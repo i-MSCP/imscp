@@ -1,0 +1,18 @@
+x-wfm-category
+Errors
+x-wfm-version
+BETA-2002-04-30 > CVS
+x-wfm-keyword
+subnet mask access weeblefm
+x-wfm-problem
+Access denied by WeebleFM configuration.
+x-wfm-solution
+If you are using "255.255.255.255" as the subnet mask for any of your access
+list entries, try changing them to "/32".
+<P>If this doesn't correct it, double-check your $ftp_access_list and $ftp_access
+variables in settings.php.</P>
+<P><I>Earlier releases of php (pre 4.0.6) do not properly convert "255.255.255.255"
+to an integer.  "/xx" style masks are handled differently in WeebleFM and are
+not subject to this bug.</I></P>
+x-wfm-php-version
+php4 < 4.0.6

@@ -1,0 +1,34 @@
+x-wfm-category
+General
+x-wfm-version
+All
+x-wfm-keyword
+help support bug post problem trouble error
+x-wfm-problem
+I have encountered a problem in WeebleFM and need some help.
+x-wfm-solution
+There are several ways you can get help with WeebleFM.  Please go through the 
+following list before posting a support request. 
+<OL>
+ <LI>Make sure you are using the latest release of WeebleFM.<BR>
+     http://sourceforge.net/project/showfiles.php?group_id=23588 </LI>
+ <LI>Check the forums to see if others are encountering the same problem.<BR>
+     http://sourceforge.net/forum/forum.php?forum_id=74652 </LI>
+ <LI>Is the problem you've encountered covered in the HelpDesk?<BR>
+     http://weeblefm.sourceforge.net/tools/helpdesk/ </LI> 
+</OL>
+<P>If none of the above help, go ahead and post a support request.<BR>
+http://sourceforge.net/tracker/?group_id=23588&atid=379038 </P>
+<P>When posting a support request please provide as much information as possible.
+All support requests should include <b>at least</b> the following:</P>
+<UL>
+ <LI>WeebleFM version.</li>
+ <li>PHP version.</li> 
+ <li>http server software and version.</li> 
+ <li>Browser software and version.</li> 
+ <li>Any errors you are receiving.</li> 
+ <li>Detailed steps on how to re-create the problem. 
+ <P><em>Note: If you are running v1.2 or later of WeebleFM, much of this 
+     information can be found by running "tools/sysinfo.php" found in the 
+     WeebleFM dir.</em></P></li>
+</ul>

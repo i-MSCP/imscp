@@ -1,0 +1,12 @@
+x-wfm-category
+Errors
+x-wfm-version
+1.0.6 > CVS
+x-wfm-keyword
+post max file size upload php ini form
+x-wfm-problem
+Uploading a file redirects you to the login page.
+x-wfm-solution
+The POST'd data exceeds "<tt>post_max_size</tt>" in <tt>php.ini</tt>. The FORM encoding 
+    used by the browser can significantly increase the file size, sometimes by 
+    more than double. Set this to at least 50% more then "<tt>upload_max_size</tt>".

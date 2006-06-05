@@ -1,0 +1,75 @@
+#! /bin/sh
+#
+# skeleton	example file to build /etc/init.d/ scripts.
+#		This file should be used to construct scripts for /etc/init.d.
+#
+#		Written by Miquel van Smoorenburg <miquels@cistron.nl>.
+#		Modified for Debian GNU/Linux
+#		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+#		Modified for SuSE 
+#		by Carsten Schoene <cs@linux-administrator.com>
+#
+# Version:	@(#)skeleton  1.8  03-Mar-1998  miquels@cistron.nl
+#
+# This file was automatically customized by dh-make on Mon, 22 Apr 2002 16:15:28 +0300
+### BEGIN INIT INFO
+# Provides: vhcs2_daemon
+# Required-Start: $network $remote_fs 
+# Required-Stop: $network $remote_fs
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Description: Start the vhcs2_daemon
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/srv/www/vhcs2/daemon/vhcs2_daemon
+PID=/var/run/vhcs2-daemon.pid
+NAME=vhcs2_daemon
+DESC=vhcs2_daemon
+
+test -x $DAEMON || exit 5
+
+. /etc/rc.status
+
+# Shell functions sourced from /etc/rc.status:
+#      rc_check         check and set local and overall rc status
+#      rc_status        check and set local and overall rc status
+#      rc_status -v     ditto but be verbose in local rc status
+#      rc_status -v -r  ditto and clear the local rc status
+#      rc_failed        set local and overall rc status to failed
+#      rc_reset         clear local rc status (overall remains)
+#      rc_exit          exit appropriate to overall rc status
+
+# First reset status of this service
+rc_reset
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: "
+	startproc -f $DAEMON -p $PID
+	rc_status -v
+        /etc/init.d/vhcs2_network
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	killproc -p $PID $DAEMON
+	rc_status -v
+	;;
+  restart|force-reload)
+	echo "Restarting $DESC: "                                     
+	$0 stop
+	$0 start
+	rc_status -v
+	;;
+  status)
+	echo "Checking for service $DESC: "
+	checkproc -p $PID $DAEMON
+	rc_status -v
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|force-reload|status}" 
+	exit 1
+	;;
+esac
+
+rc_exit

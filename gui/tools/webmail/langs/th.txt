@@ -1,0 +1,337 @@
+# ***** Thai Language By Bobby   [bobby@comsci.rid.ac.th]****** #
+# User-friendly names to system folders
+
+inbox_extended					= ถาดเข้า
+sent_extended					= ถาดออก
+trash_extended					= ถังขยะ
+
+#Navigation texts
+
+previous_text					= ก่อนหน้า
+next_text					= ถัดไป
+
+# Mail Server Errors
+
+error_connect					= ไม่สามารถติดต่อกับระบบได้ ทางเรากำลังปรับปรุง ระบบ
+error_retrieving				= มีปัญหา การรับจดหมาย ทำให้ไม่สามารถรับจดหมายได้
+error_other					= ระบบมีปัญหา ทางเรากำลังปรับปรุงระบบ
+
+#Invalid name of mailbox
+
+error_invalid_name				= การตั้งชื่อไม่ถูกต้อง - คุณสามาถใช้ตัวอักษรได้ ดังนี้ : ก-ฮ, A-Z, 0-9, .-
+
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= คุณต้องใส่ mail ของ ผู้รับอย่างน้อย 1 คน
+error_compose_invalid_mail1_s	= This mail seems to be invalid
+error_compose_invalid_mail1_p	= การส่งจดหมายลูกโซ่ไม่สามารถทำได้
+error_compose_invalid_mail2_s	= ตรวจสอบการเขียนจดหมายก่อนส่ง
+error_compose_invalid_mail2_p	= ตรวจสอบการเขียนจดหมายก่อนส่ง
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= คุณแน่ใจที่จะลบจดหมายนี้ ?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= ไม่มีหัวเรื่อง
+no_sender_text					= ไม่ทราบ
+no_recipient_text				= ไม่มีการรับรอง
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= เนื้อที่ของท่านเต็มแล้ว \r กรุณาลบจดหมายเก่าๆ ออก เพื่อเพิ่มเนื้อที่ว่างใน ระบบของท่าน
+quota_usage_info				= จำกัดเนื้อที่
+quota_usage_used				= ใช้ไป
+quota_usage_of					= ของ
+quota_usage_avail				= เนื้อที่ทั้งหมด
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= tis-620
+
+messages_mnu					= ข้อความ
+compose_mnu					= เขียนจดหมาย
+refresh_mnu					= รีโหลด
+folders_mnu					= Folder
+search_mnu					= ค้นหา
+address_mnu					= สมุดรายชื่อ
+empty_trash_mnu					= ลบขยะ
+prefs_mnu					= รายละเอียดส่วนตัว
+logoff_mnu 					= ออกจากระบบ
+
+
+
+reply_prefix					= Rv:
+forward_prefix					= Fw:
+
+reply_delimiter					= --------- ข้อความดังเดิม --------
+reply_from_hea					= จาก :
+reply_to_hea					= ถึง :
+reply_cc_hea					= Cc :
+reply_date_hea					= วันที่ :
+reply_subject_hea				= หัวเรื่อง :
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Key
+value_hea						= Value
+
+[Folders]
+
+fld_name_hea					= Folder
+fld_messages_hea				= ข้อความ
+fld_size_hea					= ขนาด
+fld_empty_hea					= ว่าง
+fld_delete_hea					= ลบ
+fld_total					= ทั้งหมด :
+fld_make_new					= สร้าง Folder ใหม่
+folders_to					= Folders to
+
+[MessageList]
+
+messages_to						= ข้อความถึง 
+no_messages						= ไม่มีจดหมายใหม่ถึง คุณ
+
+delete_selected_mnu				= ลบที่เลือก
+move_selected_mnu				= ย้ายไปที่เลือก
+delete_mnu						= ลบ
+move_mnu						= ย้ายไป
+subject_hea						= หัวเรื่อง
+from_hea						= จาก
+to_hea							= ถึง
+date_hea						= วันที่
+size_hea						= ขนาด
+
+msg_you_have					= คุณมี
+msg_message					= ข้อความ
+msg_messages					= ข้อความ
+
+msg_more_unread					= ยังไม่ได้อ่าน
+msg_one_unread					= ยังไม่ได้ดู
+msg_none_unread					= ไม่มีที่ยังไม่ได้อ่าน
+msg_in_the_folder				= ใน folder
+[Login]
+
+
+lgn_title					= เข้าระบบ
+lgn_welcome_msg					= ยินดีต้อนรับสู่  WebMail ของนักศึกษา สถาบันราชภัฏธนบุรี
+lng_user_email					= จดหมายอิเล็กทรอนิกส์
+lng_user_name					= ชื่อผู้ใช้
+lng_user_pwd					= รหัสผ่าน
+lng_theme					= Theme
+lng_login_btn					= Login &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= ถึง :
+cc_hea						= Cc :
+bcc_hea						= Bcc :
+subject_hea					= หัวเรื่อง :
+address_tip					= จากสมุดรายชื่อ
+
+attach_hea					= แนบไฟล์ :
+attch_add_new					= เพิ่มไฟล์ใหม่
+attch_name_hea					= ชื่อ
+attch_size					= ขนาด
+attch_type_hea					= ชนิด
+attch_dele_hea					= ลบ
+attch_no_hea					= ไม่มีการแนบไฟล์
+
+add_signature					= เพิ่มลายเซ็นต์ท้ายจดหมาย
+send_text					= ส่งจดหมาย
+
+result_error					= มันไม่สมบูรณ์ แต่ อาจจะส่งถึงผู้รับได้
+result_success					= ส่งจดหมายเรียบร้อยแล้ว
+nav_continue					= ต่อไป
+nav_back					= กลับ
+
+up_title 					= เพิ่มไฟล์
+up_information_text				= เลือกไฟล์
+up_button_text					= ส่ง
+
+priority_text					= ลำดับความสำคัญ
+priority_low					= น้อย
+priority_normal					= ปานกลาง
+priority_high					= มาก
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Please un mark an option
+adv_warning_text_mode2			= to use the toolbar
+
+adv_type_path					= Write the URL:
+
+format_paragraph				= Paragraph
+format_h1					= Style 1 <H1>
+format_h2					= Style 2 <H2>
+format_h3					= Style 3 <H3>
+format_h4					= Style 4 <H4>
+format_h5					= Style 5 <H5>
+format_h6					= Style 6 <H6>
+format_pre					= Formatted <PRE>
+format_clear_all				= Clear all
+
+format_font					= ตัวอักษร
+format_size					= ขนาด
+
+format_color					= สีตัวอักษร
+format_back					= สีพื้น
+color_red					= แดง
+color_blue					= น้ำเงิน
+color_green					= เขียว
+color_black					= ดำ
+color_yellow					= เหลือง
+color_white					= ขาว
+
+view_source					= ดู HTML Source
+text_mode					= Text mode
+clear_format					= Clear format
+
+priority_text					= ลำดับความสำคัญ
+
+
+
+
+[BadLogin]
+
+bdl_title					= ไม่สามารถ เข้าสู่ระบบได้ 
+bdl_msg						= คุณควรตรวจสอบ การใส่ ชื่อผู้ใช้ หรือ รหัสผ่าน ว่าถูกต้องหรือไม่
+bdl_back					= กลับไปหน้า Login
+
+
+[Error]
+
+err_title					= เกิดข้อผิดพลาด
+err_msg						= เกิดการผิดพลาดในการทำงาน กรุณา Login ใหม่
+err_system_msg					= ข้อความจากระบบ : 
+err_exit					= ออกจากระบบ
+
+[Preferences]
+
+prf_title 					= รายละเอียดส่วนตัว
+prf_general_title				= ข้อมูลทั่วไปของคุณ
+prf_name					= ชื่อ
+prf_reply_to					= เมลล์ของคุณ
+prf_time_zone					= เวลา
+prf_trash_title					= ถังขยะ
+prf_save_to_trash				= ตั้งถังขยะไว้ที่ไหน
+prf_save_only_read				= จัดเก็บจดหมายไว้ที่ไหน
+prf_empty_on_exit				= ลบจดหมายจาก Folder หลังจากออกจากระบบ
+prf_sent_title					= ส่งรายการ
+prf_save_sent					= จัดเก็บจดหมายที่ส่งไว้ที่ :
+prf_messages_title				= ข้อความ
+prf_page_limit					= แสดงจำนวนจดหมายต่อหน้า
+prf_signature_title				= ลายเซ็นต์
+prf_signature					= เขียนลายเซ็นต์
+prf_auto_add_sign				= เพิ่มลายเซ็นต์ของคุณกับจดหมายที่จะส่งทุกฉบับ
+prf_save_button					= จัดเก็บ
+prf_display_images				= แสดงรูปภาพที่แนบ
+prf_default_editor_mode				= Normal edition mode
+prf_default_editor_mode_text			= "Mode text"
+prf_default_editor_mode_html			= "จดหมายรูปแบบ HTML"
+prf_time_to_refesh				= รีโหลดทุกๆ [นาที]
+
+[Catch]
+
+ctc_title					= เพื่มไปในสมุดรายชื่อ
+ctc_information					= แสดงเฉพาะจดหมายที่ส่งมากจากคนในสมุดรายชื่อ
+ctc_name					= ชื่อ
+ctc_email					= E-mail
+ctc_no_address					= รายชื่อไม่ถูกต้อง
+ctc_close					= ปิด
+ctc_save					= จดเก็บ
+
+[Readmsg]
+
+next_mnu					= ต่อไป
+previous_mnu					= ก่อนหน้า
+back_mnu					= กลับ
+reply_mnu					= ตอบกลับ
+reply_all_mnu					= ตอบกลับทั้งหมด
+forward_mnu					= ส่งต่อ
+headers_mnu					= หัว
+move_mnu					= ย้ายไป
+delete_mnu					= ลบ
+print_mnu					= พิมพ์
+
+from_hea					= จาก :
+to_hea						= ถึง :
+cc_hea						= Cc :
+date_hea					= วันที่ :
+subject_hea					= หัวเรื่อง :
+attach_hea					= แนบไฟล์ :
+
+attch_name_hea					= ชื่อ
+attch_force_hea					= รับไฟล์
+attch_type_hea					= ชนิด
+attch_size_hea					= ขนาด
+catch_address					= เพิ่มเข้าไปในสมุดรายชื่อ
+
+[Search]
+
+sch_information_text				= เขียนข้อความที่ต้องการหาจาก จดหมายที่อ่านไปแล้ว
+sch_button_text					= ค้นหา &gt;&gt;
+sch_subject_hea					= หัวเรื่อง
+sch_from_hea					= จาก
+sch_date_hea					= วันที่
+sch_body_hea					= ข้อความ
+sch_folder_hea					= Folder
+sch_no_results					= ไม่พบข้อความที่ค้นหา
+
+
+[QuickAddress]
+
+qad_title 			= สมุดรายชื่อ
+qad_select_address		= เลือก
+qad_to				= ถึง
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= สมุดรายชื่อ
+adr_name					= ชื่อ
+adr_email					= E-mail
+adr_street					= ถนน
+adr_city					= เมือง
+adr_state					= อำเภอ
+adr_work					= งาน
+adr_back					= กลับ
+adr_save					= จัดเก็บ
+
+# list
+
+adr_name_hea					= ชื่อ
+adr_email_hea					= E-mail
+adr_edit_hea					= แก้ไข
+adr_expo_hea					= ส่งออก
+adr_dele_hea					= ลบ
+adr_new_entry					= รายชื่อใหม่
+
+
+addr_saved					= จัดเก็บข้อมูลรายชื่อแล้ว
+addr_added					= เพิ่มรายชื่อแล้ว
+addr_deleted					= ลบรายชื่อแล้ว

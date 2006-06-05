@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#
+# Traffic chains.
+#
+
+RMMOD='/sbin/rmmod'
+
+IPTABLES="/sbin/iptables"
+
+${RMMOD} ipchains 1>/tmp/vhcs2_network.log 2>/tmp/vhcs2_network.err.log
+
+#
+# firewall commet; if u have some kind of firewall
+# then this hurts... 
+#
+# must be chnaged in future releases!
+# 1zo
+#
+# ${IPTABLES} -F INPUT
+# ${IPTABLES} -F OUTPUT
+# ${IPTABLES} -F FORWARD
+#
+
+# all traffic
+
+${IPTABLES} -I INPUT
+
+${IPTABLES} -I OUTPUT
+
+# web traffic
+
+${IPTABLES} -I INPUT -p tcp --dport 80
+${IPTABLES} -I OUTPUT -p tcp --sport 80
+
+# pop3 traffic
+
+${IPTABLES} -I INPUT -p tcp --dport 110
+${IPTABLES} -I OUTPUT -p tcp --sport 110
+
+# imap traffic
+
+${IPTABLES} -I INPUT -p tcp --dport 143
+${IPTABLES} -I OUTPUT -p tcp --sport 143
+
+# mail traffic
+
+${IPTABLES} -I INPUT  -p tcp --dport 25
+${IPTABLES} -I OUTPUT -p tcp --sport 25
+

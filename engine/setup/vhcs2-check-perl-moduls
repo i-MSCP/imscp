@@ -1,0 +1,80 @@
+#!/usr/bin/perl
+
+# VHCS(tm) - Virtual Hosting Control System
+# Copyright (c) 2001-2004 by moleSoftware GmbH
+# http://www.molesoftware.com
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1    
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    MPL Mozilla Public License for more details.
+#    
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#    
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The VHCS Home Page is at:
+#
+#    http://www.vhcs.net
+
+
+
+my @needed = (strict, warnings, IO::Socket, DBI, DBD::mysql, Mail::Address, MIME::Entity,
+MIME::Parser, Crypt::CBC, Crypt::Blowfish, MIME::Base64,
+Term::ReadPassword);
+
+my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
+
+for $mod (@needed) {
+
+    print STDERR "Checking for '$mod'...\t";
+
+    if (eval "require $mod") {
+
+        $mod -> import();
+
+        printf " Ok.\n";
+
+    } else {
+
+        print STDERR "CRITICAL ERROR: Module '$mod' WAS NOT FOUND !\n" ;
+
+        $mod_err = '_on_';
+
+        if ($mod_missing eq '') {
+
+            $mod_missing .= $mod;
+
+        } else {
+
+            $mod_missing .= ", $mod";
+
+        }
+    }
+
+}
+
+if ($mod_err eq '_on_') {
+
+    print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your
+system...\n";
+
+    print STDERR "\nPlease INSTALL them before using VHCS2 software !\n";
+
+    exit 1;
+
+} else {
+
+    $| = 1;
+
+} 

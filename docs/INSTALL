@@ -1,0 +1,63 @@
+VHCS HowTo Install
+========================================================================
+
+Use the user root when installing VHCS.
+
+Install all requiered packages a list could be found at:
+	docs/debian-packages.txt
+	docs/suse-packages.txt
+
+Download the vhcs software.
+
+Extract the installation files to a secure directory.
+tangra: # cd /root
+tangra: # tar -xjf vhcs2-2.4.7.2.tar.bz2
+
+Change to the newly created directory.
+tangra: # cd vhcs2-2.4.7.2/configs/
+
+Open vhcs2.conf and make some changes. You
+have to setting up some configuration variables
+for your linux distribution. Currently delivers
+VHCS vhcs2.conf preconfiguratet for linux debian.
+If you using linux debian, you don't need to make
+this changes. We will provide soon configuration files
+for all linux distribution such as SuSE, RH, Gentoo,
+Fedora, etc.
+
+Change to the newly created directory.
+tangra: # cd ../vhcs2-2.4.7.2
+
+Now You have to make buld for your system
+tangra: # make install
+
+Your build is now stored in /tmp/vhcs-2.4.7.2
+
+Copy all directory forum the buil into your system 
+(do not forget to make backups)
+tangra: # cp -R /tmp/vhcs-2.4.7.2/* /
+
+Change to the newly created directory.
+tangra: # cd /var/www/vhcs2/engine/setup/
+
+Set mysql password if no is set :
+mysqladmin -u root password YOUR_PASSWORD
+
+Now start the vhcs setup program
+tangra: # ./vhcs2-setup
+
+Install step-by-step vhcs
+
+Clean the tmp folder
+tangra: # rm -R /tmp/vhcs-2.4.7.2
+
+moleSoftware offers a variety of support services to meet 
+your unique needs. Installation and software customizing 
+services are available too. 
+
+In an effort to better serve our customers, we ask that 
+you please sign in to the support site. Once you have 
+signed in, you will have access to VHCS support resources. 
+
+http://www.vhcs.net
+http://wwww.molesoftware.com

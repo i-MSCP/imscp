@@ -1,0 +1,345 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Érkezett
+sent_extended					= Elküldött
+trash_extended					= Kuka
+
+#Navigation texts
+
+previous_text					= Elõzõ
+next_text					= Következõ
+
+# Mail Server Errors
+
+error_connect					= Nem sikerült a POP szerverhez kapcsolódás.
+error_retrieving				= Az üzenet nem lett letöltve.
+error_other					= Váratlan hiba történt. Lépj kapcsolatba az adminisztrátorral.
+
+#Invalid name of mailbox
+
+error_invalid_name				= Hibás bejegyzés - csak A-Z, 0-9, .- és szóköz karaktereket használj
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Adj meg egy e-mail címet!
+error_compose_invalid_mail1_s			= Hibás e-mail cím
+error_compose_invalid_mail1_p			= Hibás e-mail cím
+error_compose_invalid_mail2_s			= Ellenõrizd mielõtt elküldöd
+error_compose_invalid_mail2_p			= Ellenõrizd mielõtt elküldöd
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Valóban törölni akarod ezt az üzenetet?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [nincs tárgy]
+no_sender_text					= [ismeretlen]
+no_recipient_text				= [nincs törzse]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= A tárhelyed betelt. Töröld a régi üzeneteid a beérkezett üzenetek mappából és próbáld újra!
+quota_usage_info				= Tárhely foglaltság:
+quota_usage_used				= Szabad
+quota_usage_of					= a
+quota_usage_avail				= -ból
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %y/%m/%d %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-2
+
+messages_mnu					= Érkezett
+compose_mnu					= Levél írása
+refresh_mnu					= Frissítés
+folders_mnu					= Mappák
+search_mnu					= Keresés
+address_mnu					= Címek
+empty_trash_mnu					= Kuka ürítés
+prefs_mnu					= Beállítások
+logoff_mnu 					= Kijelentkezés
+
+
+
+reply_prefix					= RE:
+forward_prefix					= FW:
+
+reply_delimiter					= --------- Eredeti üzenet --------
+reply_from_hea					= Küldõ:
+reply_to_hea					= Címzett:
+reply_cc_hea					= Másolatot kap:
+reply_date_hea					= Dátum:
+reply_subject_hea				= Tárgy:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea						= Kulcs
+value_hea					= Érték
+
+[Folders]
+
+fld_name_hea					= Mappák
+fld_messages_hea				= Üzenetek
+fld_size_hea					= Méret
+fld_empty_hea					= Üres
+fld_delete_hea					= Törlés
+fld_total					= Összesen:
+fld_make_new					= új mappa
+folders_to					= Mappák
+
+
+[MessageList]
+
+messages_to					= Üzenetek
+no_messages					= Nincs üzenet a következõ mappában:
+
+delete_selected_mnu				= Kijelölt üzenetek törlése
+move_selected_mnu				= Kijelölt üzenetek áthelyezése
+delete_mnu					= Törlés
+move_mnu					= Áthelyezés
+subject_hea					= Tárgy
+from_hea					= Küldõ
+to_hea						= Címzett
+date_hea					= Dátum
+size_hea					= Méret
+
+msg_you_have					= 
+msg_message					= üzeneted van
+msg_messages					= üzeneted van
+
+msg_more_unread					= olvasatlan
+msg_one_unread					= olvasatlan
+msg_none_unread					= nincs olvasatlan
+msg_in_the_folder				= a következõ mappában:
+
+[Login]
+
+
+lgn_title					= Bejelentkezés
+lgn_welcome_msg					= Üdv. Ird be a szükséges információkat:
+lng_user_email					= E-mail
+lng_user_name					= Felhasználónév
+lng_user_pwd					= Jelszó
+lng_theme					= Nyelv
+lng_language					= ???
+lng_login_btn					= Belépés &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Cimzett:
+cc_hea						= Másolatot kap:
+bcc_hea						= Rejtett másolatot kap:
+subject_hea					= Tárgy:
+address_tip					= Címlista
+
+attach_hea					= Csatol:
+attch_add_new					= Csatolt fájl hozzáadása
+attch_name_hea					= Név
+attch_size					= Méret
+attch_type_hea					= Típus
+attch_dele_hea					= Törlés
+attch_no_hea					= Nincs csatolt állomány!
+
+add_signature					= Aláírás hozzáadása
+send_text					= Küldés
+
+result_error					= Hiba, az üzenet nem lett elküldve
+result_success					= Az üzenet sikeresen el lett küldve!
+nav_continue					= Folytatás
+nav_back					= Vissza
+
+up_title 					= Csatolt fájl hozzáadása
+up_information_text				= Kiválaszt
+up_button_text					= Csatol
+
+priority_text					= Prioritás
+priority_low					= Nem sürgõs
+priority_normal					= Átlagos
+priority_high					= Sürgõs
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Ellenõrizd mielõtt használod az eszköztárat
+adv_warning_text_mode2			= Az eszköztár használatával
+
+adv_type_path					= Ird be az URL-t:
+
+format_paragraph				= Bekezdés
+format_h1					= Címsor 1 <H1>
+format_h2					= Címsor 2 <H2>
+format_h3					= Címsor 3 <H3>
+format_h4					= Címsor 4 <H4>
+format_h5					= Címsor 5 <H5>
+format_h6					= Címsor 6 <H6>
+format_pre					= Formázott <PRE>
+format_clear_all				= Minden formázást eltávolít
+
+format_font					= Betûtípus
+format_size					= Méret
+
+format_color					= Szín
+format_back					= Háttér
+color_red					= Piros
+color_blue					= Kék
+color_green					= Zöld
+color_black					= Fekete
+color_yellow					= Sárga
+color_white					= Fehér
+
+view_source					= Forrás megjelenítése
+text_mode					= Csak szöveg
+clear_format					= Alaphelyzet
+
+priority_text					= Prioritás
+
+
+
+
+[BadLogin]
+
+bdl_title					= Hibás bejelentkezés
+bdl_msg						= Hibás felhasználónév vagy jelszó! <br><br>Ellenõrizd az adatokat és próbáld meg újra!
+bdl_back					= Vissza
+
+
+[Error]
+
+err_title					= Hiba
+err_msg						= Hiba a folyamatban <br><br>Jelentkezz be újra:
+err_system_msg					= Rendszerüzenet:
+err_exit					= Bejelentkezés újra
+
+[Preferences]
+
+prf_title 					= Beállítások
+prf_general_title				= Személyes adatok
+prf_name					= Név
+prf_reply_to					= Válasz cím
+prf_time_zone					= Idõzóna
+prf_trash_title					= Kuka
+prf_save_to_trash				= A <b>Törölt</b> üzenetek kerüljenek a következõ mappába: 
+prf_save_only_read				= Az <b>olvasott</b> üzenetek mentése a következõ mappába: 
+prf_empty_on_exit				= <b>Kuka</b> ürítése kilépésnél
+prf_sent_title					= Elküldött üzenetek
+prf_save_sent					= Az <b>elküldött</b> üzenetek mentése a következõ mappába:
+prf_messages_title				= Üzenetek
+prf_page_limit					= Megjelenített üzenetek száma
+prf_signature_title				= Aláírás
+prf_signature					= Személyes aláírás
+prf_auto_add_sign				= Automatikus aláírás-hozzáadás
+prf_save_button					= Mentés
+prf_display_images				= Csatolt képek automatikus megjelenítése
+prf_default_editor_mode				= Szerkesztõ típusa
+prf_default_editor_mode_text			= "Sima szöveg"
+prf_default_editor_mode_html			= "HTML szerkesztõ (IE5 vagy magasabb)"
+prf_time_to_refesh				= Beérkezett üzenetek automatikus frissítése (perc)
+
+[Catch]
+
+ctc_name                			= Név
+ctc_title               			= új címek
+ctc_information         			= Csak azok a címek jelenítodnek meg, amelyek még nincsenek a címlistában.
+ctc_email               			= E-mail
+ctc_no_address          			= Nincs cím	
+ctc_save                			= Mentés
+ctc_close               			= Bezár
+
+
+[Readmsg]
+
+print_mnu					= Nyomtatás
+next_mnu                                        = Következõ
+previous_mnu                                    = Elõzõ
+back_mnu                                        = Vissza
+reply_mnu                                       = Válasz
+reply_all_mnu                                   = Válasz mindenkinek
+forward_mnu                                     = Továbbküldés
+headers_mnu                                     = Fejléc
+move_mnu                                        = Áthelyez
+delete_mnu                                      = Törlés
+
+from_hea                                        = Küldõ:
+to_hea                                          = Cimzett:
+cc_hea                                          = Másolatot kap:
+date_hea                                        = Dátum:
+subject_hea                                     = Tárgy:
+attach_hea                                      = Csatolt fájl:
+
+catch_address                                   = Küldõ hozzáadása a Címlistához
+
+attch_name_hea                                  = Név
+attch_force_hea                                 = Letöltés
+attch_type_hea                                  = Típus
+attch_size_hea                                  = Méret
+
+
+[Search]
+
+sch_body_hea					= Levéltörzs
+
+sch_information_text                    	= Keresendõ szó, vagy kifejezés megadása
+sch_button_text                         	= Keres &gt;&gt;
+sch_subject_hea                        	 	= Tárgy
+sch_from_hea                            	= Küldõ
+sch_date_hea                            	= Dátum
+sch_folder_hea                          	= Mappa
+sch_no_results                          	= Nincs találat
+
+
+[QuickAddress]
+
+qad_title                       		= Válassz cimzettet
+qad_select_address              		= Válassz címet
+qad_to                          		= Címzett
+qad_cc                          		= Másolatot kap
+qad_bcc                         		= Rejtett másolatot kap
+
+[AddressBook]
+
+# edit/display
+
+adr_title                                       = Címek
+adr_name                                        = Név
+adr_email                                       = E-mail
+adr_street                                      = Utca
+adr_city                                        = Város
+adr_state                                       = Megye
+adr_work                                        = Foglalkozás
+adr_back                                        = Vissza
+adr_save                                        = Mentés
+
+
+# list
+
+adr_name_hea                                    = Név
+adr_email_hea                                   = E-Mail
+adr_edit_hea                                    = Szerkesztés
+adr_expo_hea                                    = Export
+adr_dele_hea                                    = Törlés
+adr_new_entry                                   = új bejegyzés
+
+
+addr_saved					= a cím sikeresen elmentve
+addr_added					= a cím sikeresen hozzáadva
+addr_deleted					= a cím törölve
+

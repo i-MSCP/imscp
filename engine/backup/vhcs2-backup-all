@@ -1,0 +1,357 @@
+#!/usr/bin/perl
+
+# VHCS(tm) - Virtual Hosting Control System
+# Copyright (c) 2001-2005 by moleSoftware GmbH
+# http://www.molesoftware.com
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1    
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    MPL Mozilla Public License for more details.
+#    
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#    
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The VHCS Home Page is at:
+#
+#    http://www.vhcs.net
+
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+require 'vhcs2_common_code.pl';
+
+use strict;
+
+use warnings;
+
+sub lock_backup_all_system {
+    
+    my ($lock_file) = @_; 
+    
+    push_el(\@main::el, 'lock_backup_all_system()', 'Starting...');
+    
+    if (-e $lock_file) {
+        
+        push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked !');
+        
+        return 1;
+        
+    }
+    
+    my $touch_cmd = "/bin/touch $lock_file";
+    
+    my $rs = sys_command($touch_cmd);
+    
+    return 1 if ($rs != 0);
+    
+    push_el(\@main::el, 'lock_backup_all_system()', 'Ending...');
+    
+    return 0;
+}
+
+
+sub unlock_backup_all_system {
+    
+    my ($lock_file) = @_; 
+    
+    push_el(\@main::el, 'unlock_backup_all_system()', 'Starting...');
+    
+	my $rs = del_file($lock_file);
+
+	return $rs if ($rs != 0);
+    
+    push_el(\@main::el, 'unlock_backup_all_system()', 'Ending...');
+    
+    return 0;
+
+}
+
+
+
+sub backup_all_start_up {
+    
+    my ($lock_file) = @_;
+    
+    my ($rs, $rdata) = (undef, undef);
+    
+    push_el(\@main::el, 'backup_all_start_up()', 'Starting...');
+    
+    $rs = lock_backup_all_system($lock_file);
+    
+    return $rs if ($rs != 0);
+    
+    # config check;
+    
+    $rs = get_conf();
+    
+    return $rs if ($rs != 0);
+    
+    #
+    # getting initial data also must be done here;
+    #
+    
+    my $sql = "select * from domain;";
+    
+    ($rs, $rdata) = doSQL($sql);
+    
+    return $rs if ($rs != 0);
+    
+    push_el(\@main::el, 'backup_all_start_up()', 'Ending...');
+    
+    return 0;
+    
+}
+
+
+sub backup_all_shut_down {
+    
+    my ($lock_file) = @_;
+    
+    my $rs = undef;
+    
+    push_el(\@main::el, 'backup_all_shut_down()', 'Starting...');
+    
+    $rs = unlock_backup_all_system($lock_file);
+    
+    return $rs if ($rs != 0);
+    
+    push_el(\@main::el, 'backup_all_shut_down()', 'Ending...');
+    
+    return 0;
+    
+}
+
+sub err_exit {
+    
+    my $el_data = pop_el(\@main::el);
+
+	$main::el_sep = "\t#\t";
+
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+        
+	print STDERR "$msg\n";
+        
+    exit 1;
+    
+}
+
+sub backup_all_mail_task {
+	    
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	
+	push_el(\@main::el, 'backup_all_mail_task()', 'Starting...');
+	
+	$sql = "select admin_name, email from admin where created_by = 0";
+	
+	($rs, $rdata) = doSQL($sql);
+	
+	return $rs if ($rs != 0);
+	
+	#
+	# no admin data -> no mail message;
+	#
+	
+	return 0 if (scalar(@$rdata) == 0);
+	
+	$rdata = @$rdata[0];
+	
+	my $date = get_human_date();
+	
+	my ($admin_name, $admin_email) = (@$rdata[0], @$rdata[1]);
+	
+	my $dmn_backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
+	
+	my $backup_file_list = `ls -la $dmn_backup_dir`;
+	
+	my $server_name = $main::cfg{'SERVER_HOSTNAME'};
+	
+	my $server_ip = $main::cfg{'BASE_SERVER_IP'};
+	
+	my $msg_data = <<MESSAGE_TEXT;
+Hey There,
+
+I'm the automatic backup system on your $server_name ($server_ip) server.
+
+Backup task was completed successfully!
+
+File(s) List In ($dmn_backup_dir):
+
+========================================================================
+$backup_file_list
+========================================================================
+MESSAGE_TEXT
+	
+	my $out = new MIME::Entity;
+		
+	$out -> build(
+				From => "Automatic Backup Manager <".$admin_email.">",
+				To => $admin_email,
+				Subject => "[$date] Backup report.",
+				Data => $msg_data,
+				'X-Mailer' => "$main::cfg{'VersionH'} Automatic Backup Messager"
+				);
+
+	open MAIL, "| /usr/sbin/sendmail -t -oi";
+	
+	$out -> print(\*MAIL);
+	
+	close MAIL;
+	
+	push_el(\@main::el, 'backup_all_mail_task()', 'Ending...');
+	
+	return 0;
+    
+}
+
+
+sub backup_all_engine {
+	    
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	
+	push_el(\@main::el, 'backup_all_engine()', 'Starting...');
+	
+	
+	$sql = "select t1.domain_id, t1.domain_name, t1.domain_status, t1.domain_uid, t1.domain_gid, t2.admin_name, t2.email from domain as t1, admin as t2 where t1.domain_admin_id = t2.admin_id order by t1.domain_id";
+	
+	($rs, $rdata) = doSQL($sql);
+	
+	return $rs if ($rs != 0);
+	
+	foreach (@$rdata) {
+	
+		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6]);
+		
+		my $date = get_human_date();
+		
+		my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
+		
+		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
+		
+# 		my $dmn_backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
+		
+		my $cmd_tar = $main::cfg{'CMD_TAR'};
+		
+		my $cmd_rm = $main::cfg{'CMD_RM'};
+		
+		my $cmd_mv = $main::cfg{'CMD_MV'};
+		
+		my $httpd_uid = $main::cfg{'APACHE_USER'};
+		
+		my $httpd_gid = $main::cfg{'APACHE_GROUP'};
+
+#		my $make_dmn_backup_dir_cmd = "/usr/bin/install -d -m 0644 -o root -g root $dmn_backup_dir";
+
+		my $backup_filename = "$dmn_name-backup-$date.tar.gz";
+		
+		my $backup_cmd = "$cmd_tar --create --directory $dmn_dir --gzip --file $dmn_dir/$backup_filename --exclude=logs --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			
+		if ($dmn_status eq 'ok') {
+
+			if( -z $dmn_backup_dir)
+			{
+				$rs = del_file($dmn_backup_dir);
+			
+				return $rs if ($rs != 0);		
+			}
+
+			if(! -d $dmn_backup_dir)
+			{
+				$rs = make_dir($dmn_backup_dir);
+			
+				return $rs if ($rs != 0);		
+
+				$rs = setfmode($dmn_backup_dir, "root", "root", 0644);
+			
+				return $rs if ($rs != 0);
+			}
+
+			$rs = sys_command($backup_cmd);
+			
+			# do not return if backup throws an error, or other domains will not be backuped
+			if ($rs == 0) {
+			
+				$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
+				
+				return $rs if ($rs != 0);
+			}
+
+			$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*");
+			
+			return $rs if ($rs != 0);
+
+			$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
+			
+			return $rs if ($rs != 0);
+	
+#			my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
+#
+#			my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+#
+#			my $sys_user = "$suexec_user_pref$sys_uid";
+#
+#			my $sys_group = "$suexec_user_pref$sys_gid";
+			
+			$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
+			
+			return $rs if ($rs != 0);
+			
+		}
+		
+		
+	}
+	
+	push_el(\@main::el, 'backup_all_engine()', 'Ending...');
+	
+	return 0;
+	
+}
+
+
+my $rs = undef;
+
+my $proceed = $ARGV[0];
+
+
+if (!defined($proceed) || $proceed eq '') {
+	
+	push_el(\@main::el, 'main()', "ERROR: Missing Input Data! Please provide appropriate command line parameter(s)!");
+	
+	err_exit();
+	
+}
+
+if ($proceed ne 'yes') {
+	
+	push_el(\@main::el, 'main()', "NOTE: If you want full backup of your domain data, please run this script with 'yes' command line parameter!");
+	
+	err_exit();
+	
+}
+
+my $backup_lock_file = "/tmp/vhcs2-backup-all.lock";
+
+$rs = backup_all_start_up($backup_lock_file);
+
+err_exit() if ($rs != 0);
+
+$rs = backup_all_engine();
+ 
+err_exit() if ($rs != 0);
+
+$rs = backup_all_shut_down($backup_lock_file);
+
+err_exit() if ($rs != 0);
+
+exit 0;

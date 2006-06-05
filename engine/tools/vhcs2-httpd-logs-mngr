@@ -1,0 +1,326 @@
+#!/usr/bin/perl
+
+# VHCS(tm) - Virtual Hosting Control System
+# Copyright (c) 2001-2004 by moleSoftware GmbH
+# http://www.molesoftware.com
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1    
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    MPL Mozilla Public License for more details.
+#    
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#    
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The VHCS Home Page is at:
+#
+#    http://www.vhcs.net
+
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+require 'vhcs2_common_code.pl';
+
+use strict;
+
+use warnings;
+
+my $rs = undef;
+
+sub httpd_logs_mngr_start_up {
+    
+    my ($rs, $rdata) = (undef, undef);
+    
+    push_el(\@main::el, 'httpd_logs_mngr_start_up()', 'Starting...');
+    
+    # Let's clear Execution Logs, if any.
+    
+    if (-e $main::vhcs2_httpd_logs_mngr_el) {
+        
+        $rs = del_file($main::vhcs2_httpd_logs_mngr_el);
+        
+        return $rs if ($rs != 0);
+        
+    }
+    
+    # config check;
+    
+    $rs = get_conf();
+    
+    return $rs if ($rs != 0);
+    
+    #
+    # getting initial data also must be done here;
+    #
+    
+    my $sql = "select * from domain;";
+    
+    ($rs, $rdata) = doSQL($sql);
+    
+    return $rs if ($rs != 0);
+    
+    push_el(\@main::el, 'httpd_logs_mngr_start_up()', 'Ending...');
+    
+    return 0;
+    
+}
+
+sub copy_subdomain_logs {
+    
+    my ($rs, $rows) = (undef, undef);
+    
+    push_el(\@main::el, 'copy_subdomain_logs()', 'Starting...');
+    
+    my $sql = "select t1.subdomain_name, t2.domain_name from subdomain as t1, domain as t2 where t1.domain_id = t2.domain_id and t1.subdomain_status = 'ok' order by t1.subdomain_id;";
+    
+    ($rs, $rows) = doSQL($sql);
+    
+    return $rs if ($rs != 0);
+    
+    if (scalar(@$rows) > 0) {
+        
+        foreach (@$rows) {
+            
+            my ($sub_pref, $domain_name) = (@$_[0], @$_[1]);
+            
+            my $subdomain_name = "$sub_pref.$domain_name";
+            
+            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-access.log";
+            
+            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$subdomain_name-access.log";
+            
+            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-error.log";
+            
+            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$subdomain_name-error.log";
+            
+            my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+            
+            $rs = sys_command($cmd_cp);
+            
+            return $rs if ($rs != 0);
+            
+            $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+            
+            return $rs if ($rs != 0);
+            
+            $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+            
+            $rs = sys_command($cmd_cp);
+            
+            return $rs if ($rs != 0);
+            
+            $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+            
+            return $rs if ($rs != 0);
+            
+        }
+        
+    }
+    
+    push_el(\@main::el, 'copy_subdomain_logs()', 'Ending...');
+    
+    return 0;
+    
+}
+
+sub copy_domain_logs {
+    
+    my ($rs, $rows) = (undef, undef);
+    
+    push_el(\@main::el, 'copy_domain_logs()', 'Starting...');
+    
+    my $sql = "select domain_name from domain where domain_status = 'ok' order by domain_id";
+    
+    ($rs, $rows) = doSQL($sql);
+    
+    return $rs if ($rs != 0);
+    
+    if (scalar(@$rows) > 0) {
+        
+        foreach (@$rows) {
+            
+            my $domain_name = @$_[0];
+            
+            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$domain_name-access.log";
+            
+            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$domain_name-access.log";
+            
+            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$domain_name-error.log";
+            
+            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$domain_name-error.log";
+            
+            my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+            
+            $rs = sys_command($cmd_cp);
+            
+            return $rs if ($rs != 0);
+            
+            $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+            
+            return $rs if ($rs != 0);
+            
+            $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+            
+            $rs = sys_command($cmd_cp);
+            
+            return $rs if ($rs != 0);
+            
+            $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+            
+            return $rs if ($rs != 0);
+            
+        }
+        
+    }
+    
+    push_el(\@main::el, 'copy_domain_logs()', 'Ending...');
+    
+    return 0;
+    
+}
+
+sub copy_alias_logs {
+    
+    my ($rs, $rows) = (undef, undef);
+    
+    push_el(\@main::el, 'copy_alias_logs()', 'Starting...');
+    
+    my $sql = "select t1.*, t2.* from domain_aliasses as t1, domain as t2 where t1.domain_id = t2.domain_id and t1.alias_status = 'ok'";
+    
+    ($rs, $rows) = doSQL($sql);
+    
+    return $rs if ($rs != 0);
+    
+    if (scalar(@$rows) > 0) {
+        
+        foreach (@$rows) {
+            
+            my $als_name = @$_[2];
+            
+            my $als_mount = @$_[4];
+            
+            my $dmn_name = @$_[8];
+            
+            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log";
+            
+            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs/$als_name-access.log";
+            
+            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log";
+            
+            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs/$als_name-error.log";
+            
+            my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
+            
+            $rs = sys_command($cmd_cp);
+            
+            return $rs if ($rs != 0);
+            
+            $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+            
+            return $rs if ($rs != 0);
+            
+            $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
+            
+            $rs = sys_command($cmd_cp);
+            
+            return $rs if ($rs != 0);
+            
+            $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
+            
+            return $rs if ($rs != 0);
+            
+        }
+        
+    }
+    
+    push_el(\@main::el, 'copy_alias_logs()', 'Ending...');
+    
+    return 0;
+    
+}
+
+sub httpd_logs_mngr_engine {
+    
+    my ($rs, $rdata) = (undef, undef);
+    
+    push_el(\@main::el, 'httpd_logs_mngr_engine_up()', 'Starting...');
+    
+    $rs = copy_subdomain_logs();
+    
+    return $rs if ($rs != 0);
+    
+    $rs = copy_domain_logs();
+    
+    return $rs if ($rs != 0);
+    
+    $rs = copy_alias_logs();
+    
+    return $rs if ($rs != 0);
+    
+    push_el(\@main::el, 'httpd_logs_mngr_engine_up()', 'Ending...');
+    
+    return 0;
+    
+}
+
+sub httpd_logs_mngr_shut_down {
+    
+    my $rs = undef;
+    
+    push_el(\@main::el, 'httpd_logs_mngr_shut_down()', 'Starting...');
+    
+    push_el(\@main::el, 'httpd_logs_mngr_shut_down()', 'Ending...');
+    
+    return 0;
+    
+}
+    
+$rs = httpd_logs_mngr_start_up();
+
+if ($rs != 0) {
+    
+    dump_el(\@main::el, $main::vhcs2_httpd_logs_mngr_el);
+    
+    httpd_logs_mngr_shut_down();
+    
+    exit 1;
+    
+}
+
+
+$rs = httpd_logs_mngr_engine();
+
+if ($rs != 0) {
+    
+    dump_el(\@main::el, $main::vhcs2_httpd_logs_mngr_el);
+    
+    httpd_logs_mngr_shut_down();
+    
+    exit 1;
+    
+}
+
+
+$rs = httpd_logs_mngr_shut_down();
+
+if ($rs != 0) {
+    
+    dump_el(\@main::el, $main::vhcs2_httpd_logs_mngr_el);
+    
+    exit 1;
+    
+}
+
+exit 0;
+

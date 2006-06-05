@@ -1,0 +1,42 @@
+#! /bin/sh
+#
+. /etc/rc.conf
+. /etc/rc.conf.local
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/sendmail
+PID=/var/spool/postfix/pid/master.pid
+NAME=postfix
+DESC=postfix
+
+
+test -f $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: "
+	$DAEMON ${sendmail_flags}
+	echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	if [ -f "$PID" ] ; then
+	kill -9 `cat $PID`
+	rm -f $PID
+	fi
+	echo "$NAME."
+	;;
+  restart|force-reload)
+	$0 stop
+	$0 start
+	echo "$NAME."
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

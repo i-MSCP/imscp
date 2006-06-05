@@ -1,0 +1,218 @@
+2005-02-13 V2.7.10
+
+ - Removed the session_id from url
+ - Fixed security vulnerability BUGTRAQ:20060129
+ - Added extra security option $require_same_ip = yes in config.security.php
+
+2005-10-12 V2.7.9
+
+- No need to end temporary_directory with a /
+- Minor bugfixes reported in forum
+- Fixed error when there are no personal folders created
+- Added support for appledouble mimetype
+- Fixed bug that causes loose of messages when moving a unread message
+
+2005-08-01 V2.7.8
+
+- New error handler
+- New session management
+- Added install/index.php
+
+- A LOOONG period of inactivity :)
+
+- Added server response to bad-login.htm
+- Added charset conversion (PHP 4.3 recommended)
+- Once moved to PHPMailer, mails sent thru UM aren't in RBL filters by 'malformed headers'
+- Moved to PHPMailer as mailer (without mods), since PHPMailer is stable, powerful and RFC-compliant
+- Some cleanup on attachments download
+- Fixed bug with special chars (ç specially)
+- Per-server protocol/port configuration
+- Attachment decoding rewrote, now all attachments are decoded once and all new requests are get from the cached file
+- array_qsort2 rewrote, 80% of code reduction and no stack overflows
+- Lot of fixes, better cache and line breaks handling 
+- Fixed bug with read/unread messages under POP3
+- Added support for folder prefix (eg. Courier folder style: INBOX.folder_name)
+- Added support for MS-TNEF attachments
+- Added support for UUencoded attachments
+- Fixed problem with unsubscribed folders (IMAP)
+- Added redir.php & make links use that & redirect to the destination URL to strip off referrer info (William Warner, Jr)
+- Made mailto links open new message to address in UebiMiau instead of default mail client (William Warner, Jr)
+- $block_external_images now blocks backgrounds too (William Warner, Jr)
+- Support for message/rfc822 (*.eml hell) attachments and it's sub-attachments (uff)
+- Cleaned routines wich uses dates and timezone
+- Changed timezone interval from 1 hour to 30 minutes in preferences
+- Removed $server_time_zone from config.php, used date("Z") instead
+- Added FILTERS!. At this momment, it's not available for end users
+  A new file called apply_filters.php was added and contais a sample array wich can
+  be uncommented to test filters. At this momment, only FL_TYPE_MOVE and FL_TYPE_DELETE are
+  working. In addition, a new config key called $allow_filters was added to config.php and will
+  enable and disable the filters. Please note. In order to keep my first idea, it's a CLIENT SIDE
+  filter, and will not save your server's disk space until the user open him mailbox. Another
+  problem is the response to client, because once a filter is processed, UM will refresh the
+  message list again.
+- Some changes in smtp_send() method to prevent errors in some cases :)
+- Added $enable_cookies to "config.security.php" wich if enabled, will require also a cookie
+  I believe this change will fix all security related problems, specially the 'Referer' problem
+  If this option still turned off, a browser with no cookies still can use the webmail
+- All security-related configurations was moved to "config.security.php"
+- When in debug mode, redirections will be sent as a link in bottom of each page, it will stop the "Headers already sent" warning
+- Added $display_errors in config.php and a new error handling method
+- Ops, why address catcher is missing ? back again :)
+- Moved server communication to a separated file, now called "process.php". 
+  If you log-in from an external page, be sure to alter your form's action to this file.
+  Some templates was changed in order to keep the navigation fine
+
+10-10-2002 - v2.7.2
+- Small changes in default preferences
+- Now the script check for a 'Reply-to' header when repling a message
+- Added option to use Reply-To as From when sending messages, look for $allow_modified_from	in config.php
+- Language settings are sent to inc/config.languages.php
+- Fixed blank messages bug with split(), now using explode()
+- Added filter to block scripts from HTML messages, look for $allow_scripts in config.php
+  Due to security problems, I recomment you to leave this option turned ON
+- Fixed some problems with templates (losting theme configuration)
+- Improved support for text messages (conversion html -> plain text), 
+  the old $mime_show_html is now called $allow_html in config.php
+
+09-20-2002 - v2.7
+- MANY SECURITY FIXES
+- Ported CastilloCentral theme (tks to William Warner, Jr)
+- Added option to block external images (eg, images that start with http://...), see $block_external_images, default disabled
+- Now inline and embebed attachments are cached (_attachments), you can turn off this feature
+- Added a tooltip for trucated header fields
+- Support for VCF files is removed (functions still continues in the distro, see inc/lib.export.php)
+- Small changes in class.smtp.php, Sendmail are making arbitrary changes in To: fields
+- WARNING: Due problems with the operator ~, now addressbooks entrys are saved using base64 encoding funcoes, the, ALL EXISTING DATA IN CATALOGS WILL BE LOST if you not convert the data file before run the new version over the old 2.5
+- Added possibility to choose separated theme and language
+- LOTS of small changes
+- Added a new powerfull search engine
+- Language packs now is a unique ini-style file
+- HEAVY CHANGES in all the code due the new class structure 
+- Small changes to be compatible with PHP 4.2 
+- Preferences: added option to select the default editor mode (advanced or text)
+- Preferences: added option to disply inline images in the body
+- Preferences: added option to automatically refresh the message list in a specified interval
+- Small changes in Advanced editor to handle "<ENTER>" correctly
+- Added priority to sent messages
+- Forwards is made with the original attachments, the .eml had get rid ;)
+- Rewrite the main class UebiMiau, now it is more Object Oriented and clean
+- Added a new template engine (Smarty <http://www.phpinsider.com/php/code/Smarty/>)
+- Added new status for messages, including priority and answered
+- Added IMAP support WITHOUT the php imap extension (--with-imap)
+
+01-15-2002 - v2.5
+- Removed the SID field from login page, also form_generator.php is not needed more
+- Lot of small bug fixes/changes
+- Added support for VCF files (export address book)
+- Added support for multiple bodies
+- Fixed bug with filenames for messages under *nix systems
+- Fixed bug with line wrap
+- Fixed bug with Cyrilic chars
+- Added support for multiples body in messages
+- Now if you add a signature one time, it's disabled
+- Now if signature is added automatically, the checkbox do not apears in compose page
+- Now quota limit can be disabled
+- Changed the way that the messages are displayed.
+- Timezone working!
+- Fixed problems with quotes in languages
+- Fixed problem with message status (READ/UNREAD) in some servers
+- Added a arrow in message list to indicate what is the collumm/order that the messages are listed
+- Added a option to redirect new users to the preferences page
+- Fixed small bug with local messages, headers are not saved correctly
+- Fixed problems with long headers in headers.php, now the script get the headers from session
+- Changes in reply/forward methods
+- Hard changes in templates/languages schema
+- Romoved embebed images from attachment list
+- Fixed problems with MIME decoding in some cases
+
+09-21-2001 - v2.1
+- Fixed problem with BCC headers
+- Added address catch option
+- Fixed bug for some RFC non-compliant mail clients
+- Added support for Sendmail (UebiMiau talks directly with the binary sendmail)
+- Now folder names allow spaces 
+- Now address book is saved as an serialized array, "encrypted" like as preferences
+- Added a "back" option when reading the message
+- Added support for body backgrounds (images and colors), now did are displayed as TD background
+- Fixed bug with Cubic Circle's Server when decoding the date
+- Fixed small bug with empty keys in headers
+- Optimized routines that manage local messages, now it's more fast and can manage more data
+- Changes in readmsg.htm template, now it's more flexible
+- Added option in config.php to use full email address as username (for qmail users)
+- Cleaned source for SMTP class
+- Fixed small problems with netscape (styles) 
+
+08-27-2001 - v2.0.2
+- Added message navigation in readmsg.php
+- Fixed bug when user change de temporary dir and not make a "_sessions" folder under it
+- Fixed bug "pass-by-reference" in connect method
+- Fixed bug when user have a special char in login/password (")
+- Fixed bug when deleting an attachment (sending message)
+
+08-23-2001 - v2.0.1
+- Fixed bug when handling messages with inside images
+
+08-21-2001 - v2.0
+- Added advanced HTML editor for IE5+ users !! :)
+- Cleaned the search system, now works VERY more fast
+- Added Form Generator (see form_generator.php)
+- Added option to MOVE message in readmsg.php
+- Added "Forward" button
+- Added navigation menu to readmsg.php
+- Cleanned HTML Code in readmsg.php template, removing redundant codes
+- Added "signature" to preferences
+- Added "records per page" in preferences
+- Added quota limit !! :)
+- Added custom date format (config.php)
+- Fixed bug when handling messages with no body
+- Cleanned the function "mime_encode_headers()", now works more fast
+- Added configurable footer to sent mails
+- Added support for Virtual Domains (POP3 servers)
+- Removed $address_book_name from config.php
+- Added comments and cleaned source in some files
+- Removed all templates, added portuguese and english templates (many changes...)
+
+07-31-2001 - v1.8pl2
+- Removed "Name" from login
+- Added routine to keep the system clean of old sessions
+- Added server response for errors when sending emails (It is necessary to change the theme to work)
+- Added support for authentication of users in SMTP Server (config.php -> $use_password_for_smtp)
+- Fixed bug when handle errors/login fail
+
+07-30-2001 - v1.8pl1
+- Added "Italian" packet <paoloandrea@tiscalinet.it>
+- Added CHANGELOG.txt and README.txt
+- Added "English" packet <ts@2tonewebdesign.com>
+- Changed the structure of folders and config.php to accept languages more easy
+- Classes and Functions was put in independent files
+
+07-26-2001 - v1.8
+- Fixed small bug in addressbook
+- Added "Preferences" :)
+- Changed the core of system to accept new preferences schema
+- Added language pack for system messages (look for $language_file in config.php)
+- Changed the name of "templates" files, now is called "themes"
+- Fixed bug when empty the "inbox" folder
+- Added independent session management, now the system do not require cookies
+- Changed the "_addressbook" folder to "_infos"
+- Added sort rules to folders list (static), now personal folders apears before system folders (inbox/sent/trash)
+- Added "sort" option when listing messages
+- Added array_qsort2() function, now headers are really sorted ;)
+- Added template for "headers.php" (look for $headers_window_template in config.php)
+- Descriptions of errors now are in variables
+- Changed filename "sair.php", now is "logout.php", there is one step for languagepack
+- Fixed some bugs in reply methods
+
+07-16-2001 - v1.5
+- Fixed bug in loggof method
+- Added "$address_book_name" var in config.php. It alow admin change de filename of addressbook
+- Fixed bug in read/unread messages
+- Added "remove attachment" option when sending messages (a change of templates is needed)
+- Fixed bug in buffer control when moving messages
+- Fixed bug in "sent" folder, the messages sent were not being saved (added a "$save_to_sent" option in config.php)
+- Fixed bug in headers (sending mails), had forgotten a "\r" ;)
+- Modified the way that was gotten the date, now is used the field "received" from header 
+- Modified the way that was decoded the headers, now a repeated header is accumulated in same array
+
+07-14-2001 - v1.2
+- First public release

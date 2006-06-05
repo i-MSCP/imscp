@@ -1,0 +1,13 @@
+x-wfm-category
+Errors
+x-wfm-version
+All
+x-wfm-keyword
+ftp empty list blank
+x-wfm-problem
+ Logging in and file functions work but no file listing is returned.
+x-wfm-solution
+ This may be an issue with non-standard ftp servers.  Some ftp servers do not
+ return a file listing to php's ftp_* functions.
+x-wfm-ftpd
+GuildFTDPd

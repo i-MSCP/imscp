@@ -1,0 +1,586 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-04-21 11:53-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: crossover.php:35 ftp.php:61 functions-ftp.php:457
+msgid "CD"
+msgstr "zz_CD"
+
+#: crossover.php:48 crossover.php:84 crossover.php:163 crossover.php:185
+#: crossover.php:226 crossover.php:310 crossover.php:333 prefcrossover.php:19
+#: preferences.php:18
+msgid "Permission denied"
+msgstr "zz_Permission denied"
+
+#: crossover.php:58
+msgid "CHMOD"
+msgstr "zz_CHMOD"
+
+#: crossover.php:69
+msgid "Successful permission change of"
+msgstr "zz_Successful permission change of"
+
+#: crossover.php:74
+msgid "Permission denied on chmod of"
+msgstr "zz_Permission denied on chmod of"
+
+#: crossover.php:84
+msgid "Chmod is not available"
+msgstr "zz_Chmod is not available"
+
+#: crossover.php:84
+msgid "Contact system administration"
+msgstr "zz_Contact system administration"
+
+#: crossover.php:90 ftp.php:235 ftp.php:239
+msgid "Create"
+msgstr "zz_Create"
+
+#: crossover.php:96 crossover.php:173 crossover.php:237 ftp.php:236
+msgid "File"
+msgstr "zz_File"
+
+#: crossover.php:109 crossover.php:124 crossover.php:141 crossover.php:149
+#: crossover.php:202 crossover.php:247 crossover.php:254 crossover.php:277
+#: crossover.php:294 crossover.php:372 crossover.php:402 crossover.php:408
+#: crossover.php:442 crossover.php:470 crossover.php:480 crossover.php:512
+#: crossover.php:522 edit-preview.php:15 edit.php:16 edit.php:50
+msgid "Error"
+msgstr "zz_Error"
+
+#: crossover.php:109 crossover.php:141 crossover.php:247
+msgid "No name given"
+msgstr "zz_No name given"
+
+#: crossover.php:124
+msgid "Could not make directory"
+msgstr "zz_Could not make directory"
+
+#: crossover.php:134 crossover.php:195 crossover.php:239 ftp.php:237
+msgid "Directory"
+msgstr "zz_Directory"
+
+#: crossover.php:134
+msgid "successfully created"
+msgstr "zz_successfully created"
+
+#: crossover.php:149
+msgid "No type selected"
+msgstr "zz_No type selected"
+
+#: crossover.php:154 ftp.php:241
+msgid "Delete"
+msgstr "zz_Delete"
+
+#: crossover.php:173 crossover.php:195
+msgid "successfully deleted"
+msgstr "zz_successfully deleted"
+
+#: crossover.php:202
+msgid "No file/dir selected"
+msgstr "zz_No file/dir selected"
+
+#: crossover.php:207 ftp.php:249
+msgid "Rename"
+msgstr "zz_Rename"
+
+#: crossover.php:254
+msgid "No file/directory selected"
+msgstr "zz_No file/directory selected"
+
+#: crossover.php:259 ftp.php:243
+msgid "Move"
+msgstr "zz_Move"
+
+#: crossover.php:271 crossover.php:288
+msgid "Please select the destination directory"
+msgstr "zz_Please select the destination directory"
+
+#: crossover.php:277
+msgid "No file/directory selected to be moved"
+msgstr "zz_No file/directory selected to be moved"
+
+#: crossover.php:282 ftp.php:242
+msgid "Copy"
+msgstr "zz_Copy"
+
+#: crossover.php:294
+msgid "No file selected to be copied"
+msgstr "zz_No file selected to be copied"
+
+#: crossover.php:299 ftp.php:270
+msgid "Commit"
+msgstr "zz_Commit"
+
+#: crossover.php:310
+msgid "Cannot move"
+msgstr "zz_Cannot move"
+
+#: crossover.php:310 crossover.php:320 crossover.php:333 crossover.php:343
+msgid "to"
+msgstr "zz_to"
+
+#: crossover.php:320
+msgid "Successfully moved"
+msgstr "zz_Successfully moved"
+
+#: crossover.php:333
+msgid "Cannot copy"
+msgstr "zz_Cannot copy"
+
+#: crossover.php:343
+msgid "Successfully copied"
+msgstr "zz_Successfully copied"
+
+#: crossover.php:354 functions-ftp.php:459
+msgid "DOWNLOAD"
+msgstr "zz_DOWNLOAD"
+
+#: crossover.php:372
+msgid "could not be downloaded"
+msgstr "zz_could not be downloaded"
+
+#: crossover.php:381 ftp.php:251 upload.php:16 upload.php:70
+msgid "Upload"
+msgstr "zz_Upload"
+
+#: crossover.php:400 edit.php:56
+msgid "Warning"
+msgstr "zz_Warning"
+
+#: crossover.php:400
+msgid "Error uploading"
+msgstr "zz_Error uploading"
+
+#: crossover.php:400
+msgid "May have exceeded size requirements"
+msgstr "zz_May have exceeded size requirements"
+
+#: crossover.php:402
+msgid "An error has occurred uploading"
+msgstr "zz_An error has occurred uploading"
+
+#: crossover.php:402
+msgid "Please contact your the administrator"
+msgstr "zz_Please contact your the administrator"
+
+#: crossover.php:406 crossover.php:464 crossover.php:506 prefcrossover.php:84
+#: prefcrossover.php:117
+msgid "Info"
+msgstr "zz_Info"
+
+#: crossover.php:406
+msgid "successfully uploaded"
+msgstr "zz_successfully uploaded"
+
+#: crossover.php:408
+msgid "Unable to upload the file"
+msgstr "zz_Unable to upload the file"
+
+#: crossover.php:408 crossover.php:512
+msgid "Please check your permissions and try again"
+msgstr "zz_Please check your permissions and try again"
+
+#: crossover.php:415 ftp.php:36
+msgid "LOGOUT"
+msgstr "zz_LOGOUT"
+
+#: crossover.php:422 ftp.php:256 ftp.php:274 preferences.php:221
+#: preferences.php:231
+msgid "Hide"
+msgstr "zz_Hide"
+
+#: crossover.php:423 ftp.php:258 ftp.php:276 preferences.php:222
+#: preferences.php:229
+msgid "Show"
+msgstr "zz_Show"
+
+#: crossover.php:432 edit.php:127 ftp.php:240
+msgid "Edit"
+msgstr "zz_Edit"
+
+#: crossover.php:442 edit-preview.php:15 edit.php:16
+msgid "No file was selected"
+msgstr "zz_No file was selected"
+
+#: crossover.php:447 edit.php:128 preferences.php:286
+msgid "Preview"
+msgstr "zz_Preview"
+
+#: crossover.php:464
+msgid "Previewing"
+msgstr "zz_Previewing"
+
+#: crossover.php:464
+msgid "Click Save to keep the changes"
+msgstr "zz_Click Save to keep the changes"
+
+#: crossover.php:470
+msgid "Unable to save the temporary file"
+msgstr "zz_Unable to save the temporary file"
+
+#: crossover.php:470
+msgid "Preview unavailable"
+msgstr "zz_Preview unavailable"
+
+#: crossover.php:480 crossover.php:522
+msgid "No filename and/or editor content specified"
+msgstr "zz_No filename and/or editor content specified"
+
+#: crossover.php:484
+msgid "Save & Edit"
+msgstr "zz_Save & Edit"
+
+#: crossover.php:488 edit.php:126 edit.php:127 prefcrossover.php:84
+#: prefcrossover.php:117 preferences.php:285
+msgid "Save"
+msgstr "zz_Save"
+
+#: crossover.php:506
+msgid "successfully saved"
+msgstr "zz_successfully saved"
+
+#: crossover.php:512
+msgid "Unable to save file"
+msgstr "zz_Unable to save file"
+
+#: crossover.php:527 edit.php:114 ftp.php:271 prefcrossover.php:84
+#: preferences.php:56 upload.php:49
+msgid "Cancel"
+msgstr "zz_Cancel"
+
+#: edit-preview.php:24
+msgid "Editor"
+msgstr "zz_Editor"
+
+#: edit.php:50
+msgid "An error occurred while trying to retrieve"
+msgstr "zz_An error occurred while trying to retrieve"
+
+#: edit.php:56
+msgid "Size of"
+msgstr "zz_Size of"
+
+#: edit.php:56
+msgid "exceeds maximum edit size"
+msgstr "zz_exceeds maximum edit size"
+
+#: edit.php:80 ftp.php:37 preferences.php:41 upload.php:31
+msgid "Logout"
+msgstr "zz_Logout"
+
+#: edit.php:82 ftp.php:48 preferences.php:42 upload.php:32
+msgid "Help"
+msgstr "zz_Help"
+
+#: edit.php:94
+msgid "warn"
+msgstr "zz_warn"
+
+#: edit.php:112
+msgid "Current File"
+msgstr "zz_Current File"
+
+#: edit.php:129 login.php:92 preferences.php:287 upload.php:71
+msgid "Reset"
+msgstr "zz_Reset"
+
+#: edit.php:137
+msgid "Note"
+msgstr "zz_Note"
+
+#: edit.php:137
+msgid "The browser session will expire in"
+msgstr "zz_The browser session will expire in"
+
+#: edit.php:137
+msgid "minutes"
+msgstr "zz_minutes"
+
+#: edit.php:138
+msgid "Please remember to save before then or your changes will be lost"
+msgstr "zz_Please remember to save before then or your changes will be lost"
+
+#: edit.php:140 ftp.php:287 preferences.php:294 upload.php:78
+msgid "by"
+msgstr "zz_by"
+
+#: ftp.php:44 preferences.php:25
+msgid "Preferences"
+msgstr "zz_Preferences"
+
+#: ftp.php:60 upload.php:48
+msgid "Current Directory"
+msgstr "zz_Current Directory"
+
+#: ftp.php:95
+msgid "Home Directory"
+msgstr "zz_Home Directory"
+
+#: ftp.php:106
+msgid "Up One Directory"
+msgstr "zz_Up One Directory"
+
+#: ftp.php:218
+msgid "Directories"
+msgstr "zz_Directories"
+
+#: ftp.php:220
+msgid "Files"
+msgstr "zz_Diles"
+
+#: functions-ftp.php:461
+msgid "View"
+msgstr "zz_View"
+
+#: functions-ftp.php:568
+msgid "Copy of"
+msgstr "zz_Copy of"
+
+#: index.php:17
+msgid "Click here if your browser does not automatically redirect you"
+msgstr "zz_Click here if your browser does not automatically redirect you"
+
+#: login.php:66
+msgid "Username"
+msgstr "zz_Username"
+
+#: login.php:72
+msgid "Password"
+msgstr "zz_Password"
+
+#: login.php:79
+msgid "Server"
+msgstr "zz_Server"
+
+#: login.php:91
+msgid "Login"
+msgstr "zz_Login"
+
+#: login.php:101
+msgid "Remember Me"
+msgstr "zz_Remember Me"
+
+#: login.php:109
+msgid "Remove Login Cookie"
+msgstr "zz_Remove Login Cookie"
+
+#: login.php:130
+msgid "Missing username or password"
+msgstr "zz_Missing username or password"
+
+#: login.php:133
+msgid "Server could not be found"
+msgstr "zz_Server could not be found"
+
+#: login.php:136
+msgid "Incorrect username or password"
+msgstr "zz_Incorrect username or password"
+
+#: login.php:139
+msgid "No FTP servers have been defined"
+msgstr "zz_No FTP servers have been defined"
+
+#: login.php:140 login.php:144 login.php:148 login.php:152 login.php:156
+#: login.php:160
+msgid "Please contact your system administrator to correct this error"
+msgstr "zz_Please contact your system administrator to correct this error"
+
+#: login.php:143
+msgid "Encryption (mcrypt) support is broken or not compiled into PHP4"
+msgstr "zz_Encryption (mcrypt) support is broken or not compiled into PHP4"
+
+#: login.php:155
+msgid "FTP module is broken or not compiled into PHP4"
+msgstr "zz_FTP module is broken or not compiled into PHP4"
+
+#: login.php:159
+msgid "Access denied by WeebleFM configuration"
+msgstr "zz_Access denied by WeebleFM configuration"
+
+#: prefcrossover.php:19 preferences.php:18
+msgid "Administrator has $allow_cutom off"
+msgstr "zz_Administrator has $allow_cutom off"
+
+#: prefcrossover.php:84
+msgid "Changes will not be saved until you click"
+msgstr "zz_Changes will not be saved until you click"
+
+#: prefcrossover.php:84
+msgid "will load last saved settings"
+msgstr "zz_will load last saved settings"
+
+#: prefcrossover.php:117
+msgid "Theme loaded"
+msgstr "zz_Theme loaded"
+
+#: prefcrossover.php:117
+msgid "Changes not saved permanently until you click"
+msgstr "zz_Changes not saved permanently until you click"
+
+#: preferences.php:81
+msgid "Select a preset theme"
+msgstr "zz_Select a preset theme"
+
+#: preferences.php:86
+msgid "Personal"
+msgstr "zz_Personal"
+
+#: preferences.php:96
+msgid "Load Theme"
+msgstr "zz_Load Theme"
+
+#: preferences.php:101
+msgid "Display Settings"
+msgstr "zz_Display Settings"
+
+#: preferences.php:104
+msgid "Page"
+msgstr "zz_Page"
+
+#: preferences.php:107 preferences.php:166
+msgid "Background Color"
+msgstr "zz_Background Color"
+
+#: preferences.php:110 preferences.php:116 preferences.php:122
+#: preferences.php:128 preferences.php:142 preferences.php:148
+#: preferences.php:154 preferences.php:160 preferences.php:169
+#: preferences.php:175 preferences.php:181 preferences.php:187
+#: preferences.php:193 preferences.php:202 preferences.php:214
+#: preferences.php:227 preferences.php:244 preferences.php:276
+msgid "Current"
+msgstr "zz_Current"
+
+#: preferences.php:113 preferences.php:178
+msgid "Background Image"
+msgstr "zz_Background Image"
+
+#: preferences.php:119 preferences.php:184
+msgid "Text Color"
+msgstr "zz_Text Color"
+
+#: preferences.php:125
+msgid "Text Font"
+msgstr "zz_Text Font"
+
+#: preferences.php:127 preferences.php:147
+msgid "Font"
+msgstr "zz_Font"
+
+#: preferences.php:131
+msgid "Text Font Size"
+msgstr "zz_Text Font Size"
+
+#: preferences.php:133
+msgid "xx-small"
+msgstr "zz_xx-small"
+
+#: preferences.php:134
+msgid "x-small"
+msgstr "zz_x-small"
+
+#: preferences.php:135
+msgid "small"
+msgstr "zz_small"
+
+#: preferences.php:136
+msgid "medium"
+msgstr "zz_medium"
+
+#: preferences.php:137
+msgid "large"
+msgstr "zz_large"
+
+#: preferences.php:138
+msgid "x-large"
+msgstr "zz_x-large"
+
+#: preferences.php:139
+msgid "xx-large"
+msgstr "zz_xx-large"
+
+#: preferences.php:141
+msgid "Size"
+msgstr "zz_Size"
+
+#: preferences.php:145
+msgid "Fixed Font"
+msgstr "zz_Fixed Font"
+
+#: preferences.php:151
+msgid "Link Color"
+msgstr "zz_Link Color"
+
+#: preferences.php:157
+msgid "Link Hover Color"
+msgstr "zz_Link Hover Color"
+
+#: preferences.php:163
+msgid "File Manager"
+msgstr "zz_File Manager"
+
+#: preferences.php:172
+msgid "Alternating Background Color"
+msgstr "zz_Alternating Background Color"
+
+#: preferences.php:190
+msgid "Border Color"
+msgstr "zz_Border Color"
+
+#: preferences.php:196 preferences.php:206
+msgid "Miscellaneous"
+msgstr "zz_Miscellaneous"
+
+#: preferences.php:199
+msgid "Button Background Color"
+msgstr "zz_Button Background Color"
+
+#: preferences.php:209
+msgid "Starting Directory"
+msgstr "zz_Starting Directory"
+
+#: preferences.php:219
+msgid "Hidden Files"
+msgstr "zz_Hidden Files"
+
+#: preferences.php:237
+msgid "Edit Box Size"
+msgstr "zz_Edit Box Size"
+
+#: preferences.php:239 preferences.php:247
+msgid "Width"
+msgstr "zz_Width"
+
+#: preferences.php:240 preferences.php:248
+msgid "Height"
+msgstr "zz_Height"
+
+#: preferences.php:254
+msgid "Preview Size"
+msgstr "zz_Preview Size"
+
+#: preferences.php:254
+msgid "pixels"
+msgstr "zz_pixels"
+
+#: preferences.php:254
+msgid "or"
+msgstr "zz_or"
+
+#: preferences.php:267
+msgid "Pixels"
+msgstr "zz_Pixels"

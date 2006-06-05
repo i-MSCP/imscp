@@ -1,0 +1,279 @@
+{config_load file=$umLanguageFile section="MessageList"}
+{um_welcome_message messages=$umNumMessages unread=$umNumUnread boxname=$umBoxName var="umWelcomeMessage"}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={#default_char_set#}">
+<title>Webmail :: Inbox</title>
+<link href="themes/modern_blue/css/vhcs.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="themes/modern_blue/css/vhcs.js"></script>
+<script type="text/javascript" src="themes/modern_blue/css/js.js"></script>
+<script type="text/javascript" src="themes/modern_blue/css/webmail.js"></script>
+{$umJS}
+</head>
+
+<body onLoad="MM_preloadImages('themes/modern_blue/images/icons/database_a.gif','themes/modern_blue/images/icons/hosting_plans_a.gif','themes/modern_blue/images/icons/domains_a.gif','themes/modern_blue/images/icons/new_mail_a.gif','themes/modern_blue/images/icons/refresh_a.gif','themes/modern_blue/images/icons/dirs_a.gif','themes/modern_blue/images/icons/search_a.gif','themes/modern_blue/images/icons/adresses_a.gif','themes/modern_blue/images/icons/trash_a.gif','themes/modern_blue/images/icons/settings_a.gif','themes/modern_blue/images/icons/logout_a.gif','themes/modern_blue/images/icons/indox_a.gif')">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%">
+  <tr>
+    <td height="80" align="left" valign="top">
+    <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="17"><img src="themes/modern_blue/images/top/left.jpg" name="Image2" width="17" height="80" id="Image2"></td>
+          <td width="198" align="center" background="themes/modern_blue/images/top/logo_background.jpg"><img src="themes/modern_blue/images/trans.gif" width="1" height="1"></td>
+          <td background="themes/modern_blue/images/top/left_fill.jpg"><img src="themes/modern_blue/images/top/left_fill.jpg" width="2" height="80"></td>
+          <td width="766"><img src="themes/modern_blue/images/top/middle_background.jpg" width="766" height="80"></td>
+          <td background="themes/modern_blue/images/top/right_fill.jpg"><img src="themes/modern_blue/images/top/right_fill.jpg" width="3" height="80"></td>
+          <td width="9"><img src="themes/modern_blue/images/top/right.jpg" width="9" height="80"></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td valign="top"><table height="100%" width="100%"  border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="215" valign="top" bgcolor="#F5F5F5">
+		<table width="211" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="60" background="themes/modern_blue/images/menu/menu_top_left_bckgr.jpg"><img src="themes/modern_blue/images/menu/menu_top_left_bckgr.jpg" width="60" height="62"></td>
+            <td width="151" background="themes/modern_blue/images/menu/menu_top_bckgr.jpg" class="title">{#messages_mnu#}</td>
+          </tr>
+        </table>
+		<table width="205" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F5F5F5">
+          <tr background="themes/modern_blue/images/line.jpg">
+            <td colspan="3" background="themes/modern_blue/images/line.jpg"><img src="themes/modern_blue/images/line.jpg" width="2" height="7"><img src="themes/modern_blue/images/line.jpg" width="2" height="7"></td>
+            </tr>
+          <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+          </tr>
+          <tr>
+            <td width="28" background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:goinbox()" onMouseOver="MM_swapImage('indox','','themes/modern_blue/images/icons/indox_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:goinbox()" onMouseOver="MM_swapImage('indox','','themes/modern_blue/images/icons/indox_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu_active">{#messages_mnu#}</a></td>
+            <td width="36" align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:goinbox()" onMouseOver="MM_swapImage('indox','','themes/modern_blue/images/icons/indox_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/indox_a.gif" name="indox" width="36" height="36" border="0" id="indox"></a></td>
+          </tr>
+          <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+			 <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:newmsg()" onMouseOver="MM_swapImage('new_mail','','themes/modern_blue/images/icons/new_mail_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" name="Image1" width="28" height="36" border="0" id="Image1"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:newmsg()" onMouseOver="MM_swapImage('new_mail','','themes/modern_blue/images/icons/new_mail_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#compose_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:newmsg()" onMouseOver="MM_swapImage('new_mail','','themes/modern_blue/images/icons/new_mail_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/new_mail.gif" name="new_mail" width="36" height="36" border="0" id="new_mail"></a></td>
+          </tr>
+		   <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:refreshlist()" onMouseOver="MM_swapImage('refresh','','themes/modern_blue/images/icons/refresh_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:refreshlist()" onMouseOver="MM_swapImage('refresh','','themes/modern_blue/images/icons/refresh_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#refresh_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:refreshlist()" onMouseOver="MM_swapImage('refresh','','themes/modern_blue/images/icons/refresh_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/refresh.gif" name="refresh" width="36" height="36" border="0" id="refresh"></a></td>
+          </tr>
+          <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:folderlist()" onMouseOver="MM_swapImage('folders','','themes/modern_blue/images/icons/dirs_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:folderlist()" onMouseOver="MM_swapImage('folders','','themes/modern_blue/images/icons/dirs_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#folders_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:folderlist()" onMouseOver="MM_swapImage('folders','','themes/modern_blue/images/icons/dirs_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/dirs.gif" name="folders" width="36" height="36" border="0" id="folders"></a></td>
+          </tr>
+		  <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:search()" onMouseOver="MM_swapImage('search','','themes/modern_blue/images/icons/search_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:search()" onMouseOver="MM_swapImage('search','','themes/modern_blue/images/icons/search_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#search_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:search()" onMouseOver="MM_swapImage('search','','themes/modern_blue/images/icons/search_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/search.gif" name="search" width="36" height="36" border="0" id="search"></a></td>
+          </tr>
+		   <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:addresses()" onMouseOver="MM_swapImage('adressbook','','themes/modern_blue/images/icons/adresses_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:addresses()" onMouseOver="MM_swapImage('adressbook','','themes/modern_blue/images/icons/adresses_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#address_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:addresses()" onMouseOver="MM_swapImage('adressbook','','themes/modern_blue/images/icons/adresses_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/adresses.gif" name="adressbook" width="36" height="36" border="0" id="adressbook"></a></td>
+          </tr>
+		  <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:emptytrash()" onMouseOver="MM_swapImage('trash','','themes/modern_blue/images/icons/trash_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:emptytrash()" onMouseOver="MM_swapImage('trash','','themes/modern_blue/images/icons/trash_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#empty_trash_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:emptytrash()" onMouseOver="MM_swapImage('trash','','themes/modern_blue/images/icons/trash_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/trash.gif" name="trash" width="36" height="36" border="0" id="trash"></a></td>
+          </tr>
+		  <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:prefs()" onMouseOver="MM_swapImage('preferences','','themes/modern_blue/images/icons/settings_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:prefs()" onMouseOver="MM_swapImage('preferences','','themes/modern_blue/images/icons/settings_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#prefs_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:prefs()" onMouseOver="MM_swapImage('preferences','','themes/modern_blue/images/icons/settings_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/settings.gif" name="preferences" width="36" height="36" border="0" id="preferences"></a></td>
+          </tr>
+		  <tr>
+            <td colspan="3"><img src="themes/modern_blue/images/trans.gif" width="30" height="4"></td>
+            </tr>
+		   <tr>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:goend()" onMouseOver="MM_swapImage('logout','','themes/modern_blue/images/icons/logout_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/menu/pointer.jpg" width="28" height="36" border="0"></a></td>
+            <td background="themes/modern_blue/images/menu/button_background.jpg" class="menu"><a href="javascript:goend()" onMouseOver="MM_swapImage('logout','','themes/modern_blue/images/icons/logout_a.gif',1)" onMouseOut="MM_swapImgRestore()" class="menu">{#logoff_mnu#}</a></td>
+            <td align="right" background="themes/modern_blue/images/icons/icon_bcgr.gif" class="menu"><a href="javascript:goend()" onMouseOver="MM_swapImage('logout','','themes/modern_blue/images/icons/logout_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="themes/modern_blue/images/icons/logout.gif" name="logout" width="36" height="36" border="0" id="logout"></a></td>
+          </tr>
+        </table></td>
+        <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="62" align="left" background="themes/modern_blue/images/content/table_background.jpg" class="title"><img src="themes/modern_blue/images/content/table_icon.jpg" width="85" height="62" align="absmiddle">{#messages_mnu#}</td>
+            <td width="27" align="right" background="themes/modern_blue/images/content/table_background.jpg"><img src="themes/modern_blue/images/content/table_icon_close.jpg" width="27" height="62"></td>
+          </tr>
+          <tr>
+            <td valign="top"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="30">&nbsp;</td>
+                <td>
+				<!-- HERE gose Mail Content -->
+				
+				
+				<table cellspacing=1 cellpadding=1 width="100%" border=0>
+			{if $umNumMessages gt 0}
+				<tr>
+					<form name="form1" action="process.php" method="post">
+					{$umForms}
+					<td colspan="7" class="content"> &nbsp;&nbsp;
+					{$umWelcomeMessage}
+					</td>
+				</tr>
+				{if $umErrorMessage neq ""}
+				<tr>
+					<td colspan="7" class="default"><font color=red><b> &nbsp;&nbsp;{$umErrorMessage}</b></font></td>
+				</tr>
+				{/if}
+	
+				<tr>
+				    <td width="5"  class="content2"><input type=checkbox name=chkall onclick="sel()"></td>
+				    <td width="40"  class="content2" nowrap><img src="./images/prior_high.gif" width=5 height=11 border=0 alt="">&nbsp;<img src="images/attach.gif" border="0" width="6" height="14" alt="">&nbsp;<img src="images/msg_read.gif" border="0" width="14" height="14" alt=""></td>
+				    <td class="content2" nowrap>.: <a href="javascript:sortby('subject')" class="link"><b>{#subject_hea#}{$umSubjectArrow}</b></a> :.</td>
+
+					{if $umFolder eq "sent"}
+				    	<td width="210" class="content2">.: <a href="javascript:sortby('toname')" class="link"><b>{#to_hea#}{$umToArrow}</b></a> :.</td>
+					{else}
+				    	<td width="210" class="content2">.: <a href="javascript:sortby('fromname')" class="link"><b>{#from_hea#}{$umFromArrow}</b></a> :.</td>
+					{/if}
+				    <td width="100" class="content2">.: <a href="javascript:sortby('date')" class="link"><b>{#date_hea#}{$umDateArrow}</b></a> :.</td>
+				    <td width="60" class="content2">.: <a href="javascript:sortby('size')" class="link"><b>{#size_hea#}{$umSizeArrow}</b></a> :.</td>
+				</tr>
+			
+				{section name=i loop=$umMessageList}
+				<tr>
+					<td class="content3">{$umMessageList[i].checkbox}</td>
+					<td class="content3">{$umMessageList[i].priorimg}{$umMessageList[i].attachimg}{$umMessageList[i].statusimg}</td>
+					<td class="content3"><acronym title="{$umMessageList[i].subject|escape:"html"|default:#no_subject_text#}">{if $umMessageList[i].read eq "false"}<b>{/if}<a href="{$umMessageList[i].readlink}" class="link">{$umMessageList[i].subject|truncate:30:"...":true|escape:"html"|default:#no_subject_text#}</a>{if $umMessageList[i].read eq "false"}</b>{/if}</acronym></td>
+
+					{if $umFolder eq "sent"}
+						<td class="content3"><acronym title="{$umMessageList[i].to|escape:"html"|default:#no_recipient_text#}"><a href="{$umMessageList[i].composelinksent}" class="link">{$umMessageList[i].to|truncate:30:"...":true|escape:"html"|default:#no_recipient_text#}</a></acronym></td>
+					{else}
+						<td class="content3"><acronym title="{$umMessageList[i].from|escape:"html"|default:#no_recipient_text#}"><a href="{$umMessageList[i].composelink}" class="link">{$umMessageList[i].from|truncate:30:"...":true|escape:"html"|default:#no_subject_text#}</a></acronym></td>
+					{/if}
+
+					<td class="content3">{$umMessageList[i].date|date_format:#date_format#}</td>
+					<td class="content3">{$umMessageList[i].size}Kb &nbsp;</td>
+				</tr>
+				{/section}
+				<tr>
+					<td colspan="7" class="content2">&nbsp; 
+					<a href="javascript:delemsg()" class="link">{#delete_selected_mnu#}</a> :: 
+					<a href="javascript:movemsg()" class="link">{#move_selected_mnu#}</a> 
+					<select name="aval_folders">
+						{section name=i loop=$umAvalFolders}
+							<option value="{$umAvalFolders[i].path|escape:"html"}">{$umAvalFolders[i].display|escape:"html"}
+						{/section}
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" class="content"> &nbsp;&nbsp;{if $umPreviousLink}<a href="{$umPreviousLink}" class="link">{#previous_text#}</a> &nbsp;{/if}{$umNavBar}{if $umNextLink} &nbsp;<a href="{$umNextLink}" class="link">{#next_text#}</a>{/if}</td>
+				</tr>
+			{else}		
+				<tr>
+					<td height="200" colspan="7" align="center" ><br> 
+				  &nbsp;&nbsp;{#no_messages#} <b>{$umBoxName|escape:"html"}</b><br>
+				  <br></td>
+				</tr>
+			{/if}
+			</form>
+		</table>
+		  
+		  
+<!-- end of content -->
+				
+				
+				
+				
+				<!-- END of Mail Content -->
+				</td>
+              </tr>
+            </table>
+			</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td height="62" align="left" background="themes/modern_blue/images/content/table_background.jpg" class="title"><img src="themes/modern_blue/images/content/table_icon.jpg" width="85" height="62" align="absmiddle">{#quota_usage_info#}</td>
+              <td width="27" align="right" background="themes/modern_blue/images/content/table_background.jpg"><img src="themes/modern_blue/images/content/table_icon_close.jpg" width="27" height="62"></td>
+            </tr>
+            <tr>
+              <td valign="top"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td width="30">&nbsp;</td>
+                    <td valign="top">
+                      <div align="center">
+                          <p></p>
+                        </div>
+                        {if $umQuotaEnabled eq 1}
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td height="25">{#quota_usage_used#} <b>{$umTotalUsed}</b>Kb {#quota_usage_of#} <b>{$umQuotaLimit}</b>Kb {#quota_usage_avail#}<br></td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td width="33"><img src="themes/blue/images/stats_left.gif" width="33" height="20"></td>
+                            <td background="themes/blue/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="7"><img src="themes/blue/images/theme/stats_left.gif" width="7" height="13"></td>
+                                  <td background="themes/blue/images/theme/stats_background.gif">{$umUsageGraph}</td>
+                                  <td width="7"><img src="themes/blue/images/theme/stats_right.gif" width="7" height="13"></td>
+                                </tr>
+                            </table></td>
+                            <td width="33"><img src="themes/blue/images/stats_right.gif" width="33" height="20"></td>
+                          </tr>
+                        </table>
+                        {/if} <br>
+                        <!-- end of content -->
+                        <!-- END of Mail Content -->
+                    </td>
+                  </tr>
+              </table></td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="71"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr><td width="17"><img src="themes/modern_blue/images/top/down_left.jpg" width="17" height="71"></td><td width="198" valign="top" background="themes/modern_blue/images/top/downlogo_background.jpg"><table width="100%" border="0" cellpadding="0" cellspacing="0" >
+          <tr>
+            <td width="55"></td>
+            <td class="bottom"></td>
+          </tr>
+        </table>          </td>
+          <td background="themes/modern_blue/images/top/down_left_fill.jpg"><img src="themes/modern_blue/images/top/down_left_fill.jpg" width="2" height="71"></td><td width="766" background="themes/modern_blue/images/top/middle_background.jpg"><img src="themes/modern_blue/images/top/down_middle_background.jpg" width="766" height="71"></td>
+          <td background="themes/modern_blue/images/top/down_right_fill.jpg"><img src="themes/modern_blue/images/top/down_right_fill.jpg" width="3" height="71"></td>
+          <td width="9"><img src="themes/modern_blue/images/top/down_right.jpg" width="9" height="71"></td></tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>

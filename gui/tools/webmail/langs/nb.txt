@@ -1,0 +1,337 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Innboks
+sent_extended					= Sendte
+trash_extended					= Slettede
+
+#Navigation texts
+
+previous_text					= Forrige
+next_text					= Neste
+
+# Mail Server Errors
+
+error_connect					= Kontakt ble ikke oppnådd med server
+error_retrieving				= Problemer oppstod under forsøk på å motta dine beskjeder. Din innboks har blitt endret.
+error_other					= Systemfeil. Kontakt systemansvarlig.
+
+#Invalid name of mailbox
+
+error_invalid_name				= Ulovlig navn på katalog - Bruk kun tegnene A-Z, 0-9, .- og eller mellomrom
+
+
+#Validations when sending mails            ;
+
+error_no_recipients		= Det er nødvendig å spesifisere minimum en e-post adresse
+error_compose_invalid_mail1_s	= Denne e-posten ser ut for å være uleselig
+error_compose_invalid_mail1_p	= de følgende e-postene ser ut for å være uleselige
+error_compose_invalid_mail2_s	= Sjekk komposisjon før sending av meldingen
+error_compose_invalid_mail2_p	= Sjekk komposisjon før sending av meldingene
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Ønsker du virkelig å slette denne beskjeden?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Ingen tema]
+no_sender_text					= [Sender ukjent]
+no_recipient_text				= [Mottaker ukjent]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Det er ikke plass nok i din innboks til å fullføre denne handlingen\Slett noen meldinger for å fortsette
+quota_usage_info				= Plassbegrensning
+quota_usage_used				= Brukt
+quota_usage_of					= av
+quota_usage_avail				= tilgjengelig
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-1
+
+messages_mnu					= Beskjeder (inn)
+compose_mnu					= Skriv
+refresh_mnu					= Oppdater
+folders_mnu					= Mapper
+search_mnu					= Søk
+address_mnu					= Adressebok
+empty_trash_mnu					= Tøm slettede elementer
+prefs_mnu					= Innstillinger
+logoff_mnu 					= Logg ut
+
+
+
+reply_prefix					= Rv:
+forward_prefix					= Fv:
+
+reply_delimiter					= --------- Original melding --------
+reply_from_hea					= Fra:
+reply_to_hea					= Til:
+reply_cc_hea					= Cc:
+reply_date_hea					= Dato:
+reply_subject_hea				= Tema:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Nøkkel
+value_hea						= Verdi
+
+[Folders]
+
+fld_name_hea					= Mappe
+fld_messages_hea				= Beskjeder
+fld_size_hea					= Størrelse
+fld_empty_hea					= Tom
+fld_delete_hea					= Slett
+fld_total					= Totalt:
+fld_make_new					= Opprett ny mappe
+folders_to					= Mapper til
+
+[MessageList]
+
+messages_to						= Beskjeder til 
+no_messages						= Ingen nye meldinger i din 
+
+delete_selected_mnu				= Slett valgte
+move_selected_mnu				= Flytt valgte til
+delete_mnu						= Slett
+move_mnu						= Flytt til
+subject_hea						= Tema
+from_hea						= Fra
+to_hea							= Til
+date_hea						= Dato
+size_hea						= Størrelse
+
+msg_you_have					= Du har
+msg_message					= beskjed
+msg_messages					= beskjeder
+
+msg_more_unread					= uleste
+msg_one_unread					= ulest
+msg_none_unread					= ingen uleste
+msg_in_the_folder				= i mappen
+[Login]
+
+
+lgn_title					= Innlogging
+lgn_welcome_msg					= Velkommen! Vennligst logg deg inn på din konto
+lng_user_email					= E-post
+lng_user_name					= Brukernavn
+lng_user_pwd					= Passord
+lng_theme					= Utseende
+lng_language					= Språk
+lng_login_btn					= Logg inn &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Til:
+cc_hea						= Cc:
+bcc_hea						= Bcc:
+subject_hea					= Tema:
+address_tip					= Fra adressebok
+
+attach_hea					= Vedlegg:
+attch_add_new					= Legg ved ny fil
+attch_name_hea					= Navn
+attch_size					= Størrelse
+attch_type_hea					= Type
+attch_dele_hea					= Slett
+attch_no_hea					= Ingen vedlegg
+
+add_signature					= Legg til signatur
+send_text					= Send
+
+result_error					= Det har ikke vært mulig å sende e-posten
+result_success					= Denne e-posten har blitt sendt uten problemer
+nav_continue					= Fortsett
+nav_back					= Tilbake
+
+up_title 					= Legg til fil
+up_information_text				= Velg fil
+up_button_text					= Send
+
+priority_text					= Prioritet
+priority_low					= Lav
+priority_normal					= Normal
+priority_high					= Høy
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Vennligst velg bort et valg
+adv_warning_text_mode2			= for å bruke verktøyslinja
+
+adv_type_path					= Skriv URL - adressen:
+
+format_paragraph				= Paragraf
+format_h1					= Heading 1 <H1>
+format_h2					= Heading 2 <H2>
+format_h3					= Heading 3 <H3>
+format_h4					= Heading 4 <H4>
+format_h5					= Heading 5 <H5>
+format_h6					= Heading 6 <H6>
+format_pre					= Formatert <PRE>
+format_clear_all				= Fjern alt
+
+format_font					= Skrifttype
+format_size					= Størrelse
+
+format_color					= Farge
+format_back					= Bakgrunn
+color_red					= Rød
+color_blue					= Blå
+color_green					= Grønn
+color_black					= Svart
+color_yellow					= Gul
+color_white					= Hvit
+
+view_source					= Vis HTML - koden
+text_mode					= Tekstmodus
+clear_format					= Fjern formatering
+
+priority_text					= Prioritet
+
+
+
+
+[BadLogin]
+
+bdl_title					= Innloggingsfeil 
+bdl_msg						= Du kan ikke logge inn akkurat nå med ditt oppgitte brukernavn/passord<br><br>Sjekk opplysningene og prøv igjen
+bdl_back					= Tilbake
+
+
+[Error]
+
+err_title					= Det oppstod problemer
+err_msg						= Det oppstod problemer underveis<br><br>Vennligst logg inn igjen på nytt
+err_system_msg					= Systemmeldingn: 
+err_exit					= Logg ut
+
+[Preferences]
+
+prf_title 					= Innstillinger
+prf_general_title				= Generell informasjon
+prf_name					= Navn
+prf_reply_to					= Svar til
+prf_time_zone					= Tidssone
+prf_trash_title					= Søppel
+prf_save_to_trash				= Når du <b>sletter</b> en beskjed skal den flyttes til 
+prf_save_only_read				= Lagre bra <b>leste meldinger</b> i 
+prf_empty_on_exit				= <b>Slett</b> mappeinnholdet i slettede elementer når du logger ut
+prf_sent_title					= Sendte elementer
+prf_save_sent					= Lagre <b>sendte beskjeder</b> i 
+prf_messages_title				= Beskjeder
+prf_page_limit					= Maksimalt antall beskjeder pr side
+prf_signature_title				= Signatur
+prf_signature					= Opprett din egen signatur
+prf_auto_add_sign				= Legg til din signatur til alle utgående beskjeder 
+prf_save_button					= Lagre
+prf_display_images				= Vis vedlagte bilder
+prf_default_editor_mode				= Standard redigeringsmodus
+prf_default_editor_mode_text			= "Tekst"
+prf_default_editor_mode_html			= "Avansert HTML editor (Kun for IE5 eller høyere)"
+prf_time_to_refesh				= Oppdateringsintervall beskjeder (minutter)
+
+[Catch]
+
+ctc_title					= Legg til i adressebok
+ctc_information					= OBS! Bare adresser som ikke allerede er lagret i din adressebok vises.
+ctc_name					= Navn
+ctc_email					= E-post
+ctc_no_address					= Ingen adresse tilgjengelig
+ctc_close					= Lukk
+ctc_save					= Lagre
+
+[Readmsg]
+
+next_mnu					= Neste
+previous_mnu					= Forrige
+back_mnu					= Tilbake
+reply_mnu					= Besvar
+reply_all_mnu					= Besvar til alle
+forward_mnu					= Videresend
+headers_mnu					= Heading
+move_mnu					= Flytt til
+delete_mnu					= Slett
+print_mnu					= Skriv ut
+
+from_hea					= Fra:
+to_hea						= Til:
+cc_hea						= Cc:
+date_hea					= Dato:
+subject_hea					= Tema:
+attach_hea					= Vedlegg:
+
+attch_name_hea					= Navn
+attch_force_hea					= Last ned
+attch_type_hea					= Type
+attch_size_hea					= Størrelse
+catch_address					= Føy til i adressebok
+
+[Search]
+
+sch_information_text				= Velg en frase eller et ord som du leter etter.<br> Søk i hovedteksten vil kun skje på allerede leste meldinger. 
+sch_button_text					= Søk &gt;&gt;
+sch_subject_hea					= Tema
+sch_from_hea					= Fra
+sch_date_hea					= Dato
+sch_body_hea					= Beskjed
+sch_folder_hea					= Mappe
+sch_no_results					= Ingen beskjeder har blitt funnet
+
+
+[QuickAddress]
+
+qad_title 			= Adressebok
+qad_select_address		= Velg en kontakt
+qad_to				= Til
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Adressebok
+adr_name					= Navn
+adr_email					= E-post
+adr_street					= Gate
+adr_city					= By
+adr_state					= Stat
+adr_work					= Arbeid
+adr_back					= Tilbake
+adr_save					= Lagre
+
+# list
+
+adr_name_hea					= Navn
+adr_email_hea					= E-post
+adr_edit_hea					= Rediger
+adr_expo_hea					= Eksporter
+adr_dele_hea					= Slett
+adr_new_entry					= Ny kontakt
+
+
+addr_saved					= Kontakten har blitt lagret
+addr_added					= Kontakten har blitt lagt til
+addr_deleted					= Kontakten har blitt slettet

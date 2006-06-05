@@ -1,0 +1,338 @@
+# ** GLOBAL VARS *********#
+# GERMAN TRANSLATION BY TITUS.HANKE@WEB.DE #
+# POLITE FORM ( )      CASUAL FORM (XX)    #
+# User-friendly names to system folders
+
+inbox_extended					= Posteingang
+sent_extended					= Gesendete Objetkte
+trash_extended					= Papierkorb
+
+#Navigation texts
+
+previous_text					= Vorherige Seite
+next_text					= Nächste Seite
+
+# Mail Server Errors
+
+error_connect					= FEHLER: Keine Verbindung zum Server!
+error_retrieving				= FEHLER: Konnte Deine Nachrichten nicht abrufen!
+error_other					= FEHLER: Bitte kontaktiere den Administrator
+
+#Invalid name of mailbox
+
+error_invalid_name				= Ungültiger Ordnername. Gültige Zeichen: A-Z, 0-9, .- und oder Leerzeichen
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Bitte mindestens eine Empfängeradresse angeben
+error_compose_invalid_mail1_s	= Diese Email scheint fehlerhaft zu sein
+error_compose_invalid_mail1_p	= Die folgenden Emails scheinen fehlerhaft zu sein
+error_compose_invalid_mail2_s	= FEHLER!
+error_compose_invalid_mail2_p	= FEHLER!
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Möchtest Du diese Nachricht wirklich löschen?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Kein Betreff]
+no_sender_text					= [Absender unbekannt]
+no_recipient_text				= [Empfänger unbekannt]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Leider ist Dein Speicherplatz erschöpft. Bitte lösche ein paar Emails, bevor Du weitermachst.
+quota_usage_info				= Speicherlimit
+quota_usage_used				= verwendet
+quota_usage_of					= von
+quota_usage_avail				= verfügbar
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-1
+
+messages_mnu					= Posteingang
+compose_mnu					= Mail verfassen
+refresh_mnu					= Aktualisieren
+folders_mnu					= Ordner
+search_mnu					= Suchen
+address_mnu					= Adressen
+empty_trash_mnu				= Papierkorb leeren
+prefs_mnu					= Einstellungen
+logoff_mnu 					= Logout
+
+
+
+reply_prefix					= AW:
+forward_prefix					= WG:
+
+reply_delimiter					= --------- Original-Nachricht --------
+reply_from_hea					= Von:
+reply_to_hea					= An:
+reply_cc_hea					= Cc:
+reply_date_hea					= Datum:
+reply_subject_hea				= Betreff:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Schlüssel
+value_hea						= Wert
+
+[Folders]
+
+fld_name_hea					= Ordner
+fld_messages_hea				=Nachrichten
+fld_size_hea					= Gr.
+fld_empty_hea					= Leeren
+fld_delete_hea					= Löschen
+fld_total					= Gesamt:
+fld_make_new					= Neuen Ordner erstellen
+folders_to					= Ordner von
+
+[MessageList]
+
+messages_to						= Nachrichten von
+no_messages						= Im Augenblick hast Du keine Nachrichten in Deinem Postfach
+delete_selected_mnu				= Markierte löschen
+move_selected_mnu				= Markierte verschieben
+delete_mnu						= Löschen
+move_mnu						= Verschieben
+subject_hea						= Betreff
+from_hea						= Von
+to_hea							= An
+date_hea						= Datum
+size_hea						= Gr.
+
+msg_you_have					= Du hast
+msg_message					= Nachricht
+msg_messages					= Nachrichten
+
+msg_more_unread					= ungelesen
+msg_one_unread					= ungelesen
+msg_none_unread					= keine ungelesenen
+msg_in_the_folder				= im Ordner
+[Login]
+
+
+lgn_title					= Login
+lgn_welcome_msg					= Webmail
+lng_user_email					= E-mail
+lng_user_name					= Benutzername
+lng_user_pwd					= Kennwort
+lng_theme					= Thema
+lng_language					= Sprache
+lng_login_btn					= Einloggen &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= An:
+cc_hea						= Cc:
+bcc_hea						= Bcc:
+subject_hea					= Betreff:
+address_tip					= Vom Adressbuch
+
+attach_hea					= Dateianhang:
+attch_add_new					= Datei auswählen
+attch_name_hea					= Name
+attch_size					= Gr.
+attch_type_hea					= Typ
+attch_dele_hea					= Entfernen
+attch_no_hea					= Kein Dateianhang
+
+add_signature					= Signatur hinzufügen
+send_text					= Senden
+
+result_error					= FEHLER: Diese Email konnte nicht versandt werden.
+result_success					= Deine Nachricht wurde erfolgreich verschickt.
+nav_continue					= HIER KLICKEN!
+nav_back					= Zurück
+
+up_title 					= Datei hinzufügen
+up_information_text				= Datei auswählen
+up_button_text					= Senden
+
+priority_text					= Dringlichkeit
+priority_low					= Niedrig
+priority_normal					= Normal
+priority_high					= Hoch
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Bitte wähle 
+adv_warning_text_mode2			= um die Toolbar zu verwenden
+
+adv_type_path					= Setze die URL:
+
+format_paragraph				= Absatzformatierung
+format_h1					= Überschrift 1 <H1>
+format_h2					= Überschrift 2 <H2>
+format_h3					= Überschrift 3 <H3>
+format_h4					= Überschrift 4 <H4>
+format_h5					= Überschrift 5 <H5>
+format_h6					= Überschrift 6 <H6>
+format_pre					= Formatiert <PRE>
+format_clear_all				= Formatierung entfernen
+
+format_font					= Schriftart
+format_size					= Gr.
+
+format_color					= Farbe
+format_back					= Hintergrund
+color_red					= Rot
+color_blue					= Blau
+color_green					= Grün
+color_black					= Schwarz
+color_yellow					= Gelb
+color_white					= Weiß
+
+view_source					= HTML Quelltext anzeigen
+text_mode					= Text Modus
+clear_format					= Formatierung entfernen
+
+priority_text					= Dringlichkeit
+
+
+
+
+[BadLogin]
+
+bdl_title					= Login Fehler 
+bdl_msg						= Du kannst im Augenblick nicht einloggen, da die Verbindung zu Deinem Email-Provider gestört ist.<br><br>Bitte versuche es in ein paar Minuten noch einmal.
+bdl_back					= Zurück
+
+
+[Error]
+
+err_title					= Es sind Fehler aufgetreten
+err_msg						= Beim Einloggen sind Fehler aufgetreten.<br><br>Bitte noch einmal einloggen.
+err_system_msg					= Systemmitteilung: 
+err_exit					= Logout
+
+[Preferences]
+
+prf_title 					= Einstellungen
+prf_general_title				= Allgemeine Einstellungen
+prf_name					= Name
+prf_reply_to					= Antwortadresse
+prf_time_zone					= Zeitzone
+prf_trash_title					= Papierkorb
+prf_save_to_trash				= Wenn Du eine Nachricht löschst, dann <b>verschiebe</b> diese Mitteilung in den  
+prf_save_only_read				= Nur <b>gelesene Nachrichten</b> in den Papierkorb verschieben
+prf_empty_on_exit				= <b>Papierkorb leeren</b>, nachdem Du ausgeloggt hast.
+prf_sent_title					= Gesendete Objekte
+prf_save_sent					= <b>Gesendete Objekte </b> in den Ordner Gesendete Objekte verschieben.
+prf_messages_title				= Nachrichten
+prf_page_limit					= Max. Nachrichten pro Seite <br>(je weniger, desto schneller der Ladevorgang)
+prf_signature_title				= Signatur
+prf_signature					= Erstelle Deine Signatur
+prf_auto_add_sign				= Signatur allen ausgehenden Nachrichten anhängen
+prf_save_button					= Speichern
+prf_display_images				= Bilder in Anlagen in der Email anzeigen
+prf_default_editor_mode				= Editiermodus für neue Emails
+prf_default_editor_mode_text			= "Reiner Textmodus"
+prf_default_editor_mode_html			= "Word-ähnlicher HTML editor (nur für IE5 oder höher)"
+prf_time_to_refesh				= Posteingang alle x Minuten aktualisieren
+
+[Catch]
+
+ctc_title					= Zum Adressbuch hinzufügen
+ctc_information					= Nur Emails anzeigen, die auch im Adressbuch sind
+ctc_name					= Name
+ctc_email					= E-mail
+ctc_no_address					= Keine Adresse vorhanden
+ctc_close					= Schließen
+ctc_save					= Speichern
+
+[Readmsg]
+
+next_mnu					= Nächste
+previous_mnu					= Vorherige
+back_mnu					= Zurück
+reply_mnu					= Antworten
+reply_all_mnu					= Allen antworten
+forward_mnu					= Weiterleiten
+headers_mnu					= Kopf-Bereich
+move_mnu					= Verschieben
+delete_mnu					= Entfernen
+print_mnu					= Drucken
+
+from_hea					= Von:
+to_hea						= An:
+cc_hea						= Cc:
+date_hea					= Datum:
+subject_hea					= Betreff:
+attach_hea					= Dateianlage:
+
+attch_name_hea					= Name
+attch_force_hea					= Download
+attch_type_hea					= Typ
+attch_size_hea					= Gr.
+catch_address					= Zum Adressbuch hinzufügen
+
+[Search]
+
+sch_information_text				= Bitte Suchbegriff eingeben.<br>  
+sch_button_text					= Suche &gt;&gt;
+sch_subject_hea					= Betreff
+sch_from_hea					= Absender
+sch_date_hea					= Datum
+sch_body_hea					= Im Text
+sch_folder_hea					= Ordner
+sch_no_results					= Es wurden keine Nachrichten gefunden, die den Suchkriterien entsprechen.
+
+
+[QuickAddress]
+
+qad_title 			= Addressbuch
+qad_select_address		= Kontakt wählen
+qad_to				= An
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Addressbuch
+adr_name					= Name
+adr_email					= E-mail
+adr_street					= Straße
+adr_city					= Stadt
+adr_state					= Bundesland
+adr_work					= Telefon
+adr_back					= Zurück
+adr_save					= Speichern
+
+# list
+
+adr_name_hea					= Name
+adr_email_hea					= E-mail
+adr_edit_hea					= Bearbeiten
+adr_expo_hea					= Exportieren
+adr_dele_hea					= Entfernen
+adr_new_entry					= Neuer Kontakt
+
+
+addr_saved					= Der Kontakt wurde gespeichert.
+addr_added					= Der Kontakt wurde hinzugefügt.
+addr_deleted					= Der Kontakt wurde entfernt.

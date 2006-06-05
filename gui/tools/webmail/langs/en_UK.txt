@@ -1,0 +1,315 @@
+#
+# English
+#
+
+
+# User-friendly names to system folders
+inbox_extended					= Inbox
+sent_extended					= Sent items
+trash_extended					= Trash
+
+# Navigation texts
+previous_text					= Previous
+next_text						= Next
+
+# Mail Server Errors
+error_connect					= Error connecting to the server
+error_retrieving				= Error getting your messages, your Inbox has changed
+error_other						= System failure, please contact your network administrator
+
+# Invalid name of mailbox
+error_invalid_name				= Invalid folder name - Use only the following characters  A-Z, 0-9, - and space
+
+# Validations when sending mails
+error_no_recipients		= Error: You must have at least one recipient!
+error_compose_invalid_mail1_s	= Error: This e-mail address seems to be invalid
+error_compose_invalid_mail1_p	= Error: This e-mail addresses seem to be invalid
+error_compose_invalid_mail2_s	= Check the e-mail address before resending this email.
+error_compose_invalid_mail2_p	= Check your addresses before resending this email.
+
+# Confirmation of delete
+confirm_delete					= Do you really want to delete this message(s)?
+
+# If the message no have a subject or sender
+no_subject_text					= [No subject]
+no_sender_text					= [Sender unknown]
+no_recipient_text				= [Recipient unknown]
+
+# If the quota limit was exceeded
+quota_exceeded					= Not enough space in your inbox to complete this action\Please delete some messages to continue
+quota_usage_info				= Quota limit
+quota_usage_used				= Used
+quota_usage_of					= of
+quota_usage_avail				= available
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+date_format 					= %d/%m/%y %H:%M
+
+# CharSet 
+default_char_set				= iso-8859-1
+
+# Menu
+messages_mnu					= Inbox
+read_menu						= Read E-Mail(s)
+compose_mnu						= Write E-Mail
+refresh_mnu						= Refresh
+folders_mnu						= Folders
+search_mnu						= Search
+address_mnu						= Address book
+empty_trash_mnu					= Empty trash
+prefs_mnu						= Preferences
+logoff_mnu 						= Log out
+
+# Reply
+reply_prefix					= Re:
+forward_prefix					= Fw:
+reply_delimiter					= --------- Original Message --------
+reply_from_hea					= From:
+reply_to_hea					= To:
+reply_cc_hea					= Cc:
+reply_date_hea					= Date:
+reply_subject_hea				= Subject:
+# done
+
+
+# page-specific vars
+
+[Headers]
+key_hea							= Key
+value_hea						= Value
+
+[Folders]
+fld_name_hea					= Folder
+fld_messages_hea				= Messages
+fld_size_hea					= Size
+fld_empty_hea					= Empty
+fld_delete_hea					= Delete
+fld_total						= Total:
+fld_make_new					= Create new folder
+folders_to						= Folders to
+
+[MessageList]
+messages_to						= Messages to 
+no_messages						= No new messages in your 
+delete_selected_mnu				= Delete selected
+move_selected_to_trash_mnu		= Move selected to Trash
+move_selected_mnu				= Move selected to
+delete_mnu						= Delete
+move_mnu						= Move to
+subject_hea						= Subject
+from_hea						= From
+to_hea							= To
+date_hea						= Date
+size_hea						= Size
+
+msg_you_have					= You have
+msg_message						= message
+msg_messages					= messages
+
+msg_more_unread					= unread
+msg_one_unread					= unread
+msg_none_unread					= none read
+msg_in_the_folder				= in the folder
+
+[Login]
+lgn_title						= Login
+lgn_welcome_msg					= Welcome, please login into your account
+lng_user_email					= E-mail
+lng_user_name					= Username
+lng_user_pwd					= Password
+lng_server						= Server
+lng_theme						= Theme
+lng_language					= Language
+lng_login_btn					= Login &gt;&gt;
+
+[Newmessage]
+to_hea							= To:
+cc_hea							= Cc:
+bcc_hea							= Bcc:
+subject_hea						= Subject:
+address_tip						= From address book
+
+attach_hea						= Attachment:
+attch_add_new					= Attach new file
+attch_name_hea					= Name
+attch_size						= Size
+attch_type_hea					= Type
+attch_dele_hea					= Delete
+attch_no_hea					= No attachments
+
+add_signature					= Add signature
+send_text					= Send
+
+result_error					= It was not possible to send this e-mail
+result_success					= This e-mail has been sent
+nav_continue					= Continue
+nav_back					= Back
+
+up_title 					= Add file
+up_information_text				= Select file
+up_button_text					= Send
+
+priority_text					= Priority
+priority_low					= Low
+priority_normal					= Normal
+priority_high					= High
+
+[AdvancedEditor]
+adv_warning_text_mode1			= Please uncheck an option
+adv_warning_text_mode2			= to use the toolbar
+
+adv_type_path					= Write the URL:
+
+format_paragraph				= Paragraph
+format_h1						= Style 1 <H1>
+format_h2						= Style 2 <H2>
+format_h3						= Style 3 <H3>
+format_h4						= Style 4 <H4>
+format_h5						= Style 5 <H5>
+format_h6						= Style 6 <H6>
+format_pre						= Formatted <PRE>
+format_clear_all				= Clear all
+
+format_font						= Font
+format_size						= Size
+
+format_color					= Colour
+format_back						= Background
+color_red						= Red
+color_blue						= Blue
+color_green						= Green
+color_black						= Black
+color_yellow					= Yellow
+color_white						= White
+
+view_source						= View HTML source
+text_mode						= Text mode
+clear_format					= Clear format
+
+priority_text					= Priority
+
+[BadLogin]
+bdl_title						= Login error 
+bdl_msg							= You cannot login with the username and password entered.<br><br>Please check your username and password and try again.
+bdl_back						= Back
+
+[Error]
+err_title						= There were errors
+err_msg							= There were errors in the process<br><br>Please login again
+err_system_msg					= System message: 
+err_exit						= Logout
+
+[Preferences]
+prf_title 						= Preferences
+prf_general_title				= General information
+prf_name						= Name
+prf_reply_to					= Reply to
+prf_time_zone					= Time zone
+prf_trash_title					= Trash
+prf_save_to_trash				= When you <b>delete</b> a message, move it to 
+prf_save_only_read				= Save only <b>read messages</b> in the 
+prf_empty_on_exit				= <b>Empty</b> trash folder when you logout
+prf_sent_title					= Sent items
+prf_save_sent					= Save <b>sent messages</b> in the 
+prf_messages_title				= Messages
+prf_page_limit					= Maximum number of messages per page
+prf_signature_title				= Signature
+prf_signature					= Write your signature
+prf_auto_add_sign				= Add your signature to all the outgoing messages 
+prf_save_button					= Save
+prf_display_images				= Show attached images
+prf_default_editor_mode			= Default edit mode
+prf_default_editor_mode_text	= "Plain text"
+prf_default_editor_mode_html	= "Advanced HTML editor (Only for IE5 or higher)"
+prf_time_to_refesh				= Automatically check for new mail (minutes)
+
+[Catch]
+ctc_title						= Add to address book
+ctc_information					= Only shows e-mails that are in the address book
+ctc_name						= Name
+ctc_email						= E-mail
+ctc_no_address					= No address available
+ctc_close						= Close
+ctc_save						= Save
+
+[Readmsg]
+next_mnu						= Next
+previous_mnu					= Previous
+back_mnu						= Back
+reply_mnu						= Reply
+reply_all_mnu					= Reply to all
+forward_mnu						= Forward
+headers_mnu						= Header
+move_mnu						= Move to
+move_to_trash_mnu				= Move to Trash
+delete_mnu						= Delete
+print_mnu						= Print
+
+from_hea						= From:
+to_hea							= To:
+cc_hea							= Cc:
+date_hea						= Date:
+subject_hea						= Subject:
+attach_hea						= Attachment:
+
+attch_name_hea					= Name
+attch_force_hea					= Download
+attch_type_hea					= Type
+attch_size_hea					= Size
+catch_address					= Add to address book
+block_address					= Block address
+
+[Search]
+sch_information_text			= Write a phrase or a word that you are looking for.<br> Only read messages will be searched.
+sch_button_text					= Search &gt;&gt;
+sch_subject_hea					= Subject
+sch_from_hea					= From
+sch_date_hea					= Date
+sch_body_hea					= Message Body
+sch_folder_hea					= Folder
+sch_no_results					= No messages matching your criteria have been found
+
+[QuickAddress]
+qad_title 						= Address book
+qad_select_address				= Select a contact
+qad_to							= To
+qad_cc							= Cc
+qad_bcc							= Bcc
+
+[AddressBook]
+# edit/display
+adr_title						= Address book
+adr_name						= Name
+adr_email						= E-mail
+adr_street						= Street
+adr_city						= City
+adr_state						= State
+adr_work						= Work
+adr_back						= Back
+adr_save						= Save
+
+# list
+adr_name_hea					= Name
+adr_email_hea					= E-mail
+adr_edit_hea					= Edit
+adr_expo_hea					= Export
+adr_dele_hea					= Delete
+adr_new_entry					= New contact
+
+addr_saved						= The contact has been saved
+addr_added						= The contact has been added
+addr_deleted					= The contact has been deleted
+
+
+[BlockSender]
+blk_title						= Block sender
+blk_information					= Only shows e-mails that are not in the filter yet
+blk_email						= E-mail
+blk_no_address					= No address available
+blk_close						= Close
+blk_save						= Save
+

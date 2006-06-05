@@ -1,0 +1,26 @@
+
+Updating
+     _________________________________________________________________
+
+   The latest version of this document can be found in our [1]Document
+   Manager @ [2]SourceForge.
+     _________________________________________________________________
+
+   This document lists changes between versions that require that need
+   extra special attention.
+
+    2002-04-24
+
+     * $ftp_Server and $ftp_Port in settings.php have been removed and
+       replaced by $ftp_Servers. Users will not be able to login without
+       the new variable.
+
+
+   [3]Weeble File Manager by Jon Manna & Chris Michaels
+   Updated Apr 24, 2002
+
+References
+
+   1. http://sourceforge.net/docman/?group_id=23588
+   2. http://www.sourceforge.net/
+   3. http://weeblefm.sourceforge.net/

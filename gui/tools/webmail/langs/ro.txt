@@ -1,0 +1,338 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Inbox
+sent_extended					= Mesaje trimise
+trash_extended					= Cos de gunoi
+
+#Navigation texts
+
+previous_text					= Precedentul
+next_text					= Urmatorul
+
+# Mail Server Errors
+
+error_connect					= Eroare la conectarea cu serverul
+error_retrieving				= Eroare la receptionarea mesajelor, Inbox-ul a fost modificat intre timp.
+error_other					= Eroare fatala, contactati administratorul
+
+#Invalid name of mailbox
+
+error_invalid_name				= Nume invalid, folositi litere, cifre si -.
+
+
+#Validations when sending mails            ;
+
+error_no_recipients		= Este necesara cel putin o adresa e-mail.
+error_compose_invalid_mail1_s	= Acest mesaj pare invalid.
+error_compose_invalid_mail1_p	= Urmatoarele mesje par invalide
+error_compose_invalid_mail2_s	= Introduceti destinatarul inainte de a trimite
+error_compose_invalid_mail2_p	= Introduceti destinatarul inainte de a trimite
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Chiar vreti sa stergeti acest mesaj ?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Fara subiect]
+no_sender_text					= [Expeditor necunoscut]
+no_recipient_text				= [Recipient necunoscut]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Limita de marime pentru Inbox a fost atinsa.\n Stergeti cateva mesaje pentru a creea spatiul necesar.
+quota_usage_info				= Limita
+quota_usage_used				= Folosire
+quota_usage_of					= din
+quota_usage_avail				= disponibili
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-2
+
+messages_mnu					= Inbox
+compose_mnu					= Compune mesaj
+refresh_mnu					= Verifica mesaje noi
+folders_mnu					= Foldere
+search_mnu					= Cauta
+address_mnu					= Agenda
+empty_trash_mnu					= Goleste cosul
+prefs_mnu					= Optiuni
+logoff_mnu 					= Iesire
+
+
+
+reply_prefix					= Re:
+forward_prefix					= Fw:
+
+reply_delimiter					= --------- Mesaj Original --------
+reply_from_hea					= De la:
+reply_to_hea					= pentru:
+reply_cc_hea					= Cc:
+reply_date_hea					= Data:
+reply_subject_hea				= Subiect:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Key
+value_hea						= Value
+
+[Folders]
+
+fld_name_hea					= Folder
+fld_messages_hea				= Mesaje
+fld_size_hea					= Dimensiune
+fld_empty_hea					= Goleste
+fld_delete_hea					= Sterge
+fld_total					= Total:
+fld_make_new					= Creeaza folder
+folders_to					= Foldere la
+
+[MessageList]
+
+messages_to						= Mesaje pentru 
+no_messages						= Nici un mesaj nou in 
+
+delete_selected_mnu				= Sterge selectate
+move_selected_mnu				= Muta selectate in
+delete_mnu						= Sterge
+move_mnu						= Muta in
+subject_hea						= Subiect
+from_hea						= De la
+to_hea							= Pentru
+date_hea						= Data
+size_hea						= Marime
+
+msg_you_have					= Aveti
+msg_message					= mesaj
+msg_messages					= mesaje
+
+msg_more_unread					= necitite
+msg_one_unread					= necitit
+msg_none_unread					= citite
+msg_in_the_folder				= in folderul
+[Login]
+
+
+lgn_title					= Login
+lgn_welcome_msg					= Bine ati venit, va rugam introduceti numele si parola!
+lng_user_email					= E-mail
+lng_user_name					= Nume
+lng_user_pwd					= Parola
+lng_theme					= Limba
+lng_language					= Language
+lng_login_btn					= Logare &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Pentru:
+cc_hea						= Cc:
+bcc_hea						= Bcc:
+subject_hea					= Subiect:
+address_tip					= Alegeti din agenda
+
+attach_hea					= Atasament:
+attch_add_new					= Adaugati fisier
+attch_name_hea					= Nume
+attch_size					= Marime
+attch_type_hea					= Tip
+attch_dele_hea					= Stergeti
+attch_no_hea					= Nici un atasament
+
+add_signature					= Adaugati semnatura
+send_text					= Trimite
+
+result_error					= Nu am reusit sa trimit mesajul
+result_success					= Mesajul a fost trimis
+nav_continue					= Continua
+nav_back					= Inapoi
+
+up_title 					= Adaugati fisier
+up_information_text				= Selectari fisier
+up_button_text					= Trimite
+
+priority_text					= Prioritate
+priority_low					= Mica
+priority_normal					= Normala
+priority_high					= Mare
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Selectati o optiune
+adv_warning_text_mode2			= pentru a folosi bara de unelte
+
+adv_type_path					= Introduceti URL-ul:
+
+format_paragraph				= Paragraf
+format_h1					= Stil 1 <H1>
+format_h2					= Stil 2 <H2>
+format_h3					= Stil 3 <H3>
+format_h4					= Stil 4 <H4>
+format_h5					= Stil 5 <H5>
+format_h6					= Stil 6 <H6>
+format_pre					= Preformatat <PRE>
+format_clear_all				= Sterge tot
+
+format_font					= Font
+format_size					= Marime
+
+format_color					= Culoare
+format_back					= Fond
+color_red					= Rosu
+color_blue					= Albastru
+color_green					= Verde
+color_black					= Negru
+color_yellow					= Galben
+color_white					= Alb
+
+view_source					= Afiseaza sursa HTML
+text_mode					= Mod text
+clear_format					= Sterge formatarea
+
+priority_text					= Prioritate
+
+
+
+
+[BadLogin]
+
+bdl_title					= Eroare la autentificare 
+bdl_msg						= Combinatia nume/parola este gresita.<br><br>Va rugam incercati din nou
+bdl_back					= Inapoi
+
+
+[Error]
+
+err_title					= Eroare
+err_msg						= O eroare in proces<br><br>Va rugam incercati din nou
+err_system_msg					= Mesajul dat de sistem: 
+err_exit					= Iesire
+
+[Preferences]
+
+prf_title 					= Optiuni
+prf_general_title				= Informatii generale
+prf_name					= Nume
+prf_reply_to					= Adresa de raspuns
+prf_time_zone					= Fus orar
+prf_trash_title					= Gunoi
+prf_save_to_trash				= La <b>stergerea</b> unui mesaj, muta-l in 
+prf_save_only_read				= Salveaza numai <b>mesajele citite</b> in  
+prf_empty_on_exit				= <b>Clean</b> trash folder when you logout
+prf_sent_title					= Mesaje trimise
+prf_save_sent					= Salveaza <b>mesajele trimise</b> in 
+prf_messages_title				= Mesaje
+prf_page_limit					= Mesaje pe pagina
+prf_signature_title				= Semnatura
+prf_signature					= Scrieti semnatura
+prf_auto_add_sign				= Adauga semnatura la mesajele trimise
+prf_save_button					= Salveaza optiuni
+prf_display_images				= Afiseaza imaginile atasate
+prf_default_editor_mode				= Mod de editare
+prf_default_editor_mode_text			= "Mod text"
+prf_default_editor_mode_html			= "HTML (Doar pentru Internet Explorer 5+)"
+prf_time_to_refesh				= Interval pentru verificarea de mesaje noi (minute)
+
+[Catch]
+
+ctc_title					= Adauga in agenda
+ctc_information					= Vor fi afisate doar adresele din agenda
+ctc_name					= Nume
+ctc_email					= E-mail
+ctc_no_address					= Adresa indisponibila
+ctc_close					= Inchide
+ctc_save					= Salveaza
+
+[Readmsg]
+
+next_mnu					= Urmatorul
+previous_mnu					= Precedentul
+back_mnu					= Inapoi
+reply_mnu					= Raspunde
+reply_all_mnu					= Raspunde tuturor
+forward_mnu					= Trimite mai departe
+headers_mnu					= Afiseaza header
+move_mnu					= Muta in
+delete_mnu					= Sterge
+print_mnu					= Printeaza
+
+from_hea					= De la:
+to_hea						= Pentru:
+cc_hea						= Cc:
+date_hea					= Data:
+subject_hea					= Subiect:
+attach_hea					= Atasament:
+
+attch_name_hea					= Nume
+attch_force_hea					= Descarca
+attch_type_hea					= Tip
+attch_size_hea					= Marime
+catch_address					= Adauga in agenda
+
+[Search]
+
+sch_information_text				= Scrieti cuvantul sau fraza dupa care se ca cauta.<br> Cautarea dupa mesaj se va face numai in mesajele citite.
+sch_button_text					= Cauta &gt;&gt;
+sch_subject_hea					= Subiect
+sch_from_hea					= De la
+sch_date_hea					= Data
+sch_body_hea					= Mesaj
+sch_folder_hea					= Folder
+sch_no_results					= Nu am gasit nici un mesaj
+
+
+[QuickAddress]
+
+qad_title 			= Agenda
+qad_select_address		= Selectati un contact
+qad_to				= Pentru
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Agenda
+adr_name					= Nume
+adr_email					= E-mail
+adr_street					= Strada
+adr_city					= Oras
+adr_state					= Judet
+adr_work					= Firma
+adr_back					= Inapoi
+adr_save					= Salveaza
+
+# list
+
+adr_name_hea					= Nume
+adr_email_hea					= E-mail
+adr_edit_hea					= Editeaza
+adr_expo_hea					= Export
+a
+adr_dele_hea					= Sterge
+adr_new_entry					= Adauga contact
+
+
+addr_saved					= Intrare salvata.
+addr_added					= Contact adaugat cu succes.
+addr_deleted					= Intrare stearsa.

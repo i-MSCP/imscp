@@ -1,0 +1,1101 @@
+#!/usr/bin/perl
+
+#
+# VHCS(tm) - Virtual Hosting Control System
+# Copyright (c) 2001-2005 by moleSoftware GmbH
+# http://www.molesoftware.com
+#
+#
+# License:
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1    
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The VHCS Home Page is at:
+#
+#    http://www.vhcs.net
+#
+
+
+use FindBin;
+use lib "$FindBin::Bin/";
+require 'vhcs2_common_code.pl';
+
+use strict;
+
+use warnings;
+
+$main::htuser_task_id = undef;
+
+sub htuser_mngr_start_up {
+	
+	my ($rs, $rdata) = (undef, undef);
+	
+	push_el(\@main::el, 'htuser_mngr_start_up()', 'Starting...');
+	
+	# checking for master process;
+	
+# 	$rs = check_master();
+# 		
+# 	return $rs if ($rs != 0);
+	
+	# Let's clear Execution Logs, if any.
+	
+	if (-e $main::vhcs2_htuser_mngr_el) {
+		
+		$rs = del_file($main::vhcs2_htuser_mngr_el);
+		
+		return $rs if ($rs != 0);
+		
+	}
+	
+	# config check;
+	
+	$rs = get_conf();
+	
+	return $rs if ($rs != 0);
+	
+	# sql check;
+	
+	#
+	# getting initial data also must be done here;
+	#
+	
+	my $sql = "select * from domain;";
+	
+	($rs, $rdata) = doSQL($sql);
+	
+	return $rs if ($rs != 0);
+	
+	#
+	# getting task id and domain record id;
+	#
+	
+	$main::htuser_task_id = $ARGV[0];
+	
+	push_el(\@main::el, 'htuser_mngr_start_up()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_mngr_shut_down {
+	
+	my $rs = undef;
+	
+	push_el(\@main::el, 'htuser_mngr_shut_down()', 'Starting...');
+	
+	push_el(\@main::el, 'htuser_mngr_shut_down()', 'Ending...');
+	
+	return 0;
+	
+}
+
+#
+# AuthUserFile add/remove entries;
+#
+
+sub htuser_add_user_data {
+	
+	push_el(\@main::el, 'htuser_add_user_data()', 'Starting...');
+	
+	my ($dmn_name, $uname, $upass) = @_;
+	
+	my $rs = undef;
+	
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+	
+	my $htaccess_users_content = '';
+	
+	if (-e $htaccess_users_file) {
+		
+		open(F, '<', $htaccess_users_file);
+		
+		while (!eof(F)) {
+			
+			my $line = readline(F);
+			
+			$htaccess_users_content .= $line if ($line !~ /^$uname:/);
+				
+			
+		}
+
+		close(F);
+		
+		$htaccess_users_content .= "$uname:$upass\n";
+		
+	} else {
+		
+		$htaccess_users_content = "$uname:$upass\n";
+		
+	}
+	
+	$rs = store_file($htaccess_users_file, $htaccess_users_content, 'root', 'root', 0644);
+	
+	return $rs if ($rs != 0);
+	
+	push_el(\@main::el, 'htuser_add_user_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_del_user_data {
+	
+	push_el(\@main::el, 'htuser_del_user_data()', 'Starting...');
+	
+	my ($dmn_name, $uname) = @_;
+	
+	my $rs = undef;
+	
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+	
+	my $htaccess_users_content = '';
+	
+	if (-e $htaccess_users_file) {
+		
+		open(F, '<', $htaccess_users_file);
+		
+		while (!eof(F)) {
+			
+			my $line = readline(F);
+			
+			$htaccess_users_content .= $line if ($line !~ /^$uname:/);
+			
+			
+		}
+		
+		close(F);
+		
+		$rs = store_file(
+						 $htaccess_users_file,
+						 $htaccess_users_content,
+						 'root',
+						 'root',
+						 0644
+						); 
+		
+		return $rs if ($rs != 0);
+		
+	}
+	
+	push_el(\@main::el, 'htuser_del_user_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+#
+# AuthGroupFile add/remove entries;
+#
+
+sub htuser_add_group_line_data {
+	
+	push_el(\@main::el, 'htuser_add_group_line_data()', 'Starting...');
+	
+	my ($line, $gname, $uname) = @_;
+	
+	if ($line !~ / $uname/) {
+		
+		$line =~ s/$gname://;
+		
+		chop($line);
+		
+		$line = "$gname:$line $uname\n";
+		
+	}
+	
+	push_el(\@main::el, 'htuser_add_group_line_data()', 'Ending...');
+	
+	return $line;	
+}
+
+sub htuser_add_group_data {
+	
+	push_el(\@main::el, 'htuser_add_group_data()', 'Starting...');
+	
+	my ($dmn_name, $gname, $uname) = @_;
+	
+	my $rs = undef;
+	
+	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+	
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
+	
+	my $htaccess_groups_content = '';
+	
+	
+	if (-e $htaccess_groups_file) {
+		
+		my $gf_edit_flag = 0;
+		
+		open(F, '<', $htaccess_groups_file);
+		
+		while (!eof(F)) {
+			
+			my $line = readline(F);
+			
+			if ($line !~ /^$gname:/) {
+				
+				$htaccess_groups_content .= $line;
+				
+			} else {
+				
+				$htaccess_groups_content .= htuser_add_group_line_data($line, $gname, $uname);
+				
+				$gf_edit_flag++;
+				
+			}
+			
+		}
+		
+		$htaccess_groups_content .= "$gname: $uname\n" if ($gf_edit_flag == 0);
+		
+		close(F);
+		
+	} else {
+		
+		$htaccess_groups_content = "$gname: $uname\n";
+		
+	}
+	
+	$rs = store_file($htaccess_groups_file, $htaccess_groups_content, 'root', 'root', 0644);
+	
+	return $rs if ($rs != 0);
+		
+	push_el(\@main::el, 'htuser_add_group_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_del_group_line_data {
+	
+	push_el(\@main::el, 'htuser_del_group_line_data()', 'Starting...');
+	
+	my ($line, $gname, $uname) = @_;
+	
+	if ($line =~ / $uname/) {
+		
+		$line =~ s/$gname://;
+		
+		chop($line);
+		
+		$line =~ s/ $uname//;
+		
+		$line = "$gname:$line\n" if (length($line) > 0);
+		
+	}
+	
+	push_el(\@main::el, 'htuser_del_group_line_data()', 'Ending...');
+	
+	return $line;	
+}
+
+sub htuser_del_group_data {
+	
+	push_el(\@main::el, 'htuser_del_group_data()', 'Starting...');
+	
+	my ($dmn_name, $gname, $uname) = @_;
+	
+	my $rs = undef;
+	
+	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+	
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
+	
+	my $htaccess_groups_content = '';
+	
+	if (-e $htaccess_groups_file) {
+		
+		open(F, '<', $htaccess_groups_file);
+		
+		while (!eof(F)) {
+			
+			my $line = readline(F);
+			
+			if ($line !~ /^$gname:/) {
+				
+				$htaccess_groups_content .= $line;
+				
+			} else {
+				
+				$htaccess_groups_content .= htuser_del_group_line_data($line, $gname, $uname);
+				
+			}
+			
+		}
+		
+		close(F);
+		
+		$rs = store_file($htaccess_groups_file, $htaccess_groups_content, 'root', 'root', 0644);
+		
+		return $rs if ($rs != 0);
+		
+	} 
+	
+	push_el(\@main::el, 'htuser_del_group_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_add_user_system_data {
+	
+	my ($htuser_data) = @_;
+	
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	
+	push_el(\@main::el, 'htuser_add_user_system_data()', 'Starting...');
+	
+	if (!defined($htuser_data) || $htuser_data eq '') {
+		
+		push_el(\@main::el, 'htuser_add_user_system_data()', 'ERROR: Undefined Input Data...');
+		
+		return -1;
+		
+	}
+	
+	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
+		
+		(@$htuser_data[0], 
+		 @$htuser_data[1], 
+		 @$htuser_data[2], 
+		 @$htuser_data[3], 
+		 @$htuser_data[4], 
+		 @$htuser_data[5], 
+		 @$htuser_data[6],
+		 @$htuser_data[7],
+		 @$htuser_data[8]);
+	 
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	
+	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+	
+	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+	
+	my $unames = '';
+	
+	foreach (split(',', $user_ids)) {
+		
+		my $id = $_;
+		
+		$sql = "select uname, upass from htaccess_users where id = $id";
+		
+		($rs, $rdata) = doSQL($sql);
+		
+		return $rs if ($rs != 0);
+		
+		$rdata = @$rdata[0];
+		
+		my ($uname, $upass) = (@$rdata[0], @$rdata[1]);
+		
+		$rs = htuser_add_user_data($dmn_name, $uname, $upass);
+		
+		return $rs if ($rs != 0);
+		
+		$unames .= "$uname ";
+		
+	}
+		
+	my $htaccess_content = "
+	AuthType $auth_type
+	AuthName \"$auth_name\"
+	AuthUserFile $htaccess_users_file
+	Require user $unames
+";
+	
+	$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
+	
+	return $rs if ($rs != 0);
+	 
+	push_el(\@main::el, 'htuser_add_user_system_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_del_user_system_data {
+
+	my ($htuser_data) = @_;
+	
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	
+	push_el(\@main::el, 'htuser_del_user_system_data()', 'Starting...');
+	
+	if (!defined($htuser_data) || $htuser_data eq '') {
+		
+		push_el(\@main::el, 'htuser_del_user_system_data()', 'ERROR: Undefined Input Data...');
+		
+		return -1;
+		
+	}
+	
+	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
+		
+		(@$htuser_data[0], 
+		 @$htuser_data[1], 
+		 @$htuser_data[2], 
+		 @$htuser_data[3], 
+		 @$htuser_data[4], 
+		 @$htuser_data[5], 
+		 @$htuser_data[6],
+		 @$htuser_data[7],
+		 @$htuser_data[8]);
+	 
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	
+	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+	
+	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+
+	foreach (split(',', $user_ids)) {
+		
+		my $id = $_;
+		
+		$sql = "select uname from htaccess_users where id = $id";
+		
+		($rs, $rdata) = doSQL($sql);
+		
+		return $rs if ($rs != 0);
+		
+		$rdata = @$rdata[0];
+		
+		my ($uname) = (@$rdata[0]);
+		
+		$rs = htuser_del_user_data($dmn_name, $uname);
+		
+		return $rs if ($rs != 0);
+		
+	}
+
+	$rs = del_file($htaccess_file);
+
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'htuser_del_user_system_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_add_user_to_group {
+	
+	my ($dmn_id, $dmn_name, $ugroup, $uid) = @_;
+	
+	my ($rs, $rdata) = (undef, undef);
+	
+	push_el(\@main::el, 'htuser_add_user_to_group_data()', 'Starting...');
+	
+	my $sql = "select uname,upass from htaccess_users where id = $uid and dmn_id = $dmn_id";
+	
+	($rs, $rdata) = doSQL($sql);
+	
+	return $rs if ($rs != 0);
+	
+	if (scalar(@$rdata) == 1) {
+		
+		my $entry = @$rdata[0];
+		
+		my ($uname, $upass) = (@$entry[0], @$entry[1]);
+		
+		$rs = htuser_add_user_data($dmn_name, $uname, $upass);
+		
+		return $rs if ($rs != 0);
+		
+		$rs = htuser_add_group_data($dmn_name, $ugroup, $uname);
+		
+		return $rs if ($rs != 0);
+		
+	}
+	
+	push_el(\@main::el, 'htuser_add_user_to_group_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_add_group_system_data {
+	
+	my ($htuser_data) = @_;
+	
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	
+	push_el(\@main::el, 'htuser_add_group_system_data()', 'Starting...');
+	
+	if (!defined($htuser_data) || $htuser_data eq '') {
+		
+		push_el(
+				\@main::el, 
+				'htuser_add_group_system_data()', 'ERROR: Undefined Input Data...'
+			   );
+		
+		return -1;
+		
+	}
+	
+	my ($dmn_id,
+		$dmn_name,
+ 		$group_ids,
+		$auth_type,
+		$auth_name,
+		$path,
+		$status,
+		$domain_uid,
+		$domain_gid) = (@$htuser_data[0],
+						@$htuser_data[1],
+						@$htuser_data[2],
+						@$htuser_data[3],
+						@$htuser_data[4],
+						@$htuser_data[5],
+						@$htuser_data[6],
+						@$htuser_data[7],
+						@$htuser_data[8]);
+		 
+	my $ugroups = '';
+		
+	#
+	# add all user data for this group;
+	#
+		 
+	foreach (split(',', $group_ids)) {
+		
+		my $group_id = $_;
+		
+		$sql = <<SQL_QUERY;
+			
+			select
+				
+				ugroup, members 
+				
+			from
+				
+				htaccess_groups
+				
+			where
+				
+				id = $group_id 
+				
+			and
+				
+				dmn_id = $dmn_id
+SQL_QUERY
+		
+		($rs, $rdata) = doSQL($sql);
+		
+		$rdata = @$rdata[0];
+		
+		my ($ugroup, $members) = (@$rdata[0], @$rdata[1]);
+		
+		foreach (split(',', $members)) {
+			
+			my $user_id = $_;
+			
+			$rs = htuser_add_user_to_group($dmn_id, $dmn_name, $ugroup, $user_id);
+			
+			return $rs if ($rs != 0);
+			
+		}
+		
+		$ugroups .= "$ugroup ";
+		
+	}
+	
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	
+	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+	
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+	
+	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
+	
+	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+	
+	
+	my $htaccess_content = "
+	AuthType $auth_type
+	AuthName \"$auth_name\"
+	AuthUserFile $htaccess_users_file
+	AuthGroupFile $htaccess_groups_file
+	Require group $ugroups
+";
+	
+	$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
+	
+	return $rs if ($rs != 0);
+	 
+	push_el(\@main::el, 'htuser_add_group_system_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+sub htuser_del_group_system_data {
+	
+	my ($htuser_data) = @_;
+	
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+
+	push_el(\@main::el, 'htuser_del_group_system_data()', 'Starting...');
+	
+	if (!defined($htuser_data) || $htuser_data eq '') {
+		
+		push_el(\@main::el, 'htuser_del_group_system_data()', 'ERROR: Undefined Input Data...');
+		
+		return -1;
+		
+	}
+	
+	my ($dmn_id, $dmn_name, $group_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
+		
+		(@$htuser_data[0], 
+		 @$htuser_data[1], 
+		 @$htuser_data[2], 
+		 @$htuser_data[3], 
+		 @$htuser_data[4], 
+		 @$htuser_data[5], 
+		 @$htuser_data[6],
+		 @$htuser_data[7],
+		 @$htuser_data[8]);
+
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	
+	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+	
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	
+	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+	
+	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
+	
+	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+
+	foreach (split(',', $group_ids)) {
+		
+		my $group_id = $_;
+		
+		$sql = "select ugroup, members from htaccess_groups where id = $group_id and dmn_id = $dmn_id";
+		
+		($rs, $rdata) = doSQL($sql);
+		
+		$rdata = @$rdata[0];
+		
+		my ($gname, $members) = (@$rdata[0], @$rdata[1]);
+		
+		foreach (split(',', $members)) {
+
+			my $id = $_;
+
+			$sql = "select uname from htaccess_users where id = $id";
+
+			($rs, $rdata) = doSQL($sql);
+
+			return $rs if ($rs != 0);
+
+			$rdata = @$rdata[0];
+
+			my ($uname) = (@$rdata[0]);
+
+			$rs = htuser_del_group_data($dmn_name, $gname, $uname);
+
+			return $rs if ($rs != 0);
+
+		}
+
+		
+	}
+	
+	$rs = del_file($htaccess_file);
+
+	return $rs if ($rs != 0);
+	
+	push_el(\@main::el, 'htuser_del_group_system_data()', 'Ending...');
+	
+	return 0;
+	
+}
+
+%main::cleared = ();
+
+sub htuser_mngr_engine {
+	
+	my ($rs, $rows, $rdata) = (undef, undef, undef);
+	
+	push_el(\@main::el, 'htuser_mngr_engine()', 'Starting...');
+	
+	my $sql;
+	
+	#
+	# user managment; 
+	#
+	
+	$sql = <<SQL_QUERY;
+		
+		select
+			
+			t1.dmn_id,
+			t2.domain_name,
+			t1.user_id,
+			t1.auth_type,
+			t1.auth_name,
+			t1.path,
+			t1.status,
+			t2.domain_uid,
+			t2.domain_gid
+			
+		from
+			
+			htaccess as t1,
+			domain as t2
+			
+		where
+			
+			t1.id = $main::htuser_task_id
+		
+		and
+			
+			t1.user_id != 0
+			
+		and
+			
+			t1.dmn_id = t2.domain_id
+			
+SQL_QUERY
+	
+	($rs, $rows) = doSQL($sql);
+	
+	return $rs if ($rs != 0);
+	
+	if (scalar(@$rows) == 0) {
+	
+		#
+		# protect with group;
+		#
+		
+		$sql = <<SQL_QUERY;
+		
+		select
+			
+			t1.dmn_id,
+			t2.domain_name,
+			t1.group_id,
+			t1.auth_type,
+			t1.auth_name,
+			t1.path,
+			t1.status,
+			t2.domain_uid,
+			t2.domain_gid
+			
+		from
+			
+			htaccess as t1,
+			domain as t2
+			
+		where
+			
+			t1.id = $main::htuser_task_id 
+			
+		and
+			
+			t1.group_id != 0
+			
+		and
+			
+			t1.dmn_id = t2.domain_id
+			
+SQL_QUERY
+		
+		($rs, $rows) = doSQL($sql);
+		
+		return $rs if ($rs != 0);
+		
+		if (scalar(@$rows) != 0) {
+		
+			my $entry = @$rows[0];
+			
+			my ($htuser_status, 
+				$htuser_id,
+				$dmn_name,
+				$path) = (@$entry[6],
+						  $main::htuser_task_id, 
+						  @$entry[1],
+						  @$entry[5]);
+			
+			my $htaccess_group_cf = "/tmp/htaccess-group-cf-$dmn_name";
+			
+			if (! -e $htaccess_group_cf) {
+				
+				print "group removal\n";
+				
+				$main::cleared{$dmn_name} = 'yes';
+				
+				sys_command_rs("touch $htaccess_group_cf");
+				
+				my $htaccess_users_file_name =
+				
+				$main::cfg{'HTACCESS_USERS_FILE_NAME'};
+				
+				my $htaccess_groups_file_name =
+				
+				$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+				
+				my $apache_www_dir =
+				
+				$main::cfg{'APACHE_WWW_DIR'};
+				
+				my $htaccess_users_file =
+ 				
+				"$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+				
+				my $htaccess_groups_file =
+				
+				"$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
+				
+				my $htaccess_file =
+				
+				"$apache_www_dir/$dmn_name/$path/.htaccess";
+				
+				if ( -e $htaccess_groups_file) {
+					$rs = del_file($htaccess_groups_file);
+					return $rs if ($rs != 0);
+				}
+				
+				if ( -e $htaccess_users_file) {
+					$rs = del_file($htaccess_users_file);
+					return $rs if ($rs != 0);
+				}
+			}
+			
+			if ($htuser_status eq 'toadd' || $htuser_status eq 'change') {
+				
+				$rs = htuser_add_group_system_data($entry);
+				
+				if ($rs == 0) {
+					
+					$sql = "update htaccess set status='ok' where id = $htuser_id";
+					
+				} else {
+					
+					my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+					
+					$msg =~ s/\'/\\\'/g;
+					
+					$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+					
+				}
+				
+				($rs, $rdata) = doSQL($sql);
+				
+				return $rs if ($rs != 0);
+
+			} elsif ($htuser_status eq 'delete') {
+				
+				$rs = htuser_del_group_system_data($entry);
+				
+				if ($rs == 0) {
+					
+					$sql = "delete from htaccess where id = $htuser_id";
+					
+				} else {
+					
+					my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+					
+					$msg =~ s/\'/\\\'/g;
+					
+					$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+					
+				}
+				
+				($rs, $rdata) = doSQL($sql);
+				
+				return $rs if ($rs != 0);
+				
+			}
+			
+		}
+		
+	} else {
+	
+		#
+		# continue with signle user;
+		#
+		
+		my $entry = @$rows[0];
+		
+		my ($htuser_status, $htuser_id, $dmn_name, $path) = 
+		
+			(@$entry[6], $main::htuser_task_id, @$entry[1], @$entry[5]);
+		
+		my $htaccess_user_cf = "/tmp/htaccess-user-cf-$dmn_name";
+
+		my $htaccess_group_cf = "/tmp/htaccess-group-cf-$dmn_name";
+		
+		if ($htuser_status eq 'toadd' || $htuser_status eq 'change') {
+			
+			#print "user removal\n";
+			
+			if (! -e $htaccess_user_cf && 
+				! -e $htaccess_group_cf) {
+				
+				$main::cleared{$dmn_name} = 'yes';
+				
+				sys_command_rs("touch $htaccess_user_cf");
+				
+				my $htaccess_users_file_name =
+				
+				$main::cfg{'HTACCESS_USERS_FILE_NAME'};
+				
+				my $htaccess_groups_file_name =
+				
+				$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+				
+				my $apache_www_dir =
+				
+				$main::cfg{'APACHE_WWW_DIR'};
+				
+				my $htaccess_users_file =
+ 				
+				"$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+				
+				my $htaccess_groups_file =
+				
+				"$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
+				
+				my $htaccess_file =
+				
+				"$apache_www_dir/$dmn_name/$path/.htaccess";
+				
+				if ( -e $htaccess_groups_file) {
+					$rs = del_file($htaccess_groups_file);
+					return $rs if ($rs != 0);
+				}
+				
+				if ( -e $htaccess_users_file) {
+					$rs = del_file($htaccess_users_file);
+					return $rs if ($rs != 0);
+				}
+			}
+			
+			$rs = htuser_add_user_system_data($entry);
+			
+			if ($rs == 0) {
+				
+				$sql = "update htaccess set status='ok' where id = $htuser_id";
+				
+			} else {
+				
+				my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+				
+				$msg =~ s/\'/\\\'/g;
+				
+				$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+				
+			}
+			
+			($rs, $rdata) = doSQL($sql);
+			
+			return $rs if ($rs != 0);
+			
+		} elsif ($htuser_status eq 'delete') {
+			
+			$rs = htuser_del_user_system_data($entry);
+			
+			if ($rs == 0) {
+				
+				$sql = "delete from htaccess where id = $htuser_id";
+				
+			} else {
+				
+				my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+				
+				$msg =~ s/\'/\\\'/g;
+				
+				$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+				
+			}
+			
+			($rs, $rdata) = doSQL($sql);
+			
+			return $rs if ($rs != 0);
+			
+		}
+		
+	}
+	
+	sleep(1);
+	
+	push_el(\@main::el, 'htuser_mngr_engine()', 'Ending...');
+	
+	return 0;
+	
+}
+
+my $rs = undef;
+
+$rs = htuser_mngr_start_up();
+
+if ($rs != 0) {
+    
+    dump_el(\@main::el, $main::vhcs2_htuser_mngr_el);
+    
+    htuser_mngr_shut_down();
+    
+    exit 1;
+    
+}
+
+$rs = htuser_mngr_engine();
+
+if ($rs != 0) {
+    
+    dump_el(\@main::el, $main::vhcs2_htuser_mngr_el);
+    
+    htuser_mngr_shut_down();
+    
+    exit 1;
+    
+}
+
+$rs = htuser_mngr_shut_down();
+
+if ($rs != 0) {
+    
+    dump_el(\@main::el, $main::vhcs2_htuser_mngr_el);
+    
+    exit 1;
+    
+}
+
+exit 0;

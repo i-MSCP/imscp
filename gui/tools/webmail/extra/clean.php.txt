@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>UebiMiau</title>
+</head>
+
+<body>
+<?
+
+/*
+This script remove folders older than $default_days
+*/
+
+$temp_folder = "./temporary_files/";
+$default_days = 90;
+
+$phpver = phpversion();
+$phpver = doubleval($phpver[0].".".$phpver[2]);
+
+if($phpver >= 4.1) extract($_POST);
+
+function RmdirR($location) { 
+
+	if (substr($location,-1) <> "/") $location = $location."/";
+	$all=opendir($location);
+	while ($file=readdir($all)) { 
+		if (is_dir($location.$file) && $file <> ".." && $file <> ".") { 
+			RmdirR($location.$file);
+			unset($file); 
+		} elseif (!is_dir($location.$file)) { 
+			unlink($location.$file); 
+			unset($file); 
+		}
+	}
+	closedir($all); 
+	unset($all);
+	rmdir($location);
+}
+
+
+
+function GetLastModifiedR($location) { 
+	if (substr($location,-1) <> "/") $location = $location."/";
+	$all=opendir($location);
+	$lasMod = filemtime($location.$file);
+
+	while ($file=readdir($all)) { 
+		if($file != ".." && $file != ".") {
+			if (is_dir($location.$file)) { 
+				$curMod = GetLastModifiedR($location.$file);
+			} else {
+				$curMod = filemtime($location.$file);
+			}
+			if($curMod > $lasMod) $lasMod = $curMod;
+		}
+	}
+
+	//echo($location." ".$lasMod."<br>");
+
+	closedir($all); 
+	unset($all);
+	return intval($lasMod);
+}
+
+
+if(isset($apagar)) {
+	if(is_array($folderList)) {
+		while(list($key,$folder) = each($folderList)) {
+			echo("Removendo $folder ... "); RmdirR($folder); echo("OK<br>");
+		}
+	}
+}
+
+if(!isset($daysToSearch)) $daysToSearch = $default_days;
+
+
+?>
+<form name="form1" action="clean.php" method="POST">
+	<table width="500" border="1" cellspacing="0" cellpadding="0" bordercolorlight="Black" bordercolordark="White">
+		<tr>
+			<td align="right">Dias: &nbsp;</td><td><input type="text" size="2" maxlength="2" name="daysToSearch" value="<?=$daysToSearch?>"><input type=submit value="Atualizar"></td>
+	</table>
+	<table width="500" border="1" cellspacing="0" cellpadding="0" bordercolorlight="Black" bordercolordark="White">
+<?
+$all=opendir($temp_folder);
+$folders_found = false;
+while ($current=readdir($all)) { 
+
+	if (is_dir($temp_folder.$current) 
+		&& $current != ".." && 
+		$current != "." && 
+		$current[0] != "_" ) {
+		$daysInactive = intval((time()-GetLastModifiedR($temp_folder.$current))/86400);
+		if($daysInactive >= $daysToSearch) {
+			$folders_found = true;
+			echo("<tr><td><input type=checkbox name=folderList[] value=\"$temp_folder$current\" checked>$temp_folder$current</td><td>$daysInactive</td>");
+		}
+
+	}
+}
+if (!$folders_found) {
+?>
+		<tr>
+			<td>Nenhuma pasta inativa</td>
+<?
+} else {
+?>
+		<tr>
+			<td colspan="2"><br><br><input type="submit" name="apagar" value="Apagar"></td>
+<?
+
+}
+?>
+	</table>
+</form>
+</body>
+</html>

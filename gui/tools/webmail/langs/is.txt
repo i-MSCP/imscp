@@ -1,0 +1,337 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Innhólf
+sent_extended					= Úthólf
+trash_extended					= Rusl
+
+#Navigation texts
+
+previous_text					= Fyrri
+next_text					= Næsti
+
+# Mail Server Errors
+
+error_connect					= Tenging við póstþjón mistókst
+error_retrieving				= Villa við að ná í póst, innhólf hefur breyst
+error_other					= Kerfisvilla, vinsamlegast hafið samband við kerfisstjóra
+
+#Invalid name of mailbox
+
+error_invalid_name				= Ólöglegt möppunafn - Notið aðeins stafi á bilunum  A-Z, 0-9, .- og bil
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Þú átt eftir að setja inn viðtakanda!
+error_compose_invalid_mail1_s	= Pósturinn inniheldur villur
+error_compose_invalid_mail1_p	= Þessi netföng eru ólögleg
+error_compose_invalid_mail2_s	= Hakaðu við "semja" áður en þú sendir
+error_compose_invalid_mail2_p	= Hakaðu við "semja" áður en þú sendir
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Viltu örugglega eyða þessum pósti?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Án titils]
+no_sender_text					= [Sendandi óþekktur]
+no_recipient_text				= [Viðtakandi óþekktur]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Ekki nóg pláss!\Vinsamlegast eyðið út gömlum póstum
+quota_usage_info				= Stærðartakmörk
+quota_usage_used				= Notuð
+quota_usage_of					= af
+quota_usage_avail				= laus
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-1
+
+messages_mnu					= Skilaboð
+compose_mnu					= Skrifa
+refresh_mnu					= Endurhlaða
+folders_mnu					= Möppur
+search_mnu					= Leita
+address_mnu					= Nafnabók
+empty_trash_mnu					= Tæma rusl
+prefs_mnu					= Stillingar
+logoff_mnu 					= Útskráning
+
+
+
+reply_prefix					= Svar:
+forward_prefix					= Áframsent:
+
+reply_delimiter					= --------- Þú skrifaðir --------
+reply_from_hea					= Frá:
+reply_to_hea					= Til:
+reply_cc_hea					= Afrit:
+reply_date_hea					= Dags:
+reply_subject_hea				= Efni:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea						= Lykill
+value_hea					= Gildi
+
+[Folders]
+
+fld_name_hea					= Mappa
+fld_messages_hea				= Skilaboð
+fld_size_hea					= Stærð
+fld_empty_hea					= Tæma
+fld_delete_hea					= Eyða
+fld_total					= Samtals:
+fld_make_new					= Búa til nýja möppu
+folders_to					= Möppur í
+
+[MessageList]
+
+messages_to					= Skilaboð til
+no_messages					= Engin ný skilaboð í 
+
+delete_selected_mnu				= Eyða völdum skilaboðum
+move_selected_mnu				= Færa völd skilaboð í 
+delete_mnu					= Eyða
+move_mnu					= Færa í
+subject_hea					= Efni
+from_hea					= Frá
+to_hea						= Til
+date_hea					= Dags
+size_hea					= Stærð
+
+msg_you_have					= Þú átt
+msg_message					= skilaboð
+msg_messages					= skilaboð
+
+msg_more_unread					= ólesin
+msg_one_unread					= ólesið
+msg_none_unread					= engin lesin
+msg_in_the_folder				= í möppunni
+[Login]
+
+
+lgn_title					= Innskráning
+lgn_welcome_msg					= Velkomin, skráðu þig inn
+lng_user_email					= Netfang
+lng_user_name					= Notandanafn
+lng_user_pwd					= Lykilorð
+lng_theme					= Útlit
+lng_language					= Tungumál
+lng_login_btn					= Innskráning &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Til:
+cc_hea						= Afrit:
+bcc_hea						= Blint afrit:
+subject_hea					= Efni:
+address_tip					= Úr nafnabók
+
+attach_hea					= Viðhengi:
+attch_add_new					= Bæta við nýrri skrá
+attch_name_hea					= Nafn
+attch_size					= Stærð
+attch_type_hea					= Tegund
+attch_dele_hea					= Eyða
+attch_no_hea					= Engin viðhengi
+
+add_signature					= Bæta við undirskrift
+send_text					= Senda
+
+result_error					= Ekki tókst að senda!
+result_success					= Skilaboð send!
+nav_continue					= Halda áfram
+nav_back					= Til baka
+
+up_title 					= Bæta við skrá
+up_information_text				= Velja skrá
+up_button_text					= Senda
+
+priority_text					= Forgangur
+priority_low					= Lítill
+priority_normal					= Venjulegur
+priority_high					= Mikill
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Afhakðu valkost 
+adv_warning_text_mode2			= til að nota tólastikuna
+
+adv_type_path					= Skrifa veffangið:
+
+format_paragraph				= Málsgrein
+format_h1					= Stærð 1 (stærst) <H1>
+format_h2					= Stærð 2 <H2>
+format_h3					= Stærð 3 <H3>
+format_h4					= Stærð 4 <H4>
+format_h5					= Stærð 5 <H5>
+format_h6					= Stærð 6 (minnst) <H6>
+format_pre					= Ritvélarstafir <PRE>
+format_clear_all				= Hreinsa allt
+
+format_font					= Letur
+format_size					= Stærð
+
+format_color					= Litur
+format_back					= Bakgrunnur
+color_red					= Rauður
+color_blue					= Blár
+color_green					= Grænn 
+color_black					= Svartur
+color_yellow					= Gulur
+color_white					= Hvítur
+
+view_source					= Sjá HTML kóða
+text_mode					= Bara texti
+clear_format					= Hreinsa HTML kóða
+
+priority_text					= Forgangur
+
+
+
+
+[BadLogin]
+
+bdl_title					= Villa í innskráningu
+bdl_msg						= Gat ekki skráð þig inn með þessu notendafni og lykilorði <br><br>Vinsamlegast reyndu aftur
+bdl_back					= Til baka
+
+
+[Error]
+
+err_title					= Upp komu villur :(
+err_msg						= Það komu upp villur<br><br>Vinsamlegast skráðu þig inn aftur
+err_system_msg					= Kerfisboð: 
+err_exit					= Útskráning
+
+[Preferences]
+
+prf_title 					= Stillingar
+prf_general_title				= Almennar upplýsingar
+prf_name					= Nafn
+prf_reply_to					= Svar til netfangs
+prf_time_zone					= Tímasvæði
+prf_trash_title					= Rusl
+prf_save_to_trash				= Þegar skilaboðum er <b>eytt</b>, færa í 
+prf_save_only_read				= Vista aðeins <b>lesin skilaboð</b> í 
+prf_empty_on_exit				= <b>Tæma</b> rusl við útskráningu
+prf_sent_title					= Úthólf
+prf_save_sent					= Vista <b>send skilaboð</b> í 
+prf_messages_title				= Skilaboð
+prf_page_limit					= Mesti fjöldi skilaboða á síðu
+prf_signature_title				= Undirskrift
+prf_signature					= Búðu til undirskrift þína
+prf_auto_add_sign				= Bæta undirskrift við öll skilaboð sem eru send
+prf_save_button					= Vista
+prf_display_images				= Sýna myndir sem fylgja með skilaboðum
+prf_default_editor_mode				= Venjulegur ritill
+prf_default_editor_mode_text			= "Venjulegur texti"
+prf_default_editor_mode_html			= "HTML texti (Fyrir IE5 eða nýrri)"
+prf_time_to_refesh				= Athuga ný skilaboð hverjar (mínútur)
+
+[Catch]
+
+ctc_title					= Bæta við í nafnabók
+ctc_information					= Sýnir aðeins netföng sem eru í nafnabók
+ctc_name					= Nafn
+ctc_email					= Netfang
+ctc_no_address					= Ekkert netfang til
+ctc_close					= Loka
+ctc_save					= Vista
+
+[Readmsg]
+
+next_mnu					= Næsti
+previous_mnu					= Fyrri
+back_mnu					= Til baka
+reply_mnu					= Svara
+reply_all_mnu					= Svara öllum
+forward_mnu					= Áframsenda
+headers_mnu					= Haus
+move_mnu					= Færa í
+delete_mnu					= Eyða
+print_mnu					= Prenta
+
+from_hea					= Frá:
+to_hea						= Til:
+cc_hea						= Afrit:
+date_hea					= Dags:
+subject_hea					= Efni:
+attach_hea					= Viðhengi:
+
+attch_name_hea					= Nafn
+attch_force_hea					= Vista á tölvu
+attch_type_hea					= Tegund
+attch_size_hea					= Stærð
+catch_address					= Bæta við í nafnabók
+
+[Search]
+
+sch_information_text				= Settu inn orð eða orðasamband sem þú vilt leita eftir<br>Leitað verður í lesnum skilaboðum
+sch_button_text					= Leit &gt;&gt;
+sch_subject_hea					= Efni
+sch_from_hea					= Frá
+sch_date_hea					= Dags
+sch_body_hea					= Skilaboð
+sch_folder_hea					= Mappa
+sch_no_results					= Engin skilaboð fundust
+
+
+[QuickAddress]
+
+qad_title 			= Nafnabók
+qad_select_address		= Veldu tengilið
+qad_to				= Til
+qad_cc				= Afrit
+qad_bcc				= Blint afrit
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Nafnabók
+adr_name					= Nafn
+adr_email					= Netfang
+adr_street					= Heimilisfang
+adr_city					= Borg
+adr_state					= Land
+adr_work					= Vinna
+adr_back					= Til baka
+adr_save					= Vista
+
+# list
+
+adr_name_hea					= Nafn
+adr_email_hea					= Netfang
+adr_edit_hea					= Breyta
+adr_expo_hea					= Flytja út
+adr_dele_hea					= Eyða
+adr_new_entry					= Nýr tengiliður
+
+
+addr_saved					= Tengiliður hefur verið vistaður
+addr_added					= Tengilið hefur verið bætt við
+addr_deleted					= Tengilið hefur veið eytt

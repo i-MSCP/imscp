@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Untitled</title>
+</head>
+
+<body>
+
+<?
+
+/*
+THis script CLEAN all files/folders created in the folder specified
+
+*/
+	function RmdirR($location) { 
+
+		if (substr($location,-1) <> "/") $location = $location."/";
+		$all=opendir($location);
+		while ($file=readdir($all)) { 
+			if (is_dir($location.$file) && $file <> ".." && $file <> ".") { 
+				RmdirR($location.$file);
+				unset($file); 
+			} elseif (!is_dir($location.$file)) { 
+				unlink($location.$file); 
+				unset($file); 
+			}
+		}
+		closedir($all); 
+		unset($all);
+		rmdir($location);
+	}
+RmDirR("./temporary_files");
+
+?>
+
+</body>
+</html>

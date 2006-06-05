@@ -1,0 +1,14 @@
+----------------------------------------------------
+INSTALL
+----------------------------------------------------
+- Unpack the package (.tar.gz or .zip file) into a directory within your web server,
+eg /home/httpd/webmail (*unix) or c:\inetpub\wwwroot\webmail (Win32). 
+
+- Make a non web-shared folder (users cannot see this folder throught a web browser),
+eg. /tmp/uebimiau or c:\winnt\temp\uebimiau
+
+- The user wich the webserver is running (nobody, apache, IUSR_machine,etc) need rights
+to write on this folder, turn it writtable
+
+Open the "inc/config.php" file in a text editor, all instructions are commented on this file,
+pay attention on the $temporary_folder variable, set it according your folder name

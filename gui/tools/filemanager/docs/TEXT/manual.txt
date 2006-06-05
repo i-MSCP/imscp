@@ -1,0 +1,744 @@
+
+                            Weeble File Manager
+     _________________________________________________________________
+
+       [[1]Quick Install] [[2]Updating] [[3]Supported Configurations]
+                            [[4]Troubleshooting]
+     _________________________________________________________________
+
+Table of Contents
+
+    1. [5]Installation
+         A. [6]Requirements
+         B. [7]Unpacking the files
+         C. [8]Configuration
+         D. [9]Usage
+    2. [10]Documentation
+         A. [11]Introduction
+              i. [12]What is Weeble File Manager?
+             ii. [13]How do I install it?
+             iii. [14]Layout
+         B. [15]Features
+              i. [16]Logging In
+             ii. [17]Changing Directories
+             iii. [18]Creating Files and Directories
+             iv. [19]Editing Files
+              v. [20]Delete
+             vi. [21]Copy
+             vii. [22]Move
+             viii. [23]Rename
+             ix. [24]Upload
+              x. [25]Download
+             xi. [26]Show/Hide
+             xii. [27]Permissions
+             xiii. [28]Preferences
+         C. [29]Configuration
+         D. [30]Miscellaneous
+              i. [31]Credits
+             ii. [32]Troubleshooting
+             iii. [33]Limiting Uploads
+             iv. [34]Creating/Editing Themes
+    3. [35]Glossary
+     _________________________________________________________________
+
+Installation
+
+  Requirements
+
+     * A web server.
+     * [36]php4 with the following modules:
+          + ftp
+          + mcrypt (optional)
+     * Settings required in php.ini
+          + register_globals=on
+          + file_uploads=on
+     * ftp server
+          + CHMOD support by the ftp server is required for the changing
+            of permissions to work.
+
+  Unpacking the files
+
+   Extract the weeblefm tar archive to a folder that is accessible to
+   your web server. For example:
+cd /usr/local/www/data/
+tar -zxvf /path/to/weeblefm-1.1.tar.gz
+
+   This will create a folder called "weeblefm" where the files are
+   stored, you may rename this if you choose to. Using the above example,
+   the files would be located in:
+/usr/local/www/data/weeblefm/
+
+  Configuration
+
+   To configure the Weeble File Manager, open the settings.php file in
+   your favorite editor.
+
+   For a quick setup, all of the options are documented in that file.
+   More detailed descriptions of what the options are, and their possible
+   settings, can be found later on in this documentation.
+
+   The only setting that you must set before WeebleFM will work is the
+   $ftp_Servers variable.
+
+  Usage
+
+   Once settings.php has been edited to your liking, simply open your web
+   browser and point it to where ever WeebleFM resides on your server. In
+   the above example, we would direct our browser to
+   http://www.webserver.dom/weeblefm/
+     _________________________________________________________________
+
+Documentation
+
+  Introduction
+
+    What is Weeble File Manager?
+
+   WeebleFM is a web-based file manager based on php4 and ftp. Our
+   intention is to create an OS independent file manager. While based
+   upon FTP, WeebleFM is not limited to ftp, and we are working to create
+   a full feature file manager.
+
+    How do I install it?
+
+   See the [37]Installation section at the top of this document.
+
+    Layout
+
+
+   [38]Login Window
+     Login Window
+
+
+   [39]Main Window
+   File Manager Window
+
+
+   [40]Editor Window
+     Editor Window
+
+    Layout Descriptions
+
+      Directory
+
+   Clicking any of the directory links will change to that directory.
+   Clicking the radio button to the left will select that directory for
+   one of the functions listed at the bottom.
+
+      File Information
+
+   Listed here is the following:
+     * File/directory ownership (user:group).
+     * Last modification date and time.
+     * File/directory size.
+
+      Files
+
+   Clicking any of the files will download that file (See
+   [41]Downloading). Clicking the radio button to the left will select
+   that file for one of the functions listed at the bottom.
+
+      Help
+
+   Click Help to bring up this page.
+
+      Home Directory
+
+   Clicking this link will take you back to your home directory.
+
+      Login Information
+
+   Displays the username and the server name that the user logged in to.
+
+      Logout
+
+   Click Logout to log out of the file manager.
+
+      Up One Directory
+
+   Clicking this link will change to the parent of the current directory.
+
+  Features
+
+    Logging In
+
+      Username & Password
+
+   To login to WeebleFM, type your username and password.
+
+      Server
+
+   Next you choose the server you wish to login to by selecting it from
+   the Server dropdown list.
+
+      Login
+
+   Once your username and password are filled in, and the server is
+   selected, click Login to log into the server.
+
+      Remember Me
+
+   Check this box to have WeebleFM save your username and password in a
+   browser cookie. The next time you return to the login scree, the
+   username and password will already be filled in.
+
+      Remove Login Cookie
+
+   If you no longer want your username and password saved (as a cookie),
+   click this link.
+
+    Changing Directories
+
+   There are two ways to change directories in WeebleFM. The first is to
+   type a path into the "Current Directory" section at the top and click
+   the CD button.
+
+   The second is to click on a directory name in the main file listing.
+   There are two special "directory" entries that are always displayed at
+   the top of the file listing. Those are the ". (home directory)" and
+   ".. (up one directory)".
+
+   . (home directory)
+          This will always take you back to your home directory.
+
+   .. (up one directory)
+          This will change to the parent of your current working
+          directory.
+
+    Creating Files and Directories
+
+   Both new files and directories are easy to create. Simply select
+   whether you want to create a File or Directory, type in the name, and
+   click Create.
+
+   When creating a new directory it will be placed in the current working
+   directory.
+
+   When creating a new file, you will be taken immediately into the
+   editor. You must click Save for the new file to be created. See the
+   section on [42]Editing Files for more information on how to use the
+   editor.
+
+    Editing Files
+
+   WeebleFM has a built in text editor. To edit a file, choose one of the
+   files in the current directory, by clicking the radio button to the
+   left of it's name, and click the Edit button.
+
+   The layout of the editor window is very similar to the directory
+   listing:
+     * At the top will be listed the "Current File" instead of the
+       "Current Directory", which lists the file loaded into the editor.
+     * Directly to the right of the current file is a Cancel button.
+       Click this button to discard your changes and return to the file
+       listing.
+     * Below the current file is the edit box. Make any changes to the
+       file here.
+     * At the bottom are four buttons:
+          + Save will save your changes and return to the file listing.
+          + Save & Edit will save your changed and return to editing the
+            current file.
+          + Preview will load your current changes into a separate
+            preview frame. Changes will not be saved until one of the two
+            save buttons are clicked.
+          + Reset will discard your changes but stay in the editor.
+
+   Please note: The editor will be unable to save a file once the session
+   has expired. If you have problems with loosing your changes, either
+   save the files more frequently, or have the system administrator
+   increase session.cache_expire in php.ini.
+
+    Delete
+
+   To delete a file or directory, select the file or directory by
+   clicking the radio button to it's left and click the Delete button.
+   Directories can only be deleted if they are empty.
+
+    Copy
+
+   Only files can be copied. To copy a file, select the file by clicking
+   the radio button to it's left and click Copy. Next select the folder
+   to copy the file to and click Commit. You can select any directory you
+   have access to save a file to.
+
+   If the file name already exists in the destination folder, the words
+   "Copy of" will be append to the beginning of the name.
+
+    Move
+
+   Both files and directories can be moved. Select the file or directory
+   by clicking the radio button to it's left and click Move. Next select
+   the folder to move to and click Commit.
+
+    Rename
+
+   Both files and directories can be renamed. Select the file or
+   directory by clicking the radio button to it's left, type in a new
+   name at the bottom next to the Rename button, and then click the
+   Rename button.
+
+    Upload
+
+   To upload a file click the Browse... button at the bottom, select a
+   file, and then click the Upload button.
+
+   To upload multiple files at one time, click the Upload button without
+   1st selecting a file. This will take you to the Upload page. Here you
+   can select multiple files to upload at one time.
+
+    Download
+
+   To download a file simply click on the filename.
+
+    Show/Hide
+
+   The Show/Hide buttons toggle the display of hidden files. Click Show
+   to display hidden files. Click Hide to hide them.
+
+    Permissions
+
+   On systems that support the CHMOD command, the individual file
+   permissions can be changed. The permissions are displayed to the far
+   right of each file or directory. Below is an example of the
+   permissions on a directory:
+
+     drwxr-xr-x
+
+   Click on the permission you wish to change to toggle it. For more
+   information on how file permissions work, see the permissions entry in
+   the [43]Glossary.
+
+    Preferences
+
+   The Preferences window allows you to customize Weeble File Manager, if
+   the system administrator has enabled this feature. (See $allow_custom
+   in [44]Configuration Options.)
+
+   The available configuration options are grouped into 3 categories:
+     * [45]Preset Theme
+     * [46]Display
+     * [47]Miscellaneous
+
+      Preset Theme
+
+   A number of preset themes are available with Weeble File Manager that
+   change its look (colors, fonts, font sizes, etc...). Select a theme
+   from the list and click Load Theme to see what it looks like.
+
+   Click Save to keep this theme, or click Cancel to discard your
+   changes.
+
+   Note: Once a theme is loaded, it'll stay active even if Cancel is
+   clicked. Logging out and back in will restore the user's previous
+   settings.
+
+      Display
+
+   The Display preferences are very similar to the themes. Here you can
+   customize the colors, background image(s), fonts, and font sizes to
+   you own liking. The display preferences are broken down again, into 3
+   categories.
+     * Page - These settings effect the whole page.
+     * File Manager - These settings effect the file listing display.
+     * Misc. - Miscellaneous display settings.
+
+        Color References
+
+     * Douglas R. Jacobson's [48]RGB Color Chart
+     * [49]HTMLHelp.Org Color Units
+
+   Click Preview to view your changes, Save to keep them, or Cancel to
+   discard.
+
+      Miscellaneous
+
+   Miscellaneous preferences are any settings that don't fit in the other
+   two categories. Currently they consist of:
+
+   Starting Directory
+   Set this to the directory (folder) WeebleFM should start in, when
+   logging in. If this is blank, the default is to log into your home
+   directory.
+
+   Hidden Files
+   Controls whether to initially display hidden files when logging in.
+
+   Edit Box
+   Controls the height (in rows) and width (in columns) of the edit
+   window, and the size (in either pixels or a percentage) of the preview
+   window.
+
+  Configuration Options
+
+   All of WeebleFM's configuration options can be found in the
+   settings.php file. In this section we'll list each configuration
+   variable, what it's purpose is, and what the available settings are.
+
+    $allow_chmod
+
+      Example: $allow_chmod = TRUE;
+
+   Setting this to TRUE will allow the user to change file permissions
+   (if supported by the server).
+
+    $allow_custom
+
+      Example: $allow_custom = FALSE;
+
+   Setting this to TRUE will allow the user to override the default
+   preferences.
+
+    $def_Display_Hidden
+
+      Example: $def_Display_Hidden = FALSE;
+
+   Default setting for the display of hidden files and directories.
+
+    $default_theme
+
+      Example: $default_theme = "default";
+
+   Default theme for the file manager. Set this to the name of the theme
+   in the "themes/" directory you want to be the default (without the
+   .thm extension).
+
+   This effects the theme used on the login page, and the theme chosen
+   for new users who do not yet have one set. If $allow_custom = FALSE,
+   this will be the theme used for all users.
+
+    $editor_prefs
+
+      Example:
+      $editor_prefs = array (
+      "rows" => 20,
+      "cols" => 80,
+      "max_size" => 50000,
+      "preview_size" => "25%",
+      );
+
+   Settings used by the file editor.
+     * rows = Width of the edit box.
+     * cols = height of the edit box.
+     * max_size = Maximum file size allowed by the file editor (in
+       bytes).
+     * preview_size = Size of the Preview frame. This can either be a
+       percentage or a size in pixels.
+
+    $ftp_access
+
+      Example: $ftp_access = TRUE;
+
+   This sets the default access to WeebleFM. When a remote client is not
+   covered by any of the entries in $ftp_access_list, this variable
+   determines whether they are allowed access.
+
+   Set to TRUE to allow access by default, FALSE to deny.
+
+    $ftp_access_list
+
+      Example:
+      $ftp_access_list = array (
+      "-172.16.10.8/255.255.255.255",
+      "+172.17.45.1/24"
+      );
+
+   Access list to allow or deny access to WeebleFM. Syntax is as follows:
+   [+,-]IP/MASK
+
+   Note: Some versions of php4 choke on "255.255.255.255", in those cases
+   please use "/32" instead.
+
+   +,- + allows access, - denies access.
+   IP The IP can be specified in dotted-quad (xxx.xxx.xxx.xxx) notation
+   or as a hostname (www.example.com).
+   Mask The (subnet) mask can be specified in dotted-quad
+   (xxx.xxx.xxx.xxx) notation or in /CERN (e.g. /24) notation.
+
+    $ftp_disable_mcrypt
+
+      Example: $ftp_disable_mcrypt = FALSE;
+
+   Set this to TRUE if you absolutely must disable the mcrypt encryption
+   support. Setting this introduces security issues as anyone who has
+   access to the web server can potentially read the stored passwords.
+   The only time this should be set is when mcrypt is unavailable.
+
+    $ftp_max_uploads
+
+      Example: $ftp_max_uploads = 5;
+
+   Set this to the maximum number of files a user can upload at one time,
+   on the multiple-upload page.
+
+    $ftp_Passive_Mode
+
+      Example: $ftp_Passive_Mode = FALSE;
+
+   Set this to TRUE if you want/need to use passive mode ftp connections
+   to your server.
+
+    $ftp_remember_me
+
+      Example: $ftp_remember_me = TRUE;
+
+   Set this to TRUE to enable the Remember Me checkbox, FALSE to disable.
+
+    $ftp_Servers
+
+      Example: $ftp_Servers = array (
+      "Server Name" => "localhost:21",
+      "Another Server" => "server2:8021"
+      );
+
+   Set this to the ftp server(s) you would like available to your users.
+   The format is "Descriptive Name" => "server:port". The descriptive
+   name is what will be listed on the Login screen, Server is the
+   hostname or ip address of the ftp server, and Port is the port the ftp
+   server is listening on. If the port is not specified the default of 21
+   will be used.
+
+    $icon_display
+
+      Example:
+      $icon_display = array (
+      "dirup"=> "dirup.gif",
+      "dir"=> "dir.gif",
+      "file"=> "binary.gif",
+      "php"=> "php.gif"
+      );
+
+   Icons used for different file types, set by file extension. The
+   default settings are:
+     * dirup = Icon used for the 'up' directory link.
+     * dir = Icon used for directories.
+     * file = Default icon used for files.
+     * php = An example of the file extension support. All files ending
+       in .php will use this icon.
+
+    $key
+
+      Example: $key = 'WEEBLEFM';
+
+   Key used for the encryption in WeebleFM (passwords, etc...). This
+   should be unique to your site. Also, if this changes, the
+   username/password cookies will need to be re-saved.
+
+   Note: The key should be enclosed in single (') not double (") quotes.
+
+    $log
+
+      $log = array(
+      "dir" => "/tmp",
+      "filename" => "wfm.log",
+      "level" => 0
+      );
+
+   Set this up to configure logging.
+     * dir = Directory where the log will be stored.
+     * filename = Filename of the log.
+     * level = Level of information that will be displayed in the log.
+          + 0 = No logging.
+          + 1 = Logins.
+          + 2 = Logins and errors.
+
+   Note: If file / directory where weeblefm is logging needs to be
+   writable by the web server, otherwise logging will fail.
+
+    $logo
+
+      Example: $logo = "logo.gif";
+
+   Set this to the location of the logo graphic displayed at the top of
+   WeebleFM.
+
+    $logo_anim
+
+      Example: $logo_anim = "logo.gif";
+
+   Set this to the location of the logo graphic displayed at the top of
+   the login page.
+
+    $pref_ciphers
+
+      Example: $pref_ciphers = array ("rijndael-256", "tripledes", "blowfish",
+      "des");
+
+   This lists the preferred encryption algorithms provided by the mcrypt
+   support, they are listed in order of preference. If the 1st option
+   isn't available, it attempts to use the second. If none of the listed
+   algorithms are available, the script will default to whatever is
+   available.
+
+    $show_col
+
+      $show_col = array(
+      "owner" => TRUE,
+      "date" => TRUE,
+      "size" => TRUE,
+      "perm" => TRUE
+      );
+
+   This variable allows the admin to choose what columns to display in
+   the file manager listing.
+     * owner: User and group ownership.
+     * date: Date & time last modified.
+     * size: Size of the file.
+     * perm: Permissions of the file/directory. (See Permissions in the
+       [50]Glossary)
+
+    $warn_color
+
+      Example:
+      $warn_color = array (
+      "info" => "#000000",
+      "minor" => "#000055",
+      "medium" => "#555599",
+      "major" => "#FF0000"
+      );
+
+   Color settings for the different levels of warning messages.
+
+  Miscellaneous
+
+    Mad Props & Shout Outs (Credits)
+
+      PHP
+
+   This product includes PHP, freely available from
+   [51]http://www.php.net/. For more information on the [52]PHP license
+   (v.2.02).
+
+      SourceForge.net
+
+   A huge thanks to [53]SourceForge for hosting our project and making
+   all of this possible.
+
+    Troubleshooting
+
+   See our project page at Source Forge for the latest troubleshooting
+   information.
+
+   [54]http://www.sourceforge.net/projects/weeblefm/
+
+    Limiting Uploads
+
+   There are two settings in php.ini that must be configured to set the
+   file size upload limitations. See the [55]HelpDesk for more
+   information.
+     * upload_max_filesize
+     * post_max_size
+
+    Creating/Editing Themes
+
+   The themes are loaded from files ending in .thm, in the themes/
+   directory. Two simple ways to create a theme are.
+    1. Copy the Default.thm to a new file (e.g. MyTheme.thm), and edit
+       the file. Each option is commented as to what it is for.
+    2. Use the Preferences window to create a personal theme. Once you
+       are satisfied with it, copy your .wfmrc to the themes/ directory
+       and rename it (e.g. MyTheme.thm). Edit your new .thm file and
+       remove any lines that do not start with "thm_".
+     _________________________________________________________________
+
+Glossary
+
+   Passive Mode
+          Directly from bsd FTP manual pages: 
+
+          The PASV command requests that the remote server open a port
+          for the data connection and return the address of that port.
+          The remote server listens on that port and the client connects
+          to it.
+
+          When using the more traditional PORT command, the client
+          listens on a port and sends that address to the remote server,
+          who connects back to it. Passive mode is useful when using ftp
+          through a gateway router or host that controls the
+          directionality of traffic. (Note that though ftp servers are
+          required to support the PASV command by RFC 1123, some do not.)
+
+   Permissions
+          There are 3 sets of permissions for every file or directory --
+          owner, group, and world. For each set, there are separate read
+          (r), write (w), and execute (x) permissions. The owner
+          permissions are for the owner of the file or directory. The
+          group permissions are for everyone in the group. The world
+          permissions are for anyone else.
+
+          Using the earlier example of drwxr-xr-x we have three sets of
+          permissions.
+
+          drwxr-xr-x - Owner permissions.
+          drwxr-xr-x - Group permissions.
+          drwxr-xr-x - World permissions.
+
+   Subnet Mask
+          A subnet mask is used to determine what IP network an IP
+          address belongs to, or if two IPs are on the same network. A
+          subnet mask can be expressed in two ways, in dotted-quad
+          (xxx.xxx.xxx.xxx) notation, or in /XX shorthand.
+
+          For more information on subnetting try this [56]Google Search.
+
+   [57]Weeble File Manager by Jon Manna & Chris Michaels
+   Updated Apr 24, 2002
+
+References
+
+   1. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/quick_install.html
+   2. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/updating.html
+   3. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/supported_configs.html
+   4. http://weeblefm.sourceforge.net/tools/helpdesk/
+   5. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#install
+   6. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#install_req
+   7. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#install_unpack
+   8. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#install_config
+   9. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#install_usage
+  10. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#docs
+  11. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#Intro
+  12. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#intro_whatis
+  13. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#intro_how
+  14. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#intro_layout
+  15. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#Features
+  16. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_login
+  17. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_cd
+  18. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_create
+  19. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_edit
+  20. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_delete
+  21. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_copy
+  22. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_move
+  23. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_rename
+  24. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_upload
+  25. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_download
+  26. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_hidden
+  27. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_perm
+  28. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_Prefs
+  29. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#config_section
+  30. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#Miscellaneous
+  31. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#misc_Credits
+  32. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#misc_Troubleshooting
+  33. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#misc_Limit_Uploads
+  34. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#misc_Themes
+  35. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#glossary
+  36. http://www.php.net/
+  37. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#install
+  38. LYNXIMGMAP:file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#Map3
+  39. LYNXIMGMAP:file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#Map
+  40. LYNXIMGMAP:file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#Map2
+  41. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_download
+  42. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_edit
+  43. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#glossary
+  44. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#config_section
+  45. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_Pref_Theme
+  46. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_Pref_Display
+  47. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#feat_Pref_Misc
+  48. http://www.htmlhelp.org/icon/hexchart.gif
+  49. http://www.htmlhelp.org/reference/css/units.html#color
+  50. file://localhost/usr/local/www/users/cjm2/dev/weeblefm/docs/manual.html#glossary
+  51. http://www.php.net/
+  52. http://www.php.net/license/2_02.txt
+  53. http://www.sourceforge.net/
+  54. http://www.sourceforge.net/projects/weeblefm/
+  55. http://weeblefm.sourceforge.net/tools/helpdesk/?search=upload_max_filesize+post_max_size
+  56. http://www.google.com/search?hl=en&q=What+Is+A+Subnet+Mask
+  57. http://weeblefm.sourceforge.net/

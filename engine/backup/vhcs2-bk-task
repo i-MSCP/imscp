@@ -1,0 +1,362 @@
+#!/usr/bin/perl
+
+# VHCS(tm) - Virtual Hosting Control System
+# Copyright (c) 2001-2004 by moleSoftware GmbH
+# http://www.molesoftware.com
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1    
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    MPL Mozilla Public License for more details.
+#    
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#    
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The VHCS Home Page is at:
+#
+#    http://www.vhcs.net
+
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+require 'vhcs2_common_code.pl';
+
+use strict;
+
+use warnings;
+
+# sub lock_bk_system {
+#     
+#     my ($lock_file) = @_; 
+#     
+#     push_el(\@main::el, 'lock_bk_system()', 'Starting...');
+#     
+#     if (-e $lock_file) {
+#         
+#         push_el(\@main::el, 'lock_bk_system()', 'ERROR: backup request engine already locked !');
+#         
+#         return 1;
+#         
+#     }
+#     
+#     my $touch_cmd = "/bin/touch $lock_file";
+#     
+#     my $rs = sys_command($touch_cmd);
+#     
+#     return 1 if ($rs != 0);
+#     
+#     push_el(\@main::el, 'lock_bk_system()', 'Ending...');
+#     
+#     return 0;
+# }
+# 
+# 
+# sub unlock_bk_system {
+#     
+#     my ($lock_file) = @_; 
+#     
+#     push_el(\@main::el, 'unlock_bk_system()', 'Starting...');
+#     
+#     my $rm_cmd = "/bin/rm -rf $lock_file";
+#     
+#     my $rs = sys_command($rm_cmd);
+#     
+#     return 1 if ($rs != 0);
+#     
+#     push_el(\@main::el, 'unlock_bk_system()', 'Ending...');
+#     
+#     return 0;
+# 
+# }
+# 
+# sub bk_task_start_up {
+#     
+#     my ($lock_file) = @_;
+#     
+#     my ($rs, $rdata) = (undef, undef);
+#     
+#     push_el(\@main::el, 'bk_task_start_up()', 'Starting...');
+#     
+#     $rs = lock_bk_system($lock_file);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     # config check;
+#     
+#     $rs = get_conf();
+#     
+#     return $rs if ($rs != 0);
+#     
+#     #
+#     # getting initial data also must be done here;
+#     #
+#     
+#     my $sql = "select * from domain;";
+#     
+#     ($rs, $rdata) = doSQL($sql);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     push_el(\@main::el, 'bk_task_start_up()', 'Ending...');
+#     
+#     return 0;
+#     
+# }
+# 
+# 
+# sub bk_task_shut_down {
+#     
+#     my ($lock_file) = @_;
+#     
+#     my $rs = undef;
+#     
+#     push_el(\@main::el, 'bk_task_shut_down()', 'Starting...');
+#     
+#     $rs = unlock_bk_system($lock_file);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     push_el(\@main::el, 'bk_task_shut_down()', 'Ending...');
+#     
+#     return 0;
+#     
+# }
+# 
+# sub bk_task_engine {
+#     
+#     my ($dmn_name, $dmn_id) = @_;
+#     
+#     my $rs = undef;
+#     
+#     push_el(\@main::el, 'bk_task_engine()', 'Starting...');
+#     
+# 
+#     if (!defined($dmn_name)) {
+#         
+#         push_el(\@main::el, 'bk_task_engine()', 'ERROR: Undefined input data! You must specify domain name!');
+#         
+#         return -1;
+#         
+#     }
+#     
+#     
+#     my $date = get_human_date();
+#     
+#     my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
+#     
+#     my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
+#     
+#     my $cmd_tar = $main::cfg{'CMD_TAR'};
+#     
+#     my $cmd_rm = $main::cfg{'CMD_RM'};
+#     
+#     my $cmd_mv = $main::cfg{'CMD_MV'};
+#     
+#     my $httpd_uid = $main::cfg{'APACHE_USER'};
+#     
+#     my $httpd_gid = $main::cfg{'APACHE_GROUP'};
+#     
+#     my $backup_filename = "$dmn_name-backup-$date.tar.gz";
+#     
+#     my $backup_cmd = "$cmd_tar --create --directory $dmn_dir --gzip --file $dmn_dir/$backup_filename --exclude=logs --exclude=backups --exclude=$backup_filename .";
+#     
+#     
+#     $rs = sys_command($backup_cmd);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     $rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*");
+#     
+#     return $rs if ($rs != 0);
+#     
+#     $rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
+#     
+#     return $rs if ($rs != 0);
+#     
+#     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
+#     
+#     my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+#     
+#     my $sys_user = "$suexec_user_pref$sys_uid";
+#     
+#     my $sys_group = "$suexec_user_pref$sys_gid";
+#     
+#     $rs = setfmode("$dmn_backup_dir/$backup_filename", $sys_user, $httpd_gid, 0660);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     push_el(\@main::el, 'bk_task_engine()', 'Ending...');
+#     
+#     return 0;
+#     
+# }
+# 
+# sub bk_mail_task {
+#     
+#     my ($dmn_name) = @_;
+#     
+#     my ($rs, $rdata, $sql) = (undef, undef, undef);
+#     
+#     push_el(\@main::el, 'bk_mail_task()', 'Starting...');
+#     
+# 
+#     if (!defined($dmn_name)) {
+#         
+#         push_el(\@main::el, 'bk_mail_task()', 'ERROR: Undefined input data! You must specify domain name!');
+#         
+#         return 1;
+#         
+#     }
+#     
+#     my $date = get_human_date();
+#     
+#     my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
+#     
+#     my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
+#     
+#     my $cmd_tar = $main::cfg{'CMD_TAR'};
+#     
+#     my $cmd_rm = $main::cfg{'CMD_RM'};
+#     
+#     my $cmd_mv = $main::cfg{'CMD_MV'};
+#     
+#     my $httpd_uid = $main::cfg{'APACHE_USER'};
+#     
+#     my $httpd_gid = $main::cfg{'APACHE_GROUP'};
+#     
+#     my $backup_filename = "$dmn_name-backup-$date.tar.gz";
+#     
+#     my $backup_cmd = "$cmd_tar --create --directory $dmn_dir --gzip --file $dmn_dir/$backup_filename --exclude=logs --exclude=backups --exclude=$backup_filename .";
+#     
+#     $sql = "select domain_admin_id from domain where domain_name = '$dmn_name';";
+#     
+#     ($rs, $rdata) = doSQL($sql);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     $rdata = @$rdata[0];
+#     
+#     my $domain_admin_id = @$rdata[0];
+#     
+#     
+#     $sql = "select created_by, email from admin where admin_id = $domain_admin_id;";
+#     
+#     ($rs, $rdata) = doSQL($sql);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     $rdata = @$rdata[0];
+#     
+#     my $domain_admin_email = @$rdata[1];
+#     
+#     my $domain_admin_crby_id = @$rdata[0];
+#     
+#     my $msg_data = <<MESSAGE_TEXT;
+# Hello,
+# 
+# Backup request for '$dmn_name' was completed successfully!
+# 
+# File Location: backups/
+# 
+# File Name: $backup_filename
+# MESSAGE_TEXT
+#         
+#     $sql = "select email from admin where admin_id = $domain_admin_crby_id;";
+#     
+#     ($rs, $rdata) = doSQL($sql);
+#     
+#     return $rs if ($rs != 0);
+#     
+#     $rdata = @$rdata[0];
+#     
+#     my $domain_admin_crby_email = @$rdata[0];
+#     
+#     my $out = new MIME::Entity;
+#         
+#     $out -> build(
+#                   From => "Backup Manager <".$domain_admin_crby_email.">",
+#                   To => $domain_admin_email,
+#                   Subject => "Backup report about '".$dmn_name."' domain.",
+#                   Data => $msg_data,
+#                   'X-Mailer' => "$main::cfg{'VersionH'} Automatic Backup Messager"
+#                  );
+# 
+# # let's stop smap users every day. thay do not need to know, that backup engine works        
+# #    open MAIL, "| /usr/sbin/sendmail -t -oi";
+# #    
+# #    $out -> print(\*MAIL);
+# #    
+# #    close MAIL;
+#     
+#     push_el(\@main::el, 'bk_mail_task()', 'Ending...');
+#     
+#     return 0;
+#     
+# }
+# 
+# sub err_exit {
+#     
+#     my $el_data = pop_el(\@main::el);
+#     
+#     my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+#     
+#     print STDERR "$msg\n";
+#     
+#     exit 1;
+#     
+# }
+# 
+# 
+# my $rs = undef;
+# 
+# my $dmn_name = $ARGV[0];
+# 
+# my $dmn_id = $ARGV[1];
+# 
+# 
+# if (!defined($dmn_name) || $dmn_name eq '') {
+#     
+#     push_el(\@main::el, 'main()', "ERROR: Domain name not specified !");
+#     
+#     err_exit();
+#     
+# }
+# 
+# 
+# my $dmn_lock_file = "/tmp/$dmn_name-backup.lock";
+# 
+# 
+# $rs = bk_task_start_up($dmn_lock_file);
+# 
+# err_exit() if ($rs != 0);
+# 
+# $rs = bk_task_engine($dmn_name, $dmn_id);
+# 
+# err_exit() if ($rs != 0);
+# 
+# $rs = bk_mail_task($dmn_name);
+# 
+# err_exit() if ($rs != 0);
+# 
+# $rs = bk_task_shut_down($dmn_lock_file);
+# 
+# err_exit() if ($rs != 0);
+# 
+# exit 0;
+# 
+
+print STDOUT "Backup Task Completed!\n";
+
+exit 0;
+

@@ -1,0 +1,334 @@
+# ***** GLOBAL VARS ****** #
+
+# User-friendly names to system folders
+
+inbox_extended					= Gelen Kutusu
+sent_extended					= Gönderilmiþ Öðeler
+trash_extended					= Çöp Kutusu
+
+#Navigation texts
+
+previous_text					= Önceki
+next_text					= Sonraki
+
+# Mail Server Errors
+
+error_connect					= Sunucuya baðlanamadý.
+error_retrieving				= Mesajlarýnýzý alýrken bir hata oluþtu. Gelen Kutusunun yeri deðiþmiþ.
+error_other					= Sistem hatasý! Sistem yöneticisiyle irtibata geçin.
+
+#Invalid name of mailbox
+
+error_invalid_name				= Geçersiz klasör adý - Lütfen sadece A-Z, 0-9, .- ve boþluk karakterini kullanýn.
+
+#Validations when sending mails
+
+error_no_recipients				= Lütfen geçerli bir e-posta adresleri girin
+error_compose_invalid_mail1_s			= E-posta adresi geçersiz gözüküyor
+error_compose_invalid_mail1_p			= Belirtilen e-posta adresleri geçersiz gözüküyor
+error_compose_invalid_mail2_s			= Gönderilmeden önce kontrol edilecek
+error_compose_invalid_mail2_p			= Gönderilmeden önce kontrol edilecekler
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Bu mesajý silmek istediðinize emin misiniz?
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [konusuz]
+no_sender_text					= [gönderen bilinmiyor]
+no_recipient_text				= [alýcý bilinmiyor]
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Bu iþlemi tamamlayabilmeniz için gerekli yer mevcut deðil\Lütfen bazý devam etmek için bazý mesajlarýnýzý silin
+quota_usage_info				= Limit
+quota_usage_used				= 
+quota_usage_of					= /
+quota_usage_avail				= kullanýmda.
+
+#**********************************************************#
+# Date Format                                              #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes #
+# for a complete list, see http://www.php.net/strftime     #
+#**********************************************************#
+
+date_format 					= %d-%m-%y %H:%M
+
+# CharSet             
+
+default_char_set				= iso-8859-9
+
+messages_mnu				= Gelen Kutusu
+compose_mnu				= Yaz
+refresh_mnu				= Yenile
+folders_mnu				= Klasörler
+search_mnu				= Arama
+address_mnu				= Adres defteri
+empty_trash_mnu				= Çöpü boþalt
+prefs_mnu				= Ayarlar
+logoff_mnu 				= Çýkýþ
+
+reply_prefix					= Rv:
+forward_prefix					= Fw:
+
+reply_delimiter					= ---------  Orjinal mesaj --------
+reply_from_hea					= Kimden:
+reply_to_hea					= Kime:
+reply_cc_hea					= CC:
+reply_date_hea					= Tarih:
+reply_subject_hea				= Konu:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Anahtar
+value_hea						= Deðer
+
+[Folders]
+
+fld_name_hea					= Klasörler
+fld_messages_hea				= Mesajlar
+fld_size_hea					= Boyut
+fld_empty_hea					= Boþalt
+fld_delete_hea					= Sil
+fld_total					= Toplam:
+fld_make_new					= Yeni klasör
+folders_to					= Klasörler:
+
+
+[MessageList]
+
+messages_to				=  
+no_messages				= Yeni mesajýnýz yok. Klasör:  
+
+delete_selected_mnu			= Ýþaretlileri sil
+move_selected_mnu			= Ýþaretlileri taþý: 
+delete_mnu				= Sil
+move_mnu				= Taþý:
+subject_hea				= Konu
+from_hea				= Kimden
+to_hea					= Kime
+date_hea				= Tarih
+size_hea				= Boyut
+
+msg_you_have					= 
+msg_message					= mesajýnýz var
+msg_messages					= mesajýnýz var
+
+msg_more_unread					= tanesi okunmamýþ.
+msg_one_unread					= tanesi okunmamýþ.
+msg_none_unread					= Hepsi okunmuþ.
+msg_in_the_folder				= Klasör: 
+
+
+[Login]
+
+lgn_title					= Giriþ
+lgn_welcome_msg					= Hoþ geldiniz, lütfen hesabýnýza giriþ yapýn
+lng_user_email					= E-posta
+lng_user_name					= Kullanýcý adý
+lng_user_pwd					= Þifre
+lng_theme					= Tema
+lng_language					= Language
+lng_login_btn					= Giriþ &gt;&gt;
+
+
+[Newmessage]
+
+to_hea					= Kime:
+cc_hea					= Cc:
+bcc_hea					= Bcc:
+subject_hea				= Konu:
+address_tip				= Adres defterinden
+
+attach_hea				= Ekler:
+attch_add_new				= Dosya ekle
+attch_name_hea				= Ad
+attch_size				= Boyut
+attch_type_hea				= Tür
+attch_dele_hea				= Sil
+attch_no_hea				= Hiç dosya eklenmemiþ!
+
+add_signature				= Ýmza ekle
+send_text				= Gönder
+
+result_error				= Hata, e-postanýz gönderilemedi
+result_success				= E-posta baþarýyla gönderildi
+nav_continue				= Devam
+nav_back				= Geri
+
+up_title 				= Dosya ekle
+up_information_text			= Dosya seç
+up_button_text				= Gönder
+
+priority_text				= Periyot
+priority_low				= Düþük
+priority_normal				= Normal
+priority_high				= Yüksek
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Lütfen araç çubuðunu kullanmadan önce
+adv_warning_text_mode2			= iþareti kaldýrýn
+
+adv_type_path				= Lütfen URL girin:
+
+format_paragraph			= Paragraf
+format_h1				= Baþlýk 1 <H1>
+format_h2				= Baþlýk 2 <H2>
+format_h3				= Baþlýk 3 <H3>
+format_h4				= Baþlýk 4 <H4>
+format_h5				= Baþlýk 5 <H5>
+format_h6				= Baþlýk 6 <H6>
+format_pre				= Biçimlendirilmiþ <PRE>
+format_clear_all			= Hepsini temizle
+
+format_font				= Yazýtipi
+format_size				= Büyüklük
+
+format_color				= Renk
+format_back				= Arkafon
+color_red				= Kýrmýzý
+color_blue				= Mavi
+color_green				= Yeþil
+color_black				= Siyah
+color_yellow				= Sarý
+color_white				= Beyaz
+
+view_source				= Kodu Göster
+text_mode				= Düz Metin
+clear_format				= Temiz Biçim
+
+priority_text				= Periyot
+
+
+[BadLogin]
+
+bdl_title			= Giriþ baþarýsýz
+bdl_msg				= Kullanýcý adý ve/veya þifre yanlýþ.<br><br>Lütfün bilgilerinizi kontrol edip tekrar deneyin!
+bdl_back			= Geri
+
+
+[Error]
+
+err_title			= Hata
+err_msg				= Hata oluþtu!<br><br>Tekrar giriþ yapýn:
+err_system_msg			= Sistem mesajý: 
+err_exit			= Çýkýþ
+
+
+[Preferences]
+
+prf_title 					= Ayarlar
+prf_general_title				= Genel bilgiler
+prf_name					= Ad Soyad
+prf_reply_to					= Cevapla adresi
+prf_time_zone					= Zaman kuþaðý
+prf_trash_title					= Çöp
+prf_save_to_trash				= Bir mesaj <b>silince</b> taþýnacaðý klasör:
+prf_save_only_read				= Sadece <b>okunmuþ mesajlarýn</b> kayýt edileceði klasör:
+prf_empty_on_exit				= Çýkýþ yaptýðým zaman çöp kutusunuz <b>temizle</b>
+prf_sent_title					= Gönderilmiþ öðeler
+prf_save_sent					= <b>Gönderilmiþ mesajlarýn</b> kayýt edileceði klasör: 
+prf_messages_title				= Mesajlar
+prf_page_limit					= Bir sayfada gösterilcek mesaj sayýsý
+prf_signature_title				= Ýmza
+prf_signature					= Ýmzanýz
+prf_auto_add_sign				= Tüm giden mesajlara imzamý ekle
+prf_save_button					= Kaydet
+prf_display_images				= Ekli resimleri göster
+prf_default_editor_mode				= Normal edition mode
+prf_default_editor_mode_text			= "Düz Metin"
+prf_default_editor_mode_html			= "Geliþmiþ HTML editörü (Sadece IE5 ve üstü)"
+prf_time_to_refesh				= Mesajlarýn yenilenme zamaný (dakika)
+
+
+[Catch]
+
+ctc_title		= Adresleri yakala
+ctc_information		= Sadece adres defterinizde kayýtlý olmayan adresler yakalanacak.
+ctc_name		= Ad Soyad
+ctc_email		= E-posta
+ctc_no_address		= Hiçbir adres geçerli deðil
+ctc_save		= Kaydet
+ctc_close		= Kapat
+
+
+[Readmsg]
+
+next_mnu					= Sonraki
+previous_mnu					= Önceki
+back_mnu					= Geri
+reply_mnu					= Cevapla
+reply_all_mnu					= Hepsini cevapla
+forward_mnu					= Yönlendir
+headers_mnu					= Baþlýklar
+move_mnu					= Taþý:
+delete_mnu					= Sil
+print_mnu					= Yazdýr
+
+from_hea					= Kimden:
+to_hea						= Kime:
+cc_hea						= Cc:
+date_hea					= Tarih:
+subject_hea					= Konu:
+attach_hea					= Ekler:
+
+attch_name_hea					= Ad
+attch_force_hea					= Ýndir
+attch_type_hea					= Tür
+attch_size_hea					= Boyut
+catch_address					= Adres defterine ekle
+
+
+[Search]
+
+sch_information_text			= Lütfen bir sözcük veya sözcük grubu girin! <br> Sadece lokal klasörlerdeki mesajlar ve okunmuþ mesajlar taranacak.
+sch_button_text				= Ara &gt;&gt;
+sch_subject_hea				= Konu
+sch_from_hea				= Kimden
+sch_date_hea				= Tarih
+sch_body_hea				= Mesaj
+sch_folder_hea				= Klasör
+sch_no_results				= Hiçbir þey bulunamadý
+
+
+[QuickAddress]
+
+qad_title 			= Adres defteri
+qad_select_address		= Baðlantý seçin
+qad_to				= Kime
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Adres defteri
+adr_name					= Ad Soyad
+adr_email					= E-posta
+adr_street					= Sokak
+adr_city					= Þehir
+adr_state					= Eyalet
+adr_work					= Ýþ
+adr_back					= Geri
+adr_save					= Kaydet
+
+# list
+
+adr_name_hea					= Ad Soyad
+adr_email_hea					= E-posta
+adr_edit_hea					= Düzenle
+adr_expo_hea					= Export
+adr_dele_hea					= Sil
+adr_new_entry					= Yeni Giriþ
+
+addr_saved					= Baðlantý kayýt edildi
+addr_added					= Baðlantý eklendi
+addr_deleted					= Bu baðlantý ortadan kaldýrýldý

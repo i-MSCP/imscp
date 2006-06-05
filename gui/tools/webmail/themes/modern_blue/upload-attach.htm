@@ -1,0 +1,21 @@
+{config_load file=$umLanguageFile section="Newmessage"}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>Webmail - {#up_title#}</title>
+	<link rel="stylesheet" href="themes/blue/css/vhcs.css" type="text/css">
+	<meta http-equiv="Content-Type" content="text/html; charset={#default_char_set#}">
+</head>
+
+<body bgcolor="#334163" text="#FFFFFF" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" leftmargin=0 topmargin=0 marginwidth=0 marginheight=0>
+<br>
+<table border="0" cellspacing="0" cellpadding="0" align="center">
+<form enctype="multipart/form-data" action="upload.php?lid={$umLid}&tid={$umTid}" method="POST">
+<tr><td class=headers><b>{#up_information_text#}</b></td></tr>
+<tr><td><input type=file name=userfile class=textbox size=22></td></tr>
+<tr><td align=right><input type=submit value="Attach" name=submit class=button></td></tr>
+</form>
+</table>
+</body>
+</html>

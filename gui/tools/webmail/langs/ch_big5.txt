@@ -1,0 +1,343 @@
+###########################################
+### Big5 language translate  author	###
+### Name:violet				###
+### e-mail:violet@violet.d2g.com	###
+### web site:http://www.esalon.idv.tw	###
+###########################################
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= 收件匣
+sent_extended					= 寄件備份
+trash_extended					= 垃圾匣
+
+#Navigation texts
+
+previous_text					= 上一頁
+next_text					= 下一頁
+
+# Mail Server Errors
+
+error_connect					= 無法連接至郵件伺服器!
+error_retrieving				= 因為您的收件匣位置變更，因此無法取得此信件。
+error_other					= 目前系統發生不明錯誤，請洽詢您的郵件伺服器管理員。
+
+#Invalid name of mailbox
+
+error_invalid_name				= 資料夾名稱錯誤!目前此系統僅支援{A-Z};{0-9};{.}與空白鍵字元(目前不支援中文資料夾名稱)。
+
+
+#Validations when sending mails            ;
+
+error_no_recipients		= 您至少需要輸入一位(含)以上的收件者的郵件位址!
+error_compose_invalid_mail1_s	= 您輸入的郵件位址似乎是格式錯誤!請確認郵件位址格式。
+error_compose_invalid_mail1_p	= 以下的郵件位址似乎是無效不正確的!
+error_compose_invalid_mail2_s	= 在傳送此郵件之前請再次確認郵件排版內容。
+error_compose_invalid_mail2_p	= 在傳送此郵件之前請再次確認郵件排版內容。
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= 您確定要刪除此封郵件嗎?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [沒有主旨]
+no_sender_text					= [未知的寄件者]
+no_recipient_text				= [未知的收件者]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= 目前無法完成此動作!請先刪除不需要的信件<br>原因是您目前信箱中的<B>信件容量已經超過郵件管理員所開放給您的郵件容量空間限制</B>。
+quota_usage_info				= <b>郵件容量示意圖</b> <font color="#FF0000">紅:使用</font> <font color="#00CC66">綠:剩餘</font>
+quota_usage_used				= |您已經使用了<b>
+quota_usage_of					= </b>|最大的郵件空間限制為|<b>
+quota_usage_avail				= </b>
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= 20%y年%m月%d日%H時%M分
+
+
+# CharSet                                                 ;
+
+default_char_set				= Big5
+
+messages_mnu					= 收件匣
+compose_mnu					= 撰寫新郵件
+refresh_mnu					= 重新整理收新郵件
+folders_mnu					= 資料匣管理
+search_mnu					= 搜尋信件
+address_mnu					= 通訊錄
+empty_trash_mnu					= 清除垃圾匣
+prefs_mnu					= 個人偏好設定
+logoff_mnu 					= 登出系統
+
+
+
+reply_prefix					= 回覆:
+forward_prefix					= 轉寄:
+
+reply_delimiter					= --------- 原始訊息 Original message --------
+reply_from_hea					= 寄件者:
+reply_to_hea					= 收件者:
+reply_cc_hea					= 副本:
+reply_date_hea					= 日期:
+reply_subject_hea				= 主旨:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= 項目
+value_hea						= 內容
+
+[Folders]
+
+fld_name_hea					= 信件匣
+fld_messages_hea				= 信件(總計/未閱讀)
+fld_size_hea					= 容量大小
+fld_empty_hea					= 刪除所有郵件
+fld_delete_hea					= 刪除信件匣
+fld_total					= 總計:
+fld_make_new					= 建立新信件匣
+folders_to					= 信件匣管理
+
+[MessageList]
+
+messages_to						= 訊息到 
+no_messages						= 目前您沒有新郵件 
+
+delete_selected_mnu				= 刪除所選擇的郵件
+move_selected_mnu				= 搬移所選擇的郵件到
+delete_mnu						= 刪除郵件
+move_mnu						= 搬移到
+subject_hea						= 主旨
+from_hea						= 寄件者
+to_hea							= 收件者
+date_hea						= 日期
+size_hea						= 大小
+
+msg_you_have					= 您目前有
+msg_message					= 封郵件
+msg_messages					= 封郵件
+
+msg_more_unread					= 封未閱讀
+msg_one_unread					= 封未閱讀
+msg_none_unread					= 封未閱讀
+msg_in_the_folder				= 目前位置在
+[Login]
+
+
+lgn_title					= 進行登入
+lgn_welcome_msg					= 請輸入您的帳號密碼進行登入!
+lng_user_email					= 電子郵件
+lng_user_name					= 帳    號
+lng_user_pwd					= 密    碼
+lng_theme					= 選擇佈景
+lng_language					= 選擇語系
+lng_login_btn					= 進行登入 &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= 收件者:
+cc_hea						= 副本:
+bcc_hea						= 密件副本:
+subject_hea					= 主旨:
+address_tip					= 從通訊錄新增收件者
+
+attach_hea					= 附件檔案:
+attch_add_new					= 新增上傳附件檔案:
+attch_name_hea					= 附件名稱:
+attch_size					= 附件大小:
+attch_type_hea					= 附件格式:
+attch_dele_hea					= 刪除檔案:
+attch_no_hea					= 目前沒有附件檔案
+
+add_signature					= 加入簽名檔:
+send_text					= 傳送郵件
+
+result_error					= 無法傳送此封電子郵件!
+result_success					= 此封電子郵件已經順利寄出，請按"確定"按鈕返回收件匣。
+nav_continue					= 確定
+nav_back					= 上一頁
+
+up_title 					= 新增附件檔案
+up_information_text				= 請選擇附件檔案
+up_button_text					= 上傳附件檔案
+
+priority_text					= 優先權
+priority_low					= 低
+priority_normal					= 中
+priority_high					= 高
+
+[AdvancedEditor]
+
+adv_warning_text_mode1				= 請勿選擇
+adv_warning_text_mode2				= 在您使用工具列之前
+
+adv_type_path					= 請輸入網址:
+
+format_paragraph				= 內文格式
+format_h1					= 標題 1 <H1>
+format_h2					= 標題 2 <H2>
+format_h3					= 標題 3 <H3>
+format_h4					= 標題 4 <H4>
+format_h5					= 標題 5 <H5>
+format_h6					= 標題 6 <H6>
+format_pre					= 原始格式 <PRE>
+format_clear_all				= 清除格式設定
+
+format_font					= 字型
+format_size					= 字型大小
+	
+format_color					= 字型色彩
+format_back					= 字型底色
+color_red					= 紅色
+color_blue					= 藍色
+color_green					= 綠色
+color_black					= 黑色
+color_yellow					= 黃色
+color_white					= 白色
+
+view_source					= 顯示原始碼
+text_mode					= 使用純文字模式
+clear_format					= 清除格式
+
+priority_text					= 優先權
+
+
+
+
+[BadLogin]
+
+bdl_title					= 登入失敗 
+bdl_msg						= 您無法使用目前的 帳號/密碼 登入<BR>請檢查是否輸入正確。
+bdl_back					= 上一頁
+
+
+[Error]
+
+err_title					= 登入錯誤
+err_msg						= 系統程式可能發生錯誤<br><br>請再次重新登入
+err_system_msg					= 系統訊息: 
+err_exit					= 重新登入
+
+[Preferences]
+
+prf_title 					= 個人偏好設定
+prf_general_title				= 個人一般資訊設定
+prf_name					= 使用者姓名:
+prf_reply_to					= 回覆的郵件位址:
+prf_time_zone					= 目前時區:
+prf_trash_title					= 垃圾匣設定資訊
+prf_save_to_trash				= 將刪除的信件移至
+prf_save_only_read				= 刪除<B>未閱讀</b>的信件時，<B>是被永久刪除</B>將不會移至 
+prf_empty_on_exit				= 登出時<b>清空垃圾匣</b>
+prf_sent_title					= 寄件備份設定資訊
+prf_save_sent					= 在<B>寄件備份</b>中儲存備份信件 
+prf_messages_title				= 信件顯示設定資訊
+prf_page_limit					= 每頁中顯示的信件數量:
+prf_signature_title				= 簽名檔設定資訊
+prf_signature					= 加入您的簽名檔設定(此簽名將加入在您每封信尾)
+prf_auto_add_sign				= 自動在所寄出的郵件中加入簽名 
+prf_save_button					= 儲存設定
+prf_display_images				= 顯示附件中的圖檔
+prf_default_editor_mode				= 編輯模式設定:
+prf_default_editor_mode_text			= "純文字編輯模式"
+prf_default_editor_mode_html			= "HTML編輯模式 (僅支援 IE5 以上版本)"
+prf_time_to_refesh				= 重新整理時間 (分鐘)
+
+[Catch]
+
+ctc_title					= 加入郵件位址到通訊錄
+ctc_information					= 僅列出目前尚未存在於通訊錄的郵件位址
+ctc_name					= 姓名
+ctc_email					= 郵件位址
+ctc_no_address					= 無效的郵件位址或是此郵件位址已經存在
+ctc_close					= 關閉
+ctc_save					= 儲存
+
+[Readmsg]
+
+next_mnu					= 下一封
+previous_mnu					= 上一封
+back_mnu					= 返回
+reply_mnu					= 回覆
+reply_all_mnu					= 全部回覆
+forward_mnu					= 轉寄
+headers_mnu					= 檢視信件原始檔
+move_mnu					= 搬移到
+delete_mnu					= 刪除
+print_mnu					= 列印
+
+from_hea					= 寄件者:
+to_hea						= 收件者:
+cc_hea						= 副本:
+date_hea					= 日期:
+subject_hea					= 主旨:
+attach_hea					= 附件:
+
+attch_name_hea					= 附件名稱
+attch_force_hea					= 下載附件
+attch_type_hea					= 附件格式
+attch_size_hea					= 附件大小
+catch_address					= 加入郵件位址到通訊錄
+
+[Search]
+
+sch_information_text				= 請輸入您要搜尋的字串<br><B>注意!若是未閱讀的郵件內容目前無法搜尋</B> 
+sch_button_text					= 開始搜尋 &gt;&gt;
+sch_subject_hea					= 主旨
+sch_from_hea					= 寄件者
+sch_date_hea					= 日期
+sch_body_hea					= 郵件內容
+sch_folder_hea					= 信件匣
+sch_no_results					= 沒有找到符合的資料!請重新尋找...
+
+
+[QuickAddress]
+
+qad_title 			= 通訊錄
+qad_select_address		= 選擇聯絡人
+qad_to				= 收件者
+qad_cc				= 副本
+qad_bcc				= 密件副本
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= 通訊錄
+adr_name					= 姓名
+adr_email					= 郵件位址
+adr_street					= 街道名稱
+adr_city					= 縣市名稱
+adr_state					= 國碼
+adr_work					= 地址
+adr_back					= 上一頁
+adr_save					= 儲存
+
+# list
+
+adr_name_hea					= 姓名
+adr_email_hea					= 郵件位址
+adr_edit_hea					= 編輯
+adr_expo_hea					= 匯出
+adr_dele_hea					= 刪除
+adr_new_entry					= 新增聯絡人
+
+
+addr_saved					= 此聯絡人郵件位址已經儲存
+addr_added					= 此聯絡人郵件位址已經新增
+addr_deleted					= 此聯絡人郵件位址已經刪除

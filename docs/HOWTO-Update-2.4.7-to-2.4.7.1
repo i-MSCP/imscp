@@ -1,0 +1,155 @@
+HOWTO Update VHCS 2.4.7 to VHCS 2.4.7.1 (English)
+
+
+-------------------
+General Information
+-------------------
+
+1) Download the newest VHCS2 release :
+
+tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/vhcs/vhcs2-2.4.7.1.tar.bz2
+
+2) Turn off the VHCS Daemon:
+
+tangra: # /etc/init.d/vhcs2_daemon stop
+
+3) Make a backup of the current VHCS files of your system:
+
+tangra: # mv /var/www/vhcs2/gui /var/www/vhcs2/gui_bcp_yyyymmdd
+tangra: # mv /var/www/vhcs2/engine /var/www/vhcs2/engine_bcp_yyyymmdd
+
+4) Unpack the downloaded archive :
+
+tangra: #tar -xjf vhcs2-2.4.7.1.tar.bz2
+
+
+-------------------
+vhcs2.conf Update
+-------------------
+
+1) Change these following lines:
+
+BuildDate = 03.01.2006
+
+Version = 2.4.7.1
+
+VHCS_LICENSE = VHCS<sup>&reg;</sup> Pro v2.4.7.1<br>build: 2006-01-03<br>Spartacus
+
+-------------------
+Postfix master.cf update
+-------------------
+
+1) Edit /etc/postfix/master.cf
+
+and search for the vhcs2-arpl line (near the end) replace the flags=D to flags=O
+The complete line should look like this:
+
+vhcs2-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/vhcs2/engine/messager/vhcs2-arpl-msgr
+
+
+-------------------
+Engine Update
+-------------------
+
+1) Copy the new engine files
+
+tangra: # cp -a /mydir/engine/ /var/www/vhcs2/
+
+2) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/vhcs2-db-keys.pl
+
+tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/vhcs2-db-keys.pl
+
+3) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/messager/vhcs2-db-keys.pl
+
+tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/messager/vhcs2-db-keys.pl
+
+
+Backup Engine Update
+-------------------
+
+1) Check and maybe change the crontab line for the backup
+
+tangra: # crontab -e
+
+if line looks like: 
+
+/var/www/vhcs2/engine/tools/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+
+change it to:
+
+/var/www/vhcs2/engine/backup/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+
+
+Mailbox Engine Update
+-------------------
+
+1) because of a bug in the catchall adresses we have to rebuild the /etc/postfix/vhcs2/aliases
+
+tangra: # mv /etc/vhcs2/postfix/working/aliases /etc/vhcs2/postfix/working/aliases-SAVE
+tangra: # cp /mydir/configs/postfix/working/aliases /etc/vhcs2/postfix/working/aliases
+
+
+Delete unneeded engine file
+-------------------
+tangra: # rm /var/www/vhcs2/engine/setup/vhcs2-cfg-subst
+
+
+Finish Engine Updates
+-------------------
+
+1) Set correct engine permissions:
+
+tangra: # /var/www/vhcs2/engine/setup/set-engine-permissions.sh
+
+
+-------------------
+GUI Update
+-------------------
+
+1) Copy the new GUI files
+
+tangra: # cp -a /mydir/gui/ /var/www/vhcs2/
+
+2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/vhcs2-db-keys.php to /gui/include/vhcs2-db-keys.php
+
+tangra: # cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/vhcs2/gui/include/vhcs2-db-keys.php
+
+3) Set correct gui permissions:
+
+tangra: # /var/www/vhcs2/engine/setup/set-gui-permissions.sh
+
+-------------------
+Database Update
+-------------------
+
+1) Updated languages completely by importing the languages.sql For example with phpmyadmin or over commandline. 
+All languages are changed. Please use languages.sql because it's the only way to update lang_english which is
+not update-able by language file. languages.sql is located in: 
+
+configs/database/languages.sql
+
+
+2) Delete all wrong added and not shown catchalls for alias domains
+
+DELETE FROM `vhcs2`.`mail_users` WHERE `sub_id`='0' AND `mail_type` = 'alias_catchall';
+
+
+3) Change status for all mail-addresses:
+
+UPDATE `vhcs2`.`mail_users` SET `status` = 'change' WHERE `status` = 'ok';
+
+-------------------
+Finish update
+-------------------
+
+1) Now you should execute the VHCS engine manually, because users/customers may have made system changes during your update operation
+   This could take a moment!
+
+tangra: # /var/www/vhcs2/engine/vhcs2-rqst-mngr
+
+2) Now you can start the VHCS daemon
+
+tangra: # /etc/init.d/vhcs2_daemon start
+
+
+VHCS is successfully updated !

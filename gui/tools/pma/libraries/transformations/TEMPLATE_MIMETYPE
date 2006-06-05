@@ -1,0 +1,13 @@
+<?php
+/* $Id: TEMPLATE_MIMETYPE,v 2.1 2003/11/26 22:52:24 rabus Exp $ */
+// vim: expandtab sw=4 ts=4 sts=4:
+
+/**
+ * MIME-Init function TEMPLATE (Garvin Hicking).
+ * -----------------------------------------
+ *
+ * This files serves no function. It's only kept here to add a mimetype value for selection.
+ * You can still use global or other mimetype's transforms with this mimetype.
+ */
+
+?>

@@ -1,0 +1,338 @@
+HOWTO Update VHCS 2.4.6.2 to VHCS 2.4.7 (English)
+
+-------------------
+General Information
+-------------------
+
+1) Download the newest VHCS2 release :
+
+tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/vhcs/vhcs2.4.7.tar.bz2
+
+2) Turn off the VHCS Daemon:
+
+tangra: # /etc/init.d/vhcs2_daemon stop
+
+3) Make a backup of the current VHCS files of your system:
+
+tangra: # mv /var/www/vhcs2/gui /var/www/vhcs2/gui_bcp_yyyymmdd
+tangra: # mv /var/www/vhcs2/engine /var/www/vhcs2/engine_bcp_yyyymmdd
+
+4) Unpack the downloaded archive :
+
+tangra: #tar -xjf vhcs2.4.7.tar.bz2
+
+
+-------------------
+vhcs2.conf Update
+-------------------
+
+1) Lines to add:
+
+Search for MTA_SASLDB_FILE and add lines. The result should looks like this:
+
+MTA_SASLDB_FILE = /var/spool/postfix/etc/sasldb2
+
+ETC_SASLDB_FILE = /etc/sasldb2
+
+CMD_SASLDB_LISTUSERS2 = /usr/sbin/sasldblistusers2
+
+CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
+
+
+Search for MAIL_TRAFF_LOG and add lines. The result should looks like this:
+
+MAIL_TRAFF_LOG = mail.log
+
+MAIL_LOG_INC_AMAVIS = 0
+
+PREV_TRAFF_LOG_MAX_SIZE = 10485760
+
+QUOTA_ROOT_DIR = /var/www/vhcs2/engine/quota
+
+
+Search for DATABASE_USER and add the line. The result should looks like this:
+
+DATABASE_USER = root
+
+DATABASE_DIR = /var/lib/mysql
+
+#
+# Main situation variables;
+#
+
+
+Search for CMD_VHCS2D and add the line. The result should looks like this:
+
+CMD_VHCS2D = /etc/init.d/vhcs2_daemon
+
+CMD_VHCS2N = /etc/init.d/vhcs2_network
+
+#
+# Server traffic manager.
+#
+
+
+Search for CMD_POP and add the line. The result should looks like this:
+
+CMD_POP = /etc/init.d/courier-pop
+
+CMD_AMAVIS = no
+
+CMD_FTPD = /etc/init.d/proftpd
+
+
+Search for COURIER_CONF_DIR and add the line. The result should looks like this:
+
+COURIER_CONF_DIR = /etc/courier
+
+AUTHLIB_CONF_DIR = /etc/courier
+
+CMD_MAKEUSERDB = /usr/sbin/makeuserdb
+
+
+2) Set your default settings for traffic counting:
+
+If you are using AMAVIS and SPAMASSASSIN change
+
+MAIL_LOG_INC_AMAVIS = 0
+
+to
+
+MAIL_LOG_INC_AMAVIS = 1
+
+
+3) Set your default settings for spam and virus detection:
+
+If you are using AMAVIS change
+
+CMD_AMAVIS = no
+
+to
+
+CMD_AMAVIS = /etc/init.d/amavis
+
+4) Change these following lines:
+
+BuildDate = 24.12.2005
+
+VHCS_LICENSE = VHCS<sup>&reg;</sup> Pro v2.4.7<br>build: 2005-12-24<br>Spartacus
+
+
+5) Set permissions for vhcs2.conf (needed for autoresponder) :
+
+tangra: # chmod 0644 /etc/vhcs2/vhcs2.conf
+
+-------------------
+Daemon & init.d Update
+-------------------
+
+1) Copy the new init.d file
+
+tangra: # cp -a /mydir/configs/init.d/vhcs2_daemon /etc/init.d/
+tangra: # chown root:root /etc/init.d/vhcs2_daemon
+tangra: # chmod 755 /etc/init.d/vhcs2_daemon
+
+
+2) Make the new daemon:
+
+tangra: # cd /mydir/tools/daemon
+tangra: # make
+tangra: # cp ./vhcs2_daemon /var/www/vhcs2/daemon/vhcs2_daemon
+
+-------------------
+Configuration file Update
+-------------------
+
+1) Copy vhcs apache user logrotate script
+
+tangra: # cp /mydir/configs/logrotate/vhcs2 /etc/logrotate.d/vhcs2
+
+
+-------------------
+Engine Update
+-------------------
+
+1) Copy the new engine files
+
+tangra: # cp -a /mydir/engine/ /var/www/vhcs2/
+
+2) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/vhcs2-db-keys.pl
+
+tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/vhcs2-db-keys.pl
+
+3) changes for vhcs2-arpl-msgr
+
+tangra: # cp /var/www/vhcs2/engine/vhcs2-db-keys.pl /var/www/vhcs2/engine/messager/vhcs2-db-keys.pl
+
+4) We changed sasldb2 management for the postfix chroot.
+
+So postfix had his own file in /var/spool/postfix/etc/sasldb2
+and the system file is located in /etc/sasldb2.
+
+If you DIDN'T have other apps running that are using /etc/sasldb2 you have to run
+following command:
+
+tangra: # cp /var/spool/postfix/etc/sasldb2 /etc/sasldb2
+
+If you DID have other apps running that are using /etc/sasldb2 you don't have to run
+any command
+
+
+Mailbox Engine Update
+-------------------
+
+1) catchall adresses are moved from /etc/postfix/vhcs2/mailboxes to /etc/postfix/vhcs2/aliases
+
+tangra: # mv /etc/vhcs2/postfix/working/mailboxes /etc/vhcs2/postfix/working/mailboxes-SAVE
+tangra: # cp /mydir/configs/postfix/working/mailboxes /etc/vhcs2/postfix/working/mailboxes
+
+
+Backup Engine Update
+-------------------
+
+1) Check and maybe change the crontab line for the backup
+
+tangra: # crontab -e
+
+if line looks like:
+
+/var/www/vhcs2/engine/tools/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+
+change it too:
+
+/var/www/vhcs2/engine/backup/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+
+
+Traffic Engine Update
+-------------------
+
+1) Delete old log analyzing tool:
+
+tangra: # rm /usr/sbin/pflogsumm.pl
+tangra: # rm -R /var/www/vhcs2/engine/traffic/pflogsumm-1.0.10
+tangra: # rm -R /var/www/vhcs2/engine/traffic/pflogsumm-1.1.0
+
+2) Changes specially for SuSE:
+
+tangra: # mv /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff-DEBIAN
+tangra: # mv /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff-SUSE /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff
+
+3) Delete backup-lock file if it exit:
+
+tangra: # rm /tmp/vhcs2-backup-all.lock
+
+
+Engine Templates Update
+-------------------
+
+1) Update postfix template make the config working also with postfix 2.2:
+
+tangra: # mv /etc/postfix/master.cf /etc/postfix/master.cf-SAVE
+tangra: # cp /mydir/configs/postfix/master.cf /etc/postfix/master.cf
+
+Now compare both files and put your special config entries and domain names / IP etc.
+
+2) Update proftpd config file (added "DelayEngine off"):
+
+tangra: # mv /etc/proftpd.conf /etc/proftpd.conf-SAVE
+tangra: # cp /mydir/configs/proftpd/proftpd.conf /etc/proftpd.conf
+
+Now compare both files and put your special config entries and domain names / IP etc.
+
+3) Update apache templates part for domains (vhosts skeleton and errorpages):
+
+tangra: # cp /mydir/configs/apache/parts/als_entry.tpl /etc/vhcs2/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/dmn_entry.tpl /etc/vhcs2/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/sub_entry.tpl /etc/vhcs2/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/vh_entry.tpl /etc/vhcs2/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/vhcs2_base.tpl /etc/vhcs2/apache/parts/
+
+Save the old vhcs2 apache conf. Because will rebuild it completly
+
+tangra: # mv /etc/vhcs2/apache/working/vhcs2.conf /etc/vhcs2/apache/working/vhcs2-SAVE.conf
+
+4) Update bind templates part for domains:
+
+tangra: # cp /mydir/configs/bind/parts/db_e.tpl /etc/vhcs2/bind/parts/
+
+
+Finish Engine Updates
+-------------------
+
+1) Set correct engine permissions:
+
+tangra: # /var/www/vhcs2/engine/setup/set-engine-permissions.sh
+
+
+-------------------
+GUI Update
+-------------------
+
+1) Copy the new GUI files
+
+tangra: # cp -a /mydir/gui/ /var/www/vhcs2/
+
+2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/vhcs2-db-keys.php to /gui/include/vhcs2-db-keys.php
+
+tangra: # cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/vhcs2/gui/include/vhcs2-db-keys.php
+
+3) Password reminder:
+
+install GD library:
+tangra: # apt-get install php4-gd
+
+Apache neustarten:
+tangra: # apache2ctl graceful
+
+4) Set correct gui permissions:
+
+tangra: # /var/www/vhcs2/engine/setup/set-gui-permissions.sh
+
+5) copy gui/errordocs/index.php in all client errordoc directories!
+
+A fixed XSS (Cross-Site-Scripting) bug in that file !!
+
+-------------------
+Database Update
+-------------------
+
+Updated language tables could be updated by importing through the admin interface. The files are located here:
+
+/mydir/language-files/*
+
+or completely update by importing the languages.sql  For example with phpmyadmin or over commandline. File is located in:
+
+configs/database/languages.sql
+
+Change status for all mail-addresses because of rebuild SASLDB2 and MD5 passwords:
+
+UPDATE `vhcs2`.`mail_users` SET `status` = 'change' WHERE `status` = 'ok';
+
+Change status for rebuild apache conf for all domains:
+
+UPDATE `vhcs2`.`subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
+UPDATE `vhcs2`.`domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
+UPDATE `vhcs2`.`domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
+
+Update field settings:
+
+ALTER TABLE `vhcs2`.`hosting_plans` CHANGE  `price`  `price` DECIMAL( 10, 2 ) NOT NULL DEFAULT  '0.00';
+ALTER TABLE `vhcs2`.`hosting_plans` CHANGE  `setup_fee`  `setup_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT  '0.00';
+
+ALTER TABLE `vhcs2`.`admin` ADD `uniqkey` varchar(255);
+
+-------------------
+Finish update
+-------------------
+
+1) Now you should execute the VHCS engine manually, because users/customers may have made system changes during your update operation
+   This could take a moment!
+
+tangra: # /var/www/vhcs2/engine/vhcs2-rqst-mngr
+
+2) Now you can start the VHCS daemon
+
+tangra: # /etc/init.d/vhcs2_daemon start
+
+
+VHCS is successfully updated !

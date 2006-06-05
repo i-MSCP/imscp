@@ -1,0 +1,337 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Posta in arrivo
+sent_extended					= Posta spedita
+trash_extended					= Cestino
+
+#Navigation texts
+
+previous_text					= Precedente
+next_text					= Successivo
+
+# Mail Server Errors
+
+error_connect					= Errore di connessione con il server
+error_retrieving				= Errore di scaricamento posta, posta reimpostata
+error_other					= Errore di sistema, contattare l'amministratore di sistema
+
+#Invalid name of mailbox
+
+error_invalid_name				= Nome invalido - Usare i caratteri  A-Z, 0-9, .- e o spazio
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Necessario impostare l'indizzo e-mail
+error_compose_invalid_mail1_s	= Questa e-mail sembra non essere valida
+error_compose_invalid_mail1_p	= Queste e-mail sembrano non essere valide
+error_compose_invalid_mail2_s	= Scrivere un massaggio prima di inviare un messaggio
+error_compose_invalid_mail2_p	= Scrivere dei massaggio prima di inviare dei messaggio
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Volete veramente cancellare questo messaggio?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Nessun oggetto]
+no_sender_text					= [Mittente sconosciuto]
+no_recipient_text				= [Destinatario sconosciuto]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Spazio esaurito\Cancellare qualche messaggio per proseguire
+quota_usage_info				= Limite di spazio
+quota_usage_used				= Usato
+quota_usage_of					= di
+quota_usage_avail				= disponibile
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-1
+
+messages_mnu					= Messaggi
+compose_mnu					= Scrivi
+refresh_mnu					= Refresh
+folders_mnu					= Cartelle
+search_mnu					= Cerca
+address_mnu					= Agenda
+empty_trash_mnu					= Svuota cestino
+prefs_mnu					= Preferenze
+logoff_mnu 					= Uscita
+
+
+
+reply_prefix					= Rv:
+forward_prefix					= Fw:
+
+reply_delimiter					= --------- Messaggio Originale --------
+reply_from_hea					= Da:
+reply_to_hea					= Per:
+reply_cc_hea					= Cc:
+reply_date_hea					= Data:
+reply_subject_hea				= Oggetto:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Key
+value_hea						= Value
+
+[Folders]
+
+fld_name_hea					= Cartella
+fld_messages_hea				= Messaggi
+fld_size_hea					= Dimensioni
+fld_empty_hea					= Svuota
+fld_delete_hea					= Cancella
+fld_total					= Totale:
+fld_make_new					= Crea nuova cartella
+folders_to					= Sposta cartella
+
+[MessageList]
+
+messages_to						= Messaggio per 
+no_messages						= Nessun nuovo messaggio 
+
+delete_selected_mnu				= Cancella selezionato
+move_selected_mnu				= Sposta selezionato in
+delete_mnu						= Cancella
+move_mnu						= Sposta in
+subject_hea						= Oggetto
+from_hea						= da
+to_hea							= per
+date_hea						= Data
+size_hea						= Dimesioni
+
+msg_you_have					= Hai
+msg_message					= messaggio
+msg_messages					= messaggi
+
+msg_more_unread					= non letto
+msg_one_unread					= non visto
+msg_none_unread					= nessun messaggio letto
+msg_in_the_folder				= nella cartella
+[Login]
+
+
+lgn_title					= Accedi
+lgn_welcome_msg					= Benvenuto, accedi alla tua posta
+lng_user_email					= E-mail
+lng_user_name					= Username
+lng_user_pwd					= Password
+lng_theme					= Tema
+lng_language					= Language
+lng_login_btn					= Accedi &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Per:
+cc_hea						= Cc:
+bcc_hea						= Bcc:
+subject_hea					= Oggetto:
+address_tip					= Dalla rubrica
+
+attach_hea					= Allegato:
+attch_add_new					= Aggiungi file
+attch_name_hea					= Nome
+attch_size					= Dimesioni
+attch_type_hea					= Tipo
+attch_dele_hea					= Cancella
+attch_no_hea					= Nessun allegato
+
+add_signature					= Aggiungi firma
+send_text					= Invia
+
+result_error					= Non è stato possibile inviare l'e-mail
+result_success					= E-mail inviata correttamente
+nav_continue					= Continua
+nav_back					= Torna indietro
+
+up_title 					= Aggiungi file
+up_information_text				= Seleziona file
+up_button_text					= Invia
+
+priority_text					= Priorità
+priority_low					= Bassa
+priority_normal					= Normale
+priority_high					= Alta
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Please un mark an option
+adv_warning_text_mode2			= to use the toolbar
+
+adv_type_path					= Scrivi URL:
+
+format_paragraph				= Paragrafo
+format_h1					= Stile 1 <H1>
+format_h2					= Stile 2 <H2>
+format_h3					= Stile 3 <H3>
+format_h4					= Stile 4 <H4>
+format_h5					= Stile 5 <H5>
+format_h6					= Stile 6 <H6>
+format_pre					= Formattato <PRE>
+format_clear_all				= Cancella tutto
+
+format_font					= Font
+format_size					= Dim.
+
+format_color					= Colore
+format_back					= Sfondo
+color_red					= Rosso
+color_blue					= Blu
+color_green					= Verde
+color_black					= Nero
+color_yellow					= Giallo
+color_white					= Bianco
+
+view_source					= Vedi codice HTML
+text_mode					= Visualizzazione testuale
+clear_format					= Visualizzazione standard
+
+priority_text					= Priorità
+
+
+
+
+[BadLogin]
+
+bdl_title					= Errore di Login
+bdl_msg						= Controllare login e password<br><br>Riprovare
+bdl_back					= Torna indietro
+
+
+[Error]
+
+err_title					= Si sono verificati alcuni errori
+err_msg						= Errori in login<br><br>Riprovare
+err_system_msg					= Messaggio di sistema: 
+err_exit					= Logout
+
+[Preferences]
+
+prf_title 					= Preferenza
+prf_general_title				= Informazioni generali
+prf_name					= Nome
+prf_reply_to					= Rispondi a
+prf_time_zone					= Fuso orario
+prf_trash_title					= Cestino
+prf_save_to_trash				= Quando <b>cancelli</b> un messaggio, spostalo in
+prf_save_only_read				= Salva solo <b>i messaggi letti</b> nel
+prf_empty_on_exit				= <b>Svuota</b> il cestino quando esci
+prf_sent_title					= Posta inviata
+prf_save_sent					= Salva <b>posta inviata</b> nel
+prf_messages_title				= Messaggi
+prf_page_limit					= Massimo nr. di messaggi per pagina
+prf_signature_title				= Firma
+prf_signature					= Scrivi la firma
+prf_auto_add_sign				= Aggiungi firma a tutti i messaggi in uscita 
+prf_save_button					= Salva
+prf_display_images				= Mostra immagini allegate
+prf_default_editor_mode				= Editing semplificato
+prf_default_editor_mode_text			= "Modo testuale"
+prf_default_editor_mode_html			= "Modo avanzato (HTML editor --> Solo per IE5 o superiore)"
+prf_time_to_refesh				= Refresh dei messaggi (minuti)
+
+[Catch]
+
+ctc_title					= Aggiungi alla rubrica
+ctc_information					= Mostra solo le e-mail nella rubrica
+ctc_name					= Nome
+ctc_email					= E-mail
+ctc_no_address					= Indirizzo non disponibile
+ctc_close					= Chiudi
+ctc_save					= Salva
+
+[Readmsg]
+
+next_mnu					= Prossimo
+previous_mnu					= Precedente
+back_mnu					= Indietro
+reply_mnu					= Rispondi
+reply_all_mnu					= Rispondi a tutti
+forward_mnu					= Inoltra
+headers_mnu					= Intestazione
+move_mnu					= Sposta
+delete_mnu					= Cancella
+print_mnu					= Stampa
+
+from_hea					= Da:
+to_hea						= Per:
+cc_hea						= Cc:
+date_hea					= Data:
+subject_hea					= Oggetto:
+attach_hea					= Allegato:
+
+attch_name_hea					= Nome
+attch_force_hea					= Scarica
+attch_type_hea					= Tipo
+attch_size_hea					= Dimensioni
+catch_address					= Aggiungi alla rubrica
+
+[Search]
+
+sch_information_text				= Scrivi una frase o una parola che vuoi cercare.<br> La ricerca nei messaggi avverrà tra i messagi già letti
+sch_button_text					= Cerca &gt;&gt;
+sch_subject_hea					= Oggetto
+sch_from_hea					= Da
+sch_date_hea					= Data
+sch_body_hea					= Messaggio
+sch_folder_hea					= Cartella
+sch_no_results					= Non è stato trovato alcun messaggio
+
+
+[QuickAddress]
+
+qad_title 			= Rubrica
+qad_select_address		= Seleziona un contatto
+qad_to				= A
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Rubrica
+adr_name					= Noma
+adr_email					= E-mail
+adr_street					= Via
+adr_city					= Città
+adr_state					= Stato
+adr_work					= Impiego
+adr_back					= Indietro
+adr_save					= Salva
+
+# list
+
+adr_name_hea					= Nome
+adr_email_hea					= E-mail
+adr_edit_hea					= Modifica
+adr_expo_hea					= Esporta
+adr_dele_hea					= Cancella
+adr_new_entry					= Nuovo Contatto
+
+
+addr_saved					= Il contatto è stato salvato
+addr_added					= Il contatto è stato aggiunto
+addr_deleted					= Il contatto è stato eliminato

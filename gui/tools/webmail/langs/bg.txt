@@ -1,0 +1,341 @@
+# ***** GLOBAL VARS ****** #
+
+
+# User-friendly names to system folders
+
+inbox_extended					= Получени
+sent_extended					= Изпратени
+trash_extended					= Кошче
+
+#Navigation texts
+
+previous_text					= Предишна
+next_text					= Следваща
+
+# Mail Server Errors
+
+error_connect					= Грешка при връзка със сървъра
+error_retrieving				= Грешка при изтегляне на пощата
+error_other					= Системна грешка - свържете се със Ситемния администратор 
+
+#Invalid name of mailbox
+
+error_invalid_name				= Невалидно име за папка - използвайте само A-Z, 0-9, .- и или интервал
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Моля въведете валиден Е-mail адрес
+error_compose_invalid_mail1_s			= Вашият Е-mail изглежда валиден
+error_compose_invalid_mail1_p			= Следващите Е-mailс изглежда са невалидни
+error_compose_invalid_mail2_s			= Ще бъде проверен преди изпращане
+error_compose_invalid_mail2_p			= Ще бъдат проверени преди изпращане
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Моля потвърдете изтриването на съобщението
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Няма тема]
+no_sender_text					= [Няма изпращач]
+no_recipient_text				= [Няма съдържание]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Квотата е запълнена. Моля изтрийте стари писма за да освободите място
+quota_usage_info				= Лимит
+quota_usage_used				= Използвани
+quota_usage_of					= от
+quota_usage_avail				= предоставени
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= Windows-1251
+
+messages_mnu					= Съобщения
+compose_mnu					= Изпрати
+refresh_mnu					= Опресни
+folders_mnu					= Папки
+search_mnu					= Търси
+address_mnu					= Адреси
+empty_trash_mnu					= Изтрий кошчето
+prefs_mnu					= Настройки
+logoff_mnu 					= Изход
+
+
+
+reply_prefix					= Отг:
+forward_prefix					= Пре:
+
+reply_delimiter					= --------- Оригинално съобщение --------
+reply_from_hea					= От:
+reply_to_hea					= До:
+reply_cc_hea					= Копие до:
+reply_date_hea					= Дата:
+reply_subject_hea				= Тема:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea						= Ключ
+value_hea					= Стойност
+
+[Folders]
+
+fld_name_hea					= Папки
+fld_messages_hea				= Съобщения
+fld_size_hea					= Големина
+fld_empty_hea					= Изчисти
+fld_delete_hea					= Изтрий
+fld_total					= Общо:
+fld_make_new					= Направи нова папка
+folders_to					= Папки за 
+
+
+[MessageList]
+
+messages_to					= Съобщения за 
+no_messages					= Няма съобщения 
+
+delete_selected_mnu				= Изтрий избраните
+move_selected_mnu				= Премести избраните в
+delete_mnu					= Изтрий
+move_mnu					= Премести в
+subject_hea					= Тема
+from_hea					= От
+to_hea						= До
+date_hea					= Дата
+size_hea					= Големина
+
+msg_you_have					= Имате
+msg_message					= съобщение
+msg_messages					= съобщения
+
+msg_more_unread					= непрочетени
+msg_one_unread					= непрочетено
+msg_none_unread					= нямате непрочетени
+msg_in_the_folder				= в папка
+
+[Login]
+
+
+lgn_title					= Вход
+lgn_welcome_msg					= Добре дошли. Моля въведете име и парола
+lng_user_email					= Е-поща
+lng_user_name					= Име
+lng_user_pwd					= Парола
+lng_theme					= Layout
+lng_language					= Език
+lng_login_btn					= Вход &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= До:
+cc_hea						= Копие до:
+bcc_hea						= 2 Копие до:
+subject_hea					= Тема:
+address_tip					= От адресната книга
+
+attach_hea					= Прикрепени файлове:
+attch_add_new					= Прикрепи нов файл
+attch_name_hea					= Име
+attch_size					= Големина
+attch_type_hea					= Тип
+attch_dele_hea					= Изтрий
+attch_no_hea					= Няма прикрепени файлове!
+
+add_signature					= Добави 
+send_text					= Изпрати
+
+result_error					= Грешка, не може да се изпрати писмото
+result_success					= Писмото е изпратено успешно
+nav_continue					= Продължи
+nav_back					= Назад
+
+up_title 					= Добави нов файл
+up_information_text				= Избери файл
+up_button_text					= Добави
+
+priority_text					= Приоритет
+priority_low					= Нисък
+priority_normal					= Нормален
+priority_high					= Висок
+
+[AdvancedEditor]
+
+adv_warning_text_mode1				= Por favor desmarque a opзгo
+adv_warning_text_mode2				= para usar a barra de ferramentas
+
+adv_type_path					= Въведете URL:
+
+format_paragraph				= Paragraph 
+format_h1					= Heading 1 <H1>
+format_h2					= Heading 2 <H2>
+format_h3					= Heading 3 <H3>
+format_h4					= Heading 4 <H4>
+format_h5					= Heading 5 <H5>
+format_h6					= Heading 6 <H6>
+format_pre					= Formatted <PRE>
+format_clear_all				= Премахни всички
+
+format_font					= Шрифт
+format_size					= Големина
+
+format_color					= Цвят
+format_back					= Фон
+color_red					= Червен
+color_blue					= Син
+color_green					= Зелен
+color_black					= Черен
+color_yellow					= Жълт
+color_white					= Бял
+
+view_source					= Покажи в HTML
+text_mode					= Текстов режим
+clear_format					= Изчисти форматирането
+
+priority_text					= Приоритет
+
+
+
+
+[BadLogin]
+
+bdl_title					= Не може да влезете
+bdl_msg						= Името или паролата са грешни<br><br>Проверете дали са въведени коректно
+bdl_back					= Назад
+
+
+[Error]
+
+err_title					= Грешка
+err_msg						= Възникна грешка във Вашата сесия<br><br>Моля влезте отново
+err_system_msg					= Системно съобщение: 
+err_exit					= Влезте отново
+
+[Preferences]
+
+prf_title 					= Настройки
+prf_general_title				= Персонална информация
+prf_name					= Име
+prf_reply_to					= Адрес за отговор
+prf_time_zone					= Времева зона
+prf_trash_title					= Кошче за боклук
+prf_save_to_trash				= Премести <b>изтритите</b> съобщения в папка 
+prf_save_only_read				= Запиши само <b>прочетение</b> съобщения в папка 
+prf_empty_on_exit				= <b>Изтрий</b> Кошчето за боклук
+prf_sent_title					= Изпратени съобщения
+prf_save_sent					= Запиши <b>изпратените</b> съобщения в папка
+prf_messages_title				= Съобщения
+prf_page_limit					= Съобщения показвани на страница
+prf_signature_title				= Подпис
+prf_signature					= Персонализиран тескт за подпис
+prf_auto_add_sign				= Добави автоматично
+prf_save_button					= Запис
+prf_display_images				= Покажи картинките автоматично
+prf_default_editor_mode				= Нормлен режим на редактиране
+prf_default_editor_mode_text			= "Чист текст"
+prf_default_editor_mode_html			= "HTML Редактор (изсква минимум IE 5.0)"
+prf_time_to_refesh				= Време за автоматично опресняване на съобщенията (в минути)
+
+[Catch]
+
+ctc_title					= Запиши адреса
+ctc_information					= Само адресите, които не са записани в адресната книга все още се показват
+ctc_name					= Име
+ctc_email					= е-поща
+ctc_no_address					= Няма адрес
+ctc_close					= Затвори
+ctc_save					= Запис
+
+[Readmsg]
+
+next_mnu					= Следващо
+previous_mnu					= Предишно
+back_mnu					= Назад
+reply_mnu					= Отговори
+reply_all_mnu					= Отговори на всички
+forward_mnu					= Препрати
+headers_mnu					= Header
+move_mnu					= Премести в
+delete_mnu					= Изтрий
+print_mnu					= Печат
+
+from_hea					= От:
+to_hea						= До:
+cc_hea						= Копие до:
+date_hea					= Дата:
+subject_hea					= Тема:
+attach_hea					= Прикрепени файлове:
+
+attch_name_hea					= Име
+attch_force_hea					= изтегли
+attch_type_hea					= тип
+attch_size_hea					= Големина
+catch_address					= Добави адреса
+
+[Search]
+
+sch_information_text				= Въведете дума или фраза<br> Само съобщения в <br>локалните папки<br> и <b>прочетени съобщения</b> ще бъдат проверени
+sch_button_text					= Търси &gt;&gt;
+sch_subject_hea					= Тема
+sch_from_hea					= От
+sch_date_hea					= Дата
+sch_body_hea					= Съобщение
+sch_folder_hea					= Папка
+sch_no_results					= Няма намерени
+
+
+[QuickAddress]
+
+qad_title 					= Избери получатели
+qad_select_address				= Избери адрес
+qad_to						= До
+qad_cc						= Копие до
+qad_bcc						= 2 Копие до
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Адресна книга
+adr_name					= Име
+adr_email					= е-поща
+adr_street					= Улица
+adr_city					= Град
+adr_state					= Окръг
+adr_work					= Професия
+adr_back					= Назад
+adr_save					= Запис
+
+# list
+
+adr_name_hea					= Име
+adr_email_hea					= е-поща
+adr_edit_hea					= Редакция
+adr_expo_hea					= Експорт
+adr_dele_hea					= Изтриване
+adr_new_entry					= Нов запис
+
+
+addr_saved					= Адреса е записан успешно
+addr_added					= Адреса е добавен успешно
+addr_deleted					= Адреса е изтрит

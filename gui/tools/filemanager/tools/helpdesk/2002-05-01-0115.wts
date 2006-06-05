@@ -1,0 +1,11 @@
+x-wfm-category
+Interface
+x-wfm-version
+1.0 > BETA-2002-04-30
+x-wfm-keyword
+escape esc \ quote " ' beta
+x-wfm-problem
+On some systems quotes were being escaped (backslashes "\" were being added).
+x-wfm-solution
+This is due to magic_quotes_gpc = on being set in php.ini.  Either set this to off
+ or upgrade to version BETA-2002-04-30 or later.

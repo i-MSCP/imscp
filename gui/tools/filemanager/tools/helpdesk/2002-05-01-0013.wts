@@ -1,0 +1,12 @@
+x-wfm-category
+Features
+x-wfm-version
+1.0.6 > CVS
+x-wfm-keyword
+login user pass corrupt garbage cookie
+x-wfm-problem
+My user's login cookie(s) have become corrupt.
+x-wfm-solution
+Either the value of $key or the encryption algorithm (See <i>$pref_ciphers</i> in the Manual) 
+    has changed. Re-type the correct username & password and ensure that Rememer 
+    Me is checked, to save the new login cookie.

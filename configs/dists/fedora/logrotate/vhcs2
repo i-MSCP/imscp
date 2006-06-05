@@ -1,0 +1,18 @@
+/var/log/httpd/users/*.log {
+	weekly
+	missingok
+	rotate 52
+	compress
+	delaycompress
+	notifempty
+	create 644 root root
+	sharedscripts
+	prerotate
+		/var/www/vhcs2/engine/traffic/vhcs2-srv-traff &>/var/log/vhcs2/vhcs2-srv-traff.log
+	endscript
+	postrotate
+	if [ -f /var/run/httpd.pid ]; then
+		/etc/init.d/httpd restart > /dev/null
+	fi
+	endscript
+}

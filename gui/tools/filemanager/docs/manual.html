@@ -1,0 +1,652 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!--
+	WeebleFM Manual (c) Christopher J. Michaels & Jonathan Manna.  
+	See the LICENSE file for complete licensing agreement. 
+-->
+<head>
+<title>Weeble File Manager Manual v1.1</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+a:active { font-weight: bold; text-decoration: none; color: #000066; background-color: #CCCCFF}
+a:hover { color: navy; font-weight: bold; text-decoration: none; background-color: #CCCCFF}
+a:link { text-decoration: none; color: navy}
+a:visited { text-decoration: none; color: navy}
+body {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt ; color: #000000; background-color: #FFFFFF}
+table {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt ; color: #000000; background-color: #FFFFFF}
+dt {  font-size: larger; font-weight: bolder; font-variant: small-caps}
+.sig {  font-size: 9px; font-style: italic; font-variant: small-caps; border-color: #000099 #FFFFFF #FFFFFF; border-style: solid; border-top-width: thin; border-right-width: thin; border-bottom-width: thin; border-left-width: thin}
+h2 {  background-color: #C0C0FF}
+h3 {  background-color: #D0D0FF}
+h4 {  background-color: #E0E0FF}
+h5 {  background-color: #F0F0FF}
+-->
+</style>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<H1 align="center"><img src="images/title.gif" width="336" height="32" alt="Weeble File Manager"></H1>
+<hr>
+<DIV align="center"> [<A href="quick_install.html">Quick Install</a>] [<a href="updating.html">Updating</a>] 
+  [<A href="supported_configs.html">Supported Configurations</a>] [<a href="http://weeblefm.sourceforge.net/tools/helpdesk/">Troubleshooting</a>]
+</DIV>
+<hr>
+<h2>Table of Contents</h2>
+<ol type="1">
+  <li><a href="#install">Installation</a> 
+    <ol type="A">
+      <li><a href="#install_req">Requirements</a></li>
+      <li><a href="#install_unpack">Unpacking the files</a></li>
+      <li><a href="#install_config">Configuration</a></li>
+      <li><a href="#install_usage">Usage</a></li>
+    </ol>
+  </li>
+  <li><a href="#docs">Documentation</a> 
+    <ol type="A">
+      <li><a href="#Intro">Introduction</a> 
+        <ol type="i">
+          <li> <a href="#intro_whatis">What is Weeble File Manager?</a></li>
+          <li><a href="#intro_how">How do I install it?</a></li>
+          <li><a href="#intro_layout">Layout</a></li>
+        </ol>
+      </li>
+      <li><a href="#Features">Features</a> 
+        <ol type="i">
+          <li><a href="#feat_login">Logging In</a></li>
+          <li><a href="#feat_cd">Changing Directories</a></li>
+          <li><a href="#feat_create">Creating Files and Directories</a></li>
+          <li><a href="#feat_edit">Editing Files</a></li>
+          <li><a href="#feat_delete">Delete</a></li>
+          <li><a href="#feat_copy">Copy</a></li>
+          <li><a href="#feat_move">Move</a></li>
+          <li><a href="#feat_rename">Rename</a></li>
+          <li><a href="#feat_upload">Upload</a></li>
+          <li><a href="#feat_download">Download</a></li>
+          <li><a href="#feat_hidden">Show/Hide</a></li>
+          <li><a href="#feat_perm">Permissions</a></li>
+          <li><a href="#feat_Prefs">Preferences</a></li>
+        </ol>
+      </li>
+      <li><a href="#config_section">Configuration</a></li>
+      <li><a href="#Miscellaneous">Miscellaneous</a>
+        <ol type="i">
+          <li><a href="#misc_Credits">Credits</a></li>
+          <li><a href="#misc_Troubleshooting">Troubleshooting</a></li>
+          <li><a href="#misc_Limit_Uploads">Limiting Uploads</a></li>
+          <li><a href="#misc_Themes">Creating/Editing Themes</a></li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr>
+<h2><a name="install"></a>Installation</h2>
+<h3><a name="install_req"></a>Requirements</h3>
+<ul>
+  <li>A web server.</li>
+  <li><a href="http://www.php.net/">php4</a> with the following modules: 
+    <ul>
+      <li>ftp</li>
+      <li>mcrypt (optional)</li>
+    </ul>
+  </li>
+  <li>Settings required in php.ini
+  <ul>
+    <li><font face="Courier New, Courier, mono">register_globals=on</font></li>
+    <li><font face="Courier New, Courier, mono">file_uploads=on</font></li>
+  </ul>
+  <li>ftp server 
+    <ul>
+      <li>CHMOD support by the ftp server is required for the changing of permissions 
+        to work.</li>
+    </ul>
+  </li>
+</ul>
+<h3><a name="install_unpack"></a>Unpacking the files</h3>
+<p>Extract the weeblefm tar archive to a folder that is accessible to your web 
+  server. For example: </p>
+<pre>
+cd /usr/local/www/data/
+tar -zxvf /path/to/weeblefm-1.1.tar.gz
+</pre>
+<p>This will create a folder called &quot;weeblefm&quot; where the files are 
+  stored, you may rename this if you choose to. Using the above example, the files 
+  would be located in:</p>
+<pre>
+/usr/local/www/data/weeblefm/
+</pre>
+<h3><a name="install_config"></a>Configuration</h3>
+<p>To configure the Weeble File Manager, open the <font face="Courier New, Courier, mono" size="-1">settings.php</font> 
+  file in your favorite editor.</p>
+<p>For a quick setup, all of the options are documented in that file. More detailed 
+  descriptions of what the options are, and their possible settings, can be found 
+  later on in this documentation.</p>
+<p><i>The only setting that you <b>must</b> set before WeebleFM will work is the 
+  $ftp_Servers variable.</i></p>
+<h3><a name="install_usage"></a>Usage</h3>
+<p>Once settings.php has been edited to your liking, simply open your web browser 
+  and point it to where ever WeebleFM resides on your server. In the above example, 
+  we would direct our browser to http://www.webserver.dom/weeblefm/</p>
+<hr>
+<h2><a name="docs"></a>Documentation</h2>
+<h3><a name="Intro"></a>Introduction</h3>
+<h4><a name="intro_whatis"></a>What is Weeble File Manager?</h4>
+<p>WeebleFM is a web-based file manager based on php4 and ftp. Our intention is 
+  to create an OS independent file manager. While based upon FTP, WeebleFM is 
+  not limited to ftp, and we are working to create a full feature file manager.</p>
+<h4><a name="intro_how"></a>How do I install it?</h4>
+<p>See the <a href="#install">Installation</a> section at the top of this document.</p>
+<h4><a name="intro_layout"></a>Layout</h4>
+<p>&nbsp;</p>
+<table border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td><img src="images/WeebleFM_login.gif" width="218" height="160" border="1" usemap="#Map3" alt="Login Window">
+      <map name="Map3"> 
+        <area shape="rect" coords="0,0,217,59" href="#login_username" alt="Username" title="Username">
+        <area shape="rect" coords="22,60,205,86" href="#login_server" alt="Server Name" title="Server Name">
+        <area shape="rect" coords="46,90,170,114" href="#login_buttons" alt="Login Button" title="Login Button">
+        <area shape="rect" coords="58,122,166,140" href="#login_remember" alt="Remember Me" title="Remember Me">
+        <area shape="rect" coords="61,145,160,159" href="#login_cookie" alt="Remove Cookie" title="Remove Cookie">
+      </map>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><b>Login Window</b></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td><img src="images/WeebleFM_main.gif" width="700" height="325" alt="Main Window" border="1" usemap="#Map">
+      <map name="Map"> 
+        <area shape="rect" coords="5,262,424,291" href="#feat_create" alt="Create File/Dir" title="Create File/Dir">
+        <area shape="rect" coords="642,262,696,288" href="#feat_move" alt="Move File/Dir" title="Move File/Dir">
+        <area shape="rect" coords="565,293,619,319" href="#feat_hidden" alt="Show/Hide Hidden Files/Dirs" title="Show/Hide Hidden Files/Dirs">
+        <area shape="rect" coords="571,262,625,288" href="#feat_copy" alt="Copy File" title="Copy File">
+        <area shape="rect" coords="490,262,557,288" href="#feat_delete" alt="Delete File/Dir" title="Delete File/Dir">
+        <area shape="rect" coords="249,294,553,322" href="#feat_upload" alt="Upload FIle(s)" title="Upload FIle(s)">
+        <area shape="rect" coords="11,120,201,145" href="#layout_homedir" alt="Home Directory" title="Home Directory">
+        <area shape="rect" coords="584,176,692,253" href="#feat_perm" alt="File Permissions" title="File Permissions">
+        <area shape="rect" coords="301,176,574,253" href="#Layout_fileinfo" alt="File Information" title="File Information">
+        <area shape="rect" coords="11,148,201,173" href="#Layout_updir" alt="Up One Directory" title="Up One Directory">
+        <area shape="rect" coords="11,175,201,200" href="#Layout_dir" alt="Directory" title="Directory">
+        <area shape="rect" coords="11,201,201,252" href="#Layout_files" alt="Files" title="Files">
+        <area shape="rect" coords="8,78,558,111" href="#feat_cd" alt="Change Directory" title="Change Directory">
+        <area shape="rect" coords="5,292,238,321" href="#feat_rename" alt="Rename File/Dir" title="Rename File/Dir">
+        <area shape="rect" coords="438,262,475,288" href="#feat_edit" alt="Edit File" title="Edit File">
+        <area shape="rect" coords="632,0,693,22" href="#Layout_Logout" alt="Logout" title="Logout">
+        <area shape="rect" coords="603,21,693,41" href="#Layout_Help" alt="Help" title="Help">
+        <area shape="rect" coords="8,53,248,79" href="#layout_login" alt="Login Information" title="Login Information">
+        <area shape="rect" coords="514,21,591,41" href="#feat_Prefs" alt="Preferences" title="Preferences">
+      </map>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><b>File Manager Window</b></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table border="0" cellspacing="5" cellpadding="0">
+  <tr> 
+    <td><img src="images/WeebleFM_editor.gif" width="518" height="246" usemap="#Map2" border="1" alt="Editor Window"> 
+      <map name="Map2"> 
+        <area shape="rect" coords="440,0,503,21" href="#Layout_Logout" alt="Logout" title="Logout">
+        <area shape="rect" coords="410,21,503,42" href="#Layout_Help" alt="Help" title="Help">
+        <area shape="rect" coords="6,54,248,79" href="#layout_login" alt="Login Information" title="Login Information">
+        <area shape="rect" coords="6,79,370,109" href="#feat_Edit_Currfile" alt="Current File" title="Current File">
+        <area shape="rect" coords="441,79,508,106" href="#feat_Edit_Cancel" alt="Cancel Editor" title="Cancel Editor">
+        <area shape="rect" coords="6,117,512,209" href="#feat_Edit_box" alt="Edit Box" title="Edit Box">
+        <area shape="rect" coords="87,215,138,241" href="#feat_Edit_Save" alt="Save File" title="Save File">
+        <area shape="rect" coords="155,215,264,241" href="#feat_Edit_SaveEdit" alt="Save &amp; Continue Editing" title="Save &amp; Continue Editing">
+        <area shape="rect" coords="281,216,357,240" href="#feat_Edit_Preview" alt="Preview Changes" title="Preview Changes">
+        <area shape="rect" coords="372,215,430,241" href="#feat_Edit_Reset" alt="Discard Changes" title="Discard Changes">
+      </map>
+    </td>
+  </tr>
+  <tr> 
+    <td align="center"><b>Editor Window</b></td>
+  </tr>
+</table>
+<h4>Layout Descriptions</h4>
+<h5><a name="Layout_dir"></a>Directory</h5>
+<p>Clicking any of the directory links will change to that directory. Clicking 
+  the radio button to the left will select that directory for one of the functions 
+  listed at the bottom.</p>
+<h5><a name="Layout_fileinfo"></a>File Information</h5>
+<p>Listed here is the following:</p>
+<ul>
+  <li>File/directory ownership (user:group).</li>
+  <li>Last modification date and time.</li>
+  <li>File/directory size. </li>
+</ul>
+<h5><a name="Layout_files"></a>Files</h5>
+<p>Clicking any of the files will download that file (See <a href="#feat_download">Downloading</a>). 
+  Clicking the radio button to the left will select that file for one of the functions 
+  listed at the bottom. </p>
+<h5><a name="Layout_Help"></a>Help </h5>
+<p>Click Help to bring up this page. </p>
+<h5><a name="layout_homedir"></a>Home Directory</h5>
+<p>Clicking this link will take you back to your home directory.</p>
+<h5><a name="layout_login"></a>Login Information</h5>
+<p>Displays the username and the server name that the user logged in to.</p>
+<h5><a name="Layout_Logout"></a>Logout</h5>
+<p>Click Logout to log out of the file manager.</p>
+<h5><a name="Layout_updir"></a>Up One Directory</h5>
+<p>Clicking this link will change to the parent of the current directory. </p>
+<h3><a name="Features"></a>Features</h3>
+<h4><a name="feat_login"></a>Logging In</h4>
+<h5><a name="login_username"></a>Username &amp; Password</h5>
+<p>To login to WeebleFM, type your username and password.</p>
+<h5><a name="login_server"></a>Server</h5>
+<p>Next you choose the server you wish to login to by selecting it from the Server 
+  dropdown list.</p>
+<h5><a name="login_buttons"></a>Login</h5>
+<p>Once your username and password are filled in, and the server is selected, 
+  click Login to log into the server.</p>
+<h5><a name="login_remember"></a>Remember Me</h5>
+<p>Check this box to have WeebleFM save your username and password in a browser 
+  cookie. The next time you return to the login scree, the username and password 
+  will already be filled in.</p>
+<h5><a name="login_cookie"></a>Remove Login Cookie</h5>
+<p> If you no longer want your username and password saved (as a cookie), click 
+  this link.</p>
+<h4><a name="feat_cd"></a>Changing Directories</h4>
+<p> There are two ways to change directories in WeebleFM. The first is to type 
+  a path into the &quot;Current Directory&quot; section at the top and click the 
+  <b>CD</b> button.</p>
+<p>The second is to click on a directory name in the main file listing. There 
+  are two special &quot;directory&quot; entries that are always displayed at the 
+  top of the file listing. Those are the &quot;<b>.</b> (home directory)&quot; 
+  and &quot;<b>..</b> (up one directory)&quot;.</p>
+<dl> 
+  <dt>. (home directory)</dt>
+  <dd>This will always take you back to your home directory.</dd>
+  <dt>.. (up one directory)</dt>
+  <dd>This will change to the parent of your current working directory.</dd>
+</dl>
+<h4><a name="feat_create"></a>Creating Files and Directories</h4>
+<p>Both new files and directories are easy to create. Simply select whether you 
+  want to create a File or Directory, type in the name, and click <b>Create</b>.</p>
+<p>When creating a new directory it will be placed in the current working directory.</p>
+<p>When creating a new file, you will be taken immediately into the editor. You 
+  <i>must</i> click <b>Save</b> for the new file to be created. See the section 
+  on <a href="#feat_edit">Editing Files</a> for more information on how to use 
+  the editor.</p>
+<h4><a name="feat_edit"></a>Editing Files</h4>
+<p>WeebleFM has a built in text editor. To edit a file, choose one of the files 
+  in the current directory, by clicking the radio button to the left of it's name, 
+  and click the <b>Edit</b> button.</p>
+<p>The layout of the editor window is very similar to the directory listing:</p>
+<ul>
+  <li><a name="feat_Edit_Currfile"></a>At the top will be listed the &quot;Current 
+    File&quot; instead of the &quot;Current Directory&quot;, which lists the file 
+    loaded into the editor.</li>
+  <li><a name="feat_Edit_Cancel"></a>Directly to the right of the current file 
+    is a <b>Cancel</b> button. Click this button to discard your changes and return 
+    to the file listing.</li>
+  <li><a name="feat_Edit_box"></a>Below the current file is the edit box. Make 
+    any changes to the file here.</li>
+  <li>At the bottom are four buttons: 
+    <ul>
+      <li><a name="feat_Edit_Save"></a><b>Save</b> will save your changes and 
+        return to the file listing.</li>
+      <li><b><a name="feat_Edit_SaveEdit"></a>Save &amp; Edit</b> will save your 
+        changed and return to editing the current file.</li>
+      <li><b><a name="feat_Edit_Preview"></a>Preview</b> will load your current 
+        changes into a separate preview frame. Changes will not be saved until 
+        one of the two save buttons are clicked.</li>
+      <li><b><a name="feat_Edit_Reset"></a>Reset</b> will discard your changes 
+        but stay in the editor.</li>
+    </ul>
+  </li>
+</ul>
+<p>Please note: The editor will be unable to save a file once the session has 
+  expired. If you have problems with loosing your changes, either save the files 
+  more frequently, or have the system administrator increase <font face="Courier New, Courier, mono">session.cache_expire</font> 
+  in php.ini. </p>
+<h4><a name="feat_delete"></a>Delete</h4>
+<p>To delete a file or directory, select the file or directory by clicking the 
+  radio button to it's left and click the <b>Delete</b> button. Directories can 
+  only be deleted if they are empty.</p>
+<h4><a name="feat_copy"></a>Copy</h4>
+<p>Only files can be copied. To copy a file, select the file by clicking the radio 
+  button to it's left and click <b>Copy</b>. Next select the folder to copy the 
+  file to and click <b>Commit</b>. You can select any directory you have access 
+  to save a file to.</p>
+<p>If the file name already exists in the destination folder, the words &quot;<i>Copy 
+  of</i>&quot; will be append to the beginning of the name.</p>
+<h4><a name="feat_move"></a>Move</h4>
+<p>Both files and directories can be moved. Select the file or directory by clicking 
+  the radio button to it's left and click <b>Move</b>. Next select the folder 
+  to move to and click <b>Commit</b>.</p>
+<h4><a name="feat_rename"></a>Rename</h4>
+<p>Both files and directories can be renamed. Select the file or directory by 
+  clicking the radio button to it's left, type in a new name at the bottom next 
+  to the <b>Rename</b> button, and then click the <b>Rename</b> button.</p>
+<h4><a name="feat_upload"></a>Upload</h4>
+<p>To upload a file click the <b>Browse...</b> button at the bottom, select a 
+  file, and then click the <b>Upload</b> button.</p>
+<p>To upload multiple files at one time, click the <b>Upload</b> button without 
+  1st selecting a file. This will take you to the <i>Upload</i> page. Here you 
+  can select multiple files to upload at one time.</p>
+<h4><a name="feat_download"></a>Download</h4>
+<p>To download a file simply click on the filename.</p>
+<h4><a name="feat_hidden"></a>Show/Hide</h4>
+<p>The <b>Show</b>/<b>Hide</b> buttons toggle the display of hidden files. Click 
+  <b>Show</b> to display hidden files. Click <b>Hide</b> to hide them.</p>
+<h4><a name="feat_perm"></a>Permissions</h4>
+<p>On systems that support the CHMOD command, the individual file permissions 
+  can be changed. The permissions are displayed to the far right of each file 
+  or directory. Below is an example of the permissions on a directory:</p>
+<blockquote> 
+  <p><font face="Courier New, Courier, mono">drwxr-xr-x</font></p>
+</blockquote>
+<p>Click on the permission you wish to change to toggle it. For more information 
+  on how file permissions work, see the permissions entry in the <a href="#glossary">Glossary</a>.</p>
+<h4><a name="feat_Prefs"></a>Preferences</h4>
+<p>The Preferences window allows you to customize Weeble File Manager, if the 
+  system administrator has enabled this feature. (See $allow_custom in <a href="#config_section">Configuration 
+  Options</a>.)</p>
+<p>The available configuration options are grouped into 3 categories:</p>
+<ul>
+  <li><a href="#feat_Pref_Theme">Preset Theme</a></li>
+  <li><a href="#feat_Pref_Display">Display</a></li>
+  <li><a href="#feat_Pref_Misc">Miscellaneous</a></li>
+</ul>
+<h5><a name="feat_Pref_Theme"></a>Preset Theme</h5>
+<p>A number of preset themes are available with Weeble File Manager that change 
+  its look (colors, fonts, font sizes, etc...). Select a theme from the list and 
+  click <b>Load Theme</b> to see what it looks like.</p>
+<p>Click <b>Save</b> to keep this theme, or click <b>Cancel</b> to discard your 
+  changes.</p>
+<p><i><b>Note</b>: Once a theme is loaded, it'll stay active even if Cancel is 
+  clicked. Logging out and back in will restore the user's previous settings.</i></p>
+<h5><a name="feat_Pref_Display"></a>Display</h5>
+<p>The Display preferences are very similar to the themes. Here you can customize 
+  the colors, background image(s), fonts, and font sizes to you own liking. The 
+  display preferences are broken down again, into 3 categories.</p>
+<ul>
+  <li><b>Page</b> - These settings effect the whole page.</li>
+  <li><b>File Manager</b> - These settings effect the file listing display.</li>
+  <li><b>Misc.</b> - Miscellaneous display settings.</li>
+</ul>
+<h6>Color References</h6>
+<ul>
+  <li>Douglas R. Jacobson's <a href="http://www.htmlhelp.org/icon/hexchart.gif">RGB 
+    Color Chart</a></li>
+  <li><a href="http://www.htmlhelp.org/reference/css/units.html#color">HTMLHelp.Org 
+    Color Units</a></li>
+</ul>
+<p>Click <b>Preview</b> to view your changes, <b>Save</b> to keep them, or <b>Cancel</b> 
+  to discard.</p>
+<h5><a name="feat_Pref_Misc"></a>Miscellaneous</h5>
+<p>Miscellaneous preferences are any settings that don't fit in the other two 
+  categories. Currently they consist of:</p>
+<p><i>Starting Directory</i><br>
+  Set this to the directory (folder) WeebleFM should start in, when logging in. 
+  If this is blank, the default is to log into your home directory.</p>
+<p><i>Hidden Files</i><br>
+  Controls whether to initially display hidden files when logging in.</p>
+<p><i>Edit Box</i><br>
+  Controls the height (in rows) and width (in columns) of the edit window, and 
+  the size (in either pixels or a percentage) of the preview window.</p>
+<h3><a name="config_section"></a>Configuration Options</h3>
+<p>All of WeebleFM's configuration options can be found in the settings.php file. 
+  In this section we'll list each configuration variable, what it's purpose is, 
+  and what the available settings are.</p>
+<h4>$allow_chmod</h4>
+<h5>Example: $allow_chmod = TRUE;</h5>
+<p>Setting this to TRUE will allow the user to change file permissions (if supported 
+  by the server).</p>
+<h4>$allow_custom</h4>
+<h5>Example: $allow_custom = FALSE;</h5>
+<p>Setting this to TRUE will allow the user to override the default preferences.</p>
+<h4>$def_Display_Hidden</h4>
+<h5>Example: $def_Display_Hidden = FALSE;</h5>
+<p>Default setting for the display of hidden files and directories.</p>
+<h4>$default_theme </h4>
+<h5>Example: $default_theme = &quot;default&quot;;</h5>
+<p> Default theme for the file manager. Set this to the name of the theme in the 
+  &quot;themes/&quot; directory you want to be the default (without the .thm extension).</p>
+<p>This effects the theme used on the login page, and the theme chosen for new 
+  users who do not yet have one set. If $allow_custom = FALSE, this will be the 
+  theme used for all users.<br>
+</p>
+<h4>$editor_prefs</h4>
+<h5>Example: <br>
+  $editor_prefs = array (<br>
+  &quot;rows&quot; =&gt; 20,<br>
+  &quot;cols&quot; =&gt; 80,<br>
+  &quot;max_size&quot; =&gt; 50000,<br>
+  &quot;preview_size&quot; =&gt; &quot;25%&quot;,<br>
+  );<br>
+</h5>
+<p>Settings used by the file editor.</p>
+<ul>
+  <li>rows = Width of the edit box.</li>
+  <li>cols = height of the edit box.</li>
+  <li>max_size = Maximum file size allowed by the file editor (in bytes).</li>
+  <li>preview_size = Size of the Preview frame. This can either be a percentage 
+    or a size in pixels.</li>
+</ul>
+<h4>$ftp_access</h4>
+<h5>Example: $ftp_access = TRUE;</h5>
+<p>This sets the default access to WeebleFM. When a remote client is not covered 
+  by any of the entries in $ftp_access_list, this variable determines whether 
+  they are allowed access.</p>
+<p>Set to TRUE to allow access by default, FALSE to deny.</p>
+<h4>$ftp_access_list</h4>
+<h5>Example: <br>
+  $ftp_access_list = array (<br>
+  &quot;-172.16.10.8/255.255.255.255&quot;,<br>
+  &quot;+172.17.45.1/24&quot;<br>
+  );</h5>
+<p>Access list to allow or deny access to WeebleFM. Syntax is as follows: <b>[+,-]IP/MASK</b></p>
+<P>Note: Some versions of php4 choke on "255.255.255.255", in those cases 
+   please use "/32" instead.</P>
+<table border="0" cellpadding="2" cellspacing="2" summary="">
+  <tr valign="top"> 
+    <td><b>+,-</b></td>
+    <td><b>+</b> allows access, <b>-</b> denies access.</td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>IP</b></td>
+    <td>The IP can be specified in dotted-quad (xxx.xxx.xxx.xxx) notation or as 
+      a hostname (www.example.com).</td>
+  </tr>
+  <tr valign="top"> 
+    <td><b>Mask</b></td>
+    <td>The (subnet) mask can be specified in dotted-quad (xxx.xxx.xxx.xxx) notation 
+      or in /CERN (e.g. /24) notation.</td>
+  </tr>
+</table>
+<h4>$ftp_disable_mcrypt</h4>
+<h5>Example: $ftp_disable_mcrypt = FALSE;</h5>
+<p>Set this to TRUE if you <b><font color="#FF0000">absolutely</font></b> must 
+  disable the mcrypt encryption support. Setting this introduces security issues 
+  as anyone who has access to the web server can potentially read the stored passwords. 
+  The only time this should be set is when mcrypt is unavailable.</p>
+<h4>$ftp_max_uploads</h4>
+<h5>Example: $ftp_max_uploads = 5;</h5>
+<p>Set this to the maximum number of files a user can upload at one time, on the 
+  multiple-upload page.</p>
+<h4>$ftp_Passive_Mode</h4>
+<h5>Example: $ftp_Passive_Mode = FALSE;</h5>
+<p>Set this to TRUE if you want/need to use passive mode ftp connections to your 
+  server. </p>
+<h4>$ftp_remember_me</h4>
+<h5>Example: $ftp_remember_me = TRUE;</h5>
+<p>Set this to TRUE to enable the Remember Me checkbox, FALSE to disable.</p>
+<h4>$ftp_Servers</h4>
+<h5>Example: $ftp_Servers = array (<br>
+  &quot;Server Name&quot; =&gt; &quot;localhost:21&quot;,<br>
+  &quot;Another Server&quot; =&gt; &quot;server2:8021&quot;<br>
+  ); </h5>
+<p>Set this to the ftp server(s) you would like available to your users. The format 
+  is &quot;Descriptive Name&quot; =&gt; &quot;server:port&quot;. The descriptive 
+  name is what will be listed on the Login screen, Server is the hostname or ip 
+  address of the ftp server, and Port is the port the ftp server is listening 
+  on. If the port is not specified the default of 21 will be used.</p>
+<h4>$icon_display</h4>
+<h5>Example: <br>
+  $icon_display = array ( <br>
+  &quot;dirup&quot;=&gt; &quot;dirup.gif&quot;,<br>
+  &quot;dir&quot;=&gt; &quot;dir.gif&quot;,<br>
+  &quot;file&quot;=&gt; &quot;binary.gif&quot;,<br>
+  &quot;php&quot;=&gt; &quot;php.gif&quot;<br>
+  );<br>
+</h5>
+<p>Icons used for different file types, set by file extension. The default settings 
+  are:</p>
+<ul>
+  <li>dirup = Icon used for the 'up' directory link.</li>
+  <li>dir = Icon used for directories.</li>
+  <li>file = Default icon used for files.</li>
+  <li>php = An example of the file extension support. All files ending in .php 
+    will use this icon.</li>
+</ul>
+<h4>$key</h4>
+<h5>Example: $key = 'WEEBLEFM';</h5>
+<p>Key used for the encryption in WeebleFM (passwords, etc...). This should be 
+  unique to your site. Also, if this changes, the username/password cookies will 
+  need to be re-saved.</p>
+<p><i>Note: The key should be enclosed in single (') not double (&quot;) quotes.</i></p>
+<h4>$log</h4>
+<h5> $log = array(<br>
+  &quot;dir&quot; =&gt; &quot;/tmp&quot;,<br>
+  &quot;filename&quot; =&gt; &quot;wfm.log&quot;,<br>
+  &quot;level&quot; =&gt; 0<br>
+  );</h5>
+<p>Set this up to configure logging.</p>
+<ul>
+  <li>dir = Directory where the log will be stored.</li>
+  <li>filename = Filename of the log.</li>
+  <li>level = Level of information that will be displayed in the log. 
+    <ul>
+      <li>0 = No logging.</li>
+      <li>1 = Logins.</li>
+      <li>2 = Logins and errors.</li>
+    </ul>
+  </li>
+</ul>
+<p><i>Note: If file / directory where weeblefm is logging needs to be writable 
+  by the web server, otherwise logging will fail.</i></p>
+<h4>$logo</h4>
+<h5>Example: $logo = &quot;logo.gif&quot;;</h5>
+<p>Set this to the location of the logo graphic displayed at the top of WeebleFM.</p>
+<h4>$logo_anim</h4>
+<h5>Example: $logo_anim = &quot;logo.gif&quot;;</h5>
+<p>Set this to the location of the logo graphic displayed at the top of the login 
+  page. </p>
+<h4>$pref_ciphers</h4>
+<h5>Example: $pref_ciphers = array (&quot;rijndael-256&quot;, &quot;tripledes&quot;, 
+  &quot;blowfish&quot;, &quot;des&quot;);</h5>
+<p>This lists the preferred encryption algorithms provided by the mcrypt support, 
+  they are listed in order of preference. If the 1st option isn't available, it 
+  attempts to use the second. If none of the listed algorithms are available, 
+  the script will default to whatever is available.</p>
+<h4>$show_col</h4>
+<h5> $show_col = array(<br>
+  &quot;owner&quot; =&gt; TRUE,<br>
+  &quot;date&quot; =&gt; TRUE,<br>
+  &quot;size&quot; =&gt; TRUE,<br>
+  &quot;perm&quot; =&gt; TRUE<br>
+  );</h5>
+<p> This variable allows the admin to choose what columns to display in the file 
+  manager listing.</p>
+<ul>
+  <li>owner: User and group ownership.</li>
+  <li> date: Date &amp; time last modified.</li>
+  <li>size: Size of the file.</li>
+  <li>perm: Permissions of the file/directory. (See Permissions in the <a href="#glossary">Glossary</a>)<br>
+  </li>
+</ul>
+<h4>$warn_color</h4>
+<h5>Example:<br>
+  $warn_color = array (<br>
+  &quot;info&quot; =&gt; &quot;#000000&quot;,<br>
+  &quot;minor&quot; =&gt; &quot;#000055&quot;,<br>
+  &quot;medium&quot; =&gt; &quot;#555599&quot;,<br>
+  &quot;major&quot; =&gt; &quot;#FF0000&quot;<br>
+  );<br>
+</h5>
+<p>Color settings for the different levels of warning messages.</p>
+<h3><a name="Miscellaneous"></a>Miscellaneous</h3>
+<h4><a name="misc_Credits"></a>Mad Props &amp; Shout Outs (Credits)</h4>
+<h5><IMG SRC="images/php_logo.gif" alt="PHP"></h5>
+<P>This product includes PHP, freely available
+  from <a href="http://www.php.net/">http://www.php.net/</a>.  For more
+  information on the <a href="http://www.php.net/license/2_02.txt">PHP
+  license (v.2.02)</a>.
+</p>
+<h5><img src="http://sourceforge.net/sflogo.php?group_id=23588&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net" align=top></h5>
+<P>A <em>huge</em> thanks to <a href="http://www.sourceforge.net/">SourceForge</a> 
+  for hosting our project and making all of this possible.</P>
+<h4><a name="misc_Troubleshooting"></a>Troubleshooting</h4>
+<p>See our project page at Source Forge for the latest troubleshooting information.</p>
+<p><a href="http://www.sourceforge.net/projects/weeblefm/">http://www.sourceforge.net/projects/weeblefm/</a></p>
+<h4><a name="misc_Limit_Uploads"></a>Limiting Uploads</h4>
+<p>There are two settings in php.ini that must be configured to set the file size 
+  upload limitations. See the <a href="http://weeblefm.sourceforge.net/tools/helpdesk/?search=upload_max_filesize+post_max_size">HelpDesk</a> 
+  for more information.</p>
+<ul>
+  <li>upload_max_filesize</li>
+  <li>post_max_size</li>
+</ul>
+<h4><a name="misc_Themes"></a>Creating/Editing Themes</h4>
+<p>The themes are loaded from files ending in <b><font face="Courier New, Courier, mono">.thm</font></b>, 
+  in the <b><font face="Courier New, Courier, mono">themes/</font></b> directory. 
+  Two simple ways to create a theme are.</p>
+<ol>
+  <li>Copy the Default.thm to a new file (<i>e.g. MyTheme.thm</i>), and edit the 
+    file. Each option is commented as to what it is for.</li>
+  <li>Use the Preferences window to create a personal theme. Once you are satisfied 
+    with it, copy your <b><font face="Courier New, Courier, mono">.wfmrc</font></b> 
+    to the <b><font face="Courier New, Courier, mono">themes/</font></b> directory 
+    and rename it (<i>e.g. MyTheme.thm</i>). Edit your new <b><font face="Courier New, Courier, mono">.thm</font></b> 
+    file and remove any lines that do not start with &quot;thm_&quot;.</li>
+</ol>
+<hr>
+<h2><a name="glossary"></a>Glossary</h2>
+<dl>
+  <dt>Passive Mode</dt>
+  <dd><i>Directly from bsd FTP manual pages: </i> 
+    <p>The PASV command requests that the remote server open a port for the data 
+      connection and return the address of that port. The remote server listens 
+      on that port and the client connects to it.</p>
+    <p>When using the more traditional PORT command, the client listens on a port 
+      and sends that address to the remote server, who connects back to it. Passive 
+      mode is useful when using ftp through a gateway router or host that controls 
+      the directionality of traffic. (Note that though ftp servers are required 
+      to support the PASV command by RFC 1123, some do not.)<br>
+    </p>
+  </dd>
+  <dt>Permissions</dt>
+  <dd>There are 3 sets of permissions for every file or directory -- owner, group, 
+    and world. For each set, there are separate read (<font face="Courier New, Courier, mono" color="#FF0000"><b>r</b></font>), 
+    write (<font face="Courier New, Courier, mono" color="#FF0000"><b>w</b></font>), 
+    and execute (<font face="Courier New, Courier, mono" color="#FF0000"><b>x</b></font>) 
+    permissions. The owner permissions are for the owner of the file or directory. 
+    The group permissions are for everyone in the group. The world permissions 
+    are for anyone else.
+    <p>Using the earlier example of <font face="Courier New, Courier, mono">drwxr-xr-x</font> 
+    we have three sets of permissions.</P>
+    <p><font face="Courier New, Courier, mono">d<b><font color="#FF0000">rwx</font></b>r-xr-x</font> 
+    - Owner permissions.<br>
+    <font face="Courier New, Courier, mono">drwx<b><font color="#FF0000">r-x</font></b>r-x</font> 
+    - Group permissions.<br>
+    <font face="Courier New, Courier, mono">drwxr-x<b><font color="#FF0000">r-x</font></b></font> 
+    - World permissions.</p></dd>
+  <dt>Subnet Mask</dt>
+  <dd>A subnet mask is used to determine what IP network an IP address belongs to, or if two IPs are on the same network.  A subnet mask can be expressed in two ways, in dotted-quad (xxx.xxx.xxx.xxx) notation, or in /XX shorthand.
+  <P>For more information on subnetting try this <a href="http://www.google.com/search?hl=en&amp;q=What+Is+A+Subnet+Mask" target="_blank">Google Search</a>.
+ </P>
+ </dd>
+</dl>
+<p class="sig"><a href="http://weeblefm.sourceforge.net/">Weeble File Manager</a> 
+  by Jon Manna &amp; Chris Michaels<br>
+  Updated Apr 24, 2002</p>
+</body>
+</html>

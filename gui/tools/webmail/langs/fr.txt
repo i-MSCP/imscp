@@ -1,0 +1,343 @@
+#----------------------------------------------------------------
+# File:			fr.txt
+# Description:	French locale for Uebimiau 2.7
+# Author: 		Christophe Buguet (christophe.buguet@wanadoo.fr)
+# Comments:		If you intend to add JavaScript alert messages,
+#				use \' for quotes, and normal ' for text in	PHP
+#				pages.
+#----------------------------------------------------------------
+
+# User-friendly folder names
+
+inbox_extended					= Boîte de réception
+sent_extended					= Eléments envoyés
+trash_extended					= Corbeille
+
+# Navigation texts
+
+previous_text					= Précédent
+next_text						= Suivant
+
+# Mail Server Errors
+
+error_connect					= Connexion au serveur impossible
+error_retrieving				= Impossible de recevoir le message, dû aux modifications 
+error_other						= Des erreurs sont survenues, veuillez contacter votre administrateur
+
+#Invalid name of mailbox
+
+error_invalid_name				= Nom de dossier invalide - Veuillez utiliser les caractères suivants A-Z, 0-9, . - espace
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Aucun destinataire spécifié
+error_compose_invalid_mail1_s	= L'adresse suivante semble invalide
+error_compose_invalid_mail1_p	= Les adresses suivantes semblent invalides
+error_compose_invalid_mail2_s	= Veuillez la vérifier avant l'envoi du message
+error_compose_invalid_mail2_p	= Veuillez les vérifier avant l'envoi du message
+
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Etes-vous sûr de vouloir effacer ce message ? 
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Pas d'objet]
+no_sender_text					= [Inconnu]
+no_recipient_text				= [Inconnu]
+
+
+
+# If the quota limit was exceeded;
+
+quota_exceeded					= Espace insuffisant pour effectuer cette opération.\rVeuillez nettoyer les anciens messages et réessayer.
+quota_usage_info				= Limite de quota
+quota_usage_used				= utilisé
+quota_usage_of					= de
+quota_usage_avail				= Total
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set			= iso-8859-15
+
+messages_mnu				= Messages
+compose_mnu					= Ecrire un nouveau message
+refresh_mnu					= Actualiser
+folders_mnu					= Dossiers
+search_mnu					= Rechercher
+address_mnu					= Carnet d'adresses
+empty_trash_mnu				= Vider la corbeille
+prefs_mnu					= Préférences
+logoff_mnu 					= Quitter
+
+reply_prefix				= Re:
+forward_prefix				= Tr:
+
+reply_delimiter				= --------- Message d'origine --------
+reply_from_hea				= De:
+reply_to_hea				= A:
+reply_cc_hea				= Copies:
+reply_date_hea				= Date:
+reply_subject_hea			= Objet:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea						= Clef
+value_hea					= Valeur
+
+[Folders]
+
+fld_name_hea				= Dossiers
+fld_messages_hea			= Messages
+fld_size_hea				= Taille
+fld_empty_hea				= Vider
+fld_delete_hea				= Supprimer
+fld_total					= Total:
+fld_make_new				= Créer un nouveau dossier
+folders_to					= Dossier de
+
+[MessageList]
+
+messages_to					= Messages de 
+no_messages					= Aucun message dans le dossier 
+
+delete_selected_mnu			= Supprimer la sélection
+move_selected_mnu			= Déplacer la sélection dans
+delete_mnu					= Supprimer
+move_mnu					= Déplacer dans
+subject_hea					= Objet
+from_hea					= De
+to_hea						= A
+date_hea					= Date
+size_hea					= Taille
+
+msg_you_have				= Vous avez
+msg_message					= message
+msg_messages				= messages
+
+msg_more_unread				= non lus
+msg_one_unread				= non lu
+msg_none_unread				= aucun non lu
+msg_in_the_folder			= dans le dossier
+[Login]
+
+
+lgn_title					= Authentification
+lgn_welcome_msg				= Bienvenue. Veuillez entrer vos informations de connexion.
+lng_user_email				= e-Mail
+lng_user_name				= Nom d'utilisateur
+lng_user_pwd				= Mot de passe
+lng_theme					= Thème
+lng_language				= Langue
+lng_login_btn				= Connexion &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= A:
+cc_hea						= Copies à:
+bcc_hea						= Copies cachées:
+subject_hea					= Objet:
+address_tip					= Carnet d adresses
+
+attach_hea					= Pièces jointes:
+attch_add_new				= Ajouter une pièce jointe
+attch_name_hea				= Nom
+attch_size					= Taille
+attch_type_hea				= Type
+attch_dele_hea				= Supprimer
+attch_no_hea				= Aucune pièce jointe
+
+add_signature				= Ajouter une signature
+send_text					= Envoyer
+
+result_error				= Impossible d'envoyer l'e-Mail
+result_success				= Votre e-Mail a bien été envoyé.
+nav_continue				= Continuer
+nav_back					= Retour
+
+up_title 					= Ajouter une pièce jointe
+up_information_text			= Sélectionnez un fichier
+up_button_text				= Envoyer
+
+priority_text				= Priorité
+priority_low				= Basse
+priority_normal				= Normale
+priority_high				= Haute
+
+[AdvancedEditor]
+
+adv_warning_text_mode1		= Veuillez décocher l\'option
+adv_warning_text_mode2		= pour utiliser la barre des outils
+
+adv_type_path				= Tapez une adresse URL:
+
+format_paragraph			= Paragraphe
+format_h1					= En-tête 1 <H1>
+format_h2					= En-tête 2 <H2>
+format_h3					= En-tête 3 <H3>
+format_h4					= En-tête 4 <H4>
+format_h5					= En-tête 5 <H5>
+format_h6					= En-tête 6 <H6>
+format_pre					= Formaté <PRE>
+format_clear_all			= Nettoyer le formatage
+
+format_font					= Police
+format_size					= Taille
+
+format_color				= Couleur
+format_back					= Fond
+color_red					= Rouge
+color_blue					= Bleu
+color_green					= Vert
+color_black					= Noir
+color_yellow				= Jaune
+color_white					= Blanc
+
+view_source					= Voir source HTML 
+text_mode					= Mode texte 
+clear_format				= Supprimer le formatage
+
+priority_text				= Priorité
+
+
+[BadLogin]
+
+bdl_title					= Authentification erronée 
+bdl_msg						= Les informations entrées sont incorrectes<br><br>Veuillez vérifier les données et réessayer à nouveau
+bdl_back					= Retour
+
+
+[Error]
+
+err_title					= Erreur
+err_msg						= Une erreur est survenue durant l'éxécution de la commande<br><br>Veuillez vous reconnecter à nouveau
+err_system_msg				= Message système:
+err_exit					= Quitter
+
+[Preferences]
+
+prf_title 					= Préférences
+prf_general_title			= Informations Générales
+prf_name					= Nom
+prf_reply_to				= Répondre à 
+prf_time_zone				= Fuseau horaire
+prf_trash_title				= Corbeille
+prf_save_to_trash			= Garder une copie des messages <b>supprimés</b> dans le dossier
+prf_save_only_read			= Garder une copie des messages <b>lus</b> dans les dossier
+prf_empty_on_exit			= <b>Vider</b> la corbeille en quittant
+prf_sent_title				= Eléments envoyés
+prf_save_sent				= Garder une copie des messages <b>envoyés</b> dans le dossier
+prf_messages_title			= Messages
+prf_page_limit				= Nombre de messages maximum affichés par page
+prf_signature_title			= Signature
+prf_signature				= Tapez ou collez votre signature
+prf_auto_add_sign			= Ajouter la signature automatiquement aux nouveaux messages
+prf_save_button				= Enregistrer
+prf_display_images			= Afficher les images attachées
+prf_default_editor_mode		= Mode d'édition par défaut
+prf_default_editor_mode_text	= "Mode texte"
+prf_default_editor_mode_html	= "Editeur HTML avancé (IE5 ou supérieur uniquement)"
+prf_time_to_refesh			= Temps de rafraîchissement pour les messages (en minutes)
+
+[Catch]
+
+ctc_title					= Capturer une adresse
+ctc_information				= Seuls les e-mails valides qui ne sont pas encore dans ce carnet seront ajoutés
+ctc_name					= Nom
+ctc_email					= e-Mail
+ctc_no_address				= Pas d\'adresse disponible 
+ctc_close					= Fermer
+ctc_save					= Enregistrer
+
+[Readmsg]
+
+next_mnu					= Suivant
+previous_mnu				= Précédent
+back_mnu					= Retour
+reply_mnu					= Répondre
+reply_all_mnu				= Répondre à tous
+forward_mnu					= Transférer
+headers_mnu					= En-tête
+move_mnu					= Déplacer dans
+delete_mnu					= Supprimer
+print_mnu					= Imprimer
+
+from_hea					= De:
+to_hea						= A:
+cc_hea						= Copies:
+date_hea					= Date:
+subject_hea					= Objet:
+attach_hea					= Pièces jointes:
+
+attch_name_hea				= Nom
+attch_force_hea				= Télécharger
+attch_type_hea				= Type
+attch_size_hea				= Taille
+catch_address				= Ajouter l'adresse au carnet
+
+[Search]
+
+sch_information_text		= Entrez le mot ou la phrase que vous désirez trouver.<br> La recherche sera uniquement effectuée sur les messages des <b>dossiers locaux</b> ou sur les <b>messages lus<b>.
+sch_button_text				= Rechercher &gt;&gt;
+sch_subject_hea				= Objet
+sch_from_hea				= De
+sch_date_hea				= Date
+sch_body_hea				= Message
+sch_folder_hea				= Dossier
+sch_no_results				= Aucun message trouvé
+
+
+[QuickAddress]
+
+qad_title 					= Carnet d'adresses
+qad_select_address			= Sélectionnez un contact 
+qad_to						= A
+qad_cc						= Copies
+qad_bcc						= Copies cachées
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Carnet d'adresses
+adr_name					= Nom
+adr_email					= e-Mail
+adr_street					= Adresse
+adr_city					= Ville
+adr_state					= Etat
+adr_work					= Travail
+adr_back					= Retour
+adr_save					= Enregistrer
+
+# list
+
+adr_name_hea				= Nom
+adr_email_hea				= e-Mail
+adr_edit_hea				= Modifier
+adr_expo_hea				= Exportation
+adr_dele_hea				= Supprimer
+adr_new_entry				= Nouvelle entrée
+
+
+addr_saved					= Votre contact a été sauvé
+addr_added					= Votre contact a été ajouté
+addr_deleted				= Votre contact a été supprimé

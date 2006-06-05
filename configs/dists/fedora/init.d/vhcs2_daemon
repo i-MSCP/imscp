@@ -1,0 +1,58 @@
+#!/bin/sh
+# $Id: vhcs2.init,v 1.0 2006/01/09 17:54:30 Ugo Viti <ugo.viti@initzero.it> $
+#
+# PID file, vhcs2_network added by Carsten Schoene <cs@linux-administrator.com>
+#
+# description:	VHCS2 (Virtual Hosting Control System) Daemon
+#
+# chkconfig:	- 90 30
+# processname:	vhcs2_daemon
+# config:	/etc/vhcs2/vhcs2.conf
+# pidfile:	/var/run/vhcs2_daemon.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+prog=vhcs2_daemon
+progpath=/var/www/vhcs2/daemon
+PID=/var/run/vhcs2_daemon.pid
+
+start() {
+        echo -n $"Starting $prog: "
+        daemon $progpath/$prog -p $PID
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog
+}
+
+stop() {
+        echo -n $"Shutting down $prog: "
+        killproc $prog
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog
+}
+
+case "$1" in
+  start)
+        start
+	/etc/init.d/vhcs2_network
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        stop
+        start
+        ;;
+  status)
+        status $prog
+        RETVAL=$?
+        ;;
+  *)
+        echo "Usage: $prog {start|stop|restart|status}"
+        exit 1
+esac
+
+exit $RETVAL
+

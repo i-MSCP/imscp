@@ -1,0 +1,110 @@
+-----------------------------------------------------------------------------
+Virtual Hosting Control System (VHCS) 2.4.6.1
+--------------------------------- CHANGELOG ---------------------------------
+
+Version:	2.4.6.1
+
+Released by:	Markus Petzsch (m.petzsch@net-hoster.de) VHCS-TEAM
+
+Bugfixes:	- add new Version of phpMyAdmin
+		- Fix: Domainovertake due to inconvinent SQL Querry (0000089)
+		- Fix: Creation of FTP Accounts works again
+
+New Features:	NONE
+
+DB Changes:	NONE
+
+Files Changed:	Please see changes-2.4.6.1 for more details
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
+
+Version:	2.4.6
+
+Released by:	Alexander Kotov (alex@molesoftware.com) VHCS-TEAM
+
+Bugfixes:	- 17.08.05 :: Bug 0000124 :: Database names with wildcards fixed
+		- 10.08.05 :: Bug 0000126 :: Login encoding template fix
+		- 06.08.05 :: Bug 0000135 :: Webmail small optic fix
+		- 06.08.05 :: Bug 0000134 :: Admin Level - /admin/admin_log.php
+		- 25.05.05 :: Bug 0000045 :: Admin level reseller assigment bug fix - /admin/manage_reseller_owners.php
+		- 25.05.05 :: Bug 0000088 :: support system small bug fix admin/reseller/enduser level => view_ticket.php
+		- 25.05.05 :: Bug 0000122 :: small css bug in the webmail css file
+		- 25.05.05 :: Bug 0000123 :: enhancement - strtolower(); for all new gui system entries
+		- 25.05.05 :: Bug 0000121 :: Enduserlevel /client/edit_ftp_acc.php typo fix
+		- 25.07.05 :: Bug 0000120 :: Enduserlevel /client/add_ftp_acc.php username rangecheck enhancement
+		- 22.07.05 :: Bug 0000089 :: fix in /include/reseller-functions.php
+		- 22.07.05 :: Bug 0000117 :: Count ftp accounts to subdomains
+		- 22.07.05 :: Bug 0000109 :: End user level :: mail account additional
+		- 21.07.05 :: Bug 0000108 :: Mount pint range check was extended
+		- 21.07.05 :: Bug 0000102 :: Pakacge / Engine :: htaccess manager
+		- 21.07.05 :: Bug 0000115 :: Enduser level :: Edit custom error pages
+		- 26.06.05 :: Bug 0000083 :: Admin level :: Multilanguage management :: Install Language
+		- 26.06.05 :: Bug 0000080 :: Reseller Level :: Domain-Alias-Error
+		- 26.06.05 :: Bug 0000077 :: Admin level :: User session typo error
+		- 26.06.05 :: Bug 0000066 :: Reseller Level :: /reseller/edit_domain.php missed variable
+
+New Features:   - Purchasing module :: User part is done
+		- Purchasing module :: Reseller level :: Management of customer orders - done
+		- Purchasing module :: Enduser level :: Users can order hosting package update - done
+		-User related variables for the custom menus (expl. {uid} for user id)
+
+DB Changes:     New tables => "orders" and "orders_settings" => needed for the purchasing modul
+
+		CREATE TABLE `orders` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+ 		`user_id` int(10) unsigned NOT NULL default '0',
+		`plan_id` int(10) unsigned NOT NULL default '0',
+		`date` int(10) unsigned NOT NULL default '0',
+		`domain_name` varchar(200) default NULL,
+		`fname` varchar(200) default NULL,
+		`lname` varchar(200) default NULL,
+		`firm` varchar(200) default NULL,
+		`zip` varchar(10) default NULL,
+		`city` varchar(200) default NULL,
+		`country` varchar(200) default NULL,
+		`email` varchar(200) default NULL,
+		`phone` varchar(200) default NULL,
+		`fax` varchar(200) default NULL,
+		`street1` varchar(200) default NULL,
+		`street2` varchar(200) default NULL,
+		`status` varchar(255) default NULL,
+		PRIMARY KEY  (`id`)
+		) TYPE=MyISAM AUTO_INCREMENT=36 ;
+
+		CREATE TABLE `orders_settings` (
+		`id` int(10) unsigned NOT NULL default '0',
+		`user_id` int(10) unsigned NOT NULL default '0',
+		`header` text,
+		`footer` text,
+		PRIMARY KEY  (`id`)
+		) TYPE=MyISAM;
+
+		Changes in the existing tables => "hosting_plans"
+		New fields are
+
+		`description` varchar(255) default NULL
+		`price` int(10) unsigned NOT NULL default '0',
+		`setup_fee` int(10) unsigned NOT NULL default '0',
+		`value` varchar(255) default NULL,
+		`payment` varchar(255) default NULL,
+		`status` int(10) unsigned NOT NULL default '0',
+
+		here the structure:
+
+		CREATE TABLE `hosting_plans` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+		`reseller_id` int(10) unsigned NOT NULL default '0',
+		`name` varchar(255) default NULL,
+		`description` varchar(255) default NULL,
+  		`props` text,
+  		`price` int(10) unsigned NOT NULL default '0',
+  		`setup_fee` int(10) unsigned NOT NULL default '0',
+  		`value` varchar(255) default NULL,
+  		`payment` varchar(255) default NULL,
+  		`status` int(10) unsigned NOT NULL default '0',
+  		UNIQUE KEY `id` (`id`)
+		) TYPE=MyISAM AUTO_INCREMENT=22 ;
+
+Files Changed:	Please see changes-2.4.6 for more details
+-----------------------------------------------------------------------------
+-----------------------------------------------------------------------------

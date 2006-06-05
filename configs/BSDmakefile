@@ -1,0 +1,8 @@
+.include <../Makefile.inc>
+
+install:
+	cd dists/openbsd && $(MAKE) install
+
+uninstall:
+	cd dists/openbsd && $(MAKE) uninstall
+

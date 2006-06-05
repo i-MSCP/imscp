@@ -1,0 +1,337 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Pøíchozí pošta
+sent_extended					= Odeslaná pošta
+trash_extended					= Smazané
+
+#Navigation texts
+
+previous_text					= Pøedchozí
+next_text					= Další
+
+# Mail Server Errors
+
+error_connect					= Chyba pøipojení k serveru
+error_retrieving				= Chyba pøístupu do složka, Váše složka pøíchozí pošty byla pøesunuta
+error_other					= Systém má potíže, kontaktujte administrátora
+
+#Invalid name of mailbox
+
+error_invalid_name				= Chybný název složky - Použijte pouze tyto znaky  A-Z, 0-9, .- nebo mezeru
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Nezadali jste adresáta
+error_compose_invalid_mail1_s	= Odesílaný email je neplatný
+error_compose_invalid_mail1_p	= následující email je neplatný
+error_compose_invalid_mail2_s	= Zkontrolovat napsání pøed odesláním zprávy
+error_compose_invalid_mail2_p	= Zkontrolovat napsání pøed odesláním zpráv
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Opravdu chcete smazat tuto zprávu?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Není pøedmìt]
+no_sender_text					= [Odesílatel neznámý]
+no_recipient_text				= [Pøíjemce neznámý]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Není místo ve vaší Pøíchozí poštì k dokonèení této akce\Prosím smažte nìjaké zprávy
+quota_usage_info				= Limit
+quota_usage_used				= Používané
+quota_usage_of					= z
+quota_usage_avail				= možných
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-2
+
+messages_mnu					= Zprávy
+compose_mnu					= Napsat
+refresh_mnu					= Obnovit
+folders_mnu					= Složky
+search_mnu					= Hledej
+address_mnu					= Adresáø
+empty_trash_mnu					= Vyprázdnit smazané
+prefs_mnu					= Nastavení
+logoff_mnu 					= Odhlásit se
+
+
+
+reply_prefix					= Rv:
+forward_prefix					= Fw:
+
+reply_delimiter					= --------- Originální zpráva --------
+reply_from_hea					= Od:
+reply_to_hea					= Komu:
+reply_cc_hea					= Kopie:
+reply_date_hea					= Datum:
+reply_subject_hea				= Pøedmìt:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Klíè
+value_hea						= Hodnota
+
+[Folders]
+
+fld_name_hea					= Složka
+fld_messages_hea				= Zpráva
+fld_size_hea					= Velikost
+fld_empty_hea					= Prázdný
+fld_delete_hea					= Smazat
+fld_total					= Celkem:
+fld_make_new					= Vytvoøit novou složku
+folders_to					= Složky do:
+
+[MessageList]
+
+messages_to						= Zprávy do
+no_messages						= Nemáte žádnou zprávu v 
+
+delete_selected_mnu				= Smazat vybrané
+move_selected_mnu				= Pøesunout vybrané do
+delete_mnu						= Smazat
+move_mnu						= Pøesunout
+subject_hea						= Pøedmìt
+from_hea						= Od
+to_hea							= Komu
+date_hea						= Datum
+size_hea						= Velikost
+
+msg_you_have					= Máte
+msg_message					= zprávu
+msg_messages					= zprávy
+
+msg_more_unread					= nepøeètené
+msg_one_unread					= nezaøazené
+msg_none_unread					= nepøeètené
+msg_in_the_folder				= ve složce
+[Login]
+
+
+lgn_title					= Pøihlásit se
+lgn_welcome_msg					= Vítejte, pøihlašte se na Váš úèet
+lng_user_email					= E-mail
+lng_user_name					= Uživatel
+lng_user_pwd					= Heslo
+lng_theme					= Jazyk
+lng_language					= ??
+lng_login_btn					= Pøihlásit se &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Komu:
+cc_hea						= Kopie:
+bcc_hea						= Skrytá kopie:
+subject_hea					= Pøedmìt:
+address_tip					= Z Adresáøu
+
+attach_hea					= Pøíloha:
+attch_add_new					= Pøidat nový soubor
+attch_name_hea					= Jméno
+attch_size					= Velikost
+attch_type_hea					= Typ
+attch_dele_hea					= Smazat
+attch_no_hea					= Bez pøílohy
+
+add_signature					= Pøidat podpis
+send_text					= Poslat
+
+result_error					= Není možné poslat e-mail
+result_success					= E-mail byl odeslán
+nav_continue					= Pokraèovat
+nav_back					= Zpìt
+
+up_title 					= Pøidat soubor
+up_information_text				= Vybrat soubor
+up_button_text					= Poslat
+
+priority_text					= Priorita
+priority_low					= Nízká
+priority_normal					= Normalní
+priority_high					= Vysoká
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Odznaète parametr
+adv_warning_text_mode2			= použitím panelu nástrojù
+
+adv_type_path					= Napsat URL:
+
+format_paragraph				= Paragraph
+format_h1					= Style 1 <H1>
+format_h2					= Style 2 <H2>
+format_h3					= Style 3 <H3>
+format_h4					= Style 4 <H4>
+format_h5					= Style 5 <H5>
+format_h6					= Style 6 <H6>
+format_pre					= Formátovaný <PRE>
+format_clear_all				= Zruš vše
+
+format_font					= Font
+format_size					= Velikost
+
+format_color					= Barva
+format_back					= Pozadí
+color_red					= Èervená
+color_blue					= modrá
+color_green					= Zelená
+color_black					= Èerná
+color_yellow					= Žlutá
+color_white					= Bílá
+
+view_source					= Prohlédnout HTML zdroj
+text_mode					= Textový mód
+clear_format					= Zruš formát
+
+priority_text					= Priorita
+
+
+
+
+[BadLogin]
+
+bdl_title					= Chyba pøi pøihlášení
+bdl_msg						= Nelze se pøihlásit uživatelem/heslem, které jste zadali. Zkontrolujte údaje a zadejte znova
+bdl_back					= Zpìt
+
+
+[Error]
+
+err_title					= Vyskytly se chyby
+err_msg						= Pøi provádìní se vyskytly chyby<br><br>Pøihlašte se znova
+err_system_msg					= Zpráva systému: 
+err_exit					= Odhlásit
+
+[Preferences]
+
+prf_title 					= Nastavení
+prf_general_title				= Hlavní informace
+prf_name					= Jméno
+prf_reply_to					= Odpovìdìt komu
+prf_time_zone					= Èasové pásmo
+prf_trash_title					= Smazané složky
+prf_save_to_trash				= Když <b>mažete</b> zprávy, tak pøesouvat do 
+prf_save_only_read				= Ukládat <b>pøeètené zprávy</b> do 
+prf_empty_on_exit				= <b>Smazat</b> pøi odhlášení smazané zprávy
+prf_sent_title					= Poslané zprávy
+prf_save_sent					= Uložit <b>poslané zprávy</b> do 
+prf_messages_title				= Zprávy
+prf_page_limit					= Max. poèet zpráv na stránku
+prf_signature_title				= Podpis
+prf_signature					= Napište svùj podpis
+prf_auto_add_sign				= Pøidat Vaš podpis ke všem odchozím zprávám
+prf_save_button					= Uložit
+prf_display_images				= Ukázat pøipojené obrázky
+prf_default_editor_mode				= Editovací mód
+prf_default_editor_mode_text			= "Textový mód"
+prf_default_editor_mode_html			= "Rozšíøený HTML editor (pouze pro IE5 a vyšší)"
+prf_time_to_refesh				= Obnovovat po (minuty)
+
+[Catch]
+
+ctc_title					= Pøidat do adresáøe
+ctc_information					= Budou zobrazeny pouze emaily, které jsou v adresáøi
+ctc_name					= Jméno
+ctc_email					= E-mail
+ctc_no_address					= adresa nebyla zadána
+ctc_close					= Zavøít
+ctc_save					= Uložit
+
+[Readmsg]
+
+next_mnu					= Další
+previous_mnu					= Pøedchozí
+back_mnu					= Zpìt
+reply_mnu					= Odpovìdìt
+reply_all_mnu					= Odpovìdìt všem
+forward_mnu					= Pøeposlat
+headers_mnu					= Hlavièka
+move_mnu					= Pøesunout do
+delete_mnu					= Smazat
+print_mnu					= Tisk
+
+from_hea					= Od:
+to_hea						= Komu:
+cc_hea						= Kopie:
+date_hea					= Datum:
+subject_hea					= Pøedmìt:
+attach_hea					= Pøíloha:
+
+attch_name_hea					= Jméno
+attch_force_hea					= Stáhnout
+attch_type_hea					= Typ
+attch_size_hea					= Velikost
+catch_address					= Pøidat do adresáøe
+
+[Search]
+
+sch_information_text				= Napište slovo, které hledáte.<br>
+sch_button_text					= Hledat &gt;&gt;
+sch_subject_hea					= Pøedmìt
+sch_from_hea					= Od
+sch_date_hea					= Datum
+sch_body_hea					= Zpráva
+sch_folder_hea					= Složka
+sch_no_results					= Nebyla nalezena žádná zpráva
+
+
+[QuickAddress]
+
+qad_title 			= Adresáø
+qad_select_address		= Vyberte kontakt
+qad_to				= Komu
+qad_cc				= Kopie
+qad_bcc				= Skrytá kopie
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Adresáø
+adr_name					= Jméno
+adr_email					= E-mail
+adr_street					= Ulice
+adr_city					= Mìsto
+adr_state					= Stát
+adr_work					= Práce
+adr_back					= Zpìt
+adr_save					= Uložit
+
+# list
+
+adr_name_hea					= Jméno
+adr_email_hea					= E-mail
+adr_edit_hea					= Upravit
+adr_expo_hea					= Export
+adr_dele_hea					= Smazat
+adr_new_entry					= Nový kontakt
+
+
+addr_saved					= Kontakt byl uložen
+addr_added					= Kontakt byl pøidán
+addr_deleted					= Kontakt byl smazán

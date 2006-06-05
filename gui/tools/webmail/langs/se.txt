@@ -1,0 +1,334 @@
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended					= Inkorgen
+sent_extended					= Skickat
+trash_extended					= Borttaget
+
+#Navigation texts
+
+previous_text					= Föregående
+next_text					= Nästa
+
+# Mail Server Errors
+
+error_connect					= Anslutning till POP-server misslyckades
+error_retrieving				= Pga ändringar i din inkorg kunde inte detta meddelande hämtas
+error_other					= Ett oväntat fel uppstod. Var vänlig kontakta din adminstratör
+
+#Invalid name of mailbox
+
+error_invalid_name				= Felaktig inmatning - var god använd endast A-Z, 0-9, .- och mellanslag
+
+
+#Validations when sending mails            	;
+
+error_no_recipients				= Var god ange minst en giltig E-postadress som mottagare
+error_compose_invalid_mail1_s			= E-postadressen verkar vara ogiltig
+error_compose_invalid_mail1_p			= Följande E-postadresser verkar vara ogiltiga
+error_compose_invalid_mail2_s			= Den kommer att kontrolleras före sändning
+error_compose_invalid_mail2_p			= De kommer att kontrolleras före sändning
+
+
+#Confirmation of delete                    	;
+
+confirm_delete					= Vill du verkligen ta bort detta meddelandet?
+
+
+# If the message no have a subject or sender	;
+
+no_subject_text					= [inget ämne]
+no_sender_text					= [okänd]
+no_recipient_text				= [inget innehåll]
+
+
+# If the quota limit was exceeded           	;
+
+quota_exceeded					= Du har uppnått gränsen för ditt tillgängliga utrymme. Var vänlig ta bort gamla meddelanden och försök igen!
+quota_usage_info				= Tillgängligt utrymme
+quota_usage_used				= Använt
+quota_usage_of					= av
+quota_usage_avail				= tillgängligt
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %Y/%m/%d %H:%M
+
+
+# CharSet                                       ;
+
+default_char_set				= iso-8859-1
+
+messages_mnu					= Inkorgen
+compose_mnu					= Skriv
+refresh_mnu					= Uppdatera
+folders_mnu					= Mappar
+search_mnu					= Sök
+address_mnu					= Adressbok
+empty_trash_mnu					= Töm Borttaget
+prefs_mnu					= Alternativ
+logoff_mnu 					= Logga ut
+
+
+
+reply_prefix					= SV:
+forward_prefix					= VB:
+
+reply_delimiter					= ---------  Ursprungligt Meddelande --------
+reply_from_hea					= Från:
+reply_to_hea					= Till:
+reply_cc_hea					= Kopia:
+reply_date_hea					= Datum:
+reply_subject_hea				= Ämne:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea						= Nyckel
+value_hea					= Värde
+
+[Folders]
+
+fld_name_hea					= Mappar
+fld_messages_hea				= Meddelanden
+fld_size_hea					= Storl
+fld_empty_hea					= Töm
+fld_delete_hea					= Ta bort
+fld_total					= Totalt:
+fld_make_new					= Ny mapp
+folders_to					= Mappar för
+
+[MessageList]
+
+messages_to					= Meddelanden för 
+no_messages					= Inga meddelanden i mappen 
+
+delete_selected_mnu				= Ta bort markerade
+move_selected_mnu				= Flytta markerade till
+delete_mnu					= Ta bort
+move_mnu					= Flytta till
+subject_hea					= Ämne
+from_hea					= Från
+to_hea						= Till
+date_hea					= Datum
+size_hea					= Storl
+
+msg_you_have					= Du har
+msg_message					= meddelande
+msg_messages					= meddelanden
+
+msg_more_unread					= olästa
+msg_one_unread					= oläst
+msg_none_unread					= inga olästa
+msg_in_the_folder				= i mappen
+[Login]
+
+
+lgn_title					= Inloggning
+lgn_welcome_msg					= Välkommen. Ange din kontoinformation:
+lng_user_email					= E-postadress
+lng_user_name					= Användarnamn
+lng_user_pwd					= Lösenord
+lng_theme					= Språk
+lng_language					= Language
+lng_login_btn					= Logga in &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Till:
+cc_hea						= Kopia:
+bcc_hea						= Hemlig Kopia:
+subject_hea					= Ämne:
+address_tip					= Adressbok
+
+attach_hea					= Bilagor:
+attch_add_new					= Bifoga fil
+attch_name_hea					= Namn
+attch_size					= Storlek
+attch_type_hea					= Typ
+attch_dele_hea					= Ta bort
+attch_no_hea					= Det finns inga bilagor!
+
+
+add_signature					= Använd signatur
+send_text					= Skicka
+
+result_error					= Ett fel uppstod, ditt meddelande kunde inte skickas.
+result_success					= Meddelandet skickades.
+nav_continue					= Fortsätt
+nav_back					= Tillbaka
+
+up_title 					= Bifoga fil
+up_information_text				= Välj fil
+up_button_text					= Ladda upp
+
+priority_text					= Prioritet
+priority_low					= Låg
+priority_normal					= Normal
+priority_high					= Hög
+
+[AdvancedEditor]
+
+adv_warning_text_mode1				= Var god avmarkera ett val
+adv_warning_text_mode2				= för att använda verktygsfältet
+
+adv_type_path					= Skriv in URL:
+
+format_paragraph				= Stycke
+format_h1					= Rubrik 1 <H1>
+format_h2					= Rubrik 2 <H2>
+format_h3					= Rubrik 3 <H3>
+format_h4					= Rubrik 4 <H4>
+format_h5					= Rubrik 5 <H5>
+format_h6					= Rubrik 6 <H6>
+format_pre					= Formaterad <PRE>
+format_clear_all				= Rensa formatering
+
+format_font					= Teckensnitt
+format_size					= Storlek
+
+format_color					= Färg
+format_back					= Bakgrund
+color_red					= Röd
+color_blue					= Blå
+color_green					= Grön
+color_black					= Svart
+color_yellow					= Gul
+color_white					= Vit
+
+view_source					= Visa Källa
+text_mode					= Endast Text
+clear_format					= Rensa Format
+
+priority_text					= Prioritet
+
+
+[BadLogin]
+
+bdl_title					= Inloggningsfel
+bdl_msg						= Du kan inte logga in med angivet användarnamn/lösenord<br><br>Kontrollera din auppgifter, och försök igen
+bdl_back					= Tillbaka
+
+
+[Error]
+
+err_title					= Det uppstod ett fel
+err_msg						= Ett fel har uppstått i din session<br><br>Var vänlig logga in igen
+err_system_msg					= Systemmeddelande: 
+err_exit					= Logga in igen
+
+[Preferences]
+
+prf_title 					= Alternativ
+prf_general_title				= Personlig information
+prf_name					= Namn
+prf_reply_to					= Svarsadress
+prf_time_zone					= Tidszon
+prf_trash_title					= Borttaget
+prf_save_to_trash				= Flytta <b>borttagna</b> meddelanden till mappen <b><!--%UM_TRASH_EXTENDED%--></b>
+prf_save_only_read				= Använd <b>inte</b> mappen <b>&quot;Borttaget&quot;</b> för <b>lästa</b> meddelanden. Ta bort dem direkt. 
+prf_empty_on_exit				= <b>Töm</b> mappen borttaget vid utloggning
+prf_sent_title					= Skickade meddelanden
+prf_save_sent					= Spara en kopia av <b>skickade</b> meddelanden i mappen <b><!--%UM_SENT_EXTENDED%--></b>
+prf_messages_title				= Meddelandeinställningar
+prf_page_limit					= Antal meddelanden per sida
+prf_signature_title				= Signatur
+prf_signature					= Personlig signatur
+prf_auto_add_sign				= Lägg till signatur automatiskt
+prf_save_button					= Spara
+prf_display_images				= Visa bilder i meddelanden
+prf_default_editor_mode				= Standardformat på meddelanden
+prf_default_editor_mode_text			= "Endast text"
+prf_default_editor_mode_html			= "Avancerad HTML editor (Endast för IE v5 eller högre)"
+prf_time_to_refesh				= Ladda automatiskt om mappar efter: (minuter)
+
+[Catch]
+ctc_title					= Spara E-postadresser
+ctc_information					= OBS! Bara adresser som inte redan är lagrade i din adressbok visas.
+ctc_name					= Namn
+ctc_email					= E-post
+ctc_no_address					= Ingen adress tillgänglig
+ctc_close					= Stäng
+ctc_save					= Spara
+
+[Readmsg]
+
+next_mnu					= Nästa
+previous_mnu					= Föregående
+back_mnu					= Tillbaka
+reply_mnu					= Svara
+reply_all_mnu					= Svara alla
+forward_mnu					= Vidarebefordra
+headers_mnu					= Meddelandehuvud
+move_mnu					= Flytta till
+delete_mnu					= Ta bort
+print_mnu					= Skriv ut
+
+from_hea					= Från:
+to_hea						= Till:
+cc_hea						= Kopia:
+date_hea					= Datum:
+subject_hea					= Ämne:
+attach_hea					= Bilagor:
+
+attch_name_hea					= Namn
+attch_force_hea					= Ladda ner
+attch_type_hea					= Typ
+attch_size_hea					= Storlek
+catch_address					= Lägg till avsändaren i adressboken
+
+[Search]
+
+sch_information_text				= Skriv in ett ord eller en fras! <br> Bara meddelanden i <b>lokala mappar</b> och <b>lästa meddelanden </b>kommer att genomsökas.<br>Observera att detta kan ta en stund!
+sch_button_text					= Sök &gt;&gt;
+sch_subject_hea					= Ämne
+sch_from_hea					= Från
+sch_date_hea					= Datum
+sch_body_hea					= Meddelande
+sch_folder_hea					= Mapp
+sch_no_results					= Inga meddelanden funna
+
+
+[QuickAddress]
+
+qad_title 					= Välj mottagare
+qad_select_address				= Välj adress
+qad_to						= Till
+qad_cc						= Kopia
+qad_bcc						= Hemlig kopia
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Adressbok
+adr_name					= Namn
+adr_email					= E-postadress
+adr_street					= Gatuadress
+adr_city					= Postnr & Ort
+adr_state					= Område
+adr_work					= Övrigt
+adr_back					= Tillbaka
+adr_save					= Spara
+
+# list
+
+adr_name_hea					= Namn
+adr_email_hea					= E-post
+adr_edit_hea					= Ändra
+adr_expo_hea					= Exportera
+adr_dele_hea					= Ta bort
+adr_new_entry					= Ny adress
+
+addr_saved					= Adressen sparades 
+addr_added					= Adressen lades till
+addr_deleted					= Adressen togs bort

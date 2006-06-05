@@ -1,0 +1,16 @@
+x-wfm-category
+Errors
+x-wfm-version
+1.0.5 > CVS
+x-wfm-keyword
+fatal call mcrypt module libmcrypt
+x-wfm-problem
+Fatal error: Call to undefined function: mcrypt_module_open()
+x-wfm-solution
+The mcrypt module is either not installed or is broken. Please take one of the 
+    following solutions:
+    <ul>
+      <li>Recompile php4 with mcrypt support enabled.</li>
+      <li>Dowload the latest version of WeebleFM (which at the time of this writing 
+         would be beta 2002-04-14).  Verisons after 1.1 have an option to disable mcrypt.</li>
+    </ul>

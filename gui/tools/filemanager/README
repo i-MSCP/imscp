@@ -1,0 +1,14 @@
+WWW: https://sourceforge.net/projects/weeblefm/
+
+Project documentation is available at the above listed web site and in the
+docs/ directory.  Quick installation instructions can be found in
+docs/quick_install.html.  Text and PDF versions of all of the docs can be found
+in docs/TEXT and docs/PDF respectively.
+
+If you are upgrading from a previous version you MUST read docs/updating.html!
+
+This project and all of it's associated files and works are subject to the
+terms and conditions of the licensing agreement listed in the LICENSE file
+found in this directory.
+
+Requires PHP 4.0.x with the FTP extension. (MCRYPT is optional).

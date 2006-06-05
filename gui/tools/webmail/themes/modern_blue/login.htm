@@ -1,0 +1,63 @@
+{config_load file=$umLanguageFile section="Login"}
+<html>
+<head>
+<title>Webmail :: Login</title>
+<meta http-equiv="Content-Type" content="text/html; charset={#default_char_set#}">
+<link href="themes/modern_blue/css/vhcs.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="themes/modern_blue/css/vhcs.js"></script>
+{$umJS}
+</head>
+<body text="#000000">
+<table width="100%" height="100%"  border="00" cellpadding="0" cellspacing="0" bgcolor="#334163">
+  <tr>
+    <td height="551"><table width="100%"  border="00" cellpadding="0" cellspacing="0">
+      <tr bgcolor="#334163">
+        <td>&nbsp;</td>
+        <td align="right"><span class="login_time">{$smarty.now|date_format:"%l:%M"}&nbsp;{if $smarty.now|date_format:"%p" neq "PM"}am{else}pm{/if}</span>&nbsp;&nbsp;&nbsp;<br><span class="login_bottom">{$smarty.now|date_format:"%A, %B %e, %Y"}</span>&nbsp;&nbsp;&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="1" background="themes/modern_blue/images/login/content_background.gif"><img src="themes/modern_blue/images/login/content_background.gif" width="1" height="348"></td>
+        <td height="348" align="center" background="themes/modern_blue/images/login/content_background.gif">
+		<table width="450" cellspacing="7" align="center">
+			
+			<form name="form1" action="process.php" method=post>
+
+				<tr align="center"><td class="title" colspan=2>&nbsp;</td>
+
+				{if $umServerType neq "ONE-FOR-EACH"}
+				<tr><td align=right  width="30%" class="login_text"><b>{#lng_user_email#}</b>: &nbsp;</td><td class="default"><input type=text size=10 name="f_email" value="{$umEmail}" class="textinput" style="width:180px;"></td>
+				{else}
+				<tr><td align=right  width="30%" class="login_text"><b>{#lng_user_name#}</b>: &nbsp;</td><td class="default"><input type=text size=5 name="f_user" value="{$umUser}" class="textinput" style="width:80px;">
+				{if $umAvailableServers neq 0} <b>{$umServer}&nbsp;{$domainname}</b>{/if}</td>
+				{/if}
+				<tr><td align=right  width="30%" class="login_text"><b>{#lng_user_pwd#}</b>: &nbsp;</td><td class="default"><input type=password size=10 name="f_pass" class="textinput" style="width:180px;" value="{$umPass}"></td>
+
+
+				{if $umAllowSelectLanguage}
+				<tr><td align=right class="login_text"><b>{#lng_language#}</b>: &nbsp;</td><td class="default">{$umLanguages}</td>
+				{/if}
+
+				{if $umAllowSelectTheme}
+				<tr><td align=right class="login_text"><b>{#lng_theme#}</b>: &nbsp;</td><td class="default">{$umThemes}</td>
+				{/if}
+
+				<tr><td>&nbsp;</td><td class="default">
+				<input type=submit name=submit value="{#lng_login_btn#}" class="button"></td>
+			  </form>
+			</table>
+		</td>
+      </tr>
+      <tr>
+        <td width="1" height="2" background="themes/modern_blue/images/login/content_down.gif"><img src="themes/modern_blue/images/login/content_down.gif" width="2" height="2"></td>
+        <td height="2" background="themes/modern_blue/images/login/content_down.gif"><img src="themes/modern_blue/images/login/content_down.gif" width="2" height="2"></td>
+      </tr>
+      <tr>
+        <td width="1" bgcolor="#334163">&nbsp;</td>
+        <td bgcolor="#334163"><br><span class="login_bottom"></span></td>
+        </tr>
+    </table></td>
+  </tr>
+</table>
+</body>
+</html>
+

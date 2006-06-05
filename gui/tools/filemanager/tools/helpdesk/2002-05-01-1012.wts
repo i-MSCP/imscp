@@ -1,0 +1,14 @@
+x-wfm-category
+Features
+x-wfm-version
+All
+x-wfm-keyword
+SSH ssh SFTP sftp tunnel bridge secure
+x-wfm-problem
+Does WeebleFM support SFTP?
+x-wfm-solution
+The short answer to this no.
+<P>SFTP requires a special client that is SFTP aware.  WeebleFM currently
+ uses php4's built-in FTP functions (which are not SFTP aware).<BR>
+ Using an FTP -> SFTP bridge (or proxy) to 'tunnel' the FTP connection
+ should work fine.</P>

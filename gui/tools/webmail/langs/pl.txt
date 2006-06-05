@@ -1,0 +1,339 @@
+# Polish translation
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+
+inbox_extended					= Otrzymane
+sent_extended					= Wys³ane
+trash_extended					= Kosz
+
+#Navigation texts
+
+previous_text					= Poprzednia
+next_text					= Nastêpna
+
+# Mail Server Errors
+
+error_connect					= Nie mogê po³±czyæ siê z serwerem
+error_retrieving				= Nie mogê odczytaæ wiadomo¶ci
+error_other					= B³±d - proszê skontaktowaæ siê z administratorem
+
+#Invalid name of mailbox
+
+error_invalid_name				= Z³a nazwa - u¿ywaj tylko takich znaków: A-Z, 0-9, .-
+
+
+#Validations when sending mails            ;
+
+error_no_recipients				= Musisz podaæ odbiorcê poczty
+error_compose_invalid_mail1_s	= Podany adres e-mail jest nieprawid³owy!
+error_compose_invalid_mail1_p	= Podane adresy e-mail s± nieprawid³owe!
+error_compose_invalid_mail2_s	= Zanim wyslesz wiadomodc,\rupewnij sie czy wszelkie dane sa prawidlowe. 
+error_compose_invalid_mail2_p	= Zanim wyslesz wiadomo¶ci, \rupewnij sie czy wszelkie dane sa prawidlowe.
+
+
+#Confirmation of delete                    ;
+
+confirm_delete					= Czy jeste¶ pewien ¿e chcesz skasowaæ t± wiadomo¶æ?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text					= [Bez tytu³u]
+no_sender_text					= [Nadawca nieznany]
+no_recipient_text				= [Odbiorca nieznany]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded					= Twój limit dyskowy zosta³ przekroczony.\rProszê skasuj stare wiadomo¶ci i spróbuj ponownie
+quota_usage_info				= Limit dyskowy
+quota_usage_used				= Zajête
+quota_usage_of					= z
+quota_usage_avail				= dostêpnych
+
+
+#********************************************************#
+# Date Format                                            #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes    #
+# for a complete list, see http://www.php.net/strftime       #
+#********************************************************#
+
+date_format 					= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set				= iso-8859-2
+
+messages_mnu					= Wiadomo¶ci
+compose_mnu					= Komponuj
+refresh_mnu					= Od¶wie¿
+folders_mnu					= Foldery
+search_mnu					= Szukaj
+address_mnu					= Adresy
+empty_trash_mnu					= Opró¿nij Kosz
+prefs_mnu					= Preferencje
+logoff_mnu 					= Wyloguj
+
+
+
+reply_prefix					= Odp:
+forward_prefix					= Fw:
+
+reply_delimiter					= --------- Wiadomo¶æ oryginalna --------
+reply_from_hea					= Od:
+reply_to_hea					= Do:
+reply_cc_hea					= Cc:
+reply_date_hea					= Data:
+reply_subject_hea				= Temat:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea							= Typ
+value_hea						= Waro¶æ
+
+[Folders]
+
+fld_name_hea					= Folder
+fld_messages_hea				= Wiadomo¶ci
+fld_size_hea					= Rozmiar
+fld_empty_hea					= Opró¿nij
+fld_delete_hea					= Usuñ
+fld_total					= Wszystkie:
+fld_make_new					= Utwórz nowy folder
+folders_to					= Foldery dla
+
+[MessageList]
+
+messages_to						= Wiadomo¶ci dla 
+no_messages						= Brak wiadomo¶ci w folderze
+
+delete_selected_mnu				= Usuñ zaznaczone
+move_selected_mnu				= Przenie¶ zaznaczone do
+delete_mnu						= Usuñ
+move_mnu						= Przenie¶ do
+subject_hea						= Temat
+from_hea						= Od
+to_hea							= Do
+date_hea						= Data
+size_hea						= Rozmiar
+
+msg_you_have					= Masz
+msg_message					= wiadomo¶æ
+msg_messages					= wiadomo¶ci
+
+msg_more_unread					= nieprzeczytane
+msg_one_unread					= nieprzeczytan±
+msg_none_unread					= wszystkie przeczytane
+msg_in_the_folder				= w folderze
+[Login]
+
+
+lgn_title					= Logowanie
+lgn_welcome_msg					= Informacje Logowania
+lng_user_email					= E-mail
+lng_user_name					= Login
+lng_user_pwd					= Has³o
+lng_theme					= Wygl±d
+lng_language					= Jêzyk
+lng_login_btn					= Zaloguj &gt;&gt;
+
+
+[Newmessage]
+
+to_hea						= Do:
+cc_hea						= Cc:
+bcc_hea						= Bcc:
+subject_hea					= Temat:
+address_tip					= Wybierz
+
+attach_hea					= Za³±czniki:
+attch_add_new					= Dodaj nowy za³±cznik
+attch_name_hea					= Nazwa
+attch_size					= Rozmiar
+attch_type_hea					= Typ
+attch_dele_hea					= Usuñ
+attch_no_hea					= Nie ma za³±czników
+
+add_signature					= Dodaj sygnaturê
+send_text					= Wy¶lij
+
+result_error					= Wys³anie wiadomo¶ci by³o niemo¿liwe!
+result_success					= Wiadomo¶æ zosta³a wys³ana
+nav_continue					= Dalej
+nav_back					= Powrót
+
+up_title 					= Dodawanie za³±czników
+up_information_text				= Wybierz plik
+up_button_text					= Dodaj
+
+priority_text					= Priorytet
+priority_low					= Niski
+priority_normal					= ¦redni
+priority_high					= Wysoki
+
+[AdvancedEditor]
+
+adv_warning_text_mode1			= Aby u¿ywaæ paska zadañ, proszê odznaczyæ opcjê
+adv_warning_text_mode2			=  
+
+adv_type_path					= Podaj URL:
+
+format_paragraph				= Styl
+format_h1					= Style 1 <H1>
+format_h2					= Style 2 <H2>
+format_h3					= Style 3 <H3>
+format_h4					= Style 4 <H4>
+format_h5					= Style 5 <H5>
+format_h6					= Style 6 <H6>
+format_pre					= Formatted <PRE>
+format_clear_all				= Usuñ wszystko
+
+format_font					= Czcionka
+format_size					= Rozmiar
+
+format_color					= Kolor
+format_back					= T³o
+color_red					= Czerwony
+color_blue					= Niebieski
+color_green					= Zielony
+color_black					= Czarny
+color_yellow					= ¯ó³ty
+color_white					= Bia³y
+
+view_source					= Poka¿ kod HTML
+text_mode					= Text mode
+clear_format					= Usuñ format
+
+priority_text					= Priorytet
+
+
+
+
+[BadLogin]
+
+bdl_title					= B³±d logowania 
+bdl_msg						= Podana nazwa u¿ytkownika lub has³o jest nieprawid³owe<br><br>Proszê spróbowaæ ponownie
+bdl_back					= Powrót
+
+
+[Error]
+
+err_title					= Wyst±pi³ b³±d
+err_msg						= Wyst±pi³ b³±d<br><br>Proszê siê ponownie zalogowaæ
+err_system_msg					= Komunikat systemu: 
+err_exit					= Wyloguj
+
+[Preferences]
+
+prf_title 					= Preferencje
+prf_general_title				= Informacje podstawowe
+prf_name					= Nazwa
+prf_reply_to					= Adres zwrotny
+prf_time_zone					= Strefa czasowa
+prf_trash_title					= Kosz
+prf_save_to_trash				= Przenie¶ <b>usuniête</b> wiadomo¶ci do foldera
+prf_save_only_read				= Zapisuj tylko <b>przeczytane</b> wiadomo¶ci w folderze
+prf_empty_on_exit				= <b>Opró¿nij</b> kosz przy wyj¶ciu
+prf_sent_title					= Wys³ane wiadomo¶ci
+prf_save_sent					= Zapisz <b>wys³ane</b> wiadomo¶ci w folderze 
+prf_messages_title				= Wiadomo¶ci
+prf_page_limit					= Liczba wiadomo¶ci na stronie
+prf_signature_title				= Sygnatura
+prf_signature					= Sygnatura
+prf_auto_add_sign				= Dodawaj sygnaturê do wszystkich wysy³anych wiadomo¶ci 
+prf_save_button					= Zapisz
+prf_display_images				= Pokazuj za³±czone obrazki
+prf_default_editor_mode				= Domy¶lny tryb edycji
+prf_default_editor_mode_text			= "Tryb tekstowy"
+prf_default_editor_mode_html			= "Edytor HTML (Tylko dla przegl±darek IE5 lub nowszych)"
+prf_time_to_refesh				= Czêstotliwo¶æ od¶wierzania wiadomo¶ci (w minutach)
+
+[Catch]
+
+ctc_title					= Dodaj adres
+ctc_information					= Wy¶wietlane s± wy³±cznie kontakty, które znajduj± siê w ki±¿ce adresowej
+ctc_name					= Nazwa
+ctc_email					= E-mail
+ctc_no_address					= Brak kontaktów w ksi±¿ce adresowej
+ctc_close					= Zamknij
+ctc_save					= Zapisz
+
+[Readmsg]
+
+next_mnu					= Nastêpna
+previous_mnu					= Poprzednia
+back_mnu					= Powrót
+reply_mnu					= Odpowiedz
+reply_all_mnu					= Odpowiedz wszystkim
+forward_mnu					= Prze¶lij dalej
+headers_mnu					= Nag³ówki
+move_mnu					= Przenie¶ do
+delete_mnu					= Usuñ
+print_mnu					= Drukuj
+
+from_hea					= Od:
+to_hea						= Do:
+cc_hea						= Cc:
+date_hea					= Data:
+subject_hea					= Temat:
+attach_hea					= Za³±czniki:
+
+attch_name_hea					= Nazwa
+attch_force_hea					= Pobierz
+attch_type_hea					= Typ
+attch_size_hea					= Rozmiar
+catch_address					= Dodaj do ksi±¿ki adresowej
+
+[Search]
+
+sch_information_text				= Podaj frazê lub s³owo, którego szukasz.<br> Przeszukiwane bêd± wy³±cznie przeczytane wiadomo¶ci. 
+sch_button_text					= Szukaj &gt;&gt;
+sch_subject_hea					= Temat
+sch_from_hea					= Od
+sch_date_hea					= Data
+sch_body_hea					= Tre¶æ
+sch_folder_hea					= Folder
+sch_no_results					= Nie znaleziono ¿adnych wiadomo¶ci
+
+
+[QuickAddress]
+
+qad_title 			= Ksi±¿ka adresowa
+qad_select_address		= Wybierz adres
+qad_to				= Do
+qad_cc				= Cc
+qad_bcc				= Bcc
+
+[AddressBook]
+
+# edit/display
+
+adr_title					= Ksi±¿ka adresowa
+adr_name					= Nazwa
+adr_email					= E-mail
+adr_street					= Ulica
+adr_city					= Miasto
+adr_state					= Województwo
+adr_work					= Praca
+adr_back					= Powrót
+adr_save					= Zapisz
+
+# list
+
+adr_name_hea					= Nazwa
+adr_email_hea					= E-mail
+adr_edit_hea					= Edytuj
+adr_expo_hea					= Eksportuj
+adr_dele_hea					= Usuñ
+adr_new_entry					= Nowy kontakt
+
+
+addr_saved					= Adres zosta³ zapisany
+addr_added					= Adres zosta³ dodany
+addr_deleted					= Adres zosta³ usuniêty

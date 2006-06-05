@@ -1,0 +1,32 @@
+
+Installation
+
+This is the quick installation guide, for more detail
+please read the manual available in the same directory.
+
+1. Unpack the files
+   cd /usr/local/www/data/
+   tar -zxvf /path/to/weeblefm-1.1.tar.gz
+
+2. Configuration
+   To configure the Weeble File Manager, open the 
+   settings.php file in your favorite editor.
+
+   The only settings that you must set before WeebleFM 
+   will work are $server and $port variables.
+
+3. Use it.
+   Once settings.php has been edited to your liking, 
+   simply open your web browser and point it to where ever 
+   WeebleFM resides on your server. In the above example,
+   we would direct our browser to http://www.webserver.dom/weeblefm/
+
+See the manual (available in both txt and html formats) for
+more detailed information.
+
+   [1]Weeble File Manager by Jon Manna & Chris Michaels
+   Updated Apr 12, 2002
+
+References
+
+   1. http://weeblefm.sourceforge.net/

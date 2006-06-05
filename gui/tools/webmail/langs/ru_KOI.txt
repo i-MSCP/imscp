@@ -1,0 +1,342 @@
+########################################################################
+# Сибирский Государственный Университет Телекоммуникаций и Информатики #
+#               Отдел Телекоммуникационных Технологий                  #
+#         (c) Департамент разработки Web-приложений - 2002             #
+########################################################################
+
+# ***** GLOBAL VARS ****** #
+# User-friendly names to system folders
+
+inbox_extended			= Входящие
+sent_extended			= Отправленные
+trash_extended			= Удалённые
+
+#Navigation texts
+
+previous_text			= Назад
+next_text			= Далее
+
+# Mail Server Errors
+
+error_connect			= Ошибка подключения к почтовому серверу
+error_retrieving		= Ошибка получения письма - Папка входящие изменилась
+error_other			= Общий сбой системы
+
+#Invalid name of mailbox
+
+error_invalid_name		= Неправильное имя папки - Используйте только символы А-Б, A-Z, 0-9, .- или пробелы
+
+
+#Validations when sending mails            ;
+
+error_no_recipients		= Необходимо для начала указать свой Email адрес
+error_compose_invalid_mail1_s	= Этот Email адрес неверен
+error_compose_invalid_mail1_p	= Эти Email адреса неверны
+error_compose_invalid_mail2_s	= Выберите Создать сообщение перед отправкой
+error_compose_invalid_mail2_p	= Выберите Создать сообщение перед отправкой
+
+
+#Confirmation of delete                    ;
+
+confirm_delete			= Вы действительно хотите удалить это сообщение?
+
+
+# If the message no have a subject or sender;
+
+no_subject_text			= [Без темы]
+no_sender_text			= [Отправитель неизвестен]
+no_recipient_text		= [Получатель неизвестен]
+
+
+# If the quota limit was exceeded           ;
+
+quota_exceeded			= Не хватает места в вашем ящике!\Пожалуйста, удалите часть сообщений, чтобы продолжить
+quota_usage_info		= Место в ящике
+quota_usage_used		= Использовано
+quota_usage_of			= из
+quota_usage_avail		= доступных
+
+
+#**********************************************************#
+# Date Format                                              #
+# %d = day, %m = month, %y = year, %H = hour, %M = minutes #
+# for a complete list, see http://www.php.net/strftime     #
+#**********************************************************#
+
+date_format 			= %d/%m/%y %H:%M
+
+
+# CharSet                                                 ;
+
+default_char_set		= koi8-r
+
+messages_mnu			= Сообщения
+compose_mnu			= Написать
+refresh_mnu			= Обновить
+folders_mnu			= Папки
+search_mnu			= Поиск
+address_mnu			= Адресная книга
+empty_trash_mnu			= Очистить корзину
+prefs_mnu			= Настройки
+logoff_mnu 			= Выход
+
+
+
+reply_prefix			= Re:
+forward_prefix			= Fw:
+
+reply_delimiter			= --------- Оригинал письма --------
+reply_from_hea			= От:
+reply_to_hea			= Для:
+reply_cc_hea			= Копия:
+reply_date_hea			= Дата:
+reply_subject_hea		= Тема:
+
+# done
+
+
+# page-specific vars
+[Headers]
+
+key_hea				= Ключ
+value_hea			= Значение
+
+[Folders]
+
+fld_name_hea			= Папка
+fld_messages_hea		= Сообщения
+fld_size_hea			= Размер
+fld_empty_hea			= Очистить
+fld_delete_hea			= Удалить
+fld_total			= Итого:
+fld_make_new			= Создать папку
+folders_to			= Папки
+
+[MessageList]
+
+messages_to			= Сообщения 
+no_messages			= Нет новых сообщений в папке 
+
+delete_selected_mnu		= Удалить отмеченные
+move_selected_mnu		= Переместить отмеченные в
+delete_mnu			= Удалить
+move_mnu			= Переместить в
+subject_hea			= Тема
+from_hea			= От
+to_hea				= Для
+date_hea			= Дата
+size_hea			= Размер
+
+msg_you_have			= У вас
+msg_message			= сообщение
+msg_messages			= сообщений
+
+msg_more_unread			= непрочитанных
+msg_one_unread			= непрочитано
+msg_none_unread			= непрочитанных нет
+msg_in_the_folder		= в папке
+
+
+[Login]
+
+lgn_title			= Логин
+lgn_welcome_msg			= Введите ваши Логин и пароль для доступа к почте
+lng_user_email			= E-mail
+lng_user_name			= Логин
+lng_user_pwd			= Пароль
+lng_theme			= Язык
+lng_login_btn			= Логин &gt;&gt;
+
+
+[Newmessage]
+
+to_hea				= Для:
+cc_hea				= Копия:
+bcc_hea				= Копия 2:
+subject_hea			= Тема:
+address_tip			= Из адресной книги
+
+attach_hea			= Вложения:
+attch_add_new			= Добавить новый файл
+attch_name_hea			= Название
+attch_size			= Размер
+attch_type_hea			= Тип
+attch_dele_hea			= Удалить
+attch_no_hea			= Нет вложений
+
+add_signature			= Добавить подпись
+send_text			= Отправить
+
+result_error			= Невозможно отправить почту
+result_success			= Письмо успешно отправлено
+nav_continue			= Продолжить
+nav_back			= Назад
+
+up_title 			= Добавить файл
+up_information_text		= Выбрать файл
+up_button_text			= Отправить
+
+priority_text			= Приоритет
+priority_low			= Низкий
+priority_normal			= Средний
+priority_high			= Высокий
+
+[AdvancedEditor]
+
+adv_warning_text_mode1		= Деактивируйте этуфункцию
+adv_warning_text_mode2		= чтобы воспользоваться дополнительной панелью
+
+adv_type_path			= Ввести URL:
+
+format_paragraph		= Параграф
+format_h1			= Стиль 1 <H1>
+format_h2			= Стиль 2 <H2>
+format_h3			= Стиль 3 <H3>
+format_h4			= Стиль 4 <H4>
+format_h5			= Стиль 5 <H5>
+format_h6			= Стиль 6 <H6>
+format_pre			= Форматирование <PRE>
+format_clear_all		= Очистить всё
+
+format_font			= Шрифт
+format_size			= Размер
+
+format_color			= Цвет
+format_back			= Фон
+color_red			= Красный
+color_blue			= Синий
+color_green			= Зелёный
+color_black			= Чёрный
+color_yellow			= Жёлтый
+color_white			= Белый
+
+view_source			= Посмотреть в виде HTML
+text_mode			= Текстовый режим
+clear_format			= Очистить формат
+
+priority_text			= Приоритет
+
+
+
+[BadLogin]
+
+bdl_title			= Ошибка входа 
+bdl_msg				= Вы неверно ввели Логин или пароль<br><br>Пожалуйста, проверьте и попробуйте снова
+bdl_back			= Назад
+
+
+[Error]
+
+err_title			= Произошли ошибки
+err_msg				= Произошла системная ошибка<br><br>Пожалуйста, войдите снова
+err_system_msg			= Системное сообщение: 
+err_exit			= Выход
+
+[Preferences]
+
+prf_title 			= Настройки
+prf_general_title		= Основная информация
+prf_name			= Имя
+prf_reply_to			= Адрес для ответов
+prf_time_zone			= Временная зона
+prf_trash_title			= Корзина
+prf_save_to_trash		= Когда Вы <b>удаляете</b> сообщения, помещать из в папке 
+prf_save_only_read		= Хранить только <b>прочитанные сообщения</b> в папке  
+prf_empty_on_exit		= <b>Очистить</b> корзину при выходе из программы
+prf_sent_title			= Отправленные
+prf_save_sent			= Хранить <b>отправляемые сообщения</b> в папке  
+prf_messages_title		= Сообщения
+prf_page_limit			= Количество сообщений на страницу
+prf_signature_title		= Подпись
+prf_signature			= Здесь Вы можете написать свою подпись для отправляемых сообщений
+prf_auto_add_sign		= Добавлять Вашу подпись ко всем оправляемым сообщениям 
+prf_save_button			= Сохранить
+prf_display_images		= Показывать прикреплённые изображения
+prf_default_editor_mode		= Режим редактирования
+prf_default_editor_mode_text	= "Простой текстовый"
+prf_default_editor_mode_html	= "HTML редактор (Internet Explorer 5 или выше, или схожих)"
+prf_time_to_refesh		= Обновление папки с сообщениями (в минутах)
+
+[Catch]
+
+ctc_title			= Добавить в адресную книгу
+ctc_information			= Будут показаны адреса, записанные в адресную книгу
+ctc_name			= Имя
+ctc_email			= E-mail
+ctc_no_address			= Адреса нет
+ctc_close			= Закрыть
+ctc_save			= Сохранить
+
+[Readmsg]
+
+next_mnu			= Следующее
+previous_mnu			= Предыдущее
+back_mnu			= Назад
+reply_mnu			= Ответить
+reply_all_mnu			= Ответить всем
+forward_mnu			= Переслать
+headers_mnu			= Заголовок
+move_mnu			= Переместить в
+delete_mnu			= Удалить
+print_mnu			= Распечатать
+
+from_hea			= От:
+to_hea				= Для:
+cc_hea				= Копия:
+date_hea			= Дата:
+subject_hea			= Тема:
+attach_hea			= Вложение:
+
+attch_name_hea			= Название
+attch_force_hea			= Скачать
+attch_type_hea			= Тип
+attch_size_hea			= Размер
+catch_address			= Добавить в адресную книгу
+
+[Search]
+
+sch_information_text		= Напишите фразу или слово, которое Вы ищете.<br> Поиск в теле письма производится только, если письмо прочитано
+sch_button_text			= Поиск &gt;&gt;
+sch_subject_hea			= Тема
+sch_from_hea			= От
+sch_date_hea			= Дата
+sch_body_hea			= Сообщение
+sch_folder_hea			= Папка
+sch_no_results			= Подходящих писем не найдено
+
+
+[QuickAddress]
+
+qad_title 			= Адресная книга
+qad_select_address		= Выберите контакт
+qad_to				= Для
+qad_cc				= Копия
+qad_bcc				= Копия 2 
+
+[AddressBook]
+
+# edit/display
+
+adr_title			= Адресная книга
+adr_name			= Имя
+adr_email			= E-mail
+adr_street			= Адрес
+adr_city			= Город
+adr_state			= Район
+adr_work			= Работа
+adr_back			= Назад
+adr_save			= Сохранить
+
+# list
+
+adr_name_hea			= Имя
+adr_email_hea			= E-mail
+adr_edit_hea			= Редактировать
+adr_expo_hea			= Экспортировать
+adr_dele_hea			= Удалить
+adr_new_entry			= Новый контакт
+
+
+addr_saved			= Контакт сохранён
+addr_added			= Контакт добавлен
+addr_deleted			= Контакт уничтожен

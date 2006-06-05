@@ -1,0 +1,13 @@
+x-wfm-category
+Errors
+x-wfm-version
+1.0.6 > CVS
+x-wfm-keyword
+php post content length exceed unknown form file size upload ini
+x-wfm-problem
+[error] PHP Warning:  POST Content-Length of <i>xxx</i> bytes exceeds
+   the limit of <i>xxx</i> bytes in Unknown on line 0
+x-wfm-solution
+The POST'd data exceeds "<tt>post_max_size</tt>" in <tt>php.ini</tt>. The FORM encoding 
+    used by the browser can significantly increase the file size, sometimes by 
+    more than double. Set this to at least 50% more then "<tt>upload_max_size</tt>".
