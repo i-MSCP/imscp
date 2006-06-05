@@ -555,6 +555,127 @@ sub del_file {
     return 0;
     
 }
+sub set_zone {
+    my ($fdata, $data, $zone, $comment) = @_;
+
+    my @fdata = split("\n", $fdata);
+
+    my $bz = '';
+    my $az = '';
+    my $zs = 0;
+    my $ze = 0;
+    my $ll;
+    my $curline;
+
+    while(length($fdata) > 0) {
+        $ll = index($fdata, "\n");
+        if( $ll < 0 ) {
+            $ll = length( $fdata );
+        } else {
+            $ll++;
+        }
+        $curline = substr( $fdata, 0, $ll );
+        $fdata = substr( $fdata, $ll );
+
+        if( $zs == 0 ) {
+            if( index($curline, $comment."## START VHCS ".$zone." ###") == 0 ) {
+                $zs = 1;
+            } else {
+                $bz .= $curline;
+            }
+        } elsif( $ze == 0 ) {
+            if( index($curline, $comment."## END VHCS ".$zone." ###") == 0) {
+                $ze = 1;
+            }
+        } elsif( $ze == 1 ) {
+                $az .= $curline;
+        }
+    }
+
+    return
+        $bz.($zs == 1 ? "" : "\n").
+        $comment."## START VHCS ".$zone." ###\n".
+        $data."\n".
+        $comment."## END VHCS ".$zone." ###\n".
+        $az;
+}
+
+sub get_zone {
+    my ($fdata, $zone, $comment) = @_;
+
+    my @fdata = split("\n", $fdata);
+
+    my $zonecontent = '';
+    my $zs = 0;
+    my $ze = 0;
+    my $ll;
+    my $curline;
+
+    while(length($fdata) > 0) {
+        $ll = index($fdata, "\n");
+        if( $ll < 0 ) {
+            $ll = length( $fdata );
+        } else {
+            $ll++;
+        }
+        $curline = substr( $fdata, 0, $ll );
+        $fdata = substr( $fdata, $ll );
+
+        if( $zs == 0 ) {
+            if( index($curline, $comment."## START VHCS ".$zone." ###") == 0 ) {
+                $zs = 1;
+            }
+        } elsif( $ze == 0 ) {
+            if( index($curline, $comment."## END VHCS ".$zone." ###") == 0) {
+                $ze = 1;
+            } else {
+                $zonecontent .= $curline;
+            }
+        }
+    }
+
+    return $zonecontent;
+}
+
+sub del_zone {
+    my ($fdata, $zone, $comment) = @_;
+
+    my @fdata = split("\n", $fdata);
+
+    my $bz = '';
+    my $az = '';
+    my $zs = 0;
+    my $ze = 0;
+    my $ll;
+    my $curline;
+
+    while(length($fdata) > 0) {
+        $ll = index($fdata, "\n");
+        if( $ll < 0 ) {
+            $ll = length( $fdata );
+        } else {
+            $ll++;
+        }
+        $curline = substr( $fdata, 0, $ll );
+        $fdata = substr( $fdata, $ll );
+
+        if( $zs == 0 ) {
+            if( index($curline, $comment."## START VHCS ".$zone." ###") == 0 ) {
+                $zs = 1;
+            } else {
+                $bz .= $curline;
+            }
+        } elsif( $ze == 0 ) {
+            if( index($curline, $comment."## END VHCS ".$zone." ###") == 0) {
+                $ze = 1;
+            }
+        } elsif( $ze == 1 ) {
+                $az .= $curline;
+        }
+    }
+
+    return $bz.$az;
+}
 
 sub sys_command {
     

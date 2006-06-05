@@ -426,12 +426,13 @@ sub htuser_add_user_system_data {
 		
 	}
 		
-	my $htaccess_content = "
-	AuthType $auth_type
-	AuthName \"$auth_name\"
-	AuthUserFile $htaccess_users_file
-	Require user $unames
-";
+	my $htaccess_content =
+        set_zone( (get_file($htaccess_file))[1], "
+        AuthType $auth_type
+        AuthName \"$auth_name\"
+        AuthUserFile $htaccess_users_file
+        Require user $unames
+	", "PROTECTION", "#" );
 	
 	$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
 	
@@ -443,70 +444,48 @@ sub htuser_add_user_system_data {
 	
 }
 
-sub htuser_del_user_system_data {
+sub htuser_del_user_data {
 
-	my ($htuser_data) = @_;
-	
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-	
-	push_el(\@main::el, 'htuser_del_user_system_data()', 'Starting...');
-	
-	if (!defined($htuser_data) || $htuser_data eq '') {
-		
-		push_el(\@main::el, 'htuser_del_user_system_data()', 'ERROR: Undefined Input Data...');
-		
-		return -1;
-		
-	}
-	
-	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-		
-		(@$htuser_data[0], 
-		 @$htuser_data[1], 
-		 @$htuser_data[2], 
-		 @$htuser_data[3], 
-		 @$htuser_data[4], 
-		 @$htuser_data[5], 
-		 @$htuser_data[6],
-		 @$htuser_data[7],
-		 @$htuser_data[8]);
-	 
-	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-	
-	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-	
-	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-	
-	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+        push_el(\@main::el, 'htuser_del_user_data()', 'Starting...');
 
-	foreach (split(',', $user_ids)) {
-		
-		my $id = $_;
-		
-		$sql = "select uname from htaccess_users where id = $id";
-		
-		($rs, $rdata) = doSQL($sql);
-		
-		return $rs if ($rs != 0);
-		
-		$rdata = @$rdata[0];
-		
-		my ($uname) = (@$rdata[0]);
-		
-		$rs = htuser_del_user_data($dmn_name, $uname);
-		
-		return $rs if ($rs != 0);
-		
-	}
+        my ($dmn_name, $uname, $upass) = @_;
 
-	$rs = del_file($htaccess_file);
+        my $rs = undef;
 
-	return $rs if ($rs != 0);
+        my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
 
-	push_el(\@main::el, 'htuser_del_user_system_data()', 'Ending...');
-	
-	return 0;
-	
+        my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+        my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
+
+        my $htaccess_users_content = '';
+
+        if (-e $htaccess_users_file) {
+
+                open(F, '<', $htaccess_users_file);
+
+                while (!eof(F)) {
+
+                        my $line = readline(F);
+
+                        $htaccess_users_content .= $line if ($line !~ /^$uname:/);
+
+
+                }
+
+                close(F);
+
+                $rs = store_file($htaccess_users_file, $htaccess_users_content, 'root', 'root', 0644
+);
+
+                return $rs if ($rs != 0);
+
+        }
+
+        push_el(\@main::el, 'htuser_del_user_data()', 'Ending...');
+
+        return 0;
+
 }
 
 sub htuser_add_user_to_group {
@@ -644,13 +623,14 @@ SQL_QUERY
 	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
 	
 	
-	my $htaccess_content = "
-	AuthType $auth_type
-	AuthName \"$auth_name\"
-	AuthUserFile $htaccess_users_file
-	AuthGroupFile $htaccess_groups_file
-	Require group $ugroups
-";
+	my $htaccess_content =
+        set_zone( (get_file($htaccess_file))[1], "
+        AuthType $auth_type
+        AuthName \"$auth_name\"
+        AuthUserFile $htaccess_users_file
+        AuthGroupFile $htaccess_groups_file
+        Require group $ugroups
+	", "PROTECTION", "#" );
 	
 	$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
 	
