@@ -30,10 +30,14 @@
 ########################################################################
 
 BEGIN {
+
+	use lib "./lib";
     
     my @needed = (strict, 
                   warnings, 
-                  IO::Socket, 
+                  IO::Socket,
+                  Apache::HTgroup, 
+                  Apache::HTpasswd,
                   DBI, 
                   DBD::mysql, 
                   MIME::Entity,
