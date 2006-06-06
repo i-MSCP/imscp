@@ -123,32 +123,22 @@ sub htuser_add_user_data {
 	
 	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
 	
-	my $htaccess_users_content = '';
+	# Open Passwordfile
+	$user_add = new Apache::HTpasswd({passwdFile => $htaccess_users_file});
+								    
+	# Since we only want add / replace we overwrite if exists
 	
-	if (-e $htaccess_users_file) {
-		
-		open(F, '<', $htaccess_users_file);
-		
-		while (!eof(F)) {
-			
-			my $line = readline(F);
-			
-			$htaccess_users_content .= $line if ($line !~ /^$uname:/);
-				
-			
-		}
+	$rs = $user_add->htpasswd($uname,$upass,{'overwrite' => 1});
 
-		close(F);
-		
-		$htaccess_users_content .= "$uname:$upass\n";
-		
-	} else {
-		
-		$htaccess_users_content = "$uname:$upass\n";
-		
-	}
+	if ($rs != 1) {
 	
-	$rs = store_file($htaccess_users_file, $htaccess_users_content, 'root', 'root', 0644);
+		push_el(\@main::el, 'htuser_add_user_data()', 'Failed to add/replace user');
+		
+	} else{
+		
+		$rs = setfmode($htaccess_users_file, 'root', 'root', 0644);
+	
+	}
 	
 	return $rs if ($rs != 0);
 	
