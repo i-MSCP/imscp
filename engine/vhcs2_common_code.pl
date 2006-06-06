@@ -31,13 +31,13 @@
 
 BEGIN {
 
-	use lib "./lib";
+	use lib $main::cfg{'ROOT_DIR'}."/engine/lib/";
     
     my @needed = (strict, 
                   warnings, 
                   IO::Socket,
-                  Apache::HTgroup, 
-                  Apache::HTpasswd,
+                  Apache::Htgroup, 
+                  Apache::Htpasswd,
                   DBI, 
                   DBD::mysql, 
                   MIME::Entity,
