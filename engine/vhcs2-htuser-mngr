@@ -134,7 +134,7 @@ sub htuser_add_user_data {
 	
 		push_el(\@main::el, 'htuser_add_user_data()', 'Failed to add/replace user');
 		
-	} else{
+	} else {
 		
 		$rs = setfmode($htaccess_users_file, 'root', 'root', 0644);
 	
@@ -162,31 +162,23 @@ sub htuser_del_user_data {
 	
 	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
 	
-	my $htaccess_users_content = '';
+	# Open Passwordfile
+	$user_del = new Apache::HTpasswd({passwdFile => $htaccess_users_file});
+								    
+	# Since we only want add / replace we overwrite if exists
 	
-	if (-e $htaccess_users_file) {
+	$rs = $user_del->htDelete($uname);
+
+	if ($rs != 1) {
+	
+		push_el(\@main::el, 'htuser_add_user_data()', $user_del->error);
 		
-		open(F, '<', $htaccess_users_file);
+	} else {
 		
-		while (!eof(F)) {
-			
-			my $line = readline(F);
-			
-			$htaccess_users_content .= $line if ($line !~ /^$uname:/);
-			
-			
-		}
-		
-		close(F);
-		
-		$rs = store_file(
-						 $htaccess_users_file,
-						 $htaccess_users_content,
-						 'root',
-						 'root',
-						 0644
-						); 
-		
+		$rs = setfmode($htaccess_users_file, 'root', 'root', 0644);
+	
+	}
+	
 		return $rs if ($rs != 0);
 		
 	}
@@ -201,28 +193,8 @@ sub htuser_del_user_data {
 # AuthGroupFile add/remove entries;
 #
 
-sub htuser_add_group_line_data {
-	
-	push_el(\@main::el, 'htuser_add_group_line_data()', 'Starting...');
-	
-	my ($line, $gname, $uname) = @_;
-	
-	if ($line !~ / $uname/) {
-		
-		$line =~ s/$gname://;
-		
-		chop($line);
-		
-		$line = "$gname:$line $uname\n";
-		
-	}
-	
-	push_el(\@main::el, 'htuser_add_group_line_data()', 'Ending...');
-	
-	return $line;	
-}
-
 sub htuser_add_group_data {
+	# Add users to groups
 	
 	push_el(\@main::el, 'htuser_add_group_data()', 'Starting...');
 	
@@ -236,44 +208,17 @@ sub htuser_add_group_data {
 	
 	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
 	
-	my $htaccess_groups_content = '';
+	$htgroup = Apache::Htgroup->new( $htaccess_groups_file );
 	
+	if (!$foo = $htgroup->ismember($uname, $gname)) {
+		
+		$htgroup->adduser( $uname, $gname );
 	
-	if (-e $htaccess_groups_file) {
-		
-		my $gf_edit_flag = 0;
-		
-		open(F, '<', $htaccess_groups_file);
-		
-		while (!eof(F)) {
-			
-			my $line = readline(F);
-			
-			if ($line !~ /^$gname:/) {
-				
-				$htaccess_groups_content .= $line;
-				
-			} else {
-				
-				$htaccess_groups_content .= htuser_add_group_line_data($line, $gname, $uname);
-				
-				$gf_edit_flag++;
-				
-			}
-			
-		}
-		
-		$htaccess_groups_content .= "$gname: $uname\n" if ($gf_edit_flag == 0);
-		
-		close(F);
-		
-	} else {
-		
-		$htaccess_groups_content = "$gname: $uname\n";
-		
 	}
 	
-	$rs = store_file($htaccess_groups_file, $htaccess_groups_content, 'root', 'root', 0644);
+	$htgroup->save($htaccess_groups_file);
+	
+	$rs = setfmode($htaccess_groups_file, 'root', 'root', 0644);
 	
 	return $rs if ($rs != 0);
 		
@@ -283,30 +228,9 @@ sub htuser_add_group_data {
 	
 }
 
-sub htuser_del_group_line_data {
-	
-	push_el(\@main::el, 'htuser_del_group_line_data()', 'Starting...');
-	
-	my ($line, $gname, $uname) = @_;
-	
-	if ($line =~ / $uname/) {
-		
-		$line =~ s/$gname://;
-		
-		chop($line);
-		
-		$line =~ s/ $uname//;
-		
-		$line = "$gname:$line\n" if (length($line) > 0);
-		
-	}
-	
-	push_el(\@main::el, 'htuser_del_group_line_data()', 'Ending...');
-	
-	return $line;	
-}
 
 sub htuser_del_group_data {
+	# delete users from groups
 	
 	push_el(\@main::el, 'htuser_del_group_data()', 'Starting...');
 	
@@ -320,36 +244,20 @@ sub htuser_del_group_data {
 	
 	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
 	
-	my $htaccess_groups_content = '';
+	$htgroup = Apache::Htgroup->new( $htaccess_groups_file );
 	
-	if (-e $htaccess_groups_file) {
+	if ($foo = $htgroup->ismember($uname, $gname)) {
 		
-		open(F, '<', $htaccess_groups_file);
-		
-		while (!eof(F)) {
-			
-			my $line = readline(F);
-			
-			if ($line !~ /^$gname:/) {
-				
-				$htaccess_groups_content .= $line;
-				
-			} else {
-				
-				$htaccess_groups_content .= htuser_del_group_line_data($line, $gname, $uname);
-				
-			}
-			
-		}
-		
-		close(F);
-		
-		$rs = store_file($htaccess_groups_file, $htaccess_groups_content, 'root', 'root', 0644);
-		
-		return $rs if ($rs != 0);
-		
-	} 
+		$htgroup->deleteuser( $uname, $gname );
 	
+	}
+	
+	$htgroup->save($htaccess_groups_file);
+	
+	$rs = setfmode($htaccess_groups_file, 'root', 'root', 0644);
+	
+	return $rs if ($rs != 0);
+		
 	push_el(\@main::el, 'htuser_del_group_data()', 'Ending...');
 	
 	return 0;
@@ -432,50 +340,6 @@ sub htuser_add_user_system_data {
 	
 	return 0;
 	
-}
-
-sub htuser_del_user_data {
-
-        push_el(\@main::el, 'htuser_del_user_data()', 'Starting...');
-
-        my ($dmn_name, $uname, $upass) = @_;
-
-        my $rs = undef;
-
-        my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-
-        my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-        my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-
-        my $htaccess_users_content = '';
-
-        if (-e $htaccess_users_file) {
-
-                open(F, '<', $htaccess_users_file);
-
-                while (!eof(F)) {
-
-                        my $line = readline(F);
-
-                        $htaccess_users_content .= $line if ($line !~ /^$uname:/);
-
-
-                }
-
-                close(F);
-
-                $rs = store_file($htaccess_users_file, $htaccess_users_content, 'root', 'root', 0644
-);
-
-                return $rs if ($rs != 0);
-
-        }
-
-        push_el(\@main::el, 'htuser_del_user_data()', 'Ending...');
-
-        return 0;
-
 }
 
 sub htuser_add_user_to_group {
@@ -919,7 +783,7 @@ SQL_QUERY
 	} else {
 	
 		#
-		# continue with signle user;
+		# continue with single user;
 		#
 		
 		my $entry = @$rows[0];
