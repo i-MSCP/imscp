@@ -444,50 +444,6 @@ sub htuser_add_user_system_data {
 	
 }
 
-sub htuser_del_user_data {
-
-        push_el(\@main::el, 'htuser_del_user_data()', 'Starting...');
-
-        my ($dmn_name, $uname, $upass) = @_;
-
-        my $rs = undef;
-
-        my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-
-        my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-        my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-
-        my $htaccess_users_content = '';
-
-        if (-e $htaccess_users_file) {
-
-                open(F, '<', $htaccess_users_file);
-
-                while (!eof(F)) {
-
-                        my $line = readline(F);
-
-                        $htaccess_users_content .= $line if ($line !~ /^$uname:/);
-
-
-                }
-
-                close(F);
-
-                $rs = store_file($htaccess_users_file, $htaccess_users_content, 'root', 'root', 0644
-);
-
-                return $rs if ($rs != 0);
-
-        }
-
-        push_el(\@main::el, 'htuser_del_user_data()', 'Ending...');
-
-        return 0;
-
-}
-
 sub htuser_add_user_to_group {
 	
 	my ($dmn_id, $dmn_name, $ugroup, $uid) = @_;
@@ -883,8 +839,9 @@ SQL_QUERY
 					if (scalar(@$rows) != 0) {
 		
 						push_el(\@main::el, 'htuser-usermanagement()', 'Starting...');
-						
+												
 						my $query_user = @$rows[0];
+						
 						my ($htpasswd_name, 
 							$htpasswd_pass,
 							$htpasswd_dnm,
@@ -901,27 +858,27 @@ SQL_QUERY
 								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
 								return $rs if ($rs != 0);
 								
-								$sql = "update htaccess_user set status='ok' where id = $query_user[2]";
+								$sql = "update htaccess_user set status='ok' where id = @$query_user[2]";
 								
 						} elsif ($htpasswd_status eq 'delete') {
 								
 								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
 								return $rs if ($rs != 0);
 
-								$sql = "delete from htaccess_user where id = $query_user[2]";
+								$sql = "delete from htaccess_user where id = @$query_user[2]";
 																					
 						} elsif ($htpasswd_status eq 'toadd') {				 
 						
 								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
 								return $rs if ($rs != 0);
 								
-								$sql = "update htaccess_user set status='ok' where id = $query_user[2]";
+								$sql = "update htaccess_user set status='ok' where id = @$query_user[2]";
 																
 						} else {						
 								
 								push_el(\@main::el, 'htuser-usermanagement()', 'Failure modifying user in Domain $htpasswd_dnm : $htpasswd_name');
 								
-								$sql = "update htaccess_user set status='failure' where id = $query_user[2]";
+								$sql = "update htaccess_user set status='failure' where id =  @$query_user[2]";
 																
 						}		
 
