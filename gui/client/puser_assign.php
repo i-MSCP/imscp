@@ -209,21 +209,24 @@ SQL_QUERY;
 		$members = $members.",".$uuser_id;
 	}
 	
+	global $cfg;
+	$change_status = $cfg['ITEM_CHANGE_STATUS'];
+	
 	$update_query = <<<SQL_QUERY
 				update
 					htaccess_groups
 				set
 					members = ?
+					status = ?
 				where
 					id = ?
 					and
 					dmn_id = ?
 SQL_QUERY;
 				
-		$rs_update = exec_query($sql, $update_query, array($members, $group_id, $dmn_id));
+		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
 
-		global $cfg;
-		$change_status = $cfg['ITEM_CHANGE_STATUS'];
+
 		$query = <<<SQL_QUERY
 				update
 					htaccess

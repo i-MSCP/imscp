@@ -44,16 +44,21 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 $groupname = $rs->fields['ugroup'];
 
+global $cfg;
+$change_status = $cfg['ITEM_DELETE_STATUS'];
+
 $query = <<<SQL_QUERY
-        delete from
+        update 
         	htaccess_groups
-        where
+        set
+        	status = ?
+        where 
             id = ?
 		and
 			dmn_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($group_id, $dmn_id));
+    $rs = exec_query($sql, $query, array($change_status, $group_id, $dmn_id));
 
 
 $query = <<<SQL_QUERY

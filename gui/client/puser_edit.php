@@ -69,18 +69,22 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
 
 			$nadmin_password = crypt($_POST['pass']);
 
+			global $cfg;
+			$change_status = $cfg['ITEM_CHANGE_STATUS'];
+			
 			$query = <<<SQL_QUERY
                     update
                         htaccess_users
                     set
-                        upass = ?
+                        upass = ?,
+                        status = ?
                     where
                         dmn_id = ?
 					and
 						id = ?
 
 SQL_QUERY;
-			$rs = exec_query($sql, $query, array($nadmin_password, $dmn_id, $uuser_id));
+			$rs = exec_query($sql, $query, array($nadmin_password, $dmn_id, $uuser_id, $change_status));
 
 			// lets update htaccess to rebuild the htaccess files#
 			global $cfg;

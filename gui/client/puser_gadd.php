@@ -84,21 +84,22 @@ SQL_QUERY;
 
 	if ($rs -> RecordCount() == 0) {
 
-
+		global $cfg;
+		$change_status = $cfg['ITEM_ADD_STATUS'];
 
 $query = <<<SQL_QUERY
 
             insert into htaccess_groups
 
-               (dmn_id, ugroup)
+               (dmn_id, ugroup, status)
 
             values
 
-               (?, ?)
+               (?, ?, ?)
 
 SQL_QUERY;
 
-        $rs = exec_query($sql, $query, array($dmn_id, $groupname));
+        $rs = exec_query($sql, $query, array($dmn_id, $groupname, $change_status));
 		$admin_login = $_SESSION['user_logged'];
 		write_log("$admin_login: add group (protected areas): $groupname");
 		$gadd = 1;

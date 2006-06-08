@@ -76,7 +76,9 @@ function padd_user(&$tpl, &$sql, &$dmn_id)
 				set_page_message(tr('Passwords does not match!'));
 				return;
 			}
-
+			global $cfg;
+			$change_status = $cfg['ITEM_ADD_STATUS'];
+			
 			$uname = $_POST['username'];
 			$upass = crypt($_POST['pass']);
 
@@ -96,20 +98,22 @@ SQL_QUERY;
 	if ($rs -> RecordCount() == 0) {
 
 
+			
+
 
 $query = <<<SQL_QUERY
 
             insert into htaccess_users
 
-               (dmn_id, uname, upass)
+               (dmn_id, uname, upass, status)
 
             values
 
-               (?, ?, ?)
+               (?, ?, ?, ?)
 
 SQL_QUERY;
 
-        $rs = exec_query($sql, $query, array($dmn_id, $uname, $upass));
+        $rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $change_status));
 		$admin_login = $_SESSION['user_logged'];
 		write_log("$admin_login: add user (protected areas): $uname");
 		header('Location: puser_manage.php');
