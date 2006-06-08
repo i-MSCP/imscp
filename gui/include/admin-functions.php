@@ -1792,7 +1792,7 @@ function vhcs_username_check ( $data, $num ) {
 	return 1;
 }
 
-
+/*
 function vhcs_email_check ( $data, $num ) {
 
     $data = "$data\n";
@@ -1810,7 +1810,38 @@ function vhcs_email_check ( $data, $num ) {
     if ($res == 0) return 0;
 
     return 1;
+}*/
+
+function vhcs_email_check($email, $num) {
+  // RegEx begin
+  
+  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+
+  $nqtext        = "[^\\\\$nonascii\015\012\"]";
+  $qchar         = "\\\\[^$nonascii]";
+
+  $protocol      = '(?:mailto:)';
+
+  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+  $user_part     = "(?:$normuser|$quotedstring)";
+
+  $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
+  $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
+  $dom_tldpart   = '[a-zA-Z]{2,5}';
+  $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
+
+  $regex         = "$protocol?$user_part\@$domain_part";
+  // RegEx end
+  
+  if (!preg_match("/^$regex$/",$email)) return 0;
+  	
+  if (strlen($email) > $num) return 0;
+  	
+  return 1;
+  
 }
+
 
 
 function chk_email( $email ) {
