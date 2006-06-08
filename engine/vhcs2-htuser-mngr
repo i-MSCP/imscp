@@ -721,15 +721,6 @@ SQL_QUERY
 				
 				"$apache_www_dir/$dmn_name/$path/.htaccess";
 				
-				if ( -e $htaccess_groups_file) {
-					$rs = del_file($htaccess_groups_file);
-					return $rs if ($rs != 0);
-				}
-				
-				if ( -e $htaccess_users_file) {
-					$rs = del_file($htaccess_users_file);
-					return $rs if ($rs != 0);
-				}
 			}
 			
 			if ($htuser_status eq 'toadd' || $htuser_status eq 'change') {
@@ -831,15 +822,6 @@ SQL_QUERY
 				
 				"$apache_www_dir/$dmn_name/$path/.htaccess";
 				
-				if ( -e $htaccess_groups_file) {
-					$rs = del_file($htaccess_groups_file);
-					return $rs if ($rs != 0);
-				}
-				
-				if ( -e $htaccess_users_file) {
-					$rs = del_file($htaccess_users_file);
-					return $rs if ($rs != 0);
-				}
 			}
 			
 			$rs = htuser_add_user_system_data($entry);
@@ -933,3 +915,4 @@ if ($rs != 0) {
 }
 
 exit 0;
+
