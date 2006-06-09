@@ -216,7 +216,7 @@ SQL_QUERY;
 				update
 					htaccess_groups
 				set
-					members = ?
+					members = ?,
 					status = ?
 				where
 					id = ?
