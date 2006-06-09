@@ -1820,8 +1820,6 @@ function vhcs_email_check($email, $num) {
   $nqtext        = "[^\\\\$nonascii\015\012\"]";
   $qchar         = "\\\\[^$nonascii]";
 
-  $protocol      = '(?:mailto:)';
-
   $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
   $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
   $user_part     = "(?:$normuser|$quotedstring)";
@@ -1831,7 +1829,7 @@ function vhcs_email_check($email, $num) {
   $dom_tldpart   = '[a-zA-Z]{2,5}';
   $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
 
-  $regex         = "$protocol?$user_part\@$domain_part";
+  $regex         = "$user_part\@$domain_part";
   // RegEx end
   
   if (!preg_match("/^$regex$/",$email)) return 0;
