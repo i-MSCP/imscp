@@ -363,18 +363,21 @@ SQL_QUERY;
 
 function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
 {
+  $pass = escapeshellcmd($_POST['pass']);
+  $pass_rep = escapeshellcmd($_POST['pass_rep']);
+
   if (!isset($_POST['username']) || $_POST['username'] === '') {
     set_page_message(tr('Please enter mail account username!'));
     return;
   }
 
   if ($_POST['mail_type'] === 'normal') {
-    if (!isset($_POST['pass']) || $_POST['pass'] === '' || !isset($_POST['pass_rep']) || $_POST['pass_rep'] === '') {
+    if (!isset($pass) || $pass == NULL || !isset($pass_rep) ||$pass_rep == NULL) {
       set_page_message(tr('Password data is missing!'));
       return;
     }
 
-    if ($_POST['pass'] !== $_POST['pass_rep']) {
+    if ($pass !== $pass_rep) {
       set_page_message(tr('Entered passwords differ from the another!'));
       return;
     }
@@ -393,6 +396,11 @@ function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
   if ($_POST['mail_type'] === 'forward' && $_POST['forward_list'] === '') {
     set_page_message(tr('Forward list is empty!'));
     return;
+  }
+  // Not permitted chars
+  if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
+      set_page_message(tr('Password data includes not permitted signs!'));
+      return;
   }
 
   schedule_mail_account($sql, $dmn_id, $dmn_name);
