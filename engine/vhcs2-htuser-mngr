@@ -1057,7 +1057,7 @@ SQL_QUERY
 					
 						push_el(\@main::el, 'htuser-usermanagement()', 'Starting...');
 												
-						my $query_user = @$rows[0];
+						my $query_user = $_;
 						
 						my ($htpasswd_name, 
 							$htpasswd_pass,
