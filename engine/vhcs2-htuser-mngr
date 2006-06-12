@@ -1193,7 +1193,15 @@ SQL_QUERY
 								
 								push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.@$query_group[0].'...');
 								
-								$sql = "update htaccess_groups set status='ok' where id = @$query_group[3]";	
+								if ($htgroup_status eq 'delete') {
+								
+									$sql = "delete from htaccess_groups where id = @$query_group[3]";	
+								
+								} else {
+								
+									$sql = "update htaccess_groups set status='ok' where id = @$query_group[3]";		
+								
+								}
 								
 						} else {						
 								
