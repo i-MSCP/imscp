@@ -1135,9 +1135,9 @@ SQL_QUERY
 			#there are changes so we like to renew our entire group-information	
 			#and reset our groupsfile
 			
-			$sql2 = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]' ";
+			my $sql2 = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]' ";
 			
-				($rs, $rows_sql2) = doSQL($sql2);
+				($rs, $rows) = doSQL($sql2);
 				
 				push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
 				
@@ -1151,9 +1151,9 @@ SQL_QUERY
 					$rs = del_file($htaccess_groups_file);
 				
 						
-					foreach (@$rows_sql2) {							
+					foreach (@$rows) {							
 			
-						my $query_group = @$rows_sql2[0];
+						my $query_group = @$rows[0];
 						my ($htgroup_name, 
 							$htgroup_members,
 							$htgroup_dnm,
