@@ -1158,6 +1158,13 @@ SQL_QUERY
 								# reset the old groupfile 
 								
 								
+									my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+
+									my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+				
+									my $htaccess_groups_file = "$apache_www_dir/$htgroup_dnm/$htaccess_groups_file_name";
+								
+									$rs = del_file($htaccess_groups_file);
 								
 								
 										foreach (split(',', $htgroup_members)) {
