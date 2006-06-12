@@ -1832,11 +1832,11 @@ function vhcs_email_check($email, $num) {
   $regex         = "$user_part\@$domain_part";
   // RegEx end
   
-  if (!preg_match("/^$regex$/",$email)) return 0;
+  if (!preg_match("/^$regex$/",$email)) return 1;
   	
-  if (strlen($email) > $num) return 0;
+  if (strlen($email) > $num) return 1;
   	
-  return 1;
+  return 0;
   
 }
 
