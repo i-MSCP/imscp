@@ -303,8 +303,6 @@ SQL_QUERY;
 				set
 					status = ?
 				where
-					group_id rlike ?
-					and
 					dmn_id = ?
 SQL_QUERY;
 
