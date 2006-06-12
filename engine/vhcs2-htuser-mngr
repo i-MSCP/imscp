@@ -739,8 +739,6 @@ sub htuser_del_group_system_data {
 		
 	}
 	
-	$rs = del_file($htaccess_file);
-
 	return $rs if ($rs != 0);
 	
 	push_el(\@main::el, 'htuser_del_group_system_data()', 'Ending...');
@@ -1126,14 +1124,22 @@ SQL_QUERY
 			 ($rs, $rdata) = doSQL($sql_gid);
 
 			my $htgroup_data = @$rdata[0];
-
+					
+			#are there any changes we have to follow ?
 			$sql = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]' and status != 'ok' ";
-
+			
 				($rs, $rows) = doSQL($sql);
 				
-					if (scalar(@$rows) != 0) {
-		
-						push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
+			if (scalar(@$rows) != 0) {
+			
+			#there are changes so we like to renew our entire group-information	
+			#and reset our groupsfile
+			
+			$sql = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]' ";
+			
+				($rs, $rows) = doSQL($sql);
+				
+				push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
 						
 					foreach (@$rows) {							
 			
@@ -1146,7 +1152,7 @@ SQL_QUERY
 						   						 @$htgroup_data[1],
 						   						 @$query_group[2]);
 
-						if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'delete') {
+						if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'delete' || $htgroup_status eq 'ok') {
 						
 								# only choice atm -> build the group again.		
 								# reset the old groupfile 
@@ -1178,17 +1184,6 @@ SQL_QUERY
 								
 								$sql = "update htaccess_groups set status='ok' where id = @$query_group[3]";	
 								
-							
-#						} elsif ($htpasswd_status eq 'delete') {
-#								
-#								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
-#								return $rs if ($rs != 0);
-#						
-#						} elsif ($htpasswd_status eq 'toadd') {				 
-#						
-#								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
-#								return $rs if ($rs != 0);
-#								
 						} else {						
 								
 								push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htpasswd_dnm : $htpasswd_name');
