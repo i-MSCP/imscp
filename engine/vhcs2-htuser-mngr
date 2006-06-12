@@ -1194,11 +1194,11 @@ SQL_QUERY
 								push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htpasswd_dnm : $htpasswd_name');
 								$sql = "update htaccess_group set status='failure' where id = @$query_group[3]";
 								
-								($rs, $rdata) = doSQL($sql);
+						}								
+						
+						($rs, $rdata) = doSQL($sql);
 				
-								return $rs if ($rs != 0);
-							
-						}		
+						return $rs if ($rs != 0);
 						
 					}
 					push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
