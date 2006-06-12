@@ -1153,7 +1153,7 @@ SQL_QUERY
 						
 					foreach (@$rows) {							
 			
-						my $query_group = @$rows[0];
+						my $query_group = $_;
 						my ($htgroup_name, 
 							$htgroup_members,
 							$htgroup_dnm,
