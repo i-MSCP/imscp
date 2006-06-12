@@ -80,11 +80,11 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
                         status = ?
                     where
                         dmn_id = ?
-					and
-						id = ?
+                    and 
+                    	id = ?
 
 SQL_QUERY;
-			$rs = exec_query($sql, $query, array($nadmin_password, $dmn_id, $uuser_id, $change_status));
+			$rs = exec_query($sql, $query, array($nadmin_password, $change_status, $dmn_id, $uuser_id, ));
 
 			// lets update htaccess to rebuild the htaccess files#
 			global $cfg;
@@ -96,11 +96,9 @@ SQL_QUERY;
                     set
                         status = ?
                     where
-                         user_id = ?
-					and
-						 dmn_id = ?
+                         dmn_id = ?
 SQL_QUERY;
-			$rs = exec_query($sql, $query, array($change_status, $uuser_id, $dmn_id));
+			$rs = exec_query($sql, $query, array($change_status, $dmn_id));
 
 			check_for_lock_file();
 			send_request();

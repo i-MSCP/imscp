@@ -233,13 +233,11 @@ SQL_QUERY;
 				set
 					status = ?
 				where
-					group_id rlike ?
-					and
 					dmn_id = ?
 SQL_QUERY;
 
 				check_for_lock_file();
-				$rs_update_htaccess = exec_query($sql, $query, array($change_status, $group_id, $dmn_id));
+				$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
 
 				send_request();
 				set_page_message(tr('User was assigned to group')." - ".$rs -> fields['ugroup']);
