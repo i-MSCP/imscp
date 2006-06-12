@@ -1139,14 +1139,14 @@ SQL_QUERY
 			
 						my $query_group = @$rows[0];
 						my ($htgroup_name, 
-							$htpgroup_members,
-							$htpgroup_dnm,
-							$htpgroup_status) = (@$query_group[0],
+							$htgroup_members,
+							$htgroup_dnm,
+							$htgroup_status) = (@$query_group[0],
 						   						 @$query_group[1],
 						   						 @$htgroup_data[1],
 						   						 @$query_group[2]);
 
-						if ($htgroup_status eq 'change' || $htpasswd_status eq 'toadd' || $htpasswd_status eq 'delete') {
+						if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'delete') {
 						
 								# only choice atm -> build the group again.		
 								# reset the old groupfile 
@@ -1168,15 +1168,15 @@ SQL_QUERY
 
 												my ($uname) = (@$rdata[0]);
 
-												$rs = htuser_add_group_data($dmn_name, $gname, $uname);
+												$rs = htuser_add_group_data($htgroup_dnm, $htproup_name, $uname);
 
 												return $rs if ($rs != 0);
 
 										}
 								
-								push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.@$query_user[0].'...');
+								push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.@$query_group[0].'...');
 								
-								$sql = "update htaccess_groups set status='ok' where id = @$query_user[3]";	
+								$sql = "update htaccess_groups set status='ok' where id = @$query_group[3]";	
 								
 							
 #						} elsif ($htpasswd_status eq 'delete') {
@@ -1192,7 +1192,7 @@ SQL_QUERY
 						} else {						
 								
 								push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htpasswd_dnm : $htpasswd_name');
-								$sql = "update htaccess_group set status='failure' where id = $query_user[4]";
+								$sql = "update htaccess_group set status='failure' where id = $query_group[3]";
 								
 								($rs, $rdata) = doSQL($sql);
 				
