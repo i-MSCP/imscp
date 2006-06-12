@@ -104,7 +104,7 @@ SQL_QUERY;
 				set
 					status = ?
 				where
-					group_id rlike ?
+					group_id like ?
 SQL_QUERY;
 
 		$rs_update = exec_query($sql, $update_query, array($status, $group_id));
