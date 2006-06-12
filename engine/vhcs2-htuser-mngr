@@ -422,7 +422,7 @@ sub htuser_del_user_system_data {
 		
 	}
 
-	$rs = del_file($htaccess_file);
+	#$rs = del_file($htaccess_file);
 
 	return $rs if ($rs != 0);
 
