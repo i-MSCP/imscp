@@ -45,18 +45,21 @@ SQL_QUERY;
 $rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
 $uname = $rs->fields['uname'];
 
-
+global $cfg;
+$change_status=$cfg['ITEM_DELETE_STATUS'];
 // lets delete the user from the SQL
 $query = <<<SQL_QUERY
-        delete from
+        update
         	htaccess_users
-        where
-            id = ?
+        set 
+        	status = ?    
+        where 
+        	id = ?
 		and
 			dmn_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($uuser_id, $dmn_id));
+    $rs = exec_query($sql, $query, array($change_status, $uuser_id, $dmn_id));
 
 // lets delete this user if assignet to a group
 $query = <<<SQL_QUERY
