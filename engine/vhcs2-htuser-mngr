@@ -1135,13 +1135,13 @@ SQL_QUERY
 			#there are changes so we like to renew our entire group-information	
 			#and reset our groupsfile
 			
-			$sql = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]' ";
+			$sql2 = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]' ";
 			
-				($rs, $rows) = doSQL($sql);
+				($rs, $rows_sql2) = doSQL($sql2);
 				
 				push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
 				
-				
+						
 					my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
 
 					my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
@@ -1151,9 +1151,9 @@ SQL_QUERY
 					$rs = del_file($htaccess_groups_file);
 				
 						
-					foreach (@$rows) {							
+					foreach (@$rows_sql2) {							
 			
-						my $query_group = @$rows[0];
+						my $query_group = @$rows_sql2[0];
 						my ($htgroup_name, 
 							$htgroup_members,
 							$htgroup_dnm,
@@ -1162,6 +1162,8 @@ SQL_QUERY
 						   						 @$htgroup_data[1],
 						   						 @$query_group[2]);
 
+					push_el(\@main::el, 'htuser-groupmanagement()', 'Working on'.$htgroup_name);							   						 
+						   						 
 						if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'delete' || $htgroup_status eq 'ok') {
 						
 								# only choice atm -> build the group again.		
