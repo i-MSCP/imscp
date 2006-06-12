@@ -1140,6 +1140,16 @@ SQL_QUERY
 				($rs, $rows) = doSQL($sql);
 				
 				push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
+				
+				
+					my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+
+					my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+					my $htaccess_groups_file = "$apache_www_dir/@$htgroup_data[1]/$htaccess_groups_file_name";
+								
+					$rs = del_file($htaccess_groups_file);
+				
 						
 					foreach (@$rows) {							
 			
@@ -1157,15 +1167,7 @@ SQL_QUERY
 								# only choice atm -> build the group again.		
 								# reset the old groupfile 
 								
-								
-									my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
-
-									my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-				
-									my $htaccess_groups_file = "$apache_www_dir/$htgroup_dnm/$htaccess_groups_file_name";
-								
-									$rs = del_file($htaccess_groups_file);
-								
+													
 								
 										foreach (split(',', $htgroup_members)) {
 
