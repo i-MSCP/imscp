@@ -1042,8 +1042,14 @@ SQL_QUERY
 	
 # see if user or group data has changed (password - change ?) 
 # first the users
-				
-				$sql = "select uname, upass,dmn_id, status from htaccess_users where dmn_id = $dmn_id and status != 'ok' ";
+# 			
+			my $sql_id = "select t1.dmn_id,t2.domain_name  from htaccess as t1,domain as t2 where t1.id = $main::htuser_task_id and t1.dmn_id = t2.domain_id";
+
+			 ($rs, $rdata) = doSQL($sql_id);
+
+			my $htaccess_data = @$rdata[0];
+
+			$sql = "select uname, upass,dmn_id,status,id from htaccess_users where dmn_id = '@$htaccess_data[0]' and status != 'ok' ";
 
 				($rs, $rows) = doSQL($sql);
 				
@@ -1058,10 +1064,14 @@ SQL_QUERY
 							$htpasswd_dnm,
 							$htpasswd_status) = (@$query_user[0],
 						   						 @$query_user[1],
-						   						 $dmn_name,
+						   						 @$htaccess_data[1],
 						   						 @$query_user[3]);
 
+						push_el(\@main::el, 'htuser-usermanagement()', 'TASK : '.$htpasswd_status.' user : '.$htpasswd_name);
+
 						if ($htpasswd_status eq 'change') {
+								
+								push_el(\@main::el, 'htuser-usermanagement()', 'Change User ID : '.@$query_user[0].'...');
 								
 								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
 								return $rs if ($rs != 0);
@@ -1069,27 +1079,34 @@ SQL_QUERY
 								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
 								return $rs if ($rs != 0);
 								
-								$sql = "update htaccess_user set status='ok' where id = @$query_user[2]";
+								$sql = "update htaccess_users set status='ok' where id = @$query_user[4]";
 								
 						} elsif ($htpasswd_status eq 'delete') {
+								
+								push_el(\@main::el, 'htuser-usermanagement()', 'Delete User ID : '.@$query_user[0].'...');
 								
 								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
 								return $rs if ($rs != 0);
 
-								$sql = "delete from htaccess_user where id = @$query_user[2]";
+								$sql = "delete from htaccess_users where id = @$query_user[4]";
 																					
 						} elsif ($htpasswd_status eq 'toadd') {				 
+						
+								push_el(\@main::el, 'htuser-usermanagement()', 'Add User ID : '.@$query_user[0].'...');
 						
 								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
 								return $rs if ($rs != 0);
 								
-								$sql = "update htaccess_user set status='ok' where id = @$query_user[2]";
+								$sql = "update htaccess_users set status='ok' where id = @$query_user[4]";
 																
+						} elsif ($htpasswd_status eq 'ok') {
+
+								
 						} else {						
 								
-								push_el(\@main::el, 'htuser-usermanagement()', 'Failure modifying user in Domain $htpasswd_dnm : $htpasswd_name');
+								push_el(\@main::el, 'htuser-usermanagement()', 'Failure modifying user in Domain '.$htpasswd_dnm.' : '.$htpasswd_name);
 								
-								$sql = "update htaccess_user set status='failure' where id =  @$query_user[2]";
+								$sql = "update htaccess_users set status='failure' where id =  @$query_user[4]";
 																
 						}		
 
@@ -1105,7 +1122,7 @@ SQL_QUERY
 #				$sql = "select dmn_id,ugroup,id,status from htaccess_groups where dmn_id = $dmn_id and status != 'ok' ";
 #
 #				($rs, $rows) = doSQL($sql);
-#				
+				
 #					if (scalar(@$rows) != 0) {
 #		
 #						push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
