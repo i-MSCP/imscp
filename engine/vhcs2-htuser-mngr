@@ -1162,7 +1162,7 @@ SQL_QUERY
 						   						 @$htgroup_data[1],
 						   						 @$query_group[2]);
 
-					push_el(\@main::el, 'htuser-groupmanagement()', 'Working on'.$htgroup_name);							   						 
+					push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);							   						 
 						   						 
 						if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'delete' || $htgroup_status eq 'ok') {
 						
