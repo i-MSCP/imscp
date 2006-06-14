@@ -111,7 +111,7 @@ SQL_QUERY;
 					and 
 						status NOT like 'delete'
 SQL_QUERY;
-		 $rs = exec_query($sql, $query, array($change_status, $dmn_id));	
+		 $rs = exec_query($sql, $query, array($status, $dmn_id));	
 		
 
 check_for_lock_file();
