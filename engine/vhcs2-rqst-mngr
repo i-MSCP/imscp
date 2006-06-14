@@ -105,6 +105,136 @@ sub mngr_engine {
     #
     # Proceed tasks, if any.
     #
+    # at first handle subdomains....
+    
+    $sql = "select subdomain_id, subdomain_name, subdomain_status from subdomain where subdomain_status != 'ok' order by subdomain_id";
+    
+    ($rs, $rdata) = doSQL($sql);
+    
+    my $sub_count = @$rdata;
+    
+    if ($sub_count > 0) {
+        
+        foreach (@$rdata) {
+            
+            my $row = $_;
+            
+            my ($sub_id, $sub_name, $sub_status) = (@$row[0], @$row[1], @$row[2]);
+            
+            if ($sub_status eq "toadd" || $sub_status eq "change" || $sub_status eq "delete") {
+                
+                if (defined($main::engine_debug)) {
+                    
+                    push_el(\@main::el, 'mngr_engine()', "processing $sub_id, $sub_name, $sub_status.");
+                    
+                }
+    
+                $rs = sys_command("$main::vhcs2_sub_mngr $sub_id 1>$main::vhcs2_sub_mngr_stdout 2>$main::vhcs2_sub_mngr_stderr");
+                
+                if ($rs != 0) {
+                    
+                    if (-e $main::vhcs2_sub_mngr_el) {
+              
+                        my $rs1 = undef;
+              
+                        pop_el(\@main::el); # removing 'sys_command()' error message;
+              
+                        ($rs1, $rdata) = get_el_error($main::vhcs2_sub_mngr_el);
+              
+                        return $rs1 if ($rs1 != 0);
+              
+                        push_el(\@main::el, $main::vhcs2_sub_mngr, $rdata);
+              
+                    }
+                    
+                    if (!defined($main::engine_debug)) {
+                    
+                        del_file($main::vhcs2_sub_mngr_stdout); del_file($main::vhcs2_sub_mngr_stderr);
+                    
+                    }
+                    
+                    return $rs;
+                    
+                }
+                
+                if (!defined($main::engine_debug)) {
+                    
+                    del_file($main::vhcs2_sub_mngr_stdout); del_file($main::vhcs2_sub_mngr_stderr);
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    # then alias domains
+    
+    $sql = "select alias_id, alias_name, alias_status from domain_aliasses where alias_status != 'ok' order by alias_id";
+    
+    ($rs, $rdata) = doSQL($sql);
+    
+    my $als_count = @$rdata;
+    
+    if ($als_count > 0) {
+        
+        foreach (@$rdata) {
+            
+            my $row = $_;
+            
+            my ($als_id, $als_name, $als_status) = (@$row[0], @$row[1], @$row[2]);
+            
+            if ($als_status eq "toadd" || $als_status eq "change" || $als_status eq "delete") {
+                
+                if (defined($main::engine_debug)) {
+                    
+                    push_el(\@main::el, 'mngr_engine()', "processing $als_id, $als_name, $als_status.");
+                    
+                }
+                
+                $rs = sys_command("$main::vhcs2_als_mngr $als_id 1>$main::vhcs2_als_mngr_stdout 2>$main::vhcs2_als_mngr_stderr");
+                
+                if ($rs != 0) {
+                    
+                    if (-e $main::vhcs2_als_mngr_el) {
+            
+                        my $rs1 = undef;
+            
+                        pop_el(\@main::el); # removing 'sys_command()' error message;
+            
+                        ($rs1, $rdata) = get_el_error($main::vhcs2_als_mngr_el);
+            
+                        return $rs1 if ($rs1 != 0);
+            
+                        push_el(\@main::el, $main::vhcs2_als_mngr, $rdata);
+            
+                    }
+                    
+                    if (!defined($main::engine_debug)) {
+                    
+                        del_file($main::vhcs2_als_mngr_stdout); del_file($main::vhcs2_als_mngr_stderr);
+                    
+                    }
+                    
+                    return $rs;
+                    
+                }
+                
+                if (!defined($main::engine_debug)) {
+                    
+                    del_file($main::vhcs2_als_mngr_stdout); del_file($main::vhcs2_als_mngr_stderr);
+                    
+                }
+                
+                
+            }
+            
+        }
+        
+    }
+
+    #domain deletion after alias deletion and after subdomain deletion !!!
     
     $sql = "select domain_id, domain_name, domain_status from domain where domain_status != 'ok' order by domain_id";
     
@@ -181,130 +311,7 @@ sub mngr_engine {
         
     }
     
-    $sql = "select subdomain_id, subdomain_name, subdomain_status from subdomain where subdomain_status != 'ok' order by subdomain_id";
-    
-    ($rs, $rdata) = doSQL($sql);
-    
-    my $sub_count = @$rdata;
-    
-    if ($sub_count > 0) {
-        
-        foreach (@$rdata) {
-            
-            my $row = $_;
-            
-            my ($sub_id, $sub_name, $sub_status) = (@$row[0], @$row[1], @$row[2]);
-            
-            if ($sub_status eq "toadd" || $sub_status eq "change" || $sub_status eq "delete") {
-                
-                if (defined($main::engine_debug)) {
-                    
-                    push_el(\@main::el, 'mngr_engine()', "processing $sub_id, $sub_name, $sub_status.");
-                    
-                }
-    
-                $rs = sys_command("$main::vhcs2_sub_mngr $sub_id 1>$main::vhcs2_sub_mngr_stdout 2>$main::vhcs2_sub_mngr_stderr");
-                
-                if ($rs != 0) {
-                    
-                    if (-e $main::vhcs2_sub_mngr_el) {
-              
-                        my $rs1 = undef;
-              
-                        pop_el(\@main::el); # removing 'sys_command()' error message;
-              
-                        ($rs1, $rdata) = get_el_error($main::vhcs2_sub_mngr_el);
-              
-                        return $rs1 if ($rs1 != 0);
-              
-                        push_el(\@main::el, $main::vhcs2_sub_mngr, $rdata);
-              
-                    }
-                    
-                    if (!defined($main::engine_debug)) {
-                    
-                        del_file($main::vhcs2_sub_mngr_stdout); del_file($main::vhcs2_sub_mngr_stderr);
-                    
-                    }
-                    
-                    return $rs;
-                    
-                }
-                
-                if (!defined($main::engine_debug)) {
-                    
-                    del_file($main::vhcs2_sub_mngr_stdout); del_file($main::vhcs2_sub_mngr_stderr);
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
-    
-    $sql = "select alias_id, alias_name, alias_status from domain_aliasses where alias_status != 'ok' order by alias_id";
-    
-    ($rs, $rdata) = doSQL($sql);
-    
-    my $als_count = @$rdata;
-    
-    if ($als_count > 0) {
-        
-        foreach (@$rdata) {
-            
-            my $row = $_;
-            
-            my ($als_id, $als_name, $als_status) = (@$row[0], @$row[1], @$row[2]);
-            
-            if ($als_status eq "toadd" || $als_status eq "change" || $als_status eq "delete") {
-                
-                if (defined($main::engine_debug)) {
-                    
-                    push_el(\@main::el, 'mngr_engine()', "processing $als_id, $als_name, $als_status.");
-                    
-                }
-                
-                $rs = sys_command("$main::vhcs2_als_mngr $als_id 1>$main::vhcs2_als_mngr_stdout 2>$main::vhcs2_als_mngr_stderr");
-                
-                if ($rs != 0) {
-                    
-                    if (-e $main::vhcs2_als_mngr_el) {
-            
-                        my $rs1 = undef;
-            
-                        pop_el(\@main::el); # removing 'sys_command()' error message;
-            
-                        ($rs1, $rdata) = get_el_error($main::vhcs2_als_mngr_el);
-            
-                        return $rs1 if ($rs1 != 0);
-            
-                        push_el(\@main::el, $main::vhcs2_als_mngr, $rdata);
-            
-                    }
-                    
-                    if (!defined($main::engine_debug)) {
-                    
-                        del_file($main::vhcs2_als_mngr_stdout); del_file($main::vhcs2_als_mngr_stderr);
-                    
-                    }
-                    
-                    return $rs;
-                    
-                }
-                
-                if (!defined($main::engine_debug)) {
-                    
-                    del_file($main::vhcs2_als_mngr_stdout); del_file($main::vhcs2_als_mngr_stderr);
-                    
-                }
-                
-                
-            }
-            
-        }
-        
-    }
+
     
     $sql = "select mail_id, mail_acc, status from mail_users where status != 'ok' order by mail_id";
     
