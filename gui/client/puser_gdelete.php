@@ -32,18 +32,6 @@ if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])
    die();
 }
 
-$query = <<<SQL_QUERY
-        select
-			ugroup
-		from
-        	htaccess_groups
-        where
-            id = ?
-		and
-			dmn_id = ?
-SQL_QUERY;
-$groupname = $rs->fields['ugroup'];
-
 global $cfg;
 $change_status = $cfg['ITEM_DELETE_STATUS'];
 
@@ -58,7 +46,7 @@ $query = <<<SQL_QUERY
 			dmn_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($change_status, $group_id, $dmn_id));
+$rs = exec_query($sql, $query, array($change_status, $group_id, $dmn_id));
 
 
 $query = <<<SQL_QUERY
@@ -101,32 +89,26 @@ SQL_QUERY;
 
 		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
 				
-			} else {
-				//we like to have our changes honoured, too!
-					$status = $cfg['ITEM_CHANGE_STATUS'];
-					$query = <<<SQL_QUERY
-      				 update
-       						htaccess
-						set
-							status = ?
-						where
-							id = ? 
-SQL_QUERY;
-		 				$rs = exec_query($sql, $query, array($change_status, $dmn_id));	
-		 				check_for_lock_file();
-						send_request();
-			}
+			} 
+			
 
 		}
 
 	$rs -> MoveNext();
 	}
 	
-
-	
-	
-	
-
+	//we like to have our changes honoured to make group-deletion even without htaccess - relation possible!
+		$status = $cfg['ITEM_CHANGE_STATUS'];
+		$query = <<<SQL_QUERY
+   				 update
+  						htaccess
+					set
+						status = ?
+					where
+						id = ? 
+SQL_QUERY;
+		 $rs = exec_query($sql, $query, array($change_status, $dmn_id));	
+		
 
 check_for_lock_file();
 send_request();
