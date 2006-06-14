@@ -56,20 +56,20 @@ function MM_goToURL() { //v3.0
                     <td width="20" align="center" nowrap>&nbsp;</td>
                     <td nowrap class="content3"><b>{TR_USERNAME}</b></td>
                     <td nowrap align="center" class="content3"><b>{TR_STATUS}</b></td>
-                    <td colspan="2" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
+                    <td colspan="3" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
                   </tr>
 				  <!-- BDP: usr_msg -->
                 <tr>
                   <td nowrap >&nbsp;</td>
-                  <td colspan="4" nowrap class="title"><font color="#FF0000">{USER_MESSAGE}</font></td>
+                  <td colspan="5" nowrap class="title"><font color="#FF0000">{USER_MESSAGE}</font></td>
                   </tr>
                 <!-- EDP: usr_msg -->
 				
 				<!-- BDP: pusres -->
                   <tr>
                     <td nowrap align="center">&nbsp;</td>
-                    <td nowrap class="content">{UNAME}</td>
-                    <td width="80" nowrap class="content">{USTATUS}</td>
+                    <td nowrap class="content" colspan="2">{UNAME}</td>
+                    <td width="80" align="center" nowrap class="content"><strong>{USTATUS}</strong></td>
                     <td width="60" class="content" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.gif" width="18" height="18" border="0" align="absmiddle"> <a href="puser_edit.php?uname={USER_ID}" class="link">{TR_EDIT}</a> </td>
                     <td width="60" class="content" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" align="absmiddle"> <a href="puser_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a> </td>
                     <td width="60" align="center" nowrap class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="puser_delete.php?uname={USER_ID}" class="link">{TR_DELETE}</a></td>
@@ -77,7 +77,7 @@ function MM_goToURL() { //v3.0
 				  <!-- EDP: pusres -->
 				  <tr>
 				    <td>&nbsp;</td>
-				    <td colspan="4"><input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_uadd.php');return document.MM_returnValue" value="{TR_ADD_USER}">&nbsp;&nbsp;
+				    <td colspan="5"><input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_uadd.php');return document.MM_returnValue" value="{TR_ADD_USER}">&nbsp;&nbsp;
 				      <input type="button" class="button" name="Back" value=" Back " onClick="location = 'protected_areas.php'"></td>
 				    </tr></table>
 				  </td>
@@ -117,7 +117,7 @@ function MM_goToURL() { //v3.0
 					{MEMBER}
 					<!-- EDP: group_members -->
 					</td>
-					<td width="80" nowrap class="content">{GSTATUS}</td>
+					<td width="80" align="center" nowrap class="content"><strong>{GSTATUS}</strong></td>
                     <td width="100" colspan="2" align="center" nowrap class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="puser_gdelete.php?gname={GROUP_ID}" class="link">{TR_DELETE}</a></td>
                   </tr>
                   <!-- EDP: pgroups -->

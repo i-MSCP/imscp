@@ -84,10 +84,11 @@ SQL_QUERY;
 		$tpl -> assign('USR_MSG', '');
 		while (!$rs -> EOF) {
 
+			$status = $rs -> fields['status'];
 			$tpl -> assign(
 						array(
 								'UNAME' => $rs -> fields['uname'],
-								'USTATUS' => $rs -> fields['status'],
+								'USTATUS' => translate_dmn_status($status),
 								'USER_ID' =>  $rs -> fields['id'],
 							  )
 							);
@@ -130,10 +131,12 @@ SQL_QUERY;
 		while (!$rs -> EOF) {
 
 			$members = $rs -> fields['members'];
+			$status = $rs -> fields['status'];
+			
 			$tpl -> assign(
 						array(
 								'GNAME' => $rs -> fields['ugroup'],
-								'GSTATUS' => $rs -> fields['status'],
+								'GSTATUS' => translate_dmn_status($status),
 								'GROUP_ID' =>  $rs -> fields['id'],
 							  )
 							);
