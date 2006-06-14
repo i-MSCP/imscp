@@ -87,6 +87,7 @@ SQL_QUERY;
 			$tpl -> assign(
 						array(
 								'UNAME' => $rs -> fields['uname'],
+								'USTATUS' => $rs -> fields['status'],
 								'USER_ID' =>  $rs -> fields['id'],
 							  )
 							);
@@ -132,7 +133,7 @@ SQL_QUERY;
 			$tpl -> assign(
 						array(
 								'GNAME' => $rs -> fields['ugroup'],
-
+								'GSTATUS' => $rs -> fields['status'],
 								'GROUP_ID' =>  $rs -> fields['id'],
 							  )
 							);
@@ -220,6 +221,7 @@ $tpl -> assign(
 						'TR_DELETE' => tr('Delete'),
 						'TR_GROUPS' => tr('Groups'),
 						'TR_PASSWORD' => tr('Password'),
+						'TR_STATUS' => tr('Status'),
 						'TR_PASSWORD_REPEAT' => tr('Password repeat'),
 
 					  )

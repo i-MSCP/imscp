@@ -69,6 +69,7 @@ function MM_goToURL() { //v3.0
                   <tr>
                     <td nowrap align="center">&nbsp;</td>
                     <td nowrap class="content">{UNAME}</td>
+                    <td nowrap class="content">{USTATUS}</td>
                     <td width="60" class="content" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.gif" width="18" height="18" border="0" align="absmiddle"> <a href="puser_edit.php?uname={USER_ID}" class="link">{TR_EDIT}</a> </td>
                     <td width="60" class="content" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" align="absmiddle"> <a href="puser_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a> </td>
                     <td width="60" align="center" nowrap class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="puser_delete.php?uname={USER_ID}" class="link">{TR_DELETE}</a></td>
@@ -116,7 +117,8 @@ function MM_goToURL() { //v3.0
 					{MEMBER}
 					<!-- EDP: group_members -->
 					</td>
-                    <td width="100" colspan="3" align="center" nowrap class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="puser_gdelete.php?gname={GROUP_ID}" class="link">{TR_DELETE}</a></td>
+					<td nowrap class="content">{GSTATUS}</td>
+                    <td width="100" colspan="2" align="center" nowrap class="content"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="puser_gdelete.php?gname={GROUP_ID}" class="link">{TR_DELETE}</a></td>
                   </tr>
                   <!-- EDP: pgroups -->
                     <tr>
