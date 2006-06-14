@@ -54,8 +54,8 @@ function MM_goToURL() { //v3.0
               <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
                   <tr>
                     <td width="20" align="center" nowrap>&nbsp;</td>
-                    <td nowrap class="content3"><b>{TR_USERNAME}</b></td>
-                    <td nowrap align="center" class="content3"><b>{TR_STATUS}</b></td>
+                    <td nowrap class="content3" colspan="2"><b>{TR_USERNAME}</b></td>
+                    <td width="80" nowrap align="center" class="content3"><b>{TR_STATUS}</b></td>
                     <td colspan="3" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
                   </tr>
 				  <!-- BDP: usr_msg -->
