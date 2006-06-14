@@ -91,7 +91,7 @@ BEGIN {
 }
 
 
-#$main::engine_debug = '_on_';
+$main::engine_debug = '_on_';
 
 $main::cc_stdout = '/tmp/vhcs2-cc.stdout';
 
@@ -2135,4 +2135,5 @@ $main::working_license = $main::level1_license;
 ########################################################################
 
 return 1;
+
 

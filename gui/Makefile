@@ -46,7 +46,7 @@ install:
 
 	cp -dR ./domain_default_page $(SYSTEM_GUI_ROOT)
 	cp -dR ./errordocs $(SYSTEM_GUI_ROOT)
-	cp -dR ./images $(SYSTEM_GUI_ROOT)
+	#cp -dR ./images $(SYSTEM_GUI_ROOT)
 	cp -dR ./themes $(SYSTEM_GUI_ROOT)
 	cp -dR ./tools $(SYSTEM_GUI_ROOT)
 	cp -dR ./orderpanel $(SYSTEM_GUI_ROOT)

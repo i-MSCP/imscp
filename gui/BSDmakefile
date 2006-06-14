@@ -41,7 +41,7 @@ install:
 	rm -rf $(SYSTEM_GUI_ROOT)/{admin,reseller,client,include}/Makefile
 	cp -R ./domain_default_page $(SYSTEM_GUI_ROOT)
 	cp -R ./errordocs $(SYSTEM_GUI_ROOT)
-	cp -R ./images $(SYSTEM_GUI_ROOT)
+	#cp -R ./images $(SYSTEM_GUI_ROOT)
 	cp -R ./themes $(SYSTEM_GUI_ROOT)
 	cp -R ./tools $(SYSTEM_GUI_ROOT)
 	cp -R ./orderpanel $(SYSTEM_GUI_ROOT)
