@@ -114,6 +114,24 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
         $rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $change_status));
+        
+        global $cfg;
+        $change_status = $cfg['ITEM_CHANGE_STATUS'];
+
+		$query = <<<SQL_QUERY
+                    update
+                        htaccess
+                    set
+                        status = ?
+                    where
+                         dmn_id = ?
+SQL_QUERY;
+			$rs = exec_query($sql, $query, array($change_status, $dmn_id));
+
+		check_for_lock_file();
+		send_request();
+        
+        
 		$admin_login = $_SESSION['user_logged'];
 		write_log("$admin_login: add user (protected areas): $uname");
 		header('Location: puser_manage.php');
