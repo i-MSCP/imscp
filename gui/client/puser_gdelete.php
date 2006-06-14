@@ -109,7 +109,7 @@ SQL_QUERY;
 					where
 						id = ? 
 					and 
-						status != 'delete'
+						status NOT like 'delete'
 SQL_QUERY;
 		 $rs = exec_query($sql, $query, array($change_status, $dmn_id));	
 		
