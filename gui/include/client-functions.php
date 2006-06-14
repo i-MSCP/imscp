@@ -417,7 +417,7 @@ $tpl -> assign(
                         'TR_MENU_WEBTOOLS' => tr('Webtools'),
                         'TR_HTACCESS' => tr('Protected areas'),
                         'TR_AWSTATS' => tr('Webstatistics'),
-                        'TR_HTACCESS_USER' => (tr('Group/Usermanagement'))
+                        'TR_HTACCESS_USER' => tr('Group/Usermanagement'),
                         'TR_MENU_OVERVIEW' => tr('Overview'),
                         'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
                         'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
