@@ -69,14 +69,16 @@ SQL_QUERY;
 		for ($i = 0; $i < count($grp_id_splited); $i++) {
 				//Does this group affect some htaccess ?
 			if ($grp_id_splited[$i] == $group_id) {		
-				//oh -> our group was used in htaccess		
-				//but we don't want to delete our htaccess... 
+				//oh -> our group was used in htaccess	
+				  if (count($grp_id_splited) < 2 && count($grp_id_splited) > 0){ 
+	 	            $status = $cfg['ITEM_DELETE_STATUS']; 
+	 	          } else {	
 					$grp_id = preg_replace("/$group_id/", "", "$grp_id");
 					$grp_id = preg_replace("/,,/", ",", "$grp_id");
 					$grp_id = preg_replace("/^,/", "", "$grp_id");
 					$grp_id = preg_replace("/,$/", "", "$grp_id");
 					$status = $cfg['ITEM_CHANGE_STATUS'];
-				
+				}
 				$update_query = <<<SQL_QUERY
 				update
 					htaccess
@@ -106,6 +108,8 @@ SQL_QUERY;
 						status = ?
 					where
 						id = ? 
+					and 
+						status != 'delete'
 SQL_QUERY;
 		 $rs = exec_query($sql, $query, array($change_status, $dmn_id));	
 		
