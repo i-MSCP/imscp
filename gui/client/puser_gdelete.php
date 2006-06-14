@@ -82,16 +82,13 @@ SQL_QUERY;
 				//Does this group affect some htaccess ?
 			if ($grp_id_splited[$i] == $group_id) {		
 				//oh -> our group was used in htaccess		
-				if (count($grp_id_splited) < 2 && count($grp_id_splited) > 0){
-					$status = $cfg['ITEM_DELETE_STATUS'];
-				} else {
+				//but we don't want to delete our htaccess... 
 					$grp_id = preg_replace("/$group_id/", "", "$grp_id");
 					$grp_id = preg_replace("/,,/", ",", "$grp_id");
 					$grp_id = preg_replace("/^,/", "", "$grp_id");
 					$grp_id = preg_replace("/,$/", "", "$grp_id");
 					$status = $cfg['ITEM_CHANGE_STATUS'];
-				}
-
+				
 				$update_query = <<<SQL_QUERY
 				update
 					htaccess
@@ -103,34 +100,33 @@ SQL_QUERY;
 SQL_QUERY;
 
 		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
-
-			} else {
-			
-				$group_belongs_to_us="yes";
 				
+			} else {
+				//we like to have our changes honoured, too!
+					$status = $cfg['ITEM_CHANGE_STATUS'];
+					$query = <<<SQL_QUERY
+      				 update
+       						htaccess
+						set
+							status = ?
+						where
+							id = ? 
+SQL_QUERY;
+		 				$rs = exec_query($sql, $query, array($change_status, $dmn_id));	
+		 				check_for_lock_file();
+						send_request();
 			}
 
 		}
 
 	$rs -> MoveNext();
 	}
+	
 
-if ($group_belongs_to_us=="yes") {
-	//this group belongs to us - but is currently not used by any htacces but we'd like to have our changes honoured, too!
-	$status = $cfg['ITEM_CHANGE_STATUS'];
-	$query = <<<SQL_QUERY
-       update
-       		htaccess
-		set
-			status = ?
-		where
-			id = ? 
-SQL_QUERY;
-		 $rs = exec_query($sql, $query, array($change_status, $dmn_id));		
-		
-}
 	
 	
+	
+
 
 check_for_lock_file();
 send_request();
