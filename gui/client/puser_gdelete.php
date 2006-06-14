@@ -107,7 +107,7 @@ SQL_QUERY;
 					set
 						status = ?
 					where
-						id = ? 
+						dmn_id = ? 
 					and 
 						status NOT like 'delete'
 SQL_QUERY;
