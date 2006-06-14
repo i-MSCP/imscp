@@ -304,13 +304,13 @@ SQL_QUERY;
 				where
 					dmn_id = ?
 SQL_QUERY;
-			$rs_update_htaccess = exec_query($sql, $query, array($change_status, $group_id, $dmn_id));
+			$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
 
 			check_for_lock_file();
 			send_request();		
 				
 				
-				set_page_message(tr('User was deleted from group ')."- ".$rs -> fields['ugroup']);
+			set_page_message(tr('User was deleted from group ')."- ".$rs -> fields['ugroup']);
 				
 	} else {
 		return;
