@@ -55,7 +55,8 @@ function MM_goToURL() { //v3.0
                   <tr>
                     <td width="20" align="center" nowrap>&nbsp;</td>
                     <td nowrap class="content3"><b>{TR_USERNAME}</b></td>
-                    <td colspan="3" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
+                    <td nowrap align="center" class="content3"><b>{TR_STATUS}</b></td>
+                    <td colspan="2" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
                   </tr>
 				  <!-- BDP: usr_msg -->
                 <tr>
@@ -97,7 +98,8 @@ function MM_goToURL() { //v3.0
                     <td width="20" align="center" nowrap>&nbsp;</td>
                     <td width="203" nowrap class="content3"><b>{TR_GROUPNAME}</b></td>
                     <td nowrap class="content3"><b>{TR_GROUP_MEMBERS}</b></td>
-                    <td width="100" colspan="3" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
+                    <td nowrap align="center" class="content3"><b>{TR_STATUS}</b></td>
+                    <td width="100" colspan="2" align="center" nowrap class="content3"><b>{TR_ACTION}</b></td>
                   </tr>
                   <!-- BDP: grp_msg -->
                   <tr>
