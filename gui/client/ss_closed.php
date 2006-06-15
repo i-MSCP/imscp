@@ -156,6 +156,7 @@ SQL_QUERY;
       $tpl -> parse('TICKETS_ITEM', '.tickets_item');
             $rs->MoveNext();
             $i++;
+  	}
   }
 }
 
