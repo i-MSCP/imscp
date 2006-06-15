@@ -1,5 +1,5 @@
 <?php
-/* $Id: tatarish-iso-8859-9.inc.php,v 1.48.2.1 2006/02/17 12:43:01 lem9 Exp $ */
+/* $Id: tatarish-iso-8859-9.inc.php,v 1.48.2.3 2006/03/23 17:42:16 lem9 Exp $ */
 
 $charset = 'iso-8859-9';
 $allow_recoding = TRUE;

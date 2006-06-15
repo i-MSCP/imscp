@@ -1,5 +1,5 @@
 <?php
-/* $Id: mysqli.dbi.lib.php,v 2.43 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: mysqli.dbi.lib.php,v 2.43.2.1 2006/02/22 15:30:38 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -30,6 +30,16 @@ define('SET_FLAG',           2048);
 define('NUM_FLAG',          32768);
 define('PART_KEY_FLAG',     16384);
 define('UNIQUE_FLAG',       65536);
+
+/**
+ * @see http://bugs.php.net/36007
+ */
+if (! defined('MYSQLI_TYPE_NEWDECIMAL')) {
+    define('MYSQLI_TYPE_NEWDECIMAL', 246);
+}
+if (! defined('MYSQLI_TYPE_BIT')) {
+    define('MYSQLI_TYPE_BIT', 16);
+}
 
 function PMA_DBI_connect($user, $password, $is_controluser = FALSE)
 {
@@ -359,6 +369,8 @@ function PMA_DBI_get_fields_meta($result)
     // Build an associative array for a type look up
     $typeAr = Array();
     $typeAr[MYSQLI_TYPE_DECIMAL]     = 'real';
+    $typeAr[MYSQLI_TYPE_NEWDECIMAL]  = 'real';
+    $typeAr[MYSQLI_TYPE_BIT]         = 'bool';
     $typeAr[MYSQLI_TYPE_TINY]        = 'int';
     $typeAr[MYSQLI_TYPE_SHORT]       = 'int';
     $typeAr[MYSQLI_TYPE_LONG]        = 'int';

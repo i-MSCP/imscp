@@ -1019,7 +1019,7 @@ function Output($name='',$dest='')
 			//Send to standard output
                         // lem9
 			//if(isset($HTTP_SERVER_VARS['SERVER_NAME']))
-			if(isset($_SERVER['SERVER_NAME']))
+            if(PMA_getenv('SERVER_NAME'))
 			{
 				//We send to a browser
 				Header('Content-Type: application/pdf');
@@ -1034,7 +1034,7 @@ function Output($name='',$dest='')
 			//Download file
                         // lem9
 			//if(isset($HTTP_SERVER_VARS['HTTP_USER_AGENT']) and strpos($HTTP_SERVER_VARS['HTTP_USER_AGENT'],'MSIE'))
-			if(isset($_SERVER['HTTP_USER_AGENT']) and strpos($_SERVER['HTTP_USER_AGENT'],'MSIE'))
+            if(PMA_getenv('HTTP_USER_AGENT') and strpos(PMA_getenv('HTTP_USER_AGENT'), 'MSIE'))
 				Header('Content-Type: application/force-download');
 			else
 				Header('Content-Type: application/octet-stream');
@@ -1619,7 +1619,7 @@ function _out($s)
 //Handle special IE contype request
 // lem9
 //if(isset($HTTP_SERVER_VARS['HTTP_USER_AGENT']) and $HTTP_SERVER_VARS['HTTP_USER_AGENT']=='contype')
-if(isset($_SERVER['HTTP_USER_AGENT']) and $_SERVER['HTTP_USER_AGENT']=='contype')
+if(PMA_getenv('HTTP_USER_AGENT') == 'contype')
 {
 	Header('Content-Type: application/pdf');
 	exit;

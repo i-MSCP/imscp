@@ -1,12 +1,12 @@
-$Id: README,v 2.40.2.3.2.8 2006/05/12 16:33:02 lem9 Exp $
+$Id: README,v 2.40.2.6.2.1 2006/05/20 17:17:03 lem9 Exp $
 
 phpMyAdmin - Readme
 ===================
 
   A set of PHP-scripts to manage MySQL over the web.
 
-  Version 2.8.0.4
-  ---------------
+  Version 2.8.1
+  -------------
   http://www.phpmyadmin.net/
 
     Copyright (C) 1998-2000 Tobias Ratschiller <tobias_at_ratschiller.com>
@@ -35,7 +35,7 @@ phpMyAdmin - Readme
 
   Requirements:
     php 4.1.0 or later
-    MySQL 3.23.32 to 5.0.x 
+    MySQL 3.23.32 or later
     a web-browser (doh!)
 
   Summary:

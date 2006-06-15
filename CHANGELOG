@@ -1,9 +1,57 @@
 VHCS 2.4.7.x Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2006-06-15 Benedikt Heintel
+	- GUI:
+		* Fixed: ITEM_DELETE_STATUS not defined
+	- ENGINE:
+		* Fixed: converted back to unix linebreaks
+		* Fixed: DNS creation
+	- TEMPLATES:
+		* Fixed: valid DNS records to rfc1918
+
+2006-06-14 Malte Geierhos
+	- Engine:
+		* Fixed bug #297: .htpasswd,.htgroup files got deleted upon changes
+	- GUI:
+    	* Updated: Make Htaccess Manager own menu - point under Webtools
+		* Updated: User + Group Status is now displayed in GUI
+		* Fixed: Every Change (password change, group change and many more is now processed)
+		* updated vhcs_email_check to comply to rfc2822
+
+2006-06-14 Carsten Schoene
+	- GUI:
+		* Fixed: a date display bug (function:getdatestr) which may occour on some php5 installations
+
+2006-06-12 Carsten Schoene
+	- INSTALLATION:
+		* Updated: make copy-errordocs.sh more portable and read settings from vhcs.conf
+	- GUI:
+		* Updated: phpMyAdmin to 2.8.1 and ADODB to 4.90
+		* Updated: location of isp_logo.gif
+
+2006-06-11 Benedikt Heintel
+	- GUI:
+		* Patch from bug #341: Security enhancing against Invalid Hostnames/IPs, inspired by Roland Haeder
+		* Unused images mark as delete
+	- INSTALLATION:
+		* Securing error docs (/engine/setup/copy-errordocs.sh)
+
+2006-06-10 Benedikt Heintel
+	- GUI:
+		* Fixed bug #353: ' and ` (and a lot more) in mail password not longer allowed
+		* Fixed: Domain adding without eMail-Adress possible
+		* Updated: vhcs_email_check.php
+
+2006-06-05 Malte Geierhos
+	- ENGINE:
+		* Fixed bug #316: .htaccess in folders would be replaced by engine
+						  (incompatible to existing .htaccess-files, we have to develope a fix [Benedikt Heintel])
+
 2006-06-04 Benedikt Heintel
 	- GUI:
 		* Redesigned: Admin menus
 		* Added: Serverport are made changeable
+		* Fixed: Fixed: Status 'todelete': wrong symbol (|| instead of working-arrows)
 
 2006-05-31 Benedikt Heintel
 	- GUI:
@@ -18,7 +66,7 @@ VHCS 2.4.7.x Changelog
 		         To be backward compatible, both will be checked. New password will be a md5 password.
 
 2006-05-27 Benedikt Heintel
-	- GUI
+	- GUI:
 		* Fixed: Forgotten Bracket & Updated: Layout in protected_areas.php
 
 2006-05-26 Carsten Schoene
@@ -35,39 +83,39 @@ VHCS 2.4.7.x Changelog
 		* Added: Domains per row over Settings
 
 2006-05-21 Benedikt Heintel
-	- Languages
+	- LANGUAGES:
 		* Added: French v1.0
-	- GUI
+	- GUI:
 		* Fixed bug #0000360: Domain aliases not searchable
 		* Fixed bug #0000351: IPs not deleteable, because of hard coded user
 
 2006-05-20 Benedikt Heintel
-	- GUI
+	- GUI:
 		* Changed: Personal data forms (street before zip code)
 		* Changed: Domain alias sorted ascending
-	- SQL
+	- SQL:
 		* Solved: Conflict
 
 2006-05-19 Benedikt Heintel
-	- GUI
+	- GUI:
 		* Fixed bug #0000357: see if a(n) domain/user was deleted
 		* Fixed: Unified Admin-Log
 
 2006-05-16 Carsten Schoene
 
-	- GUI
+	- GUI:
 		* updated phpmyadmin & adodb
 		* converted templates back to unix linebreaks
 
 2006-05-16 Benedikt Heintel
 
-	- GUI
+	- GUI:
 		* Fixed: Cross Scripting attemps in Admin and Reseller
 		* Partly Fixed bug #0000296: Invalid Mountpoint was accepted
 
 2006-05-04 Benedikt Heintel
 
-	- GUI
+	- GUI:
 		* Fixed bug #0000313: downgrading MySQL user blocked even if no user exists
 		* Fixed bugs #0000327 & #0000339: eMails from Loginpage
 		* Changed: error.php (Style)
@@ -75,7 +123,7 @@ VHCS 2.4.7.x Changelog
 
 2006-04-21 Marcus Moll
 
-	- ENGINE
+	- ENGINE:
 		* Changed Apache Templates (indexing disabled)
 
 2006-04-19 Carsten Schoene / Marcus Moll

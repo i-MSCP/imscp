@@ -1,5 +1,5 @@
 <?php
-/* $Id: database_interface.lib.php,v 2.39.4.1 2006/03/08 02:33:17 lem9 Exp $ */
+/* $Id: database_interface.lib.php,v 2.39.2.2 2006/03/08 17:54:29 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -364,8 +364,20 @@ function PMA_DBI_get_tables_full($database, $table = false,
         }
     }
 
-    if ( ! is_array($database) && isset($tables[$database]) ) {
-        return $tables[$database];
+    if (! is_array($database)) {
+        if (isset($tables[$database])) {
+            return $tables[$database];
+        } elseif (isset($tables[strtolower($database)])) {
+            // on windows with lower_case_table_names = 1
+            // MySQL returns
+            // with SHOW DATABASES or information_schema.SCHEMATA: `Test`
+            // but information_schema.TABLES gives `test`
+            // bug #1436171
+            // sf.net/tracker/?func=detail&aid=1436171&group_id=23067&atid=377408
+            return $tables[strtolower($database)];
+        } else {
+            return $tables;
+        }
     } else {
         return $tables;
     }

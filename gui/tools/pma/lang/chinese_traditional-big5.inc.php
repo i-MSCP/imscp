@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_traditional-big5.inc.php,v 2.88.2.1.2.1 2006/03/04 14:53:07 lem9 Exp $ */
+/* $Id: chinese_traditional-big5.inc.php,v 2.88.2.4 2006/03/23 17:42:11 lem9 Exp $ */
 
 /**
  * Last translation by: Siu Sun <siusun@best-view.net>

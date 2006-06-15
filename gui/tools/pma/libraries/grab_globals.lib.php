@@ -1,5 +1,5 @@
 <?php
-/* $Id: grab_globals.lib.php,v 2.27 2005/12/12 14:28:28 cybot_tm Exp $ */
+/* $Id: grab_globals.lib.php,v 2.27.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -98,23 +98,22 @@ if ( ! empty( $_FILES ) ) {
     unset( $name, $value );
 }
 
-if ( ! empty( $_SERVER ) ) {
-    $server_vars = array('PHP_SELF', 'HTTP_ACCEPT_LANGUAGE', 'HTTP_AUTHORIZATION');
-    foreach ( $server_vars as $current ) {
-        // its not important HOW we detect html tags
-        // its more important to prevent XSS
-        // so its not important if we result in an invalid string,
-        // its even better than a XSS capable string
-        if ( isset( $_SERVER[$current] ) && false === strpos($_SERVER[$current], '<') ) {
-            $$current = $_SERVER[$current];
-        // already importet by register_globals?
-        } elseif ( ! isset( $$current ) || false !== strpos($$current, '<') ) {
-            $$current = '';
-        }
+/**
+ * globalize some environment variables
+ */
+$server_vars = array('PHP_SELF', 'HTTP_ACCEPT_LANGUAGE', 'HTTP_AUTHORIZATION');
+foreach ( $server_vars as $current ) {
+    // its not important HOW we detect html tags
+    // its more important to prevent XSS
+    // so its not important if we result in an invalid string,
+    // its even better than a XSS capable string
+    if (PMA_getenv($current) && false === strpos(PMA_getenv($current), '<')) {
+        $$current = PMA_getenv($current);
+    // already importet by register_globals?
+    } elseif ( ! isset( $$current ) || false !== strpos($$current, '<') ) {
+        $$current = '';
     }
-    unset( $server_vars, $current );
-} // end if
-
-unset( $_import_blacklist );
+}
+unset($server_vars, $current, $_import_blacklist);
 
 ?>

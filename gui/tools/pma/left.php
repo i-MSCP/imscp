@@ -1,5 +1,5 @@
 <?php
-/* $Id: left.php,v 2.69 2006/01/17 17:02:28 cybot_tm Exp $ */
+/* $Id: left.php,v 2.69.2.1 2006/02/22 15:33:35 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * display db and table selection
@@ -358,6 +358,14 @@ function PMA_displayDbList( $ext_dblist ) {
             if ( $db['num_tables'] ) {
                 if ( isset( $tables_full[$db['name']] ) ) {
                     $tables = PMA_getTableList($db['name'], $tables_full[$db['name']]);
+                } elseif (isset($tables_full[strtolower($db['name'])])) {
+                    // on windows with lower_case_table_names = 1
+                    // MySQL returns
+                    // with SHOW DATABASES or information_schema.SCHEMATA: `Test`
+                    // but information_schema.TABLES gives `test`
+                    // bug #1436171
+                    // sf.net/tracker/?func=detail&aid=1436171&group_id=23067&atid=377408
+                    $tables = PMA_getTableList($db['name'], $tables_full[strtolower($db['name'])]);
                 } else {
                     $tables = PMA_getTableList($db['name']);
                 }

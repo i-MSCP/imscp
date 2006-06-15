@@ -1,5 +1,5 @@
 <?php
-/* $Id: lithuanian-windows-1257.inc.php,v 2.117.2.1 2006/02/17 12:43:00 lem9 Exp $ */
+/* $Id: lithuanian-windows-1257.inc.php,v 2.117.2.3 2006/03/23 17:42:14 lem9 Exp $ */
 
 $charset = 'windows-1257';
 $text_dir = 'ltr'; // ('ltr' for left to right, 'rtl' for right to left)

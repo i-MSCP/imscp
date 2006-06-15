@@ -175,10 +175,13 @@ include_once (realpath($include_path.'/lostpassword-functions.php'));
 
 include_once (realpath($include_path.'/sql.php'));
 
+// include_once (realpath($include_path.'/vhcs-security.php'));
+
+
 $query = "SELECT name, value FROM config";
 
 if( !$res = exec_query($sql, $query, array()) ) {
-  	
+
 	system_message(tr('Could not get config from database'));
 
 	die();

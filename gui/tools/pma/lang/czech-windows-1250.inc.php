@@ -1,5 +1,5 @@
 <?php
-/* $Id: czech-windows-1250.inc.php,v 2.168 2006/01/26 13:00:34 nijel Exp $ */
+/* $Id: czech-windows-1250.inc.php,v 2.168.2.2 2006/03/23 17:42:11 lem9 Exp $ */
 
 /**
  * Czech language file by

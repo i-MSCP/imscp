@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlparser.data.php,v 2.23 2005/10/08 19:42:39 lem9 Exp $ */
+/* $Id: sqlparser.data.php,v 2.23.4.1 2006/03/26 11:54:14 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -327,6 +327,7 @@ $PMA_SQPdata_reserved_word = array (
     'COMPRESSED',
     'CONCURRENT',
     'CONSTRAINT',
+    'CONVERT',
     'CREATE',
     'CROSS',
     'CURRENT_TIMESTAMP',
@@ -563,7 +564,7 @@ $PMA_SQPdata_reserved_word = array (
     'YEAR_MONTH'
 );
 //$PMA_SQPdata_reserved_word_cnt = count($PMA_SQPdata_reserved_word);
-$PMA_SQPdata_reserved_word_cnt = 272;
+$PMA_SQPdata_reserved_word_cnt = 273;
 
 // words forbidden to be used as column or table name,
 // as seen in http://dev.mysql.com/doc/mysql/en/reserved-words.html

@@ -54,10 +54,11 @@
               </tr>
               <!-- EDP: service_status -->
             </table>
+
 			<!-- EDP: props_list -->
-			
-			
-			
+
+
+
 			</td>
             <td>&nbsp;</td>
           </tr>

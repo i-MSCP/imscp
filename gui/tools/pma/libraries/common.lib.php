@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php,v 2.266.2.11.2.1 2006/03/17 00:20:42 lem9 Exp $ */
+/* $Id: common.lib.php,v 2.266.2.23.2.1 2006/05/14 16:46:51 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -52,10 +52,11 @@ if (defined('E_STRICT')) {
 }
 
 /**
- * Avoid object cloning errors 
+ * Avoid object cloning errors
  */
 
 @ini_set('zend.ze1_compatibility_mode',false);
+
 
 /******************************************************************************/
 /* definition of functions         LABEL_definition_of_functions              */
@@ -500,13 +501,21 @@ function PMA_array_merge_recursive()
  * @param   array   $array      array to walk
  * @param   string  $function   function to call for every array element
  */
-function PMA_arrayWalkRecursive(&$array, $function)
+function PMA_arrayWalkRecursive(&$array, $function, $apply_to_keys_also = false)
 {
     foreach ($array as $key => $value) {
         if (is_array($value)) {
-            PMA_arrayWalkRecursive($array[$key], $function);
+            PMA_arrayWalkRecursive($array[$key], $function, $apply_to_keys_also);
         } else {
             $array[$key] = $function($value);
+        }
+
+        if ($apply_to_keys_also && is_string($key)) {
+            $new_key = $function($key);
+            if ($new_key != $key) {
+                $array[$new_key] = $array[$key];
+                unset($array[$key]);
+            }
         }
     }
 }
@@ -542,6 +551,30 @@ function PMA_checkPageValidity(&$page, $whitelist)
         }
     }
     return false;
+}
+
+/**
+ * trys to find the value for the given environment vriable name
+ *
+ * searchs in $_SERVER, $_ENV than trys getenv() and apache_getenv()
+ * in this order
+ *
+ * @param   string  $var_name   variable name
+ * @return  string  value of $var or empty string
+ */
+function PMA_getenv($var_name) {
+    if (isset($_SERVER[$var_name])) {
+        return $_SERVER[$var_name];
+    } elseif (isset($_ENV[$var_name])) {
+        return $_ENV[$var_name];
+    } elseif (getenv($var_name)) {
+        return getenv($var_name);
+    } elseif (function_exists('apache_getenv')
+     && apache_getenv($var_name, true)) {
+        return apache_getenv($var_name, true);
+    }
+
+    return '';
 }
 
 /**
@@ -921,33 +954,45 @@ if (!defined('PMA_MINIMUM_COMMON')) {
             // special characters that can become high-ascii after editing,
             // depending upon which editor is used by the developer?
             $error_table = array();
-            preg_match('@ALTER\sTABLE\s\`([^\`]+)\`@iu', $the_query, $error_table);
-            $error_table = $error_table[1];
+            if (preg_match('@ALTER\s*TABLE\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
+                $error_table = $error_table[1];
+            } elseif (preg_match('@INSERT\s*INTO\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
+                $error_table = $error_table[1];
+            } elseif (preg_match('@UPDATE\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
+                $error_table = $error_table[1];
+            } elseif (preg_match('@INSERT\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
+                $error_table = $error_table[1];
+            }
 
             // get fields
             $error_fields = array();
-            preg_match('@\(([^\)]+)\)@i', $the_query, $error_fields);
-            $error_fields = explode(',', $error_fields[1]);
+            if (preg_match('@\(([^\)]+)\)@i', $the_query, $error_fields)) {
+                $error_fields = explode(',', $error_fields[1]);
+            } elseif (preg_match('@(`[^`]+`)\s*=@i', $the_query, $error_fields)) {
+                $error_fields = explode(',', $error_fields[1]);
+            }
+            if (is_array($error_table) || is_array($error_fields)) {
 
-            // duplicate value
-            $duplicate_value = array();
-            preg_match('@\'([^\']+)\'@i', $tmp_mysql_error, $duplicate_value);
-            $duplicate_value = $duplicate_value[1];
+                // duplicate value
+                $duplicate_value = array();
+                preg_match('@\'([^\']+)\'@i', $tmp_mysql_error, $duplicate_value);
+                $duplicate_value = $duplicate_value[1];
 
-            $sql = '
-                 SELECT *
-                   FROM ' . PMA_backquote($error_table) . '
-                  WHERE CONCAT_WS("-", ' . implode(', ', $error_fields) . ')
-                        = "' . PMA_sqlAddslashes($duplicate_value) . '"
-               ORDER BY ' . implode(', ', $error_fields);
-            unset($error_table, $error_fields, $duplicate_value);
+                $sql = '
+                     SELECT *
+                       FROM ' . PMA_backquote($error_table) . '
+                      WHERE CONCAT_WS("-", ' . implode(', ', $error_fields) . ')
+                            = "' . PMA_sqlAddslashes($duplicate_value) . '"
+                   ORDER BY ' . implode(', ', $error_fields);
+                unset($error_table, $error_fields, $duplicate_value);
 
-            echo '        <form method="post" action="import.php" style="padding: 0; margin: 0">' ."\n"
-                .'            <input type="hidden" name="sql_query" value="' . htmlentities($sql) . '" />' . "\n"
-                .'            ' . PMA_generate_common_hidden_inputs($db, $table) . "\n"
-                .'            <input type="submit" name="submit" value="' . $GLOBALS['strBrowse'] . '" />' . "\n"
-                .'        </form>' . "\n";
-            unset($sql);
+                echo '        <form method="post" action="import.php" style="padding: 0; margin: 0">' ."\n"
+                    .'            <input type="hidden" name="sql_query" value="' . htmlentities($sql) . '" />' . "\n"
+                    .'            ' . PMA_generate_common_hidden_inputs($db, $table) . "\n"
+                    .'            <input type="submit" name="submit" value="' . $GLOBALS['strBrowse'] . '" />' . "\n"
+                    .'        </form>' . "\n";
+                unset($sql);
+            }
         } // end of show duplicate entry
 
         echo '</div>';
@@ -1036,7 +1081,12 @@ if (!defined('PMA_MINIMUM_COMMON')) {
                     header('Location: ' . $uri . $separator . SID);
                 }
             } else {
-                header('Location: ' . $uri);
+                session_write_close();
+                if (PMA_IS_IIS) {
+                    header('Refresh: 0; ' . $uri);
+                } else {
+                    header('Location: ' . $uri);
+                }
             }
         }
     }
@@ -1208,35 +1258,38 @@ if (!defined('PMA_MINIMUM_COMMON')) {
 
     /**
      * Adds backquotes on both sides of a database, table or field name.
-     * Since MySQL 3.23.6 this allows to use non-alphanumeric characters in
-     * these names.
+     * and escapes backquotes inside the name with another backquote
      *
-     * @param   mixed    the database, table or field name to "backquote" or
-     *                   array of it
-     * @param   boolean  a flag to bypass this function (used by dump
-     *                   functions)
+     * <code>
+     * echo PMA_backquote('owner`s db'); // `owner``s db`
+     * </code>
      *
+     * @param   mixed    $a_name    the database, table or field name to "backquote"
+     *                              or array of it
+     * @param   boolean  $do_it     a flag to bypass this function (used by dump
+     *                              functions)
      * @return  mixed    the "backquoted" database, table or field name if the
      *                   current MySQL release is >= 3.23.6, the original one
      *                   else
-     *
      * @access  public
      */
     function PMA_backquote($a_name, $do_it = true)
     {
-        // '0' is also empty for php :-(
-        if ($do_it
-            && isset($a_name) && !empty($a_name) && $a_name != '*') {
+        if (! $do_it) {
+            return $a_name;
+        }
 
             if (is_array($a_name)) {
                  $result = array();
-                 foreach ($a_name AS $key => $val) {
-                     $result[$key] = '`' . $val . '`';
+             foreach ($a_name as $key => $val) {
+                 $result[$key] = PMA_backquote($val);
                  }
                  return $result;
-            } else {
-                return '`' . $a_name . '`';
             }
+
+        // '0' is also empty for php :-(
+        if (strlen($a_name) && $a_name != '*') {
+            return '`' . str_replace('`', '``', $a_name) . '`';
         } else {
             return $a_name;
         }
@@ -1365,8 +1418,14 @@ if (!defined('PMA_MINIMUM_COMMON')) {
                 }
             // since counting all rows of a view could be too long
             } else {
-                $result = PMA_DBI_query('SELECT 1 FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table) . ' LIMIT ' . $cfg['MaxExactCount'], null, PMA_DBI_QUERY_STORE);
-                $num = PMA_DBI_num_rows($result);
+                // try_query because if can fail (a VIEW was based on a
+                // table that no longer exists)
+                $result = PMA_DBI_try_query('SELECT 1 FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table) . ' LIMIT ' . $cfg['MaxExactCount'], null, PMA_DBI_QUERY_STORE);
+                if (!PMA_DBI_getError()) {
+                    $num = PMA_DBI_num_rows($result);
+                } else {
+                    $num = 0;
+                }
             }
         }
         if ($ret) {
@@ -1514,11 +1573,17 @@ window.parent.updateTableTitle('<?php echo $uni_tbl; ?>', '<?php echo PMA_jsForm
             if (isset($GLOBALS['parsed_sql']) && $query_base == $GLOBALS['parsed_sql']['raw']) {
                 $parsed_sql = $GLOBALS['parsed_sql'];
             } else {
-                $parsed_sql = PMA_SQP_parse($query_base);
+                // when the query is large (for example an INSERT of binary
+                // data), the parser chokes; so avoid parsing it
+                if (strlen($query_base) < 1000) {
+                    $parsed_sql = PMA_SQP_parse($query_base);
+                }
             }
 
             // Analyze it
-            $analyzed_display_query = PMA_SQP_analyze($parsed_sql);
+            if (isset($parsed_sql)) {
+                $analyzed_display_query = PMA_SQP_analyze($parsed_sql);
+            }
 
             // Here we append the LIMIT added for navigation, to
             // enable its display. Adding it higher in the code
@@ -1542,7 +1607,9 @@ window.parent.updateTableTitle('<?php echo $uni_tbl; ?>', '<?php echo PMA_jsForm
             } elseif (!empty($GLOBALS['validatequery'])) {
                 $query_base = PMA_validateSQL($query_base);
             } else {
-                $query_base = PMA_formatSql($parsed_sql, $query_base);
+                if (isset($parsed_sql)) {
+                    $query_base = PMA_formatSql($parsed_sql, $query_base);
+                }
             }
 
             // Prepares links that may be displayed to edit/explain the query
@@ -1649,10 +1716,10 @@ window.parent.updateTableTitle('<?php echo $uni_tbl; ?>', '<?php echo PMA_jsForm
             if (isset($cfg['SQLQuery']['Refresh'])
                 && $cfg['SQLQuery']['Refresh']
                 && preg_match('@^(SELECT|SHOW)[[:space:]]+@i', $local_query)) {
-
                 $refresh_link = 'import.php'
                           . $url_qpart
                           . '&amp;show_query=1'
+                          . (isset($_GET['pos']) ? '&amp;pos=' . $_GET['pos'] : '')
                           . '&amp;sql_query=' . urlencode($local_query);
                 $refresh_link = ' [' . PMA_linkOrButton($refresh_link, $GLOBALS['strRefresh']) . ']';
             } else {
@@ -1936,7 +2003,7 @@ window.parent.updateTableTitle('<?php echo $uni_tbl; ?>', '<?php echo PMA_jsForm
             } elseif (!empty($tab['active'])
               || (isset($GLOBALS['active_page'])
                    && $GLOBALS['active_page'] == $tab['link'])
-              || basename($_SERVER['PHP_SELF']) == $tab['link'])
+              || basename(PMA_getenv('PHP_SELF')) == $tab['link'])
             {
                 $tab['class'] = 'active';
             }
@@ -2709,7 +2776,7 @@ if (isset($_POST['usesubform'])) {
     $_POST      = $subform;
     $_REQUEST   = $subform;
     if (isset($_POST['redirect'])
-      && $_POST['redirect'] != basename($_SERVER['PHP_SELF'])) {
+      && $_POST['redirect'] != basename(PMA_getenv('PHP_SELF'))) {
         $__redirect = $_POST['redirect'];
         unset($_POST['redirect']);
     } // end if (isset($_POST['redirect']))
@@ -2718,10 +2785,10 @@ if (isset($_POST['usesubform'])) {
 // end check if a subform is submitted
 
 if (get_magic_quotes_gpc()) {
-    PMA_arrayWalkRecursive($_GET, 'stripslashes');
-    PMA_arrayWalkRecursive($_POST, 'stripslashes');
-    PMA_arrayWalkRecursive($_COOKIE, 'stripslashes');
-    PMA_arrayWalkRecursive($_REQUEST, 'stripslashes');
+    PMA_arrayWalkRecursive($_GET, 'stripslashes', true);
+    PMA_arrayWalkRecursive($_POST, 'stripslashes', true);
+    PMA_arrayWalkRecursive($_COOKIE, 'stripslashes', true);
+    PMA_arrayWalkRecursive($_REQUEST, 'stripslashes', true);
 }
 
 require_once './libraries/session.inc.php';
@@ -2840,6 +2907,33 @@ if (PMA_checkPageValidity($_REQUEST['back'], $goto_whitelist)) {
     $GLOBALS['back'] = $_REQUEST['back'];
 } else {
     unset($_REQUEST['back'], $_GET['back'], $_POST['back'], $_COOKIE['back']);
+}
+
+/**
+ * Check whether user supplied token is valid, if not remove any
+ * possibly dangerous stuff from request.
+ */
+if (!isset($_REQUEST['token']) || $_SESSION['PMA_token'] != $_REQUEST['token']) {
+    /* List of parameters which are allowed from unsafe source */
+    $allow_list = array(
+        'db', 'table', 'lang', 'server', 'convcharset', 'collation_connection', 'target',
+        /* Session ID */
+        'phpMyAdmin',
+        /* Cookie preferences */
+        'pma_lang', 'pma_charset', 'pma_collation_connection', 'pma_convcharset',
+        /* Possible login form */
+        'pma_username', 'pma_password',
+    );
+    $keys = array_keys($_REQUEST);
+    /* Remove any non allowed stuff from requests */
+    foreach($keys as $key) {
+        if (!in_array($key, $allow_list)) {
+            unset($_REQUEST[$key]);
+            unset($_GET[$key]);
+            unset($_POST[$key]);
+            unset($GLOBALS[$key]);
+        }
+    }
 }
 
 /**
@@ -3019,19 +3113,16 @@ unset($default_server);
 
 if (!isset($_SESSION['PMA_Theme_Manager'])) {
     $_SESSION['PMA_Theme_Manager'] = new PMA_Theme_Manager;
+} else {
+    $_SESSION['PMA_Theme_Manager']->checkConfig();
 }
 
 if (isset($_REQUEST['set_theme'])) {
     // if user submit a theme
     $_SESSION['PMA_Theme_Manager']->setActiveTheme($_REQUEST['set_theme']);
-} elseif (version_compare(phpversion(), '5', 'lt')) {
-    $_SESSION['PMA_Theme_Manager']->__wakeup();
 }
 
 $_SESSION['PMA_Theme'] = $_SESSION['PMA_Theme_Manager']->theme;
-if (version_compare(phpversion(), '5', 'lt')) {
-    $_SESSION['PMA_Theme']->__wakeup();
-}
 
 // BC
 $GLOBALS['theme']           = $_SESSION['PMA_Theme']->getName();
@@ -3239,17 +3330,20 @@ if (!defined('PMA_MINIMUM_COMMON')) {
                     // We don't want more than one asterisk inside our 'only_db'.
                     continue;
                 }
-                if ($is_show_dbs && ereg('(^|[^\])(_|%)', $dblist[$i])) {
+                if ($is_show_dbs && preg_match('/(^|[^\\\\])(_|%)/', $dblist[$i])) {
                     $local_query = 'SHOW DATABASES LIKE \'' . $dblist[$i] . '\'';
                     // here, a PMA_DBI_query() could fail silently
                     // if SHOW DATABASES is disabled
-                    $rs          = PMA_DBI_try_query($local_query, $controllink);
+                    $rs = PMA_DBI_try_query($local_query, $userlink);
 
-                    if ($i == 0
-                      && (substr(PMA_DBI_getError($controllink), 1, 4) == 1045)) {
-                        // "SHOW DATABASES" statement is disabled
-                        $true_dblist[] = str_replace('\\_', '_', str_replace('\\%', '%', $dblist[$i]));
-                        $is_show_dbs   = false;
+                    if ($i == 0 && ! $rs) {
+                        $error_code = substr(PMA_DBI_getError($userlink), 1, 4);
+                        if ($error_code == 1227 || $error_code == 1045) {
+                            // "SHOW DATABASES" statement is disabled or not allowed to user
+                            $true_dblist[] = str_replace('\\_', '_', str_replace('\\%', '%', $dblist[$i]));
+                            $is_show_dbs   = false;
+                        }
+                        unset($error_code);
                     }
                     // Debug
                     // elseif (PMA_DBI_getError($controllink)) {

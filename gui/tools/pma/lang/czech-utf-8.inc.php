@@ -1,5 +1,5 @@
 <?php
-/* $Id: czech-utf-8.inc.php,v 2.166 2006/01/26 13:00:34 nijel Exp $ */
+/* $Id: czech-utf-8.inc.php,v 2.166.2.2 2006/03/23 17:42:11 lem9 Exp $ */
 
 /**
  * Czech language file by

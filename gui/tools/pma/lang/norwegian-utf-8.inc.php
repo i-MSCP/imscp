@@ -1,5 +1,5 @@
 <?php
-/* $Id: norwegian-utf-8.inc.php,v 2.132 2006/01/29 12:40:50 lem9 Exp $ */
+/* $Id: norwegian-utf-8.inc.php,v 2.132.2.2 2006/03/23 17:42:14 lem9 Exp $ */
 
 /**
  * Translated by Sven-Erik Andersen <sven-erik.andersen at pkf107.no>

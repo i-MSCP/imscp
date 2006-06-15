@@ -1,5 +1,5 @@
 <?php
-/* $Id: url_generating.lib.php,v 2.10 2006/01/19 15:47:22 cybot_tm Exp $ */
+/* $Id: url_generating.lib.php,v 2.10.2.1 2006/05/12 15:26:16 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -63,6 +63,8 @@ function PMA_generate_common_hidden_inputs($db = '', $table = '', $indent = 0, $
     && ! empty($GLOBALS['collation_connection'])) {
         $params['collation_connection'] = $GLOBALS['collation_connection'];
     }
+
+    $params['token'] = $_SESSION['PMA_token'];
 
     if (! is_array($skip)) {
         if (isset($params[$skip])) {
@@ -186,6 +188,8 @@ function PMA_generate_common_url ($db = '', $table = '', $delim = '&amp;')
       && ! empty($GLOBALS['collation_connection'])) {
         $params['collation_connection'] = $GLOBALS['collation_connection'];
     }
+
+    $params['token'] = $_SESSION['PMA_token'];
 
     $param_strings = array();
     foreach ($params as $key => $val) {

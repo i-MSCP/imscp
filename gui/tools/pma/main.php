@@ -1,5 +1,5 @@
 <?php
-/* $Id: main.php,v 2.100.4.2 2006/04/24 07:30:38 nijel Exp $ */
+/* $Id: main.php,v 2.100.2.2 2006/04/24 07:30:14 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

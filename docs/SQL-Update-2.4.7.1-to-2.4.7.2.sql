@@ -1,3 +1,4 @@
+//Please use docs/contrib/mysql_update_to_latest.php to reflect all feature changes since we can put some logic in there instead of just drop the tables.
 ALTER TABLE `vhcs2`.`login` ADD `ipaddr` varchar(15) NULL AFTER `session_id`;
 ALTER TABLE `vhcs2`.`login` ADD `user_name` varchar(255) NULL AFTER `ipaddr`;
 ALTER TABLE `vhcs2`.`login` ADD `login_count` tinyint(1) NULL AFTER `lastaccess`;
@@ -10,11 +11,16 @@ ALTER TABLE `vhcs2`.`domain_traffic` ADD INDEX i_domain_traffic_domain_id ( `dom
 ALTER TABLE `vhcs2`.`htaccess_users` ADD `status` varchar(255) default NULL;
 ALTER TABLE `vhcs2`.`htaccess_groups` ADD `status` varchar(255) default NULL;
 ALTER TABLE `vhcs2`.`htaccess` CHANGE `status` `status` VARCHAR( 255 ) default NULL;
+ALTER TABLE `htaccess` CHANGE `user_id` `user_id` TINYINT( 4 ) NULL DEFAULT NULL , CHANGE `group_id` `group_id` TINYINT( 4 ) , CHANGE `path` `path` VARCHAR( 255 );
 UPDATE `vhcs2`.`subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
 UPDATE `vhcs2`.`domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
 UPDATE `vhcs2`.`domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
+UPDATE `vhcs2`.`htaccess_users` SET `status` = 'toadd';
+UPDATE `vhcs2`.`htaccess_groups` SET `status` = 'toadd';
+UPDATE `vhcs2`.`htaccess` SET `status` = 'change';
 DROP TABLE IF EXISTS `vhcs2`.`lang_Deutsch`;
 DROP TABLE IF EXISTS `vhcs2`.`lang_Portugues_Brasil`;
 UPDATE `vhcs2`.`user_gui_props` SET `lang` = 'lang_German' WHERE `lang` = 'lang_Deutsch';
 UPDATE `vhcs2`.`user_gui_props` SET `lang` = 'lang_PortuguesBrazil' WHERE `lang` = 'lang_Portugues_Brasil';
 DELETE FROM `vhcs2`.`login`;
+INSERT INTO `config` ( `name`, `value` ) VALUES ('PORT_FTP', '21;tcp;FTP;1;0'), ('PORT_SSH', '22;tcp;SSH;1;0'),('PORT_TELNET', '23;tcp;TELNET;1;0'),('PORT_SMTP', '25;tcp;SMPT;1;0'),('PORT_DNS', '53;tcp;DNS;1;0'),('PORT_HTTP', '80;tcp;HTTP;1;0'),('PORT_HTTPS', '443;tcp;HTTPS;1;0'),('PORT_POP3', '110;tcp;POP3;1;0'),('PORT_POP3-SSL', '995;tcp;POP3-SSL;1;0'),('PORT_IMAP', '143;tcp;IMAP;1;0'),('PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0');

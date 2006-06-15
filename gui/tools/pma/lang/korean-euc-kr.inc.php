@@ -1,5 +1,5 @@
 <?php
-/* $Id: korean-euc-kr.inc.php,v 2.107.2.1 2006/02/17 12:43:00 lem9 Exp $ */
+/* $Id: korean-euc-kr.inc.php,v 2.107.2.3 2006/03/23 17:42:14 lem9 Exp $ */
 
 /* Translated by WooSuhan <kjh@unews.NOSPAM.co.kr> */
 

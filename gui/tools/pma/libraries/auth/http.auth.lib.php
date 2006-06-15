@@ -1,5 +1,5 @@
 <?php
-/* $Id: http.auth.lib.php,v 2.14 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: http.auth.lib.php,v 2.14.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -79,40 +79,34 @@ function PMA_auth_check()
     // 'register_globals' and the 'variables_order' directives
     // loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
     if (empty($PHP_AUTH_USER)) {
-        if (!empty($_SERVER) && isset($_SERVER['PHP_AUTH_USER'])) {
-            $PHP_AUTH_USER = $_SERVER['PHP_AUTH_USER'];
-        }
-        // CGI, might be encoded, see bellow
-        elseif (@getenv('REMOTE_USER')) {
-            $PHP_AUTH_USER = getenv('REMOTE_USER');
-        }
-        // WebSite Professional
-        elseif (@getenv('AUTH_USER')) {
-            $PHP_AUTH_USER = getenv('AUTH_USER');
-        }
-        // IIS, might be encoded, see bellow
-        elseif (@getenv('HTTP_AUTHORIZATION')) {
-            $PHP_AUTH_USER = getenv('HTTP_AUTHORIZATION');
-        }
-        // FastCGI, might be encoded, see bellow
-        elseif (@getenv('Authorization')) {
-            $PHP_AUTH_USER = getenv('Authorization');
+        if (PMA_getenv('PHP_AUTH_USER')) {
+            $PHP_AUTH_USER = PMA_getenv('PHP_AUTH_USER');
+        } elseif (PMA_getenv('REMOTE_USER')) {
+            // CGI, might be encoded, see bellow
+            $PHP_AUTH_USER = PMA_getenv('REMOTE_USER');
+        } elseif (PMA_getenv('AUTH_USER')) {
+            // WebSite Professional
+            $PHP_AUTH_USER = PMA_getenv('AUTH_USER');
+        } elseif (PMA_getenv('HTTP_AUTHORIZATION')) {
+            // IIS, might be encoded, see bellow
+            $PHP_AUTH_USER = PMA_getenv('HTTP_AUTHORIZATION');
+        } elseif (PMA_getenv('Authorization')) {
+            // FastCGI, might be encoded, see bellow
+            $PHP_AUTH_USER = PMA_getenv('Authorization');
         }
     }
     // Grabs the $PHP_AUTH_PW variable whatever are the values of the
     // 'register_globals' and the 'variables_order' directives
     // loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
     if (empty($PHP_AUTH_PW)) {
-        if (!empty($_SERVER) && isset($_SERVER['PHP_AUTH_PW'])) {
-            $PHP_AUTH_PW = $_SERVER['PHP_AUTH_PW'];
-        }
-        // Apache/CGI
-        elseif (@getenv('REMOTE_PASSWORD')) {
-            $PHP_AUTH_PW = getenv('REMOTE_PASSWORD');
-        }
-        // WebSite Professional
-        elseif (@getenv('AUTH_PASSWORD')) {
-            $PHP_AUTH_PW = getenv('AUTH_PASSWORD');
+        if (PMA_getenv('PHP_AUTH_PW')) {
+            $PHP_AUTH_PW = PMA_getenv('PHP_AUTH_PW');
+        } elseif (PMA_getenv('REMOTE_PASSWORD')) {
+            // Apache/CGI
+            $PHP_AUTH_PW = PMA_getenv('REMOTE_PASSWORD');
+        } elseif (PMA_getenv('AUTH_PASSWORD')) {
+            // WebSite Professional
+            $PHP_AUTH_PW = PMA_getenv('AUTH_PASSWORD');
         }
     }
 

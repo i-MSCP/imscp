@@ -11,7 +11,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(INST_PREF)/usr/sbin
 	$(CMD_INSTALL) ./maillogconvert/maillogconvert.pl $(INST_PREF)/usr/sbin
-        
+
 uninstall:
 
 	rm -rf $(INST_PREF)/usr/sbin/maillogconvert.pl

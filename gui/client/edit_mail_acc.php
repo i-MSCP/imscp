@@ -140,8 +140,8 @@ function update_email_pass($sql)
     return;
   }
 
-  $pass = $_POST['pass'];
-  $pass_rep = $_POST['pass_rep'];
+  $pass = escapeshellcmd($_POST['pass']);
+  $pass_rep = escapeshellcmd($_POST['pass_rep']);
   $mail_id = $_GET['id'];
   $mail_account = $_POST['mail_account'];
 
@@ -151,7 +151,12 @@ function update_email_pass($sql)
   } else if ($pass !== $pass_rep) {
     set_page_message(tr('Entered passwords differ!'));
     return;
-  } else {
+  	// Not permitted chars
+  } else if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
+    set_page_message(tr('Password data includes not valid signs!'));
+    return;
+  }
+  else {
     global $cfg;
     $status = $cfg['ITEM_CHANGE_STATUS'];
 

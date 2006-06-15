@@ -1,5 +1,5 @@
 <?php
-/* $Id: index.php,v 2.33.4.1 2006/04/20 14:13:28 nijel Exp $ */
+/* $Id: index.php,v 2.33.2.2 2006/04/20 14:14:19 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * forms frameset
@@ -26,7 +26,7 @@
  * @uses    PMA_VERSION
  * @uses    session_write_close()
  * @uses    time()
- * @uses    getenv()
+ * @uses    PMA_getenv()
  * @uses    header()                to send charset
  */
 
@@ -46,10 +46,8 @@ session_write_close();
 // Gets the host name
 // loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
 if (empty($HTTP_HOST)) {
-    if (!empty($_ENV) && isset($_ENV['HTTP_HOST'])) {
-        $HTTP_HOST = $_ENV['HTTP_HOST'];
-    } elseif (@getenv('HTTP_HOST')) {
-        $HTTP_HOST = getenv('HTTP_HOST');
+    if (PMA_getenv('HTTP_HOST')) {
+        $HTTP_HOST = PMA_getenv('HTTP_HOST');
     } else {
         $HTTP_HOST = '';
     }

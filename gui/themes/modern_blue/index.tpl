@@ -22,7 +22,7 @@
         <form name="frm" action="index.php" method="post">
         <table border="0" cellspacing="0" cellpadding="0">
          <tr>
-          <td width="20" rowspan="5"><img src="images/isp_logo.gif"></td>
+          <td width="20" rowspan="5"><img src="themes/user_logos/isp_logo.gif"></td>
           <td width="20" rowspan="5">&nbsp;</td>
           <td width="2" rowspan="5" background="{THEME_COLOR_PATH}/images/login/content_line.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="2" height="2"></td>
           <td width="20" rowspan="5">&nbsp;</td>

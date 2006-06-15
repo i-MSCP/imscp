@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: persian-utf-8.inc.php,v 2.121.2.1 2006/02/17 12:43:00 lem9 Exp $ */
+/* $Id: persian-utf-8.inc.php,v 2.121.2.3 2006/03/23 17:42:14 lem9 Exp $ */
 /*
 Persian(Farsi) translation by : Bornis Group
 www.BornisGroup.com

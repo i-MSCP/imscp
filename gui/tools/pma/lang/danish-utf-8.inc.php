@@ -1,5 +1,5 @@
 <?php
-/* $Id: danish-utf-8.inc.php,v 2.135.2.1 2006/02/16 18:12:11 lem9 Exp $ */ /* Dansk v 2.136 (english 2.130) 10/02-2006 00:00:00 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
+/* $Id: danish-utf-8.inc.php,v 2.135.2.3 2006/03/23 17:42:11 lem9 Exp $ */ /* Dansk v 2.136 (english 2.130) 10/02-2006 00:00:00 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

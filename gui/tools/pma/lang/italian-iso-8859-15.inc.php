@@ -1,5 +1,5 @@
 <?php
-/* $Id: italian-iso-8859-15.inc.php,v 2.52.2.1 2006/02/16 17:56:31 lem9 Exp $ */
+/* $Id: italian-iso-8859-15.inc.php,v 2.52.2.3 2006/03/23 17:42:14 lem9 Exp $ */
 
 /**
  * translated by: Pietro Danesi <danone at users.sourceforge.net>  2002-03-29

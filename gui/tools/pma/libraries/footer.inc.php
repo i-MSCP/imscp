@@ -1,13 +1,13 @@
 <?php
-/* $Id: footer.inc.php,v 2.7.2.1.2.1 2006/05/12 14:34:01 nijel Exp $ */
+/* $Id: footer.inc.php,v 2.7.2.5 2006/05/12 14:33:45 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
  * WARNING: This script has to be included at the very end of your code because
  *          it will stop the script execution!
- * 
+ *
  * always use $GLOBALS, as this script is also included by functions
- * 
+ *
  */
 
 require_once './libraries/relation.lib.php'; // for PMA_setHistory()
@@ -24,12 +24,16 @@ if (! isset($GLOBALS['no_history']) && isset($GLOBALS['db'])
   && strlen($GLOBALS['db']) && empty($GLOBALS['error_message'])) {
     $table = isset($GLOBALS['table']) ? $GLOBALS['table'] : ''; ?>
 // updates current settings
-window.parent.setAll('<?php echo $GLOBALS['lang']; ?>', '<?php echo htmlspecialchars($GLOBALS['collation_connection']); ?>', '<?php echo $GLOBALS['server']; ?>', '<?php echo htmlspecialchars($GLOBALS['db']); ?>', '<?php echo htmlspecialchars($table); ?>');
+if (window.parent.setAll) {
+    window.parent.setAll('<?php echo $GLOBALS['lang']; ?>', '<?php echo htmlspecialchars($GLOBALS['collation_connection']); ?>', '<?php echo $GLOBALS['server']; ?>', '<?php echo htmlspecialchars($GLOBALS['db']); ?>', '<?php echo htmlspecialchars($table); ?>');
+}
 <?php } ?>
 
 <?php if (! empty($GLOBALS['reload'])) { ?>
 // refresh navigation frame content
-window.parent.refreshLeft();
+if (window.parent.refreshLeft) {
+    window.parent.refreshLeft();
+}
 <?php } ?>
 
 <?php
@@ -48,10 +52,12 @@ if (! isset($GLOBALS['no_history']) && empty($GLOBALS['error_message'])) {
     }
     ?>
 // set current db, table and sql query in the querywindow
-window.parent.reload_querywindow(
-    "<?php echo isset($GLOBALS['db']) ? htmlspecialchars(addslashes($GLOBALS['db'])) : '' ?>",
-    "<?php echo isset($GLOBALS['table']) ? htmlspecialchars(addslashes($GLOBALS['table'])) : '' ?>",
-    "<?php echo isset($GLOBALS['sql_query']) ? htmlspecialchars(urlencode($GLOBALS['sql_query'])) : ''; ?>");
+if (window.parent.refreshLeft) {
+    window.parent.reload_querywindow(
+        "<?php echo isset($GLOBALS['db']) ? htmlspecialchars(addslashes($GLOBALS['db'])) : '' ?>",
+        "<?php echo isset($GLOBALS['table']) ? htmlspecialchars(addslashes($GLOBALS['table'])) : '' ?>",
+        "<?php echo isset($GLOBALS['sql_query']) ? htmlspecialchars(urlencode($GLOBALS['sql_query'])) : ''; ?>");
+}
 <?php } ?>
 
 <?php if (! empty($GLOBALS['focus_querywindow'])) { ?>
@@ -61,9 +67,18 @@ if (parent.querywindow && !parent.querywindow.closed && parent.querywindow.locat
 }
 <?php } ?>
 
-// reset content frame name, as querywindow needs to set a unique name
-// before submitting form data, and navigation frame needs the original name
-window.parent.frames[1].name = 'frame_content';
+if (window.parent.frames[1]) {
+    // reset content frame name, as querywindow needs to set a unique name
+    // before submitting form data, and navigation frame needs the original name
+    if (window.parent.frames[1].name != 'frame_content') {
+        window.parent.frames[1].name = 'frame_content';
+    }
+    if (window.parent.frames[1].id != 'frame_content') {
+        window.parent.frames[1].id = 'frame_content';
+    }
+    //window.parent.frames[1].setAttribute('name', 'frame_content');
+    //window.parent.frames[1].setAttribute('id', 'frame_content');
+}
 //]]>
 </script>
 <?php
@@ -73,9 +88,9 @@ if (!isset($GLOBALS['checked_special'])) {
     $GLOBALS['checked_special'] = FALSE;
 }
 
-if (isset($_SERVER['SCRIPT_NAME']) && empty($_POST) && !$GLOBALS['checked_special']) {
+if (PMA_getenv('SCRIPT_NAME') && empty($_POST) && !$GLOBALS['checked_special']) {
     echo '<div id="selflink">' . "\n";
-    echo '<a href="index.php?target=' . basename($_SERVER['SCRIPT_NAME']);
+    echo '<a href="index.php?target=' . basename(PMA_getenv('SCRIPT_NAME'));
     $url = PMA_generate_common_url(isset($GLOBALS['db']) ? $GLOBALS['db'] : '', isset($GLOBALS['table']) ? $GLOBALS['table'] : '');
     if (!empty($url)) {
         echo '&amp;' . $url;

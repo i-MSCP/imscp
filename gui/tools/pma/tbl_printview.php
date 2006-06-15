@@ -1,7 +1,8 @@
 <?php
-/* $Id: tbl_printview.php,v 2.21 2006/01/21 10:53:22 cybot_tm Exp $ */
+/* $Id: tbl_printview.php,v 2.21.2.1 2006/04/12 15:23:31 cybot_tm Exp $ */
 
 require_once('./libraries/common.lib.php');
+require './libraries/tbl_properties_common.php';
 
 /**
  * Gets the variables sent or posted to this script, then displays headers

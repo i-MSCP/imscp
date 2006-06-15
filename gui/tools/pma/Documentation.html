@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<!-- $Id: Documentation.html,v 2.205.2.11.2.10 2006/05/12 16:31:28 lem9 Exp $ -->
+<!-- $Id: Documentation.html,v 2.205.2.17.2.1 2006/05/20 17:16:47 lem9 Exp $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
@@ -9,7 +9,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 2.8.0.4 - Documentation</title>
+    <title>phpMyAdmin 2.8.1 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -33,7 +33,7 @@
 <hr noshade="noshade" width="100%" />
 </div>
 
-<h1>phpMyAdmin 2.8.0.4 Documentation</h1>
+<h1>phpMyAdmin 2.8.1 Documentation</h1>
 
 
 <!-- TOP MENU -->
@@ -53,7 +53,7 @@
     </li>
     <li>
         Documentation version:
-        <i>$Id: Documentation.html,v 2.205.2.11.2.10 2006/05/12 16:31:28 lem9 Exp $</i>
+        <i>$Id: Documentation.html,v 2.205.2.17.2.1 2006/05/20 17:16:47 lem9 Exp $</i>
     </li>
 </ul>
 
@@ -287,10 +287,14 @@ configuration file:
 
 <h3>Upgrading from an older version</h3>
 <p>
-        Just copy <i>config.inc.php</i> from previous installation into a
+        Just copy <tt>config.inc.php</tt> from previous installation into a
         newly unpacked one. If your previous phpMyAdmin version was 2.3.0 or
         older, some tweaking may be required because, as of 2.7.0, using those
         old config files is no longer supported.
+        <br /> <br />
+        You should <strong>not</strong> copy <tt>libraries/config.default.php</tt> over
+        <tt>config.inc.php</tt> because the default configuration file
+        is version-specific.
 </p>
 
 <h3>Using authentication modes</h3>

@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php,v 2.83.2.2.2.1 2006/02/23 17:53:04 lem9 Exp $ */
+/* $Id: sql.php,v 2.83.2.7 2006/04/27 08:57:09 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -9,6 +9,13 @@ require_once './libraries/common.lib.php';
 require_once './libraries/tbl_indexes.lib.php';
 require_once './libraries/check_user_privileges.lib.php';
 require_once './libraries/bookmark.lib.php';
+
+/**
+ * Could be coming from a subform ("T" column expander) 
+ */
+if (isset($_REQUEST['dontlimitchars'])) {
+    $dontlimitchars = $_REQUEST['dontlimitchars'];
+}
 
 /**
  * Defines the url to return to in case of error in a sql statement
@@ -53,6 +60,9 @@ if (!isset($sql_query) && isset($table) && isset($db)) {
         $sql_query = 'SELECT * FROM ' . PMA_backquote($table);
     }
     unset($book_sql_query);
+
+    // set $goto to what will be displayed if query returns 0 rows
+    $goto = 'tbl_properties_structure.php';
 } else {
     // Now we can check the parameters
     PMA_checkParameters(array('sql_query'));
@@ -296,7 +306,7 @@ else {
     // TODO: detect all this with the parser, to avoid problems finding
     // those strings in comments or backquoted identifiers
 
-    $is_explain = $is_count = $is_export = $is_delete = $is_insert = $is_affected = $is_show = $is_maint = $is_analyse = $is_group = $is_func = false;
+    $is_explain = $is_count = $is_export = $is_delete = $is_insert = $is_affected = $is_show = $is_maint = $is_analyse = $is_group = $is_func = $is_replace = false;
     if ($is_select) { // see line 141
         $is_group = preg_match('@(GROUP[[:space:]]+BY|HAVING|SELECT[[:space:]]+DISTINCT)[[:space:]]+@i', $sql_query);
         $is_func =  !$is_group && (preg_match('@[[:space:]]+(SUM|AVG|STD|STDDEV|MIN|MAX|BIT_OR|BIT_AND)\s*\(@i', $sql_query));
@@ -311,6 +321,9 @@ else {
     } elseif (preg_match('@^(INSERT|LOAD[[:space:]]+DATA|REPLACE)[[:space:]]+@i', $sql_query)) {
         $is_insert   = true;
         $is_affected = true;
+        if (preg_match('@^(REPLACE)[[:space:]]+@i', $sql_query)) {
+            $is_replace = true;
+        }
     } elseif (preg_match('@^UPDATE[[:space:]]+@i', $sql_query)) {
         $is_affected = true;
     } elseif (preg_match('@^SHOW[[:space:]]+@i', $sql_query)) {
@@ -601,7 +614,12 @@ else {
         if ($is_delete) {
             $message = $strDeletedRows . '&nbsp;' . $num_rows;
         } elseif ($is_insert) {
-            $message = $strInsertedRows . '&nbsp;' . $num_rows;
+            if ($is_replace) {
+                /* For replace we get DELETED + INSERTED row count, so we have to call it affected */
+                $message = $strAffectedRows . '&nbsp;' . $num_rows;
+            } else {
+                $message = $strInsertedRows . '&nbsp;' . $num_rows;
+            }
             $insert_id = PMA_DBI_insert_id();
             if ($insert_id != 0) {
                 // insert_id is id of FIRST record inserted in one insert, so if we inserted multiple rows, we had to increment this

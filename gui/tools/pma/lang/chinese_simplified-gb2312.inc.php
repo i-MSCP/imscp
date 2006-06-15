@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_simplified-gb2312.inc.php,v 2.85.2.1 2006/02/17 12:42:59 lem9 Exp $ */
+/* $Id: chinese_simplified-gb2312.inc.php,v 2.85.2.3 2006/03/23 17:42:11 lem9 Exp $ */
 
 /**
  * Last translation by: Funda Wang <fundawang@en2china.com>

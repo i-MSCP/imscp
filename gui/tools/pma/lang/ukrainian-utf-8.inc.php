@@ -1,5 +1,5 @@
 <?php
-/* $Id: ukrainian-utf-8.inc.php,v 2.117.2.1 2006/02/17 12:43:01 lem9 Exp $ */
+/* $Id: ukrainian-utf-8.inc.php,v 2.117.2.3 2006/03/23 17:42:16 lem9 Exp $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

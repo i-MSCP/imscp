@@ -1,5 +1,5 @@
 <?php
-/* $Id: azerbaijani-iso-8859-9.inc.php,v 2.118.2.1 2006/02/17 12:42:58 lem9 Exp $ */
+/* $Id: azerbaijani-iso-8859-9.inc.php,v 2.118.2.3 2006/03/23 17:42:09 lem9 Exp $ */
 
 // tercümedeki eksiklerimi ve ya sehv olduðunu düþündüyünüz yerleri shehriyari@trcomm.net adresine göndere bilersiniz...
 // Þehriyar Ýmanov 30 Avqust 2003... Shehi

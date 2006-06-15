@@ -1,5 +1,5 @@
 <?php
-/* $Id: Config.class.php,v 1.21.2.7.2.13 2006/05/12 16:30:56 lem9 Exp $ */
+/* $Id: Config.class.php,v 1.21.2.15.2.1 2006/05/20 17:15:21 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_Config
@@ -23,6 +23,7 @@ class PMA_Config
      * @var int     source modification time
      */
     var $source_mtime = 0;
+    var $default_source_mtime = 0;
 
     /**
      * @var boolean
@@ -75,7 +76,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.8.0.4');
+        $this->set('PMA_VERSION', '2.8.1');
         /**
          * @deprecated
          */
@@ -125,8 +126,8 @@ class PMA_Config
      */
     function checkClient()
     {
-        if (!empty($_SERVER['HTTP_USER_AGENT'])) {
-            $HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
+        if (PMA_getenv('HTTP_USER_AGENT')) {
+            $HTTP_USER_AGENT = PMA_getenv('HTTP_USER_AGENT');
         } elseif (!isset($HTTP_USER_AGENT)) {
             $HTTP_USER_AGENT = '';
         }
@@ -226,8 +227,11 @@ class PMA_Config
      */
     function checkWebServer()
     {
-        if ( isset( $_SERVER['SERVER_SOFTWARE'] )
-          && stristr($_SERVER['SERVER_SOFTWARE'], 'Microsoft/IIS') ) {
+        if (PMA_getenv('SERVER_SOFTWARE')
+          // some versions return Microsoft-IIS, some Microsoft/IIS
+        // we could use a preg_match() but it's slower
+          && stristr(PMA_getenv('SERVER_SOFTWARE'), 'Microsoft')
+          && stristr(PMA_getenv('SERVER_SOFTWARE'), 'IIS')) {
             $this->set('PMA_IS_IIS', 1);
         } else {
             $this->set('PMA_IS_IIS', 0);
@@ -239,10 +243,17 @@ class PMA_Config
      */
     function checkWebServerOs()
     {
-        if ( defined('PHP_OS') && stristr(PHP_OS, 'win') ) {
-            $this->set('PMA_IS_WINDOWS', 1);
-        } else {
-            $this->set('PMA_IS_WINDOWS', 0);
+        // Default to Unix or Equiv
+        $this->set('PMA_IS_WINDOWS', 0);
+        // If PHP_OS is defined then continue
+        if (defined('PHP_OS')) {          
+            if (stristr(PHP_OS, 'win') ) {
+                // Is it some version of Windows
+                $this->set('PMA_IS_WINDOWS', 1);
+            } elseif (stristr(PHP_OS, 'OS/2')) {
+                // Is it OS/2 (No file permissions like Windows)
+                $this->set('PMA_IS_WINDOWS', 1);
+            }
         }
     }
 
@@ -279,7 +290,8 @@ class PMA_Config
     function __wakeup()
     {
         if (file_exists($this->getSource()) && $this->source_mtime !== filemtime($this->getSource())
-          || $this->error_config_file || $this->error_config_default_file ) {
+          || $this->default_source_mtime !== filemtime($this->default_source)
+          || $this->error_config_file || $this->error_config_default_file) {
             $this->settings = array();
             $this->load($this->getSource());
             $this->checkSystem();
@@ -310,6 +322,8 @@ class PMA_Config
             return false;
         }
         include $this->default_source;
+
+        $this->default_source_mtime = filemtime($this->default_source);
 
         $this->default_server = $cfg['Servers'][1];
         unset( $cfg['Servers'] );
@@ -495,51 +509,51 @@ class PMA_Config
             $url = array();
 
             // At first we try to parse REQUEST_URI, it might contain full URI
-            if ( ! empty($_SERVER['REQUEST_URI'] ) ) {
-                $url = parse_url($_SERVER['REQUEST_URI']);
+            if (PMA_getenv('REQUEST_URI')) {
+                $url = parse_url(PMA_getenv('REQUEST_URI'));
             }
 
             // If we don't have scheme, we didn't have full URL so we need to
             // dig deeper
             if ( empty( $url['scheme'] ) ) {
                 // Scheme
-                if ( ! empty( $_SERVER['HTTP_SCHEME'] ) ) {
-                    $url['scheme'] = $_SERVER['HTTP_SCHEME'];
+                if (PMA_getenv('HTTP_SCHEME')) {
+                    $url['scheme'] = PMA_getenv('HTTP_SCHEME');
                 } else {
                     $url['scheme'] =
-                        !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off'
+                        PMA_getenv('HTTPS') && strtolower(PMA_getenv('HTTPS')) != 'off'
                             ? 'https'
                             : 'http';
                 }
 
                 // Host and port
-                if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
-                    if ( strpos($_SERVER['HTTP_HOST'], ':') !== false ) {
+                if (PMA_getenv('HTTP_HOST')) {
+                    if (strpos(PMA_getenv('HTTP_HOST'), ':') !== false) {
                         list( $url['host'], $url['port'] ) =
-                            explode(':', $_SERVER['HTTP_HOST']);
+                            explode(':', PMA_getenv('HTTP_HOST'));
                     } else {
-                        $url['host'] = $_SERVER['HTTP_HOST'];
+                        $url['host'] = PMA_getenv('HTTP_HOST');
                     }
-                } elseif ( ! empty( $_SERVER['SERVER_NAME'] ) ) {
-                    $url['host'] = $_SERVER['SERVER_NAME'];
+                } elseif (PMA_getenv('SERVER_NAME')) {
+                    $url['host'] = PMA_getenv('SERVER_NAME');
                 } else {
                     $this->error_pma_uri = true;
                     return false;
                 }
 
                 // If we didn't set port yet...
-                if ( empty( $url['port'] ) && ! empty( $_SERVER['SERVER_PORT'] ) ) {
-                    $url['port'] = $_SERVER['SERVER_PORT'];
+                if (empty($url['port']) && PMA_getenv('SERVER_PORT')) {
+                    $url['port'] = PMA_getenv('SERVER_PORT');
                 }
 
                 // And finally the path could be already set from REQUEST_URI
                 if ( empty( $url['path'] ) ) {
-                    if (!empty($_SERVER['PATH_INFO'])) {
-                        $path = parse_url($_SERVER['PATH_INFO']);
+                    if (PMA_getenv('PATH_INFO')) {
+                        $path = parse_url(PMA_getenv('PATH_INFO'));
                     } else {
                         // PHP_SELF in CGI often points to cgi executable, so use it
                         // as last choice
-                        $path = parse_url($_SERVER['PHP_SELF']);
+                        $path = parse_url(PMA_getenv('PHP_SELF'));
                     }
                     $url['path'] = $path['path'];
                 }
@@ -609,7 +623,7 @@ class PMA_Config
             if ( substr($pma_absolute_uri, 0, 7) != 'http://'
               && substr($pma_absolute_uri, 0, 8) != 'https://' ) {
                 $pma_absolute_uri =
-                    (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off'
+                    (PMA_getenv('HTTPS') && strtolower(PMA_getenv('HTTPS')) != 'off'
                         ? 'https'
                         : 'http')
                     . ':' . (substr($pma_absolute_uri, 0, 2) == '//' ? '' : '//')
@@ -685,19 +699,19 @@ class PMA_Config
         $url = array();
 
         // At first we try to parse REQUEST_URI, it might contain full URI
-        if ( ! empty($_SERVER['REQUEST_URI'] ) ) {
-            $url = parse_url($_SERVER['REQUEST_URI']);
+        if (PMA_getenv('REQUEST_URI')) {
+            $url = parse_url(PMA_getenv('REQUEST_URI'));
         }
 
         // If we don't have scheme, we didn't have full URL so we need to
         // dig deeper
         if ( empty( $url['scheme'] ) ) {
             // Scheme
-            if ( ! empty( $_SERVER['HTTP_SCHEME'] ) ) {
-                $url['scheme'] = $_SERVER['HTTP_SCHEME'];
+            if (PMA_getenv('HTTP_SCHEME')) {
+                $url['scheme'] = PMA_getenv('HTTP_SCHEME');
             } else {
                 $url['scheme'] =
-                    !empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off'
+                    PMA_getenv('HTTPS') && strtolower(PMA_getenv('HTTPS')) != 'off'
                         ? 'https'
                         : 'http';
             }
@@ -732,23 +746,28 @@ class PMA_Config
             return $cookie_path;
         }
 
-        if ( ! empty($_SERVER['REQUEST_URI'] ) ) {
-            $url = parse_url($_SERVER['REQUEST_URI']);
+        $url = '';
+
+        if (PMA_getenv('REQUEST_URI')) {
+            $url = PMA_getenv('REQUEST_URI');
         }
 
         // If we don't have path
-        if ( empty( $url['path'] ) ) {
-            if (!empty($_SERVER['PATH_INFO'])) {
-                $url = parse_url($_SERVER['PATH_INFO']);
-            } else {
+        if (empty($url)) {
+            if (PMA_getenv('PATH_INFO')) {
+                $url = PMA_getenv('PATH_INFO');
+            } elseif (PMA_getenv('PHP_SELF')) {
                 // PHP_SELF in CGI often points to cgi executable, so use it
                 // as last choice
-                $url = parse_url($_SERVER['PHP_SELF']);
+                $url = PMA_getenv('PHP_SELF');
+            } elseif (PMA_getenv('SCRIPT_NAME')) {
+                $url = PMA_getenv('PHP_SELF');
             }
         }
 
-        $cookie_path   = substr($url['path'], 0,
-            strrpos($url['path'], '/')) . '/';
+        $url = parse_url($url);
+        
+        $cookie_path   = substr($url['path'], 0, strrpos($url['path'], '/'))  . '/';
 
         return $cookie_path;
     }

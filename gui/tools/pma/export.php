@@ -1,5 +1,5 @@
 <?php
-/* $Id: export.php,v 2.38 2006/01/20 12:23:18 lem9 Exp $ */
+/* $Id: export.php,v 2.38.2.2 2006/04/14 09:45:23 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -429,7 +429,14 @@ if ($export_type == 'server') {
                 break 2;
             }
             $tables = PMA_DBI_get_tables($current_db);
+            $views = array();
             foreach ($tables as $table) {
+                // if this is a view, collect it for later; views must be exported
+                // after the tables
+                if (PMA_tableIsView($current_db, $table)) {
+                    $views[] = $table;
+                    continue;
+                }
                 $local_query  = 'SELECT * FROM ' . PMA_backquote($current_db) . '.' . PMA_backquote($table);
                 if (isset($GLOBALS[$what . '_structure'])) {
                     if (!PMA_exportStructure($current_db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates)) {
@@ -438,6 +445,14 @@ if ($export_type == 'server') {
                 }
                 if (isset($GLOBALS[$what . '_data'])) {
                     if (!PMA_exportData($current_db, $table, $crlf, $err_url, $local_query)) {
+                        break 3;
+                    }
+                }
+            }
+            foreach($views as $view) {
+                // no data export for a view
+                if (isset($GLOBALS[$what . '_structure'])) {
+                    if (!PMA_exportStructure($current_db, $view, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates)) {
                         break 3;
                     }
                 }
@@ -457,7 +472,14 @@ if ($export_type == 'server') {
         $tmp_select = '|' . $tmp_select . '|';
     }
     $i = 0;
+    $views = array();
     foreach ($tables as $table) {
+        // if this is a view, collect it for later; views must be exported after
+        // the tables
+        if (PMA_tableIsView($db, $table)) {
+            $views[] = $table;
+            continue;
+        }
         $local_query  = 'SELECT * FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table);
         if ((isset($tmp_select) && strpos(' ' . $tmp_select, '|' . $table . '|'))
             || !isset($tmp_select)) {
@@ -471,6 +493,14 @@ if ($export_type == 'server') {
                 if (!PMA_exportData($db, $table, $crlf, $err_url, $local_query)) {
                     break 2;
                 }
+            }
+        }
+    }
+    foreach ($views as $view) {
+        // no data export for a view
+        if (isset($GLOBALS[$what . '_structure'])) {
+            if (!PMA_exportStructure($db, $view, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates)) {
+                break 2;
             }
         }
     }
@@ -508,6 +538,7 @@ if ($export_type == 'server') {
             break;
         }
     }
+    // I think we have to export data for a single view; for example PDF report
     if (isset($GLOBALS[$what . '_data'])) {
         if (!PMA_exportData($db, $table, $crlf, $err_url, $local_query)) {
             break;

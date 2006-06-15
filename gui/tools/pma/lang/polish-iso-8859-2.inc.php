@@ -1,5 +1,5 @@
 <?php
-/* $Id: polish-iso-8859-2.inc.php,v 2.122 2006/01/29 12:14:17 lem9 Exp $ */
+/* $Id: polish-iso-8859-2.inc.php,v 2.122.2.2 2006/03/23 17:42:14 lem9 Exp $ */
 
 $charset = 'iso-8859-2';
 $text_dir = 'ltr';

@@ -86,8 +86,9 @@ init_in_values();
 
 // Process the action ...
 if (isset($_POST['uaction']) && ("rau3_nxt" === $_POST['uaction']) && !isset($_SESSION['step_two_data']) ) {
-  if(check_ruser_data($tpl, '_no_'))
+  if(check_ruser_data($tpl, '_no_')) {
     add_user_data($_SESSION['user_id']);
+  }
 } else {
 	unset($_SESSION['step_two_data']);
 	gen_empty_data();

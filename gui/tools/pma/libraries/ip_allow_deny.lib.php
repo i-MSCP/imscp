@@ -1,5 +1,5 @@
 <?php
-/* $Id: ip_allow_deny.lib.php,v 2.7 2006/01/19 15:39:29 cybot_tm Exp $ */
+/* $Id: ip_allow_deny.lib.php,v 2.7.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -22,78 +22,30 @@ function PMA_getIp()
     global $HTTP_VIA, $HTTP_X_COMING_FROM, $HTTP_COMING_FROM;
 
     // Get some server/environment variables values
-    if (empty($REMOTE_ADDR)) {
-        if (!empty($_SERVER) && isset($_SERVER['REMOTE_ADDR'])) {
-            $REMOTE_ADDR = $_SERVER['REMOTE_ADDR'];
-        } elseif (!empty($_ENV) && isset($_ENV['REMOTE_ADDR'])) {
-            $REMOTE_ADDR = $_ENV['REMOTE_ADDR'];
-        } elseif (@getenv('REMOTE_ADDR')) {
-            $REMOTE_ADDR = getenv('REMOTE_ADDR');
-        }
-    } // end if
-    if (empty($HTTP_X_FORWARDED_FOR)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $HTTP_X_FORWARDED_FOR = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_X_FORWARDED_FOR'])) {
-            $HTTP_X_FORWARDED_FOR = $_ENV['HTTP_X_FORWARDED_FOR'];
-        } elseif (@getenv('HTTP_X_FORWARDED_FOR')) {
-            $HTTP_X_FORWARDED_FOR = getenv('HTTP_X_FORWARDED_FOR');
-        }
-    } // end if
-    if (empty($HTTP_X_FORWARDED)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_X_FORWARDED'])) {
-            $HTTP_X_FORWARDED = $_SERVER['HTTP_X_FORWARDED'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_X_FORWARDED'])) {
-            $HTTP_X_FORWARDED = $_ENV['HTTP_X_FORWARDED'];
-        } elseif (@getenv('HTTP_X_FORWARDED')) {
-            $HTTP_X_FORWARDED = getenv('HTTP_X_FORWARDED');
-        }
-    } // end if
-    if (empty($HTTP_FORWARDED_FOR)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_FORWARDED_FOR'])) {
-            $HTTP_FORWARDED_FOR = $_SERVER['HTTP_FORWARDED_FOR'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_FORWARDED_FOR'])) {
-            $HTTP_FORWARDED_FOR = $_ENV['HTTP_FORWARDED_FOR'];
-        } elseif (@getenv('HTTP_FORWARDED_FOR')) {
-            $HTTP_FORWARDED_FOR = getenv('HTTP_FORWARDED_FOR');
-        }
-    } // end if
-    if (empty($HTTP_FORWARDED)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_FORWARDED'])) {
-            $HTTP_FORWARDED = $_SERVER['HTTP_FORWARDED'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_FORWARDED'])) {
-            $HTTP_FORWARDED = $_ENV['HTTP_FORWARDED'];
-        } elseif (@getenv('HTTP_FORWARDED')) {
-            $HTTP_FORWARDED = getenv('HTTP_FORWARDED');
-        }
-    } // end if
-    if (empty($HTTP_VIA)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_VIA'])) {
-            $HTTP_VIA = $_SERVER['HTTP_VIA'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_VIA'])) {
-            $HTTP_VIA = $_ENV['HTTP_VIA'];
-        } elseif (@getenv('HTTP_VIA')) {
-            $HTTP_VIA = getenv('HTTP_VIA');
-        }
-    } // end if
-    if (empty($HTTP_X_COMING_FROM)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_X_COMING_FROM'])) {
-            $HTTP_X_COMING_FROM = $_SERVER['HTTP_X_COMING_FROM'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_X_COMING_FROM'])) {
-            $HTTP_X_COMING_FROM = $_ENV['HTTP_X_COMING_FROM'];
-        } elseif (@getenv('HTTP_X_COMING_FROM')) {
-            $HTTP_X_COMING_FROM = getenv('HTTP_X_COMING_FROM');
-        }
-    } // end if
-    if (empty($HTTP_COMING_FROM)) {
-        if (!empty($_SERVER) && isset($_SERVER['HTTP_COMING_FROM'])) {
-            $HTTP_COMING_FROM = $_SERVER['HTTP_COMING_FROM'];
-        } elseif (!empty($_ENV) && isset($_ENV['HTTP_COMING_FROM'])) {
-            $HTTP_COMING_FROM = $_ENV['HTTP_COMING_FROM'];
-        } elseif (@getenv('HTTP_COMING_FROM')) {
-            $HTTP_COMING_FROM = getenv('HTTP_COMING_FROM');
-        }
-    } // end if
+    if (empty($REMOTE_ADDR) && PMA_getenv('REMOTE_ADDR')) {
+        $REMOTE_ADDR = PMA_getenv('REMOTE_ADDR');
+    }
+    if (empty($HTTP_X_FORWARDED_FOR) && PMA_getenv('HTTP_X_FORWARDED_FOR')) {
+        $HTTP_X_FORWARDED_FOR = PMA_getenv('HTTP_X_FORWARDED_FOR');
+    }
+    if (empty($HTTP_X_FORWARDED) && PMA_getenv('HTTP_X_FORWARDED')) {
+        $HTTP_X_FORWARDED = PMA_getenv('HTTP_X_FORWARDED');
+    }
+    if (empty($HTTP_FORWARDED_FOR) && PMA_getenv('HTTP_FORWARDED_FOR')) {
+        $HTTP_FORWARDED_FOR = PMA_getenv('HTTP_FORWARDED_FOR');
+    }
+    if (empty($HTTP_FORWARDED) && PMA_getenv('HTTP_FORWARDED')) {
+        $HTTP_FORWARDED = PMA_getenv('HTTP_FORWARDED');
+    }
+    if (empty($HTTP_VIA) && PMA_getenv('HTTP_VIA')) {
+        $HTTP_VIA = PMA_getenv('HTTP_VIA');
+    }
+    if (empty($HTTP_X_COMING_FROM) && PMA_getenv('HTTP_X_COMING_FROM')) {
+        $HTTP_X_COMING_FROM = PMA_getenv('HTTP_X_COMING_FROM');
+    }
+    if (empty($HTTP_COMING_FROM) && PMA_getenv('HTTP_COMING_FROM')) {
+        $HTTP_COMING_FROM = PMA_getenv('HTTP_COMING_FROM');
+    }
 
     // Gets the default ip sent by the user
     if (!empty($REMOTE_ADDR)) {
@@ -237,10 +189,10 @@ function PMA_allowDeny($type)
     );
 
     // Provide some useful shortcuts if server gives us address:
-    if (isset($_SERVER['SERVER_ADDR'])) {
-        $shortcuts['localnetA'] = $_SERVER['SERVER_ADDR'] . '/8';
-        $shortcuts['localnetB'] = $_SERVER['SERVER_ADDR'] . '/16';
-        $shortcuts['localnetC'] = $_SERVER['SERVER_ADDR'] . '/24';
+    if (PMA_getenv('SERVER_ADDR')) {
+        $shortcuts['localnetA'] = PMA_getenv('SERVER_ADDR') . '/8';
+        $shortcuts['localnetB'] = PMA_getenv('SERVER_ADDR') . '/16';
+        $shortcuts['localnetC'] = PMA_getenv('SERVER_ADDR') . '/24';
     }
 
     foreach ($rules AS $rule) {

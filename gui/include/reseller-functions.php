@@ -852,6 +852,10 @@ function check_ruser_data (&$tpl, $NoPass)
 			$rau_error = tr('Incorrect password range or syntax!');
 		}
     }
+
+    if ($user_email == NULL) {
+    	$rau_error = tr('Incorrect email range or syntax!');
+    }
 	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
 
 	else if(!vhcs_limit_check($customer_id, 999)){
@@ -878,13 +882,13 @@ function check_ruser_data (&$tpl, $NoPass)
 		return true;
 
     } else {
-
+		// Message is not displayed => to fix!
         $tpl -> assign('MESSAGE', $rau_error);
 
         return false;
     }
 
-	return true;
+	return false;
 }//End of check_ruser_data()
 
 /*TODO - remove

@@ -1,5 +1,5 @@
 <?php
-/* $Id: russian-windows-1251.inc.php,v 2.120.2.1 2006/02/17 12:43:01 lem9 Exp $ */
+/* $Id: russian-windows-1251.inc.php,v 2.120.2.3 2006/03/23 17:42:15 lem9 Exp $ */
 
 /**
  * Translated by Gosha Sakovich <gt2 at users.sourceforge.net>

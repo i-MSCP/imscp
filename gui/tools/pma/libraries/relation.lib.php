@@ -1,5 +1,5 @@
 <?php
-/* $Id: relation.lib.php,v 2.52 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: relation.lib.php,v 2.52.2.1 2006/02/24 20:28:13 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -802,7 +802,7 @@ function PMA_foreignDropdownBuild($foreign, $data, $mode) {
             $reloption .= ' title="' . $vtitle . '"';
         }
 
-        if ($key == $data) {
+        if ((string) $key == (string) $data) {
            $reloption .= ' selected="selected"';
         }
 

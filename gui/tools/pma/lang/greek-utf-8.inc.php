@@ -1,5 +1,5 @@
 <?php
-/* $Id: greek-utf-8.inc.php,v 2.116.2.1 2006/02/17 12:43:00 lem9 Exp $ */
+/* $Id: greek-utf-8.inc.php,v 2.116.2.3 2006/03/23 17:42:13 lem9 Exp $ */
 
 /* Translated by Kyriakos Xagoraris <theremon at users.sourceforge.net> */
 

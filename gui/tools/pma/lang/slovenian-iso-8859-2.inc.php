@@ -1,5 +1,5 @@
 <?php
-/* $Id: slovenian-iso-8859-2.inc.php,v 2.117.2.1 2006/02/17 12:43:01 lem9 Exp $ */
+/* $Id: slovenian-iso-8859-2.inc.php,v 2.117.2.3 2006/03/23 17:42:15 lem9 Exp $ */
 
 /* By: urska.colner, agenda d.o.o. <urska.colner@agenda.si>, uros kositer, agenda d.o.o. <urosh@agenda.si> */
 

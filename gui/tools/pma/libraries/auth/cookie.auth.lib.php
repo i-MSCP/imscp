@@ -1,5 +1,5 @@
 <?php
-/* $Id: cookie.auth.lib.php,v 2.55 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: cookie.auth.lib.php,v 2.55.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -504,8 +504,8 @@ global $conn_error, $server;
     } elseif (isset($GLOBALS['no_activity']) && $GLOBALS['no_activity']) {
         $conn_error = sprintf($GLOBALS['strNoActivity'], $GLOBALS['cfg']['LoginCookieValidity']);
         // Remember where we got timeout to return on same place
-        if (isset($_SERVER['SCRIPT_NAME'])) {
-            $GLOBALS['target'] = basename($_SERVER['SCRIPT_NAME']);
+        if (PMA_getenv('SCRIPT_NAME')) {
+            $GLOBALS['target'] = basename(PMA_getenv('SCRIPT_NAME'));
         }
     } elseif (PMA_DBI_getError()) {
         $conn_error = PMA_sanitize(PMA_DBI_getError());

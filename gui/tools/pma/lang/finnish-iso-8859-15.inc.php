@@ -1,5 +1,5 @@
 <?php
-/* $Id: finnish-iso-8859-15.inc.php,v 2.59.2.2 2006/02/17 12:42:59 lem9 Exp $ */
+/* $Id: finnish-iso-8859-15.inc.php,v 2.59.2.4 2006/03/23 17:42:12 lem9 Exp $ */
 
 /*
  * Translated by Jouni Kähkönen, <yoneh at users.sourceforge.net>

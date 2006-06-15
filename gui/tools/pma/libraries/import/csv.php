@@ -1,5 +1,5 @@
 <?php
-/* $Id: csv.php,v 1.8 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: csv.php,v 1.8.2.2 2006/04/21 07:54:53 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* CSV import plugin for phpMyAdmin */
@@ -129,13 +129,14 @@ if ($plugin_param == 'table') {
             $ch = $buffer[$i];
             while ($i < $len) {
                 // Deadlock protection
-                if ($lasti == $i) {
+                if ($lasti == $i && $lastlen == $len) {
                     $message = sprintf($strInvalidCSVFormat, $line);
                     $show_error_header = TRUE;
                     $error = TRUE;
                     break;
                 }
                 $lasti = $i;
+                $lastlen = $len;
 
                 // This can happen with auto EOL and \r at the end of buffer
                 if (!$csv_finish) {
@@ -151,6 +152,7 @@ if ($plugin_param == 'table') {
                     }
 
                     // Grab one field 
+                    $fallbacki = $i;
                     if ($ch == $csv_enclosed) {
                         $need_end = TRUE;
                         if ($i == $len - 1) {
@@ -183,16 +185,22 @@ if ($plugin_param == 'table') {
                         $ch = $buffer[$i];
                     }
                     if ($fail) {
+                        $i = $fallbacki;
+                        $ch = $buffer[$i];
                         break;
                     }
-                    $values[] = $value;
                     // Need to strip trailing enclosing char?
                     if ($need_end && $ch == $csv_enclosed) {
-                        if ($i == $len - 1) {
+                        if ($finished && $i == $len - 1) {
+                            $ch = NULL;
+                        } elseif ($i == $len - 1) {
+                            $i = $fallbacki;
+                            $ch = $buffer[$i];
                             break;
+                        } else {
+                            $i++;
+                            $ch = $buffer[$i];
                         }
-                        $i++;
-                        $ch = $buffer[$i];
                     }
                     // Are we at the end?
                     if ($ch == $csv_new_line || ($csv_new_line == 'auto' && ($ch == "\r" || $ch == "\n")) || ($finished && $i == $len - 1)) {
@@ -201,11 +209,15 @@ if ($plugin_param == 'table') {
                     // Go to next char
                     if ($ch == $csv_terminated) {
                         if ($i == $len - 1) {
+                            $i = $fallbacki;
+                            $ch = $buffer[$i];
                             break;
                         }
                         $i++;
                         $ch = $buffer[$i];
                     }
+                    // If everything went okay, store value
+                    $values[] = $value;
                 }
 
                 // End of line

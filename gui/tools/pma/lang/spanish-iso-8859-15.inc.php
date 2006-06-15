@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-iso-8859-15.inc.php,v 2.54.2.1.2.1 2006/03/22 23:36:57 rabus Exp $ */
+/* $Id: spanish-iso-8859-15.inc.php,v 2.54.2.4 2006/03/23 17:42:15 lem9 Exp $ */
 
 $charset = 'iso-8859-15';
 $text_dir = 'ltr';

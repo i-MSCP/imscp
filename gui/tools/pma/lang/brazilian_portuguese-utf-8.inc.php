@@ -1,5 +1,5 @@
 <?php
-/* $Id: brazilian_portuguese-utf-8.inc.php,v 2.118.2.1 2006/02/17 12:42:59 lem9 Exp $ */
+/* $Id: brazilian_portuguese-utf-8.inc.php,v 2.118.2.3 2006/03/23 17:42:10 lem9 Exp $ */
 
 /**
  * translated by: 

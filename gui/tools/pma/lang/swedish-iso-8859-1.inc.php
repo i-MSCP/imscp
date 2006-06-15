@@ -1,5 +1,5 @@
 <?php
-/* $Id: swedish-iso-8859-1.inc.php,v 2.127.2.1.2.2 2006/03/04 12:04:16 lem9 Exp $ */
+/* $Id: swedish-iso-8859-1.inc.php,v 2.127.2.5 2006/03/23 17:42:16 lem9 Exp $ */
 
 /*
  * Translated by Björn T. Hallberg <bjornth at users.sourceforge.net>

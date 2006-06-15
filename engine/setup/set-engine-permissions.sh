@@ -18,16 +18,16 @@ done
 for i in `find $ROOT_DIR/engine/`; do
 
 	if [[ -f $i ]]; then
-	
+
 		echo -e "\t0700 root:root $i";
-		
+
 		chmod 0700 $i;
-		chown root:root $i;	
-		
+		chown root:root $i;
+
 	elif [[ -d $i ]]; then
-	
+
 		echo "0700 root:root [$i]";
-		
+
 		chmod 0700 $i;
 		chown root:root $i;
 	fi

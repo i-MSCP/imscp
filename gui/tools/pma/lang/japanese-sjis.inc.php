@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-sjis.inc.php,v 2.126.4.1 2006/02/25 11:28:23 lem9 Exp $ */
+/* $Id: japanese-sjis.inc.php,v 2.126.2.3 2006/03/23 17:42:14 lem9 Exp $ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>

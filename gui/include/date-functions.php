@@ -108,7 +108,7 @@ function getdatestr() {
 			return strftime('%A, %d. %B %Y');
 		break;
 	default:
-		return date("l dS of F Y");
+		return date("l dS \o\f F Y");
 	}
 }
 

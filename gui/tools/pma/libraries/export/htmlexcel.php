@@ -1,5 +1,5 @@
 <?php
-/* $Id: htmlexcel.php,v 1.2 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: htmlexcel.php,v 1.2.2.1 2006/03/16 13:30:39 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -25,12 +25,14 @@ function PMA_exportComment($text) {
  * @access  public
  */
 function PMA_exportFooter() {
-    ?>
+    if (!PMA_exportOutputHandler('
 </table>
 </div>
 </body>
 </html>
-    <?php
+')) {
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -43,7 +45,7 @@ function PMA_exportFooter() {
  */
 function PMA_exportHeader() {
     global $charset, $charset_of_file;
-    ?>
+    if (!PMA_exportOutputHandler('
 <html xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns:x="urn:schemas-microsoft-com:office:excel"
 xmlns="http://www.w3.org/TR/REC-html40">
@@ -60,8 +62,10 @@ xmlns="http://www.w3.org/TR/REC-html40">
 
 <div id="Classeur1_16681" align=center x:publishsource="Excel">
 
-<table x:str border=0 cellpadding=0 cellspacing=0 width=100% style='border-collapse: collapse'>
-<?php
+<table x:str border=0 cellpadding=0 cellspacing=0 width=100% style="border-collapse: collapse">
+')) {
+        return FALSE;
+    }
 
     return TRUE;
 }

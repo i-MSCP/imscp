@@ -1,5 +1,5 @@
 <?php
-/* $Id: transformation_wrapper.php,v 2.13 2006/01/17 17:02:29 cybot_tm Exp $ */
+/* $Id: transformation_wrapper.php,v 2.13.2.1 2006/03/10 13:41:01 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 define('IS_TRANSFORMATION_WRAPPER', true);
@@ -60,12 +60,11 @@ if (isset($ct) && !empty($ct)) {
 } else {
     $content_type = 'Content-Type: ' . (isset($mime_map[urldecode($transform_key)]['mimetype']) ? str_replace('_', '/', $mime_map[urldecode($transform_key)]['mimetype']) : $default_ct) . (isset($mime_options['charset']) ? $mime_options['charset'] : '');
 }
+header($content_type);
 
 if (isset($cn) && !empty($cn)) {
-    $content_type .= "\n" . 'Content-Disposition: attachment; filename=' . urldecode($cn);
+    header('Content-Disposition: attachment; filename=' . urldecode($cn));
 }
-
-header($content_type);
 
 if (!isset($resize)) {
     echo $row[urldecode($transform_key)];

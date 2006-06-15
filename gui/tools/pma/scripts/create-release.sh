@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: create-release.sh,v 2.18.4.2 2006/03/16 22:43:42 nijel Exp $
+# $Id: create-release.sh,v 2.18.2.2 2006/03/16 22:44:05 nijel Exp $
 #
 # 2005-09-13, lem9@users.sourceforge.net
 # - no longer create a config.default.php from config.inc.php
@@ -252,8 +252,8 @@ Todo now:
         phpmyadmin-news@lists.sourceforge.net
         phpmyadmin-users@lists.sourceforge.net
 
-    Don't forget to update the Description section in the announcement,
-    based on Documentation.html.
+     Don't forget to update the Description section in the announcement,
+     based on Documentation.html.
 
  8. increment rc count or version in CVS :
         - in libraries/Config.class.php PMA_Config::__constructor() the line

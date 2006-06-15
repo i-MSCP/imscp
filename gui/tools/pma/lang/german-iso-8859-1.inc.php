@@ -1,5 +1,5 @@
 <?php
-/* $Id: german-iso-8859-1.inc.php,v 2.141 2006/01/25 09:56:13 cybot_tm Exp $ */
+/* $Id: german-iso-8859-1.inc.php,v 2.141.2.2 2006/03/23 17:42:13 lem9 Exp $ */
 
 /**
  * For suggestions concerning this file please contact

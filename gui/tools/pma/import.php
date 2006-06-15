@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.php,v 2.17.2.1 2006/01/31 21:23:11 lem9 Exp $ */
+/* $Id: import.php,v 2.17.2.2 2006/03/04 12:41:28 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Core script for import, this is just the glue around all other stuff */
@@ -385,8 +385,13 @@ if (isset($my_die)) {
 }
 
 if ($go_sql) {
-    // Set pos to zero to possibly append limit
-    $pos = 0;
+    if (isset($_GET['pos'])) {
+        // comes from the Refresh link
+        $pos = $_GET['pos'];
+    } else {
+        // Set pos to zero to possibly append limit
+        $pos = 0;
+    }
     require('./sql.php');
 } else {
     $active_page = $goto;

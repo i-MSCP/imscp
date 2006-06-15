@@ -1,5 +1,5 @@
 <?php
-/* $Id: finnish-utf-8.inc.php,v 2.124.2.2 2006/02/17 12:42:59 lem9 Exp $ */
+/* $Id: finnish-utf-8.inc.php,v 2.124.2.4 2006/03/23 17:42:12 lem9 Exp $ */
 
 /*
  * Translated by Jouni Kähkönen, <yoneh at users.sourceforge.net>

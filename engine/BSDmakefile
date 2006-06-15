@@ -52,6 +52,7 @@ install:
 	$(CMD_INSTALL) ./setup/set-gui-permissions.sh $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2-uninstall $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/copy-errordocs.sh $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./tools/vhcs2-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/vhcs2-httpd-logs-mngr
 	$(CMD_INSTALL) ./tools/vhcs2phptemp.sh $(SYSTEM_ENGINE_ROOT)/tools/vhcs2phptemp.sh
 	

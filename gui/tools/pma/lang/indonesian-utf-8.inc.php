@@ -1,5 +1,5 @@
 <?php
-/* $Id: indonesian-utf-8.inc.php,v 2.125.2.1 2006/02/17 12:43:00 lem9 Exp $ */
+/* $Id: indonesian-utf-8.inc.php,v 2.125.2.3 2006/03/23 17:42:14 lem9 Exp $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

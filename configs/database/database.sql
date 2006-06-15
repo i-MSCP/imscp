@@ -332,7 +332,7 @@ CREATE TABLE `login` (
   `session_id` varchar(200) default NULL,
   `ipaddr` varchar(15) default NULL,
   `lastaccess` int(10) unsigned default NULL,
-  `user_name` varchar(255) default NULL
+  `user_name` varchar(255) default NULL,
   `login_count` tinyint(1) default NULL
 ) TYPE=MyISAM;
 

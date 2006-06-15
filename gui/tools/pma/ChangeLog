@@ -2,61 +2,198 @@
 phpMyAdmin - Changelog
 ----------------------
 
-$Id: ChangeLog,v 2.1929.2.51.2.35 2006/05/12 16:34:20 lem9 Exp $
+$Id: ChangeLog,v 2.1929.2.130.2.4 2006/05/20 17:16:21 lem9 Exp $
 $Source: /cvsroot/phpmyadmin/phpMyAdmin/ChangeLog,v $
 
+2006-05-20 Marc Delisle  <lem9@users.sourceforge.net>
+    ### 2.8.1 released from MAINT_2_8_1
+
+2006-05-15 Michal Čihař  <michal@cihar.com>
+    * scripts/setup.php: Compatibility with security tokens (bug #1488453).
+    * scripts/setup.php: Fix detection of writable config (bug #1488447).
+
+2006-05-14 Michal Čihař  <michal@cihar.com>
+    * libraries/common.lib.php: Fix reading database list with MySQL wildcards
+      (bug #1487613).
+
 2006-05-12 Marc Delisle  <lem9@users.sourceforge.net>
-    ### 2.8.0.4 released from branch MAINT_2_8_0
+    ### 2.8.0.4 released from MAINT_2_8_0
+    ### 2.8.1-rc1 released from QA_2_8
 
 2006-05-12 Michal Čihař  <michal@cihar.com>
     * libraries/footer.inc.php: Escape user input to avoid XSS.
+    * libraries/url_generating.lib.php, libraries/session.inc.php,
+      libraries/common.lib.php: Protect against external links which could
+      perform any action (CVE-2006-1804) (backport from HEAD).
+
+2006-05-05 Michal Čihař  <michal@cihar.com>
+    * libraries/export/sql.php: Fix UPDATE export with extended inserts
+      enabled (bug#1482103).
 
 2006-05-02 Michal Čihař  <michal@cihar.com>
     * libraries/select_lang.lib.php, libraries/Theme_Manager.class.php: Escape
       user input (CVE-2006-2031).
 
+2006-04-27 Sebastian Mendel <cybot_tm@users.sourceforge.net>
+    * db_printview.php: fixed bug 'no tables found', refactored
+
+2006-04-27 Michal Čihař  <michal@cihar.com>
+    * sql.php: Show results of REPLACE as affected as it contains both deleted
+      and inserted rows count (bug #1475765).
+    * libraries/common.lib.php: Better detection of duplicate rows (bug
+      #1477500).
+
 2006-04-24 Michal Čihař  <michal@cihar.com>
     * main.php: Fix logout link (bug #1474694).
+
+2006-04-21 Michal Čihař  <michal@cihar.com>
+    * libraries/import/csv.php: Fix importing files without trailing new line
+      (bug #1473944).
 
 2006-04-20 Michal Čihař  <michal@cihar.com>
     * index.php: Check target against goto_whitelist.
 
+2006-04-14 Marc Delisle  <lem9@users.sourceforge.net>
+    * export.php: bug #1443004 part 2, export order for VIEWs
+
+2006-04-12 Sebastian Mendel <cybot_tm@users.sourceforge.net>
+    * sql.php:
+       - fixed bug #1469469 cyclic redirect with sql.php as default table-page
+
+2006-04-12 Marc Delisle  <lem9@users.sourceforge.net>
+    * export.php: bug #1443004 part 1: do not generate INSERT statements
+      for an exported VIEW
+
+2006-04-12 Sebastian Mendel <cybot_tm@users.sourceforge.net>
+    * css/phpmyadmin.css.php:
+      fixed bug #1446017 red border in outdated themes
+    * libraries/common.lib.php:
+       - added option to PMA_arrayWalkRecursive() to use function also on keys
+       - un-magic_quotes_gpc also keys in GPC arrays
+    * libraries/db_table_exists.lib.php:
+      cleanup - what a mess; fixed several undefined variables
+    * tbl_printview.php:
+      fixed undefined variable by including libraries/tbl_properties_common.php
+    * libraries/footer.inc.php:
+      fixed bug #1454874 Javascript error in new (not framed) print window
+    * css\phpmyadmin.css.php, scripts\setup.php, test\theme.php
+      themes\darkblue_orange\css\theme_right.css.php,
+      themes\original\css\theme_right.css.php:
+      fixed bug #1444466 theme directory not being processed correctly
+    * libraries\common.lib.php, libraries\Theme_Manager.class.php:
+      fixed bug #1469174 configuration changes not accepted in theme manager
+    * libraries\Theme_Manager.class.php:
+      fixed bug #1469120 missing property in Theme_Manager class
+    * libraries\common.lib.php:
+      fixed bug #1469109 PMA_backquote() issues
+
+2006-04-11 Marc Delisle  <lem9@users.sourceforge.net>
+    * Documentation.html: clarification about config.default.php
+
+2006-04-11 Sebastian Mendel <cybot_tm@users.sourceforge.net>
+    * tbl_relation.php:
+      fixed bug #1459418 Add foreign key fail on column with ' in name
+    * index.php, libraries\auth\cookie.auth.lib.php,
+      libraries\auth\http.auth.lib.php, libraries\common.lib.php,
+      libraries\footer.inc.php, libraries\fpdf\fpdf.php,
+      libraries\grab_globals.lib.php, libraries\header.inc.php,
+      libraries\ip_allow_deny.lib.php, libraries\select_lang.lib.php,
+      libraries\Config.class.php:
+      use PMA_getenv()
+    * libraries\Config.class.php:
+      fixed not initilized variable in getCookiePath();
+    * libraries\common.lib.php:
+      added PMA_getenv() as a wrapper to $_SERVER, $_ENV, getenv() and apache_getenv()
+
 2006-04-11 Michal Čihař  <michal@cihar.com>
     * lang/galician: Fix missing ; (bug #1468439).
+
+2006-04-10 Michal Čihař  <michal@cihar.com>
+    * libraries/Config.class.php: Check also default config mtime (bug
+      #1467620).
+    * libraries/Config.class.php: Better check for server system (patch
+      #1462738).
+    * libraries/import/csv.php: Fix parsing of large CSV files (bug #1456331).
+
+2006-04-07 Michal Čihař  <michal@cihar.com>
+    * scripts/setup.php: Parse correctly new version numbers.
 
 2006-04-06 Marc Delisle  <lem9@users.sourceforge.net>
     * themes/*/css/theme_left.css.php, /theme_right.css.php:
       protection from unplanned execution path
     ### 2.8.0.3 released from branch MAINT_2_8_0
 
+2006-03-26 Marc Delisle  <lem9@users.sourceforge.net>
+    * sql.php: bug #1448890 Column expander doesn't work
+    * libraries/tbl_properties.inc.php: bug #1458334, undefined offset
+    * libraries/sqlparser.data.php: bug #1455373, CONVERT in reserved words
+
+2006-03-23 Michal Čihař  <michal@cihar.com>
+    * libraries/import/sql.php: Fix handling of -- (bug #1453430).
+
+2006-03-23 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/display_tbl.lib.php: bug #1444417 blobs are centered
+    * libraries/common.lib.php: patch #1455286, catch 'permission denied'
+      error on SHOW DATABASES, thanks to Bernard Dautrevaux - b-dautrevaux
+
 2006-03-22 Alexander M. Turek  <me@derrabus.de>
     * lang/spanish-*.inc.php: Updates, thanks to Daniel Hinostroza.
     * lang/galician-*.inc.php: Updates, thanks to Xosé Calvo.
 
+2006-03-21 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/common.lib.php: bug #1439002, drop basetable of a view gives
+      error on overview
+
 2006-03-20 Alexander M. Turek  <me@derrabus.de>
     * Documentation.html: Added a note about Connector/PHP to FAQ 1.17.
+
+2006-03-17 Michal Čihař  <michal@cihar.com>
+    * scripts/setup.php: Allow empty socket (bug #1452142).
 
 2006-03-16 Marc Delisle  <lem9@users.sourceforge.net>
     * libraries/Theme_Manager.class.php: XSS vulnerability
     * libraries/common.lib.php: bug #1392554, turn off 
-      zend.ze1_compatibility_mode due to mysqli problems
+       zend.ze1_compatibility_mode due to mysqli problems
     ### 2.8.0.2 released from branch MAINT_2_8_0
 
 2006-03-16 Michal Čihař  <michal@cihar.com>
     * scripts/create-release.sh: Use w3m instead of lynx (bug #1451635).
 
-2006-03-08 Michal Čihař  <michal@cihar.com>
-    * scripts/setup.php: Sync with HEAD fixes (bug #1435806).
+2006-03-16 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/display_tbl.lib.php: undefined variable when a BLOB is NULL
+
+2006-03-15 Michal Čihař  <michal@cihar.com>
+    * libraries/export/htmlexcel.php: Fix output handling (bug #1450555).
+
+2006-03-14 Michal Čihař  <michal@cihar.com>
+    * scripts/setup.php: Fix config loading (bug #1449821).
+
+2006-03-14 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/common.lib.php: bug #1449715, loading of binary data very slow
+    * server_privileges.php: compatibility with MySQL < 4.0.2
+    * server_databases.php: bug #1445991, compatibility with MySQL 3.23.52
+
+2006-03-13 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/Config.class.php, /common.lib.php: bug #1445120, 
+      cookie login not working on IIS
+
+2006-03-10 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/display_tbl.lib.php: reactivate in-line image display
+    * transformation_wrapper.php: bug #1444121, octetstream download fails
+      on versions of PHP accepting only one line per header,
+      thanks to Ryan Schmidt
 
 2006-03-08 Marc Delisle  <lem9@users.sourceforge.net>
-    ### 2.8.0.1 released from branch MAINT_2_8_0
+    * libraries/database_interface.lib.php, tbl_create.php,
+      tbl_properties_operations.php: bug #1444892, TYPE deprecated in 
+      MySQL 5.1
+
+2006-03-08 Michal Čihař  <michal@cihar.com>
+    * scripts/setup.php: Sync with HEAD fixes (bug #1435806).
 
 2006-03-07 Marc Delisle  <lem9@users.sourceforge.net>
     * libraries/Config.class.php: bug #1444867, does not load config.inc.php
       under PHP < 4.3.0, thanks to Julian Ladisch - julianladisch
-    * libraries/database_interface.lib.php, tbl_create.php,
-      tbl_properties_operations.php: bug #1444892, TYPE deprecated in 
-      MySQL 5.1
 
 2006-03-06 Marc Delisle  <lem9@users.sourceforge.net>
     * main.php: bug #1443337, homepage link
@@ -64,8 +201,9 @@ $Source: /cvsroot/phpmyadmin/phpMyAdmin/ChangeLog,v $
 
 2006-03-04 Marc Delisle  <lem9@users.sourceforge.net>
     * lang/swedish: Update, thanks to Björn T. Hallberg - bjornth.
+    * import.php, libraries/common.lib.php: bug #1413880, page status not
+      preserved on Refresh
     * lang/chinese_traditional: Updates, thanks to Siu Sun.
-    * libraries/display_tbl.lib.php: reactivate in-line image display
 
 2006-03-03 Michal Čihař  <michal@cihar.com>
     * libraries/Theme_Manager.class.php: Fix include path (bug #1442008).
@@ -83,6 +221,8 @@ $Source: /cvsroot/phpmyadmin/phpMyAdmin/ChangeLog,v $
     * lang/japanese*: update, thanks to Ishigaki Kenichi - tcool
 
 2006-02-24 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/relation.lib.php: bug #1437754, search combos default to
+      key zero
     * lang/swedish: Update, thanks to Björn T. Hallberg - bjornth.
 
 2006-02-23 Marc Delisle  <lem9@users.sourceforge.net>
@@ -91,10 +231,22 @@ $Source: /cvsroot/phpmyadmin/phpMyAdmin/ChangeLog,v $
     * sql.php: bug #1437499, LIMIT clause when query ends with semicolon
 
 2006-02-22 Marc Delisle  <lem9@users.sourceforge.net>
-    * .htaccess: added a reference to FAQ 1.36
+    * libraries/display_tbl.lib.php: bug #1435303, error on empty BLOB transf.
+    * .htaccess: added a reference to the FAQ
+
+2006-02-22 Sebastian Mendel <cybot_tm@users.sourceforge.net>
+    * libraries/footer.inc.php:
+      bug #1436279 Left frame links open in new windows in Safari
+    * libraries/dbi/mysqli.dbi.lib.php: workaround for http://bugs.php.net/36007
+    * libraries/database_interface.lib.php PMA_DBI_get_tables_full(), left.php:
+      added workaround for bug #1436171 Cannot display Capitalised Databases
+
+2006-02-21 Michal Čihař  <michal@cihar.com>
+    * scripts/setup.php: Various bug fixes (bug #1435700, bug #1435806,
+      undefined indexes).
 
 2006-02-20 Marc Delisle  <lem9@users.sourceforge.net>
-    ### 2.8.0-rc1 released from QA_2_8 branch
+    ### 2.8.0-rc1 released
 
 2006-02-20 Sebastian Mendel <cybot_tm@users.sourceforge.net>
     * sql.php:

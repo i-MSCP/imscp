@@ -15,19 +15,19 @@ done
 # fixing gui permissions;
 #
 
-for i in `find $ROOT_DIR/gui/`; do 
+for i in `find $ROOT_DIR/gui/`; do
 
 	if [[ -f $i ]]; then
-	
+
 		echo -e "\t0400 $APACHE_USER:$APACHE_GROUP $i";
-		
+
 		chmod 0400 $i;
-		chown $APACHE_USER:$APACHE_GROUP $i;	
-		
+		chown $APACHE_USER:$APACHE_GROUP $i;
+
 	elif [[ -d $i ]]; then
-	
+
 		echo "0555 $APACHE_USER:$APACHE_GROUP [$i]";
-		
+
 		chmod 0555 $i;
 		chown $APACHE_USER:$APACHE_GROUP $i;
 	fi

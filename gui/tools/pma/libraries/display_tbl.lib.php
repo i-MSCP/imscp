@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php,v 2.96.2.2.2.2 2006/03/04 19:44:10 lem9 Exp $ */
+/* $Id: display_tbl.lib.php,v 2.96.2.7 2006/03/23 10:37:17 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -1292,20 +1292,24 @@ function PMA_displayTableBody(&$dt_result, &$is_display, $map, $analyzed_sql) {
                     $blobtext = '[BLOB';
                     if (!isset($row[$i]) || is_null($row[$i])) {
                         $blobtext .= ' - NULL';
+                        $blob_size = 0;
                     } elseif (isset($row[$i])) {
-                        $blob_size = PMA_formatByteDown(strlen($row[$i]), 3, 1);
-                        $blobtext .= ' - '. $blob_size [0] . ' ' . $blob_size[1];
-                        unset($blob_size);
+                        $blob_size = strlen($row[$i]);
+                        $display_blob_size = PMA_formatByteDown($blob_size, 3, 1);
+                        $blobtext .= ' - '. $display_blob_size[0] . ' ' . $display_blob_size[1];
+                        unset($display_blob_size);
                     }
 
                     $blobtext .= ']';
-                    // FIXME: octetstream/download seems to fail
                     if (strpos($transform_function, 'octetstream')) {
                         $blobtext = $row[$i];
                     }
-                    $blobtext = ($default_function != $transform_function ? $transform_function($blobtext, $transform_options, $meta) : $default_function($blobtext, array(), $meta));
+                    if ($blob_size > 0) {
+                        $blobtext = ($default_function != $transform_function ? $transform_function($blobtext, $transform_options, $meta) : $default_function($blobtext, array(), $meta));
+                    }
+                    unset($blob_size);
 
-                    $vertical_display['data'][$row_no][$i]      = '    <td align="center"' . $column_style . $bgcolor . '>' . $blobtext . '</td>';
+                    $vertical_display['data'][$row_no][$i]      = '    <td align="left"' . $column_style . $bgcolor . '>' . $blobtext . '</td>';
                 } else {
                     if (!isset($row[$i]) || is_null($row[$i])) {
                         $vertical_display['data'][$row_no][$i] = '    <td' . $column_style . $bgcolor . '><i>NULL</i></td>' . "\n";

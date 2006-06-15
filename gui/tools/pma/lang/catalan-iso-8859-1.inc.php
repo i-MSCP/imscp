@@ -1,5 +1,5 @@
 <?php
-/* $Id: catalan-iso-8859-1.inc.php,v 2.130.2.1 2006/02/10 17:38:51 lem9 Exp $ */
+/* $Id: catalan-iso-8859-1.inc.php,v 2.130.2.3 2006/03/23 17:42:11 lem9 Exp $ */
 
 $charset = 'iso-8859-1';
 $text_dir = 'ltr';

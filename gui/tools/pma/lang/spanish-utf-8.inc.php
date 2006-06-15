@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php,v 2.131.2.1.2.1 2006/03/22 23:36:57 rabus Exp $ */
+/* $Id: spanish-utf-8.inc.php,v 2.131.2.4 2006/03/23 17:42:16 lem9 Exp $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php,v 2.53 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: sql.php,v 2.53.2.1 2006/05/05 09:20:37 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Set of functions used to build SQL dumps of tables
@@ -526,6 +526,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
                 $schema_insert .= 'IGNORE ';
             }
             $schema_insert .= PMA_backquote($table, $use_backquotes) . ' SET ';
+            unset($GLOBALS['extended_ins']);
         } else {
             // insert or replace
             if (isset($GLOBALS['sql_type']) && $GLOBALS['sql_type'] == 'replace') {

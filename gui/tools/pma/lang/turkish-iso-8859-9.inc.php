@@ -1,5 +1,5 @@
 <?php
-/* $Id: turkish-iso-8859-9.inc.php,v 2.125.2.1 2006/02/17 12:43:01 lem9 Exp $ */
+/* $Id: turkish-iso-8859-9.inc.php,v 2.125.2.3 2006/03/23 17:42:16 lem9 Exp $ */
 
 // son güncelleme:28.08.2005 (in nova roma)
 // Türkçe Çeviri ® Bora Alioðlu

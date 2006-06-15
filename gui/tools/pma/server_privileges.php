@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_privileges.php,v 2.91.2.1 2006/02/14 09:25:30 cybot_tm Exp $ */
+/* $Id: server_privileges.php,v 2.91.2.2 2006/03/14 17:32:19 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
@@ -506,7 +506,7 @@ function PMA_displayPrivTable($db = '*', $table = '*', $submit = TRUE, $indent =
 
         echo $spaces . '    </fieldset>' . "\n";
         // The "Resource limits" box is not displayed for db-specific privs
-        if ($db == '*') {
+        if ($db == '*' && PMA_MYSQL_INT_VERSION >= 40002) {
             echo $spaces . '    <fieldset>' . "\n"
                . $spaces . '        <legend>' . $GLOBALS['strResourceLimits'] . '</legend>' . "\n"
                . $spaces . '        <p><small><i>' . $GLOBALS['strZeroRemovesTheLimit'] . '</i></small></p>' . "\n"

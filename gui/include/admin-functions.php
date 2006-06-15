@@ -1533,7 +1533,7 @@ SQL_QUERY;
 
     if($user_logo == '0' || $user_logo == '') { // default logo
 
-       return "../images/isp_logo.gif";
+       return "../themes/user_logos/isp_logo.gif";
 
     } else{ // we have logo uploaded
 

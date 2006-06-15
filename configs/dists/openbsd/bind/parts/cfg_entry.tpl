@@ -1,5 +1,4 @@
-zone "{DMN_NAME}" {
-	type	master;
-	file	"{DB_DIR}/{DMN_NAME}.db";
-	notify	YES ;
+zone "{DMN_NAME}" { 
+	type master; 
+	file "{DMN_NAME}.db"; 
 };

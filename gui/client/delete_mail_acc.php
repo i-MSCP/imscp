@@ -94,7 +94,7 @@ if ($num > 0) {
 /* if we are locket wait to unlock */
 check_for_lock_file();
 
-$query = "update mail_users set status='". STATUS_TODELETE ."' where mail_id=?";
+$query = "UPDATE mail_users SET status='".$cfg['ITEM_DELETE_STATUS']."' WHERE mail_id = ?";
 exec_query($sql, $query, array($delete_id));
 
 send_request();

@@ -138,7 +138,7 @@ function install_lang()
             return;
         }
 
-        if (!($file_type === "text/plain")){
+        if (!($file_type === "text/plain" || $file_type === "plain/text")){
 
             set_page_message(tr('You can upload only text files!'));
 

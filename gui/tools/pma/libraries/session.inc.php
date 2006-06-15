@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php,v 2.8.2.2.2.1 2006/03/02 15:28:09 lem9 Exp $ */
+/* $Id: session.inc.php,v 2.8.2.4 2006/05/12 15:26:16 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
@@ -99,6 +99,13 @@ ini_set('session.save_handler', 'files');
 
 @session_name('phpMyAdmin');
 @session_start();
+
+/**
+ * Token which is used for authenticating access queries.
+ */
+if (!isset($_SESSION['PMA_token'])) {
+    $_SESSION['PMA_token'] = md5(uniqid(rand(), true));
+}
 
 /**
  * trys to secure session from hijacking and fixation

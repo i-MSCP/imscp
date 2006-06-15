@@ -1,5 +1,5 @@
 <?php
-/* $Id: galician-iso-8859-1.inc.php,v 2.129.2.1.2.2 2006/04/17 13:16:59 rabus Exp $ */
+/* $Id: galician-iso-8859-1.inc.php,v 2.129.2.5 2006/04/11 14:11:46 nijel Exp $ */
 
 /**
  * Translated by Xosé Calvo <xosecalvo at terra.es>

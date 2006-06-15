@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php,v 1.10 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: sql.php,v 1.10.2.1 2006/03/23 16:58:09 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* SQL import plugin for phpMyAdmin */
@@ -58,7 +58,7 @@ if (isset($plugin_list)) {
                 $p4 = 2147483647;
             }
             $p5 = strpos($buffer, '--', $i);
-            if ($p5 === FALSE) {
+            if ($p5 === FALSE || $p5 >= ($len - 2) || $buffer[$p5 + 2] > ' ') {
                 $p5 = 2147483647;
             }
             $p6 = strpos($buffer, '/*', $i);
