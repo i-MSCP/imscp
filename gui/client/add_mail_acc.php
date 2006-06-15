@@ -398,10 +398,10 @@ function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
     return;
   }
   // Not permitted chars
-  if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
-      set_page_message(tr('Password data includes not permitted signs!'));
-      return;
-  }
+ // if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
+  //    set_page_message(tr('Password data includes not permitted signs!'));
+    //  return;
+  //}
 
   schedule_mail_account($sql, $dmn_id, $dmn_name);
 
