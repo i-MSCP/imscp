@@ -89,7 +89,7 @@ SQL_QUERY;
                          'ACTION' => $action,
                          'DATE' => date($date_formt, $rs -> fields['ticket_date']),
                          'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n")),
+                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "80", "<br> \n")),
                          'ID' => $rs -> fields['ticket_id']));
 
     $tpl -> parse('TICKETS_ITEM', '.tickets_item');
@@ -127,7 +127,7 @@ SQL_QUERY;
     global $cfg;
     $date_formt = $cfg['DATE_FORMAT'];
     $tpl -> assign(array('DATE' => date($date_formt, $rs -> fields['ticket_date']),
-                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n")),
+                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "80", "<br>\n")),
                          //'ID' => $rs -> fields['ticket_reply'],
                          ));
     get_ticket_from($tpl, $sql, $ticket_id);
@@ -205,10 +205,13 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id)
     set_page_message(tr('Please type your message!'));
     return;
   }
+    
+  
 
   $ticket_date = time();
-  $subj = $_POST['subject'];
-  $user_message = preg_replace("/\n/", "<br>", $_POST["user_message"]);
+  $subj = clean_html($_POST['subject']);
+  $user_message = clean_html($_POST["user_message"]);
+  
   $ticket_status = 4;
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];

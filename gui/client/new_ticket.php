@@ -46,8 +46,8 @@ function send_user_message(&$sql, $user_id, $reseller_id)
 
   $ticket_date = time();
   $urgency = $_POST['urgency'];
-  $subj = $_POST['subj'];
-  $user_message = strip_html($_POST["user_message"]);
+  $subj = clean_html($_POST['subj']);
+  $user_message = clean_html($_POST["user_message"]);
 	$ticket_status = 1;
 	$ticket_reply = 0;
 	$ticket_level = 1;

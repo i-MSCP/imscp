@@ -66,3 +66,201 @@ function check_input($value = '') {
 	}
 
 }
+
+function clean_html($input = '') {
+	
+	$suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
+               '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
+               '@([\r\n])[\s]+@',                // Leerräume entfernen
+               '@&(quot|#34);@i',                // HTML-Entitäten ersetzen
+               '@&(amp|#38);@i',
+               '@&(lt|#60);@i',
+               '@&(gt|#62);@i',
+               '@&(nbsp|#160);@i',
+               '@&(iexcl|#161);@i',
+               '@&(cent|#162);@i',
+               '@&(pound|#163);@i',
+               '@&(copy|#169);@i',
+               '@&#(\d+);@e');                    // als PHP auswerten
+
+	$ersetze = array ('',
+                 '',
+                 '\1',
+                 '"',
+                 '&',
+                 '<',
+                 '>',
+                 ' ',
+                 chr(161),
+                 chr(162),
+                 chr(163),
+                 chr(169),
+                 'chr(\1)');
+
+	$text = preg_replace($suche, $ersetze, $input);
+
+return $text;	
+	
+}
+
+/* check for valid username  */
+function chk_username( $username ) {
+
+    if ( vhcs_username_check($username,50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+/* check for valid password  */
+function chk_password( $password ) {
+
+	if ( vhcs_password_check($password, 50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+}
+
+function vhcs_username_check ( $data, $num ) {
+
+    $res = preg_match(
+    					"/^[-A-Za-z0-9\.-_]*[A-Za-z0-9]$/",
+                        $data,
+                        $match
+    				);
+
+    if ($res == 0) return 0;
+
+    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\.\-)|(\-\.)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\.\_)|(\_\.)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\-\_)|(\_\-)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $len = strlen($data);
+
+    if ( $len > $num ) return 0;
+
+	return 1;
+}
+
+function vhcs_email_check($email, $num) {
+  // RegEx begin
+  
+  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+
+  $nqtext        = "[^\\\\$nonascii\015\012\"]";
+  $qchar         = "\\\\[^$nonascii]";
+
+  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+  $user_part     = "(?:$normuser|$quotedstring)";
+
+  $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
+  $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
+  $dom_tldpart   = '[a-zA-Z]{2,5}';
+  $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
+
+  $regex         = "$user_part\@$domain_part";
+  // RegEx end
+  
+  if (!preg_match("/^$regex$/",$email)) return 0;
+  	
+  if (strlen($email) > $num) return 0;
+  	
+  return 1;
+  
+}
+
+
+
+function chk_email( $email ) {
+
+    if ( vhcs_email_check($email, 50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+
+function full_domain_check ( $data ) {
+
+	$data = "$data.";
+
+    $res = preg_match_all(
+    						"/([^\.]*\.)/",
+                            $data,
+                            $match,
+                            PREG_PATTERN_ORDER
+    					);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $last = $res - 1;
+
+    for ($i = 0; $i < $last ; $i++) {
+
+        $token = chop($match[0][$i], ".");
+
+        $res = check_dn_token($token);
+
+        if ($res == 0) {
+			return 0;
+		}
+    }
+
+
+    $res = preg_match(
+    					"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
+                        $match[0][$last],
+                        $last_match
+    				);
+
+    if ($res == 0) {
+
+		return 0;
+	}
+
+
+    return 1;
+}
+
+
+function check_dn_token ( $data ) {
+
+    $res = preg_match(
+    					"/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/",
+						$data,
+                        $match
+    				);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $res = preg_match("/\-\-/", $match[2], $minus_match);
+
+    //if ($res == 1) return 0;
+
+    return 1;
+}
