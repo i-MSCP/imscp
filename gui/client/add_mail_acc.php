@@ -293,7 +293,7 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mail forward list error!"));
+          set_page_message(tr("Mail forward list error!".$value));
 
           return;
         }
