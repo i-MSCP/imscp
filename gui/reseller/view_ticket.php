@@ -110,7 +110,7 @@ SQL_QUERY;
 									'URGENCY_ID' => $urgency_id,
 									'DATE' => date($date_formt, $rs -> fields['ticket_date']),
 									'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], 50 , "<br> \n")),
+									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], 50 , "<br />\n",1)),
 									'ID' => $rs -> fields['ticket_id']
 								)
 						  );
@@ -155,7 +155,7 @@ SQL_QUERY;
 			$tpl -> assign(
 							array(
 									'DATE' => date($date_formt, $rs -> fields['ticket_date']),
-									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], 50 , "<br> \n")),
+									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], 50 , "<br />\n", 1)),
 								 )
 						  );
 			get_ticket_from($tpl, $sql, $ticket_id);
