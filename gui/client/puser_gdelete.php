@@ -32,6 +32,19 @@ if (isset($_GET['gname']) && $_GET['gname'] !== '' && is_numeric($_GET['gname'])
    die();
 }
 
+$query = <<<SQL_QUERY
+ 	        select
+ 	            ugroup
+ 	        from
+ 	            htaccess_groups
+ 	        where
+ 	            id = ?
+ 	        and
+	            dmn_id = ?
+SQL_QUERY;
+$groupname = $rs->fields['ugroup'];
+
+
 global $cfg;
 $change_status = $cfg['ITEM_DELETE_STATUS'];
 
@@ -117,7 +130,7 @@ SQL_QUERY;
 check_for_lock_file();
 send_request();
 
-write_log("$admin_login: delete group ID (protected areas): $groupname");
+write_log($_SESSION['user_logged'].": delete group ID (protected areas): $groupname");
 header( "Location: puser_manage.php" );
 die();
 ?>
