@@ -116,13 +116,13 @@ SQL_QUERY;
 						  );
 
 			$tpl -> parse('TICKETS_ITEM', '.tickets_item');
-			get_tickets_replys($tpl, $sql, $ticket_id, $screenwidth);
+			get_tickets_replys($tpl, $sql, $ticket_id);
 		}
 
 }
 
 
-function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth)
+function get_tickets_replys(&$tpl, &$sql, &$ticket_id)
 {
   $query = <<<SQL_QUERY
 	  SELECT
