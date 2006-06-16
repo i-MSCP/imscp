@@ -89,7 +89,7 @@ SQL_QUERY;
                          'ACTION' => $action,
                          'DATE' => date($date_formt, $rs -> fields['ticket_date']),
                          'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "40", "<br> \n")),
+                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50", "<br> \n")),
                          'ID' => $rs -> fields['ticket_id']));
 
     $tpl -> parse('TICKETS_ITEM', '.tickets_item');
@@ -127,7 +127,7 @@ SQL_QUERY;
     global $cfg;
     $date_formt = $cfg['DATE_FORMAT'];
     $tpl -> assign(array('DATE' => date($date_formt, $rs -> fields['ticket_date']),
-                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "40", "<br>\n")),
+                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50", "<br>\n")),
                          //'ID' => $rs -> fields['ticket_reply'],
                          ));
     get_ticket_from($tpl, $sql, $ticket_id);
