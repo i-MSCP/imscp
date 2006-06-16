@@ -98,8 +98,11 @@ function clean_html($input = '') {
                  'chr(\1)');
 
 	$text = preg_replace($suche, $ersetze, $input);
+	//and second one...
+	$textende = strip_tags($text);
+	
 
-return $text;	
+return $textende;	
 	
 }
 
@@ -182,6 +185,24 @@ function vhcs_email_check($email, $num) {
   if (!preg_match("/^$regex$/",$email)) return 0;
   	
   if (strlen($email) > $num) return 0;
+  	
+  return 1;
+  
+}
+
+function vhcs_check_local_part($localpart) {
+	// RegEx begin
+  
+  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+
+  $nqtext        = "[^\\\\$nonascii\015\012\"]";
+  $qchar         = "\\\\[^$nonascii]";
+
+  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+  $user_part     = "(?:$normuser|$quotedstring)";
+
+  if (!preg_match("/^$regex$/",$localpart)) return 0;
   	
   return 1;
   

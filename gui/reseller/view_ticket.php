@@ -39,7 +39,7 @@ $tpl -> define_dynamic('custom_buttons', 'page');
 //
 
 
-function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth)
+function gen_tickets_list(&$tpl, &$sql, &$ticket_id)
 {
   $user_id = $_SESSION['user_id'];
   $query = <<<SQL_QUERY
@@ -110,7 +110,7 @@ SQL_QUERY;
 									'URGENCY_ID' => $urgency_id,
 									'DATE' => date($date_formt, $rs -> fields['ticket_date']),
 									'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50", "<br>\n")),
+									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], 50 , "<br> \n")),
 									'ID' => $rs -> fields['ticket_id']
 								)
 						  );
@@ -155,7 +155,7 @@ SQL_QUERY;
 			$tpl -> assign(
 							array(
 									'DATE' => date($date_formt, $rs -> fields['ticket_date']),
-									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50" , "<br>\n")),
+									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], 50 , "<br> \n")),
 								 )
 						  );
 			get_ticket_from($tpl, $sql, $ticket_id);
@@ -167,7 +167,7 @@ SQL_QUERY;
 }
 
 
-function get_ticket_from(&$tpl, &$sql, &$ticket_id, $screenwidth)
+function get_ticket_from(&$tpl, &$sql, &$ticket_id)
 {
 	$query = <<<SQL_QUERY
 		select
@@ -236,7 +236,7 @@ $tpl -> assign(
 			  );
 
 
-function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, $screenwidth)
+function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id)
 {
   if (!isset($_POST['uaction'])) return;
 
@@ -484,9 +484,9 @@ if (isset($_GET['ticket_id'])) {
 
 	change_ticket_status_view($sql, $_GET['ticket_id']);
 
-	send_user_message($sql, $_SESSION['user_id'], $reseller_id, $_GET['ticket_id'], $screenwidth);
+	send_user_message($sql, $_SESSION['user_id'], $reseller_id, $_GET['ticket_id']);
 
-	gen_tickets_list($tpl, $sql, $_GET['ticket_id'], $screenwidth);
+	gen_tickets_list($tpl, $sql, $_GET['ticket_id']);
 
 }
 else
