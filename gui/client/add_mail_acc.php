@@ -203,10 +203,13 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name)
   // standard whithout encoding
   //$mail_acc = $_POST['username'];
 
-  // lets encode the mail
+  // lets encode the mail ??? only crazy ones encode the local_part
+  
   $mail_acc_tmp = strtolower($_POST['username']);
-  $mail_acc = get_punny($mail_acc_tmp);
-  //encoded
+  if (vhcs_check_local_part($mail_acc_tmp) == "0") {
+ 	set_page_message(tr("Mail forward list error!"));
+ 	return;
+  }
 
   $status = $cfg['ITEM_ADD_STATUS'];
   $mail_auto_respond = '_no_';
@@ -398,10 +401,10 @@ function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
     return;
   }
   // Not permitted chars
- // if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
-  //    set_page_message(tr('Password data includes not permitted signs!'));
-    //  return;
-  //}
+  if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
+     set_page_message(tr('Password data includes not permitted signs!'));
+     return;
+  }
 
   schedule_mail_account($sql, $dmn_id, $dmn_name);
 
