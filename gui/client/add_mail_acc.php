@@ -206,10 +206,17 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name)
   // lets encode the mail ??? only crazy ones encode the local_part
   
   $mail_acc_tmp = strtolower($_POST['username']);
-  if (vhcs_check_local_part($mail_acc_tmp) == "0") {
- 	set_page_message(tr("Mail forward list error!"));
- 	return;
-  }
+  	if (vhcs_check_local_part($mail_acc_tmp) == "0") {
+ 		
+  		set_page_message(tr("Mail forward list error!"));
+ 	
+ 		return;
+ 		
+  	} else {
+  	
+  		$mail_acc=$mail_acc_tmp;	
+  		
+	}
 
   $status = $cfg['ITEM_ADD_STATUS'];
   $mail_auto_respond = '_no_';
