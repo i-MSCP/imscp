@@ -208,7 +208,7 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name)
   $mail_acc_tmp = strtolower($_POST['username']);
   	if (vhcs_check_local_part($mail_acc_tmp) == "0") {
  		
-  		set_page_message(tr("Mail forward list error!"));
+  		set_page_message(tr("Invalid Mail Localpart Format used!"));
  	
  		return;
  		
@@ -266,10 +266,10 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mail forward list error!"));
+          set_page_message(tr("Mailformat of an adress in your forward list is incorrect! : ".$value));
           return;
         } else if ($value === '') {
-          set_page_message(tr("Mail forward list error!"));
+          set_page_message(tr("Mail forward list empty!"));
           return;
         }
       }
@@ -285,7 +285,10 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mail forward list error!"));
+          set_page_message(tr("Mailformat of an adress in your forward list is incorrect! : ".$value));
+          return;
+        } else if ($value === '') {
+          set_page_message(tr("Mail forward list empty!"));
           return;
         }
       }
@@ -303,8 +306,11 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mail forward list error!".$value));
+          set_page_message(tr("Mailformat of an adress in your forward list is incorrect! : ".$value));
 
+          return;
+        }  else if ($value === '') {
+          set_page_message(tr("Mail forward list empty!"));
           return;
         }
       }
