@@ -200,6 +200,28 @@ function vhcs_email_check($email, $num) {
 
 }
 
+function vhcs_check_local_part($email, $num) {
+  // RegEx begin
+
+  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+
+  $nqtext        = "[^\\\\$nonascii\015\012\"]";
+  $qchar         = "\\\\[^$nonascii]";
+
+  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+  $user_part     = "(?:$normuser|$quotedstring)";
+
+  $regex         = "$user_part";
+  // RegEx end
+
+  if (!preg_match("/^$regex$/",$email)) return 0;
+
+  if (strlen($email) > $num) return 0;
+
+  return 1;
+
+}
 
 
 function chk_email( $email ) {
