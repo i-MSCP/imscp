@@ -388,7 +388,7 @@ function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
       return;
     }
       // Not permitted chars
-  	 if (preg_match("^[^/`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
+  	 if (!preg_match("^([a-zA-Z0-9@*#!;.+%§=]{6,15})$", $pass)) {
      	set_page_message(tr('Password data includes not permitted signs!'));
      return;
   	}
