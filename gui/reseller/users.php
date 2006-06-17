@@ -357,21 +357,20 @@ function generate_users_list ( &$tpl, $admin_id ) {
 
 
 
-			if ($rs -> fields['domain_status'] == $cfg['ITEM_OK_STATUS'])
-			{
+			if ($rs -> fields['domain_status'] == $cfg['ITEM_OK_STATUS']){
+
 				$status_icon = "ok.gif";
 
-			} else if ($rs -> fields['domain_status'] == $cfg['ITEM_DISABLED_STATUS'] ||
-					   $rs -> fields['domain_status'] == $cfg['ITEM_DELETE_STATUS']){
+			} else if ($rs -> fields['domain_status'] == $cfg['ITEM_DISABLED_STATUS']) {
 
 				$status_icon = "disabled.gif";
-
 
 			} else if ($rs -> fields['domain_status'] == $cfg['ITEM_ADD_STATUS'] ||
 					   $rs -> fields['domain_status'] == $cfg['ITEM_CHANGE_STATUS'] ||
 					   $rs -> fields['domain_status'] == $cfg['ITEM_TOENABLE_STATUS'] ||
 					   $rs -> fields['domain_status'] == $cfg['ITEM_RESTORE_STATUS'] ||
-					   $rs -> fields['domain_status'] == $cfg['ITEM_TODISABLED_STATUS']){
+					   $rs -> fields['domain_status'] == $cfg['ITEM_TODISABLED_STATUS'] ||
+					   $rs -> fields['domain_status'] == $cfg['ITEM_DELETE_STATUS']) {
 
 				$status_icon = "reload.gif";
 

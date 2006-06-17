@@ -1577,9 +1577,9 @@ function write_log($msg) {
 	} else {
 		$client_ip = "unknown";
 	}
-	$msg = $msg."<br><small>User IP: ".$client_ip."</small>";
+	$msg2 = $msg."<br><small>User IP: ".$client_ip."</small>";
 
-    $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$msg')" );
+    $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$msg2')" );
 
 
 	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRES'];
@@ -1587,19 +1587,20 @@ function write_log($msg) {
     /* now send email if DEFAULT_ADMIN_ADDRES != '' */
 	if ($send_log_to != '') {
 
-        global $cfg, $admin_login, $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_email;
+        global $cfg, $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
 
+		$admin_email = $cfg['DEFAULT_ADMIN_ADDRES'];
         $default_hostname =  $cfg['SERVER_HOSTNAME'];
 		$default_base_server_ip =  $cfg['BASE_SERVER_IP'];
 		$VersionH = $cfg['VersionH'];
 		$Version = $cfg['Version'];
 		$BuildDate = $cfg['BuildDate'];
 
-		$subject = "VHCS Pro on $default_hostname ($default_base_server_ip)";
+		$subject = "VHCS $Version on $default_hostname ($default_base_server_ip)";
 
         $to      = $send_log_to;
 
-        $message    = <<<AUTO_LOG_MSG
+        $message = <<<AUTO_LOG_MSG
 
 VHCS Pro Log
 
@@ -1608,21 +1609,24 @@ Version: $VersionH ($Version - $BuildDate)
 
 Message: ----------------[BEGIN]--------------------------
 
+User IP: $client_ip
 $msg
 
 Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-        $headers = "From: VHCS Pro Logging Daemon <$admin_email>\r\n";
+        $headers = "From: VHCS  Logging Daemon <$admin_email>\r\n";
 
-        $headers .= "X-Mailer: VHCS Pro v2.0.0 Logging Mailer";
+        $headers .= "MIME-Version: 1.0\r\n" .
+            		"Content-Type: text/plain; " .
+					"X-Mailer: VHCS $Version Logging Mailer";
 
         $mail_result = mail($to, $subject, $message, $headers);
 
         $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-        $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status| !";
+        $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
 
         $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$log_message')" );
 
@@ -1634,7 +1638,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
     global $sql;
 
-    global $admin_login;
+    $admin_login = $_SESSION['user_logged'];
 
     $query = <<<SQL_QUERY
         SELECT
@@ -1726,7 +1730,9 @@ MSG;
 
     $headers = "From: $from\r\n";
 
-    $headers .= "X-Mailer: VHCS Pro v2.0.0 add user auto mailer";
+    $headers .= "MIME-Version: 1.0\r\n" .
+            	"Content-Type: text/plain; " .
+				"X-Mailer: VHCS $Version Service Mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 
@@ -1736,6 +1742,187 @@ MSG;
 
 }
 
+/* check for valid username  */
+function chk_username( $username ) {
+
+    if ( vhcs_username_check($username,50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+/* check for valid password  */
+function chk_password( $password ) {
+
+	if ( vhcs_password_check($password, 50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+}
+
+function vhcs_username_check ( $data, $num ) {
+
+    $res = preg_match(
+    					"/^[-A-Za-z0-9\.-_]*[A-Za-z0-9]$/",
+                        $data,
+                        $match
+    				);
+
+    if ($res == 0) return 0;
+
+    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\.\-)|(\-\.)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\.\_)|(\_\.)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\-\_)|(\_\-)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $len = strlen($data);
+
+    if ( $len > $num ) return 0;
+
+	return 1;
+}
+
+/*
+function vhcs_email_check ( $data, $num ) {
+
+    $data = "$data\n";
+
+    $res = preg_match("/^([^\@]+)\@([^\n+]+)\n$/", $data, $match);
+
+    if ($res == 0) return 0;
+
+    $res = vhcs_username_check($match[1], $num);
+
+    if ($res == 0) return 0;
+
+    $res = full_domain_check($match[2]);
+
+    if ($res == 0) return 0;
+
+    return 1;
+}*/
+
+function vhcs_email_check($email, $num) {
+  // RegEx begin
+
+  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+
+  $nqtext        = "[^\\\\$nonascii\015\012\"]";
+  $qchar         = "\\\\[^$nonascii]";
+
+  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+  $user_part     = "(?:$normuser|$quotedstring)";
+
+  $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
+  $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
+  $dom_tldpart   = '[a-zA-Z]{2,5}';
+  $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
+
+  $regex         = "$user_part\@$domain_part";
+  // RegEx end
+
+  if (!preg_match("/^$regex$/",$email)) return 0;
+
+  if (strlen($email) > $num) return 0;
+
+  return 1;
+
+}
+
+
+
+function chk_email( $email ) {
+
+    if ( vhcs_email_check($email, 50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+
+function full_domain_check ( $data ) {
+
+	$data = "$data.";
+
+    $res = preg_match_all(
+    						"/([^\.]*\.)/",
+                            $data,
+                            $match,
+                            PREG_PATTERN_ORDER
+    					);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $last = $res - 1;
+
+    for ($i = 0; $i < $last ; $i++) {
+
+        $token = chop($match[0][$i], ".");
+
+        $res = check_dn_token($token);
+
+        if ($res == 0) {
+			return 0;
+		}
+    }
+
+
+    $res = preg_match(
+    					"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
+                        $match[0][$last],
+                        $last_match
+    				);
+
+    if ($res == 0) {
+
+		return 0;
+	}
+
+
+    return 1;
+}
+
+
+function check_dn_token ( $data ) {
+
+    $res = preg_match(
+    					"/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/",
+						$data,
+                        $match
+    				);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $res = preg_match("/\-\-/", $match[2], $minus_match);
+
+    //if ($res == 1) return 0;
+
+    return 1;
+}
 
 function update_reseller_props ( $reseller_id, $props ) {
 
@@ -2716,7 +2903,11 @@ SQL_QUERY;
     $message = preg_replace("/\{FROM_NAME\}/", $fromname, $message);
 
     $headers = "From: $from\r\n";
-    $headers .= "X-Mailer: VHCS Pro ".$cfg['Version']." tickets auto mailer";
+
+    $headers .= "MIME-Version: 1.0\r\n" .
+            	"Content-Type: text/plain; " .
+				"X-Mailer: VHCS $Version Tickets Mailer";
+
     $mail_result = mail($to, $subject, $message, $headers);
     $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
     write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");

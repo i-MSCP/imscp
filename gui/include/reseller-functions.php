@@ -876,14 +876,13 @@ function check_ruser_data (&$tpl, $NoPass)
 
     if ($rau_error == '_off_') {
 
-        $tpl -> assign('MESSAGE', '');
-
 		// send data throught session
+        $_SESSION['Message'] = NULL;
+
 		return true;
 
     } else {
-		// Message is not displayed => to fix!
-        $tpl -> assign('MESSAGE', $rau_error);
+        $_SESSION['Message'] = $rau_error;
 
         return false;
     }
@@ -1940,7 +1939,7 @@ SQL_QUERY;
 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id)
 {
-	global $sql;
+	global $sql, $Version;
 
 	    $query = <<<SQL_QUERY
         select
@@ -2030,7 +2029,9 @@ MSG;
 
     $headers = "From: $from\r\n";
 
-    $headers .= "X-Mailer: VHCS Pro auto mailer";
+    $headers .= "MIME-Version: 1.0\r\n" .
+            	"Content-Type: text/plain; " .
+				"X-Mailer: VHCS $Version Service Mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 
@@ -2038,14 +2039,16 @@ MSG;
 
 	// lets send mail to the reseller => new order
 
-	$subject = "[VHCS OrderPanel] - You have new order";
-	$message = "Dear ".$admin_fname." ".$admin_lname.", \r\n\r\n";
-	$message .= "You have new order from ".$to."\r\n";
+	$subject = "[VHCS $Version] - You have new order";
+	$message = "Dear ".$admin_fname." ".$admin_lname.", \n\n";
+	$message .= "You have new order from ".$to."\n";
 	$message .= "Please login into your VHCS control panel for more details";
 
 	$headers = "From: $to\r\n";
 
-    $headers .= "X-Mailer: VHCS Pro auto mailer";
+    $headers .= "MIME-Version: 1.0 \r\n" .
+            	"Content-Type: text/plain; " .
+				"X-Mailer: VHCS $Version Service Mailer";
 
     $mail_result = mail($from, $subject, $message, $headers);
 
