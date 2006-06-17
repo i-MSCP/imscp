@@ -333,10 +333,6 @@ SQL_QUERY;
     set_page_message(tr('Mail account already exists!'));
     return;
   }
-  if (chk_username($mail_acc)) {
-    set_page_message( tr("Incorrect username range or syntax!"));
-    return;
-  }
 
   check_for_lock_file();
 
