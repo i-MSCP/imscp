@@ -1100,3 +1100,6 @@ Other settings = Andere Einstellungen
 Default language = Standardsprache
 Supportsystem = Kundenhilfssystem
 Domains per page = Domains pro Seite
+Mailformat of an adress in your forward list is incorrect! = Ein Eintrag in ihrer Weiterleitungsliste ist keine gültige Emailadresse
+Mail forward list empty! = Ihre Weiterleitungsliste ist leer!
+Invalid Mail Localpart Format used! = Die eingegeben Emailadresse ist ungültig oder nicht unterstützt!

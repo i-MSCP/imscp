@@ -266,7 +266,7 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mailformat of an adress in your forward list is incorrect! : ".$value));
+          set_page_message(tr("Mailformat of an adress in your forward list is incorrect!"));
           return;
         } else if ($value === '') {
           set_page_message(tr("Mail forward list empty!"));
@@ -285,7 +285,7 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mailformat of an adress in your forward list is incorrect! : ".$value));
+          set_page_message(tr("Mailformat of an adress in your forward list is incorrect!"));
           return;
         } else if ($value === '') {
           set_page_message(tr("Mail forward list empty!"));
@@ -306,7 +306,7 @@ SQL_QUERY;
         $value = trim($value);
         if (chk_email($value) > 0 && $value !== '') {
           /* ERR .. strange :) not email in this line - warrning */
-          set_page_message(tr("Mailformat of an adress in your forward list is incorrect! : ".$value));
+          set_page_message(tr("Mailformat of an adress in your forward list is incorrect!"));
 
           return;
         }  else if ($value === '') {
