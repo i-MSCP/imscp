@@ -106,6 +106,15 @@ return $textende;
 	
 }
 
+function vhcs_password_check ( $data, $num) {
+
+    $len = strlen($data);
+
+    if (5 >= $len || $len > $num ) return false;
+
+    return true;
+}
+
 /* check for valid username  */
 function chk_username( $username ) {
 
@@ -162,9 +171,10 @@ function vhcs_username_check ( $data, $num ) {
 	return 1;
 }
 
+
 function vhcs_email_check($email, $num) {
   // RegEx begin
-  
+
   $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
   $nqtext        = "[^\\\\$nonascii\015\012\"]";
@@ -181,31 +191,13 @@ function vhcs_email_check($email, $num) {
 
   $regex         = "$user_part\@$domain_part";
   // RegEx end
-  
+
   if (!preg_match("/^$regex$/",$email)) return 0;
-  	
+
   if (strlen($email) > $num) return 0;
-  	
+
   return 1;
-  
-}
 
-function vhcs_check_local_part($localpart) {
-	// RegEx begin
-  
-  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
-
-  $nqtext        = "[^\\\\$nonascii\015\012\"]";
-  $qchar         = "\\\\[^$nonascii]";
-
-  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
-  $user_part     = "(?:$normuser|$quotedstring)";
-
-  if (!preg_match("/^$user_part$/",$localpart)) return 0;
-  	
-  return 1;
-  
 }
 
 
@@ -284,4 +276,288 @@ function check_dn_token ( $data ) {
     //if ($res == 1) return 0;
 
     return 1;
+}
+
+	/**********************************************************************
+	*
+ 	*Description:
+	*
+	*	Function for checking vhcs 'username' field syntax. This function
+	*	will also be used in vhcs_email_check() function;
+	*
+	*Input:
+	*
+	*	$data - vhcs 'username' field data;
+	*
+	*	$num - username maximum length;
+	*
+	*Output:
+	*
+	*	0 - incorrect syntax;
+	*
+	*	1 - correct syntax;
+	*
+	**********************************************************************/
+	function vhcs_name_check ( $data, $num )
+	{
+
+		$res = preg_match(
+							"/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/",
+							$data,
+							$match
+						);
+
+		if ($res == 0) return 0;
+
+		$res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data, $match);
+
+		if ($res == 1) return 0;
+
+		$res = preg_match("/(\.\-)|(\-\.)/", $data, $match);
+
+		if ($res == 1) return 0;
+
+		$res = preg_match("/(\.\_)|(\_\.)/", $data, $match);
+
+		if ($res == 1) return 0;
+
+		$res = preg_match("/(\-\_)|(\_\-)/", $data, $match);
+
+		if ($res == 1) return 0;
+
+		$len = strlen($data);
+
+		if ( $len > $num ) return 0;
+
+		return 1;
+	}// End of vhcs_name_check()
+
+
+
+
+	/**********************************************************************
+	*
+	*Description:
+	*
+	*	Function for checking vhcs limits. The correct values for this
+	*	limits are in ranges -1, 0, [1, $num].
+	*
+	*Input:
+	*
+	*$data - vhcs 'limit' field data;
+	*
+	*Output:
+	*
+	*	0 - incorrect syntax (ranges);
+	*
+	*	1 - correct syntax (ranges);
+	*
+	**********************************************************************/
+	function vhcs_limit_check ( $data, $num )
+	{
+
+		$res = preg_match("/^(-1|0|[1-9][0-9]*)$/", $data, $match);
+
+		if ($res == 0) return 0;
+
+		if ($data > $num) return 0;
+
+		return 1;
+	}// End of vhcs_limit_check()
+
+	/**********************************************************************
+	*
+	* Description:
+	*
+ 	*Function for checking domain name tokens; Internel function, for>
+    * usage in vhcs_* functions;
+	* Input:
+	*
+	* $data - token data. Without '\n' at the end;
+	*
+	* Output:
+ 	*
+    * 0 - incorrect syntax;
+ 	*
+    * 1 - correct syntax;
+	**********************************************************************/
+	function check_dn_rsl_token ( $data ) {
+
+		$res = preg_match(
+							"/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/",
+							$data,
+							$match
+						);
+
+		if ($res == 0) return 0;
+
+		$res = preg_match("/\-\-/", $match[2], $minus_match);
+
+		if ($res == 1) return 0;
+
+		return 1;
+	}// End of check_dn_rsl_token()
+
+
+
+
+
+	/**********************************************************************
+	*
+	* Description:
+	*
+    *Function for checking VHCS domains syntax. Here domains are limited
+    *to {dname}.{ext} parts.
+	*
+	*Input:
+	*
+    * $data - vhcs domain data;
+	*
+	* Output:
+	*
+    * 0 - incorrect syntax;
+	*
+    * 1 - correct syntax;
+	**********************************************************************/
+	function vhcs_domain_check ( $data ) {
+
+		$res = rsl_full_domain_check( $data );
+
+		if ($res == 0) return 0;
+
+		$res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
+
+		if ($res <= 0) return 0;
+
+		return 1;
+
+	}// End of vhcs_domain_check()
+
+
+
+
+	/**********************************************************************
+	*Description:
+	*
+	*	Function for checking full domain names syntax. /In VHCS domains
+	*	are limited to domain and subdomain parts.
+	*
+	*Input:
+	*
+	*	$data - domain name data;
+	*
+	*Output:
+	*
+	*	0 - incorrect syntax;
+	*
+	*	1 - correct syntax;
+	*
+	**********************************************************************/
+
+	/* check for valid domain name  */
+function chk_dname( $dname ) {
+
+    if ( vhcs_domain_check($dname) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok */
+    return 0;
+
+}
+
+
+/* check for valid url addres  */
+function chk_url( $url ) {
+
+    if ( vhcs_url_check($url) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+
+function vhcs_url_check ( $data ) {
+
+    $data = "$data\n";
+
+    $res = preg_match(
+						"/^(http|https|ftp)\:\/\/[^\n]+\n$/",
+						$data,
+						$match
+					);
+
+    if ($res == 0) return 0;
+
+    return 1;
+}
+
+
+
+function vhcs_mountpt_check ( $data, $num ) {
+
+	$res = !preg_match("/^\/(.*)$/", $data, $match);
+
+	if ($res == 1) return 0;
+
+    $res = preg_match("/^\/htdocs$/", $data, $match);
+
+    if ($res == 1) return 0;
+
+	 $res = preg_match("/^\/backups$/", $data, $match);
+
+    if ($res == 1) return 0;
+
+	$res = preg_match("/^\/cgi-bin$/", $data, $match);
+
+    if ($res == 1) return 0;
+
+	$res = preg_match("/^\/errors$/", $data, $match);
+
+    if ($res == 1) return 0;
+
+	$res = preg_match("/^\/logs$/", $data, $match);
+
+    if ($res == 1) return 0;
+
+	$res = explode("/", trim($data));
+	$cnt_res = count($res);
+	if ($cnt_res > 2) return 0;
+
+	$res = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $count = $res;
+
+    for ($i = 0; $i < $count; $i++) {
+
+        $token = substr($match[0][$i], 1);
+
+        $res = vhcs_username_check($token, $num);
+
+        if ($res == 0) {
+			return 0;
+		}
+    }
+
+    return 1;
+}
+
+
+/* check for valid mount point  */
+function chk_mountp( $mountp ) {
+
+    if ( vhcs_mountpt_check($mountp,50) == 0) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
 }
