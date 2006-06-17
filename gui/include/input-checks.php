@@ -202,7 +202,7 @@ function vhcs_check_local_part($localpart) {
   $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
   $user_part     = "(?:$normuser|$quotedstring)";
 
-  if (!preg_match("/^$regex$/",$localpart)) return 0;
+  if (!preg_match("/^$user_part$/",$localpart)) return 0;
   	
   return 1;
   
