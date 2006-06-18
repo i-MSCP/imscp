@@ -246,8 +246,8 @@ SQL_QUERY;
 
             $tpl -> assign(
                             array(
-                                    'SUBJECT' => stripslashes(wordwrap($rs -> fields['ticket_subject'])),
-									'MESSAGE' => $rs -> fields['ticket_message'],
+                                    'SUBJECT' => clean_html(stripslashes(wordwrap($rs -> fields['ticket_subject']))),
+									'MESSAGE' => clean_html($rs -> fields['ticket_message']),
 									'ID' => $ticket_id,
 									'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'
 

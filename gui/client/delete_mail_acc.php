@@ -91,14 +91,12 @@ if ($num > 0) {
   die();
 }
 
+/* if we are locket wait to unlock */
+check_for_lock_file();
 
-global $cfg;
 $query = "UPDATE mail_users SET status='".$cfg['ITEM_DELETE_STATUS']."' WHERE mail_id = ?";
 exec_query($sql, $query, array($delete_id));
 
-/* if we are locket wait to unlock */
-
-check_for_lock_file();
 send_request();
 $admin_login = decode_idna($_SESSION['user_logged']);
 write_log("$admin_login: delete mail account: ".$data['mail_acc']."@".$dmn_name);

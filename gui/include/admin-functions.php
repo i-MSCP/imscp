@@ -1626,7 +1626,7 @@ AUTO_LOG_MSG;
 
 function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype) {
 
-    global $sql;
+    global $sql,$cfg;
 
     $admin_login = $_SESSION['user_logged'];
 
@@ -1722,7 +1722,7 @@ MSG;
 
     $headers .= "MIME-Version: 1.0\r\n" .
             	"Content-Type: text/plain; " .
-				"X-Mailer: VHCS $Version Service Mailer";
+				"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 
@@ -2678,10 +2678,10 @@ SQL_QUERY;
         FROM
             admin
         WHERE
-            admin_id = '$from_id'
+            admin_id = ?
 SQL_QUERY;
 
-    $res = execute_query($sql, $query);
+    $res = exec_query($sql, $query, $from_id);
     $from_email = $res -> fields['email'];
     $from_fname = $res -> fields['fname'];
     $from_lname = $res -> fields['lname'];
@@ -2714,7 +2714,7 @@ SQL_QUERY;
 
     $headers .= "MIME-Version: 1.0\r\n" .
             	"Content-Type: text/plain; " .
-				"X-Mailer: VHCS $Version Tickets Mailer";
+				"X-Mailer: VHCS ".$cfg['Version']." Tickets Mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
     $mail_status = ($mail_result) ? 'OK' : 'NOT OK';

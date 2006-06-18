@@ -97,7 +97,7 @@ if ($data['ftpnum'] > 0) {
 $res = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($del_id));
 $dat = $res->FetchRow();
 
-exec_query($sql, "update subdomain set subdomain_status='".STATUS_TODELETE."' where subdomain_id=?", array($del_id));
+exec_query($sql, "update subdomain set subdomain_status='".$cfg[ITEM_DELETE_STATUS]."' where subdomain_id=?", array($del_id));
 send_request();
 $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: delete subdomain: ".$dat['subdomain_name']);

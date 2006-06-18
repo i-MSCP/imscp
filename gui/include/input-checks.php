@@ -200,7 +200,7 @@ function vhcs_email_check($email, $num) {
 
 }
 
-function vhcs_check_local_part($email, $num) {
+function vhcs_check_local_part($email, $num="50") {
   // RegEx begin
 
   $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed

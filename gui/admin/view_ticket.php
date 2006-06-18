@@ -73,8 +73,8 @@ SQL_QUERY;
 
 
 		$ticket_urgency = $rs -> fields['ticket_urgency'];
-		$ticket_subject = stripslashes($rs -> fields['ticket_subject']);
-		$ticket_status = $rs -> fields['ticket_status'];
+		$ticket_subject = clean_hmtl(stripslashes($rs -> fields['ticket_subject']));
+		$ticket_status = clean_html($rs -> fields['ticket_status']);
 
 		if ($ticket_status == 0){
 				$tr_action = tr("Open ticket");
@@ -128,7 +128,7 @@ SQL_QUERY;
 									'ACTION' => $action,
                                     'DATE' => date($date_formt, $rs -> fields['ticket_date']),
                                     'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50" , "<br>\n")),
+									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n", 1)),
 									'ID' => $rs -> fields['ticket_id'],
 
 								)
@@ -166,8 +166,8 @@ SQL_QUERY;
 
 			$ticket_id = $rs -> fields['ticket_id'];
 			$ticket_subject = $rs -> fields['ticket_subject'];
-            $ticket_date = $rs -> fields['ticket_date'];
-            $ticket_message = $rs -> fields['ticket_message'];
+            $ticket_date = clean_html($rs -> fields['ticket_date']);
+            $ticket_message = clean_html($rs -> fields['ticket_message']);
 
 
 			global $cfg;
@@ -175,7 +175,7 @@ SQL_QUERY;
 			$tpl -> assign(
                             array(
                                     'DATE' => date($date_formt, $rs -> fields['ticket_date']),
-									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50" , "<br>\n")),
+									'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n", 1)),
 									//'ID' => $rs -> fields['ticket_reply'],
                                  )
                           );
@@ -285,7 +285,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id)
 
     $subj = clean_html($_POST['subject']);
 
-    $user_message = clean_html($_POST["user_message"]);
+    $user_message = clean_html($_POST["user_message"]));
 
 	$ticket_status = 1;
 

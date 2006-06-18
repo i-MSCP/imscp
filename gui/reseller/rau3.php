@@ -89,6 +89,8 @@ if (isset($_POST['uaction']) && ("rau3_nxt" === $_POST['uaction']) && !isset($_S
   if(check_ruser_data($tpl, '_no_')) {
     add_user_data($_SESSION['user_id']);
   }
+  set_page_message($_SESSION['Message']);
+  unset($_SESSION['Message']);
 } else {
 	unset($_SESSION['step_two_data']);
 	gen_empty_data();

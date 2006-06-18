@@ -89,7 +89,7 @@ SQL_QUERY;
                          'ACTION' => $action,
                          'DATE' => date($date_formt, $rs -> fields['ticket_date']),
                          'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50", "<br> \n")),
+                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n", 1)),
                          'ID' => $rs -> fields['ticket_id']));
 
     $tpl -> parse('TICKETS_ITEM', '.tickets_item');
@@ -122,12 +122,12 @@ SQL_QUERY;
     $ticket_id = $rs -> fields['ticket_id'];
     $ticket_subject = $rs -> fields['ticket_subject'];
     $ticket_date = $rs -> fields['ticket_date'];
-    $ticket_message = $rs -> fields['ticket_message'];
+    $ticket_message = clean_html($rs -> fields['ticket_message']);
 
     global $cfg;
     $date_formt = $cfg['DATE_FORMAT'];
     $tpl -> assign(array('DATE' => date($date_formt, $rs -> fields['ticket_date']),
-                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], "50", "<br>\n")),
+                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n", 1)),
                          //'ID' => $rs -> fields['ticket_reply'],
                          ));
     get_ticket_from($tpl, $sql, $ticket_id);
@@ -154,7 +154,7 @@ SQL_QUERY;
   $ticket_from = $rs -> fields['ticket_from'];
   $ticket_to = $rs -> fields['ticket_to'];
   $ticket_status = $rs -> fields['ticket_status'];
-  $ticket_reply = $rs -> fields['ticket_reply'];
+  $ticket_reply = clean_html($rs -> fields['ticket_reply']);
 
   $query = <<<SQL_QUERY
         select
@@ -205,13 +205,10 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id)
     set_page_message(tr('Please type your message!'));
     return;
   }
-    
-  
 
   $ticket_date = time();
   $subj = clean_html($_POST['subject']);
   $user_message = clean_html($_POST["user_message"]);
-  
   $ticket_status = 4;
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];
