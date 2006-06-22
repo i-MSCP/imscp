@@ -1429,8 +1429,7 @@ SQL_QUERY;
 								
 		}
   		  		
-	}
-  		
+	  		
   
   list($php_new, $cgi_new, $sub_new,
        $als_new, $mail_new, $ftp_new,
