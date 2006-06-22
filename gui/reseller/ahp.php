@@ -295,28 +295,28 @@ SQL_QUERY;
 
   //check this plan 
   
+   $record_id = $sql -> Insert_ID();
+  
   	$query = <<<SQL_QUERY
   		select *
   			from hosting_plans
   		where
   			reseller_id = ?
   		and
-  			props = ?	
+  			id = ?	
   		Limit 1 
 SQL_QUERY;
   		
   	//i know, props is not reliable enough - so if we've 2 hp with same props we got a problem - but instead
   	//of checking the name - this one works (name checking not, because we've no clue about escaped chars etc)
   	
-  	$res = exec_query($sql, $query, array($admin_id, $hp_props));
+  	$res = exec_query($sql, $query, array($admin_id, $record_id));
   	
   	$data = $res -> FetchRow();
 	
   	$err_msg = '_off_';
 
-  	$hpid = $data[id];
-  	
-  	reseller_limits_check($sql,$err_msg,$admin_id,$hpid);
+  	reseller_limits_check($sql,$err_msg,$admin_id,$record_id);
   	
   	if ($err_msg != '_off_') {
 
@@ -333,6 +333,8 @@ SQL_QUERY;
 SQL_QUERY;
   		
   		$res = exec_query($sql, $query, $admin_id, $hpid);
+  		
+  		print $sql -> ErrorMsg();
   		
   		set_page_message($err_msg);
         return;
