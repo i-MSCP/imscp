@@ -274,6 +274,9 @@ function save_data_to_db(&$tpl, $admin_id)
     //$tpl -> parse('AHP_MESSAGE', 'ahp_message');
 
   } else {
+  	
+  	
+  	
     $hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
 	  $query = <<<SQL_QUERY
         insert into
@@ -290,11 +293,52 @@ function save_data_to_db(&$tpl, $admin_id)
 SQL_QUERY;
   $res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
+  //check this plan 
+  
+  	$query = <<<SQL_QUERY
+  		select id
+  			from hosting_plans
+  		where
+  			reseller_id = ?
+  		and
+  			name = ? 	
+  		Limit 1 
+SQL_QUERY;
+  		
+  	$res = exec_query($sql, $query, array($admin_id, $hp_name));
+  	
+  	$data = $res -> FetchRow();
 	
-	
-	$_SESSION['hp_added'] = '_yes_';
-    Header("Location: hp.php");
-    die();
+  	$err_msg = '_off_';
+
+  	reseller_limits_check($sql,$err_msg,$admin_id,$data['id']);
+  	
+  	if ($err_msg != '_off_') {
+
+  		//i know its crap to first insert and then delete in one go just to check data intermediate - but here we go :) 
+  		//<hoax on> in 3.0 everything will be better </hoax off>
+  		
+  		$query = <<<SQL_QUERY
+  			delete from 
+  				hosting_plans
+  			where 
+  				reseller_id = ?
+  			and 
+  				id = ?
+SQL_QUERY;
+  		
+  		$res = exec_query($sql, $query, $admin_id, $data['id']);
+  		
+  		set_page_message($err_msg);
+        return;
+  	
+  	} else {
+  	
+  		$_SESSION['hp_added'] = '_yes_';
+    	Header("Location: hp.php");
+    	die();
+    
+  	}
   }
 } //End of save_data_to_db()
 

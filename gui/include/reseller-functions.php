@@ -949,7 +949,7 @@ SQL_QUERY;
       return true;
    }
 
-}// End of vhcs_domain_exists()
+} // End of vhcs_domain_exists()
 
 
 function gen_manage_domain_query (&$search_query,
@@ -1470,7 +1470,7 @@ SQL_QUERY;
         }
     }
 
-  /*
+  
     if ($als_max != 0) {
         if ($als_new != -1) {
             if ($als_new == 0) {
@@ -1482,7 +1482,7 @@ SQL_QUERY;
             }
         }
     }
-	*/
+	
     if ($mail_max != 0) {
         if ($mail_new == 0) {
             $err_msg = tr('You have mail account limit!<br>You can not add user with unlimited mail accunt number!');
