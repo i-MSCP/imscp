@@ -1411,17 +1411,17 @@ SQL_QUERY;
     		$props = $data['props'];
   		}
   	} else {
-  		//we want to check before inserting
+  		//we want to check _before_ inserting
   		
-  		if ($newprops != "") {
+  		if (empty($newprops)) {
   			
-  		$props = $newprops;	
-  			
-		} else {
-						
-		        $err_msg = tr('no Valid Hostingplan Limits submitted'.$newprops);
+		        $err_msg = tr('no Valid Hostingplan Limits :'.$newprops.' submitted');
                 return;	
-			
+  		
+		} else {
+  			
+  			$props = $newprops;	
+								
 		}
   		  		
 	}
