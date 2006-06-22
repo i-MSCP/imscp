@@ -279,6 +279,7 @@ function save_data_to_db(&$tpl, $admin_id)
   	
   	$err_msg = '_off_';
   	
+  	//this id is just for fake and is not used in reseller_limits_check.
   	$hpid=99999999999999999999999999;
   	
   	reseller_limits_check($sql,$err_msg,$admin_id,$hpid,$hp_props);
