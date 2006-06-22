@@ -325,7 +325,7 @@ function check_data_iscorrect(&$tpl)
 // Add new host plan to DB
 function save_data_to_db()
 {
-  global $sql;
+  global $sql, $tpl;
   global $hp_name, $hp_php, $hp_cgi;
   global $hp_sub, $hp_als, $hp_mail;
   global $hp_ftp, $hp_sql_db, $hp_sql_user;
@@ -350,8 +350,7 @@ function save_data_to_db()
   	if ($err_msg != '_off_') {
   		
   		set_page_message($err_msg);
-  		Header("Location: ehp.php?hpid=$hpid");
-  		
+  		restore_form($tpl, $sql);
   		
   	} else {
 		
