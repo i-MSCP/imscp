@@ -301,11 +301,14 @@ SQL_QUERY;
   		where
   			reseller_id = ?
   		and
-  			name = ? 	
+  			props = ?	
   		Limit 1 
 SQL_QUERY;
   		
-  	$res = exec_query($sql, $query, array($admin_id, $hp_name));
+  	//i know, props is not reliable enough - so if we've 2 hp with same props we got a problem - but instead
+  	//of checking the name - this one works (name checking not, because we've no clue about escaped chars etc)
+  	
+  	$res = exec_query($sql, $query, array($admin_id, $hp_props));
   	
   	$data = $res -> FetchRow();
 	
