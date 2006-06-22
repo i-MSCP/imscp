@@ -1388,7 +1388,7 @@ SQL_QUERY;
 
 }
 
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $precheck = false, $newprops = "no_probs" )
+function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $precheck = false, $newprops )
 {
 
  	if ($precheck == false) {
