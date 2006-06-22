@@ -375,7 +375,7 @@ SQL_QUERY;
 										htmlspecialchars($currency, ENT_QUOTES, "UTF-8"), 
 										htmlspecialchars($payment, ENT_QUOTES, "UTF-8"), $status, $hpid));
 
-   		$_SESSION['hp_added'] = '_yes_';
+   		$_SESSION['hp_updated'] = '_yes_';
     	Header("Location: hp.php");
     	die();
     
