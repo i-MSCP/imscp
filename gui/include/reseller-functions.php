@@ -1420,7 +1420,7 @@ SQL_QUERY;
 		} else {
 				print $newprops;
 			
-		        $err_msg = tr('no Valid Hostingplan Limits submitted');
+		        $err_msg = tr('no Valid Hostingplan Limits submitted'.$newprops);
                 return;	
 			
 		}
