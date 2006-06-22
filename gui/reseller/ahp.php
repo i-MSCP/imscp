@@ -296,7 +296,7 @@ SQL_QUERY;
   //check this plan 
   
   	$query = <<<SQL_QUERY
-  		select id
+  		select *
   			from hosting_plans
   		where
   			reseller_id = ?
@@ -311,7 +311,9 @@ SQL_QUERY;
 	
   	$err_msg = '_off_';
 
-  	reseller_limits_check($sql,$err_msg,$admin_id,$data['id']);
+  	$hpid = $data['id'];
+  	
+  	reseller_limits_check($sql,$err_msg,$admin_id,$hpid);
   	
   	if ($err_msg != '_off_') {
 
@@ -327,7 +329,7 @@ SQL_QUERY;
   				id = ?
 SQL_QUERY;
   		
-  		$res = exec_query($sql, $query, $admin_id, $data['id']);
+  		$res = exec_query($sql, $query, $admin_id, $hpid);
   		
   		set_page_message($err_msg);
         return;
