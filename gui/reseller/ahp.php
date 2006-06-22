@@ -332,7 +332,7 @@ SQL_QUERY;
   				id = ?
 SQL_QUERY;
   		
-  		$res = exec_query($sql, $query, $admin_id, $hpid);
+  		$res = exec_query($sql, $query, $admin_id, $record_id);
   		
   		print $sql -> ErrorMsg();
   		
