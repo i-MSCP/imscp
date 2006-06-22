@@ -1388,7 +1388,7 @@ SQL_QUERY;
 
 }
 
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $precheck = false, $newprops = "" )
+function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $precheck = false, $newprops = "no_probs" )
 {
 
  	if ($precheck == false) {
@@ -1413,7 +1413,7 @@ SQL_QUERY;
   	} else {
   		//we want to check _before_ inserting
   		
-  		if (empty($newprops)) {
+  		if ($newprops=="no_probs") {
   				
   				//try to use them from our session
   				if (isset($_SESSION["ch_hpprops"])) {
