@@ -349,7 +349,7 @@ function save_data_to_db()
   	
   	$pre="true";
   	
-  	reseller_limits_check($sql,$err_msg,$admin_id,$hp_props,$true);
+  	reseller_limits_check($sql,$err_msg,$admin_id,$hp_props,$pre);
   	
   	if ($err_msg != '_off_') {
   		
