@@ -275,9 +275,19 @@ function save_data_to_db(&$tpl, $admin_id)
 
   } else {
   	
+  	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
   	
+  	$err_msg = '_off_';
   	
-    $hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
+  	reseller_limits_check($sql,$err_msg,$admin_id,true,$hp_props);
+  	
+  	if ($err_msg != '_off_') {
+  		
+  		set_page_message($err_msg);
+        return;
+  		
+  	} else {
+    
 	  $query = <<<SQL_QUERY
         insert into
             hosting_plans(reseller_id,
@@ -293,60 +303,13 @@ function save_data_to_db(&$tpl, $admin_id)
 SQL_QUERY;
   $res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
-  //check this plan 
-  
-   $record_id = $sql -> Insert_ID();
-  
-  	$query = <<<SQL_QUERY
-  		select *
-  			from hosting_plans
-  		where
-  			reseller_id = ?
-  		and
-  			id = ?	
-  		Limit 1 
-SQL_QUERY;
-  		
-  	//i know, props is not reliable enough - so if we've 2 hp with same props we got a problem - but instead
-  	//of checking the name - this one works (name checking not, because we've no clue about escaped chars etc)
-  	
-  	$res = exec_query($sql, $query, array($admin_id, $record_id));
-  	
-  	$data = $res -> FetchRow();
-	
-  	$err_msg = '_off_';
-
-  	reseller_limits_check($sql,$err_msg,$admin_id,$record_id);
-  	
-  	if ($err_msg != '_off_') {
-
-  		//i know its crap to first insert and then delete in one go just to check data intermediate - but here we go :) 
-  		//<hoax on> in 3.0 everything will be better </hoax off>
-  		
-  		$query = <<<SQL_QUERY
-  			delete from 
-  				hosting_plans
-  			where 
-  				reseller_id = ?
-  			and 
-  				id = ?
-SQL_QUERY;
-  		
-  		$res = exec_query($sql, $query, array($admin_id, $record_id));
-  		
-  		print $sql -> ErrorMsg();
-  		
-  		set_page_message($err_msg);
-        return;
-  	
-  	} else {
-  	
   		$_SESSION['hp_added'] = '_yes_';
     	Header("Location: hp.php");
     	die();
-    
+  
+  
   	}
-  }
+  } 
 } //End of save_data_to_db()
 
 ?>

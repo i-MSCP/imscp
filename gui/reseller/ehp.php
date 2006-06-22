@@ -340,8 +340,19 @@ function save_data_to_db()
 	$status = $_POST['status'];
 	
 	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
-
-  $query = <<<SQL_QUERY
+  	  	  	
+  	$err_msg = '_off_';
+  	
+  	reseller_limits_check($sql,$err_msg,$admin_id,true,$hp_props);
+  	
+  	if ($err_msg != '_off_') {
+  		
+  		set_page_message($err_msg);
+        return;
+  		
+  	} else {
+		
+	$query = <<<SQL_QUERY
         update
             hosting_plans
         set
@@ -361,9 +372,13 @@ SQL_QUERY;
 										$hp_props, $price, $setup_fee, 
 										htmlspecialchars($currency, ENT_QUOTES, "UTF-8"), 
 										htmlspecialchars($payment, ENT_QUOTES, "UTF-8"), $status, $hpid));
-  $_SESSION['hp_updated'] = "_yes_";
-  Header("Location: hp.php");
-  die();
+
+   		$_SESSION['hp_added'] = '_yes_';
+    	Header("Location: hp.php");
+    	die();
+    
+  	}										
+
 } //End of save_data_to_db()
 
 
