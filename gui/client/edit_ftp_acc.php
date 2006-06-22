@@ -67,9 +67,9 @@ SQL_QUERY;
                        'OTHER_DIR' => $oins));
 }
 
-function update_ftp_account($sql, $ftp_acc)
+function update_ftp_account(&$sql, $ftp_acc)
 {
-  global $cfg;
+  global $cfg, $ftp_acc;
   global $other_dir;
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
@@ -111,11 +111,11 @@ SQL_QUERY;
                     where
                         userid = ?
 SQL_QUERY;
-        $rs = exec_query($sql, $query, array($pass, $ftp_acc));
+        $rs = exec_query(&$sql, $query, array($pass, $ftp_acc));
 
       }
 
-      write_log($_SESSION['user_logged'].": update FTP  account data");
+      write_log($_SESSION['user_logged'].": updated FTP  ".$ftp_acc." account data");
       set_page_message(tr('FTP account data updated!'));
       user_goto('ftp_accounts.php');
     } else {
