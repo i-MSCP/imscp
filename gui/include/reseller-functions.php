@@ -1388,10 +1388,10 @@ SQL_QUERY;
 
 }
 
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops = "" ,$precheck = false )
+function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops )
 {
 
- 	if ($precheck == false) {
+ 	if (empty($newprops)) {
 	//this hosting plan exists
 	
   		if (isset($_SESSION["ch_hpprops"])) {
@@ -1412,21 +1412,18 @@ SQL_QUERY;
   		}
   	} else {
   		//we want to check _before_ inserting
-  		
-  		if (empty($newprops)) {
-  				
-  				//try to use them from our session
-  				if (isset($_SESSION["ch_hpprops"])) {
 
-  					$props = $_SESSION["ch_hpprops"];
+		//try to use them from our session
+			if (isset($_SESSION["ch_hpprops"])) {
+
+				$props = $_SESSION["ch_hpprops"];
   				
-  				} else {
+			} else {
   				
 		        $err_msg = tr('no Valid Hostingplan Limits :'.$newprops.' submitted');
                 return;	
   				
-  				}
-		} else {
+			}
   			
   			$props = $newprops;	
 								
