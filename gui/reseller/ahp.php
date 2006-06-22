@@ -279,6 +279,8 @@ function save_data_to_db(&$tpl, $admin_id)
   	
   	$err_msg = '_off_';
   	
+  	$hpid=99999999999999999999999999;
+  	
   	reseller_limits_check($sql,$err_msg,$admin_id,$hpid,$hp_props);
   	
   	if ($err_msg != '_off_') {
@@ -304,7 +306,7 @@ SQL_QUERY;
   $res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
   		$_SESSION['hp_added'] = '_yes_';
-    	Header("Location: hp.php");
+    	Header("Location: ehp.php");
     	die();
   
   
