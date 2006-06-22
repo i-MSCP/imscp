@@ -1413,19 +1413,7 @@ SQL_QUERY;
   	} else {
   		//we want to check _before_ inserting
 
-		//try to use them from our session
-			if (isset($_SESSION["ch_hpprops"])) {
-
-				$props = $_SESSION["ch_hpprops"];
-  				
-			} else {
-  				
-		        $err_msg = tr('no Valid Hostingplan Limits :'.$newprops.' submitted');
-                return;	
-  				
-			}
-  			
-  			$props = $newprops;	
+		$props = $newprops;	
 								
 		}
   		  		
