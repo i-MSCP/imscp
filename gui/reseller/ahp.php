@@ -314,7 +314,7 @@ SQL_QUERY;
 	
   	$err_msg = '_off_';
 
-  	$hpid = $data['id'];
+  	$hpid = $data[id];
   	
   	reseller_limits_check($sql,$err_msg,$admin_id,$hpid);
   	
