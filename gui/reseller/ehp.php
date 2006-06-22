@@ -350,7 +350,6 @@ function save_data_to_db()
   	if ($err_msg != '_off_') {
   		
   		set_page_message($err_msg);
-        return;
   		
   	} else {
 		
