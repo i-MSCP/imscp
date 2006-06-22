@@ -343,6 +343,8 @@ function save_data_to_db()
   	  	  	
   	$err_msg = '_off_';
   	
+  	$admin_id = $_SESSION['user_id'];
+  	
   	reseller_limits_check($sql,$err_msg,$admin_id,true,$hp_props);
   	
   	if ($err_msg != '_off_') {
