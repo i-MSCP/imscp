@@ -1388,7 +1388,7 @@ SQL_QUERY;
 
 }
 
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $precheck = false, $newprops = false )
+function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $precheck = false, $newprops = "" )
 {
 
  	if ($precheck == false) {
@@ -1413,13 +1413,12 @@ SQL_QUERY;
   	} else {
   		//we want to check before inserting
   		
-  		if ($newprops != false) {
+  		if ($newprops != "") {
   			
   		$props = $newprops;	
   			
 		} else {
-				print $newprops;
-			
+						
 		        $err_msg = tr('no Valid Hostingplan Limits submitted'.$newprops);
                 return;	
 			
