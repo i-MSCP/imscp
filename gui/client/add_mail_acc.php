@@ -375,7 +375,7 @@ SQL_QUERY;
 
 function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
 {
-  if ($_POST['pass']!= "" && $_POST['pass_rep']!="")	
+  if ($_POST['mail_type'] != 'forward')	
   {
   	$pass = escapeshellcmd($_POST['pass']);
   	$pass_rep = escapeshellcmd($_POST['pass_rep']);
