@@ -65,8 +65,19 @@
 			  <!-- BDP: clear_log -->
               <table width="100%"  border="00" cellspacing="5" cellpadding="5">
                 <tr>
-                  <td width="20">&nbsp;</td>
-                  <td><input name="Submit" type="submit" class="button" value="  {TR_CLEAR_LOG}  "></td>
+                  <td width="80">&nbsp;</td>
+                  <td>{TR_CLEAR_LOG_MESSAGE}
+                  <select name="uaction_clear">
+                  	<option value="0" selected>{TR_CLEAR_LOG_EVERYTHING}</option>
+                  	<option value="2">{TR_CLEAR_LOG_LAST2}</option>
+                  	<option value="4">{TR_CLEAR_LOG_LAST4}</option>
+                  	<option value="12">{TR_CLEAR_LOG_LAST12}</option>
+                  	<option value="26">{TR_CLEAR_LOG_LAST26}</option>
+                  	<option value="52">{TR_CLEAR_LOG_LAST52}</option>
+                  </select>
+                            
+                  <input name="Submit" type="submit" class="button" value="  {TR_CLEAR_LOG}  ">
+                  </td>
                 </tr>
               </table>
                             <!-- EDP: clear_log -->
