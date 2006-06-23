@@ -68,7 +68,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id, $read_from_db)
 	if ($read_from_db) {
 		$query = <<<SQL_QUERY
 			SELECT
-				mail_auto_respond
+				mail_auto_respond, mail_acc
 			FROM
 				mail_users
 			WHERE
