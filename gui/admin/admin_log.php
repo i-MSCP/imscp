@@ -292,8 +292,8 @@ $tpl -> assign(
                        'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
                        'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
                        'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
-                       'TR_CLEAR_LOG_LAST26' => tr('older than last half year'),
-                       'TR_CLEAR_LOG_LAST52' => tr('older than last year'),
+                       'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
+                       'TR_CLEAR_LOG_LAST52' => tr('older than 12 months'),
                      )
               );
 
