@@ -201,13 +201,69 @@ function clear_log()
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 
-        $query = <<<SQL_QUERY
+    	switch ($_POST['uaction_clear']) {
+    		
+    		case 0: 
+    				$query = <<<SQL_QUERY
             delete
                 from
             log
 SQL_QUERY;
+       			break;
+   			
+    		case 2:
+    			//2 Weeks
+    			
+    				$query = <<<SQL_QUERY
+            delete
+                from
+            log
+            	where 
+            DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+           		<= log_time  
+           
+SQL_QUERY;
 
-        $rs = exec_query($sql, $query, array());
+    			break;
+    		
+    		case 4:
+    				$query = <<<SQL_QUERY
+            delete
+                from
+            log
+            	where 
+            DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+           		<= log_time         
+SQL_QUERY;
+  			
+    			break;
+    		case 26:
+    				$query = <<<SQL_QUERY
+            delete
+                from
+            log
+            	where 
+            DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+           		<= log_time         
+SQL_QUERY;
+    			break;
+    			
+    		case 52;
+    				$query = <<<SQL_QUERY
+            delete
+                from
+            log
+            	where 
+            DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+           		<= log_time         
+SQL_QUERY;
+    		
+    			break;
+				 	    		    		    		
+    	}
+        
+    	$rs = exec_query($sql, $query, array());	
+    	
     }
 }
 
