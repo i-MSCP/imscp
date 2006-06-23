@@ -220,7 +220,7 @@ SQL_QUERY;
             log
             	where 
             DATE_SUB(CURDATE(), INTERVAL 14 DAY)
-           		<= log_time  
+           		>= log_time  
            
 SQL_QUERY;
 
@@ -233,7 +233,7 @@ SQL_QUERY;
             log
             	where 
             DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-           		<= log_time         
+           		>= log_time         
 SQL_QUERY;
   			
     			break;
@@ -244,7 +244,7 @@ SQL_QUERY;
             log
             	where 
             DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-           		<= log_time         
+           		>= log_time         
 SQL_QUERY;
     			break;
     			
@@ -255,7 +255,7 @@ SQL_QUERY;
             log
             	where 
             DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-           		<= log_time         
+           		>= log_time         
 SQL_QUERY;
     		
     			break;
