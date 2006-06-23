@@ -287,11 +287,12 @@ $tpl -> assign(
                        'TR_CLEAR_LOG' => tr('Clear log'),
                        'TR_DATE' => tr('Date'),
                        'TR_MESSAGE' => tr('Message'),
-                       'TR_CLEAR_LOG_MESSAGE' => tr('Clear log'),
-                       'TR_CLEAR_LOG_EVERYTHING' => tr('delete everything'),
+                       'TR_CLEAR_LOG_MESSAGE' => tr('Delet from log:'),
+                       'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
                        'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
                        'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
-                       'TR_CLEAR_LOG_LAST26' => tr('older than last half yrar'),
+                       'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
+                       'TR_CLEAR_LOG_LAST26' => tr('older than last half year'),
                        'TR_CLEAR_LOG_LAST52' => tr('older than last year'),
                      )
               );
