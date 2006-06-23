@@ -414,7 +414,7 @@ function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
   }
 
   if ($_POST['mail_type'] === 'forward' && $_POST['forward_list'] === '') {
-    set_page_message(tr('Forward list is empty!'));
+    set_page_message(tr('Forward list is empty!').$_POST['mail_type'].$_POST['forward_list']);
     return;
   }
 
