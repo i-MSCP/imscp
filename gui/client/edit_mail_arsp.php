@@ -106,7 +106,10 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
 
     send_request();
-    write_log($_SESSION['user_logged'].": add mail autoresponder: ".$mail_name."@".$dmn_name);
+    
+    $mail = trans_mailid_to_mail(&$sql, $mail_id);
+    
+    write_log($_SESSION['user_logged'].": add mail autoresponder: ".$mail);
     set_page_message(tr('Mail account scheduler for modification!'));
     header("Location: email_accounts.php");
     exit(0);
