@@ -409,7 +409,7 @@ function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
   }
 
   if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] == 0) {
-    set_page_message(tr('Alias list is empty! You can not add mail accounts!'));
+    set_page_message(tr('Alias list is empty! You can not add mail accounts!').$_POST['als_id']);
     return;
   }
 
