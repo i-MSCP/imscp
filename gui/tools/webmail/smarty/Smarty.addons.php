@@ -117,6 +117,9 @@ function smarty_make_timestamp($string)
 	if(empty($string)) {
 		$string = "now";
 	}
+	else if(is_numeric($string)) {
+        return (int)$string;
+    }
     $time = strtotime($string);
     if (is_numeric($time) && $time != -1)
         return $time;
@@ -803,7 +806,7 @@ function smarty_func_counter($args, &$smarty_obj) {
         $printval[$id]=true;
     else
         $printval[$id]=$print;
-    
+
     if (!empty($assign)) {
         $printval[$id] = false;
         $smarty_obj->assign($assign, $count[$id]);
@@ -816,7 +819,7 @@ function smarty_func_counter($args, &$smarty_obj) {
         $skipval[$id] = $skip;
     else if (empty($skipval[$id]))
         $skipval[$id] = 1;
-    
+
     if (isset($direction))
         $dir[$id] = $direction;
     else if (!isset($dir[$id]))
@@ -826,7 +829,7 @@ function smarty_func_counter($args, &$smarty_obj) {
         $count[$id] -= $skipval[$id];
     else
         $count[$id] += $skipval[$id];
-    
+
     return true;
 }
 
@@ -842,13 +845,13 @@ function smarty_func_assign_debug_info($args, &$smarty_obj) {
         ksort($config_vars);
         $smarty_obj->assign("_debug_config_keys", array_keys($config_vars));
         $smarty_obj->assign("_debug_config_vals", array_values($config_vars));
-    }   
-    
+    }
+
     $included_templates = $smarty_obj->_smarty_debug_info;
-    
+
     $smarty_obj->assign("_debug_keys", array_keys($assigned_vars));
     $smarty_obj->assign("_debug_vals", array_values($assigned_vars));
-    
+
     $smarty_obj->assign("_debug_tpls", $included_templates);
     return true;
 }

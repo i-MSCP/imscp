@@ -43,7 +43,7 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 
 	$servicemode = $_POST['servicemode'];
 
-	$servicemode_message = $_POST['servicemode_message'];
+	$servicemode_message = clean_input($_POST['servicemode_message']);
 
 	setConfig_Value('SERVICEMODE', $servicemode);
 

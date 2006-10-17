@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # VHCS engine permissions setter v1.1;

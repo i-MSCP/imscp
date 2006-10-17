@@ -38,10 +38,6 @@ $tpl -> define_dynamic('mails_total', 'page');
 
 $tpl -> define_dynamic('no_mails', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-
-
 //
 // page functions.
 //

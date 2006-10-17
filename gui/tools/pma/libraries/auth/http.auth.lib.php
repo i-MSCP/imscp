@@ -1,5 +1,5 @@
 <?php
-/* $Id: http.auth.lib.php,v 2.14.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
+/* $Id: http.auth.lib.php,v 2.21 2006/06/21 16:08:59 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -29,11 +29,14 @@ function PMA_auth() {
     header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
     /* HTML header */
     $page_title = $GLOBALS['strAccessDenied'];
-    require('./libraries/header_meta_style.inc.php');
+    require './libraries/header_meta_style.inc.php';
     ?>
 </head>
 <body>
-<?php require('./libraries/header_custom.inc.php'); ?>
+<?php if (file_exists('./config.header.inc.php')) {
+          require('./config.header.inc.php');
+      } 
+ ?>
 
 <br /><br />
 <center>
@@ -42,7 +45,10 @@ function PMA_auth() {
 <br />
 <div class="warning"><?php echo $GLOBALS['strWrongUser']; ?></div>
 
-<?php require('./libraries/footer_custom.inc.php'); ?>
+<?php if (file_exists('./config.footer.inc.php')) {
+         require('./config.footer.inc.php');
+      }
+ ?>
 
 </body>
 </html>
@@ -113,7 +119,7 @@ function PMA_auth_check()
     // Decode possibly encoded information (used by IIS/CGI/FastCGI)
     if (strcmp(substr($PHP_AUTH_USER, 0, 6), 'Basic ') == 0) {
         $usr_pass = base64_decode(substr($PHP_AUTH_USER, 6));
-        if (!empty($usr_pass) && strpos($usr_pass, ':') !== FALSE) {
+        if (!empty($usr_pass) && strpos($usr_pass, ':') !== false) {
             list($PHP_AUTH_USER, $PHP_AUTH_PW) = explode(':', $usr_pass);
         }
         unset($usr_pass);
@@ -127,9 +133,9 @@ function PMA_auth_check()
 
     // Returns whether we get authentication settings or not
     if (empty($PHP_AUTH_USER)) {
-        return FALSE;
+        return false;
     } else {
-        return TRUE;
+        return true;
     }
 } // end of the 'PMA_auth_check()' function
 
@@ -169,7 +175,7 @@ function PMA_auth_set_user()
     $cfg['Server']['user']     = $PHP_AUTH_USER;
     $cfg['Server']['password'] = $PHP_AUTH_PW;
 
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth_set_user()' function
 
 
@@ -182,9 +188,15 @@ function PMA_auth_set_user()
  */
 function PMA_auth_fails()
 {
-    PMA_auth();
+    $error = PMA_DBI_getError();
+    if ($error && $GLOBALS['errno'] != 1045) {
+        PMA_sendHeaderLocation('error.php?error=' . urlencode($error));
+        exit;
+    } else {
+        PMA_auth();
+        return true;
+    }
 
-    return TRUE;
 } // end of the 'PMA_auth_fails()' function
 
 ?>

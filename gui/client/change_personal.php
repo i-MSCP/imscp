@@ -55,17 +55,17 @@ SQL_QUERY;
 
 function update_user_personal_data(&$sql, $user_id)
 {
-	$fname = htmlspecialchars($_POST['fname'], ENT_QUOTES, "UTF-8");
-	$lname = htmlspecialchars($_POST['lname'], ENT_QUOTES, "UTF-8");
-	$firm = htmlspecialchars($_POST['firm'], ENT_QUOTES, "UTF-8");
-	$zip = htmlspecialchars($_POST['zip'], ENT_QUOTES, "UTF-8");
-	$city = htmlspecialchars($_POST['city'], ENT_QUOTES, "UTF-8");
-	$country = htmlspecialchars($_POST['country'], ENT_QUOTES, "UTF-8");
-	$street1 = htmlspecialchars($_POST['street1'], ENT_QUOTES, "UTF-8");
-	$street2 = htmlspecialchars($_POST['street2'], ENT_QUOTES, "UTF-8");
-	$email = htmlspecialchars($_POST['email'], ENT_QUOTES, "UTF-8");
-	$phone = htmlspecialchars($_POST['phone'], ENT_QUOTES, "UTF-8");
-	$fax = htmlspecialchars($_POST['fax'], ENT_QUOTES, "UTF-8");
+	$fname 		= clean_input($_POST['fname']);
+	$lname 		= clean_input($_POST['lname']);
+	$firm 		= clean_input($_POST['firm']);
+	$zip 		= clean_input($_POST['zip']);
+	$city 		= clean_input($_POST['city']);
+	$country 	= clean_input($_POST['country']);
+	$street1 	= clean_input($_POST['street1']);
+	$street2 	= clean_input($_POST['street2']);
+	$email 		= clean_input($_POST['email']);
+	$phone 		= clean_input($_POST['phone']);
+	$fax 		= clean_input($_POST['fax']);
 
   $query = <<<SQL_QUERY
         update
@@ -100,9 +100,9 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/change_personal.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
-global $cfg;
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
+
 $tpl -> assign(array('TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('VHCS - Client/Change Personal Data'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),

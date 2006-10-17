@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.php,v 2.17.2.2 2006/03/04 12:41:28 lem9 Exp $ */
+/* $Id: import.php,v 2.23 2006/05/21 12:03:39 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Core script for import, this is just the glue around all other stuff */
@@ -10,12 +10,21 @@
 require_once('./libraries/common.lib.php');
 $js_to_run = 'functions.js';
 
+// default values
+$GLOBALS['reload'] = false;
+
 // Are we just executing plain query or sql file? (eg. non import, but query box/window run)
 if (!empty($sql_query)) {
     // run SQL query
     $import_text = $sql_query;
     $import_type = 'query';
     $format = 'sql';
+
+    // refresh left frame on changes in table or db structure
+    if (preg_match('/^(CREATE|ALTER|DROP)\s+(VIEW|TABLE|DATABASE|SCHEMA)\s+/i', $sql_query)) {
+        $GLOBALS['reload'] = true;
+    }
+
     unset($sql_query);
 } elseif (!empty($sql_localfile)) {
     // run SQL file on server
@@ -35,7 +44,7 @@ if (!empty($sql_query)) {
     $format = 'sql';
 }
 
-// If we didn't get any parameters, either user called this directly, or 
+// If we didn't get any parameters, either user called this directly, or
 // upload limit has been reached, let's assume the second possibility.
 if ($_POST == array() && $_GET == array()) {
     require_once('./libraries/header.inc.php');
@@ -113,7 +122,6 @@ $file_to_unlink = '';
 $sql_query = '';
 $sql_query_disabled = FALSE;
 $go_sql = FALSE;
-$reload = FALSE;
 $executed_queries = 0;
 $run_query = TRUE;
 $charset_conversion = FALSE;
@@ -129,6 +137,12 @@ if (!empty($id_bookmark)) {
             if (isset($bookmark_variable) && !empty($bookmark_variable)) {
                 $import_text = preg_replace('|/\*(.*)\[VARIABLE\](.*)\*/|imsU', '${1}' . PMA_sqlAddslashes($bookmark_variable) . '${2}', $import_text);
             }
+
+            // refresh left frame on changes in table or db structure
+            if (preg_match('/^(CREATE|ALTER|DROP)\s+(VIEW|TABLE|DATABASE|SCHEMA)\s+/i', $import_text)) {
+                $GLOBALS['reload'] = true;
+            }
+
             break;
         case 1: // bookmarked query that have to be displayed
             $import_text = PMA_queryBookmarks($db, $cfg['Bookmark'], $id_bookmark);
@@ -164,7 +178,7 @@ if (!empty($bkm_label) && !empty($import_text)) {
     }
 
     PMA_addBookmarks($bfields, $cfg['Bookmark'], isset($bkm_all_users));
-    
+
     $bookmark_created = TRUE;
 } // end store bookmarks
 
@@ -190,7 +204,7 @@ if (strtolower(substr($memory_limit, -1)) == 'm') {
     $memory_limit = (int)$memory_limit;
 }
 
-$read_limit = $memory_limit / 4; // Just to be sure, there might be lot of memory needed for uncompression
+$read_limit = $memory_limit / 8; // Just to be sure, there might be lot of memory needed for uncompression
 
 // handle filenames
 if (!empty($local_import_file) && !empty($cfg['UploadDir'])) {
@@ -225,7 +239,7 @@ if ($import_file != 'none' && !$error) {
             }
         }
     }
-    
+
     // Handle file compression
     $compression = PMA_detectCompression($import_file);
     if ($compression === FALSE) {
@@ -293,7 +307,7 @@ if ($import_file != 'none' && !$error) {
     }
 } elseif (!$error) {
     if (!isset($import_text) || empty($import_text)) {
-        $message = $strNothingToImport;
+        $message = $strNoDataReceived;
         $show_error_header = TRUE;
         $error = TRUE;
     }

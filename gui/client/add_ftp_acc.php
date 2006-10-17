@@ -27,7 +27,6 @@ $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('als_list', 'page');
 $tpl -> define_dynamic('sub_list', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('to_subdomain', 'page');
 $tpl -> define_dynamic('to_alias_domain', 'page');
 $tpl -> define_dynamic('js_to_subdomain', 'page'); //JavaScript have to be generatet too
@@ -65,12 +64,12 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check)
                          'OTHER_DIR' => '',
                          'USE_OTHER_DIR_CHECKED' => ''));
     } else {
-        $tpl -> assign(array('USERNAME' => $_POST['username'],
+        $tpl -> assign(array('USERNAME' => clean_input($_POST['username']),
                              'DOMAIN_NAME' => $dmn_name,
                              'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked' : '',
                              'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked' : '',
                              'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked' : '',
-                             'OTHER_DIR' => $_POST['other_dir'],
+                             'OTHER_DIR' => clean_input($_POST['other_dir']),
                              'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? 'checked' : ''));
     }
 }
@@ -348,14 +347,14 @@ function add_ftp_user(&$sql, $dmn_name)
 {
   global $cfg;
 
-  $username = strtolower($_POST['username']);
+  $username = strtolower(clean_input($_POST['username']));
   $res_uname = preg_match("/\./", $username, $match);
   if ($res_uname == 1) {
   	set_page_message( tr("Incorrect username range or syntax!"));
     return;
   }
 
-  $res = preg_match("/\.\./", $_POST['other_dir'], $match);
+  $res = preg_match("/\.\./", clean_input($_POST['other_dir']), $match);
 
   if (chk_username($username)) {
     set_page_message( tr("Incorrect username range or syntax!"));
@@ -366,9 +365,9 @@ function add_ftp_user(&$sql, $dmn_name)
     $ftp_user = $username.$cfg['FTP_USERNAME_SEPARATOR'].$dmn_name;
 
     if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-	  $ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".$_POST['other_dir'];
+	  $ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".clean_input($_POST['other_dir']);
 	 	 if (!is_dir($ftp_home) || $res !== 0) {
-				set_page_message($_POST['other_dir']." ".tr('do not exist'));
+				set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
 				return;
 		}
 
@@ -379,9 +378,9 @@ function add_ftp_user(&$sql, $dmn_name)
     $ftp_user = $username.$cfg['FTP_USERNAME_SEPARATOR'].$_POST['als_id'];
     $alias_mount_point = get_alias_mount_point($sql, $_POST['als_id']);
     if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-      $ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".$_POST['other_dir'];
+      $ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".clean_input($_POST['other_dir']);
 	  if (!is_dir($ftp_home) || $res !== 0) {
-				set_page_message($_POST['other_dir']." ".tr('do not exist'));
+				set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
 				return;
 		}
 
@@ -391,9 +390,9 @@ function add_ftp_user(&$sql, $dmn_name)
   } else if ($_POST['dmn_type'] === 'sub') {
     $ftp_user = $username.$cfg['FTP_USERNAME_SEPARATOR'].$_POST['sub_id'].'.'.$dmn_name;
     if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-      $ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".$_POST['other_dir'];
+      $ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".clean_input($_POST['other_dir']);
 	  if (!is_dir($ftp_home) || $res !== 0) {
-				set_page_message($_POST['other_dir']." ".tr('do not exist'));
+				set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
 				return;
 		}
 
@@ -431,13 +430,18 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
     return;
   }
 
-  if (!isset($_POST['pass']) || $_POST['pass'] === '' || !isset($_POST['pass_rep']) || $_POST['pass_rep'] === '') {
+  if (!isset($_POST['pass']) || empty($_POST['pass']) || !isset($_POST['pass_rep']) || $_POST['pass_rep'] === '') {
     set_page_message(tr('Password data is missing!'));
     return;
   }
 
   if ($_POST['pass'] !== $_POST['pass_rep']) {
     set_page_message(tr('Entered passwords differ from the another!'));
+    return;
+  }
+
+	if (chk_password($_POST['pass'])) {
+  	set_page_message( tr("Incorrect password range or syntax!"));
     return;
   }
 
@@ -451,7 +455,7 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
     return;
   }
 
-  if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on' && $_POST['other_dir'] === '') {
+  if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on' && empty($_POST['other_dir'])) {
     set_page_message(tr('Please specify other FTP account dir!'));
     return;
   }

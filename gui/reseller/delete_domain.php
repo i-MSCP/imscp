@@ -23,7 +23,6 @@ check_login();
 
 $reseller = $_SESSION['user_id'];
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if(isset($_GET['domain_id']))

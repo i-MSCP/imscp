@@ -29,7 +29,6 @@ $tpl -> define_dynamic('month_item', 'page');
 $tpl -> define_dynamic('year_item', 'page');
 $tpl -> define_dynamic('traff_list', 'page');
 $tpl -> define_dynamic('traff_item', 'traff_list');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.

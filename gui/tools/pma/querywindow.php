@@ -1,8 +1,10 @@
 <?php
-/* $Id: querywindow.php,v 2.34 2006/01/14 23:17:15 cybot_tm Exp $ */
+/* $Id: querywindow.php,v 2.37 2006/07/03 15:01:44 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
+
+$is_superuser = PMA_isSuperuser();
 
 /**
  * Gets the variables sent to this script, retains the db name that may have
@@ -54,7 +56,7 @@ require_once('./libraries/header_meta_style.inc.php');
 <script type="text/javascript" language="javascript">
 //<![CDATA[
 function query_auto_commit() {
-    document.getElementById( 'sqlqueryform' ).target = window.opener.frames[1].name;
+    document.getElementById( 'sqlqueryform' ).target = window.opener.frame_content.name;
     document.getElementById( 'sqlqueryform' ).submit();
     return;
 }
@@ -69,7 +71,7 @@ function query_tab_commit(tab) {
 /**/
 var errorMsg0   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strFormEmpty']); ?>';
 var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
-var noDropDbMsg = '<?php echo !$GLOBALS['cfg']['AllowUserDropDatabase']
+var noDropDbMsg = '<?php echo (!$is_superuser && !$GLOBALS['cfg']['AllowUserDropDatabase'])
     ? str_replace('\'', '\\\'', $GLOBALS['strNoDropDatabases']) : ''; ?>';
 var confirmMsg  = '<?php echo $GLOBALS['cfg']['Confirm']
     ? str_replace('\'', '\\\'', $GLOBALS['strDoYouReally']) : ''; ?>';

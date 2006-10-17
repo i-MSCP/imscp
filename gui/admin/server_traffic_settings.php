@@ -55,7 +55,7 @@ function update_server_settings(&$sql)
 			global $data;
 			preg_match("/^(-1|0|[1-9][0-9]*)$/", $data, $match);
 
-            $max_traffic = $_POST['max_traffic'];
+            $max_traffic = clean_input($_POST['max_traffic']);
 
             $traffic_warning = $_POST['traffic_warning'];
 

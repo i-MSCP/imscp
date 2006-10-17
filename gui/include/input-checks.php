@@ -68,7 +68,7 @@ function check_input($value = '') {
 }
 
 function clean_html($input = '') {
-	
+
 	$suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
                '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
                '@([\r\n])[\s]+@',                // Leerräume entfernen
@@ -99,20 +99,43 @@ function clean_html($input = '') {
 
 	$text = preg_replace($suche, $ersetze, $input);
 	//and second one...
-	$textende = strip_tags($text);
-	
+	$text = strip_tags($text);
 
-return $textende;	
+
+return $text;
+
+}
+
+function clean_input($input) {
+
+	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
+
+		$input = trim($input, "{..}");
 	
+	}
+
+	return htmlentities(stripslashes($input), ENT_QUOTES, "UTF-8");
+
 }
 
 function vhcs_password_check ( $data, $num) {
 
-    $len = strlen($data);
+	global $cfg;
 
-    if (5 >= $len || $len > $num ) return false;
+  $len = strlen($data);
 
-    return true;
+  if ($len < $cfg['PASSWD_CHARS'] || $len > $num ) return false;
+
+	if ($cfg['PASSWD_STRONG'] == 1) {
+
+		return (preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
+
+	} else {
+
+		return true;
+
+	}
+
 }
 
 /* check for valid username  */
@@ -588,11 +611,11 @@ function chk_mountp( $mountp ) {
 function trans_mailid_to_mail (&$sql, $mailid) {
 
 	$query = <<<SQL_QUERY
-	
-	select * 
-		from 
+
+	select *
+		from
 			mail_users
-		where 
+		where
 			mail_id = ?
 		limit 1
 SQL_QUERY;
@@ -600,26 +623,26 @@ SQL_QUERY;
 	$res = exec_query($sql, $query, array($mailid));
 
 	if ($res -> RowCount() == 1) {
-		
+
 		$data = $res -> FetchRow();
 		$mail_type = $data['mail_type'];
-		
+
 		if ($mail_type === 'normal_mail') {
 
         	$local_part = $data['mail_acc'];
 			$domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
 			$res = exec_query($sql, $domain_query, array($mailid));
 		    $domain_name = $res->fields['domain_name'];
-          
+
 		    return $local_part."@".$domain_name;
-		          
+
     	} else if ($mail_type === 'normal_forward') {
 
         	$local_part = $data['mail_acc'];
         	$domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
 			$res = exec_query($sql, $domain_query, array($mailid));
 		    $domain_name = $res->fields['domain_name'];
-          
+
 		    return $local_part."@".$domain_name;
 
     	} else if ($mail_type === 'alias_mail') {
@@ -628,7 +651,7 @@ SQL_QUERY;
         	$domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliasses as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
 			$res = exec_query($sql, $domain_query, array($mailid));
 		    $domain_name = $res->fields['alias_name'];
-          
+
 		    return $local_part."@".$domain_name;
 
     	} else if ($mail_type === 'alias_forward') {
@@ -637,10 +660,10 @@ SQL_QUERY;
         	$domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliases as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
 			$res = exec_query($sql, $domain_query, array($mailid));
 		    $domain_name = $res->fields['alias'];
-          
+
 		    return $local_part."@".$domain_name;
 
-        	
+
     	} else if ($mail_type === 'subdom_mail') {
 
         	$local_part = $data['mail_acc'];
@@ -652,7 +675,7 @@ SQL_QUERY;
         	$domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
 			$res = exec_query($sql, $domain_query, array($mailid));
 		    $domain_name = $res->fields['subdomain_name'];
-          
+
 		    return $local_part."@".$domain_name;
 
     	} else if ($mail_type === 'normal_catchall') {
@@ -667,8 +690,78 @@ SQL_QUERY;
 
         	return tr('Unknown type');
 
-    	}	
-     
+    	}
+
+	}
+
+}
+
+function get_post($value) {
+
+	if(isset($_POST[$value])) {
+
+		return $_POST[$value];
+
+	} else {
+
+		return null;
+
+	}
+
+}
+
+function get_get($value) {
+
+	if(isset($_GET[$value])) {
+
+		return $_GET[$value];
+
+	} else {
+
+		return null;
+
+	}
+
+}
+
+function get_session($value) {
+
+	if(isset($_SESSION[$value])) {
+
+		return $_SESSION[$value];
+
+	} else {
+
+		return null;
+
+	}
+
+}
+
+function get_cookie($value) {
+
+	if(isset($_COOKIE[$value])) {
+
+		return $_COOKIE[$value];
+
+	} else {
+
+		return null;
+
+	}
+
+}
+
+function get_server($value) {
+
+	if(isset($_SERVER[$value])) {
+
+		return $_SERVER[$value];
+
+	} else {
+
+		return null;
+
 	}
 
 }

@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_common.inc.php,v 1.4 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: server_common.inc.php,v 1.5 2006/05/18 16:51:16 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -35,19 +35,12 @@ require_once('./libraries/header.inc.php');
 /**
  * Checks for superuser privileges
  */
-// We were checking privileges with 'USE mysql' but users with the global
-// priv CREATE TEMPORARY TABLES or LOCK TABLES can do a 'USE mysql'
-// (even if they cannot see the tables)
 
-$is_superuser = PMA_DBI_try_query('SELECT COUNT(*) FROM mysql.user');
+$is_superuser  = PMA_isSuperuser();
 
 // now, select the mysql db
 if ($is_superuser) {
-    PMA_DBI_free_result($is_superuser);
     PMA_DBI_select_db('mysql', $userlink);
-    $is_superuser = TRUE;
-} else {
-    $is_superuser = FALSE;
 }
 
 $has_binlogs = FALSE;

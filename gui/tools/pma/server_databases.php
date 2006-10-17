@@ -1,66 +1,34 @@
 <?php
-/* $Id: server_databases.php,v 2.35.2.3 2006/03/14 17:53:44 lem9 Exp $ */
+/* $Id: server_databases.php,v 2.44 2006/05/02 13:25:27 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
  * Does the common work
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.lib.php';
 
 
 $js_to_run = 'functions.js';
-require('./libraries/server_common.inc.php');
-
-/**
- * Sorts the databases array according to the user's choice
- *
- * @param   array    a record associated to a database
- * @param   array    a record associated to a database
- *
- * @return  integer  a value representing whether $a should be before $b in the
- *                   sorted array or not
- *
- * @global  string   the column the array shall be sorted by
- * @global  string   the sorting order ('asc' or 'desc')
- *
- * @access  private
- */
-function PMA_dbCmp($a, $b) {
-    global $sort_by, $sort_order;
-    if ($GLOBALS['cfg']['NaturalOrder']) {
-        $sorter = 'strnatcmp';
-    } else {
-        $sorter = 'strcasecmp';
-    }
-    if ($sort_by == 'SCHEMA_NAME') {
-        return ($sort_order == 'asc' ? 1 : -1) * $sorter($a['SCHEMA_NAME'], $b['SCHEMA_NAME']);
-    } elseif ($a[$sort_by] == $b[$sort_by]) {
-        return $sorter($a['SCHEMA_NAME'], $b['SCHEMA_NAME']);
-    } else {
-        return ($sort_order == 'asc' ? 1 : -1) * ((int)$a[$sort_by] > (int)$b[$sort_by] ? 1 : -1);
-    }
-} // end of the 'PMA_dbCmp()' function
-
+require './libraries/server_common.inc.php';
 
 /**
  * avoids 'undefined index' errors
  */
-if (empty($sort_by)) {
+if (empty($_REQUEST['sort_by'])) {
     $sort_by = 'SCHEMA_NAME';
 } else {
-    $sort_by = PMA_sanitize($sort_by);
-}
-if (empty($sort_order)) {
-    if ($sort_by == 'SCHEMA_NAME') {
-        $sort_order = 'asc';
-    } else {
-        $sort_order = 'desc';
-    }
-} else {
-    $sort_order = PMA_sanitize($sort_order);
+    $sort_by = PMA_sanitize($_REQUEST['sort_by']);
 }
 
-$dbstats = empty( $dbstats ) ? 0 : 1;
+if (isset($_REQUEST['sort_order'])
+ && strtolower($_REQUEST['sort_order']) == 'desc') {
+    $sort_order = 'desc';
+} else {
+    $sort_order = 'asc';
+}
+
+$dbstats    = empty($_REQUEST['dbstats']) ? 0 : 1;
+$pos        = empty($_REQUEST['pos']) ? 0 : (int) $_REQUEST['pos'];
 
 
 /**
@@ -69,19 +37,23 @@ $dbstats = empty( $dbstats ) ? 0 : 1;
 
 // workaround for IE behavior (it returns some coordinates based on where
 // the mouse was on the Drop image):
-
-if (isset($drop_selected_dbs_x)) {
-    $drop_selected_dbs = 'Drop';
+if (isset($_REQUEST['drop_selected_dbs_x'])) {
+    $_REQUEST['drop_selected_dbs'] = true;
 }
 
-if ((!empty($drop_selected_dbs) || isset($query_type)) && ($is_superuser || $cfg['AllowUserDropDatabase'])) {
-    if (! isset($selected_db) && ! isset($query_type)) {
+if ((isset($_REQUEST['drop_selected_dbs']) || isset($_REQUEST['query_type']))
+  && ($is_superuser || $cfg['AllowUserDropDatabase'])) {
+    if (! isset($_REQUEST['selected_dbs']) && ! isset($_REQUEST['query_type'])) {
         $message = $strNoDatabasesSelected;
     } else {
         $action = 'server_databases.php';
         $submit_mult = 'drop_db' ;
         $err_url = 'server_databases.php?' . PMA_generate_common_url();
-        require('./libraries/mult_submits.inc.php');
+        if (isset($_REQUEST['selected_dbs'])) {
+            $selected_db = $_REQUEST['selected_dbs'];
+        }
+        require './libraries/mult_submits.inc.php';
+        unset($action, $submit_mult, $err_url, $selected_db);
         if ($mult_btn == $strYes) {
             $message = sprintf($strDatabasesDropped, count($selected));
         } else {
@@ -93,7 +65,7 @@ if ((!empty($drop_selected_dbs) || isset($query_type)) && ($is_superuser || $cfg
 /**
  * Displays the links
  */
-require('./libraries/server_links.inc.php');
+require './libraries/server_links.inc.php';
 
 
 /**
@@ -111,28 +83,20 @@ echo '<h2>' . "\n"
  * Gets the databases list
  */
 if ($server > 0) {
-    $databases = PMA_DBI_get_databases_full(null, $dbstats);
+    $databases = PMA_DBI_get_databases_full(null, $dbstats, null, $sort_by,
+        $sort_order, $pos, true);
+    $databases_count = PMA_DBI_get_databases_count();
 } else {
-    $databases = array();
+    $databases_count = 0;
 }
 
 
 /**
  * Displays the page
  */
-$tmp_count = count($databases);
-if ($tmp_count > 0) {
-     if ($tmp_count > 1) {
-         // sorts the array
-         usort( $databases, 'PMA_dbCmp' );
-     } else {
-         // when there is only one database, the sort would not happen and
-         // the index would not become numeric (reproduced in MySQL 3.23.52)
-         $tmp_each = each($databases);
-         $databases = array();
-         $databases[0] = $tmp_each['value'];
-         unset($tmp_each);
-     }
+if ($databases_count > 0) {
+    reset($databases);
+    $first_database = current($databases);
 
     // table col order
     // there is no db specific collation or charset prior 4.1.0
@@ -175,22 +139,90 @@ if ($tmp_count > 0) {
         'footer'    => 0,
     );
 
+    $_url_params = array(
+        'pos' => $pos,
+        'dbstats' => $dbstats,
+        'sort_by' => $sort_by,
+        'sort_order' => $sort_order,
+    );
+
+    if ($GLOBALS['cfg']['MaxDbList']
+     && $GLOBALS['cfg']['MaxDbList'] < $databases_count) {
+        // Move to the beginning or to the previous page
+        if ($pos > 0) {
+            // loic1: patch #474210 from Gosha Sakovich - part 1
+            if ($GLOBALS['cfg']['NavigationBarIconic']) {
+                $caption1 = '&lt;&lt;';
+                $caption2 = ' &lt; ';
+                $title1   = ' title="' . $GLOBALS['strPos1'] . '"';
+                $title2   = ' title="' . $GLOBALS['strPrevious'] . '"';
+            } else {
+                $caption1 = $GLOBALS['strPos1'] . ' &lt;&lt;';
+                $caption2 = $GLOBALS['strPrevious'] . ' &lt;';
+                $title1   = '';
+                $title2   = '';
+            } // end if... else...
+            $_url_params['pos'] = 0;
+            echo '<a' . $title1 . 'href="server_databases.php'
+                . PMA_generate_common_url($_url_params) . '">'
+                . $caption1 . '</a>';
+            $_url_params['pos'] = $pos - $GLOBALS['cfg']['MaxDbList'];
+            echo '<a' . $title2 . 'href="server_databases.php'
+                . PMA_generate_common_url($_url_params) . '">'
+                . $caption2 . '</a>';
+        }
+
+        echo '<form action="./server_databases.php" method="post">' . "\n";
+        echo PMA_generate_common_hidden_inputs($_url_params);
+        echo PMA_pageselector(
+                'server_databases.php' . PMA_generate_common_url($_url_params) . '&',
+                $GLOBALS['cfg']['MaxDbList'],
+                floor(($pos + 1) / $GLOBALS['cfg']['MaxDbList']) + 1,
+                ceil($databases_count / $GLOBALS['cfg']['MaxDbList']));
+        echo '</form>';
+
+        if ($pos + $GLOBALS['cfg']['MaxDbList'] < $databases_count) {
+            if ($GLOBALS['cfg']['NavigationBarIconic']) {
+                $caption3 = ' &gt; ';
+                $caption4 = '&gt;&gt;';
+                $title3   = ' title="' . $GLOBALS['strNext'] . '"';
+                $title4   = ' title="' . $GLOBALS['strEnd'] . '"';
+            } else {
+                $caption3 = '&gt; ' . $GLOBALS['strNext'];
+                $caption4 = '&gt;&gt; ' . $GLOBALS['strEnd'];
+                $title3   = '';
+                $title4   = '';
+            } // end if... else...
+            $_url_params['pos'] = $pos + $GLOBALS['cfg']['MaxDbList'];
+            echo '<a' . $title3 . 'href="server_databases.php'
+                . PMA_generate_common_url($_url_params) . '">'
+                . $caption3 . '</a>';
+            $_url_params['pos'] = floor($databases_count / $GLOBALS['cfg']['MaxDbList']) * $GLOBALS['cfg']['MaxDbList'];
+            echo '<a' . $title4 . 'href="server_databases.php'
+                . PMA_generate_common_url($_url_params) . '">'
+                . $caption4 . '</a>';
+        }
+    }
+
+    $_url_params['pos'] = $pos;
+
     echo '<form action="./server_databases.php" method="post" name="dbStatsForm" id="dbStatsForm">' . "\n"
-       . PMA_generate_common_hidden_inputs('', '', 1)
-       . '<input type="hidden" name="dbstats" value="' . $dbstats . '" />' . "\n"
-       . '<input type="hidden" name="sort_by" value="' . $sort_by . '" />' . "\n"
-       . '<input type="hidden" name="sort_order" value="' . $sort_order . '" />' . "\n"
-       . '<table id="tabledatabases" class="data">' . "\n"
+       . PMA_generate_common_hidden_inputs($_url_params);
+
+    $_url_params['sort_by'] = 'SCHEMA_NAME';
+    $_url_params['sort_order'] = ($sort_by == 'SCHEMA_NAME' && $sort_order == 'asc') ? 'desc' : 'asc';
+
+    echo '<table id="tabledatabases" class="data">' . "\n"
        . '<thead>' . "\n"
        . '<tr>' . "\n"
        . ($is_superuser || $cfg['AllowUserDropDatabase'] ? '        <th>&nbsp;</th>' . "\n" : '')
-       . '    <th><a href="./server_databases.php?' . $url_query . '&amp;dbstats=' . $dbstats . '&amp;sort_by=SCHEMA_NAME&amp;sort_order=' . (($sort_by == 'SCHEMA_NAME' && $sort_order == 'asc') ? 'desc' : 'asc') . '">' . "\n"
+       . '    <th><a href="./server_databases.php' . PMA_generate_common_url($_url_params) . '">' . "\n"
        . '            ' . $strDatabase . "\n"
        . ($sort_by == 'SCHEMA_NAME' ? '                <img class="icon" src="' . $pmaThemeImage . 's_' . $sort_order . '.png" width="11" height="9"  alt="' . ($sort_order == 'asc' ? $strAscending : $strDescending) . '" />' . "\n" : '')
        . '        </a></th>' . "\n";
     $table_columns = 3;
     foreach ( $column_order as $stat_name => $stat ) {
-        if ( array_key_exists( $stat_name, $databases[0] ) ) {
+        if ( array_key_exists( $stat_name, $first_database ) ) {
             if ( $stat['format'] === 'byte' ) {
                 $table_columns += 2;
                 $colspan = ' colspan="2"';
@@ -198,8 +230,10 @@ if ($tmp_count > 0) {
                 $table_columns++;
                 $colspan = '';
             }
+            $_url_params['sort_by'] = $stat_name;
+            $_url_params['sort_order'] = ($sort_by == $stat_name && $sort_order == 'desc') ? 'asc' : 'desc';
             echo '    <th' . $colspan . '>'
-                .'<a href="./server_databases.php?' . $url_query . '&amp;dbstats=' . (int) $dbstats . '&amp;sort_by=' . urlencode( $stat_name ) . '&amp;sort_order=' . (($sort_by == $stat_name && $sort_order == 'desc') ? 'asc' : 'desc') . '">' . "\n"
+                .'<a href="./server_databases.php' . PMA_generate_common_url($_url_params) . '">' . "\n"
                 .'            ' . $stat['disp_name'] . "\n"
                 .($sort_by == $stat_name ? '            <img class="icon" src="' . $pmaThemeImage . 's_' . $sort_order . '.png" width="11" height="9"  alt="' . ($sort_order == 'asc' ? $strAscending : $strDescending) . '" />' . "\n" : '')
                 .'        </a></th>' . "\n";
@@ -214,17 +248,16 @@ if ($tmp_count > 0) {
        . '<tbody>' . "\n";
 
     $odd_row = true;
-    foreach ( $databases as $key => $current ) {
-
+    foreach ($databases as $current) {
         echo '<tr class="' . ( $odd_row ? 'odd' : 'even' ) . '">' . "\n";
         $odd_row = ! $odd_row;
 
         if ( $is_superuser || $cfg['AllowUserDropDatabase'] ) {
             echo '    <td class="tool">' . "\n";
             if ($current['SCHEMA_NAME'] != 'mysql' && (PMA_MYSQL_INT_VERSION < 50002 || $current['SCHEMA_NAME'] != 'information_schema')) {
-                echo '        <input type="checkbox" name="selected_db[]" title="' . htmlspecialchars($current['SCHEMA_NAME']) . '" value="' . htmlspecialchars($current['SCHEMA_NAME']) . '" ' . (empty($checkall) ? '' : 'checked="checked" ') . '/>' . "\n";
+                echo '        <input type="checkbox" name="selected_dbs[]" title="' . htmlspecialchars($current['SCHEMA_NAME']) . '" value="' . htmlspecialchars($current['SCHEMA_NAME']) . '" ' . (empty($checkall) ? '' : 'checked="checked" ') . '/>' . "\n";
             } else {
-                echo '        <input type="checkbox" name="selected_db[]" title="' . htmlspecialchars($current['SCHEMA_NAME']) . '" value="' . htmlspecialchars($current['SCHEMA_NAME']) . '" disabled="disabled"/>' . "\n";
+                echo '        <input type="checkbox" name="selected_dbs[]" title="' . htmlspecialchars($current['SCHEMA_NAME']) . '" value="' . htmlspecialchars($current['SCHEMA_NAME']) . '" disabled="disabled"/>' . "\n";
             }
             echo '    </td>' . "\n";
         }
@@ -269,15 +302,15 @@ if ($tmp_count > 0) {
         }
         echo '</tr>' . "\n";
     } // end foreach ( $databases as $key => $current )
-    unset( $key, $current, $odd_row );
+    unset($current, $odd_row);
 
     echo '<tr>' . "\n";
     if ( $is_superuser || $cfg['AllowUserDropDatabase'] ) {
         echo '    <th>&nbsp;</th>' . "\n";
     }
-    echo '    <th>' . $strTotalUC . ': ' . count( $databases ) . '</th>' . "\n";
+    echo '    <th>' . $strTotalUC . ': ' . $databases_count . '</th>' . "\n";
     foreach ( $column_order as $stat_name => $stat ) {
-        if ( array_key_exists( $stat_name, $databases[0] ) ) {
+        if ( array_key_exists( $stat_name, $first_database ) ) {
             if ( $stat['format'] === 'byte' ) {
                 list( $value, $unit ) = PMA_formatByteDown( $stat['footer'], 3, 1 );
             } elseif ( $stat['format'] === 'number' ) {
@@ -305,7 +338,7 @@ if ($tmp_count > 0) {
     echo '</tr>' . "\n";
     echo '</tbody>' . "\n"
         .'</table>' . "\n";
-    unset( $column_order, $stat_name, $stat, $databases, $table_columns );
+    unset($column_order, $stat_name, $stat, $databases, $table_columns);
 
     if ($is_superuser || $cfg['AllowUserDropDatabase']) {
         $common_url_query = PMA_generate_common_url() . '&amp;sort_by=' . $sort_by . '&amp;sort_order=' . $sort_order . '&amp;dbstats=' . $dbstats;
@@ -318,39 +351,37 @@ if ($tmp_count > 0) {
         PMA_buttonOrImage( 'drop_selected_dbs', 'mult_submit', 'drop_selected_dbs', $strDrop, 'b_deltbl.png' );
     }
 
-    if ( PMA_MYSQL_INT_VERSION < 50002 ) {
-        echo '<ul><li id="li_switch_dbstats"><strong>' . "\n";
-        if ( empty( $dbstats ) ) {
-            echo '        <a href="./server_databases.php?' . $url_query . '&amp;dbstats=1"'
-                .' title="' . $strDatabasesStatsEnable . '">' . "\n"
-                .'            ' . $strDatabasesStatsEnable;
-        } else {
-            echo '        <a href="./server_databases.php?' . $url_query . '"'
-                .' title="' . $strDatabasesStatsDisable . '">' . "\n"
-                .'            ' . $strDatabasesStatsDisable;
-        }
-        echo '</a></strong><br />' . "\n"
-            .'        <div class="warning">'
-            . $strDatabasesStatsHeavyTraffic . '</div></li>' . "\n"
-            .'</ul>' . "\n";
+    echo '<ul><li id="li_switch_dbstats"><strong>' . "\n";
+    if ( empty( $dbstats ) ) {
+        echo '        <a href="./server_databases.php?' . $url_query . '&amp;dbstats=1"'
+            .' title="' . $strDatabasesStatsEnable . '">' . "\n"
+            .'            ' . $strDatabasesStatsEnable;
+    } else {
+        echo '        <a href="./server_databases.php?' . $url_query . '"'
+            .' title="' . $strDatabasesStatsDisable . '">' . "\n"
+            .'            ' . $strDatabasesStatsDisable;
     }
+    echo '</a></strong><br />' . "\n"
+        .'        <div class="warning">'
+        . $strDatabasesStatsHeavyTraffic . '</div></li>' . "\n"
+        .'</ul>' . "\n";
     echo '</form>';
 } else {
     echo $strNoDatabases;
 }
-unset($tmp_count);
+unset($databases_count);
 
 /**
  * Create new database.
  */
 echo '<ul><li id="li_create_database">' . "\n";
-require('./libraries/display_create_database.lib.php');
+require './libraries/display_create_database.lib.php';
 echo '    </li>' . "\n";
 echo '</ul>' . "\n";
 
 /**
  * Sends the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 
 ?>

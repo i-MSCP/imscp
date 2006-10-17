@@ -18,9 +18,8 @@
 
 function write_error_page(&$sql, &$user_id, &$eid)
 {
-  $error = $_POST['error'];
-  $eid = $_POST['eid'];
-  $eid = "error_" . $eid;
+  $error = clean_input($_POST['error']);
+  $eid = "error_".$_POST['eid'];
 
   // let's check if exist error table for this looser
 
@@ -136,9 +135,8 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/error_pages.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-global $cfg;
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.

@@ -50,9 +50,6 @@ $tpl -> define_dynamic('ftp_item', 'page');
 
 $tpl -> define_dynamic('no_mails', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-
 //
 // page functions.
 //

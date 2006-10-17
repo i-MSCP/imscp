@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #
 # VHCS gui permissions setter  v1.0;
@@ -63,3 +63,10 @@ chown -R $APACHE_USER:$APACHE_GROUP $i;
 #
 
 chmod 0400 $ROOT_DIR/gui/include/vhcs2-db-keys.php
+
+#
+# Setting correct permission for virtual root directory
+#
+
+chmod  0755 $APACHE_WWW_DIR;
+chown  $APACHE_USER:$APACHE_GROUP $APACHE_WWW_DIR;

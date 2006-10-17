@@ -78,12 +78,8 @@
 			</td>
             <td>&nbsp;</td>
           </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
         </table>
-          </td>
+       </td>
       </tr>
     </table></td>
   </tr>

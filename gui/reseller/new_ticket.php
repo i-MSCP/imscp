@@ -1,7 +1,7 @@
 <?php
 //   -------------------------------------------------------------------------------
 //  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2005 by moleSoftware		            		|
+//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
 //  |			http://vhcs.net | http://www.molesoftware.com		           		|
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
@@ -30,8 +30,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 //
 // page functions.
 //
@@ -43,7 +41,7 @@ function send_user_message(&$sql, $user_id, $user_created_by)
 
     if (!isset($_POST['uaction'])) return;
 
-    if ($_POST['subj'] === '') {
+    if (empty($_POST['subj'])) {
 
         set_page_message(tr('Please specify message subject!'));
 
@@ -51,7 +49,7 @@ function send_user_message(&$sql, $user_id, $user_created_by)
 
     }
 
-    if ($_POST['user_message'] === '') {
+    if (empty($_POST['user_message'])) {
 
         set_page_message(tr('Please type your message!'));
 
@@ -63,9 +61,9 @@ function send_user_message(&$sql, $user_id, $user_created_by)
 
     $urgency = $_POST['urgency'];
 
-    $subj = $_POST['subj'];
+    $subj = clean_input($_POST['subj']);
 
-    $user_message = preg_replace("/\n/", "<br>", $_POST["user_message"]);
+    $user_message = clean_input($_POST["user_message"]);
 
 	$ticket_status = 2;
 
@@ -95,8 +93,8 @@ SQL_QUERY;
                                          $ticket_reply,
                                          $urgency,
                                          $ticket_date,
-                                         htmlspecialchars($subj, ENT_QUOTES, "UTF-8"),
-                                         htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
+                                         $subj,
+                                         $user_message));
 
 	send_tickets_msg($user_created_by,$user_id,$subj);
     header("Location: support_system.php");

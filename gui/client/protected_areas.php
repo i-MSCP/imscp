@@ -33,13 +33,8 @@ $tpl -> define_dynamic('dir_item', 'page');
 
 $tpl -> define_dynamic('action_link', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('protected_areas', 'page');
 
-
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 

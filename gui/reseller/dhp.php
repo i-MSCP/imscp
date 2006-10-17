@@ -20,7 +20,6 @@ include '../include/vhcs-lib.php';
 
 check_login();
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if(isset($_GET['hpid']) && is_numeric($_GET['hpid']))

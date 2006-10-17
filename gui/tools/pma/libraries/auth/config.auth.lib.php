@@ -1,5 +1,5 @@
 <?php
-/* $Id: config.auth.lib.php,v 2.18 2005/12/08 20:47:24 nijel Exp $ */
+/* $Id: config.auth.lib.php,v 2.20.2.1 2006/08/12 15:29:54 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -107,32 +107,43 @@ function PMA_auth_fails()
     <div id="TooltipContainer" onmouseover="holdTooltip();" onmouseout="swapTooltip('default');"></div>
     <?php
 
-    // if we display the "Server not responding" error, do not confuse users
-    // by telling them they have a settings problem
-    // (note: it's true that they could have a badly typed host name, but
-    //  anyway the current $strAccessDeniedExplanation tells that the server
-    //  rejected the connection, which is not really what happened)
-    // 2002 is the error given by mysqli
-    // 2003 is the error given by mysql
-
     if (isset($GLOBALS['allowDeny_forbidden']) && $GLOBALS['allowDeny_forbidden']) {
         echo '<p>' . $GLOBALS['strAccessDenied'] . '</p>' . "\n";
     } else {
-        if (!isset($GLOBALS['errno']) || (isset($GLOBALS['errno']) && $GLOBALS['errno'] != 2002) && $GLOBALS['errno'] != 2003) {
-            // Check whether user has configured something
-            if ($_SESSION['PMA_Config']->source_mtime == 0) {
-                echo '<p>' . sprintf($GLOBALS['strAccessDeniedCreateConfig'], '<a href="scripts/setup.php">', '</a>') . '</p>' . "\n";
-            } else {
-                echo '<p>' . $GLOBALS['strAccessDeniedExplanation'] . '</p>' . "\n";
-            }
+        // Check whether user has configured something
+        if ($_SESSION['PMA_Config']->source_mtime == 0) {
+            echo '<p>' . sprintf($GLOBALS['strAccessDeniedCreateConfig'], '<a href="scripts/setup.php">', '</a>') . '</p>' . "\n";
+        } elseif (!isset($GLOBALS['errno']) || (isset($GLOBALS['errno']) && $GLOBALS['errno'] != 2002) && $GLOBALS['errno'] != 2003) {
+        // if we display the "Server not responding" error, do not confuse users
+        // by telling them they have a settings problem
+        // (note: it's true that they could have a badly typed host name, but
+        //  anyway the current $strAccessDeniedExplanation tells that the server
+        //  rejected the connection, which is not really what happened)
+        // 2002 is the error given by mysqli
+        // 2003 is the error given by mysql
+            echo '<p>' . $GLOBALS['strAccessDeniedExplanation'] . '</p>' . "\n";
         }
-        PMA_mysqlDie($conn_error, '');
+        PMA_mysqlDie($conn_error, '', true, '', false);
+    }
+    if ( ! empty( $GLOBALS['PMA_errors'] ) && is_array( $GLOBALS['PMA_errors'] ) ) {
+        foreach ( $GLOBALS['PMA_errors'] as $error ) {
+            echo '<div class="error">' . $error . '</div>' . "\n";
+        }
     }
 ?>
         </td>
     </tr>
-</table>
 <?php
+    if (count($GLOBALS['cfg']['Servers']) > 1) {
+        // offer a chance to login to other servers if the current one failed
+        require_once('./libraries/select_server.lib.php');
+        echo '<tr>' . "\n";
+        echo ' <td>' . "\n";
+        PMA_select_server(TRUE, TRUE);
+        echo ' </td>' . "\n";
+        echo '</tr>' . "\n";
+    }
+    echo '</table>' . "\n";
     require_once('./libraries/footer.inc.php');
     return TRUE;
 } // end of the 'PMA_auth_fails()' function

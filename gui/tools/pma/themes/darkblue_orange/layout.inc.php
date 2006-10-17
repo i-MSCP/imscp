@@ -1,27 +1,90 @@
 <?php
+/**
+ * configures general layout
+ * for detailed layout configuration please refer to the css files
+ */
 
-$cfg['LeftWidth']           = 180;          // left frame width
-/* colors */
-$cfg['LeftBgColor']         = '#666699';    // background color for the left frame
-$cfg['RightBgColor']        = '#FFFFFF';    // background color for the right frame
-$cfg['RightBgImage']        = '';           // path to a background image for the right frame
-                                            // (leave blank for no background image)
-$cfg['LeftPointerColor']    = '#9999CC';    // color of the pointer in left frame
-$cfg['Border']              = 0;            // border width on tables
-$cfg['ThBgcolor']           = '#666699';    // table header row colour
-$cfg['BgcolorOne']          = '#EEEEEE';    // table data row colour
-$cfg['BgcolorTwo']          = '#E5E5E5';    // table data row colour, alternate
-$cfg['BrowsePointerColor']  = '#CCCCFF';    // color of the pointer in browse mode
-$cfg['BrowseMarkerColor']   = '#FFCC99';    // color of the marker (visually marks row
-                                            // by clicking on it) in browse mode
+/**
+ * navi frame
+ */
+// navi frame width
+$GLOBALS['cfg']['NaviWidth']                = 180;
 
-$cfg['QueryWindowWidth']    = 600;          // Width of Query window
-$cfg['QueryWindowHeight']   = 400;          // Height of Query window
+// foreground (text) color for the navi frame
+$GLOBALS['cfg']['NaviColor']                = '#ffffff';
+
+// background for the navi frame
+$GLOBALS['cfg']['NaviBackground']           = '#666699';
+
+// foreground (text) color of the pointer in navi frame
+$GLOBALS['cfg']['NaviPointerColor']         = '#000000';
+
+// background of the pointer in navi frame
+$GLOBALS['cfg']['NaviPointerBackground']    = '#9999cc';
+
+/**
+ * main frame
+ */
+// foreground (text) color for the main frame
+$GLOBALS['cfg']['MainColor']                = '#000000';
+
+// background for the main frame
+$GLOBALS['cfg']['MainBackground']           = '#ffffff';
+//$GLOBALS['cfg']['MainBackground']       = '#ffffff url(../' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
+
+// foreground (text) color of the pointer in browse mode
+$GLOBALS['cfg']['BrowsePointerColor']       = '#000000';
+
+// background of the pointer in browse mode
+$GLOBALS['cfg']['BrowsePointerBackground']  = '#ccffcc';
+
+// foreground (text) color of the marker (visually marks row by clicking on it) in browse mode
+$GLOBALS['cfg']['BrowseMarkerColor']        = '#000000';
+
+// background of the marker (visually marks row by clicking on it) in browse mode
+$GLOBALS['cfg']['BrowseMarkerBackground']   = '#ffcc99';
+
+/**
+ * fonts
+ */
+/**
+ * the font family as a valid css font family value,
+ * if not set the browser default will be used
+ * (depending on browser, DTD and system settings)
+ */
+$GLOBALS['cfg']['FontFamily']           = 'Verdana, Arial, Helvetica, sans-serif';
+/**
+ * fixed width font family, used in textarea
+ */
+$GLOBALS['cfg']['FontFamilyFixed']      = 'monospace';
+
+/**
+ * tables
+ */
+// border
+$GLOBALS['cfg']['Border']               = 0;
+// table header and footer color
+$GLOBALS['cfg']['ThBackground']         = '#ff9900 url(../' . $_SESSION['PMA_Theme']->getImgPath() . 'tbl_th.png) repeat-x top';
+// table header and footer background
+$GLOBALS['cfg']['ThColor']              = '#000000';
+// table data row background
+$GLOBALS['cfg']['BgOne']                = '#E5E5E5';
+// table data row background, alternate
+$GLOBALS['cfg']['BgTwo']                = '#D5D5D5';
+
+/**
+ * query window
+ */
+// Width of Query window
+$GLOBALS['cfg']['QueryWindowWidth']     = 600;
+// Height of Query window
+$GLOBALS['cfg']['QueryWindowHeight']    = 400;
 
 /**
  * SQL Parser Settings
+ * Syntax colouring data
  */
-$cfg['SQP']['fmtColor']     = array(        // Syntax colouring data
+$GLOBALS['cfg']['SQP']['fmtColor']      = array(
     'comment'            => '#808000',
     'comment_mysql'      => '',
     'comment_ansi'       => '',

@@ -1,7 +1,7 @@
 <?php
 /*
  * Code for displaying language selection
- * $Id: display_select_lang.lib.php,v 1.8 2005/11/27 22:04:10 nijel Exp $
+ * $Id: display_select_lang.lib.php,v 1.9 2006/08/09 21:18:34 lem9 Exp $
  */
 
 /**
@@ -48,7 +48,7 @@ function PMA_select_language($use_fieldset = FALSE) {
             . ((int)$GLOBALS['server']) . '" />' . "\n";
     }
 
-    $language_title = 'Language <a href="./translators.html" target="documentation">' .
+    $language_title = $GLOBALS['strLanguage'] . ($GLOBALS['strLanguage'] != 'Language' ? ' - Language' : '') . ' <a href="./translators.html" target="documentation">' .
             ( $cfg['ReplaceHelpImg'] ? 
                 '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_info.png" width="11" height="11" alt="Info" />' :
                 '(*)' ) . '</a>';

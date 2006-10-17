@@ -56,7 +56,7 @@ function delete_account(url) {
         </td>
         <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td height="62" align="left" background="{THEME_COLOR_PATH}/images/content/table_background.jpg" class="title"><img src="{THEME_COLOR_PATH}/images/content/table_icon.jpg" width="85" height="62" align="absmiddle">{TR_MANAGE_USERS}</td>
+            <td height="62" align="left" background="{THEME_COLOR_PATH}/images/content/table_background.jpg" class="title"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.jpg" width="85" height="62" align="absmiddle">{TR_MANAGE_USERS}</td>
             <td width="27" align="right" background="{THEME_COLOR_PATH}/images/content/table_background.jpg"><img src="{THEME_COLOR_PATH}/images/content/table_icon_close.jpg" width="27" height="62"></td>
           </tr>
           <tr>
@@ -67,8 +67,12 @@ function delete_account(url) {
                   <td width="20">&nbsp;</td>
                   <td colspan="2" class="content3"><b>{TR_CORE_DATA}</b></td>
                   </tr>
-                <div align="center"><font color="#FF0000">{MESSAGE}</font></div>
-                <font color="#FF0000">
+              <!-- BDP: page_message -->
+              <tr>
+                <td width="20">&nbsp;</td> 
+                <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                </tr>
+              <!-- EDP: page_message -->
                 <tr>
                   <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_USERNAME}</td>
@@ -77,13 +81,13 @@ function delete_account(url) {
                 <tr>
                   <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_PASSWORD}</td>
-                  <td class="content"><input type="password" name=userpassword value="{VL_USR_PASS}" style="width:210px" class="textinput">
+                  <td class="content"><input type="password" name=userpassword value="{VAL_PASSWORD}" style="width:210px" class="textinput">&nbsp;&nbsp;&nbsp;<input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} ">
                   </td>
                 </tr>
                 <tr>
                   <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_REP_PASSWORD}</td>
-                  <td class="content"><input type="password" name=userpassword_repeat value="{VL_USR_PASS_REP}" style="width:210px" class="textinput">
+                  <td class="content"><input type="password" name=userpassword_repeat value="{VAL_PASSWORD}" style="width:210px" class="textinput">
                   </td>
                 </tr>
                 <tr>
@@ -164,11 +168,12 @@ function delete_account(url) {
                 </tr>
                 <tr>
                   <td>&nbsp;</td>
-                  <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  "></td>
+                  <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_BTN_ADD_USER}  ">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="send_data" checked>{TR_SEND_DATA}</td>
                   </tr>
                 </font>
               </table>
               <input type="hidden" name="uaction" value="save_changes">
+            <input type="hidden" name="edit_id" value="{EDIT_ID}">
 		  </form>
 			</td>
             <td>&nbsp;</td>

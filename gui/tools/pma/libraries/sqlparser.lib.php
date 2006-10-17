@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlparser.lib.php,v 2.47 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: sqlparser.lib.php,v 2.50.2.1 2006/08/16 17:41:08 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /** SQL Parser Functions for phpMyAdmin
@@ -147,7 +147,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'CVS: $Id: sqlparser.lib.php,v 2.47 2006/01/17 17:02:30 cybot_tm Exp $' . "\n";
+        $debugstr .= 'CVS: $Id: sqlparser.lib.php,v 2.50.2.1 2006/08/16 17:41:08 lem9 Exp $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -601,29 +601,29 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                     $t_suffix = '_functionName';
                 } elseif (PMA_STR_binarySearchInArr($d_cur_upper, $PMA_SQPdata_column_type, $PMA_SQPdata_column_type_cnt)) {
                     $t_suffix = '_columnType';
-    
+
                     // Temporary fix for BUG #621357
                     //TODO FIX PROPERLY NEEDS OVERHAUL OF SQL TOKENIZER
                     if ($d_cur_upper == 'SET' && $t_next != 'punct_bracket_open_round') {
                         $t_suffix = '_reservedWord';
                     }
                     //END OF TEMPORARY FIX
-    
+
                     // CHARACTER is a synonym for CHAR, but can also be meant as
                     // CHARACTER SET. In this case, we have a reserved word.
                     if ($d_cur_upper == 'CHARACTER' && $d_next_upper == 'SET') {
                         $t_suffix = '_reservedWord';
                     }
-    
+
                     // experimental
                     // current is a column type, so previous must not be
                     // a reserved word but an identifier
                     // CREATE TABLE SG_Persons (first varchar(64))
-    
+
                     //if ($sql_array[$i-1]['type'] =='alpha_reservedWord') {
                     //    $sql_array[$i-1]['type'] = 'alpha_identifier';
                     //}
-    
+
                 } elseif (PMA_STR_binarySearchInArr($d_cur_upper, $PMA_SQPdata_reserved_word, $PMA_SQPdata_reserved_word_cnt)) {
                     $t_suffix = '_reservedWord';
                 } elseif (PMA_STR_binarySearchInArr($d_cur_upper, $PMA_SQPdata_column_attrib, $PMA_SQPdata_column_attrib_cnt)) {
@@ -633,7 +633,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                     if ($d_cur_upper == 'INNODB' && $d_prev_upper == 'SHOW' && $d_next_upper == 'STATUS') {
                         $t_suffix = '_reservedWord';
                     }
-    
+
                     if ($d_cur_upper == 'DEFAULT' && $d_next_upper == 'CHARACTER') {
                         $t_suffix = '_reservedWord';
                     }
@@ -1022,16 +1022,10 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                         $identifier = $arr[$i]['data'];
                         break;
 
-                //TODO: check embedded double quotes or backticks?
-                // and/or remove just the first and last character?
                     case 'quote_backtick':
-                        $identifier = str_replace('`', '', $arr[$i]['data']);
-                        break;
                     case 'quote_double':
-                        $identifier = str_replace('"', '', $arr[$i]['data']);
-                        break;
                     case 'quote_single':
-                        $identifier = str_replace("'", "", $arr[$i]['data']);
+                        $identifier = PMA_unQuote($arr[$i]['data']);
                         break;
                 } // end switch
 
@@ -1518,7 +1512,12 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                $group_by_clause .= $arr[$i]['data'] . $sep;
            }
            if ($in_order_by && $upper_data != 'ORDER' && $upper_data != 'BY') {
-               $order_by_clause .= $arr[$i]['data'] . $sep;
+               // add a space only before ASC or DESC
+               // not around the dot between dbname and tablename
+               if ($arr[$i]['type'] == 'alpha_reservedWord') {
+                  $order_by_clause .= $sep;
+               }
+               $order_by_clause .= $arr[$i]['data'];
            }
            if ($in_having && $upper_data != 'HAVING') {
                $having_clause .= $arr[$i]['data'] . $sep;
@@ -1732,7 +1731,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
 
                 if ($arr[$i]['type'] == 'quote_backtick') {
                     // remove backquotes
-                    $identifier = str_replace('`', '', $arr[$i]['data']);
+                    $identifier = PMA_unQuote($arr[$i]['data']);
                 } else {
                     $identifier = $arr[$i]['data'];
                 }
@@ -2093,6 +2092,12 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                         $after     .= ' ';
                     }
                     // workaround for
+                    // AUTO_INCREMENT = 31DEFAULT_CHARSET = utf-8
+
+                    if ($typearr[2] == 'alpha_columnAttrib' && $typearr[3] == 'alpha_reservedWord') {
+                        $before .= ' ';
+                    }
+                    // workaround for
                     // select * from mysql.user where binary user="root"
                     // binary is marked as alpha_columnAttrib
                     // but should be marked as a reserved word
@@ -2210,7 +2215,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                 case 'alpha_variable':
                     // other workaround for a problem similar to the one
                     // explained below for quote_single
-                    if (!$in_priv_list) {
+                    if (!$in_priv_list && $typearr[3] != 'quote_backtick') {
                         $after      = ' ';
                     }
                     break;
@@ -2229,10 +2234,10 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                     }
                     break;
                 case 'quote_backtick':
-                    if ($typearr[3] != 'punct_qualifier') {
+                    if ($typearr[3] != 'punct_qualifier' && $typearr[3] != 'alpha_variable') {
                         $after     .= ' ';
                     }
-                    if ($typearr[1] != 'punct_qualifier') {
+                    if ($typearr[1] != 'punct_qualifier' && $typearr[1] != 'alpha_variable') {
                         $before    .= ' ';
                     }
                     break;

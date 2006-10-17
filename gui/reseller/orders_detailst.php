@@ -25,11 +25,9 @@ check_login();
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/orders_detailst.tpl');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('ip_entry', 'page');
 $tpl -> define_dynamic('page_message', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('VHCS - Reseller/Order details'),

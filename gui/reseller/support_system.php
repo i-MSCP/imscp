@@ -32,8 +32,6 @@ $tpl -> define_dynamic('tickets_list', 'page');
 
 $tpl -> define_dynamic('tickets_item', 'tickets_list');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('scroll_prev_gray', 'page');
 
 $tpl -> define_dynamic('scroll_prev', 'page');

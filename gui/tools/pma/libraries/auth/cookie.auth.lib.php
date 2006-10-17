@@ -1,5 +1,5 @@
 <?php
-/* $Id: cookie.auth.lib.php,v 2.55.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
+/* $Id: cookie.auth.lib.php,v 2.67.2.1 2006/08/21 11:54:55 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -19,25 +19,10 @@ $current_time  = time();
 // Uses faster mcrypt library if available
 // (Note: mcrypt.lib.php needs $cookie_path and $is_https)
 if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
-    require_once('./libraries/mcrypt.lib.php');
+    require_once './libraries/mcrypt.lib.php';
 } else {
-    require_once('./libraries/blowfish.php');
+    require_once './libraries/blowfish.php';
 }
-
-/**
- * Sorts available languages by their true names
- *
- * @param   array   the array to be sorted
- * @param   mixed   a required parameter
- *
- * @return  the sorted array
- *
- * @access  private
- */
-function PMA_cookie_cmp(&$a, $b)
-{
-    return (strcmp($a[1], $b[1]));
-} // end of the 'PMA_cmp()' function
 
 
 /**
@@ -101,7 +86,7 @@ function PMA_auth()
 
     /* HTML header */
     $page_title = 'phpMyAdmin ' . PMA_VERSION;
-    require('./libraries/header_meta_style.inc.php');
+    require './libraries/header_meta_style.inc.php';
     ?>
 <script type="text/javascript" language="javascript">
 //<![CDATA[
@@ -115,8 +100,12 @@ if (top != self) {
 
 <body class="loginform">
 
-<?php require('./libraries/header_custom.inc.php'); ?>
+<?php if (file_exists('./config.header.inc.php')) {
+          require('./config.header.inc.php');
+      } 
+?>
 
+<div class="container">
 <a href="http://www.phpmyadmin.net" target="_blank" class="logo"><?php
     $logo_image = $GLOBALS['pmaThemeImage'] . 'logo_right.png';
     if (@file_exists($logo_image)) {
@@ -143,8 +132,8 @@ echo sprintf( $GLOBALS['strWelcome'],
     // Displays the languages form
     if (empty($cfg['Lang'])) {
         echo "\n";
-        require_once('./libraries/display_select_lang.lib.php');
-        PMA_select_language(TRUE);
+        require_once './libraries/display_select_lang.lib.php';
+        PMA_select_language(true);
     }
     echo "\n\n";
 
@@ -156,7 +145,11 @@ echo sprintf( $GLOBALS['strWelcome'],
             <?php echo $GLOBALS['strSecretRequired']; ?>
         </div>
 <?php
-        require('./libraries/footer_custom.inc.php');
+        echo '</div>' . "\n";
+        if (file_exists('./config.footer.inc.php')) {
+            require('./config.footer.inc.php');
+        }
+
         echo '    </body>' . "\n"
            . '</html>';
         exit();
@@ -196,8 +189,8 @@ echo sprintf( $GLOBALS['strWelcome'],
             ?>
             >
         <?php
-        require_once('./libraries/select_server.lib.php');
-        PMA_select_server(FALSE, FALSE);
+        require_once './libraries/select_server.lib.php';
+        PMA_select_server(false, false);
         ?>
             </select>
         </div>
@@ -212,22 +205,25 @@ echo sprintf( $GLOBALS['strWelcome'],
         <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
         <input type="hidden" name="convcharset" value="<?php echo $convcharset; ?>" />
     <?php
-    if (isset($GLOBALS['target'])) {
+    if (!empty($GLOBALS['target'])) {
         echo '            <input type="hidden" name="target" value="' . htmlspecialchars($GLOBALS['target']) . '" />' . "\n";
     }
-    if (isset($GLOBALS['db'])) {
+    if (!empty($GLOBALS['db'])) {
         echo '            <input type="hidden" name="db" value="' . htmlspecialchars($GLOBALS['db']) . '" />' . "\n";
     }
-    if (isset($GLOBALS['table'])) {
+    if (!empty($GLOBALS['table'])) {
         echo '            <input type="hidden" name="table" value="' . htmlspecialchars($GLOBALS['table']) . '" />' . "\n";
     }
     ?>
     </fieldset>
 </form>
 
-<div class="notice"><?php echo $GLOBALS['strCookiesRequired']; ?></div>
-
 <?php
+// show the "Cookies required" message only if cookies are disabled
+// (we previously tried to set some cookies)
+if (empty($_COOKIE)) {
+    echo '<div class="notice">' . $GLOBALS['strCookiesRequired'] . '</div>' . "\n";
+}
 if ( ! empty( $GLOBALS['PMA_errors'] ) && is_array( $GLOBALS['PMA_errors'] ) ) {
     foreach ( $GLOBALS['PMA_errors'] as $error ) {
         echo '<div class="error">' . $error . '</div>' . "\n";
@@ -246,8 +242,12 @@ if (uname.value == '') {
 }
 //-->
 </script>
+</div>
 
-<?php require('./libraries/footer_custom.inc.php'); ?>
+<?php if (file_exists('./config.footer.inc.php')) {
+         require('./config.footer.inc.php');
+      }
+ ?>
 
 </body>
 
@@ -255,7 +255,7 @@ if (uname.value == '') {
     <?php
     exit();
 
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth()' function
 
 
@@ -285,17 +285,23 @@ function PMA_auth_check()
 
     // avoid an error in mcrypt
     if (empty($GLOBALS['cfg']['blowfish_secret'])) {
-        return FALSE;
+        return false;
     }
 
     // Initialization
     $PHP_AUTH_USER = $PHP_AUTH_PW = '';
-    $from_cookie   = FALSE;
-    $from_form     = FALSE;
+    $from_cookie   = false;
+    $from_form     = false;
 
-    // The user wants to be logged out -> delete password cookie
+    // The user wants to be logged out -> delete password cookie(s)
     if (!empty($old_usr)) {
-        setcookie('pma_cookie_password-' . $server, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+        if ($GLOBALS['cfg']['LoginCookieDeleteAll']) {
+            foreach($GLOBALS['cfg']['Servers'] as $key => $val) {
+                setcookie('pma_cookie_password-' . $key, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+            }
+        } else {
+            setcookie('pma_cookie_password-' . $server, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+        }
     }
 
     // The user just logged in
@@ -305,7 +311,7 @@ function PMA_auth_check()
         if ($GLOBALS['cfg']['AllowArbitraryServer']) {
             $pma_auth_server = $pma_servername;
         }
-        $from_form     = TRUE;
+        $from_form     = true;
     }
 
     // At the end, try to set the $PHP_AUTH_USER & $PHP_AUTH_PW variables
@@ -316,17 +322,17 @@ function PMA_auth_check()
             // servername
             if (!empty($pma_cookie_servername)) {
                 $pma_auth_server = $pma_cookie_servername;
-                $from_cookie   = TRUE;
+                $from_cookie   = true;
             } elseif (!empty($_COOKIE) && isset($_COOKIE['pma_cookie_servername-' . $server])) {
                 $pma_auth_server = $_COOKIE['pma_cookie_servername-' . $server];
-                $from_cookie   = TRUE;
+                $from_cookie   = true;
             }
         }
 
         // username
         if (!empty($_COOKIE) && isset($_COOKIE['pma_cookie_username-' . $server])) {
             $PHP_AUTH_USER = $_COOKIE['pma_cookie_username-' . $server];
-            $from_cookie   = TRUE;
+            $from_cookie   = true;
         }
         $decrypted_user = PMA_blowfish_decrypt($PHP_AUTH_USER, $GLOBALS['cfg']['blowfish_secret']);
         if (!empty($decrypted_user)) {
@@ -344,10 +350,10 @@ function PMA_auth_check()
             // alerting users with a error after "much" time has passed,
             // for example next morning.
             if ($decrypted_time > $GLOBALS['current_time'] - ($GLOBALS['cfg']['LoginCookieValidity'] * 4)) {
-                $GLOBALS['no_activity'] = TRUE;
+                $GLOBALS['no_activity'] = true;
                 PMA_auth_fails();
             }
-            return FALSE;
+            return false;
         }
 
         // password
@@ -356,7 +362,7 @@ function PMA_auth_check()
         } elseif (!empty($_COOKIE) && isset($_COOKIE['pma_cookie_password-' . $server])) {
             $PHP_AUTH_PW   = $_COOKIE['pma_cookie_password-' . $server];
         } else {
-            $from_cookie   = FALSE;
+            $from_cookie   = false;
         }
         $PHP_AUTH_PW = PMA_blowfish_decrypt($PHP_AUTH_PW, $GLOBALS['cfg']['blowfish_secret'] . $decrypted_time);
 
@@ -367,12 +373,12 @@ function PMA_auth_check()
 
     // Returns whether we get authentication settings or not
     if (!$from_cookie && !$from_form) {
-        return FALSE;
+        return false;
     } elseif ($from_cookie) {
-        return TRUE;
+        return true;
     } else {
         // we don't need to strip here, it is done in grab_globals
-        return TRUE;
+        return true;
     }
 } // end of the 'PMA_auth_check()' function
 
@@ -412,13 +418,13 @@ function PMA_auth_set_user()
         } // end for
     } // end if
 
-    $pma_server_changed = FALSE;
+    $pma_server_changed = false;
     if ($GLOBALS['cfg']['AllowArbitraryServer']
             && isset($pma_auth_server) && !empty($pma_auth_server)
             && ($cfg['Server']['host'] != $pma_auth_server)
             ) {
         $cfg['Server']['host'] = $pma_auth_server;
-        $pma_server_changed = TRUE;
+        $pma_server_changed = true;
     }
     $cfg['Server']['user']     = $PHP_AUTH_USER;
     $cfg['Server']['password'] = $PHP_AUTH_PW;
@@ -436,7 +442,7 @@ function PMA_auth_set_user()
     setcookie('pma_cookie_password-' . $server,
         PMA_blowfish_encrypt(!empty($cfg['Server']['password']) ? $cfg['Server']['password'] : "\xff(blank)",
             $GLOBALS['cfg']['blowfish_secret'] . $GLOBALS['current_time']),
-        0,
+        $GLOBALS['cfg']['LoginCookieStore'],
         $GLOBALS['cookie_path'], '',
         $GLOBALS['is_https']);
 
@@ -477,11 +483,12 @@ function PMA_auth_set_user()
             $url_params['target'] = $GLOBALS['target'];
         }
 
+        define('PMA_COMING_FROM_COOKIE_LOGIN',1);
         PMA_sendHeaderLocation( $redirect_url . PMA_generate_common_url( $url_params, '&' ) );
         exit();
     } // end if
 
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth_set_user()' function
 
 
@@ -494,7 +501,7 @@ function PMA_auth_set_user()
  */
 function PMA_auth_fails()
 {
-global $conn_error, $server;
+    global $conn_error, $server;
 
     // Deletes password cookie and displays the login form
     setcookie('pma_cookie_password-' . $server, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
@@ -517,7 +524,7 @@ global $conn_error, $server;
 
     PMA_auth();
 
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth_fails()' function
 
 ?>

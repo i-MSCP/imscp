@@ -1,5 +1,5 @@
 <?
-$allow_user_change_theme			= yes;
+$allow_user_change_theme			= no;
 $default_theme						= 'modern_blue';
 $allow_user_change_language			= yes; 
 $default_language					= 'en';

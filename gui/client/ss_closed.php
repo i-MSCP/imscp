@@ -26,7 +26,6 @@ $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('tickets_list', 'page');
 $tpl -> define_dynamic('tickets_item', 'tickets_list');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('scroll_prev_gray', 'page');
 $tpl -> define_dynamic('scroll_prev', 'page');
 $tpl -> define_dynamic('scroll_next_gray', 'page');
@@ -130,8 +129,7 @@ SQL_QUERY;
 
     global $i;
 
-    $ticket_id  = $rs -> fields['ticket_id'];
-    get_last_date($tpl, $sql, $ticket_id);
+    get_last_date($tpl, $sql, $rs -> fields['ticket_id']);
 
     while (!$rs -> EOF) {
       $ticket_urgency = $rs -> fields['ticket_urgency'];
@@ -150,7 +148,7 @@ SQL_QUERY;
       $tpl -> assign(array('NEW' => tr("&nbsp;")));
 
       $tpl -> assign(array('SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-                           'ID' => $ticket_id,
+                           'ID' => $rs -> fields['ticket_id'],
                            'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'));
 
       $tpl -> parse('TICKETS_ITEM', '.tickets_item');

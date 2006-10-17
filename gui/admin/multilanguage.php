@@ -58,7 +58,7 @@ function update_def_lang()
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'change_language') {
 
 
-	if(isset($_POST['default_language']) && $_POST['default_language'] != '') {
+	if(isset($_POST['default_language']) && !empty($_POST['default_language'])) {
 
         $user_id = $_SESSION['user_id'];
 

@@ -1,17 +1,22 @@
 <?php
-/* $Id: sql.php,v 2.83.2.7 2006/04/27 08:57:09 nijel Exp $ */
+/* $Id: sql.php,v 2.94 2006/05/30 15:24:10 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
+/**
+ * @todo    we must handle the case if sql.php is called directly with a query
+ *          what returns 0 rows - to prevent cyclic redirects or includes
+ */
 
 /**
  * Gets some core libraries
  */
 require_once './libraries/common.lib.php';
+require_once './libraries/Table.class.php';
 require_once './libraries/tbl_indexes.lib.php';
 require_once './libraries/check_user_privileges.lib.php';
 require_once './libraries/bookmark.lib.php';
 
 /**
- * Could be coming from a subform ("T" column expander) 
+ * Could be coming from a subform ("T" column expander)
  */
 if (isset($_REQUEST['dontlimitchars'])) {
     $dontlimitchars = $_REQUEST['dontlimitchars'];
@@ -50,11 +55,15 @@ if (isset($fields['dbase'])) {
     $db = $fields['dbase'];
 }
 
-// Default to browse if no query set an we have table (needed for browsing from DefaultTabTable)
-if (!isset($sql_query) && isset($table) && isset($db)) {
+// Default to browse if no query set an we have table
+// (needed for browsing from DefaultTabTable)
+if (! isset($sql_query) && isset($table) && isset($db)) {
     require_once './libraries/bookmark.lib.php';
-    $book_sql_query = PMA_queryBookmarks($db, $GLOBALS['cfg']['Bookmark'], '\'' . PMA_sqlAddslashes($table) . '\'', 'label');
-    if (!empty($book_sql_query)) {
+    $book_sql_query = PMA_queryBookmarks($db,
+        $GLOBALS['cfg']['Bookmark'], '\'' . PMA_sqlAddslashes($table) . '\'',
+        'label');
+
+    if (! empty($book_sql_query)) {
         $sql_query = $book_sql_query;
     } else {
         $sql_query = 'SELECT * FROM ' . PMA_backquote($table);
@@ -93,7 +102,7 @@ if (!defined('PMA_CHK_DROP')
  */
 
 if (isset($find_real_end) && $find_real_end) {
-    $unlim_num_rows = PMA_countRecords($db, $table, true, true);
+    $unlim_num_rows = PMA_Table::countRecords($db, $table, true, true);
     $pos = @((ceil($unlim_num_rows / $session_max_rows) - 1) * $session_max_rows);
 }
 /**
@@ -423,7 +432,7 @@ else {
         // This could happen if the user sends a query like "USE `database`;"
         $res = PMA_DBI_query('SELECT DATABASE() AS \'db\';');
         $row = PMA_DBI_fetch_row($res);
-        if (is_array($row) && isset($row[0]) && (strcasecmp($db, $row[0]) != 0)) {
+        if (isset($db) && is_array($row) && isset($row[0]) && (strcasecmp($db, $row[0]) != 0)) {
             $db     = $row[0];
             $reload = 1;
         }
@@ -466,7 +475,7 @@ else {
                  ) {
 
                     // "j u s t   b r o w s i n g"
-                    $unlim_num_rows = PMA_countRecords($db, $table, true);
+                    $unlim_num_rows = PMA_Table::countRecords($db, $table, true);
 
                 } else { // n o t   " j u s t   b r o w s i n g "
 
@@ -511,6 +520,11 @@ else {
                             $count_query .= ' SQL_CALC_FOUND_ROWS ';
                             // add everything that was after the first SELECT
                             $count_query .= PMA_SQP_formatHtml($parsed_sql, 'query_only', $analyzed_sql[0]['position_of_first_select']+1);
+                            // ensure there is no semicolon at the end of the 
+                            // count query because we'll probably add
+                            // a LIMIT 1 clause after it
+                            $count_query = rtrim($count_query);
+                            $count_query = rtrim($count_query, ';');
                     } else { // PMA_MYSQL_INT_VERSION < 40000
 
                         if (!empty($analyzed_sql[0]['from_clause'])) {
@@ -651,42 +665,23 @@ else {
         if ($is_gotofile) {
             $goto = PMA_securePath($goto);
             // Checks for a valid target script
-            if (isset($table) && $table == '') {
-                unset($table);
-            }
-            if (isset($db) && $db == '') {
-                unset($db);
-            }
             $is_db = $is_table = false;
-            if (strpos(' ' . $goto, 'tbl_properties') == 1) {
-                if (!isset($table)) {
-                    $goto = 'db_details.php';
-                } else {
-                    $is_table = @PMA_DBI_query('SHOW TABLES LIKE \'' . PMA_sqlAddslashes($table, true) . '\';', null, PMA_DBI_QUERY_STORE);
-                    if (!($is_table && @PMA_DBI_num_rows($is_table))) {
-                        $goto = 'db_details.php';
-                        unset($table);
-                    }
-                    @PMA_DBI_free_result($is_table);
-                } // end if... else...
-            }
-            if (strpos(' ' . $goto, 'db_details') == 1) {
+            include 'libraries/db_table_exists.lib.php';
+            if (strpos($goto, 'tbl_properties') === 0 && ! $is_table) {
                 if (isset($table)) {
                     unset($table);
                 }
-                if (!isset($db)) {
-                    $goto = 'main.php';
-                } else {
-                    $is_db    = @PMA_DBI_select_db($db);
-                    if (!$is_db) {
-                        $goto = 'main.php';
-                        unset($db);
-                    }
-                } // end if... else...
+                $goto = 'db_details.php';
+            }
+            if (strpos($goto, 'db_details') === 0 && ! $is_db) {
+                if (isset($db)) {
+                    unset($db);
+                }
+                $goto = 'main.php';
             }
             // Loads to target script
-            if (strpos(' ' . $goto, 'db_details') == 1
-                || strpos(' ' . $goto, 'tbl_properties') == 1) {
+            if (strpos($goto, 'db_details') === 0
+             || strpos($goto, 'tbl_properties') === 0) {
                 $js_to_run = 'functions.js';
             }
             if ($goto != 'main.php') {
@@ -786,88 +781,6 @@ else {
             }
         } // End INDEX CHECK
 
-        if ($disp_mode[6] == '1' || $disp_mode[9] == '1') {
-            echo "\n";
-            echo '<hr />' . "\n";
-
-            // Displays "Insert a new row" link if required
-            if ($disp_mode[6] == '1') {
-                $lnk_goto  = 'sql.php?'
-                           . PMA_generate_common_url($db, $table)
-                           . '&amp;pos=' . $pos
-                           . '&amp;session_max_rows=' . $session_max_rows
-                           . '&amp;disp_direction=' . $disp_direction
-                           . '&amp;repeat_cells=' . $repeat_cells
-                           . '&amp;dontlimitchars=' . $dontlimitchars
-                           . '&amp;sql_query=' . urlencode($sql_query);
-                $url_query = '?'
-                           . PMA_generate_common_url($db, $table)
-                           . '&amp;pos=' . $pos
-                           . '&amp;session_max_rows=' . $session_max_rows
-                           . '&amp;disp_direction=' . $disp_direction
-                           . '&amp;repeat_cells=' . $repeat_cells
-                           . '&amp;dontlimitchars=' . $dontlimitchars
-                           . '&amp;sql_query=' . urlencode($sql_query)
-                           . '&amp;goto=' . urlencode($lnk_goto);
-
-                echo '    <!-- Insert a new row -->' . "\n";
-                echo PMA_linkOrButton(
-                    'tbl_change.php' . $url_query,
-                    ($cfg['PropertiesIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 'b_insrow.png" height="16" width="16" alt="' . $strInsertNewRow . '"/>' : '') . $strInsertNewRow,
-                    '', true, true, '') . "\n";
-
-                if ($disp_mode[9] == '1') {
-                    echo '&nbsp;&nbsp;';
-                }
-                echo "\n";
-            } // end insert new row
-
-            // Displays "printable view" link if required
-            if ($disp_mode[9] == '1') {
-                $url_query = '?'
-                           . PMA_generate_common_url($db, $table)
-                           . '&amp;pos=' . $pos
-                           . '&amp;session_max_rows=' . $session_max_rows
-                           . '&amp;disp_direction=' . $disp_direction
-                           . '&amp;repeat_cells=' . $repeat_cells
-                           . '&amp;printview=1'
-                           . '&amp;sql_query=' . urlencode($sql_query);
-                echo '    <!-- Print view -->' . "\n";
-                echo PMA_linkOrButton(
-                    'sql.php' . $url_query . ((isset($dontlimitchars) && $dontlimitchars == '1') ? '&amp;dontlimitchars=1' : ''),
-                    ($cfg['PropertiesIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 'b_print.png" height="16" width="16" alt="' . $strPrintView . '"/>' : '') . $strPrintView,
-                    '', true, true, 'print_view') . "\n";
-
-                if (!$dontlimitchars) {
-                    echo   '    &nbsp;&nbsp;' . "\n";
-                    echo PMA_linkOrButton(
-                        'sql.php' . $url_query . '&amp;dontlimitchars=1',
-                        ($cfg['PropertiesIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 'b_print.png" height="16" width="16" alt="' . $strPrintViewFull . '"/>' : '') . $strPrintViewFull,
-                        '', true, true, 'print_view') . "\n";
-                }
-            } // end displays "printable view"
-
-            echo "\n";
-        }
-
-        // Export link
-        // (the url_query has extra parameters that won't be used to export)
-        // (the single_table parameter is used in display_export.lib.php
-        //  to hide the SQL and the structure export dialogs)
-        if (isset($analyzed_sql[0]) && $analyzed_sql[0]['querytype'] == 'SELECT' && !isset($printview)) {
-            if (isset($analyzed_sql[0]['table_ref'][0]['table_true_name']) && !isset($analyzed_sql[0]['table_ref'][1]['table_true_name'])) {
-                $single_table   = '&amp;single_table=true';
-            } else {
-                $single_table   = '';
-            }
-            echo '    <!-- Export -->' . "\n";
-            echo   '    &nbsp;&nbsp;' . "\n";
-            echo PMA_linkOrButton(
-                'tbl_properties_export.php' . $url_query . '&amp;unlim_num_rows=' . $unlim_num_rows . $single_table,
-                ($cfg['PropertiesIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 'b_tblexport.png" height="16" width="16" alt="' . $strExport . '" />' : '') . $strExport,
-                '', true, true, '') . "\n";
-        }
-
         // Bookmark Support if required
         if ($disp_mode[7] == '1'
             && (isset($cfg['Bookmark']) && $cfg['Bookmark']['db'] && $cfg['Bookmark']['table'] && empty($id_bookmark))
@@ -884,11 +797,6 @@ else {
                   . '&amp;sql_query=' . urlencode($sql_query)
                   . '&amp;id_bookmark=1';
 
-            if ($disp_mode[3] == '1') {
-                echo '    <i>' . $strOr . '</i>';
-            } else {
-                echo '<br /><br />';
-            }
             ?>
 <form action="sql.php" method="post" onsubmit="return emptyFormElements(this, 'fields[label]');">
 <?php echo PMA_generate_common_hidden_inputs(); ?>

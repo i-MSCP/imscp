@@ -15,9 +15,9 @@
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 define('IN_PHPSYSINFO', true);
-require_once('../include/class.error.inc.php');
-require_once('../include/common_functions.php');
-require_once('../include/class.' . PHP_OS . '.inc.php' );
+require_once('../include/phpsysinfo/class.error.inc.php');
+require_once('../include/phpsysinfo/common_functions.php');
+require_once('../include/phpsysinfo/class.' . PHP_OS . '.inc.php' );
 $sysinfo = new sysinfo;
 $error = new error;
 

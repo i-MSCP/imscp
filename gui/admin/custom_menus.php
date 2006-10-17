@@ -46,7 +46,12 @@ SQL_QUERY;
 		$menu_name = $rs -> fields['menu_name'];
 		$menu_link = $rs -> fields['menu_link'];
 
-		if ($menu_level === 'reseller'){
+		
+		if ($menu_level === 'admin'){
+
+			$menu_level = tr('Administrator');
+
+		} else if ($menu_level === 'reseller'){
 
 			$menu_level = tr('Reseller');
 
@@ -91,13 +96,13 @@ function add_new_button(&$tpl, &$sql)
 
 	else {
 
-		$button_name = htmlspecialchars($_POST['bname'], ENT_QUOTES, "UTF-8");
-		$button_link = htmlspecialchars($_POST['blink'], ENT_QUOTES, "UTF-8");
-		$button_target = htmlspecialchars($_POST['btarget'], ENT_QUOTES, "UTF-8");
-		$button_view = htmlspecialchars($_POST['bview'], ENT_QUOTES, "UTF-8");
+		$button_name = clean_input($_POST['bname']);
+		$button_link = clean_input($_POST['blink']);
+		$button_target = clean_input($_POST['btarget']);
+		$button_view = $_POST['bview'];
 
 
-		if ($button_name === '' || $button_link === ''){
+		if (empty($button_name) || empty($button_link)){
 
 			set_page_message(tr('Missing or incorrect data input!'));
 			return;
@@ -192,17 +197,26 @@ SQL_QUERY;
 			$button_target =  $rs -> fields['menu_target'];
 			$button_view = $rs -> fields['menu_level'];
 
-			if ($button_view === 'reseller'){
+			if ($button_view === 'admin'){
+				$admin_view = "selected";
+				$reseller_view = "";
+				$user_view = "";
+				$all_view = "";
+
+			} else if ($button_view === 'reseller'){
+				$admin_view = "";
 				$reseller_view = "selected";
 				$user_view = "";
 				$all_view = "";
 
 			} else if ($button_view === 'user'){
+				$admin_view = "";
 				$reseller_view = "";
 				$user_view = "selected";
 				$all_view = "";
 
 			} else {
+				$admin_view = "";
 				$reseller_view = "";
 				$user_view = "";
 				$all_view = "selected";
@@ -214,6 +228,7 @@ SQL_QUERY;
                                     'BUTON_NAME' => $button_name,
 									'BUTON_LINK' => $button_link,
 									'BUTON_TARGET' => $button_target,
+									'ADMIN_VIEW' => $admin_view,
 									'RESELLER_VIEW' => $reseller_view,
 									'USER_VIEW' => $user_view,
 									'ALL_VIEW' => $all_view,
@@ -236,13 +251,13 @@ function update_button(&$tpl, &$sql)
 
 	else {
 
-		$button_name = $_POST['bname'];
-		$button_link = $_POST['blink'];
-		$button_target = $_POST['btarget'];
+		$button_name = clean_input($_POST['bname']);
+		$button_link = clean_input($_POST['blink']);
+		$button_target = clean_input($_POST['btarget']);
 		$button_view = $_POST['bview'];
-		$button_id = $_POST['eid'];
+		$button_id =$_POST['eid'];
 
-			if ($button_name === '' || $button_link === '' || $button_id === ''){
+			if (empty($button_name) || empty($button_link) || empty($button_id)){
 
 				set_page_message(tr('Missing or incorrect data input!'));
 				return;
@@ -333,6 +348,7 @@ $tpl -> assign(
 		'TR_BUTTON_LINK' => tr('Button link'),
 		'TR_BUTTON_TARGET' => tr('Button target'),
 		'TR_VIEW_FROM' => tr('Show in'),
+		'ADMIN' => tr('Administrator level'),
 		'RESELLER' => tr('Reseller level'),
 		'USER' => tr('Enduser level'),
 		'RESSELER_AND_USER' => tr('Reseller and enduser level'),

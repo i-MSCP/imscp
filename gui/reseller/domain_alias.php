@@ -32,15 +32,12 @@ $tpl -> define_dynamic('table_list', 'page');
 
 $tpl -> define_dynamic('table_item', 'table_list');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('scroll_prev', 'page');
 
 $tpl -> define_dynamic('scroll_next_gray', 'page');
 
 $tpl -> define_dynamic('scroll_next', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -108,8 +105,9 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err)
 	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
 
 	$current_psi = 0;
-	$search_for = '';
+	$_SESSION['search_for'] = '';
 	$search_common = '';
+	$search_for = '';
 
 	if (isset($_GET['psi'])) {
 		$start_index = $_GET['psi'];
@@ -118,9 +116,9 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err)
 
 
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] !== '') {
+	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 
-			$_SESSION['search_for'] = trim($_POST['search_for']);
+			$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 
 			$_SESSION['search_common'] = $_POST['search_common'];
 
@@ -142,14 +140,15 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err)
 	$tpl -> assign(
                 array(
 						'PSI' => $current_psi,
-						'SEARCH_FOR' => $search_for,
+						'SEARCH_FOR' => stripslashes($search_for),
 						'TR_SEARCH' => tr('Search'),
 						'M_ALIAS_NAME' => tr('Alias name'),
 						'M_ACCOUNT_NAME' => tr('Account name'),
                      )
               );
 
-	if (isset($search_for) && $search_for != '') {
+	if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
+
 		if (isset($search_common) && $search_common == 'alias_name'){
 
 			$query = <<<SQL_QUERY

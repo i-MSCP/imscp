@@ -25,7 +25,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/sql_change_password.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 if (isset($_GET['id'])) {
   $db_user_id = $_GET['id'];
@@ -56,6 +55,11 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name)
 
   if (strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH']) {
     set_page_message(tr('Too long user password!'));
+    return;
+  }
+
+	if (chk_password($_POST['pass'])) {
+  	set_page_message( tr("Incorrect password range or syntax!"));
     return;
   }
 

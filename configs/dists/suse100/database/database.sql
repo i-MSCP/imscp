@@ -3,14 +3,14 @@ create database {DATABASE_NAME};
 use {DATABASE_NAME};
 
 # VHCS(tm) - Virtual Hosting Control System
-# (c) 2001-2005 moleSoftware
+# (c) 2001-2006 moleSoftware
 # http://vhcs.net | http://www.molesoftware.com
 # All rights reserved
 #
 # Datenbank: `vhcs_pro_dev`
 # --------------------------------------------------------
 #
-# Tabellenstruktur fï¿½r Tabelle `admin`
+# Tabellenstruktur für Tabelle `admin`
 #
 
 CREATE TABLE `admin` (
@@ -33,16 +33,15 @@ CREATE TABLE `admin` (
   `street1` varchar(200) default NULL,
   `street2` varchar(200) default NULL,
   `uniqkey` varchar(255) default NULL,
-	`uniqkey_time` TIMESTAMP NULL,
-	UNIQUE KEY `admin_id` (`admin_id`),
+  `uniqkey_time` TIMESTAMP NULL,
+  UNIQUE KEY `admin_id` (`admin_id`),
   UNIQUE KEY `admin_name` (`admin_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=1;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `admin`
+# Daten für Tabelle `admin`
 #
 
-# INSERT INTO `admin` VALUES (1, 'admin', 'nv1irO7LNuRoY', 'admin', 0, NULL, 1, 'Alexander', 'Kotov', 'moleSoftware GmbH', '80686', 'Mï¿½nchen', 'Germany', 'alex@molesoftware.com', '+49 89 215 80 394', '+49 89 215 80 395', 'Fï¿½rstenrieder Str 133', '');
 
 # --------------------------------------------------------
 
@@ -69,14 +68,14 @@ CREATE TABLE `orders` (
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `orders`
+# Daten für Tabelle `orders`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `orders_settings`
+# Tabellenstruktur für Tabelle `orders_settings`
 #
 
 CREATE TABLE `orders_settings` (
@@ -88,14 +87,14 @@ CREATE TABLE `orders_settings` (
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `orders_settings`
+# Daten für Tabelle `orders_settings`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `custom_menus`
+# Tabellenstruktur für Tabelle `custom_menus`
 #
 
 CREATE TABLE `custom_menus` (
@@ -108,14 +107,14 @@ CREATE TABLE `custom_menus` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `custom_menus`
+# Daten für Tabelle `custom_menus`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `domain`
+# Tabellenstruktur für Tabelle `domain`
 #
 
 CREATE TABLE `domain` (
@@ -146,14 +145,14 @@ CREATE TABLE `domain` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `domain`
+# Daten für Tabelle `domain`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `domain_aliasses`
+# Tabellenstruktur für Tabelle `domain_aliasses`
 #
 
 CREATE TABLE `domain_aliasses` (
@@ -168,14 +167,14 @@ CREATE TABLE `domain_aliasses` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `domain_aliasses`
+# Daten für Tabelle `domain_aliasses`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `domain_props`
+# Tabellenstruktur für Tabelle `domain_props`
 #
 
 CREATE TABLE `domain_props` (
@@ -195,14 +194,14 @@ CREATE TABLE `domain_props` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `domain_props`
+# Daten für Tabelle `domain_props`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `domain_traffic`
+# Tabellenstruktur für Tabelle `domain_traffic`
 #
 
 CREATE TABLE `domain_traffic` (
@@ -214,18 +213,19 @@ CREATE TABLE `domain_traffic` (
   `dtraff_mail` int(10) unsigned default NULL,
   `dtraff_pop` int(10) unsigned default NULL,
   PRIMARY KEY  (`dtraff_id`),
-  KEY `i_domain_traffic_domain_id` (`domain_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+  KEY `i_domain_traffic_domain_id` (`domain_id`),
+  KEY `dtraff_time` (`dtraff_time`)
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 #
-# Daten fï¿½r Tabelle `domain_traffic`
+# Daten für Tabelle `domain_traffic`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `email_tpls`
+# Tabellenstruktur für Tabelle `email_tpls`
 #
 
 CREATE TABLE `email_tpls` (
@@ -238,14 +238,14 @@ CREATE TABLE `email_tpls` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `email_tpls`
+# Daten für Tabelle `email_tpls`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `error_pages`
+# Tabellenstruktur für Tabelle `error_pages`
 #
 
 CREATE TABLE `error_pages` (
@@ -259,14 +259,14 @@ CREATE TABLE `error_pages` (
 ) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
 #
-# Daten fï¿½r Tabelle `error_pages`
+# Daten für Tabelle `error_pages`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `ftp_group`
+# Tabellenstruktur für Tabelle `ftp_group`
 #
 
 CREATE TABLE `ftp_group` (
@@ -276,14 +276,14 @@ CREATE TABLE `ftp_group` (
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `ftp_group`
+# Daten für Tabelle `ftp_group`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `hosting_plans`
+# Tabellenstruktur für Tabelle `hosting_plans`
 #
 
 CREATE TABLE `hosting_plans` (
@@ -301,14 +301,14 @@ CREATE TABLE `hosting_plans` (
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `hosting_plans`
+# Daten für Tabelle `hosting_plans`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `log`
+# Tabellenstruktur für Tabelle `log`
 #
 
 CREATE TABLE `log` (
@@ -319,33 +319,33 @@ CREATE TABLE `log` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `log`
+# Daten für Tabelle `log`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `login`
+# Tabellenstruktur für Tabelle `login`
 #
 
 CREATE TABLE `login` (
   `session_id` varchar(200) default NULL,
-	`ipaddr` varchar(15) default NULL,
+  `ipaddr` varchar(15) default NULL,
   `lastaccess` int(10) unsigned default NULL,
   `user_name` varchar(255) default NULL,
-	`login_count` tinyint(1) default NULL
+  `login_count` tinyint(1) default NULL
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `login`
+# Daten für Tabelle `login`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `mail_users`
+# Tabellenstruktur für Tabelle `mail_users`
 #
 
 CREATE TABLE `mail_users` (
@@ -362,14 +362,14 @@ CREATE TABLE `mail_users` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `mail_users`
+# Daten für Tabelle `mail_users`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `reseller_props`
+# Tabellenstruktur für Tabelle `reseller_props`
 #
 
 CREATE TABLE `reseller_props` (
@@ -399,14 +399,14 @@ CREATE TABLE `reseller_props` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `reseller_props`
+# Daten für Tabelle `reseller_props`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `server_ips`
+# Tabellenstruktur für Tabelle `server_ips`
 #
 
 CREATE TABLE `server_ips` (
@@ -418,13 +418,13 @@ CREATE TABLE `server_ips` (
 ) TYPE=MyISAM AUTO_INCREMENT=8 ;
 
 #
-# Daten fï¿½r Tabelle `server_ips`
+# Daten für Tabelle `server_ips`
 #
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `server_traffic`
+# Tabellenstruktur für Tabelle `server_traffic`
 #
 
 CREATE TABLE `server_traffic` (
@@ -438,18 +438,19 @@ CREATE TABLE `server_traffic` (
   `bytes_pop_out` int(10) unsigned default NULL,
   `bytes_web_in` int(10) unsigned default NULL,
   `bytes_web_out` int(10) unsigned default NULL,
-  PRIMARY KEY  (`straff_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+  PRIMARY KEY  (`straff_id`),
+  KEY `traff_time` (`traff_time`)
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 #
-# Daten fï¿½r Tabelle `server_traffic`
+# Daten für Tabelle `server_traffic`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `sql_database`
+# Tabellenstruktur für Tabelle `sql_database`
 #
 
 CREATE TABLE `sql_database` (
@@ -460,14 +461,14 @@ CREATE TABLE `sql_database` (
 ) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
 #
-# Daten fï¿½r Tabelle `sql_database`
+# Daten für Tabelle `sql_database`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `sql_user`
+# Tabellenstruktur für Tabelle `sql_user`
 #
 
 CREATE TABLE `sql_user` (
@@ -479,14 +480,14 @@ CREATE TABLE `sql_user` (
 ) TYPE=MyISAM AUTO_INCREMENT=2 ;
 
 #
-# Daten fï¿½r Tabelle `sql_user`
+# Daten für Tabelle `sql_user`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `straff_settings`
+# Tabellenstruktur für Tabelle `straff_settings`
 #
 
 CREATE TABLE `straff_settings` (
@@ -496,7 +497,7 @@ CREATE TABLE `straff_settings` (
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `straff_settings`
+# Daten für Tabelle `straff_settings`
 #
 
 INSERT INTO `straff_settings` VALUES (0, 0, 0);
@@ -504,7 +505,7 @@ INSERT INTO `straff_settings` VALUES (0, 0, 0);
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `subdomain`
+# Tabellenstruktur für Tabelle `subdomain`
 #
 
 CREATE TABLE `subdomain` (
@@ -517,14 +518,14 @@ CREATE TABLE `subdomain` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `subdomain`
+# Daten für Tabelle `subdomain`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `suexec_props`
+# Tabellenstruktur für Tabelle `suexec_props`
 #
 
 CREATE TABLE `suexec_props` (
@@ -538,7 +539,7 @@ CREATE TABLE `suexec_props` (
 ) TYPE=MyISAM AUTO_INCREMENT=2 ;
 
 #
-# Daten fï¿½r Tabelle `suexec_props`
+# Daten für Tabelle `suexec_props`
 #
 
 #INSERT INTO `suexec_props` VALUES (1, 3001, 3001, 'vhcs0001', 'vhcs0001');
@@ -546,7 +547,7 @@ CREATE TABLE `suexec_props` (
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `syslog`
+# Tabellenstruktur für Tabelle `syslog`
 #
 
 CREATE TABLE `syslog` (
@@ -560,14 +561,14 @@ CREATE TABLE `syslog` (
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten fï¿½r Tabelle `syslog`
+# Daten für Tabelle `syslog`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `tickets`
+# Tabellenstruktur für Tabelle `tickets`
 #
 
 CREATE TABLE `tickets` (
@@ -585,14 +586,14 @@ CREATE TABLE `tickets` (
 ) TYPE=MyISAM AUTO_INCREMENT=2 ;
 
 #
-# Daten fï¿½r Tabelle `tickets`
+# Daten für Tabelle `tickets`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `user_gui_props`
+# Tabellenstruktur für Tabelle `user_gui_props`
 #
 
 CREATE TABLE `user_gui_props` (
@@ -605,7 +606,7 @@ CREATE TABLE `user_gui_props` (
 ) TYPE=MyISAM AUTO_INCREMENT=66 ;
 
 #
-# Daten fï¿½r Tabelle `user_gui_props`
+# Daten für Tabelle `user_gui_props`
 #
 
 #INSERT INTO `user_gui_props` VALUES (3, 3, 'lang_Deutsch', 'yellow', 'admin.jpg');
@@ -628,14 +629,14 @@ CREATE TABLE `ftp_users` (
 ) TYPE=MyISAM;
 
 #
-# Daten fï¿½r Tabelle `ftp_users`
+# Daten für Tabelle `ftp_users`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `quotalimits`
+# Tabellenstruktur für Tabelle `quotalimits`
 #
 
 CREATE TABLE `quotalimits` (
@@ -652,14 +653,14 @@ CREATE TABLE `quotalimits` (
 );
 
 #
-# Daten fï¿½r Tabelle `quotalimits`
+# Daten für Tabelle `quotalimits`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `quotatallies`
+# Tabellenstruktur für Tabelle `quotatallies`
 #
 
 CREATE TABLE `quotatallies` (
@@ -674,14 +675,14 @@ CREATE TABLE `quotatallies` (
 );
 
 #
-# Daten fï¿½r Tabelle `quotatallies`
+# Daten für Tabelle `quotatallies`
 #
 
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur fï¿½r Tabelle `auto_num`
+# Tabellenstruktur für Tabelle `auto_num`
 #
 
 CREATE TABLE `auto_num` (
@@ -691,15 +692,15 @@ CREATE TABLE `auto_num` (
 );
 
 #
-# Daten fï¿½r Tabelle `auto_num`
+# Daten für Tabelle `auto_num`
 #
 
 
 # --------------------------------------------------------
 
-# 
-# Tabellenstruktur fÃ¼r Tabelle `config`
-# 
+#
+# Tabellenstruktur für Tabelle `config`
+#
 
 CREATE TABLE `config` (
   `name` varchar(255) NOT NULL default '',
@@ -707,5 +708,34 @@ CREATE TABLE `config` (
   PRIMARY KEY  (`name`)
 ) TYPE=MyISAM;
 
+#
+# Daten für Tabelle `auto_num`
+#
+
+INSERT INTO `config` ( `name` , `value` )
+VALUES (
+'PORT_FTP', '21;tcp;FTP;1;0'
+), (
+'PORT_SSH', '22;tcp;SSH;1;0'
+),(
+'PORT_TELNET', '23;tcp;TELNET;1;0'
+),(
+'PORT_SMTP', '25;tcp;SMPT;1;0'
+),(
+'PORT_DNS', '53;tcp;DNS;1;0'
+),(
+'PORT_HTTP', '80;tcp;HTTP;1;0'
+),(
+'PORT_HTTPS', '443;tcp;HTTPS;1;0'
+),(
+'PORT_POP3', '110;tcp;POP3;1;0'
+),(
+'PORT_POP3-SSL', '995;tcp;POP3-SSL;1;0'
+),(
+'PORT_IMAP', '143;tcp;IMAP;1;0'
+),(
+'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'
+);
 
 # --------------------------------------------------------
+

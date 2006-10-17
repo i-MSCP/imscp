@@ -1,5 +1,5 @@
 <?php
-/* $Id: left_header.inc.php,v 2.10 2006/01/14 23:17:16 cybot_tm Exp $ */
+/* $Id: left_header.inc.php,v 2.12 2006/07/09 10:29:28 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -23,9 +23,9 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
         $logo = '<img src="' . $GLOBALS['pmaThemeImage'] . 'pma_logo2.png" '
             .'alt="' . $logo . '" id="imgpmalogo" />';
     }
-    
+
     echo '<div id="pmalogo">' . "\n"
-        .'<a href="http://www.phpmyadmin.net/" target="_blank">'
+        .'<a href="' . $GLOBALS['cfg']['LeftLogoLink'] . '" target="_blank">'
         .$logo . '</a>' . "\n"
         .'</div>' . "\n";
 } // end of display logo
@@ -44,7 +44,7 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
         // Logout for advanced authentication
         if ( $GLOBALS['cfg']['Server']['auth_type'] != 'config' ) {
             echo ($GLOBALS['cfg']['MainPageIconic'] ? '' : ' - ');
-            echo '<a href="index.php?' . $query_url . '&amp;old_usr=' 
+            echo '<a href="index.php?' . $query_url . '&amp;old_usr='
                 .urlencode($PHP_AUTH_USER) . '" target="_parent"'
                 .' title="' . $strLogout . '" >'
                 .( $GLOBALS['cfg']['MainPageIconic']
@@ -55,9 +55,9 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
         } // end if ($GLOBALS['cfg']['Server']['auth_type'] != 'config'
 
         $anchor = 'querywindow.php?' . PMA_generate_common_url( $db, $table );
-            
+
         if ($GLOBALS['cfg']['MainPageIconic']) {
-            $query_frame_link_text = 
+            $query_frame_link_text =
                 '<img class="icon" src="' . $pmaThemeImage . 'b_selboard.png"'
                 .' width="16" height="16" alt="' . $strQueryFrame . '" />';
         } else {
@@ -85,6 +85,7 @@ echo '</div>' . "\n";
  */
 if ($GLOBALS['cfg']['LeftDisplayServers'] && (count($GLOBALS['cfg']['Servers']) > 1 || $server == 0 && count($GLOBALS['cfg']['Servers']) == 1)) {
     include('./libraries/select_server.lib.php');
-    PMA_select_server(TRUE, TRUE);
+    PMA_select_server(true, true);
+    echo '<hr />';
 } // end if LeftDisplayServers
 ?>

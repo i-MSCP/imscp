@@ -72,7 +72,7 @@
                 <tr>
                   <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_REP_PASSWORD}</td>
-                  <td class="content"><input type="password" name=userpassword_repeat value="{VL_USR_PASS_REP}" style="width:210px" class="textinput">
+                  <td class="content"><input type="password" name=userpassword_repeat value="{VL_USR_PASS}" style="width:210px" class="textinput">
                   </td>
                 </tr>
                 <tr>

@@ -1,5 +1,5 @@
 <?php
-/* $Id: mysql_charsets.lib.php,v 2.43 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: mysql_charsets.lib.php,v 2.45 2006/08/09 18:11:13 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 if (PMA_MYSQL_INT_VERSION >= 40100){
@@ -121,7 +121,9 @@ if (PMA_MYSQL_INT_VERSION >= 40100){
             // MySQL 4.1.0 does not support seperate charset settings
             // for databases.
             PMA_DBI_select_db( $db );
-            $return = PMA_DBI_fetch_value( 'SHOW VARIABLES LIKE "collation_database"', 0, 1 );
+            // the query does not work if this string is in double quotes
+            // and MySQL is running in ANSI mode
+            $return = PMA_DBI_fetch_value( 'SHOW VARIABLES LIKE \'collation_database\'', 0, 1 );
             if ( isset( $GLOBALS['db'] ) && $db !== $GLOBALS['db'] ) {
                 PMA_DBI_select_db( $GLOBALS['db'] );
             }

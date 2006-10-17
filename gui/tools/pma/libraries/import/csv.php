@@ -1,5 +1,5 @@
 <?php
-/* $Id: csv.php,v 1.8.2.2 2006/04/21 07:54:53 nijel Exp $ */
+/* $Id: csv.php,v 1.11 2006/06/27 08:56:46 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* CSV import plugin for phpMyAdmin */
@@ -236,10 +236,15 @@ if ($plugin_param == 'table') {
                     }
                     // Do we have correct count of values?
                     if (count($values) != $required_fields) {
-                        $message = sprintf($strInvalidCSVFieldCount, $line);
-                        $show_error_header = TRUE;
-                        $error = TRUE;
-                        break;
+                        // Hack for excel
+                        if ($values[count($values) - 1] == ';') {
+                            unset($values[count($values) - 1]);
+                        } else {
+                            $message = sprintf($strInvalidCSVFieldCount, $line);
+                            $show_error_header = TRUE;
+                            $error = TRUE;
+                            break;
+                        }
                     }
                     
                     $first = TRUE;

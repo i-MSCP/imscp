@@ -33,13 +33,10 @@ $tpl -> define_dynamic('grp_msg', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('pusres', 'page');
 
 $tpl -> define_dynamic('pgroups', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 

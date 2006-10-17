@@ -10,6 +10,9 @@ function smarty_make_timestamp($string)
     if(empty($string)) {
         $string = "now";
     }
+    else if(is_numeric($string)) {
+        return (int)$string;
+    }
     $time = strtotime($string);
     if (is_numeric($time) && $time != -1)
         return $time;

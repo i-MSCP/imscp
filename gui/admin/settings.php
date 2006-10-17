@@ -40,25 +40,16 @@ $tpl -> assign(
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
-	$lostpassword = $_POST['lostpassword'];
-
-	$lostpassword_timeout = $_POST['lostpassword_timeout'];
-
-	$bruteforce = $_POST['bruteforce'];
-
-	$bruteforce_between = $_POST['bruteforce_between'];
-
-	$bruteforce_max_login = $_POST['bruteforce_max_login'];
-
-	$bruteforce_block_time = $_POST['bruteforce_block_time'];
-
-	$bruteforce_between_time = $_POST['bruteforce_between_time'];
-
-  	$user_initial_lang = $_POST['def_language'];
-
-	$support_system = $_POST['support_system'];
-
-	$domain_rows_per_page = $_POST['domain_rows_per_page'];
+	$lostpassword 				= clean_input($_POST['lostpassword']);
+	$lostpassword_timeout 		= clean_input($_POST['lostpassword_timeout']);
+	$bruteforce 				= clean_input($_POST['bruteforce']);
+	$bruteforce_between 		= clean_input($_POST['bruteforce_between']);
+	$bruteforce_max_login 		= clean_input($_POST['bruteforce_max_login']);
+	$bruteforce_block_time 		= clean_input($_POST['bruteforce_block_time']);
+	$bruteforce_between_time 	= clean_input($_POST['bruteforce_between_time']);
+  	$user_initial_lang 			= clean_input($_POST['def_language']);
+	$support_system 			= clean_input($_POST['support_system']);
+	$domain_rows_per_page 		= clean_input($_POST['domain_rows_per_page']);
 
 	if ( (!is_number($lostpassword_timeout)) OR (!is_number($bruteforce_max_login))
 		OR (!is_number($bruteforce_block_time))	OR (!is_number($bruteforce_between_time))

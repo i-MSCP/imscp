@@ -28,8 +28,7 @@ $tpl -> define_dynamic('month_list', 'page');
 $tpl -> define_dynamic('year_list', 'page');
 $tpl -> define_dynamic('traffic_table', 'page');
 $tpl -> define_dynamic('traffic_table_item', 'traffic_table');
-$tpl -> define_dynamic('custom_buttons', 'page');
-global $cfg;
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('VHCS - Domain Statistics Data'),

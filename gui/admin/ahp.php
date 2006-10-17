@@ -74,7 +74,7 @@ $tpl -> assign(array('TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
 					 'TR_STATUS' => tr('Available for purchasing'),
 					 'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
 					 'TR_EXAMPEL' => tr('(Ex. EUR)'),
-					 
+
                      'TR_ADD_PLAN' => tr('Add plan')));
 
 if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
@@ -171,30 +171,30 @@ function check_data_correction(&$tpl)
 
   $ahp_error  = "_off_";
 
-	$hp_name = htmlspecialchars(stripslashes($_POST['hp_name']), ENT_QUOTES, "UTF-8");
-	$hp_sub = $_POST['hp_sub'];
-	$hp_als = $_POST['hp_als'];
-	$hp_mail = $_POST['hp_mail'];
-	$hp_ftp = $_POST['hp_ftp'];
-	$hp_sql_db = $_POST['hp_sql_db'];
-	$hp_sql_user= $_POST['hp_sql_user'];
-	$hp_traff = $_POST['hp_traff'];
-	$hp_disk = $_POST['hp_disk'];
-	$description = htmlspecialchars(stripslashes($_POST['hp_description']), ENT_QUOTES, "UTF-8");
-	
-	if ($_POST['hp_price'] == ''){
+	$hp_name 		= clean_input($_POST['hp_name']);
+	$hp_sub 		= clean_input($_POST['hp_sub']);
+	$hp_als 		= clean_input($_POST['hp_als']);
+	$hp_mail 		= clean_input($_POST['hp_mail']);
+	$hp_ftp 		= clean_input($_POST['hp_ftp']);
+	$hp_sql_db 		= clean_input($_POST['hp_sql_db']);
+	$hp_sql_user	= clean_input($_POST['hp_sql_user']);
+	$hp_traff 		= clean_input($_POST['hp_traff']);
+	$hp_disk 		= clean_input($_POST['hp_disk']);
+	$description 	= clean_input($_POST['hp_description']);
+
+	if (empty($_POST['hp_price'])) {
 		$price = 0;
 	} else {
-	$price = $_POST['hp_price'];
+		$price = $_POST['hp_price'];
 	}
-	if ($_POST['hp_setupfee'] == ''){
+	if (empty($_POST['hp_setupfee'])){
 		$setup_fee = 0;
 	} else {
-	$setup_fee = $_POST['hp_setupfee'];
+		$setup_fee = $_POST['hp_setupfee'];
 	}
 
-	$value = $_POST['hp_value'];
-	$payment = $_POST['hp_payment'];
+	$value = clean_input($_POST['hp_value']);
+	$payment = clean_input($_POST['hp_payment']);
 	$status = $_POST['status'];
 
   if (isset($_POST['php']))
@@ -203,21 +203,21 @@ function check_data_correction(&$tpl)
   if (isset($_POST['cgi']))
     $hp_cgi = $_POST['cgi'];;
 
-  if ($hp_name == '') {
+  if (empty($hp_name)) {
         $ahp_error = tr('Incorrect template name range or syntax!');
     }
-	
-  if ($description == '') {
+
+  if (empty($description)) {
         $ahp_error = tr('Incorrect template description range or syntax!');
     }
   if (!is_numeric($price)) {
   	$ahp_error = tr('Incorrect price range or syntax!');
   }
-  
+
   if (!is_numeric($setup_fee)) {
   	$ahp_error = tr('Incorrect setup fee range or syntax!');
   }
-  
+
   if (!vhcs_limit_check($hp_sub, 999)) {
     $ahp_error = tr('Incorrect subdomain range or syntax!');
   } else if (!vhcs_limit_check($hp_als, 999)) {
@@ -277,9 +277,9 @@ function save_data_to_db(&$tpl, $admin_id)
 			t1.name=?
 SQL_QUERY;
     // $rs = exec_query($sql, $query, array());
-  
-  
-  
+
+
+
   $res = exec_query($sql, $query, array('admin', $hp_name));
 
   if ($res -> RowCount() == 1) {
@@ -291,7 +291,7 @@ SQL_QUERY;
 	  $query = <<<SQL_QUERY
         insert into
             hosting_plans(reseller_id,
-							name, 
+							name,
 							description,
 							props,
 							price,
@@ -303,8 +303,8 @@ SQL_QUERY;
 SQL_QUERY;
   $res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
-	
-	
+
+
 	$_SESSION['hp_added'] = '_yes_';
     Header("Location: hp.php");
     die();

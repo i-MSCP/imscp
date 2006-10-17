@@ -521,7 +521,7 @@ sub als_add_named_db_data {
     }
 
     #
-    # Initial data;
+    # Initial data we need;
     #
 
     my $als_name = @$als_data[2];
@@ -535,6 +535,17 @@ sub als_add_named_db_data {
 
     my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
 
+    my $base_svr_ip = $main::cfg{'BASE_SERVER_IP'};
+
+    my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
+
+    #
+    # Any secondary DNS defined;
+    #
+
+	if (!$sec_dns_ip) {
+		$sec_dns_ip = $base_svr_ip;
+	}
 
     my $tpl_dir = "$conf_dir/bind/parts";
 
@@ -566,13 +577,13 @@ sub als_add_named_db_data {
     return $rs if ($rs != 0);
 
 
-    #
-    # setting some defaults for dns-serials
-    #
+	#
+	# RFC 1912 template fix by Puuhis ;)
+	#
 
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-    my $time2 = sprintf "%4d%02d%02d01",$year+1900,$mon+1,$mday;
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
+	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday;
 
     #
     # Let's prepare them;
@@ -581,6 +592,8 @@ sub als_add_named_db_data {
     my %tag_hash = (
                     '{DMN_NAME}' => $als_name,
                     '{DMN_IP}' => $als_ip,
+                    '{BASE_SERVER_IP}' => $base_svr_ip,
+                    '{SECONDARY_DNS_IP}' => $sec_dns_ip,
                     '{TIMESTAMP}' => $time2
                    );
 
@@ -593,29 +606,25 @@ sub als_add_named_db_data {
 
     return $rs if ($rs != 0);
 
-    #
-    # Any secondary DNS defined;
-    #
+    #if ($main::cfg{'SECONDARY_DNS'}) {
 
-    if ($main::cfg{'SECONDARY_DNS'}) {
+    #   my $dns2 = undef;
 
-        my $dns2 = undef;
+    #    $dns2 = "\t\t \t NS \t $main::cfg{'SECONDARY_DNS'}.\n";
 
-        $dns2 = "\t\t \t NS \t $main::cfg{'SECONDARY_DNS'}.\n";
+    #    $dns2 = "$dns2_b$dns2$dns2_e";
 
-        $dns2 = "$dns2_b$dns2$dns2_e";
+    #    ($rs, $entry) = repl_tag($dns2_b, $dns2_e, $entry, $dns2);
 
-        ($rs, $entry) = repl_tag($dns2_b, $dns2_e, $entry, $dns2);
+    #    return $rs if ($rs != 0);
 
-        return $rs if ($rs != 0);
+    #} else {
 
-    } else {
+    #    ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
 
-        ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
+    #    return $rs if ($rs != 0);
 
-        return $rs if ($rs != 0);
-
-    }
+    #}
 
     #
     # Let's store generated data;

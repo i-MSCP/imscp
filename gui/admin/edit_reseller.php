@@ -184,7 +184,7 @@ function check_user_data()
 
     global $reseller_ips, $sql;
 
-    if($_POST['pass'] != '' || $_POST['pass_rep'] != ''){
+    if(!empty($_POST['pass']) || !empty($_POST['pass_rep'])){
         if (chk_password($_POST['pass'])) {
 
             set_page_message( tr("Incorrect password range or syntax!"));
@@ -277,15 +277,15 @@ function check_user_data()
 
 function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 
-	$reseller_max_domain_cnt = $_POST['nreseller_max_domain_cnt'];
-	$reseller_max_subdomain_cnt = $_POST['nreseller_max_subdomain_cnt'];
-	$reseller_max_alias_cnt = $_POST['nreseller_max_alias_cnt'];
-	$reseller_max_mail_cnt = $_POST['nreseller_max_mail_cnt'];
-	$reseller_max_ftp_cnt = $_POST['nreseller_max_ftp_cnt'];
-	$reseller_max_sql_db_cnt = $_POST['nreseller_max_sql_db_cnt'];
-	$reseller_max_sql_user_cnt = $_POST['nreseller_max_sql_user_cnt'];
-	$reseller_max_traffic = $_POST['nreseller_max_traffic'];
-	$reseller_max_disk = $_POST['nreseller_max_disk'];
+	$reseller_max_domain_cnt 	= clean_input($_POST['nreseller_max_domain_cnt']);
+	$reseller_max_subdomain_cnt = clean_input($_POST['nreseller_max_subdomain_cnt']);
+	$reseller_max_alias_cnt 	= clean_input($_POST['nreseller_max_alias_cnt']);
+	$reseller_max_mail_cnt 		= clean_input($_POST['nreseller_max_mail_cnt']);
+	$reseller_max_ftp_cnt 		= clean_input($_POST['nreseller_max_ftp_cnt']);
+	$reseller_max_sql_db_cnt 	= clean_input($_POST['nreseller_max_sql_db_cnt']);
+	$reseller_max_sql_user_cnt 	= clean_input($_POST['nreseller_max_sql_user_cnt']);
+	$reseller_max_traffic 		= clean_input($_POST['nreseller_max_traffic']);
+	$reseller_max_disk 			= clean_input($_POST['nreseller_max_disk']);
 
 
     list (
@@ -550,9 +550,11 @@ SQL_QUERY;
                 domain.domain_created_id = ?
               and
                 server_ips.ip_id = domain.domain_ip_id
+              and
+              	server_ips.ip_id = ?
 SQL_QUERY;
 
-        $dres = exec_query($sql, $query, array($reseller_id));
+        $dres = exec_query($sql, $query, array($reseller_id, $ip));
 
         if ($dres -> RowCount() != 0) {
 
@@ -563,6 +565,8 @@ SQL_QUERY;
             return true;
 
         }
+        
+        $res -> MoveNext();
 
     }
 
@@ -577,25 +581,25 @@ function update_reseller(&$sql)
 {
     global $edit_id, $reseller_ips;
 
-    if (isset($_POST['uaction']) && $_POST['uaction'] === 'update_reseller') {
+    if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'update_reseller') {
 
         $user_id = $_SESSION['user_id'];
 
         if(check_user_data()){
 
-            $fname =	$_POST['fname'];
-            $lname =	$_POST['lname'];
-            $firm =		$_POST['firm'];
-            $zip =		$_POST['zip'];
-            $city =		$_POST['city'];
-            $country =	$_POST['country'];
-            $email=		$_POST['email'];
-            $phone=		$_POST['phone'];
-            $fax=		$_POST['fax'];
-            $street1 =	$_POST['street1'];
-            $street2 =	$_POST['street2'];
+            $fname 		= clean_input($_POST['fname']);
+            $lname 		= clean_input($_POST['lname']);
+            $firm 		= clean_input($_POST['firm']);
+            $zip 		= clean_input($_POST['zip']);
+            $city 		= clean_input($_POST['city']);
+            $country	= clean_input($_POST['country']);
+            $email		= clean_input($_POST['email']);
+            $phone		= clean_input($_POST['phone']);
+            $fax		= clean_input($_POST['fax']);
+            $street1 	= clean_input($_POST['street1']);
+            $street2 	= clean_input($_POST['street2']);
 
-            if($_POST['pass'] =='')
+            if(empty($_POST['pass']))
             {
 
                 $query = <<<SQL_QUERY
@@ -666,16 +670,16 @@ SQL_QUERY;
             }
 
 
-            $nreseller_max_domain_cnt = $_POST['nreseller_max_domain_cnt'];
-            $nreseller_max_subdomain_cnt = $_POST['nreseller_max_subdomain_cnt'];
-            $nreseller_max_alias_cnt = $_POST['nreseller_max_alias_cnt'];
-            $nreseller_max_mail_cnt = $_POST['nreseller_max_mail_cnt'];
-            $nreseller_max_ftp_cnt = $_POST['nreseller_max_ftp_cnt'];
-            $nreseller_max_sql_db_cnt = $_POST['nreseller_max_sql_db_cnt'];
-            $nreseller_max_sql_user_cnt = $_POST['nreseller_max_sql_user_cnt'];
-            $nreseller_max_traffic = $_POST['nreseller_max_traffic'];
-            $nreseller_max_disk = $_POST['nreseller_max_disk'];
-            $customer_id = $_POST['customer_id'];
+            $nreseller_max_domain_cnt 		= clean_input($_POST['nreseller_max_domain_cnt']);
+            $nreseller_max_subdomain_cnt 	= clean_input($_POST['nreseller_max_subdomain_cnt']);
+            $nreseller_max_alias_cnt 		= clean_input($_POST['nreseller_max_alias_cnt']);
+            $nreseller_max_mail_cnt 		= clean_input($_POST['nreseller_max_mail_cnt']);
+            $nreseller_max_ftp_cnt 			= clean_input($_POST['nreseller_max_ftp_cnt']);
+            $nreseller_max_sql_db_cnt 		= clean_input($_POST['nreseller_max_sql_db_cnt']);
+            $nreseller_max_sql_user_cnt 	= clean_input($_POST['nreseller_max_sql_user_cnt']);
+            $nreseller_max_traffic			= clean_input($_POST['nreseller_max_traffic']);
+            $nreseller_max_disk 			= clean_input($_POST['nreseller_max_disk']);
+            $customer_id 					= clean_input($_POST['customer_id']);
 
             $query = <<<SQL_QUERY
                 update reseller_props
@@ -711,11 +715,22 @@ SQL_QUERY;
                                                  $customer_id,
 												 $edit_id));
 
-            $edit_username= $_POST['edit_username'];
+            $edit_username = clean_input($_POST['edit_username']);
 
             $user_logged= $_SESSION['user_logged'];
 
             write_log("$user_logged: change data/password for reseller: $edit_username!");
+
+						if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
+  
+  	          send_add_user_auto_msg ($user_id,
+    	                                $edit_username,
+    	                                clean_input($_POST['pass']),
+      	                              clean_input($_POST['email']),
+        	                            clean_input($_POST['fname']),
+          	                          clean_input($_POST['lname']),
+            	                        tr('Reseller'));
+						}
 
             $_SESSION['user_updated'] = 1;
             $_SESSION['reseller_ips'] = $reseller_ips;
@@ -889,6 +904,8 @@ $tpl -> assign(
         'TR_FAX' => tr('Fax'),
         'TR_PHONE' => tr('Phone'),
         'TR_UPDATE' => tr('Update'),
+				'TR_SEND_DATA' => tr('Send new login data'),
+				'TR_PASSWORD_GENERATE' => tr('Password generate'),
 
         'USERNAME'  =>$admin_name,
         'EMAIL'  =>$email,
@@ -919,6 +936,16 @@ $tpl -> assign(
         'TR_UPDATE' => tr('Update'),
         )
     );
+
+if (isset($_POST['genpass'])) {
+
+	$tpl -> assign('VAL_PASSWORD', passgen());
+
+} else {
+
+	$tpl -> assign('VAL_PASSWORD', '');
+
+}	
 
 gen_page_message($tpl);
 

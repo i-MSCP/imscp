@@ -1,5 +1,5 @@
 <?php
-/* $Id: grab_globals.lib.php,v 2.27.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
+/* $Id: grab_globals.lib.php,v 2.29.2.1 2006/09/29 12:52:59 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -82,27 +82,30 @@ $_import_blacklist = array(
     //'/^PMA_.*$/i',      // other PMA variables
 );
 
-if ( ! empty( $_GET ) ) {
+if (! empty($_GET)) {
     PMA_gpc_extract($_GET, $GLOBALS);
 }
 
-if ( ! empty( $_POST ) ) {
+if (! empty($_POST)) {
     PMA_gpc_extract($_POST, $GLOBALS);
 }
 
-if ( ! empty( $_FILES ) ) {
-    foreach ( $_FILES AS $name => $value ) {
-        $$name = $value['tmp_name'];
-        ${$name . '_name'} = $value['name'];
+if (! empty($_FILES)) {
+    $_valid_variables = preg_replace($GLOBALS['_import_blacklist'], '', array_keys($_FILES));
+    foreach ($_valid_variables as $name) {
+        if (strlen($name) != 0) {
+            $$name = $_FILES[$name]['tmp_name'];
+            ${$name . '_name'} = $_FILES[$name]['name'];
+        }
     }
-    unset( $name, $value );
+    unset($name, $value);
 }
 
 /**
  * globalize some environment variables
  */
 $server_vars = array('PHP_SELF', 'HTTP_ACCEPT_LANGUAGE', 'HTTP_AUTHORIZATION');
-foreach ( $server_vars as $current ) {
+foreach ($server_vars as $current) {
     // its not important HOW we detect html tags
     // its more important to prevent XSS
     // so its not important if we result in an invalid string,
@@ -110,7 +113,7 @@ foreach ( $server_vars as $current ) {
     if (PMA_getenv($current) && false === strpos(PMA_getenv($current), '<')) {
         $$current = PMA_getenv($current);
     // already importet by register_globals?
-    } elseif ( ! isset( $$current ) || false !== strpos($$current, '<') ) {
+    } elseif (! isset($$current) || false !== strpos($$current, '<')) {
         $$current = '';
     }
 }

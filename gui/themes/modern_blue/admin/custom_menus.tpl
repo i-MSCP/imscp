@@ -106,6 +106,7 @@ function action_delete(url) {
                 <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_VIEW_FROM}</td>
                 <td  class="content"><select name="bview" id="bview">
+                  <option value="admin">{ADMIN}</option>
                   <option value="reseller">{RESELLER}</option>
                   <option value="user">{USER}</option>
                   <option value="all">{RESSELER_AND_USER}</option>
@@ -142,6 +143,7 @@ function action_delete(url) {
                 <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_VIEW_FROM}</td>
                 <td  class="content"><select name="bview" id="bview">
+                  <option value="admin" {ADMIN_VIEW}>{ADMIN}</option>
                   <option value="reseller" {RESELLER_VIEW}>{RESELLER}</option>
                   <option value="user" {USER_VIEW}>{USER}</option>
                   <option value="all" {ALL_VIEW}>{RESSELER_AND_USER}</option>

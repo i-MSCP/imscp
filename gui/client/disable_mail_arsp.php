@@ -41,26 +41,26 @@ function check_email_user(&$sql) {
 		  t2.domain_name = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($mail_id, $dmn_name));
-  $mail_acc = $rs->fields['mail_acc'];
+  	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+  	$mail_acc = $rs->fields['mail_acc'];
 
-  if ($rs -> RecordCount() == 0) {
-	set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-	header('Location: email_accounts.php');
-	die();
-  }
+  	if ($rs -> RecordCount() == 0) {
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		header('Location: email_accounts.php');
+		die();
+  	}
 }
 
 check_email_user($sql);
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
-  global $cfg;
+  	global $cfg;
 
-  $mail_id = $_GET['id'];
-  $item_change_status = $cfg['ITEM_CHANGE_STATUS'];
-  check_for_lock_file();
+  	$mail_id = $_GET['id'];
+  	$item_change_status = $cfg['ITEM_CHANGE_STATUS'];
+  	check_for_lock_file();
 
-  $query = <<<SQL_QUERY
+  	$query = <<<SQL_QUERY
         update
             mail_users
         set
@@ -70,19 +70,33 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
             mail_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($item_change_status, $mail_id));
+  	$rs = exec_query($sql, $query, array($item_change_status, $mail_id));
 
-  send_request();
-  write_log($_SESSION['user_logged'].": change mail autoresponder: ".$mail_acc."@".$dmn_name);
-  set_page_message(tr('Mail account scheduled for modification!'));
-  header('Location: email_accounts.php');
-  exit(0);
+  	send_request();
+    // Not correct in use with Subdomains
+    $query = <<<SQL_QUERY
+		SELECT
+			t1.mail_acc, t2.domain_name
+		FROM
+			mail_users AS t1,
+			domain AS t2
+		WHERE
+				t1.mail_id = ?
+			AND
+				t1.domain_id = t2.domain_id
+SQL_QUERY;
 
-} else {
-
-  header('Location: email_accounts.php');
-  exit(0);
-
+	$rs = exec_query($sql, $query, array($mail_id));
+	$mail_name = $rs->fields['mail_acc'];
+	$dmn_name = $rs->fields['domain_name'];
+  	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name."@".$dmn_name);
+  	set_page_message(tr('Mail account scheduled for modification!'));
+  	header('Location: email_accounts.php');
+  	exit(0);
+}
+else {
+  	header('Location: email_accounts.php');
+  	exit(0);
 }
 
 ?>

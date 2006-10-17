@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_links.inc.php,v 1.1 2005/11/24 08:29:44 nijel Exp $ */
+/* $Id: server_links.inc.php,v 1.2 2006/02/22 11:31:32 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Check parameters
@@ -66,7 +66,7 @@ if ($has_binlogs) {
 }
 $tabs['process']['icon'] = 's_process.png';
 $tabs['process']['link'] = 'server_processlist.php';
-$tabs['process']['text'] = $strServerTabProcesslist;
+$tabs['process']['text'] = $strProcesses;
 
 $tabs['export']['icon'] = 'b_export.png';
 $tabs['export']['link'] = 'server_export.php';

@@ -393,6 +393,8 @@ global $sql, $cfg;
 
 $tpl -> define_dynamic('menu', $menu_file);
 
+$tpl -> define_dynamic('custom_buttons', 'menu');
+
 $tpl -> assign(
                 array(
                         'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
@@ -494,40 +496,6 @@ SQL_QUERY;
 
 	$tpl -> parse('MENU', 'menu');
 
-}
-
-function get_menu_vars($menu_link)
-{
-	global $sql;
-	$user_id = $_SESSION['user_id'];
-
-	$query = <<<SQL_QUERY
-        select
-            *
-        from
-            admin
-        where
-            admin_id = ?
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($user_id));
-
-	$menu_link = preg_replace("/\{uid\}/", $_SESSION['user_id'], $menu_link);
-	$menu_link = preg_replace("/\{uname\}/", $_SESSION['user_logged'], $menu_link);
-	$menu_link = preg_replace("/\{cid\}/", $rs -> fields['customer_id'], $menu_link);
-	$menu_link = preg_replace("/\{fname\}/", $rs -> fields['fname'], $menu_link);
-	$menu_link = preg_replace("/\{lname\}/", $rs -> fields['lname'], $menu_link);
-	$menu_link = preg_replace("/\{company\}/", $rs -> fields['firm'], $menu_link);
-	$menu_link = preg_replace("/\{zip\}/", $rs -> fields['zip'], $menu_link);
-	$menu_link = preg_replace("/\{city\}/", $rs -> fields['city'], $menu_link);
-	$menu_link = preg_replace("/\{country\}/", $rs -> fields['country'], $menu_link);
-	$menu_link = preg_replace("/\{email\}/", $rs -> fields['email'], $menu_link);
-	$menu_link = preg_replace("/\{phone\}/", $rs -> fields['phone'], $menu_link);
-	$menu_link = preg_replace("/\{fax\}/", $rs -> fields['fax'], $menu_link);
-	$menu_link = preg_replace("/\{street1\}/", $rs -> fields['street1'], $menu_link);
-	$menu_link = preg_replace("/\{street2\}/", $rs -> fields['street2'], $menu_link);
-
-	return $menu_link;
 }
 
 function get_user_domain_id(&$sql, $user_id)

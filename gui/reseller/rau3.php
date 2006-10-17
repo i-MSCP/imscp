@@ -26,8 +26,7 @@ $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/rau3.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('ip_entry', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
-global $cfg;
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -49,9 +48,6 @@ $tpl -> assign(
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
-
-$timestamp = time();
-$genpas = substr(md5($timestamp),0,6);
 
 $tpl -> assign(
                 array(
@@ -77,8 +73,7 @@ $tpl -> assign(
                         'TR_FAX' => tr('Fax'),
                         'TR_BTN_ADD_USER' => tr('Add user'),
                         'TR_ADD_ALIASES' => tr('Add other domains to this account'),
-                        'VL_USR_PASS' => $genpas,
-                        'VL_USR_PASS_REP' => $genpas
+                        'VL_USR_PASS' => passgen()
                      )
               );
 
@@ -146,16 +141,13 @@ function gen_au3_page(&$tpl)
   global $street_two, $mail, $phone;
   global $fax;
 
-  $timestamp = time();
-  $genpas = substr(md5($timestamp),0,6);
   $dmn_user_name = decode_idna($dmn_user_name);
 
   // Fill in the fileds
   $tpl -> assign(
                 array(
                       'VL_USERNAME' => $dmn_user_name,
-                      'VL_USR_PASS' => $genpas,
-                      'VL_USR_PASS_REP' => $genpas,
+                      'VL_USR_PASS' => passgen(),
                       'VL_MAIL' => $user_email,
                       'VL_USR_ID' => $customer_id,
                       'VL_USR_NAME' => $first_name,

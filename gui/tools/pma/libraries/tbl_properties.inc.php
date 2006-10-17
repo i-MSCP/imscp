@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_properties.inc.php,v 1.5.2.1 2006/03/26 11:09:13 lem9 Exp $ */
+/* $Id: tbl_properties.inc.php,v 1.6.2.1 2006/08/26 14:11:28 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 // Check parameters
 
@@ -109,7 +109,7 @@ $header_cells = array();
 $content_cells = array();
 
 $header_cells[] = $strField;
-$header_cells[] = $strType . ($GLOBALS['cfg']['ReplaceHelpImg'] ? PMA_showMySQLDocu('SQL-Syntax', 'Column_types') : '<br /><span style="font-weight: normal">' . PMA_showMySQLDocu('SQL-Syntax', 'Column_types') . '</span>');
+$header_cells[] = $strType . ($GLOBALS['cfg']['ReplaceHelpImg'] ? PMA_showMySQLDocu('SQL-Syntax', 'data-types') : '<br /><span style="font-weight: normal">' . PMA_showMySQLDocu('SQL-Syntax', 'data-types') . '</span>');
 $header_cells[] = $strLengthSet . '<sup>1</sup>';
 if (PMA_MYSQL_INT_VERSION >= 40100) {
     $header_cells[] = $strCollation;
@@ -355,7 +355,6 @@ for ( $i = 0 ; $i <= $num_fields; $i++ ) {
     && $analyzed_sql[0]['create_table_fields'][$row['Field']]['timestamp_not_null'] == true) {
         $row['Null'] = '';
     }
-
 
     // MySQL 4.1.2+ TIMESTAMP options
     // (if on_update_current_timestamp is set, then it's TRUE)

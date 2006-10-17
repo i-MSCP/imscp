@@ -33,13 +33,10 @@ $tpl -> define_dynamic('grp_msg', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('pusres', 'page');
 
 $tpl -> define_dynamic('pgroups', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -78,8 +75,8 @@ function padd_user(&$tpl, &$sql, &$dmn_id)
 			}
 			global $cfg;
 			$change_status = $cfg['ITEM_ADD_STATUS'];
-			
-			$uname = $_POST['username'];
+
+			$uname = clean_input($_POST['username']);
 			$upass = crypt($_POST['pass']);
 
 			$query = <<<SQL_QUERY
@@ -98,7 +95,7 @@ SQL_QUERY;
 	if ($rs -> RecordCount() == 0) {
 
 
-			
+
 
 
 $query = <<<SQL_QUERY
@@ -114,7 +111,7 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
         $rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $change_status));
-        
+
         global $cfg;
         $change_status = $cfg['ITEM_CHANGE_STATUS'];
 
@@ -130,8 +127,8 @@ SQL_QUERY;
 
 		check_for_lock_file();
 		send_request();
-        
-        
+
+
 		$admin_login = $_SESSION['user_logged'];
 		write_log("$admin_login: add user (protected areas): $uname");
 		header('Location: puser_manage.php');

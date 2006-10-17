@@ -29,8 +29,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('already_in', 'page');
 
 $tpl -> define_dynamic('grp_avlb', 'page');
@@ -39,7 +37,6 @@ $tpl -> define_dynamic('add_button', 'page');
 
 $tpl -> define_dynamic('remove_button', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -64,8 +61,8 @@ $query = <<<SQL_QUERY
             htaccess_users
         where
              dmn_id = ?
-        and 
-			id = ? 
+        and
+			id = ?
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
@@ -74,10 +71,10 @@ SQL_QUERY;
 		header('Location: puser_manage.php');
 		die();
 	} else {
-	
+
 		return $rs -> fields['uname'];
 	}
-	
+
 
 
 }
@@ -86,27 +83,27 @@ SQL_QUERY;
 function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 {
 	if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
-	
+
 		$uuser_id = $_GET['uname'];
-	
+
 		$tpl -> assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
 		$tpl -> assign('UID', $uuser_id);
 
-	
-	} else if (isset($_POST['nadmin_name']) && $_POST['nadmin_name'] !== '' && is_numeric($_POST['nadmin_name'] )) {
-		
+
+	} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'] )) {
+
 		$uuser_id = $_POST['nadmin_name'];
-		
+
 		$tpl -> assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
 		$tpl -> assign('UID', $uuser_id);
-		
+
 	}else {
 		header('Location: puser_manage.php');
 		die();
 	}
-	
+
 	// get groups
-	
+
 	$query = <<<SQL_QUERY
         select
             *
@@ -117,22 +114,22 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($dmn_id));
-	
+
 	if ($rs -> RecordCount() == 0) {
 		set_page_message(tr('You have no groups!'));
 		header('Location: puser_manage.php');
 		die();
 	} else {
-		
+
 		$added_in = 0;
 		$not_added_in = 0;
-		
+
 		while (!$rs -> EOF) {
-			
+
 			$group_id = $rs -> fields['id'];
 			$group_name = $rs -> fields['ugroup'];
 			$members = $rs -> fields['members'];
-			
+
 				$members = explode(",", $members);
 				$grp_in = 0;
 				// lets generete all groups wher the user is  assignet
@@ -159,40 +156,40 @@ SQL_QUERY;
 											'GRP_NAME' => $group_name,
 											'GRP_ID' =>  $group_id,
 										  )
-							);				
+							);
 				   		$tpl -> parse('GRP_AVLB', '.grp_avlb');
 						$not_added_in ++;
 				}
 
-			$rs -> MoveNext(); 
-		}				
-		
+			$rs -> MoveNext();
+		}
+
 		//generate add/remove buttons
 		if ($added_in < 1) {
 				$tpl -> assign('ALREADY_IN', '');
 				$tpl -> assign('REMOVE_BUTTON', '');
-			} 
+			}
 		if ($not_added_in < 1) {
 			 $tpl -> assign('GRP_AVLB', '');
 			$tpl -> assign('ADD_BUTTON', '');
 		}
-		
+
 	}
 }
 
 function add_user_to_group(&$tpl, &$sql, &$dmn_id)
 {
-	if(isset($_POST['uaction']) && $_POST['uaction'] == 'add' && isset($_POST['groups'] ) 
-		&& $_POST['groups'] !== '' && isset($_POST['nadmin_name']) && is_numeric($_POST['groups']) && is_numeric($_POST['nadmin_name']))
+	if(isset($_POST['uaction']) && $_POST['uaction'] == 'add' && isset($_POST['groups'] )
+		&& !empty($_POST['groups']) && isset($_POST['nadmin_name']) && is_numeric($_POST['groups']) && is_numeric($_POST['nadmin_name']))
 	{
-		$uuser_id = $_POST['nadmin_name'];
+		$uuser_id = clean_input($_POST['nadmin_name']);
 		$group_id = $_POST['groups'];
-		
+
 	$query = <<<SQL_QUERY
-        select 
+        select
 			id,
 			ugroup,
-			members 
+			members
 		from
         	htaccess_groups
         where
@@ -201,17 +198,17 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id)
 			id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $group_id));
-	
+
 	$members = $rs -> fields['members'];
 	if ($members == ''){
 		$members = $uuser_id;
 	} else {
 		$members = $members.",".$uuser_id;
 	}
-	
+
 	global $cfg;
 	$change_status = $cfg['ITEM_CHANGE_STATUS'];
-	
+
 	$update_query = <<<SQL_QUERY
 				update
 					htaccess_groups
@@ -223,11 +220,11 @@ SQL_QUERY;
 					and
 					dmn_id = ?
 SQL_QUERY;
-				
+
 		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
 
 		$change_status = $cfg['ITEM_CHANGE_STATUS'];
-	
+
 		$query = <<<SQL_QUERY
 				update
 					htaccess
@@ -236,13 +233,13 @@ SQL_QUERY;
 				where
 					dmn_id = ?
 SQL_QUERY;
-				
+
 		$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
 
 				check_for_lock_file();
 				send_request();
 				set_page_message(tr('User was assigned to group')." - ".$rs -> fields['ugroup']);
-				
+
 	} else {
 		return;
 	}
@@ -253,18 +250,18 @@ SQL_QUERY;
 
 function delete_user_from_group(&$tpl, &$sql, &$dmn_id)
 {
-	if(isset($_POST['uaction']) && $_POST['uaction'] == 'remove' && isset($_POST['groups_in']) 
-		&& $_POST['groups_in'] !== '' && isset($_POST['nadmin_name']) && is_numeric($_POST['groups_in']) && is_numeric($_POST['nadmin_name']))
+	if(isset($_POST['uaction']) && $_POST['uaction'] == 'remove' && isset($_POST['groups_in'])
+		&& !empty($_POST['groups_in']) && isset($_POST['nadmin_name']) && is_numeric($_POST['groups_in']) && is_numeric($_POST['nadmin_name']))
 	{
-	
+
 		$group_id = $_POST['groups_in'];
-		$uuser_id = $_POST['nadmin_name'];
-		
+		$uuser_id = clean_input($_POST['nadmin_name']);
+
 	$query = <<<SQL_QUERY
-        select 
+        select
 			id,
 			ugroup,
-			members 
+			members
 		from
         	htaccess_groups
         where
@@ -273,14 +270,14 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id)
 			id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $group_id));
-	
+
 	$members = $rs -> fields['members'];
 	$members = preg_replace("/$uuser_id/", "", "$members");
-	
+
 	$members = preg_replace("/,,/", ",", "$members");
 	$members = preg_replace("/^,/", "", "$members");
 	$members = preg_replace("/,$/", "", "$members");
-	
+
 	$update_query = <<<SQL_QUERY
 				update
 					htaccess_groups
@@ -291,9 +288,9 @@ SQL_QUERY;
 				and
 					dmn_id = ?
 SQL_QUERY;
-				
+
 		$rs_update = exec_query($sql, $update_query, array($members, $group_id, $dmn_id));
-		
+
 		global $cfg;
 		$change_status = $cfg['ITEM_CHANGE_STATUS'];
 		$query = <<<SQL_QUERY
@@ -307,11 +304,11 @@ SQL_QUERY;
 			$rs_update_htaccess = exec_query($sql, $query, array($change_status, $dmn_id));
 
 			check_for_lock_file();
-			send_request();		
-				
-				
+			send_request();
+
+
 			set_page_message(tr('User was deleted from group ')."- ".$rs -> fields['ugroup']);
-				
+
 	} else {
 		return;
 	}

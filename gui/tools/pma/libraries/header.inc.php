@@ -1,16 +1,16 @@
 <?php
-/* $Id: header.inc.php,v 2.6 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: header.inc.php,v 2.17 2006/08/01 07:15:30 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.lib.php';
 
 if (empty($GLOBALS['is_header_sent'])) {
 
     /**
      * Gets a core script and starts output buffering work
      */
-    require_once('./libraries/common.lib.php');
-    require_once('./libraries/ob.lib.php');
+    require_once './libraries/common.lib.php';
+    require_once './libraries/ob.lib.php';
     if ($GLOBALS['cfg']['OBGzip']) {
         $GLOBALS['ob_mode'] = PMA_outBufferModeGet();
         if ($GLOBALS['ob_mode']) {
@@ -22,31 +22,43 @@ if (empty($GLOBALS['is_header_sent'])) {
     // to a seperate file. It can now be included by header.inc.php,
     // querywindow.php.
 
-    require_once('./libraries/header_http.inc.php');
-    require_once('./libraries/header_meta_style.inc.php');
+    require_once './libraries/header_http.inc.php';
+    require_once './libraries/header_meta_style.inc.php';
 
     // generate title
-    $title     = '';
-    if ($cfg['ShowHttpHostTitle']) {
-        $title .= (empty($GLOBALS['cfg']['SetHttpHostTitle']) && isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $GLOBALS['cfg']['SetHttpHostTitle']) . ' / ';
-    }
-    if (!empty($GLOBALS['cfg']['Server']) && isset($GLOBALS['cfg']['Server']['host'])) {
-        $title.=str_replace('\'', '\\\'', $GLOBALS['cfg']['Server']['host']);
-    }
-    if (isset($GLOBALS['db'])) {
-        $title .= ' / ' . str_replace('\'', '\\\'', $GLOBALS['db']);
-    }
-    if (isset($GLOBALS['table'])) {
-        $title .= (empty($title) ? '' : ' ') . ' / ' . str_replace('\'', '\\\'', $GLOBALS['table']);
-    }
-    $title .= ' | phpMyAdmin ' . PMA_VERSION;
+    $title     = str_replace(
+                    array(
+                        '@HTTP_HOST@',
+                        '@SERVER@',
+                        '@VERBOSE@',
+                        '@VSERVER@',
+                        '@DATABASE@',
+                        '@TABLE@',
+                        '@PHPMYADMIN@',
+                        ),
+                    array(
+                        PMA_getenv('HTTP_HOST') ? PMA_getenv('HTTP_HOST') : '',
+                        isset($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['Server']['host'] : '',
+                        isset($GLOBALS['cfg']['Server']['verbose']) ? $GLOBALS['cfg']['Server']['verbose'] : '',
+                        !empty($GLOBALS['cfg']['Server']['verbose']) ? $GLOBALS['cfg']['Server']['verbose'] : (isset($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['Server']['host'] : ''),
+                        isset($GLOBALS['db']) ? $GLOBALS['db'] : '',
+                        isset($GLOBALS['table']) ? $GLOBALS['table'] : '',
+                        'phpMyAdmin ' . PMA_VERSION,
+                        ),
+                    !empty($GLOBALS['table']) ? $GLOBALS['cfg']['TitleTable'] :
+                    (!empty($GLOBALS['db']) ? $GLOBALS['cfg']['TitleDatabase'] :
+                    (!empty($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['TitleServer'] :
+                    $GLOBALS['cfg']['TitleDefault']))
+                    );
+    // here, the function does not exist with this configuration: $cfg['ServerDefault'] = 0;
+    $is_superuser    = function_exists('PMA_isSuperuser') && PMA_isSuperuser();
     ?>
     <script type="text/javascript" language="javascript">
-    <!--
+    // <![CDATA[
     // Updates the title of the frameset if possible (ns4 does not allow this)
     if (typeof(parent.document) != 'undefined' && typeof(parent.document) != 'unknown'
         && typeof(parent.document.title) == 'string') {
-        parent.document.title = '<?php echo PMA_sanitize($title); ?>';
+        parent.document.title = '<?php echo PMA_sanitize(str_replace('\'', '\\\'', $title)); ?>';
     }
     <?php
     // Add some javascript instructions if required
@@ -56,10 +68,11 @@ if (empty($GLOBALS['is_header_sent'])) {
     // js form validation stuff
     var errorMsg0   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strFormEmpty']); ?>';
     var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
-    var noDropDbMsg = '<?php echo((!$GLOBALS['cfg']['AllowUserDropDatabase']) ? str_replace('\'', '\\\'', $GLOBALS['strNoDropDatabases']) : ''); ?>';
+    var noDropDbMsg = '<?php echo (!$is_superuser && !$GLOBALS['cfg']['AllowUserDropDatabase'])
+        ? str_replace('\'', '\\\'', $GLOBALS['strNoDropDatabases']) : ''; ?>';
     var confirmMsg  = '<?php echo(($GLOBALS['cfg']['Confirm']) ? str_replace('\'', '\\\'', $GLOBALS['strDoYouReally']) : ''); ?>';
     var confirmMsgDropDB  = '<?php echo(($GLOBALS['cfg']['Confirm']) ? str_replace('\'', '\\\'', $GLOBALS['strDropDatabaseStrongWarning']) : ''); ?>';
-    //-->
+    // ]]>
     </script>
     <script src="./js/functions.js" type="text/javascript" language="javascript"></script>
         <?php
@@ -71,7 +84,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     var jsUserEmpty       = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strUserEmpty']); ?>';
     var jsPasswordEmpty   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordEmpty']); ?>';
     var jsPasswordNotSame = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordNotSame']); ?>';
-    //-->
+    // ]]>
     </script>
     <script src="./js/user_password.js" type="text/javascript" language="javascript"></script>
         <?php
@@ -83,7 +96,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     var jsUserEmpty       = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strUserEmpty']); ?>';
     var jsPasswordEmpty   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordEmpty']); ?>';
     var jsPasswordNotSame = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordNotSame']); ?>';
-    //-->
+    // ]]>
     </script>
     <script src="./js/server_privileges.js" type="text/javascript" language="javascript"></script>
     <script src="./js/functions.js" type="text/javascript" language="javascript"></script>
@@ -94,21 +107,21 @@ if (empty($GLOBALS['is_header_sent'])) {
     // js index validation stuff
     var errorMsg0   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strFormEmpty']); ?>';
     var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
-    //-->
+    // ]]>
     </script>
     <script src="./js/indexes.js" type="text/javascript" language="javascript"></script>
         <?php
     } elseif (isset($js_to_run) && $js_to_run == 'tbl_change.js') {
         echo "\n";
         ?>
-    //-->
+    // ]]>
     </script>
     <script src="./js/tbl_change.js" type="text/javascript" language="javascript"></script>
         <?php
     } else {
         echo "\n";
         ?>
-    //-->
+    // ]]>
     </script>
         <?php
     }
@@ -117,17 +130,37 @@ if (empty($GLOBALS['is_header_sent'])) {
     // Reloads the navigation frame via JavaScript if required
     PMA_reloadNavigation();
     ?>
-        <script src="./js/tooltip.js" type="text/javascript"
-            language="javascript"></script>
-        <meta name="OBGZip" content="<?php echo ($cfg['OBGzip'] ? 'true' : 'false'); ?>" />
-    </head>
+    <script src="./js/tooltip.js" type="text/javascript"
+        language="javascript"></script>
+    <meta name="OBGZip" content="<?php echo ($cfg['OBGzip'] ? 'true' : 'false'); ?>" />
+    <?php /* remove vertical scroll bar bug in ie */ ?>
+    <!--[if IE 6]>
+    <style type="text/css">
+    /* <![CDATA[ */
+    html {
+        overflow-y: scroll;
+    }
+    /* ]]> */
+    </style>
+    <![endif]-->
+</head>
 
-    <body>
-    <div id="TooltipContainer" onmouseover="holdTooltip();" onmouseout="swapTooltip('default');"></div>
+<body>
+<div id="TooltipContainer" onmouseover="holdTooltip();" onmouseout="swapTooltip('default');"></div>
     <?php
 
     // Include possible custom headers
-    require_once('./libraries/header_custom.inc.php');
+    if (file_exists('./config.header.inc.php')) {
+        require './config.header.inc.php';
+    }
+
+
+    // message of "Cookies required" displayed for auth_type http or config
+    // note: here, the decoration won't work because without cookies,
+    // our standard CSS is not operational
+    if (empty($_COOKIE)) {
+         echo '<div class="notice">' . $GLOBALS['strCookiesRequired'] . '</div>' . "\n";
+    }
 
     if (!defined('PMA_DISPLAY_HEADING')) {
         define('PMA_DISPLAY_HEADING', 1);
@@ -177,7 +210,7 @@ if (empty($GLOBALS['is_header_sent'])) {
                     's_db.png' );
 
             if (isset($GLOBALS['table']) && strlen($GLOBALS['table'])) {
-                require_once('./libraries/tbl_properties_table_info.inc.php');
+                require_once './libraries/tbl_properties_table_info.inc.php';
 
                 echo $separator;
                 printf( $item,
@@ -205,7 +238,7 @@ if (empty($GLOBALS['is_header_sent'])) {
                 /**
                  * Settings for relations stuff
                  */
-                require_once('./libraries/relation.lib.php');
+                require_once './libraries/relation.lib.php';
                 $cfgRelation = PMA_getRelationsParam();
 
                 // Get additional information about tables for tooltip is done
@@ -231,6 +264,6 @@ if (empty($GLOBALS['is_header_sent'])) {
     /**
      * Sets a variable to remember headers have been sent
      */
-    $GLOBALS['is_header_sent'] = TRUE;
+    $GLOBALS['is_header_sent'] = true;
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_processlist.php,v 2.16 2006/01/14 23:17:15 cybot_tm Exp $ */
+/* $Id: server_processlist.php,v 2.17 2006/05/30 09:26:52 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
@@ -38,10 +38,10 @@ echo '<h2>' . "\n"
 
 
 /**
- * Sends the query and buffers the result
+ * Sends the query
  */
 $sql_query = 'SHOW' . ( empty( $full ) ? '' : ' FULL' ) . ' PROCESSLIST';
-$serverProcesses = PMA_DBI_fetch_result( $sql_query );
+$result = PMA_DBI_query($sql_query);
 
 PMA_showMessage( $GLOBALS['strSuccess'] );
 
@@ -70,7 +70,7 @@ PMA_showMessage( $GLOBALS['strSuccess'] );
 <tbody>
 <?php
 $odd_row = true;
-foreach ( $serverProcesses AS $process ) {
+while($process = PMA_DBI_fetch_assoc($result)) {
     ?>
 <tr class="<?php echo $odd_row ? 'odd' : 'even'; ?>">
     <td><a href="./server_processlist.php?<?php echo $url_query . '&amp;kill=' . $process['Id']; ?>"><?php echo $strKill; ?></a></td>

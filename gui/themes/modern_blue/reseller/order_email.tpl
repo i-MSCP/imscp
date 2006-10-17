@@ -90,15 +90,13 @@
               <tr>
                 <td width="20">&nbsp;</td> 
                 <td width="200" class="content2">{TR_SENDER_EMAIL}</td>
-                <td class="content">{SENDER_EMAIL_VALUE}
-                  <input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}" style="width:270px" class="textinput">
+                <td class="content">{SENDER_EMAIL_VALUE}>
                 </td>
               </tr>
               <tr>
                 <td width="20">&nbsp;</td> 
                 <td width="200" class="content2">{TR_SENDER_NAME}</td>
-                <td class="content">{SENDER_NAME_VALUE}
-                  <input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}" style="width:270px" class="textinput">
+                <td class="content">{SENDER_NAME_VALUE}>
                 </td>
               </tr>
               <tr> 

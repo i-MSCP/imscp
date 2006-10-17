@@ -33,9 +33,6 @@ $tpl -> define_dynamic('alias_list', 'page');
 
 $tpl -> define_dynamic('alias_entry', 'alias_list');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -248,10 +245,10 @@ function add_domain_alias(&$sql, &$err_al)
 
 
 	$cr_user_id = $_SESSION['dmn_id'];
-	$alias_name	= strtolower($_POST['ndomain_name']);
+	$alias_name	= strtolower(clean_input($_POST['ndomain_name']));
 	$domain_ip = $_SESSION['dmn_ip'];
-	$mount_point = strtolower($_POST['ndomain_mpoint']);
-	$forward = $_POST['forward'];
+	$mount_point = strtolower(clean_input($_POST['ndomain_mpoint']));
+	$forward = strtolower(clean_input($_POST['forward']));
 
 	$alias_name = get_punny($alias_name);
 

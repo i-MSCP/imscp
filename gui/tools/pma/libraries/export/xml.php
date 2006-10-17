@@ -1,10 +1,24 @@
 <?php
-/* $Id: xml.php,v 2.8 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: xml.php,v 2.12 2006/05/30 06:43:00 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
  * Set of functions used to build XML dumps of tables
  */
+
+if (isset($GLOBALS['db']) && strlen($GLOBALS['db'])) { /* Can't do server export */
+
+if (isset($plugin_list)) {
+    $plugin_list['xml'] = array(
+        'text' => 'strXML',
+        'extension' => 'xml',
+        'mime_type' => 'text/xml',
+        'options' => array(
+            array('type' => 'hidden', 'name' => 'data'),
+            ),
+        'options_text' => 'strXMLOptions',
+        );
+} else {
 
 /**
  * Outputs comment
@@ -155,4 +169,6 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
 
     return TRUE;
 } // end of the 'PMA_getTableXML()' function
+}
+}
 ?>

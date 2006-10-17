@@ -1,13 +1,12 @@
 <?php
 /*
  * Code for displaying server selection written by nijel
- * $Id: select_server.lib.php,v 2.10.2.3 2006/02/17 09:46:49 cybot_tm Exp $
+ * $Id: select_server.lib.php,v 2.17 2006/07/09 10:29:28 cybot_tm Exp $
  */
 
 /**
  * display server selection in list or selectbox form, or option tags only
  *
- * @todo    make serverlist a real html-list
  * @globals $lang
  * @globals $convcharset
  * @uses    $GLOBALS['cfg']['DisplayServersList']
@@ -41,12 +40,10 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
 
         echo '<select name="server" id="select_server"'
             . ' onchange="if (this.value != \'\') this.form.submit();">';
-        // TODO FIXME replace with $GLOBALS['strServers']
-        echo '<option value="">(' . $GLOBALS['strServer'] . ') ...</option>' . "\n";
+        echo '<option value="">(' . $GLOBALS['strServers'] . ') ...</option>' . "\n";
     } elseif ($list) {
         echo $GLOBALS['strServer'] . ':<br />';
-        // TODO FIXME display server list as 'list'
-        // echo '<ol>';
+        echo '<ul id="list_server">';
     }
 
     foreach ($GLOBALS['cfg']['Servers'] as $key => $server) {
@@ -80,14 +77,13 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
         }
 
         if ($list) {
-            // TODO FIXME display server list as 'list'
-            // echo '<li>';
+            echo '<li>';
             if ($selected && !$ommit_fieldset) {
-                echo '&raquo; <b>' . htmlspecialchars($label) . '</b><br />';
+                echo '<b>' . htmlspecialchars($label) . '</b>';
             } else {
-                echo '&raquo; <a class="item" href="index.php?server=' . $key . '&amp;lang=' . $lang . '&amp;convcharset=' . $convcharset . '" target="_top">' . htmlspecialchars($label) . '</a><br />';
+                echo '<a class="item" href="index.php?server=' . $key . '&amp;lang=' . $lang . '&amp;convcharset=' . $convcharset . '" target="_top">' . htmlspecialchars($label) . '</a>';
             }
-            // echo '</li>';
+            echo '</li>';
         } else {
             echo '            <option value="' . $key . '" ' . ($selected ? ' selected="selected"' : '') . '>' . htmlspecialchars($label) . '</option>' . "\n";
         }
@@ -95,11 +91,6 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
 
     if ($not_only_options) {
         echo '</select>';
-        if ($ommit_fieldset) {
-            echo '<hr />';
-        } else {
-            echo '</fieldset>';
-        }
         ?>
         <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
         <input type="hidden" name="convcharset" value="<?php echo $convcharset; ?>" />
@@ -108,10 +99,12 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
         echo '<noscript>';
         echo '<input type="submit" value="' . $GLOBALS['strGo'] . '" />';
         echo '</noscript>';
+        if (! $ommit_fieldset) {
+            echo '</fieldset>';
+        }
         echo '</form>';
     } elseif ($list) {
-        // TODO FIXME display server list as 'list'
-        // echo '</ol>';
+        echo '</ul>';
     }
 }
 ?>

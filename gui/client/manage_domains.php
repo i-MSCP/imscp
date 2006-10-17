@@ -30,7 +30,6 @@ $tpl -> define_dynamic('als_item', 'als_list');
 $tpl -> define_dynamic('sub_message', 'page');
 $tpl -> define_dynamic('sub_list', 'page');
 $tpl -> define_dynamic('sub_item', 'sub_list');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -135,6 +134,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id)
         WHERE
             domain_id = ?
         ORDER BY
+            alias_mount,
             alias_name
 SQL_QUERY;
 

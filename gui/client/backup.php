@@ -25,7 +25,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/backup.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.

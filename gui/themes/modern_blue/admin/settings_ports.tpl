@@ -70,9 +70,9 @@ function action_delete(url) {
                   <tr>
                     <td width="20">&nbsp;</td>
                     <td class="{CLASS}">{SERVICE}<input name="var_name[]" type="hidden" id="var_name" value="{VAR_NAME}" /><input name="custom[]" type="hidden" id="custom" value="{CUSTOM}" /></td>
-                    <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port" style="width:50px" value="{PORT}" maxlength="5" /></td>
+                    <td class="{CLASS}"><input name="port[]" type="text" class="textinput" id="port" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY}/></td>
                     <td class="{CLASS}">
-                     <select name="port_type[]" id="port_type">
+                     <select name="port_type[]" id="port_type" {PROTOCOL_READONLY}>
                       <option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
                       <option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
                      </select>

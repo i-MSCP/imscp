@@ -21,16 +21,30 @@ include '../include/vhcs-lib.php';
 
 check_login();
 
+if (isset($_GET['edit_id'])) {
+
+    $edit_id = $_GET['edit_id'];
+
+} else if (isset($_POST['edit_id'])) {
+
+    $edit_id = $_POST['edit_id'];
+
+} else {
+
+    user_goto('users.php');
+
+}
 
 $tpl = new pTemplate();
 
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/edit_user.tpl');
 
+$tpl -> define_dynamic('page_message', 'page');
+
+$tpl -> define_dynamic('logged_from', 'page');
+
 $tpl -> define_dynamic('ip_entry', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -71,7 +85,8 @@ $tpl -> assign(
 							'TR_MAIL' => tr('Email'),
 							'TR_PHONE' => tr('Phone'),
 							'TR_FAX' => tr('Fax'),
-							'TR_BTN_ADD_USER' => tr('Submit changes')
+			        'EDIT_ID'  => $edit_id,
+						'TR_BTN_ADD_USER' => tr('Submit changes')
 						)
 				);
 
@@ -87,14 +102,24 @@ $tpl -> assign(
 							'TR_USERNAME' => tr('Username'),
 							'TR_ACTION' => tr('Action'),
 							'TR_BACK' => tr('Back'),
-                            'TR_TITLE_BACK' => tr('Return to previous menu'),
-                            'TR_TABLE_NAME' => tr('Users list'),
+              'TR_TITLE_BACK' => tr('Return to previous menu'),
+              'TR_TABLE_NAME' => tr('Users list'),
+							'TR_SEND_DATA' => tr('Send new login data'),
+							'TR_PASSWORD_GENERATE' => tr('Password generate')
                      )
               );
 
-gen_page_message($tpl);
+if (isset($_POST['genpass'])) {
 
-if (isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
+	$tpl -> assign('VAL_PASSWORD', passgen());
+
+} else {
+
+	$tpl -> assign('VAL_PASSWORD', '');
+
+}	
+
+if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
 // Process data
 	global $dmn_user_name;
 
@@ -118,23 +143,22 @@ if (isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
 		die();
 	}
 
-
     if (check_ruser_data($tpl, '_yes_')) { // Save data to db
 		update_data_in_db($hpid);
 	}
 
 }else{
 	// Get user id that come for edit
-	if(isset($_GET['edit_id'])){
-		$hpid = $_GET['edit_id'];
-	}
+	$hpid = $edit_id;
 
 	load_user_data_page($hpid);
 
 	$_SESSION['edit_ID'] = $hpid;
-	$tpl -> assign('MESSAGE', "");
+
 }
 gen_edituser_page($tpl);
+
+gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
 
@@ -214,7 +238,7 @@ function gen_edituser_page(&$tpl)
     global $city, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
-	
+
 	if ($customer_id == NULL){
 		$customer_id = '';
 	}
@@ -223,8 +247,6 @@ function gen_edituser_page(&$tpl)
 	$tpl -> assign(
                 array(
                        	'VL_USERNAME' => $dmn_user_name,
-						'VL_USR_PASS' => '',
-						'VL_USR_PASS_REP' => '',
 						'VL_MAIL' => $user_email,
 						'VL_USR_ID' => $customer_id,
 						'VL_USR_NAME' => $first_name,
@@ -258,20 +280,21 @@ function update_data_in_db($hpid)
   global $fax, $inpass, $domain_ip;
   global $admin_login;
 
-  /*
-  $first_name = escape_user_data($first_name);
-  $last_name = escape_user_data($last_name);
-  $firm = escape_user_data($firm);
-  $zip = escape_user_data($zip);
-  $city = escape_user_data($city);
-  $country = escape_user_data($country);
-  $phone = escape_user_data($phone);
-  $fax = escape_user_data($fax);
-  $street_one = escape_user_data($street_one);
-  $street_two = escape_user_data($street_two);
-  */
+	$reseller_id = $_SESSION['user_id'];
 
-  if ($inpass === '') {// Save with out password
+  $first_name 	= clean_input($first_name);
+  $last_name 	= clean_input($last_name);
+  $firm 		= clean_input($firm);
+  $zip 			= clean_input($zip);
+  $city 		= clean_input($city);
+  $country 		= clean_input($country);
+  $phone 		= clean_input($phone);
+  $fax 			= clean_input($fax);
+  $street_one 	= clean_input($street_one);
+  $street_two 	= clean_input($street_two);
+
+  if (empty($inpass)) {
+  // Save with out password
     $query = <<<SQL_QUERY
             update
                 admin
@@ -306,6 +329,22 @@ SQL_QUERY;
                                    $hpid));
   } else {
     // Change password
+  if (chk_password($_POST['userpassword'])) {
+
+  	set_page_message( tr("Incorrect password range or syntax!"));
+
+   	header( "Location: edit_user.php?edit_id=$edit_id" );
+    die();
+ 	}
+  if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
+
+  	set_page_message( tr("Entered passwords does not match!"));
+
+    header( "Location: edit_user.php?edit_id=$edit_id" );
+    die();
+	}
+    $pure_user_pass = $inpass;
+
     $inpass = crypt_user_pass($inpass);
 
     $query = <<<SQL_QUERY
@@ -347,6 +386,18 @@ SQL_QUERY;
 	$admin_login = $_SESSION['user_logged'];
     write_log("$admin_login change data/password for $dmn_user_name!");
 
+	if (isset($_POST['send_data']) && !empty($inpass)) {
+
+		send_add_user_auto_msg ($reseller_id,
+  	                        $dmn_user_name,
+    	                      $pure_user_pass,
+      	                    $user_email,
+        	                  $first_name,
+          	                $last_name,
+            	              tr('Domain account'));
+
+	}
+	
 	unset($_SESSION['edit_ID']);
 	unset($_SESSION['user_name']);
 

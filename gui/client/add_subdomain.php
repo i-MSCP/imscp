@@ -26,7 +26,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/add_subdomain.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -81,8 +80,8 @@ SQL_QUERY;
   $tpl -> assign('DOMAIN_NAME', '.'.$domainname);
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
-    $tpl -> assign(array('SUBDOMAIN_NAME' => $_POST['subdomain_name'],
-                         'SUBDOMAIN_MOUNT_POINT' => $_POST['subdomain_mnt_pt']));
+    $tpl -> assign(array('SUBDOMAIN_NAME' => clean_input($_POST['subdomain_name']),
+                         'SUBDOMAIN_MOUNT_POINT' => clean_input($_POST['subdomain_mnt_pt'])));
   } else {
     $tpl -> assign(array('SUBDOMAIN_NAME' => '',
                          'SUBDOMAIN_MOUNT_POINT' => ''));
@@ -196,7 +195,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id)
   $domain_id = get_user_domain_id($sql, $user_id);
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
-    if ($_POST['subdomain_name'] === '') {
+    if (empty($_POST['subdomain_name'])) {
       set_page_message(tr('Please specify subdomain name!'));
       return;
     }

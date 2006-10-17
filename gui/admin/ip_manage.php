@@ -136,8 +136,8 @@ SQL_QUERY;
                 'VALUE_IP2' => $_POST['ip_number_2'],
                 'VALUE_IP3' => $_POST['ip_number_3'],
                 'VALUE_IP4' => $_POST['ip_number_4'],
-                'VALUE_DOMAIN' => $_POST['domain'],
-                'VALUE_ALIAS' => $_POST['alias'],
+                'VALUE_DOMAIN' => clean_input($_POST['domain']),
+                'VALUE_ALIAS' => clean_input($_POST['alias']),
                 )
             );
     }
@@ -171,9 +171,9 @@ function check_user_data () {
 
     global $domain, $alias;
 
-    $domain= $_POST['domain'];
+    $domain = clean_input($_POST['domain']);
 
-    $alias= $_POST['alias'];
+    $alias = clean_input($_POST['alias']);
 
 
     $err_msg = '_off_';

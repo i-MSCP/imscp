@@ -69,7 +69,7 @@ function action_delete(url) {
                       <!-- BDP: tickets_item -->
                       <tr>
                         <td width="25" nowrap class="{CONTENT}"><b>{NEW}</b></td>
-                        <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left"> 
+                        <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left">
 					  	<script language="javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 						</script>

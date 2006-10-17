@@ -29,9 +29,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 // check if we have only hosting plans for admins - ressseler shoul not can edit them
@@ -218,7 +215,7 @@ function get_hp_data($hpid, $admin_id) {
 
 		$hp_name = $data['name'];
 	} else {
-		$hp_php = ''; $hp_cgi = ''; $hp_sub = ''; $hp_als = ''; $hp_mail = ''; $hp_ftp = ''; 
+		$hp_php = ''; $hp_cgi = ''; $hp_sub = ''; $hp_als = ''; $hp_mail = ''; $hp_ftp = '';
 		$hp_sql_db = ''; $hp_sql_user = ''; $hp_traff = ''; $hp_disk = '';
 		$hp_name = 'Custom';
 	}
@@ -239,34 +236,34 @@ function check_user_data (&$tpl) {
 
 	// Gete data for fields from previus page
 	if(isset($_POST['template']))
-		$hp_name	 = $_POST['template'];
+		$hp_name = $_POST['template'];
 
 	if(isset($_POST['nreseller_max_domain_cnt']))
-		$hp_dmn	 = $_POST['nreseller_max_domain_cnt'];
+		$hp_dmn	 = clean_input($_POST['nreseller_max_domain_cnt']);
 
 	if(isset($_POST['nreseller_max_subdomain_cnt']))
-		$hp_sub	 = $_POST['nreseller_max_subdomain_cnt'];
+		$hp_sub	 = clean_input($_POST['nreseller_max_subdomain_cnt']);
 
 	if(isset($_POST['nreseller_max_alias_cnt']))
-		$hp_als	 = $_POST['nreseller_max_alias_cnt'];
+		$hp_als	 = clean_input($_POST['nreseller_max_alias_cnt']);
 
 	if(isset($_POST['nreseller_max_mail_cnt']))
-		$hp_mail	 = $_POST['nreseller_max_mail_cnt'];
+		$hp_mail = clean_input($_POST['nreseller_max_mail_cnt']);
 
 	if(isset($_POST['nreseller_max_ftp_cnt']))
-		$hp_ftp	 = $_POST['nreseller_max_ftp_cnt'];
+		$hp_ftp	 = clean_input($_POST['nreseller_max_ftp_cnt']);
 
 	if(isset($_POST['nreseller_max_sql_db_cnt']))
-		$hp_sql_db	 = $_POST['nreseller_max_sql_db_cnt'];
+		$hp_sql_db = clean_input($_POST['nreseller_max_sql_db_cnt']);
 
 	if(isset($_POST['nreseller_max_sql_user_cnt']))
-		$hp_sql_user	 = $_POST['nreseller_max_sql_user_cnt'];
+		$hp_sql_user = clean_input($_POST['nreseller_max_sql_user_cnt']);
 
 	if(isset($_POST['nreseller_max_traffic']))
-		$hp_traff	 = $_POST['nreseller_max_traffic'];
+		$hp_traff	 = clean_input($_POST['nreseller_max_traffic']);
 
 	if(isset($_POST['nreseller_max_disk']))
-		$hp_disk	 = $_POST['nreseller_max_disk'];
+		$hp_disk	 = clean_input($_POST['nreseller_max_disk']);
 
 	//if(isset($_POST['']))
 	//	$hp_dmn	 = $_POST[''];
@@ -290,7 +287,8 @@ function check_user_data (&$tpl) {
 		$ehp_error = tr('Hosting plan with entered name already exists!');
 
 	}
-	else*/ if (!vhcs_limit_check($hp_sub, 999)) {
+	else*/
+	if (!vhcs_limit_check($hp_sub, 999)) {
 
         $ehp_error = tr('Incorrect subdomain range or syntax!');
 

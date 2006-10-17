@@ -1,5 +1,5 @@
 <?php
-/* $Id: ip_allow_deny.lib.php,v 2.7.2.1 2006/04/11 16:33:33 cybot_tm Exp $ */
+/* $Id: ip_allow_deny.lib.php,v 2.9 2006/04/11 14:33:17 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -70,7 +70,7 @@ function PMA_getIp()
         $proxy_ip = $HTTP_COMING_FROM;
     } // end if... elseif...
 
-    // Returns the true IP if it has been found, else FALSE
+    // Returns the true IP if it has been found, else false
     if (empty($proxy_ip)) {
         // True IP without proxy
         return $direct_ip;
@@ -82,7 +82,7 @@ function PMA_getIp()
         } else {
             // Can't define IP: there is a proxy but we don't have
             // information about the true IP
-            return FALSE;
+            return false;
         }
     } // end if... else...
 } // end of the 'PMA_getIp()' function
@@ -111,7 +111,7 @@ function PMA_getIp()
  */
 function PMA_ipMaskTest($testRange, $ipToTest)
 {
-   $result = TRUE;
+   $result = true;
 
    if (preg_match('|([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/([0-9]+)|', $testRange, $regs)) {
        // performs a mask match
@@ -127,9 +127,9 @@ function PMA_ipMaskTest($testRange, $ipToTest)
        } // end for
 
        if (($maskl & $rangel) == ($maskl & $ipl)) {
-           return TRUE;
+           return true;
        } else {
-           return FALSE;
+           return false;
        }
    } else {
        // range based
@@ -141,11 +141,11 @@ function PMA_ipMaskTest($testRange, $ipToTest)
             if (preg_match('|\[([0-9]+)\-([0-9]+)\]|', $maskocts[$i], $regs)) {
                 if (($ipocts[$i] > $regs[2])
                     || ($ipocts[$i] < $regs[1])) {
-                    $result = FALSE;
+                    $result = false;
                 } // end if
             } else {
                 if ($maskocts[$i] <> $ipocts[$i]) {
-                    $result = FALSE;
+                    $result = false;
                 } // end if
             } // end if/else
        } //end for
@@ -173,7 +173,7 @@ function PMA_allowDeny($type)
     // Grabs true IP of the user and returns if it can't be found
     $remote_ip = PMA_getIp();
     if (empty($remote_ip)) {
-        return FALSE;
+        return false;
     }
 
     // copy username
@@ -195,7 +195,7 @@ function PMA_allowDeny($type)
         $shortcuts['localnetC'] = PMA_getenv('SERVER_ADDR') . '/24';
     }
 
-    foreach ($rules AS $rule) {
+    foreach ($rules as $rule) {
         // extract rule data
         $rule_data = explode(' ', $rule);
 
@@ -227,11 +227,11 @@ function PMA_allowDeny($type)
 
         // Do the actual matching now
         if (PMA_ipMaskTest($rule_data[2], $remote_ip)) {
-            return TRUE;
+            return true;
         }
     } // end while
 
-    return FALSE;
+    return false;
 } // end of the "PMA_AllowDeny()" function
 
 ?>

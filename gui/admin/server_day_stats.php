@@ -26,7 +26,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/server_day_stats.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
-$tpl -> define_dynamic('hosting_plans', 'page');
 
 $tpl -> define_dynamic('hour_list', 'page');
 
@@ -205,7 +204,7 @@ SQL_QUERY;
  *
  */
 
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_statistcis.tpl');
+gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_statistics.tpl');
 
 $tpl -> assign(
     array(

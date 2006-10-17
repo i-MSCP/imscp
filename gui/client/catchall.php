@@ -47,9 +47,6 @@ $tpl -> define_dynamic('ftp_item', 'page');
 
 $tpl -> define_dynamic('no_mails', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-
 //
 // page functions.
 //
@@ -445,10 +442,10 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 
 }
 
-function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name, $dmn_mails, $als_mails)
+function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name, $dmn_mails, $als_mails, $sub_mails)
 {
 	global $counter;
-    $total_mails = $dmn_mails + $als_mails;
+    $total_mails = $dmn_mails + $als_mails + $sub_mails;
 
     if ($total_mails == 0) {
 
@@ -614,6 +611,98 @@ SQL_QUERY;
         }
 
     }
+    //
+    // Have We Any Subdomain Mails?
+    //
+
+    if ($sub_mails > 0) {
+
+        $query = <<<SQL_QUERY
+
+            select
+
+                a.subdomain_id, CONCAT(a.subdomain_name,'.',b.domain_name) as subdomain_name
+
+            from
+
+                subdomain as a, domain as b
+
+            where
+
+                a.domain_id = '$dmn_id'
+            
+            and 
+            	a.domain_id = b.domain_id
+
+SQL_QUERY;
+
+        $rs = execute_query($sql, $query);
+
+        while (!$rs -> EOF) {
+		
+			if ($counter % 2 == 0) {
+            
+               		 $tpl -> assign('ITEM_CLASS', 'content2');
+            
+          	} else {
+                
+		             $tpl -> assign('ITEM_CLASS', 'content');      
+           	}
+
+
+            $als_id = $rs -> fields['subdomain_id'];
+
+            $als_name = $rs -> fields['subdomain_name'];
+
+            $query = <<<SQL_QUERY
+    
+                select
+    
+                    mail_id, mail_acc, status
+    
+                from
+    
+                    mail_users
+    
+                where
+    
+                    domain_id = '$dmn_id'
+    
+                  and
+    
+                    sub_id = '$als_id'
+    
+                  and
+    
+                    mail_type = 'subdom_catchall'
+    
+SQL_QUERY;
+    
+            $rs_als = execute_query($sql, $query);
+    
+            if ($rs_als -> RecordCount() == 0) {
+    
+                gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'sub');
+    
+            } else {
+    
+                gen_catchall_item($tpl,
+                                  'delete',
+                                  $als_id,
+                                  $als_name,
+                                  $rs_als -> fields['mail_id'],
+                                  $rs_als -> fields['mail_acc'],
+                                  $rs_als -> fields['status'], 'sub');
+    
+            }
+    
+            $tpl -> parse('CATCHALL_ITEM', '.catchall_item');
+
+            $rs -> MoveNext(); $counter ++;
+
+        }
+
+    }
 
 }
 
@@ -676,7 +765,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id)
 
     }
 
-    gen_page_catchall_list($tpl, $sql, $dmn_id, $dmn_name, $dmn_mails, $als_mails);
+    gen_page_catchall_list($tpl, $sql, $dmn_id, $dmn_name, $dmn_mails, $als_mails, $sub_mails);
 
     //gen_page_ftp_list($tpl, $sql, $dmn_id, $dmn_name);
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_privileges.php,v 2.91.2.2 2006/03/14 17:32:19 lem9 Exp $ */
+/* $Id: server_privileges.php,v 2.98 2006/07/26 20:40:58 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
@@ -764,15 +764,12 @@ if (!empty($adduser_submit) || !empty($change_copy)) {
             'GRANT ' . join(', ', PMA_extractPrivInfo()) . ' ON *.* TO \''
             . PMA_sqlAddslashes($username) . '\'@\'' . $hostname . '\'';
         if ($pred_password != 'none' && $pred_password != 'keep') {
-            $pma_pw_hidden = '';
-            for ($i = 0; $i < strlen($pma_pw); $i++) {
-                $pma_pw_hidden .= '*';
-            }
+            $pma_pw_hidden = str_repeat('*', strlen($pma_pw));
             $sql_query = $real_sql_query . ' IDENTIFIED BY \'' . $pma_pw_hidden . '\'';
-            $real_sql_query .= ' IDENTIFIED BY \'' . $pma_pw . '\'';
+            $real_sql_query .= ' IDENTIFIED BY \'' . PMA_sqlAddslashes($pma_pw) . '\'';
             if ( isset( $create_user_real ) ) {
                 $create_user_show = $create_user_real . ' IDENTIFIED BY \'' . $pma_pw_hidden . '\'';
-                $create_user_real .= ' IDENTIFIED BY \'' . $pma_pw . '\'';
+                $create_user_real .= ' IDENTIFIED BY \'' . PMA_sqlAddslashes($pma_pw) . '\'';
             }
         } else {
             if ($pred_password == 'keep' && !empty($password)) {
@@ -833,6 +830,23 @@ if (!empty($adduser_submit) || !empty($change_copy)) {
             }
             PMA_DBI_try_query($real_sql_query) or PMA_mysqlDie(PMA_DBI_getError(), $sql_query);
             $message = $GLOBALS['strAddUserMessage'];
+
+            /* Create database for new user */
+            if (isset($createdb) && $createdb > 0) {
+                if ($createdb == 1) {
+                    $q = 'CREATE DATABASE ' . PMA_backquote(PMA_sqlAddslashes($username)) . ';';
+                    $sql_query .= $q;
+                    PMA_DBI_try_query($q) or PMA_mysqlDie(PMA_DBI_getError(), $sql_query);
+
+                    $q = 'GRANT ALL PRIVILEGES ON ' . PMA_backquote(PMA_sqlAddslashes($username)) . '.* TO \'' . PMA_sqlAddslashes($username) . '\'@\'' . $hostname . '\';';
+                    $sql_query .= $q;
+                    PMA_DBI_try_query($q) or PMA_mysqlDie(PMA_DBI_getError(), $sql_query);
+                } elseif ($createdb == 2) {
+                    $q = 'GRANT ALL PRIVILEGES ON ' . PMA_backquote(PMA_sqlAddslashes($username) . '_%') . '.* TO \'' . PMA_sqlAddslashes($username) . '\'@\'' . $hostname . '\';';
+                    $sql_query .= $q;
+                    PMA_DBI_try_query($q) or PMA_mysqlDie(PMA_DBI_getError(), $sql_query);
+                }
+            }
         } else {
             if ( isset( $create_user_real ) ) {
                 $queries[]             = $create_user_real;
@@ -1008,6 +1022,10 @@ if (!empty($update_privs)) {
     }
     $sql_query2 .= ';';
     if (!PMA_DBI_try_query($sql_query0)) { // this query may fail, but this does not matter :o)
+        // a case when it can fail is when the admin does not have all
+        // privileges: he can't do a REVOKE ALL PRIVILEGES !
+        // so at least we display the error
+        echo PMA_DBI_getError();
         unset($sql_query0);
     }
     if (isset($sql_query1) && !PMA_DBI_try_query($sql_query1)) { // this one may fail, too...
@@ -1890,12 +1908,12 @@ if ( empty( $adduser ) && ( ! isset( $checkprivs ) || ! strlen($checkprivs) ) ) 
                . '    <tr class="even noclick">' . "\n"
                . '        <td><input type="radio" name="nopass" value="0" id="radio_nopass_0" onclick="document.getElementById(\'pw_pma_pw\').focus();" /></td>' . "\n"
                . '        <td><label for="radio_nopass_0">' . $GLOBALS['strPassword'] . ':</label></td>' . "\n"
-               . '        <td><input type="password" name="pma_pw" id="pw_pma_pw" onchange="radio_nopass_0.checked = true;" /></td>' . "\n"
+               . '        <td><input type="password" name="pma_pw" id="pw_pma_pw" onchange="nopass[1].checked = true;" /></td>' . "\n"
                . '    </tr>' . "\n"
                . '    <tr class="odd noclick">' . "\n"
                . '        <td></td>' . "\n"
                . '        <td><label for="pw_pma_pw2">' . $GLOBALS['strReType'] . ':</label></td>' . "\n"
-               . '        <td><input type="password" name="pma_pw2" id="pw_pma_pw2" onchange="radio_nopass_0.checked = true;" /></td>' . "\n"
+               . '        <td><input type="password" name="pma_pw2" id="pw_pma_pw2" onchange="nopass[1].checked = true;" /></td>' . "\n"
                . '    </tr>' . "\n"
                . '    </table>' . "\n"
                . '</fieldset>' . "\n"
@@ -1942,6 +1960,21 @@ if ( empty( $adduser ) && ( ! isset( $checkprivs ) || ! strlen($checkprivs) ) ) 
        . '<form name="usersForm" id="usersForm" action="server_privileges.php" method="post" onsubmit="return checkAddUser(this);">' . "\n"
        . PMA_generate_common_hidden_inputs('', '', 1);
     PMA_displayLoginInformationFields('new', 2);
+    echo '<fieldset id="fieldset_add_user_database">' . "\n"
+       . '<legend>' . $GLOBALS['strCreateUserDatabase'] . '</legend>' . "\n"
+       . '    <div class="item">' . "\n"
+       . '        <input type="radio" name="createdb" value="0" id="radio_createdb_0" checked="checked" />' . "\n"
+       . '        <label for="radio_createdb_0">' . $GLOBALS['strCreateUserDatabaseNone'] . '</label>' . "\n"
+       . '    </div>' . "\n"
+       . '    <div class="item">' . "\n"
+       . '        <input type="radio" name="createdb" value="1" id="radio_createdb_1" />' . "\n"
+       . '        <label for="radio_createdb_1">' . $GLOBALS['strCreateUserDatabaseName'] . '</label>' . "\n"
+       . '    </div>' . "\n"
+       . '    <div class="item">' . "\n"
+       . '        <input type="radio" name="createdb" value="2" id="radio_createdb_2" />' . "\n"
+       . '        <label for="radio_createdb_2">' . $GLOBALS['strCreateUserDatabaseWildcard'] . '</label>' . "\n"
+       . '    </div>' . "\n"
+       . '</fieldset>' . "\n";
     PMA_displayPrivTable('*', '*', FALSE, 1);
     echo '    <fieldset id="fieldset_add_user_footer" class="tblFooters">' . "\n"
        . '        <input type="submit" name="adduser_submit" value="' . $GLOBALS['strGo'] . '" />' . "\n"

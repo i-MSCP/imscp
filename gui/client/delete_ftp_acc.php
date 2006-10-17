@@ -44,7 +44,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($ftp_id, $dmn_name));
-  $ftp_name = $rs->fields['t1.userid'];
+  $ftp_name = $rs->fields['userid'];
 
   if ($rs -> RecordCount() == 0) {
     user_goto('ftp_accounts.php');

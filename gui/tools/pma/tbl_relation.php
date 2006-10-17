@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_relation.php,v 2.31.2.1 2006/04/11 17:51:03 cybot_tm Exp $ */
+/* $Id: tbl_relation.php,v 2.32 2006/04/11 17:50:49 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -191,11 +191,11 @@ if (isset($_REQUEST['destination_innodb'])) {
 
             } // end if... else....
         } elseif (isset($existrel_innodb[$master_field])) {
-                if (PMA_MYSQL_INT_VERSION >= 40013) {
-                    $upd_query  = 'ALTER TABLE ' . PMA_backquote($table)
-                            . ' DROP FOREIGN KEY '
-                            . PMA_backquote($existrel_innodb[$master_field]['constraint']);
-                }
+            if (PMA_MYSQL_INT_VERSION >= 40013) {
+                $upd_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                        . ' DROP FOREIGN KEY '
+                        . PMA_backquote($existrel_innodb[$master_field]['constraint']);
+            }
         } // end if... else....
 
         if (isset($upd_query)) {

@@ -22,7 +22,6 @@ include '../include/vhcs-lib.php';
 check_login();
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
-global $cfg;
 
 if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])){
 	$uuser_id = $_GET['uname'];

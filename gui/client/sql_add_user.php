@@ -24,7 +24,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/sql_add_user.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('mysql_prefix_no', 'page');
 $tpl -> define_dynamic('mysql_prefix_yes', 'page');
 $tpl -> define_dynamic('mysql_prefix_infront', 'page');
@@ -207,12 +206,12 @@ function add_sql_user(&$sql, $user_id, $db_id)
   //
   // let's check user input;
   //
-  if ($_POST['user_name'] === '' && !isset($_POST['Add_Exist'])) {
+  if (empty($_POST['user_name']) && !isset($_POST['Add_Exist'])) {
     set_page_message(tr('Please type user name!'));
     return;
   }
 
-  if ($_POST['pass'] === '' && $_POST['pass_rep'] === '' && !isset($_POST['Add_Exist'])) {
+  if (empty($_POST['pass']) && empty($_POST['pass_rep']) && !isset($_POST['Add_Exist'])) {
     set_page_message(tr('Please type user password!'));
     return;
   }
@@ -224,6 +223,11 @@ function add_sql_user(&$sql, $user_id, $db_id)
 
   if (strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH'] && !isset($_POST['Add_Exist'])) {
     set_page_message(tr('Too user long password!'));
+    return;
+  }
+
+	if (chk_password($_POST['pass'])) {
+  	set_page_message( tr("Incorrect password range or syntax!"));
     return;
   }
 
@@ -249,11 +253,11 @@ function add_sql_user(&$sql, $user_id, $db_id)
     // we'll use domain_id in the name of the database;
     //
     if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
-      $db_user = $dmn_id."_".$_POST['user_name'];
+      $db_user = $dmn_id."_".clean_input($_POST['user_name']);
     } else if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
-      $db_user = $_POST['user_name']."_".$dmn_id;
+      $db_user = clean_input($_POST['user_name'])."_".$dmn_id;
     } else {
-      $db_user = $_POST['user_name'];
+      $db_user = clean_input($_POST['user_name']);
     }
   } else if (isset($_POST['Add_Exist'])) {
       $query = "SELECT sqlu_name FROM sql_user WHERE sqlu_id = ?";

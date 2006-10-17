@@ -1,5 +1,5 @@
 <?php
-/* $Id: plugin_interface.lib.php,v 1.3 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: plugin_interface.lib.php,v 1.18 2006/06/25 11:40:14 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -91,7 +91,19 @@ function PMA_pluginGetDefault($section, $opt)
     if (isset($GLOBALS['timeout_passed']) && $GLOBALS['timeout_passed'] && isset($_REQUEST[$opt])) {
         return htmlspecialchars($_REQUEST[$opt]);
     } elseif (isset($GLOBALS['cfg'][$section][$opt])) {
-        return htmlspecialchars($GLOBALS['cfg'][$section][$opt]);
+        $matches = array();
+        /* Possibly replace localised texts */
+        if (preg_match_all('/(str[A-Z][A-Za-z0-9]*)/', $GLOBALS['cfg'][$section][$opt], $matches)) {
+            $val = $GLOBALS['cfg'][$section][$opt];
+            foreach($matches[0] as $match) {
+                if (isset($GLOBALS[$match])) {
+                    $val = str_replace($match, $GLOBALS[$match], $val);
+                }
+            }
+            return htmlspecialchars($val);
+        } else {
+            return htmlspecialchars($GLOBALS['cfg'][$section][$opt]);
+        }
     }
     return '';
 }
@@ -123,7 +135,7 @@ function PMA_pluginIsActive($section, $opt, $val)
 }
 
 /**
- * string PMA_pluginGetChoice(string $section, string $name, array &$list)
+ * string PMA_pluginGetChoice(string $section, string $name, array &$list, string $cfgname)
  *
  * returns html radio form element for plugin choice
  *
@@ -133,19 +145,26 @@ function PMA_pluginIsActive($section, $opt, $val)
  *                              $GLOBALS['cfg'][$section] for plugin
  * @param   string  $name       name of radio element
  * @param   array   &$list      array with plugin configuration defined in plugin file
+ * @param   string  $cfgname    name of config value, if none same as $name
  * @return  string              html input radio tag
  */
-function PMA_pluginGetChoice($section, $name, &$list)
+function PMA_pluginGetChoice($section, $name, &$list, $cfgname = NULL)
 {
+    if (!isset($cfgname)) {
+        $cfgname = $name;
+    }
     $ret = '';
     foreach ($list as $plugin_name => $val) {
         $ret .= '<!-- ' . $plugin_name . ' -->' . "\n";
         $ret .= '<input type="radio" name="' . $name . '" value="' . $plugin_name . '"'
             . ' id="radio_plugin_' . $plugin_name . '"'
-            . ' onclick="if(this.checked) { hide_them_all();'
-                    .' document.getElementById(\'' . $plugin_name . '_options\').style.display = \'block\'; };'
+            . ' onclick="if(this.checked) { hide_them_all();';
+        if (isset($val['force_file'])) {
+            $ret .= 'document.getElementById(\'checkbox_dump_asfile\').checked = true;';
+        }
+        $ret .= ' document.getElementById(\'' . $plugin_name . '_options\').style.display = \'block\'; };'
                 .' return true"'
-            . PMA_pluginIsActive($section, $name, $plugin_name) . '/>' . "\n";
+            . PMA_pluginIsActive($section, $cfgname, $plugin_name) . '/>' . "\n";
         $ret .= '<label for="radio_plugin_' . $plugin_name . '">'
             . PMA_getString($val['text']) . '</label>' . "\n";
         $ret .= '<br /><br />' . "\n";
@@ -170,35 +189,89 @@ function PMA_pluginGetChoice($section, $name, &$list)
  */
 function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
 {
-    $ret = '';
-    $ret .= '<tr>';
+    $ret = "\n";
     if ($opt['type'] == 'bool') {
-        $ret .= '<td colspan="2">';
+        $ret .= '<div class="formelementrow">' . "\n";
         $ret .= '<input type="checkbox" name="' . $plugin_name . '_' . $opt['name'] . '"'
             . ' value="something" id="checkbox_' . $plugin_name . '_' . $opt['name'] . '"'
-            . ' ' . PMA_pluginCheckboxCheck($section, $plugin_name . '_' . $opt['name']) .' />';
+            . ' ' . PMA_pluginCheckboxCheck($section, $plugin_name . '_' . $opt['name']);
+        if (isset($opt['force'])) {
+            /* Same code is also few lines lower, update both if needed */
+            $ret .= ' onclick="if (!this.checked &amp;&amp; '
+                . '(!document.getElementById(\'checkbox_' . $plugin_name . '_' .$opt['force'] . '\') '
+                . '|| !document.getElementById(\'checkbox_' . $plugin_name . '_' .$opt['force'] . '\').checked)) '
+                . 'return false; else return true;"';
+        }
+        $ret .= ' />';
         $ret .= '<label for="checkbox_' . $plugin_name . '_' . $opt['name'] . '">'
             . PMA_getString($opt['text']) . '</label>';
-        $ret .= '</td>';
+        $ret .= '</div>' . "\n";
     } elseif ($opt['type'] == 'text') {
-        $ret .= '<td>';
-        $ret .= '<label for="text_' . $plugin_name . '_' . $opt['name'] . '">'
+        $ret .= '<div class="formelementrow">' . "\n";
+        $ret .= '<label for="text_' . $plugin_name . '_' . $opt['name'] . '" class="desc">'
             . PMA_getString($opt['text']) . '</label>';
-        $ret .= '</td><td>';
         $ret .= '<input type="text" name="' . $plugin_name . '_' . $opt['name'] . '"'
             . ' value="' . PMA_pluginGetDefault($section, $plugin_name . '_' . $opt['name']) . '"'
             . ' id="text_' . $plugin_name . '_' . $opt['name'] . '"'
             . (isset($opt['size']) ? ' size="' . $opt['size'] . '"' : '' )
             . (isset($opt['len']) ? ' maxlength="' . $opt['len'] . '"' : '' ) . ' />';
-        $ret .= '</td>';
+        $ret .= '</div>' . "\n";
+    } elseif ($opt['type'] == 'message_only') {
+        $ret .= '<div class="formelementrow">' . "\n";
+        $ret .= '<label for="text_' . $plugin_name . '_' . $opt['name'] . '" class="desc">'
+            . PMA_getString($opt['text']) . '</label>';
+        $ret .= '</div>' . "\n";
+    } elseif ($opt['type'] == 'select') {
+        $ret .= '<div class="formelementrow">' . "\n";
+        $ret .= '<label for="select_' . $plugin_name . '_' . $opt['name'] . '" class="desc">'
+            . PMA_getString($opt['text']) . '</label>';
+        $ret .= '<select name="' . $plugin_name . '_' . $opt['name'] . '"'
+            . ' id="select_' . $plugin_name . '_' . $opt['name'] . '">';
+        $default = PMA_pluginGetDefault($section, $plugin_name . '_' . $opt['name']);
+        foreach($opt['values'] as $key => $val) {
+            $ret .= '<option name="' . $key . '"';
+            if ($key == $default) {
+                $ret .= ' selected="selected"';
+            }
+            $ret .= '>' . PMA_getString($val) . '</option>';
+        }
+        $ret .= '</select>';
+        $ret .= '</div>' . "\n";
+    } elseif ($opt['type'] == 'hidden') {
+        $ret .= '<input type="hidden" name="' . $plugin_name . '_' . $opt['name'] . '"'
+            . ' value="' . PMA_pluginGetDefault($section, $plugin_name . '_' . $opt['name']) . '"' . ' />';
+    } elseif ($opt['type'] == 'bgroup') {
+        $ret .= '<fieldset><legend>';
+        /* No checkbox without name */
+        if (!empty($opt['name'])) {
+            $ret .= '<input type="checkbox" name="' . $plugin_name . '_' . $opt['name'] . '"'
+                . ' value="something" id="checkbox_' . $plugin_name . '_' . $opt['name'] . '"'
+                . ' ' . PMA_pluginCheckboxCheck($section, $plugin_name . '_' . $opt['name']);
+            if (isset($opt['force'])) {
+                /* Same code is also few lines higher, update both if needed */
+                $ret .= ' onclick="if (!this.checked &amp;&amp; '
+                    . '(!document.getElementById(\'checkbox_' . $plugin_name . '_' .$opt['force'] . '\') '
+                    . '|| !document.getElementById(\'checkbox_' . $plugin_name . '_' .$opt['force'] . '\').checked)) '
+                    . 'return false; else return true;"';
+            }
+            $ret .= ' />';
+            $ret .= '<label for="checkbox_' . $plugin_name . '_' . $opt['name'] . '">'
+                . PMA_getString($opt['text']) . '</label>';
+        } else {
+            $ret .= PMA_getString($opt['text']);
+        }
+        $ret .= '</legend>';
+    } elseif ($opt['type'] == 'egroup') {
+        $ret .= '</fieldset>';
     } else {
         /* This should be seen only by plugin writers, so I do not thing this
          * needs translation. */
-        $ret .= '<td colspan="2">';
-        $ret .= 'UNKNOWN OPTION IN IMPORT PLUGIN ' . $plugin_name . '!';
-        $ret .= '</td>';
+        $ret .= 'UNKNOWN OPTION ' . $opt['type'] . ' IN IMPORT PLUGIN ' . $plugin_name . '!';
     }
-    $ret .= '</tr>';
+    if (isset($opt['doc'])) {
+        $ret .= PMA_showMySQLDocu($opt['doc'][0], $opt['doc'][1]);
+    }
+    $ret .= "\n";
     return $ret;
 }
 
@@ -220,15 +293,14 @@ function PMA_pluginGetOptions($section, &$list)
     foreach ($list as $plugin_name => $val) {
         $ret .= '<fieldset id="' . $plugin_name . '_options" class="options">';
         $ret .= '<legend>' . PMA_getString($val['options_text']) . '</legend>';
-        if (isset($val['options'])) {
-            $ret .= '<table class="form">';
-            $ret .= '<tbody>';
+        $count = 0;
+        if (isset($val['options']) && count($val['options']) > 0) {
             foreach ($val['options'] as $id => $opt) {
+                if ($opt['type'] != 'hidden') $count++;
                 $ret .= PMA_pluginGetOneOption($section, $plugin_name, $id, $opt);
             }
-            $ret .= '</tbody>';
-            $ret .= '</table>';
-        } else {
+        }
+        if ($count == 0) {
             $ret .= $GLOBALS['strNoOptions'];
         }
         $ret .= '</fieldset>';
@@ -236,6 +308,14 @@ function PMA_pluginGetOptions($section, &$list)
     return $ret;
 }
 
+/**
+ * string PMA_pluginGetJavascript(array &$list)
+ *
+ * return html/javascript code which is needed for handling plugin stuff
+ *
+ * @param   array   &$list      array with plugin configuration defined in plugin file
+ * @return  string              html fieldset with plugin options
+ */
 function PMA_pluginGetJavascript(&$list) {
     $ret = '
     <script type="text/javascript" language="javascript">
@@ -253,6 +333,9 @@ function PMA_pluginGetJavascript(&$list) {
         ';
     foreach ($list as $plugin_name => $val) {
         $ret .= 'if (document.getElementById("radio_plugin_' . $plugin_name . '").checked) {' . "\n";
+        if (isset($val['force_file'])) {
+            $ret .= 'document.getElementById(\'checkbox_dump_asfile\').checked = true;' . "\n";
+        }
         $ret .= 'document.getElementById("' . $plugin_name . '_options").style.display = "block";' . "\n";
         $ret .= ' } else ' . "\n";
     }

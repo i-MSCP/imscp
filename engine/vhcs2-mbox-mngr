@@ -98,8 +98,6 @@ sub del_mta_hash_value {
     return $rs if ($rs != 0);
 
     $rdata =~ s/^$key\t+([^\n]+)\n//gim;
-    
-    push_el(\@main::el, 'del_mta_hash_value()', 'DEBUG: Try to delete data :'.$key.' in File '.$hfile);
 
     $rs = store_file($hfile, $rdata, 'root', 'root', 0644);
 
@@ -137,8 +135,6 @@ sub set_mta_hash_value {
     ($rs, $fdata) = get_file($hfile);
 
     return $rs if ($rs != 0);
-    
-    push_el(\@main::el, 'del_mta_hash_value()', 'DEBUG: Try to store data :'.$key.' in File '.$hfile);
 
     $fdata =~ s/^$key\t+([^\n]+)\n//gim if ($rdata ne '');
 

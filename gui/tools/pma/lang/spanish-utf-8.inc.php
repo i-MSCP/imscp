@@ -1,15 +1,15 @@
 <?php
-/* $Id: spanish-utf-8.inc.php,v 2.131.2.4 2006/03/23 17:42:16 lem9 Exp $ */
+/* $Id: spanish-utf-8.inc.php,v 2.157.2.1 2006/08/30 10:43:15 nijel Exp $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
 $text_dir = 'ltr';
-$left_font_family = 'verdana, arial, helvetica, geneva, sans-serif';
-$right_font_family = 'arial, helvetica, geneva, sans-serif';
 $number_thousands_separator = ',';
 $number_decimal_separator = '.';
 // Atajos para Byte, Kilo, Mega, Giga, Tera, Peta, Exa
 $byteUnits = array('Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB');
+
+$mysql_5_0_doc_lang = 'es';
 
 $day_of_week = array('Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab');
 $month = array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic');
@@ -28,12 +28,10 @@ $strAddAutoIncrement = 'Añadir el valor AUTO_INCREMENT';
 $strAddConstraints = 'Añadir restricciones';
 $strAddDeleteColumn = 'Añadir/borrar columna de criterio';
 $strAddDeleteRow = 'Añadir/borrar fila de criterio';
-$strAddDropDatabase = 'Añadir DROP DATABASE';
 $strAddedColumnComment = 'Se añadió un comentario para la columna';
 $strAddedColumnRelation = 'Se añadió una relación para la columna';
 $strAddFields = 'Añadir %s campo(s)';
 $strAddHeaderComment = 'Añadir su propio comentario en el encabezado (\\n segmenta las oraciones)';
-$strAddIfNotExists = 'Añadir IF NOT EXISTS';
 $strAddIntoComments = 'Añadir en los comentarios';
 $strAddNewField = 'Insertar nuevo campo';
 $strAddPrivilegesOnDb = 'Añadir privilegios a esta base de datos';
@@ -367,7 +365,6 @@ $strInsertAsNewRow = 'Insertar como una nueva fila';
 $strInsertedRowId = 'Se insertó la ID de la fila:';
 $strInsertedRows = 'Filas insertadas:';
 $strInsert = 'Insertar';
-$strInsertNewRow = 'Insertar nueva fila';
 $strInternalNotNecessary = '* No es necesaria una relación interna cuando también existe en InnoDB.';
 $strInternalRelations = 'Relaciones internas';
 $strInUse = 'en uso';
@@ -498,7 +495,6 @@ $strNoRowsSelected = 'No se seleccionaron filas';
 $strNoSpace = 'No hay suficiente espacio para guardar el archivo %s.';
 $strNoTablesFound = 'No se han encontrado tablas en la base de datos.';
 $strNoThemeSupport = 'No existe soporte para Diseños personalizados (Themes), por favor, revise su configuración y/o sus temas en el directorio %s.';
-$strNothingToImport = '¡Usted no seleccionó datos para importar!';
 $strNotNumber = '¡Ésto no es un número!';
 $strNotOK = 'no recibió el OK';
 $strNotSet = 'La tabla <b>%s</b> no fue hallada o no fue definida en %s';
@@ -594,6 +590,7 @@ $strPrivDescUpdate = 'Permite cambiar los datos.';
 $strPrivDescUsage = 'Sin privilegios.';
 $strPrivileges = 'Privilegios';
 $strPrivilegesReloaded = 'Los privilegios fueron cargados nuevamente de manera exitosa.';
+$strProcesses = 'Procesos';
 $strProcesslist = 'Lista de procesos';
 $strProtocolVersion = 'Versión del protocolo';
 $strPutColNames = 'Poner los nombres de campo en la primera hilera';
@@ -621,7 +618,6 @@ $strRelationsForTable = 'RELACIONES PARA LA TABLA';
 $strRelations = 'Relaciones';
 $strRelationView = 'Vista de relaciones';
 $strReloadingThePrivileges = 'Cargando los privilegios nuevamente';
-$strReloadMySQL = 'Reinicio de MySQL';
 $strRemoveSelectedUsers = 'Eliminar a los usuarios seleccionados';
 $strRenameDatabaseOK = 'La base de datos %s ha sido cambiada de nombre a %s';
 $strRenameTable = 'Cambiar el nombre de la tabla a';
@@ -681,7 +677,6 @@ $strServer = 'Servidor';
 $strServerStatusDelayedInserts = 'Delayed inserts';
 $strServerStatus = 'Información acerca del tiempo de ejecución del proceso principal';
 $strServerStatusUptime = 'Este servidor MySQL ha estado activo durante %s. Se inició en %s.';
-$strServerTabProcesslist = 'Procesos';
 $strServerTabVariables = 'Variables';
 $strServerTrafficNotes = '<b>Tráfico del servidor</b>: Estas tablas muestran las estadísticas de tráfico en la red de este servidor MySQL desde su inicio.';
 $strServerVars = 'Variables y parámetros del servidor';
@@ -823,7 +818,6 @@ $strSort = 'Ordenar';
 $strSpaceUsage = 'Espacio utilizado';
 $strSpanish = 'Español';
 $strSplitWordsWithSpace = 'Palabras separadas por un espacio (" ").';
-$strSQLExportCompatibility = 'Compatibilidad con exportación SQL';
 $strSQLExportType = 'Tipo de exportación';
 $strSQLImportOptions = 'Opciones SQL';
 $strSQLOptions = 'Opciones SQL';
@@ -845,7 +839,6 @@ $strStorageEngine = 'Motor de almacenamiento';
 $strStorageEngines = 'Motores de almacenamiento';
 $strStrucCSV = 'Datos CSV ';
 $strStrucData = 'Estructura y datos';
-$strStrucDrop = 'Añadir DROP TABLE';
 $strStrucExcelCSV = 'CSV para datos de MS Excel';
 $strStrucNativeExcel = 'Datos de MS Excel en formato nativo';
 $strStrucOnly = 'Únicamente la estructura ';
@@ -870,7 +863,6 @@ $strTableOptions = 'Opciones de la tabla';
 $strTables = '%s tabla(s)';
 $strTableStructure = 'Estructura de tabla para la tabla';
 $strTable = 'Tabla';
-$strTableType = 'Tipo de tabla';
 $strTakeIt = 'tómelo';
 $strTblPrivileges = 'Privilegios específicos para la tabla';
 $strTempData = 'Datos temporales';
@@ -898,7 +890,6 @@ $strTraditionalSpanish = 'Español tradicional';
 $strTraffic = 'Tráfico';
 $strTransactionCoordinator = 'Coordinador de transacción';
 $strTransformation_application_octetstream__download = 'Mostrar un enlace para descargar los datos binarios de un campo. La primera opción es el nombre del archivo binario.  La segunda opción es un nombre de campo factible de una fila de la tabla que contiene el nombre del campo. Si usted aporta una segunda opción, necesariamente deberá consignar la primera opción a una cadena de caracteres vacía';
-$strTransformation_application_octetstream__hex = 'Muestra los datos en representación hexadecimal.';
 $strTransformation_image_jpeg__inline = 'Muestra un thumbnail que puede abrirse mediante un clic; opciones: width, height en píxeles (mantiene la proporción original)';
 $strTransformation_image_jpeg__link = 'Muestra un enlace a esta imagen (i.e., blob descarga directa).';
 $strTransformation_image_png__inline = 'Ver imagen/jpeg: inline';
@@ -974,4 +965,39 @@ $strYes = 'Sí';
 $strZeroRemovesTheLimit = 'Nota: si cambia los parámetros de estas opciones a 0 (cero), remueve el límite.';
 $strZip = '"comprimido con zip"';
 
+// To translate:
+
+$strQueryResultsOperations = 'Query results operations';  //to translate
+
+$strReloadPrivileges = 'Reload privileges';  //to translate
+
+$strSQLCompatibility = 'SQL compatibility mode';  //to translate
+
+$strTransformation_application_octetstream__hex = 'Muestra los datos en representación hexadecimal. Optional first parameter specifies how often space will be added (defaults to 2 nibbles).';  //to translate
+
+$strAddClause = 'Add %s';  //to translate
+$strUploadsNotAllowed = 'File uploads are not allowed on this server.';  //to translate
+$strOpenDocumentSpreadsheet = 'Open Document Spreadsheet';  //to translate
+$strOpenDocumentSpreadsheetOptions = 'Open Document Spreadsheet options';  //to translate
+$strExportMustBeFile = 'Selected export type has to be saved in file!';  //to translate
+$strXMLOptions = 'XML options';  //to translate
+$strStrucNativeExcelOptions = 'Native Excel export options';  //to translate
+$strCreateUserDatabase = 'Database for user';  //to translate
+$strCreateUserDatabaseNone = 'None';  //to translate
+$strCreateUserDatabaseName = 'Create database with same name and grant all privileges';  //to translate
+$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username_%)';  //to translate
+$strOpenDocumentText = 'Open Document Text';  //to translate
+$strOpenDocumentTextOptions = 'Open Document Text options';  //to translate
+$strNoDataReceived = 'No data was received to import. Either no file name was submitted, or the file size exceeded the maximum size permitted by your PHP configuration. See FAQ 1.16.';  //to translate
+$strCanNotLoadExportPlugins = 'Could not load export plugins, please check your installation!';  //to translate
+$strErrorRenamingTable = 'Error renaming table %1$s to %2$s';  //to translate
+$strInvalidTableName = 'Invalid table name';  //to translate
+$strInvalidDatabase = 'Invalid database';  //to translate
+$strServers = 'Servers';  //to translate
+$strDelimiter = 'Delimiter';  //to translate
+$strFunctions = 'Functions';  //to translate
+$strProcedures = 'Procedures';  //to translate
+$strPDFReportExplanation = '(Generates a report containing the data of a single table)';  //to translate
+$strFontSize = 'Font size';  //to translate
+$strLanguage = 'Language';  //to translate
 ?>

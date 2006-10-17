@@ -33,9 +33,6 @@ $tpl -> define_dynamic('user_entry', 'page');
 
 $tpl -> define_dynamic('ip_entry', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -126,7 +123,7 @@ function gen_al_page(&$tpl, $reseller_id)
 
 	if (isset($_POST['forward']))
 	{
-		$forward = $_POST['forward'];
+		$forward = clean_input($_POST['forward']);
 	}
 	else
 	{
@@ -150,9 +147,9 @@ function add_domain_alias(&$sql, &$err_al)
 
 
 	$cr_user_id = $_POST['usraccounts'];
-	$alias_name	= strtolower($_POST['ndomain_name']);
-	$mount_point = strtolower($_POST['ndomain_mpoint']);
-	$forward = $_POST['forward'];
+	$alias_name	= strtolower(clean_input($_POST['ndomain_name']));
+	$mount_point = strtolower(clean_input($_POST['ndomain_mpoint']));
+	$forward = strtolower(clean_input($_POST['forward']));
 
 
 $query = <<<SQL_QUERY

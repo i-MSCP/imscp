@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_select.php,v 2.37 2006/01/17 17:02:29 cybot_tm Exp $ */
+/* $Id: tbl_select.php,v 2.38 2006/06/09 19:31:36 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -380,7 +380,10 @@ else {
                 }
 
             } elseif ($fields[$i] != '') {
-                if (preg_match('@char|binary|blob|text|set|date|time|year@i', $types[$i])) {
+                // For these types we quote the value. Even if it's another type (like INT),
+                // for a LIKE we always quote the value. MySQL converts strings to numbers
+                // and numbers to strings as necessary during the comparison
+                if (preg_match('@char|binary|blob|text|set|date|time|year@i', $types[$i]) || strpos(' ' . $func_type, 'LIKE')) {
                     $quot = '\'';
                 } else {
                     $quot = '';

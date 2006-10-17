@@ -1,5 +1,5 @@
 <?php
-/* $Id: database_interface.lib.php,v 2.39.2.2 2006/03/08 17:54:29 lem9 Exp $ */
+/* $Id: database_interface.lib.php,v 2.52.2.1 2006/09/29 13:02:48 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -144,8 +144,14 @@ function PMA_DBI_convert_message( $message ) {
 
     if ( ! empty( $server_language ) && isset( $encodings[$server_language] ) ) {
         if ( function_exists( 'iconv' ) ) {
-            $message = iconv( $encodings[$server_language],
-                $GLOBALS['charset'] . $GLOBALS['cfg']['IconvExtraParams'], $message);
+            if ((@stristr(PHP_OS, 'AIX')) && (@strcasecmp(ICONV_IMPL, 'unknown') == 0) && (@strcasecmp(ICONV_VERSION, 'unknown') == 0)) {
+                require_once('./libraries/iconv_wrapper.lib.php');
+                $message = PMA_aix_iconv_wrapper( $encodings[$server_language],
+                    $GLOBALS['charset'] . $GLOBALS['cfg']['IconvExtraParams'], $message);
+            } else {
+                $message = iconv( $encodings[$server_language],
+                    $GLOBALS['charset'] . $GLOBALS['cfg']['IconvExtraParams'], $message);
+            }
         } elseif ( function_exists( 'recode_string' ) ) {
             $message = recode_string( $encodings[$server_language] . '..'  . $GLOBALS['charset'],
                 $message );
@@ -291,7 +297,11 @@ function PMA_DBI_get_tables_full($database, $table = false,
         $tables = PMA_DBI_fetch_result($sql, array('TABLE_SCHEMA', 'TABLE_NAME'),
             null, $link);
         unset( $sql_where_table, $sql );
-    } else {
+    }
+    // If permissions are wrong on even one database directory,
+    // information_schema does not return any table info for any database
+    // this is why we fall back to SHOW TABLE STATUS even for MySQL >= 50002
+    if ( PMA_MYSQL_INT_VERSION < 50002 || empty($tables)) {
         foreach ( $databases as $each_database ) {
             if ( true === $tbl_is_group ) {
                 $sql = 'SHOW TABLE STATUS FROM '
@@ -384,19 +394,58 @@ function PMA_DBI_get_tables_full($database, $table = false,
 }
 
 /**
+ * returns count of databases for current server
+ *
+ * @param   string      $database   databases to count
+ * @param   resource    $link       mysql db link
+ */
+function PMA_DBI_get_databases_count($database = null, $link = null)
+{
+    return count(PMA_DBI_get_dblist($link));
+}
+
+/**
  * returns array with databases containing extended infos about them
  *
  * @param   string          $databases      database
  * @param   boolean         $force_stats    retrieve stats also for MySQL < 5
  * @param   resource        $link           mysql link
+ * @param   string          $sort_by        collumn to order by
+ * @param   string          $sort_order     ASC or DESC
+ * @param   integer         $limit_offset   starting offset for LIMIT
+ * @param   bool|int        $limit_count    row count for LIMIT or true for $GLOBALS['cfg']['MaxDbList']
  * @return  array       $databases
  */
-function PMA_DBI_get_databases_full( $database = null, $force_stats = false, $link = null ) {
+function PMA_DBI_get_databases_full($database = null, $force_stats = false,
+    $link = null, $sort_by = 'SCHEMA_NAME', $sort_order = 'ASC',
+    $limit_offset = 0, $limit_count = false)
+{
+    $sort_order = strtoupper($sort_order);
+
+    if (true === $limit_count) {
+        $limit_count = $GLOBALS['cfg']['MaxDbList'];
+    }
 
     // initialize to avoid errors when there are no databases
     $databases = array();
 
-    if ( PMA_MYSQL_INT_VERSION >= 50002 ) {
+    $apply_limit_and_order_manual = true;
+
+    if (PMA_MYSQL_INT_VERSION >= 50002) {
+        /**
+         * if $GLOBALS['cfg']['NaturalOrder'] is enabled, we cannot use LIMIT
+         * cause MySQL does not support natural ordering, we have to do it afterward
+         */
+        if ($GLOBALS['cfg']['NaturalOrder']) {
+            $limit = '';
+        } else {
+            if ($limit_count) {
+                $limit = ' LIMIT ' . $limit_count . ' OFFSET ' . $limit_offset;
+            }
+
+            $apply_limit_and_order_manual = false;
+        }
+
         // get table information from information_schema
         if ( $database ) {
             $sql_where_schema = 'WHERE `SCHEMA_NAME` LIKE \''
@@ -408,7 +457,9 @@ function PMA_DBI_get_databases_full( $database = null, $force_stats = false, $li
         // for PMA bc:
         // `SCHEMA_FIELD_NAME` AS `SHOW_TABLE_STATUS_FIELD_NAME`
         $sql = '
-             SELECT `information_schema`.`SCHEMATA`.*,
+             SELECT `information_schema`.`SCHEMATA`.*';
+        if ($force_stats) {
+            $sql .= ',
                     COUNT(`information_schema`.`TABLES`.`TABLE_SCHEMA`)
                         AS `SCHEMA_TABLES`,
                     SUM(`information_schema`.`TABLES`.`TABLE_ROWS`)
@@ -423,15 +474,23 @@ function PMA_DBI_get_databases_full( $database = null, $force_stats = false, $li
                       + `information_schema`.`TABLES`.`INDEX_LENGTH`)
                         AS `SCHEMA_LENGTH`,
                     SUM(`information_schema`.`TABLES`.`DATA_FREE`)
-                        AS `SCHEMA_DATA_FREE`
-               FROM `information_schema`.`SCHEMATA`
+                        AS `SCHEMA_DATA_FREE`';
+        }
+        $sql .= '
+               FROM `information_schema`.`SCHEMATA`';
+        if ($force_stats) {
+            $sql .= '
           LEFT JOIN `information_schema`.`TABLES`
                  ON `information_schema`.`TABLES`.`TABLE_SCHEMA`
-                  = `information_schema`.`SCHEMATA`.`SCHEMA_NAME`
+                  = `information_schema`.`SCHEMATA`.`SCHEMA_NAME`';
+        }
+        $sql .= '
               ' . $sql_where_schema . '
-           GROUP BY `information_schema`.`SCHEMATA`.`SCHEMA_NAME`';
+           GROUP BY `information_schema`.`SCHEMATA`.`SCHEMA_NAME`
+           ORDER BY ' . PMA_backquote($sort_by) . ' ' . $sort_order
+           . $limit;
         $databases = PMA_DBI_fetch_result( $sql, 'SCHEMA_NAME', null, $link );
-        unset( $sql_where_schema, $sql );
+        unset($sql_where_schema, $sql);
     } else {
         foreach ( PMA_DBI_get_dblist( $link ) as $database_name ) {
             // MySQL forward compatibility
@@ -475,8 +534,35 @@ function PMA_DBI_get_databases_full( $database = null, $force_stats = false, $li
         }
     }
 
-    if ( $GLOBALS['cfg']['NaturalOrder'] ) {
-        uksort( $databases, 'strnatcasecmp' );
+    /**
+     * apply limit and order manually now
+     * (caused by older MySQL < 5 or $GLOBALS['cfg']['NaturalOrder'])
+     */
+    if ($apply_limit_and_order_manual) {
+
+        /**
+         * first apply ordering
+         */
+        if ($GLOBALS['cfg']['NaturalOrder']) {
+            $sorter = 'strnatcasecmp';
+        } else {
+            $sorter = 'strcasecmp';
+        }
+
+        // produces f.e.:
+        // return -1 * strnatcasecmp($a["SCHEMA_TABLES"], $b["SCHEMA_TABLES"])
+        $sort_function = '
+            return ' . ($sort_order == 'ASC' ? 1 : -1) . ' * ' . $sorter . '($a["' . $sort_by . '"], $b["' . $sort_by . '"]);
+        ';
+
+        usort($databases, create_function('$a, $b', $sort_function));
+
+        /**
+         * now apply limit
+         */
+        if ($limit_count) {
+            $databases = array_slice($databases, $limit_offset, $limit_count);
+        }
     }
 
     return $databases;
@@ -609,9 +695,11 @@ function PMA_DBI_get_columns_full($database = null, $table = null,
 /**
  * @TODO should only return columns names, for more info use PMA_DBI_get_columns_full()
  *
+ * @deprecated by PMA_DBI_get_columns() or PMA_DBI_get_columns_full()
  * @param   string  $database   name of database
  * @param   string  $table      name of table to retrieve columns from
  * @param   mixed   $link       mysql link resource
+ * @return  array   column info
  */
 function PMA_DBI_get_fields($database, $table, $link = null)
 {
@@ -621,6 +709,27 @@ function PMA_DBI_get_fields($database, $table, $link = null)
         'SHOW FULL COLUMNS
         FROM ' . PMA_backquote($database) . '.' . PMA_backquote($table),
         null, null, $link);
+    if ( ! is_array($fields) || count($fields) < 1 ) {
+        return false;
+    }
+    return $fields;
+}
+
+/**
+ * array PMA_DBI_get_columns(string $database, string $table, bool $full = false, mysql db link $link = null)
+ *
+ * @param   string  $database   name of database
+ * @param   string  $table      name of table to retrieve columns from
+ * @param   boolean $full       wether to return full info or only column names
+ * @param   mixed   $link       mysql link resource
+ * @return  array   column names
+ */
+function PMA_DBI_get_columns($database, $table, $full = false, $link = null)
+{
+    $fields = PMA_DBI_fetch_result(
+        'SHOW ' . ($full ? 'FULL' : '') . ' COLUMNS
+        FROM ' . PMA_backquote($database) . '.' . PMA_backquote($table),
+        'Fields', ($full ? null : 'Fields'), $link);
     if ( ! is_array($fields) || count($fields) < 1 ) {
         return false;
     }
@@ -730,6 +839,7 @@ function PMA_DBI_postConnect($link, $is_controluser = false)
             if (!empty($GLOBALS['available_languages'][$lang_utf_8_version])) {
                 $GLOBALS['lang'] = $lang_utf_8_version;
                 $GLOBALS['charset'] = 'utf-8';
+                define('PMA_LANG_RELOAD', 1);
             }
         }
 
@@ -1034,4 +1144,83 @@ function PMA_DBI_get_default_engine()
     }
 }
 
+/**
+ * Get supported SQL compatibility modes
+ *
+ * @return  array   supported SQL compatibility modes
+ */
+function PMA_DBI_getCompatibilities()
+{
+    if (PMA_MYSQL_INT_VERSION < 40100) {
+        return array();
+    }
+    $compats = array('NONE');
+    if (PMA_MYSQL_INT_VERSION >= 40101) {
+        $compats[] = 'ANSI';
+        $compats[] = 'DB2';
+        $compats[] = 'MAXDB';
+        $compats[] = 'MYSQL323';
+        $compats[] = 'MYSQL40';
+        $compats[] = 'MSSQL';
+        $compats[] = 'ORACLE';
+        $compats[] = 'POSTGRESQL';
+        if (PMA_MYSQL_INT_VERSION >= 50002) {
+            $compats[] = 'TRADITIONAL';
+        }
+    }
+    return $compats;
+}
+
+
+/**
+ * returns true (int > 0) if current user is superuser
+ * otherwise 0
+ *
+ * @return integer  $is_superuser
+ */
+function PMA_isSuperuser() {
+    return PMA_DBI_try_query( 'SELECT COUNT(*) FROM mysql.user',
+        $GLOBALS['userlink'], PMA_DBI_QUERY_STORE );
+}
+
+
+/**
+ * returns an array of PROCEDURE or FUNCTION names for a db 
+ *
+ * @uses    PMA_DBI_free_result()
+ * @param   string              $db     db name
+ * @param   string              $which  PROCEDURE | FUNCTION 
+ * @param   resource            $link   mysql link
+ *
+ * @return  array   the procedure names or function names 
+ */
+function PMA_DBI_get_procedures_or_functions($db, $which, $link = null) {
+
+    $shows = PMA_DBI_fetch_result('SHOW ' . $which . ' STATUS;', null, null, $link);
+    $result = array();
+    foreach ($shows as $one_show) {
+        if ($one_show['Db'] == $db && $one_show['Type'] == $which) {
+            $result[] = $one_show['Name'];
+        }
+    }
+    return($result);
+}
+
+/**
+ * returns the definition of a specific PROCEDURE or FUNCTION 
+ *
+ * @uses    PMA_DBI_fetch_value()
+ * @param   string              $db     db name
+ * @param   string              $which  PROCEDURE | FUNCTION 
+ * @param   string              $proc_or_function_name  the procedure name or function name
+ * @param   resource            $link   mysql link
+ *
+ * @return  string              the procedure's or function's definition 
+ */
+function PMA_DBI_get_procedure_or_function_def($db, $which, $proc_or_function_name, $link = null) {
+
+    $returned_field = array('PROCEDURE' => 'Create Procedure', 'FUNCTION' => 'Create Function');
+    $query = 'SHOW CREATE ' . $which . ' ' . PMA_backquote($db) . '.' . PMA_backquote($proc_or_function_name);
+    return(PMA_DBI_fetch_value( $query, 0, $returned_field[$which]));
+}
 ?>

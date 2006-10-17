@@ -1,5 +1,5 @@
 <?php
-/* $Id: export.php,v 2.38.2.2 2006/04/14 09:45:23 lem9 Exp $ */
+/* $Id: export.php,v 2.45 2006/05/15 22:01:55 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -7,20 +7,41 @@
  */
 require_once('./libraries/common.lib.php');
 require_once('./libraries/zip.lib.php');
+require_once('./libraries/plugin_interface.lib.php');
 
 PMA_checkParameters(array('what', 'export_type'));
 
-// What type of export are we doing?
-if ($what == 'excel') {
-    $type = 'csv';
-} else {
-    $type = $what;
+// Scan plugins
+$export_list = PMA_getPlugins('./libraries/export/', array('export_type' => $export_type, 'single_table' => isset($single_table)));
+
+// Backward compatbility
+$type = $what;
+
+// Check export type
+if (!isset($export_list[$type])) {
+    die('Bad type!');
 }
 
-// Get the functions specific to the export type
-require('./libraries/export/' . PMA_securePath($type) . '.php');
+// Does export require to be into file?
+if (isset($export_list[$type]['force_file']) && ! isset($asfile)) {
+    $message = $strExportMustBeFile;
+    $GLOBALS['show_error_header'] = true;
+    $js_to_run = 'functions.js';
+    require_once('./libraries/header.inc.php');
+    if ($export_type == 'server') {
+        $active_page = 'server_export.php';
+        require('./server_export.php');
+    } elseif ($export_type == 'database') {
+        $active_page = 'db_details_export.php';
+        require('./db_details_export.php');
+    } else {
+        $active_page = 'tbl_properties_export.php';
+        require('./tbl_properties_export.php');
+    }
+    exit();
+}
 
-// Generate error url
+// Generate error url and check for needed variables
 if ($export_type == 'server') {
     $err_url = 'server_export.php?' . PMA_generate_common_url();
 } elseif ($export_type == 'database' && isset($db) && strlen($db)) {
@@ -30,6 +51,9 @@ if ($export_type == 'server') {
 } else {
     die('Bad parameters!');
 }
+
+// Get the functions specific to the export type
+require('./libraries/export/' . PMA_securePath($type) . '.php');
 
 /**
  * Increase time limit for script execution and initializes some variables
@@ -194,7 +218,7 @@ if ($onfly_compression) {
     }
 
     // Some memory is needed for compression, assume 1/3
-    $memory_limit *= 2/3;
+    $memory_limit /= 8;
 }
 
 // Generate filename and mime type if needed
@@ -224,37 +248,9 @@ if ($asfile) {
         $filename = PMA_convert_string($convcharset, 'iso-8859-1', $filename);
     }
 
-    // Generate basic dump extension
-    if ($type == 'csv') {
-        $filename  .= '.csv';
-        $mime_type = 'text/comma-separated-values';
-    } elseif ($type == 'htmlexcel') {
-        $filename  .= '.xls';
-        $mime_type = 'application/vnd.ms-excel';
-    } elseif ($type == 'htmlword') {
-        $filename  .= '.doc';
-        $mime_type = 'application/vnd.ms-word';
-    } elseif ($type == 'xls') {
-        $filename  .= '.xls';
-        $mime_type = 'application/vnd.ms-excel';
-    } elseif ($type == 'xml') {
-        $filename  .= '.xml';
-        $mime_type = 'text/xml';
-    } elseif ($type == 'latex') {
-        $filename  .= '.tex';
-        $mime_type = 'application/x-tex';
-    } elseif ($type == 'pdf') {
-        $filename  .= '.pdf';
-        $mime_type = 'application/pdf';
-    } else {
-        $filename  .= '.sql';
-        // text/x-sql is correct MIME type, however safari ignores further
-        // Content-Disposition header, so we must force it to download it this
-        // way...
-        $mime_type = PMA_USR_BROWSER_AGENT == 'SAFARI'
-                        ? 'application/octet-stream'
-                        : 'text/x-sql';
-    }
+    // Grab basic dump extension and mime type
+    $filename  .= '.' . $export_list[$type]['extension'];
+    $mime_type  = $export_list[$type]['mime_type'];
 
     // If dump is going to be compressed, set correct encoding or mime_type and add
     // compression to extension
@@ -433,7 +429,7 @@ if ($export_type == 'server') {
             foreach ($tables as $table) {
                 // if this is a view, collect it for later; views must be exported
                 // after the tables
-                if (PMA_tableIsView($current_db, $table)) {
+                if (PMA_Table::isView($current_db, $table)) {
                     $views[] = $table;
                     continue;
                 }
@@ -476,7 +472,7 @@ if ($export_type == 'server') {
     foreach ($tables as $table) {
         // if this is a view, collect it for later; views must be exported after
         // the tables
-        if (PMA_tableIsView($db, $table)) {
+        if (PMA_Table::isView($db, $table)) {
             $views[] = $table;
             continue;
         }
@@ -504,6 +500,7 @@ if ($export_type == 'server') {
             }
         }
     }
+
     if (!PMA_exportDBFooter($db)) {
         break;
     }
@@ -539,6 +536,7 @@ if ($export_type == 'server') {
         }
     }
     // I think we have to export data for a single view; for example PDF report
+    //if (isset($GLOBALS[$what . '_data']) && ! PMA_table::isView($db, $table)) {
     if (isset($GLOBALS[$what . '_data'])) {
         if (!PMA_exportData($db, $table, $crlf, $err_url, $local_query)) {
             break;

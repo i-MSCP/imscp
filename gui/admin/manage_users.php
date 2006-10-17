@@ -26,8 +26,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/manage_users.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
-$tpl -> define_dynamic('hosting_plans', 'page');
-
 
 $tpl -> define_dynamic('admin_message', 'page');
 
@@ -85,12 +83,12 @@ $tpl -> assign(
                      )
               );
 
-		
-		
-		if (isset($_POST['details']) && $_POST['details'] !== ''){		
-		
+
+
+		if (isset($_POST['details']) && !empty($_POST['details'])){
+
 			$_SESSION['details'] = $_POST['details'];
-			
+
 		} else {
 			if (!isset($_SESSION['details']))
 			{
@@ -101,53 +99,53 @@ $tpl -> assign(
 
 
 if (isset($_SESSION['user_added'])){
-    
+
         unset($_SESSION['user_added']);
-	
+
 	set_page_message(tr('User added'));
-	
+
 }
 else if (isset($_SESSION['reseller_added'])){
-    
+
         unset($_SESSION['reseller_added']);
-	
+
 	set_page_message(tr('Reseller added'));
-	
+
 }
 else if (isset($_SESSION['user_updated'])){
-    
+
         unset($_SESSION['user_updated']);
-	
+
 	set_page_message(tr('User updated'));
-	
+
 }
 else if (isset($_SESSION['user_deleted'])){
-    
+
         unset($_SESSION['user_deleted']);
-	
+
 	set_page_message(tr('User deleted'));
-	
+
 }
 else if (isset($_SESSION['email_updated'])){
-    
+
         unset($_SESSION['email_updated']);
-	
+
 	set_page_message(tr('Email Updated'));
-	
+
 }
 else if (isset($_SESSION['hdomain'])){
-    
+
         unset($_SESSION['hdomain']);
-	
+
 	set_page_message(tr('This user have domain !<br>To delete user  - first delete domain!'));
-	
+
 }
 else if (isset($_SESSION['user_disabled'])){
-    
+
         unset($_SESSION['user_disabled']);
-	
+
 	set_page_message(tr('User was disabled'));
-	
+
 }
 
 /*

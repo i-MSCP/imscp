@@ -27,7 +27,7 @@ function sbmt(form, uaction) {
 
     form.details.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
@@ -83,16 +83,16 @@ function sbmt(form, uaction) {
               <tr>
                 <td width="20">&nbsp;</td>
                 <td class="content3"><b>{TR_ADMIN_USERNAME}</b></td>
-                <td class="content3"><b>{TR_ADMIN_CREATED_BY}</b></td>
-                <td width="150" class="content3"><b>{TR_ADMIN_OPTIONS}</b></td>
+                <td class="content3" align="center"><b>{TR_ADMIN_CREATED_BY}</b></td>
+                <td width="150" align="center" class="content3"><b>{TR_ADMIN_OPTIONS}</b></td>
               </tr>
               <!-- BDP: admin_item -->
               <tr>
                 <td width="20">&nbsp;</td>
                 <td class="{ADMIN_CLASS}"><a href="{URL_EDIT_ADMIN}" class="link">{ADMIN_USERNAME}</a> </td>
-                <td class="{ADMIN_CLASS}">{ADMIN_CREATED_BY}</td>
-                
-                <td width="150" class="{ADMIN_CLASS}">
+                <td class="{ADMIN_CLASS}" align="center">{ADMIN_CREATED_BY}</td>
+
+                <td width="150" class="{ADMIN_CLASS}" align="center">
 				<!-- BDP: admin_delete_show -->
 				{TR_DELETE}
 				<!-- EDP: admin_delete_show -->
@@ -105,9 +105,9 @@ function sbmt(form, uaction) {
               <!-- EDP: admin_list -->
             </table>
 			<!-- EDP: props_list -->
-			
-			
-			
+
+
+
 			</td>
             <td>&nbsp;</td>
           </tr>
@@ -134,7 +134,7 @@ function sbmt(form, uaction) {
                   <td width="20">&nbsp;</td>
                   <td class="content3"><b>{TR_RSL_USERNAME}</b></td>
                   <td width="150" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
-                  <td width="150" class="content3"><b>{TR_RSL_CREATED_BY}</b></td>
+                  <td width="150" align="center" class="content3"><b>{TR_RSL_CREATED_BY}</b></td>
                   <td colspan="2" align="center" class="content3"><b>{TR_RSL_OPTIONS}</b></td>
                   </tr>
                 <!-- BDP: rsl_item -->
@@ -142,7 +142,7 @@ function sbmt(form, uaction) {
                   <td width="20">&nbsp;</td>
                   <td class="{RSL_CLASS}"><a href="{URL_EDIT_RSL}" class="link">{RSL_USERNAME} </a> </td>
                   <td class="{RSL_CLASS}" align="center">{RESELLER_CREATED_ON}</td>
-                  <td class="{RSL_CLASS}">{RSL_CREATED_BY}</td>
+                  <td class="{RSL_CLASS}" align="center">{RSL_CREATED_BY}</td>
                   <td width="150" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle"> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
                   <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('{URL_DELETE_RSL}')" class="link">{TR_DELETE}</a></td>
                 </tr>
@@ -190,8 +190,8 @@ function sbmt(form, uaction) {
                     </td>
                   </tr>
                 </table>
-				
-				
+
+
 				</td>
                 <td colspan="2" align="right" nowrap>
 				<input type="hidden" name="details" value="">
@@ -200,14 +200,14 @@ function sbmt(form, uaction) {
                 </tr>
 			  <!-- BDP: usr_message -->
               <tr>
-                <td width="20" nowrap>&nbsp;</td> 
+                <td width="20" nowrap>&nbsp;</td>
                 <td colspan="7" nowrap class="title"><font color="#FF0000">{USR_MESSAGE}</font></td>
                 </tr>
               <!-- EDP: usr_message -->
               <!-- BDP: usr_list -->
               <tr>
                 <td width="20">&nbsp;</td>
-                <td width="20" align="center" class="content3"><b>{TR_USER_STATUS}</b></td> 
+                <td width="20" align="center" class="content3"><b>{TR_USER_STATUS}</b></td>
                 <td class="content3"><b>{TR_USR_USERNAME}</b></td>
                 <td width="100" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
                 <td width="100" align="center" class="content3"><b>{TR_USR_CREATED_BY}</b></td>
@@ -216,14 +216,14 @@ function sbmt(form, uaction) {
               <!-- BDP: usr_item -->
               <tr>
                 <td width="20" align="center">&nbsp;</td>
-                <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="18" height="18" border="0"></a></td> 
+                <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="18" height="18" border="0"></a></td>
                 <td class="{USR_CLASS}"><a href="{URL_EDIT_USR}" class="link">{USR_USERNAME} </a> </td>
                 <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
                 <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
-		
-		        <td width="80" align="center" nowrap class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/bullet.gif" width="18" height="18" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
-				<td width="80" align="center" nowrap class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle"> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
-		        <td width="80" align="center" nowrap class="{USR_CLASS}">
+
+	        <td width="80" align="center" nowrap class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/bullet.gif" width="18" height="18" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
+		<td width="80" align="center" nowrap class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle"> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+		<td width="80" align="center" nowrap class="{USR_CLASS}">
 		<!-- BDP: usr_delete_show -->
 		{TR_DELETE}
 		<!-- EDP: usr_delete_show -->
@@ -231,7 +231,7 @@ function sbmt(form, uaction) {
 		<img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('{URL_DELETE_USR}')" class="link">{TR_DELETE}</a>
 		<!-- EDP: usr_delete_link -->
 		</td>
-		
+
               </tr>
 			  <!-- BDP: user_details -->
               <tr>
@@ -240,8 +240,8 @@ function sbmt(form, uaction) {
                 <td colspan="7" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/show_alias.jpg" width="15" height="16" align="absmiddle">&nbsp;{ALIAS_DOMAIN}</td>
                 </tr>
 			  <!-- EDP: user_details -->
-			  
-			  
+
+
               <!-- EDP: usr_item -->
               <!-- EDP: usr_list -->
             </table>

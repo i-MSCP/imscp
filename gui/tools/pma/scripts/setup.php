@@ -1,5 +1,5 @@
 <?php
-/* $Id: setup.php,v 1.23.2.8.2.2 2006/05/15 07:57:09 nijel Exp $ */
+/* $Id: setup.php,v 1.36.2.3.2.1 2006/10/03 13:11:08 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // phpMyAdmin setup script by Michal Čihař <michal@cihar.com>
@@ -10,11 +10,13 @@ chdir('..');
 require_once('./libraries/common.lib.php');
 
 // Grab configuration defaults
-$PMA_Config = new PMA_Config();
+// Do not use $PMA_Config, it interferes with the one in $_SESSION
+// on servers with register_globals enabled
+$PMA_Config_Setup = new PMA_Config();
 
 // Script information
-$script_info = 'phpMyAdmin ' . $PMA_Config->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
-$script_version = '$Id: setup.php,v 1.23.2.8.2.2 2006/05/15 07:57:09 nijel Exp $';
+$script_info = 'phpMyAdmin ' . $PMA_Config_Setup->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
+$script_version = '$Id: setup.php,v 1.36.2.3.2.1 2006/10/03 13:11:08 nijel Exp $';
 
 // Grab action
 if (isset($_POST['action'])) {
@@ -60,7 +62,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 <head>
     <link rel="icon" href="../favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
-    <title>phpMyAdmin <?php echo $PMA_Config->get('PMA_VERSION'); ?> setup</title>
+    <title>phpMyAdmin <?php echo $PMA_Config_Setup->get('PMA_VERSION'); ?> setup</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <script type="text/javascript" language="javascript">
@@ -214,7 +216,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 </head>
 
 <body>
-<h1>phpMyAdmin <?php echo $PMA_Config->get('PMA_VERSION'); ?> setup</h1>
+<h1>phpMyAdmin <?php echo $PMA_Config_Setup->get('PMA_VERSION'); ?> setup</h1>
 <?php
 } // end show html header
 
@@ -303,6 +305,15 @@ function get_hidden_cfg() {
 }
 
 /**
+ * Returns needed hidden input for forms.
+ *
+ * @return  string HTML with hidden inputs
+ */
+function get_hidden_inputs() {
+    return '<input type="hidden" name="token" value="' . $_SESSION[' PMA_token '] . '" />';
+}
+
+/**
  * Creates form for some action
  *
  * @param   string  action name
@@ -314,7 +325,7 @@ function get_hidden_cfg() {
 function get_action($name, $title, $added = '', $enabled = TRUE) {
     $ret = '';
     $ret .= '<form class="action" method="post" action="">';
-    $ret .= '<input type="hidden" name="token" value="' . $_SESSION['PMA_token'] . '" />';
+    $ret .= get_hidden_inputs();
     $ret .= '<input type="hidden" name="action" value="' . $name . '" />';
     $ret .= $added;
     $ret .= '<input type="submit" value="' . $title . '"';
@@ -340,7 +351,7 @@ function get_action($name, $title, $added = '', $enabled = TRUE) {
 function get_url_action($url, $title, $params = array()) {
     $ret = '';
     $ret .= '<form class="action" method="get" action="' . $url . '" target="_blank">';
-    $ret .= '<input type="hidden" name="token" value="' . $_SESSION['PMA_token'] . '" />';
+    $ret .= get_hidden_inputs();
     foreach ($params as $key => $val) {
         $ret .= '<input type="hidden" name="' . $key . '" value="' . $val . '" />';
     }
@@ -369,19 +380,19 @@ function footer() {
  * @return  string  authentication method description
  */
 function get_server_auth($val) {
-    global $PMA_Config;
+    global $PMA_Config_Setup;
 
     if (isset($val['auth_type'])) {
         $auth = $val['auth_type'];
     } else {
-        $auth = $PMA_Config->default_server['auth_type'];
+        $auth = $PMA_Config_Setup->default_server['auth_type'];
     }
     $ret = $auth;
     if ($auth == 'config') {
         if (isset($val['user'])) {
             $ret .= ':' . $val['user'];
         } else {
-            $ret .= ':' . $PMA_Config->default_server['user'];
+            $ret .= ':' . $PMA_Config_Setup->default_server['user'];
         }
     }
     return $ret;
@@ -395,18 +406,55 @@ function get_server_auth($val) {
  *
  * @return  string  fancy server name
  */
-function get_server_name($val, $id = FALSE) {
+function get_server_name($val, $id = FALSE, $escape = true) {
     if (!empty($val['verbose'])) {
-        $ret = htmlspecialchars($val['verbose']);
+        $ret = $val['verbose'];
     } else {
-        $ret = htmlspecialchars($val['host']);
+        $ret = $val['host'];
     }
     $ret .= ' (' . get_server_auth($val) . ')';
     if ($id !== FALSE) {
         $ret .= ' [' . ($id + 1) . ']' ;
     }
-    return $ret;
+    if ($escape) {
+        return htmlspecialchars($ret);
+    } else {
+        return $ret;
+    }
 }
+
+
+/**
+ * Exports variable to PHP code, very limited version of var_export
+ *
+ * @param   string  data to export
+ *
+ * @see var_export
+ *
+ * @return  string  PHP code containing variable value
+ */
+function PMA_var_export($input) {
+    $output = '';
+    if (is_null($input)) {
+        $output .= 'NULL';
+    } elseif (is_array($input)) {
+        $output .= "array (\n";
+        foreach($input as $key => $value) {
+            $output .= PMA_var_export($key) . ' => ' . PMA_var_export($value);
+            $output .= ",\n";
+        }
+        $output .= ')';
+    } elseif (is_string($input)) {
+        $output .= '\'' . addslashes($input) . '\'';
+    } elseif (is_int($input) || is_double($input)) {
+        $output .= (string) $input;
+    } elseif (is_bool($input)) {
+        $output .= $input ? 'true' : 'false';
+    } else {
+        die('Unknown type for PMA_var_export: ' . $input);
+    }
+    return $output;
+}	
 
 /**
  * Creates configuration code for one variable
@@ -429,23 +477,26 @@ function get_cfg_val($name, $val) {
                     $ret .= $name . " = array(\n";
                 } else {
                     // Something unknown...
-                    $ret .= $name. ' = ' . var_export($val, TRUE) . ";\n";
+                    $ret .= $name. ' = ' . PMA_var_export($val) . ";\n";
                     break;
                 }
             }
             if ($type == 'string') {
-                $ret .= $name. "['$k'] = " . var_export($v, TRUE) . ";\n";
+                $ret .= get_cfg_val($name . "['$k']", $v);
             } elseif ($type == 'int') {
-                $ret .= "    " . var_export($v, TRUE) . ",\n";
+                $ret .= "    " . PMA_var_export($v) . ",\n";
             }
         }
-        if ($type == 'int') {
+        if (!isset($type)) {
+            /* Empty array */
+            $ret .= $name . " = array();\n";
+        } elseif ($type == 'int') {
             $ret .= ");\n";
         }
         $ret .= "\n";
         unset($type);
     } else {
-        $ret .= $name . ' = ' . var_export($val, TRUE) . ";\n";
+        $ret .= $name . ' = ' . PMA_var_export($val) . ";\n";
     }
     return $ret;
 }
@@ -466,7 +517,7 @@ function get_cfg_string($cfg) {
     if (count($c['Servers']) > 0) {
         $ret .= "/* Servers configuration */\n\$i = 0;\n";
         foreach ($c['Servers'] as $cnt => $srv) {
-            $ret .= "\n/* Server " . get_server_name($srv, $cnt) . " */\n\$i++;\n";
+            $ret .= "\n/* Server " . strtr(get_server_name($srv, $cnt, false), '*', '-') . " */\n\$i++;\n";
             foreach ($srv as $key => $val) {
                 $ret .= get_cfg_val("\$cfg['Servers'][\$i]['$key']", $val);
             }
@@ -592,7 +643,7 @@ function show_overview($title, $list, $buttons = '') {
 }
 
 /**
- * Displays configuration, fallback defaults are taken from global $PMA_Config
+ * Displays configuration, fallback defaults are taken from global $PMA_Config_Setup
  *
  * @param   array   list of values to display (each element is array of two or
  *                  three values - desription, name and optional type
@@ -608,7 +659,7 @@ function show_overview($title, $list, $buttons = '') {
  * @return  nothing
  */
 function show_config_form($list, $legend, $help, $defaults = array(), $save = '', $prefix = '') {
-    global $PMA_Config;
+    global $PMA_Config_Setup;
 
     if (empty($save)) {
         $save = 'Update';
@@ -637,7 +688,7 @@ function show_config_form($list, $legend, $help, $defaults = array(), $save = ''
                 if (isset($defaults[$val[1]])) {
                     echo ' value="' . htmlspecialchars($defaults[$val[1]]) . '"';
                 } else {
-                    echo ' value="' . htmlspecialchars($PMA_Config->get($val[1])) . '"';
+                    echo ' value="' . htmlspecialchars($PMA_Config_Setup->get($val[1])) . '"';
                 }
                 echo ' />';
                 break;
@@ -648,7 +699,7 @@ function show_config_form($list, $legend, $help, $defaults = array(), $save = ''
                         echo ' checked="checked"';
                     }
                 } else {
-                    if ($PMA_Config->get($val[1])) {
+                    if ($PMA_Config_Setup->get($val[1])) {
                         echo ' checked="checked"';
                     }
                 }
@@ -671,7 +722,7 @@ function show_config_form($list, $legend, $help, $defaults = array(), $save = ''
                             }
                         }
                     } else {
-                        $def_val = $PMA_Config->get($val[1]);
+                        $def_val = $PMA_Config_Setup->get($val[1]);
                         if (is_bool($val)) {
                             if (($def_val && $opt == 'TRUE') || (!$def_val && $opt == 'FALSE')) {
                                 echo ' selected="selected"';
@@ -709,7 +760,7 @@ function show_config_form($list, $legend, $help, $defaults = array(), $save = ''
 function show_security_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="feat_security_real" />
     <?php
         echo get_hidden_cfg();
@@ -719,7 +770,7 @@ function show_security_form($defaults = array()) {
             array('Show phpinfo output', 'ShowPhpInfo', 'Whether to allow users to see phpinfo() output', FALSE),
             array('Show password change form', 'ShowChgPassword', 'Whether to show form for changing password, this does not limit ability to execute the same command directly', FALSE),
             array('Allow login to any MySQL server', 'AllowArbitraryServer', 'If enabled user can enter any MySQL server in login form for cookie auth.', FALSE),
-            array('Recall user name', 'LoginCookieRecall', 'Whether to recall user name while using cookie auth.', TRUE),
+            array('Recall user name', 'LoginCookieRecall', 'Whether to recall user name on log in prompt while using cookie auth.', TRUE),
             array('Login cookie validity', 'LoginCookieValidity', 'How long is login valid without performing any action.'),
             ),
             'Configure security features',
@@ -740,7 +791,7 @@ function show_security_form($defaults = array()) {
 function show_manual_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="feat_manual_real" />
     <?php
         echo get_hidden_cfg();
@@ -764,16 +815,16 @@ function show_manual_form($defaults = array()) {
  * @return  nothing
  */
 function show_charset_form($defaults = array()) {
-    global $PMA_Config;
+    global $PMA_Config_Setup;
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="feat_charset_real" />
     <?php
         echo get_hidden_cfg();
         show_config_form(array(
             array('Allow charset conversion', 'AllowAnywhereRecoding', 'If you want to use such functions.', FALSE),
-            array('Default charset', 'DefaultCharset', 'Default charset for conversion.', $PMA_Config->get('AvailableCharsets')),
+            array('Default charset', 'DefaultCharset', 'Default charset for conversion.', $PMA_Config_Setup->get('AvailableCharsets')),
             array('Recoding engine', 'RecodingEngine', 'PHP can contain iconv and/or recode, select which one to use or keep autodetection.', array('auto', 'iconv', 'recode')),
             array('Extra params for iconv', 'IconvExtraParams', 'Iconv can get some extra parameters for conversion see man iconv_open.'),
             ),
@@ -795,7 +846,7 @@ function show_charset_form($defaults = array()) {
 function show_extensions_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="feat_extensions_real" />
     <?php
         echo get_hidden_cfg();
@@ -818,10 +869,10 @@ function show_extensions_form($defaults = array()) {
  * @return  nothing
  */
 function show_relation_form($defaults = array()) {
-    global $PMA_Config;
+    global $PMA_Config_Setup;
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="feat_relation_real" />
     <?php
         echo get_hidden_cfg();
@@ -829,10 +880,10 @@ function show_relation_form($defaults = array()) {
             array('Permanent query history', 'QueryHistoryDB', 'Store history into database.', FALSE),
             array('Maximal history size', 'QueryHistoryMax', 'How many queries are kept in history.'),
             array('Use MIME transformations', 'BrowseMIME', 'Use MIME transformations while browsing.', TRUE),
-            array('PDF default page size', 'PDFDefaultPageSize', 'Default page size for PDF, you can change this while creating page.', $PMA_Config->get('PDFPageSizes')),
+            array('PDF default page size', 'PDFDefaultPageSize', 'Default page size for PDF, you can change this while creating page.', $PMA_Config_Setup->get('PDFPageSizes')),
             ),
             'Configure MIME/relation/history',
-            'phpMyAdmin can provide additional featrues like MIME transformation, internal relations, permanent history and PDF pages generating. You have to configure database and tables that will store such information on server page. Behaviour of those functions is configured here.',
+            'phpMyAdmin can provide additional features like MIME transformation, internal relations, permanent history and PDF pages generation. You have to configure the database and tables that will store this information on the server page. Behaviour of those functions is configured here.',
             $defaults);
     ?>
 </form>
@@ -849,7 +900,7 @@ function show_relation_form($defaults = array()) {
 function show_upload_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="feat_upload_real" />
     <?php
         echo get_hidden_cfg();
@@ -876,7 +927,7 @@ function show_upload_form($defaults = array()) {
 function show_server_form($defaults = array(), $number = FALSE) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="addserver_real" />
     <?php
         echo get_hidden_cfg();
@@ -891,9 +942,9 @@ function show_server_form($defaults = array(), $number = FALSE) {
         }
         show_config_form(array(
             array('Server hostname', 'host', 'Hostname where MySQL server is running'),
-            array('Server port', 'port', 'Port on which MySQL server is listening, leave empty if don\'t know'),
-            array('Server socket', 'socket', 'Socket on which MySQL server is listening, leave empty if don\'t know'),
-            array('Connection type', 'connect_type', 'How to connect to server, keep tcp if don\'t know', array('tcp', 'socket')),
+            array('Server port', 'port', 'Port on which MySQL server is listening, leave empty for default'),
+            array('Server socket', 'socket', 'Socket on which MySQL server is listening, leave empty for default'),
+            array('Connection type', 'connect_type', 'How to connect to server, keep tcp if unsure', array('tcp', 'socket')),
             array('PHP extension to use', 'extension', 'What PHP extension to use, use mysqli if supported', array('mysql', 'mysqli')),
             array('Compress connection', 'compress', 'Whether to compress connection to MySQL server', FALSE),
             array('Authentication type', 'auth_type', 'Authentication method to use', array('cookie', 'http', 'config')),
@@ -923,7 +974,7 @@ function show_server_form($defaults = array(), $number = FALSE) {
 function show_left_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="lay_left_real" />
     <?php
         echo get_hidden_cfg();
@@ -932,13 +983,13 @@ function show_left_form($defaults = array()) {
             array('Display databases in tree', 'LeftFrameDBTree', 'Whether to display databases in tree (determined by separator defined lower)', TRUE),
             array('Databases tree separator', 'LeftFrameDBSeparator', 'String that separates databases into different tree level'),
             array('Table tree separator', 'LeftFrameTableSeparator', 'String that separates tables into different tree level'),
-            array('Maximum table tree nesting', 'LeftFrameTableLevel', 'Maximum number of childs in table tree'),
+            array('Maximum table tree nesting', 'LeftFrameTableLevel', 'Maximum number of children in table tree'),
             array('Show logo', 'LeftDisplayLogo', 'Whether to show logo in left frame', TRUE),
             array('Display servers selection', 'LeftDisplayServers', 'Whether to show server selection in left frame', FALSE),
             array('Enable pointer highlighting', 'LeftPointerEnable', 'Whether you want to highlight server under mouse', TRUE),
             ),
             'Configure left frame',
-            'Choose how do you like left frame.',
+            'Customize the appears of the navigation frame.',
             $defaults);
     ?>
 </form>
@@ -955,7 +1006,7 @@ function show_left_form($defaults = array()) {
 function show_tabs_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="lay_tabs_real" />
     <?php
         echo get_hidden_cfg();
@@ -983,7 +1034,7 @@ function show_tabs_form($defaults = array()) {
 function show_icons_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="lay_icons_real" />
     <?php
         echo get_hidden_cfg();
@@ -1012,7 +1063,7 @@ function show_icons_form($defaults = array()) {
 function show_browse_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="lay_browse_real" />
     <?php
         echo get_hidden_cfg();
@@ -1042,7 +1093,7 @@ function show_browse_form($defaults = array()) {
 function show_edit_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="lay_edit_real" />
     <?php
         echo get_hidden_cfg();
@@ -1054,7 +1105,7 @@ function show_edit_form($defaults = array()) {
             array('Textarea columns', 'TextareaCols', 'Number of columns in textarea while editing TEXT fields'),
             array('Textarea rows', 'TextareaRows', 'Number of rows in textarea while editing TEXT fields'),
             array('Double textarea for LONGTEXT', 'LongtextDoubleTextarea', 'Whether to double textarea size for LONGTEXT fields', TRUE),
-            array('Edit CHAR fields in textarea', 'CharEditing', 'Whether to edit CHAR fields in textaread', array('input', 'textarea')),
+            array('Edit CHAR fields in textarea', 'CharEditing', 'Whether to edit CHAR fields in textarea', array('input', 'textarea')),
             array('CHAR textarea columns', 'CharTextareaCols', 'Number of columns in textarea while editing CHAR fields (must be enabled above)'),
             array('CHAR textarea rows', 'CharTextareaRows', 'Number of rows in textarea while editing CHAR fields (must be enabled above)'),
             ),
@@ -1076,7 +1127,7 @@ function show_edit_form($defaults = array()) {
 function show_window_form($defaults = array()) {
     ?>
 <form method="post" action="">
-    <input type="hidden" name="token" value="<?php echo $_SESSION['PMA_token']; ?>" />
+    <?php echo get_hidden_inputs();?>
     <input type="hidden" name="action" value="lay_window_real" />
     <?php
         echo get_hidden_cfg();
@@ -1299,7 +1350,7 @@ switch ($action) {
     case 'addserver':
         if (count($configuration['Servers']) == 0) {
             // First server will use defaults as in config.default.php
-            $defaults = $PMA_Config->default_server;
+            $defaults = $PMA_Config_Setup->default_server;
             unset($defaults['AllowDeny']); // Ignore this for now
         } else {
             $defaults = array();
@@ -1317,7 +1368,7 @@ switch ($action) {
         } elseif (function_exists('mysql_get_client_info')) {
             $defaults['extension'] = 'mysql';
         } else {
-            message('warning', 'Could not load neither mysql nor mysqli extension, you might not be able to use phpMyAdmin!');
+            message('warning', 'Could not load either mysql or mysqli extension, you might not be able to use phpMyAdmin! Check your PHP configuration.');
         }
         if (isset($defaults['extension'])) {
             message('notice', 'Autodetected MySQL extension to use: ' . $defaults['extension']);
@@ -1351,7 +1402,7 @@ switch ($action) {
                     $data[] = array('Verbose name', $srv['verbose']);
                 }
                 $data[] = array('Host', $srv['host']);
-                $data[] = array('MySQL extension', isset($srv['extension']) ? $srv['extension'] : $PMA_Config->default_server['extension']);
+                $data[] = array('MySQL extension', isset($srv['extension']) ? $srv['extension'] : $PMA_Config_Setup->default_server['extension']);
                 $data[] = array('Authentication type', get_server_auth($srv));
                 $data[] = array('phpMyAdmin advanced features', empty($srv['pmadb']) || empty($srv['controluser']) || empty($srv['controlpass']) ? 'disabled' : 'enabled, db: ' . $srv['pmadb'] . ', user: ' . $srv['controluser']);
                 $buttons =
@@ -1427,7 +1478,7 @@ switch ($action) {
             $vals = grab_values('MySQLManualBase;MySQLManualType');
             $err = FALSE;
             if ($vals['MySQLManualType'] != 'none' && empty($vals['MySQLManualBase'])) {
-                message('error', 'You need to set manual base URL or choone none type.');
+                message('error', 'You need to set manual base URL or choose type \'none\'.');
                 $err = TRUE;
             }
             if ($err) {
@@ -1472,7 +1523,7 @@ switch ($action) {
                 if (!@extension_loaded('iconv')) {
                     PMA_dl('recode');
                     if (!@extension_loaded('recode')) {
-                        message('warning', 'Could not load neither recode nor iconv so charset conversion will most likely not work.');
+                        message('warning', 'Neither recode nor iconv could be loaded so charset conversion will most likely not work.');
                     } else {
                         $d['RecodingEngine'] = 'recode';
                     }
@@ -1529,7 +1580,7 @@ switch ($action) {
             $vals = grab_values('QueryHistoryDB:bool;QueryHistoryMax:int;BrowseMIME:bool;PDFDefaultPageSize');
             $err = FALSE;
             if (isset($vals['QueryHistoryMax']) && $vals['QueryHistoryMax'] < 1) {
-                message('error', 'Invalid value for query maximal history size!');
+                message('error', 'Invalid value for query maximum history size!');
                 $err = TRUE;
             }
             if ($err) {
@@ -1747,7 +1798,7 @@ switch ($action) {
             curl_close($ch);
         }
         if (empty($data)) {
-            message('error', 'Reading of version failed. Maybe you\'re offline or server does not respond.');
+            message('error', 'Reading of version failed. Maybe you\'re offline or the upgrade server does not respond.');
             break;
         }
 
@@ -1766,7 +1817,7 @@ switch ($action) {
             break;
         }
 
-        $version_local = version_to_int( $GLOBALS['PMA_Config']->get('PMA_VERSION') );
+        $version_local = version_to_int( $PMA_Config_Setup->get('PMA_VERSION') );
         if ($version_local === FALSE) {
             message('error', 'Unparsable version string.');
             break;
@@ -1791,7 +1842,7 @@ switch ($action) {
     case '':
         message('notice', 'You want to configure phpMyAdmin using web interface. Please note that this only allows basic setup, please read <a href="../Documentation.html#config">documentation</a> to see full description of all configuration directives.', 'Welcome');
 
-        if ( $GLOBALS['PMA_Config']->get( 'PMA_PHP_INT_VERSION' ) < 40100) {
+        if ( $PMA_Config_Setup->get( 'PMA_PHP_INT_VERSION' ) < 40100) {
             message('warning', 'Please upgrade to PHP 4.1.0, it is required for phpMyAdmin.', 'Too old PHP');
         }
 

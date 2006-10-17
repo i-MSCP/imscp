@@ -76,9 +76,7 @@ SQL_QUERY;
 
         if (isset($_POST['uaction']) && $_POST['uaction'] === 'change_src') {
 
-            if (isset($_POST['src_reseller']) &&
-
-                $_POST['src_reseller'] == $rs->fields['admin_id']){
+            if (isset($_POST['src_reseller']) && $_POST['src_reseller'] == $rs->fields['admin_id']){
 
                  $selected = 'selected';
 

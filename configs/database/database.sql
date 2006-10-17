@@ -213,8 +213,9 @@ CREATE TABLE `domain_traffic` (
   `dtraff_mail` int(10) unsigned default NULL,
   `dtraff_pop` int(10) unsigned default NULL,
   PRIMARY KEY  (`dtraff_id`),
-  KEY `i_domain_traffic_domain_id` (`domain_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 ;
+  KEY `i_domain_traffic_domain_id` (`domain_id`),
+  KEY `dtraff_time` (`dtraff_time`)
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 #
 # Daten für Tabelle `domain_traffic`
@@ -437,8 +438,9 @@ CREATE TABLE `server_traffic` (
   `bytes_pop_out` int(10) unsigned default NULL,
   `bytes_web_in` int(10) unsigned default NULL,
   `bytes_web_out` int(10) unsigned default NULL,
-  PRIMARY KEY  (`straff_id`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+  PRIMARY KEY  (`straff_id`),
+  KEY `traff_time` (`traff_time`)
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 #
 # Daten für Tabelle `server_traffic`

@@ -12,7 +12,7 @@ function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
@@ -57,18 +57,18 @@ function sbmt(form, uaction) {
                 <tr>
                   <td width="20">&nbsp;</td>
                   <td valign="top">
-				  <table width="100%" cellpadding="5" cellspacing="5"> 
+				  <table width="100%" cellpadding="5" cellspacing="5">
 				  <colgroup>
 				  <col width="500">
-				  </colgroup>             
+				  </colgroup>
                 <!-- BDP: page_message -->
-              <tr> 
+              <tr>
                 <td class="title"><font color="#FF0000">{MESSAGE}</font></td>
               </tr>
               <!-- EDP: page_message -->
 			  <!-- BDP: tickets_list -->
                 <tr>
-                  <td nowrap class="content3">				  {TR_TICKET_URGENCY}: {URGENCY} <br> 				  
+                  <td nowrap class="content3">				  {TR_TICKET_URGENCY}: {URGENCY} <br>
                   {TR_TICKET_SUBJECT}: {SUBJECT} </td>
                 </tr>
                <!-- BDP: tickets_item -->
@@ -79,7 +79,7 @@ function sbmt(form, uaction) {
                 <tr>
                   <td class="content">{TICKET_CONTENT}</td>
                 </tr>
-				<!-- EDP: tickets_item -->     
+				<!-- EDP: tickets_item -->
               </table>
                     </td>
                 </tr>
@@ -118,6 +118,7 @@ function sbmt(form, uaction) {
                           </table>
                           <!-- end of content -->
                           <input name="uaction" type="hidden" value="">
+                          <input name="screenwidth" type="hidden" value="{SCREENWIDTH}">
                       </form></td>
                   </tr>
               </table></td>

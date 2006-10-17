@@ -25,7 +25,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/new_ticket.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -34,7 +33,7 @@ function send_user_message(&$sql, $user_id, $reseller_id)
 {
   if (!isset($_POST['uaction'])) return;
 
-  if ($_POST['subj'] === '') {
+  if (empty($_POST['subj'])) {
     set_page_message(tr('Please specify message subject!'));
     return;
   }
@@ -47,7 +46,7 @@ function send_user_message(&$sql, $user_id, $reseller_id)
   $ticket_date = time();
   $urgency = $_POST['urgency'];
   $subj = clean_html($_POST['subj']);
-  $user_message = clean_html($_POST["user_message"]);
+  $user_message = clean_input($_POST["user_message"]);
 	$ticket_status = 1;
 	$ticket_reply = 0;
 	$ticket_level = 1;

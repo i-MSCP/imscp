@@ -55,7 +55,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if (isset($_POST['rid']) && isset($_POST['name'])){
 
-    $rid= $_POST['rid'];
+    $rid = $_POST['rid'];
 
     $name = $_POST['name'];
 }
@@ -72,7 +72,7 @@ $month = 0;
 
 if (isset($_POST['month']) && isset($_POST['year'])){
 
-    $year= $_POST['year'];
+    $year = $_POST['year'];
 
     $month = $_POST['month'];
 }

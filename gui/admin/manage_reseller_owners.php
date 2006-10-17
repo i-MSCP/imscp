@@ -140,8 +140,7 @@ SQL_QUERY;
 
         if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
 
-            if (isset($_POST['dest_admin']) &&
-                $_POST['dest_admin'] == $rs->fields['admin_id']){
+            if (isset($_POST['dest_admin']) && $_POST['dest_admin'] == $rs->fields['admin_id']){
 
                  $selected = 'selected';
             }

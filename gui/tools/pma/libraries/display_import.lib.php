@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_import.lib.php,v 1.17 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: display_import.lib.php,v 1.19 2006/07/22 21:13:24 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/file_listing.php');
@@ -36,6 +36,9 @@ echo PMA_pluginGetJavascript($import_list);
     <fieldset class="options">
         <legend><?php echo $strFileToImport; ?></legend>
 
+        <?php
+        if ($GLOBALS['is_upload']) {
+        ?>
         <div class="formelementrow">
         <label for="input_import_file"><?php echo $strLocationTextfile; ?></label>
         <input style="margin: 5px" type="file" name="import_file" id="input_import_file" onchange="match_file(this.value);" />
@@ -43,6 +46,10 @@ echo PMA_pluginGetJavascript($import_list);
         echo PMA_displayMaximumUploadSize($max_upload_size) . "\n";
         // some browsers should respect this :)
         echo PMA_generateHiddenMaxFileSize($max_upload_size) . "\n";
+        } else {
+            echo '<div class="warning">' . "\n";
+            echo $strUploadsNotAllowed . "\n";
+        }
         ?>
         </div>
 <?php
@@ -79,8 +86,7 @@ echo '<div class="formelementrow">' . "\n";
 if ($cfg['AllowAnywhereRecoding'] && $allow_recoding) {
     echo '<label for="charset_of_file">' . $strCharsetOfFile . '</label>' . "\n";
     $temp_charset = reset($cfg['AvailableCharsets']);
-    echo $strCharsetOfFile . "\n"
-         . '    <select id="charset_of_file" name="charset_of_file" size="1">' . "\n"
+    echo '    <select id="charset_of_file" name="charset_of_file" size="1">' . "\n"
          . '            <option value="' . htmlentities( $temp_charset ) . '"';
     if ($temp_charset == $charset) {
         echo ' selected="selected"';

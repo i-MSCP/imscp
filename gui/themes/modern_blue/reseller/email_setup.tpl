@@ -61,16 +61,16 @@ function delete_account(url) {
           </tr>
           <tr>
             <td>
-			
-			
+
+
 			<form name="admin_email_setup" method="post" action="email_setup.php">
             <table width="100%" cellpadding="5" cellspacing="5">
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td colspan="2" class="content3"><b>{TR_MESSAGE_TEMPLATE_INFO}</b></td>
                 </tr>
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_USER_LOGIN_NAME}</td>
                 <td  class="content">{USERNAME} </td>
               </tr>
@@ -88,7 +88,7 @@ function delete_account(url) {
             <br>
             <table width="100%" cellpadding="5" cellspacing="5">
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td colspan="2" class="content3"><b>{TR_MESSAGE_TEMPLATE}</b></td>
                 </tr>
 				<!-- BDP: page_message -->
@@ -98,40 +98,38 @@ function delete_account(url) {
                 </tr>
 				<!-- EDP: page_message -->
               <tr>
-                <td>&nbsp;</td> 
+                <td>&nbsp;</td>
                 <td class="content2" width="200">{TR_SUBJECT}</td>
-                <td class="content"> 
+                <td class="content">
                   <input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:270px" class="textinput">
                 </td>
               </tr>
               <tr>
-                <td>&nbsp;</td> 
+                <td>&nbsp;</td>
                 <td class="content2" width="200">{TR_MESSAGE}</td>
-                <td class="content"> 
+                <td class="content">
                   <textarea name="auto_message" style="width:270px" class="textinput2" rows="8">{MESSAGE_VALUE}</textarea>
                 </td>
               </tr>
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_SENDER_EMAIL}</td>
                 <td class="content">{SENDER_EMAIL_VALUE}
-                  <input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}" style="width:270px" class="textinput">
                 </td>
               </tr>
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_SENDER_NAME}</td>
                 <td class="content">{SENDER_NAME_VALUE}
-                  <input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}" style="width:270px" class="textinput">
                 </td>
               </tr>
-              <tr> 
-                <td>&nbsp; 
+              <tr>
+                <td>&nbsp;
                   </td>
                 <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"></td>
                 </tr>
-            
-            </table>              
+
+            </table>
             <input type="hidden" name="uaction" value="email_setup">
            </form>
 			</td>

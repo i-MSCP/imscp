@@ -2,7 +2,7 @@
 
 
 /*
-V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.91 2 Aug 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
          Contributed by Ross Smith (adodb@netebb.com). 
   Released under both BSD license and Lesser GPL library license.
   Whenever there is any discrepancy between the two licenses,
@@ -501,9 +501,11 @@ class ADODB_Session {
 		ADODB_Session::password($password);
 		ADODB_Session::database($database);
 		
+		if ($driver == 'oci8' || $driver == 'oci8po') $options['lob'] = 'CLOB';
+		
 		if (isset($options['table'])) ADODB_Session::table($options['table']);
-		if (isset($options['clob'])) ADODB_Session::table($options['clob']);
-		if (isset($options['field'])) ADODB_Session::dataFieldName($options['field']);
+		if (isset($options['lob'])) ADODB_Session::clob($options['lob']);
+		if (isset($options['debug'])) ADODB_Session::debug($options['debug']);
 	}
 
 	/*!
@@ -511,7 +513,8 @@ class ADODB_Session {
 
 		If $conn already exists, reuse that connection
 	*/
-	function open($save_path, $session_name, $persist = null) {
+	function open($save_path, $session_name, $persist = null) 
+	{
 		$conn =& ADODB_Session::_conn();
 
 		if ($conn) {
@@ -565,7 +568,8 @@ class ADODB_Session {
 	/*!
 		Close the connection
 	*/
-	function close() {
+	function close() 
+	{
 /*
 		$conn =& ADODB_Session::_conn();
 		if ($conn) $conn->Close();
@@ -576,7 +580,8 @@ class ADODB_Session {
 	/*
 		Slurp in the session variables and return the serialized string
 	*/
-	function read($key) {
+	function read($key) 
+	{
 		$conn	=& ADODB_Session::_conn();
 		$data	= ADODB_Session::dataFieldName();
 		$filter	= ADODB_Session::filter();
@@ -586,7 +591,7 @@ class ADODB_Session {
 			return '';
 		}
 
-		assert('$table');
+		//assert('$table');
 
 		$qkey = $conn->quote($key);
 		$binary = $conn->dataProvider === 'mysql' ? '/*! BINARY */' : '';
@@ -629,7 +634,8 @@ class ADODB_Session {
 
 		If the data has not been modified since the last read(), we do not write.
 	*/
-	function write($key, $val) {
+	function write($key, $val) 
+	{
 	global $ADODB_SESSION_READONLY;
 	
 		if (!empty($ADODB_SESSION_READONLY)) return;
@@ -650,7 +656,7 @@ class ADODB_Session {
 		}
 		$qkey = $conn->qstr($key);
 	
-		assert('$table');
+		//assert('$table');
 
 		$expiry = time() + $lifetime;
 
@@ -714,6 +720,7 @@ class ADODB_Session {
 					break;
 			}
 			
+			$conn->StartTrans();
 			$expiryref = $conn->qstr($arr['expireref']);
 			// do we insert or update? => as for sesskey
 			$rs =& $conn->Execute("SELECT COUNT(*) AS cnt FROM $table WHERE $binary sesskey = $qkey");
@@ -722,27 +729,18 @@ class ADODB_Session {
 			} else {
 				$sql = "INSERT INTO $table (expiry, $data, sesskey,expireref) VALUES ($expiry, $lob_value, $qkey,$expiryref)";
 			}
-			if ($rs) {
-				$rs->Close();
-			}
+			if ($rs)$rs->Close();
+			
 
 			$err = '';
 			$rs1 =& $conn->Execute($sql);
-			if (!$rs1) {
-				$err = $conn->ErrorMsg()."\n";
-			}
-			$rs2 =& $conn->UpdateBlob($table, $data, $val, " sesskey=$qkey", strtoupper($clob));
+			if (!$rs1) $err = $conn->ErrorMsg()."\n";
 			
-			if (!$rs2) {
-				$err .= $conn->ErrorMsg()."\n";
-			}
+			$rs2 =& $conn->UpdateBlob($table, $data, $val, " sesskey=$qkey", strtoupper($clob));
+			if (!$rs2) $err .= $conn->ErrorMsg()."\n";
+			
 			$rs = ($rs && $rs2) ? true : false;
-			if ($rs1) {
-				$rs1->Close();
-			}
-			if (is_object($rs2)) {
-				$rs2->Close();
-			}
+			$conn->CompleteTrans();
 		}
 
 		if (!$rs) {
@@ -777,7 +775,7 @@ class ADODB_Session {
 			return false;
 		}
 
-		assert('$table');
+		//assert('$table');
 
 		$qkey = $conn->quote($key);
 		$binary = $conn->dataProvider === 'mysql' ? '/*! BINARY */' : '';
@@ -806,16 +804,14 @@ class ADODB_Session {
 		$sql = "DELETE FROM $table WHERE $binary sesskey = $qkey";
 		$rs =& $conn->Execute($sql);
 		ADODB_Session::_dumprs($rs);
-		if ($rs) {
-			$rs->Close();
-		}
 
 		return $rs ? true : false;
 	}
 
 	/*!
 	*/
-	function gc($maxlifetime) {
+	function gc($maxlifetime) 
+	{
 		$conn			=& ADODB_Session::_conn();
 		$debug			= ADODB_Session::debug();
 		$expire_notify	= ADODB_Session::expireNotify();
@@ -827,10 +823,8 @@ class ADODB_Session {
 			return false;
 		}
 
-		assert('$table');
 
 		$time			= time();
-
 		$binary = $conn->dataProvider === 'mysql' ? '/*! BINARY */' : '';
 
 		if ($expire_notify) {
@@ -842,18 +836,18 @@ class ADODB_Session {
 			ADODB_Session::_dumprs($rs);
 			$conn->SetFetchMode($savem);
 			if ($rs) {
-				$conn->BeginTrans();
+				$conn->StartTrans();
 				$keys = array();
 				while (!$rs->EOF) {
 					$ref = $rs->fields[0];
 					$key = $rs->fields[1];
 					$fn($ref, $key);
-					$del = $conn->Execute("DELETE FROM $table WHERE sesskey='$key'");
+					$del = $conn->Execute("DELETE FROM $table WHERE sesskey=".$conn->Param('0'),array($key));
 					$rs->MoveNext();
 				}
 				$rs->Close();
 				
-				$conn->CommitTrans();
+				$conn->CompleteTrans();
 			}
 		} else {
 		
@@ -861,8 +855,8 @@ class ADODB_Session {
 				$sql = "SELECT sesskey FROM $table WHERE expiry < $time";
 				$arr =& $conn->GetAll($sql);
 				foreach ($arr as $row) {
-					$sql2 = "DELETE FROM $table WHERE sesskey='$row[0]'";
-					$conn->Execute($sql2);
+					$sql2 = "DELETE FROM $table WHERE sesskey=".$conn->Param('0');
+					$conn->Execute($sql2,array($row[0]));
 				}
 			} else {
 				$sql = "DELETE FROM $table WHERE expiry < $time";

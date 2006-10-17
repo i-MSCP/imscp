@@ -1,10 +1,27 @@
 <?php
-/* $Id: htmlword.php,v 1.7 2006/01/19 15:39:29 cybot_tm Exp $ */
+/* $Id: htmlword.php,v 1.11 2006/04/27 22:28:55 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
  * Set of functions used to build CSV dumps of tables
  */
+
+if (isset($plugin_list)) {
+    $plugin_list['htmlword'] = array(
+        'text' => 'strHTMLWord',
+        'extension' => 'doc',
+        'mime_type' => 'application/vnd.ms-word',
+        'force_file' => true,
+        'options' => array(
+            array('type' => 'bool', 'name' => 'structure', 'text' => 'strStructure', 'force' => 'data'),
+            array('type' => 'bgroup', 'name' => 'data', 'text' => 'strData', 'force' => 'structure'),
+            array('type' => 'text', 'name' => 'null', 'text' => 'strReplaceNULLBy'),
+            array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
+            array('type' => 'egroup'),
+            ),
+        'options_text' => 'strHTMLWordOptions',
+        );
+} else {
 
 /**
  * Outputs comment
@@ -117,7 +134,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     $fields_cnt  = PMA_DBI_num_fields($result);
 
     // If required, get fields name at the first line
-    if (isset($GLOBALS[$what . '_shownames']) && $GLOBALS[$what . '_shownames'] == 'yes') {
+    if (isset($GLOBALS['htmlword_columns'])) {
         $schema_insert = '<tr class="print-category">';
         for ($i = 0; $i < $fields_cnt; $i++) {
             $schema_insert .= '<td class="print"><b>' . htmlspecialchars(stripslashes(PMA_DBI_field_name($result, $i))) . '</b></td>';
@@ -133,7 +150,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
         $schema_insert = '<tr class="print-category">';
         for ($j = 0; $j < $fields_cnt; $j++) {
             if (!isset($row[$j]) || is_null($row[$j])) {
-                $value = $GLOBALS[$what . '_replace_null'];
+                $value = $GLOBALS[$what . '_null'];
             } elseif ($row[$j] == '0' || $row[$j] != '') {
                 $value = $row[$j];
             } else {
@@ -319,5 +336,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
     PMA_DBI_free_result($result);
 
     return PMA_exportOutputHandler('</table>');
+}
+
 }
 ?>

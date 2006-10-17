@@ -80,7 +80,7 @@ if ($cfg['SERVICEMODE'] == 1 AND !isset($_GET['admin'])) {
 						'TR_TIME' => gettimestr(),
 						'TR_DATE' => getdatestr(),
 						'TR_MESSAGE' => nl2br($cfg['SERVICEMODE_MESSAGE']),
-						'TR_ADMINLOGIN' => tr('Administratorlogin')
+						'TR_ADMINLOGIN' => tr('Administrator login')
 						)
 					);
 

@@ -14,7 +14,7 @@
 /**
 	\mainpage 	
 	
-	 @version V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+	 @version V4.91 2 Aug 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
 
 	Released under both BSD license and Lesser GPL library license. You can choose which license
 	you prefer.
@@ -171,7 +171,7 @@
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'V4.90 8 June 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
+		$ADODB_vers = 'V4.91 2 Aug 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved. Released BSD & LGPL.';
 	
 		/**
 		 * Determines whether recordset->RecordCount() is used. 
@@ -1115,7 +1115,7 @@
 						$sql = preg_replace(
 						'/(^\s*select\s+(distinctrow|distinct)?)/i','\\1 '.$this->hasTop.' '.((integer)$nrows).' ',$sql);
 
-						if ($secs2cache>0) {
+						if ($secs2cache >= 0) {
 							$ret =& $this->CacheExecute($secs2cache, $sql,$inputarr);
 						} else {
 							$ret =& $this->Execute($sql,$inputarr);
@@ -1148,10 +1148,10 @@
 		$ADODB_COUNTRECS = false;
 			
 		if ($offset>0){
-			if ($secs2cache>0) $rs = &$this->CacheExecute($secs2cache,$sql,$inputarr);
+			if ($secs2cache >= 0) $rs = &$this->CacheExecute($secs2cache,$sql,$inputarr);
 			else $rs = &$this->Execute($sql,$inputarr);
 		} else {
-			if ($secs2cache>0) $rs = &$this->CacheExecute($secs2cache,$sql,$inputarr);
+			if ($secs2cache >= 0) $rs = &$this->CacheExecute($secs2cache,$sql,$inputarr);
 			else $rs = &$this->Execute($sql,$inputarr);
 		}
 		$ADODB_COUNTRECS = $savec;
@@ -1347,7 +1347,6 @@
 		if (!$date) $date = $this->sysDate;
 		return  '('.$date.'+'.$dayFraction.')';
 	}
-	
 	
 	/**
 	*
@@ -2868,7 +2867,17 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 			if ($ADODB_EXTENSION) {
 				if ($numIndex) {
 					while (!$this->EOF) {
-						$results[trim($this->fields[0])] = array_slice($this->fields, 1);
+						// $results[trim($this->fields[0])] = array_slice($this->fields, 1);
+						// Fix for array_slice re-numbering numeric associative keys in PHP5
+						$keys = array_slice(array_keys($this->fields), 1);
+						$sliced_array = array();
+
+						foreach($keys as $key) {
+							$sliced_array[$key] = $this->fields[$key];
+						}
+						
+						$results[trim(reset($this->fields))] = $sliced_array;
+
 						adodb_movenext($this);
 					}
 				} else {
@@ -2880,7 +2889,16 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 			} else {
 				if ($numIndex) {
 					while (!$this->EOF) {
-						$results[trim($this->fields[0])] = array_slice($this->fields, 1);
+						//$results[trim($this->fields[0])] = array_slice($this->fields, 1);
+						// Fix for array_slice re-numbering numeric associative keys in PHP5
+						$keys = array_slice(array_keys($this->fields), 1);
+						$sliced_array = array();
+
+						foreach($keys as $key) {
+							$sliced_array[$key] = $this->fields[$key];
+						}
+						
+						$results[trim(reset($this->fields))] = $sliced_array;
 						$this->MoveNext();
 					}
 				} else {

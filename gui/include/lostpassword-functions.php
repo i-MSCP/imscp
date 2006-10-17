@@ -29,6 +29,20 @@ function check_gd() {
 
 }
 
+function captcha_fontfile_exists() {
+	
+	global $cfg;
+
+	if (file_exists($cfg['LOSTPASSWORD_CAPTCHA_FONT']))
+	
+		return true;
+
+	else
+
+		return false;
+		
+}
+
 function createImage($strSessionVar) {
 
 	global $cfg;
@@ -41,7 +55,7 @@ function createImage($strSessionVar) {
 
 	$y = $cfg['LOSTPASSWORD_CAPTCHA_HEIGHT'];
 
-	$font = $cfg['LOSTPASSWORD_CAPTCHA_FONT'];
+	$font = "../" . $cfg['LOSTPASSWORD_CAPTCHA_FONT'];
 
   $iRandVal = strrand(8, $strSessionVar);
 
@@ -106,7 +120,7 @@ function strrand($length, $strSessionVar) {
 
 	  $random = rand(48, 122);
 
-  	if (ereg('[2-47-9A-HKM-NP-PRTWUYa-hkm-np-rtwuy]', chr($random))) {
+  	if (ereg('[2-47-9A-HKMNPRTWUYa-hkmnp-rtwuy]', chr($random))) {
 
   		$str .= chr($random);
 
@@ -117,30 +131,6 @@ function strrand($length, $strSessionVar) {
 	$_SESSION[$strSessionVar] = $str;
 
   return $_SESSION[$strSessionVar];
-
-}
-
-function passgen() {
-
-	$pw = '';
-
-	$pw_lenght = 8;
-
-  $chars = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z";
-  
-  $array_b = explode(",", $chars);
-
-  for($i=0; $i < $pw_lenght; $i++) {
-
-  	srand((double)microtime() * 1000000);
-
-    $z = rand(0, 25);
-
-    $pw .= "" . $array_b[$z] . "";
-
-  }
-
-	return $pw;
 
 }
 
@@ -288,15 +278,15 @@ SQL_QUERY;
 
 		if ($created_by == 0) $created_by = 1;
 
-		$data = get_email_data($created_by);
+		$data = get_lostpassword_password_email($created_by);
 		
 		$from_name = $data['sender_name'];
 
 		$from_email = $data['sender_email'];
 
-    $subject = $data['subject_2'];
+    $subject = $data['subject'];
 
-    $message = $data['message_2'];
+    $message = $data['message'];
 
     if ($from_name) {
 
@@ -315,11 +305,9 @@ SQL_QUERY;
 
     $message = preg_replace("/\{PASSWORD\}/", $upass, $message);
 
-    $message = str_replace(chr(10), "", $message);
-
     $headers = "From: $from\n";
 
-    $headers .= "Content-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
 
     $headers .= "X-Mailer: VHCS Pro lostpassword mailer";
 
@@ -370,15 +358,15 @@ SQL_QUERY;
 
 		if ($created_by == 0) $created_by = 1;
 
-		$data = get_email_data($created_by);
+		$data = get_lostpassword_activation_email($created_by);
 		
 		$from_name = $data['sender_name'];
 
 		$from_email = $data['sender_email'];
 
-    $subject = $data['subject_1'];
+    $subject = $data['subject'];
 
-    $message = $data['message_1'];
+    $message = $data['message'];
 
     if ($from_name) {
 
@@ -401,7 +389,7 @@ SQL_QUERY;
 
 		}
 
-		$link = $prot . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?i=" . $uniqkey;
+		$link = $prot . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
 
     $subject = preg_replace("/\{USERNAME\}/", $admin_name, $subject);
 
@@ -409,11 +397,9 @@ SQL_QUERY;
 
     $message = preg_replace("/\{LINK\}/", $link, $message);
 
-    $message = str_replace(chr(10), "", $message);
-
     $headers = "From: $from\n";
 
-    $headers .= "Content-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
 
     $headers .= "X-Mailer: VHCS Pro lostpassword mailer";
 
@@ -428,198 +414,6 @@ SQL_QUERY;
 	}
 
 	return false;
-
-}
-
-function set_email_data($admin_id, $data) {
-
-	global $sql;
-
-	$query = <<<SQL_QUERY
-  					SELECT
-            	subject, message
-            FROM
-            	email_tpls
-            WHERE
-            	owner_id = ?
-           	AND
-           		name = 'lostpw-msg-1'
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($admin_id));
-
-	if ($rs ->RowCount() == 0 ) {
-
-		$query = <<<SQL_QUERY
-  						INSERT INTO email_tpls
-            		(subject, message, owner_id, name)
-      	  		VALUES
-            		(?, ?, ?, 'lostpw-msg-1')
-SQL_QUERY;
-
-	} else {
-
-		$query = <<<SQL_QUERY
-  						UPDATE
-  							email_tpls
-  						SET
-  							subject = ?,
-          	    message = ?
-	            WHERE
-  	          	owner_id = ?
-    	        AND
-      	      	name = 'lostpw-msg-1'
-SQL_QUERY;
-
-	}
-
-	$rs = exec_query($sql, $query, array($data['subject_1'], $data['message_1'], $admin_id));
-
-	$query = <<<SQL_QUERY
-  					SELECT
-            	subject, message
-            FROM
-            	email_tpls
-            WHERE
-            	owner_id = ?
-            AND
-            	name = 'lostpw-msg-2'
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($admin_id));
-
-	if ($rs ->RowCount() == 0 ) {
-
-		$query = <<<SQL_QUERY
-  						INSERT INTO email_tpls
-            		(subject, message, owner_id, name)
-      	  		VALUES
-            		(?, ?, ?, 'lostpw-msg-2')
-SQL_QUERY;
-
-	} else {
-
-		$query = <<<SQL_QUERY
-  						UPDATE
-  							email_tpls
-  						SET
-  							subject = ?,
-          	    message = ?
-	            WHERE
-  	          	owner_id = ?
-    	        AND
-      	      	name = 'lostpw-msg-2'
-SQL_QUERY;
-
-	}
-
-	$rs = exec_query($sql, $query, array($data['subject_2'], $data['message_2'], $admin_id));
-
-}
-
-function get_email_data($admin_id) {
-
-	global $sql;
-
-	$query = <<<SQL_QUERY
-         		SELECT
-            	fname, lname, email
-            FROM
-            	admin
-            WHERE
-             	admin_id = ?
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($admin_id));
-
-	if ( ($rs->fields('fname') != '') && ($rs->fields('lname') != '') ) {
-
-  	$data['sender_name'] = $rs->fields('fname') . " " . $rs->fields('lname');
-
-	} else {
-
-		$data['sender_name'] = '';
-
-  }
-  
-  $data['sender_email'] = $rs->fields('email');
-
-	$query = <<<SQL_QUERY
-						SELECT
-    	      	subject, message
-      	    FROM
-        	  	email_tpls
-          	WHERE
-          		owner_id = ?
-          	AND
-          		name = 'lostpw-msg-1'
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($admin_id));
-
-	if ($rs ->RowCount() == 0 ) {
-
-		$data['subject_1'] = 'Auto message alert for lostpw ! {USERNAME}';
-
-  	$data['message_1'] = <<<MSG
-
-Dear {NAME},
-Use this link to activate your new VHCS password:
-
-{LINK}
-
-
-Good Luck with VHCS Pro System
-Hosting Provider Team
-
-MSG;
-
-	} else {
-
-		$data['subject_1'] = $rs->fields['subject'];
-
-    $data['message_1'] = $rs->fields['message'];
-	}
-
-	$query = <<<SQL_QUERY
-  					SELECT
-            	subject, message
-            FROM
-            	email_tpls
-            WHERE
-            	owner_id = ?
-            AND
-            	name = 'lostpw-msg-2'
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($admin_id));
-
-  if ($rs ->RowCount() == 0 ) {
-
-  	$data['subject_2'] = 'Auto message alert for lostpw ! {USERNAME}';
-
-  	$data['message_2'] = <<<MSG
-
-Hello {NAME} !
-
-Your VHCS login is: {USERNAME}
-Your VHCS password is: {PASSWORD}
-
-
-Good Luck with VHCS Pro System
-Hosting Provider Team
-
-MSG;
-
-	} else {
-
-    $data['subject_2'] = $rs->fields['subject'];
-
-    $data['message_2'] = $rs->fields['message'];
-
-	}
-
-	return $data;
 
 }
 

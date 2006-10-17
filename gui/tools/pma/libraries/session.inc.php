@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php,v 2.8.2.4 2006/05/12 15:26:16 nijel Exp $ */
+/* $Id: session.inc.php,v 2.13.2.1 2006/09/26 19:23:24 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
@@ -31,24 +31,6 @@ if (!@function_exists('session_name')) {
             . '&error=' . urlencode(sprintf($strCantLoad, 'session')));
     exit();
 } elseif (ini_get('session.auto_start') == true && session_name() != 'phpMyAdmin') {
-/*    $cfg = array('DefaultLang'           => 'en-iso-8859-1',
-                 'AllowAnywhereRecoding' => false);
-    // Loads the language file
-    require_once('./libraries/select_lang.lib.php');
-    // Displays the error message
-    // (do not use &amp; for parameters sent by header)
-    // TODO FIXME replace with locale string
-    $strSessionAutostartError = 'phpMyAdmin cannot run with'
-        . ' [a@http://php.net/session#ini.session.auto-start@php]session.auto_start[/a]'
-        . ' enabled. Check your php configuration.';
-    header('Location: error.php'
-            . '?lang='  . urlencode('en') //($available_languages[$lang][2])
-            . '&char='  . urlencode($charset)
-            . '&dir='   . urlencode('ltr') //($text_dir)
-            . '&type='  . urlencode('Error') //($strError)
-            . '&error=' . urlencode($strSessionAutostartError));
-    exit();
-    */
     $_SESSION = array();
     if (isset($_COOKIE[session_name()])) {
         setcookie(session_name(), '', time()-42000, '/');
@@ -102,9 +84,10 @@ ini_set('session.save_handler', 'files');
 
 /**
  * Token which is used for authenticating access queries.
+ * (we use "space PMA_token space" to prevent overwriting)
  */
-if (!isset($_SESSION['PMA_token'])) {
-    $_SESSION['PMA_token'] = md5(uniqid(rand(), true));
+if (!isset($_SESSION[' PMA_token '])) {
+    $_SESSION[' PMA_token '] = md5(uniqid(rand(), true));
 }
 
 /**

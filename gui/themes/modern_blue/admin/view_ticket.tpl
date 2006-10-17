@@ -105,6 +105,7 @@ function action_delete(url) {
                         </table>
                         <!-- end of content -->
                         <input name="uaction" type="hidden" value="">
+                        <input name="screenwidth" type="hidden" value="{SCREENWIDTH}">
                     </form></td>
                   </tr>
               </table></td>

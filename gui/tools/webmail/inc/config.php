@@ -1,6 +1,6 @@
 <?
 /************************************************************************
-UebiMiau is a GPL'ed software developed by 
+UebiMiau is a GPL'ed software developed by
 
  - Aldoir Ventura - aldoir@users.sourceforge.net
  - http://uebimiau.sourceforge.net
@@ -39,7 +39,7 @@ $languages 	= Array();
 # for all operating systems, INCLUDING Windows
 ########################################################################
 
-$temporary_directory = "database/";
+$temporary_directory = "./database/";
 
 ########################################################################
 # Your local SMTP Server (alias or IP) such as "smtp.yourdomain.com"
@@ -75,7 +75,7 @@ $check_first_login		= yes;
 
 ########################################################################
 # Turn this option to 'yes' if you want allow users send messages using
-# they 'Reply to' preference's option as your 'From' header, otherwise 
+# they 'Reply to' preference's option as your 'From' header, otherwise
 # the From field will be the email wich the users log in
 ########################################################################
 $allow_modified_from	= yes;
@@ -98,11 +98,11 @@ require("./inc/config.security.php");
 # allowed values:
 
 # "DETECT" -------->	Guess the pop3 server. If you are running UM
-# 					in a domain "www.company.com", the script will 
-#					use "PREFIX.company.com" as your server. you 
+# 					in a domain "www.company.com", the script will
+#					use "PREFIX.company.com" as your server. you
 #					can set the "PREFIX" in the var $mail_detect_prefix.
 #					Also, the var $mail_detect_remove can be set
-#					to "www.", then the script get rid the "www" and 
+#					to "www.", then the script get rid the "www" and
 #					put the prefix, eg. pop3.company.com.br
 
 #"ONE-FOR-EACH" -->	Each domain have your own mail server.
@@ -112,13 +112,13 @@ require("./inc/config.security.php");
 #"ONE-FOR-ALL" --->	If you use this option, your users must supply the
 #					full email address as username. You can set the mail
 #					server in the var $default_mail_server
-#					
+#
 
 # LOGIN_TYPE
 
 # Note. You can supply the LOGIN_TYPE according to your MAIL SERVER.
 # Eg. If your mail server requires usernames in user@domain.com, you must
-# specify the LOGIN_TYPE as "%user%@%domain%". You can combine it according to 
+# specify the LOGIN_TYPE as "%user%@%domain%". You can combine it according to
 # your server. eg.
 
 # %user%
@@ -126,7 +126,7 @@ require("./inc/config.security.php");
 # %user%.%domain%
 #
 # PROTOCOL and PORT
-# Choose "imap" as protocol to use the Internet Mail Access Protocol, 
+# Choose "imap" as protocol to use the Internet Mail Access Protocol,
 # or "pop3" to use the Post Office Protocol.
 # The default ports are:
 # pop3 -> 110
@@ -155,8 +155,8 @@ $mail_detect_folder_prefix 	= "";
 ########################################################################
 /*
 $mail_servers[] = Array( //sample using POP3
-	"domain" 		=> "", 
-	"server" 		=> "localhost", 
+	"domain" 		=> "",
+	"server" 		=> "localhost",
 	"login_type" 	=> "%user%@%domain%",
 	"protocol"		=> "IMAP",
 	"port"			=> "143",
@@ -166,8 +166,8 @@ $mail_servers[] = Array( //sample using POP3
 
 /*
 $mail_servers[] = Array( //sample using IMAP
-	"domain" 		=> "another-domain.com", 
-	"server" 		=> "mail.another-domain.com", 
+	"domain" 		=> "another-domain.com",
+	"server" 		=> "mail.another-domain.com",
 	"login_type" 	=> "%user%@%domain%",
 	"protocol"		=> "imap",
 	"port"			=> "143",

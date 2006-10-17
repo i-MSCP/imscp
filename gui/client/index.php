@@ -304,8 +304,6 @@ $tpl -> define_dynamic('t_mails_support', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('traff_warn', 'page');
 
 $tpl -> define_dynamic('disk_warn', 'page');
@@ -335,7 +333,6 @@ SQL_QUERY;
 	$_SESSION['user_def_lang'] = $user_lang;
 }
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {

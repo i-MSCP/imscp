@@ -172,7 +172,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
 	$tmpArr = get_reseller_default_props($sql, $reseller_id);
 	//$tmpArr = generate_reseller_props($reseller_id);
 
-    if (null !== $tmpArr) { // there are data in db
+    if ($tmpArr != NULL) { // there are data in db
 
 		list (
 			$rdmn_current, $rdmn_max,
@@ -421,8 +421,6 @@ $tpl -> define_dynamic('layout', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('traff_warn', 'page');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
@@ -447,13 +445,10 @@ SQL_QUERY;
 
 }
 
-
 //
 // common page data.
 //
 
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 

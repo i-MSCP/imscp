@@ -1,11 +1,25 @@
 <?php
-/* $Id: pdf.php,v 1.3 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: pdf.php,v 1.7.2.1 2006/08/18 12:18:09 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
- * Produce a PDF report (export) from a query 
+ * Produce a PDF report (export) from a query
  */
 
+if (isset($plugin_list)) {
+    $plugin_list['pdf'] = array(
+        'text' => 'strPDF',
+        'extension' => 'pdf',
+        'mime_type' => 'application/pdf',
+        'force_file' => true,
+        'options' => array(
+            array('type' => 'message_only', 'name' => 'explanation', 'text' => 'strPDFReportExplanation'),
+            array('type' => 'text', 'name' => 'report_title', 'text' => 'strPDFReportTitle'),
+            array('type' => 'hidden', 'name' => 'data'),
+            ),
+        'options_text' => 'strPDFOptions',
+        );
+} else {
 
 define('FPDF_FONTPATH', './libraries/fpdf/font/');
 //if ($charset == 'utf-8') {
@@ -24,14 +38,14 @@ define('FPDF_FONTPATH', './libraries/fpdf/font/');
 
 // Adapted from a LGPL script by Philip Clarke
 
-class PMA_PDF extends PMA_FPDF 
+class PMA_PDF extends PMA_FPDF
 {
     var $tablewidths;
     var $headerset;
     var $footerset;
 
     // overloading of a fpdf function:
-    function _beginpage($orientation) 
+    function _beginpage($orientation)
     {
         $this->page++;
         // solved the problem of overwriting a page, if it already exists
@@ -43,7 +57,7 @@ class PMA_PDF extends PMA_FPDF
         $this->y = $this->tMargin;
         $this->lasth = 0;
         $this->FontFamily = '';
-    
+
         //Page orientation
         if (!$orientation) {
             $orientation = $this->DefOrientation;
@@ -71,7 +85,7 @@ class PMA_PDF extends PMA_FPDF
         }
     }
 
-    function Header() 
+    function Header()
     {
         global $maxY;
 
@@ -111,7 +125,7 @@ class PMA_PDF extends PMA_FPDF
         $this->SetY($maxY);
     }
 
-    function Footer() 
+    function Footer()
     {
     // Check if footer for this page already exists
         if (!isset($this->footerset[$this->page])) {
@@ -124,7 +138,7 @@ class PMA_PDF extends PMA_FPDF
         }
     }
 
-    function morepagestable($lineheight=8) 
+    function morepagestable($lineheight=8)
     {
         // some things to set and 'remember'
         $l = $this->lMargin;
@@ -150,9 +164,10 @@ class PMA_PDF extends PMA_FPDF
             foreach ($data as $col => $txt) {
                 $this->page = $currpage;
                 $this->SetXY($l, $h);
-                $this->MultiCell($this->tablewidths[$col], $lineheight, $txt, 0, $this->colAlign[$col]);
-
-                $l += $this->tablewidths[$col];
+                if ($this->tablewidths[$col] > 0) {
+                    $this->MultiCell($this->tablewidths[$col], $lineheight, $txt, 0, $this->colAlign[$col]);
+                    $l += $this->tablewidths[$col];
+                }
 
                 if (!isset($tmpheight[$row.'-'.$this->page])) {
                     $tmpheight[$row.'-'.$this->page] = 0;
@@ -223,17 +238,32 @@ class PMA_PDF extends PMA_FPDF
                     $colFits[$i] = $stringWidth ;
                 }
                 $this->colTitles[$i] = $this->fields[$i]->name;
+                $this->display_column[$i] = true;
+
                 switch ($this->fields[$i]->type){
                 case 'int':
                     $this->colAlign[$i] = 'R';
+                    break;
+                case 'blob':
+                case 'tinyblob':
+                case 'mediumblob':
+                case 'longblob':
+                    //TODO: do not deactivate completely the display
+                    // but show the field's name and [BLOB]
+                    if (stristr($this->fields[$i]->flags, 'BINARY')) {
+                        $this->display_column[$i] = false;
+                        unset($this->colTitles[$i]);
+                    }
+                    $this->colAlign[$i] = 'L';
                     break;
                 default:
                     $this->colAlign[$i] = 'L';
                 }
             }
 
-            // loop through the data, any column whose contents is bigger i
-            // that the col size is resized
+            // loop through the data, any column whose contents is bigger
+            // than the col size is resized
+            // TODO: force here a LIMIT to avoid reading all rows 
             while ($row = PMA_DBI_fetch_row($this->results)) {
                 foreach ($colFits as $key => $val) {
                     $stringWidth = $this->getstringwidth($row[$key]) + 6 ;
@@ -243,7 +273,7 @@ class PMA_PDF extends PMA_FPDF
                     } else {
                     // if text is not bigger than the current column width setting enlarge the column
                         if ($stringWidth > $val) {
-                            $colFits[$key] = ($stringWidth) ;
+                            $colFits[$key] = $stringWidth ;
                         }
                     }
                 }
@@ -262,10 +292,12 @@ class PMA_PDF extends PMA_FPDF
                 if (!in_array($i, array_keys($colFits))) {
                     $this->tablewidths[$i] = $this->sColWidth + ($surplus / ($this->numFields - sizeof($colFits)));
                 }
+                if ($this->display_column[$i] == false) {
+                    $this->tablewidths[$i] = 0;
+                }
             }
 
             ksort($this->tablewidths);
-
         }
 
         PMA_DBI_free_result($this->results);
@@ -279,7 +311,7 @@ class PMA_PDF extends PMA_FPDF
         $this->morepagestable($this->FontSizePt);
         PMA_DBI_free_result($this->results);
 
-    } // end of mysql_report function 
+    } // end of mysql_report function
 
 } // end of PMA_PDF class
 
@@ -290,7 +322,7 @@ class PMA_PDF extends PMA_FPDF
  *
  * @return  bool        Whether it suceeded
  */
-function PMA_exportComment($text) 
+function PMA_exportComment($text)
 {
     return TRUE;
 }
@@ -302,7 +334,7 @@ function PMA_exportComment($text)
  *
  * @access  public
  */
-function PMA_exportFooter() 
+function PMA_exportFooter()
 {
     return TRUE;
 }
@@ -314,7 +346,7 @@ function PMA_exportFooter()
  *
  * @access  public
  */
-function PMA_exportHeader() 
+function PMA_exportHeader()
 {
     return TRUE;
 }
@@ -328,7 +360,7 @@ function PMA_exportHeader()
  *
  * @access  public
  */
-function PMA_exportDBHeader($db) 
+function PMA_exportDBHeader($db)
 {
     return TRUE;
 }
@@ -342,7 +374,7 @@ function PMA_exportDBHeader($db)
  *
  * @access  public
  */
-function PMA_exportDBFooter($db) 
+function PMA_exportDBFooter($db)
 {
     return TRUE;
 }
@@ -356,7 +388,7 @@ function PMA_exportDBFooter($db)
  *
  * @access  public
  */
-function PMA_exportDBCreate($db) 
+function PMA_exportDBCreate($db)
 {
     return TRUE;
 }
@@ -374,7 +406,7 @@ function PMA_exportDBCreate($db)
  *
  * @access  public
  */
-function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) 
+function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
 {
     global $what;
     global $pdf_report_title;
@@ -399,4 +431,5 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
 
     return TRUE;
 } // end of the 'PMA_exportData()' function
+}
 ?>

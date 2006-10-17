@@ -1,14 +1,15 @@
 <?php
-/* $Id: tbl_addfield.php,v 2.24 2006/01/17 17:02:29 cybot_tm Exp $ */
+/* $Id: tbl_addfield.php,v 2.25 2006/02/21 10:15:01 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
  * Get some core libraries
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.lib.php';
+require_once './libraries/Table.class.php';
 
 $js_to_run = 'functions.js';
-require_once('./libraries/header.inc.php');
+require_once './libraries/header.inc.php';
 
 // Check parameters
 PMA_checkParameters(array('db', 'table'));
@@ -58,7 +59,7 @@ if (isset($submit_num_fields)) {
             continue;
         }
 
-        $query .= PMA_generateFieldSpec($field_name[$i], $field_type[$i], $field_length[$i], $field_attribute[$i], isset($field_collation[$i]) ? $field_collation[$i] : '', $field_null[$i], $field_default[$i], isset($field_default_current_timestamp[$i]), $field_extra[$i], isset($field_comments[$i]) ? $field_comments[$i] : '', $field_primary, $i);
+        $query .= PMA_Table::generateFieldSpec($field_name[$i], $field_type[$i], $field_length[$i], $field_attribute[$i], isset($field_collation[$i]) ? $field_collation[$i] : '', $field_null[$i], $field_default[$i], isset($field_default_current_timestamp[$i]), $field_extra[$i], isset($field_comments[$i]) ? $field_comments[$i] : '', $field_primary, $i);
 
         if ($field_where != 'last') {
             // Only the first field can be added somewhere other than at the end

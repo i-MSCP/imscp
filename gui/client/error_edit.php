@@ -166,8 +166,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 //
 // page functions.
 //
@@ -181,7 +179,6 @@ function update_error_page(&$sql, $user_id)
 // common page data.
 //
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(

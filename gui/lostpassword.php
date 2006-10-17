@@ -26,6 +26,8 @@ if ($cfg['LOSTPASSWORD'] != 1) {
 // check for gd >= 2.x
 if (check_gd() == false) system_message("ERROR: php-extension 'gd' not loaded !");
 
+if (captcha_fontfile_exists() == false) system_message("ERROR: captcha fontfile not found !");
+
 // remove old uniqkeys
 removeOldKeys($cfg['LOSTPASSWORD_TIMEOUT']);
 
@@ -39,10 +41,10 @@ if (isset($_SESSION['user_theme_color'])) {
 
 }
 
-if (isset($_GET['i'])) {
-	if ($_GET['i'] != "") {
+if (isset($_GET['key'])) {
+	if ($_GET['key'] != "") {
 
-		check_input($_GET['i']);
+		check_input($_GET['key']);
 
 		$tpl = new pTemplate();
 		$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword_message.tpl');
@@ -55,7 +57,7 @@ if (isset($_GET['i'])) {
 							)
 						);
 
-		if (sendpassword($_GET['i'])) {
+		if (sendpassword($_GET['key'])) {
 			$tpl -> assign(array(
 								'TR_MESSAGE' => tr('Password send'),
 								'TR_LINK' => "<a class=\"submenu\" href=\"index.php\">".tr('Login')."</a>"

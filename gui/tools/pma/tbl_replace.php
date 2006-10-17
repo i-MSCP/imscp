@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_replace.php,v 2.36.2.1 2006/02/12 14:15:56 lem9 Exp $ */
+/* $Id: tbl_replace.php,v 2.39 2006/05/23 16:54:30 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -168,13 +168,15 @@ foreach ($loop_array AS $primary_key_index => $enc_primary_key) {
             $cur_value = $me_funcs[$encoded_key] . '(' . $val . '), ';
         }
 
+        //  i n s e r t
         if ($is_insert) {
-            // insert, no need to add column
+            // no need to add column into the valuelist
             $valuelist .= $cur_value;
-        } elseif (isset($me_fields_null_prev) && isset($me_fields_null_prev[$encoded_key]) && !isset($me_fields_null[$encoded_key])) {
-            // field had the null checkbox
+
+        //  u p d a t e
+        } elseif (isset($me_fields_null_prev) && isset($me_fields_null_prev[$encoded_key]) && !empty($me_fields_null_prev[$encoded_key]) && !isset($me_fields_null[$encoded_key])) {
+            // field had the null checkbox before the update
             // field no longer has the null checkbox
-            // field does not have the same value
             $valuelist .= PMA_backquote($key) . ' = ' . $cur_value;
         } elseif (empty($me_funcs[$encoded_key])
             && isset($me_fields_prev) && isset($me_fields_prev[$encoded_key])
@@ -182,8 +184,12 @@ foreach ($loop_array AS $primary_key_index => $enc_primary_key) {
             // No change for this column and no MySQL function is used -> next column
             continue;
         } elseif (!empty($val)) {
-            // TODO: avoid setting a field to NULL when it's already NULL
-            $valuelist .= PMA_backquote($key) . ' = ' . $cur_value;
+            // avoid setting a field to NULL when it's already NULL
+            // (field had the null checkbox before the update
+            //  field still has the null checkbox)
+            if (!(isset($me_fields_null_prev) && isset($me_fields_null_prev[$encoded_key]) && !empty($me_fields_null_prev[$encoded_key]) && isset($me_fields_null[$encoded_key]))) {
+                $valuelist .= PMA_backquote($key) . ' = ' . $cur_value;
+            }
         }
     } // end while
 
@@ -234,12 +240,16 @@ if (empty($valuelist) && empty($query)) {
 $sql_query = implode(';', $query) . ';';
 $total_affected_rows = 0;
 $last_message = '';
+$warning_message = '';
 
 foreach ($query AS $query_index => $single_query) {
     if ($cfg['IgnoreMultiSubmitErrors']) {
         $result = PMA_DBI_try_query($single_query);
     } else {
         $result = PMA_DBI_query($single_query);
+    }
+    if (isset($GLOBALS['warning'])) {
+        $warning_message .= $GLOBALS['warning'] . '[br]';
     }
     if (!$result) {
         $message .= PMA_DBI_getError();
@@ -265,6 +275,12 @@ if ($total_affected_rows != 0) {
 
 $message .= $last_message;
 
+if (!empty($warning_message)) {
+    // TODO: use a <div class="warning"> in PMA_showMessage()
+    // for this part of the message
+    $message .= '[br]' . $warning_message;
+}
+
 if ($is_gotofile) {
     if ($goto == 'db_details.php' && isset($table)) {
         unset($table);
@@ -274,8 +290,6 @@ if ($is_gotofile) {
     require_once('./libraries/header.inc.php');
     require('./' . PMA_securePath($goto));
 } else {
-    // I don't understand this one:
-    //$add_query = (strpos(' ' . $goto, 'tbl_change') ? '&disp_query=' . urlencode($sql_query) : '');
 
     // if we have seen binary,
     // we do not append the query to the Location so it won't be displayed

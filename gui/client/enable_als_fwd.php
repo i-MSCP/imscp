@@ -29,9 +29,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -146,7 +143,7 @@ function gen_editalias_page(&$tpl, $edit_id)
 	$ip_data =  $ipdat['ip_number'].' ('.$ipdat['ip_alias'].')';
 
 	if(isset($_POST['uaction']) && ($_POST['uaction'] == 'modify'))
-		$url_forward = $_POST['forward'];
+		$url_forward = clean_input($_POST['forward']);
 	else
 		$url_forward = $data['url_forward'];
 
@@ -181,7 +178,7 @@ function check_user_data ( &$tpl, $alias_id) {
 	}
 
 	if('_off_' === $ed_error){
-				
+
 		exec_query($sql,
                "update domain_aliasses set url_forward=?, alias_status='" . $cfg['ITEM_CHANGE_STATUS'] . "' where alias_id=?",
                array($forward_url, $alias_id));

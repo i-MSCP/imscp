@@ -12,6 +12,13 @@ function MM_goToURL() { //v3.0
   var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
   for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
 }
+
+function action_delete(url) {
+	if (!confirm("{TR_MESSAGE_DELETE}"))
+		return false;
+
+	location = url;
+}
 //-->
 </script>
 </head>
@@ -69,7 +76,7 @@ function MM_goToURL() { //v3.0
                       <!-- BDP: tickets_item -->
                       <tr>
                         <td width="25" nowrap class="{CONTENT}"><b>{NEW}</b></td>
-                        <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left"> 
+                        <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left">
 					  	<script language="javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 						</script>

@@ -74,11 +74,10 @@ class status {
 					$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
 				}
 				else {
-					$fp = @fsockopen('udp://'.$ip, $errno, $errstr, $timeout);
+					$fp = @fsockopen('udp://'.$ip, $port, $errno, $errstr, $timeout);
 				}
 
 				if($fp) {
-					fclose($fp);
 					$this->all[$i]['status'] = TRUE;
 					if($this->log) {
 						$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'TRUE');
@@ -92,6 +91,7 @@ class status {
 						// $this->StatusDown(mysql_insert_id());
 					}
 				}
+				if($fp) fclose($fp);
 			}
 		}
 

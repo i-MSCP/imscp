@@ -25,7 +25,6 @@ $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/create_catchall.tp
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('mail_list', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 if (isset($_GET['id'])) {
   $item_id = $_GET['id'];
@@ -79,10 +78,10 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id)
 	}
 
   $ok_status = $cfg['ITEM_OK_STATUS'];
-  if (preg_match("/(\d+);(dmn|als)/", $id, $match) == 1) {
+  if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
     $item_id = $match[1];
     $item_type = $match[2];
-
+    
     if ($item_type === 'dmn') {
       $query = <<<SQL_QUERY
                 SELECT
@@ -161,8 +160,53 @@ SQL_QUERY;
         $rs -> MoveNext();
       }
 
-    }
+    } else if ($item_type === 'sub') {
 
+      $query = <<<SQL_QUERY
+                SELECT
+                    t1.mail_id, t1.mail_type, CONCAT( t2.subdomain_name, '.', t3.domain_name ) AS subdomain_name, t1.mail_acc
+                FROM
+                    mail_users AS t1,
+                  	subdomain AS t2,
+                  	domain AS t3 
+                WHERE
+                    t1.sub_id = t2.subdomain_id
+                  AND 
+                  	t2.domain_id = t3.domain_id
+                  AND
+                    t1.status = ?
+                  AND
+                  	(t1.mail_type = 'subdom_mail'
+					or
+					t1.mail_type = 'subdom_forward')
+				  AND
+                    t2.subdomain_id = ?               
+                ORDER BY
+                  t1.mail_type DESC, t1.mail_acc
+SQL_QUERY;
+
+      $rs = exec_query($sql, $query, array($ok_status, $item_id));
+
+      if ($rs -> RecordCount() == 0) {
+        user_goto('catchall.php');
+      }
+
+      while (!$rs -> EOF) {
+        $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
+        $show_alias_name = decode_idna($rs -> fields['subdomain_name']);
+        $mail_acc = $rs -> fields['mail_acc'];
+        $alias_name = $rs -> fields['subdomain_name'];
+        $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
+                             'MAIL_ACCOUNT' => $show_mail_acc."@".$show_alias_name, // this will be show in the templates
+                             'MAIL_ACCOUNT_PUNNY' =>  $mail_acc."@".$alias_name //this will be updated wenn we create catch all
+                             )
+                      );
+
+        $tpl -> parse('MAIL_LIST', '.mail_list');
+        $rs -> MoveNext();
+      }
+    }
+      
   } else {
     user_goto('catchall.php');
   }
@@ -172,7 +216,7 @@ SQL_QUERY;
 function create_catchall_mail_account(&$sql, $id)
 {
 	// Check if user is owner of the domain
-	/*$query = <<<SQL_QUERY
+/*	$query = <<<SQL_QUERY
 		SELECT
 			COUNT(mail_id) as cnt
 		FROM
@@ -182,8 +226,9 @@ function create_catchall_mail_account(&$sql, $id)
 		AND
 			mail_id = ?
 SQL_QUERY;
+
 	global $domain_id;
-	$eid = explode(';', $id);
+	$eid = explode(';', $_POST['id']);
 	$mail_id = $eid[0];
 	$rs = exec_query($sql, $query, array($domain_id, $mail_id));
 
@@ -191,13 +236,13 @@ SQL_QUERY;
 		set_page_message(tr('0!'.$domain_id.$mail_id));
 		header("Location: catchall.php");
 		die();
-#		header("Location: catchall.php");
+		header("Location: catchall.php");
 	}
 */
   global $cfg;
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'normal') {
-    if (preg_match("/(\d+);(dmn|als)/", $id, $match) == 1) {
+    if (preg_match("/(\d+);(dmn|als|sub)/", $_POST['id'], $match) == 1) {
       $item_id = $match[1];
       $item_type = $match[2];
       $post_mail_id = $_POST['mail_id'];
@@ -207,8 +252,10 @@ SQL_QUERY;
         $mail_acc = $match[2];
         if ($item_type === 'dmn') {
           $mail_type = 'normal_catchall';
-        } else {
+        } elseif ($item_type === 'als') {
           $mail_type = 'alias_catchall';
+        } elseif ($item_type === 'sub') {
+          $mail_type = 'subdom_catchall';	
         }
 
         $query = <<<SQL_QUERY
@@ -252,25 +299,27 @@ SQL_QUERY;
 	}
 	} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'forward' && isset($_POST['forward_list'])) {
 
-     if (preg_match("/(\d+);(dmn|als)/", $id, $match) == 1) {
+     if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
         $item_id = $match[1];
 	    $item_type = $match[2];
 
         if ($item_type === 'dmn') {
           $mail_type = 'normal_catchall';
           $sub_id = '0';
-        } else {
+        } elseif ($item_type === 'als') {
           $mail_type = 'alias_catchall';
 	      $sub_id = $item_id;
+        } elseif ($item_type === 'sub') {
+          $mail_type = 'subdom_catchall';
+	      $sub_id = $item_id;
         }
-
-    	  $mail_forward = $_POST['forward_list'];
+    	  $mail_forward = clean_input($_POST['forward_list']);
 	      $faray = preg_split ("/[\n]+/",$mail_forward);
 
     	  foreach ($faray as $value) {
 	        $value = trim($value);
         	if (chk_email($value) > 0 && $value !== '') {
-    	      /* ERR .. strange :) not email in this line - warrning */
+    	      /* ERR .. strange :) not email in this line - warning */
 	          set_page_message(tr("Mail forward list error!"));
         	  return;
     	    } else if ($value === '') {
@@ -279,8 +328,8 @@ SQL_QUERY;
     	    }
 	      }
 
-		$mail_acc = $_POST['forward_list'];
-        $domain_id = $item_id;
+		$mail_acc = clean_input($_POST['forward_list']);
+        //$domain_id = $item_id;
         $status = $cfg['ITEM_ADD_STATUS'];
         check_for_lock_file();
 

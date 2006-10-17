@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_common.inc.php,v 1.3 2006/01/14 23:17:16 cybot_tm Exp $ */
+/* $Id: db_details_common.inc.php,v 1.4 2006/07/06 14:38:13 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -10,8 +10,10 @@ require_once('./libraries/bookmark.lib.php');
 
 PMA_checkParameters(array('db'));
 
+$is_show_stats = $cfg['ShowStats'];
+
 if ( PMA_MYSQL_INT_VERSION >= 50002 && $db == 'information_schema' ) {
-    $cfg['ShowStats'] = false;
+    $is_show_stats = false;
     $db_is_information_schema = true;
 } else {
     $db_is_information_schema = false;

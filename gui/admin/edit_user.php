@@ -42,7 +42,6 @@ $tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/edit_user.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('hosting_plans', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -61,25 +60,25 @@ function update_data(&$sql)
 {
     global $edit_id;
 
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
+if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 
 	if(check_user_data()){
 
         $user_id = $_SESSION['user_id'];
 
-        $fname =	$_POST['fname'];
-        $lname =	$_POST['lname'];
-        $firm =		$_POST['firm'];
-        $zip =		$_POST['zip'];
-        $city =		$_POST['city'];
-        $country =	$_POST['country'];
-        $email =	$_POST['email'];
-        $phone =	$_POST['phone'];
-        $fax =		$_POST['fax'];
-        $street1 =	$_POST['street1'];
-        $street2 =	$_POST['street2'];
+        $fname 		= clean_input($_POST['fname']);
+        $lname 		= clean_input($_POST['lname']);
+        $firm 		= clean_input($_POST['firm']);
+        $zip 		= clean_input($_POST['zip']);
+        $city 		= clean_input($_POST['city']);
+        $country	= clean_input($_POST['country']);
+        $email 		= clean_input($_POST['email']);
+        $phone 		= clean_input($_POST['phone']);
+        $fax 		= clean_input($_POST['fax']);
+        $street1 	= clean_input($_POST['street1']);
+        $street2 	= clean_input($_POST['street2']);
 
-        if($_POST['pass'] =='')
+        if(empty($_POST['pass']))
         {
 
         $query = <<<SQL_QUERY
@@ -124,7 +123,7 @@ SQL_QUERY;
            }
             else{
 
-                $edit_id= $_POST['edit_id'];
+                $edit_id = $_POST['edit_id'];
 
                 if (chk_password($_POST['pass'])) {
 
@@ -177,15 +176,40 @@ SQL_QUERY;
                                                  $street2,
                                                  $edit_id));
             }
-            
 
-            $edit_username= $_POST['edit_username'];
 
-            $user_logged= $_SESSION['user_logged'];
+            $edit_username = clean_input($_POST['edit_username']);
+
+            $user_logged = $_SESSION['user_logged'];
 
 
             write_log("$user_logged: change data/password for $edit_username!");
 
+						if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
+
+							$query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";
+
+  						$res = exec_query($sql, $query, array());
+
+      				if($res->fields['admin_type'] == 'admin') {
+
+								$admin_type = 'Administrator';
+
+							} else {
+
+								$admin_type = 'Domain account';
+
+							}
+
+  	          send_add_user_auto_msg ($user_id,
+																			$edit_username,
+    	                                clean_input($_POST['pass']),
+      	                              clean_input($_POST['email']),
+        	                            clean_input($_POST['fname']),
+          	                          clean_input($_POST['lname']),
+            	                        tr($admin_type));
+						}
+						
             $_SESSION['user_updated'] = 1;
 
             header( "Location: manage_users.php" );
@@ -251,6 +275,16 @@ update_data($sql);
 
 $admin_name = decode_idna($rs -> fields['admin_name']);
 
+if (isset($_POST['genpass'])) {
+
+	$tpl -> assign('VAL_PASSWORD', passgen());
+
+} else {
+
+	$tpl -> assign('VAL_PASSWORD', '');
+
+}	
+
 $tpl -> assign(
                 array(
                         'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
@@ -274,6 +308,8 @@ $tpl -> assign(
                         'TR_FAX' => tr('Fax'),
                         'TR_PHONE' => tr('Phone'),
                         'TR_UPDATE' => tr('Update'),
+												'TR_SEND_DATA' => tr('Send new login data'),
+												'TR_PASSWORD_GENERATE' => tr('Password generate'),
 
                         'FIRST_NAME' =>$rs -> fields['fname'],
                         'LAST_NAME' =>$rs -> fields['lname'],

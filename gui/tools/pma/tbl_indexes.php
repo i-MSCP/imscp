@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_indexes.php,v 2.32 2006/01/17 17:02:29 cybot_tm Exp $ */
+/* $Id: tbl_indexes.php,v 2.33 2006/04/27 09:51:51 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -321,7 +321,7 @@ elseif (!defined('PMA_IDX_INCLUDED')
 <br class="clearfloat" />
 <div class="warning"><?php echo $strPrimaryKeyWarning; ?></div>
 
-<table border="<?php echo $cfg['Border']; ?>" cellpadding="2" cellspacing="1">
+<table>
 <thead>
 <tr><th><?php echo $strField; ?></th>
     <th><?php echo $strSize; ?></th>

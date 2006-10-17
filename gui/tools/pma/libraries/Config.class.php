@@ -1,7 +1,11 @@
 <?php
-/* $Id: Config.class.php,v 1.21.2.15.2.1 2006/05/20 17:15:21 lem9 Exp $ */
+/* $Id: Config.class.php,v 1.42.2.5.2.5 2006/10/07 14:49:29 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
+/**
+ * Configuration class
+ *
+ */
 class PMA_Config
 {
     /**
@@ -76,7 +80,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.8.1');
+        $this->set('PMA_VERSION', '2.9.0.2');
         /**
          * @deprecated
          */
@@ -103,15 +107,15 @@ class PMA_Config
     {
         // If zlib output compression is set in the php configuration file, no
         // output buffering should be run
-        if ( @ini_get('zlib.output_compression') ) {
+        if (@ini_get('zlib.output_compression')) {
             $this->set('OBGzip', false);
         }
 
         // disable output-buffering (if set to 'auto') for IE6, else enable it.
-        if ( strtolower($this->get('OBGzip')) == 'auto' ) {
-            if ( $this->get('PMA_USR_BROWSER_AGENT') == 'IE'
+        if (strtolower($this->get('OBGzip')) == 'auto') {
+            if ($this->get('PMA_USR_BROWSER_AGENT') == 'IE'
               && $this->get('PMA_USR_BROWSER_VER') >= 6
-              && $this->get('PMA_USR_BROWSER_VER') < 7 ) {
+              && $this->get('PMA_USR_BROWSER_VER') < 7) {
                 $this->set('OBGzip', false);
             } else {
                 $this->set('OBGzip', true);
@@ -183,9 +187,9 @@ class PMA_Config
      */
     function checkGd2()
     {
-        if ( $this->get('GD2Available') == 'yes' ) {
+        if ($this->get('GD2Available') == 'yes') {
             $this->set('PMA_IS_GD2', 1);
-        } elseif ( $this->get('GD2Available') == 'no' ) {
+        } elseif ($this->get('GD2Available') == 'no') {
             $this->set('PMA_IS_GD2', 0);
         } else {
             if (!@extension_loaded('gd')) {
@@ -229,7 +233,7 @@ class PMA_Config
     {
         if (PMA_getenv('SERVER_SOFTWARE')
           // some versions return Microsoft-IIS, some Microsoft/IIS
-        // we could use a preg_match() but it's slower
+          // we could use a preg_match() but it's slower
           && stristr(PMA_getenv('SERVER_SOFTWARE'), 'Microsoft')
           && stristr(PMA_getenv('SERVER_SOFTWARE'), 'IIS')) {
             $this->set('PMA_IS_IIS', 1);
@@ -246,7 +250,7 @@ class PMA_Config
         // Default to Unix or Equiv
         $this->set('PMA_IS_WINDOWS', 0);
         // If PHP_OS is defined then continue
-        if (defined('PHP_OS')) {          
+        if (defined('PHP_OS')) {
             if (stristr(PHP_OS, 'win') ) {
                 // Is it some version of Windows
                 $this->set('PMA_IS_WINDOWS', 1);
@@ -263,16 +267,16 @@ class PMA_Config
     function checkPhpVersion()
     {
         $match = array();
-        if ( ! preg_match('@([0-9]{1,2}).([0-9]{1,2}).([0-9]{1,2})@',
-                phpversion(), $match) ) {
+        if (! preg_match('@([0-9]{1,2}).([0-9]{1,2}).([0-9]{1,2})@',
+                phpversion(), $match)) {
             $result = preg_match('@([0-9]{1,2}).([0-9]{1,2})@',
                 phpversion(), $match);
         }
-        if ( isset( $match ) && ! empty( $match[1] ) ) {
-            if ( ! isset( $match[2] ) ) {
+        if (isset($match) && ! empty($match[1])) {
+            if (! isset($match[2])) {
                 $match[2] = 0;
             }
-            if ( ! isset( $match[3] ) ) {
+            if (! isset($match[3])) {
                 $match[3] = 0;
             }
             $this->set('PMA_PHP_INT_VERSION',
@@ -284,16 +288,18 @@ class PMA_Config
     }
 
     /**
-     * re-init object after loadiong from session file
+     * re-init object after loading from session file
      * checks config file for changes and relaods if neccessary
      */
     function __wakeup()
     {
-        if (file_exists($this->getSource()) && $this->source_mtime !== filemtime($this->getSource())
+        if (! $this->checkConfigSource()
+          || $this->source_mtime !== filemtime($this->getSource())
           || $this->default_source_mtime !== filemtime($this->default_source)
-          || $this->error_config_file || $this->error_config_default_file) {
+          || $this->error_config_file
+          || $this->error_config_default_file) {
             $this->settings = array();
-            $this->load($this->getSource());
+            $this->load();
             $this->checkSystem();
         }
 
@@ -303,6 +309,7 @@ class PMA_Config
         $this->checkIsHttps();
 
         $this->checkCollationConnection();
+        $this->checkFontsize();
     }
 
     /**
@@ -317,7 +324,7 @@ class PMA_Config
     function loadDefaults()
     {
         $cfg = array();
-        if ( ! file_exists($this->default_source) ) {
+        if (! file_exists($this->default_source)) {
             $this->error_config_default_file = true;
             return false;
         }
@@ -326,7 +333,7 @@ class PMA_Config
         $this->default_source_mtime = filemtime($this->default_source);
 
         $this->default_server = $cfg['Servers'][1];
-        unset( $cfg['Servers'] );
+        unset($cfg['Servers']);
 
         $this->settings = PMA_array_merge_recursive($this->settings, $cfg);
 
@@ -346,11 +353,11 @@ class PMA_Config
     {
         $this->loadDefaults();
 
-        if ( null !== $source ) {
+        if (null !== $source) {
             $this->setSource($source);
         }
 
-        if ( ! $this->checkConfigSource() ) {
+        if (! $this->checkConfigSource()) {
             return false;
         }
 
@@ -360,16 +367,16 @@ class PMA_Config
          * Parses the configuration file
          */
         $old_error_reporting = error_reporting(0);
-        if ( function_exists('file_get_contents') ) {
+        if (function_exists('file_get_contents')) {
             $eval_result =
-                eval( '?>' . file_get_contents($this->getSource()) );
+                eval('?>' . trim(file_get_contents($this->getSource())));
         } else {
             $eval_result =
-                eval( '?>' . implode("\n", file($this->getSource())) );
+                eval('?>' . trim(implode("\n", file($this->getSource()))));
         }
         error_reporting($old_error_reporting);
 
-        if ( $eval_result === false ) {
+        if ($eval_result === false) {
             $this->error_config_file = true;
         } else  {
             $this->error_config_file = false;
@@ -379,15 +386,16 @@ class PMA_Config
         /**
          * @TODO check validity of $_COOKIE['pma_collation_connection']
          */
-        if ( ! empty( $_COOKIE['pma_collation_connection'] ) ) {
+        if (! empty($_COOKIE['pma_collation_connection'])) {
             $this->set('collation_connection',
-                strip_tags($_COOKIE['pma_collation_connection']) );
+                strip_tags($_COOKIE['pma_collation_connection']));
         } else {
             $this->set('collation_connection',
-                $this->get('DefaultConnectionCollation') );
+                $this->get('DefaultConnectionCollation'));
         }
 
         $this->checkCollationConnection();
+        $this->checkFontsize();
         //$this->checkPmaAbsoluteUri();
         $this->settings = PMA_array_merge_recursive($this->settings, $cfg);
         return true;
@@ -420,7 +428,12 @@ class PMA_Config
      */
     function checkConfigSource()
     {
-        if ( ! file_exists($this->getSource()) ) {
+        if (! $this->getSource()) {
+            // no configuration file set at all
+            return false;
+        }
+
+        if (! file_exists($this->getSource())) {
             // do not trigger error here
             // https://sf.net/tracker/?func=detail&aid=1370269&group_id=23067&atid=377408
             /*
@@ -432,7 +445,7 @@ class PMA_Config
             return false;
         }
 
-        if ( ! is_readable($this->getSource()) ) {
+        if (! is_readable($this->getSource())) {
             $this->source_mtime = 0;
             die('Existing configuration file (' . $this->getSource() . ') is not readable.');
         }
@@ -458,7 +471,7 @@ class PMA_Config
      */
     function get($setting)
     {
-        if ( isset( $this->settings[$setting] ) ) {
+        if (isset($this->settings[$setting])) {
             return $this->settings[$setting];
         }
         return null;
@@ -505,17 +518,25 @@ class PMA_Config
         // Setup a default value to let the people and lazy syadmins work anyway,
         // they'll get an error if the autodetect code doesn't work
         $pma_absolute_uri = $this->get('PmaAbsoluteUri');
-        if ( strlen($pma_absolute_uri) < 1 ) {
+        $is_https = $this->get('is_https');
+        if (strlen($pma_absolute_uri) < 5
+            // needed to catch http/https switch
+            || ($is_https && substr($pma_absolute_uri, 0, 6) != 'https:')
+            || (!$is_https && substr($pma_absolute_uri, 0, 5) != 'http:')
+        ) {
             $url = array();
 
-            // At first we try to parse REQUEST_URI, it might contain full URI
+            // At first we try to parse REQUEST_URI, it might contain full URL
             if (PMA_getenv('REQUEST_URI')) {
-                $url = parse_url(PMA_getenv('REQUEST_URI'));
+                $url = @parse_url(PMA_getenv('REQUEST_URI')); // produces E_WARNING if it cannot get parsed, e.g. '/foobar:/'
+                if ($url === false) {
+                    $url = array( 'path' => $_SERVER['REQUEST_URI'] );
+                }
             }
 
             // If we don't have scheme, we didn't have full URL so we need to
             // dig deeper
-            if ( empty( $url['scheme'] ) ) {
+            if (empty($url['scheme'])) {
                 // Scheme
                 if (PMA_getenv('HTTP_SCHEME')) {
                     $url['scheme'] = PMA_getenv('HTTP_SCHEME');
@@ -529,7 +550,7 @@ class PMA_Config
                 // Host and port
                 if (PMA_getenv('HTTP_HOST')) {
                     if (strpos(PMA_getenv('HTTP_HOST'), ':') !== false) {
-                        list( $url['host'], $url['port'] ) =
+                        list($url['host'], $url['port']) =
                             explode(':', PMA_getenv('HTTP_HOST'));
                     } else {
                         $url['host'] = PMA_getenv('HTTP_HOST');
@@ -547,7 +568,7 @@ class PMA_Config
                 }
 
                 // And finally the path could be already set from REQUEST_URI
-                if ( empty( $url['path'] ) ) {
+                if (empty($url['path'])) {
                     if (PMA_getenv('PATH_INFO')) {
                         $path = parse_url(PMA_getenv('PATH_INFO'));
                     } else {
@@ -572,9 +593,9 @@ class PMA_Config
             // Add hostname
             $pma_absolute_uri .= $url['host'];
             // Add port, if it not the default one
-            if ( ! empty( $url['port'] )
-              && ( ( $url['scheme'] == 'http' && $url['port'] != 80 )
-                || ( $url['scheme'] == 'https' && $url['port'] != 443 ) ) ) {
+            if (! empty($url['port'])
+              && (($url['scheme'] == 'http' && $url['port'] != 80)
+                || ($url['scheme'] == 'https' && $url['port'] != 443))) {
                 $pma_absolute_uri .= ':' . $url['port'];
             }
             // And finally path, without script name, the 'a' is there not to
@@ -620,8 +641,8 @@ class PMA_Config
 
             // If URI doesn't start with http:// or https://, we will add
             // this.
-            if ( substr($pma_absolute_uri, 0, 7) != 'http://'
-              && substr($pma_absolute_uri, 0, 8) != 'https://' ) {
+            if (substr($pma_absolute_uri, 0, 7) != 'http://'
+              && substr($pma_absolute_uri, 0, 8) != 'https://') {
                 $pma_absolute_uri =
                     (PMA_getenv('HTTPS') && strtolower(PMA_getenv('HTTPS')) != 'off'
                         ? 'https'
@@ -641,10 +662,45 @@ class PMA_Config
     function checkCollationConnection()
     {
         // (could be improved by executing it after the MySQL connection only if
-        //  PMA_MYSQL_INT_VERSION >= 40100 )
-        if ( ! empty( $_REQUEST['collation_connection'] ) ) {
+        //  PMA_MYSQL_INT_VERSION >= 40100)
+        if (! empty($_REQUEST['collation_connection'])) {
             $this->set('collation_connection',
-                strip_tags($_REQUEST['collation_connection']) );
+                strip_tags($_REQUEST['collation_connection']));
+        }
+    }
+
+    /**
+     * checks for font size configuration, and sets font size as requested by user
+     *
+     * @uses    $_GET
+     * @uses    $_POST
+     * @uses    $_COOKIE
+     * @uses    preg_match()
+     * @uses    function_exists()
+     * @uses    PMA_Config::set()
+     * @uses    PMA_Config::get()
+     * @uses    PMA_setCookie()
+     */
+    function checkFontsize()
+    {
+        $new_fontsize = '';
+
+        if (isset($_GET['fontsize'])) {
+            $new_fontsize = $_GET['fontsize'];
+        } elseif (isset($_POST['fontsize'])) {
+            $new_fontsize = $_POST['fontsize'];
+        } elseif (isset($_COOKIE['pma_fontsize'])) {
+            $new_fontsize = $_COOKIE['pma_fontsize'];
+        }
+
+        if (preg_match('/^[0-9.]+(px|em|pt|\%)$/', $new_fontsize)) {
+            $this->set('fontsize', $new_fontsize);
+        } elseif (! $this->get('fontsize')) {
+            $this->set('fontsize', '100%');
+        }
+
+        if (function_exists('PMA_setCookie')) {
+            PMA_setCookie('pma_fontsize', $this->get('fontsize'), '100%');
         }
     }
 
@@ -655,8 +711,8 @@ class PMA_Config
     function checkUpload()
     {
         $this->set('enable_upload', true);
-        if ( strtolower(@ini_get('file_uploads')) == 'off'
-          || @ini_get('file_uploads') == 0 ) {
+        if (strtolower(@ini_get('file_uploads')) == 'off'
+          || @ini_get('file_uploads') == 0) {
             $this->set('enable_upload', false);
         }
     }
@@ -669,13 +725,13 @@ class PMA_Config
      */
     function checkUploadSize()
     {
-        if ( ! $filesize = ini_get('upload_max_filesize') ) {
+        if (! $filesize = ini_get('upload_max_filesize')) {
             $filesize = "5M";
         }
 
-        if ( $postsize = ini_get('post_max_size') ) {
+        if ($postsize = ini_get('post_max_size')) {
             $this->set('max_upload_size',
-                min(get_real_size($filesize), get_real_size($postsize)) );
+                min(get_real_size($filesize), get_real_size($postsize)));
         } else {
             $this->set('max_upload_size', get_real_size($filesize));
         }
@@ -698,14 +754,17 @@ class PMA_Config
 
         $url = array();
 
-        // At first we try to parse REQUEST_URI, it might contain full URI
+        // At first we try to parse REQUEST_URI, it might contain full URL,
         if (PMA_getenv('REQUEST_URI')) {
-            $url = parse_url(PMA_getenv('REQUEST_URI'));
+            $url = @parse_url(PMA_getenv('REQUEST_URI')); // produces E_WARNING if it cannot get parsed, e.g. '/foobar:/'
+            if($url === false) {
+                $url = array();
+            }
         }
 
         // If we don't have scheme, we didn't have full URL so we need to
         // dig deeper
-        if ( empty( $url['scheme'] ) ) {
+        if (empty($url['scheme'])) {
             // Scheme
             if (PMA_getenv('HTTP_SCHEME')) {
                 $url['scheme'] = PMA_getenv('HTTP_SCHEME');
@@ -717,8 +776,8 @@ class PMA_Config
             }
         }
 
-        if ( isset( $url['scheme'] )
-          && $url['scheme'] == 'https' ) {
+        if (isset($url['scheme'])
+          && $url['scheme'] == 'https') {
             $is_https = true;
         } else {
             $is_https = false;
@@ -742,7 +801,7 @@ class PMA_Config
     {
         static $cookie_path = null;
 
-        if ( null !== $cookie_path ) {
+        if (null !== $cookie_path) {
             return $cookie_path;
         }
 
@@ -765,9 +824,12 @@ class PMA_Config
             }
         }
 
-        $url = parse_url($url);
-        
-        $cookie_path   = substr($url['path'], 0, strrpos($url['path'], '/'))  . '/';
+        $parsed_url = @parse_url($_SERVER['REQUEST_URI']); // produces E_WARNING if it cannot get parsed, e.g. '/foobar:/'
+        if ($parsed_url === false) {
+            $parsed_url = array('path' => $url);
+        }
+
+        $cookie_path   = substr($parsed_url['path'], 0, strrpos($parsed_url['path'], '/'))  . '/';
 
         return $cookie_path;
     }
@@ -797,10 +859,10 @@ class PMA_Config
             'PMA_USR_OS',
             'PMA_USR_BROWSER_VER',
             'PMA_USR_BROWSER_AGENT',
-             );
+            );
 
-        foreach ( $defines as $define ) {
-            if ( ! defined($define) ) {
+        foreach ($defines as $define) {
+            if (! defined($define)) {
                 define($define, $this->get($define));
             }
         }
@@ -810,5 +872,119 @@ class PMA_Config
      * @todo finish
      */
     function save() {}
+
+    /**
+     * returns options for font size selection
+     *
+     * @uses    preg_replace()
+     * @uses    ksort()
+     * @static
+     * @param   string  $current_size   current selected font size with unit
+     * @return  array   selectable font sizes
+     */
+    function getFontsizeOptions($current_size = '100%')
+    {
+        $unit = preg_replace('/[0-9.]*/', '', $current_size);
+        $value = preg_replace('/[^0-9.]*/', '', $current_size);
+
+        $factors = array();
+        $options = array();
+        $options["$value"] = $value . $unit;
+
+        if ($unit === '%') {
+            $factors[] = 1;
+            $factors[] = 5;
+            $factors[] = 10;
+        } elseif ($unit === 'em') {
+            $factors[] = 0.05;
+            $factors[] = 0.2;
+            $factors[] = 1;
+        } elseif ($unit === 'pt') {
+            $factors[] = 0.5;
+            $factors[] = 2;
+        } elseif ($unit === 'px') {
+            $factors[] = 1;
+            $factors[] = 5;
+            $factors[] = 10;
+        } else {
+            //unknown font size unit
+            $factors[] = 0.05;
+            $factors[] = 0.2;
+            $factors[] = 1;
+            $factors[] = 5;
+            $factors[] = 10;
+        }
+
+        foreach ($factors as $key => $factor) {
+            $option_inc = $value + $factor;
+            $option_dec = $value - $factor;
+            while (count($options) < 21) {
+                $options["$option_inc"] = $option_inc . $unit;
+                if ($option_dec > $factors[0]) {
+                    $options["$option_dec"] = $option_dec . $unit;
+                }
+                $option_inc += $factor;
+                $option_dec -= $factor;
+                if (isset($factors[$key + 1])
+                 && $option_inc >= $value + $factors[$key + 1]) {
+                    break;
+                }
+            }
+        }
+        ksort($options);
+        return $options;
+    }
+
+    /**
+     * returns html selectbox for font sizes
+     *
+     * @uses    $_SESSION['PMA_Config']
+     * @uses    PMA_Config::get()
+     * @uses    PMA_Config::getFontsizeOptions()
+     * @uses    $GLOBALS['strFontSize']
+     * @static
+     * @param   string  $current_size   currently slected font size with unit
+     * @return  string  html selectbox
+     */
+    function getFontsizeSelection()
+    {
+        $current_size = $_SESSION['PMA_Config']->get('fontsize');
+        $options = PMA_Config::getFontsizeOptions($current_size);
+
+        $return = '<label for="select_fontsize">' . $GLOBALS['strFontSize'] . ':</label>' . "\n";
+        $return .= '<select name="fontsize" id="select_fontsize" onchange="this.form.submit();">' . "\n";
+        foreach ($options as $option) {
+            $return .= '<option value="' . $option . '"';
+            if ($option == $current_size) {
+                $return .= ' selected="selected"';
+            }
+            $return .= '>' . $option . '</option>' . "\n";
+        }
+        $return .= '</select>';
+
+        return $return;
+    }
+
+    /**
+     * return complete font size selection form
+     *
+     * @uses    PMA_generate_common_hidden_inputs()
+     * @uses    PMA_Config::getFontsizeSelection()
+     * @uses    $GLOBALS['strGo']
+     * @static
+     * @param   string  $current_size   currently slected font size with unit
+     * @return  string  html selectbox
+     */
+    function getFontsizeForm()
+    {
+        return '<form name="form_fontsize_selection" id="form_fontsize_selection"'
+            . ' method="post" action="index.php" target="_parent">' . "\n"
+            . PMA_generate_common_hidden_inputs() . "\n"
+            . PMA_Config::getFontsizeSelection() . "\n"
+            . '<noscript>' . "\n"
+            . '<input type="submit" value="' . $GLOBALS['strGo'] . '" />' . "\n"
+            . '</noscript>' . "\n"
+            . '</form>';
+    }
 }
 ?>

@@ -27,7 +27,6 @@ $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('normal_mail', 'page');
 $tpl -> define_dynamic('forward_mail', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -111,7 +110,7 @@ SQL_QUERY;
     $mail_forward = $rs -> fields['mail_forward'];
 
     if (isset($_POST['forward_list'])) {
-      $mail_forward = $_POST['forward_list'];
+      $mail_forward = clean_input($_POST['forward_list']);
     }
     $mail_acc = decode_idna($mail_acc);
     $maildomain = decode_idna($maildomain);
@@ -143,7 +142,7 @@ function update_email_pass($sql)
   $pass = escapeshellcmd($_POST['pass']);
   $pass_rep = escapeshellcmd($_POST['pass_rep']);
   $mail_id = $_GET['id'];
-  $mail_account = $_POST['mail_account'];
+  $mail_account = clean_input($_POST['mail_account']);
 
   if ($pass === '' || $pass_rep === '' || $mail_id === '' || !is_numeric($mail_id)) {
     set_page_message(tr('Missing or wrong data!'));
@@ -194,7 +193,7 @@ function update_email_forward(&$tpl, &$sql)
 
   $mail_account = $_POST['mail_account'];
   $mail_id = $_GET['id'];
-  $forward_list = $_POST['forward_list'];
+  $forward_list = clean_input($_POST['forward_list']);
 
   $faray = preg_split ("/[\n]+/",$forward_list);
 

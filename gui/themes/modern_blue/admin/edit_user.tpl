@@ -56,13 +56,13 @@
               <tr>
                 <td width="20">&nbsp;</td> <td width="200" class="content2">{TR_PASSWORD}</td>
                 <td class="content"> 
-                  <input type="password" name="pass" value="" style="width:210px" class="textinput">
+                  <input type="password" name="pass" value="{VAL_PASSWORD}" style="width:210px" class="textinput">&nbsp;&nbsp;&nbsp;<input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} ">
                 </td>
               </tr>
               <tr>
                 <td width="20">&nbsp;</td> <td width="200" class="content2">{TR_PASSWORD_REPEAT}</td>
                 <td class="content"> 
-                  <input type="password" name="pass_rep" value="" style="width:210px" class="textinput">
+                  <input type="password" name="pass_rep" value="{VAL_PASSWORD}" style="width:210px" class="textinput">
                 </td>
               </tr>
               <tr>
@@ -137,7 +137,7 @@
               </tr>
               <tr>
                 <td width="20">&nbsp;</td> 
-                <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  "></td>
+                <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  ">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="send_data" checked>{TR_SEND_DATA}</td>
                 </tr>
             </table>
             <input type="hidden" name="uaction" value="edit_user">

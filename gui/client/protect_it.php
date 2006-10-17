@@ -35,13 +35,6 @@ $tpl -> define_dynamic('user_item', 'page');
 
 $tpl -> define_dynamic('unprotect_it', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-
-
-
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -65,42 +58,42 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'protect_it')  {
 
 		if (!isset($_POST['users']) && !isset($_POST['groups'])){
-			
+
 			set_page_message(tr('Please choose user or group'));
 			return;
-		
-		} else if(!isset($_POST['paname']) || $_POST['paname'] == '') {
-		
+
+		} else if(!isset($_POST['paname']) || empty($_POST['paname'])) {
+
 			set_page_message(tr('Please enter area name'));
 			return;
-		} else if(!isset($_POST['other_dir']) || $_POST['other_dir'] == '') {
-		
+		} else if(!isset($_POST['other_dir']) || empty($_POST['other_dir'])) {
+
 			set_page_message(tr('Please enter area path'));
 			return;
-		} else if (!is_dir($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].$_POST['other_dir'])) {
-			  set_page_message($_POST['other_dir'].tr(' do not exist'));
+		} else if (!is_dir($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']))) {
+			  set_page_message(clean_input($_POST['other_dir']).tr(' do not exist'));
 			  return;
 		}
-	
+
 		$ptype = $_POST['ptype'];
-		
+
 		if(isset($_POST['users']))
 			$users = $_POST['users'];
-		
+
 		if(isset($_POST['groups']))
 			$groups = $_POST['groups'];
-		
-		$path = $_POST['other_dir'];
+
+		$path = clean_input($_POST['other_dir']);
 		$area_name = $_POST['paname'];
-		
-		
-		
-		
+
+
+
+
 		$user_id = '';
 		$group_id = '';
 		if ($ptype == 'user') {
-			
-			
+
+
 			for($i = 0;$i< count($users);$i++){
 				if (count($users) == 1 || count($users) == $i+1){
 					$user_id .= $users[$i];
@@ -113,11 +106,11 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 				}
 			}
 			$group_id = 0;
-			
+
 		} else {
-					
+
 			for($i = 0;$i< count($groups);$i++){
-				
+
 				if (count($groups) == 1 || count($groups) == $i+1){
 					$group_id .= $groups[$i];
 					if ($group_id == '-1' || $group_id == '')  {
@@ -150,7 +143,7 @@ SQL_QUERY;
 	$basic = 'Basic';
 	$toadd_status = $cfg['ITEM_ADD_STATUS'];
 	$tochange_statsu = $cfg['ITEM_CHANGE_STATUS'];
-	
+
 	if ($rs -> RecordCount() !== 0) {
 	$update_id = $rs -> fields['id'];
 	$query = <<<SQL_QUERY
@@ -161,15 +154,15 @@ SQL_QUERY;
 			auth_name = ?,
 			path = ?,
 			status = ?
-        where 
+        where
 			id = '$update_id'
 SQL_QUERY;
-	
+
 	check_for_lock_file();
 	send_request();
 	$rs = exec_query($sql, $query, array($user_id, $group_id, $area_name, $path, $tochange_statsu));
 	set_page_message( tr('Protected area updated successfully!'));
-	
+
 	}	else {
 
 	$query = <<<SQL_QUERY
@@ -184,11 +177,11 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, $basic ,$area_name, $path, $toadd_status));
 	set_page_message( tr('Protected area created successfully!'));
 	}
-	
+
 	header( "Location: protected_areas.php");
 	die();
 
-	} 
+	}
 	else {
 		return;
 	}
@@ -209,16 +202,16 @@ if (!isset($_GET['id'])){
 						'AREA_NAME' => '',
 						'UNPROTECT_IT' => '',
 					  )
-				);		
-	
+				);
+
 } else {
 
 	$edit = 'yes';
 	$ht_id  = $_GET['id'];
-	
+
 	$tpl -> assign('CDIR', $ht_id);
 	$tpl -> parse('UNPROTECT_IT', 'unprotect_it');
-	
+
 
 	 $query = <<<SQL_QUERY
         select
@@ -232,16 +225,16 @@ if (!isset($_GET['id'])){
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($dmn_id, $ht_id));
-	
+
 	if ($rs -> RecordCount() == 0) {
 		header( 'Location: protect_it.php' );
 		die();
-	}	
-	
+	}
+
 	$user_id = $rs -> fields['user_id'];
 	$group_id = $rs -> fields['group_id'];
 	$status = $rs -> fields['status'];
-	$path = $rs -> fields['path'];	
+	$path = $rs -> fields['path'];
 	$auth_name = $rs -> fields['auth_name'];
 	$ok_status = $cfg['ITEM_OK_STATUS'];
 	if ($status !== $ok_status) {
@@ -250,15 +243,15 @@ SQL_QUERY;
 		die();
 	}
 
-	
+
 	$tpl -> assign(
                 array(
 						'PATH' => $path,
 						'AREA_NAME' => $auth_name,
 					  )
-				);		
+				);
 
-	
+
 	 // lets get the htaccess management type
 		 if ($user_id !== 0 and $group_id == 0){
 		 	// we habe only user htaccess
@@ -270,10 +263,10 @@ SQL_QUERY;
 		 	// we habe unsr and groups htaccess
 		 	$type = 'both';
 		 }
-}	
+}
 	// this area is not secured by htaccess
 	if ($edit = 'no' || $rs -> RecordCount() == 0 || $type == 'user') {
-	
+
 		$tpl -> assign(
                 array(
 						'USER_CHECKED' => " checked ",
@@ -281,9 +274,9 @@ SQL_QUERY;
 						'USER_FORM_ELEMENS' => "false",
 						'GROUP_FORM_ELEMENS' => "true",
 					  )
-				);		
-	}	
-	
+				);
+	}
+
 	if ($type == 'group') {
 		$tpl -> assign(
                 array(
@@ -292,7 +285,7 @@ SQL_QUERY;
 						'USER_FORM_ELEMENS' => "true",
 						'GROUP_FORM_ELEMENS' => "false",
 					  )
-				);	
+				);
 	}
 
 	$query = <<<SQL_QUERY
@@ -306,26 +299,26 @@ SQL_QUERY;
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($dmn_id));
-	
+
 			if ($rs -> RecordCount() == 0) {
-				
-				
+
+
 				 $tpl -> assign(
 						array(
 								'USER_VALUE' => "-1",
 								'USER_LEBEL' => tr('You have no users !')
 							  )
-						);	
+						);
 					$tpl -> parse('USER_ITEM', 'user_item');
-					
+
 			} else {
-				
+
 					while (!$rs -> EOF) {
-					
+
 					$usr_id = split(',', $user_id);
 					for ($i = 0; $i < count($usr_id); $i++) {
-					
-									
+
+
 						if ($edit == 'yes' && $usr_id[$i] == $rs -> fields['id']) {
 							$i = count($usr_id)+1;
 							$usr_selected = " selected ";
@@ -333,7 +326,7 @@ SQL_QUERY;
 							$usr_selected = "";
 						}
 					}
-					
+
 
 								$tpl -> assign(
 								array(
@@ -341,14 +334,14 @@ SQL_QUERY;
 										'USER_LEBEL' => $rs -> fields['uname'],
 										'USER_SELECTED' => $usr_selected,
 									  )
-								);	
-						
-						
-						$tpl -> parse('USER_ITEM', '.user_item'); 
+								);
 
-						$rs -> MoveNext(); 
-					
-					
+
+						$tpl -> parse('USER_ITEM', '.user_item');
+
+						$rs -> MoveNext();
+
+
 					}
 			}
 
@@ -363,24 +356,24 @@ SQL_QUERY;
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($dmn_id));
-	
+
 			if ($rs -> RecordCount() == 0) {
 				$tpl -> assign(
 						array(
 								'GROUP_VALUE' => "-1",
 								'GROUP_LEBEL' => tr('You have no groups !')
 							  )
-						);	
+						);
 				$tpl -> parse('GROUP_ITEM', 'group_item');
-			
+
 			} else {
-				
+
 				while (!$rs -> EOF) {
-				
+
 				$grp_id = split(',', $group_id);
 				for ($i = 0; $i < count($grp_id); $i++) {
-				
-								
+
+
 					if ($edit == 'yes' && $grp_id[$i] == $rs -> fields['id']) {
 						$i = count($grp_id)+1;
 						$grp_selected = "selected";
@@ -388,21 +381,21 @@ SQL_QUERY;
 						$grp_selected = "";
 					}
 				}
-					
+
 					$tpl -> assign(
 						array(
 								'GROUP_VALUE' => $rs -> fields['id'],
 								'GROUP_LEBEL' => $rs -> fields['ugroup'],
 								'GROUP_SELECTED' => $grp_selected,
 							  )
-						);					
-				   $tpl -> parse('GROUP_ITEM', '.group_item'); 
-				   $rs -> MoveNext();   
+						);
+				   $tpl -> parse('GROUP_ITEM', '.group_item');
+				   $rs -> MoveNext();
 				 }
-			
+
 			}
 
-				
+
 }
 
 
@@ -430,7 +423,7 @@ $tpl -> assign(
 						'TR_PROTECT_DIR' => tr('Protect this area'),
 						'TR_PATH' => tr('Path'),
 						'TR_USER' => tr('Users'),
-						'TR_GROUPS' => tr('Groups'),						
+						'TR_GROUPS' => tr('Groups'),
 						'TR_PROTECT_IT' => tr('Protect it'),
 						'TR_USER_AUTH' => tr('User auth'),
 						'TR_GROUP_AUTH' => tr('Group auth'),

@@ -128,4 +128,63 @@ function check_user_pass($crdata, $data ) {
     }
 
 }
+
+function count_array($array) {
+
+	$count = 0;
+
+  reset($array);
+
+	while(list($key, $val) = each($array)) $count += count($val);
+
+  return $count - 1;
+
+}
+
+function _passgen() {
+
+	global $cfg;
+
+	$pw = '';
+
+  $chars = "2,3,4,7,8,9,A,B,C,D,E,F,G,H,K,M,N,P,R,T,W,U,Y,a,b,c,d,e,f,g,h,k,m,n,p,q,r,t,w,u,y";
+
+  $chars_array = explode(",", $chars);
+
+	$chars_count = count_array($chars_array);
+
+  for($i=0; $i < $cfg['PASSWD_CHARS']; $i++) {
+
+  	srand((double)microtime() * 1000000);
+
+    $z = rand(0, $chars_count);
+
+    $pw .= "" . $chars_array[$z] . "";
+
+  }
+
+	return $pw;
+
+}
+
+function passgen() {
+
+	global $cfg;
+
+	$pw = _passgen();
+
+	if ($cfg['PASSWD_STRONG'] == 1) {
+
+		while ( chk_password($pw) || (!$pw) ) {
+
+			$pw = _passgen();
+
+		}
+
+	}
+
+	return $pw;
+
+}
+
 ?>

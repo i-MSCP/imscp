@@ -61,7 +61,7 @@ function delete_account(url) {
           </tr>
           <tr>
             <td valign="top">
-			
+
 			<!-- BDP: add_user -->
 			<form name="reseller_add_users_first_frm" method="post" action="rau2.php">
 			  <input type="hidden" name="uaction" value="rau2_nxt">
@@ -82,53 +82,62 @@ function delete_account(url) {
                   <td class="content"><input type="text" name=nreseller_max_subdomain_cnt value="{MAX_SUBDMN_CNT}" style="width:140px" class="textinput">
                   </td>
                 </tr>
-				<tr> 
+				<tr>
 				<td width="20">&nbsp;</td>
                 <td class="content2" width="175">{TR_MAX_DOMAIN_ALIAS}<b><i></i></b></td>
-                <td width="254"> 
+                <td class="content">
                   <input type="text" name=nreseller_max_alias_cnt value="{MAX_DMN_ALIAS_CNT}" style="width:140px" class="textinput">
                 </td>
               </tr>
-				
+
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_MAX_MAIL_COUNT}<b><i></i></b></td>
-                  <td class="content">                        <input type="text" name=nreseller_max_mail_cnt value="{MAX_MAIL_CNT}" style="width:140px" class="textinput">
-                  </td></tr>
+                  <td class="content">
+				  	<input type="text" name=nreseller_max_mail_cnt value="{MAX_MAIL_CNT}" style="width:140px" class="textinput">
+                  </td>
+				</tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_MAX_FTP}<b><i></i></b></td>
-                  <td class="content"><input type="text" name=nreseller_max_ftp_cnt value="{MAX_FTP_CNT}" style="width:140px" class="textinput">
+                  <td class="content">
+				  	<input type="text" name=nreseller_max_ftp_cnt value="{MAX_FTP_CNT}" style="width:140px" class="textinput">
                   </td>
                 </tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_MAX_SQL_DB}<b><i></i></b></td>
-                  <td class="content"><input type="text" name=nreseller_max_sql_db_cnt value="{MAX_SQL_CNT}" style="width:140px" class="textinput">
+                  <td class="content">
+				  	<input type="text" name=nreseller_max_sql_db_cnt value="{MAX_SQL_CNT}" style="width:140px" class="textinput">
                   </td>
                 </tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_MAX_SQL_USERS}<b><i></i></b></td>
-                  <td class="content"><input type="text" name=nreseller_max_sql_user_cnt value="{VL_MAX_SQL_USERS}" style="width:140px" class="textinput">
+                  <td class="content">
+				  	<input type="text" name=nreseller_max_sql_user_cnt value="{VL_MAX_SQL_USERS}" style="width:140px" class="textinput">
                   </td>
                 </tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_MAX_TRAFFIC}<b><i></i></b></td>
-                  <td class="content"><input type="text" name=nreseller_max_traffic value="{VL_MAX_TRAFFIC}" style="width:140px" class="textinput">
+                  <td class="content">
+				  	<input type="text" name=nreseller_max_traffic value="{VL_MAX_TRAFFIC}" style="width:140px" class="textinput">
                   </td>
                 </tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_MAX_DISK_USAGE}<b><i></i></b></td>
-                  <td class="content"><input type="text" name=nreseller_max_disk value="{VL_MAX_DISK_USAGE}" style="width:140px" class="textinput">
+                  <td class="content">
+				  	<input type="text" name=nreseller_max_disk value="{VL_MAX_DISK_USAGE}" style="width:140px" class="textinput">
                   </td>
                 </tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_PHP}</td>
-                  <td class="content"><input name="php" type="radio" value="yes" {VL_PHPY}>
+                  <td class="content">
+				  	<input name="php" type="radio" value="yes" {VL_PHPY}>
       {TR_YES}
         <input type="radio" name="php" value="no" {VL_PHPN}>
       {TR_NO}</td>
                 </tr>
                 <tr> <td width="20">&nbsp;</td>
                   <td class="content2" width="200">{TR_CGI}</td>
-                  <td class="content"><input name="cgi" type="radio" value="yes" {VL_CGIY}>
+                  <td class="content">
+				  	<input name="cgi" type="radio" value="yes" {VL_CGIY}>
       {TR_YES}
         <input type="radio" name="cgi" value="no" {VL_CGIN}>
       {TR_NO}</td>
@@ -141,8 +150,8 @@ function delete_account(url) {
               </table>
           			</form>
 			<!-- EDP: add_user -->
-			
-			
+
+
 			</td>
             <td>&nbsp;</td>
           </tr>

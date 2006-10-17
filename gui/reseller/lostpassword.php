@@ -21,10 +21,12 @@ include '../include/vhcs-lib.php';
 check_login();
 
 $tpl = new pTemplate();
+
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/lostpassword.tpl');
+
 $tpl -> define_dynamic('page_message', 'page');
+
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
@@ -34,35 +36,38 @@ $selected_on = '';
 
 $selected_off = '';
 
-$data = get_email_data($user_id);
+$data_1 = get_lostpassword_activation_email($user_id);
 
+$data_2 = get_lostpassword_password_email($user_id);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
-  $data['subject_1'] = $_POST['subject1'];
+  $data_1['subject'] = clean_input($_POST['subject1']);
 
-  $data['message_1'] = $_POST['message1'];
+  $data_1['message'] = clean_input($_POST['message1']);
 
-  $data['subject_2'] = $_POST['subject2'];
+  $data_2['subject'] = clean_input($_POST['subject2']);
 
-  $data['message_2'] = $_POST['message2'];
+  $data_2['message'] = clean_input($_POST['message2']);
 
-  if ( ($data['subject_1'] == '') OR ($data['subject_2'] == '') ) {
+  if ( ($data_1['subject'] == '') OR ($data_2['subject'] == '') ) {
 
 		set_page_message(tr('Please specify a subject!'));
-      
-  } else if ( ($data['message_1'] == '') OR ($data['message_2'] == '') ) {
+
+  } else if ( ($data_1['message'] == '') OR ($data_2['message'] == '') ) {
 
   	set_page_message(tr('Please specify message!'));
-     
+
   } else {
 
-		set_email_data($user_id, $data);
+		set_lostpassword_activation_email($user_id, $data_1);
+		
+		set_lostpassword_password_email($user_id, $data_2);
 
   	set_page_message (tr('Auto email template data updated!'));
-  
+
 	}
-	
+
 }
 
 /*
@@ -71,38 +76,25 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
  *
  */
 
-$sender_name = $data['sender_name'];
-
-$sender_email = $data['sender_email'];
-
-$subject_1 = $data['subject_1'];
-
-$message_1 = $data['message_1'];
-
-$subject_2 = $data['subject_2'];
-
-$message_2 = $data['message_2'];
-
 $tpl -> assign(array('TR_LOSTPW_EMAL_SETUP' => tr('VHCS - Reseller/Lostpw email setup'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
-gen_admin_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl');
+gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
 gen_logged_from($tpl);
 
-$tpl -> assign(array(
-										 'TR_LOSTPW_EMAIL' => tr('Lostpw email'),
+$tpl -> assign(array('TR_LOSTPW_EMAIL' => tr('Lostpw email'),
                      'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
                      'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-										 'SUBJECT_VALUE1' => $subject_1,
-                     'MESSAGE_VALUE1' => $message_1,
-										 'SUBJECT_VALUE2' => $subject_2,
-                     'MESSAGE_VALUE2' => $message_2,
-                     'SENDER_EMAIL_VALUE' => $sender_email,
-                     'SENDER_NAME_VALUE' => $sender_name,
+										 'SUBJECT_VALUE1' => $data_1['subject'],
+                     'MESSAGE_VALUE1' => $data_1['message'],
+										 'SUBJECT_VALUE2' => $data_2['subject'],
+                     'MESSAGE_VALUE2' => $data_2['message'],
+                     'SENDER_EMAIL_VALUE' => $data_1['sender_email'],
+                     'SENDER_NAME_VALUE' => $data_1['sender_name'],
                      'TR_LOSTPW_MESSAGE_1' => tr('Lostpw message 1'),
                      'TR_LOSTPW_MESSAGE_2' => tr('Lostpw message 2'),
                      'TR_USER_LOGIN_NAME' => tr('User login (system) name'),

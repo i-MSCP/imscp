@@ -35,8 +35,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('scroll_prev_gray', 'page');
 
 $tpl -> define_dynamic('scroll_prev', 'page');
@@ -184,7 +182,7 @@ function generate_users_list ( &$tpl, $admin_id ) {
 	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
 
 
-		if (isset($_POST['details']) && $_POST['details'] !== ''){
+		if (isset($_POST['details']) AND !empty($_POST['details'])){
 
 			$_SESSION['details'] = $_POST['details'];
 
@@ -203,16 +201,15 @@ function generate_users_list ( &$tpl, $admin_id ) {
 	//  Search requet generated ?!
 	//
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] !== '') {
+	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 
-			$_SESSION['search_for'] = trim($_POST['search_for']);
+			$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 
 			$_SESSION['search_common'] = $_POST['search_common'];
 
 			$_SESSION['search_status'] = $_POST['search_status'];
 
 			$start_index = 0;
-
 
 	} else {
 
@@ -286,8 +283,7 @@ function generate_users_list ( &$tpl, $admin_id ) {
 									'SCROLL_PREV' => '',
 									'SCROLL_NEXT' => '',
 									'TR_VIEW_DETAILS' => tr('view aliases'),
-									'SHOW_DETAILS' => "show",
-
+									'SHOW_DETAILS' => "show"
 								 )
 						  );
 

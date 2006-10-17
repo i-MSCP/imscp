@@ -17,7 +17,7 @@ function change_status(dom_id) {
 }
 
 function delete_account(url) {
-	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
+	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
 
 	location = url;

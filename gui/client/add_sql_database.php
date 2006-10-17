@@ -25,7 +25,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/add_sql_database.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('mysql_prefix_no', 'page');
 $tpl -> define_dynamic('mysql_prefix_yes', 'page');
 $tpl -> define_dynamic('mysql_prefix_infront', 'page');
@@ -59,7 +58,7 @@ function gen_page_post_data(&$tpl)
     }
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_db') {
-      $tpl -> assign(array('DB_NAME' => $_POST['db_name'],
+      $tpl -> assign(array('DB_NAME' => clean_input($_POST['db_name']),
                            'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked' : '',
                            'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked' : '',
                            'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked' : ''));
@@ -96,7 +95,7 @@ function add_sql_database(&$sql, $user_id)
   //
   // let's generate database name.
   //
-  if ($_POST['db_name'] === '') {
+  if (empty($_POST['db_name'])) {
     set_page_message(tr('Please type database name!'));
     return;
   }
@@ -108,13 +107,13 @@ function add_sql_database(&$sql, $user_id)
     // we'll use domain_id in the name of the database;
     //
     if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
-      $db_name = $dmn_id."_".$_POST['db_name'];
+      $db_name = $dmn_id."_".clean_input($_POST['db_name']);
     } else if (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
-      $db_name = $_POST['db_name']."_".$dmn_id;
+      $db_name = clean_input($_POST['db_name'])."_".$dmn_id;
     }
 
   } else {
-    $db_name = $_POST['db_name'];
+    $db_name = clean_input($_POST['db_name']);
   }
 
   if (strlen($db_name) > $cfg['MAX_SQL_DATABASE_LENGTH']) {

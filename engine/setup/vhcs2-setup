@@ -1075,12 +1075,12 @@ sub setup_sql {
 	my $vftp_sql_user = $main::ua{'db_ftp_user'};
 	my $vftp_sql_password = $main::ua{'db_ftp_password'};
 
-	$sql = "delete from tables_priv where Host = '$main::db_host' and Db = '$main::db_name' and User = '$vftp_sql_user'";
+	$sql = "delete from tables_priv where Host = '$main::cfg{'SERVER_HOSTNAME'}' and Db = '$main::db_name' and User = '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = " delete from user where Host = '$main::db_host' and User = '$vftp_sql_user'";
+	$sql = " delete from user where Host = '$main::cfg{'SERVER_HOSTNAME'}' and User = '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -1090,22 +1090,22 @@ sub setup_sql {
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.ftp_group to '$vftp_sql_user'\@'$main::db_host' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.ftp_group to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.ftp_users to '$vftp_sql_user'\@'$main::db_host' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.ftp_users to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.quotalimits to '$vftp_sql_user'\@'$main::db_host' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.quotalimits to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.quotatallies to '$vftp_sql_user'\@'$main::db_host' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.quotatallies to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);

@@ -27,7 +27,7 @@ $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('db_list', 'page');
 $tpl -> define_dynamic('db_message', 'db_list');
 $tpl -> define_dynamic('user_list', 'db_list');
-$tpl -> define_dynamic('custom_buttons', 'page');
+
 //
 // page functions.
 //

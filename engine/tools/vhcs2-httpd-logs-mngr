@@ -82,7 +82,7 @@ sub copy_subdomain_logs {
 
     push_el(\@main::el, 'copy_subdomain_logs()', 'Starting...');
 
-    my $sql = "select t1.subdomain_name, t2.domain_name from subdomain as t1, domain as t2 where t1.domain_id = t2.domain_id and t1.subdomain_status = 'ok' order by t1.subdomain_id;";
+    my $sql = "select t1.subdomain_name, t2.domain_name, t2.domain_uid from subdomain as t1, domain as t2 where t1.domain_id = t2.domain_id and t1.subdomain_status = 'ok' order by t1.subdomain_id;";
 
     ($rs, $rows) = doSQL($sql);
 
@@ -92,7 +92,7 @@ sub copy_subdomain_logs {
 
         foreach (@$rows) {
 
-            my ($sub_pref, $domain_name) = (@$_[0], @$_[1]);
+            my ($sub_pref, $domain_name, $domain_uid) = (@$_[0], @$_[1], @$_[2]);
 
             my $subdomain_name = "$sub_pref.$domain_name";
 
@@ -103,6 +103,16 @@ sub copy_subdomain_logs {
             my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-error.log";
 
             my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$subdomain_name-error.log";
+
+	    my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs";
+
+            if (! -d $dest_dir)
+            {
+               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
+
+               return $rs if ($rs != 0);
+
+            }
 
             my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
 
@@ -140,7 +150,7 @@ sub copy_domain_logs {
 
     push_el(\@main::el, 'copy_domain_logs()', 'Starting...');
 
-    my $sql = "select domain_name from domain where domain_status = 'ok' order by domain_id";
+    my $sql = "select domain_name, domain_uid from domain where domain_status = 'ok' order by domain_id";
 
     ($rs, $rows) = doSQL($sql);
 
@@ -150,7 +160,7 @@ sub copy_domain_logs {
 
         foreach (@$rows) {
 
-            my $domain_name = @$_[0];
+            my ($domain_name, $domain_uid ) = (@$_[0], @$_[1]);
 
             my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$domain_name-access.log";
 
@@ -159,6 +169,16 @@ sub copy_domain_logs {
             my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$domain_name-error.log";
 
             my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$domain_name-error.log";
+
+            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs";
+
+            if (! -d $dest_dir)
+            {
+               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
+
+               return $rs if ($rs != 0);
+
+            }
 
             my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
 
@@ -208,6 +228,8 @@ sub copy_alias_logs {
 
             my $als_name = @$_[2];
 
+            my $domain_uid = @$_[10];
+
             my $als_mount = @$_[4];
 
             my $dmn_name = @$_[8];
@@ -219,6 +241,16 @@ sub copy_alias_logs {
             my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log";
 
             my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs/$als_name-error.log";
+
+            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs";
+
+            if (! -d $dest_dir)
+            {
+               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
+
+               return $rs if ($rs != 0);
+
+            }
 
             my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
 

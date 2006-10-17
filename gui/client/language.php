@@ -30,9 +30,6 @@ $tpl -> define_dynamic('def_language', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-
 /*
  *
  * page actions.

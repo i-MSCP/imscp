@@ -29,10 +29,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -48,28 +44,24 @@ $tpl -> assign(
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
-    if ($_POST['pass'] === '' || $_POST['pass_rep'] === '' || $_POST['curr_pass'] === ''){
-
-        set_page_message(tr('Please fill up all data fields!'));
-
-    } else if ($_POST['pass'] !== $_POST['pass_rep']) {
-
+    if (empty($_POST['pass']) OR empty($_POST['pass_rep']) OR empty($_POST['curr_pass'])) {
+		set_page_message(tr('Please fill up all data fields!'));
+    }
+	else if ($_POST['pass'] !== $_POST['pass_rep']) {
         set_page_message(tr('Passwords does not match!'));
-
-    } else if (chk_password($_POST['pass']) > 0) {
-			set_page_message(tr('Incorrect password range or syntax!'));
-
-		} else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
-
+    }
+	else if (chk_password($_POST['pass']) != 0) {
+		set_page_message(tr('Incorrect password range or syntax!'));
+	}
+	else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
         set_page_message(tr('The current password is wrong!'));
+	}
+	else {
+		// Correct input password
 
+        $upass = crypt_user_pass(htmlentities($_POST['pass']));
 
-	} else
-	{// Correct input password
-
-        $upass = crypt_user_pass($_POST['pass']);
-
-				$_SESSION['user_pass'] = $upass;
+		$_SESSION['user_pass'] = $upass;
 
         $user_id = $_SESSION['user_id'];
 

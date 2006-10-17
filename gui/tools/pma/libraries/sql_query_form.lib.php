@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql_query_form.lib.php,v 1.29.2.1 2006/02/18 13:54:37 cybot_tm Exp $ */
+/* $Id: sql_query_form.lib.php,v 1.34 2006/07/03 15:01:45 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * functions for displaying the sql query form
@@ -104,9 +104,9 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
         ?>
         <form method="post" id="sqlqueryform" target="frame_content"
               action="import.php"<?php echo $enctype; ?> name="sqlform"
-              onsubmit="var save_name = window.opener.parent.frames[1].name;
-                        window.opener.parent.frames[1].name = save_name + '<?php echo time(); ?>';
-                        this.target = window.opener.parent.frames[1].name;
+              onsubmit="var save_name = window.opener.parent.frame_content.name;
+                        window.opener.parent.frame_content.name = save_name + '<?php echo time(); ?>';
+                        this.target = window.opener.parent.frame_content.name;
                         return checkSqlQuery( this );" >
         <?php
     } else {
@@ -157,6 +157,17 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
     }
 
     echo '</form>' . "\n";
+    if ($is_querywindow) {
+        ?>
+        <script type="text/javascript" language="javascript">
+        //<![CDATA[
+            if (window.opener) {
+                window.opener.parent.insertQuery();
+            }
+        //]]>
+        </script>
+        <?php
+    }
 }
 
 /**
@@ -212,7 +223,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
             . '?' . PMA_generate_common_url($db) . '"';
         if ($is_querywindow) {
             $strDBLink .= ' target="_self"'
-                . ' onclick="this.target=window.opener.frames[1].name"';
+                . ' onclick="this.target=window.opener.frame_content.name"';
         }
         $strDBLink .= '>'
             . htmlspecialchars($db) . '</a>';
@@ -237,7 +248,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
             . '?' . PMA_generate_common_url($db) . '"';
         if ($is_querywindow) {
             $strDBLink .= ' target="_self"'
-                . ' onclick="this.target=window.opener.frames[1].name"';
+                . ' onclick="this.target=window.opener.frame_content.name"';
         }
         $strDBLink .= '>'
             . htmlspecialchars($db) . '</a>';
@@ -354,10 +365,18 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
     }
     echo '</div>' . "\n";
     echo '<div class="formelement">' . "\n";
+    if (PMA_MYSQL_INT_VERSION >= 50000) {
+        echo '<label for="id_sql_delimiter">[ ' . $GLOBALS['strDelimiter']
+            .'</label>' . "\n";
+        echo '<input type="text" name="sql_delimiter" size="3" value=";" '
+            .'id="id_sql_delimiter" /> ]' . "\n";
+    }
+
     echo '<input type="checkbox" name="show_query" value="1" '
         .'id="checkbox_show_query" checked="checked" />' . "\n"
         .'<label for="checkbox_show_query">' . $GLOBALS['strShowThisQuery']
         .'</label>' . "\n";
+
     echo '</div>' . "\n";
     echo '<input type="submit" name="SQL" value="' . $GLOBALS['strGo'] . '" />'
         ."\n";

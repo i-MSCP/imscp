@@ -1,6 +1,6 @@
 <?
 /************************************************************************
-UebiMiau is a GPL'ed software developed by 
+UebiMiau is a GPL'ed software developed by
 
  - Aldoir Ventura - aldoir@users.sourceforge.net
  - http://uebimiau.sourceforge.net
@@ -66,7 +66,7 @@ if(isset($f_pass) && strlen($f_pass) > 0) {
 
 		break;
 
-	case "ONE-FOR-EACH": 
+	case "ONE-FOR-EACH":
 		$domainname 		= str_replace("webmail.","",strtolower($_SERVER['HTTP_HOST']));
 //		$domain 		= $mail_servers[$six]["domain"];
 		$domain			= $domainname;
@@ -82,11 +82,11 @@ if(isset($f_pass) && strlen($f_pass) > 0) {
 		if($login_type != "") $f_user = eregi_replace("%user%",$f_user,eregi_replace("%domain%",$domain,$login_type));
 		break;
 
-	case "ONE-FOR-ALL": 
+	case "ONE-FOR-ALL":
 		if(ereg("(.*)@(.*)",$f_email,$regs)) {
 			$f_user = $regs[1];
 			$domain = $regs[2];
-//			$domain = str_replace("webmail.","",strtolower($_SERVER['HTTP_HOST']));			
+//			$domain = str_replace("webmail.","",strtolower($_SERVER['HTTP_HOST']));
 			if($one_for_all_login_type != "") $f_user = eregi_replace("%user%",$f_user,eregi_replace("%domain%",$domain,$one_for_all_login_type));
 		}
 		$f_server = $default_mail_server;
@@ -102,15 +102,15 @@ if(isset($f_pass) && strlen($f_pass) > 0) {
 
 	$UM->mail_email 	= $sess["email"]  			= stripslashes($f_email);
 	$UM->mail_user 		= $sess["user"]   			= stripslashes($f_user);
-	$UM->mail_pass 		= $sess["pass"]   			= stripslashes($f_pass); 
-	$UM->mail_server 	= $sess["server"] 			= stripslashes($f_server); 
+	$UM->mail_pass 		= $sess["pass"]   			= stripslashes($f_pass);
+	$UM->mail_server 	= $sess["server"] 			= stripslashes($f_server);
 
-	$UM->mail_port 		= $sess["port"] 			= intval($f_port); 
-	$UM->mail_protocol	= $sess["protocol"] 		= strtolower($f_protocol); 
-	$UM->mail_prefix	= $sess["folder_prefix"] 	= $f_prefix; 
-	
+	$UM->mail_port 		= $sess["port"] 			= intval($f_port);
+	$UM->mail_protocol	= $sess["protocol"] 		= strtolower($f_protocol);
+	$UM->mail_prefix	= $sess["folder_prefix"] 	= $f_prefix;
+
 	$sess['remote_ip'] = $_SERVER['REMOTE_ADDR'];
-	
+
 
 } elseif (
 	($sess["auth"] && intval((time()-$start)/60) < $idle_timeout)
@@ -122,13 +122,13 @@ if(isset($f_pass) && strlen($f_pass) > 0) {
 	$UM->mail_server 	= $f_server  	= $sess["server"];
 	$UM->mail_email  	= $f_email   	= $sess["email"];
 
-	$UM->mail_port 		= $f_port 		= $sess["port"]; 
-	$UM->mail_protocol	= $f_protocol	= $sess["protocol"]; 
-	$UM->mail_prefix	= $f_prefix 	= $sess["folder_prefix"]; 
+	$UM->mail_port 		= $f_port 		= $sess["port"];
+	$UM->mail_protocol	= $f_protocol	= $sess["protocol"];
+	$UM->mail_prefix	= $f_prefix 	= $sess["folder_prefix"];
 
 } else {
-	redirect("./index.php?tid=$tid&lid=$lid"); 
-	exit; 
+	redirect("./index.php?tid=$tid&lid=$lid");
+	exit;
 }
 $sess["start"] = time();
 
@@ -151,15 +151,15 @@ $UM->charset			= $default_char_set;
 
 
 /*
-Don't remove the fallowing lines, or you will be problems with browser's cache 
+Don't remove the fallowing lines, or you will be problems with browser's cache
 */
 
-Header("Expires: Wed, 11 Nov 1998 11:11:11 GMT\r\n".
-"Cache-Control: no-cache\r\n".
-"Cache-Control: must-revalidate");
+header("Expires: Wed, 11 Nov 1998 11:11:11 GMT");
+header("Cache-Control: no-cache");
+header("Cache-Control: must-revalidate");
 
 $nocache = "
-<META HTTP-EQUIV=\"Cache-Control\" CONTENT=\"no-cache\">
+<META HTTP-EQUIV=\"Cache-Control\" CONTENT=\"no-cache\">\n
 <META HTTP-EQUIV=\"Expires\" CONTENT=\"-1\">";
 
 // Sort rules
@@ -186,7 +186,7 @@ if(!isset($sortorder) || !ereg("ASC|DESC",$sortorder)) {
 
 if(isset($need_save)) save_prefs($prefs);
 
-if(is_array($sess["sysmap"])) 
+if(is_array($sess["sysmap"]))
 	while(list($key, $value) = each($sess["sysmap"]))
 		if(strtolower($folder) == $key)
 			$folder = $value;
@@ -194,9 +194,9 @@ if(is_array($sess["sysmap"]))
 if(!isset($folder) || $folder == "" || strpos($folder,"..") !== false ) {
 	$folder = $sess["sysmap"]["inbox"];
 
-} elseif (!file_exists($userfolder.$folder)) { 
-	redirect("./logout.php?tid=$tid&lid=$lid"); 
-	exit; 
+} elseif (!file_exists($userfolder.$folder)) {
+	redirect("./logout.php?tid=$tid&lid=$lid");
+	exit;
 }
 
 ?>

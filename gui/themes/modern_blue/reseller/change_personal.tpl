@@ -42,7 +42,7 @@
             <td width="27" align="right" background="{THEME_COLOR_PATH}/images/content/table_background.jpg"><img src="{THEME_COLOR_PATH}/images/content/table_icon_close.jpg" width="27" height="62"></td>
           </tr>
           <tr>
-            <td height="420"><form name="client_change_personal_frm" method="post" action="chpdata.php">
+            <td height="420"><form name="client_change_personal_frm" method="post" action="change_personal.php">
               <table width="100%" cellpadding="5" cellspacing="5">
                <!-- BDP: page_message -->
                 <tr>

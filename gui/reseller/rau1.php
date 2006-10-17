@@ -32,11 +32,8 @@ $tpl -> define_dynamic('add_user', 'page');
 
 $tpl -> define_dynamic('hp_entry', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('personalize', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -97,7 +94,7 @@ unset_messages();
 //
 
 // Check correction of entered user's data
-function check_user_data ( &$tpl )
+function check_user_data(&$tpl)
 {
     global $dmn_name;			// Domain name
     global $dmn_chp;			// choosed hosting plan;
@@ -110,14 +107,14 @@ function check_user_data ( &$tpl )
 
 	if(isset($_POST['dmn_name']))
 
-		$dmn_name = strtolower($_POST['dmn_name']);
+		$dmn_name = strtolower(clean_input($_POST['dmn_name']));
 		$dmn_name = get_punny($dmn_name);
 
 	if(isset($_POST['dmn_tpl']))
-		$dmn_chp	 = $_POST['dmn_tpl'];
+		$dmn_chp  = $_POST['dmn_tpl'];
 
 	if(isset($_POST['chtpl']))
-		$dmn_pt	 = $_POST['chtpl'];
+		$dmn_pt	  = $_POST['chtpl'];
 
     if (!vhcs_domain_check($dmn_name)) {
 

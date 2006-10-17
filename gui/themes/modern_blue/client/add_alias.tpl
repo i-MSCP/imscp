@@ -48,7 +48,7 @@ var mpointError = 'Please write mount point !';
 	dname = dname.replace(/ü/gi, "ue");
 	dname = dname.replace(/ö/gi, "oe");
 	dname = dname.replace(/ß/gi, "ss");
-	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_') + "_" + document.forms[0].elements['sub_suf'].value.replace('.','_');
+	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_');
 }
 
 function MM_preloadImages() { //v3.0

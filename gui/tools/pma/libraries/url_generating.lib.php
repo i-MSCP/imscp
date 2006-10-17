@@ -1,5 +1,5 @@
 <?php
-/* $Id: url_generating.lib.php,v 2.10.2.1 2006/05/12 15:26:16 nijel Exp $ */
+/* $Id: url_generating.lib.php,v 2.12.2.1 2006/09/26 19:23:24 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -64,7 +64,7 @@ function PMA_generate_common_hidden_inputs($db = '', $table = '', $indent = 0, $
         $params['collation_connection'] = $GLOBALS['collation_connection'];
     }
 
-    $params['token'] = $_SESSION['PMA_token'];
+    $params['token'] = $_SESSION[' PMA_token '];
 
     if (! is_array($skip)) {
         if (isset($params[$skip])) {
@@ -155,14 +155,7 @@ function PMA_generate_common_url ($db = '', $table = '', $delim = '&amp;')
 
     // use seperators defined by php, but prefer ';'
     // as recommended by W3C
-    $php_arg_separator_input = ini_get('arg_separator.input');
-    if (strpos($php_arg_separator_input, ';') !== false) {
-        $separator = ';';
-    } elseif (strlen($php_arg_separator_input) > 0) {
-        $separator = $php_arg_separator_input{0};
-    } else {
-        $separator = '&';
-    }
+    $separator = PMA_get_arg_separator();
 
     // check wether to htmlentity the separator or not
     if ($delim === '&amp;') {
@@ -189,7 +182,7 @@ function PMA_generate_common_url ($db = '', $table = '', $delim = '&amp;')
         $params['collation_connection'] = $GLOBALS['collation_connection'];
     }
 
-    $params['token'] = $_SESSION['PMA_token'];
+    $params['token'] = $_SESSION[' PMA_token '];
 
     $param_strings = array();
     foreach ($params as $key => $val) {
@@ -201,6 +194,28 @@ function PMA_generate_common_url ($db = '', $table = '', $delim = '&amp;')
     }
 
     return $questionmark . implode($delim, $param_strings);
+}
+
+/**
+ * Returns url separator
+ *
+ * @return  string   character used for separating url parts
+ *
+ * @access  public
+ *
+ * @author  nijel
+ */
+function PMA_get_arg_separator() {
+    // use seperators defined by php, but prefer ';'
+    // as recommended by W3C
+    $php_arg_separator_input = ini_get('arg_separator.input');
+    if (strpos($php_arg_separator_input, ';') !== false) {
+        return ';';
+    } elseif (strlen($php_arg_separator_input) > 0) {
+        return $php_arg_separator_input{0};
+    } else {
+        return '&';
+    }
 }
 
 ?>

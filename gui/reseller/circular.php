@@ -17,17 +17,17 @@
 
 
 
-function gen_page_data ( &$tpl, &$sql)
+function gen_page_data(&$tpl, &$sql)
 {
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 
         $tpl -> assign(
             array(
-                'MESSAGE_SUBJECT' => $_POST['msg_subject'],
-                'MESSAGE_TEXT' => $_POST['msg_text'],
-                'SENDER_EMAIL' => $_POST['sender_email'],
-                'SENDER_NAME' => $_POST['sender_name'],
+                'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject']),
+                'MESSAGE_TEXT' => clean_input($_POST['msg_text']),
+                'SENDER_EMAIL' => clean_input($_POST['sender_email']),
+                'SENDER_NAME' => clean_input($_POST['sender_name'])
                 )
             );
     }
@@ -72,13 +72,13 @@ function check_user_data ( &$tpl ) {
 
     $err_message = '_off_';
 
-    $msg_subject = $_POST['msg_subject'];
+    $msg_subject = clean_input($_POST['msg_subject']);
 
-    $msg_text = $_POST['msg_text'];
+    $msg_text = clean_input($_POST['msg_text']);
 
-    $sender_email = $_POST['sender_email'];
+    $sender_email = clean_input($_POST['sender_email']);
 
-    $sender_name = $_POST['sender_name'];
+    $sender_name = clean_input($_POST['sender_name']);
 
     if ($msg_subject == '') {
 
@@ -124,7 +124,7 @@ function send_circular(&$tpl, &$sql)
 
         if (check_user_data($tpl)) {
 
-            send_reseller_users_message ( &$sql, $_SESSION['user_id']);
+            send_reseller_users_message (&$sql, $_SESSION['user_id']);
 			unset($_POST['uaction']);
 			gen_page_data($tpl, $sql);
         }
@@ -132,16 +132,16 @@ function send_circular(&$tpl, &$sql)
 }
 
 
-function send_reseller_users_message ( &$sql, $admin_id)
+function send_reseller_users_message (&$sql, $admin_id)
 {
 
-    $msg_subject = $_POST['msg_subject'];
+    $msg_subject = clean_input($_POST['msg_subject']);
 
-    $msg_text = $_POST['msg_text'];
+    $msg_text = clean_input($_POST['msg_text']);
 
-    $sender_email = $_POST['sender_email'];
+    $sender_email = clean_input($_POST['sender_email']);
 
-    $sender_name = $_POST['sender_name'];
+    $sender_name = clean_input($_POST['sender_name']);
 
     $query = <<<SQL_QUERY
         select
@@ -206,9 +206,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(

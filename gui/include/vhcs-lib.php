@@ -74,8 +74,6 @@ $cfg['HOSTING_PLANS_LEVEL'] = 'reseller';
 'admin' => hosting plans are available only in admin level, reseller can not make custom changes
 'reseller' => hosting plans are available only in reseller level
 */
-// is read from vhcs2.conf
-//$cfg['VHCS_LICENSE'] = 'VHCS<sup>&reg;</sup> Pro v2.4.7.2-alpha<br>build: 2006-01-03<br>Spartacus';
 
 // variable for developmetn edition => shows all php variables under the pages
 //$cfg['DUMP_GUI_DEBUG'] = '_on_';
@@ -108,7 +106,7 @@ $cfg['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = array(229,243,252);
 $cfg['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(0,53,92);
 
 /* captcha ttf fontfile */
-$cfg['LOSTPASSWORD_CAPTCHA_FONT'] = './cap.ttf';
+$cfg['LOSTPASSWORD_CAPTCHA_FONT'] = $cfg['LOGIN_TEMPLATE_PATH'].'/font/cap.ttf';
 
 /* enable or disable bruteforcedetection */
 /* 0 = disable */
@@ -136,6 +134,14 @@ $cfg['SERVICEMODE'] = 0;
 
 /* servicemode message */
 $cfg['SERVICEMODE_MESSAGE'] = 'The system currently in servicemode!';
+
+/* password chars */
+$cfg['PASSWD_CHARS'] = 6;
+
+/* enable or disable strong passwords */
+/* 0 = disable */
+/* 1 = enable */
+$cfg['PASSWD_STRONG'] = 1;
 
 include_once (realpath($include_path.'/spGzip.php'));
 
@@ -174,6 +180,8 @@ include_once (realpath($include_path.'/idna.php'));
 include_once (realpath($include_path.'/lostpassword-functions.php'));
 
 include_once (realpath($include_path.'/sql.php'));
+
+include_once (realpath($include_path.'/emailtpl-functions.php'));
 
 // include_once (realpath($include_path.'/vhcs-security.php'));
 

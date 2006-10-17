@@ -30,9 +30,8 @@ flush     unix  n       -       -       1000?   0       flush
 proxymap  unix  -       -       n       -       -       proxymap
 smtp      unix  -       -       -       -       -       smtp
 # When relaying mail as backup MX, disable fallback_relay to avoid MX loops
-relay     unix  -       -       -       -       -       smtp
-	-o fallback_relay=
-#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+relay     unix  -       -       -       -       -       smtp	-o fallback_relay=
+#       							-o smtp_helo_timeout=5 -o smtp_connect_timeout=5
 showq     unix  n       -       -       -       -       showq
 error     unix  -       -       -       -       -       error
 discard   unix  -       -       -       -       -       discard
@@ -41,6 +40,29 @@ virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache	  unix	-	-	-	-	1	scache
+#
+# TSL - Activate, if TSL is avaiable/used
+#
+#smtps	  inet  n	-	n	-	-	smtpd	-o smtpd_tls_wrapermode=yes
+#								-o smtpd_sasl_auth_enable=yes
+#
+# AMaViS => Antivir / Antispam
+#
+amavis	  unix	-	-	n	-	2	smtp	-o smtp_data_done_timeout=1200
+								-o smtp_send_xforward_command=yes
+								-o disable_dns_lookups=yes
+
+127.0.0.1:10025 inet n	-	n	-	-	smtpd	-o content_filter=
+								-o local_recipient_maps=
+								-o relay_recipient_maps=
+								-o smtpd_restriction_classes=
+								-o smtpd_client_restrictions=
+								-o smtpd_helo_restrictions=
+								-o smtpd_sender_restrictions=
+								-o smtpd_recipient_restrictions=permit_mynetworks,reject
+								-o smtpd_override_options=no_address_mappings
+								-o mynetworks=127.0.0.0/8
+								-o strict_rfc821_envelopes=yes
 #
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual
@@ -80,20 +102,4 @@ mailman   unix  -       -       n       -       -       pipe
 
 vhcs2-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/vhcs2/engine/messager/vhcs2-arpl-msgr
 
-#
-# Amavis 
-#
-
-smtp-amavis unix -      -       n     -       2  smtp
-	-o smtp_data_done_timeout=1200
-	-o smtp_send_xforward_command=yes
-	-o disable_dns_lookups=yes
-
-
-localhost:10025 inet    n       -       n       -       -       smtpd 
-	-o content_filter= 
-	-o mynetworks=127.0.0.0/8 
-	-o smtpd_recipient_restrictions=permit_mynetworks,reject
-	-o receive_override_options=no_address_mappings
-	
 587      inet  n       -       -       -       -       smtpd -o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination

@@ -268,11 +268,7 @@ sub backup_all_engine {
 
 			if(! -d $dmn_backup_dir)
 			{
-				$rs = make_dir($dmn_backup_dir);
-
-				return $rs if ($rs != 0);
-
-				$rs = setfmode($dmn_backup_dir, "root", "root", 0644);
+				$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
 
 				return $rs if ($rs != 0);
 			}

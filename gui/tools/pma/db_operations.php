@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_operations.php,v 2.29 2006/01/17 17:02:28 cybot_tm Exp $ */
+/* $Id: db_operations.php,v 2.37.2.1 2006/08/26 13:37:55 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -15,8 +15,9 @@
 /**
  * requirements
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/mysql_charsets.lib.php');
+require_once './libraries/common.lib.php';
+require_once './libraries/Table.class.php';
+require_once './libraries/mysql_charsets.lib.php';
 
 /**
  * Rename/move or copy database
@@ -25,17 +26,16 @@ if (isset($db) &&
     ((isset($db_rename) && $db_rename == 'true') ||
     (isset($db_copy) && $db_copy == 'true'))) {
 
-    require_once('./libraries/tbl_move_copy.php');
-
     if (isset($db_rename) && $db_rename == 'true') {
-        $move = TRUE;
+        $move = true;
     } else {
-        $move = FALSE;
+        $move = false;
     }
 
     if (!isset($newname) || !strlen($newname)) {
         $message = $strDatabaseEmpty;
     } else {
+        $sql_query = ''; // in case target db exists
         if ($move ||
            (isset($create_database_before_copying) && $create_database_before_copying)) {
             $local_query = 'CREATE DATABASE ' . PMA_backquote($newname);
@@ -45,6 +45,10 @@ if (isset($db) &&
             $local_query .= ';';
             $sql_query = $local_query;
             PMA_DBI_query($local_query);
+        }
+
+        if (isset($GLOBALS['add_constraints'])) {
+            $GLOBALS['sql_constraints_query_full_db'] = '';
         }
 
         $tables_full = PMA_DBI_get_tables_full($db);
@@ -70,26 +74,43 @@ if (isset($db) &&
             }
 
             if ($this_what != 'nocopy') {
-                PMA_table_move_copy($db, $table, $newname, $table,
-                    isset($this_what) ? $this_what : 'data', $move);
+                PMA_Table::moveCopy($db, $table, $newname, $table,
+                    isset($this_what) ? $this_what : 'data', $move, 'db_copy');
+                if (isset($GLOBALS['add_constraints'])) {
+                    $GLOBALS['sql_constraints_query_full_db'] .= $GLOBALS['sql_constraints_query'];
+                    unset($GLOBALS['sql_constraints_query']);
+                }
             }
 
             $sql_query = $back . $sql_query;
         }
         unset($table);
 
+        // now that all tables exist, create all the accumulated constraints 
+        if (isset($GLOBALS['add_constraints'])) {
+            // FIXME: this works with mysqli but not with mysql,
+            // because mysql extension does not accept more than one
+            // statement; maybe interface with the sql import plugin
+            // that handles statement delimiter
+            PMA_DBI_query($GLOBALS['sql_constraints_query_full_db']);
+
+            // and prepare to display them
+            $GLOBALS['sql_query'] .= "\n" . $GLOBALS['sql_constraints_query_full_db'];
+            unset($GLOBALS['sql_constraints_query_full_db']);
+        }
+
         // Duplicate the bookmarks for this db (done once for each db)
         if ($db != $newname) {
             $get_fields = array('user', 'label', 'query');
             $where_fields = array('dbase' => $db);
             $new_fields = array('dbase' => $newname);
-            PMA_duplicate_table_info('bookmarkwork', 'bookmark', $get_fields,
+            PMA_Table::duplicateInfo('bookmarkwork', 'bookmark', $get_fields,
                 $where_fields, $new_fields);
         }
 
         if ($move) {
             // cleanup pmadb stuff for this db
-            require_once('./libraries/relation_cleanup.lib.php');
+            require_once './libraries/relation_cleanup.lib.php';
             PMA_relationsCleanupDatabase($db);
 
             $local_query = 'DROP DATABASE ' . PMA_backquote($db) . ';';
@@ -101,17 +122,17 @@ if (isset($db) &&
             $message    = sprintf($strCopyDatabaseOK, htmlspecialchars($db),
                 htmlspecialchars($newname));
         }
-        $reload     = TRUE;
+        $reload     = true;
 
         /* Change database to be used */
         if ($move) {
             $db         = $newname;
         } else {
             if (isset($switch_to_new) && $switch_to_new == 'true') {
-                PMA_setCookie( 'pma_switch_to_new', 'true' );
+                PMA_setCookie('pma_switch_to_new', 'true');
                 $db         = $newname;
             } else {
-                PMA_setCookie( 'pma_switch_to_new', '' );
+                PMA_setCookie('pma_switch_to_new', '');
             }
         }
     }
@@ -120,7 +141,7 @@ if (isset($db) &&
  * Settings for relations stuff
  */
 
-require_once('./libraries/relation.lib.php');
+require_once './libraries/relation.lib.php';
 $cfgRelation = PMA_getRelationsParam();
 
 /**
@@ -133,15 +154,15 @@ if ($cfgRelation['commwork'] && isset($db_comment) && $db_comment == 'true') {
 
 /**
  * Prepares the tables list if the user where not redirected to this script
- * because there is no table in the database ($is_info is TRUE)
+ * because there is no table in the database ($is_info is true)
  */
 if (empty($is_info)) {
-    require('./libraries/db_details_common.inc.php');
+    require './libraries/db_details_common.inc.php';
     $url_query .= '&amp;goto=db_operations.php';
 
     // Gets the database structure
     $sub_part = '_structure';
-    require('./libraries/db_details_db_info.inc.php');
+    require './libraries/db_details_db_info.inc.php';
     echo "\n";
 }
 
@@ -150,14 +171,14 @@ if (PMA_MYSQL_INT_VERSION >= 40101) {
 }
 if (PMA_MYSQL_INT_VERSION < 50002
   || (PMA_MYSQL_INT_VERSION >= 50002 && $db != 'information_schema')) {
-    $is_information_schema = FALSE;
+    $is_information_schema = false;
 } else {
-    $is_information_schema = TRUE;
+    $is_information_schema = true;
 }
 
 if (!$is_information_schema) {
 
-    require('./libraries/display_create_table.lib.php');
+    require './libraries/display_create_table.lib.php';
 
     if ($cfgRelation['commwork']) {
         /**
@@ -235,6 +256,11 @@ if (!$is_information_schema) {
             .' alt="" width="16" height="16" />';
     }
     echo $strDBCopy . ':';
+    if (PMA_MYSQL_INT_VERSION >= 50000) {
+        $drop_clause = 'DROP TABLE / DROP VIEW';
+    } else {
+        $drop_clause = 'DROP TABLE';
+    }
     ?>
         </legend>
         <input type="text" name="newname" size="30" class="textfield" value="" /><br />
@@ -255,16 +281,18 @@ if (!$is_information_schema) {
             <?php echo $strCreateDatabaseBeforeCopying; ?></label><br />
         <input type="checkbox" name="drop_if_exists" value="true"
             id="checkbox_drop" style="vertical-align: middle" />
-        <label for="checkbox_drop"><?php echo $strStrucDrop; ?></label><br />
+        <label for="checkbox_drop"><?php echo sprintf($strAddClause, $drop_clause); ?></label><br />
         <input type="checkbox" name="sql_auto_increment" value="1"
             id="checkbox_auto_increment" style="vertical-align: middle" />
         <label for="checkbox_auto_increment">
             <?php echo $strAddAutoIncrement; ?></label><br />
-        <input type="checkbox" name="constraints" value="1"
+        <input type="checkbox" name="add_constraints" value="1"
             id="checkbox_constraints" style="vertical-align: middle" />
         <label for="checkbox_constraints">
             <?php echo $strAddConstraints; ?></label><br />
     <?php
+    unset($drop_clause);
+
     if (isset($_COOKIE) && isset($_COOKIE['pma_switch_to_new'])
       && $_COOKIE['pma_switch_to_new'] == 'true') {
         $pma_switch_to_new = 'true';
@@ -289,7 +317,7 @@ if (!$is_information_schema) {
     // MySQL supports setting default charsets / collations for databases since
     // version 4.1.1.
         echo '<form method="post" action="./db_operations.php">' . "\n"
-           . PMA_generate_common_hidden_inputs($db, $table)
+           . PMA_generate_common_hidden_inputs($db, isset($table) ? $table : '')
            . '<fieldset>' . "\n"
            . '    <legend>';
         if ($cfg['PropertiesIconic']) {
@@ -299,17 +327,17 @@ if (!$is_information_schema) {
         echo '    <label for="select_db_collation">' . $strCollation . ':</label>' . "\n"
            . '    </legend>' . "\n"
            . PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_COLLATION,
-                'db_collation', 'select_db_collation', $db_collation, FALSE, 3)
+                'db_collation', 'select_db_collation', $db_collation, false, 3)
            . '    <input type="submit" name="submitcollation"'
            . ' value="' . $strGo . '" style="vertical-align: middle" />' . "\n"
            . '</fieldset>' . "\n"
            . '</form>' . "\n";
     }
 
-    if ( $num_tables > 0
-      && !$cfgRelation['allworks'] && $cfg['PmaNoRelation_DisableWarning'] == FALSE) {
+    if ($num_tables > 0
+      && !$cfgRelation['allworks'] && $cfg['PmaNoRelation_DisableWarning'] == false) {
         echo '<div class="error"><h1>' . $strError . '</h1>'
-            . sprintf( $strRelationNotWorking,
+            . sprintf($strRelationNotWorking,
                 '<a href="' . $cfg['PmaAbsoluteUri'] . 'chk_rel.php?' . $url_query . '">',
                 '</a>')
             . '</div>';
@@ -318,8 +346,10 @@ if (!$is_information_schema) {
 
 
 // not sure about leaving the PDF dialog for information_schema
-if ($num_tables > 0) {
+if ($num_tables > 0 && isset($table)) {
     $takeaway = $url_query . '&amp;table=' . urlencode($table);
+} else {
+    $takeaway = '';
 }
 
 if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
@@ -415,9 +445,9 @@ if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
     <?php
 } // end if
 
-if ( $num_tables > 0
+if ($num_tables > 0
   && $cfgRelation['relwork'] && $cfgRelation['commwork']
-  && isset($cfg['docSQLDir']) && !empty($cfg['docSQLDir']) ) {
+  && isset($cfg['docSQLDir']) && !empty($cfg['docSQLDir'])) {
     /**
      * import docSQL files
      */
@@ -434,5 +464,5 @@ if ( $num_tables > 0
 /**
  * Displays the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 ?>

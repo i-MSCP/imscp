@@ -25,7 +25,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/enable_mail_arsp.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -51,31 +50,30 @@ function check_email_user(&$sql) {
 		  t2.domain_name = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+  	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
-  if ($rs -> RecordCount() == 0) {
-	set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-	header('Location: email_accounts.php');
-	die();
-  }
+  	if ($rs -> RecordCount() == 0) {
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		header('Location: email_accounts.php');
+		die();
+ 	 }
 }
 
-function gen_page_dynamic_data(&$tpl, &$sql, $mail_id)
-{
-  global $cfg;
+function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
+  	global $cfg;
 
-  if (isset($_POST['uaction']) && $_POST['uaction'] === 'enable_arsp') {
-    if ($_POST['arsp_message'] === '') {
-      $tpl -> assign('ARSP_MESSAGE', '');
-      set_page_message(tr('Please type your mail autorespond message!'));
-      return;
-    }
+  	if (isset($_POST['uaction']) && $_POST['uaction'] === 'enable_arsp') {
+    	if (empty($_POST['arsp_message'])) {
+      		$tpl -> assign('ARSP_MESSAGE', '');
+      		set_page_message(tr('Please type your mail autorespond message!'));
+      		return;
+   		}
 
-    $arsp_message = $_POST['arsp_message'];
-    $item_change_status = $cfg['ITEM_CHANGE_STATUS'];
-    check_for_lock_file();
+    	$arsp_message = clean_input($_POST['arsp_message']);
+    	$item_change_status = $cfg['ITEM_CHANGE_STATUS'];
+    	check_for_lock_file();
 
-    $query = <<<SQL_QUERY
+    	$query = <<<SQL_QUERY
             update
                 mail_users
             set
@@ -85,16 +83,34 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id)
                 mail_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
+    	$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
 
-    send_request();
-    write_log($_SESSION['user_logged'].": add mail autorsponder: ".$mail_name."@".$dmn_name);
-    set_page_message(tr('Mail account scheduler for modification!'));
-    header("Location: email_accounts.php");
-    exit(0);
-  } else {
-    $tpl -> assign('ARSP_MESSAGE', '');
-  }
+    	send_request();
+
+    	// Not correct in use with Subdomains
+    	$query = <<<SQL_QUERY
+			SELECT
+				t1.mail_acc, t2.domain_name
+			FROM
+				mail_users AS t1,
+				domain AS t2
+			WHERE
+					t1.mail_id = ?
+				AND
+					t1.domain_id = t2.domain_id
+SQL_QUERY;
+
+		$rs = exec_query($sql, $query, array($mail_id));
+		$mail_name = $rs->fields['mail_acc'];
+		$dmn_name = $rs->fields['domain_name'];
+    	write_log($_SESSION['user_logged'].": add mail autoresponder: ".$mail_name."@".$dmn_name);
+    	set_page_message(tr('Mail account scheduler for modification!'));
+    	header("Location: email_accounts.php");
+    	exit(0);
+  	}
+	else {
+    	$tpl -> assign('ARSP_MESSAGE', '');
+  	}
 }
 
 //
@@ -109,9 +125,8 @@ if (isset($_GET['id'])) {
     exit(0);
 }
 
-if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no")
-{
-  header("Location: index.php");
+if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
+	header("Location: index.php");
 }
 
 global $cfg;

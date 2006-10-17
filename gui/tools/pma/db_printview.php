@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_printview.php,v 2.15.2.1 2006/04/27 09:43:13 cybot_tm Exp $ */
+/* $Id: db_printview.php,v 2.17 2006/04/27 09:42:22 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';

@@ -26,8 +26,7 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/change_password.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
-global $cfg;
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_CLIENT_CHANGE_PASSWORD_PAGE_TITLE' => tr('VHCS - Client/Change Password'),
@@ -38,7 +37,7 @@ $tpl -> assign(array('TR_CLIENT_CHANGE_PASSWORD_PAGE_TITLE' => tr('VHCS - Client
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
-  if ($_POST['pass'] === '' || $_POST['pass_rep'] === '' || $_POST['curr_pass'] === '') {
+  if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
     set_page_message(tr('Please fill up all data fields!'));
   } else if ($_POST['pass'] !== $_POST['pass_rep']) {
     set_page_message(tr('Passwords does not match!'));

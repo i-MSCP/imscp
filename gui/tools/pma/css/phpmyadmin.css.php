@@ -1,13 +1,13 @@
 <?php
-/* $Id: phpmyadmin.css.php,v 2.83.2.2 2006/04/12 16:57:27 cybot_tm Exp $ */
+/* $Id: phpmyadmin.css.php,v 2.93.2.1 2006/08/14 12:41:29 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 chdir('..');
-define( 'PMA_MINIMUM_COMMON', TRUE );
-require_once('./libraries/common.lib.php');
-require_once('./libraries/sqlparser.lib.php');
+define('PMA_MINIMUM_COMMON', true);
+require_once './libraries/common.lib.php';
+require_once './libraries/sqlparser.lib.php';
 
-if ( $GLOBALS['text_dir'] === 'ltr' ) {
+if ($GLOBALS['text_dir'] === 'ltr') {
     $right = 'right';
     $left = 'left';
 } else {
@@ -19,6 +19,14 @@ if ( $GLOBALS['text_dir'] === 'ltr' ) {
 header('Content-Type: text/css; charset=ISO-8859-1');
 
 ?>
+html {
+    font-size: <?php echo $_SESSION['PMA_Config']->get('fontsize'); ?>;
+}
+
+input, select, textarea {
+    font-size: 1em;
+}
+
 /* @deprecated */
 .nowrap {
     white-space: nowrap;
@@ -29,7 +37,7 @@ div.nowrap {
 }
 
 <?php
-if ( $_SESSION['PMA_Theme']->checkVersion( '2.7.0' ) ) {
+if ($_SESSION['PMA_Theme']->checkVersion('2.7.0')) {
     ?>
 
 form {
@@ -75,7 +83,7 @@ div#tablestatistics {
 }
 
 div#tablestatistics table {
-    float: left;
+    float: <?php echo $left; ?>;
     margin-bottom: 0.5em;
     margin-right: 0.5em;
 }
@@ -124,7 +132,7 @@ div#left_tableList li {
     white-space: nowrap;
 }
 
-<?php if ( $GLOBALS['cfg']['LeftPointerEnable'] ) { ?>
+<?php if ($GLOBALS['cfg']['LeftPointerEnable']) { ?>
 div#left_tableList li:hover {
     background-color: <?php echo $GLOBALS['cfg']['LeftPointerColor']; ?>;
 }
@@ -315,7 +323,7 @@ a.tabcaution:hover {
     background-color: #FF0000;
 }
 
-<?php if ( $GLOBALS['cfg']['LightTabs'] ) { ?>
+<?php if ($GLOBALS['cfg']['LightTabs']) { ?>
 /* active tab */
 a.tabactive {
     color: black;
@@ -335,10 +343,8 @@ ul#topmenu li {
     background-color: <?php echo $GLOBALS['cfg']['BgcolorOne']; ?>;
     border: 1pt solid <?php echo $GLOBALS['cfg']['BgcolorTwo']; ?>;
     border-bottom: 0;
-    border-radius-topleft: 0.4em;
-    border-radius-topright: 0.4em;
-    -moz-border-radius-topleft: 0.4em;
-    -moz-border-radius-topright: 0.4em;
+    border-top-left-radius: 0.4em;
+    border-top-right-radius: 0.4em;
 }
 
 /* enabled hover/active tabs */
@@ -360,6 +366,7 @@ span.tab, span.tabcaution {
 /* end topmenu */
 
 
+
 /* data tables */
 table caption,
 table th,
@@ -374,17 +381,15 @@ table td {
 table tr.odd th,
 table tr.odd {
     background-color: <?php echo $GLOBALS['cfg']['BgcolorOne']; ?>;
-    text-align: left;
 }
 
 /* even table rows 2,4,6,8,... */
 table tr.even th,
 table tr.even {
     background-color: <?php echo $GLOBALS['cfg']['BgcolorTwo']; ?>;
-    text-align: left;
 }
 
-/* marked tbale rows */
+/* marked table rows */
 table tr.marked th,
 table tr.marked {
     background-color: <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
@@ -472,7 +477,7 @@ img.lightbulb {
     <?php
 } // end styles 2.7.0
 
-if ( $_SESSION['PMA_Theme']->checkVersion( '2.7.1' ) ) {
+if ($_SESSION['PMA_Theme']->checkVersion('2.7.1')) {
     ?>
 
 /********************/
@@ -517,7 +522,7 @@ form.login label {
 /* END main page */
 
 
-<?php if ( $GLOBALS['cfg']['MainPageIconic'] ) { ?>
+<?php if ($GLOBALS['cfg']['MainPageIconic']) { ?>
 /* iconic view for ul items */
 li#li_create_database {
     list-style-image: url(../<?php echo $GLOBALS['cfg']['ThemePath']; ?>/original/img/b_newdb.png);
@@ -690,8 +695,84 @@ li#li_flush_privileges {
     float: <?php echo $left; ?>;
 }
     <?php
+    $GLOBALS['cfg']['BgOne'] = $GLOBALS['cfg']['BgcolorOne'];
+    $GLOBALS['cfg']['BgTwo'] = $GLOBALS['cfg']['BgcolorTwo'];
 } // end styles 2.7.1
 
+if ($_SESSION['PMA_Theme']->checkVersion('2.9')) {
+    ?>
 
-$_SESSION['PMA_Theme']->loadCss( $_REQUEST['js_frame'] );
+/********************/
+/* NEW in PMA 2.9   */
+/********************/
+
+<?php if ($GLOBALS['cfg']['BrowseMarkerColor']) { ?>
+/* marked items */
+.marked a,
+.marked {
+    background: <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
+    color: <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
+}
+<?php } ?>
+
+/* odd items 1,3,5,7,... */
+.odd {
+    background: <?php echo $GLOBALS['cfg']['BgOne']; ?>;
+}
+
+/* even items 2,4,6,8,... */
+.even {
+    background: <?php echo $GLOBALS['cfg']['BgTwo']; ?>;
+}
+
+/* hovered items */
+.odd:hover,
+.even:hover,
+.hover {
+    background: <?php echo $GLOBALS['cfg']['BrowsePointerBackground']; ?>;
+    color: <?php echo $GLOBALS['cfg']['BrowsePointerColor']; ?>;
+}
+
+/**
+ * marks table rows/cells if the db field is in a where condition
+ */
+tr.condition th,
+tr.condition td,
+td.condition,
+th.condition {
+    border: 1px solid <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
+}
+
+label.desc {
+    width: 30em;
+    float: <?php echo $left; ?>;
+}
+
+body.loginform {
+    text-align: center;
+}
+
+body.loginform div.container {
+    text-align: <?php echo $left; ?>;
+    width: 30em;
+    margin: 0 auto;
+}
+
+#body_leftFrame #list_server {
+    list-style-image: url(../<?php echo $GLOBALS['cfg']['ThemePath']; ?>/original/img/s_host.png);
+    list-style-position: inside;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#body_leftFrame #list_server li {
+    margin: 0;
+    padding: 0;
+    font-size:          80%;
+}
+    <?php
+} // end styles 2.9
+
+$_SESSION['PMA_Theme_Manager']->printCss($_REQUEST['js_frame']);
 ?>

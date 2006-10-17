@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_importdocsql.php,v 2.11 2006/01/17 17:02:28 cybot_tm Exp $ */
+/* $Id: db_details_importdocsql.php,v 2.12 2006/03/19 13:14:16 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
@@ -117,22 +117,6 @@ if (isset($cfg['docSQLDir']) && !empty($cfg['docSQLDir'])) {
             return 0;
         } // end working on table
     }
-
-    /**
-     * Try to get the "$DOCUMENT_ROOT" variable whatever is the register_globals
-     * value
-     */
-    if (empty($DOCUMENT_ROOT)) {
-        if (!empty($_SERVER) && isset($_SERVER['DOCUMENT_ROOT'])) {
-            $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
-        } elseif (!empty($_ENV) && isset($_ENV['DOCUMENT_ROOT'])) {
-            $DOCUMENT_ROOT = $_ENV['DOCUMENT_ROOT'];
-        } elseif (@getenv('DOCUMENT_ROOT')) {
-            $DOCUMENT_ROOT = getenv('DOCUMENT_ROOT');
-        } else {
-            $DOCUMENT_ROOT = '.';
-        }
-    } // end if
 
     /**
      * Executes import if required

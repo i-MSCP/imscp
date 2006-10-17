@@ -35,7 +35,6 @@ $tpl -> define_dynamic('list_item', 'page');
 
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/ftp_choose_dir.tpl');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 // functions begin

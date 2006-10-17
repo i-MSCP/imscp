@@ -1,22 +1,22 @@
 <?php
-/* $Id: server_variables.php,v 2.13 2005/12/07 12:57:07 cybot_tm Exp $ */
+/* $Id: server_variables.php,v 2.14 2006/04/25 15:21:33 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 if ( ! defined( 'PMA_NO_VARIABLES_IMPORT' ) ) {
     define( 'PMA_NO_VARIABLES_IMPORT', true );
 }
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.lib.php';
 
 /**
  * Does the common work
  */
-require('./libraries/server_common.inc.php');
+require './libraries/server_common.inc.php';
 
 
 /**
  * Displays the links
  */
-require('./libraries/server_links.inc.php');
+require './libraries/server_links.inc.php';
 
 
 /**
@@ -60,20 +60,19 @@ if (PMA_MYSQL_INT_VERSION >= 40003) {
 <tbody>
 <?php
 $odd_row = true;
-$useBgcolorOne = TRUE;
 foreach ($serverVars as $name => $value) {
     ?>
 <tr class="<?php
     echo $odd_row ? 'odd' : 'even';
     if (PMA_MYSQL_INT_VERSION >= 40003
-      && $serverVarsGlobal[$name] !== $value ) {
+     && $serverVarsGlobal[$name] !== $value) {
         echo ' marked';
     }
     ?>">
     <th nowrap="nowrap">
         <?php echo htmlspecialchars(str_replace('_', ' ', $name)); ?></th>
     <td class="value"><?php
-    if ( is_numeric($value) ) {
+    if (is_numeric($value)) {
         echo PMA_formatNumber($value, 0);
         $is_numeric = true;
     } else {
@@ -83,7 +82,7 @@ foreach ($serverVars as $name => $value) {
     ?></td>
     <?php
     if (PMA_MYSQL_INT_VERSION >= 40003
-      && $serverVarsGlobal[$name] !== $value ) {
+     && $serverVarsGlobal[$name] !== $value) {
         ?>
 </tr>
 <tr class="<?php
@@ -91,7 +90,7 @@ foreach ($serverVars as $name => $value) {
     ?> marked">
     <td>(<?php echo $strGlobalValue; ?>)</td>
     <td class="value"><?php
-    if ( $is_numeric ) {
+    if ($is_numeric) {
         echo PMA_formatNumber($serverVarsGlobal[$name], 0);
     } else {
         echo htmlspecialchars($serverVarsGlobal[$name]);
@@ -111,6 +110,6 @@ foreach ($serverVars as $name => $value) {
 /**
  * Sends the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 
 ?>

@@ -26,7 +26,6 @@ $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('als_list', 'page');
 $tpl -> define_dynamic('sub_list', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('to_subdomain', 'page');
 $tpl -> define_dynamic('to_alias_domain', 'page');
 $tpl -> define_dynamic('js_to_subdomain', 'page'); //JavaScript have to be generatet too
@@ -56,7 +55,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check)
       $f_list = $_POST['forward_list'];
     }
 
-    $tpl -> assign(array('USERNAME' => $_POST['username'],
+    $tpl -> assign(array('USERNAME' => clean_input($_POST['username']),
                          'DOMAIN_NAME' => $dmn_name,
                          'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked' : '',
                          'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked' : '',
@@ -204,18 +203,18 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name)
   //$mail_acc = $_POST['username'];
 
   // lets encode the mail ??? only crazy ones encode the local_part
-  
-  $mail_acc_tmp = strtolower($_POST['username']);
+
+  $mail_acc_tmp = strtolower(clean_input($_POST['username']));
   	if (vhcs_check_local_part($mail_acc_tmp) == "0") {
- 		
+
   		set_page_message(tr("Invalid Mail Localpart Format used!"));
- 	
+
  		return;
- 		
+
   	} else {
-  	
-  		$mail_acc=$mail_acc_tmp;	
-  		
+
+  		$mail_acc=$mail_acc_tmp;
+
 	}
 
   $status = $cfg['ITEM_ADD_STATUS'];
@@ -375,12 +374,12 @@ SQL_QUERY;
 
 function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
 {
-  if ($_POST['mail_type'] != 'forward')	
+  if ($_POST['mail_type'] != 'forward')
   {
   	$pass = escapeshellcmd($_POST['pass']);
   	$pass_rep = escapeshellcmd($_POST['pass_rep']);
-  } 
-	
+  }
+
   if (!isset($_POST['username']) || $_POST['username'] === '') {
     set_page_message(tr('Please enter mail account username!'));
     return;

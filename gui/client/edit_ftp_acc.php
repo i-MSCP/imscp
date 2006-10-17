@@ -33,7 +33,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/edit_ftp_acc.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -43,8 +42,12 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc)
   global $cfg;
 
   $query = <<<SQL_QUERY
-        select homedir from ftp_users
-        where userid = ?
+        SELECT
+			homedir
+		FROM
+			ftp_users
+        WHERE
+			userid = ?
 SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($ftp_acc));
@@ -73,20 +76,24 @@ function update_ftp_account(&$sql, $ftp_acc)
   global $other_dir;
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
-    if ($_POST['pass'] !== '' || $_POST['pass_rep'] !== '') {
+    if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
       if ($_POST['pass'] !== $_POST['pass_rep']) {
         set_page_message(tr('Entered passwords differ!'));
         return;
       }
+		if (chk_password($_POST['pass'])) {
+  			set_page_message( tr("Incorrect password range or syntax!"));
+    		return;
+  		}
 
       $pass = crypt_user_ftp_pass($_POST['pass']);
       if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
 
-		$other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].$_POST['other_dir'];
+		$other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
 
-  	     $res = preg_match("/\.\./", $_POST['other_dir'], $match);
+  	     $res = preg_match("/\.\./", clean_input($_POST['other_dir']), $match);
 		 if (!is_dir($other_dir) || $res !== 0) {
-				set_page_message($_POST['other_dir']." ".tr('do not exist'));
+				set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
 				return;
 		}
 
@@ -115,15 +122,15 @@ SQL_QUERY;
 
       }
 
-      write_log($_SESSION['user_logged'].": updated FTP  ".$ftp_acc." account data");
+      write_log($_SESSION['user_logged'].": updated FTP ".$ftp_acc." account data");
       set_page_message(tr('FTP account data updated!'));
       user_goto('ftp_accounts.php');
     } else {
       if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-        $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].$_POST['other_dir'];
-		$res = preg_match("/\.\./", $_POST['other_dir'], $match);
+        $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
+		$res = preg_match("/\.\./", clean_input($_POST['other_dir']), $match);
 		 if (!is_dir($other_dir) || $res !== 0) {
-				set_page_message($_POST['other_dir']." ".tr('do not exist'));
+				set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
 				return;
 		}
     } else {

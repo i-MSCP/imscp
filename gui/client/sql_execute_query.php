@@ -25,7 +25,6 @@ $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/sql_execute_query.
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('sql_result', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 if (isset($_GET['id'])) {
   $db_user_id = $_GET['id'];
@@ -201,8 +200,8 @@ SQL_QUERY;
 function gen_page_post_data(&$tpl, &$sql, $db_user_id)
 {
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'execute_query') {
-    $tpl -> assign(array('USER_NAME' => $_POST['user_name'],
-                         'SQL_QUERY' => stripslashes($_POST['sql_query'])));
+    $tpl -> assign(array('USER_NAME' => clean_input($_POST['user_name']),
+                         'SQL_QUERY' => mysql_escape_string(stripslashes($_POST['sql_query']))));
   } else {
     $query = <<<SQL_QUERY
             select

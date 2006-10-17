@@ -1,21 +1,10 @@
 <?php
-/* $Id: check_user_privileges.lib.php,v 1.12 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: check_user_privileges.lib.php,v 1.13 2006/05/18 16:51:15 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Get user's global privileges and some db-specific privileges
 // ($controllink and $userlink are links to MySQL defined in the "common.lib.php" library)
 // Note: if no controluser is defined, $controllink contains $userlink
-
-/**
- * returns true (int > 0) if current user is superuser
- * otherwise 0
- *
- * @return integer  $is_superuser
- */
-function PMA_isSuperuser() {
-    return PMA_DBI_try_query( 'SELECT COUNT(*) FROM mysql.user',
-        $GLOBALS['userlink'], PMA_DBI_QUERY_STORE );
-}
 
 $is_create_db_priv  = false;
 $is_process_priv = true;

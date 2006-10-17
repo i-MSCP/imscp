@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_properties_structure.php,v 2.65.2.1 2006/02/14 10:23:44 cybot_tm Exp $ */
+/* $Id: tbl_properties_structure.php,v 2.68 2006/07/09 14:01:11 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';
@@ -85,8 +85,9 @@ $fields_cnt  = PMA_DBI_num_rows($fields_rs);
 // the info given by SHOW FULL FIELDS FROM.
 //
 // We also need this to correctly learn if a TIMESTAMP is NOT NULL, since
-// SHOW FULL FIELDS says NULL and SHOW CREATE TABLE says NOT NULL (tested
-// in MySQL 4.0.25).
+// SHOW FULL FIELDS or INFORMATION_SCHEMA incorrectly says NULL
+// and SHOW CREATE TABLE says NOT NULL (tested
+// in MySQL 4.0.25 and 5.0.21, http://bugs.mysql.com/20910).
 
 $show_create_table = PMA_DBI_fetch_value(
         'SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table),

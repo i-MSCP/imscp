@@ -32,7 +32,6 @@ $tpl -> define_dynamic('rsl_ip_list', 'page');
 
 $tpl -> define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -164,18 +163,18 @@ function add_reseller(&$tpl, &$sql)
 
             $user_id = $_SESSION['user_id'];
 
-            $username 	= $_POST['username'];
-            $fname 		= htmlspecialchars($_POST['fname'], ENT_QUOTES, "UTF-8");
-            $lname 		= htmlspecialchars($_POST['lname'], ENT_QUOTES, "UTF-8");
-            $firm 		= htmlspecialchars($_POST['firm'], ENT_QUOTES, "UTF-8");
-            $zip 		= htmlspecialchars($_POST['zip'], ENT_QUOTES, "UTF-8");
-            $city 		= htmlspecialchars($_POST['city'], ENT_QUOTES, "UTF-8");
-            $country 	= htmlspecialchars($_POST['country'], ENT_QUOTES, "UTF-8");
-            $email 		= htmlspecialchars($_POST['email'], ENT_QUOTES, "UTF-8");
-            $phone 		= htmlspecialchars($_POST['phone'], ENT_QUOTES, "UTF-8");
-            $fax 		= htmlspecialchars($_POST['fax'], ENT_QUOTES, "UTF-8");
-            $street1 	= htmlspecialchars($_POST['street1'], ENT_QUOTES, "UTF-8");
-            $street2 	= htmlspecialchars($_POST['street2'], ENT_QUOTES, "UTF-8");
+            $username 	= clean_input($_POST['username']);
+            $fname 		= clean_input($_POST['fname']);
+            $lname 		= clean_input($_POST['lname']);
+            $firm 		= clean_input($_POST['firm']);
+            $zip 		= clean_input($_POST['zip']);
+            $city 		= clean_input($_POST['city']);
+            $country 	= clean_input($_POST['country']);
+            $email 		= clean_input($_POST['email']);
+            $phone 		= clean_input($_POST['phone']);
+            $fax 		= clean_input($_POST['fax']);
+            $street1 	= clean_input($_POST['street1']);
+            $street2 	= clean_input($_POST['street2']);
 
             $query = <<<SQL_QUERY
                 insert into admin
@@ -234,10 +233,6 @@ SQL_QUERY;
 
             $new_admin_id = $sql -> Insert_ID();
 
-
-            insert_email_tpl($sql, $new_admin_id);
-
-
             $user_logged= $_SESSION['user_logged'];
 
             write_log("$user_logged: add reseller: $username");
@@ -269,16 +264,16 @@ SQL_QUERY;
             * 'reseller_props' table entry;
             */
 
-            $nreseller_max_domain_cnt 		= $_POST['nreseller_max_domain_cnt'];
-            $nreseller_max_subdomain_cnt 	= $_POST['nreseller_max_subdomain_cnt'];
-            $nreseller_max_alias_cnt 		= $_POST['nreseller_max_alias_cnt'];
-            $nreseller_max_mail_cnt 		= $_POST['nreseller_max_mail_cnt'];
-            $nreseller_max_ftp_cnt 			= $_POST['nreseller_max_ftp_cnt'];
-            $nreseller_max_sql_db_cnt 		= $_POST['nreseller_max_sql_db_cnt'];
-            $nreseller_max_sql_user_cnt 	= $_POST['nreseller_max_sql_user_cnt'];
-            $nreseller_max_traffic 			= $_POST['nreseller_max_traffic'];
-            $nreseller_max_disk 			= $_POST['nreseller_max_disk'];
-            $customer_id 					= $_POST['customer_id'];
+            $nreseller_max_domain_cnt 		= clean_input($_POST['nreseller_max_domain_cnt']);
+            $nreseller_max_subdomain_cnt 	= clean_input($_POST['nreseller_max_subdomain_cnt']);
+            $nreseller_max_alias_cnt 		= clean_input($_POST['nreseller_max_alias_cnt']);
+            $nreseller_max_mail_cnt 		= clean_input($_POST['nreseller_max_mail_cnt']);
+            $nreseller_max_ftp_cnt 			= clean_input($_POST['nreseller_max_ftp_cnt']);
+            $nreseller_max_sql_db_cnt 		= clean_input($_POST['nreseller_max_sql_db_cnt']);
+            $nreseller_max_sql_user_cnt 	= clean_input($_POST['nreseller_max_sql_user_cnt']);
+            $nreseller_max_traffic 			= clean_input($_POST['nreseller_max_traffic']);
+            $nreseller_max_disk 			= clean_input($_POST['nreseller_max_disk']);
+            $customer_id 					= clean_input($_POST['customer_id']);
 
             $query = <<<SQL_QUERY
                 insert into reseller_props
@@ -326,11 +321,11 @@ SQL_QUERY;
 
         send_add_user_auto_msg (
                                 $user_id,
-                                $_POST['username'],
+                                clean_input($_POST['username']),
                                 $_POST['pass'],
-                                $_POST['email'],
-                                htmlspecialchars($_POST['fname'], ENT_QUOTES, "UTF-8"),
-                                htmlspecialchars($_POST['lname'], ENT_QUOTES, "UTF-8"),
+                                clean_input($_POST['email']),
+                                clean_input($_POST['fname']),
+                                clean_input($_POST['lname']),
                                 tr('Reseller')
                                );
 
@@ -343,30 +338,30 @@ SQL_QUERY;
         else{
             $tpl -> assign(
                     array(
-                            'EMAIL' => $_POST['email'],
-                            'USERNAME' => $_POST['username'],
+                            'EMAIL' => clean_input($_POST['email']),
+                            'USERNAME' => clean_input($_POST['username']),
 
-                            'FIRST_NAME' => $_POST['fname'],
-                            'CUSTOMER_ID' =>$_POST['customer_id'],
-                            'LAST_NAME' => $_POST['lname'],
-                            'FIRM' => $_POST['firm'],
-                            'ZIP' => $_POST['zip'],
-                            'CITY' => $_POST['city'],
-                            'COUNTRY' => $_POST['country'],
-                            'STREET_1' => $_POST['street1'],
-                            'STREET_2' => $_POST['street2'],
-                            'PHONE' => $_POST['phone'],
-                            'FAX' => $_POST['fax'],
+                            'FIRST_NAME' => clean_input($_POST['fname']),
+                            'CUSTOMER_ID' => clean_input($_POST['customer_id']),
+                            'LAST_NAME' => clean_input($_POST['lname']),
+                            'FIRM' => clean_input($_POST['firm']),
+                            'ZIP' => clean_input($_POST['zip']),
+                            'CITY' => clean_input($_POST['city']),
+                            'COUNTRY' => clean_input($_POST['country']),
+                            'STREET_1' => clean_input($_POST['street1']),
+                            'STREET_2' => clean_input($_POST['street2']),
+                            'PHONE' => clean_input($_POST['phone']),
+                            'FAX' => clean_input($_POST['fax']),
 
-                            'MAX_DOMAIN_COUNT' => $_POST['nreseller_max_domain_cnt'],
-                            'MAX_SUBDOMAIN_COUNT' => $_POST['nreseller_max_subdomain_cnt'],
-                            'MAX_ALIASES_COUNT' => $_POST['nreseller_max_alias_cnt'],
-                            'MAX_MAIL_USERS_COUNT' => $_POST['nreseller_max_mail_cnt'],
-                            'MAX_FTP_USERS_COUNT' => $_POST['nreseller_max_ftp_cnt'],
-                            'MAX_SQLDB_COUNT' => $_POST['nreseller_max_sql_db_cnt'],
-                            'MAX_SQL_USERS_COUNT' => $_POST['nreseller_max_sql_user_cnt'],
-                            'MAX_TRAFFIC_AMOUNT' => $_POST['nreseller_max_traffic'],
-                            'MAX_DISK_AMOUNT' => $_POST['nreseller_max_disk'],
+                            'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt']),
+                            'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt']),
+                            'MAX_ALIASES_COUNT' => clean_input($_POST['nreseller_max_alias_cnt']),
+                            'MAX_MAIL_USERS_COUNT' => clean_input($_POST['nreseller_max_mail_cnt']),
+                            'MAX_FTP_USERS_COUNT' => clean_input($_POST['nreseller_max_ftp_cnt']),
+                            'MAX_SQLDB_COUNT' => clean_input($_POST['nreseller_max_sql_db_cnt']),
+                            'MAX_SQL_USERS_COUNT' => clean_input($_POST['nreseller_max_sql_user_cnt']),
+                            'MAX_TRAFFIC_AMOUNT' => clean_input($_POST['nreseller_max_traffic']),
+                            'MAX_DISK_AMOUNT' => clean_input($_POST['nreseller_max_disk']),
 
                         )
                 );
@@ -412,7 +407,7 @@ function check_user_data()
 
     global $reseller_ips, $sql;
 
-    $username= $_POST['username'];
+    $username= clean_input($_POST['username']);
 
     $query = <<<SQL_QUERY
         SELECT
@@ -431,7 +426,7 @@ SQL_QUERY;
 
         return false;
     }
-    if (chk_username($_POST['username'])) {
+    if (chk_username(clean_input($_POST['username']))) {
 
         set_page_message( tr("Incorrect username range or syntax!"));
 
@@ -449,7 +444,7 @@ SQL_QUERY;
 
         return false;
     }
-    if (chk_email($_POST['email'])) {
+    if (chk_email(clean_input($_POST['email']))) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
 
@@ -537,9 +532,6 @@ $reseller_ips = get_server_ip($tpl, $sql);
 
 add_reseller($tpl, $sql);
 
-$timestamp = time();
-$genpas = substr(md5($timestamp),0,6);
-
 $tpl -> assign(
     array(
         'TR_ADD_RESELLER' => tr('Add reseller'),
@@ -590,7 +582,7 @@ $tpl -> assign(
         'TR_FAX' => tr('Fax'),
         'TR_PHONE' => tr('Phone'),
         'TR_ADD' => tr('Add'),
-		'GENPAS' => $genpas
+		'GENPAS' => passgen()
         )
     );
 

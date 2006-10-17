@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_table_exists.lib.php,v 2.11.2.2 2006/04/12 18:51:11 lem9 Exp $ */
+/* $Id: db_table_exists.lib.php,v 2.14 2006/07/27 17:13:16 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -28,7 +28,7 @@ if (empty($is_db)) {
     }
 } // end if (ensures db exists)
 
-if (empty($is_table)) {
+if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
     // Not a valid table name -> back to the db_details.php
     if (isset($table) && strlen($table)) {
         $_result = PMA_DBI_try_query(

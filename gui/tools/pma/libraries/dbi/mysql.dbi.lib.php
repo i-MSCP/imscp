@@ -1,5 +1,5 @@
 <?php
-/* $Id: mysql.dbi.lib.php,v 2.43 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: mysql.dbi.lib.php,v 2.47 2006/07/17 16:50:47 lem9 Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -15,6 +15,26 @@ if (!defined('PMA_MYSQL_CLIENT_API')) {
     } else {
         define('PMA_MYSQL_CLIENT_API', 32332); // always expect the worst...
     }
+}
+
+function PMA_DBI_real_connect($server, $user, $password, $client_flags) {
+    global $cfg;
+
+    if (empty($client_flags)) {
+        if ($cfg['PersistentConnections']) {
+            $link = @mysql_pconnect($server, $user, $password);
+        } else {
+            $link = @mysql_connect($server, $user, $password);
+        }
+    } else {
+        if ($cfg['PersistentConnections']) {
+            $link = @mysql_pconnect($server, $user, $password, $client_flags);
+        } else {
+            $link = @mysql_connect($server, $user, $password, FALSE, $client_flags);
+        }
+    }
+
+    return $link;
 }
 
 function PMA_DBI_connect($user, $password, $is_controluser = FALSE) {
@@ -40,17 +60,13 @@ function PMA_DBI_connect($user, $password, $is_controluser = FALSE) {
         $client_flags |= 128;
     }
 
-    if (empty($client_flags)) {
-        $connect_func = 'mysql_' . ($cfg['PersistentConnections'] ? 'p' : '') . 'connect';
-        $link = @$connect_func($cfg['Server']['host'] . $server_port . $server_socket, $user, $password);
-    } else {
-        if ($cfg['PersistentConnections']) {
-            $link = @mysql_pconnect($cfg['Server']['host'] . $server_port . $server_socket, $user, $password, $client_flags);
-        } else {
-            $link = @mysql_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, $password, FALSE, $client_flags);
-        }
+    $link = PMA_DBI_real_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, $password, empty($client_flags) ? NULL : $client_flags);
+    
+    // Retry with empty password if we're allowed to
+    if (empty($link) && $cfg['Server']['nopassword'] && !$is_controluser) {
+        $link = PMA_DBI_real_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, '', empty($client_flags) ? NULL : $client_flags);
     }
-
+    
     if (empty($link)) {
         PMA_auth_fails();
     } // end if
@@ -303,7 +319,14 @@ function PMA_DBI_insert_id($link = null)
             return FALSE;
         }
     }
-    return mysql_insert_id($link);
+    //$insert_id = mysql_insert_id($link);
+    // if the primary key is BIGINT we get an incorrect result
+    // (sometimes negative, sometimes positive)
+    // and in the present function we don't know if the PK is BIGINT
+    // so better play safe and use LAST_INSERT_ID()
+    //
+    // by the way, no problem with mysqli_insert_id()
+    return PMA_DBI_fetch_value('SELECT LAST_INSERT_ID();', 0, 0, $link);
 }
 
 function PMA_DBI_affected_rows($link = null)
@@ -318,6 +341,9 @@ function PMA_DBI_affected_rows($link = null)
     return mysql_affected_rows($link);
 }
 
+/**
+ * @TODO add missing keys like in from mysqli_query (orgname, orgtable, flags, decimals)
+ */
 function PMA_DBI_get_fields_meta($result) {
     $fields       = array();
     $num_fields   = mysql_num_fields($result);

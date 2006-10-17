@@ -25,9 +25,7 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/ehp.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -113,23 +111,23 @@ if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
 // Restore form on any error
 function restore_form(&$tpl, &$sql) {
 	$tpl -> assign(array(
-						 'HP_NAME_VALUE' => htmlspecialchars(stripslashes($_POST['hp_name']), ENT_QUOTES, "UTF-8"),
-						 'HP_DESCRIPTION_VALUE' => htmlspecialchars(stripslashes($_POST['hp_description']), ENT_QUOTES, "UTF-8"),
-						 'TR_MAX_SUB_LIMITS' => $_POST['hp_sub'],
-						 'TR_MAX_ALS_VALUES' => $_POST['hp_als'],
-						 'HP_MAIL_VALUE' => $_POST['hp_mail'],
-						 'HP_FTP_VALUE' => $_POST['hp_ftp'],
-						 'HP_SQL_DB_VALUE' => $_POST['hp_sql_db'],
-						 'HP_SQL_USER_VALUE' => $_POST['hp_sql_user'],
-						 'HP_TRAFF_VALUE' => $_POST['hp_traff'],
-						 'HP_TRAFF' => $_POST['hp_traff'],
-						 'HP_DISK_VALUE' => $_POST['hp_disk'],
-						 'HP_PRICE' => $_POST['hp_price'],
-						 'HP_SETUPFEE' => $_POST['hp_setupfee'],
-						 'HP_CURRENCY' => stripslashes($_POST['hp_currency']),
-						 'HP_PAYMENT' => stripslashes($_POST['hp_payment'])
+						 'HP_NAME_VALUE' => clean_input($_POST['hp_name']),
+						 'HP_DESCRIPTION_VALUE' => clean_input($_POST['hp_description']),
+						 'TR_MAX_SUB_LIMITS' => clean_input($_POST['hp_sub']),
+						 'TR_MAX_ALS_VALUES' => clean_input($_POST['hp_als']),
+						 'HP_MAIL_VALUE' => clean_input($_POST['hp_mail']),
+						 'HP_FTP_VALUE' => clean_input($_POST['hp_ftp']),
+						 'HP_SQL_DB_VALUE' => clean_input($_POST['hp_sql_db']),
+						 'HP_SQL_USER_VALUE' => clean_input($_POST['hp_sql_user']),
+						 'HP_TRAFF_VALUE' => clean_input($_POST['hp_traff']),
+						 'HP_TRAFF' => clean_input($_POST['hp_traff']),
+						 'HP_DISK_VALUE' => clean_input($_POST['hp_disk']),
+						 'HP_PRICE' => clean_input($_POST['hp_price']),
+						 'HP_SETUPFEE' => clean_input($_POST['hp_setupfee']),
+						 'HP_CURRENCY' => clean_input($_POST['hp_currency']),
+						 'HP_PAYMENT' => clean_input($_POST['hp_payment'])
 						 ));
-						 
+
 	if ('_yes_' === $_POST['php']) {
 		$tpl -> assign(array('TR_PHP_YES' => 'checked'));
 	} else
@@ -138,8 +136,8 @@ function restore_form(&$tpl, &$sql) {
 		$tpl -> assign(array('TR_CGI_YES' => 'checked'));
 	} else
 		$tpl -> assign(array('TR_CGI_NO' => 'checked'));
-		
-	if ($_POST['status'] == 1) {
+
+	if (clean_input($_POST['status'] == 1)) {
     $tpl -> assign(array('TR_STATUS_YES' => 'checked'));
   } else
     $tpl -> assign(array('TR_STATUS_NO' => 'checked'));
@@ -166,7 +164,7 @@ SQL_QUERY;
   $disabled = 'disabled';
   $edit_hp = tr('View hosting plan');
   $tpl -> assign('FORM', "");
- 
+
 } else {
 $query = <<<SQL_QUERY
         select
@@ -197,16 +195,16 @@ SQL_QUERY;
   $status = $data['status'];
   list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
   $hp_name = $data['name'];
-  
+
   if ($description == '')
   	$description = '';
-	
+
   if ($payment == '')
   	$payment = '';
-	
+
 	if ($value == '')
   	$value = '';
-  
+
   $tpl -> assign(array('HP_NAME_VALUE' => stripslashes($hp_name),
 					   'TR_EDIT_HOSTING_PLAN' => $edit_hp,
                        'TR_MAX_SUB_LIMITS' => $hp_sub,
@@ -233,7 +231,7 @@ SQL_QUERY;
     $tpl -> assign(array('TR_CGI_YES' => 'checked'));
   } else
     $tpl -> assign(array('TR_CGI_NO' => 'checked'));
-  
+
   if ($status == 1) {
     $tpl -> assign(array('TR_STATUS_YES' => 'checked'));
   } else
@@ -254,17 +252,17 @@ function check_data_iscorrect(&$tpl)
   global $price, $setup_fee;
 
   $ahp_error	= "_off_";
-  $hp_name	= $_POST['hp_name'];
-  $hp_sub		= $_POST['hp_sub'];
-  $hp_als		= $_POST['hp_als'];
-  $hp_mail	= $_POST['hp_mail'];
-  $hp_ftp		= $_POST['hp_ftp'];
-  $hp_sql_db	= $_POST['hp_sql_db'];
-  $hp_sql_user= $_POST['hp_sql_user'];
-  $hp_traff	= $_POST['hp_traff'];
-  $hp_disk	= $_POST['hp_disk'];
-  $price = $_POST['hp_price'];
-  $setup_fee = $_POST['hp_setupfee'];
+  $hp_name		= clean_input($_POST['hp_name']);
+  $hp_sub		= clean_input($_POST['hp_sub']);
+  $hp_als		= clean_input($_POST['hp_als']);
+  $hp_mail		= clean_input($_POST['hp_mail']);
+  $hp_ftp		= clean_input($_POST['hp_ftp']);
+  $hp_sql_db	= clean_input($_POST['hp_sql_db']);
+  $hp_sql_user	= clean_input($_POST['hp_sql_user']);
+  $hp_traff		= clean_input($_POST['hp_traff']);
+  $hp_disk		= clean_input($_POST['hp_disk']);
+  $price 		= clean_input($_POST['hp_price']);
+  $setup_fee 	= clean_input($_POST['hp_setupfee']);
 
   if (isset($_SESSION['hpid']))
     $hpid = $_SESSION['hpid'];
@@ -306,7 +304,7 @@ function check_data_iscorrect(&$tpl)
   } else if (!is_numeric($setup_fee)) {
 	  $ahp_error = tr('Incorrect setup fee!');
   }
- 
+
 
   if ($ahp_error == '_off_') {
     $tpl -> assign('MESSAGE', '');
@@ -332,33 +330,33 @@ function save_data_to_db()
   global $hp_traff, $hp_disk;
   global $hpid;
 
-	$description = $_POST['hp_description'];
-	$price = $_POST['hp_price'];
-	$setup_fee = $_POST['hp_setupfee'];
-	$currency = $_POST['hp_currency'];
-	$payment = $_POST['hp_payment'];
-	$status = $_POST['status'];
-	
+	$description 	= clean_input($_POST['hp_description']);
+	$price 			= clean_input($_POST['hp_price']);
+	$setup_fee 		= clean_input($_POST['hp_setupfee']);
+	$currency 		= clean_input($_POST['hp_currency']);
+	$payment		= clean_input($_POST['hp_payment']);
+	$status 		= clean_input($_POST['status']);
+
 	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
-  	  	  	
+
   	$err_msg = '_off_';
-  	
+
   	$admin_id = $_SESSION['user_id'];
-  	
+
   	reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props);
-  	
+
   	if ($err_msg != '_off_') {
-  		
+
   		set_page_message($err_msg);
   		restore_form($tpl, $sql);
-  		
+
   	} else {
-		
+
 	$query = <<<SQL_QUERY
         update
             hosting_plans
         set
-            name = ?, 
+            name = ?,
 			description = ?,
 			props = ?,
 			price = ?,
@@ -370,16 +368,16 @@ function save_data_to_db()
             id = ?
 SQL_QUERY;
   $res = exec_query($sql, $query, array(htmlspecialchars($hp_name, ENT_QUOTES, "UTF-8"),
-  										htmlspecialchars($description, ENT_QUOTES, "UTF-8"), 
-										$hp_props, $price, $setup_fee, 
-										htmlspecialchars($currency, ENT_QUOTES, "UTF-8"), 
+  										clean_input($description),
+										$hp_props, $price, $setup_fee,
+										htmlspecialchars($currency, ENT_QUOTES, "UTF-8"),
 										htmlspecialchars($payment, ENT_QUOTES, "UTF-8"), $status, $hpid));
 
    		$_SESSION['hp_updated'] = '_yes_';
     	Header("Location: hp.php");
     	die();
-    
-  	}										
+
+  	}
 
 } //End of save_data_to_db()
 

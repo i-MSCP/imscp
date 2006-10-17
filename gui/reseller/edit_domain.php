@@ -29,11 +29,8 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('ip_entry', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('logged_from', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
@@ -366,14 +363,14 @@ function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
 
     global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql, $domain_ip, $domain_php, $domain_cgi;
 
-	$sub	= $_POST['dom_sub'];
-	$als	= $_POST['dom_alias'];
-	$mail	= $_POST['dom_mail_acCount'];
-	$ftp	= $_POST['dom_ftp_acCounts'];
-	$sql_db	= $_POST['dom_sqldb'];
-	$sql_user= $_POST['dom_sql_users'];
-	$traff	= $_POST['dom_traffic'];
-	$disk	= $_POST['dom_disk'];
+	$sub		= clean_input($_POST['dom_sub']);
+	$als		= clean_input($_POST['dom_alias']);
+	$mail		= clean_input($_POST['dom_mail_acCount']);
+	$ftp		= clean_input($_POST['dom_ftp_acCounts']);
+	$sql_db		= clean_input($_POST['dom_sqldb']);
+	$sql_user	= clean_input($_POST['dom_sql_users']);
+	$traff		= clean_input($_POST['dom_traffic']);
+	$disk		= clean_input($_POST['dom_disk']);
 	//$domain_ip = $_POST['domain_ip'];
 	$domain_php = $_POST['domain_php'];
 	$domain_cgi = $_POST['domain_cgi'];

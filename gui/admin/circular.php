@@ -48,10 +48,10 @@ function gen_page_data ( &$tpl, &$sql)
 
         $tpl -> assign(
             array(
-                'MESSAGE_SUBJECT' => $_POST['msg_subject'],
-                'MESSAGE_TEXT' => $_POST['msg_text'],
-                'SENDER_EMAIL' => $_POST['sender_email'],
-                'SENDER_NAME' => $_POST['sender_name'],
+                'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject']),
+                'MESSAGE_TEXT' => clean_input($_POST['msg_text']),
+                'SENDER_EMAIL' => clean_input($_POST['sender_email']),
+                'SENDER_NAME' => clean_input($_POST['sender_name'])
                 )
             );
     }
@@ -96,13 +96,13 @@ function check_user_data ( &$tpl ) {
 
     $err_message = '_off_';
 
-    $msg_subject = $_POST['msg_subject'];
+    $msg_subject = clean_input($_POST['msg_subject']);
 
-    $msg_text = $_POST['msg_text'];
+    $msg_text = clean_input($_POST['msg_text']);
 
-    $sender_email = $_POST['sender_email'];
+    $sender_email = clean_input($_POST['sender_email']);
 
-    $sender_name = $_POST['sender_name'];
+    $sender_name = clean_input($_POST['sender_name']);
 
     if ($msg_subject == '') {
 
@@ -145,13 +145,13 @@ function send_reseller_message ( &$sql) {
 
     $user_id = $_SESSION['user_id'];
 
-    $msg_subject = stripslashes($_POST['msg_subject']);
+    $msg_subject = clean_input($_POST['msg_subject']);
 
-    $msg_text = $_POST['msg_text'];
+    $msg_text = clean_input($_POST['msg_text']);
 
-    $sender_email = $_POST['sender_email'];
+    $sender_email = clean_input($_POST['sender_email']);
 
-    $sender_name = $_POST['sender_name'];
+    $sender_name = clean_input($_POST['sender_name']);
 
     $query = <<<SQL_QUERY
         select
@@ -216,13 +216,13 @@ function send_circular(&$tpl, &$sql)
 function send_reseller_users_message ( &$sql, $admin_id)
 {
 
-    $msg_subject = $_POST['msg_subject'];
+    $msg_subject = clean_input($_POST['msg_subject']);
 
-    $msg_text = $_POST['msg_text'];
+    $msg_text = clean_input($_POST['msg_text']);
 
-    $sender_email = $_POST['sender_email'];
+    $sender_email = clean_input($_POST['sender_email']);
 
-    $sender_name = $_POST['sender_name'];
+    $sender_name = clean_input($_POST['sender_name']);
 
     $query = <<<SQL_QUERY
         select
@@ -256,6 +256,8 @@ function send_circular_email ($to, $from, $subject, $message) {
 	$mail_date = date("r");
 
     $headers = "From: $from\r\n";
+
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
 
     $headers .= "X-Mailer: VHCS Pro v2 marketing mailer";
 

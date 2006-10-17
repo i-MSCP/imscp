@@ -125,9 +125,6 @@ $tpl -> define_dynamic('logged_from', 'page');
 
 $tpl -> define_dynamic('def_layout', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 

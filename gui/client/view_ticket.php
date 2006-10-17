@@ -26,7 +26,6 @@ $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('tickets_list', 'page');
 $tpl -> define_dynamic('tickets_item', 'tickets_list');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 //
 // page functions.
@@ -89,7 +88,7 @@ SQL_QUERY;
                          'ACTION' => $action,
                          'DATE' => date($date_formt, $rs -> fields['ticket_date']),
                          'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
-                         'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n", 1)),
+                         'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200)/7), "<br>\n", 1),
                          'ID' => $rs -> fields['ticket_id']));
 
     $tpl -> parse('TICKETS_ITEM', '.tickets_item');
@@ -122,12 +121,12 @@ SQL_QUERY;
     $ticket_id = $rs -> fields['ticket_id'];
     $ticket_subject = $rs -> fields['ticket_subject'];
     $ticket_date = $rs -> fields['ticket_date'];
-    $ticket_message = clean_html($rs -> fields['ticket_message']);
+    $ticket_message = clean_input($rs -> fields['ticket_message']);
 
     global $cfg;
     $date_formt = $cfg['DATE_FORMAT'];
     $tpl -> assign(array('DATE' => date($date_formt, $rs -> fields['ticket_date']),
-                        'TICKET_CONTENT' => stripslashes(wordwrap($rs -> fields['ticket_message'], round(($screenwidth-200)/7), "<br>\n", 1)),
+                        'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200)/7), "<br>\n", 1),
                          //'ID' => $rs -> fields['ticket_reply'],
                          ));
     get_ticket_from($tpl, $sql, $ticket_id);
@@ -200,7 +199,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id)
     // open ticket
     open_ticket($sql, $ticket_id);
     return;
-  } elseif ($_POST['user_message'] === '') {
+  } elseif (empty($_POST['user_message'])) {
     // no message check->error
     set_page_message(tr('Please type your message!'));
     return;
@@ -208,7 +207,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id)
 
   $ticket_date = time();
   $subj = clean_html($_POST['subject']);
-  $user_message = clean_html($_POST["user_message"]);
+  $user_message = clean_input($_POST["user_message"]);
   $ticket_status = 4;
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];
@@ -235,8 +234,8 @@ SQL_QUERY;
                                        $ticket_reply,
                                        $urgency,
                                        $ticket_date,
-                                       htmlspecialchars($subj, ENT_QUOTES, "UTF-8"),
-                                       htmlspecialchars($user_message, ENT_QUOTES, "UTF-8")));
+                                       $subj,
+                                       $user_message));
 
   set_page_message(tr('Message was send!'));
 
@@ -344,11 +343,19 @@ if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
 $reseller_id = $_SESSION['user_created_by'];
 if (isset($_GET['ticket_id'])) {
   	$ticket_id = $_GET['ticket_id'];
-	$screenwidth = $_GET['screenwidth'];
+
+	if (isset($_GET['screenwidth'])) {
+		$screenwidth = $_GET['screenwidth'];
+	}
+	else {
+		$screenwidth = $_POST['screenwidth'];
+	}
+
 	if (!isset($screenwidth) || $screenwidth < 639) {
   		$screenwidth = 1024;
 	}
 	$tpl -> assign('SCREENWIDTH', $screenwidth);
+
 	send_user_message($sql, $_SESSION['user_id'], $reseller_id, $ticket_id);
 	change_ticket_status($sql, $ticket_id);
 	gen_tickets_list($tpl, $sql, $ticket_id, $screenwidth);

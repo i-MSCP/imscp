@@ -1,4 +1,4 @@
-<?php 
+<?php
 // -----------------------------------------------------------------------------
 // |             VHCS(tm) - Virtual Hosting Control System                      |
 // |              Copyright (c) 2001-2005 by moleSoftware		            	|
@@ -33,7 +33,6 @@ $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/ahp.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('custom_buttons', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
@@ -79,7 +78,7 @@ $tpl -> assign(array('TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
 					 'TR_STATUS' => tr('Available for purchasing'),
 					 'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
 					 'TR_EXAMPEL' => tr('(Ex. EUR)'),
-					 
+
                      'TR_ADD_PLAN' => tr('Add plan')));
 
 if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
@@ -176,78 +175,80 @@ function check_data_correction(&$tpl)
 
   $ahp_error  = "_off_";
 
-	$hp_name = $_POST['hp_name'];
-	$hp_sub = $_POST['hp_sub'];
-	$hp_als = $_POST['hp_als'];
-	$hp_mail = $_POST['hp_mail'];
-	$hp_ftp = $_POST['hp_ftp'];
-	$hp_sql_db = $_POST['hp_sql_db'];
-	$hp_sql_user= $_POST['hp_sql_user'];
-	$hp_traff = $_POST['hp_traff'];
-	$hp_disk = $_POST['hp_disk'];
-	$description = $_POST['hp_description'];
-	
-	if ($_POST['hp_price'] == ''){
+	$hp_name 		= clean_input($_POST['hp_name']);
+	$hp_sub 		= clean_input($_POST['hp_sub']);
+	$hp_als 		= clean_input($_POST['hp_als']);
+	$hp_mail 		= clean_input($_POST['hp_mail']);
+	$hp_ftp 		= clean_input($_POST['hp_ftp']);
+	$hp_sql_db 		= clean_input($_POST['hp_sql_db']);
+	$hp_sql_user	= clean_input($_POST['hp_sql_user']);
+	$hp_traff 		= clean_input($_POST['hp_traff']);
+	$hp_disk 		= clean_input($_POST['hp_disk']);
+	$description 	= clean_input($_POST['hp_description']);
+
+	if (empty($_POST['hp_price'])) {
 		$price = 0;
-	} else {
-	$price = $_POST['hp_price'];
 	}
-	if ($_POST['hp_setupfee'] == ''){
+	else {
+		$price = clean_input($_POST['hp_price']);
+	}
+	if (empty($_POST['hp_setupfee'])) {
 		$setup_fee = 0;
-	} else {
-	$setup_fee = $_POST['hp_setupfee'];
+	}
+	else {
+		$setup_fee = clean_input($_POST['hp_setupfee']);
 	}
 
-	$value = $_POST['hp_value'];
-	$payment = $_POST['hp_payment'];
+	$value = clean_input($_POST['hp_value']);
+	$payment = clean_input($_POST['hp_payment']);
 	$status = $_POST['status'];
 
-  if (isset($_POST['php']))
-    $hp_php = $_POST['php'];
+  	if (isset($_POST['php']))
+    	$hp_php = $_POST['php'];
 
-  if (isset($_POST['cgi']))
-    $hp_cgi = $_POST['cgi'];;
+ 	if (isset($_POST['cgi']))
+    	$hp_cgi = $_POST['cgi'];;
 
-  if ($hp_name == '') {
+	if ($hp_name == '') {
         $ahp_error = tr('Incorrect template name range or syntax!');
-    }
-	
-  if ($description == '') {
+	}
+
+  	if ($description == '') {
         $ahp_error = tr('Incorrect template description range or syntax!');
     }
-  if (!is_numeric($price)) {
-  	$ahp_error = tr('Incorrect price range or syntax!');
-  }
-  
-  if (!is_numeric($setup_fee)) {
-  	$ahp_error = tr('Incorrect setup fee range or syntax!');
-  }
-  
-  if (!vhcs_limit_check($hp_sub, 999)) {
-    $ahp_error = tr('Incorrect subdomain range or syntax!');
-  } else if (!vhcs_limit_check($hp_als, 999)) {
-    $ahp_error = tr('Incorrect alias range or syntax!');
-  } else if (!vhcs_limit_check($hp_mail, 999)) {
-    $ahp_error = tr('Incorrect mail account range or syntax!');
-  } else if (!vhcs_limit_check($hp_ftp, 999) || $hp_ftp == -1) {
-    $ahp_error = tr('Incorrect FTP account range or syntax!');
-  } else if (!vhcs_limit_check($hp_sql_user, 999)) {
-    $ahp_error = tr('Incorrect SQL database range or syntax!');
-  } else if (!vhcs_limit_check($hp_sql_db, 999)) {
-    $ahp_error = tr('Incorrect SQL user range or syntax!');
-  } else if (!vhcs_limit_check($hp_traff, 1024*1024) || $hp_traff == -1) {
-    $ahp_error = tr('Incorrect traffic range or syntax!');
-  } else if (!vhcs_limit_check($hp_disk, 1024*1024) || $hp_disk == -1) {
-    $ahp_error = tr('Incorrect disk range or syntax!');
-  }
+  	if (!is_numeric($price)) {
+  		$ahp_error = tr('Incorrect price range or syntax!');
+  	}
 
-  if ($ahp_error == '_off_') {
-    $tpl -> assign('MESSAGE', '');
-    return true;
-  } else {
-    set_page_message($ahp_error);
-	//$tpl -> assign('MESSAGE', $ahp_error);
-    return false;
+  	if (!is_numeric($setup_fee)) {
+  		$ahp_error = tr('Incorrect setup fee range or syntax!');
+  	}
+
+  	if (!vhcs_limit_check($hp_sub, 999)) {
+		$ahp_error = tr('Incorrect subdomain range or syntax!');
+	} else if (!vhcs_limit_check($hp_als, 999)) {
+		$ahp_error = tr('Incorrect alias range or syntax!');
+	} else if (!vhcs_limit_check($hp_mail, 999)) {
+		$ahp_error = tr('Incorrect mail account range or syntax!');
+	} else if (!vhcs_limit_check($hp_ftp, 999) || $hp_ftp == -1) {
+		$ahp_error = tr('Incorrect FTP account range or syntax!');
+	} else if (!vhcs_limit_check($hp_sql_user, 999)) {
+		$ahp_error = tr('Incorrect SQL database range or syntax!');
+	} else if (!vhcs_limit_check($hp_sql_db, 999)) {
+		$ahp_error = tr('Incorrect SQL user range or syntax!');
+	} else if (!vhcs_limit_check($hp_traff, 1024*1024) || $hp_traff == -1) {
+		$ahp_error = tr('Incorrect traffic range or syntax!');
+	} else if (!vhcs_limit_check($hp_disk, 1024*1024) || $hp_disk == -1) {
+		$ahp_error = tr('Incorrect disk range or syntax!');
+	}
+
+  	if ($ahp_error == '_off_') {
+    	$tpl -> assign('MESSAGE', '');
+    	return true;
+  	} else {
+    	set_page_message($ahp_error);
+		//$tpl -> assign('MESSAGE', $ahp_error);
+    	return false;
   }
 
   return TRUE;
@@ -274,27 +275,27 @@ function save_data_to_db(&$tpl, $admin_id)
     //$tpl -> parse('AHP_MESSAGE', 'ahp_message');
 
   } else {
-  	
+
   	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
-  	
+
   	$err_msg = '_off_';
-  	
+
   	//this id is just for fake and is not used in reseller_limits_check.
   	$hpid=99999999999999999999999999;
-  	
+
   	reseller_limits_check($sql,$err_msg,$admin_id,$hpid,$hp_props);
-  	
+
   	if ($err_msg != '_off_') {
-  		
+
   		set_page_message($err_msg);
         return;
-  		
+
   	} else {
-    
+
 	  $query = <<<SQL_QUERY
         insert into
             hosting_plans(reseller_id,
-							name, 
+							name,
 							description,
 							props,
 							price,
@@ -309,10 +310,10 @@ SQL_QUERY;
   		$_SESSION['hp_added'] = '_yes_';
     	Header("Location: ehp.php");
     	die();
-  
-  
+
+
   	}
-  } 
+  }
 } //End of save_data_to_db()
 
 ?>

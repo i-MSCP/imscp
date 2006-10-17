@@ -1,6 +1,8 @@
 <?php
-/* $Id: tbl_properties_table_info.inc.php,v 1.3 2005/12/08 12:14:34 cybot_tm Exp $ */
+/* $Id: tbl_properties_table_info.inc.php,v 1.5 2006/04/27 12:32:11 nijel Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
+
+require_once './libraries/Table.class.php';
 
 /**
  * extracts table properties from create statement
@@ -75,7 +77,7 @@ if ($table_info_result && PMA_DBI_num_rows($table_info_result) > 0) {
         : $showtable['Collation'];
 
     if ( null === $showtable['Rows'] ) {
-        $showtable['Rows']   = PMA_countRecords( $GLOBALS['db'],
+        $showtable['Rows']   = PMA_Table::countRecords( $GLOBALS['db'],
             $showtable['Name'], true, true );
     }
     $table_info_num_rows = isset($showtable['Rows']) ? $showtable['Rows'] : 0;
@@ -89,12 +91,15 @@ if ($table_info_result && PMA_DBI_num_rows($table_info_result) > 0) {
 
     // export create options by its name as variables into gloabel namespace
     // f.e. pack_keys=1 becomes available as $pack_keys with value of '1'
+    unset($pack_keys);
     foreach ( $create_options as $each_create_option ) {
         $each_create_option = explode('=', $each_create_option);
         if ( isset( $each_create_option[1] ) ) {
             $$each_create_option[0]    = $each_create_option[1];
         }
     }
+    // we need explicit DEFAULT value here (different from '0')
+    $pack_keys = (!isset($pack_keys) || strlen($pack_keys) == 0) ? 'DEFAULT' : $pack_keys;
     unset( $create_options, $each_create_option );
 } // end if
 ?>

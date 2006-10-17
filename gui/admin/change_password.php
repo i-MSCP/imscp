@@ -48,7 +48,7 @@ function update_password()
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
-        if ($_POST['pass'] === '' || $_POST['pass_rep'] === '' || $_POST['curr_pass'] === '') {
+        if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 
             set_page_message(tr('Please fill up all data fields!'));
 
@@ -68,8 +68,8 @@ function update_password()
 
             $upass = crypt_user_pass($_POST['pass']);
 
-						$_SESSION['user_pass'] = $upass;
-						
+			$_SESSION['user_pass'] = $upass;
+
             $user_id = $_SESSION['user_id'];
 
             $query = <<<SQL_QUERY
@@ -91,34 +91,34 @@ SQL_QUERY;
 }
 
 function check_udata($id, $pass) {
+
 	global $sql;
 
 	$query = <<<SQL_QUERY
-        select
-          	 admin_id, admin_pass
-        from
-            admin
-        where
-            admin_id = ?
-        and
-        	admin_pass = ?
-SQL_QUERY;
-
-	$query2 = <<<SQL_QUERY
         SELECT
-                admin_name, admin_pass
+        	admin_name, admin_pass
         FROM
-                admin
+          admin
         WHERE
-                admin_id = ?
+          admin_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($id,md5($pass)));
+  $rs = exec_query($sql, $query, array($id));
 
-  $rs2 = exec_query($sql, $query2, array($id));
-  
-  if ( ($rs -> RecordCount()) == 1  || crypt($pass, $udata['admin_pass']) == $udata['admin_pass'] )
-        return true; else return false;
+  if ($rs -> RecordCount() == 1) {
+  	
+		$rs = $rs -> FetchRow();
+
+  	if ( (crypt($pass, $rs['admin_pass']) == $rs['admin_pass']) || (md5($pass) == $rs['admin_pass']) ) {
+		  	
+			return true;
+
+		}
+
+	}
+
+	return false;
+
 }
 
 /*

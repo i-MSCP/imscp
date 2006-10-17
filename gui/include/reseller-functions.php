@@ -34,6 +34,8 @@ global $sql, $cfg;
 
 $tpl -> define_dynamic('menu', $menu_file);
 
+$tpl -> define_dynamic('custom_buttons', 'menu');
+
 $tpl -> assign(
 					array(
 							'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
@@ -1175,25 +1177,20 @@ function gen_manage_domain_search_options  (&$tpl,
 
 	}
 
-
-
 	if ($search_for === "n/a" || $search_for === '') {
 
 			$tpl -> assign(
 			                array(
-									'SEARCH_FOR' => "",
+									'SEARCH_FOR' => ""
 								)
 							);
 	} else {
 			$tpl -> assign(
 			                array(
-									'SEARCH_FOR' => $search_for,
+									'SEARCH_FOR' => stripslashes($search_for)
 								)
 							);
-
-
 	}
-
 
 	$tpl -> assign(
 			                array(
@@ -1221,11 +1218,8 @@ function gen_manage_domain_search_options  (&$tpl,
 									'M_ALL_SELECTED' => $all_selected,
 									'M_OK_SELECTED' => $ok_selected,
 									'M_SUSPENDED_SELECTED' => $suspended_selected,
-
-
 								  )
 							  );
-
 
 }
 
@@ -1388,12 +1382,12 @@ SQL_QUERY;
 
 }
 
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops )
+function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops="" )
 {
 
  	if (empty($newprops)) {
 	//this hosting plan exists
-	
+
   		if (isset($_SESSION["ch_hpprops"])) {
     		$props = $_SESSION["ch_hpprops"];
   		} else {
@@ -1413,12 +1407,12 @@ SQL_QUERY;
   	} else {
   		//we want to check _before_ inserting
 
-		$props = $newprops;	
-								
+		$props = $newprops;
+
 		}
-  		  		
-	  		
-  
+
+
+
   list($php_new, $cgi_new, $sub_new,
        $als_new, $mail_new, $ftp_new,
        $sql_db_new, $sql_user_new,
@@ -1481,7 +1475,7 @@ SQL_QUERY;
         }
     }
 
-  
+
     if ($als_max != 0) {
         if ($als_new != -1) {
             if ($als_new == 0) {
@@ -1493,7 +1487,7 @@ SQL_QUERY;
             }
         }
     }
-	
+
     if ($mail_max != 0) {
         if ($mail_new == 0) {
             $err_msg = tr('You have mail account limit!<br>You can not add user with unlimited mail accunt number!');
@@ -1670,118 +1664,71 @@ SQL_QUERY;
 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id)
 {
-	global $sql, $Version;
+	global $cfg;
 
-	    $query = <<<SQL_QUERY
-        select
-            fname, lname, email
-        from
-            admin
-        where
-            admin_id = ?
+	$data = get_order_email($admin_id);
 
-SQL_QUERY;
+	$from_name = $data['sender_name'];
 
-	#print $admin_id;
-	#die();
-    $res = exec_query($sql, $query, array($admin_id));
+	$from_email = $data['sender_email'];
 
-    $admin_email = $res -> fields['email'];
+  $subject = $data['subject'];
 
-    $admin_fname = $res -> fields['fname'];
+  $message = $data['message'];
 
-    $admin_lname = $res -> fields['lname'];
+  if ($from_name) {
 
-    $query = <<<SQL_QUERY
-        select
-            subject, message
-        from
-            email_tpls
-        where
-            owner_id = ?
-          and
-            name = 'after-order-msg'
-SQL_QUERY;
+  	$from = $from_name . "<" . $from_email . ">";
 
-    $res = exec_query($sql, $query, array($admin_id));
+	} else {
 
-    $subject = $res -> fields['subject'];
+  	$from = $from_email;
+	
+	}
 
-    $message = $res -> fields['message'];
+  if ($ufname && $ulname) {
 
-    if ($res -> RecordCount() ==0 ){
+  	$to = "$ufname $ulname <$uemail>";
 
-    $subject = "Auto message alert for domain order {DOMAIN} !";
+    $name = "$ufname $ulname";
 
-    $message = <<<MSG
-Dear {NAME},
-This is an automatic confirmation for the order of the domain:
+  } else {
 
-{DOMAIN}
+  	$name = $uname;
 
-Thank you for using VHCS services.
-Your VHCS Team
+    $to = $uemail;
 
+  }
 
+  $subject = preg_replace("/\{DOMAIN\}/", $domain_name, $subject);
+  $message = preg_replace("/\{DOMAIN\}/", $domain_name, $message);
+  $message = preg_replace("/\{NAME\}/", $name, $message);
 
-MSG;
+  $headers  = "From: $from\n";
+  $headers .= "MIME-Version: 1.0\n" .
+            	"Content-Type: text/plain;\n" .
+							"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
 
-    }
+  $mail_result = mail($to, $subject, $message, $headers);
 
-    if ($admin_fname && $admin_lname) {
-
-        $from = "$admin_fname $admin_lname <$admin_email>";
-
-    } else {
-
-        $from = $admin_email;
-
-    }
-
-    if ($ufname && $ulname) {
-
-        $to = "$ufname $ulname <$uemail>";
-
-        $name = "$ufname $ulname";
-
-    } else {
-
-        $name = $uname;
-
-        $to = $uemail;
-
-    }
-
-
-
-    $subject = preg_replace("/\{DOMAIN\}/", $domain_name, $subject);
-    $message = preg_replace("/\{DOMAIN\}/", $domain_name, $message);
-    $message = preg_replace("/\{NAME\}/", $name, $message);
-
-    $headers = "From: $from\r\n";
-
-    $headers .= "MIME-Version: 1.0\r\n" .
-            	"Content-Type: text/plain; " .
-				"X-Mailer: VHCS $Version Service Mailer";
-
-    $mail_result = mail($to, $subject, $message, $headers);
-
-    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+  $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
 	// lets send mail to the reseller => new order
 
-	$subject = "[VHCS $Version] - You have new order";
-	$message = "Dear ".$admin_fname." ".$admin_lname.", \n\n";
-	$message .= "You have new order from ".$to."\n";
-	$message .= "Please login into your VHCS control panel for more details";
+	$from = $to;
 
-	$headers = "From: $to\r\n";
+	$subject = "You have new order";
 
-    $headers .= "MIME-Version: 1.0 \r\n" .
-            	"Content-Type: text/plain; " .
-				"X-Mailer: VHCS $Version Service Mailer";
+	$message = <<<MSG
 
-    $mail_result = mail($from, $subject, $message, $headers);
+Dear $from_name,
+you have new order from $to
+
+Please login into your VHCS control panel for more details.
+
+MSG;
+
+	$mail_result = mail($from, $subject, $message, $headers);
 
 }
 

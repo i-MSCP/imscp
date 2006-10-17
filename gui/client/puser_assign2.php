@@ -29,8 +29,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('already_in', 'page');
 
 $tpl -> define_dynamic('grp_avlb', 'page');
@@ -70,8 +68,8 @@ $query = <<<SQL_QUERY
 
              dmn_id = '$dmn_id'
 
-        and 
-			id = '$uuser_id' 
+        and
+			id = '$uuser_id'
 
 SQL_QUERY;
 
@@ -81,10 +79,10 @@ SQL_QUERY;
 		header('Location: puser_manage.php');
 		die();
 	} else {
-	
+
 		return $rs;
 	}
-	
+
 
 
 }
@@ -93,34 +91,34 @@ SQL_QUERY;
 function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 {
 	if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
-	
+
 	$uuser_id = $_GET['uname'];
 	$uname = get_htuser_name($sql, $uuser_id, $dmn_id)
-	
+
 		$tpl -> assign(
 					array(
 							'UNAME' => $uname,
 							 )
 					);
 
-	
-	} else if (isset($_POST['nadmin_name']) && $_POST['nadmin_name'] !== '' && is_numeric($_POST['nadmin_name'] )) {
-		$uuser_id =$_POST['nadmin_name'];
+
+	} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'] )) {
+		$uuser_id = clean_input($_POST['nadmin_name']);
 		$uname = get_htuser_name($sql, $uuser_id, $dmn_id)
 		$tpl -> assign(
 					array(
 							'UNAME' => $uname,
 							 )
 					);
-	
-		
+
+
 	}else {
 		header('Location: puser_manage.php');
 		die();
 	}
 
 	// lets generate all groups where the user is added
-	
+
 	$numg = 0;
     $ingr = '';
 	global $cfg;
@@ -128,7 +126,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 	$domain_name = $_SESSION['user_logged'];
     $file = $homedir.'/'.$domain_name.'/.htgroup';
     $fd   = fopen($file,'r');
-	
+
 	while(!feof($fd)){
        $line = fgets($fd,4096);
        $ua = explode(':',$line);
@@ -141,10 +139,10 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 					);
 			  $tpl -> parse('ALREADY_IN', '.already_in');
 			  $tpl -> parse('REMOVE_BUTTON', 'remove_button');
-              
+
 			  $ingr .= ' '.$ua[0];
               $numg++;
-		   }  
+		   }
        }
     }
     fclose($fd);
@@ -152,12 +150,12 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 			$tpl -> assign('ALREADY_IN', '');
 			$tpl -> assign('REMOVE_BUTTON', '');
 	}
-	
+
 	//end generate all groups where the user is added
 
 
 	// and now generate all groups
-	
+
 	$numg = 0;
     $file = $homedir.'/'.$domain_name.'/.htgroup';
     $fd   = fopen($file,'r');
@@ -171,7 +169,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 				   $tpl -> parse('ADD_BUTTON', 'add_button');
                    $numg++;
               }
-         } 
+         }
      }
      fclose($fd);
 	 if ($numg < 1) {
@@ -183,12 +181,12 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 
 function add_user_to_group(&$tpl)
 {
-	if(isset($_POST['uaction']) && $_POST['uaction'] == 'add' && isset($_POST['groups']) 
-		&& $_POST['groups'] !== '' && isset($_POST['nadmin_name']))
+	if(isset($_POST['uaction']) && $_POST['uaction'] == 'add' && isset($_POST['groups'])
+		&& !empty($_POST['groups']) && isset($_POST['nadmin_name']))
 	{
-		$uname = $_POST['nadmin_name'];
+		$uname = clean_input($_POST['nadmin_name']);
 		$groups = $_POST['groups'];
-	
+
 			/* add user to group */
 			$content = '';
 			global $cfg;
@@ -196,13 +194,13 @@ function add_user_to_group(&$tpl)
 			$domain_name = $_SESSION['user_logged'];
 			$file = $homedir.'/'.$domain_name.'/.htgroup';
 			@$fd  = fopen($file,'r');
-	
+
 			if (!$fd) {
 				/* cannot open file for reading */
 			   set_page_message(tr('Can not open file! Please contact your administrator !'));
 			   return;
 			}
-	
+
 			while(!feof($fd)){
 				$line = fgets($fd,4096);
 				$ua   = explode(':',$line);
@@ -220,7 +218,7 @@ function add_user_to_group(&$tpl)
 			fputs($fd,$content);
 			fclose($fd);
 			set_page_message(tr('User was assigned to group ').$groups);
-			
+
 	} else {
 		return;
 	}
@@ -229,15 +227,15 @@ function add_user_to_group(&$tpl)
 
 function delete_user_from_group(&$tpl)
 {
-	if(isset($_POST['uaction']) && $_POST['uaction'] == 'remove' && isset($_POST['groups_in']) 
-		&& $_POST['groups_in'] !== '' && isset($_POST['nadmin_name']))
+	if(isset($_POST['uaction']) && $_POST['uaction'] == 'remove' && isset($_POST['groups_in'])
+		&& !empty($_POST['groups_in']) && isset($_POST['nadmin_name']))
 	{
-	
+
 		$groups_in = $_POST['groups_in'];
-		$uname = $_POST['nadmin_name'];
+		$uname = clean_input($_POST['nadmin_name']);
         /* delete user from group */
         $content = '';
-		
+
 		global $cfg;
 		$homedir = $cfg['FTP_HOMEDIR'];
 		$domain_name = $_SESSION['user_logged'];
@@ -301,7 +299,7 @@ $tpl -> assign(
 						'TR_BACK' => tr('Back'),
 						'TR_REMOVE' => tr('Remove'),
 						'TR_ADD' => tr('Add'),
-						
+
 					  )
 				);
 

@@ -23,7 +23,6 @@ check_login();
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 
-global $cfg;
 $id = $_GET['id'];
 $delete_status = $cfg['ITEM_DELETE_STATUS'];
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);

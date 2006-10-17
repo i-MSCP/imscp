@@ -520,10 +520,6 @@ sub dmn_add_named_db_data {
 
     my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
 
-	if ($sec_dns_ip eq "") {
-	   $sec_dns_ip = $base_svr_ip;
-	}
-
     #
     # Any secondary DNS defined;
     #

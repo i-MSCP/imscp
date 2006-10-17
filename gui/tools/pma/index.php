@@ -1,5 +1,5 @@
 <?php
-/* $Id: index.php,v 2.33.2.2 2006/04/20 14:14:19 nijel Exp $ */
+/* $Id: index.php,v 2.39 2006/07/03 15:29:06 cybot_tm Exp $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * forms frameset
@@ -11,7 +11,7 @@
  * @uses    $GLOBALS['cfg']['Server']['user']
  * @uses    $GLOBALS['cfg']['DefaultTabServer']     as src for the mainframe
  * @uses    $GLOBALS['cfg']['DefaultTabDatabase']   as src for the mainframe
- * @uses    $GLOBALS['cfg']['LeftWidth']            for left frame width
+ * @uses    $GLOBALS['cfg']['NaviWidth']            for navi frame width
  * @uses    $GLOBALS['collation_connection']    from $_REQUEST (grab_globals.lib.php)
  *                                              or common.lib.php
  * @uses    $GLOBALS['available_languages'] from common.lib.php (select_lang.lib.php)
@@ -33,12 +33,12 @@
 /**
  * Gets core libraries and defines some variables
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.lib.php';
 
 /**
  * Includes the ThemeManager if it hasn't been included yet
  */
-require_once('./libraries/relation.lib.php');
+require_once './libraries/relation.lib.php';
 
 // free the session file, for the other frames to be loaded
 session_write_close();
@@ -56,28 +56,28 @@ if (empty($HTTP_HOST)) {
 
 // purge querywindow history
 $cfgRelation = PMA_getRelationsParam();
-if ( $GLOBALS['cfg']['QueryHistoryDB'] && $cfgRelation['historywork'] ) {
+if ($GLOBALS['cfg']['QueryHistoryDB'] && $cfgRelation['historywork']) {
     PMA_purgeHistory( $GLOBALS['cfg']['Server']['user'] );
 }
-unset( $cfgRelation );
+unset($cfgRelation);
 
 
 /**
  * pass variables to child pages
  */
-$drops = array( 'lang', 'server', 'convcharset', 'collation_connection',
-    'db', 'table' );
+$drops = array('lang', 'server', 'convcharset', 'collation_connection',
+    'db', 'table');
 
-foreach ( $drops as $each_drop ) {
-    if ( ! array_key_exists( $each_drop, $_GET ) ) {
-        unset( $_GET[$each_drop] );
+foreach ($drops as $each_drop) {
+    if (! array_key_exists($each_drop, $_GET)) {
+        unset($_GET[$each_drop]);
     }
 }
-unset( $drops, $each_drop );
+unset($drops, $each_drop);
 
-if ( ! isset($GLOBALS['db']) || ! strlen($GLOBALS['db']) ) {
+if (! isset($GLOBALS['db']) || ! strlen($GLOBALS['db'])) {
     $main_target = $GLOBALS['cfg']['DefaultTabServer'];
-} elseif ( ! isset($GLOBALS['table']) || ! strlen($GLOBALS['table']) ) {
+} elseif (! isset($GLOBALS['table']) || ! strlen($GLOBALS['table'])) {
     $_GET['db'] = $GLOBALS['db'];
     $main_target = $GLOBALS['cfg']['DefaultTabDatabase'];
 } else {
@@ -86,7 +86,7 @@ if ( ! isset($GLOBALS['db']) || ! strlen($GLOBALS['db']) ) {
     $main_target = $GLOBALS['cfg']['DefaultTabTable'];
 }
 
-$url_query = PMA_generate_common_url( $_GET );
+$url_query = PMA_generate_common_url($_GET);
 
 if (!empty($GLOBALS['target']) && in_array($GLOBALS['target'], $goto_whitelist)) {
     $main_target = $GLOBALS['target'];
@@ -133,11 +133,11 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
 <script src="./js/querywindow.js" type="text/javascript" language="javascript">
 </script>
 </head>
-<frameset cols="<?php 
+<frameset cols="<?php
 if ($GLOBALS['text_dir'] === 'rtl') {
     echo '*,';
 }
-echo $GLOBALS['cfg']['LeftWidth'];
+echo $GLOBALS['cfg']['NaviWidth'];
 if ($GLOBALS['text_dir'] === 'ltr') {
     echo ',*';
 }
@@ -161,4 +161,15 @@ if ($GLOBALS['text_dir'] === 'ltr') {
         </body>
     </noframes>
 </frameset>
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+<?php if ($GLOBALS['text_dir'] === 'ltr') { ?>
+    var frame_content = window.frames[1];
+    var frame_navigation = window.frames[0];
+<?php } else { ?>
+    var frame_content = window.frames[0];
+    var frame_navigation = window.frames[1];
+<?php } ?>
+// ]]>
+</script>
 </html>

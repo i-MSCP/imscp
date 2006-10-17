@@ -19,9 +19,11 @@
 
 function gen_admin_menu(&$tpl, $menu_file) {
 
-global $cfg;
+global $sql, $cfg;
 
 $tpl -> define_dynamic('menu', $menu_file);
+
+$tpl -> define_dynamic('custom_buttons', 'menu');
 
 $tpl -> assign(
             array(
@@ -68,6 +70,51 @@ $tpl -> assign(
                 'TR_SERVERPORTS' => tr('Serverports')
             )
     );
+$query = <<<SQL_QUERY
+        select
+            *
+        from
+            custom_menus
+        where
+            menu_level = 'admin'
+SQL_QUERY;
+
+    $rs = exec_query($sql, $query, array());
+	 if ($rs -> RecordCount() == 0) {
+
+        $tpl -> assign('CUSTOM_BUTTONS', '');
+
+    } else {
+
+		global $i;
+		$i = 100;
+
+		while (!$rs -> EOF) {
+
+		$menu_name = $rs -> fields['menu_name'];
+		$menu_link = get_menu_vars($rs -> fields['menu_link']);
+		$menu_target = $rs -> fields['menu_target'];
+
+		if ($menu_target === ''){
+			$menu_target = "";
+		} else {
+			$menu_target = "target=\"".$menu_target."\"";
+		}
+
+		$tpl -> assign(
+                  array(
+                        'BUTTON_LINK' => $menu_link,
+                        'BUTTON_NAME' => $menu_name,
+                        'BUTTON_TARGET' => $menu_target,
+                        'BUTTON_ID' => $i,
+                        )
+                  );
+
+    $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+    $rs -> MoveNext(); $i++;
+
+		} // end while
+	} // end else
 
 	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
 
@@ -431,9 +478,9 @@ function gen_user_list(&$tpl, &$sql)
 	//  Search requet generated ?!
 	//
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] !== '') {
+	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 
-			$_SESSION['search_for'] = trim($_POST['search_for']);
+			$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 
 			$_SESSION['search_common'] = $_POST['search_common'];
 
@@ -740,74 +787,6 @@ function get_admin_manage_users(&$tpl, &$sql)
 	gen_reseller_list($tpl, $sql);
 
 	gen_user_list($tpl, $sql);
-}
-
-function insert_email_tpl(&$sql, $admin_id)
-{
-
-    global $cfg;
-
-    $msg_subject = 'Auto message alert for new VHCS user {USERNAME} !';
-
-    $msg = <<<MSG
-
-Hello {NAME} !
-
-Your VHCS user type is: {USERTYPE}
-Your VHCS login is: {USERNAME}
-Your VHCS password is: {PASSWORD}
-
-
-Good luck with VHCS Pro system!
-VHCS Team.
-
-MSG;
-
-
-
-    $query = <<<SQL_QUERY
-        INSERT INTO
-			email_tpls
-            (owner_id, name, subject, message)
-        VALUES
-            (?, 'add-user-auto-msg', ?, ?)
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($admin_id, $msg_subject, $msg));
-
-}
-
-function insert_order_email_tpl(&$sql, $admin_id)
-{
-
-    global $cfg;
-
-    $msg_subject = 'Auto message alert for domain order {DOMAIN} !';
-
-    $msg = <<<MSG
-
-Dear {NAME},
-This is an automatic confirmation for the order of the domain  :
-
-{DOMAIN}
-
-Thank you for using VHCS services.
-Your VHCS Team
-
-MSG;
-
-
-
-    $query = <<<SQL_QUERY
-        INSERT INTO
-			email_tpls
-            (owner_id, name, subject, message)
-        VALUES
-            (?, 'after-order-msg', ?, ?)
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($admin_id, $msg_subject, $msg));
-
 }
 
 function generate_reseller_props ( $reseller_id ) {
@@ -1250,7 +1229,7 @@ function generate_user_traffic ($user_id) {
         WHERE
             domain_id = ?
         ORDER BY
-            domain_id
+            domain_name
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_id));
@@ -1606,11 +1585,11 @@ Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-        $headers = "From: VHCS  Logging Daemon <$admin_email>\r\n";
+        $headers = "From: VHCS  Logging Daemon <$admin_email>\n";
 
-        $headers .= "MIME-Version: 1.0\r\n" .
-            		"Content-Type: text/plain; " .
-					"X-Mailer: VHCS $Version Logging Mailer";
+		    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+
+				$headers .=	"X-Mailer: VHCS $Version Logging Mailer";
 
         $mail_result = mail($to, $subject, $message, $headers);
 
@@ -1626,73 +1605,28 @@ AUTO_LOG_MSG;
 
 function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype) {
 
-    global $sql,$cfg;
+    global $cfg;
 
     $admin_login = $_SESSION['user_logged'];
 
-    $query = <<<SQL_QUERY
-        SELECT
-            fname, lname, email
-        FROM
-            admin
-        WHERE
-            admin_id = ?
+		$data = get_welcome_email($admin_id);
 
-SQL_QUERY;
+		$from_name = $data['sender_name'];
 
-    $res = exec_query($sql, $query, array($admin_id));
+		$from_email = $data['sender_email'];
 
-    $admin_email = $res -> fields['email'];
+    $subject = $data['subject'];
 
-    $admin_fname = $res -> fields['fname'];
+    $message = $data['message'];
 
-    $admin_lname = $res -> fields['lname'];
+    if ($from_name) {
 
-    $query = <<<SQL_QUERY
-        SELECT
-            subject, message
-        FROM
-            email_tpls
-        WHERE
-            owner_id = ?
-          AND
-            name = 'add-user-auto-msg'
-SQL_QUERY;
-
-    $res = exec_query($sql, $query, array($admin_id));
-
-    $subject = $res -> fields['subject'];
-
-    $message = $res -> fields['message'];
-
-    if ($res -> RecordCount() ==0 ){
-
-    $subject = "Auto message alert for the new VHCS user {USERNAME} !";
-
-    $message = <<<MSG
-Hello {NAME} !
-
-Your VHCS user type is: {USERTYPE}
-Your VHCS login is: {USERNAME}
-Your VHCS password is: {PASSWORD}
-
-Good Luck with VHCS Pro System
-Hosting Provider Team
-
-
-MSG;
-
-    }
-
-    if ($admin_fname && $admin_lname) {
-
-        $from = "$admin_fname $admin_lname <$admin_email>";
+        $from = $from_name . "<" . $from_email . ">";
 
     } else {
 
-        $from = $admin_email;
-
-    }
+        $from = $from_email;
+		}
 
     if ($ufname && $ulname) {
 
@@ -1718,11 +1652,11 @@ MSG;
     $message = preg_replace("/\{NAME\}/", $name, $message);
     $message = preg_replace("/\{PASSWORD\}/", $password, $message);
 
-    $headers = "From: $from\r\n";
+    $headers = "From: $from\n";
 
-    $headers .= "MIME-Version: 1.0\r\n" .
-            	"Content-Type: text/plain; " .
-				"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+
+		$headers .=	"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 
@@ -1966,7 +1900,7 @@ SQL_QUERY;
                  FROM
                     domain
                  ORDER BY
-                    domain_id DESC
+                    domain_name ASC
                  LIMIT
                     $start_index, $rows_per_page
 SQL_QUERY;
@@ -2003,7 +1937,7 @@ SQL_QUERY;
                     domain
                     $add_query
                  ORDER BY
-                    domain_id DESC
+                    domain_name ASC
                  LIMIT
                     $start_index, $rows_per_page
 SQL_QUERY;
@@ -2044,7 +1978,7 @@ SQL_QUERY;
 
             $add_query = <<<SQL_QUERY
                 WHERE
-					country LRIKE '$search_for' %s
+					country RLIKE '$search_for' %s
 SQL_QUERY;
 		}
 
@@ -2089,7 +2023,7 @@ SQL_QUERY;
 				AND
                     t1.admin_id = t2.domain_admin_id
 				ORDER BY
-                    t2.domain_id desc
+                    t2.domain_name ASC
                 LIMIT
                     $start_index, $rows_per_page
 SQL_QUERY;
@@ -2192,25 +2126,20 @@ function gen_admin_domain_search_options  (&$tpl,
 
 	}
 
-
-
 	if ($search_for === "n/a" || $search_for === '') {
 
 			$tpl -> assign(
 			                array(
-									'SEARCH_FOR' => "",
+									'SEARCH_FOR' => ""
 								)
 							);
 	} else {
 			$tpl -> assign(
 			                array(
-									'SEARCH_FOR' => $search_for,
+									'SEARCH_FOR' => stripslashes($search_for)
 								)
 							);
-
-
 	}
-
 
 	$tpl -> assign(
 			                array(
@@ -2710,11 +2639,11 @@ SQL_QUERY;
     $message = preg_replace("/\{TO_NAME\}/", $name, $message);
     $message = preg_replace("/\{FROM_NAME\}/", $fromname, $message);
 
-    $headers = "From: $from\r\n";
+    $headers = "From: $from\n";
 
-    $headers .= "MIME-Version: 1.0\r\n" .
-            	"Content-Type: text/plain; " .
-				"X-Mailer: VHCS ".$cfg['Version']." Tickets Mailer";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+
+		$headers .=	"X-Mailer: VHCS ".$cfg['Version']." Tickets Mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
     $mail_status = ($mail_result) ? 'OK' : 'NOT OK';

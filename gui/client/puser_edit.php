@@ -33,13 +33,10 @@ $tpl -> define_dynamic('grp_msg', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('custom_buttons', 'page');
-
 $tpl -> define_dynamic('pusres', 'page');
 
 $tpl -> define_dynamic('pgroups', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -71,7 +68,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
 
 			global $cfg;
 			$change_status = $cfg['ITEM_CHANGE_STATUS'];
-			
+
 			$query = <<<SQL_QUERY
                     update
                         htaccess_users
@@ -80,7 +77,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
                         status = ?
                     where
                         dmn_id = ?
-                    and 
+                    and
                     	id = ?
 
 SQL_QUERY;
@@ -196,9 +193,9 @@ SQL_QUERY;
 								 )
 						);
 	}
-} else if (isset($_POST['nadmin_name']) && $_POST['nadmin_name'] !== '' && is_numeric($_POST['nadmin_name'])) {
+} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'])) {
 
-$uuser_id = $_POST['nadmin_name'];
+$uuser_id = clean_input($_POST['nadmin_name']);
 
 $query = <<<SQL_QUERY
 

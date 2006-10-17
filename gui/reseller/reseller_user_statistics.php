@@ -30,7 +30,6 @@ $tpl -> define_dynamic('year_list', 'page');
 $tpl -> define_dynamic('no_domains', 'page');
 $tpl -> define_dynamic('domain_list', 'page');
 $tpl -> define_dynamic('domain_entry', 'domain_list');
-$tpl -> define_dynamic('custom_buttons', 'page');
 $tpl -> define_dynamic('scroll_prev_gray', 'page');
 $tpl -> define_dynamic('scroll_prev', 'page');
 $tpl -> define_dynamic('scroll_next_gray', 'page');

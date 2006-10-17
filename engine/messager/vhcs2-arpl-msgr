@@ -697,9 +697,11 @@ sub arpl_msgr_engine {
 
        		 	my ($domainformsubdomain, $subformsubdomain) = (undef, undef);
 
-       		 	@edmn = split(/\./,$2,2);
+       		 	#@edmn = split(/\./,$2,2);
 
-       		 	$edmn = $edmn[1];
+       		 	#$edmn = $edmn[1];
+       		 	
+       		 	$edmn = $2;
 
         		$sql = "select count(domain_id) as cnt from domain where domain_name = '$edmn'";
 

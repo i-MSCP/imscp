@@ -36,24 +36,23 @@ $tpl -> assign(
 						'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('VHCS - Admin/Settings'),
 						'THEME_COLOR_PATH' => "../themes/$theme_color",
 						'THEME_CHARSET' => tr('encoding'),
-						'ISP_LOGO' => get_logo($_SESSION['user_id']),
+						'ISP_LOGO' => get_logo(get_session('user_id')),
 						'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
 					 )
 			  );
-
 
 function update_services(&$sql) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
 
-		$count 			= count($_POST['name']);
+		$count 			= count(get_post('name'));
 		$break			= FALSE;
-		$service_name	= $_POST['name'];
-		$var_name		= $_POST['var_name'];
-		$port			= $_POST['port'];
-		$protocol	 	= $_POST['port_type'];
-		$status 		= $_POST['show_val'];
-		$custom			= $_POST['custom'];
+		$service_name	= get_post('name');
+		$var_name		= get_post('var_name');
+		$port			= get_post('port');
+		$protocol	 	= get_post('port_type');
+		$status 		= get_post('show_val');
+		$custom			= get_post('custom');
 
 		for ($j = 0; $j < $count; $j++) {
 			if (!is_number($port[$j]) OR $port[$j] <= 0) {
@@ -64,48 +63,48 @@ function update_services(&$sql) {
 		}
 
 		if (!$break) {
-			for ($j = 0; $j < $count; $j++) {
-					$var = $var_name[$j];
-					$name = strtoupper(strip_tags($service_name[$j]));
-					$value = implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j]));
-					setConfig_Value($var, $value);
-			}
-
 			// Adding new Ports!
 			if (isset($_POST['name_new']) AND !empty($_POST['name_new'])) {
-				$port 		= $_POST['port_new'];
-				$name		= strtoupper(strip_tags($_POST['name_new']));
-				$protocol	= $_POST['port_type_new'];
-				$status		= $_POST['show_val_new'];
+				$port 		= get_post('port_new');
+				$name		= strtoupper(get_post('name_new'));
+				$protocol	= get_post('port_type_new');
+				$status		= get_post('show_val_new');
 				if (!is_number($port) OR $port <= 0) {
 					set_page_message(tr('ERROR: Only positive numbers are allowed !'));
-					break;
+					return;
 				}
 				elseif (!is_basicString($name)) {
 					set_page_message(tr('ERROR: Only Letters, Numbers, Dash and Underscore are allowed!'));
-					break;
+					return;
 				}
 				else {
 					// Check if PORT exists
 					$query = <<<SQL_QUERY
 							SELECT
-								COUNT(*)
+								name
 							FROM
 								config
 							WHERE
 								name = ?
 SQL_QUERY;
-
-					$rs = exec_query($sql, $query, array($name));
-					if ($rs == 0) {
-						$var = "PORT_".$name;
+					$var = "PORT_".$name;
+					$rs = exec_query($sql, $query, array($var));
+					if($rs -> RecordCount() == 0) {
 						$value = implode(";", array($port, $protocol, $name, $status, 1));
 						setConfig_Value($var, $value);
-						write_log($_SESSION['user_logged'].": add service port $name ({$port})!");
+						write_log(get_session('user_logged').": add service port $name ({$port})!");
 					}
 					else {
 						set_page_message(tr('ERROR: Port allready exists!'));
+						return;
 					}
+				}
+			} else {
+				for ($j = 0; $j < $count; $j++) {
+						$var = $var_name[$j];
+						$name = strtoupper(strip_tags($service_name[$j]));
+						$value = implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j]));
+						setConfig_Value($var, $value);
 				}
 			}
 			set_page_message(tr('Settings saved !'));
@@ -137,7 +136,7 @@ SQL_QUERY;
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($port_name));
-		write_log($_SESSION['user_logged'].": remove service port $port_name!");
+		write_log(get_session('user_logged').": remove service port $port_name!");
 
 		set_page_message('Service port was removed!');
 
@@ -168,6 +167,14 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	$row = 1;
+
+	if ($rs -> RecordCount() == 0) {
+
+		$tpl -> assign('SERVICE_PORTS', '');
+
+		set_page_message(tr('You have no custom service ports defined.'));
+
+	} else {
 
 	while(!$rs->EOF){
 
@@ -202,6 +209,8 @@ SQL_QUERY;
 			$tpl -> assign(array('SERVICE' => $name."<input name=\"name[]\" type=\"hidden\" id=\"name\" value=\"".$name."\" />"));
 			$tpl -> assign(
 							array(
+								'PORT_READONLY' => 'readonly',
+								'PROTOCOL_READONLY' => 'disabled',
 								'TR_DELETE' => tr('Delete'),
 								'PORT_DELETE_LINK' => ''
 							)
@@ -212,8 +221,10 @@ SQL_QUERY;
 			$tpl -> assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name\" value=\"".$name."\" class=\"textinput\" maxlength=\"25\" />"));
 			$tpl -> assign(
 							array(
+								'PORT_READONLY' => '',
+								'PROTOCOL_READONLY' => '',
 								'TR_DELETE' => tr('Delete'),
-								'URL_DELETE' => 'settings_ports.php?delete=PORT_'.$name,
+								'URL_DELETE' => 'settings_ports.php?delete='.$rs->fields['name'],
 								'PORT_DELETE_SHOW' => ''
 							)
 					);
@@ -226,15 +237,10 @@ SQL_QUERY;
 						'CUSTOM' => $custom,
 						'VAR_NAME' => $rs->fields['name'],
 						'PORT' => $port,
-						'TR_UDP' => tr('udp'),
-						'TR_TCP' => tr('tcp'),
-						'TR_ENABLED' => tr('Enabled'),
-						'TR_DISABLED' => tr('Disabled'),
 						'SELECTED_UDP' => $selected_udp,
 						'SELECTED_TCP' => $selected_tcp,
 						'SELECTED_ON' => $selected_on,
 						'SELECTED_OFF' => $selected_off,
-						'TR_ACTION' => tr('Action'),
 						)
 				);
 
@@ -242,13 +248,13 @@ SQL_QUERY;
 
 		$rs->MoveNext();
 	}//while
-
+	}//else
 }
 
 
 // Fetch delete request
 if (isset($_GET['delete'])) {
-	delete_service($_GET['delete']);
+	delete_service(get_get('delete'));
 }
 
 /*
@@ -265,6 +271,11 @@ show_services($tpl, $sql);
 
 $tpl -> assign(
 				array(
+					'TR_ACTION' => tr('Action'),
+					'TR_UDP' => tr('udp'),
+					'TR_TCP' => tr('tcp'),
+					'TR_ENABLED' => tr('Enabled'),
+					'TR_DISABLED' => tr('Disabled'),
 					'TR_APPLY_CHANGES' => tr('Apply changes'),
 					'TR_SERVERPORTS' => tr('Serverports'),
 					'TR_SERVICES' => tr('Services'),
