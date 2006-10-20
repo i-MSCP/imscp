@@ -143,6 +143,23 @@ $cfg['PASSWD_CHARS'] = 6;
 /* 1 = enable */
 $cfg['PASSWD_STRONG'] = 1;
 
+/* security level
+ * none     - Default behavior in earlier X-Panel versions
+ * easy     - some simple checks, e.g. PHP_SELF secured, regex-check on IP no, hostname
+ * medium   - checks on request method and server protocol (HTTP/x.y)
+ * high     - checks through $_GET, $_COOKIE for dangerous data and strips it, this may drive some programs in trouble
+ * paranoid - additional checks against the /etc/apache2/sites-available/vhcs2.conf if SERVER_NAME is in the file or not
+ */
+// Choose one here and comment out the other. Your choice, your destiny!
+//$cfg['SECURITY_LEVEL'] = 'none';     // Never ever use this unless you have a good reason to do so...
+//$cfg['SECURITY_LEVEL'] = 'easy';     // As easy as for the attackers... not recommended!
+//$cfg['SECURITY_LEVEl'] = 'medium';   // for normal users (recommended)
+//$cfg['SECURITY_LEVEL'] = 'high';     // For experienced users only
+$cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing (nope, we are not paranoid... ;) )
+
+// The virtual host file from Apache which contains our virtual host entries
+$cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/vhcs2.conf";
+
 include_once (realpath($include_path.'/spGzip.php'));
 
 include_once (realpath($include_path.'/class.pTemplate.php'));
@@ -183,7 +200,12 @@ include_once (realpath($include_path.'/sql.php'));
 
 include_once (realpath($include_path.'/emailtpl-functions.php'));
 
-// include_once (realpath($include_path.'/vhcs-security.php'));
+// If you comment this line out, you have no security level (none)
+include_once (realpath($include_path.'/security/core.inc.php');
+
+// OBSULETE! Do *not* include it!
+////// include_once (realpath($include_path.'/vhcs-security.php'));
+// We need to remove this file anyway... Q
 
 
 $query = "SELECT name, value FROM config";

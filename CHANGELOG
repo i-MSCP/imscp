@@ -1,6 +1,16 @@
 X-Panel 0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-10-20 Roland Haeder
+	- GUI:
+		* Added new and improved security layer with easy level switch (+ some
+		  expert settings in main config (/etc/vhcs2/vhcs2.conf)
+
+	- ENGINE:
+		* added experimental/unfinished support for php-starter-scripts (fastCGI/suExec)
+		  ( we need to complete the copy process of php5-starter-script and php.ini here!)
+		  ( and including template tags)
+
 2006-10-20 Malte
 	- Recycled old VHCS - Code to be a base for our new X-Panel!
 

@@ -192,7 +192,7 @@ use warnings;
 #
 #     my $sys_group = "$suexec_user_pref$sys_gid";
 #
-#     $rs = setfmode("$dmn_backup_dir/$backup_filename", $sys_user, $httpd_gid, 0660);
+#     $rs = setfmode("$dmn_backup_dir/$backup_filename", $sys_user, $sys_group, 0660);
 #
 #     return $rs if ($rs != 0);
 #

@@ -6,7 +6,7 @@
     #
     
     #
-    #SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
     #
 
     ServerAdmin     root@{DMN_NAME}
@@ -35,9 +35,19 @@
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.
 
+    ScriptAlias /php/ {WWW_DIR}/{DMN_NAME}/cgi-bin/
+    <Directory "{WWW_DIR}/{DMN_NAME}/cgi-bin"> 
+        AllowOverride None 
+        Options +ExecCGI -MultiViews -Indexes 
+        Order allow,deny 
+        Allow from all 
+    </Directory> 
+
     <Directory {GUI_ROOT_DIR}>
-        php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-	php_admin_value session.save_path "/tmp/"
+        <IfModule mod_php.c>
+            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+            php_admin_value session.save_path "/tmp/"
+        </IfModule>
     </Directory>
 
     # httpd sub entry PHP2 support BEGIN.
