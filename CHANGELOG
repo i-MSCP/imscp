@@ -1,5 +1,13 @@
+X-Panel 0.1 Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2006-10-20 Malte
+	- Recycled old VHCS - Code to be a base for our new X-Panel!
+
+
 VHCS 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 2006-10-15 Carsten Schoene:
 	- GUI:
 		* updated phpmyadmin to 2.9.0.2
