@@ -1668,6 +1668,8 @@ sub dmn_add_httpd_file_data {
 
 	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
+	my $pear_dir = $main::cfg{'PEAR_DIR'};
+
 	my $starter_dir = $main::cfg{'PHP_STARTUP_DIR'};
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
@@ -1935,7 +1937,9 @@ sub dmn_add_httpd_file_data {
 
 		return $rs if ($rs != 0);
 
-		$ini_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+		$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
+		$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
+		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php.ini",
@@ -1961,7 +1965,7 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-		$starter_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+		$starter_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php5-fcgi-starter",
@@ -2004,6 +2008,8 @@ sub dmn_change_httpd_file_data {
 	my $root_dir = $main::cfg{'ROOT_DIR'};
 
 	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+	my $pear_dir = $main::cfg{'PEAR_DIR'};
 
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
@@ -2074,7 +2080,9 @@ sub dmn_change_httpd_file_data {
 
 		return $rs if ($rs != 0);
 
-		$ini_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+		$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
+		$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
+		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php.ini",
@@ -2100,7 +2108,7 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-		$starter_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+		$starter_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php5-fcgi-starter",

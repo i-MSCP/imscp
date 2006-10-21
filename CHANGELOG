@@ -2,6 +2,8 @@ X-Panel 0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 2006-10-21 Roland Haeder
 	- ENGINE:
+	     * Fixes more {TEMPLATES} in vhcs2-dmn-mngr because of ephigenie's
+		  php.ini
 		* Added generation of php.ini and php5-fcgi-starter to vhcs2-dmn-mngr
 		  (not completed, just the starter!)
 
