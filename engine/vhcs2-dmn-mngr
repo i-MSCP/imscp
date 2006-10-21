@@ -1670,6 +1670,8 @@ sub dmn_add_httpd_file_data {
 
 	my $starter_dir = $main::cfg{'PHP_STARTUP_DIR'};
 
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+
 	my $httpd_uid = $main::cfg{'APACHE_USER'};
 
 	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
@@ -1922,6 +1924,57 @@ sub dmn_add_httpd_file_data {
 
 	}
 
+	#
+	# php.ini for every domain
+	#
+	if (!(-e "$starter_dir/$dmn_name/php.ini")) {
+
+		my $ini_tpl = '';
+
+		($rs, $ini_tpl) = get_file("$conf_dir/php/parts/php.ini");
+
+		return $rs if ($rs != 0);
+
+		$ini_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+
+		($rs, $rdata) = store_file(
+									"$starter_dir/$dmn_name/php.ini",
+									$ini_tpl,
+									$httpd_uid,
+									$httpd_gid,
+									0660
+									);
+
+		return $rs if ($rs != 0);
+
+	}
+
+	#
+	# php5-fcgi-starter for every domain
+	#
+	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
+
+		my $starter_tpl = '';
+
+		($rs, $starter_tpl) = get_file("$conf_dir/php/parts/php5-fcgi-starter.tpl");
+
+		return $rs if ($rs != 0);
+
+		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
+		$starter_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+
+		($rs, $rdata) = store_file(
+									"$starter_dir/$dmn_name/php5-fcgi-starter",
+									$starter_tpl,
+									$sys_user,
+									$sys_group,
+									0770
+									);
+
+		return $rs if ($rs != 0);
+
+	}
+
 	push_el(\@main::el, 'dmn_add_httpd_file_data()', 'Ending...');
 
 	return 0;
@@ -1932,7 +1985,7 @@ sub dmn_change_httpd_file_data {
 
     my ($dmn_data) = @_;
 
-    my $rs = undef;
+    my ($rs, $rdata) = (undef, undef);
 
     push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Starting...');
 
@@ -1953,6 +2006,8 @@ sub dmn_change_httpd_file_data {
 	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
+
+	my $conf_dir = $main::cfg{'CONF_DIR'};
 
 	my $httpd_uid = $main::cfg{'APACHE_USER'};
 
@@ -2006,6 +2061,57 @@ sub dmn_change_httpd_file_data {
 					);
 
 		return $rs if ($rs != 0);
+	}
+
+	#
+	# php.ini for every domain
+	#
+	if (!(-e "$starter_dir/$dmn_name/php.ini")) {
+
+		my $ini_tpl = '';
+
+		($rs, $ini_tpl) = get_file("$conf_dir/php/parts/php.ini");
+
+		return $rs if ($rs != 0);
+
+		$ini_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+
+		($rs, $rdata) = store_file(
+									"$starter_dir/$dmn_name/php.ini",
+									$ini_tpl,
+									$httpd_uid,
+									$httpd_gid,
+									0660
+									);
+
+		return $rs if ($rs != 0);
+
+	}
+
+	#
+	# php5-fcgi-starter for every domain
+	#
+	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
+
+		my $starter_tpl = '';
+
+		($rs, $starter_tpl) = get_file("$conf_dir/php/parts/php5-fcgi-starter.tpl");
+
+		return $rs if ($rs != 0);
+
+		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
+		$starter_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+
+		($rs, $rdata) = store_file(
+									"$starter_dir/$dmn_name/php5-fcgi-starter",
+									$starter_tpl,
+									$sys_user,
+									$sys_group,
+									0770
+									);
+
+		return $rs if ($rs != 0);
+
 	}
 
 
@@ -2221,8 +2327,6 @@ sub dmn_add_mta_cfg_data {
     my $sys_cfg = "/etc/postfix/vhcs2/domains";
 
     my $working_cfg = "$working_dir/domains";
-
-
 
     my $timestamp = time;
 
