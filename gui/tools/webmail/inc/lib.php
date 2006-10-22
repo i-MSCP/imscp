@@ -294,6 +294,7 @@ $preferences_template      = "themes/$selected_theme/preferences.htm";      // P
 $adv_editor_template       = "themes/$selected_theme/advanced-editor.htm";  // Advanced HTML Editor
 $catch_address_template    = "themes/$selected_theme/catch-address.htm";    // Address catcher
 $print_message_template    = "themes/$selected_theme/print-message.htm";    // Print friendly version
+$passwd_template           = "themes/$selected_theme/passwd.htm";           // change Password
 $menu_template             = "themes/$selected_theme/menu.htm";             // Menu
 
 

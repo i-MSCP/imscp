@@ -63,6 +63,8 @@ address_mnu						= Address book
 empty_trash_mnu					= Empty trash
 prefs_mnu						= Preferences
 logoff_mnu 						= Log out
+passwd_mnu                                      = Change password
+autoresponder_mnu                               = Autoresponder
 
 # Reply
 reply_prefix					= Re:
@@ -313,3 +315,13 @@ blk_no_address					= No address available
 blk_close						= Close
 blk_save						= Save
 
+[Passwd]
+sch_button_text                                 = Store password
+passwd_information_text                         = Change password
+passwd_new                                      = new password
+passwd_new_repeat                               = Retype password
+
+[Autoresponder]
+autoresponder_button_text                       = Save
+autoresponder_del_button_text                   = Delete autoresponder
+autoresponder_information_text                  = Message

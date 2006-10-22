@@ -54,6 +54,11 @@ function dis() {
 	} 
 }
 function checkDis() { if (disbl) return false; }
+
+// Change password function
+function changepasswd() { location = 'passwd.php?sid=$sid&tid=$tid&lid=$lid'; }
+// Change autoresponder function
+function changeautoresponder() { location = 'autoresp.php?sid=$sid&tid=$tid&lid=$lid'; }
 </script>
 
 ";

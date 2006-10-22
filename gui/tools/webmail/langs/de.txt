@@ -72,9 +72,11 @@ refresh_mnu					= Aktualisieren
 folders_mnu					= Ordner
 search_mnu					= Suchen
 address_mnu					= Adressen
-empty_trash_mnu				= Papierkorb leeren
+empty_trash_mnu					= Papierkorb leeren
 prefs_mnu					= Einstellungen
 logoff_mnu 					= Logout
+passwd_mnu                                      = Passwort ändern
+autoresponder_mnu                               = Autoresponder
 
 
 
@@ -336,3 +338,14 @@ adr_new_entry					= Neuer Kontakt
 addr_saved					= Der Kontakt wurde gespeichert.
 addr_added					= Der Kontakt wurde hinzugefügt.
 addr_deleted					= Der Kontakt wurde entfernt.
+
+[Passwd]
+sch_button_text                                 = Passwort speichern
+passwd_information_text                         = Passwort ändern
+passwd_new                                      = neues Passwort
+passwd_new_repeat                               = Passwort wiederholen
+
+[Autoresponder]
+autoresponder_button_text                       = Sichern
+autoresponder_del_button_text                   = Autoresponder löschen
+autoresponder_information_text                  = Nachricht
