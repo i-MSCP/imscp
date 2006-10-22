@@ -32,7 +32,7 @@
     # httpd dmn entry cgi support END.
 
     ScriptAlias /php/ {STARTER_DIR}/{DMN_NAME}/
-    <Directory "{WWW_DIR}/{DMN_NAME}/cgi-bin">
+    <Directory "{STARTER_DIR}/{DMN_NAME}">
         AllowOverride None
         Options +ExecCGI -MultiViews -Indexes
         Order allow,deny

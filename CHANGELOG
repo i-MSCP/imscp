@@ -1,5 +1,12 @@
 X-Panel 0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2006-10-22 Roland Haeder
+	- ENGINE:
+		* Fixes creation of starter-scripts (seems to work?)
+		* Added "master" starter-scripts for the FCGI-Server process
+		* Various CHMOD fixes in vhcs2-dmn-mngr
+		* fastcgi.conf added to templates (/etc/vhcs2/apache/fastcgi.conf
+
 2006-10-22 Malte Geierhos
 	- GUI:
 	 	* Added in Webmail :
