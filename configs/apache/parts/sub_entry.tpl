@@ -24,7 +24,9 @@
     Alias /errors {WWW_DIR}/{DMN_NAME}/errors/
 
     <Directory {WWW_DIR}/{DMN_NAME}/errors/>
-        php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
+        <IfModule mod_php.c>
+            php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
+        </IfModule>
     </Directory>
 
     ErrorDocument 401 /errors/401/index.php
@@ -35,13 +37,13 @@
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.
 
-    ScriptAlias /php/ {WWW_DIR}/{DMN_NAME}/cgi-bin/
-    <Directory "{WWW_DIR}/{DMN_NAME}/cgi-bin"> 
-        AllowOverride None 
-        Options +ExecCGI -MultiViews -Indexes 
-        Order allow,deny 
-        Allow from all 
-    </Directory> 
+    ScriptAlias /php/ {STARTER_DIR}/{DMN_NAME}/
+    <Directory "{WWW_DIR}/{DMN_NAME}/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews -Indexes
+        Order allow,deny
+        Allow from all
+    </Directory>
 
     <Directory {GUI_ROOT_DIR}>
         <IfModule mod_php.c>
@@ -57,7 +59,7 @@
         # httpd sub entry PHP support BEGIN.
         # httpd sub entry PHP support END.
         Options -Indexes Includes FollowSymLinks MultiViews
-        AllowOverride AuthConfig FileInfo
+        AllowOverride All
         Order allow,deny
         Allow from all
     </Directory>

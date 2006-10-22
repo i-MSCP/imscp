@@ -695,6 +695,7 @@ sub gen_httpd_sub_group_entry {
 
         (
          '{DMN_NAME}' => $dmn_name,
+         '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{SUB_NAME}' => $sub_name,
@@ -1387,7 +1388,7 @@ sub sub_add_httpd_file_data {
     ($rs, $rdata) = make_dir(
                              "$sub_dir",
                              $sys_user,
-                             $httpd_gid,
+                             $sys_group,
                              0770
                             );
 
@@ -1396,7 +1397,7 @@ sub sub_add_httpd_file_data {
     ($rs, $rdata) = make_dir(
                              "$sub_dir/htdocs",
                              $sys_user,
-                             $httpd_gid,
+                             $sys_group,
                              0770
                             );
 
@@ -1414,7 +1415,7 @@ sub sub_add_httpd_file_data {
     ($rs, $rdata) = make_dir(
                              "$sub_dir/phptmp",
                              $sys_user,
-                             $httpd_gid,
+                             $sys_group,
                              0770
                             );
 
@@ -1437,7 +1438,7 @@ sub sub_add_httpd_file_data {
                                "$sub_dir/htdocs/index.html",
                                $index_tpl,
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1502,7 +1503,7 @@ sub sub_change_httpd_file_data {
 		($rs, $rdata) = make_dir(
 									"$sub_dir/phptmp",
                              		$sys_user,
-                             		$httpd_gid,
+                             		$sys_group,
                              		0770
                             	);
 	    return $rs if ($rs != 0);

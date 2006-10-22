@@ -892,6 +892,7 @@ sub gen_httpd_dmn_group_entry {
          '{DMN_NAME}' => $dmn_name,
          '{DMN_IP}' => $dmn_ip,
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
+         '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
          '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},

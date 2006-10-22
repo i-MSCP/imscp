@@ -31,13 +31,13 @@
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 
-    ScriptAlias /php/ {WWW_DIR}/{DMN_NAME}/cgi-bin/
-    <Directory "{WWW_DIR}/{DMN_NAME}/cgi-bin"> 
-        AllowOverride None 
-        Options +ExecCGI -MultiViews -Indexes 
-        Order allow,deny 
-        Allow from all 
-    </Directory> 
+    ScriptAlias /php/ {STARTER_DIR}/{DMN_NAME}/
+    <Directory "{WWW_DIR}/{DMN_NAME}/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews -Indexes
+        Order allow,deny
+        Allow from all
+    </Directory>
 
     <Directory {GUI_ROOT_DIR}>
         <IfModule mod_php.c>
@@ -53,7 +53,7 @@
         # httpd dmn entry PHP support BEGIN.
         # httpd dmn entry PHP support END.
         Options -Indexes Includes FollowSymLinks MultiViews
-        AllowOverride AuthConfig FileInfo
+        AllowOverride All
         Order allow,deny
         Allow from all
     </Directory>

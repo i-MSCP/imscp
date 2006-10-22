@@ -1,5 +1,11 @@
 X-Panel 0.1 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2006-10-22 Roland Haeder
+	- ENGINE:
+		* Fixes loading of domain's php.ini file and not /etc/php5/cgi/php.ini:
+			+ Templates dmn_name, sub_dmn changed to use STARTER_DIR
+			+ vhcs2-dmn-mngr and vhcs2-sub-mngr extended to use STARTER_DIR
+
 2006-10-21 Roland Haeder
 	- ENGINE:
 	     * Fixes more {TEMPLATES} in vhcs2-dmn-mngr because of ephigenie's
