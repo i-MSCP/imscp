@@ -1,5 +1,5 @@
 <?php
-/* $Id: user_password.php,v 2.10 2005/11/24 09:12:16 nijel Exp $ */
+/* $Id: user_password.php 7908 2005-11-24 09:12:17Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

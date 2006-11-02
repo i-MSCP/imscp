@@ -1,5 +1,5 @@
 <?php
-/* $Id: berkeleydb.lib.php,v 2.1 2005/12/07 10:28:50 cybot_tm Exp $ */
+/* $Id: berkeleydb.lib.php 8102 2005-12-07 10:28:50Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 include_once './libraries/engines/bdb.lib.php';

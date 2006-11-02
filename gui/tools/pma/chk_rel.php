@@ -1,5 +1,5 @@
 <?php
-/* $Id: chk_rel.php,v 2.5 2005/11/24 09:12:16 nijel Exp $ */
+/* $Id: chk_rel.php 7908 2005-11-24 09:12:17Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

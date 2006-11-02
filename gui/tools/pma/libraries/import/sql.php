@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php,v 1.15 2006/06/13 15:06:49 lem9 Exp $ */
+/* $Id: sql.php 9110 2006-06-13 15:10:08Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* SQL import plugin for phpMyAdmin */

@@ -1,5 +1,5 @@
 <?php
-/* $Id: text_plain__substr.inc.php,v 2.3 2004/03/09 15:02:28 nijel Exp $ */
+/* $Id: text_plain__substr.inc.php 5523 2004-03-09 15:02:28Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_text_plain__substr($buffer, $options = array(), $meta = '') {

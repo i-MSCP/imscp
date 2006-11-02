@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: config.sample.inc.php,v 2.1.2.2 2006/08/28 08:14:14 nijel Exp $ */
+/* $Id: config.sample.inc.php 9472 2006-09-29 21:12:52Z  $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

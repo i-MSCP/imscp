@@ -1,5 +1,5 @@
 <?php
-/* $Id: georgian-utf-8.inc.php,v 2.141 2006/08/09 12:55:37 lem9 Exp $ */
+/* $Id: georgian-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /**
  * Translation by Kakha Mchedlidze <kakha at qartuli.com>

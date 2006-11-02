@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# $Id: upgrade.pl,v 1.7 2006/01/17 17:03:02 cybot_tm Exp $
+# $Id: upgrade.pl 8301 2006-01-17 17:03:02Z cybot_tm $
 #
 # upgrade.pl - automatic phpmyadmin upgrader
 #

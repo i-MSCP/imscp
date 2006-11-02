@@ -1,5 +1,5 @@
 <?php
-/* $Id: thai-utf-8.inc.php,v 2.142 2006/08/09 12:55:40 lem9 Exp $ */
+/* $Id: thai-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 // first created 2002/04/29 Arthit Suriyawongkul & Warit Wanasathian
 // last modified 2004/08/22 Arthit Suriyawongkul

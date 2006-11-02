@@ -1,5 +1,5 @@
 <?php
-/* $Id: show_config_errors.php,v 2.1 2006/03/16 22:15:06 nijel Exp $ */
+/* $Id: show_config_errors.php 8776 2006-03-16 22:15:07Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Simple wrapper just to enable error reporting and include config */

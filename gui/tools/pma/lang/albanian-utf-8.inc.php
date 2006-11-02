@@ -1,5 +1,5 @@
 <?php
-/* $Id: albanian-utf-8.inc.php,v 2.144 2006/08/09 12:55:35 lem9 Exp $ */
+/* $Id: albanian-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /**
  * Translated by: Laurent Dhima <laurenti at users.sourceforge.net>

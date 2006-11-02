@@ -1,5 +1,5 @@
 <?php
-/* $Id: left.php,v 2.73 2006/08/01 07:15:30 cybot_tm Exp $ */
+/* $Id: left.php 9215 2006-08-01 07:15:30Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * the navigation frame - displays server, db and table selection tree

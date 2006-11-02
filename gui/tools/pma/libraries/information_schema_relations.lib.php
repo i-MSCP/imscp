@@ -1,5 +1,5 @@
 <?php
-/* $Id: information_schema_relations.lib.php,v 2.0 2005/03/27 23:23:39 rabus Exp $ */
+/* $Id: information_schema_relations.lib.php 6836 2005-03-27 23:26:00Z rabus $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 $GLOBALS['information_schema_relations'] = array(

@@ -1,5 +1,5 @@
 <?php
-/* $Id: index.php,v 2.39 2006/07/03 15:29:06 cybot_tm Exp $ */
+/* $Id: index.php 9157 2006-07-03 15:29:06Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * forms frameset

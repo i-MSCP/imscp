@@ -1,5 +1,5 @@
 <?php
-/* $Id: image_png__inline.inc.php,v 2.3 2005/05/22 17:09:27 lem9 Exp $ */
+/* $Id: image_png__inline.inc.php 6998 2005-05-22 17:11:10Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_image_png__inline($buffer, $options = array(), $meta = '') {

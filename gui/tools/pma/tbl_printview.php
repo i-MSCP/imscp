@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_printview.php,v 2.26 2006/07/27 17:13:16 lem9 Exp $ */
+/* $Id: tbl_printview.php 9202 2006-07-27 17:14:30Z lem9 $ */
 
 require_once './libraries/common.lib.php';
 

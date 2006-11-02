@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php,v 2.316.2.11 2006/09/27 16:04:30 lem9 Exp $ */
+/* $Id: common.lib.php 9618 2006-10-26 15:11:14Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -2962,7 +2962,6 @@ if (empty($_SESSION['PMA_Config'])) {
     if (!function_exists('preg_replace')) {
         header('Location: error.php'
             . '?lang='  . urlencode($available_languages[$lang][2])
-            . '&char='  . urlencode($charset)
             . '&dir='   . urlencode($text_dir)
             . '&type='  . urlencode($strError)
             . '&error=' . urlencode(
@@ -3171,7 +3170,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         if (!file_exists('./libraries/auth/' . $cfg['Server']['auth_type'] . '.auth.lib.php')) {
             header('Location: error.php'
                     . '?lang='  . urlencode($available_languages[$lang][2])
-                    . '&char='  . urlencode($charset)
                     . '&dir='   . urlencode($text_dir)
                     . '&type='  . urlencode($strError)
                     . '&error=' . urlencode(

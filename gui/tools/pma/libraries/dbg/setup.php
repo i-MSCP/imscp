@@ -1,5 +1,5 @@
 <?php
-/* $Id: setup.php,v 2.6 2005/11/03 12:22:08 cybot_tm Exp $ */
+/* $Id: setup.php 7699 2005-11-03 12:22:08Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * checks for DBG extension and trys to load if not loaded

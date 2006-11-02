@@ -1,5 +1,5 @@
 <?php
-/* $Id: latex.php,v 2.20 2006/04/28 08:51:35 nijel Exp $ */
+/* $Id: latex.php 8995 2006-04-28 08:51:35Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

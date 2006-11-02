@@ -1,5 +1,5 @@
 <?php
-/* $Id: slovenian-utf-8.inc.php,v 2.144 2006/08/09 12:55:40 lem9 Exp $ */
+/* $Id: slovenian-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /* By: urska.colner, agenda d.o.o. <urska.colner@agenda.si>, uros kositer, agenda d.o.o. <urosh@agenda.si> */
 

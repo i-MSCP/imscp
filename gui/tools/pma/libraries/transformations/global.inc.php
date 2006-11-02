@@ -1,5 +1,5 @@
 <?php
-/* $Id: global.inc.php,v 2.3 2003/11/26 22:52:24 rabus Exp $ */
+/* $Id: global.inc.php 5208 2003-11-26 22:52:25Z rabus $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

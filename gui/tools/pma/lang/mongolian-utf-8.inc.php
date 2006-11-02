@@ -1,5 +1,5 @@
 <?php
-/* $Id: mongolian-utf-8.inc.php,v 1.75 2006/08/09 12:55:38 lem9 Exp $ */
+/* $Id: mongolian-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /**
  * Translated by Bayarsaikhan Enkhtaivan

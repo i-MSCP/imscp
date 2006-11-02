@@ -1,5 +1,5 @@
 <?php
-/* $Id: error.php,v 2.4 2006/01/17 17:02:28 cybot_tm Exp $ */
+/* $Id: error.php 9618 2006-10-26 15:11:14Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -14,7 +14,8 @@ require_once('./libraries/sanitizing.lib.php');
 /* Get variables */
 $lang    = isset( $_REQUEST['lang'] ) ?     htmlspecialchars($_REQUEST['lang'])     : 'en';
 $dir     = isset( $_REQUEST['dir']  ) ?     htmlspecialchars($_REQUEST['dir'])      : 'ltr';
-$charset = isset( $_REQUEST['charset'] ) ?  htmlspecialchars($_REQUEST['charset'])  : 'utf-8';
+// force utf-8 to avoid XSS with crafted URL and utf-7 in charset parameter
+$charset = 'utf-8';
 $type    = isset( $_REQUEST['type'] ) ?     htmlspecialchars($_REQUEST['type'])     : 'error';
 
 header('Content-Type: text/html; charset=' . $charset);

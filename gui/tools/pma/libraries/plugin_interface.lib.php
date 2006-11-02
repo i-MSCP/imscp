@@ -1,5 +1,5 @@
 <?php
-/* $Id: plugin_interface.lib.php,v 1.18 2006/06/25 11:40:14 lem9 Exp $ */
+/* $Id: plugin_interface.lib.php 9131 2006-06-25 11:42:18Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_change.php,v 2.85 2006/07/16 13:27:47 lem9 Exp $ */
+/* $Id: tbl_change.php 9186 2006-07-16 13:28:27Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

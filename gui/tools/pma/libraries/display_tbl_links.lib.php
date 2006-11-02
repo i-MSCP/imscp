@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl_links.lib.php,v 2.13 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: display_tbl_links.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // modified 2004-05-08 by Michael Keck <mail_at_michaelkeck_dot_de>

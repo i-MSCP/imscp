@@ -1,5 +1,5 @@
 <?php
-/* $Id: relation.lib.php,v 2.55 2006/02/24 20:31:05 lem9 Exp $ */
+/* $Id: relation.lib.php 8677 2006-02-24 20:31:45Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';

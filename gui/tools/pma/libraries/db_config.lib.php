@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_config.lib.php,v 2.4 2004/05/20 16:14:10 nijel Exp $ */
+/* $Id: db_config.lib.php 5802 2004-05-20 16:14:13Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

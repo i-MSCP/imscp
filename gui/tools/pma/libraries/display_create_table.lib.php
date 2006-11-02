@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_create_table.lib.php,v 1.9 2006/01/19 17:12:12 lem9 Exp $ */
+/* $Id: display_create_table.lib.php 8348 2006-01-19 17:13:20Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Displays form for creating a table (if user has privileges for that)

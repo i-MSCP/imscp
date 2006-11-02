@@ -1,7 +1,7 @@
 <?php
 /*
  * Code for displaying language selection
- * $Id: display_select_lang.lib.php,v 1.9 2006/08/09 21:18:34 lem9 Exp $
+ * $Id: display_select_lang.lib.php 9265 2006-08-09 21:19:33Z lem9 $
  */
 
 /**

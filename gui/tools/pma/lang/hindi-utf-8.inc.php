@@ -1,5 +1,5 @@
 <?php
-/* $Id: hindi-utf-8.inc.php,v 2.143 2006/08/09 12:55:37 lem9 Exp $ */
+/* $Id: hindi-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 // Hindi translation
 // 1st release   :   by Girish Nair <girishn@nagpur.dot.net.in(outdated)> : 08-Aug-2002

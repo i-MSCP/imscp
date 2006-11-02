@@ -1,5 +1,5 @@
 <?PHP
-    /* $Id: unzip.lib.php,v 1.2 2006/01/17 17:02:31 cybot_tm Exp $ */
+    /* $Id: unzip.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 
     /**
      *  ZIP file unpack classes. Contributed to the phpMyAdmin project.

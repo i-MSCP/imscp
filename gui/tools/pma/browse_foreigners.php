@@ -1,5 +1,5 @@
 <?php
-/* $Id: browse_foreigners.php,v 2.29 2006/07/19 15:58:22 lem9 Exp $ */
+/* $Id: browse_foreigners.php 9191 2006-07-19 15:59:26Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * display selection for relational field values

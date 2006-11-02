@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_table_exists.lib.php,v 2.14 2006/07/27 17:13:16 lem9 Exp $ */
+/* $Id: db_table_exists.lib.php 9202 2006-07-27 17:14:30Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

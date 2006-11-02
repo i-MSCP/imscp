@@ -1,4 +1,4 @@
-/* $Id: functions.js,v 1.6 2006/04/27 11:35:54 nijel Exp $ */
+/* $Id: functions.js 8985 2006-04-27 11:35:54Z nijel $ */
 
 /**
  * @var sql_box_locked lock for the sqlbox textarea in the querybox/querywindow

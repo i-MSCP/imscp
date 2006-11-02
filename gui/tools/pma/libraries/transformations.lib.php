@@ -1,5 +1,5 @@
 <?php
-/* $Id: transformations.lib.php,v 2.14 2006/01/19 15:39:29 cybot_tm Exp $ */
+/* $Id: transformations.lib.php 8340 2006-01-19 15:39:29Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

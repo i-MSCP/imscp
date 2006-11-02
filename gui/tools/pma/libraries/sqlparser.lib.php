@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlparser.lib.php,v 2.50.2.1 2006/08/16 17:41:08 lem9 Exp $ */
+/* $Id: sqlparser.lib.php 9472 2006-09-29 21:12:52Z  $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /** SQL Parser Functions for phpMyAdmin
@@ -147,7 +147,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'CVS: $Id: sqlparser.lib.php,v 2.50.2.1 2006/08/16 17:41:08 lem9 Exp $' . "\n";
+        $debugstr .= 'CVS: $Id: sqlparser.lib.php 9472 2006-09-29 21:12:52Z  $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";

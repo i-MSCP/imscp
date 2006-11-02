@@ -1,4 +1,4 @@
-/* $Id: server_privileges.js,v 1.1 2005/11/23 19:10:30 nijel Exp $ */
+/* $Id: server_privileges.js 7886 2005-11-23 19:10:30Z nijel $ */
 
 
 /**

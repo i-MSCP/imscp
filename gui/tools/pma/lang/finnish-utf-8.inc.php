@@ -1,5 +1,5 @@
 <?php
-/* $Id: finnish-utf-8.inc.php,v 2.152.2.1 2006/09/15 11:56:46 lem9 Exp $ */
+/* $Id: finnish-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
 
 /*
  * Translated by Jouni Kähkönen, <address withdrawn>

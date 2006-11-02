@@ -1,5 +1,5 @@
 <?php
-/* $Id: belarusian_latin-utf-8.inc.php,v 1.74.2.2 2006/08/30 10:42:13 nijel Exp $ */
+/* $Id: belarusian_latin-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
 
 /**
 * Translated by:

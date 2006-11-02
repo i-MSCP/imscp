@@ -1,5 +1,5 @@
 <?php
-/* $Id: xls.php,v 2.4 2006/04/26 19:16:52 nijel Exp $ */
+/* $Id: xls.php 8964 2006-04-26 19:16:52Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Check if we have native MS Excel export using PEAR class Spreadsheet_Excel_Writer

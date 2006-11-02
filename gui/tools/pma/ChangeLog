@@ -2,8 +2,24 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog,v 2.2340.2.46.2.4 2006/10/07 14:35:34 lem9 Exp $
-$Source: /cvsroot/phpmyadmin/phpMyAdmin/ChangeLog,v $
+$Id: ChangeLog 9640 2006-11-01 13:31:40Z lem9 $
+$Source$
+
+2006-11-01 Marc Delisle  <lem9@users.sourceforge.net>
+    ### 2.9.0.3 released from MAINT_2_9_0
+
+2006-10-27 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/fpdf/font: replace broken binary files
+
+2006-10-26 Marc Delisle  <lem9@users.sourceforge.net>
+    * error.php, libraries/common.lib.php, /database_interface.lib.php,
+      /session.inc.php: force utf-8 charset to avoid XSS with crafted URL
+      and utf-7 in charset; error messages won't display correctly if
+      the chosen lang is not utf-8
+
+2006-10-19 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/common.lib.php, /database_interface.lib.php,/session.inc.php:
+      wrong parameter "char" when calling error.php, should be "charset"
 
 2006-10-07 Marc Delisle  <lem9@users.sourceforge.net>
     * scripts/create-release.sh: use lang-cleanup.sh from the kit,

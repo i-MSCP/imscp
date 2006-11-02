@@ -1,7 +1,7 @@
 <?php
 /*
  * Code for displaying server selection written by nijel
- * $Id: select_server.lib.php,v 2.17 2006/07/09 10:29:28 cybot_tm Exp $
+ * $Id: select_server.lib.php 9174 2006-07-09 10:29:28Z cybot_tm $
  */
 
 /**

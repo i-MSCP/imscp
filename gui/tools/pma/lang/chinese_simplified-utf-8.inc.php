@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_simplified-utf-8.inc.php,v 2.111.2.1 2006/08/30 10:43:14 nijel Exp $ */
+/* $Id: chinese_simplified-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
 
 /**
  * Last translation by: Funda Wang <fundawang@en2china.com>

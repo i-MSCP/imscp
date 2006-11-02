@@ -1,5 +1,5 @@
 <?php
-/* $Id: grab_globals.lib.php,v 2.29.2.1 2006/09/29 12:52:59 lem9 Exp $ */
+/* $Id: grab_globals.lib.php 9472 2006-09-29 21:12:52Z  $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

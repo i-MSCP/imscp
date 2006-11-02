@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_common.inc.php,v 1.4 2006/07/06 14:38:13 lem9 Exp $ */
+/* $Id: db_details_common.inc.php 9168 2006-07-06 14:40:24Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

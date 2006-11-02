@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_qbe.php,v 2.24 2006/07/07 14:28:49 lem9 Exp $ */
+/* $Id: db_details_qbe.php 9170 2006-07-07 14:30:00Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

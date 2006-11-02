@@ -1,5 +1,5 @@
 <?php
-/* $Id: hebrew-utf-8.inc.php,v 2.108 2006/08/09 12:55:37 lem9 Exp $ 
+/* $Id: hebrew-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ 
  * Translated by Hadar Porat <hadar at banner.co.il> */
 
 $charset = 'utf-8';

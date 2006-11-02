@@ -1,5 +1,5 @@
 <?php
-/* $Id: application_octetstream__download.inc.php,v 2.0 2003/12/29 17:48:40 rabus Exp $ */
+/* $Id: application_octetstream__download.inc.php 5322 2003-12-29 17:48:40Z rabus $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_application_octetstream__download(&$buffer, $options = array(), $meta = '') {

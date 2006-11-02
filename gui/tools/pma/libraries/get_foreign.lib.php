@@ -1,5 +1,5 @@
 <?php
-/* $Id: get_foreign.lib.php,v 2.11 2006/02/21 11:07:46 cybot_tm Exp $ */
+/* $Id: get_foreign.lib.php 8609 2006-02-21 11:07:46Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

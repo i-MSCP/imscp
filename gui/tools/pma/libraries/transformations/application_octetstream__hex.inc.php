@@ -1,5 +1,5 @@
 <?php
-/* $Id: application_octetstream__hex.inc.php,v 1.2 2006/03/02 17:27:07 nijel Exp $ */
+/* $Id: application_octetstream__hex.inc.php 8705 2006-03-02 17:27:07Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_application_octetstream__hex($buffer, $options = array(), $meta = '') {

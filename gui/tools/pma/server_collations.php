@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_collations.php,v 2.15 2005/12/07 12:58:14 cybot_tm Exp $ */
+/* $Id: server_collations.php 8110 2005-12-07 12:58:14Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_common.inc.php,v 1.5 2006/05/18 16:51:16 lem9 Exp $ */
+/* $Id: server_common.inc.php 9057 2006-05-18 16:53:40Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

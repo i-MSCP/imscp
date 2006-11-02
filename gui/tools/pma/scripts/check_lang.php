@@ -1,5 +1,5 @@
 <?php
-/* $Id: check_lang.php,v 2.0 2003/11/18 15:20:45 nijel Exp $ */
+/* $Id: check_lang.php 5152 2003-11-18 15:20:45Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4 foldmarker={,} fdm=marker:
 
 

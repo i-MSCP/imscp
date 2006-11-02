@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_import.lib.php,v 1.19 2006/07/22 21:13:24 lem9 Exp $ */
+/* $Id: display_import.lib.php 9193 2006-07-22 21:13:24Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/file_listing.php');

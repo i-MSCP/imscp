@@ -1,5 +1,5 @@
 <?php
-/* $Id: left_header.inc.php,v 2.12 2006/07/09 10:29:28 cybot_tm Exp $ */
+/* $Id: left_header.inc.php 9174 2006-07-09 10:29:28Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

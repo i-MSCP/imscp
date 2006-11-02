@@ -1,5 +1,5 @@
 <?php
-/* $Id: csv.php,v 1.11 2006/06/27 08:56:46 nijel Exp $ */
+/* $Id: csv.php 9134 2006-06-27 08:56:46Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* CSV import plugin for phpMyAdmin */

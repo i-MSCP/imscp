@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_links.inc.php,v 1.2 2006/02/22 11:31:32 nijel Exp $ */
+/* $Id: server_links.inc.php 8637 2006-02-22 11:31:32Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Check parameters

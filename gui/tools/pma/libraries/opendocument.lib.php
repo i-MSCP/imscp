@@ -1,5 +1,5 @@
 <?php
-/* $Id: opendocument.lib.php,v 1.3 2006/04/28 10:46:13 nijel Exp $ */
+/* $Id: opendocument.lib.php 9000 2006-04-28 10:46:13Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

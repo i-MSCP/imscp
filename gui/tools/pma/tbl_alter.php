@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_alter.php,v 2.30 2006/02/21 11:07:44 cybot_tm Exp $ */
+/* $Id: tbl_alter.php 8609 2006-02-21 11:07:46Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';

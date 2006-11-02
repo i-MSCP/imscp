@@ -1,5 +1,5 @@
 <?php
-/* $Id: xml.php,v 2.12 2006/05/30 06:43:00 nijel Exp $ */
+/* $Id: xml.php 9082 2006-05-30 06:43:00Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

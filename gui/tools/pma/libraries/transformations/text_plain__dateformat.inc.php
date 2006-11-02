@@ -1,5 +1,5 @@
 <?php
-/* $Id: text_plain__dateformat.inc.php,v 2.3 2003/12/05 11:02:14 garvinhicking Exp $ */
+/* $Id: text_plain__dateformat.inc.php 5234 2003-12-05 11:02:14Z garvinhicking $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_text_plain__dateformat($buffer, $options = array(), $meta = '') {

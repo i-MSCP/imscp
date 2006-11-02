@@ -1,5 +1,5 @@
 <?php
-/* $Id: querywindow.php,v 2.37 2006/07/03 15:01:44 cybot_tm Exp $ */
+/* $Id: querywindow.php 9156 2006-07-03 15:01:45Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');

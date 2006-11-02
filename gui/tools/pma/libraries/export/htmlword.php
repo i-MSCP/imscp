@@ -1,5 +1,5 @@
 <?php
-/* $Id: htmlword.php,v 1.11 2006/04/27 22:28:55 nijel Exp $ */
+/* $Id: htmlword.php 8994 2006-04-27 22:28:55Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

@@ -1,5 +1,5 @@
 <?php
-/* $Id: Theme_Manager.class.php,v 1.14 2006/08/02 17:15:30 lem9 Exp $ */
+/* $Id: Theme_Manager.class.php 9247 2006-08-02 17:15:30Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Theme.class.php';

@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlvalidator.class.php,v 2.3 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: sqlvalidator.class.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -18,7 +18,7 @@
 * If you got this file from somewhere other than phpMyAdmin
 * please be aware that the latest copy will always be in the
 * phpMyAdmin CVS tree as
-* $Source: /cvsroot/phpmyadmin/phpMyAdmin/libraries/sqlvalidator.class.php,v $
+* $Source$
 *
 * This code that also used to depend on the PHP overload module, but that has been
 * removed now.
@@ -27,7 +27,7 @@
 *
 * @author   Robin Johnson <robbat2@users.sourceforge.net>
 *
-* @version  $Id: sqlvalidator.class.php,v 2.3 2006/01/17 17:02:30 cybot_tm Exp $
+* @version  $Id: sqlvalidator.class.php 8301 2006-01-17 17:03:02Z cybot_tm $
 */
 
 @include_once('SOAP/Client.php');
@@ -178,7 +178,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
             $this->username                      = 'anonymous';
             $this->password                      = '';
             $this->calling_program               = 'PHP_SQLValidator';
-            $this->calling_program_version       = '$Revision: 2.3 $';
+            $this->calling_program_version       = '$Revision: 8301 $';
             $this->target_dbms                   = 'N/A';
             $this->target_dbms_version           = 'N/A';
             $this->connection_technology         = 'PHP';

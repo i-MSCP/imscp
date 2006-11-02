@@ -1,5 +1,5 @@
 <?php
-/* $Id: bdb.lib.php,v 2.1 2005/12/07 10:28:50 cybot_tm Exp $ */
+/* $Id: bdb.lib.php 8102 2005-12-07 10:28:50Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_StorageEngine_bdb extends PMA_StorageEngine

@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_properties.php,v 2.11 2006/02/04 18:37:47 lem9 Exp $ */
+/* $Id: tbl_properties.php 8465 2006-02-04 18:38:42Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');

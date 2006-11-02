@@ -1,5 +1,5 @@
 <?php
-/* $Id: database_interface.lib.php,v 2.52.2.1 2006/09/29 13:02:48 lem9 Exp $ */
+/* $Id: database_interface.lib.php 9618 2006-10-26 15:11:14Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -56,7 +56,6 @@ if ( ! PMA_DBI_checkAndLoadMysqlExtension( $GLOBALS['cfg']['Server']['extension'
         // if alternativ fails too ...
         header( 'Location: error.php'
                 . '?lang='  . urlencode( $available_languages[$lang][2] )
-                . '&char='  . urlencode( $charset )
                 . '&dir='   . urlencode( $text_dir )
                 . '&type='  . urlencode( $strError )
                 . '&error=' . urlencode(

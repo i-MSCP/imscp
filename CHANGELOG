@@ -1,5 +1,9 @@
-X-Panel 0.1 Changelog
+VHCS 2.4.8 Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2006-11-02 Benedikt Heintel
+	- GUI:
+		* PMA Version 2.9.0.3
 
 2006-10-22 Roland Haeder
 	- ENGINE:
@@ -13,7 +17,7 @@ X-Panel 0.1 Changelog
 	 	* Added in Webmail :
 			+ change Mail Password out-of-webmail
 			+ change Autoresponder out-of-webmail
-	
+
 2006-10-22 Roland Haeder
 	- ENGINE:
 		* Fixes loading of domain's php.ini file and not /etc/php5/cgi/php.ini:
@@ -43,7 +47,7 @@ X-Panel 0.1 Changelog
 
 VHCS 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
+
 2006-10-15 Carsten Schoene:
 	- GUI:
 		* updated phpmyadmin to 2.9.0.2

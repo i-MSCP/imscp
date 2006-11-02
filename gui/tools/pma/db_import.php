@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_import.php,v 2.4 2005/11/24 09:12:16 nijel Exp $ */
+/* $Id: db_import.php 7908 2005-11-24 09:12:17Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');

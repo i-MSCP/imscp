@@ -1,5 +1,5 @@
 <?php
-/* $Id: innodb.lib.php,v 2.8 2005/12/07 11:24:38 cybot_tm Exp $ */
+/* $Id: innodb.lib.php 8107 2005-12-07 11:24:38Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_StorageEngine_innodb extends PMA_StorageEngine

@@ -1,5 +1,5 @@
 <?php
-/* $Id: ndbcluster.lib.php,v 1.1 2005/12/07 10:41:35 cybot_tm Exp $ */
+/* $Id: ndbcluster.lib.php 8103 2005-12-07 10:41:35Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_StorageEngine_ndbcluster extends PMA_StorageEngine

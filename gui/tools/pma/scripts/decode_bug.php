@@ -1,5 +1,5 @@
 <?php
-/* $Id: decode_bug.php,v 2.3 2006/01/17 17:03:02 cybot_tm Exp $ */
+/* $Id: decode_bug.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4 foldmarker={,} fdm=marker:
 
 

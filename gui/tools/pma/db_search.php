@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_search.php,v 2.19 2006/01/25 14:23:26 lem9 Exp $ */
+/* $Id: db_search.php 8398 2006-01-25 14:23:26Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Credits for this script goes to Thomas Chaumeny <chaume92 at aol.com>

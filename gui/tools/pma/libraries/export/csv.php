@@ -1,5 +1,5 @@
 <?php
-/* $Id: csv.php,v 2.12 2006/05/30 13:46:13 nijel Exp $ */
+/* $Id: csv.php 9090 2006-05-30 13:46:13Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

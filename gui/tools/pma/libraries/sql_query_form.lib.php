@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql_query_form.lib.php,v 1.34 2006/07/03 15:01:45 cybot_tm Exp $ */
+/* $Id: sql_query_form.lib.php 9156 2006-07-03 15:01:45Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * functions for displaying the sql query form

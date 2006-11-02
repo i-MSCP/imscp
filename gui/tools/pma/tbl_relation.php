@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_relation.php,v 2.32 2006/04/11 17:50:49 cybot_tm Exp $ */
+/* $Id: tbl_relation.php 8869 2006-04-11 17:50:49Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

@@ -1,5 +1,5 @@
 <?php
-/* $Id: iconv_wrapper.lib.php,v 2.2 2006/02/22 08:26:32 nijel Exp $ */
+/* $Id: iconv_wrapper.lib.php 8629 2006-02-22 08:26:32Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 # GNU iconv code set to IBM AIX libiconv code set table

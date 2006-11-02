@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_indexes.php,v 2.33 2006/04/27 09:51:51 cybot_tm Exp $ */
+/* $Id: tbl_indexes.php 8980 2006-04-27 09:51:51Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

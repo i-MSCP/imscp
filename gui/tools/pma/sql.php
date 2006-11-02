@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php,v 2.94 2006/05/30 15:24:10 lem9 Exp $ */
+/* $Id: sql.php 9094 2006-05-30 15:25:29Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * @todo    we must handle the case if sql.php is called directly with a query

@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php,v 2.13.2.1 2006/09/26 19:23:24 lem9 Exp $ */
+/* $Id: session.inc.php 9618 2006-10-26 15:11:14Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
@@ -25,7 +25,6 @@ if (!@function_exists('session_name')) {
     // (do not use &amp; for parameters sent by header)
     header('Location: error.php'
             . '?lang='  . urlencode($available_languages[$lang][2])
-            . '&char='  . urlencode($charset)
             . '&dir='   . urlencode($text_dir)
             . '&type='  . urlencode($strError)
             . '&error=' . urlencode(sprintf($strCantLoad, 'session')));

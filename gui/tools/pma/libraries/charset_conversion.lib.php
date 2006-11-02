@@ -1,5 +1,5 @@
 <?php
-/* $Id: charset_conversion.lib.php,v 2.11 2006/02/22 08:26:32 nijel Exp $ */
+/* $Id: charset_conversion.lib.php 8629 2006-02-22 08:26:32Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

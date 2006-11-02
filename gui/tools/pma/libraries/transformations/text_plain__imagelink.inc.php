@@ -1,5 +1,5 @@
 <?php
-/* $Id: text_plain__imagelink.inc.php,v 2.3 2005/05/22 17:09:27 lem9 Exp $ */
+/* $Id: text_plain__imagelink.inc.php 6998 2005-05-22 17:11:10Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_text_plain__imagelink($buffer, $options = array(), $meta = '') {

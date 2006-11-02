@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_properties.inc.php,v 1.6.2.1 2006/08/26 14:11:28 lem9 Exp $ */
+/* $Id: tbl_properties.inc.php 9472 2006-09-29 21:12:52Z  $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 // Check parameters
 

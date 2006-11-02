@@ -1,5 +1,5 @@
 <?php
-/* $Id: theme.php,v 1.5 2006/04/12 11:16:22 cybot_tm Exp $ */
+/* $Id: theme.php 8880 2006-04-12 11:16:22Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * theme test

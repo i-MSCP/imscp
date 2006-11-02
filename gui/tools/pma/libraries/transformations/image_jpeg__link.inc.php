@@ -1,5 +1,5 @@
 <?php
-/* $Id: image_jpeg__link.inc.php,v 2.2 2003/12/02 15:49:21 lem9 Exp $ */
+/* $Id: image_jpeg__link.inc.php 5215 2003-12-02 15:49:21Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_image_jpeg__link($buffer, $options = array(), $meta = '') {

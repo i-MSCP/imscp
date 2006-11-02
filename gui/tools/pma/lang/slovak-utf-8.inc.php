@@ -1,5 +1,5 @@
 <?php
-/* $Id: slovak-utf-8.inc.php,v 2.150 2006/08/09 12:55:40 lem9 Exp $ */
+/* $Id: slovak-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /* By: lubos klokner <erkac@vault-tec.sk> */
 /* and Ivan Kuriscak <shylauda69@yahoo.com>

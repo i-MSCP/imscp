@@ -1,5 +1,5 @@
 <?php
-/* $Id: pdf_schema.php,v 2.26 2006/04/25 15:21:33 cybot_tm Exp $ */
+/* $Id: pdf_schema.php 8941 2006-04-25 15:21:33Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Contributed by Maxime Delorme and merged by lem9

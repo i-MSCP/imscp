@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_status.php,v 2.29 2006/02/20 10:07:10 cybot_tm Exp $ */
+/* $Id: server_status.php 8591 2006-02-20 10:07:10Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * displays status variables with descriptions and some hints an optmizing

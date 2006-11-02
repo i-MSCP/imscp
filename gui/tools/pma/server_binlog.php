@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_binlog.php,v 2.11 2006/05/30 09:26:52 nijel Exp $ */
+/* $Id: server_binlog.php 9085 2006-05-30 09:26:52Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';

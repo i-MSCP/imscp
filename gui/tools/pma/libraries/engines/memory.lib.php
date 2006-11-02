@@ -1,5 +1,5 @@
 <?php
-/* $Id: memory.lib.php,v 1.1 2005/12/07 10:01:43 cybot_tm Exp $ */
+/* $Id: memory.lib.php 8100 2005-12-07 10:01:43Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * the MEMORY (HEAP) storage engine

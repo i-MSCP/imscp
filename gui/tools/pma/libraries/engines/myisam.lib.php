@@ -1,5 +1,5 @@
 <?php
-/* $Id: myisam.lib.php,v 2.2 2005/12/07 09:51:29 cybot_tm Exp $ */
+/* $Id: myisam.lib.php 8098 2005-12-07 09:51:29Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * the MyISAM storage engine

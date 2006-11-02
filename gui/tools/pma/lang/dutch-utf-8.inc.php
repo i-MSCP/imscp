@@ -1,5 +1,5 @@
 <?php
-/* $Id: dutch-utf-8.inc.php,v 2.148 2006/08/09 12:55:36 lem9 Exp $ */
+/* $Id: dutch-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /*
  * Updated by "CaliMonk" <calimonk at gmx.net> on 2005/01/04.

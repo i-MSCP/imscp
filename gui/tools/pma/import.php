@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.php,v 2.23 2006/05/21 12:03:39 lem9 Exp $ */
+/* $Id: import.php 9065 2006-05-21 12:03:39Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Core script for import, this is just the glue around all other stuff */

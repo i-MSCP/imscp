@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_indexes.lib.php,v 2.5 2006/01/17 17:02:31 cybot_tm Exp $ */
+/* $Id: tbl_indexes.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * function library for handling table indexes

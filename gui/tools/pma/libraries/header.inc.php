@@ -1,5 +1,5 @@
 <?php
-/* $Id: header.inc.php,v 2.17 2006/08/01 07:15:30 cybot_tm Exp $ */
+/* $Id: header.inc.php 9215 2006-08-01 07:15:30Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';

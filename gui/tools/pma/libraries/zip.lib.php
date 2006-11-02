@@ -1,5 +1,5 @@
 <?php
-/* $Id: zip.lib.php,v 2.4 2004/11/03 13:56:52 garvinhicking Exp $ */
+/* $Id: zip.lib.php 6461 2004-11-03 13:56:52Z garvinhicking $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

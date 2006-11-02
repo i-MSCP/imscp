@@ -1,5 +1,5 @@
 <?php
-/* $Id: french-utf-8.inc.php,v 2.181.2.1 2006/08/30 10:43:14 nijel Exp $ */
+/* $Id: french-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

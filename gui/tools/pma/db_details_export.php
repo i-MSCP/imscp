@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_export.php,v 2.8 2005/11/24 09:12:16 nijel Exp $ */
+/* $Id: db_details_export.php 7908 2005-11-24 09:12:17Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * dumps a database

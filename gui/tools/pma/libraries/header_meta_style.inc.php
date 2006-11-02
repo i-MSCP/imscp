@@ -1,5 +1,5 @@
 <?php
-/* $Id: header_meta_style.inc.php,v 2.17 2006/07/08 09:35:52 cybot_tm Exp $ */
+/* $Id: header_meta_style.inc.php 9171 2006-07-08 09:35:52Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])) {

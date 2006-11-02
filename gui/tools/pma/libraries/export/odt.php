@@ -1,5 +1,5 @@
 <?php
-/* $Id: odt.php,v 1.2 2006/04/28 10:46:13 nijel Exp $ */
+/* $Id: odt.php 9000 2006-04-28 10:46:13Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

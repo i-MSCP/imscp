@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlvalidator.lib.php,v 2.3 2005/10/08 15:17:42 nijel Exp $ */
+/* $Id: sqlvalidator.lib.php 7465 2005-10-08 15:17:42Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

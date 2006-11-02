@@ -1,5 +1,5 @@
 <?php
-/* $Id: check_user_privileges.lib.php,v 1.13 2006/05/18 16:51:15 lem9 Exp $ */
+/* $Id: check_user_privileges.lib.php 9057 2006-05-18 16:53:40Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Get user's global privileges and some db-specific privileges

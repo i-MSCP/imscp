@@ -1,5 +1,5 @@
 <?php
-/* $Id: phpmyadmin.css.php,v 2.93.2.1 2006/08/14 12:41:29 cybot_tm Exp $ */
+/* $Id: phpmyadmin.css.php 9472 2006-09-29 21:12:52Z  $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 chdir('..');

@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_row_action.php,v 2.21 2005/11/26 06:59:49 cybot_tm Exp $ */
+/* $Id: tbl_row_action.php 7955 2005-11-26 06:59:49Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 require_once('./libraries/common.lib.php');
 require_once('./libraries/mysql_charsets.lib.php');

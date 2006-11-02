@@ -1,5 +1,5 @@
 <?php
-/* $Id: sanitizing.lib.php,v 2.2 2005/11/17 13:12:58 cybot_tm Exp $ */
+/* $Id: sanitizing.lib.php 7802 2005-11-17 13:12:58Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

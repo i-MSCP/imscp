@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: mcrypt.lib.php,v 2.3 2005/02/07 16:46:02 rabus Exp $ */
+/* $Id: mcrypt.lib.php 6679 2005-02-07 16:46:02Z rabus $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

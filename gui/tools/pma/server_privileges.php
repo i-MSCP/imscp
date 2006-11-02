@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_privileges.php,v 2.98 2006/07/26 20:40:58 lem9 Exp $ */
+/* $Id: server_privileges.php 9197 2006-07-26 20:41:59Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');

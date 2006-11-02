@@ -1,5 +1,5 @@
 <?php
-/* $Id: arabic-utf-8.inc.php,v 2.145 2006/08/09 12:55:35 lem9 Exp $ */
+/* $Id: arabic-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 /**
  * Original translation to Arabic by Fisal <fisal77 at hotmail.com>

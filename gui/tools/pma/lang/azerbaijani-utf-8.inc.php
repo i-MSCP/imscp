@@ -1,5 +1,5 @@
 <?php
-/* $Id: azerbaijani-utf-8.inc.php,v 2.143 2006/08/09 12:55:35 lem9 Exp $ */
+/* $Id: azerbaijani-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 // tercümedeki eksiklerimi ve ya sehv olduğunu düşündüyünüz yerleri shehriyari@trcomm.net adresine göndere bilersiniz...
 // Şehriyar İmanov 30 Avqust 2003... Shehi

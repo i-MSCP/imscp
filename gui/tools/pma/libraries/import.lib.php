@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.lib.php,v 1.13 2006/06/09 20:12:18 lem9 Exp $ */
+/* $Id: import.lib.php 9105 2006-06-09 20:13:08Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Library that provides common import functions that are used by import plugins */

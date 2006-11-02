@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_variables.php,v 2.14 2006/04/25 15:21:33 cybot_tm Exp $ */
+/* $Id: server_variables.php 8941 2006-04-25 15:21:33Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 if ( ! defined( 'PMA_NO_VARIABLES_IMPORT' ) ) {

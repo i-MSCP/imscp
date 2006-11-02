@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_addfield.php,v 2.25 2006/02/21 10:15:01 cybot_tm Exp $ */
+/* $Id: tbl_addfield.php 8607 2006-02-21 10:15:01Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

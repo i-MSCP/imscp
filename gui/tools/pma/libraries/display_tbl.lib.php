@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php,v 2.108.2.1 2006/08/13 15:45:20 lem9 Exp $ */
+/* $Id: display_tbl.lib.php 9472 2006-09-29 21:12:52Z  $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';

@@ -10,7 +10,7 @@
 --                                                 
 -- Please don't forget to set up the tablenames in config.inc.php                                 
 -- 
--- $Id: upgrade_tables_mysql_4_1_2+.sql,v 2.1 2004/12/26 22:29:36 lem9 Exp $
+-- $Id: upgrade_tables_mysql_4_1_2+.sql 6537 2004-12-26 22:29:36Z lem9 $
 
 -- --------------------------------------------------------
 

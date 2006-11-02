@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_importdocsql.php,v 2.12 2006/03/19 13:14:16 lem9 Exp $ */
+/* $Id: db_details_importdocsql.php 8796 2006-03-19 13:15:56Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');

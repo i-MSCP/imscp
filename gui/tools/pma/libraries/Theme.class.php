@@ -1,5 +1,5 @@
 <?php
-/* $Id: Theme.class.php,v 1.6 2006/04/26 17:09:45 cybot_tm Exp $ */
+/* $Id: Theme.class.php 8960 2006-04-26 17:09:45Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_Theme {

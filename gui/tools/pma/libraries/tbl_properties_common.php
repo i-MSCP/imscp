@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_properties_common.php,v 1.3 2006/01/17 17:02:31 cybot_tm Exp $ */
+/* $Id: tbl_properties_common.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: language.lib.php,v 2.1 2006/04/27 12:13:52 nijel Exp $ */
+/* $Id: language.lib.php 8986 2006-04-27 12:13:52Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

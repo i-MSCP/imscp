@@ -1,5 +1,5 @@
 <?php
-/* $Id: basque-utf-8.inc.php,v 2.136 2006/08/09 12:55:35 lem9 Exp $ */
+/* $Id: basque-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

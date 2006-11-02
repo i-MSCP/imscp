@@ -1,5 +1,5 @@
 <?php
-/* $Id: setup.php,v 1.36.2.3.2.1 2006/10/03 13:11:08 nijel Exp $ */
+/* $Id: setup.php 9483 2006-10-03 13:11:08Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // phpMyAdmin setup script by Michal Čihař <michal@cihar.com>
@@ -16,7 +16,7 @@ $PMA_Config_Setup = new PMA_Config();
 
 // Script information
 $script_info = 'phpMyAdmin ' . $PMA_Config_Setup->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
-$script_version = '$Id: setup.php,v 1.36.2.3.2.1 2006/10/03 13:11:08 nijel Exp $';
+$script_version = '$Id: setup.php 9483 2006-10-03 13:11:08Z nijel $';
 
 // Grab action
 if (isset($_POST['action'])) {

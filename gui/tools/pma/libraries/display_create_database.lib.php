@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_create_database.lib.php,v 1.5 2006/01/17 17:02:30 cybot_tm Exp $ */
+/* $Id: display_create_database.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Displays form for creating database (if user has privileges for that)

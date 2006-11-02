@@ -1,5 +1,5 @@
 <?php
-/* $Id: turkish-utf-8.inc.php,v 2.148.2.1 2006/09/07 16:47:30 lem9 Exp $ */
+/* $Id: turkish-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
 
 // phpMyAdmin Türkçe 01.09.2006 itibariyle önceki çeviriye göre çok daha 
 // iyi bir çeviriyle yeniden yapılmıştır. 
