@@ -1,6 +1,14 @@
 VHCS 2.4.8 Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-11-04 Benedikt Heintel
+	- CONFIGS:
+		* proFTPd: commented out SSL via TLS
+		* proFTPd: reformated
+	- LANGUAGES:
+		* Spanish v1.8 (for VHCS 2.4.7.1)
+		* German v1.5 (for VHCS 2.4.8)
+
 2006-11-02 Benedikt Heintel
 	- GUI:
 		* PMA Version 2.9.0.3
