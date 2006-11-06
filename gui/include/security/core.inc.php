@@ -224,7 +224,7 @@ $dirPointer = @opendir(dirname(__FILE__)) or ipfilter_message("Cannot read from 
 $secFiles = array();
 
 // Begin reading the directory by only accepting level-xxxx.php scripts
-while ($dir = readdir($dirPointer) {
+while ($dir = readdir($dirPointer)) {
 	// Generate FQFN (Full Qualified FileName)
 	$entry = dirname(__FILE__)."/".$dir;
 

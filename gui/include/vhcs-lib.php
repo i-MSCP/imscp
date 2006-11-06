@@ -201,7 +201,7 @@ include_once (realpath($include_path.'/sql.php'));
 include_once (realpath($include_path.'/emailtpl-functions.php'));
 
 // If you comment this line out, you have no security level (none)
-include_once (realpath($include_path.'/security/core.inc.php');
+include_once (realpath($include_path.'/security/core.inc.php'));
 
 // OBSULETE! Do *not* include it!
 ////// include_once (realpath($include_path.'/vhcs-security.php'));
