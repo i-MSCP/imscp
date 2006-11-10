@@ -1,5 +1,5 @@
 <?php
-/* $Id: bulgarian-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: bulgarian-utf-8.inc.php 9408 2006-09-15 12:03:00Z lem9 $ */
 
 /**
  * Translated by Stanislav Yordanov <stanprog at stanprog.com>

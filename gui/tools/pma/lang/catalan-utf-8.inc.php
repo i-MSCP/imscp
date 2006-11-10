@@ -1,5 +1,5 @@
 <?php
-/* $Id: catalan-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: catalan-utf-8.inc.php 9321 2006-08-18 17:02:39Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;

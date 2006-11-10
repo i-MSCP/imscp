@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: japanese-utf-8.inc.php 9380 2006-08-30 10:43:15Z nijel $ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>

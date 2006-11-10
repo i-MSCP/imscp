@@ -1,5 +1,5 @@
 <?php
-/* $Id: belarusian_cyrillic-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: belarusian_cyrillic-utf-8.inc.php 9293 2006-08-12 20:24:34Z lem9 $ */
 
 /**
  *     Translated by:

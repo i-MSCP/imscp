@@ -1,5 +1,5 @@
 <?php
-/* $Id: german-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: german-utf-8.inc.php 9526 2006-10-10 08:05:58Z nijel $ */
 
 /**
  * For suggestions concerning this file please contact
@@ -306,7 +306,7 @@ $strFileNameTemplateDescriptionTable = 'Tabellen-Name';
 $strFileNameTemplateRemember = 'Konvention merken';
 $strFileToImport = 'Zu importierende Datei';
 $strFixed = 'starr';
-$strFlushPrivilegesNote = 'Anmerkung: phpMyAdmin liest die Benutzerprofile direkt aus den entsprechenden MySQL-Tabellen aus. Der Inhalt dieser Tabellen kann sich von den Benutzprofilen, die MySQL z.Zt. verwendet, unterscheiden, wenn manuelle Änderungen vorgenommen wurden. In diesem Fall sollten Sie  %sdie Benutzerprofile neu laden%s bevor Sie fortfahren.';
+$strFlushPrivilegesNote = 'Anmerkung: phpMyAdmin liest die Benutzerprofile direkt aus den entsprechenden MySQL-Tabellen aus. Der Inhalt dieser Tabellen kann sich von den Benutzerprofilen, die MySQL z.Zt. verwendet, unterscheiden, wenn manuelle Änderungen vorgenommen wurden. In diesem Fall sollten Sie  %sdie Benutzerprofile neu laden%s bevor Sie fortfahren.';
 $strFlushQueryCache = 'Den Abfragencache leeren (FLUSH)';
 $strFlushTable = 'Leeren des Tabellencaches ("FLUSH")';
 $strFlushTables = 'Den Tabellencache leeren ("FLUSH")';
@@ -819,7 +819,7 @@ $strShowStatusSelect_range_checkDescr = 'Anzahl der Joins ohne Schlüssel, bei d
 $strShowStatusSelect_rangeDescr = 'Anzahl der Joins, bei denen Bereiche auf die erste Tabelle benutzt wurden. (Es ist normalerweise unkritisch, wenn dieser Wert hoch ist.)';
 $strShowStatusSelect_scanDescr = 'Anzahl der Joins, bei denen die erste Tabelle gescannt wurde.';
 $strShowStatusSlave_open_temp_tablesDescr = 'Anzahl der temporären Tabellen, die momentan vom Slave-Prozess geöffnet sind.';
-$strShowStatusSlave_retried_transactionsDescr = 'Gesamtzahl (seit Start des Servers) der vom Replikations-Slave-SQL-Prozess widerversuchten Transaktionen.';
+$strShowStatusSlave_retried_transactionsDescr = 'Gesamtzahl (seit Start des Servers) der vom Replikations-Slave-SQL-Thread wiederversuchten Transaktionen.';
 $strShowStatusSlave_runningDescr = 'Dieser Wert steht auf ON wenn dieser Server ein Slave ist und mit dem Master verbunden ist.';
 $strShowStatusSlow_launch_threadsDescr = 'Anzahl der Prozesse, die länger als slow_launch_time  brauchten, um sich zu verbinden.';
 $strShowStatusSlow_queriesDescr = 'Anzahl der Anfragen, die länger als long_query_time benötigten.';

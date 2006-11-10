@@ -1,5 +1,5 @@
 <?php
-/* $Id: csv.php 9134 2006-06-27 08:56:46Z nijel $ */
+/* $Id: csv.php 9605 2006-10-26 07:37:26Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* CSV import plugin for phpMyAdmin */
@@ -142,10 +142,10 @@ if ($plugin_param == 'table') {
                 if (!$csv_finish) {
                     // Grab empty field
                     if ($ch == $csv_terminated) {
-                        $values[] = '';
                         if ($i == $len - 1) {
                             break;
                         }
+                        $values[] = '';
                         $i++;
                         $ch = $buffer[$i];
                         continue;
@@ -154,10 +154,10 @@ if ($plugin_param == 'table') {
                     // Grab one field 
                     $fallbacki = $i;
                     if ($ch == $csv_enclosed) {
-                        $need_end = TRUE;
                         if ($i == $len - 1) {
                             break;
                         }
+                        $need_end = TRUE;
                         $i++;
                         $ch = $buffer[$i];
                     } else {

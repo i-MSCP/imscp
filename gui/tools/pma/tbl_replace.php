@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_replace.php 9066 2006-05-23 16:54:30Z lem9 $ */
+/* $Id: tbl_replace.php 9497 2006-10-04 12:59:10Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -162,7 +162,7 @@ foreach ($loop_array AS $primary_key_index => $enc_primary_key) {
             $cur_value = $val . ', ';
         } elseif (preg_match('@^(UNIX_TIMESTAMP)$@', $me_funcs[$encoded_key]) && $val != '\'\'') {
             $cur_value = $me_funcs[$encoded_key] . '(' . $val . '), ';
-        } elseif (preg_match('@^(NOW|CURDATE|CURTIME|UNIX_TIMESTAMP|RAND|USER|LAST_INSERT_ID)$@', $me_funcs[$encoded_key])) {
+        } elseif (preg_match('@^(NOW|CURDATE|CURTIME|UTC_DATE|UTC_TIME|UTC_TIMESTAMP|UNIX_TIMESTAMP|RAND|USER|LAST_INSERT_ID)$@', $me_funcs[$encoded_key])) {
             $cur_value = $me_funcs[$encoded_key] . '(), ';
         } else {
             $cur_value = $me_funcs[$encoded_key] . '(' . $val . '), ';

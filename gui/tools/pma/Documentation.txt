@@ -11,15 +11,16 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.9.0.3 Documentation
+phpMyAdmin 2.9.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
+  * Official phpMyAdmin wiki
   * Local documents:
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 9640 2006-11-01 13:31:40Z
+  * Documentation version: $Id: Documentation.html 9680 2006-11-09 12:40:38Z
     lem9 $
 
 Requirements
@@ -318,7 +319,7 @@ Using authentication modes
 
 'HTTP' authentication mode
 
-  * Uses HTTP Basic authentication method and allows you to login as any valid
+  * Uses HTTP Basic authentication method and allows you to log in as any valid
     MySQL user.
   * Is supported with most PHP configurations. For IIS (ISAPI) support using
     CGI PHP see FAQ 1.32, for using with Apache CGI see FAQ 1.35.
@@ -331,9 +332,9 @@ Using authentication modes
     example, if you're running IIS).
   * Obviously, the user must enable cookies in the browser, but this is now a
     requirement for all authentication modes.
-  * With this mode, the user can truly logout of phpMyAdmin and login back with
-    the same username.
-  * If you want to login to arbitrary server see $cfg['AllowArbitraryServer']
+  * With this mode, the user can truly log out of phpMyAdmin and log in back
+    with the same username.
+  * If you want to log in to arbitrary server see $cfg['AllowArbitraryServer']
     directive.
   * As mentioned in the requirements section, having the mcrypt extension will
     speed up access considerably, but is not required.
@@ -472,7 +473,7 @@ $cfg['Servers'][$i]['auth_type'] string ['HTTP'|'cookie'|'config']
       + 'cookie' authentication mode ($auth_type = 'cookie') as introduced in
         2.2.3 allows you to log in as any valid MySQL user with the help of
         cookies. Username and password are stored in cookies during the session
-        and password is deleted when it ends. This can also allow you to login
+        and password is deleted when it ends. This can also allow you to log in
         in arbitrary server if $cfg['AllowArbitraryServer'] enabled.
       + 'HTTP' authentication (was called 'advanced' in older versions)
         ($auth_type = 'HTTP') as introduced in 1.3.0 allows you to log in as
@@ -486,7 +487,7 @@ $cfg['Servers'][$i]['user'] string
     is not needed when HTTP or cookie authentication is used and should be
     empty.
 $cfg['Servers'][$i]['nopassword'] boolean
-    Allow attempt to login without password when login with password fails.
+    Allow attempt to log in without password when a login with password fails.
     This can be used together with http authentication, when authentication is
     done some other way and phpMyAdmin gets user name from auth and uses empty
     password for connecting to MySQL. Password login is still tried first, but
@@ -771,8 +772,8 @@ $cfg['LoginCookieStore'] integer [number of seconds]
     not trusted environments.
 $cfg['LoginCookieDeleteAll'] boolean
     If enabled (default), logout deletes cookies for all servers, otherwise
-    only for current one. Setting this to false makes it easy to forget to
-    logout from other server, when you are using more of them.
+    only for current one. Setting this to false makes it easy to forget to log
+    out from other server, when you are using more of them.
 $cfg['UseDbSearch'] boolean
     Define whether the "search string inside database" is enabled or not.
 $cfg['IgnoreMultiSubmitErrors'] boolean
@@ -783,7 +784,7 @@ $cfg['VerboseMultiSubmit'] boolean
     multi-query statement embedded into the SQL output as inline comments.
     Defaults to TRUE.
 $cfg['AllowArbitraryServer'] boolean
-    If enabled allows you to login to arbitrary servers using cookie auth.
+    If enabled allows you to log in to arbitrary servers using cookie auth.
 
     NOTE: Please use this carefully, as this may allow users access to MySQL
     servers behind the firewall where your HTTP server is placed.
@@ -1032,6 +1033,13 @@ $cfg['BrowsePointerBackground'] string [HTML color]
     The colors (HTML) uses for the pointer and the marker in browse mode.
     The former feature highlights the row over which your mouse is passing and
     the latter lets you visually mark/unmark rows by clicking on them.
+    See themes/themename/layout.inc.php.
+$cfg['FontFamily'] string
+    You put here a valid CSS font family value, for example arial, sans-serif.
+    See themes/themename/layout.inc.php.
+$cfg['FontFamilyFixed'] string
+    You put here a valid CSS font family value, for example monospace. This one
+    is used in textarea.
     See themes/themename/layout.inc.php.
 $cfg['BrowsePointerEnable'] boolean
     Whether to activate the browse pointer or not.
@@ -1318,7 +1326,7 @@ $cfg['SQLValidator'] boolean
         .
     $cfg['SQLValidator']['username'] string
         $cfg['SQLValidator']['password'] string
-        The SOAP service allows you to login with anonymous and any password,
+        The SOAP service allows you to log in with anonymous and any password,
         so we use those by default. Instead, if you have an account with them,
         you can put your login details here, and it will be used in place of
         the anonymous login.
@@ -1336,7 +1344,7 @@ $cfg['DBG']['profile']['enable'] boolean
     to the end of every page displayed in the main window with profiling
     statistics for that page.
     You may need to increase the maximum execution time for this to complete
-    successfully. Profiling was removed from the code for version 2.9.0 due to
+    successfully.Profiling was removed from the code for version 2.9.0 due to
     licensing issues.
 $cfg['DBG']['profile']['threshold'] float (units in milliseconds)
     DEVELOPERS ONLY!
@@ -1629,7 +1637,7 @@ use instead the cookie authentication mode.
 This seems to be a PWS bug. Filippo Simoncini found a workaround (at this time
 there is no better fix): remove or comment the DOCTYPE declarations (2 lines)
 from the scripts libraries/header.inc.php, libraries/header_printview.inc.php,
-index.php, left.php and libraries/common.lib.php.
+index.php, navigation.php and libraries/common.lib.php.
 
 1.7 How can I GZip or Bzip a dump or a CSV export? It does not seem to work.
 
@@ -1795,7 +1803,7 @@ php_mysql.dll. phpMyAdmin tried to load the extension but failed.
 Usually, the problem is solved by installing a software package called
 "PHP-MySQL" or something similar.
 
-1.21 I am running the CGI version of PHP under Unix, and I cannot login using
+1.21 I am running the CGI version of PHP under Unix, and I cannot log in using
 cookie auth.
 
 In php.ini, set mysql.max_links higher than 1.
@@ -1885,7 +1893,7 @@ and restart Apache:
 #SetOutputFilter PHP
 #SetInputFilter PHP
 
-1.30 I get the error "left.php: Missing hash".
+1.30 I get the error "navigation.php: Missing hash".
 
 This problem is known to happen when the server is running Turck MMCache but
 upgrading MMCache to version 2.3.21 solves the problem.
@@ -2015,7 +2023,7 @@ to a plain revision.
 
 2.5 Each time I want to insert or change a record or drop a database or a
 table, an error 404 (page not found) is displayed or, with HTTP or cookie
-authentication, I'm asked to login again. What's wrong?
+authentication, I'm asked to log in again. What's wrong?
 
 Check the value you set for the $cfg['PmaAbsoluteUri'] directive in the
 phpMyAdmin configuration file.
@@ -2086,11 +2094,12 @@ Here are a few points to check:
     Adjust this setting accordingly. (Thanks to Klaus Dorninger for the hint).
   * In the php.ini directive arg_separator.input, a value of ";" will cause
     this error. Replace it with "&;".
+  * If you are using Hardened-PHP, you might want to increase request limits.
 
 Known limitations
 
-3.1 When using HTTP authentication, an user who logged out can not relogin in
-with the same nick.
+3.1 When using HTTP authentication, an user who logged out can not log in again
+in with the same nick.
 
 This is related to the authentication mechanism (protocol) used by phpMyAdmin.
 To bypass this problem: just close all the opened browser windows and then go
@@ -2243,7 +2252,7 @@ This could happen for several reasons:
 
   * $cfg['Servers'][$i]['controluser'] and/or $cfg['Servers'][$i]
     ['controlpass'] are wrong.
-  * The username/password you specify in the login-dialog are invalid.
+  * The username/password you specify in the login dialog are invalid.
   * You have already setup a security mechanism for the phpMyAdmin-directory,
     eg. a .htaccess file. This would interfere with phpMyAdmin's
     authentication, so remove it.
@@ -2366,8 +2375,8 @@ This issue has been reported by a OS X user, who adds that Chimera, Netscape
 and Mozilla do not have this problem.
 
 5.13 With Internet Explorer 5.5 or 6, and HTTP authentication type, I cannot
-manage two servers: I login to the first one, then the other one, but if I
-switch back to the first, I have to login on each operation.
+manage two servers: I log in to the first one, then the other one, but if I
+switch back to the first, I have to log in on each operation.
 
 This is a bug in Internet Explorer, other browsers do not behave this way.
 
@@ -2788,8 +2797,8 @@ http://sf.net/projects/phpmyadmin/ (and choose Forums)
 7.2 I want to translate the messages to a new language or upgrade an existing
 language, where do I start?
 
-Always use the current CVS version of your language file. For a new language,
-start from english-iso-8859-1.inc.php. If you don't know how to get the CVS
+Always use the current SVN version of your language file. For a new language,
+start from english-iso-8859-1.inc.php. If you don't know how to get the SVN
 version, please ask one of the developers.
 Please note that we try not to use HTML entities like &eacute; in the
 translations, since we define the right character set in the file. With HTML
@@ -2806,18 +2815,13 @@ proceed?
 
 The following method is preferred for new developers:
 
- 1. fetch the current CVS tree over anonymous CVS:
-    cvs -d:pserver:anonymous@phpmyadmin.cvs.sourceforge.net:/cvsroot/phpmyadmin
-    login
-    [Password: simply press the Enter key]
-    cvs -z3 -d:pserver:anonymous@phpmyadmin.cvs.sourceforge.net:/cvsroot/
-    phpmyadmin checkout phpMyAdmin
-    [This will create a new sub-directory named phpMyAdmin]
+ 1. fetch the current SVN tree over anonymous SVN:
+    svn co https://svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin
  2. add your stuff
- 3. put the modified files (tar'ed and gzip'ed) inside the patch tracker of the
-    phpMyAdmin SourceForge account.
+ 3. generate patch with your changes: svn diff
+ 4. put the patch inside the patch tracker of the phpMyAdmin project.
 
-Write access to the CVS tree is granted only to experienced developers who have
+Write access to the SVN tree is granted only to experienced developers who have
 already contributed something useful to phpMyAdmin.
 Also, have a look at the Developers section.
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: sql.php 9518 2006-10-09 12:35:10Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Set of functions used to build SQL dumps of tables
@@ -402,7 +402,12 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
         PMA_DBI_query('SET SQL_QUOTE_SHOW_CREATE = 0');
     }
 
-    $result = PMA_DBI_query('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table), null, PMA_DBI_QUERY_UNBUFFERED);
+    // I don't see the reason why this unbuffered query could cause problems,
+    // because SHOW CREATE TABLE returns only one row, and we free the
+    // results below. Nonetheless, we got 2 user reports about this
+    // (see bug 1562533) so I remove the unbuffered mode.
+    //$result = PMA_DBI_query('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table), null, PMA_DBI_QUERY_UNBUFFERED);
+    $result = PMA_DBI_query('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table));
     if ($result != FALSE && ($row = PMA_DBI_fetch_row($result))) {
         $create_query = $row[1];
         unset($row);
@@ -461,6 +466,7 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
 
                 // let's do the work
                 $sql_constraints_query .= 'ALTER TABLE ' . PMA_backquote($table) . $crlf;
+                $sql_constraints .= 'ALTER TABLE ' . PMA_backquote($table) . $crlf;
 
                 $first = TRUE;
                 for ($j = $i; $j < $sql_count; $j++) {
@@ -469,11 +475,13 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
                             $sql_constraints .= $crlf;
                         }
                         if (strpos($sql_lines[$j], 'CONSTRAINT') === FALSE) {
-                            $sql_constraints_query .= preg_replace('/(FOREIGN[\s]+KEY)/', 'ADD \1', $sql_lines[$j]);
-                            $sql_constraints .= $sql_constraints_query; 
+                            $str_tmp = preg_replace('/(FOREIGN[\s]+KEY)/', 'ADD \1', $sql_lines[$j]);
+                            $sql_constraints_query .= $str_tmp;
+                            $sql_constraints .= $str_tmp;
                         } else {
-                            $sql_constraints_query .= preg_replace('/(CONSTRAINT)/', 'ADD \1', $sql_lines[$j]);
-                            $sql_constraints .= $sql_constraints_query; 
+                            $str_tmp = preg_replace('/(CONSTRAINT)/', 'ADD \1', $sql_lines[$j]);
+                            $sql_constraints_query .= $str_tmp;
+                            $sql_constraints .= $str_tmp;
                         }
                         $first = FALSE;
                     } else {

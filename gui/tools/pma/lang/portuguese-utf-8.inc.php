@@ -1,5 +1,5 @@
 <?php
-/* $Id: portuguese-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: portuguese-utf-8.inc.php 9380 2006-08-30 10:43:15Z nijel $ */
 
 /**
  * Portuguese language file by

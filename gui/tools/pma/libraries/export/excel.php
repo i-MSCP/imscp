@@ -1,5 +1,5 @@
 <?php
-/* $Id: excel.php 8961 2006-04-26 17:49:47Z nijel $ */
+/* $Id: excel.php 9532 2006-10-10 14:20:16Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -9,8 +9,8 @@
 if (isset($plugin_list)) {
     $plugin_list['excel'] = array(
         'text' => 'strStrucExcelCSV',
-        'extension' => 'xls',
-        'mime_type' => 'application/vnd.ms-excel',
+        'extension' => 'csv',
+        'mime_type' => 'text/comma-separated-values',
         'options' => array(
             array('type' => 'text', 'name' => 'null', 'text' => 'strReplaceNULLBy'),
             array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),

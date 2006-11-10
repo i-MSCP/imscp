@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php 9618 2006-10-26 15:11:14Z lem9 $ */
+/* $Id: session.inc.php 9619 2006-10-26 15:25:28Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling

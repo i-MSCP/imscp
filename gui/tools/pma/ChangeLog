@@ -2,11 +2,21 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 9640 2006-11-01 13:31:40Z lem9 $
+$Id: ChangeLog 9680 2006-11-09 12:40:38Z lem9 $
 $Source$
 
+2006-11-09 Marc Delisle  <lem9@users.sourceforge.net>
+    ### 2.9.1 released from MAINT_2_9_1
+
+2006-11-03 Michal Čihař  <michal@cihar.com>
+    * config.sample.inc.php: Make it use CRLF to make Windows users happy.
+
+2006-11-02 Michal Čihař  <michal@cihar.com>
+    * Documentation.html: Mention problems with Hardened-PHP.
+    * lang/dutch: Fix typo, thanks to Thijs Kinkhorst - kink.
+
 2006-11-01 Marc Delisle  <lem9@users.sourceforge.net>
-    ### 2.9.0.3 released from MAINT_2_9_0
+    ### 2.9.1-rc2 released from QA_2_9
 
 2006-10-27 Marc Delisle  <lem9@users.sourceforge.net>
     * libraries/fpdf/font: replace broken binary files
@@ -14,12 +24,63 @@ $Source$
 2006-10-26 Marc Delisle  <lem9@users.sourceforge.net>
     * error.php, libraries/common.lib.php, /database_interface.lib.php,
       /session.inc.php: force utf-8 charset to avoid XSS with crafted URL
-      and utf-7 in charset; error messages won't display correctly if
-      the chosen lang is not utf-8
+      and utf-7 in charset; error messages won't display correctly
+      if the chosen lang is not utf-8
+
+2006-10-26 Michal Čihař  <michal@cihar.com>
+    * libraries/import/csv.php: Fix wrong import when ;; is at buffer boundary
+      (bug #1584836).
+    * tbl_properties_operations.php: Fix duplicate ID for checkbox (bug
+      #1584770).
+    * libraries/tbl_properties.inc.php: Check form only when saving table
+      fields (bug #1566222).
+
+2006-10-25 Michal Čihař  <michal@cihar.com>
+    * libraries/export/csv.php: Fix cvs/csv typo (bug #1583509).
 
 2006-10-19 Marc Delisle  <lem9@users.sourceforge.net>
     * libraries/common.lib.php, /database_interface.lib.php,/session.inc.php:
       wrong parameter "char" when calling error.php, should be "charset"
+
+2006-10-19 Michal Čihař  <michal@cihar.com>
+    * libraries/common.lib.php: Fix escaping of long query with js (thanks to
+      Erwin for report).
+
+2006-10-18 Marc Delisle  <lem9@users.sourceforge.net>
+    * db_operations.php, libraries/Table.class.php: bug #1567316,
+      renaming a db containing a view
+
+2006-10-10 Michal Čihař  <michal@cihar.com>
+    * Documentation.html: Sync with trunk.
+
+2006-10-14 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/Table.class.php: bug #1567316, renaming a db containing view
+      (but still some work to ensure proper sequence of renaming)
+
+2006-10-13 Marc Delisle  <lem9@users.sourceforge.net>
+    * css/phpmyadmin.css.php: bug #1517428, some IE 6 versions have
+      problems loading CSS when zlip.output_compression is on,
+      thanks to Juergen Wind
+    * db_details_export.php: select all tables by default to reflect
+      the default export behavior
+
+2006-10-12 Marc Delisle  <lem9@users.sourceforge.net>
+    * tbl_change.php: bug #1566219, automated timestamp values
+
+2006-10-10 Michal Čihař  <michal@cihar.com>
+    * lang/german: Fix typo (translation #1467138).
+    * libraries/import.lib.php: Correctly fail if file is too short (bug
+      #1574340).
+    * libraries/export/excel.php: Fix MIME type and extension to state before
+      plugins were introduced (patch #1570742, thanks to ssevennm - ssevennm).
+
+2006-10-09 Michal Čihař  <michal@cihar.com>
+    * lang/german: Fix typo (translation #1570611).
+
+2006-10-09 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/export/sql.php: bug #1562533, problems with unbuffered queries
+    * Documentation.html: FontFamily, FontFamilyFixed
+    * themes/original/layout.inc.php: bug #1564409, default FontFamily
 
 2006-10-07 Marc Delisle  <lem9@users.sourceforge.net>
     * scripts/create-release.sh: use lang-cleanup.sh from the kit,
@@ -35,15 +96,40 @@ $Source$
         - Call scripts/lang-cleanup.sh to remove not wanted languages
         - Do not login to cvs if already logged in
 
+2006-10-06 Marc Delisle  <lem9@users.sourceforge.net>
+    * libraries/database_interface.lib.php, bug #1568341, last part of
+      the fix to avoid problems on Windows servers, thanks to Juergen Wind
+
+2006-10-05 Marc Delisle  <lem9@users.sourceforge.net>
+    * scripts/create-release.sh: starting changes for new kits
+      TODO: - trimming of libraries/select_lang.lib.php in the kit
+            - 7zip 
+            - remove gzip ?
+
+2006-10-04 Michal Čihař  <michal@cihar.com>
+    * Documentation.html: Fixes thanks to Matt LaPlante - cyberdog3k.
+        - Fix Wikipedia URLs (patch #1568498).
+        - Fix duplicate ids (patch #1568504).
+    * tbl_replace.php, libraries/config.default.php: Add support for UTC_DATE,
+      UTC_TIME and UTC_TIMESTAMP functions, based on patch #1563585, thanks to
+      Alexander Schuch - ci-dev.
+    * tbl_alter.php: Fix order of includes (bug #1569277).
+
 2006-10-03 Marc Delisle  <lem9@users.sourceforge.net>
     ### 2.9.0.2 released from MAINT_2_9_0
 
 2006-10-03 Michal Čihař  <michal@cihar.com>
-    * scripts/setup.php: Sync token name, move its definition to one place
+    * scripts/setup.php: Sync token name, move it's definition to one place
       (bug #1569612).
 
 2006-10-01 Marc Delisle  <lem9@users.sourceforge.net>
     ### 2.9.0.1 released from MAINT_2_9_0
+    * libraries/database_interface.lib.php: bug #1568341, 
+      case sensitivity in database names
+    * tbl_relation.php: trap error 1452 when adding a foreign key
+      and a constraint fails
+    * libraries/export/sql.php: bug #1550690, wrong export of constraints,
+      thanks to Robert Vock
 
 2006-09-29 Marc Delisle  <lem9@users.sourceforge.net>
     * libraries/grab_globals.lib.php: fix attack via _FILES,

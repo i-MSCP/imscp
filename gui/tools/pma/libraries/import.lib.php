@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.lib.php 9105 2006-06-09 20:13:08Z lem9 $ */
+/* $Id: import.lib.php 9528 2006-10-10 13:04:24Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Library that provides common import functions that are used by import plugins */
@@ -45,14 +45,15 @@ function PMA_detectCompression($filepath)
         return FALSE;
     }
     $test = fread($file, 4);
+    $len = strlen($test);
     fclose($file);
-    if ($test[0] == chr(31) && $test[1] == chr(139)) {
+    if ($len >= 2 && $test[0] == chr(31) && $test[1] == chr(139)) {
         return 'application/gzip';
     }
-    if (substr($test, 0, 3) == 'BZh') {
+    if ($len >= 3 && substr($test, 0, 3) == 'BZh') {
         return 'application/bzip2';
     }
-    if ($test == "PK\003\004") {
+    if ($len >= 4 && $test == "PK\003\004") {
         return 'application/zip';
     }
     return 'none';

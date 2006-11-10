@@ -1,5 +1,5 @@
 <?php
-/* $Id: dutch-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
+/* $Id: dutch-utf-8.inc.php 9672 2006-11-02 17:43:37Z nijel $ */
 
 /*
  * Updated by "CaliMonk" <calimonk at gmx.net> on 2005/01/04.
@@ -347,7 +347,7 @@ $strLogin = 'Inloggen';
 $strLogout = 'Uitloggen';
 $strLogPassword = 'Wachtwoord:';
 $strLogServer = 'Server';
-$strLogUsername = 'Gebruikers naam:';
+$strLogUsername = 'Gebruikersnaam:';
 
 $strMaximumSize = 'Maximale grootte: %s%s';
 $strMbExtensionMissing = 'De mbstring PHP extensie werd niet gevonden en u lijkt een multibyte charset te gebruiken. Zonder de mbstring extensie kan phpMyAdmin strings niet correct splitsen wat tot onverwachte resultaten kan leiden.';

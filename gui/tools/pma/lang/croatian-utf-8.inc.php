@@ -1,5 +1,5 @@
 <?php
-/* $Id: croatian-utf-8.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: croatian-utf-8.inc.php 9375 2006-08-29 15:33:28Z nijel $ */
 
 /**
  *   Croatian language file by

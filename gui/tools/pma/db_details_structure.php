@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_structure.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: db_details_structure.php 9405 2006-09-14 10:22:30Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';

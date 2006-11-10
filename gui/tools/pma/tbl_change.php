@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_change.php 9186 2006-07-16 13:28:27Z lem9 $ */
+/* $Id: tbl_change.php 9540 2006-10-13 01:40:47Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -455,7 +455,9 @@ foreach ($loop_array AS $vrowcount => $vrow) {
             } // end if... else...
             // loic1: if a timestamp field value is not included in an update
             //        statement MySQL auto-update it to the current timestamp
-            $backup_field  = ($row_table_def['True_Type'] == 'timestamp')
+            // lem9:  however, things have changed since MySQL 4.1, so
+            //        it's better to set a fields_prev in this situation
+            $backup_field  = (PMA_MYSQL_INT_VERSION < 40100 && $row_table_def['True_Type'] == 'timestamp')
                            ? ''
                            : '<input type="hidden" name="fields_prev' . $vkey . '[' . urlencode($field) . ']" value="' . urlencode($vrow[$rowfield]) . '" />';
         } else {

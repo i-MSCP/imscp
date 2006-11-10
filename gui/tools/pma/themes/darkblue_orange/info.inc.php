@@ -1,5 +1,5 @@
 <?php
-/* $Id: info.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: info.inc.php 9302 2006-08-14 12:41:29Z cybot_tm $ */
 /* Theme information */
 $theme_name = 'Darkblue/orange';
 $theme_full_version = '2.9';

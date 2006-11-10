@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_properties.inc.php 9472 2006-09-29 21:12:52Z  $ */
+/* $Id: tbl_properties.inc.php 9614 2006-10-26 14:23:23Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 // Check parameters
 
@@ -43,7 +43,7 @@ function display_field_options(field_type, i) {
 </script>
 <?php } ?>
 
-<form method="post" action="<?php echo $action; ?>" onsubmit="return checkTableEditForm(this, <?php echo $num_fields; ?>)" >
+<form method="post" action="<?php echo $action; ?>">
 <?php
 echo PMA_generate_common_hidden_inputs($db, $table);
 if ($action == 'tbl_create.php') {
@@ -673,7 +673,7 @@ if ($action == 'tbl_create.php') {
 ?>
 
 <fieldset class="tblFooters">
-    <input type="submit" name="do_save_data" value="<?php echo $strSave; ?>" />
+    <input type="submit" name="do_save_data" value="<?php echo $strSave; ?>" onclick="return checkTableEditForm(this.form, <?php echo $num_fields; ?>)" />
 <?php if ($action == 'tbl_create.php' || $action == 'tbl_addfield.php') { ?>
     <?php echo $GLOBALS['strOr']; ?>
     <?php echo sprintf( $strAddFields, '<input type="text" id="added_fields" name="added_fields" size="2" value="1" onfocus="this.select()" />' ); ?>
