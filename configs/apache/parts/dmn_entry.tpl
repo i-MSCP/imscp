@@ -23,6 +23,8 @@
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
+    Redirect /stats http://{DMN_NAME}/awstats/awstats.pl
+
     ErrorDocument 401 /errors/401/index.php
     ErrorDocument 403 /errors/403/index.php
     ErrorDocument 404 /errors/404/index.php
