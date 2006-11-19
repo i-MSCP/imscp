@@ -3115,6 +3115,204 @@ sub dmn_del_crontab_data {
 }
 
 #
+# domain awstats data management
+#
+
+sub dmn_add_awstats_data {
+
+    my ($dmn_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'dmn_add_awstats_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_add_awstats_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    $rs = dmn_add_awstats_cfg_data($dmn_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_add_awstats_data()', 'Ending...');
+
+    return 0;
+}
+
+sub dmn_add_awstats_cfg_data {
+
+    my ($dmn_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    #
+    # Initial data we need;
+    #
+
+    my $dmn_name = @$dmn_data[1];
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+
+    my $tpl_dir = "$conf_dir/awstats";
+
+    my $awstats_fname = "awstats.$dmn_name.conf";
+
+    my $sys_cfg = "$awstats_dir/$awstats_fname";
+
+    #
+    # Let's get needed tags and templates;
+    #
+
+    my $entry = '';
+
+    ($rs, $entry) = get_tpl(
+                            $tpl_dir,
+                            'awstats.vhcs_tpl.conf'
+                           );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's prepare them;
+    #
+
+    my %tag_hash = (
+                    '{DOMAIN_NAME}' => $dmn_name
+                   );
+
+    ($rs, $entry) = prep_tpl(
+                             \%tag_hash,
+                             $entry
+                            );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's store generated data;
+    #
+
+    $rs = store_file($sys_cfg, $entry, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'Ending...');
+
+    return 0;
+}
+
+sub dmn_change_awstats_data {
+
+    my ($dmn_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'dmn_change_awstats_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_change_awstats_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    $rs = dmn_add_awstats_cfg_data($dmn_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_change_awstats_data()', 'Ending...');
+
+    return 0;
+}
+
+sub dmn_del_awstats_data {
+
+    my ($dmn_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'dmn_del_awstats_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_del_awstats_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    $rs = dmn_del_awstats_cfg_data($dmn_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_del_awstats_data()', 'Ending...');
+
+    return 0;
+}
+
+sub dmn_del_awstats_cfg_data {
+
+    my ($dmn_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    #
+    # Initial data we need;
+    #
+
+    my $dmn_name = @$dmn_data[1];
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+
+    my $tpl_dir = "$conf_dir/awstats";
+
+    my $awstats_fname = "awstats.$dmn_name.conf";
+
+    my $sys_cfg = "$awstats_dir/$awstats_fname";
+
+    #
+    # Let's delete file;
+    #
+
+    $rs = del_file($sys_cfg);
+
+    return $rs if ($rs != 0);
+
+
+    push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Ending...');
+
+    return 0;
+}
+
+#
 # domain high level managment functions;
 #
 
@@ -3145,6 +3343,11 @@ sub dmn_add_data {
     $rs = dmn_add_mta_data($dmn_data);
 
     return $rs if ($rs != 0);
+
+    $rs = dmn_add_awstats_data($dmn_data);
+
+    return $rs if ($rs != 0);
+
 
 #     $rs = dmn_add_crontab_data($dmn_data);
 #
@@ -3184,6 +3387,11 @@ sub dmn_change_data {
 
     return $rs if ($rs != 0);
 
+
+    $rs = dmn_change_awstats_data($dmn_data);
+
+    return $rs if ($rs != 0);
+
     push_el(\@main::el, 'dmn_change_data()', 'Ending...');
 
     return 0;
@@ -3217,6 +3425,11 @@ sub dmn_del_data {
     $rs = dmn_del_mta_data($dmn_data);
 
     return $rs if ($rs != 0);
+
+    $rs = dmn_del_awstats_data($dmn_data);
+
+    return $rs if ($rs != 0);
+
 
 #     $rs = dmn_del_crontab_data($dmn_data);
 #

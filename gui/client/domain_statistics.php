@@ -307,6 +307,8 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 $tpl -> assign(array('TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
+					 'DOMAIN_URL' => 'http://'.$_SESSION['user_logged'].'/stats/',
+					 'TR_AWSTATS' => tr('Web Stats'),
                      'TR_MONTH' => tr('Month'),
                      'TR_YEAR' => tr('Year'),
                      'TR_SHOW' => tr('Show'),

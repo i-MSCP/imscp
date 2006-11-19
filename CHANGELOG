@@ -1,6 +1,24 @@
 VHCS 2.4.8 Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-11-19 Benedikt Heintel
+	- CONFIG:
+		* Added AWStats configdir to vhcs2.conf
+		* Added wget hacking prevention
+		* Changed AWStats config template
+		* Cahnged postfix's main.cf
+	- ENGINE:
+		* Excluded backup of the phptmp-directories
+		* Added AWStats backend functions
+	- GUI:
+		* Added User frontend support for AWStats
+
+2006-11-10 Benedikt Heintel
+	- CONFIGS:
+		* proFTPd: changed main.cf (addes features)
+	- GUI:
+		* PMA Version 2.9.1
+
 2006-11-04 Benedikt Heintel
 	- CONFIGS:
 		* proFTPd: commented out SSL via TLS

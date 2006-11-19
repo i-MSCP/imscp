@@ -87,8 +87,11 @@ smtpd_sasl2_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain =
 broken_sasl_auth_clients = yes
-smtpd_recipient_restrictions = permit_sasl_authenticated,
-			       permit_mynetworks,
+smtpd_sender_restrictions = permit_mynetworks,
+                            permit_sasl_authenticated,
+                            reject_unauth_destination
+smtpd_recipient_restrictions = permit_mynetworks,
+			       permit_sasl_authenticated,
 			       reject_unauth_destination
 
 #
