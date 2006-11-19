@@ -11,7 +11,8 @@ VHCS 2.4.8 Omega Changelog
 		* Excluded backup of the phptmp-directories
 		* Added AWStats backend functions
 	- GUI:
-		* Added User frontend support for AWStats
+		* Added user frontend support for AWStats
+		* Added template for AWStats Support
 
 2006-11-10 Benedikt Heintel
 	- CONFIGS:
