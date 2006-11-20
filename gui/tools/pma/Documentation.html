@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 9680 2006-11-09 12:40:38Z lem9 $ -->
+<!-- $Id: Documentation.html 9733 2006-11-19 00:16:45Z lem9 $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
@@ -11,7 +11,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 2.9.1 - Documentation</title>
+    <title>phpMyAdmin 2.9.1.1 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -33,7 +33,7 @@
     <li><a href="#glossary">Glossary</a></li>
 </ul>
 
-<h1>phpMyAdmin 2.9.1 Documentation</h1>
+<h1>phpMyAdmin 2.9.1.1 Documentation</h1>
 
 <ul><li><a href="http://www.phpmyadmin.net/">
             phpMyAdmin homepage</a></li>
@@ -48,7 +48,7 @@
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 9680 2006-11-09 12:40:38Z lem9 $</i>
+        <i>$Id: Documentation.html 9733 2006-11-19 00:16:45Z lem9 $</i>
     </li>
 </ul>
 
@@ -501,7 +501,7 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
         suggested, perhaps a <a href="#glossary">.htaccess</a> file with the
         HTTP-AUTH directive or disallowing incoming HTTP requests at
         one&#8217;s router or firewall will suffice (both of which
-    are beyond the scope of this manual but easily searchable with Google).</li>
+        are beyond the scope of this manual but easily searchable with Google).</li>
 </ul>
 
 <!-- CONFIGURATION -->
@@ -976,7 +976,11 @@ ALTER TABLE `pma_column_comments`
         listed in the <i>allow</i> rules, and not listed in the <i>deny</i>
         rules. This is the <b>most</b> secure means of using Allow/Deny rules,
         and was available in Apache by specifying allow and deny rules without
-        setting any order.
+        setting any order.<br /><br />
+
+        Please also see <a
+        href="#cfg_TrustedProxies">$cfg['TrustedProxies']</a> for detecting IP
+        address behind proxies.
     </dd>
     <dt id="servers_allowdeny_rules">
         <span id="cfg_Servers_AllowDeny_rules">$cfg['Servers'][$i]['AllowDeny']['rules']</span> array of strings
@@ -1398,6 +1402,22 @@ ALTER TABLE `pma_column_comments`
         supported by recode/iconv) or remove these which you don't use.
         Character sets will be shown in same order as here listed, so if you
         frequently use some of these move them to the top.</dd>
+
+    <dt id="cfg_TrustedProxies">$cfg['TrustedProxies'] array</dt>
+    <dd>Lists proxies and HTTP headers which are trusted for <a
+        href="#servers_allowdeny_order">IP Allow/Deny</a>. This list is by
+        default empty, you need to fill in some trusted proxy servers if you
+        want to use rules for IP addresses behind proxy.<br /><br />
+
+        The following example specifies that phpMyAdmin should trust a 
+        HTTP_X_FORWARDED_FOR (<tt>X-Forwarded-For</tt>) header coming from the proxy 1.2.3.4:
+<pre>
+$cfg['TrustedProxies'] =
+     array('1.2.3.4' =&gt; 'HTTP_X_FORWARDED_FOR');
+</pre>
+        The $cfg['Servers'][$i]['AllowDeny']['rules'] directive uses the 
+        client's IP address as usual.
+    </dd>
 
     <dt id="cfg_GD2Available">$cfg['GD2Available'] string</dt>
     <dd>Specifies whether GD &gt;= 2 is available. If yes it can be used for

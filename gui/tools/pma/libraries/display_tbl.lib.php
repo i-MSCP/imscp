@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php 9298 2006-08-13 15:46:07Z lem9 $ */
+/* $Id: display_tbl.lib.php 9706 2006-11-17 08:49:25Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';
@@ -13,6 +13,9 @@ require_once './libraries/Table.class.php';
  */
 if (!isset($pos)) {
     $pos = 0;
+} else {
+    /* We need this to be a integer */
+    $pos = (int)$pos;
 }
 
 /**

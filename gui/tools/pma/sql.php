@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 9094 2006-05-30 15:25:29Z lem9 $ */
+/* $Id: sql.php 9706 2006-11-17 08:49:25Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
@@ -110,6 +110,9 @@ if (isset($find_real_end) && $find_real_end) {
  */
 elseif (!isset($pos)) {
     $pos = 0;
+} else {
+    /* We need this to be a integer */
+    $pos = (int)$pos;
 }
 
 /**

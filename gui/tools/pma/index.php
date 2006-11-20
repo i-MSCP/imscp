@@ -1,5 +1,5 @@
 <?php
-/* $Id: index.php 9157 2006-07-03 15:29:06Z cybot_tm $ */
+/* $Id: index.php 9718 2006-11-18 11:21:43Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * forms frameset
@@ -88,7 +88,7 @@ if (! isset($GLOBALS['db']) || ! strlen($GLOBALS['db'])) {
 
 $url_query = PMA_generate_common_url($_GET);
 
-if (!empty($GLOBALS['target']) && in_array($GLOBALS['target'], $goto_whitelist)) {
+if (isset($GLOBALS['target']) && is_string($GLOBALS['target']) && !empty($GLOBALS['target']) && in_array($GLOBALS['target'], $goto_whitelist)) {
     $main_target = $GLOBALS['target'];
 }
 

@@ -71,6 +71,26 @@
             <td background="{THEME_COLOR_PATH}/images/menu/open_background.gif" class="menu"><a href="domain_statistics.php" class="menu_active" onMouseOver="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onMouseOut="MM_swapImgRestore()">{TR_MENU_DOMAIN_STATISTICS}</a></td>
             <td align="right" background="{THEME_COLOR_PATH}/images/menu/open_icon_bcgr.jpg" class="menu"><a href="domain_statistics.php" onMouseOver="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="{THEME_COLOR_PATH}/images/icons/statistics_a.gif" name="statistics" width="36" height="36" border="0" id="statistics"></a></td>
           </tr>
+		   <tr background="{THEME_COLOR_PATH}/images/menu/open_background.jpg">
+		     <td colspan="3" class="menu" background="{THEME_COLOR_PATH}/images/menu/open_background.jpg"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <tr>
+                 <td width="5" rowspan="6" background="{THEME_COLOR_PATH}/images/menu/open_background_left.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="12" height="1"></td>
+                 <td><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15"></td>
+                 <td><a href="domain_statistics.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
+                 <td width="5" rowspan="6" background="{THEME_COLOR_PATH}/images/menu/open_background_right.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="5" height="1"></td>
+               </tr>
+               <tr>
+                 <td colspan="2"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="30" height="4"></td>
+               </tr>
+               <tr>
+                 <td width="15"><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15"></td>
+                 <td><a href="{DOMAIN_URL}" target="awstats" class="submenu">{TR_AWSTATS}</a></td>
+               </tr>
+               <tr>
+                 <td colspan="2"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="30" height="4"></td>
+                 </tr>
+		  </table></td>
+		     </tr>
 		  <!-- BDP: support_system -->
 		  <tr>
             <td colspan="3"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="30" height="4"></td>

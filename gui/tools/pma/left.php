@@ -1,5 +1,5 @@
 <?php
-/* $Id: left.php 9215 2006-08-01 07:15:30Z cybot_tm $ */
+/* $Id: left.php 9710 2006-11-17 08:59:43Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * the navigation frame - displays server, db and table selection tree
@@ -533,8 +533,8 @@ function PMA_displayTableList($tables, $visible = false,
             }
             echo ' id="icon_' . htmlspecialchars($table_db . '.' . $table['Name']) . '"'
                 .' width="10" height="10" alt="' . $GLOBALS['strBrowse'] . '" /></a>' . "\n"
-                .'<a href="' . $href . '" title="' . $table['Comment']
-                .' (' . PMA_formatNumber($table['Rows'], 0) . ' ' . $GLOBALS['strRows'] . ')"'
+                .'<a href="' . $href . '" title="' . htmlspecialchars($table['Comment']
+                .' (' . PMA_formatNumber($table['Rows'], 0) . ' ' . $GLOBALS['strRows']) . ')"'
                 .' id="' . htmlspecialchars($table_db . '.' . $table['Name']) . '">'
                 . htmlspecialchars($table['disp_name']) . '</a>';
             echo '</li>' . "\n";

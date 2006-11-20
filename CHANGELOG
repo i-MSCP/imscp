@@ -1,6 +1,10 @@
 VHCS 2.4.8 Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-11-20 Benedikt Heintel
+	- GUI:
+		* updated phpMyAdmin to 2.9.1.1
+
 2006-11-19 Benedikt Heintel
 	- CONFIG:
 		* Added AWStats configdir to vhcs2.conf

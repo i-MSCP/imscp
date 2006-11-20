@@ -1,5 +1,5 @@
 <?php
-/* $Id: url_generating.lib.php 9453 2006-09-26 19:23:24Z lem9 $ */
+/* $Id: url_generating.lib.php 9711 2006-11-17 09:32:12Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -186,7 +186,10 @@ function PMA_generate_common_url ($db = '', $table = '', $delim = '&amp;')
 
     $param_strings = array();
     foreach ($params as $key => $val) {
-        $param_strings[] = urlencode($key) . '=' . urlencode($val);
+        /* We ignore arrays as we don't use them! */
+        if (!is_array($val)) {
+            $param_strings[] = urlencode($key) . '=' . urlencode($val);
+        }
     }
 
     if (empty($param_strings)) {

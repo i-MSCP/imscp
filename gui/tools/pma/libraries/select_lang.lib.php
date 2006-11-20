@@ -1,5 +1,5 @@
 <?php
-/* $Id: select_lang.lib.php 9121 2006-06-21 10:40:41Z lem9 $ */
+/* $Id: select_lang.lib.php 9711 2006-11-17 09:32:12Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -39,6 +39,9 @@ function PMA_langCheck()
     if (! empty($_POST['lang'])) {
         if (PMA_langSet($_POST['lang'])) {
             return true;
+        } elseif (!is_string($_POST['lang'])) {
+            /* Faked request, don't care on localisation */
+            $GLOBALS['lang_failed_request'] = 'Yes';
         } else {
             $GLOBALS['lang_failed_request'] = $_POST['lang'];
         }
@@ -48,6 +51,9 @@ function PMA_langCheck()
     if (! empty($_GET['lang'])) {
         if (PMA_langSet($_GET['lang'])) {
             return true;
+        } elseif (!is_string($_GET['lang'])) {
+            /* Faked request, don't care on localisation */
+            $GLOBALS['lang_failed_request'] = 'Yes';
         } else {
             $GLOBALS['lang_failed_request'] = $_GET['lang'];
         }
@@ -57,6 +63,9 @@ function PMA_langCheck()
     if (! empty($_COOKIE['pma_lang'])) {
         if (PMA_langSet($_COOKIE['pma_lang'])) {
             return true;
+        } elseif (!is_string($_COOKIE['lang'])) {
+            /* Faked request, don't care on localisation */
+            $GLOBALS['lang_failed_request'] = 'Yes';
         } else {
             $GLOBALS['lang_failed_cookie'] = $_COOKIE['pma_lang'];
         }
@@ -95,7 +104,7 @@ function PMA_langCheck()
  */
 function PMA_langSet(&$lang)
 {
-    if (empty($lang) || empty($GLOBALS['available_languages'][$lang])) {
+    if (!is_string($lang) || empty($lang) || empty($GLOBALS['available_languages'][$lang])) {
         return false;
     }
     $GLOBALS['lang'] = $lang;

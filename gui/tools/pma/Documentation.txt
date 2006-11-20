@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.9.1 Documentation
+phpMyAdmin 2.9.1.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.9.1 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 9680 2006-11-09 12:40:38Z
+  * Documentation version: $Id: Documentation.html 9733 2006-11-19 00:16:45Z
     lem9 $
 
 Requirements
@@ -686,6 +686,9 @@ $cfg['Servers'][$i]['AllowDeny']['order'] string
     not listed in the deny rules. This is the most secure means of using Allow/
     Deny rules, and was available in Apache by specifying allow and deny rules
     without setting any order.
+
+    Please also see $cfg['TrustedProxies'] for detecting IP address behind
+    proxies.
 $cfg['Servers'][$i]['AllowDeny']['rules'] array of strings
     The general format for the rules is as such:
 
@@ -995,6 +998,20 @@ $cfg['AvailableCharsets'] array
     supported by recode/iconv) or remove these which you don't use. Character
     sets will be shown in same order as here listed, so if you frequently use
     some of these move them to the top.
+$cfg['TrustedProxies'] array
+    Lists proxies and HTTP headers which are trusted for IP Allow/Deny. This
+    list is by default empty, you need to fill in some trusted proxy servers if
+    you want to use rules for IP addresses behind proxy.
+
+    The following example specifies that phpMyAdmin should trust a
+    HTTP_X_FORWARDED_FOR (X-Forwarded-For) header coming from the proxy
+    1.2.3.4:
+
+    $cfg['TrustedProxies'] =
+         array('1.2.3.4' => 'HTTP_X_FORWARDED_FOR');
+
+    The $cfg['Servers'][$i]['AllowDeny']['rules'] directive uses the client's
+    IP address as usual.
 $cfg['GD2Available'] string
     Specifies whether GD >= 2 is available. If yes it can be used for MIME
     transformations.
