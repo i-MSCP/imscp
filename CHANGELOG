@@ -4,6 +4,7 @@ VHCS 2.4.8 Omega Changelog
 2006-11-20 Benedikt Heintel
 	- GUI:
 		* updated phpMyAdmin to 2.9.1.1
+		* new phpMyAdmin config file
 
 2006-11-19 Benedikt Heintel
 	- CONFIG:
