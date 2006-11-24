@@ -1,5 +1,15 @@
 VHCS 2.4.8 Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2006-11-24 Benedikt Heintel
+	- CONFIGS:
+		* Commented crontab.conf
+		* Added variables for AWStats to vhcs2.conf
+	- ENGINE:
+		* Added AWStats files
+	- GUI:
+		* Changed client-functions.php added variable AWStats Link in Menu (not working, why?)
+	- TOOLS:
+		* Added AWStats install files
 
 2006-11-20 Benedikt Heintel
 	- GUI:

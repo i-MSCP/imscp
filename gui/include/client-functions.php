@@ -494,6 +494,10 @@ SQL_QUERY;
 
 	}
 
+	if ($cfg['AWSTATS_DIR'] == "no") {
+		$tpl -> assign('AWSTSTS', '');
+	}
+
 	$tpl -> parse('MENU', 'menu');
 
 }

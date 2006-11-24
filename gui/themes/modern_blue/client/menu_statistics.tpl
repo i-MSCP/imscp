@@ -82,6 +82,7 @@
                <tr>
                  <td colspan="2"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="30" height="4"></td>
                </tr>
+               <!-- BDP: awstats -->
                <tr>
                  <td width="15"><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15"></td>
                  <td><a href="{DOMAIN_URL}" target="awstats" class="submenu">{TR_AWSTATS}</a></td>
@@ -89,6 +90,7 @@
                <tr>
                  <td colspan="2"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="30" height="4"></td>
                  </tr>
+                <!-- EDP: awstats -->
 		  </table></td>
 		     </tr>
 		  <!-- BDP: support_system -->
