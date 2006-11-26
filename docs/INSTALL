@@ -1,4 +1,4 @@
-VHCS HowTo Install
+VHCS ω (OMEGA) HowTo Install
 ========================================================================
 
 Use the user root when installing VHCS.
@@ -33,7 +33,7 @@ tangra: # make install
 
 Your build is now stored in /tmp/vhcs-2.4.8
 
-Copy all directory forum the buil into your system 
+Copy all directory forum the buil into your system
 (do not forget to make backups)
 tangra: # cp -R /tmp/vhcs-2.4.8/* /
 
@@ -51,13 +51,13 @@ Install step-by-step vhcs
 Clean the tmp folder
 tangra: # rm -R /tmp/vhcs-2.4.8
 
-moleSoftware offers a variety of support services to meet 
-your unique needs. Installation and software customizing 
-services are available too. 
+moleSoftware offers a variety of support services to meet
+your unique needs. Installation and software customizing
+services are available too.
 
-In an effort to better serve our customers, we ask that 
-you please sign in to the support site. Once you have 
-signed in, you will have access to VHCS support resources. 
+In an effort to better serve our customers, we ask that
+you please sign in to the support site. Once you have
+signed in, you will have access to VHCS support resources.
 
 http://www.vhcs.net
 http://wwww.molesoftware.com

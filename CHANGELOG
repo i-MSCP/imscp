@@ -1,5 +1,5 @@
-VHCS 2.4.8 Omega Changelog
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+VHCS 2.4.8 ω Omega Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2006-11-26 Roland Haeder
 	- CONFIGS
@@ -8,6 +8,19 @@ VHCS 2.4.8 Omega Changelog
 2006-11-26 Benedikt Heintel
 	- DOCS:
 		* Modified Docs for next release
+	- CONFIGS:
+		* Added FastCGI files for PHP4
+		* Modified FastCGI files for PHP5
+	- ENGINE:
+		* Modified dmn-mngr for creating FastCGI files
+
+	@TODO:
+		- FastCGI:
+			* Copy files on install/update
+			* Modifie dmn-mngr for working
+		- AWStats:
+			* dmn-mngr: check whether awstats is enabled or not
+			* apache: set statsdir if awstats is enabled
 
 2006-11-24 Benedikt Heintel
 	- CONFIGS:

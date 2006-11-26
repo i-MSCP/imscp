@@ -14,6 +14,7 @@ gcc
 gzip
 iptables
 libapache2-mod-php4
+libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
 libcrypt-blowfish-perl
@@ -40,9 +41,10 @@ libsnmp-session-perl
 libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
+libmysqlclient14
 make
 mysql-client-4.1
-mysql-common-4.1
+mysql-common
 mysql-server-4.1
 original-awk
 patch

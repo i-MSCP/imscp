@@ -1671,7 +1671,7 @@ sub dmn_add_httpd_file_data {
 
 	my $pear_dir = $main::cfg{'PEAR_DIR'};
 
-	my $starter_dir = $main::cfg{'PHP_STARTUP_DIR'};
+	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
 
@@ -2199,7 +2199,7 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 
 	}
-	
+
 	#
 	# php.ini for every domain
 	#
