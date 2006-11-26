@@ -1,6 +1,10 @@
 VHCS 2.4.8 Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-11-26 Roland Haeder
+	- CONFIGS
+		* Added missing SEC_FOO_BAR variables (thx 2 xister ;) )
+
 2006-11-26 Benedikt Heintel
 	- DOCS:
 		* Modified Docs for next release
