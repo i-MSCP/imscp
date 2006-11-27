@@ -1,6 +1,25 @@
 VHCS 2.4.8 ω Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-11-27 Benedikt Heintel
+	- CONFIGS:
+		* apache2-parts: added "IfModule mod_fastcgi" tag
+	- ENGINE:
+		* vhcs2-dmn-mngr: Added Comments
+		* vhcs2-dmn-mngr: check wether awstats is enabled or not
+		* vhcs2-dmn-mngr: FastCGI enhangements
+	- MAKEFILES:
+		* edited them for FastCGI
+
+	@TODO:
+		- FastCGI:
+			* Copy files on install/update
+			* Check, if 2 php.ini-files are allowed and working
+			* apache: check if stats are working with FastCGI
+		- AWStats:
+			* apache: set statsdir if awstats is enabled
+			* gui: disable stats-alias in client-menu
+
 2006-11-26 Roland Haeder
 	- CONFIGS
 		* Added missing SEC_FOO_BAR variables (thx 2 xister ;) )
@@ -13,14 +32,6 @@ VHCS 2.4.8 ω Omega Changelog
 		* Modified FastCGI files for PHP5
 	- ENGINE:
 		* Modified dmn-mngr for creating FastCGI files
-
-	@TODO:
-		- FastCGI:
-			* Copy files on install/update
-			* Modifie dmn-mngr for working
-		- AWStats:
-			* dmn-mngr: check whether awstats is enabled or not
-			* apache: set statsdir if awstats is enabled
 
 2006-11-24 Benedikt Heintel
 	- CONFIGS:

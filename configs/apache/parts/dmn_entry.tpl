@@ -1,13 +1,11 @@
 <VirtualHost {DMN_IP}:80>
 
     #
-    #User {SUEXEC_USER}
-    #Group {SUEXEC_GROUP}
+    # User {SUEXEC_USER}
+    # Group {SUEXEC_GROUP}
     #
 
-    #
     SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
-    #
 
     ServerAdmin     root@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
@@ -33,20 +31,30 @@
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 
-    ScriptAlias /php/ {STARTER_DIR}/{DMN_NAME}/
-    <Directory "{STARTER_DIR}/{DMN_NAME}">
-        AllowOverride None
-        Options +ExecCGI -MultiViews -Indexes
-        Order allow,deny
-        Allow from all
-    </Directory>
+    <IfModule mod_fastcgi.c>
+        ScriptAlias /php4/ {STARTER_DIR}/{DMN_NAME}/
+        <Directory "{STARTER_DIR}/{DMN_NAME}">
+            AllowOverride None
+            Options +ExecCGI -MultiViews -Indexes
+            Order allow,deny
+            Allow from all
+        </Directory>
 
-    <Directory {GUI_ROOT_DIR}>
-        <IfModule mod_php.c>
+        ScriptAlias /php5/ {STARTER_DIR}/{DMN_NAME}/
+        <Directory "{STARTER_DIR}/{DMN_NAME}">
+            AllowOverride None
+            Options +ExecCGI -MultiViews -Indexes
+            Order allow,deny
+            Allow from all
+        </Directory>
+    </IfModule>
+
+    <IfModule mod_php.c>
+        <Directory {GUI_ROOT_DIR}>
             php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
             php_admin_value session.save_path "/tmp/"
-	   </IfModule>
-    </Directory>
+        </Directory>
+    </IfModule>
 
     # httpd dmn entry PHP2 support BEGIN.
     # httpd dmn entry PHP2 support END.
