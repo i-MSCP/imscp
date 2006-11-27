@@ -23,9 +23,10 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The VHCS ω Home Page is at:
 #
-#    http://www.vhcs.net
+#    http://isp-control.net
+#
 
 
 use FindBin;
@@ -37,6 +38,13 @@ use strict;
 use warnings;
 
 $main::dmn_task_id = undef;
+
+################################################################################
+##                                SUBROUTINES                                 ##
+################################################################################
+##
+## Start Up!
+##
 
 sub dmn_mngr_start_up {
 
@@ -90,6 +98,11 @@ sub dmn_mngr_start_up {
 
 }
 
+################################################################################
+##
+## Shut Down!
+##
+
 sub dmn_mngr_shut_down {
 
     my $rs = undef;
@@ -102,9 +115,12 @@ sub dmn_mngr_shut_down {
 
 }
 
-#
-# domain named data managment;
-#
+##################################### DNS ######################################
+
+################################################################################
+##
+## Add DNS CFG Data
+##
 
 sub dmn_add_named_cfg_data {
 
@@ -295,6 +311,11 @@ sub dmn_add_named_cfg_data {
 
     return 0;
 }
+
+################################################################################
+##
+## Delete DNS CFG Data
+##
 
 sub dmn_del_named_cfg_data {
 
@@ -487,6 +508,11 @@ sub dmn_del_named_cfg_data {
     return 0;
 }
 
+################################################################################
+##
+## Add DNS DB Data
+##
+
 sub dmn_add_named_db_data {
 
     my ($dmn_data) = @_;
@@ -624,6 +650,11 @@ sub dmn_add_named_db_data {
     return 0;
 }
 
+################################################################################
+##
+## Delte DNS DB Data
+##
+
 sub dmn_del_named_db_data {
 
     my ($dmn_data) = @_;
@@ -686,6 +717,11 @@ sub dmn_del_named_db_data {
     return 0;
 }
 
+################################################################################
+##
+## Add DNS Data
+##
+
 sub dmn_add_named_data {
 
     my ($dmn_data) = @_;
@@ -715,6 +751,11 @@ sub dmn_add_named_data {
     return 0;
 }
 
+################################################################################
+##
+## Change DNS Data
+##
+
 sub dmn_change_named_data {
 
     my ($dmn_data) = @_;
@@ -739,6 +780,11 @@ sub dmn_change_named_data {
 
     return 0;
 }
+
+################################################################################
+##
+## Delete DNS Data
+##
 
 sub dmn_del_named_data {
 
@@ -769,9 +815,12 @@ sub dmn_del_named_data {
     return 0;
 }
 
-#
-# domain httpd data managment;
-#
+##################################### HTTPd ####################################
+
+################################################################################
+##
+## Generate Auto Number
+##
 
 sub get_auto_num {
 
@@ -792,6 +841,11 @@ sub get_auto_num {
     return $num;
 
 }
+
+################################################################################
+##
+## Generate HTTPd Domain Group Entry
+##
 
 sub gen_httpd_dmn_group_entry {
 
@@ -1005,6 +1059,11 @@ sub gen_httpd_dmn_group_entry {
     return (0,  $dg_entry);
 
 }
+
+################################################################################
+##
+## Add HTTPd CFG Data
+##
 
 sub dmn_add_httpd_cfg_data {
 
@@ -1337,6 +1396,11 @@ sub dmn_add_httpd_cfg_data {
 
 }
 
+################################################################################
+##
+## Change HTTPd CFG Data
+##
+
 sub dmn_change_httpd_cfg_data {
 
     my ($dmn_data) = @_;
@@ -1362,6 +1426,11 @@ sub dmn_change_httpd_cfg_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Delete HTTPd CFG Data
+##
 
 sub dmn_del_httpd_cfg_data {
 
@@ -1644,6 +1713,11 @@ sub dmn_del_httpd_cfg_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Add HTTPd File Data
+##
 
 sub dmn_add_httpd_file_data {
 
@@ -2026,6 +2100,11 @@ sub dmn_add_httpd_file_data {
 
 }
 
+################################################################################
+##
+## Change HTTPd File Data
+##
+
 sub dmn_change_httpd_file_data {
 
     my ($dmn_data) = @_;
@@ -2260,6 +2339,11 @@ sub dmn_change_httpd_file_data {
 
 }
 
+################################################################################
+##
+## Delete HTTPd File Data
+##
+
 sub dmn_del_httpd_file_data {
 
     my ($dmn_data) = @_;
@@ -2346,6 +2430,11 @@ sub dmn_del_httpd_file_data {
 
 }
 
+################################################################################
+##
+## Add HTTPd Data
+##
+
 sub dmn_add_httpd_data {
 
     my ($dmn_data) = @_;
@@ -2374,6 +2463,11 @@ sub dmn_add_httpd_data {
 
     return 0;
 }
+
+################################################################################
+##
+## Change HTTPd Data
+##
 
 sub dmn_change_httpd_data {
 
@@ -2404,6 +2498,11 @@ sub dmn_change_httpd_data {
     return 0;
 }
 
+################################################################################
+##
+## Delete HTTPd Data
+##
+
 sub dmn_del_httpd_data {
 
     my ($dmn_data) = @_;
@@ -2432,6 +2531,13 @@ sub dmn_del_httpd_data {
 
     return 0;
 }
+
+##################################### MTA ######################################
+
+################################################################################
+##
+## Add MTA CFG Data
+##
 
 sub dmn_add_mta_cfg_data {
 
@@ -2522,6 +2628,11 @@ sub dmn_add_mta_cfg_data {
     return 0;
 }
 
+################################################################################
+##
+## Delete MTA CFG Data
+##
+
 sub dmn_del_mta_cfg_data {
 
     my ($dmn_data) = @_;
@@ -2611,6 +2722,11 @@ sub dmn_del_mta_cfg_data {
     return 0;
 }
 
+################################################################################
+##
+## Add MTA File Data
+##
+
 sub dmn_add_mta_file_data {
 
     my ($dmn_data) = @_;
@@ -2651,6 +2767,11 @@ sub dmn_add_mta_file_data {
     return 0;
 }
 
+################################################################################
+##
+## Add MTA File Data
+##
+
 sub dmn_del_mta_file_data {
 
     my ($dmn_data) = @_;
@@ -2687,7 +2808,10 @@ sub dmn_del_mta_file_data {
     return 0;
 }
 
-
+################################################################################
+##
+## Add MTA Data
+##
 
 sub dmn_add_mta_data {
 
@@ -2718,6 +2842,11 @@ sub dmn_add_mta_data {
     return 0;
 }
 
+################################################################################
+##
+## Change MTA CFG Data
+##
+
 sub dmn_change_mta_data {
 
     my ($dmn_data) = @_;
@@ -2742,6 +2871,11 @@ sub dmn_change_mta_data {
 
     return 0;
 }
+
+################################################################################
+##
+## Delete MTA CFG Data
+##
 
 sub dmn_del_mta_data {
 
@@ -2771,6 +2905,13 @@ sub dmn_del_mta_data {
 
     return 0;
 }
+
+################################### CRONTAB ####################################
+
+################################################################################
+##
+## Add Crontab Data
+##
 
 sub dmn_add_crontab_data {
 
@@ -2951,6 +3092,13 @@ sub dmn_add_crontab_data {
 
 }
 
+################################### CRONTAB ####################################
+
+################################################################################
+##
+## Delete Crontab Data
+##
+
 sub dmn_del_crontab_data {
 
     my ($dmn_data) = @_;
@@ -3114,9 +3262,12 @@ sub dmn_del_crontab_data {
 
 }
 
-#
-# domain awstats data management
-#
+################################### AWStats ####################################
+
+################################################################################
+##
+## Add AWStats Data
+##
 
 sub dmn_add_awstats_data {
 
@@ -3142,6 +3293,11 @@ sub dmn_add_awstats_data {
 
     return 0;
 }
+
+################################################################################
+##
+## Add AWStats CFG Data
+##
 
 sub dmn_add_awstats_cfg_data {
 
@@ -3216,6 +3372,11 @@ sub dmn_add_awstats_cfg_data {
     return 0;
 }
 
+################################################################################
+##
+## Change AWStats Data
+##
+
 sub dmn_change_awstats_data {
 
     my ($dmn_data) = @_;
@@ -3241,6 +3402,11 @@ sub dmn_change_awstats_data {
     return 0;
 }
 
+################################################################################
+##
+## Delete AWStats Data
+##
+
 sub dmn_del_awstats_data {
 
     my ($dmn_data) = @_;
@@ -3265,6 +3431,11 @@ sub dmn_del_awstats_data {
 
     return 0;
 }
+
+################################################################################
+##
+## Delete AWStats CFG Data
+##
 
 sub dmn_del_awstats_cfg_data {
 
@@ -3312,9 +3483,12 @@ sub dmn_del_awstats_cfg_data {
     return 0;
 }
 
-#
-# domain high level managment functions;
-#
+################################# DOMAIN DATA ##################################
+
+################################################################################
+##
+## Add Domain Data
+##
 
 sub dmn_add_data {
 
@@ -3359,6 +3533,11 @@ sub dmn_add_data {
 
 }
 
+################################################################################
+##
+## Change Domain Data
+##
+
 sub dmn_change_data {
 
     my ($dmn_data) = @_;
@@ -3397,6 +3576,11 @@ sub dmn_change_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Delete Domain Data
+##
 
 sub dmn_del_data {
 
@@ -3440,6 +3624,11 @@ sub dmn_del_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Restore Backups Data
+##
 
 sub dmn_restore_data {
 
@@ -3501,6 +3690,11 @@ sub dmn_restore_data {
 
 }
 
+################################################################################
+##
+## Enable Domain
+##
+
 sub dmn_enable_data {
 
     my ($dmn_data) = @_;
@@ -3536,6 +3730,11 @@ sub dmn_enable_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Disable Domain
+##
 
 sub dmn_disable_data {
 
@@ -3574,6 +3773,13 @@ sub dmn_disable_data {
     return 0;
 
 }
+
+#################################### ENGINE ####################################
+
+################################################################################
+##
+## Domain Manager Engine
+##
 
 sub dmn_mngr_engine {
 
@@ -3775,6 +3981,10 @@ sub dmn_mngr_engine {
     return 0;
 
 }
+
+################################################################################
+##                                    MAIN                                    ##
+################################################################################
 
 my $rs = undef;
 
