@@ -17,7 +17,7 @@
         <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.gif" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
-	<!-- EDP: logged_from -->	
+	<!-- EDP: logged_from -->
     <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="17"><img src="{THEME_COLOR_PATH}/images/top/left.jpg" width="17" height="80"></td>
@@ -44,7 +44,7 @@
           <tr>
             <td valign="top">
                   <table width="100%" cellpadding="5" cellspacing="5">
-                  
+
                      <tr>
                        <td>&nbsp;</td>
                        <td class="content3" colspan="{COLSPAN}"><strong>{TR_HOSTING_PLANS}</strong></td>
@@ -55,24 +55,23 @@
                       <td width="719" class=title><font color="#FF0000">{MESSAGE}</font></td>
                       </tr>
 					 <!-- EDP: page_message -->
-					 
+					 <!-- BDP: hosting_plans -->
                      <tr>
-                       <td width="20">&nbsp;</td><!-- BDP: hosting_plans -->
+                       <td width="20">&nbsp;</td>
                        <td valign="top" class="{ITHEM}"><strong>{HP_NAME}</strong><br>
                        {HP_DESCRIPTION}<br>
                        <br>
                        {HP_DETAILS}<br>
                        <br>
                        <strong>{HP_COSTS}</strong></td>
-					   <!-- EDP: hosting_plans -->
                      </tr>
                      <tr>
                        <td>&nbsp;</td>
-					   <!-- BDP: hp_order -->
+
                        <td class="content3"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle"> <a href="update_hp.php?{LINK}={ID}" class="link">{TR_PURCHASE}</a></td>
-                     	<!-- EDP: hp_order -->
+
 					 </tr>
-					
+					<!-- EDP: hosting_plans -->
                   </table>
              </td>
             <td>&nbsp;</td>

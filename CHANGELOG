@@ -1,13 +1,18 @@
 VHCS 2.4.8 ω Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-11-29 Benedikt Heintel
+	- GUI:
+		* Updated Hostingsplans (thanks to Ruben Hempel)
+
 2006-11-27 Benedikt Heintel
 	- CONFIGS:
 		* apache2-parts: added "IfModule mod_fastcgi" tag
+		* apache2-templates: FastCGI compatiblity
 	- ENGINE:
 		* vhcs2-dmn-mngr: Added Comments
 		* vhcs2-dmn-mngr: check wether awstats is enabled or not
-		* vhcs2-dmn-mngr: FastCGI enhangements
+		* vhcs2-dmn-mngr: FastCGI enhancements
 	- MAKEFILES:
 		* edited them for FastCGI
 
