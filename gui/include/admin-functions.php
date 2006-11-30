@@ -1,7 +1,7 @@
 <?php
 //   -------------------------------------------------------------------------------
 //  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
+//  |              Copyright (c) 2001-2005 be moleSoftware		            		|
 //  |			http://vhcs.net | http://www.molesoftware.com		           		|
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
@@ -17,13 +17,9 @@
 
 
 
-function gen_admin_menu(&$tpl, $menu_file) {
-
-global $sql, $cfg;
-
-$tpl -> define_dynamic('menu', $menu_file);
-
-$tpl -> define_dynamic('custom_buttons', 'menu');
+function gen_admin_menu(&$tpl)
+{
+global $cfg;
 
 $tpl -> assign(
             array(
@@ -38,10 +34,10 @@ $tpl -> assign(
                 'TR_MENU_USER_ASIGNMENT'  => tr('User assignment'),
                 'TR_MENU_EMAIL_SETUP'  => tr('Email setup'),
                 'TR_MENU_CIRCULAR'  => tr('Email marketing'),
-
+				
 				'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
 				'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-
+				
                 'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
                 'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
                 'TR_MENU_ADMIN_LOG' => tr('Admin log'),
@@ -60,86 +56,37 @@ $tpl -> assign(
                 'TR_MENU_VHCS_DEBUGGER'=> tr('VHCS debugger'),
                 'TR_CUSTOM_MENUS' => tr('Custom menus'),
                 'TR_MENU_OVERVIEW' => tr('Overview'),
+				'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),
                 'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
                 'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
                 'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
 				'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-				'TR_SERVICEMODE' => tr('Servicemode'),
-				'TR_MENU_SETTINGS' => tr('Settings'),
-                'TR_GENERAL_SETTINGS' => tr('General settings'),
-                'TR_SERVERPORTS' => tr('Serverports')
+
             )
     );
-$query = <<<SQL_QUERY
-        select
-            *
-        from
-            custom_menus
-        where
-            menu_level = 'admin'
-SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array());
-	 if ($rs -> RecordCount() == 0) {
+	$support_system = $cfg['VHCS_SUPPORT_SYSTEM'];
 
-        $tpl -> assign('CUSTOM_BUTTONS', '');
-
-    } else {
-
-		global $i;
-		$i = 100;
-
-		while (!$rs -> EOF) {
-
-		$menu_name = $rs -> fields['menu_name'];
-		$menu_link = get_menu_vars($rs -> fields['menu_link']);
-		$menu_target = $rs -> fields['menu_target'];
-
-		if ($menu_target === ''){
-			$menu_target = "";
-		} else {
-			$menu_target = "target=\"".$menu_target."\"";
-		}
-
-		$tpl -> assign(
-                  array(
-                        'BUTTON_LINK' => $menu_link,
-                        'BUTTON_NAME' => $menu_name,
-                        'BUTTON_TARGET' => $menu_target,
-                        'BUTTON_ID' => $i,
-                        )
-                  );
-
-    $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
-    $rs -> MoveNext(); $i++;
-
-		} // end while
-	} // end else
-
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
-
+	if ($support_system == 'no'){
 		$tpl -> assign('SUPPORT_SYSTEM', '');
-
 	}
-
-	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
-
+	
+	if (!isset($cfg['HOSTING_PLANS_LEVEL'])){
 		$tpl -> assign('HOSTING_PLANS', '');
-
+	} else if ($cfg['HOSTING_PLANS_LEVEL'] !== 'admin'){
+		$tpl -> assign('HOSTING_PLANS', '');
 	}
-
-	$tpl -> parse('MENU', 'menu');
 
 }
 
 function get_cnt_of_user(&$sql, $user_type) {
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             count(admin_id) as cnt
-        FROM
+        from
             admin
-        WHERE
+        where
             admin_type=?
 SQL_QUERY;
 
@@ -156,11 +103,11 @@ function get_cnt(&$sql, $table, $field, $where, $value)
 {
   if ($where != '') {
     $query = <<<SQL_QUERY
-            SELECT
+            select
                 count(?) as  cnt
-            FROM
+            from
                 $table
-            WHERE
+            where
                 $where = ?
 SQL_QUERY;
     $rs = exec_query($sql, $query, array($field, $value));
@@ -168,9 +115,9 @@ SQL_QUERY;
   } else {
 
     $query = <<<SQL_QUERY
-            SELECT
+            select
                 count(?) as  cnt
-            FROM
+            from
                 $table
 SQL_QUERY;
     $rs = exec_query($sql, $query, array($field));
@@ -189,7 +136,7 @@ function get_sql_user_count($sql) {
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, FALSE);
-
+	
 	return $rs -> RecordCount();
 }
 
@@ -239,17 +186,17 @@ function gen_admin_list(&$tpl, &$sql)
 {
 
     $query = <<<SQL_QUERY
-            SELECT
+            select
                 t1.admin_id, t1.admin_name, IFNULL(t2.admin_name, '') AS created_by
-            FROM
-                admin AS t1
-              LEFT JOIN
+            from
+                admin as t1
+              left join
                 admin AS t2 ON t1.created_by = t2.admin_id
-            WHERE
+            where
                 t1.admin_type='admin'
-            ORDER BY
+            order by
                 t1.admin_name
-			ASC
+			asc
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array());
@@ -347,17 +294,17 @@ function gen_reseller_list(&$tpl, &$sql)
 {
 
     $query = <<<SQL_QUERY
-              SELECT
+              select
                   t1.admin_id, t1.admin_name, t1.domain_created, IFNULL(t2.admin_name, '') AS created_by
-              FROM
+              from
                   admin as t1
-                LEFT JOIN
+                left join
                   admin AS t2 ON t1.created_by = t2.admin_id
-              WHERE
+              where
                   t1.admin_type='reseller'
-              ORDER BY
+              order by
                   t1.admin_name
-			  ASC
+			  asc
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array());
@@ -478,9 +425,9 @@ function gen_user_list(&$tpl, &$sql)
 	//  Search requet generated ?!
 	//
 
-	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
+	if (isset($_POST['uaction']) && $_POST['uaction'] !== '') {
 
-			$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
+			$_SESSION['search_for'] = trim($_POST['search_for']);
 
 			$_SESSION['search_common'] = $_POST['search_common'];
 
@@ -645,16 +592,16 @@ function gen_user_list(&$tpl, &$sql)
 
 
   $query = <<<SQL_QUERY
-        SELECT
+        select
             admin_id,
             admin_name
-        FROM
+        from
             admin
-        WHERE
+        where
             admin_id=?
-		ORDER BY
+		order by
 			admin_name
-		ASC
+		asc
 SQL_QUERY;
 
 	$rs2 = exec_query($sql, $query, array($domain_created_id));
@@ -691,7 +638,8 @@ SQL_QUERY;
 				$status_icon = "ok.gif";
 				$status_url = "change_status.php?domain_id=".$rs -> fields['domain_id'];
 
-		} else if ($rs -> fields['domain_status'] == $cfg['ITEM_DISABLED_STATUS']) {
+		} else if ($rs -> fields['domain_status'] == $cfg['ITEM_DISABLED_STATUS'] ||
+				   $rs -> fields['domain_status'] == $cfg['ITEM_DELETE_STATUS']){
 
 				$status_icon = "disabled.gif";
 				$status_url = "change_status.php?domain_id=".$rs -> fields['domain_id'];
@@ -700,9 +648,8 @@ SQL_QUERY;
 		} else if ($rs -> fields['domain_status'] == $cfg['ITEM_ADD_STATUS'] ||
 					$rs -> fields['domain_status'] == $cfg['ITEM_RESTORE_STATUS'] ||
 					$rs -> fields['domain_status'] == $cfg['ITEM_CHANGE_STATUS'] ||
-          			$rs -> fields['domain_status'] == $cfg['ITEM_TOENABLE_STATUS'] ||
-				  	$rs -> fields['domain_status'] == $cfg['ITEM_TODISABLED_STATUS'] ||
-					$rs -> fields['domain_status'] == $cfg['ITEM_DELETE_STATUS']){
+          $rs -> fields['domain_status'] == $cfg['ITEM_TOENABLE_STATUS'] ||
+				  $rs -> fields['domain_status'] == $cfg['ITEM_TODISABLED_STATUS']){
 
 				$status_icon = "reload.gif";
 				$status_url = "#";
@@ -789,16 +736,82 @@ function get_admin_manage_users(&$tpl, &$sql)
 	gen_user_list($tpl, $sql);
 }
 
+function insert_email_tpl(&$sql, $admin_id)
+{
+
+    global $cfg;
+
+    $msg_subject = 'Auto message alert for new VHCS user {USERNAME} !';
+
+    $msg = <<<MSG
+
+Hello {NAME} !
+
+Your VHCS user type is: {USERTYPE}
+Your VHCS login is: {USERNAME}
+Your VHCS password is: {PASSWORD}
+
+
+Good luck with VHCS Pro system!
+VHCS Team.
+
+MSG;
+
+
+
+    $query = <<<SQL_QUERY
+        insert into email_tpls
+            (owner_id, name, subject, message)
+        values
+            (?, 'add-user-auto-msg', ?, ?)
+SQL_QUERY;
+
+    $rs = exec_query($sql, $query, array($admin_id, $msg_subject, $msg));
+
+}
+
+function insert_order_email_tpl(&$sql, $admin_id)
+{
+
+    global $cfg;
+
+    $msg_subject = 'Auto message allert for domain order {DOMAIN} !';
+
+    $msg = <<<MSG
+
+Dear {NAME},
+This is an automatic confirmation for the order of the domain  :
+
+{DOMAIN}
+
+Thank you for using VHCS services.
+Your VHCS Team
+
+MSG;
+
+
+
+    $query = <<<SQL_QUERY
+        insert into email_tpls
+            (owner_id, name, subject, message)
+        values
+            (?, 'after-order-msg', ?, ?)
+SQL_QUERY;
+
+    $rs = exec_query($sql, $query, array($admin_id, $msg_subject, $msg));
+
+}
+
 function generate_reseller_props ( $reseller_id ) {
 
     global $sql;
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             *
-        FROM
+        from
             reseller_props
-        WHERE
+        where
             reseller_id = ?
 SQL_QUERY;
 
@@ -869,11 +882,11 @@ function generate_reseller_users_props ( $reseller_id ) {
         );
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             admin_id
-        FROM
+        from
             admin
-        WHERE
+        where
             created_by = ?
 SQL_QUERY;
 
@@ -890,11 +903,11 @@ SQL_QUERY;
         $admin_id = $rs -> fields['admin_id'];
 
         $query = <<<SQL_QUERY
-            SELECT
+            select
                 domain_id
-            FROM
+            from
                 domain
-            WHERE
+            where
                 domain_admin_id = ?
 SQL_QUERY;
 
@@ -1003,16 +1016,16 @@ SQL_QUERY;
 
 }
 
-function generate_user_props($user_id) {
+function generate_user_props ( $user_id ) {
 
     global $sql;
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             *
-        FROM
+        from
             domain
-        WHERE
+        where
             domain_id = ?
 
 SQL_QUERY;
@@ -1031,8 +1044,7 @@ SQL_QUERY;
     $als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
     $als_max = $rs ->fields['domain_alias_limit'];
 
-	// Sorry 4 the strange Hack, but it works - RatS
-    $mail_current = records_count('mail_id', 'mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
+    $mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id);
     $mail_max = $rs ->fields['domain_mailacc_limit'];
 
     $ftp_current = sub_records_rlike_count(
@@ -1078,27 +1090,27 @@ SQL_QUERY;
 
 }
 
-function records_count($field, $table, $where, $value) {
+function records_count ($field, $table, $where, $value) {
 
     global $sql;
 
     if ($where != '') {
 
         $query = <<<SQL_QUERY
-            SELECT
-                COUNT($field) AS cnt
-            FROM
+            select
+                count($field) as cnt
+            from
                 $table
-            WHERE
+            where
                 $where = ?
 SQL_QUERY;
         $rs = exec_query($sql, $query, array($value));
     } else {
 
         $query = <<<SQL_QUERY
-            SELECT
-                COUNT($field) AS cnt
-            FROM
+            select
+                count($field) as cnt
+            from
                 $table
 SQL_QUERY;
       $rs = exec_query($sql, $query, array());
@@ -1115,23 +1127,23 @@ function records_rlike_count ($field, $table, $where, $value, $a, $b) {
     if ($where != '') {
 
         $query = <<<SQL_QUERY
-            SELECT
-                COUNT($field) AS cnt
-            FROM
+            select
+                count($field) as cnt
+            from
                 $table
-            WHERE
-                $where RLIKE ?
+            where
+                $where rlike ?
 SQL_QUERY;
       $rs = exec_query($sql, $query, array($a . $value . $b));
     } else {
 
         $query = <<<SQL_QUERY
-            SELECT
-                COUNT($field) AS cnt
-            FROM
+            select
+                count($field) as cnt
+            from
                 $table
-SQL_QUERY;
       $rs = exec_query($sql, $query, array());
+SQL_QUERY;
     }
 
     return $rs->fields['cnt'];
@@ -1145,20 +1157,27 @@ function sub_records_count ($field, $table, $where, $value, $subfield, $subtable
     if ($where != '') {
 
         $query = <<<SQL_QUERY
-            SELECT
-                $field AS field
-            FROM
+
+            select
+
+                $field as field
+
+            from
+
                 $table
-            WHERE
+
+            where
+
                 $where = ?
+
 SQL_QUERY;
       $rs = exec_query($sql, $query, array($value));
     } else {
 
         $query = <<<SQL_QUERY
-            SELECT
-                $field AS field
-            FROM
+            select
+                $field as field
+            from
                 $table
 
 SQL_QUERY;
@@ -1180,11 +1199,11 @@ SQL_QUERY;
         if ($subwhere != '') {
 
             $query = <<<SQL_QUERY
-                SELECT
-                    COUNT($subfield) AS cnt
-                FROM
+                select
+                    count($subfield) as cnt
+                from
                     $subtable
-                WHERE
+                where
                     $subwhere = ?
 SQL_QUERY;
 
@@ -1218,25 +1237,25 @@ function generate_user_traffic ($user_id) {
     }
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             domain_id,
-            IFNULL(domain_disk_usage,0) AS domain_disk_usage,
-            IFNULL(domain_traffic_limit,0) AS domain_traffic_limit,
-            IFNULL(domain_disk_limit,0) AS domain_disk_limit,
+            IFNULL(domain_disk_usage,0) as domain_disk_usage,
+            IFNULL(domain_traffic_limit,0) as domain_traffic_limit,
+            IFNULL(domain_disk_limit,0) as domain_disk_limit,
             domain_name
-        FROM
+        from
             domain
-        WHERE
+        where
             domain_id = ?
-        ORDER BY
-            domain_name
+        order by
+            domain_id
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_id));
 
     if ($rs -> RowCount() == 0 || $rs -> RowCount() > 1) {
 
-        write_log("TRAFFIC WARNING: ".$rs->fields['domain_name']." manages incorrect number of domains: ".$rs -> RowCount());
+        write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of domains >".$rs -> RowCount()."<");
 
         return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
@@ -1253,22 +1272,22 @@ SQL_QUERY;
         $domain_name = $rs->fields['domain_name'];
 
         $query = <<<SQL_QUERY
-            SELECT
-                IFNULL(SUM(dtraff_web), 0) AS web,
-                IFNULL(SUM(dtraff_ftp), 0) AS ftp,
-                IFNULL(SUM(dtraff_mail), 0) AS smtp,
-                IFNULL(SUM(dtraff_pop), 0) AS pop,
-                IFNULL(SUM(dtraff_web), 0) +
-                IFNULL(SUM(dtraff_ftp), 0) +
-                IFNULL(SUM(dtraff_mail), 0) +
-                IFNULL(SUM(dtraff_pop), 0) AS total
-            FROM
+            select
+                IFNULL(sum(dtraff_web), 0) as web,
+                IFNULL(sum(dtraff_ftp), 0) as ftp,
+                IFNULL(sum(dtraff_mail), 0) as smtp,
+                IFNULL(sum(dtraff_pop), 0) as pop,
+                IFNULL(sum(dtraff_web), 0) +
+                IFNULL(sum(dtraff_ftp), 0) +
+                IFNULL(sum(dtraff_mail), 0) +
+                IFNULL(sum(dtraff_pop), 0) as total
+            from
                 domain_traffic
-            WHERE
+            where
                     domain_id = ?
-                AND
+                and
                     dtraff_time >= ?
-                AND
+                and
                     dtraff_time < ?
 SQL_QUERY;
 
@@ -1323,11 +1342,11 @@ function sub_records_rlike_count ($field, $table, $where, $value, $subfield, $su
 
   if ($where != '') {
     $query = <<<SQL_QUERY
-      SELECT
-          $field AS field
-      FROM
+      select
+          $field as field
+      from
           $table
-      WHERE
+      where
           $where = ?
 SQL_QUERY;
 
@@ -1335,9 +1354,9 @@ SQL_QUERY;
 
   } else {
     $query = <<<SQL_QUERY
-            SELECT
-                $field AS field
-            FROM
+            select
+                $field as field
+            from
                 $table
 SQL_QUERY;
 
@@ -1359,12 +1378,12 @@ SQL_QUERY;
         if ($subwhere != '') {
 
             $query = <<<SQL_QUERY
-                SELECT
-                    COUNT($subfield) AS cnt
-                FROM
+                select
+                    count($subfield) as cnt
+                from
                     $subtable
-                WHERE
-                    $subwhere RLIKE ?
+                where
+                    $subwhere rlike ?
 SQL_QUERY;
 
         } else {
@@ -1438,11 +1457,11 @@ function get_user_name($user_id)
 
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             admin_name
-        FROM
+        from
             admin
-        WHERE
+        where
             admin_id = ?
 
 SQL_QUERY;
@@ -1459,11 +1478,11 @@ function get_logo($user_id)
 
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             admin_id, created_by, admin_type
-        FROM
+        from
             admin
-        WHERE
+        where
             admin_id = ?
 
 SQL_QUERY;
@@ -1497,11 +1516,11 @@ function get_admin_logo($user_id)
 
 
     $query = <<<SQL_QUERY
-        SELECT
+        select
             logo
-        FROM
+        from
             user_gui_props
-        WHERE
+        where
             user_id= ?
 
 SQL_QUERY;
@@ -1512,7 +1531,7 @@ SQL_QUERY;
 
     if($user_logo == '0' || $user_logo == '') { // default logo
 
-       return "../themes/user_logos/isp_logo.gif";
+       return "../images/isp_logo.gif";
 
     } else{ // we have logo uploaded
 
@@ -1537,7 +1556,17 @@ function calc_bar_value($value, $value_max , $bar_width)
 }
 
 
-function write_log($msg) {
+function vhcs_password_check ( $data, $num) {
+
+    $len = strlen($data);
+
+    if (5 >= $len || $len > $num ) return false;
+
+    return true;
+}
+
+
+function write_log( $msg ) {
 /* log function */
     global $sql, $send_log_to, $cfg;
 
@@ -1546,9 +1575,9 @@ function write_log($msg) {
 	} else {
 		$client_ip = "unknown";
 	}
-	$msg2 = $msg."<br><small>User IP: ".$client_ip."</small>";
+	$msg = $msg."<br><small>User IP: ".$client_ip."</small>";
 
-    $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$msg2')" );
+    $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(now(),'$msg')" );
 
 
 	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRES'];
@@ -1556,20 +1585,19 @@ function write_log($msg) {
     /* now send email if DEFAULT_ADMIN_ADDRES != '' */
 	if ($send_log_to != '') {
 
-        global $cfg, $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
+        global $cfg, $admin_login, $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_email;
 
-		$admin_email = $cfg['DEFAULT_ADMIN_ADDRES'];
         $default_hostname =  $cfg['SERVER_HOSTNAME'];
 		$default_base_server_ip =  $cfg['BASE_SERVER_IP'];
 		$VersionH = $cfg['VersionH'];
 		$Version = $cfg['Version'];
 		$BuildDate = $cfg['BuildDate'];
 
-		$subject = "VHCS $Version on $default_hostname ($default_base_server_ip)";
+		$subject = "VHCS Pro on $default_hostname ($default_base_server_ip)";
 
         $to      = $send_log_to;
 
-        $message = <<<AUTO_LOG_MSG
+        $message    = <<<AUTO_LOG_MSG
 
 VHCS Pro Log
 
@@ -1578,26 +1606,23 @@ Version: $VersionH ($Version - $BuildDate)
 
 Message: ----------------[BEGIN]--------------------------
 
-User IP: $client_ip
 $msg
 
 Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-        $headers = "From: VHCS  Logging Daemon <$admin_email>\n";
+        $headers = "From: VHCS Pro Logging Daemon <$admin_email>\r\n";
 
-		    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
-
-				$headers .=	"X-Mailer: VHCS $Version Logging Mailer";
+        $headers .= "X-Mailer: VHCS Pro v2.0.0 Logging Mailer";
 
         $mail_result = mail($to, $subject, $message, $headers);
 
         $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-        $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
+        $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status| !";
 
-        $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$log_message')" );
+        $sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(now(),'$log_message')" );
 
     }
 
@@ -1605,28 +1630,73 @@ AUTO_LOG_MSG;
 
 function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype) {
 
-    global $cfg;
+    global $sql;
 
-    $admin_login = $_SESSION['user_logged'];
+    global $admin_login;
 
-		$data = get_welcome_email($admin_id);
+    $query = <<<SQL_QUERY
+        select
+            fname, lname, email
+        from
+            admin
+        where
+            admin_id = ?
 
-		$from_name = $data['sender_name'];
+SQL_QUERY;
 
-		$from_email = $data['sender_email'];
+    $res = exec_query($sql, $query, array($admin_id));
 
-    $subject = $data['subject'];
+    $admin_email = $res -> fields['email'];
 
-    $message = $data['message'];
+    $admin_fname = $res -> fields['fname'];
 
-    if ($from_name) {
+    $admin_lname = $res -> fields['lname'];
 
-        $from = $from_name . "<" . $from_email . ">";
+    $query = <<<SQL_QUERY
+        select
+            subject, message
+        from
+            email_tpls
+        where
+            owner_id = ?
+          and
+            name = 'add-user-auto-msg'
+SQL_QUERY;
+
+    $res = exec_query($sql, $query, array($admin_id));
+
+    $subject = $res -> fields['subject'];
+
+    $message = $res -> fields['message'];
+
+    if ($res -> RecordCount() ==0 ){
+
+    $subject = "Auto message allert for the new VHCS ser {USERNAME} !";
+
+    $message = <<<MSG
+Hello {NAME} !
+
+Your VHCS user type is: {USERTYPE}
+Your VHCS login is: {USERNAME}
+Your VHCS password is: {PASSWORD}
+
+Good Luck with VHCS Pro System
+Hosting Provider Team
+
+
+MSG;
+
+    }
+
+    if ($admin_fname && $admin_lname) {
+
+        $from = "$admin_fname $admin_lname <$admin_email>";
 
     } else {
 
-        $from = $from_email;
-		}
+        $from = $admin_email;
+
+    }
 
     if ($ufname && $ulname) {
 
@@ -1652,18 +1722,171 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
     $message = preg_replace("/\{NAME\}/", $name, $message);
     $message = preg_replace("/\{PASSWORD\}/", $password, $message);
 
-    $headers = "From: $from\n";
+    $headers = "From: $from\r\n";
 
-    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
-
-		$headers .=	"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
+    $headers .= "X-Mailer: VHCS Pro v2.0.0 add user auto mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 
     $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-    write_log("$admin_login: Auto Add User To: |$to|, From: |$from|, Status: |$mail_status|!");
+    $log_message = "$admin_login: Auto Add User To: |$to|, From: |$from|, Status: |$mail_status| !";
 
+    write_log($log_message);
+
+}
+
+/* check for valid username  */
+function chk_username( $username ) {
+
+    if ( vhcs_username_check($username,50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+/* check for valid password  */
+function chk_password( $password ) {
+
+	if ( vhcs_password_check($password, 50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+}
+
+function vhcs_username_check ( $data, $num ) {
+
+    $res = preg_match(
+    					"/^[A-Za-z0-9][A-Za-z0-9\.\-\_]*[A-Za-z0-9\-\_]$/",
+                        $data,
+                        $match
+    				);
+
+    if ($res == 0) return 0;
+
+    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\.\-)|(\-\.)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\.\_)|(\_\.)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $res = preg_match("/(\-\_)|(\_\-)/", $data, $match);
+
+    if ($res == 1) return 0;
+
+    $len = strlen($data);
+
+    if ( $len > $num ) return 0;
+
+	return 1;
+}
+
+
+function vhcs_email_check ( $data, $num ) {
+
+    $data = "$data\n";
+
+    $res = preg_match("/^([^\@]+)\@([^\n+]+)\n$/", $data, $match);
+
+    if ($res == 0) return 0;
+
+    $res = vhcs_username_check($match[1], $num);
+
+    if ($res == 0) return 0;
+
+    $res = full_domain_check($match[2]);
+
+    if ($res == 0) return 0;
+
+    return 1;
+}
+
+
+function chk_email( $email ) {
+
+    if ( vhcs_email_check($email, 50) == 0 ) {
+        return 1;
+    }
+
+    /* seems ok ! */
+    return 0;
+
+}
+
+
+function full_domain_check ( $data ) {
+
+	$data = "$data.";
+
+    $res = preg_match_all(
+    						"/([^\.]*\.)/",
+                            $data,
+                            $match,
+                            PREG_PATTERN_ORDER
+    					);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $last = $res - 1;
+
+    for ($i = 0; $i < $last ; $i++) {
+
+        $token = chop($match[0][$i], ".");
+
+        $res = check_dn_token($token);
+
+        if ($res == 0) {
+			return 0;
+		}
+    }
+
+
+    $res = preg_match(
+    					"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
+                        $match[0][$last],
+                        $last_match
+    				);
+
+    if ($res == 0) {
+
+		return 0;
+	}
+
+
+    return 1;
+}
+
+
+function check_dn_token ( $data ) {
+
+    $res = preg_match(
+    					"/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/",
+						$data,
+                        $match
+    				);
+
+    if ($res == 0) {
+		return 0;
+	}
+
+    $res = preg_match("/\-\-/", $match[2], $minus_match);
+
+    //if ($res == 1) return 0;
+
+    return 1;
 }
 
 function update_reseller_props ( $reseller_id, $props ) {
@@ -1689,9 +1912,9 @@ function update_reseller_props ( $reseller_id, $props ) {
          ) = explode (";", $props);
 
 	$query = <<<SQL_QUERY
-        UPDATE
+        update
             reseller_props
-        SET
+        set
             current_dmn_cnt = ?,
             max_dmn_cnt = ?,
             current_sub_cnt = ?,
@@ -1710,7 +1933,7 @@ function update_reseller_props ( $reseller_id, $props ) {
             max_traff_amnt = ?,
             current_disk_amnt = ?,
             max_disk_amnt = ?
-        WHERE
+        where
             reseller_id = ?
 SQL_QUERY;
 
@@ -1743,7 +1966,7 @@ function gen_logged_from(&$tpl)
 
 			$tpl -> assign(
                 array(
-                        'YOU_ARE_LOGGED_AS' => $_SESSION['logged_from'].", ".tr('you are logged now as')." ".$_SESSION['user_logged'],
+                        'YOU_ARE_LOGGED_AS' => $_SESSION['logged_from'].tr(' you are logged now as ').$_SESSION['user_logged'],
 						'TR_GO_BACK' => tr('Go back'),
                      )
               );
@@ -1773,14 +1996,14 @@ function change_domain_status(&$sql, &$domain_id, &$domain_name, &$action, &$loc
 	}
 
 $query = <<<SQL_QUERY
-      SELECT
+      select
           mail_id,
           mail_pass
-      FROM
+      from
           mail_users
-      WHERE
+      where
           domain_id = ?
-        AND
+        and
           mail_pass != '_no_'
 SQL_QUERY;
 
@@ -1812,12 +2035,12 @@ SQL_QUERY;
 			$mail_status = $cfg['ITEM_CHANGE_STATUS'];
 				// and lets update the pass
 				$query = <<<SQL_QUERY
-            UPDATE
+            update
                  mail_users
-            SET
+            set
                 mail_pass = ?,
                 status = ?
-            WHERE
+            where
                 mail_id = ?
 SQL_QUERY;
 
@@ -1827,11 +2050,11 @@ SQL_QUERY;
 	} // end of while => all mails account are with changed passwords :-)
 
   $query = <<<SQL_QUERY
-          UPDATE
+          update
               domain
-          SET
+          set
               domain_status = ?
-          WHERE
+          where
               domain_id = ?
 SQL_QUERY;
 
@@ -1846,13 +2069,13 @@ SQL_QUERY;
 
 			if ($action == 'disable') {
 
-				write_log("$user_logged: suspended domain: $domain_name");
+				write_log("$user_logged : suspended domin -> $domain_name");
 
 				$_SESSION['user_disabled'] = 1;
 
 			} else if ($action == 'enable') {
 
-				write_log("$user_logged: enabled domain: $domain_name");
+				write_log("$user_logged : enabled domin -> $domain_name");
 
 				$_SESSION['user_enabled'] = 1;
 
@@ -1888,21 +2111,36 @@ function gen_admin_domain_query (
         // We have pure list query;
         //
 		$count_query = <<<SQL_QUERY
-                SELECT
-                    COUNT(domain_id) AS cnt
-                FROM
+
+                select
+
+                    count(domain_id) as cnt
+
+                from
+
                     domain
+
+
 SQL_QUERY;
 
             $search_query = <<<SQL_QUERY
-                 SELECT
+
+                 select
+
                     *
-                 FROM
+
+                 from
+
                     domain
-                 ORDER BY
-                    domain_name ASC
-                 LIMIT
+
+                 order by
+
+                    domain_id desc
+
+                 limit
+
                     $start_index, $rows_per_page
+
 SQL_QUERY;
 
 
@@ -1917,29 +2155,45 @@ SQL_QUERY;
 		} else {
 
 			$add_query = <<<SQL_QUERY
-				WHERE
+				where
 					domain_status = '$search_status'
 SQL_QUERY;
 		}
 
 		$count_query = <<<SQL_QUERY
-                SELECT
-                    COUNT(domain_id) AS cnt
-                FROM
+
+                select
+
+                    count(domain_id) as cnt
+
+                from
+
                     domain
+
                    $add_query
+
 SQL_QUERY;
 
             $search_query = <<<SQL_QUERY
-                 SELECT
+
+                 select
+
                     *
-                 FROM
+
+                 from
+
                     domain
+
                     $add_query
-                 ORDER BY
-                    domain_name ASC
-                 LIMIT
+
+                 order by
+
+                    domain_id desc
+
+                 limit
+
                     $start_index, $rows_per_page
+
 SQL_QUERY;
 
 	} else if ($search_for != '') {
@@ -1947,38 +2201,56 @@ SQL_QUERY;
 		if ($search_common === 'domain_name') {
 
             $add_query = <<<SQL_QUERY
-                WHERE
-					admin_name RLIKE '$search_for' %s
+
+                where
+
+					admin_name rlike '$search_for' %s
+
 SQL_QUERY;
 		} else if ($search_common === 'customer_id') {
 
             $add_query = <<<SQL_QUERY
-                WHERE
-					customer_id RLIKE '$search_for' %s
+
+                where
+
+					customer_id rlike '$search_for' %s
+
 SQL_QUERY;
 		} else if ($search_common === 'lname') {
 
             $add_query = <<<SQL_QUERY
-                WHERE
-					(lname RLIKE '$search_for' OR fname RLIKE '$search_for') %s
+
+                where
+
+					(lname rlike '$search_for' or fname rlike '$search_for') %s
+
 SQL_QUERY;
 		} else if ($search_common === 'firm') {
 
             $add_query = <<<SQL_QUERY
-                WHERE
-					firm RLIKE '$search_for' %s
+
+                where
+
+					firm rlike '$search_for' %s
+
 SQL_QUERY;
 		} else if ($search_common === 'city') {
 
             $add_query = <<<SQL_QUERY
-                WHERE
-					city RLIKE '$search_for' %s
+
+                where
+
+					city rlike '$search_for' %s
+
 SQL_QUERY;
 		} else if ($search_common === 'country') {
 
             $add_query = <<<SQL_QUERY
-                WHERE
-					country RLIKE '$search_for' %s
+
+                where
+
+					country rlike '$search_for' %s
+
 SQL_QUERY;
 		}
 
@@ -1987,14 +2259,24 @@ SQL_QUERY;
 			$add_query = sprintf($add_query, " and t2.domain_status = '$search_status'");
 
 			$count_query = <<<SQL_QUERY
-					SELECT
-						COUNT(admin_id) AS cnt
-					FROM
-						admin AS t1,
-						domain AS t2
+
+					select
+
+						count(admin_id) as cnt
+
+					from
+
+						admin  as t1,
+
+						domain as t2
+
+
 					$add_query
-						AND
+
+						and
+
                     t1.admin_id = t2.domain_admin_id
+
 SQL_QUERY;
 
 		} else {
@@ -2002,11 +2284,17 @@ SQL_QUERY;
 			$add_query = sprintf($add_query, " ");
 
 			$count_query = <<<SQL_QUERY
-					SELECT
-						COUNT(admin_id) AS cnt
-					FROM
+
+					select
+
+						count(admin_id) as cnt
+
+					from
+
 						admin
+
 					$add_query
+
 SQL_QUERY;
 
 		}
@@ -2014,18 +2302,30 @@ SQL_QUERY;
 
 
 	$search_query = <<<SQL_QUERY
-			SELECT
+			select
+
                 	t1.admin_id, t2.*
-            FROM
+
+                from
+
                 	admin as t1,
+
                  	domain as t2
+
                 $add_query
-				AND
+
+				and
+
                     t1.admin_id = t2.domain_admin_id
-				ORDER BY
-                    t2.domain_name ASC
-                LIMIT
+
+				 order by
+
+                    t2.domain_id desc
+
+                 limit
+
                     $start_index, $rows_per_page
+
 SQL_QUERY;
 
 
@@ -2126,20 +2426,25 @@ function gen_admin_domain_search_options  (&$tpl,
 
 	}
 
+
+
 	if ($search_for === "n/a" || $search_for === '') {
 
 			$tpl -> assign(
 			                array(
-									'SEARCH_FOR' => ""
+									'SEARCH_FOR' => "",
 								)
 							);
 	} else {
 			$tpl -> assign(
 			                array(
-									'SEARCH_FOR' => stripslashes($search_for)
+									'SEARCH_FOR' => $search_for,
 								)
 							);
+
+
 	}
+
 
 	$tpl -> assign(
 			                array(
@@ -2178,14 +2483,14 @@ function rm_rf_user_account($id_user)
 
 // get domain user data
 	$query = <<<SQL_QUERY
-        SELECT
+        select
             domain_id,
             domain_name,
             domain_gid,
             domain_created_id
-        FROM
+        from
             domain
-        WHERE
+        where
             domain_admin_id = ?
 SQL_QUERY;
 
@@ -2204,9 +2509,9 @@ SQL_QUERY;
 	//fist we'll delete all FTP Accounts
 	//delete all FTP Accounts
   $query = <<<SQL_QUERY
-          DELETE FROM
+          delete from
               ftp_users
-          WHERE
+          where
               gid = ?
 SQL_QUERY;
   $rs = exec_query($sql, $query, array($domain_gid));
@@ -2218,9 +2523,9 @@ SQL_QUERY;
 
 	 // delete the group
 	 $query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	    ftp_group
-        	WHERE
+        	where
             	gid = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_gid));
@@ -2229,22 +2534,22 @@ SQL_QUERY;
 	$delete_status = $cfg['ITEM_DELETE_STATUS'];
 
 	    $query = <<<SQL_QUERY
-    	    UPDATE
+    	    update
         	    subdomain
-	        SET
+	        set
     	        subdomain_status = ?
-        	WHERE
+        	where
             	domain_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
 
 	//let's delete all domain aliases for this user
   $query = <<<SQL_QUERY
-        UPDATE
+        update
             domain_aliasses
-        SET
+        set
             alias_status = ?
-        WHERE
+        where
             domain_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
@@ -2257,43 +2562,43 @@ SQL_QUERY;
 //let's delete all mail accounts for this user
 
 	    $query = <<<SQL_QUERY
-    	    UPDATE
+    	    update
         	    mail_users
-	        SET
+	        set
     	        status = ?
-        	WHERE
+        	where
             	domain_id = ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
-
+	
 	// delete all htaccess entries for this user
 	$query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	    htaccess
-        	WHERE
+        	where
             	dmn_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_id));
-
+	
 	$query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	    htaccess_groups
-        	WHERE
+        	where
             	dmn_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_id));
-
+	
 	$query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	     htaccess_users
-        	WHERE
+        	where
             	dmn_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_id));
-
+	
 	// end of delete htaccess entires
-
+	
 
 while (!$rs -> EOF) {
 		$rs -> MoveNext();
@@ -2303,11 +2608,11 @@ while (!$rs -> EOF) {
 
 	// Lets Delete SQL DBs and Users
 	$query = <<<SQL_QUERY
-    	SELECT
+    	select
 			sqld_id
-    	FROM
+    	from
         	sql_database
-    	WHERE
+    	where
         	domain_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_id));
@@ -2324,9 +2629,9 @@ SQL_QUERY;
 // BEGIN - DELETE ALL GUI ENTRIES FOR THIS USER
 	// delete the layout settings
 	 $query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	    user_gui_props
-        	WHERE
+        	where
             	user_id = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($id_user));
@@ -2337,11 +2642,11 @@ SQL_QUERY;
 
 	//delete all tickets for this user
 	$query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	    tickets
-        	WHERE
+        	where
               ticket_from = ?
-            OR
+            or
               ticket_to = ?
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($id_user, $id_user));
@@ -2349,22 +2654,24 @@ SQL_QUERY;
 //let's delete the main domain for this user
 
 	    $query = <<<SQL_QUERY
-    	    UPDATE
+    	    update
         	    domain
-	        SET
+	        set
     	        domain_status = ?
-        	WHERE
+        	where
             	domain_admin_id = ?
+
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($delete_status, $id_user));
 
 
 	// delete the user acount
 	 $query = <<<SQL_QUERY
-    	    DELETE FROM
+    	    delete from
         	    admin
-        	WHERE
+        	where
             	admin_id = ?
+
 SQL_QUERY;
 	$rs = exec_query($sql, $query, array($id_user));
 
@@ -2446,11 +2753,11 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 function gen_purchase_haf(&$tpl, &$sql, $user_id)
 {
 	$query = <<<SQL_QUERY
-			SELECT
-				header, footer
-			FROM
+			select
+				header, footer 
+			from
 				orders_settings
-			WHERE
+			where
 				user_id = ?
 
 SQL_QUERY;
@@ -2499,7 +2806,7 @@ td.content {
 	white-space: nowrap;
 	background: #F9F9F9;
 	white-space: nowrap;
-	BORDER-TOP: #EFF0F7 1px solid;
+	BORDER-TOP: #EFF0F7 1px solid; 
 	BORDER-LEFT: #EFF0F7 1px solid;
 	BORDER-RIGHT: #EFF0F7 1px solid;
 	BORDER-BOTTOM: #EFF0F7 1px solid;
@@ -2513,7 +2820,7 @@ td.content2 {
 	white-space: nowrap;
 	background: #E1EFFF;
 	white-space: nowrap;
-	BORDER-TOP: #EFF0F7 1px solid;
+	BORDER-TOP: #EFF0F7 1px solid; 
 	BORDER-LEFT: #EFF0F7 1px solid;
 	BORDER-RIGHT: #EFF0F7 1px solid;
 	BORDER-BOTTOM: #EFF0F7 1px solid;
@@ -2527,13 +2834,13 @@ td.content3 {
 	white-space: nowrap;
 	background: #B6D5F8;
 	white-space: nowrap;
-	BORDER-TOP: #6C98D9 1px solid;
+	BORDER-TOP: #6C98D9 1px solid; 
 	BORDER-LEFT: #6C98D9 1px solid;
 	BORDER-RIGHT: #6C98D9 1px solid;
 	BORDER-BOTTOM: #6C98D9 1px solid;
 	height: 30px;
 	padding: 2px;
-
+	
 .button
 {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
@@ -2544,8 +2851,8 @@ td.content3 {
 	background-image: url(/vhcs2/themes/modern_blue/images/button.gif);
 	background-repeat: repeat-x;
 	border: 1px solid #326BC0;
-}
-
+}	
+	
 }
 -->
 </style>
@@ -2566,16 +2873,16 @@ $footer = <<<RIC
 </body>
 </html>
 RIC;
-
+    
   } else {
-
+  	
 	$header = $rs -> fields['header'];
-	$footer = $rs -> fields['footer'];
-
+	$footer = $rs -> fields['footer'];	
+	
 	$header    = str_replace ('\\', '', "$header");
 	$footer    = str_replace ('\\', '', "$footer");
   }
-
+  
   $tpl -> assign('PURCHASE_HEADER', $header);
   $tpl -> assign('PURCHASE_FOOTER', $footer);
 }
@@ -2584,14 +2891,13 @@ RIC;
 function send_tickets_msg($to_id,$from_id,$ticket_subject) {
     global $sql;
     global $admin_login;
-    global $cfg;
 // To information
     $query = <<<SQL_QUERY
-        SELECT
+        select
             fname, lname, email, admin_name
-        FROM
+        from
             admin
-        WHERE
+        where
             admin_id = '$to_id'
 SQL_QUERY;
 
@@ -2602,15 +2908,15 @@ SQL_QUERY;
     $to_uname = $res -> fields['admin_name'];
 // From information
     $query = <<<SQL_QUERY
-        SELECT
+        select
             fname, lname, email, admin_name
-        FROM
+        from
             admin
-        WHERE
-            admin_id = ?
+        where
+            admin_id = '$from_id'
 SQL_QUERY;
 
-    $res = exec_query($sql, $query, $from_id);
+    $res = execute_query($sql, $query);
     $from_email = $res -> fields['email'];
     $from_fname = $res -> fields['fname'];
     $from_lname = $res -> fields['lname'];
@@ -2639,44 +2945,12 @@ SQL_QUERY;
     $message = preg_replace("/\{TO_NAME\}/", $name, $message);
     $message = preg_replace("/\{FROM_NAME\}/", $fromname, $message);
 
-    $headers = "From: $from\n";
-
-    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
-
-		$headers .=	"X-Mailer: VHCS ".$cfg['Version']." Tickets Mailer";
-
+    $headers = "From: $from\r\n";
+    $headers .= "X-Mailer: VHCS Pro v2.4.7.1 tickets auto mailer";
     $mail_result = mail($to, $subject, $message, $headers);
     $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-    write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");
+    $log_message = "$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status| !";
+    write_log($log_message);
 }
-
-function setConfig_Value($name, $value) {
-
-	global $sql, $cfg;
-
-	$query = "SELECT name FROM config WHERE name='" . $name . "'";
-
-	$res = exec_query($sql, $query, array());
-
-	if ($res -> RecordCount() == 0) {
-
-   	$query = "INSERT INTO config (name, value) VALUES ('" . $name . "','" . $value . "')";
-
-   	exec_query($sql, $query, array());
-
-	} else {
-
-		$query = "UPDATE config SET	value='" . $value . "' WHERE name='" . $name . "'";
-
-		$res = exec_query($sql, $query, array());
-
-	}
-
-	$cfg[$name] = $value;
-
-	return TRUE;
-
-}
-
 
 ?>
