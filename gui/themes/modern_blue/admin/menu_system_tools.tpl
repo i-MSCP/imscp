@@ -80,7 +80,7 @@
        </tr>
 	   <tr>
         <td><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15"></td>
-        <td><a href="vhcs_debugger.php" class="submenu">{TR_MENU_ROOTKIT_LOG}</a></td>
+        <td><a href="rootkit_log.php" class="submenu">{TR_MENU_ROOTKIT_LOG}</a></td>
        </tr>
        <tr>
         <td colspan="2"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="30" height="4"></td>
