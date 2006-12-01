@@ -54,14 +54,14 @@ if (is_readable($filename) == false) {
 		$log = fread($handle, filesize($filename));
 
 		$contents = "<form><textarea cols='120' rows='40'>" . $log . "</textarea></form>";
+		
+		fclose($handle);
 }
 $tpl -> assign(
 				array(
 					'LOG'=>$contents
 				     )
 			  );
-
-fclose($handle);
 
 /*
  *
@@ -77,8 +77,6 @@ $tpl -> assign(
                      )
               );
 
-
-get_server_status($tpl, $sql);
 
 gen_page_message($tpl);
 
