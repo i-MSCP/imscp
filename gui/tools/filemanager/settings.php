@@ -54,7 +54,7 @@
   $icon_display = array (
     "dirup" => "images/dirup.gif", 
     "home"  => "images/home.gif", 
-	"dir"   => "images/dir.gif", 
+    "dir"   => "images/dir.gif", 
     "file"  => "images/generic.gif", 
     "php"   => "images/script.gif",
     "zip"   => "images/transfer.gif",

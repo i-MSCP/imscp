@@ -10,7 +10,7 @@
   require_once ( "functions-ftp.php" );
   require_once ( "access_list.php" );
   require_once ( "gettext.php" );
-  require_once ( "messages.php" );
+  require_once ("messages.php");
 
   // Set language if it was passed to the script.
   if ( isset ( $_POST ) && compat_array_key_exists ( 'lang', $_POST ) )
@@ -78,8 +78,8 @@
   if ( $allow_custom )
   {
     // load the .wfmrc file, then load the appropriate theme
-	// overwrites default settings set earlier
-	$personal = array_merge( $personal, load_settings( $fp, $default_theme, $def_Display_Hidden, $numeric_val ) );
+    // overwrites default settings set earlier
+    $personal = array_merge( $personal, load_settings( $fp, $default_theme, $def_Display_Hidden, $numeric_val ) );
 
     // if the user specified to start in a different dir from his home dir
     if ( compat_array_key_exists ( "start_dir", $personal ) && $personal["start_dir"] != "" )
@@ -124,7 +124,7 @@
   // log sign in if set too
   if ( $log["level"] > 0 )
   	log_message( $log, $ftp_User . "/" . $REMOTE_ADDR . " - Logged in.\n" );
-  
+
   if (!isset($location)) $location = "Location: ftp.php?SID=".session_id().$lang_loc;
 
   header ($location . "\n\n");

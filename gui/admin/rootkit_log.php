@@ -1,19 +1,19 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |          VHCS ? (OMEGA) - Virtual Hosting Control System | Omega Version	    |
-//  |             		 Copyright (c) 2006 by ispCP     	                  		|
-//  |	   http://isp-control.net | http://www.serverozzo-project.com	   	    	|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the GPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+//   ---------------------------------------------------------------------------
+//  |		VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version		|
+//  |						Copyright (c) 2006 by ispCP							|
+//  |						   http://isp-control.net							|
+//  |																			|
+//  | This program is free software; you can redistribute it and/or				|
+//  | modify it under the terms of the GPL General Public License				|
+//  | as published by the Free Software Foundation; either version 2.0			|
+//  | of the License or (at your option) any later version.						|
+//  |																			|
+//  | You should have received a copy of the GPL eneral Public License			|
+//  | along with this program; if not, write to the Open Source Initiative (OSI)|
+//  | http://opensource.org | osi@opensource.org								|
+//  |																			|
+//   ---------------------------------------------------------------------------
 // Begin page line
 include '../include/vhcs-lib.php';
 
@@ -39,7 +39,7 @@ $tpl -> assign(
                         'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
                      )
               );
-			  
+
 /* Check Log File */
 $filename = "/var/log/rkhunter.log";
 
@@ -60,7 +60,7 @@ $tpl -> assign(
 					'LOG'=>$contents
 				     )
 			  );
-			  	
+
 fclose($handle);
 
 /*

@@ -49,9 +49,6 @@ sub welcome_note {
 
     This program will set up VHCS2 system on your server.
 
-
-    Please press 'Enter' to continue.
-
 MSG
 
     print STDOUT $welcome_message;

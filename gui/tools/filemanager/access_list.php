@@ -38,7 +38,7 @@ function ip2bin ( $ip ) {
 //  to a binary string.
 function mask2bin ( $mask ) {
   if ( count ( explode ('.', $mask) ) == 4 ) {
-    return ip2long ( $mask );
+    return ip2bin ( $mask );
   } else {
     if ( $mask <= 32 && $mask >= 0 ) {
       $bin_mask = compat_str_pad ( '', $mask, '1' );

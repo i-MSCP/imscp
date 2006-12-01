@@ -1,5 +1,5 @@
 
-export 
+export
 
 install:
 
@@ -11,6 +11,7 @@ install:
 		cd ./cron.d && $(MAKE) install ; cd .. ; \
 		cd ./database && $(MAKE) install ; cd .. ;  \
 		cd ./init.d && $(MAKE) install ; cd .. ; \
+		cd ./fcgi && $(MAKE) install ; cd .. ; \
 		cd ./postfix && $(MAKE) install ; cd .. ; \
 		cd ./courier && $(MAKE) install ; cd .. ; \
 		cd ./proftpd && $(MAKE) install ; cd .. ; \
@@ -45,5 +46,5 @@ uninstall:
 		cd ./dists/fedora && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == sles9 ]] ; then \
 		cd ./dists/sles9 && $(MAKE) uninstall ; \
-	fi 
+	fi
 

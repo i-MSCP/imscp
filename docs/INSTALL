@@ -1,63 +1,193 @@
 VHCS ω (OMEGA) HowTo Install
-========================================================================
+================================================================================
 
-Use the user root when installing VHCS.
+Table of Content
+================
+1) Version Info
+2) Requirements
+3) Introduction
+4) Installation
+5) Update
+6) FAQ
+7) Credits
 
-Install all requiered packages a list could be found at:
-	docs/debian-packages.txt
-	docs/suse-packages.txt
+================================================================================
+1) Version Info
+---------------
+VHCS ω Version:		2.4.8
+INSTALL Skript:		2.0
+Maintainer:			RatS
+Homepage:			http://isp-contol.net
 
-Download the vhcs software.
+================================================================================
+2) Requirements
+---------------
+There is no must have for a system using VHCS ω. This is only a recommendation:
 
-Extract the installation files to a secure directory.
-tangra: # cd /root
-tangra: # tar -xjf vhcs2-2.4.8.tar.bz2
+Penitum III or K6-4 with 500 MHz
+512 MB RAM
+100 MB disk space (only for install of VHCS ω)
+Debian (or even any other *NIX-Distribution)
 
-Change to the newly created directory.
-tangra: # cd vhcs2-2.4.8/configs/
+All required packages are listed in ./docs/debian-packages.txt
 
-Open vhcs2.conf and make some changes. You
-have to setting up some configuration variables
-for your linux distribution. Currently delivers
-VHCS vhcs2.conf preconfiguratet for linux debian.
-If you using linux debian, you don't need to make
-this changes. We will provide soon configuration files
-for all linux distribution such as SuSE, RH, Gentoo,
-Fedora, etc.
+================================================================================
+3) Introduction
+---------------
+VHCS ω delivers a complete hosting automation appliance by offering significant
+security, total-cost-of-ownership, and performance advantages over competing
+commercial solutions.
 
-Change to the newly created directory.
-tangra: # cd ../vhcs2-2.4.8
+With VHCS ω you can configure your server and applications, create user with
+domains with a few point-and-click operations that take less than a minute.
+There is no limit to the number of resellers, users and domains that can be
+created. The core of VHCS ω are 3 easy-to-use, Web-based control panels. VHCS
+provides graphic user interfaces for the administrators, resellers and users.
 
-Now You have to make buld for your system
-tangra: # make install
+================================================================================
+4) Installation
+---------------
+Make sure you are logged in as root.
 
-Your build is now stored in /tmp/vhcs-2.4.8
+1. Untar or unzip the distribution files to a secure directory:
+	# cd /root
+	# tar -xjvf vhcs2.4.8.tar.bz2
 
-Copy all directory forum the buil into your system
-(do not forget to make backups)
-tangra: # cp -R /tmp/vhcs-2.4.8/* /
+2. Change to the newly created directory:
+	# cd ./vhcs2.4.8
 
-Change to the newly created directory.
-tangra: # cd /var/www/vhcs2/engine/setup/
+3. Install the required modules
+   for Debian you can use:
+	# apt-get update && apt-get upgrade
+	# apt-get install cat `./docs/debian-packages.txt`
 
-Set mysql password if no is set :
-mysqladmin -u root password YOUR_PASSWORD
+	(when you get to the courier screen screen select no to web directories)
+	(when you get to the postfix screen select internet site and then type root
+	for mail. If you set debian up correctly on install your domain should be
+	already on screen. Select no to force sync updates.)
+	(when you get to the proftpd screen, select standalone)
 
-Now start the vhcs setup program
-tangra: # ./vhcs2-setup
+4. Now there are two ways of install VHCS ω
 
-Install step-by-step vhcs
+a) via install script
+---------------------
+4a. Start the script and follow the install instructions:
+	# ./install-vhcs.sh
 
-Clean the tmp folder
-tangra: # rm -R /tmp/vhcs-2.4.8
+After that return to step 12.
 
-moleSoftware offers a variety of support services to meet
-your unique needs. Installation and software customizing
-services are available too.
+b) manualy
+----------
+4b. Change into the configuration directory:
+	# cd ./configs
 
-In an effort to better serve our customers, we ask that
-you please sign in to the support site. Once you have
-signed in, you will have access to VHCS support resources.
+5. Open the vhcs2.conf and make some changes.
+   You have to set up some configuration variables for your linux distribution.
+   VHCS ω is preconfigurated for Debian 3.1 Sarge.
+   If you're using another distribution please check, if config files exist in
+   ./configs/dists and use / change them.
 
-http://www.vhcs.net
-http://wwww.molesoftware.com
+   These are the Variables you have to look at:
+
+   	DEFAULT_ADMIN_ADDRES = your email
+	SERVER_HOSTNAME = your hostname
+	BASE_SERVER_IP = your ip
+	DATABASE_TYPE = mysql
+	DATABASE_HOST = localhost
+	DATABASE_NAME = vhcs2
+	DATABASE_PASSWORD = vhcs2
+	DATABASE_USER = vhcs
+	AWSTATS_DIR = no			# Either no or path to the awstats configs dir
+	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
+								# infront or behind for MYSQL_PREFIX = no
+
+   Check the vhcs2.conf and adapt it to your requirements.
+   An overview over the variables you can find in the FAQ on
+   http://isp-control.net
+
+6. Return to the parent direction and build the System by using make:
+	# cd ../
+	# make install
+
+7. Copy all the directories into the system (you may make backups)
+	# cp -Rv /tmp/vhcs-2.4.8/* /
+
+8. Now it's time to set up the frontend. Change into the engine directory:
+	# cd /var/www/vhcs2/engine/setup
+
+8a. Set the MySQL password, if not set:
+	# mysqladmin -u root password YOUR_PASSWORD
+
+9. Start the engine setup:
+	# ./vhcs2-setup
+
+10. Install VHCS ω step-by-step:
+
+	Welcome to VHCS2 '2.4 Reha' Setup Dialog.
+
+	This program will set up VHCS2 system on your server.
+
+	Please enter system hostname (Enter for defaults) [debian]: YOUR HOSTNAME
+	Please enter system network address (Enter for defaults) [192.168.0.128]: YOUr IP ADDRESS
+	Please enter SQL server host (Enter for defaults) [localhost]:
+	Please enter system SQL database (Enter for defaults) [vhcs2]: vhcs2
+	Please enter system SQL user (Enter for defaults) [root]:
+	Please enter system SQL password (Enter for defaults) [none]:
+	Please repeat system SQL password:
+	Please enter VHCS ftp SQL user (Enter for defaults) [vftp]: vftp
+	Please enter VHCS ftp SQL user password (Enter for defaults) [none]:
+	Please repeat VHCS ftp SQL user password:
+	Please enter administrator login name (Enter for defaults) [admin]:
+	Please enter administrator password: ANY PASSWORD
+	Please repeat administrator password: ANY PASSWORD
+	Please enter admininistrator email address: YOUR EMAIL ADDRESS
+
+	If you get no error, all went good; if you get one, look at
+	http://isp-control.net to solve the problem.
+
+11. Activate SuExec:
+	# a2enmod suexec
+	# /etc/init.d/apache2 force-reload
+
+12. There is an error in some courier-versions. Courier won't stop, if you use
+	/etc/init.d/courier-authdaemon stop, so change it:
+	# nano /etc/ini.d/courier-authdaemon
+
+	change: ${libexecdir}/authlib/authdaemon stop
+	into:	killall authdaemond.plain
+
+13. Clean the temporary folders:
+	# rm -R /tmp/vhcs-2.4.8
+
+
+================================================================================
+5) Update
+---------
+
+There are two ways of update VHCS ω
+
+a) via install script
+---------------------
+1. Start the script and follow the update instructions:
+	# ./install-vhcs.sh
+
+b) manualy
+----------
+1.	Please check the update From-To-Files in the ./docs directory
+
+================================================================================
+6) FAQ
+------
+
+Please check http://isp-control.net for any questions not answered in this file.
+
+================================================================================
+7) Credits
+----------
+
+VHCS ω is a project of ispCP | isp Control Panel.
+Please visit our site under http://isp-control.net for further information on
+VHCS ω, ispCP and other themes.
+
+We hope you enjoy using VHCS ω. If you like it, help us, to make it better. We
+are glad on any help provided!
