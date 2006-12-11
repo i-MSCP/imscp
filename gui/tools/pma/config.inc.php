@@ -28,10 +28,10 @@ $cfg['Servers'][$i]['compress'] 		= true;
 /* Select mysqli if your server has it */
 $cfg['Servers'][$i]['extension'] 		= 'mysql';
 /* User for advanced features */
-$cfg['Servers'][$i]['controluser'] 		= 'pma';
-$cfg['Servers'][$i]['controlpass'] 		= 'pmapw';
+$cfg['Servers'][$i]['controluser'] 		= 'pma';		// Change it to the in the VHCS Setup set Username
+$cfg['Servers'][$i]['controlpass'] 		= 'pmapw';		// Change it to the in the VHCS Setup set Password
 /* Advanced phpMyAdmin features */
-$cfg['Servers'][$i]['pmadb'] 			= 'phpmyadmin';
+//$cfg['Servers'][$i]['pmadb'] 			= 'phpmyadmin';
 $cfg['Servers'][$i]['bookmarktable'] 	= 'pma_bookmark';
 $cfg['Servers'][$i]['relation'] 		= 'pma_relation';
 $cfg['Servers'][$i]['table_info'] 		= 'pma_table_info';

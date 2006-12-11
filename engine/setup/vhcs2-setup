@@ -3,6 +3,8 @@
 # VHCS(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
+# Copyright (c) 2006 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -22,10 +24,7 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-#
-# The VHCS Home Page is at:
-#
-#    http://www.vhcs.net
+
 
 use FindBin;
 use lib "$FindBin::Bin/..";
@@ -34,6 +33,10 @@ require 'vhcs2_common_code.pl';
 use strict;
 
 use warnings;
+
+################################################################################
+##                                SUBROUTINES                                 ##
+################################################################################
 
 %main::ua = ();
 
@@ -46,9 +49,7 @@ sub welcome_note {
     my $welcome_message = <<MSG;
 
     Welcome to VHCS2 '$main::cfg{'VersionH'}' Setup Dialog.
-
-    This program will set up VHCS2 system on your server.
-
+    This program will set up VHCS2 OMEGA system on your server.
 MSG
 
     print STDOUT $welcome_message;
@@ -408,6 +409,53 @@ sub ask_db_ftp_password {
 
 }
 
+sub ask_db_pma_user {
+
+    my ($rs, $rdata) = (undef, undef);
+    push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
+    my $db_user = 'pma';
+
+    my $qmsg = "\n    Please enter VHCS phpMyAdmin Control user (Enter for defaults) [$db_user]: ";
+    print STDOUT $qmsg;
+    $rdata = readline(\*STDIN); chop($rdata);
+
+    if (!defined($rdata) || $rdata eq '') {
+        $main::ua{'db_pma_user'} = $db_user;
+    } else {
+        $main::ua{'db_pma_user'} = $rdata;
+    }
+
+    push_el(\@main::el, 'ask_db_pma_user()', 'Ending...');
+    return 0;
+}
+
+sub ask_db_ftp_password {
+
+    my ($rs, $pass1, $pass2) = (undef, undef, undef);
+    push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
+    my $db_password = 'none';
+
+    my $qmsg = "\n    Please enter VHCS phpMyAdmin Control user password (Enter for defaults) [$db_password]: ";
+    $pass1 = read_password($qmsg);
+
+    if (!defined($pass1) || $pass1 eq '') {
+        $main::ua{'db_pma_password'} = '';
+    } else {
+        $qmsg = "    Please repeat VHCS phpMyAdmin SQL user password: ";
+        $pass2 = read_password($qmsg);
+
+        if ($pass1 eq $pass2) {
+            $main::ua{'db_pma_password'} = $pass1;
+        } else {
+            return 1;
+        }
+    }
+
+    push_el(\@main::el, 'ask_db_pma_password()', 'Ending...');
+    return 0;
+
+}
+
 sub ask_admin {
 
     my ($rs, $rdata) = (undef, undef);
@@ -563,20 +611,31 @@ sub user_dialog {
 
     } while ($rs == 1);
 
-	#
-	# VHCS ftp SQL user questions;
-	#
+    #
+    # VHCS ftp SQL user questions;
+    #
 
-	$rs = ask_db_ftp_user();
+    $rs = ask_db_ftp_user();
+    return $rs if ($rs != 0);
 
-	return $rs if ($rs != 0);
+    do {
+    	$rs = ask_db_ftp_password();
+    } while ($rs == 1);
 
-	do {
+    #
+    # PMA user for SQL
+    #
 
-		$rs = ask_db_ftp_password();
+    $rs = ask_db_pma_user();
+    return $rs if ($rs != 0);
 
-	} while ($rs == 1);
+    do {
+    	$rs = ask_db_pma_password();
+    } while ($rs == 1);
 
+    #
+    # Admin questions
+    #
 
     $rs = ask_admin();
 
@@ -783,39 +842,30 @@ sub setup_system_users {
 
     push_el(\@main::el, 'setup_system_users()', 'Starting...');
 
+	## Mailbox user
     my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
-
     my ($uid, $gid) = (undef, undef);
 
-
     my @udata = ();
-
     my @gdata = ();
-
 
     @gdata = getgrnam($fgid);
 
-    if (scalar(@gdata) == 0) { # we have not this one group data;
-
+	if (scalar(@gdata) == 0) { # we have not this one group data;
         my $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
-
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
 
         @gdata = getgrnam($fgid);
-
     }
 
     $gid = $gdata[2];
 
-
     @udata = getpwnam($fuid);
 
     if (scalar(@udata) == 0) { # we have not this one user data;
-
         my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vmail-user -g $gid -s /bin/false $fuid";
-
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
@@ -824,10 +874,40 @@ sub setup_system_users {
     }
 
     $uid = $udata[2];
-
     $main::ua{'su_uid'} = $uid;
-
     $main::ua{'su_gid'} = $gid;
+
+	## FCGI Master user
+    my ($fuid, $fgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
+    my ($uid, $gid) = (undef, undef);
+
+    my @udata = getpwnam($fuid);
+    my @gdata = getgrnam($fgid);
+
+	if (scalar(@gdata) == 0) { # we have not this one group data;
+        my $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
+        $rs = sys_command($cmd);
+
+        return $rs if ($rs != 0);
+
+        @gdata = getgrnam($fgid);
+    }
+
+    $mgid = $gdata[2];
+
+    if (scalar(@udata) == 0) { # we have not this one user data;
+        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $gid -s /bin/false $fuid";
+        $rs = sys_command($cmd);
+
+        return $rs if ($rs != 0);
+
+        @udata = getpwnam($fuid);
+    }
+
+    $muid = $udata[2];
+    $main::ua{'vu_uid'} = $muid;
+    $main::ua{'vu_gid'} = $mgid
+	##
 
     push_el(\@main::el, 'setup_system_users()', 'Ending...');
 
@@ -866,6 +946,10 @@ sub setup_system_dirs {
     return $rs if ($rs != 0);
 
 	$rs = make_dir($main::cfg{'BACKUP_FILE_DIR'}, 'root', 'root', 0755);
+
+    return $rs if ($rs != 0);
+
+    $rs = make_dir($main::cfg{'PHP_STARTER_DIR'}, 'root', 'root', 0755);
 
     return $rs if ($rs != 0);
 
@@ -922,6 +1006,14 @@ sub setup_config {
     return $rs if ($rs != 0);
 
     $rs = set_conf_val('MTA_MAILBOX_GID', $main::ua{'su_gid'});
+
+    return $rs if ($rs != 0);
+
+    $rs = set_conf_val('APACHE_SUEXEC_MIN_UID', $main::ua{'vu_uid'});
+
+    return $rs if ($rs != 0);
+
+    $rs = set_conf_val('APACHE_SUEXEC_MIN_GIDD', $main::ua{'vu_gid'});
 
     return $rs if ($rs != 0);
 
@@ -1107,6 +1199,45 @@ sub setup_sql {
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
+	#
+	# Create the PMA user
+	#
+	$main::db = undef;
+
+	@main::db_connect = (
+							"DBI:mysql:mysql:$main::db_host",
+							$main::db_user,
+							$main::db_pwd
+						);
+
+	my $pma_sql_user = $main::ua{'db_pma_user'};
+	my $pma_sql_password = $main::ua{'db_pma_password'};
+
+	$sql = "GRANT USAGE ON mysql.* TO '$pma_sql_user'@'localhost' IDENTIFIED BY '$pma_sql_password';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO '$pma_sql_user'@'localhost';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT ON mysql.db TO '$pma_sql_user'@'localhost';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT ON mysql.host TO 'pma_sql_user'@'localhost';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO 'pma_sql_user'@'localhost';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
 	push_el(\@main::el, 'setup_sql()', 'Ending...');
 
 	return 0;
@@ -1195,7 +1326,13 @@ sub setup_resolver {
 
     push_el(\@main::el, 'setup_resolver()', 'Starting...');
 
-    $rs = store_file("/etc/resolv.conf", "nameserver 127.0.0.1\n", 'root', 'root', 0644);
+    my $data = "nameserver 127.0.0.1\n";
+
+    if ($main::cfg{'SECONDARY_DNS'} ne '') {
+		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";
+	}
+
+    $rs = store_file("/etc/resolv.conf", $data, 'root', 'root', 0644);
 
     return $rs if ($rs != 0);
 
@@ -1293,9 +1430,119 @@ sub setup_named {
 
 sub setup_php {
 
-    my ($rs, $rdata, $cmd) = (undef, undef, undef);
+    my ($rs, $rdata, $cmd, $cfg_tpl, $cfg) = (undef, undef, undef, undef, undef);
 
     push_el(\@main::el, 'setup_php()', 'Starting...');
+
+	#
+	# Configure the fastcgi.conf
+	#
+
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+
+	my $bk_dir = "$cfg_dir/backup";
+
+	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'fastcgi.conf');
+    return $rs if ($rs != 0);
+
+    my %tag_hash = (
+                    '{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+                    '{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+                    );
+
+    ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+    return $rs if ($rs != 0);
+
+    $rs = store_file("$bk_dir/fastcgi.conf.vhcs2", $cfg, 'root', 'root', 0644);
+    return $rs if ($rs != 0);
+
+    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi.conf.vhcs2 $main::cfg{'APACHE_CONF_DIR']}/mods-available/fastcgi.conf";
+    $rs = sys_command($cmd);
+    return $rs if ($rs != 0);
+
+    #
+    # Copy the Master starter dir
+    #
+
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi";
+
+	my $bk_dir = "$cfg_dir/backup";
+
+	my $tpl_dir = "$cfg_dir/parts";
+
+	## PHP4 Starter
+	($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php4-fcgi-starter.tpl');
+    return $rs if ($rs != 0);
+
+    my %tag_hash = (
+                    '{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+                    '{DMN_NAME}' => "master"
+                    );
+
+    ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+    return $rs if ($rs != 0);
+
+    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    return $rs if ($rs != 0);
+
+    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR']}/master/php4-fcgi-starter";
+    $rs = sys_command($cmd);
+    return $rs if ($rs != 0);
+
+    ## PHP5 Starter
+    ($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5-fcgi-starter.tpl');
+    return $rs if ($rs != 0);
+
+    my %tag_hash = (
+                    '{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+                    '{DMN_NAME}' => "master"
+                    );
+
+    ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+    return $rs if ($rs != 0);
+
+    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    return $rs if ($rs != 0);
+
+    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php5-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR']}/master/php5-fcgi-starter";
+    $rs = sys_command($cmd);
+    return $rs if ($rs != 0);
+
+    ## php4.ini
+    ($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php4.ini');
+    return $rs if ($rs != 0);
+
+    my %tag_hash = (
+                    '{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
+                    '{DMN_NAME}' => "vhcs2",
+                    '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
+                    );
+
+    ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+    return $rs if ($rs != 0);
+
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php4.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    return $rs if ($rs != 0);
+
+    ## php5.ini
+	($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5.ini');
+    return $rs if ($rs != 0);
+
+    my %tag_hash = (
+                    '{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
+                    '{DMN_NAME}' => "vhcs2",
+                    '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
+                    );
+
+    ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+    return $rs if ($rs != 0);
+
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php5.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    return $rs if ($rs != 0);
+
+	#
+	# Old Code (was commented out)
+	#
 
     #
     # Let's regenerate config;
@@ -1354,6 +1601,17 @@ sub setup_httpd {
     if ( -e "/usr/sbin/a2ensite" ) {
 
     	sys_command_rs("/usr/sbin/a2ensite vhcs2.conf &> /tmp/vhcs2-setup-services.log");
+
+    }
+
+    #
+    # start fastcgi & suexec
+    # ToDo: Check if they work, if mod_php is aktivated
+    #
+    if ( -e "/usr/sbin/a2enmod" ) {
+
+    	sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/vhcs2-setup-services.log");
+    	sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/vhcs2-setup-services.log");
 
     }
 
@@ -1935,6 +2193,10 @@ sub setup_host_system {
 
     return $rs if ($rs != 0);
 
+    $rs = setup_php();
+
+    return $rs if ($rs != 0);
+
     $rs = setup_httpd();
 
     return $rs if ($rs != 0);
@@ -1960,6 +2222,10 @@ sub setup_host_system {
     return 0;
 
 }
+
+################################################################################
+##                                    MAIN                                    ##
+################################################################################
 
 my $rs = undef;
 

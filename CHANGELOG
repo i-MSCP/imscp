@@ -1,6 +1,31 @@
 VHCS 2.4.8 ω Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2006-12-11 Benedikt Heintel
+	- CONFIGS:
+		* added: new variables to vhcs2.conf
+		* changed: fastcgi.conf (vu-user for master)
+	- DOCS:
+		* modified: INSTALL
+	- GUI:
+		* changed: phpMyAdmin config
+	- SETUP:
+		* added new parts:
+			- fastcgi setup
+			- phpMyAdmin user
+			- Secoundary DNS
+ ____________________________________________________________
+/ @TODO:                                                     \
+|	- FastCGI:                                               |
+|		* Copy files on update                               |
+|		* Check, if 2 php.ini-files are allowed and working  |
+|		* apache: check if stats are working with FastCGI    |
+|	- AWStats:                                               |
+|		* apache: set statsdir if awstats is enabled         |
+|		* gui: disable stats-alias in client-menu            |
+\____________________________________________________________/
+
+
 2006-12-01 Benedikt Heintel
 	- CONFIGS:
 		* changed: vhcs2.conf
@@ -32,15 +57,6 @@ VHCS 2.4.8 ω Omega Changelog
 		* vhcs2-dmn-mngr: FastCGI enhancements
 	- MAKEFILES:
 		* edited them for FastCGI
-
-	@TODO:
-		- FastCGI:
-			* Copy files on install/update
-			* Check, if 2 php.ini-files are allowed and working
-			* apache: check if stats are working with FastCGI
-		- AWStats:
-			* apache: set statsdir if awstats is enabled
-			* gui: disable stats-alias in client-menu
 
 2006-11-26 Roland Haeder
 	- CONFIGS

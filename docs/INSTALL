@@ -121,42 +121,19 @@ b) manualy
 9. Start the engine setup:
 	# ./vhcs2-setup
 
-10. Install VHCS ω step-by-step:
-
-	Welcome to VHCS2 '2.4 Reha' Setup Dialog.
-
-	This program will set up VHCS2 system on your server.
-
-	Please enter system hostname (Enter for defaults) [debian]: YOUR HOSTNAME
-	Please enter system network address (Enter for defaults) [192.168.0.128]: YOUr IP ADDRESS
-	Please enter SQL server host (Enter for defaults) [localhost]:
-	Please enter system SQL database (Enter for defaults) [vhcs2]: vhcs2
-	Please enter system SQL user (Enter for defaults) [root]:
-	Please enter system SQL password (Enter for defaults) [none]:
-	Please repeat system SQL password:
-	Please enter VHCS ftp SQL user (Enter for defaults) [vftp]: vftp
-	Please enter VHCS ftp SQL user password (Enter for defaults) [none]:
-	Please repeat VHCS ftp SQL user password:
-	Please enter administrator login name (Enter for defaults) [admin]:
-	Please enter administrator password: ANY PASSWORD
-	Please repeat administrator password: ANY PASSWORD
-	Please enter admininistrator email address: YOUR EMAIL ADDRESS
+10. Install VHCS ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-11. Activate SuExec:
-	# a2enmod suexec
-	# /etc/init.d/apache2 force-reload
-
-12. There is an error in some courier-versions. Courier won't stop, if you use
+11. There is an error in some courier-versions. Courier won't stop, if you use
 	/etc/init.d/courier-authdaemon stop, so change it:
 	# nano /etc/ini.d/courier-authdaemon
 
 	change: ${libexecdir}/authlib/authdaemon stop
 	into:	killall authdaemond.plain
 
-13. Clean the temporary folders:
+12. Clean the temporary folders:
 	# rm -R /tmp/vhcs-2.4.8
 
 
