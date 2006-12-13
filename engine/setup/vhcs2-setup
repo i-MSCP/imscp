@@ -429,7 +429,7 @@ sub ask_db_pma_user {
     return 0;
 }
 
-sub ask_db_ftp_password {
+sub ask_db_pma_password {
 
     my ($rs, $pass1, $pass2) = (undef, undef, undef);
     push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
@@ -878,14 +878,14 @@ sub setup_system_users {
     $main::ua{'su_gid'} = $gid;
 
 	## FCGI Master user
-    my ($fuid, $fgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
-    my ($uid, $gid) = (undef, undef);
+    ($fuid, $fgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
+    ($uid, $gid, $udata, $gdata) = (undef, undef, undef, undef);
 
-    my @udata = getpwnam($fuid);
-    my @gdata = getgrnam($fgid);
+    @udata = getpwnam($fuid);
+    @gdata = getgrnam($fgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-        my $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
+        $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
@@ -906,7 +906,7 @@ sub setup_system_users {
 
     $muid = $udata[2];
     $main::ua{'vu_uid'} = $muid;
-    $main::ua{'vu_gid'} = $mgid
+    $main::ua{'vu_gid'} = $mgid;
 	##
 
     push_el(\@main::el, 'setup_system_users()', 'Ending...');
@@ -1212,8 +1212,9 @@ sub setup_sql {
 
 	my $pma_sql_user = $main::ua{'db_pma_user'};
 	my $pma_sql_password = $main::ua{'db_pma_password'};
+	my $localhost = $main::ua{'localhost'};
 
-	$sql = "GRANT USAGE ON mysql.* TO '$pma_sql_user'@'localhost' IDENTIFIED BY '$pma_sql_password';";
+	$sql = "GRANT USAGE ON mysql.* TO '$pma_sql_user'@'$localhost' IDENTIFIED BY '$pma_sql_password';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -1456,7 +1457,7 @@ sub setup_php {
     $rs = store_file("$bk_dir/fastcgi.conf.vhcs2", $cfg, 'root', 'root', 0644);
     return $rs if ($rs != 0);
 
-    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi.conf.vhcs2 $main::cfg{'APACHE_CONF_DIR']}/mods-available/fastcgi.conf";
+    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi.conf.vhcs2 $main::cfg{'APACHE_CONF_DIR'}/mods-available/fastcgi.conf";
     $rs = sys_command($cmd);
     return $rs if ($rs != 0);
 
@@ -1464,9 +1465,9 @@ sub setup_php {
     # Copy the Master starter dir
     #
 
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi";
+	$cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi";
 
-	my $bk_dir = "$cfg_dir/backup";
+	$bk_dir = "$cfg_dir/backup";
 
 	my $tpl_dir = "$cfg_dir/parts";
 
@@ -1474,7 +1475,7 @@ sub setup_php {
 	($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php4-fcgi-starter.tpl');
     return $rs if ($rs != 0);
 
-    my %tag_hash = (
+    %tag_hash = (
                     '{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
                     '{DMN_NAME}' => "master"
                     );
@@ -1482,7 +1483,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
     return $rs if ($rs != 0);
 
     $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR']}/master/php4-fcgi-starter";
@@ -1493,7 +1494,7 @@ sub setup_php {
     ($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5-fcgi-starter.tpl');
     return $rs if ($rs != 0);
 
-    my %tag_hash = (
+    %tag_hash = (
                     '{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
                     '{DMN_NAME}' => "master"
                     );
@@ -1501,7 +1502,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
     return $rs if ($rs != 0);
 
     $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php5-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR']}/master/php5-fcgi-starter";
@@ -1512,7 +1513,7 @@ sub setup_php {
     ($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php4.ini');
     return $rs if ($rs != 0);
 
-    my %tag_hash = (
+    %tag_hash = (
                     '{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
                     '{DMN_NAME}' => "vhcs2",
                     '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
@@ -1521,7 +1522,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php4.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php4.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
     return $rs if ($rs != 0);
 
     ## php5.ini
@@ -1537,7 +1538,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php5.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php5.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
     return $rs if ($rs != 0);
 
 	#
