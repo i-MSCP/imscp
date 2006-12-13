@@ -1,12 +1,12 @@
 
-ROOT_APACHE_CONF=$(ROOT_CONF)/apache2/
+ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
 export
 
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/apache2
 
 	cp ./httpd.conf ./working/vhcs2.conf
 	cp ./fastcgi.conf ./working/fastcgi.conf
