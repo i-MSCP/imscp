@@ -888,7 +888,7 @@ sub setup_system_users {
     @gdata = getgrnam($fgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-        $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
+        my $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
@@ -896,7 +896,7 @@ sub setup_system_users {
         @gdata = getgrnam($fgid);
     }
 
-    $mgid = $gdata[2];
+    my $mgid = $gdata[2];
 
     if (scalar(@udata) == 0) { # we have not this one user data;
         my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $gid -s /bin/false $fuid";
@@ -907,7 +907,7 @@ sub setup_system_users {
         @udata = getpwnam($fuid);
     }
 
-    $muid = $udata[2];
+    my $muid = $udata[2];
     $main::ua{'vu_uid'} = $muid;
     $main::ua{'vu_gid'} = $mgid;
 	##
@@ -1486,10 +1486,10 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}". "$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
     return $rs if ($rs != 0);
 
-    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR']}/master/php4-fcgi-starter";
+    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.vhcs2 $main::cfg{['PHP_STARTER_DIR']}/master/php4-fcgi-starter";
     $rs = sys_command($cmd);
     return $rs if ($rs != 0);
 
@@ -1505,10 +1505,10 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
     return $rs if ($rs != 0);
 
-    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php5-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR']}/master/php5-fcgi-starter";
+    $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php5-fcgi-starter.vhcs2 $main::cfg{['PHP_STARTER_DIR']}/master/php5-fcgi-starter";
     $rs = sys_command($cmd);
     return $rs if ($rs != 0);
 
@@ -1525,7 +1525,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php4.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$main::cfg{['PHP_STARTER_DIR']}/master/php4.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
     return $rs if ($rs != 0);
 
     ## php5.ini
@@ -1541,7 +1541,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR']}/master/php5.ini", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_SUEXEC_USER_PREF'}'.'$main::cfg{'APACHE_SUEXEC_MIN_GID'}', 0440);
+    $rs = store_file("$main::cfg{['PHP_STARTER_DIR']}/master/php5.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
     return $rs if ($rs != 0);
 
 	#
