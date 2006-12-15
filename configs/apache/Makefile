@@ -7,6 +7,8 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
 
 	cp ./httpd.conf ./working/vhcs2.conf
 	cp ./fastcgi.conf ./working/fastcgi.conf
