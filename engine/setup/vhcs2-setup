@@ -500,7 +500,7 @@ sub ask_admin_password {
         return 1;
     } else {
     	if (length($pass1) > 5) {
-			"\n    Password too short!"
+			"\n    Password too short!";
         	return 1;
     	}
         $qmsg = "    Please repeat administrator password: ";
@@ -509,7 +509,7 @@ sub ask_admin_password {
 		if ($pass1 eq $pass2) {
         	$main::ua{'admin_password'} = $pass1;
         } else {
-        	"\n    Passwords do not match!"
+        	"\n    Passwords do not match!";
             return 1;
         }
     }
