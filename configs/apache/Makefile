@@ -6,7 +6,7 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/apache2
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 
 	cp ./httpd.conf ./working/vhcs2.conf
 	cp ./fastcgi.conf ./working/fastcgi.conf
