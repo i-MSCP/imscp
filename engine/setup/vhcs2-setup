@@ -878,38 +878,38 @@ sub setup_system_users {
     $main::ua{'su_gid'} = $gid;
 
 	## FCGI Master user
-    ($fuid, $fgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
-    ($uid, $gid) = (undef, undef);
+    my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
+    my ($vuuid, $vuugid) = (undef, undef);
 
     @udata = ();
     @gdata = ();
 
-    @udata = getpwnam($fuid);
-    @gdata = getgrnam($fgid);
+    @udata = getpwnam($muid);
+    @gdata = getgrnam($mgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-        my $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
+        my $cmd = "$main::cfg{'CMD_GROUPADD'} $mgid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
 
-        @gdata = getgrnam($fgid);
+        @gdata = getgrnam($mgid);
     }
 
-    my $mgid = $gdata[2];
+    $vugid = $gdata[2];
 
     if (scalar(@udata) == 0) { # we have not this one user data;
-        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $gid -s /bin/false $fuid";
+        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $mgid -s /bin/false $muid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
 
-        @udata = getpwnam($fuid);
+        @udata = getpwnam($muid);
     }
 
-    my $muid = $udata[2];
-    $main::ua{'vu_uid'} = $muid;
-    $main::ua{'vu_gid'} = $mgid;
+    $vuuid = $udata[2];
+    $main::ua{'vu_uid'} = $vuuid;
+    $main::ua{'vu_gid'} = $vugid;
 	##
 
     push_el(\@main::el, 'setup_system_users()', 'Ending...');
@@ -1532,7 +1532,7 @@ sub setup_php {
 	($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5.ini');
     return $rs if ($rs != 0);
 
-    my %tag_hash = (
+    %tag_hash = (
                     '{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
                     '{DMN_NAME}' => "vhcs2",
                     '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}

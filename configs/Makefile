@@ -11,7 +11,6 @@ install:
 		cd ./cron.d && $(MAKE) install ; cd .. ; \
 		cd ./database && $(MAKE) install ; cd .. ;  \
 		cd ./init.d && $(MAKE) install ; cd .. ; \
-		cd ./fcgi && $(MAKE) install ; cd .. ; \
 		cd ./postfix && $(MAKE) install ; cd .. ; \
 		cd ./courier && $(MAKE) install ; cd .. ; \
 		cd ./proftpd && $(MAKE) install ; cd .. ; \
