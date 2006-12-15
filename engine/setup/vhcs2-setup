@@ -500,18 +500,16 @@ sub ask_admin_password {
         return 1;
     } else {
     	if (length($pass1) < 5) {
-			$qmsg = "\n    Password too short!";
+			print STDOUT "\n    Password too short!";
         	return 1;
     	}
         $qmsg = "    Please repeat administrator password: ";
-        print STDOUT $qmsg;
         $pass2 = read_password($qmsg);
 
 		if ($pass1 eq $pass2) {
         	$main::ua{'admin_password'} = $pass1;
         } else {
-        	$qmsg = "\n    Passwords do not match!";
-        	print STDOUT $qmsg;
+        	print STDOUT "\n    Passwords do not match!";
             return 1;
         }
     }
@@ -1432,11 +1430,11 @@ sub setup_php {
 	# Configure the fastcgi.conf
 	#
 
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache/";
 
 	my $bk_dir = "$cfg_dir/backup";
 
-	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'fastcgi.conf');
+	($rs, $cfg_tpl) = get_tpl($cfg_dir/working, 'fastcgi.conf');
     return $rs if ($rs != 0);
 
     my %tag_hash = (
