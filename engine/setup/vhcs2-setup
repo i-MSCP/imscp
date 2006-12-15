@@ -499,17 +499,19 @@ sub ask_admin_password {
     if (!defined($pass1) || $pass1 eq '') {
         return 1;
     } else {
-    	if (length($pass1) > 5) {
-			"\n    Password too short!";
+    	if (length($pass1) < 5) {
+			$qmsg = "\n    Password too short!";
         	return 1;
     	}
         $qmsg = "    Please repeat administrator password: ";
+        print STDOUT $qmsg;
         $pass2 = read_password($qmsg);
 
 		if ($pass1 eq $pass2) {
         	$main::ua{'admin_password'} = $pass1;
         } else {
-        	"\n    Passwords do not match!";
+        	$qmsg = "\n    Passwords do not match!";
+        	print STDOUT $qmsg;
             return 1;
         }
     }
@@ -876,7 +878,7 @@ sub setup_system_users {
     @gdata = getgrnam($mgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-        my $cmd = "$main::cfg{'CMD_GROUPADD'} $mgid";
+        my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $main::cfg{'APACHE_SUEXEC_USER_PREF'}$mgid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
@@ -887,7 +889,7 @@ sub setup_system_users {
     $vugid = $gdata[2];
 
     if (scalar(@udata) == 0) { # we have not this one user data;
-        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $mgid -s /bin/false $muid";
+        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $main::cfg{'APACHE_SUEXEC_USER_PREF'}$mgid -s /bin/false -u $muid $main::cfg{'APACHE_SUEXEC_USER_PREF'}$muid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
