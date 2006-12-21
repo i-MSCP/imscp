@@ -1205,27 +1205,27 @@ sub setup_sql {
 	my $pma_sql_password = $main::ua{'db_pma_password'};
 	my $localhost = $main::ua{'localhost'};
 
-	$sql = "GRANT USAGE ON mysql.* TO '$pma_sql_user'\@'$localhost' IDENTIFIED BY '$pma_sql_password';";
+	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$localhost\' IDENTIFIED BY \'$pma_sql_password\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO '$pma_sql_user'\@'$localhost';";
+	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO \'$pma_sql_user\'\@\'$localhost\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT ON mysql.db TO '$pma_sql_user'\@'$localhost';";
+	$sql = "GRANT SELECT ON mysql.db TO \'$pma_sql_user\'\@\'$localhost\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT ON mysql.host TO '$pma_sql_user'\@'$localhost';";
+	$sql = "GRANT SELECT ON mysql.host TO \'$pma_sql_user\'\@\'$localhost\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO '$pma_sql_user'\@'$localhost';";
+	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO \'$pma_sql_user\'\@\'$localhost\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
