@@ -14,6 +14,7 @@ VHCS 2.4.8 ω Omega Changelog
 2006-12-22 Benedikt Heintel
 	- MAKEFILE:
 		* Added FastCGI Makefile
+		* Changed FastCGI Makefile
 	- SETUP:
 		* Fixed Warnings
 
