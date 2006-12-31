@@ -876,7 +876,7 @@ sub setup_system_users {
     @gdata = getgrnam($mgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-        my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $main::cfg{'APACHE_SUEXEC_USER_PREF'}.$mgid";
+        my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $main::cfg{'APACHE_SUEXEC_USER_PREF'}$mgid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
