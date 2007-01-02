@@ -869,6 +869,9 @@ sub setup_system_users {
     my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
     my ($vuuid, $vugid) = (undef, undef);
 
+    @udata = ();
+    @gdata = ();
+
     @udata = getpwnam($muid);
     @gdata = getgrnam($mgid);
 
@@ -1200,7 +1203,7 @@ sub setup_sql {
 
 	my $pma_sql_user = $main::ua{'db_pma_user'};
 	my $pma_sql_password = $main::ua{'db_pma_password'};
-	my $localhost = $main::ua{'db_host'};
+	my $localhost = $main::ua{'localhost'};
 
 	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$localhost\' IDENTIFIED BY \'$pma_sql_password\';";
 
