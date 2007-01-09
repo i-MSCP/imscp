@@ -11,6 +11,10 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client-menu            |
 \____________________________________________________________/
 
+2007-01-09 Benedikt Heintel
+	- LANGUAGES:
+		* Added Danish language file
+
 2006-12-22 Benedikt Heintel
 	- MAKEFILE:
 		* Added FastCGI Makefile
