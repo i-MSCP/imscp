@@ -1,0 +1,921 @@
+vhcs_table = Thai
+vhcs_language = Thai
+encoding = th-tis-620
+Access your files through the web interface = Access your files through the web interface
+Access your mail through the web interface = Access your mail through the web interface
+Account name = ชื่อผู้ใช้
+Action = = 
+Add = เพิ่ม
+Add admin = เพิ่มผู้ดูแลระบบ
+Add alias = เพิ่ม alias
+Add domain alias = เพิ่ม domain alias
+Add FTP user = เพิ่มผู้ใช้ FTP
+Add group = เพิ่มกลุ่ม
+Add hosting plan = เพิ่มโฮสติ้งแพลน
+Additional data = เพิ่มข้อมูล
+Addition in progress = = 
+Add mail user = เพิ่มผู้ใช้อีเมล์
+Add mail users = เพิ่มผู้ใช้อีเมล์
+Add new button = เพิ่มเมนูใหม่
+Add new IP = เพิ่ม IP ใหม่
+Add new user hosting plan = เพิ่มผู้ใช้ โอสติ้งเพลน ใหม่
+Add plan = เพิ่มเพลน
+Add reseller = เพิ่มผู้แทนจำหน่าย
+Add SQL database = เพิ่มฐานข้อมูล SQL
+Add SQL user = เพิ่มผู้ใช้งาน SQL
+Add subdomain = เพิ่ม subdomain
+Add user = เพิ่มผู้ใช้
+Administrator = ผู้ดูแลระบบ
+Administrators = ผู้ดูแลระบบ
+Adminitrators list is empty! = ไม่มีผู้ดูแลระบบนี้อยู่ในบัญชีรายชื่อ
+Admin log = = 
+Admin Log = = 
+Admin users = ผู้ดูแลระบบทั้งหมด
+Alais name = = 
+Alias = = 
+Aliases = = 
+Alias(es)<br><i>(-1 disabled, 0 unlimited) = = 
+Alias forward = = 
+Alias list is empty! = = 
+Alias list is empty! You can not add FTP accounts there! = = 
+Alias list is empty! You can not add mail accounts! = = 
+Alias mail = = 
+Alias mails = = 
+Alias name = = 
+Alias scheduled for deletion! = = 
+Alias scheduled for modification! = = 
+All = ทั้งหมด
+All closed support tickets deleted successfully! = = 
+All in = ขาเข้า
+All open support tickets deleted successfully! = = 
+All out = ขาออก
+All resellers = ผู้แทนจำหน่ายทั้งหมด
+All traffic = จำนวนการรับส่งข้อมูลทั้งหมด
+All users = ผู้ใช้ทั้งหมด
+All users & resellers = ผู้ใช้และผู้แทนจำหน่ายทั้งหมด
+Already in: = = 
+Apache logfiles = = 
+Apache logs = = 
+Apply changes = = 
+Area name = = 
+Are you sure you want to change the status of domain account? = = 
+Are you sure you want to delete = = 
+Are you sure you want to delete this account? = = 
+Assign = = 
+Auto email template data updated! = = 
+Auto respond = = 
+Available IPs = = 
+Available VHCS updates = = 
+Awstats = = 
+AwStats = = 
+</b> = = 
+Back = กลับไป
+Backup = สำรองข้อมูล
+Backup and restore = สำรองข้อมูลและเรียกคืน
+Backup and restore settings = ตั้งค่าการสำรองข้อมูลและเรียกคืน
+Backup archive scheduled for restoring! = = 
+Backup / Restore = สำรองข้อมูล / เรียกคืน
+</b> Address !<br>Edit reseller aborted! = = 
+</b> amount, present on the system! = = 
+</b><br> = = 
+Behind the name = = 
+</b> in a destination reseller,<br> = = 
+</b> In a destination reseller,<br> = = 
+Blue = สีน้ำเงิน
+</b> records on the system! = = 
+</b> records, present on the system! = = 
+<b>Routine maintenance!</b><br><br>VHCS is not available for system changes<br><br>Pleas contact your hosting service provider for more information<br><br>We apologize for any inconvenience and thank you for understanding = = 
+<br>service in destination reseller!<br> = = 
+</b> service! = = 
+</b> Service !<br> = = 
+</b> Service can not be disabled !<br>There is <b> = = 
+</b> Service can not be limited !<br>specified number is smaller then <b> = = 
+</b> Service can not be limited !<br>Specified number is smaller then <b> = = 
+</b> Service can not be limited !<br>You are exceeding reseller limits for the <b> = = 
+</b> Service can not be unlimited !<br>There is reseller limits for the <b> = = 
+Button link = เมนูลิ้งไปยัง
+Button name = ชื่อเมนู
+Button target = การเรียก (Target)
+Cancel = ยกเลิก
+Can not connect as MySQL administrator! = = 
+Can Not Connect As MySQL Administrator! = = 
+Can not open directory !<br>Please contact your administrator ! = = 
+Can not open file for reading! Please contact your administrator ! = = 
+Can not open file! Please contact your administrator ! = = 
+Can not read vhcs language file! = = 
+Catch all = = 
+Catch all account = = 
+Catch all account scheduled for deletion! = = 
+Catch all account sheculed for creation! = = 
+Catch all mail account can not be created! = = 
+CGI / Perl = = 
+CGI support = สนับสนุน CGI
+Change = เปลี่ยน
+Change password = เปลี่ยนรหัสผ่าน
+Change pers. data = เปลี่ยนประวัติข้อมูลผู้ใช้งาน
+Change personal data = = 
+Change SQL user password = เปลี่ยนรหัสผ่านผู้ใช้ SQL
+Change user interface = = 
+Choose = เลือก
+Choose default language = เลือกภาษาให้เป็นค่าเริ่มต้น
+Choose default layout = เลือกเลย์เอาท์เป็นค่าเริ่มต้น
+Choose dir = เลือกไดเร็คทรอรี่
+Choose hosting plan = เลือกโฮสติ้งแพลน
+Circular = จดหมายเวียน
+City = จังหวัด
+Clear log = ลบค่า log
+Click Restore button and the system will<br>restore last daily backup = = 
+Closed tickets = = 
+Company = บริษัท
+Core data = = 
+Country = ประเทศ
+CPU bogomips = = 
+CPU cache = = 
+CPU MHz = ความเร็วหน่วยประมวลผล MHz
+CPU model = รุ่นหน่วยประมวลผล
+CPU system Info = ข้อมูลระบบของหน่วยประมวลผล
+Create catch all = = 
+Create catch all mail account = = 
+Created by = จัดสร้างโดย
+Creation date = วันที่ทำการสร้างเสร็จ
+Customer ID = รหัสลูกค้า
+Custom error pages = หน้าแสดงความผิดพลาด
+Custom error page was updated! = ได้ทำการปรับปรุงหน้าแสดงความผิดพลาดไปแล้ว
+Customize error pages for your domain = = 
+Custom menu data updated successful! = ข้อมูลเมนูถูกอัปโหลดเรียบร้อยแล้ว
+Custom menu deleted successful! = เมนูที่สร้างถูกลบเรียบร้อยแล้ว
+Custom menus = สร้างเมนูใหม่เอง
+D = = 
+Daily backup = สำรองข้อมูลทุกวัน
+Database list is empty! = ฐานข้อมูลนี้ไม่มีอยู่ในบัญชีรายชื่อ!
+Database name = ชื่อฐานข้อมูล
+Database user list is empty! = ไม่มีฐานผู้ใช้นี้อยู่ในบัญชีรายชื่อ!
+Database users = ฐานข้อมูลผู้ใช้
+Date = วันที่
+Day = วันที่
+Day: = วัน :
+default = ค่าเริ่มต้น
+Default = ค่าเริ่มต้น
+Default language changed! = ค่าเริ่มต้นขอภาษาถูกเปลี่ยน
+delete = ลบทิ้ง
+Delete = ลบทิ้ง
+Delete all = ลบทิ้งทั้งมหด
+Delete CatchAll = = 
+Deletion in progress = = 
+Details = รายละเอียด
+Direction download today backup = = 
+Directories = = 
+Directory listing = = 
+Directory mount point = = 
+Directory tree = = 
+Directory tree<br>mount point = = 
+Disable = ปิดการทำงาน
+disabled = ปิดการทำงานแล้ว
+Disk = พื้นที่ใช้งาน
+Disk<br>usage = พื้นที่ที่ใช้ไป
+Disk in MB = = 
+Disk limit [Mb]<br><i>(0 unlimited)</i> = = 
+Disk limit [MB]<br><i>(0 unlimited)</i> = = 
+Disk [MB]<br><i>(0 unlimited) = = 
+Disk usage = พื้นที่ที่ใช้ไป
+Domain = = 
+Domain account = = 
+Domain alias = = 
+Domain alias added! = = 
+Domain alias added for termination! = = 
+Domain alias errors = = 
+Domain aliases = = 
+Domain alias modified! = = 
+Domain alias not added! = = 
+Domain alias not added for termination! = = 
+Domain alias not modified! = = 
+Domain aliasses = = 
+Domain alias you are trying to remove has email accounts !<br>First remove them! = = 
+Domain alias you are trying to remove has FTP accounts!<br>First remove them! = = 
+Domain details = = 
+Domain errors = = 
+Domain IP = = 
+Domain mail = = 
+Domain mails = = 
+Domain name = โดเมนเนม
+Domain properties = ข้อมูลทั้วไปของโดเมนเนม
+Domain properties updated successfully! = ปรับปรุงข้อมูลทั่วไปของโดเมนเรียบร้อยแล้ว
+Domains = โดเมน
+Domain statistics = สถิติโดเมน
+Domain with that name already exists on the system! = = 
+Domain with this name already exist = = 
+Domain you are trying to remove has domain alias!<br> first remove them ! = = 
+Domain you are trying to remove has email accounts !<br> first remove them ! = = 
+Domain you are trying to remove has FTP accounts !<br> first remove them ! = = 
+Domain you are trying to remove has subdomains accounts !<br> first remove them ! = = 
+Download the only one file in this directory = = 
+Edit = แก้ไข
+Edit admin = แก้ไขแอดมิน
+Edit button = แก้ไขเมนู
+Edit Domain = แก้ไข Domain
+Edit domain alias = = 
+Edit email account = แก้ไขชื่ออีเมล์
+Edit error page = แก้ไขหน้าแสดงความผิดพลาด
+Edit FTP user = แก้ไข FTP สำหรับผู้ใช้
+Edit hosting plan = แก้ไขข้อมูลโฮสติ้งแพลน
+Edit properties = แก้ไขค่าทั่วไป
+Edit reseller = แก้ไขข้อมูลผู้แทนจำหน่าย
+Edit reseller aborted! = = 
+Edit user = แก้ไขข้อมูลผู้ใช้
+E-mail = อีเมล์
+Email = อีเมล์
+Email account not founded! = = 
+Email Accounts = ระบบจัดการอีเมล์
+Email and FTP accounts = รหัสอีเมล์และ FTP
+Email forward = อีเมล์ฟอเวิร์ด
+Email marketing = อีเมล์เพื่อการตลาด
+Email setup = ติดตั้งอีเมล์
+Email Updated = ปรับปรุงอีเมล์แล้ว
+Email Updated! = ปรับปรุงอีเมล์แล้ว!
+Empty data or wrong field! = = 
+Empty list = ไม่มีอยู่ในบัญชีรายชื่อ
+Empty List = ไม่มีอยู่ในบัญชีรายชื่อ
+Enable = เปิดการใช้งาน
+enabled = เปิดการใช้งานแล้ว
+Enable mail auto responder = เปิดการใช้งาน การตอบกลับอีเมล์อัตโนมัติ
+Enduser level = ระดับการใช้งานของผู้ใช้
+Entered passwords differ! = = 
+Entered passwords differ from the another! = = 
+Entered passwords does not match! = = 
+Error = ผิดพลาด
+Error 401 (unauthorized) = = 
+Error 403 (forbidden) = = 
+Error 404 (not found) = = 
+Error 500 (internal server error) = = 
+Error pages = = 
+Execute = = 
+Execute query = = 
+Execute SQL query = = 
+Export = ส่งออก
+Extras = = 
+Fax = แฟกซ์
+Feature = = 
+Filemanager = ระบบจัดการไฟล์
+Filesystem system Info = = 
+First name = ชื่อ
+Forward = ส่งต่อ
+Forward list is empty! = = 
+Forward mail = ส่งอีเมล์นี้ให้ผู้อื่นต่อ
+Forward to = ส่งต่อถึง
+Forward to URL = ทำการส่งต่อถึง URL
+Free = ฟรี
+From = จาก
+From reseller = จากผู้แทนจำหน่าย
+Fronpage extensions = = 
+FTP = = 
+FTP account = = 
+FTP account added! = = 
+FTP account already exists! = = 
+FTP account data updated! = = 
+FTP account deleted successfully! = = 
+FTP account limit<br><i>(0 unlimited)</i> = = 
+FTP accounts = = 
+FTP Accounts = = 
+FTP account(s)<br><i>(0 unlimited) = = 
+FTP accounts limit expired! = = 
+FTP<br>traffic = = 
+FTP list is empty! = = 
+FTPs total = = 
+FTP traffic = = 
+FTP users = = 
+General information = ข้อมูลทั่วไป
+Go back = กลับไป
+Green = สีเขียว
+Group = กลุ่ม
+Group already exist ! = = 
+Group auth = = 
+Group members = กลุ่มสมาชิก
+Group name = ชื่อกลุ่ม
+Groups = กลุ่ม
+ Has IP address that can not be managed from the destination reseller !<br>This user can not be moved! = = 
+ Has unlimited rights for a <b> = = 
+Has unlimited rights for a <b> = = 
+Havent you got more than one name? = = 
+Havent you got more then one name? = = 
+hide aliases = = 
+High = = 
+Host = = 
+Hosting plan added! = ทำการเพิ่มโฮสติ้งแพลนเสร็จแล้ว
+Hosting plan deleted! = ทำการลบโฮสติ้งแพลนเสร็จแล้ว
+Hosting plan properties = รายละเอียดโฮสติ้งแพลนโดยทั่วไป
+Hosting plans = โฮสติ้งแพลน
+Hosting plans not found! = ยังไม่มีรายละเอียดโฮสติ้งแพลน
+Hosting plan updated! = ปรับปรุงโฮสติ้งแพลนแล้ว
+Hosting plan with entered name already exists! = = 
+Hour = ชั่วโมง
+If you want to limit the reseller, fist you must limit its users !<br> = = 
+Incorrect alias range or syntax! = = 
+Incorrect city syntax! = = 
+Incorrect company range or syntax! = = 
+Incorrect country syntax! = = 
+Incorrect customer ID syntax! = = 
+Incorrect data input! = = 
+Incorrect disk range or syntax! = = 
+Incorrect domain name syntax = = 
+Incorrect email range or syntax! = = 
+Incorrect fax range or syntax! = = 
+Incorrect first name range or syntax! = = 
+Incorrect forward syntax = = 
+Incorrect FTP account range or syntax! = = 
+Incorrect mail account range or syntax! = = 
+Incorrect max alias count or syntax! = = 
+Incorrect max disk amount or syntax! = = 
+Incorrect max domain count or syntax! = = 
+Incorrect max FTP count or syntax! = = 
+Incorrect max mail count or syntax! = = 
+Incorrect max SQL databases count or syntax! = = 
+Incorrect max SQL users count or syntax! = = 
+Incorrect max subdomain count or syntax! = = 
+Incorrect max traffic amount or syntax! = = 
+Incorrect mount point syntax = = 
+Incorrect password range or ayntax! = = 
+Incorrect password range or syntax! = = 
+Incorrect phone range or syntax! = = 
+Incorrect post code range or syntax! = = 
+Incorrect second name range or syntax! = = 
+Incorrect SQL database range or syntax! = = 
+Incorrect SQL user range or syntax! = = 
+Incorrect street 1 syntax! = = 
+Incorrect street 2 syntax! = = 
+Incorrect subdomain range or syntax! = = 
+Incorrect template name range or syntax! = = 
+Incorrect traffic range or syntax! = = 
+Incorrect username range or syntax! = = 
+In front the name = = 
+Install = ติดตั้ง
+Installed languages = ติดตั้งภาษา
+Installed layouts = = 
+Install new language = ติดตั้งภาษาใหม่
+IP = = 
+ is exceeding limits for a <b> = = 
+ Is exceeding limits for a <b> = = 
+JSP = = 
+Kernel = = 
+Kill session = = 
+Label = = 
+Language = ภาษา
+Language file = ไฟล์ภาษา
+Last access = ติดต่อครั้งสุดท้าย
+Last name = นามสกุล
+Last reply = ตอบกลับครั้งสุดท้าย
+Layout = เลย์เอาท์
+Layout name = ชื่อเลย์เอาท์
+Layout settings = กำหนดค่า เลย์เอาท์
+Level = ระดับ
+Limit = ขีดจำกัด
+Load = = 
+Login = เข้าสู่ระบบ
+Login with your FTP account = = 
+Log is empty! = = 
+Logo file = ไฟล์โลโก้
+Logo upload = อัปโหลดโลโก้
+Logout = ออกจากระบบ
+Low = = 
+Mail = = 
+Mail account = ชื่อผู้ใช้อีเมล์
+Mail account already exists! = = 
+Mail account errors = = 
+Mail account limit<br><i>(0 unlimited)</i> = = 
+Mail accounts = = 
+Mail account(s)<br><i>(0 unlimited) = = 
+Mail account scheduled for addition! = = 
+Mail account scheduled for modification! = = 
+Mail account scheduler for modification! = = 
+Mail accounts limit expired! = = 
+Mail accounts list = = 
+Mail accounts list is empty! = = 
+Mail forward list error! = = 
+Mail in = เมล์เข้า
+Mail out = เมล์ออก
+Mails total = อีเมล์ทั้งหมด
+Mail users = ผู้ใช้งานอีเมล์
+Mail were updated successfully! = = 
+Main domain = ชื่อเว็บไซต์หลักหลัก
+Manage alias = = 
+Manage custom menus = ระบบจัดการสร้างเมนูใหม่
+Manage domain alias = = 
+Manage domains = ระบบจัดการโดเมน
+Manage hosting plans = ระบบจัดการโฮสติ้งแพลน
+Manage IPs = ระบบจัดการ IPs
+Manage Orders = ระบบจัดการคำสั่งซื้อ
+Manage protected areas, users and groups = = 
+Manage SQL = ระบบจัดการ SQL
+Manage user = จัดการข้อมูลผู้ใช้งาน
+Manage users = จัดการข้อมูลผู้ใช้งาน
+Manage users and groups = จัดการข้อมูลผู้ใช้งาน และกลุ่มผู้ใช้งาน
+Manage user sessions = = 
+Mark = = 
+Max aliases<br><i>(-1 disabled, 0 unlimited) = = 
+Max aliases count = = 
+Max aliases count<br><i>(0 unlimited)</i> = = 
+Max disk amount [MB] = = 
+Max disk amount [MB]<br><i>(0 unlimited)</i> = = 
+Max domain count = = 
+Max Domain count = = 
+Max domain count<br><i>(0 unlimited)</i> = = 
+Max FTP users count = = 
+Max FTP users count<br><i>(0 unlimited)</i> = = 
+Max mail users count = = 
+Max mail users count<br><i>(0 unlimited)</i> = = 
+Max SQL databases count = = 
+Max SQL databases count<br><i>(-1 disabled, 0 unlimited)</i> = = 
+Max SQL users count = = 
+Max SQL users count<br><i>(-1 disabled, 0 unlimited)</i> = = 
+Max subdomain count = = 
+Max subdomain count<br><i>(0 unlimited) = = 
+Max subdomains<br><i>(-1 disabled, 0 unlimited) = = 
+Max traffic amount [MB] = = 
+Max traffic amount [MB]<br><i>(0 unlimited)</i> = = 
+Max traffic [MB] = = 
+Medium = = 
+Memory system info = = 
+Menu button = ชื่อเมนู
+Message = ข้อความ
+Messages = ข้อความ
+ Messages translated = ข้อความถูกแปลแล้ว
+Message subject = หัวข้อข้อความ
+Message template = = 
+Message template info = = 
+Message was send! = = 
+Message was sended! = = 
+Missing or incorrect data input! = = 
+Missing or wrong data! = = 
+Modification in progress = = 
+Modify = ปรับแต่งค่า
+Month = เดือน
+Month: = เดือน:
+Mount = จุดเชื่อมต่อ
+Mount point = จุดเชื่อมต่อ
+Move = ย้าย
+Moving aborted! = = 
+Multilanguage = เลือกภาษา
+MySQL support = สนับสนุน MySQL
+N/A = ไม่มีข้อมูล
+Name = ชื่อ
+&nbsp; = = 
+new = ใหม่
+[New] = = 
+New = ใหม่
+New language installed! = ติดตั้งภาษาใหม่เรียบร้อยแล้ว!
+New ticket = = 
+New VHCS update is now available = = 
+Next step = ทำต่อไป
+no = ไม่
+No = ไม่
+No. = ไม่.
+No domain alias system errors = = 
+No domain system errors = = 
+No email account system errors = = 
+None = = 
+No new messages = = 
+No new VHCS updates available = = 
+Normal mail = = 
+Normal users = ผู้ใช้ทั้งหมด
+No subdomain system errors = = 
+Not found reseller(s) in your system! = = 
+Not found user records matching the search criteria! = = 
+Not in: = = 
+Number = = 
+of = จาก
+ok = ตกลง
+Ok = ตกลง
+OK = ตกลง
+Open tickets = = 
+Options = ผู้เลือก
+Other in = = 
+Other out = = 
+Overview = ดูโดยรวม
+Owner = เจ้าของ
+Parent Directory = = 
+Partition = = 
+Password = รหัสผ่าน
+Password data = ข้อมูลรหัสผ่าน
+Password data is missing! = = 
+Password not match! = = 
+Password (repeat) = = 
+Password repeat = = 
+Password(repeat) = = 
+Passwords does not match! = = 
+Percent = = 
+Personal data = ประวัติผู้ใช้งาน
+Personal data updated successfully! = = 
+Personalize template = = 
+Phone = โทรศัพท์
+PHP = = 
+PhpMyAdmin = = 
+PHP support = สนับสนุน PHP
+Please choose user or group = โปรดเลือกกลุ่มผู้ใช้
+Please delete first ChachAll account for this email! = = 
+Please enter area name = โปรดกรอกชื่อพื้นที่
+Please enter FTP account username! = โปรดกรอกชื่อผู้ใช้ FTP !
+Please enter mail account username! = โปรดกรอกชื่อผู้ใช้ อีเมล์!
+Please enter SQL query! = = 
+Please fill up both data fields! = = 
+Please fill up both data fields for password! = = 
+Please select some user(s)! = = 
+Please specify alias! = = 
+Please specify a message content! = = 
+Please specify a message subject! = = 
+Please specify a sender email! = = 
+Please specify a sender name! = = 
+Please specify a subject! = = 
+Please specify domain! = = 
+Please specify email address! = = 
+Please specify message! = = 
+Please specify message subject! = = 
+Please specify other FTP account dir! = = 
+Please specify sender name! = = 
+Please specify some email address! = = 
+Please specify some message! = = 
+Please specify some sender name! = = 
+Please specify subdomain name! = = 
+Please type database name! = = 
+Please type user name! = = 
+Please type user password! = = 
+Please type your mail autorespond message! = = 
+Please type your message! = = 
+POP3/IMAP<br>traffic = = 
+POP3/IMAP traffic = = 
+POP/IMAP = = 
+Pop/IMAP in = = 
+Pop/IMAP out = = 
+Priority = = 
+Protected areas = = 
+Protected area was deleted successful! = = 
+Protect it = = 
+Protect this area = = 
+Query result = = 
+Query status = = 
+RAM = หน่วยความจำ
+[Re] = = 
+Real domain = = 
+Red = สีแดง
+Remove = ลบออก
+Reseller = ผู้แทนจำหน่าย
+Reseller added = เพิ่มผู้แทนจำหน่ายแล้ว
+Reseller and enduser level = ระดับผู้แทนจำหน่ายและผู้ใช้
+Reseller assignment = กำหนดหน้าที่ผู้แทนจำหน่าย
+Reseller IP list is empty! = ไม่มี IP ของผู้แทนจำหน่ายอยู่ในบัญชีรายชื่อ
+Reseller IPs = IPs ผู้แทนจำหน่าย
+Reseller level = ระดับผู้แทนจำหน่าย
+Reseller list is empty! = ไม่มีผู้แทนจำหน่ายนี้อยู่ในบัญชีรายชื่อ
+Reseller name = ชื่อผู้แทนจำหน่าย
+Resellers = ผู้แทนจำหน่าย
+Resellers list is empty! = ไม่มีผู้แทนจำหน่ายนี้อยู่ในบัญชีรายชื่อ
+Reseller statistics = สถิติผู้แทนจำหน่าย
+Reseller statistics table = = 
+Reseller users = ผู้แทนจำหน่ายทั้งหมด
+Reseller users table = ตารางผู้ใช้งานของผู้แทนจำหน่าย
+Restore = เรียกคืน
+Restore backup = เรียกคืนข้อมูลสำรอง
+Return to previous menu = กลับไปยังเมนูที่ผ่านมา
+S = = 
+Save = บันทึก
+Save changes = เปลี่ยนการบันทึก
+Search = ค้นหา
+Senders email = = 
+Senders name = = 
+Send message = ส่งข้อความ
+Send message reply = ส่งข้อความตอบกลับ
+Send message to = ส่งข้อตวามถึง
+Send reply = ตอบกลับ
+Server day statistics = สถิติเครื่องแม่ข่ายวันนี้
+Server error - please choose error page = = 
+Server statistics = สถิติเครื่องแม่ข่าย
+Server status = สถานะเครื่องแม่ข่าย
+Server traffic = การรับส่งข้อมูลของเครื่องแม่ข่าย
+Server traffic settings = กำหนดค่าการรับส่งข้อมลูเครื่องแม่ข่าย
+Server traffic settings updated successfully! = การกำหนดค่าการรับส่งข้อมูลเครื่องแม่ข่ายสำเร็จแล้ว
+Service = = 
+Service in destination reseller!<br> = = 
+Set server traffic settings = = 
+Show = แสดง
+Show in = แสดงใน
+Size = ขนาด
+SMTP = = 
+SMTP<br>traffic = = 
+SMTP traffic = = 
+Source and destination reseller are the same! = = 
+Specified database name already exists! = = 
+Specified SQL username name already exists! = = 
+SQL accounts limit expired! = = 
+SQL<br>database = = 
+SQL<br>user = = 
+SQL database = ฐานข้อมูล SQL
+SQL Database = ฐานข้อมูล SQL
+SQL database created successfully! = ทำการสร้างฐานข้อมูล SQL สำเร็จแล้ว
+SQL databases = ฐานข้อมูล SQL
+SQL database(s)<br><i>(-1 disabled, 0 unlimited) = = 
+SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i> = = 
+SQL databases Limit<br><i>(-1 disabled, 0 unlimited)</i> = = 
+SQL database was removed successfully! = = 
+SQL query = = 
+SQL query has error = = 
+SQL query is ok = = 
+SQL support = สนับสนุน SQL
+SQL user = = 
+SQL User = = 
+SQL-user limit expired! = = 
+SQL user name = = 
+SQL user password was successfully changed! = = 
+SQL users = = 
+SQL user(s)<br><i>(-1 disabled, 0 unlimited) = = 
+SQL users limit<br><i>(-1 disabled, 0 unlimited)</i> = = 
+SQL user successfully added! = = 
+SQL user was removed successfully! = = 
+SSI = ระบบรักษาความปลอดภัย ssl
+Statistics = สถิติทั่วไป
+Stats = สถิติ
+Status = สถานะ
+Street 1 = = 
+Street 2 = = 
+Subdomain = = 
+Subdomain already exists! = = 
+Subdomain data = = 
+Subdomain errors = = 
+Subdomain forward = = 
+Subdomain limit expired! = = 
+Subdomain list is empty! = = 
+Subdomain list is empty! You can not add FTP accounts there! = = 
+Subdomain list is empty! You can not add mail accounts! = = 
+Subdomain mail = = 
+Subdomain mails = = 
+Subdomain mount point already exists! = = 
+Subdomain name = = 
+Subdomains = = 
+Subdomain(s)<br><i>(-1 disabled, 0 unlimited) = = 
+Subdomain scheduled for addition! = = 
+Subdomain scheduled for deletion! = = 
+Subject = หัวข้อ
+Submit changes = = 
+Sum = บวก
+support question(s) = = 
+support questions = = 
+Support question(s) = = 
+Support system = ระบบช่วยเหลือ
+Support ticket deleted successfully! = = 
+Support tickets = = 
+suspended = ระงับการใช้งานชั่วคราว
+Suspended = ระงับการใช้งานชั่วคราว
+Swap = = 
+Switch to backup directory = = 
+System error - custom error page was NOT updated! = = 
+System info = ข้อมูลระบบ
+System messages = ข้อความระบบ
+System tools = เครื่องมือระบบ
+Template name = = 
+Theme color = = 
+Then the value you are trying to enter now !<br> = = 
+Then the value you are trying to enter now!<br> = = 
+There are alias with same mount point = = 
+This IP already exist! = = 
+This reseller has already dispatched more <b> = = 
+This reseller has domains assigned To <b> = = 
+This reseller has more <b> = = 
+This reseller has user(s) with unlimited rights for <b> = = 
+This reseller have not domains yet! = = 
+This user has domain record !<br>First remove the domain from the system! = = 
+This user have domain !<br>To delete user  - first delete domain! = = 
+This user name already exist! = = 
+Ticket not found! = = 
+Ticket(s) are closed! = = 
+Ticket(s) are deleted! = = 
+Ticket was closed! = = 
+To Admin = ถึงผู้ดูแลระบบ
+To domain alias = = 
+To main domain = = 
+Too long database name! = = 
+Too long SQL user name! = = 
+Too long user password! = = 
+Too user long password! = = 
+To reseller = = 
+To subdomain = = 
+Total = ทั้งหมด
+Traffic = การรับส่งข้อมูล
+Traffic accounting for the selected month is missing! = = 
+Traffic<br>usage = การรับส่งข้อมูลที่ใช้ไป
+Traffic in MB = = 
+Traffic limit [Mb]<br><i>(0 unlimited)</i> = = 
+Traffic limit [MB]<br><i>(0 unlimited)</i> = = 
+Traffic [MB]<br><i>(0 unlimited) = = 
+Traffic usage = การรับส่งข้อมูลที่ใช้ไป
+Type = รูปแบบ
+Undefined reference to data! = = 
+Undefined user accounting error! = = 
+uninstall = ยกเลิกการติดตั้ง
+Uninstall = ยกเลิกการติดตั้ง
+Unknown = ไม่ทราบ
+unknown status = ไม่ทราบสถานะ
+Unknown type = ไม่ทราบรูปแบบ
+unlimited = ไม่จำกัด
+Unprotect it = = 
+Update = ปรับปรุง
+Update data = ปรับปรุงข้อมูล
+Update details = ปรับปรุงรายละเอียด
+Update language installed! = ปรับปรุงภาษาที่ติดตั้งเรียบร้อยแล้ว
+Update password = ปรับปรุงรหัสผ่าน
+Update plan = ปรับปรุงแพลน
+Update user = ปรับปรุงผู้ใช้
+Upload = อัปโหลด
+Upload file error! = อัปโหลดไฟล์ผิดพลาด!
+Upload logo = อัปโหลดโลดก้
+Up time = = 
+Used = = 
+Use numeric ID = = 
+Use other dir = = 
+User = = 
+User account = บัญชีผู้ใช้
+User accounts = บัญชีผู้ใช้
+User added = เพิ่มผู้ใช้เสร็จแล้ว
+User added! = เพิ่มผู้ใช้เสร็จแล้ว!
+User already exist ! = = 
+User already logged or session sharing problem! Aborting... = = 
+User assign = กำหนดหน้าที่ผู้ใช
+User assignment = กำหนดหน้าที่ผู้ใช้
+User auth = = 
+User data not updated! = = 
+User data updated! = = 
+User deleted = = 
+User does not exist! = = 
+User does not exist or you do not have permission to access this interface! = = 
+User (first and last) name = = 
+User language updated successfully! = = 
+User login (system) name = = 
+User name = ชื่อผู้ใช้
+Username = ชื่อผู้ใช้
+User not terminated! = = 
+User password = รหัสผ่านผู้ใช้
+User password updated successfully! = = 
+User real (first and last) Name = = 
+Users = ชื่อผู้ใช้
+User sessions = = 
+User session was killed! = = 
+Users list = บัญชีรายชื่อผู้ใช้
+Users list is empty! = ไม่มีผู้ใช้นี้อยู่ในบัฐชีรายชื่อ
+Users were not found! = = 
+User terminated! = = 
+User type = รูปแบบผู้ใช้
+User updated = ปรับปรุงผู้ใช้เรียบร้อยแล้ว
+User was assigned to group  = = 
+User was deleted from group  = = 
+User was disabled = = 
+(usually named backup_YYY_MM_DD.tar) = = 
+Very high = = 
+VHCS - Admin/Admin Log = = 
+VHCS - Admin/Change Password = = 
+VHCS - Admin/Change Personal Data = = 
+VHCS - Admin - Email Marketing = = 
+VHCS - Admin/Internationalization = = 
+VHCS - Admin/IP manage = = 
+VHCS - Admin/Main Index = = 
+VHCS - Admin - Manage custom menus = = 
+VHCS - Admin/Manage Sessions = = 
+VHCS - Admin/Manage Users = = 
+VHCS - Admin/Manage users/Add reseller = = 
+VHCS - Admin/Manage users/Add User = = 
+VHCS - Admin/Manage users/Edit Reseller = = 
+VHCS - Admin/Manage users/Edit User = = 
+VHCS - Admin/Manage users/Email setup = = 
+VHCS - Admin/Manage users/Reseller assignment = = 
+VHCS - Admin/Manage users/User assignment = = 
+VHCS - Admin/Reseller User Statistics = = 
+VHCS - Admin/Server day stats = = 
+VHCS - Admin/Server statistics = = 
+VHCS - Admin/Server Traffic Settings = = 
+VHCS Admin / System Tools / Server Status = = 
+VHCS - Circular = = 
+VHCS - Client/Add FTP User = = 
+VHCS - Client/Add Mail User = = 
+VHCS - Client/Add SQL Database = = 
+VHCS - Client/Add SQL User = = 
+VHCS - Client/Add Subdomain = = 
+VHCS - Client/Change Language = = 
+VHCS - Client/Change Password = = 
+VHCS - Client/Change Personal Data = = 
+VHCS - Client/Change SQL User Password = = 
+VHCS - Client/Create CatchAll Mail Account = = 
+VHCS - Client/Daily Backup = = 
+VHCS - Client/Domain Statistics = = 
+VHCS - Client/Edit FTP Account = = 
+VHCS - Client/Enable Mail Autoresponder = = 
+VHCS - Client/Enable Mail Auto Responder = = 
+VHCS - Client/Execute SQL Query = = 
+VHCS - Client/Main Index = = 
+VHCS - Client/Manage Domains = = 
+VHCS - Client/Manage SQL = = 
+VHCS - Client/Manage Users = = 
+VHCS - Client/Questions & Comments = = 
+VHCS - Client : Support System: View Tickets = = 
+VHCS - Client/Webtools = = 
+VHCS debugger = = 
+VHCS - Domain/Details = = 
+VHCS - Domain/Edit = = 
+VHCS - Domain Statistics Data = = 
+VHCS - Manage Domain/Alias = = 
+VHCS - Manage Domain Alias/Edit Alias = = 
+VHCS - Manage Mail and FTP / Edit mail account = = 
+VHCS Reseller : Add Alias = = 
+VHCS - Reseller/Add hosting plan = = 
+VHCS - Reseller/Change Password = = 
+VHCS - Reseller/Change Personal Data = = 
+VHCS - Reseller/Edit hosting plan = = 
+VHCS - Reseller/Main Index = = 
+VHCS - Reseller statistics = = 
+VHCS - Reseller : Support System: View Tickets = = 
+VHCS - Support system - New ticket = = 
+VHCS updates = = 
+VHCS - User/Add user = = 
+VHCS - User/Add user(step2) = = 
+VHCS - Users = = 
+VHCS - Users/Add user = = 
+VHCS - Users/Edit = = 
+VHCS - Virtual Hosting Control System = = 
+View = แสดง
+view aliases = = 
+View support ticket = = 
+Vital system info = = 
+wait to be added = = 
+wait to be deleted = = 
+wait to be enabled = = 
+wait to be modified = = 
+wait to be suspended = = 
+Warning traffic is bigger then max traffic! = = 
+Warning traffic [MB] = = 
+WEB = = 
+Web<br>traffic = = 
+Web in = ขาเข้า
+Webmail = = 
+Web out = ขาออก
+Webstatistics = สถิติเว็บ
+Webtools = เครื่องมือ
+Web traffic = การรับส่งข้อมูลเว็บ
+which has limits for the <b> = = 
+Which has limits for the <b> = = 
+Wrong data input! = = 
+Wrong domain ID! = = 
+Wrong domain name syntax! = = 
+Wrong IP number! = = 
+Wrong subdomain syntax! = = 
+Wrong username! = = 
+Year = ปี
+Year: = ปี.
+Yellow = สีเหลือง
+yes = ใช่
+Yes = ใช่
+You are exceeding SQL database limit! = = 
+You Are Exceeding Your Alias Limit! = = 
+You are exceeding your disk limit! = = 
+You are exceeding your FTP account limit! = = 
+You are exceeding your mail account limit! = = 
+You are exceeding your subdomain limit! = = 
+You are exceeding your traffic limit! = = 
+You are exceeding your UNLIMITED disk limit! = = 
+You are exceeding your UNLIMITED traffic limit! = = 
+ you are logged now as  = = 
+You can not move <b> = ท่านไม่สามารถย้ายได้
+You can upload only images! = ท่านสามารถอัปโหลดได้เฉพาะรูปเท่านั้น!
+You can upload only text files! = ท่านสามารถอัปโหลดได้เฉพาะไฟล์ข้อความเท่านั้น!
+You do not have new orders! = ท่านยังไม่มีคำสั่งซื้อใหม่!
+You have = ท่านมี
+You have alias limit!<br>You can Not Add User With Unlimited Alias Number! = = 
+You have been reached your domain limit.<br>You can not add more domains !  = = 
+You have no custom menus. = ท่านยังไม่ได้สร้างเมนูใหม่
+You have disabled SQL databases for this user!<br>You can not have SQL users here! = = 
+You have disk limit!<br>You can not add user with unlimited disk number! = = 
+You have FTP account limit!<br>You can not Add User With Unlimited FTP Accunt Number! = = 
+You have mail account limit!<br>You can not add user with unlimited mail accunt number! = = 
+You have no groups ! = ท่านยังไม่มีกลุ่ม!
+You have no groups! = ท่านยังไม่มีกลุ่ม!
+You have no new support questions! = = 
+You have not alias records yet! = = 
+You have not custom menus! = = 
+You have not hosting plans. Pleas add first hosting plan! = = 
+You have not support tickets! = = 
+You have not user records yet! = = 
+You have no users ! = ท่านยังไม่มีผู้ใช้งาน!
+You have no users! = ท่านยังไม่มีผู้ใช้งาน!
+You have SQL database limit!<br>You can not add user with unlimited SQL database number! = = 
+You have SQL user limit!<br>You can not add user with unlimited SQL users! = = 
+You have subdomain limit!<br>You can not add user with unlimited subdomain number! = = 
+You have traffic limit!<br>You can not add user with unlimited traffic number! = = 
+You must assign at least one IP number for a reseller! = = 
+Your logo was successful uploaded! = = 
+Your message = ข้อความของท่าน
+Your message was send! = ข้อความของท่านได้ทำการส่งไปแล้ว
+You spamed your users successfully! = = 
+Zip / Postal code = รหัสไปรษณีย์
+Zip/Postal code = รหัสไปรษณีย์
+
+<!--
+	Compression level: 7
+	Original size: 29.35 kb
+	New size: 7.89 kb
+	Saving: 21.46 kb (73 %)
+	Time: 3.6 ms
+	Serverload: 0.56
+-->
