@@ -963,12 +963,3 @@ There are no available updates = Il n'y a pas de mises à jour possibles
 No available hosting packages = Pas de plans d'h&eacute;bergement disponibles
 Add On A Domain = Ajoutez votre domaine
 Order = Commande
-
-<!--
-	Compression level: 8
-	Original size: 54.96 kb
-	New size: 12.95 kb
-	Saving: 42.01 kb (76 %)
-	Time: 7.22 ms
-	Serverload: 0.4
--->

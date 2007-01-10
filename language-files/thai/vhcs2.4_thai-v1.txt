@@ -910,12 +910,3 @@ Your message was send! = ข้อความของท่านได้ทำการส่งไปแล้ว
 You spamed your users successfully! = = 
 Zip / Postal code = รหัสไปรษณีย์
 Zip/Postal code = รหัสไปรษณีย์
-
-<!--
-	Compression level: 7
-	Original size: 29.35 kb
-	New size: 7.89 kb
-	Saving: 21.46 kb (73 %)
-	Time: 3.6 ms
-	Serverload: 0.56
--->
