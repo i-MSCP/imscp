@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_variables.php 8941 2006-04-25 15:21:33Z cybot_tm $ */
+/* $Id: server_variables.php 9778 2006-12-06 18:04:05Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 if ( ! defined( 'PMA_NO_VARIABLES_IMPORT' ) ) {
@@ -72,7 +72,7 @@ foreach ($serverVars as $name => $value) {
     <th nowrap="nowrap">
         <?php echo htmlspecialchars(str_replace('_', ' ', $name)); ?></th>
     <td class="value"><?php
-    if (is_numeric($value)) {
+    if (strlen($value) < 16 && is_numeric($value)) {
         echo PMA_formatNumber($value, 0);
         $is_numeric = true;
     } else {

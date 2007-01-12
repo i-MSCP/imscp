@@ -1,5 +1,5 @@
 <?php
-/* $Id: left.php 9710 2006-11-17 08:59:43Z nijel $ */
+/* $Id: left.php 9709 2006-11-17 08:59:42Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * the navigation frame - displays server, db and table selection tree

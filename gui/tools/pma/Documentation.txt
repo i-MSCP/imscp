@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.9.1.1 Documentation
+phpMyAdmin 2.9.2-rc1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.9.1.1 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 9733 2006-11-19 00:16:45Z
+  * Documentation version: $Id: Documentation.html 9833 2007-01-09 22:23:54Z
     lem9 $
 
 Requirements
@@ -465,7 +465,7 @@ $cfg['Servers'][$i]['controluser'] string
     information.
 
     In phpMyAdmin versions before 2.2.5, those were called "stduser/stdpass".
-$cfg['Servers'][$i]['auth_type'] string ['HTTP'|'cookie'|'config']
+$cfg['Servers'][$i]['auth_type'] string ['HTTP'|'http'|'cookie'|'config']
     Whether config or cookie or HTTP authentication should be used for this
     server.
       + 'config' authentication ($auth_type = 'config') is the plain old way:
@@ -475,9 +475,9 @@ $cfg['Servers'][$i]['auth_type'] string ['HTTP'|'cookie'|'config']
         cookies. Username and password are stored in cookies during the session
         and password is deleted when it ends. This can also allow you to log in
         in arbitrary server if $cfg['AllowArbitraryServer'] enabled.
-      + 'HTTP' authentication (was called 'advanced' in older versions)
-        ($auth_type = 'HTTP') as introduced in 1.3.0 allows you to log in as
-        any valid MySQL user via HTTP-Auth.
+      + 'HTTP' authentication (was called 'advanced' in older versions and can
+        be written also as 'http') ($auth_type = 'HTTP') as introduced in 1.3.0
+        allows you to log in as any valid MySQL user via HTTP-Auth.
     Please see the install section on "Using authentication modes" for more
     information.
 $cfg['Servers'][$i]['user'] string
@@ -2519,7 +2519,7 @@ CREATE TABLE REL_towns (
 ) TYPE=MyISAM;
 
 INSERT INTO REL_towns VALUES ('S', 'Sherbrooke');
-INSERT INTO REL_towns VALUES ('M', 'Montre'al');
+INSERT INTO REL_towns VALUES ('M', 'Montr?al');
 
 To setup appropriate links and display information:
 
@@ -2596,7 +2596,7 @@ and the underscore means "any character". So, if the database name is
 If you put a backslash before the underscore, it means that the database name
 will have a real underscore.
 
-6.11 What is the curious symbol o/ in the statistics pages?
+6.11 What is the curious symbol ? in the statistics pages?
 
 It means "average".
 
@@ -2646,7 +2646,7 @@ beta, so this single command "pear -d preferred_state=beta install -a SOAP"
 installed all the needed modules.
 If you use the Validator, you should be aware that any SQL statement you submit
 will be stored anonymously (database/table/column names, strings, numbers
-replaced with generic values). The Mimer SQL Validator itself, is (C) 2001
+replaced with generic values). The Mimer SQL Validator itself, is ? 2001
 Upright Database Technology. We utilize it as free SOAP service.
 
 6.15 I want to add a BLOB field and put an index on it, but MySQL says "BLOB
@@ -2901,14 +2901,14 @@ CREDITS, in chronological order
     * SQL analyser (most of it)
     * current project maintainer
 
-- Olivier Mu:ller <om_at_omnis.ch>
+- Olivier M?ller <om_at_omnis.ch>
     * started SourceForge phpMyAdmin project in March 2001
     * sync'ed different existing CVS trees with new features and bugfixes
     * multi-language improvements, dynamic language selection
     * current project maintainer
     * many bugfixes and improvements
 
-- Loi:c Chapeaux <lolo_at_phpheaven.net>
+- Lo?c Chapeaux <lolo_at_phpheaven.net>
     * rewrote and optimized javascript, DHTML and DOM stuff
     * rewrote the scripts so they fit the PEAR coding standards and
       generate XHTML1.0 and CSS2 compliant codes
@@ -2970,7 +2970,7 @@ CREDITS, in chronological order
     * various features and fixes
     * Czech language file updates
 
-- Christophe Gesche' from the "MySQL Form Generator for PHPMyAdmin"
+- Christophe Gesch? from the "MySQL Form Generator for PHPMyAdmin"
   (http://sf.net/projects/phpmysqlformgen/)
     * suggested the patch for multiple table printviews
 
@@ -3017,7 +3017,7 @@ CREDITS, in chronological order
     * redesign for 2.6.0
     * phpMyAdmin sailboat logo (June 2004)
 
-- Mathias Landha:usser
+- Mathias Landh?u?er
     * Representation at conferences
 
 - Sebastian Mendel <cybot_tm_at_users.sourceforge.net>
@@ -3028,13 +3028,13 @@ And also to the following people who have contributed minor changes,
 enhancements, bugfixes or support for a new language since version 2.1.0:
 
 Bora Alioglu, Ricardo ?, Sven-Erik Andersen, Alessandro Astarita,
-Pe'ter Bakondy, Borges Botelho, Olivier Bussier, Neil Darlow,
-Mats Engstrom, Ian Davidson, Laurent Dhima, Kristof Hamann, Thomas Kla:ger,
+P?ter Bakondy, Borges Botelho, Olivier Bussier, Neil Darlow,
+Mats Engstrom, Ian Davidson, Laurent Dhima, Kristof Hamann, Thomas Kl?ger,
 Lubos Klokner, Martin Marconcini, Girish Nair, David Nordenberg, Andreas Pauley,
 Bernard M. Piller, Laurent Haas, "Sakamoto", Yuval Sarna,
 www.securereality.com.au, Alexis Soulard, Alvar Soome, Siu Sun, Peter Svec,
 Michael Tacelosky, Rachim Tamsjadi, Kositer Uros,
-Lui's V., Martijn W. van der Lee,
+Lu?s V., Martijn W. van der Lee,
 Algis Vainauskas, Daniel Villanueva, Vinay, Ignacio Vazquez-Abrams, Chee Wai,
 Jakub Wilk, Thomas Michael Winningham, Vilius Zigmantas, "Manuzhai".
 

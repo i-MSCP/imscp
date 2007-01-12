@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php 9619 2006-10-26 15:25:28Z lem9 $ */
+/* $Id: session.inc.php 9830 2007-01-08 18:09:57Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
@@ -74,11 +74,17 @@ if (version_compare(PHP_VERSION, '5.0.0', 'ge')
 // on some servers (for example, sourceforge.net), we get a permission error
 // on the session data directory, so I add some "@"
 
-// [2006-01-25] Nicola Asuni - www.tecnick.com: maybe the PHP directive
-// session.save_handler is set to another value like "user"
-ini_set('session.save_handler', 'files');
+// See bug #1538132. This would block normal behavior on a cluster
+//ini_set('session.save_handler', 'files');
 
-@session_name('phpMyAdmin');
+$session_name = 'phpMyAdmin';
+@session_name($session_name);
+// strictly, PHP 4 since 4.4.2 would not need a verification 
+if (version_compare(PHP_VERSION, '5.1.2', 'lt') 
+ && isset($_COOKIE[$session_name]) 
+ && eregi("\r|\n", $_COOKIE[$session_name])) {
+    die('attacked'); 
+}
 @session_start();
 
 /**
@@ -90,7 +96,7 @@ if (!isset($_SESSION[' PMA_token '])) {
 }
 
 /**
- * trys to secure session from hijacking and fixation
+ * tries to secure session from hijacking and fixation
  * should be called before login and after successfull login
  * (only required if sensitive information stored in session)
  *

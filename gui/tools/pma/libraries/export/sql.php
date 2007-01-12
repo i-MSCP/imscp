@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 9518 2006-10-09 12:35:10Z lem9 $ */
+/* $Id: sql.php 9816 2007-01-02 09:24:39Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Set of functions used to build SQL dumps of tables
@@ -284,7 +284,7 @@ function PMA_exportDBFooter($db)
         unset($GLOBALS['sql_constraints']);
     }
 
-    if (PMA_MYSQL_INT_VERSION >= 50000) {
+    if (PMA_MYSQL_INT_VERSION >= 50000 && isset($GLOBALS['sql_structure'])) {
         $procs_funcs = '';
 
         $procedure_names = PMA_DBI_get_procedures_or_functions($db, 'PROCEDURE');
@@ -294,7 +294,7 @@ function PMA_exportDBFooter($db)
               . $comment_marker . $crlf
               . $comment_marker . $GLOBALS['strProcedures'] . $crlf 
               . $comment_marker . $crlf
-              . $comment_marker . 'DELIMITER ' . $delimiter . $crlf
+              . 'DELIMITER ' . $delimiter . $crlf
               . $comment_marker . $crlf;
 
             foreach($procedure_names as $procedure_name) {
@@ -302,7 +302,7 @@ function PMA_exportDBFooter($db)
             }
 
             $procs_funcs .= $comment_marker . $crlf
-              . $comment_marker . 'DELIMITER ;' . $crlf
+              . 'DELIMITER ;' . $crlf
               . $comment_marker . $crlf;
         }
 

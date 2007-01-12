@@ -1,5 +1,5 @@
 <?PHP
-    /* $Id: unzip.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
+    /* $Id: unzip.lib.php 9746 2006-11-19 20:57:22Z nijel $ */
 
     /**
      *  ZIP file unpack classes. Contributed to the phpMyAdmin project.
@@ -278,7 +278,7 @@
                 // Retrieving local file header information
                 $aP = unpack('v1VN/v1GPF/v1CM/v1FT/v1FD/V1CRC/V1CS/V1UCS/v1FNL', $vZ);
                 // Check if data is encrypted
-                $bE = ($aP['GPF'] && 0x0001) ? TRUE : FALSE;
+                $bE = ($aP['GPF'] & 0x0001) ? TRUE : FALSE;
                 $nF = $aP['FNL'];
 
                 // Special case : value block after the compressed data

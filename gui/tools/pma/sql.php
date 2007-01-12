@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 9706 2006-11-17 08:49:25Z nijel $ */
+/* $Id: sql.php 9767 2006-11-29 10:55:32Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
@@ -784,9 +784,9 @@ else {
             }
         } // End INDEX CHECK
 
-        // Bookmark Support if required
+        // Bookmark support if required
         if ($disp_mode[7] == '1'
-            && (isset($cfg['Bookmark']) && $cfg['Bookmark']['db'] && $cfg['Bookmark']['table'] && empty($id_bookmark))
+            && (isset($cfg['Bookmark']) && ! empty($cfg['Bookmark']['db']) && ! empty($cfg['Bookmark']['table']) && empty($id_bookmark))
             && !empty($sql_query)) {
             echo "\n";
 

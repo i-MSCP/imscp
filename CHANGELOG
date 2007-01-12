@@ -11,6 +11,14 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client-menu            |
 \____________________________________________________________/
 
+2007-01-12 Benedikt Heintel
+	- GUI:
+		* Updated PHPmyAdmin to 2.9.2-rc1
+
+2007-01-11 Benedikt Heintel
+	- LANGUAGES:
+		* Changed Strings to VHCS2.4.8
+
 2007-01-09 Benedikt Heintel
 	- LANGUAGES:
 		* Added Danish language file

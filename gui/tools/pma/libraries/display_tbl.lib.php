@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php 9706 2006-11-17 08:49:25Z nijel $ */
+/* $Id: display_tbl.lib.php 9767 2006-11-29 10:55:32Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';
@@ -1097,7 +1097,7 @@ function PMA_displayTableBody(&$dt_result, &$is_display, $map, $analyzed_sql) {
                 }
             } // end if (1.2.1)
 
-            if ($table == $GLOBALS['cfg']['Bookmark']['table'] && $db == $GLOBALS['cfg']['Bookmark']['db'] && isset($row[1]) && isset($row[0])) {
+            if (isset($GLOBALS['cfg']['Bookmark']['table']) && isset($GLOBALS['cfg']['Bookmark']['db']) && $table == $GLOBALS['cfg']['Bookmark']['table'] && $db == $GLOBALS['cfg']['Bookmark']['db'] && isset($row[1]) && isset($row[0])) {
                 $bookmark_go = '<a href="import.php?'
                                 . PMA_generate_common_url($row[1], '')
                                 . '&amp;id_bookmark=' . $row[0]

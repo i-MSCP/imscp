@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_details_structure.php 9405 2006-09-14 10:22:30Z nijel $ */
+/* $Id: db_details_structure.php 9769 2006-12-04 18:21:53Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';
@@ -407,7 +407,7 @@ if (!($cfg['PropertiesNumColumns'] > 1)) {
     $default_engine = PMA_DBI_get_default_engine();
     echo '    <th align="center">' . "\n"
        . '        <dfn title="'
-       . sprintf($strDefaultEngine, $default_engine) . '">' .$default_engine . '</th>' . "\n";
+       . sprintf($strDefaultEngine, $default_engine) . '">' .$default_engine . '</dfn></th>' . "\n";
     // Have to account for old MySQL with no collation (bug 1554885)
     if (PMA_MYSQL_INT_VERSION >= 40100) {
         // we got a case where $db_collation was empty

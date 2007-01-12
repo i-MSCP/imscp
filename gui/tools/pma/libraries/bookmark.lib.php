@@ -1,5 +1,5 @@
 <?php
-/* $Id: bookmark.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
+/* $Id: bookmark.lib.php 9762 2006-11-26 10:51:59Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -50,6 +50,10 @@ function PMA_getBookmarksParam()
 function PMA_listBookmarks($db, $cfgBookmark)
 {
     global $controllink;
+
+    if (empty($cfgBookmark['db']) || empty($cfgBookmark['table'])) {
+        return '';
+    }
 
     $query  = 'SELECT label, id FROM '. PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
             . ' WHERE dbase = \'' . PMA_sqlAddslashes($db) . '\''
@@ -203,6 +207,16 @@ function PMA_deleteBookmarks($db, $cfgBookmark, $id)
 /**
  * Bookmark Support
  */
-$cfg['Bookmark'] = PMA_getBookmarksParam();
+
+if (! isset($GLOBALS['cfgRelation'])) {
+    require_once './libraries/relation.lib.php';
+    $GLOBALS['cfgRelation'] = PMA_getRelationsParam();
+}
+
+if ($GLOBALS['cfgRelation']['bookmarkwork']) {
+    $cfg['Bookmark'] = PMA_getBookmarksParam();
+} else {
+    $cfg['Bookmark'] = array();
+}
 
 ?>

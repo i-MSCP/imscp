@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# $Id: upgrade.pl 8301 2006-01-17 17:03:02Z cybot_tm $
+# $Id: upgrade.pl 9742 2006-11-19 13:07:51Z lem9 $
 #
 # upgrade.pl - automatic phpmyadmin upgrader
 #
@@ -72,8 +72,8 @@ if (open(LATEST, "wget -o /dev/null -O - $source_url|")) {
 
 	$version = <LATEST>; chomp($version);
 	$releasedate = <LATEST>; chomp($releasedate);
-	$filename = "phpMyAdmin-" . $version . ".tar.gz";
-	$directory = "phpMyAdmin-" . $version;
+	$filename = "phpMyAdmin-" . $version . "-all-languages.tar.gz";
+	$directory = "phpMyAdmin-" . $version . "-all-languages";
 
 	my $i = 0;
 

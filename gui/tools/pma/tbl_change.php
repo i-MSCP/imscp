@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_change.php 9540 2006-10-13 01:40:47Z lem9 $ */
+/* $Id: tbl_change.php 9789 2006-12-12 17:44:04Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -399,7 +399,7 @@ foreach ($loop_array AS $vrowcount => $vrow) {
 
         <?php
         // The type column
-        $is_binary                  = stristr($row_table_def['Type'], ' binary');
+        $is_binary                  = stristr($row_table_def['Type'], 'binary');
         $is_blob                    = stristr($row_table_def['Type'], 'blob');
         $is_char                    = stristr($row_table_def['Type'], 'char');
         switch ($row_table_def['True_Type']) {

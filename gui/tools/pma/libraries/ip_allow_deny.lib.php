@@ -1,5 +1,5 @@
 <?php
-/* $Id: ip_allow_deny.lib.php 9722 2006-11-18 12:59:41Z nijel $ */
+/* $Id: ip_allow_deny.lib.php 9781 2006-12-07 18:00:46Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -28,7 +28,8 @@ function PMA_getIp()
     /* Do we trust this IP as a proxy? If yes we will use it's header. */
     if (isset($GLOBALS['cfg']['TrustedProxies'][$direct_ip])) {
         $proxy_ip = PMA_getenv($GLOBALS['cfg']['TrustedProxies'][$direct_ip]);
-        $is_ip = preg_match('|^([0-9]{1,3}\.){3,3}[0-9]{1,3}|', $proxy_ip, $regs);
+        // the $ checks that the header contains only one IP address
+        $is_ip = preg_match('|^([0-9]{1,3}\.){3,3}[0-9]{1,3}$|', $proxy_ip, $regs);
         if ($is_ip && (count($regs) > 0)) {
             // True IP behind a proxy
             return $regs[0];

@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 9728 2006-11-18 19:33:17Z nijel $ */
+/* $Id: common.lib.php 9831 2007-01-09 09:49:30Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -1408,7 +1408,7 @@ if (!defined('PMA_MINIMUM_COMMON')) {
                             '\'' => '\\\'',
                             "\n" => '\n',
                             "\r" => '\r',
-                            '</script' => '<\' + \'script'));
+                            '</script' => '</\' + \'script'));
     }
 
     /**
@@ -1572,7 +1572,7 @@ window.parent.updateTableTitle('<?php echo $uni_tbl; ?>', '<?php echo PMA_jsForm
                  /* SQL-Parser-Analyzer */
                 $query_base = preg_replace("@((\015\012)|(\015)|(\012))+@", $new_line, $query_base);
             } else {
-                $query_base = htmlspecialchars($local_query);
+                $query_base = $local_query;
             }
 
             // Parse SQL if needed
@@ -2946,7 +2946,7 @@ if (isset($_REQUEST['convcharset'])) {
 /**
  * @var string $db current selected database
  */
-if (isset($_REQUEST['db'])) {
+if (isset($_REQUEST['db']) && is_string($_REQUEST['db'])) {
     // can we strip tags from this?
     // only \ and / is not allowed in db names for MySQL
     $GLOBALS['db'] = $_REQUEST['db'];
@@ -2958,7 +2958,7 @@ if (isset($_REQUEST['db'])) {
 /**
  * @var string $db current selected database
  */
-if (isset($_REQUEST['table'])) {
+if (isset($_REQUEST['table']) && is_string($_REQUEST['table'])) {
     // can we strip tags from this?
     // only \ and / is not allowed in table names for MySQL
     $GLOBALS['table'] = $_REQUEST['table'];
@@ -2970,7 +2970,7 @@ if (isset($_REQUEST['table'])) {
 /**
  * @var string $sql_query sql query to be executed
  */
-if (isset($_REQUEST['sql_query'])) {
+if (isset($_REQUEST['sql_query']) && is_string($_REQUEST['sql_query'])) {
     $GLOBALS['sql_query'] = $_REQUEST['sql_query'];
 }
 
@@ -3195,6 +3195,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         // (for a quick check of path disclosure in auth/cookies:)
         $coming_from_common = true;
 
+        // to allow HTTP or http
+        $cfg['Server']['auth_type'] = strtolower($cfg['Server']['auth_type']);
         if (!file_exists('./libraries/auth/' . $cfg['Server']['auth_type'] . '.auth.lib.php')) {
             header('Location: error.php'
                     . '?lang='  . urlencode($available_languages[$lang][2])
