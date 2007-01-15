@@ -18,7 +18,7 @@
 
 function write_error_page(&$sql, &$user_id, &$eid)
 {
-  $error = clean_input($_POST['error']);
+  $error = $_POST['error'];
   $eid = "error_".$_POST['eid'];
 
   // let's check if exist error table for this looser

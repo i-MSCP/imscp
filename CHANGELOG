@@ -19,6 +19,9 @@ VHCS 2.4.8 ω Omega Changelog
 			fixed bug #20:	Backup working with tar 1.16
 		* ./vhcs-dmn-mngr
 			fixed bug #20:	Backup working with tar 1.16
+	- GUI:
+		* ./client/error_pages.php
+			fixed bug #19:	html tags not allowed
 
 2007-01-12 Benedikt Heintel
 	- GUI:
