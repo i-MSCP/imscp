@@ -169,7 +169,7 @@ use warnings;
 #
 #     my $backup_filename = "$dmn_name-backup-$date.tar.gz";
 #
-#     my $backup_cmd = "$cmd_tar --create --directory $dmn_dir --gzip --file $dmn_dir/$backup_filename --exclude=logs --exclude=backups --exclude=$backup_filename .";
+#     my $backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename .";
 #
 #
 #     $rs = sys_command($backup_cmd);

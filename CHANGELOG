@@ -8,8 +8,17 @@ VHCS 2.4.8 ω Omega Changelog
 |		* apache: check if stats are working with FastCGI    |
 |	- AWStats:                                               |
 |		* apache: set statsdir if awstats is enabled         |
-|		* gui: disable stats-alias in client-menu            |
+|		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
+
+2007-01-15 Benedikt Heintel
+	- ENGINE:
+		* ./backup/vhcs2-backup-all
+			fixed bug #20:	Backup working with tar 1.16
+		* ./backup/vhcs2-bk-tasks
+			fixed bug #20:	Backup working with tar 1.16
+		* ./vhcs-dmn-mngr
+			fixed bug #20:	Backup working with tar 1.16
 
 2007-01-12 Benedikt Heintel
 	- GUI:
