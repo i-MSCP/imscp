@@ -253,7 +253,7 @@ sub backup_all_engine {
 
 #		my $make_dmn_backup_dir_cmd = "/usr/bin/install -d -m 0644 -o root -g root $dmn_backup_dir";
 
-		my $backup_filename = "$dmn_name-backup-$date.tar.gz";
+		my $backup_filename = "$dmn_name-backup-$date.tar.bz2";
 
 		my $backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 
