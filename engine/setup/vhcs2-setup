@@ -867,6 +867,7 @@ sub setup_system_users {
 
 	## FCGI Master user
     my ($muid, $mgid, $prefix) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'});
+    my ($vuuid, $vugid) = (undef, undef);
 
     @udata = getpwnam($muid);
     @gdata = getgrnam($mgid);
@@ -878,8 +879,6 @@ sub setup_system_users {
         return $rs if ($rs != 0);
     }
 
-    $vugid = $gdata[2];
-
     if (scalar(@udata) == 0) { # we have not this one user data;
         my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
         $rs = sys_command($cmd);
@@ -887,9 +886,10 @@ sub setup_system_users {
         return $rs if ($rs != 0);
     }
 
+	$vugid = $gdata[2];
     $vuuid = $udata[2];
-    $main::ua{'vu_uid'} = $muid;
-    $main::ua{'vu_gid'} = $mgid;
+    $main::ua{'vu_uid'} = $vuuid;
+    $main::ua{'vu_gid'} = $vugid;
 	##
 
     push_el(\@main::el, 'setup_system_users()', 'Ending...');

@@ -61,7 +61,7 @@ Make sure you are logged in as root.
 	# apt-get update && apt-get upgrade
 	# apt-get install cat `./docs/debian-packages.txt`
 
-	(when you get to the courier screen screen select no to web directories)
+	(when you get to the courier screen select no to web directories)
 	(when you get to the postfix screen select internet site and then type root
 	for mail. If you set debian up correctly on install your domain should be
 	already on screen. Select no to force sync updates.)
@@ -85,7 +85,7 @@ b) manualy
    You have to set up some configuration variables for your linux distribution.
    VHCS ω is preconfigurated for Debian 3.1 Sarge.
    If you're using another distribution please check, if config files exist in
-   ./configs/dists and use / change them.
+   ./configs/dists and use/change them.
 
    These are the Variables you have to look at:
 

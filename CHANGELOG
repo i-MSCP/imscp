@@ -12,6 +12,9 @@ VHCS 2.4.8 ω Omega Changelog
 \____________________________________________________________/
 
 2007-01-17 Benedikt Heintel
+	- DOCS:
+		* ./INSTALL
+			changed:		deleted double word
 	- LANGUAGES:
 		* English:			Changed translations
 	- SETUP:
