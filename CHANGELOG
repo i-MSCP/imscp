@@ -11,6 +11,17 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
+2007-01-17 Benedikt Heintel
+	- LANGUAGES:
+		* English:			Changed translations
+	- SETUP:
+		* ./vhcs2-setup
+
+2007-01-16 Benedikt Heintel
+	- ENGINE:
+		* ./backup/vhcs2-backup-all
+			changed:		Extension of the backup files to bz2
+
 2007-01-15 Benedikt Heintel
 	- ENGINE:
 		* ./backup/vhcs2-backup-all
