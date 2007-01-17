@@ -853,7 +853,7 @@ sub setup_system_users {
     @udata = getpwnam($fuid);
 
     if (scalar(@udata) == 0) { # we have not this one user data;
-        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vmail-user -g $gid -s /bin/false $fuid";
+        my $cmd = "$main::cfg{'CMD_USERADD'} -c vmail-user -g $gid -s /bin/false $fuid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
@@ -880,7 +880,7 @@ sub setup_system_users {
     }
 
     if (scalar(@udata) == 0) { # we have not this one user data;
-        my $cmd = "$main::cfg{'CMD_USERADD'} -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
+        my $cmd = "$main::cfg{'CMD_USERADD'} -m  $main::cfg{'PHP_STARTER_DIR'}/master -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
