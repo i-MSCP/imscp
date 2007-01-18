@@ -11,10 +11,14 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
+2007-01-18 Pieter Verhaeghe
+	- LANGUAGES:
+		* Dutch:			Added missing translations
+
 2007-01-17 Benedikt Heintel
 	- DOCS:
 		* ./INSTALL
-			changed:		deleted double word
+			changed:		Deleted double word
 	- LANGUAGES:
 		* English:			Changed translations
 	- SETUP:
