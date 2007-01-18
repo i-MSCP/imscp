@@ -996,7 +996,7 @@ sub setup_config {
 
     return $rs if ($rs != 0);
 
-    $rs = set_conf_val('APACHE_SUEXEC_MIN_GIDD', $main::ua{'vu_gid'});
+    $rs = set_conf_val('APACHE_SUEXEC_MIN_GID', $main::ua{'vu_gid'});
 
     return $rs if ($rs != 0);
 
