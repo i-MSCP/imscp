@@ -880,7 +880,7 @@ sub setup_system_users {
     }
 
     if (scalar(@udata) == 0) { # we have not this one user data;
-        my $cmd = "$main::cfg{'CMD_USERADD'} -m  $main::cfg{'PHP_STARTER_DIR'}/master -c vu-master -g $mgid -s /bin/false -u $muid $prefix$muid";
+        my $cmd = "$main::cfg{'CMD_USERADD'} -m  $main::cfg{'PHP_STARTER_DIR'}/master -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
