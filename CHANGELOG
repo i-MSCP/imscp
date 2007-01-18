@@ -14,6 +14,9 @@ VHCS 2.4.8 ω Omega Changelog
 2007-01-18 Pieter Verhaeghe
 	- LANGUAGES:
 		* Dutch:			Added missing translations
+	- SETUP:
+		* ./vhcs2-setup
+			fixed:			Installation error
 
 2007-01-17 Benedikt Heintel
 	- DOCS:
