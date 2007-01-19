@@ -14,6 +14,13 @@ VHCS 2.4.8 ω Omega Changelog
 2007-01-19 Benedikt Heintel
 	- LANGUAGES:
 		* Danish:			Added missing translations
+	- GUI:
+		* ./include/adodb/
+			update:			Version 4.93a
+		* ./tools/filemanager/login.php
+			fixed:			Bug #439 (vhcs.net)
+		* ./tools/pma/
+			update:			Version 2.9.2
 
 2007-01-18 Pieter Verhaeghe
 	- LANGUAGES:

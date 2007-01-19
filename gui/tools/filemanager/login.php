@@ -38,15 +38,14 @@
   elseif ( !extension_loaded ("ftp") && !isset ($ERROR) ) $ERROR = 23;
   elseif ( !isset ($ftp_Servers) && !isset ($ERROR) ) $ERROR = 10;
 
-// Load the default theme into the login page.
-  $theme = "";
+  // Load the default theme into the login page.
   if ( @is_readable( "themes/" . $default_theme . ".thm" ) ) {
     $tp = fopen( "themes/" . $default_theme . ".thm", 'r' );
     $theme = load_theme( $tp );
-    fclose ($tp);  
-  }  
-  $style = build_style_sheet( $theme );
-  
+    fclose ($tp);
+	$style = build_style_sheet( $theme );
+  }
+
   if (!isset($ERROR) ) $ERROR = 0;
 ?>
 <html>
@@ -107,7 +106,7 @@
     </tr>
     <tr>
       <td colspan=2 align="center">
-        <?php 
+        <?php
           $cookie_checked = "";
           if ( $cookie_present ) $cookie_checked = " CHECKED";
           if ( !$ftp_remember_me ) $cookie_checked = " DISABLED";
@@ -132,7 +131,7 @@
   <p>&nbsp;</p>
 </form>
 <P align="center">
-  <?php 
+  <?php
     /*
       Error message definitions:
           0 = No error
@@ -179,12 +178,12 @@
         break;
     }
   ?>
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 </td>
       </tr>
       <tr>

@@ -15,7 +15,7 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.91 2 Aug 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p>V4.93 10 Oct 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
   
@@ -102,7 +102,7 @@ pre {
   <a href="#genid">GenID</a> <a href="#createseq">CreateSequence</a> <a href="#dropseq">DropSequence</a> 
   <br>
   Error Handling: <a href="#errormsg">ErrorMsg</a> <a href="#errorno">ErrorNo</a> 
-  <a href="#metaerror">MetaError</a> <a href="#metaerrormsg">MetaErrorMsg</a><br>
+  <a href="#metaerror">MetaError</a> <a href="#metaerrormsg">MetaErrorMsg</a> <a href="#ignoreerrors">IgnoreErrors</a><br>
   Data Dictionary (metadata): <a href="#metadatabases">MetaDatabases</a> <a href="#metatables">MetaTables</a> 
   <a href="#metacolumns">MetaColumns</a> <a href="#metacolumnames">MetaColumnNames</a> 
   <a href="#metaprimarykeys">MetaPrimaryKeys</a> <a href="#metaforeignkeys">MetaForeignKeys</a> 
@@ -1769,9 +1769,9 @@ only with SELECT statements.
 </font></p><p><font>If no parameter is passed in, then all adodb_*.cache files are deleted. 
 </font></p>
   <p>CacheSelectLimit() rewrites the SQL query, so you won't be able to pass the SQL to CacheFlush. In this case,
-   to flush the cached SQL recordset returned by CacheSelectLimit(), set $secs2cache to 0:
+   to flush the cached SQL recordset returned by CacheSelectLimit(), set $secs2cache to -1:
 <pre>
-	$db->CacheSelectLimit(0, $sql, $nrows);
+	$db->CacheSelectLimit(-1, $sql, $nrows);
 </pre>
 <p><font> If you want to flush all cached recordsets manually, execute the following 
 	PHP code (works only under Unix): <br>
@@ -1812,7 +1812,16 @@ If 0 is returned, no error occurred.
 <font>Note that old versions of PHP (pre 4.0.6) do 
 	not support error number for ODBC. In general you do not need to call this 
 	function unless an ADOdb function returns false on an error.</font></p>
-
+<p><font><b>IgnoreErrors<a name="ignoreerrors"></a>($saveErrHandlers)</b></font></p>
+<p>Allows you to ignore errors so that StartTrans()/CompleteTrans() is not affected, nor is the default error handler called if an error occurs.
+Useful when you want to check if a field or table exists in a database without invoking an error if it does not exist.
+<p>Usage:
+<pre>
+$saveErrHandlers = $conn->IgnoreErrors();
+$rs = $conn->Execute("select field from some_table_that_might_not_exist");
+$conn->IgnoreErrors($saveErrHandlers);
+</pre>
+<p>Warning: do not call StartTrans()/CompleteTrans() inside a code block that is using IgnoreErrors().
 <p><font><b>SetFetchMode<a name="setfetchmode"></a>($mode)</b></font></p>
 <p><font>Sets the current fetch mode for the connection and stores 
 	it in $db-&gt;fetchMode. Legal modes are ADODB_FETCH_ASSOC and ADODB_FETCH_NUM. 
@@ -2349,7 +2358,7 @@ Also see <a href="docs-perf.htm">Performance Monitor</a>.
 <p>Here is an example of using fnExecute, to count all cached queries and non-cached 
   queries, you can do this:</p>
 <pre><font color="#006600"># $db is the connection object</font>
-function CountExecs($db, $sql, $inputarray)
+function &CountExecs($db, $sql, $inputarray)
 {
 global $EXECS;
 
@@ -2357,7 +2366,6 @@ global $EXECS;
 	<font color="#006600"># handle 2-dimensional input arrays</font>
 	else if (is_array(reset($inputarray))) $EXECS += sizeof($inputarray);
 	else $EXECS++;
-
 	
 	<font color="#006600"># in PHP4.4 and PHP5, we need to return a value by reference</font>
 	$null = null;
@@ -2912,6 +2920,48 @@ of MySQL.</font></p>
   PHP</a>. </font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
+<p><a name="4.93"></a><b>4.93 10 Oct 2006</b>
+<p>Added support for multiple database connections in performance monitoring code (adodb-perf.inc.php). Now all sql in multiple database connections can be saved into one database ($ADODB_LOG_CONN).
+<p>Added MetaIndexes() to odbc_mssql.
+<p>Added connection property $db->null2null = 'null'. In autoexecute/getinsertsql/getupdatesql, this value will be converted to a null. Set this to a funny invalid value if you do not want null conversion. See http://phplens.com/lens/lensforum/msgs.php?id=15902.
+<p>Path disclosure problem in mysqli fixed. Thx Andy.
+<p>Fixed typo in session_schema2.xml.
+<p>Changed INT in oci8 to return correct precision in $fld->max_length, MetaColumns(). Thx Eloy Lafuente Plaza.
+<p>Patched postgres64 _connect to handle serverinfo(). see http://phplens.com/lens/lensforum/msgs.php?id=15887.
+<p>Added pdo fix for null columns. See http://phplens.com/lens/lensforum/msgs.php?id=15889
+<p>For stored procedures, missing connection id now passed into mssql_query(). Thx Ecsy (ecsy#freemail.hu).
+<p><a name="4.92a"></a><b>4.92a 30 Aug 2006</b>
+<p>Syntax error in postgres7 driver. Thx Eloy Lafuente Plaza. 
+<p>Minor bug fixes - adodb informix 10 types added to adodb.inc.php. Thx Fernando Ortiz.
+
+<p><a name="4.92"></a><b>4.92 29 Aug 2006</b>
+<p>Better odbtp date support.
+<P>Added IgnoreErrors() to bypass default error handling.
+<p>The _adodb_getcount() function in adodb-lib.inc.php, some ORDER BY bug fixes.
+<p>For ibase and firebird, set  $sysTimeStamp = "CURRENT_TIMESTAMP".
+<p>Fixed postgres connection bug: http://phplens.com/lens/lensforum/msgs.php?id=11057.
+<p>Changed CacheSelectLimit() to flush cache when $secs2cache==-1 due to complaints from other users. 
+<p>Added support for using memcached with CacheExecute/CacheSelectLimit. Requires memcache module PECL extension. Usage:
+<pre>
+$db = NewADOConnection($driver);
+$db->memCache = true; /// should we use memCache instead of caching in files
+$db->memCacheHost = 126.0.1.1; /// memCache host
+$db->memCachePort = 11211; /// this is default memCache port
+$db->memCacheCompress = false; /// Use 'true' to store the item compressed (uses zlib)
+
+$db->Connect(...);
+$db->CacheExecute($sql);
+</pre>
+<p>Implemented Transpose() for recordsets. Recordset must be retrieved using ADODB_FETCH_NUM. First column becomes the 
+column name.
+<pre>
+$DB = NewADOConnection('mysql');
+$DB->Connect(...);
+$DB->SetFetchMode(ADODB_FETCH_NUM);
+$rs = $DB->Execute('select productname,productid,unitprice from products limit 10');
+$rs2 = $DB->Transpose($rs);
+rs2html($rs2);
+</pre>
 <p><a name="4.91"></a><b>4.91 2 Aug 2006</b>
 <p>Major session code rewrite .... See session docs.
 <p>PDO bindinputarray was not set properly for MySQL (changed from true to false).

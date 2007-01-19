@@ -2,8 +2,11 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 9833 2007-01-09 22:23:54Z lem9 $
+$Id: ChangeLog 9841 2007-01-16 17:32:33Z lem9 $
 $Source$
+
+2007-01-16 Marc Delisle  <lem9@users.sourceforge.net>
+    ### 2.9.2 released from QA_2_9
 
 2007-01-09 Marc Delisle  <lem9@users.sourceforge.net>
     ### 2.9.2-rc1 released from QA_2_9
