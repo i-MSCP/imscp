@@ -1,14 +1,16 @@
 If you really want to install VHCS on OpenBSD you should be familar with the manual installation
 process from the linux platform, it's only recommended for people with BSD knowledge!
 
-This is a short list of notes i have written while setting up and porting vhcs to OpenBSD, 
+This is a short list of notes i have written while setting up and porting vhcs to OpenBSD,
 it may be incomplete/outdated in some places.
 
 1. install all packages from packagelist (openbsd-packages-install.sh will help you)
 
 2. download proftpd source & compile with configure command:
-   wget ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.0.tar.bz2
- 
+   wget ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.0a.tar.bz2
+   bunzip2 proftpd-1.3.0a.tar.bz2
+   tar -xvf proftpd-1.3.0a.tar
+   cd proftpd-1.3.0a
    ./configure --sysconfdir=/etc \
         --enable-ctrls \
         --enable-ipv6 \
@@ -18,11 +20,15 @@ it may be incomplete/outdated in some places.
         --with-includes=/usr/local/include/mysql \
         --with-libraries=/usr/local/lib \
         --localstatedir=/var/run
+   make
+   make install
 
 3. install required perl modules
    perl -MCPAN -e shell
    cpan> install Crypt::PasswdMD5
-   cpan> install Term::ReadPassword 
+   cpan> install Term::ReadPassword
+   if package p5-MIME-tools can't be installed, install it with cpan
+   cpan> install MIME::Tools
 
 4. extract vhcs2 source package and run make
 
@@ -31,8 +37,11 @@ it may be incomplete/outdated in some places.
 	groupadd -o -g 0 root
 	ln -s /usr/local/libexec/makedatprog /usr/local/bin/makedatprog
 
-6. run vhcs2-setup 
+6. /usr/local/share/mysql/mysql.server start
+   set mysql root password with mysqladmin: mysqladmin password 'your-new-password'
 
+   run make in vhcs2 directory , change to /tmp/vhcs2-<version>, execute: cp -R * /
+   change to /var/www/vhcs2/engine/setup and run vhcs2-setup
 
 7. edit /etc/rc.local and add the following lines:
 
@@ -55,7 +64,6 @@ inetd=NO
 syslogd_flags=          # "-a /var/spool/postfix/dev/log"
 sendmail_flags="-bd -q30m"
 named_flags=
-
 
 9. edit /var/www/conf/httpd.conf and insert
 
@@ -86,11 +94,9 @@ run following command to enable postfix
 
 and restart apache: apachectl restart
 
+   optional create imap&pop3 ssl certificates:
+      mkimapdcert
+      mkpop3dcert
 
-12. not working "features" (list may be incomplete) 
+12. not working "features" (list may be incomplete)
 	- all iptables based traffic accounting
-  
-
-
-
- 
