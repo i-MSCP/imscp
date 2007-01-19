@@ -869,6 +869,10 @@ sub setup_system_users {
     my ($muid, $mgid, $prefix) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'});
     my ($vuuid, $vugid) = (undef, undef);
 
+    if ($muid eq '') { $muid = '2000'; }
+    if ($mgid eq '') { $mgid = '2000'; }
+    if ($prefix eq '') { $prefix = 'vu'; }
+
     @udata = getpwnam($muid);
     @gdata = getgrnam($mgid);
 
@@ -923,6 +927,8 @@ sub setup_system_dirs {
     $rs = make_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'}, 'root', 'root', 0755);
 
     return $rs if ($rs != 0);
+
+
 
     $rs = make_dir($main::cfg{'LOG_DIR'}, 'root', 'root', 0755);
 
