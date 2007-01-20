@@ -15,48 +15,41 @@
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 
-
-
-/* BEGIN common functions */
-function get_update_infos(&$tpl)
-{
- 
-	$info_url = "http://updates.vhcs.net/update.php";
-	$last_update = "http://updates.vhcs.net/last_update.php";
-	
-       // Fake the browser type 
-       ini_set('user_agent','MSIE 4\.0b2;'); 
-
-       $dh = @fopen("$info_url",'r'); 
-       $info_result = @fread($dh,8192);       
-	   
-	   $dh2 = @fopen("$last_update",'r'); 
-       $last_update_result = @fread($dh2,8192);                                                                                                                      
-
-	   $current_version = 20050818;
-	   if ($current_version <  $last_update_result)
-	   {	
-	    
-		   $tpl -> assign(
-					array(
-							'UPDATE_MESSAGE' =>  '',
-							'UPDATE' =>  tr('New VHCS update is now available'),
-							'INFOS' => $info_result,
-						 )
-				  );
-		
-			$tpl -> parse('UPDATE_INFOS', 'update_infos');
-		} else {
-			$tpl -> assign('UPDATE_INFOS', '');
-		
-		}
-}
-
-/* END system functions */
-
 include '../include/vhcs-lib.php';
 
 check_login();
+
+/* BEGIN common functions */
+function get_update_infos(&$tpl) {
+	global $cfg;
+
+	$info_url = "http://trac.inetcentral.de/ispcp/wiki/download";
+	$last_update = "http://isp-control.net/latest.txt";
+
+    // Fake the browser type
+    ini_set('user_agent','Mozilla/5.0');
+
+	$dh2 = @fopen("$last_update",'r');
+	$last_update_result = @fread($dh2, 8);
+
+	$current_version = $cfg['BuildDate'];
+	if ($current_version < $last_update_result) {
+
+	   $tpl -> assign(
+				array(
+						'UPDATE_MESSAGE' =>  '',
+						'UPDATE' =>  tr('New VHCS update is now available'),
+						'INFOS' => tr('Get it at')." <a href=\"".$info_url."\" class=\"link\" target=\"vhcs\">".$info_url."</a>"
+					 )
+			  );
+
+		$tpl -> parse('UPDATE_INFOS', 'update_infos');
+	} else {
+		$tpl -> assign('UPDATE_INFOS', '');
+
+	}
+}
+/* END system functions */
 
 $tpl = new pTemplate();
 
@@ -82,7 +75,7 @@ $tpl -> assign(
                      )
               );
 
-              
+
 
 
 /*

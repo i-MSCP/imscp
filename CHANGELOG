@@ -11,6 +11,17 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
+2007-01-20 Benedikt Heintel
+	- CONFIGS:
+		* vhcs.conf
+			fixed bug #38:	changed build formating
+	- LANGUAGES:
+		* English:			added new string
+		* German:			added new string
+	- GUI:
+		*./vhcs_updates
+			fixed bug #38:	Updates via VHCS Omega page
+
 2007-01-19 Benedikt Heintel
 	- DOCS:
 		* ./openbsd_install_notes.txt

@@ -70,6 +70,7 @@ $cfg['PURCHASE_TEMPLATE_PATH'] = "../".$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INI
 $cfg['DOMAIN_ROWS_PER_PAGE'] = 10;
 
 $cfg['HOSTING_PLANS_LEVEL'] = 'reseller';
+
 /*
 'admin' => hosting plans are available only in admin level, reseller can not make custom changes
 'reseller' => hosting plans are available only in reseller level
