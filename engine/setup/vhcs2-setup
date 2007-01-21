@@ -1434,7 +1434,7 @@ sub setup_php {
                     '{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
                     '{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
                     '{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-                    '{PHP_STARTER_DIR} => $mail:cfg{'PHP_STARTER_DIR'}
+                    '{PHP_STARTER_DIR}' => $mail:cfg{'PHP_STARTER_DIR'}
                     );
 
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
