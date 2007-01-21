@@ -29,7 +29,7 @@
  ************************************************************************/
 
 // Check selected security level
-if ($cfg['SECURITY_LEVEL'] != "paranoid" && $cfg['SECURITY_LEVEL'] != "high")
+if ($cfg['SECURITY_LEVEL'] != "paranoid" && $cfg['SECURITY_LEVEL'] != "high") {
 	// Abort on any other levels
 	return;
 }

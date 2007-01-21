@@ -22,6 +22,10 @@ VHCS 2.4.8 ω Omega Changelog
 	- LANGUAGES:
 		* all languages:	added new sting(s)
 		* German:			translated missing strings
+	- GUI:
+		* ./include/security/level-high.php
+		* ./include/security/level-paranoid.php
+			fixed bug #42
 
 2007-01-20 Benedikt Heintel
 	- CONFIGS:
