@@ -275,6 +275,7 @@ Domain you are trying to remove has subdomains accounts !<br> first remove them 
 Domains = Domains
 Domains per page = Domains pro Seite
 Done = Fertigstellen
+DOWN = DOWN
 Download the only one file in this directory = Laden Sie die darin befindliche Datei herunter
 E-mail = E-Mail
 Edit = Bearbeiten
@@ -885,6 +886,7 @@ unknown status = Unbekannter Status
 Unknown type = Unbekannter Typ
 unlimited = unbegrenzt
 Unprotect it = Schutz aufheben
+UP = UP
 Up time = Online Zeit
 Update = Aktualisieren
 Update data = Daten aktualisieren
