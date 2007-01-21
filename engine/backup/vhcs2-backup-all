@@ -200,7 +200,7 @@ MESSAGE_TEXT
 				To => $admin_email,
 				Subject => "[$date] Backup report.",
 				Data => $msg_data,
-				'X-Mailer' => "$main::cfg{'VersionH'} Automatic Backup Messager"
+				'X-Mailer' => "$main::cfg{'VersionH'} Automatic Backup Messanger"
 				);
 
 	open MAIL, "| /usr/sbin/sendmail -t -oi";
@@ -223,7 +223,7 @@ sub backup_all_engine {
 	push_el(\@main::el, 'backup_all_engine()', 'Starting...');
 
 
-	$sql = "select t1.domain_id, t1.domain_name, t1.domain_status, t1.domain_uid, t1.domain_gid, t2.admin_name, t2.email from domain as t1, admin as t2 where t1.domain_admin_id = t2.admin_id order by t1.domain_id";
+	$sql = "select t1.domain_id, t1.domain_name, t1.domain_status, t1.domain_uid, t1.domain_gid, t2.admin_name, t2.email from domain as t1, admin as t2 where t1.domain_status = 'ok' and t1.domain_admin_id = t2.admin_id order by t1.domain_id";
 
 	($rs, $rdata) = doSQL($sql);
 
