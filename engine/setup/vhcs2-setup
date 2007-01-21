@@ -1472,7 +1472,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}". "$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
+    $rs = store_file("$bk_dir/php4-fcgi-starter.vhcs2", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}". "$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0755);
     return $rs if ($rs != 0);
 
     $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php4-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR'}/master/php4-fcgi-starter";
@@ -1491,7 +1491,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
+    $rs = store_file("$bk_dir/php5-fcgi-starter.vhcs2", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0755);
     return $rs if ($rs != 0);
 
     $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/php5-fcgi-starter.vhcs2 $main::cfg{'PHP_STARTER_DIR'}/master/php5-fcgi-starter";
@@ -1511,7 +1511,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
     return $rs if ($rs != 0);
 
     ## php5.ini
@@ -1527,7 +1527,7 @@ sub setup_php {
     ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
     return $rs if ($rs != 0);
 
-    $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php5.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0440);
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php5.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
     return $rs if ($rs != 0);
 
 	#
