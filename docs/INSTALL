@@ -89,15 +89,8 @@ b) manualy
 
    These are the Variables you have to look at:
 
-   	DEFAULT_ADMIN_ADDRES = your email
-	SERVER_HOSTNAME = your hostname
-	BASE_SERVER_IP = your ip
-	DATABASE_TYPE = mysql
-	DATABASE_HOST = localhost
-	DATABASE_NAME = vhcs2
-	DATABASE_PASSWORD = vhcs2
-	DATABASE_USER = vhcs
 	AWSTATS_DIR = no			# Either no or path to the awstats configs dir
+	SECONDARY_DNS =
 	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
 								# infront or behind for MYSQL_PREFIX = no
 

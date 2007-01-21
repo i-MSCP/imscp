@@ -869,18 +869,12 @@ sub setup_system_users {
     my ($muid, $mgid, $prefix) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'});
     my ($vuuid, $vugid) = (undef, undef);
 
-    if ($muid eq '') { $muid = '2000'; }
-    if ($mgid eq '') { $mgid = '2000'; }
-    if ($prefix eq '') { $prefix = 'vu'; }
-
-    @udata = getpwnam($muid);
-    @gdata = getgrnam($mgid);
-
 	if (scalar(@gdata) == 0) { # we have not this one group data;
         my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
+
     }
 
     if (scalar(@udata) == 0) { # we have not this one user data;
@@ -888,12 +882,11 @@ sub setup_system_users {
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
+
     }
 
-	$vugid = $gdata[2];
-    $vuuid = $udata[2];
-    $main::ua{'vu_uid'} = $vuuid;
-    $main::ua{'vu_gid'} = $vugid;
+    $main::ua{'vu_uid'} = $muid;
+    $main::ua{'vu_gid'} = $mgid;
 	##
 
     push_el(\@main::el, 'setup_system_users()', 'Ending...');
@@ -1005,6 +998,8 @@ sub setup_config {
     $rs = set_conf_val('APACHE_SUEXEC_MIN_GID', $main::ua{'vu_gid'});
 
     return $rs if ($rs != 0);
+
+    $rs = set_conf_val('DEFAULT_ADMIN_ADDRES', $main::ua{'admin_email'});
 
     $rs = store_conf();
 

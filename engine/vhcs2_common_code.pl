@@ -1694,7 +1694,7 @@ sub store_conf {
 
         while (($key, $value) = each %main::cfg_reg) {
 
-            $rwith = "$key = $value \n";
+            $rwith = "$key = $value\n";
 
             $fline =~ s/^$key *= *([^\n\r]*)[\n\r]/$rwith/gim;
 

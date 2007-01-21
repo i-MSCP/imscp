@@ -19,6 +19,9 @@ VHCS 2.4.8 ω Omega Changelog
 		* Dutch:			translated missing strings
 
 2007-01-21 Benedikt Heintel
+	- DOCS:
+		* INSTALL
+			deleted automaticaly set values
 	- LANGUAGES:
 		* all languages:	added new sting(s)
 		* German:			translated missing strings
@@ -26,6 +29,9 @@ VHCS 2.4.8 ω Omega Changelog
 		* ./include/security/level-high.php
 		* ./include/security/level-paranoid.php
 			fixed bug #42
+	- SETUP:
+		* ./vhcs2-setup
+			fixed bug #39
 
 2007-01-20 Benedikt Heintel
 	- CONFIGS:
