@@ -5,24 +5,24 @@ HOWTO Update VHCS 2.4.7.1 to VHCS 2.4.8 ω (English)
 General Information
 -------------------
 
-1) Cange to your <VHCS-SOURCE-DIR>. (This is only a variable for your temporary install direction.)
+1) Change to your <VHCS-SOURCE-DIR>. (This is only a variable for your temporary install direction.)
 
 2) Download the newest VHCS2 release :
 
-tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/vhcs/vhcs2-2.4.8.tar.bz2
+# wget http://isp-control.net/vhcs/vhcs-2.4.8.tar.bz2
 
 3) Turn off the VHCS Daemon:
 
-tangra: # /etc/init.d/vhcs2_daemon stop
+# /etc/init.d/vhcs2_daemon stop
 
 4) Make a backup of the current VHCS files of your system:
 
-tangra: # mv /var/www/vhcs2/gui /var/www/vhcs2/gui_bcp_yyyymmdd
-tangra: # mv /var/www/vhcs2/engine /var/www/vhcs2/engine_bcp_yyyymmdd
+# mv /var/www/vhcs2/gui /var/www/vhcs2/gui_bcp_yyyymmdd
+# mv /var/www/vhcs2/engine /var/www/vhcs2/engine_bcp_yyyymmdd
 
 5) Unpack the downloaded archive:
 
-tangra: #tar -xjf vhcs2-2.4.8.tar.bz2
+#tar -xjf vhcs-2.4.8.tar.bz2
 
 
 -------------------
@@ -31,7 +31,7 @@ System Update
 
 Install php4-cgi php5-cgi php4-mysql php5-mysql
 
-tangra: # apt-get install php4-cgi php5-cgi php4-mysql php5-mysql
+# apt-get install php4-cgi php5-cgi php4-mysql php5-mysql
 
 -------------------
 vhcs2.conf Update
@@ -92,14 +92,14 @@ proftpd.conf update
 For Proftpd < 1.3:
 3) Move <VHCS-SOURCE-DIR>/configs/proftpd/proftpd.conf to /etc/
 
-tangra: # mv <VHCS-SOURCE-DIR>/configs/proftpd/proftpd.conf /etc/
+# mv <VHCS-SOURCE-DIR>/configs/proftpd/proftpd.conf /etc/
 
 For Proftpd >= 1.3:
 
 3) Move <VHCS-SOURCE-DIR>/configs/proftpd/proftpd.conf to /etc/proftpd/
 
-tangra: # mkdir /etc/proftpd/
-tangra: # mv <VHCS-SOURCE-DIR>/configs/proftpd/proftpd.conf /etc/proftpd/
+# mkdir /etc/proftpd/
+# mv <VHCS-SOURCE-DIR>/configs/proftpd/proftpd.conf /etc/proftpd/
 
 3a) Uncomment the lines 9 and 97
 
@@ -112,19 +112,19 @@ Engine Update
 
 1) Copy the new engine files
 
-tangra: # cp -a /<VHCS-SOURCE-DIR>/engine/ /var/www/vhcs2/
+# cp -a <VHCS-SOURCE-DIR>/engine/ /var/www/vhcs2/
 
 2) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/vhcs2-db-keys.pl
 
-tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/vhcs2-db-keys.pl
+# cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/vhcs2-db-keys.pl
 
 3) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/messager/vhcs2-db-keys.pl
 
-tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/messager/vhcs2-db-keys.pl
+# cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/messager/vhcs2-db-keys.pl
 
 4) Copy phptemp cleanup cron script:
 
-tangra: # cp <VHCS-SOURCE-DIR>/configs/cron.d/vhcs2.phptemp /etc/cron.d/
+# cp <VHCS-SOURCE-DIR>/configs/cron.d/vhcs2.phptemp /etc/cron.d/
 
 
 
@@ -143,11 +143,11 @@ Backup Engine Update
 
 1) Delete old no longer needed backup manager if it exists
 
-tangra: # rm /var/www/vhcs2/engine/tools/vhcs2-backup-all
+# rm /var/www/vhcs2/engine/tools/vhcs2-backup-all
 
 2) Check and maybe change the crontab line for the backup
 
-tangra: # crontab -e
+# crontab -e
 
 if line looks like:
 
@@ -163,8 +163,8 @@ Engine Templates Update
 
 1) Update templates:
 
-tangra: # cp <VHCS-SOURCE-DIR>/configs/apache/parts/* /etc/vhcs2/apache/parts/
-tangra: # cp <VHCS-SOURCE-DIR>/configs/bind/parts/* /etc/vhcs2/bind/parts/
+# cp <VHCS-SOURCE-DIR>/configs/apache/parts/* /etc/vhcs2/apache/parts/
+# cp <VHCS-SOURCE-DIR>/configs/bind/parts/* /etc/vhcs2/bind/parts/
 
 If you changed any templates, they're updated in this release and need to be updated with your own changes.
 
@@ -197,7 +197,7 @@ Finish Engine Updates
 
 1) Set correct engine permissions:
 
-tangra: # /var/www/vhcs2/engine/setup/set-engine-permissions.sh
+# /var/www/vhcs2/engine/setup/set-engine-permissions.sh
 
 
 -------------------
@@ -206,11 +206,11 @@ GUI Update
 
 1) Copy the new GUI files
 
-tangra: # cp -a <VHCS-SOURCE-DIR>/gui/ /var/www/vhcs2/
+# cp -a <VHCS-SOURCE-DIR>/gui/ /var/www/vhcs2/
 
 2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/vhcs2-db-keys.php to /gui/include/vhcs2-db-keys.php
 
-tangra: # cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/vhcs2/gui/include/vhcs2-db-keys.php
+# cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/vhcs2/gui/include/vhcs2-db-keys.php
 
 3) If you want to see date and time in your default language on the vhcs login page you need to configure system locales
    on debian run: dpkg-reconfigure locales (or if not installed: apt-get install locales) then select the locales you want to use.
@@ -218,18 +218,18 @@ tangra: # cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/
 
 4) Set correct gui permissions:
 
-tangra: # /var/www/vhcs2/engine/setup/set-gui-permissions.sh
+# /var/www/vhcs2/engine/setup/set-gui-permissions.sh
 
 5) Copy new and secured errorpages:
 
-tangra: # /var/www/vhcs2/engine/setup/copy-errordocs.sh
+# /var/www/vhcs2/engine/setup/copy-errordocs.sh
 
 -------------------
 Database Update
 -------------------
 
 1) Database structure must be updated:
-   (instead of copying these lines into an SQL shell, you can use the supplied SQL-Update-2.4.7.1-to-2.4.7.2.sql update file)
+   (instead of copying these lines into an SQL shell, you can use the supplied SQL-Update-2.4.7.1-to-2.4.8.sql update file)
 
 ALTER TABLE `vhcs2`.`login` ADD `ipaddr` varchar(15) NULL AFTER `session_id`;
 ALTER TABLE `vhcs2`.`login` ADD `user_name` varchar(255) NULL AFTER `ipaddr`;
@@ -281,9 +281,9 @@ Daemon & init.d Update
 
 1) Make the new daemon:
 
-tangra: # cd /mydir/tools/daemon
-tangra: # make
-tangra: # cp ./vhcs2_daemon /var/www/vhcs2/daemon/vhcs2_daemon
+# cd /mydir/tools/daemon
+# make
+# cp ./vhcs2_daemon /var/www/vhcs2/daemon/vhcs2_daemon
 
 
 -------------------
@@ -293,13 +293,13 @@ Finish update
 1) Now you should execute the VHCS engine manually, because users/customers may have made system changes during your update operation
    This could take a moment!
 
-tangra: # /var/www/vhcs2/engine/vhcs2-rqst-mngr
+# /var/www/vhcs2/engine/vhcs2-rqst-mngr
 
 2) Now you can start the daemons
 
-tangra: # /etc/init.d/apache2 restart
-tangra: # /etc/init.d/proftpd restart
-tangra: # /etc/init.d/vhcs2_daemon start
+# /etc/init.d/apache2 restart
+# /etc/init.d/proftpd restart
+# /etc/init.d/vhcs2_daemon start
 
 
 VHCS is successfully updated !
