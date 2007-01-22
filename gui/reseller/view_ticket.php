@@ -45,7 +45,7 @@ $tpl -> define_dynamic('tickets_item', 'tickets_list');
 //
 
 
-function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth)
+function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth)
 {
   $user_id = $_SESSION['user_id'];
   $query = <<<SQL_QUERY
@@ -128,7 +128,7 @@ SQL_QUERY;
 }
 
 
-function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth)
+function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth)
 {
   $query = <<<SQL_QUERY
 	  SELECT
@@ -241,7 +241,7 @@ $tpl -> assign(
 			  );
 
 
-function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, $screenwidth)
+function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwidth)
 {
   if (!isset($_POST['uaction'])) return;
 

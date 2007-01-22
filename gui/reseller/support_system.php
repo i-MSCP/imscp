@@ -43,8 +43,7 @@ $tpl -> define_dynamic('scroll_next', 'page');
 //
 // page functions.
 //
-function get_last_date(&$tpl, &$sql, &$ticket_id)
-{
+function get_last_date(&$tpl, &$sql, &$ticket_id) {
   global $cfg;
 
   $query = <<<SQL_QUERY
@@ -73,10 +72,7 @@ SQL_QUERY;
 
 }
 
-
-
-function gen_tickets_list(&$tpl, &$sql,$user_id)
-{
+function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	global $cfg;
 
 	$start_index = 0;
@@ -174,16 +170,11 @@ SQL_QUERY;
 
 		}
 
-
-
 	global $i ;
-
-
-
-
 
 		while (!$rs -> EOF) {
 			$ticket_id  = $rs -> fields['ticket_id'];
+			$from = get_ticket_from($tpl, $sql, $ticket_id);
 			$ticket_urgency = $rs -> fields['ticket_urgency'];
 			get_last_date($tpl, $sql, $ticket_id);
 			$ticket_status = $rs -> fields['ticket_status'];
@@ -245,6 +236,7 @@ SQL_QUERY;
 
             $tpl -> assign(
                             array(
+                            		'FROM' => $from,
                                     'SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
 									'ID' => $ticket_id,
 									'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'
@@ -260,8 +252,48 @@ SQL_QUERY;
     }
 }
 
+function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
+	$query = <<<SQL_QUERY
+		select
+			ticket_from,
+			ticket_to,
+			ticket_status,
+			ticket_reply
+		from
+			tickets
+		where
+			ticket_id = ?
 
+SQL_QUERY;
 
+		$rs = exec_query($sql, $query, array($ticket_id));
+		$ticket_from = $rs -> fields['ticket_from'];
+		$ticket_to = $rs -> fields['ticket_to'];
+		$ticket_status = $rs -> fields['ticket_status'];
+		$ticket_reply = clean_html($rs -> fields['ticket_reply']);
+
+	$query = <<<SQL_QUERY
+		SELECT
+			admin_name,
+			admin_type,
+			fname,
+			lname
+		FROM
+			admin
+		WHERE
+			admin_id = ?
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($ticket_from));
+	$from_user_name = $rs -> fields['admin_name'];
+	$admin_type = $rs -> fields['admin_type'];
+	$from_first_name = $rs -> fields['fname'];
+	$from_last_name = $rs -> fields['lname'];
+
+	$from_name = $from_first_name." ".$from_last_name." (".$from_user_name.")";
+
+	return $from_name;
+}
 
 
 //
@@ -318,6 +350,7 @@ $tpl -> assign(
                 array(
                         'TR_SUPPORT_SYSTEM' => tr('Support system'),
                         'TR_SUPPORT_TICKETS' => tr('Support tickets'),
+                        'TR_TICKET_FROM' => tr('From'),
                         'TR_NEW' => tr('&nbsp;'),
 						'TR_ACTION' => tr('Action'),
                         'TR_URGENCY' => tr('Priority'),

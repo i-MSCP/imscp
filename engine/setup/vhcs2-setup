@@ -48,7 +48,7 @@ sub welcome_note {
 
     my $welcome_message = <<MSG;
 
-    Welcome to VHCS2 '$main::cfg{'VersionH'}' Setup Dialog.
+    Welcome to VHCS2 '$main::cfg{'Version'}' Setup Dialog.
     This program will set up VHCS2 OMEGA system on your server.
 MSG
 
@@ -705,7 +705,7 @@ sub setup_shut_down {
 
     Congratulations !
 
-    VHCS2 '$main::cfg{'VersionH'}' Setup completed successfully !
+    VHCS2 '$main::cfg{'Version'}' Setup completed successfully !
 
     Please type http://$main::ua{'eth_ip'}/vhcs2/ in your
     browser!

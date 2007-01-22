@@ -36,11 +36,12 @@ $tpl -> define_dynamic('no_messages', 'page');
 
 $tpl -> define_dynamic('msg_entry', 'page');
 
+$tpl -> define_dynamic('update_message', 'page');
+
 $tpl -> define_dynamic('traff_warn', 'page');
 
 
-function gen_system_message(&$tpl, &$sql)
-{
+function gen_system_message(&$tpl, &$sql) {
 
     $user_id =  $_SESSION['user_id'];
 
@@ -62,17 +63,11 @@ SQL_QUERY;
     $num_question = $rs->fields('cnum');
 
     if ($num_question == 0) {
-        $tpl -> assign(
-                array(
-                        'TR_NO_NEW_MESSAGES' => tr('You have no new support questions!'),
-                        'MSG_ENTRY' => ''
-                        )
-                );
+        $tpl -> assign(array('MSG_ENTRY' => ''));
     }
     else {
         $tpl -> assign(
                          array(
-                                 'NO_MESSAGES' => '',
                                  'TR_YOU_HAVE' => tr('You have'),
 								 'TR_MSG_TYPE' => tr('Support question(s)'),
                                  'TR_NEW' => tr('New'),
@@ -81,14 +76,31 @@ SQL_QUERY;
                               )
                       );
 
-        $tpl -> parse('MSG_ENTRY', '.msg_entry');
-
-
+        $tpl -> parse('MSG_ENTRY', 'msg_entry');
     }
 }
 
-function gen_server_trafic(&$tpl, &$sql)
-{
+function get_update_infos(&$tpl) {
+	global $cfg;
+
+	$last_update = "http://isp-control.net/latest.txt";
+
+    // Fake the browser type
+    ini_set('user_agent','Mozilla/5.0');
+
+	$dh2 = @fopen("$last_update",'r');
+	$last_update_result = @fread($dh2, 8);
+
+	$current_version = $cfg['BuildDate'];
+	if ($current_version < $last_update_result) {
+		$tpl -> assign(array('UPDATE' =>  tr('New VHCS update is now available')));
+		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
+	} else {
+		$tpl -> assign(array('UPDATE_MESSAGE' => ''));
+	}
+}
+
+function gen_server_trafic(&$tpl, &$sql) {
     $query = <<<SQL_QUERY
         select
             straff_max,straff_warn
@@ -184,6 +196,8 @@ $tpl -> assign(
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
 get_admin_general_info($tpl, $sql);
+
+get_update_infos($tpl);
 
 gen_system_message($tpl, $sql);
 

@@ -63,32 +63,34 @@ function action_delete(url) {
                   <td valign="top"><table width="100%" cellspacing="7">
                       <!-- BDP: page_message -->
                       <tr>
-                        <td colspan="5" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="6" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <!-- BDP: tickets_list -->
                       <tr>
-                        <td colspan="2" nowrap class="content3"><b>{TR_SUBJECT}</b></td>
+                        <td colspan="2" class="content3" nowrap align="center"><b>{TR_TICKET_FROM}</b></td>
+                        <td width="260" class="content3" nowrap align="center"><b>{TR_SUBJECT}</b></td>
                         <td width="150" class="content3" nowrap align="center"><b>{TR_URGENCY}</b></td>
                         <td width="100" class="content3" nowrap align="center"><b>{TR_LAST_DATA}</b></td>
-                        <td width="100" align="center" nowrap class="content3"><strong>{TR_ACTION}</strong></td>
+                        <td width="100" class="content3" nowrap align="center"><b>{TR_ACTION}</b></td>
                       </tr>
                       <!-- BDP: tickets_item -->
                       <tr>
                         <td width="25" nowrap class="{CONTENT}"><b>{NEW}</b></td>
+                        <td class="{CONTENT}" nowrap align="left">{FROM}</td>
                         <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left">
 					  	<script language="javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 						</script>
 						{SUBJECT}</a>
-					  </td>
+					    </td>
                         <td class="{CONTENT}" nowrap align="center">{URGENCY}</td>
                         <td class="{CONTENT}" nowrap align="center">{LAST_DATE}</td>
                         <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
                       </tr>
                       <!-- EDP: tickets_item -->
                       <tr>
-                        <td colspan="2" nowrap><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','delete_ticket.php?delete=open');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
+                        <td colspan="3" nowrap><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','delete_ticket.php?delete=open');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
                         <td colspan="3" nowrap><div align="right">
                             <!-- BDP: scroll_prev_gray -->
                             <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">

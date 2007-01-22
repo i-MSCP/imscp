@@ -99,6 +99,12 @@
                 <td colspan="2" class="title"><font color="#FF0000">{TR_YOU_HAVE}&nbsp;<b>{MSG_NUM}</b>&nbsp;{TR_NEW}&nbsp;{TR_MSG_TYPE}</font></td>
                 </tr>
 				<!-- EDP: msg_entry -->
+				<!-- BDP: update_message -->
+              <tr>
+                <td width="20">&nbsp;</td>
+                <td colspan="2" style="color:ff0000"><b>{UPDATE}</b></td>
+                </tr>
+              <!-- EDP: update_message -->
             </table>
 			<!-- EDP: props_list -->
 

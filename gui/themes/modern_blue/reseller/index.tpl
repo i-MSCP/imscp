@@ -100,18 +100,16 @@
                 <td colspan="2" class="title"><font color="#FF0000">{TR_YOU_HAVE}&nbsp;<b>{MSG_NUM}</b>&nbsp;{TR_NEW}&nbsp;{TR_MSG_TYPE}</font></td>
                 </tr>
 				<!-- EDP: msg_entry -->
-			  
+
               <!--
-			  <tr> 
+			  <tr>
                 <td width="132" class="content">{TR_EXTRAS}</td>
                 <td width="291" class="content2">{EXTRAS}</td>
               </tr>
 			  -->
             </table>
 			<!-- EDP: props_list -->
-			
-			
-			
+
 			</td>
             <td>&nbsp;</td>
           </tr>

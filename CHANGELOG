@@ -11,6 +11,22 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
+2007-01-22 Benedikt Heintel
+	- GUI:
+		./admin/index.php
+		./themes/modern_blue/admin/index.tpl
+			added:			updateinfo on mainpage
+		./admin/support_system.php
+		./reseller/support_system.php
+		./reseller/view_ticket.php
+		./themes/modern_blue/admin/support_system.tpl
+		./themes/modern_blue/reseller/index.tpl
+		./themes/modern_blue/reseller/support_system.tpl
+			added:			ticket from info
+	- SETUP:
+		./vhcs2-setup
+			fixed "bug" #44: wrong Version Info
+
 2007-01-21 Pieter Verhaeghe
 	- DOCS:
 		* ./HOWTO-Update-2.4.7.1-to-2.4.8
