@@ -26,6 +26,7 @@ VHCS 2.4.8 ω Omega Changelog
 	- SETUP:
 		./vhcs2-setup
 			fixed "bug" #44: wrong Version Info
+			fixed bug #45:	missed "a2enmod actions"
 
 2007-01-21 Pieter Verhaeghe
 	- DOCS:

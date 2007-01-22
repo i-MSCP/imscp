@@ -1600,6 +1600,7 @@ sub setup_httpd {
     #
     if ( -e "/usr/sbin/a2enmod" ) {
 
+    	sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/vhcs2-setup-services.log");
     	sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/vhcs2-setup-services.log");
     	sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/vhcs2-setup-services.log");
 
