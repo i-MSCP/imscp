@@ -93,7 +93,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 	if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
 
 	$uuser_id = $_GET['uname'];
-	$uname = get_htuser_name($sql, $uuser_id, $dmn_id)
+	$uname = get_htuser_name($sql, $uuser_id, $dmn_id);
 
 		$tpl -> assign(
 					array(
@@ -104,7 +104,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 
 	} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'] )) {
 		$uuser_id = clean_input($_POST['nadmin_name']);
-		$uname = get_htuser_name($sql, $uuser_id, $dmn_id)
+		$uname = get_htuser_name($sql, $uuser_id, $dmn_id);
 		$tpl -> assign(
 					array(
 							'UNAME' => $uname,

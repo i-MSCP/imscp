@@ -10,6 +10,18 @@ VHCS 2.4.8 ω Omega Changelog
 |		* apache: set statsdir if awstats is enabled         |
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
+2007-01-22 Malte Geierhos
+	- GUI: 
+		fixed bug #46
+	
+	- ENGINE: 
+		added SQL-Backup in backup-mngr
+		fixed #13 (Backup-Mngr restoring directorys if domain is paused)
+
+	- SETUP: 
+		fixed #35 emtpy APACHE_SUEXEC_MIN* (added fallback to uid/gid 2000)
+		fixed #34
+		fixed correct usage of useradd
 
 2007-01-22 Benedikt Heintel
 	- GUI:

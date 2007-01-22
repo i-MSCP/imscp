@@ -102,7 +102,7 @@ sub backup_all_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from domain;";
+    my $sql = "select * from domain where domain_status = 'ok' ;";
 
     ($rs, $rdata) = doSQL($sql);
 
@@ -259,6 +259,37 @@ sub backup_all_engine {
 
 		if ($dmn_status eq 'ok') {
 
+		#	       
+		# MOD USER_DB-BACKUP 
+		# Modifikation CROYDON_DE
+		# Modifikation der Modifikation by ephigenie(at)g-house.de for isp-control.net
+		# Backup der Datenbanken
+		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der VHCS-DB auslesen
+		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
+		#
+	              $sql="select * from sql_database where domain_id=$dmn_id";
+			($rs,my $rdata3) = doSQL($sql);
+			foreach(@$rdata3) {
+				my $db_name=@$_[2];
+				my $db_id=@$_[0];
+				$sql = "select * from sql_user where sqld_id=$db_id";
+				($rs,my $rdata2) = doSQL($sql);
+				my $dbuser = "";
+				my $dbpass = "";
+				foreach(@$rdata2) {
+					$dbuser = @$_[2];
+					$dbpass = @$_[3];
+				}
+				my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
+				my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
+				$rs = sys_command($db_backupcmd);
+				return $rs if ($rs != 0);
+				$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
+				return $rs if ($rs != 0);
+			}
+		#
+		# END MOD USER_DB-BACKUP
+		#
 			if( -z $dmn_backup_dir)
 			{
 				$rs = del_file($dmn_backup_dir);
