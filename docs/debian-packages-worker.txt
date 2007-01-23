@@ -1,6 +1,7 @@
 apache2
-apache2-common
 apache2-mpm-worker
+apache2.2-common 
+apache2-utils
 bind9
 bzip2
 courier-authdaemon
