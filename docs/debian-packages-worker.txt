@@ -41,7 +41,7 @@ libsnmp-session-perl
 libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
-libmysqlclient14
+libmysqlclient15off
 make
 mysql-client
 mysql-common
