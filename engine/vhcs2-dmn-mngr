@@ -3856,6 +3856,7 @@ sub dmn_restore_data {
 
 	if ($fname =~ m/.tar.gz/i) {
     	$cmd = "$cmd_tar --extract --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+    }
     else {
     	$cmd = "$cmd_tar --extract --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
     }
