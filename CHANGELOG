@@ -12,6 +12,11 @@ VHCS 2.4.8 ω Omega Changelog
 \____________________________________________________________/
 
 2007-01-24 Benedikt Heintel
+	-GUI:
+		./themes/modern_blue/index.tpl
+		./tools/filemanager/login.php
+		./errordocs/index.php
+			fixed bug #54:	URL changed to ispCP's
 	- LANGUAGES:
 		Dutch:				added strings
 		Italian:			added strings

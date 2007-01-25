@@ -192,7 +192,7 @@
       </tr>
       <tr>
         <td width="1" bgcolor="#334163">&nbsp;</td>
-        <td bgcolor="#334163"><a href="http://www.vhcs.net" target="_blank"><img src="/vhcs2/themes/modern_blue/images/login/vhcs_logo.gif" alt="VHCS - Virtual Hosting Control System - Control Panel" width="68" height="60" border="0"></a><br><span class="login_bottom">VHCS FileManager by <br>Jon Manna & Chris Michaels</span></td>
+        <td bgcolor="#334163"><a href="http://www.isp-control.net" target="_blank"><img src="/vhcs2/themes/modern_blue/images/login/vhcs_logo.gif" alt="VHCS OMEGA - Virtual Hosting Control System - OMEGA Version!" width="68" height="60" border="0"></a><br><span class="login_bottom">VHCS FileManager by <br>Jon Manna & Chris Michaels</span></td>
         </tr>
     </table></td>
   </tr>
