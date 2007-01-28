@@ -1748,7 +1748,7 @@ sub dmn_add_httpd_file_data {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	# Should be created on install! (delete if okay)
-	#my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
+	my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
