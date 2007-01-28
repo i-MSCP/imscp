@@ -2223,7 +2223,7 @@ sub dmn_change_httpd_file_data {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	# Should be created on install! (delete if okay)
-	#my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
+	my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
@@ -3696,17 +3696,14 @@ sub dmn_add_data {
 
     return $rs if ($rs != 0);
 
-}
 
-#     $rs = dmn_add_crontab_data($dmn_data);
-#
-#     return $rs if ($rs != 0);
+#    $rs = dmn_add_crontab_data($dmn_data);
+
+#    return $rs if ($rs != 0);
 
     push_el(\@main::el, 'dmn_add_data()', 'Ending...');
 
     return 0;
-
-
 
 ################################################################################
 ##
@@ -4176,7 +4173,7 @@ sub dmn_mngr_engine {
 ##                                    MAIN                                    ##
 ################################################################################
 
-my $rs = undef;
+# my $rs = undef;
 
 $rs = dmn_mngr_start_up();
 
@@ -4213,3 +4210,5 @@ if ($rs != 0) {
 }
 
 exit 0;
+
+}
