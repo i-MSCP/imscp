@@ -3676,6 +3676,14 @@ sub dmn_add_data {
 
     }
 
+        # check wether AWStats is enabled
+        if ($awstats_dir != 'no') {
+        $rs = dmn_add_awstats_data($dmn_data);
+
+                return $rs if ($rs != 0);
+        }
+
+
     $rs = dmn_add_named_data($dmn_data);
 
     return $rs if ($rs != 0);
@@ -3688,12 +3696,7 @@ sub dmn_add_data {
 
     return $rs if ($rs != 0);
 
-	# check wether AWStats is enabled
-	if ($awstats_dir != 'no') {
-    	$rs = dmn_add_awstats_data($dmn_data);
-
-		return $rs if ($rs != 0);
-	}
+}
 
 #     $rs = dmn_add_crontab_data($dmn_data);
 #
@@ -3703,7 +3706,7 @@ sub dmn_add_data {
 
     return 0;
 
-}
+
 
 ################################################################################
 ##
@@ -3726,6 +3729,8 @@ sub dmn_change_data {
 
     }
 
+    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+
     $rs = dmn_change_named_data($dmn_data);
 
     return $rs if ($rs != 0);
@@ -3739,6 +3744,7 @@ sub dmn_change_data {
     return $rs if ($rs != 0);
 
 	# check wether AWStats is enabled
+
 	if ($awstats_dir != 'no') {
     	$rs = dmn_change_awstats_data($dmn_data);
 
@@ -3762,6 +3768,8 @@ sub dmn_del_data {
 
     my $rs = undef;
 
+    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+
     push_el(\@main::el, 'dmn_del_data()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
@@ -3771,6 +3779,13 @@ sub dmn_del_data {
         return -1;
 
     }
+
+        # check wether AWStats is enabled
+        if ($awstats_dir != 'no') {
+        $rs = dmn_del_awstats_data($dmn_data);
+
+        return $rs if ($rs != 0);
+        }
 
     $rs = dmn_del_named_data($dmn_data);
 
@@ -3784,12 +3799,6 @@ sub dmn_del_data {
 
     return $rs if ($rs != 0);
 
-	# check wether AWStats is enabled
-	if ($awstats_dir != 'no') {
-    	$rs = dmn_del_awstats_data($dmn_data);
-
-    	return $rs if ($rs != 0);
-	}
 
 #     $rs = dmn_del_crontab_data($dmn_data);
 #
