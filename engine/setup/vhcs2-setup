@@ -3,7 +3,7 @@
 # VHCS(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006 by isp Control Panel
+# Copyright (c) 2006-2007 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -441,7 +441,7 @@ sub ask_db_pma_password {
     if (!defined($pass1) || $pass1 eq '') {
         $main::ua{'db_pma_password'} = '';
     } else {
-        $qmsg = "    Please repeat VHCS phpMyAdmin SQL user password: ";
+        $qmsg = "    Please repeat VHCS phpMyAdmin Control user password: ";
         $pass2 = read_password($qmsg);
 
         if ($pass1 eq $pass2) {
@@ -1426,7 +1426,7 @@ sub setup_php {
 	# Configure the fastcgi.conf
 	#
 
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache/";
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
 
 	my $bk_dir = "$cfg_dir/backup";
 

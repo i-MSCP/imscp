@@ -57,9 +57,20 @@ Make sure you are logged in as root.
 	# cd ./vhcs2.4.8
 
 3. Install the required modules
-   for Debian you can use:
+   for Debian Etch you can use:
 	# apt-get update && apt-get upgrade
-	# apt-get install cat `./docs/debian-packages.txt`
+	# apt-get install `cat ./docs/debian-packages-etch.txt`
+
+   for Debian Sarge please use:
+    # apt-get install `cat ./docs/debian-packages-sarge.txt`
+
+   Make sure you have added the following backport into your
+   /etc/apt/sources.list:
+
+    # backports
+    deb     http://dotdeb.pimpmylinux.org/          stable          all
+	deb-src http://dotdeb.pimpmylinux.org/          stable          all
+
 
 	(when you get to the courier screen select no to web directories)
 	(when you get to the postfix screen select internet site and then type root

@@ -11,6 +11,17 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
+2007-01-31 Benedikt Heintel
+	- CONFIG:
+		./fcgi/*
+			added:		 	empty-files for folder creation
+	- DOCU:
+		./INSTALL
+			changed for latest install. (commit will follow)
+	- SETUP:
+		./vhcs2-setup
+			fixed:			text string
+
 2007-01-24 Benedikt Heintel
 	-GUI:
 		./themes/modern_blue/index.tpl
