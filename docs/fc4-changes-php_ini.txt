@@ -9,7 +9,7 @@ Without this change, Filemanager will not upload files.
 
 allow_call_time_pass_reference = On
 
-Or e-mailmarketing will not work
+Otherwise e-mailmarketing will not work
 
 
 set error reporting or webmail login page will display an notice:

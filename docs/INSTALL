@@ -1,4 +1,6 @@
-VHCS ω (OMEGA) HowTo Install
+VHCS ω (OMEGA) HowTo Install for Debian Sarge, Etch
+================================================================================
+For other Linux distributions please check the other INSTALL files.
 ================================================================================
 
 Table of Content
@@ -18,6 +20,7 @@ VHCS ω Version:		2.4.8
 INSTALL Skript:		2.0
 Maintainer:			RatS
 Homepage:			http://isp-contol.net
+Linux Distris:		Debian Sarge, Etch
 
 ================================================================================
 2) Requirements
@@ -29,7 +32,8 @@ Penitum III or K6-4 with 500 MHz
 100 MB disk space (only for install of VHCS ω)
 Debian (or even any other *NIX-Distribution)
 
-All required packages are listed in ./docs/debian-packages.txt
+All Sarge required packages are listed in ./docs/debian-packages-sarge.txt
+All Etch required packages are listed in ./docs/debian-packages-etch.txt
 
 ================================================================================
 3) Introduction
@@ -41,7 +45,7 @@ commercial solutions.
 With VHCS ω you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of VHCS ω are 3 easy-to-use, Web-based control panels. VHCS
+created. The core of VHCS ω are 3 easy-to-use, web-based control panels. VHCS
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================

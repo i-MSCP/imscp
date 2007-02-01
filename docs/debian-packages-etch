@@ -1,6 +1,7 @@
 apache2
-apache2-common
-apache2-mpm-prefork
+apache2-mpm-worker
+apache2.2-common
+apache2-utils
 bind9
 bzip2
 courier-authdaemon
@@ -13,7 +14,6 @@ dnsutils
 gcc
 gzip
 iptables
-libapache2-mod-php4
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
@@ -41,11 +41,11 @@ libsnmp-session-perl
 libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
-libmysqlclient14
+libmysqlclient15off
 make
-mysql-client-4.1
+mysql-client
 mysql-common
-mysql-server-4.1
+mysql-server
 original-awk
 patch
 perl
@@ -58,6 +58,10 @@ php4-mcrypt
 php4-mysql
 php4-pear
 php5-cgi
+php5-gd
+php5-imap
+php5-mcrypt
+php5-mhash
 php5-mysql
 postfix
 postfix-tls

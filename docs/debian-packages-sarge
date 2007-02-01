@@ -1,6 +1,6 @@
 apache2
 apache2-common
-apache2-mpm-prefork
+apache2-mpm-worker
 bind9
 bzip2
 courier-authdaemon
@@ -13,7 +13,6 @@ dnsutils
 gcc
 gzip
 iptables
-libapache2-mod-php4
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
@@ -58,6 +57,10 @@ php4-mcrypt
 php4-mysql
 php4-pear
 php5-cgi
+php5-gd
+php5-imap
+php5-mcrypt
+php5-mhash
 php5-mysql
 postfix
 postfix-tls
