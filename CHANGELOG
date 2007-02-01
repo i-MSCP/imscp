@@ -12,6 +12,10 @@ VHCS 2.4.8 ω Omega Changelog
 \____________________________________________________________/
 
 2007-02-01 Benedikt Heintel
+	- DOCU:
+		changed the organisation of the documentation
+
+2007-02-01 Benedikt Heintel
 	- CONFIG:
 		./fcgi/*
 			added:		 	empty-files for folder creation

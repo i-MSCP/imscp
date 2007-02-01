@@ -1,4 +1,4 @@
-VHCS ω (OMEGA) HowTo Install for Debian Sarge, Etch
+VHCS ω (OMEGA) HowTo Install for Feodora Core 4 - 5
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -17,10 +17,10 @@ Table of Content
 1) Version Info
 ---------------
 VHCS ω Version:		2.4.8
-INSTALL Skript:		2.0
+INSTALL Skript:		1.0
 Maintainer:			RatS
 Homepage:			http://isp-contol.net
-Linux Distris:		Debian Sarge, Etch
+Linux Distris:		Feodora Core 4 - 5
 
 ================================================================================
 2) Requirements
@@ -32,8 +32,7 @@ Penitum III or K6-4 with 500 MHz
 100 MB disk space (only for install of VHCS ω)
 Debian (or even any other *NIX-Distribution)
 
-All Sarge required packages are listed in ./docs/debian-packages-sarge.txt
-All Etch required packages are listed in ./docs/debian-packages-etch.txt
+All required packages are listed in ./docs/fc4-packages.txt
 
 ================================================================================
 3) Introduction
