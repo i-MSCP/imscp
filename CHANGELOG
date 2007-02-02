@@ -12,7 +12,14 @@ VHCS 2.4.8 ω Omega Changelog
 \____________________________________________________________/
 
 2007-02-01 Benedikt Heintel
-	- DOCU:
+	- DOCS:
+		added feodora install doc
+	- SETUP:
+		changed Makefiles
+		changed feodora Install
+
+2007-02-01 Benedikt Heintel
+	- DOCS:
 		changed the organisation of the documentation
 	- ENGINE:
 		./vhcs2-dmn-mngr

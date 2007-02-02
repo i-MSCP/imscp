@@ -5,9 +5,7 @@
     #Group {SUEXEC_GROUP}
     #
 
-    #
     SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
-    #
 
     ServerAdmin     root@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs

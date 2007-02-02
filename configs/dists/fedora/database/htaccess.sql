@@ -1,12 +1,13 @@
--- MySQL dump 9.11
---
--- Host: localhost    Database: vhcs22
--- ------------------------------------------------------
--- Server version	4.0.24_Debian-2-log
-
---
--- Table structure for table `htaccess_users`
---
+# VHCS(tm) - Virtual Hosting Control System
+# (c) 2001-2006 moleSoftware
+# http://vhcs.net | http://www.molesoftware.com
+# All rights reserved
+#
+# Datenbank: `vhcs_pro_dev`
+# --------------------------------------------------------
+#
+# Tabellenstruktur für Tabelle `htaccess_users`
+#
 
 DROP TABLE IF EXISTS `htaccess_users`;
 CREATE TABLE `htaccess_users` (
@@ -14,16 +15,20 @@ CREATE TABLE `htaccess_users` (
   `dmn_id` int(10) unsigned NOT NULL default '0',
   `uname` varchar(255) default NULL,
   `upass` varchar(255) default NULL,
+  `status` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
 ) TYPE=MyISAM;
 
---
--- Dumping data for table `htaccess_users`
---
+#
+# Daten für Tabelle `htaccess_users`
+#
 
---
--- Table structure for table `htaccess_groups`
---
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `htaccess_groups`
+#
 
 DROP TABLE IF EXISTS `htaccess_groups`;
 CREATE TABLE `htaccess_groups` (
@@ -31,16 +36,20 @@ CREATE TABLE `htaccess_groups` (
   `dmn_id` int(10) unsigned NOT NULL default '0',
   `ugroup` varchar(255) default NULL,
   `members` text,
+  `status` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
 ) TYPE=MyISAM;
 
---
--- Dumping data for table `htaccess_groups`
---
+#
+# Daten für Tabelle `htaccess_groups`
+#
 
---
--- Table structure for table `htaccess`
---
+
+# --------------------------------------------------------
+
+#
+# Tabellenstruktur für Tabelle `htaccess`
+#
 
 DROP TABLE IF EXISTS `htaccess`;
 CREATE TABLE `htaccess` (
@@ -51,11 +60,11 @@ CREATE TABLE `htaccess` (
   `auth_type` varchar(255) default NULL,
   `auth_name` varchar(255) default NULL,
   `path` text,
-  `status` text,
+  `status` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
 ) TYPE=MyISAM;
 
---
--- Dumping data for table `htaccess`
---
+#
+# Daten für Tabelle `htaccess`
+#
 

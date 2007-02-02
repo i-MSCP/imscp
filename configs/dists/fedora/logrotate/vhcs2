@@ -5,7 +5,7 @@
 	compress
 	delaycompress
 	notifempty
-	create 644 root root
+	create 640 root adm
 	sharedscripts
 	prerotate
 		/var/www/vhcs2/engine/traffic/vhcs2-srv-traff &>/var/log/vhcs2/vhcs2-srv-traff.log

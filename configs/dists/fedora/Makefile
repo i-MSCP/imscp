@@ -10,6 +10,7 @@ install:
 		cd ./crontab && $(MAKE) install ; cd .. ; \
 		cd ./cron.d && $(MAKE) install ; cd .. ; \
 		cd ./database && $(MAKE) install ; cd .. ;  \
+		cd ./fcgi && $(MAKE) install ; cd .. ; \
 		cd ./init.d && $(MAKE) install ; cd .. ; \
 		cd ./postfix && $(MAKE) install ; cd .. ; \
 		cd ./courier && $(MAKE) install ; cd .. ; \
@@ -32,5 +33,4 @@ uninstall:
 		cd ./proftpd && $(MAKE) uninstall ; cd .. ; \
 		cd ./logrotate && $(MAKE) uninstall ; cd .. ; \
 	fi
-   
 
