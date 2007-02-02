@@ -3677,7 +3677,7 @@ sub dmn_add_data {
     }
 
         # check wether AWStats is enabled
-        if ($awstats_dir != 'no') {
+        if ($awstats_dir ne 'no') {
         $rs = dmn_add_awstats_data($dmn_data);
 
                 return $rs if ($rs != 0);
@@ -3779,7 +3779,7 @@ sub dmn_del_data {
     }
 
         # check wether AWStats is enabled
-        if ($awstats_dir != 'no') {
+        if ($awstats_dir ne 'no') {
         $rs = dmn_del_awstats_data($dmn_data);
 
         return $rs if ($rs != 0);
