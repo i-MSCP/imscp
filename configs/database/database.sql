@@ -588,7 +588,6 @@ CREATE TABLE `subdomain` (
   `subdomain_name` varchar(200) default NULL,
   `subdomain_mount` varchar(200) default NULL,
   `subdomain_status` varchar(255) default NULL,
-  `subdomain_phpv` varchar(15) default NULL,
   PRIMARY KEY  (`subdomain_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
