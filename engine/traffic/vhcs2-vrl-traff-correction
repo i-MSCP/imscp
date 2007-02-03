@@ -1,0 +1,175 @@
+#!/usr/bin/perl
+
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the GPL General Public License
+#    as published by the Free Software Foundation; either version 2.0
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GPL General Public License for more details.
+#
+#    You may have received a copy of the GPL General Public License
+#    along with this program.
+#
+#    An on-line copy of the GPL General Public License can be found
+#    http://www.gnu.org/licenses/gpl.html
+#
+#
+#    The programm vhcs2-vrl-traff-correction is written by zttom
+#
+########################################################################
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+require 'vhcs2_common_code.pl';
+
+use strict;
+
+use warnings;
+
+sub vrl_traff_correction_start_up {
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'vrl_traff_correction_start_up()', 'Starting...');
+
+    # Let's clear Execution Logs, if any.
+
+    if (-e $main::vhcs2_vrl_traff_correction_el) {
+
+        $rs = del_file($main::vhcs2_vrl_traff_correction_el);
+
+        return $rs if ($rs != 0);
+
+    }
+
+    # config check;
+
+    $rs = get_conf();
+
+    return $rs if ($rs != 0);
+
+    #
+    # getting initial data also must be done here;
+    #
+
+    my $sql = "select * from domain;";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'vrl_traff_correction_start_up()', 'Ending...');
+
+    return 0;
+
+}
+
+sub vrl_traff_correction_shut_down {
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'vrl_traff_correction_shut_down()', 'Starting...');
+
+    push_el(\@main::el, 'vrl_traff_correction_shut_down()', 'Ending...');
+
+    return 0;
+
+}
+
+sub vrl_traff_correction_engine {
+
+    my ($rs, $rdata1, $rdata2, $rdata3) = (undef, undef, undef, undef);
+
+    push_el(\@main::el, 'vrl_traff_correction_engine()', 'Starting...');
+
+    my $sql = "SELECT traff_time, IFNULL( sum( t2.dtraff_mail ) , 0 ) AS dom_mail_sum, IFNULL( sum( t2.dtraff_pop ) , 0 )  AS dom_pop_sum, IFNULL( sum( t2.dtraff_web ) , 0 ) AS dom_web_sum, ifnull( (t1.bytes_mail_in + t1.bytes_mail_out), 0 ) - IFNULL( sum( t2.dtraff_mail ) , 0 ) AS diff_mail, ifnull( (t1.bytes_pop_in + t1.bytes_pop_out), 0 ) - IFNULL( sum( t2.dtraff_pop ) , 0 ) AS diff_pop, ifnull( (t1.bytes_web_in +  t1.bytes_web_out), 0 ) - IFNULL( sum( t2.dtraff_web ) , 0 ) AS diff_web FROM server_traffic AS t1 INNER JOIN domain_traffic AS t2 ON t2.dtraff_time = t1.traff_time WHERE t1.correction = 0 and t2.correction = 0 GROUP BY t2.dtraff_time;";
+
+    ($rs, $rdata1) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    my $rowscount = @$rdata1;
+
+    push_el(\@main::el, 'vrl_traff_correction_engine()', "Found $rowscount entries in table server_traffic for correction...");
+
+    if ($rowscount > 0) {
+
+        foreach (@$rdata1) {
+
+            my $row = $_;
+
+            my ($traff_time, $dom_mail_sum, $dom_pop_sum, $dom_web_sum, $diff_mail, $diff_pop, $diff_web) = (@$row[0], @$row[1], @$row[2], @$row[3], @$row[4], @$row[5], @$row[6]);
+
+            push_el(\@main::el, 'vrl_traff_correction_engine()', "Handling server_traffic with timestamp: $traff_time...");
+
+            $sql = "update domain_traffic set dtraff_web=dtraff_web+ifnull(dtraff_web/$dom_web_sum,0)*$diff_web, dtraff_mail=dtraff_mail+ifnull(dtraff_mail/$dom_mail_sum,0)*$diff_mail, dtraff_pop=dtraff_pop+ifnull(dtraff_pop/$dom_pop_sum,0)*$diff_pop, correction = 1 where dtraff_time = $traff_time;";
+
+            ($rs, $rdata2) = doSQL($sql);
+
+            return $rs if ($rs != 0);
+
+            $sql = "update server_traffic set correction = 1 where traff_time = $traff_time;";
+
+            ($rs, $rdata3) = doSQL($sql);
+
+            return $rs if ($rs != 0);
+
+        }
+
+    }
+
+    push_el(\@main::el, 'vrl_traff_correction_engine()', 'Ending...');
+
+    return 0;
+
+}
+
+
+my $rs = undef;
+
+
+$rs = vrl_traff_correction_start_up();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::vhcs2_vrl_traff_correction_el);
+
+    vrl_traff_correction_shut_down();
+
+    exit 1;
+
+}
+
+
+$rs = vrl_traff_correction_engine();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::vhcs2_vrl_traff_correction_el);
+
+    vrl_traff_correction_shut_down();
+
+    exit 1;
+
+}
+
+
+$rs = vrl_traff_correction_shut_down();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::vhcs2_vrl_traff_correction_el);
+
+    exit 1;
+
+}
+
+exit 0;

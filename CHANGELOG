@@ -11,7 +11,20 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
-2007-02-01 Benedikt Heintel
+2007-02-03 Benedikt Heintel
+	- CONFIGS:
+		modified sql datafiles to VHCS 2.4.8 ω
+		fixed bug #14
+	- DOCS:
+		changed SQL-Update-2.4.7.1-to-2.4.8.sql
+	- ENGINE:
+		added traffic correction by Thomas Partsch
+	- GUI TOOLS:
+		changed webmail default settings
+	- SETUP:
+		fixed bug in fcgi configuration
+
+2007-02-02 Benedikt Heintel
 	- DOCS:
 		added feodora install doc
 	- SETUP:

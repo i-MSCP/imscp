@@ -145,8 +145,8 @@ $mail_server_type 	= "ONE-FOR-ALL";
 $mail_detect_remove 		= "webmail.";
 $mail_detect_prefix 		= "mail.";
 $mail_detect_login_type 	= "%user%@%domain%";
-$mail_detect_protocol 		= "pop3";
-$mail_detect_port 			= "110";
+$mail_detect_protocol 		= "imap";
+$mail_detect_port 			= "143";
 $mail_detect_folder_prefix 	= "";
 
 ########################################################################

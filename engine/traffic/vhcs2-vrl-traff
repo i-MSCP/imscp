@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
-# http://www.molesoftware.com
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
 #
 # License:
@@ -22,31 +22,7 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-#
-# The VHCS Home Page is at:
-#
-#    http://www.vhcs.net
-####
-#
-#  	changed 07.06.2005 by Erik Lehmann - reisswolf(AT)macnews.de
-#
-#	+ logs in subdirectoys of /var/log
-#	+ replace pflogsumm.pl with maillogconvert.pl
-#	+ added courier imap-ssl and pop-ssl analysis support
-#	+ changed courier pop and imap analyse strings for debian sarge
-#
-#	changed 22.08.2005 by Erik Lehmann - reisswolf(AT)macnews.de (THANKS to zeaq for ideas and testing)
-#
-#	+ pop(-ssl)/imap(-ssl)/smtp/ftp traffic for Alias Domains will be counted
-#	+ pop(-ssl)/imap(-ssl)/smtp/ftp traffic for Sub-Domains will be counted
-#	+ not counting pop(-ssl)/imap(-ssl) traffic from localhost produced by webmail
-#	+ added variable MAIL_LOG_INC_AMAVIS in vhcs2.conf values: 0/1
-#
-#	changed 23.10.2005 by Erik Lehmann - reisswolf(AT)macnews.de
-#
-#	+ small bugfix
-#
-####
+########################################################################
 
 use FindBin;
 use lib "$FindBin::Bin/..";

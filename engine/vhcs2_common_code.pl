@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
-# http://www.molesoftware.com
+# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
 #
 # License:
@@ -22,10 +22,6 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-#
-# The VHCS Home Page is at:
-#
-#    http://www.vhcs.net
 #
 ########################################################################
 
@@ -2095,6 +2091,8 @@ $main::vhcs2_vrl_traff = "$main::root_dir/engine/messager/vhcs2-vrl-traff";
 $main::vhcs2_vrl_traff_el = "$main::log_dir/vhcs2-vrl-traff.el";
 $main::vhcs2_vrl_traff_stdout = "$main::log_dir/vhcs2-vrl-traff.stdout";
 $main::vhcs2_vrl_traff_stderr = "$main::log_dir/vhcs2-vrl-traff.stderr";
+
+$main::vhcs2_vrl_traff_correction_el = "$main::log_dir/vhcs2-vrl-traff-correction.el";
 
 $main::vhcs2_httpd_logs_mngr_el = "$main::log_dir/vhcs2-httpd-logs-mngr.el";
 $main::vhcs2_httpd_logs_mngr_stdout = "$main::log_dir/vhcs2-httpd-logs-mngr.stdout";

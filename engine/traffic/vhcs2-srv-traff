@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
-# http://www.molesoftware.com
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
 #
 # License:
@@ -22,11 +22,7 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-#
-# The VHCS Home Page is at:
-#
-#    http://www.vhcs.net
-
+########################################################################
 
 use FindBin;
 use lib "$FindBin::Bin/..";
@@ -175,6 +171,10 @@ sub srv_traff_engine {
     $pop3_out += $imap_out;
 
     my $timestamp = time;
+
+    # timestamp has floor down for the last half'n our to make timestamps in
+	# server_traffic and domain_traffic the same
+    $timestamp = $timestamp - ($timestamp % 1800);
 
     my $sql = "insert into server_traffic (traff_time, bytes_in, bytes_out, bytes_mail_in, bytes_mail_out, bytes_pop_in, bytes_pop_out, bytes_web_in, bytes_web_out) values ($timestamp, $all_in, $all_out, $smtp_in, $smtp_out, $pop3_in, $pop3_out, $http_in, $http_out);";
 

@@ -32,8 +32,8 @@ Penitum III or K6-4 with 500 MHz
 100 MB disk space (only for install of VHCS ω)
 Debian (or even any other *NIX-Distribution)
 
-All Sarge required packages are listed in ./docs/debian-packages-sarge
-All Etch required packages are listed in ./docs/debian-packages-etch
+All Sarge required packages are listed in ./docs/Debian/debian-packages-sarge
+All Etch required packages are listed in ./docs/Debian/debian-packages-etch
 
 ================================================================================
 3) Introduction
@@ -63,10 +63,18 @@ Make sure you are logged in as root.
 3. Install the required modules
    for Debian Etch you can use:
 	# apt-get update && apt-get upgrade
-	# apt-get install `cat ./docs/debian-packages-etch`
+	# apt-get install `cat ./docs/Debian/debian-packages-etch`
+
+   Make sure you have added the non-free into your
+   /etc/apt/sources.list:
+
+   deb     http://ftp.de.debian.org/debian/            testing         main contrib non-free
+   deb-src http://ftp.de.debian.org/debian/            testing         main contrib non-free
+   deb     http://security.debian.org/                 testing/updates main contrib non-free
+   deb-src http://security.debian.org/                 testing/updates main contrib non-free
 
    for Debian Sarge please use:
-    # apt-get install `cat ./docs/debian-packages-sarge`
+    # apt-get install `cat ./docs/Debian/debian-packages-sarge`
 
    Make sure you have added the following backport into your
    /etc/apt/sources.list:
