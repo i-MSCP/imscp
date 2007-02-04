@@ -9,6 +9,7 @@ use {DATABASE_NAME};
 --
 -- --------------------------------------------------------
 
+--
 -- Tabellenstruktur für Tabelle `admin`
 --
 
