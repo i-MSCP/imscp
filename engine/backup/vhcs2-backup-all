@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2005 by moleSoftware GmbH
-# http://www.molesoftware.com
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
 #
 # License:
@@ -22,11 +22,7 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-#
-# The VHCS Home Page is at:
-#
-#    http://www.vhcs.net
-
+########################################################################
 
 use FindBin;
 use lib "$FindBin::Bin/..";
@@ -229,6 +225,16 @@ sub backup_all_engine {
 
 	return $rs if ($rs != 0);
 
+	my $cmd_tar = $main::cfg{'CMD_TAR'};
+
+	my $cmd_rm = $main::cfg{'CMD_RM'};
+
+	my $cmd_mv = $main::cfg{'CMD_MV'};
+
+	my $httpd_uid = $main::cfg{'APACHE_USER'};
+
+	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
+
 	foreach (@$rdata) {
 
 		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6]);
@@ -239,103 +245,82 @@ sub backup_all_engine {
 
 		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
 
-# 		my $dmn_backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
-
-		my $cmd_tar = $main::cfg{'CMD_TAR'};
-
-		my $cmd_rm = $main::cfg{'CMD_RM'};
-
-		my $cmd_mv = $main::cfg{'CMD_MV'};
-
-		my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-		my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
-#		my $make_dmn_backup_dir_cmd = "/usr/bin/install -d -m 0644 -o root -g root $dmn_backup_dir";
-
 		my $backup_filename = "$dmn_name-backup-$date.tar.bz2";
 
 		my $backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 
-		if ($dmn_status eq 'ok') {
-
-		#	       
-		# MOD USER_DB-BACKUP 
-		# Modifikation CROYDON_DE
-		# Modifikation der Modifikation by ephigenie(at)g-house.de for isp-control.net
-		# Backup der Datenbanken
+		#
+		# User Database Backup
 		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der VHCS-DB auslesen
-		# MYSQLDUMP mit den Datenbanken durchf�hren und die Ausgabe in das Backup-Verzeichnis umleiten
+		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
 		#
-	              $sql="select * from sql_database where domain_id=$dmn_id";
-			($rs,my $rdata3) = doSQL($sql);
-			foreach(@$rdata3) {
-				my $db_name=@$_[2];
-				my $db_id=@$_[0];
-				$sql = "select * from sql_user where sqld_id=$db_id";
-				($rs,my $rdata2) = doSQL($sql);
-				my $dbuser = "";
-				my $dbpass = "";
-				foreach(@$rdata2) {
-					$dbuser = @$_[2];
-					$dbpass = @$_[3];
-				}
-				my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
-				my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
-				$rs = sys_command($db_backupcmd);
-				return $rs if ($rs != 0);
-				$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
-				return $rs if ($rs != 0);
-			}
-		#
-		# END MOD USER_DB-BACKUP
-		#
-			if( -z $dmn_backup_dir)
-			{
-				$rs = del_file($dmn_backup_dir);
 
-				return $rs if ($rs != 0);
+    	$sql="select * from sql_database where domain_id=$dmn_id";
+		($rs,my $rdata3) = doSQL($sql);
+
+		foreach(@$rdata3) {
+			my $db_name=@$_[2];
+			my $db_id=@$_[0];
+			$sql = "select * from sql_user where sqld_id=$db_id";
+			($rs,my $rdata2) = doSQL($sql);
+			my $dbuser = "";
+			my $dbpass = "";
+
+			foreach(@$rdata2) {
+				$dbuser = @$_[2];
+				$dbpass = @$_[3];
 			}
 
-			if(! -d $dmn_backup_dir)
-			{
-				$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
-
-				return $rs if ($rs != 0);
-			}
-
-			$rs = sys_command($backup_cmd);
-
-			# do not return if backup throws an error, or other domains will not be backuped
-			if ($rs == 0) {
-
-				$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
-
-				return $rs if ($rs != 0);
-			}
-
-			$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*");
+			my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
+			my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
+			$rs = sys_command($db_backupcmd);
 
 			return $rs if ($rs != 0);
 
-			$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
+			$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
 
 			return $rs if ($rs != 0);
-
-#			my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
-#
-#			my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-#
-#			my $sys_user = "$suexec_user_pref$sys_uid";
-#
-#			my $sys_group = "$suexec_user_pref$sys_gid";
-
-			$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
-
-			return $rs if ($rs != 0);
-
 		}
 
+		#
+		# User Database Backup
+		#
+
+		if(! -d $dmn_backup_dir) {
+			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
+
+			return $rs if ($rs != 0);
+		}
+
+		$rs = sys_command($backup_cmd);
+
+		# do not return if backup throws an error, or other domains will not be backuped
+		if ($rs == 0) {
+
+			$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
+
+			return $rs if ($rs != 0);
+		}
+
+		$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*");
+
+		return $rs if ($rs != 0);
+
+		$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
+
+		return $rs if ($rs != 0);
+
+#		my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
+#
+#		my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+#
+#		my $sys_user = "$suexec_user_pref$sys_uid";
+#
+#		my $sys_group = "$suexec_user_pref$sys_gid";
+
+		$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
+
+		return $rs if ($rs != 0);
 
 	}
 

@@ -199,6 +199,10 @@ sub collect_http_traffic {
 
     my ($key, $value, $timestamp, $sum) = (undef, undef, time(), 0);
 
+    # timestamp has floor down for the last half'n our to make timestamps in
+	# server_traffic and domain_traffic the same
+    $timestamp = $timestamp - ($timestamp % 1800);
+
     my ($rs, $rdata) = (undef, undef);
 
     push_el(\@main::el, 'collect_http_traffic()', 'Starting...');
