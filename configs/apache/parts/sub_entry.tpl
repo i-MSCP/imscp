@@ -22,7 +22,7 @@
     Alias /errors {WWW_DIR}/{DMN_NAME}/errors/
 
     <Directory {WWW_DIR}/{DMN_NAME}/errors/>
-        <IfModule mod_php.c>
+        <IfModule mod_php4.c>
             php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
         </IfModule>
     </Directory>
@@ -53,7 +53,7 @@
         </Directory>
     </IfModule>
 
-    <IfModule mod_php.c>
+    <IfModule mod_php4.c>
         <Directory {GUI_ROOT_DIR}>
             php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
             php_admin_value session.save_path "/tmp/"

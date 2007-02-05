@@ -27,7 +27,7 @@ Alias /vhcs2 /var/www/vhcs2/gui
 </Directory>
 
 <Directory /var/www/vhcs2/gui/tools/filemanager>
-    <IfModule mod_php.c>
+    <IfModule mod_php4.c>
         php_flag register_globals On
         php_admin_value open_basedir "/var/www/vhcs2/gui/tools/filemanager/:/tmp/:/usr/share/php/"
     </IfModule>
