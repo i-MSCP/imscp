@@ -251,45 +251,46 @@ sub backup_all_engine {
 
 		#
 		# User Database Backup
-		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der VHCS-DB auslesen
-		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
-		#
-
-    	$sql="select * from sql_database where domain_id=$dmn_id";
-		($rs,my $rdata3) = doSQL($sql);
-
-		foreach(@$rdata3) {
-			my $db_name=@$_[2];
-			my $db_id=@$_[0];
-			$sql = "select * from sql_user where sqld_id=$db_id";
-			($rs,my $rdata2) = doSQL($sql);
-			my $dbuser = "";
-			my $dbpass = "";
-
-			foreach(@$rdata2) {
-				$dbuser = @$_[2];
-				$dbpass = @$_[3];
-			}
-
-			my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
-			my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
-			$rs = sys_command($db_backupcmd);
-
-			return $rs if ($rs != 0);
-
-			$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
-
-			return $rs if ($rs != 0);
-		}
-
-		#
-		# User Database Backup
 		#
 
 		if(! -d $dmn_backup_dir) {
 			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
 
 			return $rs if ($rs != 0);
+		}
+
+		#
+		# User Database Backup
+		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der VHCS-DB auslesen
+		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
+		#
+
+    	$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+		($rs,my $rdata3) = doSQL($sql);
+
+		foreach(@$rdata3) {
+			my $db_id=@$_[0];
+			my $db_name=@$_[1];
+			$sql = "SELECT * FROM sqlu_name, sqlu_pass WHERE sqld_id=$db_id LIMIT 1";
+			($rs,my $rdata2) = doSQL($sql);
+			my $dbuser = "";
+			my $dbpass = "";
+
+			foreach(@$rdata2) {
+				$dbuser = @$_[0];
+				$dbpass = @$_[1];
+			}
+			if ($dbuser && $dbpass) {
+				my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
+				my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
+				$rs = sys_command($db_backupcmd);
+
+				return $rs if ($rs != 0);
+
+				$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
+
+				return $rs if ($rs != 0);
+			}
 		}
 
 		$rs = sys_command($backup_cmd);
