@@ -1,15 +1,24 @@
 VHCS 2.4.8 ω Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ____________________________________________________________
-/ @TODO:                                                     \
-|	- FastCGI:                                               |
-|		* Copy files on update                               |
-|		* apache: check if stats are working with FastCGI    |
-|	- AWStats:                                               |
-|		* apache: set statsdir if awstats is enabled         |
-|		* gui: disable stats-alias in client menu            |
-\____________________________________________________________/
+ _________________________________________________________________
+/ @TODO:                                                     	\
+|	- FastCGI:                                                  |
+|		* Copy files on update						|
+|		* apache: check if stats are working with FastCGI	|
+|											|
+|		* Fixed path default-vhcs php.ini				|
+|           * Fixed name php.ini fot fcgi and other			|            
+|											|
+|	- AWStats:									|
+|		* apache: set statsdir if awstats is enabled		|
+|		* gui: disable stats-alias in client menu			|
+\_________________________________________________________________/
 
+2007-02-06 Laurent DECLERCQ
+		- CONFIGS:
+			- Edit "httpd.conf" and "vhcs2.base.tpl"
+			=> added Handler "default-vhcs" (for vhcs working)
+ 
 2007-02-05 Benedikt Heintel
 	- GUI:
 		multilingual support changed (tables have less columns, languages are stored UTF-8)
