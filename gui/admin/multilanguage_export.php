@@ -25,6 +25,7 @@ check_login();
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== ''){
   $language_table = $_GET['export_lang'];
+  $encoding 	= $sql->Execute("SELECT `msqstr` FROM `$language_table` WHERE `msgid` = 'encoding';");
   $query = <<<SQL_QUERY
 			SELECT
 				msgid,
@@ -41,6 +42,7 @@ SQL_QUERY;
 		die();
 	}
 	else {
+		header( "Content-type: text/plain; charset=".$encoding );
 		while (!$rs -> EOF) {
 			$msgid = $rs->fields['msgid'];
 			$msgstr = $rs->fields['msgstr'];

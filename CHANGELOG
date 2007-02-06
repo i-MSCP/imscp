@@ -10,13 +10,23 @@ VHCS 2.4.8 ω Omega Changelog
 |		* gui: disable stats-alias in client menu            |
 \____________________________________________________________/
 
+2007-02-05 Benedikt Heintel
+	- GUI:
+		multilingual support changed (tables have less columns, languages are stored UTF-8)
+		lostpassword improvements
+	- LANGUAGES:
+		added message string
+		all languages in UTF-8
+		=> Chinese, Thai and Russian have to be re-translated!
+	- SETUP:
+		added "a2enmod rewirte" for nativ mod_rewrite support
+
 2007-02-05 Laurent DECLERCQ
 	- CONFIGS:
 		Changed <IfModule mod_php.c>
-            Report wget-hack prevention 
-
+            Report wget-hack prevention
 	- DOCS:
-		Fixed name fedora
+		Fixed name "fedora"
 
 2007-02-04 Benedikt Heintel
 	- ENGINE:

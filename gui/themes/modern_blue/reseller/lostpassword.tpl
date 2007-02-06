@@ -44,45 +44,44 @@
           </tr>
           <tr>
             <td>
-			
-			
 			<form action="lostpassword.php" method="post" name="frmlostpassword" ID="frmlostpassword">
             <table width="100%" cellpadding="5" cellspacing="5">
               <tr>
-                <td width="20">&nbsp;</td> 
-                <td WIDTH="200" class="content3"><b>{TR_MESSAGE_TEMPLATE_INFO}</b></td>
-                <td WIDTH="300" class="content3">{TR_LOSTPW_MESSAGE_1}</td>
-                <td colspan="2" class="content3">{TR_LOSTPW_MESSAGE_2}</td>
+                <td width="20">&nbsp;</td>
+                <td colspan="4" class="content3"><b>{TR_MESSAGE_TEMPLATE_INFO}</b></td>
+			  </tr>
+              <tr>
+                <td width="20">&nbsp;</td>
+                <td width="48%" colspan="2" class="content3">{TR_ACTIVATION_EMAIL}</td>
+                <td colspan="2" class="content3">{TR_PASSWORD_EMAIL}</td>
                 </tr>
               <tr>
-                <td width="20">&nbsp;</td> 
-                <td width="200" class="content2">{TR_USER_LOGIN_NAME}</td>
-                <td WIDTH="300"  class="content">{USERNAME} </td>
-                <td WIDTH="200"  class="content2">{TR_USER_LOGIN_NAME}</td>
-                <td  class="content">{USERNAME} </td>
+                <td width="20">&nbsp;</td>
+                <td width="24%" class="content2">{TR_USER_LOGIN_NAME}</td>
+                <td width="24%" class="content">{USERNAME}</td>
+                <td width="24%" class="content2">{TR_USER_LOGIN_NAME}</td>
+                <td class="content">{USERNAME}</td>
               </tr>
               <tr>
                 <td width="20">&nbsp;</td>
                 <td class="content2">{TR_LOSTPW_LINK}</td>
-                <td  class="content">{LINK}</td>
-                <td  class="content2">{TR_USER_PASSWORD}</td>
-                <td  class="content">{PASSWORD}</td>
+                <td class="content">{LINK}</td>
+                <td class="content2">{TR_USER_PASSWORD}</td>
+                <td class="content">{PASSWORD}</td>
               </tr>
               <tr>
                 <td width="20">&nbsp;</td>
                 <td class="content2">{TR_USER_REAL_NAME}</td>
-                <td  class="content">{NAME}</td>
-                <td  class="content2">{TR_USER_REAL_NAME}</td>
-                <td  class="content">{NAME}</td>
+                <td class="content">{NAME}</td>
+                <td class="content2">{TR_USER_REAL_NAME}</td>
+                <td class="content">{NAME}</td>
               </tr>
             </table>
             <br>
             <table width="100%" cellpadding="5" cellspacing="5">
               <tr>
-                <td width="20">&nbsp;</td> 
-                <td WIDTH="200" class="content3"><b>{TR_MESSAGE_TEMPLATE}</b></td>
-                <td WIDTH="300" class="content3">&nbsp;</td>
-                <td class="content3">&nbsp;</td>
+                <td width="20">&nbsp;</td>
+                <td colspan="3" class="content3"><b>{TR_MESSAGE_TEMPLATE}</b></td>
               </tr>
 				<!-- BDP: page_message -->
               <tr>
@@ -91,42 +90,42 @@
                 </tr>
 				<!-- EDP: page_message -->
               <tr>
-                <td>&nbsp;</td> 
+                <td>&nbsp;</td>
                 <td class="content2" width="200">{TR_SUBJECT}</td>
-                <td WIDTH="300" class="content"> 
+                <td WIDTH="300" class="content">
                   <input name="subject1" type="text" class="textinput" ID="subject1" style="width:270px" value="{SUBJECT_VALUE1}">
                 </td>
                 <td class="content"><input type="text" name="subject2" value="{SUBJECT_VALUE2}" style="width:270px" class="textinput"></td>
               </tr>
               <tr>
-                <td>&nbsp;</td> 
+                <td>&nbsp;</td>
                 <td class="content2" width="200">{TR_MESSAGE}</td>
-                <td class="content"> 
+                <td class="content">
                   <textarea name="message1" rows="8" class="textinput2" ID="message1" style="width:270px">{MESSAGE_VALUE1}</textarea>
                 </td>
                 <td class="content"><textarea name="message2" rows="8" class="textinput2" ID="message2" style="width:270px">{MESSAGE_VALUE2}</textarea></td>
               </tr>
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_SENDER_EMAIL}</td>
                 <td COLSPAN="2" class="content">{SENDER_EMAIL_VALUE}
                   <input type="hidden" name="sender_email" value="{SENDER_EMAIL_VALUE}" style="width:270px" class="textinput">
                 </td>
               </tr>
               <tr>
-                <td width="20">&nbsp;</td> 
+                <td width="20">&nbsp;</td>
                 <td width="200" class="content2">{TR_SENDER_NAME}</td>
                 <td COLSPAN="2" class="content">{SENDER_NAME_VALUE}
                   <input type="hidden" name="sender_name" value="{SENDER_NAME_VALUE}" style="width:270px" class="textinput">
                 </td>
               </tr>
-              <tr> 
-                <td>&nbsp; 
+              <tr>
+                <td>&nbsp;
                   </td>
                 <td colspan="3"><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}"></td>
                 </tr>
-            
-            </table>              
+
+            </table>
             <input type="hidden" name="uaction" value="apply">
            </form>
 			</td>

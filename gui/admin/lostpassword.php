@@ -1,20 +1,22 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		      			|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org									|
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
 
 include '../include/vhcs-lib.php';
 
@@ -59,7 +61,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
   } else {
 
 		set_lostpassword_activation_email($user_id, $data_1);
-		
+
 		set_lostpassword_password_email($user_id, $data_2);
 
   	set_page_message (tr('Auto email template data updated!'));
@@ -87,19 +89,19 @@ gen_logged_from($tpl);
 $tpl -> assign(array('TR_LOSTPW_EMAIL' => tr('Lostpw email'),
                      'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
                      'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-										 'SUBJECT_VALUE1' => $data_1['subject'],
+					 'SUBJECT_VALUE1' => $data_1['subject'],
                      'MESSAGE_VALUE1' => $data_1['message'],
-										 'SUBJECT_VALUE2' => $data_2['subject'],
+					 'SUBJECT_VALUE2' => $data_2['subject'],
                      'MESSAGE_VALUE2' => $data_2['message'],
                      'SENDER_EMAIL_VALUE' => $data_1['sender_email'],
                      'SENDER_NAME_VALUE' => $data_1['sender_name'],
-                     'TR_LOSTPW_MESSAGE_1' => tr('Lostpw message 1'),
-                     'TR_LOSTPW_MESSAGE_2' => tr('Lostpw message 2'),
+                     'TR_ACTIVATION_EMAIL' => tr('Activation E-Mail'),
+                     'TR_PASSWORD_EMAIL' => tr('Password E-Mail'),
                      'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
                      'TR_USER_PASSWORD' => tr('User password'),
                      'TR_USER_REAL_NAME' => tr('User (first and last) name'),
-										 'TR_LOSTPW_LINK' => tr('Lostpw link'),
-										 'TR_SUBJECT' => tr('Subject'),
+					 'TR_LOSTPW_LINK' => tr('Lostpw link'),
+					 'TR_SUBJECT' => tr('Subject'),
                      'TR_MESSAGE' => tr('Message'),
                      'TR_SENDER_EMAIL' => tr('Senders email'),
                      'TR_SENDER_NAME' => tr('Senders name'),

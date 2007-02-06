@@ -164,27 +164,10 @@ function install_lang() {
 								id int(10) unsigned NOT NULL auto_increment,
 								msgid text,
 								msgstr text,
-								msg_row int(10) unsigned,
-								msg_column int(10) unsigned,
-								msg_file_dest text,
-								msg_name varchar(250),
-								UNIQUE id (id));"
+								UNIQUE id (id)
+								) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 							);
 
-				/*
-				exec_query($sql, "DROP TABLE $lang_table", array());
-
-				exec_query($sql, "CREATE TABLE $lang_table (
-								  id int(10) unsigned NOT NULL auto_increment,
-								  msgid text,
-								  msgstr text,
-								  msg_row int(10) unsigned,
-								  msg_column int(10) unsigned,
-								  msg_file_dest text,
-								  msg_name varchar(250),
-								  UNIQUE id (id))",
-							array());
-				*/
 				while(!feof($fd)){
 					$buffer_id   = fgets($fd, 4096);
 					$buffer_id   = explode(" = ",chop($buffer_id));
