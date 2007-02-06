@@ -1,13 +1,15 @@
 # httpd Data BEGIN.
-NameVirtualHost *
+
 #
 # wget-hack prevention
 #
+
 <IfModule mod_rewrite.c>
     RewriteEngine on
     RewriteCond %{HTTP_USER_AGENT} ^LWP::Simple
     RewriteRule ^/.* http://%{REMOTE_ADDR}/ [L,E=nolog:1]
 </IfModule>
+
 #
 # Web traffic accounting.
 #
@@ -39,6 +41,7 @@ Alias /vhcs_images /var/www/vhcs2/gui/images
     Options MultiViews IncludesNoExec FollowSymLinks
 </Directory>
 
+<IfModule mod_fastcgi.c>
 # GLOBAL VHCS PHP-CGI (Just for vhcs)
 # The php.ini for this is in /etc/php4/cgi
 # TODO : Fixed path in default php.ini
@@ -52,6 +55,7 @@ ScriptAlias /default-vhcs /usr/lib/cgi-bin/
    Order allow,deny
    Allow from all
 </Directory>
+</IfModule>
 
 #
 # Default GUI.
@@ -67,10 +71,12 @@ ScriptAlias /default-vhcs /usr/lib/cgi-bin/
         Order allow,deny
         Allow from all
     </Directory>
-       
+
+      <IfModule mod_fastcgi.c>
 	Action default-vhcs /default-vhcs/php
 	AddHandler default-vhcs .php
 	AddType application/x-httpd-default-vhcs .php
+      </IfModule>
 
 </VirtualHost>
 
