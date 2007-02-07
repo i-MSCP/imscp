@@ -1511,7 +1511,7 @@ sub setup_php {
 
     ## php5.ini
 	#($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5.ini');
-       #($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php5/php5.ini');
+       ($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php5/php.ini');
     return $rs if ($rs != 0);
 
     %tag_hash = (
