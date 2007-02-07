@@ -15,7 +15,7 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007.02.07 Laurent DECLERCQ
+2007-02-07 Laurent DECLERCQ
 	- CONFIGS:
 		Fixed #48 :
 			=> Edit fastcgi.conf (NO FINISH)
@@ -24,7 +24,7 @@ VHCS 2.4.8 ω Omega Changelog
 
 			=> Edit httpd.conf and vhcs2_base.tpl :
 				- Remove Handler "default-vhcs"
-	
+
 			=> Create new directory "master" for the files of configuration (fascgi) of the user master.
 			=> Copy and move "php4-fcgi-starter" and "php5-fcgi-starter" in "master" directory for the master user
 			=> Create "php4" and "php5" directory in master "directory" for master user
@@ -48,7 +48,7 @@ VHCS 2.4.8 ω Omega Changelog
 				- Changed path for "php4-fcgi-starter" and "php5-fcgi-starter" (for master user)
 				- Added "CONF_DIR" for php.ini
 			=> Edit set-gui-permissions script :
-				- Added chmod "0755" for the GUI "phptmp" directory 
+				- Added chmod "0755" for the GUI "phptmp" directory
 	- GUI:
 		Fixed #48 :
 			=> Create new directory for the tmp_dir and the upload_dir --> "phptmp" for the master user
