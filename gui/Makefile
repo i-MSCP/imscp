@@ -51,7 +51,7 @@ install:
 	cp -dR ./tools $(SYSTEM_GUI_ROOT)
 	cp -dR ./orderpanel $(SYSTEM_GUI_ROOT)
 	
-	cp-dR ./phptmp $(SYSTEM_GUI_ROOT)
+	cp -dR ./phptmp $(SYSTEM_GUI_ROOT)
 
 uninstall:
 
