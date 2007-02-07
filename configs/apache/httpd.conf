@@ -41,22 +41,6 @@ Alias /vhcs_images /var/www/vhcs2/gui/images
     Options MultiViews IncludesNoExec FollowSymLinks
 </Directory>
 
-<IfModule mod_fastcgi.c>
-# GLOBAL VHCS PHP-CGI (Just for vhcs)
-# The php.ini for this is in /etc/php4/cgi
-# TODO : Fixed path in default php.ini
-
-
-ScriptAlias /default-vhcs /usr/lib/cgi-bin/
-
-<Directory /usr/lib/cgi-bin>
-   Options +ExecCGI +FollowSymLinks
-   AllowOverride all
-   Order allow,deny
-   Allow from all
-</Directory>
-</IfModule>
-
 #
 # Default GUI.
 #
@@ -71,12 +55,6 @@ ScriptAlias /default-vhcs /usr/lib/cgi-bin/
         Order allow,deny
         Allow from all
     </Directory>
-
-      <IfModule mod_fastcgi.c>
-	Action default-vhcs /default-vhcs/php
-	AddHandler default-vhcs .php
-	AddType application/x-httpd-default-vhcs .php
-      </IfModule>
 
 </VirtualHost>
 
