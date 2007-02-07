@@ -70,3 +70,14 @@ chmod 0400 $ROOT_DIR/gui/include/vhcs2-db-keys.php
 
 chmod  0755 $APACHE_WWW_DIR;
 chown  $APACHE_USER:$APACHE_GROUP $APACHE_WWW_DIR;
+
+#
+# Set correct permission for phptmp gui directory
+#
+
+i="$ROOT_DIR/gui/phptmp"
+
+echo "0755 $APACHE_USER:$APACHE_GROUP [$i]";
+
+chmod -R 0755 $i;
+chown -R $APACHE_USER:$APACHE_GROUP $i;
