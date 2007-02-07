@@ -37,7 +37,7 @@ Alias /vhcs2 /var/www/vhcs2/gui
 
 Alias /vhcs_images /var/www/vhcs2/gui/images
 <Directory /var/www/vhcs2/gui/images>
-    AllowOverride none 
+    AllowOverride none
     Options MultiViews IncludesNoExec FollowSymLinks
 </Directory>
 
@@ -45,7 +45,7 @@ Alias /vhcs_images /var/www/vhcs2/gui/images
 # Default GUI.
 #
 
-<VirtualHost _default_:*> 
+<VirtualHost _default_:*>
 
     DocumentRoot /var/www/vhcs2/gui
 
