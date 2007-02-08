@@ -1419,13 +1419,13 @@ sub setup_php_master_user_dirs {
 
 	# Create php4 directory for Master User
 	
-	$rs = make_dir("$starter_dir/master/php4", 'root', 'root', '0644');
+	$rs = make_dir("$starter_dir/master/php4", 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 
 	# Create php5 directory for Master User
 
-	$rs = make_dir("$starter_dir/master/php5", 'root', 'root', '0644');
+	$rs = make_dir("$starter_dir/master/php5", 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 
@@ -1465,17 +1465,6 @@ sub setup_php {
     $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi.conf.vhcs2 $main::cfg{'APACHE_CONF_DIR'}/mods-available/fastcgi.conf";
     $rs = sys_command($cmd);
     return $rs if ($rs != 0);
-
-    #
-    # Actual Work (nuxwin)
-    # Create php4 and php5 directory for php.ini file of the Master user
-    #
-
-	# php4 directory
-	#return $rs if ($rs != 0);
-
-	# php5 directory
-	#return $rs if ($rs != 0);
 
     #
     # Copy the Master starter dir
