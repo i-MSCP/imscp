@@ -16,6 +16,10 @@ VHCS 2.4.8 ω Omega Changelog
 2007-02-08 Benedikt Heintel
 	- LANGUAGES:
 		Spanish: added missing language strings
+	- GUI:
+		changed behavior of string translation and added optional javascript variable
+	- SETUP:
+		modified Makefiles
 
 2007-02-08 Laurent DECLERCQ
 	- ENGINE:

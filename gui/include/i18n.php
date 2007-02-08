@@ -25,14 +25,18 @@
  * 	@access			public
  * 	@version		2.0
  *  @author			VHCS Team, Benedikt Heintel (2007)
+ *
+ * 	@param		$msgid		string to translate
+ * 	@param		$js			whether the input string is in javascript or not
+ * 	@return					translated or original string
  **/
-function tr($msgid) {
+function tr($msgid, $js = false) {
 	global $sql, $default_lang;
 
 	$default_lang = $_SESSION['user_def_lang'];
 
 	if (!$sql) {
-		return htmlentities($msgid, ENT_COMPAT, "UTF-8");
+		return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, "UTF-8")));
 	}
 	else {
 		$table 		= $default_lang;
@@ -44,21 +48,55 @@ function tr($msgid) {
 		}
 
 		if (!$res) {
-			return htmlentities($msgid, ENT_COMPAT, $encoding);
+			return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
 		}
 		elseif ($res->RowCount() == 0) {
-			return htmlentities($msgid, ENT_COMPAT, $encoding);
+			return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
 		}
 		else {
 			$data = $res->FetchRow();
 			if ($data['msgstr'] == '') {
-				return htmlentities($msgid, ENT_COMPAT, $encoding);
+				return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
 			}
 			else {
-				return htmlentities($data['msgstr'], ENT_COMPAT, $encoding);
+				return ($js ? $data['msgstr'] : replace_html(htmlentities($data['msgstr'], ENT_COMPAT, $encoding)));
 			}
 		}
 	}
+}
+
+/**
+ * 	Function:		replace_html
+ * 	Description:	replaces special encoded strings back to their original signs
+ *
+ * 	@access			public
+ * 	@version		1.0
+ *  @author			VHCS Team, Benedikt Heintel (2007)
+ *
+ * 	@param		$string		string to replace chars
+ * 	@return					string with replaced chars
+ **/
+function replace_html($string) {
+
+	$pattern = array (
+						"=&lt;b&gt;=is",
+						"=&lt;/b&gt;=is",
+						"=&lt;i&gt;=is",
+						"=&lt;/i&gt;=is",
+						"=&lt;br&gt;=is"
+					 );
+
+	$replacement = array (
+							"<b>",
+							"</b>",
+							"<i>",
+							"</i>",
+							"<br />"
+						 );
+
+	$string = preg_replace($pattern, $replacement, $string);
+
+	return $string;
 }
 
 ?>
