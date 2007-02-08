@@ -15,10 +15,15 @@ VHCS 2.4.8 ω Omega Changelog
 \_________________________________________________________________/
 
 2007-02-08 Laurent DECLERCQ
-	- ENGINE
+	- ENGINE:
 		Fixed bug #48 :
 			=> Edit "vhcs2-dmn-mngr
 				- Instructions disabled for Master user
+
+	- SETUP:
+		Fixed bug #48 :
+			=> Edit vhcs-setup
+				- added new Subroutine --> create "php4" and "php5" directory for Master User
  
 2007-02-07 Laurent DECLERCQ
 	- CONFIGS:

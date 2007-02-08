@@ -1405,6 +1405,33 @@ sub setup_named {
 
 }
 
+
+#
+	# Create PHP directory for Master User (FastCGI)
+	#
+sub setup_php_master_user_dirs {
+
+	push_el(\@main::el, 'setup_php_master_user_dirs()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
+
+	# Create php4 directory for Master User
+	
+	$rs = make_dir("$starter_dir/master/php4", root, root, 0644);
+
+	return $rs if ($rs != 0);
+
+	# Create php5 directory for Master User
+
+	$rs = make_dir("$starter_dir/master/php5", root, root, 0644);
+
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'setup_php_master_user_dirs()', 'Ending...');
+}
+
 sub setup_php {
 
     my ($rs, $rdata, $cmd, $cfg_tpl, $cfg) = (undef, undef, undef, undef, undef);
@@ -2192,6 +2219,10 @@ sub setup_host_system {
     return $rs if ($rs != 0);
 
     $rs = setup_named();
+
+    return $rs if ($rs != 0);
+
+    $rs = setup_php_master_user_dirs();
 
     return $rs if ($rs != 0);
 
