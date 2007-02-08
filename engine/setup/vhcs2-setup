@@ -1430,6 +1430,8 @@ sub setup_php_master_user_dirs {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_php_master_user_dirs()', 'Ending...');
+	
+	return 0;
 }
 
 sub setup_php {
