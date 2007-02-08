@@ -1440,6 +1440,17 @@ sub setup_php {
     return $rs if ($rs != 0);
 
     #
+    # Actual Work (nuxwin)
+    # Create php4 and php5 directory for php.ini file of the Master user
+    #
+
+	# php4 directory
+	#return $rs if ($rs != 0);
+
+	# php5 directory
+	#return $rs if ($rs != 0);
+
+    #
     # Copy the Master starter dir
     #
 

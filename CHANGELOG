@@ -7,7 +7,6 @@ VHCS 2.4.8 ω Omega Changelog
 |               * apache: check if stats are working with FastCGI |
 |                                                                 |
 |               * Finish fastcgi.conf file                        |
-|               * Edit vhcs2.dmn.mngr for fcgi                    |
 |                                                                 |
 |                                                                 |
 |         - AWStats:                                              |
@@ -15,14 +14,20 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-02-08 Laurent DECLERCQ
+	- ENGINE
+		Fixed bug #48 :
+			=> Edit "vhcs2-dmn-mngr
+				- Instructions disabled for Master user
+ 
 2007-02-07 Laurent DECLERCQ
 	- CONFIGS:
-		Fixed #48 :
-			=> Edit fastcgi.conf (NO FINISH)
+		Fixed bug #48 :
+			=> Edit "fastcgi.conf" (NO FINISH)
 				- Rename fastcgi.conf in fastcgi.conf.bak
 				- Create new fastcgi.conf (testing file)
 
-			=> Edit httpd.conf and vhcs2_base.tpl :
+			=> Edit "httpd.conf" and "vhcs2_base.tpl" :
 				- Remove Handler "default-vhcs"
 
 			=> Create new directory "master" for the files of configuration (fascgi) of the user master.
@@ -34,11 +39,11 @@ VHCS 2.4.8 ω Omega Changelog
 			=> Edit "php.ini" files for master user :
 				- Fixed "open_basedir" path for master user
 				- Fixed "upload_dir" path for master user
-				- Fixed 'session_dir" path for master user
+				- Fixed "session_dir" path for master user
 			=> Copy, move "php4-fcgi-starter" and "php5-fcgi-starter" in "master" directory for the master user
 
 	- SETUP:
-		Fixed #48 :
+		Fixed bug #48 :
 			=> Edit makefile :
 				- Added "phptmp" directory
 			=> Edit "vhcs2.setup" script :
@@ -46,11 +51,11 @@ VHCS 2.4.8 ω Omega Changelog
 				- Changed path and rename "php4.ini" in "php.ini" (for master user)
 				- Changed path and rename "php5.ini" in "php.ini" (for master user)
 				- Changed path for "php4-fcgi-starter" and "php5-fcgi-starter" (for master user)
-				- Added "CONF_DIR" for php.ini
+				- Added "CONF_DIR" for "php.ini"
 			=> Edit set-gui-permissions script :
 				- Added chmod "0755" for the GUI "phptmp" directory
 	- GUI:
-		Fixed #48 :
+		Fixed bug #48 :
 			=> Create new directory for the tmp_dir and the upload_dir --> "phptmp" for the master user
 
 2007-02-06 Laurent DECLERCQ
