@@ -1405,15 +1405,15 @@ sub setup_named {
 
 }
 
-
-#
+	#
 	# Create PHP directory for Master User (FastCGI)
 	#
+
 sub setup_php_master_user_dirs {
+	
+	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'setup_php_master_user_dirs()', 'Starting...');
-
-	my ($rs, $rdata) = (undef, undef);
 
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
