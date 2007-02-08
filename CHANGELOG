@@ -8,11 +8,14 @@ VHCS 2.4.8 ω Omega Changelog
 |                                                                 |
 |               * Finish fastcgi.conf file                        |
 |                                                                 |
-|                                                                 |
 |         - AWStats:                                              |
 |               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-02-08 Benedikt Heintel
+	- LANGUAGES:
+		Spanish: added missing language strings
 
 2007-02-08 Laurent DECLERCQ
 	- ENGINE:
@@ -24,7 +27,7 @@ VHCS 2.4.8 ω Omega Changelog
 		Fixed bug #48 :
 			=> Edit vhcs-setup
 				- added new Subroutine --> create "php4" and "php5" directory for Master User
- 
+
 2007-02-07 Laurent DECLERCQ
 	- CONFIGS:
 		Fixed bug #48 :
