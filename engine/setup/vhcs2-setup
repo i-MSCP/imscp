@@ -1419,13 +1419,13 @@ sub setup_php_master_user_dirs {
 
 	# Create php4 directory for Master User
 	
-	$rs = make_dir("$starter_dir/master/php4", 'root', 'root', 0644);
+	$rs = make_dir("$starter_dir/master/php4", 'root', 'root', 0755);
 
 	return $rs if ($rs != 0);
 
 	# Create php5 directory for Master User
 
-	$rs = make_dir("$starter_dir/master/php5", 'root', 'root', 0644);
+	$rs = make_dir("$starter_dir/master/php5", 'root', 'root', 0755);
 
 	return $rs if ($rs != 0);
 
