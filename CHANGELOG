@@ -13,6 +13,13 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-02-09 Laurent DECLERCQ
+	- CONFIGS:
+		Edit "php.ini" files for master user:
+			- open_basedir: added "bind/df" and "/bind/mount" path for GUI System Info
+			- open_basedir: added "/var/log/rkhunter.log" path for Gui Rootkit
+			- disable_functions: remove "popen" function for GUI system Info
+
 2007-02-08 Benedikt Heintel
 	- LANGUAGES:
 		Spanish: added missing language strings
