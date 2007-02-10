@@ -27,6 +27,104 @@ define('MT_NORMAL_CATCHALL', 'normal_catchall');
 define('MT_ALIAS_CATCHALL',  'alias_catchall');
 
 
+function gen_reseller_mainmenu(&$tpl, $menu_file) {
+
+global $sql, $cfg;
+
+$tpl -> define_dynamic('menu', $menu_file);
+
+$tpl -> define_dynamic('custom_buttons', 'menu');
+
+$tpl -> assign(
+					array(
+							'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+							'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+							'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+							'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+							'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+							'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+							'TR_MENU_ADD_USER' => tr('Add user'),
+							'TR_MENU_E_MAIL_SETUP' => tr('Email setup'),
+							'TR_MENU_CIRCULAR' => tr('Email marketing'),
+							'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
+							'TR_MENU_DOMAIN_ALIAS' => tr('Domain alias'),
+							'TR_MENU_SUBDOMAINS' => tr('Subdomains'),
+							'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
+							'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+							'TR_MENU_NEW_TICKET' => tr('New ticket'),
+							'TR_MENU_LAYOUT_SETTINGS' => tr('Layout settings'),
+							'TR_MENU_LOGOUT' => tr('Logout'),
+							'TR_MENU_OVERVIEW' => tr('Overview'),
+							'TR_MENU_LANGUAGE'  => tr('Language'),
+							'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
+							'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+							'TR_MENU_ORDERS' => tr('Manage Orders'),
+							'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
+							'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
+							'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+						)
+				);
+
+$query = <<<SQL_QUERY
+        select
+            *
+        from
+            custom_menus
+        where
+            menu_level = 'reseller'
+          or
+            menu_level = 'all'
+SQL_QUERY;
+
+    $rs = exec_query($sql, $query, array());
+	 if ($rs -> RecordCount() == 0) {
+
+        $tpl -> assign('CUSTOM_BUTTONS', '');
+
+    } else {
+
+		global $i;
+		$i = 100;
+
+		while (!$rs -> EOF) {
+
+		$menu_name = $rs -> fields['menu_name'];
+		$menu_link = get_menu_vars($rs -> fields['menu_link']);
+		$menu_target = $rs -> fields['menu_target'];
+
+		if ($menu_target === ''){
+			$menu_target = "";
+		} else {
+			$menu_target = "target=\"".$menu_target."\"";
+		}
+
+		$tpl -> assign(
+                  array(
+                        'BUTTON_LINK' => $menu_link,
+                        'BUTTON_NAME' => $menu_name,
+                        'BUTTON_TARGET' => $menu_target,
+                        'BUTTON_ID' => $i,
+                        )
+                  );
+
+    $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+    $rs -> MoveNext(); $i++;
+
+		} // end while
+	} // end else
+
+	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+
+		$tpl -> assign('SUPPORT_SYSTEM', '');
+
+	}
+
+	$tpl -> parse('MAIN_MENU', 'menu');
+
+}// End of gen_reseller_menu()
+
+
+
 	// Function to generate the manu data for reseller
 function gen_reseller_menu(&$tpl, $menu_file) {
 

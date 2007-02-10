@@ -70,6 +70,18 @@ SQL_QUERY;
 
 }
 
+function add_temp_ftp_acc(&$sql, $domain, $user) {
+	//goal : install temporary ftp-user for some skripts	
+	
+	
+	
+
+}
+
+function del_temp_ftp_acc(&$sql, $domain, $user) {
+	
+
+}
 
 function get_domain_running_sub_cnt(&$sql, $domain_id) {
     $query = <<<SQL_QUERY
@@ -383,6 +395,118 @@ function get_domain_running_props_cnt(&$sql, $domain_id) {
     list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($sql, $domain_id);
 
     return array($sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt, $sqlu_acc_cnt);
+
+}
+
+function gen_client_mainmenu(&$tpl, $menu_file) {
+
+global $sql, $cfg;
+
+$tpl -> define_dynamic('menu', $menu_file);
+
+$tpl -> define_dynamic('custom_buttons', 'menu');
+
+$tpl -> assign(
+                array(
+                        'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+                        'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+                        'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+                        'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
+                        'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
+                        'TR_MENU_MANAGE_USERS' => tr('Email and FTP accounts'),
+                        'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
+                        'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
+                        'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
+                        'TR_MENU_ERROR_PAGES' => tr('Error pages'),
+                        'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
+                        'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
+                        'TR_MENU_DAILY_BACKUP' => tr('Daily backup'),
+                        'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+                        'TR_MENU_NEW_TICKET' => tr('New ticket'),
+                        'TR_MENU_LOGOUT' => tr('Logout'),
+                        'PHP_MY_ADMIN' => tr('PhpMyAdmin'),
+                        'TR_WEBMAIL' => tr('Webmail'),
+                        'TR_FILEMANAGER' => tr('Filemanager'),
+                        'TR_MENU_WEBTOOLS' => tr('Webtools'),
+                        'TR_HTACCESS' => tr('Protected areas'),
+                        'TR_AWSTATS' => tr('Webstatistics'),
+                        'TR_HTACCESS_USER' => tr('Group - Usermanagement'),
+                        'TR_MENU_OVERVIEW' => tr('Overview'),
+                        'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
+                        'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
+                        'TR_MENU_LANGUAGE'  => tr('Language'),
+                        'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
+                        'TR_MENU_ADD_ALIAS' => tr('Add alias'),
+						'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
+                        'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
+                        'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+                        'WEBMAIL_PATH' => $cfg['WEBMAIL_PATH'],
+                        'WEBMAIL_TARGET' => $cfg['WEBMAIL_TARGET'],
+                        'PMA_PATH' => $cfg['PMA_PATH'],
+                        'PMA_TARGET' => $cfg['PMA_TARGET'],
+                        'FILEMANAGER_PATH' => $cfg['FILEMANAGER_PATH'],
+                        'FILEMANAGER_TARGET' => $cfg['FILEMANAGER_TARGET'],
+                     )
+             );
+
+
+
+$query = <<<SQL_QUERY
+        select
+            *
+        from
+            custom_menus
+        where
+            menu_level = 'user'
+          or
+            menu_level = 'all'
+SQL_QUERY;
+
+    $rs = exec_query($sql, $query, array());
+   if ($rs -> RecordCount() == 0) {
+
+        $tpl -> assign('CUSTOM_BUTTONS', '');
+
+    } else {
+
+    global $i;
+    $i = 100;
+
+    while (!$rs -> EOF) {
+
+    $menu_name = $rs -> fields['menu_name'];
+    $menu_link = get_menu_vars($rs -> fields['menu_link']);
+    $menu_target = $rs -> fields['menu_target'];
+	$menu_link = preg_replace("/\{vhcs_uname\}/", $_SESSION['user_logged'], $menu_link);
+
+    if ($menu_target === ''){
+      $menu_target = "";
+    } else {
+      $menu_target = "target=\"".$menu_target."\"";
+    }
+
+    $tpl -> assign(
+                array(
+                    'BUTTON_LINK' => $menu_link,
+                    'BUTTON_NAME' => $menu_name,
+                    'BUTTON_TARGET' => $menu_target,
+                    'BUTTON_ID' => $i,
+                    )
+                );
+
+            $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+      $rs -> MoveNext(); $i++;
+
+    } // end while
+  } // end else
+
+	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+
+		$tpl -> assign('SUPPORT_SYSTEM', '');
+
+	}
+
+	$tpl -> parse('MAIN_MENU', 'menu');
 
 }
 

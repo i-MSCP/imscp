@@ -16,6 +16,122 @@
 //   -------------------------------------------------------------------------------
 
 
+function gen_admin_mainmenu(&$tpl, $menu_file) {
+		global $sql, $cfg;
+
+		$tpl -> define_dynamic('menu', $menu_file);
+		$tpl -> define_dynamic('custom_buttons', 'menu');
+		$tpl -> assign(
+            array(
+				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+				'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+				'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+    			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+				'TR_MENU_STATISTICS' => tr('Statistics'),
+				'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
+                'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+				'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+				'TR_MENU_SETTINGS' => tr('Settings'),
+				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+				'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+				'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+    			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+				'TR_MENU_STATISTICS' => tr('Statistics'),
+				'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
+                'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+				'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+				'TR_MENU_SETTINGS' => tr('Settings'),
+                'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+                'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change pers. data'
+				'TR_MENU_ADD_ADMIN'  => tr('Add admin'),
+                'TR_MENU_ADD_RESELLER'  => tr('Add reseller'),
+                'TR_MENU_RESELLER_ASIGNMENT'  => tr('Reseller assignment'),
+                'TR_MENU_USER_ASIGNMENT'  => tr('User assignment'),
+                'TR_MENU_EMAIL_SETUP'  => tr('Email setup'),
+                'TR_MENU_CIRCULAR'  => tr('Email marketing'),
+				'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+                'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
+                'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
+                'TR_MENU_ADMIN_LOG' => tr('Admin log'),
+                'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),                
+                'TR_MENU_SYSTEM_INFO' => tr('System info'),
+                'TR_MENU_I18N' => tr('Multilanguage'),
+                'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
+                'TR_MENU_LOGOUT' => tr('Logout'),
+                'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),              
+                'TR_MENU_SERVER_TRAFFIC_SETTINGS'=> tr('Server traffic settings'),
+                'TR_MENU_SERVER_STATUS'=> tr('Server status'),
+                'TR_MENU_VHCS_UPDATE'=> tr('VHCS updates'),
+                'TR_MENU_VHCS_DEBUGGER'=> tr('VHCS debugger'),
+                'TR_CUSTOM_MENUS' => tr('Custom menus'),
+                'TR_MENU_OVERVIEW' => tr('Overview'),
+                'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
+				'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+				'TR_SERVICEMODE' => tr('Servicemode'),				
+                'TR_GENERAL_SETTINGS' => tr('General settings'),
+                'TR_SERVERPORTS' => tr('Serverports')
+		};
+	$query = <<<SQL_QUERY
+        select
+            *
+        from
+            custom_menus
+        where
+            menu_level = 'admin'
+SQL_QUERY;
+
+    $rs = exec_query($sql, $query, array());
+	 if ($rs -> RecordCount() == 0) {
+
+        $tpl -> assign('CUSTOM_BUTTONS', '');
+
+    } else {
+
+		global $i;
+		$i = 100;
+
+		while (!$rs -> EOF) {
+
+		$menu_name = $rs -> fields['menu_name'];
+		$menu_link = get_menu_vars($rs -> fields['menu_link']);
+		$menu_target = $rs -> fields['menu_target'];
+
+		if ($menu_target === ''){
+			$menu_target = "";
+		} else {
+			$menu_target = "target=\"".$menu_target."\"";
+		}
+
+		$tpl -> assign(
+                  array(
+                        'BUTTON_LINK' => $menu_link,
+                        'BUTTON_NAME' => $menu_name,
+                        'BUTTON_TARGET' => $menu_target,
+                        'BUTTON_ID' => $i,
+                        )
+                  );
+
+    $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+    $rs -> MoveNext(); $i++;
+
+		} // end while
+	} // end else
+
+	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+
+		$tpl -> assign('SUPPORT_SYSTEM', '');
+
+	}
+
+	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
+
+		$tpl -> assign('HOSTING_PLANS', '');
+
+	}
+
+	$tpl -> parse('MAIN_MENU', 'menu');
+
+}
 
 function gen_admin_menu(&$tpl, $menu_file) {
 
@@ -39,9 +155,9 @@ $tpl -> assign(
                 'TR_MENU_EMAIL_SETUP'  => tr('Email setup'),
                 'TR_MENU_CIRCULAR'  => tr('Email marketing'),
 
-				'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-				'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-				'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),
+		'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+		'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+		'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),
                 'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
                 'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
                 'TR_MENU_ADMIN_LOG' => tr('Admin log'),
@@ -63,9 +179,9 @@ $tpl -> assign(
                 'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
                 'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
                 'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
-				'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-				'TR_SERVICEMODE' => tr('Servicemode'),
-				'TR_MENU_SETTINGS' => tr('Settings'),
+		'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+		'TR_SERVICEMODE' => tr('Servicemode'),
+		'TR_MENU_SETTINGS' => tr('Settings'),
                 'TR_GENERAL_SETTINGS' => tr('General settings'),
                 'TR_SERVERPORTS' => tr('Serverports')
             )
@@ -76,7 +192,7 @@ $query = <<<SQL_QUERY
         from
             custom_menus
         where
-            menu_level = 'admin'
+            menu_level = 'admin1' 
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array());
