@@ -60,14 +60,14 @@ if (isset($_GET['key'])) {
 		if (sendpassword($_GET['key'])) {
 			$tpl -> assign(array(
 								'TR_MESSAGE' => tr('Password send'),
-								'TR_LINK' => "<a class=\"submenu\" href=\"index.php\">".tr('Login')."</a>"
+								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 								)
 							);
 
 		} else {
 			$tpl -> assign(array(
 								'TR_MESSAGE' => tr('ERROR: Password not send'),
-								'TR_LINK' => "<a class=\"submenu\" href=\"index.php\">".tr('Login')."</a>"
+								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 								)
 							);
 		}
@@ -102,20 +102,20 @@ if (isset($_POST['uname'])) {
 			if (requestpassword($_POST['uname'])) {
 				$tpl -> assign(array(
 									'TR_MESSAGE' => tr('The password was requested'),
-									'TR_LINK' => "<a class=\"submenu\" href=\"index.php\">".tr('Login')."</a>"
+									'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 									)
 								);
 			} else {
 				$tpl -> assign(array(
 									'TR_MESSAGE' => tr('ERROR: Unknown user'),
-									'TR_LINK' => "<a class=\"submenu\" href=\"index.php\">".tr('Retry')."</a>"
+									'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Retry')."</a>"
 									)
 								);
 			}
 		} else {
 			$tpl -> assign(array(
 								'TR_MESSAGE' => tr('ERROR: Security code was not correct!').' '. $_SESSION['image'],
-								'TR_LINK' => "<a class=\"submenu\" href=\"index.php\">".tr('Retry')."</a>"
+								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Retry')."</a>"
 								)
 							);
 		}
