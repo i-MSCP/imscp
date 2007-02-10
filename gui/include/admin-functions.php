@@ -23,33 +23,33 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 		$tpl -> define_dynamic('custom_buttons', 'menu');
 		$tpl -> assign(
             array(
-				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-				'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-				'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-    			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-				'TR_MENU_STATISTICS' => tr('Statistics'),
-				'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
+		'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+		'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+    		'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+		'TR_MENU_STATISTICS' => tr('Statistics'),
+		'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
                 'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
-				'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-				'TR_MENU_SETTINGS' => tr('Settings'),
-				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-				'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-				'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-    			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-				'TR_MENU_STATISTICS' => tr('Statistics'),
-				'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
+		'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_MENU_SETTINGS' => tr('Settings'),
+		'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+		'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+    		'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+		'TR_MENU_STATISTICS' => tr('Statistics'),
+		'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
                 'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
-				'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-				'TR_MENU_SETTINGS' => tr('Settings'),
+		'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_MENU_SETTINGS' => tr('Settings'),
                 'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-                'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change pers. data'
-				'TR_MENU_ADD_ADMIN'  => tr('Add admin'),
+                'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change pers. data'),
+		'TR_MENU_ADD_ADMIN'  => tr('Add admin'),
                 'TR_MENU_ADD_RESELLER'  => tr('Add reseller'),
                 'TR_MENU_RESELLER_ASIGNMENT'  => tr('Reseller assignment'),
                 'TR_MENU_USER_ASIGNMENT'  => tr('User assignment'),
                 'TR_MENU_EMAIL_SETUP'  => tr('Email setup'),
                 'TR_MENU_CIRCULAR'  => tr('Email marketing'),
-				'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+		'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
                 'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
                 'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
                 'TR_MENU_ADMIN_LOG' => tr('Admin log'),
@@ -66,11 +66,11 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
                 'TR_CUSTOM_MENUS' => tr('Custom menus'),
                 'TR_MENU_OVERVIEW' => tr('Overview'),
                 'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-				'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-				'TR_SERVICEMODE' => tr('Servicemode'),				
+		'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+		'TR_SERVICEMODE' => tr('Servicemode'),				
                 'TR_GENERAL_SETTINGS' => tr('General settings'),
-                'TR_SERVERPORTS' => tr('Serverports')
-		};
+                'TR_SERVERPORTS' => tr('Serverports'))
+		));
 	$query = <<<SQL_QUERY
         select
             *
@@ -146,7 +146,6 @@ $tpl -> assign(
                 'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
                 'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
                 'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change pers. data'),
-
                 'TR_MENU_MANAGE_USERS' => tr('Manage users'),
                 'TR_MENU_ADD_ADMIN'  => tr('Add admin'),
                 'TR_MENU_ADD_RESELLER'  => tr('Add reseller'),
@@ -154,7 +153,6 @@ $tpl -> assign(
                 'TR_MENU_USER_ASIGNMENT'  => tr('User assignment'),
                 'TR_MENU_EMAIL_SETUP'  => tr('Email setup'),
                 'TR_MENU_CIRCULAR'  => tr('Email marketing'),
-
 		'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
 		'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
 		'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),

@@ -437,7 +437,7 @@ $tpl -> assign(
                         'TR_MENU_LANGUAGE'  => tr('Language'),
                         'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
                         'TR_MENU_ADD_ALIAS' => tr('Add alias'),
-						'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
+			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
                         'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
                         'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
                         'WEBMAIL_PATH' => $cfg['WEBMAIL_PATH'],
