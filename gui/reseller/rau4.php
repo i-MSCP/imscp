@@ -123,7 +123,7 @@ gen_al_page($tpl, $_SESSION['user_id']);
 
 gen_page_message($tpl);
 
-
+gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
 gen_logged_from($tpl);

@@ -850,6 +850,7 @@ $reseller_ips = get_servers_IPs($tpl, $sql, $rip_lst);
 
 update_reseller($sql);
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
 $tpl -> assign(

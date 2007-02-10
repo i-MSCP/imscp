@@ -331,7 +331,7 @@ gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 //
 // static page messages.
 //
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_support_system.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_support_system.tpl');
 
 $tpl -> assign(

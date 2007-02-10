@@ -525,7 +525,7 @@ SQL_QUERY;
  * static page messages.
  *
  */
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
 $reseller_ips = get_server_ip($tpl, $sql);

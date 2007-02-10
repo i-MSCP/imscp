@@ -108,6 +108,7 @@ SQL_QUERY;
  *
  */
 
+gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
 gen_logged_from($tpl);

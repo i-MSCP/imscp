@@ -214,6 +214,7 @@ gen_page_post_data($tpl);
 
 add_sql_database($sql, $_SESSION['user_id']);
 
+gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);

@@ -46,6 +46,8 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 global	$hpid;
 
 // Show main menu
+
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_hp.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_hp.tpl');
 
 $tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('VHCS - Administrator/Edit hosting plan'),

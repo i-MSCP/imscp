@@ -563,6 +563,7 @@ gen_page_ftp_acc_props($tpl, $sql, $_SESSION['user_id']);
 // static page messages.
 //
 
+gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_ftp_accounts.tpl');
 
 gen_logged_from($tpl);

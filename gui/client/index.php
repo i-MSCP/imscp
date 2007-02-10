@@ -454,6 +454,7 @@ $tpl -> assign(
  *
  */
 
+gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
 gen_logged_from($tpl);

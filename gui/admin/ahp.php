@@ -46,6 +46,8 @@ $tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('VHCS - Administr
  * static page messages.
  *
  */
+
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_hp.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_hp.tpl');
 
 $tpl -> assign(array('TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),

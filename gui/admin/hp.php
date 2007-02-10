@@ -56,6 +56,7 @@ $tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('VHCS - Administr
  *
  */
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_hp.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_hp.tpl');
 gen_hp_table($tpl, $_SESSION['user_id']);
 

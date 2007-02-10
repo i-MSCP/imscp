@@ -69,6 +69,7 @@ $tpl -> assign(array(
         	'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
 					'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
 $tpl -> assign(array(

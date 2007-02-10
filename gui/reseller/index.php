@@ -497,6 +497,7 @@ gen_def_language($tpl, $sql, $user_def_lang);
 
 gen_def_layout($tpl, $sql, $user_def_layout);
 
+gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
 

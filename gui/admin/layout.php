@@ -240,7 +240,7 @@ $tpl -> assign(
  * static page messages.
  *
  */
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
 $tpl -> assign(

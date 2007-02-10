@@ -153,7 +153,7 @@ else if (isset($_SESSION['user_disabled'])){
  * static page messages.
  *
  */
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
 get_admin_manage_users($tpl, $sql);

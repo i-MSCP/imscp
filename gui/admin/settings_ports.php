@@ -265,6 +265,7 @@ if (isset($_GET['delete'])) {
 
 update_services($sql);
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
 show_services($tpl, $sql);

@@ -82,6 +82,7 @@ $tpl -> assign(array('TR_LOSTPW_EMAL_SETUP' => tr('VHCS - Admin/Lostpw email set
                      'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
 gen_logged_from($tpl);

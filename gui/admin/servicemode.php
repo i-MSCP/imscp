@@ -68,7 +68,7 @@ if ($cfg['SERVICEMODE'] == 1) {
  * static page messages.
  *
  */
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_system_tools.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(

@@ -353,6 +353,7 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 $crnt_month = '';
 $crnt_year = '';
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_statistics.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_statistics.tpl');
 
 generate_page ( &$tpl );

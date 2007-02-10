@@ -405,6 +405,7 @@ SQL_QUERY;
  *
  */
 
+gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_webtools.tpl');
 
 gen_logged_from($tpl);

@@ -209,6 +209,7 @@ if (isset($_POST['uaction'])){
  
 gen_order_details($tpl, $sql, $_SESSION['user_id'], $order_id);
 
+gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_orders.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_orders.tpl');
 
 gen_logged_from($tpl);

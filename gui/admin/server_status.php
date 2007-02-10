@@ -199,7 +199,7 @@ SQL_QUERY;
  * static page messages.
  *
  */
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
 $tpl -> assign(

@@ -193,6 +193,7 @@ $tpl -> assign(
                      )
               );
 
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
 get_admin_general_info($tpl, $sql);

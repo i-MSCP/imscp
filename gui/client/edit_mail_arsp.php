@@ -167,6 +167,7 @@ gen_page_dynamic_data($tpl, $sql, $mail_id, !isset($_POST['uaction']));
 // static page messages.
 //
 
+gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_email_accounts.tpl');
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);

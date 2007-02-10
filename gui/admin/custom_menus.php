@@ -320,7 +320,7 @@ $tpl -> assign(
             'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
             )
     );
-
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
 add_new_button($tpl, $sql);

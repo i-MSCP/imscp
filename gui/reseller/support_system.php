@@ -342,6 +342,7 @@ gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 // static page messages.
 //
 
+gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_support_system.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_support_system.tpl');
 
 gen_logged_from($tpl);
