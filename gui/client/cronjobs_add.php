@@ -75,7 +75,7 @@ $tpl -> assign(
 					   'TR_ADD_CRONJOB' => tr('Add Cronjob'),
 					   'TR_NAME' => tr('Name'),
 					   'TR_DESCRIPTION' => tr('Description'),
-					   'TR_ACTIVE' => tr('Acttive'),
+					   'TR_ACTIVE' => tr('Active'),
 					   'YES' => tr('Yes'),
 					   'NO' => tr('No'),
 					   'TR_CRONJOB' => tr('Cronjob'),

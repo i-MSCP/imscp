@@ -5,13 +5,16 @@ VHCS 2.4.8 ω Omega Changelog
 |        - FastCGI:                                               |
 |               * Copy files on update                            |
 |               * apache: check if stats are working with FastCGI |
-|                                                                 |
 |               * Finish fastcgi.conf file                        |
 |                                                                 |
 |         - AWStats:                                              |
 |               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-02-10 Benedikt Heintel
+	- LANGUAGES:
+		changed and deleted unused / wrong strings
 
 2007-02-09 Laurent DECLERCQ
 	- CONFIGS:

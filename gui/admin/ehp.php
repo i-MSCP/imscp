@@ -79,7 +79,7 @@ $tpl -> assign(array('TR_HOSTING PLAN PROPS' => tr('Hosting plan properties'),
 					 'TR_PAYMENT' => tr('Payment period'),
 					 'TR_STATUS' => tr('Available for purchasing'),
 					 'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-					 'TR_EXAMPEL' => tr('(Ex. EUR)'),
+					 'TR_EXAMPEL' => tr('(e.g. EUR)'),
                      'TR_UPDATE_PLAN' => tr('Update plan')));
 
 /*
