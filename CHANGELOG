@@ -12,10 +12,12 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-02-10 Benedikt Heintel
+2007-02-11 Benedikt Heintel
 	- GUI:
 		* changed Errordocs (untested)
 		* fixed bug #71
+	 - SETUP:
+	 	* updated initial English language
 
 2007-02-10 Benedikt Heintel
 	- LANGUAGES:
@@ -131,42 +133,42 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-02-04 Benedikt Heintel
 	- ENGINE:
-		added fix for traffic correction by Thomas Partsch
-		enhancement #64 added
+		* added fix for traffic correction by Thomas Partsch
+		* enhancement #64 added
 	- GUI:
-		changed translation function and language upload
+		* changed translation function and language upload
 	- LANGUAGES:
-		Dutch: added missing translations
-		Danish: added missing translations
-		English: corrected spelling mistakes
-		French: added missing translations
-		Spanish: added missing translations
+		* Dutch: added missing translations
+		* Danish: added missing translations
+		* English: corrected spelling mistakes
+		* French: added missing translations
+		* Spanish: added missing translations
 	- SQL:
-		only english language is installed by default
+		* only english language is installed by default
 
 2007-02-03 Benedikt Heintel
 	- CONFIGS:
-		modified sql datafiles to VHCS 2.4.8 ω
-		fixed bug #14
+		* modified sql datafiles to VHCS 2.4.8 ω
+		* fixed bug #14
 	- DOCS:
-		changed SQL-Update-2.4.7.1-to-2.4.8.sql
+		* changed SQL-Update-2.4.7.1-to-2.4.8.sql
 	- ENGINE:
-		added traffic correction by Thomas Partsch
+		* added traffic correction by Thomas Partsch
 	- GUI TOOLS:
-		changed webmail default settings
+		* changed webmail default settings
 	- SETUP:
-		fixed bug in fcgi configuration
+		* fixed bug in fcgi configuration
 
 2007-02-02 Benedikt Heintel
 	- DOCS:
-		added feodora install doc
+		* added feodora install doc
 	- SETUP:
-		changed Makefiles
-		changed feodora Install
+		* changed Makefiles
+		* changed fedora Install
 
 2007-02-01 Benedikt Heintel
 	- DOCS:
-		changed the organisation of the documentation
+		* changed the organisation of the documentation
 	- ENGINE:
 		./vhcs2-dmn-mngr
 			fixed bug #61:	wrong check type
