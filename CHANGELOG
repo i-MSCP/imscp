@@ -13,38 +13,43 @@ VHCS 2.4.8 ω Omega Changelog
 \_________________________________________________________________/
 
 2007-02-10 Benedikt Heintel
+	- GUI:
+		* changed Errordocs (untested)
+		* fixed bug #71
+
+2007-02-10 Benedikt Heintel
 	- LANGUAGES:
-		changed and deleted unused / wrong strings
+		* changed and deleted unused / wrong strings
 
 2007-02-09 Laurent DECLERCQ
 	- CONFIGS:
-		Edit "php.ini" files for master user:
+		* Edit "php.ini" files for master user:
 			- open_basedir: added "bind/df" and "/bind/mount" path for GUI System Info
 			- open_basedir: added "/var/log/rkhunter.log" path for Gui Rootkit
 			- disable_functions: remove "popen" function for GUI system Info
 
 2007-02-08 Benedikt Heintel
 	- LANGUAGES:
-		Spanish: added missing language strings
+		* Spanish: added missing language strings
 	- GUI:
-		changed behavior of string translation and added optional javascript variable
+		* changed behavior of string translation and added optional javascript variable
 	- SETUP:
-		modified Makefiles
+		* modified Makefiles
 
 2007-02-08 Laurent DECLERCQ
 	- ENGINE:
-		Fixed bug #48 :
+		* Fixed bug #48 :
 			=> Edit "vhcs2-dmn-mngr
 				- Instructions disabled for Master user
 
 	- SETUP:
-		Fixed bug #48 :
+		* Fixed bug #48 :
 			=> Edit vhcs-setup
 				- added new Subroutine --> create "php4" and "php5" directory for Master User
 
 2007-02-07 Laurent DECLERCQ
 	- CONFIGS:
-		Fixed bug #48 :
+		* Fixed bug #48 :
 			=> Edit "fastcgi.conf" (NO FINISH)
 				- Rename fastcgi.conf in fastcgi.conf.bak
 				- Create new fastcgi.conf (testing file)
@@ -65,7 +70,7 @@ VHCS 2.4.8 ω Omega Changelog
 			=> Copy, move "php4-fcgi-starter" and "php5-fcgi-starter" in "master" directory for the master user
 
 	- SETUP:
-		Fixed bug #48 :
+		* Fixed bug #48 :
 			=> Edit makefile :
 				- Added "phptmp" directory
 			=> Edit "vhcs2.setup" script :
@@ -77,7 +82,7 @@ VHCS 2.4.8 ω Omega Changelog
 			=> Edit set-gui-permissions script :
 				- Added chmod "0755" for the GUI "phptmp" directory
 	- GUI:
-		Fixed bug #48 :
+		* Fixed bug #48 :
 			=> Create new directory for the tmp_dir and the upload_dir --> "phptmp" for the master user
 
 2007-02-06 Laurent DECLERCQ
@@ -87,20 +92,20 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-02-06 Benedikt Heintel
 	- ENGINE:
-		changed MySQL Backup
+		* changed MySQL Backup
 	- LANGUAGES:
-		added Ukrainian
-		added missings strings to Dutch and French
+		* added Ukrainian
+		* added missings strings to Dutch and French
 	- SETUP:
-		added setup reset script
+		* added setup reset script
 
 2007-02-05 Benedikt Heintel
 	- GUI:
-		multilingual support changed (tables have less columns, languages are stored UTF-8)
-		lostpassword improvements
+		* multilingual support changed (tables have less columns, languages are stored UTF-8)
+		* lostpassword improvements
 	- LANGUAGES:
-		added message string
-		all languages in UTF-8
+		* added message string
+		* all languages in UTF-8
 		=> Chinese, Thai and Russian have to be re-translated!
 	- SETUP:
 		- added "a2enmod rewrite" for nativ mod_rewrite support
@@ -108,21 +113,21 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-02-05 Benedikt Heintel
 	- GUI:
-		multilingual support changed (tables have less columns, languages are stored UTF-8)
-		lostpassword improvements
+		* multilingual support changed (tables have less columns, languages are stored UTF-8)
+		* lostpassword improvements
 	- LANGUAGES:
-		added message string
-		all languages in UTF-8
+		* added message string
+		* all languages in UTF-8
 		=> Chinese, Thai and Russian have to be re-translated!
 	- SETUP:
-		added "a2enmod rewrite" for nativ mod_rewrite support
+		* added "a2enmod rewrite" for nativ mod_rewrite support
 
 2007-02-05 Laurent DECLERCQ
 	- CONFIGS:
-		Changed <IfModule mod_php.c>
+		* Changed <IfModule mod_php.c>
 			Report wget-hack prevention
 	- DOCS:
-		Fixed name "fedora"
+		* Fixed name "fedora"
 
 2007-02-04 Benedikt Heintel
 	- ENGINE:

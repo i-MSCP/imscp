@@ -1,9 +1,13 @@
 <html>
  <head>
   <title>VHCS ERROR</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <link href="/vhcs2/themes/omega_original/css/vhcs.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="/vhcs2/themes/omega_original/css/vhcs.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<?php
+	require_once('/vhcs2/include/vhcs-lib.php');
+	$theme = $cfg['USER_INITIAL_THEME'];
+?>
+  <link href="/vhcs2/themes/<?=$theme;?>/css/vhcs.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/vhcs2/themes/<?=$theme;?>/css/vhcs.js"></script>
  </head>
  <body style="color:#000000;">
 <table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
