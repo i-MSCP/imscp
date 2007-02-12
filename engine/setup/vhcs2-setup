@@ -173,11 +173,7 @@ sub ask_eth {
 
 #	my $eth = '192.168.0.128';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter system network address (Enter for defaults) [$eth]: ";
-=======
-	my $qmsg = "\n	Please enter system network address (Enter for defaults) [$eth]: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 
@@ -225,11 +221,7 @@ sub ask_db_host {
 
 	my $db_host = 'localhost';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter SQL server host (Enter for defaults) [$db_host]: ";
-=======
-	my $qmsg = "\n	Please enter SQL server host (Enter for defaults) [$db_host]: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 
@@ -259,11 +251,7 @@ sub ask_db_name {
 
 	my $db_name = 'vhcs2';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter system SQL database (Enter for defaults) [$db_name]: ";
-=======
-	my $qmsg = "\n	Please enter system SQL database (Enter for defaults) [$db_name]: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 
@@ -294,11 +282,7 @@ sub ask_db_user {
 
 	my $db_user = 'root';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter system SQL user (Enter for defaults) [$db_user]: ";
-=======
-	my $qmsg = "\n	Please enter system SQL user (Enter for defaults) [$db_user]: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 
@@ -328,11 +312,7 @@ sub ask_db_password {
 
 	my $db_password = 'none';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter system SQL password (Enter for defaults) [$db_password]: ";
-=======
-	my $qmsg = "\n	Please enter system SQL password (Enter for defaults) [$db_password]: ";
->>>>>>> .r342
 
 	$pass1 = read_password($qmsg);
 
@@ -372,11 +352,7 @@ sub ask_db_ftp_user {
 
 	my $db_user = 'vftp';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter VHCS ftp SQL user (Enter for defaults) [$db_user]: ";
-=======
-	my $qmsg = "\n	Please enter VHCS ftp SQL user (Enter for defaults) [$db_user]: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 
@@ -406,11 +382,7 @@ sub ask_db_ftp_password {
 
 	my $db_password = 'none';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter VHCS ftp SQL user password (Enter for defaults) [$db_password]: ";
-=======
-	my $qmsg = "\n	Please enter VHCS ftp SQL user password (Enter for defaults) [$db_password]: ";
->>>>>>> .r342
 
 	$pass1 = read_password($qmsg);
 
@@ -448,15 +420,9 @@ sub ask_db_pma_user {
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
 	my $db_user = 'pma';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter VHCS phpMyAdmin Control user (Enter for defaults) [$db_user]: ";
 	print STDOUT $qmsg;
 	$rdata = readline(\*STDIN); chop($rdata);
-=======
-	my $qmsg = "\n	Please enter VHCS phpMyAdmin Control user (Enter for defaults) [$db_user]: ";
-	print STDOUT $qmsg;
-	$rdata = readline(\*STDIN); chop($rdata);
->>>>>>> .r342
 
 	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'db_pma_user'} = $db_user;
@@ -474,13 +440,8 @@ sub ask_db_pma_password {
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
 	my $db_password = 'none';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter VHCS phpMyAdmin Control user password (Enter for defaults) [$db_password]: ";
 	$pass1 = read_password($qmsg);
-=======
-	my $qmsg = "\n	Please enter VHCS phpMyAdmin Control user password (Enter for defaults) [$db_password]: ";
-	$pass1 = read_password($qmsg);
->>>>>>> .r342
 
 	if (!defined($pass1) || $pass1 eq '') {
 		$main::ua{'db_pma_password'} = '';
@@ -508,11 +469,7 @@ sub ask_admin {
 
 	my $admin = 'admin';
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter administrator login name (Enter for defaults) [$admin]: ";
-=======
-	my $qmsg = "\n	Please enter administrator login name (Enter for defaults) [$admin]: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 
@@ -540,15 +497,10 @@ sub ask_admin_password {
 
 	push_el(\@main::el, 'ask_admin_password()', 'Starting...');
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter administrator password: ";
-=======
-	my $qmsg = "\n	Please enter administrator password: ";
->>>>>>> .r342
 
 	$pass1 = read_password($qmsg);
 
-<<<<<<< .mine
 	if (!defined($pass1) || $pass1 eq '') {
 		return 1;
 	} else {
@@ -558,34 +510,14 @@ sub ask_admin_password {
 		}
 		$qmsg = "	Please repeat administrator password: ";
 		$pass2 = read_password($qmsg);
-=======
-	if (!defined($pass1) || $pass1 eq '') {
-		return 1;
-	} else {
-		if (length($pass1) < 5) {
-			print STDOUT "\n	Password too short!";
-			return 1;
-		}
-		$qmsg = "	Please repeat administrator password: ";
-		$pass2 = read_password($qmsg);
->>>>>>> .r342
 
 		if ($pass1 eq $pass2) {
-<<<<<<< .mine
 			$main::ua{'admin_password'} = $pass1;
 		} else {
 			print STDOUT "\n    Passwords do not match!";
 			return 1;
 		}
 	}
-=======
-			$main::ua{'admin_password'} = $pass1;
-		} else {
-			print STDOUT "\n	Passwords do not match!";
-			return 1;
-		}
-	}
->>>>>>> .r342
 
 	push_el(\@main::el, 'ask_admin_password()', 'Ending...');
 
@@ -599,11 +531,7 @@ sub ask_admin_email {
 
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
 
-<<<<<<< .mine
 	my $qmsg = "\n    Please enter admininistrator email address: ";
-=======
-	my $qmsg = "\n	Please enter admininistrator email address: ";
->>>>>>> .r342
 
 	print STDOUT $qmsg;
 

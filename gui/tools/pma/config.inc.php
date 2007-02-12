@@ -1,7 +1,13 @@
 <?php
 /* $Id: config.sample.inc.php 9673 2006-11-03 09:05:54Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
-/* Modified for VHCS Omega 2006-11-20 */
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ */
 
 /**
  * phpMyAdmin Configuration File
@@ -28,8 +34,8 @@ $cfg['Servers'][$i]['compress'] 		= true;
 /* Select mysqli if your server has it */
 $cfg['Servers'][$i]['extension'] 		= 'mysql';
 /* User for advanced features */
-$cfg['Servers'][$i]['controluser'] 		= 'pma';		// Change it to the in the VHCS Setup set Username
-$cfg['Servers'][$i]['controlpass'] 		= 'pmapw';		// Change it to the in the VHCS Setup set Password
+$cfg['Servers'][$i]['controluser'] 		= '{PMA_USER}';
+$cfg['Servers'][$i]['controlpass'] 		= '{PMA_PASS}';
 /* Advanced phpMyAdmin features */
 //$cfg['Servers'][$i]['pmadb'] 			= 'phpmyadmin';
 $cfg['Servers'][$i]['bookmarktable'] 	= 'pma_bookmark';
