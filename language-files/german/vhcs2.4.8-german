@@ -645,6 +645,7 @@ Please enter area path = Bitte geben Sie einen Pfad für den Bereich an
 Please enter FTP account username! = Bitte FTP Benutzernamen angeben!
 Please enter mail account username! = Bitte E-Mail Benutzernamen angeben!
 Please enter SQL query! = Bitte MySQL Query angeben!
+Please enter your login information = Bitte Benutzername und Passwort eingeben.
 Please fill out all needed fields! = Bitte füllen Sie alle benötigten Felder aus!
 Please fill up all data fields! = Bitte alle Felder ausfüllen!
 Please fill up both data fields for password! = Keine oder falsche Eingabe!
