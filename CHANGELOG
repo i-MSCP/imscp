@@ -11,6 +11,15 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-02-12 Laurent DECLERCQ
+	-CONFIGS:
+		* Edited "als_entry.tpl", "dmn_entry.tpl", "sub_entry.tpl" and "vhcs2_base.tpl" for FastCGI
+		* Edited  "httpd.conf" for FastCGI
+	-ENGINE:
+		* Edited vhcs2-dmn-mngr for Fastcgi :
+			- Added instructions for create "php4" and "php5" directory for usualy users
+			- Changed "php.ini" files name for usualy users
+			
 2007-02-12 Benedikt Heintel
 	- CONFIGS:
 		* added folder and files for Gentoo
@@ -30,6 +39,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* changed permissions
 		* fixed bug #48
 
+>>>>>>> .r333
 2007-02-11 Benedikt Heintel
 	- GUI:
 		* changed Errordocs (untested)

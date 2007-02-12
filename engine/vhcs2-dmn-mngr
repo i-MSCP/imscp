@@ -1788,7 +1788,12 @@ sub dmn_add_httpd_file_data {
 
 	####	return $rs if ($rs != 0);
 	####}
+	
+	#
+	# Starter directory for usual user
+	#
 
+	if(!(-e "$starter_dir/$dmn_name")) {
 	$rs = make_dir(
 					"$starter_dir/$dmn_name",
 					$sys_user,
@@ -1797,6 +1802,29 @@ sub dmn_add_httpd_file_data {
 					);
 
 	return $rs if ($rs != 0);
+	
+	#
+	# PHP4 and PHP5 Directory for usual user
+	#
+	
+	$rs = make_dir(
+					"$starter_dir/$dmn_name/php4",
+					$sys_user,
+					$sys_group,
+					0750
+					);
+	
+	return $rs if ($rs != 0);
+	
+	$rs = make_dir(
+					"$starter_dir/$dmn_name/php5",
+					$sys_user,
+					$sys_group,
+					0750
+					);
+	
+	return $rs if ($rs != 0);
+	}
 
 	#
 	# Domain WWW directories;
@@ -2094,7 +2122,9 @@ sub dmn_add_httpd_file_data {
 	#
 	# php.ini for the new domain
 	#
-	if (!(-e "$starter_dir/$dmn_name/php5.ini")) {
+	
+	##if (!(-e "$starter_dir/$dmn_name/php5.ini")) {
+	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
 		my $ini_tpl = '';
 
@@ -2107,7 +2137,8 @@ sub dmn_add_httpd_file_data {
 		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php4.ini",
+									##"$starter_dir/$dmn_name/php4.ini",
+									"$starter_dir/$dmn_name/php4/php.ini",
 									$ini_tpl,
 									$sys_user,
 									$sys_group,
@@ -2127,7 +2158,8 @@ sub dmn_add_httpd_file_data {
 		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php5.ini",
+									##"$starter_dir/$dmn_name/php5.ini",
+									"$starter_dir/$dmn_name/php5/php.ini",
 									$ini_tpl,
 									$sys_user,
 									$sys_group,

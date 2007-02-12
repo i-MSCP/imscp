@@ -43,14 +43,6 @@
             Order allow,deny
             Allow from all
         </Directory>
-
-        ScriptAlias /php5/ {STARTER_DIR}/{DMN_NAME}/
-        <Directory "{STARTER_DIR}/{DMN_NAME}">
-            AllowOverride None
-            Options +ExecCGI -MultiViews -Indexes
-            Order allow,deny
-            Allow from all
-        </Directory>
     </IfModule>
 
     <IfModule mod_php4.c>
