@@ -51,7 +51,7 @@ Alias /vhcs_images /var/www/vhcs2/gui/images
     
     <IfModule mod_fastcgi.c>
     SuexecUserGroup vu2000 vu2000
-    <IfModule mod_fastcgi.c>
+    </IfModule>
     
     <Directory /var/www/vhcs2/gui>
         Options Indexes Includes FollowSymLinks MultiViews
