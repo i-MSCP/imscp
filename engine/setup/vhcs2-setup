@@ -1623,7 +1623,8 @@ sub setup_httpd {
     }
 
     #
-    # start fastcgi & suexec
+    # start fastcgi, suexec and rewrite mod
+    # Disable default site (if not, vhcs not working) (Added by nuxwin)
     # ToDo: Check if they work, if mod_php is aktivated
     #
     if ( -e "/usr/sbin/a2enmod" ) {
@@ -1632,8 +1633,19 @@ sub setup_httpd {
     	sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/vhcs2-setup-services.log");
     	sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/vhcs2-setup-services.log");
     	sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/vhcs2-setup-services.log");
-
+	
     }
+    
+    #
+    # Disable default site --> 000-default (if not, vhcs not working)
+    #
+    
+    if (-e "/usr/sbin/a2dissite") {
+	    
+	sys_command_rs("/usr/sbin/a2dissite 000-default &> /tmp/vhcs2-setup-services.log");
+	
+	}
+	
 
     #
     # Here we'll manage some permission;

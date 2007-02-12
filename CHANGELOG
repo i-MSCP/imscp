@@ -25,15 +25,17 @@ VHCS 2.4.8 ω Omega Changelog
 		* changed error - documents to match omega-original
 
 2007-02-12 Laurent DECLERCQ
-	-CONFIGS:
+	- CONFIGS:
 		* Edited "als_entry.tpl", "dmn_entry.tpl", "sub_entry.tpl" and "vhcs2_base.tpl" for FastCGI
 		* Edited  "httpd.conf" for FastCGI
 		* Edited "fastcgi.conf" for FastCGI (Not finish)
-	-ENGINE:
+	- ENGINE:
 		* Edited vhcs2-dmn-mngr for Fastcgi :
 			- Added instructions for create "php4" and "php5" directory for usual users
 			- Changed "php.ini" files name for usual users
 		* Fixed #62
+	- SETUP:
+		* - added "a2dissite 000-default" for disabled the default site (If not, fastCgi not working)
 			
 2007-02-12 Benedikt Heintel
 	- CONFIGS:
