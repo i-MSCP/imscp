@@ -97,6 +97,7 @@ if ($cfg['SERVICEMODE'] == 1 AND !isset($_GET['admin'])) {
 						'TR_LOGIN' => tr('Login'),
 						'TR_USERNAME' => tr('Username'),
 						'TR_PASSWORD' => tr('Password'),
+						'TR_LOGIN_INFO' => tr('Please enter your login information'),
 						// Please make this configurable by vhcs-lib
 						'TR_SSL_LINK' => '', // isset($_SERVER['HTTPS']) ? 'http://'.$_SERVER['HTTP_HOST'].'/vhcs2/' : 'https://'.$_SERVER['HTTP_HOST'].'/vhcs2/',
 						'TR_SSL_IMAGE' => '', // isset($_SERVER['HTTPS']) ? 'secure.gif' : 'insecure.gif',

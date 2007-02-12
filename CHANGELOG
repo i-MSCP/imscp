@@ -5,7 +5,6 @@ VHCS 2.4.8 ω Omega Changelog
 |        - FastCGI:                                               |
 |               * Copy files on update                            |
 |               * apache: check if stats are working with FastCGI |
-|               * Finish fastcgi.conf file                        |
 |                                                                 |
 |         - AWStats:                                              |
 |               * apache: set statsdir if awstats is enabled      |
@@ -17,10 +16,14 @@ VHCS 2.4.8 ω Omega Changelog
 		* added folder and files for Gentoo
 		* added Fedora files missing / changed
 		* changed masters php.inis
+		* changed main theme
 	- DOCS:
 		* added folder for Gentoo
 	- GUI:
 		* fixed small bug
+		* Theme: omega_original fixed small bug
+		* fixed error doc
+		* changed css a.login
 	- LANGUAGES:
 		* Portugues-Brazil: added missing strings
 	- SETUP:
