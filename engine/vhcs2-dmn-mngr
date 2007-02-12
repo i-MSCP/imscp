@@ -1835,7 +1835,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name",
 					$sys_user,
-					$sys_group,
+					$http_gid,
 					0770
 					);
 
@@ -1845,7 +1845,7 @@ sub dmn_add_httpd_file_data {
 					"$www_dir/$dmn_name/htdocs",
 					$sys_user,
 					$sys_group,
-					0770
+					0775
 					);
 
 	return $rs if ($rs != 0);
@@ -1862,7 +1862,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/logs",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1871,7 +1871,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/phptmp",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1880,7 +1880,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/backups",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1890,7 +1890,7 @@ sub dmn_add_httpd_file_data {
 					"$www_dir/$dmn_name/errors",
 					$sys_user,
 					$sys_group,
-					0770
+					0775
 					);
 
 	return $rs if ($rs != 0);
@@ -1899,7 +1899,7 @@ sub dmn_add_httpd_file_data {
 					"$www_dir/$dmn_name/errors/401",
 					$sys_user,
 					$sys_group,
-					0770
+					0775
 					);
 
 	return $rs if ($rs != 0);
@@ -1908,7 +1908,7 @@ sub dmn_add_httpd_file_data {
 					"$www_dir/$dmn_name/errors/403",
 					$sys_user,
 					$sys_group,
-					0770
+					0775
 					);
 
 	return $rs if ($rs != 0);
@@ -1917,7 +1917,7 @@ sub dmn_add_httpd_file_data {
 					"$www_dir/$dmn_name/errors/404",
 					$sys_user,
 					$sys_group,
-					0770
+					0775
 					);
 
 	return $rs if ($rs != 0);
@@ -1926,7 +1926,7 @@ sub dmn_add_httpd_file_data {
 					"$www_dir/$dmn_name/errors/500",
 					$sys_user,
 					$sys_group,
-					0770
+					0775
 					);
 
 	return $rs if ($rs != 0);
@@ -1939,8 +1939,8 @@ sub dmn_add_httpd_file_data {
 								"$www_dir/$dmn_name/.htpasswd",
 								"\n",
 								$sys_user,
-								$sys_group,
-								0660
+								$httpd_gid,
+								0640
 								);
 
 	return $rs if ($rs != 0);
@@ -1949,8 +1949,8 @@ sub dmn_add_httpd_file_data {
 								"$www_dir/$dmn_name/.htgroup",
 								"\n",
 								$sys_user,
-								$sys_group,
-								0660
+								$httpd_gid,
+								0640
 								);
 
 	return $rs if ($rs != 0);
@@ -1974,7 +1974,7 @@ sub dmn_add_httpd_file_data {
 										$err_tpl,
 										$sys_user,
 										$sys_group,
-										0660
+										0644
 										);
 
 			return $rs if ($rs != 0);
@@ -1987,7 +1987,7 @@ sub dmn_add_httpd_file_data {
 										$err_tpl,
 										$sys_user,
 										$sys_group,
-										0660
+										0644
 										);
 
 			return $rs if ($rs != 0);
@@ -2000,7 +2000,7 @@ sub dmn_add_httpd_file_data {
 										$err_tpl,
 										$sys_user,
 										$sys_group,
-										0660
+										0644
 										);
 
 			return $rs if ($rs != 0);
@@ -2013,7 +2013,7 @@ sub dmn_add_httpd_file_data {
 										$err_tpl,
 										$sys_user,
 										$sys_group,
-										0660
+										0644
 										);
 
 			return $rs if ($rs != 0);
@@ -2039,7 +2039,7 @@ sub dmn_add_httpd_file_data {
 									$index_tpl,
 									$sys_user,
 									$sys_group,
-									0660
+									0644
 									);
 
 		return $rs if ($rs != 0);
