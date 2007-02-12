@@ -15,10 +15,12 @@ VHCS 2.4.8 ω Omega Changelog
 	-CONFIGS:
 		* Edited "als_entry.tpl", "dmn_entry.tpl", "sub_entry.tpl" and "vhcs2_base.tpl" for FastCGI
 		* Edited  "httpd.conf" for FastCGI
+		* Edited "fastcgi.conf" for FastCGI (Not finish)
 	-ENGINE:
 		* Edited vhcs2-dmn-mngr for Fastcgi :
-			- Added instructions for create "php4" and "php5" directory for usualy users
-			- Changed "php.ini" files name for usualy users
+			- Added instructions for create "php4" and "php5" directory for usual users
+			- Changed "php.ini" files name for usual users
+		* Fixed #62
 			
 2007-02-12 Benedikt Heintel
 	- CONFIGS:
@@ -90,8 +92,8 @@ VHCS 2.4.8 ω Omega Changelog
 			=> Create new directory "master" for the files of configuration (fascgi) of the user master.
 			=> Copy and move "php4-fcgi-starter" and "php5-fcgi-starter" in "master" directory for the master user
 			=> Create "php4" and "php5" directory in master "directory" for master user
-			=> Copy and move  "php4.ini" in "php4"  in "php4" directory for master user
-			=> Copy and move  "php5.ini" in "php4"  in "php5" directory for master user
+			=> Copy and move  "php4.ini" in "php4" directory for master user
+			=> Copy and move  "php5.ini" in "php4" directory for master user
 			=> Rename "php4.ini" "and php5.ini" in "php.ini" for master user
 			=> Edit "php.ini" files for master user :
 				- Fixed "open_basedir" path for master user
