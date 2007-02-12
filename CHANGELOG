@@ -11,6 +11,19 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-02-12 Malte Geierhos / Henriks Schytte
+	- GUI:	
+		* added Squirrelmail as new Webmailer
+		* added Omega Original Theme for Squirrelmail
+		* added functions for the second menu (to split the menu) 
+		* changed default theme to omega_original
+		* added new phpmyadmin
+
+2007-02-12 Henrik Schytte		
+	- GUI: 
+		* added Omega Original Theme to the gui
+		* changed error - documents to match omega-original
+
 2007-02-12 Laurent DECLERCQ
 	-CONFIGS:
 		* Edited "als_entry.tpl", "dmn_entry.tpl", "sub_entry.tpl" and "vhcs2_base.tpl" for FastCGI
