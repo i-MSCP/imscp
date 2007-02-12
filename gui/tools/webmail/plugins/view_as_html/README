@@ -1,0 +1,41 @@
+$Id: README,v 1.8 2006/03/05 04:50:22 indiri69 Exp $
+view_as_html -- Version 3.7a-1.4.x
+By Seth Randall <indiri69@users.sourceforge.net>
+
+Description
+===========
+Allows the user to chose on an individual basis whether or not to
+view HTML email as HTML or plain text.  If you have the option to 
+view HTML set you can view the current email as plain text instead.
+
+Thanks
+======
+Thanks to Ben Brillat since I modified the README from the
+delete_move_next plugin and for code and ideas to show the
+link only when there is an HTML part.
+Thanks to Pete Walker for code and ideas to show the link
+only when there is a HTML part.
+
+Copyright
+=========
+Copyright (C) 2001-2005 Seth E. Randall 
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program ("gpl.txt"); if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Contact
+=======
+
+Let me know what you think:
+Seth Randall <indiri69@users.sourceforge.net>

@@ -1,0 +1,119 @@
+<chapter>
+   <title>
+      Adrese
+   </title>
+   <summary>
+      Adresari vas mogu spasti mnogo kucanja i u¹tedeti vam vreme. U adresar mo¾ete
+      upisati adrese ljudi s kojima èesto kontaktirate i koristiti ih sledeæi put
+      bez ponovnog upisivanja cele adrese, koliko god to ¾elite.
+   </summary>
+   <description>
+      <p>
+      Adresari su veliki pomoænici u èuvanju va¹eg vremena. Èesto kori¹æene
+      adrese se ovde upisuju. LDAP serveri (koji se èesto koriste u veæim kompanijama
+      i univerzitetima da bi se lak¹e organizovale adrese unutar istih) 
+      su takoðe podr¾ani.
+      </p>
+      <p>
+      Ukoliko va¹ browser podr¾ava JavaScript onda biste verovatno ¾eleli da ukljuèite
+      adresar koji radi pod JavaScript-om pod menijem Opcije s glavnog menija. To je jedna vrlo
+      zgodna pop-up stvarèica. Èisti HTML browseri su takoðe podr¾ani tako da i bez
+      podr¹ke za JavaScript imate moguænost kori¹æenja SquirrelMail-a bez gubitka funkcionalnosti.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Nadimak
+   </title>
+   <description>
+      <p>
+      Ovde postavite neko ime po kome je vama zgodno da zapamtite osobu.
+      Mo¾ete upisati bilo ¹ta ¹to vas asocira na datu osobu ili upisati 
+      njen nadimak koji inaèe koristi. ©ta god upisali stavite ne¹to ¹to æete lako zapamtiti.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Email Adresa
+   </title>
+   <description>
+      <p>
+      Ovde morate upisati potpunu e-mail adresu osobe. Ovde neæe dobro proæi ako nagaðate.
+      Dakle, postoje tri dela u email adresi. Prvo je identifikacija primaoca, ili ono ¹to se èesto 
+      zove korisnièko ime, npr. "petarp". Sledeæe je ime domena kome pripada. Uzeæemo za primer
+      "etrovic". Na kraju dolazi nacionalni domen, koji mo¾e da bude sve i svasta. Na
+      primer au, cc, us, yu, com, org, net, ili ne¹to nalik edu. Dakle kad sve to spojimo trebalo bi da
+      dobije ne¹to nalik na petarp@etrovic.co.yu. Ukoliko ne upi¹ete taèno email adresu, vrlo verovatno
+      æe vam se poruke vraæati sa porukom o gre¹ci u slanju.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Dodatne informacije
+   </title>
+   <description>
+      <p>
+      Ovde opet mo¾ete dodati ne¹to ¹to æe vam bli¾e objasniti osobu koju ste 
+      upravo uneli u adresar. Mo¾ete upisati ne¹to du¾e od nadimka kao na primer
+      "upoznali smo se na ¾urci kod Marka", ili "Mali iz kom¹iluka"
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Promeni ili Obri¹i
+   </title>
+   <description>
+      <p>
+      Ova dva dugmeta vam omoguæavaju da izaberete neki od prethodnih unosa i
+      promenite bilo koje od malopre obja¹njenih polja. Dozvoljeno je da izaberete samo po jedan 
+      unos koji æete menjati ili brisati.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Dodaj u Lièni adresar
+   </title>
+   <description>
+      <p>
+      Popunite naznaèena polja. Prva tri (Nadimak, E-mail adresa i Ime) su obavezna
+      i moraju biti popunjena. Prezime i Dodatne informacije ne morate upisati
+      ukoliko ne ¾elite.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      LDAP
+   </title>
+   <description>
+      <p>
+      LDAP je protokol za unificirano sme¹tanje imena i adresa i udaljeni pristup
+      tim informacijama. Na primer: univerzitet bi mogao koristiti LDAP na jednom 
+      mestu gde bi svi studenti, osoblje, i profesori fakulteta bili upisani i dostupni.
+      Ukoliko se SquirrelMail konfigurise da koristi takav LDAP, onda bi SquirrelMail mogao
+      da lista sve email adrese koje se nalaze na tom serveru, zajedno sa ostalim
+      adresama iz adresara. SquirrelMail-ova upotreba LDAP-a je toliko moæna
+      da on <I>kombinuje</I> lokanlni adresar i informacije sa LDAP servera da bi
+      prikazao sve informacije kao da se nalaze u jednom jedinstvenom adresaru.
+      
+      </p><p>
+      LDAP se mo¾e podesiti tako da koristi bilo koji LDAP server, ili da bude iskljuèen
+      u potpunosti kao moguænost. Ukoliko imate specifièna pitanja u vezi LDAP-a
+      o njima mo¾ete razgovarati s va¹im sistem administratorom.
+      </p><p>
+      LDAP pode¹avanja utièu na ceo SquirrelMail, stoga ih mora obaviti  
+      neko ko ima prava pristupa pode¹avanjima mail servera.
+      </p>
+   </description>
+</section>

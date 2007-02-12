@@ -1,0 +1,87 @@
+# Archive Mail Plugin
+# Copyright (C) 2004 The Squirrlmail Devellopment Team
+# This file is distributed under the same license as the Squirrelmail package.
+# M.J. Prinsen <translation@prinsenonline.com>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Archive Mail Plugin 0.9\n"
+"POT-Creation-Date: 2003-11-08 11:38+0200\n"
+"PO-Revision-Date: 2004-01-10 12:00+0100\n"
+"Last-Translator: M.J. Prinsen <translation@prinsenonline.com>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Archive disabled (zlib not supported)"
+msgstr "Archief uitgeschakeld (zlib niet ondersteund)"
+
+msgid "Archive"
+msgstr "Archief"
+
+msgid "Format Emails as"
+msgstr "Sla e-mails op als"
+
+msgid "EML Messages"
+msgstr "EML berichten"
+
+msgid "Mbox"
+msgstr "Mbox"
+
+msgid "Maildir"
+msgstr "Maildir"
+
+msgid "Seperate Entities"
+msgstr "Gescheiden entiteiten"
+
+msgid "Save Attachments"
+msgstr "Bewaar bijlagen"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Compress Type"
+msgstr "Compressietype"
+
+msgid "Tar"
+msgstr "Tar"
+
+msgid "Tar.GZ"
+msgstr "Tar.GZ"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Zip"
+msgstr "Zip"
+
+msgid "Email Filename"
+msgstr "E-mail bestandsnaam"
+
+msgid "Numbered"
+msgstr "Genummerd"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Subject"
+msgstr "Onderwerp"
+
+msgid "Archive Settings"
+msgstr "Archief instellingen"
+
+msgid "These settings allow you to modify the way you archive messages."
+msgstr "Deze instellingen geven aan hoe u uw berichten wilt archiveren."
+
+msgid "From"
+msgstr "Van"
+
+msgid "To"
+msgstr "Aan"

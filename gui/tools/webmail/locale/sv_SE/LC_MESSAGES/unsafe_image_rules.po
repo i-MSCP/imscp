@@ -1,0 +1,211 @@
+# Swedish (sv_SE) unsafe_image_rules Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2006.
+# $Id: unsafe_image_rules.po,v 1.9 2006/01/28 10:55:22 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: unsafe_image_rules 0.8\n"
+"POT-Creation-Date: 2006-01-17 10:40+0100\n"
+"PO-Revision-Date: 2006-01-28 11:52+0100\n"
+"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Safe Sender"
+msgstr "Pålitlig avsändare"
+
+msgid "Unsafe Image Rules"
+msgstr "Regler för osäkra bilder"
+
+msgid ""
+"Use the form below to modify the address that will be added to the Unsafe "
+"Image Rules."
+msgstr ""
+"Använd formuläret nedan för att redigera adressen som kommer att läggas till "
+"i regellistan."
+
+msgid "From"
+msgstr "Från"
+
+msgid "Contains"
+msgstr "innehåller"
+
+msgid "Reg.Exp."
+msgstr "reguljärt uttryck"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid ""
+"The following address has been successfully added to the Unsafe Images Rules:"
+msgstr "Följande adress har lagts till i regellistan:"
+
+msgid ""
+"I didn't seem to get a valid email address to add. This shouldn't happen!"
+msgstr ""
+"Hittade inte någon giltig e-postadress att lägga till. Detta borde inte "
+"inträffa!"
+
+msgid "Sending you back to the message list in five seconds."
+msgstr "Index kommer att visas inom fem sekunder."
+
+#. i18n: The first %s inserts HTML flr starting a link, and the second ends it.
+#, php-format
+msgid "If you are not automatically redirected, please click %shere%s."
+msgstr "Om inte, klicka %shär%s."
+
+msgid "Set up rules about how unsafe images in HTML messages are handled."
+msgstr ""
+"Skapa regler för hur osäkra bilder i HTML-formaterade brev ska hanteras."
+
+msgid "Always trust images from this sender"
+msgstr "Lita alltid på bilder från denna avsändare"
+
+msgid "Saved Trusted Options"
+msgstr "Inställningarna sparades"
+
+msgid "Options"
+msgstr "Inställningar"
+
+msgid "Trust all sources:"
+msgstr "Lita på alla avsändare:"
+
+msgid "WARNING!"
+msgstr "VARNING!"
+
+msgid "This is not recommended by the SquirrelMail Project Team."
+msgstr "Detta rekommenderas inte av SquirrelMails utvecklingsteam."
+
+#. i18n: %s inserts a complete link which doesn't need to be i18n.
+#, php-format
+msgid ""
+"Read %s for more details. There is a risk you may receive more spam if you "
+"check this option."
+msgstr ""
+"Läs %s för mer information (på engelska). Det finns en risk att du med det "
+"här valet får mer skräppost."
+
+msgid "If checked unsafe images are always seen."
+msgstr "Detta kommer att visa alla osäkra bilder."
+
+msgid "If this option is checked, the state of other options is irrelevant."
+msgstr ""
+"Om du använder den här inställningen blir övriga bildinställningar "
+"irrelevanta."
+
+msgid "Trust sources in address book:"
+msgstr "Lita på avsändare i adressboken:"
+
+msgid ""
+"If checked, unsafe images are shown for messages from anyone in your address "
+"book."
+msgstr "Osäkra bilder kommer att visas i brev från någon i din adressbok."
+
+msgid "Trust anything I send:"
+msgstr "Lita på allt jag skickar:"
+
+msgid ""
+"If checked, unsafe images are shown for messages sent by any of your "
+"identities."
+msgstr "Visar osäkra bilder från brev skickade av någon av dina identiteter."
+
+msgid ""
+"You might not want to set this if you forward Spam to other people, and then "
+"go back and read from your 'Sent' folder."
+msgstr ""
+"Du vill antagligen inte använda dig av detta om du skickar skräppost, och "
+"sedan läser vad du har skickat."
+
+msgid "Trust defined sources:"
+msgstr "Lita på definierade brev:"
+
+msgid "If checked, unsafe images are shown for the sources shown below."
+msgstr "Visar osäkra bilder enligt reglerna nedan."
+
+msgid ""
+"When viewing a message with unsafe images, you can quickly add the sender's "
+"email address or domain to the Unsafe Image Rules by clicking the 'Always "
+"trust images from this sender' link. The following options set the default "
+"behavior when the address is being added."
+msgstr ""
+"När ett de osäkra bilderna i ett brev visas kan du snabbt lägga till "
+"avsändarens e-postadress eller domän till regellistan genom att klicka på "
+"länken \"Lita alltid på bilder från denna avsändare\". Nedanstående "
+"inställningar anger förvalt beteende när en adress läggs till listan."
+
+msgid "Always add full email address:"
+msgstr "Lägg till hela adressen:"
+
+msgid ""
+"If selected the full email address of the sender will be added to the Unsafe "
+"Image Rules list."
+msgstr "Lägg alltid till en specifik avsändare i regellistan."
+
+msgid "Always add full domain:"
+msgstr "Lägg endast till domänen:"
+
+msgid ""
+"If selected only the domain of the sender will be added to the Unsafe Image "
+"Rules list."
+msgstr ""
+"Lägg alltid till domänen i regellistan, men inte en specifik avsändare från "
+"den domänen."
+
+msgid "Always ask:"
+msgstr "Fråga alltid:"
+
+msgid "Ask what to add to the Unsafe Image Rules list."
+msgstr "Fråga, i varje enskilt fall, vad som ska läggas till i regellistan."
+
+msgid "Add New Rule"
+msgstr "Skriv en ny regel"
+
+msgid "Done"
+msgstr "Klar"
+
+msgid "Trust source if "
+msgstr "Lita på källan om "
+
+msgid "To"
+msgstr "Till"
+
+msgid "Cc"
+msgstr "Kopia"
+
+msgid "To or Cc"
+msgstr "Till eller Kopia"
+
+msgid "Subject"
+msgstr "Ärende"
+
+msgid "NB"
+msgstr "OBS"
+
+msgid "When specifying a Reg.Exp you must include delimeters."
+msgstr "När du anger ett reguljärt uttryck måste det innehålla avgränsare."
+
+msgid "The 'Contains' check will be done with case-insensitive match."
+msgstr "Vid alternativet \"innehåller\" är jämförelsen skiftlägesokänslig."
+
+msgid "Submit"
+msgstr "Spara"
+
+msgid "Edit"
+msgstr "Redigera"
+
+msgid "Delete"
+msgstr "Stryk"
+
+#. i18n: If [field] [Contains|Reg.Exp.] [user defined data]
+#, php-format
+msgid "If %s %s %s"
+msgstr "Om %s %s %s"
+
+msgid "This doesn't look like a valid Reg.Exp."
+msgstr "Detta verkar inte vara ett giltigt reguljärt uttryck."
+
+msgid "WARNING:"
+msgstr "VARNING:"

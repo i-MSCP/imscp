@@ -1,0 +1,5059 @@
+# SquirrelMail Basque Translation
+# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Iker Etxaniz <ietxaniz@csiss.jesuitak.org>, 2004.
+# $Id: squirrelmail.po,v 1.4 2005/06/05 11:49:44 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: squirrelmail VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-16 19:47+0200\n"
+"PO-Revision-Date: 2004-05-19 15:21+0100\n"
+"Last-Translator: Iker Etxaniz <ietxaniz@csiss.jesuitak.org>\n"
+"Language-Team: Spanish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Address Book"
+msgstr "Agenda"
+
+msgid "Name"
+msgstr "Izena"
+
+msgid "E-mail"
+msgstr "Helbide elektronikoa"
+
+msgid "Info"
+msgstr "Informazioa"
+
+msgid "Source"
+msgstr "Jatorria"
+
+msgid "To"
+msgstr "Norentzat"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+#, fuzzy
+msgid "No persons matching your search were found"
+msgstr "Ez da datu horiekin pertsonarik aurkitu"
+
+msgid "Search for"
+msgstr "Irizpide honen arabera bilatu:"
+
+msgid "in"
+msgstr "barne"
+
+msgid "All address books"
+msgstr "Helbide liburu guztiak"
+
+msgid "Search"
+msgstr "Bilatu"
+
+msgid "List all"
+msgstr "Guztiak zerrendatu"
+
+msgid "Close"
+msgstr "Itxi"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "Ezinezkoa %s-tik helbideak zerrendatzea"
+
+msgid "Your search failed with the following error(s)"
+msgstr "Bilaketak ondoko akatsekin hutsegin du"
+
+msgid "All"
+msgstr "Denak"
+
+msgid "Use Addresses"
+msgstr "Helbideak erabili"
+
+#, fuzzy
+msgid "Cancel"
+msgstr "Aldatu"
+
+msgid "Address Book Search"
+msgstr "Agendan bilatu"
+
+msgid "Return"
+msgstr "Bueltatu"
+
+msgid "Nickname"
+msgstr "Ezizen"
+
+msgid "Must be unique"
+msgstr "Bakarra izan behar du"
+
+msgid "E-mail address"
+msgstr "Korreo elektronikoen helbideak"
+
+msgid "Last name"
+msgstr "Abizenak"
+
+msgid "First name"
+msgstr "Izena"
+
+msgid "Additional info"
+msgstr "Informazio gehigarria"
+
+#, fuzzy
+msgid "Add to:"
+msgstr "Gehitu %s -ra"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr ""
+"Ezin dira agenda pertsonalak definitu.Administratzailearekin harremanetan "
+"jarri."
+
+msgid "You can only edit one address at the time"
+msgstr "Aldi berean helbide bakarra alda dezakezu."
+
+msgid "Update address"
+msgstr "Helbideak gaurkotu"
+
+msgid "ERROR"
+msgstr "ERROREA"
+
+msgid "Please select address that you want to edit"
+msgstr ""
+
+msgid "Add address"
+msgstr "Helbidea gehitu"
+
+msgid "Edit selected"
+msgstr "Aukeratutakoa editatu"
+
+msgid "Delete selected"
+msgstr "Aukeratutakoa ezabatu"
+
+#, php-format
+msgid "Add to %s"
+msgstr "Gehitu %s -ra"
+
+#, php-format
+msgid "%s wrote:"
+msgstr ""
+
+msgid "quote"
+msgstr "hitzordua"
+
+msgid "who"
+msgstr "norn"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr ""
+
+msgid "Subject"
+msgstr "Gaia"
+
+msgid "From"
+msgstr "Norengandik"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Original Message"
+msgstr "Jatorrizko mezua"
+
+msgid "Draft Email Saved"
+msgstr "Zirriborroa gordeta"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "Ezin da fitxategia mugitu/kopiatu.Fitxategia ez da erantsi"
+
+msgid "Draft Saved"
+msgstr "Zirriborroa gordeta"
+
+#, fuzzy
+msgid "Your Message has been sent."
+msgstr "Zure mezua bidalia izan da"
+
+msgid "From:"
+msgstr "Norengandik:"
+
+msgid "Send"
+msgstr "Bidali"
+
+msgid "Attach:"
+msgstr "Erantsi:"
+
+msgid "Add"
+msgstr "Gehitu"
+
+msgid "Delete selected attachments"
+msgstr "Ezabatu aukeratutako fitxategi erantsiak"
+
+msgid "Priority"
+msgstr "Lehentasuna"
+
+msgid "High"
+msgstr "Altua"
+
+msgid "Normal"
+msgstr "Normala"
+
+msgid "Low"
+msgstr "Bajua"
+
+msgid "Receipt"
+msgstr "Baieztapena"
+
+#, fuzzy
+msgid "On Read"
+msgstr "Irakurketa"
+
+msgid "On Delivery"
+msgstr "Bidalketa"
+
+msgid "Signature"
+msgstr "Sinadura"
+
+msgid "Addresses"
+msgstr "Helbideak"
+
+msgid "Save Draft"
+msgstr "Zirriborroa gorde"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "Ez dezu \"Norentzat:\" atala bete"
+
+#, fuzzy, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Ez dago beste '%s' erabiltzailerik"
+
+#, fuzzy
+msgid "Server replied:"
+msgstr "Zerbitzariak hau erantzun du: "
+
+msgid "Folders"
+msgstr "Karpetak"
+
+#, fuzzy
+msgid "Subscribed successfully."
+msgstr "Harpidetza burutua!"
+
+#, fuzzy
+msgid "Unsubscribed successfully."
+msgstr "Baja beteta!"
+
+#, fuzzy
+msgid "Deleted folder successfully."
+msgstr "Karpeta ongi ezabatua!"
+
+#, fuzzy
+msgid "Created folder successfully."
+msgstr "Karpeta ongi sortua"
+
+#, fuzzy
+msgid "Renamed successfully."
+msgstr "Ongi berizendatua!"
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr ""
+
+msgid "refresh folder list"
+msgstr "karpeten zerrenda eguneratu"
+
+msgid "Create Folder"
+msgstr "Karpeta sortu"
+
+msgid "as a subfolder of"
+msgstr "ondorengoaren menpeko karpeta bezala"
+
+msgid "None"
+msgstr "Baterez"
+
+msgid "Let this folder contain subfolders"
+msgstr "Karpeta honi baimendu menpeko karpetak izatea"
+
+msgid "Create"
+msgstr "Sortu"
+
+msgid "Rename a Folder"
+msgstr "Karpeta berizendatu"
+
+msgid "Select a folder"
+msgstr "Aukeratu karpeta"
+
+msgid "Rename"
+msgstr "Berizendatu"
+
+msgid "No folders found"
+msgstr "Ez da karpetarik aurkitu"
+
+msgid "Delete Folder"
+msgstr "Karpeta ezabatu"
+
+msgid "Delete"
+msgstr "Ezabatu"
+
+msgid "Unsubscribe"
+msgstr "Baja eman"
+
+msgid "Subscribe"
+msgstr "Izen eman"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "Ez dago baja eman daitekeen karpetarik!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "Ez dago izen eman daitekeen karpetarik!"
+
+#, fuzzy
+msgid "Subscribe to:"
+msgstr "Izen eman"
+
+#, fuzzy
+msgid "Illegal folder name. Please select a different name."
+msgstr "Karpeta izen desegokia.Mesedez, aukeratu beste bat"
+
+msgid "Click here to go back"
+msgstr "Itzultzeko sakatu hemen"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Ez duzu ezabatu nahi duzun karpeta aukeratu."
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Ziur zaude gertaera hau ezabatu nahi duzula?"
+
+msgid "Yes"
+msgstr "Bai"
+
+msgid "No"
+msgstr "Ez"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "Ez dezu ezabatu nahi duzun karpeta aukeratu."
+
+msgid "Rename a folder"
+msgstr "Karpeta berizendatu"
+
+msgid "New name:"
+msgstr "Izen berria:"
+
+msgid "Submit"
+msgstr "Bidali"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "ERROREA:Laguntza fitxategiak ez daude formatu egokian!"
+
+msgid "Help"
+msgstr "Laguntza"
+
+#, fuzzy, php-format
+msgid ""
+"The help has not been translated to %s. It will be displayed in English "
+"instead."
+msgstr "Laguntza ez da %s -ra itzulia izan.Beraz, ingeleses erakutsikoda"
+
+msgid "Some or all of the help documents are not present!"
+msgstr "Laguntza dokumentu batzu edo denak falta dira!"
+
+msgid "Table of Contents"
+msgstr "Edukien taula"
+
+msgid "Previous"
+msgstr "Aurrekoa"
+
+msgid "Next"
+msgstr "Hurrengoa"
+
+msgid "Top"
+msgstr "Gora"
+
+msgid "Viewing an image attachment"
+msgstr "Erantsitako irudia ikusten"
+
+msgid "View message"
+msgstr "Mezua ikusi"
+
+msgid "Download this as a file"
+msgstr "Mezu hau fitxategi modura jeitsi"
+
+msgid "INBOX"
+msgstr "SARRERA"
+
+#, fuzzy
+msgid "Purge"
+msgstr "garbitu"
+
+msgid "Login"
+msgstr "Sartu"
+
+#, php-format
+msgid "%s Logo"
+msgstr "%s -ren logotipoa"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail %s bertsioa"
+
+#, fuzzy
+msgid "By the SquirrelMail Project Team"
+msgstr "SquirrelMail-en garapen taldeak egina"
+
+#, php-format
+msgid "%s Login"
+msgstr "%s sartu"
+
+msgid "Name:"
+msgstr "Izena:"
+
+msgid "Password:"
+msgstr "Pasahitza:"
+
+msgid "No messages were selected."
+msgstr "Ez dago mezurik aukeratuta."
+
+msgid "Personal Information"
+msgstr "Norbere informazioa"
+
+msgid "Display Preferences"
+msgstr "Pantaila lehentasunak"
+
+msgid "Message Highlighting"
+msgstr "Mezuen nabaritzea"
+
+msgid "Folder Preferences"
+msgstr "Karpeten lehentasunak"
+
+msgid "Index Order"
+msgstr "Indizearen ordena"
+
+msgid "Options"
+msgstr "Aukerak"
+
+msgid "Error(s) occurred while saving your options"
+msgstr ""
+
+msgid "Some of your preference changes were not applied."
+msgstr ""
+
+msgid "Successfully Saved Options"
+msgstr "Aukerak eguneratuak"
+
+msgid "Refresh Folder List"
+msgstr "Karpetak eguneratu"
+
+msgid "Refresh Page"
+msgstr "Orria eguneratu"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+"Aukera hoek zure informazio pertsonala jasotzen du,besteak beste,zure izena, "
+"e-posta helbidea etab."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"Squirrelmail-ek ematen eta azaltzen dizun informazioa alda dezakezu, besteak "
+"beste, kolorea,hizkuntza eta beste konfigurazioak."
+
+#, fuzzy
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"Emandako irizpideei jarraituz jasotako mezuak background kolore "
+"ezberdinetanatera ditzakegu. Horiek nork bidalia den jakiten laguntzen digu, "
+"berezikiposta zerrendatik bidaliak badira"
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "Aukera hauek karpetak aldatzeko eta azaltzeko era moldatzen dute"
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"Indizearen ordena alda dezakezu zuk nahi duzun erara egokitzeko eta "
+"edozeinorriburu jarriz."
+
+msgid "New"
+msgstr "Berria"
+
+msgid "Done"
+msgstr "Eginda"
+
+msgid "To or Cc"
+msgstr "Norentzat edo CC"
+
+#, fuzzy
+msgid "subject"
+msgstr "Gaia"
+
+msgid "Edit"
+msgstr "Idatzi"
+
+msgid "Up"
+msgstr "Gora"
+
+msgid "Down"
+msgstr "Behera"
+
+msgid "No highlighting is defined"
+msgstr "Ez dago nabaritzailerik finkatuta"
+
+msgid "Identifying name"
+msgstr "Ezagutze izena"
+
+msgid "Color"
+msgstr "Kolorea"
+
+msgid "Dark Blue"
+msgstr "Urdin iluna"
+
+msgid "Dark Green"
+msgstr "Orlegi iluna"
+
+msgid "Dark Yellow"
+msgstr "Hori iluna"
+
+msgid "Dark Cyan"
+msgstr "Cyan iluna"
+
+msgid "Dark Magenta"
+msgstr "Magenta iluna"
+
+msgid "Light Blue"
+msgstr "Urdin argia"
+
+msgid "Light Green"
+msgstr "Orlegi argia"
+
+msgid "Light Yellow"
+msgstr "Ori argia"
+
+msgid "Light Cyan"
+msgstr "Cyan argia"
+
+msgid "Light Magenta"
+msgstr "Magenta argia"
+
+msgid "Dark Gray"
+msgstr "Gris iluna"
+
+msgid "Medium Gray"
+msgstr "Gris arrunta"
+
+msgid "Light Gray"
+msgstr "Gris argia"
+
+msgid "White"
+msgstr "Zuria"
+
+msgid "Other:"
+msgstr "Beste bat:"
+
+msgid "Ex: 63aa7f"
+msgstr "Adib: 63AA7F"
+
+msgid "Matches"
+msgstr "Kointzidentzia"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Beste nortasuna %d"
+
+msgid "Advanced Identities"
+msgstr "Nortasun bereziak"
+
+msgid "Default Identity"
+msgstr "Besterik ezeko nortasuna"
+
+msgid "Add a New Identity"
+msgstr "Nortasun bat gehitu"
+
+msgid "Full Name"
+msgstr "Izen osoa"
+
+msgid "E-Mail Address"
+msgstr "Posta elektronikoaren helbidea"
+
+msgid "Reply To"
+msgstr "Nori erantzun:"
+
+msgid "Save / Update"
+msgstr "Gorde / Eguneratu"
+
+msgid "Make Default"
+msgstr "Besterik ezean jarri"
+
+msgid "Move Up"
+msgstr "Gora mugitu"
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+msgid "Flags"
+msgstr "Adierazleak"
+
+msgid "Size"
+msgstr "Neurria"
+
+#, fuzzy
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"Indizearen ordenak mezuen indizean zutabeak nola agertzen diren azaltzendu. "
+"Zutabe goriek gehitu, kendu eta mugitu ditzakezu zuk nahi duzun erara."
+
+msgid "up"
+msgstr "gora"
+
+msgid "down"
+msgstr "behera"
+
+msgid "remove"
+msgstr "kendu"
+
+msgid "Return to options page"
+msgstr "Aukera orrira bueltatu"
+
+msgid "Message not printable"
+msgstr "Mezu hau ezin da imprimatu"
+
+msgid "Invalid URL"
+msgstr ""
+
+msgid "Printer Friendly"
+msgstr "Inprimatze itxura"
+
+msgid "Print"
+msgstr "Inprimatu"
+
+msgid "View Printable Version"
+msgstr "Ikusi inprimatutako bertsioa"
+
+msgid "Read:"
+msgstr "Irakurrita:"
+
+msgid "Your message"
+msgstr "Zure mezua"
+
+#, fuzzy
+msgid "Sent"
+msgstr "Bidalia:"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "%s erakutsi zen"
+
+msgid "less"
+msgstr "gutxiago"
+
+msgid "more"
+msgstr "gehiago"
+
+#, fuzzy
+msgid "Unknown sender"
+msgstr "Bidaltzaile ezezaguna"
+
+msgid "Mailer"
+msgstr "Bezeroa"
+
+msgid "Read receipt"
+msgstr "Irakurtze baieztapena"
+
+#, fuzzy
+msgid "sent"
+msgstr "bidalia"
+
+msgid "requested"
+msgstr "eskatuta"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"Mezua bidali duen pertsonak irakurri duzula adierazten duen "
+"irakurtzebaieztapena eskatzen du. Bidali nahi duzu orain?"
+
+msgid "Send read receipt now"
+msgstr "Bidali irakurtze baieztapena"
+
+msgid "Search Results"
+msgstr "Bilaketaren emaitzak"
+
+msgid "Message List"
+msgstr "Mezuen zerrenda"
+
+msgid "Resume Draft"
+msgstr "Zirriborroa berreskuratu"
+
+msgid "Edit Message as New"
+msgstr "Idatzi Msg. berria balitz bezala"
+
+#, fuzzy
+msgid "View Message"
+msgstr "Mezua ikusi"
+
+msgid "Forward"
+msgstr "Berbidali"
+
+#, fuzzy
+msgid "Forward as Attachment"
+msgstr "Gehituriko fitxategiak"
+
+msgid "Reply"
+msgstr "Erantzun"
+
+msgid "Reply All"
+msgstr "Denei erantzun"
+
+msgid "View Full Header"
+msgstr "Ikusi goiburu guztia"
+
+msgid "Attachments"
+msgstr "Gehituriko fitxategiak"
+
+msgid "You must be logged in to access this page."
+msgstr "Erabiltzailearen izen eta pasahitza behar dituzu sartzeko."
+
+msgid "Folder:"
+msgstr "Karpeta:"
+
+msgid "edit"
+msgstr "idatzi"
+
+msgid "search"
+msgstr "bilatu"
+
+msgid "delete"
+msgstr "ezabatu"
+
+msgid "Recent Searches"
+msgstr "Azken bilaketak"
+
+msgid "save"
+msgstr "gorde"
+
+msgid "forget"
+msgstr "ahaztu"
+
+msgid "Current Search"
+msgstr "Oraingo bilaketa"
+
+msgid "All Folders"
+msgstr "Karpeta guztiak"
+
+msgid "Body"
+msgstr "Gorputza"
+
+msgid "Everywhere"
+msgstr "Leku guztiak"
+
+msgid "No Messages Found"
+msgstr "Ez da mezurik aurkitu"
+
+#, fuzzy
+msgid "Signout"
+msgstr "Deskonektatu"
+
+msgid "Sign Out"
+msgstr "Deskonektatu"
+
+msgid "You have been successfully signed out."
+msgstr "Ongi deskonektatu da."
+
+msgid "Click here to log back in."
+msgstr "Sakatu hemen berriz sartzeko"
+
+msgid "Viewing a Business Card"
+msgstr "Bisita txartela ikusten"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+
+msgid "Title"
+msgstr "Izenburua"
+
+msgid "Email"
+msgstr "Posta elektronikoa"
+
+msgid "Web Page"
+msgstr "Web orria"
+
+msgid "Organization / Department"
+msgstr "Enpresa / Dptua."
+
+msgid "Address"
+msgstr "Helbidea"
+
+msgid "Work Phone"
+msgstr "Laneko telefonoa"
+
+msgid "Home Phone"
+msgstr "Etxeko telefonoa"
+
+msgid "Cellular Phone"
+msgstr "Sakeleko telefonoa"
+
+msgid "Fax"
+msgstr "Faxa"
+
+msgid "Note"
+msgstr "Oharra"
+
+msgid "Add to Addressbook"
+msgstr "Helbidetegira gehitu"
+
+msgid "Title & Org. / Dept."
+msgstr "Lana,Enpr. / Dptua."
+
+#, fuzzy
+msgid "Add to Address Book"
+msgstr "Helbidetegira gehitu"
+
+msgid "Viewing Full Header"
+msgstr "Ikusi goiburu guztiak"
+
+msgid "Viewing a text attachment"
+msgstr "Gehitutako testu bat ikusi"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+
+msgid "Please contact your system administrator and report this error."
+msgstr "Jakinarazi informatika arduradunari."
+
+msgid "Personal address book"
+msgstr "Helbide liburu pertsonala"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "Datu basearen akatsa: %s"
+
+msgid "Addressbook is read-only"
+msgstr "Helbidetegia irakurtzeko baino ez da"
+
+#, php-format
+msgid "User '%s' already exist"
+msgstr "Badago beste '%s' erabiltzaile bat"
+
+#, php-format
+msgid "User '%s' does not exist"
+msgstr "Ez dago beste '%s' erabiltzailerik"
+
+msgid "Not a file name"
+msgstr "Ez da fitxategi izena"
+
+msgid "No such file or directory"
+msgstr "Ez da aurkitu fitxategi edo direktorioa"
+
+msgid "Open failed"
+msgstr "Errorea irekitzean"
+
+msgid "Write failed"
+msgstr "Idazketak huts egin du"
+
+msgid "Unable to update"
+msgstr "Ezin da eguneratu"
+
+msgid "Could not lock datafile"
+msgstr "Ezin izan da datu fitxategia blokeatu"
+
+msgid "Write to addressbook failed"
+msgstr "Akatsa helbide liburuan idaztean"
+
+msgid "Error initializing addressbook database."
+msgstr "Akatsa helbide datu basea irekitzerakoan."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "Akatsa %s fitxategia irekitzean"
+
+msgid "Global address book"
+msgstr "Helbidetegi orokorra"
+
+msgid "Error initializing global addressbook."
+msgstr "Akatsa helbide liburu orokorra irekitzean."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Akatsa LDPA zerbitzaria irekitzean %s:"
+
+msgid "Invalid input data"
+msgstr "Datu sarrera baliogabea"
+
+msgid "Name is missing"
+msgstr "Izena falta da"
+
+msgid "E-mail address is missing"
+msgstr "Posta elektronikoaren helbidea falta da"
+
+msgid "Nickname contains illegal characters"
+msgstr "Goitizenak onartezinak diren hizkiak ditu"
+
+#, fuzzy
+msgid "View"
+msgstr "ikusi"
+
+#, fuzzy
+msgid "View Business Card"
+msgstr "Bisita txartela ikusten"
+
+msgid "Sunday"
+msgstr "Igandea"
+
+msgid "Monday"
+msgstr "Astelehena"
+
+msgid "Tuesday"
+msgstr "Asteartea"
+
+msgid "Wednesday"
+msgstr "Asteazkena"
+
+msgid "Thursday"
+msgstr "Osteguna"
+
+msgid "Friday"
+msgstr "Ostirala"
+
+msgid "Saturday"
+msgstr "Larunbata"
+
+msgid "Sun"
+msgstr "Iga"
+
+msgid "Mon"
+msgstr "Ale"
+
+msgid "Tue"
+msgstr "Aar"
+
+msgid "Wed"
+msgstr "Aaz"
+
+msgid "Thu"
+msgstr "Oste"
+
+msgid "Fri"
+msgstr "Ost"
+
+msgid "Sat"
+msgstr "Lar"
+
+msgid "January"
+msgstr "Urtarrila"
+
+msgid "February"
+msgstr "Otsaila"
+
+msgid "March"
+msgstr "Martxoa"
+
+msgid "April"
+msgstr "Apirila"
+
+msgid "May"
+msgstr "Maiatza"
+
+msgid "June"
+msgstr "Ekaina"
+
+msgid "July"
+msgstr "Uztaila"
+
+msgid "August"
+msgstr "Abuztua"
+
+msgid "September"
+msgstr "Iraila"
+
+msgid "October"
+msgstr "Urria"
+
+msgid "November"
+msgstr "Azaroa"
+
+msgid "December"
+msgstr "Abendua"
+
+msgid "Jan"
+msgstr "Urt"
+
+msgid "Feb"
+msgstr "Ots"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Api"
+
+msgid "Ma&#121;"
+msgstr ""
+
+msgid "Jun"
+msgstr "Eka"
+
+msgid "Jul"
+msgstr "Uzt"
+
+msgid "Aug"
+msgstr "Abu"
+
+msgid "Sep"
+msgstr "Ira"
+
+msgid "Oct"
+msgstr "Urr"
+
+msgid "Nov"
+msgstr "Aza"
+
+msgid "Dec"
+msgstr "Abe"
+
+msgid "D, F j, Y g:i a"
+msgstr "D, j \\d\\e F \\d\\e Y, g:i a"
+
+#, fuzzy
+msgid "D, F j, Y H:i"
+msgstr "D, j \\d\\e F \\d\\e Y, G:i"
+
+msgid "M j, Y"
+msgstr "j/m/Y"
+
+msgid "g:i a"
+msgstr "g:i a"
+
+#, fuzzy
+msgid "H:i"
+msgstr "G:i"
+
+msgid "D, g:i a"
+msgstr "D, g:i a"
+
+#, fuzzy
+msgid "D, H:i"
+msgstr "D, G:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "Ez da %s lehentasun fitxategia aurkitu.Gaizki ateratzen."
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "Sakatu hemen berriz %s -ra itzultzeko"
+
+msgid "Go to the login page"
+msgstr "Sarrera orrira joan"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"Lehentasun fitxategia, %s ez da existitzen. Atera eta sartu berrizberez "
+"fitxategia berregiteko."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Lehentasunen fitxategia, %s ezin izan da ireki.Jakinarazi "
+"informatikaarduradunari errorea."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Lehentasunen fitxategia, %s ezin izan da idatzi.Jakinarazi "
+"informatikaarduradunari errorea."
+
+#, fuzzy, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Lehentasunen fitxategia, %s ezin izan da ireki.Jakinarazi "
+"informatikaarduradunari errorea."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "Errorea %s irekitzen"
+
+msgid "Default preference file not found or not readable!"
+msgstr "Berezko lehentasun fitxategia ez da aurkitzen!"
+
+msgid "Could not create initial preference file!"
+msgstr "Ezin izan da lehentasunen hasiera fitxategia sortu!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr ""
+"Idazketa baimanek eman behar zaizkio %s erabiltzaileari %s direktorioan"
+
+#, fuzzy
+msgid "Signature is too big."
+msgstr "Sinadura aukerak"
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Sinadura fitxategia %s ezin da ireki. Jakinarazi informatika arduradunari "
+"errorea."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Sinadura fitxategia %s ezin da idatzi. Jakinarazi informatika arduradunari "
+"errorea."
+
+#, fuzzy, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Sinadura fitxategia %s ezin da ireki. Jakinarazi informatika arduradunari "
+"errorea."
+
+msgid ""
+"You need to have php4 installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+
+msgid "ERROR: No available IMAP stream."
+msgstr ""
+
+#, fuzzy
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "Errrorea IMAP %s zerbitzariarekin konektatzerakoan."
+
+#, fuzzy
+msgid "ERROR: Could not complete request."
+msgstr "ERROREA: Ezin izan da eskaera burutu."
+
+msgid "Query:"
+msgstr "Galdera:"
+
+#, fuzzy
+msgid "Reason Given:"
+msgstr "Emandako arrazoia: "
+
+#, fuzzy
+msgid "ERROR: Bad or malformed request."
+msgstr "ERROREA: eskaera okerra edo formatu okerra."
+
+#, fuzzy
+msgid "Server responded:"
+msgstr "Zerbitzariak hau erantzun du: "
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr ""
+
+msgid "ERROR: Unknown IMAP response."
+msgstr ""
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Errrorea IMAP %s zerbitzariarekin konektatzerakoan."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "%s eskaera okerra"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "Errore ezezaguna: %s"
+
+msgid "Read data:"
+msgstr "Irakurri datuak:"
+
+msgid "Unknown user or password incorrect."
+msgstr "Erabiltzaile edo pasahitz okerra."
+
+#, fuzzy
+msgid "ERROR: Could not append message to"
+msgstr "ERROREA: Ezin izan da eskaera burutu."
+
+#, fuzzy
+msgid "Solution:"
+msgstr "Proposamenak:"
+
+msgid ""
+"Remove unneccessary messages from your folder and start with your Trash "
+"folder."
+msgstr ""
+
+msgid "(no subject)"
+msgstr "(gairik gabe)"
+
+msgid "Unknown Sender"
+msgstr "Bidaltzaile ezezaguna"
+
+#, fuzzy
+msgid "Unknown response from IMAP server:"
+msgstr "IMAP zerbitzariaren erantzun ezezaguna: "
+
+msgid "The server couldn't find the message you requested."
+msgstr ""
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+
+#, fuzzy
+msgid "Unknown date"
+msgstr "Bidaltzaile ezezaguna"
+
+msgid "A"
+msgstr "C"
+
+#, fuzzy
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr "Instalazioan erabilitako IMAP zerbitzariak ezin ditu mezuak ordenatu."
+
+#, fuzzy
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr "Instalazioan erabilitako IMAP zerbitzariak ezin ditu mezuak ordenatu."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "KARPETA HAU HUTSIK DAGO"
+
+#, fuzzy
+msgid "Move Selected To"
+msgstr "Aukeratuak hona mugitu: "
+
+msgid "Transform Selected Messages"
+msgstr "Aukeraturiko mezuak hona bihurtu: "
+
+msgid "Move"
+msgstr "Mugitu"
+
+msgid "Expunge"
+msgstr "Ezabatu"
+
+msgid "mailbox"
+msgstr "postontzia"
+
+msgid "Read"
+msgstr "Irakurria"
+
+msgid "Unread"
+msgstr "Irakurri gabea"
+
+msgid "Unthread View"
+msgstr "Gaiaren araberako ordena kendu"
+
+msgid "Thread View"
+msgstr "Gaiaren araberako ordena"
+
+msgid "Toggle All"
+msgstr "Denak aldatu"
+
+msgid "Unselect All"
+msgstr "Ez-aukeratu Guztiak"
+
+msgid "Select All"
+msgstr "Guztiak aukeratu"
+
+#, fuzzy, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "Mezu hauek ikusten: <B>%s</B> -tik <B>%s</B> -ra (guztira %s)"
+
+#, fuzzy, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "Mezu hau ikusten: <B>%s</B> (guztira 1)"
+
+msgid "Paginate"
+msgstr "orrikatu"
+
+msgid "Show All"
+msgstr "Denak"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr ""
+
+msgid "the provided bodystructure by your imap-server"
+msgstr ""
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"Berreskuratze errorea: Errore honen arrazoia seguraski mezua "
+"gaizkiegituraturik dagoela da."
+
+msgid "Command:"
+msgstr "Komandoa:"
+
+msgid "Response:"
+msgstr "Erantzuna:"
+
+msgid "Message:"
+msgstr "Mezua:"
+
+msgid "FETCH line:"
+msgstr "Erantzuniko lerroa:"
+
+msgid "Hide Unsafe Images"
+msgstr "Ez erakutsi segurtasunik gabeko irudiak"
+
+msgid "View Unsafe Images"
+msgstr "Ikusi segurtasunik gabeko irudiak"
+
+#, fuzzy
+msgid "Download"
+msgstr "jeitsi"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_eu_ES.png"
+
+msgid "This external link will open in a new window"
+msgstr ""
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "%s aukera ez da aurkitu"
+
+msgid "Current Folder"
+msgstr "Karpeta hau"
+
+msgid "Compose"
+msgstr "Idatzi"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "Errorea %s direktorioa sortzen."
+
+msgid "Could not create hashed directory structure!"
+msgstr "Ezin da direktorio egitura sortu!"
+
+msgid "Service not available, closing channel"
+msgstr ""
+
+msgid "A password transition is needed"
+msgstr ""
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "Requested action aborted: error in processing"
+msgstr ""
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr ""
+
+#, fuzzy
+msgid "Temporary authentication failure"
+msgstr "apop kautotzeak huts egin du"
+
+msgid "Syntax error; command not recognized"
+msgstr ""
+
+msgid "Syntax error in parameters or arguments"
+msgstr ""
+
+#, fuzzy
+msgid "Command not implemented"
+msgstr "Aginduak huts egin du "
+
+msgid "Bad sequence of commands"
+msgstr ""
+
+msgid "Command parameter not implemented"
+msgstr ""
+
+#, fuzzy
+msgid "Authentication required"
+msgstr "kautotze errorea "
+
+msgid "Authentication mechanism is too weak"
+msgstr ""
+
+#, fuzzy
+msgid "Authentication failed"
+msgstr "kautotze errorea "
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr ""
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "User not local; please try forwarding"
+msgstr ""
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr ""
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr ""
+
+#, fuzzy
+msgid "Transaction failed"
+msgstr "kautotze errorea "
+
+#, fuzzy
+msgid "Unknown response"
+msgstr "Bidaltzaile ezezaguna"
+
+msgid "General Display Options"
+msgstr "Pantailaratze aukera orokorrak"
+
+msgid "Theme"
+msgstr "Gaia"
+
+msgid "Default"
+msgstr "Besterik ezean"
+
+msgid "Custom Stylesheet"
+msgstr "Norberaren estiloa"
+
+msgid "Language"
+msgstr "Hizkuntza"
+
+msgid "Use Javascript"
+msgstr "Javascript erabili"
+
+msgid "Autodetect"
+msgstr "Autotopaketa"
+
+msgid "Always"
+msgstr "Beti"
+
+msgid "Never"
+msgstr "Inoiz ez"
+
+msgid "Mailbox Display Options"
+msgstr "Postontziaren pantailaratze aukerak"
+
+#, fuzzy
+msgid "Number of Messages per Page"
+msgstr "Indexatu beharreko mezu kopurura"
+
+msgid "Enable Alternating Row Colors"
+msgstr "Koloreak txandakatu zerrendetan"
+
+msgid "Enable Page Selector"
+msgstr "Orri aukeratzailea"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "Erakusteko orri kopuru gehiengoa"
+
+msgid "Always Show Full Date"
+msgstr ""
+
+msgid "Message Display and Composition"
+msgstr "Mezuen idazketa eta pantailaratzea"
+
+msgid "Wrap Incoming Text At"
+msgstr "Sarrera testuak ondokoari moldatu"
+
+#, fuzzy
+msgid "Width of Editor Window"
+msgstr "Editorearen lehioaren neurria"
+
+#, fuzzy
+msgid "Height of Editor Window"
+msgstr "Editorearen lehioaren neurria"
+
+msgid "Location of Buttons when Composing"
+msgstr "Idazketa botoien kokapena"
+
+msgid "Before headers"
+msgstr "Izenburuen aurretik"
+
+msgid "Between headers and message body"
+msgstr "Mezua eta izenburuen artean"
+
+msgid "After message body"
+msgstr "Mezuaren ondoren"
+
+msgid "Addressbook Display Format"
+msgstr "Helbide-liburuaren pantailaratzea"
+
+msgid "Javascript"
+msgstr "Javascript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Show HTML Version by Default"
+msgstr "Besterik ezean HTML bertsioa erakutsi"
+
+msgid "Enable Forward as Attachment"
+msgstr ""
+
+#, fuzzy
+msgid "Include CCs when Forwarding Messages"
+msgstr "Mezuen berbidaltzean CC-ak sartu"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "Guztiei erantzutean CC-en sart nazazu"
+
+msgid "Enable Mailer Display"
+msgstr "Bidaltzailea ikusi"
+
+msgid "Display Attached Images with Message"
+msgstr "Gehituriko irudiak mezuarenkin batera erakutsi"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "Pantaila garbitu hasierako pantailaratzean"
+
+#, fuzzy
+msgid "Enable Mail Delivery Notification"
+msgstr "Mezu berrien abisua aktibatu"
+
+#, fuzzy
+msgid "Compose Messages in New Window"
+msgstr "Beti leiho berri batean idatzi"
+
+#, fuzzy
+msgid "Width of Compose Window"
+msgstr "Mezuen edizio zabalera"
+
+#, fuzzy
+msgid "Height of Compose Window"
+msgstr "Mezuen edizio altuera"
+
+#, fuzzy
+msgid "Append Signature before Reply/Forward Text"
+msgstr "Erantzun atalaren aurretik sinadura erantsi"
+
+msgid "Prefix for Original Message when Replying"
+msgstr ""
+
+msgid "Cursor Position when Replying"
+msgstr ""
+
+msgid "To: field"
+msgstr ""
+
+msgid "Focus in body"
+msgstr ""
+
+#, fuzzy
+msgid "Select body"
+msgstr "Aukeratu karpeta"
+
+#, fuzzy
+msgid "No focus"
+msgstr "Ordularirik gabe"
+
+msgid "Sort by Received Date"
+msgstr ""
+
+msgid "Enable Thread Sort by References Header"
+msgstr ""
+
+msgid "Special Folder Options"
+msgstr "Karpeta berezien aukerak"
+
+msgid "Folder Path"
+msgstr "Karpeten kokapena"
+
+msgid "Do not use Trash"
+msgstr "Ez erabili paperontzia"
+
+msgid "Trash Folder"
+msgstr "Paperontzia"
+
+msgid "Do not use Drafts"
+msgstr "Ez erabili zirriborroa"
+
+msgid "Draft Folder"
+msgstr "Zirriborroak"
+
+msgid "Do not use Sent"
+msgstr "Ez erabili bidaliriko mezuak"
+
+msgid "Sent Folder"
+msgstr "Bidalitako mezuak"
+
+msgid "Folder List Options"
+msgstr "Karpeten aukerak"
+
+msgid "Location of Folder List"
+msgstr "Karpeten kokapena"
+
+msgid "Left"
+msgstr "Ezkerra"
+
+msgid "Right"
+msgstr "Eskuina"
+
+msgid "pixels"
+msgstr "pixels"
+
+msgid "Width of Folder List"
+msgstr "Karpeten zerrendaren zabalera"
+
+msgid "Minutes"
+msgstr "Minutuak"
+
+msgid "Seconds"
+msgstr "Segunduak"
+
+msgid "Minute"
+msgstr "Minutua"
+
+msgid "Auto Refresh Folder List"
+msgstr "Karpetak gaurkotu"
+
+msgid "Enable Unread Message Notification"
+msgstr "Mezu berrien abisua aktibatu"
+
+msgid "No Notification"
+msgstr "Ez jakinerazi"
+
+msgid "Only INBOX"
+msgstr "Sarrerako mezuak bakarrik"
+
+msgid "Unread Message Notification Type"
+msgstr "Mezu berrien abisu mota"
+
+msgid "Only Unseen"
+msgstr "Berriak bakarrik"
+
+msgid "Unseen and Total"
+msgstr "Irakurri gabeak eta denak"
+
+msgid "Enable Collapsable Folders"
+msgstr "Karpetak ilaran aktibatu"
+
+#, fuzzy
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "Mezu berrien abisua aktibatu"
+
+msgid "Show Clock on Folders Panel"
+msgstr "Karpeten panelean ordularia erakutsi"
+
+#, fuzzy
+msgid "International date and time"
+msgstr "Hiztegi internazionalak gehitu"
+
+msgid "American date and time"
+msgstr ""
+
+#, fuzzy
+msgid "European date and time"
+msgstr "Europear Gaztelania"
+
+msgid "Show weekday and time"
+msgstr ""
+
+msgid "Show time with seconds"
+msgstr ""
+
+#, fuzzy
+msgid "Show time"
+msgstr "Hasierako ordua:"
+
+msgid "No Clock"
+msgstr "Ordularirik gabe"
+
+msgid "Hour Format"
+msgstr "Ordu formatoa"
+
+msgid "12-hour clock"
+msgstr "12 orduko ordularia"
+
+msgid "24-hour clock"
+msgstr "24 orduko ordularia"
+
+msgid "Memory Search"
+msgstr "Bilaketak gorde"
+
+msgid "Disabled"
+msgstr "Aktibatu gabe"
+
+#, fuzzy
+msgid "Folder Selection Options"
+msgstr "Karpeten aukerak"
+
+#, fuzzy
+msgid "Selection List Style"
+msgstr "Erantzunetan aipatzeko eredua"
+
+#, fuzzy
+msgid "Long:"
+msgstr "Iraupena:"
+
+#, fuzzy
+msgid "Folder"
+msgstr "Karpetak"
+
+#, fuzzy
+msgid "Subfolder"
+msgstr "Erabili Bidalitako mezuen Azpi karpetak"
+
+msgid "Indented:"
+msgstr ""
+
+#, fuzzy
+msgid "Delimited:"
+msgstr "Ezabatu"
+
+msgid "Name and Address Options"
+msgstr "Izen eta helbideetako aukerak"
+
+msgid "Email Address"
+msgstr "Posta elektronikoaren helbidea"
+
+msgid "Edit Advanced Identities"
+msgstr "Nortasun bereziak idatzi"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(ezabatu orainarte egindako aldaketak)"
+
+msgid "Multiple Identities"
+msgstr "Nortasun anitzak"
+
+msgid "Same as server"
+msgstr "Zerbitzailea bezala"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr ""
+
+msgid "Timezone Options"
+msgstr "Ordu guneetako aukerak"
+
+msgid "Your current timezone"
+msgstr "Zure ordu gunea"
+
+msgid "Reply Citation Options"
+msgstr "Erantzunetan aipatzeko aukerak"
+
+msgid "Reply Citation Style"
+msgstr "Erantzunetan aipatzeko eredua"
+
+msgid "No Citation"
+msgstr "Erantzunak aipamenik gabe"
+
+#, fuzzy
+msgid "AUTHOR Wrote"
+msgstr "EGILEAK esan zuen"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr ""
+
+msgid "Quote Who XML"
+msgstr "XML aipamena"
+
+msgid "User-Defined"
+msgstr "Erabiltzaileak definitua"
+
+msgid "User-Defined Citation Start"
+msgstr "Erabiltzaileak definituriko aipamenaren hasiera"
+
+msgid "User-Defined Citation End"
+msgstr "Erabiltzaileak definituriko aipamenaren bukaera"
+
+msgid "Signature Options"
+msgstr "Sinadura aukerak"
+
+msgid "Use Signature"
+msgstr "Sinadura bat erabili"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Sinadura baino lehen '-- ' marra jarri"
+
+#, fuzzy
+msgid "Take Address"
+msgstr "Helbidea"
+
+#, fuzzy
+msgid "Address Book Take:"
+msgstr "Agenda"
+
+msgid "Try to verify addresses"
+msgstr ""
+
+msgid "Config File Version"
+msgstr "Konfigurazio bertsioa"
+
+#, fuzzy
+msgid "SquirrelMail Version"
+msgstr "Squirrelmail bertsioa"
+
+msgid "PHP Version"
+msgstr "PHP bertsioa"
+
+msgid "Organization Preferences"
+msgstr "Erakunde lehentasunak"
+
+msgid "Organization Name"
+msgstr "Erakundearen izena"
+
+msgid "Organization Logo"
+msgstr "Erakundearen logotipoa"
+
+msgid "Organization Logo Width"
+msgstr "Logotipoaren zabalera"
+
+msgid "Organization Logo Height"
+msgstr "Logotipoaren altuera"
+
+msgid "Organization Title"
+msgstr "Erakundearen izenburua"
+
+msgid "Signout Page"
+msgstr "Desconexio orria"
+
+msgid "Provider Link URI"
+msgstr ""
+
+#, fuzzy
+msgid "Provider Name"
+msgstr "Zerbitzariaren Izena:"
+
+msgid "Top Frame"
+msgstr "Goiko eremua"
+
+msgid "Server Settings"
+msgstr "Zerbitzarien konfigurazioa"
+
+msgid "Mail Domain"
+msgstr "Korreo domeinua"
+
+msgid "IMAP Server Address"
+msgstr "IMAP zerbitzariaren helbidea"
+
+msgid "IMAP Server Port"
+msgstr "IMAP zerbitzariaren portua"
+
+msgid "IMAP Server Type"
+msgstr "IMAP zerbitzari mota"
+
+msgid "Cyrus IMAP server"
+msgstr "IMAP Cyrus zerbitzaria"
+
+msgid "University of Washington's IMAP server"
+msgstr "Washington-eko unibertsitatearen IMAP zerbitzaria"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "Microsoft Exchange IMAP zerbitzaria"
+
+msgid "Courier IMAP server"
+msgstr "Courier IMAP zerbitzaria"
+
+msgid "Mac OS X Mailserver"
+msgstr ""
+
+#, fuzzy
+msgid "hMailServer IMAP server"
+msgstr "Courier IMAP zerbitzaria"
+
+msgid "Not one of the above servers"
+msgstr "Aurrekoetatik bat ere ez"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAP karpetaren mugatzailea"
+
+#, fuzzy
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Idatzi \"detect\" topaketa automatikorako."
+
+msgid "Use TLS for IMAP Connections"
+msgstr ""
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr ""
+
+#, fuzzy
+msgid "IMAP Authentication Type"
+msgstr "kautotze errorea "
+
+#, fuzzy
+msgid "IMAP login"
+msgstr "POP3 login-a:"
+
+#, fuzzy
+msgid "Use Sendmail Binary"
+msgstr "Sendmail erabili?"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr ""
+
+msgid "Sendmail Path"
+msgstr "Sendmail-aren kokapena"
+
+msgid "SMTP Server Address"
+msgstr "SMTP zerbitzariaren helbidea"
+
+msgid "SMTP Server Port"
+msgstr "SMTP zerbitzariaren portua"
+
+msgid "Use TLS for SMTP Connections"
+msgstr ""
+
+#, fuzzy
+msgid "SMTP Authentication Type"
+msgstr "kautotze errorea "
+
+msgid "No SMTP auth"
+msgstr ""
+
+msgid "Login (plain text)"
+msgstr ""
+
+msgid "POP3 Before SMTP?"
+msgstr ""
+
+msgid "Invert Time"
+msgstr "Ordua irauli?"
+
+msgid "Folders Defaults"
+msgstr "Besterik ezeko balioak karpetetan"
+
+msgid "Default Folder Prefix"
+msgstr "Karpeten aurrizkia"
+
+msgid "Show Folder Prefix Option"
+msgstr "Aurrizki aldaketa baimendu"
+
+msgid "By default, move to trash"
+msgstr "Besterik ezean zakarrontzira mugitu?"
+
+msgid "By default, move to sent"
+msgstr "Besterik ezean bidalitako mezuetara mugitu?"
+
+msgid "By default, save as draft"
+msgstr "Besterik ezean gorde zikineko mezua"
+
+msgid "List Special Folders First"
+msgstr "Lehenbizi karpeta bereziak erakutsi"
+
+msgid "Show Special Folders Color"
+msgstr "Karpeta berezien kolorea aldatu"
+
+msgid "Auto Expunge"
+msgstr "Garbitze automatikoa"
+
+msgid "Default Sub. of INBOX"
+msgstr "Besterik ezean INBOX-en azpian"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Azpikarpeten aukerak erakutsi"
+
+msgid "Default Unseen Notify"
+msgstr "Besterik ezean ez irakurrien abisua"
+
+msgid "Default Unseen Type"
+msgstr "Besterik ezean ez irakurrien abisua"
+
+msgid "Auto Create Special Folders"
+msgstr "Karpeta bereziak automatikoki sortu"
+
+msgid "Auto delete folders"
+msgstr "Karpeten ezabaketa automatikoa"
+
+#, fuzzy
+msgid "Enable /NoSelect folder fix"
+msgstr "Orri aukeratzailea"
+
+msgid "General Options"
+msgstr "Aukera orokorrak"
+
+msgid "Data Directory"
+msgstr "Datuen direktorioa"
+
+msgid "Temp Directory"
+msgstr "Aldibaterako direktorioa"
+
+msgid "Hash Level"
+msgstr "Frakmentazio maila"
+
+msgid "Hash Disabled"
+msgstr "Direktorioaren frakmentazioa desaktibatu"
+
+msgid "Moderate"
+msgstr "Tartekoa"
+
+msgid "Medium"
+msgstr "Erdia"
+
+msgid "Default Left Size"
+msgstr "Besterik ezeko karpeta zerrenden neurria"
+
+msgid "Usernames in Lowercase"
+msgstr "Erabiltzaile izenak letra xehez"
+
+msgid "Allow use of priority"
+msgstr "Aktibatu lehentasuenak"
+
+msgid "Hide SM attributions"
+msgstr "SM ezaugarriak eskutatu"
+
+msgid "Enable use of delivery receipts"
+msgstr "Jasotze baieztapenak aktibatu"
+
+msgid "Allow editing of identities"
+msgstr "Nortasun edizioa baimendu"
+
+msgid "Allow editing of full name"
+msgstr "Izenaren edizioa baimendu"
+
+msgid "Use server-side sorting"
+msgstr ""
+
+#, fuzzy
+msgid "Use server-side thread sorting"
+msgstr "Goi-buruaren erreferentziaren arabera ordenatu"
+
+msgid "Allow server charset search"
+msgstr ""
+
+msgid "UID support"
+msgstr ""
+
+#, fuzzy
+msgid "PHP session name"
+msgstr "PHP bertsioa"
+
+msgid "Message of the Day"
+msgstr "Eguneko mezua"
+
+msgid "Database"
+msgstr "Datu baseak"
+
+msgid "Address book DSN"
+msgstr "Helbide liburuaren DSN"
+
+msgid "Address book table"
+msgstr "Agendaren taula"
+
+msgid "Preferences DSN"
+msgstr "DSN lehentasunak"
+
+msgid "Preferences table"
+msgstr "Lehentasunen taula"
+
+msgid "Preferences username field"
+msgstr "Erabiltzaile izenaren lehentasuenak"
+
+msgid "Preferences key field"
+msgstr "Gakoaren lehentasunak"
+
+msgid "Preferences value field"
+msgstr "Baliodun atalen lehentasunak"
+
+#, fuzzy
+msgid "Global address book DSN"
+msgstr "Helbidetegi orokorra"
+
+#, fuzzy
+msgid "Global address book table"
+msgstr "Helbidetegi orokorra"
+
+#, fuzzy
+msgid "Allow writing into global address book"
+msgstr "Helbide liburu orokorra ezin da aldatu"
+
+#, fuzzy
+msgid "Allow listing of global address book"
+msgstr "Helbide liburu orokorra ezin da aldatu"
+
+#, fuzzy
+msgid "Language settings"
+msgstr "Aukerak aldatu"
+
+msgid "Default Language"
+msgstr "Besterik ezeko hizkuntza"
+
+msgid "Default Charset"
+msgstr "Besterik ezeko karaktereak"
+
+msgid "Enable lossy encoding"
+msgstr ""
+
+#, fuzzy
+msgid "Address Books"
+msgstr "Agenda"
+
+#, fuzzy
+msgid "Default Javascript Addressbook"
+msgstr "Besterik ezean Javascript erabili agendan"
+
+#, fuzzy
+msgid "Global address book file"
+msgstr "Helbidetegi orokorra"
+
+#, fuzzy
+msgid "Allow writing into global address book file"
+msgstr "Akatsa helbide liburuan idaztean"
+
+msgid "Themes"
+msgstr "Gaiak"
+
+msgid "Style Sheet URL (css)"
+msgstr "Estilo orriaren URL-a(css)"
+
+#, fuzzy
+msgid "Default theme"
+msgstr "Besterik ezeko karaktereak"
+
+msgid "Use index number of theme"
+msgstr ""
+
+msgid "Configuration Administrator"
+msgstr "Sistemaren konfigurazioa"
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+
+msgid "Theme Name"
+msgstr "Gaiaren izena"
+
+msgid "Theme Path"
+msgstr "Gaiaren kokalekua"
+
+msgid "Plugins"
+msgstr "Gehiagarriak (Plugins)"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr ""
+
+msgid "Change Settings"
+msgstr "Aukerak aldatu"
+
+#, fuzzy
+msgid "Test Configuration"
+msgstr "Erabili jasotze baieztapena"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr ""
+"Konfigurazio fitxategia ezin da ireki.Mesedez aztertu config.phpfitxategia"
+
+msgid "Administration"
+msgstr "Administrazioa"
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+"Modulu honek Squirrelmail-en aukera nagusiak hurrundik konfiguratzeko "
+"aukeraematen du."
+
+#, fuzzy
+msgid "Submit a Bug Report"
+msgstr "Izan diren erroreak:"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+
+msgid "This bug involves"
+msgstr ""
+
+msgid "the general program"
+msgstr ""
+
+msgid "a specific plugin"
+msgstr ""
+
+#, fuzzy
+msgid "Start Bug Report Form"
+msgstr "Izan diren erroreak:"
+
+#, fuzzy
+msgid "Bug"
+msgstr "Abu"
+
+msgid "Bug Reports:"
+msgstr "Izan diren erroreak:"
+
+msgid "Show button in toolbar"
+msgstr "Goiko barran botoia adierazi."
+
+msgid "TODAY"
+msgstr "GAUR"
+
+msgid "Go"
+msgstr "Aurrera"
+
+#, fuzzy, php-format
+msgid "Could not write calendar file %s"
+msgstr "Ezin izan da lehentasunen hasiera fitxategia sortu!"
+
+msgid "l, F j Y"
+msgstr "l, F j Y"
+
+msgid "ADD"
+msgstr "Gehitu"
+
+msgid "EDIT"
+msgstr "Aldatu"
+
+msgid "DEL"
+msgstr "Ezabatu"
+
+msgid "Start time:"
+msgstr "Hasierako ordua:"
+
+msgid "Length:"
+msgstr "Iraupena:"
+
+msgid "Priority:"
+msgstr "Lehentasuna:"
+
+msgid "Title:"
+msgstr "Izenburua:"
+
+msgid "Set Event"
+msgstr "Gertaera jarri"
+
+msgid "Event Has been added!"
+msgstr "Gertaera jarrita!"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Time:"
+msgstr "Ordua:"
+
+msgid "Day View"
+msgstr "Egunez-egun"
+
+msgid "Do you really want to delete this event?"
+msgstr "Ziur zaude gertaera hau ezabatu nahi duzula?"
+
+msgid "Event deleted!"
+msgstr "Gertaera ezabatuta!"
+
+msgid "Nothing to delete!"
+msgstr "Ez dago ezer ezabatzeko!"
+
+msgid "Update Event"
+msgstr "Gertaera eguneratu"
+
+msgid "Do you really want to change this event from:"
+msgstr "Bukaeran agertzen den pertsonarekin zita ezabatu nahi duzu?:"
+
+msgid "to:"
+msgstr "nori:"
+
+msgid "Event updated!"
+msgstr "Zita eguneratua!"
+
+msgid "Month View"
+msgstr "Hilabetero"
+
+msgid "0 min."
+msgstr "0 min."
+
+msgid "15 min."
+msgstr "15 min."
+
+#, fuzzy
+msgid "30 min."
+msgstr "0 min."
+
+msgid "45 min."
+msgstr "45 min."
+
+msgid "1 hr."
+msgstr "ordu bat."
+
+msgid "1.5 hr."
+msgstr "ordu eta erdi bat."
+
+msgid "2 hr."
+msgstr "2 ordu."
+
+msgid "2.5 hr."
+msgstr "2,5 ordu."
+
+msgid "3 hr."
+msgstr "3 ordu."
+
+msgid "3.5 hr."
+msgstr "3,5 ordu."
+
+msgid "4 hr."
+msgstr "4 ordu."
+
+msgid "5 hr."
+msgstr "5 ordu."
+
+msgid "6 hr."
+msgstr "6 ordu."
+
+msgid "Calendar"
+msgstr "Egutegia"
+
+msgid "Delete & Prev"
+msgstr "Ezabatu eta Atzera"
+
+msgid "Delete & Next"
+msgstr "Ezabatu eta Aurrera"
+
+msgid "Move to:"
+msgstr "Nora mugitu:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "Ezabatu/Mugitu/Hurrengoa botoiak:"
+
+msgid "Display at top"
+msgstr "Goian erakutsi"
+
+msgid "with move option"
+msgstr "mugitzekoa aktibatu"
+
+msgid "Display at bottom"
+msgstr "Azpian erakutsi"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"MERKATARITZA -Zerrenda hauek SPAM motako mezuak bidaltzen dituzten "
+"zerbitzariak dituzte eta oso erabilgarriak izan daitezke"
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"MERKATARITZA - SPAM bidalketa baimentzen duten zerbitzariakblokeatuak izango "
+"dira."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"MERKATARITZA -Dial up-en bidez konektatzen diren erabiltzaileak,batzutan "
+"filtratuak izan behar dira, beraien ISP-en posta zerbitzariakerabili behar "
+"dituzte. Arrunta da \"Spammers\" -ek mota honetako konekzioakerabiltzea."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "MERKATARITZA - RBL + sarrera \"Blackhole\"."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "MERKATARITZA - RBL+ sarrera \"OpenRelay\"."
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "MERKATARITZA - RBL+ RTC. konexioak"
+
+msgid ""
+"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+"false positives than ORBS did though."
+msgstr ""
+"DOHAIN - ORDB jaio zen ORBS desagertzean. Badirudi aurrekoa baino "
+"eraginkorragoa dela."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "DOHAIN - Five-Ten-sg.com - SPAM iturri zuzena."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr "DOHAIN - Five-Ten-sg.com - RTC konexio zerrenda - IP batzurekin DSL."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+"DOHAIN - Five-Ten-sg.com - Bidaltzaile handiak ez dutenak \"opt in\" "
+"erabiltzendenak baieztatuak."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "DOHAIN - Five-Ten-sg.com - Beste zerbitzari batzu."
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "DOHAIN - Five-Ten-sg.com - Fase arrunteko zerbitzariak."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "DOHAIN - Five-Ten-sg.com - SPAM zerbitzari laguntzaileak."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "DOHAIN - Five-Ten-sg.com - WEB formulariotako IP-ak."
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"DOHAIN - Badirudi Dorkslayers-ek esteka txarrak eskeintzen dituela EEUU-tik "
+"kanpo. Interesgarria bada ere berain web orriak ez erabiltzeko gamendatzen "
+"du."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "DOHAIN - SPAMHaus-en SPAMERS zerrenda"
+
+#, fuzzy
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"FREE, for now - SPAMCOP - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85% or more)."
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "DOHAIN - dev.null.dk - Ez dago informazio zehatzik."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr "DOHAIN - visi.com - Relay Stop List. Very conservative OpenRelay List."
+
+#, fuzzy
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "DOHAIN - 2mbit.com Open Relays - Another list of Open Relays."
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "DOHAIN - 2mbit.com SPAM Source - List of Direct SPAM Sources."
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr "DOHAIN - 2mbit.com SPAM ISPs - List of SPAM-friendly ISPs."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"DOHAIN - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"DOHAIN - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"DOHAIN - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed "
+"opt-in or that have allowed known spammers to become clients and abuse their "
+"services."
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"DOHAIN - Leadmon Open Relays - Single Stage Open Relays that are not listed "
+"on other active RBLs."
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"DOHAIN - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed "
+"on other active RBLs and that have sent SPAM to Leadmon.net."
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"DOHAIN - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"DOHAIN , oraingoz - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr "DOHAIN , oraingoz - Not Just Another Blacklist - Dial-up IPs."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+
+msgid "WARNING! You must enter something to search for."
+msgstr ""
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+
+msgid "Saved Scan type"
+msgstr "Gordetako eskaneatu mota"
+
+msgid "Message Filtering"
+msgstr "Mezuen iragazketa"
+
+msgid "What to Scan:"
+msgstr "Egiaztatu:"
+
+msgid "All messages"
+msgstr "Mezu guztiak"
+
+msgid "Only unread messages"
+msgstr "Bakarrik irakurri gabeko mezuak"
+
+msgid "Save"
+msgstr "Gorde"
+
+msgid "Match:"
+msgstr "Kointzidentziak:"
+
+msgid "Header"
+msgstr "Burua"
+
+msgid "Contains:"
+msgstr "Edukia:"
+
+#, fuzzy, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "<b>%s</b> -ak <b>%s</b> -a badu, mugitu <b>%s</b> -ra"
+
+msgid "Message Filters"
+msgstr "Mezu iragazleak"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr "Mezuen iragazketak karpeten mezu antolaketa egiten duautomatikoki."
+
+msgid "SPAM Filters"
+msgstr "SPAM iragazia"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"SPAM filtroak zerrenda beltzetako zerbitzariak aukeratu eta beraien mezuak "
+"beste karpeta batetara ( adibidez zakarrontzira ) mugitzeko aukera ematen du."
+
+#, fuzzy
+msgid "You must select a spam folder."
+msgstr "Aukeratu karpeta"
+
+#, fuzzy
+msgid "You must select a scan type."
+msgstr "Aukera bat egin behar duzu"
+
+msgid "Spam Filtering"
+msgstr "SPAM Filtroa"
+
+#, fuzzy, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr ""
+"?KONTUZ! Administratzaileari ondoko aldagaia aktibatzeko esan "
+"SpamFilters_YourHop."
+
+msgid "Move spam to:"
+msgstr "SPAM -a nora mugitu:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"SPAM mezuak zuzenean papelontzira mugitzea ez da ideia ona hasieran mezu "
+"garrantzitsurenbat gal baitaiteke.Hala ere ziurtatu erabiltzen den karpeta "
+"maiztasun txiki batekin izaten dela ezabatua."
+
+#, fuzzy
+msgid "Unread messages only"
+msgstr "Mezu berriak bakarri"
+
+#, fuzzy
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"Gero eta mezu gehiago aztertu denbora gehiago eramango du.Mezu berriak "
+"bakarrik aztertzea proposatzen degu.Filtroetan aldaketarenbat eginez "
+"geromezu guztietan aldatu.Ondoren karpetara joan eta berriz mezu berriak "
+"begiratzeko moduan jarri.Modu hontan filtroa mezu zaharrei aplikatuko zaie "
+"berriekin hasi aurretik."
+
+#, fuzzy, php-format
+msgid "Spam is sent to %s."
+msgstr "<b>%s</b> -ra bidali SPAM-a"
+
+#, fuzzy
+msgid "not set yet"
+msgstr "[<i>oraindik zehaztu gabe</i>]"
+
+#, fuzzy, php-format
+msgid "Spam scan is limited to %s."
+msgstr "Mezuen azterketa <b>%s</b> -n bakarrik egiten da"
+
+#, fuzzy
+msgid "ON"
+msgstr "ON"
+
+msgid "OFF"
+msgstr "OFF"
+
+#, php-format
+msgid "%s is not found."
+msgstr ""
+
+msgid "Today's Fortune"
+msgstr ""
+
+#, fuzzy
+msgid "Fortunes:"
+msgstr "Portugesa"
+
+msgid "Show fortunes at top of mailbox"
+msgstr ""
+
+msgid "Plugin is disabled."
+msgstr ""
+
+#, fuzzy
+msgid "IMAP server information"
+msgstr "IMAP zerbitzariaren portua"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+
+msgid "Mailinglist"
+msgstr "Korreo zerrenda"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"Egintza honek %s-ri bidaliko dio mezu bat laguntza eske korreo zerrenda honi "
+"buruz. Korreo elektronikoaren bitartez jasoko duzu erantzuna. Erantzun hori "
+"helbide honetan jasoko duzu:"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"Egintza honek %s-ri bidaliko dio mezu bat korreo zerrenda honetan "
+"atxikitzeko. Helbide hau atxikituta izango da:"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"Egintza honek %s-ri bidaliko dio mezu bat korreo zerrenda honetatik "
+"ateratzeko. Helbide honi baja emango zaio:"
+
+msgid "Send Mail"
+msgstr "Korreoa bidali"
+
+msgid "Post to List"
+msgstr "Idatzi"
+
+msgid "Reply to List"
+msgstr "Erantzun"
+
+msgid "List Archives"
+msgstr "Fitxategiak"
+
+msgid "Contact Listowner"
+msgstr "Galdetu Adm."
+
+#, fuzzy
+msgid "Mailing List"
+msgstr "Korreo zerrenda:"
+
+msgid "POP3 connect:"
+msgstr "POP3 konexioa:"
+
+msgid "No server specified"
+msgstr "Ez da zerbitzaririk zehaztu"
+
+msgid "Error "
+msgstr "Errorea "
+
+msgid "POP3 user:"
+msgstr "POP3 erabiltzaile:"
+
+msgid "no login ID submitted"
+msgstr "Ez da ID-rik (identifikatzailerik) zehaztu"
+
+msgid "connection not established"
+msgstr "konexioa ez da gauzatu"
+
+msgid "POP3 pass:"
+msgstr "POP3 pasahitzak:"
+
+msgid "No password submitted"
+msgstr "Ez da pasahitzarik zehaztu"
+
+msgid "authentication failed "
+msgstr "kautotze errorea "
+
+msgid "POP3 apop:"
+msgstr "POP3 apop:"
+
+msgid "No connection to server"
+msgstr "Ez dago konexiorik zerbitzariarekin"
+
+msgid "No login ID submitted"
+msgstr "Ez da ID-rik (identifikatzailerik) zehaztu"
+
+msgid "No server banner"
+msgstr "Ez dago zerbitzari bannera"
+
+msgid "abort"
+msgstr "bertan behera utzi"
+
+msgid "apop authentication failed"
+msgstr "apop kautotzeak huts egin du"
+
+msgid "POP3 login:"
+msgstr "POP3 login-a:"
+
+msgid "POP3 top:"
+msgstr "POP3 lehena:"
+
+msgid "POP3 pop_list:"
+msgstr "POP3 zerrenda:"
+
+msgid "Premature end of list"
+msgstr "Zerrenda bukaera azkarregia"
+
+msgid "POP3 get:"
+msgstr "POP3 jaso:"
+
+msgid "POP3 last:"
+msgstr "azken POP3-a:"
+
+msgid "POP3 reset:"
+msgstr "POP3 reset-a:"
+
+msgid "POP3 send_cmd:"
+msgstr "POP3 cmd-a bidali:"
+
+msgid "Empty command string"
+msgstr "Agindu katea hutsik"
+
+msgid "POP3 quit:"
+msgstr "POP3 bukatu:"
+
+msgid "connection does not exist"
+msgstr "ez dago konexiorik"
+
+msgid "POP3 uidl:"
+msgstr "POP3 uidl:"
+
+msgid "POP3 delete:"
+msgstr "POP3 ezabatu:"
+
+msgid "No msg number submitted"
+msgstr "Mezuaren zenbakia ez da jakinarazi"
+
+msgid "Command failed "
+msgstr "Aginduak huts egin du "
+
+msgid "Remote POP server Fetching Mail"
+msgstr "POP3-ko Korreo urruneko jasotze"
+
+msgid "Select Server:"
+msgstr "Aukeratu Zerbitzaria:"
+
+msgid "Password for"
+msgstr "Norentzat Pasahitza"
+
+msgid "Fetch Mail"
+msgstr "Korreoa Jaso"
+
+msgid "Fetching from "
+msgstr "Bertatik Jasotzen "
+
+msgid "Oops, "
+msgstr "Kontuz, "
+
+msgid "Opening IMAP server"
+msgstr "IMAP-a Irekitzen"
+
+msgid "Opening POP server"
+msgstr "POP-a irekitzen"
+
+msgid "Login Failed:"
+msgstr "Login Errorea:"
+
+msgid "Login OK: No new messages"
+msgstr "Login zuzena: Ez dago mezu berririk"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "Login zuzena: postontzia utzik dago"
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "Hasteko saiakera ona; postontziak ["
+
+msgid "Fetching UIDL..."
+msgstr "UIDLa egiaztatzen..."
+
+msgid "Server does not support UIDL."
+msgstr "Zerbitzariak ez du UIDL-ik."
+
+#, fuzzy
+msgid "Leaving mail on server..."
+msgstr "Korreoa zerbitzarian uzten..."
+
+msgid "Deleting messages from server..."
+msgstr "Mezuak zerbitzariatik ezabatzen..."
+
+msgid "Fetching message "
+msgstr "Mezua jasotzen "
+
+msgid "Server error. Disconnect"
+msgstr ""
+
+msgid "Reconnect from dead connection"
+msgstr ""
+
+msgid "Saving UIDL"
+msgstr "UIDL-a gordetzen"
+
+#, fuzzy
+msgid "Refetching message "
+msgstr "Mezua jasotzen "
+
+msgid "Error Appending Message!"
+msgstr "?Errore bat izan da mezua gehitzean!"
+
+msgid "Closing POP"
+msgstr "POPa ixten"
+
+msgid "Logging out from IMAP"
+msgstr "IMAP-etik deskonektatzen"
+
+msgid "Message appended to mailbox"
+msgstr "Mezua postontxira gehituta"
+
+#, fuzzy, php-format
+msgid "Message %d deleted from remote server!"
+msgstr " Urruneko zerbitzariatik ezabatuta."
+
+msgid "Delete failed:"
+msgstr "Ezabatzeak huts egin du:"
+
+msgid "Remote POP server settings"
+msgstr "POP3 kontuetako konfigurazioa"
+
+#, fuzzy
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"Adi egon behar zara, pasahitza gordetzeko kodifikazioa ez baitago guztiz "
+"babestuta. Zerbitzarian egiten den kodifikazioa hacker batek irakur dezake "
+"fitxategi honen iturria irakurriaz. Dena den, POP3 kontu bat erabiltzen "
+"baduzu ez dago kodifikaziorik. "
+
+#, fuzzy
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "Pasahitza bete gabe uzten baduzu, korreoa jasotzean eskatuko zaizu."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "Pasahitza zifratu (jakinarazteko bakarrik)"
+
+msgid "Add Server"
+msgstr "Zerbitzaria Gehitu"
+
+msgid "Server:"
+msgstr "Zerbitzaria:"
+
+msgid "Port:"
+msgstr "Portua:"
+
+msgid "Alias:"
+msgstr "Deskribapena:"
+
+msgid "Username:"
+msgstr "Erabiltzailearen izena:"
+
+msgid "Store in Folder:"
+msgstr "Gordetzeko Karpeta:"
+
+#, fuzzy
+msgid "Leave mail on server"
+msgstr "Utzi Korreoa Zerbitzarian"
+
+#, fuzzy
+msgid "Check mail at login"
+msgstr "Korreoa begiratu sartzean"
+
+#, fuzzy
+msgid "Check mail at folder refresh"
+msgstr "Korreoa begiratu refresh egitean"
+
+msgid "Modify Server"
+msgstr "Zerbitzaria Aldatu"
+
+msgid "Server Name:"
+msgstr "Zerbitzariaren Izena:"
+
+msgid "Modify"
+msgstr "Aldatu"
+
+#, fuzzy
+msgid "No servers known."
+msgstr "Ez dago zerbitzari bannera"
+
+msgid "Fetching Servers"
+msgstr "Jasotzeko Zerbitzariak"
+
+msgid "Confirm Deletion of a Server"
+msgstr "Konfirmatu ea Zerbitzaria ezabatu nahi duzun"
+
+msgid "Selected Server:"
+msgstr "Hau da zerbitzari ezabatuta:"
+
+msgid "Confirm delete of selected server?"
+msgstr "?Zerbitzaria ezabatu nahi duzu?"
+
+msgid "Confirm Delete"
+msgstr "Baietz ezabapenari"
+
+msgid "Leave Mail on Server"
+msgstr "Utzi Korreoa Zerbitzarian"
+
+msgid "Undefined Function"
+msgstr "Definitu gabeko funtzioa"
+
+msgid "The function you requested is unknown."
+msgstr ""
+
+msgid "Fetch"
+msgstr "Jaso"
+
+msgid "Warning, "
+msgstr "Adi, "
+
+msgid "Mail Fetch Result:"
+msgstr "Jasoaren emaitza:"
+
+#, fuzzy
+msgid "POP3 Fetch Mail"
+msgstr "POP3 kontuen jasoera"
+
+#, fuzzy
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"Aukera honek behar diren datuak betetzen ditu postontxi pop3 batetik "
+"zerbitzari honetako kontu batera mezuak jaisteko."
+
+#, fuzzy
+msgid "Message Details"
+msgstr "Mezuen zerrenda"
+
+msgid "Bodystructure"
+msgstr ""
+
+#, fuzzy
+msgid "Entity"
+msgstr "Idatzi"
+
+msgid "Content-Type"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+#, fuzzy
+msgid "RFC822 Message body"
+msgstr "Mezuaren ondoren"
+
+msgid "Close Window"
+msgstr "Leihoa itxi"
+
+#, fuzzy
+msgid "Save Message"
+msgstr "Mezua "
+
+#, fuzzy
+msgid "View Message details"
+msgstr "Mezua ikusi"
+
+msgid "New Mail"
+msgstr "Mezu berriak"
+
+msgid "SquirrelMail Notice:"
+msgstr "SquirrelMail-en Oharra:"
+
+#, fuzzy, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "Mezu berriak dituzu!"
+msgstr[1] "Mezu berriak dituzu!"
+
+#, fuzzy, php-format
+msgid "You have %s new messages"
+msgstr "Mezu berriak dituzu!"
+
+msgid "New Mail Notification"
+msgstr "Mezu berri oharra"
+
+#, fuzzy, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"<b>Karpeta guztiak begiratu</b> aukerak, mezu berriak karpeta guztietan "
+"bilatzeko balio du, ez bakarrik <b>INBOX</b>-en."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "Karpeta guztietan begiratu, ez bakarrik INBOX-en"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"Aukera <b>Erakutsi Popup Lehioa </b> aktibatzen baduzu lehio berri bat "
+"irekiko da mezu berriak iritsi direla jakinarazteko."
+
+msgid "Show popup window on new mail"
+msgstr "Erakutsi Popup Lehioa"
+
+#, fuzzy, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"<b>Mezu BERRIAK soilik kontuan hartu</b> aktibatuz mezu heltzen den "
+"momentuanjakinarazten dizu, mezua berria dela. Bakarrik lehendabiziko "
+"sarrera jakinaraziz."
+
+msgid "Count only messages that are RECENT"
+msgstr "Mezu BERRIAK bakarrik zenbatu"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript, and only works in IE but "
+"you won't see errors with other browsers). This will always tell you if you "
+"have new mail, even if you have %s enabled."
+msgstr ""
+"<b>Nabigatzaile konpatibleetako izenburua aldatzea</b> aktibatuta badago "
+"lehioaren izenburua aldatuko da mezu berriak iristen direnean (Javascript-a "
+"behar da eta bakarrik IE-rekin funtzionatzen du)"
+
+#, fuzzy
+msgid "Change title on supported browsers"
+msgstr "Nabigatzaile konpatibleetan izenburua aldatu"
+
+#, fuzzy, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"Aukeratu <b>Soinu jolea aktibatu</b> mezu berriak iristean soinurenbat "
+"entzun nahi baduzu.Aktibatu ondoren nahi duzun soinu artxiboa aukera "
+"dezakezu."
+
+msgid "Enable Media Playing"
+msgstr "Soinua Aktibatu"
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+
+#, fuzzy
+msgid "Select server file"
+msgstr "Aukeratu zerbitzariaren fitxategia:"
+
+#, fuzzy
+msgid "(none)"
+msgstr "Eginda"
+
+msgid "requires JavaScript to work"
+msgstr "Javascript-a behar da"
+
+msgid "Try"
+msgstr "Saiatu"
+
+msgid "Current File:"
+msgstr "Oraingo Fitxategia:"
+
+msgid "NewMail Options"
+msgstr "Mezu berrien aukerak"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr "Mezu berriak jasotzen direnerako aukerak ezartzen ditu."
+
+#, fuzzy, php-format
+msgid "%s New Messages"
+msgstr "%s mezu berri"
+
+#, fuzzy, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s mezu berri"
+msgstr[1] "%s mezu berri"
+
+msgid "Test Sound"
+msgstr "Soinua probatu"
+
+#, fuzzy
+msgid "No sound specified"
+msgstr "Ez da zerbitzaririk zehaztu"
+
+msgid "Loading the sound..."
+msgstr "Soinua kargatzen ..."
+
+msgid "Sent Subfolders Options"
+msgstr "Bidalitako mezuen Azpi karpetako aukerak"
+
+msgid "Use Sent Subfolders"
+msgstr "Erabili Bidalitako mezuen Azpi karpetak"
+
+msgid "Monthly"
+msgstr "Hilabetero"
+
+msgid "Quarterly"
+msgstr "Hiruhilabetean behin"
+
+msgid "Yearly"
+msgstr "Urtero"
+
+msgid "Base Sent Folder"
+msgstr "Bidalitako mezuen oinarrizko karpeta"
+
+#, fuzzy
+msgid "Enabled"
+msgstr "Aktibatu gabe"
+
+#, fuzzy
+msgid "Disable it"
+msgstr "Aktibatu gabe"
+
+msgid "Enable it"
+msgstr ""
+
+#, fuzzy
+msgid "Spam reporting"
+msgstr "SPAM Filtroa"
+
+msgid "SpamCop link is:"
+msgstr ""
+
+#, fuzzy
+msgid "Delete spam when reported:"
+msgstr "Aukeratutakoa ezabatu"
+
+msgid "Only works with email-based reporting"
+msgstr ""
+
+msgid "Spam Reporting Method:"
+msgstr ""
+
+msgid "Quick email-based reporting"
+msgstr ""
+
+msgid "Thorough email-based reporting"
+msgstr ""
+
+msgid "Web-based form"
+msgstr ""
+
+msgid "Save Method"
+msgstr ""
+
+msgid "Your SpamCop authorization code:"
+msgstr ""
+
+msgid "see below"
+msgstr ""
+
+#, fuzzy
+msgid "Save ID"
+msgstr "Gorde"
+
+msgid "About SpamCop"
+msgstr ""
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+
+msgid "Before you sign up, be warned"
+msgstr ""
+
+#, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+
+msgid "Email-based reporting"
+msgstr ""
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+
+msgid "Web-based reporting"
+msgstr ""
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+
+msgid "SpamCop service type"
+msgstr ""
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+
+#, fuzzy
+msgid "More information"
+msgstr "Norbere informazioa"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+
+msgid "Report as Spam"
+msgstr ""
+
+msgid "SpamCop - Spam Reporting"
+msgstr ""
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+
+msgid "Cancel / Done"
+msgstr ""
+
+msgid "Send Spam Report"
+msgstr ""
+
+msgid "SpellChecker Options"
+msgstr "Zuzentzaile ortografikoaren aukerak"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"Hemen zure hiztegi pertsonala nola gorde, editatu, edo ortografia  zuzenketa "
+"zein hizkuntzatan egingo duzun adierazi dezakezu."
+
+msgid "Check Spelling"
+msgstr "Ortografia"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "Bueltatu &quot;SpellChecker&quot; -en aukeretara"
+
+msgid "ATTENTION:"
+msgstr "ADI:"
+
+#, fuzzy
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"SquirrelSpell-ek ezin du deszifratu zure hiztegi pertsonala. Zure posta "
+"pasahitza aldatu duzula izango da arazoa. Jarraitzeko pasahitza zaharra "
+"sartu beharko duzu SquirrelSpell-ek zure hiztegi pertsonala deszifratzeko."
+"Hori egin eta gero pasahitz berria berriro zifratuko da. <br> Zure "
+"hiztegiaez bazegoen zifratuta horrek esan nahi du guztiz hondatu dela. "
+"Ezabatu etaberri bat egin. Gauza bera egin beharko duzu zure pasahitz "
+"zaharra ahaztubadezu. Pasahitz zahar hori gabe ezin izango duzu zure "
+"hiztegia berreskuratu."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "Nire hiztegi pertsonala ezabatu eta beste berri bat egin"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "Hiztegi pertsonala deszifratu pasahitz zaharrarekin:"
+
+msgid "Proceed"
+msgstr "Ekin"
+
+msgid "You must make a choice"
+msgstr "Aukera bat egin behar duzu"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr "Hiztegia ezaba dezakezu edo hiztegiaren pasahitz zaharrasartu."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "Honek zure hiztegi pertsonala ezabatuko du. Jarraitu nahi duzu?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "Errorea hiztegia deskodetzen"
+
+msgid "Cute."
+msgstr "Oso polita."
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr ""
+
+msgid "Error while writing to pipe."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "Ezin izan da datu fitxategia blokeatu"
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr ""
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "%s exekutatzen saiatu da,baina ondokoa itzuli du:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell gaizki konfiguraturik dago"
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "Egiaztapenak ez du amaitu.Zuzenketak gorde nahi dituzu?"
+
+msgid "No changes were made."
+msgstr "Ez da aldaketarik egin."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "Zure hiztegi pertsonala gordetzen... Itxaron une batez."
+
+msgid "SquirrelSpell Results"
+msgstr "SquirrelSpell-en emaitzak"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "%s errore topatu dira"
+
+msgid "Line with an error:"
+msgstr "Errorea daukan lerroa:"
+
+msgid "Error:"
+msgstr "Errorea:"
+
+msgid "Suggestions:"
+msgstr "Proposamenak:"
+
+msgid "Suggestions"
+msgstr "Proposamenak"
+
+msgid "Change to:"
+msgstr "Nora aldatu:"
+
+msgid "Occurs times:"
+msgstr "Zenbat aldiz:"
+
+msgid "Change this word"
+msgstr "Aldatu hitz hau"
+
+msgid "Change"
+msgstr "Aldatu"
+
+msgid "Change ALL occurances of this word"
+msgstr "Hitz honen azalpen GUZTIAK aldatu"
+
+msgid "Change All"
+msgstr "Aldatu guztiak"
+
+msgid "Ignore this word"
+msgstr "Ez egin kasurik hitz honi"
+
+msgid "Ignore"
+msgstr "Ez egin kasu"
+
+msgid "Ignore ALL occurances this word"
+msgstr "Ez egin kasurik hitz honi"
+
+msgid "Ignore All"
+msgstr "Ez egin kasu inori"
+
+msgid "Add this word to your personal dictionary"
+msgstr "Hitz hau gehitu zure hiztegi pertsonalera"
+
+msgid "Add to Dic"
+msgstr "Gehitu"
+
+msgid "Close and Commit"
+msgstr "Itxi eta zuzendu"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr "Spellcheck ez da amaitu oraindik.Benetan amaitu nahi duzu?"
+
+msgid "Close and Cancel"
+msgstr "Itxi eta Utzi"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr "Spellcheck-ek ez du amaitu oraindik.Baieztatu amaiera?"
+
+msgid "No errors found"
+msgstr "Ez dira erroreak topatu"
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"Zure hiztegi pertsonala <strong>zifratua</strong> izan da eta "
+"<strong>zifratze</strong> formatoan gorde da."
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"Zure hiztegi pertsonala <strong>deszifratua</strong> izan da eta zifratu "
+"gabeko <strong>testu</strong> bezala gorde da."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Hiztegi pertsonalaren zifratze aukerak"
+
+msgid "Your personal dictionary was erased."
+msgstr "Zure hiztegi pertsonala ezabatu da."
+
+msgid "Dictionary Erased"
+msgstr "Hiztegia ezabatua"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"Zure hiztegi pertsonala ezabatu egin da.Mesedez itxi leihoa eta "
+"sakatuortografia botoia berriz."
+
+msgid "Close this Window"
+msgstr "Itxi leiho hau itxi"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"Zure hiztegi pertsonala zuzen zifratu da.Spellcheker-en aukera "
+"orrirabueltatu eta berriz aukeratu."
+
+#, fuzzy
+msgid "Successful re-encryption"
+msgstr "Zifratze zuzena"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"Zure hiztegi pertsonala ongi zifratu da.Mesedez itxi leiho hau eta sakatu "
+"\"Ortografia\" botoia berriz hasteko zuzenketa"
+
+msgid "Dictionary re-encrypted"
+msgstr "Hiztegia zifratua"
+
+msgid "Personal Dictionary"
+msgstr "Hiztegi pertsonala"
+
+msgid "No words in your personal dictionary."
+msgstr "Zure hiztegi pertsonalak ez du hitzik."
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "Mesedez zure hiztegitik ezabatu nahi dituzun hitzak aukeratu."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "%s hiztegia"
+
+msgid "Delete checked words"
+msgstr "Ezabatu aukeraturiko hitzak"
+
+msgid "Edit your Personal Dictionary"
+msgstr "Hiztegi pertsonala edituatu"
+
+msgid "Please make your selection first."
+msgstr "Mesedez lehenbizi aukera egin"
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr "Zure hiztegi pertsonala zifratzera zoaz.Jarraitu nahi duzu?"
+
+#, fuzzy
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr "Zure hiztegi pertsonala deszifratzera zoaz.Jarraitu nahi duzu?"
+
+#, fuzzy
+msgid "Your personal dictionary is currently encrypted."
+msgstr "Zure hiztegi pertsonala ezabatu da."
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "Mesedez deszifratu nire hiztegi pertsonala eta gorde testu modura."
+
+msgid "Change crypto settings"
+msgstr "Zifratze aukerak aldatu"
+
+#, fuzzy
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "Zure hiztegi pertsonala ezabatu da."
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+
+#, fuzzy
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"<p>Momentu honetan zure hiztegi personala <b>ez dago zifratua</b>. Nahi "
+"izanez gero zifra daiteke web korreoaren segurtasuna zalantzan jarri edo "
+"zure datuenfitxategia lapurtuz gero, datuak jakin ez daitezen. Behin "
+"zifratua, oso zailada benetako datuak ikustea pasahitza jakingabe (korreo "
+"buzoiko bera dena).</p><b>KONTUZ:</b> Hiztegia zifratu ondoren pasahitza "
+"galduz gero, ezingo litzatekeberriz erabili. Edozein kasutan, buzoiko "
+"pasahitza aldatuz gero hiztegiaren zifratzerako pasahitz zaharra gorde "
+"beharko litzateke.</p>"
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "Mesedez zifratu nire hiztegia."
+
+#, fuzzy, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "Hiztegitik ondoko hitzak ezabatuz <b>%s</b>:"
+
+msgid "All done!"
+msgstr "?Eginda!"
+
+msgid "Personal Dictionary Updated"
+msgstr "Hiztegi pertsonala gaurkotua"
+
+msgid "No changes requested."
+msgstr "Ez dago aldaketarik egiteke"
+
+msgid "Please wait, communicating with the server..."
+msgstr "Itxaron une batez,zerbitzariarekin komunikatzen..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr ""
+"Mesedez, aukeratu mezu honen ortografia zuzentzeko erabili nahi duzun "
+"hiztegia."
+
+msgid "SquirrelSpell Initiating"
+msgstr "SquirrelSpell hasten"
+
+#, fuzzy, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr ""
+"Aukerak: <b>%s</b>, <b>%s</b> erabiliz defektuzko hiztegi moduraomisión."
+
+#, fuzzy, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "<b>%s</b> hiztegia erabiltzen (besterik ezean) ortografiaaztertzeko"
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "Hiztegi int. aukerak gaurkotuak."
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr ""
+"Mesedez, aukeratu eskuragarri dauden hiztegietatik ortografia "
+"zuzentzekoerabili nahiko zenituzkenak."
+
+msgid "Make this dictionary my default selection:"
+msgstr "Besterik ezean ondoko hiztegia erabili:"
+
+msgid "Make these changes"
+msgstr "Aldaketa hauek egin"
+
+msgid "Add International Dictionaries"
+msgstr "Hiztegi internazionalak gehitu"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "Mesedez, aukeratu ezarri nahi dituzun aukerak:"
+
+msgid "Edit your personal dictionary"
+msgstr "Zure hiztegi pertsonala editatu"
+
+msgid "Set up international dictionaries"
+msgstr "Hiztegi internazionalak ezarri"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "Hiztegi pertsonalaren zifratzea"
+
+msgid "not available"
+msgstr "ez dago eskuragarri"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "SquirrelSpell-en aukera menua"
+
+msgid "Translator"
+msgstr "Itzultzailea"
+
+msgid "Saved Translation Options"
+msgstr "Itzulpen aukerak gordeta"
+
+msgid "Your server options are as follows:"
+msgstr "Hauek dira zure zerbitzari aukerak:"
+
+#, fuzzy
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "10 hizkuntza pare, gehienez 25 kilobytes itzulpena, Systran motorea"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr ""
+
+#, fuzzy
+msgid "No known limits, powered by Systran"
+msgstr "12 hizkuntza pare, ez dago muga ezagunik,Systran motorea"
+
+#, fuzzy
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+"767 hizkuntza pare, ez dago muga ezagunik,InterTran motorea Translation "
+"Experts -ena"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "12 hizkuntza pare, ez dago muga ezagunik,Systran motorea"
+
+#, fuzzy
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr ""
+"13 hizkuntza pare, gehienez 1000 karaktereren itzulpena, Systran motorea"
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr ""
+"Itzulpen aukeratzailea agertu edo ez erabaki dezakezu eta baita non ager "
+"daitekeen ere."
+
+msgid "Select your translator:"
+msgstr "Aukeratu zure itzultzailea:"
+
+msgid "When reading:"
+msgstr "Irakurtzen:"
+
+msgid "Show translation box"
+msgstr "Itzulpen aukeratzailea erakutsi"
+
+msgid "to the left"
+msgstr "ezkerraldera"
+
+msgid "in the center"
+msgstr "erdian"
+
+msgid "to the right"
+msgstr "eskuin aldean"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "SquirrelMail-en eremuaren barnean itzuli"
+
+msgid "Translation Options"
+msgstr "Itzulpen aukerak"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "Ze itzultzaile erabili behar da mezuak beste hizkuntzatan jasotzean?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s-tik %s-ra"
+
+msgid "Chinese, Simplified"
+msgstr ""
+
+msgid "English"
+msgstr "Ingelesa"
+
+msgid "Chinese, Traditional"
+msgstr ""
+
+msgid "Dutch"
+msgstr "Holandesa"
+
+msgid "French"
+msgstr "Frantsesa"
+
+msgid "German"
+msgstr "Alemaniera"
+
+msgid "Greek"
+msgstr "Grekera"
+
+msgid "Italian"
+msgstr "Italiera"
+
+msgid "Japanese"
+msgstr "Japoniera"
+
+#, fuzzy
+msgid "Korean"
+msgstr "Norbegirea"
+
+msgid "Portuguese"
+msgstr "Portugesa"
+
+msgid "Russian"
+msgstr "Errusiera"
+
+msgid "Spanish"
+msgstr "Gaztelania"
+
+msgid "Translate"
+msgstr "Itzuli"
+
+msgid "Brazilian Portuguese"
+msgstr "Brasildar portugesa"
+
+msgid "Bulgarian"
+msgstr "Bulgariarra"
+
+msgid "Croatian"
+msgstr "Kroaziarra"
+
+msgid "Czech"
+msgstr "Txekiarra"
+
+msgid "Danish"
+msgstr "Danimarkarra"
+
+msgid "Filipino (Tagalog)"
+msgstr ""
+
+msgid "Finnish"
+msgstr "Finladiera"
+
+msgid "Hungarian"
+msgstr "Hungariera"
+
+msgid "Icelandic"
+msgstr "Islandiera"
+
+msgid "Latin"
+msgstr "Latinera"
+
+msgid "Latin American Spanish"
+msgstr "Gaztelania Latino Amerikarra"
+
+msgid "Norwegian"
+msgstr "Norbegirea"
+
+msgid "Polish"
+msgstr "Poloniera"
+
+msgid "Romanian"
+msgstr "Errumaniera"
+
+msgid "Serbian"
+msgstr "Serbiera"
+
+msgid "Slovenian"
+msgstr "Eslobeniera"
+
+msgid "Swedish"
+msgstr "Suekiera"
+
+msgid "Turkish"
+msgstr ""
+
+msgid "Welsh"
+msgstr "Galiera"
+
+msgid "Indonesian"
+msgstr "Indonesiera"
+
+#, fuzzy
+msgid "to English"
+msgstr "Ingelesa"
+
+#, fuzzy
+msgid "from English"
+msgstr "Ingelesa"
+
+#, fuzzy
+msgid "Interface language"
+msgstr "Besterik ezeko hizkuntza"
+
+#, fuzzy
+msgid "Translation direction"
+msgstr "Itzulpen aukerak"
+
+#, fuzzy, php-format
+msgid "About SquirrelMail %s"
+msgstr "SquirrelMail %s bertsioa"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+#, fuzzy
+msgid "System information"
+msgstr "Norbere informazioa"
+
+#, fuzzy, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "SquirrelMail %s bertsioa"
+
+msgid "The administrator installed the following plugins:"
+msgstr ""
+
+msgid "none installed"
+msgstr ""
+
+msgid "sort by nickname"
+msgstr ""
+
+#, fuzzy
+msgid "sort by name"
+msgstr "Abizenak"
+
+msgid "sort by email"
+msgstr ""
+
+msgid "sort by info"
+msgstr ""
+
+#, fuzzy
+msgid "Add to address book"
+msgstr "Helbidetegira gehitu"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "Ez dago baja eman daitekeen karpetarik!"
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "Ez dago izen eman daitekeen karpetarik!"
+
+msgid "Last Refresh"
+msgstr "Azken eguneratzea"
+
+#, fuzzy
+msgid "Check mail"
+msgstr "Korreoa begiratu sartzean"
+
+msgid "Save folder tree"
+msgstr ""
+
+#, fuzzy
+msgid "SquirrelMail Webmail Application"
+msgstr "SquirrelMail %s bertsioa"
+
+#, fuzzy
+msgid "Compose Preferences"
+msgstr "Karpeten lehentasunak"
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+#, fuzzy
+msgid "Received"
+msgstr "Baieztapena"
+
+#, fuzzy
+msgid "As Attachment"
+msgstr "Gehituriko fitxategiak"
+
+msgid "Bypass Trash"
+msgstr ""
+
+msgid "Please enter something to search for"
+msgstr ""
+
+msgid "There must be at least one criteria to search for"
+msgstr ""
+
+msgid "Error in criteria argument"
+msgstr ""
+
+msgid "(Illegal date)"
+msgstr ""
+
+msgid "(Wrong date)"
+msgstr ""
+
+#, fuzzy
+msgid "In"
+msgstr "Informazioa"
+
+msgid "(Missing argument)"
+msgstr ""
+
+msgid "(Spurious argument)"
+msgstr ""
+
+#, fuzzy
+msgid "Fold"
+msgstr "Karpetak"
+
+#, fuzzy
+msgid "Unfold"
+msgstr "Informazioa"
+
+#, fuzzy
+msgid "Saved Searches"
+msgstr "Azken bilaketak"
+
+msgid "Missing"
+msgstr ""
+
+msgid "and&nbsp;subfolders:"
+msgstr ""
+
+msgid "Exclude Criteria:"
+msgstr ""
+
+#, fuzzy
+msgid "Search Criteria"
+msgstr "Irizpide honen arabera bilatu:"
+
+#, fuzzy
+msgid "Add New Criteria"
+msgstr "Zerbitzaria Gehitu"
+
+msgid "Remove Excluded Criteria"
+msgstr ""
+
+msgid "Remove All Criteria"
+msgstr ""
+
+#, fuzzy
+msgid "Not"
+msgstr "Oharra"
+
+msgid "Answered"
+msgstr ""
+
+#, fuzzy
+msgid "Before"
+msgstr "ahaztu"
+
+#, fuzzy
+msgid "Message Body"
+msgstr "Mezua "
+
+#, fuzzy
+msgid "Deleted"
+msgstr "Ezabatu"
+
+#, fuzzy
+msgid "Draft"
+msgstr "Zirriborroa gorde"
+
+#, fuzzy
+msgid "Flagged"
+msgstr "Adierazleak"
+
+#, fuzzy
+msgid "Sent By"
+msgstr "Bidalia:"
+
+#, fuzzy
+msgid "Header Field"
+msgstr "Burua"
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Larger Than"
+msgstr ""
+
+msgid "Old"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+#, fuzzy
+msgid "Recent"
+msgstr "Baieztapena"
+
+#, fuzzy
+msgid "Seen"
+msgstr "Bidali"
+
+#, fuzzy
+msgid "Sent Before"
+msgstr "Bidalitako mezuak"
+
+#, fuzzy
+msgid "Sent On"
+msgstr "Bidalia:"
+
+msgid "Sent Since"
+msgstr ""
+
+#, fuzzy
+msgid "Since"
+msgstr "Neurria"
+
+msgid "Smaller Than"
+msgstr ""
+
+#, fuzzy
+msgid "Subject Contains"
+msgstr "Edukia:"
+
+msgid "Header and Body"
+msgstr ""
+
+#, fuzzy
+msgid "Sent To"
+msgstr "Bidalia:"
+
+msgid "And In"
+msgstr ""
+
+msgid "Or In"
+msgstr ""
+
+#, fuzzy
+msgid "And"
+msgstr "Gehitu"
+
+msgid "Or"
+msgstr ""
+
+msgid "Standard search"
+msgstr ""
+
+msgid "Advanced search"
+msgstr ""
+
+#, fuzzy
+msgid "Folder List"
+msgstr "Karpetak"
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Click here to change the sorting of the address list"
+msgstr ""
+
+msgid "Illegal folder name."
+msgstr ""
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Please select a different name."
+msgstr "Karpeta izen desegokia.Mesedez, aukeratu beste bat"
+
+#, fuzzy
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "Ez dezu ezabatu nahi duzun karpeta aukeratu."
+
+#, fuzzy
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "Ez dezu ezabatu nahi duzun karpeta aukeratu."
+
+msgid "Possible reason:"
+msgstr ""
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+#, fuzzy
+msgid "Reason:"
+msgstr "Erantzuna:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown recipient"
+msgstr "Bidaltzaile ezezaguna"
+
+msgid "Unflag"
+msgstr ""
+
+#, fuzzy
+msgid "Flag"
+msgstr "Adierazleak"
+
+#, fuzzy
+msgid "Undelete"
+msgstr "ezabatu"
+
+#, fuzzy
+msgid "General Message Composition"
+msgstr "Mezuen idazketa eta pantailaratzea"
+
+#, fuzzy
+msgid "Replying and Forwarding Messages"
+msgstr "Mezuen berbidaltzean CC-ak sartu"
+
+msgid "Strip signature when replying"
+msgstr ""
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Message Flags Icon Theme"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+#, fuzzy
+msgid "Use Compact Page Selector"
+msgstr "Orri aukeratzailea"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr ""
+
+msgid "Length of Subject Field (0 for full)"
+msgstr ""
+
+#, fuzzy
+msgid "Message Display Options"
+msgstr "Pantailaratze aukera orokorrak"
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr ""
+
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "Jatorrizko mezua"
+
+#, fuzzy, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "Minutua"
+msgstr[1] "Minutua"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr ""
+
+#, fuzzy
+msgid "Hide SquirrelMail Header"
+msgstr "Ikusi goiburu guztia"
+
+#, fuzzy
+msgid "Search functions"
+msgstr "Irizpide honen arabera bilatu:"
+
+msgid "Only basic search"
+msgstr ""
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+#, fuzzy
+msgid "Enable aggressive decoding"
+msgstr "Orri aukeratzailea"
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use advanced tree folder listing"
+msgstr ""
+
+#, fuzzy
+msgid "Use icons"
+msgstr "Segunduak"
+
+msgid "Use PHP recode functions"
+msgstr ""
+
+msgid "Use PHP iconv functions"
+msgstr ""
+
+msgid "Allow remote configuration test"
+msgstr ""
+
+msgid "Show System Specifications"
+msgstr ""
+
+#, fuzzy
+msgid "Search Mailing List Archives"
+msgstr "Fitxategiak"
+
+msgid "Search SourceForge Bugtracker"
+msgstr ""
+
+#, fuzzy
+msgid "Search for words:"
+msgstr "Irizpide honen arabera bilatu:"
+
+msgid "Written by:"
+msgstr ""
+
+#, fuzzy
+msgid "Email addresses only"
+msgstr "Korreo elektronikoen helbideak"
+
+#, fuzzy
+msgid "Mailing list:"
+msgstr "Korreo zerrenda:"
+
+#, fuzzy
+msgid "SquirrelMail users list"
+msgstr "SquirrelMail %s bertsioa"
+
+#, fuzzy
+msgid "SquirrelMail plugins list"
+msgstr "SquirrelMail %s bertsioa"
+
+#, fuzzy
+msgid "SquirrelMail developers list"
+msgstr "SquirrelMail %s bertsioa"
+
+#, fuzzy
+msgid "SquirrelMail internationalization list"
+msgstr "SquirrelMail %s bertsioa"
+
+#, fuzzy
+msgid "Sort by:"
+msgstr "Portua:"
+
+msgid "Relevance"
+msgstr ""
+
+#, fuzzy
+msgid "Search Archives"
+msgstr "Fitxategiak"
+
+#, fuzzy
+msgid "Reset Form"
+msgstr "Karpeta ezabatu"
+
+msgid "Summary keyword:"
+msgstr ""
+
+#, fuzzy
+msgid "Sort By:"
+msgstr "Portua:"
+
+msgid "ID"
+msgstr ""
+
+#, fuzzy
+msgid "Summary"
+msgstr "Igandea"
+
+#, fuzzy
+msgid "Open Date"
+msgstr "Errorea irekitzean"
+
+#, fuzzy
+msgid "Close Date"
+msgstr "Itxi"
+
+#, fuzzy
+msgid "Submitter"
+msgstr "Bidali"
+
+msgid "Assignee"
+msgstr ""
+
+#, fuzzy
+msgid "Order:"
+msgstr "Beste bat:"
+
+#, fuzzy
+msgid "Ascending"
+msgstr "bidalia"
+
+msgid "Descending"
+msgstr ""
+
+msgid "Search Bugtracker"
+msgstr ""
+
+msgid "You must type in a new password."
+msgstr ""
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+
+msgid "Your new password does not match the verify password."
+msgstr ""
+
+msgid "You must type in your current password."
+msgstr ""
+
+#, fuzzy
+msgid "Your current password is not correct."
+msgstr "Erabiltzaile edo pasahitz okerra."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+#, fuzzy
+msgid "Your new password contains invalid characters."
+msgstr "Goitizenak onartezinak diren hizkiak ditu"
+
+#, fuzzy
+msgid "Change Password"
+msgstr "Aldatu hitz hau"
+
+#, fuzzy
+msgid "Current Password:"
+msgstr "Pasahitza:"
+
+#, fuzzy
+msgid "New Password:"
+msgstr "Pasahitza:"
+
+#, fuzzy
+msgid "Verify New Password:"
+msgstr "Pasahitza:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+#, fuzzy
+msgid "User's Password"
+msgstr "Pasahitza:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to use TLS."
+msgstr "Ezin da eguneratu"
+
+#, fuzzy, php-format
+msgid "Error: %s"
+msgstr "Errorea:"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Server replied: %s"
+msgstr "Zerbitzariak hau erantzun du: "
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to connect to LDAP server."
+msgstr "Ez dago konexiorik zerbitzariarekin"
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+#, fuzzy
+msgid "Search error."
+msgstr "Irizpide honen arabera bilatu:"
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr ""
+
+msgid "PHP mhash extension is missing."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+#, fuzzy
+msgid "unknown"
+msgstr "(bidaltzaile ezezaguna)"
+
+msgid "Unable to validate user's password."
+msgstr ""
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+#, fuzzy
+msgid "Cannot change password!"
+msgstr "Aldatu hitz hau"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr ""
+
+msgid "SQL call failed, try again later."
+msgstr ""
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr ""
+
+msgid "Closing Connection"
+msgstr ""
+
+#, fuzzy
+msgid "Connecting to Password Server"
+msgstr "Ez dago konexiorik zerbitzariarekin"
+
+msgid "No valid backend defined."
+msgstr ""
+
+msgid "Incorrent path to vmail.inc file."
+msgstr ""
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr ""
+
+msgid "Invalid user."
+msgstr ""
+
+#, fuzzy
+msgid "Empty domain"
+msgstr "Agindu katea hutsik"
+
+#, fuzzy
+msgid "Empty domain password"
+msgstr "Agindu katea hutsik"
+
+#, fuzzy
+msgid "Empty username"
+msgstr "Erabiltzailearen izena:"
+
+msgid "Empty new password"
+msgstr ""
+
+#, fuzzy
+msgid "Server Capability response:"
+msgstr "Zerbitzariak hau erantzun du: "
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+#, fuzzy
+msgid "Select"
+msgstr "Guztiak aukeratu"
+
+#, fuzzy
+msgid "Test Name"
+msgstr "Gaiaren izena"
+
+#, fuzzy
+msgid "IMAP command string"
+msgstr "Agindu katea hutsik"
+
+#, fuzzy
+msgid "Request:"
+msgstr "eskatuta"
+
+#, fuzzy
+msgid "No POP3 servers configured yet."
+msgstr "Ez da zerbitzaririk zehaztu"
+
+#, fuzzy
+msgid "Click here to go to the options page."
+msgstr "Sakatu hemen berriz sartzeko"
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "Hasteko saiakera ona; postontziak ["
+msgstr[1] "Hasteko saiakera ona; postontziak ["
+
+#, fuzzy
+msgid "Width of popup window:"
+msgstr "Mezuen edizio zabalera"
+
+msgid "If set to 0, reverts to default value"
+msgstr ""
+
+#, fuzzy
+msgid "Height of popup window:"
+msgstr "Mezuen edizio altuera"
+
+#, fuzzy
+msgid "uploaded media file"
+msgstr "Fitxategi Lokala:"
+
+#, fuzzy
+msgid "none"
+msgstr "Baterez"
+
+#, fuzzy
+msgid "Upload Media File:"
+msgstr "Fitxategi Lokala:"
+
+#, fuzzy
+msgid "Uploaded Media File:"
+msgstr "Fitxategi Lokala:"
+
+#, fuzzy
+msgid "unavailable"
+msgstr "ez dago eskuragarri"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr ""
+
+#, fuzzy
+msgid "Spam Service Type:"
+msgstr "IMAP zerbitzari mota"
+
+msgid "Free reporting"
+msgstr ""
+
+msgid "Member services"
+msgstr ""
+
+#, fuzzy
+msgid "Save Service Type"
+msgstr "Gordetako eskaneatu mota"
+
+#, fuzzy
+msgid "SpamCop reporting"
+msgstr "SPAM Filtroa"
+
+#, fuzzy
+msgid "Translation Theme:"
+msgstr "Itzuli"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+
+#, fuzzy
+msgid "Translation Preferences"
+msgstr "Erakunde lehentasunak"
+
+#, fuzzy
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr "10 hizkuntza pare, gehienez 25 kilobytes itzulpena, Systran motorea"
+
+#, fuzzy
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr "8 hizkuntza pare, ez dago muga ezagunik,GPLTrans motorea dohakoa"
+
+msgid "Transliterate unknown words:"
+msgstr ""
+
+msgid "When composing:"
+msgstr "Idazten:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "Oraindik ez dabil."
+
+msgid "Delivery error report"
+msgstr "Jasotze errore txostena"
+
+msgid "Undelivered Message Headers"
+msgstr "Mezuaren burua ez da jaso"
+
+msgid "This image has been removed for security reasons"
+msgstr ""
+
+#~ msgid "Unknown error"
+#~ msgstr "Errore ezezaguna"
+
+#~ msgid "To:"
+#~ msgstr "Norentzat:"
+
+#~ msgid "CC:"
+#~ msgstr "CC:"
+
+#~ msgid "BCC:"
+#~ msgstr "BCC:"
+
+#~ msgid "Subject:"
+#~ msgstr "Gaia"
+
+#~ msgid "said"
+#~ msgstr "esan zuen"
+
+#~ msgid "Viewing a message attachment"
+#~ msgstr "Gehitutako fitxategi bat erakusten"
+
+#~ msgid "Cc:"
+#~ msgstr "Cc:"
+
+#~ msgid "Bcc:"
+#~ msgstr "Bcc:"
+
+#~ msgid "<No subject>"
+#~ msgstr "<gairik gabe>"
+
+#~ msgid "Enable Subtle Printer Friendly Link"
+#~ msgstr "Lotura diskretua aktibatu hasierako pantailaratzean"
+
+#~ msgid "Enable request/confirm reading"
+#~ msgstr "Irakurketa baieztapen aukera aktibatu"
+
+#~ msgid "Use receive date for sort"
+#~ msgstr "Iriste dataren arabera ordenatu"
+
+#~ msgid "CC"
+#~ msgstr "CC"
+
+#~ msgid "There was an error contacting the mail server."
+#~ msgstr "Errore bat izan da zerbitzariarekin harremanetan jartzean."
+
+#~ msgid "Contact your administrator for help."
+#~ msgstr "Informatika arduradunarekin harremanetan jarri."
+
+#, fuzzy
+#~ msgid "All folders"
+#~ msgstr "Karpeta guztiak"
+
+#~ msgid "No Messages found"
+#~ msgstr "Ez da mezurik aurkitu"
+
+#~ msgid "Note Field Contains"
+#~ msgstr "Oharra eremuak ondokoa du"
+
+#~ msgid "Business Card"
+#~ msgstr "Bisita txartela"
+
+#~ msgid "Click here to try again"
+#~ msgstr "Sakatu hemen berriz saiatzeko"
+
+#~ msgid "Unknown message number in reply from server: "
+#~ msgstr "Zerbitzariaren erantzunaren zenbaki ezezaguna:"
+
+#~ msgid "No To Address"
+#~ msgstr "Hartzailerik gabe"
+
+#~ msgid "Found"
+#~ msgstr "Aurkitua"
+
+#~ msgid "messages"
+#~ msgstr "mezuak"
+
+#~ msgid "Error decoding mime structure.  Report this as a bug!"
+#~ msgstr ""
+#~ "MIME egitura deskodetzen errorea izan da.Jakinerazi programaren akats bat "
+#~ "bezala!"
+
+#~ msgid ""
+#~ "FREE - Osirusoft Relays - Osirusofts list of verified open relays. Seems "
+#~ "to include servers used by abuse@uunet.net auto-replies too."
+#~ msgstr ""
+#~ "DOHAIN - Osirusoft estekak - \"Osirusoft\" esteka irekiak. Badirudi "
+#~ "erantzun automatikodun mezuak erabiltzen dituelaabuse@uunet.net -etik"
+
+#~ msgid "FREE - Osirusoft Dialups - Osirusofts Dialup Spam Source list."
+#~ msgstr ""
+#~ "DOHAIN -  \"Osirusoft\" RTC-a - SPAM zerrenda \"Osirusoft\" tek emana RTC."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Confirmed Spam Source - Sites that continually spam and "
+#~ "have been manually added after multiple nominations. Use with caution. "
+#~ "Seems to catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "DOHAIN -  Osirusoft zerrenda SPAM bidaltzaileekin - SPAM etengabe "
+#~ "bidaltzen duten lekuak. Kontuz ibiltzekoa erantzun automatikoak burutzen "
+#~ "ditu eta batzuetan. Manualki sortua."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Smart Hosts - List of hosts that are secure but relay "
+#~ "for other mail servers that are not secure."
+#~ msgstr ""
+#~ "DOHAIN - \"Osirusoft Smart Hosts\" - Zerbitzari seguruen zerrendabaina "
+#~ "seguru ez direnetara igarotzeko aukerarekin."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Spamware Developers - It is believed that these are IP "
+#~ "ranges of companies that are known to produce spam software. Seems to "
+#~ "catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "DOHAIN - Osirusoft zerrenda SPAM  garatzaileekinIp hauek SPAM "
+#~ "garatzaileenak direla uste da.ISP batzuetatik geihegikeriak atzeman dira."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Unconfirmed OptIn Servers - List of listservers that opt "
+#~ "users in without confirmation."
+#~ msgstr "DOHAIN - Osirusoft zerbitzari zerrenda \"Opt-In\" baieztatu gabe."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Insecure formmail.cgi scripts - List of insecure "
+#~ "formmail.cgi scripts. (planned)."
+#~ msgstr "DOHAIN - Formulario ez seguruak Osirusoft."
+
+#~ msgid "FREE - Osirusoft Open Proxy Servers - List of Open Proxy Servers."
+#~ msgstr "DOHAIN - Proxy zerbitzari irekien Osirusoft zerrenda."
+
+#~ msgid "All Messages"
+#~ msgstr "Mezu guztiak"
+
+#~ msgid ""
+#~ "<p>Your personal dictionary is <strong>currently encrypted</strong>. This "
+#~ "helps protect your privacy in case the web-mail system gets compromized "
+#~ "and your personal dictionary ends up stolen. It is currently encrypted "
+#~ "with the password you use to access your mailbox, making it hard for "
+#~ "anyone to see what is stored in your personal dictionary.</p> "
+#~ "<p><strong>ATTENTION:</strong> If you forget your password, your personal "
+#~ "dictionary will become unaccessible, since it can no longer be decrypted. "
+#~ "If you change your mailbox password, SquirrelSpell will recognize it and "
+#~ "prompt you for your old password in order to re-encrypt the dictionary "
+#~ "with a new key.</p>"
+#~ msgstr ""
+#~ "<p>Zure hiztegi pertsonala <b>zifratua</b> dago. Honek web korreoaren "
+#~ "segurtasuna arriskuan egonez gero zure datuak babesten ditu eta "
+#~ "lapurretakekiditen. Momentu honetan zure zifratze pasahitza zure buzoiko "
+#~ "bera da.</p><p><b>KONTUZ:</b> Zure pasahitza ahazten baduzu zure hiztegi "
+#~ "pertsonalaezingo da erabili, ezingo baita deszifratu. Zure buzoiko "
+#~ "pasahitza aldatuz gero,SquirrelSpell konturatuko da eta pasahitz zaharra "
+#~ "eskatuko dizu hiztegiaren zifratzea aldatzeko.</p>"
+
+#~ msgid ""
+#~ "Select from the list of <b>server files</b> the media file to play when "
+#~ "new mail arrives.  Selecting <b>local media</b> will play the file "
+#~ "specified in the <b>local media file</b> box to play from the local "
+#~ "computer.  If no file is specified, the system will use a default from "
+#~ "the server."
+#~ msgstr ""
+#~ "Korreo berria iristean entzun nahi duzun soinu artxiboa aukeratu "
+#~ "<b>zerbitzariaren fitxategi</b> zerrendatik.<b>Fitxategi lokala</b> "
+#~ "aukeratuz gero disko gogorreko fitxategiak erabil ditzakezu. Ez baduzu "
+#~ "artxiborik aukeratzen besterik ezeko zerbitzariaren fitxategia "
+#~ "exekutatuko da."
+
+#~ msgid "(local media)"
+#~ msgstr "(bertako baliabideak)"
+
+#~ msgid "New Mail Notification options saved"
+#~ msgstr "Mezu berriak jakinarazte aukerak gordeta"
+
+#~ msgid "POP3 noop:"
+#~ msgstr "POP3 noop:"
+
+#~ msgid "] messages"
+#~ msgstr "] mezu ditu"
+
+#~ msgid "No-one server in use. Try to add."
+#~ msgstr "Zerbitzari guztiak erabili gabe. Saia zaitez bat gehitzen,"
+
+#~ msgid "Mofify a Server"
+#~ msgstr "Zerbitzari bat Aldatu"
+
+#~ msgid "Hey! Wath do You are looking for?"
+#~ msgstr "Aizu! Zeren bila zabiltza?"
+
+#~ msgid "l, F d Y"
+#~ msgstr "l, F d Y"
+
+#~ msgid "35 min."
+#~ msgstr "35 min."
+
+#~ msgid "Authenticated SMTP"
+#~ msgstr "SMTP zerbitzaria kautotzearekin?"

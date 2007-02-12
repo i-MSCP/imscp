@@ -1,0 +1,78 @@
+<chapter>
+   <title>
+      Paieška
+   </title>
+   <summary>
+      Ieško aplanke pagal pasirinktus kriterijus.
+   </summary>
+   <description>
+      <p>
+      Naudodami šį įrankį jūs galite vykdyti įvairiausią paiešką po jūsų
+		turimas žinutes. Galima pasirinkti įvairius paieškos kriterijus ir
+		vietą, kur bus vykdoma paieška.
+		</p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Bendrai
+   </title>
+   <description>
+      <p>
+      Jūs paprasčiausiai pasirenkate aplanką, kuriame norite vykdyti paiešką,
+		nurodote, ko ieškoti ir pasirenkate tą žinutės dalį, kuriuoje norite 
+		vykdyti paiešką. Paieška turėtų išvesti surastų žinučių sąrašą, kurį
+		jūs galėsite peržiūrėti taip pat, kaip jūs paržiūrite bet kuri savo 
+		pašto dėžės aplanką.
+		</p>
+      <p>
+      Atkreipkite dėmesį, kad jei jūs esate kokiame nors pašto dėžės aplanke
+		ir persijungiate į paieškos langą, būtent tas aplankas, kuriame jūs 
+		buvote yra laikomas aktyviu ir būtent jis iš pradžiu pasirenkamas kaip
+		vieta, kuriuoje reikia vykdyti paiešką.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kaip ieškoti
+   </title>
+   <description>
+      <p>
+      Kairėje pusėje nuo įvedimo lauko esantis iššokantis sąrašas leidžia
+      pasirinkti, kur jūs vykdysite paiešką. Galima vykdyti paiešką
+      žinučių tekste, visose žinutėse, jų temose, nuo ko atėjo žinutės, 
+      kokiu adresu jos buvo siųstos, kam buvo nusiustos kopijos.
+      </p>
+      <p>
+      <b>Tekstas</b> - Ieško pasirinktos frazės žinučių tekste. Tai yra
+      pagrindinėje vietoje, kur galima rasti kažką svarbaus.
+      </p>
+      <p>
+      <b>Bet kur</b> - Ieško pasirinktos frazės visoje žinutėje. Įskaitant
+      ir antraštes. Ši paieška yra detaliausia, tačiau dažnai gali grąžinti
+      tokius rezultatus, kokių jūs nesitikėjote arba kurių jums niekada
+      nereiks.
+      </p>
+      <p>
+      <b>Tema</b> - Frazės ieškoma vien tik laiškų pavadinimuose.
+      </p>
+      <p>
+      <b>Nuo</b> - Paieška vykdoma žinutės siuntėjo lauke. Realiai lauko 
+      turinys šiek tiek skiriasi nuo to, ką jūs matote aplankų sąrašuose.
+      Paprastai "Nuo" laukas saugo vardą IR elektroninio pašto adresą. Tačiau 
+      Squirrelmail parodo tik vardą. Todėl paieškos kriterijus gali sutapti 
+      ne tik su kieno nors vardu, bet ir su elektroninio pašto adresu.
+      </p>
+      <p>
+      <b>Kam</b> - Paieška vykdoma žinutės gavėjo lauke. Nors laiskai atsidurė
+      jūsų pašto dėžėje tačiau jie galėjo būti išsiųsti ne tik jums.
+      </p>
+      <p>
+      <b>Cc</b> - Tas pats, kaip ir "Kam", išskyrus tai, kad ieškome tų, 
+      kurie gavo laiško kopijas.
+      </p>
+   </description>
+</section>

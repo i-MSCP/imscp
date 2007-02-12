@@ -1,0 +1,3 @@
+#!/bin/sh
+xgettext --keyword=_ -keyword=N_  --default-domain=check_quota \
+    --no-location -C *.php --output=check_quota.pot

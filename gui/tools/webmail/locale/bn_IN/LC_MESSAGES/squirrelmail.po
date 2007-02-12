@@ -1,0 +1,5111 @@
+# translation of squirrelmail.po to 
+# Bengali Squirrelmail Translation
+# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# $Id: squirrelmail.po,v 1.6 2005/06/05 11:49:41 jervfors Exp $
+# Uttiya Chowdhury <chowdhury_uttiya@yahoo.com>, 2004.
+# Uttiya Chowdhury <chowdhury_uttiya@yahoo.com>, 2004.
+msgid ""
+msgstr ""
+"Project-Id-Version: squirr\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-16 19:47+0200\n"
+"PO-Revision-Date: 2004-10-15 15:28-0700\n"
+"Last-Translator: Uttiya Chowdhury <chowdhury_uttiya@yahoo.com>\n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9\n"
+
+msgid "Address Book"
+msgstr "লোকজনের ঠিকানা"
+
+msgid "Name"
+msgstr "নাম"
+
+msgid "E-mail"
+msgstr "বিজলীচিঠি পাঠাবার ঠিকানা"
+
+msgid "Info"
+msgstr "তথ্য"
+
+msgid "Source"
+msgstr "সূত্র"
+
+msgid "To"
+msgstr "প্রতি"
+
+msgid "Cc"
+msgstr "প্রতিলিপি"
+
+msgid "Bcc"
+msgstr "লুকানো প্রতিলিপি"
+
+msgid "No persons matching your search were found"
+msgstr "আপনার কথামত কিছুই খুঁজে পাওয়া যায় নি"
+
+msgid "Search for"
+msgstr "যা খোঁজা হবে"
+
+msgid "in"
+msgstr "যার মধ্যে খোঁজা হবে"
+
+msgid "All address books"
+msgstr "সব ঠিকানার তালিকা"
+
+msgid "Search"
+msgstr "অনুসন্ধান"
+
+msgid "List all"
+msgstr "যা আছে সব দেখানো"
+
+msgid "Close"
+msgstr "বন্ধ করা"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "%s থেকে ঠিকানা বের করা যাচ্ছে না"
+
+msgid "Your search failed with the following error(s)"
+msgstr "খোঁজা যায় নি।  কারণ - "
+
+msgid "All"
+msgstr "সব"
+
+msgid "Use Addresses"
+msgstr "এই ঠিকানাগুলো ব্যবহার করা হোক"
+
+#, fuzzy
+msgid "Cancel"
+msgstr "ঠিক করা হোক"
+
+msgid "Address Book Search"
+msgstr "ঠিকানার তালিকা থেকে খুঁজে বের করা হোক"
+
+msgid "Return"
+msgstr "ফেরা"
+
+msgid "Nickname"
+msgstr "ডাকনাম"
+
+msgid "Must be unique"
+msgstr "একের বেশী থাকতে পারবে না"
+
+msgid "E-mail address"
+msgstr "বিজলীচিঠি পাঠাবার ঠিকানা"
+
+msgid "Last name"
+msgstr "পৈত্রিক পদবী"
+
+msgid "First name"
+msgstr "নাম"
+
+msgid "Additional info"
+msgstr "অন্যান্য তথ্য"
+
+#, fuzzy
+msgid "Add to:"
+msgstr "%s তে যোগ করা"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr ""
+"কোন ঠিকানার তালিকা তৈরী করা নেই।  কারিগরী ব্যবস্থাপকদের সাথে যোগাযোগ করুন।"
+
+msgid "You can only edit one address at the time"
+msgstr "একবারে শুধু একটা ঠিকানা পরিবর্তন করা যায়"
+
+msgid "Update address"
+msgstr "ঠিকানা পরিবর্তন করা"
+
+msgid "ERROR"
+msgstr "সমস্যা"
+
+msgid "Please select address that you want to edit"
+msgstr ""
+
+msgid "Add address"
+msgstr "ঠিকানা যোগ করা"
+
+msgid "Edit selected"
+msgstr "যেটাকে চিহ্নিত করা হয়েছে সেটাতে কিছু বদলানো"
+
+msgid "Delete selected"
+msgstr "যেটাকে চিহ্নিত করা হয়েছে সেটাকে মুছে ফেলা হোক"
+
+#, php-format
+msgid "Add to %s"
+msgstr "%s তে যোগ করা"
+
+#, php-format
+msgid "%s wrote:"
+msgstr ""
+
+msgid "quote"
+msgstr "বাণী"
+
+msgid "who"
+msgstr "কে"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr ""
+
+msgid "Subject"
+msgstr "বিষয়"
+
+msgid "From"
+msgstr "প্রেরক"
+
+msgid "Date"
+msgstr "তারিখ"
+
+msgid "Original Message"
+msgstr "এই চিঠির বিষয়ে"
+
+msgid "Draft Email Saved"
+msgstr "খসড়া হিসাবে লিখে রাখা হল"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "ফাইল টা সরানো বা প্রতিলিপি তৈরী করা যায় নি।  ফাইল যুক্ত করা গেল না।"
+
+msgid "Draft Saved"
+msgstr "খসড়াটা লিখে রাখা হল"
+
+#, fuzzy
+msgid "Your Message has been sent."
+msgstr "চিঠি পাঠানো হয়ে গেছে"
+
+msgid "From:"
+msgstr "হতে:"
+
+msgid "Send"
+msgstr "পাঠানো হোক"
+
+msgid "Attach:"
+msgstr "ফাইল যুক্ত করা হোক:"
+
+msgid "Add"
+msgstr "যুক্ত করা হোক"
+
+msgid "Delete selected attachments"
+msgstr "যুক্ত করার তালিকা থেকে টিক চিহ্ন দেওয়া ফাইলগুলো বাদ দেওয়া হোক"
+
+msgid "Priority"
+msgstr "গুরুত্ব"
+
+msgid "High"
+msgstr "অনেক"
+
+msgid "Normal"
+msgstr "সাধারণ"
+
+msgid "Low"
+msgstr "কম"
+
+msgid "Receipt"
+msgstr "প্রাপ্তিপত্র"
+
+msgid "On Read"
+msgstr "পড়া হবার পর"
+
+msgid "On Delivery"
+msgstr "বিতরণ হবার পর"
+
+msgid "Signature"
+msgstr "স্বাক্ষর"
+
+msgid "Addresses"
+msgstr "ঠিকানার খাতা"
+
+msgid "Save Draft"
+msgstr "খসড়া হিসাবে লিখে রাখা হোক"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "কাকে পাঠানো হবে সেটা লিখেন নি"
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "সমস্যা: %s নামের খসড়া চিঠির বাক্সটা খুঁজে পাওয়া যাচ্ছে না"
+
+#, fuzzy
+msgid "Server replied:"
+msgstr "বিজলী ডাকঘর থেকে বলা হচ্ছে: "
+
+msgid "Folders"
+msgstr "চিঠি সাজিয়ে রাখার বাক্স"
+
+#, fuzzy
+msgid "Subscribed successfully."
+msgstr "নাম লিখিয়ে নিতে পেরেছি!"
+
+#, fuzzy
+msgid "Unsubscribed successfully."
+msgstr "নাম মুছিয়ে নিতে পেরেছি!"
+
+#, fuzzy
+msgid "Deleted folder successfully."
+msgstr "বাক্সটা ঠিকমত ফেলে এসেছি!"
+
+#, fuzzy
+msgid "Created folder successfully."
+msgstr "চিঠি সাজিয়ে রাখার বাক্স ঠিকমত তৈরী করতে পেরেছি!"
+
+#, fuzzy
+msgid "Renamed successfully."
+msgstr "ঠিকমত নাম বদলাতে পেরেছি!"
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "নাম লেখাতে পারিনি - এ রকম কোনো চিঠির বাক্স নেই"
+
+msgid "refresh folder list"
+msgstr "তালিকাটা আবার তৈরী করা হোক"
+
+msgid "Create Folder"
+msgstr "চিঠি সাজানোর বাক্স তৈরী কর"
+
+msgid "as a subfolder of"
+msgstr "এই বাক্সের মধ্যে তৈরী কর"
+
+msgid "None"
+msgstr "একটাও নেই"
+
+msgid "Let this folder contain subfolders"
+msgstr "এই বাক্সের মধ্যে চিঠি ছাড়াও চিঠি রাখার বাক্সও রাখা যাবে"
+
+msgid "Create"
+msgstr "তৈরী করা হোক"
+
+msgid "Rename a Folder"
+msgstr "বাক্সের নাম পাল্টানো হোক"
+
+msgid "Select a folder"
+msgstr "কোন একটা বাক্স চিহ্নিত করুন"
+
+msgid "Rename"
+msgstr "নাম পাল্টানো হোক"
+
+msgid "No folders found"
+msgstr "চিঠি সাজানোর কোন বাক্স পাওয়া যায় নি"
+
+msgid "Delete Folder"
+msgstr "চিহ্নিত বাক্সটা ফেলে দেওয়া হোক"
+
+msgid "Delete"
+msgstr "মুছে ফেলা হোক"
+
+msgid "Unsubscribe"
+msgstr "এই বাক্স থেকে চিঠি নিতে চাই না"
+
+msgid "Subscribe"
+msgstr "এই বাক্স থেকে চিঠি নিতে চাই"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "চিঠি নেওয়া বন্ধ করার মত কোন চিঠির বাক্স পাওয়া যায় নি!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "যেখান থেকে চিঠি নেওয়া হবে, এমন কোনো চিঠির বাক্স পাওয়া যায় নি!"
+
+msgid "Subscribe to:"
+msgstr "যে বাক্স থেকে চিঠি নেওয়া শুরু করা হবে:"
+
+#, fuzzy
+msgid "Illegal folder name. Please select a different name."
+msgstr ""
+"চিঠি সাজিয়ে রাখার বাক্সের জন্য এই নাম দেওয়া যাবে না।  অন্য একটা নাম ঠিক করুন।"
+
+msgid "Click here to go back"
+msgstr "ফিরে যাবার জন্য এখানে খোঁচা দিন"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr ""
+"কোনটাকে ফেলে দেওয়া হবে তা চিহ্নিত করে দেওয়া হয় নি।  দয়া করে চিহ্নিত করে দিন।"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "শেষবারের মত ভেবে দেখুন, সত্যি সত্যি %s বাক্সটা ফেলে দিতে চান কিনা"
+
+msgid "Yes"
+msgstr "হ্যাঁ"
+
+msgid "No"
+msgstr "না"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr ""
+"কোন বাক্সের নাম বদলানোর হবে তা আপনি চিহ্নিত করেন নি।  দয়া করে চিহ্নিত করুন।"
+
+msgid "Rename a folder"
+msgstr "চিঠি সাজিয়ে রাখার বাক্সের নাম পাল্টানো হোক"
+
+msgid "New name:"
+msgstr "নতুন যে নাম দেওয়া হবে:"
+
+msgid "Submit"
+msgstr "করে ফেল"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "সমস্যা: সহায়িকা ফাইলগুলো মনে হচ্ছে ঠিকমত লেখা নেই!"
+
+msgid "Help"
+msgstr "সহায়িকা"
+
+#, fuzzy, php-format
+msgid ""
+"The help has not been translated to %s. It will be displayed in English "
+"instead."
+msgstr "এই সহায়িকা টা %s তে অনুবাদ করা হয় নি।  তাই ইংরেজীতে সহায়িকা দেখানো হবে।"
+
+msgid "Some or all of the help documents are not present!"
+msgstr "সহায়িকার কিছু/কোন ফাইল পাওয়া যাচ্ছে না!"
+
+msgid "Table of Contents"
+msgstr "সুচীপত্র"
+
+msgid "Previous"
+msgstr "আগেরটা"
+
+msgid "Next"
+msgstr "পরেরটা"
+
+msgid "Top"
+msgstr "পাতার শুরুতে"
+
+msgid "Viewing an image attachment"
+msgstr "চিঠির সাথে যুক্ত করে পাঠানো ছবি দেখা"
+
+msgid "View message"
+msgstr "চিঠি পড়া হোক"
+
+msgid "Download this as a file"
+msgstr "চিঠির সাথে যুক্ত করে পাঠানো ফাইলটা অন্যত্র লিখে রাখা হোক"
+
+msgid "INBOX"
+msgstr "যা চিঠি এসেছে তার বাক্স"
+
+#, fuzzy
+msgid "Purge"
+msgstr "খালি করা হোক"
+
+msgid "Login"
+msgstr "পরিচয় পরীক্ষা করা হোক"
+
+#, php-format
+msgid "%s Logo"
+msgstr "%s-র ছবি"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+#, fuzzy
+msgid "By the SquirrelMail Project Team"
+msgstr "<a href=www.squirrelmail.org>কাঠবেড়ালী ডাক গোষ্ঠি</a>র তৈরী"
+
+#, php-format
+msgid "%s Login"
+msgstr "%s -- পরিচয় পরীক্ষা"
+
+msgid "Name:"
+msgstr "নাম:"
+
+msgid "Password:"
+msgstr "গুপ্তবাক্য:"
+
+msgid "No messages were selected."
+msgstr "কোন চিঠিটা/গুলো নিয়ে কাজ করা হবে তা বলা হয় নি"
+
+msgid "Personal Information"
+msgstr "ব্যক্তিগত তথ্য"
+
+msgid "Display Preferences"
+msgstr "যে নিয়ম মত দেখানো হবে"
+
+msgid "Message Highlighting"
+msgstr "চিঠির কিছু অংশ মোটা অক্ষরে লেখা"
+
+msgid "Folder Preferences"
+msgstr "চিঠি রাখার বাক্সের জন্য নিয়ম"
+
+msgid "Index Order"
+msgstr "তালিকা তৈরীর ক্রম"
+
+msgid "Options"
+msgstr "আপনার পছন্দ"
+
+msgid "Error(s) occurred while saving your options"
+msgstr ""
+
+msgid "Some of your preference changes were not applied."
+msgstr ""
+
+msgid "Successfully Saved Options"
+msgstr "আপনি যেসব নিয়ম ঠিক করে দিয়েছেন, সেগুলো ঠিকমত লিখে নেওয়া হয়েছে"
+
+msgid "Refresh Folder List"
+msgstr "চিঠি রাখার বাক্সের তালিকাটা আবার তৈরী করা হোক"
+
+msgid "Refresh Page"
+msgstr "এই পৃষ্ঠাটা নতুন করে তৈরী করা হোক"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+"এখানে আপনার ব্যক্তিগত তথ্য, যেমন আপনার নাম, বিজলীচিঠির ঠিকানা, ইত্যাদি দেওয়া যায়"
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"কাঠবেড়ালী ডাক ব্যবস্থার তথ্যপট গুলো কিরকম দেখাবে, যেমন রঙ, ভাষা, ইত্যাদি এখানে "
+"ঠিক করে দেওয়া যায়"
+
+#, fuzzy
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"আপনি যা চিঠি আসছে তা কিছু নিয়মের ভিত্তিতে বিভিন্ন রঙে দেখানোর ব্যবস্থা করতে "
+"পারেন।  এতে কোথা থেকে চিঠিগুলো আসছে তা সহজে দেখা যায়।"
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+"এখানের আপনি যা নিয়ম ঠিক করে দেবেন, চিঠি রাখার বাক্সগুলো সেই নিয়ম মেনে দেখানো "
+"হবে এবং বাক্সগুলো নিয়ে সেই নিয়ম মত কাজ করা যাবে।"
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"চিঠিগুলোর তালিকা তৈরীর সময় কলামগুলো কি পরিরক্রমায় সাজানো হবে সেটা আপনি বলে দিতে "
+"পারেন।"
+
+msgid "New"
+msgstr "নতুন"
+
+msgid "Done"
+msgstr "কাজ শেষ"
+
+msgid "To or Cc"
+msgstr "প্রতি এবং প্রতিলিপি"
+
+msgid "subject"
+msgstr "বিষয়"
+
+msgid "Edit"
+msgstr "পরিবর্তন করা হোক"
+
+msgid "Up"
+msgstr "উপরে"
+
+msgid "Down"
+msgstr "নীচে"
+
+msgid "No highlighting is defined"
+msgstr "মোটা অক্ষরে লেখার জন্য কি ব্যবহার করা হবে তা বলা হয় নি"
+
+msgid "Identifying name"
+msgstr "পরিচয় হিসাবে যে নাম ব্যবহার করা হবে"
+
+msgid "Color"
+msgstr "রঙ"
+
+msgid "Dark Blue"
+msgstr "গাঢ় নীল"
+
+msgid "Dark Green"
+msgstr "গাঢ় সবুজ"
+
+msgid "Dark Yellow"
+msgstr "হলুদ"
+
+msgid "Dark Cyan"
+msgstr "আকাশী"
+
+msgid "Dark Magenta"
+msgstr "গাঢ় ম্যাজেন্টা"
+
+msgid "Light Blue"
+msgstr "নীল"
+
+msgid "Light Green"
+msgstr "সবুজ"
+
+msgid "Light Yellow"
+msgstr "হাল্কা হলুদ"
+
+msgid "Light Cyan"
+msgstr "হাল্কা আকাশী"
+
+msgid "Light Magenta"
+msgstr "ম্যাজেন্টা"
+
+msgid "Dark Gray"
+msgstr "গাঢ় ছাই রঙ"
+
+msgid "Medium Gray"
+msgstr "মাঝারী ছাই রঙ"
+
+msgid "Light Gray"
+msgstr "হাল্কা ছাই রঙ"
+
+msgid "White"
+msgstr "সাদা"
+
+msgid "Other:"
+msgstr "অন্য:"
+
+msgid "Ex: 63aa7f"
+msgstr "যেমন: 63aa7f"
+
+msgid "Matches"
+msgstr "এর সাথে মিলে"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "অন্য পরিচয় %d"
+
+msgid "Advanced Identities"
+msgstr "বিশেষধরণের কাজ করার জন্য যে সব পরিচয় ব্যবহার করা হবে"
+
+msgid "Default Identity"
+msgstr "আলাদা করে বলে না দিলে যে পরিচয় ব্যবহার করা হবে"
+
+msgid "Add a New Identity"
+msgstr "নতুন একটা পরিচয় তৈরী করা হোক"
+
+msgid "Full Name"
+msgstr "পুরো নাম"
+
+msgid "E-Mail Address"
+msgstr "বিজলী চিঠির ঠিকানা"
+
+msgid "Reply To"
+msgstr "চিঠির উত্তর যে ঠিকানায় পাঠানো হবে"
+
+msgid "Save / Update"
+msgstr "লিখে রাখা হোক"
+
+msgid "Make Default"
+msgstr "আলাদা করে বলে না দিলে এই পরিচয়টা ব্যবহার করা হবে"
+
+msgid "Move Up"
+msgstr "একঘর উপরে পাঠানো হোক"
+
+msgid "Checkbox"
+msgstr "টিক চিহ্ন দেবার বাক্স"
+
+msgid "Flags"
+msgstr "টিক চিহ্ন"
+
+msgid "Size"
+msgstr "কত বড়"
+
+#, fuzzy
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"তালিকার ধারায় আপনি যা বলে দেবেন, আপনার চিঠিগুলোর তালিকা দেখানোর সময় কলাম গুলো "
+"সে অনুযায়ী সাজানো হবে।আপনি কলাম যোগ করতে পারেন, বা বাদ দিতে পারেন।  এ ছাড়াও "
+"কলামগুলোকে আপনার পছন্দ মত আগে-পরে করতে পারেন।"
+
+msgid "up"
+msgstr "উপরে"
+
+msgid "down"
+msgstr "নীচে"
+
+msgid "remove"
+msgstr "বাদ দেওয়া হোক"
+
+msgid "Return to options page"
+msgstr ""
+"সাজানোর নিয়মগুলো যে পাতা থেকে ঠিক করে দেওয়া যায়, সে পাতায় ফিরে যাওয়া হোক "
+
+msgid "Message not printable"
+msgstr "চিঠিটা ছাপানো যাচ্ছে না"
+
+msgid "Invalid URL"
+msgstr ""
+
+msgid "Printer Friendly"
+msgstr "ছাপানোর সুবিধার জন্য তৈরী"
+
+msgid "Print"
+msgstr "ছাপা হোক"
+
+msgid "View Printable Version"
+msgstr "ছাপানোর সুবিধামত তৈরী করে এনে দেখানো হোক"
+
+msgid "Read:"
+msgstr "পড়া হয়েছে:"
+
+msgid "Your message"
+msgstr "আপনার চিঠি"
+
+#, fuzzy
+msgid "Sent"
+msgstr "পাঠানোর তারিখ:"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "%s এ দেখানো হয়েছিল"
+
+msgid "less"
+msgstr "কম"
+
+msgid "more"
+msgstr "বেশী"
+
+msgid "Unknown sender"
+msgstr "অজানা প্রেরক"
+
+msgid "Mailer"
+msgstr "বিজলীডাক ব্যবস্থা"
+
+msgid "Read receipt"
+msgstr "প্রাপ্তিপত্র পড়া হোক"
+
+msgid "sent"
+msgstr "পাঠানো হয়েছে"
+
+msgid "requested"
+msgstr "চেয়েছে"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"প্রেরক আপনার চিঠি পড়া হলে প্রাপ্তিপত্র পাঠাতে অনুরোধ করেছে।  আপনি কি পাঠাতে চান?"
+
+msgid "Send read receipt now"
+msgstr "এখনই প্রাপ্তিপত্র পাঠানো হোক"
+
+msgid "Search Results"
+msgstr "খুঁজে যা পাওয়া গেল"
+
+msgid "Message List"
+msgstr "চিঠির তালিকা"
+
+msgid "Resume Draft"
+msgstr "খসড়া থেকে আবার শুরু করা হোক"
+
+msgid "Edit Message as New"
+msgstr "বদলে আবার পাঠানোর জন্য আবার খোলা হোক"
+
+msgid "View Message"
+msgstr "চিঠিটা দেখা হোক"
+
+msgid "Forward"
+msgstr "আর কাউকে পাঠানো হোক"
+
+msgid "Forward as Attachment"
+msgstr "এই চিঠিটা ফাইল হিসাবে সংযুক্ত করে পাঠানো হোক"
+
+msgid "Reply"
+msgstr "প্রত্যুত্তর"
+
+msgid "Reply All"
+msgstr "সংশ্লিষ্ট সবাইকে প্রত্যুত্তর"
+
+msgid "View Full Header"
+msgstr "খামের লেখা বিস্তারিত দেখা হোক"
+
+msgid "Attachments"
+msgstr "সংযুক্ত ফাইল(গুলি)"
+
+msgid "You must be logged in to access this page."
+msgstr "পরিচয় প্রমাণ না করে এই পাতা দেখা যাবে না।"
+
+msgid "Folder:"
+msgstr "চিঠির বাক্স:"
+
+msgid "edit"
+msgstr "খোলা হোক"
+
+msgid "search"
+msgstr "খোঁজা হোক"
+
+msgid "delete"
+msgstr "মুছে ফেলা হোক"
+
+msgid "Recent Searches"
+msgstr "বিগত সর্বশেষ অনুসন্ধান"
+
+msgid "save"
+msgstr "লিখে রাখা হোক"
+
+msgid "forget"
+msgstr "বাতিল করে দেওয়া হোক"
+
+msgid "Current Search"
+msgstr "বর্তমান অনুসন্ধান"
+
+msgid "All Folders"
+msgstr "সব চিঠির বাক্স"
+
+msgid "Body"
+msgstr "চিঠির মূল অংশ"
+
+msgid "Everywhere"
+msgstr "সর্বত্র"
+
+msgid "No Messages Found"
+msgstr "কিছুই পাওয়া যায় নি"
+
+#, fuzzy
+msgid "Signout"
+msgstr "এবারের মত কাজ শেষ"
+
+msgid "Sign Out"
+msgstr "এবারের মত কাজ শেষ"
+
+msgid "You have been successfully signed out."
+msgstr "ঠিকমত বন্ধ করা হল -- আবার ঢুকতে হলে নতুন করে পরিচয় দিতে হবে।"
+
+msgid "Click here to log back in."
+msgstr "নতুন করে ঢুকতে চাইলে এখানে খোঁচা দিন।"
+
+msgid "Viewing a Business Card"
+msgstr "পরিচয় বিনিময় পত্র দেখতে হলে"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+
+msgid "Title"
+msgstr "পরিচয়"
+
+msgid "Email"
+msgstr "বিজলীচিঠির ঠিকানা"
+
+msgid "Web Page"
+msgstr "সংযুক্তপত্র"
+
+msgid "Organization / Department"
+msgstr "কর্মস্থল/বিভাগ"
+
+msgid "Address"
+msgstr "ঠিকানা"
+
+msgid "Work Phone"
+msgstr "কাজের দূরালাপনী"
+
+msgid "Home Phone"
+msgstr "ব্যক্তিগত দূরালাপনী"
+
+msgid "Cellular Phone"
+msgstr "বেতার দুরালাপনী"
+
+msgid "Fax"
+msgstr "দূরমূদ্রণী"
+
+msgid "Note"
+msgstr "বর্ণনা"
+
+msgid "Add to Addressbook"
+msgstr "ঠিকানার খাতায় লিখে রাখা হোক"
+
+msgid "Title & Org. / Dept."
+msgstr "পরিচয় ও কর্মস্থল/বিভাগ"
+
+msgid "Add to Address Book"
+msgstr "ঠিকানার খাতায় লিখে রাখা হোক"
+
+msgid "Viewing Full Header"
+msgstr "খামে যা লেখা আছে তা বিস্তারিত দেখা"
+
+msgid "Viewing a text attachment"
+msgstr "সাধারণ লেখা দেখতে হলে"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+
+msgid "Please contact your system administrator and report this error."
+msgstr "কারিগরী বিভাগের সাথে যোগাযোগ করে এই সমস্যাটার কথা জানান।"
+
+msgid "Personal address book"
+msgstr "ব্যক্তিগত ঠিকানার খাতা"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "তথ্যরক্ষীতে সমস্যা: %s"
+
+msgid "Addressbook is read-only"
+msgstr "ঠিকানার খাতায় লেখা যাচ্ছে না -- শুধু পড়া যাচ্ছে"
+
+#, php-format
+msgid "User '%s' already exist"
+msgstr "'%s' নামে আগে থেকেই একজন আছে"
+
+#, php-format
+msgid "User '%s' does not exist"
+msgstr "'%s' নামে কেউ নেই"
+
+msgid "Not a file name"
+msgstr "এটা একটা ফাইলের নাম নয়"
+
+msgid "No such file or directory"
+msgstr "এই নামে কোনো ফাইল বা ফাইল রাখার বাক্স নেই"
+
+msgid "Open failed"
+msgstr "খোলা যায় নি"
+
+msgid "Write failed"
+msgstr "লেখা যায় নি"
+
+msgid "Unable to update"
+msgstr "বদলানো যায় নি"
+
+msgid "Could not lock datafile"
+msgstr "তথ্যের ফাইলটা অন্য কেউ যাতে বদলাতে না পারে, সে ব্যবস্থা করা যায় নি"
+
+msgid "Write to addressbook failed"
+msgstr "ঠিকানার খাতায় লেখা যায় নি"
+
+msgid "Error initializing addressbook database."
+msgstr "ঠিকানার খাতার তথ্যরক্ষী শুরু করা যায় নি"
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "%s ফাইলটা খুলতে গিয়ে সমস্যা হল"
+
+msgid "Global address book"
+msgstr "সর্বত্রলভ্য ঠিকানার খাতা"
+
+msgid "Error initializing global addressbook."
+msgstr "সর্বত্রলভ্য ঠিকানার খাতাটা শুরু করতে গিয়ে সমস্যা হল"
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "তড়িত্ ঠিকানারক্ষী (LDAP server) %s কে শুরু করতে গিয়ে সমস্যা হল:"
+
+msgid "Invalid input data"
+msgstr "আপনি যা লিখেছেন তার কোনো মানে করতে পারলাম না"
+
+msgid "Name is missing"
+msgstr "নাম দেওয়া হয় নি"
+
+msgid "E-mail address is missing"
+msgstr "বিজলীচিঠির ঠিকানা দেওয়া হয় নি"
+
+msgid "Nickname contains illegal characters"
+msgstr "ডাকনামে আপনি যেসব অক্ষর ব্যবহার করেছেন, তা ব্যবহার করা যায় না"
+
+#, fuzzy
+msgid "View"
+msgstr "দেখানো হোক"
+
+#, fuzzy
+msgid "View Business Card"
+msgstr "পরিচয় বিনিময় পত্র দেখতে হলে"
+
+msgid "Sunday"
+msgstr "রবিবার"
+
+msgid "Monday"
+msgstr "সোমবার"
+
+msgid "Tuesday"
+msgstr "মঙ্গলবার"
+
+msgid "Wednesday"
+msgstr "বুধবার"
+
+msgid "Thursday"
+msgstr "বৃহঃষ্পতিবার"
+
+msgid "Friday"
+msgstr "শুক্রবার"
+
+msgid "Saturday"
+msgstr "শনিবার"
+
+msgid "Sun"
+msgstr "রবিবার"
+
+msgid "Mon"
+msgstr "সোমবার"
+
+msgid "Tue"
+msgstr "মঙ্গল"
+
+msgid "Wed"
+msgstr "বুধ"
+
+msgid "Thu"
+msgstr "বৃহঃ"
+
+msgid "Fri"
+msgstr "শুক্র"
+
+msgid "Sat"
+msgstr "শনি"
+
+msgid "January"
+msgstr "জানুয়ারী"
+
+msgid "February"
+msgstr "ফেব্রুয়ারী"
+
+msgid "March"
+msgstr "মার্চ"
+
+msgid "April"
+msgstr "এপ্রিল"
+
+msgid "May"
+msgstr "মে"
+
+msgid "June"
+msgstr "জুন"
+
+msgid "July"
+msgstr "জুলাই"
+
+msgid "August"
+msgstr "অগাষ্ট"
+
+msgid "September"
+msgstr "সেপ্টেম্বর"
+
+msgid "October"
+msgstr "অক্টোবর"
+
+msgid "November"
+msgstr "নভেম্বর"
+
+msgid "December"
+msgstr "ডিসেম্বর"
+
+msgid "Jan"
+msgstr "জান"
+
+msgid "Feb"
+msgstr "ফেব"
+
+msgid "Mar"
+msgstr "মার্চ"
+
+msgid "Apr"
+msgstr "এপ্রিল"
+
+msgid "Ma&#121;"
+msgstr "মে"
+
+msgid "Jun"
+msgstr "জুন"
+
+msgid "Jul"
+msgstr "জুলাই"
+
+msgid "Aug"
+msgstr "আগষ্ট"
+
+msgid "Sep"
+msgstr "সেপ্ট"
+
+msgid "Oct"
+msgstr "অক্ট"
+
+msgid "Nov"
+msgstr "নভে"
+
+msgid "Dec"
+msgstr "ডিসে"
+
+msgid "D, F j, Y g:i a"
+msgstr ""
+
+msgid "D, F j, Y H:i"
+msgstr ""
+
+msgid "M j, Y"
+msgstr ""
+
+msgid "g:i a"
+msgstr ""
+
+msgid "H:i"
+msgstr ""
+
+msgid "D, g:i a"
+msgstr ""
+
+msgid "D, H:i"
+msgstr ""
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr ""
+"নিজের ঠিক করে দেওয়া নিয়মাবলীর তথ্য রক্ষীতে সমস্যা হচ্ছে (%s)।  সমস্যার কারণে বের "
+"হয়ে যাচ্ছি।"
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "%s.এ ফিরতে হলে এখানে খোঁচা দিন"
+
+msgid "Go to the login page"
+msgstr "পরিচয় প্রমাণের পাতায় ফেরত যাওয়া হোক।"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"নিজের ঠিক করে দেওয়া নিয়মাবলীর ফাইল %s টা মনে হচ্ছে নেই।  ডাকব্যবস্থা থেকে বের "
+"হয়ে পরিচয় প্রমাণ দিয়ে আবার ঢুকুন -- শুরুর নিয়মগুলো দিয়ে একটা নিয়মের ফাইল তৈরী করা "
+"হবে।"
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"আপনার ঠিক করে দেওয়া নিয়মের ফাইল %s টাকে খোলা যাচ্ছে না।  কারিগরী ব্যবস্থাপকদের "
+"বলুন সমস্যাটা ঠিক করে দিতে।"
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"নিজের ঠিক করে দেওয়া নিয়মাবলীর ফাইল %s টাতে লেখা যাচ্ছে না।  কারিগরী "
+"ব্যবস্থাপকদের বলুন সমস্যাটা ঠিক করে দিতে।"
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"নিজের ঠিক করে দেওয়া নিয়মাবলীর ফাইল %s টাতে খসড়া ফাইল %s টা থেকে প্রতিলিপি "
+"তৈরী করা যাচ্ছে না।  কারিগরী ব্যবস্থাপকদের বলুন সমস্যাটা ঠিক করে দিতে।"
+
+#, php-format
+msgid "Error opening %s"
+msgstr "%s -টাকে খুলতে গিয়ে সমস্যা হচ্ছে"
+
+msgid "Default preference file not found or not readable!"
+msgstr ""
+"ডাকব্যবস্থা শুরুতে যে নিয়মাবলীর ফাইল তৈরী করে দেয়, সেটা পাওয়া যাচ্ছে না, বা সেটা "
+"থেকে পড়া যাচ্ছে না!"
+
+msgid "Could not create initial preference file!"
+msgstr "আপনার নিজের পছন্দ-অপছন্দ যে ফাইলে লেখা হবে সেটা তৈরী করা যাচ্ছে না!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s তে %s ব্যক্তির লেখার অনুমোদন থাকতে হবে"
+
+#, fuzzy
+msgid "Signature is too big."
+msgstr "স্বাক্ষর লেখার নিয়ম"
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"স্বাক্ষরের ফাইল %s টাকে খোলা যাচ্ছে না।  কারিগরী ব্যবস্থাপকদের বলুন সমস্যাটা ঠিক "
+"করে দিতে।"
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"স্বাক্ষরের ফাইল %s টাতে লেখা যাচ্ছে না।  কারিগরী ব্যবস্থাপকদের বলুন সমস্যাটা ঠিক "
+"করে দিতে।"
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"স্বাক্ষরের ফাইল %s টাতে খসড়া ফাইল %s থেকে প্রতিলিপি তৈরী করা যাচ্ছে না।  কারিগরী "
+"ব্যবস্থাপকদের বলুন সমস্যাটা ঠিক করে দিতে।"
+
+msgid ""
+"You need to have php4 installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+"পি এইচ পি-র ৪র্থ সংস্করণে অক্ষরকে একাধিক অষ্টতথ্যাণুর মাধ্যমে প্রকাশের ব্যবস্থা না "
+"থাকলে এটা করা যাবে না।  --enable-mbstring যোগ করে পি এইচ পি কে আবার তৈরী "
+"করতে হবে।"
+
+#, fuzzy
+msgid "ERROR: No available IMAP stream."
+msgstr "সমস্যা: কোন বিজলীডাক (IMAP stream) পাওয়া যাচ্ছে না।"
+
+#, fuzzy
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "সমস্যা: ডাক ব্যবস্থা যোগাযোগ বন্ধ করে দিল"
+
+#, fuzzy
+msgid "ERROR: Could not complete request."
+msgstr "সমস্যা: যা করার ছিল তা শেষ করা যায় নি"
+
+msgid "Query:"
+msgstr "ডাকঘরকে যে অনুরোধ পাঠানো হয়েছে:"
+
+#, fuzzy
+msgid "Reason Given:"
+msgstr "কারণ: "
+
+#, fuzzy
+msgid "ERROR: Bad or malformed request."
+msgstr "সমস্যা: ডাকঘরকে যে অনুরোধ পাঠানো হয়েছে তার অর্থ করা যাচ্ছে না।"
+
+#, fuzzy
+msgid "Server responded:"
+msgstr "ডাকঘর উত্তরে বলেছে: "
+
+#, fuzzy
+msgid "ERROR: IMAP server closed the connection."
+msgstr "সমস্যা: বিজলীডাক ব্যবস্থা (IMAP server) এবারের মত যোগাযোগ বন্ধ করে দিয়েছে।"
+
+#, fuzzy
+msgid "ERROR: Unknown IMAP response."
+msgstr "সমস্যা: বিজলীডাক ব্যবস্থা (IMAP server) কি বলল তা বোঝা গেল না।"
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr ""
+"%s জায়গার বিজলী ডাক ব্যবস্থার (IMAP server) সাথে যোগাযোগ করতে সমস্যা হচ্ছে।"
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "%s -- বিজলীডাক ব্যবস্থার কাছে পাঠানো এই অনুরোধটি অর্থহীন।"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "অজানা সমস্যা: %s"
+
+msgid "Read data:"
+msgstr "যা পড়া হল:"
+
+msgid "Unknown user or password incorrect."
+msgstr "এই নামে কেউ নেই অথবা গুপ্তবাক্য মিলে নি।"
+
+#, fuzzy
+msgid "ERROR: Could not append message to"
+msgstr "সমস্যা: চিঠিটা নিম্নলিখিত জায়গায় যুক্ত করা যায় নি"
+
+#, fuzzy
+msgid "Solution:"
+msgstr "সমাধান:"
+
+msgid ""
+"Remove unneccessary messages from your folder and start with your Trash "
+"folder."
+msgstr ""
+"আপনার চিঠি রাখার বাক্সগুলো থেকে অপ্রয়োজনীয় চিঠিগুলো ফেলে দিন, এরপর ছিঁড়ে ফেলা "
+"চিঠির বাক্স থেকে শুরু করুন।"
+
+msgid "(no subject)"
+msgstr "(বিষয় উহ্য)"
+
+msgid "Unknown Sender"
+msgstr "অজানা প্রেরক"
+
+#, fuzzy
+msgid "Unknown response from IMAP server:"
+msgstr "বিজলী ডাক ব্যবস্থা (IMAP server) কি বলল বোঝা গেল না: "
+
+msgid "The server couldn't find the message you requested."
+msgstr "বিজলী ডাক ব্যবস্থা (IMAP server) আপনি যে চিঠিটা খুঁজছেন সেটা খুঁজে পেল না"
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+"সম্ভবতঃ আপনার তালিকা পুরানো হয়ে গেছে এবং এর মধ্যে চিঠিটা সরিয়ে বা মুছে ফেলা "
+"হয়েছে।  এমনও হতে পারে যে অন্য কোন প্রক্রিয়ক থেকে একই চিঠির বাক্স পড়া হচ্ছে।"
+
+msgid "Unknown date"
+msgstr "অজানা তারিখ"
+
+# 'A'nswered/'উ'ত্তর দেওয়া হয়েছে
+msgid "A"
+msgstr "উ"
+
+#, fuzzy
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr ""
+"আপনার IMAP ডাকব্যবস্থা সূত্র ধরে চিঠি সাজাতে পারে না।<br>  কারিগরী ব্যবস্থাপকদের "
+"সাথে যোগাযোগ করুন।"
+
+#, fuzzy
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr ""
+"ডাক-ব্যবস্থাপক নিজে থেকে ক্রমানুসারে চিঠি সাজিয়ে দিতে জানে না।  <br>  কারিগরী "
+"ব্যবস্থাপকদের সাথে যোগাযোগ করুন।"
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "চিঠি রাখার এই বাক্সটা দেখছি খালি"
+
+msgid "Move Selected To"
+msgstr "চিহ্নিত চিঠিগুলোকে বাক্স বদলে নীচের বাক্সে পাঠানো হোক"
+
+msgid "Transform Selected Messages"
+msgstr "চিহ্নিত চিঠিগুলোকে বদলানো হোক"
+
+msgid "Move"
+msgstr "সরিয়ে নেওয়া হোক"
+
+msgid "Expunge"
+msgstr "মুছে ফেলা হোক"
+
+msgid "mailbox"
+msgstr "ডাকবাক্স"
+
+msgid "Read"
+msgstr "পড়া হয়েছে"
+
+msgid "Unread"
+msgstr "পড়া হয় নি"
+
+msgid "Unthread View"
+msgstr "আলোচনার সূত্র মতে দেখানোর দরকার নেই"
+
+msgid "Thread View"
+msgstr "আলোচনার সূত্র মতে দেখানো হোক"
+
+msgid "Toggle All"
+msgstr "চিহ্নিত/অচিহ্নিত বদল"
+
+msgid "Unselect All"
+msgstr "সবগুলোকে অচিহ্নিত করা"
+
+msgid "Select All"
+msgstr "সবগুলোকে চিহ্নিত করা"
+
+#, fuzzy, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "<b>%s</b> তম থেকে <b>%s</b> তম চিঠি দেখানো হচ্ছে (মোট %s টার মধ্যে)"
+
+#, fuzzy, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "<b>%s</b> তম চিঠিটা দেখানো হচ্ছে (মোট ১ টা)"
+
+msgid "Paginate"
+msgstr "পাতায় পাতায় দেখানো হোক"
+
+msgid "Show All"
+msgstr "সব দেখানো হোক"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "কাঠবেড়ালী ডাক ব্যবস্থা চিঠির গঠন বুঝে উঠতে পারছে না"
+
+msgid "the provided bodystructure by your imap-server"
+msgstr "IMAP ডাক ব্যবস্থার দেওয়া চিঠির মূল অংশের গঠন"
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"চিঠির মূল অংশ পড়ে নেওয়া গেল না।  এর কারণ সম্ভবতঃ চিঠির ফাইলটার গঠনে সমস্যা আছে।"
+
+msgid "Command:"
+msgstr "যে অনুরোধ পাঠানো হয়েছিল:"
+
+msgid "Response:"
+msgstr "উত্তরে যা পাওয়া গেছে:"
+
+msgid "Message:"
+msgstr "চিঠি:"
+
+msgid "FETCH line:"
+msgstr "আনার (FETCH) আদেশবাক্য:"
+
+msgid "Hide Unsafe Images"
+msgstr "সন্দেহজনক ছবি যেন দেখানো না হয়"
+
+msgid "View Unsafe Images"
+msgstr "সন্দেহজনক ছবিও যেন দেখানো হয়"
+
+#, fuzzy
+msgid "Download"
+msgstr "ফাইল পেড়ে আনা হোক"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_bn_IN"
+
+msgid "This external link will open in a new window"
+msgstr "এটা যুক্তপত্র থেকে বাইরের একটা সূত্র: আলাদা পাতায় খোলা হবে"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "'%s' নামে কোন নিয়ম পাওয়া যায় নি"
+
+msgid "Current Folder"
+msgstr "বর্তমান বাক্স"
+
+msgid "Compose"
+msgstr "নতুন চিঠি লেখা"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "তথ্যচক্রে %s নামে ফাইল রাখার শাখা তৈরী করা যাচ্ছে না।"
+
+msgid "Could not create hashed directory structure!"
+msgstr "তথ্যচক্রে সন্ধানের জন্য সন্ধানসূত্রে বাঁধা শাখা তৈরী করা যায় নি!"
+
+msgid "Service not available, closing channel"
+msgstr "সংযোগ নেই -- যোগাযোগ বন্ধ করে দিতে হচ্ছে"
+
+msgid "A password transition is needed"
+msgstr "গুপ্তবাক্য নতুন করে দিতে হবে"
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "যা করতে বলা হয়েছিল করা যায় নি: চিঠির বাক্সটা পাওয়া যাচ্ছে না।"
+
+msgid "Requested action aborted: error in processing"
+msgstr "যা করতে বলা হয়েছিল মাঝপথে বাতিল করতে হল: করতে গিয়ে সমস্যা হল"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "যা করতে বলা হয়েছিল মাঝপথে বাতিল করতে হল: তথ্যচক্রে আর জায়গা খালি নাই"
+
+msgid "Temporary authentication failure"
+msgstr "সাময়িকভাবে পরিচয় প্রমাণে গোলযোগ হচ্ছে"
+
+msgid "Syntax error; command not recognized"
+msgstr "ব্যাকরণে ভুল: অনুরোধটির মানে করা যায় নি"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "নিয়মে অথবা নিয়মের কোন অংশে ব্যাকরণগত ভুল আছে"
+
+msgid "Command not implemented"
+msgstr "এই অনুরোধ পালনের মত প্রক্রিয়ক এখনো লেখা হয় নি"
+
+msgid "Bad sequence of commands"
+msgstr "অনুরোধের ক্রমটির কোন অর্থ করা যাচ্ছে না"
+
+msgid "Command parameter not implemented"
+msgstr "এই অনুরোধবাক্যটার মত কাজ করার প্রক্রিয়ক এখনো লেখা হয় নি"
+
+msgid "Authentication required"
+msgstr "পরিচয় প্রমাণ করতে হবে"
+
+msgid "Authentication mechanism is too weak"
+msgstr "এখানকার পরিচয় প্রমাণের ব্যবস্থাটা যথেষ্ট জোরালো না।"
+
+msgid "Authentication failed"
+msgstr "পরিচয় প্রমাণ করা যায় নি"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "এভাবে পরিচয় প্রমাণের জন্য গুপ্তলিপি লাগে"
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "যা করতে বলা হয়েছিল করা যায় নি: চিঠির বাক্সটা পাওয়া যাচ্ছে না।"
+
+msgid "User not local; please try forwarding"
+msgstr "এই ব্যবহারকারী বর্তমান কম্পিউটারের নন -- রিলে করার চেষ্টা করুন"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr ""
+"যা করতে বলা হয়েছিল মাঝ পথে বাতিল করতে হল: তথ্যচক্রে যা জায়গা দেওয়া হয়েছে, তার "
+"চেয়ে বেশী জায়গা লাগছে।"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "যা করতে বলা হয়েছিল করা গেল না: চিঠির বাক্সের জন্য এই নাম দেওয়া যায় না"
+
+msgid "Transaction failed"
+msgstr "লেনদেন করা যায় নি"
+
+msgid "Unknown response"
+msgstr "উত্তরে যা পাওয়া গেল তার কোন মানে নেই"
+
+msgid "General Display Options"
+msgstr "কিভাবে দেখানো হবে"
+
+msgid "Theme"
+msgstr "দেখানোর স্টাইল"
+
+msgid "Default"
+msgstr "আলাদা করে বলে না দিলে"
+
+msgid "Custom Stylesheet"
+msgstr "নিজের তৈরী স্টাইল"
+
+msgid "Language"
+msgstr "ভাষা"
+
+msgid "Use Javascript"
+msgstr "জাভালিপি ব্যবহার করা হোক"
+
+msgid "Autodetect"
+msgstr "আপনা-আপনি বুঝে নেওয়া হোক"
+
+msgid "Always"
+msgstr "সবসময়"
+
+msgid "Never"
+msgstr "কখনোই না"
+
+msgid "Mailbox Display Options"
+msgstr "চিঠির বাক্স যেভাবে দেখানো হবেে"
+
+#, fuzzy
+msgid "Number of Messages per Page"
+msgstr "চিঠির তালিকায়ায় যতটা চিঠি দেখানো হবে"
+
+msgid "Enable Alternating Row Colors"
+msgstr "তালিকাতে ডোরা কেটে দেখানো হবে"
+
+msgid "Enable Page Selector"
+msgstr "যে কোনো পাতায় যাবার ব্যবস্থা সক্রিয় করা হোক"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "সর্বাধিক যতটা পাতা দেখানো হবে"
+
+msgid "Always Show Full Date"
+msgstr "তারিখ দেখানোর সময় সবসময় যেন পুরোটা দেখানো হয়"
+
+msgid "Message Display and Composition"
+msgstr "চিঠি দেখানো এবং লেখা"
+
+msgid "Wrap Incoming Text At"
+msgstr "লেখা এই সংখ্যক অক্ষরের পর ভেঙে পরের লাইনে যাওয়া হবে"
+
+msgid "Width of Editor Window"
+msgstr "লেখার পত্রাংশের প্রস্থ"
+
+msgid "Height of Editor Window"
+msgstr "লেখার পত্রাংশের উচ্চতা"
+
+msgid "Location of Buttons when Composing"
+msgstr "লেখার সময় সুইচ গুলো যেখানে থাকবে"
+
+msgid "Before headers"
+msgstr "খামের লেখার আগে"
+
+msgid "Between headers and message body"
+msgstr "খামের লেখা এবং চিঠির লেখার মাঝখানে"
+
+msgid "After message body"
+msgstr "চিঠির লেখার পর"
+
+msgid "Addressbook Display Format"
+msgstr "ঠিকানার খাতা যেভাবে দেখানো হবে"
+
+msgid "Javascript"
+msgstr "জাভালিপি"
+
+msgid "HTML"
+msgstr "পত্রযুক্তি ভাষা"
+
+msgid "Show HTML Version by Default"
+msgstr "আলাদা করে বলে না দিলে পত্রযুক্তি ভাষার সংস্করণ সংখ্যা দেখানো হবে"
+
+msgid "Enable Forward as Attachment"
+msgstr "চিঠিকে ফাইল হিসাবে যুক্ত করে পাঠানো যাবে"
+
+msgid "Include CCs when Forwarding Messages"
+msgstr "চিঠি রিলে করার সময় প্রতিলিপিও করা হবে"
+
+msgid "Include Me in CC when I Reply All"
+msgstr ""
+"যখন সংশ্লিষ্ট সবার কাছে চিঠি পাঠানো হবে, তখন যেন নিজেকেও একটা প্রতিলিপি পাঠানো "
+"হয়"
+
+msgid "Enable Mailer Display"
+msgstr "পত্রবাহীর লেনদেন সংক্রান্ত তথ্য দেখানো হোক"
+
+msgid "Display Attached Images with Message"
+msgstr ""
+"চিঠির সাথে যদি ফাইল হিসাবে যুক্ত করে ছবি পাঠানো হয়, তাহলে সেটা যেন চিঠির সাথে "
+"দেখানো হয়"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "ছাপানোর জন্য সুবিধাজনক পাতা তৈরীর ব্যবস্থা সক্রিয় করা হোক"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "চিঠি দেওয়া হলে যেন জানানো হয়"
+
+msgid "Compose Messages in New Window"
+msgstr "নতুন চিঠি লেখার জন্য যেন আলাদা পাতা দেওয়া হয়"
+
+msgid "Width of Compose Window"
+msgstr "চিঠি লেখার পত্রাংশের প্রস্থ"
+
+msgid "Height of Compose Window"
+msgstr "চিঠি লেখার পত্রাংশের উচ্চতা"
+
+msgid "Append Signature before Reply/Forward Text"
+msgstr "স্বাক্ষর থাকবে রিলে করা অংশের/উত্তরের আগে"
+
+#, fuzzy
+msgid "Prefix for Original Message when Replying"
+msgstr "উত্তর দেওয়ার সময় লেখা যেখান থেকে শুরু করা হবে"
+
+msgid "Cursor Position when Replying"
+msgstr "উত্তর দেওয়ার সময় লেখা যেখান থেকে শুরু করা হবে"
+
+msgid "To: field"
+msgstr "'প্রতি' তে"
+
+msgid "Focus in body"
+msgstr "উত্তরের শুরু থেকে লেখা শুরু হবে"
+
+msgid "Select body"
+msgstr "লেখার পুরো অংশটা চিহ্নিত করা হোক"
+
+#, fuzzy
+msgid "No focus"
+msgstr "ঘড়ি না দেখানো হোক"
+
+#, fuzzy
+msgid "Sort by Received Date"
+msgstr "প্রাপ্তির সময় অনুযায়ী ক্রমাণ্বিত করার ব্যবস্থাটা সক্রিয় করা হোক"
+
+msgid "Enable Thread Sort by References Header"
+msgstr "কি সংক্রান্ত তার ক্রমানুসারে চিঠি সাজানোর ব্যবস্থা চালু করা হোক।"
+
+msgid "Special Folder Options"
+msgstr "চিঠি রাখার বিশেষ বাক্স সংক্রান্ত নিয়মাবলী"
+
+msgid "Folder Path"
+msgstr "চিঠির বাক্সগুলো যেখানে থাকবে"
+
+msgid "Do not use Trash"
+msgstr "চিঠি ছিঁড়ে ফেলার ব্যবস্থা রাখা হবে না"
+
+msgid "Trash Folder"
+msgstr "ছেঁড়া চিঠি ফেলার বাক্স"
+
+msgid "Do not use Drafts"
+msgstr "খসড়া চিঠি লিখে রাখার ব্যবস্থা রাখা হবে না"
+
+msgid "Draft Folder"
+msgstr "খসড়া চিঠির বাক্স"
+
+msgid "Do not use Sent"
+msgstr "প্রেরিত চিঠির প্রতিলিপি রাখার বাক্স রাখা হবে না"
+
+msgid "Sent Folder"
+msgstr "প্রেরিত চিঠির বাক্স"
+
+msgid "Folder List Options"
+msgstr "চিঠি রাখার বাক্স যেভাবে দেখানো হবে"
+
+msgid "Location of Folder List"
+msgstr "চিঠি রাখার বাক্স গুলোর তালিকা যেখানে রাখা থাকবে"
+
+msgid "Left"
+msgstr "বামে"
+
+msgid "Right"
+msgstr "ডানে"
+
+msgid "pixels"
+msgstr "চিত্রবিন্দু"
+
+msgid "Width of Folder List"
+msgstr "চিঠি রাখার বাক্স গুলোর তালিকার প্রস্থ"
+
+msgid "Minutes"
+msgstr "মিনিট"
+
+msgid "Seconds"
+msgstr "সেকেন্ড"
+
+msgid "Minute"
+msgstr "মিনিট"
+
+msgid "Auto Refresh Folder List"
+msgstr ""
+"চিঠি রাখার বাক্স গুলোর তালিকাটা কিছুক্ষণ পরপর যেন আপনা থেকে নতুন করে তৈরী করা হয়"
+
+msgid "Enable Unread Message Notification"
+msgstr "না পড়া চিঠি থাকলে যেন জানানো হয়"
+
+msgid "No Notification"
+msgstr "জানান দেওয়া হবে না"
+
+msgid "Only INBOX"
+msgstr "শুধু যেসব চিঠি এসেছে সেগুলোর বাক্স"
+
+msgid "Unread Message Notification Type"
+msgstr "না পড়া চিঠির সংখ্যা যেভাবেে জানানো হবে"
+
+msgid "Only Unseen"
+msgstr "শুধু না পড়াগুলো"
+
+msgid "Unseen and Total"
+msgstr "না পড়া / মোট"
+
+#, fuzzy
+msgid "Enable Collapsable Folders"
+msgstr "চিঠি রাখার বাক্স ছোট করে দেখানোর ব্যবস্থা চালু করা হোক"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "মোট না পড়া চিঠির সংখ্যা জানানোর ব্যবস্থাটা সক্রিয় করা হোক"
+
+msgid "Show Clock on Folders Panel"
+msgstr "চিঠির বাক্স গুলো যেখানে দেখানো হবে, তার মধ্যে কোন জায়গায় সময়ও দেখানো হোক"
+
+msgid "International date and time"
+msgstr "আন্তর্জাতিক রীতিতে তারিখ ও সময়"
+
+msgid "American date and time"
+msgstr "আমেরিকান রীতিতে তারিখ ও সময়"
+
+msgid "European date and time"
+msgstr "ইউরোপীয় রীতিতে তারিখ ও সময়"
+
+msgid "Show weekday and time"
+msgstr "বার ও সময়ও দেখানো হোক"
+
+msgid "Show time with seconds"
+msgstr "সময়ের মধ্যে সেকেন্ডও দেখানো হোক"
+
+msgid "Show time"
+msgstr "সময় দেখানো হোক"
+
+msgid "No Clock"
+msgstr "ঘড়ি না দেখানো হোক"
+
+msgid "Hour Format"
+msgstr "১২ ঘন্টায় না ২৪ ঘন্টায়"
+
+msgid "12-hour clock"
+msgstr "১২ ঘন্টা"
+
+msgid "24-hour clock"
+msgstr "২৪ ঘন্টা (রেলওয়ে)"
+
+msgid "Memory Search"
+msgstr "সাম্প্রতিক অনুসন্ধানের সংখ্যা"
+
+msgid "Disabled"
+msgstr "নিষ্ক্রিযয়"
+
+msgid "Folder Selection Options"
+msgstr "চিঠি রাখার বাক্স যেভাবে চিহ্নিত করা হবে"
+
+msgid "Selection List Style"
+msgstr "চিহ্নিত করার তালিকা দেখতে কেমন হবে"
+
+#, fuzzy
+msgid "Long:"
+msgstr "বড়: "
+
+#, fuzzy
+msgid "Folder"
+msgstr "চিঠি সাজিয়ে রাখার বাক্স"
+
+#, fuzzy
+msgid "Subfolder"
+msgstr "পাঠানো চিঠিগুলোর প্রতিলিপি রাখার বাক্স ব্যবহার করা হবে"
+
+#, fuzzy
+msgid "Indented:"
+msgstr "ডানে চাপিয়ে: "
+
+#, fuzzy
+msgid "Delimited:"
+msgstr "- দিয়ে আলাদা আলাদা করে: "
+
+msgid "Name and Address Options"
+msgstr "নাম-ঠিকানা সংক্রান্ত নিয়মাবলী"
+
+msgid "Email Address"
+msgstr "বিজলীচিঠির ঠিকানা"
+
+msgid "Edit Advanced Identities"
+msgstr "বিশেষ পরিচয় গুলো সংজ্ঞায়িত করা হোক"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(এই পাতায় এখন পর্যন্ত যা যা বদলানো হল, তা বাতিল করা হোক)"
+
+msgid "Multiple Identities"
+msgstr "একাধিক পরিচয়"
+
+msgid "Same as server"
+msgstr "ডাকব্যবস্থাতে যা আছে সেটাই"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr ""
+"কালক্ষেত্র সংক্রান্ত নিয়মাবলী খোলা যাচ্ছে না -- কারিগরী সহায়কদের সাথে যোগাযোগ করুন"
+
+msgid "Timezone Options"
+msgstr "কালক্ষেত্র"
+
+msgid "Your current timezone"
+msgstr "বর্তমান কালক্ষেত্র"
+
+msgid "Reply Citation Options"
+msgstr "উত্তরে যার উত্তর লেখা হচ্ছে তা কিভাবে পূনরুক্ত করা হবে"
+
+msgid "Reply Citation Style"
+msgstr "পূনরুক্তি যেভাবে দেখানো হবে"
+
+msgid "No Citation"
+msgstr "পূনরুক্তি ব্যবহার করা হবে না"
+
+#, fuzzy
+msgid "AUTHOR Wrote"
+msgstr "লেখক লিখেছেন"
+
+#, fuzzy
+msgid "On DATE, AUTHOR Wrote"
+msgstr "DATE তারিখে, AUTHOR লেখক বলেছেন"
+
+msgid "Quote Who XML"
+msgstr "উদ্ধৃতির জন্য বর্ধিত বর্ণনা ভাষা XML ব্যবহার করা হোক"
+
+msgid "User-Defined"
+msgstr "নিজের ঠিক করা"
+
+msgid "User-Defined Citation Start"
+msgstr "আপনার নিজের ঠিক করে দেওয়া পূনরুক্তি শুরুর নির্দেশক"
+
+msgid "User-Defined Citation End"
+msgstr "আপনার নিজের ঠিক করে দেওয়া পূনরুক্তি শেষের নির্দেশক"
+
+msgid "Signature Options"
+msgstr "স্বাক্ষর লেখার নিয়ম"
+
+msgid "Use Signature"
+msgstr "স্বাক্ষর ব্যবহার করা হোক"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "স্বাক্ষর লাইনের আগে এক লাইন ধরে '-- ' দেওয়া হোক"
+
+msgid "Take Address"
+msgstr "ঠিকানা যুক্ত করা হোক"
+
+msgid "Address Book Take:"
+msgstr "ঠিকানার খাতায় যুক্ত করা হোক:"
+
+msgid "Try to verify addresses"
+msgstr "ঠিকানা ঠিক আছে কিনা পরীক্ষা করার চেষ্টা করা হোক"
+
+msgid "Config File Version"
+msgstr "কিভাবে কাজ করবে তার নিয়মের ফাইলের সংস্করণ সংখ্যা"
+
+#, fuzzy
+msgid "SquirrelMail Version"
+msgstr "কাঠবেড়ালী ডাকের সংস্করণ সংখ্যা"
+
+msgid "PHP Version"
+msgstr "পি-এইচ-পি (PHP)র সংস্করণ সংখ্যা"
+
+msgid "Organization Preferences"
+msgstr "আপনার সংগঠনের নিজস্ব নিয়ম ঠিক করে দেওয়া"
+
+msgid "Organization Name"
+msgstr "সংগঠনের নাম"
+
+msgid "Organization Logo"
+msgstr "সংগঠনের প্রতীক"
+
+msgid "Organization Logo Width"
+msgstr "প্রতীকের প্রস্থ"
+
+msgid "Organization Logo Height"
+msgstr "প্রতীকের দৈর্ঘ্য"
+
+msgid "Organization Title"
+msgstr "সংগঠনের পরিচয়"
+
+msgid "Signout Page"
+msgstr "ডাকব্যবস্থা থেকে বের হয়ে আসলে যে পাতায় যাওয়া হবে"
+
+msgid "Provider Link URI"
+msgstr "যারা এই ব্যবস্থাটি দিচ্ছেন বিশ্বব্যাপী পত্রযোজনায় তাদের পত্রসূত্র"
+
+msgid "Provider Name"
+msgstr "যারা এই ব্যবস্থাটি দিচ্ছেন তাদের নাম"
+
+msgid "Top Frame"
+msgstr "উপরের পত্রাংশ"
+
+msgid "Server Settings"
+msgstr "ডাকব্যবস্থা কিভাবে কাজ করবে"
+
+msgid "Mail Domain"
+msgstr "ডাকের ক্ষেত্র"
+
+msgid "IMAP Server Address"
+msgstr "ডাকব্যবস্থা (IMAP)র বিজলী ঠিকানা"
+
+msgid "IMAP Server Port"
+msgstr "IMAP ডাকব্যবস্থার সাথে যোগাযোগের ব্যবস্থা (port):"
+
+msgid "IMAP Server Type"
+msgstr "যে ডাকব্যবস্থাটি ব্যবহার করা হচ্ছে সেটি কিধরণের"
+
+msgid "Cyrus IMAP server"
+msgstr "সাইরাস"
+
+msgid "University of Washington's IMAP server"
+msgstr "যেটা ওয়াশিংটন বিশ্ববিদ্যালয়ে তৈরী"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "মাইক্রোসফ্ট এক্সচেঞ্জ"
+
+msgid "Courier IMAP server"
+msgstr "কুরিয়ার"
+
+msgid "Mac OS X Mailserver"
+msgstr ""
+
+#, fuzzy
+msgid "hMailServer IMAP server"
+msgstr "কুরিয়ার"
+
+msgid "Not one of the above servers"
+msgstr "এগুলো বাদে অন্য এক রকমের"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAP ডাক ব্যবস্থায় ডাকবাক্সের নামের পৃথকীকরণের জন্য যে অক্ষর ব্যবহৃত হচ্ছে"
+
+#, fuzzy
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr ""
+"আপনি «&nbsp;detect&nbsp;» লিখে দিলে কম্পিউটার নিজে থেকে বের করে নেবার চেষ্টা "
+"করবে"
+
+msgid "Use TLS for IMAP Connections"
+msgstr "IMAP ডাকব্যবস্থার সাথে যোগাযোগের জন্য TLS ব্যবহার করা হোক"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "এর জন্য পি এইচ পি র ৪.৩.? তম সংস্করণ (পরীক্ষামূলক) লাগবে!"
+
+msgid "IMAP Authentication Type"
+msgstr "IMAP ডাক ব্যবস্থা যে ভাবে পরিচয় পরীক্ষা করে"
+
+#, fuzzy
+msgid "IMAP login"
+msgstr "POP3 ডাক ব্যবস্থার কাছে পরিচয় প্রমাণের জন্য নাম: "
+
+msgid "Use Sendmail Binary"
+msgstr "সেন্ড মেইল (Sendmail) ব্যবহার করা হোক"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr ""
+
+msgid "Sendmail Path"
+msgstr "সেন্ড মেইল (Sendmail) শুরু করতে হলে যেখানে যেতে হয়"
+
+msgid "SMTP Server Address"
+msgstr "SMTP ডাকব্যবস্থার বিজলীঠিকানা"
+
+msgid "SMTP Server Port"
+msgstr "SMTP ডাকব্যবস্থার সাথে যোগাযোগের ব্যবস্থা (port):"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "SMTP ডাকব্যবস্থার সাথে যোগাযোগের জন্য TLS ব্যবহার করা হোক"
+
+msgid "SMTP Authentication Type"
+msgstr "SMTP ডাকব্যবস্থা যেভাবে পরিচয় পরীক্ষা করে"
+
+msgid "No SMTP auth"
+msgstr ""
+
+msgid "Login (plain text)"
+msgstr ""
+
+msgid "POP3 Before SMTP?"
+msgstr "SMTP র আগে POP3?"
+
+msgid "Invert Time"
+msgstr "সময় উল্টে দেওয়া হবে কিনা"
+
+msgid "Folders Defaults"
+msgstr "চিঠির বাক্স সংক্রান্ত নিয়মাবলী"
+
+msgid "Default Folder Prefix"
+msgstr "আলাদা করে বলে না দিলে বাক্সের নামের আগে যা ব্যবহার করা হবে"
+
+msgid "Show Folder Prefix Option"
+msgstr "বাক্সের নামের আগে যা ব্যবহার করা হবে সেই সংক্রান্ত নিয়মাবলী দেখানো হোক"
+
+msgid "By default, move to trash"
+msgstr "আলাদা করে বলে না দিলে যেন ছেঁড়া চিঠির বাক্সে সরিয়ে রাখা হয়"
+
+msgid "By default, move to sent"
+msgstr "আলাদা করে বলে না দিলে যেন পাঠানো চিঠির বাক্সে সরিয়ে রাখা হয়"
+
+msgid "By default, save as draft"
+msgstr "আলাদা করে বলে না দিলে যেন খসড়া হিসাবে লিখে রাখা হয়"
+
+msgid "List Special Folders First"
+msgstr "চিঠি রাখার বিশেষ বাক্সগুলো যেন তালিকার শুরুতে দেখানো হয়"
+
+msgid "Show Special Folders Color"
+msgstr "চিঠি রাখার বিশেষ বাক্সগুলো যেন আলাদা করে রঙীন করে দেখানো হয়"
+
+msgid "Auto Expunge"
+msgstr "যেন আপনা আপনি খালি করে ফেলা হয়"
+
+msgid "Default Sub. of INBOX"
+msgstr ""
+"চিঠি সাজিয়ে রাখার সব বাক্সগুলো কি যা চিঠি আসছে তার বাক্সের মধ্যে প্রশাখা হিসাবে "
+"থাকবে?"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr ""
+"'এই বাক্সের মধ্যে চিঠি ছাড়াও চিঠি রাখার বাক্সও রাখা যাবে' - কিনা সেটা "
+"ব্যবহারকারীকে ঠিক করে দিতে দেওয়া হবে"
+
+msgid "Default Unseen Notify"
+msgstr "আলাদা করে বলে না দিলে না পড়া চিঠির কথা যেভাবে জানানো হবে"
+
+msgid "Default Unseen Type"
+msgstr "আলাদা করে বলে না দিলে না পড়া চিঠিগুলো কিরকম হবে"
+
+msgid "Auto Create Special Folders"
+msgstr "চিঠি রাখার বিশেষ বাক্সগুলো যেন আপনা আপনি তৈরী করে ফেলা হয়"
+
+msgid "Auto delete folders"
+msgstr "চিঠির বাক্স যেন আপনা-আপনি মুছে ফেলা হয়"
+
+msgid "Enable /NoSelect folder fix"
+msgstr ""
+"/NoSelect নামে চিঠি রাখার বাক্স থাকলে যে সমস্যা হয় তা প্রতিরোধের ব্যবস্থা সক্রিয় "
+"করা হোক"
+
+msgid "General Options"
+msgstr "সাধারণ নিয়মাবলী"
+
+msgid "Data Directory"
+msgstr "তথ্যচক্রে তথ্যফাইল রাখার শাখা"
+
+msgid "Temp Directory"
+msgstr "তথ্যচক্রে অস্থায়ী তথ্য রাখার শাখা"
+
+msgid "Hash Level"
+msgstr "সন্ধানসহায়কসূত্রের (hash) স্তর"
+
+msgid "Hash Disabled"
+msgstr "সন্ধানসহায়কসূত্র নিষ্ক্রিয় করা হল"
+
+msgid "Moderate"
+msgstr "অল্প"
+
+msgid "Medium"
+msgstr "মাঝারী"
+
+msgid "Default Left Size"
+msgstr "আলাাদা করে বলে না দিলে বামদিকে কতটুকু জায়গা রাখা হবে"
+
+msgid "Usernames in Lowercase"
+msgstr "নাম শুধু ইংরেজীর ছোটহাতের অক্ষরে দেওয়া যাবে"
+
+msgid "Allow use of priority"
+msgstr "গুরুত্ব ব্যবহার করা যাবে"
+
+msgid "Hide SM attributions"
+msgstr "কাঠবেড়ালী ডাক ব্যবস্থার নাম যেন দেখানো না হয়"
+
+msgid "Enable use of delivery receipts"
+msgstr "চিঠি পৌঁছে গেলে পৌঁছ-পত্র প্রদানের ব্যবস্থা সক্রিয় করা হোক"
+
+msgid "Allow editing of identities"
+msgstr "পরিচয় বদলানো যাবে"
+
+msgid "Allow editing of full name"
+msgstr "পুরো নাম বদলানো যাবে"
+
+msgid "Use server-side sorting"
+msgstr "ডাকব্যবস্থা যেন নিজেই চিঠিগুলোকে ক্রমানুসারে সাজিয়ে দেয়"
+
+msgid "Use server-side thread sorting"
+msgstr "ডাকব্যবস্থা যেন নিজেই চিঠিগুলোকে সূত্র ধরে ক্রমানুসারে সাজিয়ে দেয়"
+
+msgid "Allow server charset search"
+msgstr "ডাকব্যবস্থা কি কি লিপি ব্যবহার করতে পারে তা যেন খুঁজে নিতে দেওয়া হয়"
+
+msgid "UID support"
+msgstr "ব্যবহারকারীর পরিচায়ক সংখ্যা ব্যবহার করা হোক"
+
+msgid "PHP session name"
+msgstr "পি এইচ পি-র বর্তমান কার্যসূচীর নাম"
+
+msgid "Message of the Day"
+msgstr "আজকের দিনের বার্তা"
+
+msgid "Database"
+msgstr "তথ্যাধার"
+
+msgid "Address book DSN"
+msgstr "লোকজনের ঠিকানার খাতার ডি এস এন (DSN)"
+
+msgid "Address book table"
+msgstr "লোকজনের ঠিকানার খাতার তালিকা"
+
+msgid "Preferences DSN"
+msgstr "আপনার ঠিক করে দেওয়া নিয়মাবলীর ডি এস এন (DSN)"
+
+msgid "Preferences table"
+msgstr "আপনার ঠিক করে দেওয়া নিয়মাবলীর তালিকা"
+
+msgid "Preferences username field"
+msgstr "আপনার ঠিক করে দেওয়া নিয়মাবলীতে ব্যবহারকারীর নাম হিসাবে যা থাকবে"
+
+msgid "Preferences key field"
+msgstr "ঠিক করে দেওয়া নিয়মাবলীতে নিয়মের নাম"
+
+msgid "Preferences value field"
+msgstr "ঠিক করে দেওয়া নিয়মাবলীতে নিয়মের মান"
+
+#, fuzzy
+msgid "Global address book DSN"
+msgstr "সর্বত্রলভ্য ঠিকানার খাতা"
+
+#, fuzzy
+msgid "Global address book table"
+msgstr "সর্বত্রলভ্য ঠিকানার খাতা"
+
+#, fuzzy
+msgid "Allow writing into global address book"
+msgstr "সর্বত্রলভ্য ঠিকানার খাতায় আপনার পক্ষে কিছু লেখার অনুমতি নেই"
+
+#, fuzzy
+msgid "Allow listing of global address book"
+msgstr "সর্বত্রলভ্য ঠিকানার খাতায় আপনার পক্ষে কিছু লেখার অনুমতি নেই"
+
+#, fuzzy
+msgid "Language settings"
+msgstr "নিয়মাবলী বদলানো হোক"
+
+msgid "Default Language"
+msgstr "আলাদা করে বলে না দিলে যে ভাষা ব্যবহার করা হবে"
+
+msgid "Default Charset"
+msgstr "আলাদা করে বলে না দিলে যে বর্ণগোষ্ঠি ব্যবহার করা হবে"
+
+msgid "Enable lossy encoding"
+msgstr ""
+
+#, fuzzy
+msgid "Address Books"
+msgstr "লোকজনের ঠিকানা"
+
+msgid "Default Javascript Addressbook"
+msgstr "আলাদা করে বলে না দিলে জাভালিপিতে তৈরী ঠিকানার খাতা"
+
+#, fuzzy
+msgid "Global address book file"
+msgstr "সর্বত্রলভ্য ঠিকানার খাতা"
+
+#, fuzzy
+msgid "Allow writing into global address book file"
+msgstr "ঠিকানার খাতায় লেখা যায় নি"
+
+msgid "Themes"
+msgstr "প্রভূষণ"
+
+msgid "Style Sheet URL (css)"
+msgstr "ক্রমপ্রযুক্ত প্রভূষণ সংজ্ঞায়নের (CSS) সূত্র"
+
+msgid "Default theme"
+msgstr "আলাদা করে বলে না দিলে ব্যবহার্য প্রভূষণ"
+
+msgid "Use index number of theme"
+msgstr "প্রভূষণের সংজ্ঞায়নের জন্য ক্রম সংখ্যা ব্যবহার করা হোক"
+
+msgid "Configuration Administrator"
+msgstr "নিয়মাবলী যে ঠিক করে দেবে"
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+
+msgid "Theme Name"
+msgstr "প্রভূষণ সংজ্ঞায়নের নাম"
+
+msgid "Theme Path"
+msgstr "প্রভূষণের বর্ণনার ফাইলটা যেখানে থাকবে"
+
+msgid "Plugins"
+msgstr "প্রবর্ধন (<i>plugins</i>)"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr ""
+
+msgid "Change Settings"
+msgstr "নিয়মাবলী বদলানো হোক"
+
+msgid "Test Configuration"
+msgstr ""
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr ""
+"নিয়মাবলীর ফাইলটা খোলা যাচ্ছে না। config.php ফাইলটা ঠিক আছে কিনা পরীক্ষা করুন।"
+
+msgid "Administration"
+msgstr "ব্যবস্থাপনা"
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+"এই প্রক্রিয়কাংশ থেকে ব্যবস্থাপকেরা মূল কম্পিউটারে না বসেও অন্য কম্পিউটার থেকে "
+"ডাকব্যবস্থার মূল নিয়মাবলী নিয়ন্ত্রণ করতে পারবেন।"
+
+msgid "Submit a Bug Report"
+msgstr "প্রক্রিয়কটা যারা লিখেছে তাদের কাছে ভুলের একটা বর্ণনা পাঠানো হোক"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+"সচরাচর যে সব সমস্যা দেখা দেয় তার একটি তালিকার সূত্র নীচে দেওয়া আছে।  ভুলের বর্ণনা "
+"করে পাঠানোর আগে এই তালিকাটি দেখে নিন।"
+
+#, fuzzy, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+"আপনি <a href=\"http://www.squirrelmail.org/\">কাঠবেড়ালী ডাক ব্যবস্থার</a> "
+"সাম্প্রতিকতম সংস্করণ ব্যবহার করছেন কিনা দেখে নিন।"
+
+#, fuzzy, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+"ভুলের বর্ণনা পাঠানোর আগে <a href=\"http://sourceforge.net/bugs/?group_id=311"
+"\">এই তালিকায়</a> দেখে নিন, এই ভুলটার কথা আগেই কেউ জানিয়েছে কিনা।"
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+"এই সমস্যাটা সবসময় ঘটে, নাকি কখনো কখনো ঘটে, আবার কখনো কখনো ঘটে না সেটা পরীক্ষা "
+"করে নিন।  যদি এমন হয়ে থাকে যে অনিয়মিত ভাবে ঘটে, তাহলে কখন কখন ঘটে সে সম্পর্কে "
+"কোন নিয়মে আসা যায় কিনা চেষ্টা করে দেখুন।"
+
+#, fuzzy, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+"যদি আপনি কোন সতর্কতাসূচক বর্ণনা পেয়ে থাকেন, তাহলে নিজে থেকে সমস্যাটা ঠিক করার "
+"চেষ্টা করতে পারেন।  কাঠবেড়ালী ডাক ব্যবস্থার সাথে যেসব সহায়ক লেখা আসে, তা "
+"তথ্যচক্রের <tt>doc/</tt> প্রশাখায় লেখা থাকার কথা।  ওগুলো পড়লে অনেক সাহায্য হতে "
+"পারে।"
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+"নীচের সুইচটিতে চাপ দিলে কাঠবেড়ালী ডাকব্যবস্থার প্রক্রিয়ক প্রকৌশলীদের উদ্দেশ্য করে "
+"আপনার কম্পিউটার, যুক্তপত্রপ্রদর্শক, কাঠবেড়ালী ব্যবস্থার নিয়মাবলী, এবং IMAP ডাক "
+"ব্যবস্থা সম্পর্কে অনেক তথ্য দিয়ে একটা চিঠি শুরু করা হবে।  আপনাকে শুধু উপরের অংশটি পূরণ "
+"করে দিতে হবে।  কি কি তথ্য পাঠানো হচ্ছে যদি দেখতে চান, তাহলে পুরো চিঠিটা পড়ে "
+"দেখতে পারেন।"
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+"ভুলটা ঠিক করা যাতে সহজ হয়, সেজন্য যথাসম্ভব বিস্তারিত তথ্য দেবেন।  ভুলের বর্ণনা "
+"পাঠালেই তা ভুলের তালিকায় যুক্ত হয়ে যাবে না -- প্রকৌশলীদের মধ্যে কেউ প্রথমে পরীক্ষা "
+"করে দেখবে, তারপর সে যদি উচিত মনে করে, তাহলে ভুলের তালিকায় যুক্ত করে দেবে।"
+
+msgid "This bug involves"
+msgstr "ভুলটা হচ্ছে এই সংক্রান্ত"
+
+msgid "the general program"
+msgstr "পুরো প্রক্রিয়ক সংক্রান্ত"
+
+msgid "a specific plugin"
+msgstr "একটা বিশেষ প্রবর্ধন সংক্রান্ত"
+
+msgid "Start Bug Report Form"
+msgstr "ভুলের বর্ণনা এখান থেকে শুরু করা হোক"
+
+msgid "Bug"
+msgstr "প্রক্রিয়কে ভুল"
+
+msgid "Bug Reports:"
+msgstr "প্রক্রিয়কের ভুলের বিবরণী:"
+
+msgid "Show button in toolbar"
+msgstr "সুইচের সারিতে এই সংক্রান্ত সুইচ দেখানো হোক"
+
+msgid "TODAY"
+msgstr "আজকে"
+
+msgid "Go"
+msgstr "শুরু করা হোক"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "দিনপঞ্জিকার ফাইল %s তে লেখা যাচ্ছে না"
+
+msgid "l, F j Y"
+msgstr ""
+
+msgid "ADD"
+msgstr "যোগ করা"
+
+msgid "EDIT"
+msgstr "পরিবর্তন করা"
+
+msgid "DEL"
+msgstr "মুছে ফেলা"
+
+msgid "Start time:"
+msgstr "কখন শুরু হবে:"
+
+msgid "Length:"
+msgstr "কতক্ষণ ধরে:"
+
+msgid "Priority:"
+msgstr "গুরুত্ব:"
+
+msgid "Title:"
+msgstr "নাম:"
+
+msgid "Set Event"
+msgstr "অনুষ্ঠান যোগ করা হোক"
+
+msgid "Event Has been added!"
+msgstr "অনুষ্ঠানটা যোগ করা হল!"
+
+msgid "Date:"
+msgstr "তারিখ:"
+
+msgid "Time:"
+msgstr "সময়:"
+
+msgid "Day View"
+msgstr "দিন হিসাবে দেখানো"
+
+msgid "Do you really want to delete this event?"
+msgstr "আপনি কি সত্যি সত্যি এই অনুষ্ঠানটা মুছে ফেলতে চান?"
+
+msgid "Event deleted!"
+msgstr "অনুষ্ঠান মুছে ফেলা হল!"
+
+msgid "Nothing to delete!"
+msgstr "মোছার মত কিছুই পাওয়া গেল না!"
+
+msgid "Update Event"
+msgstr "অনুষ্ঠান বদলানো হোক"
+
+msgid "Do you really want to change this event from:"
+msgstr "আপনি কি সত্যি সত্যি অনুষ্ঠানটাকে:"
+
+msgid "to:"
+msgstr "থেকে বদলে এটা করে দিতে চান:"
+
+msgid "Event updated!"
+msgstr "অনুষ্ঠানের তথ্য বদলানো হল!"
+
+msgid "Month View"
+msgstr "মাস হিসাবে দেখানো"
+
+msgid "0 min."
+msgstr "০ মিনিট"
+
+msgid "15 min."
+msgstr "১৫ মিনিট"
+
+msgid "30 min."
+msgstr "৩০ মিনিট"
+
+msgid "45 min."
+msgstr "৪৫ মিনিট"
+
+msgid "1 hr."
+msgstr "১ ঘন্টা"
+
+msgid "1.5 hr."
+msgstr "দেড় ঘন্টা"
+
+msgid "2 hr."
+msgstr "২ ঘন্টা"
+
+msgid "2.5 hr."
+msgstr "আড়াই ঘন্টা"
+
+msgid "3 hr."
+msgstr "৩ ঘন্টা"
+
+msgid "3.5 hr."
+msgstr "সাড়ে ৩ ঘন্টা"
+
+msgid "4 hr."
+msgstr "৪ ঘন্টা"
+
+msgid "5 hr."
+msgstr "৫ ঘন্টা"
+
+msgid "6 hr."
+msgstr "৬ ঘন্টা"
+
+msgid "Calendar"
+msgstr "দিনপঞ্জী"
+
+msgid "Delete & Prev"
+msgstr "মুছে আগেরটাতে যাওয়া হোক"
+
+msgid "Delete & Next"
+msgstr "মুছে পরেরটাতে যাওয়া হোক"
+
+msgid "Move to:"
+msgstr "এখানে সরানো হোক:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "মুছে ফেলার, সরিয়ে রাখার, পরেরটাতে যাওয়ার সুইচগুলো যেখানে থাকবে:"
+
+msgid "Display at top"
+msgstr "ওপরে দেখানো হোক"
+
+msgid "with move option"
+msgstr "সরানোর ব্যবস্থা সহ"
+
+msgid "Display at bottom"
+msgstr "তলায় দেখানো হোক"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"ব্যবসায়িক - এই তালিকায় যারা উড়োচিঠি পাঠায় বলে সাধারণ লোকে জানে, তাদের নাম "
+"দেওয়া আছে।  এই তালিকার কোনো জায়গা থেকে আসলে মোটামুটি ধরে নেওয়া যায় যে এটা "
+"উড়োচিঠি।"
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"ব্যবসায়িক - যে সব কম্পিউটার ব্যবস্থা ভুল করে বা ইচ্ছাকৃতভাবে উড়োচিঠি রিলে করছে, "
+"এটার মাধ্যমে তাদের বর্জন করা যায়।  এটা বেশ ভাল কাজ করে।"
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"ব্যবসায়িক - দূরালাপনী ব্যবহার করে যারা কম্পিউটার যোগাযোগ করে, উড়োচিঠির তালিকা "
+"থেকে অনেকসময় তাদের বাদ দিয়ে দেওয়া হয়।  কারণ এই ব্যবস্থা যারা করে, তারা চিঠি "
+"পাঠানোর জন্য যোগাযোগ ব্যবস্থাপকদের দেওয়া ডাক ব্যবস্থা ব্যবহার করার কথা।  কিন্তু এই "
+"বাদ দেওয়ার সুযোগ নিয়ে উড়োচিঠি প্রেরকেরা দূরালাপনীভিত্তিক কম্পিউটার যোগাযোগ ব্যবস্থা "
+"নিয়ে ব্যবস্থাপকদের কম্পিউটার দিয়ে না গিয়ে সরাসরি উড়োচিঠি পাঠায়।"
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "ব্যবসায়িক - <i>আর বি এল+ কালোগুহার তালিকা</i>"
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "ব্যবসায়িক - <i> আর বি এল (RBL) + মুক্ত রিলে (OpenRelay)</i>"
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr ""
+"ব্যবসায়িক - <i>আর বি এল (RBL)+ দূরালাপনীর তার দিয়ে কম্পিউটার যোগাযোগ সংক্রান্ত</i>"
+
+msgid ""
+"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+"false positives than ORBS did though."
+msgstr ""
+"বিনা খরচে - ORBS বন্ধ হয়ে যাবার পর ORDB চালু হয়।  ORDB সম্ভবতঃ সাধারণ চিঠিকে "
+"উড়োচিঠি বলে ভুল কম করে"
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "বিনা খরচে - <i>Five-Ten-sg.com</i> - উড়োচিঠির প্রেরক"
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr ""
+"বিনা খরচে - <i>Five-Ten-sg.com</i> - দূরালাপনীর তার দিয়ে কম্পিউটার "
+"যোগাযোগকারীদের তালিকা।  দূরালাপনীর তার ভিত্তিক দ্রুততর যোগাযোগ ব্যবহারকারীদের "
+"মধ্যেও কয়েকটাকে তালিকাতে ঢুকানো আছে।"
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+"বিনা খরচে - <i>Five-Ten-sg.com</i> - বিজ্ঞাপকরা অনেকসময় একসাথে অনেক জায়গায় "
+"একই চিঠি পাঠায়।  যারা এরকম চিঠি চায়, তাদের তালিকা পাওয়া যাওয়া সত্বেও যে সব "
+"বিজ্ঞাপকেরা তালিকা ব্যবহার করে না, তাদের এখানে তালিকাভুক্ত করে রাখা আছে।"
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "বিনা খরচে - <i>Five-Ten-sg.com</i> - অন্যান্য বিবিধ মূল কম্পিউটার"
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "বিনা খরচে - <i>Five-Ten-sg.com</i> - <i>এক ধাপের মূল কম্পিউটার</i>."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr ""
+"বিনা খরচে - <i>Five-Ten-sg.com</i> - উড়োচিঠি সংক্রান্ত কাজের জন্য মূল কম্পিউটার"
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr ""
+"বিনা খরচে - <i>Five-Ten-sg.com</i> - যুক্তপত্র বিবরণী ব্যবহারকারীদের কম্পিউটার "
+"যোগাযোগ পরিচায়ক সংখ্যা।"
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"বিনা খরচে - যুক্তরাজ্যের বাইরে ডর্ক-কর্তক মনে হয় একমাত্র মুক্তরিলে ব্যবস্থাপক যাদের "
+"বিরুদ্ধে মামলা দায়ের করা হয় নি।  মজার ব্যাপার হল, এরা এদের ব্যবস্থা ব্যবহার না "
+"করার উপদেশ দেয়।"
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr ""
+"বিনা খরচে - <i>SPAMhaus (স্প্যামহাউস)</i> - উড়ো চিঠি পাঠায় এমন জায়গার একটা "
+"তালিকা - সবাই মোটামুটি এই তালিকা বিশ্বাস করে।"
+
+#, fuzzy
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"এখনো পর্যন্ত বিনা খরচে - <i>SPAMCOP (স্প্যামকপ)</i> - উড়োচিঠি সনাক্ত করার জন্য এরা "
+"নতুন একটা সূত্র ব্যবহার করে - যেসব জায়গা থেকে যা চিঠি আসে তার ৮৫% এর ওপর "
+"উড়োচিঠি, সেসব জায়গার তালিকা।"
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "বিনা খরচে - <i>dev.null.dk</i> - এদের সম্পর্কে বিস্তারিত তথ্য জানা নেই।"
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr ""
+"বিনা খরচে - <i>visi.com রিলে থামানোর তালিকা</i> - ঠিক মত পরিচয় প্রমাণ ছাড়া "
+"চিঠি রিলে করে এমন ব্যবস্থার তালিকা - বেশ সাবধানে তৈরী - যারা খোলা রিলে কিনা এ "
+"ব্যাপারে খুব অল্প হলেও সন্দেহ আছে এমন জায়গা গুলোকে এরা তালিকাতে রাখে না।"
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr ""
+"বিনা খরচে - <i>ahbl.org খোলা রিলের তালিকা</i> - - ঠিক মত পরিচয় প্রমাণ ছাড়া "
+"চিঠি রিলে করে এমন ব্যবস্থার আরেকটা তালিকা"
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr ""
+"বিনা খরচে - <i>ahbl.org উড়োচিঠি প্রেরকদের তালিকা</i> - সরাসরি উড়ো চিঠি পাঠায় "
+"এমন জায়গার তালিকা।"
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+"বিনা খরচে - <i>ahbl.org</i> - যেসব বিশ্বব্যাপী কম্পিউটার যোজনা ব্যবস্থাপকেরা "
+"উড়োচিঠি প্রেরকদের ব্যাপারে কড়াকড়ি করেনা, তাদের তালিকা।."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"বিনা খরচে - <i>লীডমন (Leadmon) DUL</i> - দূরালাপনী ব্যবহার করে কম্পিউটার "
+"যোগাযোগ এবং অন্যান্য যে সব ব্যবস্থাতে যোগাযোগ পরিচায়ক সংখ্যা পরিবর্তিত হয়, সে সবের "
+"পরিচায়ক সংখ্যার তালিকা।"
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"বিনা খরচে - <i>লীডমন (Leadmon) উড়োচিঠি প্রেরক</i> - যাদের কাছথেকে লীডমন "
+"নিজেরাই উড়োচিঠি পেয়েছে তাদের তালিকা।"
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"বিনা খরচে - <i>লীডমনের তৈরী একসাথে অনেক চিঠি প্রেরকদের তালিকা</i> - বিজ্ঞাপকরা "
+"অনেকসময় একসাথে অনেক জায়গায় একই চিঠি পাঠায়।  যারা এরকম চিঠি চায়, তাদের তালিকা "
+"পাওয়া যাওয়া সত্বেও যে সব বিজ্ঞাপকেরা তালিকা ব্যবহার করে না, অথবা যারা তাদের "
+"ব্যবস্থা ব্যবহার করে উড়োচিঠি পাঠানোর ব্যাপারে কড়াকড়ি করে না তাদের এখানে "
+"তালিকাভুক্ত করে রাখা আছে।"
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"বিনা খরচে - <i>লীডমন মুক্তরিলে ব্যবস্থা</i> - একস্তরের মুক্ত রিলে ব্যবস্থার তালিকা -- "
+"যেগুলো অন্য কোন RBL এর তালিকায় নেই।"
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"বিনা খরচে - <i>লীডমন বহুস্তরের ব্যবস্থা</i> - বহুস্তরের মুক্ত রিলে ব্যবস্থার তালিকা -- "
+"যেগুলো অন্য কোন RBL এর তালিকায় নেই এবং লীডমনে উড়োচিঠি পাঠিয়েছে।"
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"বিনা খরচে - <i>লীডমন (Leadmon) উড়োচিঠি রোধক</i> - কম্পিউটার যোগাযোগ পরিচায়ক "
+"সংখ্যার তালিকার মধ্যে যেসব উপতালিকার কোন সংখ্যার সাথে কম্পিউটারের নামের যোগ "
+"থাকার কথা নয়, সেসব যোগাযোগ সংখ্যার কম্পিউটার থেকে কোন চিঠি আসা উচিত নয় কারণ "
+"কম্পিউটারের নাম না থাকলে সেখানে কোনো বিজলীচিঠির ঠিকানা থাকতে পারে না।  কিন্তু "
+"এইসব উপতালিকার মধ্যে যেগুলো থেকে লীডমন সরাসরি উড়োচিঠি পেয়েছে তাদের এখানে "
+"তালিকা করে রাখা আছে।"
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"আপাততঃ কোন খরচ নেই - <i>শুধুই আরেকটি কালো তালিকা নয়</i> - যে কাউকে রিলে করে "
+"দেয় এমন ব্যবস্থা এবং সরাসরি উড়োচিঠি পাঠায় এমন ব্যবস্থার তালিকা।"
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr ""
+"আপাততঃ কোন খরচ নেই - <i>শুধুই আরেকটি কালো তালিকা নয়</i> - দূরালাপনী ব্যবহার করে "
+"যুক্ত এমন কম্পিউটার সমূহের যোগাযোগ-পরিচায়ক সংখ্যা।"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr ""
+"বিনা খরচে - <i>বিস্তৃত প্রেরক-বর্জন-তালিকা</i> - চিঠি রিলে করে বলে জানা আছে এমন "
+"ব্যবস্থার তালিকা।"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+"বিনা খরচে - <i>বিস্তৃত প্রেরক-বর্জন-তালিকা</i> - বহু স্তরে চিঠি রিলে করে বলে "
+"নিশ্চিতভাবে জানা আছে এমন ব্যবস্থার তালিকা।"
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+"বিনা খরচে - <i>বিস্তৃত প্রেরক-বর্জন-তালিকা</i> - চিঠি রিলে করে বলে সন্দেহ করা হয় "
+"এমন ব্যবস্থার তালিকা।"
+
+#, fuzzy
+msgid "WARNING! You must enter something to search for."
+msgstr "কি খুঁজতে হবে বলা হয় নি"
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+
+msgid "Saved Scan type"
+msgstr "যাচাই করার যে ব্যবস্থাটা লিখে রাখা হয়েছে"
+
+msgid "Message Filtering"
+msgstr "চিঠি যাচাই করা"
+
+msgid "What to Scan:"
+msgstr "যার মধ্যে যাচাই করতে হবে:"
+
+msgid "All messages"
+msgstr "সব চিঠি"
+
+msgid "Only unread messages"
+msgstr "শুধু না পড়া চিঠিগুলো"
+
+msgid "Save"
+msgstr "ঠিকমত লিখে রাখা হোক"
+
+msgid "Match:"
+msgstr "মেলানো হোক:"
+
+msgid "Header"
+msgstr "খামের লেখা"
+
+msgid "Contains:"
+msgstr "এর মধ্যে আছে:"
+
+#, fuzzy, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "যদি <b>%s</b> তে <b>%s</b> থাকে, তাহলে <b>%s</b> তে সরিয়ে নেওয়া হোক"
+
+msgid "Message Filters"
+msgstr "চিঠি আপনা আপনি সাজিয়ে রাখার ব্যবস্থা"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"আপনা আপনি ভাগ করার ব্যবস্থা দিয়ে কিছু নিয়ম তৈরী করে দিলে সেই অনুযায়ীী যা চিঠি "
+"আসছে সেগুলোকে নিয়ম অনুযায়ী আলাদা আলাদা বাক্সে আপনা আপনি পাঠিয়ে দেওয়া যায়।"
+
+msgid "SPAM Filters"
+msgstr "উড়োচিঠি যাচাইয়ের ব্যবস্থা"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"উড়োচিঠি যাচাইয়ের ব্যবস্থাটা কোথা থেকে চিঠি আসছে সেটার উপর ভিত্তি করে, আপনার "
+"পছন্দের কালো তালিকা ব্যবহার করে উড়োচিঠি সনাক্ত করতে পারে এবং উড়োচিঠি পেলে "
+"সেগুলোকে বিশেষ বাক্সে (যেমন ছেঁড়াচিঠির বাক্সে) ফেলে দিতে পারে।"
+
+#, fuzzy
+msgid "You must select a spam folder."
+msgstr "কোন একটা বাক্স চিহ্নিত করুন"
+
+#, fuzzy
+msgid "You must select a scan type."
+msgstr "আপনাকে এর মধ্যেই একটা বেঁছে নিতে হবে"
+
+msgid "Spam Filtering"
+msgstr "উড়োচিঠি কিনা যাচাই"
+
+#, fuzzy, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr ""
+"সতর্কবাণী!  কারিগরী সহায়কদের বলুন আপনার জন্য উড়োচিঠি যাচাই এর জন্য "
+"SpamFilters_YourHop এর মানটা ঠিক করে দিতে।"
+
+msgid "Move spam to:"
+msgstr "উড়ো চিঠি আসলে এখানে সরিয়ে রাখা হবে:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"প্রথম থেকেই উড়োচিঠিগুলোকে ছেঁড়াচিঠির বাক্সে পাঠানোটা উচিত্ হবে না -- কারণ এই "
+"স্বয়ংক্রিয় উড়োচিঠি সনাক্তকরণ ব্যবস্থা অনেক সময় ভুল করে ফেলে।  প্রথম দিকে উড়োচিঠির "
+"জন্য আলাদা একটা বাক্স রাখা এবং সময় সময় দেখে বাক্সটা খালি করে ফেলাটাই ভাল।"
+
+#, fuzzy
+msgid "Unread messages only"
+msgstr "শুধু নতুন চিঠির জন্য"
+
+#, fuzzy
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"যত বেশী চিঠিতে পরীক্ষা করবেন, তত বেশী সময় লাগবে।  আমার উপদেশ হল শুধুমাত্র নতুন "
+"আসা চিঠিতে পরীক্ষা করা হোক।  যদি নিয়মে কোন পরিবর্তন করেন, তাহলে প্রথমে সব চিঠির "
+"উপর একবার পরীক্ষা করে নিতে হবে।  তারপর একবার যে সব চিঠি আসছে সেগুলোর বাক্সে "
+"গিয়ে, তারপর আবার এখানে এসে শুধুমাত্র নতুন চিঠিতে পরীক্ষা করার ব্যবস্থা করে দিলেই "
+"চলবে।"
+
+#, fuzzy, php-format
+msgid "Spam is sent to %s."
+msgstr "উড়োচিঠিগুলো <b>%s</b>-তে পাঠানো হল"
+
+#, fuzzy
+msgid "not set yet"
+msgstr "[<i>এখনো ঠিক করা হয় নি</i>]"
+
+#, fuzzy, php-format
+msgid "Spam scan is limited to %s."
+msgstr "উড়োচিঠি বিশ্লেষণ <b>%s</b> টা পর্যন্ত সীমিত"
+
+msgid "ON"
+msgstr "সক্রিয়"
+
+msgid "OFF"
+msgstr "নিষ্ক্রিযয়"
+
+#, fuzzy, php-format
+msgid "%s is not found."
+msgstr " পাওয়া যায় নি।"
+
+msgid "Today's Fortune"
+msgstr "আজকের বাণী"
+
+msgid "Fortunes:"
+msgstr "বাণী তৈরীর কবি:"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "চিঠির বাক্সগুলোর ওপর বাণী দেখানো হোক"
+
+msgid "Plugin is disabled."
+msgstr ""
+
+msgid "IMAP server information"
+msgstr "ডাক ব্যবস্থাপক (IMAP) সংক্রান্ত তথ্য"
+
+#, fuzzy
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+"IMAP ডাকব্যবস্থার জন্য কিছু পরীক্ষামূলক অনুরোধ পাঠানো হবে এবং ফলাফল দেখানো হবে।  "
+"কাঠবেড়ালী ডাক ব্যবস্থা যে সব অনুরোধ ব্যবহার করে এবং ডাক ব্যবস্ছার জন্য আপনি যে সব "
+"নিয়ম ঠিক করে দিয়েছেন, এই পরীক্ষায় সেগুলো ব্যবহার করা হবে।  আপনি ইচ্ছা করলে নিজের "
+"তৈরী অনুরোধ বাক্যও ব্যবহার করতে পারেন।"
+
+msgid "Mailinglist"
+msgstr "বিজলী আড্ডা"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"এটা দিয়ে %s কে চিঠি লিখে এই আড্ডা সম্বন্ধে সাহায্য চাওয়া যাবে।  উত্তর আসবে নীচের "
+"এই ঠিকানায়।"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"এখন %s কে একটি চিঠি লিখে জানানো হবে যে আপনি এই বিজলীআড্ডায় নাম লেখাতে "
+"চেয়েছেন।  নাম লিখানোর সময় আপনার বিজলীচিঠির ঠিকানা হিসাবে নীচের ঠিকানাটা "
+"ব্যবহার করা হবে:"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"এখন %s কে একটা চিঠি দিয়ে জানানো হবে যে আপনি এই আড্ডা থেকে সরে যাবেন।  আপনার "
+"নিম্নলিখিত ঠিকানাটা আড্ডার তালিকা থেকে কেটে দেওয়া হবে"
+
+msgid "Send Mail"
+msgstr "চিঠিটা পাঠানো হোক"
+
+msgid "Post to List"
+msgstr "বিজলী আড্ডায় দেওয়া হোক"
+
+msgid "Reply to List"
+msgstr "বিজলীআড্ডাতে উত্তর দেওয়া হোক"
+
+msgid "List Archives"
+msgstr "বিজলীআড্ডার তালিকা তৈরী করা হোক "
+
+msgid "Contact Listowner"
+msgstr "এই বিজলীআড্ডাটির সম্পাদকের সাথে যোগাযোগ করুন"
+
+msgid "Mailing List"
+msgstr "বিজলীআড্ডা"
+
+msgid "POP3 connect:"
+msgstr "POP3 দিয়ে যোগাযোগ করা হচ্ছে:"
+
+msgid "No server specified"
+msgstr "কোন ডাকব্যবস্থার প্রক্রিয়ক ব্যবহার করা হবে বলা হয় নি "
+
+msgid "Error "
+msgstr "সমস্যা "
+
+msgid "POP3 user:"
+msgstr "POP3 ডাক ব্যবহারকারীর নাম: "
+
+msgid "no login ID submitted"
+msgstr "পরিচয় প্রমাণের জন্য কোন নাম দেওয়া হয় নি"
+
+msgid "connection not established"
+msgstr "যোগাযোগ স্থাপন করা যায় নি"
+
+msgid "POP3 pass:"
+msgstr "POP3 এর জন্য গুপ্তবাক্য: "
+
+msgid "No password submitted"
+msgstr "গুপ্তবাক্য দেওয়া হয় নি"
+
+msgid "authentication failed "
+msgstr "পরিচয় প্রমাণ করা যায় নি"
+
+msgid "POP3 apop:"
+msgstr "POP3 ডাকব্যবস্থার apop: "
+
+msgid "No connection to server"
+msgstr "ডাকব্যবস্থার সাথে কোন যোগাযোগ নেই"
+
+msgid "No login ID submitted"
+msgstr "পরিচয় প্রমাণের জন্য কোন নাম দেওয়া হয় নি"
+
+msgid "No server banner"
+msgstr "ডাক ব্যবস্থাতে কোন সংক্ষিপ্ত বর্ণনা নেই"
+
+msgid "abort"
+msgstr "বাদ দাও"
+
+msgid "apop authentication failed"
+msgstr "POP ডাক ব্যবস্থার কাছে পরিচয় প্রমাণ করা যায় নি"
+
+msgid "POP3 login:"
+msgstr "POP3 ডাক ব্যবস্থার কাছে পরিচয় প্রমাণের জন্য নাম: "
+
+msgid "POP3 top:"
+msgstr "POP3 ডাক ব্যবস্থা প্রথমে যা বলছে: "
+
+msgid "POP3 pop_list:"
+msgstr "POP3 ডাকব্যবস্থার তালিকা (pop_list): "
+
+msgid "Premature end of list"
+msgstr "তালিকা পুরোটা পাওয়ার আগেই শেষ হয়ে গেল"
+
+msgid "POP3 get:"
+msgstr "POP3 ডাকব্যবস্থার আনয়ন অনুরোধবাক্য: "
+
+msgid "POP3 last:"
+msgstr "POP3 ডাকব্যবস্থা শেষে যা বলছে;: "
+
+msgid "POP3 reset:"
+msgstr "POP3 ডাকব্যবস্থা -- নতুন করে লেনদেন শুরু: "
+
+msgid "POP3 send_cmd:"
+msgstr "POP3 ডাকব্যবস্থার প্রেরণ অনুরোধবাক্য: "
+
+msgid "Empty command string"
+msgstr "অনুরোধ বাক্যে কিছু নেই"
+
+msgid "POP3 quit:"
+msgstr "POP3 ডাকব্যবস্থা বন্ধ হয়ে গেল: "
+
+msgid "connection does not exist"
+msgstr "যোগাযোগ নেই"
+
+msgid "POP3 uidl:"
+msgstr "POP3 ডাক ব্যবস্থার ইউ আই ডি এল (UIDL):"
+
+msgid "POP3 delete:"
+msgstr "POP3 ডাকব্যবস্থার মুছেফেলা অনুরোধ বাক্য: "
+
+msgid "No msg number submitted"
+msgstr "ডাকব্যবস্থাকে কোন চিঠি দেওয়া যায় নি"
+
+msgid "Command failed "
+msgstr "অনুরোধটা কাজ করল না"
+
+msgid "Remote POP server Fetching Mail"
+msgstr "দূরের POP ডাকব্যবস্থা চিঠি আনছে"
+
+msgid "Select Server:"
+msgstr "কোন ডাকব্যবস্থা ব্যবহার করা হবে বলে দিন:"
+
+msgid "Password for"
+msgstr "গুপ্তবাক্য -- "
+
+msgid "Fetch Mail"
+msgstr "চিঠি আনা হোক"
+
+msgid "Fetching from "
+msgstr "এখান থেকে চিঠি আনা হচ্ছে -- "
+
+msgid "Oops, "
+msgstr "হায় হায়, "
+
+msgid "Opening IMAP server"
+msgstr "IMAP ডাক ব্যবস্থার সাথে যোগাযোগ খোলা হচ্ছে"
+
+msgid "Opening POP server"
+msgstr "POP ডাকব্যবস্থার সাথে যোগাযোগ খোলা হচ্ছে"
+
+msgid "Login Failed:"
+msgstr "পরিচয় প্রমাণ করা যায় নি:"
+
+msgid "Login OK: No new messages"
+msgstr "পরিচয় প্রমাণ হয়েছে: নতুন কোনো চিঠি আসে নি"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "পরিচয় প্রমাণ হয়েছে: চিঠি আসার বাক্সে কোন চিঠি নেই"
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "পরিচয় প্রমাণ হয়েছে: আগত চিঠির বাক্সে ["
+
+msgid "Fetching UIDL..."
+msgstr "ইউ আই ডি এল (UIDL)টা নিয়ে আসা হচ্ছে... "
+
+msgid "Server does not support UIDL."
+msgstr "এই ডাক ব্যবস্থা ইউ আই ডি এল (UIDL) নিয়ে কাজ করতে পারে না।"
+
+#, fuzzy
+msgid "Leaving mail on server..."
+msgstr "ডাকবাক্সে চিঠি রেখে দেওয়া হচ্ছে... "
+
+msgid "Deleting messages from server..."
+msgstr "ডাকব্যবস্থা থেকে চিঠিগুলো মুছে ফেলা হচ্ছে..."
+
+msgid "Fetching message "
+msgstr "চিঠি গ্রহন করা হচ্ছে "
+
+#, fuzzy
+msgid "Server error. Disconnect"
+msgstr "ডাকব্যবস্থাতে সমস্যা হচ্ছে... যোগাযোগ বন্ধ"
+
+msgid "Reconnect from dead connection"
+msgstr "বন্ধ যোগাযোগ আবার স্থাপনের চেষ্টা"
+
+msgid "Saving UIDL"
+msgstr "ইউ আই ডি এল (UIDL) টা লিখে রাখা হচ্ছে"
+
+msgid "Refetching message "
+msgstr "এই চিঠিটা আবার আনা হচ্ছে -- "
+
+msgid "Error Appending Message!"
+msgstr "চিঠি শেষে যুক্ত করতে সমস্যা হচ্ছে!"
+
+msgid "Closing POP"
+msgstr "ডাক ব্যবস্থা POP বন্ধ করা হচ্ছে"
+
+msgid "Logging out from IMAP"
+msgstr "IMAP ডাকব্যবস্থার সাথে কাজ সেরে বন্ধ করে দেওয়া হচ্ছে"
+
+msgid "Message appended to mailbox"
+msgstr "চিঠি চিঠি রাখার বাক্সের শেষে যুক্ত করা হল"
+
+#, fuzzy, php-format
+msgid "Message %d deleted from remote server!"
+msgstr " দূরের ডাকব্যবস্থা থেকে মুছে ফেলা হল!"
+
+msgid "Delete failed:"
+msgstr "মোছা গেল না:"
+
+msgid "Remote POP server settings"
+msgstr "দূরের POP ডাকব্যবস্থার জন্য নিয়ম"
+
+#, fuzzy
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"আপনাকে বলে রাখা ভাল, লিপিগুপ্তি করলেও আপনার গুপ্তবাক্য যে চুরি যাবে না, সেটা জোর "
+"দিয়ে বলা যায় না।  কিন্তু আপনি যদি POP ডাকব্যবস্থা ব্যবহার করেন, তা হলে তো এমনিতেই "
+"কোনো লিপিগুপ্তি নেই।  তার উপর আমরা যা লিপিগুপ্তি করছি সেটা এই প্রক্রিয়কের "
+"উপাদানলিপি পড়ে চোরেরা এমনিতেই উদ্ধার করতে পারে।"
+
+#, fuzzy
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr ""
+"আপনি যদি এখনের মত পরিচয়-প্রমাণ বাক্যের জায়গাটা খালি রেখে দেন, তাহলে গুপ্তবাক্যটি "
+"চিঠি আনার সময় দিতে হবে"
+
+msgid "Encrypt passwords (informative only)"
+msgstr "গুপ্তবাক্যগুলো লিপিগুপ্তি করে রাখা হোক (শুধুমাত্র জানানোর জন্য)"
+
+msgid "Add Server"
+msgstr "ডাকব্যবস্থা যোগ করা হোক"
+
+msgid "Server:"
+msgstr "ডাকব্যবস্থা:"
+
+msgid "Port:"
+msgstr "যোগাযোগের ব্যবস্থা:"
+
+msgid "Alias:"
+msgstr "ছদ্মনাম:"
+
+msgid "Username:"
+msgstr "নাম:"
+
+msgid "Store in Folder:"
+msgstr "এই বাক্সে রাখা হোক:"
+
+#, fuzzy
+msgid "Leave mail on server"
+msgstr "ডাক ব্যবস্থা থেকে চিঠি যেন মুছে ফেলা না হয়"
+
+#, fuzzy
+msgid "Check mail at login"
+msgstr "পরিচয় প্রমাণের সময় চিঠি লেনদেন করা হোক"
+
+#, fuzzy
+msgid "Check mail at folder refresh"
+msgstr "চিঠির তালিকা নতুন করে তৈরী করতে বললে চিঠি লেনদেন করা হোক"
+
+msgid "Modify Server"
+msgstr "ডাকব্যবস্থার জন্য নিয়মাবলী পরিবর্তন করা হোক"
+
+msgid "Server Name:"
+msgstr "ডাক ব্যবস্থার নাম:"
+
+msgid "Modify"
+msgstr "বদলানো হোক"
+
+#, fuzzy
+msgid "No servers known."
+msgstr "ডাক ব্যবস্থাতে কোন সংক্ষিপ্ত বর্ণনা নেই"
+
+msgid "Fetching Servers"
+msgstr "ডাকব্যবস্থার তালিকা তৈরী করা হচ্ছে"
+
+msgid "Confirm Deletion of a Server"
+msgstr "আবার ভেবে দেখুন এই ডাকব্যবস্থাটাকে বাতিল করবেন কিনা"
+
+msgid "Selected Server:"
+msgstr "আপনার চিহ্নিত ডাকব্যবস্থা:"
+
+msgid "Confirm delete of selected server?"
+msgstr "আবার ভেবে দেখুন চিহ্নিত ডাকব্যবস্থাটাকে বাতিল করবেন কিনা?"
+
+msgid "Confirm Delete"
+msgstr "আবার ভেবে দেখুন বাতিল করবেন কিনা"
+
+msgid "Leave Mail on Server"
+msgstr "ডাক ব্যবস্থা থেকে চিঠি যেন মুছে ফেলা না হয়"
+
+msgid "Undefined Function"
+msgstr "এই রকম কিছু করার নেই"
+
+msgid "The function you requested is unknown."
+msgstr ""
+
+msgid "Fetch"
+msgstr "আনা হোক"
+
+msgid "Warning, "
+msgstr "সতর্কবাণী, "
+
+msgid "Mail Fetch Result:"
+msgstr "চিঠি আনার অনুরোধবাক্যের ফলাফল:"
+
+#, fuzzy
+msgid "POP3 Fetch Mail"
+msgstr "সাধারণ POP3 ডাকব্যবস্থায় চিঠি আনা"
+
+#, fuzzy
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"এখানে POP3 ডাকব্যবস্থাপকের কাছ থেকে আপনার চিঠি এই কম্পিউটারে নামিয়ে আনা সংক্রান্ত "
+"নিয়মাবলী ঠিক করে দেওয়া যায়।"
+
+msgid "Message Details"
+msgstr "চিঠি সংক্রান্ত বিস্তারিত তথ্য"
+
+msgid "Bodystructure"
+msgstr ""
+
+#, fuzzy
+msgid "Entity"
+msgstr "পরিবর্তন করা হোক"
+
+msgid "Content-Type"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+# BODY
+#, fuzzy
+msgid "RFC822 Message body"
+msgstr "চিঠির লেখায়"
+
+msgid "Close Window"
+msgstr "পাতাটা বন্ধ করা হোক"
+
+msgid "Save Message"
+msgstr "চিঠিটা রেখে দেওয়া হোক"
+
+msgid "View Message details"
+msgstr "চিঠির বিস্তারিত বর্ণনা দেখানো হোক"
+
+msgid "New Mail"
+msgstr "নতুন চিঠি"
+
+msgid "SquirrelMail Notice:"
+msgstr "চিঠির কাঠবেড়লী বলছে:"
+
+#, fuzzy, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "%s টা নতুন চিঠি"
+msgstr[1] "%s টা নতুন চিঠি"
+
+#, fuzzy, php-format
+msgid "You have %s new messages"
+msgstr "%s টা নতুন চিঠি"
+
+msgid "New Mail Notification"
+msgstr "নতুন চিঠি এলে কিভাবে জানানো হবে"
+
+#, fuzzy, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"<b>নতুন চিঠি এল কিনা সব বাক্সে পরীক্ষা করা হোক (শুধু চিঠি আসার বাক্সে নয়)</b> টা "
+"চিহ্নিত করে দিলে আপনার নতুন চিঠি আছে কিনা জানান দেবার জন্য পরীক্ষার সময় চিঠি "
+"আসার বাক্স ছাড়াও অন্য সব চিঠি রাখার বাক্সে পরীক্ষা করা হবে।"
+
+msgid "Check all boxes, not just INBOX"
+msgstr "নতুন চিঠি এল কিনা সব বাক্সে পরীক্ষা করা হোক (শুধু চিঠি আসার বাক্সে নয়)"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"<b>নতুন চিঠি এলে যেন আলাদা একটা বার্তাবাহী পাতা খুলে জানানো হয়</b> টা চিহ্নিত "
+"করে দিলে যদি কোন বাক্সে আপনার না পড়া চিঠি থাকে, তাহলে একটা নতুন বার্তাবাহী পাতা "
+"খোলা হবে|  (এটা কাজ করার জন্য জাভালিপি লাগবে)."
+
+msgid "Show popup window on new mail"
+msgstr "নতুন চিঠি এলে যেন আলাদা একটা বার্তাবাহী পাতা খুলে জানানো হয়"
+
+#, fuzzy, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"<b>শুধুমাত্র সাম্প্রতিকগুলো পরীক্ষা করা হোক</b> - এমন ঠিক করে দিলে শুধুমাত্র যেসব চিঠি "
+"এইমাত্র দেখানো হল এবং এর আগে দেখা বা পরীক্ষা করা হয় নি সেগুলিতে পরীক্ষা করা "
+"হবে।  এটা করলে বার বার নতুন চিঠি আসা জানান দেবার বাজনা বা বার্তাবাহী পাতা খোলা "
+"হবার বিরক্তি থেকে নিস্তার পাওয়া যাবে।"
+
+msgid "Count only messages that are RECENT"
+msgstr "শুধুমাত্র সাম্প্রতিক চিঠিগুলো গুনা হোক"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript, and only works in IE but "
+"you won't see errors with other browsers). This will always tell you if you "
+"have new mail, even if you have %s enabled."
+msgstr ""
+"'শিরোনাম পরিবর্তন করা হোক' টা ঠিক করে দিলে আপনি নতুন চিঠি এলে যুক্তপত্র প্রদর্শকের "
+"শিরোনামে লেখা উঠবে।  এটা ঠিকমত কাজ করার জন্য জাভালিপি থাকতে হবে।  তার ওপর, "
+"এটা শুধুমাত্র মাইক্রোসফ্ট ইন্টারনেট এক্সপ্লোরারের সাথে কাজ করে।  তবে অন্য প্রদর্শক "
+"ব্যবহার করলেও কোন সমস্যাসূচক বার্তা দেবেনা।  শুধুমাত্র নতুন চিঠি এসেছে কিনা পরীক্ষা "
+"করা হবে -- এমন কি আপনি যদি সাম্প্রতিক চিঠি পরীক্ষা করার নিয়ম ঠিক করে দেন, "
+"তাহলেও।"
+
+#, fuzzy
+msgid "Change title on supported browsers"
+msgstr "যদি যুক্তপত্র প্রদর্শক পারে তা হলে পত্রের শিরোনাম বদলানো হোক"
+
+#, fuzzy, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"<b>গান/বাজনা/ছবি দেখানোর ব্যবস্থাটা সক্রিয় করা হোক</b> টা চিহ্নিত করে দিলে আপনার "
+"কোন চিঠি রাখার বাক্সে যদি না পড়া চিঠি থেকে থাকে তাহলে বাজনা বাজানো হবে।  কোন "
+"বাজনা বাজানো হবে সেটার ফাইল আপনি পছন্দ করে দিতে পারেন।"
+
+msgid "Enable Media Playing"
+msgstr "গান/বাজনা/ছবি দেখানোর ব্যবস্থা সক্রিয় করা হোক"
+
+#, fuzzy, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+"ডাক ব্যবস্থার ফাইলের তালিকাতে দেখিয়ে দিন নতুন চিঠি এলে কোন বাজনাটা বাজানো হবে।  "
+"আপনি যদি \"কোনটাই না\" ঠিক করে দেন, তাহলে বাজনা ব্যবহার করা হবে না।"
+
+#, fuzzy
+msgid "Select server file"
+msgstr "ডাকব্যবস্থার কোন ফাইলটা ব্যবহার করা হবে বলুন:"
+
+msgid "(none)"
+msgstr "(একটাও না)"
+
+msgid "requires JavaScript to work"
+msgstr "ব্যবহারের জন্য জাভালিপি (Javascript) লাগবে"
+
+msgid "Try"
+msgstr "চেষ্টা করা হোক"
+
+msgid "Current File:"
+msgstr "বর্তমান ফাইল:"
+
+msgid "NewMail Options"
+msgstr "নতুন চিঠি সংক্রান্ত নিয়মাবলী"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"নতুন চিঠি আসলে বাজনা বাজানো বা নতুন পাতা খুলে জানানোর নিয়মাবলী এখান থেকে ঠিক "
+"করে দেওয়া যায়।"
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s নতুন চিঠি"
+
+#, fuzzy, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s নতুন চিঠি"
+msgstr[1] "%s নতুন চিঠি"
+
+msgid "Test Sound"
+msgstr "শব্দ পরীক্ষা"
+
+msgid "No sound specified"
+msgstr "কি বাজানো হবে বলা হয় নি"
+
+msgid "Loading the sound..."
+msgstr "বাজানোর জন্য প্রস্তুতি..."
+
+msgid "Sent Subfolders Options"
+msgstr "পাঠানো চিঠিগুলোর প্রতিলিপি রাখার বাক্স সংক্রান্ত নিয়মাবলী"
+
+msgid "Use Sent Subfolders"
+msgstr "পাঠানো চিঠিগুলোর প্রতিলিপি রাখার বাক্স ব্যবহার করা হবে"
+
+msgid "Monthly"
+msgstr "মাসিক"
+
+msgid "Quarterly"
+msgstr "ত্রৈমাসিক"
+
+msgid "Yearly"
+msgstr "বাত্‌সরিক"
+
+msgid "Base Sent Folder"
+msgstr "সবচেয়ে উপরের প্রেরিত চিঠির বাক্স"
+
+msgid "Enabled"
+msgstr "সক্রিয়"
+
+msgid "Disable it"
+msgstr "নিষ্ক্রিযয় করা হোক"
+
+msgid "Enable it"
+msgstr "সক্রিয় করা হোক"
+
+msgid "Spam reporting"
+msgstr "উড়োচিঠি পেলে জানানোর ব্যবস্থা"
+
+msgid "SpamCop link is:"
+msgstr "স্প্যামকপ (SpamCop) এর পত্রসূত্র হল:"
+
+msgid "Delete spam when reported:"
+msgstr "জানানোর পর উড়োচিঠি মুছে ফেলা হোক:"
+
+msgid "Only works with email-based reporting"
+msgstr "শুধুমাত্র বিজলীচিঠি দিয়ে জানানোর ব্যবস্থা ব্যবহার করা যায়"
+
+msgid "Spam Reporting Method:"
+msgstr "উড়ো চিঠির বর্ণনা যেভাবে পাঠানো হবে :"
+
+msgid "Quick email-based reporting"
+msgstr "দ্রুত - বিজলীচিঠি দিয়ে"
+
+msgid "Thorough email-based reporting"
+msgstr "বিস্তারিত - বিজলী চিঠি দিয়ে"
+
+msgid "Web-based form"
+msgstr "বিশ্বব্যাপী যুক্তপত্রযোজনা দিয়ে"
+
+msgid "Save Method"
+msgstr "কিভাবে করা হবে তা লিখে রাখা হোক"
+
+msgid "Your SpamCop authorization code:"
+msgstr "স্প্যামকপ (SpamCop) ব্যবহারের জন্য স্প্যামকপের দেওয়া পরিচায়ক গুপ্তবাক্য:"
+
+msgid "see below"
+msgstr "নীচে বর্ণিত আছে"
+
+msgid "Save ID"
+msgstr "নামটা মনে রেখে দেওয়া হোক"
+
+msgid "About SpamCop"
+msgstr ""
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+"স্প্যামকপ (SpamCop) বিনা পয়সায় আপনাকে কিছু সুবিধা দেয়।  উড়োচিঠি আসলে কোথাথেকে "
+"আসছে ওরা তা খুঁজে বের করতে সাহায্য করে।  এরপর উড়োচিঠির ব্যাপারটা সঠিক কর্তৃপক্ষকে "
+"জানানোর কাজটাও ওরা করে থাকে।"
+
+#, fuzzy, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+"এই সুবিধা ব্যবহার করতে হলে আপনাকে স্প্যামকপের কাছ থেকে একটি গুপ্তবাক্য যোগাড় করতে "
+"হবে।  ওরা বিনা পয়সায় এই গুপ্তবাক্য দিয়ে থাকে, কিন্তু সে জন্য প্রথমে আপনাকে <a href="
+"\"http://spamcop.net/anonsignup.shtml\">এই পত্রসূত্র</a> অনুসরণ করে আপনার কিছু "
+"তথ্য লিখিয়ে নিতে হবে।"
+
+msgid "Before you sign up, be warned"
+msgstr ""
+
+#, fuzzy, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+"<b>আপনি তথ্য লিখিয়ে নেবার আগে বলে রাখছি -- সাবধান!!! </b> কোন কোন ব্যবহারকারী "
+"অভিযোগ করেছেন যে স্প্যামকপে যে ঠিকানা লেখানো হয়, তা মাঝেমাঝে উড়োচিঠি পাঠানো "
+"লোকজনের হাতে চলে যায়।  তাই সবচেয়ে ভাল হয় যদি আপনি <a href=\"http://www/yahoo."
+"com/\">Yahoo</a>র দেওয়া <a href=\"http://dir.yahoo.com/Business_and_Economy/"
+"Business_to_Business/Communications_and_Networking/"
+"Internet_and_World_Wide_Web/Email_Providers/Forwarding_Services/"
+"Free_Forwarding/\">চিঠি রিলে ব্যবস্থাপক</a> জাতীয় কোন এক জায়গায় কম গুরুত্বপূর্ণ "
+"একটা বিজলীচিঠি রিলে করার ঠিকানা খুলে সেই ঠিকানাটা স্প্যাম কপকে দেন।  এই ঠিকানার "
+"চিঠি আপনার নিত্যব্যবহার্য্য ঠিকানায় রিলে করে দিতে পারেন।  আর যদি দেখেন যে এই "
+"ঠিকানায় অনেক উড়োচিঠি আসা শুরু হয়েছে, তাহলে এই ঠিকানাটা বন্ধ করে দিতে পারবেন"
+
+#, fuzzy
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+"স্প্যামকপের কাছ থেকে পরিচায়ক গুপ্তবাক্য পাবার পর নীচের সূত্রটিতে খোঁচা দিয়ে এই "
+"প্রবর্ধনটিকে সক্রিয় করে দিতে হবে।  এরপর থেকে চিঠি দেখার সময় ডান তিকে উপরে কোন "
+"চিঠিকে উড়োচিঠি হিসাবে জানানোর জন্য একটি পত্রসূত্র দেওয়া থাকবে।  কোন উড়োচিঠি পেলে "
+"সেই সূত্রটিতে খোঁচা দিন।  আপনি নিশ্চিত কিনা জিজ্ঞেস করার জন্য একটি পাতা খোলা হবে, "
+"এবং আপনি নিশ্চিত বললে কি পদ্ধতিতে জানানো হবে তার উপর নির্ভর করে ঠিকমত পাঠানোর "
+"ব্যবস্থা করা হবে।"
+
+#, fuzzy
+msgid "Email-based reporting"
+msgstr "বিজলী-ডাক ব্যবস্থা ব্যবহার করে জানানো"
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+"নীচের সুইচটা চেপে দিলে চিঠিটা স্প্যামকপের কাছে পাঠিয়ে দেওয়া হবে এবং আপনি চাইলে "
+"চিঠিটা মুছেও ফেলা হবে।  এরপর আপনি স্প্যামকপের কাছ থেকে একটা চিঠি পাবেন।  (মনে "
+"রাখবেন, আপনি স্প্যামকপকে যেই ঠিকানা দিয়েছেন, স্প্যামকপ সেই ঠিকানাতেই উত্তর "
+"পাঠাবে।  কাজেই আপনি যদি চিঠি রিলে করার ব্যবস্থা করে থাকেন, তাহলে আগে থেকে চিঠি "
+"ঠিকমত রিলে হচ্ছে কিনা পরীক্ষা করে নেওয়া ভাল। )  স্প্যামকপের পাঠানো চিঠিতে একটা "
+"পত্রসূত্র থাকবে যেটা অনুসরণ করলে নতুন একটা পাতা খোলা হবে।"
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+"এই দ্রুত অভিযোগ ব্যবস্থা ব্যবহার করলে শুধুমাত্র বিস্তারিত বর্ণনা প্রস্তুতের জন্য পাঠানো "
+"হবে।  তার উপর সম্ভবতঃ এই ব্যবস্থাটি গ্রাহকদের জন্য সংরক্ষিত (গ্রাহক হতে হলে মনে হয় "
+"খরচ করতে হয়)।  আশা করছি ওরা এই ব্যবস্থা শীঘ্রই বদলে ফেলবে।"
+
+#, fuzzy
+msgid "Web-based reporting"
+msgstr "বিশ্বব্যাপী পত্রযোজনা ব্যবস্থা ব্যবহার করে জানানো"
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+"নিশ্চিতকরণের পাতার সুইচ চাপলে যুক্তপত্র প্রদর্শক একটা নতুন পাতা খুলে স্প্যামকপ ব্যবস্থার "
+"বর্ণনা দেখাবে।  তখন চিঠিটা মুছে ফেলা হবে না, কিন্তু উড়োচিঠি সম্পর্কে অভিযোগ করার "
+"জন্য আপনার উত্তরের অপেক্ষা করারও দরকার নেই।"
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+"স্প্যামকপ যখন কোন তথ্য পাবে তখন সেটা সম্পর্কে দেখাবে।  তাই একটা সুইচ দেখতে পাওয়া "
+"পর্যন্ত পাতা ধরে নীচে নামতে থাকুন।  তথ্য খুঁজে বের করতে অনেক সময় সময় লাগতে পারে।  "
+"কাজেই ধৈর্য ধরতে হবে।  যা লেখা দেবে, তা পড়ে দেখুন এবং তারপর উড়োচিঠির বিবরণটা "
+"পাঠিয়ে দিন।  এরপর পাতাটি বন্ধ করে দিন।  এরপর আবার কাঠবেড়ালী ডাকে ফেরত এসে "
+"চিঠিটা আবার দেখতে বা মুছে ফেলতে পারেন।"
+
+msgid "SpamCop service type"
+msgstr ""
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+
+#, fuzzy
+msgid "More information"
+msgstr "ডাক ব্যবস্থাপক (IMAP) সংক্রান্ত তথ্য"
+
+#, fuzzy, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+"স্প্যামকপ (SpamCop) সম্পর্কে <b>বিস্তারিত জানতে হলে</b>, বা উড়ো চিঠি সম্পর্কে  এবং "
+"এ সম্পর্কিত অনেক তথ্যের জন্য <a href=\"http://spamcop.net/help.shtml\">স্প্যামকপের "
+"সাহায্য এবং প্রশ্নোত্তর </a> পাতায় দেখুন।"
+
+msgid "Report as Spam"
+msgstr "এটা যে একটা উড়ো চিঠি, তা জানানো হোক"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "স্প্যামকপ (SpamCop) ব্যবহার করে উড়োচিঠির কথা কর্তৃপক্ষকে জানানো হোক"
+
+#, fuzzy
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+"উড়োচিঠি থামাতে সাহায্য করুন -- স্প্যামকপ (SpamCop) উড়োচিঠিটা পড়ে আসলে এটা "
+"কোথাথেকে আসছে সেটা বের করে এবং কোথায় অভিযোগ জানাতে হবে বুঝে নেয়।  এই ব্যবস্থাটা "
+"বেশ দ্রুত ও ভাল কাজ করে -- ব্যবহার করা বেশ সহজ।"
+
+#, fuzzy
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+"আপনি যদি উড়োচিঠির বর্ণনা পাঠান, তাহলে উত্তরে একটা চিঠি আসবে যাতে কিছু পত্রসূত্র "
+"থাকবে।  ওই পত্রসূত্র ব্যবহার করে আপনি উড়োচিঠি সংশ্লিষ্ট কর্তৃপক্ষের কাছে  অভিযোগ "
+"পাঠিয়ে দিতে পারবেন।  এই কাজটি করার জন্য কোন খরচ নেই।  আপনি নীচের 'বর্ণনা "
+"পাঠানো হোক' সুইচটি চাপলে ধরে নেওয়া হবে যে আপনি স্পামকপ (SpamCop) এর সকল "
+"শর্তাবলী মেনে নিচ্ছেন।"
+
+msgid "Cancel / Done"
+msgstr "আর কিছু করার দরকার নেই"
+
+msgid "Send Spam Report"
+msgstr "উড়োচিঠির বর্ণনা পাঠানো হোক"
+
+msgid "SpellChecker Options"
+msgstr "বানান পরীক্ষা করার ব্যবস্থার জন্য নিয়ম"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"আপনার নিজের তৈরী শব্দকোষ কিভাবে ক্রমাণ্বিত করা হবে, কিভাবে ওটাতে পরিবর্তন করা "
+"হবে, এবং বানান পরীক্ষার জন্য আপনি কি কি ভাষা ব্যবহার করবেন তা এখানে ঠিক করে "
+"দেওয়া যাবে।"
+
+msgid "Check Spelling"
+msgstr "বানান দেখা হোক"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "&quot;বানান পরীক্ষা করার ব্যবস্থার জন্য নিয়ম&quot; পাতায় ফেরা হোক"
+
+msgid "ATTENTION:"
+msgstr "সাবধান! সাবধান!! সাবধান!!!:"
+
+#, fuzzy
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"কাঠবেড়ালী বানান পরীক্ষন ব্যবস্থা আপনার নিজের শব্দকোষ লিপিগুপ্তি থেকে উদ্ধার করতে "
+"পারে নি।  এর সবচাইতে সম্ভাব্য কারণ হল যে আপনি আপনার ডাকব্যবস্থার গুপ্তবাক্য "
+"লিপিগুপ্তি করার পর কোন এক সময় বদলে ফেলেছেন।  আপনার পুরানো গুপ্তবাক্য দিয়ে চেষ্টা "
+"করুন।  যদি লিপিগুপ্তি উদ্ধার করা যায়, তাহলে এর পর আপনার নতুন গুপ্তবাক্য দিয়ে "
+"লিপিগুপ্তি করা হবে।<br>আর যদি এমন হয় যে আপনি শব্দকোষটা লিপিগুপ্তি করেন নি, তাহলে "
+"এই অবস্থার সম্ভাব্য কারণ হল ফাইলটা কোন ভাবে গুলিয়ে গেছে।  ফাইলটা মুছে নতুন করে শুরু "
+"করা ছাড়া তাহলে আর কোনো উপায় নেই।  আপনি যদি পুরানো গুপ্তবাক্য ভুলে গিয়ে থাকেন, "
+"তাহলেও ফাইলটা মুছে নতুন করে শুরু করতে হবে -- গুপ্তবাক্য ছাড়া ফাইলটা পড়ার কোনো উপায় "
+"নাই (কারিগরী ব্যবস্থাপকেরাও কিছু করতে পারবেন না)।  "
+
+msgid "Delete my dictionary and start a new one"
+msgstr "আমার নিজের তৈরী শব্দকোষটা মুছে নতুন করে শুরু করা হোক"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "আমার পুরানো লিপিগুপ্তি উদ্ধার বাক্যটা দিয়ে লিপিগুপ্তি ভেদ করা হোক:"
+
+msgid "Proceed"
+msgstr "শুরু কর"
+
+msgid "You must make a choice"
+msgstr "আপনাকে এর মধ্যেই একটা বেঁছে নিতে হবে"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr ""
+"আপনি হয় শব্দকোষটা মুছে ফেলতে পারেন, অথবা আপনার পুরানো লিপিগুপ্তির বাক্যটা দিতে "
+"পারেন -- দুটো একসাথে করা যাবে না।"
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr ""
+"এতে আপনার নিজের তৈরী শব্দকোষটা মুছে যাবে।  ঠিক করে ভেবে দেখুন -- করে ফেলা হবে "
+"কি?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "শব্দকোষটা লিপিগুপ্তি ভেদ করে পড়ে নিতে গিয়ে সমস্যা হল"
+
+msgid "Cute."
+msgstr "থাম"
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr ""
+
+msgid "Error while writing to pipe."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "দিনপঞ্জিকার ফাইল %s তে লেখা যাচ্ছে না"
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr ""
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "'%s' এই প্রক্রিয়কটা চালানোর চেষ্টা করা হল, কিন্তু সে বলল:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "কাঠবেড়ালী বানান পরীক্ষকের নিয়মগুলো ঠিকমত দেওয়া হয় নি"
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "বানান পরীক্ষা শেষ।  যা বদলানো হল, তা কি প্রয়োগ করা হবে?"
+
+msgid "No changes were made."
+msgstr "কিছুই বদলানো হয় নি"
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "আপনার নিজের তৈরী শব্দকোষটা তথ্যচক্রে লিখে রাখা হচ্ছে... দয়া করে ধৈর্য ধরুন।"
+
+msgid "SquirrelSpell Results"
+msgstr "বানান পরীক্ষার ফলাফল"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "%s টা ভুল পাওয়া গেছে"
+
+msgid "Line with an error:"
+msgstr "ভুলটা এই লাইনে ছিল:"
+
+msgid "Error:"
+msgstr "ভুল:"
+
+msgid "Suggestions:"
+msgstr "সম্ভাব্য সঠিক বানান:"
+
+msgid "Suggestions"
+msgstr "সম্ভাব্য সঠিক বানান"
+
+msgid "Change to:"
+msgstr "সঠিক বানানটা হল:"
+
+msgid "Occurs times:"
+msgstr "যতবার পাওয়া গেছে:"
+
+msgid "Change this word"
+msgstr "এই শব্দটা ঠিক করা হোক"
+
+msgid "Change"
+msgstr "ঠিক করা হোক"
+
+msgid "Change ALL occurances of this word"
+msgstr "এই শব্দটা যত জায়গায় আছে, সব জায়গায় ঠিক করে দেওয়া হোক"
+
+msgid "Change All"
+msgstr "এই শব্দটা যত জায়গায় আছে সবগুলো ঠিক করা হোক"
+
+msgid "Ignore this word"
+msgstr "এই শব্দটা ঠিক করতে চাইনা"
+
+msgid "Ignore"
+msgstr "ঠিক করতে চাই না"
+
+msgid "Ignore ALL occurances this word"
+msgstr "এই ভুলটা যত জায়গায় আছে তার একটাও ঠিক করতে চাই না"
+
+msgid "Ignore All"
+msgstr "কোন ভুল ঠিক করতে চাই না"
+
+msgid "Add this word to your personal dictionary"
+msgstr "শব্দকোষে আপনি নিজে যেসব শব্দ যোগ করছেন, তার মধ্যে এটাও যোগ করা হোক"
+
+msgid "Add to Dic"
+msgstr "শব্দকোষে যোগ করা হোক"
+
+msgid "Close and Commit"
+msgstr "একটু থামা হোক এবং যা যা বদলানো হল তা প্রয়োগ করা হোক"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr ""
+"বানান পরীক্ষা শেষ হয় নি।  আপনি কি সত্যিই এখন পর্যন্ত যা যা করা হল তা প্রয়োগ করে "
+"বন্ধ করে দিতে চান?"
+
+msgid "Close and Cancel"
+msgstr "যা যা করা হল, তা বাতিল করে বন্ধ করে ফেলা হোক"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr ""
+"বানান পরীক্ষা শেষ হয়নি।  আপনি কি সত্যিই বন্ধ করতে চান এবং যা যা বদলানো হল তা "
+"বাতিল করে দিতে চান?"
+
+msgid "No errors found"
+msgstr "কোন সমস্যা পাওয়া যায় নি"
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"আপনার নিজের তৈরী শব্দকোষটা <strong>লিপিগুপ্তি করে লেখা হল</strong>।  এখন "
+"লিপিগুপ্তি উদ্ধার না করে পড়া যাবে না।"
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"আপনার নিজের তৈরী শব্দকোষটা <strong>লিপিগুপ্তি থেকে উদ্ধার করা হল</strong>।  এখন "
+"সহজলিপিতে লেখা আছে -- সহজেই পড়া যাবে।"
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "নিজের তৈরী শব্দকোষের জন্য লিপিগুপ্তির নিয়ম"
+
+msgid "Your personal dictionary was erased."
+msgstr "আপনার নিজের তৈরী শব্দকোষটা মুছে গেছিল"
+
+msgid "Dictionary Erased"
+msgstr "শব্দকোষ মুছে ফেলা হল"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"শব্দকোষে আপনি নিজে যা যোগ করেছিলেন, তা মুছে গেছে।  দয়া করে এই পাতাটি বন্ধ করে "
+"\"বানান পরীক্ষা করা হোক\"-এ খোঁচা দিয়ে নতুন করে বানান পরীক্ষা শুরু করুন।"
+
+msgid "Close this Window"
+msgstr "এই পাতাটি বন্ধ করা হোক"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"আপনার নিজের তৈরী শব্দকোষটা আবার ঠিকমত লিপিগুপ্তি করা গেছে।  এখন বানান পরীক্ষার "
+"নিয়মের পাতায় ফেরত যান এবং নতুন করে শুরু করুন।"
+
+#, fuzzy
+msgid "Successful re-encryption"
+msgstr "ঠিকমত লিপিগুপ্তি করা গেছে"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"আপনার নিজের তৈরী শব্দকোষটা আবার ঠিকমত লিপিগুপ্তি করা গেছে।  এখন এই পাতাটি বন্ধ "
+"করে \"বানান পরীক্ষা করা হোক\"-এ গিয়ে নতুন করে বানান পরীক্ষা শুরু করুন।"
+
+msgid "Dictionary re-encrypted"
+msgstr "শব্দকোষ আবার লিপিগুপ্তি করা হল"
+
+msgid "Personal Dictionary"
+msgstr "শব্দকোষে আপনার নিজের সংযোজনা"
+
+msgid "No words in your personal dictionary."
+msgstr "আপনার নিজের বানানো শব্দকোষে কোন শব্দ নেই"
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "Cochez les mots que vous souhaitez effacer de votre dictionnaire."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "%s শব্দকোষ"
+
+msgid "Delete checked words"
+msgstr "যেসব শব্দ চিহ্নিত করা হয়েছে সেগুলো মুছে ফেলা হোক"
+
+msgid "Edit your Personal Dictionary"
+msgstr "আপনার নিজের তৈরী শব্দকোষে নিয়ে কাজ করা হোক"
+
+msgid "Please make your selection first."
+msgstr "প্রথমে কিছু একটা চিহ্নিত করুন"
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+"এখন আপনার নিজের তৈরী শব্দকোষটা লিপিগুপ্তি করে লিখে রাখা হবে।  ঠিক করে ভেবে দেখুন।"
+
+#, fuzzy
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr ""
+"এখন আপনার নিজের তৈরী শব্দকোষটা লিপিগুপ্তি ভেঙে সহজলিপিতে লিখে রাখা হবে।  ঠিক "
+"করে ভেবে দেখুন।"
+
+#, fuzzy
+msgid "Your personal dictionary is currently encrypted."
+msgstr "আপনার নিজের তৈরী শব্দকোষটা মুছে গেছিল"
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr ""
+"আমার নিজের তৈরী শব্দকোষটার লিপিগুপ্তি উদ্ধার করে পরিষ্কার সহজলিপিতে লিখে রাখা হোক"
+
+msgid "Change crypto settings"
+msgstr "লিপিগুপ্তির নিয়মাবলী বদলানো হোক"
+
+#, fuzzy
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "আপনার নিজের তৈরী শব্দকোষটা মুছে গেছিল"
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+
+#, fuzzy
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"<p>শব্দকোষে আপনি নিজে যা যোগ করেছেন তা বর্তমানে <strong>লিপিগুপ্তি দিয়ে সংরক্ষিত "
+"নেই</strong>।  তড়িত্ ডাক ব্যবস্থার প্রতিরক্ষা ব্যবস্থা যদি কেউ ভেঙে ফেলে আপনার "
+"শব্দকোষ পড়ে ফেলে তার হাত থেকে বাঁচার জন্য আপনি লিপিগুপ্তি ব্যবহার করার কথা ভেবে "
+"দেখতে পারেন।  লিপিগুপ্তি করে রাখলে ফাইলটা গুপ্তবাক্য ছাড়া ঠিকমত পড়া যাবে না -- শুধু "
+"অর্থহীন সব অক্ষর দেখা যাবে।  গুপ্তবাক্য হিসাবে আপনার ডাকবাক্সের গুপ্তবাক্য ব্যবহার করা "
+"হবে।</p><p><strong>সাবধান!!!</strong> যদি আপনি লিপিগুপ্তি ব্যবহার করবেন বলে ঠিক "
+"করে থাকেন তা হলে মনে রাখবেন যে আপনি নিজে যদি আপনাীর গুপ্তবাক্য ভুলে যান, তাহলে "
+"আর ফাইলটা পড়া যাবে না।  এমনকি কারিগরী ব্যবস্থাপকেরা যদি আপনাকে একটা নতুন "
+"গুপ্তবাক্য দেয়, তাতেও এই ফাইলের লিপিগুপ্তি উদ্ধার করা যাবে না।  আবার কারিগরী "
+"ব্যবস্থাপকেরা যদি আপনার ডাকবাক্সের গুপ্তবাক্য বদলেও দেয়, তাহলেও এই ফাইলের লিপিগুপ্তি "
+"কাটাতে পুরানো বাক্য -- যেটা দিয়ে লিপিগুপ্তি করা হয়েছিল -- সেটা দিয়েই লিপিগুপ্তি "
+"কাটানো যাবে।</p>"
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "আমার নিজের তৈরী শব্দকোষটিকে লিপিগুপ্তি দিয়ে বেঁধে গুপ্ত অবস্থায় লিখে রাখা হোক"
+
+#, fuzzy, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "<strong>%s</strong> শব্দকোষ থেকে নীচের শব্দগুলো মুছে ফেলা হচ্ছে: "
+
+msgid "All done!"
+msgstr "সব কাজ শেষ!"
+
+msgid "Personal Dictionary Updated"
+msgstr "নিজের তৈরী শব্দকোষটা বদলানো হল"
+
+msgid "No changes requested."
+msgstr "কোনকিছুই বদলাতে বলা হয় নি।"
+
+msgid "Please wait, communicating with the server..."
+msgstr "ডাকব্যবস্থার সাথে যোগাযোগ করা হচ্ছে... অনুগ্রহপূর্বক অপেক্ষা করুন।"
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr "এই চিঠিটার বানান পরীক্ষার জন্য কোন শব্দকোষটা ব্যবহার করা হবে বলে দিন:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "বানান পরীক্ষক শুরু করা হচ্ছে"
+
+#, fuzzy, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr ""
+"আপনার ঠিক করা নিয়ম: <strong>%s</strong> -র বদলে আলাদা করে বলে না দিলে এখন "
+"থেকে <strong>%s</strong> শব্দকোষটা ব্যবহার করা হবে।"
+
+#, fuzzy, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr ""
+"বানান পরীক্ষার জন্য <strong>%s</strong> শব্দকোষ ব্যবহার করা হচ্ছে (আলাদা করে বলে "
+"না দিলে এই শব্দকোষ ব্যবহার করা হবে বলে নিয়মে বলা আছে)"
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "আন্তর্জাতিক শব্দকোষ সংক্রান্ত পছন্দগুলো বদলে নেওয়া হয়েেছে"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr ""
+"আপনি বানান পরীক্ষার জন্য যেসব আন্তর্জাতিক শব্দকোষ ব্যবহার করতে চান সেগুলো চিহ্নিত "
+"করুন:"
+
+msgid "Make this dictionary my default selection:"
+msgstr "আলাদা করে বলে না দিলে আমি এই শব্দকোষটা ব্যবহার করব:"
+
+msgid "Make these changes"
+msgstr "যা যা বদলাতে বলা হল, তা বদলানো হোক"
+
+msgid "Add International Dictionaries"
+msgstr "আন্তর্যাতিক শব্দকোষ যোগ করা হোক"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "আপনি কোন নিয়মগুলো ঠিক করে দিতে চান চিহ্নিত করে দিন:"
+
+msgid "Edit your personal dictionary"
+msgstr "শব্দকোষে আপনি নিজে যে সব শব্দ যোগ করছেন সেগুলো নিয়ে কাজ করা হোক"
+
+msgid "Set up international dictionaries"
+msgstr "শব্দকোষ ব্যবহারের জন্য যে সব নিয়ম ব্যবহার করা হবে"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "আপনার নিজের শব্দকোষ লিপিগুপ্তি করা বা লিপিগুপ্তি থেকে উদ্ধার করা হোক"
+
+msgid "not available"
+msgstr "এখনো নেই"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "বানান পরীক্ষা করার জন্য যেসব নিয়ম ব্যবহার করা হবে"
+
+msgid "Translator"
+msgstr "অনুবাদ করার প্রক্রিয়ক"
+
+msgid "Saved Translation Options"
+msgstr "অনুবাদক ব্যবস্থার জন্য নিয়মাবলী লিখে রাখা হল"
+
+msgid "Your server options are as follows:"
+msgstr "ডাক ব্যবস্থা সংক্রান্ত নিয়মগুলো হল:"
+
+#, fuzzy
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr ""
+"সর্বাধিক ১০০০ অক্ষর অনুবাদ করা যায়।  সীসট্রান (Systran) প্রক্রিয়ক ব্যবহার করা হচ্ছে।"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "মোট %s জোড়া ভাষা নিয়ে কাজ করার জন্য প্রক্রিয়ক আছে"
+
+msgid "No known limits, powered by Systran"
+msgstr "জানামতে কোন শব্দসীমা নেই।  সীসট্রান (Systran) প্রক্রিয়ক ব্যবহার করা হচ্ছে।"
+
+#, fuzzy
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+"জানামতে কোন শব্দসীমা নেই।  ট্রান্সলেশন এক্সপার্ট (Translation Expert) এর "
+"ইন্টারট্রান (Intertran) প্রক্রিয়ক ব্যবহার করা হচ্ছে।"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "অনুবাদের জন্য যতগুলো ভাষায় কাজ করার ক্ষমতা আছে: %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr ""
+"গ্রীকে অনুবাদ।  জানামতে কোন শব্দসীমা নেই।  সীসট্রান (Systran) প্রক্রিয়ক ব্যবহার করা "
+"হচ্ছে।"
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr "রুশ ভাষায় অনুবাদ: ৫০০ অক্ষরের বেশী অনুবাদ করা যাবে না"
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr ""
+"এছাড়াও আপনি ঠিক করে দিতে পারবেন অনুবাদের যন্ত্রপাতির বাক্স দেখানো হবে কিনা এবং "
+"দেখানো হলে কোথায় দেখানো হবে।"
+
+msgid "Select your translator:"
+msgstr "যে প্রক্রিয়ক দিয়ে অনুবাদ করা হবে:"
+
+msgid "When reading:"
+msgstr "পড়ার সময়:"
+
+msgid "Show translation box"
+msgstr "অনুবাদের যন্ত্রপাতির বাক্স দেখানো হোক"
+
+msgid "to the left"
+msgstr "বামদিকে"
+
+msgid "in the center"
+msgstr "মাঝখানে"
+
+msgid "to the right"
+msgstr "ডানদিকে"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "কাঠবেড়ালী ডাকের পাতার মধ্যে"
+
+msgid "Translation Options"
+msgstr "অনুবাদের জন্য যা যা নিয়ম ব্যবহার করা হবে"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "আপনি যদি অন্য কোন ভাষায় চিঠি পান, তাহলে অনুবাদের জন্য কি ব্যবহার করা হবে?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s থেকে %s তে"
+
+msgid "Chinese, Simplified"
+msgstr ""
+
+msgid "English"
+msgstr "ইংরেজী"
+
+msgid "Chinese, Traditional"
+msgstr ""
+
+msgid "Dutch"
+msgstr "ডাচ"
+
+msgid "French"
+msgstr "ফরাসী (ফ্রান্স)"
+
+msgid "German"
+msgstr "জার্মান"
+
+msgid "Greek"
+msgstr "গ্রীক"
+
+msgid "Italian"
+msgstr "ইতালিয়"
+
+msgid "Japanese"
+msgstr "জাপানী"
+
+msgid "Korean"
+msgstr "কোরিয়ান"
+
+msgid "Portuguese"
+msgstr "পর্তুগীজ"
+
+msgid "Russian"
+msgstr "রুশ"
+
+msgid "Spanish"
+msgstr "স্প্যানিশ"
+
+msgid "Translate"
+msgstr "অনুবাদ করা হোক"
+
+msgid "Brazilian Portuguese"
+msgstr "ব্রাজিলে প্রচলিত পর্তুগীজ"
+
+msgid "Bulgarian"
+msgstr "বুলগেরিয়ান"
+
+msgid "Croatian"
+msgstr "ক্রোএশিয়"
+
+msgid "Czech"
+msgstr "চেক"
+
+msgid "Danish"
+msgstr "ড্যানিশ"
+
+msgid "Filipino (Tagalog)"
+msgstr ""
+
+msgid "Finnish"
+msgstr "ফিনিশ"
+
+msgid "Hungarian"
+msgstr "হাঙ্গেরীয়"
+
+msgid "Icelandic"
+msgstr "আইসল্যান্ডিক"
+
+msgid "Latin"
+msgstr "লাতিন"
+
+msgid "Latin American Spanish"
+msgstr "লাতিন-আমেরিকান স্প্যানিশ"
+
+msgid "Norwegian"
+msgstr "নরওয়েজিয়ান"
+
+msgid "Polish"
+msgstr "পোলিশ"
+
+msgid "Romanian"
+msgstr "রোমানিয়ান"
+
+msgid "Serbian"
+msgstr "সার্বিয়ান"
+
+msgid "Slovenian"
+msgstr "স্লোভেনিয়ান"
+
+msgid "Swedish"
+msgstr "সুইডিশ"
+
+msgid "Turkish"
+msgstr "তুর্কী"
+
+msgid "Welsh"
+msgstr "ওয়েল্শ"
+
+msgid "Indonesian"
+msgstr "ইন্দোনেশিয়ান"
+
+msgid "to English"
+msgstr "থেকে ইংরেজীতে"
+
+msgid "from English"
+msgstr "ইংরেজী থেকে"
+
+msgid "Interface language"
+msgstr "দেখানোর ভাষা"
+
+msgid "Translation direction"
+msgstr "কি থেকে কিসে অনুবাদ করতে হবে"
+
+#, fuzzy, php-format
+msgid "About SquirrelMail %s"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+#, fuzzy
+msgid "System information"
+msgstr "ডাক ব্যবস্থাপক (IMAP) সংক্রান্ত তথ্য"
+
+#, fuzzy, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr ""
+
+msgid "none installed"
+msgstr ""
+
+msgid "sort by nickname"
+msgstr ""
+
+#, fuzzy
+msgid "sort by name"
+msgstr "পৈত্রিক পদবী"
+
+msgid "sort by email"
+msgstr ""
+
+msgid "sort by info"
+msgstr ""
+
+#, fuzzy
+msgid "Add to address book"
+msgstr "ঠিকানার খাতায় লিখে রাখা হোক"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "চিঠি নেওয়া বন্ধ করার মত কোন চিঠির বাক্স পাওয়া যায় নি!"
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "যেখান থেকে চিঠি নেওয়া হবে, এমন কোনো চিঠির বাক্স পাওয়া যায় নি!"
+
+msgid "Last Refresh"
+msgstr "এই তালিকা যখন তৈরী করা হয়েছিল"
+
+#, fuzzy
+msgid "Check mail"
+msgstr "পরিচয় প্রমাণের সময় চিঠি লেনদেন করা হোক"
+
+msgid "Save folder tree"
+msgstr "চিঠি সাজানোর বাক্স রাখার আলমারিটা ঠিক মত রেখে দেওয়া হোক"
+
+#, fuzzy
+msgid "SquirrelMail Webmail Application"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+#, fuzzy
+msgid "Compose Preferences"
+msgstr "চিঠি রাখার বাক্সের জন্য নিয়ম"
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+#, fuzzy
+msgid "Received"
+msgstr "প্রাপ্তিপত্র"
+
+#, fuzzy
+msgid "As Attachment"
+msgstr "সংযুক্ত ফাইল(গুলি)"
+
+msgid "Bypass Trash"
+msgstr ""
+
+msgid "Please enter something to search for"
+msgstr "কি খুঁজতে হবে বলা হয় নি"
+
+msgid "There must be at least one criteria to search for"
+msgstr "অনুসন্ধানের জন্য অন্ততঃ একটা নিয়ম দিতে হবে"
+
+msgid "Error in criteria argument"
+msgstr "অনুসন্ধানের নিয়মের উপাদানে ভুল আছে"
+
+msgid "(Illegal date)"
+msgstr "(অর্থহীন তারিখ)"
+
+msgid "(Wrong date)"
+msgstr "(ভুল তারিখ)"
+
+msgid "In"
+msgstr "এর মধ্যে"
+
+msgid "(Missing argument)"
+msgstr "(উপাদান দেওয়া হয় নি)"
+
+msgid "(Spurious argument)"
+msgstr "(অতিরিক্ত উপাদান)"
+
+#, fuzzy
+msgid "Fold"
+msgstr "চিঠি সাজিয়ে রাখার বাক্স"
+
+#, fuzzy
+msgid "Unfold"
+msgstr "তথ্য"
+
+msgid "Saved Searches"
+msgstr "আগে লিখে রাখা অনুসন্ধান"
+
+msgid "Missing"
+msgstr "পাওয়া যাচ্ছে না"
+
+msgid "and&nbsp;subfolders:"
+msgstr "ও&nbsp;বাক্সের মধ্যের বাক্স:"
+
+msgid "Exclude Criteria:"
+msgstr "এই নিয়মটা বাদ দেওয়া হোক:"
+
+msgid "Search Criteria"
+msgstr "অনুসন্ধানের নিয়ম"
+
+msgid "Add New Criteria"
+msgstr "নতুন নিয়ম যোগ করা হোক"
+
+msgid "Remove Excluded Criteria"
+msgstr "যা যা নিয়ম বাদ দেওয়া হয়েছে সেগুলো বাদ দেওয়া হোক"
+
+msgid "Remove All Criteria"
+msgstr "অনুসন্ধানের সব নিয়ম বাতিল করা হোক"
+
+msgid "Not"
+msgstr "নেই"
+
+msgid "Answered"
+msgstr "উত্তর দেওয়া হয়েছে"
+
+msgid "Before"
+msgstr "এই তারিখের আগে"
+
+# BODY
+msgid "Message Body"
+msgstr "চিঠির লেখায়"
+
+msgid "Deleted"
+msgstr "মোছা হয়ে গেছে এমন"
+
+msgid "Draft"
+msgstr "খসড়া"
+
+msgid "Flagged"
+msgstr "টিক চিহ্ন দেওয়া"
+
+# FROM
+msgid "Sent By"
+msgstr "যে পাঠিয়েছে"
+
+# HEADER
+msgid "Header Field"
+msgstr "খামের লেখা"
+
+msgid "Keyword"
+msgstr "গুরুত্বপূর্ণ শব্দ"
+
+# LARGER
+msgid "Larger Than"
+msgstr "অন্ততঃ এই আকারের"
+
+msgid "Old"
+msgstr "পুরানো"
+
+msgid "On"
+msgstr "এই তারিখে পাঠানো"
+
+msgid "Recent"
+msgstr "সাম্প্রতিক"
+
+msgid "Seen"
+msgstr "পড়া হয়েছে এমন"
+
+msgid "Sent Before"
+msgstr "এই তারিখের আগে পাঠানো"
+
+msgid "Sent On"
+msgstr "এই তারিখ/সময়ে পাঠানো"
+
+msgid "Sent Since"
+msgstr "এই তারিখ/সময়ের পরে পাঠানো"
+
+msgid "Since"
+msgstr "এই তারিখ/সময়ের পরে"
+
+# SMALLER
+msgid "Smaller Than"
+msgstr "এই মাপের চেয়ে বড় নয়"
+
+# SUBJECT
+msgid "Subject Contains"
+msgstr "বিষয়ের মধ্যে আছে"
+
+# TEXT
+msgid "Header and Body"
+msgstr "খামে যা লেখা আছে এবং চিঠিতে যা লেখা আছে"
+
+# TO
+msgid "Sent To"
+msgstr "যার কাছে পাঠানো হয়েছে"
+
+msgid "And In"
+msgstr "আর এখানে"
+
+msgid "Or In"
+msgstr "অথবা এখানে"
+
+msgid "And"
+msgstr "এবং"
+
+msgid "Or"
+msgstr "অথবা"
+
+#, fuzzy
+msgid "Standard search"
+msgstr "আগে লিখে রাখা অনুসন্ধান"
+
+#, fuzzy
+msgid "Advanced search"
+msgstr "আগে লিখে রাখা অনুসন্ধান"
+
+#, fuzzy
+msgid "Folder List"
+msgstr "চিঠি সাজিয়ে রাখার বাক্স"
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Click here to change the sorting of the address list"
+msgstr ""
+
+#, fuzzy
+msgid "Illegal folder name."
+msgstr "(অর্থহীন তারিখ)"
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Please select a different name."
+msgstr ""
+"চিঠি সাজিয়ে রাখার বাক্সের জন্য এই নাম দেওয়া যাবে না।  অন্য একটা নাম ঠিক করুন।"
+
+#, fuzzy
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr ""
+"কোন বাক্সের নাম বদলানোর হবে তা আপনি চিহ্নিত করেন নি।  দয়া করে চিহ্নিত করুন।"
+
+#, fuzzy
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr ""
+"কোন বাক্সের নাম বদলানোর হবে তা আপনি চিহ্নিত করেন নি।  দয়া করে চিহ্নিত করুন।"
+
+#, fuzzy
+msgid "Possible reason:"
+msgstr "সম্ভাব্য কারণ হল : "
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+#, fuzzy
+msgid "Reason:"
+msgstr "উত্তরে যা পাওয়া গেছে:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown recipient"
+msgstr "উত্তরে যা পাওয়া গেল তার কোন মানে নেই"
+
+msgid "Unflag"
+msgstr ""
+
+#, fuzzy
+msgid "Flag"
+msgstr "টিক চিহ্ন"
+
+#, fuzzy
+msgid "Undelete"
+msgstr "মুছে ফেলা হোক"
+
+#, fuzzy
+msgid "General Message Composition"
+msgstr "চিঠি দেখানো এবং লেখা"
+
+#, fuzzy
+msgid "Replying and Forwarding Messages"
+msgstr "চিঠি রিলে করার সময় প্রতিলিপিও করা হবে"
+
+#, fuzzy
+msgid "Strip signature when replying"
+msgstr "উত্তর দেওয়ার সময় লেখা যেখান থেকে শুরু করা হবে"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Message Flags Icon Theme"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+#, fuzzy
+msgid "Use Compact Page Selector"
+msgstr "যে কোনো পাতায় যাবার ব্যবস্থা সক্রিয় করা হোক"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr ""
+
+msgid "Length of Subject Field (0 for full)"
+msgstr ""
+
+#, fuzzy
+msgid "Message Display Options"
+msgstr "কিভাবে দেখানো হবে"
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr ""
+
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "এই চিঠির বিষয়ে"
+
+#, fuzzy, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "মিনিট"
+msgstr[1] "মিনিট"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr ""
+
+#, fuzzy
+msgid "Hide SquirrelMail Header"
+msgstr "খামের লেখা বিস্তারিত দেখা হোক"
+
+#, fuzzy
+msgid "Search functions"
+msgstr "যা খোঁজা হবে"
+
+msgid "Only basic search"
+msgstr ""
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+#, fuzzy
+msgid "Enable aggressive decoding"
+msgstr "যে কোনো পাতায় যাবার ব্যবস্থা সক্রিয় করা হোক"
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use advanced tree folder listing"
+msgstr ""
+
+#, fuzzy
+msgid "Use icons"
+msgstr "সেকেন্ড"
+
+msgid "Use PHP recode functions"
+msgstr ""
+
+msgid "Use PHP iconv functions"
+msgstr ""
+
+msgid "Allow remote configuration test"
+msgstr ""
+
+msgid "Show System Specifications"
+msgstr ""
+
+#, fuzzy
+msgid "Search Mailing List Archives"
+msgstr "বিজলীআড্ডার তালিকা তৈরী করা হোক "
+
+msgid "Search SourceForge Bugtracker"
+msgstr ""
+
+#, fuzzy
+msgid "Search for words:"
+msgstr "যা খোঁজা হবে"
+
+msgid "Written by:"
+msgstr ""
+
+#, fuzzy
+msgid "Email addresses only"
+msgstr "বিজলীচিঠি পাঠাবার ঠিকানা"
+
+#, fuzzy
+msgid "Mailing list:"
+msgstr "বিজলী আড্ডা"
+
+#, fuzzy
+msgid "SquirrelMail users list"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+#, fuzzy
+msgid "SquirrelMail plugins list"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+#, fuzzy
+msgid "SquirrelMail developers list"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+#, fuzzy
+msgid "SquirrelMail internationalization list"
+msgstr "চিঠি দেওয়া কাঠবেড়ালী %s"
+
+#, fuzzy
+msgid "Sort by:"
+msgstr "যোগাযোগের ব্যবস্থা:"
+
+msgid "Relevance"
+msgstr ""
+
+#, fuzzy
+msgid "Search Archives"
+msgstr "খুঁজে যা পাওয়া গেল"
+
+#, fuzzy
+msgid "Reset Form"
+msgstr "চিহ্নিত বাক্সটা ফেলে দেওয়া হোক"
+
+msgid "Summary keyword:"
+msgstr ""
+
+# FROM
+#, fuzzy
+msgid "Sort By:"
+msgstr "যে পাঠিয়েছে"
+
+msgid "ID"
+msgstr ""
+
+#, fuzzy
+msgid "Summary"
+msgstr "রবিবার"
+
+#, fuzzy
+msgid "Open Date"
+msgstr "খোলা যায় নি"
+
+#, fuzzy
+msgid "Close Date"
+msgstr "বন্ধ করা"
+
+#, fuzzy
+msgid "Submitter"
+msgstr "করে ফেল"
+
+msgid "Assignee"
+msgstr ""
+
+#, fuzzy
+msgid "Order:"
+msgstr "অন্য:"
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+#, fuzzy
+msgid "Search Bugtracker"
+msgstr "অনুসন্ধানের নিয়ম"
+
+msgid "You must type in a new password."
+msgstr ""
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+
+msgid "Your new password does not match the verify password."
+msgstr ""
+
+msgid "You must type in your current password."
+msgstr ""
+
+#, fuzzy
+msgid "Your current password is not correct."
+msgstr "এই নামে কেউ নেই অথবা গুপ্তবাক্য মিলে নি।"
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+#, fuzzy
+msgid "Your new password contains invalid characters."
+msgstr "ডাকনামে আপনি যেসব অক্ষর ব্যবহার করেছেন, তা ব্যবহার করা যায় না"
+
+#, fuzzy
+msgid "Change Password"
+msgstr "এই শব্দটা ঠিক করা হোক"
+
+#, fuzzy
+msgid "Current Password:"
+msgstr "গুপ্তবাক্য:"
+
+#, fuzzy
+msgid "New Password:"
+msgstr "গুপ্তবাক্য:"
+
+#, fuzzy
+msgid "Verify New Password:"
+msgstr "গুপ্তবাক্য:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+#, fuzzy
+msgid "User's Password"
+msgstr "গুপ্তবাক্য:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to use TLS."
+msgstr "বদলানো যায় নি"
+
+#, fuzzy, php-format
+msgid "Error: %s"
+msgstr "সমস্যা "
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Server replied: %s"
+msgstr "বিজলী ডাকঘর থেকে বলা হচ্ছে: "
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to connect to LDAP server."
+msgstr "ডাকব্যবস্থার সাথে কোন যোগাযোগ নেই"
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+#, fuzzy
+msgid "Search error."
+msgstr "যা খোঁজা হবে"
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr ""
+
+msgid "PHP mhash extension is missing."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+#, fuzzy
+msgid "unknown"
+msgstr "অজানা তারিখ"
+
+msgid "Unable to validate user's password."
+msgstr ""
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+#, fuzzy
+msgid "Cannot change password!"
+msgstr "এই শব্দটা ঠিক করা হোক"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr ""
+
+msgid "SQL call failed, try again later."
+msgstr ""
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr ""
+
+msgid "Closing Connection"
+msgstr ""
+
+#, fuzzy
+msgid "Connecting to Password Server"
+msgstr "ডাকব্যবস্থার সাথে কোন যোগাযোগ নেই"
+
+msgid "No valid backend defined."
+msgstr ""
+
+msgid "Incorrent path to vmail.inc file."
+msgstr ""
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr ""
+
+msgid "Invalid user."
+msgstr ""
+
+#, fuzzy
+msgid "Empty domain"
+msgstr "অনুরোধ বাক্যে কিছু নেই"
+
+#, fuzzy
+msgid "Empty domain password"
+msgstr "অনুরোধ বাক্যে কিছু নেই"
+
+#, fuzzy
+msgid "Empty username"
+msgstr "নাম:"
+
+msgid "Empty new password"
+msgstr ""
+
+#, fuzzy
+msgid "Server Capability response:"
+msgstr "ডাকঘর উত্তরে বলেছে: "
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+#, fuzzy
+msgid "Select"
+msgstr "সবগুলোকে চিহ্নিত করা"
+
+#, fuzzy
+msgid "Test Name"
+msgstr "প্রভূষণ সংজ্ঞায়নের নাম"
+
+#, fuzzy
+msgid "IMAP command string"
+msgstr "অনুরোধ বাক্যে কিছু নেই"
+
+#, fuzzy
+msgid "Request:"
+msgstr "চেয়েছে"
+
+#, fuzzy
+msgid "No POP3 servers configured yet."
+msgstr "কোন ডাকব্যবস্থার প্রক্রিয়ক ব্যবহার করা হবে বলা হয় নি "
+
+#, fuzzy
+msgid "Click here to go to the options page."
+msgstr "নতুন করে ঢুকতে চাইলে এখানে খোঁচা দিন।"
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "পরিচয় প্রমাণ হয়েছে: আগত চিঠির বাক্সে ["
+msgstr[1] "পরিচয় প্রমাণ হয়েছে: আগত চিঠির বাক্সে ["
+
+#, fuzzy
+msgid "Width of popup window:"
+msgstr "চিঠি লেখার পত্রাংশের প্রস্থ"
+
+msgid "If set to 0, reverts to default value"
+msgstr ""
+
+#, fuzzy
+msgid "Height of popup window:"
+msgstr "চিঠি লেখার পত্রাংশের উচ্চতা"
+
+msgid "uploaded media file"
+msgstr ""
+
+#, fuzzy
+msgid "none"
+msgstr "(একটাও না)"
+
+msgid "Upload Media File:"
+msgstr ""
+
+msgid "Uploaded Media File:"
+msgstr ""
+
+#, fuzzy
+msgid "unavailable"
+msgstr "এখনো নেই"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr ""
+
+#, fuzzy
+msgid "Spam Service Type:"
+msgstr "যে ডাকব্যবস্থাটি ব্যবহার করা হচ্ছে সেটি কিধরণের"
+
+#, fuzzy
+msgid "Free reporting"
+msgstr "উড়োচিঠি পেলে জানানোর ব্যবস্থা"
+
+msgid "Member services"
+msgstr ""
+
+#, fuzzy
+msgid "Save Service Type"
+msgstr "যাচাই করার যে ব্যবস্থাটা লিখে রাখা হয়েছে"
+
+#, fuzzy
+msgid "SpamCop reporting"
+msgstr "উড়োচিঠি পেলে জানানোর ব্যবস্থা"
+
+#, fuzzy
+msgid "Translation Theme:"
+msgstr "কি থেকে কিসে অনুবাদ করতে হবে"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+
+#, fuzzy
+msgid "Translation Preferences"
+msgstr "আপনার সংগঠনের নিজস্ব নিয়ম ঠিক করে দেওয়া"
+
+#, fuzzy
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr ""
+"সর্বাধিক ১০০০ অক্ষর অনুবাদ করা যায়।  সীসট্রান (Systran) প্রক্রিয়ক ব্যবহার করা হচ্ছে।"
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr ""
+"জানামতে কোন শব্দসীমা নেই।  গ্নু-এর GPLTrans প্রক্রিয়ক ব্যবহার করা হচ্ছে (বিনা পয়সায় "
+"পাওয়া যায়, বিনা বাধায় বিতরণ করা যায়, প্রক্রিয়কের স্তোত্র পাওয়া যায়)।"
+
+msgid "Transliterate unknown words:"
+msgstr ""
+
+msgid "When composing:"
+msgstr "লেখার সময়:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "এখনো কাজ করে না।  আপাততঃ কিছুই করা যায় না।"
+
+msgid "Delivery error report"
+msgstr "চিঠি পাঠাতে সমস্যার বর্ণনা"
+
+msgid "Undelivered Message Headers"
+msgstr "যেসব চিঠি পাঠানো যায় নি তার খামের লেখা"
+
+msgid "This image has been removed for security reasons"
+msgstr ""
+
+#~ msgid "Unknown error"
+#~ msgstr "কি সমস্যা হচ্ছে বোঝা যাচ্ছে না"
+
+#~ msgid "said"
+#~ msgstr "লিখেছে "
+
+#~ msgid "To:"
+#~ msgstr "প্রতি:"
+
+#~ msgid "CC:"
+#~ msgstr "প্রতিলিপি:"
+
+#~ msgid "BCC:"
+#~ msgstr "লুকানো প্রতিলিপি:"
+
+#~ msgid "Subject:"
+#~ msgstr "বিষয়:"
+
+#~ msgid "CC"
+#~ msgstr "প্রতিলিপি"
+
+#~ msgid "Business Card"
+#~ msgstr "পরিচয় বিনিময় পত্র"
+
+#~ msgid "Click here to try again"
+#~ msgstr "আবার চেষ্টা করতে চাইলে এখানে খোঁচা দিন"
+
+#~ msgid "You are currently using version %s."
+#~ msgstr "বর্তমানে আপনি %s-তম সংস্করণ ব্যবহার করছেন।"
+
+#~ msgid "All Messages"
+#~ msgstr "সব চিঠির জন্য"
+
+#~ msgid "POP3 noop:"
+#~ msgstr "POP3 ডাকব্যবস্থার noop বাক্য: "
+
+#~ msgid "] messages"
+#~ msgstr "] টা চিঠি আছে"
+
+#~ msgid "Message "
+#~ msgstr "চিঠি "
+
+#~ msgid "No-one server in use. Try to add."
+#~ msgstr "কোন ডাকব্যবস্থা সক্রিয় নেই।  নতুন করে একটা যোগ করুন।"
+
+#~ msgid "Hey! Wath do You are looking for?"
+#~ msgstr "কি খুঁজতে চাইছেন বলবেন তো?"
+
+#~ msgid "You have"
+#~ msgstr "এবার এসেছে"
+
+#~ msgid "New Mail Notification options saved"
+#~ msgstr "নতুন চিঠি এলে জানানোর নিয়ম লিখে রাখা হল"
+
+#~ msgid ""
+#~ "<p>Your personal dictionary is <strong>currently encrypted</strong>. This "
+#~ "helps protect your privacy in case the web-mail system gets compromized "
+#~ "and your personal dictionary ends up stolen. It is currently encrypted "
+#~ "with the password you use to access your mailbox, making it hard for "
+#~ "anyone to see what is stored in your personal dictionary.</p> "
+#~ "<p><strong>ATTENTION:</strong> If you forget your password, your personal "
+#~ "dictionary will become unaccessible, since it can no longer be decrypted. "
+#~ "If you change your mailbox password, SquirrelSpell will recognize it and "
+#~ "prompt you for your old password in order to re-encrypt the dictionary "
+#~ "with a new key.</p>"
+#~ msgstr ""
+#~ "<p>বর্তমানে আপনার নিজের তৈরী শব্দকোষটি <strong>লিপিগুপ্তিতে বাঁধা আছে</"
+#~ "strong>।  যদি কাঠবেড়ালী ডাক ব্যবস্থার প্রতিরক্ষা ব্যবস্থা ভেঙে কেউ ফাইল পড়ে "
+#~ "ফেলার ব্যবস্থা পেয়ে যায়, তাহলেও এই লিপিগুপ্তির কারণে তারা আপনার শব্দকোষ পড়তে "
+#~ "পারবে না।  বর্তমানে আপনার ডাকব্যবস্থার গুপ্তবাক্যটিকে লিপিগুপ্তির গুপ্তবাক্য হিসাবে "
+#~ "ব্যবহার করা হয়েছে।  </p> <p><strong>সতর্কতা!!!</strong> আপনি নিজেও যদি "
+#~ "গুপ্তবাক্য ভুলে যান, তাহলে শব্দকোষের ফাইলটি আর কোন ভাবেই উদ্ধার করা যাবে না।  "
+#~ "যদি এর মধ্যে আপনি আপনার ডাকব্যবস্থার গুপ্তবাক্য পরিবর্তন করেন, তাহলে শব্দকোষ "
+#~ "আপনার কাছে পুরানো গুপ্তবাক্য চাইবে এবং আপনি গুপ্তবাক্য দিতে পারতে নতুন করে নতুন "
+#~ "গুপ্তবাক্য দিয়ে লিপিগুপ্তি করতে দেবে।</p>"
+
+#~ msgid "Chinese"
+#~ msgstr "চীনা"
+
+#~ msgid "European Spanish"
+#~ msgstr "ইউরোপে প্রচলিত স্প্যানিশ"
+
+#~ msgid "The imap server failed to handle threading."
+#~ msgstr ""
+#~ "ডাকব্যবস্থা (IMAP) একসাথে কয়েকটা কাজ করতে পারার কথা (threading), কিন্তু পারল "
+#~ "না।"
+
+#~ msgid "Click here to unset thread view for this mailbox and start again."
+#~ msgstr ""
+#~ "এই বাক্সের জন্য সূত্র ধরে দেখানো বন্ধ করে নতুন করে শুরু করতে চাইলে এখানে খোঁচা দিন"
+
+#~ msgid "Folder List Display Format"
+#~ msgstr "চিঠি রাখার বাক্স যেভাবে দেখানো হবে"
+
+# Will be in Advanced Search
+#~ msgid "Bcc To"
+#~ msgstr "লুকানো প্রতিলিপি"
+
+#~ msgid "Cc To"
+#~ msgstr "প্রতিলিপি"
+
+# Small Calendar plugin
+#~ msgid "Today"
+#~ msgstr "আজ"
+
+#~ msgid "SMTWTFS"
+#~ msgstr "রসমববশশ"
+
+# Spam plugins
+#~ msgid "Whitelist From"
+#~ msgstr "এখান থেকে সাদা তালিকায় পাঠানো হবে"
+
+#~ msgid "Don't Whitelist From"
+#~ msgstr "এখান থেকে সাদা তালিকায় পাঠানো হবে না"
+
+#~ msgid "Blacklist From"
+#~ msgstr "এখান থেকে কালো তালিকায় পাঠানো হবে"
+
+#~ msgid "Don't Blacklist From"
+#~ msgstr "এখান থেকে কালোতালিকায় পাঠানো হবে না"
+
+#~ msgid "Whitelist To"
+#~ msgstr "প্রতি হিসাবে সাদা তালিকায় পাঠানো হোক"

@@ -1,0 +1,178 @@
+<chapter>
+   <title>
+      Options
+   </title>
+   <summary>
+      Vous pouvez personnaliser le comportement et l'apparence de SquirrelMail en 
+      r&eacute;glant diff&eacute;rentes options dans cette section.
+   </summary>
+   <description>
+      <p>
+      Un des grands avantage de SquirrelMail est son haut degr&eacute; de personnalisation. 
+      Suivant la configuration, vous pouvez avoir le choix entre plusieurs th&egrave;mes, 
+      langages, dossiers et autres pr&eacute;f&eacute;rences. 
+      Il y a quatres parties dans les options: Personnelle, Affichage, Mise en valeur des Messages et Dossiers. 
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Informations Personnelles
+   </title>
+   <description>
+      <b>Nom Complet</b><br>
+      Vous pouvez mettre votre nom complet ici. Par exemple, "Paul Dupont". C'est ce 
+      qui sera montr&eacute; aux personnes &agrave; qui vous envoyez le message. 
+      Ils verront que l'exp&eacute;diteur est "Paul Dupont". Si vous ne remplissez pas ce 
+      champ, tout ce qu'ils verront apparaitre sera votre adresse &eacute;lectronique, "pdupont@mondomaine.org".
+      <br><br>
+      
+      <b>Addresse E-mail</b><br>
+      <i>Optionnel</i> - Si votre adresse est diff&eacute;rente de celle qui vous est automatiquement 
+      assign&eacute;e vous pouvez la changer ici.
+      <br><br>
+      
+      <b>R&eacute;pondre &Agrave;: </b><br>
+      <i>Optionnel</i> - C'est l'adresse email &agrave; laquelle on pourra vous r&eacute;pondre. 
+      Si elle est diff&eacute;rente de l'adresse &agrave; partir de laquelle vous exp&eacute;diez, vous pouvez 
+      le sp&eacute;cifier ici. C'est utile si vous voulez que les gens vous r&eacute;pondent sur votre compte 
+      Yahoo! plut&ocirc;t qu'&agrave; votre adresse professionnelle.
+      <br><br>
+      
+      <b>Signature</b><br>
+      <i>Optionnel</i>  - Les signatures sont ajout&eacute;es &agrave; la fin de tous les 
+       messages que vous envoyez. Si vous voulez une signature, vous devez vous assurer que la
+       boite de validation &agrave; cot&eacute; de "utiliser signature" est s&eacute;lectionn&eacute;e et 
+       que vous avez d&eacute;fini votre signature dans la boite de saisie en dessous de celle ci.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Pr&eacute;f&eacute;rences d'Affichage
+   </title>
+   <description>
+      <b>Th&egrave;me</b><br>
+      SquirrelMail vous offre diff&eacute;rents th&egrave;mes de couleurs pour votre 
+      plaisir visuel. Vous pouvez choisir parmi ceux list&eacute;s ici si vous le d&eacute;sirez.
+      <br><br>
+
+      <b>Language</b><br>
+      Si l'anglais n'est pas votre langue maternelle, vous pouvez changer facilement 
+      la langue dans laquelle seront affich&eacute;es la pluspart des informations. 
+      Si le langage que vous cherchez est pr&eacute;sent dans la liste, vous pouvez le choisir 
+      et tous les futurs messages relatifs &agrave; SquirrelMail seront dans cette langue. 
+      Notez que cela ne traduira pas les messages re&ccedil;us ni le nom des dossiers.
+      <br><br>
+
+      <b>Utiliser le r&eacute;pertoire Java ?</b><br>
+      Un de nos buts principal en cr&eacute;ant Squirrelmail &eacute;tait de n'avoir aucun script 
+      Java dans nos pages. Cependant, quelques uns de nos d&eacute;veloppeurs ont faits un tr&eacute;s 
+      bon utilitaire de recherche dans le r&eacute;pertoire d'adresses qui utilise le Javascript. Plut&ocirc;t que 
+      de l'enlever, nous vous offrons le choix entre le carnet en HTML et celui en Java. Si vous ne 
+      savez pas ce que cela signifie, il est plus s&ucirc;r de valider celui en HTML, 
+      mais celui &agrave; base de java fonctionnera tr&egrave;s bien .
+      <br><br>
+      
+      <b>Nombre de Messages dans l'Index</b><br>
+      C'est le nombre de messages &agrave; montrer en une fois dans un dossier. S'il y en a 
+      plus que ce nombre dans le dossier, vous verrez apparaitre deux liens "Pr&eacute;c&eacute;dent" 
+      et "Suivant" au dessus et au dessous du listing, qui vous emm&egrave;neront aux messages 
+      pr&eacute;c&eacute;dents et suivants.
+      <br><br>
+      
+      <b>Rogner le texte &agrave;</b><br>   
+      Combien de caract&egrave;res doivent &ecirc;tre affich&eacute;s avant de rogner le texte. 
+      Cela emp&ecirc;che les messages d'&ecirc;tres &eacute;crits hors de la surface de l'&eacute;cran. 
+      86 est habituellemnt une bonne valeur &agrave; mettre ici, mais vous &ecirc;tes libre d'y mettre ce que vous voulez.
+      <br><br>
+      
+      <b>Taille de la fen&ecirc;tre d'&eacute;dition</b><br>
+      Quelle largeur voulez vous affecter &agrave; la boite de composition ? C'est le nombre de caract&egrave;res 
+      par ligne que vous serez autoris&eacute; &agrave; saisir avant la fin de ligne. 
+      <br><br>
+      
+      <b>Largeur de la liste des Dossiers</b><br>
+      Sur la partie gauche de votre fen&ecirc;tre de navigation, vous pouvez voir une liste de dossiers. 
+      Avec cette option, vous pouvez d&eacute;terminer la largeur de ce cadre. Si vous avez des noms de dossiers 
+      longs, ou une police de caract&egrave;res large, il faut le r&eacute;gler &agrave; une valeur &eacute;lev&eacute;e. 
+      Autrement vous pouvez le r&eacute;gler au plus juste pour &eacute;conomiser la surface d'affichage utile.
+      <br><br>
+      
+      <b>Raffraichissement automatique de la liste des Dossiers</b><br>
+      SquirrelMail a la possibilit&eacute; de rafraichir automatiquement la liste des dossiers (sur la partie gauche de l'&eacute;cran). 
+      Cela mettra &eacute;galement &agrave; jour le nombre de message non consult&eacute;s (dans le cadre de gauche 
+      et dans tous les dossiers). C'est une bonne mani&egrave;re de rafraichir la boite de r&eacute;ception sans passer 
+      son temps &agrave; cliquer dessus.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+     Mise en valeur des Messages
+   </title>
+   <description>
+      Si vous souscrivez &agrave; beaucoup de listes, il peut &ecirc;tre tr&egrave;s dur de distinguer rapidement la provenance des messages.
+      Avec la mise en valeur des messages vous pouvez diff&eacute;rencier vos differentes sources en leur attribuant une couleur propre.
+     <br><br>
+
+      Cliquez sur [Nouveau] pour cr&eacute;er une nouvelle r&egrave;gle, ou sur [Editer] pour en modifier une existante 
+      (les options apparaitront alors en dessous).
+      <br><br>
+      
+      <b>Nom Identifiant</b><br>
+      C'est tout simplement le nom qui vous permettra d'identifier cette liste. Par exemple, si vous colorisez 
+      les messages en provenance de votre m&egrave;re, vous pourrriez saisir ici "De Maman".
+      <br><br>
+      
+      <b>Couleur</b><br>
+      C'est la couleur qui sera utilis&eacute;e pour l'arri&egrave;re plan des messages. Vous pouvez choisir entre  
+      plusieurs couleurs pr&eacute;d&eacute;finies, s&eacute;lectionn&eacute;es par nos soins; ou vous pouvez saisir directement 
+      le code hexad&eacute;cimal de la couleur que vous souhaitez (par exemple a6b492). Si vous choisissez d'entrer votre propre code couleur, 
+      assurez vous d'avoir valid&eacute; le bouton situ&eacute; devant.
+      <br><br>
+      
+      <b>Correspondance</b><br>
+      Ici vous choisissez la phrase cl&eacute;. Dans la boite de choix, saisissez la partie du message dans laquelle la correspondance devra
+       &ecirc;tre trouv&eacute;e.(De, Sujet...), et dans la boite de saisie vous pouvez entrer la s&eacute;quence qui devra &ecirc;tre recherch&eacute;e (Maman@yahoo.com).
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Pr&eacute;f&eacute;rences des Dossiers
+   </title>
+   <description>
+      <b>Chemin des dossiers</b><br>
+      Sur certains syst&egrave;mes cette option ne sera pas propos&eacute;e. Sur d'autres par contre c'est une option n&eacute;cessaire. 
+      Normalement vous devez faire pointer cette option sur le dossier contenant vos messages.
+
+      <br><br>
+
+      <b>Dossier Poubelle</b><br>
+      Vous pouvez choisir dans quel dossier vos messages seront d&eacute;plac&eacute;s lorsque vous les effacerez. Si vous ne voulez pas que les messages effac&eacute;s soient
+       d&eacute;plac&eacute;s, r&eacute;glez cette option sur "Ne pas utiliser de Poubelle".
+      <br><br>
+      
+      <b>Messages envoy&eacute;s</b><br>
+      Vous pouvez choisir dans quel dossier les messages envoy&eacute;s seront d&eacute;plac&eacute;s. Si &ccedil;a ne vous int&eacute;resse pas, r&eacute;glez
+       le sur "Ne pas utiliser Dossier Envoy&eacute;s".
+      <br><br>
+      
+      <b>Notification des messages non lus</b><br>
+      Cette option pr&eacute;cise la mani&egrave;re dont les messages non consult&eacute;s seront affich&eacute;s (dans le cadre droit). 
+      Si vous choisissez "Pas de Notification", vous ne serez pas pr&eacute;venu. Si vous choisissez Boite de Reception, lorsque vous aurez de nouveaux messages, 
+      le titre Boite de R&eacute;ception passe en caract&egrave;res gras et un nombre apparaitra &agrave; sa droite vous indiquant le nombre de messages. 
+      Si vous validez Tous les Dossiers, ce comportement sera &eacute;tendu &agrave; tous les dossiers. Si le chargement de la liste des dossiers est trop long, vous pouvez 
+      r&eacute;gler ce param&egrave;tre su Boite de Reception ou Aucune et vous devriez gagner du temps.
+      <br><br>
+      
+      <b>Type de Notification des messages non lus</b><br>
+      Cette option d&eacute;termine la mani&egrave;re dont vous &ecirc;tes pr&eacute;venu de l'arriv&eacute;e de nouveaux messages.
+       <br><br>
+   </description>
+</section>

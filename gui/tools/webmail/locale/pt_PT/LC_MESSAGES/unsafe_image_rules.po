@@ -1,0 +1,144 @@
+# $Id: unsafe_image_rules.po,v 1.2 2006/01/28 11:04:01 jervfors Exp $
+# Portuguese unsafe_image_rules plugin translation.
+# Copyright (c) 2003-2005 The SquirrelMail Project Team
+# Ruben Leote Mendes <ruben@nocturno.org>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.6\n"
+"POT-Creation-Date: 2003-09-24 20:00+0100\n"
+"PO-Revision-Date: 2005-03-13 11:32+0100\n"
+"Last-Translator: Ruben Leote Mendes <ruben@nocturno.org>\n"
+"Language-Team: Portuguese Portugal <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Saved Trusted Options"
+msgstr "Opções Gravadas"
+
+msgid "Options"
+msgstr "Opções"
+
+msgid "Unsafe Image Rules"
+msgstr "Imagens Perigosas"
+
+msgid "Trust all sources:"
+msgstr "Apresentar Todas as Imagens"
+
+msgid "WARNING!"
+msgstr "AVISO!"
+
+msgid "This is not recommended by the Squirrelmail Development Team."
+msgstr "Não recomendado pela equipa Squirrelmail."
+
+msgid ""
+"Read this <a href=\"http://www.squirrelmail.org/wiki/UnsafeImages\">http://"
+"www.squirrelmail.org/wiki/UnsafeImages</a> for more details. There is a risk "
+"you may receive more spam if you check this option."
+msgstr ""
+"Leia <a href=\"http://www.squirrelmail.org/wiki/UnsafeImages\">http://"
+"www.squirrelmail.org/wiki/UnsafeImages</a> para mais informação (em inglês). "
+"Ao escolher esta opção está a aumentar a probabilidade de receber mais "
+"<i>spam</i>."
+
+msgid "If checked unsafe images are always seen."
+msgstr "Se seleccionada, todas as imagens serão visualizadas."
+
+msgid "If this option is checked, the state of other options is irrelevant."
+msgstr "Se seleccionada, as opções seguintes serão ignoradas."
+
+msgid "Trust sources in address book:"
+msgstr "Confiar Remetentes no Livro de Endereços"
+
+msgid ""
+"If checked unsafe images are shown for messages from anyone in your address "
+"book."
+msgstr "Todas as imagens contidas em mensagens provenientes de remetentes "
+"que constem do Livro de Endereços serão visualizadas."
+
+msgid "Trust anything I send:"
+msgstr "Confiar nas Minhas Mensagens"
+
+msgid ""
+"If checked unsafe images are shown for messages sent by any of your "
+"identities."
+msgstr "Todas as imagens contidas em mensagens enviadas de uma das suas "
+"identidades serão visualizadas."
+
+msgid ""
+"You might not want to set this if you forward Spam to other people, and then "
+"go back and read from your 'Sent' folder."
+msgstr "Se envia <i>spam</i> e guarda essas mensagens na pasta 'Enviadas', "
+"poderá não querer activar esta opção."
+
+msgid "Trust defined sources:"
+msgstr "Personalizar Regras de Confiança"
+
+msgid "If checked unsafe images are shown for the sources shown below."
+msgstr "Utilizar regras definidas em baixo."
+
+msgid "Save"
+msgstr "Gravar"
+
+msgid "Add New Rule"
+msgstr "Acrescentar Regra Nova"
+
+msgid "Done"
+msgstr "Terminar"
+
+msgid "Trust source if "
+msgstr "Confiar mensagem se "
+
+msgid "From"
+msgstr "Remetente"
+
+msgid "To"
+msgstr "Destinatário"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "To or Cc"
+msgstr "Destinatário ou Cc"
+
+msgid "Subject"
+msgstr "Assunto"
+
+msgid "Contains"
+msgstr "Contém"
+
+msgid "Reg.Exp."
+msgstr "Expr. Reg."
+
+msgid "NB"
+msgstr "Nota"
+
+msgid "When specifying a Reg.Exp you must include delimeters."
+msgstr "As expressões regulares têm de incluir delimitadores."
+
+msgid "The 'Contains' check will be done with case-insensitive match."
+msgstr "A verificação 'Contém' não distingue minúsculas de maiúsculas."
+
+msgid "Submit"
+msgstr "Submeter"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Delete"
+msgstr "Apagar"
+
+#, c-format
+msgid "If <b>%s</b> %s <b>%s</b>"
+msgstr "Se <b>%s</b> %s <b>%s</b>"
+
+msgid "This doesn't look like a valid Reg.Exp."
+msgstr "Expressão Regular inválida."
+
+msgid "WARNING:"
+msgstr "ATENÇÃO:"
+
+msgid "Set up rules about how unsafe images in HTML messages are handled."
+msgstr "Regras que determinam o modo como as imagens externas presentes em"
+" mensagens HTML são processadas."

@@ -1,0 +1,86 @@
+<chapter>
+   <title>   
+      Kansiot
+   </title>   
+   <summary>
+      Voit tallettaa viestejä eri kansioihin. Tämä on kätevää jos sinulla
+      on paljon viestejä ja haluat pitää ne jonkinlaisessa järjestyksessä.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Käytetyt kansiot ja Kansiolista
+   </title>
+   <description>
+      <p>
+      Käytössä olevat kansiot näytetään kansiolistalla. Kansiolistan
+      automaattipäivitys asetetaan Näyttöasetuksissa, lista voidaan
+      päivittää myös klikkaamalla (päivitä lista) linkkiä Kansiolistalla.
+      </p><p>
+      Ensimmäisenä listalla on saapuneitten viestien kansio, usein
+      sen nimenä on "INBOX". Ei luettujen viestien esitys on valittavissa
+      kansioasetuksissa. Seuraavaksi listalla on yleensä lähetettyjen
+      viestien kansio, mahdollisesti "Sent" ja senjälkeen paperikori,
+      "Trash". Tämän jälkeen listataan itse luomasi kansiot.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Poista
+   </title>
+   <description>
+      <p>
+      Voit poistaa valitun kansion. Huomaa että kaikki kansiolistalla
+      olevat kansiot eivät ole poistettavissa.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Luo
+   </title>
+   <description>
+      <p>
+      Kirjoita uuden kansion nimi ja paina "Luo" nappia.
+      </p>
+      <p>
+      Monissa postiservereissä on mahdollisuus käyttää alikansioita, jos
+      kansio sisältää alikansioita se ei itse voi sisältää viestejä.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Muuta Kansion nimeä
+   </title>
+   <description>
+      <p>
+      Voit muuttaa kaikkien muitten kuin saapuneitten, lähetettyjen
+      kansion ja paperikorin nimiä.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Poista käytöstä/Ota käyttöön
+   </title>
+   <description>
+      Määritelmä:<br>
+      <i>Ota käyttöön</i>: Luomasi kansiot eivät automaattisesti tule
+       käyttöön. Ota ne käyttöön tästä.<br>
+      <i>Poista käytöstä</i>: Poistaa kansion käytöstä mutta ei tuhoa sitä.<br>
+      <br><p>
+      Voit käyttää niin monta kansiota kuin haluat. Kun poistat kansion
+      käytöstä se siirtyy listalle josta sen voi uudelleen ottaa käyttöön.
+      Kun otat kansion käyttöön se siirtyy listalle josta sen voi poistaa
+      käytöstä.
+      </p>
+   </description>
+</section>

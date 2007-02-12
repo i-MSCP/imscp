@@ -1,0 +1,42 @@
+<chapter>
+   <title>
+      Seznam zpráv
+   </title>
+   <summary>
+      
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Seznam zpráv
+   </title>
+   <description>
+      <p>
+      Po kliknutí na název slo¾ky se v levé èásti obrazovky zobrazí seznam zpráv, které tato slo¾ka obsahuje. 
+      Pod horním menu se nachází øádek s informacemi o tom, které zprávy se zobrazují a kolik jste jich celkem obdr¾eli. 
+      </p><p>
+      Napøíklad: zobrazeny zprávy <B>20</B> a¾ <B>30</B> (45 celkem).
+      </p><p>
+      Poèet v¹ech zpráv se mù¾e li¹it od poètu nepøeètených zpráv, jejich¾ poèet 
+      je uveden v závorkách v hlavní slo¾ce zpráv. 
+      </p><p>
+      Následuje li¹ta se tøemi tlaèítky. První zleva je rozbalovací seznam 
+      slo¾ek. Tento seznam zobrazuje slo¾ky, které aktuálnì vyu¾íváte. Jakákoliv 
+      vybraná zpráva bude pøesunuta do vybrané slo¾ky, kdy¾ kliknete na tlaèítko 
+      "Pøesunout", pøièem¾ je mo¾né pøesunout více zpráv najednou. V pravé èásti 
+      li¹ty je tlaèítko, kterým lze odstranit vybrané zprávy. Vyberte zprávy, 
+      které chcete vymazat a kliknìte na "Odstranit". 
+      </p><p>
+      Pole "Od" zobrazuje odesílatele zpráv nebo adresu, ze které byla zpráva 
+      odeslána. V poli "Datum" se zobrazí datum odeslání zprávy a "Pøedmìt" oznaèuje 
+      titulek zprávy, který odesílatel uvedl. Poznámka: Mezi políèkem "Datum" a 
+      "Pøedmìt" je neoznaèený sloupec, který mù¾e obsahovat buï  "!" nebo "A". 
+      "A" znamená, ¾e jste na zprávu odpovìdìli, "!" pak to, ¾e je zpráva dùle¾itá. 
+      </p><p>
+      Na této stránce se také zobrazí tabulka aktuálních zpráv. Nepøeètené zprávy 
+      jsou oznaèeny <B>tuènì</B>, pøeètené standardním písmem. Vlevo jsou políèka 
+      urèená k oznaèení zprávy. Oznaèené zprávy lze pøesouvat do slo¾ek nebo je odstraòovat. 
+     </p>
+   </description>
+</section>

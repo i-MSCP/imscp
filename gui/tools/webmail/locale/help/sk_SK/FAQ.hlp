@@ -1,0 +1,108 @@
+<chapter>
+   <title>
+    Èasto Pytané sa Otázky
+   </title>   
+   <summary>
+      ¥udia majú èasto tie isté otázky. ktoré u¾ boli predtým mnohokrát
+      zodpovedané. Toto je zoznam hlavne sa pýtaných otázok a odpovedí.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Mô¾em pou¾i» pri vkladaní adresy cez adresár viac mien naraz?
+   </title>
+   <description>
+      <p>
+      Áno. Okno vyhµadávania v adresári zobrazuje v¹etky nájdené výsledky pre
+      zadané kritéria vyhµadávania. Ak je napr. zobrazených 10 mien  mô¾te si
+      ich vybra» v akejkoµvek kombinácii do poµa <B>Príjemca:</B> alebo do poµa
+      <B>Kópia</B>. Ak pou¾ijete tlaèidlo Pou¾i» Adresy mô¾te vlo¾i» adresy
+      do patrièných polí.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Mô¾em prida» mená do adresára priamo zo správy?
+   </title>
+   <description>
+      <p>
+      Nie. V súèasnosti nemô¾te mená prida» priamo z doruèenej správy do
+      adresára. Mô¾te av¹ak kliknutím pravým tlaèidlom na my¹i ulo¾i» si adresu
+      do schránky(systému windows) a prilepi» ho do adresára. Vyskú¹ajte,
+      nebudete sklamaný. SquirrelMail sa neustále vyvíja a táto funkcia mô¾e
+      by» zahrnutá v blízkej budúcnosti v tejto alebo podobnej forme.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kto vytvoril SquirrelMail? 
+   </title>
+   <description>
+      <p>
+      Pomáha nám mno¾stvo µudí. Pre zobrazenie ich zoznamu, mô¾te nav¹tívi» na¹u
+      www stránku <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Èo je webmail?
+   </title>
+   <description>
+      <p>
+      V prípade SquirrelMail-u vám dáva prístup cez IMAP protokol k vá¹mu e-mail
+      úètu. To znamená, ¾e nemusíte konfigurova» softvér, len si jednoducho
+      prezriete svoju po¹tu :-) .
+     </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kde mô¾em pou¾i» tento webmail?
+   </title>
+   <description>
+      <p>
+      Kdekoµvek kde je k dispozícii internetový prehliadaè (Internet Explorer,
+      Mozilla, Netscape a iné..)
+      Bezdrôtový prístup (WAP/WML) nieje v súèasnosti plánovaný.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Preèo pou¾i» webmail namiesto normálneho po¹tového klienta (softvéru)?
+   </title>
+   <description>
+      <p>
+      Nieje isté èi by webmail bol niekedy kompletnou náhradou za normálneho
+      po¹tového klienta (softvéru). Ale! Kto to vie? Kedykoµvek keï budete
+      v dome priateµov, na výlete, doma, v práci, èi proste mimo svojho osobného
+      poèítaèa a budete si chcie» skontrolova» po¹tu, v¾dy budete vedie» ako.
+      Preto¾e je veµmi nepríjemné nastavova» na poèítaèi e-mailový úèet a potom
+      ho znovu hneï zmaza». SquirrelMail je navrhnutý ako dodatok pri pou¾ívaní
+      vá¹ho po¹tového klienta (softvéru).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ako táto vec funguje?
+   </title>
+   <description>
+      <p>
+      SquirrelMail pou¾íva IMAP protokol, informácie o òom mô¾te nájs» <A HREF="http://imap.org"/>tu</A>.
+      Program tie¾ pou¾íva svoje IMAp funkcie, nie len tie zabudované v PHP4.
+      Vám na tom nemusí zále¾a» s výnimkou tých, ktorí sú zodpovední za ich
+      in¹taláciu na serveri, ale mô¾te nám dôverova», oceòujú to.
+      </p>
+   </description>
+</section>

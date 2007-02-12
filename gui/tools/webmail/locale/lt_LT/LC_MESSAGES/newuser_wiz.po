@@ -1,0 +1,43 @@
+# Lithuanian Translation of
+# SquirrelMail newuser_wiz plugin.
+# Copyright (c) 2006 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: newuser_wiz.po,v 1.1 2006/06/21 20:08:19 tokul Exp $
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: newuser_wiz 1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-04-03 09:09+0200\n"
+"PO-Revision-Date: 2006-06-21 08:33+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
+
+#: functions.php:30
+msgid "Welcome to"
+msgstr "Sveiki apsilankę"
+
+#: functions.php:31
+msgid ""
+"Since it appears as though you're new to this system, please fill in the "
+"following information."
+msgstr ""
+"Sistema neturi duomenų apie Jus. Prašau užpildyti žemiau nurodytus"
+"laukus."
+
+#: functions.php:33
+msgid "Full Name:"
+msgstr "Pilnas vardas:"
+
+#: functions.php:34
+msgid "Email Address:"
+msgstr "E-pašto adresas:"
+
+#: functions.php:36
+msgid "Submit"
+msgstr "Vykdyti"
+

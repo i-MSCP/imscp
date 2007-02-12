@@ -1,0 +1,69 @@
+# Lithuanian Translation of SquirrelMail spam_buttons plugin.
+# Copyright (c) 2005 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# $Id: spam_buttons.po,v 1.1 2005/06/10 11:04:35 tokul Exp $
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: spam_buttons 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-09 12:35-0800\n"
+"PO-Revision-Date: 2005-06-10 13:50+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid "Server replied: "
+msgstr "Serveris atsakė: "
+
+msgid "Spam"
+msgstr "Spamas"
+
+msgid "Not Spam"
+msgstr "Ne spamas"
+
+msgid "Successfully reported as spam"
+msgstr "Informacija apie nesankcionuotą žinutę perduota"
+
+msgid "Successfully reported as non-spam"
+msgstr "Informacija apie leistiną žinutę perduota"
+
+msgid "ERROR:"
+msgstr "KLAIDA:"
+
+msgid ""
+"ERROR: Counld not open temp file; check attachments directory permissions"
+msgstr "KLAIDA: Nepavyko atverti laikinos bylos. Patikrinkite priedų katalogo priėjimo teises"
+
+#, c-format
+msgid "ERROR %d: Problem reporting message ID %d: %s"
+msgstr "KLAIDA %d: Įvyko klaida perduodant pranešimą apie žinutę %d: %s"
+
+#, c-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Klaida: Juodraščių aplankas %s neegzistuoja."
+
+msgid "Message Details"
+msgstr "Žinutės detalės"
+
+msgid "Bodystructure"
+msgstr "Žinutės struktūra"
+
+msgid "Entity"
+msgstr "Elementas"
+
+msgid "Content-Type"
+msgstr "Duomenų tipas"
+
+msgid "Name"
+msgstr "Vardas"
+
+msgid "Encoding"
+msgstr "Kodavimas"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 Žinutės tekstas"
+

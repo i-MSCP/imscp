@@ -1,0 +1,122 @@
+<chapter>
+   <title>
+	Alamat
+   </title>
+   <summary>
+   Buku Alamat dapat menghemat banyak waktu dan pengetikan. Anda dapat 
+   menyimpan alamat siapa saja yang sering Anda pakai di dalamnya dan 
+   menggunakannya berulang kali.
+   </summary>
+   <description>
+      <p>
+	Buku Alamat merupakan fitur penghemat waktu yang sangat bagus. Alamat 
+	yang sering diguanakan dapat disimpan di sini. Server LDAP ( biasanya 
+	digunakan di perusahaan dan univeresitas untuk membuat alamat seluruh anggota 
+	organisasi dapat tersedia dengan mudah ) juga mendapat dukungan dengan baik. 
+      </p>
+      <p>
+	Jika Browser Anda mendukung Javascript , maka Anda mungkin ingin 
+	mengaktifkan alamat yang berbasis Javascript yang terdapat dalam menu 
+	Pilihan. Itu adalah suatu popup kecil yang mungil. Alamat berbasis HTML murni 
+	juga tersedia sehingga browser tanpa Javascript juga dapat menggunakan 
+	SquirrelMail tanpa kurang suatu apapun.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+	Nama Singkat
+   </title>
+   <description>
+      <p>
+	Tulis nama yang mudah dikenal di sini. Sesuatu yang membantu Anda 
+	mengingat. Sesuatu yang memberikan Anda kepastian siapa pemilik 
+	alamat surate ini.
+   </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Alamat Surate
+   </title>
+   <description>
+      <p>
+	Ini haruslah berupa alamat surate seseorang yang betul-betul sah. 
+	Menerka-nerka tidaklah berguna di sini. Ada tiga bagian dalam alamat surate. 
+	Pertama identitas penerima, seperti "tatim" . Selanjutnya adalah nama domain 
+	yang dapat berupa "fisika" . Terakhir adalah domain tingkat atas , yang dapat 
+	berupa salah satu dari ac.id, co.id, net.id, dll. Jadi, jika Anda menulis 
+	semua ini, maka haruslah berbentuk tatim@fisika.ui.ac.id. Jika salah, Anda 
+	akan mendapatkan surate Anda kembali kepada Anda dalam bentuk pesan yang 
+	mental.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Keterangan
+   </title>
+   <description>
+      <p>
+	Ini adalah isian lainnya tempat Anda memasukkan seauatu yang
+	mengingatkan Anda tentang orang ini. Isian ini dibuat lebih panjang
+	daripada "Nama Singkat". Misalnya, jika Anda memasukkan hubungan bisnis,
+	Anda dapat menuliskan "Bisnis Menarik Nich".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ubah atau Hapus
+   </title>
+   <description>
+      <p>
+	Kedua tombol ini bisa digunakan untuk memilih suatu alamat  dan 
+	mengubah isinya atau menghapusnya. Anda hanya bisa memilih salah satu saja.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Tambahkan ke buku alamat pribadi
+   </title>
+   <description>
+      <p>
+	Isilah di kolom yang tersedia. Tiga bagian pertama ( Nama singkat, 
+	alamat surate, dan Nama Depan ) harus diisi. Nama Belakang dan keterangan 
+	tambahan hanyalah pelangkap saja.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      LDAP
+   </title>
+   <description>
+      <p>
+	LDAP adalah merupakan media penyimpanan terpusat dan akses informasi 
+	jarak jauh. Contoh: sebuah universitas mungkin meggunakan LDAP sebagai wadah 
+	tunggal tempat alamat surate siswa, karyawan , dan fakultas disimpan dan 
+	disediakan. Jika dikonfigurasikan untuk menggunakan server LDAP universitas 
+	tsb, SquirrelMail dapat menampilkan semua alamat surate seluruh kampus ( 
+	bersama dengan semua buku alamat yang lain jika ada ). Penggunaan LDAP SquirrelMail 
+	sungguh-sungguh mumpuni dalam hal <I>menggabungkan</I> buku alamat lokal Anda 
+	dan informasi server alamat LDAP untuk menampilkan semua keterangan 
+	seolah-olah berada dalam satu buku alamat tunggal.
+      </p><p>
+	Seting LDAP dapat dikonfigurasi untuk sembarang server LDAP, atau tidak 
+	digunakan sama sekali. Anda harus bicara kepada administrator sistem jika 
+	memiliki pertanyaan khusus mengenai hal ini.
+      </p><p>
+	Seting LDAP mempengaruhi seluruh sistem SquirrelMail; akibatnya hanya 
+	seseorang yang memiliki wewenang sebagai administrator saja yang bisa 
+	mengubah seting ini.
+      </p>
+   </description>
+</section>

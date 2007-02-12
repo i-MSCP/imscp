@@ -1,0 +1,104 @@
+# Swedish (sv_SE) smallcal Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
+# $Id: smallcal.po,v 1.3 2005/06/05 11:49:53 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: smallcal 0.9\n"
+"POT-Creation-Date: 2003-10-20 16:27+0300\n"
+"PO-Revision-Date: 2004-02-14 17:38+0100\n"
+"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "S M T W T F S"
+msgstr "S M T O T F L"
+
+msgid "Today"
+msgstr "Idag"
+
+msgid "Color Picker"
+msgstr "Färgväljare"
+
+msgid ""
+"Click a box and the hexadecimal color will be shown <br>below. Use these hex "
+"values for color box settings."
+msgstr ""
+"Välj en ruta så visas det hexadecimala färgvärdet nedan.<br>Använd dessa värden "
+"i färginställningarna."
+
+msgid "Hex Value"
+msgstr "Hexadecimalt värde"
+
+msgid "Small Calendar Options"
+msgstr "Inställningar för minikalendern"
+
+msgid "Small Calendar:"
+msgstr "Minikalender:"
+
+msgid "Show small calendar in left bar"
+msgstr "Visa minikalendern under mapplistan"
+
+msgid "Use Default Theme:"
+msgstr "Använd förvalt tema:"
+
+msgid "This will override values below"
+msgstr "Detta åsidosätter värdena nedan"
+
+msgid "Header Color:"
+msgstr "Färg för rubriker:"
+
+msgid "Day Color:"
+msgstr "Färg för dagar:"
+
+msgid "Today Color:"
+msgstr "Färg för idag:"
+
+msgid "Event Color:"
+msgstr "Färg för händelser:"
+
+msgid "Calendar separator:"
+msgstr "Minikalenderns avgränsare"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Horizontal rule"
+msgstr "Streck"
+
+msgid "Box"
+msgstr "Ram"
+
+msgid "Calendar size:"
+msgstr "Kalenderstorlek:"
+
+msgid "Default size"
+msgstr "Förvald storlek"
+
+msgid "10 px"
+msgstr "10 px"
+
+msgid "12 px"
+msgstr "12 px"
+
+msgid "14 px"
+msgstr "14 px"
+
+msgid "16 px"
+msgstr "16 px"
+
+msgid "Use Shared Calendar:"
+msgstr "Använd gemensam kalender:"
+
+msgid ""
+"Use the shared calendar selected below as your<br>small calendar (default is "
+"Personal calendar)"
+msgstr ""
+"Använd den nedan valda gemensamma kalendern som<br>din minikalender (förval: "
+"din privata kalender)."
+
+msgid "Shared Calendar:"
+msgstr "Gemensam kalender:"

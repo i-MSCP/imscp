@@ -1,0 +1,321 @@
+<chapter>
+   <title>
+      Mo¾nosti
+   </title>
+   <summary>
+      Rozlièným nastavením v tejto sekcii mô¾te meni» výzor SquirrelMailu-u a
+      spôsob akým reaguje.
+   </summary>
+   <description>
+      <p>
+      Jednou z ohromných vecí v SquirrelMail-e je stupeò jeho prispôsobovania.
+      V závislosti na konfigurácii máte mnoho mo¾ností výberu schém, jazykov, 
+      prieèinkov, a iných nastavení. V¹etky z nich mô¾u by» zmenené bez toho aby
+      ovlyvnili nastavenia iných u¾ívateµov systému. Je tu najmenej pä» hlavných
+      kategórií Mo¾nosti: Osobné, Zobrazi», Zvýrazòovanie správ, Prieèinky, a Poradie
+      v zozname. Ïal¹ie kategórie Mo¾ností závisia od va¹ej SquirrelMail in¹talácie.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Osobné informácie
+   </title>
+   <description>
+      <b>Plné meno</b><br>
+      Mali by ste tam uvies» svoje úplné meno. Pre príklad, "John Doe". Toto meno
+      sa potom zobrazuje µuïom, ktorým sú správy odosielané. Budú vidie», ¾e je
+      to od "John Doe". Ak túto polo¾ku nevyplníte, adresátom sa zobrazí len 
+      va¹a e-mailová adresa, jdoe@mydomain.org.
+      <br><br>
+      
+      <b>E-mailová adresa</b><br>
+      <i>Volitelné</i> - Aj je va¹a email adresa odli¹ná ako tá, ktorá je automaticky
+      prideµovaná, mô¾ete si ju zmeni» tu.
+      <br><br>
+      
+      <b>Odpoveda» na adresu</b><br>
+      <i>Volitelné</i> - To je emailová adresa kam budú prichádza» odpovede od µudí,
+      ktorí vám budú odpoveda».  Je to u¾itoèné, ak chcete aby µudia odpovedali
+      na vá¹ Yahoo (napr. pobox.sk) úèet rad¹ej ako na va¹u firemnú adresu.
+      <br><br>
+      
+      <b>Viaceré Identity</b><BR>
+      Kliknite na tento odkaz pre nastavenie viacerých identít - toto¾ností.
+      Toto je u¾itoèné ak si chcete vybra» medzi správami s rozdielnym obsahom
+      poµa "Od:". Napríklad identity obsahujúce va¹u email-ovú adresu do práce
+      alebo domov. Na stránke ktorá sa objaví, si mo¾te prida» tak veµa identít
+      ako chcete. Keï budete tvori» správu, ponúkne sa vám výber z týchto identít.
+      
+      <b>Odpoveda» ako Citácia</b><BR>
+      Ak kliknete "Odpoveda» na Správu", zobrazí sa vám formulár "Nová správa"
+      s citovanou pôvodnou správou. Pred citáciou tejto správy mô¾e by» vsunutý 
+      napr. text <TT>Ján Novák napísal:</TT> (ak odpovedáte na správu, ktorú
+      poslal Ján Novák). Toto sa nazýva riadok citácie. Tu si mô¾te vybra» ako
+      bude tento riadok vyzera».<BR>
+      
+      
+      <UL>
+      <LI><B>Bez Citácie</B><br>
+      Vôbec sa nevlo¾í citácia.<br><br>
+      <LI><B>Autor povedal</B><br>
+      Toto vyprodukuje napr. riadok <TT>Ján Novák Povedal:</TT>. Tu sa vlo¾í text
+      citácie nech pôvodnú správu, na ktorú odpovedáte, napísal ktokoµvek.<br><br>
+      <LI><B>Citova» ako XML</B><br>
+      Toto vyprodukuje riadok: <TT>&lt;Kto cituje="Ján Novák"&gt;</TT>.<br><br>
+      <LI><B>U¾ívateµom definované</B><br>
+      Povolí vami definovaný riadok citácie. V dvoch textových poliach ni¾¹ie,
+      mô¾te napísa» zaèiatok a koniec citácie. medzi týmito bude vlo¾ené meno autora.
+      </UL><br><br>
+      
+      <b>Podpis</b><br>
+      <i>Voliteµné</i> - Podpisy sú automaticky prikladané na koniec v¹etkých
+      odoslaných správ. Ak chcete podpis, musíte sa uisti» ¾e ste voµbu 
+      "Pou¾i» Podpis" za¹krtli, a potom vyplnili text, ktorý by sa mal zobrazova»
+      ako podpis.
+      <br><br>
+   
+   
+   
+   
+   </description>
+</section>
+
+<section>
+   <title>
+      Mo¾nosti vzhµadu
+   </title>
+   <description>
+      <b>Schéma</b><br>
+      SquirrelMail ponúka rôzne farebné schémy, pre va¹e vizuálne pote¹enie.
+      Mô¾te si vybra» z mnohých tu zobrazených schém podµa vá¹ho ¾elania.
+      <br><br>
+
+      <b>Custom Stylesheet</b><br>
+      Zmenením schémy len zmeníme farbu, ¹týly umo¾òujú zmeni» viac, napríklad 
+      veµkos» písma pou¾ívaného v SquirrelMail-y.
+      <br><br>
+
+      <b>Jazyk</b><br>
+      Ak nieje va¹ím rodným jazykom angliètina, µahko si mô¾ete zmeni» jazyk podµa
+      jazykových verzií zobrazenia. Ak vá¹ po¾adovaný jazyk je v zozname, mô¾ete
+      si ho vybra» a  SquirrelMail  vám v¹etky nasledujúce správy a texty zobrazí
+      v tomto jazyku. Treba poznamena», ¾e toto sa v¹ak nevz»ahuje na prichadzajúce
+      e-mail správy alebo názvy prieèinkov.
+      <br><br>
+
+      <b>Pou¾i» Javascript</b><br>
+      Jedným z hlavých cieµov pri vytváraní SquirrelMailu bolo aby vo svojich
+      stránkach neobsahoval JavaScript. Ale jednako, niektorí z na¹ich vývojárov
+      vyrobili veµmi dobrý nástroj na vyhµadávanie v adresári, ktorý pou¾íva
+      JavaScript. Niektoré ïal¹ie JavaScript funkcie sme tie¾ pridali. Rad¹ej ako
+      ich odstráni», dali sme vám mo¾nos» pou¾i» èíre HTML alebo pou¾i» taktie¾
+      JavaScript. Ak neviete, èo to znamená, je bezpeènej¹ie, keï zvolíte Autodetekcia.
+      <br><br>
+      
+      <b>Poèet správ zobrazených v prieèinku</b><br>
+      Toto je poèet správ, ktoré sa naraz zobrazia v prieèinku. Ak je ich v tomto
+      prieèinku viac, zobrazí sa  vám odkaz Predchádzajúca a Nasledujúca správa
+      pod zoznamom správ. Pomocou nich dosiahnete zobrazenie po¾adovanej správy.
+      <br><br>
+      
+      <b>Povoli» Voliè Strán</b><br>
+      Nastavením tejto voµby na Áno sa zobrazia nad a pod zoznamom strán èísla stránok
+      pre rýchly skok na po¾adovanú stránku so zobrazením správ. "Maximálny Poèet
+      Strán pre Zobrazenie" mô¾e limitova» koµko strán koµko maximálne strán bude
+      zobrazených nad a pod zoznamom správ.
+      <br><br>
+      
+      <b>Zalomi» text doruèenej správy na</b><br>
+      Koµko znakov mo¾e by» pred zalomením textu. Toto zabraòuje pred posúvaním
+      zabrazenia správy mimo obrazovku. 86 je zvyèajne najbezpeènej¹ia mo¾nos»,
+      ktorú tu mô¾te zada», no to èo tu zadáte je len na vás.
+      <br><br>
+      
+      <b>Veµkos» Okna Editora</b><br>
+      Ako chcete aby ako bolo ¹iroké textové pole na Písanie Správy? Toto je
+      poèet znakov na riadok, ktorý mo¾te napísa» pred zalomením textu do nového
+      riadku.
+      <br><br>
+      
+      <b>Umiestnenie Tlaèidiel pri Písaní Novej Správy</b><br>
+      Kde sú umiestnené taèidlá Adresy, Ulo¾i» ako Koncept a Posla»?
+      <br><br>
+      
+      <b>Formát Zobrazenia Adresára</B><br>
+      Zvoµte si ako chcete aby vyzeral vá¹ Adresár. Ak chcete maximálnu kompatibilitu
+      so v¹etkými vyhµadávaèmi, pou¾ívajte HTML. Vyberte si Javascript ak ho vá¹
+      vyhµadávaè podporuje, tak bude adresár vyzera» lep¹ie.
+      <br><br>
+      
+      <b>Predvoli» Zobrazovanie HTML verzie</b><br>
+      Ak v správe ktorú obdr¾íte je spolu toxtový a HTML formát, mô¾ete si vybra»
+      èi chcete vidie» HTML verziu (Áno) alebo textovú verziu (Nie). Predvolená
+      je textová verzia.<br><br>
+      
+      <b>Zahrnú» aj Mòa v Kópii pri Odpovedi V¹etkým</b><br>
+      Odpoveda» V¹etkým po¹le odpoveï v¹etkým príjemcom pôvodnej správy, vrátane
+      seba. Pre vynechanie vlastne e-mailovej adresy, nastavte toto na Nie.
+      <br><br>
+      
+      <b>Povoli» Zobrazenie Po¹tového Programu (Mailer)</b><BR>
+      Ked si prezeráte správu, toto zobrazí aký po¹tový program pou¾ívate.
+      <br><br>
+      
+      <b>Zobrazi» Obrázky v Prílohe spolu so Správou</b><br>
+      Ak vám niekto po¹le správu s jedným, alebo viacerými obrázkami a vy máte túto
+      mo¾nos» nastavenú na Áno, obrázky sa zobrazia vpravo od miesta, kde je
+      zobrazená správa.
+      
+      <br><br>
+      
+      <b>Povoli» Odkaz na Verziu pre Tlaè</b><br>
+      Toto determinuje ako bude zobrazená Verzia pre tlaè.
+      <br><br>
+      
+      <b>Povoli» Zobrazenie Èistého Pohµadu ako Verzie pre Tlaè</b><br>
+      Toto vyèistí formát zobrazenia správy aby vyzerala po vytlaèení lep¹ie.
+      <br><br>
+      
+      <b>Iné nastavenia</b><br>
+      V závislosti na va¹ej in¹talácii SquirrelMail-u, sa tu nachádzajú niektoré
+      ïal¹ie mo¾nosti nastavenia. Dúfame, ¾e budú samovysvetµujúce.
+      <br><br>
+      
+   </description>
+</section>
+
+<section>
+   <title>
+      Zvýrazòovanie správ
+   </title>
+   <description>
+      My¹lienka nato vzi¹la z dôvodu, ¾e ak ste prihlásený do viacerých mailing-listov
+      (po¹tových konferencií), je pre vás veµmi »a¾ké  vyzna» sa medzi správami
+      ktoré pri¹li. So zvýrazòovaním správ, máte pozadie farebne odí¹ené v závislosti
+      od toho, z ktorého mailing listu správa pri¹la.
+      <br><br>
+
+      Jednoducho kliknite na [Nový] pre vytvorenie nového a [Upravi»] pre úpravu
+      u¾ existujúceho a voµby sa zobrazia hneï dole.<br><br>
+     
+      <b>Identifikaèné meno</b><br>
+      Toto je jednoducho meno ktoré vidíte v popise od koho pri¹la. Pre príklad,
+      ak ste zvýradznili  správu od mamy, mô¾ete si tu nastavi» text : "od mamy".
+      <br><br>
+      
+      <b>Farba</b><br>
+      Toto je aktuálna farba pozadia. Mô¾ete si vybra» medzi niekoµko preddefinovanými
+      farbami, podµa vlastného uvá¾enia, alebo si tu mô¾ete zada» HEX kód farby,
+      ktorú si ¾eláte ( napr.: a6b492). Ak si vyberiete vlastnú farbu musíte
+      tie¾ vybra» prepínacie tlaèidlo (radio button) ktorým toto vyberiete.
+      <br><br>
+      
+      <b>Zhoda</b><br>
+      Tu si mô¾te vybra» frázu zhody. Z políèka výberu si mô¾te vybra» pole hlavièky
+      (Komu, Od, Predmet, ...)ktoré sa má zhodova» s textom (frázou )ktorý napí¹ete
+      do textového poµa. Napr. mama@centrum.sk
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Nastavenia Prieèinkov
+   </title>
+   <description>
+      <b>Cesta prieèinku</b><br>
+      Na niektorých systémoch toto nemusí by» zobrazené. Ak nevidíte túto mo¾nos»,
+      jednoducho ju ignorujte. Na iných systémoch je to dos» podstatná voµba. Zvyèajne
+      je tu toto nastavenie, ak tu musí by». Je to prieèinok vo va¹om domácom
+      (home) prieèinku ktorý uchováva va¹e po¹tovné prieèinky. Ak tomuto
+      nerozumiete, jednoducho to nechajte tak.
+      <br><br>
+
+      <b>Prieèinok Kô¹</b><br>
+      Mô¾ete si vybra» prieèinok kam sa va¹e správy budú odstraòova». Ak nechcete,
+      aby sa va¹e správy odstraòovali do ko¹a, vyberte si "Nepou¾íva» kô¹".
+      <br><br>
+      
+      <b>Prieèinok Odoslaná po¹ta</b><br>
+      Mo¾te si zvoli» do ktorého prieèinka pôjdu odoslané správy. Ak toto nechcete,
+      jednoducho nastavte "Nepou¾íva» prieèinok Odoslaná po¹ta"
+      <br><br>
+
+      <b>Prieèinok Konceptov</b><br>
+      
+      Mo¾te si zvoli» do ktorého prieèinka pôjdu Koncepty (rozpísané správy). Ak
+      toto nechcete, jednoducho nastavte "Nepou¾íva» prieèinok Koncepty"
+      <br><br>
+      
+      <b>Umiestnenie Zoznamu Prieèinkov</b><br>
+      Determinuje èi chcete ma» zoznam prieèinkov na µavej alebo pravej strane
+      vá¹ho okna.
+      <br><br>
+      
+      <b>©írka Zoznamu Prieèinkov</b><br>
+      S týmto nastavením si mô¾te zvoli» aký bude ¹iroký vá¹ zoznam prieèinkov.
+      Ak máte veµmi dlhé názvy prieèinkov alebo nastavené veµké písmo, je toto
+      veµmi u¾itoèné nastavenie. Inak si toto musíte nastavi» na èo najmenej,
+      aby ste nemrhali plochou obrazovky.
+      <br><br>
+      
+      <b>Automatické obnovenie Zoznamu Prieèinkov</b><br>
+      SquirrelMail umo¾òuje automaticky obnova» zobrazenie prieèinkov na µavej
+      strane okna vá¹ho prehliadaèa. Toto nastavenie automaticky aktualizuje
+      poèet nepreèítaných správ v ka¾dom z prieèinkov. Toto je dobrý spôsob ako
+      si prezrie» správy v prieèinku Doruèená po¹ta bez klikania na tento prieèinok
+      znovu a znovu.
+      <br><br>
+
+      <b>Oznámenie o nepreèítaných správach</b><br>      
+      Toto nastavenie ¹pecifikuje ako zobrazi» nepreèítané správy zobrazené  na
+      µavej strane okna vá¹ho prehliadaèa. Ak toto nastavíte na "Bez oznámenia"
+      Nebudú sa vám zobrazova» oznámenia o nepreèítaných správach. Ak toto nastavíte
+      na "Doruèená Po¹ta", tak ak prídu nové správy do prieèinka doruèená po¹ta,
+      Tento prieèinok sa vypí¹e tuèným písmom a zobrazí sa vpravo poèet nových
+      správ v òom. Ak toto nastavíte na v¹etky prieèinky, bude sa toto oznamovanie
+      vz»ahova» na v¹etky prieèinky. Ak je na va¹om PC nahrávanie zoznamu prieèinkov
+      príli¹ dlhé, nastavne "®iadny". Týmto nahrávanie urýchlite.
+      <br><br>
+      
+      <b>Typ Oznámenia o Nepreèítaných Správach</b><br>
+      Ak sú v Prieèinku nové správy, táto mo¾nos» zobrazí len poèet nových správ
+      v prieèinku.
+      <br><br>
+      
+      <b>Povoli» Skládateµné prieèinky</b><br>
+      Skládateµné prieèinky umo¾òujú zlo¾it a rozlo¾i» prieèinok, ktorý obsahuje
+      ïal¹ie pod-prieèinky. Prieèinok mô¾te zlo¾i» kliknutím na "-" a rozlo¾i»
+      kliknutím na znak "+". Nastavenie "Nie" zaká¾e skladanie.
+      <br><br>
+      
+      <b>Zobraz Hodiny na Paneli Prieèinkov</b><br>
+      Toto nastavne ak chcete aby nad zoznamom prieèinkov boli zobrazené hodiny a 
+      ako majú vyzera». zobrazova» ( Y = rok, D = deò, H = hodina, M = minúta,
+      S = sekunda ). Táto voµba <B>Formát hodín</B> vám umo¾òuje si vybra» z: 12- alebo 24-
+      hodinových hodín.
+      <br><br>
+      
+      <b>Hµadanie v Pamäti</b><br>
+      Ak vyhµadávate v schránke, zoznam posledných vyhµadávané bude zobrazený pre
+      rýchlej¹í prístup. Toto definuje, ako veµa posledných vyhµadávaní bude zobrazených.
+      <br><br>
+      
+   </description>
+</section>
+
+<section>
+   <title>
+      Poradie v zozname
+   </title>
+   <description>
+      Táto sekcia vám dá kontrolu nad zoznamom správ. Mô¾te si vybra» ako veµa
+      informácií chcete ma» v zozname správ a v akom poradí ich chcete ma»
+      zobrazené.
+      <br><br>
+      Pou¾ite odkazy Hore a Dole pre presun o ståpec ïalej, Del pre odstránie ståpca
+      a Prida» pre pridanie nového ståpca.
+   </description>
+</section>

@@ -1,0 +1,42 @@
+# Squirrelmail Lithuanian Translation.
+# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2001.
+# $Id: naguser.po,v 1.2 2005/06/05 11:49:48 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: naguser 1.0\n"
+"POT-Creation-Date: 2004-05-12 21:10+0300\n"
+"PO-Revision-Date: 2004-05-12 21:12+0200\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Rules of engagement"
+msgstr "Naudojimosi taisyklės"
+
+msgid "You have to read and understand program usage rules:"
+msgstr "Jūs turite perskaityti ir suprasti programos naudojimosi taisykles:"
+
+msgid "Your browser does not support inline frames. Please read related document by checking usage instructions."
+msgstr "Jūsų naršyklė nepalaiko įterptų rėmelių. Perskaitykite reikiamą dokumentą patikrindami naudojimo instrukcijas."
+
+msgid "Usage instructions"
+msgstr "Naudojimosi instrukcijos"
+
+msgid "Yes, I understand"
+msgstr "Taip, aš suprantu"
+
+msgid "Terms of service"
+msgstr "Naudojimosi taisyklės"
+
+msgid "URL to usage rules is not available. Please contact your system administrator."
+msgstr "Nenurodytas naudojimosi taisyklių adresas. Susisiekite su Jūsų sistemos administratoriumi."
+
+msgid "You can find interface usage rules by following the link."
+msgstr "Jūs galite rasti sąsajos naudojimosi taisykles žemiau esančiu adresu."
+
+msgid "Usage rules"
+msgstr "Naudojimosi taisyklės"
+

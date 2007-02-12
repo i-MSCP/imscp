@@ -1,0 +1,50 @@
+# Lithuanian translation of
+# SquirrelMail's qmailadmin_login plugin.
+# Copyright (c) 2005 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# $Id: qmailadmin_login.po,v 1.3 2005/08/28 08:18:30 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: qmailadmin_login 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-27 07:55+0300\n"
+"PO-Revision-Date: 2005-08-28 11:13+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid "Account Administration"
+msgstr "Vartotojo Nustatymai"
+
+msgid "This option provides access to account management interface."
+msgstr "Šis punktas leidžia pasiekti vartotojo valdymo sąsają."
+
+msgid ""
+"Please confirm your password in order to access account management pages."
+msgstr ""
+"Norėdami pasiekti vartotojo valdymo sąsają Jūs turite dar kartą įvesti "
+"prisijungimo slaptažodį."
+
+msgid "Your password: "
+msgstr "Jūsų slaptažodis: "
+
+msgid "Login"
+msgstr "Prisijungti"
+
+msgid "Redirecting to QmailAdmin"
+msgstr "Nukreipiama į QmailAdmin"
+
+msgid ""
+"Your are being redirected to the administration page. If your browser does "
+"not automatically redirect you, please click on login button."
+msgstr "Jūs esate nukreipiami į administravimo puslapius. Jei naršyklė nepersijungs automatiškai, pasinaudokite prisijungimo mygtuku."
+
+msgid ""
+"WARNING: You will have to relogin into SquirrelMail, if you change your "
+"password."
+msgstr ""
+"DĖMESIO: Jūs turėsite iš naujo užsiregistruoti į SquirrelMail, jei pakeisite "
+"savo slaptažodį."
+

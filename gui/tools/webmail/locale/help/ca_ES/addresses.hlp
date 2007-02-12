@@ -1,0 +1,105 @@
+<chapter>
+   <title>
+      Direccions
+   </title>
+   <summary>
+      La llibreta de direccions pot estalviar molt de temps i evitar escriure
+      molt. Vostè pot posar les direccions de la gent que mes utilitza, i
+      usar-les una vagada i una altra.
+   </summary>
+   <description>
+      <p>
+      El llibre de direccions es un estalvi de temps. Les direccions 
+      utilitzades amb molta frecuencia, es poden guardar aquí. Els servidors
+      LDAP (Usats sovint en companyies i universitats) també es poden usar.
+      </p>
+      <p>
+      Si el seu visor d'HTML suporta JavaScript, a les hores vostè pot activar
+      que el llibre de direccions es mostri com una subfinestra de la 
+      principal. Però també es pot utilitzar aquesta funcio sense JavaScript.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Àlias
+   </title>
+   <description>
+      <p>
+      Posi un nom familiar. Qualsevol cosa que l'ajudi a recordar a qui 
+      pertany la direcció de correu.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Direcció de correu
+   </title>
+   <description>
+      <p>
+      Aquí ha d'anar la direcció sencera de correu. La direcció de correu te 
+      tres parts. La primera es el nom del recipient, com "johnq". Després es
+      el nom del domini, que podria ser "tayloru.com". La direcció correcte 
+      seria "johnq@tayloru.com". Si la direcció no es correcte, al enviar un
+      missatge amb aquesta direcció, ens retornaria un altra missatge indicant
+      que no s'ha trobat el destinatari en questio.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Informació Adicional
+   </title>
+   <description>
+      <p>
+      Aquesta es una altra caixa de text on es pot posar qualsevol cosa per 
+      recordar a qui pertany la direcció de correu. Això es fa per poder 
+      tenir un àlias més llarg. Per exemple, es pot posar "Amic de la feina".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Editar o esborrar
+   </title>
+   <description>
+      <p>
+      Aquests dos botons permeten selecciona una direcció per modificar 
+      qualsevol dada o per esborrar-la. Nomès es permet de seleccionar una
+      direcció per editar-la.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Afegir direcció
+   </title>
+   <description>
+      <p>
+      Ompli les caixes de text com s'indica. Les tres primeres (Àlias, Direccio
+      de correu i Nom) han d'estar com a mínim. El Cognom i la Informació 
+      adicional son camps opcionals.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      LDAP
+   </title>
+   <description>
+      <p>
+      LDAP es un protocol per a l'emmagatzematge centralitzat, unificat i
+      accés remot a la informació. Per exemple, la facultat por utilitzar
+      un servidor LDAP per a guardar les dades dels estudiants amb les
+      seves direccións de correu. SquirrelMail pot utilitzar aquesta 
+      característica i mostrar el llibre de direccions local combinat amb
+      les direccions del servidor LDAP de forma que sembli només un.
+      </p>
+   </description>
+</section>

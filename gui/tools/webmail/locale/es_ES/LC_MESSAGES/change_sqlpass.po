@@ -1,0 +1,86 @@
+# change_mysqlpass translation to Spanish
+# This file is distributed under the same license as the PACKAGE package.
+# Dirk Enrique Seiffert <info@caribenet.com>, 2005.
+# $Id: change_sqlpass.po,v 1.1 2005/11/12 15:13:47 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: change_mysqlpass\n"
+"POT-Creation-Date: 2002-10-24 22:19-0700\n"
+"PO-Revision-Date: 2005-02-24 22:19-0700\n"
+"Last-Translator: Dirk Enrique Seiffert <info@caribenet.com>\n"
+"Language-Team: Spanish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Use this to change your email password."
+msgstr "Aquí puede cambiar su contraseña."
+
+msgid "Password change cancelled."
+msgstr "Cambio de contraseña cancelado."
+
+msgid "Your password has NOT been changed."
+msgstr "Su contraseña NO ha sido cambiado."
+
+msgid "Password changed successfully."
+msgstr "Contraseña actualizado."
+
+msgid "Please use your new password to log in from now on."
+msgstr "Por favor utilice su nueva contraseña a partir de ahora!"
+
+msgid "Change Password"
+msgstr "Cambiar Contraseña"
+
+msgid "Secure"
+msgstr "Seguro"
+
+msgid "Old Password"
+msgstr "Contraseña actual"
+
+msgid "New Password"
+msgstr "Contraseña nueva"
+
+msgid "Verify New Password"
+msgstr "Verifique su contraseña nueva"
+
+msgid "Submit"
+msgstr "Guardar"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "You must type in your old password."
+msgstr "Debe que escribir su contraseña anterior."
+
+msgid "You must type in a new password."
+msgstr "Debe que escribir su nueva contraseña."
+
+msgid "You must also type in your new password in the verify box."
+msgstr "Debe que verifiquar su contraseña."
+
+msgid "Your new password does not match the verify password."
+msgstr "Error de contraseña."
+
+msgid "Your old password is not correct."
+msgstr "Error de contraseña."
+
+msgid "Your new password must be different than your old password."
+msgstr "Su nueva contraseña debe que ser diferente del contraseña anterior."
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr "No puedo conectar a la base de datos. Intentalo más tarde."
+
+msgid "Database not found on server"
+msgstr "No encuentro el servidor de base de datos"
+
+msgid "SQL call failed, try again later."
+msgstr "Falla SQL, intentalo más tarde."
+
+msgid "Strange, your old password does not match the database... rejecting."
+msgstr "Su contraseña actual no empareja con la base de datos. Cambio negado."
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr "Logins duplicados detectados. No puedo cambiar contraseña."
+
+msgid "Password change was not successful!"
+msgstr "El cambio de contraseña NO ha sido realizado."

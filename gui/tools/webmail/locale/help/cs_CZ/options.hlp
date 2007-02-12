@@ -1,0 +1,162 @@
+<chapter>
+   <title>
+      Mo¾nosti nastavení
+   </title>
+   <summary>
+      
+   </summary>
+   <description>
+      <p>
+      Výhodou systému SquirrelMail je mo¾nost úpravy podle pøání u¾ivatele. Máte na výbìr 
+      mezi nìkolika schématy, jazyky a jinými nastaveními. V¹echny z nich mohou být zmìnìny 
+      bez toho, ani¾ by ovlivnily nastavení jiných u¾ivatelù systému. V nabídce je 5 hlavních 
+      kategorií: Osobní informace, Vzhled, Zvýrazòování zpráv a Filtry zpráv. 
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Osobní informace
+   </title>
+   <description>
+      <b>Celé jméno</b><br>
+      U¾ivatel by mìl uvést celé jméno, napø. "John Doe". Toto jméno se pak zobrazuje lidem, 
+      kterým jsou zprávy odesílány. Jestli¾e toto jméno zùstane nevyplnìno, adresátùm se 
+      zobrazí pouze e-mailová adresa.
+      <br><br>
+      
+      <b>E-mailová adresa</b><br>
+      <i>Volitelné</i> - jestli¾e je Va¹e e-mailová adresa odli¹ná ne¾ ta, která Vám byla 
+      automaticky pøidìlena, mù¾ete ji zmìnit zde.
+      <br><br>
+      
+      <b>Odpovìdìt na adresu</b><br>
+      <i>Volitelné</i> - toto je e-mailová adresa, na kterou budou pøicházet odpovìdi na Va¹e 
+      zprávy. Jestli¾e se tato adresa li¹í od té, ze které své zprávy odesíláte, mù¾ete ji zde uvést. 
+      Tato volba je vhodná pro u¾ivatele, kteøí si chtìjí odpovìdi na své zprávy nechat posílat 
+      na jiný úèet (napø. POST.CZ).
+      <br><br>
+      
+      <b>Podpis</b><br>
+      <i>Volitelné</i> - podpisy se automaticky pøikládají na konec v¹ech odesílaných zpráv. 
+      Jestli¾e chcete pou¾ít této volby, mìli byste se ujistit, ¾e máte volbu za¹krtnutou, 
+      a pak vyplnit text, který by se mìl jako podpis zobrazovat. 
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vzhled - mo¾nosti
+   </title>
+   <description>
+      <b>Schéma</b><br>
+      SquirrelMail nabízí svým u¾ivatelùm rùzná schémata, pomocí nich¾ mohou libovolnì mìnit vzhled 
+      své schránky. 
+      <br><br>
+
+      <b>Jazyk</b><br>
+      Nevyhovuje-li Vám anglická verze systému SquirrelMail, mù¾ete libovolnì volit mezi 
+      jazykovými verzemi, které Vám nabízíme. Je-li Vámi po¾adovaný jazyk v seznamu, mù¾ete 
+      jej zvolit a v¹echny následující zprávy a texty se Vám v tomto jazyce zobrazí. Toto se v¹ak 
+      nevztahuje na text pøíchozích zpráv nebo názvù slo¾ek. 
+      <br><br>
+
+      <b>Pou¾ít adresáø v Javascriptu?</b><br>
+      Jedním z hlavních cílù SquirrelMailu bylo pøedejít pou¾ití Javascriptu na na¹ich stránkách. 
+      Tým SquirrelMailu v¹ak vyvinul nástroj na vyhledávání v adresáøích, který pou¾ívá Javascript. 
+      Nabízíme Vám volbu mezi HTML a Javascript adresáøem. Jestli¾e nevíte, co volby obná¹ejí, 
+      zvolte variantu HTML adresáøe, i kdy¾ Javascript bude pravdìpodobnì také funkèní.
+      <br><br>
+      
+      <b>Poèet zpráv zobrazených ve slo¾ce</b><br>
+      Tato funkce Vám umo¾òuje nastavit, kolik zpráv se Vám bude zobrazovat ve slo¾ce Doruèená po¹ta. 
+      Jestli¾e je v této v této slo¾ce více zpráv, ne¾ je nadefinováno, zobrazí se Vám odkaz na "Pøedchozí" a 
+      "Následující" zprávy, pomocí nich¾ dosáhnete zobrazení po¾adovaných zpráv.
+      <br><br>
+      
+      <b>Zalomit pøíchozí text </b><br>
+      V této èásti si mù¾ete navolit poèet znakù, které se Vám zobrazí jako text pøíchozí zprávy, aby se text 
+      neposunoval mimo okno. Standardní poèet znakù je 86, ale ka¾dý u¾ivatel si jejich poèet mù¾e mìnit 
+      podle svého pøání.
+      <br><br>
+      
+      <b>Velikost editaèního okna</b><br>
+      Udává poèet znakù v øádku, které budete moci napsat pøed zalomením v èásti "Vytvoøit".
+      <br><br>
+      
+      <b>©íøka seznamu slo¾ek</b><br>
+      V levé èásti Va¹eho prohlí¾eèe je umístìn seznam slo¾ek, jeho¾ ¹íøku mù¾ete urèit pomocí této funkce. 
+      Pokud mají Va¹e slo¾ky dlouhý název nebo obsahují písmo vìt¹í velikosti, je vhodné nastavit vìt¹í ¹íøku. 
+      V opaèném pøípadì ji mù¾ete nastavit na men¹í mìøítko tak, abyste vyu¾ili co nejvìt¹í plochu. 
+      <br><br>
+      
+      <b>Automatická aktualizace seznamu zpráv</b><br>
+      SquirrelMail obsahuje mo¾nost automatické aktualizace seznamu zpráv v levé èásti Va¹eho prohlí¾eèe. 
+      Automaticky se také obnoví poèet nepøeètených zpráv v ka¾dé slo¾ce. 
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Zvýrazòování zpráv
+   </title>
+   <description>
+      
+
+      Tato funkce Vám umo¾ní snadnìj¹í orientaci mezi Va¹imi zprávami. 
+      Kliknìte na "[Nový]" a vytvoøte nový, nebo na "[Upravit]" a upravíte tak stávající 
+      záznam, jeho¾ nastavení se Vám zobrazí.
+      <br><br>
+      
+      <b>Identifikaèní jméno</b><br>
+      Toto je v podstatì jméno, které Vám zobrazí, od koho zpráva pøi¹la. Napøíklad pokud 
+      nastavíte zvýrazòování zpráv od Petra, mù¾ete zde nastavit text "Od Petra". 
+      <br><br>
+      
+      <b>Barva</b><br>
+      Toto je aktuální barva pozadí. Mù¾ete zvolit z nìkolika pøeddefinovaných barev, nebo zde 
+      mù¾ete zadat HEX kód barvy, kterou po¾adujete (napø. a6b492). 
+      <br><br>
+      
+      <b>Pøiøadit</b><br>
+      Zde mù¾ete zvolit odpovídající slovní spojení. Z rozbalovací nabídky nastavíte hlavièku (od, komu, pøedmìt,...) 
+      a do textového pole vepí¹ete odpovídající slovní spojení (petr@post.cz). 
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Slo¾ky - mo¾nosti
+   </title>
+   <description>
+      <b>Cesta slo¾ky</b><br>
+      V nìkterých systémech se nezobrazí. Jestli¾e tuto mo¾nost neuvidíte, ignorujte ji. Toto je 
+      slo¾ka ve va¹em adresáøi, který obsahuje va¹e slo¾ky zpráv. 
+      <br><br>
+
+      <b>Ko¹</b><br>
+      Mù¾ete se rozhodnout, kam se Va¹e zprávy budou odstraòovat. Jestli¾e nechcete, aby se Va¹e 
+      zprávy odstraòovaly do ko¹e, zvolte mo¾nost "Nepou¾ívat Ko¹". 
+      <br><br>
+      
+      <b>Odeslaná po¹ta</b><br>
+      Tato funkce Vám umo¾ní vybrat si slo¾ku, kde se budou zobrazovat Va¹e odchozí zprávy. 
+      Pokud této mo¾nosti nechcete vyu¾ívat, zvolte "Nemìnit slo¾ku pro odeslanou po¹tu".
+      <br><br>
+      
+      <b>Upozornìní o nepøeètených zprávách</b><br>
+      V této èásti mù¾ete specifikovat, jak se budou zobrazovat nepøeètené zprávy v seznamu 
+      zpráv v pravé stranì Va¹eho prohlí¾eèe. Jestli¾e zvolíte "®ádné upozornìní", nebudete 
+      o poètu nepøeètených zpráv srozumìni. Pokud vyberete slo¾ku INBOX a obdr¾íte nové zprávy, INBOX se zobrazí 
+      tuèným písmem a v závorkách se zobrazí poèet nových zpráv. Toté¾ se stane, zvolíte-li "V¹echny slo¾ky".
+      <br><br>
+      
+      <b>Typ upozornìní o nepøeètených zprávách</b><br>
+      Obdr¾íte-li nové zprávy, tato funkce Vám umo¾ní nastavit si typ upozornìní. 
+      <br><br>
+   </description>
+</section>

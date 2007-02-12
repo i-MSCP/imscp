@@ -1,0 +1,192 @@
+<chapter>
+   <title>
+      Opzioni
+   </title>
+   <summary>
+      E' possibile personalizzare la modalità di visualizzazione di SquirrelMail
+      e la maniera in cui deve rispondere, grazie alla configurazione di alcune
+      opzioni di questa sezione.
+   </summary>
+   <description>
+      <p>
+      Una delle cose più interessanti di SquirrelMail è l'alto livello di personalizzazione.
+      A seconda delle diverse configurazioni, è possibile scegliere tra diversi temi,
+      linguaggi, cartelle ed altre preferenze. Tutto ciò è configurabile senza che
+      le modifiche abbiano effetto verso altri utenti del sistema. Ci sono quattro parti
+      principali riguardo le Opzioni: Personali, Visualizzazione, Evidenziazione Messaggio e
+      Cartelle.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Informazioni Personali
+   </title>
+   <description>
+      <b>Nome Completo</b><br>
+      E' possibile inserire il vostro nome per intero.  Per esempio, "Mario Rossi". Questo è
+      quello che verrà mostrato ai destinatari dei vostri messaggi. Vedranno comparire questo
+      nome nel campo "Da". Se non inserite nulla in questo campo i destinatari dei vostri messaggi
+      vedranno comparire il vostro indirizzo email (es.: mrossi@dominio.it).
+      <br><br>
+      
+      <b>Indirizzo E-Mail</b><br>
+      <i>Opzionale</i> - Se il vostro indirizzo è diverso da quello assegnatovi automaticamente
+      è possibile cambiarlo qui.
+      <br><br>
+      
+      <b>Rispondere A</b><br>
+      <i>Opzionale</i> - Questo è l'indirizzo email a cui i destinatari dei vostri messaggi
+      invieranno automaticamente le loro risposte. Se deve essere un indirizzo diverso da
+      quello usato per inviare il messaggio, inseritelo qui. Questo è utile quando desiderate
+      farvi rispondere sull'indirizzo di Yahoo o Hotmail anzichè su quello di casa o dell'ufficio.
+      <br><br>
+      
+      <b>Firma</b><br>
+      <i>Opzionale</i> - Le firme vengono automaticamente inserite in fondo al corpo dei messaggi
+      inviati. Se desiderate apporre automaticamente una firma, è necessario selezionare la casella
+      "usa firma" e quindi inserire il testo nella casella sottostante.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Preferenze di Visualizzazione
+   </title>
+   <description>
+      <b>Tema</b><br>
+      SquirrelMail offre differenti temi colorati per visualizzare in maniera vivace il
+      vostro servizio di posta. E' possibile scegliere uno qualsiasi tra i diversi temi
+      elencati.
+      <br><br>
+
+      <b>Lingua</b><br>
+      Se l'Inglese non è la vostra lingua nativa, è possibile scegliere, in maniera molto
+      semplice, la propria.  Se la vostra lingua è presente nella lista, una volta selezionata
+      tutti i messaggi di SquirrelMail saranno visualizzati in questa lingua. Notare che 
+      questa non è una traduzione "al volo" dei messaggi o delle cartelle, ma la traduzione
+      dei testi delle maschere di SquirrelMail.
+      <br><br>
+
+      <b>Usare la Rubrica in Javascript?</b><br>
+      Uno dei nostri obiettivi è quello di usare SquirrelMail senza che sia necessario avere
+      il supporto a Javascript in nessuna delle nostre pagine. Tuttavia, alcuni dei nostri
+      sviluppatori hanno realizzato una eccellente utility di ricerca indirizzi che usa il
+      linguaggio Javascript. Piuttosto che rimuoverla, abbiamo preferito lasciare all'utente
+      la possibilità di usare o meno questa caratteristica.
+      <br><br>
+      
+      <b>Numero di Messaggi nell'Indice</b><br>
+      Rappresenta il numero di messaggi di una cartella da visualizzare in ogni videata.
+      Se nella cartella esistono più messaggi di quelli indicati da questo numero, vedrete
+      apparire un pulsate "Precedente" e "Successivo" che una volta premuti visualizzeranno
+      il resto dei messaggi.
+      <br><br>
+      
+      <b>Delimita il testo in arrivo</b><br>
+      Quanti caratteri sono consentiti prima che il testo scorra via dal video?
+      86 è normalmente il numero utile più comunemente usato, ma si è liberi di
+      inserire qualsiasi valore.
+      <br><br>
+      
+      <b>Dimensioni della finestra di composizione</b><br>
+      Quanto si desidera larga la finestra in cui si compone il testo del messaggio?
+      Questo è il numero di caratteri per linea permessi prima che il testo si allinei
+      nella sezione Componi.
+      <br><br>
+      
+      <b>Larghezza della lista cartelle sul frame sinistro</b><br>
+      Sul lato sinistro della finestra del vostro browser, vedrete l'elenco delle vostre
+      cartelle. Con questa opzione è possibile selezionare la larghezza. Se usate dei nomi
+      di cartella molto lunghi o un tipo di font largo, è consigliabile inserire un valore
+      alto. Altrimenti inserire un valore in maniera da non togliere spazio alla zona di
+      gestione dei messaggi.
+      <br><br>
+      
+      <b>Auto refresh dell'elenco cartelle</b><br>
+      SquirrelMail ha la funzionalità di "rinfrescare" automaticamente la lista delle cartelle
+      presente sul lato sinistro della finestra del vostro browser. Viene anche automaticamente
+      aggiornato il numero dei messaggi non ancora letti in ciascuna cartella. Questa è un
+      ottimo sistema per avere sotto controllo la cartella INBOX senza per questo doverci fare
+      click ogni volta.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Evidenziazione messaggio
+   </title>
+   <description>
+      Questa idea è venuta perchè se siete iscritti a diverse mailing lists, diventa
+      difficile distinguere da dove viene un messaggio mentre si scorre la lista.
+      Con questa opzione attivata si ha la possibilità di avere un colore di sfondo
+      diverso per ciascun messaggio proveniente da ciascuna mailing list.<br><br>
+
+      Fate click su [Nuovo] per creare una nuova evidenziazione, o [Modifica] per modificare
+      un tipo di evidenziazione già esistente; le opzioni appariranno subito sotto.<br><br>
+      
+      <b>Nome Identificativo</b><br>
+      Questo campo serve a poter descrivere il nome del tipo di evidenziazione messaggio.
+      Per esempio se state evidenziando messaggi provenienti dalla vosrta mamma, potreste
+      inserire il testo "Da mamma".
+      <br><br>
+      
+      <b>Colore</b><br>
+      E' il colore di background per la scelta corrente.  E' possibile scegliere tra un
+      numero predefinito di colori che sono stati scelti per voi, oppure potete inserire
+      un colore col il corrispondente valore esadecimale (es.:a6b492). Se scegliete di
+      usare un colore da voi definito, dovete selezionare il pulsante radio relativo.
+      <br><br>
+      
+      <b>Match</b><br>
+      Here you can choose the matching phrase.  From the drop-down box, you can 
+      choose which header field to match against (to, from, subject...) and in the
+      text box, you can enter the phrase to match (mom@yahoo.com). 
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Preferenze Cartella
+   </title>
+   <description>
+      <b>Percorso Cartella</b><br>
+      In alcuni sistemi questo non sarà visualizzato.  Se non vedete qeusta opzione ignorate
+      quanto segue.  In altri sistemi è necessario usare questa opzione.  Normalmente questa
+      opzione indica esattamente ciò che deve essere indicato.  Questa è la cartella nella
+      vostra home directory che contiene tutte le cartelle di posta. Se non ne comprendete
+      appieno il significato non modificate questo valore!
+      <br><br>
+
+      <b>Cartella Posta Eliminata (Trash)</b><br>
+      E' possibile scegliere in quale cartella inviare la posta eliminata. Se non volete usare
+      una cartella per i messaggi eliminati settate questo valore a "Non usa Trash".
+      <br><br>
+      
+      <b>Cartella Posta Inviata</b><br>
+      E' possibile scegliere la cartella in cui salvare i messaggi inviati.
+      Se non volete salvare i messaggi inviati settate questa opzione al valore
+      "Non Usare Posta Inviata".
+      <br><br>
+      
+      <b>Notificazione messaggio non visto</b><br>
+      Questa opzione specifica come visualizzare i messaggi non letti nella lista che appare
+      sul lato destro della finestra del vostro browser. Se settata questa opzione su
+      No Notificazione, non sarete avvisati circa i messaggi non letti.
+      Se settate questa opzione su INBOX, quando avete dei nuovi messaggi, la cartella INBOX
+      apparirà in grassetto e comparirà un numero alla sua destra che indica il numero dei
+      messaggi non letti.  Se settate questa opzione a Tutte le Cartelle, il comportamento
+      appena descritto sarà valido per tutte le cartelle.
+      Se notate che richiamando un acartella la lista compare lentamente, potete settare questo
+      valore a INBOX o Nessuno e le prestazioni miglioreranno.
+      <br><br>
+      
+      <b>Tipo di notificazione messaggio non letto</b><br>
+      Quando ci sono nuovi messaggi in una cartela, questa opzione dice come notificarvi la cosa.
+      <br><br>
+   </description>
+</section>

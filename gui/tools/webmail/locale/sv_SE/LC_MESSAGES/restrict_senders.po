@@ -1,0 +1,43 @@
+# Swedish (sv_SE) restrict_senders Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2005 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
+# $Id: restrict_senders.po,v 1.6 2005/06/10 16:21:19 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: restrict_senders\n"
+"POT-Creation-Date: 2005-06-07 15:40+0300\n"
+"PO-Revision-Date: 2005-06-10 07:28+0200\n"
+"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "Too many outgoing recipients. Please limit number of recipients to %d."
+msgstr "För många mottagare. Vänligen begränsa antalet till %d."
+
+#, php-format
+msgid ""
+"Daily e-mail limit has been reached. Please limit number of emails per day "
+"to %d."
+msgstr "Dagens kvot har fyllts. Begränsa antalet brev per dag till %d."
+
+msgid "All recipients in the To: field are illegal destinations."
+msgstr "Alla mottagare i till-fältet är otillåtna domäner."
+
+#, php-format
+msgid "\"%s\" plugin is not configured correctly."
+msgstr "\"%s\" insticksmodulen är inte korrekt installerad."
+
+#, php-format
+msgid "Error on data/send_restrictions.dat line number %d."
+msgstr "Fel i data/send_restrictions.dat på rad %d."
+
+msgid "Message not sent."
+msgstr "Brevet skickades inte."
+
+#, php-format
+msgid "\"%s\" plugin could not open its restriction table."
+msgstr "\"%s\" insticksmodulen kan inte öppna tabellen med restriktionerna."

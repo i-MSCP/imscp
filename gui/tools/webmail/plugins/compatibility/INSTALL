@@ -1,0 +1,45 @@
+Installing the Compatibility Plugin
+===================================
+
+1) Untar the file into the plugins directory.  Here is an example 
+   for the 1.0 version of the compatibility plugin.
+
+      $ cd plugins
+      $ tar -zxvf compatibility-1.0.tar.gz
+
+2) Patch your SquirrelMail source code - a new plugin hook
+   is necessary for this plugin, and it can easily be added
+   to most SquirrelMail versions.  Make sure you use the
+   patch file that pertains to your version of SquirrelMail.
+   The patch command can be run from the main plugins directory:
+
+      $ patch -p0 < compatibility/patches/compatibility_patch-1.4.4.diff
+
+   Note for Windows users: you can get native patch functionality
+   by installing this very useful package:
+   http://unxutils.sourceforge.net/
+
+   If you need a patch for an older version of SquirrelMail, first
+   ask yourself why you cannot upgrade (there are security issues
+   at stake), then email and we can put one together for you.
+
+3) You do *NOT* need to enable this plugin using conf.pl, since
+   it has no functionality in and of itself.  However, if you
+   use the Plugin Updates plugin, you do need to enable this 
+   plugin in order to see it on the Plugin Updates page:
+
+   ---------- optional ----------
+
+   Go to your config directory and run conf.pl.  Choose option
+   8 and add the compatibility plugin.  Save and exit.
+
+      $ cd ../../config
+      $ ./conf.pl
+
+   ---------- optional ----------
+
+4) Translations are not included in this package.  To get a
+   translation, download the language pack needed from:
+
+       http://www.squirrelmail.org/download.php
+

@@ -1,0 +1,70 @@
+# French SquirrelMail spam_buttons Plugin Translation File
+# Copyright (c) 2005 The Squirrelmail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Intri Geri <intrigeri@boum.org>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Spam Buttons Plugin 1.0\n"
+"POT-Creation-Date: 2005-03-09 12:35-0800\n"
+"PO-Revision-Date: 2005-09-04 12:16+0200\n"
+"Last-Translator: Intri Geri <intrigeri@boum.org>\n"
+"Language-Team: French <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Server replied: "
+msgstr "Réponse du serveur : "
+
+msgid "Spam"
+msgstr "Spam"
+
+msgid "Not Spam"
+msgstr "Non-spam"
+
+msgid "Successfully reported as spam"
+msgstr "Appris comme spam avec succès"
+
+msgid "Successfully reported as non-spam"
+msgstr "Appris comme non-spam avec succès"
+
+msgid "ERROR:"
+msgstr "ERREUR :"
+
+msgid ""
+"ERROR: Counld not open temp file; check attachments directory permissions"
+msgstr ""
+"ERREUR : impossible d'ouvrir le fichier temporaire : vérifiez les "
+"permissions du répertoire des fichiers joints"
+
+#, c-format
+msgid "ERROR %d: Problem reporting message ID %d: %s"
+msgstr ""
+"ERREUR %d : Il y a eu un problème lors de l'apprentissage du message numéro %"
+"d : %s"
+
+#, c-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "ERREUR : Le répertoire de brouillons %s n'existe pas."
+
+msgid "Message Details"
+msgstr "Détails du message"
+
+msgid "Bodystructure"
+msgstr "Corps du message"
+
+msgid "Entity"
+msgstr "Entité"
+
+msgid "Content-Type"
+msgstr "Type de contenu"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Encoding"
+msgstr "Encodage"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 : corps du message"

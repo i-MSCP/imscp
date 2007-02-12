@@ -1,0 +1,50 @@
+Quick instructions for installing squirrelmail: (detailed instructions can be found at www.squirrelmail.org)
+
+1. If you have cpanel or ssh access to your site, then just upload the .tgz file 
+you downloaded from us to the directory you want nutsmail to install to. (ie /nutsmail/ or /squirrelmail/ or /webmail/ 
+or to the root, pick your flavor, or create your own)
+
+2. In cpanel you can use the filemanager to extract the contents of the archive, or if you have ssh then 
+tar -xvfz FILENAME.tgz should do it.
+
+3. If you don't have cpanel or ssh, then use winzip or winrar or some such utility to extract the archive 
+contents to a directory on your pc and then upload via ftp.
+
+4. chmod to 777 the following directories/files: (d = directory, f = file)
+
+	(d) /data/	(775 would be better, sometimes it doesn't work though, if it doesn't, go 777)
+	(f) /data/default_pref	
+	(f) /plugins/virusscan/includes/virussignatures.php (optional, isn't included in recent upgrades)
+
+	note. this is assuming you will set your data dir to be below your squirrelmail root 
+    (/NUTSMAIL/data) if in the next step you choose to have your data elsewhere on your server 
+    (would require you having access to directories above your site root) you'll have to make sure that 
+    directory has the appropriate permissions (777).
+
+5. edit the config/config.php file.
+
+	following lines are of importance: (line number in parentheses for those that use a text-editor that shows line-numbers.)
+
+	(28) $license="Enter your license number here..."; (Put your license number provided by nutsmail here)
+		
+	(118)	$domain = 'yourdomain.com'; (replace with your domain)
+
+	(146)	$smtpServerAddress = 'localhost'; (usually is "mail.yourdomain.com" or something similar, 
+    however this varies from host to host so if you aren't sure check with your hosting company.
+
+	(169)	$imapServerAddress = 'localhost'; (usually it IS localhost however you may have a special setup)
+
+	(447)	$data_dir = SM_PATH . 'data/'; (by default is so, however if you want added 'security' you could 
+    consider moving it elsewhere (requires access to server filesystem) and setting an absolute path in this 
+    variable (ie. $data_dir = '/path/to/your/data/dir/'; ) you would have to ensure it has the appropriate permissions (777)
+
+	(617)	$theme_default = 38; (change to whatever skin you want the default to be. nutsmail skins start at
+		#38, we've left the original squirrelmail 'themes' as they are.
+
+	(618)	$theme_css = SM_PATH.'themes/css/XP_BlueSky.css'; (normally this should work, if however your skin 
+    looks "messed up", consider changing that to: $theme_css = /nutsmail/themes/css/XP_BlueSky.css'; (assuming you've installed to /nutsmail/ 
+    if you've installed to the root of your site you would of course substitute /nutsmail/ for just / making it: $theme_css = /themes/css/XP_BlueSky.css';
+		
+6. finished setup, go to http://www.yourdomain.com/YOURNUTSMAILPATH/ and login.
+
+7. if you are having difficulty installing, or would like a more advanced (server-wide, virtual domains etc..)installation, you can order one from our website: www.nutsmail.com 

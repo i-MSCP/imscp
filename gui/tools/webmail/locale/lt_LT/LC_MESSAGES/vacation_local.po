@@ -1,0 +1,118 @@
+# Lithuanian translation of
+# SquirrelMail's vacation_local plugin.
+# Copyright (c) 2005 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# $Id: vacation_local.po,v 1.4 2005/08/28 10:45:09 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: vacation_local 2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-20 17:05+0200\n"
+"PO-Revision-Date: 2005-08-28 11:33+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid "Vacation Message"
+msgstr "Atostogų žinutė"
+
+msgid ""
+"Set up an auto-reply message and optionally forward your incoming email. "
+"This can be useful when you are away on vacation."
+msgstr ""
+"Čia galima nustatyti automatinį atsakymą išsiunčiamą gavus žinutę bei gaunamų žinučių persiuntimą. Tai gali praversti Jūsų atostogų metu."
+
+msgid "Bad characters in list of forwarding address."
+msgstr "Neleistini simboliai nukreipimų sąraše."
+
+msgid "Options"
+msgstr "Nustatymai"
+
+msgid "Change Vacation Message"
+msgstr "Pakeisti atostogų žinutę"
+
+msgid "Settings Saved"
+msgstr "Nustatymai išsaugoti"
+
+msgid "Send auto-reply to sender?"
+msgstr "Ar siųsti automatinį atsakymą siuntėjui?"
+
+msgid "Vacation subject:"
+msgstr "Žinutės tema:"
+
+msgid "Vacation message:"
+msgstr "Atostogų pranešimas:"
+
+msgid "Forward incoming messages to addresses listed below?"
+msgstr "Ar persiųsti gaunamas žinutes žemiau nurodytiems adresatams?"
+
+msgid "No local delivery; forward and/or auto-reply only."
+msgstr "Nenaudoti lokalaus pristatymo. Vykdyti tik persiuntimus ir automatinius atsakymus."
+
+msgid "Forwarding email addresses (one address per line)"
+msgstr "Nukreipimo adresai (po vieną adresą eilutėje)"
+
+msgid "Submit"
+msgstr "Nustatyti"
+
+msgid "Error: Could not bind to LDAP server."
+msgstr "Klaida: Nepavyko užsiregistruoti LDAP serveryje."
+
+#, php-format
+msgid "Error: Could not find FTP server for %s in LDAP server."
+msgstr "Klaida: Nepavyko aptikti vartotojo %s FTP serverio tarp LDAP serverio įrašų."
+
+msgid "Error: Could not connect to LDAP server."
+msgstr "Klaida: Nepavyko prisijungti prie LDAP serverio."
+
+msgid "Error: Unable to connect to FTP server. Please try again later."
+msgstr "Klaida: nepavyko prisijungti prie FTP serverio. Bandykite vėliau."
+
+msgid ""
+"Error: Unable to log in to FTP server. Please contact your system "
+"administrator."
+msgstr "Klaida: nepavyko užsiregistruoti FTP serveryje. Susisiekite su Jūsų pašto sistemos administratoriumi."
+
+msgid ""
+"Error: Unable to switch to passive FTP mode. Please contact your system "
+"administrator."
+msgstr "Klaida: nepavyko persijungti į pasyvų FTP režimą. Susisiekite su Jūsų pašto sistemos administratoriumi."
+
+msgid "Error: Unable to upload file. Please contact your system administrator."
+msgstr "Klaida: nepavyko įkelti bylos. Susisiekite su Jūsų pašto sistemos administratoriumi."
+
+msgid "An error occurred uploading the file:"
+msgstr "Įvyko klaida įkeliant bylą:"
+
+msgid ""
+"Error: unable to download file. Please contact your system administrator."
+msgstr "Klaida: nepavyko atsisiųsti bylos. Susisiekite su Jūsų pašto sistemos administratoriumi."
+
+msgid "An error occurred downloading the file:"
+msgstr "Įvyko klaida atsisiunčiant bylą:"
+
+msgid "Error: unable to delete file. Please contact your system administrator."
+msgstr "Klaida: nepavyko ištrinti bylos. Susisiekite su Jūsų pašto sistemos administratoriumi."
+
+msgid "An error occurred deleting the file:"
+msgstr "Įvyko klaida trinant bylą:"
+
+msgid "Unknown action:"
+msgstr "Nežinomas veiksmas:"
+
+msgid ""
+"An error occurred attempting to read temp file; check permissions on "
+"attachments directory."
+msgstr ""
+"Įvyko klaida bandant perskaityti laikiną bylą. Patikrinkite priedų katalogo "
+"priėjimo teises."
+
+msgid ""
+"An error occurred attempting to create temp file; check permissions on "
+"attachments directory."
+msgstr ""
+"Įvyko klaida bandant sukurti laikiną bylą. Patikrinkite priedų katalogo "
+"priėjimo teises."
+

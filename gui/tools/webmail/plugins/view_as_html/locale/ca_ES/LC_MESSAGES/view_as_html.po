@@ -1,0 +1,22 @@
+# Catalan (ca_ES) view_as_html plugin translation.
+# Copyright (C) 2003 The SquirrelMail Development Team.
+# Marc Revenga <smurfing@vilabarrufet.homelinux.net>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: view_as_html.po,v 1.2 2003/12/14 21:30:05 indiri69 Exp $\n"
+"POT-Creation-Date: 2003-10-20 17:44-0100\n"
+"PO-Revision-Date: 2003-10-20 17:44-0100\n"
+"Last-Translator: Marc Revenga <smurfing@vilabarrufet.homelinux.net>\n"
+"Language-Team: Marc Revenga <smurfing@vilabarrufet.homelinux.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:81
+msgid "View as HTML"
+msgstr "Veure com a HTML"
+
+#: setup.php:76
+msgid "View as plain text"
+msgstr "Veure com a només texte"

@@ -1,0 +1,2 @@
+1) Copy both login.php and signout.php to the src directory.
+2) Copy the bg.png and logo.jpg file into the images directory.

@@ -1,0 +1,30 @@
+# translation of compatibility.po to Faroese
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# $Id: compatibility.po,v 1.1 2005/12/20 07:42:51 tokul Exp $
+# Danial Olsen <danial@com-data.fo>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: compatibility\n"
+"POT-Creation-Date: 2005-11-12 16:51+0200\n"
+"PO-Revision-Date: 2005-12-19 22:00+0000\n"
+"Last-Translator: Danial Olsen <danial@com-data.fo>\n"
+"Language-Team: Faroese <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11\n"
+
+msgid "Administrative error:"
+msgstr "Umsitingarlig villa:"
+
+#, c-format
+msgid "The plugin %s has not been set up correctly."
+msgstr "Plugin'ið %s er ikki rætt uppsett."
+
+msgid "Please read the README or INSTALL files that came with the plugin."
+msgstr "Vinarliga les README ella INSTALL fílurnar, ið komu við plugin'inum."
+
+#, c-format
+msgid "The file %s is missing."
+msgstr "%s fílan manglar."
+

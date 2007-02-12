@@ -1,0 +1,49 @@
+# Lithuanian translation of SquirrelMail
+# empty_folders plugin.
+# Copyright (C) 2004 SquirrelMail development team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
+# $Id: empty_folders.po,v 1.3 2005/11/12 15:13:47 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: empty_folders 1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-02-23 00:25-0800\n"
+"PO-Revision-Date: 2004-02-29 17:08+0200\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: functions.php:53
+msgid "empty"
+msgstr "išvalyti"
+
+#: functions.php:138
+msgid "Empty Link"
+msgstr "Išvalymo Nuoroda"
+
+#: functions.php:177
+msgid "Toggle Special Folders"
+msgstr "Perjungti Specialius Aplankus"
+
+#: functions.php:178
+msgid "Toggle All"
+msgstr "Perjungti visus"
+
+#: functions.php:184
+msgid "Link behavior"
+msgstr "Nuorodos elgsena"
+
+#: functions.php:188
+msgid "Move to Trash"
+msgstr "Perkelti į Šiukšlių Aplanką"
+
+#: functions.php:192
+msgid "Expunge"
+msgstr "Ištrinti"
+
+#: functions.php:197
+msgid "Save"
+msgstr "Išsaugoti"
+

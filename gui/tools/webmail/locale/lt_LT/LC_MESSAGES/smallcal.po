@@ -1,0 +1,96 @@
+# Lithuanian translation of 
+# SquirrelMail's smallcal plugin.
+# Copyright (c) 2003-2005 SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: smallcal.po,v 1.5 2005/06/05 11:49:48 jervfors Exp $\n"
+"POT-Creation-Date: 2003-10-20 16:27+0300\n"
+"PO-Revision-Date: 2003-10-20 18:53+0200\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "S M T W T F S"
+msgstr "S P A T K P Š"
+
+msgid "Today"
+msgstr "Šiandien"
+
+msgid "Color Picker"
+msgstr "Spalvos parinkimas"
+
+msgid "Click a box and the hexadecimal color will be shown <br>below. Use these hex values for color box settings."
+msgstr "Paspauskite lauką ir šešioliktainis spalvos kodas bus išvestas<br>žemiau. Išvestą kodą galima naudoti laukuose, kuriuose reikia nurodyti spalvas."
+
+msgid "Hex Value"
+msgstr "Šešioliktainė reikšmė"
+
+msgid "Small Calendar Options"
+msgstr "Mažojo kalendoriaus nustatymai"
+
+msgid "Small Calendar:"
+msgstr "Mažasis kalendorius:"
+
+msgid "Show small calendar in left bar"
+msgstr "Rodyti kalendorių kairėje pusėje"
+
+msgid "Use Default Theme:"
+msgstr "Naudoti standartinę temą:"
+
+msgid "This will override values below"
+msgstr "Čia galima pakeisti žemiau nurodytas reikšmes"
+
+msgid "Header Color:"
+msgstr "Antraštės spalva:"
+
+msgid "Day Color:"
+msgstr "Dienos spalva:"
+
+msgid "Today Color:"
+msgstr "Šiandienos spalva:"
+
+msgid "Event Color:"
+msgstr "Įvykio spalva:"
+
+msgid "Calendar separator:"
+msgstr "Kalendoriaus skirtukas:"
+
+msgid "None"
+msgstr "Joks"
+
+msgid "Horizontal rule"
+msgstr "Horizonali juosta"
+
+msgid "Box"
+msgstr "Rėmelis"
+
+msgid "Calendar size:"
+msgstr "Kalendoriaus dydis:"
+
+msgid "Default size"
+msgstr "Standartinis dydis"
+
+msgid "10 px"
+msgstr "10 pikselių"
+
+msgid "12 px"
+msgstr "12 pikselių"
+
+msgid "14 px"
+msgstr "14 pikselių"
+
+msgid "16 px"
+msgstr "16 pikselių"
+
+msgid "Use Shared Calendar:"
+msgstr "Naudoti bendrą kalendorių:"
+
+msgid "Use the shared calendar selected below as your<br>small calendar (default is Personal calendar)"
+msgstr "Naudoti žemiau pasirinktą bendrą kalendorių kaip jūsų mažąjį kalendorių (vietoj asmeninio kalendoriaus)."
+
+msgid "Shared Calendar:"
+msgstr "Bendras kalendorius:"
+

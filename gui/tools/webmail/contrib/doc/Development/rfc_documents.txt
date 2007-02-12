@@ -1,0 +1,22 @@
+SquirrelMail "talks" several protocols.  To make sure that we are
+standards-compatible, we need to refer to RFC documents.  Here's a list of
+the ones we use a lot:
+
+They are available from a wide variety of places on the net.
+For instance, if you want RFC 822, you can jump directly to it at
+    http://www.faqs.org/rfcs/rfc822.html
+    http://www.rfc-editor.org/rfc/rfc822.txt
+    http://www.imc.org/Searchable/rfc822
+
+NUMBER     DESCRIPTION
+-----------------------------------------------------------
+RFC 1730   IMAP version 4
+RFC 2060   IMAP version 4rev1
+RFC 2183   Content-Disposition MIME header
+RFC 2195   IMAP/POP AUTHorize Extension for Simple Challenge/Response
+RFC 2298   Details return receipts
+RFC 2342   The IMAP4 NAMESPACE command
+RFC 2616   HTTP/1.1
+RFC 2683   IMAP4 Implementation Recommendations
+RFC 2822   Format of an email message (sendmail)
+RFC 2831   Using Digest Authentication as a SASL Mechanism (digest-md5)

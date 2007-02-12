@@ -1,0 +1,143 @@
+$Id: ChangeLog,v 1.21 2006/03/05 04:50:22 indiri69 Exp $
+
+* Sat Mar 04 2006 Seth E. Randall <indiri69@users.sourceforge.net>
+
+- Added Dutch (nl_NL) translation from "Bram Mol" <gnoise@gmail.com>
+- Changed version number to 3.7a-1.4.x
+
+* Tue Feb 28 2006 Seth E. Randall <indiri69@users.sourceforge.net>
+
+- Fix link so it doesn't forget that it was part of a search result
+- Changed email addresses to sf.net
+- Changed version number to 3.7-1.4.x
+
+* Mon Jun 13 2005 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added XSS fix
+- Changed version number to 3.6-1.4.x
+
+* Thu Feb 12 2004 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Japanese (ja_JP) translation from "Kosaku Nagasaka" <nagasaka@yamaguchi-u.ac.jp>
+- Copied the no_NO translation to nb_NO.  We'll keep the old one for a while for
+  backwards compatability.
+- Changed version number to 3.5a-1.4.x
+
+* Wed Jan 14 2004 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Italian (it_IT) translation from "Nico"
+
+* Thu Dec 18 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Minor updates to some translations
+- Changed version number to 3.5-1.4.x
+
+* Wed Dec 17 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added French (fr_FR) translation from "Ludovic Marcotte" <ludovic@sophos.ca>
+
+* Mon Oct 20 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Catalan (ca_ES) translation from "Marc Revenga" <smurfing@vilabarrufet.homelinux.net>
+
+* Tue Oct 14 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Encode mailbox URL (thanks to Anders Wennerberg)
+- Check for more variables to pass through GET
+- Better handling of HTML documents inside message/rfc822 attachments
+- Changed version number to 3.4-1.4.x
+
+* Fri Oct  3 2003 Ruben Leote Mendes <ruben@nocturno.org>
+
+- Added Portuguese (pt_PT) translation
+
+* Thu Oct  2 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Polish (pl_PL) translation from "Sebastian Turzynski" <buzz@zamek.gda.pl>
+
+* Fri Sep 25 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added version support to setup.php
+- Added version file
+
+* Thu Sep 25 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Spanish (es_ES) translation from "grana canal10" <grana at canal10.com.uy>
+
+* Wed Jun 04 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Handles emails with Content-Type: text/html without a Mime-Version header
+
+* Tue Apr 08 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Now works properly with "Show HTML Version by Default" set
+
+* Mon Feb 24 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Swedish (sv_SE) translation from "Fredrik Nilsson" <fnen@pc.nu>
+
+* Tue Feb 18 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Moved functions out of setup.php for faster loading
+
+* Mon Jan 13 2003 Seth E. Randall <sethr@missoulafcu.org>
+
+- Cleaned up support for latest devel series
+
+* Fri Nov 01 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added view_unsafe_images support
+- Added Turkish (tr_TR) translation from "Kerem Erkan" <akerem@hacettepe.edu.tr>
+
+* Thu Sep 26 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added support for rg=0
+
+* Fri Jun 21 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Indonesian (id_ID) translation from "Arief S Fitrianto" <arief@gurame.fisika.ui.ac.id>
+
+* Wed Jun 19 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Hebrew (he_HE) translation from "yoav" <yoavb@zavit.net.il>
+- Added Danish (da_DK) translation from "Bjarke Sørensen" <bs@wasd.dk>
+- Added Czech (cs_CZ) translation from "Ivo Panacek" <ivop@regionet.cz>
+- Added Norwegian (no_NO) translation from "Bjarke Sørensen" <bs@wasd.dk>
+  after "Gustav Foseid" <gustavf-squirrel@initio.no> pointed out that it's
+  the same as the Danish one.
+- Added German (de_DE) translation from "Sebastian Gingter" <gingter@phoenixnet.de>
+
+* Tue Jun 18 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added Lithuanian (lt_LT) translation from "Tomas Kuliavas" <tokul@users.sourceforge.net>
+
+* Thu Jun 13 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added support for Display Unsafe Images
+
+* Mon Mar 25 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Fixed interaction with Delete/Move/Next that could delete other messages
+
+* Fri Feb 22 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added support for multitype/mixed and multitype/related.
+
+- Requires SquirrelMail >= 1.2.5 for multipart/mixed.
+
+* Sun Jan 20 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Added support for type text/html
+
+* Wed Jan 16 2002 Seth E. Randall <sethr@missoulafcu.org>
+
+- Changed to only show link when there is an alternate part
+
+* Sat Dec 01 2001 Seth E. Randall <sethr@missoulafcu.org>
+
+- Fixed problem where plugin ignored the user's preferences
+
+* Fri Oct 26 2001 Seth E. Randall <sethr@missoulafcu.org>
+
+- initial release
+

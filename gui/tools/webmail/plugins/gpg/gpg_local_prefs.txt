@@ -1,0 +1,19 @@
+# GPG Plugin for Squirrelmail local config file
+#
+# Make changes to this file to change the plugin defaults.
+#
+# $Id: gpg_local_prefs.txt,v 1.12 2003/10/17 12:50:20 brian Exp $
+#
+path_to_gpg=/usr/bin/gpg 
+allowprivatekeys=true 
+allowkeygeneration=true
+systemkeyring=false
+systemkeyringfile=gpgsystemkeys/pubring.gpg
+systemtrustedkey=
+systemadk=
+maxfilesize=100000
+allowpassphrasecaching=false
+insecure_mem_warning=1
+default_keystrength=1024
+default_keyexpires=1y
+debug=0

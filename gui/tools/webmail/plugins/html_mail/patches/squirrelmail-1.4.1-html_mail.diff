@@ -1,0 +1,31 @@
+--- ../../src/compose.php.orig	Sat Sep 13 13:23:35 2003
++++ ../../src/compose.php	Sat Sep 13 13:26:11 2003
+@@ -1009,13 +1009,13 @@
+     if ($compose_new_win == '1') {
+         echo '   <TR>' . "\n" .
+              '      <TD BGCOLOR="' . $color[0] . '" COLSPAN=2 ALIGN=CENTER>' . "\n" .
+-             '         <TEXTAREA NAME=body ROWS=20 COLS="' .
++             '         <TEXTAREA NAME=body ID=body ROWS=20 COLS="' .
+                        $editor_size . '" WRAP="VIRTUAL">';
+     }
+     else {
+         echo '   <TR>' . "\n" .
+             '      <TD BGCOLOR="' . $color[4] . '" COLSPAN=2>' . "\n" .
+-            '         &nbsp;&nbsp;<TEXTAREA NAME=body ROWS=20 COLS="' .
++            '         &nbsp;&nbsp;<TEXTAREA NAME=body ID=body ROWS=20 COLS="' .
+                       $editor_size . '" WRAP="VIRTUAL">';
+     }
+ 
+@@ -1445,7 +1445,11 @@
+ 
+     /* Here you can modify the message structure just before we hand 
+        it over to deliver */
+-    do_hook('compose_send');
++    $hookReturn = do_hook('compose_send', $composeMessage);
++    /* Get any changes made by plugins to $composeMessage. */
++    if ( is_object($hookReturn[1]) ) {
++        $composeMessage = $hookReturn[1];
++    }
+ 
+     if (!$useSendmail && !$draft) {
+         require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');

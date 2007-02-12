@@ -1,0 +1,26 @@
+# translation of verify_reply_to.po to
+# German SquirrelMail Verify Reply-To Plugin Translation File
+# Copyright (c) 2005 The Squirrelmail Development Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
+# $Id: verify_reply_to.po,v 1.1 2005/11/04 15:02:39 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: verify_reply_to\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-10 12:50-0700\n"
+"PO-Revision-Date: 2005-09-14 16:53+0200\n"
+"Last-Translator: Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>\n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10.2\n"
+
+msgid "Reply To field must contain a full email address. Reply To has been reset."
+msgstr "Das \"Reply-To\" Feld muss eine vollstÃ€ndige Emailadresse enthalten. Das \"Reply-To\" Feld wurde nicht ÃŒbernommen!"
+
+#, php-format
+msgid "Reply To field must contain a full email address. Reply To has been reset to %s."
+msgstr "Das \"Reply-To\" Feld muss eine vollstÃ€ndige Emailadresse enthalten. Das \"Reply-To\" Feld wurde auf %s zurÃŒckgesetzt."
+

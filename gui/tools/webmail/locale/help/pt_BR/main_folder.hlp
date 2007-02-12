@@ -1,0 +1,41 @@
+<chapter>
+   <title>
+      &Iacute;ndice de Mensagens
+   </title>
+   <summary>
+O termo pode soar complexo, mas se trata apenas da lista de mensagens que existem 
+em uma determinada pasta. </summary> </chapter> <section>
+<title>&Iacute;ndice de Mensagens </title>
+<description> 
+<p> Depois de selecionar uma pasta, voc&ecirc; ser&aacute; levado ao índice de 
+  mensagens no frame da direita . Ele consiste de uma lista das mensagens contidas 
+  na pasta selecionada. Abaixo da barra superior de menu existe uma linha que 
+  indica número e posi&ccedil;&atilde;o da mensagem que está sendo visualizada. 
+</p>
+<p> Por exemplo: Vendo mensagens <B>20</B> a <B>30</B> (45 total). </p>
+<p> Note que o número total de mensagens difere do número de mensagens n&atilde;o 
+  lidas que aparece entre par&ecirc;ntesis do lado direito do nome da pasta principal.</p>
+<p> Segue uma barra com tr&ecirc;s bot&otilde;es. Do lado esquerdo fica um list 
+  box. Este box lista suas pastas cadastradas atuais.Todas as mensagens selecionadas 
+  sar&atilde;o removidas para a pasta selecionada quando o bot&atilde;o &quot;mover&quot; 
+  for pressionado. De forma similar funciona o bot&atilde;o "apagar", que fica 
+  do lado direito da barra, eliminando as mensagens marcadas ao ser pressionado. 
+</p>
+<p> Continuando temos uma barra com tr&ecirc;s campos: De, Data, and Assunto. 
+  Estes cabe&ccedil;alhos separam a tabela de mensagens em tr&ecirc;s colunas 
+  l&oacute;gicas. A coluna &quot;De&quot; cont&eacute;m o remetente da mensagem, 
+  &quot;Data&quot; a data em que a mensagem foi enviada e &quot;Assunto&quot;, 
+  o assunto da mensagem. <b>Nota:</b> Entre as colunas de Data e Assunto existe 
+  uma pequena coluna sem cabe&ccedil;alho que pode conter "+", "!" ou "A". "+" 
+  significa que a mensagem cont&eacute;m arquivos atachados, "!" que a mensagem 
+  &eacute; urgente e "A" que voc&ecirc; j&aacute; respondeu a mensagem. </p>
+<p> O resto corresponde a pr&oacute;pria lista de mensagens. Voc&ecirc; pode observar 
+  que as mensagens n&atilde;o lidas aparecem em<b> negrito</b> enquanto as demais 
+  est&atilde;o em letra normal. Quatro campos formam esta tabela. No canto mais 
+  a esquerda, existe um quadrinho que voc&ecirc; pode usar para selecionar as 
+  mensagens tanto para mover quanto para deletar. Para trocar a ordem das mensagens 
+  clique sobre o símbolo da direita do cabe&ccedil;alho correspondente ao que 
+  queira usar para ordenar a tabela ascendentemente, um segundo click na coluna 
+  indica ordem inversa, observe como o símbolo mudará em fun&ccedil;&atilde;o 
+  da ordem. </p>
+</description> </section> 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<bindings xmlns="http://www.mozilla.org/xbl">
+	<binding id="templateitem">
+		<handlers>
+			<handler event="mouseover">
+				this.className += ' PopupSelectionBox' ;
+			</handler>
+			<handler event="mouseout">
+				this.className = this.className.replace( /\s*PopupSelectionBox\s*/, '' ) ;
+			</handler>
+			<handler event="click">
+				SelectTemplate( this.TplIndex ) ;
+			</handler>
+		</handlers>
+	</binding>
+</bindings>

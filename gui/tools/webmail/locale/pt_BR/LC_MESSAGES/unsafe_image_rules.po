@@ -1,0 +1,181 @@
+# $Id: unsafe_image_rules.po,v 1.3 2006/01/28 11:04:01 jervfors Exp $
+# Portuguese unsafe_image_rules plugin translation.
+# Copyright (c) 2003-2005 The SquirrelMail Project Team
+# Ruben Leote Mendes <ruben@nocturno.org>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.6\n"
+"POT-Creation-Date: 2003-09-24 20:00+0100\n"
+"PO-Revision-Date: 2003-09-25 02:55+0100\n"
+"Last-Translator: Ruben Leote Mendes <ruben@nocturno.org>\n"
+"Language-Team: Portuguese Portugal <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:65
+msgid "Saved Trusted Options"
+msgstr "Opções Gravadas"
+
+#: options.php:77
+msgid "Options"
+msgstr "Opções"
+
+#: options.php:77 setup.php:270
+msgid "Unsafe Image Rules"
+msgstr "Imagens Perigosas"
+
+#: options.php:91
+msgid "Trust all sources:"
+msgstr "Apresentar Todas as Imagens"
+
+#: options.php:97
+msgid "WARNING!"
+msgstr "AVISO!"
+
+#: options.php:98
+msgid "This is not recommended by the Squirrelmail Development Team."
+msgstr "Não recomendado pela equipa Squirrelmail."
+
+#: options.php:99
+msgid ""
+"Read this <a href=\"http://www.squirrelmail.org/wiki/UnsafeImages\">http://"
+"www.squirrelmail.org/wiki/UnsafeImages</a> for more details. There is a risk "
+"you may receive more spam if you check this option."
+msgstr ""
+"Leia <a href=\"http://www.squirrelmail.org/wiki/UnsafeImages\">http://"
+"www.squirrelmail.org/wiki/UnsafeImages</a> para mais informação (em inglês). "
+"Ao escolher esta opção está a aumentar a probabilidade de receber mais "
+"<i>spam</i>."
+
+#: options.php:100
+msgid "If checked unsafe images are always seen."
+msgstr "Se seleccionada, todas as imagens serão visualizadas."
+
+#: options.php:101
+msgid "If this option is checked, the state of other options is irrelevant."
+msgstr "Se seleccionada, as opções seguintes serão ignoradas."
+
+#: options.php:110
+msgid "Trust sources in address book:"
+msgstr "Confiar Remetentes no Livro de Endereços"
+
+#: options.php:116
+msgid ""
+"If checked unsafe images are shown for messages from anyone in your address "
+"book."
+msgstr "Todas as imagens contidas em mensagens provenientes de remetentes "
+"que constem do Livro de Endereços serão visualizadas."
+
+#: options.php:123
+msgid "Trust anything I send:"
+msgstr "Confiar nas Minhas Mensagens"
+
+#: options.php:129
+msgid ""
+"If checked unsafe images are shown for messages sent by any of your "
+"identities."
+msgstr "Todas as imagens contidas em mensagens enviadas de uma das suas "
+"identidades serão visualizadas."
+
+#: options.php:130
+msgid ""
+"You might not want to set this if you forward Spam to other people, and then "
+"go back and read from your 'Sent' folder."
+msgstr "Se envia <i>spam</i> e guarda essas mensagens na pasta 'Enviadas', "
+"poderá não querer activar esta opção."
+
+#: options.php:137
+msgid "Trust defined sources:"
+msgstr "Personalizar Regras de Confiança"
+
+#: options.php:143
+msgid "If checked unsafe images are shown for the sources shown below."
+msgstr "Utilizar regras definidas em baixo."
+
+#: options.php:151
+msgid "Save"
+msgstr "Gravar"
+
+#: options.php:160
+msgid "Add New Rule"
+msgstr "Acrescentar Regra Nova"
+
+#: options.php:161
+msgid "Done"
+msgstr "Terminar"
+
+#: options.php:169
+msgid "Trust source if "
+msgstr "Confiar mensagem se "
+
+#: options.php:175
+msgid "From"
+msgstr "Remetente"
+
+#: options.php:178
+msgid "To"
+msgstr "Destinatário"
+
+#: options.php:181
+msgid "Cc"
+msgstr "Cc"
+
+#: options.php:184
+msgid "To or Cc"
+msgstr "Destinatário ou Cc"
+
+#: options.php:187
+msgid "Subject"
+msgstr "Assunto"
+
+#: options.php:195
+msgid "Contains"
+msgstr "Contém"
+
+#: options.php:198
+msgid "Reg.Exp."
+msgstr "Expr. Reg."
+
+#: options.php:206
+msgid "NB"
+msgstr "Nota"
+
+#: options.php:208
+msgid "When specifying a Reg.Exp you must include delimeters."
+msgstr "As expressões regulares têm de incluir delimitadores."
+
+#: options.php:209
+msgid "The 'Contains' check will be done with case-insensitive match."
+msgstr "A verificação 'Contém' não distingue minúsculas de maiúsculas."
+
+#: options.php:211
+msgid "Submit"
+msgstr "Submeter"
+
+#: options.php:223
+msgid "Edit"
+msgstr "Editar"
+
+#: options.php:225
+msgid "Delete"
+msgstr "Apagar"
+
+#: options.php:227
+#, c-format
+msgid "If <b>%s</b> %s <b>%s</b>"
+msgstr "Se <b>%s</b> %s <b>%s</b>"
+
+#: options.php:235
+msgid "This doesn't look like a valid Reg.Exp."
+msgstr "Expressão Regular inválida."
+
+#: options.php:235
+msgid "WARNING:"
+msgstr "ATENÇÃO:"
+
+#: setup.php:272
+msgid "Set up rules about how unsafe images in HTML messages are handled."
+msgstr "Regras que determinam o modo como as imagens externas presentes em"
+" mensagens HTML são processadas."

@@ -1,0 +1,28 @@
+QUESTIONS
+
+1. I use Courier-IMAP with the user quota set, but nothing shows up.
+
+2. When using UNIX quotas, the plugin does not show anything.
+
+ANSWERS
+
+1. I use Courier-IMAP with the user quota set, but nothing shows up.
+
+    A: The "QUOTA" capability is not listed in the configuration file by 
+    default.  To turn this on, add "QUOTA" in the CAPABILITY directive 
+    of /usr/lib/courier-imap/etc/imapd, then restart the imap server.
+
+    NOTE: Courier-IMAP will NOT report a quota if usage is 0%.  If you believe
+    you have it setup correctly, try sending a message to the user, then 
+    check again.
+
+2. When using UNIX quotas, the plugin does not show anything.
+
+   If you are using UNIX quotas and cannot see quota information for your
+   account, check your quota output from a command shell using the command:
+
+  $ quota -v your_username
+
+   If you do not have any quota or limit set, the plugin will not show
+   anything. Set a quota and limit for your account and you should be able
+   to see the quota information via the plugin.

@@ -1,0 +1,67 @@
+SquirrelMail 1.4.9 locales
+
+This is the first SquirrelMail 1.4.9 translation release.
+
+The current translation status is:
+------------------------------------
+Lithuanian (lt_LT)           100.00
+Swedish (sv_SE)              100.00
+Dutch (nl_NL)                 99.83
+Bahasa Indonesia (id_ID)      99.13
+Czech (cs_CZ)                 98.08
+Faroese (fo_FO)               98.00
+Norwegian Nynorsk (nn_NO)     97.65
+French (fr_FR)                97.21
+Portuguese (pt_PT)            97.21
+German (de_DE)                95.99
+Spanish (es_ES)               95.99
+Ukrainian (uk_UA)             95.91
+Brazilian Portuguese (pt_BR)  95.73
+Russian (ru_RU)               95.73
+Serbian (sr_YU)               95.56
+Georgian (ka)                 95.38
+Greek (el_GR)                 94.25
+Polish (pl_PL)                91.81
+Finnish (fi_FI)               91.46
+Norwegian Bokmål (nb_NO)      86.41
+Japanese (ja_JP)              85.37
+Turkish (tr_TR)               83.01
+Hungarian (hu_HU)             80.14
+Slovak (sk_SK)                80.14
+Bengali (bn_IN)               79.88
+Italian (it_IT)               79.18
+Romanian (ro_RO)              79.01
+Slovenian (sl_SI)             75.70
+Bahasa Melayu (ms_MY)         74.74
+Estonian (et_EE)              74.48
+Icelandic (is_IS)             73.17
+Bulgarian (bg_BG)             72.82
+Korean (ko_KR)                72.39
+Arabic (ar)                   70.64
+Croatian (hr_HR)              69.77
+Danish (da_DK)                69.77
+Uighur (ug)                   67.25
+Basque (eu_ES)                66.99
+Farsi (fa_IR)                 64.72
+Catalan (ca_ES)               64.37
+Welsh (cy_GB)                 64.20
+Chinese Simplified (zh_CN)    62.46
+Hebrew (he_IL)                58.54
+Chinese Traditional (zh_TW)   58.28
+British (en_GB)                2.00
+------------------------------------
+
+The main changes in this release are:
+
+2007-01-06 (1.4.9 release 1)
+ - Updated the Swedish translation.
+
+2007-01-04
+ - Updated the Lithuanian translation.
+
+2006-12-31
+ - Removed unsupported translations.
+ - Removed 1.5.2cvs strings from squirrelmail.pot.
+
+2006-12-03 (branch point)
+ - Branched from HEAD.

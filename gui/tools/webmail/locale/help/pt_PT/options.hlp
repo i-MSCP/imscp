@@ -1,0 +1,171 @@
+<chapter>
+   <title>
+      Op&ccedil;&otilde;es
+   </title>
+   <summary>
+Voc&ecirc; pode personalizar o aspecto e a forma de resposta do Squirrelmail alterando 
+as diferentes op&ccedil;&otilde;es desta se&ccedil;&atilde;o. </summary> <description> 
+<p> Uma das grandes vantagens do Squirrelmail &eacute; o alto n&iacute;vel de 
+  personaliza&ccedil;&atilde;o que ele disponibiliza. Dependendo de sua configura&ccedil;&atilde;o, 
+  voc&ecirc; poderá dispor de uma grande variedade de temas, cores, idiomas, pastas 
+  e outras possibilidades. Tudo isto pode ser alterado sem afetar os outros usu&aacute;rios 
+  do sistema. As op&ccedil;&otilde;es se dividem em quatro partes principais: 
+  Informa&ccedil;&otilde;es Pessoais, Prefer&ecirc;ncias de Apresenta&ccedil;&atilde;o, 
+  Destacando Mensagens e Prefer&ecirc;ncias de Pastas. </p>
+</description> </chapter> <section> 
+<title> Informa&ccedil;&atilde;o Pessoal </title>
+<description> <b>Nome Completo</b><br>
+Voc&ecirc; deve colocar seu nome completo aqui. Por exemplo: &quot;Jo&atilde;o 
+da Silva&quot;. Este &eacute; o campo que ser&aacute; mostrado aos destinat&aacute;rios 
+de suas mensagens. Se este campo n&atilde;o for preenchido, os destinat&aacute;rios 
+ver&atilde;o seu endere&ccedil;o de correio, por exemplo: "meulogin@meudominio.org". 
+<br>
+<br>
+<b>E-Mail</b><br>
+<i>Opcional</i> - Se seu endere&ccedil;o de correio for diferente do que for exibido 
+automaticamente, voc&ecirc; pode alterar isto aqui.<br>
+<br>
+<b>Responder a</b><br>
+<i>Opcional</i> - Este &eacute; o endere&ccedil;o de email para onde as pessoas 
+ir&atilde;o enviar as mensagens de resposta quando eles respodenrem alguma mensagem 
+sua. Isto pode ser útil se voc&ecirc; quiser receber as respostas em um endere&ccedil;o 
+diferente daquele de onde emite suas mensagens, por exemplo se voc&ecirc; utiliza 
+correio do trabalho para enviar, mas quer que lhe respondam para o endere&ccedil;o 
+de casa. <br>
+<br>
+<b>Assinatura</b><br>
+<i>Opcional</i> - As assinaturas s&atilde;o adicionadas ao final de todas as mensagens 
+que voc&ecirc; enviar, sempre e quando voc&ecirc; marcar o checkbox "Usar assinatura?" 
+e o campo texto da assinatura se encontrar preenchido. <br>
+<br>
+</description> </section> <section> 
+<title> Prefer&ecirc;ncias de Apresenta&ccedil;&atilde;o</title>
+<b><description> </description></b></section> 
+<p><section><description><b>Tema</b><br>
+  O Squirrelmail disp&otilde;e de v&aacute;rios temas de cores para mudar o aspecto 
+  cromático do mesmo. Voc&ecirc; pode escolher qualquer um dentre os listados 
+  quando desejar. <br>
+  <br>
+  <b>L&iacute;ngua</b><br>
+  Se voc&ecirc; deseja alterar o idioma com o qual o Squirrelmail interage com 
+  voc&ecirc;, pode escolher um idioma diferente a partir dessa lista. Note, entretanto, 
+  que isto n&atilde;o ir&aacute; traduzir as mensagens recebidas por voc&ecirc;, 
+  nem mesmo o nome de suas pastas. <br>
+  <br>
+  <b>Usar Livro de Endere&ccedil;os com JavaScript ou HTML?</b><br>
+  Um dos nossos principais objetivos ao criar o Squirrelmail foi n&atilde;o empregar 
+  Javascript em nenhuma de nossas páginas. Entretanto, alguns de nossos colaboradores 
+  desenvolveram uma excelente ferramenta de busca para o livro de endere&ccedil;os 
+  que usa Javascript. Ao inv&eacute;s de remov&ecirc;-la, damos a voc&ecirc; a 
+  possibilidade de ativ&aacute;-la, ou n&atilde;o, a seu crit&eacute;rio. Ainda 
+  que a vers&atilde;o Javascript sem d&uacute;vida funcione perfeitamente, se 
+  voc&ecirc; n&atilde;o sabe do que se trata, pode usar a vers&atilde;o HTML sem 
+  preju&iacute;zos. <br>
+  <br>
+  <b>N&uacute;mero de mensagens a indexar</b><br>
+  &Eacute; o número máximo de mensagens exibidas por página. Se a quantidade de 
+  mensagens na pasta for maior que este número, ser&atilde;o mostrados os links 
+  de "Anterior" e"Seguinte", acima e abaixo da lista de mensagens, para voc&ecirc; 
+  ir alternando as páginas. <br>
+  <br>
+  <b>Quebar texto recebido em</b><br>
+  Cont&eacute;m o número de caracteres permitidos antes de saltar de linha. Isto 
+  evita que algumas mensagens ultrapassem a margem direita do v&iacute;deo. 86 
+  pode ser um valor aceit&aacute;vel, mas voc&ecirc; pode alter&aacute;-lo como 
+  desejar'. <br>
+  <br>
+  <b>Tamanho de janela de edi&ccedil;&atilde;o</b><br>
+  De que tamanho voc&ecirc; gostaria que fosse sua caixa </description></section><section><description>de 
+  edi&ccedil;&atilde;o de mensagens? Este &eacute; o número de caracteres por 
+  linha que voc&ecirc; poderá digitar at&eacute; que haja um salto de linha. <br>
+  <br>
+  <b>Largura da lista de pastas</b><br>
+  Voc&ecirc; pode alterar a largura da coluna lateral esquerda que cont&eacute;m 
+  a lista de suas pastas atrav&eacute;s desta op&ccedil;&atilde;o. Valores altos 
+  s&atilde;o &uacute;teis quando os nomes das pastas s&atilde;o compridos ou quando 
+  voc&ecirc; quer usar fontes grandes. Valores baixos s&atilde;o ideais para economizar 
+  espa&ccedil;o de tela.<br>
+  <br>
+  <b>Auto atualizar lista de pastas</b><br>
+  O Squirrelmail pode atualizar automaticamente a lista de pastas que fica do 
+  lado esquerdo da janela do seu browser, o que permite atualizar o número de 
+  mensagens n&atilde;o lidas de cada pasta (entre parentesis a direita do nome 
+  da pasta). Esta &eacute; uma boa op&ccedil;&atilde;o para checar suas mensagens 
+  n&atilde;o lidas na pasta Inbox sem ter que estar toda hora clicando na mesma.<br>
+  <br>
+  </description></section></p>
+<section> </section> <section> 
+<title> Destacando Mensagens </title>
+</section> 
+<p><section><description>A id&eacute;ia para isto veio da compreens&atilde;o de 
+  que se voc&ecirc; está inscrito em muitas listas de correio, &eacute; realmente 
+  dif&iacute;cil de saber de onde vem cada uma das mensagens enquanto se est&aacute; 
+  lendo a lista de mensagens. Com o destaque das mensagens, voc&ecirc; pode trocar 
+  a cor de fundo das mensagens em fun&ccedil;&atilde;o de sua proced&ecirc;</description></section><section><description>ncia. 
+  <br>
+  <br>
+  Clique em [Novo] para criear um novo destaque, ou [Feito] para alterar um que 
+  j&aacute; exista, as op&ccedil;&otilde;es aparecer&atilde;o abaixo. <br>
+  <br>
+  <b>Identificando</b><b> Nome</b><br>
+  Se trata de uma etiqueta que permite identificar o que está sendo visto. Se 
+  por exemplo voc&ecirc; quer destacar as mensagens de sua m&atilde;e, deveria 
+  cham&aacute;-lo algo assim como "De Mam&atilde;e". <br>
+  <br>
+  <b>Cor</b><br>
+  Esta &eacute; a cor do plano de fundo. Voc&ecirc; pode selecionar a cor de tr&ecirc;s 
+  maneiras diferentes, pelo seu nome (atrav&eacute;s de uma lista pr&eacute;-definida 
+  que selecionamos para voc&ecirc;), por seu código hexadecimal (tipo a6b492) 
+  ou por seu aspecto (tamb&eacute;m atrav&eacute;s das op&ccedil;&otilde;es disponibilizadas). 
+  Clique sobre o círculo que corresponda a sua prefer&ecirc;ncia. <br>
+  <br>
+  <b>Encontrado</b><br>
+  Aqui voc&ecirc; pode escolher a frase de compara&ccedil;&atilde;o. Escolha no 
+  box drop-down o campo de cabe&ccedil;alho que voc&ecirc; deseja usar (to, from, 
+  subject...) e no ret&acirc;ngulo de texto digite o texto que queira comparar, 
+  de forma que aquelas mensagens que atendam a esta condi&ccedil;&atilde;o se 
+  destacar&atilde;o com a cor escolhida. Clique em executar.<br>
+  <br>
+  </description></section></p>
+<section>
+</section>
+
+<section>
+   
+<title> Prefer&ecirc;ncias de Pastas </title>
+<description> <b>Caminho das Pastas</b><br>
+Esta op&ccedil;&atilde;o n&atilde;o existe em alguns sistemas. Se voc&ecirc; n&atilde;o 
+pode v&ecirc;-la simplesmente ignore-a. Em outros sistemas esta op&ccedil;&atilde;o 
+&eacute; muito necess&aacute;ria pois determina o caminho das pastas de correio 
+a partir de seu diret&oacute;rio pessoal. Normalmente, ela est&aacute; preenchida 
+corretamente. Se voc&ecirc; n&atilde;o entende o que h&aacute; nela, deixe como 
+est&aacute;.<br>
+<br>
+<b>Lixeira</b><br>
+Voc&ecirc; pode escolher qual ser&aacute; a pasta de destino das mensagens deletadas. 
+Se voc&ecirc; n&atilde;o quiser que as mensagens sejam movidas para a lixeira, 
+escolha: N&atilde;o use Lixeira. <br>
+<br>
+<b>Pasta de enviadas</b><br>
+Voc&ecirc; pode conservar uma c&oacute;pia das mensagens enviadas na pasta escolhida 
+nessa op&ccedil;&atilde;o. Caso n&atilde;o queira, escolha &quot;N&atilde;o utilize 
+Enviar". <br>
+<br>
+<b>Notifica&ccedil;&atilde;o de mensagens n&atilde;o lidas</b><br>
+Esta op&ccedil;&atilde;o especifica como devem ser exibidas as mensagens n&atilde;o 
+lidas na lista de pastas no lado direito da janela de seu browser. Voc&ecirc; 
+pode selecionar "N&atilde;o notificar" para que n&atilde;o haja nenhuma notifica&ccedil;&atilde;o. 
+Se voc&ecirc; selecionar "Somente Entrada", quando chegarem novas mensagens, o 
+nome Inbox ficar&aacute; em negrito e um n&uacute;mero aparecer&aacute; ao seu 
+lado para dizer quantas mensagens n&atilde;o lidas se encontram na pasta. Se voc&ecirc; 
+selecionar todas as pastas, o mesmo comportamento se dar&aacute; com todas as 
+pastas. Esta &uacute;ltima op&ccedil;&atilde;o pode causar uma lentid&atilde;o 
+no carregamento da lista de pastas, e neste caso &eacute; mais conveniente que 
+voc&ecirc; opte por uma das outras op&ccedil;&otilde;es.<br>
+<br>
+<b>Tipo de Notifica&ccedil;&atilde;o de mensagens n&atilde;o lidas</b><br>
+Voc&ecirc; pode escolher entre mostrar apenas mensagens que n&atilde;o foram lidas 
+ou as que n&atilde;o foram lidas junto com o total. <br>
+<br>
+   </description>
+</section>

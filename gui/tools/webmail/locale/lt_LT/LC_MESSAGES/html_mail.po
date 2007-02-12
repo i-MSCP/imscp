@@ -1,0 +1,87 @@
+# Lithuanian Translation of SquirrelMail html_mail plugin.
+# Copyright (c) 2005-2006 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: html_mail.po,v 1.3 2006/06/21 20:08:19 tokul Exp $
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: html_mail 2.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-10-24 21:00+0300\n"
+"PO-Revision-Date: 2006-06-21 08:35+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#, php-format
+msgid "ERROR (%s): can't load config file"
+msgstr "KLAIDA (%s): nepavyko įkelti nustatymų bylos"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid ""
+"Warning: all special formatting will be lost.  Are you sure you want to send "
+"your message in plain text format?"
+msgstr ""
+"Dėmesio: bus prarasti visi specialūs formatavimo simboliai. Ar Jūs tikrai "
+"norite siųsti žinutę paprasto teksto formatu?"
+
+msgid "Plain Text"
+msgstr "Tekstas"
+
+msgid "Compose in HTML"
+msgstr "HTML"
+
+#, php-format
+msgid ""
+"FATAL: HTML_Mail plugin must come AFTER %s in plugins array.  Please modify "
+"plugin order using conf.pl or by editing config/config.php"
+msgstr ""
+"KLAIDA: HTML_Mail priedas priedų masyve turi būti įjungtas po %s. Pakeiskite "
+"priedų tvarką naudodami SquirrelMail konfigūravimo įrankius arba rankiniu "
+"būdu pataisykite config/config.php"
+
+msgid "Subject"
+msgstr "Tema"
+
+msgid "From"
+msgstr "Nuo"
+
+msgid "Default Email Composition Format:"
+msgstr "Įprastas pašto kūrimo formatas:"
+
+msgid "Use Emoticons:"
+msgstr "Naudoti šypsiukus:"
+
+msgid "Yes"
+msgstr "Taip"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "Only Reply In HTML When Viewing HTML Format:"
+msgstr "Atsakyti HTML formatu tik tada, kai skaitant naudojamas HTML:"
+
+msgid "(Always Attempt To Reply In HTML)"
+msgstr "(Visada bandyti atsakyti HTML formatu)"
+
+msgid "Only Allow Unsafe Images In HTML Replies When Viewing Unsafe Images:"
+msgstr ""
+"Leisti nesaugius piešinius tik tada, kai jie yra leidžiami skaitant žinutę:"
+
+msgid "(Always Include Unsafe Images)"
+msgstr "(Visada įterpti nesaugius piešinius)"
+
+msgid "HTML Editor Type:"
+msgstr "HTML redaktoriaus tipas:"
+
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+msgid "HTMLArea"
+msgstr "HTMLArea"
+

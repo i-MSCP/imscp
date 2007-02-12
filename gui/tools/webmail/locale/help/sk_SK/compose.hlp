@@ -1,0 +1,167 @@
+<chapter>
+   <title>
+      Písanie nových správ
+   </title>
+   <summary>
+      Pomocou funkcie "Nová správa" mô¾te posiela» za pomoci Squirrelmailu
+      správy rôznym µuïom.
+   </summary>
+   <description>
+      <p>
+      Menu
+      Voµba "Nová správa" vám umo¾òuje prejs» na stránku písania novej správy.
+      Tu nájdete niekoµko polí a pár tlaèidiel. V závislosti od toho ako (odkiaµ)
+      ste sa dostali na stránku písania novej správy, mô¾u by» u¾ niektoré polia
+      vyplnené.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Od:
+   </title>
+   <description>
+      <p>Pole <B>Od:</B> bude zobrazené len keï povolíte viacnásobne identity.
+      (Cez menu Nastavenia, Menu osobné nastavenia). Ak ste tak urobili a
+      zvolili si ktorú identitu chcete pou¾íva», tak zvolené meno a e-mailová
+      adresa budú zobrazované vo va¹ej správe v poli Od.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Komu:
+   </title>
+   <description>
+      <p>
+      Ïal¹ie je pole <B>Komu:</B>. V tomto poli musíte zada» e-mailovú adresu
+      osoby alebo viacerých osôb, ktorým chcete posla» správu. Mô¾te napísa»
+      toµko adries koµko chcete, oddelených èiarkou. Taktie¾ mô¾te toto pole
+      vyplni» stlaèením tlaèidla "Adresár". Nemusíte sa obavá», ak niesú  v¹etky
+      ktoré zadáte zobrazené. Zobrazenie poµa "Komu" má fixnú dl¾ku a ïal¹ie
+      adresy ktoré zadáte sa dajú zobrazi» posúvaním sa vo vnútri poµa(napríklad
+      kurzorovými ¹ípkami doprava a doµava).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kópia:
+   </title>
+   <description>
+      <p>
+      Ïal¹ie pole je pole <B>Kópia</B>. Ak chcete posla» niekomu kópiu správy,
+      napí¹te jeho adresu do tohto poµa. Do poµa "Pre:" sa odporúèa napísa» adresy
+      len tých, ktorých sa táto správa priamo dotýka, do polí "Kópia:" a "Skrytá
+      Kópia:" zadajte len tých µudí, ktorých chcete o tejto správe inform.ova».
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Skrytá Kópia:
+   </title>
+   <description>
+      <p>
+      Skrytá Kópia (tie¾ nazývaná Slepá Kópia) slú¾i na poslanie kópie správy
+      bez toho, aby prijemca správy vedel o tom, ¾e existujú iní, ktorí dostanú
+      kópiu správy.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Predmet:
+   </title>
+   <description>
+      <p>
+      Tu napí¹te relevantý názov správy. Pamätajte, ¾e e-mail mô¾e by» ú¾asným
+      prostriedkom ¹etrenia vá¹ho èasu, pokiaµ napí¹ete relevantný Predmet správy.
+   </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Tlaèidlo Adresár
+   </title>
+   <description>
+      <p>
+      Toto tlaèidlo otvorí adresár. Hneï na to sa zobrazí pole vyhµadávania
+      osoby. Na získanie výsledku musíte do tohto poµa nieèo zada». Pokiaµ
+      chcete zobrazi» v¹etky osoby v adresári, stisnite tlaèidlo "Zobrazi» v¹etko".
+      Adreár má nemalú funkcionalitu a zaslú¾i si vlastnú kapitolu. Viac
+      detailnej¹ích informácií získate v kapitole "Adresár".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Tlaèidlo Ulo¾i» Koncept
+   </title>
+   <description>
+      <p>
+      Ak pí¹ete správu ale z nejakej príèiny ju teraz nechcete odosla» teraz,
+      mô¾ete stisnú» tlaèidlo "Ulo¾i» Koncept" a správa sa ulo¾í do prieèinka
+      Koncepty. Ak chcete správu neskôr dokonèi» a posla», chod»e do prieèinku
+      Koncepty, otvorte správu, a tým sa vrátite do okna písania novej správy
+      so skôr napísaným textom - mô¾te pokraèova» v písaní+poslaní správy.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Priorita
+   </title>
+   <description>
+      <p>
+      Pokiaµ to povolí systémový administrátor, bude napravo ponuka priority
+      správy. Tu si mô¾te zvoli» prioritu správy. Správa s vysokou prioritou
+      mô¾e by» odli¹ne prezentovaná e-mailovým programom prímateµa. Nezabudnite,
+      ¾e príli¹ným pou¾ívaním tejto mo¾nosti sa stratí stratí po¾adovaný efekt 
+      (psychologický).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Telo správy
+   </title>
+   <description>
+      <p>
+      Do veµkého poµa napí¹te èokoµvek chcete. Ak máte nastavený podpis správy,
+      mô¾te tento podpis vlo¾i» tlaèidlom "Podpis". Toto je miesto, kde napí¹ete
+      vlastný text správy.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Príloha
+   </title>
+   <description>
+      <p>
+      Na spodku stránky "Nová správa" sa nachádza tlaèidlo "Príloha". Umo¾ní vám
+      odosla» spolu s textom správy vami zvolený súbor ako prílohu. Tento súbor
+      sa musí nachadza» vo va¹om poèítaèi, alebo vo va¹ej sieti. Tlaèidlo "browse"
+      vám umo¾ní nájs» tento súbor klikaním v stromovej ¹truktúre va¹ich adresárov
+      a kliknú» na súbor ktorý chcete prilo¾i» k správe. Alternatívou je, ¾e do
+      poµa "Prilo¾i» súbor:" napí¹ete presnú cestu k súboru. Po vybratí si súboru
+      jednoducho kliknite na tlaèidlo "Prilo¾i»".
+      </p>
+      <p>
+      Prilo¾i» je mo¾né jeden alebo viac súborov. Pokiaµ chcete u¾ prilo¾ený súbor
+      zmaza» zo zoznamu príloh, kliknite na tlaèidlo "Odstráni» vybrané prilo¾ené
+      súbory".
+      <p>
+   </description>
+</section>

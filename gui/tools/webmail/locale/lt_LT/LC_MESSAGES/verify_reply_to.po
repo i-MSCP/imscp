@@ -1,0 +1,28 @@
+# Lithuanian Translation of SquirrelMail verify_reply_to plugin.
+# Copyright (c) 2005 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# $Id: verify_reply_to.po,v 1.1 2005/06/10 11:04:35 tokul Exp $
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: verify_reply_to 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-10 12:50-0700\n"
+"PO-Revision-Date: 2005-06-10 13:37+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid ""
+"Reply To field must contain a full email address. Reply To has been reset."
+msgstr "Atgalinio adreso nustatymas privalo nurodyti pilną elektroninio pašto adresą. Nustatymas buvo atstatytas į pradinę reikšmę."
+
+#, php-format
+msgid ""
+"Reply To field must contain a full email address. Reply To has been reset to "
+"%s."
+msgstr "Atgalinio·adreso·nustatymas·privalo·nurodyti·pilną·elektroninio·pašto·adresą.·Nustatymas·buvo·atstatytas·į·%s reikšmę."
+

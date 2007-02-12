@@ -1,0 +1,93 @@
+<chapter>
+   <title>
+      Adresboek
+   </title>
+   <summary>
+      Een adresboek kan veel tijd en invoerwerk besparen. U kunt de
+      e-mailadressen van mensen waar u veel contact mee heeft eenmalig toevoegen, en
+      keer op keer gebruiken.
+   </summary>
+   <description>
+      <p>
+      Een adresboek kan veel tijd besparen. Regelmatig gebruikte e-mailadressen
+      kunt u hierin opslaan. Het Webmail adresboek heeft tevens ondersteuning 
+      voor LDAP servers, dit zijn systemen die vaak binnen bedrijven en instellingen
+      gebruikt worden
+      om alle adressen binnen die organisatie beschikbaar te maken.
+      </p>
+      <p>
+      Als uw browser ondersteuning heeft voor JavaScript dan kunt u deze optie
+      in het instellingenmenu inschakelen. U krijgt dan een
+      nog beter overzichtelijk adresboek. Deze optie is echter niet noodzakelijk zodat het  
+      Webmail adresboek ook werkt op als u gebruikt maakt van een browsers zonder 
+      JavaScript-ondersteuning.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Korte naam
+   </title>
+   <description>
+      <p>
+      Hier kunt u een afgekorte maar herkenbare naam opgeven voor deze
+      persoon in uw adresboek.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      E-mailadres
+   </title>
+   <description>
+      <p>
+      Hier moet u het volledige e-mailadres van de persoon invoeren. Een e-mailadres bestaat uit ten
+      minste een gedeelte voor het apenstaartje (de gebruikersnaam), het apenstaartje
+      zelf en het gedeelte daarachter (de domeinnaam, geeft de organisatie weer).
+      Bijvoorbeeld piet.klaassen@bedrijf.nl.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Info
+   </title>
+   <description>
+      <p>
+      Hier kunt u willekeurige informatie, bijvoorbeeld het telefoonnummer, van de betreffende
+persoon in opslaan.
+      De informatie wordt verder niet gebruikt bij het versturen van e-mail maar
+      kan u helpen herinneren wie iemand is.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bewerk en Verwijder
+   </title>
+   <description>
+      <p>
+      Deze twee knoppen geven u de mogelijkheid om een adres te selecteren
+      en een van de bovengenoemde velden te bewerken, of de hele persoon
+      uit uw adressenboek te verwijderen. Om te Bewerken kunt u maar &eacute;&eacute;n
+      persoon tegelijk selecteren.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Toevoegen aan persoonlijk adresboek
+   </title>
+   <description>
+      <p>
+      Vul de velden in met de informatie zoals hierboven beschreven.
+      De eerste drie velden moeten verplicht ingevuld worden. De laatste twee velden 
+      zijn optioneel.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,34 @@
+--- ../../../squirrelmail-1.4.3a/src/left_main.php	2004-05-17 09:03:40.000000000 -0700
++++ src/left_main.php	2004-06-01 04:00:36.000000000 -0700
+@@ -70,8 +70,19 @@
+         $line .= "<font color=\"$color[11]\">";
+     }
+     if ( $mailbox == 'INBOX' ) {
++    		$line .= '<img src="../images/inbox.png" border="0" height="16" width="16" style="vertical-align: bottom;" alt="'. _("INBOX") .'" title="'. _("INBOX") .'">';
+         $line .= _("INBOX");
++    } elseif ( $real_box == $draft_folder){
++    		$line .= '<img src="../images/draft.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">';
++        $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
++    } elseif ( $real_box == $sent_folder){
++    		$line .= '<img src="../images/senti.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">';
++        $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
++    } elseif ( $real_box == $trash_folder){
++    		$line .= '<img src="../images/delitem.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">';
++        $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
+     } else {
++    		$line .= '<img src="../images/folder.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">';
+         $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
+     }
+     if ($special_color == TRUE)
+@@ -173,9 +184,9 @@
+     $link = '<a target="left" style="text-decoration:none" ' .
+             'href="left_main.php?';
+     if ($boxes[$boxnum]['collapse'] == SM_BOX_COLLAPSED) {
+-        $link .= "unfold=$mailbox\">+";
++        $link .= "unfold=$mailbox\"><IMG src=\"../images/plus.png\" border=\"0\" height=\"7\" width=\"7\">";
+     } else {
+-        $link .= "fold=$mailbox\">-";
++        $link .= "fold=$mailbox\"><IMG src=\"../images/minus.png\" border=\"0\" height=\"7\" width=\"7\">";
+     }
+     $link .= '</a>';
+ 

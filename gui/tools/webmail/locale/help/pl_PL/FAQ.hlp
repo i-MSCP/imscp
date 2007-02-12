@@ -1,0 +1,107 @@
+<chapter>
+   <title>
+      Odpowiedzi na czêsto zadawane pytania (FAQ - Frequently Asked Questions)
+   </title>   
+   <summary>
+      	W tej sekcji znajduj± siê odpowiedzi na czêsto powtarzaj±ce siê pytania.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+       Czy mo¿na u¿ywaæ wielu adresów z ksi±¿ki adresowej?
+   </title>
+   <description>
+      <p>
+ 	Tak. Po przeszukaniu ksi±¿ki adresowej wy¶wietlone zostan± wszystkie
+	znalezione adresy, odpowiadaj±ce zadanemu kryterium. Je¿eli
+	znalezionych zostanie 10 adresów, to mo¿na wybraæ dowolne z nich
+	do pól "Do:" lub "CC:". Wszystkie wybrane adresy zostan± wprowadzone
+	do odpowiedniego pola po klikniêciu przycisku <i>U¿yj adresy</i>.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Czy mo¿na dodaæ adres do ksi±¿ki adresowej bezpo¶rednio z wiadomo¶ci?
+   </title>
+   <description>
+      <p>
+ 	Nie. Obecnie nie ma takiej mo¿liwo¶ci. Mo¿na natomiast klikn±æ
+	prawym przyciskiem myszy na adres, skopiowaæ go do schowka, a
+	nastêpnie do ksi±¿ki adresowej. To utrudnienie zostanie
+	prawdopodobnie usuniête w przysz³ej wersji programu.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kto jest twórc± Wiewiórczej poczty?
+   </title>
+   <description>
+      <p>
+ 	Wiele osób jest za to odpowiedzialnych. Pe³na lista twórców dostêpna
+	jest w witrynie programu - <a href="http://www.squirrelmail.org"
+	target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Czym jest obs³uga poczty przez WWW?
+   </title>
+   <description>
+      <p>
+ 	W przypadku Wiewiórczej poczty oznacza to dostêp do konta
+	pocztowego za pomoc± protoko³u IMAP i brak potrzeby "grzebania" w
+	konfiguracji w celu sprawdzenia poczty.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Gdzie mo¿na korzystaæ z obs³ugi poczty przez WWW (</b>ang. <b>webmail)?
+   </title>
+   <description>
+      <p>
+ 	Wszêdzie tam, gdzie dostêpna jest przegl±darka internetowa.
+	Na razie nie dotyczy to po³±czeñ bezprzewodowych (WAP/WML).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Dlaczego do obs³ugi poczty elektronicznej korzystaæ z przegl±darki internetowej, a nie zwyk³ego klienta pocztowego?
+   </title>
+   <description>
+      <p>
+ 	Prawdopodobnie obs³uga poczty przez WWW nigdy nie stanie siê pe³nym
+	substytutem dla zwyk³ego klienta pocztowego. Chocia¿, kto wie?
+	Jednak ka¿dy u¿ytkownik usi³uj±cy sprawdziæ pocztê u
+	znajomych, w pracy, podró¿y; gdziekolwiek z dala od swego komputera,
+	powinien ju¿ znaæ odpowied¼. Poniewa¿ zwykle ustawienie na innych
+	komputerach odbioru poczty jest po prostu zawracaniem g³owy.
+	Wiewiórcza poczta zosta³a stworzona jako uzupe³nienie zwyk³ego klienta pocztowego.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      W jaki sposób to wszystko dzia³a?
+   </title>
+   <description>
+      <p>
+ 	Wiewiórcza poczta korzysta z protoko³u IMAP. Wiêcej informacji
+	znajduje siê w <A HREF="http://imap.org"/>tym</a> miejscu. Program
+	wykorzystuje równie¿ specjalnie stworzone dla niego funkcje, które
+	nie s± zawarte w PHP4. Tylko osoby odpowiedzialne za
+	zainstalowanie programu zwróc± na nie uwagê i - na pewno - doceni±.
+      </p>
+   </description>
+</section>

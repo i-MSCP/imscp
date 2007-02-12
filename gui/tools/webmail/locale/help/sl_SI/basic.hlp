@@ -1,0 +1,48 @@
+<chapter>
+   <title>
+      Uvod v SquirrelMail
+   </title>
+   <summary>
+      SquirrelMail omogoèa pregledovanje elektronske po¹te preko svetovnega spleta.
+   </summary>
+   <description>
+      <p>
+      Kaj natanèno je <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      Je nekak¹en spletni vmestnik ki omogoèa branje emailov in je napisan v <A HREF="http://www.php.net">PHP4</A>.
+      Izdelan je bil z namenom, da lahko dostopa do email sporoèil preko stre¾nika kjerkoli boste ¾e.
+      Dodatne informacije o podrobnih delovanjih IMAP protokola, lahko najdete na naslovu <A HREF="http://imap.org">tukaj</A>.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Osnove
+   </title>
+   <description>
+      <p>
+      Èe imate kak¹na vpra¹anja, si lahko preberete FAQ.
+      </p>
+      <p>
+      Squirrelmail je sestavljen iz dveh delov ki se imenujejo okvirji (frames).
+      Levi okvir prikazuje seznam vseh direktorijev. Dodatne informacije o levem okvirju
+      lahko najdete v rubriki pod "Datoteke".
+     </p>
+      <p>
+      Na desni strani se dogajjo vse glavne stvari. Zgornji del strani je vrstica z menijem.
+      Odjava vas bo varno odjavila iz sistema.  Trenutna Mapa prikazuje v kateri mapi se
+      trenutno nahajate. Takoj ob prijavi v sistem vas bo program ponesel v mapo PREJETO (INBOX).
+      </p>
+      <p>
+      Na vrhu strani imate vrsto mo¾nosti:
+         <ul>
+            <li><b>Novo sporoèilo</b> - Napi¹ite in po¹ljite elektronsko sporoèilo.
+            <li><b>Adresar</b> - Vsebuje seznam naslovov ki jih imate v Adresarju.
+            <li><b>Mape</b> - Vse mape so tukaj.  Lahko si izdelate, izbri¹ete preimenujete mape.
+            <li><b>Nastavitve</b> - Spremenite nastavitve.
+            <li><b>Iskanje</b> - S tem orodjem, prei¹èete vse va¹e mape ki jih doloèite.
+            <li><b>Pomoè</b> - Se ¹e nahajate v njej!
+         </ul>
+      </p>
+   </description>
+</section>

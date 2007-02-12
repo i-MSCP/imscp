@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<bindings xmlns="http://www.mozilla.org/xbl">
+	<binding id="showtableborders">
+		<implementation>
+			<constructor>
+				this.CheckShowBorders() ;
+			</constructor>
+			<method name="CheckShowBorders">
+				<body>
+					var oClassRegex = /\s*FCK__ShowTableBorders\s*/ ;
+
+					if ( this.border == 0 )
+					{
+						if ( !oClassRegex.test( this.className ) )
+							this.className += ' FCK__ShowTableBorders' ;
+					}
+					else
+					{
+						if ( oClassRegex.test( this.className ) )
+							this.className = this.className.replace( oClassRegex, '' ) ;
+					}
+			   </body>
+			</method>
+		</implementation>
+		<handlers>
+			<handler event="DOMAttrModified">
+				this.CheckShowBorders() ;
+			</handler>
+		</handlers>
+	</binding>
+	<binding id="anchors">
+		<implementation>
+			<constructor>
+				<![CDATA[
+				this.IsAnchor = ( this.name != null && this.name.length > 0 && ( this.getAttribute('href') == null || this.getAttribute('href').length == 0 ) ) ;
+				this.ShowIcon() ;
+				]]>
+			</constructor>
+			<method name="ShowIcon">
+				<body>
+					if ( this.IsAnchor ) 
+					{
+						this.style.height = '1px' ;
+						this.style.paddingLeft		= '16px' ;
+						this.style.backgroundImage	= 'url(behaviors/anchor.gif)' ;
+						this.style.backgroundRepeat	= 'no-repeat' ;
+						this.style.cursor = 'pointer' ;
+					}
+			   </body>
+			</method>
+		</implementation>
+		<handlers>
+			<handler event="click">
+				if ( this.IsAnchor ) 
+					alert( this.IsAnchor ) ;
+			</handler>
+		</handlers>
+	</binding>
+</bindings>

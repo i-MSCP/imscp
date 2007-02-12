@@ -1,0 +1,656 @@
+# translation of ldapquery.po to Nynorsk
+# This file is distributed under the same license as the ldapquery plugin.
+# Copyright (c) 2004-2006 The Squirrelmail Project Team
+# $Id: ldapquery.po,v 1.6 2006/08/11 13:20:02 tokul Exp $
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004,2005,2006
+msgid ""
+msgstr ""
+"Project-Id-Version: ldapquery\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2006-03-26 17:23+0300\n"
+"PO-Revision-Date: 2006-08-09 12:36+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "Personal address book is not available."
+msgstr "Personleg adressebok er ikkje tilgjengeleg."
+
+#. checked email field
+msgid "Email address is not set or empty."
+msgstr "E-postadresse er ikkje valgt eller mangler."
+
+#. checked both name fields
+msgid "Name is not set or empty."
+msgstr "Namn er ikkje valgt eller mangler."
+
+msgid "Nickname %s is already in use."
+msgstr "Kallenam %s er allereie i bruk."
+
+msgid "Can't create address book entry."
+msgstr "Can ikkje lage ny oppføring i adresseboka."
+
+msgid "Nickname: "
+msgstr "Kallenamn: "
+
+msgid "First name: "
+msgstr "Førenamn: "
+
+msgid "Last name: "
+msgstr "Etternamn: "
+
+msgid "E-mail: "
+msgstr "E-post: "
+
+msgid "Info: "
+msgstr "Informasjon: "
+
+msgid "Add address"
+msgstr "Legg til adresse"
+
+msgid "Address book entry is saved."
+msgstr "Adressebokoppføringa er lagra."
+
+msgid "Return to search results"
+msgstr "Returner til søkjeresultatet"
+
+msgid "Dublicate ldap attribute definition: %s."
+msgstr "Dupliser ldap eigenskap definisjonen %s."
+
+msgid "Dublicate ldap object definition: %s."
+msgstr "Dupliser ldap obejekt definisjonen %s."
+
+msgid "Any"
+msgstr "Vilkårleg"
+
+msgid "Directory"
+msgstr "Katalog"
+
+msgid "Directory Preferences"
+msgstr "Kataloginnstillingar"
+
+msgid ""
+"These settings control what type of output you will see when you use the "
+"Directory link to search Directory Services."
+msgstr ""
+"Oppsettet kontrolerer kva ein ser når ein brukar Kataloglenkje for å søkje i "
+"ein katalog teneste"
+
+msgid "No records found"
+msgstr "Ingen post funnet"
+
+msgid "Save"
+msgstr "Lagre"
+
+msgid "Add to address book"
+msgstr "Legg til adressebok"
+
+msgid "Plugin requires PHP with LDAP support."
+msgstr "Programtillegg krev PHP med LDAP støtte."
+
+msgid "LDAP address books are not configured in SquirrelMail configuration."
+msgstr "LDAP adressebøker er ikkje set opp i SquirrelMail oppsettet."
+
+#. Get the userdn to authenticate with
+msgid "User DN:"
+msgstr "Brukar DN:"
+
+#. Get the user password
+msgid "Password:"
+msgstr "Passord"
+
+#. Get the objectclass the user wants to search for
+msgid "Search For:"
+msgstr "Søk etter"
+
+#. Get the attribute the user wants to search by
+msgid "Where:"
+msgstr "Kor:"
+
+msgid "Contains"
+msgstr "Inneheld"
+
+msgid "Is"
+msgstr "Er"
+
+#. Sort By menu
+msgid "Sort By:"
+msgstr "Sorter etter:"
+
+msgid "Search in:"
+msgstr "Søk i:"
+
+msgid "All LDAP address books"
+msgstr "Alle LDAP adressebøker"
+
+msgid "Search"
+msgstr "Søk"
+
+msgid "Search Results"
+msgstr "Søkjeresultat"
+
+msgid "Comparetype is %s"
+msgstr "Samanlikn type er %s"
+
+msgid "QUERY is %s"
+msgstr "Førespurnad er %s"
+
+#.
+#. * Used in debug mode
+#. * Example output "Querying: ldap-server-address on port some-port with base ldap-base-dn"
+#. * See http://www.php.net/sprintf if you want to rearrange order of arguments
+#.
+msgid "Querying: %s on port %d with base %s"
+msgstr "Førespurnad %s på port %d med base %s"
+
+msgid "Could not connect to LDAP server %s"
+msgstr "Kan ikkje kopla til LDAP tenaren %s"
+
+msgid "Unable to bind to LDAP server"
+msgstr "Klarte ikkje knyta til LDAP tenaren"
+
+msgid "Nothing found!"
+msgstr "Ingen oppslag funnet"
+
+msgid "output type is %s"
+msgstr "utskriftstype er %s"
+
+msgid "output sorted by %s"
+msgstr "utskrift sortert ved %s"
+
+msgid "Options - Directory Preferences"
+msgstr "Kataloginnstillingar"
+
+msgid "Output types can be:"
+msgstr "Utskrifttypar kan vera:"
+
+msgid "One Table"
+msgstr "Ein tabell"
+
+msgid ""
+"One big table with one row per record found and each selected attribute as a "
+"separate column."
+msgstr ""
+"Vis rsultatet som ein stor tabell med ei rad per funnet post og kvar valgte "
+"eigenskap som seperate kolonner."
+
+msgid "Multiple Tables"
+msgstr "Fleire tabellar"
+
+msgid ""
+"One table per record found with 2 columns for each table. One column "
+"contains attribute names and the 2nd column shows values for each "
+"attribute.  This format is best if you have many attributes selected or if "
+"the values for some of the attributes you have selected can be very long "
+"with no spaces (like labeledurl)."
+msgstr ""
+"Ein tabel per funnet post med 2 kolonner for kvar tabell. Ei kolonne som "
+"inneheld namn og ei andre kolonne som viser verdier for kvar eigenskap. "
+"Dette formatet er best viss ein har mange valgte eigenskaper eller viss "
+"verdiane for nokre av eigenskapane er svært lange utan blanke teikn."
+
+msgid "Select Output Type:"
+msgstr "Vel utskrifttype:"
+
+msgid "Select Displayed Fields"
+msgstr "Vel synte felt"
+
+msgid "Submit"
+msgstr "Send"
+
+#. openldap system schemas
+msgid "Common Name"
+msgstr "Vanleg namn:"
+
+msgid "Knowledge Information"
+msgstr "Kunnskap informasjon"
+
+msgid "Surname"
+msgstr "Etternan"
+
+msgid "Serial Number"
+msgstr "Serienummer"
+
+msgid "Country Name"
+msgstr "Namn på land"
+
+msgid "Locality Name"
+msgstr "Stedsnamn"
+
+msgid "State or Province Name"
+msgstr "Fylke eller kommunenamn"
+
+msgid "Street Address"
+msgstr "Gateadresse"
+
+msgid "Organisation Name"
+msgstr "Organisajonsnamn"
+
+msgid "Organisational Unit Name"
+msgstr "Hovedorganisasjonsnamn"
+
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Description"
+msgstr "Skildring"
+
+msgid "Search Guide"
+msgstr "Søk guide"
+
+msgid "Business Category"
+msgstr "Jobbkategori"
+
+msgid "Postal Address"
+msgstr "Postadresse"
+
+msgid "Postal Code"
+msgstr "Postnummer"
+
+msgid "Post Office Box"
+msgstr "Postboks"
+
+msgid "Physical Delivery Office Name"
+msgstr "Fysisk levering kontornamn"
+
+msgid "Telephone Number"
+msgstr "Telfon nummer"
+
+msgid "Telex Number"
+msgstr "Telex nummer"
+
+msgid "Teletex Terminal Identifier"
+msgstr "Telex terminal identitet"
+
+msgid "Facsimile (Fax) Telephone Number"
+msgstr "Fax telefon nummer"
+
+msgid "X.121 Address"
+msgstr "X.121 adresse"
+
+msgid "International ISDN Number"
+msgstr "Internasjonal ISDN nummer"
+
+msgid "Registered Postal Address"
+msgstr "Registrert postadresse"
+
+msgid "Destination Indicator"
+msgstr "Reisemål indikator"
+
+msgid "Preferred Delivery Method"
+msgstr "Føretrekt leveringsmetode"
+
+msgid "Presentation Address"
+msgstr "Framvisingsadresse"
+
+msgid "Supported Application Context"
+msgstr "Støtta programinnhald"
+
+msgid "Member of a group"
+msgstr "Medlem av ei gruppe"
+
+msgid "Owner"
+msgstr "Eigar"
+
+msgid "Occupant of role"
+msgstr "Innbyggarrolle"
+
+msgid "See also"
+msgstr "Sjå også"
+
+msgid "User Certificate"
+msgstr "Brukar sertifikat"
+
+msgid "CA Certificate"
+msgstr "CA Sertifikat"
+
+msgid "Authority Revocation List"
+msgstr "Forfatter annulleringsliste"
+
+msgid "Certificate Revocation List"
+msgstr "Sertifikat annulleringsliste"
+
+msgid "Cross Certificate Pair"
+msgstr "Kryss sertifikat par"
+
+msgid "First Name"
+msgstr "Førenamn"
+
+msgid "Initials"
+msgstr "Forbokstaver"
+
+msgid "Generation Qualifier"
+msgstr "Genereringskvalitet"
+
+msgid "X.500 unique identifier"
+msgstr "X.500 unik identitet"
+
+msgid "DN qualifier"
+msgstr "DN qualifier"
+
+msgid "Enhanced Search Guide"
+msgstr "Utvida søke guide"
+
+msgid "Protocol Information"
+msgstr "Protokollinformasjon"
+
+msgid "unique member of a group"
+msgstr "unik medlemav ei gruppe"
+
+msgid "House Identifier"
+msgstr "Hus identitet"
+
+msgid "Supported Algorithms"
+msgstr "Støtta algoritmer"
+
+msgid "Delta Revocation List"
+msgstr "Delta annulleringsliste"
+
+#. Attribute specifies a directory management domain (DMD),
+#. the administrative authority which operates the directory server.
+msgid "Name of DMD"
+msgstr "Namn på DMD"
+
+msgid "Labelled URI"
+msgstr "Merka URI"
+
+msgid "User ID"
+msgstr "Brukar ID"
+
+msgid "Mail"
+msgstr "E-post"
+
+msgid "Domain Component"
+msgstr "Domenekomponent"
+
+msgid "Associated Domain"
+msgstr "Tilknytta domene"
+
+msgid "Email Address"
+msgstr "E-postadresse"
+
+#. * Object Classes
+msgid "Country"
+msgstr "Land"
+
+msgid "Locality"
+msgstr "Stad"
+
+msgid "Organisation"
+msgstr "Organisasjon"
+
+msgid "Organisational Unit"
+msgstr "Hoverorganisasjon"
+
+msgid "Person"
+msgstr "Person"
+
+msgid "Organisational Person"
+msgstr "Kontaktperson"
+
+msgid "Organisational Role"
+msgstr "Organisasjonsbransje"
+
+msgid "Group of Names"
+msgstr "Gruppe med namn"
+
+msgid "Residential Person"
+msgstr "Heime person"
+
+msgid "Application Process"
+msgstr "Programprosess"
+
+msgid "Application Entity"
+msgstr "Program"
+
+#. RFC2256: a directory system agent (a server)
+msgid "DSA"
+msgstr "DSA"
+
+msgid "Device"
+msgstr "Eining"
+
+msgid "Strong Authentication User"
+msgstr "Streng brukarautentisering"
+
+msgid "Certificate Authority"
+msgstr "Sertifikatautorisasjon"
+
+msgid "Group of Unique Names"
+msgstr "Gruppe med unike namn"
+
+msgid "User Security Information"
+msgstr "Brukar tryggleiksinformasjon"
+
+msgid "Certificate Authority V2"
+msgstr "Sertifikatautorisasjon V2"
+
+msgid "CRL Distribution Point"
+msgstr "CRL distribusjonspunkt"
+
+#. a directory management domain object
+msgid "dmd"
+msgstr "dmd"
+
+msgid "PKI User"
+msgstr "PKI brukar"
+
+msgid "PKI CA"
+msgstr "PKI CA"
+
+msgid "Delta CRL"
+msgstr "Delta CRL"
+
+msgid "Labeled URI Object"
+msgstr "Merka URI objekt"
+
+msgid "Simple Security Object"
+msgstr "Enkelt tryggleiksobjekt"
+
+msgid "DC Object"
+msgstr "DC objekt"
+
+msgid "UID Object"
+msgstr "UID objekt"
+
+msgid "Encoded Text or Address"
+msgstr "Kode tekst eller adresse"
+
+msgid "Info"
+msgstr "Informasjon"
+
+#. Favorite drink (noun)
+msgid "Drink"
+msgstr "drikk"
+
+msgid "Room Number"
+msgstr "Romnummer"
+
+msgid "Photo"
+msgstr "Foto"
+
+msgid "Category of user"
+msgstr "Kategori ov brukarar"
+
+msgid "Host"
+msgstr "Tenar"
+
+msgid "Manager"
+msgstr "Leiar"
+
+msgid "Document identifier"
+msgstr "Dokumentidentitet"
+
+msgid "Document Title"
+msgstr "Dokumenttittel"
+
+msgid "Document version"
+msgstr "Dokumentversjon"
+
+msgid "Document author"
+msgstr "Dokumentforfattar"
+
+msgid "Location of document"
+msgstr "Plassering av dokument"
+
+msgid "Home Phone"
+msgstr "Heimetelefon"
+
+msgid "Secretary"
+msgstr "Fullmektig"
+
+msgid "Other Mailbox"
+msgstr "Andre e-postbokser"
+
+#. DNS A record entries
+msgid "A Record"
+msgstr "A Post"
+
+#. DNS MD record entries
+msgid "MD Record"
+msgstr "MD Post"
+
+#. DNS MX record entries
+msgid "MX Record"
+msgstr "MX Post"
+
+#. DNS NS record entries
+msgid "NS Record"
+msgstr "NS Post"
+
+#. DNS SOA record entries
+msgid "SOA Record"
+msgstr "SOA Post"
+
+#. DNS CNAME record entries
+msgid "CNAME Record"
+msgstr "CNAME Post"
+
+msgid "Associated Name"
+msgstr "Tilknytta namn"
+
+msgid "Home Postal Address"
+msgstr "Heimeadresse"
+
+msgid "Personal Title"
+msgstr "Persontittel"
+
+msgid "Mobile Phone Number"
+msgstr "Mobilnummer"
+
+msgid "Pager"
+msgstr "Personsøkjer"
+
+msgid "Unique Identifier"
+msgstr "Unik identitet"
+
+msgid "Organizational status"
+msgstr "Organisasjonsstatus"
+
+#. Mail address in rfc733 format
+msgid "Janet mailbox"
+msgstr "Janet e-post"
+
+msgid "Mail Preference Option"
+msgstr "E-postinstillingar"
+
+msgid "Name of building"
+msgstr "Namn på byggning"
+
+msgid "DSA Quality"
+msgstr "DSA kvalitet"
+
+msgid "Single Level Quality"
+msgstr "Einnivå kvalitet"
+
+msgid "Subtree Minimum Quality"
+msgstr "Subtre minimum kvalitet"
+
+msgid "Subtree Maximum Quality"
+msgstr "Suntre maksimum kvalitet"
+
+msgid "Personal Signature"
+msgstr "Personleg signatur"
+
+#. Redirection to other entry in directory
+msgid "DIT Redirect"
+msgstr "DIT omdiriger"
+
+msgid "Audio"
+msgstr "Lyd"
+
+msgid "Publisher of document"
+msgstr "Dokumentutgiver"
+
+msgid "Pilot Person"
+msgstr "Personførar"
+
+msgid "Account"
+msgstr "Konto"
+
+msgid "Document"
+msgstr "Dokument"
+
+msgid "Room"
+msgstr "Rom"
+
+msgid "Document Series"
+msgstr "Dokument serie"
+
+#. can represent dns and nrs domain objects
+msgid "Domain"
+msgstr "Domene"
+
+msgid "RFC822 Local Part"
+msgstr "RFC822 loal del"
+
+msgid "DNS Domain"
+msgstr "DNS domene"
+
+msgid "Object related to domain"
+msgstr "Objekt relatert til domene"
+
+msgid "Friendly Country"
+msgstr "Venlege land"
+
+msgid "Pilot Organisation"
+msgstr "Person organisasjon"
+
+msgid "Pilot DSA"
+msgstr "Førar DSA"
+
+msgid "Quality Labelled Data"
+msgstr "Kvalitets merka data"
+
+msgid "Car License"
+msgstr "Førarkort"
+
+msgid "Department Number"
+msgstr "Avdeling nummer"
+
+msgid "Displayed Name"
+msgstr "Synt namn"
+
+msgid "Employee Number"
+msgstr "Tilsettnummer"
+
+msgid "Employee Type"
+msgstr "Stillingstype"
+
+msgid "JPEG Photo"
+msgstr "JEPG foto"
+
+msgid "Preferred Language"
+msgstr "Ønska språk"
+
+msgid "User SMIME Certificate"
+msgstr "Bruk SMIME sertifikat"
+
+msgid "User PKCS12"
+msgstr "Bruk PKCS12"
+
+msgid "Internet Organizational Person"
+msgstr "Internett organisatorisk person"

@@ -1,0 +1,111 @@
+<chapter>
+   <title>
+      Ofta förekommande frågor
+   </title>   
+   <summary>
+      Många av de vanligaste frågorna förekommer gång på gång.
+      Detta är en lista över de vanligaste frågorna och svaren till dessa.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Kan jag på en och samma gång använda flera namn från adressboken?
+   </title>
+   <description>
+      <p>
+      Ja. Adressboksökning visar alla träffar som uppfyller sökkriterierna.
+      Man kan på önskat sätt välja vilka som skall vara mottagare (<B>Till:</B>)
+      eller mottagare till en kopia (<B>CC:</B>). Samtliga valda adresser
+      fylls i rätt när man trycker på knappen <B>Använd Adresser</B>.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Kan jag plocka adresser från meddelanden till adressboken?
+      Voinko poimia nimiä osoitekirjaan viestistä?
+   </title>
+   <description>
+      <p>
+      Nej. Denna funktion är tyvärr inte implementerad. Du kan markera
+      adressen och klippa och klistra, om din webläsare har stöd för detta.
+      SquirrelMail utvecklas dock kontinuerligt, det är möjligt att det
+      i framtiden kommer att gå att plocka adresser från meddelanden.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vem har gjort SquirrelMail?
+   </title>
+   <description>
+      <p>
+      Många har hjälpt till. Du kan få mer information från
+      <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vad betyder webmail?
+   </title>
+   <description>
+      <p>
+      När det gäller SquirrelMail, den ger dig åtkomst till din E-postlåda
+      med hjälp av IMAP protokoll. Detta betyder att du inte behöver fundera
+      allt för mycket över konfigureringar bara för att kunna läsa dina
+      meddelanden.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Var kan jag använda webmail?
+   </title>
+   <description>
+      <p>
+      Överallt där det finns åtkomst till nätet och en webläsare.
+      Trådlös användning med WAP/WML har man dock inte ens börjat att utveckla.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Varför använda webmail istället för en vanlig E-postläsare.
+   </title>
+   <description>
+      <p>
+      Det är troligt att webmail aldrig kommer att ersätta vanliga
+      E-postläsare, men vem vet? I vilket fall som helst, det är bekvämt
+      om du befinner dig långt borta från din dator, hos en kompis, på
+      en resa, hemma eller på jobbet och vill läsa dina meddelanden.
+      Det är inte särskilt roligt att behöva lista ut hur man konfigurerar
+      en E-postläsare som man kanske inte har sett tidigare, göra det
+      arbetet, läsa/skicka post, och sedan rensa bort allt man har gjort.
+      SquirrelMail är gjort för att kompletera E-postläsare, inte för att
+      ersätta dem.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Hur fungerar detta?
+   </title>
+   <description>
+      <p>
+      SquirrelMail använder IMAP protokoll, mer information om det hittar du
+      <A HREF="http://imap.org"/>här</A>.
+      Programmet använder också sina egna IMAP funktioner istället för de
+      som finns färdigt i PHP4. Detta har kanske ingen som helst betydelse
+      för någon som helst, utom för de som har hand om installationen av
+      SquirrelMail, men tro på oss när vi säger att de uppskattar detta.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,35 @@
+# German (de_DE) newuser_wiz Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Jam <jam@qv90.de>, 2005-2006.
+# $Id: newuser_wiz.po,v 1.2 2006/04/05 19:23:54 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: newuser_wiz 1.3.2\n"
+"Report-Msgid-Bugs-To: Angelo Bertolli <angelo.bertolli@gmail.com>\n"
+"POT-Creation-Date: 2006-04-03 09:09+0200\n"
+"PO-Revision-Date: 2006-04-03 09:25+0200\n"
+"Last-Translator: Jam <jam@qv90.de>\n"
+"Language-Team: German <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Welcome to"
+msgstr "Willkommen bei"
+
+msgid ""
+"Since it appears as though you're new to this system, please fill in the "
+"following information."
+msgstr ""
+"Es scheint so, als ob Sie sich erstmalig an diesem System anmelden! Bitte "
+"füllen Sie die folgenden Informationen aus."
+
+msgid "Full Name:"
+msgstr "Vollständiger Name:"
+
+msgid "Email Address:"
+msgstr "E-Mail Adresse:"
+
+msgid "Submit"
+msgstr "Senden"

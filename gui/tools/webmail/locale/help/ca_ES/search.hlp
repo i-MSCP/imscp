@@ -1,0 +1,72 @@
+<chapter>
+   <title>
+      Cercar
+   </title>
+   <summary>
+      Cercar a través d'una carpeta per uns criteris concrets.
+   </summary>
+   <description>
+      <p>
+      amb aquesta eina útil, vostè pot cercar a través d'una carpeta
+      específica per uns criteris concrets als diversos camps de la capçalera.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Descripció general
+   </title>
+   <description>
+      <p>
+      Vostè selecciona simplement la carpeta on vostè desitja buscar, entra
+      a la caixa de text la cadena a buscar i indica en quin camp vol cercar.
+      Una vegada feta la recerca, apareixerà una llista de missatges. Tots
+      els que es mostren compleixen el criteri demanat. Ara es poden mirar
+      com si fossin missatges normals.
+      </p>
+      <p>
+      <B>Nota</B>: Quan vostè seleccioni la opció cercar, aquest seleccionarà 
+      per defecte que la carpeta per fer la recerca serà la carpeta actual.
+      Per exemple: si vostè mira la carpeta amics, i selecciona la opció
+      per cercar, la carpeta seleccionada per defecte serà la d'amics.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Cercar a través de
+   </title>
+   <description>
+      <p>
+      A la dreta de la caixa de text, vostè veu un menú deslligable de llocs
+      on es possible cercar. Aquest conté: Cos, Tots, Assumpte, De, CC i A.
+      </p>
+      <p>
+      <b>Cos</b> - Cerca a través del cos del missatge. Es aquí on es troba
+      la informació important.
+      </p>
+      <p>
+      <b>Tots</b> - Aquesta cerca per tots els camps del missatge incloent la
+      capçalera del missatge. A menys que vostè desitgi fer-ho així, es poc
+      recomanable, ja que pot tornar resultats que normalment no esperaria.
+      </p>
+      <p>
+      <b>Assumpte</b> - Cerca pel camp de l'assumpte per tots els missatges.
+      </p>
+      <p>
+      <b>De</b> - De qui es el missatge. SquirrelMail no mostra la direcció
+      de correu si el nom es al missatge. Això no implica que encara que 
+      normalment no veiem la direcció de correu, aquest cerqui una direcció.
+      </p>
+      <p>
+      <b>A</b> - A qui va destinat el missatge. Aquí pot ser mes d'una direcció
+      de correu.
+      </p>
+      <p>
+      <b>CC</b> - Igual que "A", excepte que en lloc de a qui va el correu, es 
+      el que rep la copia carbó.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,191 @@
+<chapter>
+   <title>
+	Membaca sebuah pesan surate
+   </title>
+   <summary>
+	Kemampuan untuk membaca suatu pesan dalam surate merupakan
+	salah satu hal mendasar dalam suatu klien surate. Akan tetapi,
+	Squirrelmail memiliki cukup banyak kemampuan saat Anda sedang membaca
+	pesan. Hal ini akan diterangkan kemudian.
+   </summary>
+   <description>
+      <p>
+	Klik bagian subyek dari suatu surat tertentu dan pesan di dalamnya 
+	akan ditampilkan. Satu hal yang Anda lihat adalah alamat surate
+	dan untai nara web dalam keadaan aktif sehingga Anda dapat mengkliknya
+	untuk mengirimkan surate atau menuju ke suatu situs. Kemampuan yang
+	lainnya lagi adalah surate ditampilkan berwarna. Standar untuk balasan
+	adalah kutipan pesan asli dengan didahului oleh "> " dalam setiap baris.
+	SquirrelMail melihat hal ini dan mewarnainya. Pesan yang dibalas akan
+	memiliki warna berbeda dalam surat balasan  dari naskah baru. Hal ini
+	berlaku sampai dua tingkat. Baris menu yang lain ditampilkan di bawah
+	menu pilihan. Baris ini memiliki tiga bagian. Di sebelah kiri ,
+	Anda bisa menghapus atau kembali ke daftar pesan. Di tengah, memungkinkan
+	navigasi langsung antara pesan. Di kanan , berbagai fungsi penyuratan
+	diketengahkan.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+	Daftar Pesan
+   </title>
+   <description>
+      <p>
+	Klik untai nara ini untuk kembali ke laci semula.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Hapus
+   </title>
+   <description>
+      <p>
+	Klik untai nara ini untuk menghapus pesan yang sedang dibaca.
+	Semua sisipan yang ada juga akan dihapus. Hindari kehilangan sisipan
+	file yang ada dengan cara menyimpannya terlebih dahulu. (dijelaskan
+	lebih lanjut dalam bab ini). <BR>
+	Dalam konteks ini, penghapusan berarti bahwa pesan akan dipindahkan 
+	ke laci yang disebut Sampah. Jika Anda ingin menyimpan pesan 
+	ini selamanya, lihat laci Sampah dan pindahkan pesan tersebut 
+	ke tempat lain.  
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Navigasi
+   </title>
+   <description>
+      <p>
+	Di bagian tengah ada tombol navigasi. "Sebelumnya" akan menjadi
+	sebua untai nara aktif bila ada pesan sebelumnya dan hanya berupa teks
+	murni bila sebaliknya. Klik untai nara ini bila ingin melihat pesan
+	sebelumnya tanpa kembali lagi ke daftar pesan. Hal yang sama untuk 
+	untai nara "Berikutnya" yang akan membawa Anda melihat surat yang 
+	berikutnya setelah surat yang sedang Anda lihat.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Berikutnya
+   </title>
+   <description>
+      <p>
+	Klik untai nara ini untuk melihat surat yang berikutnya setelah
+	surat yang sedang Anda baca saat ini. "Berikutnya" akan aktif bila ada pesan
+	selanjutnya dan hanya teks murni bila tidak.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Kirimkan ke
+   </title>
+   <description>
+      <p>
+	Di sebelah kanan, bila untai nara "Kirimkan ke" diklik akan
+	membuka halaman "Tulis Surat" yang akan memperlihatkan surate yang asli
+	dengan kata pembuka "Pesan Asli". "Fwd:" akan ditambahkan dalam baris
+	subyek dan diletakkan di tempat yang benar. Berbagai isian untuk
+	mengirimkan ke alamat tertentu harus Anda isi. Anda dapat meletakkan
+	kursor dalam kotak naskah untuk menambah naskah yang sudah ada. Anda
+	juga bisa memasukkan sisipan file.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Balas
+   </title>
+   <description>
+      <p>
+	Klik untai nara ini untuk membalas suatu pesan yang dibaca. Re:
+	akan ditambahkan di bagian subyek . Naskah dari pesan asli juga akan
+	ditampilkan di kotak naskah. Kali ini tanda "> " ditempatkan di depan
+	naskah asli. Anda mungkin akan melihat bahwa tidak semua naskah asli
+	didahului oleh tanda "> ". Hal ini dikarenakan oleh adanya pemenggalan
+	kata yang tidak bisa dihindarkan. Coba mengubah nilai <I>Penggal naskah
+	pada kolom</I> dengan angka yang lebih besar, mudah-mudahan bisa
+	membantu. komentar bisa dibuat di mana saja dalam kotak naskah sebagai
+	tambahan terhadap naskah yang sudah ada. Anda juga bisa memasukkan
+	sisipan file di sini.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Balas Semua
+   </title>
+   <description>
+      <p>
+	Sama seperti "Balas" dengan perbedaan bahwa semua alamat yang
+	ada dalam header akan menerima surate.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Lihat header lengkap
+   </title>
+   <description>
+      <p>
+	Ini akan menampilkan seluruh header dari suatu surate, termasuk
+	juga rute pesan tetrsebut sampai di sini dan banyak lagi hal lainnya
+	yang berkaitan dengan surate tersebut.
+      </p>
+   </description>
+</section>
+
+<section>
+    <title>
+	Lihat Versi yang Bisa Dicetak
+    </title>
+    <description>
+	Jika anda ingin mencetak suatu pesan, Anda dapat klik untai nara 
+	ini. Anda akan melihat sebuah jendela baru yang berisi pesan tanpa 
+	menu dan hal-hal yang tidak perlu, siap cetak. Klik tombol "Cetak" 
+	akan mencetak pesan tersebut. Tekan "Tutup" untuk kembali ke pesan 
+	Anda.
+    </description>
+</section>
+
+<section>
+   <title>
+	Simpan pesan ini ke file
+   </title>
+   <description>
+      <p>
+	Di bagian bawah di atas baris terbawah . Anda akan menemukan
+	untai nara ini. Klik di sini akan memungkinkan Anda menyimpan surate
+	ke dalam harddisk anda sebagai teks. Header sederhana akan disisipkan di
+	atas pesan tersebut.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Sisipan
+   </title>
+   <description>
+      <p>
+	Sembarang sisipan yang dikirimkan bersama surate yang diterima
+	akan ditampilkan di bagian bawah pesan, di dalam kotak berwarna. File
+	ditampilkan sebagai untai nara dengan penjelasan di sebelah kanannya.
+	Klik pada nama file akan menampilkan file sebagai sisipan atau sebuah
+	pesan download tergantung dari jenis file tersebut. Jika Anda ingin
+	mendownloadnya, maka klik tombol "ambil" yang ada di sebelah kanan.
+      </p>
+   </description>
+</section>

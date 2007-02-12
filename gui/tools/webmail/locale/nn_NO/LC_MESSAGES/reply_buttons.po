@@ -1,0 +1,29 @@
+# translation of reply_buttons.po to Nynorsk
+# This file is distributed under the same license as the reply_buttons plugin.
+# Copyright (c) 2005 The Squirrelmail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2005
+# $Id: reply_buttons.po,v 1.1 2005/08/13 05:31:07 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: reply_buttons\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-15 02:14+0100\n"
+"PO-Revision-Date: 2005-08-03 10:09+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "Show Reply Button Above Message List"
+msgstr "Syn Svar til kanpp over meldingslista"
+
+msgid "Show Reply All Button Above Message List"
+msgstr "Syn Svar til all knappen over meldingslista"
+
+msgid "Reply"
+msgstr "Svar til"
+
+msgid "Reply All"
+msgstr "Svar til alle"

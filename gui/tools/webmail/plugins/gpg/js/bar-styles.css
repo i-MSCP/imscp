@@ -1,0 +1,16 @@
+DIV.container > DIV { font-family: tahoma, sans-serif; text-align: center;}
+
+DIV.container { Xborder: white 1px solid;}
+
+.status_bar, .final { width: 100%; }
+
+.left      { float: left;  width: 100%; }
+.progress  { background: blue; color: blue;}
+.num_left  { Xbackground: #e6e6fa;}
+
+.progress, .final      {font-size: 4pt;}
+.num {font-size: 8pt; text-align: center; display: none;}
+
+
+.final     {float: left;  background: #d8d8d8; color: #d8d8d8;}
+.num_right {float: right; background: #afeeee;}

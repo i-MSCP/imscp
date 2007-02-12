@@ -1,0 +1,66 @@
+Address Book Take -- Version 1.3
+
+If you would like to add the sender of a message you're reading to your
+address book quickly and easily without cutting and pasting, then this
+plugin simplifies the process.  It scans the mail message you're reading
+for any email address and lets you add it with a quick form.
+
+
+Features
+========
+
+* Saves you the need to Cut & Paste
+* Steals from the To, From, Reply-To, and CC fields
+* Steals from the body of the message
+* Address verification (pretty good)
+
+
+Description
+===========
+
+By pulling down a list and selecting the address you want to add, you
+are then presented with a familiar Add to Personal Address Book screen.
+By filling out this form, you will then add the email address to your
+personal address book.
+
+The user can decide if the box is shown, where it is shown on the bottom
+of the Read screen, and whether or not to attempt to verify that the
+address works.
+
+When trying to verify if the address works, it checks to see if the host
+has any DNS record available.  Usually this will work.
+
+
+Future Work
+===========
+
+* Maybe grab the name, if available
+* Search more headers (when they become available)
+* Steal from the body of the message directly (when possible)
+* When new domains are added, update the email verification function
+
+
+Installation
+============
+
+As with other plugins, just uncompress the archive in the plugins
+directory, go back to the main directory, run configure and add the plugin.
+
+Questions/comments/flames/etc can be sent to
+    Tyler Akins <fidian@tiny.net>
+
+
+Changes
+=======
+1.2 -> 1.3
+  * Removed warning created when all warning were enabled in PHP
+  
+1.1 -> 1.2
+  * Fixed some HTML
+  * Fixed how message body is grabbed
+  
+1.0 -> 1.1
+  * Fixed where a color was hardcoded
+  * Moved address <select> to take.php
+  * Moved verification to take.php
+  * Added & changed preferences

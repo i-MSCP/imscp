@@ -1,0 +1,83 @@
+# translation of expire.po to Nynorsk
+# This file is distributed under the same license as the SquirrelMail package.
+# Copyright (C) The SquirrelMail Project Team, 2006
+# $Id: expire.po,v 1.2 2006/08/11 13:20:01 tokul Exp $
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2006.
+msgid ""
+msgstr ""
+"Project-Id-Version: expire\n"
+"Report-Msgid-Bugs-To: Florian Daeumling <jam@qv90.de>\n"
+"POT-Creation-Date: 2006-05-13 11:09+0200\n"
+"PO-Revision-Date: 2006-08-09 12:23+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "ERROR (%s): Can't load config file"
+msgstr "FEIL (%s) kan ikkje laste inn kofigurasjonsfila"
+
+msgid "Cannot create option directory!"
+msgstr "Kan ikkje lage oppsettkatalog!"
+
+msgid "Please contact system administrator."
+msgstr "Kontakt systemadministrator."
+
+msgid "Cannot create option file!"
+msgstr "Kan ikkje lage til oppsettfil!"
+
+msgid "Cannot create temporary file!"
+msgstr "Kan ikkje lage til midletidigfil!"
+
+msgid "Expiration"
+msgstr "Utgår"
+
+msgid "Expire emails in folder"
+msgstr "Utgått epostar i mappe"
+
+msgid "Select a folder"
+msgstr "Vel ei mappe"
+
+msgid "after"
+msgstr "etter"
+
+msgid "days"
+msgstr "dagar"
+
+msgid "Define"
+msgstr "Definer"
+
+msgid "%s after %s days"
+msgstr "%s etter %s dagar"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "This folder definition cannot be modified"
+msgstr "Denne mappedefinisjonen kan ikkje endrast"
+
+msgid "Cannot read option file!"
+msgstr "Kan ikkje lesa oppsettfil!"
+
+msgid "Expiration modified successfully for folder %s."
+msgstr "Modifisering av utløpsdato var vellukka for mappa %s."
+
+msgid "Expiration deleted successfully for folder %s."
+msgstr "Vellukka sletting av utløpsdata for mappa %s."
+
+msgid "Expiration set successfully for folder %s."
+msgstr "Velluka satt utløpsdato for mappa %s."
+
+msgid "Cannot replace option file!"
+msgstr "Kan ikkje bytta ut oppsettfla!"
+
+msgid "You have not selected a folder."
+msgstr "Har ikkje valt ei mappe."
+
+msgid "You have not entered a valid number of days."
+msgstr "Har ikkje skreve inn eit gyldig tal på dagar."

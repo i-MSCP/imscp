@@ -1,0 +1,16 @@
+--- src/read_body.php.orig	Thu Aug  5 23:52:01 2004
++++ src/read_body.php	Thu Aug  5 23:52:50 2004
+@@ -883,7 +883,12 @@
+    }
+ }
+ 
+-displayPageHeader($color, $mailbox);
++if (getPref($data_dir, $username, 'use_previewPane', 0) == 0) {
++    displayPageHeader($color, $mailbox);
++} else {
++    include_once(SM_PATH . 'plugins/preview_pane/functions.php');
++    pp_displayPageHeader($color, $mailbox);
++}
+ formatMenuBar($aMailbox, $passed_id, $passed_ent_id, $message,false);
+ formatEnvheader($aMailbox, $passed_id, $passed_ent_id, $message, $color, $FirstTimeSee);
+ echo '<table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">';

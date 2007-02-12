@@ -1,0 +1,51 @@
+Bug Reporter -- Version 1.0
+
+Need to submit a bug?  Need to know valuable system information?  Need
+to be accurate?  This should do it for you.
+
+
+Features
+========
+
+* You save yourself a lot of typing
+* By default, this is not enabled.
+* Provides detailed setup information to help diagnose your problem
+* Has some warnings that can help out the person submitting the bug report
+
+
+Description
+===========
+
+When people stumble across a bug, which may happen in a work-in-progress,
+often times they would like to help out the software and get rid of the bug.
+Sometimes, these people don't know much about the system and how it is set
+up -- they know enough to make the bug happen for them.  This bug report
+plugin is designed to gather all of the non-private information for the user
+automatically, so that the user doesn't need to know more than how to trigger
+the bug.
+
+
+Future Work
+===========
+
+* Add more data
+* Add more warnings
+
+
+Installation
+============
+
+As with other plugins, just uncompress the archive in the plugins
+directory, go back to the main directory, run configure and add the plugin.
+
+Questions/comments/flames/etc can be sent to
+    Tyler Akins <fidian@tiny.net>
+
+
+Changes
+=======
+1.0 -> 1.1
+ * Added a bit more data to the report
+ * Cleaned up some HTML
+ * Altered link in menu bar to look good with other plugins
+ * User-selectable list for where message gets sent to

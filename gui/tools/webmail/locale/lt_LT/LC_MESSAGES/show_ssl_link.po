@@ -1,0 +1,24 @@
+# Lithuanian Translation of SquirrelMail show_ssl_link plugin.
+# Copyright (c) 2005 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2005.
+# $Id: show_ssl_link.po,v 1.1 2005/06/10 09:56:56 tokul Exp $
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: show_ssl_link VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-05-03 01:59-0700\n"
+"PO-Revision-Date: 2005-06-09 23:05+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid "Secure Login"
+msgstr "Saugi jungtis"
+
+msgid "Remain Secure After Login"
+msgstr "Išlikti saugiame režime po registracijos"
+

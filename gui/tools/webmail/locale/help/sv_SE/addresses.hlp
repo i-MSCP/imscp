@@ -1,0 +1,126 @@
+<chapter>
+   <title>
+      Adresser
+   </title>
+   <summary>
+      Användningen av en adressbok kan spara mycket tid och knappande.
+      Spara sådana adresser som du använder ofta och du kan enkelt
+      använda dem om och om igen.
+   </summary>
+   <description>
+      <p>
+      Adressbok är en fantastisk tidsparande sak. Adresser som man ofta
+      använder är sparade på ett händigt sätt. Du kan också använda dig
+      av LDAP servrar (ofta i bruk på universiteter och företag, samtliga
+      gemensamma adresserna enkelt tillgängliga för alla).
+      </p>
+      <p>
+      Om din webläsare stödjer Javascript, du kanske vill också använda det.
+      Välj Javascript-adressbok i inställningarna. Det är ett trevligt
+      hjälpmedel med sina egna pop-upp fönster. Den vanliga HTML-adressboken
+      fungerar även i webläsare som inte har stöd för Javascript. Ingen
+      behöver vara utan adressbok.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Smeknamn
+   </title>
+   <description>
+      <p>
+      Skriv in ett bekant namn här. Någonting som hjälper dig att minnas.
+      Någonting som gör att du känner igen vems adress denna är.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      E-post adress
+   </title>
+   <description>
+      <p>
+      Den här skall vara en komplett adress. Det går inte att gissa här.
+      en E-post adress har två delar. Den första är för att identifiera
+      mottagaren, till exempel sven.berg eller svanteb. Den andra är
+      den mottagande domainen, till exempel storfirma.se eller 
+      laroanstalt.edu. Det allra sista i adresserna är antingen en landskod
+      (t.ex se, fi, us) eller någon annan topdomain adress (företagen har
+      ofta com, organisationer org, nätverksföretagen net, många
+      amerikanska högskolor och universitet edu, osv.).
+      Mittimellan dessa två delar skriver man en @. Adresserna ovan blir då:
+      sven.berg@storfirma.se och svanteb@laroanstalt.edu<br>
+      Om adressen är felaktig är det mycket sannolikt att du får tillbaka
+      att automatsvar som informerar dig om att det inte finns någon sådan
+      mottagare.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+     Ytterligare information 
+   </title>
+   <description>
+      <p>
+      Här kan du också skriva in någonting som hjälper dig att komma ihåg
+      vem adressen tillhör. Det finns mer plats här än det du kan skriva
+      in i smeknamn fältet. Om personen ifråga är någon du har träffat på
+      en affärsresa kan du skriva till exempel: "Vi träffades på mässan
+      i Hannover 2000".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+     Modifiera eller Ta Bort
+   </title>
+   <description>
+      <p>
+      Med hjälp av dessa knappar kan du välja att modifiera eller ta bort
+      adresser. Du kan modifiera bara en adress åt gången.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Lägg till i Personlig adressbok
+   </title>
+   <description>
+      <p>
+      Fyll i fälten. De första tre (Smeknamn, E-post adress och Förnamn) är
+      obligatoriska. Efternamnet och Ytterligare information är frivillga.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      LDAP
+   </title>
+   <description>
+      <p>
+      LDAP är en protokoll som används för att hämta lagrad information från
+      en centraliserad källa. Till exempel: På ett universitet kan man
+      i en LDAP databas lagra personalens och de studerandes adresser,
+      enkelt att komma åt för alla. Om SquirrelMail konfigugerars så att
+      den använder sig av denna LDAP server, samtliga adresser, med
+      eventuell extra information, kan användas med adressboken.
+      SquirrelMail <i>kombinerar</i> din egen personlig adressbok med
+      informationen från LDAP servern, du kommer åt samtliga adresser som
+      om de fanns lagrade i en och samma adressbok.
+      </p><p>
+      SquirrelMail kan hämta information från vilken som helst LDAP server,
+      det kan också vara så att denna funktion är inte aktiverad. Ta
+      kontakt med din administratör om du har frågor som är relaterade till
+      detta.
+      </p><p>
+      LDAP inställningarna påverkar hela SquirrelMail system. Det är
+      därför bara administratörer som får förändra dessa.
+      </p>
+   </description>
+</section>

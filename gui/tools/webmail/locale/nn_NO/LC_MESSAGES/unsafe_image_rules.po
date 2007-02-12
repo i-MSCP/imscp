@@ -1,0 +1,211 @@
+# Norwegian Nynorsk (nn_NO) unsafe_image_rules Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2006
+# $Id: unsafe_image_rules.po,v 1.1 2006/03/03 23:34:10 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: unsafe_image_rules 0.8\n"
+"POT-Creation-Date: 2006-01-17 10:40+0100\n"
+"PO-Revision-Date: 2006-03-04 00:23+0100\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Safe Sender"
+msgstr "Trygg avsender"
+
+msgid "Unsafe Image Rules"
+msgstr "Utrygge biletereglar"
+
+msgid ""
+"Use the form below to modify the address that will be added to the Unsafe "
+"Image Rules."
+msgstr ""
+"Bruk skjema under for å redigera adressa som vert lagt til Utrygge "
+"biletereglar."
+
+msgid "From"
+msgstr "Frå"
+
+msgid "Contains"
+msgstr "Inneheld"
+
+msgid "Reg.Exp."
+msgstr "Reg.Exp."
+
+msgid "Save"
+msgstr "Lagra"
+
+msgid ""
+"The following address has been successfully added to the Unsafe Images Rules:"
+msgstr "Fyljande adresse er lagt til Utrygge biletereglar"
+
+msgid ""
+"I didn't seem to get a valid email address to add. This shouldn't happen!"
+msgstr ""
+"Ser ut til å ikkje få ei gyldig epostadresse å legja til. Dette skulle ikkje "
+"skjedd!"
+
+msgid "Sending you back to the message list in five seconds."
+msgstr "Går tilbake til meldingslista om fem sekund."
+
+msgid "If you are not automatically redirected, please click %shere%s."
+msgstr "Viss ein ikkje er automatisk omderigert, trykk %sher%s."
+
+msgid "Set up rules about how unsafe images in HTML messages are handled."
+msgstr "Reglar om korleis utrygge bilete i HTML meldinger vert handterte."
+
+msgid "Always trust images from this sender"
+msgstr "Stol alltid på bilete frå denne avsendaren"
+
+msgid "Saved Trusted Options"
+msgstr "Lagra tiltrodd vala"
+
+msgid "Options"
+msgstr "Val"
+
+msgid "Trust all sources:"
+msgstr "Ha tiltro til alle kjeldene:"
+
+msgid "WARNING!"
+msgstr "ÅTVARING!"
+
+msgid "This is not recommended by the SquirrelMail Project Team."
+msgstr "Dette er ikkje tilrådd av Squirrelmail prosjekt laget."
+
+msgid ""
+"Read %s for more details. There is a risk you may receive more spam if you "
+"check this option."
+msgstr ""
+"Les %s for meir detaljer. Det er ein risiko at ein kan motta meir søppelpost "
+"viss ein krysser av for dette valet."
+
+msgid "If checked unsafe images are always seen."
+msgstr "Viss avkryssa utrygge bilete vil alltid koma opp"
+
+msgid "If this option is checked, the state of other options is irrelevant."
+msgstr ""
+"Viss dette valet er avkryssa, vil tilsanden på dei andre vala vera "
+"irrelevant."
+
+msgid "Trust sources in address book:"
+msgstr "Tiltru kjelder i adreseboka:"
+
+msgid ""
+"If checked, unsafe images are shown for messages from anyone in your address "
+"book."
+msgstr ""
+"Viss avkryssa, utrygge bilete er synt for meldinger frå alle i adresseboka."
+
+msgid "Trust anything I send:"
+msgstr "Ha tiltru på alt ein sender:"
+
+msgid ""
+"If checked, unsafe images are shown for messages sent by any of your "
+"identities."
+msgstr ""
+"Viss avkryssa, utrygge bilete vert synt for meldinger sent av alle "
+"identitetane."
+
+msgid ""
+"You might not want to set this if you forward Spam to other people, and then "
+"go back and read from your 'Sent' folder."
+msgstr ""
+"Ein vil kanskje setje dette viss ein vidaresender Søppel til andre, og gå "
+"tilbake å lesa frå 'Sent' mappa."
+
+msgid "Trust defined sources:"
+msgstr "Stol på definerte kjelder:"
+
+msgid "If checked, unsafe images are shown for the sources shown below."
+msgstr "Viss avkryssa, utrygge bilete vert vist for kjeldene synt under."
+
+msgid ""
+"When viewing a message with unsafe images, you can quickly add the sender's "
+"email address or domain to the Unsafe Image Rules by clicking the 'Always "
+"trust images from this sender' link. The following options set the default "
+"behavior when the address is being added."
+msgstr ""
+"Når ein ser ei melding med utrygge bilete, kan ein raskt leggja till "
+"avsenderadressa eller domene til Utrygge bilete reglane ved å trykkja på "
+"lenkja 'Alltid ha tiltru til bilete frå denne avsendaren'. Fylgjande val set "
+"standard åtferd når adressa vert lagt til."
+
+msgid "Always add full email address:"
+msgstr "Alltid legg til full epostadresse:"
+
+msgid ""
+"If selected the full email address of the sender will be added to the Unsafe "
+"Image Rules list."
+msgstr ""
+"Vis avkryssa, fullepostadresse på avsendaren vert lagt til lista Utrygge "
+"Bilete Reglar."
+
+msgid "Always add full domain:"
+msgstr "Alltid legg til fult domene:"
+
+msgid ""
+"If selected only the domain of the sender will be added to the Unsafe Image "
+"Rules list."
+msgstr ""
+"Viss avkryssa, vil domene til avsendaren vert lagt til lista Utrygge Bilete "
+"Reglar."
+
+msgid "Always ask:"
+msgstr "Alltid spør:"
+
+msgid "Ask what to add to the Unsafe Image Rules list."
+msgstr "Spør kva som skal leggjast til lista Utrygge Bilete Reglar."
+
+msgid "Add New Rule"
+msgstr "Legg til ny regel"
+
+msgid "Done"
+msgstr "Ferdig"
+
+msgid "Trust source if "
+msgstr "Ha tiltru viss kjelde "
+
+msgid "To"
+msgstr "Til"
+
+msgid "Cc"
+msgstr "Kopi til"
+
+msgid "To or Cc"
+msgstr "Til eller Kopi til"
+
+msgid "Subject"
+msgstr "Emne"
+
+msgid "NB"
+msgstr "NB"
+
+msgid "When specifying a Reg.Exp you must include delimeters."
+msgstr "Når ein spesifiserer ein Reg.Exp. må ein inkludera skiljeteikn."
+
+msgid "The 'Contains' check will be done with case-insensitive match."
+msgstr ""
+"'Innehaldet'  vert kontrolert der ein ikkje skil mellom store og små "
+"bokstavar."
+
+msgid "Submit"
+msgstr "Send"
+
+msgid "Edit"
+msgstr "Rediger"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "If %s %s %s"
+msgstr "Viss %s %s %s"
+
+msgid "This doesn't look like a valid Reg.Exp."
+msgstr "Dette ser ikkje ut som ein gyldig Reg.Exp."
+
+msgid "WARNING:"
+msgstr "ÅTVARING:"

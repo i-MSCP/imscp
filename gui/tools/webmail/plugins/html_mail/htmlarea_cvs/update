@@ -1,0 +1,3 @@
+#!/bin/sh
+cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/itools-htmlarea login
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/itools-htmlarea co -P htmlarea

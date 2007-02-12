@@ -1,0 +1,5069 @@
+# Uighur squirrel mail translation.
+# Copyright (c) 2004-2005 The SquirrelMail Project Team
+# Mamatjan Tursun <oghri@163.com>, 2003.
+# $Id: squirrelmail.po,v 1.5 2005/06/09 07:42:54 tokul Exp $
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: squirrelmail HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-05-18 20:32+0300\n"
+"PO-Revision-Date: 2005-02-13 08:53+0300\n"
+"Last-Translator: Mamatjan Tursun <oghri@163.com>\n"
+"Language-Team: XinJiang University / Uighur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Address Book"
+msgstr "ئادرىس دەپتىرى "
+
+msgid "All"
+msgstr "ﻫەممە "
+
+msgid "To"
+msgstr "تاپشۇرۋالغۇچى"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Name"
+msgstr "ئىسىم "
+
+msgid "E-mail"
+msgstr "E-mail "
+
+msgid "Info"
+msgstr "ئۇچۇر "
+
+msgid "Source"
+msgstr "ئەسلى كودى "
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Use Addresses"
+msgstr "ئادرىس دەپتەر"
+
+#, fuzzy
+msgid "Cancel"
+msgstr "ۋاز كېچىش"
+
+msgid "Address Book Search"
+msgstr "ئادرىس دەپتەردىن ئىزلەش"
+
+msgid "Search for"
+msgstr "ئىزدەش "
+
+msgid "in"
+msgstr "دىن"
+
+msgid "All address books"
+msgstr "بارلىق ئادرىس دەپتەرلىرى"
+
+msgid "Search"
+msgstr "ئىزدەش"
+
+msgid "List all"
+msgstr "ﻫەممىنى كۆرسىتىش"
+
+#, c-format
+msgid "Unable to list addresses from %s"
+msgstr "دىن ئادرىسنى كۆرسىتەلمىدۇق %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "ئىزلەش مەغلۇپ بولدى"
+
+#, fuzzy
+msgid "No persons matching your search were found"
+msgstr "سىز ئىزلىگەن كىشى يوق"
+
+msgid "Return"
+msgstr "قايتىش"
+
+msgid "Close"
+msgstr "ئىتىش"
+
+msgid "Nickname"
+msgstr "لەقەم"
+
+msgid "Must be unique"
+msgstr "بىردىن-بىر بولسۇن"
+
+msgid "E-mail address"
+msgstr "E-mail"
+
+msgid "Last name"
+msgstr "فامىلە "
+
+msgid "First name"
+msgstr "ئىسم "
+
+msgid "Additional info"
+msgstr "قوشۇمچە ئۇچۇر"
+
+#, fuzzy
+msgid "Add to:"
+msgstr " %sگە قىتىلدى"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "شەخسىي ئادرىس دەپتىرى بىكىتىلمىدى.باشقۇرغۇچى بىلەن ئالاقىلىشىڭ."
+
+msgid "You can only edit one address at the time"
+msgstr "بىر ۋاقىتتا پەقەت بىر ئادرىسنىلا تەﻫرىرلىيەلەيسىز."
+
+msgid "Update address"
+msgstr "يېڭىلاش "
+
+msgid "ERROR"
+msgstr "خاتالىق"
+
+msgid "Please select address that you want to edit"
+msgstr ""
+
+msgid "Add address"
+msgstr "يىڭى ئادرىس"
+
+msgid "Edit selected"
+msgstr "تەﻫرىرلەش"
+
+msgid "Delete selected"
+msgstr "ئۆچۈرۈش"
+
+#, c-format
+msgid "Add to %s"
+msgstr " %sگە قىتىلدى"
+
+#, c-format
+msgid "%s wrote:"
+msgstr "%sيازدى"
+
+msgid "quote"
+msgstr "دىن"
+
+msgid "who"
+msgstr "كىم"
+
+#, c-format
+msgid "On %s, %s wrote:"
+msgstr ""
+
+msgid "Subject"
+msgstr "تىما"
+
+msgid "From"
+msgstr "ئەۋەرتكۈچى"
+
+msgid "Date"
+msgstr "چىسلا"
+
+msgid "Original Message"
+msgstr "ئەسلى مەزمۇن"
+
+msgid "Draft Email Saved"
+msgstr "چورنىۋاي ساقلاندى"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "خوججەت تېخى قېتىلمىدى"
+
+msgid "Draft Saved"
+msgstr "چورنىۋاي ساقلاندى "
+
+#, fuzzy
+msgid "Your Message has been sent."
+msgstr "خېتىڭىز يوللاندى"
+
+msgid "From:"
+msgstr "ئادرىسڭىز:"
+
+msgid "Send"
+msgstr "ئەۋەرتىش"
+
+msgid "Attach:"
+msgstr "قوشۇمچە ﻫۆججەت:"
+
+msgid "Add"
+msgstr "قىتىش"
+
+msgid "Delete selected attachments"
+msgstr "قوشۇمچە ﻫۆججەتنى ئۆچۈرۈش"
+
+msgid "Priority"
+msgstr "دەرىجىسى"
+
+msgid "High"
+msgstr "جىددى"
+
+msgid "Normal"
+msgstr "نورمال"
+
+msgid "Low"
+msgstr "ئاستا"
+
+msgid "Receipt"
+msgstr "ئىنكاس"
+
+#, fuzzy
+msgid "On Read"
+msgstr "ئوقۇلغان"
+
+msgid "On Delivery"
+msgstr "تاپشۇرۇپ ئالغان"
+
+msgid "Signature"
+msgstr "ئىمزا"
+
+msgid "Addresses"
+msgstr "ئادرىس دەپتىرى"
+
+msgid "Save Draft"
+msgstr " ساقلاش"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "قارشى تەرەپ ئادرىسىنى توشقازمىدىڭىز"
+
+#, fuzzy, c-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "ئاللىقاچان مەۋجۇت'%s'"
+
+#, fuzzy
+msgid "Server replied:"
+msgstr "مۇلازىمىتىردىن جاۋاپ:"
+
+#, fuzzy
+msgid "Illegal folder name. Please select a different name."
+msgstr "مۇندەرىجە نامى قانۇنسىز,باشقا ئىسىمنى تاللاڭ."
+
+msgid "Click here to go back"
+msgstr "بۇيەرنى چىكىپ قايتىڭ"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "ئۆچۇردىغان مۇندەرىجىنى تاللىمىدىڭىز.."
+
+msgid "Delete Folder"
+msgstr "مۇندەرىجىنى ئۆچۈرۈش"
+
+#, fuzzy, c-format
+msgid "Are you sure you want to delete %s?"
+msgstr "راستىلا ئۆچۈرەمسىز؟"
+
+msgid "Yes"
+msgstr "بولىدۇ"
+
+msgid "No"
+msgstr "بولمايدۇ"
+
+msgid "Folders"
+msgstr "مۇندەرىجىلەر"
+
+#, fuzzy
+msgid "Subscribed successfully."
+msgstr "مۇندەرىجىنى كۆرستىش مۇۋەپپەقىيەتلىك بولدى"
+
+#, fuzzy
+msgid "Unsubscribed successfully."
+msgstr "مۇندەرىجىنى يوشۇرۇش مۇۋەپپەقىيەتلىك بولدى"
+
+#, fuzzy
+msgid "Deleted folder successfully."
+msgstr "مۇندەرىجە مۇۋەپپەقىيەتلىك ئۆچۈرۈلدى"
+
+#, fuzzy
+msgid "Created folder successfully."
+msgstr "مۇندەرىجە مۇۋەپپەقىيەتلىك قۇرۇلدى"
+
+#, fuzzy
+msgid "Renamed successfully."
+msgstr "ئىسىم ئۆزگەرتىش مۇۋەپپقيەتلىك بولدى!"
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "مەشغۇلات مەغلۇپ بولدى.مۇندەرىجە مەۋجۇت ئەمەس."
+
+msgid "refresh folder list"
+msgstr "مۇندەرىجە تىزىملىكىنى يېڭىلاش"
+
+msgid "Create Folder"
+msgstr "مۇندەرىجە قۇرۇش"
+
+msgid "as a subfolder of"
+msgstr "نىڭ ئىككىنجى دەرىجىلىك مۇندەرىجىسى قىلىش"
+
+msgid "None"
+msgstr "يوق"
+
+msgid "Let this folder contain subfolders"
+msgstr "بۇ مۇندەرىجىنىڭ ئىككىنجى دەرىجىلىك مۇندەرىجىسى بار."
+
+msgid "Create"
+msgstr "قۇرۇش"
+
+msgid "Rename a Folder"
+msgstr "مۇندەرىجە ئىسمىنى ئۆزگەرتىش."
+
+msgid "Select a folder"
+msgstr "مۇندەرىجە تاللاش"
+
+msgid "Rename"
+msgstr "ئىسمىنى ئۆزگەرتىش"
+
+msgid "No folders found"
+msgstr "ﻫىچقانداق مۇندەرىجە تېپىلمىدى."
+
+msgid "Delete"
+msgstr "ئۆچۈرۈش"
+
+msgid "Unsubscribe"
+msgstr "يوشۇرۇش"
+
+msgid "Subscribe"
+msgstr "كۆرسىتىش"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "يوشۇردىغان مۇندەرىجە يوق"
+
+msgid "No folders were found to subscribe to!"
+msgstr "كۆرستىدىغان مۇندەرىجە يوق"
+
+#, fuzzy
+msgid "Subscribe to:"
+msgstr "گە كۆرسىتىش"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "ئىسمىنى ئۆزگەرتىدىغان مۇندەرىجىنى تاللاڭ."
+
+msgid "Rename a folder"
+msgstr "ئىسمىنى ئۆزگەرتىش"
+
+msgid "New name:"
+msgstr "يىڭى ئىسمى:"
+
+msgid "Submit"
+msgstr "يوللاش"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "ياردەم ﻫۆججىتىنىڭ شەكلى خاتا.!"
+
+msgid "Help"
+msgstr "ياردەم"
+
+#, fuzzy, c-format
+msgid ""
+"The help has not been translated to %s. It will be displayed in English "
+"instead."
+msgstr "ياردەم ﻫۆججىتى تېخى  %s غا تەرجىمە قىلىنمىدى.."
+
+msgid "Some or all of the help documents are not present!"
+msgstr "بەزى ياردەم ﻫۆججەتلىرى مەۋجۇت ئەمەس.!"
+
+msgid "Table of Contents"
+msgstr "مۇندەرىجە"
+
+msgid "Previous"
+msgstr "ئالدىنقى"
+
+msgid "Next"
+msgstr "كىيىنكى"
+
+msgid "Top"
+msgstr "ئۇستى"
+
+msgid "Viewing an image attachment"
+msgstr "رەسىم قوشۇمچە ﻫۆججىتىنى ئىچىش"
+
+msgid "View message"
+msgstr "خەت ئوقۇش"
+
+msgid "Download this as a file"
+msgstr "ﻫۆججەت شەكلىدە چۈشۈرۈش"
+
+#, c-format
+msgid "INBOX"
+msgstr "خەت ساندۇغى"
+
+#, fuzzy
+msgid "Purge"
+msgstr "ئۆچۈرۈش"
+
+msgid "Last Refresh"
+msgstr "ئەڭ يېڭىسى"
+
+msgid "Check mail"
+msgstr "خەت قوبۇل قىلش"
+
+msgid "Save folder tree"
+msgstr "مۇندەرىجە قۇرۇلمىسىنى ساقلاش"
+
+msgid "Login"
+msgstr "ئېچىش"
+
+#, c-format
+msgid "%s Logo"
+msgstr "تۇغى %s"
+
+#, fuzzy, c-format
+msgid "SquirrelMail version %s"
+msgstr "نۇسخىسى Tarim Webmail %s"
+
+#, fuzzy
+msgid "By the SquirrelMail Project Team"
+msgstr "مەمەتجان ئۇيغۇرچىلاشتۇردى"
+
+#, c-format
+msgid "%s Login"
+msgstr "كىرىش %s "
+
+msgid "Name:"
+msgstr "ئىسىم:"
+
+msgid "Password:"
+msgstr "شىفىر:"
+
+msgid "No messages were selected."
+msgstr "ﻫىچقانداق خەت تاللانمىدى ."
+
+msgid "Options"
+msgstr "خاسلىق"
+
+msgid "Message Highlighting"
+msgstr "ئوخشىمىغان رەڭدە كۆرسىتىش"
+
+msgid "New"
+msgstr "يېڭى"
+
+msgid "Done"
+msgstr "يوللاش"
+
+msgid "To or Cc"
+msgstr "تاپشۇرۋالغۇچى"
+
+#, fuzzy
+msgid "subject"
+msgstr "تىما"
+
+msgid "Edit"
+msgstr "تەﻫرىرلەش"
+
+msgid "Up"
+msgstr "ئۇستىگە"
+
+msgid "Down"
+msgstr "ئاستىغا"
+
+msgid "No highlighting is defined"
+msgstr "ﻫىچقانداق رەڭدە كۆرسىتىش تاللانمىدى"
+
+msgid "Identifying name"
+msgstr "بەلگە ئىسمى"
+
+msgid "Color"
+msgstr "رەڭ"
+
+msgid "Dark Blue"
+msgstr "تۈن كۆك"
+
+msgid "Dark Green"
+msgstr "أخضر داكن"
+
+msgid "Dark Yellow"
+msgstr "تۇن يىشىل"
+
+msgid "Dark Cyan"
+msgstr "كۆك"
+
+msgid "Dark Magenta"
+msgstr "تۈن بىنەپشەs"
+
+msgid "Light Blue"
+msgstr "سۇس كۆك"
+
+msgid "Light Green"
+msgstr "سۇس يىشىل"
+
+msgid "Light Yellow"
+msgstr "سۇس سېرىق"
+
+msgid "Light Cyan"
+msgstr "سۇس كۆك"
+
+msgid "Light Magenta"
+msgstr "سۇس بىنەپشە"
+
+msgid "Dark Gray"
+msgstr "قېنىق كۇلرەڭ "
+
+msgid "Medium Gray"
+msgstr "ئوتتۇرﻫال كۇلرەڭ "
+
+msgid "Light Gray"
+msgstr "سۇس كۈلرەڭ"
+
+msgid "White"
+msgstr "ئاق"
+
+msgid "Other:"
+msgstr "باشقا:"
+
+msgid "Ex: 63aa7f"
+msgstr ""
+
+msgid "Matches"
+msgstr "ماس كەلگىنى"
+
+#, c-format
+msgid "Alternate Identity %d"
+msgstr "قوشۇمچە بەلگە %d"
+
+msgid "Advanced Identities"
+msgstr "ئالي بەلگە"
+
+msgid "Default Identity"
+msgstr "ئادەتتكى بەلگە"
+
+msgid "Add a New Identity"
+msgstr "يېڭى بەلگە قىتىش"
+
+msgid "Full Name"
+msgstr "تولۇق ئىسمى"
+
+msgid "E-Mail Address"
+msgstr "E-Mail"
+
+msgid "Reply To"
+msgstr "جاۋاپ ئادرىسى"
+
+msgid "Save / Update"
+msgstr " ساقلاش/ يېڭىلاش"
+
+msgid "Make Default"
+msgstr "دائىملىق تاللاش"
+
+msgid "Move Up"
+msgstr "ئۇستىگە يۆتكەش"
+
+msgid "Index Order"
+msgstr "خەتلەرنىڭ تەرتىۋى"
+
+msgid "Checkbox"
+msgstr "رامكىنى تاللاش"
+
+msgid "Flags"
+msgstr "بەلگە"
+
+msgid "Size"
+msgstr "چوڭلىغى"
+
+#, fuzzy
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"خەتلەرنىڭ تەرتىۋى ئارقىلق خەتلەر تىزىملىكىدە كۆرۈنگەن ئىستونلارنىڭ ئورنىنى "
+"بەلگىلىيەلەيسىز.ئىستونلارنىئۆچۈرۈش،يۆتكەش ئارقىلىق ئۆز ئىﻬتىياجىڭىزغا "
+"ماسلاشتۇرسىڭىز بولىدۇ..."
+
+msgid "up"
+msgstr "ئۈستىگە"
+
+msgid "down"
+msgstr "ئاستىغا"
+
+msgid "remove"
+msgstr "يۆتكەش"
+
+msgid "Return to options page"
+msgstr "خاسلىق كۆزنىكىگە قايتىش "
+
+msgid "Personal Information"
+msgstr "شەخسىي ئۇچۇرلار "
+
+msgid "Display Preferences"
+msgstr "كۆزنەك كۆرۈنۈشى"
+
+msgid "Folder Preferences"
+msgstr "مۇندەرىجەخاسلىقلىرى"
+
+msgid "Error(s) occurred while saving your options"
+msgstr "خاسلىق ساقلاش جەريانىدا خاتالىق كۆرۈلدى"
+
+msgid "Some of your preference changes were not applied."
+msgstr "بەزى خاسلىقلار يېڭىلانمىدى"
+
+msgid "Successfully Saved Options"
+msgstr "خاسلىقنى ساقلاش مۇۋەپپەقىيەتلىك بولدى"
+
+msgid "Refresh Folder List"
+msgstr "مۇندەرىجە تىزىملىكىنى يېڭىلاش "
+
+msgid "Refresh Page"
+msgstr "بەتنى يېڭىلاش"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "شەخسىي ئۇچۇرلار. ئىسمىڭىز، email ئادرىسڭىز دىگەندەك."
+
+#, fuzzy
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"SquirrelMail ونىڭ كۆرۈنۈشىنى ئۆزگەرتەلەيسىز.مەسىلەن، رەڭ-بەلگە، كۆرۈنۈدىغان "
+"يېزىق دىگەندەك.."
+
+#, fuzzy
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"كەلگەن خەتلەرنى خەت تىزىملىكىدە بېرىلگەن شەرتكە ئاساسەن ئوخشىمغان رەڭدە "
+"كۆرستىشكە بولىدۇ.بۇ خەت ئەۋەتكۈچىلەرنى پەرقلەندۈرۈشكە پايدىلىق.."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+"بۇ يەردە مۇندەرىجىلەرنىڭ كۆرۈنۈشى ۋە باشقۇرۇش بەلگىلىمىلىرىنى بەلگىلەش "
+"مۈمكىن."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"ئوخشىمغان خەت بېشى ئۇچۇرىغا قاراپ خەتلەرنىڭ تەرتىۋىنى  قايتىدىن ئۆزگەرتىشكە "
+"بولىدۇ."
+
+msgid "Message not printable"
+msgstr "خەتنى ئۇرۇپ چىقارغىلى بولمايدۇ"
+
+msgid "Invalid URL"
+msgstr "ئادرىس شەكلى قانۇنسىز"
+
+msgid "Printer Friendly"
+msgstr "پرىنتىر نۇسخىسى"
+
+msgid "Print"
+msgstr "بىېسىپ چىقىرىش"
+
+msgid "View Printable Version"
+msgstr "بىېسىپ چىقارغىلى بولىدىغان شەكىلىنى كۆرۇش"
+
+msgid "Read:"
+msgstr "ئوقۇش:"
+
+msgid "Your message"
+msgstr "سىزنىڭ خېتىڭىز"
+
+#, fuzzy
+msgid "Sent"
+msgstr "ئەۋەتىلگەن:"
+
+#, c-format
+msgid "Was displayed on %s"
+msgstr "نىڭ ئۈستىدە كۆرۈندى %s"
+
+msgid "less"
+msgstr "ئازراق"
+
+msgid "more"
+msgstr "كۆپرەك"
+
+#, fuzzy
+msgid "Unknown sender"
+msgstr "ئەۋەتكۈچى نامەلۇم"
+
+msgid "Mailer"
+msgstr "ئەۋەتكۈچى"
+
+msgid "Read receipt"
+msgstr "ئوقۇش"
+
+#, fuzzy
+msgid "sent"
+msgstr "ئەۋەتىگەن"
+
+msgid "requested"
+msgstr "تەلەپ قىلىنغان"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr "Hat awatkuqi jawap yezixingizni talap kildi, jawap yazamsiz?"
+
+msgid "Send read receipt now"
+msgstr "Jawap yizix"
+
+msgid "Search Results"
+msgstr "ئىزدەش نەتجىسى"
+
+msgid "Message List"
+msgstr "خەتلەر تىزىملىكى "
+
+msgid "Resume Draft"
+msgstr "ئەسلىگە كەلتۈرۈش"
+
+msgid "Edit Message as New"
+msgstr "يېڭى خەت قىلىپ تەﻫرىرلەش"
+
+#, fuzzy
+msgid "View Message"
+msgstr "خەت ئوقۇش"
+
+msgid "Forward"
+msgstr "باشقلارغا ئەۋەتىش"
+
+#, fuzzy
+msgid "Forward as Attachment"
+msgstr "قوشۇمچە قىىلىپ ئەۋەتىش"
+
+msgid "Reply"
+msgstr "جاۋاپ يىزىش"
+
+msgid "Reply All"
+msgstr "ﻫەممىگە جاۋاپ"
+
+msgid "View Full Header"
+msgstr "خەت بېشى"
+
+msgid "Attachments"
+msgstr "قوشۇمچە ﻫۆججەت"
+
+msgid "You must be logged in to access this page."
+msgstr "تىزىملاپ كىرگەندىن كىيىن كۆرەلەيسىز."
+
+msgid "Folder:"
+msgstr "مۇندەرىجە:"
+
+msgid "edit"
+msgstr "تەﻫرىرلەش"
+
+msgid "search"
+msgstr "ئىزلەش"
+
+msgid "delete"
+msgstr "ئۆچۈرۈش"
+
+msgid "Recent Searches"
+msgstr "يېقىنقى ئىزدەش"
+
+msgid "save"
+msgstr "ساقلاش"
+
+msgid "forget"
+msgstr "ئۇنتۇش"
+
+msgid "Current Search"
+msgstr "ﻫازىرقى ئىزدەش "
+
+msgid "All Folders"
+msgstr "ﻫەممە مۇندەرىجە"
+
+msgid "Body"
+msgstr "مەزمۇنى"
+
+msgid "Everywhere"
+msgstr "ﻫەممە يەردە"
+
+msgid "No Messages Found"
+msgstr "ﻫىچقانداق خەت يوق"
+
+#, fuzzy
+msgid "Signout"
+msgstr "چىكىنىش"
+
+msgid "Sign Out"
+msgstr "چىكىنىش"
+
+msgid "You have been successfully signed out."
+msgstr "مۇۋەپپەقىيەتلىك چىكىندىڭىز ."
+
+msgid "Click here to log back in."
+msgstr "بۇ يەرنى بىسىپ قايتىدىن كىرىڭ"
+
+msgid "Viewing a Business Card"
+msgstr "ئىسىم كارتۇچكىسى كۆرۇش"
+
+#, c-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+
+msgid "Title"
+msgstr "تىما"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Web Page"
+msgstr "تور ئادرىسى"
+
+msgid "Organization / Department"
+msgstr "ئىدارە"
+
+msgid "Address"
+msgstr "ئادىرس"
+
+msgid "Work Phone"
+msgstr "ئىشخانا تىلفۇنى"
+
+msgid "Home Phone"
+msgstr "ئۆي تىلفۇنى"
+
+msgid "Cellular Phone"
+msgstr "يانفۇن"
+
+msgid "Fax"
+msgstr "فاكىس"
+
+msgid "Note"
+msgstr "خاتىرە"
+
+msgid "Add to Addressbook"
+msgstr "ئادرىس دەپتىرىگە قىتىش"
+
+msgid "Title & Org. / Dept."
+msgstr "تىما & ئورگان/ بۆلۇم."
+
+#, fuzzy
+msgid "Add to Address Book"
+msgstr "ئادرىس دەپتىرىگە قىتىش"
+
+msgid "Viewing Full Header"
+msgstr "خەت بېشى"
+
+msgid "Viewing a text attachment"
+msgstr "تىكىس شەكلىدىكى قوشۇمچىنى كۆرۈش "
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+
+#, c-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+
+msgid "Please contact your system administrator and report this error."
+msgstr "باشقۇرغۇچىغا بۇ ئەﻫۋالنى مەلۇم قىلىڭ."
+
+msgid "Personal address book"
+msgstr "ئادرىس دەپتىرى"
+
+#, c-format
+msgid "Database error: %s"
+msgstr "سانلار ئامبىرى خاتالىق ئۇچۇرى::  %s"
+
+msgid "Addressbook is read-only"
+msgstr "ئادرىس دەپتىرىنى پەقەت ئوقۇشقىلا بولىدۇ"
+
+#, c-format
+msgid "User '%s' already exist"
+msgstr "ئىشلەتكۈچى '%s' مەۋجۇت"
+
+#, c-format
+msgid "User '%s' does not exist"
+msgstr " مەۋجۇت ئەمەس'%s'"
+
+msgid "Not a file name"
+msgstr "ﻫۆججەت ئىسمى خاتا"
+
+msgid "No such file or directory"
+msgstr "ئۇنداق ﻫۆججەت ياكى مۇندەرىجە يوق"
+
+msgid "Open failed"
+msgstr "ئېچىلمىدى"
+
+msgid "Write failed"
+msgstr "يېىزش مەغلۇپ بولدى"
+
+msgid "Unable to update"
+msgstr "يېڭىلىغىلى بولمايدۇ"
+
+msgid "Could not lock datafile"
+msgstr "ئارخىپ ﻫۆججتىنى قۇلۇپلىيالمىدۇق"
+
+msgid "Write to addressbook failed"
+msgstr "ئادرىس دەپتىرىگە يىزش مەغلۇپ بولدى "
+
+msgid "Error initializing addressbook database."
+msgstr "ئادرىس دەپتىرى ئۇچۇرىنى ئېلىش مەغلۇپ بولدى."
+
+#, c-format
+msgid "Error opening file %s"
+msgstr "دىگەن ﻫۆججەتنى ئېچىش مەغلۇپ بولدى %s"
+
+msgid "Global address book"
+msgstr "ئاممىۋى ئادرىس دەپتىرى "
+
+msgid "Error initializing global addressbook."
+msgstr "ئاممىۋى ئادرىس دەپتىرىنى قوزغىتىش مەغلۇپ بولدى ."
+
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "%s LDAPمۇلازىمىتىرىنى قوزغىتىش مەغلۇپ بولدى : "
+
+msgid "Invalid input data"
+msgstr "كىرگۈزگەن ئۇچۇرلار قانۇنسىزة"
+
+msgid "Name is missing"
+msgstr "ئىسمنى كىرگۈزمىدىڭىز"
+
+msgid "E-mail address is missing"
+msgstr "emailئادرىسىنى كىرگۈزمىدىڭىز"
+
+msgid "Nickname contains illegal characters"
+msgstr "لەقەمنىڭ ئىچىدە قانۇنسىز ﻫەرىپلەر بار"
+
+#, fuzzy
+msgid "View"
+msgstr "كۆرۈش"
+
+#, fuzzy
+msgid "View Business Card"
+msgstr "ئىسىم كارتۇچكىسى كۆرۇش"
+
+msgid "Sunday"
+msgstr "يەكشەنبە"
+
+msgid "Monday"
+msgstr "دۇشەنبە"
+
+msgid "Tuesday"
+msgstr "سەيشەنبە"
+
+msgid "Wednesday"
+msgstr "چارشەنبە"
+
+msgid "Thursday"
+msgstr "پەيشەنبە"
+
+msgid "Friday"
+msgstr "جۇمە"
+
+msgid "Saturday"
+msgstr "شەنبە"
+
+msgid "Sun"
+msgstr "يەكشەنبە"
+
+msgid "Mon"
+msgstr "دۇشەنبە"
+
+msgid "Tue"
+msgstr "سەيشەنبە"
+
+msgid "Wed"
+msgstr "چارشەنبە"
+
+msgid "Thu"
+msgstr "پەيشەنبە"
+
+msgid "Fri"
+msgstr "جۈمە"
+
+msgid "Sat"
+msgstr "شەنبە"
+
+msgid "January"
+msgstr "يانىۋار"
+
+msgid "February"
+msgstr "فۋۇرال"
+
+msgid "March"
+msgstr "مارت"
+
+msgid "April"
+msgstr "ئاپرىل"
+
+msgid "May"
+msgstr "ماي"
+
+msgid "June"
+msgstr "ئىيون"
+
+msgid "July"
+msgstr "ئىيول"
+
+msgid "August"
+msgstr "ئاۋغۇست"
+
+msgid "September"
+msgstr "سىنتەبىر"
+
+msgid "October"
+msgstr "ئۆكتەبىر"
+
+msgid "November"
+msgstr "نويابىر"
+
+msgid "December"
+msgstr "دىكابىر"
+
+msgid "Jan"
+msgstr "يانىۋار"
+
+msgid "Feb"
+msgstr "فىۋورال"
+
+msgid "Mar"
+msgstr "مارت"
+
+msgid "Apr"
+msgstr "ئاپرىل"
+
+msgid "Ma&#121;"
+msgstr ""
+
+msgid "Jun"
+msgstr "ئىيۇن"
+
+msgid "Jul"
+msgstr "ئىيول"
+
+msgid "Aug"
+msgstr "ئاۋغۇست"
+
+msgid "Sep"
+msgstr "سىنتەبىر"
+
+msgid "Oct"
+msgstr "ئۆكتەبىر"
+
+msgid "Nov"
+msgstr "نويابىر"
+
+msgid "Dec"
+msgstr "دىكابىر"
+
+msgid "D, F j, Y g:i a"
+msgstr ""
+
+msgid "D, F j, Y H:i"
+msgstr ""
+
+msgid "M j, Y"
+msgstr ""
+
+msgid "g:i a"
+msgstr ""
+
+msgid "H:i"
+msgstr ""
+
+msgid "D, g:i a"
+msgstr ""
+
+msgid "D, H:i"
+msgstr ""
+
+#, c-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "خاسلىقنى ساقلاشتا خاتالىق كۆرۈلدى(%s) . نورمالسىز چېكىنىۋاتىدۇ "
+
+#, c-format
+msgid "Click here to return to %s"
+msgstr "بۇيەرنى چىكىپ %sگە قايتىڭ"
+
+msgid "Go to the login page"
+msgstr "كىرىش كۆزنىكىگە قايتىش"
+
+#, c-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr "خاسلىق ﻫۆججىتى  %sمەۋجۇت ئەمەس.قايتىدىن كىرىپ بىرنى  قۇرۇڭ. "
+
+#, c-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr "خاسلىق ﻫۆججىتى  %sئېچىلمىدى. سېستىما باشقۇرغۇچى بىلەن ئالاقىلىشىڭ."
+
+#, c-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr "خاسلىق ﻫۆججىتى  %sئېچىلمىدى. سېستىما باشقۇرغۇچى بىلەن  ئالاقىلىشىڭ."
+
+#, fuzzy, c-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr "خاسلىق ﻫۆججىتى  %sئېچىلمىدى. سېستىما باشقۇرغۇچى بىلەن ئالاقىلىشىڭ."
+
+#, c-format
+msgid "Error opening %s"
+msgstr "ئېچىلمىدى  %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "كۆپ ئىشلىتىلىدىغان خاسلىق ﻫۆججىتى مەۋجۇت ئەمەس ياكى ئوقۇغۇلى بولمايدۇ!"
+
+msgid "Could not create initial preference file!"
+msgstr "دەسلەپكى خاسلىق ﻫۆججىتىنى قۇرغىلى بولمىدى!"
+
+#, c-format
+msgid "%s should be writable by user %s"
+msgstr "%s ئىشلەتكۈچىگە چوقۇم ئوقۇيالايدىغان بولىشى كىرەك %s"
+
+#, fuzzy
+msgid "Signature is too big."
+msgstr "ئىمزا خاسلىقلىرى"
+
+#, c-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr "ئىمزا ھۆججىتى,  %s. تېپىلمىدى."
+
+#, c-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr "ئىمزا ھۆججىتى,  %s نى يازغىلى بولمىدى."
+
+#, fuzzy, c-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr "ئىمزا ﻫۆججىتى ,  %sمەۋجۇت ئەمەس. باشقۇرغۇچى بىلەن ئالاقىلىشىڭ.."
+
+msgid ""
+"You need to have php4 installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+
+msgid "ERROR: No available IMAP stream."
+msgstr ""
+
+#, fuzzy
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "IMAPمۇلازىمىتىگە ئۇلىنىشتا خاتالىق بار: %s."
+
+#, fuzzy
+msgid "ERROR: Could not complete request."
+msgstr "خاتالىق: بۇيرۇقىڭىزنى ئىجرا قىلالمايمىز"
+
+msgid "Query:"
+msgstr "ئىزدەش:"
+
+#, fuzzy
+msgid "Reason Given:"
+msgstr "سەۋەبى:"
+
+#, fuzzy
+msgid "ERROR: Bad or malformed request."
+msgstr "بۇيرۇق خاتا بولۇپ قالدى"
+
+#, fuzzy
+msgid "Server responded:"
+msgstr "مۇلازىمىتىردىن ئىنكاس:"
+
+#, fuzzy
+msgid "ERROR: IMAP server closed the connection."
+msgstr "مۇلازىمىتى ئۈزۈۋېتىلدى.IMAP"
+
+#, fuzzy
+msgid "ERROR: Unknown IMAP response."
+msgstr "ئۇچۇر نامەلۇم"
+
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "IMAPمۇلازىمىتىگە ئۇلىنىشتا خاتالىق بار: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+
+#, c-format
+msgid "Bad request: %s"
+msgstr "بۇيرۇق خاتا:  %s"
+
+#, c-format
+msgid "Unknown error: %s"
+msgstr "نامەلۇم خاتالىق: %s"
+
+msgid "Read data:"
+msgstr "ئۇچۇرنى ئوقۇش:"
+
+msgid "Unknown user or password incorrect."
+msgstr "بۇ ئىسىم تىزىملىتىلمىغان ياكى شىفىر خاتا."
+
+#, fuzzy
+msgid "ERROR: Could not append message to"
+msgstr "خاتالىق: خەتنى قاتقىلى بولمىدى"
+
+#, fuzzy
+msgid "Solution:"
+msgstr "ﻫەل قىلىش ئۇسۇلى:"
+
+msgid ""
+"Remove unneccessary messages from your folder and start with your Trash "
+"folder."
+msgstr ""
+
+msgid "(no subject)"
+msgstr "( تىمىسز)"
+
+msgid "Unknown Sender"
+msgstr "ئەۋەتكۈچى نامەلۇم"
+
+#, fuzzy
+msgid "Unknown response from IMAP server:"
+msgstr "IMAP مۇلازىمىتىرىدىن كەلگەن ئۇچۇر خاتا :"
+
+msgid "The server couldn't find the message you requested."
+msgstr "مۇلازىمىتىر سىز دىگەن ئۇچۇرنى تاپالمىدى"
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+
+#, fuzzy
+msgid "Unknown date"
+msgstr "ۋاقىت نامەلۇم"
+
+msgid "A"
+msgstr "أ"
+
+#, fuzzy
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr ""
+"IMAPمۇلازىمىتىرى پەشتاقچە رەتكە تىزىشنى قوللىمايدىكەن .<br>باشقۇرغۇچى بىلەن "
+"ئالاقىلىشىڭ."
+
+#, fuzzy
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr ""
+"IMAPمۇلازىمىتىرى پەشتاقچە رەتكە تىزىشنى قوللىمايدىكەن .<br>باشقۇرغۇچى بىلەن "
+"ئالاقىلىشىڭ."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "بۇ مۇندەرىجىنىڭ ئىچى قۇرۇق."
+
+#, fuzzy
+msgid "Move Selected To"
+msgstr "تاللىغانلارىن يۆتكەش:"
+
+msgid "Transform Selected Messages"
+msgstr "تاللىغانلارغا بەلگە سېلىش"
+
+msgid "Move"
+msgstr "يۆتكەش"
+
+msgid "Expunge"
+msgstr "شطب"
+
+msgid "mailbox"
+msgstr "علبة البريد"
+
+msgid "Read"
+msgstr "ئوقۇلغان"
+
+msgid "Unread"
+msgstr "ئوقۇلمىغان"
+
+msgid "Unthread View"
+msgstr "كىڭەيتىش "
+
+msgid "Thread View"
+msgstr "كۆرۈنۈشىنى قىسقارتىش "
+
+msgid "Toggle All"
+msgstr "ﻫەممىنى تاللاش"
+
+msgid "Unselect All"
+msgstr "ﻫەممىنى تاللىماسلىق"
+
+msgid "Select All"
+msgstr "ﻫەممىنى تاللاش"
+
+#, fuzzy, c-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "خەت كۆرۇش:<B>%s</B>گىچە<B>%s</B>(جەمئىي %s) "
+
+#, fuzzy, c-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "خەت كۆرۇش:<B>%s</B>( جەمئىي%s)"
+
+msgid "Paginate"
+msgstr "بەت قويۇش"
+
+msgid "Show All"
+msgstr "ﻫەممىنى كۆرسىتىش"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "كود يېشىش مۇۋەپپەقىيەتلىك بولمىدى"
+
+msgid "the provided bodystructure by your imap-server"
+msgstr ""
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr "خەتنىڭ شەكلى خاتا بولىشى مۈمكىن."
+
+msgid "Command:"
+msgstr "بۇيرۇق:"
+
+msgid "Response:"
+msgstr "ئىنكاس:"
+
+msgid "Message:"
+msgstr "ئۇچۇر:"
+
+msgid "FETCH line:"
+msgstr "FETCH line:"
+
+msgid "Hide Unsafe Images"
+msgstr "بىخەتەر بولمىغان رەسىملەرنى يوشۇرۇش"
+
+msgid "View Unsafe Images"
+msgstr "خەتەرلىك رەسىملەرنى كۆرۈش"
+
+#, fuzzy
+msgid "Download"
+msgstr "چۈشۈرۈش"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_ug.png"
+
+msgid "This external link will open in a new window"
+msgstr ""
+
+#, c-format
+msgid "Option Type '%s' Not Found"
+msgstr "بۇنداق خاسلىق تېپىلمىدى'%s'"
+
+msgid "Current Folder"
+msgstr "ﻫازىرقى مۇندەرىجە"
+
+msgid "Compose"
+msgstr "خەت يېزىش"
+
+#, c-format
+msgid "Error creating directory %s."
+msgstr "مۇندەرىجىنى قۇرۇشتا خاتالىق كۆرۈلدى  %s."
+
+msgid "Could not create hashed directory structure!"
+msgstr "مۇندەرىجە قۇرۇش مەغلۇپ بولدى"
+
+msgid "Service not available, closing channel"
+msgstr "مۇلازىمەت توختىتىلدى، قانال ئېتىلىۋاتىدۇ."
+
+msgid "A password transition is needed"
+msgstr "شىفىرنى تەكشۈرۈشتىن ئۆتكۈزۈش كىرەك."
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "خەت ساندۇغى خاتا"
+
+msgid "Requested action aborted: error in processing"
+msgstr "ھەركەت مەغلۇپ بولىدى"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr ""
+
+#, fuzzy
+msgid "Temporary authentication failure"
+msgstr "ۋاقتىنچە تىزىملاش مەغلۇپ بولدى"
+
+msgid "Syntax error; command not recognized"
+msgstr ""
+
+msgid "Syntax error in parameters or arguments"
+msgstr ""
+
+#, fuzzy
+msgid "Command not implemented"
+msgstr "بۇنداق بۇيرۇق يوق"
+
+msgid "Bad sequence of commands"
+msgstr ""
+
+msgid "Command parameter not implemented"
+msgstr ""
+
+#, fuzzy
+msgid "Authentication required"
+msgstr "ئاۋال سالاﻫىيىتڭىزنى تەكشۈرتۈڭ"
+
+msgid "Authentication mechanism is too weak"
+msgstr ""
+
+#, fuzzy
+msgid "Authentication failed"
+msgstr "سالاﻫىيەت تەكشۇرۇشتىن خاتالىق كۆرۈلدى"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr ""
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "User not local; please try forwarding"
+msgstr "ئىشلەتكۈچى بۇ بىكەتتە ئەمەس، ۋاستىلق ئەۋەرتىڭ"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr "بوشلۇق يېتىشمىدى"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "خەت ساندۇغىنىڭ ئىسمى خاتا"
+
+#, fuzzy
+msgid "Transaction failed"
+msgstr "سالاﻫىيەت تەكشۈرۈش مەغلۇپ بولدى "
+
+#, fuzzy
+msgid "Unknown response"
+msgstr "ئۇچۇر نامەلۇم"
+
+msgid "General Display Options"
+msgstr "دائىملىق كۆرۈنۈش "
+
+msgid "Theme"
+msgstr "نۇسخا"
+
+msgid "Default"
+msgstr "كۆپ ئىشلىتىلدىغان"
+
+msgid "Custom Stylesheet"
+msgstr "فونت ئۇسلۇبى"
+
+msgid "Language"
+msgstr "يېزىق"
+
+msgid "Use Javascript"
+msgstr "Javascriptئىشلىتەمدۇق"
+
+msgid "Autodetect"
+msgstr "ئاپتوماتىك"
+
+msgid "Always"
+msgstr "ﻫەردائىمً"
+
+msgid "Never"
+msgstr "ﻫەرگىزً"
+
+msgid "Mailbox Display Options"
+msgstr "خەت ساندۇغىنىڭ كۆرۈنىشى"
+
+#, fuzzy
+msgid "Number of Messages per Page"
+msgstr "خەتلەر تىزىملىكىدىكى خەتلەرنىڭ سانى"
+
+msgid "Enable Alternating Row Colors"
+msgstr "قۇردا ئوخشىمىغان رەڭنى ئىشلىتىش"
+
+msgid "Enable Page Selector"
+msgstr "كۆزنەك تاللىغۇچنى كۆرسىتىش "
+
+msgid "Maximum Number of Pages to Show"
+msgstr "ئەڭ كۆپ بولغاندا نەچچە بەت كۆرسىتدۇ "
+
+msgid "Always Show Full Date"
+msgstr ""
+
+msgid "Message Display and Composition"
+msgstr "خەت يېىزش ۋە خەت ئوقۇش "
+
+msgid "Wrap Incoming Text At"
+msgstr "خەتنىڭ قۇر ئاتلىشى  "
+
+#, fuzzy
+msgid "Width of Editor Window"
+msgstr "تەﻫرىرلەش كۆزنىكىنىڭ چوڭ كىچىكلىگى"
+
+#, fuzzy
+msgid "Height of Editor Window"
+msgstr "تەﻫرىرلەش كۆزنىكىنىڭ چوڭ كىچىكلىگى"
+
+msgid "Location of Buttons when Composing"
+msgstr "خەت يازغاندا كونۇپكىلارنىڭ ئورنى"
+
+msgid "Before headers"
+msgstr "ئۈستىدە"
+
+msgid "Between headers and message body"
+msgstr "ئوتتۇردا "
+
+msgid "After message body"
+msgstr "ئاستىدا "
+
+msgid "Addressbook Display Format"
+msgstr "ئادرىس دەپتىرىنىڭ كۆرۈنۈشى "
+
+msgid "Javascript"
+msgstr "Javascript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Show HTML Version by Default"
+msgstr "ئادەتتە HTMLشەكلىدە كۆرسىتىش"
+
+msgid "Enable Forward as Attachment"
+msgstr "قوشۇمچە ھۆججەت سۈپىتىدە ئەۋەرتش"
+
+#, fuzzy
+msgid "Include CCs when Forwarding Messages"
+msgstr "تاپشۇرۋالغان خەتنى باشقىلارغا ئەۋەتكەندە CCنى قىستۇرۇش"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "ﻫەممىگە جاۋاپ يازغاندا ئۆزەمنى CCغا قىستۇرۇش"
+
+msgid "Enable Mailer Display"
+msgstr "email كۆرسىتىش كۆزنىكىنى كۆرسىتش"
+
+msgid "Display Attached Images with Message"
+msgstr "قوشۇمچە ﻫۆججەت ئىچىدىكى رەسىملەرنى كۆرسىتش"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "پرىنتىردا چىقىردىغان نۇسخدا كۆرسىتىش"
+
+#, fuzzy
+msgid "Enable Mail Delivery Notification"
+msgstr "خەتنىڭ يىتىپ بارغان ئۇقتۇرشى نى قوزغۇتۇش"
+
+#, fuzzy
+msgid "Compose Messages in New Window"
+msgstr "خەتنى يېڭى ئىكراندا يېزىش"
+
+#, fuzzy
+msgid "Width of Compose Window"
+msgstr "خەت يېزىش ئېكرانىنىڭ كەڭلىگى"
+
+#, fuzzy
+msgid "Height of Compose Window"
+msgstr "خەت يېزىش ئېكرانىنىڭ ئىگىزلىكى"
+
+#, fuzzy
+msgid "Append Signature before Reply/Forward Text"
+msgstr "جاۋاپ يازغان ۋە قايتا ئەۋەتكەندە ئىمزانى قوشۇش"
+
+msgid "Prefix for Original Message when Replying"
+msgstr ""
+
+msgid "Cursor Position when Replying"
+msgstr "جاۋاپ يازغاندا نۈر بەلگىسىنىڭ ئورنى"
+
+msgid "To: field"
+msgstr ""
+
+msgid "Focus in body"
+msgstr "تېكىستكە توغرىلاش"
+
+#, fuzzy
+msgid "Select body"
+msgstr "مۇندەرىجە تاللاش"
+
+#, fuzzy
+msgid "No focus"
+msgstr "سائەت يوق"
+
+#, fuzzy
+msgid "Sort by Received Date"
+msgstr "خەتلەرنى تاپشۇرۋالغان ۋاقتى بويىچە تىزىش"
+
+msgid "Enable Thread Sort by References Header"
+msgstr ""
+
+msgid "Special Folder Options"
+msgstr "مۇندەرىجىنىڭ ئالي خاسلىقلىرى "
+
+msgid "Folder Path"
+msgstr "مۇندەرىجىنىڭ ئورنى "
+
+msgid "Do not use Trash"
+msgstr "ئەخلەت ساندۇغى نى ئىشلەتمەيمىز"
+
+msgid "Trash Folder"
+msgstr "ئەخلەت ساندۇغى"
+
+msgid "Do not use Drafts"
+msgstr "چورنىۋاي مۇندەرىجىسىنى ئىشلەتمەيمىز"
+
+msgid "Draft Folder"
+msgstr "ئەخلەت مۇندەرىجىسى "
+
+msgid "Do not use Sent"
+msgstr "ئەۋەتلىگەن مۇندەرىجىسىنى ئىشلەتمەيمىز"
+
+msgid "Sent Folder"
+msgstr "ئەۋەتىلگەنt"
+
+msgid "Folder List Options"
+msgstr "مۇندەرىجىلەر تىزىملىكى خاسلىقلىرى "
+
+msgid "Location of Folder List"
+msgstr "مۇندەرىجىلەر تىزىملىكىنىڭ ئورنى "
+
+msgid "Left"
+msgstr "سول"
+
+msgid "Right"
+msgstr "ئوڭ"
+
+msgid "pixels"
+msgstr "pixels"
+
+msgid "Width of Folder List"
+msgstr "مۇندەرىجىلەر تىزىملىكىنىڭ كەڭلىگى"
+
+msgid "Minutes"
+msgstr "مىنۇت"
+
+msgid "Seconds"
+msgstr "سىكونت"
+
+msgid "Minute"
+msgstr "مىنۇت"
+
+msgid "Auto Refresh Folder List"
+msgstr "مۇندەرىجىلەر تىزىملىكىنى ئاپتوماتىك يېڭىلاش "
+
+msgid "Enable Unread Message Notification"
+msgstr "ئوقۇلمىغان خەتلەرنى ئەسكەرتىش"
+
+msgid "No Notification"
+msgstr "ئەسكەرتمەيدۇ"
+
+msgid "Only INBOX"
+msgstr "پەقەت INBOXتىلا"
+
+msgid "Unread Message Notification Type"
+msgstr "ئوقۇلمىغان خەتلەرنى ئەسكەرتىش شەكلى"
+
+msgid "Only Unseen"
+msgstr "پەقەت ئوقۇلمىغان خەتنىڭ سانى"
+
+msgid "Unseen and Total"
+msgstr "ئوقۇلمىغان خەتنىڭ سانى ۋە ئومۇمى سانى"
+
+#, fuzzy
+msgid "Enable Collapsable Folders"
+msgstr "مۇندەرىجىلەر تىزىملىكىنى پەلەمپەي شەكلىدە كۆرسىتش"
+
+#, fuzzy
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "ئوقۇمىغان خەتلەرنى ئەسكەرتىش"
+
+msgid "Show Clock on Folders Panel"
+msgstr "مۇندەرىجىلەر كۆزنىكىدە سائەتنى كۆرسىتىش"
+
+#, fuzzy
+msgid "International date and time"
+msgstr "خەلقىئارالىق ۋاقىت ئىپادىلاش شەكلى "
+
+msgid "American date and time"
+msgstr "ئامرىكىچە ۋاقىت ئىپادىلەش شەكلى"
+
+#, fuzzy
+msgid "European date and time"
+msgstr "ياۋروپاچە ۋاقىت ئىپادىلەش شەكلى"
+
+msgid "Show weekday and time"
+msgstr "ۋاقىت ۋە كۈننى كۆرسىتىش"
+
+msgid "Show time with seconds"
+msgstr "ۋاقىتنى سىكونت بويىچە كۆرسىتىش"
+
+#, fuzzy
+msgid "Show time"
+msgstr "ۋاقىتنى كۆرستىش"
+
+msgid "No Clock"
+msgstr "سائەت يوق"
+
+msgid "Hour Format"
+msgstr "سائەتنى ئىپادىلەش شەكلى"
+
+msgid "12-hour clock"
+msgstr "12سائەت"
+
+msgid "24-hour clock"
+msgstr "24سائەت"
+
+msgid "Memory Search"
+msgstr "ئەڭ يېڭى ئىزدەش نەتىجىسنى ساقلاش "
+
+msgid "Disabled"
+msgstr "ئىشلىمەيدۇ"
+
+#, fuzzy
+msgid "Folder Selection Options"
+msgstr "مۇندەرىجىنى تاللاش خاسلىقى "
+
+#, fuzzy
+msgid "Selection List Style"
+msgstr "تاللاش تىزىملىكىنىڭ شەكلى"
+
+#, fuzzy
+msgid "Long:"
+msgstr "ئۇزۇن:"
+
+#, fuzzy
+msgid "Folder"
+msgstr "مۇندەرىجىلەر"
+
+#, fuzzy
+msgid "Subfolder"
+msgstr "استخدام مجلدات Sent الفرعية"
+
+#, fuzzy
+msgid "Indented:"
+msgstr "قىسقارتىلغان"
+
+#, fuzzy
+msgid "Delimited:"
+msgstr "كىسلگەن"
+
+msgid "Name and Address Options"
+msgstr "ئىسىم ۋە ئادرىس خاسلىقلىرى"
+
+msgid "Email Address"
+msgstr "emailئادرىسى "
+
+msgid "Edit Advanced Identities"
+msgstr "ئالي خاسلىقىنى تەﻫرىرلەش"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(ئۆزگەرتكەنلەرنى ئەمەلدىن قالدۇرۇش)"
+
+msgid "Multiple Identities"
+msgstr "ئوخشىمغان بەلگە"
+
+msgid "Same as server"
+msgstr "مۇلازىمىتىر بىلەن ئوخشاش"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr ""
+
+msgid "Timezone Options"
+msgstr "ۋاقىت رايۇنى خاسلىقى"
+
+msgid "Your current timezone"
+msgstr "سىز تۇرغان ۋاقىت رايۇنى"
+
+msgid "Reply Citation Options"
+msgstr "جاۋاپ يازغاندىكى خاسلىق"
+
+msgid "Reply Citation Style"
+msgstr "جاۋاپ يازغاندا نەقىل كەلتۇرۇش شەكلى"
+
+msgid "No Citation"
+msgstr "نەقىل كەلتۈرمەيمىز"
+
+#, fuzzy
+msgid "AUTHOR Wrote"
+msgstr "ئەسلى يازغۇچى"
+
+#, fuzzy
+msgid "On DATE, AUTHOR Wrote"
+msgstr "ئەسلى يازغۇچى"
+
+msgid "Quote Who XML"
+msgstr "Quote Who XML"
+
+msgid "User-Defined"
+msgstr "ئىشلەتكۈچى خالىغانچە"
+
+msgid "User-Defined Citation Start"
+msgstr "خاسلىققا ئىگە نەقىل باشلىنىدۇ"
+
+msgid "User-Defined Citation End"
+msgstr "خاسلىققا ئىگە نەقىل ئاخىرلىشىدۇ"
+
+msgid "Signature Options"
+msgstr "ئىمزا خاسلىقلىرى"
+
+msgid "Use Signature"
+msgstr "ئىمزا ئىشلىتىش"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "ئارقىلىق ئىمزا باشلىنىدۇ'-- '"
+
+#, fuzzy
+msgid "Take Address"
+msgstr "كەلگەن ئادرىسى"
+
+#, fuzzy
+msgid "Address Book Take:"
+msgstr "كەلگەن ئادرىسى "
+
+msgid "Try to verify addresses"
+msgstr ""
+
+msgid "Config File Version"
+msgstr "خاسلىق ﻫۆججىتىنىڭ نەسىرى"
+
+#, fuzzy
+msgid "SquirrelMail Version"
+msgstr "نىڭ نەشىرى Tarim webmail"
+
+msgid "PHP Version"
+msgstr "نەشىرىPHP"
+
+msgid "Organization Preferences"
+msgstr "شىركەت/ ئورۇن خاسلىغى"
+
+msgid "Organization Name"
+msgstr "شىركەت/ ئورگان ئىسمى"
+
+msgid "Organization Logo"
+msgstr "شىركەت/ ئورگان ئىسمىنىڭ تۇغى"
+
+msgid "Organization Logo Width"
+msgstr "شىركەت /ئورگان  تۇغىنىڭ كەڭلىگى"
+
+msgid "Organization Logo Height"
+msgstr "شىركەت /ئورگان تۇغىنىڭ ئىگىزلىكى"
+
+msgid "Organization Title"
+msgstr "شىركەت /ئورگان ئىسمى"
+
+msgid "Signout Page"
+msgstr "چىكىنگەندە كۆرۈنىدىغان بەت"
+
+msgid "Provider Link URI"
+msgstr ""
+
+#, fuzzy
+msgid "Provider Name"
+msgstr "مۇلازىمەت بىلەن تەمىنلىگۈچى:"
+
+msgid "Top Frame"
+msgstr "ئۈستىدىكى بەت "
+
+msgid "Server Settings"
+msgstr "مۇلازىمىتىرغا ئالاقىدار "
+
+msgid "Mail Domain"
+msgstr "تور بېكەت نامى "
+
+msgid "IMAP Server Address"
+msgstr "IMAPمۇلازىمىتىرنىڭ ئادرىسى"
+
+msgid "IMAP Server Port"
+msgstr "IMAPمۇلازىمەت ئېغىزى"
+
+msgid "IMAP Server Type"
+msgstr "IMAPمۇلازىمىتىنىڭ خىلى"
+
+msgid "Cyrus IMAP server"
+msgstr "Cyrus IMAP"
+
+msgid "University of Washington's IMAP server"
+msgstr "UW IMAP server"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "Microsoft Exchange IMAP"
+
+msgid "Courier IMAP server"
+msgstr "Courier IMAP"
+
+msgid "Mac OS X Mailserver"
+msgstr ""
+
+#, fuzzy
+msgid "hMailServer IMAP server"
+msgstr "Courier IMAP"
+
+msgid "Not one of the above servers"
+msgstr "ھىچقايسىسى ئەمەس"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAPمۇندەرىجە ئايرىش بەلگىسى"
+
+#, fuzzy
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Use \"detect\" to auto-detect."
+
+msgid "Use TLS for IMAP Connections"
+msgstr ""
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr ""
+
+#, fuzzy
+msgid "IMAP Authentication Type"
+msgstr "IMAP سالاﻫىيەت تەكشۈرشىنىڭ ئۇسۇلى "
+
+#, fuzzy
+msgid "IMAP login"
+msgstr "تسجيل دخولPOP3 :"
+
+#, fuzzy
+msgid "Use Sendmail Binary"
+msgstr "نى ئىشلىتىشSendmail"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr ""
+
+msgid "Sendmail Path"
+msgstr "نىڭ ئورنى Sendmail"
+
+msgid "SMTP Server Address"
+msgstr "مۇلازىمىتىرىنڭ ئادرىسىSMTP"
+
+msgid "SMTP Server Port"
+msgstr "مۇلازىمىتىرىنڭ ئېغىزىSMTP"
+
+msgid "Use TLS for SMTP Connections"
+msgstr ""
+
+#, fuzzy
+msgid "SMTP Authentication Type"
+msgstr "سالاﻫىيەت تەكشۈرۈش مەغلۇپ بولدى"
+
+msgid "No SMTP auth"
+msgstr ""
+
+msgid "Login (plain text)"
+msgstr ""
+
+msgid "POP3 Before SMTP?"
+msgstr ""
+
+msgid "Invert Time"
+msgstr "ۋاقىتنى ئالماشتۇرۇش "
+
+msgid "Folders Defaults"
+msgstr "خەت ساندۇغى خاسلىقلىرى"
+
+msgid "Default Folder Prefix"
+msgstr "ئادەتتەمۇندەرىجىلەرنىڭ ئورنى"
+
+msgid "Show Folder Prefix Option"
+msgstr "ئىشلەتكۈچىلەر مۇندەرىجەئورنىنى بەلگىلسە بولىدۇ"
+
+msgid "By default, move to trash"
+msgstr "ئادەتتە ئەخلەت ساندۇغىغا يۆتكەيدۇ"
+
+msgid "By default, move to sent"
+msgstr "ئادەتتە ئەۋەرتىلگەن خەتلەر ساندۇغىغا يۆتكەيدۇ"
+
+msgid "By default, save as draft"
+msgstr "ئادەتتە ئەۋەرتىلگەن چورنىۋاي ساندۇغىغا يۆتكەيدۇ"
+
+msgid "List Special Folders First"
+msgstr "سېستىما مۇندەرىجىسى ئالدىدا "
+
+msgid "Show Special Folders Color"
+msgstr "سېستىما مۇندەرىجىسنى رەڭلىك كۆرسىتىش"
+
+msgid "Auto Expunge"
+msgstr "ئەۋەرتىمگەن خەتلەردىن ۋاز كېچىش "
+
+msgid "Default Sub. of INBOX"
+msgstr "خەت ساندۇغى باشقا مۇندەرىجىلەرنىڭ ئالدىدا"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Show 'Contain Sub.' Option"
+
+msgid "Default Unseen Notify"
+msgstr "ئوقۇلمىغان خەتلەرنى پەرىقلەندۈرۈش"
+
+msgid "Default Unseen Type"
+msgstr "ئوقۇلمىغان خەتلەرنى پەرىقلەندۈرۈش شەكلى"
+
+msgid "Auto Create Special Folders"
+msgstr "سېستىما مۇندەرىجىسىنى ئاپتوماتىك قۇرۇش"
+
+msgid "Auto delete folders"
+msgstr "مۇندەرىجىلەرنى ئاپتوماتىك ئۆچۈرۈش"
+
+#, fuzzy
+msgid "Enable /NoSelect folder fix"
+msgstr "تمكين Page Selector "
+
+msgid "General Options"
+msgstr "خيارات عامة"
+
+msgid "Data Directory"
+msgstr "دليل بيانات "
+
+msgid "Temp Directory"
+msgstr "دليل Temp"
+
+msgid "Hash Level"
+msgstr "مستوى التجزئة Hash"
+
+msgid "Hash Disabled"
+msgstr "التجزئة Hash معطلة"
+
+msgid "Moderate"
+msgstr "معتدل"
+
+msgid "Medium"
+msgstr "متوسط"
+
+msgid "Default Left Size"
+msgstr "الحجم الأيسر الافتراضي "
+
+msgid "Usernames in Lowercase"
+msgstr "اسم مستخدم بأحرف صغيرة"
+
+msgid "Allow use of priority"
+msgstr "السماح باستخدام الأفضلية"
+
+msgid "Hide SM attributions"
+msgstr "إخفاء سمات SM "
+
+msgid "Enable use of delivery receipts"
+msgstr "تمكين استخدام إيصالات الاستلام"
+
+msgid "Allow editing of identities"
+msgstr "السماح بتحرير المعرّفات "
+
+msgid "Allow editing of full name"
+msgstr "السماح بتحرير الاسم الكامل"
+
+msgid "Use server-side sorting"
+msgstr ""
+
+#, fuzzy
+msgid "Use server-side thread sorting"
+msgstr "استخدام رؤوس الصفحات المرجعية للفرز بمؤشر ترابط "
+
+msgid "Allow server charset search"
+msgstr ""
+
+msgid "UID support"
+msgstr ""
+
+#, fuzzy
+msgid "PHP session name"
+msgstr "إصدارPHP"
+
+msgid "Message of the Day"
+msgstr "رسالة اليوم"
+
+msgid "Database"
+msgstr "قاعدة بيانات"
+
+msgid "Address book DSN"
+msgstr "DSN دفتر العناوين"
+
+msgid "Address book table"
+msgstr "جدول دفتر العناوين "
+
+msgid "Preferences DSN"
+msgstr "DSN التفضيلات"
+
+msgid "Preferences table"
+msgstr "جدول التفضيلات"
+
+msgid "Preferences username field"
+msgstr "حقل اسم مستخدم التفضيلات "
+
+msgid "Preferences key field"
+msgstr "حقل مفتاح التفضيلات"
+
+msgid "Preferences value field"
+msgstr "z"
+
+#, fuzzy
+msgid "Global address book DSN"
+msgstr "ئاممىۋى ئادرىس دەپتىرى "
+
+#, fuzzy
+msgid "Global address book table"
+msgstr "ئاممىۋى ئادرىس دەپتىرى "
+
+#, fuzzy
+msgid "Allow writing into global address book"
+msgstr "ئاممىۋى ئادرىس دەپتىرىنى ئۆزگەرتكىلى بولمايدۇ "
+
+#, fuzzy
+msgid "Allow listing of global address book"
+msgstr "ئاممىۋى ئادرىس دەپتىرىنى ئۆزگەرتكىلى بولمايدۇ "
+
+#, fuzzy
+msgid "Language settings"
+msgstr "خاسلىقىنى ئۆزگەرتىش"
+
+msgid "Default Language"
+msgstr "كۆپ ئىشلىتىلىدىغان يېزىق "
+
+msgid "Default Charset"
+msgstr "مجموعة الأحرف الافتراضية"
+
+msgid "Enable lossy encoding"
+msgstr ""
+
+#, fuzzy
+msgid "Address Books"
+msgstr "ئادرىس دەپتىرى "
+
+#, fuzzy
+msgid "Default Javascript Addressbook"
+msgstr "ئادەتتە Javascriptئادرىس دەپتىرىنى ئىشلىتىش"
+
+#, fuzzy
+msgid "Global address book file"
+msgstr "ئاممىۋى ئادرىس دەپتىرى "
+
+#, fuzzy
+msgid "Allow writing into global address book file"
+msgstr "ئادرىس دەپتىرىگە يىزش مەغلۇپ بولدى "
+
+msgid "Themes"
+msgstr "نۇسخا"
+
+msgid "Style Sheet URL (css)"
+msgstr "Style Sheet URL (css)"
+
+#, fuzzy
+msgid "Default theme"
+msgstr "كۆپ ئىشلىتىلىدىغان نۇسخا"
+
+msgid "Use index number of theme"
+msgstr ""
+
+msgid "Configuration Administrator"
+msgstr "باشقۇرغۇچىنى بەلگىلەش "
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+
+msgid "Theme Name"
+msgstr "نۇسخا ئىسمى"
+
+msgid "Theme Path"
+msgstr "نۇسخىنىڭ ئورنى"
+
+msgid "Plugins"
+msgstr "قوشۇمچە دىتاللار"
+
+#, c-format
+msgid "Plugin directory could not be found: %s"
+msgstr ""
+
+msgid "Change Settings"
+msgstr "خاسلىقىنى ئۆزگەرتىش"
+
+msgid "Test Configuration"
+msgstr ""
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr "خاسلىق ھۆججىتى ئېچىلمىدى. config.php.نى تەكشۈرۈپ بېقىڭ"
+
+msgid "Administration"
+msgstr "ئاساسىي سېستىمنى باشقۇرۇش"
+
+#, fuzzy
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+"تسمح هذه الوحدة النمطية للمسئولين بإدارة التكوين  الرئيسي لـ biznas_mailمن "
+"بعيد."
+
+#, fuzzy
+msgid "Submit a Bug Report"
+msgstr "تقارير عن خلل:"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+
+#, c-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+
+#, c-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+
+#, c-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+
+msgid "This bug involves"
+msgstr ""
+
+msgid "the general program"
+msgstr ""
+
+msgid "a specific plugin"
+msgstr ""
+
+#, fuzzy
+msgid "Start Bug Report Form"
+msgstr "تقارير عن خلل:"
+
+#, fuzzy
+msgid "Bug"
+msgstr "ئىۋەن"
+
+msgid "Bug Reports:"
+msgstr "كۆرۈلگەن ئىۋەن:"
+
+msgid "Show button in toolbar"
+msgstr "كونۇپكىلارنى كۆرسىتىش"
+
+#, fuzzy, c-format
+msgid "Could not write calendar file %s"
+msgstr "كالىندار ھۆججىتىگە يازغىلى بولمىدى!"
+
+msgid "TODAY"
+msgstr "بۈگۈن"
+
+msgid "Go"
+msgstr "ئالغا"
+
+msgid "l, F j Y"
+msgstr ""
+
+msgid "ADD"
+msgstr "قوشۇش"
+
+msgid "EDIT"
+msgstr "تەھرىرلەش"
+
+msgid "DEL"
+msgstr "ئۆچۈرۈش"
+
+msgid "Start time:"
+msgstr "باشلانغان ۋاقتى:"
+
+msgid "Length:"
+msgstr "ئۇزۈنلىغى:"
+
+msgid "Priority:"
+msgstr "دەرىجىسى:"
+
+msgid "Title:"
+msgstr "تىمىسى:"
+
+msgid "Set Event"
+msgstr "پىلان تۈزۈش"
+
+msgid "Event Has been added!"
+msgstr "پىلان قېتىلدى!"
+
+msgid "Date:"
+msgstr "چىسلا:"
+
+msgid "Time:"
+msgstr "ۋاقىت:"
+
+msgid "Day View"
+msgstr "كۈن بويىچە كۆرۈش "
+
+msgid "Do you really want to delete this event?"
+msgstr "بۇ پىلاننى راستىنلا ئۆچۈرەمسىز؟"
+
+msgid "Event deleted!"
+msgstr "ئۆچۈرۈلدى!"
+
+msgid "Nothing to delete!"
+msgstr "ئۆچۈرگۈدەك ھىچنىمە يوق!"
+
+msgid "Update Event"
+msgstr "پىلاننى يېڭىلاش"
+
+msgid "Do you really want to change this event from:"
+msgstr "راستىنلا ئۆزگەرتەمسىز؟:"
+
+msgid "to:"
+msgstr "گە:"
+
+msgid "Event updated!"
+msgstr "يېڭىلاندى!"
+
+msgid "Month View"
+msgstr "ئاي بويىچە كۆرۈش "
+
+msgid "0 min."
+msgstr "يوق"
+
+msgid "15 min."
+msgstr " 15 مىنۇت"
+
+#, fuzzy
+msgid "30 min."
+msgstr "يېرىم سائەت"
+
+msgid "45 min."
+msgstr " 45 مىنۇت"
+
+msgid "1 hr."
+msgstr "1سائەت"
+
+msgid "1.5 hr."
+msgstr "1.5 سائەت"
+
+msgid "2 hr."
+msgstr "سائەت"
+
+msgid "2.5 hr."
+msgstr "2.5 سائەت"
+
+msgid "3 hr."
+msgstr "3 سائەت"
+
+msgid "3.5 hr."
+msgstr "3.5 سائەت"
+
+msgid "4 hr."
+msgstr "4 سائەت"
+
+msgid "5 hr."
+msgstr "5 سائەت"
+
+msgid "6 hr."
+msgstr "6 سائەت"
+
+msgid "Calendar"
+msgstr "كالىندار"
+
+msgid "Delete & Prev"
+msgstr "ئالدىنقىسى & ئۆچۈرۈش"
+
+msgid "Delete & Next"
+msgstr "ئۆچۈرۈش&كىيىنكىسى"
+
+msgid "Move to:"
+msgstr "غا يۆتكەش :"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "حذف/نقل/الأزرار التالية:"
+
+msgid "Display at top"
+msgstr "عرض على العلوي"
+
+msgid "with move option"
+msgstr "مع خيار النقل "
+
+msgid "Display at bottom"
+msgstr "عرض على السفلي"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"إعلان تجاري- تحتوى هذه القائمة على ملقمات تقوم بالتحقق من مرسلي البريد غير "
+"المرغوب فيه. وهى قائمة يمكن الاعتماد عليها لمسح البريد غير المرغوب ."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"إعلان تجاري- ملقمات يتم تكوينها (أو إساءة تكوينها) لحظر البريد غير "
+"المرغوبالمسموح له بالمرور فى نظامهم.طريقة أخرى صالحة للاستخدام."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"إعلان تجاري- يتم غالبا تصفية مستخدمي الطلب الهاتفي لكونهم مضطرين لاستخدام "
+"ملقمات البريد الخاصة بشركات توفير الإنترنت, ويحصل مرسلو البريد غير المرغوب "
+"عادة على اشتراك طلب هاتفي لإرسال رسائلهم من هنالك مباشرة ."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "إعلان تجاري- مدخلاتRBL + Blackhole"
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "إعلان تجاري- مدخلاتRBL + OpenRelay"
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "إعلان تجاري- مدخلاتRBL + طلب هاتفي "
+
+msgid ""
+"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+"false positives than ORBS did though."
+msgstr ""
+"مجاناً- ظهرت ORDB عند توقفORBS عن البث.ويبدو أن لديها بعض الإيجابيات الزائفة "
+"أكثر منORBS ."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "مجاناً-Five-Ten-sg.com - مصادر البريد المباشر غير المرغوب. "
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr ""
+"مجاناً-Five-Ten-sg.com - قوائم للطلب الهاتفي- تتضمن بعض برتوكولاتDSL "
+"للإنترنت.  "
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+"مجاناً-Five-Ten-sg.com - مرسلو البريد الكبير الذين لا يستخدمون الاختيار "
+"المؤكد.  "
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "مجاناً-Five-Ten-sg.com - ملقمات متنوعة أخرى.  "
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "مجاناً-Five-Ten-sg.com - ملقمات المرحلة الواحدة.  "
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "مجاناً-Five-Ten-sg.com - ملقمات دعم البريد غير المرغوب.   "
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "مجاناً-Five-Ten-sg.com - بروتوكولات الإنترنت بنموذج ويب. "
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"مجاناً- تظهرDorkslayers  خارج الولايات المتحدة  لتتضمن المرحلات السيئة "
+"المفتوحة  حتى يمكن تجنب الملاحقة القانونية, ومن الطريف أن موقعهميوصى بعدم "
+"استخدام هذه الخدمة."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "مجاناً-SPAMhaus  -  قائمة مصادر للبريد غير المرغوب المعروفة جيداّ ."
+
+#, fuzzy
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"مجاناً حالياً-SPAMCOP - حل شيق يقوم بسرد الملقماتالتي بها بريد غير مرغوب بكمية "
+"كبيرة جداً بالنسبة للبريد المشروع (85% أو أكثر)"
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "مجاناً -dev.null.dk - لا يتوفر عندي معلومات تفصيلية عن هذه القائمة."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr "مجاناً-visi.com - قائمةRelay Stop - قائمة OpenRelay  محافظة للغاية.  "
+
+#, fuzzy
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "مجاناً-2mbit.com Open Relays - قائمة أخرى للمرحلات المفتوحة."
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "مجاناً-2mbit.com SPAM Source -  قائمة للبريد غير المرغوب المباشر.   "
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+"مجانا-2mbit.com SPAM ISPs -  قائمة لشركات توفير الإنترنت المتوافقة مع البريد "
+"غير المرغوب."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"مجانا-Leadmon DUL -  قائمة أخرى للطلب الهاتفي أو بروتوكولات الإنترنت المعينة "
+"ديناميكيا."
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"مجاناً-Leadmon SPAM Source -  قائمة لبروتوكولات الإنترنت التي تلقتLeadmon."
+"netبريداً غير مرغوب منها مباشرة."
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"مجاناً-Leadmon Bulk Mailers - مرسلو البريد الكبير الذين لا يطلبون تأكيد "
+"الاختيار أو  يسمحون لمرسلي البريد غير المرغوب المعروفين بأن يكونوا عملاء "
+"لديهمويسيئون استخدام خدماتهم."
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"مجاناً-Leadmon Open Relays  - مرحلات مفتوحة ذات مرحلة واحدة غير مدرجة "
+"علىوحداتRBL نشطة أخرى ."
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"مجاناً-Leadmon Multi-stage - مرحلات مفتوحة ذات مراحل متعددة غير مدرجة "
+"علىوحداتRBL نشطة أخرى وقامت بإرسال بريد مباشر غير مرغوب إلى Leadmon.net."
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"مجاناً-Leadmon SpamBlock - قامت مواقع على هذه القوائم بإرسال بريد غير مرغوب "
+"إلى Leadmon.netمن بروتوكولات إنترنت موجودة فى تجمعات شبكية لا يوجد تخطيط DNS "
+"للتجمع الكلى لها.إنها قائمة لتجمعات بروتوكولات إنترنت يستخدمها أفراد لديهم "
+"برنامج SPAMmedLeadmon.net."
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"مجاناً حالياً- ليست مجرد قائمة سوداء أخرى- تشمل كل من المرحلات "
+"المفتوحةوالمصادر المباشرة للبريد غير المرغوب."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr ""
+"مجاناً حالياً- ليست مجرد قائمة سوداء أخرى- بروتوكولات إنترنت للطلب الهاتفي."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+
+msgid "WARNING! You must enter something to search for."
+msgstr ""
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+
+msgid "Saved Scan type"
+msgstr "نوع المسح المحفوظ"
+
+msgid "Message Filtering"
+msgstr "تصفية رسالة"
+
+msgid "What to Scan:"
+msgstr "المطلوب مسحه:"
+
+msgid "All messages"
+msgstr "كافة الرسائل"
+
+msgid "Only unread messages"
+msgstr "رسائل غير المقروءة فقط "
+
+msgid "Save"
+msgstr "ساقلاش"
+
+msgid "Match:"
+msgstr "مطابقة:"
+
+msgid "Header"
+msgstr "رأس صفحة"
+
+msgid "Contains:"
+msgstr "يحتوي:"
+
+#, fuzzy, c-format
+msgid "If %s contains %s then move to %s"
+msgstr "إذا كان<b>%s</b>يحتوي على<b>%s</b>فقم بالانتقال إلى <b>%s</b>"
+
+msgid "Message Filters"
+msgstr "خەتلەرنى سۈزۈش"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"تمكن التصفية الرسائل ذات المعايير المختلفة من تصفيتها تلقائياًفى مجلدات "
+"مختلفة وذلك لسهولة التنظيم."
+
+msgid "SPAM Filters"
+msgstr "مصافي البريد غير المرغوب"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"تمكنك مصافي البريد غير المرغوب من الاختيار من القوائم السوداء القائمة "
+"علىDNS  مختلفوذلك لاكتشاف البريد غير الهام فى مجلد البريد الوارد INBOX ونقله "
+"إلى مجلد آخر (مثل المهملات Trash).  "
+
+#, fuzzy
+msgid "You must select a spam folder."
+msgstr "مۇندەرىجە تاللاش"
+
+msgid "You must select a scan type."
+msgstr ""
+
+msgid "Spam Filtering"
+msgstr "تصفية البريد غير المرغوب"
+
+#, fuzzy, c-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "تحذير! قم بإخبار المسؤول ليقوم بتعيين متغير SpamFilters_YourHop"
+
+msgid "Move spam to:"
+msgstr "نقل البريد غير المرغوب إلى:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"قد لا يكون نقل البريد غير المرغوب إلى المهملات Trash مستحباً فى البداية,فقد "
+"يتم التعليم دون قصد على الرسائل الواردة من أصدقائك ومن القوائم البريدية "
+"كبريد غير مرغوب.وأيا كان المجلد الذي تخصصه لذلك, فيجب التأكد بصفة دورية من "
+"تنظيفه,حتى لا تتضخم علبة البريد بدرجة زائدة عن الحد."
+
+#, fuzzy
+msgid "Unread messages only"
+msgstr "الرسائل الجديدة فقط"
+
+#, fuzzy
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"بقدر ما يكون عدد الرسائل التي تقوم بمسحها كبيراً بقدر ما يستغرق ذلك وقتاً,"
+"ولذلك أقترح أن تقوم بمسح الرسائل الجديدة فقط, أما عند عمل تغيير فى المصافي, "
+"فيمكن إعدادها لمسح كافة الرسائل ثم عرض البريد الوارد ثم العودة لإعدادها لمسح "
+"الرسائل الجديدة فقط.وبهذه الطريفة سوف يتم استخدام المصافي الجديدة للبريد غير "
+"المرغوب,وسوف تقوم بمسح حتى البريد غير المرغوب الذي تقرأه بهذه  المصافي "
+"الجديدة."
+
+#, fuzzy, c-format
+msgid "Spam is sent to %s."
+msgstr "تم إرسال البريد غير المرغوب إلى<b>%s</b>"
+
+#, fuzzy
+msgid "not set yet"
+msgstr "[<i> لم يتم تعيينه بعد</i>]"
+
+#, fuzzy, c-format
+msgid "Spam scan is limited to %s."
+msgstr "يقتصر مسح البريد غير المرغوب على <b>%s</b>"
+
+msgid "ON"
+msgstr "تشغيل"
+
+msgid "OFF"
+msgstr "إيقاف تشغيل"
+
+#, fuzzy, c-format
+msgid "%s is not found."
+msgstr "لم يتم العثور على أخطاء"
+
+msgid "Today's Fortune"
+msgstr ""
+
+#, fuzzy
+msgid "Fortunes:"
+msgstr "برتغالية"
+
+msgid "Show fortunes at top of mailbox"
+msgstr ""
+
+msgid "Plugin is disabled."
+msgstr ""
+
+#, fuzzy
+msgid "IMAP server information"
+msgstr "منفذ ملقم IMAP"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+
+msgid "Mailinglist"
+msgstr "قائمة بريدية"
+
+#, c-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"سيقوم ذلك بإرسال رسالة إلى %s  لطلب مساعدة لهذه القائمة.سوف تتلقى رداً "
+"بالبريد الإلكتروني على العنوان المبين أدناه."
+
+#, c-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"سيقوم ذلك بإرسال رسالة إلى %s  لطلب اشتراكك فى هذه القائمة.سوف يتم اشتراكك "
+"بالعنوان المبين أدناه."
+
+#, c-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"سيقوم ذلك بإرسال رسالة إلى %s  لطلب إلغاء اشتراكك فى هذه القائمة.سوف أحاول "
+"إلغاء اشتراك العنوان المبين أدناه."
+
+msgid "Send Mail"
+msgstr "إرسال بريد"
+
+msgid "Post to List"
+msgstr "توزيع  على قائمة"
+
+msgid "Reply to List"
+msgstr "إجابة على قائمة"
+
+msgid "List Archives"
+msgstr "سجلات قائمة"
+
+msgid "Contact Listowner"
+msgstr "اتصل بـ Listowner"
+
+#, fuzzy
+msgid "Mailing List"
+msgstr "قائمة بريدية:"
+
+msgid "POP3 connect:"
+msgstr "اتصالPOP3 :"
+
+msgid "No server specified"
+msgstr "لم يتم تحديد ملقم"
+
+msgid "Error "
+msgstr "خطأ"
+
+msgid "POP3 user:"
+msgstr "مستخدمPOP3 :"
+
+msgid "no login ID submitted"
+msgstr "لم يتم تسليم معرّف تسجيل دخول"
+
+msgid "connection not established"
+msgstr "لم يتم الاتصال"
+
+msgid "POP3 pass:"
+msgstr "تمريرPOP3 :"
+
+msgid "No password submitted"
+msgstr "لم يتم تسليم كلمة مرور"
+
+msgid "authentication failed "
+msgstr "فشل المصادقة "
+
+msgid "POP3 apop:"
+msgstr "POP3 apop:"
+
+msgid "No connection to server"
+msgstr "لا يوجد اتصال بملقم "
+
+msgid "No login ID submitted"
+msgstr "لم يتم تسليم معرّف تسجيل دخول"
+
+msgid "No server banner"
+msgstr "لا يوجد شعار للملقم "
+
+msgid "abort"
+msgstr "إحباط"
+
+msgid "apop authentication failed"
+msgstr "فشل المصادقة علىapop"
+
+msgid "POP3 login:"
+msgstr "تسجيل دخولPOP3 :"
+
+msgid "POP3 top:"
+msgstr "أعلىPOP3 :"
+
+msgid "POP3 pop_list:"
+msgstr "POP3 pop_list:"
+
+msgid "Premature end of list"
+msgstr "نهاية قبل الأوان للقائمة"
+
+msgid "POP3 get:"
+msgstr "كسبPOP3 :"
+
+msgid "POP3 last:"
+msgstr "آخرPOP3 :"
+
+msgid "POP3 reset:"
+msgstr "إعادة تعيين POP3:"
+
+msgid "POP3 send_cmd:"
+msgstr "POP3 send_cmd:"
+
+msgid "Empty command string"
+msgstr "سلسلة أوامر فارغة"
+
+msgid "POP3 quit:"
+msgstr "إنهاء POP3:"
+
+msgid "connection does not exist"
+msgstr "الاتصال غير موجود"
+
+msgid "POP3 uidl:"
+msgstr "POP3 uidl:"
+
+msgid "POP3 delete:"
+msgstr "حذفPOP3 :"
+
+msgid "No msg number submitted"
+msgstr "لم يتم تسليم رقم رسالة"
+
+msgid "Command failed "
+msgstr "فشل الأمر"
+
+msgid "Remote POP server Fetching Mail"
+msgstr "ملقم POP بعيد لجلب البريد"
+
+msgid "Select Server:"
+msgstr "تحديد ملقم:"
+
+msgid "Password for"
+msgstr "كلمة مرور من أجل"
+
+msgid "Fetch Mail"
+msgstr "جلب بريد"
+
+msgid "Fetching from "
+msgstr "جلب من"
+
+msgid "Oops, "
+msgstr "Oops,"
+
+msgid "Opening IMAP server"
+msgstr "فتح ملقمIMAP"
+
+msgid "Opening POP server"
+msgstr "فتح ملقمPOP"
+
+msgid "Login Failed:"
+msgstr "فشل تسجيل الدخول:"
+
+msgid "Login OK: No new messages"
+msgstr "تسجيل الدخول سليم: لا توجد رسائل جديدة"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "تسجيل الدخول سليم: علبة الوارد فارغة"
+
+#, fuzzy, c-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "تسجيل الدخول سليم: تحتوى علبة الوارد على  "
+
+msgid "Fetching UIDL..."
+msgstr "جلبUIDL ..."
+
+msgid "Server does not support UIDL."
+msgstr "الملقم لا يدعم  UIDL."
+
+#, fuzzy
+msgid "Leaving mail on server..."
+msgstr "ترك البريد على الملقم..."
+
+msgid "Deleting messages from server..."
+msgstr "حذف رسائل من الملقم..."
+
+msgid "Fetching message "
+msgstr "جلب رسالة"
+
+msgid "Server error. Disconnect"
+msgstr ""
+
+msgid "Reconnect from dead connection"
+msgstr ""
+
+msgid "Saving UIDL"
+msgstr "حفظ  UIDL"
+
+#, fuzzy
+msgid "Refetching message "
+msgstr "جلب رسالة"
+
+msgid "Error Appending Message!"
+msgstr "خطأ  إلحاق رسالة!"
+
+msgid "Closing POP"
+msgstr "غلق POP"
+
+msgid "Logging out from IMAP"
+msgstr "تسجيل الخروج من IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "رسالة ملحقة بعلبة بريد"
+
+#, fuzzy, c-format
+msgid "Message %d deleted from remote server!"
+msgstr "محذوف من ملقم بعيد! "
+
+msgid "Delete failed:"
+msgstr "فشل الحذف:"
+
+msgid "Remote POP server settings"
+msgstr "إعدادات ملقمPOP بعيد"
+
+#, fuzzy
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"يجب أن تكون مدركاً أن التشفير المستخدم فى تخزين كلمة المرور ليسآمنا من جميع "
+"الوجوه. ومع ذلك فلا يوجد أي تشفير عند استخدام ملقمPOP .وفضلاً عن ذلك فالتشفير "
+"الذي نقوم به لحفظه على الملقميمكن إلغاءه بواسطة أحد المتسللين الذين يقومون "
+"بقراءة مصدر هذا الملف. "
+
+#, fuzzy
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "إذا قمت بترك كلمة المرور فارغة, فسوف تطلب منك عند جلب البريد."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "تشفير كلمات المرور (للعلم فقط)"
+
+msgid "Add Server"
+msgstr "إضافة ملقم"
+
+msgid "Server:"
+msgstr "ملقم:"
+
+#, fuzzy
+msgid "Port:"
+msgstr "الأفضلية:"
+
+msgid "Alias:"
+msgstr "اسم مستعار:"
+
+msgid "Username:"
+msgstr "اسم مستخدم:"
+
+msgid "Store in Folder:"
+msgstr "تخزين في مجلد:"
+
+#, fuzzy
+msgid "Leave mail on server"
+msgstr "ترك البريد على الملقم"
+
+#, fuzzy
+msgid "Check mail at login"
+msgstr "فحص البريد خلال تسجيل الدخول"
+
+#, fuzzy
+msgid "Check mail at folder refresh"
+msgstr "فحص البريد خلال تحديث مجلد "
+
+msgid "Modify Server"
+msgstr "تعديل ملقم"
+
+msgid "Server Name:"
+msgstr "اسم الملقم:"
+
+msgid "Modify"
+msgstr "تعديل"
+
+#, fuzzy
+msgid "No servers known."
+msgstr "لا يوجد شعار للملقم "
+
+msgid "Fetching Servers"
+msgstr "ملقمات جلب "
+
+msgid "Confirm Deletion of a Server"
+msgstr "تأكيد حذف ملقم"
+
+msgid "Selected Server:"
+msgstr "الملقم المحدد:"
+
+msgid "Confirm delete of selected server?"
+msgstr "هل تؤكد على حذف الملقم المحدد؟"
+
+msgid "Confirm Delete"
+msgstr "تأكيد حذف"
+
+msgid "Leave Mail on Server"
+msgstr "ترك البريد على الملقم"
+
+msgid "Undefined Function"
+msgstr "وظيفة غير معرّفة "
+
+msgid "The function you requested is unknown."
+msgstr ""
+
+msgid "Fetch"
+msgstr "جلب"
+
+msgid "Warning, "
+msgstr "تحذير,"
+
+msgid "Mail Fetch Result:"
+msgstr "نتيجة جلب البريد:"
+
+#, fuzzy
+msgid "POP3 Fetch Mail"
+msgstr "جلب بريد POP3 بسيط"
+
+#, fuzzy
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"يقوم ذلك بتكوين إعدادات تحميل البريد الإلكتروني من علبة بريد  pop3 "
+"إلىاشتراكك على هذا الملقم."
+
+#, fuzzy
+msgid "Message Details"
+msgstr "قائمة رسائل "
+
+msgid "Bodystructure"
+msgstr ""
+
+msgid "Entity"
+msgstr ""
+
+msgid "Content-Type"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+#, fuzzy
+msgid "RFC822 Message body"
+msgstr "ئاستىدا "
+
+msgid "Close Window"
+msgstr "إغلاق الإطار"
+
+#, fuzzy
+msgid "Save Message"
+msgstr "رسالة"
+
+#, fuzzy
+msgid "View Message details"
+msgstr "عرض رسالة"
+
+msgid "New Mail Notification"
+msgstr "إعلام عن بريد جديد "
+
+#, fuzzy, c-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"<b>ليست خانات فحص الكل هي مجرد خيار لعلبة الوارد</b> يقوم بفحص جميع "
+"المجلداتللبحث عن بريد غير مرئي, وليس مجرد البحث فى علبة الوارد عن إعلام ."
+
+#, c-format
+msgid "Check all boxes, not just INBOX"
+msgstr "ليس فحص الكل هو مجرد فحص علبة الوارد"
+
+#, fuzzy, c-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"تحديد <b>خيار الإظهار المنبثق</b>يؤدى إلى إظهار إطار منبثقعند وجود بريد غير "
+"مرئي فى المجلدات (يتطلب JavaScript)."
+
+#, c-format
+msgid "Show popup window on new mail"
+msgstr "إظهار إطار منبثق على بريد جديد "
+
+#, fuzzy, c-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr "استخدم <b>فحص الحديث</b>للبحث عن الرسائل الحديثة فقط."
+
+#, c-format
+msgid "Count only messages that are RECENT"
+msgstr "قم باحتساب الرسائل الحديثة فقط "
+
+#, c-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript, and only works in IE but "
+"you won't see errors with other browsers). This will always tell you if you "
+"have new mail, even if you have %s enabled."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Change title on supported browsers"
+msgstr "تغيير العنوان الوظيفي على برامج التصفح المدعومة ."
+
+#, fuzzy, c-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"تحديد <b>تمكين قراءة الوسائط </b>لتشغيل قراءة ملف وسائط عند وجود بريد غير "
+"مرئي فى المجلدات. وعند تمكينه تستطيع تحديد ملف الوسائطوذلك لقراءته ة فى مربع "
+"الملف."
+
+#, c-format
+msgid "Enable Media Playing"
+msgstr "تمكين قراءة الوسائط"
+
+#, fuzzy, c-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+"تحديد <b>الوسائط المحلية </b>سيؤدى إلى قراءة الملف المحدد فى مربع <b>ملف "
+"الوسائط المحلية </b>وذلك للقراءة من الكمبيوتر المحلى.وعند عدم تحديد ملف "
+"فسيقوم النظام باستخدام الملف الافتراضي من الملقم."
+
+#, fuzzy, c-format
+msgid "Select server file"
+msgstr "تحديد ملف ملقم:"
+
+#, fuzzy
+msgid "(none)"
+msgstr "تم"
+
+msgid "requires JavaScript to work"
+msgstr "يتطلبJavaScript حتى يعمل"
+
+msgid "Try"
+msgstr "محاولة"
+
+msgid "Current File:"
+msgstr "الملف الحالي:"
+
+msgid "New Mail"
+msgstr "بريد جديد "
+
+#, fuzzy
+msgid "SquirrelMail Notice:"
+msgstr "إعلام biznas_mail:"
+
+#, fuzzy, c-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "رسالة جديدة %s"
+msgstr[1] "رسالة جديدة %s"
+
+#, fuzzy, c-format
+msgid "You have %s new messages"
+msgstr "رسائل جديدة %s"
+
+msgid "NewMail Options"
+msgstr "خيارات البريد الجديد"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"يقوم ذلك بتكوين إعدادات قراءة الأصوات و/أو إظهار الإطارات المنبثقة عند وصول "
+"بريد جديد."
+
+#, c-format
+msgid "%s New Messages"
+msgstr "رسائل جديدة %s"
+
+#, fuzzy, c-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "رسالة جديدة %s"
+msgstr[1] "رسالة جديدة %s"
+
+msgid "Test Sound"
+msgstr "اختبار الصوت"
+
+#, fuzzy
+msgid "No sound specified"
+msgstr "لم يتم تحديد ملقم"
+
+msgid "Loading the sound..."
+msgstr "تحميل الصوت..."
+
+msgid "Sent Subfolders Options"
+msgstr "خيارات مجلدات Sent الفرعية"
+
+msgid "Use Sent Subfolders"
+msgstr "استخدام مجلدات Sent الفرعية"
+
+msgid "Monthly"
+msgstr "شهرياً"
+
+msgid "Quarterly"
+msgstr "فصلياً"
+
+msgid "Yearly"
+msgstr "سنوياً"
+
+msgid "Base Sent Folder"
+msgstr "مجلد Base Sent"
+
+#, fuzzy
+msgid "Enabled"
+msgstr "ئىشلەيدۇ"
+
+#, fuzzy
+msgid "Disable it"
+msgstr "ئىشلىمەيدۇ"
+
+msgid "Enable it"
+msgstr ""
+
+#, fuzzy
+msgid "Spam reporting"
+msgstr "تصفية البريد غير المرغوب"
+
+msgid "SpamCop link is:"
+msgstr ""
+
+#, fuzzy
+msgid "Delete spam when reported:"
+msgstr "ئۆچۈرۈش"
+
+msgid "Only works with email-based reporting"
+msgstr ""
+
+msgid "Spam Reporting Method:"
+msgstr ""
+
+msgid "Quick email-based reporting"
+msgstr ""
+
+msgid "Thorough email-based reporting"
+msgstr ""
+
+msgid "Web-based form"
+msgstr ""
+
+#, fuzzy
+msgid "Save Method"
+msgstr "رسالة"
+
+msgid "Your SpamCop authorization code:"
+msgstr ""
+
+msgid "see below"
+msgstr ""
+
+#, fuzzy
+msgid "Save ID"
+msgstr "حفظ"
+
+msgid "About SpamCop"
+msgstr ""
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+
+#, c-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+
+msgid "Before you sign up, be warned"
+msgstr ""
+
+#, c-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+
+#, fuzzy
+msgid "Email-based reporting"
+msgstr "تصفية البريد غير المرغوب"
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+
+#, fuzzy
+msgid "Web-based reporting"
+msgstr "تصفية البريد غير المرغوب"
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+
+msgid "SpamCop service type"
+msgstr ""
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+
+#, fuzzy
+msgid "More information"
+msgstr "منفذ ملقم IMAP"
+
+#, c-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+
+msgid "Report as Spam"
+msgstr ""
+
+msgid "SpamCop - Spam Reporting"
+msgstr ""
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+
+msgid "Cancel / Done"
+msgstr ""
+
+msgid "Send Spam Report"
+msgstr ""
+
+msgid "SpellChecker Options"
+msgstr "خيارات المدقق الإملائي"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"يمكنك هنا إعداد كيفية تخزين القاموس الشخصي أو  تحريره أواختيار اللغة التي "
+"يجب أن تتوفر لديك عند التدقيق الإملائي."
+
+msgid "Check Spelling"
+msgstr "تدقيق إملائي"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr ""
+
+msgid "ATTENTION:"
+msgstr "تنبيه:"
+
+#, fuzzy
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"تعذر على المدقق الإملائي فك شفرة القاموس الشخصي.يرجع ذلك غالباً إلى قيامك "
+"بتغيير كلمة مرور علبة البريد.ويجب تقديم كلمة المرور القديمة حتى يستطيع "
+"المدقق الإملائيفك شفرة القاموس الشخصي. وسيتم بعد ذلك إعادة تشفيره بكلمة مرور "
+"جديدة<br> وإذا لم تقم بتشفير القاموس الشخصي  فسوف يتضرر ويصبح غير صالح, وسوف "
+"تضطر لحذفه والبدء من جديد.ويحدث نفس الشيء أيضاً إذا نسيت كلمة المرور القديمة,"
+"فبدونها لا يمكن الوصول للبيانات المشفرة."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "حذف القاموس وبدء قاموس جديد "
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "تشفير القاموس بكلمة المرور القديمة:"
+
+msgid "Proceed"
+msgstr "المتابعة"
+
+msgid "You must make a choice"
+msgstr "يجب أن تختار"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr "يمكنك إما حذف القاموس أو إدخال كلمة المرور القديمة, وليس الاثنين معاً."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "سيؤدى ذلك إلى حذف ملف القاموس الشخصي.هل تريد المتابعة؟"
+
+msgid "Error Decrypting Dictionary"
+msgstr "خطأ فى فك شفرة القاموس"
+
+msgid "Cute."
+msgstr "بارع."
+
+#, c-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr ""
+
+msgid "Error while writing to pipe."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Could not open temporary file '%s'."
+msgstr "كالىندار ھۆججىتىگە يازغىلى بولمىدى!"
+
+#, c-format
+msgid "Error while writing to temporary file '%s'."
+msgstr ""
+
+#, c-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "حاولت تنفيذ '%s'  لكنه أعطى:"
+
+#, fuzzy
+msgid "SquirrelSpell is misconfigured."
+msgstr "ئېلخەت سېستىمىسدا خاتالىق بار "
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "تم التدقيق الإملائي. هل يتم تنفيذ التغييرات؟"
+
+msgid "No changes were made."
+msgstr "لم يتم عمل أية تغييرات."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "يجرى الآن حفظ القاموس الشخصي ... يرجى الانتظار."
+
+#, fuzzy
+msgid "SquirrelSpell Results"
+msgstr "نتائج التدقيق الإملائي "
+
+#, c-format
+msgid "Found %s errors"
+msgstr "تم العثور على%s  أخطاء"
+
+msgid "Line with an error:"
+msgstr "خط مصحوب بخطأ:"
+
+msgid "Error:"
+msgstr "خطأ:"
+
+msgid "Suggestions:"
+msgstr "اقتراحات:"
+
+msgid "Suggestions"
+msgstr "اقتراحات"
+
+msgid "Change to:"
+msgstr "تغيير إلى:"
+
+msgid "Occurs times:"
+msgstr "مرات الحدوث:"
+
+msgid "Change this word"
+msgstr "تغيير هذه الكلمة"
+
+msgid "Change"
+msgstr "تغيير"
+
+msgid "Change ALL occurances of this word"
+msgstr "تغيير كافة حالات حدوث هذه الكلمة"
+
+msgid "Change All"
+msgstr "تغيير الكل"
+
+msgid "Ignore this word"
+msgstr "تجاهل هذه الكلمة"
+
+msgid "Ignore"
+msgstr "تجاهل"
+
+msgid "Ignore ALL occurances this word"
+msgstr "تجاهل كافة حالات حدوث هذه الكلمة"
+
+msgid "Ignore All"
+msgstr "تجاهل الكل"
+
+msgid "Add this word to your personal dictionary"
+msgstr "إضافة هذه الكلمة إلى القاموس الشخصي "
+
+msgid "Add to Dic"
+msgstr "إضافة إلى القاموس "
+
+msgid "Close and Commit"
+msgstr "إغلاق وتنفيذ"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr "لم يتم الانتهاء من التدقيق الإملائي. هل تريد الإغلاق والتنفيذ حقاً؟"
+
+msgid "Close and Cancel"
+msgstr "إغلاق و إلغاء الأمر"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr ""
+"لم يتم الانتهاء من التدقيق الإملائي. هل تريد الإغلاق وتجاهل التغييرات حقاً؟"
+
+msgid "No errors found"
+msgstr "لم يتم العثور على أخطاء"
+
+msgid "Your personal dictionary was erased."
+msgstr "تم مسح القاموس الشخصي "
+
+msgid "Dictionary Erased"
+msgstr "تم مسح القاموس"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"تم مسح القاموس الشخصي. يرجى إغلاق هذا الإطار والنقر/التدقيق الإملائي/ ضغط "
+"الزر مرة أخرى لتشغيل التدقيق الإملائي مرة أخرى. "
+
+msgid "Close this Window"
+msgstr "إغلاق هذا الإطار "
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+
+#, fuzzy
+msgid "Successful re-encryption"
+msgstr "إعادة تشفير ناجحة. "
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"تم إعادة تشفير القاموس الشخصي بنجاح. قم الآن بإغلاق هذا الإطار والنقر/"
+"التدقيق الإملائي/ضغط الزر مرة أخرى لتشغيل التدقيق الإملائي مرة أخرى."
+
+msgid "Dictionary re-encrypted"
+msgstr "تم إعادة تشفير القاموس "
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"تم إعادة تشفير <strong>القاموس الشخصي</strong>والآنتم تخزينه فى<strong>تنسيق "
+"مشفر</strong>."
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"تم فك شفرة <strong>القاموس الشخصي</strong>والآنتم تخزينه <strong>كنص واضح</"
+"strong>."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "إعدادات تشفير القاموس الشخصي"
+
+msgid "Personal Dictionary"
+msgstr "القاموس الشخصي"
+
+msgid "No words in your personal dictionary."
+msgstr "لا توجد كلمات فى القاموس الشخصي."
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "يرجى تدقيق الكلمات التي تريد حذفها من القاموس."
+
+#, c-format
+msgid "%s dictionary"
+msgstr "القاموس%s"
+
+msgid "Delete checked words"
+msgstr "حذف كلمات تم تدقيقها "
+
+msgid "Edit your Personal Dictionary"
+msgstr "تحرير القاموس الشخصي"
+
+msgid "Please make your selection first."
+msgstr "يرجى القيام بالتحديد أولاً."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+"سيؤدى ذلك إلى تشفير القاموس الشخصي وتخزينه بتنسيق مشفر.هل تريد المتابعة؟"
+
+#, fuzzy
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr ""
+"سيؤدى ذلك إلى فك شفرة القاموس الشخصي وتخزينه بتنسيق نص واضح.هل تريد المتابعة؟"
+
+#, fuzzy
+msgid "Your personal dictionary is currently encrypted."
+msgstr "تم مسح القاموس الشخصي "
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "يرجى فك شفرة القاموس الشخصي وتخزينه على هيئة تنسيق نص واضح."
+
+msgid "Change crypto settings"
+msgstr "تغيير إعدادات التشفير"
+
+#, fuzzy
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "تم مسح القاموس الشخصي "
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "يرجى تشفير القاموس الشخصي وتخزينه على هيئة تنسيق مشفر."
+
+#, fuzzy, c-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "حذف المدخلات التالية من <strong>%s</strong> القاموس:"
+
+msgid "All done!"
+msgstr "تم عمل الكل!"
+
+msgid "Personal Dictionary Updated"
+msgstr "تم تحديث القاموس الشخصي"
+
+msgid "No changes requested."
+msgstr "لا توجد أية تغييرات مطلوبة."
+
+msgid "Please wait, communicating with the server..."
+msgstr "يرجى الانتظار, جارى الاتصال بالملقم..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr ""
+"يرجى اختيار القاموس الذي تريد استخدامه فى التدقيق الإملائي لهذهالرسالة:"
+
+#, fuzzy
+msgid "SquirrelSpell Initiating"
+msgstr "تهيئة التدقيق الإملائي"
+
+#, fuzzy, c-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr ""
+"ضبط الإعدادات على:<strong>%s</strong>مع <strong>%s</strong>كقاموس افتراضي ."
+
+#, fuzzy, c-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr ""
+"استخدام <strong>%s</strong> القاموس (الافتراضي فى النظام) للتدقيق الإملائي. "
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "تم تحديث تفضيلات قواميس عالمية"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr ""
+"يرجى التأكد من وجود القواميس العالمية التي تريداستخدامها عند التدقيق "
+"الإملائي لـ: "
+
+msgid "Make this dictionary my default selection:"
+msgstr "جعل هذا القاموس هو التحديد الافتراضي:"
+
+msgid "Make these changes"
+msgstr "إجراء هذه التغييرات"
+
+msgid "Add International Dictionaries"
+msgstr "إضافة قواميس عالمية "
+
+msgid "Please choose which options you wish to set up:"
+msgstr "يرجى اختيار الخيارات التي تريد إعدادها:"
+
+msgid "Edit your personal dictionary"
+msgstr "تحرير القاموس الشخصي"
+
+msgid "Set up international dictionaries"
+msgstr "إعداد قواميس عالمية "
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "تشفير أو فك شفرة القاموس الشخصي"
+
+msgid "not available"
+msgstr "غير متوفر"
+
+#, fuzzy
+msgid "SquirrelSpell Options Menu"
+msgstr "قائمة خيارات التدقيق الإملائي "
+
+msgid "Translator"
+msgstr "مترجم"
+
+msgid "Saved Translation Options"
+msgstr "خيارات الترجمة المحفوظة"
+
+msgid "Your server options are as follows:"
+msgstr "تكون خيارات الملقم كما يلي: "
+
+#, fuzzy
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr ""
+"13 زوجاً من اللغات, ويتم ترجمة 1000 حرف كحد أقصى, ويتم التشغيل ببرنامج Systran"
+
+#, c-format
+msgid "Number of supported language pairs: %s"
+msgstr ""
+
+#, fuzzy
+msgid "No known limits, powered by Systran"
+msgstr ""
+"12 زوجاً من اللغات, وحدود الترجمة غير معروفة, ويتم التشغيل ببرنامج Systran"
+
+#, fuzzy
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+"767 زوجاً من اللغات, وحدود الترجمة غير معروفة, ويتم التشغيل ببرنامج "
+"Translation ExpertsInterTran"
+
+#, c-format
+msgid "Number of supported languages: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr ""
+"12 زوجاً من اللغات, وحدود الترجمة غير معروفة, ويتم التشغيل ببرنامج Systran"
+
+#, fuzzy
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr ""
+"13 زوجاً من اللغات, ويتم ترجمة 1000 حرف كحد أقصى, ويتم التشغيل ببرنامج Systran"
+
+#, fuzzy
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr "كما تقرر أيضاً إذا ما كنت ترغب فى عرض مربع الترجمة,ومكان وجوده."
+
+msgid "Select your translator:"
+msgstr "تحديد المترجم:"
+
+msgid "When reading:"
+msgstr "عند قراءة:"
+
+msgid "Show translation box"
+msgstr "إظهار مربع الترجمة"
+
+msgid "to the left"
+msgstr "على الجانب الأيسر"
+
+msgid "in the center"
+msgstr "فى المنتصف"
+
+msgid "to the right"
+msgstr "على الجانب الأيمن"
+
+#, fuzzy
+msgid "Translate inside the SquirrelMail frames"
+msgstr "ترجمة داخل إطاراتbiznas_mail"
+
+msgid "Translation Options"
+msgstr "خيارات الترجمة"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "ما هو المترجم الواجب استخدامه عند تلقى رسائل مختلفة فىاللغة؟"
+
+#, c-format
+msgid "%s to %s"
+msgstr "%s  إلى %s"
+
+#, c-format
+msgid "Chinese, Simplified"
+msgstr ""
+
+#, c-format
+msgid "English"
+msgstr "إنجليزية"
+
+#, c-format
+msgid "Chinese, Traditional"
+msgstr ""
+
+#, c-format
+msgid "Dutch"
+msgstr "هولندية"
+
+#, c-format
+msgid "French"
+msgstr "فرنسية"
+
+#, c-format
+msgid "German"
+msgstr "ألمانية"
+
+#, c-format
+msgid "Greek"
+msgstr "يونانية"
+
+#, c-format
+msgid "Italian"
+msgstr "إيطالية"
+
+#, c-format
+msgid "Japanese"
+msgstr "يابانية"
+
+#, fuzzy, c-format
+msgid "Korean"
+msgstr "نرويجية"
+
+#, c-format
+msgid "Portuguese"
+msgstr "برتغالية"
+
+#, c-format
+msgid "Russian"
+msgstr "روسية"
+
+#, c-format
+msgid "Spanish"
+msgstr "إسبانية"
+
+msgid "Translate"
+msgstr "ترجمة"
+
+msgid "Brazilian Portuguese"
+msgstr "برتغالية برازيلية"
+
+msgid "Bulgarian"
+msgstr "بلغارية"
+
+msgid "Croatian"
+msgstr "كرواتية"
+
+msgid "Czech"
+msgstr "تشيكية"
+
+msgid "Danish"
+msgstr "دانمركية"
+
+msgid "Filipino (Tagalog)"
+msgstr ""
+
+msgid "Finnish"
+msgstr "فنلندية"
+
+msgid "Hungarian"
+msgstr "هنغارية"
+
+msgid "Icelandic"
+msgstr "إيسلندية"
+
+msgid "Latin"
+msgstr "لاتينية"
+
+msgid "Latin American Spanish"
+msgstr "أسبانية أمريكية لاتينية"
+
+msgid "Norwegian"
+msgstr "نرويجية"
+
+msgid "Polish"
+msgstr "بولندية"
+
+msgid "Romanian"
+msgstr "رومانية"
+
+msgid "Serbian"
+msgstr "صربية"
+
+msgid "Slovenian"
+msgstr "صربية"
+
+msgid "Swedish"
+msgstr "سلوفينية"
+
+msgid "Turkish"
+msgstr ""
+
+msgid "Welsh"
+msgstr "سويدية"
+
+msgid "Indonesian"
+msgstr "ويلزيّة"
+
+#, fuzzy
+msgid "to English"
+msgstr "إنجليزية"
+
+#, fuzzy
+msgid "from English"
+msgstr "إنجليزية"
+
+#, fuzzy
+msgid "Interface language"
+msgstr "اللغة الافتراضية "
+
+#, fuzzy
+msgid "Translation direction"
+msgstr "خيارات الترجمة"
+
+#, fuzzy, c-format
+msgid "About SquirrelMail %s"
+msgstr "نىڭ نەشىرى Tarim webmail"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, c-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, c-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, c-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, c-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+#, fuzzy
+msgid "System information"
+msgstr "منفذ ملقم IMAP"
+
+#, fuzzy, c-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "نۇسخىسى Tarim Webmail %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr ""
+
+msgid "none installed"
+msgstr ""
+
+msgid "sort by nickname"
+msgstr ""
+
+#, fuzzy
+msgid "sort by name"
+msgstr "فامىلە "
+
+msgid "sort by email"
+msgstr ""
+
+msgid "sort by info"
+msgstr ""
+
+#, fuzzy
+msgid "Add to address book"
+msgstr "ئادرىس دەپتىرىگە قىتىش"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "يوشۇردىغان مۇندەرىجە يوق"
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "كۆرستىدىغان مۇندەرىجە يوق"
+
+#, fuzzy
+msgid "SquirrelMail Webmail Application"
+msgstr "نىڭ نەشىرى Tarim webmail"
+
+#, fuzzy
+msgid "Received"
+msgstr "ئىنكاس"
+
+#, fuzzy
+msgid "Compose Preferences"
+msgstr "مۇندەرىجەخاسلىقلىرى"
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+#, fuzzy
+msgid "As Attachment"
+msgstr "قوشۇمچە ﻫۆججەت"
+
+msgid "Bypass Trash"
+msgstr ""
+
+msgid "Please enter something to search for"
+msgstr ""
+
+msgid "There must be at least one criteria to search for"
+msgstr ""
+
+msgid "Error in criteria argument"
+msgstr ""
+
+msgid "(Illegal date)"
+msgstr ""
+
+msgid "(Wrong date)"
+msgstr ""
+
+#, fuzzy
+msgid "In"
+msgstr "ئۇچۇر "
+
+msgid "(Missing argument)"
+msgstr ""
+
+msgid "(Spurious argument)"
+msgstr ""
+
+#, fuzzy
+msgid "Fold"
+msgstr "مۇندەرىجىلەر"
+
+msgid "Unfold"
+msgstr ""
+
+#, fuzzy
+msgid "Saved Searches"
+msgstr "يېقىنقى ئىزدەش"
+
+msgid "Missing"
+msgstr ""
+
+msgid "and&nbsp;subfolders:"
+msgstr ""
+
+msgid "Exclude Criteria:"
+msgstr ""
+
+#, fuzzy
+msgid "Search Criteria"
+msgstr "ئىزدەش "
+
+#, fuzzy
+msgid "Add New Criteria"
+msgstr "إضافة ملقم"
+
+msgid "Remove Excluded Criteria"
+msgstr ""
+
+msgid "Remove All Criteria"
+msgstr ""
+
+#, fuzzy
+msgid "Not"
+msgstr "خاتىرە"
+
+msgid "Answered"
+msgstr ""
+
+#, fuzzy
+msgid "Before"
+msgstr "ئۇنتۇش"
+
+#, fuzzy
+msgid "Message Body"
+msgstr "رسالة"
+
+#, fuzzy
+msgid "Deleted"
+msgstr "ئۆچۈرۈش"
+
+#, fuzzy
+msgid "Draft"
+msgstr "چىسلا"
+
+#, fuzzy
+msgid "Flagged"
+msgstr "بەلگە"
+
+#, fuzzy
+msgid "Sent By"
+msgstr "ئەۋەتىلگەن:"
+
+#, fuzzy
+msgid "Header Field"
+msgstr "رأس صفحة"
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Larger Than"
+msgstr ""
+
+msgid "Old"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+#, fuzzy
+msgid "Recent"
+msgstr "ئىنكاس"
+
+#, fuzzy
+msgid "Seen"
+msgstr "ئەۋەرتىش"
+
+#, fuzzy
+msgid "Sent Before"
+msgstr "ئەۋەتىلگەنt"
+
+#, fuzzy
+msgid "Sent On"
+msgstr "ئەۋەتىلگەن:"
+
+msgid "Sent Since"
+msgstr ""
+
+#, fuzzy
+msgid "Since"
+msgstr "چوڭلىغى"
+
+msgid "Smaller Than"
+msgstr ""
+
+#, fuzzy
+msgid "Subject Contains"
+msgstr "يحتوي:"
+
+msgid "Header and Body"
+msgstr ""
+
+#, fuzzy
+msgid "Sent To"
+msgstr "ئەۋەتىلگەن:"
+
+msgid "And In"
+msgstr ""
+
+msgid "Or In"
+msgstr ""
+
+#, fuzzy
+msgid "And"
+msgstr "قىتىش"
+
+msgid "Or"
+msgstr ""
+
+msgid "Standard search"
+msgstr ""
+
+msgid "Advanced search"
+msgstr ""
+
+#, fuzzy
+msgid "Folder List"
+msgstr "مۇندەرىجىلەر"
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Click here to change the sorting of the address list"
+msgstr ""
+
+msgid "Illegal folder name."
+msgstr ""
+
+#, c-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Please select a different name."
+msgstr "مۇندەرىجە نامى قانۇنسىز,باشقا ئىسىمنى تاللاڭ."
+
+#, fuzzy
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "ئىسمىنى ئۆزگەرتىدىغان مۇندەرىجىنى تاللاڭ."
+
+#, fuzzy
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "ئىسمىنى ئۆزگەرتىدىغان مۇندەرىجىنى تاللاڭ."
+
+msgid "Possible reason:"
+msgstr ""
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+#, fuzzy
+msgid "Reason:"
+msgstr "ئىنكاس:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown recipient"
+msgstr "ئۇچۇر نامەلۇم"
+
+msgid "Unflag"
+msgstr ""
+
+#, fuzzy
+msgid "Flag"
+msgstr "بەلگە"
+
+#, fuzzy
+msgid "Undelete"
+msgstr "ئۆچۈرۈش"
+
+msgid "Viewing HTML formatted email"
+msgstr ""
+
+#, fuzzy
+msgid "General Message Composition"
+msgstr "خەت يېىزش ۋە خەت ئوقۇش "
+
+#, fuzzy
+msgid "Replying and Forwarding Messages"
+msgstr "تاپشۇرۋالغان خەتنى باشقىلارغا ئەۋەتكەندە CCنى قىستۇرۇشل"
+
+#, fuzzy
+msgid "Strip signature when replying"
+msgstr "جاۋاپ يازغاندا نۈر بەلگىسىنىڭ ئورنى"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Message Flags Icon Theme"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+#, fuzzy
+msgid "Use Compact Page Selector"
+msgstr "كۆزنەك تاللىغۇچنى كۆرسىتىش "
+
+msgid "Length of From/To Field (0 for full)"
+msgstr ""
+
+msgid "Length of Subject Field (0 for full)"
+msgstr ""
+
+#, fuzzy
+msgid "Message Display Options"
+msgstr "دائىملىق كۆرۈنۈش "
+
+msgid "Height of inline frame"
+msgstr ""
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr ""
+
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "ئەسلى مەزمۇن"
+
+#, fuzzy, c-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "مىنۇت"
+msgstr[1] "مىنۇت"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr ""
+
+msgid "Header Encryption Key"
+msgstr ""
+
+msgid "Remove username from headers"
+msgstr ""
+
+msgid "Used only when identities can't be modified"
+msgstr ""
+
+#, fuzzy
+msgid "Search functions"
+msgstr "ئىزدەش "
+
+msgid "Only basic search"
+msgstr ""
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+#, fuzzy
+msgid "Enable aggressive decoding"
+msgstr "كۆزنەك تاللىغۇچنى كۆرسىتىش "
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use advanced tree folder listing"
+msgstr ""
+
+#, fuzzy
+msgid "Use icons"
+msgstr "سىكونت"
+
+msgid "Use inline frames with html mails"
+msgstr ""
+
+msgid "Use PHP recode functions"
+msgstr ""
+
+msgid "Use PHP iconv functions"
+msgstr ""
+
+msgid "Allow remote configuration test"
+msgstr ""
+
+msgid "Show System Specifications"
+msgstr ""
+
+#, fuzzy
+msgid "Search Mailing List Archives"
+msgstr "سجلات قائمة"
+
+msgid "Search SourceForge Bugtracker"
+msgstr ""
+
+#, fuzzy
+msgid "Search for words:"
+msgstr "ئىزدەش "
+
+msgid "Written by:"
+msgstr ""
+
+#, fuzzy
+msgid "Email addresses only"
+msgstr "E-mail"
+
+#, fuzzy
+msgid "Mailing list:"
+msgstr "قائمة بريدية"
+
+#, fuzzy
+msgid "SquirrelMail users list"
+msgstr "نىڭ نەشىرى Tarim webmail"
+
+#, fuzzy
+msgid "SquirrelMail plugins list"
+msgstr "نۇسخىسى Tarim Webmail %s"
+
+#, fuzzy
+msgid "SquirrelMail developers list"
+msgstr "نۇسخىسى Tarim Webmail %s"
+
+#, fuzzy
+msgid "SquirrelMail internationalization list"
+msgstr "نۇسخىسى Tarim Webmail %s"
+
+#, fuzzy
+msgid "Sort by:"
+msgstr "الأفضلية:"
+
+msgid "Relevance"
+msgstr ""
+
+#, fuzzy
+msgid "Search Archives"
+msgstr "ئىزدەش نەتىجىسى"
+
+#, fuzzy
+msgid "Reset Form"
+msgstr "مۇندەرىجىنى ئۆچۈرۈش"
+
+msgid "Summary keyword:"
+msgstr ""
+
+#, fuzzy
+msgid "Sort By:"
+msgstr "الأفضلية:"
+
+msgid "ID"
+msgstr ""
+
+#, fuzzy
+msgid "Summary"
+msgstr "يەكشەنبە"
+
+#, fuzzy
+msgid "Open Date"
+msgstr "ئېچىلمىدى"
+
+#, fuzzy
+msgid "Close Date"
+msgstr "ئىتىش"
+
+#, fuzzy
+msgid "Submitter"
+msgstr "يوللاش"
+
+msgid "Assignee"
+msgstr ""
+
+#, fuzzy
+msgid "Order:"
+msgstr "باشقا:"
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Search Bugtracker"
+msgstr ""
+
+msgid "You must type in a new password."
+msgstr ""
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+
+msgid "Your new password does not match the verify password."
+msgstr ""
+
+msgid "You must type in your current password."
+msgstr ""
+
+#, fuzzy
+msgid "Your current password is not correct."
+msgstr "بۇ ئىسىم تىزىملىتىلمىغان ياكى شىفىر خاتا."
+
+#, c-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+#, fuzzy
+msgid "Your new password contains invalid characters."
+msgstr "لەقەمنىڭ ئىچىدە قانۇنسىز ﻫەرىپلەر بار"
+
+#, fuzzy
+msgid "Change Password"
+msgstr "تغيير هذه الكلمة"
+
+#, fuzzy
+msgid "Current Password:"
+msgstr "شىفىر:"
+
+#, fuzzy
+msgid "New Password:"
+msgstr "شىفىر:"
+
+#, fuzzy
+msgid "Verify New Password:"
+msgstr "شىفىر:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+#, fuzzy
+msgid "User's Password"
+msgstr "شىفىر:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, c-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, c-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to use TLS."
+msgstr "يېڭىلىغىلى بولمايدۇ"
+
+#, fuzzy, c-format
+msgid "Error: %s"
+msgstr "خطأ"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Server replied: %s"
+msgstr "مۇلازىمىتىردىن جاۋاپ:"
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to connect to LDAP server."
+msgstr "لا يوجد اتصال بملقم "
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+#, fuzzy
+msgid "Search error."
+msgstr "ئىزدەشتىن خاتالىق كۆرۈلدى "
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, c-format
+msgid "Unsupported crypto: %s"
+msgstr ""
+
+msgid "PHP mhash extension is missing or does not support selected crypto."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "unknown"
+msgstr "ۋاقىت نامەلۇم"
+
+msgid "Unable to validate user's password."
+msgstr ""
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+#, fuzzy
+msgid "Cannot change password!"
+msgstr "شىفىرنى ئۆزگەرتىكىلى بولمىدى"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr ""
+
+msgid "SQL call failed, try again later."
+msgstr ""
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr ""
+
+msgid ""
+"Plugin is unable to use PHP Pear DB libraries. PHP Pear includes must be "
+"available in your PHP include_path setting."
+msgstr ""
+
+msgid "Required change password backend configuration options are missing."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Connection error: %s"
+msgstr "نامەلۇم خاتالىق: %s"
+
+#, c-format
+msgid "Invalid table name: %s"
+msgstr ""
+
+msgid "User table is empty."
+msgstr ""
+
+#, fuzzy
+msgid "Invalid uid field."
+msgstr "كىرگۈزگەن ئۇچۇرلار قانۇنسىز"
+
+#, fuzzy
+msgid "Invalid password field"
+msgstr "كىرگۈزگەن ئۇچۇرلار قانۇنسىز"
+
+#, fuzzy
+msgid "Invalid domain field"
+msgstr "كىرگۈزگەن ئۇچۇرلار قانۇنسىز"
+
+#, c-format
+msgid "Query failed: %s"
+msgstr ""
+
+msgid "Unable to find user in user table."
+msgstr "ئىشلەتكۈچى تېپىلمىدى"
+
+msgid "Too many matches found in user table."
+msgstr ""
+
+msgid "Unable to detect password crypto algorithm."
+msgstr ""
+
+msgid "Unable to encrypt new password."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Unable to set new password: %s"
+msgstr "دىن ئادرىسنى كۆرسىتەلمىدۇق %s"
+
+msgid "Unable to use digest-md5 crypto."
+msgstr ""
+
+msgid "Closing Connection"
+msgstr ""
+
+#, fuzzy
+msgid "Connecting to Password Server"
+msgstr "لا يوجد اتصال بملقم "
+
+msgid "No valid backend defined."
+msgstr ""
+
+msgid "Incorrent path to vmail.inc file."
+msgstr ""
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr ""
+
+msgid "Invalid user."
+msgstr ""
+
+#, fuzzy
+msgid "Empty domain"
+msgstr "سلسلة أوامر فارغة"
+
+#, fuzzy
+msgid "Empty domain password"
+msgstr "سلسلة أوامر فارغة"
+
+#, fuzzy
+msgid "Empty username"
+msgstr "اسم مستخدم:"
+
+msgid "Empty new password"
+msgstr ""
+
+#, fuzzy
+msgid "Server Capability response:"
+msgstr "مۇلازىمىتىردىن ئىنكاس:"
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+#, fuzzy
+msgid "Select"
+msgstr "ﻫەممىنى تاللاش"
+
+#, fuzzy
+msgid "Test Name"
+msgstr "نۇسخا ئىسمى"
+
+#, fuzzy
+msgid "IMAP command string"
+msgstr "سلسلة أوامر فارغة"
+
+#, fuzzy
+msgid "Request:"
+msgstr "تەلەپ قىلىنغان"
+
+msgid "No POP3 servers configured yet."
+msgstr ""
+
+#, fuzzy
+msgid "Click here to go to the options page."
+msgstr "بۇ يەرنى بىسىپ قايتىدىن كىرىڭ"
+
+#, fuzzy, c-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "مۇۋەپپەقىيەتلىك كىردىڭىز  "
+msgstr[1] "تسجيل الدخول سليم: تحتوى علبة الوارد على  "
+
+#, fuzzy
+msgid "Width of popup window:"
+msgstr "خەت يېزىش ئېكرانىنىڭ كەڭلىگى"
+
+msgid "If set to 0, reverts to default value"
+msgstr ""
+
+#, fuzzy
+msgid "Height of popup window:"
+msgstr "خەت يېزىش ئېكرانىنىڭ ئىگىزلىكى"
+
+msgid "uploaded media file"
+msgstr ""
+
+#, fuzzy
+msgid "none"
+msgstr "يوق"
+
+msgid "Upload Media File:"
+msgstr ""
+
+msgid "Uploaded Media File:"
+msgstr ""
+
+#, fuzzy
+msgid "unavailable"
+msgstr "تەييار ئەمەس"
+
+#, c-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr ""
+
+#, fuzzy
+msgid "Spam Service Type:"
+msgstr "IMAPمۇلازىمىتىنىڭ خىلى"
+
+#, fuzzy
+msgid "Free reporting"
+msgstr "تصفية البريد غير المرغوب"
+
+msgid "Member services"
+msgstr ""
+
+#, fuzzy
+msgid "Save Service Type"
+msgstr "نوع المسح المحفوظ"
+
+#, fuzzy
+msgid "SpamCop reporting"
+msgstr "تصفية البريد غير المرغوب"
+
+#, c-format
+msgid ""
+"Your %s dictionary is encrypted with password that differs from your current "
+"password."
+msgstr ""
+
+#, fuzzy
+msgid "Invalid SquirrelSpell module."
+msgstr "نتائج التدقيق الإملائي "
+
+#, fuzzy, c-format
+msgid "Found %d error"
+msgstr "تم العثور على%s  أخطاء"
+
+#, fuzzy, c-format
+msgid "Found %d errors"
+msgstr "تم العثور على%s  أخطاء"
+
+#, fuzzy
+msgid "No action requested."
+msgstr "لا توجد أية تغييرات مطلوبة."
+
+#, fuzzy, c-format
+msgid "Using %s dictionary for spellcheck."
+msgstr ""
+"استخدام <strong>%s</strong> القاموس (الافتراضي فى النظام) للتدقيق الإملائي. "
+
+#, fuzzy
+msgid "Personal dictionary encryption options are not available"
+msgstr "إعدادات تشفير القاموس الشخصي"
+
+#, fuzzy
+msgid "Translation Theme:"
+msgstr "سالاﻫىيەت تەكشۈرۈش مەغلۇپ بولدى "
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+
+#, fuzzy
+msgid "Translation Preferences"
+msgstr "شىركەت/ ئورۇن خاسلىغى"
+
+#, fuzzy
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr ""
+"13 زوجاً من اللغات, ويتم ترجمة 1000 حرف كحد أقصى, ويتم التشغيل ببرنامج Systran"
+
+#, fuzzy
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr ""
+"8 أزواج من اللغات, وحدود الترجمة غير معروفة, ويتم التشغيل  ببرنامج GPLTrans "
+"(وهو مجاني وذو مصدر مفتوح)"
+
+msgid "Transliterate unknown words:"
+msgstr ""
+
+msgid "When composing:"
+msgstr "عند إنشاء:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "لا تعمل بعد, ولا تقم حالياً بفعل أي شيء"
+
+msgid "D"
+msgstr ""
+
+msgid "F"
+msgstr ""
+
+#, fuzzy
+msgid "Message Flags"
+msgstr "خەتلەرنى سۈزۈش"
+
+#, fuzzy
+msgid "Attachment"
+msgstr "قوشۇمچە ﻫۆججەت"
+
+msgid "Click here to change the sorting of the message list"
+msgstr ""
+
+msgid "Delivery error report"
+msgstr "تقرير عن خطأ فى التسليم "
+
+msgid "Undelivered Message Headers"
+msgstr "رؤوس رسائل لم يتم تسليمها"
+
+msgid "This image has been removed for security reasons"
+msgstr ""
+
+#~ msgid "Unknown error"
+#~ msgstr "ئېنىقسىز خاتالىق"
+
+#~ msgid "said"
+#~ msgstr "دىيىلدى"
+
+#~ msgid "No-one server in use. Try to add."
+#~ msgstr "لا يوجد أي ملقم تحت الاستخدام. حاول الإضافة."
+
+#~ msgid "Hey! Wath do You are looking for?"
+#~ msgstr "فيما تنظر؟"
+
+#~ msgid "To:"
+#~ msgstr "گە:"
+
+#~ msgid "CC:"
+#~ msgstr "CC"
+
+#~ msgid "BCC:"
+#~ msgstr "BCC:"
+
+#~ msgid "Subject:"
+#~ msgstr "تىما:"
+
+#~ msgid "CC"
+#~ msgstr "CC"
+
+#~ msgid "Business Card"
+#~ msgstr "ئىسم كارتۇچكىسى"
+
+#~ msgid "Click here to try again"
+#~ msgstr "بۇ يەرنى چىكىپ قايتا سىناپ بېقىڭ"
+
+#, fuzzy
+#~ msgid "You are currently using version %s."
+#~ msgstr "سىز تۇرغان ۋاقىت رايۇنى"
+
+#~ msgid "All Messages"
+#~ msgstr "كافة الرسائل"
+
+#~ msgid "POP3 noop:"
+#~ msgstr "POP3 noop:"
+
+#~ msgid "] messages"
+#~ msgstr "[ رسائل]"
+
+#, fuzzy
+#~ msgid "You have"
+#~ msgstr "لديك بريد جديد! "
+
+#~ msgid "New Mail Notification options saved"
+#~ msgstr "تم حفظ خيارات الإعلام عن بريد جديد"
+
+#, fuzzy
+#~ msgid ""
+#~ "<p>Your personal dictionary is <strong>currently encrypted</strong>. This "
+#~ "helps protect your privacy in case the web-mail system gets compromized "
+#~ "and your personal dictionary ends up stolen. It is currently encrypted "
+#~ "with the password you use to access your mailbox, making it hard for "
+#~ "anyone to see what is stored in your personal dictionary.</p> "
+#~ "<p><strong>ATTENTION:</strong> If you forget your password, your personal "
+#~ "dictionary will become unaccessible, since it can no longer be decrypted. "
+#~ "If you change your mailbox password, SquirrelSpell will recognize it and "
+#~ "prompt you for your old password in order to re-encrypt the dictionary "
+#~ "with a new key.</p>"
+#~ msgstr ""
+#~ "<p>يتم حالياً تشفير<strong>القاموس الشخصي. </strong> يساعد ذلك على حماية "
+#~ "خصوصيتك عند تعرض نظام بريد الويب للتهديد, وعند سرقة القاموس الشخصي. ويتم "
+#~ "حالياً تشفيره بكلمة المرور التي تستخدمها فى الوصول إلى علبة البريد, مما "
+#~ "يجعل من العسير على أي شخص أن يرى ما تم تخزينه فى القاموس الشخصي.</p> "
+#~ "<p><strong>تنبيه:</strong>لا يمكن الوصول للقاموس الشخصي عند نسيان كلمة "
+#~ "المرور,حيث يصبح من غير الممكن فك شفرته. وإذا قمت بتغيير كلمة مرور علبة "
+#~ "البريد فسوف يتعرف التدقيق الإملائي عليها ويطلب منك  كلمة المرور القديمة "
+#~ "حتى يتم إعادة تشفير القاموس بمفتاح جديد. </p>"
+
+#, fuzzy
+#~ msgid "Chinese"
+#~ msgstr "خەنزۇچە"
+
+#~ msgid "European Spanish"
+#~ msgstr "ياۋروپاچە ئىسپان تىلى"

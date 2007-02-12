@@ -1,0 +1,1923 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR: Mij <Mij@bitchx.it> , 2003.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GPG Plugin v 2.0rc1\n"
+"POT-Creation-Date: 2003-11-22 10:26-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Mij <mij@bitchx.it>\n"
+"Language-Team: ITALIAN < - >\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: modules/cachepass.mod:38
+msgid " Please try again."
+msgstr " Riprova."
+
+#: modules/genkey.php:217
+msgid " selected"
+msgstr " selezionato"
+
+#: modules/general.mod:196
+msgid "'On Send' Defaults"
+msgstr "Default 'all'invio'"
+
+#: modules/genkey.php:254
+msgid "1 Year"
+msgstr "1 anno"
+
+#: help/what_keystrength.php:13
+msgid ""
+"A 1024 bit key is often acceptable, 2048 is generally seen as a good "
+"compromise between security and usability, and 4096 is very strong and can "
+"be noticeably slower."
+msgstr "Una chiave di 1024 bit &egrave; spesso accettabile, 2048 pu&ograve;"
+"essere un buon compromesso tra sicurezza e usabilit&agrave;; 4096"
+"&egrave; molto potente ma sensibilmente pi&ugrave; lento."
+
+
+#: modules/genkey.php:83
+msgid ""
+"A Keypair consists of a <b>public key</b>, which people will use to send "
+"encrypted messages to you and verify your signature, and a <b>secret key</"
+"b>, which will never be shared with others."
+msgstr "Un <b>keypair</b> consiste di una <b>chiave pubblica</b>, che gli altri"
+"usano per spedirti messaggi crittati e verificare le tue signature, e una"
+"</b>chiave privata</b>, segreta, che non deve MAI essere presentata a altri."
+
+#: help/disc_keystore.php:15
+msgid ""
+"A new Keypair can be generated for this account on the webserver for use "
+"here."
+msgstr "Un nuovo keypair per questo account pu&ograve; essere generato "
+"da questo webserver."
+
+#: modules/genkey_keygen.php:250
+msgid "A new personal Keypair has been generated."
+msgstr "Il nuovo keypair personale &egrave; stato generato."
+
+#: modules/import_key_file.php:74 modules/import_key_text.php:86
+msgid "Add Keys"
+msgstr "Aggiungi chiavi"
+
+#: modules/keyview.php:66
+msgid "Algorithm"
+msgstr "Algoritmo"
+
+#: modules/getstart.php:100 help/what_trusted.php:21
+msgid ""
+"Any key signed with your trusted key ID will be allowed for encryption "
+"without generating errors."
+msgstr "Ogni chiave firmata con il tuo key ID fidato pu&ograve; crittare "
+"senza generare errori."
+
+#: modules/gpgdecrypt.mod:636
+msgid "Attachments"
+msgstr "Allegati"
+
+#: modules/gpg_module_footer.php:25
+msgid "Back to GPG Plugin Options"
+msgstr "Indietro alle opzioni del plugin GPG"
+
+#: modules/genkey_keygen.php:271
+msgid "Back to Keyring Management"
+msgstr "Indietro alla gestione del portachiavi"
+
+#: modules/gpg_module_footer.php:29
+msgid "Back to Keyring Management Options"
+msgstr "Indietro alle opzioni di gestione del portachiavi"
+
+#: modules/gpg_module_footer.php:21
+msgid "Back to Main Squirrelmail Options"
+msgstr "Indietro alle opzioni di Squirrelmail"
+
+#: modules/cachepass.mod:38 modules/keyring_main.php:132
+#: modules/keyring_main.php:159
+msgid "Bad Passphrase."
+msgstr "Passphrase non valida."
+
+#: gpg_hook_functions.php:164
+msgid "Bad Signature"
+msgstr "Signature non valida"
+
+#: modules/gpgdecrypt.mod:580
+msgid "Bcc"
+msgstr "Bcc"
+
+#: modules/general.mod:206
+msgid ""
+"Be aware that using this option in combination with the partial recipients "
+"option, above, may result in unintended consequences."
+msgstr ""
+"Tieni presente che usare questa opzione con quella dei destinatari "
+"parziali potrebbe produrre conseguenze indesiderate."
+
+#: help/what_trusted.php:14
+msgid ""
+"Because of this risk of compromise and lack of security, you may not want to "
+"store your private key on the web server."
+msgstr ""
+"A causa del rischio di comprometterne la sicurezza, &egrave; opportuno non "
+"salvare le chiavi private sul webserver."
+
+#: modules/general.mod:306
+msgid ""
+"Caching the passphrase can be very convenient, but many security experts "
+"recommend against storing the passphrase on the server because it may be "
+"more susceptible to an attack."
+msgstr ""
+"Il caching della passphrase pu&ograve; essere molto conveniente, ma diversi "
+"esperti di sicurezza raccomandano di non salvarla sul server poich&eacute; "
+"sarebbe cos&igrave; potenzialmente soggetta ad attacchi."
+
+#: modules/general.mod:334 modules/changepass.php:101 modules/genkey.php:284
+#: modules/import_key_file.php:78 modules/import_key_text.php:90
+#: modules/keyview.php:161
+msgid "Cancel"
+msgstr "Annulla"
+
+#: modules/keyring_main.php:102
+msgid "Cannot change passphrase on key: "
+msgstr "Impossibile modificare la passphrase per la chiave: "
+
+#: modules/gpgdecrypt.mod:579
+msgid "Cc"
+msgstr "Cc"
+
+#: modules/changepass.php:14 modules/changepass.php:100
+msgid "Change Passphrase"
+msgstr "Modifica Passphrase"
+
+#: modules/keyserver.mod:81
+msgid "Choose a Key to Import"
+msgstr "Scegli una chiave da importare"
+
+#: help/what_passphrase.php:20
+msgid "Choose a complete sentence that you will be able to remember."
+msgstr "Scegli una frase completa che sarai in grado di ricordare."
+
+#: modules/keyserver.mod:50
+msgid "Choose your Default Keyserver"
+msgstr "Scegli il tuo Keysever di default"
+
+#: help/what_passphrase.php:12
+msgid ""
+"Choosing a good passphrase is one of the most important tasks for secure "
+"communications."
+msgstr "Scegliere una buona passphrase &egrave; uno dei fattori pi&ugrave; "
+"importanti per comunicare in sicurezza."
+
+#: modules/passpop.mod:148
+msgid "Close Window"
+msgstr "Chiudi la finestra"
+
+#: modules/getstart.php:97
+msgid "Configure a Trusted Key"
+msgstr "Configura una chiave fidata"
+
+#: modules/passpop.mod:80
+msgid "Confirm Delete Key"
+msgstr "Confirma Elimina chiave"
+
+#: modules/passpop.mod:85
+msgid "Confirm Delete Keypair"
+msgstr "Confirma Elimina Keypair"
+
+#: modules/gpgdecrypt.mod:459
+msgid "Connection to IMAP Server to retrieve message body failed."
+msgstr "Connessione al server IMAP per il fetch del contenuto del messaggio fallita."
+
+#: modules/keyring_main.php:60
+msgid "Could not export your key.  Please contact gpg development."
+msgstr "Impossibile esportare la chiave. Contatta gli sviluppatori gpg."
+
+#: gpg_decrypt_attach.php:141 gpg_decrypt_attach.php:332
+#: gpg_hook_functions.php:78
+msgid "Could not write to temporary file: "
+msgstr "Impossibile scrivere su file temporaneo: "
+
+#: modules/genkey.php:280
+msgid "Create New Personal Keypair"
+msgstr "Crea un nuovo Keypair personale"
+
+#: gpg_functions.php:152
+msgid "Cute."
+msgstr "Abile."
+
+#: modules/gpgdecrypt.mod:577
+msgid "Date"
+msgstr "Data"
+
+#: modules/genkey_keygen.php:161 modules/genkey.php:222 modules/genkey.php:233
+#: modules/genkey.php:244
+msgid "Days"
+msgstr "Giorni"
+
+#: gpg_hook_functions.php:117
+msgid "Decrypt Attachment"
+msgstr "Decritta Allegato"
+
+#: gpg_hook_functions.php:405
+msgid "Decrypt Message Now"
+msgstr "Decritta messaggio ora"
+
+#: modules/gpgdecrypt.mod:600
+msgid "Decrypted Message"
+msgstr "Messaggio decrittato"
+
+#: modules/keyserver.mod:85
+msgid "Default Keyserver set to:"
+msgstr "Keyserver default impostato a:"
+
+#: modules/gpgdecrypt.mod:238 modules/keyview.php:180 modules/keyview.php:184
+msgid "Delete"
+msgstr "Elimina"
+
+#: modules/keyview.php:178 modules/keyview.php:185
+msgid "Delete Keypair"
+msgstr "Elimina Keypair"
+
+#: modules/getstart.php:87
+msgid "Did you import a personal Keypair in Step 1?"
+msgstr "Hai importato un Keypair personale al passo 1?"
+
+#: modules/getstart.php:68
+msgid ""
+"Do you already have a keyring, or individual keys you would like to use?"
+msgstr ""
+"Hai gi&agrave; un portachiavi o chiavi singole che vuoi utilizzare?"
+
+#: modules/genkey.php:87
+msgid "Do you already have a personal Keypair?"
+msgstr "Hai gi&agrave; un Keypair personale?"
+
+#: modules/general.mod:130
+msgid ""
+"Do you want the GPG plugin to encrypt the message to only some recipients, "
+"if you do not have public keys for everyone?"
+msgstr ""
+"Desideri che il plugin GPG critti il messaggio solo per alcuni destinatari "
+"se non hai le chiavi pubbliche di tutti?"
+
+#: modules/general.mod:156
+msgid ""
+"Do you want the plugin to encrypt mail to your address, in addition to the "
+"recipients?"
+msgstr ""
+"Desiderii che il plugin critti anche la posta al tuo indirizzo, oltre che "
+"ai destinatari?"
+
+#: modules/general.mod:314
+msgid "Do you want the system to cache your passphrase?"
+msgstr "Vuoi che il sistema faccia il caching della tua passphrase?"
+
+#: modules/general.mod:245
+msgid ""
+"Do you want to trust the system-wide keyring that has been defined by your "
+"system administrator?"
+msgstr ""
+"Consideri fidato il portachiavi di sistema definito dal tuo amministratore?"
+
+#: modules/general.mod:279
+msgid ""
+"Do you want to use the system-wide ADK that has been defined by your system "
+"administrator?"
+msgstr ""
+"Vuoi usare l'ADK di sistema specificato dal tuo amministratore?"
+
+#: modules/keyring_main.php:83
+msgid "Done"
+msgstr "Finito"
+
+#: gpg_view_verify_text.php:57
+msgid "Download signed attachment"
+msgstr "Scarica l'allegato firmato"
+
+#: modules/keyring_main.php:471 modules/keyring_main.php:486
+msgid "Email"
+msgstr "Email"
+
+#: modules/keyserver.mod:118 modules/genkey_keygen.php:97
+#: modules/genkey.php:151
+msgid "Email Address"
+msgstr "Indirizzo email"
+
+#: modules/keyview.php:167 modules/keyview.php:169
+msgid "Email Key"
+msgstr "Chiave email"
+
+#: gpg_hook_functions.php:1017
+msgid "Encrypt Now"
+msgstr "Critta ora"
+
+#: gpg_hook_functions.php:1094
+msgid "Encrypt on Send"
+msgstr "Critta all'invio"
+
+#: modules/general.mod:222
+msgid "Encrypt on Send by Default"
+msgstr "Critta all'invio per default"
+
+#: modules/general.mod:148
+msgid "Encrypt to Self"
+msgstr "Critta per s&egrave;"
+
+#: gpg_hook_functions.php:1078
+msgid "Encrypt&Sign Now"
+msgstr "Critta&Firma ora"
+
+#: gpg_hook_functions.php:535
+msgid "Encrypted"
+msgstr "Crittato"
+
+#: modules/getstart.php:40
+msgid "Encryption Options - Getting Started"
+msgstr "Opzioni di crittazione - Introduzione"
+
+#: modules/changepass.php:67
+msgid "Enter New Passphrase:"
+msgstr "Inserisci la nuova passphrase"
+
+#: gpg_decrypt_attach.php:229 modules/passpop.mod:133 modules/genkey.php:260
+msgid "Enter Passphrase"
+msgstr "Inserisci la passphrase"
+
+#: modules/keyserver.mod:66
+msgid "Enter Search text below to search for a key to import"
+msgstr "Inserisci sotto il testo di ricerca per la chiave da importare."
+
+#: gpg_key_functions.php:389
+msgid ""
+"Enter a search string for the key you would like to trust in the box below."
+msgstr ""
+"Inserisci nella casella sottostante la stringa di ricerca per la chiave da fidare"
+
+#: modules/gpgdecrypt.mod:662 modules/changepass.php:28
+#: modules/genkey_keygen.php:209 modules/keyring_main.php:285
+#: modules/keyview.php:137
+msgid "Error: "
+msgstr "Errore: "
+
+#: gpg_decrypt_attach.php:311
+msgid "Error: No filename found to save attachment"
+msgstr "Errore: Nomefile inesistente per salvare l'allegato"
+
+#: gpg_encrypt.php:191
+msgid "Errors:"
+msgstr "Errori:"
+
+#: modules/keyview.php:63
+msgid "Expiration Date"
+msgstr "Data di scadenza"
+
+#: help/base.php:54 help/external_resources.php:4
+msgid "External Resources"
+msgstr "Risorse esterne"
+
+#: modules/keyring_main.php:519
+msgid "Extras"
+msgstr "Extra"
+
+#: modules/getstart.php:138
+msgid "Find the public keys of people you want to communicate securely with"
+msgstr "Trova le chiavi pubbliche per le persone con cui vuoi comunicare in via sicura"
+
+#: modules/keyring_main_chunk.php:31 modules/keyring_main_chunk.php:34
+msgid "First"
+msgstr "Primo"
+
+#: modules/gpgdecrypt.mod:296
+msgid "Forward"
+msgstr "Inoltra"
+
+#: modules/gpgdecrypt.mod:301
+msgid "Forward as Attachment"
+msgstr "Inoltra come allegato"
+
+#: modules/gpgdecrypt.mod:576
+msgid "From"
+msgstr "Da"
+
+#: modules/options_main.mod:27
+msgid "From this screen, you may select options for setting up the GPG Plugin."
+msgstr "Da questa pagina puoi scegliere le impostazioni per il plugin GPG."
+
+#: modules/genkey_keygen.php:113 modules/genkey.php:134
+msgid "Full Name"
+msgstr "Nome completo"
+
+#: modules/passpop.mod:75
+msgid "GPG Decryption Initiating"
+msgstr "Decrittazione GPG avviata"
+
+#: modules/gpgdecrypt.mod:445
+msgid "GPG Decryption Results"
+msgstr "Risultati decrittazione GPG"
+
+#: modules/passpop.mod:55
+msgid "GPG Draft Signing Initiating"
+msgstr "Firma leggera GPG avviata"
+
+#: modules/passpop.mod:65
+msgid "GPG Encrypt and Sign Initiating"
+msgstr "Crittazione e firma GPG avviate"
+
+#: modules/genkey_keygen.php:76 modules/genkey.php:69
+msgid "GPG Options - Create a Personal Keypair"
+msgstr "Opzioni GPG - Crea un Keypair personale"
+
+#: modules/keyring_main.php:66 modules/keyview.php:129
+msgid "GPG Options - Display Key"
+msgstr "Opzioni GPG - Mostra chiave"
+
+#: modules/keyring_main.php:258
+msgid "GPG Options - Keyring Management"
+msgstr "Opzioni GPG - Gestione portachiavi"
+
+#: modules/options_main.mod:21
+msgid "GPG Options - Main Options"
+msgstr "Opzioni GPG - Opzioni generali"
+
+#: modules/gpg_module_footer.php:39
+msgid "GPG Plugin"
+msgstr "Plugin GPG"
+
+#: modules/general.mod:107
+msgid "GPG Plugin - General Options"
+msgstr "Plugin GPG - Opzioni generali"
+
+#: gpg_sign_functions.php:220
+msgid "GPG Plugin Error:No body text received from Compose page"
+msgstr "Errore plugin GPG: nessun contenuto ricevuto dalla pagina di composizione"
+
+#: gpg_help_base.php:57 gpg_help_base.php:62 gpg_help.php:56
+#: modules/options_main.mod:43
+msgid "GPG Plugin Help"
+msgstr "Aiuto plugin GPG"
+
+#: gpg_hook_functions.php:901
+msgid "GPG Plugin Options"
+msgstr "Opzioni plugin GPG"
+
+#: gpg_encrypt_functions.php:279
+msgid "GPG Plugin: No cyphertext was generated."
+msgstr "Plugin GPG: Nessun cyphertext generato"
+
+#: gpg_encrypt.php:355
+msgid ""
+"GPG Plugin: Plain-text Attachment file not deleted due to error in Encrypt."
+msgstr ""
+"Plugin GPG: allegato testuale non eliminato a causa di un errore nella crittazione."
+
+#: gpg_encrypt_functions.php:203
+msgid ""
+"GPG Plugin: You must specify a signing key in the Options screen to sign "
+"messages."
+msgstr ""
+"Plugin GPG: devi specificare una chiave di firma nel pannello delle "
+"opzioni per firmare i messaggi."
+
+#: gpg_encrypt_functions.php:282
+msgid "GPG Plugin: gpg returned a non-clean return value of: "
+msgstr "Plugin GPG: gpg ha restituito un retval d'errore: "
+
+#: modules/passpop.mod:45
+msgid "GPG Signing Initiating"
+msgstr "Firma GPG avviata"
+
+#: modules/options_main.mod:37
+msgid "General Options about how the plugin works"
+msgstr "Opzioni generiche sul funzionamento del plugin"
+
+#: modules/genkey.php:126
+msgid "Generate New Keypair"
+msgstr "Crea un nuovo Keypair"
+
+#: modules/keyring_main.php:667
+msgid "Generate new personal key pair"
+msgstr "Crea un nuovo keypair personale"
+
+#: modules/genkey_keygen.php:85
+msgid "Generating Keypair based on:"
+msgstr "Creazione del Keypair basato su:"
+
+#: modules/keyring_main.php:496 modules/keyring_main.php:511
+#: modules/keyview.php:62
+msgid "Generation Date"
+msgstr "Data di creazione"
+
+#: modules/options_main.mod:35 help/base.php:7
+msgid "Getting Started with the GPG Plugin"
+msgstr "Introduzione al plugin GPG"
+
+#: modules/keyring_main.php:404
+msgid "Go"
+msgstr "Vai"
+
+#: gpg_hook_functions.php:162
+msgid "Good Signature"
+msgstr "Firma corretta"
+
+#: help/what_passphrase.php:15
+msgid "Here are a few tips on choosing a good passphrase:"
+msgstr "Qui c'&egrave; qualche indicazione su come scegliere una buona passphrase:"
+
+#: gpg_encrypt.php:203
+msgid "Here are the keys which GPG reported as missing:"
+msgstr "Qui ci sono le chiavi che GPG indica mancanti:"
+
+#: help/what_keystrength.php:11
+msgid ""
+"Higher strength keys (those with more 'bits') are harder to compromise, but "
+"they also take more time to use.  It will take longer to decrypt and sign "
+"with a stronger key."
+msgstr ""
+"Le chiavi di maggior robustezza sono pi&ugrave; difficili da compromettere, ma "
+"prendono anche maggior tempo nell'utilizzo. &Egrave; pi&ugrave; lento il "
+"processo per decrittare una chiave pi&ugrave; lunga."
+
+#: help/base.php:19 help/what_passphrase.php:5
+msgid "How do I choose a passphrase?"
+msgstr "Come scelgo una passphrase?"
+
+#: modules/keyview.php:66
+msgid "ID"
+msgstr "ID"
+
+#: modules/getstart.php:79
+msgid "If not, skip this step."
+msgstr "Altrimenti, salta questo passo."
+
+#: modules/getstart.php:89
+msgid "If not, you should"
+msgstr "Altrimenti, dovresti"
+
+#: modules/general.mod:212
+msgid ""
+"If you Sign your messages, the message will be verifiable as being from you, "
+"and the recipient will be able to make sure that the message was not "
+"tampered with in transit."
+msgstr ""
+"Se Firmi i tuoi messaggi, tu sarai accertabile come l'autore del messaggio, e "
+"inoltre il destinatario sar&agrave; in grado di verificare che non &egrave; "
+"stato modificato durante il percorso."
+
+
+#: help/what_passphrase.php:26
+msgid ""
+"If you are inventing a new passphrase that you have never used before, you "
+"should consider writing it down until you are comfortable that you will not "
+"forget it."
+msgstr ""
+"Se stai inventando una passphrase che non hai mai usato finora, &egrave; "
+"opportuno che tu la trascriva da qualche parte (sicura) finch&eacute; non "
+"hai certezza di averci preso confidenza." 
+
+#: help/what_trusted.php:26
+msgid ""
+"If you choose a trusted key and store a keypair on the web server, all keys "
+"that you wish to encrypt to will need to be signed by a trusted key."
+msgstr ""
+"Se scegli una chiave fidata e salvi un keyair sul webserver, tutte le chiavi "
+"che vuoi crittare necessiteranno di essere firmate da una chiave fidata."
+
+
+#: modules/general.mod:308
+msgid ""
+"If you choose to cache your passphrase, your passphrase will be stored on "
+"the Web Mail server in secure storage for use by you while you are logged in."
+msgstr ""
+"Se scegli di cachare la tua passphrase, questa sar&agrave; salvata sul "
+"webserver in modo sicuro finch&egrave; non fai logout."
+
+#: help/what_passphrase.php:28
+msgid ""
+"If you do choose to write down your passphrase, be careful about where you "
+"store it, and destroy your paper copy as soon as you are sure that you will "
+"remember your passphrase."
+msgstr ""
+"Se decidi di annotare la tua passphrase, scegli bene dove farlo, e distruggi "
+"la nota non appena non ti servir&agrave; pi&ugrave;."
+
+#: gpg_key_functions.php:387
+msgid ""
+"If you do not see the key you want to trust in the list above, or if there "
+"is no list:"
+msgstr "Se non vedi la chiave che vuoi fidare nella lista qui sopra, o se non "
+"c'&egrave; alcuna lista:"
+
+#: modules/keyserver.mod:111
+msgid ""
+"If you do not see the key you wish to import, you may go back and enter "
+"different search terms or select a different keyserver."
+msgstr ""
+"Se non vedi la chiave che vuoi importare torna indietro e inserisci un "
+"termine di ricerca differente, oppure scegli un altro keyserver."
+
+#: help/disc_keystore.php:13
+msgid ""
+"If you do not trust the people that are hosting this email service it is "
+"recommended that you do not upload your existing private key until trust can "
+"be established."
+msgstr ""
+"Se non hai confidi ciecamente nel team che amministra questo servizio webmail "
+"&egrave; opportuno che tu non faccia l'upload di chiavi private esistenti."
+
+#: help/what_passphrase.php:10
+msgid ""
+"If you forget your passphrase, you will not be able to decrypt messages "
+"encrypted with this public key."
+msgstr ""
+"Se dimentichi la passphrase non sarai pi&ugrave; in grado di decrittare "
+"messaggi crittati con la relativa chiave pubblica."
+
+#: modules/getstart.php:132
+msgid ""
+"If you generated a personal Keypair in step 2, this is probably the key you "
+"want."
+msgstr ""
+"Se hai generato un Keypair personale al passo 2, questa probabilmente &egrave; "
+"la chiave che vuoi."
+
+#: modules/general.mod:276
+msgid ""
+"If you select 'No' below, the holder of the ADK will not be able to decrypt "
+"your messages."
+msgstr ""
+"Se scegli 'No' sotto chi mantiene l'ADK non potr&agrave; decrittare i tuoi messaggi."
+
+
+#: modules/general.mod:312
+msgid ""
+"If you select 'No' below, you will be prompted for your passphrase every "
+"time it is needed for decryption or signing of messages."
+msgstr ""
+"Se scegli 'No' qui sotto ti verr&agrave; richiesta la tua passphrase ogni "
+"volta che sar&agrave; necessaria per decrittare o segnare i messaggi."
+
+#: modules/general.mod:272
+msgid ""
+"If you select 'Yes' below, all messages that you encrypt will also be "
+"encrypted to the ADK."
+msgstr ""
+"Se scegli 'Si' sotto, tutti i messaggi che vorrai crittare saranno crittati "
+"anche con la ADK."
+
+#: modules/general.mod:241
+msgid ""
+"If you select 'Yes' below, the plugin will search the 'system-wide' keyring "
+"for public keys after looking at your public keyring."
+msgstr ""
+"Se scegli 'Si' sotto, il plugin cercher&agrave; le chiavi publiche nel "
+"portachiavi di sistema dopo il tuo personale."
+
+#: modules/general.mod:310
+msgid ""
+"If you select 'Yes' below, you will only be prompted for your passphrase "
+"once during a session."
+msgstr ""
+"Se scegli 'Si' sotto ti sar&agrave; chiesta la passphrase una sola volta "
+"per ogni sessione."
+
+#: modules/general.mod:172
+msgid ""
+"If you selected 'Yes', what is the email address you would like to encrypt "
+"to:"
+msgstr ""
+"Se scegli 'Si', indica qual &egrave; l'indirizzo email sul quale vuoi crittare:"
+
+#: modules/general.mod:214
+msgid ""
+"If you set one of these options below, you will have the opportunity on the "
+"Compose page to turn it off on a message by message basis."
+msgstr ""
+"Se scegli una delle opzioni sotto potrai disattivarlo dalla pagina di "
+"composizione sulla base del messaggio."
+
+#: modules/general.mod:154
+msgid ""
+"If you set this option to 'No', you will not be able to decrypt messages "
+"encrypted with the plugin unless you add your email address in the To, CC, "
+"or BCC line of the email before encrypting it."
+msgstr ""
+"Se imposti questa opzione a 'No' non potrai decrittare messaggi crittati con "
+"il plugin se non aggiungi il tuo indirizzo mail tra i destinatari (To, CC, BCC) "
+"della mail prima di crittarla."
+
+#: modules/general.mod:243
+msgid ""
+"If you set this option to 'No', you will not have access to any keys stored "
+"on the system keyring, which may include keys for members of a group to "
+"which you belong."
+msgstr ""
+"Se imposti questa opzione a 'No' non avrai accesso ad alcuna chiave salvata "
+"sul portachiavi di sistema, che potrebbe includere le chiavi per i membri "
+"di un gruppo a cui appartieni."
+
+#: help/what_trusted.php:30
+msgid ""
+"If you try to encrypt to a key not signed by one of these keys, you will not "
+"be allowed to do so, because the identity of the recipient is unverifiable."
+msgstr ""
+"Se provi a crittare con una chiave non firmata da nessuna di queste chiavi non "
+"potrai farlo, perch&eacute; l'identit&agrave; del destinatario non &egrave; accertabile."
+
+#: modules/general.mod:210
+msgid ""
+"If you wish to Sign all of your messages by default, you may also select the "
+"'Sign on Send' option below."
+msgstr ""
+"Se desideri firmare tutti i tuoi messaggi per default, puoi anche scegliere "
+"l'opzione 'Firma all'invio' qui sotto."
+
+#: modules/general.mod:204
+msgid ""
+"If you with to Encrypt all messages by default, select the 'Encrypt on Send' "
+"option below."
+msgstr ""
+"Se vuoi crittare tutti i messaggi per default scegli l'opzione 'Critta all'invio' "
+"qui sotto."
+
+#: modules/general.mod:152
+msgid ""
+"If your keyring has a public key for this email address on it, then all "
+"messages you encrypt will be readable by you later."
+msgstr ""
+"Se il tuo portachiavi ha una chiave pubblica per tale indirizzo mail, allora "
+"potrai anche leggere tutti i messaggi che critti."
+
+#: modules/import_key_file.php:41
+msgid "Import ASCII-Armored Key Text to Keyring"
+msgstr "Importa testo di chiave ASCII-Armored nel portachiavi"
+
+#: modules/keyserver.mod:148
+msgid "Import Key"
+msgstr "Importa chiave"
+
+#: modules/import_key_text.php:41
+msgid "Import Key File to Keyring"
+msgstr "Importa file di chiave nel portachiavi"
+
+#: gpg_hook_functions.php:454
+msgid "Import Key contained in this email now"
+msgstr "Importa la chiave contenuta in questa mail ora"
+
+#: modules/keyserver.mod:131
+msgid "Import Selected Key"
+msgstr "Importa la chiave scelta"
+
+#: modules/getstart.php:66
+msgid "Import external keys"
+msgstr "Importa chiavi esterne"
+
+#: modules/genkey.php:91 modules/getstart.php:70 modules/keyring_main.php:629
+msgid "Import keys to your personal keyring via: "
+msgstr "Importa chiavi nel tuo portachiavi personale via: "
+
+#: help/what_trusted.php:12
+msgid ""
+"In fact, most security experts recommend that web servers be presumed to be "
+"at risk of compromise."
+msgstr ""
+"Molti esperti raccomandano di agire considerando il webserver a rischio di "
+"compromissione."
+
+#: gpg_encrypt.php:213
+msgid "Info:"
+msgstr "Info:"
+
+#: modules/gpgdecrypt.mod:671
+msgid "Info: "
+msgstr "Info: "
+
+#: help/what_trusted.php:10
+msgid ""
+"It may be dangerous to believe that any web server (like this one) may be "
+"presumed secure."
+msgstr ""
+"Potrebbe esser rischioso ritenere un webserver (come questo) &quot;sicuro&quot;."
+
+#: help/disc_keystore.php:9
+msgid ""
+"It would be dangerous to simply assume that any web server (like this one) "
+"is secure."
+msgstr ""
+"&Egrave; rischioso assumere che ogni webserver (come questo) &egrave; sicuro."
+
+#: modules/keyring_main.php:446 modules/keyring_main.php:461
+msgid "Key"
+msgstr "Chiave"
+
+#: modules/keyserver.mod:119
+msgid "Key Date"
+msgstr "Data chiave"
+
+#: gpg_key_functions.php:348 gpg_key_functions.php:361
+msgid "Key Details:"
+msgstr "Dettagli chiave:"
+
+#: modules/genkey_keygen.php:151 modules/genkey.php:197
+msgid "Key Expires"
+msgstr "Scadenze chiave:"
+
+#: modules/keyserver.mod:116
+msgid "Key ID"
+msgstr "ID chiave"
+
+#: modules/keyview.php:65
+msgid "Key Length"
+msgstr "Lunghezza chiave"
+
+#: modules/keyring_main.php:613
+msgid "Key Search"
+msgstr "Ricerca chiave"
+
+#: modules/genkey_keygen.php:143
+msgid "Key Strength"
+msgstr "Robustezza chiave"
+
+#: help/what_keystrength.php:9
+msgid ""
+"Key strength is a measure of how difficult it is for an eavesdropper to "
+"compromise the security of your encrypted messages."
+msgstr ""
+"La robustezza della chiave misura quanto &egrave; difficile per un "
+"malintenzionato compromettere la sicurezza dei messaggi che critti."
+
+#: modules/options_main.mod:39
+msgid "Keyring Management Functions"
+msgstr "Funzioni di gestione del portachiavi"
+
+#: modules/keyring_main.php:682
+msgid "Keyring not editable, keyring functions disabled."
+msgstr "Portachiavi non modificabile, funzioni del portachiavi disattivate."
+
+#: modules/keyserver.mod:44
+msgid "Keyserver Options"
+msgstr "Opzioni Keyserver"
+
+#: modules/genkey.php:167
+msgid "Keystrength"
+msgstr "Robustezza chiave"
+
+#: modules/keyring_main_chunk.php:52 modules/keyring_main_chunk.php:55
+msgid "Last"
+msgstr "Ultimo"
+
+#: modules/getstart.php:143 modules/keyring_main.php:648
+msgid "Look up keys on a public keyserver"
+msgstr "Visiona chiavi su un keyserver pubblico"
+
+#: modules/gpgdecrypt.mod:224
+msgid "Message List"
+msgstr "Lista messaggi"
+
+#: modules/gpgdecrypt.mod:345
+msgid "Move"
+msgstr "Sposta"
+
+#: modules/gpgdecrypt.mod:336
+msgid "Move to:"
+msgstr "Sposta a:"
+
+#: modules/keyserver.mod:117
+msgid "Name"
+msgstr "Nome"
+
+#: modules/genkey_keygen.php:156 modules/genkey.php:211
+msgid "Never"
+msgstr "Mai"
+
+#: modules/keyring_main.php:421 modules/keyring_main.php:609
+msgid "New Search"
+msgstr "Nuova ricerca"
+
+#: modules/keyring_main.php:375
+msgid "Newly Imported Keys"
+msgstr "Nuove chiavi importate"
+
+#: modules/gpgdecrypt.mod:267 modules/gpgdecrypt.mod:281
+#: modules/gpgdecrypt.mod:283 modules/keyring_main_chunk.php:45
+#: modules/keyring_main_chunk.php:48
+msgid "Next"
+msgstr "Avanti"
+
+#: modules/general.mod:136 modules/general.mod:141 modules/general.mod:163
+#: modules/general.mod:168 modules/general.mod:251 modules/general.mod:256
+#: modules/general.mod:285 modules/general.mod:290 modules/general.mod:321
+#: modules/general.mod:326
+msgid "No"
+msgstr "No"
+
+#: modules/keyring_main.php:210
+msgid "No file was uploaded."
+msgstr "Nessun file inviato."
+
+#: modules/keyring_main.php:117
+msgid "No old passphrase passed.  Possibly blank password?"
+msgstr "Vecchia passphrase non ricevuta. Password vuota?"
+
+#: modules/keyring_main.php:155
+msgid "No secret key found."
+msgstr "Nessuna chiave privata trovata."
+
+#: modules/keyring_main.php:571
+msgid "None"
+msgstr "Niente"
+
+#: modules/genkey_keygen.php:158
+msgid "One Year"
+msgstr "Un anno"
+
+#: modules/keyview.php:62
+msgid "Owner Email"
+msgstr "Email proprietario"
+
+#: modules/general.mod:124
+msgid "Partial Recipient Encryption Option"
+msgstr "Opzioni crittazione destinatari parziali"
+
+#: modules/genkey_keygen.php:129
+msgid "Passphrase"
+msgstr "Passphrase"
+
+#: modules/general.mod:301
+msgid "Passphrase Caching"
+msgstr "Caching passphrase"
+
+#: modules/import_key_text.php:79
+msgid "Paste one or more ASCII-armored keys below:"
+msgstr "Incolla una o pi&ugrave; chiavi ASCII-armored sotto:"
+
+#: modules/genkey_keygen.php:215
+msgid "Please"
+msgstr "Prego"
+
+#: modules/import_key_file.php:62
+msgid "Please choose a file containing one or more ASCII-armored key blocks"
+msgstr "Scegli un file contenente una o pi&ugrave; chiavi ASCII-armored"
+
+#: modules/options_main.mod:31
+msgid "Please choose the GPG Encryption Plugin options you wish to set up:"
+msgstr "Scegli le opzioni del plugin GPG che vuoi impostare:"
+
+#: modules/keyring_main.php:547
+msgid ""
+"Please import a keypair containing a secret key if you wish to continue."
+msgstr ""
+"Per proseguire devi importare un keypair contenente una chiave privata."
+
+#: gpg_key_functions.php:466
+msgid "Please try a different keyserver or contact your system administrator."
+msgstr "Prova un keyserver diverso o contatta il tuo amministratore di sistema."
+
+#: modules/genkey_keygen.php:39 modules/gpg_module_header.php:31
+#: modules/gpg_popup_header.php:32 modules/keyring_main.php:540
+msgid "Please try again."
+msgstr "Riprova."
+
+#: modules/changepass.php:53
+msgid "Please type your old passphrase: "
+msgstr "Inserisci la tua passphrase vecchia:"
+
+#: modules/gpgdecrypt.mod:266 modules/gpgdecrypt.mod:272
+#: modules/gpgdecrypt.mod:274 modules/keyring_main_chunk.php:38
+#: modules/keyring_main_chunk.php:41
+msgid "Previous"
+msgstr "Indietro"
+
+#: modules/gpgdecrypt.mod:581
+msgid "Priority"
+msgstr "Priorit&agrave;"
+
+#: gpg_functions.php:923 gpg_functions.php:1025
+msgid "Problem with command syntax. Check Debug Output"
+msgstr "Problema con la sintassi del comando. Controlla l'output di debug"
+
+#: gpg_hook_functions.php:843
+msgid "Problems with the cyphertext output:"
+msgstr "Problema con l'output cyphertext:"
+
+#: help/disc_keystore.php:4
+msgid "Public web servers are not always secure!"
+msgstr "I webserver pubblici non sono sempre sicuri!"
+
+#: modules/keyview.php:91
+msgid "Remove this key from your keyring?  This action cannot be undone!"
+msgstr "Eliminare dal tuo portachiavi? L'eliminazione non potr&agrave; esser annullata!"
+
+#: modules/gpgdecrypt.mod:327
+msgid "Reply"
+msgstr "Rispondi"
+
+#: modules/gpgdecrypt.mod:330
+msgid "Reply All"
+msgstr "Rispondi a tutti"
+
+#: help/base.php:59
+msgid "Report a bug on the GPG Plugin Bugzilla"
+msgstr "Riporta un bug sul GPG Plugin Bugzilla"
+
+#: modules/genkey_keygen.php:214
+msgid "Required data missing."
+msgstr "Mancano informazioni necessarie."
+
+#: modules/gpgdecrypt.mod:253
+msgid "Resume Draft"
+msgstr "Ripristina bozza."
+
+#: modules/changepass.php:84
+msgid "Retype New Passphrase:"
+msgstr "Ridigita la passphrase nuova: "
+
+#: modules/genkey.php:268
+msgid "Retype Passphrase"
+msgstr "Ridigita la passphrase"
+
+#: modules/genkey_keygen.php:53 modules/genkey.php:47
+msgid "SSL connection required to generate keypair."
+msgstr "Necessaria connessione SSL per generare il keypair."
+
+#: gpg_encrypt_functions.php:380
+msgid "SSL connection required to use passphrase functions."
+msgstr "Necessaria connessione SSL per accedere alla funzioni di passphrase."
+
+#: modules/general.mod:333 modules/keyview.php:160
+msgid "Save"
+msgstr "Salva"
+
+#: gpg_key_functions.php:393
+msgid "Search String:"
+msgstr "Stringa di ricerca:"
+
+#: modules/keyserver.mod:71
+msgid "Search for Key"
+msgstr "Cerca chiave"
+
+#: gpg_key_functions.php:396
+msgid "Search my keyring for a new trusted key using the search string above:"
+msgstr "Cerca una nuova chiave fidata nel mio portachiavi usando la stringa di ricerca sopra:"
+
+#: modules/gpgdecrypt.mod:219
+msgid "Search results"
+msgstr "Risultati ricerca"
+
+#: modules/keyring_main.php:415 modules/keyring_main.php:602
+msgid "Search results for"
+msgstr "Cerca nei risultati per"
+
+#: modules/keyserver.mod:68
+msgid "Search text may be an email address or an OpenPGP(PGP/GPG) Key ID"
+msgstr "Il testo di ricerca pu&ograve; essere un indirizzo mail o un Key ID OpenPGP/GPG"
+
+#: modules/keyview.php:192
+msgid "Secret Key: "
+msgstr "Chiave privata: "
+
+#: modules/getstart.php:116
+msgid "Select a Signing Key"
+msgstr "Scegli una chiave di firma"
+
+#: modules/keyserver.mod:109
+msgid "Select a key to import from the list below."
+msgstr "Scegli una chiave da importare dalla lista."
+
+#: help/what_signing.php:13
+msgid "Select this option to set the key as your signing key."
+msgstr "Scegli questa opzione per impostare la chiave come tua chiave di firma."
+
+#: help/what_trusted.php:33
+msgid "Select this option to set the key as your trusted key."
+msgstr "Scegli questa opzione per impostare la chiave come tua chiave fidata."
+
+#: help/what_signing.php:15
+msgid "Setting a new signing key will replace any previously chosen key."
+msgstr "Impostare una nuova chiave di firma sostituir&agrave; ogni chiave precedentemente scelta."
+
+#: help/what_trusted.php:35
+msgid "Setting a new trusted key will replace any previously chosen key."
+msgstr "Impostare una nuova chiave fidata sostituir&agrave; ogni chiave precedentemente scelta."
+
+#: gpg_hook_functions.php:377
+msgid "Setup the GPG Plugin with a secret key."
+msgstr "Imposta il plugin GPG con una chiave privata."
+
+#: modules/general.mod:233
+msgid "Shared System Keyring"
+msgstr "Portachiavi condiviso di sistema"
+
+#: help/base.php:34
+msgid "Should I store my private keys on the server?"
+msgstr "Devo salvare le chiavi private sul server?"
+
+#: modules/keyring_main_chunk.php:20
+msgid "Showing"
+msgstr "Visualizzando"
+
+#: modules/keyring_main.php:364
+msgid "Showing keys in"
+msgstr "Visualizzando chiavi in"
+
+#: gpg_hook_functions.php:1079
+msgid "Sign on Send"
+msgstr "Firma all'invio"
+
+#: modules/general.mod:223
+msgid "Sign on Send by Default"
+msgstr "Firma all'invio per default"
+
+#: gpg_hook_functions.php:479 gpg_hook_functions.php:667
+#: modules/gpgdecrypt.mod:583 modules/gpgdecrypt.mod:585
+msgid "Signature"
+msgstr "Firma"
+
+#: gpg_hook_functions.php:170
+msgid "Signature verification process failed."
+msgstr "La procedura di verifica della firma &egrave; fallita."
+
+#: modules/passpop.mod:146
+msgid "Signing functions not allowed from an insecure connection."
+msgstr "Funzioni di firma non abilitate da una connessione insicura."
+
+#: modules/general.mod:126
+msgid ""
+"Sometimes, you may not have public keys for all of the email addresses in "
+"your To, CC, and BCC fields in the Compose window."
+msgstr ""
+"Qualche volta potresti non disporre delle chiavi pubbliche per alcuni dei "
+"destinatari nel To, CC o BCC nella schermata di composizione."
+
+#: modules/genkey.php:104
+msgid ""
+"Storing a private key on a remote host can be insecure if you do not trust "
+"the host!"
+msgstr ""
+"Salvare una chiave privata su un server remoto pu&ograve; essere insicuro "
+"se non ti fidi del server!"
+
+#: modules/gpgdecrypt.mod:558
+msgid "Subject"
+msgstr "Oggetto"
+
+#: modules/keyview.php:252
+msgid "Subkey"
+msgstr "Subkey"
+
+#: modules/passpop.mod:138
+msgid "Submit"
+msgstr "Invia"
+
+#: modules/genkey_keygen.php:249
+msgid "Success!"
+msgstr "Successo!"
+
+#: modules/keyring_main.php:387
+msgid "System Keyring"
+msgstr "Portachivi di sistema"
+
+#: gpg_help_base.php:69
+msgid "Table of Contents"
+msgstr "Indice"
+
+#: gpg_hook_functions.php:903 setup.php:97 modules/options_main.mod:29
+msgid ""
+"The GPG Encryption Plugin will allow you to encrypt, sign, and decrypt "
+"messages in accordance with the OpenPGP standard for email security and "
+"authentication."
+msgstr ""
+"Il plugin GPG permette di crittare, firmare e decrittare "
+"messaggi secondo lo standard OpenPGP per la sicurezza email"
+"e l'autenticazione."
+
+#: gpg_hook_functions.php:364
+msgid "The System Administrator has disabled private key functions."
+msgstr "L'amministratore ha disabilitato le funzioni per la chiave privata."
+
+#: gpg_encrypt_functions.php:67
+msgid "The attachment file was not found"
+msgstr "Il file allegato non &egrave; stato trovato"
+
+#: modules/getstart.php:58
+msgid "The following is a list of suggested steps you can take to get started:"
+msgstr "Di seguito la lista dei passi suggeriti per iniziare:"
+
+#: modules/general.mod:274
+msgid "The holder of the ADK will be able to decrypt these messages."
+msgstr "Chi detiene l'ADK potr&agrave; decrittare questi messaggi."
+
+#: modules/general.mod:198
+msgid ""
+"The plugin supports the ability to set default options to be applied every "
+"time you send a message."
+msgstr ""
+"Il plugin permette di impostare opzioni di default da applicarsi ogni "
+"volta che invii un messaggio."
+
+#: modules/general.mod:218
+msgid ""
+"The plugin will return you to the Compose page with your original message "
+"(plaintext) preserved if there is an error that requires your attention "
+"after you press 'Send'."
+msgstr ""
+"Il plugin ti riporter&agrave; alla pagina di composizione conservando il tuo "
+"messaggio se si verificher&agrave; un messaggio che richiede la tua "
+"attenzione dopo che hai premuto 'Invia'."
+
+#: help/what_trusted.php:28
+msgid ""
+"The signing key may be one of: a key that you have explicitly marked as a "
+"trusted key, a keypair that you have on your public and secret keyrings, or "
+"a shared system trusted key defined by your system administrator."
+msgstr ""
+"La chiave di firma dovrebbe essere: una chiave che hai esplicitamente "
+"marcato come fidata, un keypair presente sui tuoi portachivi, oppure una "
+"chiave fidata di sistema definita dal tuo amministratore."
+
+#: modules/general.mod:304
+msgid ""
+"The system has the ability to cache (store) the passphrase for your secret "
+"key."
+msgstr ""
+"Il sistema pu&ograve; fare caching della passphrase per la tua chiave privata."
+
+#: modules/keyring_main.php:536
+msgid "There are no keys containing the string "
+msgstr "Non esistono chiavi contenenti la stringa "
+
+#: gpg_functions.php:1096 gpg_functions.php:1103
+msgid "There is no indication that this key really belongs to the owner"
+msgstr "Non ci sono indicazioni perch&eacute; questa chiave appartenga realmente al proprietario"
+
+#: modules/gpg_err.php:10
+msgid "There was a problem with your request"
+msgstr "C'&egrave; stato un problema con la tua richiesta"
+
+#: modules/gpg_module_header.php:30 modules/gpg_popup_header.php:31
+msgid "There was a problem with your request."
+msgstr "C'&egrave; stato un problema con la tua richiesta."
+
+#: modules/general.mod:113
+msgid ""
+"These options have broad effects on how the plugin works, and can help you "
+"be more productive."
+msgstr ""
+"Queste opzioni hanno un effetto ampio sul funzionamento del plugin, e possono "
+"aiutarti ad essere pi&ugrave; produttivo."
+
+#: modules/keyring_main.php:92
+msgid ""
+"This action can only be performed on a secure connection (https).  Please "
+"change the 'http' in your address bar to 'https', and try again."
+msgstr ""
+"Questa operazione pu&ograve; essere realizzata solo attraverso una connessione "
+"sicura (https). Cambia il prefisso 'http' in 'https' nella tua barra indirizzo e riprova."
+
+#: gpg_functions.php:1097 gpg_functions.php:1104
+msgid ""
+"This error usually occurs because you have not set a trusted key, or because "
+"you have not signed the key you are trying to encrypt to."
+msgstr ""
+"Questo errore si verifica perlopi&ugrave; perch&eacute; non hai impostato una "
+"chiave fidata, o perch&egrave; non hai firmato la chiave con cui cerchi di crittare."
+
+#: modules/keyring_main.php:204
+msgid "This file exceeds the maximum size allowed."
+msgstr "Questo file supera la dimensione massima permessa."
+
+#: modules/keyring_main.php:207
+msgid "This file was only partially uploaded."
+msgstr "Questo file &egrave; stato caricato solo parzialmente."
+
+#: modules/genkey.php:74
+msgid "This is a required field, please fill it in."
+msgstr "Questo &egrave; un campo necessario, riempilo per favore."
+
+#: modules/keyview.php:188
+msgid "This is my SIGNING key"
+msgstr "Questa &egrave; la mia chiave di FIRMA"
+
+#: modules/keyview.php:201
+msgid "This is my TRUSTED key"
+msgstr "Questa &egrave; la mia chiave FIDATA"
+
+#: modules/general.mod:264
+msgid "This key has the properties:"
+msgstr "Questa chiave ha le propriet&agrave;"
+
+#: gpg_hook_functions.php:372
+msgid "This message contains encrypted content."
+msgstr "Questo messaggio ha contenuto crittato."
+
+#: help/what_trusted.php:19
+msgid ""
+"This option allows you to indicate to GPG which key on your public keyring "
+"should be treated as a fully trusted key."
+msgstr ""
+"Questa opzione ti permette di indicare a GPG qualche chiave sul portachiavi "
+"pubblico dev'essere trattata come fidata."
+
+#: help/external_resources.php:7
+msgid ""
+"This page provides links to external resources about the technologies used "
+"by the GPG Plugin."
+msgstr ""
+"Questa pagina fornisce i link a risorse esterne riguardo le tecnologie impiegate "
+"dal plugin GPG."
+
+#: modules/general.mod:216
+msgid "This preference only sets the default behavior."
+msgstr "Questa opzione indica solo il comportamento default."
+
+#: modules/general.mod:111
+msgid "This screen allows you to set general GPG Plugin options."
+msgstr "Questa schermata ti permette di impostare le opzioni generali del plugin GPG."
+
+#: modules/getstart.php:51
+msgid ""
+"This screen will help you set up the various options you need to get started "
+"using encryption. "
+msgstr ""
+"Questa pagina ti aiuter&agrave; a impostare le varie opzioni necessarie ad "
+"avviarti all'uso della crittazione."
+
+#: gpg_key_functions.php:389
+msgid ""
+"This will usually be the email address of the account that you use as your "
+"primary signing key."
+msgstr ""
+"Questo &egrave; generalmente l'indirizzo email dell'account che usi come "
+"firma principale."
+
+#: modules/import_key_file.php:66
+msgid "Tip: this is typically a '.asc' or '.pkr' file"
+msgstr "Tip: questo &egrave; tipicamente un file '.asc' o '.pkr'"
+
+#: modules/gpgdecrypt.mod:578
+msgid "To"
+msgstr "A"
+
+#: help/what_trusted.php:17
+msgid ""
+"To allow you to use the GPG plugin optimally without storing your private key"
+"(s) on the web server, the GPG Plugin allows you to specify a special option "
+"called 'Trusted Key ID'."
+msgstr ""
+"Affinch&eacute; tu possa usare al meglio il plugin GPG senza salvare la tua "
+"chiave/i privata sul webserver, il plugin GPG ti permette di specificare una "
+"opzione speciale chiamata 'ID chiave fidata'."
+
+#: gpg_hook_functions.php:374
+msgid "To decrypt this message inside Squirrelmail:"
+msgstr "Per decrittare questo messagge all'interno di Squirrelmail:"
+
+#: help/what_trusted.php:38
+msgid "To disable the trusted key option, select no key as trusted."
+msgstr "Per disabilitare l'opzione chiave fidata non scegliere alcuna chiave come fidata."
+
+#: modules/keyring_main.php:556
+msgid "To locate a key or keys, please enter a search string below."
+msgstr "Per individuare una o pi&ugrave; chiavi inserisci una stringa di ricerca sotto."
+
+#: modules/getstart.php:123
+msgid ""
+"To set your signing key, find the desired key in the 'secret' ring of the"
+msgstr ""
+"Per impostare la chiave di firma trova la chiave desiderata nel portachiavi privato del "
+
+#: modules/getstart.php:104
+msgid ""
+"To set your trusted key, find the desired key in the 'public' or 'system' "
+"ring of the"
+msgstr ""
+"Per definire la tua chiave fidata, trova la chiave nei portachiavi "
+"pubblico o di sistema del"
+
+#: modules/genkey.php:81
+msgid ""
+"To sign outgoing mail and receive encrypted messages, you must have a "
+"personal Keypair."
+msgstr ""
+"Per firmare i messaggi in uscita e ricevere messaggi crittati devi avere "
+"un Keypair personale."
+
+#: help/base.php:39 help/troubleshooting.php:3
+msgid "Troubleshooting"
+msgstr "Problematiche"
+
+#: gpg_key_functions.php:464
+msgid "Unable to connect to the keyserver you specified."
+msgstr "Impossibile collegarsi al keyserver specificato."
+
+#: gpg_encrypt.php:324
+msgid "Unable to rename encrypted file"
+msgstr "Impossibile rinominare il file crittato"
+
+#: gpg_encrypt.php:312
+msgid "Unable to rename temporary file"
+msgstr "Impossibile rinominare il file temporaneo"
+
+#: gpg_encrypt.php:359
+msgid "Unable to rename temporary file after failed encrypt"
+msgstr "Impossibile rinominare il file a seguito della crittazione fallita"
+
+#: modules/genkey_keygen.php:106 modules/genkey_keygen.php:122
+#: modules/genkey_keygen.php:136
+msgid "Unassigned"
+msgstr "Non impostato"
+
+#: gpg_key_functions.php:571
+msgid ""
+"Unexpected Error. Did not receive valid export_type in gpg_export_key "
+"function."
+msgstr ""
+"Errore inaspettato. Non ho ricevuto nessuna export_type valida nella "
+"funzione gpg_export_key."
+
+#: modules/gpgdecrypt.mod:109 modules/gpgdecrypt.mod:460
+msgid "Unknown sender"
+msgstr "Mittente sconosciuto"
+
+#: gpg_hook_functions.php:532 gpg_hook_functions.php:535
+#: gpg_hook_functions.php:676 modules/gpgdecrypt.mod:585
+msgid "Unsigned"
+msgstr "Non firmato"
+
+#: gpg_key_functions.php:340
+msgid "Using signing key:"
+msgstr "Usando la chiave di firma:"
+
+#: gpg_key_functions.php:353
+msgid "Using trusted key:"
+msgstr "Usando la chiave fidata:"
+
+#: help/what_trusted.php:23
+msgid ""
+"Usually, this will be your primary public key, the key you use to sign other "
+"people's keys."
+msgstr ""
+"Generalmente questa &egrave; la tua chiave pubblica primaria, la chiave che "
+"usi per segnare le chiave degli altri."
+
+#: modules/general.mod:237
+msgid ""
+"Usually, this would suggest that a keyring is maintained for some group "
+"which you are a part of, such as an organization or corporation."
+msgstr ""
+"Generalmente questo indica che il portachiavi &egrave; mantenuta da un "
+"gruppo di cui fai parte, come un'organizzazione o societ&agrave;."
+
+#: help/base.php:49
+msgid "View INSTALL file"
+msgstr "Vedi file INSTALL"
+
+#: modules/genkey_keygen.php:258 modules/keyview.php:171
+msgid "View Key"
+msgstr "Vedi chiave"
+
+#: help/base.php:44
+msgid "View README file - includes contact information"
+msgstr "Vedi file README - include informazioni sui contatti"
+
+#: gpg_view_verify_text.php:53
+msgid "View message"
+msgstr "Visualizza il messaggio"
+
+#: gpg_view_verify_text.php:52
+msgid "Viewing signature verification output for attachment: "
+msgstr "Visualizzazione dell'output di verifica della firma per l'allegato: "
+
+#: modules/gpgdecrypt.mod:638
+msgid "Warning: "
+msgstr "Attenzione: "
+
+#: gpg_encrypt.php:181
+msgid "Warnings:"
+msgstr "Segnalazioni: "
+
+#: help/what_trusted.php:8
+msgid ""
+"Web-based email programs are very convenient, and using your web email to "
+"send encrypted email adds to that convenience."
+msgstr ""
+"Le applicazioni email basate su web sono molto comode, e poter usare la tua "
+"webmail per spedire email crittate costituisce un ulteriore vantaggio."
+
+#: help/disc_keystore.php:7
+msgid ""
+"Web-based email programs are very convenient, using your web email to send "
+"encrypted emails adds to that convenience."
+msgstr ""
+"Le applicazioni email basate su web sono molto comode, e poter usare la tua "
+"webmail per spedire email crittate costituisce un ulteriore vantaggio."
+
+#: modules/getstart.php:49
+msgid "Welcome to the GPG Encryption Plugin for Squirrelmail! "
+msgstr "Benvenuto nel plugin di crittazione GPG per Squirrelmail!"
+
+#: help/what_keystrength.php:5
+msgid "What is Key Strength?"
+msgstr "Qual &egrave; la robustezza della chiave?"
+
+#: help/base.php:24
+msgid "What is a 'Signing Key'?"
+msgstr "Cos'&egrave; una 'chiave di segnatura'?"
+
+#: help/base.php:29
+msgid "What is a 'Trusted Key'?"
+msgstr "Cos'&egrave; una 'chiave fidata'?"
+
+#: help/what_signing.php:4
+msgid "What is a Signing Key?"
+msgstr "Cos'&egrave; una chiave di segnatura?"
+
+#: help/what_trusted.php:4
+msgid "What is a Trusted Key?"
+msgstr "Cos'&egrave; una chiave fidata?"
+
+#: help/base.php:14
+msgid "What is a good key strength?"
+msgstr "Qual &egrave; una buona robustezza di chiave?"
+
+#: modules/genkey.php:189 modules/keyview.php:205 modules/keyview.php:219
+msgid "What's this?"
+msgstr "Cos'&egrave; questo?"
+
+#: modules/general.mod:128
+msgid ""
+"When this happens, the GPG plugin can either display an error and return to "
+"your plaintext, or encrypt the message to the recipients that you do have "
+"keys for, and inform you of the email addresses that you did not have keys "
+"for."
+msgstr ""
+"Quando questo succede, il plugin GPG pu&ograve; visualizzare un errore e "
+"tornare al tuo testo, oppure crittare il messaggio per i destinatari di cui "
+"hai la chiave ed informarti degli indirizzi per cui non la hai."
+
+#: modules/general.mod:150
+msgid ""
+"When you encrypt an email message, the plugin can be set to automatically "
+"include your email address in the recipient list."
+msgstr ""
+"Quando critti un messaggio il plugin pu&ograve; esser impostato per "
+"includere automaticamente il tuo indirizzo email nella lista dei destinatari."
+
+
+#: modules/getstart.php:53
+msgid ""
+"With this interface, you will be able to encrypt, decrypt, and sign your "
+"email and attachments from the comfort of the Squirrelmail web mail "
+"interface."
+msgstr ""
+"Con questa interfaccia puoi crittare, decrittare e firmare le tue email e "
+"gli allegati direttamente dalla webmail Squirrelmail."
+
+#: modules/general.mod:135 modules/general.mod:140 modules/general.mod:162
+#: modules/general.mod:167 modules/general.mod:250 modules/general.mod:255
+#: modules/general.mod:284 modules/general.mod:289 modules/general.mod:320
+#: modules/general.mod:325
+msgid "Yes"
+msgstr "Si"
+
+#: modules/passpop.mod:144
+msgid "You are not connected using a secure connection."
+msgstr "Non sei collegato attraverso una connessione sicura."
+
+#: gpg_encrypt_functions.php:380 modules/genkey_keygen.php:53
+#: modules/genkey.php:45
+msgid "You are not using a secure connection."
+msgstr "Non stai utilizzando una connessione sicura"
+
+#: modules/getstart.php:141
+msgid "You can"
+msgstr "Altrimenti"
+
+#: modules/import_key_file.php:50 modules/import_key_text.php:49
+msgid ""
+"You can add keys to your keyring with blocks of ASCII-armored key text "
+"(encoded text which contains all the necessary information for a key)."
+msgstr ""
+"Puoi aggiungere chiavi al tuo portachiavi con blocchi di chiavi in "
+"formato testuale ASCII-armored (testo codificato che contiene tutta "
+"l'informazione di una chiave)."
+
+#: modules/changepass.php:22
+msgid ""
+"You can change your passphrase from this screen.  More help will be "
+"available in the future."
+msgstr ""
+"Da questa pagina puoi modificare la tua passphrase. Aiuto pi&egrave; "
+"dettagliato sar&agrave; disponibile pi&ugrave; avanti."
+
+#: modules/getstart.php:121 help/what_signing.php:10
+msgid "You can only have one signing key at any given time."
+msgstr "Puoi disporre di una sola chiave di segnatura alla volta."
+
+#: modules/getstart.php:102 help/what_trusted.php:40
+msgid "You can only have one trusted key at any given time."
+msgstr "Puoi disporre di una sola chiave fidata alla volta."
+
+#: gpg_key_functions.php:357
+msgid "You currently trust key:"
+msgstr "La tua chiave fidata attuale:"
+
+#: gpg_encrypt_functions.php:454
+msgid "You did not provide a passphrase!"
+msgstr "Non hai specificato la passphrase!"
+
+#: gpg_sign_functions.php:260
+msgid ""
+"You did not provide a passphrase! Please right-click and select 'Back' and "
+"try again"
+msgstr ""
+"Non hai specificato la passphrase! Clicca sulla voce 'Indietro' del men&ugrave; "
+"che compare premendo il qui tasto destro e riprova"
+
+#: gpg_encrypt.php:202
+msgid ""
+"You do not have a public key for the following email addresses and so your "
+"message will NOT be readable by these recipients."
+msgstr ""
+"Non disponi della chiave pubblica per i seguenti indirizzi email, quindi il "
+"tuo messaggio sar&agrave; ILLEGGIBILE per questi destinatari."
+
+#: modules/keyring_main.php:519
+msgid "You have no secret keys in your ring"
+msgstr "Non hai chiavi private nel tuo portachiavi"
+
+#: modules/general.mod:200
+msgid ""
+"You have the option to attempt to Encrypt, Sign, or Encrypt and Sign every "
+"message that you send, by default. "
+msgstr ""
+"Puoi disporre di provare a crittare, firmare, oppure crittare e segnare tutti "
+"i messaggi che spedisci per default."
+
+#: help/what_passphrase.php:24
+msgid ""
+"You may also choose to replace letters with numbers and symbols. For "
+"example: 'A dove of peace is here.' where 'e'='3', 'i'='1' and 'o'='0' "
+"becomes 'A d0v3 0f p3ac3 1s h3r3.' which becomes 'ad0v30fp3ac31sh3r3.'"
+msgstr ""
+"Puoi scegliere anche di sostituire lettere con numeri e simboli. Per "
+"esempio: 'un esempio scemo.' dove 'e'='3', 'i'='1' e o='0' "
+"diventa 'un 3s3mp10 sc3m0', che diventa 'un3s3mp10sc3m0.'"
+
+#: modules/general.mod:202
+msgid ""
+"You may encrypt your email either after you press the 'Encrypt Now' button "
+"from the Compose page, or at the time you send the message."
+msgstr ""
+"Puoi crittare il tuo messaggio premendo il tasto 'Critta ora' dalla pagina di "
+"composizione oppure al momento di spedirlo."
+
+#: modules/general.mod:239
+msgid ""
+"You must choose whether to trust this keyring and use it in your public key "
+"lookups."
+msgstr ""
+"Devi scegliere se fidare questo portachiavi ed utilizzarlo per le ricerche "
+"nelle chiavi pubbliche."
+
+#: modules/general.mod:270
+msgid "You must choose whether to use this ADK."
+msgstr "Devi scegliere se usare questo ADK."
+
+#: help/what_passphrase.php:22
+msgid ""
+"You should change the capitalization and punctuation so that others cannot "
+"easily guess it, even if they guess the phrase you chose."
+msgstr ""
+"Dovresti cambiare la capitalizzazione e la punteggiatura in modo che gli altri "
+"account non la possano indovinare facilmente nemmeno indovinando la frase che hai scelto."
+
+#: modules/general.mod:350
+msgid "Your Preference to allow partial encryption has been saved."
+msgstr "La tua preferenza sull'abilitazione a crittare parzialmente &egrave; stata salvata."
+
+#: modules/general.mod:388
+msgid ""
+"Your Preference to attempt to Encrypt on Send by default has been saved."
+msgstr ""
+"La tua preferenza sul tentativo di crittare all'invio per default &egrave; stata salvata."
+
+#: modules/general.mod:395
+msgid "Your Preference to attempt to Sign on Send by default has been saved."
+msgstr "La tua preferenza sul tentativo di segnare all'invio &egrave; stata salvata."
+
+#: modules/general.mod:431
+msgid "Your Preference to cache your passphrase has been saved."
+msgstr "La tua preferenza sul caching della tua passphrase &egrave; stata salvata."
+
+#: modules/general.mod:364
+msgid "Your Preference to encrypt a copy of all messages to"
+msgstr "La tua preferenza sul crittare una copia di tutti i messaggi a"
+
+#: modules/general.mod:391
+msgid "Your Preference to not Encrypt on Send by default has been saved."
+msgstr "La tua preferenza sul non crittare all'invio per default &egrave; stata salvata."
+
+#: modules/general.mod:398
+msgid "Your Preference to not Sign on Send by default has been saved."
+msgstr "La tua preferenza sul non firmare all'invio per default &egrave; stata salvata."
+
+#: modules/general.mod:353
+msgid "Your Preference to not allow partial encryption has been saved."
+msgstr "La tua preferenza sul non permettere la crittazione parziale &egrave; stata salvata."
+
+#: modules/general.mod:434
+msgid "Your Preference to not cache your passphrase has been saved."
+msgstr "La tua preferenza sul non fare il caching della tua passphrase &egrave; stata salvata."
+
+#: modules/general.mod:367
+msgid ""
+"Your Preference to not encrypt a copy of every message to yourself has been "
+"saved."
+msgstr ""
+"La tua preferenza sul non crittare una copa di ogni messaggio a te stesso "
+"&egrave; stata salvata."
+
+
+#: modules/general.mod:408
+msgid "Your Preference to not trust the system keyring has been saved."
+msgstr "La tua preferenza sul non fidare il portachiavi di sistema &egrave; stata salvata."
+
+#: modules/general.mod:418
+msgid "Your Preference to not use the system ADK has been saved."
+msgstr "La tua preferenza sul non usare l'ADK di sistema &egrave; stata salvata."
+
+#: modules/general.mod:377
+msgid "Your Preference to request automatic key lookup has been saved"
+msgstr "La tua preferenza sul non richiedere una ricerca automatica della chiave &egrave; stata salvata."
+
+#: modules/general.mod:405
+msgid "Your Preference to trust the system keyring has been saved."
+msgstr "La tua preferenza sul fidare il portachiavi di sistema &egrave; stata salvata."
+
+#: modules/general.mod:415
+msgid "Your Preference to use the system ADK has been saved."
+msgstr "La tua preferenza sull'utilizzare l'ADK di sistema &egrave; stata salvata."
+
+#: modules/keyring_main.php:369
+msgid "Your Public Keyring"
+msgstr "Il tuo portachiavi pubblico"
+
+#: gpg_encrypt.php:107
+msgid "Your Request to Encrypt on Send encountered a problem, details below:"
+msgstr "La tua richiesta di codificare all'invio ha incontrato problemi. I dettagli qui di seguito:"
+
+#: modules/keyring_main.php:398
+msgid "Your Secret Keyring"
+msgstr "Il tuo portachiavi privato"
+
+#: modules/general.mod:235
+msgid ""
+"Your System administrator has indicated that there is a 'system-wide' public "
+"keyring."
+msgstr ""
+"Il tuo amministratore di sistema ha indicato la disponibilit&agrave; di un "
+"portachiavi di sistema."
+
+#: modules/general.mod:437
+msgid "Your cached passphrase has been securely erased."
+msgstr "La tua passphrase cachata &egrave; stata cancellata con successo."
+
+#: gpg_key_functions.php:344
+msgid "Your current signing key: "
+msgstr "La tua chiave di firma attuale: "
+
+#: modules/genkey_keygen.php:171
+msgid "Your key is being generated... please be patient!"
+msgstr "La tua chiave &egrave; in fase di creazione... un attimo!"
+
+#: modules/general.mod:208
+msgid "Your message may be sent without being readable by some recipients."
+msgstr "Il tuo messaggio potrebbe esser spedito e non essere leggibile da alcuni destinatari."
+
+#: modules/genkey_keygen.php:37
+msgid "Your passphrases do not match."
+msgstr "Le tue passphrase non sono state corrette."
+
+#: modules/getstart.php:84
+msgid "Your personal Keypair"
+msgstr "Il tuo Keypair personale"
+
+#: modules/gpg_err.php:27
+msgid "Your request returned this information:"
+msgstr "La tua richiesta ha ottenuto la seguente risposta:"
+
+#: help/what_passphrase.php:8
+msgid ""
+"Your secret passphrase should be as long as possible and easy for you to "
+"remember, but hard for someone else to guess."
+msgstr ""
+"La tua passphrase segreta dev'essere pi&ugrave; lunga possibile, e facile "
+"da ricordare per te ma difficile da indovinare per gli altri."
+
+#: modules/getstart.php:119
+msgid ""
+"Your signing key is the key you use to 'sign' a message you are sending, to "
+"prove that is from you."
+msgstr ""
+"La tua chiave di firma &egrave; la chiave che usi per 'firmare' un messaggio "
+"da spedire, per provare che proviente da te."
+
+#: help/what_signing.php:8
+msgid ""
+"Your signing key is the key you use to 'sign' a message you are sending, to "
+"prove that it is from you."
+msgstr ""
+"La tua chiave di firma &egrave; la chiave che usi per 'firmare' i messaggi "
+"che spedisci, per dimostrare che li hai scritti tu."
+
+#: modules/general.mod:262
+msgid ""
+"Your system administrator has also defined an Alternate Decryption Key (ADK) "
+"for the system."
+msgstr ""
+"Il tuo amministratore di sistema ha definito una Alternate Decryption Key (ADK) "
+"per il sistema."
+
+#: modules/getstart.php:146 modules/keyring_main.php:651
+msgid "and import them to your keyring."
+msgstr "e importale nel tuo portachivi."
+
+#: modules/getstart.php:130
+msgid "check 'This is my signing key' and save."
+msgstr "controlla 'Questa &egrave; la mia chiave di firma' e salva."
+
+#: modules/getstart.php:111
+msgid "check 'This is my trusted key', and save."
+msgstr "controlla 'Questa &egrave; la mia chiave fidata' e salva."
+
+#: modules/getstart.php:109 modules/getstart.php:128
+msgid "click on it to view the details,"
+msgstr "cliccalo per vedere i dettagli,"
+
+#: modules/genkey.php:109
+msgid "disclaimer"
+msgstr "avviso"
+
+#: gpg_hook_functions.php:869
+msgid "evil_muppets killed your encryption"
+msgstr "alcuni diavoletti hanno ucciso la tua crittazione"
+
+#: modules/genkey.php:93 modules/getstart.php:72 modules/keyring_main.php:631
+msgid "file"
+msgstr "file"
+
+#: modules/keyring_main.php:197
+msgid "filename:"
+msgstr "nome file:"
+
+#: modules/getstart.php:91
+msgid "generate a personal Keypair"
+msgstr "generare un Keypair personale"
+
+#: modules/general.mod:364
+msgid "has been saved."
+msgstr "&egrave; stato salvato."
+
+#: modules/getstart.php:106 modules/getstart.php:125
+msgid "keyring"
+msgstr "portachiavi"
+
+#: modules/keyring_main_chunk.php:28
+msgid "of"
+msgstr "di"
+
+#: modules/genkey.php:95 modules/getstart.php:74 modules/keyring_main.php:633
+msgid "or"
+msgstr "o"
+
+#: modules/passpop.mod:40
+msgid "script file not found, exiting abnormally."
+msgstr "file script non trovato, termino scorrettamente."
+
+#: modules/genkey.php:181 modules/genkey.php:207
+msgid "selected"
+msgstr "selezionato"
+
+#: modules/keyring_main.php:584
+msgid "signing key"
+msgstr "chiave di firma"
+
+#: modules/genkey.php:97 modules/getstart.php:76 modules/keyring_main.php:635
+msgid "text"
+msgstr "testo"
+
+#: modules/keyring_main.php:578
+msgid "trusted key"
+msgstr "chiave fidata"
+
+#: modules/genkey_keygen.php:218
+msgid "try again"
+msgstr "prova di nuovo"
+
+#: modules/gpgdecrypt.mod:697
+msgid "writes"
+msgstr "scrive"

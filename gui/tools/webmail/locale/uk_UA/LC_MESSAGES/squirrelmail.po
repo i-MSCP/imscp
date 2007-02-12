@@ -1,0 +1,4425 @@
+# SquirrelMail Ukrainian translation
+# Copyright (c) 2005-2006 SquirrelMail Project Team
+# Khohlov Sergii <sergkh@westlucky.net>, 2004.
+# Serhij Dubyk <dubyk@library.lviv.ua>, 2006
+# $Id: squirrelmail.po,v 1.8 2006/06/21 19:25:22 tokul Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: SquirrelMail 1.5.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-16 19:47+0200\n"
+"PO-Revision-Date: 2006-03-07 19:05+0200\n"
+"Last-Translator: Сергій Дубик <dubyk@library.lviv.ua>\n"
+"Language-Team: Ukrainian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Ukrainian\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Address Book"
+msgstr "Адресна книга"
+
+msgid "All"
+msgstr "Усе"
+
+msgid "To"
+msgstr "До"
+
+msgid "Cc"
+msgstr "Копія"
+
+msgid "Name"
+msgstr "Ім'я"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Info"
+msgstr "Інформація"
+
+msgid "Source"
+msgstr "Від кого"
+
+msgid "Bcc"
+msgstr "Прихована копія"
+
+msgid "Use Addresses"
+msgstr "Викорстовувати адресу"
+
+msgid "Cancel"
+msgstr "Відміна"
+
+msgid "Address Book Search"
+msgstr "Пошук у адресній книзі"
+
+msgid "Search for"
+msgstr "Шукати за"
+
+msgid "in"
+msgstr "у"
+
+msgid "All address books"
+msgstr "Усі адресні книги"
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "List all"
+msgstr "Скласти список усього"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "Неможливо створити список адрес зі %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "Ваш пошук не вдався у зв'язку з наступними помилками"
+
+msgid "No persons matching your search were found"
+msgstr "За заданими умовами пошуку нічого не знайдено"
+
+msgid "Return"
+msgstr "Повернутися"
+
+msgid "Close"
+msgstr "Закрити"
+
+msgid "Nickname"
+msgstr "Прізвисько"
+
+msgid "Must be unique"
+msgstr "Повинно бути унікальне"
+
+msgid "E-mail address"
+msgstr "Адреса електронної пошти"
+
+msgid "Last name"
+msgstr "Прізвище"
+
+msgid "First name"
+msgstr "Ім'я"
+
+msgid "Additional info"
+msgstr "Додаткова інформація"
+
+msgid "Add to:"
+msgstr "Додати до:"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Не знайдено особисту адресну книгу. Зверніться до адміністратора."
+
+msgid "You can only edit one address at the time"
+msgstr "Можна редагувати лише одну адресу одночасно"
+
+msgid "Update address"
+msgstr "Оновити адресу"
+
+msgid "ERROR"
+msgstr "ПОМИЛКА"
+
+msgid "Please select address that you want to edit"
+msgstr "Виберіть адресу для зміни"
+
+msgid "Add address"
+msgstr "Додати адресу"
+
+msgid "Edit selected"
+msgstr "Змінити вибране"
+
+msgid "Delete selected"
+msgstr "Видалити вибране"
+
+msgid "sort by nickname"
+msgstr "сортувати за прізвиськами"
+
+msgid "sort by name"
+msgstr "сортувати за іменем"
+
+msgid "sort by email"
+msgstr "сортувати за електронною поштою"
+
+msgid "sort by info"
+msgstr "сортувати за інформацією"
+
+#, php-format
+msgid "Add to %s"
+msgstr "Додати до %s"
+
+#. * To translators: %s is for author's name
+#, php-format
+msgid "%s wrote:"
+msgstr "%s пише:"
+
+msgid "quote"
+msgstr "цитата"
+
+msgid "who"
+msgstr "хто"
+
+#. * To translators:
+#. *  first %s is for date string, second %s is for author's name. Date uses
+#. *  formating from "D, F j, Y g:i a" and "D, F j, Y H:i" translations.
+#. * Example string:
+#. *  "On Sat, December 24, 2004 23:59, Santa wrote:"
+#. * If you have to put author's name in front of date string, check comments about
+#. * argument swapping at http://www.php.net/sprintf
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr "У листі від %s %s пише:"
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "From"
+msgstr "Від"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Original Message"
+msgstr "Вихідний лист"
+
+msgid "Draft Email Saved"
+msgstr "Чернетка листа збережена"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "Неможливо перемісити чи скопіювати файл. Файл не приєднано"
+
+msgid "Draft Saved"
+msgstr "Чернетка збережена"
+
+msgid "Your Message has been sent."
+msgstr "Ваш лист відправлено."
+
+msgid "From:"
+msgstr "Від:"
+
+msgid "Send"
+msgstr "Відправити"
+
+msgid "Attach:"
+msgstr "Приєднання:"
+
+msgid "Add"
+msgstr "Додати"
+
+msgid "Delete selected attachments"
+msgstr "Видалити вибрані додатки"
+
+msgid "Because PHP file uploads are turned off, you can not attach files to this message. Please see your system administrator for details."
+msgstr "Завантаження файлів на сервер заборонене у параметрах PHP. Вкласти файл у лист неможливо. Зверніться до системного адміністратора."
+
+msgid "Priority"
+msgstr "Пріоритет "
+
+msgid "High"
+msgstr "Високий"
+
+msgid "Normal"
+msgstr "Нормальний"
+
+msgid "Low"
+msgstr "Низький"
+
+msgid "Receipt"
+msgstr "Підтвердження"
+
+msgid "On Read"
+msgstr "прочитання"
+
+msgid "On Delivery"
+msgstr "отримання"
+
+msgid "Signature"
+msgstr "Підпис"
+
+msgid "Addresses"
+msgstr "Адреси"
+
+msgid "Save Draft"
+msgstr "Зберегти чернетку"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "Ви не заповнили поле \"Кому:\"."
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Помилка: тека чернеток %s не існує."
+
+msgid "Server replied:"
+msgstr "Відповідь сервера:"
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "Неправильна назва теки. Будь-ласка виберіть інше ім'я."
+
+msgid "Click here to go back"
+msgstr "Клацніть тут, щоб вернутися"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Ви не вибрали теку для видалення. Будь-ласка зробіть це."
+
+msgid "Delete Folder"
+msgstr "Видалити теку"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Видалити %s?"
+
+msgid "Yes"
+msgstr "Так"
+
+msgid "No"
+msgstr "Ні"
+
+msgid "Folders"
+msgstr "Теки"
+
+msgid "Subscribed successfully."
+msgstr "Підписка здійснена вдало."
+
+msgid "Unsubscribed successfully."
+msgstr "Підписка анульована успішно."
+
+msgid "Deleted folder successfully."
+msgstr "Тека видалена успішно."
+
+msgid "Created folder successfully."
+msgstr "Тека створена успішно."
+
+msgid "Renamed successfully."
+msgstr "Перейменовано успішно."
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "Помилка при підписці: тека не існує."
+
+msgid "refresh folder list"
+msgstr "оновити список тек"
+
+msgid "Create Folder"
+msgstr "Створити теку"
+
+msgid "as a subfolder of"
+msgstr "як підтеку від"
+
+msgid "None"
+msgstr "Немає"
+
+msgid "Let this folder contain subfolders"
+msgstr "Дозволити цій теці мати підтеки"
+
+msgid "Create"
+msgstr "Створити"
+
+msgid "Rename a Folder"
+msgstr "Перейменувати теку"
+
+msgid "Select a folder"
+msgstr "Вибрати теку"
+
+msgid "Rename"
+msgstr "Перейменувати"
+
+msgid "No folders found"
+msgstr "Тек не знайдено"
+
+msgid "Delete"
+msgstr "Видалити"
+
+msgid "Unsubscribe"
+msgstr "Відписатися"
+
+msgid "Subscribe"
+msgstr "Підписатися"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "Не знайдено тек для відписки!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "Не знайдено тек для підписки!"
+
+msgid "Subscribe to:"
+msgstr "Підпишіться на:"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "Ви не вибрали теку для перейменування. Будь-ласка зробіть це."
+
+msgid "Rename a folder"
+msgstr "Перейменувати теку"
+
+msgid "New name:"
+msgstr "Нове ім'я:"
+
+msgid "Submit"
+msgstr "Задіяти"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "ПОМИЛКА: невірний формат файлів довідки."
+
+msgid "Help"
+msgstr "Довідка"
+
+msgid "The help has not been translated to the selected language. It will be displayed in English instead."
+msgstr "Ця допомога не перекладена на вибрану мову. Натомість буде відображитись англійською."
+
+msgid "Some or all of the help documents are not present!"
+msgstr "Деякі чи всі документи довідки відсутні!"
+
+msgid "Table of Contents"
+msgstr "Таблиця змісту"
+
+msgid "Previous"
+msgstr "Попереднє"
+
+msgid "Next"
+msgstr "Наступне"
+
+msgid "Top"
+msgstr "Верх"
+
+msgid "Viewing an image attachment"
+msgstr "Перегляд причепленого малюнку"
+
+msgid "View message"
+msgstr "Перегляд листа"
+
+msgid "Download this as a file"
+msgstr "Зберегти це як файл"
+
+msgid "INBOX"
+msgstr "ВХІДНІ"
+
+msgid "Purge"
+msgstr "Очистити"
+
+msgid "Last Refresh"
+msgstr "Останнє оновлення"
+
+msgid "Check mail"
+msgstr "Перевірити пошту"
+
+msgid "Login"
+msgstr "Вхід"
+
+#, php-format
+msgid "%s Logo"
+msgstr "Логотип %s"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "Версія білки-поштаря (SquirrelMail) %s "
+
+msgid "By the SquirrelMail Project Team"
+msgstr "Розроблено групою проекту SquirrelMail"
+
+#, php-format
+msgid "%s Login"
+msgstr "Вхід у: %s"
+
+msgid "Name:"
+msgstr "Ім'я: "
+
+msgid "Password:"
+msgstr "Пароль: "
+
+msgid "No messages were selected."
+msgstr "Не вибрано жодного листа."
+
+msgid "Options"
+msgstr "Параметри"
+
+msgid "Message Highlighting"
+msgstr "Підсвічування листів"
+
+msgid "New"
+msgstr "Нове правило"
+
+msgid "Done"
+msgstr "Зроблено"
+
+msgid "To or Cc"
+msgstr "кому чи копія"
+
+msgid "subject"
+msgstr "тема"
+
+msgid "Edit"
+msgstr "Редагувати"
+
+msgid "Up"
+msgstr "Вище"
+
+msgid "Down"
+msgstr "Нижче"
+
+msgid "No highlighting is defined"
+msgstr "Жодного підсвічування не означено"
+
+msgid "Identifying name"
+msgstr "Ідентифікація імені"
+
+msgid "Color"
+msgstr "Колір"
+
+msgid "Dark Blue"
+msgstr "Темно синій"
+
+msgid "Dark Green"
+msgstr "Темно зелений"
+
+msgid "Dark Yellow"
+msgstr "Темно жовтий"
+
+msgid "Dark Cyan"
+msgstr "Темний ціан"
+
+msgid "Dark Magenta"
+msgstr "Темний червоно-аніліновий"
+
+msgid "Light Blue"
+msgstr "Світло синій"
+
+msgid "Light Green"
+msgstr "Світло зелений"
+
+msgid "Light Yellow"
+msgstr "Світло жовтий"
+
+msgid "Light Cyan"
+msgstr "Світлий ціан"
+
+msgid "Light Magenta"
+msgstr "Світлий червоно-аніліновий"
+
+msgid "Dark Gray"
+msgstr "Темно-сірий"
+
+msgid "Medium Gray"
+msgstr "Середньо-сірий"
+
+msgid "Light Gray"
+msgstr "Світло-сірий"
+
+msgid "White"
+msgstr "Білий"
+
+msgid "Other:"
+msgstr "Інший:"
+
+msgid "Ex: 63aa7f"
+msgstr "Приклад: 63aa7f"
+
+msgid "Matches"
+msgstr "Співпадіння"
+
+msgid "Default Identity"
+msgstr "Ідентифікація по умовчанню"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Альтернативний профіль %d"
+
+msgid "Add a New Identity"
+msgstr "Додати новий профіль"
+
+msgid "Advanced Identities"
+msgstr "Додаткова ідентифікація"
+
+msgid "Full Name"
+msgstr "Повне ім'я"
+
+msgid "E-Mail Address"
+msgstr "Адреса e-mail"
+
+msgid "Reply To"
+msgstr "Адреса для відповідей"
+
+msgid "Save / Update"
+msgstr "Зберегти / оновити"
+
+msgid "Make Default"
+msgstr "Використовувати за умовчанням"
+
+msgid "Move Up"
+msgstr "Підняти догори"
+
+msgid "Index Order"
+msgstr "Порядок індексації"
+
+msgid "Checkbox"
+msgstr "Маркер"
+
+msgid "Flags"
+msgstr "Прапорці"
+
+msgid "Size"
+msgstr "Розмір"
+
+msgid "The index order is the order that the columns are arranged in the message index. You can add, remove, and move columns around to customize them to fit your needs."
+msgstr "Порядок індексації - це порядок, в якому листи відображаються у теці. Стовпці можна додавати, видаляти або переміщати на свій розсуд."
+
+msgid "up"
+msgstr "догори"
+
+msgid "down"
+msgstr "вниз"
+
+msgid "remove"
+msgstr "видалити"
+
+msgid "Return to options page"
+msgstr "Повернутись до сторінки з параметрами"
+
+msgid "Personal Information"
+msgstr "Особиста інформація"
+
+msgid "Display Preferences"
+msgstr "Налаштування відображення"
+
+msgid "Folder Preferences"
+msgstr "Налаштування теки"
+
+msgid "Error(s) occurred while saving your options"
+msgstr "Помилка при збереженні параметрів"
+
+msgid "Some of your preference changes were not applied."
+msgstr "Деякі зі внесених змін не вступили в силу."
+
+msgid "Successfully Saved Options"
+msgstr "Параметри успішно збережені "
+
+msgid "Refresh Folder List"
+msgstr "Оновити список тек"
+
+msgid "Refresh Page"
+msgstr "Оновити сторінку"
+
+msgid "This contains personal information about yourself such as your name, your email address, etc."
+msgstr "Тут міститься Ваша особиста інформація, така як, Ваше ім'я, адреса електронної пошти та інше."
+
+msgid "You can change the way that SquirrelMail looks and displays information to you, such as the colors, the language, and other settings."
+msgstr "Ви також можете змінити те, як білка-поштар (SquirrelMail) виглядає та відображає інформацію для Вас, таку як кольори, мова та інші налаштування."
+
+msgid "Based upon given criteria, incoming messages can have different background colors in the message list. This helps to easily distinguish who the messages are from, especially for mailing lists."
+msgstr "Листи у вашому ящику можуть підсвічуватися різними кольорами згідно вибраним умовам. Це дозволяє з легкістю відрізняти важливі листи від інших, особливо за наявності списків розсилки."
+
+msgid "These settings change the way your folders are displayed and manipulated."
+msgstr "Тут можна налаштувати параметри різних тек."
+
+msgid "The order of the message index can be rearranged and changed to contain the headers in any order you want."
+msgstr "Тут можна налаштувати розташування заголовків у таблиці листів."
+
+msgid "Message not printable"
+msgstr "Невидрукований лист"
+
+msgid "Attachments:"
+msgstr "Додатки:"
+
+msgid "Unknown sender"
+msgstr "Невідомий відправник"
+
+msgid "Info:"
+msgstr "Інформація:"
+
+msgid "Size:"
+msgstr "Розмір:"
+
+msgid "Type:"
+msgstr "Тип:"
+
+msgid "Invalid URL"
+msgstr "Неправильний URL"
+
+msgid "Printer Friendly"
+msgstr "Версія для друку"
+
+msgid "Print"
+msgstr "Друк"
+
+msgid "View Printable Version"
+msgstr "Переглянути версію, зручну для друку"
+
+msgid "Read:"
+msgstr "Прочитано:"
+
+msgid "Your message"
+msgstr "Ваш лист"
+
+msgid "Sent"
+msgstr "Відправлено"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "Відображався на %s"
+
+msgid "less"
+msgstr "менше"
+
+msgid "more"
+msgstr "більше"
+
+msgid "Mailer"
+msgstr "Поштовик"
+
+msgid "Read receipt"
+msgstr "Повідомлення про читання"
+
+msgid "sent"
+msgstr "послано"
+
+msgid "requested"
+msgstr "запитано"
+
+msgid "The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?"
+msgstr "Відправник листа просить дати знати про те, що Ви читали його лист. Чи Ви б хотіли відправити йому таку звістку?"
+
+msgid "Send read receipt now"
+msgstr "Відправити зараз повідомлення про читання"
+
+msgid "Search Results"
+msgstr "Результат пошуку"
+
+msgid "Message List"
+msgstr "Список листів"
+
+msgid "Resume Draft"
+msgstr "Продовжити чернетку"
+
+msgid "Edit Message as New"
+msgstr "Редагувати лист як новий"
+
+msgid "View Message"
+msgstr "Перегляд листа"
+
+msgid "Forward"
+msgstr "Переслати"
+
+msgid "Forward as Attachment"
+msgstr "Переслати як додаток"
+
+msgid "Reply"
+msgstr "Відповісти"
+
+msgid "Reply All"
+msgstr "Відповісти всім"
+
+msgid "View Full Header"
+msgstr "Показати повний заголовок"
+
+msgid "Attachments"
+msgstr "Додатки"
+
+msgid "You must be logged in to access this page."
+msgstr "Ви повинні ввійти, щоб мати доступ до цієї сторінки."
+
+msgid "Folder:"
+msgstr "Тека:"
+
+msgid "edit"
+msgstr "редагувати"
+
+msgid "search"
+msgstr "пошук"
+
+msgid "delete"
+msgstr "видалити"
+
+msgid "Recent Searches"
+msgstr "Недавні пошуки"
+
+msgid "save"
+msgstr "зберегти"
+
+msgid "forget"
+msgstr "забути"
+
+msgid "Current Search"
+msgstr "Поточний пошук"
+
+msgid "All Folders"
+msgstr "Усі теки"
+
+msgid "Body"
+msgstr "Тіло"
+
+msgid "Everywhere"
+msgstr "Усюди"
+
+msgid "No Messages Found"
+msgstr "Повідомлень не знайдено"
+
+msgid "Signout"
+msgstr "Вийти"
+
+msgid "Sign Out"
+msgstr "Завершити сеанс"
+
+msgid "You have been successfully signed out."
+msgstr "Сеанс роботи закінчений."
+
+msgid "Click here to log back in."
+msgstr "Клацніть тут щоб увійти."
+
+msgid "Viewing a Business Card"
+msgstr "Перегляд візитки"
+
+#, php-format
+msgid "vCard Version %s is not supported. Some information might not be converted correctly."
+msgstr "Версія vcard %s не підтримується. Можливо, частина інформації була перетворена з помилками."
+
+msgid "Title"
+msgstr "Заголовок"
+
+msgid "Web Page"
+msgstr "Веб-сторінка"
+
+msgid "Organization / Department"
+msgstr "Організація / відділ"
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Work Phone"
+msgstr "Робочий телефон"
+
+msgid "Home Phone"
+msgstr "Домашній телефон"
+
+msgid "Cellular Phone"
+msgstr "Мобільний телефон"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Note"
+msgstr "Примітка"
+
+msgid "Add to address book"
+msgstr "Додати до адресної книги"
+
+msgid "Title & Org. / Dept."
+msgstr "Заголовок та організація / відділ"
+
+msgid "Viewing Full Header"
+msgstr "Перегляд повного заголовка"
+
+msgid "Viewing a text attachment"
+msgstr "Перегляд текстового додатку"
+
+msgid "Could not include PEAR database functions required for the database backend."
+msgstr "Не вдалося підключити функції PEAR для роботи з сервером баз даних."
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr "Перевірте, чи встановлений PEAR та чи вірно вказаний шлях пошуку %s."
+
+msgid "Please contact your system administrator and report this error."
+msgstr "Будь-ласка зверніться до Вашого системного адміністратора та повідомте про цю помилку."
+
+msgid "Personal address book"
+msgstr "Особиста адресна книга"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "Помилка бази данних: %s "
+
+msgid "Addressbook is read-only"
+msgstr "Адресна книга доступна лише для читання"
+
+#. i18n: don't use html formating in translation
+#, php-format
+msgid "User \"%s\" already exists"
+msgstr "Користувач \"%s\" вже існує"
+
+#. i18n: don't use html formating in translation
+#, php-format
+msgid "User \"%s\" does not exist"
+msgstr "Користувач \"%s\" не існує"
+
+msgid "Not a file name"
+msgstr "Не ім'я файлу"
+
+msgid "No such file or directory"
+msgstr "Не знайдено файл чи теку"
+
+msgid "Open failed"
+msgstr "Не вдалося відкрити"
+
+msgid "Write failed"
+msgstr "Помилка запису"
+
+msgid "Unable to update"
+msgstr "Не вдається оновити"
+
+msgid "Could not lock datafile"
+msgstr "Не вдалося заблокувати файл з даними"
+
+msgid "Write to addressbook failed"
+msgstr "Невдалося записати до адресної книги"
+
+msgid "Error initializing addressbook database."
+msgstr "Помилка ініціалізації бази даних для адресної книги."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "Помилка відкриття файлу %s"
+
+msgid "Global address book"
+msgstr "Спільна адресна книга"
+
+msgid "Error initializing global addressbook."
+msgstr "Помилка ініціалізації спільної адресної книги."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Помилка ініціалізації LDAP-сервера %s:"
+
+msgid "Click here to change the sorting of the address list"
+msgstr "Клацніть тут, щоб змінити порядок сортування адрес"
+
+msgid "Invalid input data"
+msgstr "Помилкові вхідні дані"
+
+msgid "Name is missing"
+msgstr "Відсутнє ім'я"
+
+msgid "E-mail address is missing"
+msgstr "Адреса електронної пошти відсутня"
+
+msgid "Nickname contains illegal characters"
+msgstr "Прізвисько містить заборонені символи"
+
+msgid "View"
+msgstr "Перегляд"
+
+msgid "View Business Card"
+msgstr "Перегляд візитки"
+
+msgid "Sunday"
+msgstr "Неділя"
+
+msgid "Monday"
+msgstr "Понеділок"
+
+msgid "Tuesday"
+msgstr "Вівторок"
+
+msgid "Wednesday"
+msgstr "Середа"
+
+msgid "Thursday"
+msgstr "Четвер"
+
+msgid "Friday"
+msgstr "П'тниця"
+
+msgid "Saturday"
+msgstr "Субота"
+
+msgid "Sun"
+msgstr "Неділя"
+
+msgid "Mon"
+msgstr "Понеділок"
+
+msgid "Tue"
+msgstr "Вівторок"
+
+msgid "Wed"
+msgstr "Середа"
+
+msgid "Thu"
+msgstr "Четвер"
+
+msgid "Fri"
+msgstr "П'ятниця"
+
+msgid "Sat"
+msgstr "Субота"
+
+msgid "January"
+msgstr "Січень"
+
+msgid "February"
+msgstr "Лютий"
+
+msgid "March"
+msgstr "Березень"
+
+msgid "April"
+msgstr "Квітень"
+
+msgid "May"
+msgstr "Травень"
+
+msgid "June"
+msgstr "Червень"
+
+msgid "July"
+msgstr "Липень"
+
+msgid "August"
+msgstr "Серпень"
+
+msgid "September"
+msgstr "Вересень"
+
+msgid "October"
+msgstr "Жовтень"
+
+msgid "November"
+msgstr "Листопад"
+
+msgid "December"
+msgstr "Грудень"
+
+msgid "Jan"
+msgstr "Січень"
+
+msgid "Feb"
+msgstr "Лютий"
+
+msgid "Mar"
+msgstr "Березень"
+
+msgid "Apr"
+msgstr "Квітень"
+
+msgid "Ma&#121;"
+msgstr "Травень"
+
+msgid "Jun"
+msgstr "Червень"
+
+msgid "Jul"
+msgstr "Липень"
+
+msgid "Aug"
+msgstr "Серпень"
+
+msgid "Sep"
+msgstr "Вересень"
+
+msgid "Oct"
+msgstr "Жовтень"
+
+msgid "Nov"
+msgstr "Листопад"
+
+msgid "Dec"
+msgstr "Грудень"
+
+msgid "D, F j, Y g:i a"
+msgstr "D, d M Y, H:i"
+
+msgid "D, F j, Y H:i"
+msgstr "D, d M Y, H:i"
+
+msgid "M j, Y"
+msgstr "j M Y"
+
+msgid "g:i a"
+msgstr "H:i"
+
+msgid "H:i"
+msgstr "H:i"
+
+msgid "D, g:i a"
+msgstr "D, H:i"
+
+msgid "D, H:i"
+msgstr "D, H:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "Помилка налаштувань бази данних (%s). Вихід через помилку"
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "Натисніть тут щоб повернутись до %s"
+
+msgid "Go to the login page"
+msgstr "Перейти на сторінку входу"
+
+#, php-format
+msgid "Preference file, %s, does not exist. Log out, and log back in to create a default preference file."
+msgstr "Файл налаштувань %s не існує. Вийдіть та зайдіть щоб створити файл налаштувань по умовчанню."
+
+#, php-format
+msgid "Preference file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "Файл налаштувань, %s, не вдається відкрити. Зверніться до Вашого системного адміністратора, щоб вирішити цю проблему."
+
+#, php-format
+msgid "Preference file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "Файл налаштувань, %s, не вдається записати. Зверніться до Вашого системного адміністратора, щоб вирішити цю проблему."
+
+#, php-format
+msgid "Preference file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "Не вдається скопіювати файл параметрів %s з тимчасового файлу %s. Зв'яжіться з системним адміністратором."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "Помилка відкриття %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "Заданий по умовчанню файл налаштувань не знайдений або ж не вдається прочитати!"
+
+msgid "Could not create initial preference file!"
+msgstr "Неможливо створити початковий файл налаштувань"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s вимагає права доступу для %s"
+
+msgid "Signature is too big."
+msgstr "Підпис занадто великий."
+
+#, php-format
+msgid "Signature file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "Файл підпису, %s, не вдалося відкрити. Зверніться до Вашого системного адміністратора, щоб вирішити цю проблему."
+
+#, php-format
+msgid "Signature file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "Файл підпису, %s, не вдалося записати. Зверніться до Вашого системного адміністратора, щоб вирішити цю проблему."
+
+#, php-format
+msgid "Signature file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "Не вдається скопіювати файл підпису %s з тимчасового файлу %s. Зв'яжіться з системним адміністратором."
+
+msgid "You need to have PHP installed with the multibyte string function enabled (using configure option --enable-mbstring)."
+msgstr "Потрібна установка PHP з підтримкою модуля многобайтних рядків (з опцією configure --with-mbstring)."
+
+msgid "ERROR: No available IMAP stream."
+msgstr "ПОМИЛКА: Дані IMAP недоступні."
+
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "ПОМИЛКА: Пропущене підключення до IMAP-сервера."
+
+msgid "ERROR: Could not complete request."
+msgstr "ПОМИЛКА: Не вдалося завершити запит."
+
+msgid "Query:"
+msgstr "Запит:"
+
+msgid "Reason Given:"
+msgstr "Причина: "
+
+msgid "ERROR: Bad or malformed request."
+msgstr "ПОМИЛКА: Поганий чи несформований запит."
+
+msgid "Server responded:"
+msgstr "Відповідь сервера:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr "ПОМИЛКА: Сервер IMAP закрив з'єднання."
+
+msgid "ERROR: Unknown IMAP response."
+msgstr "ПОМИЛКА: Невідома відповідь сервера IMAP."
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Помилка з'єднання з IMAP-сервером: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr "Сервер IMAP повідомляє, що ідентифікація з незашифрованим паролем заборонена."
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr "Спробуйте вказати механізм ідентифікації Cram-md5 або Digest-md5."
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr "Можливо, TLS також працюватиме."
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "Поганий запит: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "Невідома помилка: %s"
+
+msgid "Read data:"
+msgstr "Читання даних:"
+
+msgid "Unknown user or password incorrect."
+msgstr "Невідомий користувач чи ж пароль помилковий."
+
+msgid "ERROR: Could not append message to"
+msgstr "ПОМИЛКА: Не вдалося доповнити лист до"
+
+msgid "Solution:"
+msgstr "Рішення:"
+
+msgid "Remove unneccessary messages from your folder and start with your Trash folder."
+msgstr "Видаліть непотрібні повідомлення з теки та почніть роботу з теки смітника (trash)."
+
+msgid "(no subject)"
+msgstr "(без теми)"
+
+msgid "Unknown Sender"
+msgstr "Невідомий відправник"
+
+msgid "Unknown response from IMAP server:"
+msgstr "Невідома відповідь від IMAP-сервера:"
+
+msgid "The server couldn't find the message you requested."
+msgstr "Запитане повідомлення не знайдене сервером."
+
+msgid "Most probably your message list was out of date and the message has been moved away or deleted (perhaps by another program accessing the same mailbox)."
+msgstr "Можливо, список повідомлень застарілий, а саме повідомлення було переміщене або видалене (наприклад, іншою програмою, що має доступ до даної поштової скриньки)."
+
+msgid "Unknown date"
+msgstr "Невідома дата"
+
+msgid "A"
+msgstr "О"
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr "Сортування по темах не підтримується сервером IMAP."
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr "Сортування на сервері не підтримується сервером IMAP."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "ЦЯ ТЕКА ПОРОЖНЯ"
+
+msgid "Move Selected To"
+msgstr "Перемістити вибране до:"
+
+msgid "Transform Selected Messages"
+msgstr "Перетворити вибрані листи"
+
+msgid "Move"
+msgstr "Перемістити"
+
+msgid "Expunge"
+msgstr "Очистити"
+
+msgid "mailbox"
+msgstr "скринька"
+
+msgid "Read"
+msgstr "Прочитане"
+
+msgid "Unread"
+msgstr "Непрочитане"
+
+msgid "Unthread View"
+msgstr "Прибрати сортування по темах"
+
+msgid "Thread View"
+msgstr "Сортувати за темами"
+
+msgid "Toggle All"
+msgstr "Перемкнути усе"
+
+msgid "Unselect All"
+msgstr "Скасувати вибір усього"
+
+msgid "Select All"
+msgstr "Вибрати усе"
+
+#, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "Перегляд листів: з %s по %s (%s усього)"
+
+#, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "Перегляд листа: %s (%s усього)"
+
+msgid "Paginate"
+msgstr "Розбити на сторінки"
+
+msgid "Show All"
+msgstr "Показати усе"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "Не вдається розкодувати структуру тіла листа."
+
+msgid "The bodystructure provided by your IMAP server:"
+msgstr ""
+
+msgid "Body retrieval error. The reason for this is most probably that the message is malformed."
+msgstr ""
+
+msgid "Command:"
+msgstr "Команда:"
+
+msgid "Response:"
+msgstr "Відповідь:"
+
+msgid "Message:"
+msgstr "Лист:"
+
+msgid "FETCH line:"
+msgstr "Команда FETCH:"
+
+msgid "Hide Unsafe Images"
+msgstr "Приховувати небезпечні малюнки"
+
+msgid "View Unsafe Images"
+msgstr "Показувати небезпечні малюнки"
+
+msgid "Download"
+msgstr "Завантаження"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_uk_UA.png"
+
+msgid "This external link will open in a new window"
+msgstr "Зовнішнє посилання буде відкрито у новому вікні"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "Параметр '%s' не знайдений"
+
+msgid "Current Folder"
+msgstr "Поточна тека"
+
+msgid "Compose"
+msgstr "Створити"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "Помилка створення теки %s."
+
+msgid "Could not create hashed directory structure!"
+msgstr "Помилка створення хеш-теки!"
+
+msgid "Service not available, closing channel"
+msgstr "Сервіс недоступний, завершення з'єднання"
+
+msgid "A password transition is needed"
+msgstr "Необхідна передача пароля"
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "Запит не виконаний: поштова скринька недоступна"
+
+msgid "Requested action aborted: error in processing"
+msgstr "Запит перерваний: помилка при виконанні"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "Запит не виконаний: недостатньо місця на диску"
+
+msgid "Temporary authentication failure"
+msgstr "Ідентифікація не виконана"
+
+msgid "Syntax error; command not recognized"
+msgstr "Синтаксична помилка: команда не розпізнана"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "Синтаксична помилка в параметрах або аргументах"
+
+msgid "Command not implemented"
+msgstr "Команда не підтримується"
+
+msgid "Bad sequence of commands"
+msgstr "Неприпустима послідовність команд"
+
+msgid "Command parameter not implemented"
+msgstr "Параметр команди не підтримується"
+
+msgid "Authentication required"
+msgstr "Потрібна ідентифікація"
+
+msgid "Authentication mechanism is too weak"
+msgstr "Механізм ідентифікації небезпечний"
+
+msgid "Authentication failed"
+msgstr "Помилка входу"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "Запитаний механізм ідентифікації вимагає шифрування"
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "Запит не виконаний: поштова скринька недоступна"
+
+msgid "User not local; please try forwarding"
+msgstr "Користувач не на локальному сервері; використовуйте пересилання"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr "Запит не виконаний: перевищена квота зберігання"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "Запит не виконаний: неприпустиме ім'я поштової скриньки"
+
+msgid "Transaction failed"
+msgstr "Помилка транзакції"
+
+msgid "Unknown response"
+msgstr "Невідома відповідь"
+
+msgid "General Display Options"
+msgstr "Загальні параметри відображення"
+
+msgid "Theme"
+msgstr "Тема"
+
+msgid "Default"
+msgstr "По умовчанню"
+
+msgid "Custom Stylesheet"
+msgstr "Особливий стиль"
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "Use Javascript"
+msgstr "Використовувати Java-скрипти"
+
+msgid "Autodetect"
+msgstr "Автовизначення"
+
+msgid "Always"
+msgstr "Завжди"
+
+msgid "Never"
+msgstr "Ніколи"
+
+msgid "Mailbox Display Options"
+msgstr "Параметри відображення скриньки"
+
+msgid "Number of Messages per Page"
+msgstr "Кількість листів на сторінку"
+
+msgid "Enable Alternating Row Colors"
+msgstr "Використовувати чергуючі кольори рядків"
+
+msgid "Enable Page Selector"
+msgstr "Дозволити вибір сторінок"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "Максимальна кількість сторінок для відображення"
+
+msgid "Always Show Full Date"
+msgstr "Показувати повну дату"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr "Довжина полів 'Від' та 'Кому' (0 - без обмежень)"
+
+msgid "Length of Subject Field (0 for full)"
+msgstr "Довжина поля 'Тема' (0 - без обмежень)"
+
+msgid "Message Display and Composition"
+msgstr "Складання листа"
+
+msgid "Wrap Incoming Text At"
+msgstr "Переносити текстові рядки через "
+
+msgid "Width of Editor Window"
+msgstr "Ширина вікна редактора"
+
+msgid "Height of Editor Window"
+msgstr "Висота вікна редактора"
+
+msgid "Location of Buttons when Composing"
+msgstr "Розташування кнопок при створенні"
+
+msgid "Before headers"
+msgstr "Перед заголовками"
+
+msgid "Between headers and message body"
+msgstr "Між заголовками та тілом листа"
+
+msgid "After message body"
+msgstr "Після тіла листа"
+
+msgid "Addressbook Display Format"
+msgstr "Формат адресної книги"
+
+msgid "Javascript"
+msgstr "Javascript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Show HTML Version by Default"
+msgstr "Відображати HTML-версію по умовчанню"
+
+msgid "Enable Forward as Attachment"
+msgstr "Включити перенаправлення вкладенням"
+
+msgid "Include CCs when Forwarding Messages"
+msgstr "Додавати поле \" Копія\" при пересиланні листів"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "Додавати мене у поле \"копія\" коли я \"відповідаю всім\""
+
+msgid "Enable Mailer Display"
+msgstr "Показувати поштову програму"
+
+msgid "Display Attached Images with Message"
+msgstr "Показувати вкладені зображення"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "Вклячити, зручне для друку, очищення сторінки"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "Ввімкнути повідомлення про доставку"
+
+msgid "Compose Messages in New Window"
+msgstr "Редагувати листи у новому вікні"
+
+msgid "Width of Compose Window"
+msgstr "Ширина вікно редагування"
+
+msgid "Height of Compose Window"
+msgstr "Висота вікна редагування"
+
+msgid "Append Signature before Reply/Forward Text"
+msgstr "Додавати підпис у текст відповіді/пересилання"
+
+msgid "Prefix for Original Message when Replying"
+msgstr "Стиль цитування при відповіді"
+
+msgid "Cursor Position when Replying"
+msgstr "Позиція курсора при відповіді"
+
+msgid "To: field"
+msgstr "У полі 'Кому':"
+
+msgid "Focus in body"
+msgstr "У тілі листа"
+
+msgid "Select body"
+msgstr "Вибрати тіло"
+
+msgid "No focus"
+msgstr "Фокус не заданий"
+
+msgid "Sort by Received Date"
+msgstr "Сортування за датою отримання"
+
+msgid "Enable Thread Sort by References Header"
+msgstr ""
+
+msgid "Special Folder Options"
+msgstr "Налаштування спеціальних тек"
+
+msgid "Folder Path"
+msgstr "Шлях до тек"
+
+msgid "Do not use Trash"
+msgstr "Не використовувати смітник"
+
+msgid "Trash Folder"
+msgstr "Тека смітника"
+
+msgid "Do not use Drafts"
+msgstr "Не використовувати чернетки"
+
+msgid "Draft Folder"
+msgstr "Тека чернеток"
+
+msgid "Do not use Sent"
+msgstr "Не копіювати лист у теку Відправлені (Sent)"
+
+msgid "Sent Folder"
+msgstr "Тека відправлених"
+
+msgid "Folder List Options"
+msgstr "Параметри списку тек"
+
+msgid "Location of Folder List"
+msgstr "Розташуваня списку тек"
+
+msgid "Left"
+msgstr "Зліва"
+
+msgid "Right"
+msgstr "Справа"
+
+msgid "pixels"
+msgstr "пікселі"
+
+msgid "Width of Folder List"
+msgstr "Ширина списку тек"
+
+msgid "Minutes"
+msgstr "Хвилин"
+
+msgid "Seconds"
+msgstr "Секунд"
+
+msgid "Minute"
+msgstr "Хвилина"
+
+msgid "Auto Refresh Folder List"
+msgstr "Автооновлювати список тек"
+
+msgid "Enable Unread Message Notification"
+msgstr "Ввімкнути повідомлення про читання"
+
+msgid "No Notification"
+msgstr "Немає повідомлень"
+
+msgid "Only INBOX"
+msgstr "Лише ВХІДНІ"
+
+msgid "Unread Message Notification Type"
+msgstr "Тип повідомлення про непрочитані повідомлення"
+
+msgid "Only Unseen"
+msgstr "Тільки непрочитані"
+
+msgid "Unseen and Total"
+msgstr "Непрочитані та загалом"
+
+msgid "Enable Collapsable Folders"
+msgstr "Використовувати теки, що згортаються"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "Ввімкнути повідомлення про блок непрочитаних листів"
+
+msgid "Show Clock on Folders Panel"
+msgstr "Показувати годинник на панелі тек"
+
+msgid "International date and time"
+msgstr "Міжнародна дата та час"
+
+msgid "American date and time"
+msgstr "Дата і час США"
+
+msgid "European date and time"
+msgstr "Європейська дата і час"
+
+msgid "Show weekday and time"
+msgstr "Показувати день тижня і час"
+
+msgid "Show time with seconds"
+msgstr "Показувати секунди"
+
+msgid "Show time"
+msgstr "Показувати час"
+
+msgid "No Clock"
+msgstr "Без годинника"
+
+msgid "Hour Format"
+msgstr "Формат часу"
+
+msgid "12-hour clock"
+msgstr "12-годдиний час"
+
+msgid "24-hour clock"
+msgstr "24-годдиний час"
+
+msgid "Memory Search"
+msgstr "Пошук у пам'яті"
+
+msgid "Disabled"
+msgstr "Вимкнено"
+
+msgid "Folder Selection Options"
+msgstr "Параметри вибору теки"
+
+msgid "Selection List Style"
+msgstr "Стиль списку вибору"
+
+msgid "Long:"
+msgstr "Детально:"
+
+msgid "Folder"
+msgstr "Тека"
+
+msgid "Subfolder"
+msgstr "Підтека"
+
+msgid "Indented:"
+msgstr "З відступом:"
+
+msgid "Delimited:"
+msgstr "Відмежовано:"
+
+msgid "Name and Address Options"
+msgstr "Опції імен та адрес"
+
+msgid "E-mail Address"
+msgstr "Адреса електронної пошти"
+
+msgid "Edit Advanced Identities"
+msgstr "Змінити додаткові профілі"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(відхилити зміни та скинути форму)"
+
+msgid "Multiple Identities"
+msgstr "Декілька профілів"
+
+msgid "Same as server"
+msgstr "Як на сервері"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr "Помилка при визначенні часової зони. Зв'яжіться з системним адміністратором."
+
+msgid "Timezone Options"
+msgstr "Параметри часового поясу"
+
+msgid "Your current timezone"
+msgstr "Ваш часовий пояс"
+
+msgid "Reply Citation Options"
+msgstr "Параметри цитування у відповідь"
+
+msgid "Reply Citation Style"
+msgstr "Стиль цитування у відповідь"
+
+msgid "No Citation"
+msgstr "Не цитувати"
+
+msgid "AUTHOR Wrote"
+msgstr "АВТОР пише"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr "У листі від DATE, AUTHOR пише"
+
+msgid "Quote Who XML"
+msgstr "Цитувати в XML-стилі"
+
+msgid "User-Defined"
+msgstr "Інакше"
+
+msgid "User-Defined Citation Start"
+msgstr "На початку цитати"
+
+msgid "User-Defined Citation End"
+msgstr "В кінці цитати"
+
+msgid "Signature Options"
+msgstr "Параметри підпису"
+
+msgid "Use Signature"
+msgstr "Використовувати підпис"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Передувати підпис рискою '-- '?"
+
+msgid "Take Address"
+msgstr "Взяти адресу"
+
+msgid "Address Book Take:"
+msgstr "Запис в адресну книгу"
+
+msgid "Try to verify addresses"
+msgstr "Перевірити адреси"
+
+msgid "Config File Version"
+msgstr "Версія файлу конфігурації"
+
+msgid "SquirrelMail Version"
+msgstr "Версія білки-поштаря (SquirrelMail)"
+
+msgid "PHP Version"
+msgstr "Версія PHP"
+
+msgid "Organization Preferences"
+msgstr "Параметри організації"
+
+msgid "Organization Name"
+msgstr "Ім'я організації"
+
+msgid "Organization Logo"
+msgstr "Логотип організації"
+
+msgid "Organization Logo Width"
+msgstr "Ширина логотипу організації (у пікселях)"
+
+msgid "Organization Logo Height"
+msgstr "Висота логотипу організації (у пікселях)"
+
+msgid "Organization Title"
+msgstr "Назва організації"
+
+msgid "Signout Page"
+msgstr "Сторінка виходу"
+
+msgid "Provider Link URI"
+msgstr "Адреса провайдера"
+
+msgid "Provider Name"
+msgstr "Ім'я провайдера"
+
+msgid "Top Frame"
+msgstr "Верхній кадр"
+
+msgid "Server Settings"
+msgstr "Налаштування сервера"
+
+msgid "Mail Domain"
+msgstr "Поштовий домен"
+
+msgid "IMAP Server Address"
+msgstr "Адреса IMAP-сервера"
+
+msgid "IMAP Server Port"
+msgstr "Порт IMAP-сервера"
+
+msgid "IMAP Server Type"
+msgstr "Тип IMAP-сервера"
+
+msgid "Cyrus IMAP server"
+msgstr "IMAP-сервер від Cyrus"
+
+msgid "University of Washington's IMAP server"
+msgstr "IMAP-сервер від Вашингтонського університету"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "IMAP-сервер від Microsoft Exchange"
+
+msgid "Courier IMAP server"
+msgstr "IMAP-сервер від Courier"
+
+msgid "Mac OS X Mailserver"
+msgstr "Поштовий сервер ОС Mac X"
+
+msgid "hMailServer IMAP server"
+msgstr "IMAP-сервер hMailServer"
+
+msgid "Binc IMAP server"
+msgstr "IMAP-сервер від Binc"
+
+msgid "Not one of the above servers"
+msgstr "Жоден з вищезгаданих серверів"
+
+msgid "IMAP Folder Delimiter"
+msgstr "Обмежувач IMAP-тек"
+
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Використовуйте &quot;detect&quot; для автоматичного визначення."
+
+msgid "Use TLS for IMAP Connections"
+msgstr "Використовувати TLS для з'єднань IMAP"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "Потрібний PHP 4.3.x. Недостатньо протестовано."
+
+msgid "IMAP Authentication Type"
+msgstr "Механізм ідентифікації IMAP"
+
+msgid "IMAP login"
+msgstr "Логін IMAP"
+
+msgid "Use Sendmail Binary"
+msgstr "Использовать Sendmail"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr "Виберіть &quot;ні&quot; для SMTP"
+
+msgid "Sendmail Path"
+msgstr "Шлях до Sendmail"
+
+msgid "SMTP Server Address"
+msgstr "Адреса сервера SMTP"
+
+msgid "SMTP Server Port"
+msgstr "Порт сервера SMTP"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "Використовувати TLS для SMTP"
+
+msgid "SMTP Authentication Type"
+msgstr "Механізм ідентифікації SMTP"
+
+msgid "No SMTP auth"
+msgstr "Не використовувати механізм ідентифікації SMTP"
+
+msgid "Login (plain text)"
+msgstr "Логін (чистий текст)"
+
+msgid "POP3 Before SMTP?"
+msgstr "POP3 перед SMTP?"
+
+msgid "Header Encryption Key"
+msgstr "Ключ кодування заголовку"
+
+msgid "Invert Time"
+msgstr "Використовувати зворотний формат для часу"
+
+msgid "Folders Defaults"
+msgstr "Параметри тек за умовчанням"
+
+msgid "Default Folder Prefix"
+msgstr "Префікс за умовчанням (для тек)"
+
+msgid "Show Folder Prefix Option"
+msgstr "Включити опцію вибору префікса"
+
+msgid "By default, move to trash"
+msgstr "За умовчанням переміщати у смітник"
+
+msgid "By default, move to sent"
+msgstr "За умовчанням переміщати до теки \"Відправлені\""
+
+msgid "By default, save as draft"
+msgstr "По замовчуванню записати як чернетку"
+
+msgid "List Special Folders First"
+msgstr "Показувати спеціальні теки першими в списку"
+
+msgid "Show Special Folders Color"
+msgstr "Показувати спеціальні теки іншим кольором"
+
+msgid "Auto Expunge"
+msgstr "Автоматично очищати теки"
+
+msgid "Default Sub. of INBOX"
+msgstr "За умовчанням всі теки створюються як підтеки у 'ВХІДНИХ' (INBOX)"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Показувати опцію \"містить підтеки\""
+
+msgid "Default Unseen Notify"
+msgstr "За умовчанням оповіщати про непрочитані листи"
+
+msgid "Default Unseen Type"
+msgstr "Тип непрочитаних листів за умовчанням"
+
+msgid "Auto Create Special Folders"
+msgstr "Автоматично створювати спеціальні теки"
+
+msgid "Auto delete folders"
+msgstr "Автоматично видаляти теки"
+
+msgid "Enable /NoSelect folder fix"
+msgstr "Виправляти помилку /NoSelect"
+
+msgid "General Options"
+msgstr "Загальні параметри"
+
+msgid "Data Directory"
+msgstr "Тека з параметрами користувачів"
+
+msgid "Temp Directory"
+msgstr "Тека для тимчасових файлів"
+
+msgid "Hash Level"
+msgstr "Рівень хэш-підтек"
+
+msgid "Hash Disabled"
+msgstr "Не використовувати підтеки"
+
+msgid "Moderate"
+msgstr "Небагато"
+
+msgid "Medium"
+msgstr "Середній рівень"
+
+msgid "Default Left Size"
+msgstr "Розмір лівого кадру"
+
+msgid "Usernames in Lowercase"
+msgstr "Ім'я користувача в нижньому регістрі"
+
+msgid "Allow use of priority"
+msgstr "Дозволити використання термінових повідомлень"
+
+msgid "Hide SM attributions"
+msgstr "Не додавати атрибути білки-поштаря (Squiirelmail) до повідомлень"
+
+msgid "Enable use of delivery receipts"
+msgstr "Дозволити використання розписки про доставку"
+
+msgid "Allow editing of identities"
+msgstr "Дозволити зміну профілю"
+
+msgid "Allow editing of full name"
+msgstr "Дозволити зміну повного імені"
+
+msgid "Remove username from headers"
+msgstr ""
+
+msgid "Used only when identities can't be modified"
+msgstr ""
+
+msgid "Use server-side sorting"
+msgstr "Використовувати сортування на сервері"
+
+msgid "Use server-side thread sorting"
+msgstr "Використовувати потокове сортування на стороні сервера"
+
+msgid "Allow server charset search"
+msgstr "Дозволити пошук кодування на сервері"
+
+msgid "UID support"
+msgstr "Підтримка UID"
+
+msgid "PHP session name"
+msgstr "Ім'я сеансу PHP"
+
+msgid "Message of the Day"
+msgstr "Повідомлення дня"
+
+msgid "Database"
+msgstr "База даних"
+
+msgid "Address book DSN"
+msgstr "DSN адресної книги"
+
+msgid "Address book table"
+msgstr "Таблиця адресної книги"
+
+msgid "Preferences DSN"
+msgstr "DSN параметрів"
+
+msgid "Preferences table"
+msgstr "Таблиця параметрів"
+
+msgid "Preferences username field"
+msgstr "Поле імені в таблиці параметрів"
+
+msgid "Preferences key field"
+msgstr "Поле ключа в таблиці параметрів"
+
+msgid "Preferences value field"
+msgstr "Поле значення в таблиці параметрів"
+
+msgid "Global address book DSN"
+msgstr "Спільна адресна книга DSN"
+
+msgid "Global address book table"
+msgstr "Спільна таблиця адресної книги"
+
+msgid "Allow writing into global address book"
+msgstr "Дозволити вписування у спільну адресну книгу"
+
+msgid "Allow listing of global address book"
+msgstr "Дозволити перегляд спільної адресної книги"
+
+msgid "Language settings"
+msgstr "Налаштування мови"
+
+msgid "Default Language"
+msgstr "Мова за умовчанням"
+
+msgid "Default Charset"
+msgstr "Кодування за умовчанням"
+
+msgid "Enable lossy encoding"
+msgstr "Дозволити кодування з втратами символів"
+
+msgid "Address Books"
+msgstr "Адресна книга"
+
+msgid "Default Javascript Addressbook"
+msgstr "Використовувати адресну книгу з Javascript за умовчанням"
+
+msgid "Global address book file"
+msgstr "Спільний файл адресної книги"
+
+msgid "Allow writing into global address book file"
+msgstr "Дозволити запис у спільний файл адресної книги"
+
+msgid "Themes"
+msgstr "Теми"
+
+msgid "Style Sheet URL (css)"
+msgstr "URL сторінки з css-стилями"
+
+msgid "Default theme"
+msgstr "Задана по умовчанню тема"
+
+msgid "Use index number of theme"
+msgstr "Використовувати номер індексу теми"
+
+msgid "Configuration Administrator"
+msgstr "Адміністратор настройки"
+
+msgid "Note: it is recommended that you configure your system using conf.pl, and not this plugin. conf.pl contains additional information regarding the purpose of variables and appropriate values, as well as additional verification steps."
+msgstr "Примітка: рекомендується використовувати conf.pl замість цього модуля. У conf.pl входить додаткова інформація про призначення змінних і їх можливі значення, а також процедури перевірки."
+
+msgid "Run or consult conf.pl should you run into difficulty with your configuration."
+msgstr "При виникненні проблем з настройкою запустите conf.pl."
+
+msgid "Theme Name"
+msgstr "Ім'я теми"
+
+msgid "Theme Path"
+msgstr "Розташування теми"
+
+msgid "Plugins"
+msgstr "Плаґіни"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr "Каталог з плаґінами не знайдений: %s"
+
+msgid "Change Settings"
+msgstr "Змінити параметри"
+
+msgid "Test Configuration"
+msgstr "Перевірити конфігурацію"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr "Файл конфігурації недоступний. Перевірте config.php."
+
+msgid "Administration"
+msgstr "Адміністрування"
+
+msgid "This module allows administrators to manage SquirrelMail main configuration remotely."
+msgstr "Цей модуль дозволяє адміністраторам змінювати параметри білки-поштаря (Squirrelmail) дистанційно."
+
+msgid "Submit a Bug Report"
+msgstr "Відправити повідомлення про помилку"
+
+msgid "Before you send your bug report, please make sure to check this checklist for any common problems."
+msgstr "Перед відправкою повідомлення про помилку прочитайте наступну інформацію."
+
+#, php-format
+msgid "Make sure that you are running the most recent copy of %s. You are currently using version %s."
+msgstr "Переконаєтеся, що встановлена остання версія %s. Поточна використовувана версія - %s."
+
+#, php-format
+msgid "Check to see if your bug is already listed in the %sBug List%s on SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr "Перевірте, чи не входить вже ця помилка в %sСписок помилок%s на Sourceforge. Якщо так, то над її виправленням вже ведеться робота."
+
+msgid "Try to make sure that you can repeat it. If the bug happens sporatically, try to document what you did when it happened. If it always occurs when you view a specific message, keep that message around so maybe we can see it."
+msgstr "Перевірте, чи виникає ця помилка регулярно. Якщо вона виникає від випадку до випадку, запишіть, в якій ситуації вона виникла. Якщо вона завжди виникає при прогляданні конкретного повідомлення, збережете це повідомлення, щоб передати його розробникам, якщо в цьому виникне необхідність."
+
+#, php-format
+msgid "If there were warnings displayed above, try to resolve them yourself. Read the guides in the %s directory where SquirrelMail was installed."
+msgstr "Якщо на сторінці показані попередження, спочатку спробуйте усунути ці попередження. Прочитайте керівництво в каталозі %s установки білки-поштаря (Squirrelmail)."
+
+msgid "Pressing the button below will start a mail message to the developers of SquirrelMail that will contain a lot of information about your system, your browser, how SquirrelMail is set up, and your IMAP server. It will also prompt you for information. Just fill out the sections at the top. If you like, you can scroll down in the message to see what else is being sent."
+msgstr "При натисненні кнопки програма почне складання листа, яке буде відправлено розробникам білки-поштаря (Squirrelmail). До нього увійдуть докладні відомості про систему, версію браузера, параметри Squirrelmail і сервера IMAP. Якісь відомості будуть запитані у вас. Заповніть поля вверху сторінки і перегорніть її до кінця, щоб проглянути всю інформацію, що відправляється."
+
+msgid "Please make sure to fill out as much information as you possibly can to give everyone a good chance of finding and removing the bug. Submitting your bug like this will not have it automatically added to the bug list on SourceForge, but someone who gets your message may add it for you."
+msgstr "Чим докладнішу інформацію ви вкажете, тим легше буде знайти і виправити помилку. При відправці повідомлення воно не буде додано в список помилок на Sourceforge, але спочатку його проглянуть розробники, і вони самі додадуть туди цю помилку, якщо це буде потрібно."
+
+msgid "This bug involves:"
+msgstr "Помилка відноситься до"
+
+msgid "the general program"
+msgstr "програмі в цілому"
+
+msgid "a specific plugin"
+msgstr "окремому плаґіну"
+
+msgid "Start Bug Report Form"
+msgstr "Повідомлення про помилку"
+
+msgid "Bug"
+msgstr "Помилка"
+
+msgid "Bug Reports:"
+msgstr "Відправка повідомлення про помилки:"
+
+msgid "Show button in toolbar"
+msgstr "Показувати кнопку в меню"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "Не вдається записати календарний файл %s"
+
+msgid "TODAY"
+msgstr "СЬОГОДНІ"
+
+msgid "Go"
+msgstr "Далі"
+
+msgid "l, F j Y"
+msgstr "l, F j Y"
+
+msgid "ADD"
+msgstr "ДОДАТИ"
+
+msgid "EDIT"
+msgstr "ЗМІНИТИ"
+
+msgid "DEL"
+msgstr "ВИДАЛИТИ"
+
+msgid "Start time:"
+msgstr "Початок:"
+
+msgid "Length:"
+msgstr "Розмір:"
+
+msgid "Priority:"
+msgstr "Терміновість:"
+
+msgid "Title:"
+msgstr "Заголовок:"
+
+msgid "Set Event"
+msgstr "Зберегти пам'ятку"
+
+msgid "Event Has been added!"
+msgstr "Пам'ятка збережена!"
+
+msgid "Date:"
+msgstr "Дата:"
+
+msgid "Time:"
+msgstr "Час:"
+
+msgid "Day View"
+msgstr "Відкрити день"
+
+msgid "Do you really want to delete this event?"
+msgstr "Видалити цю пам'ятку?"
+
+msgid "Event deleted!"
+msgstr "Пам'ятка видалена!"
+
+msgid "Nothing to delete!"
+msgstr "Нічого видаляти!"
+
+msgid "Update Event"
+msgstr "Змінити пам'ятку"
+
+msgid "Do you really want to change this event from:"
+msgstr "Змінити цю пам'ятку з:"
+
+msgid "to:"
+msgstr "на:"
+
+msgid "Event updated!"
+msgstr "Пам'ятка збережена!"
+
+msgid "Month View"
+msgstr "Відкрити місяць"
+
+msgid "0 min."
+msgstr "0 хв."
+
+msgid "15 min."
+msgstr "15 хв."
+
+msgid "30 min."
+msgstr "30 хв."
+
+msgid "45 min."
+msgstr "45 хв."
+
+msgid "1 hr."
+msgstr "1 год."
+
+msgid "1.5 hr."
+msgstr "1.5 год."
+
+msgid "2 hr."
+msgstr "2 год."
+
+msgid "2.5 hr."
+msgstr "2.5 год."
+
+msgid "3 hr."
+msgstr "3 год."
+
+msgid "3.5 hr."
+msgstr "3.5 год."
+
+msgid "4 hr."
+msgstr "4 год."
+
+msgid "5 hr."
+msgstr "5 год."
+
+msgid "6 hr."
+msgstr "6 год."
+
+msgid "Calendar"
+msgstr "Календар"
+
+msgid "Delete & Prev"
+msgstr "Видалити і назад"
+
+msgid "Delete & Next"
+msgstr "Видалити і далі"
+
+msgid "Move to:"
+msgstr "Перемістити в:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "Кнопки Видалити/Перемістити/Далі:"
+
+msgid "Display at top"
+msgstr "Показувати вгорі"
+
+msgid "with move option"
+msgstr "з опцією переміщення в іншу теку"
+
+msgid "Display at bottom"
+msgstr "показувати знизу"
+
+msgid "COMMERCIAL - This list contains servers that are verified spam senders. It is a pretty reliable list to scan spam from."
+msgstr "ПЛАТНЕ - цей список включає в собі поштові сервери, що розсилають рекламні помідомлення (спам). Його бажано використовувати."
+
+msgid "COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to be relayed through their system will be banned with this. Another good one to use."
+msgstr "ПЛАТНЕ - Поштові сервери які настроєні (зумисно чи помилково) для передачі комерційних повідомлень (спаму)."
+
+msgid "COMMERCIAL - Dial-up users are often filtered out since they should use their ISP's mail servers to send mail. Spammers typically get a dial-up account and send spam directly from there."
+msgstr "ПЛАТНЕ - Деякі спамери використовують власних провайдерів для надсилання пошти. Спамери зазвичай отримують комутований обліковий запис і посилають нав'язливу рекламу безпосередньо звідти."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "ПЛАТНЕ - RBL+ Blackhole список спамерів."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "ПЛАТНЕ - RBL+ список серверних спамерів."
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "ПЛАТНЕ - RBL+ список модемних спамерів."
+
+msgid "FREE - ORDB was born when ORBS went off the air. It seems to have fewer false positives than ORBS did though."
+msgstr "БЕЗКОШТОВНО - ORDB - це заміна серверу ORBS, що пішов в небуття. Іноді працює навіть краще ORBS."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - список серверів, що розсилають спам."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - список спам-серверов дозвону, включаючи деякі адреси IP на DSL."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - сервери розсилки, які підписують, не питаючи дозволу."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - інші сервера, такі, що мають відношення до спаму."
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - сервери, що посилають спам безпосередньо."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - сервери, що підтримують розсилки спаму."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "БЕЗКОШТОВНО - Five-ten-sg.com - Містить список IP-адрес, на яких діють веб-форми."
+
+msgid "FREE - Dorkslayers appears to include only really bad open relays outside the US to avoid being sued. Interestingly enough, their website recommends you NOT use their service."
+msgstr "БЕЗКОШТОВНО - Dorkslayers надають список основних спам-серверов і відкритих пересильщиків за межами США. На своєму сайті вони не рекомендують користуватися їх фільтрами."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "FREE - Spamhaus - список загальновідомих джерел спаму."
+
+msgid "FREE, for now - SpamCop - An interesting solution that lists servers that have a very high spam to legit email ratio (85 percent or more)."
+msgstr "БЕЗКОШТОВНО (на теперішній момент) - Spamcop - фільтруються більшість серверів, через які спаммери намагаються розсилати листи."
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "БЕЗКОШТОВНО - dev.null.dk - недостатньо інформації."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr "БЕЗКОШТОВНО - visi.com - список пересилальників. Дуже консервативний."
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "БЕЗКОШТОВНО - ahbl.com Open Relays - інший список пересилальників."
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "БЕЗКОШТОВНО - ahbl.com SPAM Source - список розсилальників спаму."
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr "БЕЗКОШТОВНО - ahbl.com SPAM ISP - список провайдерів, що підтримують спам."
+
+msgid "FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically assigned IPs."
+msgstr "БЕЗКОШТОВНО - Leadmon DUL - Ще один список діалапщиків і інших адрес, що динамічно призначаються."
+
+msgid "FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM directly from."
+msgstr "БЕЗКОШТОВНО - Leadmon SPAM Source - Список IP-адрес, з яких Leadmon.net отримував спам."
+
+msgid "FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-in or that have allowed known spammers to become clients and abuse their services."
+msgstr "БЕЗКОШТОВНО - Leadmon Bulk Mailers - Сервери, що посилають масові повідомлення без згоди на те підписчиків."
+
+msgid "FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on other active RBLs."
+msgstr "БЕЗКОШТОВНО - Leadmon Open Relays - Список серверів пересилки, які не вказані на інших спам-фільтрах."
+
+msgid "FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr "БЕЗКОШТОВНО - Leadmon Multi-stage - Ще один список відкритих серверів, що розсилають спам."
+
+msgid "FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net direct SPAM from IPs in netblocks where the entire block has no DNS mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed Leadmon.net."
+msgstr "БЕЗКОШТОВНО - Leadmon Spamblock - список блоків IP-адрес, що відправили спам на Leadmon.net."
+
+msgid "FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct SPAM Sources."
+msgstr "БЕЗКОШТОВНО (наразі) - Not Just Another Blacklist - список як рассильщиков, так і пересильщиков спаму."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr "БЕЗКОШТОВНО - Not Just Another Blacklist - Діалап-адреси, що розсилають спам."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr "БЕЗКОШТОВНО - Distributed Sender Boycott List - пересилальники"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr "БЕЗКОШТОВНО - Distributed Sender Boycott List - багатостадійні пересилальники"
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+
+msgid "WARNING! You must enter something to search for."
+msgstr "Попередження: Введіть рядок для пошуку."
+
+msgid "WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr "Попередження: фільтри заголовків повинні мати формат &quot;Заголовок: значення&quot;"
+
+msgid "Saved Scan type"
+msgstr "Параметри перевірки повідомлень успішно збережені"
+
+msgid "Message Filtering"
+msgstr "Фільтри листів"
+
+msgid "What to Scan:"
+msgstr "Перевіряти:"
+
+msgid "All messages"
+msgstr "Усі листи"
+
+msgid "Only unread messages"
+msgstr "Непрочитані листи"
+
+msgid "Save"
+msgstr "Зберегти"
+
+msgid "Match:"
+msgstr "Область пошуку:"
+
+msgid "Header"
+msgstr "Заголовок"
+
+msgid "Contains:"
+msgstr "Містить:"
+
+#, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "Якщо %s містить %s, то перемістити лист до теки %s"
+
+msgid "Message Filters"
+msgstr "Фільтри листів"
+
+msgid "Filtering enables messages with different criteria to be automatically filtered into different folders for easier organization."
+msgstr "Фільтри листів слугують для забезпечення зручної роботи з листами. Листи, співпадаючі з тими або іншими умовами, автоматично переміщатимуться у відповідні теки."
+
+msgid "SPAM Filters"
+msgstr "СПАМ-фільтри"
+
+msgid "SPAM filters allow you to select from various DNS based blacklists to detect junk email in your INBOX and move it to another folder (like Trash)."
+msgstr "СПАМ-фільтри використовують послуги спеціальних серверів для розпізнавання спаму і дозволяють автоматично переміщати ці повідомлення в різні теки (наприклад, до смітника)."
+
+msgid "You must select a spam folder."
+msgstr "Ви повинні вибрати теку нав'язливої реклами-спаму."
+
+msgid "You must select a scan type."
+msgstr "Ви повинні вибрати тип сканування."
+
+msgid "Spam Filtering"
+msgstr "СПАМ-фільтри"
+
+#, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "УВАГА! Попросіть адміністратора налаштувати змінну %s."
+
+msgid "Move spam to:"
+msgstr "Переміщати спам до:"
+
+msgid "Moving spam directly to the trash may not be a good idea at first, since messages from friends and mailing lists might accidentally be marked as spam. Whatever folder you set this to, make sure that it gets cleaned out periodically, so that you don't have an excessively large mailbox hanging around."
+msgstr "Не варто переміщати весь спам відразу в корзину, хоч це і спокусливо, тому що іноді спам-сервера помиляються і позначають звичайні повідомлення як спам. Краще відвести спеціальну теку для цього роду повідомлень і час від часу її проглядати на випадок, якщо туди потрапить невірно відфільтроване повідомлення."
+
+msgid "Unread messages only"
+msgstr "Лише непрочитані листи"
+
+msgid "The more messages scanned, the longer it takes. It's recommended to scan unread messages only. If a change to the filters is made, it's recommended to set it to scan all messages, then go view the INBOX, then come back and set it to scan unread messages only. That way, the new spam filters will be applied and even the spam you didn't catch with the old filters will be scanned."
+msgstr "Чим більше повідомлень ви скануєте, тим довше це займає часу. Краще налаштувати фільтри так, щоб вони сканували тільки нові повідомлення. Якщо ви тільки що поміняли параметри фільтрів і хочете обробити всі старі повідомлення, то виберіть опцію \"сканувати усі листи\", потім поверніться в теку 'ВХІДНІ' (INBOX). Всі старі повідомлення будуть відфільтровані наново. Після цього поміняйте опцію назад на \"сканувати тільки непрочитані\", щоб витрачати менше часу при відкритті теки."
+
+#, php-format
+msgid "Spam is sent to %s."
+msgstr "Пересилати спам до %s."
+
+msgid "not set yet"
+msgstr "щн не встановлено"
+
+#, php-format
+msgid "Spam scan is limited to %s."
+msgstr "Перевіряти на спам %s."
+
+msgid "ON"
+msgstr "Вкл"
+
+msgid "OFF"
+msgstr "Викл"
+
+#, php-format
+msgid "%s is not found."
+msgstr "%s не знайдений."
+
+msgid "Today's Fortune"
+msgstr "Що чутно сьогодні?"
+
+msgid "Fortunes:"
+msgstr ""
+
+msgid "Show fortunes at top of mailbox"
+msgstr ""
+
+msgid "Plugin is disabled."
+msgstr "Плаґін вимкнений."
+
+msgid "IMAP server information"
+msgstr "Інформація про IMAP-сервер"
+
+msgid "Run some test IMAP commands, displaying both the command and the result. These tests use the SquirrelMail IMAP commands and your current SquirrelMail configuration. Custom command strings can be used."
+msgstr "Виконання деяких команд IMAP, з виведенням як самих команд, так і результату їх роботи. У тестах використовуються команди IMAP Squirrelmail і поточні параметри Squirrelmail. Можна використовувати і інші команди."
+
+#, php-format
+msgid "This will send a message to %s requesting help for this list. You will receive an emailed response at the address below."
+msgstr "Відправка листа за адресою %s з проханням прислати інструкції по роботі з даним списком розсилки. Відповідь прийде на вказану нижче адресу."
+
+#, php-format
+msgid "This will send a message to %s requesting that you will be subscribed to this list. You will be subscribed with the address below."
+msgstr "Відправка листа за адресою %s із запитом на підписку на дану розсилку. Для розсилки використовуватиметься адреса, вказана нижче."
+
+#, php-format
+msgid "This will send a message to %s requesting that you will be unsubscribed from this list. It will try to unsubscribe the adress below."
+msgstr "Відправка листа за адресою %s із запитом на видалення вашої адреси з розсилки. Для цього буде використана адреса, вказана нижче."
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Невідома дія: %s"
+
+msgid "Mailinglist"
+msgstr "Список розсилки"
+
+msgid "Send Mail"
+msgstr "Відправити листа"
+
+msgid "Post to List"
+msgstr "Відправити до розсилки"
+
+msgid "Reply to List"
+msgstr "Відповісти в розсилку"
+
+msgid "List Archives"
+msgstr "Архів повідомлень"
+
+msgid "Contact Listowner"
+msgstr "Зв'язатися з координатором списку"
+
+msgid "Mailing List"
+msgstr "Список розсилки"
+
+msgid "POP3 connect:"
+msgstr "Підключення до поштової скриньки Pop3:"
+
+msgid "No server specified"
+msgstr "Не вибраний жоден сервер."
+
+msgid "Error "
+msgstr "Помилка "
+
+msgid "POP3 user:"
+msgstr "Вхідне ім'я Pop3:"
+
+msgid "no login ID submitted"
+msgstr "не вказано вхідне ім'я"
+
+msgid "connection not established"
+msgstr "з'єднання не встановлене"
+
+msgid "POP3 pass:"
+msgstr "Пароль Pop3:"
+
+msgid "No password submitted"
+msgstr "Пароль не вказаний"
+
+msgid "POP3 apop:"
+msgstr ""
+
+msgid "No connection to server"
+msgstr "Спроба зв'язку з сервером не вдалася"
+
+msgid "No login ID submitted"
+msgstr "Не вказано ім'я"
+
+msgid "No server banner"
+msgstr "Немає серверного банера"
+
+msgid "abort"
+msgstr "перервати"
+
+msgid "apop authentication failed"
+msgstr "ідентифікація apop не виконана"
+
+msgid "POP3 login:"
+msgstr "Вхідне ім'я Pop3:"
+
+msgid "POP3 top:"
+msgstr ""
+
+msgid "POP3 pop_list:"
+msgstr ""
+
+msgid "Premature end of list"
+msgstr "Передчасне завершення списку"
+
+msgid "POP3 get:"
+msgstr ""
+
+msgid "POP3 last:"
+msgstr ""
+
+msgid "POP3 reset:"
+msgstr ""
+
+msgid "POP3 send_cmd:"
+msgstr ""
+
+msgid "Empty command string"
+msgstr "Порожня команда"
+
+msgid "POP3 quit:"
+msgstr ""
+
+msgid "connection does not exist"
+msgstr "з'єднання не встановлене"
+
+msgid "POP3 uidl:"
+msgstr ""
+
+msgid "POP3 delete:"
+msgstr ""
+
+msgid "No msg number submitted"
+msgstr "Не заданий номер повідомлення"
+
+msgid "Command failed "
+msgstr "Помилка при виконанні команди"
+
+msgid "Remote POP server Fetching Mail"
+msgstr "Завантаження пошти з віддаленого POP-сервера"
+
+msgid "Select Server:"
+msgstr "Виберіть сервер:"
+
+msgid "Password for"
+msgstr "Пароль для"
+
+msgid "Fetch Mail"
+msgstr "Завантажити пошту"
+
+msgid "Fetching from "
+msgstr "Завантаження пошти з"
+
+msgid "Oops, "
+msgstr "Помилка, "
+
+msgid "Opening IMAP server"
+msgstr "З'єднання з сервером IMAP"
+
+msgid "Opening POP server"
+msgstr "З'єднання з сервером POP"
+
+msgid "Login Failed:"
+msgstr "Помилка входу:"
+
+msgid "Login OK: No new messages"
+msgstr "Вхід на сервер: немає нових листів"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "Вхід на сервер: ящик порожній"
+
+#, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "Вхід на сервер. Всього повідомлень: %s"
+
+msgid "Fetching UIDL..."
+msgstr "Отримання UIDL..."
+
+msgid "Server does not support UIDL."
+msgstr "Сервер не підтримує UIDL."
+
+msgid "Leaving mail on server..."
+msgstr "Пошта залишається на сервері..."
+
+msgid "Deleting messages from server..."
+msgstr "Видалення повідомлень з сервера..."
+
+msgid "Fetching message "
+msgstr "Отримання листа "
+
+msgid "Server error. Disconnect"
+msgstr "Помилка сервера. Завершення з'єднання"
+
+msgid "Reconnect from dead connection"
+msgstr "З'єднатися повторно"
+
+msgid "Saving UIDL"
+msgstr "Збереження UIDL"
+
+msgid "Refetching message "
+msgstr "Повторне завантаження листа"
+
+msgid "Error Appending Message!"
+msgstr "Помилка при записі листа!"
+
+msgid "Closing POP"
+msgstr "Закриття POP-сеансу"
+
+msgid "Logging out from IMAP"
+msgstr "Відключення від IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "Лист додано у теку"
+
+#, php-format
+msgid "Message %d deleted from remote server!"
+msgstr "Лист %d видалено зі сервера!"
+
+msgid "Delete failed:"
+msgstr "Лист не був видалений:"
+
+msgid "Remote POP server settings"
+msgstr "Параметри сервера POP"
+
+msgid "You should be aware that the encryption used to store your password is not perfectly secure. However, if you are using pop, there is inherently no encryption anyway. Additionally, the encryption that we do to save it on the server can be undone by a hacker reading the source to this file."
+msgstr "Зберігаючи пароль на сервері, майте на увазі, що він буде збережений в слабо зашифрованому вигляді (втім, при використанні POP пароль і так не зашифрований, коли він подорожує по мережі). Ключ, використовуваний для збереження вашого пароля, може бути легко підібраний будь-яким хакером."
+
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "Якщо не вказати пароль, то він запрошуватиметься кожного разу."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "Шифрувати паролі (слабке шифрування)"
+
+msgid "Add Server"
+msgstr "Додати сервер"
+
+msgid "Server:"
+msgstr "Сервер:"
+
+msgid "Port:"
+msgstr "Порт:"
+
+msgid "Alias:"
+msgstr "Псевдонім:"
+
+msgid "Username:"
+msgstr "Вхідне ім'я:"
+
+msgid "Store in Folder:"
+msgstr "Зберігати лист у теці:"
+
+msgid "Leave mail on server"
+msgstr "Залишати пошту на сервері"
+
+msgid "Check mail at login"
+msgstr "Перевіряти пошту при вході в Squirrelmail"
+
+msgid "Check mail at folder refresh"
+msgstr "Перевіряти пошту при оновленні списку з теками"
+
+msgid "Modify Server"
+msgstr "Змінити сервер"
+
+msgid "Server Name:"
+msgstr "Ім'я сервера:"
+
+msgid "Modify"
+msgstr "Змінити"
+
+msgid "No servers known."
+msgstr "Немає серверів."
+
+msgid "Fetching Servers"
+msgstr "Отримання пошти з серверів"
+
+msgid "Confirm Deletion of a Server"
+msgstr "Confirm видалення сервера"
+
+msgid "Selected Server:"
+msgstr "Вибраний сервер:"
+
+msgid "Confirm delete of selected server?"
+msgstr "Видалити вибраний сервер?"
+
+msgid "Confirm Delete"
+msgstr "Видалити"
+
+msgid "Leave Mail on Server"
+msgstr "Залишати пошту на сервері"
+
+msgid "Undefined Function"
+msgstr "Невизначена функція"
+
+msgid "The function you requested is unknown."
+msgstr "Запитана невідома функція."
+
+msgid "Fetch"
+msgstr "Забрати пошту"
+
+msgid "Warning, "
+msgstr "Увага, "
+
+msgid "Mail Fetch Result:"
+msgstr "Результати завантаження пошти:"
+
+msgid "POP3 Fetch Mail"
+msgstr "Ящики Pop3"
+
+msgid "This configures settings for downloading email from a POP3 mailbox to your account on this server."
+msgstr "Параметри завантаження пошти по Pop3 з іншого сервера."
+
+msgid "Message Details"
+msgstr "Деталі листа"
+
+msgid "Bodystructure"
+msgstr "Структура тіла"
+
+msgid "Entity"
+msgstr "Частина"
+
+msgid "Content-Type"
+msgstr "Тип (Content-Type)"
+
+msgid "Encoding"
+msgstr "Кодування"
+
+msgid "RFC822 Message body"
+msgstr "Тіло листа за RFC822"
+
+msgid "Close Window"
+msgstr "Закрити вікно"
+
+msgid "Save Message"
+msgstr "Зберегти лист"
+
+msgid "View Message details"
+msgstr "Подивитись деталі листа"
+
+msgid "New Mail Notification"
+msgstr "Сповіщення про нові листи"
+
+#, php-format
+msgid "The %s option will check ALL of your folders for unseen mail, not just the inbox for notification."
+msgstr "У режимі %s ви дізнаватиметеся про прихід нових повідомлень в будь-яку теку, а не тільки у \"Вхідні\"."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "Перевіряти усі теки, а не тільки 'ВХІДНІ'"
+
+#, php-format
+msgid "Selecting the %s option will enable the showing of a popup window when unseen mail is in your folders (requires JavaScript)."
+msgstr "При виборі опції %s відкриватиметься нове вікно, якщо прийшла нова пошта (потрібен Javascript)."
+
+msgid "Show popup window on new mail"
+msgstr "Показувати спливаюче вікно при приході пошти"
+
+#, php-format
+msgid "Use the %s option to only check for messages that are recent. Recent messages are those that have just recently showed up and have not been \"viewed\" or checked yet. This can prevent being continuously annoyed by sounds or popups for unseen mail."
+msgstr "Опція %s дозволяє обмежитися тільки новими повідомленнями, інакше приходитимуть сповіщення про загальну кількість непрочитаних повідомлень, що може швидко набриднути."
+
+msgid "Count only messages that are RECENT"
+msgstr "Тільки нові повідомлення"
+
+#, php-format
+msgid "Selecting the %s option will change the title in some browsers to let you know when you have new mail (requires JavaScript, and only works in IE but you won't see errors with other browsers). This will always tell you if you have new mail, even if you have %s enabled."
+msgstr "Опція %s мінятиме заголовок браузера при приході нової пошти (вимагає підтримки Javascript і працює тільки в IE). Показуватиметься загальна кількість непрочитаних повідомлень, навіть якщо вибрана опція %s."
+
+msgid "Change title on supported browsers"
+msgstr "Змінювати заголовок вікна браузера."
+
+#, php-format
+msgid "Select %s to turn on playing a media file when unseen mail is in your folders. When enabled, you can specify the media file to play in the provided file box."
+msgstr "Виберіть опцію %s, щоб при приході нової пошти відтворювався звук. Можна вказати, який звук при цьому використовувати."
+
+msgid "Enable Media Playing"
+msgstr "Програвати звук"
+
+#, php-format
+msgid "Select from the list of %s the media file to play when new mail arrives. If no file is specified, %s, no sound will be used."
+msgstr "Виберіть із списку \"%s\", яким звуком оповіщати про прихід нової пошти. Якщо жоден файл не вибраний (опція \"%s\"), звук не програватиметься."
+
+msgid "Select server file"
+msgstr "Виберіть серверний файл"
+
+msgid "(none)"
+msgstr "(нічого)"
+
+msgid "requires JavaScript to work"
+msgstr "вимагає Javascript для роботи"
+
+msgid "Try"
+msgstr "Тест"
+
+msgid "Current File:"
+msgstr "Вибраний файл:"
+
+msgid "New Mail"
+msgstr "Нова пошта"
+
+msgid "SquirrelMail Notice:"
+msgstr "Повідомлення від Squirrelmail:"
+
+#, fuzzy, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "Ви маєте нових повідомленнь: %s"
+msgstr[1] "Ви маєте нових повідомленнь: %s"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "Ви маєте нових листів: %s"
+
+msgid "NewMail Options"
+msgstr "Настройка сповіщень"
+
+msgid "This configures settings for playing sounds and/or showing popup windows when new mail arrives."
+msgstr "Тут можна налаштувати тип сповіщень про прихід нових повідомлень."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "Нових повідомлень: %s"
+
+#, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Test Sound"
+msgstr "Перевірити звук"
+
+msgid "No sound specified"
+msgstr "Звук не вказаний"
+
+msgid "Loading the sound..."
+msgstr "Завантаження звуку..."
+
+msgid "Sent Subfolders Options"
+msgstr "Налаштування підтек теки 'Відіслано' ('Sent')"
+
+msgid "Use Sent Subfolders"
+msgstr "Використовувати підтеки відісланих"
+
+msgid "Monthly"
+msgstr "Щомісячно"
+
+msgid "Quarterly"
+msgstr "Щокварталу"
+
+msgid "Yearly"
+msgstr "Щорічно"
+
+msgid "Base Sent Folder"
+msgstr "Тека з відправленими листами (Відіслане/Sent)"
+
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "Disable it"
+msgstr "Відключити це"
+
+msgid "Enable it"
+msgstr "Включити"
+
+msgid "Spam reporting"
+msgstr "Повідомлення про спам"
+
+msgid "SpamCop link is:"
+msgstr "Посилання Spamcop:"
+
+msgid "Delete spam when reported:"
+msgstr "Видалити спам після відправки звіту:"
+
+msgid "Only works with email-based reporting"
+msgstr "Працює тільки з відправкою звітів по ел. пошті."
+
+msgid "Spam Reporting Method:"
+msgstr "Метод відправки звіту:"
+
+msgid "Quick email-based reporting"
+msgstr "По ел. пошті (без подробиць)"
+
+msgid "Thorough email-based reporting"
+msgstr "По ел. пошті (з подробицями)"
+
+msgid "Web-based form"
+msgstr "Форма на веб-сторінці"
+
+msgid "Save Method"
+msgstr "Метод збереження"
+
+msgid "Your SpamCop authorization code:"
+msgstr "Код користувача Spamcop:"
+
+msgid "see below"
+msgstr "див. нижче"
+
+msgid "Save ID"
+msgstr "Зберегти ідентифікатор (ID)"
+
+msgid "About SpamCop"
+msgstr "Про сервіс Spamcop"
+
+msgid "SpamCop is a free service that greatly assists in finding the true source of the spam and helps in letting the proper people know about the abuse."
+msgstr "Spamcop - це безкоштовна служба виявлення справжніх джерел спаму і боротьби з розсилальниками спаму."
+
+#, php-format
+msgid "To use it, you must get a SpamCop authorization code. There is a free %ssign up page%s so you can use SpamCop."
+msgstr "Для того, щоб використовувати Spamcop, потрібно отримати код користувача. Реєстрація користувачів здійснюється безкоштовно на %sсторінці реєстрації%s Spamcop."
+
+msgid "Before you sign up, be warned"
+msgstr "Перш ніж реєструватися, прочитайте наступну інформацію."
+
+#, php-format
+msgid "Some users have reported that the email addresses used with SpamCop find their way onto spam lists. To be safe, you can just create an email forwarding account and have all SpamCop reports get sent to there. Also, if it gets flooded with spam, you can then just delete that account with no worries about losing your real email address. Just go create an email forwarder somewhere (%s has a %slist of places%s) so that messages from system administrators and what not can be sent to you."
+msgstr "Деякі користувачі повідомляють, що адреси зареєстрованих користувачів Spamcop стають відомими розсилальникам спаму. Щоб уникнути будь-яких неприємностей заведіть собі поштову адресу, яка використовуватиметься тільки для пересилки листів, і отримуйте всі звіти Spamcop тільки на цю адресу. Якщо на нього приходитиме дуже багато спам, його можна буде закрити, зберігши свою справжню поштову адресу. Отже, перш за все створіть ящик для пересилки таких листів. Зайдіть на %s, щоб ознайомитися з %sсписком таких служб%s."
+
+msgid "Once you have signed up with SpamCop and have received your SpamCop authorization code, you need to enable this plugin by clicking the link above. Once enabled, you go about your normal life. If you encounter a spam message in your mailbox, just view it. On the right-hand side, near the top of where the message is displayed, you will see a link to report this message as spam. Clicking on it brings you to a confirmation page. Confirming that you want the spam report sent will do different things with different reporting methods."
+msgstr "Зареєструвавшись в Spamcop і отримавши код користувача Spamcop, включіть плаґін, клацнувши на посиланні вгорі. Після цього можна працювати звичайним способом. При отриманні спаму відкрийте його. Праворуч від тексту листа буде показано посилання, яке служить для відправки повідомлень про спам. При клацанні на посиланні відкриється діалог підтвердження. Якщо ви підтверджуєте відправку повідомлення про спам, то наступні дії залежать від того, який метод відправки звітів про спам використовується."
+
+msgid "Email-based reporting"
+msgstr "По електронній пошті"
+
+msgid "Pressing the button forwards the message to the SpamCop service and will optionally delete the message. From there, you just need to go to your INBOX and quite soon a message should appear from SpamCop. (It gets sent to the account you registered with, so make sure that your mail forwarder works!) Open it up, click on the appropriate link at the top, and a new browser window will open."
+msgstr "При натисненні цієї кнопки повідомлення буде переслано в Spamcop і видалене (якщо це вказано). Поверніться в теку 'ВХІДНІ'. Швидше за все, там вже буде повідомлення від служби Spamcop, яке було відправлено на зареєстровану адресу (якщо це адреса пересилки, перевірте, що він працює). Відкрийте повідомлення і клацніть на посиланні вверху листа. Відкриється нове вікно браузера."
+
+msgid "Currently, the quick reporting just forwards the request to the thorough reporting. Also, it appears that this is for members (non-free) only. Hopefully this will change soon."
+msgstr "В даний час повідомлення без подробиць тільки перенаправляють на повідомлення з подробицями. Крім того, мабуть, це не безкоштовний сервіс."
+
+msgid "Web-based reporting"
+msgstr "Форма веб-сторінки"
+
+msgid "When you press the button on the confirmation page, this will pop open a new browser window and the SpamCop service should appear inside. The message will not be deleted (working on that part), but you won't need to wait for a response email to start the spam reporting."
+msgstr "При натисненні кнопки підтвердження відкриється нове вікно браузера на сторінці служби Spamcop. У цьому вікні можна відразу відправити звіт про спам."
+
+msgid "The SpamCop service will display information as it finds it, so scroll down until you see a form button. It might pause a little while it is looking up information, so be a little patient. Read what it says, and submit the spam. Close the browser window. Press Cancel or click on the appropriate mail folder to see messages and/or delete the spam."
+msgstr "Робота служби Spamcop займає якийсь час. Перегорніть сторінку і знайдіть кнопку відправки форми. Прочитайте інформацію і відправте повідомлення. Після цього поверніться до роботи з поштою і видаліть спам."
+
+msgid "SpamCop service type"
+msgstr "Тип служби Spamcop"
+
+msgid "Service type option allows selecting which SpamCop services you are using. Member services use different web reporting forms and does not display nags. You can purchase these services, if you want to support SpamCop."
+msgstr "Виберіть тип служби Spamcop. Зареєстровані користувачі працюють із зручнішими формами відправки повідомлень. Якщо ви хочете підтримати Spamcop, скористайтеся платним сервісом."
+
+msgid "More information"
+msgstr "Більше інформації"
+
+#, php-format
+msgid "For more information about SpamCop, it's services, spam in general, and many related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr "Докладніше про Spamcop і його служби, про спам в цілому і багато чому іншому прочитатйте на веб-сайті Spamcop в розділі %sHelp and Feedback%s."
+
+msgid "Report as Spam"
+msgstr "Повідомити про спам"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "Spamcop - служба боротьби із спамом"
+
+msgid "Help fight the battle against unsolicited email. SpamCop reads the spam email and determines the correct addresses to send complaints to. Quite fast, really smart, and easy to use."
+msgstr "Боротьба з рекламними листами.  Spamcop читає заголовки повідомлень і визначає, куди перенаправляти повідомлення про спам.  Швидко, зручно і правильно."
+
+msgid "Sending this spam report will give you back a reply with URLs that you can click on to properly report this spam message to the proper authorities. This is a free service. By pressing the \"Send Spam Report\" button, you agree to follow SpamCop's rules/terms of service/etc."
+msgstr "При відправці звіту про спам буде прислана відповідь з посиланням, на якому потрібно буде клацнути, щоб підтвердити відправку повідомлення про спам. Це безкоштовна служба. Натискаючи кнопку \"Повідомити про спам\", ви підтверджуєте свою згоду з умовами використання служби Spamcop."
+
+msgid "Cancel / Done"
+msgstr "Відміна / зроблено"
+
+msgid "Send Spam Report"
+msgstr "Повідомити про спам"
+
+msgid "SpellChecker Options"
+msgstr "Параметри перевірки правопису"
+
+msgid "Here you may set up how your personal dictionary is stored, edit it, or choose which languages should be available to you when spell-checking."
+msgstr "Тут ви можете налаштувати функції перевірки правопису: налаштувати ваш особистий словничок, або вказати, які мови зробити доступними при перевірці."
+
+msgid "Check Spelling"
+msgstr "Перевірити правопис"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "Повернутися до &quot;Параметрів перевірки правопису&quot;"
+
+msgid "ATTENTION:"
+msgstr "Увага:"
+
+msgid "SquirrelSpell was unable to decrypt your personal dictionary. This is most likely due to the fact that you have changed your mailbox password. In order to proceed, you will have to supply your old password so that SquirrelSpell can decrypt your personal dictionary. It will be re-encrypted with your new password after this. If you haven't encrypted your dictionary, then it got mangled and is no longer valid. You will have to delete it and start anew. This is also true if you don't remember your old password -- without it, the encrypted data is no longer accessible."
+msgstr "Система перевірки правопису Squirrelspell не змогла відкрити ваш особистий словник. Швидше за все це відбулося через те, що ви змінили пароль. Для того, щоб відновити і розшифрувати словник, необхідно ввести старий пароль. Після цього словник буде зашифрований наново за допомогою нового пароля. Якщо ви не зашифровували словник, означає щось трапилося з файлом, і система не в змозі його прочитати. В цьому випадку словник доведеться видалити і створити наново. Також доведеться поступити, якщо старий пароль загублений - без нього розшифрувати словник неможливо."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "Видалити особистий словник і почати новий"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "Розшифрувати словник за допомогою старого пароля:"
+
+msgid "Proceed"
+msgstr "Далі"
+
+msgid "You must make a choice"
+msgstr "Будь ласка, зробіть вибір"
+
+msgid "You can either delete your dictionary or type in the old password. Not both."
+msgstr "Можна видалити старий словник або ввести пароль для розшифровки, але не і те, і інше одночасне."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "Цю дію видалить ваш особистий словник. Продовжити?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "Помилка при розшифровці словника"
+
+msgid "Cute."
+msgstr "Привабливо."
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr "Не вдається запустити команду перевірки орфографії (%s)."
+
+msgid "Error while writing to pipe."
+msgstr "Помилка запису в канал."
+
+#, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "Не вдається відкрити тимчасовий файл '%s'."
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr "Не вдається записати в тимчасовий файл '%s'."
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "При спробі виконати '%s' отриманий результат:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "Перевірка орфографії не настроєна."
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "Перевірка орфографії закінчена. Зберегти зміни?"
+
+msgid "No changes were made."
+msgstr "Ніяких змін не проведено."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "Запис особистого словника на диск. Почекайте..."
+
+msgid "SquirrelSpell Results"
+msgstr "Результати перевірки"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "Знайдено помилок: %s"
+
+msgid "Line with an error:"
+msgstr "Рядок з помилкою:"
+
+msgid "Error:"
+msgstr "Помилка:"
+
+msgid "Suggestions:"
+msgstr "Підказки:"
+
+msgid "Suggestions"
+msgstr "Підказки"
+
+msgid "Change to:"
+msgstr "Змінити на:"
+
+msgid "Occurs times:"
+msgstr "Знайдено раз:"
+
+msgid "Change this word"
+msgstr "Змінити це слово"
+
+msgid "Change"
+msgstr "Змінити"
+
+msgid "Change ALL occurances of this word"
+msgstr "Змінити ВСІ слова з цією помилкою"
+
+msgid "Change All"
+msgstr "Змінити все"
+
+msgid "Ignore this word"
+msgstr "Пропустити це слово"
+
+msgid "Ignore"
+msgstr "Пропустити"
+
+msgid "Ignore ALL occurances this word"
+msgstr "Пропустити ВСІ слова з цією помилкою"
+
+msgid "Ignore All"
+msgstr "Пропустити все"
+
+msgid "Add this word to your personal dictionary"
+msgstr "Додати це слово в особистий словник"
+
+msgid "Add to Dic"
+msgstr "У словник"
+
+msgid "Close and Commit"
+msgstr "Закрити і зберегти"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr "Перевірка правопису не закінчена. Закрити і зберегти зміни?"
+
+msgid "Close and Cancel"
+msgstr "Закрити і відхилити"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr "Перевірка правопису не закінчена. Закрити і відхилити всі зміни?"
+
+msgid "No errors found"
+msgstr "Помилок не знайдено"
+
+msgid "Your personal dictionary was erased."
+msgstr "Особистий словник був видалений."
+
+msgid "Dictionary Erased"
+msgstr "Словник видалений"
+
+msgid "Your personal dictionary was erased. Please close this window and click \"Check Spelling\" button again to start your spellcheck over."
+msgstr "Особистий словник був видалений. Закрийте це вікно і натисніть \"Перевірка правопису\" знову, щоб закінчити перевірку."
+
+msgid "Close this Window"
+msgstr "Закрити вікно"
+
+msgid "Your personal dictionary was re-encrypted successfully. Now return to the &quot;SpellChecker options&quot; menu and make your selection again."
+msgstr "Особистий словник був зашифрований новим паролем. Поверніться на сторінку з &quot;Параметрами перевірки правопису&quot; і виберіть його ще раз."
+
+msgid "Successful re-encryption"
+msgstr "Успішне повторне кодування"
+
+msgid "Your personal dictionary was re-encrypted successfully. Please close this window and click \"Check Spelling\" button again to start your spellcheck over."
+msgstr "Особистий словник був успішно захищений новим паролем. Закрийте це вікно і натисніть кнопку \"Перевірити правопис\" знову, щоб відновити перевірку."
+
+msgid "Dictionary re-encrypted"
+msgstr "Словник захищений"
+
+msgid "Your personal dictionary has been encrypted and is now stored in an encrypted format."
+msgstr "Особистий словник був зашифрований і тепер зберігається в закодованому вигляді."
+
+msgid "Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr "Особистий словник був розшифрований і тепер зберігається в незашифрованому вигляді."
+
+msgid "No action requested."
+msgstr "Немає запитаної дії."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Параметри захисту особистого словника"
+
+msgid "Personal Dictionary"
+msgstr "Особистий словник"
+
+msgid "No words in your personal dictionary."
+msgstr "У особистому словнику немає записів."
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "Відзначте слова, які потрібно видалити із словника."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "Словник %s"
+
+msgid "Delete checked words"
+msgstr "Видалити виділені слова"
+
+msgid "Edit your Personal Dictionary"
+msgstr "Редагувати особистий словник"
+
+msgid "Please make your selection first."
+msgstr "Спочатку виберіть опцію."
+
+msgid "This will encrypt your personal dictionary and store it in an encrypted format. Proceed?"
+msgstr "Особистий словник буде захищений паролем і збережений на диску в зашифрованом форматі. Продовжити?"
+
+msgid "This will decrypt your personal dictionary and store it in a plain text format. Proceed?"
+msgstr "Особистий словник буде не захищений паролем і збережений на диску в незашифрованом форматі. Продовжити?"
+
+msgid "Your personal dictionary is currently encrypted."
+msgstr "Особистий словник зашифрований."
+
+msgid "This helps protect your privacy in case the web-mail system gets compromized and your personal dictionary ends up stolen. It is currently encrypted with the password you use to access your mailbox, making it hard for anyone to see what is stored in your personal dictionary."
+msgstr "Шифрування особистого словника служить для його захисту при зломі сервера і несанкціонованому доступі до інформації. Словник буде зашифрований за допомогою пароля, використовуваного для доступу до пошти, і прочитати його стороннім буде складно."
+
+msgid "If you forget your password, your personal dictionary will become unaccessible, since it can no longer be decrypted. If you change your mailbox password, SquirrelSpell will recognize it and prompt you for your old password in order to re-encrypt the dictionary with a new key."
+msgstr "Якщо ви забудете пароль, то словник стане недоступним, оскільки його не можна буде більш розшифрувати. Якщо поштовий пароль був змінений, то Squirrelspell виявить цю ситуацію і запропонує ввести старий пароль, щоб розшифрувати словник і знов його зашифрувати за допомогою нового пароля."
+
+msgid "Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "Розшифрувати особистий словник і зберігати його в незашифрованому вигляді."
+
+msgid "Change crypto settings"
+msgstr "Змінити параметри захисту"
+
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "Особистий словник незашифрований."
+
+msgid "You may wish to encrypt your personal dictionary to protect your privacy in case the webmail system gets compromized and your personal dictionary file gets stolen. When encrypted, the file's contents look garbled and are hard to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr "Якщо це необхідно, можна зашифрувати словник. Шифрування особистого словника служить для його захисту при зломі сервера і несанкціонованому доступі до інформації. Словник зашифрований за допомогою пароля, використовуваного для доступу до пошти, і прочитати його стороннім буде складно."
+
+msgid "If you decide to encrypt your personal dictionary, you must remember that it gets &quot;hashed&quot; with your mailbox password. If you forget your mailbox password and the administrator changes it to a new value, your personal dictionary will become useless and will have to be created anew. However, if you or your system administrator change your mailbox password but you still have the old password at hand, you will be able to enter the old key to re-encrypt the dictionary with the new value."
+msgstr "Якщо ви вирішите зашифрувати словник, то повинні пам'ятати, що він &quot;кодуєтьсяя&quot; вашим поштовим паролем.  Якщо ви забудете поштовий пароль або адміністратор змінить його на новий, то особистий словник буде загублений, і його доведеться почати наново. У випадку якщо ви зміните пароль, але пам'ятатимете старий, то можна буде перекодувати словник з новим паролем."
+
+msgid "Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "Захистити словник і зберігати його в зашифрованому вигляді."
+
+#, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "Видалення наступних слів із словника %s:"
+
+msgid "All done!"
+msgstr "Все зроблено."
+
+msgid "Personal Dictionary Updated"
+msgstr "Особистий словник оновлений"
+
+msgid "No changes requested."
+msgstr "Ніяких змін не запитано."
+
+msgid "Please wait, communicating with the server..."
+msgstr "З'єднання з сервером. Почекайте..."
+
+msgid "Please choose which dictionary you would like to use to spellcheck this message:"
+msgstr "Виберіть, який словник використовувати для перевірки цього повідомлення:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "Ініціалізація системи перевірки правопису"
+
+#, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr "Параметри змінені: використовуватиметься %s і словник %s за умовчанням."
+
+#, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "Використовується словник %s (системний за умовчанням)."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "Параметри іноземних словників оновлені"
+
+msgid "Please check any available international dictionaries which you would like to use when spellchecking:"
+msgstr "Виберіть будь-які з доступних словників, які потрібно використовувати при перевірці правопису:"
+
+msgid "Make this dictionary my default selection:"
+msgstr "Використовувати цей словник за умовчанням:"
+
+msgid "Make these changes"
+msgstr "Зберегти зміни"
+
+msgid "Add International Dictionaries"
+msgstr "Додати іноземні словники"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "Виберіть, що саме потрібно налаштувати:"
+
+msgid "Edit your personal dictionary"
+msgstr "Редагувати особистий словник"
+
+msgid "Set up international dictionaries"
+msgstr "Налаштувати іноземні словники"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "Зашифрувати або розшифрувати особистий словник"
+
+msgid "Personal dictionary encryption options are not available"
+msgstr ""
+
+msgid "SquirrelSpell Options Menu"
+msgstr "Настройка системи правопису"
+
+msgid "Translator"
+msgstr "Перекладач"
+
+msgid "Saved Translation Options"
+msgstr "Збережені параметри перекладача"
+
+msgid "Your server options are as follows:"
+msgstr "Параметри серверів:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "Максимум 150 слів, система Systran"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "Число підтримуваних мовних пар: %s"
+
+msgid "No known limits, powered by Systran"
+msgstr "Без обмежень, система Systran"
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr "Без обмежень, система Translation Experts' Intertran"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "Число підтримуваних мов: %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "Грецькі переклади, без обмежень, система Systran"
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr "Російські переклади, максимум 500 символів"
+
+msgid "You also decide if you want the translation box displayed, and where it will be located."
+msgstr "Показ/приховання вікна перекладу і його розміщення на сторінці."
+
+msgid "Select your translator:"
+msgstr "Виберіть перекладача:"
+
+msgid "When reading:"
+msgstr "При читанні:"
+
+msgid "Show translation box"
+msgstr "Показувати опцію перекладу"
+
+msgid "to the left"
+msgstr "зліва"
+
+msgid "in the center"
+msgstr "по центру"
+
+msgid "to the right"
+msgstr "справа"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "Переводити усередині інтерфейсу Squirrelmail"
+
+msgid "Translation Options"
+msgstr "Параметри перекладу"
+
+msgid "Which translator should be used when you get messages in a different language?"
+msgstr "Який перекладач використовувати, коли приходить повідомлення на іншій мові?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s на %s"
+
+msgid "Chinese, Simplified"
+msgstr "Китайська мова, спрощена"
+
+msgid "English"
+msgstr "Англійська мова"
+
+msgid "Chinese, Traditional"
+msgstr "Китайська мова, традиційна"
+
+msgid "Dutch"
+msgstr "Голландська мова"
+
+msgid "French"
+msgstr "Французька мова"
+
+msgid "German"
+msgstr "Німецька мова"
+
+msgid "Greek"
+msgstr "Грецький"
+
+msgid "Italian"
+msgstr "Італійський"
+
+msgid "Japanese"
+msgstr "Японська мова"
+
+msgid "Korean"
+msgstr "Корейська мова"
+
+msgid "Portuguese"
+msgstr "Португальський"
+
+msgid "Russian"
+msgstr "Російська мова"
+
+msgid "Spanish"
+msgstr "Іспанська мова"
+
+msgid "Translate"
+msgstr "Перекласти"
+
+msgid "Brazilian Portuguese"
+msgstr "Португальський (Бразилія)"
+
+msgid "Bulgarian"
+msgstr "Болгарська мова"
+
+msgid "Croatian"
+msgstr "Хорватський"
+
+msgid "Czech"
+msgstr "Чеська мова"
+
+msgid "Danish"
+msgstr "Данська мова"
+
+msgid "Filipino (Tagalog)"
+msgstr "Філіппінський (Тагалог)"
+
+msgid "Finnish"
+msgstr "Фінська мова"
+
+msgid "Hungarian"
+msgstr "Угорська мова"
+
+msgid "Icelandic"
+msgstr "Ісландська мова"
+
+msgid "Latin"
+msgstr "Латинська мова"
+
+msgid "Latin American Spanish"
+msgstr "Латиноамериканська іспанська мова"
+
+msgid "Norwegian"
+msgstr "Норвезька мова"
+
+msgid "Polish"
+msgstr "Польська мова"
+
+msgid "Romanian"
+msgstr "Румунський"
+
+msgid "Serbian"
+msgstr "Сербська мова"
+
+msgid "Slovenian"
+msgstr "Словенська мова"
+
+msgid "Swedish"
+msgstr "Шведська мова"
+
+msgid "Turkish"
+msgstr "Турецька мова"
+
+msgid "Welsh"
+msgstr "Уельський"
+
+msgid "Indonesian"
+msgstr "Індонезійський"
+
+msgid "to English"
+msgstr "до англійської мови"
+
+msgid "from English"
+msgstr "з англійської мови"
+
+msgid "Interface language"
+msgstr "Мова інтерфейсу"
+
+msgid "Translation direction"
+msgstr "Напрям перекладу"
+
+#, php-format
+msgid "About SquirrelMail %s"
+msgstr "Про білку-поштаря (SquirrelMail) %s"
+
+msgid "SquirrelMail is the name of the program that provides access to your email via the web."
+msgstr "Squirrelmail (Білка-Поштар) - це назва програми, за допомогою якої Ви працюєте зі своєю поштою у браузері."
+
+#. i18n: %s displays org_name variable value enclosed in () or empty string.
+#, php-format
+msgid "If you have questions about or problems with your mail account, passwords, abuse etc, please refer to your system administrator or provider%s."
+msgstr "Питання про свій обліковий запис пошти, паролі, зловживання і ін. адресуйте своєму системному адміністраторові або провайдеру%s."
+
+#. i18n: %s tags are used in order to remove html URL attributes from translation
+#, php-format
+msgid "They can assist you adequately with these issues. The SquirrelMail Project Team cannot help you with that. The %shelp system%s provides answers to frequently asked questions."
+msgstr "Саме вони повинні цим займатися. Розробники Squirrelmail не можуть допомогти з цим. Відповіді на багато питань приведені в %sдовідковій системі%s."
+
+#. i18n: %s tags are used in order to remove html URL attributes from translation
+#, php-format
+msgid "SquirrelMail is a feature rich, standards compliant webmail application written in PHP. It was made by a group of volunteers united in the SquirrelMail Project Team and is released as open source, free software under the %sGNU General Public License%s."
+msgstr "Squirrelmail - це повнофункціональний і такий, що відповідає стандартам пакет веб-пошти, написаний на PHP. Група розробників Squirrelmail розвиває цей проект програмного забезпечення з відкритими початковими кодами і випускає його на умовах ліцензії %sGNU General Public License%s."
+
+#. i18n: %s tags are used in order to remove html URL attributes from translation
+#, php-format
+msgid "For more information about SquirrelMail and the SquirrelMail Project Team, see %sthe SquirrelMail website%s."
+msgstr "Додаткова інофрмация про Squirrelmail і розробників проекту доступна на %sсайте Squirrelmail%s."
+
+msgid "System information"
+msgstr "Системна інформація"
+
+#, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "Ви використовуєте %s версію білки-поштаря (SquirrelMail)"
+
+msgid "The administrator installed the following plugins:"
+msgstr "Адміністратор включив наступні плаґіни:"
+
+msgid "none installed"
+msgstr "немає"
+
+msgid "Nothing to search"
+msgstr ""
+
+msgid "No folders were found to unsubscribe from."
+msgstr "Немає підписаних тек."
+
+msgid "No folders were found to subscribe to."
+msgstr "Немає тек, на які можна підписатися."
+
+msgid "Save folder tree"
+msgstr "Зберегти дерево тек"
+
+msgid "SquirrelMail Webmail Application"
+msgstr "Білка-поштар (SquirrelMail) - програма веб-пошти"
+
+msgid "Received"
+msgstr "Отримано"
+
+msgid "Compose Preferences"
+msgstr "Налаштування редагування"
+
+msgid "Control the behaviour and layout of writing new mail messages, replying to and forwarding messages."
+msgstr "Тут настроюється зовнішній вигляд і макет нових повідомлень, відповіді і пересилка листів."
+
+msgid "View as plain text"
+msgstr ""
+
+msgid "View as HTML"
+msgstr "Перегляд як HTML"
+
+msgid "As Attachment"
+msgstr "Як додаток"
+
+msgid "Bypass Trash"
+msgstr "Минуючи смітник"
+
+msgid "Please enter something to search for"
+msgstr "Введіть рядок для пошуку"
+
+msgid "There must be at least one criteria to search for"
+msgstr "Слід вказати хоч би один критерій пошуку"
+
+msgid "Error in criteria argument"
+msgstr "Помилка в аргументах критерію"
+
+msgid "(Illegal date)"
+msgstr "(неприпустима дата)"
+
+msgid "(Wrong date)"
+msgstr "(Неправильна дата)"
+
+msgid "In"
+msgstr "У"
+
+msgid "(Missing argument)"
+msgstr "(відсутній аргумент)"
+
+msgid "(Spurious argument)"
+msgstr "(надмірний аргумент)"
+
+msgid "Fold"
+msgstr "Згорнути"
+
+msgid "Unfold"
+msgstr "Розгорнути"
+
+msgid "Saved Searches"
+msgstr "Збережені пошуки"
+
+msgid "Missing"
+msgstr "Відсутній"
+
+msgid "and&nbsp;subfolders:"
+msgstr "і&nbsp;підтеки:"
+
+msgid "Exclude Criteria:"
+msgstr "Критерії, що виключаються:"
+
+msgid "Search Criteria"
+msgstr "Пошукові критерії"
+
+msgid "Add New Criteria"
+msgstr "Додати критерії"
+
+msgid "Remove Excluded Criteria"
+msgstr "Видалити виключаючі"
+
+msgid "Remove All Criteria"
+msgstr "Видалити всі критерії"
+
+msgid "Not"
+msgstr "Ні"
+
+msgid "Answered"
+msgstr "Відповіджені"
+
+msgid "Before"
+msgstr "До"
+
+msgid "Message Body"
+msgstr "Тіло листа"
+
+msgid "Deleted"
+msgstr "Видалено"
+
+msgid "Draft"
+msgstr "Чернетка"
+
+msgid "Flagged"
+msgstr "Відмічені"
+
+msgid "Sent By"
+msgstr "Відправлено"
+
+msgid "Header Field"
+msgstr "Заголовок"
+
+msgid "Keyword"
+msgstr "Ключове слово"
+
+msgid "Larger Than"
+msgstr "Більш ніж"
+
+msgid "Old"
+msgstr "Застарілі"
+
+msgid "On"
+msgstr "Дата"
+
+msgid "Recent"
+msgstr "Недавній"
+
+msgid "Seen"
+msgstr "Побачено"
+
+msgid "Sent Before"
+msgstr "Відправлені до"
+
+msgid "Sent On"
+msgstr "Відправлені тоді-то"
+
+msgid "Sent Since"
+msgstr "Відправлені після"
+
+msgid "Since"
+msgstr "Після"
+
+msgid "Smaller Than"
+msgstr "Менше ніж"
+
+msgid "Subject Contains"
+msgstr "Тема містить"
+
+msgid "Header and Body"
+msgstr "Заголовок і тіло"
+
+msgid "Sent To"
+msgstr "Відправлені кому"
+
+msgid "And In"
+msgstr "і в"
+
+msgid "Or In"
+msgstr "або в"
+
+msgid "And"
+msgstr "Та"
+
+msgid "Or"
+msgstr "Або"
+
+msgid "Standard search"
+msgstr "Простий пошук"
+
+msgid "Advanced search"
+msgstr "Розширений пошук"
+
+msgid "Folder List"
+msgstr "Список тек"
+
+msgid "PHP install does not have LDAP support."
+msgstr "У PHP відсутня підтримка LDAP."
+
+msgid "Illegal folder name."
+msgstr "Неприпустиме ім'я теки."
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr "Наступні символи недопустимі в імені: %s"
+
+msgid "Please select a different name."
+msgstr "Будь-ласка виберіть інше ім'я."
+
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "Ви не вибрали теку для підписання. Будь-ласка зробіть це."
+
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "Ви не вибрали теку, щоб анулювати підписку. Будь-ласка зробіть це."
+
+msgid "Possible reason:"
+msgstr "Можлива причина:"
+
+msgid "ERROR: Bad function call."
+msgstr "ПОМИЛКА: Невірний виклик функції."
+
+msgid "Reason:"
+msgstr "Причина:"
+
+msgid "TLS is enabled, but this version of PHP does not support TLS sockets, or is missing the openssl extension."
+msgstr "TLS включений, але або дана версія PHP не підтримує сокети TLS, або не включений модуль openssl."
+
+msgid "IMAP STARTTLS is enabled in SquirrelMail configuration, but used IMAP server does not support STARTTLS."
+msgstr ""
+
+msgid "Unable to start TLS."
+msgstr "Неможливо запустити TLS."
+
+msgid "IMAP STARTTLS is enabled in SquirrelMail configuration, but used PHP version does not support functions that allow to enable encryption on open socket."
+msgstr ""
+
+msgid "Your mailbox is not located at this server. Try a different server or consult your system administrator"
+msgstr "Поштова скринька не знайдена на цьому сервері. Вкажіть інший сервер або зверніться до системного адміністратора."
+
+msgid "Unknown recipient"
+msgstr "Невідомий одержувач"
+
+msgid "Unflag"
+msgstr "Зняти відмітку"
+
+msgid "Flag"
+msgstr "Відзначити"
+
+msgid "Undelete"
+msgstr "Відновити видалення"
+
+msgid "Viewing HTML formatted email"
+msgstr ""
+
+msgid "unavailable"
+msgstr "недійсний"
+
+msgid "Error"
+msgstr "Помилка"
+
+msgid "Terminating SquirrelMail due to a fatal error"
+msgstr ""
+
+msgid "Email delivery error"
+msgstr "Помилка доставки електронної пошти"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr "Не вдається виконати командну '%s'."
+
+msgid "Secure SMTP (TLS) is enabled in SquirrelMail configuration, but used PHP version does not support it."
+msgstr ""
+
+msgid "Can't open SMTP stream."
+msgstr ""
+
+msgid "TLS session is already activated."
+msgstr ""
+
+msgid "SMTP STARTTLS is enabled in SquirrelMail configuration, but used SMTP server does not support it"
+msgstr ""
+
+msgid "SMTP STARTTLS is enabled in SquirrelMail configuration, but used PHP version does not support functions that allow to enable encryption on open socket."
+msgstr ""
+
+msgid "Run \"configure\", choose option 4 (General options) and set option 10 (Disable server thread sort) to true)."
+msgstr ""
+
+msgid "Run \"configure\", choose option 4 (General options) and set option 11 (Disable server-side sorting) to true."
+msgstr ""
+
+msgid "Your used charset is not supported by your IMAP server."
+msgstr ""
+
+msgid "Run \"configure\", choose option 4 (General options) and set option 12 (Allow server charset search) to false) or choose option 10 (Language settings) and set option 2 (Default charset) to a charset supported by your IMAP server."
+msgstr ""
+
+msgid "Out of quota error."
+msgstr ""
+
+msgid "An error occured when SquirrelMail appended a message to the mailbox as listed in this message."
+msgstr ""
+
+msgid "Your IMAP server returned an error."
+msgstr ""
+
+msgid "IMAP server closed the connection."
+msgstr "Сервер IMAP закрив з'єднання."
+
+msgid "General Message Composition"
+msgstr "Параметри нового листа"
+
+msgid "Replying and Forwarding Messages"
+msgstr "Відповіді і пересилка"
+
+msgid "Strip signature when replying"
+msgstr "Видаляти підпис у відповідях"
+
+msgid "Template"
+msgstr "Шаблон"
+
+msgid "Default font style"
+msgstr "Стиль шрифту за умовчанням"
+
+msgid "Font style"
+msgstr "Стиль шрифту"
+
+msgid "Font size"
+msgstr "Розмір шрифту"
+
+msgid "Default font size"
+msgstr "Розмір шрифту за умовчанням"
+
+msgid "Icon Theme"
+msgstr "Тема іконок"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr "Підсвічувати рядки при наведенні миші"
+
+msgid "Show Flag / Unflag Buttons"
+msgstr "Показати кнопки відмітки / зняття"
+
+msgid "Use Compact Page Selector"
+msgstr "Використовувати компактний вибір сторінки"
+
+msgid "Message Display Options"
+msgstr "Параметри відображення листа"
+
+msgid "Height of inline frame"
+msgstr ""
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr "Показати посилання 'Видалити і назад/далі'"
+
+msgid "Save Replies with Original Message"
+msgstr "Зберігати відповіді разом з оригінальним листом"
+
+#, fuzzy, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "хвилин"
+msgstr[1] "хвилин"
+
+msgid "Show only subscribed folders"
+msgstr "Показати тільки підписані теки"
+
+msgid "Template Default"
+msgstr "Шаблон по умовчанню"
+
+msgid "XP"
+msgstr "XP"
+
+msgid "Mercury/32 IMAP server"
+msgstr ""
+
+msgid "IMAP Connection Security"
+msgstr ""
+
+msgid "Plain text connection"
+msgstr ""
+
+msgid "Secure IMAP (TLS) connection"
+msgstr ""
+
+msgid "IMAP STARTTLS connection"
+msgstr ""
+
+msgid "Requires higher PHP version and special functions. See SquirrelMail documentation."
+msgstr ""
+
+msgid "Sendmail Arguments"
+msgstr "Параметри Sendmail"
+
+msgid "SMTP Connection Security"
+msgstr ""
+
+msgid "Disable server-side sorting"
+msgstr "Відключити серверне сортування"
+
+msgid "Disable server-side thread sorting"
+msgstr "Відключити серверне ниткоподібне сортування"
+
+msgid "Search functions"
+msgstr "Пошук функцій"
+
+msgid "Only basic search"
+msgstr "Тільки простий пошук"
+
+msgid "Only advanced search"
+msgstr "Тільки розширений пошук"
+
+msgid "Both search functions"
+msgstr "Обидва види пошуку"
+
+msgid "Time Zone Configuration"
+msgstr "Параметри часового поясу"
+
+msgid "Standard GNU C time zones"
+msgstr ""
+
+msgid "Strict time zones"
+msgstr "Строгі часові пояси"
+
+msgid "Custom GNU C time zones"
+msgstr ""
+
+msgid "Custom strict time zones"
+msgstr ""
+
+msgid "Size of username field"
+msgstr ""
+
+msgid "Size of key field"
+msgstr ""
+
+msgid "Size of value field"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr "Показувати альтернативні назви мов"
+
+msgid "Enable aggressive decoding"
+msgstr "Дозволити агресивне декодування"
+
+msgid "Tweaks"
+msgstr "Спеціальні можливості"
+
+msgid "Use advanced tree folder listing"
+msgstr "Використовувати новий вигляд списку тек"
+
+msgid "Use icons"
+msgstr "Використовувати іконки"
+
+msgid "Use inline frames with HTML mails"
+msgstr ""
+
+msgid "Use PHP recode functions"
+msgstr "Використовувати функцію recode PHP"
+
+msgid "Use PHP iconv functions"
+msgstr "Використовувати функцію iconv PHP"
+
+msgid "Allow remote configuration test"
+msgstr "Вирішити перевірку конфігурації по мережі"
+
+msgid "Templates"
+msgstr "Шаблони"
+
+msgid "Default font set"
+msgstr "Шрифтовий набір по умовчанню"
+
+msgid "Default template"
+msgstr "Заданий по умовчанню шаблон"
+
+msgid "Show System Specifications"
+msgstr "Показати відомості про систему"
+
+msgid "my email account"
+msgstr "мій поштовий обліковий запис"
+
+msgid "Bug Reports"
+msgstr "Відправка повідомлення про помилки:"
+
+msgid "m/d/Y"
+msgstr "m/d/Y"
+
+msgid "You must type in a new password."
+msgstr "Введіть новий пароль."
+
+msgid "You must also type in your new password in the verify box."
+msgstr "Введіть новий пароль в поле повтору пароля."
+
+msgid "Your new password does not match the verify password."
+msgstr "Паролі не співпадають."
+
+msgid "You must type in your current password."
+msgstr "Введіть поточний пароль."
+
+msgid "Your current password is not correct."
+msgstr "Ваш поточний пароль не правильний."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr "Новий пароль містити від %s до %s символів."
+
+msgid "Your new password contains invalid characters."
+msgstr "Ваш новий пароль містить заборонені символи."
+
+msgid "Change Password"
+msgstr "Зміна паролю"
+
+msgid "Current Password:"
+msgstr "Поточний пароль:"
+
+msgid "New Password:"
+msgstr "Новий пароль:"
+
+msgid "Verify New Password:"
+msgstr "Перевірте новий пароль:"
+
+msgid "Use this to change your email password."
+msgstr "Тут можна змінити пароль електронної пошти."
+
+#. i18n: is displayed after "Successfully Saved Options:"
+msgid "User's Password"
+msgstr "Пароль користувача"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr "Поточна конфігурація вимагає підтримки LDAP в PHP."
+
+msgid "Plugin is not configured correctly."
+msgstr "Плаґін працює з помилками."
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr "Не вдалося задати опцію LDAP %s рівною %s. "
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr "Неприпустима опція з'єднання LDAP: %s"
+
+msgid "Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr "У даній версії PHP розширення LDAP не допускає виклик функції ldap_set_option()."
+
+msgid "Unable to use TLS."
+msgstr "Не вдається працювати з TLS."
+
+#, php-format
+msgid "Error: %s"
+msgstr "Помилка: %s"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr "У поточній конфігурації TLS для LDAP не підтримується."
+
+msgid "Unable to bind to LDAP server."
+msgstr "Не вдається зв'язатися з сервером LDAP."
+
+#, php-format
+msgid "Server replied: %s"
+msgstr "Сервер відповів: %s"
+
+msgid "Unable to find user's password attribute."
+msgstr "Атрибут призначеного для користувача пароля не знайдений."
+
+msgid "Unable to rebind to LDAP server."
+msgstr "Не вдається повторно зв'язатися з сервером LDAP."
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr "Сервер LDAP використовує інший атрибут для зберігання призначеного для користувача пароля."
+
+msgid "Unable to connect to LDAP server."
+msgstr "Не вдається з'єднатися з LDAP-сервером."
+
+msgid "Unable to find user's DN."
+msgstr "Не вдається знайти DN користувача."
+
+msgid "Search error."
+msgstr "Помилка пошуку."
+
+msgid "Multiple userid matches found."
+msgstr "Знайдено декілька співпадаючих userid."
+
+msgid "ldap_get_dn error."
+msgstr "Помилка ldap_get_dn."
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr "Невідомий шифр: %s"
+
+msgid "PHP mhash extension is missing or does not support selected crypto."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr "Бібліотека crypt не підтримує стандартний шифр DES."
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr "Бібліотека crypt не підтримує шифр Md5."
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr "Бібліотека crypt не підтримує розширений шифр DES."
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr "Бібліотека crypt не підтримує шифр Blowfish."
+
+msgid "unknown"
+msgstr "(невідомо)"
+
+msgid "Unable to validate user's password."
+msgstr "Не вдається перевірити пароль користувача."
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr "Blowfish не підтримується бібліотекою шифрування веб-сервера."
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr "Md5 не підтримується бібліотекою шифрування веб-сервера."
+
+msgid "Extended DES crypt is not supported by webserver's system crypt library."
+msgstr "Розширений DES не підтримується бібліотекою шифрування веб-сервера."
+
+msgid "Standard DES crypt is not supported by webserver's system crypt library."
+msgstr "Стандартний DES не підтримується бібліотекою шифрування веб-сервера."
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr "Модуль curl PHP не знайдений. Зміна пароля неможлива."
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr "Не вдається змінити пароль. Перевірте, чи дозволено це. (401)"
+
+msgid "Cannot change password!"
+msgstr "Пароль не був змінений."
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr "Не вдалося з'єднатися з сервером бази даних. Спробуйте ще раз."
+
+msgid "Database not found on server"
+msgstr "Не знайдена база даних на сервері"
+
+msgid "SQL call failed, try again later."
+msgstr "Помилка запиту SQL. Повторіть спробу пізніше."
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr "Пароль не був змінений. Знайдені співпадаючі імена користувачів."
+
+msgid "Password change was not successful!"
+msgstr "Пароль не був змінений."
+
+msgid "Plugin is unable to use PHP Pear DB libraries. PHP Pear includes must be available in your PHP include_path setting."
+msgstr ""
+
+msgid "Required change password backend configuration options are missing."
+msgstr ""
+
+#, php-format
+msgid "Connection error: %s"
+msgstr "Помилка з'єднання: %s"
+
+#, php-format
+msgid "Invalid table name: %s"
+msgstr ""
+
+msgid "User table is empty."
+msgstr ""
+
+msgid "Invalid uid field."
+msgstr "Недійсний користувач."
+
+msgid "Invalid password field"
+msgstr "Недійсне поле пароля"
+
+msgid "Invalid domain field"
+msgstr "Недійсне доменне поле"
+
+#, php-format
+msgid "Query failed: %s"
+msgstr "Запит невдався: %s"
+
+msgid "Unable to find user in user table."
+msgstr ""
+
+msgid "Too many matches found in user table."
+msgstr ""
+
+msgid "Unable to detect password crypto algorithm."
+msgstr ""
+
+msgid "Unable to encrypt new password."
+msgstr "Неможливо закодувати новий пароль."
+
+#, php-format
+msgid "Unable to set new password: %s"
+msgstr "Неможливо встановити новий пароль: %s"
+
+msgid "Unable to use digest-md5 crypto."
+msgstr ""
+
+msgid "Closing Connection"
+msgstr "Закриття з'єднання"
+
+msgid "Connecting to Password Server"
+msgstr "З'єднання з парольним сервером"
+
+msgid "No valid backend defined."
+msgstr "Не вказана базова програма."
+
+msgid "Incorrent path to vmail.inc file."
+msgstr "Невірний шлях до файлу vmail.inc."
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr "Файл vmail.inc пошкоджений."
+
+msgid "Invalid user."
+msgstr "Недійсний користувач."
+
+msgid "Empty domain"
+msgstr "Порожній домен"
+
+msgid "Empty domain password"
+msgstr "Порожній пароль домена"
+
+msgid "Empty username"
+msgstr "Порожнє ім'я користувача"
+
+msgid "Empty new password"
+msgstr "Порожній новий пароль"
+
+msgid "Server Capability response:"
+msgstr "Можливості сервера:"
+
+msgid "Select the IMAP commands you would like to run. Most commands require a selected mailbox so the select command is already setup. You can clear all the commands and test your own IMAP command strings. The commands are executed in order. The default values are simple IMAP commands using your default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid "NOTE: These commands are live, any changes made will effect your current email account."
+msgstr ""
+
+msgid "Select"
+msgstr "Вибрати"
+
+msgid "Test Name"
+msgstr "Випробувальне ім'я"
+
+msgid "IMAP command string"
+msgstr "Команда IMAP"
+
+msgid "Request:"
+msgstr "Запит:"
+
+msgid "Execution time:"
+msgstr "Тривалість виконання:"
+
+#, php-format
+msgid "%s ms"
+msgstr "%s мс"
+
+msgid "Command failed"
+msgstr "Помилка при виконанні команди"
+
+msgid "No POP3 servers configured yet."
+msgstr "Сервери Pop3 не настроєні."
+
+msgid "Click here to go to the options page."
+msgstr "Клацніть тут, щоб перейти до сторінки параметрів."
+
+#, php-format
+msgid "Fetching from %s"
+msgstr ""
+
+#, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Fetching message %s."
+msgstr ""
+
+#, php-format
+msgid "Refetching message %s."
+msgstr ""
+
+msgid "Warning:"
+msgstr "Попередження:"
+
+msgid "The NewMail plugin will follow the Folder Preferences option &quot;Enable Unread Message Notification&quot;"
+msgstr ""
+
+msgid "Width of popup window:"
+msgstr "Ширина спливаючого вікна:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "Якщо рівно 0, використовується значення за умовчанням"
+
+msgid "Height of popup window:"
+msgstr "Висота спливаючого вікна:"
+
+msgid "uploaded media file"
+msgstr "завантажений звуковий файл:"
+
+msgid "none"
+msgstr "Немає"
+
+msgid "Upload Media File:"
+msgstr "Завантажити звуковий файл:"
+
+msgid "Uploaded Media File:"
+msgstr "Завантажений звуковий файл:"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr "Якщо завантажити новий звуковий файл %s буде видалений."
+
+msgid "Warning"
+msgstr "Увага"
+
+msgid "There are some restrictions in Sent Subfolder options."
+msgstr ""
+
+msgid "Sent Subfolders plugin is misconfigured."
+msgstr ""
+
+msgid "Save emails submitted to SpamCop:"
+msgstr ""
+
+msgid "Spam Service Type:"
+msgstr "Тип служби боротьби із спамом:"
+
+msgid "Free reporting"
+msgstr "Безкоштовно"
+
+msgid "Member services"
+msgstr "Потрібна реєстрація"
+
+msgid "Save Service Type"
+msgstr "Зберегти тип служби"
+
+msgid "SpamCop reporting"
+msgstr "Звіт Spamcop"
+
+#, php-format
+msgid "Your %s dictionary is encrypted with password that differs from your current password."
+msgstr ""
+
+msgid "Invalid SquirrelSpell module."
+msgstr "Непрацездатний модуль SquirrelSpell."
+
+#, php-format
+msgid "Found %d error"
+msgid_plural "Found %d errors"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "Using %s dictionary for spellcheck."
+msgstr ""
+
+msgid "Translation Theme:"
+msgstr "Тема перекладу:"
+
+msgid "Selected translation engine is disabled. Please update your translation preferences."
+msgstr "Вибрана система перекладу вимкнена. Відновите параметри перекладу."
+
+msgid "Translation Preferences"
+msgstr "Налаштування перекладу"
+
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr "Максимум 25 кбайт, система Systran"
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr "Без обмежень, система Gpltrans (відкритий код)"
+
+msgid "Transliterate unknown words:"
+msgstr "Замінювати незнайомі слова транслітерацией:"
+
+msgid "When composing:"
+msgstr "При написанні:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "Дана функція ще не реалізована"
+
+msgid "D"
+msgstr ""
+
+msgid "F"
+msgstr ""
+
+msgid "SquirrelMail notice messages"
+msgstr ""
+
+msgid "Category:"
+msgstr "Категорія:"
+
+msgid "Tip:"
+msgstr "Порада:"
+
+msgid "More info:"
+msgstr "Більше інформації:"
+
+msgid "Message Flags"
+msgstr "Прапорці листа"
+
+msgid "Attachment"
+msgstr "Вкладення"
+
+msgid "Click here to change the sorting of the message list"
+msgstr "Клацніть тут, щоб змінити сортування списку листів"
+
+msgid "Delivery error report"
+msgstr "Повідомлення про помилку при доставці"
+
+msgid "Undelivered Message Headers"
+msgstr "Заголовки недоставленого повідомлення"
+
+msgid "This image has been removed for security reasons"
+msgstr "Небезпечні зображення не показані."
+

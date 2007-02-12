@@ -1,0 +1,85 @@
+# Italian (it_IT) html_mail Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rocco Scappatura <rocsca@sttspa.it>, 2006.
+# $Id: html_mail.po,v 1.1 2006/04/20 12:43:27 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: html_mail 2.3\n"
+"POT-Creation-Date: 2005-10-24 21:00+0300\n"
+"PO-Revision-Date: 2006-04-20 14:34+0200\n"
+"Last-Translator: Rocco Scappatura <rocsca@sttspa.it>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "ERROR (%s): can't load config file"
+msgstr ""
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid ""
+"Warning: all special formatting will be lost.  Are you sure you want to send "
+"your message in plain text format?"
+msgstr ""
+"Attenzione: tutte le formattazioni speciali verranno perse. Sei sicuro di "
+"voler inviare il tuo messaggio in formato testo?"
+
+msgid "Plain Text"
+msgstr "Testo"
+
+msgid "Compose in HTML"
+msgstr "Componi in HTML"
+
+#, php-format
+msgid ""
+"FATAL: HTML_Mail plugin must come AFTER %s in plugins array.  Please modify "
+"plugin order using conf.pl or by editing config/config.php"
+msgstr ""
+"Errore: Il plugin 'HTML Mail' deve essere caricato dopo %s nell'array dei "
+"plugin. Modifica l'ordine dei plugin usando 'conf,pl' o editando il file "
+"'config/config.php'"
+
+msgid "Subject"
+msgstr "Oggetto"
+
+msgid "From"
+msgstr "Da"
+
+msgid "Default Email Composition Format:"
+msgstr "Formato di composizione dei messaggi di default:"
+
+msgid "Use Emoticons:"
+msgstr "Usa le 'faccine':"
+
+msgid "Yes"
+msgstr "Si"
+
+msgid "No"
+msgstr "No"
+
+msgid "Only Reply In HTML When Viewing HTML Format:"
+msgstr "Rispondi solo in HTML ai messaggi ricevuti in formato HTML:"
+
+msgid "(Always Attempt To Reply In HTML)"
+msgstr "(Tenta sempre di rispondere in HTML)"
+
+msgid "Only Allow Unsafe Images In HTML Replies When Viewing Unsafe Images:"
+msgstr ""
+"Consenti l'inserimento delle immagini 'insicure' nelle risposte ai messaggi "
+"in formato HTML contenenti immagini 'insicure':"
+
+msgid "(Always Include Unsafe Images)"
+msgstr "(Includi sempre immagini 'insicure')"
+
+msgid "HTML Editor Type:"
+msgstr "Editor HTML:"
+
+msgid "FCKeditor"
+msgstr "FCKeditor"
+
+msgid "HTMLArea"
+msgstr "HTMLArea"

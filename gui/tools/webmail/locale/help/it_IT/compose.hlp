@@ -1,0 +1,132 @@
+<chapter>
+   <title>
+      Componi
+   </title>
+   <summary>
+      Con questa scelta, potete inviare messaggi a diverse persone
+      da SquirrelMail.
+   </summary>
+   <description>
+      <p>
+      Le scelte del menu Componi vi porteranno alla pagina di composizione
+      di un nuovo messaggio. Qui troverete diversi campi e due pulsanti.
+      In funzione di come siete arrivati alla vista di composizione, alcuni
+      campi potrebbero risultare già compilati.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      A
+   </title>
+   <description>
+      <p>
+      Primo tra questi c'è il campo <B>A:</B>  In questo campo dovrete
+      inserire l'indirizzo email della persona o persone a cui inviare
+      il messaggio.  Potete inserire tanti indirizzi quanti volete, separati
+      da una virgola.  Eè possibile premere il pulsante "Indirizzi" per 
+      compilare automaticamente il campo.  Non preoccupatevi se non dovesse
+      essere visualizzato l'intero indirizzo.
+      Il campo è a lunghezza fissa, ma qualsiasi cosa vi inserirete sarà usata
+      fedelmente, anche nel caso dovesse scorrere a destra o sinistra.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Cc
+   </title>
+   <description>
+      <p>
+      Quindi viene il campo <B>CC:</B>   CC è un'abbreviazione di <B>C</B>arbon 
+      <B>C</B>opy (copia carbone).  Se volete inviare il vostro messaggio come una
+      copia (velina) questo è il campo che fà per voi. E' possibile inserire quanti
+      indirizzi desiderate nei campi <B>A:</B>, <B>CC:</B>, e <B>BCC:</B>.  
+      Solo le persone a cui il messaggio è diretto dovranno essere indicate nel campo
+      <B>A:</B> mentre le persone che dovranno ricevere il messaggio come informativa
+      saranno inserite nei campi <B>CC:</B> e <B>BCC:</B>
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bcc
+   </title>
+   <description>
+      <p>
+      BCC è un'abbreviazione di <B>B</B>lind <B>C</B>arbon <B>C</B>opy (copia nascosta).
+      Usate questo campo per inserire indirizzi <I>senza</I> che i destinatari
+      presenti nei campi <B>A:</B> o <B>CC:</B> ne conoscano l'esistenza.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Oggetto
+   </title>
+   <description>
+      <p>
+      Inserite la descrizione principale del messaggio, qui.  Ricordate, l'email può servire
+      a risparmiare molto tempo, ed un'accurata riga oggetto rappresenta una buona ragione.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Pulsante Indirizzi
+   </title>
+   <description>
+      <p>
+      Questo pulsante aprirà la rubrica indirizzi dopo la comparsa di una
+      finestra di ricerca.
+      Nella casella di ricerca deve essere digitato qualche cosa affinchè
+      possa essere trovato un risultato.
+      Se si vuole inviare un messaggio a tutti gli indirizzi presenti nella
+      rubrica, inserite uno spazio e premete il pulsante submit. 
+      La rubrica indirizzi ha diverse funzionalità che sono spiegate nella
+      apposita sezione. Maggiori informazioni sono disponibili nel capitolo
+      "Indirizzi". 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Corpo del Messaggio
+   </title>
+   <description>
+      <p>
+      La casella vuota più ampia è per l'inserimento del corpo del vostro
+      messaggio. Se avete salvato un file contenente la vostra firma, questa
+      apparirà automaticamente qui.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Allegato
+   </title>
+   <description>
+      <p>
+      Posto in basso della pagina Componi, questa caratteristica vi permette
+      di includere un file nel vostro messaggio.  Il file deve essere presente
+      nelle <I>unità</I> della vostra macchina o della vostra rete.  E' anche
+      presente un pulsante Sfoglia cosicchè sia possibile cercare nella struttura
+      delle vostre directory ed includere con un click il file desiderato.
+      Alternativamente è possibile digitare direttamente nel campo, il file da allegare,
+      con l'esatto percoro e nome. Premete semplicemente il pulsante Aggiungi per
+      vedere apparire di seguito il file selezionato, elencato come allegato.
+      </p>
+      <p>
+      Una volta che è stato inserito almeno un file in allegato, vi vedrà apparire
+      un altro pulsante.  La cancellazione di uno o più files allegati sarà possibile
+      selezionandoli e premendo il pulsante cancella.
+      <p>
+   </description>
+</section>

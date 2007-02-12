@@ -1,0 +1,182 @@
+Installing Check Quota
+======================
+
+1) To install Check Quota, you must untar and gunzip the quota
+   file you downloaded. This is an example to do this with version
+   1.4 of the plugin:
+
+   On Linux, FreeBSD, etc:
+
+  $ cd plugins
+  $ tar -zxvf check_quota-1.4-1.2.7.tar.gz
+
+   On Solaris, when using Solaris native tar:
+
+  $ cd plugins
+  $ gzip -d check_quota-1.4-1.2.7.tar.gz
+  $ tar -xvf check_quota-1.4-1.2.7.tar
+
+2) Change into the check_quota directory, copy config.php.sample
+   to config.php and edit config.php, making adjustments as
+   you deem necessary.
+
+  $ cd quota_usage
+  $ cp config.php.sample config.php
+  $ vi config.php
+
+3) Then go to your config directory and run conf.pl.  Choose
+   option 8 and move the plugin from the "Available Plugins"
+   category to the "Installed Plugins" category.  Save and exit.
+
+  $ cd ../../config/
+  $ ./conf.pl
+
+   PLEASE NOTE that if you are using the MOTD warning 
+   functionality in this plugin and you have any other plugins 
+   that modify the MOTD, you should usually make sure that this 
+   one is listed AFTER the other MOTD-related plugins.
+
+Upgrading Check Quota
+=====================
+
+1) Untar the plugin as told on step 1 in "Installing Check Quota"
+   section.
+
+2) Change into the check_quota directory, check your config.php
+   file against the new version, to see if there are any new
+   or obsolete settings that you must add to or remove from
+   your config.php file.
+
+  $ diff -Nau config.php config.php.sample
+
+   Or simply replace your config.php file with the provided sample
+   and reconfigure the plugin from scratch (see step 2 in
+   "Installing Check Quota" section).
+
+Configuring Check Quota
+=======================
+
+As this plugin supports two different quota formats which are
+UNIX and IMAP quotas, the configuration process for these two
+formats differ from each other. Let's start with the simpler one.
+
+1) Configuring for IMAP quotas:
+
+   Not much to do here, if you have installed Check Quota as
+   told in previous sections, the only thing you have to do
+   is editing the config.php file and setting the
+   $cq_check_quota_type to 0 (zero). That's it :-)
+
+2) Configuring for UNIX quotas:
+
+   Well this one is the tricky one, but it is not hard. So this
+   is how to do it:
+
+   2.1) First you must know how to check your users' quota. In
+        UNIX, Linux, FreeBSD, etc. quotas are checked by the
+        quota -v command and only the "root" user has the right
+        to check other users' quotas with this command. When
+        this plugin's name was Disk Quota, we had some ways to grant
+        the webserver user the ability to see everyone's quotas,
+        but only one way is mostly secure, so I will only mention that
+        way here. The other ways will be buried in the dusty shelves
+        of our RAID 0+1 systems and our hearts :-P
+
+        So, let's start by learning under which account our webserver
+        runs. If you are running Apache, you can do this with the ps
+        command:
+
+        On Linux, Solaris etc:
+
+       # ps -ef|grep apache
+
+        On FreeBSD, OpenBSD, or other BSD based systems:
+
+       # ps aux|grep apache
+
+        This command will give you an output like this:
+
+        root    56625  [trimmed info] /usr/local/apache2/bin/httpd -k start -DSSL
+        nobody  56626  [trimmed info] /usr/local/apache2/bin/httpd -k start -DSSL
+        nobody  56630  [trimmed info] /usr/local/apache2/bin/httpd -k start -DSSL
+        nobody  58078  [trimmed info] /usr/local/apache2/bin/httpd -k start -DSSL
+        nobody  58088  [trimmed info] /usr/local/apache2/bin/httpd -k start -DSSL
+        nobody  81974  [trimmed info] /usr/local/apache2/bin/httpd -k start -DSSL
+
+        We see that the "nobody" user runs our webserver. This user must be able to
+        check anyone's quota, so we must give it some root privileges. Scary eh?
+
+   2.2) So comes our savior, "sudo" command. You can find out if sudo is
+        installed on your system or not, by:
+
+       # which sudo
+
+        This may give some output like
+
+        /usr/bin/sudo
+
+        So, our sudo resides on this path. Note this path, you will need
+        it later. If the command above gives no output or gives some error
+        like "no sudo found", you will have to install it first. You can
+        download the latest sudo source from:
+
+        http://www.courtesan.com/sudo/
+
+        Installing sudo is beyond the scope of this file, so I will not
+        mention it here.
+
+        Also find where your quota binary resides:
+
+       # which quota
+
+        One of the possible outputs (which will be used as our example
+        below):
+
+        /usr/bin/quota
+
+   2.3) Now, you will have two ways to use sudo and quota:
+
+        a) FIRST WAY: This way is simpler but not so secure if your users have
+           shell access to your system. So I recommend you to use the second
+           way if users have shell access. Edit the /etc/sudoers file or
+           create one if it does not exist and add this line to this file:
+
+           nobody  ALL=NOPASSWD: /usr/bin/quota -v *
+
+        b) SECOND WAY: Copy the quota binary to another name like cqcheck so
+           that the quota binary will be disguised under a name, most of your
+           users will not think of.
+
+          # cd /usr/bin
+          # cp quota cqcheck
+
+           Edit the /etc/sudoers file or create one if it does not exist
+           and add this line to this file:   
+
+           nobody  ALL=NOPASSWD: /usr/bin/cqcheck -v *
+
+        After following either the first or second way, su to the nobody
+        user and try to check a user's quota:
+
+       # su - nobody
+       $ /usr/bin/sudo /usr/bin/cqcheck -v someuser
+
+        If you get quota output for the user, you are all set. If sudo
+        complains about not finding sudoers file, or if you don't get any
+        quota output for the commands above, sudo may be looking for
+        sudoers in a different directory which may include:
+
+        /usr/etc
+        /usr/local/etc
+
+        Try to edit sudoers file in these directories. Also you can find
+	information about this file with this command:
+
+       $ man sudo
+
+   2.4) After configuring quota and sudo, all you have to do is edit
+        the config.php file of the plugin and set the
+        $cq_check_quota_type to 1 and set the $cq_quota_binary to
+        "/usr/bin/sudo /usr/bin/quota" or "/usr/bin/sudo /usr/bin/cqcheck".
+        You can now check UNIX quotas.
+
