@@ -12,6 +12,21 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-02-12 Benedikt Heintel
+	- CONFIGS:
+		* added folder and files for Gentoo
+		* added Fedora files missing / changed
+		* changed masters php.inis
+	- DOCS:
+		* added folder for Gentoo
+	- GUI:
+		* fixed small bug
+	- LANGUAGES:
+		* Portugues-Brazil: added missing strings
+	- SETUP:
+		* changed permissions
+		* fixed bug #48
+
 2007-02-11 Benedikt Heintel
 	- GUI:
 		* changed Errordocs (untested)
