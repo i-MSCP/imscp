@@ -107,6 +107,11 @@ a.submenu:active {
 	vertical-align: middle;
 }
 
+a.submenu:focus {
+	color: #f4dc6b;
+	background-image: url(../images/top/link_hover_bg.jpg);
+	vertical-align: middle;
+}
 
 /*  submenu end*/
 
