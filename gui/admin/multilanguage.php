@@ -128,7 +128,7 @@ function install_lang() {
 				return;
 			}
 			$table  = fgets($fd, 4096);
-			$table  = explode(" = ",chop($table));
+			$table  = explode("=",trim($table));
 			if ($table[0] != "vhcs_table") {
 				set_page_message(tr('Can not read vhcs language file!'));
 				return;

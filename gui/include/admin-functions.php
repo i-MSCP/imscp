@@ -44,7 +44,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 						'TR_MENU_SETTINGS' => tr('Settings'),
 						'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-						'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change pers. data'),
+						'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 						'TR_MENU_ADD_ADMIN'  => tr('Add admin'),
 						'TR_MENU_ADD_RESELLER'  => tr('Add reseller'),
 						'TR_MENU_RESELLER_ASIGNMENT'  => tr('Reseller assignment'),

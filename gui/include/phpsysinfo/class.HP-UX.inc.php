@@ -17,7 +17,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: class.HP-UX.inc.php,v 1.17 2006/02/11 17:31:03 bigmichi1 Exp $
+// $Id: class.HP-UX.inc.php,v 1.19 2006/06/11 09:57:20 bigmichi1 Exp $
 
 class sysinfo {
   // get our apache SERVER_NAME or vhost
@@ -338,9 +338,7 @@ class sysinfo {
           $results['ram']['cached'] = $ar_buf[5] / 1024; 
           // I don't like this since buffers and cache really aren't
           // 'used' per say, but I get too many emails about it.
-          $results['ram']['t_used'] = $results['ram']['used'];
-          $results['ram']['t_free'] = $results['ram']['total'] - $results['ram']['t_used'];
-          $results['ram']['percent'] = round(($results['ram']['t_used'] * 100) / $results['ram']['total']);
+          $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']);
         } 
 
         if (preg_match('/Swap:\s+(.*)$/', $buf, $ar_buf)) {

@@ -202,7 +202,7 @@ check_permissions($tpl);
 
 $tpl -> assign(array('TR_SUPPORT_SYSTEM' => tr('Support system'),
                      'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-                     'TR_NEW' => tr('&nbsp;'),
+                     'TR_NEW' => '&nbsp;',
                      'TR_ACTION' => tr('Action'),
                      'TR_URGENCY' => tr('Priority'),
                      'TR_SUBJECT' => tr('Subject'),

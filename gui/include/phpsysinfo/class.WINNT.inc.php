@@ -13,7 +13,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // WINNT implementation written by Carl C. Longnecker, longneck@iname.com
-// $Id: class.WINNT.inc.php,v 1.17 2006/01/30 19:38:30 bigmichi1 Exp $
+// $Id: class.WINNT.inc.php,v 1.24 2006/06/15 22:24:56 bigmichi1 Exp $
 
 class sysinfo {
   // $wmi holds the COM object that we pull all the WMI data from
@@ -55,7 +55,7 @@ class sysinfo {
 
     foreach($arrWEBMCol as $objItem)
     {
-        reset($arrProp);
+        @reset($arrProp);
         $arrInstance = array();
         foreach($arrProp as $propItem)
         {
@@ -119,20 +119,26 @@ class sysinfo {
   function uptime ()
   {
     $result = 0;
-    $buffer = $this->_GetWMI( "Win32_OperatingSystem", array( "LastBootUpTime" ) );
+    $buffer = $this->_GetWMI( "Win32_OperatingSystem", array( "LastBootUpTime", "LocalDateTime" ) );
 
-    $year = intval(substr($buffer[0]["LastBootUpTime"], 0, 4));
-    $month = intval(substr($buffer[0]["LastBootUpTime"], 4, 2));
-    $day = intval(substr($buffer[0]["LastBootUpTime"], 6, 2));
-    $hour = intval(substr($buffer[0]["LastBootUpTime"], 8, 2));
-    $minute = intval(substr($buffer[0]["LastBootUpTime"], 10, 2));
-    $seconds = intval(substr($buffer[0]["LastBootUpTime"], 12, 2));
+    $byear = intval(substr($buffer[0]["LastBootUpTime"], 0, 4));
+    $bmonth = intval(substr($buffer[0]["LastBootUpTime"], 4, 2));
+    $bday = intval(substr($buffer[0]["LastBootUpTime"], 6, 2));
+    $bhour = intval(substr($buffer[0]["LastBootUpTime"], 8, 2));
+    $bminute = intval(substr($buffer[0]["LastBootUpTime"], 10, 2));
+    $bseconds = intval(substr($buffer[0]["LastBootUpTime"], 12, 2));
 
-    $hour -= date(Z) / 60 / 60;	// GMT-Offset
+    $lyear = intval(substr($buffer[0]["LocalDateTime"], 0, 4));
+    $lmonth = intval(substr($buffer[0]["LocalDateTime"], 4, 2));
+    $lday = intval(substr($buffer[0]["LocalDateTime"], 6, 2));
+    $lhour = intval(substr($buffer[0]["LocalDateTime"], 8, 2));
+    $lminute = intval(substr($buffer[0]["LocalDateTime"], 10, 2));
+    $lseconds = intval(substr($buffer[0]["LocalDateTime"], 12, 2));
 
-    $boottime = mktime($hour, $minute, $seconds, $month, $day, $year);
+    $boottime = mktime($bhour, $bminute, $bseconds, $bmonth, $bday, $byear);
+    $localtime = mktime($lhour, $lminute, $lseconds, $lmonth, $lday, $lyear);
 
-    $result = mktime() - $boottime;
+    $result = $localtime - $boottime;
 
     return $result;
   } 
@@ -140,7 +146,7 @@ class sysinfo {
   // count the users, which are logged in
   function users ()
   {
-    if( !stristr( $this->_GetWMI( "Win32_OperatingSystem", array( "Version" ) ), "2000 P" ) ) return "N.A."; 
+    if( stristr( $this->kernel(), "2000 P" ) ) return "N.A."; 
     $buffer = $this->_GetWMI( "Win32_PerfRawData_TermService_TerminalServices", array( "TotalSessions" ) );
     return $buffer[0]["TotalSessions"];
   } 
@@ -213,27 +219,39 @@ class sysinfo {
     return $sbus;
   } 
 
-  // get the netowrk devices and rx/tx bytes
-  function network ()
-  {
-    $buffer = $this->_GetWMI( "Win32_PerfRawData_Tcpip_NetworkInterface" );
-    $results = array();
-    foreach ( $buffer as $device ) {
-      $dev_name = $device["Name"];
-      // http://msdn.microsoft.com/library/default.asp?url=/library/en-us/wmisdk/wmi/win32_perfrawdata_tcpip_networkinterface.asp
-      $results[$dev_name]['rx_bytes'] = $device["BytesReceivedPersec"];
-      $results[$dev_name]['rx_packets'] = $device["PacketsReceivedPersec"];
-      $results[$dev_name]['rx_errs'] = $device["PacketsReceivedErrors"];
-      $results[$dev_name]['rx_drop'] = $device["PacketsReceivedDiscarded"];
-
-      $results[$dev_name]['tx_bytes'] = $device["BytesSentPersec"];
-      $results[$dev_name]['tx_packets'] = $device["PacketsSentPersec"];
-
-      $results[$dev_name]['errs'] = $device["PacketsReceivedErrors"];
-      $results[$dev_name]['drop'] = $device["PacketsReceivedDiscarded"];
-    }
-    return $results;
-  } 
+	// get the netowrk devices and rx/tx bytes
+	function network () {
+		$results = array();
+		$buffer = $this->_GetWMI( "Win32_PerfRawData_Tcpip_NetworkInterface" );
+		foreach( $buffer as $device ) {
+			$dev_name = $device["Name"];
+			// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/wmisdk/wmi/win32_perfrawdata_tcpip_networkinterface.asp
+			// there is a possible bug in the wmi interfaceabout uint32 and uint64: http://www.ureader.com/message/1244948.aspx, so that
+			// magative numbers would occour, try to calculate the nagative value from total - positive number
+			
+			if( $device["BytesSentPersec"] < 0) {
+				$results[$dev_name]['tx_bytes'] = $device["BytesTotalPersec"] - $device["BytesReceivedPersec"];
+			} else {
+				$results[$dev_name]['tx_bytes'] = $device["BytesSentPersec"];
+			}
+			if( $device["BytesReceivedPersec"] < 0 ) {
+				$results[$dev_name]['rx_bytes'] = $device["BytesTotalPersec"] - $device["BytesSentPersec"];
+			} else {
+				$results[$dev_name]['rx_bytes'] = $device["BytesReceivedPersec"];
+			}
+			
+			$results[$dev_name]['rx_packets'] = $device["PacketsReceivedPersec"];
+			$results[$dev_name]['tx_packets'] = $device["PacketsSentPersec"];
+			
+			$results[$dev_name]['rx_errs'] = $device["PacketsReceivedErrors"];
+			$results[$dev_name]['rx_drop'] = $device["PacketsReceivedDiscarded"];
+			
+			$results[$dev_name]['errs'] = $device["PacketsReceivedErrors"];
+			$results[$dev_name]['drop'] = $device["PacketsReceivedDiscarded"];
+		}
+		
+		return $results;
+	} 
 
   function memory ()
   {
@@ -244,9 +262,7 @@ class sysinfo {
     $results['ram']['free'] = $buffer[0]["AvailableKBytes"];
 
     $results['ram']['used'] = $results['ram']['total'] - $results['ram']['free'];
-    $results['ram']['t_used'] = $results['ram']['used'];
-    $results['ram']['t_free'] = $results['ram']['total'] - $results['ram']['t_used'];
-    $results['ram']['percent'] = ceil( ( $results['ram']['t_used'] * 100 ) / $results['ram']['total'] );
+    $results['ram']['percent'] = ceil( ( $results['ram']['used'] * 100 ) / $results['ram']['total'] );
     $results['swap']['total'] = 0;
     $results['swap']['used'] = 0;
     $results['swap']['free'] = 0;
@@ -294,7 +310,7 @@ class sysinfo {
       @$results[$k]['percent'] = ceil( $results[$k]['used'] / $results[$k]['size'] * 100 );  // silence this line, nobody is having a floppy in the drive everytime
       $results[$k]['fstype'] = $filesystem["FileSystem"];
       $results[$k]['disk'] = $typearray[$filesystem["DriveType"]];
-      if ( $filesystem["DriveType"] == 2 ) $results[$k]['disk'] .= " (" . $floppyarray[$filesystem["MediaType"]] . ")";
+      if ( $filesystem["MediaType"] != ""  && $filesystem["DriveType"] == 2 ) $results[$k]['disk'] .= " (" . $floppyarray[$filesystem["MediaType"]] . ")";
       $k += 1;
     } 
     return $results;

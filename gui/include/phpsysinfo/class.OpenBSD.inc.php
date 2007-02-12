@@ -17,45 +17,35 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: class.OpenBSD.inc.php,v 1.18 2005/11/28 15:52:15 bigmichi1 Exp $
+// $Id: class.OpenBSD.inc.php,v 1.21 2006/04/18 17:46:15 bigmichi1 Exp $
 if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
 }
 
-require_once('class.BSD.common.inc.php');
+require_once(APP_ROOT . '/includes/os/class.BSD.common.inc.php');
 
 class sysinfo extends bsd_common {
-  var $cpu_regexp;
-  var $scsi_regexp; 
+  var $cpu_regexp   = "";
+  var $scsi_regexp1 = "";
+  var $scsi_regexp2 = "";
+  var $cpu_regexp2  = "";
+  
   // Our contstructor
   // this function is run on the initialization of this class
   function sysinfo () {
+    $this->bsd_common();
     $this->cpu_regexp = "^cpu(.*) (.*) MHz";
     $this->scsi_regexp1 = "^(.*) at scsibus.*: <(.*)> .*";
     $this->scsi_regexp2 = "^(da[0-9]): (.*)MB ";
+    $this->cpu_regexp2 = "/(.*),(.*),(.*),(.*),(.*)/";
+    $this->pci_regexp1 = '/(.*) at pci[0-9] .* "(.*)"/';
+    $this->pci_regexp2 = '/"(.*)" (.*).* at [.0-9]+ irq/';
   } 
 
   function get_sys_ticks () {
     $a = $this->grab_key('kern.boottime');
     $sys_ticks = time() - $a;
     return $sys_ticks;
-  } 
-  // get the pci device information out of dmesg
-  function pci () {
-    $results = array();
-
-    for ($i = 0, $s = 0, $max = count($this->read_dmesg()); $i < $max; $i++) {
-      $buf = $this->dmesg[$i];
-      if (preg_match('/(.*) at pci[0-9] .* "(.*)"/', $buf, $ar_buf)) {
-        $results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
-      } elseif (preg_match('/"(.*)" (.*).* at [.0-9]+ irq/', $buf, $ar_buf)) {
-        $results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
-      } 
-    }
-
-    $results = array_unique($results);
-    asort($results);
-    return $results;
   } 
 
   function network () {

@@ -2077,11 +2077,11 @@ sub dmn_add_httpd_file_data {
 	#
 	# php.ini/php-fcgi-starter for "master" (FCGI-Server)
 	#
-	##if (!(-e "$starter_dir/master/php5.ini")) {
+	##if (!(-e "$starter_dir/master/php5/php.ini")) {
 
 	##	my $ini_tpl = '';
 
-	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 
 	##	return $rs if ($rs != 0);
 
@@ -2090,7 +2090,7 @@ sub dmn_add_httpd_file_data {
 	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
 	##	($rs, $rdata) = store_file(
-	##								"$starter_dir/master/php5.ini",
+	##								"$starter_dir/master/php5/php.ini",
 	##								$ini_tpl,
 	##								$sys_user,
 	##								$sys_group,
@@ -2101,7 +2101,7 @@ sub dmn_add_httpd_file_data {
 
 	##	$ini_tpl = '';
 
-	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4/php.ini");
 
 	##	return $rs if ($rs != 0);
 
@@ -2110,7 +2110,7 @@ sub dmn_add_httpd_file_data {
 	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
 	##	($rs, $rdata) = store_file(
-	##								"$starter_dir/master/php4.ini",
+	##								"$starter_dir/master/php4/php.ini",
 	##								$ini_tpl,
 	##								$sys_user,
 	##								$sys_group,
@@ -2129,7 +2129,7 @@ sub dmn_add_httpd_file_data {
 
 		my $ini_tpl = '';
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
+		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4/php.ini");
 
 		return $rs if ($rs != 0);
 
@@ -2151,7 +2151,7 @@ sub dmn_add_httpd_file_data {
 
 		$ini_tpl = '';
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
+		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 
 		return $rs if ($rs != 0);
 
@@ -2356,11 +2356,11 @@ sub dmn_change_httpd_file_data {
 	#
 	# php.ini/php-fcgi-starter for "master" (FCGI-Server)
 	#
-	##if (!(-e "$starter_dir/master/php5.ini")) {
+	##if (!(-e "$starter_dir/master/php5/php.ini")) {
 
 	##	my $ini_tpl = '';
 
-	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 
 	##	return $rs if ($rs != 0);
 
@@ -2369,7 +2369,7 @@ sub dmn_change_httpd_file_data {
 	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
 	##	($rs, $rdata) = store_file(
-	##								"$starter_dir/master/php5.ini",
+	##								"$starter_dir/master/php5/php.ini",
 	##								$ini_tpl,
 	##								$sys_user,
 	##								$sys_group,
@@ -2380,7 +2380,7 @@ sub dmn_change_httpd_file_data {
 
 	##	$ini_tpl = '';
 
-	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4/php.ini");
 
 	##	return $rs if ($rs != 0);
 
@@ -2389,7 +2389,7 @@ sub dmn_change_httpd_file_data {
 	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
 	##	($rs, $rdata) = store_file(
-	##								"$starter_dir/master/php4.ini",
+	##								"$starter_dir/master/php4/php.ini",
 	##								$ini_tpl,
 	##								$sys_user,
 	##								$sys_group,
@@ -2445,11 +2445,11 @@ sub dmn_change_httpd_file_data {
 	#
 	# php.ini for the domain
 	#
-	if (!(-e "$starter_dir/$dmn_name/php5.ini")) {
+	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
 		my $ini_tpl = '';
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
+		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 
 		return $rs if ($rs != 0);
 
@@ -2458,7 +2458,7 @@ sub dmn_change_httpd_file_data {
 		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php5.ini",
+									"$starter_dir/$dmn_name/php5/php.ini",
 									$ini_tpl,
 									$sys_user,
 									$sys_group,
@@ -2469,7 +2469,7 @@ sub dmn_change_httpd_file_data {
 
 		$ini_tpl = '';
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
+		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4/php.ini");
 
 		return $rs if ($rs != 0);
 
@@ -2478,7 +2478,7 @@ sub dmn_change_httpd_file_data {
 		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php4.ini",
+									"$starter_dir/$dmn_name/php4/php.ini",
 									$ini_tpl,
 									$sys_user,
 									$sys_group,

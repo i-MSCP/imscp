@@ -17,7 +17,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: class.SunOS.inc.php,v 1.22 2006/02/11 17:55:25 bigmichi1 Exp $
+// $Id: class.SunOS.inc.php,v 1.23 2006/06/05 13:14:45 bigmichi1 Exp $
 
 $error->addError("WARN", "The SunOS version of phpSysInfo is work in progress, some things currently don't work");
 
@@ -182,8 +182,6 @@ class sysinfo {
     $results['ram']['buffers'] = 0;
     $results['ram']['cached'] = 0;
 
-    $results['ram']['t_used'] = $results['ram']['used'] - $results['ram']['cached'] - $results['ram']['buffers'];
-    $results['ram']['t_free'] = $results['ram']['total'] - $results['ram']['t_used'];
     $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']);
 
     $results['swap'] = array();

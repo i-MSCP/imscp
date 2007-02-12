@@ -17,23 +17,37 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: class.BSD.common.inc.php,v 1.37 2006/02/11 17:31:03 bigmichi1 Exp $
+// $Id: class.BSD.common.inc.php,v 1.52 2006/06/13 18:31:52 bigmichi1 Exp $
+
+if (!defined('IN_PHPSYSINFO')) {
+    die("No Hacking");
+}
+
+require_once(APP_ROOT . '/includes/os/class.parseProgs.inc.php');
 
 class bsd_common {
   var $dmesg; 
+  var $parser;
   // Our constructor
   // this function is run on the initialization of this class
   function bsd_common () {
-    // initialize all the variables we need from our parent class
-    $this->sysinfo();
+    $this->parser = new Parser();
+    $this->parser->df_param = "";    
   } 
+  
   // read /var/run/dmesg.boot, but only if we haven't already.
   function read_dmesg () {
     if (! $this->dmesg) {
-      $this->dmesg = rfts( '/var/run/dmesg.boot' );
+      if( PHP_OS == "Darwin" ) {
+        $this->dmesg = array();
+      } else {
+        $parts = explode("rebooting", rfts( '/var/run/dmesg.boot' ) );
+        $this->dmesg = explode("\n", $parts[count($parts) - 1]);
+      }
     } 
     return $this->dmesg;
   } 
+  
   // grabs a key from sysctl(8)
   function grab_key ($key) {
     return execute_program('sysctl', "-n $key");
@@ -81,19 +95,19 @@ class bsd_common {
 
     if ($bar) {
       if ($fd = $this->grab_key('kern.cp_time')) {
-        sscanf($fd, "%*s %Ld %Ld %Ld %Ld", $ab, $ac, $ad, $ae);
         // Find out the CPU load
         // user + sys = load
         // total = total
-        $load = $ab + $ac + $ad;        // cpu.user + cpu.sys
-        $total = $ab + $ac + $ad + $ae; // cpu.total
+	preg_match($this->cpu_regexp2, $fd, $res );
+        $load = $res[2] + $res[3] + $res[4];		// cpu.user + cpu.sys
+        $total = $res[2] + $res[3] + $res[4] + $res[5];	// cpu.total
 
         // we need a second value, wait 1 second befor getting (< 1 second no good value will occour)
         sleep(1);
         $fd = $this->grab_key('kern.cp_time');
-        sscanf($fd, "%*s %Ld %Ld %Ld %Ld", $ab, $ac, $ad, $ae);
-        $load2 = $ab + $ac + $ad;
-        $total2 = $ab + $ac + $ad + $ae;
+	preg_match($this->cpu_regexp2, $fd, $res );
+        $load2 = $res[2] + $res[3] + $res[4];
+        $total2 = $res[2] + $res[3] + $res[4] + $res[5];
         $results['cpupercent'] = (100*($load2 - $load)) / ($total2 - $total);
       }
     }
@@ -144,30 +158,21 @@ class bsd_common {
   function pci () {
     $results = array();
 
-    if($buf = execute_program("pciconf", "-lv")) {
-	$buf = explode("\n", $buf); $s = 0;
-	foreach($buf as $line) {
-	    if (preg_match("/(.*) = '(.*)'/", $line, $strings)) {
-		if (trim($strings[1]) == "vendor") {
-		    $results[$s] = trim($strings[2]);
-		} elseif (trim($strings[1]) == "device") {
-		    $results[$s] .= " - " . trim($strings[2]);
-		    $s++;
-		}
-	    }
-	}
-    } else {
-	for ($i = 0, $s = 0; $i < count($this->read_dmesg()); $i++) {
+    if( !( is_array($results = $this->parser->parse_lspci()) || is_array($results = $this->parser->parse_pciconf() ))) {
+        for ($i = 0, $s = 0; $i < count($this->read_dmesg()); $i++) {
 	    $buf = $this->dmesg[$i];
-	    if (preg_match('/(.*): <(.*)>(.*) pci[0-9]$/', $buf, $ar_buf)) {
-		$results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
-	    } elseif (preg_match('/(.*): <(.*)>.* at [.0-9]+ irq/', $buf, $ar_buf)) {
-		$results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
+	    if(!isset($this->pci_regexp1) && !isset($this->pci_regexp2)) {
+	        $this->pci_regexp1 = '/(.*): <(.*)>(.*) pci[0-9]$/';
+	        $this->pci_regexp2 = '/(.*): <(.*)>.* at [.0-9]+ irq/';
+	    }
+	    if (preg_match($this->pci_regexp1, $buf, $ar_buf)) {
+	        $results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
+	    } elseif (preg_match($this->pci_regexp2, $buf, $ar_buf)) {
+	        $results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
 	    }
 	} 
-	$results = array_unique($results);
+    	asort($results);
     }
-    asort($results);
     return $results;
   } 
 
@@ -228,9 +233,12 @@ class bsd_common {
     $lines = split("\n", $pstat);
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 19);
-
       if ($i == 2) {
-        $results['ram']['free'] = $ar_buf[5] * $pagesize / 1024;
+        if(PHP_OS == 'NetBSD') {
+	    $results['ram']['free'] = $ar_buf[5];
+	} else {
+    	    $results['ram']['free'] = $ar_buf[5] * $pagesize / 1024;
+	}
       } 
     } 
 
@@ -239,12 +247,10 @@ class bsd_common {
     $results['ram']['buffers'] = 0;
     $results['ram']['used'] = $results['ram']['total'] - $results['ram']['free'];
     $results['ram']['cached'] = 0;
-    $results['ram']['t_used'] = $results['ram']['used'];
-    $results['ram']['t_free'] = $results['ram']['free'];
 
     $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']);
 
-    if (PHP_OS == 'OpenBSD') {
+    if (PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
       $pstat = execute_program('swapctl', '-l -k');
     } else {
       $pstat = execute_program('swapinfo', '-k');
@@ -256,68 +262,32 @@ class bsd_common {
     $results['swap']['used'] = 0;
     $results['swap']['free'] = 0;
 
-    for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
+    for ($i = 1, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 6);
 
       if ($ar_buf[0] != 'Total') {
         $results['swap']['total'] = $results['swap']['total'] + $ar_buf[1];
         $results['swap']['used'] = $results['swap']['used'] + $ar_buf[2];
         $results['swap']['free'] = $results['swap']['free'] + $ar_buf[3];
-      } 
+
+        $results['devswap'][$i - 1] = array();
+        $results['devswap'][$i - 1]['dev'] = $ar_buf[0];
+        $results['devswap'][$i - 1]['total'] = $ar_buf[1];
+        $results['devswap'][$i - 1]['used'] = $ar_buf[2];
+        $results['devswap'][$i - 1]['free'] = ($results['devswap'][$i - 1]['total'] - $results['devswap'][$i - 1]['used']);
+        $results['devswap'][$i - 1]['percent'] = $ar_buf[2] > 0 ? round(($ar_buf[2] * 100) / $ar_buf[1]) : 0;
+      }
     } 
     $results['swap']['percent'] = round(($results['swap']['used'] * 100) / $results['swap']['total']);
 
+    if( is_callable( array( 'sysinfo', 'memory_additional' ) ) ) {
+        $results = $this->memory_additional( $results );
+    }
     return $results;
   } 
 
   function filesystems () {
-    global $show_bind;
-    $fstype = array();
-    $fsoptions = array();
-
-    $df = execute_program('df', '-k');
-    $mounts = split("\n", $df);
-
-    $buffer = execute_program("mount");
-    $buffer = explode("\n", $buffer);
-
-    $j = 0;
-    foreach($buffer as $line) {
-      preg_match("/(.*) on (.*) \((.*)\)/", $line, $result);
-      list($result[3], $result[4]) = preg_split("/,\s/", $result[3], 2);
-      if (count($result) == 5) {
-        $dev = $result[1]; $mpoint = $result[2]; $type = $result[3]; $options = $result[4];
-        $fstype[$mpoint] = $type; $fsdev[$dev] = $type; $fsoptions[$mpoint] = $options;
-
-       if ($dev == "devfs")
-         continue;
-        foreach ($mounts as $line2) {
-          if (preg_match("#^" . str_replace("\$", "\\$", $result[1]) . "#", $line2)) {
-            $line2 = preg_replace("#^" . str_replace("\$", "\\$", $result[1]) . "#", "", $line2);
-            $ar_buf = preg_split("/(\s+)/", $line2, 6);
-            $ar_buf[0] = $result[1];
-
-            if (hide_mount($ar_buf[5]) || $ar_buf[0] == "") {
-              continue;
-            }
-
-            if ($show_bind || !stristr($fsoptions[$ar_buf[5]], "bind")) {
-              $results[$j] = array();
-              $results[$j]['disk'] = $ar_buf[0];
-              $results[$j]['size'] = $ar_buf[1];
-              $results[$j]['used'] = $ar_buf[2];
-              $results[$j]['free'] = $ar_buf[3];
-              $results[$j]['percent'] = round(($results[$j]['used'] * 100) / $results[$j]['size']);
-              $results[$j]['mount'] = $ar_buf[5];
-              ($fstype[$ar_buf[5]]) ? $results[$j]['fstype'] = $fstype[$ar_buf[5]] : $results[$j]['fstype'] = $fsdev[$ar_buf[0]];
-              $results[$j]['options'] = $fsoptions[$ar_buf[5]];
-              $j++;
-            }
-          }
-        }
-      }
-    }
-    return $results;
+    return $this->parser->parse_filesystems();
   }
 
   function distro () { 

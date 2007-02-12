@@ -54,15 +54,24 @@ VHCS 2.4.8 ω Omega Changelog
 		* changed main theme
 	- DOCS:
 		* added folder for Gentoo
+	- ENGINE:
+		* change php4.ini / php5.ini
+			=> Create "php4" and "php5" directory for all users
+			=> Copy and move "php4.ini" in "php4" directory for all user
+			=> Copy and move "php5.ini" in "php5" directory for all user
+			=> Rename "php4.ini" "and php5.ini" in "php.ini" for all user
 	- GUI:
 		* fixed small bug
 		* Theme: omega_original fixed small bug
 		* fixed error doc
 		* changed css a.login
 		* fixed bug #73: &nbsp; not translated
+		* added PHPSysInfo 2.5.3 RC1
 	- LANGUAGES:
 		* Portugues-Brazil: added missing strings
+		* Ukrainian: added missing strings
 		* fixed bug #67 (language string missing)
+		* deleted language string
 	- SETUP:
 		* changed permissions
 
@@ -117,7 +126,7 @@ VHCS 2.4.8 ω Omega Changelog
 			=> Copy and move "php4-fcgi-starter" and "php5-fcgi-starter" in "master" directory for the master user
 			=> Create "php4" and "php5" directory in master "directory" for master user
 			=> Copy and move  "php4.ini" in "php4" directory for master user
-			=> Copy and move  "php5.ini" in "php4" directory for master user
+			=> Copy and move  "php5.ini" in "php5" directory for master user
 			=> Rename "php4.ini" "and php5.ini" in "php.ini" for master user
 			=> Edit "php.ini" files for master user :
 				- Fixed "open_basedir" path for master user
