@@ -39,9 +39,9 @@ use warnings;
 
 $main::dmn_task_id = undef;
 
-################################################################################
+########################################
 ##                                SUBROUTINES                                 ##
-################################################################################
+########################################
 ##
 ## Start Up!
 ##
@@ -98,7 +98,7 @@ sub dmn_mngr_start_up {
 
 }
 
-################################################################################
+########################################
 ##
 ## Shut Down!
 ##
@@ -115,9 +115,9 @@ sub dmn_mngr_shut_down {
 
 }
 
-##################################### DNS ######################################
+################### DNS ####################
 
-################################################################################
+########################################
 ##
 ## Add DNS CFG Data
 ##
@@ -312,7 +312,7 @@ sub dmn_add_named_cfg_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Delete DNS CFG Data
 ##
@@ -508,7 +508,7 @@ sub dmn_del_named_cfg_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Add DNS DB Data
 ##
@@ -650,7 +650,7 @@ sub dmn_add_named_db_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Delte DNS DB Data
 ##
@@ -717,7 +717,7 @@ sub dmn_del_named_db_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Add DNS Data
 ##
@@ -751,7 +751,7 @@ sub dmn_add_named_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Change DNS Data
 ##
@@ -781,7 +781,7 @@ sub dmn_change_named_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Delete DNS Data
 ##
@@ -815,9 +815,9 @@ sub dmn_del_named_data {
     return 0;
 }
 
-##################################### HTTPd ####################################
+################### HTTPd ##################
 
-################################################################################
+########################################
 ##
 ## Generate Auto Number
 ##
@@ -842,7 +842,7 @@ sub get_auto_num {
 
 }
 
-################################################################################
+########################################
 ##
 ## Generate HTTPd Domain Group Entry
 ##
@@ -1060,7 +1060,7 @@ sub gen_httpd_dmn_group_entry {
 
 }
 
-################################################################################
+########################################
 ##
 ## Add HTTPd CFG Data
 ##
@@ -1396,7 +1396,7 @@ sub dmn_add_httpd_cfg_data {
 
 }
 
-################################################################################
+########################################
 ##
 ## Change HTTPd CFG Data
 ##
@@ -1427,7 +1427,7 @@ sub dmn_change_httpd_cfg_data {
 
 }
 
-################################################################################
+########################################
 ##
 ## Delete HTTPd CFG Data
 ##
@@ -1714,7 +1714,7 @@ sub dmn_del_httpd_cfg_data {
 
 }
 
-################################################################################
+########################################
 ##
 ## Add HTTPd File Data
 ##
@@ -1748,7 +1748,7 @@ sub dmn_add_httpd_file_data {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	# Should be created on install! (delete if okay)
-	####my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
+	##my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
@@ -1778,17 +1778,17 @@ sub dmn_add_httpd_file_data {
 	#
 	#return $rs if ($rs != 0);
 
-	####if (!(-e "$starter_dir/master")) {
-	####	$rs = make_dir(
-	####					"$starter_dir/master",
-	####					$sys_user,
-	####					$sys_group,
-	####					0755
-	####					);
+	#if (!(-e "$starter_dir/master")) {
+	#	$rs = make_dir(
+	#					"$starter_dir/master",
+	#					$sys_user,
+	#					$sys_group,
+	#					0755
+	#					);
 
-	####	return $rs if ($rs != 0);
-	####}
-	
+	#	return $rs if ($rs != 0);
+	#}
+
 	#
 	# Starter directory for usual user
 	#
@@ -1802,27 +1802,27 @@ sub dmn_add_httpd_file_data {
 					);
 
 	return $rs if ($rs != 0);
-	
+
 	#
 	# PHP4 and PHP5 Directory for usual user
 	#
-	
+
 	$rs = make_dir(
 					"$starter_dir/$dmn_name/php4",
 					$sys_user,
 					$sys_group,
 					0750
 					);
-	
+
 	return $rs if ($rs != 0);
-	
+
 	$rs = make_dir(
 					"$starter_dir/$dmn_name/php5",
 					$sys_user,
 					$sys_group,
 					0750
 					);
-	
+
 	return $rs if ($rs != 0);
 	}
 
@@ -2048,83 +2048,82 @@ sub dmn_add_httpd_file_data {
 	#
 	# fastcgi.conf for apache
 	#
-	####if (!(-e "$fastcgi_target")) {
+	##if (!(-e "$fastcgi_target")) {
 
-	####	my $fast_tpl = '';
+	##	my $fast_tpl = '';
 
-	####	($rs, $fast_tpl) = get_file("$conf_dir/apache/fastcgi.conf");
+	##	($rs, $fast_tpl) = get_file("$conf_dir/apache/fastcgi.conf");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$fast_tpl =~ s/{STARTER_DIR}/$starter_dir/gi;
-	####	$fast_tpl =~ s/{MASTER_USER}/$sys_user/gi;
-	####	$fast_tpl =~ s/{MASTER_GROUP}/$sys_group/gi;
+	##	$fast_tpl =~ s/{STARTER_DIR}/$starter_dir/gi;
+	##	$fast_tpl =~ s/{MASTER_USER}/$sys_user/gi;
+	##	$fast_tpl =~ s/{MASTER_GROUP}/$sys_group/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$fastcgi_target",
-	####								$fast_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0640
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$fastcgi_target",
+	##								$fast_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0640
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####}
+	##}
 
 	#
 	# php.ini/php-fcgi-starter for "master" (FCGI-Server)
 	#
-	####if (!(-e "$starter_dir/master/php5.ini")) {
+	##if (!(-e "$starter_dir/master/php5.ini")) {
 
-	####	my $ini_tpl = '';
+	##	my $ini_tpl = '';
 
-	####	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-	####	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-	####	$ini_tpl =~ s/{DMN_NAME}/master/gi;
+	##	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
+	##	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
+	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$starter_dir/master/php5.ini",
-	####								$ini_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0640
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$starter_dir/master/php5.ini",
+	##								$ini_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0640
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$ini_tpl = '';
+	##	$ini_tpl = '';
 
-	####	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-	####	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-	####	$ini_tpl =~ s/{DMN_NAME}/master/gi;
+	##	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
+	##	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
+	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$starter_dir/master/php4.ini",
-	####								$ini_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0640
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$starter_dir/master/php4.ini",
+	##								$ini_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0640
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####}
+	##}
 
 	#
 	# php.ini for the new domain
 	#
-	
-	##if (!(-e "$starter_dir/$dmn_name/php5.ini")) {
-	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
+
+	if (!(-e "$starter_dir/$dmn_name/php4/php.ini")) {
 
 		my $ini_tpl = '';
 
@@ -2137,7 +2136,6 @@ sub dmn_add_httpd_file_data {
 		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
-									##"$starter_dir/$dmn_name/php4.ini",
 									"$starter_dir/$dmn_name/php4/php.ini",
 									$ini_tpl,
 									$sys_user,
@@ -2146,6 +2144,8 @@ sub dmn_add_httpd_file_data {
 									);
 
 		return $rs if ($rs != 0);
+
+	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
 		$ini_tpl = '';
 
@@ -2158,7 +2158,6 @@ sub dmn_add_httpd_file_data {
 		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
 
 		($rs, $rdata) = store_file(
-									##"$starter_dir/$dmn_name/php5.ini",
 									"$starter_dir/$dmn_name/php5/php.ini",
 									$ini_tpl,
 									$sys_user,
@@ -2221,7 +2220,7 @@ sub dmn_add_httpd_file_data {
 
 }
 
-################################################################################
+########################################
 ##
 ## Change HTTPd File Data
 ##
@@ -2255,7 +2254,7 @@ sub dmn_change_httpd_file_data {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	# Should be created on install! (delete if okay)
-	#### my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
+	## my $fastcgi_target = $main::cfg{'APACHE_MOD_FASTCGI'};
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
@@ -2275,27 +2274,27 @@ sub dmn_change_httpd_file_data {
 	# Starter-Scripts for FastCGI
 	#
 
-	####if( ! -d "$starter_dir") {
-	####	$rs = make_dir(
-	####					"$starter_dir",
-	####					$httpd_uid,
-	####					$httpd_gid,
-	####					0755
-	####					);
+	##if( ! -d "$starter_dir") {
+	##	$rs = make_dir(
+	##					"$starter_dir",
+	##					$httpd_uid,
+	##					$httpd_gid,
+	##					0755
+	##					);
 
-	####	return $rs if ($rs != 0);
-	####}
+	##	return $rs if ($rs != 0);
+	##}
 
-	####if( ! -d "$starter_dir/master") {
-	####	$rs = make_dir(
-	####					"$starter_dir/master",
-	####					$sys_user,
-	####					$sys_group,
-	####					0755
-	####					);
+	##if( ! -d "$starter_dir/master") {
+	##	$rs = make_dir(
+	##					"$starter_dir/master",
+	##					$sys_user,
+	##					$sys_group,
+	##					0755
+	##					);
 
-	####	return $rs if ($rs != 0);
-	####}
+	##	return $rs if ($rs != 0);
+	##}
 
 	if( ! -d "$starter_dir/$dmn_name") {
 		$rs = make_dir(
@@ -2328,118 +2327,118 @@ sub dmn_change_httpd_file_data {
 	#
 	# fastcgi.conf for apache
 	#
-	#####if (!(-e "$fastcgi_target")) {
+	###if (!(-e "$fastcgi_target")) {
 
-	####	my $fast_tpl = '';
+	##	my $fast_tpl = '';
 
-	####	($rs, $fast_tpl) = get_file("$conf_dir/apache/fastcgi.conf");
+	##	($rs, $fast_tpl) = get_file("$conf_dir/apache/fastcgi.conf");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$fast_tpl =~ s/{STARTER_DIR}/$starter_dir/gi;
-	####	$fast_tpl =~ s/{MASTER_USER}/$sys_user/gi;
-	####	$fast_tpl =~ s/{MASTER_GROUP}/$sys_group/gi;
+	##	$fast_tpl =~ s/{STARTER_DIR}/$starter_dir/gi;
+	##	$fast_tpl =~ s/{MASTER_USER}/$sys_user/gi;
+	##	$fast_tpl =~ s/{MASTER_GROUP}/$sys_group/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$fastcgi_target",
-	####								$fast_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0640
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$fastcgi_target",
+	##								$fast_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0640
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####}
+	##}
 
 	#
 	# php.ini/php-fcgi-starter for "master" (FCGI-Server)
 	#
-	####if (!(-e "$starter_dir/master/php5.ini")) {
+	##if (!(-e "$starter_dir/master/php5.ini")) {
 
-	####	my $ini_tpl = '';
+	##	my $ini_tpl = '';
 
-	####	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5.ini");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-	####	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-	####	$ini_tpl =~ s/{DMN_NAME}/master/gi;
+	##	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
+	##	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
+	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$starter_dir/master/php5.ini",
-	####								$ini_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0640
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$starter_dir/master/php5.ini",
+	##								$ini_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0640
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$ini_tpl = '';
+	##	$ini_tpl = '';
 
-	####	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
+	##	($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4.ini");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-	####	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-	####	$ini_tpl =~ s/{DMN_NAME}/master/gi;
+	##	$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
+	##	$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
+	##	$ini_tpl =~ s/{DMN_NAME}/master/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$starter_dir/master/php4.ini",
-	####								$ini_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0640
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$starter_dir/master/php4.ini",
+	##								$ini_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0640
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####}
+	##}
 
-	####if (!(-e "$starter_dir/master/php5-fcgi-starter")) {
+	##if (!(-e "$starter_dir/master/php5-fcgi-starter")) {
 
-	####	my $starter_tpl = '';
+	##	my $starter_tpl = '';
 
-	####	($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php5-fcgi-starter.tpl");
+	##	($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php5-fcgi-starter.tpl");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-	####	$starter_tpl =~ s/{DMN_NAME}/master/gi;
+	##	$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
+	##	$starter_tpl =~ s/{DMN_NAME}/master/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$starter_dir/master/php5-fcgi-starter",
-	####								$starter_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0750
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$starter_dir/master/php5-fcgi-starter",
+	##								$starter_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0750
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$starter_tpl = '';
+	##	$starter_tpl = '';
 
-	####	($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php4-fcgi-starter.tpl");
+	##	($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php4-fcgi-starter.tpl");
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####	$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-	####	$starter_tpl =~ s/{DMN_NAME}/master/gi;
+	##	$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
+	##	$starter_tpl =~ s/{DMN_NAME}/master/gi;
 
-	####	($rs, $rdata) = store_file(
-	####								"$starter_dir/master/php4-fcgi-starter",
-	####								$starter_tpl,
-	####								$sys_user,
-	####								$sys_group,
-	####								0750
-	####								);
+	##	($rs, $rdata) = store_file(
+	##								"$starter_dir/master/php4-fcgi-starter",
+	##								$starter_tpl,
+	##								$sys_user,
+	##								$sys_group,
+	##								0750
+	##								);
 
-	####	return $rs if ($rs != 0);
+	##	return $rs if ($rs != 0);
 
-	####}
+	##}
 
 	#
 	# php.ini for the domain
@@ -2539,7 +2538,7 @@ sub dmn_change_httpd_file_data {
 
 }
 
-################################################################################
+########################################
 ##
 ## Delete HTTPd File Data
 ##
@@ -2630,7 +2629,7 @@ sub dmn_del_httpd_file_data {
 
 }
 
-################################################################################
+########################################
 ##
 ## Add HTTPd Data
 ##
@@ -2664,7 +2663,7 @@ sub dmn_add_httpd_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Change HTTPd Data
 ##
@@ -2698,7 +2697,7 @@ sub dmn_change_httpd_data {
     return 0;
 }
 
-################################################################################
+########################################
 ##
 ## Delete HTTPd Data
 ##
@@ -2732,9 +2731,9 @@ sub dmn_del_httpd_data {
     return 0;
 }
 
-##################################### MTA ######################################
+################### MTA ####################
 
-################################################################################
+########################################
 ##
 ## Add MTA CFG Data
 ##
@@ -2828,7 +2827,7 @@ sub dmn_add_mta_cfg_data {
     return 0;
 }
 
-################################################################################
+######################################################
 ##
 ## Delete MTA CFG Data
 ##

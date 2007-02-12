@@ -16,15 +16,15 @@ VHCS 2.4.8 ω Omega Changelog
 		* changed set-gui-permissions to match our new webmailer
 
 2007-02-12 Malte Geierhos / Henriks Schytte
-	- GUI:	
+	- GUI:
 		* added Squirrelmail as new Webmailer
 		* added Omega Original Theme for Squirrelmail
-		* added functions for the second menu (to split the menu) 
+		* added functions for the second menu (to split the menu)
 		* changed default theme to omega_original
 		* added new phpmyadmin
 
-2007-02-12 Henrik Schytte		
-	- GUI: 
+2007-02-12 Henrik Schytte
+	- GUI:
 		* added Omega Original Theme to the gui
 		* changed error - documents to match omega-original
 
@@ -40,11 +40,12 @@ VHCS 2.4.8 ω Omega Changelog
 		* Fixed #62
 	- SETUP:
 		* - added "a2dissite 000-default" for disabled the default site (If not, fastCgi not working)
-			
+
 2007-02-12 Benedikt Heintel
 	- CONFIGS:
 		* added folder and files for Gentoo
-		* added Fedora files missing / changed
+		* added/changed Fedora files
+		* added/changed OpenBSD files
 		* changed masters php.inis
 		* changed main theme
 	- DOCS:

@@ -47,6 +47,9 @@ transport_maps = hash:{MTA_TRANSPORT_HASH}
 #
 
 mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
+# Mailboxquota
+# => 0 for unlimited
+# => 104857600 for 100 MB
 mailbox_size_limit = 0
 mailbox_command = procmail -a "$EXTENSION"
 
@@ -58,7 +61,7 @@ local_destination_recipient_limit = 1
 local_recipient_maps = unix:passwd.byname $alias_database
 
 #
-# VHCS Autoresponder paramters;
+# VHCS Autoresponder parameters;
 #
 
 vhcs2-arpl_destination_recipient_limit = 1
@@ -87,11 +90,41 @@ smtpd_sasl_auth_enable = yes
 
 smtpd_sasl_security_options = noanonymous
 
-smtpd_sasl_local_domain = vhcs.net
+smtpd_sasl_local_domain =
 
 broken_sasl_auth_clients = yes
+smtpd_sender_restrictions = permit_mynetworks,
+                            permit_sasl_authenticated,
+                            reject_unauth_destination
+smtpd_recipient_restrictions = permit_mynetworks,
+			       permit_sasl_authenticated,
+			       reject_unauth_destination
 
-smtpd_recipient_restrictions =
-   permit_sasl_authenticated,
-   permit_mynetworks,
-   reject_unauth_destination
+#
+# TLS parameters; activate, if avaible/used
+#
+
+#smtpd_tld_loglevel = 2
+#smtpd_tls_cert_file = /etc/postfix/cert.pem
+#smtpd_tls_key_file = /etc/postfix/privkey.pem
+#smtpd_use_tls = yes
+#smtpd_tls_auth_only = no
+#smtpd_tls_received_header = yes
+
+
+#
+# AMaViS parameters; activate, if avaible/used
+#
+
+#content_filter = amavis:[127.0.0.1]:10024
+
+#
+# Quota support; activate, if avaible/used
+#
+
+#virtual_create_maildirsize = yes
+#virtual_mailbox_extended = yes
+#virtual_mailbox_limit_maps = mysql:/etc/postfix/mysql_virtual_mailbox_limit_maps.cf
+#virtual_mailbox_limit_override = yes
+#virtual_maildir_limit_message = "The user you're trying to reach is over mailbox quota."
+#virtual_overquota_bounce = yes
