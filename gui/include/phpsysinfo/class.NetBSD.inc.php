@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // phpSysInfo - A PHP System Information Script
 // http://phpsysinfo.sourceforge.net/
@@ -22,29 +22,29 @@ if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
 }
 
-require_once(APP_ROOT . '/includes/os/class.BSD.common.inc.php');
+require_once('class.BSD.common.inc.php');
 
 class sysinfo extends bsd_common {
   var $cpu_regexp;
-  var $scsi_regexp; 
+  var $scsi_regexp;
   // Our contstructor
   // this function is run on the initialization of this class
   function sysinfo () {
     $this->bsd_common();
-    
+
     $this->cpu_regexp = "^cpu(.*)\, (.*) MHz";
     $this->scsi_regexp1 = "^(.*) at scsibus.*: <(.*)> .*";
     $this->scsi_regexp2 = "^(da[0-9]): (.*)MB ";
     $this->cpu_regexp2 = "/user = (.*), nice = (.*), sys = (.*), intr = (.*), idle = (.*)/";
     $this->pci_regexp1 = '/(.*) at pci[0-9] dev [0-9]* function [0-9]*: (.*)$/';
     $this->pci_regexp2 = '/"(.*)" (.*).* at [.0-9]+ irq/';
-  } 
+  }
 
   function get_sys_ticks () {
     $a = $this->grab_key('kern.boottime');
     $sys_ticks = time() - $a;
     return $sys_ticks;
-  } 
+  }
 
   function network () {
     $netstat_b = execute_program('netstat', '-nbdi | cut -c1-25,44- | grep "^[a-z]*[0-9][ \t].*Link"');
@@ -70,10 +70,10 @@ class sysinfo extends bsd_common {
 
         $results[$ar_buf_b[0]]['errs'] = $ar_buf_n[4] + $ar_buf_n[6];
         $results[$ar_buf_b[0]]['drop'] = $ar_buf_n[8];
-      } 
-    } 
+      }
+    }
     return $results;
-  } 
+  }
 
   // get the ide device information out of dmesg
   function ide () {
@@ -85,7 +85,7 @@ class sysinfo extends bsd_common {
       if (preg_match('/^(.*) at (pciide|wdc|atabus|atapibus)[0-9] (.*): <(.*)>/', $buf, $ar_buf)) {
         $s = $ar_buf[1];
         $results[$s]['model'] = $ar_buf[4];
-        $results[$s]['media'] = 'Hard Disk'; 
+        $results[$s]['media'] = 'Hard Disk';
         // now loop again and find the capacity
         for ($j = 0, $max1 = count($this->read_dmesg()); $j < $max1; $j++) {
           $buf_n = $this->dmesg[$j];
@@ -94,18 +94,18 @@ class sysinfo extends bsd_common {
           } elseif (preg_match("/^($s): (.*) MB, (.*), (.*), .*$/", $buf_n, $ar_buf_n)) {
 	    $results[$s]['capacity'] = $ar_buf_n[2] * 2048;
 	  }
-        } 
-      } 
-    } 
+        }
+      }
+    }
     asort($results);
     return $results;
-  } 
+  }
 
   function distroicon () {
     $result = 'NetBSD.png';
     return($result);
   }
-  
-} 
+
+}
 
 ?>

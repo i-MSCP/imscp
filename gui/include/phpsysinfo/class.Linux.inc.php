@@ -1,4 +1,4 @@
-<?php 
+<?php
 // phpSysInfo - A PHP System Information Script
 // http://phpsysinfo.sourceforge.net/
 // This program is free software; you can redistribute it and/or
@@ -18,24 +18,24 @@ if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
 }
 
-require_once(APP_ROOT . '/includes/os/class.BSD.common.inc.php');
+require_once('class.BSD.common.inc.php');
 
 class sysinfo {
 	var $inifile = "distros.ini";
 	var $icon = "unknown.png";
 	var $distro = "unknown";
 	var $parser;
-	
+
 	// get the distro name and icon when create the sysinfo object
 	function sysinfo() {
   		$this->parser = new Parser();
 		$this->parser->df_param = 'P';
-		
+
 		$list = @parse_ini_file(APP_ROOT . "/" . $this->inifile, true);
 		if (!$list) {
 			return;
 		}
-		
+
 		$distro_info = execute_program('lsb_release','-a 2> /dev/null', false);  // We have the '2> /dev/null' because Ubuntu gives an error on this command which causes the distro to be unknown
 		if ( $distro_info != 'ERROR') {
 			$distro_tmp = split("\n",$distro_info);
@@ -65,14 +65,14 @@ class sysinfo {
 			}
 		}
 	}
-  
+
   // get our apache SERVER_NAME or vhost
   function vhostname () {
     if (! ($result = getenv('SERVER_NAME'))) {
       $result = 'N.A.';
-    } 
+    }
     return $result;
-  } 
+  }
   // get our canonical hostname
   function chostname () {
     $result = rfts( '/proc/sys/kernel/hostname', 1 );
@@ -80,16 +80,16 @@ class sysinfo {
       $result = "N.A.";
     } else {
       $result = gethostbyaddr( gethostbyname( trim( $result ) ) );
-    } 
+    }
     return $result;
-  } 
+  }
   // get the IP address of our canonical hostname
   function ip_addr () {
     if (!($result = getenv('SERVER_ADDR'))) {
       $result = gethostbyname($this->chostname());
-    } 
+    }
     return $result;
-  } 
+  }
 
   function kernel () {
     $buf = rfts( '/proc/version', 1 );
@@ -101,19 +101,19 @@ class sysinfo {
 
         if (preg_match('/SMP/', $buf)) {
           $result .= ' (SMP)';
-        } 
-      } 
-    } 
+        }
+      }
+    }
     return $result;
-  } 
-  
+  }
+
   function uptime () {
     $buf = rfts( '/proc/uptime', 1 );
     $ar_buf = split( ' ', $buf );
     $result = trim( $ar_buf[0] );
 
     return $result;
-  } 
+  }
 
 	function users () {
 		$strResult = 0;
@@ -132,13 +132,13 @@ class sysinfo {
     } else {
       $results['avg'] = preg_split("/\s/", $buf, 4);
       unset($results['avg'][3]);	// don't need the extra values, only first three
-    } 
+    }
     if ($bar) {
       $buf = rfts( '/proc/stat', 1 );
       if( $buf != "ERROR" ) {
 	sscanf($buf, "%*s %Ld %Ld %Ld %Ld", $ab, $ac, $ad, $ae);
 	// Find out the CPU load
-	// user + sys = load 
+	// user + sys = load
 	// total = total
 	$load = $ab + $ac + $ad;	// cpu.user + cpu.sys
 	$total = $ab + $ac + $ad + $ae;	// cpu.total
@@ -153,18 +153,18 @@ class sysinfo {
       }
     }
     return $results;
-  } 
+  }
 
 	function cpu_info () {
 		$bufr = rfts( '/proc/cpuinfo' );
 		$results = array("cpus" => 0);
-		
+
 		if ( $bufr != "ERROR" ) {
 			$bufe = explode("\n", $bufr);
-			
+
 			$results = array('cpus' => 0, 'bogomips' => 0);
 			$ar_buf = array();
-			
+
 			foreach( $bufe as $buf ) {
 				$arrBuff = preg_split('/\s+:\s+/', trim($buf));
 				if( count( $arrBuff ) == 2 ) {
@@ -235,7 +235,7 @@ class sysinfo {
 		 			}
 				}
 			}
-		
+
 			// sparc64 specific code follows
 			// This adds the ability to display the cache that a CPU has
 			// Originally made by Sven Blumenstein <bazik@gentoo.org> in 2004
@@ -248,7 +248,7 @@ class sysinfo {
 				}
 			}
 			// sparc64 specific code ends
-	
+
 			// XScale detection code
 			if ( $results['cpus'] == 0 ) {
 				foreach( $bufe as $buf ) {
@@ -274,28 +274,28 @@ class sysinfo {
 				}
 				$results['cache'] = $results['cache'] / 1024 . " KB";
 			}
-		}		
+		}
 		$keys = array_keys($results);
 		$keys2be = array('model', 'cpuspeed', 'cache', 'bogomips', 'cpus');
-		
+
 		while ($ar_buf = each($keys2be)) {
 			if (! in_array($ar_buf[1], $keys)) {
 				$results[$ar_buf[1]] = 'N.A.';
-			} 
+			}
 		}
-		
+
 		$buf = rfts( '/proc/acpi/thermal_zone/THRM/temperature', 1, 4096, false );
 		if ( $buf != "ERROR" ) {
 			$results['temp'] = substr( $buf, 25, 2 );
 		}
-		
+
 		return $results;
 	}
 
 	function pci () {
 		$arrResults = array();
 		$booDevice = false;
-		
+
 		if( ! $arrResults = $this->parser->parse_lspci() ) {
 			$strBuf = rfts( '/proc/pci', 0, 4096, false );
 			if( $strBuf != "ERROR" ) {
@@ -317,7 +317,7 @@ class sysinfo {
 			}
 		}
 		return $arrResults;
-	} 
+	}
 
   function ide () {
     $results = array();
@@ -325,7 +325,7 @@ class sysinfo {
 
     foreach( $bufd as $file ) {
       if (preg_match('/^hd/', $file)) {
-        $results[$file] = array(); 
+        $results[$file] = array();
 	$buf = rfts("/proc/ide/" . $file . "/media", 1 );
         if ( $buf != "ERROR" ) {
           $results[$file]['media'] = trim($buf);
@@ -337,14 +337,14 @@ class sysinfo {
 	    }
 	    if ( $buf != "ERROR" ) {
     	        $results[$file]['capacity'] = trim( $buf );
-    	    } 
+    	    }
           } elseif ($results[$file]['media'] == 'cdrom') {
             $results[$file]['media'] = 'CD-ROM';
 	    unset($results[$file]['capacity']);
-          } 
+          }
         } else {
 		unset($results[$file]);
-	} 
+	}
 
 	$buf = rfts( "/proc/ide/" . $file . "/model", 1 );
         if ( $buf != "ERROR" ) {
@@ -357,15 +357,15 @@ class sysinfo {
             $results[$file]['manufacture'] = 'Fujitsu';
           } else {
             $results[$file]['manufacture'] = 'Unknown';
-          } 
-        } 
-	
-      } 
-    } 
+          }
+        }
+
+      }
+    }
 
     asort($results);
     return $results;
-  } 
+  }
 
   function scsi () {
     $results = array();
@@ -389,7 +389,7 @@ class sysinfo {
           $dev_str = $value;
           $get_type = true;
           continue;
-        } 
+        }
 
         if ($get_type) {
           preg_match('/Type:\s+(\S+)/i', $buf, $dev_type);
@@ -397,12 +397,12 @@ class sysinfo {
           $results[$s]['media'] = "Hard Disk";
           $s++;
           $get_type = false;
-        } 
-      } 
-    } 
+        }
+      }
+    }
     asort($results);
     return $results;
-  } 
+  }
 
   function usb () {
     $results = array();
@@ -424,9 +424,9 @@ class sysinfo {
             		$results[$devnum] .= " " . trim($value2);
             		$devstring = 0;
     		    }
-        	} 
+        	}
             }
-        } 
+        }
     } else {
 	$bufe = explode( "\n", $bufr );
 	foreach( $bufe as $buf ) {
@@ -437,15 +437,15 @@ class sysinfo {
 	}
     }
     return $results;
-  } 
+  }
 
   function sbus () {
     $results = array();
-    $_results[0] = ""; 
+    $_results[0] = "";
     // TODO. Nothing here yet. Move along.
     $results = $_results;
     return $results;
-  } 
+  }
 
   function network () {
     $results = array();
@@ -471,11 +471,11 @@ class sysinfo {
 
           $results[$dev_name]['errs'] = $stats[2] + $stats[10];
           $results[$dev_name]['drop'] = $stats[3] + $stats[11];
-        } 
+        }
       }
     }
     return $results;
-  } 
+  }
 
   function memory () {
     $results['ram'] = array('total' => 0, 'free' => 0, 'used' => 0, 'percent' => 0);
@@ -494,12 +494,12 @@ class sysinfo {
           $results['ram']['cached'] = $ar_buf[1];
         } else if (preg_match('/^Buffers:\s+(.*)\s*kB/i', $buf, $ar_buf)) {
           $results['ram']['buffers'] = $ar_buf[1];
-        } 
-      } 
+        }
+      }
 
       $results['ram']['used'] = $results['ram']['total'] - $results['ram']['free'];
       $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']);
-      
+
       // values for splitting memory usage
       if (isset($results['ram']['cached']) && isset($results['ram']['buffers'])) {
         $results['ram']['app'] = $results['ram']['used'] - $results['ram']['cached'] - $results['ram']['buffers'];
@@ -525,24 +525,24 @@ class sysinfo {
 	    $results['swap']['free'] = $results['swap']['total'] - $results['swap']['used'];
 	    $results['swap']['percent'] = round(($results['swap']['used'] * 100) / $results['swap']['total']);
 	  }
-        } 
+        }
       }
     }
     return $results;
-  } 
-  
+  }
+
   function filesystems () {
     return $this->parser->parse_filesystems();
-  } 
+  }
 
   function distro () {
    return $this->distro;
   }
 
-  function distroicon () {   
+  function distroicon () {
    return $this->icon;
   }
 
-} 
+}
 
 ?>

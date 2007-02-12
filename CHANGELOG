@@ -52,6 +52,8 @@ VHCS 2.4.8 ω Omega Changelog
 		* added/changed OpenBSD files
 		* changed masters php.inis
 		* changed main theme
+		* fixed errors with new PHPSysInfo in master's php.ini
+		* fixed error in vhcs2.conf
 	- DOCS:
 		* added folder for Gentoo
 	- ENGINE:
@@ -67,6 +69,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* changed css a.login
 		* fixed bug #73: &nbsp; not translated
 		* added PHPSysInfo 2.5.3 RC1
+		* fixed errors with new PHPSysInfo in admins sysinfo.php
 	- LANGUAGES:
 		* Portugues-Brazil: added missing strings
 		* Ukrainian: added missing strings

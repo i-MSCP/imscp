@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // phpSysInfo - A PHP System Information Script
 // http://phpsysinfo.sourceforge.net/
@@ -23,18 +23,18 @@ if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
 }
 
-require_once(APP_ROOT . '/includes/os/class.parseProgs.inc.php');
+require_once('class.parseProgs.inc.php');
 
 class bsd_common {
-  var $dmesg; 
+  var $dmesg;
   var $parser;
   // Our constructor
   // this function is run on the initialization of this class
   function bsd_common () {
     $this->parser = new Parser();
-    $this->parser->df_param = "";    
-  } 
-  
+    $this->parser->df_param = "";
+  }
+
   // read /var/run/dmesg.boot, but only if we haven't already.
   function read_dmesg () {
     if (! $this->dmesg) {
@@ -44,48 +44,48 @@ class bsd_common {
         $parts = explode("rebooting", rfts( '/var/run/dmesg.boot' ) );
         $this->dmesg = explode("\n", $parts[count($parts) - 1]);
       }
-    } 
+    }
     return $this->dmesg;
-  } 
-  
+  }
+
   // grabs a key from sysctl(8)
   function grab_key ($key) {
     return execute_program('sysctl', "-n $key");
-  } 
+  }
   // get our apache SERVER_NAME or vhost
   function hostname () {
     if (!($result = getenv('SERVER_NAME'))) {
       $result = "N.A.";
-    } 
+    }
     return $result;
-  } 
+  }
   // get our canonical hostname
   function chostname () {
     return execute_program('hostname');
-  } 
+  }
   // get the IP address of our canonical hostname
   function ip_addr () {
     if (!($result = getenv('SERVER_ADDR'))) {
       $result = gethostbyname($this->chostname());
-    } 
+    }
     return $result;
-  } 
+  }
 
   function kernel () {
     $s = $this->grab_key('kern.version');
     $a = explode(':', $s);
     return $a[0] . $a[1] . ':' . $a[2];
-  } 
+  }
 
   function uptime () {
     $result = $this->get_sys_ticks();
 
     return $result;
-  } 
+  }
 
   function users () {
     return execute_program('who', '| wc -l');
-  } 
+  }
 
   function loadavg ($bar = false) {
     $s = $this->grab_key('vm.loadavg');
@@ -112,7 +112,7 @@ class bsd_common {
       }
     }
     return $results;
-  } 
+  }
 
   function cpu_info () {
     $results = array();
@@ -126,10 +126,10 @@ class bsd_common {
       if (preg_match("/$this->cpu_regexp/", $buf, $ar_buf)) {
         $results['cpuspeed'] = round($ar_buf[2]);
         break;
-      } 
-    } 
+      }
+    }
     return $results;
-  } 
+  }
   // get the scsi device information out of dmesg
   function scsi () {
     $results = array();
@@ -146,13 +146,13 @@ class bsd_common {
         $s = $ar_buf[1];
         $results[$s]['capacity'] = $ar_buf[2] * 2048 * 1.049;
       }
-    } 
+    }
     // return array_values(array_unique($results));
     // 1. more useful to have device names
     // 2. php 4.1.1 array_unique() deletes non-unique values.
     asort($results);
     return $results;
-  } 
+  }
 
   // get the pci device information out of dmesg
   function pci () {
@@ -170,11 +170,11 @@ class bsd_common {
 	    } elseif (preg_match($this->pci_regexp2, $buf, $ar_buf)) {
 	        $results[$s++] = $ar_buf[1] . ": " . $ar_buf[2];
 	    }
-	} 
+	}
     	asort($results);
     }
     return $results;
-  } 
+  }
 
   // get the ide device information out of dmesg
   function ide () {
@@ -194,18 +194,18 @@ class bsd_common {
         $results[$s]['model'] = $ar_buf[3];
         $results[$s]['media'] = 'CD-ROM';
       }
-    } 
+    }
     // return array_values(array_unique($results));
     // 1. more useful to have device names
     // 2. php 4.1.1 array_unique() deletes non-unique values.
     asort($results);
     return $results;
-  } 
+  }
 
   // place holder function until we add acual usb detection
   function usb () {
     return array();
-  } 
+  }
 
   function sbus () {
     $results = array();
@@ -225,7 +225,7 @@ class bsd_common {
       $pagesize = 1024;
     } else {
       $pagesize = $this->grab_key('hw.pagesize');
-    } 
+    }
 
     $results['ram'] = array();
 
@@ -239,8 +239,8 @@ class bsd_common {
 	} else {
     	    $results['ram']['free'] = $ar_buf[5] * $pagesize / 1024;
 	}
-      } 
-    } 
+      }
+    }
 
     $results['ram']['total'] = $s / 1024;
     $results['ram']['shared'] = 0;
@@ -254,7 +254,7 @@ class bsd_common {
       $pstat = execute_program('swapctl', '-l -k');
     } else {
       $pstat = execute_program('swapinfo', '-k');
-    } 
+    }
 
     $lines = split("\n", $pstat);
 
@@ -277,24 +277,24 @@ class bsd_common {
         $results['devswap'][$i - 1]['free'] = ($results['devswap'][$i - 1]['total'] - $results['devswap'][$i - 1]['used']);
         $results['devswap'][$i - 1]['percent'] = $ar_buf[2] > 0 ? round(($ar_buf[2] * 100) / $ar_buf[1]) : 0;
       }
-    } 
+    }
     $results['swap']['percent'] = round(($results['swap']['used'] * 100) / $results['swap']['total']);
 
     if( is_callable( array( 'sysinfo', 'memory_additional' ) ) ) {
         $results = $this->memory_additional( $results );
     }
     return $results;
-  } 
+  }
 
   function filesystems () {
     return $this->parser->parse_filesystems();
   }
 
-  function distro () { 
-    $distro = execute_program('uname', '-s');                             
+  function distro () {
+    $distro = execute_program('uname', '-s');
     $result = $distro;
-    return($result);               
+    return($result);
   }
-} 
+}
 
 ?>

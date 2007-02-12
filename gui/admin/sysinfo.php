@@ -1,23 +1,27 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2004 be moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
+
 define('IN_PHPSYSINFO', true);
 require_once('../include/phpsysinfo/class.error.inc.php');
 require_once('../include/phpsysinfo/common_functions.php');
-require_once('../include/phpsysinfo/class.' . PHP_OS . '.inc.php' );
+require_once('../include/phpsysinfo/class.' .  PHP_OS . '.inc.php' );
 $sysinfo = new sysinfo;
 $error = new error;
 
@@ -70,27 +74,27 @@ $tpl -> assign(
                      )
               );
 
-              
+
 function gen_mount_point(&$tpl)
 {
     global $sysinfo;
     $mount_points = $sysinfo->filesystems();
-    
+
     while (list($number, $row) = each($mount_points)) {
-        
+
      if (($number+1) % 2 == 0) {
         $tpl -> assign(
                 array(
-                    'ITEM_CLASS' => 'content', 
+                    'ITEM_CLASS' => 'content',
                     )
                 );
     }
     else{
         $tpl -> assign(
                 array(
-                    'ITEM_CLASS' => 'content2', 
+                    'ITEM_CLASS' => 'content2',
                     )
-                );      
+                );
     }
        $tpl -> assign(
                 array(
@@ -103,7 +107,7 @@ function gen_mount_point(&$tpl)
                         'SIZE' => make_hr($row['size']*1024),
                      )
               );
-              
+
           $tpl -> parse('DISK_LIST_ITEM', '.disk_list_item');
      }
 
@@ -172,8 +176,8 @@ $tpl -> assign(
                 'LOAD' => $load['avg'][0] . ' ' . $load['avg'][1] . '  '. $load['avg'][2] ,
                 'RAM' => tr('RAM'),
                 'RAM_TOTAL' => format_bytesize($mem['ram']['total']),
-                'RAM_USED' => format_bytesize($mem['ram']['t_used']),
-                'RAM_FREE' => format_bytesize($mem['ram']['t_free']),
+                'RAM_USED' => format_bytesize($mem['ram']['used']),
+                'RAM_FREE' => format_bytesize($mem['ram']['free']),
                 'SWAP_TOTAL' => format_bytesize($mem['swap']['total']),
                 'SWAP_USED' => format_bytesize($mem['swap']['used']),
                 'SWAP_FREE' => format_bytesize($mem['swap']['free']),

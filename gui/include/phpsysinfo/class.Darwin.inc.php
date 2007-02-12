@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // phpSysInfo - A PHP System Information Script
 // http://phpsysinfo.sourceforge.net/
@@ -22,14 +22,14 @@ if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
 }
 
-require_once(APP_ROOT . '/includes/os/class.BSD.common.inc.php');
+require_once('class.BSD.common.inc.php');
 
 $error->addWarning("The Darwin version of phpSysInfo is work in progress, some things currently don't work");
 
 class sysinfo extends bsd_common {
   var $cpu_regexp;
-  var $scsi_regexp; 
-  
+  var $scsi_regexp;
+
   var $parser;
   // Our contstructor
   // this function is run on the initialization of this class
@@ -38,15 +38,15 @@ class sysinfo extends bsd_common {
     // $this->scsi_regexp1 = "^(.*): <(.*)> .*SCSI.*device";
     $this->cpu_regexp2 = "/(.*) ([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)/";
     $this->parser = new Parser();
-  } 
+  }
 
   function grab_key ($key) {
     $s = execute_program('sysctl', $key);
     $s = ereg_replace($key . ': ', '', $s);
     $s = ereg_replace($key . ' = ', '', $s); // fix Apple set keys
-    
+
     return $s;
-  } 
+  }
 
   function grab_ioreg ($key) {
     $s = execute_program('ioreg', '-cls "' . $key . '" | grep "' . $key . '"'); //ioreg -cls "$key" | grep "$key"
@@ -56,17 +56,17 @@ class sysinfo extends bsd_common {
     $s = ereg_replace('<[^>]+>', '', $s); // remove possible XML conflicts
 
     return $s;
-  } 
+  }
 
   function get_sys_ticks () {
-    $a = execute_program('sysctl', '-n kern.boottime'); // get boottime (value in seconds) 
+    $a = execute_program('sysctl', '-n kern.boottime'); // get boottime (value in seconds)
     $sys_ticks = time() - $a;
 
     return $sys_ticks;
-  } 
+  }
 
   function cpu_info () {
-    $results = array(); 
+    $results = array();
     // $results['model'] = $this->grab_key('hw.model'); // need to expand this somehow...
     // $results['model'] = $this->grab_key('hw.machine');
     $results['model'] = ereg_replace('Processor type: ', '', execute_program('hostinfo', '| grep "Processor type"')); // get processor type
@@ -80,7 +80,7 @@ class sysinfo extends bsd_common {
     if (($this->grab_key('hw.model') == "PowerMac1,1") && ($results['cpus'] == "1")) { $results['model'] = 'B&W G3 - (PowerPC 750)';} // is B&W G3
 
     return $results;
-  } 
+  }
   // get the pci device information out of ioreg
   function pci () {
     $results = array();
@@ -90,15 +90,15 @@ class sysinfo extends bsd_common {
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
       $ar_buf = preg_split("/\s+/", $lines[$i], 19);
       $results[$i] = $ar_buf[0];
-    } 
+    }
     asort($results);
     return array_values(array_unique($results));
-  } 
+  }
   // get the ide device information out of ioreg
   function ide () {
-    $results = array(); 
+    $results = array();
     // ioreg | grep "Media  <class IOMedia>"
-    $s = $this->grab_ioreg('IOATABlockStorageDevice'); 
+    $s = $this->grab_ioreg('IOATABlockStorageDevice');
 
     $lines = split("\n", $s);
     $j = 0;
@@ -107,11 +107,11 @@ class sysinfo extends bsd_common {
 
       if ( isset( $ar_buf[1] ) && $ar_buf[1] == 'class IOMedia' && preg_match('/Media/', $ar_buf[0])) {
         $results[$j++]['model'] = $ar_buf[0];
-      } 
-    } 
+      }
+    }
     asort($results);
     return array_values(array_unique($results));
-  } 
+  }
 
   function memory () {
     $s = $this->grab_key('hw.memsize');
@@ -119,7 +119,7 @@ class sysinfo extends bsd_common {
     $results['ram'] = array();
     $results['swap'] = array();
     $results['devswap'] = array();
-    
+
     $pstat = execute_program('vm_stat'); // use darwin's vm_stat
     $lines = split("\n", $pstat);
     for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
@@ -127,8 +127,8 @@ class sysinfo extends bsd_common {
 
       if ($i == 1) {
         $results['ram']['free'] = $ar_buf[2] * 4; // calculate free memory from page sizes (each page = 4MB)
-      } 
-    } 
+      }
+    }
 
     $results['ram']['total'] = $s / 1024;
     $results['ram']['shared'] = 0;
@@ -136,7 +136,7 @@ class sysinfo extends bsd_common {
     $results['ram']['used'] = $results['ram']['total'] - $results['ram']['free'];
     $results['ram']['cached'] = 0;
 
-    $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']); 
+    $results['ram']['percent'] = round(($results['ram']['used'] * 100) / $results['ram']['total']);
     // need to fix the swap info...
     // meanwhile silence and / or disable the swap information
     $pstat = execute_program('swapinfo', '-k', false);
@@ -145,7 +145,7 @@ class sysinfo extends bsd_common {
 
         for ($i = 0, $max = sizeof($lines); $i < $max; $i++) {
           $ar_buf = preg_split("/\s+/", $lines[$i], 6);
-    
+
           if ($i == 0) {
             $results['swap']['total'] = 0;
             $results['swap']['used'] = 0;
@@ -154,13 +154,13 @@ class sysinfo extends bsd_common {
             $results['swap']['total'] = $results['swap']['total'] + $ar_buf[1];
             $results['swap']['used'] = $results['swap']['used'] + $ar_buf[2];
             $results['swap']['free'] = $results['swap']['free'] + $ar_buf[3];
-          } 
-        } 
+          }
+        }
         $results['swap']['percent'] = round(($results['swap']['used'] * 100) / $results['swap']['total']);
     }
-    
+
     return $results;
-  } 
+  }
 
   function network () {
     $netstat = execute_program('netstat', '-nbdi | cut -c1-24,42- | grep Link');
@@ -183,16 +183,16 @@ class sysinfo extends bsd_common {
 
         $results[$ar_buf[0]]['errs'] = $ar_buf[4] + $ar_buf[7];
         $results[$ar_buf[0]]['drop'] = isset( $ar_buf[10] ) ? $ar_buf[10] : 0;
-      } 
-    } 
+      }
+    }
     return $results;
-  } 
+  }
 
   function distroicon () {
     $result = 'Darwin.png';
     return($result);
   }
 
-} 
+}
 
 ?>

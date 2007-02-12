@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // phpSysInfo - A PHP System Information Script
 // http://phpsysinfo.sourceforge.net/
@@ -22,14 +22,14 @@ if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
 }
 
-require_once(APP_ROOT . '/includes/os/class.BSD.common.inc.php');
+require_once('class.BSD.common.inc.php');
 
 class sysinfo extends bsd_common {
   var $cpu_regexp   = "";
   var $scsi_regexp1 = "";
   var $scsi_regexp2 = "";
   var $cpu_regexp2  = "";
-  
+
   // Our contstructor
   // this function is run on the initialization of this class
   function sysinfo () {
@@ -38,14 +38,14 @@ class sysinfo extends bsd_common {
     $this->scsi_regexp1 = "^(.*): <(.*)> .*SCSI.*device";
     $this->scsi_regexp2 = "^(da[0-9]): (.*)MB ";
     $this->cpu_regexp2 = "/(.*) ([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)/";
-  } 
+  }
 
   function get_sys_ticks () {
     $s = explode(' ', $this->grab_key('kern.boottime'));
     $a = ereg_replace('{ ', '', $s[3]);
     $sys_ticks = time() - $a;
     return $sys_ticks;
-  } 
+  }
 
   function network () {
     $netstat = execute_program('netstat', '-nibd | grep Link');
@@ -82,17 +82,17 @@ class sysinfo extends bsd_common {
 
           $results[$ar_buf[0]]['errs'] = $ar_buf[5] + $ar_buf[8];
           $results[$ar_buf[0]]['drop'] = $ar_buf[11];
-        } 
-      } 
-    } 
+        }
+      }
+    }
     return $results;
-  } 
+  }
 
   function distroicon () {
     $result = 'FreeBSD.png';
     return($result);
   }
-  
+
   function memory_additional($results) {
     $pagesize = $this->grab_key("hw.pagesize");
     $results['ram']['cached'] = $this->grab_key("vm.stats.vm.v_cache_count") * $pagesize / 1024;
@@ -103,6 +103,6 @@ class sysinfo extends bsd_common {
     $results['ram']['buffers_percent'] = round( $results['ram']['buffers'] * 100 / $results['ram']['total']);
     return $results;
   }
-} 
+}
 
 ?>
