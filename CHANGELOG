@@ -13,17 +13,10 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-02-12 Malte Geierhos
 	- SETUP:
-		* fixed #72 (permissions on new domain - folders are wrong created)
-
-2007-02-12 Henriks Schytte
-	- GUI:	
-		* added omega theme to phpmyadmin
-
-2007-02-12 Malte Geierhos
-	- SETUP:
 		* changed set-gui-permissions to match our new webmailer
+		* fixed bug #72 (permissions on new domain - folders are wrong created)
 
-2007-02-12 Malte Geierhos / Henriks Schytte
+2007-02-12 Malte Geierhos / Henrik Schytte
 	- GUI:
 		* added Squirrelmail as new Webmailer
 		* added Omega Original Theme for Squirrelmail
@@ -35,6 +28,7 @@ VHCS 2.4.8 ω Omega Changelog
 	- GUI:
 		* added Omega Original Theme to the gui
 		* changed error - documents to match omega-original
+		* added omega theme to phpmyadmin
 
 2007-02-12 Laurent DECLERCQ
 	- CONFIGS:
@@ -46,9 +40,9 @@ VHCS 2.4.8 ω Omega Changelog
 		* Edited vhcs2-dmn-mngr for Fastcgi :
 			- Added instructions for create "php4" and "php5" directory for usual users
 			- Changed "php.ini" files name for usual users
-		* Fixed #62
+		* Fixed bug #62
 	- SETUP:
-		* - added "a2dissite 000-default" for disabled the default site (If not, fastCgi not working)
+		* - added "a2dissite 000-default" for disabled the default site (If not, FastCGI is not working)
 
 2007-02-12 Benedikt Heintel
 	- CONFIGS:
@@ -64,8 +58,10 @@ VHCS 2.4.8 ω Omega Changelog
 		* Theme: omega_original fixed small bug
 		* fixed error doc
 		* changed css a.login
+		* fixed bug #73: &nbsp; not translated
 	- LANGUAGES:
 		* Portugues-Brazil: added missing strings
+		* fixed bug #67 (language string missing)
 	- SETUP:
 		* changed permissions
 

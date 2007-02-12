@@ -83,7 +83,8 @@ function replace_html($string) {
 						"=&lt;/b&gt;=is",
 						"=&lt;i&gt;=is",
 						"=&lt;/i&gt;=is",
-						"=&lt;br&gt;=is"
+						"=&lt;br&gt;=is",
+						"=&nbsp;=is"
 					 );
 
 	$replacement = array (
@@ -91,7 +92,8 @@ function replace_html($string) {
 							"</b>",
 							"<i>",
 							"</i>",
-							"<br />"
+							"<br />",
+							" "
 						 );
 
 	$string = preg_replace($pattern, $replacement, $string);
