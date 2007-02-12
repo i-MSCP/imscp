@@ -404,7 +404,7 @@ SQL_QUERY;
 						)
 					);
 		}
-		else{
+		else {
 			$tpl -> assign(
 					array(
 						'ADMIN_CLASS' => 'content2',
@@ -412,19 +412,16 @@ SQL_QUERY;
 					);
 		}
 
-		if( $rs -> fields['created_by'] == '' ||
-			$rs -> fields['admin_id'] == $_SESSION['user_id'])
-		{
+		if ($rs -> fields['created_by'] == '' || $rs -> fields['admin_id'] == $_SESSION['user_id']) {
 			$tpl -> assign(
 							array(
 									'TR_DELETE' => tr('Delete'),
-									'ADMIN_DELETE_LINK' =>'',
+									'ADMIN_DELETE_LINK' =>''
 								 )
 						  );
 			$tpl -> parse('ADMIN_DELETE_SHOW', 'admin_delete_show');
 		}
-		else
-		{
+		else {
 			$tpl -> assign(
 				array(
 					'ADMIN_DELETE_SHOW' =>'',
@@ -435,14 +432,11 @@ SQL_QUERY;
 			$tpl -> parse('ADMIN_DELETE_LINK', 'admin_delete_link');
 		}
 
-
-
-
 		$tpl -> assign(
 			array(
-				'ADMIN_USERNAME' => $rs -> fields['admin_name'],
-				'ADMIN_CREATED_BY' => $rs -> fields['created_by'],
-				'URL_EDIT_ADMIN' => "edit_user.php?edit_id=".$rs -> fields['admin_id'],
+				'ADMIN_USERNAME' => $rs->fields['admin_name'],
+				'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != NULL) ? $rs->fields['created_by'] : "&nbsp;",
+				'URL_EDIT_ADMIN' => "edit_user.php?edit_id=".$rs->fields['admin_id'],
 				)
 		);
 
@@ -462,8 +456,7 @@ SQL_QUERY;
 
 }
 
-function gen_reseller_list(&$tpl, &$sql)
-{
+function gen_reseller_list(&$tpl, &$sql) {
 
 	$query = <<<SQL_QUERY
 			  SELECT

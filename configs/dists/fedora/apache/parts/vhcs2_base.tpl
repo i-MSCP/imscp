@@ -3,11 +3,13 @@
 #
 # wget-hack prevention
 #
+
 <IfModule mod_rewrite.c>
     RewriteEngine on
     RewriteCond %{HTTP_USER_AGENT} ^LWP::Simple
     RewriteRule ^/.* http://%{REMOTE_ADDR}/ [L,E=nolog:1]
 </IfModule>
+
 #
 # Web traffic accounting.
 #
@@ -27,7 +29,7 @@ Alias /vhcs2 /srv/www/vhcs2/gui
 </Directory>
 
 <Directory /srv/www/vhcs2/gui/tools/filemanager>
-    <IfModule mod_php.c>
+    <IfModule mod_php4.c>
     php_flag register_globals On
     php_admin_value open_basedir "/srv/www/vhcs2/gui/tools/filemanager/:/tmp/:/usr/share/php/"
     </IfModule>
@@ -56,7 +58,6 @@ Alias /vhcs_images /srv/www/vhcs2/gui/images
 
 </VirtualHost>
 
-
 #
 # AWStats-Alias
 #
@@ -65,12 +66,14 @@ Alias /awstatsclasses "/srv/www/awstats/classes/"
 Alias /awstatscss "/srv/www/awstats/css/"
 Alias /awstatsicons "/srv/www/awstats/icon/"
 Alias /awstatsjs "/srv/www/awstats/js/"
-ScriptAlias /stats "/usr/lib/cgi-bin/awstats/awstats.pl"
+Alias /stats "/usr/lib/cgi-bin/awstats/"
 
 <Directory /usr/lib/cgi-bin/awstats>
-    AllowOverride none
-    Options Indexes Includes FollowSymLinks MultiViews
-    Order allow,deny
+    AllowOverride AuthConfig
+    Options -Includes FollowSymLinks +ExecCGI MultiViews
+    AddHandler cgi-script cgi pl
+    DirectoryIndex awstats.pl
+    Order deny,allow
     Allow from all
 </Directory>
 
