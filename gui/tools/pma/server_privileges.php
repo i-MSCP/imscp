@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_privileges.php 9821 2007-01-02 15:35:57Z lem9 $ */
+/* $Id: server_privileges.php 9855 2007-01-20 15:38:45Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
@@ -783,7 +783,9 @@ if (!empty($adduser_submit) || !empty($change_copy)) {
                 $create_user_show = $create_user_real;
             }
         }
-        // FIXME: similar code appears twice in this script
+        /**
+         * @todo similar code appears twice in this script
+         */
         if ((isset($Grant_priv) && $Grant_priv == 'Y') || (PMA_MYSQL_INT_VERSION >= 40002 && (isset($max_questions) || isset($max_connections) || isset($max_updates) || isset($max_user_connections)))) {
             $real_sql_query .= 'WITH';
             $sql_query .= 'WITH';
@@ -991,7 +993,9 @@ if (!empty($update_privs)) {
         . ' ON ' . $db_and_table
         . ' TO \'' . PMA_sqlAddslashes($username) . '\'@\'' . $hostname . '\'';
 
-        // FIXME: similar code appears twice in this script
+    /**
+     * @todo similar code appears twice in this script
+     */
     if ( ( isset($Grant_priv) && $Grant_priv == 'Y')
       || ( ( ! isset($dbname) || ! strlen($dbname) ) && PMA_MYSQL_INT_VERSION >= 40002
         && ( isset($max_questions) || isset($max_connections)
@@ -1231,7 +1235,7 @@ if (isset($viewing_mode) && $viewing_mode == 'db') {
 
      // Gets the database structure
      $sub_part = '_structure';
-     require('./libraries/db_details_db_info.inc.php');
+     require('./libraries/db_info.inc.php');
      echo "\n";
 } else {
     require('./libraries/server_links.inc.php');
@@ -1578,10 +1582,12 @@ if ( empty( $adduser ) && ( ! isset( $checkprivs ) || ! strlen($checkprivs) ) ) 
             } else {
             echo '    - ' . $GLOBALS['strDatabase'];
             }
-            echo ' <i><a href="' . $GLOBALS['cfg']['DefaultTabDatabase'] . '?' . $GLOBALS['url_query'] . '&amp;db=' . urlencode($dbname) . '&amp;reload=1">' . htmlspecialchars($dbname) . '</a></i>' . "\n";
+            $url_dbname = urlencode(str_replace('\_', '_', $dbname));
+            echo ' <i><a href="' . $GLOBALS['cfg']['DefaultTabDatabase'] . '?' . $GLOBALS['url_query'] . '&amp;db=' . $url_dbname . '&amp;reload=1">' . htmlspecialchars($dbname) . '</a></i>' . "\n";
             if ( isset( $tablename ) && strlen($tablename) ) {
-                echo '    - ' . $GLOBALS['strTable'] . ' <i><a href="' . $GLOBALS['cfg']['DefaultTabTable'] . '?' . $GLOBALS['url_query'] . '&amp;db=' . urlencode($dbname) . '&amp;table=' . urlencode($tablename) . '&amp;reload=1">' . htmlspecialchars($tablename) . '</a></i>' . "\n";
+                echo '    - ' . $GLOBALS['strTable'] . ' <i><a href="' . $GLOBALS['cfg']['DefaultTabTable'] . '?' . $GLOBALS['url_query'] . '&amp;db=' . $url_dbname . '&amp;table=' . urlencode($tablename) . '&amp;reload=1">' . htmlspecialchars($tablename) . '</a></i>' . "\n";
             }
+            unset($url_dbname);
         }
         echo ' : ' . $GLOBALS['strEditPrivileges'] . '</h2>' . "\n";
         $res = PMA_DBI_query('SELECT \'foo\' FROM `mysql`.`user` WHERE ' . PMA_convert_using('User') . ' = ' . PMA_convert_using(PMA_sqlAddslashes($username), 'quoted') . ' AND ' . PMA_convert_using('Host') . ' = ' . PMA_convert_using($hostname, 'quoted') . ';', null, PMA_DBI_QUERY_STORE);

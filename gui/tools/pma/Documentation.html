@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 9841 2007-01-16 17:32:33Z lem9 $ -->
+<!-- $Id: Documentation.html 9869 2007-01-23 13:45:27Z lem9 $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
@@ -11,7 +11,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 2.9.2 - Documentation</title>
+    <title>phpMyAdmin 2.10.0-beta1 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -33,7 +33,7 @@
     <li><a href="#glossary">Glossary</a></li>
 </ul>
 
-<h1>phpMyAdmin 2.9.2 Documentation</h1>
+<h1>phpMyAdmin 2.10.0-beta1 Documentation</h1>
 
 <ul><li><a href="http://www.phpmyadmin.net/">
             phpMyAdmin homepage</a></li>
@@ -48,7 +48,7 @@
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 9841 2007-01-16 17:32:33Z lem9 $</i>
+        <i>$Id: Documentation.html 9869 2007-01-23 13:45:27Z lem9 $</i>
     </li>
 </ul>
 
@@ -598,6 +598,10 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
         <tt>mysql</tt> command&#8211;line client, issue the <tt>status</tt> command.
         Among the resulting information displayed will be the socket used.</dd>
 
+    <dt id="cfg_Servers_ssl">$cfg['Servers'][$i]['ssl'] boolean</dt>
+    <dd>Whether to enable SSL for connection to MySQL server.
+    </dd>
+
     <dt id="cfg_Servers_connect_type">$cfg['Servers'][$i]['connect_type'] string</dt>
     <dd>What type connection to use with the MySQL server. Your options are
         <tt>'socket'</tt> and <tt>'tcp'</tt>. It defaults to 'tcp' as that
@@ -653,9 +657,9 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
         &quot;stduser/stdpass&quot;.</dd>
 
     <dt id="cfg_Servers_auth_type">$cfg['Servers'][$i]['auth_type'] string
-        <tt>['<abbr title="HyperText Transfer Protocol">HTTP</abbr>'|'http'|'cookie'|'config']</tt></dt>
+        <tt>['<abbr title="HyperText Transfer Protocol">HTTP</abbr>'|'http'|'cookie'|'config'|'signon']</tt></dt>
     <dd>Whether config or cookie or
-        <abbr title="HyperText Transfer Protocol">HTTP</abbr> authentication
+        <abbr title="HyperText Transfer Protocol">HTTP</abbr> or signon authentication
         should be used for this server.
         <ul><li>'config' authentication (<tt>$auth_type&nbsp;=&nbsp;'config'</tt>)
                 is the plain old way: username and password are stored in
@@ -671,6 +675,16 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
             <li>'<abbr title="HyperText Transfer Protocol">HTTP</abbr>' authentication (was called 'advanced' in older versions and can be written also as 'http')
                 (<tt>$auth_type&nbsp;=&nbsp;'<abbr title="HyperText Transfer Protocol">HTTP</abbr>'</tt>) as introduced in 1.3.0
                 allows you to log in as any valid MySQL user via HTTP-Auth.</li>
+            <li>'signon' authentication mode 
+                (<tt>$auth_type&nbsp;=&nbsp;'signon'</tt>)
+                as introduced in 2.10.0 allows you to log in from prepared PHP
+                session data. This is useful for implementing single signon
+                from another application. Sample way how to seed session is in
+                signon example: <code>scripts/signon.php</code>. You need to
+                configure <a href="#cfg_Servers_SignonSession"
+                class="configrule">session name</a> and <a
+                href="#cfg_Servers_SignonURL" class="configrule">signon
+                URL</a> to use this authentication method.</li>
         </ul>
 
         Please see the <a href="#setup">install section</a> on &quot;Using authentication modes&quot;
@@ -937,6 +951,22 @@ ALTER TABLE `pma_column_comments`
         </ul>
     </dd>
 
+    <dt id="designer_coords">
+        <span id="cfg_Servers_designer_coords">$cfg['Servers'][$i]['designer_coords']</span> string
+    </dt>
+    <dd>Since release 2.10.0 a Designer interface is available; it permits
+        to visually manage the relations. 
+        <br /><br />
+
+        To allow the usage of this functionality:
+
+        <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
+                infrastructure</li>
+            <li>put the table name in <tt>$cfg['Servers'][$i]['designer_coords']</tt>
+                </li>
+        </ul>
+    </dd>
+
     <dt><span id="cfg_Servers_verbose_check">$cfg['Servers'][$i]['verbose_check']</span> boolean
     </dt>
     <dd>Because release 2.5.0 introduced the new MIME-transformation support, the
@@ -1017,6 +1047,15 @@ ALTER TABLE `pma_column_comments`
         But the following does not work:<br />
         <tt>xxx.xxx.xxx.xx[yyy-zzz]</tt> (partial
         <abbr title="Internet Protocol">IP</abbr> address range)
+    </dd>
+    <dt><span id="cfg_Servers_SignonSession">$cfg['Servers'][$i]['SignonSession']</span> string</dt>
+    <dd>Name of session which will be used for signon authentication method.
+    </dd>
+    <dt><span id="cfg_Servers_SignonURL">$cfg['Servers'][$i]['SignonURL']</span> string</dt>
+    <dd>URL where user will be redirected to log in for signon authentication method. Should be absolute including protocol.
+    </dd>
+    <dt><span id="cfg_Servers_LogoutURL">$cfg['Servers'][$i]['LogoutURL']</span> string</dt>
+    <dd>URL where user will be redirected after logout (doesn't affect config authentication method). Should be absolute including protocol.
     </dd>
 
     <dt id="cfg_ServerDefault">$cfg['ServerDefault'] integer</dt>
@@ -1182,11 +1221,20 @@ ALTER TABLE `pma_column_comments`
     <dt id="cfg_DisplayServersList">$cfg['DisplayServersList'] boolean</dt>
     <dd>Defines whether to display this server choice as links instead of in a drop-down.
         Defaults to FALSE (drop-down).</dd>
+    <dt id="cfg_DisplayDatabasesList">$cfg['DisplayDatabasesList'] boolean</dt>
+    <dd>Defines whether to display database choice in light navigation frame as links 
+        instead of in a drop-down. Defaults to FALSE (drop-down).</dd>
     <dt id="cfg_ShowStats">$cfg['ShowStats'] boolean</dt>
     <dd>Defines whether or not to display space usage and statistics about databases
         and tables.<br />
         Note that statistics requires at least MySQL 3.23.3 and that, at this
         date, MySQL doesn't return such information for Berkeley DB tables.</dd>
+
+    <dt><span id="cfg_ShowServerInfo">$cfg['ShowServerInfo'] </span>boolean</dt>
+    <dd>Defines whether to display detailed server information on main page.
+        You can additionally hide more information by using 
+        <tt><a href="#cfg_Servers_verbose">$cfg['Servers'][$i]['verbose']</a></tt>.
+        </dd>
 
     <dt><span id="cfg_ShowPhpInfo">$cfg['ShowPhpInfo'] </span>boolean<br />
         <span id="cfg_ShowChgPassword">$cfg['ShowChgPassword'] </span>boolean<br />
@@ -1245,8 +1293,10 @@ ALTER TABLE `pma_column_comments`
     </dd>
 
     <dt id="cfg_ShowFunctionFields">$cfg['ShowFunctionFields'] boolean</dt>
-    <dd>Defines whether or not MySQL functions fields should be displayed in
-        edit/insert mode.</dd>
+    <dd>Defines whether or not MySQL functions fields should be initially 
+        displayed in edit/insert mode. Since version 2.10, the user can
+        toggle this setting from the interface.
+    </dd>
 
     <dt id="cfg_CharEditing">$cfg['CharEditing'] string</dt>
     <dd>Defines which type of editing controls should be used for CHAR and
@@ -1314,13 +1364,13 @@ ALTER TABLE `pma_column_comments`
 
     <dt id="cfg_DefaultTabDatabase">$cfg['DefaultTabDatabase'] string</dt>
     <dd>Defines the tab displayed by default on database view. Possible
-        values: &quot;db_details_structure.php&quot;,
-        &quot;db_details.php&quot; or &quot;db_search.php&quot;.</dd>
+        values: &quot;db_structure.php&quot;,
+        &quot;db_sql.php&quot; or &quot;db_search.php&quot;.</dd>
 
     <dt id="cfg_DefaultTabTable">$cfg['DefaultTabTable'] string</dt>
     <dd>Defines the tab displayed by default on table view. Possible
-        values: &quot;tbl_properties_structure.php&quot;,
-        &quot;tbl_properties.php&quot;, &quot;tbl_select.php&quot;,
+        values: &quot;tbl_structure.php&quot;,
+        &quot;tbl_sql.php&quot;, &quot;tbl_select.php&quot;,
         &quot;tbl_change.php&quot; or &quot;sql.php&quot;.</dd>
 
     <dt id="cfg_MySQLManualBase">$cfg['MySQLManualBase'] string</dt>
@@ -1550,12 +1600,16 @@ $cfg['TrustedProxies'] =
         does not look as good as CSS.</dd>
 
     <dt id="DefaultPropDisplay">
-        <span id="cfg_DefaultPropDisplay">$cfg['DefaultPropDisplay']</span> string</dt>
+        <span id="cfg_DefaultPropDisplay">$cfg['DefaultPropDisplay']</span>
+        string or integer</dt>
     <dd>When editing/creating new columns in a table all fields normally get
         lined up one field a line. (default: 'horizontal'). If you set this to
         'vertical' you can have each field lined up vertically beneath each
         other. You can save up a lot of place on the horizontal direction and
-        no longer have to scroll.</dd>
+        no longer have to scroll. If you set this to integer, editing of fewer
+        columns will appear in 'vertical' mode, while editing of more fields
+        still in 'horizontal' mode. This way you can still effectively edit
+        large number of fields, while having full view on few of them.</dd>
 
     <dt id="cfg_ShowBrowseComments">$cfg['ShowBrowseComments'] boolean<br />
         <span id="cfg_ShowPropertyComments">$cfg['ShowPropertyComments'] </span>boolean
@@ -1594,15 +1648,6 @@ $cfg['TrustedProxies'] =
         See also <a href="#faq1_16">
         <abbr title="Frequently Asked Questions">FAQ</abbr> 1.16</a> for
         alternatives.
-    </dd>
-
-    <dt id="cfg_docSQLDir">$cfg['docSQLDir'] string</dt>
-    <dd>
-        The name of the directory where docSQL files can be uploaded for
-        import into phpMyAdmin.
-        <br /><br />
-        Please note that if PHP is running in safe mode, this directory must
-        be owned by the same user as the owner of the phpMyAdmin scripts.
     </dd>
 
     <dt id="cfg_SaveDir">$cfg['SaveDir'] string</dt>
@@ -1709,16 +1754,18 @@ $cfg['TrustedProxies'] =
     <dd>Enable <a href="#transformations">MIME-transformations</a>.</dd>
 
     <dt id="cfg_MaxExactCount">$cfg['MaxExactCount'] integer</dt>
-    <dd><ul><li>For InnoDB tables, determines for how large tables phpMyAdmin
+    <dd>For InnoDB tables, determines for how large tables phpMyAdmin
                 should get the exact row count using <code>SELECT COUNT</code>.
                 If the approximate row count as returned by
                 <code>SHOW TABLE STATUS</code> is smaller than this value,
                 <code>SELECT COUNT</code> will be used, otherwise the approximate
-                count will be used.</li>
-            <li>For VIEWs, since obtaining the exact count could have an
-                impact on performance, this value is the maximum to be displayed.
-            </li>
-        </ul>
+                count will be used.
+    </dd>
+    <dt id="cfg_MaxExactCountViews">$cfg['MaxExactCountViews'] integer</dt>
+    <dd>For VIEWs, since obtaining the exact count could have an
+    impact on performance, this value is the maximum to be displayed, using
+    a <code>SELECT COUNT ... LIMIT</code>. The default value of 0 bypasses 
+    any row counting.
     </dd>
 
     <dt id="wysiwyg">
@@ -1989,7 +2036,7 @@ $cfg['TrustedProxies'] =
 
 <h3 id="transformationshowto">2. Usage</h3>
 
-<p> Go to your <i>tbl_properties_structure.php</i> page (i.e. reached through
+<p> Go to your <i>tbl_structure.php</i> page (i.e. reached through
     clicking on the 'Structure' link for a table). There click on
     &quot;Change&quot; (or change icon) and there you will see three new fields at
     the end of the line. They are called 'MIME-type', 'Browser transformation' and
@@ -2541,7 +2588,7 @@ $cfg['TrustedProxies'] =
 
 <h4 id="faq1_27">
     <a href="#faq1_27">1.27 I get empty page when I want to view huge page (eg.
-    db_details_structure.php with plenty of tables).</a></h4>
+    db_structure.php with plenty of tables).</a></h4>
 
 <p> This is a <a href="http://bugs.php.net/21079">PHP bug</a> that occur when
     GZIP output buffering is enabled. If you turn off it (by
@@ -2850,6 +2897,8 @@ RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
        you might want to increase 
        <a href="http://www.hardened-php.net/hphp/troubleshooting.html">request limits</a>.
     </li>
+    <li>The directory specified in the <tt>php.ini</tt> directive <tt>session.save_path</tt> does not exist or is read-only.
+    </li>
 </ul>
 
 <h3 id="faqlimitations">Known limitations</h3>
@@ -2885,7 +2934,7 @@ RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
     <a href="#faq3_4">3.4 I am unable to import dumps I created with the mysqldump tool
     bundled with the MySQL server distribution.</a></h4>
 
-<p> The problem is that mysqldump creates invalid comments like this:</p>
+<p> The problem is that older versions of mysqldump created invalid comments like this:</p>
 
 <pre>
 -- MySQL dump 8.22
@@ -3123,6 +3172,11 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] = array(
     <a href="#cfg_PmaAbsoluteUri" class="configrule">$cfg['PmaAbsoluteUri']</a>.
     For example, a missing &quot;www&quot;, or entering with an <abbr title="Internet Protocol">IP</abbr> address
     while a domain name is defined in the config file.</p>
+
+<h4 id="faq4_8">
+	<a href="#faq4_8">4.8 Which parameters can I use in the URL that starts phpMyAdmin?</a></h4>
+
+<p>When starting phpMyAdmin, you can use the <tt>db</tt>, <tt>pma_username</tt>, <tt>pma_password</tt> and <tt>server</tt> parameters. This last one can contain either the numeric host index (from <tt>$i</tt> of the configuration file) or one of the host names present in the configuration file. Using <tt>pma_username</tt> and <tt>pma_password</tt> has been tested along with the usage of 'cookie' <tt>auth_type</tt>.</p>
 
 <h3 id="faqbrowsers">Browsers or client <abbr title="operating system">OS</abbr></h3>
 
@@ -4019,6 +4073,9 @@ CREDITS, in chronological order
     * interface improvements
     * various bugfixes
 
+- Ivan A Kirillov
+    * new relations Designer
+
 And also to the following people who have contributed minor changes,
 enhancements, bugfixes or support for a new language since version 2.1.0:
 
@@ -4204,7 +4261,7 @@ Original Credits of Version 2.1.0
          applications.</li>
     <li><a href="http://www.wikipedia.org/wiki/Port_%28computing%29">port</a>
          - a connection through which data is sent and received.</li>
-    <li><a href="http://www.wikipedia.org/wiki/Request_for_Comments">RFC</a>
+	 <li><a href="http://www.wikipedia.org/wiki/Request_for_Comments">RFC</a>
          - Request for Comments (RFC) documents are a series of memoranda
          encompassing new research, innovations, and methodologies applicable to
          Internet technologies.</li>

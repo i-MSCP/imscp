@@ -1,5 +1,5 @@
 <?php
-/* $Id: pdf_schema.php 8941 2006-04-25 15:21:33Z cybot_tm $ */
+/* $Id: pdf_schema.php 9658 2006-11-02 12:56:57Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Contributed by Maxime Delorme and merged by lem9
@@ -33,20 +33,12 @@ if (!$cfgRelation['pdfwork']) {
 }
 
 /**
- * Gets the "fpdf" libraries and defines the pdf font path, use unicode version for unicode.
+ * Font used in PDF.
+ *
+ * @todo Make this configuratble (at least Sans/Serif).
  */
-define('FPDF_FONTPATH', './libraries/fpdf/font/');
-if ($charset == 'utf-8') {
-    define('PMA_PDF_FONT', 'FreeSans');
-    require_once('./libraries/fpdf/ufpdf.php');
-    class PMA_FPDF extends UFPDF {
-    };
-} else {
-    define('PMA_PDF_FONT', 'Arial');
-    require_once('./libraries/fpdf/fpdf.php');
-    class PMA_FPDF extends FPDF {
-    };
-}
+define('PMA_PDF_FONT', 'DejaVuSans');
+require_once('./libraries/tcpdf/tcpdf.php');
 
 /**
  * Extends the "FPDF" class and prepares the work
@@ -54,7 +46,7 @@ if ($charset == 'utf-8') {
  * @access public
  * @see FPDF
  */
-class PMA_PDF extends PMA_FPDF {
+class PMA_PDF extends TCPDF {
     /**
      * Defines private properties
      */
@@ -86,7 +78,7 @@ class PMA_PDF extends PMA_FPDF {
     function PMA_PDF($orientation = 'L', $unit = 'mm', $format = 'A4')
     {
         $this->Alias = array() ;
-        $this->FPDF($orientation, $unit, $format);
+        $this->TCPDF($orientation, $unit, $format);
     } // end of the "PMA_PDF()" method
     function SetAlias($name, $value)
     {
@@ -98,7 +90,7 @@ class PMA_PDF extends PMA_FPDF {
             $nb = $this->page;
             foreach ($this->Alias AS $alias => $value) {
                 for ($n = 1;$n <= $nb;$n++)
-                $this->pages[$n] = $this->_strreplace($alias, $value, $this->pages[$n]);
+					$this->pages[$n]=str_replace($alias, $value, $this->pages[$n]);
             }
         }
         parent::_putpages();
@@ -245,7 +237,7 @@ class PMA_PDF extends PMA_FPDF {
         echo '    ' . $error_message . "\n";
         echo '</p>' . "\n";
 
-        echo '<a href="db_details_structure.php?' . PMA_generate_common_url($db)
+        echo '<a href="db_structure.php?' . PMA_generate_common_url($db)
          . '">' . $GLOBALS['strBack'] . '</a>';
         echo "\n";
 
@@ -980,20 +972,11 @@ class PMA_RT {
         $pdf->SetAuthor('phpMyAdmin ' . PMA_VERSION);
         $pdf->AliasNbPages();
 
-        if ($GLOBALS['charset'] == 'utf-8') {
-            // Force FreeSans for utf-8
-            $this->ff = 'FreeSans';
-            $pdf->AddFont('FreeSans', '', 'FreeSans.php');
-            $pdf->AddFont('FreeSans', 'B', 'FreeSansBold.php');
-        } elseif ($GLOBALS['charset'] == 'iso-8859-2') {
-            // fonts added to phpMyAdmin and considered non-standard by fpdf
-            // (Note: those tahoma fonts are iso-8859-2 based)
-            $this->ff == 'tahoma';
-            $pdf->AddFont('tahoma', '', 'tahoma.php');
-            $pdf->AddFont('tahoma', 'B', 'tahomab.php');
-        } else {
-            $this->ff == 'helvetica';
-        }
+        $pdf->AddFont('DejaVuSans', '', 'dejavusans.php');
+        $pdf->AddFont('DejaVuSans', 'B', 'dejavusans-bold.php');
+        $pdf->AddFont('DejaVuSerif', '', 'dejavuserif.php');
+        $pdf->AddFont('DejaVuSerif', 'B', 'dejavuserif-bold.php');
+        $this->ff = PMA_PDF_FONT;
         $pdf->SetFont($this->ff, '', 14);
         $pdf->SetAutoPageBreak('auto');
         // Gets tables on this page
@@ -1265,7 +1248,9 @@ function PMA_RT_DOC($alltables)
                 $comments_width = 67;
             } else {
                 // this is really intended for 'letter'
-                // TODO: find optimal width for all formats
+                /**
+                 * @todo find optimal width for all formats
+                 */
                 $comments_width = 50;
             }
             $pdf->Cell($comments_width, 8, ucfirst($GLOBALS['strComments']), 1, 0, 'C');

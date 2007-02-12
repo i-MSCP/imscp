@@ -99,7 +99,6 @@ form {
 
 textarea {
     overflow:           visible;
-    height:             8em;
 }
 
 fieldset {
@@ -195,7 +194,7 @@ table tr.even {
     text-align:         <?php echo $left; ?>;
 }
 
-/* marked tbale rows */
+/* marked table rows */
 table tr.marked th,
 table tr.marked {
     background:   <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
@@ -648,6 +647,7 @@ a.tab:hover,
 
 /* disabled drop/empty tabs */
 span.tab,
+a.warning,
 span.tabcaution {
     cursor:             url(../<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>error.ico), default;
 }

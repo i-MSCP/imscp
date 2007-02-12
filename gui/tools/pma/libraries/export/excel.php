@@ -1,5 +1,5 @@
 <?php
-/* $Id: excel.php 9532 2006-10-10 14:20:16Z nijel $ */
+/* $Id: excel.php 9533 2006-10-10 14:20:58Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

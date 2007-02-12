@@ -1,5 +1,5 @@
 <?php
-/* $Id: latex.php 8995 2006-04-28 08:51:35Z nijel $ */
+/* $Id: latex.php 9805 2006-12-26 16:10:47Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -278,13 +278,14 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
  * @param   boolean  whether to include relation comments
  * @param   boolean  whether to include column comments
  * @param   boolean  whether to include mime comments
+ * @param   string   future feature: support view dependencies 
  *
  * @return  bool     Whether it suceeded
  *
  * @access  public
  */
  // @@@ $strTableStructure
-function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = false, $do_comments = false, $do_mime = false, $dates = false)
+function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = false, $do_comments = false, $do_mime = false, $dates = false, $dummy)
 {
     global $cfgRelation;
 
@@ -459,7 +460,7 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
 
     $buffer = ' \\end{longtable}' . $crlf;
     return PMA_exportOutputHandler($buffer);
-} // end of the 'PMA_getTableStructureLaTeX()' function
+} // end of the 'PMA_exportStructure' function
 
-}
+} // end else
 ?>

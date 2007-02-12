@@ -1,5 +1,5 @@
 <?php
-/* $Id: user_password.php 7908 2005-11-24 09:12:17Z nijel $ */
+/* $Id: user_password.php 9657 2006-11-02 10:51:57Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -57,12 +57,7 @@ if (isset($nopass)) {
         // Duration = till the browser is closed for password (we don't want this to be saved)
         if ($cfg['Server']['auth_type'] == 'cookie') {
 
-            setcookie('pma_cookie_password-' . $server,
-               PMA_blowfish_encrypt($pma_pw,
-               $GLOBALS['cfg']['blowfish_secret'] . $GLOBALS['current_time']),
-               0,
-               $GLOBALS['cookie_path'], '',
-               $GLOBALS['is_https']);
+            PMA_setCookie('pma_cookie_password-' . $server, PMA_blowfish_encrypt($pma_pw, $GLOBALS['cfg']['blowfish_secret'] . $GLOBALS['current_time']));
 
         } // end if
         // For http auth. mode, the "back" link will also enforce new

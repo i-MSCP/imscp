@@ -1,5 +1,5 @@
 <?php
-/* $Id: transformations.lib.php 8340 2006-01-19 15:39:29Z cybot_tm $ */
+/* $Id: transformations.lib.php 9616 2006-10-26 14:56:57Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -9,11 +9,24 @@
 function PMA_transformation_getOptions($string) {
     $transform_options = array();
 
-    if ($string != '') {
-        if ($string{0} == "'" && $string{strlen($string)-1} == "'") {
-            $transform_options = explode('\',\'', substr($string, 1, strlen($string)-2));
+    /* Parse options */
+    for ($nextToken = strtok($string, ','); $nextToken !== false; $nextToken = strtok(',')) {
+        $trimmed = trim($nextToken);
+        if ($trimmed{0} == '\'' && $trimmed{strlen($trimmed) - 1} == '\'') {
+            $transform_options[] = substr($trimmed, 1, -1);
         } else {
-            $transform_options = array(0 => $string);
+            if ($trimmed{0} == '\'') {
+                $trimmed= ltrim($nextToken);
+                while ($nextToken !== false) {
+                    $nextToken = strtok(',');
+                    $trimmed .= $nextToken;
+                    $rtrimmed = rtrim($trimmed);
+                    if ($rtrimmed{strlen($rtrimmed) - 1} == '\'') break;
+                }
+                $transform_options[] = substr($rtrimmed, 1, -1);
+            } else {
+                $transform_options[] = $nextToken;
+            }
         }
     }
 

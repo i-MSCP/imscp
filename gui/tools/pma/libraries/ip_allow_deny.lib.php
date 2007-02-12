@@ -1,5 +1,5 @@
 <?php
-/* $Id: ip_allow_deny.lib.php 9781 2006-12-07 18:00:46Z lem9 $ */
+/* $Id: ip_allow_deny.lib.php 9780 2006-12-07 17:57:02Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

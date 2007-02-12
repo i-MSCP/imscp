@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php 9764 2006-11-29 09:52:26Z lem9 $ */
+/* $Id: spanish-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -19,7 +19,6 @@ $datefmt = '%d-%m-%Y a las %H:%M:%S';
 $timespanfmt = '%s días, %s horas, %s minutos y %s segundos';
 
 $strAbortedClients = 'Abortado';
-$strAbsolutePathToDocSqlDir = 'Por favor, escriba la ruta absoluta del servidor que lleve al directorio docSQL';
 $strAccessDenied = 'Acceso denegado ';
 $strAccessDeniedCreateConfig = 'La razón más probable es que usted no creó un archivo de configuración. Utilice %1$ssetup script%2$s para crear una.';
 $strAccessDeniedExplanation = 'phpMyAdmin intentó conectarse con el servidor MySQL, y el servidor rechazó esta conexión. Deberá revisar el host, nombre de usuario y contraseña en config.inc.php y asegurarse que corresponden con la información provista por el administrador del servidor MySQL.';
@@ -29,8 +28,6 @@ $strAddClause = 'Añada %s';
 $strAddConstraints = 'Añadir restricciones';
 $strAddDeleteColumn = 'Añadir/borrar columna de criterio';
 $strAddDeleteRow = 'Añadir/borrar fila de criterio';
-$strAddedColumnComment = 'Se añadió un comentario para la columna';
-$strAddedColumnRelation = 'Se añadió una relación para la columna';
 $strAddFields = 'Añadir %s campo(s)';
 $strAddHeaderComment = 'Añadir su propio comentario en el encabezado (\\n segmenta las oraciones)';
 $strAddIntoComments = 'Añadir en los comentarios';
@@ -202,15 +199,6 @@ $strDataOnly = 'Solamente datos';
 $strDataPages = 'Páginas que contienen datos'; 
 $strDBComment = 'Comentario de la base de datos: ';
 $strDBCopy = 'Copiar la base de datos a';
-$strDBGContext = 'Contexto';
-$strDBGContextID = 'ID del contexto';
-$strDBGHits = 'Hits';
-$strDBGLine = 'Línea';
-$strDBGMaxTimeMs = 'Tiempo máximo, ms';
-$strDBGMinTimeMs = 'Tiempo mínimo, ms';
-$strDBGModule = 'Módulo';
-$strDBGTimePerHitMs = 'Tiempo/Hit, ms';
-$strDBGTotalTimeMs = 'Tiempo total, ms';
 $strDbPrivileges = 'Privilegios específicos para la base de datos';
 $strDBRename = 'Cambiar el nombre de la base de datos a';
 $strDbSpecific = 'específico para la base de datos';
@@ -347,8 +335,6 @@ $strIdxFulltext = 'Texto completo';
 $strIgnoreDuplicates = 'Ignore las filas duplicadas';
 $strIgnore = 'Ignorar';
 $strIgnoreInserts = 'Usar la opción ignore inserts';
-$strIgnoringFile = 'Ignorando el archivo %s';
-$strImportDocSQL = 'Importar archivos docSQL';
 $strImportFiles = 'Importar archivos';
 $strImportFormat = 'Formato del archivo importado';
 $strImport = 'Importar';
@@ -901,7 +887,6 @@ $strThemeNoValidImgPath = '¡No se halló la ruta de imágenes para la plantilla
 $strThemePathNotFound = '¡No se halló la ruta de la plantilla de interfaz (theme) para la plantilla %s!';
 $strTheme = 'Tema / Estilo';
 $strThisHost = 'Este Host';
-$strThisNotDirectory = 'Esto no es un directorio';
 $strThreads = 'Procesos';
 $strThreadSuccessfullyKilled = 'El proceso %s fue destruido exitosamente.';
 $strTimeoutInfo = 'Se agotó el tiempo de ejecución en la importación previa; si lo reenvía continuará desde la posición %d.';
@@ -920,7 +905,6 @@ $strTransformation_application_octetstream__hex = 'Muestra los datos en represen
 $strTransformation_image_jpeg__inline = 'Muestra un thumbnail que puede abrirse mediante un clic; opciones: width, height en píxeles (mantiene la proporción original)';
 $strTransformation_image_jpeg__link = 'Muestra un enlace a esta imagen (i.e., blob descarga directa).';
 $strTransformation_image_png__inline = 'Ver imagen/jpeg: inline';
-$strTransformation_text_plain__dateformat = 'Toma un campo TIME, TIMESTAMP o DATETIME y lo formatea usando su formato de fechas local. La primera opción es el offset (en horas) que se añadirá al timestamp (Predeterminado: 0). La segunda opción es un dateformat diferente de acuerdo con los parámetros disponibles para el strftime() del PHP.';
 $strTransformation_text_plain__external = 'LINUX SOLAMENTE: Ejecuta una aplicación externa y alimenta el fielddata mediante input estándar. Retorna el output estándar de la aplicación. El predeterminado es Tidy, para mostrar código HTML agradable para la impresión. Por razones de seguridad, debe editar manualmente el archivo libraries/transformations/text_plain__external.inc.php e insertar las herramientas que permitirá se ejecuten. La primera opción será el número del programa que querrá utilizar y la segunda opción son los parámetros para el programa. El tercer parámetro, de ser 1 convertirá el output usando htmlspecialchars() (el predeterminado es 1). Un cuarto parámetro, de ser 1 pondrá un NOWRAP a la celda de contenido para que todo el output se muestre sin reformatear (Predeterminado 1)';
 $strTransformation_text_plain__formatted = 'Mantiene el formato original del campo. No se puede hacer Escape.';
 $strTransformation_text_plain__imagelink = 'Muestra una imagen y un enlace, el campo contiene el nombre del archivo; la primera opción es un prefijo como "http://dominio.com/", la segunda opción es el ancho en píxeles, el tercero es el alto.';
@@ -982,8 +966,6 @@ $strWildcard = 'comodín';
 $strWindowNotFound = 'La ventana del navegador no pudo actualizarse. Quizá cerró la ventana principal o su navegador está bloqueando las actualizaciones en ventanas múltiples debido a sus parámetros de seguridad.';
 $strWithChecked = 'Para los elementos que están marcados:';
 $strWriteRequests = 'Escribir las solicitudes';
-$strWritingCommentNotPossible = 'No fue posible escribir el comentario';
-$strWritingRelationNotPossible = 'No fue posible escribir la relación';
 $strWrongUser = 'El nombre de usuario o la contraseña está equivocado. El acceso fue denegado.';
 
 $strXMLOptions = 'Opciones XML';
@@ -994,4 +976,66 @@ $strYes = 'Sí';
 $strZeroRemovesTheLimit = 'Nota: si cambia los parámetros de estas opciones a 0 (cero), remueve el límite.';
 $strZip = '"comprimido con zip"';
 
+// To translate:
+$strAngularLinks = 'Angular links';  //to translate
+
+$strCancel = 'Cancel';  //to translate
+$strCreateRelation = 'Create relation';  //to translate
+$strCreateTable  = 'Create table';  //to translate
+
+$strDbIsEmpty = 'Database seems to be empty!';  //to translate
+$strDeleteRelation = 'Delete relation';  //to translate
+$strDesigner = 'Designer';  //to translate
+$strDirectLinks = 'Direct links';  //to translate
+$strDocSQL = 'DocSQL';  //to translate
+$strDocSQLOptions = 'DocSQL options';  //to translate
+
+$strExportImportToScale = 'Export/Import to scale';  //to translate
+
+$strForeignKeyError = 'Error creating foreign key (check data types)';  //to translate
+
+$strHelp = 'Help';  //to translate
+$strHide         = 'Hide';  //to translate
+$strHideShowAll = 'Hide/Show all';  //to translate
+$strHideShowNoRelation = 'Hide/Show Tables with no relation';  //to translate
+
+$strImportExportCoords = 'Import/Export coordinates for PDF schema';  //to translate
+$strInnoDBRelationAdded = 'InnoDB relation added';  //to translate
+$strInternalRelationAdded = 'Internal relation added';  //to translate
+
+$strMoveMenu = 'Move Menu';  //to translate
+
+$strNumberOfTables = 'Number of tables';  //to translate
+
+$strPleaseSelectPrimaryOrUniqueKey = 'Please select the primary key or a unique key';  //to translate
+$strPmaWiki = 'phpMyAdmin wiki';  //to translate
+
+$strRecommended = 'recommended';  //to translate
+$strRelationDeleted = 'Relation deleted';  //to translate
+$strReload = 'Reload';  //to translate
+
+$strSavePosition = 'Save position';  //to translate
+$strSelectForeignKey = 'Select Foreign Key';  //to translate
+$strSelectReferencedKey = 'Select referenced key';  //to translate
+$strShowHideLeftMenu = 'Show/Hide left menu';  //to translate
+$strShowingPhp = 'Showing as PHP code';  //to translate
+$strShowingSQL = 'Showing SQL query';  //to translate
+$strSmallBigAll = 'Small/Big All';  //to translate
+
+$strTableIsEmpty = 'Table seems to be empty!';  //to translate
+$strTableName = 'Table name';  //to translate
+$strToFromPage = 'to/from page';  //to translate
+$strToSelectRelation = 'To select relation, click :';  //to translate
+$strTransformation_text_plain__dateformat = 'Toma un campo TIME, TIMESTAMP o DATETIME y lo formatea usando su formato de fechas local. La primera opción es el offset (en horas) que se añadirá al timestamp (Predeterminado: 0). La segunda opción es un dateformat diferente de acuerdo con los parámetros disponibles para el strftime() del PHP. Third option determines whether you want to see local date or UTC one (use "local" or "utc" strings) for that. According to that, date format has different value - for "local" see the documentation for PHP\'s strftime() function and for "utc" it is done using gmdate() function.';  //to translate
+
+$strKnownExternalBug = 'The %s functionality is affected by a known bug, see %s';  //to translate
+$strStructureForView = 'Structure for view';  //to translate
+$strStandInStructureForView = 'Stand-in structure for view';  //to translate
+$strToggleSmallBig = 'Toggle small/big';  //to translate
+$strIEUnsupported = 'Internet Explorer does not support this function.';  //to translate
+$strErrorRelationAdded = 'Error: Relation not added.';  //to translate
+$strErrorRelationExists = 'Error: relation already exists.';  //to translate
+$strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
+$strSnapToGrid = 'Snap to grid';  //to translate
+$strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
 ?>

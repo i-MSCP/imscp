@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_printview.php 8978 2006-04-27 09:42:22Z cybot_tm $ */
+/* $Id: db_printview.php 9602 2006-10-25 12:25:01Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';
@@ -15,7 +15,7 @@ PMA_checkParameters(array('db'));
 /**
  * Defines the url to return to in case of error in a sql statement
  */
-$err_url = 'db_details.php?' . PMA_generate_common_url($db);
+$err_url = 'db_sql.php?' . PMA_generate_common_url($db);
 
 /**
  * Settings for relations stuff

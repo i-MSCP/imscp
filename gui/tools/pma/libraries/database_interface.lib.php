@@ -1,5 +1,5 @@
 <?php
-/* $Id: database_interface.lib.php 9619 2006-10-26 15:25:28Z lem9 $ */
+/* $Id: database_interface.lib.php 9745 2006-11-19 20:54:19Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -38,8 +38,10 @@ if ( ! PMA_DBI_checkAndLoadMysqlExtension( $GLOBALS['cfg']['Server']['extension'
     // if it fails try alternative extension ...
     // and display an error ...
 
-    // TODO 2.7.1: add different messages for alternativ extension
-    // and complete fail (no alternativ extension too)
+    /**
+     * @todo 2.7.1: add different messages for alternativ extension
+     * and complete fail (no alternativ extension too)
+     */
     $GLOBALS['PMA_errors'][] =
         sprintf( PMA_sanitize( $GLOBALS['strCantLoad'] ),
             $GLOBALS['cfg']['Server']['extension'] )
@@ -164,35 +166,12 @@ function PMA_DBI_convert_message( $message ) {
             }
         }
     } else {
-        // lang not found, try all
-        // what TODO ?
+        /**
+         * @todo lang not found, try all, what TODO ?
+         */
     }
 
     return $message;
-}
-
-/**
- * returns array with database names
- *
- * @return  array   $databases
- */
-function PMA_DBI_get_dblist($link = null)
-{
-    $dbs_array = PMA_DBI_fetch_result('SHOW DATABASES;', $link);
-
-    // Before MySQL 4.0.2, SHOW DATABASES could send the
-    // whole list, so check if we really have access:
-    if (PMA_MYSQL_INT_VERSION < 40002 || !empty($GLOBALS['cfg']['Server']['hide_db'])) {
-        foreach ($dbs_array as $key => $db) {
-            if (!@PMA_DBI_select_db($db, $link) || (!empty($GLOBALS['cfg']['Server']['hide_db']) && preg_match('/' . $GLOBALS['cfg']['Server']['hide_db'] . '/', $db))) {
-                unset( $dbs_array[$key] );
-            }
-        }
-        // re-index values
-        $dbs_array = array_values( $dbs_array );
-    }
-
-    return $dbs_array;
 }
 
 /**
@@ -236,7 +215,7 @@ function PMA_DBI_get_tables($database, $link = null)
  * @param   string          $table          table
  * @param   boolean|string  $tbl_is_group   $table is a table group
  * @param   resource        $link           mysql link
- * @return  array           list of tbales in given db(s)
+ * @return  array           list of tables in given db(s)
  */
 function PMA_DBI_get_tables_full($database, $table = false,
     $tbl_is_group = false, $link = null)
@@ -271,7 +250,7 @@ function PMA_DBI_get_tables_full($database, $table = false,
         //
         // on non-Windows servers,
         // added BINARY in the WHERE clause to force a case sensitive
-        // comparison (if we are looking for the db AA we don't want
+        // comparison (if we are looking for the db Aa we don't want
         // to find the db aa)
         $sql = '
              SELECT *,
@@ -296,14 +275,13 @@ function PMA_DBI_get_tables_full($database, $table = false,
                     `CREATE_OPTIONS`     AS `Create_options`,
                     `TABLE_COMMENT`      AS `Comment`
                FROM `information_schema`.`TABLES`
-              WHERE ' . (PMA_IS_WINDOWS ? '' : 'BINARY') . '  `TABLE_SCHEMA` IN (\'' . implode("', '", $databases) . '\')
+              WHERE ' . (PMA_IS_WINDOWS ? '' : 'BINARY') . ' `TABLE_SCHEMA` IN (\'' . implode("', '", $databases) . '\')
                 ' . $sql_where_table;
 
         $tables = PMA_DBI_fetch_result($sql, array('TABLE_SCHEMA', 'TABLE_NAME'),
             null, $link);
         unset( $sql_where_table, $sql );
     }
-
     // If permissions are wrong on even one database directory,
     // information_schema does not return any table info for any database
     // this is why we fall back to SHOW TABLE STATUS even for MySQL >= 50002
@@ -364,8 +342,9 @@ function PMA_DBI_get_tables_full($database, $table = false,
                 if ( strtoupper( $each_tables[$table_name]['Comment'] ) === 'VIEW' ) {
                     $each_tables[$table_name]['TABLE_TYPE'] = 'VIEW';
                 } else {
-                    // TODO difference between 'TEMPORARY' and 'BASE TABLE'
-                    // but how to detect?
+                    /**
+                     * @todo difference between 'TEMPORARY' and 'BASE TABLE' but how to detect?
+                     */
                     $each_tables[$table_name]['TABLE_TYPE'] = 'BASE TABLE';
                 }
             }
@@ -400,26 +379,16 @@ function PMA_DBI_get_tables_full($database, $table = false,
 }
 
 /**
- * returns count of databases for current server
- *
- * @param   string      $database   databases to count
- * @param   resource    $link       mysql db link
- */
-function PMA_DBI_get_databases_count($database = null, $link = null)
-{
-    return count(PMA_DBI_get_dblist($link));
-}
-
-/**
  * returns array with databases containing extended infos about them
  *
- * @param   string          $databases      database
- * @param   boolean         $force_stats    retrieve stats also for MySQL < 5
- * @param   resource        $link           mysql link
- * @param   string          $sort_by        collumn to order by
- * @param   string          $sort_order     ASC or DESC
- * @param   integer         $limit_offset   starting offset for LIMIT
- * @param   bool|int        $limit_count    row count for LIMIT or true for $GLOBALS['cfg']['MaxDbList']
+ * @todo    move into PMA_List_Database?
+ * @param   string      $databases      database
+ * @param   boolean     $force_stats    retrieve stats also for MySQL < 5
+ * @param   resource    $link           mysql link
+ * @param   string      $sort_by        collumn to order by
+ * @param   string      $sort_order     ASC or DESC
+ * @param   integer     $limit_offset   starting offset for LIMIT
+ * @param   bool|int    $limit_count    row count for LIMIT or true for $GLOBALS['cfg']['MaxDbList']
  * @return  array       $databases
  */
 function PMA_DBI_get_databases_full($database = null, $force_stats = false,
@@ -495,10 +464,25 @@ function PMA_DBI_get_databases_full($database = null, $force_stats = false,
            GROUP BY `information_schema`.`SCHEMATA`.`SCHEMA_NAME`
            ORDER BY ' . PMA_backquote($sort_by) . ' ' . $sort_order
            . $limit;
-        $databases = PMA_DBI_fetch_result( $sql, 'SCHEMA_NAME', null, $link );
-        unset($sql_where_schema, $sql);
+        $databases = PMA_DBI_fetch_result($sql, 'SCHEMA_NAME', null, $link);
+
+        $mysql_error = PMA_DBI_getError($link);
+        if (! count($databases) && $GLOBALS['errno']) {
+            PMA_mysqlDie($mysql_error, $sql);
+        }
+
+        // display only databases also in official database list
+        // f.e. to apply hide_db and only_db
+        $drops = array_diff(array_keys($databases), $GLOBALS['PMA_List_Database']->items);
+        if (count($drops)) {
+            foreach ($drops as $drop) {
+                unset($databases[$drop]);
+            }
+            unset($drop);
+        }
+        unset($sql_where_schema, $sql, $drops);
     } else {
-        foreach ( PMA_DBI_get_dblist( $link ) as $database_name ) {
+        foreach ($GLOBALS['PMA_List_Database']->items as $database_name) {
             // MySQL forward compatibility
             // so pma could use this array as if every server is of version >5.0
             $databases[$database_name]['SCHEMA_NAME']      = $database_name;
@@ -631,8 +615,7 @@ function PMA_DBI_get_columns_full($database = null, $table = null,
         unset( $sql_wheres, $sql );
     } else {
         if ( null === $database ) {
-            $databases = PMA_DBI_get_dblist();
-            foreach ( $databases as $database ) {
+            foreach ($GLOBALS['PMA_List_Database']->items as $database) {
                 $columns[$database] = PMA_DBI_get_columns_full($database, null,
                     null, $link);
             }
@@ -676,9 +659,13 @@ function PMA_DBI_get_columns_full($database = null, $table = null,
             $columns[$column_name]['DATA_TYPE']                   =
                 substr($columns[$column_name]['COLUMN_TYPE'], 0,
                     strpos($columns[$column_name]['COLUMN_TYPE'], '('));
-            // @TODO guess CHARACTER_MAXIMUM_LENGTH from COLUMN_TYPE
+            /**
+             * @todo guess CHARACTER_MAXIMUM_LENGTH from COLUMN_TYPE
+             */
             $columns[$column_name]['CHARACTER_MAXIMUM_LENGTH']    = null;
-            // @TODO guess CHARACTER_OCTET_LENGTH from CHARACTER_MAXIMUM_LENGTH
+            /**
+             * @todo guess CHARACTER_OCTET_LENGTH from CHARACTER_MAXIMUM_LENGTH
+             */
             $columns[$column_name]['CHARACTER_OCTET_LENGTH']      = null;
             $columns[$column_name]['NUMERIC_PRECISION']           = null;
             $columns[$column_name]['NUMERIC_SCALE']               = null;
@@ -699,7 +686,7 @@ function PMA_DBI_get_columns_full($database = null, $table = null,
 }
 
 /**
- * @TODO should only return columns names, for more info use PMA_DBI_get_columns_full()
+ * @todo should only return columns names, for more info use PMA_DBI_get_columns_full()
  *
  * @deprecated by PMA_DBI_get_columns() or PMA_DBI_get_columns_full()
  * @param   string  $database   name of database
@@ -1191,14 +1178,14 @@ function PMA_isSuperuser() {
 
 
 /**
- * returns an array of PROCEDURE or FUNCTION names for a db 
+ * returns an array of PROCEDURE or FUNCTION names for a db
  *
  * @uses    PMA_DBI_free_result()
  * @param   string              $db     db name
- * @param   string              $which  PROCEDURE | FUNCTION 
+ * @param   string              $which  PROCEDURE | FUNCTION
  * @param   resource            $link   mysql link
  *
- * @return  array   the procedure names or function names 
+ * @return  array   the procedure names or function names
  */
 function PMA_DBI_get_procedures_or_functions($db, $which, $link = null) {
 
@@ -1213,15 +1200,15 @@ function PMA_DBI_get_procedures_or_functions($db, $which, $link = null) {
 }
 
 /**
- * returns the definition of a specific PROCEDURE or FUNCTION 
+ * returns the definition of a specific PROCEDURE or FUNCTION
  *
  * @uses    PMA_DBI_fetch_value()
  * @param   string              $db     db name
- * @param   string              $which  PROCEDURE | FUNCTION 
+ * @param   string              $which  PROCEDURE | FUNCTION
  * @param   string              $proc_or_function_name  the procedure name or function name
  * @param   resource            $link   mysql link
  *
- * @return  string              the procedure's or function's definition 
+ * @return  string              the procedure's or function's definition
  */
 function PMA_DBI_get_procedure_or_function_def($db, $which, $proc_or_function_name, $link = null) {
 

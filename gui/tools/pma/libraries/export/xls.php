@@ -1,5 +1,5 @@
 <?php
-/* $Id: xls.php 8964 2006-04-26 19:16:52Z nijel $ */
+/* $Id: xls.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Check if we have native MS Excel export using PEAR class Spreadsheet_Excel_Writer
@@ -177,7 +177,9 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
             if (!isset($row[$j]) || is_null($row[$j])) {
                 $worksheet->write($col, $j, $GLOBALS['xls_null']);
             } elseif ($row[$j] == '0' || $row[$j] != '') {
-                // FIXME: we should somehow handle character set here!
+                /**
+                 * @todo we should somehow handle character set here!
+                 */
                 $worksheet->write($col, $j, $row[$j]);
             } else {
                 $worksheet->write($col, $j, '');

@@ -1,5 +1,5 @@
 <?php
-/* $Id: querywindow.php 9156 2006-07-03 15:01:45Z cybot_tm $ */
+/* $Id: querywindow.php 9602 2006-10-25 12:25:01Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once('./libraries/common.lib.php');
@@ -34,17 +34,6 @@ $cfgRelation = PMA_getRelationsParam();
 // initialize some variables
 $_sql_history = array();
 $_input_query_history = array();
-
-/**
- * Get the list and number of available databases.
- * Skipped if no server selected: in this case no database should be displayed
- * before the user choose among available ones at the welcome screen.
- */
-if ($server > 0) {
-    PMA_availableDatabases(); // this function is defined in "common.lib.php"
-} else {
-    $num_dbs = 0;
-}
 
 // garvin: For re-usability, moved http-headers and stylesheets
 // to a seperate file. It can now be included by libraries/header.inc.php,
@@ -238,9 +227,9 @@ if (isset($no_js) && $no_js) {
     // ... we redirect to appropriate query sql page
     // works only full if $db and $table is also stored/grabbed from $_COOKIE
     if ( isset( $table ) && strlen($table) ) {
-        require './tbl_properties.php';
+        require './tbl_sql.php';
     } elseif ( isset($db) && strlen($db) ) {
-        require './db_details.php';
+        require './db_sql.php';
     } else {
         require './server_sql.php';
     }
@@ -283,8 +272,8 @@ if ( count( $_sql_history ) > 0
                .'querydisplay_tab.value = \'' . $tab . '\';'
                .' document.getElementById(\'hiddenqueryform\').'
                .'query_history_latest.value = \''
-                . preg_replace('/(\r|\n)+/i', '\\n',
-                    htmlentities( $sql, ENT_QUOTES ) ) . '\';'
+               . preg_replace('/(\r|\n)+/i', '\\n',
+                    PMA_jsFormat($sql, false) ) . '\';'
                .' document.getElementById(\'hiddenqueryform\').'
                .'auto_commit.value = \'false\';'
                .' document.getElementById(\'hiddenqueryform\').'
@@ -305,8 +294,8 @@ if ( count( $_sql_history ) > 0
                .'querydisplay_tab.value = \'' . $tab . '\';'
                .' document.getElementById(\'hiddenqueryform\').'
                .'query_history_latest.value = \''
-                . preg_replace('/(\r|\n)+/i', '\\r\\n',
-                    htmlentities( $sql, ENT_QUOTES ) ) . '\';'
+               . preg_replace('/(\r|\n)+/i', '\\r\\n',
+                    PMA_jsFormat($sql, false) ) . '\';'
                .' document.getElementById(\'hiddenqueryform\').'
                .'auto_commit.value = \'true\';'
                .' document.getElementById(\'hiddenqueryform\').'

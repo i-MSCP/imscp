@@ -1,7 +1,7 @@
 <?php
 /*
  * Code for displaying server selection written by nijel
- * $Id: select_server.lib.php 9174 2006-07-09 10:29:28Z cybot_tm $
+ * $Id: select_server.lib.php 9438 2006-09-21 14:28:46Z cybot_tm $
  */
 
 /**
@@ -69,7 +69,9 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
         //        value, displaying such informations may not be a so good
         //        idea
         if (!empty($server['only_db'])) {
-            // TODO FIXME this can become a really big/long/wide selectbox ...
+            /**
+             * @todo this can become a really big/long/wide selectbox ...
+             */
             $label .= ' - ' . (is_array($server['only_db']) ? implode(', ', $server['only_db']) : $server['only_db']);
         }
         if (!empty($server['user']) && $server['auth_type'] == 'config') {

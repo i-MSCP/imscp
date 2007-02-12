@@ -1,5 +1,5 @@
 <?php
-/* $Id: header_meta_style.inc.php 9171 2006-07-08 09:35:52Z cybot_tm $ */
+/* $Id: header_meta_style.inc.php 9784 2006-12-10 13:30:40Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])) {
@@ -36,5 +36,5 @@ if ($GLOBALS['text_dir'] == 'ltr') {
     }
 ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
-    <link rel="stylesheet" type="text/css" href="<?php echo defined('PMA_PATH_TO_BASEDIR') ? PMA_PATH_TO_BASEDIR : './'; ?>css/phpmyadmin.css.php?<?php echo PMA_generate_common_url(); ?>&amp;js_frame=<?php echo isset($print_view) ? 'print' : 'right'; ?>" />
+    <link rel="stylesheet" type="text/css" href="<?php echo defined('PMA_PATH_TO_BASEDIR') ? PMA_PATH_TO_BASEDIR : './'; ?>css/phpmyadmin.css.php?<?php echo PMA_generate_common_url(); ?>&amp;js_frame=<?php echo isset($print_view) ? 'print' : 'right'; ?>&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
     <link rel="stylesheet" type="text/css" href="<?php echo defined('PMA_PATH_TO_BASEDIR') ? PMA_PATH_TO_BASEDIR : './'; ?>css/print.css?<?php echo PMA_generate_common_url(); ?>" media="print" />

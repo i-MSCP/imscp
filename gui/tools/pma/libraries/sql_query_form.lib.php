@@ -1,13 +1,13 @@
 <?php
-/* $Id: sql_query_form.lib.php 9156 2006-07-03 15:01:45Z cybot_tm $ */
+/* $Id: sql_query_form.lib.php 9602 2006-10-25 12:25:01Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * functions for displaying the sql query form
  *
  * @usedby  server_sql.php
- * @usedby  db_details.php
- * @usedby  tbl_properties.php
- * @usedby  tbl_properties_structure.php
+ * @usedby  db_sql.php
+ * @usedby  tbl_sql.php
+ * @usedby  tbl_structure.php
  * @usedby  querywindow.php
  */
 
@@ -18,9 +18,9 @@ require_once './libraries/bookmark.lib.php'; // used for file listing
  * prints the sql query boxes
  *
  * @usedby  server_sql.php
- * @usedby  db_details.php
- * @usedby  tbl_properties.php
- * @usedby  tbl_properties_structure.php
+ * @usedby  db_sql.php
+ * @usedby  tbl_sql.php
+ * @usedby  tbl_structure.php
  * @usedby  querywindow.php
  * @uses    $GLOBALS['table']
  * @uses    $GLOBALS['db']
@@ -90,12 +90,12 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
         // prepare for db related
         $db     = $GLOBALS['db'];
         $goto   = empty($GLOBALS['goto']) ?
-                    'db_details.php' : $GLOBALS['goto'];
+                    'db_sql.php' : $GLOBALS['goto'];
     } else {
         $table  = $GLOBALS['table'];
         $db     = $GLOBALS['db'];
         $goto   = empty($GLOBALS['goto']) ?
-                    'tbl_properties.php' : $GLOBALS['goto'];
+                    'tbl_sql.php' : $GLOBALS['goto'];
     }
 
 
@@ -180,11 +180,9 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
  * @uses    $GLOBALS['cfg']['TextareaRows']
  * @uses    $GLOBALS['strShowThisQuery']
  * @uses    $GLOBALS['strGo']
- * @uses    PMA_availableDatabases()
  * @uses    PMA_USR_OS
  * @uses    PMA_USR_BROWSER_AGENT
  * @uses    PMA_USR_BROWSER_VER
- * @uses    PMA_availableDatabases()
  * @uses    htmlspecialchars()
  * @param   string      $query          query to display in the textarea
  * @param   boolean     $is_querywindow if inside querywindow or not
@@ -203,8 +201,10 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
     if ($is_querywindow) {
         $locking = ' onkeypress="document.sqlform.elements[\'LockFromUpdate\'].'
             .'checked = true;"';
+        $height = $GLOBALS['cfg']['TextareaRows'] * 1.25;
     } else {
         $locking = '';
+        $height = $GLOBALS['cfg']['TextareaRows'] * 2;
     }
 
     $table          = '';
@@ -285,7 +285,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
     echo '<div id="' . $sqlquerycontainer_id . '">' . "\n"
         .'<textarea name="sql_query" id="sqlquery"'
         .'  cols="' . $GLOBALS['cfg']['TextareaCols'] . '"'
-        .'  rows="' . $GLOBALS['cfg']['TextareaRows'] . '"'
+        .'  rows="' . $height . '"'
         .'  dir="' . $GLOBALS['text_dir'] . '"'
         .$auto_sel . $locking . '>' . htmlspecialchars($query) . '</textarea>' . "\n";
     echo '</div>' . "\n";

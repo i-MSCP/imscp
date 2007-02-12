@@ -1,5 +1,5 @@
 <?php
-/* $Id: error.php 9620 2006-10-26 15:25:44Z lem9 $ */
+/* $Id: error.php 9621 2006-10-26 15:49:33Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

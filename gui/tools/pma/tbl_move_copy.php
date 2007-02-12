@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_move_copy.php 9162 2006-07-04 16:46:09Z lem9 $ */
+/* $Id: tbl_move_copy.php 9657 2006-11-02 10:51:57Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -15,7 +15,7 @@ PMA_checkParameters(array('db', 'table'));
 /**
  * Defines the url to return to in case of error in a sql statement
  */
-$err_url = 'tbl_properties.php?' . PMA_generate_common_url($db, $table);
+$err_url = 'tbl_sql.php?' . PMA_generate_common_url($db, $table);
 
 
 /**
@@ -42,11 +42,11 @@ if (isset($new_name) && trim($new_name) != '') {
         } else {
             $pma_uri_parts = parse_url($cfg['PmaAbsoluteUri']);
             if (isset($switch_to_new) && $switch_to_new == 'true') {
-                setcookie('pma_switch_to_new', 'true', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+                PMA_setCookie('pma_switch_to_new', 'true');
                 $db        = $target_db;
                 $table     = $new_name;
             } else {
-                setcookie('pma_switch_to_new', '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+                PMA_removeCookie('pma_switch_to_new');
             }
         }
     }
@@ -67,5 +67,5 @@ else {
  * Back to the calling script
  */
 
-require './tbl_properties.php';
+require './tbl_sql.php';
 ?>

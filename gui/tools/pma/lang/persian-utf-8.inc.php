@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: persian-utf-8.inc.php 9261 2006-08-09 12:55:40Z lem9 $ */
+/* $Id: persian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
 /*
 Persian(Farsi) translation by : Bornis Group
 www.BornisGroup.com
@@ -152,7 +152,6 @@ $strHost = 'ميزبان';
 
 $strIdxFulltext = 'كاملا متن';
 $strIgnore = 'Ignore';
-$strImportDocSQL = 'وارد كردن پرونده‌هاي docSQL';
 $strIndexes = 'فهرست‌ها';
 $strIndexHasBeenDropped = 'فهرست %s حذف گرديد';
 $strIndexName = 'اسم فهرست&nbsp;:';
@@ -348,13 +347,10 @@ $strZip = '"zipped"';
 
 // To translate:
 $strAbortedClients = 'Aborted'; //to translate
-$strAbsolutePathToDocSqlDir = 'Please enter the absolute path on webserver to docSQL directory'; //to translate
 $strAccessDeniedCreateConfig = 'Probably reason of this is that you did not create configuration file. You might want to use %1$ssetup script%2$s to create one.';  //to translate
 $strAccessDeniedExplanation = 'phpMyAdmin tried to connect to the MySQL server, and the server rejected the connection. You should check the host, username and password in config.inc.php and make sure that they correspond to the information given by the administrator of the MySQL server.'; //to translate
 $strAddAutoIncrement = 'Add AUTO_INCREMENT value'; //to translate
 $strAddConstraints = 'Add constraints';  //to translate
-$strAddedColumnComment = 'Added comment for column'; //to translate
-$strAddedColumnRelation = 'Added relation for column'; //to translate
 $strAddFields = 'Add %s field(s)';  //to translate
 $strAddHeaderComment = 'Add custom comment into header (\\n splits lines)';  //to translate
 $strAddIntoComments = 'Add into comments'; //to translate
@@ -460,15 +456,6 @@ $strDatabasesStatsHeavyTraffic = 'Note: Enabling the Database statistics here mi
 $strDataPages = 'Pages containing data';  //to translate
 $strDBComment = 'Database comment: '; //to translate
 $strDBCopy = 'Copy database to';  //to translate
-$strDBGContext = 'Context'; //to translate
-$strDBGContextID = 'Context ID'; //to translate
-$strDBGHits = 'Hits'; //to translate
-$strDBGLine = 'Line'; //to translate
-$strDBGMaxTimeMs = 'Max time, ms'; //to translate
-$strDBGMinTimeMs = 'Min time, ms'; //to translate
-$strDBGModule = 'Module'; //to translate
-$strDBGTimePerHitMs = 'Time/Hit, ms'; //to translate
-$strDBGTotalTimeMs = 'Total time, ms'; //to translate
 $strDbPrivileges = 'Database-specific privileges'; //to translate
 $strDBRename = 'Rename database to';  //to translate
 $strDbSpecific = 'database-specific'; //to translate
@@ -542,7 +529,6 @@ $strIcelandic = 'Icelandic';  //to translate
 $strId = 'ID'; //to translate
 $strIgnoreDuplicates = 'Ignore duplicate rows';  //to translate
 $strIgnoreInserts = 'Use ignore inserts';  //to translate
-$strIgnoringFile = 'Ignoring file %s'; //to translate
 $strImportFiles = 'Import files'; //to translate
 $strImportFormat = 'Format of imported file';  //to translate
 $strImport = 'Import';  //to translate
@@ -620,7 +606,7 @@ $strMIME_MIMEtype = 'MIME-type'; //to translate
 $strMIME_nodescription = 'No Description is available for this transformation.<br />Please ask the author, what %s does.'; //to translate
 $strMIME_transformation = 'Browser transformation'; //to translate
 $strMIME_transformation_note = 'For a list of available transformation options and their MIME-type transformations, click on %stransformation descriptions%s'; //to translate
-$strMIME_transformation_options_note = 'Please enter the values for transformation options using this format: \'a\',\'b\',\'c\'...<br />If you ever need to put a backslash ("\") or a single quote ("\'") amongst those values, backslashes it (for example \'\\\\xyz\' or \'a\\\'b\').'; //to translate
+$strMIME_transformation_options_note = 'Please enter the values for transformation options using this format: \'a\', 100, b,\'c\'...<br />If you ever need to put a backslash ("\") or a single quote ("\'") amongst those values, backslashes it (for example \'\\\\xyz\' or \'a\\\'b\').'; //to translate
 $strMIME_transformation_options = 'Transformation options'; //to translate
 $strMIMETypesForTable = 'MIME TYPES FOR TABLE';  //to translate
 $strMIME_without = 'MIME-types printed in italics do not have a seperate transformation function'; //to translate
@@ -930,7 +916,6 @@ $strThemeNoValidImgPath = 'No valid image path for theme %s found!';  //to trans
 $strThemePathNotFound = 'Theme path not found for theme %s!';  //to translate
 $strTheme = 'Theme / Style';  //to translate
 $strThisHost = 'This Host'; //to translate
-$strThisNotDirectory = 'This was not a directory'; //to translate
 $strThreads = 'Threads';  //to translate
 $strThreadSuccessfullyKilled = 'Thread %s was successfully killed.'; //to translate
 $strTimeoutInfo = 'Previous import timed out, after resubmitting will continue from position %d.';  //to translate
@@ -947,7 +932,6 @@ $strTransformation_application_octetstream__hex = 'Displays hexadecimal represen
 $strTransformation_image_jpeg__inline = 'Displays a clickable thumbnail; options: width,height in pixels (keeps the original ratio)'; //to translate
 $strTransformation_image_jpeg__link = 'Displays a link to this image (direct blob download, i.e.).'; //to translate
 $strTransformation_image_png__inline = 'See image/jpeg: inline'; //to translate
-$strTransformation_text_plain__dateformat = 'Takes a TIME, TIMESTAMP or DATETIME field and formats it using your local dateformat. First option is the offset (in hours) which will be added to the timestamp (Default: 0). Second option is a different dateformat according to the parameters available for PHPs strftime().'; //to translate
 $strTransformation_text_plain__external = 'LINUX ONLY: Launches an external application and feeds the fielddata via standard input. Returns standard output of the application. Default is Tidy, to pretty print HTML code. For security reasons, you have to manually edit the file libraries/transformations/text_plain__external.inc.php and insert the tools you allow to be run. The first option is then the number of the program you want to use and the second option are the parameters for the program. The third parameter, if set to 1 will convert the output using htmlspecialchars() (Default is 1). A fourth parameter, if set to 1 will put a NOWRAP to the content cell so that the whole output will be shown without reformatting (Default 1)'; //to translate
 $strTransformation_text_plain__formatted = 'Preserves original formatting of the field. No Escaping is done.'; //to translate
 $strTransformation_text_plain__imagelink = 'Displays an image and a link, the field contains the filename; first option is a prefix like "http://domain.com/", second option is the width in pixels, third is the height.'; //to translate
@@ -988,8 +972,6 @@ $strWestEuropean = 'West European'; //to translate
 $strWildcard = 'wildcard'; //to translate
 $strWindowNotFound = 'The target browser window could not be updated. Maybe you have closed the parent window or your browser is blocking cross-window updates of your security settings'; //to translate
 $strWriteRequests = 'Write requests';  //to translate
-$strWritingCommentNotPossible = 'Writing of comment not possible'; //to translate
-$strWritingRelationNotPossible = 'Writing of relation not possible'; //to translate
 
 $strXML = 'XML'; //to translate
 
@@ -1021,4 +1003,52 @@ $strProcedures = 'Procedures';  //to translate
 $strPDFReportExplanation = '(Generates a report containing the data of a single table)';  //to translate
 $strFontSize = 'Font size';  //to translate
 $strLanguage = 'Language';  //to translate
+$strPmaWiki = 'phpMyAdmin wiki';  //to translate
+$strTransformation_text_plain__dateformat = 'Displays a TIME, TIMESTAMP, DATETIME or numeric unix timestamp field as formatted date. The first option is the offset (in hours) which will be added to the timestamp (Default: 0). Use second option to specify a different date/time format string. Third option determines whether you want to see local date or UTC one (use "local" or "utc" strings) for that. According to that, date format has different value - for "local" see the documentation for PHP\'s strftime() function and for "utc" it is done using gmdate() function.';  //to translate
+$strDocSQL = 'DocSQL';  //to translate
+$strDocSQLOptions = 'DocSQL options';  //to translate
+$strTableName = 'Table name';  //to translate
+$strTableIsEmpty = 'Table seems to be empty!';  //to translate
+$strDbIsEmpty = 'Database seems to be empty!';  //to translate
+$strShowingPhp = 'Showing as PHP code';  //to translate
+$strShowingSQL = 'Showing SQL query';  //to translate
+$strDesigner = 'Designer';  //to translate
+$strNumberOfTables = 'Number of tables';  //to translate
+$strCreateTable  = 'Create table';  //to translate
+$strCreateRelation = 'Create relation';  //to translate
+$strSavePosition = 'Save position';  //to translate
+$strSelectForeignKey = 'Select Foreign Key';  //to translate
+$strHide         = 'Hide';  //to translate
+$strShowHideLeftMenu = 'Show/Hide left menu';  //to translate
+$strReload = 'Reload';  //to translate
+$strSmallBigAll = 'Small/Big All';  //to translate
+$strImportExportCoords = 'Import/Export coordinates for PDF schema';  //to translate
+$strMoveMenu = 'Move Menu';  //to translate
+$strAngularLinks = 'Angular links';  //to translate
+$strDirectLinks = 'Direct links';  //to translate
+$strHideShowAll = 'Hide/Show all';  //to translate
+$strHideShowNoRelation = 'Hide/Show Tables with no relation';  //to translate
+$strInternalRelationAdded = 'Internal relation added';  //to translate
+$strInnoDBRelationAdded = 'InnoDB relation added';  //to translate
+$strRelationDeleted = 'Relation deleted';  //to translate
+$strToSelectRelation = 'To select relation, click :';  //to translate
+$strExportImportToScale = 'Export/Import to scale';  //to translate
+$strRecommended = 'recommended';  //to translate
+$strToFromPage = 'to/from page';  //to translate
+$strSelectReferencedKey = 'Select referenced key';  //to translate
+$strPleaseSelectPrimaryOrUniqueKey = 'Please select the primary key or a unique key';  //to translate
+$strForeignKeyError = 'Error creating foreign key (check data types)';  //to translate
+$strHelp = 'Help';  //to translate
+$strCancel = 'Cancel';  //to translate
+$strDeleteRelation = 'Delete relation';  //to translate
+$strKnownExternalBug = 'The %s functionality is affected by a known bug, see %s';  //to translate
+$strStructureForView = 'Structure for view';  //to translate
+$strStandInStructureForView = 'Stand-in structure for view';  //to translate
+$strToggleSmallBig = 'Toggle small/big';  //to translate
+$strIEUnsupported = 'Internet Explorer does not support this function.';  //to translate
+$strErrorRelationAdded = 'Error: Relation not added.';  //to translate
+$strErrorRelationExists = 'Error: relation already exists.';  //to translate
+$strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
+$strSnapToGrid = 'Snap to grid';  //to translate
+$strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
 ?>

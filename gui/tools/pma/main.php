@@ -1,5 +1,5 @@
 <?php
-/* $Id: main.php 9209 2006-07-31 13:52:52Z cybot_tm $ */
+/* $Id: main.php 9572 2006-10-17 10:25:01Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -59,12 +59,16 @@ if ($server > 0) {
     //          if a value is set
     $server_info = '';
     if (!empty($cfg['Server']['verbose'])) {
-        $server_info .= $cfg['Server']['verbose'];
-        $server_info .= ' (';
+        $server_info .= htmlspecialchars($cfg['Server']['verbose']);
+        if ($GLOBALS['cfg']['ShowServerInfo']) {
+            $server_info .= ' (';
+        }
     }
-    $server_info .= PMA_DBI_get_host_info();
+    if ($GLOBALS['cfg']['ShowServerInfo'] || empty($cfg['Server']['verbose'])) {
+        $server_info .= PMA_DBI_get_host_info();
+    }
 
-    if (!empty($cfg['Server']['verbose'])) {
+    if (!empty($cfg['Server']['verbose']) && $GLOBALS['cfg']['ShowServerInfo']) {
         $server_info .= ')';
     }
     // loic1: skip this because it's not a so good idea to display sockets
@@ -89,12 +93,17 @@ if ($server > 0) {
 if ($server > 0) {
     echo '<ul>' . "\n";
 
-    PMA_printListItem($strServerVersion . ': ' . PMA_MYSQL_STR_VERSION, 'li_server_info');
-    PMA_printListItem($strProtocolVersion . ': ' . PMA_DBI_get_proto_info(),
-        'li_mysql_proto');
-    PMA_printListItem($strServer . ': ' . $server_info, 'li_server_info');
-    PMA_printListItem($strUser . ': ' . htmlspecialchars($mysql_cur_user_and_host),
-        'li_user_info');
+    if ($GLOBALS['cfg']['ShowServerInfo']) {
+        PMA_printListItem($strServerVersion . ': ' . PMA_MYSQL_STR_VERSION, 'li_server_info');
+        PMA_printListItem($strProtocolVersion . ': ' . PMA_DBI_get_proto_info(),
+            'li_mysql_proto');
+        PMA_printListItem($strServer . ': ' . $server_info, 'li_server_info');
+        PMA_printListItem($strUser . ': ' . htmlspecialchars($mysql_cur_user_and_host),
+            'li_user_info');
+    } else {
+        PMA_printListItem($strServerVersion . ': ' . PMA_MYSQL_STR_VERSION, 'li_server_info');
+        PMA_printListItem($strServer . ': ' . $server_info, 'li_server_info');
+    }
 
     if ($cfg['AllowAnywhereRecoding'] && $allow_recoding && PMA_MYSQL_INT_VERSION < 40100) {
         echo '<li id="li_select_mysql_charset">';
@@ -191,7 +200,11 @@ if ($server > 0) {
     PMA_printListItem($strImport, 'li_import',
         './server_import.php?' . $common_url_query);
 
-    // Change password (TODO ? needs another message)
+    /**
+     * Change password
+     *
+     * @todo ? needs another message
+     */
     if ($cfg['ShowChgPassword']) {
         PMA_printListItem($strChangePassword, 'li_change_password',
             './user_password.php?' . $common_url_query);
@@ -286,6 +299,7 @@ echo '<li id="li_select_fontsize">';
 echo PMA_Config::getFontsizeForm();
 echo '</li>';
 PMA_printListItem($strPmaDocumentation, 'li_pma_docs', 'Documentation.html');
+PMA_printListItem($strPmaWiki, 'li_pma_docs', 'http://wiki.cihar.com');
 
 if ($cfg['ShowPhpInfo']) {
     PMA_printListItem($strShowPHPInfo, 'li_phpinfo', './phpinfo.php?' . $common_url_query);
@@ -296,8 +310,8 @@ PMA_printListItem($strHomepageOfficial, 'li_pma_homepage', 'http://www.phpMyAdmi
 ?>
     <li><bdo xml:lang="en" dir="ltr">
         [<a href="changelog.php" target="_blank">ChangeLog</a>]
-        [<a href="http://phpmyadmin.cvs.sourceforge.net/phpmyadmin/"
-            target="_blank">CVS</a>]
+        [<a href="http://svn.sourceforge.net/viewvc/phpmyadmin/"
+            target="_blank">Subversion</a>]
         [<a href="http://sourceforge.net/mail/?group_id=23067"
             target="_blank">Lists</a>]
         </bdo>

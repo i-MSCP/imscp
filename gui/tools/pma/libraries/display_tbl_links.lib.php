@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl_links.lib.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
+/* $Id: display_tbl_links.lib.php 9782 2006-12-10 12:32:41Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // modified 2004-05-08 by Michael Keck <mail_at_michaelkeck_dot_de>
@@ -12,7 +12,7 @@ if ( $doWriteModifyAt == 'left' ){
 
     if (!empty($del_url) && $is_display['del_lnk'] != 'kp') {
         echo '    <td align="center">' . "\n"
-           . '        <input type="checkbox" id="id_rows_to_delete' . $row_no . '" name="rows_to_delete[' . $uva_condition . ']"'
+           . '        <input type="checkbox" id="id_rows_to_delete' . $row_no . '" name="rows_to_delete[' . $unique_condition . ']"'
            . ' onclick="copyCheckboxesRange(\'rowsDeleteForm\', \'id_rows_to_delete' . $row_no . '\',\'l\');"'
            . ' value="' . $del_query . '" ' . (isset($GLOBALS['checkall']) ? 'checked="checked"' : '') . ' />' . "\n"
            . '    </td>' . "\n";
@@ -42,7 +42,7 @@ if ( $doWriteModifyAt == 'left' ){
     }
     if (!empty($del_url) && $is_display['del_lnk'] != 'kp') {
         echo '    <td align="center">' . "\n"
-           . '        <input type="checkbox" id="id_rows_to_delete' . $row_no . 'r" name="rows_to_delete[' . $uva_condition . ']"'
+           . '        <input type="checkbox" id="id_rows_to_delete' . $row_no . 'r" name="rows_to_delete[' . $unique_condition . ']"'
            . ' onclick="copyCheckboxesRange(\'rowsDeleteForm\', \'id_rows_to_delete' . $row_no . '\',\'r\');"'
            . ' value="' . $del_query . '" ' . (isset($GLOBALS['checkall']) ? 'checked="checked"' : '') . ' />' . "\n"
            . '    </td>' . "\n";

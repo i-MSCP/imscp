@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_operations.php 9583 2006-10-18 12:38:36Z lem9 $ */
+/* $Id: db_operations.php 9696 2006-11-13 08:30:25Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -45,6 +45,9 @@ if (isset($db) &&
             $local_query .= ';';
             $sql_query = $local_query;
             PMA_DBI_query($local_query);
+            // rebuild the database list because PMA_Table::moveCopy
+            // checks in this list if the target db exists
+            $GLOBALS['PMA_List_Database']->build();
         }
 
         if (isset($GLOBALS['add_constraints'])) {
@@ -57,8 +60,8 @@ if (isset($db) &&
             // to be able to rename a db containing views, we
             // first collect in $views all the views we find and we
             // will handle them after the tables
-            /** 
-             * @todo support a view of a view 
+            /**
+             * @todo support a view of a view
              */
             if (PMA_Table::isView($db, $table)) {
                 $views[] = $table;
@@ -104,8 +107,8 @@ if (isset($db) &&
                 'structure', $move, 'db_copy');
         }
         unset($view, $views);
-        
-        // now that all tables exist, create all the accumulated constraints 
+
+        // now that all tables exist, create all the accumulated constraints
         if (isset($GLOBALS['add_constraints'])) {
             /**
              * @todo this works with mysqli but not with mysql, because
@@ -177,12 +180,12 @@ if ($cfgRelation['commwork'] && isset($db_comment) && $db_comment == 'true') {
  * because there is no table in the database ($is_info is true)
  */
 if (empty($is_info)) {
-    require './libraries/db_details_common.inc.php';
+    require './libraries/db_common.inc.php';
     $url_query .= '&amp;goto=db_operations.php';
 
     // Gets the database structure
     $sub_part = '_structure';
-    require './libraries/db_details_db_info.inc.php';
+    require './libraries/db_info.inc.php';
     echo "\n";
 }
 
@@ -356,11 +359,14 @@ if (!$is_information_schema) {
 
     if ($num_tables > 0
       && !$cfgRelation['allworks'] && $cfg['PmaNoRelation_DisableWarning'] == false) {
-        echo '<div class="error"><h1>' . $strError . '</h1>'
-            . sprintf($strRelationNotWorking,
-                '<a href="' . $cfg['PmaAbsoluteUri'] . 'chk_rel.php?' . $url_query . '">',
-                '</a>')
-            . '</div>';
+        /* Show error if user has configured something, notice elsewhere */
+        if (!empty($cfg['Servers'][$server]['pmadb'])) {
+            echo '<div class="error"><h1>' . $strError . '</h1>';
+        } else {
+            echo '<div class="notice">';
+        }
+        printf($strRelationNotWorking, '<a href="' . $cfg['PmaAbsoluteUri'] . 'chk_rel.php?' . $url_query . '">', '</a>');
+        echo '</div>';
     } // end if
 } // end if (!$is_information_schema)
 
@@ -464,22 +470,6 @@ if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
     </ul>
     <?php
 } // end if
-
-if ($num_tables > 0
-  && $cfgRelation['relwork'] && $cfgRelation['commwork']
-  && isset($cfg['docSQLDir']) && !empty($cfg['docSQLDir'])) {
-    /**
-     * import docSQL files
-     */
-    echo '<ul>' . "\n"
-        .'<li><a href="db_details_importdocsql.php?' . $takeaway . '">' . "\n";
-    if ($cfg['PropertiesIconic']) {
-        echo '<img class="icon" src="' . $pmaThemeImage . 'b_docsql.png"'
-            .' alt="" width="16" height="16" />';
-    }
-    echo $strImportDocSQL . '</a></li>' . "\n"
-        .'</ul>';
-}
 
 /**
  * Displays the footer

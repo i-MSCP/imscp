@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_status.php 8591 2006-02-20 10:07:10Z cybot_tm $ */
+/* $Id: server_status.php 9695 2006-11-13 08:11:52Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * displays status variables with descriptions and some hints an optmizing
@@ -117,10 +117,23 @@ if (isset($server_status['Key_blocks_unused'])
         $server_status['Key_blocks_used']
       * 1024
       / $server_variables['key_buffer_size'];
-}
+  }
+
+// Ratio for key read/write
+if (isset($server_status['Key_writes'])
+    && isset($server_status['Key_write_requests'])
+    && $server_status['Key_write_requests'] > 0)
+        $server_status['Key_write_ratio_%'] = 100 * $server_status['Key_writes'] / $server_status['Key_write_requests'];
+
+if (isset($server_status['Key_reads'])
+    && isset($server_status['Key_read_requests'])
+    && $server_status['Key_read_requests'] > 0)
+        $server_status['Key_read_ratio_%'] = 100 * $server_status['Key_reads'] / $server_status['Key_read_requests'];
+
 // Threads_cache_hitrate
 if (isset($server_status['Threads_created'])
-  && isset($server_status['Connections'])) {
+  && isset($server_status['Connections'])
+  && $server_status['Connections'] > 0) {
     $server_status['Threads_cache_hitrate_%'] =
         100
       - $server_status['Threads_created']

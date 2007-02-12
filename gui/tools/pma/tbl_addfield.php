@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_addfield.php 8607 2006-02-21 10:15:01Z cybot_tm $ */
+/* $Id: tbl_addfield.php 9601 2006-10-25 10:55:20Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -18,7 +18,7 @@ PMA_checkParameters(array('db', 'table'));
 /**
  * Defines the url to return to in case of error in a sql statement
  */
-$err_url = 'tbl_properties.php?' . PMA_generate_common_url($db, $table);
+$err_url = 'tbl_sql.php?' . PMA_generate_common_url($db, $table);
 
 /**
  * The form used to define the field to add has been submitted
@@ -187,8 +187,8 @@ if (isset($submit_num_fields)) {
         $sql_query = $sql_query_cpy;
         unset($sql_query_cpy);
         $message   = $strTable . ' ' . htmlspecialchars($table) . ' ' . $strHasBeenAltered;
-        $active_page = 'tbl_properties_structure.php';
-        require('./tbl_properties_structure.php');
+        $active_page = 'tbl_structure.php';
+        require('./tbl_structure.php');
     } else {
         PMA_mysqlDie('', '', '', $err_url, FALSE);
         // garvin: An error happened while inserting/updating a table definition.
@@ -212,13 +212,13 @@ if ($abort == FALSE) {
     /**
      * Gets tables informations
      */
-    require_once('./libraries/tbl_properties_common.php');
-    require_once('./libraries/tbl_properties_table_info.inc.php');
+    require_once('./libraries/tbl_common.php');
+    require_once('./libraries/tbl_info.inc.php');
     /**
      * Displays top menu links
      */
-    $active_page = 'tbl_properties_structure.php';
-    require_once('./libraries/tbl_properties_links.inc.php');
+    $active_page = 'tbl_structure.php';
+    require_once('./libraries/tbl_links.inc.php');
     /**
      * Display the form
      */

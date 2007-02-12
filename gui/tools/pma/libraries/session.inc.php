@@ -1,11 +1,11 @@
 <?php
-/* $Id: session.inc.php 9830 2007-01-08 18:09:57Z lem9 $ */
+/* $Id: session.inc.php 9829 2007-01-08 18:06:00Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
  *
- * @TODO    add failover or warn if sessions are not configured properly
- * @TODO    add an option to use mm-module for session handler
+ * @todo    add failover or warn if sessions are not configured properly
+ * @todo    add an option to use mm-module for session handler
  * @see     http://www.php.net/session
  * @uses    session_name()
  * @uses    session_start()
@@ -32,7 +32,7 @@ if (!@function_exists('session_name')) {
 } elseif (ini_get('session.auto_start') == true && session_name() != 'phpMyAdmin') {
     $_SESSION = array();
     if (isset($_COOKIE[session_name()])) {
-        setcookie(session_name(), '', time()-42000, '/');
+        PMA_removeCookie(session_name());
     }
     session_unset();
     @session_destroy();
@@ -43,7 +43,7 @@ if (!@function_exists('session_name')) {
 //ini_set('session.auto_start', 0);
 
 // session cookie settings
-session_set_cookie_params(0, PMA_Config::getCookiePath(),
+session_set_cookie_params(0, PMA_Config::getCookiePath() . '; HttpOnly',
     '', PMA_Config::isHttps());
 
 // cookies are safer
@@ -69,6 +69,10 @@ if (version_compare(PHP_VERSION, '5.0.0', 'ge')
     ini_set('session.hash_function', 1);
     ini_set('session.hash_bits_per_character', 6);
 }
+
+// some pages (e.g. stylesheet) may be cached on clients, but not in shared
+// proxy servers
+session_cache_limiter('private');
 
 // start the session
 // on some servers (for example, sourceforge.net), we get a permission error

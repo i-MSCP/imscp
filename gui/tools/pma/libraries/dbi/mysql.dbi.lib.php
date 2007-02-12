@@ -1,5 +1,5 @@
 <?php
-/* $Id: mysql.dbi.lib.php 9187 2006-07-17 16:51:51Z lem9 $ */
+/* $Id: mysql.dbi.lib.php 9662 2006-11-02 13:34:14Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -52,21 +52,32 @@ function PMA_DBI_connect($user, $password, $is_controluser = FALSE) {
                    ? ''
                    : ':' . $cfg['Server']['socket'];
 
+    $client_flags = 0;
+
     if (PMA_PHP_INT_VERSION >= 40300 && PMA_MYSQL_CLIENT_API >= 32349) {
-        $client_flags = $cfg['Server']['compress'] && defined('MYSQL_CLIENT_COMPRESS') ? MYSQL_CLIENT_COMPRESS : 0;
         // always use CLIENT_LOCAL_FILES as defined in mysql_com.h
         // for the case where the client library was not compiled
         // with --enable-local-infile
         $client_flags |= 128;
     }
 
+    /* Optionally compress connection */
+    if (defined('MYSQL_CLIENT_COMPRESS') && $cfg['Server']['compress']) {
+        $client_flags |= MYSQL_CLIENT_COMPRESS;
+    }
+
+    /* Optionally enable SSL */
+    if (defined('MYSQL_CLIENT_SSL') && $cfg['Server']['ssl']) {
+        $client_flags |= MYSQL_CLIENT_SSL;
+    }
+
     $link = PMA_DBI_real_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, $password, empty($client_flags) ? NULL : $client_flags);
-    
+
     // Retry with empty password if we're allowed to
     if (empty($link) && $cfg['Server']['nopassword'] && !$is_controluser) {
         $link = PMA_DBI_real_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, '', empty($client_flags) ? NULL : $client_flags);
     }
-    
+
     if (empty($link)) {
         PMA_auth_fails();
     } // end if
@@ -249,7 +260,7 @@ function PMA_DBI_get_client_info() {
  */
 function PMA_DBI_getError($link = null)
 {
-    unset($GLOBALS['errno']);
+    $GLOBALS['errno'] = 0;
     if (null === $link && isset($GLOBALS['userlink'])) {
         $link =& $GLOBALS['userlink'];
 
@@ -342,7 +353,7 @@ function PMA_DBI_affected_rows($link = null)
 }
 
 /**
- * @TODO add missing keys like in from mysqli_query (orgname, orgtable, flags, decimals)
+ * @todo add missing keys like in from mysqli_query (orgname, orgtable, flags, decimals)
  */
 function PMA_DBI_get_fields_meta($result) {
     $fields       = array();

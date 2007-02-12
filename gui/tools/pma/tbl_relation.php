@@ -1,21 +1,21 @@
 <?php
-/* $Id: tbl_relation.php 9478 2006-10-01 18:09:24Z lem9 $ */
+/* $Id: tbl_relation.php 9809 2006-12-29 16:27:25Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
  * Gets some core libraries
  */
 require_once('./libraries/common.lib.php');
-require_once('./libraries/tbl_properties_common.php');
-$url_query .= '&amp;goto=tbl_properties.php';
+require_once('./libraries/tbl_common.php');
+$url_query .= '&amp;goto=tbl_sql.php';
 
 
 /**
  * Gets tables informations
  */
-require_once('./libraries/tbl_properties_table_info.inc.php');
+require_once('./libraries/tbl_info.inc.php');
 
-// Note: in libraries/tbl_properties_links.inc.php we get and display the table comment.
+// Note: in libraries/tbl_links.inc.php we get and display the table comment.
 // For InnoDB, this comment contains the REFER information but any update
 // has not been done yet (will be done in tbl_relation.php later).
 $avoid_show_comment = TRUE;
@@ -23,7 +23,7 @@ $avoid_show_comment = TRUE;
 /**
  * Displays top menu links
  */
-require_once('./libraries/tbl_properties_links.inc.php');
+require_once('./libraries/tbl_links.inc.php');
 
 require_once('./libraries/relation.lib.php');
 
@@ -123,7 +123,12 @@ if (isset($destination) && $cfgRelation['relwork']) {
 // u p d a t e s   f o r   I n n o D B
 // ( for now, one index name only; we keep the definitions if the
 // foreign db is not the same)
+// I use $sql_query to be able to display directly the query via
+// PMA_showMessage()
+
 if (isset($_REQUEST['destination_innodb'])) {
+    $display_query = '';
+    $seen_error = false;
     foreach ($_REQUEST['destination_innodb'] as $master_field => $foreign_string) {
         if ($foreign_string != 'nix') {
             list($foreign_db, $foreign_table, $foreign_field) = explode('.', $foreign_string);
@@ -136,7 +141,7 @@ if (isset($_REQUEST['destination_innodb'])) {
                 // backquotes but MySQL 4.0.16 did not like the syntax
                 // (for example: `base2`.`table1` )
 
-                $upd_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
                             . ' ADD FOREIGN KEY ('
                             . PMA_backquote($master_field) . ')'
                             . ' REFERENCES '
@@ -145,12 +150,13 @@ if (isset($_REQUEST['destination_innodb'])) {
                             . PMA_backquote($foreign_field) . ')';
 
                 if ($_REQUEST['on_delete'][$master_field] != 'nix') {
-                    $upd_query   .= ' ON DELETE ' . $options_array[$_REQUEST['on_delete'][$master_field]];
+                    $sql_query   .= ' ON DELETE ' . $options_array[$_REQUEST['on_delete'][$master_field]];
                 }
                 if ($_REQUEST['on_update'][$master_field] != 'nix') {
-                    $upd_query   .= ' ON UPDATE ' . $options_array[$_REQUEST['on_update'][$master_field]];
+                    $sql_query   .= ' ON UPDATE ' . $options_array[$_REQUEST['on_update'][$master_field]];
                 }
-
+                $sql_query .= ';';
+                $display_query .= $sql_query . "\n";
                 // end repeated code
 
             } elseif (($existrel_innodb[$master_field]['foreign_db'] . '.' .$existrel_innodb[$master_field]['foreign_table'] . '.' . $existrel_innodb[$master_field]['foreign_field'] != $foreign_string)
@@ -163,16 +169,17 @@ if (isset($_REQUEST['destination_innodb'])) {
 
                 // remove existing key
                 if (PMA_MYSQL_INT_VERSION >= 40013) {
-                    $upd_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                    $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
                                 . ' DROP FOREIGN KEY '
-                                . PMA_backquote($existrel_innodb[$master_field]['constraint']);
+                                . PMA_backquote($existrel_innodb[$master_field]['constraint']) . ';';
 
                     // I tried to send both in one query but it failed
-                    $upd_rs     = PMA_DBI_query($upd_query);
+                    $upd_rs     = PMA_DBI_query($sql_query);
+                    $display_query .= $sql_query . "\n";
                 }
 
                 // add another
-                $upd_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
                             . ' ADD FOREIGN KEY ('
                             . PMA_backquote($master_field) . ')'
                             . ' REFERENCES '
@@ -181,38 +188,52 @@ if (isset($_REQUEST['destination_innodb'])) {
                             . PMA_backquote($foreign_field) . ')';
 
                 if ($_REQUEST['on_delete'][$master_field] != 'nix') {
-                    $upd_query   .= ' ON DELETE '
+                    $sql_query   .= ' ON DELETE '
                         . $options_array[$_REQUEST['on_delete'][$master_field]];
                 }
                 if ($_REQUEST['on_update'][$master_field] != 'nix') {
-                    $upd_query   .= ' ON UPDATE '
+                    $sql_query   .= ' ON UPDATE '
                         . $options_array[$_REQUEST['on_update'][$master_field]];
                 }
+                $sql_query .= ';';
+                $display_query .= $sql_query . "\n";
 
             } // end if... else....
         } elseif (isset($existrel_innodb[$master_field])) {
             if (PMA_MYSQL_INT_VERSION >= 40013) {
-                $upd_query  = 'ALTER TABLE ' . PMA_backquote($table)
+                $sql_query  = 'ALTER TABLE ' . PMA_backquote($table)
                         . ' DROP FOREIGN KEY '
                         . PMA_backquote($existrel_innodb[$master_field]['constraint']);
+                $sql_query .= ';';
+                $display_query .= $sql_query . "\n";
             }
         } // end if... else....
 
-        if (isset($upd_query)) {
-            $upd_rs    = PMA_DBI_try_query($upd_query);
+        if (isset($sql_query)) {
+            $upd_rs    = PMA_DBI_try_query($sql_query);
             $tmp_error = PMA_DBI_getError();
+            if (! empty($tmp_error)) {
+                $seen_error = true;
+            }
             if (substr($tmp_error, 1, 4) == '1216'
             ||  substr($tmp_error, 1, 4) == '1452') {
-                PMA_mysqlDie($tmp_error, $upd_query, FALSE, '', FALSE);
+                PMA_mysqlDie($tmp_error, $sql_query, FALSE, '', FALSE);
                 echo PMA_showMySQLDocu('manual_Table_types', 'InnoDB_foreign_key_constraints') . "\n";
             }
             if (substr($tmp_error, 1, 4) == '1005') {
-                echo '<p class="warning">' . $strNoIndex . ' (' . $master_field
-                    .')</p>'  . PMA_showMySQLDocu('manual_Table_types', 'InnoDB_foreign_key_constraints') . "\n";
+                echo '<p class="warning">' . $strForeignKeyError . ' : ' . $master_field
+                    .'</p>'  . PMA_showMySQLDocu('manual_Table_types', 'InnoDB_foreign_key_constraints') . "\n";
             }
-            unset($upd_query, $tmp_error);
+            unset($sql_query, $tmp_error);
         }
-    } // end while
+    } // end foreach 
+    if (!empty($display_query)) {
+        if ($seen_error) {
+            PMA_showMessage($strError); 
+        } else {
+            PMA_showMessage($strSuccess); 
+        }
+    }
 } // end if isset($destination_innodb)
 
 

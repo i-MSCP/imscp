@@ -1,5 +1,5 @@
 <?php
-/* $Id: pdf.php 9319 2006-08-18 12:18:45Z lem9 $ */
+/* $Id: pdf.php 9658 2006-11-02 12:56:57Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -21,30 +21,23 @@ if (isset($plugin_list)) {
         );
 } else {
 
-define('FPDF_FONTPATH', './libraries/fpdf/font/');
-//if ($charset == 'utf-8') {
-    define('PMA_PDF_FONT', 'FreeSans');
-    require_once('./libraries/fpdf/ufpdf.php');
-    class PMA_FPDF extends UFPDF
-    {
-    };
-//} else {
-//    define('PMA_PDF_FONT', 'Arial');
-//    require_once('./libraries/fpdf/fpdf.php');
-//    class PMA_FPDF extends FPDF {
-//    };
-//}
-
+/**
+ * Font used in PDF.
+ *
+ * @todo Make this configuratble (at least Sans/Serif).
+ */
+define('PMA_PDF_FONT', 'DejaVuSans');
+require_once('./libraries/tcpdf/tcpdf.php');
 
 // Adapted from a LGPL script by Philip Clarke
 
-class PMA_PDF extends PMA_FPDF
+class PMA_PDF extends TCPDF
 {
     var $tablewidths;
     var $headerset;
     var $footerset;
 
-    // overloading of a fpdf function:
+    // overloading of a tcpdf function:
     function _beginpage($orientation)
     {
         $this->page++;
@@ -217,8 +210,10 @@ class PMA_PDF extends PMA_FPDF
             $this->$key = $val ;
         }
 
-        // Pass 1 for column widths
-        // TODO: force here a LIMIT to speed up pass 1 ?
+        /**
+         * Pass 1 for column widths
+         * @todo force here a LIMIT to speed up pass 1 ?
+         */
         $this->results = PMA_DBI_query($query, null, PMA_DBI_QUERY_UNBUFFERED);
         $this->numFields  = PMA_DBI_num_fields($this->results);
         $this->fields = PMA_DBI_get_fields_meta($this->results);
@@ -248,8 +243,10 @@ class PMA_PDF extends PMA_FPDF
                 case 'tinyblob':
                 case 'mediumblob':
                 case 'longblob':
-                    //TODO: do not deactivate completely the display
-                    // but show the field's name and [BLOB]
+                    /**
+                     * @todo do not deactivate completely the display
+                     * but show the field's name and [BLOB]
+                     */
                     if (stristr($this->fields[$i]->flags, 'BINARY')) {
                         $this->display_column[$i] = false;
                         unset($this->colTitles[$i]);
@@ -263,7 +260,7 @@ class PMA_PDF extends PMA_FPDF
 
             // loop through the data, any column whose contents is bigger
             // than the col size is resized
-            // TODO: force here a LIMIT to avoid reading all rows 
+            // TODO: force here a LIMIT to avoid reading all rows
             while ($row = PMA_DBI_fetch_row($this->results)) {
                 foreach ($colFits as $key => $val) {
                     $stringWidth = $this->getstringwidth($row[$key]) + 6 ;
@@ -396,6 +393,7 @@ function PMA_exportDBCreate($db)
 /**
  * Outputs the content of a table in PDF format
  *
+ * @todo    user-defined page orientation, paper size
  * @param   string      the database name
  * @param   string      the table name
  * @param   string      the end of line sequence
@@ -411,11 +409,12 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     global $what;
     global $pdf_report_title;
 
-    // TODO: user-defined page orientation, paper size
     $pdf = new PMA_PDF('L', 'pt', 'A3');
 
-    $pdf->AddFont('FreeSans', '', 'FreeSans.php');
-    $pdf->AddFont('FreeSans', 'B', 'FreeSansBold.php');
+    $pdf->AddFont('DejaVuSans', '', 'dejavusans.php');
+    $pdf->AddFont('DejaVuSans', 'B', 'dejavusans-bold.php');
+    $pdf->AddFont('DejaVuSerif', '', 'dejavuserif.php');
+    $pdf->AddFont('DejaVuSerif', 'B', 'dejavuserif-bold.php');
     $pdf->SetFont(PMA_PDF_FONT, '', 11.5);
     $pdf->AliasNbPages();
     $attr=array('titleFontSize' => 18, 'titleText' => $pdf_report_title);

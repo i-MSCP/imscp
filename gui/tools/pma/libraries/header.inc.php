@@ -1,5 +1,5 @@
 <?php
-/* $Id: header.inc.php 9215 2006-08-01 07:15:30Z cybot_tm $ */
+/* $Id: header.inc.php 9601 2006-10-25 10:55:20Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';
@@ -210,7 +210,7 @@ if (empty($GLOBALS['is_header_sent'])) {
                     's_db.png' );
 
             if (isset($GLOBALS['table']) && strlen($GLOBALS['table'])) {
-                require_once './libraries/tbl_properties_table_info.inc.php';
+                require_once './libraries/tbl_info.inc.php';
 
                 echo $separator;
                 printf( $item,
@@ -222,7 +222,7 @@ if (empty($GLOBALS['is_header_sent'])) {
 
                 /**
                  * Displays table comment
-                 * @uses $show_comment from libraries/tbl_properties_table_info.inc.php
+                 * @uses $show_comment from libraries/tbl_info.inc.php
                  * @uses $GLOBALS['avoid_show_comment'] from tbl_relation.php
                  */
                 if (!empty($show_comment) && !isset($GLOBALS['avoid_show_comment'])) {
@@ -242,7 +242,7 @@ if (empty($GLOBALS['is_header_sent'])) {
                 $cfgRelation = PMA_getRelationsParam();
 
                 // Get additional information about tables for tooltip is done
-                // in libraries/db_details_db_info.inc.php only once
+                // in libraries/db_info.inc.php only once
                 if ($cfgRelation['commwork']) {
                     $comment = PMA_getComments( $GLOBALS['db'] );
 

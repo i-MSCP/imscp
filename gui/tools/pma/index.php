@@ -1,5 +1,5 @@
 <?php
-/* $Id: index.php 9831 2007-01-09 09:49:30Z nijel $ */
+/* $Id: index.php 9832 2007-01-09 09:50:49Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * forms frameset
@@ -144,7 +144,7 @@ if ($GLOBALS['text_dir'] === 'ltr') {
 ?>" rows="*" id="mainFrameset">
     <?php if ($GLOBALS['text_dir'] === 'ltr') { ?>
     <frame frameborder="0" id="frame_navigation"
-        src="left.php<?php echo $url_query; ?>"
+        src="navigation.php<?php echo $url_query; ?>"
         name="frame_navigation" />
     <?php } ?>
     <frame frameborder="0" id="frame_content"
@@ -152,7 +152,7 @@ if ($GLOBALS['text_dir'] === 'ltr') {
         name="frame_content" />
     <?php if ($GLOBALS['text_dir'] === 'rtl') { ?>
     <frame frameborder="0" id="frame_navigation"
-        src="left.php<?php echo $url_query; ?>"
+        src="navigation.php<?php echo $url_query; ?>"
         name="frame_navigation" />
     <?php } ?>
     <noframes>

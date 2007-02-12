@@ -1,5 +1,5 @@
 <?php
-/* $Id: config.auth.lib.php 9281 2006-08-12 15:30:40Z lem9 $ */
+/* $Id: config.auth.lib.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -99,10 +99,12 @@ function PMA_auth_fails()
     echo "\n";
     $GLOBALS['is_header_sent'] = TRUE;
 
-    //TODO: I have included this div from libraries/header.inc.php to work around
-    //      an undefined variable in tooltip.js, when the server
-    //      is not responding. Work has to be done to merge all code that
-    //      starts the page (DOCTYPE and this div) to one place
+    /**
+     * @todo I have included this div from libraries/header.inc.php to work around
+     * an undefined variable in tooltip.js, when the server is not responding.
+     * Work has to be done to merge all code that starts the page (DOCTYPE and
+     * this div) to one place
+     */
     ?>
     <div id="TooltipContainer" onmouseover="holdTooltip();" onmouseout="swapTooltip('default');"></div>
     <?php

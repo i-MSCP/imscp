@@ -1,5 +1,5 @@
 <?php
-/* $Id: htmlword.php 8994 2006-04-27 22:28:55Z nijel $ */
+/* $Id: htmlword.php 9805 2006-12-26 16:10:47Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -171,7 +171,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     return TRUE;
 }
 
-function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = false, $do_comments = false, $do_mime = false, $dates = false)
+function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = false, $do_comments = false, $do_mime = false, $dates = false, $dummy)
 {
     global $cfgRelation;
 

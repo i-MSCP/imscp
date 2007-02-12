@@ -1,5 +1,5 @@
 <?php
-/* $Id: mysqli.dbi.lib.php 9252 2006-08-03 12:58:46Z cybot_tm $ */
+/* $Id: mysqli.dbi.lib.php 9662 2006-11-02 13:34:14Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -87,7 +87,17 @@ function PMA_DBI_connect($user, $password, $is_controluser = false)
 
     mysqli_options($link, MYSQLI_OPT_LOCAL_INFILE, true);
 
-    $client_flags = $GLOBALS['cfg']['Server']['compress'] && defined('MYSQLI_CLIENT_COMPRESS') ? MYSQLI_CLIENT_COMPRESS : 0;
+    $client_flags = 0;
+
+    /* Optionally compress connection */
+    if ($GLOBALS['cfg']['Server']['compress'] && defined('MYSQLI_CLIENT_COMPRESS')) {
+        $client_flags |= MYSQLI_CLIENT_COMPRESS;
+    }
+
+    /* Optionally enable SSL */
+    if ($GLOBALS['cfg']['Server']['ssl'] && defined('MYSQLI_CLIENT_SSL')) {
+        $client_flags |= MYSQLI_CLIENT_SSL;
+    }
 
     $return_value = @mysqli_real_connect($link, $GLOBALS['cfg']['Server']['host'], $user, $password, false, $server_port, $server_socket, $client_flags);
 
@@ -171,7 +181,9 @@ function PMA_DBI_try_query($query, $link = null, $options = 0)
     $result = mysqli_query($link, $query, $method);
 
     if (mysqli_warning_count($link)) {
-        // TODO: check $method ?
+        /**
+         * @todo check $method ?
+         */
         $warning_result = mysqli_query($link, 'SHOW WARNINGS');
         if ($warning_result) {
             $warning_row = mysqli_fetch_row($warning_result);
@@ -405,7 +417,7 @@ function PMA_DBI_get_client_info()
  */
 function PMA_DBI_getError($link = null)
 {
-    unset($GLOBALS['errno']);
+    $GLOBALS['errno'] = 0;
 
     if (null === $link && isset($GLOBALS['userlink'])) {
         $link =& $GLOBALS['userlink'];
@@ -520,7 +532,7 @@ function PMA_DBI_affected_rows($link = null)
 /**
  * returns metainfo for fields in $result
  *
- * @TODO preserve orignal flags value
+ * @todo preserve orignal flags value
  * @uses    PMA_DBI_field_flags()
  * @uses    MYSQLI_TYPE_*
  * @uses    MYSQLI_MULTIPLE_KEY_FLAG

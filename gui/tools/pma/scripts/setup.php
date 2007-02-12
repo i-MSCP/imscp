@@ -1,8 +1,18 @@
 <?php
-/* $Id: setup.php 9484 2006-10-03 13:11:22Z nijel $ */
+/**
+ * phpMyAdmin setup script
+ *
+ * PHP versions 4 and 5
+ *
+ * @category   Setup
+ * @package    phpMyAdmin-setup
+ * @author     Michal Čihař <michal@cihar.com>
+ * @copyright  2006 Michal Čihař <michal@cihar.com>
+ * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
+ * @version    Subversion $Id: setup.php 9697 2006-11-13 08:32:28Z nijel $
+ */
+/* $Id: setup.php 9697 2006-11-13 08:32:28Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
-
-// phpMyAdmin setup script by Michal Čihař <michal@cihar.com>
 
 // Grab phpMyAdmin version and PMA_dl function
 define( 'PMA_MINIMUM_COMMON', TRUE );
@@ -16,13 +26,33 @@ $PMA_Config_Setup = new PMA_Config();
 
 // Script information
 $script_info = 'phpMyAdmin ' . $PMA_Config_Setup->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
-$script_version = '$Id: setup.php 9484 2006-10-03 13:11:22Z nijel $';
+$script_version = '$Id: setup.php 9697 2006-11-13 08:32:28Z nijel $';
 
 // Grab action
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
 } else {
     $action = '';
+}
+
+// Grab wanted CRLF type
+if (isset($_POST['eoltype'])) {
+    $eoltype = $_POST['eoltype'];
+} else {
+    if (PMA_USR_OS == 'Win') {
+        $eoltype = 'dos';
+    } else {
+        $eoltype = 'unix';
+    }
+}
+
+// Detect which CRLF to use
+if ($eoltype == 'dos') {
+    $crlf = "\r\n";
+} elseif ($eoltype == 'mac') {
+    $crlf = "\r";
+} else {
+    $crlf = "\n";
 }
 
 if (isset($_POST['configuration']) && $action != 'clear' ) {
@@ -206,10 +236,13 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
     code:before, code:after {
         content: '"';
     }
-    a.doc {
+    span.doc {
         margin: 0 1em 0 1em;
     }
-    a.doc img {
+    span.doc a {
+        margin: 0 0.1em 0 0.1em;
+    }
+    span.doc a img {
         border: none;
     }
     </style>
@@ -270,7 +303,21 @@ function version_to_int($version) {
  * @return  string  HTML link to documentation
  */
 function get_cfg_doc($anchor) {
-    return '<a href="../Documentation.html#cfg_' . $anchor . '" target="pma_doc" class="doc"><img class="icon" src="../' . $GLOBALS['cfg']['ThemePath'] . '/original/img/b_help.png" width="11" height="11" alt="Documentation" title="Documentation" /></a>';
+    /* Link for wiki */
+    $wiki = $anchor;
+    if (strncmp($anchor, 'Servers_', 8) == 0) {
+        $wiki = substr($anchor, 8);
+    }
+    return
+        '<span class="doc">' .
+        '<a href="../Documentation.html#cfg_' . $anchor . '" target="pma_doc" class="doc">' .
+        '<img class="icon" src="../' . $GLOBALS['cfg']['ThemePath'] . '/original/img/b_help.png" width="11" height="11" alt="Documentation" title="Documentation" />' .
+        '</a>' .
+        '<a href="http://wiki.cihar.com/pma/Config#' . $wiki . '" target="pma_doc" class="doc">' .
+        '<img class="icon" src="../' . $GLOBALS['cfg']['ThemePath'] . '/original/img/b_info.png" width="11" height="11" alt="Wiki" title="Wiki" />' .
+        '</a>' .
+        '</span>'
+        ;
 }
 
 /**
@@ -299,9 +346,12 @@ function message($type, $text, $title = '') {
  * @return string   HTML with hidden inputs
  */
 function get_hidden_cfg() {
-    global $configuration;
+    global $configuration, $eoltype;
 
-    return '<input type="hidden" name="configuration" value="' . htmlspecialchars(serialize($configuration)) . '" />' . "\n";
+    $ret = '<input type="hidden" name="configuration" value="' . htmlspecialchars(serialize($configuration)) . '" />' . "\n";
+    $ret .= '<input type="hidden" name="eoltype" value="' . htmlspecialchars($eoltype) . '" />' . "\n";
+
+    return $ret;
 }
 
 /**
@@ -434,14 +484,16 @@ function get_server_name($val, $id = FALSE, $escape = true) {
  * @return  string  PHP code containing variable value
  */
 function PMA_var_export($input) {
+    global $crlf;
+
     $output = '';
     if (is_null($input)) {
         $output .= 'NULL';
     } elseif (is_array($input)) {
-        $output .= "array (\n";
+        $output .= 'array (' . $crlf;
         foreach($input as $key => $value) {
             $output .= PMA_var_export($key) . ' => ' . PMA_var_export($value);
-            $output .= ",\n";
+            $output .= ',' . $crlf;
         }
         $output .= ')';
     } elseif (is_string($input)) {
@@ -454,7 +506,7 @@ function PMA_var_export($input) {
         die('Unknown type for PMA_var_export: ' . $input);
     }
     return $output;
-}	
+}
 
 /**
  * Creates configuration code for one variable
@@ -465,38 +517,40 @@ function PMA_var_export($input) {
  * @return  string  PHP code containing configuration
  */
 function get_cfg_val($name, $val) {
+    global $crlf;
+
     $ret = '';
     if (is_array($val)) {
-        $ret .= "\n";
+        $ret .= $crlf;
         foreach ($val as $k => $v) {
             if (!isset($type)) {
                 if (is_string($k)) {
                     $type = 'string';
                 } elseif (is_int($k)) {
                     $type = 'int';
-                    $ret .= $name . " = array(\n";
+                    $ret .= $name . ' = array(' . $crlf;
                 } else {
                     // Something unknown...
-                    $ret .= $name. ' = ' . PMA_var_export($val) . ";\n";
+                    $ret .= $name. ' = ' . PMA_var_export($val) . ';' . $crlf;
                     break;
                 }
             }
             if ($type == 'string') {
                 $ret .= get_cfg_val($name . "['$k']", $v);
             } elseif ($type == 'int') {
-                $ret .= "    " . PMA_var_export($v) . ",\n";
+                $ret .= '    ' . PMA_var_export($v) . ',' . $crlf;
             }
         }
         if (!isset($type)) {
             /* Empty array */
-            $ret .= $name . " = array();\n";
+            $ret .= $name . ' = array();' . $crlf;
         } elseif ($type == 'int') {
-            $ret .= ");\n";
+            $ret .= ');' . $crlf;
         }
-        $ret .= "\n";
+        $ret .= $crlf;
         unset($type);
     } else {
-        $ret .= $name . ' = ' . PMA_var_export($val) . ";\n";
+        $ret .= $name . ' = ' . PMA_var_export($val) . ';' . $crlf;
     }
     return $ret;
 }
@@ -509,20 +563,20 @@ function get_cfg_val($name, $val) {
  * @return  string  PHP code containing configuration
  */
 function get_cfg_string($cfg) {
-    global $script_info, $script_version, $now;
+    global $script_info, $script_version, $now, $crlf;
 
     $c = $cfg;
-    $ret = "<?php\n/*\n * Generated configuration file\n * Generated by: $script_info\n * Version: $script_version\n * Date: " . $now . "\n */\n\n";
+    $ret = "<?php$crlf/*$crlf * Generated configuration file$crlf * Generated by: $script_info$crlf * Version: $script_version$crlf * Date: " . $now . $crlf . ' */' . $crlf . $crlf;
 
     if (count($c['Servers']) > 0) {
-        $ret .= "/* Servers configuration */\n\$i = 0;\n";
+        $ret .= "/* Servers configuration */$crlf\$i = 0;" . $crlf;
         foreach ($c['Servers'] as $cnt => $srv) {
-            $ret .= "\n/* Server " . strtr(get_server_name($srv, $cnt, false), '*', '-') . " */\n\$i++;\n";
+            $ret .= $crlf . '/* Server ' . strtr(get_server_name($srv, $cnt, false), '*', '-') . " */$crlf\$i++;" . $crlf;
             foreach ($srv as $key => $val) {
                 $ret .= get_cfg_val("\$cfg['Servers'][\$i]['$key']", $val);
             }
         }
-        $ret .= "\n/* End of servers configuration */\n\n";
+        $ret .= $crlf . '/* End of servers configuration */' . $crlf . $crlf;
     }
     unset($c['Servers']);
 
@@ -530,7 +584,7 @@ function get_cfg_string($cfg) {
         $ret .= get_cfg_val("\$cfg['$key']", $val);
     }
 
-    $ret .= "?>\n";
+    $ret .= '?>' . $crlf;
     return $ret;
 }
 
@@ -907,7 +961,6 @@ function show_upload_form($defaults = array()) {
         show_config_form(array(
             array('Upload directory', 'UploadDir', 'Directory on server where you can upload files for import'),
             array('Save directory', 'SaveDir', 'Directory where exports can be saved on server'),
-            array('Directory with docSQL', 'docSQLDir', 'Directory on server where you can place docSQL files for import'),
             ),
             'Configure upload/save directories',
             'Enter directories, either absolute path or relative to phpMyAdmin top level directory.',
@@ -934,7 +987,7 @@ function show_server_form($defaults = array(), $number = FALSE) {
         if (!($number === FALSE)) {
             echo '<input type="hidden" name="server" value="' . $number . '" />';
         }
-        $hi = array ('bookmarktable', 'relation', 'table_info', 'table_coords', 'pdf_pages', 'column_info', 'history', 'AllowDeny');
+        $hi = array ('bookmarktable', 'relation', 'table_info', 'table_coords', 'pdf_pages', 'column_info', 'designer_coords', 'history', 'AllowDeny');
         foreach ($hi as $k) {
             if (isset($defaults[$k]) && (!is_string($defaults[$k]) || strlen($defaults[$k]) > 0)) {
                 echo '<input type="hidden" name="' . $k . '" value="' . htmlspecialchars(serialize($defaults[$k])) . '" />';
@@ -947,7 +1000,7 @@ function show_server_form($defaults = array(), $number = FALSE) {
             array('Connection type', 'connect_type', 'How to connect to server, keep tcp if unsure', array('tcp', 'socket')),
             array('PHP extension to use', 'extension', 'What PHP extension to use, use mysqli if supported', array('mysql', 'mysqli')),
             array('Compress connection', 'compress', 'Whether to compress connection to MySQL server', FALSE),
-            array('Authentication type', 'auth_type', 'Authentication method to use', array('cookie', 'http', 'config')),
+            array('Authentication type', 'auth_type', 'Authentication method to use', array('cookie', 'http', 'config', 'signon')),
             array('User for config auth', 'user', 'Leave empty if not using config auth'),
             array('Password for config auth', 'password', 'Leave empty if not using config auth', 'password'),
             array('Only database to show', 'only_db', 'Limit listing of databases in left frame to this one'),
@@ -955,6 +1008,9 @@ function show_server_form($defaults = array(), $number = FALSE) {
             array('phpMyAdmin control user', 'controluser', 'User which phpMyAdmin can use for various actions'),
             array('phpMyAdmin control user password', 'controlpass', 'Password for user which phpMyAdmin can use for various actions', 'password'),
             array('phpMyAdmin database for advanced features', 'pmadb', 'phpMyAdmin will allow much more when you enable this. Table names are filled in automatically.'),
+            array('Session name for signon auth', 'SignonSession', 'Leave empty if not using signon auth'),
+            array('Login URL for signon auth', 'SignonURL', 'Leave empty if not using signon auth'),
+            array('Logout URL', 'LogoutURL', 'Where to redirect user after logout'),
             ),
             'Configure server',
             ($number === FALSE) ? 'Enter new server connection parameters.' : 'Editing server ' . get_server_name($defaults, $number),
@@ -975,7 +1031,7 @@ function show_left_form($defaults = array()) {
     ?>
 <form method="post" action="">
     <?php echo get_hidden_inputs();?>
-    <input type="hidden" name="action" value="lay_left_real" />
+    <input type="hidden" name="action" value="lay_navigation_real" />
     <?php
         echo get_hidden_cfg();
         show_config_form(array(
@@ -986,9 +1042,11 @@ function show_left_form($defaults = array()) {
             array('Maximum table tree nesting', 'LeftFrameTableLevel', 'Maximum number of children in table tree'),
             array('Show logo', 'LeftDisplayLogo', 'Whether to show logo in left frame', TRUE),
             array('Display servers selection', 'LeftDisplayServers', 'Whether to show server selection in left frame', FALSE),
+            array('Display servers as list', 'DisplayServersList', 'Whether to show server listing as list instead of drop down', FALSE),
+            array('Display databases as list', 'DisplayDatabasesList', 'Whether to show database listing in navigation as list instead of drop down', FALSE),
             array('Enable pointer highlighting', 'LeftPointerEnable', 'Whether you want to highlight server under mouse', TRUE),
             ),
-            'Configure left frame',
+            'Configure navigation frame',
             'Customize the appears of the navigation frame.',
             $defaults);
     ?>
@@ -1012,8 +1070,8 @@ function show_tabs_form($defaults = array()) {
         echo get_hidden_cfg();
         show_config_form(array(
             array('Default tab for server', 'DefaultTabServer', 'Tab that is displayed when entering server', array('main.php', 'server_databases.php', 'server_status.php', 'server_variables.php', 'server_privileges.php', 'server_processlist.php')),
-            array('Default tab for database', 'DefaultTabDatabase', 'Tab that is displayed when entering database', array('db_details_structure.php', 'db_details.php', 'db_search.php', 'db_operations.php')),
-            array('Default tab for table', 'DefaultTabTable', 'Tab that is displayed when entering table', array('tbl_properties_structure.php', 'sql.php', 'tbl_properties.php', 'tbl_select.php', 'tbl_change.php')),
+            array('Default tab for database', 'DefaultTabDatabase', 'Tab that is displayed when entering database', array('db_structure.php', 'db_sql.php', 'db_search.php', 'db_operations.php')),
+            array('Default tab for table', 'DefaultTabTable', 'Tab that is displayed when entering table', array('tbl_structure.php', 'sql.php', 'tbl_sql.php', 'tbl_select.php', 'tbl_change.php')),
             array('Use lighter tabs', 'LightTabs', 'If you want simpler tabs enable this', FALSE),
             ),
             'Configure tabs',
@@ -1285,7 +1343,7 @@ switch ($action) {
 
     case 'addserver_real':
         if (isset($_POST['submit_save'])) {
-            $new_server = grab_values('host;extension;port;socket;connect_type;compress:bool;controluser;controlpass;auth_type;user;password;only_db;verbose;pmadb;bookmarktable:serialized;relation:serialized;table_info:serialized;table_coords:serialized;pdf_pages:serialized;column_info:serialized;history:serialized;AllowDeny:serialized');
+            $new_server = grab_values('host;extension;port;socket;connect_type;compress:bool;controluser;controlpass;auth_type;user;password;only_db;verbose;pmadb;bookmarktable:serialized;relation:serialized;table_info:serialized;table_coords:serialized;pdf_pages:serialized;column_info:serialized;designer_coords:serialized;history:serialized;AllowDeny:serialized;SignonSession;SignonURL;LogoutURL');
             $err = FALSE;
             if (empty($new_server['host'])) {
                 message('error', 'Empty hostname!');
@@ -1293,6 +1351,14 @@ switch ($action) {
             }
             if ($new_server['auth_type'] == 'config' && empty($new_server['user'])) {
                 message('error', 'Empty username while using config authentication method!');
+                $err = TRUE;
+            }
+            if ($new_server['auth_type'] == 'signon' && empty($new_server['SignonSession'])) {
+                message('error', 'Empty signon session name while using signon authentication method!');
+                $err = TRUE;
+            }
+            if ($new_server['auth_type'] == 'signon' && empty($new_server['SignonURL'])) {
+                message('error', 'Empty signon URL while using signon authentication method!');
                 $err = TRUE;
             }
             if ( isset($new_server['pmadb']) && strlen($new_server['pmadb'])) {
@@ -1304,6 +1370,7 @@ switch ($action) {
                 $pmadb['table_coords']  = 'pma_table_coords';
                 $pmadb['pdf_pages']     = 'pma_pdf_pages';
                 $pmadb['column_info']   = 'pma_column_info';
+                $pmadb['designer_coords'] = 'pma_designer_coords';
                 $pmadb['history']       = 'pma_history';
 
                 $new_server = array_merge($pmadb, $new_server);
@@ -1415,7 +1482,7 @@ switch ($action) {
 
     case 'feat_upload_real':
         if (isset($_POST['submit_save'])) {
-            $dirs = grab_values('UploadDir;SaveDir;docSQLDir');
+            $dirs = grab_values('UploadDir;SaveDir');
             $err = FALSE;
             if (!empty($dirs['UploadDir']) && !is_dir($dirs['UploadDir'])) {
                 message('error', 'Upload directory ' . htmlspecialchars($dirs['UploadDir']) . ' does not exist!');
@@ -1423,10 +1490,6 @@ switch ($action) {
             }
             if (!empty($dirs['SaveDir']) && !is_dir($dirs['SaveDir'])) {
                 message('error', 'Save directory ' . htmlspecialchars($dirs['SaveDir']) . ' does not exist!');
-                $err = TRUE;
-            }
-            if (!empty($dirs['docSQLDir']) && !is_dir($dirs['docSQLDir'])) {
-                message('error', 'docSQL directory ' . htmlspecialchars($dirs['docSQLDir']) . ' does not exist!');
                 $err = TRUE;
             }
             if ($err) {
@@ -1598,9 +1661,9 @@ switch ($action) {
         show_relation_form($configuration);
         break;
 
-    case 'lay_left_real':
+    case 'lay_navigation_real':
         if (isset($_POST['submit_save'])) {
-            $vals = grab_values('LeftFrameLight:bool;LeftFrameDBTree:bool;LeftFrameDBSeparator;LeftFrameTableSeparator;LeftFrameTableLevel:int;LeftDisplayLogo:bool;LeftDisplayServers:bool;LeftPointerEnable:bool');
+            $vals = grab_values('LeftFrameLight:bool;LeftFrameDBTree:bool;LeftFrameDBSeparator;LeftFrameTableSeparator;LeftFrameTableLevel:int;LeftDisplayLogo:bool;LeftDisplayServers:bool;DisplayServersList:bool;DisplayDatabasesList:bool;LeftPointerEnable:bool');
             $err = FALSE;
             if (isset($vals['LeftFrameTableLevel']) && $vals['LeftFrameTableLevel'] < 1) {
                 message('error', 'Invalid value for maximum table nesting level!');
@@ -1617,7 +1680,7 @@ switch ($action) {
             $show_info = TRUE;
         }
         break;
-    case 'lay_left':
+    case 'lay_navigation':
         show_left_form($configuration);
         break;
 
@@ -1827,13 +1890,16 @@ switch ($action) {
             message('notice', 'New version of phpMyAdmin is available, you should consider upgrade. New version is ' . htmlspecialchars($version) . '.');
         } else {
             if ($version_local % 100 == 0) {
-                message('notice', 'You are using CVS version, run <code>cvs update</code> :-). However latest released version is ' . htmlspecialchars($version) . '.');
+                message('notice', 'You are using subversion version, run <code>svn update</code> :-). However latest released version is ' . htmlspecialchars($version) . '.');
             } else {
                 message('notice', 'No newer stable version is available.');
             }
         }
         break;
 
+    case 'seteol':
+        $eoltype = $_POST['neweol'];
+        message('notice', 'End of line format changed.');
     case 'clear': // Actual clearing is done on beginning of this script
     case 'main':
         $show_info = TRUE;
@@ -1903,7 +1969,7 @@ if (!empty($servers)) {
 echo '</fieldset>' . "\n\n";
 
 echo '<fieldset class="toolbar"><legend>Layout</legend>' . "\n";
-echo get_action('lay_left', 'Left frame');
+echo get_action('lay_navigation', 'Navigation frame');
 echo get_action('lay_tabs', 'Tabs');
 echo get_action('lay_icons', 'Icons');
 echo get_action('lay_browse', 'Browsing');
@@ -1927,6 +1993,12 @@ echo get_action('download', 'Download');
 echo get_action('save', 'Save', '', !$fail_dir);
 echo get_action('load', 'Load', '', !$fail_dir);
 echo get_action('clear', 'Clear');
+echo get_action('seteol', 'Change end of line',
+        '<select name="neweol">' .
+        '<option value="unix" ' . ( $eoltype == 'unix' ? ' selected="selected"' : '' ) . '>UNIX/Linux (\\n)</option>' .
+        '<option value="dos" ' . ( $eoltype == 'dos' ? ' selected="selected"' : '' ) . '>DOS/Windows (\\r\\n)</option>' .
+        '<option value="mac" ' . ( $eoltype == 'mac' ? ' selected="selected"' : '' ) . '>Macintosh (\\r)</option>' . '
+        </select>');
 echo '</fieldset>' . "\n\n";
 
 echo '<fieldset class="toolbar"><legend>Other actions</legend>' . "\n";

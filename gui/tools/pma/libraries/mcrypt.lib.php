@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: mcrypt.lib.php 6679 2005-02-07 16:46:02Z rabus $ */
+/* $Id: mcrypt.lib.php 9657 2006-11-02 10:51:57Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -14,11 +14,7 @@
 if (!isset($_COOKIE['pma_mcrypt_iv'])) {
     srand((double) microtime() * 1000000);
     $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC), MCRYPT_RAND);
-    setcookie('pma_mcrypt_iv',
-        base64_encode($iv),
-        time() + (60 * 60 * 24 * 30),
-        $GLOBALS['cookie_path'], '',
-        $GLOBALS['is_https']);
+    PMA_setCookie('pma_mcrypt_iv', base64_encode($iv));
 } else {
     $iv = base64_decode($_COOKIE['pma_mcrypt_iv']);
 }

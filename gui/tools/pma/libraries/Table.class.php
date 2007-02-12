@@ -1,5 +1,5 @@
 <?php
-/* $Id: Table.class.php 9787 2006-12-12 13:02:40Z lem9 $ */
+/* $Id: Table.class.php 9856 2007-01-21 13:13:42Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_Table {
@@ -216,6 +216,7 @@ class PMA_Table {
      * Checks if this "table" is a view
      *
      * @deprecated
+     * @todo see what we could do with the possible existence of $table_is_view
      * @param   string   the database name
      * @param   string   the table name
      *
@@ -225,8 +226,6 @@ class PMA_Table {
      */
     function _isView($db, $table) {
         // maybe we already know if the table is a view
-        // TODO: see what we could do with the possible existence
-        // of $table_is_view
         if (isset($GLOBALS['tbl_is_view']) && $GLOBALS['tbl_is_view']) {
             return true;
         }
@@ -234,17 +233,28 @@ class PMA_Table {
         if (PMA_MYSQL_INT_VERSION < 50000) {
             return false;
         }
-        if (false === PMA_DBI_fetch_value('SELECT TABLE_NAME FROM `information_schema`.`VIEWS` WHERE `TABLE_SCHEMA` = \'' . $db . '\' AND `TABLE_NAME` = \'' . $table . '\';')) {
+        // This would be the correct way of doing the check but at least in
+        // MySQL 5.0.33 it's too slow when there are hundreds of databases
+        // and/or tables (more than 3 minutes for 400 tables)
+        /*if (false === PMA_DBI_fetch_value('SELECT TABLE_NAME FROM `information_schema`.`VIEWS` WHERE `TABLE_SCHEMA` = \'' . $db . '\' AND `TABLE_NAME` = \'' . $table . '\';')) {
             return false;
         } else {
             return true;
-        }
+        } */
+        // A more complete verification would be to check if all columns
+        // from the result set are NULL except Name and Comment.
+        // MySQL from 5.0.0 to 5.0.12 returns 'view',
+        // from 5.0.13 returns 'VIEW'.
+        $comment = strtoupper(PMA_DBI_fetch_value('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'', 0, 'Comment'));
+        return ($comment == 'VIEW');
     }
 
     /**
      * generates column/field specification for ALTER or CREATE TABLE syntax
      *
      * @todo    move into class PMA_Column
+     * @todo on the interface, some js to clear the default value when the default
+     * current_timestamp is checked
      * @static
      * @param   string  $name       name
      * @param   string  $type       type ('INT', 'VARCHAR', 'BIT', ...)
@@ -272,10 +282,10 @@ class PMA_Table {
         $is_timestamp = strpos(' ' . strtoupper($type), 'TIMESTAMP') == 1;
 
         // $default_current_timestamp has priority over $default
-        // TODO: on the interface, some js to clear the default value
-        // when the default current_timestamp is checked
 
-        // TODO: include db-name
+        /**
+         * @todo include db-name
+         */
         $query = PMA_backquote($name) . ' ' . $type;
 
         if ($length != ''
@@ -369,23 +379,34 @@ class PMA_Table {
 
         $tbl_is_view = PMA_Table::isView($db, $table);
 
+        // for a VIEW, $row_count is always false at this point
         if (false === $row_count || $row_count < $GLOBALS['cfg']['MaxExactCount']) {
             if (! $tbl_is_view) {
                 $row_count = PMA_DBI_fetch_value(
                     'SELECT COUNT(*) FROM ' . PMA_backquote($db) . '.'
                     . PMA_backquote($table));
-            // since counting all rows of a view could be too long
             } else {
-                // try_query because it can fail ( a VIEW was based on
-                // a table that no longer exists)
-                $result = PMA_DBI_try_query(
-                    'SELECT 1 FROM ' . PMA_backquote($db) . '.'
-                        . PMA_backquote($table) . ' LIMIT '
-                        . $GLOBALS['cfg']['MaxExactCount'],
-                    null, PMA_DBI_QUERY_STORE);
-                if (!PMA_DBI_getError()) {
-                    $row_count = PMA_DBI_num_rows($result);
-                    PMA_DBI_free_result($result);
+                // For complex views, even trying to get a partial record
+                // count could bring down a server, so we offer an
+                // alternative: setting MaxExactCountViews to 0 will bypass
+                // completely the record counting for views
+
+                if ($GLOBALS['cfg']['MaxExactCountViews'] == 0) {
+                    $row_count = 0;
+                } else {
+                    // Counting all rows of a VIEW could be too long, so use
+                    // a LIMIT clause.
+                    // Use try_query because it can fail ( a VIEW is based on
+                    // a table that no longer exists)
+                    $result = PMA_DBI_try_query(
+                        'SELECT 1 FROM ' . PMA_backquote($db) . '.'
+                            . PMA_backquote($table) . ' LIMIT '
+                            . $GLOBALS['cfg']['MaxExactCountViews'],
+                            null, PMA_DBI_QUERY_STORE);
+                    if (!PMA_DBI_getError()) {
+                        $row_count = PMA_DBI_num_rows($result);
+                        PMA_DBI_free_result($result);
+                    }
                 }
             }
         }
@@ -409,7 +430,7 @@ class PMA_Table {
     } // end of the 'PMA_Table::countRecords()' function
 
     /**
-     * @TODO    add documentation
+     * @todo    add documentation
      */
     function generateAlter($oldcol, $newcol, $type, $length,
         $attribute, $collation, $null, $default, $default_current_timestamp,
@@ -509,10 +530,10 @@ class PMA_Table {
 
     /**
      * Copies or renames table
-     * FIXME: use RENAME for move operations
+     * @todo use RENAME for move operations
      *        - would work only if the databases are on the same filesystem,
      *          how can we check that? try the operation and
-     *          catch an error? 
+     *          catch an error?
      *        - for views, only if MYSQL > 50013
      *        - still have to handle pmadb synch.
      *
@@ -520,7 +541,7 @@ class PMA_Table {
      */
     function moveCopy($source_db, $source_table, $target_db, $target_table, $what, $move, $mode)
     {
-        global $dblist, $err_url;
+        global $err_url;
 
         if (! isset($GLOBALS['sql_query'])) {
             $GLOBALS['sql_query'] = '';
@@ -531,9 +552,10 @@ class PMA_Table {
         $GLOBALS['asfile']         = 1;
 
         // Ensure the target is valid
-        if (count($dblist) > 0 &&
-          (! in_array($source_db, $dblist) || ! in_array($target_db, $dblist))) {
-              // TODO exit really needed here? or just a return?
+        if (! $GLOBALS['PMA_List_Database']->exists($source_db, $target_db)) {
+            /**
+             * @todo exit really needed here? or just a return?
+             */
             exit;
         }
 
@@ -553,7 +575,7 @@ class PMA_Table {
             require_once './libraries/export/sql.php';
 
             $no_constraints_comments = true;
-	    $GLOBALS['sql_constraints_query'] = '';
+        $GLOBALS['sql_constraints_query'] = '';
 
             $sql_structure = PMA_getTableDef($source_db, $source_table, "\n", $err_url);
             unset($no_constraints_comments);
@@ -564,7 +586,7 @@ class PMA_Table {
             // this is not a CREATE TABLE, so find the first VIEW
                 $target_for_view = PMA_backquote($target_db);
                 while (true) {
-	            if ($parsed_sql[$i]['type'] == 'alpha_reservedWord' && $parsed_sql[$i]['data'] == 'VIEW') {
+                if ($parsed_sql[$i]['type'] == 'alpha_reservedWord' && $parsed_sql[$i]['data'] == 'VIEW') {
                         break;
                     }
                     $i++;
@@ -632,7 +654,7 @@ class PMA_Table {
                 // find the first quote_backtick, it must be the source table name
                 while ($parsed_sql[$i]['type'] != 'quote_backtick') {
                     $i++;
-		    // maybe someday we should guard against going over limit
+            // maybe someday we should guard against going over limit
                     //if ($i == $parsed_sql['len']) {
                     //    break;
                     //}
@@ -658,13 +680,13 @@ class PMA_Table {
                 // Generate query back
                 $GLOBALS['sql_constraints_query'] = PMA_SQP_formatHtml($parsed_sql,
                     'query_only');
-	        if ($mode == 'one_table') {
+            if ($mode == 'one_table') {
                     PMA_DBI_query($GLOBALS['sql_constraints_query']);
-		}
+        }
                 $GLOBALS['sql_query'] .= "\n" . $GLOBALS['sql_constraints_query'];
-	        if ($mode == 'one_table') {
+            if ($mode == 'one_table') {
                     unset($GLOBALS['sql_constraints_query']);
-		}
+        }
             }
 
         } else {
@@ -739,10 +761,12 @@ class PMA_Table {
                 unset($table_query);
             }
 
-            // garvin: [TODO] Can't get moving PDFs the right way. The page numbers always
-            // get screwed up independently from duplication because the numbers do not
-            // seem to be stored on a per-database basis. Would the author of pdf support
-            // please have a look at it?
+            /**
+             * @todo garvin: Can't get moving PDFs the right way. The page numbers
+             * always get screwed up independently from duplication because the
+             * numbers do not seem to be stored on a per-database basis. Would
+             * the author of pdf support please have a look at it?
+             */
 
             if ($GLOBALS['cfgRelation']['pdfwork']) {
                 $table_query = 'UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['table_coords'])
@@ -822,11 +846,13 @@ class PMA_Table {
                 $new_fields = array('foreign_db' => $target_db, 'foreign_table' => $target_table);
                 PMA_Table::duplicateInfo('relwork', 'relation', $get_fields, $where_fields, $new_fields);
 
-                // garvin: [TODO] Can't get duplicating PDFs the right way. The page numbers always
-                // get screwed up independently from duplication because the numbers do not
-                // seem to be stored on a per-database basis. Would the author of pdf support
-                // please have a look at it?
-                /*
+                /**
+                 * @todo garvin: Can't get duplicating PDFs the right way. The
+                 * page numbers always get screwed up independently from
+                 * duplication because the numbers do not seem to be stored on a
+                 * per-database basis. Would the author of pdf support please
+                 * have a look at it?
+                 *
                 $get_fields = array('page_descr');
                 $where_fields = array('db_name' => $source_db);
                 $new_fields = array('db_name' => $target_db);
@@ -838,7 +864,7 @@ class PMA_Table {
                     $new_fields = array('db_name' => $target_db, 'table_name' => $target_table, 'pdf_page_number' => $last_id);
                     PMA_Table::duplicateInfo('pdfwork', 'table_coords', $get_fields, $where_fields, $new_fields);
                 }
-                */
+                 */
             }
         }
 
@@ -884,8 +910,7 @@ class PMA_Table {
     {
         if (null !== $new_db && $new_db !== $this->getDbName()) {
             // Ensure the target is valid
-            if (count($GLOBALS['dblist']) > 0
-              && ! in_array($new_db, $GLOBALS['dblist'])) {
+            if (! $GLOBALS['PMA_List_Database']->exists($new_db)) {
                 $this->errors[] = $GLOBALS['strInvalidDatabase'] . ': ' . $new_db;
                 return false;
             }
@@ -917,8 +942,9 @@ class PMA_Table {
         $this->setName($new_name);
         $this->setDbName($new_db);
 
-        // TODO move into extra function
-        // PMA_Relation::renameTable($new_name, $old_name, $new_db, $old_db)
+        /**
+         * @todo move into extra function PMA_Relation::renameTable($new_name, $old_name, $new_db, $old_db)
+         */
         // garvin: Move old entries from comments to new table
         require_once './libraries/relation.lib.php';
         $GLOBALS['cfgRelation'] = PMA_getRelationsParam();

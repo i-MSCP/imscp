@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_collations.php 8110 2005-12-07 12:58:14Z cybot_tm $ */
+/* $Id: server_collations.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -34,10 +34,10 @@ echo '<h2>' . "\n"
 
 
 /**
- * Checks the MySQL version
+ * exits if wrong MySQL version
+ * @todo Some nice Message :-)
  */
 if (PMA_MYSQL_INT_VERSION < 40100) {
-    // TODO: Some nice Message :-)
     require_once('./libraries/footer.inc.php');
 }
 

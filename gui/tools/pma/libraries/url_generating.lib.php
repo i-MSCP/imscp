@@ -1,5 +1,5 @@
 <?php
-/* $Id: url_generating.lib.php 9713 2006-11-17 09:32:24Z nijel $ */
+/* $Id: url_generating.lib.php 9712 2006-11-17 09:32:19Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 

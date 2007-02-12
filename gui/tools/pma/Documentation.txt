@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.9.2 Documentation
+phpMyAdmin 2.10.0-beta1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.9.2 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 9841 2007-01-16 17:32:33Z
+  * Documentation version: $Id: Documentation.html 9869 2007-01-23 13:45:27Z
     lem9 $
 
 Requirements
@@ -427,6 +427,8 @@ $cfg['Servers'][$i]['socket'] string
     To determine the correct socket, check your MySQL configuration or, using
     the mysql command?line client, issue the status command. Among the
     resulting information displayed will be the socket used.
+$cfg['Servers'][$i]['ssl'] boolean
+    Whether to enable SSL for connection to MySQL server.
 $cfg['Servers'][$i]['connect_type'] string
     What type connection to use with the MySQL server. Your options are
     'socket' and 'tcp'. It defaults to 'tcp' as that is nearly guaranteed to be
@@ -465,9 +467,10 @@ $cfg['Servers'][$i]['controluser'] string
     information.
 
     In phpMyAdmin versions before 2.2.5, those were called "stduser/stdpass".
-$cfg['Servers'][$i]['auth_type'] string ['HTTP'|'http'|'cookie'|'config']
-    Whether config or cookie or HTTP authentication should be used for this
-    server.
+$cfg['Servers'][$i]['auth_type'] string ['HTTP'|'http'|'cookie'|'config'|
+    'signon']
+    Whether config or cookie or HTTP or signon authentication should be used
+    for this server.
       + 'config' authentication ($auth_type = 'config') is the plain old way:
         username and password are stored in config.inc.php.
       + 'cookie' authentication mode ($auth_type = 'cookie') as introduced in
@@ -478,6 +481,12 @@ $cfg['Servers'][$i]['auth_type'] string ['HTTP'|'http'|'cookie'|'config']
       + 'HTTP' authentication (was called 'advanced' in older versions and can
         be written also as 'http') ($auth_type = 'HTTP') as introduced in 1.3.0
         allows you to log in as any valid MySQL user via HTTP-Auth.
+      + 'signon' authentication mode ($auth_type = 'signon') as introduced in
+        2.10.0 allows you to log in from prepared PHP session data. This is
+        useful for implementing single signon from another application. Sample
+        way how to seed session is in signon example: scripts/signon.php. You
+        need to configure session name and signon URL to use this
+        authentication method.
     Please see the install section on "Using authentication modes" for more
     information.
 $cfg['Servers'][$i]['user'] string
@@ -654,6 +663,13 @@ $cfg['Servers'][$i]['history'] string
     To allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
       + put the table name in $cfg['Servers'][$i]['history']
+$cfg['Servers'][$i]['designer_coords'] string
+    Since release 2.10.0 a Designer interface is available; it permits to
+    visually manage the relations.
+
+    To allow the usage of this functionality:
+      + set up pmadb and the linked-tables infrastructure
+      + put the table name in $cfg['Servers'][$i]['designer_coords']
 $cfg['Servers'][$i]['verbose_check'] boolean
     Because release 2.5.0 introduced the new MIME-transformation support, the
     column_info table got enhanced with three new fields. If the above variable
@@ -716,6 +732,14 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] array of strings
     xxx.xxx.xxx.xxx/nn (CIDR, Classless Inter-Domain Routing type IP addresses)
     But the following does not work:
     xxx.xxx.xxx.xx[yyy-zzz] (partial IP address range)
+$cfg['Servers'][$i]['SignonSession'] string
+    Name of session which will be used for signon authentication method.
+$cfg['Servers'][$i]['SignonURL'] string
+    URL where user will be redirected to log in for signon authentication
+    method. Should be absolute including protocol.
+$cfg['Servers'][$i]['LogoutURL'] string
+    URL where user will be redirected after logout (doesn't affect config
+    authentication method). Should be absolute including protocol.
 $cfg['ServerDefault'] integer
     If you have more than one server configured, you can set $cfg
     ['ServerDefault'] to any one of them to autoconnect to that server when
@@ -837,11 +861,18 @@ $cfg['LeftDisplayServers'] boolean
 $cfg['DisplayServersList'] boolean
     Defines whether to display this server choice as links instead of in a
     drop-down. Defaults to FALSE (drop-down).
+$cfg['DisplayDatabasesList'] boolean
+    Defines whether to display database choice in light navigation frame as
+    links instead of in a drop-down. Defaults to FALSE (drop-down).
 $cfg['ShowStats'] boolean
     Defines whether or not to display space usage and statistics about
     databases and tables.
     Note that statistics requires at least MySQL 3.23.3 and that, at this date,
     MySQL doesn't return such information for Berkeley DB tables.
+$cfg['ShowServerInfo'] boolean
+    Defines whether to display detailed server information on main page. You
+    can additionally hide more information by using $cfg['Servers'][$i]
+    ['verbose'].
 $cfg['ShowPhpInfo'] boolean
     $cfg['ShowChgPassword'] boolean
     $cfg['ShowCreateDb'] boolean
@@ -886,8 +917,9 @@ $cfg['ProtectBinary'] boolean or string
       + 'blob' to allow editing of all fields except BLOBS;
       + 'all' to disallow editing of all BINARY or BLOB fields.
 $cfg['ShowFunctionFields'] boolean
-    Defines whether or not MySQL functions fields should be displayed in edit/
-    insert mode.
+    Defines whether or not MySQL functions fields should be initially displayed
+    in edit/insert mode. Since version 2.10, the user can toggle this setting
+    from the interface.
 $cfg['CharEditing'] string
     Defines which type of editing controls should be used for CHAR and VARCHAR
     fields. Possible values are:
@@ -936,11 +968,11 @@ $cfg['DefaultTabServer'] string
     "server_processlist.php".
 $cfg['DefaultTabDatabase'] string
     Defines the tab displayed by default on database view. Possible values:
-    "db_details_structure.php", "db_details.php" or "db_search.php".
+    "db_structure.php", "db_sql.php" or "db_search.php".
 $cfg['DefaultTabTable'] string
     Defines the tab displayed by default on table view. Possible values:
-    "tbl_properties_structure.php", "tbl_properties.php", "tbl_select.php",
-    "tbl_change.php" or "sql.php".
+    "tbl_structure.php", "tbl_sql.php", "tbl_select.php", "tbl_change.php" or
+    "sql.php".
 $cfg['MySQLManualBase'] string
     If set to an URL which points to the MySQL documentation (type depends on
     $cfg['MySQLManualType']), appropriate help links are generated.
@@ -1098,12 +1130,15 @@ $cfg['DefaultDisplay'] string $cfg['HeaderFlipType'] string
     rotation of the header for horizontalflipped is done via CSS. If set to
     'fake' PHP does the transformation for you, but of course this does not
     look as good as CSS.
-$cfg['DefaultPropDisplay'] string
+$cfg['DefaultPropDisplay'] string or integer
     When editing/creating new columns in a table all fields normally get lined
     up one field a line. (default: 'horizontal'). If you set this to 'vertical'
     you can have each field lined up vertically beneath each other. You can
     save up a lot of place on the horizontal direction and no longer have to
-    scroll.
+    scroll. If you set this to integer, editing of fewer columns will appear in
+    'vertical' mode, while editing of more fields still in 'horizontal' mode.
+    This way you can still effectively edit large number of fields, while
+    having full view on few of them.
 $cfg['ShowBrowseComments'] boolean
     $cfg['ShowPropertyComments'] boolean
     By setting the corresponding variable to TRUE you can enable the display of
@@ -1129,12 +1164,6 @@ $cfg['UploadDir'] string
     owned by the same user as the owner of the phpMyAdmin scripts.
 
     See also FAQ 1.16 for alternatives.
-$cfg['docSQLDir'] string
-    The name of the directory where docSQL files can be uploaded for import
-    into phpMyAdmin.
-
-    Please note that if PHP is running in safe mode, this directory must be
-    owned by the same user as the owner of the phpMyAdmin scripts.
 $cfg['SaveDir'] string
     The name of the directory where dumps can be saved.
 
@@ -1214,13 +1243,14 @@ $cfg['EditInWindow'] boolean
 $cfg['BrowseMIME'] boolean
     Enable MIME-transformations.
 $cfg['MaxExactCount'] integer
-      + For InnoDB tables, determines for how large tables phpMyAdmin should
-        get the exact row count using SELECT COUNT. If the approximate row
-        count as returned by SHOW TABLE STATUS is smaller than this value,
-        SELECT COUNT will be used, otherwise the approximate count will be
-        used.
-      + For VIEWs, since obtaining the exact count could have an impact on
-        performance, this value is the maximum to be displayed.
+    For InnoDB tables, determines for how large tables phpMyAdmin should get
+    the exact row count using SELECT COUNT. If the approximate row count as
+    returned by SHOW TABLE STATUS is smaller than this value, SELECT COUNT will
+    be used, otherwise the approximate count will be used.
+$cfg['MaxExactCountViews'] integer
+    For VIEWs, since obtaining the exact count could have an impact on
+    performance, this value is the maximum to be displayed, using a SELECT
+    COUNT ... LIMIT. The default value of 0 bypasses any row counting.
 $cfg['WYSIWYG-PDF'] boolean
     Utilizes a WYSIWYG editing control to easily place elements of a PDF page.
     By clicking on the button 'toggle scratchboard' on the page where you edit
@@ -1431,8 +1461,8 @@ on the official phpMyAdmin homepage.
 
 2. Usage
 
-Go to your tbl_properties_structure.php page (i.e. reached through clicking on
-the 'Structure' link for a table). There click on "Change" (or change icon) and
+Go to your tbl_structure.php page (i.e. reached through clicking on the
+'Structure' link for a table). There click on "Change" (or change icon) and
 there you will see three new fields at the end of the line. They are called
 'MIME-type', 'Browser transformation' and 'Transformation options'.
 
@@ -1870,8 +1900,8 @@ This is a permission problem. Right-click on the phpmyadmin folder and choose
 properties. Under the tab Security, click on "Add" and select the user
 "IUSR_machine" from the list. Now set his permissions and it should work.
 
-1.27 I get empty page when I want to view huge page (eg.
-db_details_structure.php with plenty of tables).
+1.27 I get empty page when I want to view huge page (eg. db_structure.php with
+plenty of tables).
 
 This is a PHP bug that occur when GZIP output buffering is enabled. If you turn
 off it (by $cfg['OBGzip'] = false in config.inc.php), it should work. This bug
@@ -2112,6 +2142,8 @@ Here are a few points to check:
   * In the php.ini directive arg_separator.input, a value of ";" will cause
     this error. Replace it with "&;".
   * If you are using Hardened-PHP, you might want to increase request limits.
+  * The directory specified in the php.ini directive session.save_path does not
+    exist or is read-only.
 
 Known limitations
 
@@ -2138,7 +2170,8 @@ This seems to be a InnoDB bug (fixed in MySQL 3.23.50?).
 3.4 I am unable to import dumps I created with the mysqldump tool bundled with
 the MySQL server distribution.
 
-The problem is that mysqldump creates invalid comments like this:
+The problem is that older versions of mysqldump created invalid comments like
+this:
 
 -- MySQL dump 8.22
 --
@@ -2308,6 +2341,14 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] = array(
 This happens if you are using a URL to start phpMyAdmin which is different than
 the one set in your $cfg['PmaAbsoluteUri']. For example, a missing "www", or
 entering with an IP address while a domain name is defined in the config file.
+
+4.8 Which parameters can I use in the URL that starts phpMyAdmin?
+
+When starting phpMyAdmin, you can use the db, pma_username, pma_password and
+server parameters. This last one can contain either the numeric host index
+(from $i of the configuration file) or one of the host names present in the
+configuration file. Using pma_username and pma_password has been tested along
+with the usage of 'cookie' auth_type.
 
 Browsers or client OS
 
@@ -3023,6 +3064,9 @@ CREDITS, in chronological order
 - Sebastian Mendel <cybot_tm_at_users.sourceforge.net>
     * interface improvements
     * various bugfixes
+
+- Ivan A Kirillov
+    * new relations Designer
 
 And also to the following people who have contributed minor changes,
 enhancements, bugfixes or support for a new language since version 2.1.0:

@@ -29,7 +29,6 @@ $GLOBALS['cfg']['MainColor']                = '#000000';
 
 // background for the main frame
 $GLOBALS['cfg']['MainBackground']           = '#F5F5F5';
-// for a solid vertical line, uncomment this:
 //$GLOBALS['cfg']['MainBackground']       = '#F5F5F5 url(../' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
 
 // foreground (text) color of the pointer in browse mode

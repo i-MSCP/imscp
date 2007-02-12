@@ -1,5 +1,5 @@
 <?php
-/* $Id: mult_submits.inc.php 9202 2006-07-27 17:14:30Z lem9 $ */
+/* $Id: mult_submits.inc.php 9602 2006-10-25 12:25:01Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -127,12 +127,12 @@ if ( !empty($submit_mult) && !empty($what)) {
     $js_to_run = 'functions.js';
     unset($message);
     if (isset($table) && strlen($table)) {
-        require('./libraries/tbl_properties_common.php');
-        $url_query .= '&amp;goto=tbl_properties.php&amp;back=tbl_properties.php';
-        require('./libraries/tbl_properties_table_info.inc.php');
+        require('./libraries/tbl_common.php');
+        $url_query .= '&amp;goto=tbl_sql.php&amp;back=tbl_sql.php';
+        require('./libraries/tbl_info.inc.php');
     } elseif (isset($db) && strlen($db)) {
-        require('./libraries/db_details_common.inc.php');
-        require('./libraries/db_details_db_info.inc.php');
+        require('./libraries/db_common.inc.php');
+        require('./libraries/db_info.inc.php');
     }
     // Builds the query
     $full_query     = '';
@@ -229,9 +229,9 @@ if ( !empty($submit_mult) && !empty($what)) {
 <form action="<?php echo $action; ?>" method="post">
 <input type="hidden" name="query_type" value="<?php echo $what; ?>" />
     <?php
-    if (strpos(' ' . $action, 'db_details') == 1) {
+    if (strpos(' ' . $action, 'db_') == 1) {
         echo PMA_generate_common_hidden_inputs($db);
-    } elseif (strpos(' ' . $action, 'tbl_properties') == 1
+    } elseif (strpos(' ' . $action, 'tbl_') == 1
               || $what == 'row_delete') {
         echo PMA_generate_common_hidden_inputs($db, $table);
     } else  {

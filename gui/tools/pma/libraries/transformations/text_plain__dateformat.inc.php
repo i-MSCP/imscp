@@ -1,5 +1,5 @@
 <?php
-/* $Id: text_plain__dateformat.inc.php 5234 2003-12-05 11:02:14Z garvinhicking $ */
+/* $Id: text_plain__dateformat.inc.php 9577 2006-10-18 08:09:03Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 function PMA_transformation_text_plain__dateformat($buffer, $options = array(), $meta = '') {
@@ -7,13 +7,22 @@ function PMA_transformation_text_plain__dateformat($buffer, $options = array(), 
     // include('./libraries/transformations/global.inc.php');
 
     // further operations on $buffer using the $options[] array.
-    if (!isset($options[0]) || $options[0] == '') {
+    if (empty($options[0])) {
         $options[0] = 0;
     }
 
-    if (!isset($options[1]) || $options[1] == '') {
-        $options[1] = $GLOBALS['datefmt'];
+    if (empty($options[2])) {
+        $options[2] = 'local';
+    } else {
+        $options[2] = strtolower($options[2]);
+    }
 
+    if (empty($options[1])) {
+        if ($options[2] == 'local') {
+            $options[1] = $GLOBALS['datefmt'];
+        } else {
+            $options[1] = 'Y-m-d  H:i:s';
+        }
     }
 
     $timestamp = -1;
@@ -40,7 +49,11 @@ function PMA_transformation_text_plain__dateformat($buffer, $options = array(), 
         }
     // If all fails, assume one of the dozens of valid strtime() syntaxes (http://www.gnu.org/manual/tar-1.12/html_chapter/tar_7.html)
     } else {
-        $timestamp = strtotime($buffer);
+        if (preg_match('/^[0-9]\d{1,9}$/', $buffer)) {
+            $timestamp = (int)$buffer;
+        } else {
+            $timestamp = strtotime($buffer);
+        }
     }
 
     // If all above failed, maybe it's a Unix timestamp already?
@@ -52,7 +65,14 @@ function PMA_transformation_text_plain__dateformat($buffer, $options = array(), 
     if ($timestamp >= 0) {
         $timestamp -= $options[0] * 60 * 60;
         $source = $buffer;
-        $buffer = '<dfn onclick="alert(\'' . $source . '\');" title="' . $source . '">' . PMA_localisedDate($timestamp, $options[1]) . '</dfn>';
+        if ($options[2] == 'local') {
+            $text = PMA_localisedDate($timestamp, $options[1]);
+        } elseif ($options[2] == 'utc') {
+            $text = gmdate($options[1], $timestamp);
+        } else {
+            $text = 'INVALID DATE TYPE';
+        }
+        $buffer = '<dfn onclick="alert(\'' . $source . '\');" title="' . $source . '">' . $text . '</dfn>';
     }
 
     return $buffer;

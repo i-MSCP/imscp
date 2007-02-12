@@ -1,5 +1,5 @@
 <?php
-/* $Id: http.auth.lib.php 9126 2006-06-21 16:08:59Z lem9 $ */
+/* $Id: http.auth.lib.php 9352 2006-08-24 12:39:16Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -20,6 +20,12 @@
  * @access  public
  */
 function PMA_auth() {
+
+    /* Perform logout to custom URL */
+    if (!empty($_REQUEST['old_usr']) && !empty($GLOBALS['cfg']['Server']['LogoutURL'])) {
+        PMA_sendHeaderLocation($GLOBALS['cfg']['Server']['LogoutURL']);
+        exit;
+    }
 
     header('WWW-Authenticate: Basic realm="phpMyAdmin ' . sprintf($GLOBALS['strRunning'], (empty($GLOBALS['cfg']['Server']['verbose']) ? str_replace('\'', '\\\'', $GLOBALS['cfg']['Server']['host']) : str_replace('\'', '\\\'', $GLOBALS['cfg']['Server']['verbose']))) .  '"');
     header('HTTP/1.0 401 Unauthorized');

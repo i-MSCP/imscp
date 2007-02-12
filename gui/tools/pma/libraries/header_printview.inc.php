@@ -1,5 +1,5 @@
 <?php
-/* $Id: header_printview.inc.php 7908 2005-11-24 09:12:17Z nijel $ */
+/* $Id: header_printview.inc.php 9802 2006-12-21 01:22:03Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -46,7 +46,7 @@ if ($text_dir == 'ltr') {
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 <title><?php echo $strSQLResult; ?> - phpMyAdmin <?php echo PMA_VERSION ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<link rel="stylesheet" type="text/css" href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url( '', '' ); ?>&amp;js_frame=print" />
+<link rel="stylesheet" type="text/css" href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url( '', '' ); ?>&amp;js_frame=print&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
 </style>
 </head>
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_export.lib.php 8968 2006-04-26 20:59:09Z nijel $ */
+/* $Id: display_export.lib.php 9791 2006-12-13 13:02:42Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';
@@ -242,6 +242,7 @@ if ( $is_zip || $is_gzip || $is_bzip ) { ?>
 <?php } ?>
 
 <fieldset class="tblFooters">
+<?php PMA_externalBug($GLOBALS['strSQLCompatibility'], 'mysql', '50027', '14515'); ?>
     <input type="submit" value="<?php echo $strGo; ?>" id="buttonGo" />
 </fieldset>
 </form>

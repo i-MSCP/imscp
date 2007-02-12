@@ -1,5 +1,5 @@
 <?php
-/* $Id: Config.class.php 9841 2007-01-16 17:32:33Z lem9 $ */
+/* $Id: Config.class.php 9869 2007-01-23 13:45:27Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -28,6 +28,7 @@ class PMA_Config
      */
     var $source_mtime = 0;
     var $default_source_mtime = 0;
+    var $set_mtime = 0;
 
     /**
      * @var boolean
@@ -80,7 +81,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.9.2');
+        $this->set('PMA_VERSION', '2.10.0-beta1');
         /**
          * @deprecated
          */
@@ -384,7 +385,26 @@ class PMA_Config
         }
 
         /**
-         * @TODO check validity of $_COOKIE['pma_collation_connection']
+         * Backward compatibility code
+         */
+        if (!empty($cfg['DefaultTabTable'])) {
+            $cfg['DefaultTabTable'] = str_replace('_properties', '', str_replace('tbl_properties.php', 'tbl_sql.php', $cfg['DefaultTabTable']));
+        }
+        if (!empty($cfg['DefaultTabDatabase'])) {
+            $cfg['DefaultTabDatabase'] = str_replace('_details', '', str_replace('db_details.php', 'db_sql.php', $cfg['DefaultTabDatabase']));
+        }
+
+        $this->checkFontsize();
+        //$this->checkPmaAbsoluteUri();
+        $this->settings = PMA_array_merge_recursive($this->settings, $cfg);
+
+        // Handling of the collation must be done after merging of $cfg
+        // (from config.inc.php) so that $cfg['DefaultConnectionCollation']
+        // can have an effect. Note that the presence of collation
+        // information in a cookie has priority over what is defined
+        // in the default or user's config files. 
+        /**
+         * @todo check validity of $_COOKIE['pma_collation_connection']
          */
         if (! empty($_COOKIE['pma_collation_connection'])) {
             $this->set('collation_connection',
@@ -393,11 +413,13 @@ class PMA_Config
             $this->set('collation_connection',
                 $this->get('DefaultConnectionCollation'));
         }
-
+        // Now, a collation information could come from REQUEST
+        // (an example of this: the collation selector in main.php)
+        // so the following handles the setting of collation_connection
+        // and later, in common.lib.php, the cookie will be set
+        // according to this.
         $this->checkCollationConnection();
-        $this->checkFontsize();
-        //$this->checkPmaAbsoluteUri();
-        $this->settings = PMA_array_merge_recursive($this->settings, $cfg);
+
         return true;
     }
 
@@ -486,7 +508,10 @@ class PMA_Config
      */
     function set($setting, $value)
     {
-        $this->settings[$setting] = $value;
+        if (!isset($this->settings[$setting]) || $this->settings[$setting] != $value) {
+            $this->settings[$setting] = $value;
+            $this->set_mtime = time();
+        }
     }
 
     /**
@@ -506,6 +531,15 @@ class PMA_Config
     function PMA_Config($source = null)
     {
         $this->__construct($source);
+    }
+
+    /**
+     * returns time of last config change.
+     * @return  int  Unix timestamp
+     */
+    function getMtime()
+    {
+        return max($this->source_mtime, $this->default_source_mtime, $this->set_mtime);
     }
 
     /**
@@ -657,7 +691,7 @@ class PMA_Config
 
     /**
      * check selected collation_connection
-     * @TODO check validity of $_REQUEST['collation_connection']
+     * @todo check validity of $_REQUEST['collation_connection']
      */
     function checkCollationConnection()
     {
@@ -731,9 +765,9 @@ class PMA_Config
 
         if ($postsize = ini_get('post_max_size')) {
             $this->set('max_upload_size',
-                min(get_real_size($filesize), get_real_size($postsize)));
+                min(PMA_get_real_size($filesize), PMA_get_real_size($postsize)));
         } else {
-            $this->set('max_upload_size', get_real_size($filesize));
+            $this->set('max_upload_size', PMA_get_real_size($filesize));
         }
     }
 

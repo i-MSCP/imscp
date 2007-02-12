@@ -1,5 +1,5 @@
 <?php
-/* $Id: browse_foreigners.php 9191 2006-07-19 15:59:26Z lem9 $ */
+/* $Id: browse_foreigners.php 9802 2006-12-21 01:22:03Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * display selection for relational field values
@@ -93,7 +93,7 @@ if (isset($disp_row) && is_array($disp_row)) {
     <title>phpMyAdmin</title>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
     <link rel="stylesheet" type="text/css"
-        href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url( '', '' ); ?>&amp;js_frame=right" />
+        href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url( '', '' ); ?>&amp;js_frame=right&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
     <script src="./js/functions.js" type="text/javascript" language="javascript"></script>
     <script type="text/javascript" language="javascript">
     //<![CDATA[

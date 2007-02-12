@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_alter.php 9499 2006-10-04 13:10:13Z nijel $ */
+/* $Id: tbl_alter.php 9601 2006-10-25 10:55:20Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -7,7 +7,6 @@
  */
 require_once('./libraries/common.lib.php');
 require_once('./libraries/Table.class.php');
-
 
 $js_to_run = 'functions.js';
 require_once('./libraries/header.inc.php');
@@ -18,20 +17,20 @@ PMA_checkParameters(array('db', 'table'));
 /**
  * Gets tables informations
  */
-require_once('./libraries/tbl_properties_common.php');
-require_once('./libraries/tbl_properties_table_info.inc.php');
+require_once('./libraries/tbl_common.php');
+require_once('./libraries/tbl_info.inc.php');
 /**
  * Displays top menu links
  */
-$active_page = 'tbl_properties_structure.php';
+$active_page = 'tbl_structure.php';
 // I don't see the need to display the links here, they will be displayed later
-//require('./libraries/tbl_properties_links.inc.php');
+//require('./libraries/tbl_links.inc.php');
 
 
 /**
  * Defines the url to return to in case of error in a sql statement
  */
-$err_url = 'tbl_properties_structure.php?' . PMA_generate_common_url($db, $table);
+$err_url = 'tbl_structure.php?' . PMA_generate_common_url($db, $table);
 
 
 /**
@@ -41,7 +40,7 @@ $abort = false;
 if (isset($do_save_data)) {
     $field_cnt = count($field_orig);
     for ($i = 0; $i < $field_cnt; $i++) {
-        // to "&quot;" in tbl_properties.php
+        // to "&quot;" in tbl_sql.php
         $field_orig[$i]     = urldecode($field_orig[$i]);
         if (strcmp(str_replace('"', '&quot;', $field_orig[$i]), $field_name[$i]) == 0) {
             $field_name[$i] = $field_orig[$i];
@@ -138,8 +137,8 @@ if (isset($do_save_data)) {
             }
         }
 
-        $active_page = 'tbl_properties_structure.php';
-        require('./tbl_properties_structure.php');
+        $active_page = 'tbl_structure.php';
+        require('./tbl_structure.php');
     } else {
         PMA_mysqlDie('', '', '', $err_url, FALSE);
         // garvin: An error happened while inserting/updating a table definition.
@@ -165,7 +164,9 @@ if ($abort == FALSE) {
         $selected_cnt = count($selected);
     }
 
-    // TODO: optimize in case of multiple fields to modify
+    /**
+     * @todo optimize in case of multiple fields to modify
+     */
     for ($i = 0; $i < $selected_cnt; $i++) {
         if (!empty($submit_mult)) {
             $field = PMA_sqlAddslashes(urldecode($selected[$i]), TRUE);
@@ -184,11 +185,13 @@ if ($abort == FALSE) {
     // but later, if the analyser returns more information, it
     // could be executed for any MySQL version and replace
     // the info given by SHOW FULL FIELDS FROM.
-    // TODO: put this code into a require()
-    // or maybe make it part of PMA_DBI_get_fields();
+    /**
+     * @todo put this code into a require()
+     * or maybe make it part of PMA_DBI_get_fields();
+     */
 
     // We also need this to correctly learn if a TIMESTAMP is NOT NULL, since
-    // SHOW FULL FIELDS says NULL and SHOW CREATE TABLE says NOT NULL (tested 
+    // SHOW FULL FIELDS says NULL and SHOW CREATE TABLE says NOT NULL (tested
     // in MySQL 4.0.25).
 
     $show_create_table = PMA_DBI_fetch_value(

@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_select.php 9104 2006-06-09 19:32:20Z lem9 $ */
+/* $Id: tbl_select.php 9601 2006-10-25 10:55:20Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -28,19 +28,19 @@ if ( $GLOBALS['cfg']['PropertiesIconic'] == true ) {
  */
 if (!isset($param) || $param[0] == '') {
     // Gets some core libraries
-    require_once('./libraries/tbl_properties_common.php');
+    require_once('./libraries/tbl_common.php');
     //$err_url   = 'tbl_select.php' . $err_url;
     $url_query .= '&amp;goto=tbl_select.php&amp;back=tbl_select.php';
 
     /**
      * Gets tables informations
      */
-    require_once('./libraries/tbl_properties_table_info.inc.php');
+    require_once('./libraries/tbl_info.inc.php');
 
     /**
      * Displays top menu links
      */
-    require_once('./libraries/tbl_properties_links.inc.php');
+    require_once('./libraries/tbl_links.inc.php');
 
     if (!isset($goto)) {
         $goto = $GLOBALS['cfg']['DefaultTabTable'];
@@ -192,6 +192,9 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     <tbody>
     <?php
     $odd_row = true;
+?>
+<script type="text/javascript" language="javascript" src="./js/tbl_change.js"></script>
+<?php
     for ($i = 0; $i < $fields_cnt; $i++) {
         ?>
         <tr class="<?php echo $odd_row ? 'odd' : 'even'; $odd_row = ! $odd_row; ?>">
@@ -276,9 +279,18 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         } else {
             // o t h e r   c a s e s
             echo '            <input type="text" name="fields[' . $i . ']"'
-                .' size="40" class="textfield" />' .  "\n";
-        }
-
+                .' size="40" class="textfield" id="field_' . $i . '" />' .  "\n";
+        };
+        $type = $fields_type[$i];
+        if ($type == 'date' || $type == 'datetime' || substr($type, 0, 9) == 'timestamp') {
+        ?>
+                    <script type="text/javascript" language="javascript">
+                    //<![CDATA[
+                    document.write('<a title="<?php echo $strCalendar;?>" href="javascript:openCalendar(\'<?php echo PMA_generate_common_url();?>\', \'insertForm\', \'field_<?php echo ($i); ?>\', \'<?php echo (PMA_MYSQL_INT_VERSION >= 40100 && substr($type, 0, 9) == 'timestamp') ? 'datetime' : substr($type, 0, 9); ?>\')"><img class="calendar" src="<?php echo $pmaThemeImage; ?>b_calendar.png" alt="<?php echo $strCalendar; ?>"/></a>');
+                    //]]>
+                    </script>
+        <?php
+        } 
         ?>
             <input type="hidden" name="names[<?php echo $i; ?>]"
                 value="<?php echo htmlspecialchars($fields_list[$i]); ?>" />

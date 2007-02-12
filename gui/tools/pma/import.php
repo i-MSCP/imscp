@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.php 9065 2006-05-21 12:03:39Z lem9 $ */
+/* $Id: import.php 9636 2006-10-27 13:04:15Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Core script for import, this is just the glue around all other stuff */
@@ -75,9 +75,9 @@ if ($import_type == 'table') {
 } else {
     if (empty($goto) || !preg_match('@^(server|db|tbl)(_[a-z]*)*\.php$@i', $goto)) {
         if (isset($table) && isset($db)) {
-            $goto = 'tbl_properties_structure.php';
+            $goto = 'tbl_structure.php';
         } elseif (isset($db)) {
-            $goto = 'db_details_structure.php';
+            $goto = 'db_structure.php';
         } else {
             $goto = 'server_sql.php';
         }
@@ -91,7 +91,7 @@ if ($import_type == 'table') {
     }
     $err_url  = $goto
               . '?' . $common
-              . (preg_match('@^tbl_properties(_[a-z]*)?\.php$@', $goto) ? '&amp;table=' . urlencode($table) : '');
+              . (preg_match('@^tbl_[a-z]*\.php$@', $goto) ? '&amp;table=' . urlencode($table) : '');
 }
 
 
@@ -156,6 +156,12 @@ if (!empty($id_bookmark)) {
             break;
     }
 } // end bookmarks reading
+
+// Do no run query if we show PHP code
+if (isset($GLOBALS['show_as_php'])) {
+    $run_query = FALSE;
+    $go_sql = TRUE;
+}
 
 // Store the query as a bookmark before executing it if bookmarklabel was given
 if (!empty($bkm_label) && !empty($import_text)) {
@@ -387,14 +393,14 @@ if ($timeout_passed) {
     }
 }
 
-// Display back import page
-require_once('./libraries/header.inc.php');
+// Parse and analyze the query, for correct db and table name 
+// in case of a query typed in the query window
+require_once('./libraries/parse_analyze.lib.php');
 
 // There was an error?
 if (isset($my_die)) {
     foreach ($my_die AS $key => $die) {
         PMA_mysqlDie($die['error'], $die['sql'], '', $err_url, $error);
-        echo '<hr />';
     }
 }
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: cookie.auth.lib.php 9333 2006-08-21 11:55:32Z lem9 $ */
+/* $Id: cookie.auth.lib.php 9851 2007-01-18 11:11:15Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -46,6 +46,12 @@ if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
 function PMA_auth()
 {
     global $cfg, $lang, $server, $convcharset, $conn_error;
+
+    /* Perform logout to custom URL */
+    if (!empty($_REQUEST['old_usr']) && !empty($GLOBALS['cfg']['Server']['LogoutURL'])) {
+        PMA_sendHeaderLocation($GLOBALS['cfg']['Server']['LogoutURL']);
+        exit;
+    }
 
     // Tries to get the username from cookie whatever are the values of the
     // 'register_globals' and the 'variables_order' directives if last login
@@ -297,10 +303,10 @@ function PMA_auth_check()
     if (!empty($old_usr)) {
         if ($GLOBALS['cfg']['LoginCookieDeleteAll']) {
             foreach($GLOBALS['cfg']['Servers'] as $key => $val) {
-                setcookie('pma_cookie_password-' . $key, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+                PMA_removeCookie('pma_cookie_password-' . $key);
             }
         } else {
-            setcookie('pma_cookie_password-' . $server, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+            PMA_removeCookie('pma_cookie_password-' . $server);
         }
     }
 
@@ -407,15 +413,18 @@ function PMA_auth_set_user()
     // Ensures valid authentication mode, 'only_db', bookmark database and
     // table names and relation table name are used
     if ($cfg['Server']['user'] != $PHP_AUTH_USER) {
-        $servers_cnt = count($cfg['Servers']);
-        for ($i = 1; $i <= $servers_cnt; $i++) {
-            if (isset($cfg['Servers'][$i])
-                && ($cfg['Servers'][$i]['host'] == $cfg['Server']['host'] && $cfg['Servers'][$i]['user'] == $PHP_AUTH_USER)) {
-                $server        = $i;
-                $cfg['Server'] = $cfg['Servers'][$i];
+        foreach ($cfg['Servers'] as $idx => $current) {
+            if ($current['host'] == $cfg['Server']['host'] 
+                    && $current['port'] == $cfg['Server']['port'] 
+                    && $current['socket'] == $cfg['Server']['socket'] 
+                    && $current['ssl'] == $cfg['Server']['ssl'] 
+                    && $current['connect_type'] == $cfg['Server']['connect_type'] 
+                    && $current['user'] == $PHP_AUTH_USER) {
+                $server        = $idx;
+                $cfg['Server'] = $current;
                 break;
             }
-        } // end for
+        } // end foreach
     } // end if
 
     $pma_server_changed = false;
@@ -431,20 +440,14 @@ function PMA_auth_set_user()
 
     // Name and password cookies needs to be refreshed each time
     // Duration = one month for username
-    setcookie('pma_cookie_username-' . $server,
-        PMA_blowfish_encrypt($cfg['Server']['user'] . ':' . $GLOBALS['current_time'],
-            $GLOBALS['cfg']['blowfish_secret']),
-        time() + (60 * 60 * 24 * 30),
-        $GLOBALS['cookie_path'], '',
-        $GLOBALS['is_https']);
+    PMA_setCookie('pma_cookie_username-' . $server, PMA_blowfish_encrypt($cfg['Server']['user'] . ':' . $GLOBALS['current_time'], $GLOBALS['cfg']['blowfish_secret']));
 
-    // Duration = till the browser is closed for password (we don't want this to be saved)
-    setcookie('pma_cookie_password-' . $server,
+    // Duration = as configured
+    PMA_setCookie('pma_cookie_password-' . $server,
         PMA_blowfish_encrypt(!empty($cfg['Server']['password']) ? $cfg['Server']['password'] : "\xff(blank)",
             $GLOBALS['cfg']['blowfish_secret'] . $GLOBALS['current_time']),
-        $GLOBALS['cfg']['LoginCookieStore'],
-        $GLOBALS['cookie_path'], '',
-        $GLOBALS['is_https']);
+        null,
+        $GLOBALS['cfg']['LoginCookieStore']);
 
     // Set server cookies if required (once per session) and, in this case, force
     // reload to ensure the client accepts cookies
@@ -452,14 +455,10 @@ function PMA_auth_set_user()
         if ($GLOBALS['cfg']['AllowArbitraryServer']) {
             if (isset($pma_auth_server) && !empty($pma_auth_server) && $pma_server_changed) {
                 // Duration = one month for serverrname
-                setcookie('pma_cookie_servername-' . $server,
-                    $cfg['Server']['host'],
-                    time() + (60 * 60 * 24 * 30),
-                    $GLOBALS['cookie_path'], '',
-                    $GLOBALS['is_https']);
+                PMA_setCookie('pma_cookie_servername-' . $server, $cfg['Server']['host']);
             } else {
                 // Delete servername cookie
-                setcookie('pma_cookie_servername-' . $server, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+                PMA_removeCookie('pma_cookie_servername-' . $server);
             }
         }
 
@@ -504,7 +503,7 @@ function PMA_auth_fails()
     global $conn_error, $server;
 
     // Deletes password cookie and displays the login form
-    setcookie('pma_cookie_password-' . $server, '', 0, $GLOBALS['cookie_path'], '', $GLOBALS['is_https']);
+    PMA_removeCookie('pma_cookie_password-' . $server);
 
     if (isset($GLOBALS['allowDeny_forbidden']) && $GLOBALS['allowDeny_forbidden']) {
         $conn_error = $GLOBALS['strAccessDenied'];

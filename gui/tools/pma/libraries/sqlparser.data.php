@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlparser.data.php 9284 2006-08-12 19:14:48Z lem9 $ */
+/* $Id: sqlparser.data.php 9663 2006-11-02 14:56:33Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 
@@ -98,6 +98,7 @@ $PMA_SQPdata_function_name = array (
     'EXPORT_SET',
     'EXTERIORRING',             // polygon-property-functions.html
     'EXTRACT',
+    'EXTRACTVALUE',             // xml-functions.html
     'FIELD',
     'FIND_IN_SET',
     'FLOOR',
@@ -235,6 +236,7 @@ $PMA_SQPdata_function_name = array (
     'UNHEX',                    // string-functions.html
     'UNIQUE_USERS',
     'UNIX_TIMESTAMP',
+    'UPDATEXML',                // xml-functions.html
     'UPPER',
     'USER',
     'UTC_DATE',
@@ -254,7 +256,7 @@ $PMA_SQPdata_function_name = array (
     'YEARWEEK'
 );
 //$PMA_SQPdata_function_name_cnt = count($PMA_SQPdata_function_name);
-$PMA_SQPdata_function_name_cnt = 229;
+$PMA_SQPdata_function_name_cnt = 231;
 // DEBUG
 //$test_PMA_SQPdata_function_name = $PMA_SQPdata_function_name;
 //sort($PMA_SQPdata_function_name);
@@ -363,6 +365,7 @@ $PMA_SQPdata_reserved_word = array (
     'DO',
     'DROP',
     'DUMPFILE',
+    'DUPLICATE',
     'DYNAMIC',
     'ELSE',
     'ENCLOSED',
@@ -578,7 +581,7 @@ $PMA_SQPdata_reserved_word = array (
     'YEAR_MONTH'
 );
 //$PMA_SQPdata_reserved_word_cnt = count($PMA_SQPdata_reserved_word);
-$PMA_SQPdata_reserved_word_cnt = 274;
+$PMA_SQPdata_reserved_word_cnt = 275;
 
 // words forbidden to be used as column or table name,
 // as seen in http://dev.mysql.com/doc/mysql/en/reserved-words.html

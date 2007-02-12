@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_databases.php 9004 2006-05-02 13:25:27Z nijel $ */
+/* $Id: server_databases.php 9422 2006-09-20 11:15:56Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -85,7 +85,7 @@ echo '<h2>' . "\n"
 if ($server > 0) {
     $databases = PMA_DBI_get_databases_full(null, $dbstats, null, $sort_by,
         $sort_order, $pos, true);
-    $databases_count = PMA_DBI_get_databases_count();
+    $databases_count = $PMA_List_Database->count();
 } else {
     $databases_count = 0;
 }

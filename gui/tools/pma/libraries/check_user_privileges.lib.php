@@ -1,5 +1,5 @@
 <?php
-/* $Id: check_user_privileges.lib.php 9057 2006-05-18 16:53:40Z lem9 $ */
+/* $Id: check_user_privileges.lib.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Get user's global privileges and some db-specific privileges
@@ -52,18 +52,20 @@ function PMA_analyseShowGrant($rs_usr, &$is_create_db_priv, &$db_to_create, &$is
                     $dbname_to_test = $show_grants_dbname;
                 }
 
-                if ( (ereg($re0 . '%|_', $show_grants_dbname)
-                    && !ereg('\\\\%|\\\\_', $show_grants_dbname))
-                    // does this db exist?
-                    || (!PMA_DBI_try_query('USE ' .  ereg_replace($re1 .'(%|_)', '\\1\\3', $dbname_to_test),  null, PMA_DBI_QUERY_STORE) && substr(PMA_DBI_getError(), 1, 4) != 1044)
-                    ) {
-                     $db_to_create = ereg_replace($re0 . '%', '\\1...', ereg_replace($re0 . '_', '\\1?', $show_grants_dbname));
-                     $db_to_create = ereg_replace($re1 . '(%|_)', '\\1\\3', $db_to_create);
-                     $is_create_db_priv     = true;
+                if ((ereg($re0 . '%|_', $show_grants_dbname)
+                 && !ereg('\\\\%|\\\\_', $show_grants_dbname))
+                 // does this db exist?
+                 || (!PMA_DBI_try_query('USE ' .  ereg_replace($re1 .'(%|_)', '\\1\\3', $dbname_to_test),  null, PMA_DBI_QUERY_STORE)
+                   && substr(PMA_DBI_getError(), 1, 4) != 1044)
+                ) {
+                    $db_to_create = ereg_replace($re0 . '%', '\\1...', ereg_replace($re0 . '_', '\\1?', $show_grants_dbname));
+                    $db_to_create = ereg_replace($re1 . '(%|_)', '\\1\\3', $db_to_create);
+                    $is_create_db_priv     = true;
 
-                     // TODO: collect $db_to_create into an array, to display a drop-down
-                     // in the "Create new database" dialog
-                     //
+                    /**
+                     * @todo collect $db_to_create into an array, to display a
+                     * drop-down in the "Create new database" dialog
+                     */
                      // we don't break, we want all possible databases
                      //break;
                 } // end if

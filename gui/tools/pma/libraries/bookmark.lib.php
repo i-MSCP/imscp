@@ -1,5 +1,5 @@
 <?php
-/* $Id: bookmark.lib.php 9762 2006-11-26 10:51:59Z lem9 $ */
+/* $Id: bookmark.lib.php 9763 2006-11-26 10:57:48Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

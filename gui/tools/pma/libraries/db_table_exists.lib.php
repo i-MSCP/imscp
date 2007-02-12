@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_table_exists.lib.php 9202 2006-07-27 17:14:30Z lem9 $ */
+/* $Id: db_table_exists.lib.php 9636 2006-10-27 13:04:15Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -20,6 +20,12 @@ if (empty($is_db)) {
             if (isset($message)) {
                 $url_params['message'] = $message;
             }
+            if (isset($sql_query)) {
+                $url_params['sql_query'] = $sql_query;
+            }
+            if (isset($show_as_php)) {
+                $url_params['show_as_php'] = $show_as_php;
+            }
             PMA_sendHeaderLocation(
                 $cfg['PmaAbsoluteUri'] . 'main.php'
                     . PMA_generate_common_url($url_params, '&'));
@@ -29,7 +35,7 @@ if (empty($is_db)) {
 } // end if (ensures db exists)
 
 if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
-    // Not a valid table name -> back to the db_details.php
+    // Not a valid table name -> back to the db_sql.php
     if (isset($table) && strlen($table)) {
         $_result = PMA_DBI_try_query(
             'SHOW TABLES LIKE \'' . PMA_sqlAddslashes($table, true) . '\';',
@@ -47,7 +53,9 @@ if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
                 // (as it can happen just in case temporary table, it should be
                 // fast):
 
-                // @todo should this check really only happen if IS_TRANSFORMATION_WRAPPER?
+                /**
+                 * @todo should this check really only happen if IS_TRANSFORMATION_WRAPPER?
+                 */
                 $_result = PMA_DBI_try_query(
                     'SELECT COUNT(*) FROM `' . PMA_sqlAddslashes($table, true) . '`;',
                     null, PMA_DBI_QUERY_STORE);
@@ -60,8 +68,14 @@ if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
                 if (isset($message)) {
                     $url_params['message'] = $message;
                 }
+                if (isset($sql_query)) {
+                    $url_params['sql_query'] = $sql_query;
+                }
+                if (isset($display_query)) {
+                    $url_params['display_query'] = $display_query;
+                }
                 PMA_sendHeaderLocation(
-                    $cfg['PmaAbsoluteUri'] . 'db_details.php'
+                    $cfg['PmaAbsoluteUri'] . 'db_sql.php'
                         . PMA_generate_common_url($url_params, '&'));
             }
         }

@@ -1,5 +1,5 @@
 <?php
-/* $Id: phpmyadmin.css.php 9552 2006-10-13 12:24:47Z lem9 $ */
+/* $Id: phpmyadmin.css.php 9784 2006-12-10 13:30:40Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 chdir('..');
@@ -24,6 +24,10 @@ if ($GLOBALS['text_dir'] === 'ltr') {
 
 // Send correct type:
 header('Content-Type: text/css; charset=ISO-8859-1');
+
+// Cache output in client - the nocache query parameter makes sure that this
+// file is reloaded when config changes
+header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
 
 ?>
 html {
