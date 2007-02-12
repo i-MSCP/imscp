@@ -56,7 +56,7 @@ done
 # fixing webmail's database permissions;
 #
 
-i="$ROOT_DIR/gui/tools/webmail/database"
+i="$ROOT_DIR/gui/tools/webmail/data"
 
 echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
 
