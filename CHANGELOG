@@ -36,6 +36,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* Edited  "httpd.conf" for FastCGI
 		* Edited "fastcgi.conf" for FastCGI (Not finish)
 		* Fixe paths in fcgi templates
+		* Added new cfg variables in "vhcs2.conf" for PHP Fastcgi BIN
 	- ENGINE:
 		* Edited vhcs2-dmn-mngr for Fastcgi :
 			- Added instructions for create "php4" and "php5" directory for usual users
