@@ -41,6 +41,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* Edited "als_entry.tpl", "dmn_entry.tpl", "sub_entry.tpl" and "vhcs2_base.tpl" for FastCGI
 		* Edited  "httpd.conf" for FastCGI
 		* Edited "fastcgi.conf" for FastCGI (Not finish)
+		* Fixe paths in fcgi templates
 	- ENGINE:
 		* Edited vhcs2-dmn-mngr for Fastcgi :
 			- Added instructions for create "php4" and "php5" directory for usual users
