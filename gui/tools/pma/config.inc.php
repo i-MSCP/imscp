@@ -84,6 +84,6 @@ $cfg['IconvExtraParams'] 				= '//TRANSLIT';
 $cfg['GD2Available'] 					= 'yes';
 $cfg['BrowseMIME'] 						= true;
 /* Changes the default Theme */
-$cfg['ThemeDefault'] 					= 'original';
+$cfg['ThemeDefault'] 					= 'omega';
 ?>
-?>
+
