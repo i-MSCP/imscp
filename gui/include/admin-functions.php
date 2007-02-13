@@ -151,7 +151,7 @@ $tpl -> assign(
 			array(
 				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 				'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-				'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change pers. data'),
+				'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 				'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 				'TR_MENU_ADD_ADMIN'  => tr('Add admin'),
 				'TR_MENU_ADD_RESELLER'  => tr('Add reseller'),
