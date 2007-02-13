@@ -1835,7 +1835,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name",
 					$sys_user,
-					$http_gid,
+					$httpd_gid,
 					0770
 					);
 
