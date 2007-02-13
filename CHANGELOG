@@ -19,6 +19,10 @@ VHCS 2.4.8 ω Omega Changelog
 	- SETUP:
 		* Changed set-gui-permissions (chmod 440 --> 444) If not, usual user do not access VHCS
 		* Fixed error -> No input file specified for usual user
+	- CONFIGS:
+		* Changed all php.ini files
+			- Fixed Open_basedir for usuals user (If not, vhcs has errors)
+			- Fixed Disable_function for usuals user and master user (If not, vhcs has errors)
 
 2007-02-12 Malte Geierhos
 	- SETUP:
