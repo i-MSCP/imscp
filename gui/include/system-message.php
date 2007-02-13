@@ -20,29 +20,31 @@
 
 
 function system_message($msg) {
-  global $cfg;
+	global $cfg;
 
-  $theme_color = $cfg['USER_INITIAL_THEME_COLOR'];
+	$theme_color = $cfg['USER_INITIAL_THEME_COLOR'];
 
-  $tpl = new pTemplate();
+	$tpl = new pTemplate();
 
-  $tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl');
+	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl');
+	$tpl->assign(
+					array(
+						'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'VHCS Error',
+						'THEME_COLOR_PATH' => "themes/$theme_color",
+						'THEME_CHARSET' => "UTF-8",
+						'TR_BACK' => tr('Back'),
+						'TR_ERROR_MESSAGE' => "Error Message",
+						'TR_TIME' => gettimestr(),
+						'TR_DATE' => getdatestr(),
+						'MESSAGE' => $msg
+						)
+					);
 
-  $tpl -> assign(array('TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'VHCS Error',
-                       'THEME_COLOR_PATH' => "themes/$theme_color",
-                       'THEME_CHARSET' => "UTF-8",
-                       'TR_ERROR_MESSAGE' => "Error Message",
-                       'TR_TIME' => gettimestr(),
-                       'TR_DATE' => getdatestr(),
-                       'MESSAGE' => $msg ));
+	$tpl->parse('PAGE', 'page');
+	$tpl->prnt();
 
-	$tpl -> parse('PAGE', 'page');
-
-  $tpl -> prnt();
-
-  exit(0);
-
-  die();
+	exit(0);
+	die();
 }
 
 ?>

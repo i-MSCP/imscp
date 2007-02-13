@@ -56,17 +56,17 @@
           <td>&nbsp;</td>
           <td background="{THEME_COLOR_PATH}/images/login/content_line.gif">&nbsp;</td>
           <td>&nbsp;</td>
-          <td align="left" valign="bottom"><input type="submit" name="Submit" class="login_button" value="   {TR_SEND}   "></td>
+          <td align="left" valign="bottom"><input type="submit" name="Submit" class="button" value="   {TR_SEND}   "></td>
           <td align="left" valign="bottom"><a class="login" href="index.php">{TR_BACK}</a></td>
          </tr>
         </table>
-        </form>	
+        </form>
 	</td>
     </tr>
   <tr>
     <td></td>
     </tr>
-  
+
   </table>
 
 </td>

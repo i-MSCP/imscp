@@ -52,7 +52,7 @@
   <tr>
     <td colspan="3">&nbsp;</td>
     <td colspan="2" align="right">&nbsp;</td>
-    <td align="right"><input type="submit" name="Submit" class="login_button" value="{TR_LOGIN}"></td>
+    <td align="right"><input type="submit" name="Submit" class="button" value="    {TR_LOGIN}    "></td>
     <td align="right">&nbsp;</td>
   </tr>
 <!-- /* Uncomment this, to use SSL-Switch */
