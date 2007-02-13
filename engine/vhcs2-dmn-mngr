@@ -2146,10 +2146,12 @@ sub dmn_add_httpd_file_data {
 									);
 
 		return $rs if ($rs != 0);
+		
+	}
 
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
-		$ini_tpl = '';
+		my $ini_tpl = '';
 
 		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 
@@ -2174,6 +2176,7 @@ sub dmn_add_httpd_file_data {
 	#
 	# php-fcgi-starters for every domain
 	#
+	
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 
 		my $starter_tpl = '';
@@ -2445,6 +2448,7 @@ sub dmn_change_httpd_file_data {
 	#
 	# php.ini for the domain
 	#
+	
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
 		my $ini_tpl = '';
@@ -2491,6 +2495,7 @@ sub dmn_change_httpd_file_data {
 	#
 	# php5-fcgi-starter for every domain
 	#
+	
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 
 		my $starter_tpl = '';
@@ -4207,7 +4212,7 @@ sub dmn_mngr_engine {
 ##                                    MAIN                                    ##
 ################################################################################
 
-## my $rs = undef;
+my $rs = undef;
 
 $rs = dmn_mngr_start_up();
 
