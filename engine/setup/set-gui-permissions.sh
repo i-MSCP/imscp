@@ -37,9 +37,9 @@ for i in `find $ROOT_DIR/gui/`; do
 
 	if [[ -f $i ]]; then
 
-		echo -e "\t0440 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
+		echo -e "\t0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
 
-		chmod 0440 $i;
+		chmod 0444 $i;
 		chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 	elif [[ -d $i ]]; then
@@ -80,7 +80,7 @@ chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 # fixing db keys permissions;
 #
 
-chmod 0440 $ROOT_DIR/gui/include/vhcs2-db-keys.php
+chmod 0444 $ROOT_DIR/gui/include/vhcs2-db-keys.php
 
 #
 # Setting correct permission for virtual root directory
