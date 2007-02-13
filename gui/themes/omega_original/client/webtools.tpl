@@ -91,7 +91,7 @@
                       <td>&nbsp;</td>
                       <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td width="55"><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/filrmanagericon.gif" width="46" height="46" border="0"></a></td>
+                            <td width="55"><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/filemanagericon.gif" width="46" height="46" border="0"></a></td>
                             <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="link">{TR_FILEMANAGER}</a><br>
                               {TR_FILEMANAGER_TEXT}</td>
                           </tr>
