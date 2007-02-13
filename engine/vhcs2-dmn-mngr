@@ -841,6 +841,8 @@ sub get_auto_num {
     push_el(\@main::el, 'get_auto_num()', 'Ending...');
 
     return $num;
+    
+    close('db');
 
 }
 

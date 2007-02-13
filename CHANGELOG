@@ -27,6 +27,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* Edited vhcs2-dmn-mngr :
 			- Fixed error at line 1838 (name variable $http --> $httpd
 			- Fixed bug #76
+			- Fixed Warn --> Name "main::db" used only once: possible typo at ./vhcs2-dmn-mngr line 839
 
 2007-02-12 Malte Geierhos
 	- SETUP:
