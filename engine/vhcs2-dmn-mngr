@@ -4207,7 +4207,7 @@ sub dmn_mngr_engine {
 ##                                    MAIN                                    ##
 ################################################################################
 
-my $rs = undef;
+## my $rs = undef;
 
 $rs = dmn_mngr_start_up();
 

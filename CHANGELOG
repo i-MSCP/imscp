@@ -23,6 +23,10 @@ VHCS 2.4.8 ω Omega Changelog
 		* Changed all php.ini files
 			- Fixed Open_basedir for usuals user (If not, vhcs has errors)
 			- Fixed Disable_function for usuals user and master user (If not, vhcs has errors)
+	ENGINE:
+		* Edited vhcs2-dmn-mngr :
+			- Fixed error at line 1838 (name variable $http --> $httpd
+			- Fixed warning at line 4210 --> $rs masks earlier declaration in same scope 
 
 2007-02-12 Malte Geierhos
 	- SETUP:
