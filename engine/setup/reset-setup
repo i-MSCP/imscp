@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/perl
 
 # VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2006-2007 by ispCP | http://isp-control.net
@@ -31,27 +31,31 @@
 #
 ########################################################################
 
+use FindBin;
+use lib "$FindBin::Bin/..";
 require 'vhcs2_common_code.pl';
 use strict;
 use warnings;
 
 ## Variables
-my ($rs, $sql)	= (undef, undef);
+my ($rs, $sql, $rdata)	= (undef, undef, undef);
 my $user_prefix = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 my $master_user = $main::cfg{'APACHE_SUEXEC_MIN_UID'};
 my $user_delete	= $main::cfg{'CMD_USERDEL'};
 my $database	= $main::cfg{'DATABASE_NAME'};
 
 ## MAIN
-echo "Re-setting VHCS 2 Setup!";
-echo "========================";
-my $delete_cmd = "$user_delete $master_user$user_prefix";
+print STDOUT "Re-setting VHCS 2 Setup!\n";
+print STDOUT "========================\n";
+my $delete_cmd = "$user_delete $user_prefix$master_user";
 $rs = sys_command($delete_cmd);
 
-$sql = "drop database $database";
+$sql = "DROP DATABASE IF EXISTS $database";
 ($rs, $rdata) = doSQL($sql);
 if ($rs != 0) {
-	echo "An error occured!";
+	print STDOUT "An error occured!\n";
+	print STDOUT "$rdata\n";
 }
-echo "done!"
-return 1
+else {
+	print STDOUT "done!\n";
+}

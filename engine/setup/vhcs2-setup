@@ -53,8 +53,8 @@ sub welcome_note {
 
 	my $welcome_message = <<MSG;
 
-	Welcome to VHCS2 '$main::cfg{'Version'}' Setup Dialog.
-	This program will set up VHCS2 OMEGA system on your server.
+    Welcome to VHCS2 '$main::cfg{'Version'}' Setup Dialog.
+    This program will set up VHCS2 OMEGA system on your server.
 MSG
 
 	print STDOUT $welcome_message;
@@ -121,7 +121,7 @@ sub ask_hostname {
 
 	return $rs if ($rs != 0);
 
-	my $qmsg = "	Please enter system hostname (Enter for defaults) [$hostname]: ";
+	my $qmsg = "    Please enter system hostname (Enter for defaults) [$hostname]: ";
 
 	print STDOUT $qmsg;
 
@@ -322,7 +322,7 @@ sub ask_db_password {
 
 	} else {
 
-		$qmsg = "	Please repeat system SQL password: ";
+		$qmsg = "    Please repeat system SQL password: ";
 
 		$pass2 = read_password($qmsg);
 
@@ -392,7 +392,7 @@ sub ask_db_ftp_password {
 
 	} else {
 
-		$qmsg = "	Please repeat VHCS ftp SQL user password: ";
+		$qmsg = "    Please repeat VHCS ftp SQL user password: ";
 
 		$pass2 = read_password($qmsg);
 
@@ -446,7 +446,7 @@ sub ask_db_pma_password {
 	if (!defined($pass1) || $pass1 eq '') {
 		$main::ua{'db_pma_password'} = '';
 	} else {
-		$qmsg = "	Please repeat VHCS phpMyAdmin Control user password: ";
+		$qmsg = "    Please repeat VHCS phpMyAdmin Control user password: ";
 		$pass2 = read_password($qmsg);
 
 		if ($pass1 eq $pass2) {
@@ -508,7 +508,7 @@ sub ask_admin_password {
 			print STDOUT "\n    Password too short!";
 			return 1;
 		}
-		$qmsg = "	Please repeat administrator password: ";
+		$qmsg = "    Please repeat administrator password: ";
 		$pass2 = read_password($qmsg);
 
 		if ($pass1 eq $pass2) {
@@ -1021,7 +1021,7 @@ sub setup_config {
 
 sub setup_sql {
 
-	my ($rs, $rdata, $cfg_tpl) = (undef, undef, undef);
+	my ($rs, $rdata, $cfg_tpl, $cfg) = (undef, undef, undef, undef);
 
 	push_el(\@main::el, 'setup_sql()', 'Starting...');
 
