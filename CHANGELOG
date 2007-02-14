@@ -14,6 +14,11 @@ VHCS 2.4.8 ω Omega Changelog
 2007-02-13 Benedikt Heintel
 	- GUI:
 		* changed design issues
+		* fixed not translated message
+	- LANGUAGES:
+		* Ukrainian: added missing strings (complete)
+	- SETUP:
+		* pma user is added in config.inc.php file
 
 2007-02-13 Laurent DECLERCQ
 	- SETUP:
@@ -23,7 +28,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* Changed all php.ini files
 			- Fixed Open_basedir for usuals user (If not, vhcs has errors)
 			- Fixed Disable_function for usuals user and master user (If not, vhcs has errors)
-	ENGINE:
+	- ENGINE:
 		* Edited vhcs2-dmn-mngr :
 			- Fixed error at line 1838 (name variable $http --> $httpd
 			- Fixed bug #76

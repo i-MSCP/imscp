@@ -1144,13 +1144,14 @@ sub setup_sql {
 
 	my $vftp_sql_user = $main::ua{'db_ftp_user'};
 	my $vftp_sql_password = $main::ua{'db_ftp_password'};
+	my $hostname = $main::ua{'db_host'};
 
 	$sql = "delete from tables_priv where Host = '$main::cfg{'SERVER_HOSTNAME'}' and Db = '$main::db_name' and User = '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = " delete from user where Host = '$main::cfg{'SERVER_HOSTNAME'}' and User = '$vftp_sql_user'";
+	$sql = " delete from user where Host = '$hostname' and User = '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -1160,22 +1161,22 @@ sub setup_sql {
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.ftp_group to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.ftp_group to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.ftp_users to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.ftp_users to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.quotalimits to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.quotalimits to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.quotatallies to '$vftp_sql_user'\@'$main::cfg{'SERVER_HOSTNAME'}' identified by '$vftp_sql_password'";
+	$sql = "grant select,insert,update,delete on $main::db_name.quotatallies to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -1193,31 +1194,54 @@ sub setup_sql {
 
 	my $pma_sql_user = $main::ua{'db_pma_user'};
 	my $pma_sql_password = $main::ua{'db_pma_password'};
-	my $localhost = $main::ua{'db_host'};
 
-	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$localhost\' IDENTIFIED BY \'$pma_sql_password\';";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO \'$pma_sql_user\'\@\'$localhost\';";
+	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$hostname\' IDENTIFIED BY \'$pma_sql_password\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT ON mysql.db TO \'$pma_sql_user\'\@\'$localhost\';";
+	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO \'$pma_sql_user\'\@\'$hostname\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT ON mysql.host TO \'$pma_sql_user\'\@\'$localhost\';";
+	$sql = "GRANT SELECT ON mysql.db TO \'$pma_sql_user\'\@\'$hostname\';";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO \'$pma_sql_user\'\@\'$localhost\';";
+	$sql = "GRANT SELECT ON mysql.host TO \'$pma_sql_user\'\@\'$hostname\';";
 
 	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO \'$pma_sql_user\'\@\'$hostname\';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	#
+	# Insert pma user and password to config file
+	#
+
+	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/"
+
+	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
+
+	return $rs if ($rs != 0);
+
+	my %tag_hash = (
+					'{PMA_USER}' => $pma_sql_user,
+					'{PMA_PASS}' => $pma_sql_password,
+					'{HOSTNAME}' => $hostname
+				   );
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$cfg_dir/$cfg_tpl", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_GROUP'}', 0440);
+
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_sql()', 'Ending...');
