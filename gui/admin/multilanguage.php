@@ -117,48 +117,49 @@ function install_lang() {
 
 		if (!($file_type === "application/octet-stream")){
 			set_page_message(tr('You can upload only text files!'));
+			echo $file_type;
 			return;
 		}
 		else {
-			$file =  $_FILES['lang_file']['tmp_name'];
-			$fd = fopen($file,"r");
+			$file = $_FILES['lang_file']['tmp_name'];
+			$fd = fopen($file, "r");
 
 			if (!$fd) {
 				set_page_message(tr('Can not read vhcs language file!'));
 				return;
 			}
-			$table  = fgets($fd, 4096);
-			$table  = explode("=",trim($table));
+			$table = fgets($fd, 4096);
+			$table = explode("=", trim($table));
 			if ($table[0] != "vhcs_table") {
 				set_page_message(tr('Can not read vhcs language file!'));
 				return;
 			}
-			$lang_table = $table[1];
-			$lang_table = 'lang_' . $lang_table;
+			$lang_table = 'lang_'.$table[1];
 
 			$tables = $sql->MetaTables();
 			$nlang = count($tables);
 			$lang_update = 0;
 
-			for ($i=0 ; $i < $nlang; $i++) {
-				$data= $tables[$i];
+			$i = 0;
+			do {
+				$data = $tables[$i];
 				if ($data == $lang_table) {
 					$lang_update = 1;
 				}
-			}
+				$i++;
+			} while ($lang_update == 1 OR $i >= $nlang);
 
 			clearstatcache();
 			if (file_exists($file)) {
-				$fd = fopen($file,"r");
+				$fd = fopen($file, "r");
 
 				if (!$fd) {
-				set_page_message(tr('Can not read vhcs language file!'));
+					set_page_message(tr('Can not read vhcs language file!'));
 					return;
 				}
 
-
 				//	clean up table if this is language update
-				$sql->Execute("DROP TABLE `$lang_table`;");
+				$sql->Execute("DROP TABLE IF EXISTS `$lang_table`;");
 
 				$sql->Execute("CREATE TABLE `$lang_table` (
 								id int(10) unsigned NOT NULL auto_increment,
@@ -169,9 +170,9 @@ function install_lang() {
 							);
 
 				while(!feof($fd)){
-					$buffer_id   = fgets($fd, 4096);
-					$buffer_id   = explode(" = ",chop($buffer_id));
-					$orig_string = @$buffer_id[0];
+					$buffer_id    = fgets($fd, 4096);
+					$buffer_id    = explode("=", trim($buffer_id));
+					$orig_string  = @$buffer_id[0];
 					$trans_string = html_entity_decode(@$buffer_id[1]);
 
 					$query = "INSERT INTO `$lang_table` (msgid,msgstr) VALUES (?, ?)";
@@ -333,7 +334,7 @@ $tpl -> assign(
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		'TR_INSTALL' => tr('Install'),
 		'TR_EXPORT' => tr('Export'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true),
 		)
 	);
 

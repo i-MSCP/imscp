@@ -1021,7 +1021,7 @@ sub setup_config {
 
 sub setup_sql {
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $cfg_tpl) = (undef, undef, undef);
 
 	push_el(\@main::el, 'setup_sql()', 'Starting...');
 
@@ -1195,6 +1195,21 @@ sub setup_sql {
 	my $pma_sql_user = $main::ua{'db_pma_user'};
 	my $pma_sql_password = $main::ua{'db_pma_password'};
 
+	$sql = "delete from tables_priv where Host = '$main::cfg{'SERVER_HOSTNAME'}' and Db = '$main::db_name' and User = '$pma_sql_user'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = " delete from user where Host = '$hostname' and User = '$pma_sql_user'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "flush privileges";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
 	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$hostname\' IDENTIFIED BY \'$pma_sql_password\';";
 
 	($rs, $rdata) = doSQL($sql);
@@ -1224,7 +1239,7 @@ sub setup_sql {
 	# Insert pma user and password to config file
 	#
 
-	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/"
+	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
 
 	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
 
@@ -1240,7 +1255,7 @@ sub setup_sql {
 
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$cfg_dir/$cfg_tpl", $cfg, '$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}', '$main::cfg{'APACHE_GROUP'}', 0440);
+	$rs = store_file("$cfg_dir/config.inc.php", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_GROUP'}", 0440);
 
 	return $rs if ($rs != 0);
 
@@ -1548,8 +1563,7 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	## php4.ini
-	#($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4.ini');
-	 ($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4/php.ini');
+	($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4/php.ini');
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
@@ -1562,14 +1576,12 @@ sub setup_php {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	#$rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
-	 $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
+    $rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php4/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
 
 	return $rs if ($rs != 0);
 
 	## php5.ini
-	#($rs, $cfg_tpl) = get_tpl($tpl_dir, 'php5.ini');
-	   ($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php5/php.ini');
+	($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php5/php.ini');
 	return $rs if ($rs != 0);
 
 	%tag_hash = (
@@ -1582,7 +1594,6 @@ sub setup_php {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	#$rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php5.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
 	$rs = store_file("$main::cfg{'PHP_STARTER_DIR'}/master/php5/php.ini", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_SUEXEC_USER_PREF'}"."$main::cfg{'APACHE_SUEXEC_MIN_GID'}", 0644);
 
 	return $rs if ($rs != 0);

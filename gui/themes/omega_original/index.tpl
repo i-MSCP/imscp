@@ -33,7 +33,7 @@
     <td rowspan="3">&nbsp;</td>
     <td width="131" class="login_text"><div align="right">{TR_USERNAME}</div></td>
     <td width="14" class="login_text">&nbsp;</td>
-    <td width="150"><input type="text" name="uname" value="" maxlength="255" style="width:150px" class="textinput"></td>
+    <td width="150"><input type="text" name="uname" value="" maxlength="255" style="width:150px" class="textinput" tabindex="1"></td>
     <td width="25">&nbsp;</td>
   </tr>
   <tr>
@@ -42,17 +42,17 @@
   <tr>
     <td class="login_text"><div align="right">{TR_PASSWORD}</div></td>
     <td class="login_text">&nbsp;</td>
-    <td><input type="password" name="upass" value="" maxlength="255" style="width:150px" class="textinput"></td>
+    <td><input type="password" name="upass" value="" maxlength="255" style="width:150px" class="textinput" tabindex="2"></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td colspan="3"><div align="center"><a class="login" href="lostpassword.php"><font size="-2">{TR_LOSTPW}</font></a></div></td>
+    <td colspan="3"><div align="center"><a class="login" href="lostpassword.php" tabindex="4"><font size="-2">{TR_LOSTPW}</font></a></div></td>
     <td colspan="4">&nbsp;</td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>
     <td colspan="2" align="right">&nbsp;</td>
-    <td align="right"><input type="submit" name="Submit" class="button" value="    {TR_LOGIN}    "></td>
+    <td align="right"><input type="submit" name="Submit" class="button" value="    {TR_LOGIN}    " tabindex="3"></td>
     <td align="right">&nbsp;</td>
   </tr>
 <!-- /* Uncomment this, to use SSL-Switch */
