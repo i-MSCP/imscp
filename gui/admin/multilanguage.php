@@ -172,7 +172,7 @@ function install_lang() {
 
 				while(!feof($fd)){
 					$buffer_id    = fgets($fd, 4096);
-					$buffer_id    = explode("=", trim($buffer_id));
+					$buffer_id    = explode(" = ", trim($buffer_id));
 					$orig_string  = trim(@$buffer_id[0]);
 					$trans_string = trim(@$buffer_id[1]);
 
