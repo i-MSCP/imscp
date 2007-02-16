@@ -6,6 +6,7 @@ install:
 	if [[ $(HOST_OS) == debian ]] ; then \
 		cp ./vhcs2.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
+		cd ./awstats && $(MAKE) install ; cd .. ; \
 		cd ./bind && $(MAKE) install ; cd .. ; \
 		cd ./crontab && $(MAKE) install ; cd .. ; \
 		cd ./cron.d && $(MAKE) install ; cd .. ; \
@@ -16,14 +17,16 @@ install:
 		cd ./courier && $(MAKE) install ; cd .. ; \
 		cd ./proftpd && $(MAKE) install ; cd .. ; \
 		cd ./logrotate && $(MAKE) install ; cd .. ; \
+	elif [[ $(HOST_OS) == fedora ]] ; then \
+		cd ./dists/fedora && $(MAKE) install ; \
+	elif [[ $(HOST_OS) == gentoo ]] ; then \
+		cd ./dists/gentoo && $(MAKE) install ; \
+	elif [[ $(HOST_OS) == sles9 ]] ; then \
+		cd ./dists/sles9 && $(MAKE) install ; \
 	elif [[ $(HOST_OS) == suse100 ]] ; then \
 		cd ./dists/suse100 && $(MAKE) install ; \
 	elif [[ $(HOST_OS) == suse93 ]] ; then \
 		cd ./dists/suse93 && $(MAKE) install ; \
-	elif [[ $(HOST_OS) == fedora ]] ; then \
-		cd ./dists/fedora && $(MAKE) install ; \
-	elif [[ $(HOST_OS) == sles9 ]] ; then \
-		cd ./dists/sles9 && $(MAKE) install ; \
 	fi
 
 uninstall:
@@ -31,6 +34,7 @@ uninstall:
 	if [[ $(HOST_OS) == debian ]] ; then \
 		rm -rf $(SYSTEM_CONF)/vhcs2.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
+		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \
 		cd ./crontab && $(MAKE) uninstall ; cd .. ; \
 		cd ./cron.d && $(MAKE) uninstall ; cd .. ; \
@@ -40,11 +44,15 @@ uninstall:
 		cd ./courier && $(MAKE) uninstall ; cd .. ; \
 		cd ./proftpd && $(MAKE) uninstall ; cd .. ; \
 		cd ./logrotate && $(MAKE) uninstall ; cd .. ; \
-	elif [[ $(HOST_OS) == suse ]] ; then \
-		cd ./dists/suse && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == fedora ]] ; then \
+		cd ./dists/fedora && $(MAKE) uninstall ; \
+	elif [[ $(HOST_OS) == gentoo ]] ; then \
 		cd ./dists/fedora && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == sles9 ]] ; then \
 		cd ./dists/sles9 && $(MAKE) uninstall ; \
+	elif [[ $(HOST_OS) == suse93 ]] ; then \
+		cd ./dists/suse93 && $(MAKE) uninstall ; \
+	elif [[ $(HOST_OS) == suse100 ]] ; then \
+		cd ./dists/suse100 && $(MAKE) uninstall ; \
 	fi
 

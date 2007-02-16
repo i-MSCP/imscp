@@ -46,7 +46,7 @@ $cfg['Servers'][$i]['pdf_pages'] 		= 'pma_pdf_pages';
 $cfg['Servers'][$i]['column_info'] 		= 'pma_column_info';
 $cfg['Servers'][$i]['history'] 			= 'pma_history';
 /* Name of the Server displayed */
-$cfg['Servers'][$i]['verbose'] 			= 'mysql.myserver.com';
+/*$cfg['Servers'][$i]['verbose'] 			= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
 
 /*
  * End of servers configuration

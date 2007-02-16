@@ -31,12 +31,12 @@ $tpl -> define_dynamic('lang_delete_show', 'lang_row');
 $tpl -> define_dynamic('lang_radio', 'lang_row');
 $tpl -> define_dynamic('lang_def', 'lang_row');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
+$theme = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
 	array(
 			'TR_ADMIN_I18N_PAGE_TITLE' => tr('VHCS - Admin/Internationalization'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_COLOR_PATH' => "../themes/$theme",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
 			'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
@@ -79,7 +79,7 @@ SQL_QUERY;
 							)
 SQL_QUERY;
 
-				$rs = exec_query($sql, $query, array($user_id, $user_lang, $theme_color));
+			$rs = exec_query($sql, $query, array($user_id, $user_lang, $theme));
 			}
 			else {
 				$query = <<<SQL_QUERY
@@ -117,7 +117,6 @@ function install_lang() {
 
 		if (!($file_type === "application/octet-stream")){
 			set_page_message(tr('You can upload only text files!'));
-			echo $file_type;
 			return;
 		}
 		else {
@@ -129,7 +128,7 @@ function install_lang() {
 				return;
 			}
 			$table = fgets($fd, 4096);
-			$table = explode("=", trim($table));
+			$table = explode(" = ", trim($table));
 			if ($table[0] != "vhcs_table") {
 				set_page_message(tr('Can not read vhcs language file!'));
 				return;
@@ -138,18 +137,18 @@ function install_lang() {
 
 			$tables = $sql->MetaTables();
 			$nlang = count($tables);
-			$lang_update = 0;
+			$lang_update = false;
 
 			$i = 0;
 			do {
 				$data = $tables[$i];
 				if ($data == $lang_table) {
-					$lang_update = 1;
+					$lang_update = true;
 				}
 				$i++;
-			} while ($lang_update == 1 OR $i >= $nlang);
+			} while ($lang_update === false AND $i < $nlang);
 
-			clearstatcache();
+			reset($tables);
 			if (file_exists($file)) {
 				$fd = fopen($file, "r");
 
@@ -158,8 +157,10 @@ function install_lang() {
 					return;
 				}
 
-				//	clean up table if this is language update
-				$sql->Execute("DROP TABLE IF EXISTS `$lang_table`;");
+				if ($lang_update === true) {
+					// clean up table if this is language update
+					$sql->Execute("DROP TABLE IF EXISTS `$lang_table`;");
+				}
 
 				$sql->Execute("CREATE TABLE `$lang_table` (
 								id int(10) unsigned NOT NULL auto_increment,
@@ -172,8 +173,8 @@ function install_lang() {
 				while(!feof($fd)){
 					$buffer_id    = fgets($fd, 4096);
 					$buffer_id    = explode("=", trim($buffer_id));
-					$orig_string  = @$buffer_id[0];
-					$trans_string = html_entity_decode(@$buffer_id[1]);
+					$orig_string  = trim(@$buffer_id[0]);
+					$trans_string = trim(@$buffer_id[1]);
 
 					$query = "INSERT INTO `$lang_table` (msgid,msgstr) VALUES (?, ?)";
 					exec_query($sql, $query, array($orig_string, $trans_string));
