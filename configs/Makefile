@@ -47,7 +47,7 @@ uninstall:
 	elif [[ $(HOST_OS) == fedora ]] ; then \
 		cd ./dists/fedora && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == gentoo ]] ; then \
-		cd ./dists/fedora && $(MAKE) uninstall ; \
+		cd ./dists/gentoo && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == sles9 ]] ; then \
 		cd ./dists/sles9 && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == suse93 ]] ; then \

@@ -1,5 +1,6 @@
 
-ROOT_COURIER_CONF=$(ROOT_CONF)/courier
+ROOT_COURIER_CONF=$(ROOT_CONF)/courier/authlib
+ROOT_COURIER_IMAP_CONF=$(ROOT_CONF)/courier-imap
 
 export
 
@@ -7,6 +8,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/courier
 	$(SYSTEM_MAKE_DIRS) $(ROOT_COURIER_CONF)
+	$(SYSTEM_MAKE_DIRS) $(ROOT_COURIER_IMAP_CONF)
 #
 #	MTA Configuration Files;
 #
@@ -25,9 +27,9 @@ install:
 
 	cp ./authdaemonrc $(ROOT_COURIER_CONF)
 	cp ./authmodulelist $(ROOT_COURIER_CONF)
-	cp ./imapd $(ROOT_COURIER_CONF)
-	cp ./pop3d $(ROOT_COURIER_CONF)
-	cp ./userdb $(ROOT_COURIER_CONF)
+	cp ./imapd $(ROOT_COURIER_IMAP_CONF)
+	cp ./pop3d $(ROOT_COURIER_IMAP_CONF)
+	cp ./userdb $(ROOT_COURIER_IMAP_CONF)
 
 uninstall:
 
