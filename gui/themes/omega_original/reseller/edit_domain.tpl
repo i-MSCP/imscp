@@ -184,7 +184,8 @@ function MM_goToURL() { //v3.0
               </tr>
             </table></td>
           </tr>
-        </table>	    <p>&nbsp;</p></td>
+        </table>
+	  </td>
 	</tr>
 </table>
 </body>

@@ -187,7 +187,8 @@ function MM_swapImage() { //v3.0
 </table>			
 			</td>
           </tr>
-        </table>	    <p>&nbsp;</p></td>
+        </table>
+	  </td>
 	</tr>
 </table>
 </body>

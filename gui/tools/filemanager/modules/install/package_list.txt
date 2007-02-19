@@ -1,0 +1,95 @@
+<option value="" style="font-weight: bold; text-decoration: underline;">Blogs</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/evocms/b2evolution-1.8.0-2006-07-09.zip">b2evolution 1.8.0</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/nucleuscms/nucleus3.23.zip">Nucleus 3.23 English</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/nucleuscmsde/nucleus3.23_de.zip">Nucleus 3.23 German</option>
+<option value="http://wordpress.org/latest.tar.gz">WordPress (latest version)</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Content management</option>
+<option value="http://ftp.osuosl.org/pub/drupal/files/projects/drupal-4.6.8.tar.gz">Drupal 4.6.8</option>
+<option value="http://ftp.osuosl.org/pub/drupal/files/projects/drupal-4.7.2.tar.gz">Drupal 4.7.2</option>
+<option value="http://ez.no/content/download/137355/877522/file/ezpublish-3.8.3-gpl.tar.gz">eZ Publish 3.8.3</option>
+<option value="http://www.geeklog.net/filemgmt/visit.php?lid=747">Geeklog</option>
+<option value="http://developer.joomla.org/sf/frs/do/downloadFile/projects.joomla/frs.joomla_1_0.1_0_10/frs5790?dl=1">Joomla 1.0.10</option>
+<option value="http://mamboxchange.com/frs/download.php/7368/mambov4.5.3h.tar.gz">Mambo 4.5.3h</option>
+<option value="http://mamboxchange.com/frs/download.php/7877/MamboV4.5.4.tar.gz">Mambo 4.5.4</option>
+<option value="http://mamboxchange.com/frs/download.php/8046/MamboV4.6RC2.tar.gz">Mambo 4.6 RC2</option>
+<option value="http://download.moodle.org/stable16/moodle-latest-16.tgz">Moodle 1.6.1 stable</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpwcms/phpwcms_1.2.5-DEV.tgz">phpWCMS 1.2.5</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpwebsite/phpwebsite-0.10.2-full.tar.gz">phpWebSite 0.10.2 full</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpwebsite/phpwebsite-0.10.2-full.tar.gz">phpWebSite 0.10.2 full</option>
+<option value="http://noc.postnuke.com/frs/download.php/987/PostNuke-0.762.tar.gz">Post-Nuke 0.762</option>
+<option value="http://siteframe.org/files/2/34/siteframe-5.0.2-768.tar.gz">Siteframe 5.0.2</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/typo3/dummy-4.0.tar.gz">TYPO3 4.0 dummy</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/typo3/typo3_src-4.0.tar.gz">TYPO3 4.0 source</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/xoops/xoops-2.0.14.tar.gz">Xoops 2.0.14</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Customer relationship</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/cslive/craftysyntax2.12.9.tar.gz">Crafty Syntax Live Help 2.12.9</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/helpcenterlive/hcl_2-1-2.zip">Help Center Live 2.1.2</option>
+<option value="http://www.phpsupporttickets.com/pages/php_support_tickets/dist/free/PHP_S_Tickets_v2.2.tar.gz">PHP Support Tickets</option>
+<option value="http://www.support-logic.com/download/index.php?cmd=download&id=22">Support Logic Helpdesk 1.3</option>
+<option value="http://www.sheddnet.net/forums/attachment.php?attachmentid=77&d=1146954912">Support Services Manager 1.0.2</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Development</option>
+<option value="http://www.net2ftp.com/download/net2ftp_v0.93.zip">net2ftp 0.93 full version</option>
+<option value="http://www.net2ftp.com/download/net2ftp_v0.93_light.zip">net2ftp 0.93 light version</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpmyadmin/phpMyAdmin-2.8.2.tar.gz">phpMyAdmin 2.8.2</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Discussion boards</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpbb/phpBB-2.0.21.tar.gz">phpBB 2.0.21</option>
+<option value="http://www.punbb.org/download/punbb-1.2.12.tar.gz">punBB 1.2.12</option>
+<option value="http://www.simplemachines.org/download/index.php/smf_1-0-7_install.tar.gz">Simple Machines Forum 1.0.7</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">E-Commerce</option>
+<option value="https://www.cubecart.com/site/helpdesk/index.php?_m=downloads&_a=viewdownload&downloaditemid=44&nav=0,5">CubeCart</option>
+<option value="http://www.oscommerce.com/redirect.php/go,28">OS Commerce 2.2 Milestone 2 Update 051113</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/zencart/zen-cart-v1.1.4d.zip">Zen Cart 1.1.4d</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/zencart/zen-cart-1-2-7-d_full-release.zip">Zen Cart 1.2.7d full release</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/zencart/zen-cart-v1.3.0.2-full-fileset.zip">Zen Cart 1.3.0.2 full fileset</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">FAQ</option>
+<option value="http://www.lethalpenguin.net/design/faqmasterflex.php?download=true">FAQMasterFlex</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Guestbooks</option>
+<option value="http://www.danskcinders.com/download/ViPER_Guestbook_X1.1.zip">ViPER Guestbook 1.1</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Hosting billing</option>
+<option value="http://www.phpcoin.com/coin_addons/dload.php?id=108">phpCOIN 1.2.3</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Image galleries</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/coppermine/cpg1.4.8.zip">Coppermine Photo Gallery 1.4.8</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/gallery/gallery-2.1.1a-typical.tar.gz">Gallery 2.1.1a (typical)</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/gallery/gallery-2.1.1a-full.tar.gz">Gallery 2.1.1a (full)</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/gallery/gallery-2.1.1a-minimal.tar.gz">Gallery 2.1.1a (mininal)</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/gallery/gallery-2.1.1a-developer.tar.gz">Gallery 2.1.1a (developer)</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Mailing lists</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phplist/phplist-2.10.2.tgz">PHPlist 2.10.2</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Polls and surveys</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpesp/phpESP-1.8.2.tar.gz">phpESP 1.8.2</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpsurveyor/phpsurveyor-1_00.zip">PHPSurveyor 1.0</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Project management</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/dotproject/dotproject-2.0.4.tar.gz">dotProject 2.0.4</option>
+<option value="http://www.phprojekt.com/modules.php?op=modload&name=Downloads&file=index&req=getit&lid=3">PHProjekt 5.1</option>
+<option value="http://www.tutos.org/download/TUTOS-php-1.2.20050904.tar.gz">Tutos 1.2.20050904</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Webmail</option>
+<option value="ftp://ftp.horde.org/pub/horde/horde-3.1.2.tar.gz">Horde 3.1.2 (required for IMP)</option>
+<option value="ftp://ftp.horde.org/pub/imp/imp-h3-4.1.2.tar.gz">IMP H3 4.1.2 (requires Horde)</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/neomail/neomail-1.29.tar.gz">NeoMail 1.29</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/squirrelmail/squirrelmail-1.4.7.tar.gz">Squirrelmail 1.4.7</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Wiki</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/tikiwiki/tikiwiki-1.9.4.tar.gz">TikiWiki 1.9.4</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpwiki/phpwiki-1.2.10.tar.gz">PhpWiki 1.2.10 (stable)</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpwiki/phpwiki-1.3.12p3.tar.bz2">PhpWiki 1.3.12p3 (current)</option>
+
+<option value="" style="font-weight: bold; text-decoration: underline;">Other scripts</option>
+<option value="http://www.cacti.net/downloads/cacti-0.8.6h.tar.gz">Cacti 0.8.6h</option>
+<option value="http://classifieds.phpoutsourcing.com/classifieds_1_3.tgz">Noahs Classifieds 1.3</option>
+<option value="http://www.open-realty.org/release/open-realty232.zip">Open-Realty 2.3.2</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpadsnew/phpAdsNew-2.0.8.tar.gz">phpAdsNew</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/phpformgen/phpFormGen-php-2.09c.tar.gz">phpFormGenerator 2.0.9c</option>
+<option value="http://belnet.dl.sourceforge.net/sourceforge/webcalendar/WebCalendar-1.0.4.tar.gz">WebCalendar 1.0.4</option>

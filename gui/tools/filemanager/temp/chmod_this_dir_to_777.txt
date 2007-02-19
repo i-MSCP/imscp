@@ -1,0 +1,2 @@
+
+Don't forget to chmod this directory to 777 (all permissions).

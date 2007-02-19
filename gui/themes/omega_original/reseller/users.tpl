@@ -159,7 +159,8 @@ function sbmt(form, uaction) {
               </tr>
             </table></td>
           </tr>
-        </table>	    <p>&nbsp;</p></td>
+        </table>
+	  </td>
 	</tr>
 </table>
 </body>

@@ -1,0 +1,3 @@
+html {border:none;} /*remove ie frameborder */
+body {margin-top:13px;margin-top:15px;background:white;font-family:monospace;font-size:13px;margin-left:32px;white-space:pre;background-image:url("../images/linenumbers.png");background-repeat:repeat-y;background-position:0 3px;line-height:16px;}
+html>body{background-position:0 2px;}

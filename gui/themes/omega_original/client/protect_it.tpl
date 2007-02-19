@@ -174,7 +174,8 @@ function begin_js(){
               </tr>
             </table></td>
           </tr>
-        </table>	    <p>&nbsp;</p></td>
+        </table>
+	  </td>
 	</tr>
 </table>
 </body>

@@ -23,41 +23,32 @@
         <form name="frm" action="lostpassword.php" method="post">
         <table width="453" border="0" cellspacing="0" cellpadding="0">
          <tr>
-          <td width="20" rowspan="6"></td>
-          <td width="20" rowspan="6">&nbsp;</td>
-          <td width="2" rowspan="6" background="{THEME_COLOR_PATH}/images/login/content_line.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="2" height="2"></td>
-          <td width="20" rowspan="6">&nbsp;</td>
+          <td width="45" rowspan="6"></td>
           <td colspan="2"><strong><div class="login_text">{TR_IMGCAPCODE}<br />{TR_CAPCODE}</div></strong></td>
          </tr>
          <tr>
           <td colspan="2"><input name="capcode" type="text" class="textinput" ID="capcode" style="width:210px" value=""></td>
          </tr>
          <tr>
-          <td width="210" colspan="6" class="imgcapcode_description_text"><p>{TR_IMGCAPCODE_DESCRIPTION}</p></td>
+          <td colspan="6" class="imgcapcode_description_text"><p>{TR_IMGCAPCODE_DESCRIPTION}</p></td>
          </tr>
          <tr>
-          <td><br></td>
+          <td width="106"><br></td>
          </tr>
          <tr>
           <td colspan="2"><strong>
-           <div class="login_text">{TR_USERNAME}</div>
-          </td>
+           <div class="login_text">{TR_USERNAME}</div>          </td>
          </tr>
          <tr>
-          <td width="161" colspan="2"><input name="uname" type="text" class="textinput" id="uname3" style="width:210px" value=""></td>
+          <td colspan="2"><input name="uname" type="text" class="textinput" id="uname3" style="width:210px" value=""></td>
          </tr>
          <tr>
-          <td colspan="2">&nbsp;</td>
-          <td background="{THEME_COLOR_PATH}/images/login/content_line.gif">&nbsp;</td>
           <td colspan="3">&nbsp;</td>
-         </tr>
+          </tr>
          <tr>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td background="{THEME_COLOR_PATH}/images/login/content_line.gif">&nbsp;</td>
           <td>&nbsp;</td>
           <td align="left" valign="bottom"><input type="submit" name="Submit" class="button" value="   {TR_SEND}   "></td>
-          <td align="left" valign="bottom"><a class="login" href="index.php">{TR_BACK}</a></td>
+          <td width="302" align="left" valign="bottom"><a class="login" href="index.php">{TR_BACK}</a></td>
          </tr>
         </table>
         </form>
@@ -72,6 +63,13 @@
 </td>
   </tr>
 </table>
+<table align="center" width="453">  
+    <tr>
+  <td align="right" class="login">
+  Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a>
+  </td>
+  </tr>
+ </table>
 </td>
   </tr>
 </table>

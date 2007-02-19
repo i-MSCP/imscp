@@ -1,0 +1,18 @@
+/* global */
+html {border:none;} /*remove ie frameborder */
+body {margin-top:13px;margin-top:15px;background:white;font-family:monospace;font-size:13px;margin-left:32px;white-space:pre;background-image:url("../images/linenumbers.png");background-repeat:repeat-y;background-position:0 3px;line-height:16px;}
+html>body{background-position:0 2px;}
+P {margin:0;padding:0;border:0;outline:0;display:block;white-space:pre;}
+
+/* language specific (php) */
+/* fonts with bold and italic must have size 12px */
+b,i,s,em,u,ins,strong,var,cite,big {display:inline;font-weight:normal;text-decoration:none;font-style:normal;}
+b {color:#000080;} /* tags */
+big, big b, big em, big u, big s, strong i, strong i b, strong i s, strong i ins, strong i var, strong i var ins, strong i s ins {color:gray;font-weight:normal;font-style:italic;font-size:12px;letter-spacing:1px;} /* comments */
+s, s b, strong s ins, strong s cite {color:#5656fa;font-weight:normal;font-size:13px;} /* attributes and strings */
+strong var, strong var ins {color:#006700;font-weight:bold;font-size:12px;letter-spacing:1px;} /* variables */
+em {color:#800080;font-style:normal;} /* style */
+u {color:#800000;text-decoration:none;} /* script */
+strong ins {color:#7F0055;font-weight:bold;font-size:12px;letter-spacing:1px;} /* reserved words */
+strong, strong i {/*background-color:#f4f4f4;*/} /* everything inside php tags */
+cite, s cite {color:red;font-weight:bold;font-size:12px;letter-spacing:1px;} /* <?php and ?> */

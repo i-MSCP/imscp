@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+	<title>CodePress - Real Time Syntax Highlighting Editor written in JavaScript</title>
+
+	<style>
+	body {color:#000;background-color:white;font:15px georgia, "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif; letter-spacing:0.01em;margin:15px;}
+	p {margin:0 0 15px 0;}
+	a,a:visited {color:#7f0055;}
+	select {background:#ffffe1;}
+	button {margin-top:5px;}
+	h1 {color:#7f0055;margin:0;padding:0;font-size:42px;font-weight:normal;}
+	h2 {font-size:22px;margin:0;color:black;font-weight:normal;}
+	h3 {font-size:20px;font-weight:normal;padding:0;margin:25px 0 5px 0;color:#7f0055;font-weight:bold;border-bottom:2px dotted #d8d8d8;}
+	code {color:gray;}
+	#logo {text-align:center;background-color:#d6d6d6;padding:10px;-moz-border-radius:5px;border:1px solid silver;}
+	#container {width:700px;margin:20px auto;padding:25px;border:3px solid #d9d9d9;-moz-border-radius:10px;background:#f8f8f8;}
+	#languages {margin:5px 0;}
+	#codepress {width:100%;height:400px;border:1px solid gray;frameborder:0;}
+	#default {font-weight:bold;color:red;}
+	#load-code {display:none;}
+	</style>
+	
+	<script>
+	// get code from codepress
+	function getCode() {
+		var IFrameObj = document.getElementById('codepress').contentWindow;
+		var textWithoutHighlighting = IFrameObj.CodePress.getCode()
+		alert(textWithoutHighlighting);
+	}
+
+	// get code from a textarea and put it inside codepress window
+	function setCode() {
+		var IFrameObj = document.getElementById('codepress').contentWindow;
+		IFrameObj.CodePress.setCode('php',document.getElementById('load-code').value);
+	}
+	
+	last = null;
+	function edit(file,obj) {
+		if(last == null) last = document.getElementById('default');
+		last.style.fontWeight = 'normal';
+		last.style.color = 'black';
+		obj.style.fontWeight = 'bold';
+		obj.style.color = 'red';
+		last = obj;
+		document.getElementById('codepress').src='codepress.php?action=edit&file='+file;
+	}
+	</script>
+</head>
+
+<body>
+<div id="container">
+
+<div id="logo">
+	<h1>CodePress</h1>
+	<h2>Online Real Time Syntax Highlighting Editor</h2>
+</div>
+
+<div id="main">
+	<h4>CodePress is a code editor with syntax highlighting written in JavaScript that colors text in real time while it's being typed in the browser.</h4>
+	
+	<p>Go to <strong><a href="http://codepress.fermads.net/">http://codepress.fermads.net/</a></strong> for updates.</p>
+
+<h3>Demo</h3>
+<p>Example shows syntax highlighting for <strong>PHP</strong>, <strong>Java</strong>, <strong>JavaScript</strong>, <strong>HTML</strong> and <strong>CSS</strong>.</p>
+
+<div id="languages">
+	<em>choose language:</em> 
+	<button onclick="edit('codepress.php',this)" id="default">PHP</button> 
+	<button onclick="edit('codepress.js',this)">JavaScript</button> 
+	<button onclick="edit('FileManager.java',this)">Java</button> 
+	<button onclick="edit('index.html',this)">HTML</button> 
+	<button onclick="edit('styles.css',this)">CSS</button> 	
+	<button onclick="edit('loremipsum.txt',this)">plain text</button><br />
+</div>
+<iframe id="codepress" src="codepress.php?action=edit&file=codepress.php"></iframe><br />
+
+<textarea id="load-code"><!-- CodePress example -->
+<html>
+<head>
+	<title>CodePress setCode() example</title>
+</head>
+<body id="home">
+&lt;?php
+	// HTML entities must be escaped with &amp;amp;
+	echo "Code loaded from hidden textarea";
+?&gt;
+</body>
+</html></textarea>
+
+<button onclick="getCode()"><strong>get code from editor</strong></button> :: Example getting (<code>alert()</code>) original code from CodePress window<br />
+<button onclick="setCode()"><strong>set code to editor</strong></button> :: Example setting code from a hidden textarea to CodePress window
+<br/><br/>
+
+<p>
+	CodePress is distributed under the <a href="http://www.opensource.org/licenses/lgpl-license.php">LGPL</a>. You can use it as you want. Just keep my credits somewhere around.
+</p>
+<p>
+Thanks.
+</p>
+
+<a href="mailto:fermads@gmail.com">Fernando M.A.d.S.</a>
+
+
+</div><!--/container-->
+</body>
+</html>

@@ -88,6 +88,14 @@ a.logout:hover, a.logout:active, a.logout:focus {
 	color: 				#f4dc6b;
 }
 
+.login {
+	font-family: 		geneva, arial, helvetica, sans-serif;
+	font-size: 			11px;
+	color: 				#000;
+	white-space: 		nowrap;
+	text-decoration: 	none;
+}
+
 a.login, a.login:link, a.login:visited {
 	font-family: 		geneva, arial, helvetica, sans-serif;
 	font-size: 			11px;

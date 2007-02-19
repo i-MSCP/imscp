@@ -57,8 +57,20 @@
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td class="logoutbutton"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.gif" height="18" width="18" /><a href="../index.php" class="logout">{TR_MENU_LOGOUT}</a></td>
+      <td class="logoutbutton"><a href="../index.php"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.gif" border="0" height="18" width="18" /></a><a href="../index.php" class="logout">{TR_MENU_LOGOUT}</a></td>
     </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>	
+    <tr>
+      <td align="center"><img src="{ISP_LOGO}" /></td>
+    </tr>	
 </table>				  
 				  </td>					
 				</tr>			

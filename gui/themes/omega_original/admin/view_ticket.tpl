@@ -130,8 +130,7 @@ function action_delete(url) {
 					</td>
 				</tr>
 			</table>
-			
-	    <p>&nbsp;</p></td>
+		</td>
 	</tr>
 </table>
 </body>

@@ -187,8 +187,7 @@ function delete_account(url) {
                   </table></td>
 				</tr>
 			</table>
-			
-	    <p>&nbsp;</p></td>
+		</td>
 	</tr>
 </table>
 </body>

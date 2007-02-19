@@ -141,7 +141,8 @@ var mpointError = 'Please write mount point !';
               </tr>
             </table></td>
           </tr>
-        </table>	    <p>&nbsp;</p></td>
+        </table>
+	  </td>
 	</tr>
 </table>
 </body>

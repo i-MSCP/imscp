@@ -1,0 +1,15 @@
+/* global */
+html {border:none;} /*remove ie frameborder */
+body {margin-top:13px;margin-top:15px;background:white;font-family:monospace;font-size:13px;margin-left:32px;white-space:pre;background-image:url("../images/linenumbers.png");background-repeat:repeat-y;background-position:0 3px;line-height:16px;}
+html>body{background-position:0 2px;}
+P {margin:0;padding:0;border:0;outline:0;display:block;white-space:pre;}
+
+/* language specific (html) */
+/* fonts with bold and italic must have size 12px */
+b,i,s,em,u {display:inline;font-weight:normal;text-decoration:none;}
+b {color:#000080;} /* tags */
+i, i b, i s, i em, i u {color:gray;font-size:12px;letter-spacing:1px} /* comments */
+s, s b {color:#0000ff;} /* attributes */
+em {color:#800080;font-style:normal;} /* style */
+u {color:#800000;text-decoration:none;} /* script */
+

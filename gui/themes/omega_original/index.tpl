@@ -76,6 +76,13 @@
 </td>
   </tr>
 </table>
+<table align="center" width="453">  
+    <tr>
+  <td align="right" class="login">
+  Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a>
+  </td>
+  </tr>
+ </table>
 </td>
   </tr>
 </table>
