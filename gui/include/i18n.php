@@ -23,7 +23,7 @@
  * 	Description:	translates a given string into the selected language, if exists
  *
  * 	@access			public
- * 	@version		2.0
+ * 	@version		2.1
  *  @author			VHCS Team, Benedikt Heintel (2007)
  *
  * 	@param		$msgid		string to translate
@@ -33,7 +33,7 @@
 function tr($msgid, $js = false) {
 	global $sql, $default_lang;
 
-	$default_lang = $_SESSION['user_def_lang'];
+	$default_lang = session_id() ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
 
 	if (!$sql) {
 		return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, "UTF-8")));

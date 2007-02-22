@@ -216,17 +216,17 @@ function add_sql_user(&$sql, $user_id, $db_id)
     return;
   }
 
-  if ($_POST['pass'] !== $_POST['pass_rep'] && !isset($_POST['Add_Exist'])) {
+  if ((isset($_POST['pass ']) AND isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] AND !isset($_POST['Add_Exist'])) {
     set_page_message(tr('Entered passwords does not match!'));
     return;
   }
 
-  if (strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH'] && !isset($_POST['Add_Exist'])) {
+  if (isset($_POST['pass']) AND strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH'] && !isset($_POST['Add_Exist'])) {
     set_page_message(tr('Too user long password!'));
     return;
   }
 
-	if (chk_password($_POST['pass'])) {
+	if (isset($_POST['pass']) AND chk_password($_POST['pass'])) {
   	set_page_message( tr("Incorrect password range or syntax!"));
     return;
   }
@@ -240,7 +240,8 @@ function add_sql_user(&$sql, $user_id, $db_id)
 		return;
 	}
 	$user_pass = $rs -> fields['sqlu_pass'];
-  } else {
+  }
+  else {
   	$user_pass = $_POST['pass'];
   }
 
@@ -349,7 +350,7 @@ function gen_page_post_data(&$tpl, $db_id)
   }
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-    $tpl -> assign(array('USER_NAME' => $_POST['user_name'],
+    $tpl -> assign(array('USER_NAME' => (isset($_POST['user_name'])) ? $_POST['user_name'] : '',
                          'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked' : '',
                          'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked' : '',
                          'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked' : ''));
