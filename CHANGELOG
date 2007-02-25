@@ -14,6 +14,7 @@ VHCS 2.4.8 ω Omega Changelog
 2007-02-25 Benedikt Heintel
 	- CONFIGS:
 		* fixed bug #82 - forgot to upload Makefile
+		* fixed bug #89 - typo in Serverports: SMPT => SMTP
 	- ENGINE:
 		* fixed bug #88 - Backup not working due to an error if user has no MySQL BD
 	- LANGUAGES:

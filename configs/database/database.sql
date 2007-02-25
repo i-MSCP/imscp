@@ -74,7 +74,7 @@ VALUES (
 ),(
 'PORT_TELNET', '23;tcp;TELNET;1;0'
 ),(
-'PORT_SMTP', '25;tcp;SMPT;1;0'
+'PORT_SMTP', '25;tcp;SMTP;1;0'
 ),(
 'PORT_DNS', '53;tcp;DNS;1;0'
 ),(
