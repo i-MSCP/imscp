@@ -276,20 +276,22 @@ sub backup_all_engine {
 			my $dbuser = "";
 			my $dbpass = "";
 
-			foreach(@$rdata2) {
-				$dbuser = @$_[0];
-				$dbpass = @$_[1];
-			}
-			if ($dbuser && $dbpass) {
-				my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
-				my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
-				$rs = sys_command($db_backupcmd);
+			if ($rdata2 != "") {
+				foreach(@$rdata2) {
+					$dbuser = @$_[0];
+					$dbpass = @$_[1];
+				}
+				if ($dbuser && $dbpass) {
+					my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
+					my $db_backupcmd = "mysqldump --add-drop-table -u$dbuser -p$dbpass $db_name >$db_backup_file";
+					$rs = sys_command($db_backupcmd);
 
-				return $rs if ($rs != 0);
+					return $rs if ($rs != 0);
 
-				$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
+					$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
 
-				return $rs if ($rs != 0);
+					return $rs if ($rs != 0);
+				}
 			}
 		}
 
