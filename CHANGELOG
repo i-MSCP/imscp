@@ -15,6 +15,8 @@ VHCS 2.4.8 ω Omega Changelog
 	- CONFIGS:
 		* fixed bug #96 - added missing spaces on sendmail_path
 		* changed session.save_path
+	- ENGINE:
+		* fixed bug #88 - Backup not working due to an error in MySQL query
 
 2007-02-25 Benedikt Heintel
 	- CONFIGS:

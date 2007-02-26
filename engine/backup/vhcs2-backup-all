@@ -271,7 +271,7 @@ sub backup_all_engine {
 		foreach(@$rdata3) {
 			my $db_id=@$_[0];
 			my $db_name=@$_[1];
-			$sql = "SELECT * FROM sqlu_name, sqlu_pass WHERE sqld_id=$db_id LIMIT 1";
+			$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
 			($rs,my $rdata2) = doSQL($sql);
 			my $dbuser = "";
 			my $dbpass = "";
