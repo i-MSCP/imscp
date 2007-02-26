@@ -1,3 +1,4 @@
+RELEASE=`cat /etc/issue.net|awk '{print $3}'`
 export
 
 install:
@@ -5,7 +6,13 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/proftpd
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
-	cp ./proftpd.conf $(ROOT_CONF)
+	# Debian 4.0 "Etch"?
+	if [[ $(RELEASE) == 4.0 ]]; then
+		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd
+		cp ./proftpd.conf $(ROOT_CONF)/proftpd
+	else
+		cp ./proftpd.conf $(ROOT_CONF)
+	fi
 
 uninstall:
 

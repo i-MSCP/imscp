@@ -167,10 +167,10 @@ function install_lang() {
 								msgid text,
 								msgstr text,
 								UNIQUE id (id)
-								) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+								) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 							);
 
-				while(!feof($fd)){
+				while(!feof($fd)) {
 					$buffer_id    = fgets($fd, 4096);
 					$buffer_id    = explode(" = ", trim($buffer_id));
 					$orig_string  = trim(@$buffer_id[0]);

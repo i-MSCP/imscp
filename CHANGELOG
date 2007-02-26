@@ -13,6 +13,7 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-02-26 Benedikt Heintel
 	- CONFIGS:
+		* fixed bug #92 - proftpd.conf in wrong location under Debian Etch
 		* fixed bug #96 - added missing spaces on sendmail_path
 		* changed session.save_path
 	- ENGINE:
