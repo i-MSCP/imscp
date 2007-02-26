@@ -20,14 +20,14 @@ pre {
 
 BODY{
 	font-family: verdana;
-    	background-image: url(../../skins/omega/header_right_bg.png);
+    background-image: url(../../skins/omega/header_right_bg.png);
 	font-size: 9px;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	}
 body.left {
-	background-image: url(../../skins/omega/header_bg.png);
-	background-repeat: repeat-x;
+    background-image: url(../../skins/omega/folders_bottom.gif);
+	background-repeat: repeat-y;
 	background-color: #FFFFFF;
 	margin: 0;
 	padding: 0;
@@ -386,8 +386,10 @@ p.button_text {
 }
 	
 #left_logo{
+	background-image: url(../../skins/omega/header_bg.png);
 	float: none;
-	margin: 10px 0px 0px 0px;
+	height:117px;
+	margin: 0px 0px 0px 0px;
 }	
 
 .left_button_text { 
@@ -424,7 +426,7 @@ p.button_text {
 	background-repeat: no-repeat;
 	background-position: top right;
 	position: relative;
-	margin-top: 16px;
+	margin-top: 0px;
 	padding: 0 0 12 0;
 }
 #folders {
