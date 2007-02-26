@@ -1,7 +1,7 @@
 
 ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
-RELEASE=`cat /etc/issue.net|awk '{print $3}'`
+RELEASE=`/etc/debian_version|awk '{print $1}'`
 
 export
 
