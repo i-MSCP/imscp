@@ -1,7 +1,7 @@
 
 ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
-RELEASE=`/etc/debian_version|awk '{print $1}'`
+RELEASE=`cat /etc/debian_version | awk '{print $1}'`
 
 export
 
@@ -14,7 +14,7 @@ install:
 
 	cp ./httpd.conf ./working/vhcs2.conf
 	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) == 4.0 ]]; then
+	if [[ $(RELEASE) == '4.0' ]]; then
 		cp ./fastcgi2.conf ./working/fastcgi.conf
 	else
 		cp ./fastcgi.conf ./working/fastcgi.conf
