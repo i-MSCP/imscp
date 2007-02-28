@@ -28,8 +28,7 @@
 
 OBJS = vhcs_daemon.o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
-helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o\
-query_license_server.o
+helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
 BUILD = gcc -O2 -ansi -Wall -Wstrict-prototypes -pedantic -o
 
@@ -88,9 +87,6 @@ bye_cmd.o: bye_cmd.c bye_cmd.h
 
 bye_syntax.o: bye_syntax.c bye_syntax.h
 	$(COMPILE) bye_syntax.o bye_syntax.c
-
-query_license_server.o: query_license_server.c query_license_server.h
-	$(COMPILE) query_license_server.o query_license_server.c
 
 uninstall: clean
 
