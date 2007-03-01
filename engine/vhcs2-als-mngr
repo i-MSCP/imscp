@@ -1651,8 +1651,7 @@ sub als_add_httpd_file_data {
 
     my $sys_user = "$suexec_user_pref$sys_uid";
 
-    my $sys_group = "$suexec_user_pref$sys_gid";
-
+    my $sys_group = $main::cfg{'APACHE_GROUP'};
     #
     # Domain WWW directories;
     #
