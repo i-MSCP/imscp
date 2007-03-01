@@ -632,11 +632,29 @@ function add_user_data ($reseller_id)
     // $customer_id = escape_user_data($customer_id);
 
   if (!vhcs_domain_check($dmn_user_name)) {
-    //set_page_message = tr("Wrong domain name syntax!");
+//    set_page_message(tr("Wrong domain name syntax!"));
     return;
   }
 
   check_for_lock_file();
+  
+   //check again if a user like that exits
+  $query = <<<OMEGA_SQL_QUERY
+	select count(*) as count
+            	from admin
+		where admin_name = ?
+		limit 1
+OMEGA_SQL_QUERY;
+
+  $res = exec_query($sql, $query, $dmn_user_name);
+  $data = $res -> FetchRow();
+
+  if ($data['count'] > 0 ) {
+	set_page_message(tr("There's a conflicting admin / reseller fix that first!"));
+	return;
+  }
+
+
 
   $query = <<<VHCS_SQL_QUERY
             insert into admin
