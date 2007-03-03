@@ -7,13 +7,14 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/proftpd
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
+
 	# Debian 4.0 "Etch"?
 	if [[ $(RELEASE) == 4.0 ]] ; then \
-		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd \
-		cp ./proftpd.conf $(ROOT_CONF)/proftpd \
+		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
+		cp ./proftpd.conf $(ROOT_CONF)/proftpd ; \
 	else \
-		cp ./proftpd.conf $(ROOT_CONF) \
-	fi
+		cp ./proftpd.conf $(ROOT_CONF) ; \
+	fi \
 
 uninstall:
 
