@@ -1,4 +1,4 @@
-RELEASE=`/etc/debian_version|awk '{print $1}'`
+RELEASE=`cat /etc/debian_version | awk '{print $1}'`
 
 export
 
@@ -9,7 +9,7 @@ install:
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
 
 	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) == 4.0 ]] ; then \
+	if [[ $(RELEASE) == '4.0' ]] ; then \
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
 		cp ./proftpd.conf $(ROOT_CONF)/proftpd ; \
 	else \
