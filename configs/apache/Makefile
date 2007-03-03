@@ -1,4 +1,3 @@
-
 ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
 RELEASE=`cat /etc/debian_version | awk '{print $1}'`
@@ -14,10 +13,10 @@ install:
 
 	cp ./httpd.conf ./working/vhcs2.conf
 	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) == '4.0' ]]; then
-		cp ./fastcgi2.conf ./working/fastcgi.conf
-	else
-		cp ./fastcgi.conf ./working/fastcgi.conf
+	if [[ $(RELEASE) == '4.0' ]] ; then \
+		cp ./fastcgi2.conf ./working/fastcgi.conf \
+	else \
+		cp ./fastcgi.conf ./working/fastcgi.conf \
 	fi
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
