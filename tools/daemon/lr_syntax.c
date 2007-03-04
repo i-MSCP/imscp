@@ -1,6 +1,11 @@
-
-#include "lr_syntax.h"
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/procfs.h>
+#include <unistd.h>
 #include <sys/param.h>
+#include "lr_syntax.h"
 
 #if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 int readlink(char *pathname, char *buf, int bufsize);
@@ -48,6 +53,9 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 			 */
 
 			if (fork() == 0 ) {
+				
+				 int fdres, dupres;
+				 char logfile[MAXPATHLEN];
 
 				/*
 				 execute it
@@ -66,30 +74,55 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 				if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
 					strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/vhcs2_daemon"));
 					strcat(daemon_path, "engine/vhcs2-rqst-mngr");
-				#endif
-					memset((void *) &qcommand, '\0', (size_t) sizeof(MAX_MSG_SIZE));
-					#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-					sprintf(qcommand,
-							"%s 1>%s/%s.%ld 2>%s/%s.%ld",
-							daemon_path,
-							LOG_DIR,
-							STDOUT_LOG,
-							(long int) tim,
-							LOG_DIR,
-							STDERR_LOG,
-							(long int) tim);
-					#else
-					sprintf(qcommand,
-							"%s 1>%s/%s.%ld 2>%s/%s.%ld",
-							QUERY_CMD,
-							LOG_DIR,
-                                                        STDOUT_LOG,
-                                                        (long int) tim,
-                                                        LOG_DIR,
-                                                        STDERR_LOG,
-                                                        (long int) tim);
-					#endif	
-					system(qcommand);
+					
+					fdres = open ( "/dev/null", O_RDONLY );
+                                        if(fdres == -1)
+                                        {
+                                                say("Error in reopening stdin: %s",  strerror(errno) );
+                                                exit(128);
+                                        }
+                                        dupres = dup2(fdres, 0); /* reassign 0*/
+                                        if( dupres == -1)
+                                        {
+                                                say("Error in reassigning stdin: %s",  strerror(errno) );
+                                                exit(128);
+                                        }
+                                        else if( dupres != fdres) close (fdres);
+
+                                        memset(logfile, 0, sizeof (logfile));
+                                        sprintf(logfile, "%s.%ld", LOG_DIR"/"STDOUT_LOG , (long int) tim);
+                                        fdres = creat( logfile, S_IRUSR | S_IWUSR );
+                                        if(fdres == -1)
+                                        {
+                                                say("Error in opening stdout: %s",  strerror(errno) );
+                                                exit(128);
+                                        }
+                                        dupres = dup2(fdres, 0); /* reassign 0*/
+                                        if( dupres == -1)
+                                        {
+					 say("Error in reassigning stdout: %s",  strerror(errno) );
+                                                exit(128);
+                                        }
+                                        else if( dupres != fdres) close (fdres);
+
+                                        memset(logfile, 0, sizeof (logfile));
+                                        sprintf(logfile, "%s.%ld", LOG_DIR"/"STDERR_LOG , (long int) tim);
+                                        fdres = creat( logfile,  S_IRUSR | S_IWUSR );
+                                        if(fdres == -1)
+                                        {
+                                                say("Error in opening stderr: %s",  strerror(errno) );
+                                                exit(128);
+                                        }
+                                        dupres = dup2(fdres, 0); /* reassign 0*/
+                                        if( dupres == -1)
+                                        {
+                                                say("Error in reassigning stderr: %s",  strerror(errno) );
+                                                exit(128);
+                                        }
+                                        else if( dupres != fdres) close (fdres);
+
+                                        execl( daemon_path, "vhcs2-rqst-mngr" ,(char*)NULL );
+
 					exit(0);
 				#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 				}
