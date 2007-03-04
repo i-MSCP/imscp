@@ -18,8 +18,6 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 
 	char *ptr1;
 
-	char qcommand [MAX_MSG_SIZE];
-
 	time_t tim;
 
 	ptr = strstr(buff, message(MSG_LS_CMD));
@@ -122,6 +120,7 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
                                         else if( dupres != fdres) close (fdres);
 
                                         execl( daemon_path, "vhcs2-rqst-mngr" ,(char*)NULL );
+					#endif 
 
 					exit(0);
 				#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
