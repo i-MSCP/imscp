@@ -14,9 +14,7 @@
 //  | http://opensource.org | osi@opensource.org								    |
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
-
-
-
+require '../include/vfs.php';
 include '../include/vhcs-lib.php';
 
 check_login();
@@ -37,164 +35,63 @@ $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/ftp_choose_dir.tpl
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-// functions begin
 
-function cleanPath($path) {
-   $result = array();
-   $pathTemp = explode('/', $path);
-   if (!$pathTemp[0])
-       $result[] = '';
-   foreach ($pathTemp AS $key => $dir) {
-       if ($dir == '..') {
-           if (end($result) == '..') {
-               $result[] = '..';
-           } elseif (!array_pop($result)) {
-               $result[] = '..';
-           }
-       } elseif ($dir && $dir != '.') {
-           $result[] = $dir;
-       }
-   }
-   if (!end($pathTemp)) 
-       $result[] = '';
-   return implode('/', $result);
-}
-
-
-function gen_directories(&$tpl)
-{
-
-	global $cur_dir, $cfg, $sql;
+function gen_directories( &$tpl ) {
+	global $sql;
+	$path   = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
+	$domain = $_SESSION['user_logged'];
 	
-	if(!isset($path)){$path = '';}	
+	$vfs = new vfs($domain);
+	$vfs->setDb($sql);
+	$vfs->open();
+	$list = $vfs->ls($path,true);
 	
-	$domain_name = $_SESSION['user_logged'];
-	
-	$homedir = $cfg['FTP_HOMEDIR'];
-
-	$dtop = $homedir.'/'.$domain_name;
-	
-	if (!isset($_GET['cur_dir'])) {
-			$cur_dir = '/';
-	} else {
-		$path = cleanPath($path);
-		$_GET['cur_dir'] = eregi_replace("\.\./","",cleanPath($_GET['cur_dir']));
-		$_GET['cur_dir'] = eregi_replace("\.\.","",$_GET['cur_dir']);
-		$_GET['cur_dir'] = '/'.$_GET['cur_dir'];
-		if ($_GET['cur_dir'] === "/") {
-				$cur_dir = $_GET['cur_dir'];
-			} else {
-				$cur_dir = $_GET['cur_dir'].'/';
-			}
-	}
-	
-    
-	$real_dir = $dtop . $cur_dir;
-    
-	$d = dir($real_dir);
-	if(!$d->handle){
+	if (!$list) {
 		set_page_message( tr('Can not open directory !<br>Please contact your administrator !'));
-		
 		return;
 	}
-	else {
-		while (false !== ($entry = $d->read())) {
-                                        
-			if ($entry == '.') {
-				/* */
-			}
-			else if ($entry == '..') {
-                                        
-				$top_dir1 = $cur_dir;
-			
-			if ($real_dir != $dtop) {
-				$top_dir1 = substr($cur_dir,0,strlen($cur_dir)-1);
-			}
-		
-			
-			$up = substr($top_dir1,0,strlen($top_dir1) - strlen(strrchr($top_dir1,'/')));
-			// 1st gose back/up button
-			$tpl -> assign('ACTION_LINK', '');
-			$tpl -> assign(
-                array(
-						'ACTION' => tr(''),
-						'ICON' => "parent",
-						'DIR_NAME' => tr('Parent Directory'),
-						'LINK' => "ftp_choose_dir.php?cur_dir=$up",
 
-					  )
-				);
-			
-			 
-			 $tpl -> parse('DIR_ITEM', '.dir_item');
-			
-		}
+	// Show parent directory link
+	$parent = explode('/',$path);
+	array_pop($parent);
+	$parent = implode('/',$parent);
+	$tpl -> assign('ACTION_LINK', '');
+	$tpl -> assign( array(
+				'ACTION' => tr(''),
+				'ICON' => "parent",
+				'DIR_NAME' => tr('Parent Directory'),
+				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,
+			));
+	$tpl -> parse('DIR_ITEM', '.dir_item');
 	
-		else if (is_dir($real_dir.$entry)) {
-			$dr = $cur_dir.$entry;
-			$tfile = $real_dir.$entry.'/'.'.htaccess';
+	// Show directories
+	foreach ($list as $entry) {
 		
-			if (file_exists($tfile)) {
-				$image = "locked";
-			}
-			else {
-				$image = "folder";
-			}
-		
-			// here gose link to the dir
-			 
-			 $tpl -> assign(
-                array(
-						'ACTION' => tr('Protect it'),
-						'PROTECT_IT' => "protect_it.php?file=$dr",
-						'ICON' => $image,
-						'DIR_NAME' => $entry,
-						'CHOOSE_IT' => $dr,
-						'LINK' => "ftp_choose_dir.php?cur_dir=$dr",
-					  )
-				);
-			 $tpl -> parse('ACTION_LINK', 'action_link');
-			 $tpl -> parse('DIR_ITEM', '.dir_item');
-			 
-			
+		if ( $entry['type'] != VFS_TYPE_DIR )
+			continue;
+	
+		$dr = $path.'/'.$entry['file'];
+		//$tfile = $real_dir.$entry.'/'.'.htaccess';
+	
+		/*if (file_exists($tfile)) {
+			$image = "locked";
 		}
-                                   
+		else {*/
+			$image = "folder";
+		/*}*/
+	
+		// Create directory link
+		$tpl->assign( array(
+			'ACTION' => tr('Protect it'),
+			'PROTECT_IT' => "protect_it.php?file=$dr",
+			'ICON' => $image,
+			'DIR_NAME' => $entry['file'],
+			'CHOOSE_IT' => $dr,
+			'LINK' => "ftp_choose_dir.php?cur_dir=$dr",
+		));
+		$tpl->parse('ACTION_LINK', 'action_link');
+		$tpl->parse('DIR_ITEM'   , '.dir_item');
 	}
-	$d->close();
-	}
-
-	$d = dir($real_dir);
-
-	if(!$d->handle){
-		set_page_message( tr('Can not open directory !<br>Please contact your administrator !'));
-		
-		return;
-	}
-	else {
-
-		while (false !== ($entry = $d->read())) {
-                                        
-                                            
-			if ($entry == '.') {
-				/* */
-			}
-			else if ($entry == '..') {
-				/* */
-			}
-			else if (!is_dir($real_dir.$entry)) {
-
-				// here gose document
-				$tpl -> assign('LIST_ITEM', '');
-			
-				 
-				 $tpl -> parse('DIR_ITEM', '.dir_item');
-			}                     
-                                   
-	}
-    $d->close();
-  }
-
-
 }
 
 
