@@ -217,9 +217,24 @@ SQL_QUERY;
 		}
 	}
 	
-	
-	function ls($dirname, $long=false, $files_only=false) {
-		if (empty($dirname)) $dirname = '/';
+	/**
+	 * Get directory listing
+	 * 
+	 * Get the directory listing of a specified dir,
+	 * either in short (default) or long mode
+	 *
+	 * @param string $dirname Full (virtual) directory path
+	 * @param boolean $long If FALSE only the filenames ar resturned,
+	 * 						If TRUE each entry is an array of file 
+	 * 						properties
+	 * @return array Array of directory entries or FALSE on error
+	 */
+	function ls($dirname) {
+		// Path is always relative to the root vfs
+		if (substr($dirname,0,1) != '/') {
+			$dirname = '/' . $dirname;
+		}
+		
 		// Check for connection
 		if ( !$this->_handle ) {
 			return false;
@@ -227,38 +242,62 @@ SQL_QUERY;
 		
 		// No security implications, the FTP server handles
 		// this for us
-		if ( !$long ) {
-			$list = ftp_nlist( $this->_handle, $dirname );
-		} else {
-			$list = ftp_rawlist( $this->_handle, $dirname, false );
-			if ( !$list ) {
-				return false;
-			}
-			$len = count($list);
-			for( $i=0; $i<$len; $i++ ) {
-				$type = substr($list[$i],0,1);
-				if ( $files_only && $type != VFS_TYPE_FILE) {
-					unset($list[$i]);
-					continue;
-				}
-				$parts = preg_split("/[\s]+/",$list[$i],9);
-				$list[$i] = array(
-					'perms'		=> $parts[0],
-					'number'	=> $parts[1],
-					'owner'		=> $parts[2],
-					'group'		=> $parts[3],
-					'size'		=> $parts[4],
-					'month'		=> $parts[5],
-					'day'		=> $parts[6],
-					'time'		=> $parts[7],
-					'file'		=> $parts[8],
-					'type'		=> $type,
-				);
-			}
+		$list = ftp_rawlist( $this->_handle, '-a '.$dirname, false );
+		if ( !$list ) {
+			return false;
+		}
+		$len = count($list);
+		for( $i=0; $i<$len; $i++ ) {
+			$parts = preg_split("/[\s]+/",$list[$i],9);
+			$list[$i] = array(
+				'perms'		=> $parts[0],
+				'number'	=> $parts[1],
+				'owner'		=> $parts[2],
+				'group'		=> $parts[3],
+				'size'		=> $parts[4],
+				'month'		=> $parts[5],
+				'day'		=> $parts[6],
+				'time'		=> $parts[7],
+				'file'		=> $parts[8],
+				'type'		=> substr($parts[0],0,1),
+			);
 		}
 		
 		return $list;
 	}
+	
+	/**
+	 * Checks for file existance
+	 *
+	 * @param string $file Full (virtual) path to the file
+	 * @param int $type Type of the file to match (see constants)
+	 * @return boolean TRUE if file exists or FALSE if it doesn't exist
+	 */
+	function exists($file, $type=null) {
+		$dirname = dirname($file);
+		$list = $this->ls($dirname);
+		if ( !$list )
+			return false;
+		
+		// We get filenames only from the listing
+		$file = basename($file);
+		
+		// Try to match it
+		foreach($list as $entry) {
+			// Skip non-matching files
+			if ( $entry['file'] != $file ) {
+				continue;
+			}
+			// Check type
+			if ( $type !== null && $entry['type'] != $type )
+				return false;
+			
+			// Matched and same type (or no type specified)
+			return true;
+		}
+		return false;
+	}
+	
 }
 
 ?>

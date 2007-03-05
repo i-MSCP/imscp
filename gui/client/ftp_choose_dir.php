@@ -38,14 +38,18 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 function gen_directories( &$tpl ) {
 	global $sql;
+	
+	// Initialize variables
 	$path   = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
 	
+	// Create the virtual file system and open it so it can be used
 	$vfs = new vfs($domain);
 	$vfs->setDb($sql);
 	$vfs->open();
-	$list = $vfs->ls($path,true);
 	
+	// Get the directory listing
+	$list = $vfs->ls($path);
 	if (!$list) {
 		set_page_message( tr('Can not open directory !<br>Please contact your administrator !'));
 		return;
@@ -64,23 +68,26 @@ function gen_directories( &$tpl ) {
 			));
 	$tpl -> parse('DIR_ITEM', '.dir_item');
 	
-	// Show directories
+	// Show directories only
 	foreach ($list as $entry) {
 		
+		// Skip non-directory entries
 		if ( $entry['type'] != VFS_TYPE_DIR )
 			continue;
+		// Skip '.' and '..'
+		if ( $entry['file'] == '.' || $entry['file'] == '..')
+			continue;
 	
+		// Check for .htaccess existance to display another icon
 		$dr = $path.'/'.$entry['file'];
-		//$tfile = $real_dir.$entry.'/'.'.htaccess';
-	
-		/*if (file_exists($tfile)) {
+		$tfile = $dr . '/.htaccess';
+		if ($vfs->exists($tfile)) {
 			$image = "locked";
-		}
-		else {*/
+		} else { 
 			$image = "folder";
-		/*}*/
+		}
 	
-		// Create directory link
+		// Create the directory link
 		$tpl->assign( array(
 			'ACTION' => tr('Protect it'),
 			'PROTECT_IT' => "protect_it.php?file=$dr",
@@ -92,10 +99,10 @@ function gen_directories( &$tpl ) {
 		$tpl->parse('ACTION_LINK', 'action_link');
 		$tpl->parse('DIR_ITEM'   , '.dir_item');
 	}
+	
+	// We're done, close the virtual file system
+	$vfs->close();
 }
-
-
-
 // functions end
 
 
