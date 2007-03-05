@@ -6,7 +6,7 @@
 # line or a browser to read report results.
 # See AWStats documentation (in docs/ directory) for all setup instructions.
 #------------------------------------------------------------------------------
-# $Revision: 1.885 $ - $Author: eldy $ - $Date: 2006/09/16 23:24:46 $
+# $Revision: 1.887 $ - $Author: eldy $ - $Date: 2006/11/15 22:37:40 $
 require 5.005;
 
 #$|=1;
@@ -892,10 +892,10 @@ sub error {
 sub warning {
 	my $messagestring=shift;
 
-	if (! $HeaderHTTPSent && $ENV{'GATEWAY_INTERFACE'}) { http_head(); }
-	if (! $HeaderHTMLSent) { html_head(); }
 	if ($Debug) { debug("$messagestring",1); }
 	if ($WarningMessages) {
+		if (! $HeaderHTTPSent && $ENV{'GATEWAY_INTERFACE'}) { http_head(); }
+		if (! $HeaderHTMLSent) { html_head(); }
 		if (scalar keys %HTMLOutput) {
 			$messagestring =~ s/\n/\<br\>/g;
 			print "$messagestring<br />\n";

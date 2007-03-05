@@ -19,7 +19,7 @@ use strict;no strict "refs";
 # Defines
 #-------------------------------------------------------
 use vars qw/ $REVISION $VERSION /;
-$REVISION='$Revision: 1.32 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
+$REVISION='$Revision: 1.33 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
 $VERSION="1.2 (build $REVISION)";
 
 use vars qw/
@@ -370,7 +370,7 @@ while (<>) {
 		$mail{$id}{'mon'}=$mon;
 		$mail{$id}{'day'}=$day;
 		$mail{$id}{'time'}=$time;
-		if (&trim($to)=~/^|/) {
+		if (&trim($to)=~/^\|/) {
 			# In particular case of mails are sent to a pipe, the ctladdr contains the to
 			$mail{$id}{'to'}=&trim($fromorto);
 		} else {

@@ -6,10 +6,12 @@
 # alone for any other log analyzer.
 # See COPYING.TXT file about AWStats GNU General Public License.
 #-----------------------------------------------------------------------------
-# $Revision: 1.36 $ - $Author: eldy $ - $Date: 2006/07/22 22:08:20 $
+# $Revision: 1.38 $ - $Author: eldy $ - $Date: 2006/10/26 18:53:34 $
 
 use strict; no strict "refs";
 #use diagnostics;
+use POSIX qw( strftime );
+
 
 #-----------------------------------------------------------------------------
 # Defines
@@ -34,7 +36,7 @@ my %TmpDNSLookup = ();
 
 # ---------- Init variables --------
 use vars qw/ $REVISION $VERSION /;
-$REVISION='$Revision: 1.36 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
+$REVISION='$Revision: 1.38 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
 $VERSION="1.2 (build $REVISION)";
 
 use vars qw/ $NBOFLINESFORBENCHMARK /;
@@ -341,8 +343,8 @@ if (scalar @ParamFile == 0) {
 	print "WARNING: If log files are old MAC text files (lines ended with CR char), you\n";
 	print "can't run this tool on Win or Unix platforms.\n";
 	print "\n";
-	print "WARNING: Because of important memory holes in ActiveState Perl version, use\n";
-	print "another Perl interpreter if you need to process large lof files.\n";
+	print "WARNING: Because of memory holes in ActiveState Perl version, use another\n";
+	print "Perl interpreter if you need to process large log files.\n";
 	print "\n";
 	print "Now supports/detects:\n";
 	print "  Automatic detection of log format\n";
@@ -518,8 +520,15 @@ while (1 == 1)
 			# Split DD/Month/YYYY:HH:MM:SS or YYYY-MM-DD HH:MM:SS or MM/DD/YY\tHH:MM:SS
 			my $year=0; my $month=0; my $day=0; my $hour=0; my $minute=0; my $second=0;
 			if ($_ =~ /(\d\d\d\d)-(\d\d)-(\d\d)\s(\d\d):(\d\d):(\d\d)/) { $year=$1; $month=$2; $day=$3; $hour=$4; $minute=$5; $second=$6; }
-			elsif ($_ =~ /\[(\d\d)[\/:\s](\w+)[\/:\s](\d\d\d\d)[\/:\s](\d\d)[\/:\s](\d\d)[\/:\s](\d\d) /) { $year=$3; $month=$2; $day=$1; $hour=$4; $minute=$5; $second=$6; }
-			elsif ($_ =~ /\[\w+ (\w+) (\d\d) (\d\d)[\/:\s](\d\d)[\/:\s](\d\d) (\d\d\d\d)\]/) { $year=$6; $month=$1; $day=$2; $hour=$3; $minute=$4; $second=$5; }
+			elsif ($_ =~ /\[(\d?\d)[\/:\s](\w+)[\/:\s](\d\d\d\d)[\/:\s](\d\d)[\/:\s](\d\d)[\/:\s](\d\d) /) { $year=$3; $month=$2; $day=$1; $hour=$4; $minute=$5; $second=$6; }
+			elsif ($_ =~ /\[\w+ (\w+) (\d?\d) (\d\d)[\/:\s](\d\d)[\/:\s](\d\d) (\d\d\d\d)\]/) { $year=$6; $month=$1; $day=$2; $hour=$3; $minute=$4; $second=$5; }
+			elsif ($_ =~ /^(\d\d\d\d+\.\d\d\d) /)
+			{
+				my $timetime = strftime('%Y-%m-%d-%T', gmtime($1));
+				$timetime =~ /(\d\d\d\d)-(\d\d)-(\d\d)-(\d\d):(\d\d):(\d\d)/;
+				$year=$1; $month=$2; $day=$3; $hour=$4; $minute=$5; $second=$6;
+			}
+			if (length $day == 1) { $day = "0".$day; }
 
 			if ($monthnum{$month}) { $month=$monthnum{$month}; }	# Change lib month in num month if necessary
 

@@ -165,7 +165,7 @@ sub _ReadAndOutputTooltipFile {
 	# Windows and standard package:         	"$DIR/lang" (lang in same dir than awstats.pl)
 	# Debian package :                    		"/usr/share/awstats/lang"
 	# Other possible directories :        		"./lang"
-	my @PossibleLangDir=("$DirLang","${DIR}/lang","/usr/share/awstats/lang","./lang","/var/www/awstats/lang");
+	my @PossibleLangDir=("$DirLang","${DIR}/lang","/usr/share/awstats/lang","./lang");
 
 	my $FileLang='';
 	my $logtype=lc($LogType ne 'S'?$LogType:'W');

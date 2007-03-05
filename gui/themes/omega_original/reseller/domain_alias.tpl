@@ -84,8 +84,11 @@ function MM_goToURL() { //v3.0
                             <input type="hidden" name="uaction" value="go_search">
                           </form>
                         <!-- serach end here -->
-                      </td>
                     </tr>
+                    <tr>
+                    	<td><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','add_alias.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
+                        </td>
+					</tr>
                     <tr>
                       <td width="25" align="center" nowrap>&nbsp;</td>
                       <td height="25" nowrap class="content3"><b>{TR_NAME}</b></td>
