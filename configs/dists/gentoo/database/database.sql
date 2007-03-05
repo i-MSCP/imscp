@@ -74,7 +74,7 @@ VALUES (
 ),(
 'PORT_TELNET', '23;tcp;TELNET;1;0'
 ),(
-'PORT_SMTP', '25;tcp;SMPT;1;0'
+'PORT_SMTP', '25;tcp;SMTP;1;0'
 ),(
 'PORT_DNS', '53;tcp;DNS;1;0'
 ),(
@@ -269,8 +269,8 @@ CREATE TABLE `hosting_plans` (
   `name` varchar(255) default NULL,
   `props` text,
   `description` varchar(255) default NULL,
-  `price` decimal(4,2) NOT NULL default '0.00',
-  `setup_fee` decimal(4,2) NOT NULL default '0.00',
+  `price` decimal(10,2) NOT NULL default '0.00',
+  `setup_fee` decimal(10,2) NOT NULL default '0.00',
   `value` varchar(255) default NULL,
   `payment` varchar(255) default NULL,
   `status` int(10) unsigned NOT NULL default '0',
