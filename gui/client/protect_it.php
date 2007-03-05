@@ -16,8 +16,8 @@
 //   -------------------------------------------------------------------------------
 
 
-
 include '../include/vhcs-lib.php';
+require '../include/vfs.php';
 
 check_login();
 
@@ -57,21 +57,36 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 	global $cfg;
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'protect_it')  {
 
-		if (!isset($_POST['users']) && !isset($_POST['groups'])){
-
+		
+		if ( !isset($_POST['users']) && !isset($_POST['groups']) ){
 			set_page_message(tr('Please choose user or group'));
 			return;
-
-		} else if(!isset($_POST['paname']) || empty($_POST['paname'])) {
-
+		}
+		
+		if ( empty($_POST['paname']) ) {
 			set_page_message(tr('Please enter area name'));
 			return;
-		} else if(!isset($_POST['other_dir']) || empty($_POST['other_dir'])) {
-
+		}
+		
+		if ( empty($_POST['other_dir']) ) {
 			set_page_message(tr('Please enter area path'));
 			return;
-		} else if (!is_dir($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']))) {
-			  set_page_message(clean_input($_POST['other_dir']).tr(' do not exist'));
+		}
+		
+		// Check for existing directory
+		$path   = clean_input($_POST['other_dir']);
+		$domain = $_SESSION['user_logged'];
+		// We need to use the virtual file system
+		$vfs = new vfs($domain);
+		$vfs->setDb($sql);
+		$res = $vfs->open();
+		if (!$res) {
+			set_page_message(tr("Couldn't retrieve directory listing"));
+		}
+		$res = $vfs->exists($path);
+		$vfs->close();
+		if (!$res) {
+			  set_page_message($path.tr(" doesn't exist"));
 			  return;
 		}
 
@@ -83,7 +98,6 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 		if(isset($_POST['groups']))
 			$groups = $_POST['groups'];
 
-		$path = clean_input($_POST['other_dir']);
 		$area_name = $_POST['paname'];
 
 
