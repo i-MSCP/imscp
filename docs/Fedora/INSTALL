@@ -1,4 +1,4 @@
-VHCS ω (OMEGA) HowTo Install for Fedora Core 4 - 5
+VHCS ω (OMEGA) HowTo Install for Fedora Core 4 - 6
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,11 +16,11 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-VHCS ω Version:		2.4.8
+VHCS ω Version:		1.0.0
 INSTALL Skript:		1.0
-Maintainer:			RatS
+Maintainer:
 Homepage:			http://isp-contol.net
-Linux Distris:		Fedora Core 4 - 5
+Linux Distris:		Fedora Core 4 - 6
 
 ================================================================================
 2) Requirements
@@ -171,4 +171,4 @@ Please visit our site under http://isp-control.net for further information on
 VHCS ω, ispCP and other themes.
 
 We hope you enjoy using VHCS ω. If you like it, help us, to make it better. We
-are glad on any help provided!
+would be glad on any help provided!

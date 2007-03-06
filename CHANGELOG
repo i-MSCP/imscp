@@ -11,6 +11,13 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-03-06 Benedikt Heintel
+	- CONFIGS:
+		* RedHat: Added support for RedHat (seeking for maintainer)
+	- DOCS:
+		* RedHat: Added support for RedHat (seeking for maintainer)
+		* changed some strings
+
 2007-03-05 Benedikt Heintel
 	- GUI:
 		* changed: added secound "Add Domain Alias" button on top
@@ -24,7 +31,7 @@ VHCS 2.4.8 ω Omega Changelog
 		* fixed bug #99: fastcgi.conf (and proftpd.conf) are not copied on setup
 
 2007-02-28 Benedikt Heintel
-	- DOCU:
+	- DOCS:
 		* Debian: added greylisting via postgrey in packages
 		* SuSE: added additional information
 	- LANGUAGES:
