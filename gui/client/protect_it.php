@@ -77,14 +77,8 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 		$path   = clean_input($_POST['other_dir']);
 		$domain = $_SESSION['user_logged'];
 		// We need to use the virtual file system
-		$vfs = new vfs($domain);
-		$vfs->setDb($sql);
-		$res = $vfs->open();
-		if (!$res) {
-			set_page_message(tr("Couldn't retrieve directory listing"));
-		}
+		$vfs =& new vfs($domain, $sql);
 		$res = $vfs->exists($path);
-		$vfs->close();
 		if (!$res) {
 			  set_page_message($path.tr(" doesn't exist"));
 			  return;

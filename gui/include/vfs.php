@@ -26,9 +26,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-define('VFS_TYPE_DIR', 'd');
-define('VFS_TYPE_LINK','l');
-define('VFS_TYPE_FILE','-');
+
+/*
+ * This should be class constants, but we're php4 compatible
+ */
+
+/*
+ * File types definition
+ */
+define('VFS_TYPE_DIR',  'd');
+define('VFS_TYPE_LINK', 'l');
+define('VFS_TYPE_FILE', '-');
+
+/*
+ * Temporary directory
+ */
+define('VFS_TMP_DIR', '/var/www/vhcs2/gui/phptmp');
+
+/*
+ * Possible VFS Transfer modes
+ */
+define('VFS_ASCII',  FTP_ASCII);
+define('VFS_BINARY', FTP_BINARY);
 
 /**
  * Virtual File System main class
@@ -77,34 +96,48 @@ class vfs {
 	 * Create a new Virtual File System
 	 * 
 	 * Creates a new Virtual File System object for the
-	 * specified domain
+	 * specified domain.
 	 * 
 	 * Warning! $domain parameter is not sanitized, so this is
-	 * left as work for the caller
+	 * left as work for the caller.
 	 *
-	 * @param string  $domain
+	 * @param  string   $domain  Domain name of the new VFS.
+	 * @param  resource $db      Adodb database resource.
 	 * @return vfs
 	 */
-	function vfs($domain) {
-		$this->_domain = $domain;
+	function vfs($domain, &$db) {
+		// Sort of php4 destructor
+		register_shutdown_function(array(&$this, "__destruct"));
+		return $this->__construct($domain, $db);
 	}
 	
 	/**
 	 * PHP5 constructor
 	 *
-	 * @param string $domain
+	 * @param  string   $domain Domain name of the new VFS.
+	 * @param  resource $db     Adodb database resource.
+	 * @return vfs
 	 */
-	function __construct($domain) {
-		$this->vfs($domain);
+	function __construct($domain, &$db) {
+		$this->_domain =  $domain;
+		$this->_db     =& $db;
+	}
+	
+	/**
+	 * Destructor, ensure that we logout and remove the
+	 * temporary user
+	 */
+	function __destruct() {
+		$this->close();
 	}
 	
 	/**
 	 * Set VHCS DB handler
 	 * 
 	 * The system uses a "global" $sql variable to store the DB
-	 * handler, but we're a "black box" ;)
+	 * handler, but we're a "black box" ;).
 	 *
-	 * @param  resource $db
+	 * @param  resource $db Adodb database resource.
 	 */
 	function setDb(&$db) {
 		$this->_db =& $db;
@@ -113,15 +146,14 @@ class vfs {
 	/**
 	 * Create a temporary FTP user
 	 *
-	 * @return boolean Returns TRUE on succes or FALSE on failure
+	 * @return boolean Returns TRUE on succes or FALSE on failure.
 	 */
 	function _createTmpUser() {
+
 		// Get domain data
-		$query = <<<SQL_QUERY
-			select domain_uid AS uid,domain_gid AS gid
-			from   domain 
-			where  domain_name = ?
-SQL_QUERY;
+		$query = 'select domain_uid, domain_gid
+				  from   domain 
+				  where  domain_name = ?';
 		$rs = exec_query($this->_db, $query, array($this->_domain));
 		if ( !$rs ) {
 			return false;
@@ -140,7 +172,7 @@ SQL_QUERY;
 	            (?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array(
-			$user, $passwd, $rs->fields['uid'], $rs->fields['gid'], 
+			$user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'], 
 			'/bin/bash', '/var/www/virtual/' . $this->_domain
 		));
 		if ( !$rs ) {
@@ -155,7 +187,7 @@ SQL_QUERY;
 	/**
 	 * Removes the temporary FTP user
 	 *
-	 * @return TRUE on succes or FALSE on failure
+	 * @return Returns TRUE on succes or FALSE on failure.
 	 */
 	function _removeTmpUser() {
 		$query = <<<SQL_QUERY
@@ -170,13 +202,19 @@ SQL_QUERY;
 	/**
 	 * Open the virtual file system
 	 *
-	 * @return boolean	TRUE on succes or FALSE on failure
+	 * @return boolean	Returns TRUE on succes or FALSE on failure.
 	 */
 	function open() {
+		// Check if we're already open
+		if ( $this->_handle ) {
+			return true;
+		}
+		
 		// Check if we have a valid vhcs database
 		if ( !$this->_db ) {
 			return false;
 		}
+		
 		
 		// Create the temporary ftp account
 		$result = $this->_createTmpUser();
@@ -221,23 +259,20 @@ SQL_QUERY;
 	 * Get directory listing
 	 * 
 	 * Get the directory listing of a specified dir,
-	 * either in short (default) or long mode
+	 * either in short (default) or long mode.
 	 *
-	 * @param string $dirname Full (virtual) directory path
-	 * @param boolean $long If FALSE only the filenames ar resturned,
-	 * 						If TRUE each entry is an array of file 
-	 * 						properties
-	 * @return array Array of directory entries or FALSE on error
+	 * @param  string $dirname VFS directory path.
+	 * @return array  Returns an array of directory entries or FALSE on error.
 	 */
 	function ls($dirname) {
+		// Ensure that we're open
+		if ( !$this->open() ) {
+			return false;
+		}
+		
 		// Path is always relative to the root vfs
 		if (substr($dirname,0,1) != '/') {
 			$dirname = '/' . $dirname;
-		}
-		
-		// Check for connection
-		if ( !$this->_handle ) {
-			return false;
 		}
 		
 		// No security implications, the FTP server handles
@@ -269,11 +304,18 @@ SQL_QUERY;
 	/**
 	 * Checks for file existance
 	 *
-	 * @param string $file Full (virtual) path to the file
-	 * @param int $type Type of the file to match (see constants)
-	 * @return boolean TRUE if file exists or FALSE if it doesn't exist
+	 * @param  string $file VFS file path.
+	 * @param  int $type Type of the file to match. Must be either VFS_TYPE_DIR,
+	 * 					VFS_TYPE_LINK or VFS_TYPE_FILE.
+	 * @return boolean Returns TRUE if file exists or FALSE if it doesn't exist.
 	 */
 	function exists($file, $type=null) {
+		// Ensure that we're open
+		if ( false === $this->open() ) {
+			return false;
+		}
+		
+		// Actually get the listing
 		$dirname = dirname($file);
 		$list = $this->ls($dirname);
 		if ( !$list )
@@ -298,6 +340,123 @@ SQL_QUERY;
 		return false;
 	}
 	
+	/**
+	 * Retrieves a file from the virtual file system
+	 *
+	 * @param  string $file VFS file path.
+	 * @param  int VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
+	 * @return boolean Returns TRUE on succes or FALSE on failure.
+	 */
+	function get($file, $mode=VFS_ASCII) {
+		// Ensure that we're open
+		if ( !$this->open() ) {
+			return false;
+		}
+		
+		// Get a temporary file name
+		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
+		// Get the actual file
+		$res = ftp_get( $this->_handle, $tmp, $file, $mode);
+		if ( false === $res ) {
+			return false;
+		}
+
+		// Retrieve file contents
+		$res = file_get_contents($tmp);
+		
+		// Delete temporary file
+		unlink($tmp);
+		
+		return $res;
+	}
+	
+	/**
+	 * Stores a file inside the virtual file system
+	 *
+	 * @param string $file VFS file path.
+	 * @param string $content File contents.
+	 * @param int VFS transfer mode. Must be either VFS_ASCII or VFS_BINARY.
+	 * @return boolean Returns TRUE on success or FALSE on failure.
+	 */
+	function put($file, $content, $mode=VFS_ASCII) {
+		var_export($this);die();
+		// Ensure that we're open
+		if ( !$this->open() ) {
+			return false;
+		}
+		
+		// Get a temporary file name
+		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
+		
+		// Save temporary file
+		$res = file_put_contents($tmp, $content);
+		if ( false === $res ) {
+			return false;
+		}
+		
+		// Upload it
+		$res = ftp_put( $this->_handle, $file, $tmp, $mode);
+		if ( !$res ) {
+			return false;
+		}
+		
+		// Remove temp file
+		unlink($tmp);
+		
+		return true;
+	}
+	
 }
+
+/**
+ * Make sure we have needed file_put_contents() functionality
+ */
+if (!function_exists('file_put_contents')) {
+    function file_put_contents($filename, $content)
+    {
+        // Make sure that we have a string to write
+        if (!is_scalar($content)) {
+            user_error('file_put_contents() The 2nd parameter should be a string',
+                E_USER_WARNING);
+            return false;
+        }
+
+        // Get the data size
+        $length = strlen($content);
+
+        // Open the file for writing
+        if (($fh = @fopen($filename, 'wb')) === false) {
+            user_error('file_put_contents() failed to open stream: Permission denied',
+                E_USER_WARNING);
+            return false;
+        }
+
+        // Write to the file
+        $bytes = 0;
+        if (($bytes = @fwrite($fh, $content)) === false) {
+            $errormsg = sprintf('file_put_contents() Failed to write %d bytes to %s',
+                            $length,
+                            $filename);
+            user_error($errormsg, E_USER_WARNING);
+            return false;
+        }
+
+        // Close the handle
+        @fclose($fh);
+
+        // Check all the data was written
+        if ($bytes != $length) {
+            $errormsg = sprintf('file_put_contents() Only %d of %d bytes written, possibly out of free disk space.',
+                            $bytes,
+                            $length);
+            user_error($errormsg, E_USER_WARNING);
+            return false;
+        }
+
+        // Return length
+        return $bytes;
+    }
+}
+
 
 ?>

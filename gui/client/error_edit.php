@@ -15,140 +15,24 @@
 //  |                                                                               |
 //   -------------------------------------------------------------------------------
 
+require '../include/vfs.php';
+include '../include/vhcs-lib.php';
 
 function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 {
-  $query = <<<SQL_QUERY
-        select
-            error_401,
-            error_403,
-            error_404,
-            error_500
-        from
-            error_pages
-        where
-            user_id = ?
-SQL_QUERY;
-
-	$rs = exec_query($sql, $query, array($user_id));
+	$domain = $_SESSION['user_logged'];
 	
-	$error_401 = stripslashes($rs -> fields['error_401']);
-	$error_403 = stripslashes($rs -> fields['error_403']);
-	$error_404 = stripslashes($rs -> fields['error_404']);
-	$error_500 = stripslashes($rs -> fields['error_500']);
-
-
-  $error_standard_content = <<<RIC
-<html>
-<head>
-<title>VHCS ERROR {EID}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link href="/vhcs2/themes/modern_blue/css/vhcs.css" rel="stylesheet" type="text/css">
-</head>
-<body text="#000000">
-<table width="100%" height="99%"  border="00" cellpadding="0" cellspacing="0" bgcolor="#334163">
-  <tr>
-    <td height="551"><table width="100%"  border="00" cellpadding="0" cellspacing="0">
-      <tr bgcolor="#334163">
-
-        <td>&nbsp;</td>
-        <td align="right">&nbsp;</td>
-      </tr>
-      <tr>
-        <td width="1" background="/vhcs2/themes/modern_blue/images/login/content_background.gif"><img src="/vhcs2/themes/modern_blue/images/login/content_background.gif" width="1" height="348"></td>
-        <td height="348" align="center" background="/vhcs2/themes/modern_blue/images/login/content_background.gif">
-		  <table width="600" height="200" border="00" cellpadding="1" cellspacing="3" bgcolor="#FF0000">
-
-            <tr>
-              <td align="center" bgcolor="#FFFFFF"></strong>
-			  <h2><font color="#FF0000">Error {EID}!</font></h2>
-                <br/>
-                <b>{EID_STATUS}</b><br>
-
-			  </td>
-            </tr>
-
-          </table>
-		</td>
-      </tr>
-      <tr>
-        <td width="1" height="2" background="/vhcs2/themes/modern_blue/images/login/content_down.gif"><img src="/vhcs2/themes/modern_blue/images/login/content_down.gif" width="2" height="2"></td>
-        <td height="2" background="/vhcs2/themes/modern_blue/images/login/content_down.gif"><img src="/vhcs2/themes/modern_blue/images/login/content_down.gif" width="2" height="2"></td>
-      </tr>
-      <tr>
-        <td width="1" bgcolor="#334163">&nbsp;</td>
-
-        <td bgcolor="#334163"><a href="http://www.vhcs.net" target="_blank"><img src="/vhcs2/themes/modern_blue/images/login/vhcs_logo.gif" alt="VHCS - Virtual Hosting Control System - Control Panel" width="68" height="60" border="0"></a></td>
-        </tr>
-    </table></td>
-  </tr>
-</table>
-</body>
-</html>
-
-RIC;
-
-
-
-	if ($eid==401 && $error_401 != ''){
-	$tpl -> assign(
-                    array(
-								'ERROR' => $error_401,
-
-                         )
-                  );
+	// Check if we already have an error page
+	$vfs   =& new vfs( $domain, $sql);
+	$error =  $vfs->get('/errors/' . $eid . '/index.php');
+	if (false !== $error) {
+		// We already have an error page, return it
+		$tpl->assign( array('ERROR'=>$error) );
+		return;
 	}
-	elseif ($eid==403 && $error_403 != ''){
-	$tpl -> assign(
-                    array(
-								'ERROR' => $error_403,
-
-                         )
-                  );
-	}
-	elseif ($eid==404 && $error_404 != ''){
-	$tpl -> assign(
-                    array(
-								'ERROR' => $error_404,
-
-                         )
-                  );
-	}
-	elseif ($eid==500 && $error_500 != ''){
-	$tpl -> assign(
-                    array(
-								'ERROR' => $error_500,
-
-                         )
-                  );
-	}
-
-	else {
-		switch ($eid){
-            case 401:
-               $eid_status= "Unauthorized !";
-               break;
-            case 403:
-               $eid_status = "Forbidden !";
-               break;
-            case 404:
-               $eid_status = "File not found !";
-            break;
-              case 500:
-            $eid_status = "Internal server error !";
-              break;
-	    }
-
-	$tpl -> assign(
-                    array(
-								'ERROR' => $error_standard_content,
-								'EID_STATUS' => $eid_status
-
-                         )
-                  );
-	}
-
-
+	
+	// No error info :'(
+	$tpl->assign( array('ERROR'=> '') );
 }
 
 
@@ -204,7 +88,7 @@ if (!isset( $_GET['eid'])) {
 		 die();
 }
 else{
-	$eid = $_GET['eid'];
+	$eid = intval($_GET['eid']);
 }
 
 

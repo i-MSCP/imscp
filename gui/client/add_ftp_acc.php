@@ -407,22 +407,13 @@ function add_ftp_user(&$sql, $dmn_name)
 		$ftp_home = str_replace('//', '/', $ftp_home);
 		
 		// Check for $ftp_vhome existance
-		// Create a virtual filesystem
-		$vfs = new vfs($dmn_name);
-		$vfs->setDb($sql);
-		// Open it, so it can be used
-		$res = $vfs->open();
-		if ( !$res ) {
-			set_page_message( tr('Can not open directory !<br>Please contact your administrator !'));
-			return;
-		}
+		// Create a virtual filesystem (it's important to use =&!)
+		$vfs =& new vfs($dmn_name, $sql);
 		// Check for directory existance
 		$res = $vfs->exists($ftp_vhome);
-		// We're done, just close
-		$vfs->close();
 		
 		if ( !$res ) {
-			set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
+			set_page_message($ftp_vhome." ".tr('do not exist'));
 			return;
 		}
 	

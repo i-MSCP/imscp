@@ -47,6 +47,11 @@
               </tr>
               <tr>
                 <td><table width="100%" cellspacing="7">
+                <!-- BDP: page_message -->
+                  <tr>
+                    <td colspan="3" nowrap class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                  </tr>
+                  <!-- EDP: page_message -->
                     <tr>
                       <td width="25">&nbsp;</td>
                       <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">

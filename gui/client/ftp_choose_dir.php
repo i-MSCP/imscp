@@ -44,9 +44,7 @@ function gen_directories( &$tpl ) {
 	$domain = $_SESSION['user_logged'];
 	
 	// Create the virtual file system and open it so it can be used
-	$vfs = new vfs($domain);
-	$vfs->setDb($sql);
-	$vfs->open();
+	$vfs =& new vfs($domain,$sql);
 	
 	// Get the directory listing
 	$list = $vfs->ls($path);
@@ -99,9 +97,6 @@ function gen_directories( &$tpl ) {
 		$tpl->parse('ACTION_LINK', 'action_link');
 		$tpl->parse('DIR_ITEM'   , '.dir_item');
 	}
-	
-	// We're done, close the virtual file system
-	$vfs->close();
 }
 // functions end
 
