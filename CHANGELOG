@@ -14,9 +14,16 @@ VHCS 2.4.8 ω Omega Changelog
 2007-03-06 Benedikt Heintel
 	- CONFIGS:
 		* RedHat: Added support for RedHat (seeking for maintainer)
+		* Ubuntu: Added support for Ubuntu
+		* updated postfix master file
+		* updated Makefiles
+		* added greylisting via postgrey for Debian and Ubuntu
 	- DOCS:
 		* RedHat: Added support for RedHat (seeking for maintainer)
 		* changed some strings
+		* Gentoo: Added INSTALL file
+		* Ubuntu: Added support for Ubuntu
+		* updated INSTALL files
 
 2007-03-05 Benedikt Heintel
 	- GUI:

@@ -63,6 +63,7 @@ Make sure you are logged in as root.
 3. Install the required modules:
 	# yum upgrade
 	# wget http://dag.wieers.com/rpm/packages/rpmforge-release/rpmforge-release-0.3.6-1.el4.rf.i386.rpm
+	# yum remove sendmail
 	# yum install `cat ./docs/RedHat/redhat-packages`
 
 4. Now there are two ways of install VHCS ω
@@ -98,6 +99,7 @@ b) manualy
 
 6. Return to the parent direction and build the System by using make:
 	# cd ../
+	# mv Makefile.redhat Makefile
 	# make install
 
 7. Copy all the directories into the system (you may make backups)

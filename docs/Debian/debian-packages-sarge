@@ -65,6 +65,7 @@ php5-mhash
 php5-mysql
 postfix
 postfix-tls
+postgrey
 procmail
 proftpd-mysql
 sasl2-bin

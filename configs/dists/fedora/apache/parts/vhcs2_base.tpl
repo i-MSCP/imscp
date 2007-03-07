@@ -49,6 +49,10 @@ Alias /vhcs_images /srv/www/vhcs2/gui/images
 
     DocumentRoot /srv/www/vhcs2/gui
 
+    <IfModule mod_fastcgi.c>
+        SuexecUserGroup vu2000 vu2000
+    </IfModule>
+
     <Directory /srv/www/vhcs2/gui>
         Options Indexes Includes FollowSymLinks MultiViews
         AllowOverride None
@@ -56,10 +60,20 @@ Alias /vhcs_images /srv/www/vhcs2/gui/images
         Allow from all
     </Directory>
 
+    <IfModule mod_fastcgi.c>
+    ScriptAlias /php4/ /srv/www/fcgi/master/
+        <Directory "/srv/www/fcgi/master">
+            AllowOverride None
+            Options +ExecCGI MultiViews Indexes
+            Order allow,deny
+            Allow from all
+        </Directory>
+    </IfModule>
+
 </VirtualHost>
 
 #
-# AWStats-Alias
+# AWStats
 #
 
 Alias /awstatsclasses "/srv/www/awstats/classes/"

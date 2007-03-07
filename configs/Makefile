@@ -21,12 +21,16 @@ install:
 		cd ./dists/fedora && $(MAKE) install ; \
 	elif [[ $(HOST_OS) == gentoo ]] ; then \
 		cd ./dists/gentoo && $(MAKE) install ; \
+	elif [[ $(HOST_OS) == redhat ]] ; then \
+		cd ./dists/redhat && $(MAKE) install ; \
 	elif [[ $(HOST_OS) == sles9 ]] ; then \
 		cd ./dists/sles9 && $(MAKE) install ; \
 	elif [[ $(HOST_OS) == suse100 ]] ; then \
 		cd ./dists/suse100 && $(MAKE) install ; \
 	elif [[ $(HOST_OS) == suse93 ]] ; then \
 		cd ./dists/suse93 && $(MAKE) install ; \
+	elif [[ $(HOST_OS) == ubuntu ]] ; then \
+		cd ./dists/ubuntu && $(MAKE) install ; \
 	fi
 
 uninstall:
@@ -48,11 +52,15 @@ uninstall:
 		cd ./dists/fedora && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == gentoo ]] ; then \
 		cd ./dists/gentoo && $(MAKE) uninstall ; \
+	elif [[ $(HOST_OS) == redhat ]] ; then \
+		cd ./dists/redhat && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == sles9 ]] ; then \
 		cd ./dists/sles9 && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == suse93 ]] ; then \
 		cd ./dists/suse93 && $(MAKE) uninstall ; \
 	elif [[ $(HOST_OS) == suse100 ]] ; then \
 		cd ./dists/suse100 && $(MAKE) uninstall ; \
+	elif [[ $(HOST_OS) == ubuntu ]] ; then \
+		cd ./dists/ubuntu && $(MAKE) uninstall ; \
 	fi
 

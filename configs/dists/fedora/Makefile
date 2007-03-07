@@ -1,11 +1,12 @@
 
-export 
+export
 
 install:
 
 	if [[ $(HOST_OS) == fedora ]] ; then \
 		cp ./vhcs2.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
+		cd ./awstats && $(MAKE) install ; cd .. ; \
 		cd ./bind && $(MAKE) install ; cd .. ; \
 		cd ./crontab && $(MAKE) install ; cd .. ; \
 		cd ./cron.d && $(MAKE) install ; cd .. ; \
@@ -17,12 +18,13 @@ install:
 		cd ./proftpd && $(MAKE) install ; cd .. ; \
 		cd ./logrotate && $(MAKE) install ; cd .. ; \
 	fi
-   
+
 uninstall:
 
 	if [[ $(HOST_OS) == fedora ]] ; then \
 		rm -rf $(SYSTEM_CONF)/vhcs2.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
+		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \
 		cd ./crontab && $(MAKE) uninstall ; cd .. ; \
 		cd ./cron.d  && $(MAKE) uninstall ; cd .. ; \
