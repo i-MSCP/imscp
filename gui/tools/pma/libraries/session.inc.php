@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php 9829 2007-01-08 18:06:00Z lem9 $ */
+/* $Id: session.inc.php 9922 2007-02-05 12:37:18Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
@@ -89,7 +89,37 @@ if (version_compare(PHP_VERSION, '5.1.2', 'lt')
  && eregi("\r|\n", $_COOKIE[$session_name])) {
     die('attacked'); 
 }
-@session_start();
+
+if (! isset($_COOKIE[$session_name])) {
+    // on first start of session we will check for errors
+    // f.e. session dir cannot be accessed - session file not created
+    ob_start();
+    $old_display_errors = ini_get('display_errors');
+    $old_error_reporting = error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    $r = session_start();
+    ini_set('display_errors', $old_display_errors);
+    error_reporting($old_error_reporting);
+    unset($old_display_errors, $old_error_reporting);
+    $session_error = ob_get_contents();
+    ob_end_clean();
+    if ($r !== true || ! empty($session_error)) {
+        $cfg = array('DefaultLang'           => 'en-iso-8859-1',
+                     'AllowAnywhereRecoding' => false);
+        // Loads the language file
+        require_once './libraries/select_lang.lib.php';
+        // Displays the error message
+        // (do not use &amp; for parameters sent by header)
+        header('Location: error.php'
+                . '?lang='  . urlencode($available_languages[$lang][2])
+                . '&dir='   . urlencode($text_dir)
+                . '&type='  . urlencode($strError)
+                . '&error=' . urlencode($strSessionStartupErrorGeneral));
+        exit();
+    }
+} else {
+    @session_start();
+}
 
 /**
  * Token which is used for authenticating access queries.

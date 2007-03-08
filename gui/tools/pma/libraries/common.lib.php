@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 9873 2007-01-29 13:12:10Z lem9 $ */
+/* $Id: common.lib.php 10051 2007-03-02 17:22:14Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -264,13 +264,24 @@ function PMA_array_merge_recursive()
 }
 
 /**
- * calls $function vor every element in $array recursively
+ * calls $function for every element in $array recursively
+ *
+ * this function is protected against deep recursion attack CVE-2006-1549,
+ * 1000 seems to be more than enough
+ *
+ * @see http://www.php-security.org/MOPB/MOPB-02-2007.html
+ * @see http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-1549
  *
  * @param   array   $array      array to walk
  * @param   string  $function   function to call for every array element
  */
 function PMA_arrayWalkRecursive(&$array, $function, $apply_to_keys_also = false)
 {
+     static $recursive_counter = 0;
+     if (++$recursive_counter > 1000) {
+             die('possible deep recursion attack');
+     }
+
     foreach ($array as $key => $value) {
         if (is_array($value)) {
             PMA_arrayWalkRecursive($array[$key], $function, $apply_to_keys_also);
@@ -286,6 +297,7 @@ function PMA_arrayWalkRecursive(&$array, $function, $apply_to_keys_also = false)
             }
         }
     }
+    $recursive_counter++;
 }
 
 /**
@@ -1104,7 +1116,7 @@ if (!defined('PMA_MINIMUM_COMMON')) {
         }
 
         // '0' is also empty for php :-(
-        if (strlen($a_name) && $a_name != '*') {
+        if (strlen($a_name) && $a_name !== '*') {
             return '`' . str_replace('`', '``', $a_name) . '`';
         } else {
             return $a_name;
@@ -1185,8 +1197,11 @@ if (typeof(window.parent) != 'undefined'
                 $sql_query = $GLOBALS['display_query'];
             } elseif ($cfg['SQP']['fmtType'] == 'none' && ! empty($GLOBALS['unparsed_sql'])) {
                 $sql_query = $GLOBALS['unparsed_sql'];
-            } else {
+            // could be empty, for example export + save on server
+            } elseif (! empty($GLOBALS['sql_query'])) {
                 $sql_query = $GLOBALS['sql_query'];
+            } else {
+                $sql_query = '';
             }
         }
 
@@ -1270,13 +1285,18 @@ if (typeof(window.parent) != 'undefined'
                 $query_base = $sql_query;
             }
 
+            $max_characters = 1000;
+            if (strlen($query_base) > $max_characters) {
+                define('PMA_QUERY_TOO_BIG',1);
+            }
+
             // Parse SQL if needed
             if (isset($GLOBALS['parsed_sql']) && $query_base == $GLOBALS['parsed_sql']['raw']) {
                 $parsed_sql = $GLOBALS['parsed_sql'];
             } else {
                 // when the query is large (for example an INSERT of binary
                 // data), the parser chokes; so avoid parsing the query
-                if (strlen($query_base) < 1000) {
+                if (! defined('PMA_QUERY_TOO_BIG')) {
                     $parsed_sql = PMA_SQP_parse($query_base);
                 }
             }
@@ -1318,20 +1338,13 @@ if (typeof(window.parent) != 'undefined'
             // Prepares links that may be displayed to edit/explain the query
             // (don't go to default pages, we must go to the page
             // where the query box is available)
-            // (also, I don't see why we should check the goto variable)
 
-            //if (!isset($GLOBALS['goto'])) {
-                //$edit_target = (isset($GLOBALS['table'])) ? $cfg['DefaultTabTable'] : $cfg['DefaultTabDatabase'];
             $edit_target = isset($GLOBALS['db']) ? (isset($GLOBALS['table']) ? 'tbl_sql.php' : 'db_sql.php') : 'server_sql.php';
-            //} elseif ($GLOBALS['goto'] != 'main.php') {
-            //    $edit_target = $GLOBALS['goto'];
-            //} else {
-            //    $edit_target = '';
-            //}
 
             if (isset($cfg['SQLQuery']['Edit'])
                 && ($cfg['SQLQuery']['Edit'] == true)
-                && (!empty($edit_target))) {
+                && (!empty($edit_target))
+                && ! defined('PMA_QUERY_TOO_BIG')) {
 
                 if ($cfg['EditInWindow'] == true) {
                     $onclick = 'window.parent.focus_querywindow(\'' . PMA_jsFormat($sql_query, false) . '\'); return false;';
@@ -1352,7 +1365,8 @@ if (typeof(window.parent) != 'undefined'
             // but only explain a SELECT (that has not been explained)
             /* SQL-Parser-Analyzer */
             if (isset($cfg['SQLQuery']['Explain'])
-                && $cfg['SQLQuery']['Explain'] == true) {
+                && $cfg['SQLQuery']['Explain'] == true
+                && ! defined('PMA_QUERY_TOO_BIG')) {
 
                 // Detect if we are validating as well
                 // To preserve the validate uRL data
@@ -1386,7 +1400,8 @@ if (typeof(window.parent) != 'undefined'
             // Also we would like to get the SQL formed in some nice
             // php-code (Mike Beck 2002-05-22)
             if (isset($cfg['SQLQuery']['ShowAsPHP'])
-                && $cfg['SQLQuery']['ShowAsPHP'] == true) {
+                && $cfg['SQLQuery']['ShowAsPHP'] == true
+                && ! defined('PMA_QUERY_TOO_BIG')) {
                 $php_link = 'import.php'
                           . $url_qpart
                           . '&amp;show_query=1'
@@ -1456,7 +1471,14 @@ if (typeof(window.parent) != 'undefined'
             echo '<fieldset class="">' . "\n";
             echo '    <legend>' . $GLOBALS['strSQLQuery'] . ':</legend>';
             echo '    <div>';
-            echo '    ' . $query_base;
+            // when uploading a 700 Kio binary file into a LONGBLOB, 
+            // I get a white page, strlen($query_base) is 2 x 700 Kio
+            // so put a hard limit here (let's say 1000)
+            if (defined('PMA_QUERY_TOO_BIG')) {
+                echo '    ' . substr($query_base,0,$max_characters) . '[...]';
+            } else {
+                echo '    ' . $query_base;
+            }
 
             //Clean up the end of the PHP
             if (!empty($GLOBALS['show_as_php'])) {
@@ -2062,6 +2084,7 @@ if (typeof(window.parent) != 'undefined'
         $nonprimary_condition = '';
 
         for ($i = 0; $i < $fields_cnt; ++$i) {
+            $condition   = '';
             $field_flags = PMA_DBI_field_flags($handle, $i);
             $meta        = $fields_meta[$i];
 
@@ -2116,13 +2139,16 @@ if (typeof(window.parent) != 'undefined'
                     // hexify only if this is a true not empty BLOB
                      && stristr($field_flags, 'BINARY')
                      && !empty($row[$i])) {
-                        // use a CAST if possible, to avoid problems
-                        // if the field contains wildcard characters % or _
-                        if (PMA_MYSQL_INT_VERSION < 40002) {
-                            $condition .= 'LIKE 0x' . bin2hex($row[$i]) . ' AND';
-                        } else {
-                            $condition .= '= CAST(0x' . bin2hex($row[$i])
-                                . ' AS BINARY) AND';
+                        // do not waste memory building a too big condition 
+                        if (strlen($row[$i]) < 1000) {
+                            if (PMA_MYSQL_INT_VERSION < 40002) {
+                                $condition .= 'LIKE 0x' . bin2hex($row[$i]) . ' AND';
+                            } else {
+                                // use a CAST if possible, to avoid problems
+                                // if the field contains wildcard characters % or _
+                                $condition .= '= CAST(0x' . bin2hex($row[$i])
+                                    . ' AS BINARY) AND';
+                            }
                         }
                 } else {
                     $condition .= '= \''

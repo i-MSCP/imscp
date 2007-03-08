@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.10.0-beta1 Documentation
+phpMyAdmin 2.10.0.2 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.10.0-beta1 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 9869 2007-01-23 13:45:27Z
+  * Documentation version: $Id: Documentation.html 10052 2007-03-02 17:35:25Z
     lem9 $
 
 Requirements
@@ -101,15 +101,20 @@ lines character ("\r").
 
 Quick Install
 
- 1. Untar or unzip the distribution (be sure to unzip the subdirectories): tar
-    -xzvf phpMyAdmin_x.x.x.tar.gz in your webserver's document root. If you
-    don't have direct access to your document root, put the files in a
-    directory on your local machine, and, after step 3, transfer the directory
-    on your web server using, for example, ftp.
- 2. Ensure that all the scripts have the appropriate owner (if PHP is running
+ 1. Choose an appropriate distribution kit from the phpmyadmin.net Downloads
+    page. Some kits contain only the English messages, others contain all
+    languages in UTF-8 format (this should be fine in most situations), others
+    contain all languages and all character sets. We'll assume you chose a kit
+    whose name looks like phpMyAdmin-x.x.x-all-languages.tar.gz.
+ 2. Untar or unzip the distribution (be sure to unzip the subdirectories): tar
+    -xzvf phpMyAdmin_x.x.x-all-languages.tar.gz in your webserver's document
+    root. If you don't have direct access to your document root, put the files
+    in a directory on your local machine, and, after step 4, transfer the
+    directory on your web server using, for example, ftp.
+ 3. Ensure that all the scripts have the appropriate owner (if PHP is running
     in safe mode, having some scripts with an owner different from the owner of
     other scripts will be a problem). See FAQ 4.2 and FAQ 1.26 for suggestions.
- 3. Now you must configure your installation. There are two methods that can be
+ 4. Now you must configure your installation. There are two methods that can be
     used. Traditionally, users have hand-edited a copy of config.inc.php, but
     now a wizard-style setup script is provided for those who prefer a
     graphical installation. Creating a config.inc.php is still a quick way to
@@ -180,17 +185,17 @@ Quick Install
         Now the file is ready to be used. You can choose to review or edit the
         file with your favorite editor, if you prefer to set some advanced
         options which the setup script does not provide.
- 4. If you are using the auth_type "config", it is suggested that you protect
+ 5. If you are using the auth_type "config", it is suggested that you protect
     the phpMyAdmin installation directory because using config does not require
     a user to enter a password to access the phpMyAdmin installation. Use of an
     alternate authentication method is recommended, for example with HTTP?AUTH
     in a .htaccess file or switch to using auth_type cookie or http. See the
     multi?user sub?section of this FAQ for additional information, especially
     FAQ 4.4.
- 5. Open the main phpMyAdmin directory in your browser. phpMyAdmin should now
+ 6. Open the main phpMyAdmin directory in your browser. phpMyAdmin should now
     display a welcome screen and your databases, or a login dialog if using
     HTTP or cookie authentication mode.
- 6. You should deny access to the ./libraries subfolder in your webserver
+ 7. You should deny access to the ./libraries subfolder in your webserver
     configuration. For Apache you can use supplied .htaccess file in that
     folder, for other webservers, you should configure this yourself. Such
     configuration prevents from possible path exposure and cross side scripting
@@ -853,8 +858,12 @@ $cfg['LeftDisplayLogo'] boolean
     Defines whether or not to display the phpMyAdmin logo at the top of the
     left frame. Defaults to TRUE.
 $cfg['LeftLogoLink'] string
-    Enter URL where logo in left frame will point to. For use especially with
-    self made theme which changes this.
+    Enter URL where logo in the navigation frame will point to. For use
+    especially with self made theme which changes this. The default value for
+    this is main.php.
+$cfg['LeftLogoLinkWindow'] string
+    Whether to open the linked page in the main window (main) or in a new one
+    (new).
 $cfg['LeftDisplayServers'] boolean
     Defines whether or not to display a server choice at the top of the left
     frame. Defaults to FALSE.
@@ -1146,6 +1155,19 @@ $cfg['ShowBrowseComments'] boolean
     are shown inside the header. In property mode, comments are displayed using
     a CSS-formatted dashed-line below the name of the field. The comment is
     shown as a tool-tip for that field.
+$cfg['SQLQuery']['Edit'] boolean
+    Whether to display an edit link to change a query in any SQL Query box.
+$cfg['SQLQuery']['Explain'] boolean
+    Whether to display a link to explain a SELECT query in any SQL Query box.
+$cfg['SQLQuery']['ShowAsPHP'] boolean
+    Whether to display a link to wrap a query in PHP code in any SQL Query box.
+$cfg['SQLQuery']['Validate'] boolean
+    Whether to display a link to validate a query in any SQL Query box. See
+    also $cfg_SQLValidator.
+$cfg['SQLQuery']['Refresh'] boolean
+    Whether to display a link to refresh a query in any SQL Query box.
+$cfg['UploadDir'] string
+    The name of the directory where
 $cfg['UploadDir'] string
     The name of the directory where SQL files have been uploaded by other means
     than phpMyAdmin (for example, ftp). Those files are available under a

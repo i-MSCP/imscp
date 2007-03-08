@@ -1,5 +1,5 @@
 <?php
-/* $Id: pmd_general.php 9880 2007-01-29 18:08:53Z lem9 $ */
+/* $Id: pmd_general.php 9929 2007-02-06 09:56:31Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /*
@@ -157,7 +157,7 @@ for ( $i=0; $i < sizeof( $GLOBALS['PMD']["TABLE_NAME"] ); $i++ )
   {
   ?>
     <tr id = "_|_tr_<?php echo $GLOBALS['PMD_URL']["TABLE_NAME_SMALL"][$i].'.'.urlencode($tab_column[$t_n]["COLUMN_NAME"][$j]) ?>"
-    <? if($display_field == $tab_column[$t_n]["COLUMN_NAME"][$j]) echo ' class="tab_field_3" '; else  echo ' class="tab_field" '; ?>
+    <?php if($display_field == $tab_column[$t_n]["COLUMN_NAME"][$j]) echo ' class="tab_field_3" '; else  echo ' class="tab_field" '; ?>
     onMouseOver="old_class = this.className; this.className = 'tab_field_2';" onMouseOut="this.className = old_class;" 
     onMouseDown="Click_field('<?php
         echo $GLOBALS['PMD_URL']["TABLE_NAME_SMALL"][$i]."','".urlencode($tab_column[$t_n]["COLUMN_NAME"][$j])."',";
@@ -177,7 +177,7 @@ for ( $i=0; $i < sizeof( $GLOBALS['PMD']["TABLE_NAME"] ); $i++ )
       <img src="pmd/styles/<?php echo $GLOBALS['PMD']['STYLE']
       ?>/images/FieldKey_small.png" alt="*"><?php 
       } else {
-      ?><img src="pmd/styles/<?php echo $GLOBALS['PMD']['STYLE']?>/images/Field_small<? 
+      ?><img src="pmd/styles/<?php echo $GLOBALS['PMD']['STYLE']?>/images/Field_small<?php
         if(strstr($tab_column[$t_n]["TYPE"][$j],'char')
         || strstr($tab_column[$t_n]["TYPE"][$j],'text')  ) echo '_char';
         elseif(strstr($tab_column[$t_n]["TYPE"][$j],'int')

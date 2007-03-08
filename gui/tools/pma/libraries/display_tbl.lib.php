@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php 9782 2006-12-10 12:32:41Z lem9 $ */
+/* $Id: display_tbl.lib.php 9900 2007-02-01 09:55:55Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';
@@ -793,17 +793,15 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
             }
 
             // 2.1.4 Do define the sorting url
-            if (!$is_in_sort) {
+            if (! $is_in_sort) {
                 // loic1: patch #455484 ("Smart" order)
-                $GLOBALS['cfg']['Order']  = strtoupper($GLOBALS['cfg']['Order']);
-                if ($GLOBALS['cfg']['Order'] == 'SMART') {
-                    $GLOBALS['cfg']['Order'] = (preg_match('@time|date@i', $fields_meta[$i]->type)) ? 'DESC' : 'ASC';
+                $GLOBALS['cfg']['Order'] = strtoupper($GLOBALS['cfg']['Order']);
+                if ($GLOBALS['cfg']['Order'] === 'SMART') {
+                    $sort_order .= (preg_match('@time|date@i', $fields_meta[$i]->type)) ? 'DESC' : 'ASC';
+                } else {
+                    $sort_order .= $GLOBALS['cfg']['Order'];
                 }
-                $sort_order .= $GLOBALS['cfg']['Order'];
                 $order_img   = '';
-            } elseif (preg_match('@[[:space:]]ASC$@i', $sort_expression)) {
-                $sort_order .= ' DESC';
-                $order_img   = ' <img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 's_asc.png" width="11" height="9" alt="'. $GLOBALS['strAscending'] . '" title="'. $GLOBALS['strAscending'] . '" id="soimg' . $i . '" />';
             } elseif (preg_match('@[[:space:]]DESC$@i', $sort_expression)) {
                 $sort_order .= ' ASC';
                 $order_img   = ' <img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 's_desc.png" width="11" height="9" alt="'. $GLOBALS['strDescending'] . '" title="'. $GLOBALS['strDescending'] . '" id="soimg' . $i . '" />';

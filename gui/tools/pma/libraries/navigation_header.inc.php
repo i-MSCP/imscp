@@ -1,5 +1,5 @@
 <?php
-/* $Id: navigation_header.inc.php 9589 2006-10-18 14:54:35Z nijel $ */
+/* $Id: navigation_header.inc.php 9963 2007-02-12 00:35:16Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -25,8 +25,15 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
     }
 
     echo '<div id="pmalogo">' . "\n"
-        .'<a href="' . $GLOBALS['cfg']['LeftLogoLink'] . '" target="_blank">'
-        .$logo . '</a>' . "\n"
+        .'<a href="' . $GLOBALS['cfg']['LeftLogoLink'];
+    switch ($GLOBALS['cfg']['LeftLogoLinkWindow']) {
+        case 'new':
+            echo '" target="_blank"';
+            break;
+        case 'main':
+            echo '?' . $query_url . '" target="frame_content"';
+    }
+    echo '>' . $logo . '</a>' . "\n"
         .'</div>' . "\n";
 } // end of display logo
 ?>

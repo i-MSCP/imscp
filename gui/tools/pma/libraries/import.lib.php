@@ -1,5 +1,5 @@
 <?php
-/* $Id: import.lib.php 9777 2006-12-06 17:39:42Z lem9 $ */
+/* $Id: import.lib.php 9905 2007-02-01 17:33:29Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /* Library that provides common import functions that are used by import plugins */
@@ -175,9 +175,6 @@ function PMA_importRunQuery($sql = '', $full = '', $controluser = false)
                         $sql_query = '';
                         $sql_query_disabled = TRUE;
                     }
-                }
-                if (! empty($sql_query)) {
-                    $sql_query = htmlspecialchars($sql_query);
                 }
             }
         } // end do query (no skip)

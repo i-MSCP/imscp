@@ -1,5 +1,5 @@
 <?php
-/* $Id: pmd_save_pos.php 9818 2007-01-02 14:39:22Z lem9 $ */
+/* $Id: pmd_save_pos.php 9929 2007-02-06 09:56:31Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 include_once 'pmd_common.php';
@@ -53,6 +53,6 @@ if(! empty($die_save_pos)) {
   header("Cache-Control: no-cache");
 ?>
 <root act='save_pos' return='<?php echo 'strModifications'; ?>'></root>
-<? 
+<?php
 }
 ?>

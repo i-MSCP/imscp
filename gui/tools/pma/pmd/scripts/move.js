@@ -1,5 +1,5 @@
 /*
-$Id: move.js 9858 2007-01-22 17:53:54Z lem9 $
+$Id: move.js 10008 2007-02-21 17:59:42Z lem9 $
 @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
 */
 var dx, dy, dy2;
@@ -177,7 +177,9 @@ function Main()
   Small_tab_refresh();
   Re_load();
   id_hint = document.getElementById('hint');
-  General_scroll();
+  if (ieIE) {
+    General_scroll();
+  }
 }
 
 
@@ -321,6 +323,7 @@ function Circle(x,y,r,w,color)
 {   
   var ctx = document.getElementById('canvas').getContext('2d');   
   ctx.beginPath(); 
+  ctx.moveTo(x, y);
   ctx.lineWidth = w;
   ctx.strokeStyle = color;
   ctx.arc(x, y, r, 0, 2*Math.PI, true);   

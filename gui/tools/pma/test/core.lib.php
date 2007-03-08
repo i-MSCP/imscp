@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 9832 2007-01-09 09:50:49Z nijel $ */
+/* $Id: core.lib.php 9913 2007-02-03 17:30:07Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**

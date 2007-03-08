@@ -18,7 +18,7 @@
 * If you got this file from somewhere other than phpMyAdmin
 * please be aware that the latest copy will always be in the
 * phpMyAdmin subversion tree as
-* $HeadURL: https://svn.sourceforge.net/svnroot/phpmyadmin/branches/QA_2_10/phpMyAdmin/libraries/sqlvalidator.class.php $
+* $HeadURL: https://svn.sourceforge.net/svnroot/phpmyadmin/branches/MAINT_2_10_0/phpMyAdmin/libraries/sqlvalidator.class.php $
 *
 * This code that also used to depend on the PHP overload module, but that has been
 * removed now.

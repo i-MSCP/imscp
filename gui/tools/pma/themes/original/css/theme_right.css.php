@@ -169,13 +169,16 @@ table tr.even {
     text-align:         <?php echo $left; ?>;
 }
 
+<?php if ($GLOBALS['cfg']['BrowseMarkerEnable']) { ?>
 /* marked table rows */
 table tr.marked th,
 table tr.marked {
     background:   <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
     color:   <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
 }
+<?php } ?>
 
+<?php if ($GLOBALS['cfg']['BrowsePointerEnable']) { ?>
 /* hovered items */
 .odd:hover,
 .even:hover,
@@ -191,6 +194,7 @@ table tr.hover th {
     background:   <?php echo $GLOBALS['cfg']['BrowsePointerBackground']; ?>;
     color:   <?php echo $GLOBALS['cfg']['BrowsePointerColor']; ?>;
 }
+<?php } ?>
 
 /**
  * marks table rows/cells if the db field is in a where condition

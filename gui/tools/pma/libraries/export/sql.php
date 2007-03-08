@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 9817 2007-01-02 09:24:56Z nijel $ */
+/* $Id: sql.php 10002 2007-02-17 18:06:11Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Set of functions used to build SQL dumps of tables
@@ -162,7 +162,8 @@ function PMA_exportFooter()
     }
 
     // restore connection settings
-    $charset_of_file = $GLOBALS['charset_of_file'];
+    // (not set if $cfg['AllowAnywhereRecoding'] is false)
+    $charset_of_file = isset($GLOBALS['charset_of_file']) ? $GLOBALS['charset_of_file'] : '';
     if (!empty($GLOBALS['asfile']) && isset($mysql_charset_map[$charset_of_file])) {
         $foot .=  $crlf
                . '/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;' . $crlf 
@@ -226,7 +227,7 @@ function PMA_exportHeader()
    
     $head .= $crlf;
 
-    $charset_of_file = $GLOBALS['charset_of_file'];
+    $charset_of_file = isset($GLOBALS['charset_of_file']) ? $GLOBALS['charset_of_file'] : '';
     if (!empty($GLOBALS['asfile']) && isset($mysql_charset_map[$charset_of_file])) {
         $head .=  $crlf
                . '/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;' . $crlf
@@ -239,7 +240,7 @@ function PMA_exportHeader()
 }
 
 /**
- * Outputs create database database
+ * Outputs CREATE DATABASE database
  *
  * @param   string      Database name
  *

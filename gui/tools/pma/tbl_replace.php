@@ -1,12 +1,11 @@
 <?php
 /**
  * manipulation of table data like inserting, replacing and updating
+ * vim: expandtab sw=4 ts=4 sts=4:
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * vim: expandtab sw=4 ts=4 sts=4:
- *
- * @version $Id: tbl_replace.php 9795 2006-12-19 16:54:29Z cybot_tm $
+ * @version $Id: tbl_replace.php 9907 2007-02-02 15:53:29Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -352,7 +351,18 @@ if (isset($return_to_sql_query)) {
     $GLOBALS['sql_query'] = $return_to_sql_query;
 }
 
-$js_to_run = 'functions.js';
+// if user asked to "Insert another new row", we need tbl_change.js
+// otherwise the calendar icon does not work
+if ($goto_include == 'tbl_change.php') {
+    /**
+     * @todo if we really need to run many different js at header time,
+     * $js_to_run would become an array and header.inc.php would iterate
+     * thru it, instead of the bunch of if/elseif it does now
+     */
+    $js_to_run = 'tbl_change.js';
+} else {
+    $js_to_run = 'functions.js';
+}
 $active_page = $goto_include;
 require_once './libraries/header.inc.php';
 require './' . PMA_securePath($goto_include);

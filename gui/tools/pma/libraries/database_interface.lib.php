@@ -1,5 +1,5 @@
 <?php
-/* $Id: database_interface.lib.php 9745 2006-11-19 20:54:19Z nijel $ */
+/* $Id: database_interface.lib.php 9974 2007-02-12 15:22:19Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -456,13 +456,13 @@ function PMA_DBI_get_databases_full($database = null, $force_stats = false,
         if ($force_stats) {
             $sql .= '
           LEFT JOIN `information_schema`.`TABLES`
-                 ON `information_schema`.`TABLES`.`TABLE_SCHEMA`
-                  = `information_schema`.`SCHEMATA`.`SCHEMA_NAME`';
+                 ON BINARY `information_schema`.`TABLES`.`TABLE_SCHEMA`
+                  = BINARY `information_schema`.`SCHEMATA`.`SCHEMA_NAME`';
         }
         $sql .= '
               ' . $sql_where_schema . '
-           GROUP BY `information_schema`.`SCHEMATA`.`SCHEMA_NAME`
-           ORDER BY ' . PMA_backquote($sort_by) . ' ' . $sort_order
+           GROUP BY BINARY `information_schema`.`SCHEMATA`.`SCHEMA_NAME`
+           ORDER BY BINARY ' . PMA_backquote($sort_by) . ' ' . $sort_order
            . $limit;
         $databases = PMA_DBI_fetch_result($sql, 'SCHEMA_NAME', null, $link);
 

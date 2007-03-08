@@ -10,7 +10,7 @@
 --                                                 
 -- Please don't forget to set up the tablenames in config.inc.php                                 
 -- 
--- $Id: upgrade_tables_mysql_4_1_2+.sql 6537 2004-12-26 22:29:36Z lem9 $
+-- $Id: upgrade_tables_mysql_4_1_2+.sql 10020 2007-02-26 17:51:47Z lem9 $
 
 -- --------------------------------------------------------
 
@@ -143,4 +143,22 @@ ALTER TABLE `pma_table_info`
   CHANGE `table_name` `table_name` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '';
 ALTER TABLE `pma_table_info`
   CHANGE `display_field` `display_field` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '';
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `pma_designer_coords`
+-- 
+
+CREATE TABLE IF NOT EXISTS `pma_designer_coords` (
+  `db_name` varchar(64) NOT NULL default '',
+  `table_name` varchar(64) NOT NULL default '',
+  `x` INT,
+  `y` INT,
+  `v` TINYINT,
+  `h` TINYINT,
+  PRIMARY KEY (`db_name`,`table_name`)
+)
+  ENGINE=MyISAM COMMENT='Table coordinates for Designer'
+  DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 

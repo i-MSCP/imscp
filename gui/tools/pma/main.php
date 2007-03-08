@@ -1,5 +1,5 @@
 <?php
-/* $Id: main.php 9572 2006-10-17 10:25:01Z nijel $ */
+/* $Id: main.php 9991 2007-02-14 21:18:38Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -298,8 +298,8 @@ if ($GLOBALS['cfg']['ThemeManager']) {
 echo '<li id="li_select_fontsize">';
 echo PMA_Config::getFontsizeForm();
 echo '</li>';
-PMA_printListItem($strPmaDocumentation, 'li_pma_docs', 'Documentation.html');
-PMA_printListItem($strPmaWiki, 'li_pma_docs', 'http://wiki.cihar.com');
+PMA_printListItem($strPmaDocumentation, 'li_pma_docs', 'Documentation.html', null, '_blank');
+PMA_printListItem($strPmaWiki, 'li_pma_docs', 'http://wiki.cihar.com', null, '_blank');
 
 if ($cfg['ShowPhpInfo']) {
     PMA_printListItem($strShowPHPInfo, 'li_phpinfo', './phpinfo.php?' . $common_url_query);
@@ -392,6 +392,10 @@ if (PMA_PHP_INT_VERSION < 40100) {
 // not yet defined before the server choice
 if (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION < 32332) {
     echo '<div class="warning">' . sprintf($strUpgrade, 'MySQL', '3.23.32') . '</div>' . "\n";
+}
+
+if (defined('PMA_WARN_FOR_MCRYPT')) {
+    echo '<div class="warning">' . PMA_sanitize(sprintf($strCantLoad, 'mcrypt')) . '</div>' . "\n";
 }
 
 /**

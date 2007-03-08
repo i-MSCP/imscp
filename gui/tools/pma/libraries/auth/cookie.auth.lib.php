@@ -1,5 +1,5 @@
 <?php
-/* $Id: cookie.auth.lib.php 9851 2007-01-18 11:11:15Z nijel $ */
+/* $Id: cookie.auth.lib.php 9991 2007-02-14 21:18:38Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -22,6 +22,8 @@ if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
     require_once './libraries/mcrypt.lib.php';
 } else {
     require_once './libraries/blowfish.php';
+    // for main.php:
+    define('PMA_WARN_FOR_MCRYPT',1);
 }
 
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: french-utf-8.inc.php 9860 2007-01-22 18:35:31Z lem9 $ */
+/* $Id: french-utf-8.inc.php 10018 2007-02-26 17:26:53Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -11,7 +11,7 @@ $byteUnits = array('o', 'Kio', 'Mio', 'Gio', 'Tio', 'Pio', 'Eio');
 
 $mysql_5_0_doc_lang = 'fr';
 
-$day_of_week = array('Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi');
+$day_of_week = array('Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam');
 $month = array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
 // Voir http://www.php.net/manual/en/function.strftime.php pour la variable
 // ci-dessous

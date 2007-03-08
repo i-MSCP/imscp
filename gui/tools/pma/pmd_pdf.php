@@ -1,5 +1,5 @@
 <?php
-/* $Id: pmd_pdf.php 9818 2007-01-02 14:39:22Z lem9 $ */
+/* $Id: pmd_pdf.php 9929 2007-02-06 09:56:31Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 include_once 'pmd_common.php';
@@ -53,7 +53,7 @@ if (isset($scale)) {
 <body>
 <br>
 <div style="text-align:center; font-weight:bold;">
-  <form name="form1" method="post" action="pmd_pdf.php?db=<? echo $db ?>&token=<? echo $token ?>">
+  <form name="form1" method="post" action="pmd_pdf.php?db=<?php echo $db ?>&token=<?php echo $token ?>">
     <p><?php echo $strExportImportToScale; ?>:
       <select name="scale">
         <option value="1">1:1</option>
@@ -66,14 +66,14 @@ if (isset($scale)) {
   <p><?php echo $strToFromPage; ?>:
 
       <select name="pdf_page_number">
-      <?
+      <?php
       $table_info_result = PMA_query_as_cu('SELECT * FROM '.PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['pdf_pages']).'
                                              WHERE db_name = \''.$db.'\'');
       while($page = PMA_DBI_fetch_assoc($table_info_result))
       {
       ?>
-      <option value="<? echo $page['page_nr'] ?>"><? echo $page['page_descr'] ?></option>
-      <?
+      <option value="<?php echo $page['page_nr'] ?>"><?php echo $page['page_descr'] ?></option>
+      <?php
       }
       ?>
       </select>
