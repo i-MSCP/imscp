@@ -10,6 +10,7 @@ install:
 
 	# Debian 4.0 "Etch"?
 	if [[ $(RELEASE) == '4.0' ]] ; then \
+		mv $(ROOT_CONF)/proftpd.conf $(ROOT_CONF)/proftpd.conf.bak
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
 		cp ./proftpd3.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
 	else \

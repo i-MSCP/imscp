@@ -47,8 +47,11 @@ my $database	= $main::cfg{'DATABASE_NAME'};
 ## MAIN
 print STDOUT "Re-setting VHCS 2 Setup!\n";
 print STDOUT "========================\n";
-my $delete_cmd = "$user_delete $user_prefix$master_user";
+my $delete_cmd = "$user_delete -r $user_prefix$master_user";
 $rs = sys_command($delete_cmd);
+
+my $delete_fcgi = "$main::cfg{'CMD_RM'} -r $main::cfg{'PHP_STARTER_DIR'}/master";
+$rs = sys_command($delete_fcgi);
 
 $sql = "DROP DATABASE IF EXISTS $database";
 ($rs, $rdata) = doSQL($sql);
