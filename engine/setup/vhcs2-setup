@@ -2141,7 +2141,14 @@ sub setup_ftpd {
 	if (! -e "$bk_dir/proftpd.conf.vhcs2") {
 
 		if (! -e $main::cfg{'FTPD_CONF_FILE'}) {
-			$rs = set_conf_val('FTPD_CONF_FILE', '/etc/proftpd/proftpd.conf');
+			$main::ua{'ftpd_conf_file'} = '/etc/proftpd/proftpd.conf';
+			$rs = set_conf_val('FTPD_CONF_FILE', $main::ua{'ftpd_conf_file'});
+
+			return $rs if ($rs != 0);
+
+			$rs = store_conf();
+
+			return $rs if ($rs != 0);
 		}
 
 		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} $bk_dir/proftpd.conf.system";
