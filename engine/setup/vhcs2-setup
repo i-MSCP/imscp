@@ -243,36 +243,6 @@ sub ask_db_host {
 
 }
 
-sub ask_db_host {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'ask_db_host()', 'Starting...');
-
-	my $db_host = 'localhost';
-
-	my $qmsg = "\n    Please enter SQL server host (Enter for defaults) [$db_host]: ";
-
-	print STDOUT $qmsg;
-
-	$rdata = readline(\*STDIN); chop($rdata);
-
-	if (!defined($rdata) || $rdata eq '') {
-
-		$main::ua{'db_host'} = $db_host;
-
-	} else {
-
-		$main::ua{'db_host'} = $rdata;
-
-	}
-
-	push_el(\@main::el, 'ask_db_host()', 'Ending...');
-
-	return 0;
-
-}
-
 sub ask_db_name {
 
 	my ($rs, $rdata) = (undef, undef);
