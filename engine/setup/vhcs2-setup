@@ -243,6 +243,36 @@ sub ask_db_host {
 
 }
 
+sub ask_db_host {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'ask_db_host()', 'Starting...');
+
+	my $db_host = 'localhost';
+
+	my $qmsg = "\n    Please enter SQL server host (Enter for defaults) [$db_host]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN); chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+
+		$main::ua{'db_host'} = $db_host;
+
+	} else {
+
+		$main::ua{'db_host'} = $rdata;
+
+	}
+
+	push_el(\@main::el, 'ask_db_host()', 'Ending...');
+
+	return 0;
+
+}
+
 sub ask_db_name {
 
 	my ($rs, $rdata) = (undef, undef);
@@ -585,6 +615,10 @@ sub user_dialog {
 		return $rs if ($rs != 0);
 
 	} while (check_eth() == 0);
+
+	#
+	# SQL Questions
+	#
 
 	$rs = ask_db_host();
 
@@ -2136,11 +2170,16 @@ sub setup_ftpd {
 
 	if (! -e "$bk_dir/proftpd.conf.vhcs2") {
 
+		if (! -e $main::cfg{'FTPD_CONF_FILE'}) {
+			$rs = set_conf_val('FTPD_CONF_FILE', '/etc/proftpd/proftpd.conf');
+		}
+
 		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} $bk_dir/proftpd.conf.system";
 
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
+
 
 		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'proftpd.conf');
 
