@@ -37,7 +37,8 @@
          </tr>
          <tr>
           <td colspan="2"><strong>
-           <div class="login_text">{TR_USERNAME}</div>          </td>
+           <div class="login_text">{TR_USERNAME}</div>
+          </td>
          </tr>
          <tr>
           <td colspan="2"><input name="uname" type="text" class="textinput" id="uname3" style="width:210px" value=""></td>
@@ -48,7 +49,7 @@
          <tr>
           <td>&nbsp;</td>
           <td align="left" valign="bottom"><input type="submit" name="Submit" class="button" value="   {TR_SEND}   "></td>
-          <td width="302" align="left" valign="bottom"><a class="login" href="index.php">{TR_BACK}</a></td>
+          <td width="302" align="right" valign="bottom"><a class="login" href="index.php">{TR_BACK}</a></td>
          </tr>
         </table>
         </form>
@@ -63,7 +64,7 @@
 </td>
   </tr>
 </table>
-<table align="center" width="453">  
+<table align="center" width="453">
     <tr>
   <td align="right" class="login">
   Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a>

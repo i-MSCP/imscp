@@ -102,20 +102,20 @@ if (isset($_POST['uname'])) {
 			if (requestpassword($_POST['uname'])) {
 				$tpl -> assign(array(
 									'TR_MESSAGE' => tr('The password was requested'),
-									'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
+									'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Back')."</a>"
 									)
 								);
 			} else {
 				$tpl -> assign(array(
 									'TR_MESSAGE' => tr('ERROR: Unknown user'),
-									'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Retry')."</a>"
+									'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">".tr('Retry')."</a>"
 									)
 								);
 			}
 		} else {
 			$tpl -> assign(array(
 								'TR_MESSAGE' => tr('ERROR: Security code was not correct!').' '. $_SESSION['image'],
-								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Retry')."</a>"
+								'TR_LINK' => "<a class=\"link\" href=\"lostpassword.php\">".tr('Retry')."</a>"
 								)
 							);
 		}

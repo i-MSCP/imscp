@@ -72,24 +72,24 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" width="200">{TR_SUBJECT}</td>
-                              <td><input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:270px" class="textinput">
+                              <td class="content"><input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:270px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2" width="200">{TR_MESSAGE}</td>
-                              <td><textarea name="auto_message" style="width:270px" class="textinput2" rows="8">{MESSAGE_VALUE}</textarea>
+                              <td class="content"><textarea name="auto_message" style="width:270px" class="textinput2" rows="8">{MESSAGE_VALUE}</textarea>
                               </td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_SENDER_EMAIL}</td>
-                              <td class="content">{SENDER_EMAIL_VALUE}> </td>
+                              <td class="content">{SENDER_EMAIL_VALUE}</td>
                             </tr>
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_SENDER_NAME}</td>
-                              <td class="content">{SENDER_NAME_VALUE}> </td>
+                              <td class="content">{SENDER_NAME_VALUE}</td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>

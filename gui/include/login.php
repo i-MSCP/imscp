@@ -212,109 +212,86 @@ SQL_QUERY;
 
 		write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " bad session data.");
 
-    return false;
-
-  }
+   	 	return false;
+  	}
 
 }
 
 function goto_user_location() {
 
 	$path = explode("/", $_SERVER['SCRIPT_NAME']);
+  	$found = false;
 
-  $found = false;
-
-  for($i = count($path) - 2 ; $i < count($path); $i++) {
-
-  	if($path[$i] == $_SESSION['user_type']){
-
-    	$found= true;
-
-    } else if ($_SESSION['user_type'] == 'user' && $path[$i] == 'client') {
-
-    	$found= true;
-
-    }
-
+  	for($i = count($path) - 2 ; $i < count($path); $i++) {
+  		if($path[$i] == $_SESSION['user_type']){
+    		$found= true;
+    	}
+		else if ($_SESSION['user_type'] == 'user' && $path[$i] == 'client') {
+    		$found= true;
+  		}
 	}
 
 	if(!$found) {
-
 		if ($_SESSION['user_type'] == 'admin') {
-
-    	header("Location: ../admin/manage_users.php");
-
-	    die();
-
-    } else if ($_SESSION['user_type'] == 'reseller') {
-
-    	header("Location: ../reseller/index.php");
-
-	    die();
-
-    } else if ($_SESSION['user_type'] == 'user') {
-
-    	header("Location: ../client/index.php");
-
-	    die();
-
-    }
-
-  }
-
+    		header("Location: ../admin/manage_users.php");
+	    	die();
+    	}
+		else if ($_SESSION['user_type'] == 'reseller') {
+	    	header("Location: ../reseller/index.php");
+		    die();
+	    }
+		else if ($_SESSION['user_type'] == 'user') {
+	    	header("Location: ../client/index.php");
+		    die();
+	    }
+  	}
 }
 
 function check_login () {
 
 	if (isset($_SESSION['user_logged'])) {
 
-  	if (!check_user_login()) {
-
-    	header("Location: ../index.php");
-
+	  	if (!check_user_login()) {
+	    	header("Location: ../index.php");
 			die();
-
-    }
-
-	} else {
-
-  	header("Location: ../index.php");
-
+	    }
+	}
+	else {
+	  	header("Location: ../index.php");
 		die();
 	}
-
 }
 
 function change_user_interface($form_id, $to_id) {
 
 	global $sql, $cfg;
 
-  $timestamp = time();
+	$timestamp = time();
 
-  if ($cfg['DB_TYPE'] === 'mysql') {
+	if ($cfg['DB_TYPE'] === 'mysql') {
 
 		$query_from = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
 
-    $query_to = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
+    	$query_to = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
 
 	}
 
-  $rs_from = exec_query($sql, $query_from, array($form_id));
+  	$rs_from = exec_query($sql, $query_from, array($form_id));
 
-  $rs_to = exec_query($sql, $query_to, array($to_id));
+  	$rs_to = exec_query($sql, $query_to, array($to_id));
 
-  if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
+  	if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
 
 		write_log("Change interface error => unknown from or to username");
 
-    return false;
+    	return false;
 
-  }
+	}
 
 
-  $from_udata = $rs_from -> FetchRow();
+  	$from_udata = $rs_from -> FetchRow();
 
-  $to_udata = $rs_to -> FetchRow();
+  	$to_udata = $rs_to -> FetchRow();
 
 	if (!is_userdomain_ok($to_udata['admin_name'])) {
 
