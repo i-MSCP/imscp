@@ -1,19 +1,22 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
 
 include '../include/vhcs-lib.php';
 
@@ -60,31 +63,18 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
 	} else {
-
 		setConfig_Value('LOSTPASSWORD', $lostpassword);
-
 		setConfig_Value('LOSTPASSWORD_TIMEOUT', $lostpassword_timeout);
-
 		setConfig_Value('BRUTEFORCE', $bruteforce);
-
 		setConfig_Value('BRUTEFORCE_BETWEEN', $bruteforce_between);
-
 		setConfig_Value('BRUTEFORCE_MAX_LOGIN', $bruteforce_max_login);
-
 		setConfig_Value('BRUTEFORCE_BLOCK_TIME', $bruteforce_block_time);
-
 		setConfig_Value('BRUTEFORCE_BETWEEN_TIME', $bruteforce_between_time);
-
 		setConfig_Value('USER_INITIAL_LANG', $user_initial_lang);
-
 		setConfig_Value('VHCS_SUPPORT_SYSTEM', $support_system);
-
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
-
 		set_page_message(tr('Settings saved !'));
-
 	}
-
 }
 
 $tpl -> assign(
@@ -100,43 +90,35 @@ $tpl -> assign(
 gen_def_language($tpl, $sql, $cfg['USER_INITIAL_LANG']);
 
 if ($cfg['LOSTPASSWORD'] == 1) {
-
 	$tpl -> assign('LOSTPASSWORD_SELECTED_ON', 'selected');
-
+	$tpl -> assign('LOSTPASSWORD_SELECTED_OFF', '');
 } else {
-
+	$tpl -> assign('LOSTPASSWORD_SELECTED_ON', '');
 	$tpl -> assign('LOSTPASSWORD_SELECTED_OFF', 'selected');
-
 }
 
 if ($cfg['BRUTEFORCE'] == 1) {
-
 	$tpl -> assign('BRUTEFORCE_SELECTED_ON', 'selected');
-
+	$tpl -> assign('BRUTEFORCE_SELECTED_OFF', '');
 } else {
-
+	$tpl -> assign('BRUTEFORCE_SELECTED_ON', '');
 	$tpl -> assign('BRUTEFORCE_SELECTED_OFF', 'selected');
-
 }
 
 if ($cfg['BRUTEFORCE_BETWEEN'] == 1) {
-
 	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_ON', 'selected');
-
+	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
 } else {
-
+	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_ON', '');
 	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected');
-
 }
 
 if ($cfg['VHCS_SUPPORT_SYSTEM'] == 1) {
-
 	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected');
-
+	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
-
+	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_ON', '');
 	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_OFF', 'selected');
-
 }
 
 /*

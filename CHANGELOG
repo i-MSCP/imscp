@@ -13,8 +13,9 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-03-12 Benedikt Heintel
 	- GUI:
-		* fixed: Some design issues
-		* changed: behaviour of Lostpassword messages
+		* fixed: some design issues
+		* fixed: bug in error pages
+		* changed: behaviour of lostpassword messages
 		* modified: layout of some functions
 
 2007-03-09 Benedikt Heintel
