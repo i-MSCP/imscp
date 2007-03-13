@@ -11,6 +11,10 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-03-13 Benedikt Heintel
+	- CONFIGS:
+		* Ubuntu: proftpd changed config files for v3.1
+
 2007-03-12 Benedikt Heintel
 	- GUI:
 		* fixed: some design issues
