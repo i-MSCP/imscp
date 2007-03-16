@@ -63,32 +63,32 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_DOMAIN_NAME}</td>
-                            <td  class="content" colspan="2">{VL_DOMAIN_NAME}</td>
+                            <td class="content" colspan="2">{VL_DOMAIN_NAME}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_DOMAIN_IP}</td>
-                            <td  class="content" colspan="2">{VL_DOMAIN_IP}</td>
+                            <td class="content" colspan="2">{VL_DOMAIN_IP}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_STATUS}</td>
-                            <td  class="content" colspan="2">{VL_STATUS}</td>
+                            <td class="content" colspan="2">{VL_STATUS}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_PHP_SUPP} </td>
-                            <td  class="content" colspan="2">{VL_PHP_SUPP}</td>
+                            <td class="content" colspan="2">{VL_PHP_SUPP}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_CGI_SUPP}</td>
-                            <td  class="content" colspan="2">{VL_CGI_SUPP}</td>
+                            <td class="content" colspan="2">{VL_CGI_SUPP}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_MYSQL_SUPP}</td>
-                            <td  class="content" colspan="2">{VL_MYSQL_SUPP}</td>
+                            <td class="content" colspan="2">{VL_MYSQL_SUPP}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
@@ -136,38 +136,38 @@ function MM_goToURL() { //v3.0
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_MAIL_ACCOUNTS}</td>
-                            <td  class="content">{VL_MAIL_ACCOUNTS_USED}</td>
-                            <td  class="content">{VL_MAIL_ACCOUNTS_LIIT}</td>
+                            <td class="content">{VL_MAIL_ACCOUNTS_USED}</td>
+                            <td class="content">{VL_MAIL_ACCOUNTS_LIIT}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_FTP_ACCOUNTS}</td>
-                            <td  class="content">{VL_FTP_ACCOUNTS_USED}</td>
-                            <td  class="content">{VL_FTP_ACCOUNTS_LIIT}</td>
+                            <td class="content">{VL_FTP_ACCOUNTS_USED}</td>
+                            <td class="content">{VL_FTP_ACCOUNTS_LIIT}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_SQL_DB_ACCOUNTS}</td>
-                            <td  class="content">{VL_SQL_DB_ACCOUNTS_USED}</td>
-                            <td  class="content">{VL_SQL_DB_ACCOUNTS_LIIT}</td>
+                            <td class="content">{VL_SQL_DB_ACCOUNTS_USED}</td>
+                            <td class="content">{VL_SQL_DB_ACCOUNTS_LIIT}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_SQL_USER_ACCOUNTS}</td>
-                            <td  class="content">{VL_SQL_USER_ACCOUNTS_USED}</td>
-                            <td  class="content">{VL_SQL_USER_ACCOUNTS_LIIT}</td>
+                            <td class="content">{VL_SQL_USER_ACCOUNTS_USED}</td>
+                            <td class="content">{VL_SQL_USER_ACCOUNTS_LIIT}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_SUBDOM_ACCOUNTS}</td>
-                            <td  class="content">{VL_SUBDOM_ACCOUNTS_USED}</td>
-                            <td  class="content">{VL_SUBDOM_ACCOUNTS_LIIT}</td>
+                            <td class="content">{VL_SUBDOM_ACCOUNTS_USED}</td>
+                            <td class="content">{VL_SUBDOM_ACCOUNTS_LIIT}</td>
                           </tr>
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content2" width="193">{TR_DOMALIAS_ACCOUNTS}</td>
-                            <td  class="content">{VL_DOMALIAS_ACCOUNTS_USED}</td>
-                            <td  class="content">{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
+                            <td class="content">{VL_DOMALIAS_ACCOUNTS_USED}</td>
+                            <td class="content">{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
                           </tr>
                           <tr>
                             <td>&nbsp;</td>

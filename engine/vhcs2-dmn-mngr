@@ -2210,7 +2210,8 @@ sub dmn_change_httpd_file_data {
 	# php.ini for the domain
 	#
 
-	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
+	# feature #94: change of php.ini files on update!
+	#if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
 		my $ini_tpl = '';
 
@@ -2251,10 +2252,10 @@ sub dmn_change_httpd_file_data {
 									);
 
 		return $rs if ($rs != 0);
-	}
+	#}
 
 	#
-	# php5-fcgi-starter for every domain
+	# php4/5-fcgi-starter for the domain
 	#
 
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
@@ -3542,7 +3543,7 @@ sub dmn_change_data {
 
 	# check wether AWStats is enabled
 
-	if ($awstats_dir != 'no') {
+	if ($awstats_dir ne 'no') {
     	$rs = dmn_change_awstats_data($dmn_data);
 
    		return $rs if ($rs != 0);

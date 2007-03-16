@@ -69,6 +69,7 @@ postfix-tls
 postgrey
 procmail
 proftpd-mysql
+rkhunter
 sasl2-bin
 ssh
 tar

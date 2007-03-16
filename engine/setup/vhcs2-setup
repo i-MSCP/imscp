@@ -1657,14 +1657,14 @@ sub setup_httpd {
 	return $rs if ($rs != 0);
 
 	my %tag_hash = (
-					'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'},
+					'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
 					);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 
 	return $rs if ($rs != 0);
 
-	$rs = store_file($main::cfg{'APACHE_CONF_FILE'}, $cfg_tpl, 'root', 'root', 0644);
+	$rs = store_file($main::cfg{'APACHE_CONF_FILE'}, $cfg, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 

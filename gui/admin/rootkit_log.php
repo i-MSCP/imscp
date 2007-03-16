@@ -46,23 +46,24 @@ $tpl -> assign(
 /* Check Log File */
 $filename = "/var/log/rkhunter.log";
 
-if (is_readable($filename) == false) {
+if (!is_readable($filename)) {
 
-        $contents = "<b><font color='#FF0000'>The file doesn't exist or can't be opened.</font><b>" ;
+	$contents = "<b><font color='#FF0000'>The file doesn't exist or can't be opened.</font><b>" ;
 
-} else {
+}
+else {
 
-        $handle = fopen($filename, "r");
+	$handle = fopen($filename, "r");
 
-		$log = fread($handle, filesize($filename));
+	$log = fread($handle, filesize($filename));
 
-		$contents = "<form><textarea cols='120' rows='40'>" . $log . "</textarea></form>";
+	$contents = nl2br($log);
 
-		fclose($handle);
+	fclose($handle);
 }
 $tpl -> assign(
 				array(
-					'LOG'=>$contents
+					'LOG' => $contents
 				     )
 			  );
 

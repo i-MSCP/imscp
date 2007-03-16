@@ -39,12 +39,12 @@
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td align="center" class="content3"><strong><span class="title">Scanning Log:</span></strong></td>
+                              <td class="content3"><strong>Scanning Log:</strong></td>
                             </tr>
                             <!-- BDP: service_status -->
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="{CLASS}">{LOG}</td>
+                              <td class="content" style="white-space:normal;">{LOG}</td>
                             </tr>
                             <!-- EDP: service_status -->
                           </table>
