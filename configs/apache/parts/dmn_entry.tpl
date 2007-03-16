@@ -1,10 +1,5 @@
 <VirtualHost {DMN_IP}:80>
 
-    #
-    # User {SUEXEC_USER}
-    # Group {SUEXEC_GROUP}
-    #
-
     SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
 
     ServerAdmin     root@{DMN_NAME}

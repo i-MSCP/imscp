@@ -11,6 +11,15 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-03-15 Benedikt Heintel
+	- CONFIGS:
+		* Workaround for VHCS panel page not longer working after creation of a new domain
+		* fixed bug #93: the value {STARTER_DIR} which is used by the php fcgi support isn't replaced
+	- ENGINE:
+		* some trivial changes
+	- GUI:
+		* some trivial changes
+
 2007-03-13 Benedikt Heintel
 	- CONFIGS:
 		* Ubuntu: proftpd changed config files for v3.1

@@ -1,20 +1,23 @@
 <?php
-//   ---------------------------------------------------------------------------
-//  |		VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version		|
-//  |						Copyright (c) 2006 by ispCP							|
-//  |						   http://isp-control.net							|
-//  |																			|
-//  | This program is free software; you can redistribute it and/or				|
-//  | modify it under the terms of the GPL General Public License				|
-//  | as published by the Free Software Foundation; either version 2.0			|
-//  | of the License or (at your option) any later version.						|
-//  |																			|
-//  | You should have received a copy of the GPL eneral Public License			|
-//  | along with this program; if not, write to the Open Source Initiative (OSI)|
-//  | http://opensource.org | osi@opensource.org								|
-//  |																			|
-//   ---------------------------------------------------------------------------
-// Begin page line
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team (2006)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
+
 include '../include/vhcs-lib.php';
 
 check_login();
@@ -54,7 +57,7 @@ if (is_readable($filename) == false) {
 		$log = fread($handle, filesize($filename));
 
 		$contents = "<form><textarea cols='120' rows='40'>" . $log . "</textarea></form>";
-		
+
 		fclose($handle);
 }
 $tpl -> assign(

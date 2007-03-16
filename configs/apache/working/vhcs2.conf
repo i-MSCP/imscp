@@ -45,7 +45,9 @@ Alias /vhcs_images /var/www/vhcs2/gui/images
 # Default GUI.
 #
 
-<VirtualHost _default_:*>
+# Temporary changed; now it's working
+# will be replaced in future
+<VirtualHost {IP}:80>
 
     DocumentRoot /var/www/vhcs2/gui
 

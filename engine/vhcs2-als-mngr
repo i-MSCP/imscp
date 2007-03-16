@@ -903,6 +903,7 @@ sub gen_httpd_als_entry {
          '{ALS_IP}' => $als_ip,
          '{URI}' => $url_forward,
          '{MOUNT_POINT}' => $mount_point,
+         '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},

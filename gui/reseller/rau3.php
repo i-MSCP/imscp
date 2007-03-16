@@ -1,21 +1,22 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
-
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
 
 include '../include/vhcs-lib.php';
 
@@ -94,7 +95,7 @@ if (isset($_POST['uaction']) && ("rau3_nxt" === $_POST['uaction']) && !isset($_S
 }
 
 
-gen_au3_page($tpl);
+gen_rau3_page($tpl);
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();
@@ -133,7 +134,7 @@ function init_in_values()
 } // End of init_in_values()
 
 // generate page add user 3
-function gen_au3_page(&$tpl)
+function gen_rau3_page(&$tpl)
 {
   global $dmn_name, $hpid , $dmn_user_name;
   global $user_email, $customer_id, $first_name;
@@ -168,7 +169,7 @@ function gen_au3_page(&$tpl)
   generate_ip_list($tpl, $_SESSION['user_id']);
   $_SESSION['local_data'] = "$dmn_name;$hpid";
 
-}// End of gen_au3_page()
+}// End of gen_rau3_page()
 
 
 // Init global value with empty values
@@ -196,386 +197,7 @@ function gen_empty_data()
 } // End of gen_empty_data()
 
 
-
-// Check validity of input data
-/*function check_user_data (&$tpl) {
-
-	global $dmn_name, $hpid , $dmn_user_name;
-	global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip;
-    global $city, $country, $street_one;
-	global $street_two, $mail, $phone;
-	global $fax, $inpass, $domain_ip;
-
-    $rau_error = '_off_';
-	$inpass_re = '';
-
-	// Get data for fields from previus page
-	if(isset($_POST['userpassword']))
-		$inpass	 = $_POST['userpassword'];
-
-	if(isset($_POST['userpassword_repeat']))
-		$inpass_re	 = $_POST['userpassword_repeat'];
-
-	if(isset($_POST['domain_ip']))
-		$domain_ip	 = $_POST['domain_ip'];
-
-	if(isset($_POST['useremail']))
-		$user_email	 = $_POST['useremail'];
-
-	if(isset($_POST['useruid']))
-		$customer_id = $_POST['useruid'];
-
-	if(isset($_POST['userfname']))
-		$first_name  = $_POST['userfname'];
-
-	if(isset($_POST['userlname']))
-		$last_name	 = $_POST['userlname'];
-
-	if(isset($_POST['userfirm']))
-		$firm	 	 = $_POST['userfirm'];
-
-	if(isset($_POST['userzip']))
-		$zip = $_POST['userzip'];
-
-	if(isset($_POST['usercity']))
-		$city = $_POST['usercity'];
-
-	if(isset($_POST['usercountry']))
-		$country = $_POST['usercountry'];
-
-	if(isset($_POST['userstreet1']))
-		$street_one = $_POST['userstreet1'];
-
-	if(isset($_POST['userstreet2']))
-		$street_two	 = $_POST['userstreet2'];
-
-	if(isset($_POST['useremail']))
-		$mail	 = $_POST['useremail'];
-
-	if(isset($_POST['userphone']))
-		$phone = $_POST['userphone'];
-
-	if(isset($_POST['userfax']))
-		$fax = $_POST['userfax'];
-
-	//if(isset($_SESSION['local_data']) )
-	//	list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);
-
-	// Begin checking...
-	if (('' === $inpass_re) || ('' === $inpass)){
-
-		$rau_error = tr('Please fill up both data fields for password!');
-
-	}else if ($inpass_re !== $inpass ){
-
-		$rau_error = tr('Passwords does not match!');
-
-	}else if (!vhcs_password_check($inpass, 20)) {
-
-        $rau_error = tr('Incorrect password range or ayntax!');
-
-    }else if (!vhcs_name_check($user_email, 40)){
-
-		$rau_error = tr('Incorrect mail account range or syntax!');
-
-	}else if(!vhcs_limit_check($customer_id, 999)){
-
-		$rau_error = tr('Incorrect customer ID syntax!');
-	}else if(!vhcs_name_check($first_name, 40)){
-
-		$rau_error = tr('Incorrect first name range or syntax!');
-	}else if(!vhcs_name_check($last_name, 40)){
-
-		$rau_error = tr('Incorrect second name range or syntax!');
-	}else if(!vhcs_name_check($firm, 100)){
-
-		$rau_error = tr('Incorrect company range or syntax!');
-	}else if(!vhcs_limit_check($zip, 999999)){
-
-		$rau_error = tr('Incorrect post code range or syntax!');
-	}else if(!vhcs_name_check($city, 40)){
-
-		$rau_error = tr('Incorrect city syntax!');
-	}else if(!vhcs_name_check($country, 100)){
-
-		$rau_error = tr('Incorrect country syntax!');
-	}else if(!vhcs_name_check($street_one, 100)){
-
-		$rau_error = tr('Incorrect street 1 syntax!');
-	}else if(!vhcs_name_check($street_two, 100)){
-
-		$rau_error = tr('Incorrect street 2 syntax!');
-	}else if(!vhcs_name_check($mail, 100)){
-
-		$rau_error = tr('Incorrect mail account range or syntax!');
-	}else if(!vhcs_name_check($phone, 100)){
-
-		$rau_error = tr('Incorrect phone range or syntax!');
-	}else if(!vhcs_name_check($fax, 100)){
-
-		$rau_error = tr('Incorrect fax range or syntax!');
-	}
-
-
-    if ($rau_error == '_off_') {
-
-        $tpl -> assign('MESSAGE', '');
-
-		// send data throught session
-		return true;
-
-    } else {
-
-        $tpl -> assign('MESSAGE', $rau_error);
-
-        return false;
-    }
-
-	return true;
-}*///End of check_user_data()
-
-
-
-//Generate ip list
-/*function generate_ip_list(&$tpl, $reseller_id)
-{
-
-    global $sql;
-    global $domain_ip;
-
-    $query = <<<SQL_QUERY
-
-        select
-
-            reseller_ips
-
-        from
-
-            reseller_props
-
-        where
-
-            reseller_id = '$reseller_id'
-
-SQL_QUERY;
-
-    $res = $sql -> Execute($query);
-
-    $data = $res -> FetchRow();
-
-    $reseller_ips = $data['reseller_ips'];
-
-    $query = <<<SQL_QUERY
-
-        select * from server_ips
-
-SQL_QUERY;
-
-    $res = $sql -> Execute($query);
-
-    while ($data = $res -> FetchRow()) {
-
-        $ip_id = $data['ip_id'];
-
-        if (preg_match("/$ip_id;/", $reseller_ips) == 1) {
-
-            $selected = '';
-
-            if ($domain_ip === $ip_id) {
-            	$selected = 'selected';
-            }
-
-            $tpl -> assign(
-                            array(
-                                    'IP_NUM' => $data['ip_number'],
-                                    'IP_NAME' => $data['ip_domain'],
-                                    'IP_VALUE' => $ip_id,
-                                    'IP_SELECTED' => "$selected"
-                                 )
-                          );
-
-            $tpl -> parse('IP_ENTRY', '.ip_entry');
-        }
-    }// End loop
-
-}*/// End of generate_ip_list()
-
 // Save data for new user in db
-
-
-
-/*
-function reseller_limits_check(&$err_msg, $reseller_id)
-{
-  global $sql, $hpid;
-
-  if (isset($_SESSION["ch_hpprops"])) {
-    $props = $_SESSION["ch_hpprops"];
-  } else {
-    $query = <<<SQL_QUERY
-        select
-            props
-        from
-            hosting_plans
-        where
-            reseller_id = ?
-          and
-            id = ?
-SQL_QUERY;
-
-    $res = exec_query($sql, $query, array($reseller_id, $hpid));
-    $data = $res -> FetchRow();
-    $props = $data['props'];
-  }
-
-  list($php_new, $cgi_new, $sub_new,
-       $als_new, $mail_new, $ftp_new,
-       $sql_db_new, $sql_user_new,
-       $traff_new, $disk_new) = explode(";", $props);
-
-    $query = <<<SQL_QUERY
-        select
-            *
-        from
-            reseller_props
-        where
-            reseller_id = ?
-SQL_QUERY;
-
-    $res = exec_query($sql, $query, array($reseller_id));
-    $data = $res -> FetchRow();
-    $dmn_current = $data['current_dmn_cnt'];
-    $dmn_max = $data['max_dmn_cnt'];
-
-    $sub_current = $data['current_sub_cnt'];
-    $sub_max = $data['max_sub_cnt'];
-
-    $als_current = $data['current_als_cnt'];
-    $als_max = $data['max_als_cnt'];
-
-    $mail_current = $data['current_mail_cnt'];
-    $mail_max = $data['max_mail_cnt'];
-
-    $ftp_current = $data['current_ftp_cnt'];
-    $ftp_max = $data['max_ftp_cnt'];
-
-    $sql_db_current = $data['current_sql_db_cnt'];
-    $sql_db_max = $data['max_sql_db_cnt'];
-
-    $sql_user_current = $data['current_sql_user_cnt'];
-    $sql_user_max = $data['max_sql_user_cnt'];
-
-    $traff_current = $data['current_traff_amnt'];
-    $traff_max = $data['max_traff_amnt'];
-
-    $disk_current = $data['current_disk_amnt'];
-    $disk_max = $data['max_disk_amnt'];
-
-    if ($dmn_max != 0) {
-        if ($dmn_current + 1 > $dmn_max) {
-            $err_msg = tr('You have been reached your domain limit.<br>You can not add more domains ! ');
-            return;
-        }
-    }
-
-    if ($sub_max != 0) {
-        if ($sub_new != -1) {
-            if ($sub_new == 0) {
-                $err_msg = tr('You have subdomain limit!<br>You can not add user with unlimited subdomain number!');
-                return;
-            } else if ($sub_current + $sub_new > $sub_max) {
-                $err_msg = tr('You are exceeding your subdomain limit!');
-                return;
-            }
-        }
-    }
-
-
-#    if ($als_max != 0) {
-#        if ($als_new != -1) {
-#            if ($als_new == 0) {
-#                $err_msg = tr('You have alias limit!<br>You can Not Add User With Unlimited Alias Number!');
-#                return;
-#            } else if ($als_current + $als_new > $als_max) {
-#                $err_msg = tr('You Are Exceeding Your Alias Limit!');
-#                return;
-#            }
-#        }
-#    }
-
-    if ($mail_max != 0) {
-        if ($mail_new == 0) {
-            $err_msg = tr('You have mail account limit!<br>You can not add user with unlimited mail accunt number!');
-            return;
-        } else if ($mail_current + $mail_new > $mail_max) {
-            $err_msg = tr('You are exceeding your mail account limit!');
-            return;
-        }
-    }
-
-    if ($ftp_max != 0) {
-        if ($ftp_new == 0) {
-            $err_msg = tr('You have FTP account limit!<br>You can not Add User With Unlimited FTP Accunt Number!');
-            return;
-        } else if ($ftp_current + $ftp_new > $ftp_max) {
-            $err_msg = tr('You are exceeding your FTP account limit!');
-            return;
-        }
-    }
-
-    if ($sql_db_max != 0) {
-        if ($sql_db_new != -1) {
-            if ($sql_db_new == 0) {
-                $err_msg = tr('You have SQL database limit!<br>You can not add user with unlimited SQL database number!');
-                return;
-            } else if ($sql_db_current + $sql_db_new > $sql_db_max) {
-                $err_msg = tr('You are exceeding SQL database limit!');
-                return;
-            }
-        }
-    }
-
-    if ($sql_user_max != 0) {
-        if ($sql_user_new != -1) {
-            if ($sql_user_new == 0) {
-                $err_msg = tr('You have SQL user limit!<br>You can not add user with unlimited SQL users!');
-                return;
-            } else if ($sql_db_new == -1) {
-                $err_msg = tr('You have disabled SQL databases for this user!<br>You can not have SQL users here!');
-                return;
-            } else if ($sql_user_current + $sql_user_new > $sql_user_max) {
-                $err_msg = tr('You are exceeding SQL database limit!');
-                return;
-            }
-        }
-    }
-
-    if ($traff_max != 0) {
-        if ($traff_new == 0) {
-            $err_msg = tr('You have traffic limit!<br>You can not add user with unlimited traffic number!');
-            return;
-        } else if ($traff_current + $traff_new > $traff_max) {
-            $err_msg = tr('You are exceeding your traffic limit!');
-            return;
-        }
-    }
-
-    if ($disk_max != 0) {
-        if ($disk_new == 0) {
-            $err_msg = tr('You have disk limit!<br>You can not add user with unlimited disk number!');
-            return;
-        } else if ($disk_current + $disk_new > $disk_max) {
-            $err_msg = tr('You are exceeding your disk limit!');
-            return;
-        }
-    }
-
-}
-
-*/
-
-
 function add_user_data ($reseller_id)
 {
   global $sql, $cfg;
@@ -637,7 +259,7 @@ function add_user_data ($reseller_id)
   }
 
   check_for_lock_file();
-  
+
    //check again if a user like that exits
   $query = <<<OMEGA_SQL_QUERY
 	select count(*) as count

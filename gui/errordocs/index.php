@@ -28,19 +28,19 @@
               <?php
 				switch ($_SERVER['REDIRECT_STATUS']) {
 					case 401:
-						print "Unauthorized!";
+						print "Unauthorized!\n";
 						break;
 					case 403:
-						print "Forbidden!";
+						print "Forbidden!\n";
 						break;
 					case 404:
-						print "File Not Found!";
+						print "File Not Found!\n";
 						break;
 					case 500:
-						print "Internal Server Error!";
+						print "Internal Server Error!\n";
 						break;
 					default:
-						print "Unknown Error!";
+						print "Unknown Error!\n";
 						break;
 				}
              ?>
