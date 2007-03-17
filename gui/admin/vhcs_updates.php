@@ -5,7 +5,7 @@
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2006)
+ *  @author		VHCS Team, Benedikt Heintel (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -26,7 +26,7 @@ check_login();
 function get_update_infos(&$tpl) {
 	global $cfg;
 
-	$info_url = "http://trac.inetcentral.de/ispcp/wiki/download";
+	$info_url = "http://www.isp-control.net/download.html";
 	$last_update = "http://isp-control.net/latest.txt";
 
     // Fake the browser type
