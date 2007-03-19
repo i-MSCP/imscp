@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>VHCS ERROR</title>
+  <title>VHCS OMEGA ERROR</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link href="/vhcs2/themes/omega_original/css/vhcs.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="/vhcs2/themes/omega_original/css/vhcs.js"></script>

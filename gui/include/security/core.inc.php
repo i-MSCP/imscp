@@ -178,7 +178,7 @@ Alert-Level: ".$secLevels[$level]."
 	$subject = sprintf("IP-Filtered: %s on %s: %s", $_SERVER['REMOTE_ADDR'], $_SERVER['SERVER_NAME'], $secLevels[$level]);
 
 	// And send the email...
-	mail($cfg['DEFAULT_ADMIN_ADDRES'], $subject, $mail_text, sprintf("From: %s", $cfg['DEFAULT_ADMIN_ADDRES']));
+	mail($cfg['DEFAULT_ADMIN_ADDRESS'], $subject, $mail_text, sprintf("From: %s", $cfg['DEFAULT_ADMIN_ADDRESS']));
 }
 
 // Access forbidden with tar pit function

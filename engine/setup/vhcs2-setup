@@ -36,8 +36,8 @@ use lib "$FindBin::Bin/..";
 require 'vhcs2_common_code.pl';
 
 use strict;
-
 use warnings;
+use Socket;
 
 ##############################################################################
 ##								SUBROUTINES									##
@@ -170,8 +170,6 @@ sub ask_eth {
 	return $rs if ($rs != 0);
 
 	my $eth = $rdata;
-
-#	my $eth = '192.168.0.128';
 
 	my $qmsg = "\n    Please enter system network address (Enter for defaults) [$eth]: ";
 
@@ -331,7 +329,7 @@ sub ask_db_password {
 			$main::ua{'db_password'} = $pass1;
 
 		} else {
-
+			print STDOUT "\n    Passwords do not match!";
 			return 1;
 
 		}
@@ -401,7 +399,7 @@ sub ask_db_ftp_password {
 			$main::ua{'db_ftp_password'} = $pass1;
 
 		} else {
-
+			print STDOUT "\n    Passwords do not match!";
 			return 1;
 
 		}
@@ -452,6 +450,7 @@ sub ask_db_pma_password {
 		if ($pass1 eq $pass2) {
 			$main::ua{'db_pma_password'} = $pass1;
 		} else {
+			print STDOUT "\n    Passwords do not match!";
 			return 1;
 		}
 	}
@@ -543,14 +542,12 @@ sub ask_admin_email {
 
 	} else {
 
-		if ($rdata =~ /^([\W\w-]+)\@([\W\w]+\.){1}[\W\w]+$/ ||
-			$rdata =~ /^([\W\w-]+)\@([\W\w]+\.){2}[\W\w]+$/ ||
-			$rdata =~ /^([\W\w-]+)\@([\W\w]+\.){3}[\W\w]+$/) {
+		if ($rdata =~ /^([\w\W]{1,255})\@([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 
 			$main::ua{'admin_email'} = $rdata;
 
 		} else {
-
+			print STDOUT "\n    E-Mail address not valid!";
 			return 1;
 
 		}
@@ -561,6 +558,39 @@ sub ask_admin_email {
 
 	return 0;
 
+}
+
+ask_vhost {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main:el, 'ask_vhost()', 'Starting...');
+
+	my $vhost = "admin.".gethostbyaddr($main::ua{'eth'}, AF_INET);
+
+	my $qmsg = "\n    Please enter the domain name VHCS OMEGA will run on [$vhost]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN); chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		return 1;
+	}
+	else {
+		if ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+			$main::ua{'admin_vhost'} = $rdata;
+		}
+		else {
+			print STDOUT "\n    Vhost not valid!";
+			return 1;
+		}
+
+	}
+
+	push_el(\@main::el, 'ask_vhost()', 'Ending...');
+
+	return 0;
 }
 
 
@@ -585,6 +615,12 @@ sub user_dialog {
 		return $rs if ($rs != 0);
 
 	} while (check_eth() == 0);
+
+	do {
+		$rs = ask_vhost();
+
+		return $rs if ($rs != 0);
+	} while (ask_chost() == 0);
 
 	#
 	# SQL Questions
@@ -653,6 +689,8 @@ sub user_dialog {
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
 
 	#push_el(\@main::el, 'user_dialog()',  "eth: $main::ua{'eth'}");
+
+	push_el(\@main::el, 'user_dialog()',  "panel_vhost: $main::ua{'admin_vhost'}");
 
 	push_el(\@main::el, 'user_dialog()',  "db_host: $main::ua{'db_host'}");
 
@@ -967,6 +1005,10 @@ sub setup_config {
 
 	return $rs if ($rs != 0);
 
+	$rs = set_conf_val('BASE_SERVER_VHOST', $main::ua{'admin_vhost'});
+
+	return $rs if ($rs != 0);
+
 	$rs = set_conf_val('DATABASE_HOST', $main::ua{'db_host'});
 
 	return $rs if ($rs != 0);
@@ -1011,7 +1053,7 @@ sub setup_config {
 
 	return $rs if ($rs != 0);
 
-	$rs = set_conf_val('DEFAULT_ADMIN_ADDRES', $main::ua{'admin_email'});
+	$rs = set_conf_val('DEFAULT_ADMIN_ADDRESS', $main::ua{'admin_email'});
 
 	$rs = store_conf();
 
@@ -1652,6 +1694,44 @@ sub setup_httpd {
 
 	}
 
+	#
+	# Master file
+	#
+
+	($rs, $cfg_tpl) = get_file("$cfg_dir/master.conf");
+
+	return $rs if ($rs != 0);
+
+	my %tag_hash = (
+					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
+					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
+					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
+					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
+					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+	return $rs if ($rs != 0);
+
+	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/master.conf, $cfg, 'root', 'root', 0644);
+
+	return $rs if ($rs != 0);
+
+    $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
+
+    return $rs if ($rs != 0);
+
+    $rs = add_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
+
+    return $rs if ($rs != 0);
+
+	#
+	# Default vhost file
+	#
+
 	($rs, $cfg_tpl) = get_file("$cfg_dir/httpd.conf");
 
 	return $rs if ($rs != 0);
@@ -1664,13 +1744,16 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
-	$rs = store_file($main::cfg{'APACHE_CONF_FILE'}, $cfg, 'root', 'root', 0644);
+	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf, $cfg, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
+
+	# Enable sites
 
 	if ( -e "/usr/sbin/a2ensite" ) {
 
 		sys_command_rs("/usr/sbin/a2ensite vhcs2.conf &> /tmp/vhcs2-setup-services.log");
+		sys_command_rs("/usr/sbin/a2ensite master.conf &> /tmp/vhcs2-setup-services.log");
 
 	}
 
@@ -1680,7 +1763,7 @@ sub setup_httpd {
 
 	if (-e "/usr/sbin/a2dissite") {
 
-	sys_command_rs("/usr/sbin/a2dissite 000-default &> /tmp/vhcs2-setup-services.log");
+		sys_command_rs("/usr/sbin/a2dissite 000-default &> /tmp/vhcs2-setup-services.log");
 
 	}
 
@@ -1722,6 +1805,306 @@ sub setup_httpd {
 
 	return 0;
 
+}
+
+#
+# Add Bind CFG
+#
+
+sub add_named_cfg_data {
+
+    my ($base_vhost) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'add_named_cfg_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+        push_el(\@main::el, 'add_named_cfg_data()', 'ERROR: Undefined Input Data...');
+        return -1;
+    }
+
+    #
+    # Initial data we need;
+    #
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
+
+    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+
+
+    my $tpl_dir = "$conf_dir/bind/parts";
+
+    my $backup_dir = "$conf_dir/bind/backup";
+
+    my $working_dir = "$conf_dir/bind/working";
+
+
+    my $timestamp = time;
+
+    my $backup_cfg = "$backup_dir/named.conf.$timestamp";
+
+    my $working_cfg = "$working_dir/named.conf";
+
+    #
+    #  BEGIN/END tags, and templates needed for this config;
+    #
+
+    my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
+
+    (
+     $rs,
+     $dta_b,
+     $dta_e,
+     $entry_b,
+     $entry_e,
+     $entry
+    ) = get_tpl(
+                $tpl_dir,
+                'cfg_dta_b.tpl',
+                'cfg_dta_e.tpl',
+                'cfg_entry_b.tpl',
+                'cfg_entry_e.tpl',
+                'cfg_entry.tpl'
+               );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's construct nedded tags and entries;
+    #
+
+    my %tag_hash = (
+                    '{DMN_NAME}' => $base_vhost,
+                    '{DB_DIR}' => $named_db_dir
+                   );
+
+    my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
+
+    (
+     $rs,
+     $entry_b_val,
+     $entry_e_val,
+     $entry_val
+    ) = prep_tpl(
+                 \%tag_hash,
+                 $entry_b,
+                 $entry_e,
+                 $entry
+                );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's get Sytem and Workind config files;
+    #
+
+    my ($sys, $working) = ('', '');
+
+
+    ($rs, $sys) = get_file($sys_cfg);
+
+    return $rs  if ($rs != 0);
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs  if ($rs != 0);
+
+    ($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Is the new domain entry exists ?
+    #
+
+    ($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
+
+    if ($rs == 0) {
+
+        # Yes it exists ! Then we must delete it !
+
+        ($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
+
+        return $rs if ($rs != 0);
+
+    }
+
+    ($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's contruct the replacement and do it;
+    #
+
+    my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
+
+    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Here we'll backup production config file;
+    #
+
+    $rs = sys_command("cp -p $sys_cfg $backup_cfg");
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's save working copy;
+    #
+
+    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Here we'll replace data in production config file with data in working
+    # confing file. A little workaround will be done. If working copy data does not exist
+    # in production config then we will add it;
+    #
+
+    ($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
+
+    if ($rs == 0) { # YES ! Data is here ! /in production config file/;
+
+        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working);
+
+        return $rs if ($rs != 0);
+
+    } elsif ($rs == -5) {
+
+        $sys .= $working;
+
+    } else {
+
+        return $rs;
+
+    }
+
+    $rs = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+
+    push_el(\@main::el, 'add_named_cfg_data()', 'Ending...');
+
+    return 0;
+}
+
+#
+# Add DNS DB Data
+#
+
+sub add_named_db_data {
+
+    my ($base_ip, $base_vhost) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'add_named_db_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+        push_el(\@main::el, 'add_named_db_data()', 'ERROR: Undefined Input Data...');
+        return -1;
+    }
+
+    #
+    # Initial data we need;
+    #
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+
+    my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
+
+    #
+    # Any secondary DNS defined;
+    #
+
+	if (!$sec_dns_ip) {
+		$sec_dns_ip = $base_ip;
+	}
+
+    my $tpl_dir = "$conf_dir/bind/parts";
+
+    my $backup_dir = "$conf_dir/bind/backup";
+
+    my $working_dir = "$conf_dir/bind/working";
+
+
+    my $db_fname = "$base_vhost.db";
+
+
+    my $sys_cfg = "$named_db_dir/$db_fname";
+
+    my $working_cfg = "$working_dir/$db_fname";
+
+    #
+    # Let's get needed tags and templates;
+    #
+
+    my ($entry, $dns2_b, $dns2_e) = ('', '', '');
+
+    ($rs, $entry, $dns2_b, $dns2_e) = get_tpl(
+                                              $tpl_dir,
+                                              'db_master_e.tpl',
+                                              'db_dns2_b.tpl',
+                                              'db_dns2_e.tpl'
+                                             );
+
+    return $rs if ($rs != 0);
+
+	#
+	# RFC 1912
+	#
+
+	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+
+	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday;
+
+    #
+    # Let's prepare them;
+    #
+
+    my %tag_hash = (
+                    '{DMN_NAME}' => $base_vhost,
+                    '{DMN_IP}' => $base_ip,
+                    '{BASE_SERVER_IP}' => $base_ip,
+                    '{SECONDARY_DNS_IP}' => $sec_dns_ip,
+                    '{TIMESTAMP}' => $time2
+                   );
+
+    ($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
+                                               \%tag_hash,
+                                               $entry,
+                                               $dns2_b,
+                                               $dns2_e
+                                              );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Let's store generated data;
+    #
+
+    $rs = store_file($working_cfg, $entry, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    $rs = store_file($sys_cfg, $entry, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'add_named_db_data()', 'Ending...');
+
+
+    return 0;
 }
 
 sub setup_mta {

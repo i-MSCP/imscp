@@ -1,8 +1,10 @@
 #!/usr/bin/perl
 
 # VHCS(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
+# Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -23,9 +25,10 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The VHCS ω Home Page is at:
 #
-#    http://www.vhcs.net
+#    http://isp-control.net
+#
 
 
 
@@ -429,7 +432,11 @@ sub uninstall_httpd {
 
     sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/vhcs2-uninstall-services.log");
 
-    $rs = del_file($main::cfg{'APACHE_CONF_FILE'});
+    $rs = del_file($main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf);
+
+    return $rs if ($rs != 0);
+
+    $rs = del_file($main::cfg{'APACHE_SITES_DIR'}/master.conf);
 
     return $rs if ($rs != 0);
 

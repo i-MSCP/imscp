@@ -1663,14 +1663,14 @@ function write_log($msg) {
 	$sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$msg2')" );
 
 
-	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRES'];
+	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRESS'];
 
-	/* now send email if DEFAULT_ADMIN_ADDRES != '' */
+	/* now send email if DEFAULT_ADMIN_ADDRESS != '' */
 	if ($send_log_to != '') {
 
 		global $cfg, $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
 
-		$admin_email = $cfg['DEFAULT_ADMIN_ADDRES'];
+		$admin_email = $cfg['DEFAULT_ADMIN_ADDRESS'];
 		$default_hostname =  $cfg['SERVER_HOSTNAME'];
 		$default_base_server_ip =  $cfg['BASE_SERVER_IP'];
 		$VersionH = $cfg['VersionH'];

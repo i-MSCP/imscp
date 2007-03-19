@@ -586,7 +586,7 @@ sub dmn_add_named_db_data {
     return $rs if ($rs != 0);
 
 	#
-	# RFC 1912 template fix by Puuhis ;)
+	# RFC 1912
 	#
 
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
@@ -949,6 +949,7 @@ sub gen_httpd_dmn_group_entry {
          '{DMN_GRP}' => $dmn_name,
          '{DMN_NAME}' => $dmn_name,
          '{DMN_IP}' => $dmn_ip,
+         '{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
@@ -1102,7 +1103,7 @@ sub dmn_add_httpd_cfg_data {
     my $backup_dir = "$conf_dir/apache/backup";
 
 
-    my $sys_cfg = $main::cfg{'APACHE_CONF_FILE'};
+    my $sys_cfg = $main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf;
 
     my $working_cfg = "$working_dir/vhcs2.conf";
 
@@ -1467,7 +1468,7 @@ sub dmn_del_httpd_cfg_data {
     my $backup_dir = "$conf_dir/apache/backup";
 
 
-    my $sys_cfg = $main::cfg{'APACHE_CONF_FILE'};
+    my $sys_cfg = $main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf;
 
     my $working_cfg = "$working_dir/vhcs2.conf";
 
