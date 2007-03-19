@@ -14,6 +14,7 @@ VHCS 2.4.8 ω Omega Changelog
 2007-03-18 Benedikt Heintel
 	- GUI:
 		* serveral fixes with permissions
+		* fixed: problems with domain default page
 
 2007-03-18 Benedikt Heintel
 	* fixed typo: DEFAULT_ADMIN_ADDRES
