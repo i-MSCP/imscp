@@ -2,7 +2,9 @@
 
 # VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
-# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
+# http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -23,7 +25,10 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-########################################################################
+# The VHCS ω Home Page is at:
+#
+#    http://isp-control.net
+#
 
 BEGIN {
 

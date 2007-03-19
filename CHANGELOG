@@ -12,6 +12,10 @@ VHCS 2.4.8 ω Omega Changelog
 \_________________________________________________________________/
 
 2007-03-18 Benedikt Heintel
+	- GUI:
+		* serveral fixes with permissions
+
+2007-03-18 Benedikt Heintel
 	* fixed typo: DEFAULT_ADMIN_ADDRES
 	- CONFIGS:
 		* fixed bugs #95 and #108: administrative domain created on Setup

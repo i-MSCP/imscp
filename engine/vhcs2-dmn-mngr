@@ -268,7 +268,7 @@ sub dmn_add_named_cfg_data {
     # Here we'll backup production config file;
     #
 
-    $rs = sys_command("cp -p $sys_cfg $backup_cfg");
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
 
     return $rs if ($rs != 0);
 
@@ -464,7 +464,7 @@ sub dmn_del_named_cfg_data {
     # Here we'll backup production config file;
     #
 
-    $rs = sys_command("cp -p $sys_cfg $backup_cfg");
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
 
     return $rs if ($rs != 0);
 
@@ -1369,7 +1369,7 @@ sub dmn_add_httpd_cfg_data {
 
         $sys .= $working;
 
-    } else { # Some error that should not be happend ! Exitting...
+    } else { # Some error that should not be happend ! Exiting...
 
         return $rs;
 
@@ -1379,7 +1379,7 @@ sub dmn_add_httpd_cfg_data {
     # Backuping system config;
     #
 
-    ($rs, $rdata) = sys_command("cp -p $sys_cfg $backup_cfg");
+    ($rs, $rdata) = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
 
     return $rs if ($rs != 0);
 
@@ -1687,7 +1687,7 @@ sub dmn_del_httpd_cfg_data {
 
         $sys .= $working;
 
-    } else { # Some error that should not be happend ! Exitting...
+    } else { # Some error that should not be happend ! Exiting...
 
         return $rs;
 
@@ -1697,7 +1697,7 @@ sub dmn_del_httpd_cfg_data {
     # Backuping system config;
     #
 
-    ($rs, $rdata) = sys_command("cp -p $sys_cfg $backup_cfg");
+    ($rs, $rdata) = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
 
     return $rs if ($rs != 0);
 
@@ -1957,6 +1957,12 @@ sub dmn_add_httpd_file_data {
 										);
 
 			return $rs if ($rs != 0);
+
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/401");
+			return $rs if ($rs != 0);
+
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, httpd_gid, 0640);
+			return $rs if ($rs != 0);
 		}
 
 		if (!(-e "$www_dir/$dmn_name/errors/403/index.php")) {
@@ -1969,6 +1975,12 @@ sub dmn_add_httpd_file_data {
 										0644
 										);
 
+			return $rs if ($rs != 0);
+
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/403");
+			return $rs if ($rs != 0);
+
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, httpd_gid, 0640);
 			return $rs if ($rs != 0);
 		}
 
@@ -1983,6 +1995,12 @@ sub dmn_add_httpd_file_data {
 										);
 
 			return $rs if ($rs != 0);
+
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/404");
+			return $rs if ($rs != 0);
+
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, httpd_gid, 0640);
+			return $rs if ($rs != 0);
 		}
 
 		if (!(-e "$www_dir/$dmn_name/errors/500/index.php")) {
@@ -1995,6 +2013,12 @@ sub dmn_add_httpd_file_data {
 										0644
 										);
 
+			return $rs if ($rs != 0);
+
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/500");
+			return $rs if ($rs != 0);
+
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, httpd_gid, 0640);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2012,6 +2036,7 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		$index_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+		$index_tpl =~ s/{BASE_SERVER_VHOST}/$main::cfg{'BASE_SERVER_VHOST'}/gi;
 
 		($rs, $rdata) = store_file(
 									"$www_dir/$dmn_name/htdocs/index.html",
@@ -3477,12 +3502,11 @@ sub dmn_add_data {
 
     }
 
-        # check wether AWStats is enabled
-        if ($awstats_dir ne 'no') {
+    # check wether AWStats is enabled
+    if ($awstats_dir ne 'no') {
         $rs = dmn_add_awstats_data($dmn_data);
-
-                return $rs if ($rs != 0);
-        }
+        return $rs if ($rs != 0);
+    }
 
 
     $rs = dmn_add_named_data($dmn_data);
@@ -3496,11 +3520,6 @@ sub dmn_add_data {
     $rs = dmn_add_mta_data($dmn_data);
 
     return $rs if ($rs != 0);
-
-
-#    $rs = dmn_add_crontab_data($dmn_data);
-
-#    return $rs if ($rs != 0);
 
     push_el(\@main::el, 'dmn_add_data()', 'Ending...');
 
@@ -3543,10 +3562,8 @@ sub dmn_change_data {
     return $rs if ($rs != 0);
 
 	# check wether AWStats is enabled
-
 	if ($awstats_dir ne 'no') {
     	$rs = dmn_change_awstats_data($dmn_data);
-
    		return $rs if ($rs != 0);
    	}
 
@@ -3597,11 +3614,6 @@ sub dmn_del_data {
     $rs = dmn_del_mta_data($dmn_data);
 
     return $rs if ($rs != 0);
-
-
-#     $rs = dmn_del_crontab_data($dmn_data);
-#
-#     return $rs if ($rs != 0);
 
     push_el(\@main::el, 'dmn_del_data()', 'Ending...');
 
@@ -3656,7 +3668,7 @@ sub dmn_restore_data {
 
     shift(@bk_files);
 
-    shift(@bk_files);
+    #shift(@bk_files);
 
     return 0 if (scalar(@bk_files) == 0);
 

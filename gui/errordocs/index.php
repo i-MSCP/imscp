@@ -3,7 +3,6 @@
   <title>VHCS OMEGA ERROR</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link href="/vhcs2/themes/omega_original/css/vhcs.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="/vhcs2/themes/omega_original/css/vhcs.js"></script>
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
  </head>
@@ -16,7 +15,7 @@
        <td>
         <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
          <tr>
-          <td width="453" height="69" background="/vhcs2/themes/omega_original/images/login/login_top.jpg">&nbsp;</td>
+          <td width="453" height="69" background="./error_top.jpg">&nbsp;</td>
          </tr>
          <tr>
           <td>
