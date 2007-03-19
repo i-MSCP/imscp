@@ -26,6 +26,7 @@ install:
 	cp -R ./working $(SYSTEM_CONF)/apache
 
 	cp -R ./httpd.conf $(ROOT_APACHE_CONF)/sites-available/vhcs2.conf
+	cp -R ./httpd.conf $(ROOT_APACHE_CONF)/sites-available/master.conf
 	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
 
 uninstall:

@@ -136,7 +136,8 @@ b) manualy
 	# mysqladmin -u root password YOUR_PASSWORD
 
 9. Start the engine setup:
-	# ./vhcs2-setup
+	#
+
 
 10. Install VHCS ω step-by-step
 

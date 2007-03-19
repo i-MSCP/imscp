@@ -560,15 +560,19 @@ sub ask_admin_email {
 
 }
 
-ask_vhost {
+sub ask_vhost {
 
 	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
-	my $eth = $main::ua{'eth'};
+	my $eth = $main::ua{'eth_ip'};
 
-	my $addr = gethostbyaddr($eth, AF_INET);
+	my $addr = gethostbyaddr($main::ua{'eth_ip'}, AF_INET);
+
+	if (!$addr) {
+		$addr = "my-domain.tld";
+	}
 
 	my $vhost = "admin.$addr";
 
@@ -579,8 +583,12 @@ ask_vhost {
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	if (!defined($rdata) || $rdata eq '') {
+	if ($rdata eq 'admin.my-domain.tld') {
+		print STDOUT "\n    Please enter a valid Vhost!";
 		return 1;
+	}
+	else if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'admin_vhost'} = $vhost;
 	}
 	else {
 		if ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
@@ -690,7 +698,7 @@ sub user_dialog {
 
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
 
-	#push_el(\@main::el, 'user_dialog()',  "eth: $main::ua{'eth'}");
+	push_el(\@main::el, 'user_dialog()',  "eth: $main::ua{'eth_ip'}");
 
 	push_el(\@main::el, 'user_dialog()',  "panel_vhost: $main::ua{'admin_vhost'}");
 
