@@ -564,15 +564,20 @@ ask_vhost {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main:el, 'ask_vhost()', 'Starting...');
+	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
-	my $vhost = "admin.".gethostbyaddr($main::ua{'eth'}, AF_INET);
+	my $eth = $main::ua{'eth'};
+
+	my $addr = gethostbyaddr($eth, AF_INET);
+
+	my $vhost = "admin.$addr";
 
 	my $qmsg = "\n    Please enter the domain name VHCS OMEGA will run on [$vhost]: ";
 
 	print STDOUT $qmsg;
 
-	$rdata = readline(\*STDIN); chop($rdata);
+	$rdata = readline(\*STDIN);
+	chop($rdata);
 
 	if (!defined($rdata) || $rdata eq '') {
 		return 1;
@@ -592,7 +597,6 @@ ask_vhost {
 
 	return 0;
 }
-
 
 sub user_dialog {
 
@@ -618,9 +622,7 @@ sub user_dialog {
 
 	do {
 		$rs = ask_vhost();
-
-		return $rs if ($rs != 0);
-	} while (ask_vhost() == 0);
+	} while ($rs == 1);
 
 	#
 	# SQL Questions
