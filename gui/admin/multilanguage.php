@@ -44,7 +44,7 @@ $tpl -> assign(
 	);
 
 function update_def_lang() {
-	global $sql;
+	global $sql, $theme;
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'change_language') {
 		if (isset($_POST['default_language']) && !empty($_POST['default_language'])) {
