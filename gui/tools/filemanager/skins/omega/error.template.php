@@ -1,9 +1,10 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
 <!-- Template /skins/omega/error.template.php begin -->
+<div align="center" style="text-align:left; padding-left:20px; background-color:#FFFFFF;">
 <script type="text/javascript" src="<?php echo $net2ftp_globals["application_rootdir_url"]; ?>/modules/edit/edit.js"></script>
 		<h1><?php echo __("An error has occured"); ?></h1> 
 		<p><?php echo $net2ftp_result["errormessage"]; ?><br /><br />
-		<a href="javascript:top.history.back();"><?php echo __("Go back"); ?></a> or <a href="http://www.net2ftp.com/index.php?state=clearcookies"><?php echo __("Go to the login page"); ?></a></p><br />
+		<a href="javascript:top.history.back();"><?php echo __("Go back"); ?></a> or <a href="index.php?state=clearcookies"><?php echo __("Go to the login page"); ?></a></p><br />
 		<div id="error_hidden">
 			<a href="javascript:toggleTextarea('error');">View technical details</a>
 		</div>
@@ -27,3 +28,4 @@
 	</div>
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/footer.template.php"); ?>
 <!-- Template /skins/omega/error.template.php end -->
+</div>
