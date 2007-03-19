@@ -49,7 +49,9 @@ function MM_goToURL() { //v3.0
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
+                <td valign="top">
+                <form name="add_user_group" method="post" action="puser_uadd.php">
+				<table width="100%" cellpadding="5" cellspacing="5">
                     <!-- BDP: page_message -->
                     <tr>
                       <td>&nbsp;</td>

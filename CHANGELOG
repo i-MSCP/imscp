@@ -15,6 +15,7 @@ VHCS 2.4.8 ω Omega Changelog
 	- GUI:
 		* serveral fixes with permissions
 		* fixed: problems with domain default page
+		* fixed bug #113: Protected group button has no function
 
 2007-03-18 Benedikt Heintel
 	* fixed typo: DEFAULT_ADMIN_ADDRES
