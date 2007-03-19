@@ -1646,30 +1646,6 @@ sub setup_php {
 
 	return $rs if ($rs != 0);
 
-	#
-	# Old Code (was commented out)
-	#
-
-	#
-	# Let's regenerate config;
-	#
-
-	#$cmd = "$main::cfg{'CMD_CAT'} /etc/php.ini | $main::cfg{'CMD_AWK'} -v sfor='zend_extension' -v rwith='zend_extension = /var/lib/vhcs2/gui_plugins/ioncube_loader_so' -f /var/lib/vhcs2/engine/setup/vhcs2-cfg-subst > /tmp/php.ini";
-
-	#$rs = sys_command($cmd);
-
-	#return $rs if ($rs != 0);
-
-	#
-	# Let's move it to it's original place;
-	#
-
-	#$cmd = "$main::cfg{'CMD_MV'} -f /tmp/php.ini /etc/php.ini";
-
-	#$rs = sys_command($cmd);
-
-	#return $rs if ($rs != 0);
-
 	push_el(\@main::el, 'setup_php()', 'Ending...');
 
 	return 0;
@@ -1688,7 +1664,7 @@ sub add_named_cfg_data {
 
     push_el(\@main::el, 'add_named_cfg_data()', 'Starting...');
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+    if (!defined($base_vhost) || $base_vhost eq '') {
         push_el(\@main::el, 'add_named_cfg_data()', 'ERROR: Undefined Input Data...');
         return -1;
     }
@@ -1877,7 +1853,7 @@ sub add_named_db_data {
 
     push_el(\@main::el, 'add_named_db_data()', 'Starting...');
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+    if (!defined($base_vhost) || $base_vhost eq '') {
         push_el(\@main::el, 'add_named_db_data()', 'ERROR: Undefined Input Data...');
         return -1;
     }
@@ -2018,7 +1994,7 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
-	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/master.conf, $cfg, 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/master.conf", $cfg, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 
@@ -2038,7 +2014,7 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
-	my %tag_hash = (
+	%tag_hash = (
 					'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
 					);
 
@@ -2046,7 +2022,7 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
-	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf, $cfg, 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf", $cfg, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 
