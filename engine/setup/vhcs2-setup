@@ -764,7 +764,7 @@ sub setup_shut_down {
 
 	VHCS2 '$main::cfg{'Version'}' Setup completed successfully !
 
-	Please type http://$main::ua{'eth_ip'}/vhcs2/ in your
+	Please type http://$main::ua{'admin_vhost'} in your
 	browser!
 
 MSG

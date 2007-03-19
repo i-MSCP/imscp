@@ -1103,7 +1103,7 @@ sub dmn_add_httpd_cfg_data {
     my $backup_dir = "$conf_dir/apache/backup";
 
 
-    my $sys_cfg = $main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf;
+    my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf";
 
     my $working_cfg = "$working_dir/vhcs2.conf";
 
@@ -1468,7 +1468,7 @@ sub dmn_del_httpd_cfg_data {
     my $backup_dir = "$conf_dir/apache/backup";
 
 
-    my $sys_cfg = $main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf;
+    my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf";
 
     my $working_cfg = "$working_dir/vhcs2.conf";
 
