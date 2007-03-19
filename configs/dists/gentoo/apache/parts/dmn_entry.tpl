@@ -1,11 +1,8 @@
 <VirtualHost {DMN_IP}:80>
 
-    #
-    # User {SUEXEC_USER}
-    # Group {SUEXEC_GROUP}
-    #
-
-    SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    <IfModule mod_fastcgi.c>
+        SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    </IfModule>
 
     ServerAdmin     root@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
@@ -21,12 +18,13 @@
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
-    Redirect /stats http://{DMN_NAME}/awstats/awstats.pl
-
     ErrorDocument 401 /errors/401/index.php
     ErrorDocument 403 /errors/403/index.php
     ErrorDocument 404 /errors/404/index.php
     ErrorDocument 500 /errors/500/index.php
+
+    Redirect /stats http://{DMN_NAME}/awstats/awstats.pl
+    Redirect /vhcs2 http://{BASE_SERVER_VHOST}
 
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
@@ -43,8 +41,8 @@
 
     <IfModule mod_php4.c>
         <Directory {GUI_ROOT_DIR}>
-            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-            php_admin_value session.save_path "/tmp/"
+            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+            php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
         </Directory>
     </IfModule>
 

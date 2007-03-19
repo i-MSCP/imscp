@@ -42,39 +42,6 @@ Alias /vhcs_images /var/www/vhcs2/gui/images
 </Directory>
 
 #
-# Default GUI.
-#
-
-# Temporary changed; now it's working
-# will be replaced in future
-<VirtualHost {IP}:80>
-
-    DocumentRoot /var/www/vhcs2/gui
-
-    <IfModule mod_fastcgi.c>
-        SuexecUserGroup vu2000 vu2000
-    </IfModule>
-
-    <Directory /var/www/vhcs2/gui>
-        Options Indexes Includes FollowSymLinks MultiViews
-        AllowOverride None
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    <IfModule mod_fastcgi.c>
-    ScriptAlias /php4/ /var/www/fcgi/master/
-        <Directory "/var/www/fcgi/master">
-            AllowOverride None
-            Options +ExecCGI MultiViews Indexes
-            Order allow,deny
-            Allow from all
-        </Directory>
-    </IfModule>
-
-</VirtualHost>
-
-#
 # AWStats
 #
 

@@ -1,4 +1,3 @@
-
 ROOT_APACHE_CONF=$(ROOT_CONF)/httpd/conf.d
 
 export
@@ -13,11 +12,11 @@ install:
 	cp ./httpd.conf ./working/vhcs2.conf
 	cp ./fastcgi.conf ./working/fastcgi.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
+	cp ./master.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./httpd.conf $(ROOT_APACHE_CONF)/vhcs2.conf
 	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
 
 uninstall:
