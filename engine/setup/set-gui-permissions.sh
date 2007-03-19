@@ -64,6 +64,15 @@ chmod -R 0755 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 #
+# fixing filemanager permissions
+#
+
+i="$ROOT_DIR/gui/tools/filemanager/temp"
+
+echo "0777 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+chmod -R 0777 $i;
+
+#
 # fixing user_logo folder permissions;
 #
 

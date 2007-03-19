@@ -151,7 +151,7 @@ SQL_QUERY;
       if ($ticket_status == 2) {
         $tpl -> assign(array('NEW' => tr("[Re]")));
       } else {
-        $tpl -> assign(array('NEW' => tr("&nbsp;")));
+        $tpl -> assign(array('NEW' => tr(" ")));
       }
 
       $tpl -> assign(array('SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
@@ -202,7 +202,7 @@ check_permissions($tpl);
 
 $tpl -> assign(array('TR_SUPPORT_SYSTEM' => tr('Support system'),
                      'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-                     'TR_NEW' => '&nbsp;',
+                     'TR_NEW' => ' ',
                      'TR_ACTION' => tr('Action'),
                      'TR_URGENCY' => tr('Priority'),
                      'TR_SUBJECT' => tr('Subject'),

@@ -229,7 +229,7 @@ SQL_QUERY;
 			else{
 					$tpl -> assign(
                             array(
-                                    'NEW' => tr("&nbsp;")
+                                    'NEW' => tr(" ")
                                  )
                           );
 			}
@@ -352,7 +352,7 @@ $tpl -> assign(
                         'TR_SUPPORT_SYSTEM' => tr('Support system'),
                         'TR_SUPPORT_TICKETS' => tr('Support tickets'),
                         'TR_TICKET_FROM' => tr('From'),
-                        'TR_NEW' => '&nbsp;',
+                        'TR_NEW' => ' ',
 						'TR_ACTION' => tr('Action'),
                         'TR_URGENCY' => tr('Priority'),
                         'TR_SUBJECT' => tr('Subject'),
