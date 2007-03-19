@@ -620,7 +620,7 @@ sub user_dialog {
 		$rs = ask_vhost();
 
 		return $rs if ($rs != 0);
-	} while (ask_chost() == 0);
+	} while (ask_vhost() == 0);
 
 	#
 	# SQL Questions
@@ -1674,139 +1674,6 @@ sub setup_php {
 
 }
 
-sub setup_httpd {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'setup_httpd()', 'Starting...');
-
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
-
-	my $bk_dir = "$cfg_dir/backup";
-
-	my $wrk_dir = "$cfg_dir/working";
-
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
-
-		sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/vhcs2-setup-services.log");
-
-	}
-
-	#
-	# Master file
-	#
-
-	($rs, $cfg_tpl) = get_file("$cfg_dir/master.conf");
-
-	return $rs if ($rs != 0);
-
-	my %tag_hash = (
-					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
-					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
-					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
-					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
-					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
-					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
-					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-
-	return $rs if ($rs != 0);
-
-	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/master.conf, $cfg, 'root', 'root', 0644);
-
-	return $rs if ($rs != 0);
-
-    $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
-
-    return $rs if ($rs != 0);
-
-    $rs = add_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
-
-    return $rs if ($rs != 0);
-
-	#
-	# Default vhost file
-	#
-
-	($rs, $cfg_tpl) = get_file("$cfg_dir/httpd.conf");
-
-	return $rs if ($rs != 0);
-
-	my %tag_hash = (
-					'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
-					);
-
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-
-	return $rs if ($rs != 0);
-
-	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf, $cfg, 'root', 'root', 0644);
-
-	return $rs if ($rs != 0);
-
-	# Enable sites
-
-	if ( -e "/usr/sbin/a2ensite" ) {
-
-		sys_command_rs("/usr/sbin/a2ensite vhcs2.conf &> /tmp/vhcs2-setup-services.log");
-		sys_command_rs("/usr/sbin/a2ensite master.conf &> /tmp/vhcs2-setup-services.log");
-
-	}
-
-	#
-	# Disable default site --> 000-default (if not, vhcs is not working)
-	#
-
-	if (-e "/usr/sbin/a2dissite") {
-
-		sys_command_rs("/usr/sbin/a2dissite 000-default &> /tmp/vhcs2-setup-services.log");
-
-	}
-
-	#
-	# start fastcgi, suexec and rewrite mod
-	# Disable default site (if not, vhcs not working)
-	#
-
-	if ( -e "/usr/sbin/a2enmod" ) {
-
-		sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/vhcs2-setup-services.log");
-		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/vhcs2-setup-services.log");
-		sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/vhcs2-setup-services.log");
-		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/vhcs2-setup-services.log");
-
-	}
-
-	#
-	# Here we'll manage some permission;
-	#
-
-	my $gui_root_dir = "$main::cfg{'ROOT_DIR'}/gui";
-
-	$cmd = "$main::cfg{'CMD_CHOWN'} -R $main::cfg{'APACHE_USER'}:$main::cfg{'APACHE_GROUP'} $gui_root_dir";
-
-	$rs = sys_command($cmd);
-
-	return $rs if ($rs != 0);
-
-	sleep(5);
-
-	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
-
-		sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/vhcs2-setup-services.log");
-
-	}
-
-	push_el(\@main::el, 'setup_httpd()', 'Ending...');
-
-	return 0;
-
-}
-
 #
 # Add Bind CFG
 #
@@ -2105,6 +1972,139 @@ sub add_named_db_data {
 
 
     return 0;
+}
+
+sub setup_httpd {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'setup_httpd()', 'Starting...');
+
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
+
+	my $bk_dir = "$cfg_dir/backup";
+
+	my $wrk_dir = "$cfg_dir/working";
+
+	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
+
+	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
+
+		sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/vhcs2-setup-services.log");
+
+	}
+
+	#
+	# Master file
+	#
+
+	($rs, $cfg_tpl) = get_file("$cfg_dir/master.conf");
+
+	return $rs if ($rs != 0);
+
+	my %tag_hash = (
+					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
+					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
+					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
+					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
+					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+	return $rs if ($rs != 0);
+
+	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/master.conf, $cfg, 'root', 'root', 0644);
+
+	return $rs if ($rs != 0);
+
+    $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
+
+    return $rs if ($rs != 0);
+
+    $rs = add_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
+
+    return $rs if ($rs != 0);
+
+	#
+	# Default vhost file
+	#
+
+	($rs, $cfg_tpl) = get_file("$cfg_dir/httpd.conf");
+
+	return $rs if ($rs != 0);
+
+	my %tag_hash = (
+					'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+	return $rs if ($rs != 0);
+
+	$rs = store_file($main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf, $cfg, 'root', 'root', 0644);
+
+	return $rs if ($rs != 0);
+
+	# Enable sites
+
+	if ( -e "/usr/sbin/a2ensite" ) {
+
+		sys_command_rs("/usr/sbin/a2ensite vhcs2.conf &> /tmp/vhcs2-setup-services.log");
+		sys_command_rs("/usr/sbin/a2ensite master.conf &> /tmp/vhcs2-setup-services.log");
+
+	}
+
+	#
+	# Disable default site --> 000-default (if not, vhcs is not working)
+	#
+
+	if (-e "/usr/sbin/a2dissite") {
+
+		sys_command_rs("/usr/sbin/a2dissite 000-default &> /tmp/vhcs2-setup-services.log");
+
+	}
+
+	#
+	# start fastcgi, suexec and rewrite mod
+	# Disable default site (if not, vhcs not working)
+	#
+
+	if ( -e "/usr/sbin/a2enmod" ) {
+
+		sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/vhcs2-setup-services.log");
+		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/vhcs2-setup-services.log");
+		sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/vhcs2-setup-services.log");
+		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/vhcs2-setup-services.log");
+
+	}
+
+	#
+	# Here we'll manage some permission;
+	#
+
+	my $gui_root_dir = "$main::cfg{'ROOT_DIR'}/gui";
+
+	$cmd = "$main::cfg{'CMD_CHOWN'} -R $main::cfg{'APACHE_USER'}:$main::cfg{'APACHE_GROUP'} $gui_root_dir";
+
+	$rs = sys_command($cmd);
+
+	return $rs if ($rs != 0);
+
+	sleep(5);
+
+	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
+
+		sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/vhcs2-setup-services.log");
+
+	}
+
+	push_el(\@main::el, 'setup_httpd()', 'Ending...');
+
+	return 0;
+
 }
 
 sub setup_mta {
