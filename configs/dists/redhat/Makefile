@@ -3,7 +3,7 @@ export
 
 install:
 
-	if [[ $(HOST_OS) == fedora ]] ; then \
+	if [[ $(HOST_OS) == redhat  ]] ; then \
 		cp ./vhcs2.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
@@ -21,7 +21,7 @@ install:
 
 uninstall:
 
-	if [[ $(HOST_OS) == fedora ]] ; then \
+	if [[ $(HOST_OS) == redhat ]] ; then \
 		rm -rf $(SYSTEM_CONF)/vhcs2.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
