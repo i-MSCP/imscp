@@ -2,7 +2,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#if defined(__OpenBSD__) || defined(__FreeBSD__)
+#include <sys/proc.h>
+#else
 #include <sys/procfs.h>
+#endif
+
 #include <unistd.h>
 #include <sys/param.h>
 #include "lr_syntax.h"
@@ -51,7 +57,7 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 			 */
 
 			if (fork() == 0 ) {
-				
+
 				 int fdres, dupres;
 				 char logfile[MAXPATHLEN];
 
@@ -72,7 +78,7 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 				if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
 					strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/vhcs2_daemon"));
 					strcat(daemon_path, "engine/vhcs2-rqst-mngr");
-					
+
 					fdres = open ( "/dev/null", O_RDONLY );
                                         if(fdres == -1)
                                         {
@@ -120,14 +126,14 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
                                         else if( dupres != fdres) close (fdres);
 
                                         execl( daemon_path, "vhcs2-rqst-mngr" ,(char*)NULL );
-					#endif 
+					#endif
 
 					exit(0);
 				#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 				}
-				#endif	
+				#endif
 			}
-			
+
 			strcat(lr_ans, message(MSG_CMD_OK));
 			strcat(lr_ans, " query scheduled for execution.\r\n");
 
@@ -141,7 +147,7 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 
 		}
 
-	} 
+	}
 
 	return (NO_ERROR);
 

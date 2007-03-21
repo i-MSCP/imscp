@@ -1,8 +1,10 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -23,10 +25,10 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The VHCS ω Home Page is at:
 #
-#    http://www.vhcs.net
-####
+#    http://isp-control.net
+#
 
 use FindBin;
 use lib "$FindBin::Bin/..";
@@ -372,7 +374,7 @@ sub collect_mail_traffic {
 
 
         # Changed by Erik Lehmann 07.06.2005
-        my $cmd = "$main::cfg{'CMD_CAT'} $rlog | $main::cfg{'CMD_GREP'} 'postfix' | $main::cfg{'CMD_PFLOGSUMM'} standard 1>$smtp_delivery_log";
+        my $cmd = "$main::cfg{'CMD_CAT'} $rlog | $main::cfg{'CMD_GREP'} 'postfix' | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
 
         $rs = sys_command($cmd);
 

@@ -2,7 +2,9 @@
 
 # VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
-# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
+# http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -22,7 +24,11 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-########################################################################
+#
+# The VHCS ω Home Page is at:
+#
+#    http://isp-control.net
+#
 
 use FindBin;
 use lib "$FindBin::Bin/..";
@@ -371,7 +377,7 @@ sub collect_mail_traffic {
 
 
         # Changed by Erik Lehmann 07.06.2005
-        my $cmd = "$main::cfg{'CMD_CAT'} $rlog | $main::cfg{'CMD_GREP'} 'postfix' | $main::cfg{'CMD_PFLOGSUMM'} standard 1>$smtp_delivery_log";
+        my $cmd = "$main::cfg{'CMD_CAT'} $rlog | $main::cfg{'CMD_GREP'} 'postfix' | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
 
         $rs = sys_command($cmd);
 
