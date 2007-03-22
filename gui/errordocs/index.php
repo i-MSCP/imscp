@@ -2,7 +2,6 @@
  <head>
   <title>VHCS OMEGA ERROR</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link href="/vhcs2/themes/omega_original/css/vhcs.css" rel="stylesheet" type="text/css">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
  </head>

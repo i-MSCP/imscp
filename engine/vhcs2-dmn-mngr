@@ -2048,7 +2048,7 @@ sub dmn_add_httpd_file_data {
 
 		return $rs if ($rs != 0);
 
-		$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/htdocs/");
+		$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$dmn_name/htdocs/");
 		return $rs if ($rs != 0);
 
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images", $sys_user, $httpd_gid, 0640);

@@ -86,9 +86,28 @@ function MM_goToURL() { //v3.0
                         <!-- serach end here -->
                     </tr>
                     <tr>
-                    	<td><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','add_alias.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
-                        </td>
-					</tr>
+                      <td><table width="100%"  border="0" cellspacing="3" cellpadding="0">
+                    	<tr>
+                    	 <td width="30">&nbsp;</td>
+                         <td><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','add_alias.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
+                         </td>
+                         </td>
+                         <td><div align="right">
+                             <!-- BDP: scroll_prev_gray -->
+                             <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
+                             <!-- EDP: scroll_prev_gray -->
+                             <!-- BDP: scroll_prev -->
+                             <a href="domain_alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
+                             <!-- EDP: scroll_prev -->
+                             <!-- BDP: scroll_next_gray -->
+                           &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
+                           <!-- EDP: scroll_next_gray -->
+                           <!-- BDP: scroll_next -->
+                           &nbsp;<a href="domain_alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
+                           <!-- EDP: scroll_next -->
+                         </div></td>
+					    </tr>
+					  </table></td>
                     <tr>
                       <td width="25" align="center" nowrap>&nbsp;</td>
                       <td height="25" nowrap class="content3"><b>{TR_NAME}</b></td>
