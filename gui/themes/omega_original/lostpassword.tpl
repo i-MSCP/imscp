@@ -1,9 +1,9 @@
 <html>
  <head>
   <title>{TR_MAIN_INDEX_PAGE_TITLE}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
   <link href="{THEME_COLOR_PATH}/css/vhcs.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/vhcs.js"></script>
  </head>

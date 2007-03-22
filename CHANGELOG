@@ -14,6 +14,8 @@ VHCS 2.4.8 ω Omega Changelog
 2007-03-21 Benedikt Heintel
 	- ENGINE:
 		* fixed bug #124: missing folder './errordocs/images'
+	- GUI:
+		* changed: system login templates
 
 2007-03-21 Benedikt Heintel
 	- DISTS:

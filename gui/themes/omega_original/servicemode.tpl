@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-  <link href="themes/omega_original/css/vhcs.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="themes/omega_original/css/vhcs.js"></script>
+  <link href="{THEME_COLOR_PATH}/css/vhcs.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/vhcs.js"></script>
  </head>
  <body text="#000000">
   <table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
@@ -16,7 +16,7 @@
        <td>
         <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
          <tr>
-          <td width="453" height="69" background="themes/omega_original/images/login/login_top.jpg">&nbsp;</td>
+          <td width="453" height="69" background="{THEME_COLOR_PATH}/images/login/login_top.jpg">&nbsp;</td>
          </tr>
          <tr>
           <td>
@@ -37,13 +37,13 @@
        </td>
       </tr>
      </table>
-<table align="center" width="453">  
+<table align="center" width="453">
     <tr>
   <td align="right" class="login">
   Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a>
   </td>
   </tr>
- </table>	 
+ </table>
     </td>
    </tr>
   </table>

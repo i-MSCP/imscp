@@ -1,11 +1,10 @@
 <html>
  <head>
   <title>{TR_MAIN_INDEX_PAGE_TITLE}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
   <link href="{THEME_COLOR_PATH}/css/vhcs.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/vhcs.js"></script>
  </head>
 <body onLoad="javascript:document.frm.uname.focus()">
 <table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
@@ -44,13 +43,13 @@
   <tr>
     <td></td>
     </tr>
-  
+
   </table>
 
 </td>
   </tr>
 </table>
-<table align="center" width="453">  
+<table align="center" width="453">
     <tr>
   <td align="right" class="login">
   Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a>
