@@ -12,6 +12,10 @@ VHCS 2.4.8 ω Omega Changelog
 \_________________________________________________________________/
 
 2007-03-21 Benedikt Heintel
+	- ENGINE:
+		* fixed bug #124: missing folder './errordocs/images'
+
+2007-03-21 Benedikt Heintel
 	- DISTS:
 		* RedHat: Added config files
 		* OpenBSD: fixed bug #119: wrong filename of the BSDMakefile
