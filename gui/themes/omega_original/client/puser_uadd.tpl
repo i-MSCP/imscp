@@ -50,7 +50,7 @@ function MM_goToURL() { //v3.0
               </tr>
               <tr>
                 <td valign="top">
-                <form name="add_user_group" method="post" action="puser_gadd.php">
+                <form name="add_user_group" method="post" action="puser_uadd.php">
                 <table width="100%" cellpadding="5" cellspacing="5">
                     <!-- BDP: page_message -->
                     <tr>

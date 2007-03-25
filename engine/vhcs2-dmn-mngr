@@ -1754,10 +1754,6 @@ sub dmn_add_httpd_file_data {
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
-	my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1814,7 +1810,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name",
 					$sys_user,
-					$httpd_gid,
+					$sys_group,
 					0770
 					);
 
@@ -1841,7 +1837,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/logs",
 					$sys_user,
-					$httpd_gid,
+					$sys_group,
 					0770
 					);
 
@@ -1850,7 +1846,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/phptmp",
 					$sys_user,
-					$httpd_gid,
+					$sys_group,
 					0770
 					);
 
@@ -1859,7 +1855,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/backups",
 					$sys_user,
-					$httpd_gid,
+					$sys_group,
 					0770
 					);
 
@@ -1918,7 +1914,7 @@ sub dmn_add_httpd_file_data {
 								"$www_dir/$dmn_name/.htpasswd",
 								"\n",
 								$sys_user,
-								$httpd_gid,
+								$sys_group,
 								0640
 								);
 
@@ -1928,7 +1924,7 @@ sub dmn_add_httpd_file_data {
 								"$www_dir/$dmn_name/.htgroup",
 								"\n",
 								$sys_user,
-								$httpd_gid,
+								$sys_group,
 								0640
 								);
 
@@ -1961,7 +1957,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/401");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $httpd_gid, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
 			return $rs if ($rs != 0);
 		}
 
@@ -1980,7 +1976,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/403");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $httpd_gid, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
 			return $rs if ($rs != 0);
 		}
 
@@ -1999,7 +1995,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/404");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $httpd_gid, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
 			return $rs if ($rs != 0);
 		}
 
@@ -2018,7 +2014,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/500");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $httpd_gid, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2051,7 +2047,7 @@ sub dmn_add_httpd_file_data {
 		$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$dmn_name/htdocs/");
 		return $rs if ($rs != 0);
 
-		$rs = setfmode("$www_dir/$dmn_name/htdocs/images", $sys_user, $httpd_gid, 0640);
+		$rs = setfmode("$www_dir/$dmn_name/htdocs/images", $sys_user, $sys_group, 0640);
 		return $rs if ($rs != 0);
 
 	}
@@ -2194,10 +2190,6 @@ sub dmn_change_httpd_file_data {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
-
-	my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 

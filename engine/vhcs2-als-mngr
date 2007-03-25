@@ -1645,10 +1645,6 @@ sub als_add_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-    my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
     my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1663,7 +1659,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1672,7 +1668,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/htdocs",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1690,7 +1686,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/logs",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1699,7 +1695,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/phptmp",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1708,7 +1704,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/backups",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1717,7 +1713,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/errors",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1726,7 +1722,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/errors/401",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1735,7 +1731,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/errors/403",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1744,7 +1740,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/errors/404",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1753,7 +1749,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/errors/500",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
@@ -1767,7 +1763,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/.htpasswd",
                                "\n",
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1777,7 +1773,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/.htgroup",
                                "\n",
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1798,7 +1794,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/errors/401/index.php",
                                $err_tpl,
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1808,7 +1804,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/errors/403/index.php",
                                $err_tpl,
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1818,7 +1814,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/errors/404/index.php",
                                $err_tpl,
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1828,7 +1824,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/errors/500/index.php",
                                $err_tpl,
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
@@ -1851,16 +1847,16 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/htdocs/index.html",
                                $index_tpl,
                                $sys_user,
-                               $httpd_gid,
+                               $sys_group,
                                0660
                               );
 
     return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$dmn_name/htdocs/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$als_name/htdocs/");
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$www_dir/$dmn_name/htdocs/images", $sys_user, $httpd_gid, 0640);
+	$rs = setfmode("$www_dir/$als_name/htdocs/images", $sys_user, $sys_group, 0640);
 	return $rs if ($rs != 0);
 
     push_el(\@main::el, 'als_add_httpd_file_data()', 'Ending...');
@@ -1897,10 +1893,6 @@ sub als_change_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-    my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
     my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1918,7 +1910,7 @@ sub als_change_httpd_file_data {
 	    $rs = make_dir(
     	               "$www_dir/$als_name/phptmp",
         	           $sys_user,
-            	       $httpd_gid,
+            	       $sys_group,
                 	   0770
                   	);
 

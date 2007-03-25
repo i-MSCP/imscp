@@ -3,13 +3,24 @@ VHCS 2.4.8 ω Omega Changelog
  _________________________________________________________________
 / @TODO:                                                          \
 |        - FastCGI:                                               |
-|               * Copy files on update                            |
 |               * apache: check if stats are working with FastCGI |
 |                                                                 |
 |         - AWStats:                                              |
 |               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-03-21 Benedikt Heintel
+	- ENGINE:
+		* fixed bug #125: edited a lot of permissions
+		* fixed bug #131: sub/alias domains have no images folder for default page
+		* fixed bug #134: empty .sql file on sql backup error (Thanks to Dominik Habbel)
+		* fixed bug #136: strings escaped on sql backup (Thanks to Dominik Habbel)
+	- GUI:
+		* fixed bug #126: cannot add protected groups and users (Thanks to Jan Porath)
+		* changed: security improvements & fixes (Thanks to Jan Porath)
+	- TOOLS:
+		filemanage: deleted unuses folders
 
 2007-03-21 Benedikt Heintel
 	- ENGINE:
@@ -21,7 +32,7 @@ VHCS 2.4.8 ω Omega Changelog
 
 2007-03-21 Benedikt Heintel
 	- DISTS:
-		* RedHat: Added config files
+		* RedHat: added config files
 		* OpenBSD: fixed bug #119: wrong filename of the BSDMakefile
 	- ENGINE:
 		* fixed bug #120: missing '$'

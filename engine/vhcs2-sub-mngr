@@ -1369,10 +1369,6 @@ sub sub_add_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-    my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
     my $sub_dir = "$www_dir/$dmn_name/$sub_mount";
 
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
@@ -1445,10 +1441,10 @@ sub sub_add_httpd_file_data {
 
     return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$dmn_name/htdocs/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $sub_dir/htdocs/");
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$www_dir/$dmn_name/htdocs/images", $sys_user, $httpd_gid, 0640);
+	$rs = setfmode("$sub_dir/htdocs/images", $sys_user, $sys_group, 0640);
 	return $rs if ($rs != 0);
 
     push_el(\@main::el, 'sub_add_httpd_file_data()', 'Ending...');
@@ -1486,10 +1482,6 @@ sub sub_change_httpd_file_data {
     my $root_dir = $main::cfg{'ROOT_DIR'};
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-    my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
     my $sub_dir = "$www_dir/$dmn_name$sub_mount";
 
@@ -1549,10 +1541,6 @@ sub sub_del_httpd_file_data {
     my $root_dir = $main::cfg{'ROOT_DIR'};
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-    my $httpd_uid = $main::cfg{'APACHE_USER'};
-
-    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
     my $sub_dir = "$www_dir/$dmn_name$sub_mount";
 

@@ -1,31 +1,23 @@
 <?php
 /**
- * VHCS Omega Virtual File System
- * 
- * This file implements the VHCS Omega Virtual File System to access
- * all user directories from within the panel. We can't access them
- * directly because we have no permissions so we will do it over an
- * FTP layer.
- * 
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @author Marc Pujol <marc@la3.org>
- * @version 0.1
- * @package gui
- * @license
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author 	Marc Pujol <marc@la3.org>
+ *  @version 	0.1
+ *  @package 	gui
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
 
 /*
  * This should be class constants, but we're php4 compatible
@@ -51,53 +43,53 @@ define('VFS_BINARY', FTP_BINARY);
 
 /**
  * Virtual File System main class
- * 
+ *
  * This class allows the VHCS Control panel to browse and
  * edit all of the user files
  */
 class vfs {
-	
+
 	/**
 	 * Domain name of this filesystem
 	 *
 	 * @var string
 	 */
 	var $_domain = '';
-	
+
 	/**
 	 * FTP connection handle
 	 *
 	 * @var resource
 	 */
 	var $_handle = null;
-	
+
 	/**
 	 * Database connection handle
 	 *
 	 * @var resource
 	 */
 	var $_db = null;
-	
+
 	/**
 	 * FTP temporary user name
 	 *
 	 * @var string
 	 */
 	var $_user = '';
-	
+
 	/**
 	 * FTP password
 	 *
 	 * @var string
 	 */
 	var $_passwd = '';
-	
+
 	/**
 	 * Create a new Virtual File System
-	 * 
+	 *
 	 * Creates a new Virtual File System object for the
 	 * specified domain.
-	 * 
+	 *
 	 * Warning! $domain parameter is not sanitized, so this is
 	 * left as work for the caller.
 	 *
@@ -110,7 +102,7 @@ class vfs {
 		register_shutdown_function(array(&$this, "__destruct"));
 		return $this->__construct($domain, $db);
 	}
-	
+
 	/**
 	 * PHP5 constructor
 	 *
@@ -122,7 +114,7 @@ class vfs {
 		$this->_domain =  $domain;
 		$this->_db     =& $db;
 	}
-	
+
 	/**
 	 * Destructor, ensure that we logout and remove the
 	 * temporary user
@@ -130,10 +122,10 @@ class vfs {
 	function __destruct() {
 		$this->close();
 	}
-	
+
 	/**
 	 * Set VHCS DB handler
-	 * 
+	 *
 	 * The system uses a "global" $sql variable to store the DB
 	 * handler, but we're a "black box" ;).
 	 *
@@ -142,7 +134,7 @@ class vfs {
 	function setDb(&$db) {
 		$this->_db =& $db;
 	}
-	
+
 	/**
 	 * Create a temporary FTP user
 	 *
@@ -152,18 +144,18 @@ class vfs {
 
 		// Get domain data
 		$query = 'select domain_uid, domain_gid
-				  from   domain 
+				  from   domain
 				  where  domain_name = ?';
 		$rs = exec_query($this->_db, $query, array($this->_domain));
 		if ( !$rs ) {
 			return false;
 		}
-		
+
 		// Generate a random userid and password
 		$user   = uniqid('tmp_').'@'.$this->_domain;
 		$this->_passwd = uniqid('tmp_',true);
 		$passwd = crypt_user_ftp_pass($this->_passwd);
-		
+
 		// Create the temporary user
 		$query = <<<SQL_QUERY
 	        insert into ftp_users
@@ -172,18 +164,18 @@ class vfs {
 	            (?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array(
-			$user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'], 
+			$user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
 			'/bin/bash', '/var/www/virtual/' . $this->_domain
 		));
 		if ( !$rs ) {
 			return false;
 		}
-		
+
 		// All ok
 		$this->_user   = $user;
 		return true;
 	}
-	
+
 	/**
 	 * Removes the temporary FTP user
 	 *
@@ -195,10 +187,10 @@ SQL_QUERY;
 			where  userid = ?
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array($this->_user));
-		
+
 		return $rs ? true : false;
 	}
-	
+
 	/**
 	 * Open the virtual file system
 	 *
@@ -209,13 +201,13 @@ SQL_QUERY;
 		if ( $this->_handle ) {
 			return true;
 		}
-		
+
 		// Check if we have a valid vhcs database
 		if ( !$this->_db ) {
 			return false;
 		}
-		
-		
+
+
 		// Create the temporary ftp account
 		$result = $this->_createTmpUser();
 		if ( !$result ) {
@@ -228,17 +220,17 @@ SQL_QUERY;
 		if ( !$this->_handle ) {
 			$this->close();
 		}
-		
+
 		// Perform actual login
 		$response = @ftp_login( $this->_handle, $this->_user, $this->_passwd);
 		if ( !$response ) {
 			$this->close();
 		}
-		
+
 		// All went ok! :)
 		return true;
 	}
-	
+
 	/**
 	 * Closes the virtual file system
 	 *
@@ -254,10 +246,10 @@ SQL_QUERY;
 			$this->_removeTmpUser();
 		}
 	}
-	
+
 	/**
 	 * Get directory listing
-	 * 
+	 *
 	 * Get the directory listing of a specified dir,
 	 * either in short (default) or long mode.
 	 *
@@ -269,12 +261,12 @@ SQL_QUERY;
 		if ( !$this->open() ) {
 			return false;
 		}
-		
+
 		// Path is always relative to the root vfs
 		if (substr($dirname,0,1) != '/') {
 			$dirname = '/' . $dirname;
 		}
-		
+
 		// No security implications, the FTP server handles
 		// this for us
 		$list = ftp_rawlist( $this->_handle, '-a '.$dirname, false );
@@ -297,10 +289,10 @@ SQL_QUERY;
 				'type'		=> substr($parts[0],0,1),
 			);
 		}
-		
+
 		return $list;
 	}
-	
+
 	/**
 	 * Checks for file existance
 	 *
@@ -314,16 +306,16 @@ SQL_QUERY;
 		if ( false === $this->open() ) {
 			return false;
 		}
-		
+
 		// Actually get the listing
 		$dirname = dirname($file);
 		$list = $this->ls($dirname);
 		if ( !$list )
 			return false;
-		
+
 		// We get filenames only from the listing
 		$file = basename($file);
-		
+
 		// Try to match it
 		foreach($list as $entry) {
 			// Skip non-matching files
@@ -333,13 +325,13 @@ SQL_QUERY;
 			// Check type
 			if ( $type !== null && $entry['type'] != $type )
 				return false;
-			
+
 			// Matched and same type (or no type specified)
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Retrieves a file from the virtual file system
 	 *
@@ -352,7 +344,7 @@ SQL_QUERY;
 		if ( !$this->open() ) {
 			return false;
 		}
-		
+
 		// Get a temporary file name
 		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
 		// Get the actual file
@@ -363,13 +355,13 @@ SQL_QUERY;
 
 		// Retrieve file contents
 		$res = file_get_contents($tmp);
-		
+
 		// Delete temporary file
 		unlink($tmp);
-		
+
 		return $res;
 	}
-	
+
 	/**
 	 * Stores a file inside the virtual file system
 	 *
@@ -379,33 +371,33 @@ SQL_QUERY;
 	 * @return boolean Returns TRUE on success or FALSE on failure.
 	 */
 	function put($file, $content, $mode=VFS_ASCII) {
-		var_export($this);die();
+
 		// Ensure that we're open
 		if ( !$this->open() ) {
 			return false;
 		}
-		
+
 		// Get a temporary file name
 		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
-		
+
 		// Save temporary file
 		$res = file_put_contents($tmp, $content);
 		if ( false === $res ) {
 			return false;
 		}
-		
+
 		// Upload it
 		$res = ftp_put( $this->_handle, $file, $tmp, $mode);
 		if ( !$res ) {
 			return false;
 		}
-		
+
 		// Remove temp file
 		unlink($tmp);
-		
+
 		return true;
 	}
-	
+
 }
 
 /**
