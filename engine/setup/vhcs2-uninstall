@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
+# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -30,14 +30,11 @@
 #    http://isp-control.net
 #
 
-
-
 use FindBin;
 use lib "$FindBin::Bin/..";
 require 'vhcs2_common_code.pl';
 
 use strict;
-
 use warnings;
 
 %main::ua = ();
@@ -50,17 +47,19 @@ sub welcome_note {
 
     my $welcome_message = <<MSG;
 
-    Welcome in VHCS2 '$main::cfg{'VersionH'}' Uninstall Program.
+    Welcome in VHCS OMEGA '$main::cfg{'VersionH'}' Uninstall Program.
 
-    This program will uninstall VHCS system from your server.
-    All domain users and their accounts will be removed.
+    This program will uninstall VHCS OMEGA system from your server.
+
+    /!\ WARNING: All domain users and their accounts will be removed.  /!\
 
     Please press 'Enter' to continue.
 MSG
 
     print STDOUT $welcome_message;
 
-    $rdata = readline(\*STDIN); chop($rdata);
+    $rdata = readline(\*STDIN);
+	chop($rdata);
 
     push_el(\@main::el, 'welcome_note()', 'Ending...');
 
@@ -114,9 +113,9 @@ sub uninstall_shut_down {
 
     Congratulations !
 
-    VHCS2 '$main::cfg{'VersionH'}' uninstall completed successfully !
+    VHCS OMEGA '$main::cfg{'VersionH'}' uninstall completed successfully !
 
-    Thank you for using our product !
+    Thank you for using VHCS OMEGA product !
 
 MSG
 
@@ -189,6 +188,8 @@ sub uninstall_system_users {
 
     my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
 
+    my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
+
     my ($uid, $gid) = (undef, undef);
 
 
@@ -196,9 +197,11 @@ sub uninstall_system_users {
 
     my @gdata = ();
 
-
-
+    #
+	# MTA Mailbox User
+    #
     @udata = getpwnam($fuid);
+    @gdata = getgrnam($fuid);
 
     if (scalar(@udata) != 0) { # we have not this one user data;
 
@@ -210,11 +213,35 @@ sub uninstall_system_users {
 
     }
 
-    @gdata = getgrnam($fuid);
-
     if (scalar(@gdata) != 0) { # we have not this one group data;
 
         my $cmd = "$main::cfg{'CMD_GROUPDEL'} $fuid";
+
+        $rs = sys_command($cmd);
+
+        return $rs if ($rs != 0);
+
+    }
+
+    #
+    # PHP Master
+    #
+    @udata = getpwnam($muid);
+    @gdata = getgrnam($muid);
+
+    if (scalar(@udata) != 0) { # we have not this one user data;
+
+        my $cmd = "$main::cfg{'CMD_USERDEL'} $muid";
+
+        $rs = sys_command($cmd);
+
+        return $rs if ($rs != 0);
+
+    }
+
+    if (scalar(@gdata) != 0) { # we have not this one group data;
+
+        my $cmd = "$main::cfg{'CMD_GROUPDEL'} $muid";
 
         $rs = sys_command($cmd);
 
@@ -255,6 +282,10 @@ sub uninstall_system_dirs {
     return $rs if ($rs != 0);
 
     $rs = del_dir($main::cfg{'LOG_DIR'});
+
+    return $rs if ($rs != 0);
+
+    $rs = del_dir($main::cfg{'PHP_STARTER_DIR'});
 
     return $rs if ($rs != 0);
 
@@ -405,7 +436,6 @@ sub uninstall_named {
 
         return $rs if ($rs != 0);
 
-
     }
 
     sys_command_rs("$main::cfg{'CMD_NAMED'} start &> /tmp/vhcs2-uninstall-services.log");
@@ -432,11 +462,21 @@ sub uninstall_httpd {
 
     sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/vhcs2-uninstall-services.log");
 
+    sys_command_rs("a2dissite vhcs2.conf &> /tmp/vhcs2-uninstall-services.log");
+
     $rs = del_file($main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf);
 
     return $rs if ($rs != 0);
 
+    sys_command_rs("a2dissite master.conf &> /tmp/vhcs2-uninstall-services.log");
+
     $rs = del_file($main::cfg{'APACHE_SITES_DIR'}/master.conf);
+
+    return $rs if ($rs != 0);
+
+    sys_command_rs("a2dismod fastcgi &> /tmp/vhcs2-uninstall-services.log");
+
+    $rs = del_file($main::cfg{'APACHE_MODS_DIR'}/fastcgi.conf);
 
     return $rs if ($rs != 0);
 
@@ -762,6 +802,10 @@ sub uninstall_host_system {
 
 }
 
+################################################################################
+##                                    MAIN                                    ##
+################################################################################
+
 my $rs = undef;
 
 $rs = uninstall_start_up();
@@ -833,4 +877,3 @@ if ($rs != 0) {
     exit 1;
 
 }
-

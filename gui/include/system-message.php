@@ -18,11 +18,18 @@
  *
  **/
 
-
 function system_message($msg) {
 	global $cfg;
 
-	$theme_color = $cfg['USER_INITIAL_THEME_COLOR'];
+	if (isset($_SESSION['user_theme'])) {
+
+		$theme_color = $_SESSION['user_theme'];
+
+	} else {
+
+		$theme_color = $cfg['USER_INITIAL_THEME'];
+
+	}
 
 	$tpl = new pTemplate();
 

@@ -10,7 +10,16 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-03-21 Benedikt Heintel
+2007-03-25 Benedikt Heintel
+	- ENGINE:
+		* restructured: vhcs2.conf
+		* changed: logical structure for MYSQL_PREFIX (YES = prefix; no = no prefix)
+	- GUI:
+		* deleted: images for old error pages: not longer supported
+	- SETUP:
+		* changed: Uninstaller
+
+2007-03-25 Benedikt Heintel
 	- ENGINE:
 		* fixed bug #125: edited a lot of permissions
 		* fixed bug #131: sub/alias domains have no images folder for default page

@@ -1645,6 +1645,8 @@ sub als_add_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
+	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
+
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
     my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1659,7 +1661,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name",
                    $sys_user,
-                   $sys_group,
+                   $httpd_gid,
                    0770
                   );
 
@@ -1686,7 +1688,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/logs",
                    $sys_user,
-                   $sys_group,
+                   $httpd_gid,
                    0770
                   );
 
@@ -1695,7 +1697,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/phptmp",
                    $sys_user,
-                   $sys_group,
+                   $httpd_gid,
                    0770
                   );
 
@@ -1704,7 +1706,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name/backups",
                    $sys_user,
-                   $sys_group,
+                   $httpd_gid,
                    0770
                   );
 
@@ -1763,7 +1765,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/.htpasswd",
                                "\n",
                                $sys_user,
-                               $sys_group,
+                               $httpd_gid,
                                0660
                               );
 
@@ -1773,7 +1775,7 @@ sub als_add_httpd_file_data {
                                "$www_dir/$als_name/.htgroup",
                                "\n",
                                $sys_user,
-                               $sys_group,
+                               $httpd_gid,
                                0660
                               );
 

@@ -361,7 +361,7 @@ VHCS_SQL_QUERY;
   // add user into user_gui_props => domain looser needs language and skin too :-)
 
   $user_def_lang = $_SESSION['user_def_lang'];
-  $user_theme_color = $_SESSION['user_theme_color'];
+  $user_theme_color = $_SESSION['user_theme'];
 
   $query = <<<SQL_QUERY
                 insert into

@@ -1754,6 +1754,8 @@ sub dmn_add_httpd_file_data {
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
+	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
+
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
@@ -1810,7 +1812,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1837,7 +1839,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/logs",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1846,7 +1848,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/phptmp",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1855,7 +1857,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir(
 					"$www_dir/$dmn_name/backups",
 					$sys_user,
-					$sys_group,
+					$httpd_gid,
 					0770
 					);
 
@@ -1914,7 +1916,7 @@ sub dmn_add_httpd_file_data {
 								"$www_dir/$dmn_name/.htpasswd",
 								"\n",
 								$sys_user,
-								$sys_group,
+								$httpd_gid,
 								0640
 								);
 
@@ -1924,7 +1926,7 @@ sub dmn_add_httpd_file_data {
 								"$www_dir/$dmn_name/.htgroup",
 								"\n",
 								$sys_user,
-								$sys_group,
+								$httpd_gid,
 								0640
 								);
 

@@ -59,13 +59,13 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 
 
 
-if (isset($_SESSION['user_theme_color'])) {
+if (isset($_SESSION['user_theme'])) {
 
-	$theme_color = $cfg['USER_INITIAL_THEME'];
+	$theme_color = $_SESSION['user_theme'];
 
 } else {
 
-	$theme_color = $cfg['USER_INITIAL_THEME_COLOR'];
+	$theme_color = $cfg['USER_INITIAL_THEME'];
 
 }
 
