@@ -10,7 +10,11 @@ VHCS 2.4.8 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-03-25 Benedikt Heintel
+2007-03-27 Benedikt Heintel
+	- ENGINE:
+		* fixed bug #125: wrong permissions
+
+2007-03-26 Benedikt Heintel
 	- ENGINE:
 		* restructured: vhcs2.conf
 		* changed: logical structure for MYSQL_PREFIX (YES = prefix; no = no prefix)
