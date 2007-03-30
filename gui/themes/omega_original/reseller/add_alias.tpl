@@ -13,7 +13,7 @@ function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
@@ -112,17 +112,17 @@ var mpointError = 'Please write mount point !';
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">{TR_DOMAIN_NAME}</td>
-                        <td class="content"><input name="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onBlur="makeUser();"></td>
+                        <td class="content">http://<input name="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onBlur="makeUser();"></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2">{TR_MOUNT_POINT}</td>
-                        <td class="content"><input name="ndomain_mpoint" type="text" class="textinput" id="ndomain_mpoint" value='{MP}' style="width:170px"></td>
+                        <td class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="ndomain_mpoint" type="text" class="textinput" id="ndomain_mpoint" value='{MP}' style="width:170px"></td>
                       </tr>
                       <tr>
                         <td width="25" nowrap>&nbsp;</td>
                         <td width="200" nowrap class="content2">{TR_FORWARD}</td>
-                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}">
+                        <td class="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}">
                         </td>
                       </tr>
                       <tr>

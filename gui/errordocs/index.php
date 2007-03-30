@@ -14,7 +14,7 @@
        <td>
         <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
          <tr>
-          <td width="453" height="69" background="./error_top.jpg">&nbsp;</td>
+          <td width="453" height="69" background="/errors/<?php echo $_SERVER['REDIRECT_STATUS']; ?>/error_top.jpg">&nbsp;</td>
          </tr>
          <tr>
           <td>

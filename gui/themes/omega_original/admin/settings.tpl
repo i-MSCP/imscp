@@ -50,7 +50,8 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td width="200" class="content2">{TR_LOSTPASSWORD}</td>
-                              <td><select name="lostpassword">
+                              <td class="content">
+							   <select name="lostpassword">
                                   <option value="0" {LOSTPASSWORD_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {LOSTPASSWORD_SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>
@@ -58,9 +59,9 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_LOSTPASSWORD_TIMEOUT}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <input name="lostpassword_timeout" type="text" class="textinput" id="lostpassword_timeout" style="width:50px" value="{LOSTPASSWORD_TIMEOUT_VALUE}" maxlength="3" />
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -69,41 +70,42 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE}</td>
-                              <td><select name="bruteforce" id="bruteforce">
+                              <td class="content">
+							    <select name="bruteforce" id="bruteforce">
                                   <option value="0" {BRUTEFORCE_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {BRUTEFORCE_SELECTED_ON}>{TR_ENABLED}</option>
-                              </select></td>
+                                </select></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_BETWEEN}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <select name="bruteforce_between" id="bruteforce_between">
                                   <option value="0" {BRUTEFORCE_BETWEEN_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {BRUTEFORCE_BETWEEN_SELECTED_ON}>{TR_ENABLED}</option>
                                 </select>
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_MAX_LOGIN}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <input name="bruteforce_max_login" type="text" class="textinput" id="bruteforce_max_login" style="width:50px" value="{BRUTEFORCE_MAX_LOGIN_VALUE}" maxlength="3" />
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_BLOCK_TIME}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <input name="bruteforce_block_time" type="text" class="textinput" id="bruteforce_block_time" style="width:50px" value="{BRUTEFORCE_BLOCK_TIME_VALUE}" maxlength="3" />
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_BETWEEN_TIME}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" />
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
@@ -112,30 +114,30 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_USER_INITIAL_LANG}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <select name="def_language" id="def_language">
                                   <!-- BDP: def_language -->
                                   <option value="{LANG_VALUE}" {LANG_SELECTED}>{LANG_NAME}</option>
                                   <!-- EDP: def_language -->
                                 </select>
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_SUPPORT_SYSTEM}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <select name="support_system" id="support_system">
                                   <option value="0" {SUPPORT_SYSTEM_SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {SUPPORT_SYSTEM_SELECTED_ON}>{TR_ENABLED}</option>
                                 </select>
-                              </span></td>
+							 </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_DOMAIN_ROWS_PER_PAGE}</td>
-                              <td><span class="content">
+                              <td class="content">
                                 <input name="domain_rows_per_page" type="text" class="textinput" id="domain_rows_per_page" style="width:50px" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" />
-                              </span></td>
+                              </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
