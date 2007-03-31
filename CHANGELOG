@@ -1,4 +1,4 @@
-VHCS 2.4.8 ω Omega Changelog
+VHCS 1.0.0 ω Omega Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
@@ -9,6 +9,12 @@ VHCS 2.4.8 ω Omega Changelog
 |               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-03-31 Benedikt Heintel
+	- RELEASE: VHCS ω Omega 1.0.0 RC1
+
+VHCS 2.4.8 ω Omega Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2007-03-30 Benedikt Heintel
 	- GUI:

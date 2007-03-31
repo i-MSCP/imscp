@@ -103,7 +103,7 @@ SQL_QUERY;
 				for ($j = 0; $j < $count; $j++) {
 						$var = $var_name[$j];
 						$name = strtoupper(strip_tags($service_name[$j]));
-						$value = implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j]));
+						$value = @implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j]));
 						setConfig_Value($var, $value);
 				}
 			}
