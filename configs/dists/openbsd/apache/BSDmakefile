@@ -5,7 +5,7 @@ APACHE_MOD_CONF=$(INST_PREF)/usr/local/etc/apache22/extra/
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
-	$(SYSTEM_MAKE_DIRS) $(EXT_CONF)
+	$(SYSTEM_MAKE_DIRS) $(APACHE_EXT_CONF)
 	$(SYSTEM_MAKE_DIRS) $(APACHE_MOD_CONF)
 	cp ./httpd.conf ./working/vhcs2.conf
 	cp ./fastcgi.conf ./working/fastcgi.conf
@@ -13,7 +13,7 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
-	cp -R ./httpd.conf $(EXT_CONF)/vhcs2.conf
+	cp -R ./httpd.conf $(APACHE_EXT_CONF)/vhcs2.conf
 	cp -R ./fastcgi.conf $(APACHE_MOD_CONF)/fastcgi.conf
 
 uninstall:
