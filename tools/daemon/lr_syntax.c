@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/param.h>
 
 #if defined(__OpenBSD__) || defined(__FreeBSD__)
 #include <sys/proc.h>
@@ -10,7 +11,6 @@
 #endif
 
 #include <unistd.h>
-#include <sys/param.h>
 #include "lr_syntax.h"
 
 #if !defined(__OpenBSD__) && !defined(__FreeBSD__)

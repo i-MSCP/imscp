@@ -115,7 +115,7 @@ function install_lang() {
 			return;
 		}
 
-		if (!($file_type === "application/octet-stream")){
+		if (if (!($file_type === "text/plain") && !($file_type === "application/octet-stream")){
 			set_page_message(tr('You can upload only text files!'));
 			return;
 		}

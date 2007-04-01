@@ -23,7 +23,8 @@ function MM_goToURL() { //v3.0
       </tr>
     </table>
 	<!-- EDP: logged_from -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
+	<form name="puser_assign" method="post" action="puser_assign.php?uname={UNAME}">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 	<tr>
 		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
 		<td style="height: 56px; width: 785px;"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0"></td>
@@ -101,7 +102,10 @@ function MM_goToURL() { //v3.0
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
               </tr>
-            </table></td>
+              </table>
+             </form>
+            </td>
+           </tr>
           </tr>
         </table>
 	  </td>

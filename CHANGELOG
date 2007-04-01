@@ -10,6 +10,17 @@ VHCS 1.0.0 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-01 Benedikt Heintel
+	- CONFIGS:
+		* fixed bug in awstats Makefile (Jan Porath)
+	- ENGINE:
+		* fixed: variable parsing in uninstal (Jan Porath)
+		* fixed bug #141: compression for SQL Backup
+		* fixed bug #138: htaccess status not changed (Jan Porath)
+	- GUI:
+		* fixed: bug on language upload
+		* fixed: protected areas templates (Jan Porath)
+
 2007-03-31 Benedikt Heintel
 	- RELEASE: VHCS ω Omega 1.0.0 RC1
 

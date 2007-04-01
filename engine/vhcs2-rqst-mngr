@@ -534,6 +534,20 @@ sub mngr_engine {
 
 		}
 
+	} else {
+
+		$sql = "delete from htaccess_users where status = 'delete'";
+		($rs, $rdata) = doSQL($sql);
+
+		$sql = "delete from htaccess_groups where status = 'delete'";
+		($rs, $rdata) = doSQL($sql);
+
+		$sql = "update htaccess_users set status = 'ok' where status = 'toadd' or status = 'change'";
+		($rs, $rdata) = doSQL($sql);
+
+		$sql = "update htaccess_groups set status = 'ok' where status = 'toadd' or status = 'change'";
+		($rs, $rdata) = doSQL($sql);
+
 	}
 
 	#

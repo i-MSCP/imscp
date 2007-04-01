@@ -82,7 +82,9 @@ function MM_goToURL() { //v3.0
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
               </tr>
-            </table></td>
+            </table>
+			</form>
+			</td>
           </tr>
         </table>
 	  </td>
