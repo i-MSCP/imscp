@@ -127,7 +127,7 @@ b) manualy
 	into:	killall authdaemond.plain
 
 12. Clean the temporary folders:
-	# rm -R /tmp/vhcs-2.4.8
+	# rm -R /tmp/vhcs-1.0.0
 
 
 ================================================================================
