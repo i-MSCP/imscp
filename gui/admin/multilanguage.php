@@ -105,7 +105,7 @@ SQL_QUERY;
 function install_lang() {
 	global $sql;
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_language') {
+	if (isset($_POST['uaction']) AND $_POST['uaction'] === 'upload_language') {
 
 		// add lang pack now !
 		$file_type = $_FILES['lang_file']['type'];
@@ -115,7 +115,7 @@ function install_lang() {
 			return;
 		}
 
-		if (if (!($file_type === "text/plain") && !($file_type === "application/octet-stream")){
+		if (!($file_type === "text/plain") AND !($file_type === "application/octet-stream")){
 			set_page_message(tr('You can upload only text files!'));
 			return;
 		}

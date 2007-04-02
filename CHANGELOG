@@ -10,6 +10,11 @@ VHCS 1.0.0 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-02 Benedikt Heintel
+	- GUI:
+		* fixed: bug on language upload
+		* fixed bug #132: No special chars on filemanager (Jan Porath)
+
 2007-04-01 Benedikt Heintel
 	- CONFIGS:
 		* fixed bug in awstats Makefile (Jan Porath)
