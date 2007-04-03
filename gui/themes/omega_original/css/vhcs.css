@@ -165,12 +165,13 @@ td.content2 {
 
 td.content3 {
 	font-size: 			12px;
-	color: 				#FFFFFF;
+	color: 				#ffffff;
 	white-space: 		nowrap;
-	background: 		#000;
+	background: 		#000000;
 	white-space: 		nowrap;
 	height: 			30px;
 	padding: 			2px;
+	padding-left:		5px;
 	border-bottom:		2px solid #000000;
 	border-right:		2px solid #000000;
 	border-top:			2px solid #eeeeee;

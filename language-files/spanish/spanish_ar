@@ -1,6 +1,6 @@
 vhcs_table = Spanish
 vhcs_language = Spanish
-vhcs_languageSetlocaleValue = es_ES
+vhcs_languageSetlocaleValue = es_AR
 encoding = UTF-8
 do not exist =  no existe
  Has IP address that can not be managed from the destination reseller !<br>This user can not be moved! =  Tiene una dirección IP que no puede ser administrada desde el reseller destino!<br>El usuario no puede ser movido!

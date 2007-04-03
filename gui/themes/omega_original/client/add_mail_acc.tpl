@@ -12,7 +12,7 @@ function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
@@ -45,7 +45,7 @@ function sbmt(form, uaction) {
                 }
             }
     }
-	
+
 	<!-- BDP: js_to_all_domain -->
     function begin_js(){
             document.forms[0].als_id.disabled = true;
@@ -56,7 +56,7 @@ function sbmt(form, uaction) {
             document.forms[0].username.focus();
     }
 
-    
+
 
     function changeDom(wath) {
         if (wath == "alias") {
@@ -73,7 +73,7 @@ function sbmt(form, uaction) {
         }
     }
 	<!-- EDP: js_to_all_domain -->
-	
+
 	<!-- BDP: js_not_domain -->
     function begin_js(){
             document.forms[0].pass.disabled = false;
@@ -82,8 +82,8 @@ function sbmt(form, uaction) {
 			document.forms[0].username.focus();
     }
 	<!-- EDP: js_not_domain -->
-	
-	
+
+
 	<!-- BDP: js_to_subdomain -->
     function begin_js(){
             document.forms[0].sub_id.disabled = true;
@@ -93,7 +93,7 @@ function sbmt(form, uaction) {
             document.forms[0].username.focus();
     }
 
-    
+
 
     function changeDom(wath) {
         if (wath == "alias") {
@@ -107,8 +107,8 @@ function sbmt(form, uaction) {
         }
     }
 	<!-- EDP: js_to_subdomain -->
-	
-	
+
+
 	<!-- BDP: js_to_alias_domain -->
     function begin_js(){
             document.forms[0].als_id.disabled = true;
@@ -118,7 +118,7 @@ function sbmt(form, uaction) {
             document.forms[0].username.focus();
     }
 
-    
+
 
     function changeDom(wath) {
         if (wath == "alias") {
@@ -191,7 +191,7 @@ function sbmt(form, uaction) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_email.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_ADD_MAIL_USER}</td>
 	</tr>
-</table>			
+</table>
 			</td>
             <td width="27" align="right">&nbsp;</td>
           </tr>
@@ -202,27 +202,25 @@ function sbmt(form, uaction) {
                   <td valign="top">
             <table width="100%" cellpadding="5" cellspacing="5">
               <!-- BDP: page_message -->
-              <tr> 
+              <tr>
                 <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
               </tr>
               <!-- EDP: page_message -->
-              <tr> 
+              <tr>
                 <td nowrap class="content2" width="200">{TR_USERNAME}</td>
-                <td valign="middle" nowrap class="content"> 
+                <td valign="middle" nowrap class="content">
                   <input type="text" name="username" value="{USERNAME}" style="width:170px" class="textinput">
-		<td width="100%" valign=middle nowrap class="content">@{DOMAIN_NAME}
-                </td>
               </tr>
-              <tr> 
-                <td nowrap class="content2" width="200"> 
+              <tr>
+                <td nowrap class="content2" width="200">
                   <input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onClick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
                 <td nowrap class="content" colspan="2">@{DOMAIN_NAME}</td>
               </tr>
 			  <!-- BDP: to_alias_domain -->
-              <tr> 
-                <td nowrap class="content2" width="200"> 
+              <tr>
+                <td nowrap class="content2" width="200">
                   <input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onClick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
-                <td nowrap class="content"> 
+                <td nowrap class="content">
                   <select name="als_id">
                     <!-- BDP: als_list -->
                     <option value="{ALS_ID}" {ALS_SELECTED}>@{ALS_NAME}</option>
@@ -232,10 +230,10 @@ function sbmt(form, uaction) {
               </tr>
 			  <!-- EDP: to_alias_domain -->
 			  <!-- BDP: to_subdomain -->
-              <tr> 
-                <td nowrap class="content2" width="200"> 
+              <tr>
+                <td nowrap class="content2" width="200">
                   <input type="radio" name="dmn_type" value="sub" {MAIL_SUB_CHECKED} onClick="changeDom('subdom');">{TR_TO_SUBDOMAIN}</td>
-                <td nowrap class="content"> 
+                <td nowrap class="content">
                   <select name="sub_id">
                     <!-- BDP: sub_list -->
                     <option value="{SUB_ID}" {SUB_SELECTED}>@{SUB_NAME}</option>
@@ -244,29 +242,29 @@ function sbmt(form, uaction) {
                 </td>
               </tr>
 			  <!-- EDP: to_subdomain -->
-              <tr> 
-                <td nowrap class="content2" colspan="3"> 
+              <tr>
+                <td nowrap class="content2" colspan="2">
                   <input type="radio" name="mail_type" value="normal" onClick="changeType('normal');" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td nowrap class="content2" width="200">{TR_PASSWORD}</td>
-                <td nowrap  class="content"> 
+                <td nowrap  class="content">
                   <input type="password" name="pass" value="" style="width:170px" class="textinput">
                 </td>
               </tr>
-              <tr> 
+              <tr>
                 <td nowrap class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
-                <td nowrap class="content"> 
+                <td nowrap class="content">
                   <input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
                 </td>
               </tr>
-              <tr> 
-                <td nowrap class="content2" colspan="3"> 
+              <tr>
+                <td nowrap class="content2" colspan="2">
                   <input type="radio" name="mail_type" value="forward" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
-                <td nowrap  class="content"> 
+                <td nowrap  class="content">
                   <textarea name="forward_list" cols="35" rows="5" wrap="virtual">{FORWARD_LIST}</textarea>
 	    	        </td>
 	              </tr>
@@ -282,7 +280,7 @@ function sbmt(form, uaction) {
        	</td>
 	</tr>
         </table>
-      </form>			
+      </form>
 			</td>
           </tr>
         </table>
