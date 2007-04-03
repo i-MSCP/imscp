@@ -1,20 +1,21 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware							|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 include '../include/vhcs-lib.php';
 require '../include/vfs.php';
@@ -347,19 +348,19 @@ SQL_QUERY;
 function add_ftp_user(&$sql, $dmn_name)
 {
 	global $cfg;
-	
+
 	$username = strtolower(clean_input($_POST['username']));
 	$res_uname = preg_match("/\./", $username, $match);
 	if ($res_uname == 1) {
 		set_page_message( tr("Incorrect username range or syntax!"));
 	return;
 	}
-	
+
 	if (chk_username($username)) {
 		set_page_message( tr("Incorrect username range or syntax!"));
 		return;
 	}
-	
+
 	// Set default values ($ftp_home may be overriden if user
 	// has specified a mount point
 	switch( $_POST['dmn_type'] ) {
@@ -368,35 +369,35 @@ function add_ftp_user(&$sql, $dmn_name)
   			$ftp_user = $username.$cfg['FTP_USERNAME_SEPARATOR'].$dmn_name;
   			$ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name";
   			break;
-  		
+
   		// Default mount point for an alias domain
   		case 'als':
   			$ftp_user = $username.$cfg['FTP_USERNAME_SEPARATOR'].$_POST['als_id'];
   			$alias_mount_point = get_alias_mount_point($sql, $_POST['als_id']);
   			$ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name".$alias_mount_point;
   			break;
-  		
+
   		// Default mount point for a subdomain
   		case 'sub':
   			$ftp_user = $username.$cfg['FTP_USERNAME_SEPARATOR'].$_POST['sub_id'].'.'.$dmn_name;
   			$ftp_home = $cfg['FTP_HOMEDIR']."/$dmn_name/".clean_input($_POST['sub_id']);
   			break;
-  		
+
   		// Unknown domain type (?)
   		default:
   			set_page_message( tr('Unknown domain type') );
   			return;
   			break;
   	}
-  
+
 	// User-specified mount point
 	if ( isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-		
+
 		$ftp_vhome = clean_input($_POST['other_dir']);
 		// Strip possible double-slashes
 		$ftp_vhome = str_replace('//', '/', $ftp_vhome);
-		
-		// Check for updirs ".." 
+
+		// Check for updirs ".."
 		$res = preg_match("/\.\./", $ftp_vhome);
 		if ($res !== 0) {
 			set_page_message( tr('Incorrect mount point range or syntax') );
@@ -405,28 +406,28 @@ function add_ftp_user(&$sql, $dmn_name)
 		$ftp_home  = $cfg['FTP_HOMEDIR']."/$dmn_name/" . $ftp_vhome;
 		// Strip possible double-slashes
 		$ftp_home = str_replace('//', '/', $ftp_home);
-		
+
 		// Check for $ftp_vhome existance
 		// Create a virtual filesystem (it's important to use =&!)
 		$vfs =& new vfs($dmn_name, $sql);
 		// Check for directory existance
 		$res = $vfs->exists($ftp_vhome);
-		
+
 		if ( !$res ) {
-			set_page_message($ftp_vhome." ".tr('do not exist'));
+			set_page_message($ftp_vhome." ".tr('does not exist'));
 			return;
 		}
-	
+
 	}// End of user-specified mount-point
 
 	$ftp_gid = get_ftp_user_gid($sql, $dmn_name, $ftp_user);
 	$ftp_uid = get_ftp_user_uid($sql, $dmn_name, $ftp_user, $ftp_gid);
-	
+
 	if ($ftp_uid == -1) return;
-	
+
 	$ftp_shell = $cfg['FTP_SHELL'];
 	$ftp_passwd = crypt_user_ftp_pass($_POST['pass']);
-	
+
 	$query = <<<SQL_QUERY
         insert into ftp_users
             (userid, passwd, uid, gid, shell, homedir)

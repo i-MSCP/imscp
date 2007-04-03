@@ -1,21 +1,21 @@
-<?php 
-// -----------------------------------------------------------------------------
-// |             VHCS(tm) - Virtual Hosting Control System                      |
-// |              Copyright (c) 2001-2005 by moleSoftware		            	|
-// |			http://vhcs.net | http://www.molesoftware.com		           	|
-// |                                                                            |
-// | This program is free software; you can redistribute it and/or              |
-// | modify it under the terms of the MPL General Public License                |
-// | as published by the Free Software Foundation; either version 1.1           |
-// | of the License, or (at your option) any later version.                     |
-// |                                                                            |
-// | You should have received a copy of the MPL Mozilla Public License          |
-// | along with this program; if not, write to the Open Source Initiative (OSI) |
-// | http://opensource.org | osi@opensource.org								    |
-// |                                                                         	|
-// -----------------------------------------------------------------------------
-
-
+<?php
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 include '../include/vhcs-lib.php';
 
@@ -38,7 +38,7 @@ function addon_domain(&$tpl, $dmn_name)
 {
 	$dmn_name = strtolower($dmn_name);
 	$dmn_name = get_punny($dmn_name);
-	
+
 	if (!vhcs_domain_check($dmn_name)) {
 
         set_page_message(tr('Wrong domain name syntax!'));
@@ -50,7 +50,7 @@ function addon_domain(&$tpl, $dmn_name)
 		return;
 
     }
-	
+
 	$_SESSION['domainname'] = $dmn_name;
 	header( "Location: address.php" );
 	die();
@@ -74,7 +74,7 @@ function addon_domain(&$tpl, $dmn_name)
 
 if (isset($_SESSION['user_id'])){
 	$user_id = $_SESSION['user_id'];
-	
+
 	if (isset($_SESSION['plan_id'])){
 		$plan_id = $_SESSION['plan_id'];
 	} else if(isset($_GET['id'])){
@@ -105,7 +105,7 @@ gen_page_message($tpl);
                        	'DOMAIN_ADDON' => tr('Add On A Domain'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),
 						'TR_CONTINUE' => tr('Continue'),
-						'TR_EXAMPLE' => tr('(Ex. domain-of-your-choice.com)'),
+						'TR_EXAMPLE' => tr('(e.g. domain-of-your-choice.com)'),
 
 
 					)

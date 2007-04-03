@@ -10,10 +10,17 @@ VHCS 1.0.0 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-04 Benedikt Heintel
+	- LANGUAGES:
+		* English: updates
+		* Turkish: added missing strings
+	- GUI:
+		* Updated translation strings
+
 2007-04-03 Benedikt Heintel
 	- GUI:
 		* fixed: color of table header headlines in Firefox
-		* fixed bug #148: alias domainname was false in adminlog
+		* fixed bug #148: alias domainname was wrong in adminlog
 		* fixed: layout issues on add_mail_acc.tpl
 
 2007-04-02 Benedikt Heintel

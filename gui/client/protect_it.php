@@ -1,20 +1,21 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2005 by moleSoftware	|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
+/**
+ *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		VHCS Team, Benedikt Heintel (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 include '../include/vhcs-lib.php';
 require '../include/vfs.php';
@@ -57,22 +58,22 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 	global $cfg;
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'protect_it')  {
 
-		
+
 		if ( !isset($_POST['users']) && !isset($_POST['groups']) ){
 			set_page_message(tr('Please choose user or group'));
 			return;
 		}
-		
+
 		if ( empty($_POST['paname']) ) {
 			set_page_message(tr('Please enter area name'));
 			return;
 		}
-		
+
 		if ( empty($_POST['other_dir']) ) {
 			set_page_message(tr('Please enter area path'));
 			return;
 		}
-		
+
 		// Check for existing directory
 		$path   = clean_input($_POST['other_dir']);
 		$domain = $_SESSION['user_logged'];
@@ -246,7 +247,7 @@ SQL_QUERY;
 	$auth_name = $rs -> fields['auth_name'];
 	$ok_status = $cfg['ITEM_OK_STATUS'];
 	if ($status !== $ok_status) {
-		set_page_message(tr('Protected area status should be OK if you wannt to edit it!'));
+		set_page_message(tr('Protected area status should be OK if you want to edit it!'));
 		header( "Location: protected_areas.php");
 		die();
 	}
@@ -369,7 +370,7 @@ SQL_QUERY;
 				$tpl -> assign(
 						array(
 								'GROUP_VALUE' => "-1",
-								'GROUP_LEBEL' => tr('You have no groups !')
+								'GROUP_LEBEL' => tr('You have no groups!')
 							  )
 						);
 				$tpl -> parse('GROUP_ITEM', 'group_item');

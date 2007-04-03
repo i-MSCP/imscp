@@ -1547,7 +1547,7 @@ SQL_QUERY;
 
     if ($dmn_max != 0) {
         if ($dmn_current + 1 > $dmn_max) {
-            $err_msg = tr('You have been reached your domain limit.<br>You can not add more domains ! ');
+            $err_msg = tr('You have reached your domain limit.<br>You can not add more domains! ');
             return;
         }
     }

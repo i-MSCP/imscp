@@ -146,7 +146,7 @@ function check_user_login() {
 	/* check session */
 	if (!session_exists($sess_id)) {
 
-  	write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " user session do not exist or killed");
+  	write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " user session does not exist or killed");
 
     return false;
 
