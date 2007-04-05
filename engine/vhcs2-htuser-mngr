@@ -421,8 +421,33 @@ sub htuser_del_user_system_data {
 		return $rs if ($rs != 0);
 
 	}
+	
+	foreach (split(',', $dmn_id)) {
 
-	#$rs = del_file($htaccess_file);
+		my $id = $_;
+
+		$sql = "select count(dmn_id) from htaccess where dmn_id = $id";
+
+		($rs, $rdata) = doSQL($sql);
+
+		return $rs if ($rs != 0);
+
+		$rdata = @$rdata[0];
+
+		my ($rcounter) = (@$rdata[0]);
+
+		if($rcounter eq '1') {
+
+			if (-e $htaccess_file) {
+
+				del_file($htaccess_file);
+
+			}
+
+		}
+
+	}
+
 
 	return $rs if ($rs != 0);
 
