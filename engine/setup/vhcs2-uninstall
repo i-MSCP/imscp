@@ -182,13 +182,15 @@ sub check_host_system {
 
 sub uninstall_system_users {
 
-    my ($rs, $rdata) = (undef, undef);
+    my ($rs, $rdata, $rows, $sql) = (undef, undef, undef, undef);
 
     push_el(\@main::el, 'uninstall_system_users()', 'Starting...');
 
     my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
 
     my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
+		
+		my ($upref) 			=	($main::cfg{'APACHE_SUEXEC_USER_PREF'});
 
     my ($uid, $gid) = (undef, undef);
 
@@ -198,7 +200,7 @@ sub uninstall_system_users {
     my @gdata = ();
 
     #
-	# MTA Mailbox User
+		# MTA Mailbox User
     #
     @udata = getpwnam($fuid);
     @gdata = getgrnam($fuid);
@@ -223,31 +225,78 @@ sub uninstall_system_users {
 
     }
 
-    #
-    # PHP Master
-    #
-    @udata = getpwnam($muid);
-    @gdata = getgrnam($muid);
+		#
+		# PHP Master
+		#
 
-    if (scalar(@udata) != 0) { # we have not this one user data;
+		@gdata = getgrnam("$upref$mgid");
 
-        my $cmd = "$main::cfg{'CMD_USERDEL'} $muid";
+		if (scalar(@gdata) != 0) { # we have not this one group data;
 
-        $rs = sys_command($cmd);
+			my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref$mgid";
 
-        return $rs if ($rs != 0);
+			$rs = sys_command($cmd);
 
-    }
+			return $rs if ($rs != 0);
 
-    if (scalar(@gdata) != 0) { # we have not this one group data;
+		}
 
-        my $cmd = "$main::cfg{'CMD_GROUPDEL'} $muid";
+		@udata = getpwnam("$upref$muid");
 
-        $rs = sys_command($cmd);
+		if (scalar(@udata) != 0) { # we have not this one user data;
 
-        return $rs if ($rs != 0);
+			my $cmd = "$main::cfg{'CMD_USERDEL'} $upref$muid";
 
-    }
+			$rs = sys_command($cmd);
+
+			return $rs if ($rs != 0);
+
+		}
+		
+		#
+		# Virtual User
+		#
+		
+		$sql = "select domain_uid,domain_gid from domain";
+		
+		($rs, $rows) = doSQL($sql);
+		
+		return $rs if ($rs != 0);
+
+		if (scalar(@$rows) != 0) {
+
+			foreach (@$rows) {
+
+				my $query_user = $_;
+
+				@gdata = getgrnam("$upref@$query_user[1]");
+
+				if (scalar(@gdata) != 0) { # we have not this one group data;
+
+					my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref@$query_user[0]";
+
+					$rs = sys_command($cmd);
+
+					return $rs if ($rs != 0);
+
+				}
+
+				@udata = getpwnam("$upref@$query_user[0]");
+
+				if (scalar(@udata) != 0) { # we have not this one user data;
+
+					my $cmd = "$main::cfg{'CMD_USERDEL'} $upref@$query_user[0]";
+
+					$rs = sys_command($cmd);
+
+					return $rs if ($rs != 0);
+
+				}
+				
+			}
+
+		}
+
 
     push_el(\@main::el, 'uninstall_system_users()', 'Ending...');
 
