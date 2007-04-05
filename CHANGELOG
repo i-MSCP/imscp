@@ -10,6 +10,21 @@ VHCS 1.0.0 ω Omega Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-05 Benedikt Heintel
+	- LANGUAGES:
+		* English: fixed spelling mistake
+		* French: changed translated strings
+		* Spanish: added Spanish Spain
+		* Russian: added missing strings
+		* Turkish: added missing strings
+
+2007-04-05 Jan Porath
+	- ENGINE:
+		* fixed bug #144: after deleting a protected area in the GUI, the directory is still protected
+	- SETUP:
+		* fixed bug #60: user groupes deleted on uninstall
+		* fixed bug #153: when installing the setup asks you the hostname and cuts it down to the local part
+
 2007-04-04 Benedikt Heintel
 	- LANGUAGES:
 		* English: updates
