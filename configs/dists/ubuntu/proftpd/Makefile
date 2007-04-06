@@ -13,8 +13,8 @@ install:
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
 		fi ; \
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
-		cp ./proftpd3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
-		cp ./proftpd3.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
+		cp ./proftpd1.3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
+		cp ./proftpd1.3.conf $(ROOT_CONF)/proftpd/proftpd.conf ; \
 	else \
 		cp ./proftpd.conf $(ROOT_CONF) ; \
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
