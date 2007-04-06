@@ -284,7 +284,7 @@ sub backup_all_engine {
 				if ($dbuser && $dbpass) {
 					my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
 					my $db_backupcmd = "mysqldump --add-drop-table -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
-					my $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force $db_backup_file";
+					my $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
 					$rs = sys_command($db_backupcmd);
 
 					if ($rs == 0) {
@@ -293,14 +293,16 @@ sub backup_all_engine {
 						if ($rs != 0) {
 							unlink($db_backup_file);
 						}
+						else {
+							$rs = sys_command($db_compresscmd);
+							return $rs if ($rs != 0);
+						}
 						return $rs if ($rs != 0);
 					}
 					else {
 						push_el(\@main::el, 'backup_all_engine()', "ERROR: Failed to backup database $db_name");
 						unlink($db_backup_file);
 					}
-				 		$rs = sys_command($db_compresscmd);
- 						return $rs if ($rs != 0);
 				}
 			}
 		}

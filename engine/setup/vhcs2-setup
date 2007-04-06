@@ -122,7 +122,7 @@ sub ask_hostname {
 	}
 	else {
 
-		print STDOUT "\n    Hostname not a valid domain!";
+		print STDOUT "\n    Hostname not a valid domain!\n";
 		return 1;
 
 	}
@@ -561,7 +561,7 @@ sub ask_vhost {
 	my $addr = gethostbyaddr($main::ua{'eth_ip'}, AF_INET);
 
 	if (!$addr) {
-		$addr = "my-domain.tld";
+		$addr = $main::ua{'hostname'};
 	}
 
 	my $vhost = "admin.$addr";
@@ -573,11 +573,7 @@ sub ask_vhost {
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	if ($rdata eq 'admin.my-domain.tld') {
-		print STDOUT "\n    Please enter a valid Vhost!";
-		return 1;
-	}
-	elsif (!defined($rdata) || $rdata eq '') {
+	if (!defined($rdata) || $rdata eq '') {
 		$main::ua{'admin_vhost'} = $vhost;
 	}
 	else {
@@ -606,7 +602,9 @@ sub user_dialog {
 
 	return $rs if ($rs != 0);
 
-	$rs = ask_hostname();
+	do {
+		$rs = ask_hostname();
+	} while ($rs == 1);
 
 	return $rs if ($rs != 0);
 

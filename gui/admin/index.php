@@ -89,9 +89,9 @@ function get_update_infos(&$tpl) {
     ini_set('user_agent','Mozilla/5.0');
 
 	$dh2 = @fopen("$last_update",'r');
-	$last_update_result = @fread($dh2, 8);
+	(int) $last_update_result = @fread($dh2, 8);
 
-	$current_version = $cfg['BuildDate'];
+	(int) $current_version = $cfg['BuildDate'];
 	if ($current_version < $last_update_result) {
 		$tpl -> assign(array('UPDATE' =>  tr('New VHCS update is now available')));
 		$tpl -> parse('UPDATE_MESSAGE', 'update_message');

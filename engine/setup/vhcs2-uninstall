@@ -37,8 +37,6 @@ require 'vhcs2_common_code.pl';
 use strict;
 use warnings;
 
-%main::ua = ();
-
 sub welcome_note {
 
     my ($rs, $rdata) = (undef, undef);
@@ -51,7 +49,7 @@ sub welcome_note {
 
     This program will uninstall VHCS OMEGA system from your server.
 
-    /!\ WARNING: All domain users and their accounts will be removed.  /!\
+    /!\\ WARNING: All domain users and their accounts will be removed.  /!\\
 
     Please press 'Enter' to continue.
 MSG
@@ -189,7 +187,7 @@ sub uninstall_system_users {
     my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
 
     my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
-		
+
 		my ($upref) 			=	($main::cfg{'APACHE_SUEXEC_USER_PREF'});
 
     my ($uid, $gid) = (undef, undef);
@@ -252,15 +250,15 @@ sub uninstall_system_users {
 			return $rs if ($rs != 0);
 
 		}
-		
+
 		#
 		# Virtual User
 		#
-		
+
 		$sql = "select domain_uid,domain_gid from domain";
-		
+
 		($rs, $rows) = doSQL($sql);
-		
+
 		return $rs if ($rs != 0);
 
 		if (scalar(@$rows) != 0) {
@@ -292,7 +290,7 @@ sub uninstall_system_users {
 					return $rs if ($rs != 0);
 
 				}
-				
+
 			}
 
 		}

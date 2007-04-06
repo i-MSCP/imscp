@@ -1,4 +1,4 @@
-VHCS 1.0.0 ω Omega Changelog
+VHCS ω Omega 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
@@ -11,12 +11,22 @@ VHCS 1.0.0 ω Omega Changelog
 \_________________________________________________________________/
 
 2007-04-05 Benedikt Heintel
+	- GUI:
+		* fixed bug: update available was shown, even if no update was available
+	- ENGINE:
+		* fixed bug #158: Backup breaks on bzip if file not exists
 	- LANGUAGES:
 		* English: fixed spelling mistake
 		* French: changed translated strings
 		* Spanish: added Spanish Spain
 		* Russian: added missing strings
 		* Turkish: added missing strings
+	- SETUP:
+		* fixed: uninstall-script linebreaks
+		* fixed: install-script stopped on wrong Hostname
+	- THEMES:
+		o Omega:
+			* fixed bug #147: padding changed
 
 2007-04-05 Jan Porath
 	- ENGINE:
@@ -58,7 +68,7 @@ VHCS 1.0.0 ω Omega Changelog
 2007-03-31 Benedikt Heintel
 	- RELEASE: VHCS ω Omega 1.0.0 RC1
 
-VHCS 2.4.8 ω Omega Changelog
+VHCS ω Omega 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2007-03-30 Benedikt Heintel
