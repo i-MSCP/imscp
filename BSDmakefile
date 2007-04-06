@@ -15,6 +15,8 @@ install:
 	cd ./engine && $(MAKE) install
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
+	cd ${INST_PREF} && cp -A * /
+	rm -rf ${INST_PREF}
 
 uninstall:
 	cd ./tools && $(MAKE) uninstall
