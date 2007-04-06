@@ -1,5 +1,5 @@
 
-INST_PREF=/tmp/vhcs-2.4.8
+INST_PREF=/tmp/vhcs-1.0.0
 
 HOST_OS=openbsd
 
