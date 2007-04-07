@@ -10,6 +10,10 @@ VHCS ω Omega 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-07 Benedikt Heintel
+	- LANGUAGES:
+		* Romanian: added language
+
 2007-04-05 Benedikt Heintel
 	- GUI:
 		* fixed bug: update available was shown, even if no update was available
