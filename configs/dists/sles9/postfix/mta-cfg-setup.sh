@@ -2,7 +2,7 @@
 
 MTA_CONF_DIR=/etc/postfix
 
-MTA_SYSTEM_CONF_DIR=/etc/postfix/vhcs2
+MTA_SYSTEM_CONF_DIR=/etc/postfix/ispcp
 
 
 

@@ -24,7 +24,7 @@ myhostname = {MTA_HOSTNAME}
 mydomain = {MTA_LOCAL_DOMAIN}
 myorigin = $mydomain
 
-smtpd_banner = $myhostname VHCS2 {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
+smtpd_banner = $myhostname ISPCP {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
 setgid_group = maildrop
 
 #
@@ -54,10 +54,10 @@ local_destination_recipient_limit = 1
 local_recipient_maps = unix:passwd.byname $alias_database
 
 #
-# VHCS Autoresponder paramters;
+# ISPCP Autoresponder paramters;
 #
 
-vhcs2-arpl_destination_recipient_limit = 1
+ispcp-arpl_destination_recipient_limit = 1
 
 #
 # Delivering virtual messages parameters;
@@ -83,7 +83,7 @@ smtpd_sasl_auth_enable = yes
 
 smtpd_sasl_security_options = noanonymous
 
-smtpd_sasl_local_domain = vhcs.net
+smtpd_sasl_local_domain = ispcp.net
 
 broken_sasl_auth_clients = yes
 

@@ -24,7 +24,7 @@
     ErrorDocument 500 /errors/500/index.php
 
     Redirect /stats http://{DMN_NAME}/awstats/awstats.pl
-    Redirect /vhcs2 http://{BASE_SERVER_VHOST}
+    Redirect /ispcp http://{BASE_SERVER_VHOST}
 
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
@@ -41,7 +41,7 @@
 
     <IfModule mod_php4.c>
         <Directory {GUI_ROOT_DIR}>
-            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/vhcs2/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
             php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
         </Directory>
     </IfModule>

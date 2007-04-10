@@ -69,10 +69,10 @@ procmail  unix  -       n       n       -       -       pipe
   flags=R user=nobody argv=/usr/bin/procmail -t -m /etc/procmailrc ${sender} ${recipient}
 
 #
-# vhcs delivery agent.
+# ispcp delivery agent.
 #
 
-vhcs2-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/srv/www/vhcs2/engine/messager/vhcs2-arpl-msgr
+ispcp-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/srv/www/ispcp/engine/messager/ispcp-arpl-msgr
 #
 # Amavis
 #

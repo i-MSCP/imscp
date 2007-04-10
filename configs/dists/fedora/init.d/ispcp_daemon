@@ -1,0 +1,78 @@
+#!/bin/sh
+# $Id: ispcp.init,v 1.0 2006/01/09 17:54:30 Ugo Viti <ugo.viti@initzero.it> $
+#
+# PID file, ispcp_network added by Carsten Schoene <cs@linux-administrator.com>
+#
+# description:	ISPCP (Virtual Hosting Control System) Daemon
+#
+# chkconfig:	- 90 30
+# processname:	ispcp_daemon
+# config:	/etc/ispcp/ispcp.conf
+# pidfile:	/var/run/ispcp_daemon.pid
+
+lockfile=/var/lock/subsys/ispcp
+PID=/var/run/ispcp_daemon.pid
+prog=ispcp_daemon
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+prog=ispcp_daemon
+progpath=/var/www/ispcp/daemon
+
+start() {
+        echo -n $"Starting $prog: "
+        daemon $progpath/$prog -p $PID
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && touch $lockfile >/dev/null 2>&1
+        echo
+}
+
+stop() {
+        echo -n $"Shutting down $prog: "
+        killproc $prog
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f $lockfile
+}
+
+status() {
+		if [ -s $pidfile ]; then
+			pid=`cat $pidfile`
+			kill -0 $pid >/dev/null 2>&1
+			if [ "$?" = "0" ]; then
+				echo "$prog (pid $pid) is running"
+				RETVAL=0
+			else
+				echo "$prog is stopped"
+				RETVAL=1
+			fi
+		else
+			echo "$prog is stopped"
+			RETVAL=1
+		fi
+}
+
+case "$1" in
+  start)
+        start
+		/etc/init.d/ispcp_network
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        stop
+        start
+        ;;
+  status)
+        status $prog
+        RETVAL=$?
+        ;;
+  *)
+        echo "Usage: $prog {start|stop|restart|status}"
+        exit 1
+esac
+
+exit $RETVAL
+

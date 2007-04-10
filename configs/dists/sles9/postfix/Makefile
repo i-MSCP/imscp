@@ -20,14 +20,14 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/postfix
 	cp -R ./parts $(SYSTEM_CONF)/postfix
 	cp -R ./working $(SYSTEM_CONF)/postfix
-	cp -R ./vhcs2 $(SYSTEM_CONF)/postfix
+	cp -R ./ispcp $(SYSTEM_CONF)/postfix
 	
-	cp -R ./vhcs2 $(ROOT_POSTFIX_CONF)
+	cp -R ./ispcp $(ROOT_POSTFIX_CONF)
 	cp ./main.cf $(ROOT_POSTFIX_CONF)
 	cp ./master.cf $(ROOT_POSTFIX_CONF)
 
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/postfix
-	rm -rf $(ROOT_POSTFIX_CONF)/vhcs2
+	rm -rf $(ROOT_POSTFIX_CONF)/ispcp
 

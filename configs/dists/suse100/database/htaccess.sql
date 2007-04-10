@@ -1,6 +1,6 @@
 -- MySQL dump 9.11
 --
--- Host: localhost    Database: vhcs22
+-- Host: localhost    Database: ispcp2
 -- ------------------------------------------------------
 -- Server version	4.0.24_Debian-2-log
 

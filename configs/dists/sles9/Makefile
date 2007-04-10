@@ -4,7 +4,7 @@ export
 install:
 
 	if [[ $(HOST_OS) == sles9 ]] ; then \
-		cp ./vhcs2.conf $(SYSTEM_CONF) ; \
+		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./bind && $(MAKE) install ; cd .. ; \
 		cd ./crontab && $(MAKE) install ; cd .. ; \
@@ -20,7 +20,7 @@ install:
 uninstall:
 
 	if [[ $(HOST_OS) == sles9 ]] ; then \
-		rm -rf $(SYSTEM_CONF)/vhcs2.conf ;  \
+		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \
 		cd ./crontab && $(MAKE) uninstall ; cd .. ; \

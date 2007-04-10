@@ -99,9 +99,9 @@ bsmtp     unix  -       n       n       -       -       pipe
   flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f $sender $nexthop $recipient
 
 #
-# vhcs delivery agent.
+# ispcp delivery agent.
 #
 
-vhcs2-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/vhcs2/engine/messager/vhcs2-arpl-msgr
+ispcp-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/ispcp/engine/messager/ispcp-arpl-msgr
 
 587      inet  n       -       -       -       -       smtpd -o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination

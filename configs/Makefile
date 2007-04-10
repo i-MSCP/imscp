@@ -4,7 +4,7 @@ export
 install:
 
 	if [[ $(HOST_OS) == debian ]] ; then \
-		cp ./vhcs2.conf $(SYSTEM_CONF) ; \
+		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
 		cd ./bind && $(MAKE) install ; cd .. ; \
@@ -36,7 +36,7 @@ install:
 uninstall:
 
 	if [[ $(HOST_OS) == debian ]] ; then \
-		rm -rf $(SYSTEM_CONF)/vhcs2.conf ;  \
+		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \

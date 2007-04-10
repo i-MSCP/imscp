@@ -1,0 +1,18 @@
+/var/log/apache2/users/*.log {
+	weekly
+	missingok
+	rotate 52
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
+	sharedscripts
+	prerotate
+		/var/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
+	endscript
+	postrotate
+	if [ -f /var/run/apache2.pid ]; then
+		/etc/init.d/apache2 restart > /dev/null
+	fi
+	endscript
+}

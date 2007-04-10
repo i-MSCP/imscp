@@ -3,7 +3,7 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/cron.d
-	cp ./vhcs2.phptemp $(ROOT_CONF)/cron.d
+	cp ./ispcp.phptemp $(ROOT_CONF)/cron.d
 	
 uninstall:
 
