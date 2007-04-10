@@ -1,15 +1,15 @@
 
-INST_PREF=/tmp/vhcs-1.0.0
+INST_PREF=/tmp/ispcp-1.0.0
 
 HOST_OS=openbsd
 
 ROOT_CONF=$(INST_PREF)/etc
 
-SYSTEM_ROOT=$(INST_PREF)/var/www/vhcs2
+SYSTEM_ROOT=$(INST_PREF)/var/www/ispcp
 
-SYSTEM_CONF=$(INST_PREF)/etc/vhcs2
+SYSTEM_CONF=$(INST_PREF)/etc/ispcp
 
-SYSTEM_LOG=$(INST_PREF)/var/log/vhcs2
+SYSTEM_LOG=$(INST_PREF)/var/log/ispcp
 
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/var/www/log/backup
 
@@ -19,6 +19,6 @@ SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
-SYSTEM_MAKE_DIRS=/usr/sbin/vhcs2-mkdirs.pl
+SYSTEM_MAKE_DIRS=/usr/sbin/ispcp-mkdirs.pl
 
 CODE_PHP=/usr/sbin/encode-file
