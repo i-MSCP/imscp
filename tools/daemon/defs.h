@@ -176,9 +176,9 @@ typedef unsigned int word;
 /* Global variables. */
 
 char *messages_array[MSG_MAX_COUNT][1] = {
-    {"250 OK moleSoftware VHCS2 Server Welcomes You !\r\n"},
-    {"moleSoftware vhcs_daemon v2.02 started !"},
-    {"vhcs2_daemon"},
+    {"250 OK ispCP Server Welcomes You !\r\n"},
+    {"ispCP_daemon v1.0 started !"},
+    {"ispcp_daemon"},
     {"listen() error: %s"},
     {"child %s terminated !"},
     {"Aeee! SIG_PIPE was received ! Will we survive ?"},
@@ -197,11 +197,11 @@ char *messages_array[MSG_MAX_COUNT][1] = {
     {"bye"},
     {"license status"},
     {"execute query"},
-    {"VHCS Pro configuration file not found !"},
-    {"VHCS Pro license data cannot be found in the config file !"},
+    {"ispCP configuration file not found !"},
+    {"ispCP data cannot be found in the config file !"},
     {"Connect to license-server: socket() error [%s]!"},
     {"Connect to license-server: connect() error [%s]!"},
-    {"250 OK moleSoftware Licnese Server Welcomes You !\r\n"},
+    {"250 OK ispCP Server Welcomes You !\r\n"},
     {"999 ERR License error !\r\n"},
     {"bind() error: %s ! \r\n Please check for another daemon runing !\r\n "}
 };
@@ -209,7 +209,7 @@ char *messages_array[MSG_MAX_COUNT][1] = {
 char client_ip [MAX_MSG_SIZE];
 
 /*
- BEGIN: vhcs_daemon variables
+ BEGIN: ispcp_daemon variables
  */
 
 char product_number [MAX_MSG_SIZE];
@@ -221,7 +221,7 @@ char license_key [MAX_MSG_SIZE];
 char license_status [MAX_MSG_SIZE];
 
 /*
- END: vhcs_daemon variables
+ END: ispcp_daemon variables
  */
 
 struct timeval     *tv_rcv;

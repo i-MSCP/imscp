@@ -5,10 +5,10 @@ export
 
 install:
 
-	$(CMD_INSTALL) ./vhcs2-mkdirs.pl /usr/sbin
+	$(CMD_INSTALL) ./ispcp-mkdirs.pl /usr/sbin
 
 uninstall:
 
-	rm -rf /usr/sbin/vhcs2-mkdirs.pl
+	rm -rf /usr/sbin/ispcp-mkdirs.pl
 
 

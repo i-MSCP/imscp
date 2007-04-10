@@ -58,15 +58,15 @@ typedef struct {
 
 #if defined(__OpenBSD__) || defined(__FreeBSD__)
 
-#define QUERY_CMD "/var/www/vhcs2/engine/vhcs2-rqst-mngr"
+#define QUERY_CMD "/var/www/ispcp/engine/ispcp-rqst-mngr"
 
 #endif
 
-#define LOG_DIR "/var/log/vhcs2"
+#define LOG_DIR "/var/log/ispcp"
 
-#define STDOUT_LOG "vhcs2_daemon-stdout-log"
+#define STDOUT_LOG "ispcp_daemon-stdout-log"
 
-#define STDERR_LOG "vhcs2_daemon-stderr-log"
+#define STDERR_LOG "ispcp_daemon-stderr-log"
 
 extern char *message(int message_number);
 

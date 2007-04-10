@@ -1,32 +1,22 @@
-# VHCS(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
-# http://www.molesoftware.com
 #
+#  ispCP . (OMEGA) - Virtual Hosting Control System | Omega Version
 #
-# License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1    
-#    of the License, or (at your option) any later version.
+#  @copyright  2001-2006 by moleSoftware GmbH
+#  @copyright  2006-2007 by ispCP | http://isp-control.net
+#  @link   http://isp-control.net
+#  @author  ispCP Team
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-#    MPL Mozilla Public License for more details.
-#    
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
-#    
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
+#  @license
+#  This program is free software; you can redistribute it and/or modify it under
+#  the terms of the MPL General Public License as published by the Free Software
+#  Foundation; either version 1.1 of the License, or (at your option) any later
+#  version.
+#  You should have received a copy of the MPL Mozilla Public License along with
+#  this program; if not, write to the Open Source Initiative (OSI)
+#  http://opensource.org | osi@opensource.org
 #
-#
-# The VHCS Home Page is at:
-#
-#    http://www.vhcs.net
 
-
-OBJS = vhcs_daemon.o message.o daemon_init.o say.o signal-handlers.o\
+OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
 helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
@@ -36,12 +26,12 @@ COMPILE = gcc -O2 -ansi -Wall -Wstrict-prototypes -pedantic -c -o
 
 STRIP = strip -s
 
-vhcs2_daemon: $(OBJS)
-	$(BUILD) vhcs2_daemon $(OBJS)
-	$(STRIP) vhcs2_daemon
+ispcp_daemon: $(OBJS)
+	$(BUILD) ispcp_daemon $(OBJS)
+	$(STRIP) ispcp_daemon
         
-vhcs_daemon.o: vhcs_daemon.c defs.h
-	$(COMPILE) vhcs_daemon.o vhcs_daemon.c
+ispcp_daemon.o: ispcp_daemon.c defs.h
+	$(COMPILE) ispcp_daemon.o ispcp_daemon.c
 
 daemon_init.o: daemon_init.c daemon_init.h
 	$(COMPILE) daemon_init.o daemon_init.c
@@ -93,5 +83,5 @@ uninstall: clean
 clean:
 	rm -rf *~
 	rm -rf *.o
-	rm -rf vhcs2_daemon
+	rm -rf ispcp_daemon
 

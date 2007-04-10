@@ -2,10 +2,10 @@ CMD_INSTALL=/usr/bin/install -m 0700 -o root -g wheel
 
 install:
 
-	$(CMD_INSTALL) ./vhcs2-mkdirs.pl /usr/sbin
+	$(CMD_INSTALL) ./ispcp-mkdirs.pl /usr/sbin
 
 uninstall:
 
-	rm -rf /usr/sbin/vhcs2-mkdirs.pl
+	rm -rf /usr/sbin/ispcp-mkdirs.pl
 
 

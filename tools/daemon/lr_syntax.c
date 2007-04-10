@@ -76,8 +76,8 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
 				sprintf (fname1, "/proc/%ld/exe", (long int) getpid());
 				memset (fname2, 0, sizeof (fname2));
 				if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
-					strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/vhcs2_daemon"));
-					strcat(daemon_path, "engine/vhcs2-rqst-mngr");
+					strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/ispcp_daemon"));
+					strcat(daemon_path, "engine/ispcp-rqst-mngr");
 
 					fdres = open ( "/dev/null", O_RDONLY );
                                         if(fdres == -1)
@@ -125,7 +125,7 @@ int lr_syntax(int fd, license_data_type *ld, char *buff)
                                         }
                                         else if( dupres != fdres) close (fdres);
 
-                                        execl( daemon_path, "vhcs2-rqst-mngr" ,(char*)NULL );
+                                        execl( daemon_path, "ispcp-rqst-mngr" ,(char*)NULL );
 					#endif
 
 					exit(0);
