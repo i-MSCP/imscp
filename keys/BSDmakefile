@@ -17,7 +17,7 @@ gen-keys: gen-keys.c
 #	./gen-keys 32 16 > keys.txt
 	chown root:wheel ./rpl.pl ./gen-keys
 	chmod 0700 ./rpl.pl ./gen-keys
-	./rpl.pl $(SYSTEM_ROOT)/gui/include/vhcs2-db-keys.php $(SYSTEM_ROOT)/engine/vhcs2-db-keys.pl $(SYSTEM_ROOT)/engine/messager/vhcs2-db-keys.pl
+	./rpl.pl $(SYSTEM_ROOT)/gui/include/ispcp-db-keys.php $(SYSTEM_ROOT)/engine/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/messager/ispcp-db-keys.pl
         
 install: gen-keys 
 

@@ -46,8 +46,8 @@ open(F, '<', $php_fname);
 my @php_file = <F>;
 close(F);
 
-$php_file[2] = "\t\$vhcs2_db_pass_key = '$key';\n";
-$php_file[4] = "\t\$vhcs2_db_pass_iv = '$iv';\n";
+$php_file[2] = "\t\$ispcp_db_pass_key = '$key';\n";
+$php_file[4] = "\t\$ispcp_db_pass_iv = '$iv';\n";
 
 open(F, '>', $php_fname);
 foreach(@php_file) {
