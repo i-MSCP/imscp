@@ -84,7 +84,7 @@ function isOwnDomain() {
 	// First every attempt is invalid...
 	$status = false;
 
-	// Open the vhcs2.conf file (open_basedir must allow this!)
+	// Open the ispcp.conf file (open_basedir must allow this!)
 	$fp = @fopen($cfg['SERVER_VHOST_FILE'], 'r') or ipfilter_message(sprintf("Cannot read virtual hostname list <strong>%s</strong>.", $cfg['SERVER_VHOST_FILE']));
 
 	// Read until EOF

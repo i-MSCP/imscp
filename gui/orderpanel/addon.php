@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 $tpl = new pTemplate();
 
@@ -39,12 +39,12 @@ function addon_domain(&$tpl, $dmn_name)
 	$dmn_name = strtolower($dmn_name);
 	$dmn_name = get_punny($dmn_name);
 
-	if (!vhcs_domain_check($dmn_name)) {
+	if (!ispcp_domain_check($dmn_name)) {
 
         set_page_message(tr('Wrong domain name syntax!'));
 		return;
 
-    } else if (vhcs_domain_exists($dmn_name, 0)) {
+    } else if (ispcp_domain_exists($dmn_name, 0)) {
 
         set_page_message(tr('Domain with that name already exists on the system!'));
 		return;

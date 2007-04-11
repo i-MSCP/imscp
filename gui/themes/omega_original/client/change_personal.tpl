@@ -4,8 +4,8 @@
 <title>{TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE}</title>
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-<link href="{THEME_COLOR_PATH}/css/vhcs.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/vhcs.js"></script>
+<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">

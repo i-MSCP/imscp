@@ -1,12 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author 	Marc Pujol <marc@la3.org>
- *  @version 	0.1
- *  @package 	gui
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -33,7 +32,7 @@ define('VFS_TYPE_FILE', '-');
 /*
  * Temporary directory
  */
-define('VFS_TMP_DIR', '/var/www/vhcs2/gui/phptmp');
+define('VFS_TMP_DIR', '/var/www/ispcp/gui/phptmp');
 
 /*
  * Possible VFS Transfer modes
@@ -44,7 +43,7 @@ define('VFS_BINARY', FTP_BINARY);
 /**
  * Virtual File System main class
  *
- * This class allows the VHCS Control panel to browse and
+ * This class allows the ISPCP Control panel to browse and
  * edit all of the user files
  */
 class vfs {
@@ -124,7 +123,7 @@ class vfs {
 	}
 
 	/**
-	 * Set VHCS DB handler
+	 * Set ISPCP DB handler
 	 *
 	 * The system uses a "global" $sql variable to store the DB
 	 * handler, but we're a "black box" ;).
@@ -202,7 +201,7 @@ SQL_QUERY;
 			return true;
 		}
 
-		// Check if we have a valid vhcs database
+		// Check if we have a valid ispcp database
 		if ( !$this->_db ) {
 			return false;
 		}

@@ -1,20 +1,22 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2004 be moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
 
 
 //-- check if they are trying to hack
@@ -118,7 +120,7 @@ function clean_input($input) {
 
 }
 
-function vhcs_password_check ( $data, $num) {
+function ispcp_password_check ( $data, $num) {
 
 	global $cfg;
 
@@ -141,7 +143,7 @@ function vhcs_password_check ( $data, $num) {
 /* check for valid username  */
 function chk_username( $username ) {
 
-    if ( vhcs_username_check($username,50) == 0 ) {
+    if ( ispcp_username_check($username,50) == 0 ) {
         return 1;
     }
 
@@ -153,7 +155,7 @@ function chk_username( $username ) {
 /* check for valid password  */
 function chk_password( $password ) {
 
-	if ( vhcs_password_check($password, 50) == 0 ) {
+	if ( ispcp_password_check($password, 50) == 0 ) {
         return 1;
     }
 
@@ -161,7 +163,7 @@ function chk_password( $password ) {
     return 0;
 }
 
-function vhcs_username_check ( $data, $num ) {
+function ispcp_username_check ( $data, $num ) {
 
     $res = preg_match(
     					"/^[-A-Za-z0-9\.-_]*[A-Za-z0-9]$/",
@@ -195,7 +197,7 @@ function vhcs_username_check ( $data, $num ) {
 }
 
 
-function vhcs_email_check($email, $num) {
+function ispcp_email_check($email, $num) {
   // RegEx begin
 
   $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
@@ -223,7 +225,7 @@ function vhcs_email_check($email, $num) {
 
 }
 
-function vhcs_check_local_part($email, $num="50") {
+function ispcp_check_local_part($email, $num="50") {
   // RegEx begin
 
   $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
@@ -249,7 +251,7 @@ function vhcs_check_local_part($email, $num="50") {
 
 function chk_email( $email ) {
 
-    if ( vhcs_email_check($email, 50) == 0 ) {
+    if ( ispcp_email_check($email, 50) == 0 ) {
         return 1;
     }
 
@@ -327,12 +329,12 @@ function check_dn_token ( $data ) {
 	*
  	*Description:
 	*
-	*	Function for checking vhcs 'username' field syntax. This function
-	*	will also be used in vhcs_email_check() function;
+	*	Function for checking ispcp 'username' field syntax. This function
+	*	will also be used in ispcp_email_check() function;
 	*
 	*Input:
 	*
-	*	$data - vhcs 'username' field data;
+	*	$data - ispcp 'username' field data;
 	*
 	*	$num - username maximum length;
 	*
@@ -343,7 +345,7 @@ function check_dn_token ( $data ) {
 	*	1 - correct syntax;
 	*
 	**********************************************************************/
-	function vhcs_name_check ( $data, $num )
+	function ispcp_name_check ( $data, $num )
 	{
 
 		$res = preg_match(
@@ -375,7 +377,7 @@ function check_dn_token ( $data ) {
 		if ( $len > $num ) return 0;
 
 		return 1;
-	}// End of vhcs_name_check()
+	}// End of ispcp_name_check()
 
 
 
@@ -384,12 +386,12 @@ function check_dn_token ( $data ) {
 	*
 	*Description:
 	*
-	*	Function for checking vhcs limits. The correct values for this
+	*	Function for checking ispcp limits. The correct values for this
 	*	limits are in ranges -1, 0, [1, $num].
 	*
 	*Input:
 	*
-	*$data - vhcs 'limit' field data;
+	*$data - ispcp 'limit' field data;
 	*
 	*Output:
 	*
@@ -398,7 +400,7 @@ function check_dn_token ( $data ) {
 	*	1 - correct syntax (ranges);
 	*
 	**********************************************************************/
-	function vhcs_limit_check ( $data, $num )
+	function ispcp_limit_check ( $data, $num )
 	{
 
 		$res = preg_match("/^(-1|0|[1-9][0-9]*)$/", $data, $match);
@@ -408,14 +410,14 @@ function check_dn_token ( $data ) {
 		if ($data > $num) return 0;
 
 		return 1;
-	}// End of vhcs_limit_check()
+	}// End of ispcp_limit_check()
 
 	/**********************************************************************
 	*
 	* Description:
 	*
  	*Function for checking domain name tokens; Internel function, for>
-    * usage in vhcs_* functions;
+    * usage in ispcp_* functions;
 	* Input:
 	*
 	* $data - token data. Without '\n' at the end;
@@ -451,12 +453,12 @@ function check_dn_token ( $data ) {
 	*
 	* Description:
 	*
-    *Function for checking VHCS domains syntax. Here domains are limited
+    *Function for checking ISPCP domains syntax. Here domains are limited
     *to {dname}.{ext} parts.
 	*
 	*Input:
 	*
-    * $data - vhcs domain data;
+    * $data - ispcp domain data;
 	*
 	* Output:
 	*
@@ -464,7 +466,7 @@ function check_dn_token ( $data ) {
 	*
     * 1 - correct syntax;
 	**********************************************************************/
-	function vhcs_domain_check ( $data ) {
+	function ispcp_domain_check ( $data ) {
 
 		$res = rsl_full_domain_check( $data );
 
@@ -476,7 +478,7 @@ function check_dn_token ( $data ) {
 
 		return 1;
 
-	}// End of vhcs_domain_check()
+	}// End of ispcp_domain_check()
 
 
 
@@ -484,7 +486,7 @@ function check_dn_token ( $data ) {
 	/**********************************************************************
 	*Description:
 	*
-	*	Function for checking full domain names syntax. /In VHCS domains
+	*	Function for checking full domain names syntax. /In ISPCP domains
 	*	are limited to domain and subdomain parts.
 	*
 	*Input:
@@ -502,7 +504,7 @@ function check_dn_token ( $data ) {
 	/* check for valid domain name  */
 function chk_dname( $dname ) {
 
-    if ( vhcs_domain_check($dname) == 0 ) {
+    if ( ispcp_domain_check($dname) == 0 ) {
         return 1;
     }
 
@@ -515,7 +517,7 @@ function chk_dname( $dname ) {
 /* check for valid url addres  */
 function chk_url( $url ) {
 
-    if ( vhcs_url_check($url) == 0 ) {
+    if ( ispcp_url_check($url) == 0 ) {
         return 1;
     }
 
@@ -525,7 +527,7 @@ function chk_url( $url ) {
 }
 
 
-function vhcs_url_check ( $data ) {
+function ispcp_url_check ( $data ) {
 
     $data = "$data\n";
 
@@ -542,7 +544,7 @@ function vhcs_url_check ( $data ) {
 
 
 
-function vhcs_mountpt_check ( $data, $num ) {
+function ispcp_mountpt_check ( $data, $num ) {
 
 	$res = !preg_match("/^\/(.*)$/", $data, $match);
 
@@ -584,7 +586,7 @@ function vhcs_mountpt_check ( $data, $num ) {
 
         $token = substr($match[0][$i], 1);
 
-        $res = vhcs_username_check($token, $num);
+        $res = ispcp_username_check($token, $num);
 
         if ($res == 0) {
 			return 0;
@@ -598,7 +600,7 @@ function vhcs_mountpt_check ( $data, $num ) {
 /* check for valid mount point  */
 function chk_mountp( $mountp ) {
 
-    if ( vhcs_mountpt_check($mountp,50) == 0) {
+    if ( ispcp_mountpt_check($mountp,50) == 0) {
         return 1;
     }
 

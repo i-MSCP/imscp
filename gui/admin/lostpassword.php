@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,10 +15,9 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -76,10 +75,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
  *
  */
 
-$tpl -> assign(array('TR_LOSTPW_EMAL_SETUP' => tr('VHCS - Admin/Lostpw email setup'),
+$tpl -> assign(array('TR_LOSTPW_EMAL_SETUP' => tr('ISPCP - Admin/Lostpw email setup'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
-                     'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                     'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');

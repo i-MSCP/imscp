@@ -70,7 +70,7 @@
     <td colspan="2" class="content3"><strong>{TR_STANDARD_FEATURES}</strong></td>
   </tr>
   <tr>
-    <td class="content">{TR_VHCS}</td>
+    <td class="content">{TR_ISPCP}</td>
     <td nowrap  class="content2">{YES}</td>
   </tr>
   <tr>

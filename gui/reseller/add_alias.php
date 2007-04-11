@@ -1,23 +1,25 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -39,7 +41,7 @@ $tpl -> assign(
                 array(
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
                      )
               );
@@ -59,7 +61,7 @@ gen_logged_from($tpl);
 
 $tpl -> assign(
                 array(
-						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('VHCS Reseller : Add Alias'),
+						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ISPCP Reseller : Add Alias'),
 						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 						'TR_ADD_ALIAS' => tr('Add domain alias'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -171,7 +173,7 @@ SQL_QUERY;
 	// Fisrt check is the data correct
 	if (chk_dname($alias_name) > 0) {
 		$err_al = tr("Incorrect domain name syntax");
-	}else if (vhcs_domain_exists($alias_name, $_SESSION['user_id'])) {
+	}else if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
         $err_al = tr('Domain with that name already exists on the system!');
 	}else if (chk_mountp($mount_point) > 0) {
 		$err_al = tr("Incorrect mount point syntax");

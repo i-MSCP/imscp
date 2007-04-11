@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -287,7 +287,7 @@ function add_sql_user(&$sql, $user_id, $db_id)
   }
 
   //
-  // add user in the vhcs table;
+  // add user in the ispcp table;
   //
   $query = <<<SQL_QUERY
         insert into sql_user
@@ -375,11 +375,11 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no")
 
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
-$tpl -> assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('VHCS - Client/Add SQL User'),
+$tpl -> assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ISPCP - Client/Add SQL User'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'TID' => $_SESSION['layout_id'],
-                     'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                     'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 //

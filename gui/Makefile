@@ -1,4 +1,4 @@
-# VHCS(tm) - Virtual Hosting Control System
+# ISPCP(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
 #
@@ -21,9 +21,9 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The ISPCP Home Page is at:
 #
-#    http://www.vhcs.net
+#    http://www.isp-control.net
 
 
 SYSTEM_GUI_ROOT=$(SYSTEM_ROOT)/gui

@@ -4,8 +4,8 @@
 <title>{TR_SUPPORT_SYSTEM}</title>
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-<link href="{THEME_COLOR_PATH}/css/vhcs.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/vhcs.js"></script>
+<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 <!--
 

@@ -1,19 +1,21 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2005 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 
 
@@ -450,13 +452,13 @@ SQL_QUERY;
 }
 /* END system functions */
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
 $tpl = new pTemplate();
 
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/vhcs_debugger.tpl');
+$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/ispcp_debugger.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('hosting_plans', 'page');
@@ -485,11 +487,11 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_VHCS_DEBUGGER_PAGE_TITLE' => tr('VHCS - Virtual Hosting Control System'),
+                        'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
                      )
               );
 
@@ -505,7 +507,7 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(
         array(
-                'TR_DEBUGGER_TITLE' => tr('VHCS debugger'),
+                'TR_DEBUGGER_TITLE' => tr('ISPCP debugger'),
 				'TR_DOMAIN_ERRORS' => tr('Domain errors'),
 				'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
 				'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),

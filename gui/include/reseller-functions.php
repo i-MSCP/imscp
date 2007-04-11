@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -58,8 +58,8 @@ $tpl -> assign(
 							'TR_MENU_LOGOUT' => tr('Logout'),
 							'TR_MENU_OVERVIEW' => tr('Overview'),
 							'TR_MENU_LANGUAGE'  => tr('Language'),
-							'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-							'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+							'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+							'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
 							'TR_MENU_ORDERS' => tr('Manage Orders'),
 							'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 							'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
@@ -115,7 +115,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -157,8 +157,8 @@ $tpl -> assign(
 							'TR_MENU_LOGOUT' => tr('Logout'),
 							'TR_MENU_OVERVIEW' => tr('Overview'),
 							'TR_MENU_LANGUAGE'  => tr('Language'),
-							'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-							'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+							'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+							'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
 							'TR_MENU_ORDERS' => tr('Manage Orders'),
 							'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 							'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
@@ -214,7 +214,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -764,7 +764,7 @@ function check_ruser_data (&$tpl, $NoPass)
 
 			$rau_error = tr('Passwords does not match!');
 
-		}else if (!vhcs_password_check($inpass, 20)) {
+		}else if (!ispcp_password_check($inpass, 20)) {
 
 			$rau_error = tr('Incorrect password range or syntax!');
 		}
@@ -775,17 +775,17 @@ function check_ruser_data (&$tpl, $NoPass)
     }
 	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
 
-	else if(!vhcs_limit_check($customer_id, 999)){
+	else if(!ispcp_limit_check($customer_id, 999)){
 
 		$rau_error = tr('Incorrect customer ID syntax!');
 	}
-	else if(!vhcs_name_check($first_name, 40)){
+	else if(!ispcp_name_check($first_name, 40)){
 
 		$rau_error = tr('Incorrect first name range or syntax!');
-	}else if(!vhcs_name_check($last_name, 40)){
+	}else if(!ispcp_name_check($last_name, 40)){
 
 		$rau_error = tr('Incorrect second name range or syntax!');
-	}else if(!vhcs_limit_check($zip, 999999)){
+	}else if(!ispcp_limit_check($zip, 999999)){
 
 		$rau_error = tr('Incorrect post code range or syntax!');
 	} */
@@ -919,7 +919,7 @@ function translate_dmn_status ($status) {
 
 
 // Check if the domain already exist
-function vhcs_domain_exists ($domain_name, $reseller_id)
+function ispcp_domain_exists ($domain_name, $reseller_id)
 {
   global $sql;
 
@@ -1040,7 +1040,7 @@ SQL_QUERY;
       return true;
    }
 
-} // End of vhcs_domain_exists()
+} // End of ispcp_domain_exists()
 
 
 function gen_manage_domain_query (&$search_query,
@@ -1331,7 +1331,7 @@ SQL_QUERY;
                 from
                     $lang_table
                 where
-                    msgid = 'vhcs_language'
+                    msgid = 'ispcp_language'
 SQL_QUERY;
 
       $res = exec_query($sql, $query, array());
@@ -1796,7 +1796,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
   $headers  = "From: $from\n";
   $headers .= "MIME-Version: 1.0\n" .
             	"Content-Type: text/plain;\n" .
-							"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
+							"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
 
   $mail_result = mail($to, $subject, $message, $headers);
 
@@ -1813,7 +1813,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 Dear $from_name,
 you have new order from $to
 
-Please login into your VHCS control panel for more details.
+Please login into your ISPCP control panel for more details.
 
 MSG;
 

@@ -6,7 +6,7 @@
 <table align="center" width="980">  
     <tr>
   <td align="right" class="login">
-  Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a> and <a class="login" href="http://www.net2ftp.com/" target="_blank">net2ftp</a>
+  Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a> and <a class="login" href="http://www.net2ftp.com/" target="_blank">net2ftp</a>
   </td>
   </tr>
  </table>

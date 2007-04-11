@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,10 +15,9 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -32,10 +31,10 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADD_USER_PAGE_TITLE' => tr('VHCS - User/Add user'),
+                        'TR_ADD_USER_PAGE_TITLE' => tr('ISPCP - User/Add user'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
                      )
               );
@@ -253,7 +252,7 @@ function add_user_data ($reseller_id)
     // $street_two = escape_user_data($street_two);
     // $customer_id = escape_user_data($customer_id);
 
-  if (!vhcs_domain_check($dmn_user_name)) {
+  if (!ispcp_domain_check($dmn_user_name)) {
 //    set_page_message(tr("Wrong domain name syntax!"));
     return;
   }
@@ -278,7 +277,7 @@ OMEGA_SQL_QUERY;
 
 
 
-  $query = <<<VHCS_SQL_QUERY
+  $query = <<<ISPCP_SQL_QUERY
             insert into admin
                       (
                         admin_name, admin_pass, admin_type, domain_created,
@@ -292,7 +291,7 @@ OMEGA_SQL_QUERY;
                         ?, ?, 'user', unix_timestamp(),
                         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                       )
-VHCS_SQL_QUERY;
+ISPCP_SQL_QUERY;
 
     $res = exec_query($sql, $query, array($dmn_user_name, $inpass, $reseller_id, $first_name, $last_name,
                       $firm, $zip, $city, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id));
@@ -301,7 +300,7 @@ VHCS_SQL_QUERY;
 
     $record_id = $sql -> Insert_ID();
 
-    $query = <<<VHCS_SQL_QUERY
+    $query = <<<ISPCP_SQL_QUERY
             insert into domain (
                         domain_name, domain_admin_id,
                         domain_created_id, domain_created,
@@ -322,7 +321,7 @@ VHCS_SQL_QUERY;
                         ?, ?, '0',
                         ?, ?
                        )
-VHCS_SQL_QUERY;
+ISPCP_SQL_QUERY;
 
     $res = exec_query($sql, $query, array($dmn_name,
                                           $record_id,
@@ -340,7 +339,7 @@ VHCS_SQL_QUERY;
                                           $cgi));
     $dmn_id = $sql -> Insert_ID();
 
-	// vhcs 2.5 feature
+	// ispcp 2.5 feature
 	//add_domain_extras($dmn_id, $record_id, $sql);
 
 
@@ -355,7 +354,7 @@ VHCS_SQL_QUERY;
                                  tr('Domain account')
                                );
 
-    // send query to the vhcs2 daemon
+    // send query to the ispcp daemon
 
 
   // add user into user_gui_props => domain looser needs language and skin too :-)

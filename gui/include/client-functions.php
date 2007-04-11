@@ -1,19 +1,21 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware							|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 function get_domain_default_props(&$sql, $domain_admin_id)
 {
@@ -438,8 +440,8 @@ $tpl -> assign(
                         'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
                         'TR_MENU_ADD_ALIAS' => tr('Add alias'),
 			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-                        'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-                        'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+                        'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+                        'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
                         'WEBMAIL_PATH' => $cfg['WEBMAIL_PATH'],
                         'WEBMAIL_TARGET' => $cfg['WEBMAIL_TARGET'],
                         'PMA_PATH' => $cfg['PMA_PATH'],
@@ -477,7 +479,7 @@ SQL_QUERY;
     $menu_name = $rs -> fields['menu_name'];
     $menu_link = get_menu_vars($rs -> fields['menu_link']);
     $menu_target = $rs -> fields['menu_target'];
-	$menu_link = preg_replace("/\{vhcs_uname\}/", $_SESSION['user_logged'], $menu_link);
+	$menu_link = preg_replace("/\{ispcp_uname\}/", $_SESSION['user_logged'], $menu_link);
 
     if ($menu_target === ''){
       $menu_target = "";
@@ -500,7 +502,7 @@ SQL_QUERY;
     } // end while
   } // end else
 
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -551,8 +553,8 @@ $tpl -> assign(
                         'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
                         'TR_MENU_ADD_ALIAS' => tr('Add alias'),
 						'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-                        'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-                        'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+                        'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+                        'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
                         'WEBMAIL_PATH' => $cfg['WEBMAIL_PATH'],
                         'WEBMAIL_TARGET' => $cfg['WEBMAIL_TARGET'],
                         'PMA_PATH' => $cfg['PMA_PATH'],
@@ -612,7 +614,7 @@ SQL_QUERY;
     } // end while
   } // end else
 
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -762,7 +764,7 @@ SQL_QUERY;
     }
 
 		//
-    	// remove from vhcs sql_user table.
+    	// remove from ispcp sql_user table.
     	//
 
    	 	$query_1 = <<<SQL_QUERY
@@ -880,7 +882,7 @@ function check_permissions(&$tpl)
 
 function chk_subdname( $subdname ) {
 
-    if ( vhcs_subdomain_check($subdname) == 0 ) {
+    if ( ispcp_subdomain_check($subdname) == 0 ) {
         return 1;
     }
 
@@ -893,14 +895,14 @@ function chk_subdname( $subdname ) {
 
  Description:
 
-    Function for checking VHCS subdomain syntac. Here subdomains are
+    Function for checking ISPCP subdomain syntac. Here subdomains are
   limited to {subname}.{dname}.{ext} parts. Data passed to this
   function must be in the upper form, not only subdomain part for
   example.
 
  Input:
 
-    $data - vhcs subdomain data;
+    $data - ispcp subdomain data;
 
  Output:
 
@@ -910,7 +912,7 @@ function chk_subdname( $subdname ) {
 
 **********************************************************************/
 
-function vhcs_subdomain_check ( $data ) {
+function ispcp_subdomain_check ( $data ) {
 
     $res = full_domain_check( $data );
 
@@ -1118,7 +1120,7 @@ SQL_QUERY;
 
     write_log($_SESSION['user_logged'].": delete SQL database: ".$db_name);
     //
-    // delete desired database from the vhcs sql_database table;
+    // delete desired database from the ispcp sql_database table;
     //
 
     $query = <<<SQL_QUERY

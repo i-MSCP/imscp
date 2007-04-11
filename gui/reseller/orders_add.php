@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -121,13 +121,13 @@ if ($err_msg != '_off_') {
 	$pure_user_pass = substr($timestamp,0,6);
 	$inpass = crypt_user_pass($pure_user_pass);
 
-	if (!vhcs_domain_check($dmn_user_name)) {
+	if (!ispcp_domain_check($dmn_user_name)) {
         set_page_message(tr('Wrong domain name syntax!'));
 		unset($_SESSION['domain_ip']);
 		header('Location: orders.php');
 		die();
 
-    } if (vhcs_domain_exists($dmn_name, $_SESSION['user_id'])) {
+    } if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		set_page_message(tr('Domain with that name already exists on the system!'));
 		unset($_SESSION['domain_ip']);
 		header('Location: orders.php');
@@ -136,7 +136,7 @@ if ($err_msg != '_off_') {
 
   check_for_lock_file();
 
-  $query = <<<VHCS_SQL_QUERY
+  $query = <<<ISPCP_SQL_QUERY
             insert into admin
                       (
                         admin_name, admin_pass, admin_type, domain_created,
@@ -150,7 +150,7 @@ if ($err_msg != '_off_') {
                         ?, ?, 'user', unix_timestamp(),
                         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                       )
-VHCS_SQL_QUERY;
+ISPCP_SQL_QUERY;
 
     $res = exec_query($sql, $query, array($dmn_user_name, $inpass, $reseller_id, $first_name, $last_name,
                       $firm, $zip, $city, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id));
@@ -173,7 +173,7 @@ SQL_QUERY;
 	$domain_ip = $rs -> fields['reseller_ips'];
 
 
-    $query = <<<VHCS_SQL_QUERY
+    $query = <<<ISPCP_SQL_QUERY
             insert into domain (
                         domain_name, domain_admin_id,
                         domain_created_id, domain_created,
@@ -194,7 +194,7 @@ SQL_QUERY;
                         ?, ?, '0',
                         ?, ?
                        )
-VHCS_SQL_QUERY;
+ISPCP_SQL_QUERY;
 
     $res = exec_query($sql, $query, array($dmn_user_name,
                                           $record_id,
@@ -212,7 +212,7 @@ VHCS_SQL_QUERY;
                                           $cgi));
     $dmn_id = $sql -> Insert_ID();
 
-	// vhcs 2.5 feature
+	// ispcp 2.5 feature
 	//add_domain_extras($dmn_id, $record_id, $sql);
 
 
@@ -227,7 +227,7 @@ VHCS_SQL_QUERY;
                                  tr('Domain account')
                                );
 
-    // send query to the vhcs2 daemon
+    // send query to the ispcp daemon
 
 
   // add user into user_gui_props => domain looser needs language and skin too :-)

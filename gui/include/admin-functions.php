@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,7 +15,6 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
 
 function gen_admin_mainmenu(&$tpl, $menu_file) {
@@ -30,8 +29,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 						'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 						'TR_MENU_STATISTICS' => tr('Statistics'),
-						'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-						'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+						'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+						'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
 						'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 						'TR_MENU_SETTINGS' => tr('Settings'),
 						'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
@@ -39,8 +38,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 						'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 						'TR_MENU_STATISTICS' => tr('Statistics'),
-						'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-						'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+						'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+						'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
 						'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 						'TR_MENU_SETTINGS' => tr('Settings'),
 						'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -63,8 +62,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
 						'TR_MENU_SERVER_TRAFFIC_SETTINGS'=> tr('Server traffic settings'),
 						'TR_MENU_SERVER_STATUS'=> tr('Server status'),
-						'TR_MENU_VHCS_UPDATE'=> tr('VHCS updates'),
-						'TR_MENU_VHCS_DEBUGGER'=> tr('VHCS debugger'),
+						'TR_MENU_ISPCP_UPDATE'=> tr('ISPCP updates'),
+						'TR_MENU_ISPCP_DEBUGGER'=> tr('ISPCP debugger'),
 						'TR_CUSTOM_MENUS' => tr('Custom menus'),
 						'TR_MENU_OVERVIEW' => tr('Overview'),
 						'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
@@ -123,7 +122,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -176,13 +175,13 @@ $tpl -> assign(
 				'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 				'TR_MENU_SERVER_TRAFFIC_SETTINGS'=> tr('Server traffic settings'),
 				'TR_MENU_SERVER_STATUS'=> tr('Server status'),
-				'TR_MENU_VHCS_UPDATE'=> tr('VHCS updates'),
-				'TR_MENU_VHCS_DEBUGGER'=> tr('VHCS debugger'),
+				'TR_MENU_ISPCP_UPDATE'=> tr('ISPCP updates'),
+				'TR_MENU_ISPCP_DEBUGGER'=> tr('ISPCP debugger'),
 				'TR_CUSTOM_MENUS' => tr('Custom menus'),
 				'TR_MENU_OVERVIEW' => tr('Overview'),
 				'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-				'SUPPORT_SYSTEM_PATH' => $cfg['VHCS_SUPPORT_SYSTEM_PATH'],
-				'SUPPORT_SYSTEM_TARGET' => $cfg['VHCS_SUPPORT_SYSTEM_TARGET'],
+				'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+				'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
 				'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
 				'TR_SERVICEMODE' => tr('Servicemode'),
 				'TR_MENU_SETTINGS' => tr('Settings'),
@@ -236,7 +235,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	if ($cfg['VHCS_SUPPORT_SYSTEM'] != 1) {
+	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -1677,13 +1676,13 @@ function write_log($msg) {
 		$Version = $cfg['Version'];
 		$BuildDate = $cfg['BuildDate'];
 
-		$subject = "VHCS $Version on $default_hostname ($default_base_server_ip)";
+		$subject = "ISPCP $Version on $default_hostname ($default_base_server_ip)";
 
 		$to	  = $send_log_to;
 
 		$message = <<<AUTO_LOG_MSG
 
-VHCS Pro Log
+ISPCP Pro Log
 
 Server: $default_hostname ($default_base_server_ip)
 Version: $VersionH ($Version - $BuildDate)
@@ -1697,11 +1696,11 @@ Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-		$headers = "From: VHCS  Logging Daemon <$admin_email>\n";
+		$headers = "From: ISPCP  Logging Daemon <$admin_email>\n";
 
 			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
 
-				$headers .=	"X-Mailer: VHCS $Version Logging Mailer";
+				$headers .=	"X-Mailer: ISPCP $Version Logging Mailer";
 
 		$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1768,7 +1767,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .=	"X-Mailer: VHCS ".$cfg['Version']." Service Mailer";
+		$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -2577,7 +2576,7 @@ $header = <<<RIC
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-<title>VHCS - Order Panel</title>
+<title>ISPCP - Order Panel</title>
 <style type="text/css">
 <!--
 body {
@@ -2653,7 +2652,7 @@ td.content3 {
 	font-size: 12px;
 	color: #000000;
 	text-align: center;
-	background-image: url(/vhcs2/themes/modern_blue/images/button.gif);
+	background-image: url(/ispcp/themes/omega_original/images/button.gif);
 	background-repeat: repeat-x;
 	border: 1px solid #326BC0;
 }
@@ -2755,7 +2754,7 @@ SQL_QUERY;
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .=	"X-Mailer: VHCS ".$cfg['Version']." Tickets Mailer";
+		$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Tickets Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';

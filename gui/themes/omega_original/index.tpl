@@ -4,8 +4,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-  <link href="{THEME_COLOR_PATH}/css/vhcs.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/vhcs.js"></script>
+  <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
 <body onLoad="javascript:document.frm.uname.focus()">
 <table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
@@ -79,7 +79,7 @@
 <table align="center" width="453">
     <tr>
   <td align="right" class="login">
-  Powered by <a class="login" href="http://www.isp-control.net" target="_blank">VHCS Omega</a>
+  Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a>
   </td>
   </tr>
  </table>

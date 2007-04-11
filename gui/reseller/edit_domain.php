@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -42,10 +42,10 @@ if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin
 
 $tpl -> assign(
                 array(
-                        'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('VHCS - Domain/Edit'),
+                        'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ISPCP - Domain/Edit'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
                      )
               );
@@ -379,35 +379,35 @@ function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
 
     $ed_error = '_off_';
 
-    if (!vhcs_limit_check($sub, 999)) {
+    if (!ispcp_limit_check($sub, 999)) {
 
         $ed_error = tr('Incorrect subdomain range or syntax!');
 
-    } else if (!vhcs_limit_check($als, 999)) {
+    } else if (!ispcp_limit_check($als, 999)) {
 
         $ed_error = tr('Incorrect alias range or syntax!');
 
-    } else if (!vhcs_limit_check($mail, 999)) {
+    } else if (!ispcp_limit_check($mail, 999)) {
 
         $ed_error = tr('Incorrect mail account range or syntax!');
 
-    } else if (!vhcs_limit_check($ftp, 999) || $ftp == -1) {
+    } else if (!ispcp_limit_check($ftp, 999) || $ftp == -1) {
 
         $ed_error = tr('Incorrect FTP account range or syntax!');
 
-    } else if (!vhcs_limit_check($sql_db, 999)) {
+    } else if (!ispcp_limit_check($sql_db, 999)) {
 
         $ed_error = tr('Incorrect SQL user range or syntax!');
 
-    } else if (!vhcs_limit_check($sql_user, 999)) {
+    } else if (!ispcp_limit_check($sql_user, 999)) {
 
         $ed_error = tr('Incorrect SQL database range or syntax!');
 
-    } else if (!vhcs_limit_check($traff, 1024*1024) || $traff == -1) {
+    } else if (!ispcp_limit_check($traff, 1024*1024) || $traff == -1) {
 
         $ed_error = tr('Incorrect traffic range or syntax!');
 
-    } else if (!vhcs_limit_check($disk, 1024*1024) || $disk == -1) {
+    } else if (!ispcp_limit_check($disk, 1024*1024) || $disk == -1) {
 
         $ed_error = tr('Incorrect disk range or syntax!');
 

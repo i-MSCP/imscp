@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,10 +15,9 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
-
-include '../include/vhcs-lib.php';
+ 
+include '../include/ispcp-lib.php';
 
 // Security
 check_login();

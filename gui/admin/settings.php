@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,10 +15,9 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -32,11 +31,11 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('VHCS - Admin/Settings'),
+                        'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ISPCP - Admin/Settings'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
                      )
               );
 
@@ -71,7 +70,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('BRUTEFORCE_BLOCK_TIME', $bruteforce_block_time);
 		setConfig_Value('BRUTEFORCE_BETWEEN_TIME', $bruteforce_between_time);
 		setConfig_Value('USER_INITIAL_LANG', $user_initial_lang);
-		setConfig_Value('VHCS_SUPPORT_SYSTEM', $support_system);
+		setConfig_Value('ISPCP_SUPPORT_SYSTEM', $support_system);
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
 		set_page_message(tr('Settings saved !'));
 	}
@@ -113,7 +112,7 @@ if ($cfg['BRUTEFORCE_BETWEEN'] == 1) {
 	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected');
 }
 
-if ($cfg['VHCS_SUPPORT_SYSTEM'] == 1) {
+if ($cfg['ISPCP_SUPPORT_SYSTEM'] == 1) {
 	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected');
 	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {

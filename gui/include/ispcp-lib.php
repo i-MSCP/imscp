@@ -1,23 +1,26 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2004 be moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
 
 
 
-session_name("VHCS");
+session_name("ISPCP");
 
 if (!isset($_SESSION)) session_start();
 
@@ -26,7 +29,7 @@ error_reporting(E_ALL); // setting for development edition - see all error messa
 
 $include_path = realpath(dirname(__FILE__));
 
-include_once (realpath($include_path.'/vhcs-config.php'));
+include_once (realpath($include_path.'/ispcp-config.php'));
 
 /* session timeout in minutes */
 $cfg['SESSION_TIMEOUT'] = 30;
@@ -84,7 +87,7 @@ $cfg['USER_INITIAL_LANG'] = 'lang_English';
 /* enable or disable supportsystem */
 /* 0 = disable */
 /* 1 = enable */
-$cfg['VHCS_SUPPORT_SYSTEM'] = 1;
+$cfg['ISPCP_SUPPORT_SYSTEM'] = 1;
 
 /* enable or disable lostpassword function */
 /* 0 = disable */
@@ -149,7 +152,7 @@ $cfg['PASSWD_STRONG'] = 1;
  * easy     - some simple checks, e.g. PHP_SELF secured, regex-check on IP no, hostname
  * medium   - checks on request method and server protocol (HTTP/x.y)
  * high     - checks through $_GET, $_COOKIE for dangerous data and strips it, this may drive some programs in trouble
- * paranoid - additional checks against the /etc/apache2/sites-available/vhcs2.conf if SERVER_NAME is in the file or not
+ * paranoid - additional checks against the /etc/apache2/sites-available/ispcp.conf if SERVER_NAME is in the file or not
  */
 // Choose one here and comment out the other. Your choice, your destiny!
 //$cfg['SECURITY_LEVEL'] = 'none';     // Never ever use this unless you have a good reason to do so...
@@ -159,7 +162,7 @@ $cfg['PASSWD_STRONG'] = 1;
 $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing (nope, we are not paranoid... ;) )
 
 // The virtual host file from Apache which contains our virtual host entries
-$cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/vhcs2.conf";
+$cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/ispcp.conf";
 
 include_once (realpath($include_path.'/spGzip.php'));
 
@@ -169,7 +172,7 @@ include_once (realpath($include_path.'/date-functions.php'));
 
 include_once (realpath($include_path.'/system-message.php'));
 
-include_once (realpath($include_path.'/vhcs2-db-keys.php'));
+include_once (realpath($include_path.'/ispcp-db-keys.php'));
 
 include_once (realpath($include_path.'/input-checks.php'));
 
@@ -191,7 +194,7 @@ include_once (realpath($include_path.'/admin-functions.php'));
 
 include_once (realpath($include_path.'/reseller-functions.php'));
 
-include_once (realpath($include_path.'/vhcs-2-0.php'));
+include_once (realpath($include_path.'/ispcp-2-0.php'));
 
 include_once (realpath($include_path.'/idna.php'));
 
@@ -205,7 +208,7 @@ include_once (realpath($include_path.'/emailtpl-functions.php'));
 include_once (realpath($include_path.'/security/core.inc.php'));
 
 // OBSULETE! Do *not* include it!
-////// include_once (realpath($include_path.'/vhcs-security.php'));
+////// include_once (realpath($include_path.'/ispcp-security.php'));
 // We need to remove this file anyway... Q
 
 

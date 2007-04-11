@@ -1,12 +1,12 @@
 <?php
 
-$cfg_obj = new Config("/etc/vhcs2/vhcs2.conf");
+$cfg_obj = new Config("/etc/ispcp/ispcp.conf");
 
 if ($cfg_obj->status == "err") {
 
-    /* cannot open vhcs.conf file - we must show warning */
+    /* cannot open ispcp.conf file - we must show warning */
 
-    print "<center><b><font color=red>Cannot open the vhcs2.conf config file !<br><br>Please contact your system administrator</font></b></center>";
+    print "<center><b><font color=red>Cannot open the ispcp.conf config file !<br><br>Please contact your system administrator</font></b></center>";
 
     die();
 
@@ -22,7 +22,7 @@ class Config {
     var $config_file;       /* config filename */
     var $cfg_values;        /* array with  options and values that you can get and user :P :) */
     var $status;
-    function Config($cfg = "/etc/vhcs2/vhcs2.conf"){
+    function Config($cfg = "/etc/ispcp/ispcp.conf"){
         $this -> config_file = $cfg;
         $this -> status = "ok";
         if ($this->parseFile() == FALSE) {
@@ -80,7 +80,7 @@ class Config {
 
 function decrypt_db_password ($db_pass) {
 
-	global $vhcs2_db_pass_key, $vhcs2_db_pass_iv;
+	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
 	if ($db_pass == '') return '';
 	
@@ -92,10 +92,10 @@ function decrypt_db_password ($db_pass) {
   	$td = @mcrypt_module_open ('blowfish', '', 'cbc', '');
 
   	/* Create key */
-		$key = $vhcs2_db_pass_key;
+		$key = $ispcp_db_pass_key;
 
   	/* Create the IV and determine the keysize length */
-		$iv = $vhcs2_db_pass_iv;
+		$iv = $ispcp_db_pass_iv;
 
   	/* Intialize encryption */
   	@mcrypt_generic_init ($td, $key, $iv);

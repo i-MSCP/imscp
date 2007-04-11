@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,10 +15,9 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -35,11 +34,11 @@ $theme = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
 	array(
-			'TR_ADMIN_I18N_PAGE_TITLE' => tr('VHCS - Admin/Internationalization'),
+			'TR_ADMIN_I18N_PAGE_TITLE' => tr('ISPCP - Admin/Internationalization'),
 			'THEME_COLOR_PATH' => "../themes/$theme",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
+			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
 			)
 	);
 
@@ -124,13 +123,13 @@ function install_lang() {
 			$fd = fopen($file, "r");
 
 			if (!$fd) {
-				set_page_message(tr('Can not read vhcs language file!'));
+				set_page_message(tr('Can not read ispcp language file!'));
 				return;
 			}
 			$table = fgets($fd, 4096);
 			$table = explode(" = ", trim($table));
-			if ($table[0] != "vhcs_table") {
-				set_page_message(tr('Can not read vhcs language file!'));
+			if ($table[0] != "ispcp_table") {
+				set_page_message(tr('Can not read ispcp language file!'));
 				return;
 			}
 			$lang_table = 'lang_'.$table[1];
@@ -153,7 +152,7 @@ function install_lang() {
 				$fd = fopen($file, "r");
 
 				if (!$fd) {
-					set_page_message(tr('Can not read vhcs language file!'));
+					set_page_message(tr('Can not read ispcp language file!'));
 					return;
 				}
 
@@ -233,7 +232,7 @@ SQL_QUERY;
 				from
 					$tables[$i]
 				where
-					msgid = 'vhcs_language'
+					msgid = 'ispcp_language'
 SQL_QUERY;
 			$res = exec_query($sql, $query, array());
 

@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -39,7 +39,7 @@ $tpl -> assign(
                 array(
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
                      )
               );
@@ -60,7 +60,7 @@ check_permissions($tpl);
 
 $tpl -> assign(
                 array(
-						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('VHCS Client : Add Alias'),
+						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ISPCP Client : Add Alias'),
 						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 						'TR_ADD_ALIAS' => tr('Add domain alias'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -214,7 +214,7 @@ SQL_QUERY;
 	// Fisrt check is the data correct
 	if (chk_dname($alias_name) > 0) {
 		$err_al = tr("Incorrect domain name syntax");
-	}else if (vhcs_domain_exists($alias_name, 0)) {
+	}else if (ispcp_domain_exists($alias_name, 0)) {
         $err_al = tr('Domain with that name already exists on the system!');
 	}else if (chk_mountp($mount_point) > 0) {
 		$err_al = tr("Incorrect mount point syntax");

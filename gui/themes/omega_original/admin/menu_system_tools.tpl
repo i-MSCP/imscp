@@ -24,13 +24,13 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="vhcs_updates.php" class="submenu">{TR_MENU_VHCS_UPDATE}</a></td>
+    <td><a href="ispcp_updates.php" class="submenu">{TR_MENU_ISPCP_UPDATE}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
-    <td><a href="vhcs_debugger.php" class="submenu">{TR_MENU_VHCS_DEBUGGER}</a></td>
+    <td><a href="ispcp_debugger.php" class="submenu">{TR_MENU_ISPCP_DEBUGGER}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
@@ -69,6 +69,6 @@
 				  </td>					
 				</tr>			
 				<tr height="53" style="vertical-align: bottom;">
-					<td class="bottom" align="center">{VHCS_LICENSE}</td>					
+					<td class="bottom" align="center">{ISPCP_LICENSE}</td>					
 				</tr>			
 			</table>

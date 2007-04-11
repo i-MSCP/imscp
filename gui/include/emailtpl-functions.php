@@ -1,20 +1,21 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 function get_email_tpl_data($admin_id, $tpl_name) {
 
@@ -140,7 +141,7 @@ function get_welcome_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Welcome new VHCS user {USERNAME} !';
+		$data['subject'] = 'Welcome new ISPCP user {USERNAME} !';
 
 	}
 	
@@ -150,13 +151,13 @@ function get_welcome_email($admin_id) {
 
 Hello {NAME} !
 
-Your VHCS user type is: {USERTYPE}
-Your VHCS login is: {USERNAME}
-Your VHCS password is: {PASSWORD}
+Your ISPCP user type is: {USERTYPE}
+Your ISPCP login is: {USERNAME}
+Your ISPCP password is: {PASSWORD}
 
 
-Good luck with VHCS Pro system!
-VHCS Team.
+Good luck with ISPCP Pro system!
+ISPCP Team.
 
 MSG;
 
@@ -178,7 +179,7 @@ function get_lostpassword_activation_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Please activate your new VHCS login !';
+		$data['subject'] = 'Please activate your new ISPCP login !';
 
 	}
 	
@@ -187,12 +188,12 @@ function get_lostpassword_activation_email($admin_id) {
   	$data['message'] = <<<MSG
 
 Hello {NAME} !
-Use this link to activate your new VHCS password:
+Use this link to activate your new ISPCP password:
 
 {LINK}
 
 
-Good Luck with VHCS Pro System
+Good Luck with ISPCP Pro System
 Hosting Provider Team
 
 MSG;
@@ -215,7 +216,7 @@ function get_lostpassword_password_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Your new VHCS login !';
+		$data['subject'] = 'Your new ISPCP login !';
 
 	}
 	
@@ -225,11 +226,11 @@ function get_lostpassword_password_email($admin_id) {
 
 Hello {NAME} !
 
-Your VHCS login is: {USERNAME}
-Your VHCS password is: {PASSWORD}
+Your ISPCP login is: {USERNAME}
+Your ISPCP password is: {PASSWORD}
 
 
-Good Luck with VHCS Pro System
+Good Luck with ISPCP Pro System
 Hosting Provider Team
 
 MSG;
@@ -265,8 +266,8 @@ This is an automatic confirmation for the order of the domain  :
 
 {DOMAIN}
 
-Thank you for using VHCS services.
-Your VHCS Team
+Thank you for using ISPCP services.
+Your ISPCP Team
 
 MSG;
 

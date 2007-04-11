@@ -1,21 +1,23 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2006 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
-
-include '../include/vhcs-lib.php';
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
+ 
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -32,11 +34,11 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('VHCS Admin / System Tools / Server Status'),
+                        'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ISPCP Admin / System Tools / Server Status'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
                      )
               );
 
@@ -136,36 +138,36 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
 
-	$vhcs_status = new status;
+	$ispcp_status = new status;
 	// Enable logging?
-	$vhcs_status->log = FALSE; // Default is false
-	$vhcs_status->AddService('localhost', 9876, 'VHCS Daemon', 'tcp');
+	$ispcp_status->log = FALSE; // Default is false
+	$ispcp_status->AddService('localhost', 9876, 'ISPCP Daemon', 'tcp');
 	// Dynamic added Ports
 	while(!$rs->EOF) {
 
 		list($port, $protocol, $name, $status, $custom) = explode(";", $rs->fields['value']);
 		if ($status) {
-			$vhcs_status->AddService('localhost', (int)$port, $name, $protocol);
+			$ispcp_status->AddService('localhost', (int)$port, $name, $protocol);
 		}
 
 		$rs->MoveNext();
 	} //while
 
 	/*
-	$vhcs_status->AddService('localhost', 21, 'FTP', 'tcp');
-	$vhcs_status->AddService('localhost', 22, 'SSH', 'tcp');
-	$vhcs_status->AddService('localhost', 23, 'Telnet', 'tcp');
-	$vhcs_status->AddService('localhost', 25, 'SMTP', 'tcp');
-	$vhcs_status->AddService('localhost', 53, 'DNS', 'tcp');
-	$vhcs_status->AddService('localhost', 80, 'HTTP', 'tcp');
-	$vhcs_status->AddService('localhost', 443, 'HTTP-SSL', 'tcp');
-	$vhcs_status->AddService('localhost', 110, 'POP3', 'tcp');
-	$vhcs_status->AddService('localhost', 995, 'POP3-SSL', 'tcp');
-	$vhcs_status->AddService('localhost', 143, 'IMAP', 'tcp');
-	$vhcs_status->AddService('localhost', 993, 'IMAP-SSL', 'tcp');
+	$ispcp_status->AddService('localhost', 21, 'FTP', 'tcp');
+	$ispcp_status->AddService('localhost', 22, 'SSH', 'tcp');
+	$ispcp_status->AddService('localhost', 23, 'Telnet', 'tcp');
+	$ispcp_status->AddService('localhost', 25, 'SMTP', 'tcp');
+	$ispcp_status->AddService('localhost', 53, 'DNS', 'tcp');
+	$ispcp_status->AddService('localhost', 80, 'HTTP', 'tcp');
+	$ispcp_status->AddService('localhost', 443, 'HTTP-SSL', 'tcp');
+	$ispcp_status->AddService('localhost', 110, 'POP3', 'tcp');
+	$ispcp_status->AddService('localhost', 995, 'POP3-SSL', 'tcp');
+	$ispcp_status->AddService('localhost', 143, 'IMAP', 'tcp');
+	$ispcp_status->AddService('localhost', 993, 'IMAP-SSL', 'tcp');
 	*/
-	$vhcs_status->CheckStatus(5);
-	$data = $vhcs_status->GetStatus();
+	$ispcp_status->CheckStatus(5);
+	$data = $ispcp_status->GetStatus();
 
 
 	for($i = 0; $i <= count($data) - 1; $i++) {

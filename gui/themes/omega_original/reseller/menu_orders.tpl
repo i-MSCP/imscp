@@ -57,6 +57,6 @@
 				  </td>					
 				</tr>			
 				<tr height="53" style="vertical-align: bottom;">
-					<td class="bottom" align="center">{VHCS_LICENSE}</td>					
+					<td class="bottom" align="center">{ISPCP_LICENSE}</td>					
 				</tr>			
 			</table>

@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>VHCS OMEGA ERROR</title>
+  <title>ispCP OMEGA ERROR</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">

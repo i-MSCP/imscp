@@ -1,23 +1,25 @@
 <?php
-//   -------------------------------------------------------------------------------
-//  |             VHCS(tm) - Virtual Hosting Control System                         |
-//  |              Copyright (c) 2001-2005 by moleSoftware		            		|
-//  |			http://vhcs.net | http://www.molesoftware.com		           		|
-//  |                                                                               |
-//  | This program is free software; you can redistribute it and/or                 |
-//  | modify it under the terms of the MPL General Public License                   |
-//  | as published by the Free Software Foundation; either version 1.1              |
-//  | of the License, or (at your option) any later version.                        |
-//  |                                                                               |
-//  | You should have received a copy of the MPL Mozilla Public License             |
-//  | along with this program; if not, write to the Open Source Initiative (OSI)    |
-//  | http://opensource.org | osi@opensource.org								    |
-//  |                                                                               |
-//   -------------------------------------------------------------------------------
+/**
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ **/
 
 
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -43,10 +45,10 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_hp.tpl');
 
 gen_logged_from($tpl);
 
-$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('VHCS - Reseller/Edit hosting plan'),
+$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Reseller/Edit hosting plan'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
-                     'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+                     'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 $tpl -> assign(array('TR_HOSTING PLAN PROPS' => tr('Hosting plan properties'),
@@ -280,25 +282,25 @@ function check_data_iscorrect(&$tpl)
   if (isset($_POST['cgi']))
     $hp_cgi		= $_POST['cgi'];;
 
-  // if (!vhcs_name_check($hp_name, 200)) {
+  // if (!ispcp_name_check($hp_name, 200)) {
         // $ahp_error = tr('Incorrect template name range or syntax!');
     // } else
 
-  if (!vhcs_limit_check($hp_sub, 999)) {
+  if (!ispcp_limit_check($hp_sub, 999)) {
     $ahp_error = tr('Incorrect subdomain range or syntax!');
-  } else if (!vhcs_limit_check($hp_als, 999)) {
+  } else if (!ispcp_limit_check($hp_als, 999)) {
     $ahp_error = tr('Incorrect alias range or syntax!');
-  } else if (!vhcs_limit_check($hp_mail, 999) || $hp_mail == -1) {
+  } else if (!ispcp_limit_check($hp_mail, 999) || $hp_mail == -1) {
     $ahp_error = tr('Incorrect mail account range or syntax!');
-  } else if (!vhcs_limit_check($hp_ftp, 999) || $hp_ftp == -1) {
+  } else if (!ispcp_limit_check($hp_ftp, 999) || $hp_ftp == -1) {
     $ahp_error = tr('Incorrect FTP account range or syntax!');
-  } else if (!vhcs_limit_check($hp_sql_user, 999)) {
+  } else if (!ispcp_limit_check($hp_sql_user, 999)) {
     $ahp_error = tr('Incorrect SQL database range or syntax!');
-  } else if (!vhcs_limit_check($hp_sql_db, 999)) {
+  } else if (!ispcp_limit_check($hp_sql_db, 999)) {
     $ahp_error = tr('Incorrect SQL user range or syntax!');
-  } else if (!vhcs_limit_check($hp_traff, 1024*1024) || $hp_traff == -1) {
+  } else if (!ispcp_limit_check($hp_traff, 1024*1024) || $hp_traff == -1) {
     $ahp_error = tr('Incorrect traffic range or syntax!');
-  } else if (!vhcs_limit_check($hp_disk, 1024*1024) || $hp_disk == -1) {
+  } else if (!ispcp_limit_check($hp_disk, 1024*1024) || $hp_disk == -1) {
     $ahp_error = tr('Incorrect disk range or syntax!');
   } else if (!is_numeric($price)) {
 	  $ahp_error = tr('Incorrect price!');

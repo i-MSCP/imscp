@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -210,7 +210,7 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name) {
     // $mail_acc = $_POST['username'];
     // lets encode the mail ??? only crazy ones encode the local_part
     $mail_acc_tmp = strtolower(clean_input($_POST['username']));
-    if (vhcs_check_local_part($mail_acc_tmp) == "0") {
+    if (ispcp_check_local_part($mail_acc_tmp) == "0") {
         set_page_message(tr("Invalid Mail Localpart Format used!"));
 
         return;
@@ -549,11 +549,11 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl->assign(array('TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE' => tr('VHCS - Client/Add Mail User'),
+$tpl->assign(array('TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE' => tr('ISPCP - Client/Add Mail User'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
         'THEME_CHARSET' => tr('encoding'),
         'TID' => $_SESSION['layout_id'],
-        'VHCS_LICENSE' => $cfg['VHCS_LICENSE'],
+        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 // dynamic page data.

@@ -1,11 +1,11 @@
 <?php
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -15,10 +15,9 @@
  *  You should have received a copy of the MPL Mozilla Public License along with
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
- *
  **/
 
-include '../include/vhcs-lib.php';
+include '../include/ispcp-lib.php';
 
 check_login();
 
@@ -41,8 +40,8 @@ function get_update_infos(&$tpl) {
 	   $tpl -> assign(
 				array(
 						'UPDATE_MESSAGE' =>  '',
-						'UPDATE' =>  tr('New VHCS update is now available'),
-						'INFOS' => tr('Get it at')." <a href=\"".$info_url."\" class=\"link\" target=\"vhcs\">".$info_url."</a>"
+						'UPDATE' =>  tr('New ISPCP update is now available'),
+						'INFOS' => tr('Get it at')." <a href=\"".$info_url."\" class=\"link\" target=\"ispcp\">".$info_url."</a>"
 					 )
 			  );
 
@@ -56,7 +55,7 @@ function get_update_infos(&$tpl) {
 
 $tpl = new pTemplate();
 
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/vhcs_updates.tpl');
+$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/ispcp_updates.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('hosting_plans', 'page');
@@ -70,11 +69,11 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_VHCS_UPDATES_PAGE_TITLE' => tr('VHCS - Virtual Hosting Control System'),
+                        'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                        'VHCS_LICENSE' => $cfg['VHCS_LICENSE']
+                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
                      )
               );
 
@@ -91,9 +90,9 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(
         array(
-                'TR_UPDATES_TITLE' => tr('VHCS updates'),
-				'TR_AVAILABLE_UPDATES' => tr('Available VHCS updates'),
-				'TR_MESSAGE' => tr('No new VHCS updates available'),
+                'TR_UPDATES_TITLE' => tr('ISPCP updates'),
+				'TR_AVAILABLE_UPDATES' => tr('Available ISPCP updates'),
+				'TR_MESSAGE' => tr('No new ISPCP updates available'),
 				'TR_UPDATE' => tr('Update'),
 				'TR_INFOS' => tr('Update details'),
 
