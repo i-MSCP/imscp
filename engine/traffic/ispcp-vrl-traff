@@ -1,0 +1,832 @@
+﻿#!/usr/bin/perl
+
+# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ISPCP ω Home Page is at:
+#
+#    http://isp-control.net
+#
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+require 'ispcp_common_code.pl';
+
+%main::ftp_traffic = ();
+
+%main::smtp_traffic = ();
+
+%main::po_traffic = ();
+
+
+use strict;
+
+use warnings;
+
+use File::Basename;
+
+
+sub zero_traffic_entries {
+
+    my ($key, $value) = (undef, undef);
+
+    push_el(\@main::el, 'zero_traffic_entries()', 'Starting...');
+
+    while (($key, $value) = each %main::domain_name_id) {
+
+        $main::ftp_traffic{$key} = 0;
+
+        $main::smtp_traffic{$key} = 0;
+
+        $main::po_traffic{$key} = 0;
+
+    }
+
+#    while (($key, $value) = each %main::sub_name_id) {
+
+#        $main::ftp_traffic{$key} = 0;
+
+#        $main::smtp_traffic{$key} = 0;
+
+#        $main::po_traffic{$key} = 0;
+
+#    }
+
+	# Added by Erik Lehmann 22.08.2005
+	#---------------
+    while (($key, $value) = each %main::als_name_id) {
+
+        $main::ftp_traffic{$key} = 0;
+
+        $main::smtp_traffic{$key} = 0;
+
+        $main::po_traffic{$key} = 0;
+
+    }
+	#---------------
+
+    push_el(\@main::el, 'zero_traffic_entries()', 'Ending...');
+
+    return 0;
+
+}
+
+sub diff_command {
+
+    my ($cmd) = @_;
+
+    push_el(\@main::el, 'diff_command()', 'Starting...');
+
+    my $result = system($cmd);
+
+    my $exit_value  = $? >> 8;
+
+    my $signal_num  = $? & 127;
+
+    my $dumped_core = $? & 128;
+
+    if ($exit_value == 2) {
+
+        push_el(\@main::el, 'diff_command()', "ERORR: '$cmd' returned '$exit_value' !");
+
+        return $exit_value;
+
+    }
+
+    push_el(\@main::el, 'diff_command()', 'Ending...');
+
+    return $exit_value;
+
+}
+
+sub gen_log_file {
+
+    my ($fname, $src_dir, $dest_dir) = @_;
+
+    push_el(\@main::el, 'gen_log_file()', 'Starting...');
+
+    my $rs = undef;
+
+    # Changed by Erik Lehmann 02.06.2005
+	#-----------------------
+    $fname =~ s/\/*//i;
+
+    my $src_file = "$src_dir/$fname";
+
+    my $dest_file = "$dest_dir/".basename($fname);
+
+    my $dest_file_prev = "$dest_dir/".basename($fname).".perv";
+	#-----------------------
+
+    my $log_file = $dest_file;
+
+    $rs = sys_command("$main::cfg{'CMD_CP'} $src_file $dest_file");
+
+    return ($rs, '') if ($rs != 0);
+
+	if (-e $dest_file_prev) {
+
+		my $prev_size = -s $dest_file_prev;
+
+		if ($prev_size > $main::cfg{'PREV_TRAFF_LOG_MAX_SIZE'}) {
+
+			$rs = del_file($dest_file_prev);
+
+			return ($rs, "del_file($dest_file_prev)") if ($rs != 0);
+
+		}
+
+	}
+
+    if (-e $dest_file_prev) {
+
+        if (diff_command("$main::cfg{'CMD_DIFF'} -a -q $dest_file $dest_file_prev") == 0) {
+
+            $rs = del_file($dest_file);
+
+            return ($rs, '') if ($rs != 0);
+
+            return (0, '_no_');
+
+        }
+
+        $log_file = $dest_file.".diff";
+
+        diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | grep '<' 1> $log_file");
+
+        my $diff_data = get_file($log_file);
+
+        $diff_data =~ s/^\< //gim;
+
+        $rs = store_file($log_file, $diff_data, 'root', 'root', 0644);
+
+        return ($rs, '') if ($rs != 0);
+
+        $rs = sys_command("$main::cfg{'CMD_MV'} $dest_file $dest_file_prev");
+
+        return ($rs, '') if ($rs != 0);
+
+    } else {
+
+        $rs = sys_command("$main::cfg{'CMD_CP'} $dest_file $dest_file_prev");
+
+        return ($rs, '') if ($rs != 0);
+
+    }
+
+    push_el(\@main::el, 'gen_log_file()', 'Ending...');
+
+    return (0, $log_file);
+}
+
+sub collect_http_traffic {
+
+    my ($key, $value, $timestamp, $sum) = (undef, undef, time(), 0);
+
+    # timestamp has floor down for the last half'n our to make timestamps in
+	# server_traffic and domain_traffic the same
+    $timestamp = $timestamp - ($timestamp % 1800);
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'collect_http_traffic()', 'Starting...');
+
+    while (($key,$value) = each %main::domain_name_id) {
+
+        my $domain_log = "$key-traf.log";
+
+        ($rs, $rdata) = gen_log_file($domain_log, $main::cfg{'APACHE_LOG_DIR'}, $main::cfg{'APACHE_BACKUP_LOG_DIR'});
+
+        return ($rs, '') if ($rs != 0);
+
+        $sum = 0;
+
+        if ($rdata ne '_no_') {
+
+            my $rlog = $rdata;
+
+            ($rs, $rdata) = get_file($rlog);
+
+            return ($rs, '') if ($rs != 0);
+
+            my @rows = split(/\n/, $rdata);
+
+            foreach (@rows) {
+
+                my $line = "$_\n";
+
+                $sum += $1 if ($line =~ /(\d+)\n$/);
+
+            }
+
+            $rs = del_file($rlog);
+
+            return ($rs, '') if ($rs != 0);
+
+        }
+
+        my $sql = undef;
+
+        $sql = "insert into domain_traffic (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$value', '$timestamp', '$sum', '0', '0', '0');";
+
+        ($rs, $rdata) = doSQL($sql);
+
+        return ($rs, '') if ($rs != 0);
+
+    }
+
+    push_el(\@main::el, 'collect_http_traffic()', 'Ending...');
+
+    return (0, $timestamp);
+}
+
+sub collect_ftp_traffic {
+
+    my ($timestamp) = @_;
+
+    my ($key, $value, $id) = (undef, undef, undef);
+
+    my ($rs, $rdata, $rlog) = (undef, undef, undef);
+
+	# Added by Erik Lehmann 22.08.2005
+	my $traffic_size = undef;
+	my $traffic_domain = undef;
+
+    ($rs, $rlog) = gen_log_file($main::cfg{'FTP_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'APACHE_BACKUP_LOG_DIR'});
+
+    return $rs if ($rs != 0);
+
+    if ($rlog ne '_no_') {
+
+        ($rs, $rdata) = get_file($rlog);
+
+        return $rs if ($rs != 0);
+
+        my @rows = split(/\n/, $rdata);
+
+        foreach (@rows) {
+
+            my $line = "$_\n";
+
+            if ($line =~ /^(\d+) [^\@]+\@([^\n]+)\n$/) {
+
+				# Added by Erik Lehmann 22.08.2005
+				#---------------
+				$traffic_size = $1;
+				$traffic_domain = $2;
+
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::ftp_traffic{$traffic_domain}) {
+					$main::ftp_traffic{$3.$4} += $traffic_size;
+				}
+				else {
+					$main::ftp_traffic{$traffic_domain} += $traffic_size;
+				}
+				#---------------
+
+            }
+
+        }
+
+        while (($key, $value) = each %main::ftp_traffic) {
+
+			# Added by Erik Lehmann 22.08.2005
+			#---------------
+            if ($id = $main::als_name_id{$key}) {
+                $main::ftp_traffic{
+                    $main::domain_id_name {
+                        $main::als_id_parentid{$id}
+                    }
+                } += $value;
+            }
+			#---------------
+
+        }
+
+        $rs = del_file($rlog);
+
+        return $rs if ($rs != 0);
+    }
+
+    while (($key, $value) = each %main::ftp_traffic) {
+
+        if ($id = $main::domain_name_id{$key}) {
+
+            my $sql = undef;
+
+            $sql = "update domain_traffic set dtraff_ftp = $value where dtraff_time = $timestamp and domain_id = $id;";
+
+            ($rs, $rdata) = doSQL($sql);
+
+            return $rs if ($rs != 0);
+
+        }
+    }
+}
+
+sub collect_mail_traffic {
+
+    my ($timestamp) = @_;
+
+
+    my ($key, $value, $id) = (undef, undef, undef);
+
+    my ($rs, $rdata, $rlog) = (undef, undef);
+
+	# Added by Erik Lehmann 22.08.2005
+	my $traffic_size = undef;
+    my $traffic_domain = undef;
+	my $smtp_from_domain = undef;
+	my $smtp_to_domain = undef;
+
+    ($rs, $rlog) = gen_log_file($main::cfg{'MAIL_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'APACHE_BACKUP_LOG_DIR'});
+
+    return $rs if ($rs != 0);
+
+
+    if ($rlog ne '_no_') {
+
+        my $smtp_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/smtp.log";
+
+        my $smtp_delivery_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/smtp_delivery.log";
+
+        my $imap_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/imap.log";
+
+        my $pop3_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/pop3.log";
+
+
+        # Changed by Erik Lehmann 07.06.2005
+        my $cmd = "$main::cfg{'CMD_CAT'} $rlog | $main::cfg{'CMD_GREP'} 'postfix' | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
+
+        $rs = sys_command($cmd);
+
+        return $rs if ($rs != 0);
+
+        # Changed by Erik Lehmann 22.08.2005
+        # bugfix by Erik Lehmann 23.10.2005
+		if(exists  $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
+			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
+	        $cmd = "$main::cfg{'CMD_CAT'} $smtp_delivery_log | $main::cfg{'CMD_AWK'} '{if (\$5 != \"localhost\" && \$6 != \"virtual\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
+		}
+		else {
+			# Logs not including AMAVIS/SPAMASSASSIN/CLAMAV entries
+    	    $cmd = "$main::cfg{'CMD_CAT'} $smtp_delivery_log | $main::cfg{'CMD_AWK'} '{if (\$5 != \"localhost\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
+		}
+
+        $rs = sys_command($cmd);
+
+        return $rs if ($rs != 0);
+
+        $rs = del_file($smtp_delivery_log);
+
+        return $rs if ($rs != 0);
+
+        ($rs, $rdata) = get_file($smtp_log);
+
+        return $rs if ($rs != 0);
+
+
+        my @rows = split(/\n/, $rdata);
+
+        foreach (@rows) {
+
+            my $line = "$_\n";
+
+	        # Changed by Erik Lehmann 07.06.2005
+            if ($line =~ /^([^\,]+)\ ([^\,]+)\ (\d+)\n$/) {
+
+				# Added by Erik Lehmann 22.08.2005
+				#---------------
+				$smtp_from_domain = $1;
+				$smtp_to_domain = $2;
+				$traffic_size = $3;
+
+				if($smtp_from_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::smtp_traffic{$smtp_from_domain}) {
+					$smtp_from_domain = $3.$4;
+				}
+				if($smtp_to_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::smtp_traffic{$smtp_to_domain}) {
+					$smtp_to_domain = $3.$4;
+				}
+				#---------------
+
+		        # Changed by Erik Lehmann 22.08.2005
+				#---------------
+                if(exists $main::smtp_traffic{$smtp_from_domain}) {
+                	$main::smtp_traffic{$smtp_from_domain} += $traffic_size;
+				}
+				else {
+                	$main::smtp_traffic{$smtp_to_domain} += $traffic_size;
+                }
+
+            }
+
+        }
+
+        while (($key, $value) = each %main::smtp_traffic) {
+
+			# Added by Erik Lehmann 22.08.2005
+			#---------------
+            if ($id = $main::als_name_id{$key}) {
+                $main::smtp_traffic{
+                    $main::domain_id_name {
+                        $main::als_id_parentid{$id}
+                    }
+                } += $value;
+            }
+			#---------------
+
+        }
+
+        $rs = del_file($smtp_log);
+
+        return $rs if ($rs != 0);
+
+
+		# IMAP
+		$rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'imaplogin'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'body='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+
+        return $rs if ($rs != 0);
+
+        ($rs, $rdata) = get_file($imap_log);
+
+        return $rs if ($rs != 0);
+
+
+        @rows = split(/\n/, $rdata);
+
+        foreach (@rows) {
+
+            my $line = "$_\n";
+
+            if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
+
+                my ($ma, $sum) = ("$1\n", $2 + $3);
+
+                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+
+				# Added by Erik Lehmann 22.08.2005
+				#---------------
+				$traffic_domain = $2;
+
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
+					$main::po_traffic{$3.$4} += $sum;
+				}
+				else {
+					$main::po_traffic{$traffic_domain} += $sum;
+				}
+				#---------------
+
+            }
+
+        }
+
+
+        $rs = del_file($imap_log);
+
+        return $rs if ($rs != 0);
+
+
+		# IMAP-SSL
+		$rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'imapd-ssl'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'body='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+
+        return $rs if ($rs != 0);
+
+
+        ($rs, $rdata) = get_file($imap_log);
+
+        return $rs if ($rs != 0);
+
+
+        @rows = split(/\n/, $rdata);
+
+        foreach (@rows) {
+
+            my $line = "$_\n";
+
+            if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
+
+                my ($ma, $sum) = ("$1\n", $2 + $3);
+
+                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+
+				# Added by Erik Lehmann 22.08.2005
+				#---------------
+				$traffic_domain = $2;
+
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
+					$main::po_traffic{$3.$4} += $sum;
+				}
+				else {
+					$main::po_traffic{$traffic_domain} += $sum;
+				}
+				#---------------
+
+            }
+
+        }
+
+
+        $rs = del_file($imap_log);
+
+        return $rs if ($rs != 0);
+
+
+		# POP3
+        $rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'courierpop3login'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'top='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
+
+        return $rs if ($rs != 0);
+
+        ($rs, $rdata) = get_file($pop3_log);
+
+        return $rs if ($rs != 0);
+
+
+        @rows = split(/\n/, $rdata);
+
+        foreach (@rows) {
+
+            my $line = "$_\n";
+
+            if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
+
+                my ($ma, $sum) = ("$1\n", $2 + $3);
+
+                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+
+				# Added by Erik Lehmann 22.08.2005
+				#---------------
+				$traffic_domain = $2;
+
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
+					$main::po_traffic{$3.$4} += $sum;
+				}
+				else {
+					$main::po_traffic{$traffic_domain} += $sum;
+				}
+				#---------------
+
+            }
+
+        }
+
+        $rs = del_file($pop3_log);
+
+        return $rs if ($rs != 0);
+
+
+        # POP3-SSL
+        $rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'pop3d-ssl'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'retr='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
+
+        return $rs if ($rs != 0);
+
+        ($rs, $rdata) = get_file($pop3_log);
+
+        return $rs if ($rs != 0);
+
+
+        @rows = split(/\n/, $rdata);
+
+        foreach (@rows) {
+
+            my $line = "$_\n";
+
+            if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
+
+                my ($ma, $sum) = ("$1\n", $2 + $3);
+
+                $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
+
+				# Added by Erik Lehmann 22.08.2005
+				#---------------
+				$traffic_domain = $2;
+
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
+					$main::po_traffic{$3.$4} += $sum;
+				}
+				else {
+					$main::po_traffic{$traffic_domain} += $sum;
+				}
+				#---------------
+
+            }
+
+        }
+
+        while (($key, $value) = each %main::po_traffic) {
+
+			# Added by Erik Lehmann 22.08.2005
+			#---------------
+            if ($id = $main::als_name_id{$key}) {
+                $main::po_traffic {
+                    $main::domain_id_name {
+                        $main::als_id_parentid{$id}
+                    }
+                } += $value;
+
+            }
+			#---------------
+
+        }
+
+        $rs = del_file($pop3_log);
+
+        return $rs if ($rs != 0);
+
+        $rs = del_file($rlog);
+
+        return $rs if ($rs != 0);
+
+
+    }
+
+    while (($key, $value) = each %main::smtp_traffic) {
+
+        if ($id = $main::domain_name_id{$key}) {
+
+            my $sql = undef;
+
+            $sql = "update domain_traffic set dtraff_mail = $value where dtraff_time = $timestamp and domain_id = $id;";
+
+            ($rs, $rdata) = doSQL($sql);
+
+            return $rs if ($rs != 0);
+
+        }
+    }
+
+    while (($key, $value) = each %main::po_traffic) {
+
+        if ($id = $main::domain_name_id{$key}) {
+
+            my $sql = undef;
+
+            $sql = "update domain_traffic set dtraff_pop = $value where dtraff_time = $timestamp and domain_id = $id;";
+
+            ($rs, $rdata) = doSQL($sql);
+
+            return $rs if ($rs != 0);
+
+        }
+    }
+
+    return 0;
+
+}
+
+
+sub vrl_traff_start_up {
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'vrl_traff_start_up()', 'Starting...');
+
+    # Let's clear Execution Logs, if any.
+
+    if (-e $main::ispcp_vrl_traff_el) {
+
+        $rs = del_file($main::ispcp_vrl_traff_el);
+
+        return $rs if ($rs != 0);
+
+    }
+
+    # config check;
+
+    $rs = get_conf();
+
+    return $rs if ($rs != 0);
+
+    #
+    # getting initial data also must be done here;
+    #
+
+    my $sql = "select * from domain;";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    $rs = get_domain_ids();
+
+    return $rs if ($rs != 0);
+
+#    $rs = get_subdom_ids();
+
+#    return $rs if ($rs != 0);
+
+	# Added by Erik Lehmann 22.08.2005
+	#---------------
+    $rs = get_alias_ids();
+
+    return $rs if ($rs != 0);
+	#---------------
+
+    $rs = zero_traffic_entries();
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'vrl_traff_start_up()', 'Ending...');
+
+    return 0;
+
+}
+
+
+sub vrl_traff_shut_down {
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'vrl_traff_shut_down()', 'Starting...');
+
+    push_el(\@main::el, 'vrl_traff_shut_down()', 'Ending...');
+
+    return 0;
+
+}
+
+sub vrl_traff_engine {
+
+    my ($rs, $timestamp) = (undef, undef);
+
+    push_el(\@main::el, 'vrl_traff_engine()', 'Starting...');
+
+    ($rs, $timestamp) = collect_http_traffic();
+
+    return $rs if ($rs != 0);
+
+    $rs = collect_ftp_traffic($timestamp);
+
+    return $rs if ($rs != 0);
+
+    $rs = collect_mail_traffic($timestamp);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'vrl_traff_engine()', 'Ending...');
+
+    return 0;
+
+}
+
+
+my $rs = undef;
+
+
+$rs = vrl_traff_start_up();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+
+    vrl_traff_shut_down();
+
+    exit 1;
+
+}
+
+
+$rs = vrl_traff_engine();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+
+    vrl_traff_shut_down();
+
+    exit 1;
+
+}
+
+
+$rs = vrl_traff_shut_down();
+
+if ($rs != 0) {
+
+    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+
+    exit 1;
+
+}
+
+exit 0;
