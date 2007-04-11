@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
+# ISPCP(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
 #
@@ -23,14 +23,14 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The ISPCP Home Page is at:
 #
-#    http://www.vhcs.net
+#    http://www.isp-control.net
 
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'vhcs2_common_code.pl';
+require 'ispcp_common_code.pl';
 
 use strict;
 
@@ -46,9 +46,9 @@ sub httpd_logs_mngr_start_up {
 
     # Let's clear Execution Logs, if any.
 
-    if (-e $main::vhcs2_httpd_logs_mngr_el) {
+    if (-e $main::ispcp_httpd_logs_mngr_el) {
 
-        $rs = del_file($main::vhcs2_httpd_logs_mngr_el);
+        $rs = del_file($main::ispcp_httpd_logs_mngr_el);
 
         return $rs if ($rs != 0);
 
@@ -322,7 +322,7 @@ $rs = httpd_logs_mngr_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::vhcs2_httpd_logs_mngr_el);
+    dump_el(\@main::el, $main::ispcp_httpd_logs_mngr_el);
 
     httpd_logs_mngr_shut_down();
 
@@ -335,7 +335,7 @@ $rs = httpd_logs_mngr_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::vhcs2_httpd_logs_mngr_el);
+    dump_el(\@main::el, $main::ispcp_httpd_logs_mngr_el);
 
     httpd_logs_mngr_shut_down();
 
@@ -348,7 +348,7 @@ $rs = httpd_logs_mngr_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::vhcs2_httpd_logs_mngr_el);
+    dump_el(\@main::el, $main::ispcp_httpd_logs_mngr_el);
 
     exit 1;
 

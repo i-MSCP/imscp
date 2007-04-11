@@ -2,7 +2,7 @@
 #
 # clear old sessions from user directorys
 #
-for a in `cat /etc/vhcs2/vhcs2.conf | grep -E '(^APACHE_WWW_DIR)' | sed -e 's/ //g'`
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(^APACHE_WWW_DIR)' | sed -e 's/ //g'`
 do
 export $a
 done
