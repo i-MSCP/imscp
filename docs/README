@@ -1,4 +1,4 @@
-VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 ================================================================
 Often it ain't what you do, it's the way you do it.
 
@@ -6,22 +6,22 @@ http://isp-control.com
 http://isp-control.net
 http://isp-control.org
 
-VHCS ω software appliance provides complete hosting automation for Linux
-platforms. VHCS Professional offers an easy-to-use graphical interface for
+ISPCP ω software appliance provides complete hosting automation for Linux
+platforms. ISPCP Professional offers an easy-to-use graphical interface for
 administrators, resellers and domain owners and complete functionality to
 manage the server and its components.
 
-VHCS ω was designed for professional Hosting Service Providers (HSPs),
+ISPCP ω was designed for professional Hosting Service Providers (HSPs),
 Internet Service Providers (ISPs) and IT-Professionals.
 
-With VHCS ω you are able configure your server and aplications, create user
+With ISPCP ω you are able configure your server and aplications, create user
 with domains with a few point-and-click operations that take less than a
 minute. There is no limit to the number of resellers, users and domains
 that can be created.
 
 
-Enjoy the power of VHCS ω
-Your VHCS ω Team
+Enjoy the power of ISPCP ω
+Your ISPCP ω Team
 
 ================================================================
 INSTALLATION
@@ -30,17 +30,17 @@ INSTALLATION
 Select the folder of the distribution you are using.
 If there is none, try the Debian one and try it with this one.
 
-You have successfully installed VHCS OMEGA on a non-listet distribution? Great,
+You have successfully installed ISPCP OMEGA on a non-listet distribution? Great,
 send us your install instructions.
 
 ================================================================
 LICENSING
 ---------
 
-VHCS was originaly developed by moleSoftware http://molesoftware.com/
+ISPCP was originaly developed by moleSoftware http://molesoftware.com/
 After getting OpenSource it was set under the MPL (Mozilla Public License)
 Version 1.1. We cannot change this licensing and the copyright of the parts
-we're using out of the VHCS project.
+we're using out of the ISPCP project.
 All new files are licensed under the GPL (GNU Public License) Version 2.
 
 Please have a look at these Licenses if intrested. They are shipped with
@@ -53,4 +53,4 @@ LICENSE-GPL2
 TRADE MARK
 ----------
 
-VHCS is a registered trade mark of GAJDA IT-CONSULTING, http://www.gajda-it.de
+ISPCP is a registered trade mark of GAJDA IT-CONSULTING, http://www.gajda-it.de

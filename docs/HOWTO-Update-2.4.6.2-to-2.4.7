@@ -1,29 +1,29 @@
-HOWTO Update VHCS 2.4.6.2 to VHCS 2.4.7 (English)
+HOWTO Update ISPCP 2.4.6.2 to ISPCP 2.4.7 (English)
 
 -------------------
 General Information
 -------------------
 
-1) Download the newest VHCS2 release :
+1) Download the newest ISPCP release :
 
-tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/vhcs/vhcs2.4.7.tar.bz2
+tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/ispcp/ispcp.4.7.tar.bz2
 
-2) Turn off the VHCS Daemon:
+2) Turn off the ISPCP Daemon:
 
-tangra: # /etc/init.d/vhcs2_daemon stop
+tangra: # /etc/init.d/ispcp_daemon stop
 
-3) Make a backup of the current VHCS files of your system:
+3) Make a backup of the current ISPCP files of your system:
 
-tangra: # mv /var/www/vhcs2/gui /var/www/vhcs2/gui_bcp_yyyymmdd
-tangra: # mv /var/www/vhcs2/engine /var/www/vhcs2/engine_bcp_yyyymmdd
+tangra: # mv /var/www/ispcp/gui /var/www/ispcp/gui_bcp_yyyymmdd
+tangra: # mv /var/www/ispcp/engine /var/www/ispcp/engine_bcp_yyyymmdd
 
 4) Unpack the downloaded archive :
 
-tangra: #tar -xjf vhcs2.4.7.tar.bz2
+tangra: #tar -xjf ispcp.4.7.tar.bz2
 
 
 -------------------
-vhcs2.conf Update
+ispcp.conf Update
 -------------------
 
 1) Lines to add:
@@ -47,7 +47,7 @@ MAIL_LOG_INC_AMAVIS = 0
 
 PREV_TRAFF_LOG_MAX_SIZE = 10485760
 
-QUOTA_ROOT_DIR = /var/www/vhcs2/engine/quota
+QUOTA_ROOT_DIR = /var/www/ispcp/engine/quota
 
 
 Search for DATABASE_USER and add the line. The result should looks like this:
@@ -61,11 +61,11 @@ DATABASE_DIR = /var/lib/mysql
 #
 
 
-Search for CMD_VHCS2D and add the line. The result should looks like this:
+Search for CMD_ISPCPD and add the line. The result should looks like this:
 
-CMD_VHCS2D = /etc/init.d/vhcs2_daemon
+CMD_ISPCPD = /etc/init.d/ispcp_daemon
 
-CMD_VHCS2N = /etc/init.d/vhcs2_network
+CMD_ISPCPN = /etc/init.d/ispcp_network
 
 #
 # Server traffic manager.
@@ -115,12 +115,12 @@ CMD_AMAVIS = /etc/init.d/amavis
 
 BuildDate = 24.12.2005
 
-VHCS_LICENSE = VHCS<sup>&reg;</sup> Pro v2.4.7<br>build: 2005-12-24<br>Spartacus
+ISPCP_LICENSE = ISPCP<sup>&reg;</sup> Pro v2.4.7<br>build: 2005-12-24<br>Spartacus
 
 
-5) Set permissions for vhcs2.conf (needed for autoresponder) :
+5) Set permissions for ispcp.conf (needed for autoresponder) :
 
-tangra: # chmod 0644 /etc/vhcs2/vhcs2.conf
+tangra: # chmod 0644 /etc/ispcp/ispcp.conf
 
 -------------------
 Daemon & init.d Update
@@ -128,24 +128,24 @@ Daemon & init.d Update
 
 1) Copy the new init.d file
 
-tangra: # cp -a /mydir/configs/init.d/vhcs2_daemon /etc/init.d/
-tangra: # chown root:root /etc/init.d/vhcs2_daemon
-tangra: # chmod 755 /etc/init.d/vhcs2_daemon
+tangra: # cp -a /mydir/configs/init.d/ispcp_daemon /etc/init.d/
+tangra: # chown root:root /etc/init.d/ispcp_daemon
+tangra: # chmod 755 /etc/init.d/ispcp_daemon
 
 
 2) Make the new daemon:
 
 tangra: # cd /mydir/tools/daemon
 tangra: # make
-tangra: # cp ./vhcs2_daemon /var/www/vhcs2/daemon/vhcs2_daemon
+tangra: # cp ./ispcp_daemon /var/www/ispcp/daemon/ispcp_daemon
 
 -------------------
 Configuration file Update
 -------------------
 
-1) Copy vhcs apache user logrotate script
+1) Copy ispcp apache user logrotate script
 
-tangra: # cp /mydir/configs/logrotate/vhcs2 /etc/logrotate.d/vhcs2
+tangra: # cp /mydir/configs/logrotate/ispcp /etc/logrotate.d/ispcp
 
 
 -------------------
@@ -154,15 +154,15 @@ Engine Update
 
 1) Copy the new engine files
 
-tangra: # cp -a /mydir/engine/ /var/www/vhcs2/
+tangra: # cp -a /mydir/engine/ /var/www/ispcp/
 
-2) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/vhcs2-db-keys.pl
+2) Copy your crypt key from the old /engine_bcp_yyyymmdd/ispcp-db-keys.pl to /engine/ispcp-db-keys.pl
 
-tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/vhcs2-db-keys.pl
+tangra: # cp /var/www/ispcp/engine_bcp_yyyymmdd/ispcp-db-keys.pl /var/www/ispcp/engine/ispcp-db-keys.pl
 
-3) changes for vhcs2-arpl-msgr
+3) changes for ispcp-arpl-msgr
 
-tangra: # cp /var/www/vhcs2/engine/vhcs2-db-keys.pl /var/www/vhcs2/engine/messager/vhcs2-db-keys.pl
+tangra: # cp /var/www/ispcp/engine/ispcp-db-keys.pl /var/www/ispcp/engine/messager/ispcp-db-keys.pl
 
 4) We changed sasldb2 management for the postfix chroot.
 
@@ -181,10 +181,10 @@ any command
 Mailbox Engine Update
 -------------------
 
-1) catchall adresses are moved from /etc/postfix/vhcs2/mailboxes to /etc/postfix/vhcs2/aliases
+1) catchall adresses are moved from /etc/postfix/ispcp/mailboxes to /etc/postfix/ispcp/aliases
 
-tangra: # mv /etc/vhcs2/postfix/working/mailboxes /etc/vhcs2/postfix/working/mailboxes-SAVE
-tangra: # cp /mydir/configs/postfix/working/mailboxes /etc/vhcs2/postfix/working/mailboxes
+tangra: # mv /etc/ispcp/postfix/working/mailboxes /etc/ispcp/postfix/working/mailboxes-SAVE
+tangra: # cp /mydir/configs/postfix/working/mailboxes /etc/ispcp/postfix/working/mailboxes
 
 
 Backup Engine Update
@@ -196,11 +196,11 @@ tangra: # crontab -e
 
 if line looks like:
 
-/var/www/vhcs2/engine/tools/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+/var/www/ispcp/engine/tools/ispcp-backup-all yes &>/var/log/ispcp/ispcp-backup-all-mngr.log
 
 change it too:
 
-/var/www/vhcs2/engine/backup/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+/var/www/ispcp/engine/backup/ispcp-backup-all yes &>/var/log/ispcp/ispcp-backup-all-mngr.log
 
 
 Traffic Engine Update
@@ -209,17 +209,17 @@ Traffic Engine Update
 1) Delete old log analyzing tool:
 
 tangra: # rm /usr/sbin/pflogsumm.pl
-tangra: # rm -R /var/www/vhcs2/engine/traffic/pflogsumm-1.0.10
-tangra: # rm -R /var/www/vhcs2/engine/traffic/pflogsumm-1.1.0
+tangra: # rm -R /var/www/ispcp/engine/traffic/pflogsumm-1.0.10
+tangra: # rm -R /var/www/ispcp/engine/traffic/pflogsumm-1.1.0
 
 2) Changes specially for SuSE:
 
-tangra: # mv /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff-DEBIAN
-tangra: # mv /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff-SUSE /var/www/vhcs2/engine/traffic/vhcs2-vrl-traff
+tangra: # mv /var/www/ispcp/engine/traffic/ispcp-vrl-traff /var/www/ispcp/engine/traffic/ispcp-vrl-traff-DEBIAN
+tangra: # mv /var/www/ispcp/engine/traffic/ispcp-vrl-traff-SUSE /var/www/ispcp/engine/traffic/ispcp-vrl-traff
 
 3) Delete backup-lock file if it exit:
 
-tangra: # rm /tmp/vhcs2-backup-all.lock
+tangra: # rm /tmp/ispcp-backup-all.lock
 
 
 Engine Templates Update
@@ -241,19 +241,19 @@ Now compare both files and put your special config entries and domain names / IP
 
 3) Update apache templates part for domains (vhosts skeleton and errorpages):
 
-tangra: # cp /mydir/configs/apache/parts/als_entry.tpl /etc/vhcs2/apache/parts/
-tangra: # cp /mydir/configs/apache/parts/dmn_entry.tpl /etc/vhcs2/apache/parts/
-tangra: # cp /mydir/configs/apache/parts/sub_entry.tpl /etc/vhcs2/apache/parts/
-tangra: # cp /mydir/configs/apache/parts/vh_entry.tpl /etc/vhcs2/apache/parts/
-tangra: # cp /mydir/configs/apache/parts/vhcs2_base.tpl /etc/vhcs2/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/als_entry.tpl /etc/ispcp/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/dmn_entry.tpl /etc/ispcp/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/sub_entry.tpl /etc/ispcp/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/vh_entry.tpl /etc/ispcp/apache/parts/
+tangra: # cp /mydir/configs/apache/parts/ispcp_base.tpl /etc/ispcp/apache/parts/
 
-Save the old vhcs2 apache conf. Because will rebuild it completly
+Save the old ispcp apache conf. Because will rebuild it completly
 
-tangra: # mv /etc/vhcs2/apache/working/vhcs2.conf /etc/vhcs2/apache/working/vhcs2-SAVE.conf
+tangra: # mv /etc/ispcp/apache/working/ispcp.conf /etc/ispcp/apache/working/ispcp-SAVE.conf
 
 4) Update bind templates part for domains:
 
-tangra: # cp /mydir/configs/bind/parts/db_e.tpl /etc/vhcs2/bind/parts/
+tangra: # cp /mydir/configs/bind/parts/db_e.tpl /etc/ispcp/bind/parts/
 
 
 Finish Engine Updates
@@ -261,7 +261,7 @@ Finish Engine Updates
 
 1) Set correct engine permissions:
 
-tangra: # /var/www/vhcs2/engine/setup/set-engine-permissions.sh
+tangra: # /var/www/ispcp/engine/setup/set-engine-permissions.sh
 
 
 -------------------
@@ -270,11 +270,11 @@ GUI Update
 
 1) Copy the new GUI files
 
-tangra: # cp -a /mydir/gui/ /var/www/vhcs2/
+tangra: # cp -a /mydir/gui/ /var/www/ispcp/
 
-2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/vhcs2-db-keys.php to /gui/include/vhcs2-db-keys.php
+2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/ispcp-db-keys.php to /gui/include/ispcp-db-keys.php
 
-tangra: # cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/vhcs2/gui/include/vhcs2-db-keys.php
+tangra: # cp /var/www/ispcp/gui_bcp_yyyymmdd/include/ispcp-db-keys.php /var/www/ispcp/gui/include/ispcp-db-keys.php
 
 3) Password reminder:
 
@@ -286,7 +286,7 @@ tangra: # apache2ctl graceful
 
 4) Set correct gui permissions:
 
-tangra: # /var/www/vhcs2/engine/setup/set-gui-permissions.sh
+tangra: # /var/www/ispcp/engine/setup/set-gui-permissions.sh
 
 5) copy gui/errordocs/index.php in all client errordoc directories!
 
@@ -306,33 +306,33 @@ configs/database/languages.sql
 
 Change status for all mail-addresses because of rebuild SASLDB2 and MD5 passwords:
 
-UPDATE `vhcs2`.`mail_users` SET `status` = 'change' WHERE `status` = 'ok';
+UPDATE `ispcp`.`mail_users` SET `status` = 'change' WHERE `status` = 'ok';
 
 Change status for rebuild apache conf for all domains:
 
-UPDATE `vhcs2`.`subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
-UPDATE `vhcs2`.`domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
-UPDATE `vhcs2`.`domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
+UPDATE `ispcp`.`subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
+UPDATE `ispcp`.`domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
+UPDATE `ispcp`.`domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
 
 Update field settings:
 
-ALTER TABLE `vhcs2`.`hosting_plans` CHANGE  `price`  `price` DECIMAL( 10, 2 ) NOT NULL DEFAULT  '0.00';
-ALTER TABLE `vhcs2`.`hosting_plans` CHANGE  `setup_fee`  `setup_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT  '0.00';
+ALTER TABLE `ispcp`.`hosting_plans` CHANGE  `price`  `price` DECIMAL( 10, 2 ) NOT NULL DEFAULT  '0.00';
+ALTER TABLE `ispcp`.`hosting_plans` CHANGE  `setup_fee`  `setup_fee` DECIMAL( 10, 2 ) NOT NULL DEFAULT  '0.00';
 
-ALTER TABLE `vhcs2`.`admin` ADD `uniqkey` varchar(255);
+ALTER TABLE `ispcp`.`admin` ADD `uniqkey` varchar(255);
 
 -------------------
 Finish update
 -------------------
 
-1) Now you should execute the VHCS engine manually, because users/customers may have made system changes during your update operation
+1) Now you should execute the ISPCP engine manually, because users/customers may have made system changes during your update operation
    This could take a moment!
 
-tangra: # /var/www/vhcs2/engine/vhcs2-rqst-mngr
+tangra: # /var/www/ispcp/engine/ispcp-rqst-mngr
 
-2) Now you can start the VHCS daemon
+2) Now you can start the ISPCP daemon
 
-tangra: # /etc/init.d/vhcs2_daemon start
+tangra: # /etc/init.d/ispcp_daemon start
 
 
-VHCS is successfully updated !
+ISPCP is successfully updated !

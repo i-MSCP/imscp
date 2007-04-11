@@ -1,30 +1,30 @@
-HOWTO Update VHCS 2.4.7 to VHCS 2.4.7.1 (English)
+HOWTO Update ISPCP 2.4.7 to ISPCP 2.4.7.1 (English)
 
 
 -------------------
 General Information
 -------------------
 
-1) Download the newest VHCS2 release :
+1) Download the newest ISPCP release :
 
-tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/vhcs/vhcs2-2.4.7.1.tar.bz2
+tangra: # wget http://heanet.dl.sourceforge.net/sourceforge/ispcp/ispcp-2.4.7.1.tar.bz2
 
-2) Turn off the VHCS Daemon:
+2) Turn off the ISPCP Daemon:
 
-tangra: # /etc/init.d/vhcs2_daemon stop
+tangra: # /etc/init.d/ispcp_daemon stop
 
-3) Make a backup of the current VHCS files of your system:
+3) Make a backup of the current ISPCP files of your system:
 
-tangra: # mv /var/www/vhcs2/gui /var/www/vhcs2/gui_bcp_yyyymmdd
-tangra: # mv /var/www/vhcs2/engine /var/www/vhcs2/engine_bcp_yyyymmdd
+tangra: # mv /var/www/ispcp/gui /var/www/ispcp/gui_bcp_yyyymmdd
+tangra: # mv /var/www/ispcp/engine /var/www/ispcp/engine_bcp_yyyymmdd
 
 4) Unpack the downloaded archive :
 
-tangra: #tar -xjf vhcs2-2.4.7.1.tar.bz2
+tangra: #tar -xjf ispcp-2.4.7.1.tar.bz2
 
 
 -------------------
-vhcs2.conf Update
+ispcp.conf Update
 -------------------
 
 1) Change these following lines:
@@ -33,7 +33,7 @@ BuildDate = 03.01.2006
 
 Version = 2.4.7.1
 
-VHCS_LICENSE = VHCS<sup>&reg;</sup> Pro v2.4.7.1<br>build: 2006-01-03<br>Spartacus
+ISPCP_LICENSE = ISPCP<sup>&reg;</sup> Pro v2.4.7.1<br>build: 2006-01-03<br>Spartacus
 
 -------------------
 Postfix master.cf update
@@ -41,10 +41,10 @@ Postfix master.cf update
 
 1) Edit /etc/postfix/master.cf
 
-and search for the vhcs2-arpl line (near the end) replace the flags=D to flags=O
+and search for the ispcp-arpl line (near the end) replace the flags=D to flags=O
 The complete line should look like this:
 
-vhcs2-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/vhcs2/engine/messager/vhcs2-arpl-msgr
+ispcp-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/ispcp/engine/messager/ispcp-arpl-msgr
 
 
 -------------------
@@ -53,15 +53,15 @@ Engine Update
 
 1) Copy the new engine files
 
-tangra: # cp -a /mydir/engine/ /var/www/vhcs2/
+tangra: # cp -a /mydir/engine/ /var/www/ispcp/
 
-2) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/vhcs2-db-keys.pl
+2) Copy your crypt key from the old /engine_bcp_yyyymmdd/ispcp-db-keys.pl to /engine/ispcp-db-keys.pl
 
-tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/vhcs2-db-keys.pl
+tangra: # cp /var/www/ispcp/engine_bcp_yyyymmdd/ispcp-db-keys.pl /var/www/ispcp/engine/ispcp-db-keys.pl
 
-3) Copy your crypt key from the old /engine_bcp_yyyymmdd/vhcs2-db-keys.pl to /engine/messager/vhcs2-db-keys.pl
+3) Copy your crypt key from the old /engine_bcp_yyyymmdd/ispcp-db-keys.pl to /engine/messager/ispcp-db-keys.pl
 
-tangra: # cp /var/www/vhcs2/engine_bcp_yyyymmdd/vhcs2-db-keys.pl /var/www/vhcs2/engine/messager/vhcs2-db-keys.pl
+tangra: # cp /var/www/ispcp/engine_bcp_yyyymmdd/ispcp-db-keys.pl /var/www/ispcp/engine/messager/ispcp-db-keys.pl
 
 
 Backup Engine Update
@@ -73,25 +73,25 @@ tangra: # crontab -e
 
 if line looks like: 
 
-/var/www/vhcs2/engine/tools/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+/var/www/ispcp/engine/tools/ispcp-backup-all yes &>/var/log/ispcp/ispcp-backup-all-mngr.log
 
 change it to:
 
-/var/www/vhcs2/engine/backup/vhcs2-backup-all yes &>/var/log/vhcs2/vhcs2-backup-all-mngr.log
+/var/www/ispcp/engine/backup/ispcp-backup-all yes &>/var/log/ispcp/ispcp-backup-all-mngr.log
 
 
 Mailbox Engine Update
 -------------------
 
-1) because of a bug in the catchall adresses we have to rebuild the /etc/postfix/vhcs2/aliases
+1) because of a bug in the catchall adresses we have to rebuild the /etc/postfix/ispcp/aliases
 
-tangra: # mv /etc/vhcs2/postfix/working/aliases /etc/vhcs2/postfix/working/aliases-SAVE
-tangra: # cp /mydir/configs/postfix/working/aliases /etc/vhcs2/postfix/working/aliases
+tangra: # mv /etc/ispcp/postfix/working/aliases /etc/ispcp/postfix/working/aliases-SAVE
+tangra: # cp /mydir/configs/postfix/working/aliases /etc/ispcp/postfix/working/aliases
 
 
 Delete unneeded engine file
 -------------------
-tangra: # rm /var/www/vhcs2/engine/setup/vhcs2-cfg-subst
+tangra: # rm /var/www/ispcp/engine/setup/ispcp-cfg-subst
 
 
 Finish Engine Updates
@@ -99,7 +99,7 @@ Finish Engine Updates
 
 1) Set correct engine permissions:
 
-tangra: # /var/www/vhcs2/engine/setup/set-engine-permissions.sh
+tangra: # /var/www/ispcp/engine/setup/set-engine-permissions.sh
 
 
 -------------------
@@ -108,15 +108,15 @@ GUI Update
 
 1) Copy the new GUI files
 
-tangra: # cp -a /mydir/gui/ /var/www/vhcs2/
+tangra: # cp -a /mydir/gui/ /var/www/ispcp/
 
-2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/vhcs2-db-keys.php to /gui/include/vhcs2-db-keys.php
+2) Copy your crypt key from the old /gui_bcp_yyyymmdd/include/ispcp-db-keys.php to /gui/include/ispcp-db-keys.php
 
-tangra: # cp /var/www/vhcs2/gui_bcp_yyyymmdd/include/vhcs2-db-keys.php /var/www/vhcs2/gui/include/vhcs2-db-keys.php
+tangra: # cp /var/www/ispcp/gui_bcp_yyyymmdd/include/ispcp-db-keys.php /var/www/ispcp/gui/include/ispcp-db-keys.php
 
 3) Set correct gui permissions:
 
-tangra: # /var/www/vhcs2/engine/setup/set-gui-permissions.sh
+tangra: # /var/www/ispcp/engine/setup/set-gui-permissions.sh
 
 -------------------
 Database Update
@@ -131,25 +131,25 @@ configs/database/languages.sql
 
 2) Delete all wrong added and not shown catchalls for alias domains
 
-DELETE FROM `vhcs2`.`mail_users` WHERE `sub_id`='0' AND `mail_type` = 'alias_catchall';
+DELETE FROM `ispcp`.`mail_users` WHERE `sub_id`='0' AND `mail_type` = 'alias_catchall';
 
 
 3) Change status for all mail-addresses:
 
-UPDATE `vhcs2`.`mail_users` SET `status` = 'change' WHERE `status` = 'ok';
+UPDATE `ispcp`.`mail_users` SET `status` = 'change' WHERE `status` = 'ok';
 
 -------------------
 Finish update
 -------------------
 
-1) Now you should execute the VHCS engine manually, because users/customers may have made system changes during your update operation
+1) Now you should execute the ISPCP engine manually, because users/customers may have made system changes during your update operation
    This could take a moment!
 
-tangra: # /var/www/vhcs2/engine/vhcs2-rqst-mngr
+tangra: # /var/www/ispcp/engine/ispcp-rqst-mngr
 
-2) Now you can start the VHCS daemon
+2) Now you can start the ISPCP daemon
 
-tangra: # /etc/init.d/vhcs2_daemon start
+tangra: # /etc/init.d/ispcp_daemon start
 
 
-VHCS is successfully updated !
+ISPCP is successfully updated !

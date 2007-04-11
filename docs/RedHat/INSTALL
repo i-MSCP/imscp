@@ -1,4 +1,4 @@
-VHCS ω (OMEGA) HowTo Install for RedHat (Enterprise), CentOS
+ISPCP ω (OMEGA) HowTo Install for RedHat (Enterprise), CentOS
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,7 +16,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-VHCS ω Version:		1.0.0
+ISPCP ω Version:		1.0.0
 INSTALL Skript:		0.9
 Maintainer:
 Homepage:			http://isp-contol.net
@@ -25,11 +25,11 @@ Linux Distris:		RedHat (Enterprise), CentOS
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using VHCS ω. This is only a recommendation:
+There is no must have for a system using ISPCP ω. This is only a recommendation:
 
 Penitum III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of VHCS ω)
+100 MB disk space (only for install of ISPCP ω)
 Debian (or even any other *NIX-Distribution)
 
 All RedHat (Professional), CentOS required packages are listed in
@@ -38,14 +38,14 @@ All RedHat (Professional), CentOS required packages are listed in
 ================================================================================
 3) Introduction
 ---------------
-VHCS ω delivers a complete hosting automation appliance by offering significant
+ISPCP ω delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With VHCS ω you can configure your server and applications, create user with
+With ISPCP ω you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of VHCS ω are 3 easy-to-use, web-based control panels. VHCS
+created. The core of ISPCP ω are 3 easy-to-use, web-based control panels. ISPCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
@@ -55,10 +55,10 @@ Make sure you are logged in as root.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar -xjvf vhcs1.0.0-omega.tar.bz2
+	# tar -xjvf ispcp1.0.0-omega.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./vhcs1.0.0
+	# cd ./ispcp1.0.0
 
 3. Install the required modules:
 	# yum upgrade
@@ -66,12 +66,12 @@ Make sure you are logged in as root.
 	# yum remove sendmail
 	# yum install `cat ./docs/RedHat/redhat-packages`
 
-4. Now there are two ways of install VHCS ω
+4. Now there are two ways of install ISPCP ω
 
 a) via install script
 ---------------------
 4a. Start the script and follow the install instructions:
-	# ./install-vhcs.sh
+	# ./install-ispcp.sh
 
 After that return to step 12.
 
@@ -80,9 +80,9 @@ b) manualy
 4b. Change into the configuration directory:
 	# cd ./configs
 
-5. Open the vhcs2.conf and make some changes.
+5. Open the ispcp.conf and make some changes.
    You have to set up some configuration variables for your linux distribution.
-   VHCS ω is preconfigurated for Debian 3.1 Sarge.
+   ISPCP ω is preconfigurated for Debian 3.1 Sarge.
    If you're using another distribution please check, if config files exist in
    ./configs/dists and use/change them.
 
@@ -93,7 +93,7 @@ b) manualy
 	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
 								# infront or behind for MYSQL_PREFIX = no
 
-   Check the vhcs2.conf and adapt it to your requirements.
+   Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
@@ -103,18 +103,18 @@ b) manualy
 	# make install
 
 7. Copy all the directories into the system (you may make backups)
-	# cp -Rv /tmp/vhcs-1.0.0/* /
+	# cp -Rv /tmp/ispcp-1.0.0/* /
 
 8. Now it's time to set up the frontend. Change into the engine directory:
-	# cd /var/www/vhcs2/engine/setup
+	# cd /var/www/ispcp/engine/setup
 
 8a. Set the MySQL password, if not set:
 	# mysqladmin -u root password YOUR_PASSWORD
 
 9. Start the engine setup:
-	# ./vhcs2-setup
+	# ./ispcp-setup
 
-10. Install VHCS ω step-by-step
+10. Install ISPCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
@@ -127,19 +127,19 @@ b) manualy
 	into:	killall authdaemond.plain
 
 12. Clean the temporary folders:
-	# rm -R /tmp/vhcs-1.0.0
+	# rm -R /tmp/ispcp-1.0.0
 
 
 ================================================================================
 5) Update
 ---------
 
-There are two ways of update VHCS ω
+There are two ways of update ISPCP ω
 
 a) via install script
 ---------------------
 1. Start the script and follow the update instructions:
-	# ./install-vhcs.sh
+	# ./install-ispcp.sh
 
 b) manualy
 ----------
@@ -155,9 +155,9 @@ Please check http://isp-control.net for any questions not answered in this file.
 7) Credits
 ----------
 
-VHCS ω is a project of ispCP | isp Control Panel.
+ISPCP ω is a project of ispCP | isp Control Panel.
 Please visit our site under http://isp-control.net for further information on
-VHCS ω, ispCP and other themes.
+ISPCP ω, ispCP and other themes.
 
-We hope you enjoy using VHCS ω. If you like it, help us, to make it better. We
+We hope you enjoy using ISPCP ω. If you like it, help us, to make it better. We
 would be glad on any help provided!

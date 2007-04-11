@@ -1,7 +1,7 @@
-If you really want to install VHCS on OpenBSD you should be familar with the manual installation
+If you really want to install ISPCP on OpenBSD you should be familar with the manual installation
 process from the linux platform, it's only recommended for people with BSD knowledge!
 
-This is a short list of notes i have written while setting up and porting vhcs to OpenBSD,
+This is a short list of notes i have written while setting up and porting ispcp to OpenBSD,
 it may be incomplete/outdated in some places.
 
 1. install all packages from packagelist (openbsd-packages-install.sh will help you)
@@ -30,7 +30,7 @@ it may be incomplete/outdated in some places.
    if package p5-MIME-tools can't be installed, install it with cpan
    cpan> install MIME::Tools
 
-4. extract vhcs2 source package and run make
+4. extract ispcp source package and run make
 
 5. execute these commands:
 
@@ -40,8 +40,8 @@ it may be incomplete/outdated in some places.
 6. /usr/local/share/mysql/mysql.server start
    set mysql root password with mysqladmin: mysqladmin password 'your-new-password'
 
-   run make in vhcs2 directory , change to /tmp/vhcs2-<version>, execute: cp -R * /
-   change to /var/www/vhcs2/engine/setup and run vhcs2-setup
+   run make in ispcp directory , change to /tmp/ispcp-<version>, execute: cp -R * /
+   change to /var/www/ispcp/engine/setup and run ispcp-setup
 
 7. edit /etc/rc.local and add the following lines:
 
@@ -54,7 +54,7 @@ mkdir -p /var/run/courier-imap
 /usr/local/share/mysql/mysql.server start
 mkdir -p /var/run/proftpd
 /etc/proftpd.rc start
-/etc/vhcs2_daemon.rc start
+/etc/ispcp_daemon.rc start
 
 8. edit /etc/rc.conf.local and add the following lines:
 
@@ -68,7 +68,7 @@ named_flags=
 9. edit /var/www/conf/httpd.conf and insert
 
 AddType application/x-httpd-php .php
-Include /var/www/conf/vhcs2.conf to the last line
+Include /var/www/conf/ispcp.conf to the last line
 
 10. create initial php.ini
 cp /usr/local/share/examples/php4/php.ini-recommended /var/www/conf/php.ini
