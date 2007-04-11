@@ -1,6 +1,6 @@
-#!/bin/bash
+﻿#!/bin/bash
 
-# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
 #
@@ -23,8 +23,8 @@
 #
 ########################################################################
 
-# read needed entries from vhcs2.conf
-for a in `cat /etc/vhcs2/vhcs2.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ //g'`
+# read needed entries from ispcp.conf
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ //g'`
 do
 export $a
 done
@@ -89,7 +89,7 @@ chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 # fixing db keys permissions;
 #
 
-chmod 0444 $ROOT_DIR/gui/include/vhcs2-db-keys.php
+chmod 0444 $ROOT_DIR/gui/include/ispcp-db-keys.php
 
 #
 # Setting correct permission for virtual root directory

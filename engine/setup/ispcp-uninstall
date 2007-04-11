@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
-# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,14 +25,14 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS ω Home Page is at:
+# The ISPCP ω Home Page is at:
 #
 #    http://isp-control.net
 #
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'vhcs2_common_code.pl';
+require 'ispcp_common_code.pl';
 
 use strict;
 use warnings;
@@ -45,9 +45,9 @@ sub welcome_note {
 
     my $welcome_message = <<MSG;
 
-    Welcome in VHCS OMEGA '$main::cfg{'VersionH'}' Uninstall Program.
+    Welcome in ISPCP OMEGA '$main::cfg{'VersionH'}' Uninstall Program.
 
-    This program will uninstall VHCS OMEGA system from your server.
+    This program will uninstall ISPCP OMEGA system from your server.
 
     /!\\ WARNING: All domain users and their accounts will be removed.  /!\\
 
@@ -103,7 +103,7 @@ sub uninstall_shut_down {
 
     push_el(\@main::el, 'uninstall_shut_down()', 'Starting...');
 
-    $rs = del_file("/tmp/vhcs2-uninstall-services.log");
+    $rs = del_file("/tmp/ispcp-uninstall-services.log");
 
     return $rs if ($rs != 0);
 
@@ -111,9 +111,9 @@ sub uninstall_shut_down {
 
     Congratulations !
 
-    VHCS OMEGA '$main::cfg{'VersionH'}' uninstall completed successfully !
+    ISPCP OMEGA '$main::cfg{'VersionH'}' uninstall completed successfully !
 
-    Thank you for using VHCS OMEGA product !
+    Thank you for using ISPCP OMEGA product !
 
 MSG
 
@@ -417,11 +417,11 @@ sub uninstall_crontab {
     my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
 
-    $cmd = "$main::cfg{'CMD_CRONTAB'} -u root -r &> /tmp/vhcs2-uninstall-crontab.log";
+    $cmd = "$main::cfg{'CMD_CRONTAB'} -u root -r &> /tmp/ispcp-uninstall-crontab.log";
 
     $rs = sys_command_rs($cmd);
 
-    $rs = del_file("/tmp/vhcs2-uninstall-crontab.log");
+    $rs = del_file("/tmp/ispcp-uninstall-crontab.log");
 
     return $rs if ($rs != 0);
 
@@ -465,7 +465,7 @@ sub uninstall_named {
 
     my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-    sys_command_rs("$main::cfg{'CMD_NAMED'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_NAMED'} stop &> /tmp/ispcp-uninstall-services.log");
 
     if (-e "$bk_dir/named.conf.system") {
 
@@ -479,13 +479,13 @@ sub uninstall_named {
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/named.conf.vhcs2");
+        $rs = del_file("$bk_dir/named.conf.ispcp");
 
         return $rs if ($rs != 0);
 
     }
 
-    sys_command_rs("$main::cfg{'CMD_NAMED'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_NAMED'} start &> /tmp/ispcp-uninstall-services.log");
 
     push_el(\@main::el, 'uninstall_named()', 'Ending...');
 
@@ -507,21 +507,21 @@ sub uninstall_httpd {
 
     my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-    sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/ispcp-uninstall-services.log");
 
-    sys_command_rs("a2dissite vhcs2.conf &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("a2dissite ispcp.conf &> /tmp/ispcp-uninstall-services.log");
 
-    $rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/vhcs2.conf");
+    $rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf");
 
     return $rs if ($rs != 0);
 
-    sys_command_rs("a2dissite master.conf &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("a2dissite master.conf &> /tmp/ispcp-uninstall-services.log");
 
     $rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/master.conf");
 
     return $rs if ($rs != 0);
 
-    sys_command_rs("a2dismod fastcgi &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("a2dismod fastcgi &> /tmp/ispcp-uninstall-services.log");
 
     $rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi.conf");
 
@@ -529,7 +529,7 @@ sub uninstall_httpd {
 
     sleep(5);
 
-    sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/ispcp-uninstall-services.log");
 
     push_el(\@main::el, 'uninstall_httpd()', 'Ending...');
 
@@ -549,11 +549,11 @@ sub uninstall_mta {
 
     my $wrk_dir = "$cfg_dir/working";
 
-    my $vrl_dir = "$cfg_dir/vhcs2";
+    my $vrl_dir = "$cfg_dir/ispcp";
 
     my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-    sys_command_rs("$main::cfg{'CMD_MTA'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_MTA'} stop &> /tmp/ispcp-uninstall-services.log");
 
     if (-e "$bk_dir/main.cf.system") {
 
@@ -577,21 +577,21 @@ sub uninstall_mta {
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/main.cf.vhcs2");
+        $rs = del_file("$bk_dir/main.cf.ispcp");
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/master.cf.vhcs2");
+        $rs = del_file("$bk_dir/master.cf.ispcp");
 
         return $rs if ($rs != 0);
 
     }
 
-    $rs = sys_command("$main::cfg{'CMD_NEWALIASES'} &> /tmp/vhcs2-uninstall-services.log");
+    $rs = sys_command("$main::cfg{'CMD_NEWALIASES'} &> /tmp/ispcp-uninstall-services.log");
 
     return $rs if ($rs != 0);
 
-    sys_command_rs("$main::cfg{'CMD_MTA'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_MTA'} start &> /tmp/ispcp-uninstall-services.log");
 
     push_el(\@main::el, 'uninstall_mta()', 'Ending...');
 
@@ -613,11 +613,11 @@ sub uninstall_po {
 
     my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-    sys_command_rs("$main::cfg{'CMD_AUTHD'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_AUTHD'} stop &> /tmp/ispcp-uninstall-services.log");
 
-    sys_command_rs("$main::cfg{'CMD_IMAP'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_IMAP'} stop &> /tmp/ispcp-uninstall-services.log");
 
-    sys_command_rs("$main::cfg{'CMD_POP'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_POP'} stop &> /tmp/ispcp-uninstall-services.log");
 
     if (-e "$bk_dir/imapd.system") {
 
@@ -709,19 +709,19 @@ sub uninstall_po {
 
 	}
 
-        $rs = del_file("$bk_dir/imapd.vhcs2");
+        $rs = del_file("$bk_dir/imapd.ispcp");
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/pop3d.vhcs2");
+        $rs = del_file("$bk_dir/pop3d.ispcp");
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/authdaemonrc.vhcs2");
+        $rs = del_file("$bk_dir/authdaemonrc.ispcp");
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/authmodulelist.vhcs2");
+        $rs = del_file("$bk_dir/authmodulelist.ispcp");
 
         return $rs if ($rs != 0);
 
@@ -731,11 +731,11 @@ sub uninstall_po {
 
     return $rs if ($rs != 0);
 
-    sys_command_rs("$main::cfg{'CMD_AUTHD'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_AUTHD'} start &> /tmp/ispcp-uninstall-services.log");
 
-    sys_command_rs("$main::cfg{'CMD_IMAP'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_IMAP'} start &> /tmp/ispcp-uninstall-services.log");
 
-    sys_command_rs("$main::cfg{'CMD_POP'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_POP'} start &> /tmp/ispcp-uninstall-services.log");
 
     push_el(\@main::el, 'uninstall_po()', 'Ending...');
 
@@ -755,7 +755,7 @@ sub uninstall_ftpd {
 
     my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-    sys_command_rs("$main::cfg{'CMD_FTPD'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_FTPD'} stop &> /tmp/ispcp-uninstall-services.log");
 
     if (-e "$bk_dir/proftpd.conf.system") {
 
@@ -769,13 +769,13 @@ sub uninstall_ftpd {
 
         return $rs if ($rs != 0);
 
-        $rs = del_file("$bk_dir/proftpd.conf.vhcs2");
+        $rs = del_file("$bk_dir/proftpd.conf.ispcp");
 
         return $rs if ($rs != 0);
 
     }
 
-    sys_command_rs("$main::cfg{'CMD_FTPD'} start &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_FTPD'} start &> /tmp/ispcp-uninstall-services.log");
 
     push_el(\@main::el, 'uninstall_ftpd()', 'Ending...');
 
@@ -783,15 +783,15 @@ sub uninstall_ftpd {
 
 }
 
-sub uninstall_vhcs2d {
+sub uninstall_ispcpd {
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'uninstall_vhcs2d()', 'Starting...');
+    push_el(\@main::el, 'uninstall_ispcpd()', 'Starting...');
 
-    sys_command_rs("$main::cfg{'CMD_VHCS2D'} stop &> /tmp/vhcs2-uninstall-services.log");
+    sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-uninstall-services.log");
 
-    push_el(\@main::el, 'uninstall_vhcs2d()', 'Ending...');
+    push_el(\@main::el, 'uninstall_ispcpd()', 'Ending...');
 
     return 0;
 
@@ -839,7 +839,7 @@ sub uninstall_host_system {
 
     return $rs if ($rs != 0);
 
-    $rs = uninstall_vhcs2d();
+    $rs = uninstall_ispcpd();
 
     return $rs if ($rs != 0);
 

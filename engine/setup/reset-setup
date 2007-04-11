@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
-# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
 #
@@ -23,17 +23,17 @@
 #
 ########################################################################
 #
-# This Script only resetts the VHCS Setup, it WON'T uninstall VHCS!!
+# This Script only resetts the ISPCP Setup, it WON'T uninstall ISPCP!!
 # Afterwards a new install is possible. Use it, if you had an installation
 # error during setup.
 #
-# Keep attention: The VHCS database will be deleted with all its content!
+# Keep attention: The ISPCP database will be deleted with all its content!
 #
 ########################################################################
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'vhcs2_common_code.pl';
+require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
@@ -45,7 +45,7 @@ my $user_delete	= $main::cfg{'CMD_USERDEL'};
 my $database	= $main::cfg{'DATABASE_NAME'};
 
 ## MAIN
-print STDOUT "Re-setting VHCS 2 Setup!\n";
+print STDOUT "Re-setting ISPCP Setup!\n";
 print STDOUT "========================\n";
 my $delete_cmd = "$user_delete -r $user_prefix$master_user";
 $rs = sys_command($delete_cmd);

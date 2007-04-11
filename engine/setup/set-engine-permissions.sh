@@ -1,11 +1,11 @@
 #!/bin/sh
 
 #
-# VHCS engine permissions setter v1.1;
+# ISPCP engine permissions setter v1.1;
 #
 
-# read needed entries from vhcs2.conf
-for a in `cat /etc/vhcs2/vhcs2.conf | grep -E '(ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`
+# read needed entries from ispcp.conf
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`
 do
 export $a
 done
@@ -69,7 +69,7 @@ echo "0755 root:root folder [$i]";
 # fixing messager log folder permissions;
 #
 
-i="${LOG_DIR}/vhcs2-arpl-msgr"
+i="${LOG_DIR}/ispcp-arpl-msgr"
 
 echo "0755 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME folder [$i]";
 
