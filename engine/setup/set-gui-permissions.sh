@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 # ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2006-2007 by ispCP | http://isp-control.net
