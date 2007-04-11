@@ -1,4 +1,4 @@
-# VHCS(tm) - Virtual Hosting Control System
+# ISPCP(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
 #
@@ -21,12 +21,12 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The ISPCP Home Page is at:
 #
-#    http://www.vhcs.net
+#    http://www.ispcp.net
 
 
-OBJS = vhcs_daemon.o message.o daemon_init.o say.o signal-handlers.o\
+OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
 helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
@@ -36,12 +36,12 @@ COMPILE = gcc -O2 -ansi -Wall -Wstrict-prototypes -pedantic -c -o
 
 STRIP = strip -s
 
-vhcs2_daemon: $(OBJS)
-	$(BUILD) vhcs2_daemon $(OBJS)
-	$(STRIP) vhcs2_daemon
+ispcp_daemon: $(OBJS)
+	$(BUILD) ispcp_daemon $(OBJS)
+	$(STRIP) ispcp_daemon
         
-vhcs_daemon.o: vhcs_daemon.c defs.h
-	$(COMPILE) vhcs_daemon.o vhcs_daemon.c
+ispcp_daemon.o: ispcp_daemon.c defs.h
+	$(COMPILE) ispcp_daemon.o ispcp_daemon.c
 
 daemon_init.o: daemon_init.c daemon_init.h
 	$(COMPILE) daemon_init.o daemon_init.c
@@ -93,5 +93,5 @@ uninstall: clean
 clean:
 	rm -rf *~
 	rm -rf *.o
-	rm -rf vhcs2_daemon
+	rm -rf ispcp_daemon
 
