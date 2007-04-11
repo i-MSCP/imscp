@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
+# ISPCP(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
 #
@@ -23,9 +23,9 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The VHCS Home Page is at:
+# The ISPCP Home Page is at:
 #
-#    http://www.vhcs.net
+#    http://www.isp-control.net
 
 #
 # common code: BEGIN
@@ -376,13 +376,13 @@ sub del_file {
 
 %main::cfg = ();
 
-$main::cfg_file = '/etc/vhcs2/vhcs2.conf';
+$main::cfg_file = '/etc/ispcp/ispcp.conf';
 
 $main::cfg_re = '^([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'vhcs2-db-keys.pl';
+require 'ispcp-db-keys.pl';
 
 sub encrypt_db_password {
 
@@ -529,14 +529,14 @@ sub get_conf {
 my $rs = get_conf();
 
 if ($rs != 0) {
-	if( -d "/var/log/vhcs2/vhcs2-arpl-msgr/") {
-		$main::vhcs2_arpl_msgr_el = "/var/log/vhcs2/vhcs2-arpl-msgr/vhcs2-arpl-msgr.el";
-		$main::vhcs2_arpl_msgr_stdout = "/var/log/vhcs2/vhcs2-arpl-msgr/vhcs2-arpl-msgr.stdout";
-		$main::vhcs2_arpl_msgr_stderr = "/var/log/vhcs2/vhcs2-arpl-msgr/vhcs2-arpl-msgr.stderr";
-		open(STDOUT, ">", $main::vhcs2_arpl_msgr_stdout) || die "Can't redirect stdout";
-		open(STDERR, ">", $main::vhcs2_arpl_msgr_stderr) || die "Can't redirect stderr";
+	if( -d "/var/log/ispcp/ispcp-arpl-msgr/") {
+		$main::ispcp_arpl_msgr_el = "/var/log/ispcp/ispcp-arpl-msgr/ispcp-arpl-msgr.el";
+		$main::ispcp_arpl_msgr_stdout = "/var/log/ispcp/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
+		$main::ispcp_arpl_msgr_stderr = "/var/log/ispcp/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
+		open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) || die "Can't redirect stdout";
+		open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) || die "Can't redirect stderr";
 	}
-	print STDERR "\nCRITICAL ERROR: Failed open /etc/vhcs2/vhcs2.conf! Maybe wrong permissions?\n" ;
+	print STDERR "\nCRITICAL ERROR: Failed open /etc/ispcp/ispcp.conf! Maybe wrong permissions?\n" ;
 	exit 0;
 }
 
@@ -545,12 +545,12 @@ if ($rs != 0) {
 # debug dump files;
 $main::log_dir = $main::cfg{'LOG_DIR'};
 
-$main::vhcs2_arpl_msgr_el = "$main::log_dir/vhcs2-arpl-msgr/vhcs2-arpl-msgr.el";
-$main::vhcs2_arpl_msgr_stdout = "$main::log_dir/vhcs2-arpl-msgr/vhcs2-arpl-msgr.stdout";
-$main::vhcs2_arpl_msgr_stderr = "$main::log_dir/vhcs2-arpl-msgr/vhcs2-arpl-msgr.stderr";
+$main::ispcp_arpl_msgr_el = "$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.el";
+$main::ispcp_arpl_msgr_stdout = "$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
+$main::ispcp_arpl_msgr_stderr = "$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
 
-open(STDOUT, ">", $main::vhcs2_arpl_msgr_stdout) || die "Can't redirect stdout";
-open(STDERR, ">", $main::vhcs2_arpl_msgr_stderr) || die "Can't redirect stderr";
+open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) || die "Can't redirect stdout";
+open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) || die "Can't redirect stderr";
 
 #
 # common code: END
@@ -572,9 +572,9 @@ sub arpl_msgr_start_up {
 
     # Let's clear Execution Logs, if any.
 
-    if (-e $main::vhcs2_arpl_msgr_el) {
+    if (-e $main::ispcp_arpl_msgr_el) {
 
-        $rs = del_file($main::vhcs2_arpl_msgr_el);
+        $rs = del_file($main::ispcp_arpl_msgr_el);
 
         return $rs if ($rs != 0);
 
@@ -614,11 +614,11 @@ sub arpl_msgr_shut_down {
 
 	if (!defined($main::engine_debug)) {
 
-		$rs = del_file($main::vhcs2_arpl_msgr_stdout);
+		$rs = del_file($main::ispcp_arpl_msgr_stdout);
 
         return $rs if ($rs != 0);
 
-		$rs = del_file($main::vhcs2_arpl_msgr_stderr);
+		$rs = del_file($main::ispcp_arpl_msgr_stderr);
 
         return $rs if ($rs != 0);
 
@@ -773,7 +773,7 @@ sub arpl_msgr_engine {
 
 			        my $out = new MIME::Entity;
 
-            		$mail_to=~s/\@vhcs2-arpl./\@/;
+            		$mail_to=~s/\@ispcp-arpl./\@/;
 
 					$out -> build(
     		    	              From => $mail_to,
@@ -781,7 +781,7 @@ sub arpl_msgr_engine {
             		    	      Subject => "[Autoreply] ".$head -> get('Subject'),
                 		    	  Type => "multipart/mixed",
 								  'X-Autoresponse-From' => $mail_to,
-	                    		  'X-Mailer' => "VHCS $main::cfg{'VersionH'} Autoreply Manager"
+	                    		  'X-Mailer' => "ISPCP $main::cfg{'VersionH'} Autoreply Manager"
 								);
 
 
@@ -828,7 +828,7 @@ $rs = arpl_msgr_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::vhcs2_arpl_msgr_el);
+    dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
 
     arpl_msgr_shut_down();
 
@@ -840,7 +840,7 @@ $rs = arpl_msgr_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::vhcs2_arpl_msgr_el);
+    dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
 
     arpl_msgr_shut_down();
 
@@ -852,7 +852,7 @@ $rs = arpl_msgr_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::vhcs2_arpl_msgr_el);
+    dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
 
     exit 1;
 

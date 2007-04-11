@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
-# VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ispCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 #
@@ -26,7 +26,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'vhcs2_common_code.pl';
+require 'ispcp_common_code.pl';
 
 use strict;
 
@@ -261,7 +261,7 @@ sub backup_all_engine {
 
 		#
 		# User Database Backup
-		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der VHCS-DB auslesen
+		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der ISPCP-DB auslesen
 		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
 		#
 
@@ -367,7 +367,7 @@ if ($proceed ne 'yes') {
 
 }
 
-my $backup_lock_file = "/tmp/vhcs2-backup-all.lock";
+my $backup_lock_file = "/tmp/ispcp-backup-all.lock";
 
 $rs = backup_all_start_up($backup_lock_file);
 
