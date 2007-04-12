@@ -1028,6 +1028,7 @@ SQL_QUERY;
           t2.domain_created_id = ?
 SQL_QUERY;
 
+   $subdomains[] = array();	
    $res_build_sub = exec_query($sql, $query_build_subdomain, array($reseller_id));
    while (!$res_build_sub -> EOF) {
       $subdomains[] = $res_build_sub -> fields['subdomain_name'].".".$res_build_sub -> fields['domain_name'];
