@@ -1,11 +1,10 @@
 #!/bin/sh
 
-#export PKG_PATH=ftp://ftp.de.openbsd.org/pub/OpenBSD/3.8/packages/sparc64/
-export PKG_PATH=ftp://ftp.de.openbsd.org/pub/OpenBSD/3.8/packages/i386/
+export PKG_PATH=ftp://ftp.ca.openbsd.org/pub/OpenBSD/`uname -r`/packages/`uname -m`/
 
 for a in `cat openbsd-packages.txt`
 do
 
-	pkg_add -v $a 
+	pkg_add -v $a
 
 done
