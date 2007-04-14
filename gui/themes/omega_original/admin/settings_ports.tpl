@@ -14,6 +14,20 @@ function action_delete(url) {
 
 	location = url;
 }
+
+function enable_for_post() {
+    
+	for (var i = 0; i < document.frmsettings.length; i++) {
+		for (var a = 0; a < document.frmsettings.elements[i].length; a++) {
+			if (document.frmsettings.elements[i].name == "port_type[]") {
+				document.frmsettings.elements[i].disabled = false;
+			}
+		}
+	}
+    
+return true;
+
+}
 //-->
 </script>
 </head>
@@ -45,7 +59,7 @@ function action_delete(url) {
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form name="frmsettings" method="post" action="settings_ports.php">
+                      <td valign="top"><form name="frmsettings" method="post" action="settings_ports.php" onSubmit="return enable_for_post();">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <!-- BDP: page_message -->
                             <tr>
