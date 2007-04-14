@@ -10,6 +10,11 @@ ispCP Omega 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-14 Jan Porath
+	- GUI:
+		* fixed bug: add alias domains fails
+		* fixed bug: #164 port check update deletes protocol entry
+
 2007-04-07 Benedikt Heintel
 	- LANGUAGES:
 		* Romanian: added language
