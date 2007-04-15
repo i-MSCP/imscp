@@ -1,13 +1,13 @@
 apr
 apr-util
 bash
-bzip2
+bzip2-1.0.3
 c-client
 courier-imap
 courier-pop3
 courier-utils
 curl
-cyrus-sasl
+cyrus-sasl-2.1.21p2
 db-4.2.52p8
 expat
 freetype
@@ -22,8 +22,8 @@ libmcrypt
 libxml
 mhash
 mtr-0.71-no_x11
-mysql-client
-mysql-server
+mysql-client-5.0.22
+mysql-server-5.0.22
 neon
 p5-Compress-Zlib
 p5-Crypt-Blowfish
@@ -39,7 +39,7 @@ p5-HTML-Tagset
 p5-HTTP-GHTTP
 p5-IO-stringy
 p5-MIME-tools
-p5-Mail-SpamAssassin
+p5-Mail-SpamAssassin-3.1.8
 p5-Mail-Tools
 p5-Net-DNS
 p5-Net-Daemon
