@@ -194,7 +194,7 @@ include_once (realpath($include_path.'/admin-functions.php'));
 
 include_once (realpath($include_path.'/reseller-functions.php'));
 
-include_once (realpath($include_path.'/ispcp-2-0.php'));
+include_once (realpath($include_path.'/ispcp-functions.php'));
 
 include_once (realpath($include_path.'/idna.php'));
 

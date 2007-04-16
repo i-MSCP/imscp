@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -198,7 +198,7 @@ sub uninstall_system_users {
     my @gdata = ();
 
     #
-		# MTA Mailbox User
+	# MTA Mailbox User
     #
     @udata = getpwnam($fuid);
     @gdata = getgrnam($fuid);
@@ -223,77 +223,77 @@ sub uninstall_system_users {
 
     }
 
-		#
-		# PHP Master
-		#
+	#
+	# PHP Master
+	#
 
-		@gdata = getgrnam("$upref$mgid");
+	@udata = getpwnam("$upref$muid");
 
-		if (scalar(@gdata) != 0) { # we have not this one group data;
+	if (scalar(@udata) != 0) { # we have not this one user data;
 
-			my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref$mgid";
+		my $cmd = "$main::cfg{'CMD_USERDEL'} $upref$muid";
 
-			$rs = sys_command($cmd);
-
-			return $rs if ($rs != 0);
-
-		}
-
-		@udata = getpwnam("$upref$muid");
-
-		if (scalar(@udata) != 0) { # we have not this one user data;
-
-			my $cmd = "$main::cfg{'CMD_USERDEL'} $upref$muid";
-
-			$rs = sys_command($cmd);
-
-			return $rs if ($rs != 0);
-
-		}
-
-		#
-		# Virtual User
-		#
-
-		$sql = "select domain_uid,domain_gid from domain";
-
-		($rs, $rows) = doSQL($sql);
+		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
 
-		if (scalar(@$rows) != 0) {
+	}
 
-			foreach (@$rows) {
+	@gdata = getgrnam("$upref$mgid");
 
-				my $query_user = $_;
+	if (scalar(@gdata) != 0) { # we have not this one group data;
 
-				@gdata = getgrnam("$upref@$query_user[1]");
+		my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref$mgid";
 
-				if (scalar(@gdata) != 0) { # we have not this one group data;
+		$rs = sys_command($cmd);
 
-					my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref@$query_user[0]";
+		return $rs if ($rs != 0);
 
-					$rs = sys_command($cmd);
+	}
 
-					return $rs if ($rs != 0);
+	#
+	# Virtual User
+	#
 
-				}
+	$sql = "select domain_uid,domain_gid from domain";
 
-				@udata = getpwnam("$upref@$query_user[0]");
+	($rs, $rows) = doSQL($sql);
 
-				if (scalar(@udata) != 0) { # we have not this one user data;
+	return $rs if ($rs != 0);
 
-					my $cmd = "$main::cfg{'CMD_USERDEL'} $upref@$query_user[0]";
+	if (scalar(@$rows) != 0) {
 
-					$rs = sys_command($cmd);
+		foreach (@$rows) {
 
-					return $rs if ($rs != 0);
+			my $query_user = $_;
 
-				}
+			@udata = getpwnam("$upref@$query_user[0]");
+
+			if (scalar(@udata) != 0) { # we have not this one user data;
+
+				my $cmd = "$main::cfg{'CMD_USERDEL'} $upref@$query_user[0]";
+
+				$rs = sys_command($cmd);
+
+				return $rs if ($rs != 0);
+
+			}
+
+			@gdata = getgrnam("$upref@$query_user[1]");
+
+			if (scalar(@gdata) != 0) { # we have not this one group data;
+
+				my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref@$query_user[0]";
+
+				$rs = sys_command($cmd);
+
+				return $rs if ($rs != 0);
 
 			}
 
 		}
+
+	}
 
 
     push_el(\@main::el, 'uninstall_system_users()', 'Ending...');

@@ -1,4 +1,4 @@
-ispCP Omega 1.0.0 Changelog
+ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
@@ -9,6 +9,18 @@ ispCP Omega 1.0.0 Changelog
 |               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-04-16 Benedikt Heintel
+	- LANGUAGES:
+		* Romanian: added missing strings
+	- GUI:
+		* renamed ispcp-2-0.php => ispcp-functions.php
+	- SETUP:
+		* fixed erron on uninstall
+
+2007-04-11 Malte Geierhos
+	- RELEASE:
+		* name change of project: VHCS ω => ispCP ω
 
 2007-04-14 Jan Porath
 	- GUI:
@@ -77,7 +89,7 @@ ispCP Omega 1.0.0 Changelog
 2007-03-31 Benedikt Heintel
 	- RELEASE: VHCS ω Omega 1.0.0 RC1
 
- ω 2.4.8 Changelog
+VHCS ω 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2007-03-30 Benedikt Heintel

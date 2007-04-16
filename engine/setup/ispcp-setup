@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# VHCS(tm) - Virtual Hosting Control System
+# ispCP ω a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP ω Home Page is at:
+# The ispCP ω Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -103,7 +103,7 @@ sub ask_hostname {
 
 	return $rs if ($rs != 0);
 
-	my $qmsg = "    Please enter system hostname (Enter for defaults) [$hostname]: ";
+	my $qmsg = "    Please enter fully qualified hostname (Enter for defaults) [$hostname]: ";
 
 	print STDOUT $qmsg;
 
@@ -122,7 +122,7 @@ sub ask_hostname {
 	}
 	else {
 
-		print STDOUT "\n    Hostname not a valid domain!\n";
+		print STDOUT "\n    Hostname not a valid domain name!\n";
 		return 1;
 
 	}
