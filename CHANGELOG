@@ -13,6 +13,7 @@ ispCP ω 1.0.0 Changelog
 2007-04-16 Benedikt Heintel
 	- LANGUAGES:
 		* Romanian: added missing strings
+		* Spanish: added language (Spain)
 	- GUI:
 		* renamed ispcp-2-0.php => ispcp-functions.php
 	- SETUP:
