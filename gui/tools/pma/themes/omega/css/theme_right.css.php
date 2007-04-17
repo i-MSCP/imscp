@@ -819,6 +819,7 @@ table.calendar th {
 
 table.calendar td.selected {
     background-color:   #FFCC99;
+	color:	#000000;
 }
 
 img.calendar {
