@@ -266,6 +266,7 @@ table tr.even {
 table tr.marked th,
 table tr.marked {
     background-color:   #FFCC99;
+    color :   #000000;
 }
 
 /* hovered table rows */
