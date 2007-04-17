@@ -1,4 +1,4 @@
-ROOT_APACHE_CONF=$(ROOT_CONF)/apache2/
+ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
 export
 
@@ -10,10 +10,9 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
 
 	cp ./httpd.conf ./working/ispcp.conf
-
 	cp ./fastcgi.conf ./working/fastcgi.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
-	cp ./master.conf $(SYSTEM_CONF)/apache
+	cp ./00_master.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache

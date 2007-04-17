@@ -11,6 +11,12 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-04-16 Benedikt Heintel
+	- CONFIGS:
+		* fixed bug #174: master not longer reachable on adding Domain
+	- ENGINE:
+		* fixed bug #174: master not longer reachable on adding Domain
+
+2007-04-16 Benedikt Heintel
 	- LANGUAGES:
 		* Romanian: added missing strings
 		* Spanish: added language (Spain)

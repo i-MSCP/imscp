@@ -1972,7 +1972,7 @@ sub setup_httpd {
 	# Master file
 	#
 
-	($rs, $cfg_tpl) = get_file("$cfg_dir/master.conf");
+	($rs, $cfg_tpl) = get_file("$cfg_dir/00_master.conf");
 
 	return $rs if ($rs != 0);
 
@@ -1990,7 +1990,7 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/master.conf", $cfg, 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 
@@ -2027,7 +2027,7 @@ sub setup_httpd {
 	if ( -e "/usr/sbin/a2ensite" ) {
 
 		sys_command_rs("/usr/sbin/a2ensite ispcp.conf &> /tmp/ispcp-setup-services.log");
-		sys_command_rs("/usr/sbin/a2ensite master.conf &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/sbin/a2ensite 00_master.conf &> /tmp/ispcp-setup-services.log");
 
 	}
 

@@ -1,5 +1,6 @@
-
 ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
+
+RELEASE=`cat /etc/debian_version | awk '{print $1}'`
 
 export
 
@@ -11,13 +12,20 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
 
 	cp ./httpd.conf ./working/ispcp.conf
-	cp ./fastcgi.conf ./working/fastcgi.conf
+
+	# Ubuntu 7.04?
+	if [[ $(RELEASE) == 'testing/unstable' ]] ; then \
+		cp ./fastcgi2.conf ./working/fastcgi.conf ; \
+	else \
+		cp ./fastcgi.conf ./working/fastcgi.conf ; \
+	fi \
+
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
+	cp ./00_master.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./httpd.conf $(ROOT_APACHE_CONF)/sites-available/ispcp.conf
 	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
 
 uninstall:
