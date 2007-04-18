@@ -14,6 +14,8 @@ ispCP ω 1.0.0 Changelog
 	- DISTS:
 		* Fedora: updated files
 		* Gentoo: updated files
+		* SuSE 10.0: updated files
+		* SuSE 9.3: updated files
 	- DOCS:
 		* SuSE: updated installation
 	- ENGINE:
@@ -26,6 +28,7 @@ ispCP ω 1.0.0 Changelog
 		* changed debugger layout
 	- TOOLS:
 		* PMA update 2.10.2-RC1
+	- RELEASE ispCP ω Omega 1.0.0 RC1
 
 2007-04-17 Benedikt Heintel
 	- CONFIGS:

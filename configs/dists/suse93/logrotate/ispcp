@@ -5,13 +5,13 @@
 	compress
 	delaycompress
 	notifempty
-	create 644 root root
+	create 640 root adm
 	sharedscripts
 	prerotate
 		/srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
 	endscript
 	postrotate
-	if [ -f /var/run/httpd2.pid ]; then
+	if [ -f /var/run/httpd.pid ]; then
 		/etc/init.d/apache2 restart > /dev/null
 	fi
 	endscript

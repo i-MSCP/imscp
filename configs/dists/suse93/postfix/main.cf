@@ -10,19 +10,19 @@
 #
 
 command_directory = /usr/sbin
-daemon_directory = /usr/lib/postfix
+daemon_directory  = /usr/lib/postfix
 program_directory = /usr/lib/postfix
 
 #
 # Some common configuration parameters;
 #
 
-inet_interfaces = all
+inet_interfaces  = all
 mynetworks_style = host
 
 myhostname = {MTA_HOSTNAME}
-mydomain = {MTA_LOCAL_DOMAIN}
-myorigin = $mydomain
+mydomain   = {MTA_LOCAL_DOMAIN}
+myorigin   = $mydomain
 
 smtpd_banner = $myhostname ISPCP {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
 setgid_group = maildrop
@@ -31,30 +31,34 @@ setgid_group = maildrop
 # Receiving messages parameters;
 #
 
-mydestination = $myhostname, $mydomain 
+mydestination       = $myhostname, $mydomain
 append_dot_mydomain = no
-append_at_myorigin = yes
-local_transport = local
-virtual_transport = virtual
-transport_maps = hash:{MTA_TRANSPORT_HASH}
+append_at_myorigin  = yes
+local_transport     = local
+virtual_transport   = virtual
+transport_maps      = hash:{MTA_TRANSPORT_HASH}
 
 #
 # Delivering local messages parameters;
 #
 
 mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
+
+# Mailboxquota
+# => 0 for unlimited
+# => 104857600 for 100 MB
 mailbox_size_limit = 0
-mailbox_command = procmail -a "$EXTENSION"
+mailbox_command    = procmail -a "$EXTENSION"
 
 biff = no
 
-alias_database = hash:{MTA_LOCAL_ALIAS_HASH}
+alias_database                    = hash:{MTA_LOCAL_ALIAS_HASH}
 
 local_destination_recipient_limit = 1
-local_recipient_maps = unix:passwd.byname $alias_database
+local_recipient_maps              = unix:passwd.byname $alias_database
 
 #
-# ISPCP Autoresponder paramters;
+# ISPCP Autoresponder parameters;
 #
 
 ispcp-arpl_destination_recipient_limit = 1
@@ -63,31 +67,61 @@ ispcp-arpl_destination_recipient_limit = 1
 # Delivering virtual messages parameters;
 #
 
-virtual_mailbox_base = {MTA_VIRTUAL_MAIL_DIR}
-virtual_mailbox_limit = 0
+virtual_mailbox_base    = {MTA_VIRTUAL_MAIL_DIR}
+virtual_mailbox_limit   = 0
 
 virtual_mailbox_domains = hash:{MTA_VIRTUAL_DMN_HASH}
-virtual_mailbox_maps = hash:{MTA_VIRTUAL_MAILBOX_HASH}
+virtual_mailbox_maps    = hash:{MTA_VIRTUAL_MAILBOX_HASH}
 
-virtual_alias_maps = hash:{MTA_VIRTUAL_ALIAS_HASH}
+virtual_alias_maps      = hash:{MTA_VIRTUAL_ALIAS_HASH}
 
-virtual_minimum_uid = {MTA_MAILBOX_MIN_UID}
-virtual_uid_maps = static:{MTA_MAILBOX_UID}
-virtual_gid_maps = static:{MTA_MAILBOX_GID}
+virtual_minimum_uid     = {MTA_MAILBOX_MIN_UID}
+virtual_uid_maps        = static:{MTA_MAILBOX_UID}
+virtual_gid_maps        = static:{MTA_MAILBOX_GID}
 
 #
 # SASL paramters;
 #
 
-smtpd_sasl_auth_enable = yes
+smtpd_sasl_auth_enable       = yes
+smtpd_sasl2_auth_enable      = yes
+smtpd_sasl_security_options  = noanonymous
+smtpd_sasl_local_domain      =
+broken_sasl_auth_clients     = yes
+smtpd_sender_restrictions    = permit_mynetworks,
+                               permit_sasl_authenticated,
+                               reject_unauth_destination
+smtpd_recipient_restrictions = permit_mynetworks,
+                               permit_sasl_authenticated,
+                               reject_unauth_destination
+                               check_policy_service inet:127.0.0.1:60000
 
-smtpd_sasl_security_options = noanonymous
 
-smtpd_sasl_local_domain = ispcp.net
+#
+# TLS parameters; activate, if avaible/used
+#
 
-broken_sasl_auth_clients = yes
+#smtpd_tld_loglevel        = 2
+#smtpd_tls_cert_file       = /etc/postfix/cert.pem
+#smtpd_tls_key_file        = /etc/postfix/privkey.pem
+#smtpd_use_tls             = yes
+#smtpd_tls_auth_only       = no
+#smtpd_tls_received_header = yes
 
-smtpd_recipient_restrictions =
-   permit_sasl_authenticated,
-   permit_mynetworks,
-   reject_unauth_destination
+
+#
+# AMaViS parameters; activate, if avaible/used
+#
+
+#content_filter = amavis:[127.0.0.1]:10024
+
+#
+# Quota support; activate, if avaible/used
+#
+
+#virtual_create_maildirsize     = yes
+#virtual_mailbox_extended       = yes
+#virtual_mailbox_limit_maps     = mysql:/etc/postfix/mysql_virtual_mailbox_limit_maps.cf
+#virtual_mailbox_limit_override = yes
+#virtual_maildir_limit_message  = "The user you're trying to reach is over mailbox quota."
+#virtual_overquota_bounce       = yes
