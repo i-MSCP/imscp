@@ -1,5 +1,5 @@
 <?php
-/* $Id: database_interface.lib.php 9974 2007-02-12 15:22:19Z cybot_tm $ */
+/* $Id: database_interface.lib.php 10189 2007-03-23 16:45:44Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -871,10 +871,10 @@ function PMA_DBI_postConnect($link, $is_controluser = false)
         }
 
         // Add some field types to the list, this needs to be done once per session!
-        if ($GLOBALS['cfg']['ColumnTypes'][count($GLOBALS['cfg']['ColumnTypes']) - 1] != 'VARBINARY') {
+        if (!in_array('BINARY', $GLOBALS['cfg']['ColumnTypes']))
             $GLOBALS['cfg']['ColumnTypes'][] = 'BINARY';
+        if (!in_array('VARBINARY', $GLOBALS['cfg']['ColumnTypes']))
             $GLOBALS['cfg']['ColumnTypes'][] = 'VARBINARY';
-        }
 
     } else {
         require_once('./libraries/charset_conversion.lib.php');
@@ -1156,7 +1156,9 @@ function PMA_DBI_getCompatibilities()
         $compats[] = 'MYSQL40';
         $compats[] = 'MSSQL';
         $compats[] = 'ORACLE';
-        $compats[] = 'POSTGRESQL';
+        // removed; in MySQL 5.0.33, this produces exports that
+        // can't be read by POSTGRESQL (see our bug #1596328)
+        //$compats[] = 'POSTGRESQL';
         if (PMA_MYSQL_INT_VERSION >= 50002) {
             $compats[] = 'TRADITIONAL';
         }

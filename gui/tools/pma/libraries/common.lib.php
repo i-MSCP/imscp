@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 10051 2007-03-02 17:22:14Z lem9 $ */
+/* $Id: common.lib.php 10251 2007-04-06 13:43:04Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -264,24 +264,17 @@ function PMA_array_merge_recursive()
 }
 
 /**
- * calls $function for every element in $array recursively
- *
- * this function is protected against deep recursion attack CVE-2006-1549,
- * 1000 seems to be more than enough
- *
- * @see http://www.php-security.org/MOPB/MOPB-02-2007.html
- * @see http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-1549
+ * calls $function vor every element in $array recursively
  *
  * @param   array   $array      array to walk
  * @param   string  $function   function to call for every array element
  */
 function PMA_arrayWalkRecursive(&$array, $function, $apply_to_keys_also = false)
 {
-     static $recursive_counter = 0;
-     if (++$recursive_counter > 1000) {
-             die('possible deep recursion attack');
-     }
-
+    static $recursive_counter = 0;
+    if (++$recursive_counter > 1000) {
+        die('possible deep recursion attack');
+    }
     foreach ($array as $key => $value) {
         if (is_array($value)) {
             PMA_arrayWalkRecursive($array[$key], $function, $apply_to_keys_also);
@@ -358,6 +351,77 @@ function PMA_getenv($var_name) {
 }
 
 /**
+ * removes cookie
+ *
+ * @uses    PMA_Config::isHttps()
+ * @uses    PMA_Config::getCookiePath()
+ * @uses    setcookie()
+ * @uses    time()
+ * @param   string  $cookie     name of cookie to remove
+ * @return  boolean result of setcookie()
+ */
+function PMA_removeCookie($cookie)
+{
+    return setcookie($cookie, '', time() - 3600,
+        PMA_Config::getCookiePath(), '', PMA_Config::isHttps());
+}
+
+/**
+ * sets cookie if value is different from current cokkie value,
+ * or removes if value is equal to default
+ *
+ * @uses    PMA_Config::isHttps()
+ * @uses    PMA_Config::getCookiePath()
+ * @uses    $_COOKIE
+ * @uses    PMA_removeCookie()
+ * @uses    setcookie()
+ * @uses    time()
+ * @param   string  $cookie     name of cookie to remove
+ * @param   mixed   $value      new cookie value
+ * @param   string  $default    default value
+ * @param   int     $validity   validity of cookie in seconds (default is one month)
+ * @param   bool    $httponlt   whether cookie is only for HTTP (and not for scripts)
+ * @return  boolean result of setcookie()
+ */
+function PMA_setCookie($cookie, $value, $default = null, $validity = null, $httponly = true)
+{
+    if ($validity == null) {
+        $validity = 2592000;
+    }
+    if (strlen($value) && null !== $default && $value === $default
+     && isset($_COOKIE[$cookie])) {
+        // remove cookie, default value is used
+        return PMA_removeCookie($cookie);
+    }
+
+    if (! strlen($value) && isset($_COOKIE[$cookie])) {
+        // remove cookie, value is empty
+        return PMA_removeCookie($cookie);
+    }
+
+    if (! isset($_COOKIE[$cookie]) || $_COOKIE[$cookie] !== $value) {
+        // set cookie with new value
+        /* Calculate cookie validity */
+        if ($validity == 0) {
+            $v = 0;
+        } else {
+            $v = time() + $validity;
+        }
+        /* Use native support for httponly cookies if available */
+        if (version_compare(PHP_VERSION, '5.2.0', 'ge')) {
+            return setcookie($cookie, $value, $v,
+                PMA_Config::getCookiePath(), '', PMA_Config::isHttps(), $httponly);
+        } else {
+            return setcookie($cookie, $value, $v,
+                PMA_Config::getCookiePath() . ($httponly ? '; HttpOnly' : ''), '', PMA_Config::isHttps());
+        }
+    }
+
+    // cookie has already $value as value
+    return true;
+}
+
+/**
  * include here only libraries which contain only function definitions
  * no code im main()!
  */
@@ -389,6 +453,61 @@ if (!defined('PMA_MINIMUM_COMMON')) {
      * Java script escaping.
      */
     require_once './libraries/js_escape.lib.php';
+
+    /**
+     * Exponential expression / raise number into power
+     *
+     * @uses    function_exists()
+     * @uses    bcpow()
+     * @uses    gmp_pow()
+     * @uses    gmp_strval()
+     * @uses    pow()
+     * @param   number  $base
+     * @param   number  $exp
+     * @param   string  pow function use, or false for auto-detect
+     * @return  mixed  string or float
+     */
+    function PMA_pow($base, $exp, $use_function = false)
+    {
+        static $pow_function = null;
+        if (null == $pow_function) {
+            if (function_exists('bcpow')) {
+                // BCMath Arbitrary Precision Mathematics Function
+                $pow_function = 'bcpow';
+            } elseif (function_exists('gmp_pow')) {
+                // GMP Function
+                $pow_function = 'gmp_pow';
+            } else {
+                // PHP function
+                $pow_function = 'pow';
+            }
+        }
+
+        if (! $use_function) {
+            $use_function = $pow_function;
+        }
+
+        switch ($use_function) {
+            case 'bcpow' :
+                $pow = bcpow($base, $exp);
+                break;
+            case 'gmp_pow' :
+                $pow = gmp_strval(gmp_pow($base, $exp));
+                break;
+            case 'pow' :
+                $base = (float) $base;
+                $exp = (int) $exp;
+                if ($exp < 0) {
+                    return false;
+                }
+                $pow = pow($base, $exp);
+                break;
+            default:
+                $pow = $use_function($base, $exp);
+        }
+
+        return $pow;
+    }
 
     /**
      * string PMA_getIcon(string $icon)
@@ -1291,7 +1410,9 @@ if (typeof(window.parent) != 'undefined'
             }
 
             // Parse SQL if needed
-            if (isset($GLOBALS['parsed_sql']) && $query_base == $GLOBALS['parsed_sql']['raw']) {
+            // (here, use "! empty" because when deleting a bookmark,
+            // $GLOBALS['parsed_sql'] is set but empty
+            if (! empty($GLOBALS['parsed_sql']) && $query_base == $GLOBALS['parsed_sql']['raw']) {
                 $parsed_sql = $GLOBALS['parsed_sql'];
             } else {
                 // when the query is large (for example an INSERT of binary
@@ -1513,15 +1634,15 @@ if (typeof(window.parent) != 'undefined'
      */
     function PMA_formatByteDown($value, $limes = 6, $comma = 0)
     {
-        $dh           = pow(10, $comma);
-        $li           = pow(10, $limes);
+        $dh           = PMA_pow(10, $comma);
+        $li           = PMA_pow(10, $limes);
         $return_value = $value;
         $unit         = $GLOBALS['byteUnits'][0];
 
         for ($d = 6, $ex = 15; $d >= 1; $d--, $ex-=3) {
-            if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * pow(10, $ex)) {
+            if (isset($GLOBALS['byteUnits'][$d]) && $value >= $li * PMA_pow(10, $ex)) {
                 // use 1024.0 to avoid integer overflow on 64-bit machines
-                $value = round($value / (pow(1024.0, $d) / $dh)) /$dh;
+                $value = round($value / (PMA_pow(1024, $d) / $dh)) /$dh;
                 $unit = $GLOBALS['byteUnits'][$d];
                 break 1;
             } // end if
@@ -1604,22 +1725,22 @@ if (typeof(window.parent) != 'undefined'
             $sign = '';
         }
 
-        $dh = pow(10, $comma);
-        $li = pow(10, $length);
+        $dh = PMA_pow(10, $comma);
+        $li = PMA_pow(10, $length);
         $unit = $units[0];
 
         if ($value >= 1) {
             for ($d = 8; $d >= 0; $d--) {
-                if (isset($units[$d]) && $value >= $li * pow(1000.0, $d-1)) {
-                    $value = round($value / (pow(1000.0, $d) / $dh)) /$dh;
+                if (isset($units[$d]) && $value >= $li * PMA_pow(1000, $d-1)) {
+                    $value = round($value / (PMA_pow(1000, $d) / $dh)) /$dh;
                     $unit = $units[$d];
                     break 1;
                 } // end if
             } // end for
         } elseif (!$only_down && (float) $value !== 0.0) {
             for ($d = -8; $d <= 8; $d++) {
-                if (isset($units[$d]) && $value <= $li * pow(1000.0, $d-1)) {
-                    $value = round($value / (pow(1000.0, $d) / $dh)) /$dh;
+                if (isset($units[$d]) && $value <= $li * PMA_pow(1000, $d-1)) {
+                    $value = round($value / (PMA_pow(1000, $d) / $dh)) /$dh;
                     $unit = $units[$d];
                     break 1;
                 } // end if
@@ -2149,6 +2270,9 @@ if (typeof(window.parent) != 'undefined'
                                 $condition .= '= CAST(0x' . bin2hex($row[$i])
                                     . ' AS BINARY) AND';
                             }
+                        } else {
+                            // this blob won't be part of the final condition
+                            $condition = '';
                         }
                 } else {
                     $condition .= '= \''
@@ -2351,77 +2475,6 @@ if (typeof(window.parent) != 'undefined'
     }
 
     /**
-     * removes cookie
-     *
-     * @uses    PMA_Config::isHttps()
-     * @uses    PMA_Config::getCookiePath()
-     * @uses    setcookie()
-     * @uses    time()
-     * @param   string  $cookie     name of cookie to remove
-     * @return  boolean result of setcookie()
-     */
-    function PMA_removeCookie($cookie)
-    {
-        return setcookie($cookie, '', time() - 3600,
-            PMA_Config::getCookiePath(), '', PMA_Config::isHttps());
-    }
-
-    /**
-     * sets cookie if value is different from current cokkie value,
-     * or removes if value is equal to default
-     *
-     * @uses    PMA_Config::isHttps()
-     * @uses    PMA_Config::getCookiePath()
-     * @uses    $_COOKIE
-     * @uses    PMA_removeCookie()
-     * @uses    setcookie()
-     * @uses    time()
-     * @param   string  $cookie     name of cookie to remove
-     * @param   mixed   $value      new cookie value
-     * @param   string  $default    default value
-     * @param   int     $validity   validity of cookie in seconds (default is one month)
-     * @param   bool    $httponlt   whether cookie is only for HTTP (and not for scripts)
-     * @return  boolean result of setcookie()
-     */
-    function PMA_setCookie($cookie, $value, $default = null, $validity = null, $httponly = true)
-    {
-        if ($validity == null) {
-            $validity = 2592000;
-        }
-        if (strlen($value) && null !== $default && $value === $default
-         && isset($_COOKIE[$cookie])) {
-            // remove cookie, default value is used
-            return PMA_removeCookie($cookie);
-        }
-
-        if (! strlen($value) && isset($_COOKIE[$cookie])) {
-            // remove cookie, value is empty
-            return PMA_removeCookie($cookie);
-        }
-
-        if (! isset($_COOKIE[$cookie]) || $_COOKIE[$cookie] !== $value) {
-            // set cookie with new value
-            /* Calculate cookie validity */
-            if ($validity == 0) {
-                $v = 0;
-            } else {
-                $v = time() + $validity;
-            }
-            /* Use native support for httponly cookies if available */
-            if (version_compare(PHP_VERSION, '5.2.0', 'ge')) {
-                return setcookie($cookie, $value, $v,
-                    PMA_Config::getCookiePath(), '', PMA_Config::isHttps(), $httponly);
-            } else {
-                return setcookie($cookie, $value, $v,
-                    PMA_Config::getCookiePath() . ($httponly ? '; HttpOnly' : ''), '', PMA_Config::isHttps());
-            }
-        }
-
-        // cookie has already $value as value
-        return true;
-    }
-
-    /**
      * Displays a lightbulb hint explaining a known external bug
      * that affects a functionality
      *
@@ -2461,6 +2514,13 @@ if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])
   || isset($_SERVER['GLOBALS']) || isset($_COOKIE['GLOBALS'])
   || isset($_ENV['GLOBALS'])) {
     die('GLOBALS overwrite attempt');
+}
+
+/**
+ * protect against possible exploits - there is no need to have so much vars
+ */
+if (count($_REQUEST) > 1000) {
+    die('possible exploit');
 }
 
 /**
@@ -2548,6 +2608,22 @@ if (get_magic_quotes_gpc()) {
     PMA_arrayWalkRecursive($_POST, 'stripslashes', true);
     PMA_arrayWalkRecursive($_COOKIE, 'stripslashes', true);
     PMA_arrayWalkRecursive($_REQUEST, 'stripslashes', true);
+}
+
+/**
+ * clean cookies on new install or upgrade
+ * when changing something with increment the cookie version
+ */
+$pma_cookie_version = 4;
+if (isset($_COOKIE)
+ && (! isset($_COOKIE['pmaCookieVer'])
+  || $_COOKIE['pmaCookieVer'] < $pma_cookie_version)) {
+    // delete all cookies
+    foreach($_COOKIE as $cookie_name => $tmp) {
+        PMA_removeCookie($cookie_name);
+    }
+    $_COOKIE = array();
+    PMA_setCookie('pmaCookieVer', $pma_cookie_version);
 }
 
 /**
@@ -2990,7 +3066,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
      * by Arnold - Helder Hosting
      * (see FAQ 4.8)
      */
-    if (! empty($_REQUEST['server']) && is_string($_REQUEST['server']) && ! ctype_digit($_REQUEST['server'])) {
+    if (! empty($_REQUEST['server']) && is_string($_REQUEST['server'])
+     && ! is_numeric($_REQUEST['server'])) {
         foreach ($cfg['Servers'] as $i => $server) {
             if ($server['host'] == $_REQUEST['server']) {
                 $_REQUEST['server'] = $i;

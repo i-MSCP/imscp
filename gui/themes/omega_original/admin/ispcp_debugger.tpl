@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-<title>{TR_ADMIN_ispcp_DEBUGGER_PAGE_TITLE}</title>
+<title>{TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE}</title>
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
@@ -32,7 +32,7 @@
 		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_debugger.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_DEBUGGER_TITLE}</td>
 	</tr>
-</table>					  
+</table>
 					  </td>
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
@@ -52,7 +52,7 @@
                             <!-- BDP: domain_list -->
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="{CONTENT}">{TR_DOMAIN_NAME}<br>
+                              <td class="{CONTENT}">{TR_DOMAIN_NAME}<br />
                                   <font color="red">{TR_DOMAIN_ERROR}</font></td>
                             </tr>
                             <!-- EDP: domain_list -->

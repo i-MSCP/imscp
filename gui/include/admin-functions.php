@@ -5,7 +5,7 @@
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		Benedikt Heintel, ispCP Team (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -1682,7 +1682,7 @@ function write_log($msg) {
 
 		$message = <<<AUTO_LOG_MSG
 
-ISPCP Pro Log
+ispCP Log
 
 Server: $default_hostname ($default_base_server_ip)
 Version: $VersionH ($Version - $BuildDate)

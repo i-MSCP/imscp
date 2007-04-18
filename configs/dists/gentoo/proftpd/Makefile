@@ -4,8 +4,8 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/proftpd
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
-	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
 	cp ./proftpd.conf $(ROOT_CONF)/proftpd
+	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
 
 uninstall:
 

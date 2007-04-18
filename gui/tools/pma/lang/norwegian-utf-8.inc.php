@@ -1,5 +1,5 @@
 <?php
-/* $Id: norwegian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: norwegian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 /**
  * Translated by Sven-Erik Andersen <sven DOT erik DOT andersen AT gmail DOT com>
@@ -172,7 +172,7 @@ $strCreatePdfFeat = 'Lag PDF-dokumenter';
 $strCreateUserDatabase = 'Brukerdatabase';
 $strCreateUserDatabaseName = 'Opprett database med samme navn og gi alle rettigheter';
 $strCreateUserDatabaseNone = 'Ingen';
-$strCreateUserDatabaseWildcard = 'Gi alle rettigheter på jokertegnavn (username_%)';
+$strCreateUserDatabaseWildcard = 'Gi alle rettigheter på jokertegnavn (username\_%)';
 $strCreationDates = 'Opprettelse/Oppdaterings/Kontrolldato';
 $strCriteria = 'Kriterier';
 $strCroatian = 'kroatisk';

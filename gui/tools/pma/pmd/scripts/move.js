@@ -1,5 +1,5 @@
 /*
-$Id: move.js 10008 2007-02-21 17:59:42Z lem9 $
+$Id: move.js 10044 2007-03-02 14:13:13Z cybot_tm $
 @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
 */
 var dx, dy, dy2;
@@ -177,7 +177,7 @@ function Main()
   Small_tab_refresh();
   Re_load();
   id_hint = document.getElementById('hint');
-  if (ieIE) {
+  if (isIE) {
     General_scroll();
   }
 }

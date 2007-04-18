@@ -1,5 +1,5 @@
 --
--- ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+-- ISPCP ω (OMEGA) a Virtual Hosting Control Panel
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 --

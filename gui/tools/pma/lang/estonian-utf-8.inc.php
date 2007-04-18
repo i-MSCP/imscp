@@ -1,5 +1,5 @@
 <?php
-/* $Id: estonian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: estonian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 /*
  * Translated by Marko Ellermaa, <marko.ellermaa@nlkp.net>
@@ -179,7 +179,7 @@ $strCreateTable  = 'Loo tabel';
 $strCreateUserDatabase = 'Andmebaas kasutajale';  
 $strCreateUserDatabaseName = 'Loo sama nimega andmebaas ja anna kõik õigused'; 
 $strCreateUserDatabaseNone = 'Puudub';  
-$strCreateUserDatabaseWildcard = 'Anna kõik õigused Metanimele (username_%)';
+$strCreateUserDatabaseWildcard = 'Anna kõik õigused Metanimele (username\_%)';
 $strCreationDates = 'Loo/muuda/kontrolli kuupäevi';
 $strCriteria = 'Kriteerium';
 $strCroatian = 'Horvaatia';

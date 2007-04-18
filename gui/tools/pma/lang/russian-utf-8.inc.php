@@ -1,5 +1,5 @@
 <?php
-/* $Id: russian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: russian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 /**
  * Translated by Gosha Sakovich <gt2 at users.sourceforge.net>
@@ -159,7 +159,7 @@ $strCreatePdfFeat = 'Создание PDF-схемы';
 $strCreateUserDatabase = 'База данных для пользователя';
 $strCreateUserDatabaseName = 'Создать базу данных с таким-же именем и предоставить все привелегии';
 $strCreateUserDatabaseNone = 'Не создавать';
-$strCreateUserDatabaseWildcard = 'Предоставить все привелегии по маске (username_%)';
+$strCreateUserDatabaseWildcard = 'Предоставить все привелегии по маске (username\_%)';
 $strCreationDates = 'Создание/Обновление/Проверка дат';
 $strCriteria = 'Критерий';
 $strCroatian = 'Хорватский';

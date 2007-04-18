@@ -1,20 +1,23 @@
 #
 # Postfix master process configuration file.  For details on the format
-# of the file, see the Postfix master(5) manual page.
+# of the file, see the master(5) manual page (command: "man 5 master").
 #
 # ==========================================================================
 # service type  private unpriv  chroot  wakeup  maxproc command + args
 #               (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
 smtp      inet  n       -       -       -       -       smtpd
-#submission inet n      -       -       -       -       smtpd
-#	-o smtpd_etrn_restrictions=reject
-#	-o smtpd_client_restrictions=permit_sasl_authenticated,reject
-#smtps    inet  n       -       -       -       -       smtpd
-#  -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes
-#submission inet n      -       -       -       -       smtpd
-#  -o smtpd_etrn_restrictions=reject
-#  -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
+#submission inet n       -       -       -       -       smtpd
+#  -o smtpd_enforce_tls=yes
+#  -o smtpd_sasl_auth_enable=yes
+#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+#smtps     inet  n       -       -       -       -       smtpd
+#  -o smtpd_tls_wrappermode=yes
+#  -o smtpd_sasl_auth_enable=yes
+#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+# For AOL-Accounts
+587       inet  n       -       -       -       -       smtpd
+   -o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination
 #628      inet  n       -       -       -       -       qmqpd
 pickup    fifo  n       -       -       60      1       pickup
 cleanup   unix  n       -       -       -       0       cleanup
@@ -30,8 +33,9 @@ flush     unix  n       -       -       1000?   0       flush
 proxymap  unix  -       -       n       -       -       proxymap
 smtp      unix  -       -       -       -       -       smtp
 # When relaying mail as backup MX, disable fallback_relay to avoid MX loops
-relay     unix  -       -       -       -       -       smtp	-o fallback_relay=
-#       							-o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+relay     unix  -       -       -       -       -       smtp
+	-o fallback_relay=
+#   -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
 showq     unix  n       -       -       -       -       showq
 error     unix  -       -       -       -       -       error
 discard   unix  -       -       -       -       -       discard
@@ -39,30 +43,38 @@ local     unix  -       n       n       -       -       local
 virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
-scache	  unix	-	-	-	-	1	scache
-#
-# TSL - Activate, if TSL is avaiable/used
-#
-#smtps	  inet  n	-	n	-	-	smtpd	-o smtpd_tls_wrapermode=yes
-#								-o smtpd_sasl_auth_enable=yes
-#
+scache    unix  -       -       -       -       1       scache
+# ====================================================================
+# ISPCP ? OMEGA configuration
+# ====================================================================
 # AMaViS => Antivir / Antispam
-#
-amavis	  unix	-	-	n	-	2	smtp	-o smtp_data_done_timeout=1200
-								-o smtp_send_xforward_command=yes
-								-o disable_dns_lookups=yes
+amavis    unix  -       -       n       -       2       smtp
+   -o smtp_data_done_timeout=1200
+   -o smtp_send_xforward_command=yes
+   -o disable_dns_lookups=yes
 
-127.0.0.1:10025 inet n	-	n	-	-	smtpd	-o content_filter=
-								-o local_recipient_maps=
-								-o relay_recipient_maps=
-								-o smtpd_restriction_classes=
-								-o smtpd_client_restrictions=
-								-o smtpd_helo_restrictions=
-								-o smtpd_sender_restrictions=
-								-o smtpd_recipient_restrictions=permit_mynetworks,reject
-								-o smtpd_override_options=no_address_mappings
-								-o mynetworks=127.0.0.0/8
-								-o strict_rfc821_envelopes=yes
+localhost:10025 inet  n -       n       -      -        smtpd
+   -o content_filter=
+   -o local_recipient_maps=
+   -o relay_recipient_maps=
+   -o smtpd_restriction_classes=
+   -o smtpd_client_restrictions=
+   -o smtpd_helo_restrictions=
+   -o smtpd_sender_restrictions=
+   -o smtpd_recipient_restrictions=permit_mynetworks,reject
+   -o smtpd_override_options=no_address_mappings
+   -o mynetworks=127.0.0.0/8
+   -o strict_rfc821_envelopes=yes
+
+# ISPCP autoresponder
+ispcp-arpl unix  -      n       n       -       -       pipe
+  flags=O user=vmail argv=/var/www/ispcp/engine/messager/ispcp-arpl-msgr
+
+# TSL - Activate, if TSL is avaiable/used
+smtps     inet  n       -       -       -       -       smtpd
+   -o smtpd_tls_wrappermode=yes
+   -o smtpd_sasl_auth_enable=yes
+#   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 #
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual
@@ -79,6 +91,15 @@ amavis	  unix	-	-	n	-	2	smtp	-o smtp_data_done_timeout=1200
 maildrop  unix  -       n       n       -       -       pipe
   flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d ${recipient}
 #
+# The Cyrus deliver program has changed incompatibly, multiple times.
+#
+old-cyrus unix  -       n       n       -       -       pipe
+  flags=R user=cyrus argv=/cyrus/bin/deliver -e -m ${extension} ${user}
+# Cyrus 2.1.5 (Amos Gouaux)
+# Also specify in main.cf: cyrus_destination_recipient_limit=1
+cyrus     unix  -       n       n       -       -       pipe
+  user=cyrus argv=/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
+#
 # See the Postfix UUCP_README file for configuration details.
 #
 uucp      unix  -       n       n       -       -       pipe
@@ -89,17 +110,4 @@ uucp      unix  -       n       n       -       -       pipe
 ifmail    unix  -       n       n       -       -       pipe
   flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
 bsmtp     unix  -       n       n       -       -       pipe
-  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t$nexthop -f$sender $recipient
-scalemail-backend unix	-	n	n	-	2	pipe
-  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
-mailman   unix  -       -       n       -       -       pipe
-  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
-  ${nexthop} ${user}
-
-#
-# ispcp delivery agent.
-#
-
-ispcp-arpl unix  -      n       n       -       -       pipe flags=O user=vmail argv=/var/www/ispcp/engine/messager/ispcp-arpl-msgr
-
-587      inet  n       -       -       -       -       smtpd -o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination
+  flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f $sender $nexthop $recipient

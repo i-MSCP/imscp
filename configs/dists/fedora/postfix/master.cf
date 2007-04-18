@@ -45,7 +45,7 @@ lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache    unix  -       -       -       -       1       scache
 # ====================================================================
-# ISPCP ? OMEGA configuration
+# ISPCP ω OMEGA configuration
 # ====================================================================
 # AMaViS => Antivir / Antispam
 amavis    unix  -       -       n       -       2       smtp

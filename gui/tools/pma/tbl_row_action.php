@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_row_action.php 9601 2006-10-25 10:55:20Z nijel $ */
+/* $Id: tbl_row_action.php 10144 2007-03-20 11:22:31Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 require_once('./libraries/common.lib.php');
 require_once('./libraries/mysql_charsets.lib.php');
@@ -91,7 +91,7 @@ if (!empty($submit_mult)) {
             $single_table = TRUE;
 
             $primary_key = array();
-            $sql_query = urldecode($sql_query);
+            //$sql_query = urldecode($sql_query);
             // garvin: As we got the fields to be edited from the 'rows_to_delete' checkbox, we use the index of it as the
             // indicating primary key. Then we built the array which is used for the tbl_change.php script.
             foreach ($rows_to_delete AS $i_primary_key => $del_query) {

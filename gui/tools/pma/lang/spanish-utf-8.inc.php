@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php 9959 2007-02-10 14:56:00Z lem9 $ */
+/* $Id: spanish-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -174,7 +174,7 @@ $strCreateTable  = 'Crear tabla';
 $strCreateUserDatabase = 'Base de datos para el usuario';
 $strCreateUserDatabaseName = 'Crear base de datos con el mismo nombre y otorgue todos los privilegios';
 $strCreateUserDatabaseNone = 'Ninguna';
-$strCreateUserDatabaseWildcard = 'Otorgue todos los privilegios al nombre que contiene comodín (username_%)';
+$strCreateUserDatabaseWildcard = 'Otorgue todos los privilegios al nombre que contiene comodín (username\_%)';
 $strCreationDates = 'Fechas de creación/actualización/revisión';
 $strCriteria = 'Criterio';
 $strCroatian = 'Croata';

@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 9907 2007-02-02 15:53:29Z lem9 $
+ * @version $Id: tbl_replace.php 10232 2007-03-31 12:18:40Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -20,7 +20,7 @@
  * @uses    PMA_DBI_affected_rows()
  * @uses    PMA_DBI_insert_id()
  * @uses    PMA_backquote()
- * @uses    PMA_getUvaCondition()
+ * @uses    PMA_getUniqueCondition()
  * @uses    PMA_sqlAddslashes()
  * @uses    PMA_securePath()
  * @uses    PMA_sendHeaderLocation()
@@ -98,7 +98,7 @@ if (isset($_REQUEST['after_insert'])
                 $res            = PMA_DBI_query($local_query);
                 $row            = PMA_DBI_fetch_row($res);
                 $meta           = PMA_DBI_get_fields_meta($res);
-                $url_params['primary_key'][] = PMA_getUvaCondition($res, count($row), $meta, $row);
+                $url_params['primary_key'][] = PMA_getUniqueCondition($res, count($row), $meta, $row);
             }
         }
     }
@@ -223,7 +223,10 @@ foreach ($loop_array as $primary_key) {
         //  i n s e r t
         if ($is_insert) {
             // no need to add column into the valuelist
-            $query_values[] = $cur_value;
+            if (strlen($cur_value)) {
+                $query_values[] = $cur_value;
+                $query_fields[] = PMA_backquote($key);
+            }
 
         //  u p d a t e
         } elseif (!empty($me_fields_null_prev[$key])
@@ -265,10 +268,6 @@ unset($me_fields_prev, $me_funcs, $me_fields_type, $me_fields_null, $me_fields_n
 
 // Builds the sql query
 if ($is_insert && count($value_sets) > 0) {
-    // first inserted row -> prepare template
-    foreach ($me_fields as $key => $val) {
-        $query_fields[]   = PMA_backquote($key);
-    }
     $query[] = 'INSERT INTO ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($GLOBALS['table'])
         . ' (' . implode(', ', $query_fields) . ') VALUES (' . implode('), (', $value_sets) . ')';
 

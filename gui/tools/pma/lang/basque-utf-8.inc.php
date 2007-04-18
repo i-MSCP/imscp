@@ -1,5 +1,5 @@
 <?php
-/* $Id: basque-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: basque-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -75,8 +75,8 @@ $strBzip = '"Bzip-ez trinkotua"';
 
 $strCannotLogin = 'Ezinezkoa MySql zerbitzarian saioa hastea';
 $strCantLoad = 'ezinezkoa %s luzapena kargatzea ,<br />mesedez, berpasatu zure PHPren konfigurazioa.';
-$strCantLoadRecodeIconv = 'Ezinezkoa iconv kargatzea edota karaktere-jokoaren bihurketarako beharrezkoa den luzapena berkodifikatzea, configure php para permitir el uso de estas extensiones o desactive la conversión de juegos de caracteres en phpMyAdmin.';
-$strCantRenameIdxToPrimary = 'Ezinezkoa indizearen izena ¡PRIMARY! berrizendatzea';
+$strCantLoadRecodeIconv = 'Ezinezkoa iconv kargatzea edota karaktere-jokoaren bihurketarako beharrezkoa den luzapena berkodifikatzea, configure php para permitir el uso de estas extensiones o desactive la conversiÃ³n de juegos de caracteres en phpMyAdmin.';
+$strCantRenameIdxToPrimary = 'Ezinezkoa indizearen izena Â¡PRIMARY! berrizendatzea';
 $strCantUseRecodeIconv = 'Ezin dira erabili ez iconv, ez libiconv ezta recode_string funtzioa luzapenen txostena kargatzen den bitartean. Berpasatu php-ren konfigurazioa.';
 $strCardinality = 'Kardinalitatea';
 $strCaseInsensitive = 'Maiuskulak ez ditu bereizten';
@@ -983,7 +983,7 @@ $strStrucNativeExcelOptions = 'Native Excel export options';  //to translate
 $strCreateUserDatabase = 'Database for user';  //to translate
 $strCreateUserDatabaseNone = 'None';  //to translate
 $strCreateUserDatabaseName = 'Create database with same name and grant all privileges';  //to translate
-$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username_%)';  //to translate
+$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username\_%)';  //to translate
 $strOpenDocumentText = 'Open Document Text';  //to translate
 $strOpenDocumentTextOptions = 'Open Document Text options';  //to translate
 $strNoDataReceived = 'No data was received to import. Either no file name was submitted, or the file size exceeded the maximum size permitted by your PHP configuration. See FAQ 1.16.';  //to translate

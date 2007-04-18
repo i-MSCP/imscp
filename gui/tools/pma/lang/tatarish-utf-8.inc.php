@@ -1,5 +1,5 @@
 <?php
-/* $Id: tatarish-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: tatarish-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -844,7 +844,7 @@ $strBrowseDistinctValues = 'Browse distinct values';  //to translate
 $strCanNotLoadExportPlugins = 'Could not load export plugins, please check your installation!';  //to translate
 $strCompressionWillBeDetected = 'Imported file compression will be automatically detected from: %s';  //to translate
 $strCreateUserDatabaseName = 'Create database with same name and grant all privileges';  //to translate
-$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username_%)';  //to translate
+$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username\_%)';  //to translate
 
 $strDelimiter = 'Delimiter';  //to translate
 

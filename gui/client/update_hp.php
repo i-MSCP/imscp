@@ -318,15 +318,16 @@ SQL_QUERY;
 	$message = "You have update order for account ".$_SESSION['user_logged']."\r\n\r\n";
 	$message .= "Please login into your ISPCP control panel for more details";
 
-	$headers = "From: $form\r\n";
+    $headers = "From: $from\n";
 
-    $headers .= "X-Mailer: ISPCP Pro auto mailer";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
+
+    $headers .= "X-Mailer: ispCP auto mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 
-
-
 }
+
 function del_order(&$tpl, &$sql, $order_id, $user_id)
 {
     $query = <<<SQL_QUERY

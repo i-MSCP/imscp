@@ -5,7 +5,7 @@
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		Benedikt Heintel, ispCP Team (2007)
+ *  @author		ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -73,11 +73,12 @@ SQL_QUERY;
 
 	if ($rs ->RowCount() == 1 ) {
 
-		$data['subject'] = $rs->fields['subject'];
+		$data['subject'] = html_entity_decode($rs->fields['subject']);
 
-    $data['message'] = $rs->fields['message'];
+    	$data['message'] = html_entity_decode($rs->fields['message']);
 
-	} else {
+	}
+	else {
 
 		$data['subject'] = '';
 
@@ -200,7 +201,7 @@ MSG;
 
 	}
 
-	return $data;
+	return html_entity_decode($data);
 
 }
 

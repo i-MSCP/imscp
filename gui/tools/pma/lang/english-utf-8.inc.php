@@ -1,5 +1,5 @@
 <?php
-/* $Id: english-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: english-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -178,7 +178,7 @@ $strCreateTable  = 'Create table';
 $strCreateUserDatabase = 'Database for user';
 $strCreateUserDatabaseName = 'Create database with same name and grant all privileges';
 $strCreateUserDatabaseNone = 'None';
-$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username_%)';
+$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username\_%)';
 $strCreationDates = 'Creation/Update/Check dates';
 $strCriteria = 'Criteria';
 $strCroatian = 'Croatian';

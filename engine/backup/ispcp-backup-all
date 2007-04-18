@@ -1,8 +1,10 @@
 ﻿#!/usr/bin/perl
 
-# ispCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
-# Copyright (c) 2006-2007 by ispCP | http://isp-control.net
+# http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -22,7 +24,11 @@
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
-########################################################################
+#
+# The ISPCP ω Home Page is at:
+#
+#    http://isp-control.net
+#
 
 use FindBin;
 use lib "$FindBin::Bin/..";

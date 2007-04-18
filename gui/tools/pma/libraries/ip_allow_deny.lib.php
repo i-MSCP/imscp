@@ -1,5 +1,5 @@
 <?php
-/* $Id: ip_allow_deny.lib.php 9780 2006-12-07 17:57:02Z lem9 $ */
+/* $Id: ip_allow_deny.lib.php 10089 2007-03-14 12:47:37Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -75,7 +75,7 @@ function PMA_ipMaskTest($testRange, $ipToTest)
 
        for ($i = 0; $i < 31; $i++) {
            if ($i < $regs[5] - 1) {
-               $maskl = $maskl + pow(2, (30 - $i));
+               $maskl = $maskl + PMA_pow(2, (30 - $i));
            } // end if
        } // end for
 

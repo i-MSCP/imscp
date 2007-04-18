@@ -1,5 +1,5 @@
 <?php
-/* $Id: bulgarian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: bulgarian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 /**
  * Translated by Stanislav Yordanov <stanprog at stanprog.com>
@@ -813,7 +813,7 @@ $strBusyPages = 'Busy pages';  //to translate
 $strCreateUserDatabase = 'Database for user';  //to translate
 $strCreateUserDatabaseName = 'Create database with same name and grant all privileges';  //to translate
 $strCreateUserDatabaseNone = 'Няма';  //to translate
-$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username_%)';  //to translate
+$strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username\_%)';  //to translate
 $strCSV = 'CSV';  //to translate
 
 $strDirtyPages = 'Dirty pages';  //to translate

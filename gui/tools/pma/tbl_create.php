@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_create.php 8748 2006-03-08 18:07:55Z lem9 $ */
+/* $Id: tbl_create.php 10144 2007-03-20 11:22:31Z cybot_tm $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -194,9 +194,19 @@ if (isset($submit_num_fields)) {
             }
         }
 
-        require './' . $cfg['DefaultTabTable'];
-        $abort = true;
-        exit();
+        $message = $strTable . ' '
+         . htmlspecialchars(PMA_backquote($db) . '.' . PMA_backquote($table))
+         . ' ' . $strHasBeenCreated;
+        $display_query = $sql_query;
+        unset($sql_query);
+
+        // do not switch to sql.php - as there is no row to be displayed on a new table
+        if ($cfg['DefaultTabTable'] === 'sql.php') {
+            require './tbl_structure.php';
+        } else {
+            require './' . $cfg['DefaultTabTable'];
+        }
+        exit;
     } else {
         PMA_mysqlDie('', '', '', $err_url, false);
         // garvin: An error happened while inserting/updating a table definition.

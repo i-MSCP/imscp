@@ -1,6 +1,6 @@
 <?php
 /**
- * f i e l d    u p l o a d e d    f r o m    a    f i l e
+ * handle field values (possibly uploaded from a file)  
  *
  * garvin: original if-clause checked, whether input was stored in a possible
  * fields_upload_XX var. Now check, if the field is set. If it is empty or a
@@ -16,7 +16,7 @@
  *
  * note: grab_globals has extracted the fields from _FILES or HTTP_POST_FILES
  *
- * @version $Id: tbl_replace_fields.inc.php 9795 2006-12-19 16:54:29Z cybot_tm $
+ * @version $Id: tbl_replace_fields.inc.php 10232 2007-03-31 12:18:40Z lem9 $
  * vim: expandtab sw=4 ts=4 sts=4:
  *
  * @uses $GLOBALS['cfg']['UploadDir']
@@ -190,6 +190,8 @@ if (false === $valid_file_was_uploaded) {
                 if (! empty($prot_row[$key])) {
                     $val = '0x' . bin2hex($prot_row[$key]);
                     $seen_binary = true;
+                } else {
+                    $val = '';
                 }
 
                 break;

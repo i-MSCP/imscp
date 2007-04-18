@@ -1,5 +1,5 @@
 <?php
-/* $Id: italian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: italian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 /**
  * translated by: Pietro Danesi <danone at users.sourceforge.net>  2002-03-29
@@ -174,7 +174,7 @@ $strCreatePdfFeat = 'Creazione di PDF';
 $strCreateUserDatabase = 'Database per l\'utente';
 $strCreateUserDatabaseName = 'Crea un database con lo stesso nome e concedi tutti i privilegi';
 $strCreateUserDatabaseNone = 'None';
-$strCreateUserDatabaseWildcard = 'Concedi tutti i privilegi al nome con caratteri jolly (username_%)';
+$strCreateUserDatabaseWildcard = 'Concedi tutti i privilegi al nome con caratteri jolly (username\_%)';
 $strCreationDates = 'Creazione/Aggiornamento/Controllo date';
 $strCriteria = 'Criterio';
 $strCroatian = 'Croato';

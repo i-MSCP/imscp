@@ -3,7 +3,7 @@ create database {DATABASE_NAME};
 use {DATABASE_NAME};
 
 --
--- ISPCP (OMEGA) - ispCP Omega Version
+-- ISPCP ω (OMEGA) a Virtual Hosting Control Panel
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 --

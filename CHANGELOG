@@ -10,13 +10,22 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-04-17 Benedikt Heintel
+2007-04-18 Benedikt Heintel
+	- DISTS:
+		* Fedora: updated files
+		* Gentoo: updated files
 	- DOCS:
 		* SuSE: updated installation
+	- ENGINE:
+		* fixed backup not running due to abort
 	- GUI:
 		* fixed stupid default domain error
 		* fixed bug #165: encoding not set
 		* added link to admin-panel in default e-mail
+		* changed all ISPCP Pro to ispCP
+		* changed debugger layout
+	- TOOLS:
+		* PMA update 2.10.2-RC1
 
 2007-04-17 Benedikt Heintel
 	- CONFIGS:

@@ -1,5 +1,5 @@
 <?php
-/* $Id: german-utf-8.inc.php 9923 2007-02-05 12:39:30Z cybot_tm $ */
+/* $Id: german-utf-8.inc.php 10253 2007-04-06 20:04:46Z lem9 $ */
 
 /**
  * For suggestions concerning this file please contact
@@ -178,7 +178,7 @@ $strCreatePdfFeat = 'Erzeugen von PDFs';
 $strCreateUserDatabase = 'Datenbank für Benutzer';
 $strCreateUserDatabaseNone = 'Keine';
 $strCreateUserDatabaseName = 'Erstelle eine Datenbank mit gleichem Namen und gewähre alle Rechte';
-$strCreateUserDatabaseWildcard = 'Gewähre alle Rechte auf Datenbanken die mit dem Benuterznamen beginnen (username_%)';
+$strCreateUserDatabaseWildcard = 'Gewähre alle Rechte auf Datenbanken die mit dem Benuterznamen beginnen (username\_%)';
 $strCreationDates = 'Erzeugungs- / Aktualisierungs- / Überprüfungszeiten';
 $strCriteria = 'Kriterium';
 $strCroatian = 'Kroatisch';
@@ -766,7 +766,7 @@ $strShowStatusInnodb_os_log_writtenDescr = 'Anzahl an Byte die in die Protokoll-
 $strShowStatusInnodb_pages_createdDescr = 'Anzahl erstellter Seiten.';
 $strShowStatusInnodb_page_sizeDescr = 'Die fest kompilierte InnnoDB Seitengröße (Standard 16 KiB). Viele Werte werden in Seiten gezählt; die Seitengröße erlaubt es diese einfach in Byte umzurechnen.';
 $strShowStatusInnodb_pages_readDescr = 'Anzahl gelesener Seiten.';
-$strShowStatusInnodb_pages_writtenDescr = 'Anzhal geschriebener Seiten.';
+$strShowStatusInnodb_pages_writtenDescr = 'Anzahl geschriebener Seiten.';
 $strShowStatusInnodb_row_lock_current_waitsDescr = 'Momentan anstehende Zeilen-Sperren.';
 $strShowStatusInnodb_row_lock_time_avgDescr = 'Durchschnittliche Wartezeite um eine Zeilen-Sperre zu bekommen, in Millisekunden.';
 $strShowStatusInnodb_row_lock_timeDescr = 'Summe aller Wartezeiten um Zeilen-Sperren zu bekommen, in Millisekunden.';
@@ -993,7 +993,7 @@ $strDbIsEmpty = 'Die Datenbank scheint leer zu sein!';
 $strShowingPhp = 'Ansicht als PHP Code';
 $strShowingSQL = 'Ansicht als SQL Abfrage';
 $strDesigner = 'Designer';
-$strNumberOfTables = 'Anzhal Tabellen';
+$strNumberOfTables = 'Anzahl Tabellen';
 $strCreateTable  = 'Erzeuge Tabelle';
 $strCreateRelation = 'Erzeuge Verknüpfung';
 $strSavePosition = 'Speichere Position';

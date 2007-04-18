@@ -1,5 +1,5 @@
 <?php
-/* $Id: galician-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: galician-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
 
 /**
  * Translated by Xosé Calvo <xosecalvo at terra.es>
@@ -173,7 +173,7 @@ $strCreatePdfFeat = 'Creación de PDFs';
 $strCreateUserDatabase = 'Base de datos para o usuario';
 $strCreateUserDatabaseName = 'Crear unha base de datos co mesmo nome e conceder todos os privilexios';
 $strCreateUserDatabaseNone = 'Nengunha';
-$strCreateUserDatabaseWildcard = 'Conceder todos os privilexios para o nome con comodíns (username_%)';
+$strCreateUserDatabaseWildcard = 'Conceder todos os privilexios para o nome con comodíns (username\_%)';
 $strCreationDates = 'Datas de creación/actualización/comprobación';
 $strCriteria = 'Criterio';
 $strCroatian = 'Croata';
