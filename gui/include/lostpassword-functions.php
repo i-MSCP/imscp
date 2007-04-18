@@ -329,7 +329,7 @@ SQL_QUERY;
 
 function requestpassword($admin_name) {
 
-	global $sql;
+	global $sql, $cfg;
 
  	$query = <<<SQL_QUERY
         		SELECT

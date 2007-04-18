@@ -73,9 +73,9 @@ SQL_QUERY;
 
 	if ($rs ->RowCount() == 1 ) {
 
-		$data['subject'] = html_entity_decode($rs->fields['subject']);
+		$data['subject'] = utf8_encode(html_entity_decode($rs->fields['subject'], ENT_COMPAT));
 
-    	$data['message'] = html_entity_decode($rs->fields['message']);
+    	$data['message'] = utf8_encode(html_entity_decode($rs->fields['message'], ENT_COMPAT));
 
 	}
 	else {
@@ -201,7 +201,7 @@ MSG;
 
 	}
 
-	return html_entity_decode($data);
+	return $data;
 
 }
 

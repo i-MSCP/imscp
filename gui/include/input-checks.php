@@ -113,7 +113,7 @@ function clean_input($input) {
 	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
 
 		$input = trim($input, "{..}");
-	
+
 	}
 
 	return htmlentities(stripslashes($input), ENT_QUOTES, "UTF-8");
