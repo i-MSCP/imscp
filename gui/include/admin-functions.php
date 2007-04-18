@@ -1,11 +1,11 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ *  @author		Benedikt Heintel, ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -1698,9 +1698,9 @@ AUTO_LOG_MSG;
 
 		$headers = "From: ISPCP  Logging Daemon <$admin_email>\n";
 
-			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-				$headers .=	"X-Mailer: ISPCP $Version Logging Mailer";
+		$headers .=	"X-Mailer: ISPCP $Version Logging Mailer";
 
 		$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1720,15 +1720,17 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$admin_login = $_SESSION['user_logged'];
 
-		$data = get_welcome_email($admin_id);
+	$data = get_welcome_email($admin_id);
 
-		$from_name = $data['sender_name'];
+	$from_name = $data['sender_name'];
 
-		$from_email = $data['sender_email'];
+	$from_email = $data['sender_email'];
 
 	$subject = $data['subject'];
 
 	$message = $data['message'];
+
+	$base_vhost = $cfg['BASE_SERVER_VHOST'];
 
 	if ($from_name) {
 
@@ -1762,12 +1764,13 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$message = preg_replace("/\{USERNAME\}/", $username, $message);
 	$message = preg_replace("/\{NAME\}/", $name, $message);
 	$message = preg_replace("/\{PASSWORD\}/", $password, $message);
+	$message = preg_replace("/\{BASE_SERVER_VHOST\}/", $base_vhost, $message);
 
 	$headers = "From: $from\n";
 
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
+	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -2752,9 +2755,9 @@ SQL_QUERY;
 
 	$headers = "From: $from\n";
 
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Tickets Mailer";
+	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Tickets Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
@@ -2788,6 +2791,5 @@ function setConfig_Value($name, $value) {
 	return TRUE;
 
 }
-
 
 ?>

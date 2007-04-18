@@ -2028,13 +2028,14 @@ sub dmn_add_httpd_file_data {
 	if (!(-e "$www_dir/$dmn_name/htdocs/index.html")) {
 
 		my $index_tpl = '';
+		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 
 		($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
 
 		return $rs if ($rs != 0);
 
 		$index_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
-		$index_tpl =~ s/{BASE_SERVER_VHOST}/$main::cfg{'BASE_SERVER_VHOST'}/gi;
+		$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 
 		($rs, $rdata) = store_file(
 									"$www_dir/$dmn_name/htdocs/index.html",

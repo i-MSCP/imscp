@@ -10,7 +10,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-04-16 Benedikt Heintel
+2007-04-17 Benedikt Heintel
+	- DOCS:
+		* SuSE: updated installation
+	- GUI:
+		* fixed stupid default domain error
+		* fixed bug #165: encoding not set
+		* added link to admin-panel in default e-mail
+
+2007-04-17 Benedikt Heintel
 	- CONFIGS:
 		* fixed bug #174: master not longer reachable on adding Domain
 	- ENGINE:

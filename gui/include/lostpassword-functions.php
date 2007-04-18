@@ -1,11 +1,11 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ *  @author		BenediktHeintel, ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -32,17 +32,17 @@ function check_gd() {
 }
 
 function captcha_fontfile_exists() {
-	
+
 	global $cfg;
 
 	if (file_exists($cfg['LOSTPASSWORD_CAPTCHA_FONT']))
-	
+
 		return true;
 
 	else
 
 		return false;
-		
+
 }
 
 function createImage($strSessionVar) {
@@ -129,7 +129,7 @@ function strrand($length, $strSessionVar) {
    	}
 
 	}
-		
+
 	$_SESSION[$strSessionVar] = $str;
 
   return $_SESSION[$strSessionVar];
@@ -278,38 +278,39 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array('', '', $uniqkey));
 
-		if ($created_by == 0) $created_by = 1;
+	if ($created_by == 0) $created_by = 1;
 
-		$data = get_lostpassword_password_email($created_by);
-		
-		$from_name = $data['sender_name'];
+	$data = get_lostpassword_password_email($created_by);
 
-		$from_email = $data['sender_email'];
+	$from_name = $data['sender_name'];
+
+	$from_email = $data['sender_email'];
 
     $subject = $data['subject'];
 
     $message = $data['message'];
 
+	$base_vhost = $cfg['BASE_SERVER_VHOST'];
+
     if ($from_name) {
 
         $from = $from_name . "<" . $from_email . ">";
 
-    } else {
+    }
+	else {
 
         $from = $from_email;
-		}
+	}
 
     $subject = preg_replace("/\{USERNAME\}/", $admin_name, $subject);
-
     $message = preg_replace("/\{USERNAME\}/", $admin_name, $message);
-
     $message = preg_replace("/\{NAME\}/", $admin_fname . " " . $admin_lname, $message);
-
     $message = preg_replace("/\{PASSWORD\}/", $upass, $message);
+    $message = preg_replace("/\{BASE_SERVER_VHOST\}/", $base_vhost, $message);
 
     $headers = "From: $from\n";
 
-    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
     $headers .= "X-Mailer: ISPCP Pro lostpassword mailer";
 
@@ -331,7 +332,7 @@ function requestpassword($admin_name) {
 
 	global $sql;
 
-  $query = <<<SQL_QUERY
+ 	$query = <<<SQL_QUERY
         		SELECT
             	created_by, fname, lname, email
         		FROM
@@ -340,70 +341,70 @@ function requestpassword($admin_name) {
             	admin_name = ?
 SQL_QUERY;
 
-  $res = exec_query($sql, $query, array($admin_name));
+  	$res = exec_query($sql, $query, array($admin_name));
 
 	if ($res -> RecordCount() == 1) {
 
-	  $created_by = $res -> fields['created_by'];
+	$created_by = $res -> fields['created_by'];
 
-	  $admin_fname = $res -> fields['fname'];
+	$admin_fname = $res -> fields['fname'];
 
   	$admin_lname = $res -> fields['lname'];
 
   	$to = $res -> fields['email'];
 
-		$uniqkey = uniqkeygen();
+	$uniqkey = uniqkeygen();
 
-		setUniqKey($admin_name, $uniqkey);
+	setUniqKey($admin_name, $uniqkey);
 
     write_log("Lostpassword: ".$admin_name.": uniqkey created");
 
-		if ($created_by == 0) $created_by = 1;
+	if ($created_by == 0) $created_by = 1;
 
-		$data = get_lostpassword_activation_email($created_by);
-		
-		$from_name = $data['sender_name'];
+	$data = get_lostpassword_activation_email($created_by);
 
-		$from_email = $data['sender_email'];
+	$from_name = $data['sender_name'];
+
+	$from_email = $data['sender_email'];
 
     $subject = $data['subject'];
 
     $message = $data['message'];
 
+    $base_vhost = $cfg['BASE_SERVER_VHOST'];
+
     if ($from_name) {
 
         $from = $from_name . "<" . $from_email . ">";
 
-    } else {
+    }
+	else {
 
         $from = $from_email;
-		}
+	}
 
-		switch( $_SERVER["SERVER_PORT"] ) {
-			
-			case "80": $prot = "http://";
+	switch( $_SERVER["SERVER_PORT"] ) {
 
+		case "80":
+			$prot = "http://";
 			break;
-
-			case "443": $prot = "https://";
-
+		case "443":
+			$prot = "https://";
 			break;
+	}
 
-		}
-
-		$link = $prot . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
+	$link = $prot . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
 
     $subject = preg_replace("/\{USERNAME\}/", $admin_name, $subject);
-
     $message = preg_replace("/\{NAME\}/", $admin_fname . " " . $admin_lname, $message);
-
     $message = preg_replace("/\{LINK\}/", $link, $message);
+	$message = preg_replace("/\{BASE_SERVER_VHOST\}/", $base_vhost, $message);
 
     $headers = "From: $from\n";
 
-    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 7bit\n";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-    $headers .= "X-Mailer: ISPCP Pro lostpassword mailer";
+    $headers .= "X-Mailer: ISPCP lostpassword mailer";
 
     $mail_result = mail($to, $subject, $message, $headers);
 

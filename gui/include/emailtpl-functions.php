@@ -1,11 +1,11 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ *  @author		Benedikt Heintel, ispCP Team (2007)
  *
  *  @license
  *  This program is free software; you can redistribute it and/or modify it under
@@ -54,7 +54,7 @@ SQL_QUERY;
 
 		}
 
-	}			
+	}
 
   $data['sender_email'] = $rs->fields('email');
 
@@ -78,13 +78,13 @@ SQL_QUERY;
     $data['message'] = $rs->fields['message'];
 
 	} else {
-		
+
 		$data['subject'] = '';
-		
+
 		$data['message'] = '';
-		
+
 	}
-	
+
 	return $data;
 
 }
@@ -132,7 +132,7 @@ SQL_QUERY;
 	}
 
 	exec_query($sql, $query, array($data['subject'], $data['message'], $admin_id, $tpl_name));
-	
+
 }
 
 function get_welcome_email($admin_id) {
@@ -141,23 +141,24 @@ function get_welcome_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Welcome new ISPCP user {USERNAME} !';
+		$data['subject'] = 'Welcome new ISPCP user {USERNAME}!';
 
 	}
-	
+
 	if (!$data['message']) {
 
   	$data['message'] = <<<MSG
 
-Hello {NAME} !
+Hello {NAME}!
 
-Your ISPCP user type is: {USERTYPE}
-Your ISPCP login is: {USERNAME}
-Your ISPCP password is: {PASSWORD}
+Your ispCP user type is: {USERTYPE}
+Your ispCP login is: {USERNAME}
+Your ispCP password is: {PASSWORD}
 
+You can login at http://{BASE_SERVER_VHOST}
 
-Good luck with ISPCP Pro system!
-ISPCP Team.
+Good luck with the ispCP system!
+The ispCP Team.
 
 MSG;
 
@@ -170,7 +171,7 @@ MSG;
 function set_welcome_email($admin_id, $data) {
 
 	set_email_tpl_data($admin_id, 'add-user-auto-msg', $data);
-	
+
 }
 
 function get_lostpassword_activation_email($admin_id) {
@@ -182,19 +183,18 @@ function get_lostpassword_activation_email($admin_id) {
 		$data['subject'] = 'Please activate your new ISPCP login !';
 
 	}
-	
+
 	if (!$data['message']) {
 
   	$data['message'] = <<<MSG
 
-Hello {NAME} !
+Hello {NAME}!
 Use this link to activate your new ISPCP password:
 
 {LINK}
 
-
-Good Luck with ISPCP Pro System
-Hosting Provider Team
+Good Luck with the ispCP System
+The ispCP Team
 
 MSG;
 
@@ -219,19 +219,20 @@ function get_lostpassword_password_email($admin_id) {
 		$data['subject'] = 'Your new ISPCP login !';
 
 	}
-	
+
 	if (!$data['message']) {
 
   	$data['message'] = <<<MSG
 
-Hello {NAME} !
+Hello {NAME}!
 
-Your ISPCP login is: {USERNAME}
-Your ISPCP password is: {PASSWORD}
+Your ispCP login is: {USERNAME}
+Your ispCP password is: {PASSWORD}
 
+You can login at http://{BASE_SERVER_VHOST}
 
-Good Luck with ISPCP Pro System
-Hosting Provider Team
+Good Luck with the ispCP System
+The ispCP Team
 
 MSG;
 
@@ -256,18 +257,18 @@ function get_order_email($admin_id) {
 		$data['subject'] = 'Confirmation for domain order {DOMAIN} !';
 
 	}
-	
+
 	if (!$data['message']) {
 
   	$data['message'] = <<<MSG
 
 Dear {NAME},
-This is an automatic confirmation for the order of the domain  :
+This is an automatic confirmation for the order of the domain:
 
 {DOMAIN}
 
-Thank you for using ISPCP services.
-Your ISPCP Team
+Thank you for using ispCP services.
+The ISPCP Team
 
 MSG;
 
