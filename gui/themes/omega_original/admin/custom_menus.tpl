@@ -123,7 +123,7 @@ function action_delete(url) {
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_BUTTON_NAME}</td>
-                                <td class="content"><input name="bname2" type="text" class="textinput" id="bname" style="width:210px" value="{BUTON_NAME}"></td>
+                                <td class="content"><input name="bname" type="text" class="textinput" id="bname" style="width:210px" value="{BUTON_NAME}"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>

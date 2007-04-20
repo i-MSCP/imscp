@@ -597,6 +597,8 @@ SQL_QUERY;
 	function rsl_full_domain_check ( $data ) {
 
 		$data = "$data.";
+		$match = array();
+		$last_match = array();
 
 		$res = preg_match_all(
 								"/([^\.]*\.)/",
@@ -617,7 +619,6 @@ SQL_QUERY;
 
 			if ($res == 0) return 0;
 		}
-
 
 		$res = preg_match(
 							"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
@@ -997,7 +998,7 @@ SQL_QUERY;
   }
 
    // if we have :
-   // db entrie in the tables domain
+   // db entry in the tables domain
    // AND
    // no problem with 3th level domains
    // AND
@@ -1028,7 +1029,7 @@ SQL_QUERY;
           t2.domain_created_id = ?
 SQL_QUERY;
 
-   $subdomains[] = array();	
+   $subdomains = array();
    $res_build_sub = exec_query($sql, $query_build_subdomain, array($reseller_id));
    while (!$res_build_sub -> EOF) {
       $subdomains[] = $res_build_sub -> fields['subdomain_name'].".".$res_build_sub -> fields['domain_name'];
@@ -1313,8 +1314,9 @@ function gen_manage_domain_search_options  (&$tpl,
 
 }
 
-function gen_def_language(&$tpl, &$sql, &$user_def_language)
-{
+function gen_def_language(&$tpl, &$sql, &$user_def_language) {
+
+	$matches = array();
     $query = <<<SQL_QUERY
         show tables
 SQL_QUERY;
@@ -1752,61 +1754,57 @@ SQL_QUERY;
 } // End of au_update_reseller_props()
 
 
-function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id)
-{
+function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id) {
+
 	global $cfg;
 
 	$data = get_order_email($admin_id);
 
 	$from_name = $data['sender_name'];
-
 	$from_email = $data['sender_email'];
+	$subject = $data['subject'];
+	$message = $data['message'];
 
-  $subject = $data['subject'];
-
-  $message = $data['message'];
-
-  if ($from_name) {
-
-  	$from = $from_name . "<" . $from_email . ">";
-
-	} else {
-
-  	$from = $from_email;
-
+	if ($from_name) {
+	  	$from = $from_name . "<" . $from_email . ">";
+	}
+	else {
+	  	$from = $from_email;
 	}
 
-  if ($ufname && $ulname) {
+	if ($ufname AND $ulname) {
+	  	$to = "$ufname $ulname <$uemail>";
+    	$name = "$ufname $ulname";
+	}
+	else {
+   		if($ufname) {
+			$name = $ufname;
+		}
+	   	else if($ulname) {
+   			$name = $ulname;
+   		}
+		else {
+	   		$name = $uname;
+	   	}
+	    $to = $uemail;
+	}
 
-  	$to = "$ufname $ulname <$uemail>";
+	$subject = preg_replace("/\{DOMAIN\}/", $domain_name, $subject);
+	$message = preg_replace("/\{DOMAIN\}/", $domain_name, $message);
+	$message = preg_replace("/\{NAME\}/", $name, $message);
 
-    $name = "$ufname $ulname";
-
-  } else {
-
-  	$name = $uname;
-
-    $to = $uemail;
-
-  }
-
-  $subject = preg_replace("/\{DOMAIN\}/", $domain_name, $subject);
-  $message = preg_replace("/\{DOMAIN\}/", $domain_name, $message);
-  $message = preg_replace("/\{NAME\}/", $name, $message);
-
-  $headers  = "From: $from\n";
-  $headers .= "MIME-Version: 1.0\n" .
-            	"Content-Type: text/plain;\n" .
+	$headers  = "From: $from\n";
+	$headers .= "MIME-Version: 1.0\n" .
+	        	"Content-Type: text/plain;\n" .
 							"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
 
-  $mail_result = mail($to, $subject, $message, $headers);
+	$mail_result = mail($to, $subject, $message, $headers);
 
-  $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
 	// lets send mail to the reseller => new order
 
 	$from = $to;
-
 	$subject = "You have new order";
 
 	$message = <<<MSG

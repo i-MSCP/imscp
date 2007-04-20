@@ -10,6 +10,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-21 Benedikt Heintel
+	- GUI:
+		* fixed bug #146: array warnings and notices in reseller functions
+	- LANGUAGES:
+		* German: fixed bug #204
+
+2007-04-19 Benedikt Heintel
+	- GUI:
+		* fixed bug #185: can't edit custom menu buttons
+
 2007-04-18 Benedikt Heintel
 	- DISTS:
 		* Fedora: updated files
