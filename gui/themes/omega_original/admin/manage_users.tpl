@@ -16,8 +16,8 @@ function action_status(url) {
 	location = url;
 }
 
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, dmn_name) {
+	if (!confirm("{TR_MESSAGE_DELETE} (" + dmn_name + ")"))
 		return false;
 
 	location = url;
@@ -61,7 +61,7 @@ function sbmt(form, uaction) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_ADMINISTRATORS}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right" >&nbsp;</td>
   </tr>
@@ -96,7 +96,7 @@ function sbmt(form, uaction) {
               {TR_DELETE}
               <!-- EDP: admin_delete_show -->
               <!-- BDP: admin_delete_link -->
-              <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_ADMIN}')" class="link">{TR_DELETE}</a>
+              <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
               <!-- EDP: admin_delete_link -->
             </td>
           </tr>
@@ -120,7 +120,7 @@ function sbmt(form, uaction) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_RESELLERS}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -147,7 +147,7 @@ function sbmt(form, uaction) {
         <td class="{RSL_CLASS}" align="center">{RESELLER_CREATED_ON}</td>
         <td class="{RSL_CLASS}" align="center">{RSL_CREATED_BY}</td>
         <td width="150" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
-        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_RSL}')" class="link">{TR_DELETE}</a></td>
+        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')" class="link">{TR_DELETE}</a></td>
       </tr>
       <!-- EDP: rsl_item -->
       <!-- EDP: rsl_list -->
@@ -168,7 +168,7 @@ function sbmt(form, uaction) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_USERS}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -228,7 +228,7 @@ function sbmt(form, uaction) {
             {TR_DELETE}
             <!-- EDP: usr_delete_show -->
                 <!-- BDP: usr_delete_link -->
-                <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}')" class="link">{TR_DELETE}</a>
+                <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
                 <!-- EDP: usr_delete_link -->
           </td>
         </tr>
@@ -264,7 +264,7 @@ function sbmt(form, uaction) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>				  
+</table>
 				  </td>
 				</tr>
 			</table>

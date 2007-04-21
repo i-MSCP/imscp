@@ -13,8 +13,16 @@ ispCP ω 1.0.0 Changelog
 2007-04-21 Benedikt Heintel
 	- GUI:
 		* fixed bug #146: array warnings and notices in reseller functions
+		* added: domain / user name on delete in java-script confirm box
 	- LANGUAGES:
 		* German: fixed bug #204
+
+2007-04-18 Roland Haeder
+	- GUI
+		* added: Direct shortcut link in hp.php (admin / reseller) which links
+		  directly to the choosen hosting plan. This shall help you
+		  find the correct link for your hosting plans. You can use
+		  them e.g. in frames or IFRAMEs...
 
 2007-04-19 Benedikt Heintel
 	- GUI:

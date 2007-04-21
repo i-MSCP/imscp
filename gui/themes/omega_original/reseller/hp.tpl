@@ -71,7 +71,7 @@ function delete_account(url) {
                     <tr>
                       <td width="35" align="center">&nbsp;</td>
                       <td class="{CLASS_TYPE_ROW}" width="50" align="center">{PLAN_NOM}</td>
-                      <td class="{CLASS_TYPE_ROW}">{PLAN_NAME}</td>
+                      <td class="{CLASS_TYPE_ROW}"><a href="../orderpanel/package_info.php?user_id={RESELLER_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>
                       <td align="center" class="{CLASS_TYPE_ROW}">{PURCHASING}</td>
                       <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.gif" width="16" height="16" border="0" align="absmiddle"> <a href="ehp.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
                       <!-- BDP: hp_delete -->

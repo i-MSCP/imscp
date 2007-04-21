@@ -49,13 +49,13 @@ function delete_account(url) {
                       <td valign="top"><table width="100%" cellspacing="3">
                           <!-- BDP: page_message -->
                           <tr>
-                            <td width="25">&nbsp;</td>
+                      <td width="35">&nbsp;</td>
                             <td colspan="5" class="title"><font color="#FF0000">{MESSAGE}</font></b></td>
                           </tr>
                           <!-- EDP: page_message -->
                           <!-- BDP: hp_table -->
                           <tr>
-                            <td width="25" align="center">&nbsp;</td>
+                      <td width="35" align="center">&nbsp;</td>
                             <td class="content3" width="50" align="center"><span class="menu"><b>{TR_NOM}</b></span></td>
                             <td class="content3"><b>{TR_PLAN_NAME}</b></td>
                             <td width="100" align="center" class="content3"><strong>{TR_PURCHASING}</strong></td>
@@ -63,12 +63,14 @@ function delete_account(url) {
                           </tr>
                           <!-- BDP: hp_entry -->
                           <tr>
-                            <td width="25" align="center">&nbsp;</td>
+                      		<td width="35" align="center">&nbsp;</td>
                             <td class="{CLASS_TYPE_ROW}" width="50" align="center">{PLAN_NOM}</td>
-                            <td class="{CLASS_TYPE_ROW}">{PLAN_NAME}</td>
+                      		<td class="{CLASS_TYPE_ROW}"><a href="../orderpanel/package_info.php?user_id={ADMIN_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>
                             <td align="center" class="{CLASS_TYPE_ROW}">{PURCHASING}</td>
                             <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.gif" width="16" height="16" border="0" align="absmiddle"> <a href="ehp.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
+                      		<!-- BDP: hp_delete -->
                             <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('dhp.php?hpid={HP_ID}')" class="link">{PLAN_ACTION}</a></td>
+                      		<!-- EDP: hp_delete -->
                           </tr>
                           <!-- EDP: hp_entry -->
                           <!-- EDP: hp_table -->

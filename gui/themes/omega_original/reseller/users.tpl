@@ -16,8 +16,8 @@ function change_status(dom_id) {
 	location = ('change_status.php?domain_id=' + dom_id);
 }
 
-function delete_account(url) {
-	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT}"))
+function delete_account(url, dmn_name) {
+	if (!confirm("{TR_MESSAGE_DELETE_ACCOUNT} (" + dmn_name + ")"))
 		return false;
 
 	location = url;
@@ -123,7 +123,7 @@ function sbmt(form, uaction) {
                         <!-- EDP: edit_option -->
                         <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="18" height="18" border="0" align="absmiddle"> <a href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
                         <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle"> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('druser.php?id={USER_ID}')" class="link">{ACTION}</a></td>
+                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('druser.php?id={USER_ID}', '{NAME}')" class="link">{ACTION}</a></td>
                       </tr>
                       <!-- BDP: user_details -->
                       <tr>
