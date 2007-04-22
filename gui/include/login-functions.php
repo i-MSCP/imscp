@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -28,16 +28,7 @@ function username_exists($username) {
 
 	$res = exec_query($sql, $query, array());
 
-	if ($res -> RecordCount() == 1) {
-
-		return TRUE;
-
-	} else {
-
-		return FALSE;
-
-	}
-
+	return  ($res -> RecordCount() == 1);
 }
 
 function get_userdata($username) {
@@ -187,7 +178,7 @@ function check_ipaddr($ipaddr) {
 		return false;
 
 	}
-	
+
 }
 
 function block_ipaddr($ipaddr) {
@@ -235,11 +226,10 @@ function session_exists($sess_id) {
 	$res = exec_query($sql, $query, array());
 
 	if ($res -> RecordCount() == 0) {
-
-  	return FALSE;
-
-  }
-
-  return TRUE;
+  		return FALSE;
+  	}
+	return TRUE;
 
 }
+
+?>

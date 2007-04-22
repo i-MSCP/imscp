@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -267,14 +267,15 @@ function change_user_interface($form_id, $to_id) {
 
 	global $sql, $cfg;
 
-	$timestamp = time();
-
 	if ($cfg['DB_TYPE'] === 'mysql') {
 
 		$query_from = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
 
     	$query_to = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
 
+	}
+	else {
+		die ("Other Databases than MySQL are not supported");
 	}
 
   	$rs_from = exec_query($sql, $query_from, array($form_id));
@@ -308,11 +309,11 @@ function change_user_interface($form_id, $to_id) {
 
 	} else if ($from_udata['admin_type'] === 'admin' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
 
-  	$header = "../client/index.php";
+  		$header = "../client/index.php";
 
 	} else if ($from_udata['admin_type'] === 'reseller' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
 
-  	$header = "../client/index.php";
+  		$header = "../client/index.php";
 
 	// lets check and go from bottom to top User -> Reseller -> Admin
 	// there is SESSION 'logged from' -> we can go from Buttom to TOP
@@ -367,20 +368,20 @@ function change_user_interface($form_id, $to_id) {
 	// we gonna kill all sessions and globals if user get back to admin level
 	if (isset($_SESSION['admin_name']))
 
-	unset($_SESSION['admin_name']);
+		unset($_SESSION['admin_name']);
 
 	if (isset($_SESSION['admin_id']))
 
-	unset($_SESSION['admin_id']);
+		unset($_SESSION['admin_id']);
 
 	if (isset($GLOBALS['admin_name']))
 
-	unset($GLOBALS['admin_name']);
+		unset($GLOBALS['admin_name']);
 
 	if (isset($GLOBALS['admin_id']))
 
-	unset($GLOBALS['admin_id']);
-	// no more sessions and globals to kill - they were always killed - rest in peace
+		unset($GLOBALS['admin_id']);
+		// no more sessions and globals to kill - they were always killed - rest in peace
 
 	$_SESSION['user_logged'] = $to_udata['admin_name'];
 
@@ -413,7 +414,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($sess_id, $new_user_name, $user_login_time));
 
-  write_log($from_udata['admin_name']." change into interface from ".$to_udata['admin_name']);
+ 	write_log($from_udata['admin_name']." change into interface from ".$to_udata['admin_name']);
 
 	return $header;
 
@@ -422,19 +423,19 @@ SQL_QUERY;
 function unset_user_login_data () {
 	global $cfg, $sql;
 
-  if (isset($_SESSION['user_logged'])) {
+	if (isset($_SESSION['user_logged'])) {
 
 		$sess_id = session_id();
 
-  	$admin_name = $_SESSION['user_logged'];
+		$admin_name = $_SESSION['user_logged'];
 
-    $query = <<<SQL_QUERY
-    	delete from
-      	login
-      where
-      	session_id = ?
-      and
-      	user_name = ?
+		$query = <<<SQL_QUERY
+			delete from
+		  	login
+		  where
+		  	session_id = ?
+		  and
+		  	user_name = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($sess_id, $admin_name));

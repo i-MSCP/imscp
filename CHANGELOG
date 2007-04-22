@@ -10,6 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-22 Benedikt Heintel
+	- GUI:
+		* deleted: unused functions
+		* modified: some basic funtions (thanks to atomo64)
+
 2007-04-21 Benedikt Heintel
 	- GUI:
 		* fixed bug #146: array warnings and notices in reseller functions
@@ -17,7 +22,7 @@ ispCP ω 1.0.0 Changelog
 	- LANGUAGES:
 		* German: fixed bug #204
 
-2007-04-18 Roland Haeder
+2007-04-21 Roland Haeder
 	- GUI
 		* added: Direct shortcut link in hp.php (admin / reseller) which links
 		  directly to the choosen hosting plan. This shall help you

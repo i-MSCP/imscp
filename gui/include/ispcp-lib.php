@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -22,7 +22,8 @@
 
 session_name("ISPCP");
 
-if (!isset($_SESSION)) session_start();
+if (!isset($_SESSION))
+	session_start();
 
 //error_reporting(0);
 error_reporting(E_ALL); // setting for development edition - see all error messages
@@ -164,53 +165,50 @@ $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/ispcp.conf";
 
-include_once (realpath($include_path.'/spGzip.php'));
+require_once(realpath($include_path.'/spGzip.php'));
 
-include_once (realpath($include_path.'/class.pTemplate.php'));
+require_once(realpath($include_path.'/class.pTemplate.php'));
 
-include_once (realpath($include_path.'/date-functions.php'));
+require_once(realpath($include_path.'/date-functions.php'));
 
-include_once (realpath($include_path.'/system-message.php'));
+require_once(realpath($include_path.'/system-message.php'));
 
-include_once (realpath($include_path.'/ispcp-db-keys.php'));
+require_once(realpath($include_path.'/ispcp-db-keys.php'));
 
-include_once (realpath($include_path.'/input-checks.php'));
+require_once(realpath($include_path.'/input-checks.php'));
 
-include_once (realpath($include_path.'/debug.php'));
+require_once(realpath($include_path.'/debug.php'));
 
-include_once (realpath($include_path.'/i18n.php'));
+require_once(realpath($include_path.'/i18n.php'));
 
-include_once (realpath($include_path.'/system-log.php'));
+require_once(realpath($include_path.'/system-log.php'));
 
-include_once (realpath($include_path.'/calc-functions.php'));
+require_once(realpath($include_path.'/calc-functions.php'));
 
-include_once (realpath($include_path.'/login-functions.php'));
+require_once(realpath($include_path.'/login-functions.php'));
 
-include_once (realpath($include_path.'/login.php'));
+require_once(realpath($include_path.'/login.php'));
 
-include_once (realpath($include_path.'/client-functions.php'));
+require_once(realpath($include_path.'/client-functions.php'));
 
-include_once (realpath($include_path.'/admin-functions.php'));
+require_once(realpath($include_path.'/admin-functions.php'));
 
-include_once (realpath($include_path.'/reseller-functions.php'));
+require_once(realpath($include_path.'/reseller-functions.php'));
 
-include_once (realpath($include_path.'/ispcp-functions.php'));
+require_once(realpath($include_path.'/ispcp-functions.php'));
 
-include_once (realpath($include_path.'/idna.php'));
+require_once(realpath($include_path.'/idna.php'));
 
-include_once (realpath($include_path.'/lostpassword-functions.php'));
+require_once(realpath($include_path.'/lostpassword-functions.php'));
 
-include_once (realpath($include_path.'/sql.php'));
+require_once(realpath($include_path.'/sql.php'));
 
-include_once (realpath($include_path.'/emailtpl-functions.php'));
+require_once(realpath($include_path.'/emailtpl-functions.php'));
+
+require_once(realpath($include_path.'/layout-functions.php'));
 
 // If you comment this line out, you have no security level (none)
-include_once (realpath($include_path.'/security/core.inc.php'));
-
-// OBSULETE! Do *not* include it!
-////// include_once (realpath($include_path.'/ispcp-security.php'));
-// We need to remove this file anyway... Q
-
+require_once(realpath($include_path.'/security/core.inc.php'));
 
 $query = "SELECT name, value FROM config";
 
@@ -229,7 +227,5 @@ if( !$res = exec_query($sql, $query, array()) ) {
 	}
 
 }
-
-include_once (realpath($include_path.'/layout-functions.php'));
 
 ?>

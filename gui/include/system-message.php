@@ -51,7 +51,6 @@ function system_message($msg) {
 	$tpl->prnt();
 
 	exit(0);
-	die();
 }
 
 ?>

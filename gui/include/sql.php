@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -17,9 +17,6 @@
  *  http://opensource.org | osi@opensource.org
  *
  **/
-
-
-
 
 include_once (realpath($include_path.'/adodb/adodb.inc.php'));
 
@@ -39,17 +36,14 @@ $cfg['DB_NAME'] = $cfg['DATABASE_NAME'];
 
 
 if ($cfg['DB_TYPE'] === 'pgsql') {
-
-  $sql = &ADONewConnection('postgres7');
-
+	$sql = &ADONewConnection('postgres7');
 } else if ($cfg['DB_TYPE'] === 'mysql') {
-
-  $sql = &ADONewConnection('mysql');
-
+	$sql = &ADONewConnection('mysql');
+} else {
+	$sql = NULL;
 }
 
 @$sql -> Connect($cfg['DB_HOST'], $cfg['DB_USER'], $cfg['DB_PASS'], $cfg['DB_NAME']) OR
-
 	system_message('ERROR: Unable to connect MySQL server !<br>MySQL returns: '.$sql -> ErrorMsg() );
 
 /* No longer needed */
@@ -59,32 +53,31 @@ unset($cfg['DB_PASS']);
 /* unset for safety */
 
 function execute_query (&$sql, $query) {
-  check_query($query);
-  $rs = $sql -> Execute($query);
-  if (!$rs) system_message($sql -> ErrorMsg());
-  return $rs;
+	check_query($query);
+	$rs = $sql -> Execute($query);
+	if (!$rs) system_message($sql -> ErrorMsg());
+	return $rs;
 }
 
 function exec_query(&$sql, $query, $data) {
-  check_query($query);
-  $stmt = $sql->Prepare($query);
-  $rs = $sql->Execute($query, $data);
-  if (!$rs) system_message($sql->ErrorMsg());
-  return $rs;
+	check_query($query);
+	$stmt = $sql->Prepare($query);
+	$rs = $sql->Execute($query, $data);
+	if (!$rs) system_message($sql->ErrorMsg());
+	return $rs;
 }
 
-function quoteIdentifier($identifier)
-{
-  global $cfg;
+function quoteIdentifier($identifier) {
+	global $cfg;
 
-  switch ($cfg['DB_TYPE']) {
-    case 'pgsql':
-      return '"' . $identifier . '"';
-    case 'mysql':
-      return '`' . $identifier . '`';
-    default: // is there a standard?
-      return $identifier;
-  }
+	switch ($cfg['DB_TYPE']) {
+		case 'pgsql':
+			return '"' . $identifier . '"';
+		case 'mysql':
+			return '`' . $identifier . '`';
+		default: // is there a standard?
+			return $identifier;
+	}
 }
 
 function pg_get_record_id(&$sql, $table, $oid) {
@@ -98,8 +91,7 @@ function pg_get_record_id(&$sql, $table, $oid) {
 }
 
 function match_sqlinjection($value) {
-	if (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value, $imatch)>0)
-		return true; else return false;
+	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value)>0);
 }
 
 function check_query() {
@@ -107,16 +99,18 @@ function check_query() {
 		foreach($_REQUEST as $key=>$value) {
 			if (!is_array($value)) {
 				if (match_sqlinjection($value)) {
-					write_log("Possible SQL injection detected: $key=>$value. <b>$imatch[0]</b> Script terminated.");
-					system_message("Possible SQL injection detected: $key=>$value. <b>$imatch[0]</b> Script terminated.");
+					$message = "Possible SQL injection detected: $key=>$value. <b>$imatch[0]</b>. Script terminated.";
+					write_log($message);
+					system_message($message);
 					die();
 				}
 			} else {
 				foreach($value as $key1=>$val) {
 					if (!is_array($val)) {
 						if (match_sqlinjection($val)) {
-							write_log("Possible SQL injection detected: $key=>$val <b>$imatch[0]</b>.  Script terminated.");
-							system_message("Possible SQL injection detected: $key=>$val <b>$imatch[0]</b>.  Script terminated.");
+							$message = "Possible SQL injection detected: $key=>$val <b>$imatch[0]</b>. Script terminated.";
+							write_log($message);
+							system_message($message);
 							die();
 						}
 					}

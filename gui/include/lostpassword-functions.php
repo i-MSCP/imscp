@@ -20,29 +20,12 @@
 
 
 function check_gd() {
-
-	if (function_exists('imagecreatetruecolor'))
-
-		return true;
-
-	else
-
-		return false;
-
+	return function_exists('imagecreatetruecolor');
 }
 
 function captcha_fontfile_exists() {
-
 	global $cfg;
-
-	if (file_exists($cfg['LOSTPASSWORD_CAPTCHA_FONT']))
-
-		return true;
-
-	else
-
-		return false;
-
+	return file_exists($cfg['LOSTPASSWORD_CAPTCHA_FONT']);
 }
 
 function createImage($strSessionVar) {
@@ -104,13 +87,13 @@ function createImage($strSessionVar) {
 	}
 
 	// Header schicken
-  header("Content-type: image/png");
+	header("Content-type: image/png");
 
-  // PNG Bild erzeugen und senden
+	// PNG Bild erzeugen und senden
 	imagepng($im);
 
-  // Bild auf dem Server loeschen
-  imagedestroy($im);
+	// Bild auf dem Server loeschen
+	imagedestroy($im);
 
 }
 

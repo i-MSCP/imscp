@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -22,9 +22,9 @@ function check_day($day) {
 
     if ($day === '') return 0;
 
-    if (preg_match("/^0?[1-9]$/", $day)) return 1;
+    if (preg_match("/^0?[1-9]$/D", $day)) return 1;
 
-    if (preg_match("/^[1-9][0-9]$/", $day) && (9 < $day) && ($day < 32)) return 1;
+    if (preg_match("/^[1-9][0-9]$/D", $day) && (9 < $day) && ($day < 32)) return 1;
 
     return 0;
 
@@ -34,9 +34,9 @@ function check_month($month) {
 
     if ($month === '') return 0;
 
-    if (preg_match("/^0?[1-9]$/", $month)) return 1;
+    if (preg_match("/^0?[1-9]$/D", $month)) return 1;
 
-    if (preg_match("/^[1-9][0-9]$/", $month) && (9 < $month) && ($month < 13)) return 1;
+    if (preg_match("/^[1-9][0-9]$/D", $month) && (9 < $month) && ($month < 13)) return 1;
 
     return 0;
 
@@ -48,7 +48,7 @@ function check_year($year) {
 
     if ($year === '') return 0;
 
-    if (preg_match("/^[1-9][0-9][0-9][0-9]$/", $year) && (1899 < $year) && ($year < ($current_year + 1))) return 1;
+    if (preg_match("/^[1-9][0-9][0-9][0-9]$/D", $year) && (1899 < $year) && ($year < ($current_year + 1))) return 1;
 
     return 0;
 
@@ -58,7 +58,7 @@ function check_date($date) {
 
     if ($date === '') return 0;
 
-    $res = preg_match_all("/^([^\.]+)\.([^\.]+)\.([^\n]+)\n/", "$date\n", $parts, PREG_PATTERN_ORDER);
+    $res = preg_match_all("/^([^\.]+)\.([^\.]+)\.([^\n]+)\n/D", "$date\n", $parts, PREG_PATTERN_ORDER);
 
     if ($res != 1) return 0;
 
@@ -71,7 +71,7 @@ function split_date($date) {
 
     if (check_date($date)) {
 
-        $res = preg_match_all("/^([^\.]+)\.([^\.]+)\.([^\n]+)\n/", "$date\n", $parts, PREG_PATTERN_ORDER);
+        $res = preg_match_all("/^([^\.]+)\.([^\.]+)\.([^\n]+)\n/D", "$date\n", $parts, PREG_PATTERN_ORDER);
 
         return array($parts[1][0], $parts[2][0], $parts[3][0]);
 

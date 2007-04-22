@@ -1,8 +1,8 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2005 by Oliver Sperke | http://sperke.net
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
  *  @author		ispCP Team (2007)
@@ -19,13 +19,6 @@
  **/
 
 /**
- * spGzip.php
- *                             -------------------
- *    copyright            : (C) 2005 Oliver Sperke
- *    website              : http://sperke.net
- */
-
-/**
  * This class checks the output buffer
  * zips the input if necessary
  * @param: int $MaxServerload the maximum serverload
@@ -36,8 +29,7 @@
  * @input: bool $showSize show the compression in html
  * @return: mixed the output
  */
-class spOutput
-{
+class spOutput {
    /**
     * Public vars
     */
@@ -61,8 +53,7 @@ class spOutput
    /**
     * Constructor
     */
-   function spOutput($level='3', $debug=false, $showSize=true)
-   {
+   function spOutput($level='3', $debug=false, $showSize=true) {
       $this->level = $level;
       $this->debug = $debug;
       $this->showSize = $showSize;
@@ -71,8 +62,7 @@ class spOutput
    /**
     * Let's work a bit with the buffer
     */
-   function output($buffer)
-   {
+   function output($buffer) {
       $this->contents = $buffer;
 
       /* Find out which encoding to use */
@@ -82,14 +72,11 @@ class spOutput
        * Check the best compress version for the browser
        * Use the @ to prevent bots from saving an error
        */
-      if (isset($_SERVER['HTTP_ACCEPT_ENCODING']))
-      {
-         if(@strpos(' ' . $_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip') !== false)
-         {
+      if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+         if(@strpos(' ' . $_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip') !== false) {
             $this->encoding = 'x-gzip';
          }
-         if(@strpos(' ' . $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false)
-         {
+         if(@strpos(' ' . $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
             $this->encoding = 'gzip';
          }
       }
@@ -97,70 +84,59 @@ class spOutput
       /* Find out more about the file which should be compressed */
       $filetype = substr($this->contents, 0, 4);
 
-      if(substr($filetype, 0, 2) === '^_')
-      {
+      if(substr($filetype, 0, 2) === '^_') {
          /* gzip data */
          $this->encoding = false;
       }
-      elseif(substr($filetype, 0, 3) === 'GIF')
-      {
+      elseif(substr($filetype, 0, 3) === 'GIF') {
          /* gif images */
          $this->encoding = false;
       }
-      elseif(substr($filetype, 0, 2) === "\xFF\xD8")
-      {
+      elseif(substr($filetype, 0, 2) === "\xFF\xD8") {
          /* jpeg images */
          $this->encoding = false;
       }
-      elseif(substr($filetype, 0, 4) === "\x89PNG")
-      {
+      elseif(substr($filetype, 0, 4) === "\x89PNG") {
          /* png images */
          $this->encoding = false;
       }
-      elseif(substr($filetype, 0, 3) === 'FWS')
-      {
+      elseif(substr($filetype, 0, 3) === 'FWS') {
          /* Shockwave Flash */
          $this->encoding = false;
       }
-      elseif(substr($filetype, 0, 2) === 'PK')
-      {
+      elseif(substr($filetype, 0, 2) === 'PK') {
          /* pk zip file */
          $this->encoding = false;
       }
-      elseif($filetype == '%PDF')
-      {
+      elseif($filetype == '%PDF') {
          /* PDF File */
          $this->encoding = false;
       }
 
       /* There might be some Problems */
-      if(headers_sent() || connection_status() != 0 || !$this->encoding || $this->contents === false || !extension_loaded('zlib') || @ini_get('output_handler') == 'ob_gzhandler' || $GLOBALS['data']['error'])
+      if(headers_sent() || connection_status() != 0 || !$this->encoding || $this->contents === false || !extension_loaded('zlib') || @ini_get('output_handler') == 'ob_gzhandler' || @ini_get('zlib.output_compression') || $GLOBALS['data']['error'])
          return $this->contents;
 
       /* We need a level to compress the output */
-      if($this->level == 'auto')
-      {
+      if($this->level == 'auto') {
          /* Let's find out, which compression level is ok for the system */
-         if(@file_exists('/proc/loadavg'))
-         {
+         if(@file_exists('/proc/loadavg')) {
             $fh = @fopen('/proc/loadavg', 'r');
             $load_averages = @fread($fh, 64);
             @fclose($fh);
-         
+
             $load_averages = @explode(' ', $load_averages);
             $this->serverload = ((float)$load_averages[0]+(float)$load_averages[1]+(float)$load_averages[2])/3;
          }
-         elseif(preg_match('/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/i', @exec('uptime'), $load_averages))
-         {
+         elseif(preg_match('/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/i', @exec('uptime'), $load_averages)) {
             $this->serverload = ((float)$load_averages[1]+(float)$load_averages[2]+(float)$load_averages[3])/3;
          }
-         else
-         {
-            $this->serverload = '1';
+         else {
+		 	$this->serverload = '1';
          }
-   
+
          $this->level = (1-($this->serverload/$this->MaxServerload))*10;
-   
+
          /* Ok, that looks terrible, but its faster than a min/max construction */
          $this->level = ($this->level > $this->MinCompression) ? (($this->level < $this->MaxCompression) ? intval($this->level) : $this->MaxCompression) : $this->MinCompression;
       }
@@ -173,8 +149,7 @@ class spOutput
        * This is not the ideal because you need to
        * compress the output twice
        */
-      if($this->showSize)
-      {
+      if($this->showSize) {
          /* We need some vars for the information */
          $uncompressed   = round(strlen($this->contents)/1024, 2);
          $start      = $this->getMicrotime();
@@ -196,15 +171,13 @@ class spOutput
       $this->gzsize   = strlen($this->gzdata);
 
 		/* This prevents stupid IEs from displaying blank pages */
-		if(isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) && $this->gzsize < 4096)
-		{
+		if(isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/MSIE/i', $_SERVER['HTTP_USER_AGENT']) && $this->gzsize < 4096) {
 			/* Returns the uncompressed content */
 			return $this->contents;
 		}
 
       /* Maybe you just want to see the result of all this */
-      if($this->debug)
-      {
+      if($this->debug) {
          $this->contents = $this->contents."\n".'<!--'."\n\t".'spGzip is in debug mode. The shown output is uncompressed'."\n".'-->';
          return $this->contents;
       }
@@ -221,8 +194,7 @@ class spOutput
     * Returns the actual microtime
     * @return: int the actual microtime
     */
-   function getMicrotime()
-   {
+   function getMicrotime() {
       return array_sum(explode(' ', microtime()));
    }
 }

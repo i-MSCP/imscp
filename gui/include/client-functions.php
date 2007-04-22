@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -17,8 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-function get_domain_default_props(&$sql, $domain_admin_id)
-{
+function get_domain_default_props(&$sql, $domain_admin_id) {
     $query = <<<SQL_QUERY
         select
             domain_id,
@@ -69,19 +68,6 @@ SQL_QUERY;
                  $rs -> fields['domain_disk_usage'],
                  $rs -> fields['domain_php'],
                  $rs -> fields['domain_cgi']);
-
-}
-
-function add_temp_ftp_acc(&$sql, $domain, $user) {
-	//goal : install temporary ftp-user for some skripts	
-	
-	
-	
-
-}
-
-function del_temp_ftp_acc(&$sql, $domain, $user) {
-	
 
 }
 
@@ -324,15 +310,6 @@ function get_domain_running_ftp_acc_cnt(&$sql, $domain_id) {
                  $als_ftp_acc_cnt);
 
 }
-
-
-function get_domain_running_traffic_cnt(&$sql, $domain_id) {
-
-  return $utraff_current;
-
-
-}
-
 
 function get_domain_running_sqld_acc_cnt(&$sql, $domain_id) {
 
@@ -645,80 +622,49 @@ SQL_QUERY;
 
 }
 
-function user_trans_item_status($item_status)
-{
-
+function user_trans_item_status($item_status) {
     global $cfg;
 
     if ($item_status === $cfg['ITEM_ADD_STATUS']) {
-
         return tr('Addition in progress');
-
     } else if ($item_status === $cfg['ITEM_OK_STATUS']) {
-
         return tr('ok');
-
     } else if ($item_status === $cfg['ITEM_CHANGE_STATUS']) {
-
         return tr('Modification in progress');
-
     } else if ($item_status === $cfg['ITEM_DELETE_STATUS']) {
-
         return tr('Deletion in progress');
-
     }
+	else {
+		return tr('Unknown Error');
+	}
 
 }
 
-function user_trans_mail_type($mail_type)
-{
+function user_trans_mail_type($mail_type) {
 
     if ($mail_type === 'normal_mail') {
-
         return tr('Domain mail');
-
     } else if ($mail_type === 'normal_forward') {
-
         return tr('Email forward');
-
     } else if ($mail_type === 'alias_mail') {
-
         return tr('Alias mail');
-
     } else if ($mail_type === 'alias_forward') {
-
         return tr('Alias forward');
-
     } else if ($mail_type === 'subdom_mail') {
-
         return tr('Subdomain mail');
-
     } else if ($mail_type === 'subdom_forward') {
-
         return tr('Subdomain forward');
-
-  } else if ($mail_type === 'normal_catchall') {
-
+  	} else if ($mail_type === 'normal_catchall') {
         return tr('Domain mail');
-
-  } else if ($mail_type === 'alias_catchall') {
-
+	} else if ($mail_type === 'alias_catchall') {
         return tr('Domain mail');
-
-
     } else {
-
         return tr('Unknown type');
-
     }
-
 }
 
-function user_goto($dest)
-{
-
+function user_goto($dest) {
     header("Location: $dest"); exit(0);
-
 }
 
 function count_sql_user_by_name(&$sql, $sqlu_name) {
@@ -736,8 +682,7 @@ SQL_QUERY;
 	return $rs -> fields['cnt'];
 }
 
-function sql_delete_user(&$sql, $dmn_id, $db_user_id)
-{
+function sql_delete_user(&$sql, $dmn_id, $db_user_id) {
 
     //
     // let's get sql user common data;
@@ -917,14 +862,14 @@ function ispcp_subdomain_check ( $data ) {
     $res = full_domain_check( $data );
 
     if ($res == 0) {
-    return 0;
-  }
+    	return 0;
+  	}
 
     $res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
 
     if ($res <= 1) {
-    return 0;
-  }
+    	return 0;
+  	}
 
     $res = preg_match("/^(www|ftp|mail|ns)\./", $data, $match);
 
@@ -934,31 +879,60 @@ function ispcp_subdomain_check ( $data ) {
 }
 
 
-function check_usr_sql_perms(&$sql, &$db_user_id)
-{
-$query = <<<SQL_QUERY
-        select
-            sqld_id
-        from
-            sql_user
-        where
-            sqlu_id  = ?
+function check_usr_sql_perms(&$sql, &$db_user_id) {
+	$query = <<<SQL_QUERY
+	        select
+	            sqld_id
+	        from
+	            sql_user
+	        where
+	            sqlu_id  = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($db_user_id));
+  	$rs = exec_query($sql, $query, array($db_user_id));
 
-  if ($rs -> RecordCount() == 0) {
+	if ($rs -> RecordCount() == 0) {
 
-      set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-      header('Location: manage_sql.php');
-      die();
-    }
+		header('Location: manage_sql.php');
+		die();
+	}
 
-  $db_id = $rs->fields('sqld_id');
+	$db_id = $rs->fields('sqld_id');
 
 
-  $dmn_name = $_SESSION['user_logged'];
+	$dmn_name = $_SESSION['user_logged'];
+
+	$query = <<<SQL_QUERY
+        select
+            t1.sqld_id, t2.domain_id, t2.domain_name
+        from
+            sql_database as t1,
+            domain as t2
+        where
+            t1.sqld_id = ?
+          and
+            t2.domain_id = t1.domain_id
+          and
+            t2.domain_name = ?
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($db_id, $dmn_name));
+
+	if ($rs -> RecordCount() == 0) {
+
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+
+		header('Location: manage_sql.php');
+		die();
+	}
+
+}
+
+function check_db_sql_perms(&$sql, &$db_id) {
+
+	$dmn_name = $_SESSION['user_logged'];
 
     $query = <<<SQL_QUERY
         select
@@ -974,52 +948,18 @@ SQL_QUERY;
             t2.domain_name = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($db_id, $dmn_name));
+  	$rs = exec_query($sql, $query, array($db_id, $dmn_name));
 
     if ($rs -> RecordCount() == 0) {
 
-      set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-      header('Location: manage_sql.php');
-      die();
-    }
-
-
-
-}
-
-function check_db_sql_perms(&$sql, &$db_id)
-{
-
-$dmn_name = $_SESSION['user_logged'];
-
-    $query = <<<SQL_QUERY
-        select
-            t1.sqld_id, t2.domain_id, t2.domain_name
-        from
-            sql_database as t1,
-            domain as t2
-        where
-            t1.sqld_id = ?
-          and
-            t2.domain_id = t1.domain_id
-          and
-            t2.domain_name = ?
-SQL_QUERY;
-
-  $rs = exec_query($sql, $query, array($db_id, $dmn_name));
-
-    if ($rs -> RecordCount() == 0) {
-
-      set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-
-      header('Location: manage_sql.php');
-      die();
+		header('Location: manage_sql.php');
+		die();
     }
 }
 
-function check_ftp_perms($sql, $ftp_acc)
-{
+function check_ftp_perms($sql, $ftp_acc) {
   $dmn_name = $_SESSION['user_logged'];
 
   $query = <<<SQL_QUERY

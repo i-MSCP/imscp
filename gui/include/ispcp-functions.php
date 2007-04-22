@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -17,8 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-function check_for_lock_file()
-{
+function check_for_lock_file() {
 
     global $lock_file_name, $wait_lock_timeout, $cfg;
 
@@ -29,11 +28,7 @@ function check_for_lock_file()
 	set_time_limit(0);
     while(file_exists($lock_file_name)) {
 
-	   // let's write some stupid text and stop the GUI
-	   //
-	    /* nope ... we dont wannt let loosers browsing empty page 10000x hours */
-		//ooooops :(
-        usleep($wait_lock_timeout);
+		usleep($wait_lock_timeout);
         clearstatcache();
         // and send header to keep connection
         header( "Cache-Control: no-store, no-cache, must-revalidate" );
@@ -43,7 +38,7 @@ function check_for_lock_file()
 function read_line($socket) {
     $ch = '';
     $line = '';
-    do{
+    do {
         $ch = socket_read($socket,1);
         $line = $line . $ch;
     } while($ch != "\r");
@@ -52,8 +47,7 @@ function read_line($socket) {
 
 function send_request() {
 
-
-	global $Version, $VersionH, $BuildDate;
+	global $Version;
 
     @$socket = socket_create (AF_INET, SOCK_STREAM, 0);
     if ($socket < 0) {
@@ -132,7 +126,7 @@ function update_user_props ( $user_id, $props ) {
             domain_cgi = ?
 SQL_QUERY;
 
-     $rs = exec_query($sql, $query, array($user_id, $domain_php, $domain_cgi));
+	$rs = exec_query($sql, $query, array($user_id, $domain_php, $domain_cgi));
 
 	if ($rs -> RecordCount() == 0) {
 		// mama mia, we have to rebuild the system entry for this domain
@@ -350,200 +344,68 @@ function is_basicString(&$sting) {
 	return false;
 }
 
-function unset_messages ()
-{
-
-	if (isset($GLOBALS['user_page_message']))
-
-        unset($GLOBALS['user_page_message']);
-
-	if (isset($GLOBALS['user_updated']))
-
-        unset($GLOBALS['user_updated']);
-
-	if (isset($GLOBALS['dmn_tpl']))
-
-        unset($GLOBALS['dmn_tpl']);
-
-
-	if (isset($GLOBALS['chtpl']))
-
-        unset($GLOBALS['chtpl']);
-
-
-	if (isset($GLOBALS['step_one']))
-
-        unset($GLOBALS['step_one']);
-
-
-	if (isset($GLOBALS['step_two_data']))
-
-        unset($GLOBALS['step_two_data']);
-
-
-	if (isset($GLOBALS['ch_hpprops']))
-
-        unset($GLOBALS['ch_hpprops']);
-
-	if (isset($GLOBALS['rau3_added']))
-
-        unset($GLOBALS['rau3_added']);
-
-	if (isset($GLOBALS['user_has_domain']))
-
-        unset($GLOBALS['user_has_domain']);
-
-	if (isset($GLOBALS['local_data']))
-
-        unset($GLOBALS['local_data']);
-
-	if (isset($GLOBALS['reseller_added']))
-
-        unset($GLOBALS['reseller_added']);
-
-	if (isset($GLOBALS['user_added']))
-
-        unset($GLOBALS['user_added']);
-
-	if (isset($GLOBALS['aladd']))
-
-        unset($GLOBALS['aladd']);
-
-	if (isset($GLOBALS['edit_ID']))
-
-        unset($GLOBALS['edit_ID']);
-
-	if (isset($GLOBALS['hp_added']))
-
-        unset($GLOBALS['hp_added']);
-
-	if (isset($GLOBALS['aldel']))
-
-        unset($GLOBALS['aldel']);
-
-	if (isset($GLOBALS['hpid']))
-
-        unset($GLOBALS['hpid']);
-
-	if (isset($GLOBALS['user_deleted']))
-
-        unset($GLOBALS['user_deleted']);
-
-	if (isset($GLOBALS['hdomain']))
-
-        unset($GLOBALS['hdomain']);
-
-	if (isset($GLOBALS['aledit']))
-
-        unset($GLOBALS['aledit']);
-
- 	if (isset($GLOBALS['acreated_by']))
-
-        unset($GLOBALS['acreated_by']);
-
- 	if (isset($GLOBALS['dhavesub']))
-
-        unset($GLOBALS['dhavesub']);
-
- 	if (isset($GLOBALS['ddel']))
-
-        unset($GLOBALS['ddel']);
-
- 	if (isset($GLOBALS['dhavealias']))
-
-        unset($GLOBALS['dhavealias']);
-
- 	if (isset($GLOBALS['dadel']))
-
-        unset($GLOBALS['dadel']);
-
-	if (isset($GLOBALS['local_data']))
-
-        unset($GLOBALS['local_data']);
-
-//
-
-	if (isset($_SESSION['reseller_added']))
-
-        unset($_SESSION['reseller_added']);
-
-	if (isset($_SESSION['dmn_name']))
-
-        unset($_SESSION['dmn_name']);
-
-	if (isset($_SESSION['rau3_added']))
-
-        unset($_SESSION['rau3_added']);
-
-	if (isset($_SESSION['user_has_domain']))
-
-        unset($_SESSION['user_has_domain']);
-
-	if (isset($_SESSION['user_added']))
-
-        unset($_SESSION['user_added']);
-
-	if (isset($_SESSION['aladd']))
-
-        unset($_SESSION['aladd']);
-
-	if (isset($_SESSION['edit_ID']))
-
-        unset($_SESSION['edit_ID']);
-
-	if (isset($_SESSION['hp_added']))
-
-        unset($_SESSION['hp_added']);
-
-	if (isset($_SESSION['aldel']))
-
-        unset($_SESSION['aldel']);
-
-	if (isset($_SESSION['aldel']))
-
-        unset($_SESSION['aldel']);
-
-	if (isset($_SESSION['hpid']))
-
-        unset($_SESSION['hpid']);
-
-	if (isset($_SESSION['user_deleted']))
-
-        unset($_SESSION['user_deleted']);
-
-	if (isset($_SESSION['hdomain']))
-
-        unset($_SESSION['hdomain']);
-
-	if (isset($_SESSION['aledit']))
-
-        unset($_SESSION['aledit']);
-
- 	if (isset($_SESSION['acreated_by']))
-
-        unset($_SESSION['acreated_by']);
-
- 	if (isset($_SESSION['dhavesub']))
-
-        unset($_SESSION['dhavesub']);
-
- 	if (isset($_SESSION['ddel']))
-
-        unset($_SESSION['ddel']);
-
- 	if (isset($_SESSION['dhavealias']))
-
-        unset($_SESSION['dhavealias']);
-
- 	if (isset($_SESSION['dadel']))
-
-        unset($_SESSION['dadel']);
-
-	if (isset($_SESSION['local_data']))
-
-        unset($_SESSION['local_data']);
-
-
+function unset_messages () {
+
+	$glToUnset = array();
+	$glToUnset[] = 'user_page_message';
+	$glToUnset[] = 'user_updated';
+	$glToUnset[] = 'user_updated';
+	$glToUnset[] = 'dmn_tpl';
+	$glToUnset[] = 'chtpl';
+	$glToUnset[] = 'step_one';
+	$glToUnset[] = 'step_two_data';
+	$glToUnset[] = 'ch_hpprops';
+	$glToUnset[] = 'rau3_added';
+	$glToUnset[] = 'user_has_domain';
+	$glToUnset[] = 'local_data';
+	$glToUnset[] = 'reseller_added';
+	$glToUnset[] = 'user_added';
+	$glToUnset[] = 'aladd';
+	$glToUnset[] = 'edit_ID';
+	$glToUnset[] = 'hp_added';
+	$glToUnset[] = 'aldel';
+	$glToUnset[] = 'hpid';
+	$glToUnset[] = 'user_deleted';
+	$glToUnset[] = 'hdomain';
+	$glToUnset[] = 'aledit';
+	$glToUnset[] = 'acreated_by';
+	$glToUnset[] = 'dhavesub';
+	$glToUnset[] = 'ddel';
+	$glToUnset[] = 'dhavealias';
+	$glToUnset[] = 'dhavealias';
+	$glToUnset[] = 'dadel';
+	$glToUnset[] = 'local_data';
+
+	foreach ($glToUnset as $toUnset) {
+		if (isset($GLOBALS[$toUnset]))
+			unset($GLOBALS[$toUnset]);
+	}
+
+	$sessToUnset = array();
+	$sessToUnset[] = 'reseller_added';
+	$sessToUnset[] = 'dmn_name';
+	$sessToUnset[] = 'rau3_added';
+	$sessToUnset[] = 'user_has_domain';
+	$sessToUnset[] = 'user_added';
+	$sessToUnset[] = 'aladd';
+	$sessToUnset[] = 'edit_ID';
+	$sessToUnset[] = 'hp_added';
+	$sessToUnset[] = 'aldel';
+	$sessToUnset[] = 'hpid';
+	$sessToUnset[] = 'user_deleted';
+	$sessToUnset[] = 'hdomain';
+	$sessToUnset[] = 'aledit';
+	$sessToUnset[] = 'acreated_by';
+	$sessToUnset[] = 'dhavesub';
+	$sessToUnset[] = 'ddel';
+	$sessToUnset[] = 'dhavealias';
+	$sessToUnset[] = 'dadel';
+	$sessToUnset[] = 'local_data';
+
+	foreach ($sessToUnset as $toUnset) {
+		if (isset($_SESSION[$toUnset]))
+			unset($_SESSION[$toUnset]);
+	}
 }
 
 ?>

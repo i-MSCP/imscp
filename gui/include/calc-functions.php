@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -19,14 +19,13 @@
 
 
 
-function calc_bars($crnt, $max, $bars_max)
-{
-	if($max != 0)
-    {
+function calc_bars($crnt, $max, $bars_max) {
+	if($max != 0) {
 		$percent_usage = (100*$crnt)/$max;
-	}else
+	} else {
 		$percent_usage = 0;
-		
+	}
+
     $bars = ($percent_usage * $bars_max)/100;
 
     if ($bars > $bars_max) $bars = $bars_max;
@@ -116,30 +115,19 @@ function crypt_user_ftp_pass($data) {
 function check_user_pass($crdata, $data ) {
 
     $salt = get_salt_from($crdata);
-
     $udata = crypt($data, $salt);
 
-    if ($udata == $crdata) {
-
-        return true;
-
-    } else {
-
-        return false;
-
-    }
-
+    return ($udata == $crdata);
 }
 
 function count_array($array) {
 
 	$count = 0;
-
-  reset($array);
+	reset($array);
 
 	while(list($key, $val) = each($array)) $count += count($val);
 
-  return $count - 1;
+	return $count - 1;
 
 }
 
@@ -149,22 +137,21 @@ function _passgen() {
 
 	$pw = '';
 
-  $chars = "2,3,4,7,8,9,A,B,C,D,E,F,G,H,K,M,N,P,R,T,W,U,Y,a,b,c,d,e,f,g,h,k,m,n,p,q,r,t,w,u,y";
+	$chars = "2,3,4,7,8,9,A,B,C,D,E,F,G,H,K,M,N,P,R,T,W,U,Y,a,b,c,d,e,f,g,h,k,m,n,p,q,r,t,w,u,y";
 
-  $chars_array = explode(",", $chars);
+  	$chars_array = explode(",", $chars);
 
 	$chars_count = count_array($chars_array);
 
-  for($i=0; $i < $cfg['PASSWD_CHARS']; $i++) {
+  	for($i=0; $i < $cfg['PASSWD_CHARS']; $i++) {
 
-  	srand((double)microtime() * 1000000);
+  		srand((double)microtime() * 1000000);
 
-    $z = rand(0, $chars_count);
+    	$z = rand(0, $chars_count);
 
-    $pw .= "" . $chars_array[$z] . "";
+    	$pw .= "" . $chars_array[$z] . "";
 
-  }
-
+  	}
 	return $pw;
 
 }

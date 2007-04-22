@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -55,11 +55,9 @@ function check_input($value = '') {
 		foreach($CHECK_VARS as $VAR) {
 
 			if (preg_match($VAR, $value) > 0) {
-
-				write_log("Possible hacking attempt. Script terminated.");
-
-				system_message("Possible hacking attempt. Script terminated.");
-
+				$message = "Possible hacking attempt. Script terminated.";
+				write_log($message);
+				system_message(tr($message));
 				die();
 			}
 
@@ -103,8 +101,7 @@ function clean_html($input = '') {
 	//and second one...
 	$text = strip_tags($text);
 
-
-return $text;
+	return $text;
 
 }
 
@@ -163,29 +160,25 @@ function chk_password( $password ) {
     return 0;
 }
 
-function ispcp_username_check ( $data, $num ) {
+function ispcp_username_check($data, $num) {
 
-    $res = preg_match(
-    					"/^[-A-Za-z0-9\.-_]*[A-Za-z0-9]$/",
-                        $data,
-                        $match
-    				);
+    $res = preg_match("/^[-A-Za-z0-9\.-_]*[A-Za-z0-9]$/", $data);
 
     if ($res == 0) return 0;
 
-    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data, $match);
+    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data);
 
     if ($res == 1) return 0;
 
-    $res = preg_match("/(\.\-)|(\-\.)/", $data, $match);
+    $res = preg_match("/(\.\-)|(\-\.)/", $data);
 
     if ($res == 1) return 0;
 
-    $res = preg_match("/(\.\_)|(\_\.)/", $data, $match);
+    $res = preg_match("/(\.\_)|(\_\.)/", $data);
 
     if ($res == 1) return 0;
 
-    $res = preg_match("/(\-\_)|(\_\-)/", $data, $match);
+    $res = preg_match("/(\-\_)|(\_\-)/", $data);
 
     if ($res == 1) return 0;
 
@@ -198,58 +191,58 @@ function ispcp_username_check ( $data, $num ) {
 
 
 function ispcp_email_check($email, $num) {
-  // RegEx begin
+	// RegEx begin
 
-  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+	$nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
-  $nqtext        = "[^\\\\$nonascii\015\012\"]";
-  $qchar         = "\\\\[^$nonascii]";
+	$nqtext        = "[^\\\\$nonascii\015\012\"]";
+	$qchar         = "\\\\[^$nonascii]";
 
-  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
-  $user_part     = "(?:$normuser|$quotedstring)";
+	$normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+	$quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+	$user_part     = "(?:$normuser|$quotedstring)";
 
-  $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
-  $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
-  $dom_tldpart   = '[a-zA-Z]{2,5}';
-  $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
+	$dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
+	$dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
+	$dom_tldpart   = '[a-zA-Z]{2,5}';
+	$domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
 
-  $regex         = "$user_part\@$domain_part";
-  // RegEx end
+	$regex         = "$user_part\@$domain_part";
+	// RegEx end
 
-  if (!preg_match("/^$regex$/",$email)) return 0;
+	if (!preg_match("/^$regex$/",$email)) return 0;
 
-  if (strlen($email) > $num) return 0;
+	if (strlen($email) > $num) return 0;
 
-  return 1;
+	return 1;
 
 }
 
 function ispcp_check_local_part($email, $num="50") {
-  // RegEx begin
+	// RegEx begin
 
-  $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+	$nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
-  $nqtext        = "[^\\\\$nonascii\015\012\"]";
-  $qchar         = "\\\\[^$nonascii]";
+	$nqtext        = "[^\\\\$nonascii\015\012\"]";
+	$qchar         = "\\\\[^$nonascii]";
 
-  $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-  $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
-  $user_part     = "(?:$normuser|$quotedstring)";
+	$normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+	$quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+	$user_part     = "(?:$normuser|$quotedstring)";
 
-  $regex         = "$user_part";
-  // RegEx end
+	$regex         = "$user_part";
+	// RegEx end
 
-  if (!preg_match("/^$regex$/",$email)) return 0;
+	if (!preg_match("/^$regex$/",$email)) return 0;
 
-  if (strlen($email) > $num) return 0;
+	if (strlen($email) > $num) return 0;
 
-  return 1;
+	return 1;
 
 }
 
 
-function chk_email( $email ) {
+function chk_email($email) {
 
     if ( ispcp_email_check($email, 50) == 0 ) {
         return 1;
@@ -261,16 +254,12 @@ function chk_email( $email ) {
 }
 
 
-function full_domain_check ( $data ) {
+function full_domain_check($data) {
 
-	$data = "$data.";
+	$data .= ".";
+	$match = array();
 
-    $res = preg_match_all(
-    						"/([^\.]*\.)/",
-                            $data,
-                            $match,
-                            PREG_PATTERN_ORDER
-    					);
+    $res = preg_match_all("/([^\.]*\.)/", $data, $match, PREG_PATTERN_ORDER);
 
     if ($res == 0) {
 		return 0;
@@ -290,36 +279,25 @@ function full_domain_check ( $data ) {
     }
 
 
-    $res = preg_match(
-    					"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
-                        $match[0][$last],
-                        $last_match
-    				);
+    $res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last], $last_match);
 
     if ($res == 0) {
-
 		return 0;
 	}
-
-
     return 1;
 }
 
 
-function check_dn_token ( $data ) {
+function check_dn_token($data) {
 
-    $res = preg_match(
-    					"/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/",
-						$data,
-                        $match
-    				);
+	$match = array();
+    $res = preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/",	$data, $match);
 
     if ($res == 0) {
 		return 0;
 	}
 
-    $res = preg_match("/\-\-/", $match[2], $minus_match);
-
+    //$res = preg_match("/\-\-/", $match[2], $minus_match);
     //if ($res == 1) return 0;
 
     return 1;
@@ -345,39 +323,34 @@ function check_dn_token ( $data ) {
 	*	1 - correct syntax;
 	*
 	**********************************************************************/
-	function ispcp_name_check ( $data, $num )
-	{
+function ispcp_name_check ( $data, $num ) {
 
-		$res = preg_match(
-							"/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/",
-							$data,
-							$match
-						);
+	$res = preg_match("/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/", $data);
 
-		if ($res == 0) return 0;
+	if ($res == 0) return 0;
 
-		$res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data, $match);
+	$res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data);
 
-		if ($res == 1) return 0;
+	if ($res == 1) return 0;
 
-		$res = preg_match("/(\.\-)|(\-\.)/", $data, $match);
+	$res = preg_match("/(\.\-)|(\-\.)/", $data);
 
-		if ($res == 1) return 0;
+	if ($res == 1) return 0;
 
-		$res = preg_match("/(\.\_)|(\_\.)/", $data, $match);
+	$res = preg_match("/(\.\_)|(\_\.)/", $data);
 
-		if ($res == 1) return 0;
+	if ($res == 1) return 0;
 
-		$res = preg_match("/(\-\_)|(\_\-)/", $data, $match);
+	$res = preg_match("/(\-\_)|(\_\-)/", $data);
 
-		if ($res == 1) return 0;
+	if ($res == 1) return 0;
 
-		$len = strlen($data);
+	$len = strlen($data);
 
-		if ( $len > $num ) return 0;
+	if ( $len > $num ) return 0;
 
-		return 1;
-	}// End of ispcp_name_check()
+	return 1;
+}// End of ispcp_name_check()
 
 
 
@@ -400,17 +373,18 @@ function check_dn_token ( $data ) {
 	*	1 - correct syntax (ranges);
 	*
 	**********************************************************************/
-	function ispcp_limit_check ( $data, $num )
-	{
+function ispcp_limit_check($data, $num) {
 
-		$res = preg_match("/^(-1|0|[1-9][0-9]*)$/", $data, $match);
+	$res = preg_match("/^(-1|0|[1-9][0-9]*)$/", $data);
 
-		if ($res == 0) return 0;
+	if ($res == 0)
+		return 0;
 
-		if ($data > $num) return 0;
+	if ($data > $num)
+		return 0;
 
-		return 1;
-	}// End of ispcp_limit_check()
+	return 1;
+}// End of ispcp_limit_check()
 
 	/**********************************************************************
 	*
@@ -428,22 +402,17 @@ function check_dn_token ( $data ) {
  	*
     * 1 - correct syntax;
 	**********************************************************************/
-	function check_dn_rsl_token ( $data ) {
+function check_dn_rsl_token($data) {
 
-		$res = preg_match(
-							"/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/",
-							$data,
-							$match
-						);
+	$match = array();
+	$res = preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/", $data,	$match);
+	if ($res == 0) return 0;
 
-		if ($res == 0) return 0;
+	$res = preg_match("/\-\-/", $match[2], $minus_match);
+	if ($res == 1) return 0;
 
-		$res = preg_match("/\-\-/", $match[2], $minus_match);
-
-		if ($res == 1) return 0;
-
-		return 1;
-	}// End of check_dn_rsl_token()
+	return 1;
+}// End of check_dn_rsl_token()
 
 
 
@@ -466,19 +435,19 @@ function check_dn_token ( $data ) {
 	*
     * 1 - correct syntax;
 	**********************************************************************/
-	function ispcp_domain_check ( $data ) {
+function ispcp_domain_check($data) {
 
-		$res = rsl_full_domain_check( $data );
+	$res = rsl_full_domain_check($data);
 
-		if ($res == 0) return 0;
+	if ($res == 0) return 0;
 
-		$res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
+	$res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
 
-		if ($res <= 0) return 0;
+	if ($res <= 0) return 0;
 
-		return 1;
+	return 1;
 
-	}// End of ispcp_domain_check()
+}// End of ispcp_domain_check()
 
 
 
@@ -515,7 +484,7 @@ function chk_dname( $dname ) {
 
 
 /* check for valid url addres  */
-function chk_url( $url ) {
+function chk_url($url) {
 
     if ( ispcp_url_check($url) == 0 ) {
         return 1;
@@ -527,15 +496,11 @@ function chk_url( $url ) {
 }
 
 
-function ispcp_url_check ( $data ) {
+function ispcp_url_check ($data) {
 
     $data = "$data\n";
 
-    $res = preg_match(
-						"/^(http|https|ftp)\:\/\/[^\n]+\n$/",
-						$data,
-						$match
-					);
+    $res = preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/",	$data);
 
     if ($res == 0) return 0;
 
@@ -544,29 +509,29 @@ function ispcp_url_check ( $data ) {
 
 
 
-function ispcp_mountpt_check ( $data, $num ) {
+function ispcp_mountpt_check($data, $num) {
 
-	$res = !preg_match("/^\/(.*)$/", $data, $match);
+	$res = !preg_match("/^\/(.*)$/D", $data);
 
 	if ($res == 1) return 0;
 
-    $res = preg_match("/^\/htdocs$/", $data, $match);
+    $res = preg_match("/^\/htdocs$/D", $data);
 
     if ($res == 1) return 0;
 
-	 $res = preg_match("/^\/backups$/", $data, $match);
+	 $res = preg_match("/^\/backups$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = preg_match("/^\/cgi-bin$/", $data, $match);
+	$res = preg_match("/^\/cgi-bin$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = preg_match("/^\/errors$/", $data, $match);
+	$res = preg_match("/^\/errors$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = preg_match("/^\/logs$/", $data, $match);
+	$res = preg_match("/^\/logs$/D", $data);
 
     if ($res == 1) return 0;
 
@@ -574,6 +539,7 @@ function ispcp_mountpt_check ( $data, $num ) {
 	$cnt_res = count($res);
 	if ($cnt_res > 2) return 0;
 
+	$match = array();
 	$res = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
 
     if ($res == 0) {
@@ -598,7 +564,7 @@ function ispcp_mountpt_check ( $data, $num ) {
 
 
 /* check for valid mount point  */
-function chk_mountp( $mountp ) {
+function chk_mountp($mountp) {
 
     if ( ispcp_mountpt_check($mountp,50) == 0) {
         return 1;
@@ -610,7 +576,7 @@ function chk_mountp( $mountp ) {
 }
 
 /* return mail for a a id */
-function trans_mailid_to_mail (&$sql, $mailid) {
+function trans_mailid_to_mail(&$sql, $mailid) {
 
 	$query = <<<SQL_QUERY
 

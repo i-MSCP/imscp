@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -31,43 +31,43 @@ define('MT_ALIAS_CATCHALL',  'alias_catchall');
 
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
 
-global $sql, $cfg;
+	global $sql, $cfg;
 
-$tpl -> define_dynamic('menu', $menu_file);
+	$tpl -> define_dynamic('menu', $menu_file);
 
-$tpl -> define_dynamic('custom_buttons', 'menu');
+	$tpl -> define_dynamic('custom_buttons', 'menu');
 
-$tpl -> assign(
-					array(
-							'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-							'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-							'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-							'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-							'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-							'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-							'TR_MENU_ADD_USER' => tr('Add user'),
-							'TR_MENU_E_MAIL_SETUP' => tr('Email setup'),
-							'TR_MENU_CIRCULAR' => tr('Email marketing'),
-							'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
-							'TR_MENU_DOMAIN_ALIAS' => tr('Domain alias'),
-							'TR_MENU_SUBDOMAINS' => tr('Subdomains'),
-							'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
-							'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-							'TR_MENU_NEW_TICKET' => tr('New ticket'),
-							'TR_MENU_LAYOUT_SETTINGS' => tr('Layout settings'),
-							'TR_MENU_LOGOUT' => tr('Logout'),
-							'TR_MENU_OVERVIEW' => tr('Overview'),
-							'TR_MENU_LANGUAGE'  => tr('Language'),
-							'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-							'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
-							'TR_MENU_ORDERS' => tr('Manage Orders'),
-							'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
-							'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
-							'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-						)
-				);
+	$tpl -> assign(
+				array(
+					'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+					'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+					'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+					'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+					'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+					'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+					'TR_MENU_ADD_USER' => tr('Add user'),
+					'TR_MENU_E_MAIL_SETUP' => tr('Email setup'),
+					'TR_MENU_CIRCULAR' => tr('Email marketing'),
+					'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
+					'TR_MENU_DOMAIN_ALIAS' => tr('Domain alias'),
+					'TR_MENU_SUBDOMAINS' => tr('Subdomains'),
+					'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
+					'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+					'TR_MENU_NEW_TICKET' => tr('New ticket'),
+					'TR_MENU_LAYOUT_SETTINGS' => tr('Layout settings'),
+					'TR_MENU_LOGOUT' => tr('Logout'),
+					'TR_MENU_OVERVIEW' => tr('Overview'),
+					'TR_MENU_LANGUAGE'  => tr('Language'),
+					'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+					'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+					'TR_MENU_ORDERS' => tr('Manage Orders'),
+					'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
+					'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
+					'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+				)
+			);
 
-$query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         select
             *
         from
@@ -79,7 +79,7 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array());
-	 if ($rs -> RecordCount() == 0) {
+	if ($rs -> RecordCount() == 0) {
 
         $tpl -> assign('CUSTOM_BUTTONS', '');
 
@@ -90,27 +90,25 @@ SQL_QUERY;
 
 		while (!$rs -> EOF) {
 
-		$menu_name = $rs -> fields['menu_name'];
-		$menu_link = get_menu_vars($rs -> fields['menu_link']);
-		$menu_target = $rs -> fields['menu_target'];
+			$menu_name = $rs -> fields['menu_name'];
+			$menu_link = get_menu_vars($rs -> fields['menu_link']);
+			$menu_target = $rs -> fields['menu_target'];
 
-		if ($menu_target === ''){
-			$menu_target = "";
-		} else {
-			$menu_target = "target=\"".$menu_target."\"";
-		}
+			if ($menu_target !== ""){
+				$menu_target = "target=\"".$menu_target."\"";
+			}
 
-		$tpl -> assign(
-                  array(
-                        'BUTTON_LINK' => $menu_link,
-                        'BUTTON_NAME' => $menu_name,
-                        'BUTTON_TARGET' => $menu_target,
-                        'BUTTON_ID' => $i,
-                        )
-                  );
+			$tpl -> assign(
+	                  array(
+	                        'BUTTON_LINK' => $menu_link,
+	                        'BUTTON_NAME' => $menu_name,
+	                        'BUTTON_TARGET' => $menu_target,
+	                        'BUTTON_ID' => $i,
+	                        )
+	                  );
 
-    $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
-    $rs -> MoveNext(); $i++;
+	    	$tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+	    	$rs -> MoveNext(); $i++;
 
 		} // end while
 	} // end else
@@ -130,43 +128,43 @@ SQL_QUERY;
 	// Function to generate the manu data for reseller
 function gen_reseller_menu(&$tpl, $menu_file) {
 
-global $sql, $cfg;
+	global $sql, $cfg;
 
-$tpl -> define_dynamic('menu', $menu_file);
+	$tpl -> define_dynamic('menu', $menu_file);
 
-$tpl -> define_dynamic('custom_buttons', 'menu');
+	$tpl -> define_dynamic('custom_buttons', 'menu');
 
-$tpl -> assign(
-					array(
-							'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-							'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-							'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-							'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-							'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-							'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-							'TR_MENU_ADD_USER' => tr('Add user'),
-							'TR_MENU_E_MAIL_SETUP' => tr('Email setup'),
-							'TR_MENU_CIRCULAR' => tr('Email marketing'),
-							'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
-							'TR_MENU_DOMAIN_ALIAS' => tr('Domain alias'),
-							'TR_MENU_SUBDOMAINS' => tr('Subdomains'),
-							'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
-							'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-							'TR_MENU_NEW_TICKET' => tr('New ticket'),
-							'TR_MENU_LAYOUT_SETTINGS' => tr('Layout settings'),
-							'TR_MENU_LOGOUT' => tr('Logout'),
-							'TR_MENU_OVERVIEW' => tr('Overview'),
-							'TR_MENU_LANGUAGE'  => tr('Language'),
-							'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
-							'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
-							'TR_MENU_ORDERS' => tr('Manage Orders'),
-							'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
-							'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
-							'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-						)
-				);
+	$tpl -> assign(
+				array(
+					'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+					'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+					'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+					'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+					'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+					'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+					'TR_MENU_ADD_USER' => tr('Add user'),
+					'TR_MENU_E_MAIL_SETUP' => tr('Email setup'),
+					'TR_MENU_CIRCULAR' => tr('Email marketing'),
+					'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
+					'TR_MENU_DOMAIN_ALIAS' => tr('Domain alias'),
+					'TR_MENU_SUBDOMAINS' => tr('Subdomains'),
+					'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
+					'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+					'TR_MENU_NEW_TICKET' => tr('New ticket'),
+					'TR_MENU_LAYOUT_SETTINGS' => tr('Layout settings'),
+					'TR_MENU_LOGOUT' => tr('Logout'),
+					'TR_MENU_OVERVIEW' => tr('Overview'),
+					'TR_MENU_LANGUAGE'  => tr('Language'),
+					'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
+					'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
+					'TR_MENU_ORDERS' => tr('Manage Orders'),
+					'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
+					'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
+					'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+				)
+			);
 
-$query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         select
             *
         from
@@ -177,8 +175,8 @@ $query = <<<SQL_QUERY
             menu_level = 'all'
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array());
-	 if ($rs -> RecordCount() == 0) {
+	$rs = exec_query($sql, $query, array());
+	if ($rs -> RecordCount() == 0) {
 
         $tpl -> assign('CUSTOM_BUTTONS', '');
 
@@ -189,27 +187,25 @@ SQL_QUERY;
 
 		while (!$rs -> EOF) {
 
-		$menu_name = $rs -> fields['menu_name'];
-		$menu_link = get_menu_vars($rs -> fields['menu_link']);
-		$menu_target = $rs -> fields['menu_target'];
+			$menu_name = $rs -> fields['menu_name'];
+			$menu_link = get_menu_vars($rs -> fields['menu_link']);
+			$menu_target = $rs -> fields['menu_target'];
 
-		if ($menu_target === ''){
-			$menu_target = "";
-		} else {
-			$menu_target = "target=\"".$menu_target."\"";
-		}
+			if ($menu_target !== ""){
+				$menu_target = "target=\"".$menu_target."\"";
+			}
 
-		$tpl -> assign(
-                  array(
-                        'BUTTON_LINK' => $menu_link,
-                        'BUTTON_NAME' => $menu_name,
-                        'BUTTON_TARGET' => $menu_target,
-                        'BUTTON_ID' => $i,
-                        )
-                  );
+			$tpl -> assign(
+	                  array(
+	                        'BUTTON_LINK' => $menu_link,
+	                        'BUTTON_NAME' => $menu_name,
+	                        'BUTTON_TARGET' => $menu_target,
+	                        'BUTTON_ID' => $i,
+	                        )
+	                  );
 
-    $tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
-    $rs -> MoveNext(); $i++;
+	    	$tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+	    	$rs -> MoveNext(); $i++;
 
 		} // end while
 	} // end else
@@ -224,14 +220,10 @@ SQL_QUERY;
 
 }// End of gen_reseller_menu()
 
-
-
-
-	// Get data for page of reseller
-	function get_reseller_default_props(&$sql, $reseller_id)
-	{
-		// Make sql query
-		$query = <<<SQL_QUERY
+// Get data for page of reseller
+function get_reseller_default_props(&$sql, $reseller_id) {
+	// Make sql query
+	$query = <<<SQL_QUERY
         select
             *
         from
@@ -239,62 +231,59 @@ SQL_QUERY;
         where
             reseller_id = ?
 SQL_QUERY;
-		// send sql query
-		$rs = exec_query($sql, $query, array($reseller_id));
+	// send sql query
+	$rs = exec_query($sql, $query, array($reseller_id));
 
-		if (0 == $rs->RowCount())
-		{
-        	return NULL;
-    	}
+	if (0 == $rs->RowCount()) {
+       	return NULL;
+    }
 
-		return array($rs -> fields['current_dmn_cnt'],
-					$rs -> fields['max_dmn_cnt'],
-					$rs -> fields['current_sub_cnt'],
-					$rs -> fields['max_sub_cnt'],
-					$rs -> fields['current_als_cnt'],
-					$rs -> fields['max_als_cnt'],
-					$rs -> fields['current_mail_cnt'],
-					$rs -> fields['max_mail_cnt'],
-					$rs -> fields['current_ftp_cnt'],
-					$rs -> fields['max_ftp_cnt'],
-					$rs -> fields['current_sql_db_cnt'],
-					$rs -> fields['max_sql_db_cnt'],
-					$rs -> fields['current_sql_user_cnt'],
-					$rs -> fields['max_sql_user_cnt'],
-					$rs -> fields['current_traff_amnt'],
-					$rs -> fields['max_traff_amnt'],
-					$rs -> fields['current_disk_amnt'],
-					$rs -> fields['max_disk_amnt']
-				);
-	}// End of get_reseller_default_props()
+	return array($rs -> fields['current_dmn_cnt'],
+				$rs -> fields['max_dmn_cnt'],
+				$rs -> fields['current_sub_cnt'],
+				$rs -> fields['max_sub_cnt'],
+				$rs -> fields['current_als_cnt'],
+				$rs -> fields['max_als_cnt'],
+				$rs -> fields['current_mail_cnt'],
+				$rs -> fields['max_mail_cnt'],
+				$rs -> fields['current_ftp_cnt'],
+				$rs -> fields['max_ftp_cnt'],
+				$rs -> fields['current_sql_db_cnt'],
+				$rs -> fields['max_sql_db_cnt'],
+				$rs -> fields['current_sql_user_cnt'],
+				$rs -> fields['max_sql_user_cnt'],
+				$rs -> fields['current_traff_amnt'],
+				$rs -> fields['max_traff_amnt'],
+				$rs -> fields['current_disk_amnt'],
+				$rs -> fields['max_disk_amnt']
+			);
+}// End of get_reseller_default_props()
 
-	// Makeing user's probs
-	function generate_reseller_user_props ( $reseller_id )
-	{
+// Makeing user's probs
+function generate_reseller_user_props ( $reseller_id ) {
 
-		global $sql;
+	global $sql;
 
-		// Init with empty variables
+	// Init with empty variables
+	$rdmn_current = 0; $rdmn_max = 0; $rdmn_uf = '_off_';
+	$rsub_current = 0; $rsub_max = 0; $rsub_uf = '_off_';
+	$rals_current = 0; $rals_max = 0; $rals_uf = '_off_';
+	$rmail_current = 0; $rmail_max = 0; $rmail_uf = '_off_';
+	$rftp_current = 0; $rftp_max = 0; $rftp_uf = '_off_';
+	$rsql_db_current = 0; $rsql_db_max = 0; $rsql_db_uf = '_off_';
+	$rsql_user_current = 0; $rsql_user_max = 0; $rsql_user_uf = '_off_';
+	$rtraff_current = 0; $rtraff_max = 0; $rtraff_uf = '_off_';
+	$rdisk_current = 0; $rdisk_max = 0; $rdisk_uf = '_off_';
 
-		$rdmn_current = 0; $rdmn_max = 0; $rdmn_uf = '_off_';
-		$rsub_current = 0; $rsub_max = 0; $rsub_uf = '_off_';
-		$rals_current = 0; $rals_max = 0; $rals_uf = '_off_';
-		$rmail_current = 0; $rmail_max = 0; $rmail_uf = '_off_';
-		$rftp_current = 0; $rftp_max = 0; $rftp_uf = '_off_';
-		$rsql_db_current = 0; $rsql_db_max = 0; $rsql_db_uf = '_off_';
-		$rsql_user_current = 0; $rsql_user_max = 0; $rsql_user_uf = '_off_';
-		$rtraff_current = 0; $rtraff_max = 0; $rtraff_uf = '_off_';
-		$rdisk_current = 0; $rdisk_max = 0; $rdisk_uf = '_off_';
-
-		$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
-                      $rsub_current, $rsub_max, $rsub_uf,
-                      $rals_current, $rals_max, $rals_uf,
-                      $rmail_current, $rmail_max, $rmail_uf,
-                      $rftp_current, $rftp_max, $rftp_uf,
-                      $rsql_db_current, $rsql_db_max, $rsql_db_uf,
-                      $rsql_user_current, $rsql_user_max, $rsql_user_uf,
-                      $rtraff_current, $rtraff_max, $rtraff_uf,
-                      $rdisk_current, $rdisk_max, $rdisk_uf);
+	$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
+                  $rsub_current, $rsub_max, $rsub_uf,
+                  $rals_current, $rals_max, $rals_uf,
+                  $rmail_current, $rmail_max, $rmail_uf,
+                  $rftp_current, $rftp_max, $rftp_uf,
+                  $rsql_db_current, $rsql_db_max, $rsql_db_uf,
+                  $rsql_user_current, $rsql_user_max, $rsql_user_uf,
+                  $rtraff_current, $rtraff_max, $rtraff_uf,
+                  $rdisk_current, $rdisk_max, $rdisk_uf);
 
     $query = <<<SQL_QUERY
         select
@@ -305,36 +294,33 @@ SQL_QUERY;
             created_by = ?
 SQL_QUERY;
 
-		$res = exec_query($sql, $query, array($reseller_id));
+	$res = exec_query($sql, $query, array($reseller_id));
 
+	if ($res -> RowCount() == 0) {
+		return array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+	}
 
-		if ($res -> RowCount() == 0) {
-			return array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+	// Process all users of this group
+	while ($data = $res -> FetchRow()) {
 
-		}
+		$admin_id = $data['admin_id'];
 
-		// Process all users of this group
-		while ($data = $res -> FetchRow())
-		{
-
-			$admin_id = $data['admin_id'];
-
-			$query = <<<SQL_QUERY
-          select
-              domain_id
-          from
-              domain
-          where
-              domain_admin_id = ?
+		$query = <<<SQL_QUERY
+	          select
+	              domain_id
+	          from
+	              domain
+	          where
+	              domain_admin_id = ?
 SQL_QUERY;
 
-			$dres = exec_query($sql, $query, array($admin_id));
+		$dres = exec_query($sql, $query, array($admin_id));
 
-			$ddata = $dres -> FetchRow();
+		$ddata = $dres -> FetchRow();
 
-			$user_id = $ddata['domain_id'];
+		$user_id = $ddata['domain_id'];
 
-			list (
+		list (
 				$sub_current, $sub_max,
 				$als_current, $als_max,
 				$mail_current, $mail_max,
@@ -344,7 +330,7 @@ SQL_QUERY;
 				$traff_max, $disk_max
 				) = get_user_props($user_id);
 
-			list (
+		list (
 				$tmpval1,
 				$tmpval2,
 				$tmpval3,
@@ -357,91 +343,86 @@ SQL_QUERY;
 				$tmpval8
 				) = generate_user_traffic($user_id);
 
-			$rdmn_current += 1;
+		$rdmn_current += 1;
 
-			if ($sub_max != -1) {
+		if ($sub_max != -1) {
 
-				if ($sub_max == 0) $rsub_uf = '_on_';
+			if ($sub_max == 0) $rsub_uf = '_on_';
 
-				$rsub_current += $sub_current;
-				$rsub_max += $sub_max;
-
-			}
-
-			if ($als_max != -1) {
-
-				if ($als_max == 0) $rals_uf = '_on_';
-
-				$rals_current += $als_current;
-				$rals_max += $als_max;
-
-			}
-
-			if ($mail_max == 0) $rmail_uf = '_on_';
-
-			$rmail_current += $mail_current;
-			$rmail_max += $mail_max;
-
-			if ($ftp_max == 0) $rftp_uf = '_on_';
-
-			$rftp_current += $ftp_current;
-			$rftp_max += $ftp_max;
-
-			if ($sql_db_max != -1) {
-
-				if ($sql_db_max == 0) $rsql_db_uf = '_on_';
-
-				$rsql_db_current += $sql_db_current;
-				$rsql_db_max += $sql_db_max;
-
-			}
-
-			if ($sql_user_max != -1) {
-
-				if ($sql_user_max == 0) $rsql_user_uf = '_on_';
-
-				$rsql_user_current += $sql_user_current;
-				$rsql_user_max += $sql_user_max;
-
-			}
-
-			if ($traff_max == 0) $rtraff_uf = '_on_';
-
-
-			$rtraff_current += $traff_current;
-			$rtraff_max += $traff_max;
-			//print $rtraff_current."<br>"; //- debug shit
-
-			if ($disk_max == 0) $rdisk_uf = '_on_';
-
-			$rdisk_current += $disk_current;
-			$rdisk_max += $disk_max;
-			//print $rdisk_current."<br>"; //- debug shit
+			$rsub_current += $sub_current;
+			$rsub_max += $sub_max;
 
 		}
 
-		$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
-                      $rsub_current, $rsub_max, $rsub_uf,
-                      $rals_current, $rals_max, $rals_uf,
-                      $rmail_current, $rmail_max, $rmail_uf,
-                      $rftp_current, $rftp_max, $rftp_uf,
-                      $rsql_db_current, $rsql_db_max, $rsql_db_uf,
-                      $rsql_user_current, $rsql_user_max, $rsql_user_uf,
-                      $rtraff_current, $rtraff_max, $rtraff_uf,
-                      $rdisk_current, $rdisk_max, $rdisk_uf);
-		return $ResArray;
+		if ($als_max != -1) {
 
-	}// End of generate_reseller_user_props()
+			if ($als_max == 0) $rals_uf = '_on_';
 
+			$rals_current += $als_current;
+			$rals_max += $als_max;
 
+		}
 
+		if ($mail_max == 0) $rmail_uf = '_on_';
 
-	// Get traffic information for user
-	function get_user_traffic ( $user_id )
-	{
-		global $sql, $crnt_month, $crnt_year;
+		$rmail_current += $mail_current;
+		$rmail_max += $mail_max;
 
-		$query = <<<SQL_QUERY
+		if ($ftp_max == 0) $rftp_uf = '_on_';
+
+		$rftp_current += $ftp_current;
+		$rftp_max += $ftp_max;
+
+		if ($sql_db_max != -1) {
+
+			if ($sql_db_max == 0) $rsql_db_uf = '_on_';
+
+			$rsql_db_current += $sql_db_current;
+			$rsql_db_max += $sql_db_max;
+
+		}
+
+		if ($sql_user_max != -1) {
+
+			if ($sql_user_max == 0) $rsql_user_uf = '_on_';
+
+			$rsql_user_current += $sql_user_current;
+			$rsql_user_max += $sql_user_max;
+
+		}
+
+		if ($traff_max == 0) $rtraff_uf = '_on_';
+
+		$rtraff_current += $traff_current;
+		$rtraff_max += $traff_max;
+		//print $rtraff_current."<br>"; //- debug shit
+
+		if ($disk_max == 0) $rdisk_uf = '_on_';
+
+		$rdisk_current += $disk_current;
+		$rdisk_max += $disk_max;
+		//print $rdisk_current."<br>"; //- debug shit
+
+	}
+
+	$ResArray = array($rdmn_current, $rdmn_max, $rdmn_uf,
+	                  $rsub_current, $rsub_max, $rsub_uf,
+	                  $rals_current, $rals_max, $rals_uf,
+	                  $rmail_current, $rmail_max, $rmail_uf,
+	                  $rftp_current, $rftp_max, $rftp_uf,
+	                  $rsql_db_current, $rsql_db_max, $rsql_db_uf,
+	                  $rsql_user_current, $rsql_user_max, $rsql_user_uf,
+	                  $rtraff_current, $rtraff_max, $rtraff_uf,
+	                  $rdisk_current, $rdisk_max, $rdisk_uf);
+	return $ResArray;
+
+}// End of generate_reseller_user_props()
+
+// Get traffic information for user
+function get_user_traffic($user_id) {
+	global $sql, $crnt_month, $crnt_year;
+
+	$query = <<<SQL_QUERY
 			select
 				domain_id,
 				IFNULL(domain_disk_usage, 0) as domain_disk_usage,
@@ -456,29 +437,28 @@ SQL_QUERY;
 				domain_id
 SQL_QUERY;
 
-		$res = exec_query($sql, $query, array($user_id));
+	$res = exec_query($sql, $query, array($user_id));
 
-		if ($res -> RowCount() == 0 || $res -> RowCount() > 1) {
+	if ($res -> RowCount() == 0 || $res -> RowCount() > 1) {
 
-			//write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of domains >".$res -> RowCount()."<");
+		//write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of domains >".$res -> RowCount()."<");
+		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-			return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	} else {
 
-		} else {
+		$data = $res -> FetchRow();
 
-			$data = $res -> FetchRow();
+		$domain_id = $data['domain_id'];
 
-			$domain_id = $data['domain_id'];
+		$domain_disk_usage = $data['domain_disk_usage'];
 
-			$domain_disk_usage = $data['domain_disk_usage'];
+		$domain_traff_limit = $data['domain_traffic_limit'];
 
-			$domain_traff_limit = $data['domain_traffic_limit'];
+		$domain_disk_limit = $data['domain_disk_limit'];
 
-			$domain_disk_limit = $data['domain_disk_limit'];
+		$domain_name = $data['domain_name'];
 
-			$domain_name = $data['domain_name'];
-
-			$query = <<<SQL_QUERY
+		$query = <<<SQL_QUERY
           select
               sum(dtraff_web) as web,
               sum(dtraff_ftp) as ftp,
@@ -494,147 +474,144 @@ SQL_QUERY;
               domain_id = ?
 SQL_QUERY;
 
-			$res = exec_query($sql, $query, array($domain_id));
-
-			$data = $res -> FetchRow();
-
-
-			return array(
-							$domain_name,
-							$domain_id,
-							$data['web'],
-							$data['ftp'],
-							$data['smtp'],
-							$data['pop'],
-							$data['total'],
-							$domain_disk_usage,
-							$domain_traff_limit,
-							$domain_disk_limit
-						);
-
-		}
-
-	}//End of get_user_traffic()
-
-
-	// Get user's probs info from sql
-	function get_user_props ( $user_id )
-	{
-
-		global $sql;
-
-		$query = <<<SQL_QUERY
-        select
-            *
-        from
-            domain
-        where
-            domain_id  = ?
-SQL_QUERY;
-
-		$res = exec_query($sql, $query, array($user_id));
-
-		if ($res -> RowCount() == 0) {
-
-			return array(0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-
-		}
+		$res = exec_query($sql, $query, array($domain_id));
 
 		$data = $res -> FetchRow();
 
-		$sub_current = records_count('subdomain_id', 'subdomain', 'domain_id', $user_id);
-		$sub_max = $data['domain_subd_limit'];
-
-		$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
-		$als_max = $data['domain_alias_limit'];
-
-		$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id);
-		$mail_max = $data['domain_mailacc_limit'];
-
-		$ftp_current = sub_records_rlike_count(
-												'domain_name', 'domain', 'domain_id', $user_id,
-												'userid', 'ftp_users', 'userid', '@', ''
-											);
-
-		$ftp_current += sub_records_rlike_count(
-												'subdomain_name', 'subdomain', 'domain_id', $user_id,
-												'userid', 'ftp_users', 'userid', '@', ''
-											);
-
-		$ftp_current += sub_records_rlike_count(
-												'alias_name', 'domain_aliasses', 'domain_id', $user_id,
-												'userid', 'ftp_users', 'userid', '@', ''
-											);
-
-		$ftp_max = $data['domain_ftpacc_limit'];
-
-		$sql_db_current = records_count('sqld_id', 'sql_database', 'domain_id', $user_id);
-		$sql_db_max = $data['domain_sqld_limit'];
-
-		$sql_user_current = get_domain_running_sqlu_acc_cnt(&$sql, $user_id);
-
-		$sql_user_max = $data['domain_sqlu_limit'];
-
-		$traff_max = $data['domain_traffic_limit'];
-
-		$disk_max = $data['domain_disk_limit'];
-
-		// Make return data
 		return array(
-						$sub_current, $sub_max,
-						$als_current, $als_max,
-						$mail_current, $mail_max,
-						$ftp_current, $ftp_max,
-						$sql_db_current, $sql_db_max,
-						$sql_user_current, $sql_user_max,
-						$traff_max, $disk_max
-						);
+					$domain_name,
+					$domain_id,
+					$data['web'],
+					$data['ftp'],
+					$data['smtp'],
+					$data['pop'],
+					$data['total'],
+					$domain_disk_usage,
+					$domain_traff_limit,
+					$domain_disk_limit
+					);
 
-	}// End of get_user_props();
-
-
-
-	function rsl_full_domain_check ( $data ) {
-
-		$data = "$data.";
-		$match = array();
-		$last_match = array();
-
-		$res = preg_match_all(
-								"/([^\.]*\.)/",
-								$data,
-								$match,
-								PREG_PATTERN_ORDER
-							);
-
-		if ($res == 0) return 0;
-
-		$last = $res - 1;
-
-		for ($i = 0; $i < $last ; $i++) {
-
-			$token = chop($match[0][$i], ".");
-
-			$res = check_dn_rsl_token($token);
-
-			if ($res == 0) return 0;
 		}
 
-		$res = preg_match(
-							"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
-							$match[0][$last],
-							$last_match
+}//End of get_user_traffic()
+
+
+// Get user's probs info from sql
+function get_user_props ( $user_id ) {
+
+	global $sql;
+
+	$query = <<<SQL_QUERY
+    select
+        *
+    from
+        domain
+    where
+        domain_id  = ?
+SQL_QUERY;
+
+	$res = exec_query($sql, $query, array($user_id));
+
+	if ($res -> RowCount() == 0) {
+
+		return array(0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+
+	}
+
+	$data = $res -> FetchRow();
+
+	$sub_current = records_count('subdomain_id', 'subdomain', 'domain_id', $user_id);
+	$sub_max = $data['domain_subd_limit'];
+
+	$als_current = records_count('alias_id', 'domain_aliasses', 'domain_id', $user_id);
+	$als_max = $data['domain_alias_limit'];
+
+	$mail_current = records_count('mail_id', 'mail_users', 'domain_id', $user_id);
+	$mail_max = $data['domain_mailacc_limit'];
+
+	$ftp_current = sub_records_rlike_count(
+											'domain_name', 'domain', 'domain_id', $user_id,
+											'userid', 'ftp_users', 'userid', '@', ''
+										);
+
+	$ftp_current += sub_records_rlike_count(
+											'subdomain_name', 'subdomain', 'domain_id', $user_id,
+											'userid', 'ftp_users', 'userid', '@', ''
+										);
+
+	$ftp_current += sub_records_rlike_count(
+											'alias_name', 'domain_aliasses', 'domain_id', $user_id,
+											'userid', 'ftp_users', 'userid', '@', ''
+										);
+
+	$ftp_max = $data['domain_ftpacc_limit'];
+
+	$sql_db_current = records_count('sqld_id', 'sql_database', 'domain_id', $user_id);
+	$sql_db_max = $data['domain_sqld_limit'];
+
+	$sql_user_current = get_domain_running_sqlu_acc_cnt(&$sql, $user_id);
+
+	$sql_user_max = $data['domain_sqlu_limit'];
+
+	$traff_max = $data['domain_traffic_limit'];
+
+	$disk_max = $data['domain_disk_limit'];
+
+	// Make return data
+	return array(
+					$sub_current, $sub_max,
+					$als_current, $als_max,
+					$mail_current, $mail_max,
+					$ftp_current, $ftp_max,
+					$sql_db_current, $sql_db_max,
+					$sql_user_current, $sql_user_max,
+					$traff_max, $disk_max
+					);
+
+}// End of get_user_props();
+
+
+
+function rsl_full_domain_check ( $data ) {
+
+	$data = "$data.";
+	$match = array();
+	$last_match = array();
+
+	$res = preg_match_all(
+							"/([^\.]*\.)/",
+							$data,
+							$match,
+							PREG_PATTERN_ORDER
 						);
 
+	if ($res == 0) return 0;
+
+	$last = $res - 1;
+
+	for ($i = 0; $i < $last ; $i++) {
+
+		$token = chop($match[0][$i], ".");
+
+		$res = check_dn_rsl_token($token);
+
 		if ($res == 0) return 0;
+	}
+
+	$res = preg_match(
+						"/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/",
+						$match[0][$last],
+						$last_match
+					);
+
+	if ($res == 0) return 0;
 
 
-		return 1;
-	}// End of  full_domain_check()
+	return 1;
+}// End of  full_domain_check()
 
 //Generate ip list
-function generate_ip_list(&$tpl, &$reseller_id)
-{
+function generate_ip_list(&$tpl, &$reseller_id) {
 
     global $sql;
     global $domain_ip;
@@ -689,8 +666,7 @@ SQL_QUERY;
 
 
 // Check validity of input data
-function check_ruser_data (&$tpl, $NoPass)
-{
+function check_ruser_data (&$tpl, $NoPass) {
 
 	global $dmn_name, $hpid , $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
@@ -755,8 +731,7 @@ function check_ruser_data (&$tpl, $NoPass)
 	//	list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);
 
 	// Begin checking...
-	if('_no_' == $NoPass)
-	{
+	if('_no_' == $NoPass) {
 		if (('' === $inpass_re) || ('' === $inpass)){
 
 			$rau_error = tr('Please fill up both data fields for password!');
@@ -808,74 +783,6 @@ function check_ruser_data (&$tpl, $NoPass)
 	return false;
 }//End of check_ruser_data()
 
-/*TODO - remove
-function update_reseller_props ( $reseller_id, $props ) {
-
-    global $sql;
-
-    if ($props == '') {
-
-        return;
-
-    }
-
-    list (
-           $dmn_current, $dmn_max,
-           $sub_current, $sub_max,
-           $als_current, $als_max,
-           $mail_current, $mail_max,
-           $ftp_current, $ftp_max,
-           $sql_db_current, $sql_db_max,
-           $sql_user_current, $sql_user_max,
-           $traff_current, $traff_max,
-           $disk_current, $disk_max
-         ) = explode(";", $props);
-
-    $query = <<<SQL_QUERY
-
-        update
-
-            reseller_props
-
-        set
-
-            current_dmn_cnt = '$dmn_current',
-            max_dmn_cnt = '$dmn_max',
-
-            current_sub_cnt = '$sub_current',
-            max_sub_cnt = '$sub_max',
-
-            current_als_cnt = '$als_current',
-            max_als_cnt = '$als_max',
-
-            current_mail_cnt = '$mail_current',
-            max_mail_cnt = '$mail_max',
-
-            current_ftp_cnt = '$ftp_current',
-            max_ftp_cnt = '$ftp_max',
-
-            current_sql_db_cnt = '$sql_db_current',
-            max_sql_db_cnt = '$sql_db_max',
-
-            current_sql_user_cnt = '$sql_user_current',
-            max_sql_user_cnt = '$sql_user_max',
-
-            current_traff_amnt = '$traff_current',
-            max_traff_amnt = '$traff_max',
-
-            current_disk_amnt = '$disk_current',
-            max_disk_amnt = '$disk_max'
-
-        where
-
-            reseller_id = '$reseller_id'
-
-SQL_QUERY;
-
-    $res = $sql -> Execute($query);
-
-}
-*/
 // Translate domain status
 function translate_dmn_status ($status) {
 
@@ -920,8 +827,7 @@ function translate_dmn_status ($status) {
 
 
 // Check if the domain already exist
-function ispcp_domain_exists ($domain_name, $reseller_id)
-{
+function ispcp_domain_exists ($domain_name, $reseller_id) {
   global $sql;
 
   // query to check if the domain name exist in the table for domains/accounts
