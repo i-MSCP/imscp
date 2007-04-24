@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  *
  **/
-$include_path = realpath(dirname(_ _FILE_ _));
+$include_path = realpath(dirname(__FILE__));
 
 include_once (realpath($include_path.'/adodb/adodb.inc.php'));
 
