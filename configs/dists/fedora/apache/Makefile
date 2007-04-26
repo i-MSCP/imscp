@@ -1,4 +1,4 @@
-ROOT_APACHE_CONF=$(ROOT_CONF)/httpd/conf.d
+ROOT_APACHE_CONF=$(ROOT_CONF)/httpd/
 
 export
 
@@ -6,8 +6,8 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/vhosts
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/conf.d
 
 	cp ./httpd.conf ./working/ispcp.conf
 	cp ./fastcgi.conf ./working/fastcgi.conf
@@ -17,7 +17,7 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
+	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/conf.d/fastcgi.conf
 
 uninstall:
 

@@ -82,7 +82,7 @@ b) manualy
 
 5. Open the ispcp.conf and make some changes.
    You have to set up some configuration variables for your linux distribution.
-   ISPCP ω is preconfigurated for Debian 3.1 Sarge.
+   ISPCP ω is preconfigurated for Debian 4.0 Etch.
    If you're using another distribution please check, if config files exist in
    ./configs/dists and use/change them.
 
