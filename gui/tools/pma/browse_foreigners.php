@@ -1,5 +1,5 @@
 <?php
-/* $Id: browse_foreigners.php 9802 2006-12-21 01:22:03Z lem9 $ */
+/* $Id: browse_foreigners.php 10309 2007-04-20 16:43:45Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * display selection for relational field values
@@ -108,7 +108,7 @@ if (isset($disp_row) && is_array($disp_row)) {
             var element_name = field + '[]';
             <?php } ?>
 
-            <?php if ( isset( $fieldkey ) ) { ?>
+            <?php if ( isset( $fieldkey ) && is_numeric($fieldkey)) { ?>
             var element_name_alt = field + '[<?php echo $fieldkey; ?>]';
             <?php } else { ?>
             var element_name_alt = field + '[0]';

@@ -1,4 +1,4 @@
-/* $Id: functions.js 10281 2007-04-15 00:00:43Z lem9 $ */
+/* $Id: functions.js 10296 2007-04-17 16:42:58Z lem9 $ */
 
 /**
  * @var sql_box_locked lock for the sqlbox textarea in the querybox/querywindow
@@ -988,7 +988,7 @@ function getElement(e,f){
         if(f.document.layers[e]) {
             return f.document.layers[e];
         }
-        for(W=0;i<f.document.layers.length;W++) {
+        for(W=0;W<f.document.layers.length;W++) {
             return(getElement(e,f.document.layers[W]));
         }
     }

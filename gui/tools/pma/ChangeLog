@@ -2,10 +2,10 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 10281 2007-04-15 00:00:43Z lem9 $
+$Id: ChangeLog 10319 2007-04-24 04:04:17Z lem9 $
 $HeadURL: https://svn.sourceforge.net/svnroot/phpmyadmin/branches/MAINT_2_10_1/phpMyAdmin/ChangeLog $
 
-2.10.1.0 (not released yet)
+2.10.1.0 (2007-04-23)
 =====================
 
 - bug #1541147 [js] '#' in database names not correctly handled by queywindow.js
@@ -34,12 +34,10 @@ $HeadURL: https://svn.sourceforge.net/svnroot/phpmyadmin/branches/MAINT_2_10_1/p
 - bug #1672636 [export] PDF export too wide 
 + [lang] brazilian-portuguese update, thanks to Airon Luis Pereira  
 - patch #1698964 javascript typo, thanks to Corey Hollaway
-
-2.10.0.3 (not released yet)
-=====================
-
+- bug #1703897 [css] undefined index 'js_frame' 
 - bug #1690561 Blobs being cleared on Edit of row
 - bug #1679801 [core] XSS vulnerability in PMA_sanitize(), thanks to sp3x SecurityReason
+- bug #1704467 XSS vulnerability in browse_foreigners.php, thanks to sp3x SecurityReason
 
 2.10.0.2 (2007-03-02)
 =====================

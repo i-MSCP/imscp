@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) - Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -86,10 +86,10 @@ $tpl -> assign(array('TR_BACKUP' => tr('Backup'),
                      'TR_DOWNLOAD_DIRECTION' => tr('Direction download today backup'),
                      'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
                      'TR_SWITCH_TO_BACKUP' => tr('Switch to backup directory'),
-                     'TR_DOWNLOAD_FILE' => tr('Download the only one file in this directory'),
-                     'TR_USUALY_NAMED' => tr('(usually named backup_YYY_MM_DD.tar)'),
+                     'TR_DOWNLOAD_FILE' => tr('Download the files stored in this directory'),
+                     'TR_USUALY_NAMED' => tr('(usually named backup_YYYY_MM_DD.tar.bz2)'),
                      'TR_RESTORE_BACKUP' => tr('Restore backup'),
-                     'TR_RESTORE_DIRECTIONS' => tr('Click Restore button and the system will<br>restore last daily backup'),
+                     'TR_RESTORE_DIRECTIONS' => tr('Click Restore button and the system will restore last daily backup'),
                      'TR_RESTORE' => tr('Restore')));
 
 gen_page_message($tpl);

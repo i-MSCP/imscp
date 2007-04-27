@@ -13,6 +13,10 @@ ispCP ω 1.0.0 Changelog
 2007-04-27 Benedikt Heintel
 	- CONFIGS:
 		* fixed bug #221: php5 doesn't load modules
+	- LANGUAGE:
+		* English: changed strings
+	- GUI:
+		* updated PMA version to 2.10.1
 
 2007-04-26 Benedikt Heintel
 	- DOCS:

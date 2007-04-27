@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 10232 2007-03-31 12:18:40Z lem9 $
+ * @version $Id: tbl_replace.php 10305 2007-04-19 17:45:22Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -225,7 +225,10 @@ foreach ($loop_array as $primary_key) {
             // no need to add column into the valuelist
             if (strlen($cur_value)) {
                 $query_values[] = $cur_value;
-                $query_fields[] = PMA_backquote($key);
+                // first inserted row so prepare the list of fields
+                if (empty($value_sets)) {
+                    $query_fields[] = PMA_backquote($key);
+                }
             }
 
         //  u p d a t e

@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 10251 2007-04-06 13:43:04Z lem9 $ */
+/* $Id: common.lib.php 10318 2007-04-24 03:54:30Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -2608,6 +2608,13 @@ if (get_magic_quotes_gpc()) {
     PMA_arrayWalkRecursive($_POST, 'stripslashes', true);
     PMA_arrayWalkRecursive($_COOKIE, 'stripslashes', true);
     PMA_arrayWalkRecursive($_REQUEST, 'stripslashes', true);
+}
+/**
+ * In some cases, this one is not set
+ *
+ */
+if (! isset($_REQUEST['js_frame']) || ! is_string($_REQUEST['js_frame'])) {
+    $_REQUEST['js_frame'] = '';
 }
 
 /**
