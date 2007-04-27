@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-28 Malte Geierhos
+	- ENGINE:
+		* fixed Backup restore
+
 2007-04-27 Benedikt Heintel
 	- CONFIGS:
 		* fixed bug #221: php5 doesn't load modules

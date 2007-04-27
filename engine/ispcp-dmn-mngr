@@ -3677,7 +3677,7 @@ sub dmn_restore_data {
 
     shift(@bk_files);
 
-    #shift(@bk_files);
+    shift(@bk_files);
 
     return 0 if (scalar(@bk_files) == 0);
 
