@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-28 Benedikt Heintel
+	- GUI:
+		* updated: domain_default_page
+
 2007-04-28 Malte Geierhos
 	- ENGINE:
 		* fixed Backup restore
