@@ -10,6 +10,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-28 Malte Geierhos
+	- GUI: 	
+		* fixed #220 (reseller logo file has to few permissions after upload set)
+		* fixed #206 (new mail count black on dark grey bg -> changed to white)
+
+	- ENGINE:
+		* fixed #207 (changed array - string comparison to a string-string comparison)
+
 2007-04-28 Benedikt Heintel
 	- GUI:
 		* updated: domain_default_page
