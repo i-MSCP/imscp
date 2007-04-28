@@ -10,23 +10,26 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-29 Benedikt Heintel
+	- ENGINE:
+		* fixed #226: wrong link in default alias- and subdomains
+	- LANGUAGES:
+		* Hungarian: added missing strings
+
 2007-04-28 Malte Geierhos
-	- GUI: 	
+	- GUI:
 		* fixed #220 (reseller logo file has to few permissions after upload set)
 		* fixed #206 (new mail count black on dark grey bg -> changed to white)
-		* fixed #227 (wrong image on errorpage) 
+		* fixed #227 (wrong image on errorpage)
 
 	- ENGINE:
 		* fixed #207 (changed array - string comparison to a string-string comparison)
 		* fixed #224 (deleted images cannot be copied ;) )
+		* fixed Backup restore
 
 2007-04-28 Benedikt Heintel
 	- GUI:
 		* updated: domain_default_page
-
-2007-04-28 Malte Geierhos
-	- ENGINE:
-		* fixed Backup restore
 
 2007-04-27 Benedikt Heintel
 	- CONFIGS:
