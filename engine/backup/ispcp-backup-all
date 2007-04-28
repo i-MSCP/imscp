@@ -282,7 +282,7 @@ sub backup_all_engine {
 			my $dbuser = "";
 			my $dbpass = "";
 
-			if ($rdata2[0] != "") {
+			if (@$rdata2) {
 				foreach(@$rdata2) {
 					$dbuser = @$_[0];
 					$dbpass = @$_[1];
