@@ -194,8 +194,9 @@ function update_logo()
 
                 $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
 
-                move_uploaded_file($_FILES['logo_file']['tmp_name'], $path1."/themes/user_logos/".get_user_name($user_id).".jpg");
-		chmod ($file, 0644);
+                $logoFile = $path1."/themes/user_logos/".get_user_name($user_id).".jpg";
+		move_uploaded_file($_FILES['logo_file']['tmp_name'], $logoFile);
+		chmod ($logoFile, 0644);
 
                 update_user_gui_props(get_user_name($user_id).".jpg", $user_id);
 
