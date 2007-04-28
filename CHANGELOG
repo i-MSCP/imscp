@@ -17,6 +17,7 @@ ispCP ω 1.0.0 Changelog
 
 	- ENGINE:
 		* fixed #207 (changed array - string comparison to a string-string comparison)
+		* fixed #224 (deleted images cannot be copied ;) )
 
 2007-04-28 Benedikt Heintel
 	- GUI:

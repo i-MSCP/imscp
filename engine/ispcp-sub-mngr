@@ -1446,8 +1446,6 @@ sub sub_add_httpd_file_data {
 
 	$rs = setfmode("$sub_dir/htdocs/images/", $sys_user, $sys_group, 0755);
 	return $rs if ($rs != 0);
-	$rs = setfmode("$sub_dir/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
 	$rs = setfmode("$sub_dir/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
 	$rs = setfmode("$sub_dir/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
