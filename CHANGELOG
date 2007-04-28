@@ -14,6 +14,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI: 	
 		* fixed #220 (reseller logo file has to few permissions after upload set)
 		* fixed #206 (new mail count black on dark grey bg -> changed to white)
+		* fixed #227 (wrong image on errorpage) 
 
 	- ENGINE:
 		* fixed #207 (changed array - string comparison to a string-string comparison)
