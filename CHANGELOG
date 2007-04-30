@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-01 Malte Geierhos
+	- GUI:
+		* fixed #236
+
 2007-04-30 Benedikt Heintel
 	- LANGUAGES:
 		* Japanese: added
@@ -23,6 +27,7 @@ ispCP ω 1.0.0 Changelog
 		* fixed #234
 		* fixed #238
 		* fixed #230
+		* according to #212 disabled the install function in net2ftp
 
 2007-04-29 Benedikt Heintel
 	- ENGINE:

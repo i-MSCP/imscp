@@ -670,7 +670,7 @@ $theme_css = SM_PATH . 'themes/css/omega.css';
  */
 
 $theme[0]['PATH'] = SM_PATH . 'themes/omega_theme.php';
-$theme[0]['NAME'] = 'VHCS Omega';
+$theme[0]['NAME'] = 'ispCP Omega';
 
 /**
  * LDAP server(s)
