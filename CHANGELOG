@@ -10,11 +10,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-04-30 Benedikt Heintel
+	- LANGUAGES:
+		* Japanese: added
+
 2007-04-30 Malte Geierhos
 	- ENGINE:
 		* fixed #223 (/etc/hosts was in wrong format and not ipv6 aware)
-	- GUI 	
-		* fixed #234 
+	- GUI
+		* fixed #234
 		* fixed #238
 		* fixed #230
 
