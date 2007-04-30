@@ -1,6 +1,6 @@
-ispcp_table = English
-ispcp_language = English
-ispcp_languageSetlocaleValue = en_GB
+ispcp_table = Japanese
+ispcp_language = Japanese (please translate)
+ispcp_languageSetlocaleValue = jp_JP
 encoding = UTF-8
 (e.g. domain-of-your-choice.com) =
 (e.g. EUR) =
