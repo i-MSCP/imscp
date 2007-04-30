@@ -4,7 +4,7 @@
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/status/status.template.php"); ?>
 	<div id="head">
 		<div id="headleft">
-			<a href="http://www.net2ftp.com" target="_blank"><img src="<?php echo $net2ftp_globals["image_url"]; ?>/img/logo.png" alt="net2ftp" width="193" height="59" border="0" /></a>
+			<a href="http://www.isp-control.net" target="_blank"><img src="<?php echo $net2ftp_globals["image_url"]; ?>/img/logo.png" alt="net2ftp" width="193" height="59" border="0" /></a>
 		</div><div id="buttonsright">
 		<div style="float: <?php echo __("right"); ?>; text-align: <?php echo __("right"); ?>;">
 			<form id="StatusbarForm" method="post" action="<?php echo $net2ftp_globals["action_url"]; ?>">

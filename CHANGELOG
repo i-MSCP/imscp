@@ -16,6 +16,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI 	
 		* fixed #234 
 		* fixed #238
+		* fixed #230
 
 2007-04-29 Benedikt Heintel
 	- ENGINE:
