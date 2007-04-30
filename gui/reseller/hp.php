@@ -105,7 +105,7 @@ function gen_hp_message (&$tpl) {
 
 // Extract and show data for hosting plants
 function gen_hp_table(&$tpl, $reseller_id) {
-	global $sql, $cfg;
+	global $sql, $cfg, $external_event;
 
 	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
 		$query = <<<SQL_QUERY

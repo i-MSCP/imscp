@@ -13,6 +13,9 @@ ispCP ω 1.0.0 Changelog
 2007-04-30 Malte Geierhos
 	- ENGINE:
 		* fixed #223 (/etc/hosts was in wrong format and not ipv6 aware)
+	- GUI 	
+		* fixed #234 
+		* fixed #238
 
 2007-04-29 Benedikt Heintel
 	- ENGINE:
