@@ -32,6 +32,7 @@
 
 
 use FindBin;
+
 use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 
@@ -115,9 +116,10 @@ sub ask_hostname {
 
 	}
 
-	if ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+	if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 
 		 $main::ua{'hostname'} = $rdata;
+		 $main::ua{'hostname_local'} = $1;
 
 	}
 	else {
@@ -1414,12 +1416,13 @@ sub setup_hosts {
 	push_el(\@main::el, 'setup_hosts()', 'Starting...');
 
 	my $hostname = $main::ua{'hostname'};
+	my $host     = $main::ua{'hostname_local'};
 
 	my $hostname_local = "$hostname.local";
 
 	my $ip = $main::ua{'eth_ip'};
 
-	$rs = store_file("/etc/hosts", "\n# 'hosts' file configuration.\n\n127.0.0.1\t$hostname_local\tlocalhost\n$ip\t$hostname\t$hostname\n", 'root', 'root', 0644);
+	$rs = store_file("/etc/hosts", "\n# 'hosts' file configuration.\n\n127.0.0.1\t$hostname_local\tlocalhost\n$ip\t$hostname\t$host\n::ffff:$ip\t$hostname\t$host\n::1\tip6-localhost ip6-loopback\nfe00::0\tip6-localnet\nff00::0\tip6-mcastprefix\nff02::1\tip6-allnodes\nff02::2\tip6-allrouters\nff02::3\tip6-allhosts", 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 
