@@ -10,15 +10,23 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-01 Benedikt Heintel
+	- LANGUAGES:
+		* Polish: added missing strings
+	- GUI:
+		* fixed #237: &nbsp; in Support System
+		* fixed #233: no image on error page
+		* fixed #231: no image on enable auto responder page
+
 2007-05-01 Malte Geierhos
 	- GUI:
 		* fixed #236
 
 2007-04-30 Benedikt Heintel
 	- LANGUAGES:
-		* Japanese: added
 		* Hungarian: added missing strings
 		* Italian: added missing strings
+		* Japanese: added missing strings
 
 2007-04-30 Malte Geierhos
 	- ENGINE:

@@ -49,7 +49,7 @@ function action_delete(url) {
               <tr>
                 <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                     <tr>
-                      <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon.png" width="25" height="25"></td>
+                      <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_support.png" width="25" height="25"></td>
                       <td colspan="2" class="title">{TR_ENABLE_MAIL_AUTORESPONDER}</td>
                     </tr>
                 </table></td>

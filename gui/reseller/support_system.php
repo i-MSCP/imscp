@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -70,8 +70,6 @@ SQL_QUERY;
 
                                  )
                           );
-
-
 }
 
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
@@ -231,7 +229,7 @@ SQL_QUERY;
 			else{
 					$tpl -> assign(
                             array(
-                                    'NEW' => tr(" ")
+                                    'NEW' => " "
                                  )
                           );
 			}
@@ -323,21 +321,6 @@ $tpl -> assign(
                      )
               );
 
-//
-// dynamic page data.
-//
-//if (isset($_POST['uaction']) && $_POST['uaction'] === 'del_ticket') {
-
-//	set_page_message(tr('Ticket(s) are deleted!'));
-//}
-
-//if (isset($_POST['uaction']) && $_POST['uaction'] === 'close_ticket') {
-
-//	set_page_message(tr('Ticket(s) are closed!'));
-
-//}
-
-
 gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 
 //
@@ -376,4 +359,5 @@ $tpl -> prnt();
 if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
 
 unset_messages();
+
 ?>

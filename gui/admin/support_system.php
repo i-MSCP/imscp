@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -241,7 +241,7 @@ SQL_QUERY;
 			else{
 					$tpl -> assign(
                             array(
-                                    'NEW' => tr(" ")
+                                    'NEW' => " "
                                  )
                           );
 			}
@@ -362,4 +362,5 @@ $tpl -> prnt();
 if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
 
 unset_messages();
+
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -75,10 +75,7 @@ SQL_QUERY;
 
 }
 
-
-
-function gen_tickets_list(&$tpl, &$sql,$user_id)
-{
+function gen_tickets_list(&$tpl, &$sql,$user_id) {
 	global $cfg;
 
 	$start_index = 0;
@@ -175,12 +172,7 @@ SQL_QUERY;
 
 		}
 
-
-
-
-	global $i ;
-
-
+		global $i ;
 
 		while (!$rs -> EOF) {
 		$ticket_id  = $rs -> fields['ticket_id'];
@@ -218,7 +210,7 @@ SQL_QUERY;
 			}
 
 
-			$tpl -> assign(array('NEW' => tr("&nbsp;")));
+			$tpl -> assign(array('NEW' => " "));
 
 
             $tpl -> assign(
@@ -227,7 +219,6 @@ SQL_QUERY;
 									'MESSAGE' => $rs -> fields['ticket_message'],
 									'ID' => $ticket_id,
 									'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'
-
                                  )
                           );
 
@@ -238,10 +229,6 @@ SQL_QUERY;
 
     }
 }
-
-
-
-
 
 //
 // common page data.
@@ -268,21 +255,6 @@ $tpl -> assign(
                      )
               );
 
-//
-// dynamic page data.
-//
-//if (isset($_POST['uaction']) && $_POST['uaction'] === 'del_ticket') {
-
-//	set_page_message(tr('Ticket(s) are deleted!'));
-//}
-
-//if (isset($_POST['uaction']) && $_POST['uaction'] === 'close_ticket') {
-
-//	set_page_message(tr('Ticket(s) are closed!'));
-
-//}
-
-
 gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
 
 //
@@ -298,7 +270,7 @@ $tpl -> assign(
                 array(
                         'TR_SUPPORT_SYSTEM' => tr('Support system'),
                         'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-                        'TR_NEW' => '&nbsp;',
+                        'TR_NEW' => ' ',
 						'TR_ACTION' => tr('Action'),
                         'TR_URGENCY' => tr('Priority'),
                         'TR_SUBJECT' => tr('Subject'),
@@ -320,4 +292,5 @@ $tpl -> prnt();
 if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
 
 unset_messages();
+
 ?>

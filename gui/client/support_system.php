@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -153,7 +153,7 @@ SQL_QUERY;
       if ($ticket_status == 2) {
         $tpl -> assign(array('NEW' => tr("[Re]")));
       } else {
-        $tpl -> assign(array('NEW' => tr(" ")));
+        $tpl -> assign(array('NEW' => " "));
       }
 
       $tpl -> assign(array('SUBJECT' => stripslashes($rs -> fields['ticket_subject']),

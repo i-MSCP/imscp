@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -147,7 +147,7 @@ SQL_QUERY;
         $tpl -> assign(array('URGENCY' => tr("Very high")));
       }
 
-      $tpl -> assign(array('NEW' => tr("&nbsp;")));
+      $tpl -> assign(array('NEW' => " "));
 
       $tpl -> assign(array('SUBJECT' => stripslashes($rs -> fields['ticket_subject']),
                            'ID' => $rs -> fields['ticket_id'],
@@ -203,7 +203,7 @@ check_permissions($tpl);
 
 $tpl -> assign(array('TR_SUPPORT_SYSTEM' => tr('Support system'),
                      'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-                     'TR_NEW' => '&nbsp;',
+                     'TR_NEW' => ' ',
                      'TR_ACTION' => tr('Action'),
                      'TR_URGENCY' => tr('Priority'),
                      'TR_SUBJECT' => tr('Subject'),

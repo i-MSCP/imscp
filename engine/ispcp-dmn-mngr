@@ -1959,7 +1959,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/401");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 
@@ -1978,7 +1978,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/403");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 
@@ -1997,7 +1997,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/404");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 
@@ -2016,7 +2016,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/500");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0640);
+			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 	}
