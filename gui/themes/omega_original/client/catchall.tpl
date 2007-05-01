@@ -82,7 +82,7 @@ function action_delete(url) {
                             <td nowrap class="{ITEM_CLASS}">{CATCHALL_ACC}</td>
                             <td nowrap class="{ITEM_CLASS}" align="center" width="100">{CATCHALL_STATUS}</td>
                             <td nowrap class="{ITEM_CLASS}" align="center" width="200"><!-- BDP: del_icon -->
-                                <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle">
+                                <img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle">
                                 <!-- EDP: del_icon -->
                               <a href="{CATCHALL_ACTION_SCRIPT}" class="link">{CATCHALL_ACTION}</a></td>
                           </tr>

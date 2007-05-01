@@ -21,6 +21,7 @@ ispCP ω 1.0.0 Changelog
 2007-05-01 Malte Geierhos
 	- GUI:
 		* fixed #236
+		* fixed #235
 
 2007-04-30 Benedikt Heintel
 	- LANGUAGES:
