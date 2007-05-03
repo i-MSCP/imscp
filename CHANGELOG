@@ -10,8 +10,17 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-03 Benedikt Heintel
+	- LANGUAGES:
+		* Chinese (UTF-8) added missing strings
+		* Danish: RC3 compatible
+		* Czech: RC3 compatible
+		* Japanese: added missing strings
+		* Polish: RC3 compatible
+
 2007-05-01 Benedikt Heintel
 	- LANGUAGES:
+		* Japanese: added missing strings
 		* Polish: added missing strings
 	- GUI:
 		* fixed #237: &nbsp; in Support System
