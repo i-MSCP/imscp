@@ -13,6 +13,10 @@ ispCP ω 1.0.0 Changelog
 2007-05-04 Benedikt Heintel
 	- CONFIGS:
 		* fixed #245: ftp alias not working
+	- LANGUAGES:
+		* Italian: added missing strings
+		* Romanian: RC3 compatible
+		* Russian: RC3 compatible
 
 2007-05-03 Benedikt Heintel
 	- LANGUAGES:
