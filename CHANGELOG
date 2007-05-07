@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-07 Benedikt Heintel
+	- LANGUAGES:
+		* Dutch: added missing strings
+		* French: added missing strings
+		* Romanian: added missing strings
+
 2007-05-04 Benedikt Heintel
 	- CONFIGS:
 		* fixed #245: ftp alias not working
