@@ -7,6 +7,7 @@ install:
 	cd ./bind && $(MAKE) install ; cd ..
 	cd ./crontab && $(MAKE) install ; cd ..
 	cd ./database && $(MAKE) install ; cd ..
+	cd ./fcgi && $(MAKE) install ; cd ..
 	cd ./init.d && $(MAKE) install ; cd ..
 	cd ./postfix && $(MAKE) install ; cd ..
 	cd ./courier && $(MAKE) install ; cd ..
@@ -20,6 +21,7 @@ uninstall:
 	cd ./bind && $(MAKE) uninstall ; cd ..
 	cd ./crontab && $(MAKE) uninstall ; cd ..
 	cd ./database && $(MAKE) uninstall ; cd ..
+	cd ./fcgi && $(MAKE) install ; cd ..
 	cd ./init.d && $(MAKE) uninstall ; cd ..
 	cd ./postfix && $(MAKE) uninstall ; cd ..
 	cd ./courier && $(MAKE) uninstall ; cd ..

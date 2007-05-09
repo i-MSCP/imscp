@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-09 Benedikt Heintel
+	- CONFIGS:
+		* fixed #240: missing copy of fastCGI files in working dir (SuSE 9.3)
+		* fixed #253: wrong ISPCP_LICENSE in conf file of some distris
+		* fixed #254: missing httpd.conf in working dir (OpenBSD)
+		* fixed #255: missing copy of fastCGI files in working dir (OpenBSD)
+
 2007-05-07 Benedikt Heintel
 	- LANGUAGES:
 		* Dutch: added missing strings

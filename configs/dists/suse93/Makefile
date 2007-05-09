@@ -1,5 +1,5 @@
 
-export 
+export
 
 install:
 
@@ -10,13 +10,14 @@ install:
 		cd ./crontab && $(MAKE) install ; cd .. ; \
 		cd ./cron.d && $(MAKE) install ; cd .. ; \
 		cd ./database && $(MAKE) install ; cd .. ;  \
+		cd ./fcgi && $(MAKE) install ; cd .. ;  \
 		cd ./init.d && $(MAKE) install ; cd .. ; \
 		cd ./postfix && $(MAKE) install ; cd .. ; \
 		cd ./courier && $(MAKE) install ; cd .. ; \
 		cd ./proftpd && $(MAKE) install ; cd .. ; \
 		cd ./logrotate && $(MAKE) install ; cd .. ; \
 	fi
-   
+
 uninstall:
 
 	if [[ $(HOST_OS) == suse93 ]] ; then \
@@ -26,11 +27,12 @@ uninstall:
 		cd ./crontab && $(MAKE) uninstall ; cd .. ; \
 		cd ./cron.d && $(MAKE) uninstall ; cd .. ; \
 		cd ./database && $(MAKE) uninstall ; cd .. ;  \
+		cd ./fcgi && $(MAKE) uninstall ; cd .. ;  \
 		cd ./init.d && $(MAKE) uninstall ; cd .. ; \
 		cd ./postfix && $(MAKE) uninstall ; cd .. ; \
 		cd ./courier && $(MAKE) uninstall ; cd .. ; \
 		cd ./proftpd && $(MAKE) uninstall ; cd .. ; \
 		cd ./logrotate && $(MAKE) uninstall ; cd .. ; \
 	fi
-   
+
 
