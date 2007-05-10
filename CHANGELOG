@@ -14,6 +14,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI
 		* fixed #258: change user password / protected area
 		* fixed #238: undefined variable / hosting plan
+		* fixed #251: adding exsisting user to db requires password
 
 	- ENGINE
 		* fixed: permission and user settings on subdomain folders
