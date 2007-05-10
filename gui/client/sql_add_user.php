@@ -227,7 +227,7 @@ function add_sql_user(&$sql, $user_id, $db_id)
     return;
   }
 
-	if (isset($_POST['pass']) AND chk_password($_POST['pass'])) {
+	if (isset($_POST['pass']) AND chk_password($_POST['pass']) && !isset($_POST['Add_Exist'])) {
   	set_page_message( tr("Incorrect password range or syntax!"));
     return;
   }
