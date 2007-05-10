@@ -1369,7 +1369,9 @@ sub sub_add_httpd_file_data {
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-    my $sub_dir = "$www_dir/$dmn_name/$sub_mount";
+		my $sub_dir = "$www_dir/$dmn_name/$sub_mount";
+  
+    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
@@ -1377,7 +1379,7 @@ sub sub_add_httpd_file_data {
 
     my $sys_user = "$suexec_user_pref$sys_uid";
 
-    my $sys_group = $main::cfg{'APACHE_GROUP'};
+    my $sys_group = "$suexec_user_pref$sys_gid";
     #
     # Subdomain entry support directories;
     #
@@ -1386,7 +1388,7 @@ sub sub_add_httpd_file_data {
                              "$sub_dir",
                              $sys_user,
                              $sys_group,
-                             0770
+                             0755
                             );
 
     return $rs if ($rs != 0);
@@ -1395,7 +1397,7 @@ sub sub_add_httpd_file_data {
                              "$sub_dir/htdocs",
                              $sys_user,
                              $sys_group,
-                             0770
+                             0755
                             );
 
     return $rs if ($rs != 0);
@@ -1412,7 +1414,7 @@ sub sub_add_httpd_file_data {
     ($rs, $rdata) = make_dir(
                              "$sub_dir/phptmp",
                              $sys_user,
-                             $sys_group,
+                             $httpd_gid,
                              0770
                             );
 
@@ -1437,7 +1439,7 @@ sub sub_add_httpd_file_data {
                                $index_tpl,
                                $sys_user,
                                $sys_group,
-                               0660
+                               0644
                               );
 
     return $rs if ($rs != 0);
@@ -1492,6 +1494,8 @@ sub sub_change_httpd_file_data {
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
     my $sub_dir = "$www_dir/$dmn_name$sub_mount";
+    
+    my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 
@@ -1510,7 +1514,7 @@ sub sub_change_httpd_file_data {
 		($rs, $rdata) = make_dir(
 									"$sub_dir/phptmp",
                              		$sys_user,
-                             		$sys_group,
+                             		$httpd_gid,
                              		0770
                             	);
 	    return $rs if ($rs != 0);
