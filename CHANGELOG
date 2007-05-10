@@ -10,6 +10,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-10 Jan Porath
+	- GUI
+		* fixed #258: change user password / protected area
+		* fixed #238: undefined variable / hosting plan
+
+	- ENGINE
+		* fixed: permission and user settings on subdomain folders
+		* modified: excluded counting backup files in quota-engine
+
 2007-05-09 Benedikt Heintel
 	- CONFIGS:
 		* fixed #240: missing copy of fastCGI files in working dir (SuSE 9.3)
