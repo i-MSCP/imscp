@@ -49,7 +49,9 @@ function MM_goToURL() { //v3.0
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
+                <td valign="top">
+                <form name="edit_user" method="post" action="puser_edit.php">
+                <table width="100%" cellpadding="5" cellspacing="5">
                     <!-- BDP: page_message -->
                     <tr>
                       <td>&nbsp;</td>
@@ -79,7 +81,7 @@ function MM_goToURL() { //v3.0
                         &nbsp;&nbsp;
                         <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
                     </tr>
-                </table></td>
+                </table></form></td>
                 <td>&nbsp;</td>
               </tr>
               <tr>
