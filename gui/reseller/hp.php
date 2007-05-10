@@ -147,13 +147,13 @@ SQL_QUERY;
 	}
 
 	if ($rs -> RowCount() == 0) {
-		// if ($externel_event == '_off_') {
+		// if ($external_event == '_off_') {
 		set_page_message(tr('Hosting plans not found!'));
 		//}
 		$tpl -> assign('HP_TABLE', '');
 	}
 	else { // There are data for hosting plants :-)
-		if ($externel_event == '_off_') {
+		if ($external_event == '_off_') {
   			$tpl -> assign('HP_MESSAGE', '');
 		}
 
