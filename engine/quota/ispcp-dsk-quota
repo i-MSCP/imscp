@@ -110,7 +110,7 @@ sub dsk_quota_engine {
 
         my $domain_id   = @$_[0];
 
-        my $size = `$cmd_du -sb $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+        my $size = `$cmd_du --exclude="backups/*.bz2" -sb $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
         $size =~ /^(\d+)/; $size = $1;
 
