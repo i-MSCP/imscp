@@ -406,7 +406,8 @@ sub htuser_del_user_system_data {
 
 		my $id = $_;
 
-		$sql = "select uname from htaccess_users where id = $id";
+		#$sql = "select uname from htaccess_users where id = $id";
+		$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id BY htaccess.user_id";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -414,11 +415,14 @@ sub htuser_del_user_system_data {
 
 		$rdata = @$rdata[0];
 
-		my ($uname) = (@$rdata[0]);
+		my ($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
 
-		$rs = htuser_del_user_data($dmn_name, $uname);
+  	if($ucounter == 1) {
 
-		return $rs if ($rs != 0);
+			$rs = htuser_del_user_data($dmn_name, $uname);
+
+			return $rs if ($rs != 0);
+		}
 
 	}
 	
@@ -426,7 +430,7 @@ sub htuser_del_user_system_data {
 
 		my $id = $_;
 
-		$sql = "select count(dmn_id) from htaccess where dmn_id = $id";
+		$sql = "select count(dmn_id) from htaccess where dmn_id = $id and path='$path'";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -440,12 +444,26 @@ sub htuser_del_user_system_data {
 
 			if (-e $htaccess_file) {
 
-				del_file($htaccess_file);
+				my $htaccess_content = del_zone( (get_file($htaccess_file))[1],  "PROTECTION", "#" );
+
+				$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
+
+				return $rs if ($rs != 0);
+
+				my $cmd_du = $main::cfg{'CMD_DU'};
+
+				my $size = `$cmd_du -sb $htaccess_file`;
+
+				if ($size<2) {
+
+					del_file($htaccess_file);
+
+				}
 
 			}
 
 		}
-
+	
 	}
 
 
@@ -745,7 +763,8 @@ sub htuser_del_group_system_data {
 
 			my $id = $_;
 
-			$sql = "select uname from htaccess_users where id = $id";
+			#$sql = "select uname from htaccess_users where id = $id";
+			$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id BY htaccess.user_id";
 
 			($rs, $rdata) = doSQL($sql);
 
@@ -753,14 +772,56 @@ sub htuser_del_group_system_data {
 
 			$rdata = @$rdata[0];
 
-			my ($uname) = (@$rdata[0]);
+			my ($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
 
-			$rs = htuser_del_group_data($dmn_name, $gname, $uname);
+  		if($ucounter == 0) {
+
+				$rs = htuser_del_group_data($dmn_name, $gname, $uname);
+
+				return $rs if ($rs != 0);
+			}
+
+		}
+		
+		foreach (split(',', $dmn_id)) {
+
+			my $id = $_;
+
+			$sql = "select count(dmn_id) from htaccess where dmn_id = $id and path='$path'";
+
+			($rs, $rdata) = doSQL($sql);
 
 			return $rs if ($rs != 0);
 
-		}
+			$rdata = @$rdata[0];
 
+			my ($rcounter) = (@$rdata[0]);
+
+			if($rcounter eq '1') {
+
+				if (-e $htaccess_file) {
+
+					my $htaccess_content = del_zone( (get_file($htaccess_file))[1],  "PROTECTION", "#" );
+
+					$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
+
+					return $rs if ($rs != 0);
+
+					my $cmd_du = $main::cfg{'CMD_DU'};
+
+					my $size = `$cmd_du -sb $htaccess_file`;
+
+					if ($size<2) {
+
+						del_file($htaccess_file);
+
+					}
+
+				}
+
+			}
+	
+		}
 
 	}
 
