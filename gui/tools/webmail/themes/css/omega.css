@@ -24,7 +24,7 @@ BODY{
     background-image: url(../../skins/omega/header_right_bg.png);
 	font-size: 9px;
 	background-repeat: no-repeat;
-	background-attachment: fixed;
+	/* background-attachment: fixed; */
 	}
 body.left {
     background-image: url(../../skins/omega/folders_bottom.gif);

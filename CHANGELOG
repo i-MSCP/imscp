@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-11 Malte Geierhos
+	- GUI 
+		* fixed #248: Webmail Background Image fixed
+
 2007-05-10 Jan Porath
 	- GUI
 		* fixed #258: change user password / protected area
