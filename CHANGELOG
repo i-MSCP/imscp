@@ -13,8 +13,8 @@ ispCP ω 1.0.0 Changelog
 2007-05-11 Jan Porath
 	-	ENGINE
 		* fixed #228: .htaccess still stayed after deleting proteced area
-									wrong user and group deleting
-									no deleting of user content in .htaccess file (if exists)
+		              wrong user and group deleting
+		              no deleting of user content in .htaccess file (if exists)
 
 2007-05-11 Malte Geierhos
 	- GUI 
