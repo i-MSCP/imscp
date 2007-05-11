@@ -407,7 +407,7 @@ sub htuser_del_user_system_data {
 		my $id = $_;
 
 		#$sql = "select uname from htaccess_users where id = $id";
-		$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id BY htaccess.user_id";
+		$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id GROUP BY htaccess.user_id";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -417,7 +417,7 @@ sub htuser_del_user_system_data {
 
 		my ($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
 
-  	if($ucounter == 1) {
+	  	if($ucounter <= 1) {
 
 			$rs = htuser_del_user_data($dmn_name, $uname);
 
@@ -751,36 +751,53 @@ sub htuser_del_group_system_data {
 
 		my $group_id = $_;
 
-		$sql = "select ugroup, members from htaccess_groups where id = $group_id and dmn_id = $dmn_id";
+#		$sql = "select ugroup, members from htaccess_groups where id = $group_id and dmn_id = $dmn_id";
+		$sql = "select ugroup, members, count(htaccess.id) as c from htaccess_groups left join htaccess on htaccess.group_id=htaccess_groups.id where htaccess_groups.id = $group_id and htaccess_groups.dmn_id = $dmn_id group by htaccess.group_id";
 
 		($rs, $rdata) = doSQL($sql);
 
 		$rdata = @$rdata[0];
 
-		my ($gname, $members) = (@$rdata[0], @$rdata[1]);
+		my ($gname, $members, $cgroup) = (@$rdata[0], @$rdata[1],@$rdata[2]);
 
-		foreach (split(',', $members)) {
+		if ($cgroup <=1) {
 
-			my $id = $_;
+			foreach (split(',', $members)) {
 
-			#$sql = "select uname from htaccess_users where id = $id";
-			$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id BY htaccess.user_id";
+				my $id = $_;
 
-			($rs, $rdata) = doSQL($sql);
+				$sql = "select uname from htaccess_users where id = $id";
 
-			return $rs if ($rs != 0);
+				($rs, $rdata) = doSQL($sql);
+    
+				return $rs if ($rs != 0);
 
-			$rdata = @$rdata[0];
+				$rdata = @$rdata[0];
 
-			my ($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
-
-  		if($ucounter == 0) {
+				my ($uname) = (@$rdata[0]);
 
 				$rs = htuser_del_group_data($dmn_name, $gname, $uname);
 
 				return $rs if ($rs != 0);
-			}
+				
+				$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id GROUP BY htaccess.user_id";
 
+				($rs, $rdata) = doSQL($sql);
+
+				return $rs if ($rs != 0);
+
+				$rdata = @$rdata[0];
+
+				my ($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
+
+			  	if($ucounter == 0) {
+
+					$rs = htuser_del_user_data($dmn_name, $uname);
+
+					return $rs if ($rs != 0);
+				}
+
+			}
 		}
 		
 		foreach (split(',', $dmn_id)) {
@@ -822,6 +839,8 @@ sub htuser_del_group_system_data {
 			}
 	
 		}
+		
+		
 
 	}
 
@@ -1020,6 +1039,8 @@ SQL_QUERY
 				($rs, $rdata) = doSQL($sql);
 
 				return $rs if ($rs != 0);
+				
+				$rs = htuser_del_user_system_data($entry);
 
 			}
 
