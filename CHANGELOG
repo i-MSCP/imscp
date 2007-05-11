@@ -13,6 +13,9 @@ ispCP ω 1.0.0 Changelog
 2007-05-11 Malte Geierhos
 	- GUI 
 		* fixed #248: Webmail Background Image fixed
+	
+	- SETUP 
+		* fixed #264: phptmp not copied on BSD* systems
 
 2007-05-10 Jan Porath
 	- GUI
