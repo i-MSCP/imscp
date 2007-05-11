@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-11 Jan Porath
+	-	ENGINE
+		* fixed #228: .htaccess still stayed after deleting proteced area
+									wrong user and group deleting
+									no deleting of user content in .htaccess file (if exists)
+
 2007-05-11 Malte Geierhos
 	- GUI 
 		* fixed #248: Webmail Background Image fixed
