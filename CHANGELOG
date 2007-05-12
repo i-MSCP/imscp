@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-07 Benedikt Heintel
+	- LANGUAGES:
+		* Japanes: added missing strings
+		* Turkish: added missing strings
+		* Polish: added missing strings
+
 2007-05-11 Jan Porath
 	-	ENGINE
 		* fixed #228: .htaccess still stayed after deleting proteced area
@@ -17,10 +23,9 @@ ispCP ω 1.0.0 Changelog
 		              no deleting of user content in .htaccess file (if exists)
 
 2007-05-11 Malte Geierhos
-	- GUI 
+	- GUI
 		* fixed #248: Webmail Background Image fixed
-	
-	- SETUP 
+	- SETUP
 		* fixed #264: phptmp not copied on BSD* systems
 
 2007-05-10 Jan Porath
@@ -28,7 +33,6 @@ ispCP ω 1.0.0 Changelog
 		* fixed #258: change user password / protected area
 		* fixed #238: undefined variable / hosting plan
 		* fixed #251: adding exsisting user to db requires password
-
 	- ENGINE
 		* fixed: permission and user settings on subdomain folders
 		* modified: excluded counting backup files in quota-engine
