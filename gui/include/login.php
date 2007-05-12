@@ -153,7 +153,12 @@ function check_user_login() {
 
   }
 
-  if (isset($_SESSION['user_logged'])) {
+  if (!isset($_SESSION['user_logged'])) {
+
+//		write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " bad session data.");
+
+   	 	return false;
+  	}
 
 		// verify sessiondata with database
 		$query = <<<SQL_QUERY
@@ -184,6 +189,8 @@ SQL_QUERY;
 
   	if ($cfg['SERVICEMODE'] == 1 AND $user_type != 'admin') {
 
+  	    unset_user_login_data();
+
 			write_log("<b><i>".htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8")."</i></b> system currently in servicemode. User logged out...");
 
 			header("Location: ../index.php");
@@ -208,13 +215,6 @@ SQL_QUERY;
       goto_user_location();
 
       return true;
-
-	} else {
-
-		write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " bad session data.");
-
-   	 	return false;
-  	}
 
 }
 
@@ -250,17 +250,10 @@ function goto_user_location() {
 
 function check_login () {
 
-	if (isset($_SESSION['user_logged'])) {
-
-	  	if (!check_user_login()) {
-	    	header("Location: ../index.php");
-			die();
-	    }
-	}
-	else {
-	  	header("Location: ../index.php");
-		die();
-	}
+    if (!check_user_login()) { //check_user_login already performs all the check
+        header("Location: ../index.php");
+        die();
+    }
 }
 
 function change_user_interface($form_id, $to_id) {
@@ -442,14 +435,33 @@ SQL_QUERY;
 
 	}
 
+	$lang = $_SESSION['user_def_lang'];
+
 	$_SESSION = array();
 
-//	session_unset();
+	$_SESSION['user_def_lang'] = $lang;
 
-//	session_destroy();
+}
 
-	$_SESSION['user_def_lang'] = $cfg['USER_INITIAL_LANG'];
+function redirect_to_level_page()
+{
+    if (!isset($_SESSION['user_type']))
+    return false;
 
+    $user_type = $_SESSION['user_type'];
+
+    switch ($user_type) {
+        case 'user':
+            $user_type = 'client';
+        case 'admin':
+        case 'reseller':
+            header('Location: ' . $user_type . '/index.php');
+            break;
+        default:
+            die("FIX ME! " . __FILE__ . ":" . __LINE__);
+            break;
+    }
+    exit;
 }
 
 ?>

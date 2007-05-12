@@ -225,7 +225,7 @@ update_logo();
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-gen_def_layout($tpl, $sql, $user_def_layout);
+gen_def_layout($tpl, $sql, $_SESSION['user_theme']);
 
 $tpl -> assign(
                 array(

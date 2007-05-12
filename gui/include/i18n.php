@@ -32,7 +32,7 @@
 function tr($msgid, $js = false) {
 	global $sql, $default_lang;
 
-	$default_lang = session_id() ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+	$default_lang = (session_id() && isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
 
 	if (!$sql) {
 		return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, "UTF-8")));

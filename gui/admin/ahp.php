@@ -248,8 +248,6 @@ function check_data_correction(&$tpl)
     return false;
   }
 
-  return TRUE;
-
 }// End of check_data_correction()
 
 

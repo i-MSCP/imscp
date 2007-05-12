@@ -76,7 +76,7 @@ SQL_QUERY;
     $data = $res -> FetchRow();
     $reseller_ips = $data['reseller_ips'];
 
-    while ($data = $res -> FetchRow()) {
+    while (($data = $res -> FetchRow())) {
       if (preg_match("/$delete_id;/", $reseller_ips) == 1) {
         set_page_message(tr('Error we have reseller that use this IP!'));
         header( "Location: ip_manage.php" );

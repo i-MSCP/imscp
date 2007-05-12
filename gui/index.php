@@ -17,9 +17,10 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include 'include/ispcp-lib.php';
+require 'include/ispcp-lib.php';
 
-unset_user_login_data();
+//unset_user_login_data();
+do_session_timeout();
 
 init_login();
 
@@ -32,30 +33,19 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 	check_input($_POST['upass']);
 
 	if (register_user($uname, $_POST['upass'])) {
-
-  	if ($_SESSION['user_type'] == 'admin') {
-
-			header("Location: admin/index.php");
-
-		} else if ($_SESSION['user_type'] == 'reseller') {
-
-			header("Location: reseller/index.php");
-
-		} else if ($_SESSION['user_type'] == 'user') {
-
-			header("Location: client/index.php");
-
-    }
-
-	} else {
-
-		header('Location: index.php');
-
+	    redirect_to_level_page();
 	}
+
+	header('Location: index.php');
+	exit;
 
 }
 
-
+if (check_user_login()) {
+    if (!redirect_to_level_page()) {
+        unset_user_login_data();
+    }
+}
 
 
 if (isset($_SESSION['user_theme'])) {

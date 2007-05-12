@@ -83,23 +83,23 @@ $tpl -> prnt();
 
 function gen_hp_message (&$tpl) {
 	//global $externel_event, $hp_added, $hp_deleted, $hp_updated;
-	global $external_event;
+//	global $external_event;
 
 	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
-		$external_event = '_on_';
+//		$external_event = '_on_';
 		set_page_message(tr('Hosting plan added!'));
 		unset($_SESSION["hp_added"]);
 		if (isset($GLOBALS['hp_added']))
 			unset($GLOBALS['hp_added']);
 	}
 	else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
-		$external_event = '_on_';
+//		$external_event = '_on_';
 		set_page_message(tr('Hosting plan deleted!'));
 		unset($_SESSION["hp_deleted"]);
 		if (isset($GLOBALS['hp_deleted']))
 			unset($GLOBALS['hp_deleted']);
 	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
-		$external_event = '_on_';
+//		$external_event = '_on_';
 		set_page_message(tr('Hosting plan updated!'));
 		unset($_SESSION["hp_updated"]);
 		if (isset($GLOBALS['hp_updated']))
@@ -137,9 +137,9 @@ SQL_QUERY;
 		//}
 		$tpl -> assign('HP_TABLE', '');
 	} else { // There are data for hosting plants :-)
-		if ($externel_event == '_off_') {
+		/*if ($GLOBALS['external_event'] == '_off_') {
 			$tpl -> assign('HP_MESSAGE', '');
-		}
+		}*/
 
 		$tpl -> assign(array('TR_HOSTING_PLANS' => tr('Hosting plans'),
 							 'TR_NOM' => tr('No.'),

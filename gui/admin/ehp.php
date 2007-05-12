@@ -248,7 +248,7 @@ function check_data_iscorrect(&$tpl)
   global $hp_traff, $hp_disk;
   global $hpid;
 
-  $ahp_error	= "_off_";
+  $ahp_error	= '_off_';
   $hp_name		= clean_input($_POST['hp_name']);
   $hp_sub		= clean_input($_POST['hp_sub']);
   $hp_als		= clean_input($_POST['hp_als']);
@@ -311,8 +311,6 @@ function check_data_iscorrect(&$tpl)
     set_page_message($ahp_error);
     return false;
   }
-
-  return TRUE;
 
 } // End of check_data_iscorrect()
 

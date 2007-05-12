@@ -46,53 +46,44 @@ function update_server_settings(&$sql)
 {
 
     if (!isset($_POST['uaction']) && !isset($_POST['uaction'])) {
+        return;
+    }
+    /*global $data;
+    $match = array();
+    preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data, $match);*/
+
+    $max_traffic = clean_input($_POST['max_traffic']);
+
+    $traffic_warning = $_POST['traffic_warning'];
+
+    if (!is_numeric($max_traffic) || !is_numeric($traffic_warning) ) {
+        set_page_message(tr('Wrong data input!'));
+    }
+
+    if ($traffic_warning > $max_traffic){
+
+        set_page_message(tr('Warning traffic is bigger then max traffic!'));
 
         return;
     }
 
+    if ($max_traffic < 0) {
+        $max_traffic = 0;
+    }
+    if ($traffic_warning < 0) {
+        $traffic_warning = 0;
+    }
 
-	else
-	{
-			global $data;
-			preg_match("/^(-1|0|[1-9][0-9]*)$/", $data, $match);
-
-            $max_traffic = clean_input($_POST['max_traffic']);
-
-            $traffic_warning = $_POST['traffic_warning'];
-
-			if (!is_numeric($max_traffic) || !is_numeric($traffic_warning) ) {
-        			set_page_message(tr('Wrong data input!'));
-			}
-
-
-
-			if ($traffic_warning > $max_traffic){
-
-				set_page_message(tr('Warning traffic is bigger then max traffic!'));
-
-				return;
-			}
-
-			if ($max_traffic < 0){
-				 $max_traffic = 0;
-			}
-			if ($traffic_warning < 0){
-				 $traffic_warning = 0;
-			}
-
-            $query = <<<SQL_QUERY
+    $query = <<<SQL_QUERY
                 update
                     straff_settings
                 set
                     straff_max = ?,
                     straff_warn  = ?
 SQL_QUERY;
-            $rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
+    $rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
 
-            set_page_message(tr('Server traffic settings updated successfully!'));
-
-
-        }
+    set_page_message(tr('Server traffic settings updated successfully!'));
 }
 
 function generate_server_data(&$tpl, &$sql)

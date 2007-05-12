@@ -82,18 +82,20 @@ SQL_QUERY;
     }
 }
 
+
 function get_update_infos(&$tpl) {
 	global $cfg;
 
-	$last_update = "http://isp-control.net/latest.txt";
+	$last_update = "http://www.isp-control.net/latest.txt";
 
     // Fake the browser type
     ini_set('user_agent','Mozilla/5.0');
 
-	$dh2 = @fopen("$last_update",'r');
-	(int) $last_update_result = @fread($dh2, 8);
+	$dh2 = @fopen($last_update,'r');
+	$last_update_result = (int)@fread($dh2, 8);
+	fclose($dh2);
 
-	(int) $current_version = $cfg['BuildDate'];
+	$current_version = (int)$cfg['BuildDate'];
 	if ($current_version < $last_update_result) {
 		$tpl -> assign(array('UPDATE' =>  tr('New ISPCP update is now available')));
 		$tpl -> parse('UPDATE_MESSAGE', 'update_message');

@@ -438,6 +438,8 @@ SQL_QUERY;
         exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
     }
 
+    return true;
+
 }
 function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$err, $obj, $uname) {
 

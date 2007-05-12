@@ -19,7 +19,7 @@
 
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
 check_login();
 
@@ -300,7 +300,7 @@ $tpl -> assign(
         )
     );
 
-send_circular(&$tpl, &$sql);
+send_circular($tpl, $sql);
 
 gen_page_data ($tpl, $sql);
 
