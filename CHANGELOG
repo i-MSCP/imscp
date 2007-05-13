@@ -13,6 +13,9 @@ ispCP ω 1.0.0 Changelog
 2007-05-13 Malte Geierhos / Joximu
 	- GUI	
 		* fixed password encryption with suhosin patch #265
+	
+	- ENGINE 
+		* fixed wrong Versionstrings in openbsd, redhat, sles9, ubuntu 
 
 2007-05-07 Benedikt Heintel
 	- LANGUAGES:
