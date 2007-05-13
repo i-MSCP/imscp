@@ -79,7 +79,17 @@ function padd_user(&$tpl, &$sql, &$dmn_id)
 			$change_status = $cfg['ITEM_ADD_STATUS'];
 
 			$uname = clean_input($_POST['username']);
-			$upass = crypt($_POST['pass']);
+
+			if (CRYPT_BLOWFISH == 1) {
+                                // suhosin enables blowfish, but apache cannot crypt this, so we don't need that
+                                if (CRYPT_MD5 == 1) { // use md5 if available: salt is $1$.microseconds.$
+                                        $upass = crypt($_POST['pass'], '$1$'.microtime().'$');
+                                } else { // else only DES encryption is used
+                                        $upass = crypt($_POST['pass'], microtime());
+                                }
+                        } else {
+                                $upass = crypt($_POST['pass']);
+                        }
 
 			$query = <<<SQL_QUERY
         select

@@ -70,7 +70,16 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
 			return;
 		}
 
-			$nadmin_password = crypt($_POST['pass']);
+			if (CRYPT_BLOWFISH == 1) { 
+				// suhosin enables blowfish, but apache cannot crypt this, so we don't need that
+				if (CRYPT_MD5 == 1) { // use md5 if available: salt is $1$.microseconds.$
+					$nadmin_password = crypt($_POST['pass'], '$1$'.microtime().'$');
+				} else { // else only DES encryption is used
+					$nadmin_password = crypt($_POST['pass'], microtime());
+				}
+			} else {
+				$nadmin_password = crypt($_POST['pass']);
+			}
 
 			global $cfg;
 			$change_status = $cfg['ITEM_CHANGE_STATUS'];

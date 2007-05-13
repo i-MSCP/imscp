@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-13 Malte Geierhos / Joximu
+	- GUI	
+		* fixed password encryption with suhosin patch #265
+
 2007-05-07 Benedikt Heintel
 	- LANGUAGES:
 		* Japanes: added missing strings
