@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-13 Jan Porath
+	-	GUI
+		* fixed #222: special chars problem in hostingplan
+	-	ENGINE
+		* fixed #232: restoring db-backups does not work 
+
 2007-05-13 Malte Geierhos / Joximu
 	- GUI	
 		* fixed password encryption with suhosin patch #265
