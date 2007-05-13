@@ -3648,6 +3648,8 @@ sub dmn_restore_data {
     }
 
     my ($rs, $rdata) = ('', '');
+    
+    my $dmn_id = @$dmn_data[0];
 
     my $dmn_name = @$dmn_data[1];
 
@@ -3658,6 +3660,8 @@ sub dmn_restore_data {
     my $dmn_bk_dir = "$www_dir/$dmn_name/backups";
 
     my $cmd_tar = $main::cfg{'CMD_TAR'};
+    
+    my $cmd_mysql = $main::cfg{'CMD_MYSQL'};
 
     $rs = opendir(DIR, $dmn_bk_dir);
 
@@ -3679,19 +3683,82 @@ sub dmn_restore_data {
 
     return 0 if (scalar(@bk_files) == 0);
 
-    my ($cmd, $fname) = ('', $bk_files[0]);
+    #my ($cmd, $fname) = ('', $bk_files[0]);
+    my ($cmd,$rdata2,$rdata3,$sql) = ('','','','');
 
-	if ($fname =~ m/.tar.gz/i) {
-    	$cmd = "$cmd_tar --extract --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+    foreach(@bk_files) {
+			
+	my ($fname) = ($_);
+
+	# Restore bzip2 files
+	if ($fname =~ m/.tar.bz2/i) {
+
+	$cmd = "$cmd_tar --extract --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+				
+	$rs = sys_command($cmd);
+
+	return $rs if ($rs != 0)
     }
-    else {
-    	$cmd = "$cmd_tar --extract --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+			
+    # Restore gz files
+    if ($fname =~ m/.tar.gz/i) {
+	
+	$cmd = "$cmd_tar --extract --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+				
+	$rs = sys_command($cmd);
+	
+	return $rs if ($rs != 0)
     }
+			
+    # Restore SQL files
+    if ($fname =~ m/.sql.bz2/i) {
+				
+	# Extract databasename
+	$fname =~ /(.*).sql.bz2/;
+	my $dbf_name = $1;
 
-    $rs = sys_command($cmd);
+	$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+	($rs,$rdata3) = doSQL($sql);
+				
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	foreach(@$rdata3) {
+				
+	    my $db_id=@$_[0];
+	    my $db_name=@$_[1];
+					
+	    # if databasename eq filedatabasename get SQL user and pass
+	    if ($db_name eq $dbf_name) {
+					
+		$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
+		($rs,$rdata2) = doSQL($sql);
+						
+		return $rs if ($rs != 0);
+						
+		$rdata2=@$rdata2[0];
+					
+		my $dbuser = @$rdata2[0];
+		my $dbpass = @$rdata2[1];
+						
+		# if username and pass for db exists - restore database from file
+		if ($dbuser && $dbpass) {
+				
+	    	    $cmd = "bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
 
+    		    $rs = sys_command($cmd);
+
+    		    return $rs if ($rs != 0);
+		
+		}
+						
+	    }
+			    
+	}
+				
+    }
+    
+    }
+	
     push_el(\@main::el, 'dmn_restore_data()', 'Ending...');
 
     return 0;
