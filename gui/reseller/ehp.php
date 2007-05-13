@@ -370,11 +370,8 @@ function save_data_to_db()
         where
             id = ?
 SQL_QUERY;
-  $res = exec_query($sql, $query, array(htmlspecialchars($hp_name, ENT_QUOTES, "UTF-8"),
-  										clean_input($description),
-										$hp_props, $price, $setup_fee,
-										htmlspecialchars($currency, ENT_QUOTES, "UTF-8"),
-										htmlspecialchars($payment, ENT_QUOTES, "UTF-8"), $status, $hpid));
+  $res = exec_query($sql, $query, array($hp_name,$description, $hp_props, $price,
+                                        $setup_fee, $currency, $payment, $status, $hpid));
 
    		$_SESSION['hp_updated'] = '_yes_';
     	Header("Location: hp.php");
