@@ -132,13 +132,7 @@ function check_user_login() {
 
 	global $cfg, $sql;
 
-	$user_logged = $_SESSION['user_logged'];
-
-  $user_pass = $_SESSION['user_pass'];
-
-  $user_type = $_SESSION['user_type'];
-
-  $user_id = $_SESSION['user_id'];
+	$user_logged = isset($_SESSION['user_logged'])? $_SESSION['user_logged'] : false;
 
   $sess_id = session_id();
 
@@ -159,6 +153,12 @@ function check_user_login() {
 
    	 	return false;
   	}
+
+  $user_pass = $_SESSION['user_pass'];
+
+  $user_type = $_SESSION['user_type'];
+
+  $user_id = $_SESSION['user_id'];
 
 		// verify sessiondata with database
 		$query = <<<SQL_QUERY
