@@ -1325,19 +1325,13 @@ sub setup_crontab {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	if (! -e "$bk_dir/crontab.conf.ispcp") { # We are running setup for the first time.
+	if (! -e "$bk_dir/crontab.conf") { # We are running setup for the first time.
 
 		# Let's backup system crontab (if any);
 
 		$cmd = "$main::cfg{'CMD_CRONTAB'} -u root -l &> $bk_dir/crontab.conf.system";
 
 		$rs = sys_command_rs($cmd);
-
-		$cmd = "$main::cfg{'CMD_CRONTAB'} -u root -r &> /tmp/ispcp-setup-crontab.log";
-
-		$rs = sys_command_rs($cmd);
-
-		$rs = del_file("/tmp/ispcp-setup-crontab.log");
 
 		return $rs if ($rs != 0);
 
@@ -1361,7 +1355,15 @@ sub setup_crontab {
 
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$wrk_dir/crontab.conf", $cfg, 'root', 'root', 0644);
+		$cmd = "$main::cfg{'CMD_CAT'} $bk_dir/crontab.conf.ispcp $bk_dir/crontab.conf.system > $bk_dir/crontab.conf";
+
+		$rs = sys_command_rs($cmd);
+
+		return $rs if ($rs != 0);
+
+		$cmd = "$main::cfg{'CMD_CP'} -a -f $bk_dir/crontab.conf $wrk_dir/";
+
+		$rs = sys_command_rs($cmd);
 
 		return $rs if ($rs != 0);
 
@@ -1371,7 +1373,7 @@ sub setup_crontab {
 
 	$rs = sys_command_rs($cmd);
 
-	$cmd = "$main::cfg{'CMD_CRONTAB'} -u root $bk_dir/crontab.conf.ispcp";
+	$cmd = "$main::cfg{'CMD_CRONTAB'} -u root $bk_dir/crontab.conf";
 
 	$rs = sys_command($cmd);
 

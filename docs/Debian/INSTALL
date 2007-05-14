@@ -17,9 +17,9 @@ Table of Content
 1) Version Info
 ---------------
 ISPCP ω Version:	1.0.0
-INSTALL Skript:		2.0
-Maintainer:			RatS
-Homepage:			http://isp-contol.net
+INSTALL Script:		2.0
+Maintainer:		RatS
+Homepage:		http://www.isp-contol.net
 Linux Distris:		Debian Sarge, Etch
 
 ================================================================================
@@ -27,7 +27,7 @@ Linux Distris:		Debian Sarge, Etch
 ---------------
 There is no must have for a system using ISPCP ω. This is only a recommendation:
 
-Penitum III or K6-4 with 500 MHz
+Pentium III or K6-4 with 500 MHz
 512 MB RAM
 100 MB disk space (only for install of ISPCP ω)
 Debian (or even any other *NIX-Distribution)
@@ -61,10 +61,11 @@ Make sure you are logged in as root.
 	# cd ./ispcp1.0.0
 
 3. Install the required modules
-   for Debian Etch you can use:
+   first update your system:
 	# apt-get update && apt-get upgrade
-    # apt-get install `cat ./docs/Debian/debian-packages-sarge`
 
+   for Debian Sarge please use
+	# apt-get install `cat ./docs/Debian/debian-packages-sarge`
    for Debian Etch please use:
    	# apt-get install `cat ./docs/Debian/debian-packages-etch`
 
@@ -76,12 +77,12 @@ Make sure you are logged in as root.
    deb     http://security.debian.org/                 testing/updates main contrib non-free
    deb-src http://security.debian.org/                 testing/updates main contrib non-free
 
-   Make sure you have added the following backport into your
+   If using Sarge, make sure you have added the following backport into your
    /etc/apt/sources.list:
 
     # backports
     deb     http://dotdeb.pimpmylinux.org/          stable          all
-	deb-src http://dotdeb.pimpmylinux.org/          stable          all
+    deb-src http://dotdeb.pimpmylinux.org/          stable          all
 
 
 	(when you get to the courier screen select 'no' to web directories)
@@ -96,11 +97,11 @@ Make sure you are logged in as root.
 a) via install script
 ---------------------
 4a. Start the script and follow the install instructions:
-	# ./install-ispcp.sh
+	# ./ispcp-setup.sh
 
-After that return to step 12.
+After that go to step 12.
 
-b) manualy
+b) manually
 ----------
 4b. Change into the configuration directory:
 	# cd ./configs
@@ -165,7 +166,7 @@ a) via install script
 1. Start the script and follow the update instructions:
 	# ./install-ispcp.sh
 
-b) manualy
+b) manually
 ----------
 1.	Please check the update From-To-Files in the ./docs directory
 
