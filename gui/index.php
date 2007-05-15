@@ -19,7 +19,10 @@
 
 require 'include/ispcp-lib.php';
 
-unset_user_login_data();
+if (isset($_GET['logout'])) {
+    unset_user_login_data();
+}
+
 do_session_timeout();
 
 init_login();

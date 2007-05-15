@@ -10,6 +10,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-15 Raphael Geissert
+	-	GUI
+		* Improved fix for #271: logout does not function
+
+2007-05-15 Jan Porath
+	-	GUI
+		* Fixed #271: logout does not function
+	-	SETUP
+		* Fixed #272: crontab setup fails
+
 2007-05-14 Raphael Geissert
 	-	GUI
 		* Fixed #268: undefined index on Login Page
