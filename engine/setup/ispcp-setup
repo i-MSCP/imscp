@@ -1332,8 +1332,20 @@ sub setup_crontab {
 		$cmd = "$main::cfg{'CMD_CRONTAB'} -u root -l &> $bk_dir/crontab.conf.system";
 
 		$rs = sys_command_rs($cmd);
+		
+		if ($rs != 0) {
+			
+				$rs = del_file("$bk_dir/crontab.conf.system");
 
-		return $rs if ($rs != 0);
+				return $rs if ($rs != 0);
+				
+				$cmd = "touch $bk_dir/crontab.conf.system";
+
+				$rs = sys_command_rs($cmd);
+				
+				return $rs if ($rs != 0);
+		
+		}
 
 		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'crontab.conf');
 
