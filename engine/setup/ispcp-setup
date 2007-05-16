@@ -1630,6 +1630,7 @@ sub setup_php {
 	%tag_hash = (
 					'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
 					'{DMN_NAME}' => "gui",
+					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
 					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
 					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
 					);
@@ -1648,6 +1649,7 @@ sub setup_php {
 	%tag_hash = (
 					'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
 					'{DMN_NAME}' => "gui",
+					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
 					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
 					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
 					);

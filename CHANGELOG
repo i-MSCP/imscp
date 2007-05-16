@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-16 Jan Porath
+	-	SETUP
+		* Fixed #269: wrong mail setting in master php.ini
+
 2007-05-15 Raphael Geissert
 	-	GUI
 		* Improved fix for #271: logout does not function
