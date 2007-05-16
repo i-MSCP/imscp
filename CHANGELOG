@@ -10,24 +10,28 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-16 Malte Geierhos
+	- GUI
+		* Fixed #260 missing icons 
+
 2007-05-16 Jan Porath
-	-	SETUP
+	- SETUP
 		* Fixed #269: wrong mail setting in master php.ini
 
 2007-05-15 Raphael Geissert
-	-	GUI
+	- GUI
 		* Improved fix for #271: logout does not function
 
 2007-05-15 Jan Porath
-	-	GUI
+	- GUI
 		* Fixed #271: logout does not function
-	-	SETUP
+	- SETUP
 		* Fixed #272: crontab setup fails
 
 2007-05-14 Raphael Geissert
-	-	GUI
+	- GUI
 		* Fixed #268: undefined index on Login Page
-	-	SETUP
+	- SETUP
 		* Fixed #179: crontab was overwritten by installing ispcp 
 
 2007-05-13 Jan Porath
