@@ -1373,7 +1373,7 @@ sub setup_crontab {
 
 		return $rs if ($rs != 0);
 
-		$cmd = "$main::cfg{'CMD_CP'} -a -f $bk_dir/crontab.conf $wrk_dir/";
+		$cmd = "$main::cfg{'CMD_CP'} -p -f $bk_dir/crontab.conf $wrk_dir/";
 
 		$rs = sys_command_rs($cmd);
 
