@@ -1286,6 +1286,7 @@ sub setup_sql {
 	#
 
 	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
+	my $tmp_dir = "/var/www/ispcp/gui/phptmp";
 
 	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
 
@@ -1294,7 +1295,8 @@ sub setup_sql {
 	my %tag_hash = (
 					'{PMA_USER}' => $pma_sql_user,
 					'{PMA_PASS}' => $pma_sql_password,
-					'{HOSTNAME}' => $hostname
+					'{HOSTNAME}' => $hostname,
+					'{TMP_DIR}'  => $tmp_dir
 				   );
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);

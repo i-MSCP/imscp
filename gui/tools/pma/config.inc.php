@@ -78,8 +78,8 @@ $cfg['AllowArbitraryServer'] 			= false;
 $cfg['LoginCookieRecall'] 				= 'something';
 $cfg['LoginCookieValidity'] 			= 1800;
 /* Directories for saving/loading files from server */
-$cfg['UploadDir'] 						= '/tmp';
-$cfg['SaveDir'] 						= '/tmp';
+$cfg['UploadDir'] 						= '{TMP_DIR}';
+$cfg['SaveDir'] 						= '{TMP_DIR}';
 
 $cfg['AllowAnywhereRecoding'] 			= true;
 $cfg['DefaultCharset'] 					= 'utf-8';
