@@ -42,10 +42,11 @@ if ($cfg['DB_TYPE'] === 'pgsql') {
 	$sql = &ADONewConnection('mysql');
 } else {
 	$sql = NULL;
+    system_message('ERROR: unknown DATABASE_TYPE !');
 }
 
 @$sql -> Connect($cfg['DB_HOST'], $cfg['DB_USER'], $cfg['DB_PASS'], $cfg['DB_NAME']) OR
-	system_message('ERROR: Unable to connect MySQL server !<br>MySQL returns: '.$sql -> ErrorMsg() );
+	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: '.$sql -> ErrorMsg() );
 
 /* No longer needed */
 unset($cfg['DB_USER']);
@@ -92,10 +93,13 @@ function pg_get_record_id(&$sql, $table, $oid) {
 }
 
 function match_sqlinjection($value) {
+    global $imatch;
+    $imatch = array();
 	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value)>0);
 }
 
 function check_query() {
+    global $imatch;
 	if (phpversion() > '4.2.2') {
 		foreach($_REQUEST as $key=>$value) {
 			if (!is_array($value)) {

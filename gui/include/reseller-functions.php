@@ -574,7 +574,7 @@ SQL_QUERY;
 
 function rsl_full_domain_check ( $data ) {
 
-	$data = "$data.";
+	$data .= '.';
 	$match = array();
 	$last_match = array();
 
@@ -1711,12 +1711,12 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	// lets send mail to the reseller => new order
 
 	$from = $to;
-	$subject = "You have new order";
+	$subject = "You have a new order";
 
 	$message = <<<MSG
 
 Dear $from_name,
-you have new order from $to
+you have a new order from $to
 
 Please login into your ISPCP control panel for more details.
 

@@ -79,9 +79,9 @@ function sizeit($crnt)
 
 function generate_rand_salt($min = 46, $max = 126) {
 
-    $salt = chr(rand($min, $max));
+    $salt = chr(mt_rand($min, $max));
 
-    $salt .= chr(rand($min, $max));
+    $salt .= chr(mt_rand($min, $max));
 
     return $salt;
 
@@ -145,9 +145,9 @@ function _passgen() {
 
   	for($i=0; $i < $cfg['PASSWD_CHARS']; $i++) {
 
-  		srand((double)microtime() * 1000000);
+  		mt_srand((double)microtime() * 1000000);
 
-    	$z = rand(0, $chars_count);
+    	$z = mt_rand(0, $chars_count);
 
     	$pw .= "" . $chars_array[$z] . "";
 

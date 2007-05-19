@@ -211,9 +211,14 @@ function do_session_timeout() {
 
 	$ttl = time() - $cfg['SESSION_TIMEOUT'] * 60;
 
-	$query = "DELETE FROM login WHERE	lastaccess < '" . $ttl . "'";
+	$query = "DELETE FROM login WHERE lastaccess < '" . $ttl . "'";
 
 	exec_query($sql, $query, array());
+
+	if (!session_exists(session_id())) {
+	    unset($_SESSION['user_logged']);
+        unset_user_login_data();
+	}
 
 }
 

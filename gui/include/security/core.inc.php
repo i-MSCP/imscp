@@ -201,7 +201,7 @@ function ipfilter_die ( $sleep = 0 ) {
 			sleep( $sleep );
 		} else {
 			// Sleep between 10 and $sleep seconds
-			sleep( rand( 10, $sleep ) );
+			sleep( mt_rand( 10, $sleep ) );
 		}
 	}
 

@@ -840,7 +840,7 @@ function chk_subdname( $subdname ) {
 
  Description:
 
-    Function for checking ISPCP subdomain syntac. Here subdomains are
+    Function for checking ISPCP subdomain syntax. Here subdomains are
   limited to {subname}.{dname}.{ext} parts. Data passed to this
   function must be in the upper form, not only subdomain part for
   example.
@@ -865,13 +865,15 @@ function ispcp_subdomain_check ( $data ) {
     	return 0;
   	}
 
+  	$match = array();
+
     $res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
 
     if ($res <= 1) {
     	return 0;
   	}
 
-    $res = preg_match("/^(www|ftp|mail|ns)\./", $data, $match);
+    $res = preg_match("/^(www|ftp|mail|ns)\./", $data);
 
     if ($res == 1) return 0;
 

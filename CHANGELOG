@@ -10,6 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-19 Raphael Geissert
+	- GUI
+		* Fixed #286: login after session timed out gives message
+		* Added pending patches from my first submission
+
 2007-05-19 Benedikt Heintel
 	- SETUP
 		* Fixed Regexp for Hostname

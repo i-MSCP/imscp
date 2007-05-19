@@ -71,8 +71,8 @@ function clean_html($input = '') {
 
 	$suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
                '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
-               '@([\r\n])[\s]+@',                // Leerräume entfernen
-               '@&(quot|#34);@i',                // HTML-Entitäten ersetzen
+               '@([\r\n])[\s]+@',                // Leerrï¿½ume entfernen
+               '@&(quot|#34);@i',                // HTML-Entitï¿½ten ersetzen
                '@&(amp|#38);@i',
                '@&(lt|#60);@i',
                '@&(gt|#62);@i',
@@ -279,7 +279,7 @@ function full_domain_check($data) {
     }
 
 
-    $res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last], $last_match);
+    $res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last]);
 
     if ($res == 0) {
 		return 0;
@@ -408,7 +408,7 @@ function check_dn_rsl_token($data) {
 	$res = preg_match("/^([[^a-z0-9^A-Z^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\-]*)([A-Za-z0-9])$/", $data,	$match);
 	if ($res == 0) return 0;
 
-	$res = preg_match("/\-\-/", $match[2], $minus_match);
+	$res = preg_match("/\-\-/", $match[2]);
 	if ($res == 1) return 0;
 
 	return 1;

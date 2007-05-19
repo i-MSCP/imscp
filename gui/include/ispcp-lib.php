@@ -30,7 +30,7 @@ error_reporting(E_ALL); // setting for development edition - see all error messa
 
 $include_path = realpath(dirname(__FILE__));
 
-include_once (realpath($include_path.'/ispcp-config.php'));
+require_once (realpath($include_path.'/ispcp-config.php'));
 
 /* session timeout in minutes */
 $cfg['SESSION_TIMEOUT'] = 30;

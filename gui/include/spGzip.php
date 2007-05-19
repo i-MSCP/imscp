@@ -114,7 +114,7 @@ class spOutput {
       }
 
       /* There might be some Problems */
-      if(headers_sent() || connection_status() != 0 || !$this->encoding || $this->contents === false || !extension_loaded('zlib') || @ini_get('output_handler') == 'ob_gzhandler' || @ini_get('zlib.output_compression') || $GLOBALS['data']['error'])
+      if(headers_sent() || connection_status() != 0 || !$this->encoding || $this->contents === false || !extension_loaded('zlib') || @ini_get('output_handler') == 'ob_gzhandler' || @ini_get('zlib.output_compression') || (isset($GLOBALS['data']['error']) && !empty($GLOBALS['data']['error'])))
          return $this->contents;
 
       /* We need a level to compress the output */

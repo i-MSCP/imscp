@@ -64,23 +64,23 @@ function createImage($strSessionVar) {
 	//some obfuscation
   	for ($i=0; $i<3; $i++) {
 
-	  	$x1 = rand(0, $x - 1);
+	  	$x1 = mt_rand(0, $x - 1);
 
-	    $y1 = rand(0, round($y / 10, 0));
+	    $y1 = mt_rand(0, round($y / 10, 0));
 
-	    $x2 = rand(0, round($x / 10, 0));
+	    $x2 = mt_rand(0, round($x / 10, 0));
 
-	    $y2 = rand(0, $y - 1);
+	    $y2 = mt_rand(0, $y - 1);
 
 	    imageline($im, $x1, $y1, $x2, $y2, $white);
 
-	    $x1 = rand(0, $x - 1);
+	    $x1 = mt_rand(0, $x - 1);
 
-	    $y1 = $y - rand(1, round($y / 10, 0));
+	    $y1 = $y - mt_rand(1, round($y / 10, 0));
 
-	    $x2 = $x - rand(1, round($x / 10, 0));
+	    $x2 = $x - mt_rand(1, round($x / 10, 0));
 
-	    $y2 = rand(0, $y - 1);
+	    $y2 = mt_rand(0, $y - 1);
 
 	    imageline($im, $x1, $y1, $x2, $y2, $white);
 
@@ -103,9 +103,9 @@ function strrand($length, $strSessionVar) {
 
 	while(strlen($str) < $length){
 
-	  	$random = rand(48, 122);
+	  	$random = mt_rand(48, 122);
 
-  		if (ereg('[2-47-9A-HKMNPRTWUYa-hkmnp-rtwuy]', chr($random))) {
+  		if (preg_match('/[2-47-9A-HKMNPRTWUYa-hkmnp-rtwuy]/', chr($random))) {
 
   			$str .= chr($random);
 
@@ -209,7 +209,7 @@ function uniqkeygen() {
 
 	while ( (uniqkeyexists($uniqkey)) || (!$uniqkey)) {
 
-		$uniqkey = md5(uniqid(rand()));
+		$uniqkey = md5(uniqid(mt_rand()));
 
 	}
 

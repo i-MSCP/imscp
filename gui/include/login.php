@@ -22,7 +22,7 @@ function init_login() {
 
 	global $cfg;
 
-	if ($cfg['BRUTEFORCE'] != 1) return false;
+	if ($cfg['BRUTEFORCE'] != 1) return;
 
 	unblock($cfg['BRUTEFORCE_BLOCK_TIME']);
 
@@ -33,7 +33,6 @@ function init_login() {
 		block_ipaddr($ipaddr);
 
 	}
-
 }
 
 function register_user($uname, $upass) {
@@ -132,22 +131,15 @@ function check_user_login() {
 
 	global $cfg, $sql;
 
-	$user_logged = isset($_SESSION['user_logged'])? $_SESSION['user_logged'] : false;
-
   $sess_id = session_id();
 
 	/* kill timedout sessions */
 	do_session_timeout();
-	/* check session */
-	if (!session_exists($sess_id)) {
 
-  	write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " user session does not exist or killed");
+	$user_logged = isset($_SESSION['user_logged'])? $_SESSION['user_logged'] : false;
 
-    return false;
 
-  }
-
-  if (!isset($_SESSION['user_logged'])) {
+  if (!$user_logged) {
 
 //		write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " bad session data.");
 
