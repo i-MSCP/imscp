@@ -10,17 +10,21 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-19 Benedikt Heintel
+	- SETUP
+		* Fixed Regexp for Hostname
+
 2007-05-17 Raphael Geissert
 	- SETUP
 		* Fixed cp -a compatiblity issue
 
 2007-05-17 Henriks
 	- GUI
-		* Fixed #214  
+		* Fixed #214
 
 2007-05-16 Malte Geierhos
 	- GUI
-		* Fixed #260 missing icons 
+		* Fixed #260 missing icons
 
 2007-05-16 Jan Porath
 	- SETUP
@@ -40,20 +44,20 @@ ispCP ω 1.0.0 Changelog
 	- GUI
 		* Fixed #268: undefined index on Login Page
 	- SETUP
-		* Fixed #179: crontab was overwritten by installing ispcp 
+		* Fixed #179: crontab was overwritten by installing ispcp
 
 2007-05-13 Jan Porath
 	-	GUI
 		* fixed #222: special chars problem in hostingplan
 	-	ENGINE
-		* fixed #232: restoring db-backups does not work 
+		* fixed #232: restoring db-backups does not work
 
 2007-05-13 Malte Geierhos / Joximu
-	- GUI	
+	- GUI
 		* fixed password encryption with suhosin patch #265
-	
-	- ENGINE 
-		* fixed wrong Versionstrings in openbsd, redhat, sles9, ubuntu 
+
+	- ENGINE
+		* fixed wrong Versionstrings in openbsd, redhat, sles9, ubuntu
 
 2007-05-07 Benedikt Heintel
 	- LANGUAGES:

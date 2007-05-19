@@ -116,7 +116,7 @@ sub ask_hostname {
 
 	}
 
-	if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+	if ($rdata =~ /^(([\w][\w-]{0,253}[\w])\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 
 		 $main::ua{'hostname'} = $rdata;
 		 $main::ua{'hostname_local'} = $1;
@@ -1332,19 +1332,19 @@ sub setup_crontab {
 		$cmd = "$main::cfg{'CMD_CRONTAB'} -u root -l &> $bk_dir/crontab.conf.system";
 
 		$rs = sys_command_rs($cmd);
-		
+
 		if ($rs != 0) {
-			
+
 				$rs = del_file("$bk_dir/crontab.conf.system");
 
 				return $rs if ($rs != 0);
-				
+
 				$cmd = "touch $bk_dir/crontab.conf.system";
 
 				$rs = sys_command_rs($cmd);
-				
+
 				return $rs if ($rs != 0);
-		
+
 		}
 
 		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'crontab.conf');
