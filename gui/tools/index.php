@@ -1,3 +1,4 @@
-<?
-
+<?php
+header("Location: ../");
+exit;
 ?>

@@ -92,36 +92,35 @@ function pg_get_record_id(&$sql, $table, $oid) {
 
 }
 
-function match_sqlinjection($value) {
-    global $imatch;
-    $imatch = array();
-	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value)>0);
+function match_sqlinjection($value, &$matches) {
+    $matches = array();
+	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value, $matches)>0);
 }
 
 function check_query() {
-    global $imatch;
-	if (phpversion() > '4.2.2') {
-		foreach($_REQUEST as $key=>$value) {
-			if (!is_array($value)) {
-				if (match_sqlinjection($value)) {
-					$message = "Possible SQL injection detected: $key=>$value. <b>$imatch[0]</b>. Script terminated.";
-					write_log($message);
-					system_message($message);
-					die();
-				}
-			} else {
-				foreach($value as $key1=>$val) {
-					if (!is_array($val)) {
-						if (match_sqlinjection($val)) {
-							$message = "Possible SQL injection detected: $key=>$val <b>$imatch[0]</b>. Script terminated.";
-							write_log($message);
-							system_message($message);
-							die();
-						}
-					}
-				}
-			}
-		}
+    $matches = null;
+    if (phpversion() > '4.2.2') {
+        foreach($_REQUEST as $key=>$value) {
+            if (!is_array($value)) {
+                if (match_sqlinjection($value, $matches)) {
+                    $message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
+                    write_log($message);
+                    system_message($message);
+                    die();
+                }
+            } else {
+                foreach($value as $skey=>$svalue) {
+                    if (!is_array($sval)) {
+                        if (match_sqlinjection($svalue, $matches)) {
+                            $message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
+                            write_log($message);
+                            system_message($message);
+                            die();
+                        }
+                    }
+                }
+            }
+        }
 	}
 }
 ?>

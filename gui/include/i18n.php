@@ -32,12 +32,11 @@
 function tr($msgid, $js = false) {
 	global $sql, $default_lang;
 
-	$default_lang = (session_id() && isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+	$default_lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
 
 	if (!$sql) {
 		return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, "UTF-8")));
-	}
-	else {
+	} else {
 		$table 		= $default_lang;
 		$encoding 	= $sql->Execute("SELECT `msqstr` FROM `$table` WHERE `msgid` = 'encoding';");
 		$res		= $sql->Execute("SELECT `msgstr` FROM `$table` WHERE `msgid` = '$msgid';");
@@ -48,11 +47,9 @@ function tr($msgid, $js = false) {
 
 		if (!$res) {
 			return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
-		}
-		elseif ($res->RowCount() == 0) {
+		} elseif ($res->RowCount() == 0) {
 			return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
-		}
-		else {
+		} else {
 			$data = $res->FetchRow();
 			if ($data['msgstr'] == '') {
 				return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));

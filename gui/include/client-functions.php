@@ -17,7 +17,7 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-function get_domain_default_props(&$sql, $domain_admin_id) {
+function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false) {
     $query = <<<SQL_QUERY
         select
             domain_id,
@@ -48,27 +48,30 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($domain_admin_id));
 
-    return array($rs -> fields['domain_id'],
-                 $rs -> fields['domain_name'],
-                 $rs -> fields['domain_gid'],
-                 $rs -> fields['domain_uid'],
-                 $rs -> fields['domain_created_id'],
-                 $rs -> fields['domain_created'],
-                 $rs -> fields['domain_last_modified'],
-                 $rs -> fields['domain_mailacc_limit'],
-                 $rs -> fields['domain_ftpacc_limit'],
-                 $rs -> fields['domain_traffic_limit'],
-                 $rs -> fields['domain_sqld_limit'],
-                 $rs -> fields['domain_sqlu_limit'],
-                 $rs -> fields['domain_status'],
-                 $rs -> fields['domain_alias_limit'],
-                 $rs -> fields['domain_subd_limit'],
-                 $rs -> fields['domain_ip_id'],
-                 $rs -> fields['domain_disk_limit'],
-                 $rs -> fields['domain_disk_usage'],
-                 $rs -> fields['domain_php'],
-                 $rs -> fields['domain_cgi']);
-
+    if (!$returnWKeys) {
+            return array($rs -> fields['domain_id'],
+                         $rs -> fields['domain_name'],
+                         $rs -> fields['domain_gid'],
+                         $rs -> fields['domain_uid'],
+                         $rs -> fields['domain_created_id'],
+                         $rs -> fields['domain_created'],
+                         $rs -> fields['domain_last_modified'],
+                         $rs -> fields['domain_mailacc_limit'],
+                         $rs -> fields['domain_ftpacc_limit'],
+                         $rs -> fields['domain_traffic_limit'],
+                         $rs -> fields['domain_sqld_limit'],
+                         $rs -> fields['domain_sqlu_limit'],
+                         $rs -> fields['domain_status'],
+                         $rs -> fields['domain_alias_limit'],
+                         $rs -> fields['domain_subd_limit'],
+                         $rs -> fields['domain_ip_id'],
+                         $rs -> fields['domain_disk_limit'],
+                         $rs -> fields['domain_disk_usage'],
+                         $rs -> fields['domain_php'],
+                         $rs -> fields['domain_cgi']);
+    } else {
+        return $rs->fields;
+    }
 }
 
 function get_domain_running_sub_cnt(&$sql, $domain_id) {

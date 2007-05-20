@@ -33,36 +33,21 @@ $tpl -> define_dynamic('logged_from', 'page');
 //
 function check_subdomain_permissions($sql, $user_id)
 {
-  list($dmn_id,
-       $dmn_name,
-       $dmn_gid,
-       $dmn_uid,
-       $dmn_created_id,
-       $dmn_created,
-       $dmn_last_modified,
-       $dmn_mailacc_limit,
-       $dmn_ftpacc_limit,
-       $dmn_traff_limit,
-       $dmn_sqld_limit,
-       $dmn_sqlu_limit,
-       $dmn_status,
-       $dmn_als_limit,
-       $dmn_subd_limit,
-       $dmn_ip_id,
-       $dmn_disk_limit,
-       $dmn_disk_usage,
-       $dmn_php,
-       $dmn_cgi) = get_domain_default_props($sql, $user_id);
+    $props = get_domain_default_props($sql, $user_id, true);
 
-  $sub_cnt = get_domain_running_sub_cnt($sql, $dmn_id);
+    $dmn_id = $props['domain_id'];
+    $dmn_name = $props['domain_name'];
+    $dmn_subd_limit = $props['domain_subd_limit'];
 
-  if ($dmn_subd_limit != 0 &&  $sub_cnt >= $dmn_subd_limit) {
-    set_page_message(tr('Subdomain limit expired!'));
-    header("Location: manage_domains.php");
-    die();
-  }
+    $sub_cnt = get_domain_running_sub_cnt($sql, $dmn_id);
 
-  return $dmn_name; // Will be used in subdmn_exists()
+    if ($dmn_subd_limit != 0 &&  $sub_cnt >= $dmn_subd_limit) {
+        set_page_message(tr('Subdomain limit expired!'));
+        header("Location: manage_domains.php");
+        die();
+    }
+
+    return $dmn_name; // Will be used in subdmn_exists()
 }
 
 function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id)
@@ -191,7 +176,7 @@ SQL_QUERY;
   send_request();
 }
 
-function check_subdomain_data(&$tpl, &$sql, $user_id)
+function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name)
 {
   $domain_id = get_user_domain_id($sql, $user_id);
 
@@ -211,7 +196,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id)
 
     if (subdmn_exists($sql, $user_id, $domain_id, $sub_name) > 0) {
       set_page_message(tr('Subdomain already exists!'));
-    } else if (@chk_subdname($sub_name.".".$_SESSION['user_logged']) > 0) {
+    } else if (@chk_subdname($sub_name.".".$dmn_name) > 0) {
       set_page_message(tr('Wrong subdomain syntax!'));
     } else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)) {
       set_page_message(tr('Subdomain mount point already exists!'));
@@ -252,7 +237,7 @@ $tpl -> assign(array('TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('ISPCP - Client/
 //
 $dmn_name = check_subdomain_permissions($sql, $_SESSION['user_id']);
 gen_user_add_subdomain_data($tpl, $sql, $_SESSION['user_id']);
-check_subdomain_data($tpl, $sql, $_SESSION['user_id']);
+check_subdomain_data($tpl, $sql, $_SESSION['user_id'], $dmn_name);
 
 //
 // static page messages.

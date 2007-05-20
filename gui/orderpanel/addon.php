@@ -34,7 +34,7 @@ $tpl -> define_dynamic('purchase_footer', 'page');
 * Functions start
 */
 
-function addon_domain(&$tpl, $dmn_name)
+function addon_domain($dmn_name)
 {
 	$dmn_name = strtolower($dmn_name);
 	$dmn_name = get_punny($dmn_name);
@@ -93,7 +93,7 @@ if (isset($_SESSION['domainname'])){
 }
 
 if (isset($_POST['domainname']) && $_POST['domainname'] != ''){
-	addon_domain($tpl, $_POST['domainname']);
+	addon_domain($_POST['domainname']);
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);

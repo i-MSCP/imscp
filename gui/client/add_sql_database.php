@@ -132,7 +132,7 @@ function add_sql_database(&$sql, $user_id)
 
    // are wildcards used?
   //
-  if (ereg("\%|\?", $db_name)) {
+  if (preg_match("/[%|\?]+/", $db_name)) {
     set_page_message(tr('Wildcards as % and ? are not allowed!'));
     return;
   }

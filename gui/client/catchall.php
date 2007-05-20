@@ -56,8 +56,8 @@ function gen_user_mail_action($mail_id, $mail_status)
 {
 
     global $cfg;
-	
-	
+
+
 
     if ($mail_status === $cfg['ITEM_OK_STATUS']) {
 
@@ -67,7 +67,7 @@ function gen_user_mail_action($mail_id, $mail_status)
 
         return array(tr('N/A'), '#', '#');
 
-    } 
+    }
 }
 
 function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond)
@@ -135,9 +135,9 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name)
           and
 
             sub_id = 0
-			
-		and 
-			
+
+		and
+
 				(mail_type  = 'normal_mail'
 			or
 				mail_type  = 'normal_forward')
@@ -163,9 +163,9 @@ SQL_QUERY;
             list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs -> fields['mail_id'], $rs -> fields['status']);
 
 			$mail_acc = decode_idna($rs -> fields['mail_acc']);
-			
+
 			$show_dmn_name = decode_idna($dmn_name);
-			
+
 
             $tpl -> assign(
                             array(
@@ -224,9 +224,9 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name)
           and
 
     	     t2.domain_id = '$dmn_id'
-			
-		and 
-			
+
+		and
+
 				(t2.mail_type = 'subdom_mail'
 			or
 				t2.mail_type = 'subdom_forward')
@@ -234,7 +234,7 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name)
           and
 
             t1.subdomain_id = t2.sub_id
-		
+
 
         order by
 
@@ -255,11 +255,11 @@ SQL_QUERY;
             list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs -> fields['mail_id'], $rs -> fields['status']);
 
 			$mail_acc = decode_idna($rs -> fields['mail_acc']);
-			
+
 			$show_sub_name = decode_idna($rs -> fields['sub_name']);
-			
+
 			$show_dmn_name = decode_idna($dmn_name);
-			
+
             $tpl -> assign(
                             array(
                                     'MAIL_ACC' => $mail_acc."@".$show_sub_name.".".$show_dmn_name,
@@ -320,9 +320,9 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name)
           and
 
             t1.alias_id = t2.sub_id
-			
-		and 
-			
+
+		and
+
 				(t2.mail_type = 'alias_mail'
 			or
 				t2.mail_type = 'alias_forward')
@@ -345,16 +345,16 @@ SQL_QUERY;
 
             list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs -> fields['mail_id'], $rs -> fields['status']);
 
-			
+
 			$mail_acc = decode_idna($rs -> fields['mail_acc']);
-			
+
 			$show_dmn_name = decode_idna($dmn_name);
-			
+
 			$show_als_name = decode_idna($rs -> fields['als_name']);
 
 			$tpl -> assign(
                             array(
-                                    'MAIL_ACC' => $mail_acc."@".$show_als_name,     
+                                    'MAIL_ACC' => $mail_acc."@".$show_als_name,
                                     'MAIL_TYPE' => user_trans_mail_type($rs -> fields['mail_type']),
                                     'MAIL_STATUS' => user_trans_item_status($rs -> fields['status']),
                                     'MAIL_ACTION' => $mail_action,
@@ -402,6 +402,10 @@ function gen_user_catchall_action($mail_id, $mail_status)
 
         return array(tr('N/A'), '#');
 
+    } else {
+
+        return null;
+
     }
 
 }
@@ -410,7 +414,7 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 {
 
 	$show_dmn_name = decode_idna($dmn_name);
-			
+
     if ($action === 'create') {
 
         $tpl -> assign(
@@ -428,7 +432,7 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 
 		$show_dmn_name = decode_idna($dmn_name);
 		$show_mail_acc = decode_idna($mail_acc);
-		
+
         $tpl -> assign(
                         array(
                                 'CATCHALL_DOMAIN' => $show_dmn_name,
@@ -548,14 +552,14 @@ SQL_QUERY;
         $rs = execute_query($sql, $query);
 
         while (!$rs -> EOF) {
-		
+
 			if ($counter % 2 == 0) {
-            
+
                		 $tpl -> assign('ITEM_CLASS', 'content2');
-            
+
           	} else {
-                
-		             $tpl -> assign('ITEM_CLASS', 'content');      
+
+		             $tpl -> assign('ITEM_CLASS', 'content');
            	}
 
 
@@ -564,37 +568,37 @@ SQL_QUERY;
             $als_name = $rs -> fields['alias_name'];
 
             $query = <<<SQL_QUERY
-    
+
                 select
-    
+
                     mail_id, mail_acc, status
-    
+
                 from
-    
+
                     mail_users
-    
+
                 where
-    
+
                     domain_id = '$dmn_id'
-    
+
                   and
-    
+
                     sub_id = '$als_id'
-    
+
                   and
-    
+
                     mail_type = 'alias_catchall'
-    
+
 SQL_QUERY;
-    
+
             $rs_als = execute_query($sql, $query);
-    
+
             if ($rs_als -> RecordCount() == 0) {
-    
+
                 gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'als');
-    
+
             } else {
-    
+
                 gen_catchall_item($tpl,
                                   'delete',
                                   $als_id,
@@ -602,9 +606,9 @@ SQL_QUERY;
                                   $rs_als -> fields['mail_id'],
                                   $rs_als -> fields['mail_acc'],
                                   $rs_als -> fields['status'], 'als');
-    
+
             }
-    
+
             $tpl -> parse('CATCHALL_ITEM', '.catchall_item');
 
             $rs -> MoveNext(); $counter ++;
@@ -631,8 +635,8 @@ SQL_QUERY;
             where
 
                 a.domain_id = '$dmn_id'
-            
-            and 
+
+            and
             	a.domain_id = b.domain_id
 
 SQL_QUERY;
@@ -640,14 +644,14 @@ SQL_QUERY;
         $rs = execute_query($sql, $query);
 
         while (!$rs -> EOF) {
-		
+
 			if ($counter % 2 == 0) {
-            
+
                		 $tpl -> assign('ITEM_CLASS', 'content2');
-            
+
           	} else {
-                
-		             $tpl -> assign('ITEM_CLASS', 'content');      
+
+		             $tpl -> assign('ITEM_CLASS', 'content');
            	}
 
 
@@ -656,37 +660,37 @@ SQL_QUERY;
             $als_name = $rs -> fields['subdomain_name'];
 
             $query = <<<SQL_QUERY
-    
+
                 select
-    
+
                     mail_id, mail_acc, status
-    
+
                 from
-    
+
                     mail_users
-    
+
                 where
-    
+
                     domain_id = '$dmn_id'
-    
+
                   and
-    
+
                     sub_id = '$als_id'
-    
+
                   and
-    
+
                     mail_type = 'subdom_catchall'
-    
+
 SQL_QUERY;
-    
+
             $rs_als = execute_query($sql, $query);
-    
+
             if ($rs_als -> RecordCount() == 0) {
-    
+
                 gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'sub');
-    
+
             } else {
-    
+
                 gen_catchall_item($tpl,
                                   'delete',
                                   $als_id,
@@ -694,9 +698,9 @@ SQL_QUERY;
                                   $rs_als -> fields['mail_id'],
                                   $rs_als -> fields['mail_acc'],
                                   $rs_als -> fields['status'], 'sub');
-    
+
             }
-    
+
             $tpl -> parse('CATCHALL_ITEM', '.catchall_item');
 
             $rs -> MoveNext(); $counter ++;

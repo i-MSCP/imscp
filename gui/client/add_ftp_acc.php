@@ -39,7 +39,7 @@ $tpl -> define_dynamic('js_not_domain', 'page'); //JavaScript have to be generat
 //
 // page functions.
 //
-function get_alias_mount_point(&$sql, &$alias_name)
+function get_alias_mount_point(&$sql, $alias_name)
 {
   $query = <<<SQL_QUERY
         select

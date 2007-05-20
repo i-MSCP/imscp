@@ -19,7 +19,7 @@
 
 require '../include/vfs.php';
 
-function write_error_page(&$sql, &$user_id, &$eid)
+function write_error_page(&$sql, &$user_id, $eid)
 {
   $error =  stripslashes($_POST['error']);
   $file  =  '/errors/' . $eid . '/index.php';

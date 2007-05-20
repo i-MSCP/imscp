@@ -256,7 +256,7 @@ SQL_QUERY;
 
 // Fetch delete request
 if (isset($_GET['delete'])) {
-	delete_service(get_get('delete'));
+	delete_service($_GET['delete']);
 }
 
 /*

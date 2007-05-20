@@ -292,7 +292,7 @@ $input -> string get in punny or not punny
 $output -> normal string get out
 
 */
-function decode_idna(&$input)
+function decode_idna($input)
 {
 
 	$IDN = new idna_convert();
@@ -311,7 +311,7 @@ function decode_idna(&$input)
 	}
 }
 
-function get_punny(&$input)
+function get_punny($input)
 {
 
 	$IDN = new idna_convert();
@@ -324,20 +324,20 @@ function get_punny(&$input)
 
 }
 
-function strip_html(&$input)
+function strip_html($input)
 {
 	$output = htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 	return $output;
 }
 
-function is_number(&$integer) {
+function is_number($integer) {
 	if (preg_match('/^[0-9]+$/', $integer)) {
 		return true;
 	}
 	return false;
 }
 
-function is_basicString(&$sting) {
+function is_basicString($sting) {
 	if (preg_match('=^[a-zA-Z0-9_-]+$=', $sting)) {
 		return true;
 	}

@@ -216,6 +216,7 @@ function do_session_timeout() {
 	exec_query($sql, $query, array());
 
 	if (!session_exists(session_id())) {
+	    if (isset($_SESSION['user_logged']))
 	    unset($_SESSION['user_logged']);
         unset_user_login_data();
 	}

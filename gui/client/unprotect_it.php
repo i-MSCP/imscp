@@ -30,8 +30,6 @@ if (!isset($_GET['cdir'])) {
 }
 $domain_name = $_SESSION['user_logged'];
 $cdir = $_GET['cdir'];
-global $cfg;
-$homedir = $cfg['FTP_HOMEDIR'];
 
 unlink($cfg['FTP_HOMEDIR'].'/'.$domain_name.$cdir.'.htaccess');
 
@@ -39,8 +37,4 @@ set_page_message( tr('Protected area was deleted successful!'));
 
 header( "Location: protected_areas.php?cur_dir=$cdir" );
 die();
-
-
-
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
 ?>

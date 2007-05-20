@@ -230,10 +230,10 @@ function ispcp_check_local_part($email, $num="50") {
 	$quotedstring  = "\"(?:$nqtext|$qchar)+\"";
 	$user_part     = "(?:$normuser|$quotedstring)";
 
-	$regex         = "$user_part";
+	$regex         = $user_part;
 	// RegEx end
 
-	if (!preg_match("/^$regex$/",$email)) return 0;
+	if (!preg_match("/^$regex$/D",$email)) return 0;
 
 	if (strlen($email) > $num) return 0;
 
@@ -291,7 +291,7 @@ function full_domain_check($data) {
 function check_dn_token($data) {
 
 	$match = array();
-    $res = preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/",	$data, $match);
+    $res = preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D",	$data, $match);
 
     if ($res == 0) {
 		return 0;
@@ -325,7 +325,7 @@ function check_dn_token($data) {
 	**********************************************************************/
 function ispcp_name_check ( $data, $num ) {
 
-	$res = preg_match("/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/", $data);
+	$res = preg_match("/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/D", $data);
 
 	if ($res == 0) return 0;
 
@@ -375,7 +375,7 @@ function ispcp_name_check ( $data, $num ) {
 	**********************************************************************/
 function ispcp_limit_check($data, $num) {
 
-	$res = preg_match("/^(-1|0|[1-9][0-9]*)$/", $data);
+	$res = preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data);
 
 	if ($res == 0)
 		return 0;
@@ -405,7 +405,7 @@ function ispcp_limit_check($data, $num) {
 function check_dn_rsl_token($data) {
 
 	$match = array();
-	$res = preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/", $data,	$match);
+	$res = preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/D", $data,	$match);
 	if ($res == 0) return 0;
 
 	$res = preg_match("/\-\-/", $match[2]);
@@ -498,7 +498,7 @@ function chk_url($url) {
 
 function ispcp_url_check ($data) {
 
-    $data = "$data\n";
+    $data .= "\n";
 
     $res = preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/",	$data);
 
@@ -678,53 +678,11 @@ function get_post($value) {
 
 }
 
-function get_get($value) {
-
-	if(isset($_GET[$value])) {
-
-		return $_GET[$value];
-
-	} else {
-
-		return null;
-
-	}
-
-}
-
 function get_session($value) {
 
 	if(isset($_SESSION[$value])) {
 
 		return $_SESSION[$value];
-
-	} else {
-
-		return null;
-
-	}
-
-}
-
-function get_cookie($value) {
-
-	if(isset($_COOKIE[$value])) {
-
-		return $_COOKIE[$value];
-
-	} else {
-
-		return null;
-
-	}
-
-}
-
-function get_server($value) {
-
-	if(isset($_SERVER[$value])) {
-
-		return $_SERVER[$value];
 
 	} else {
 
