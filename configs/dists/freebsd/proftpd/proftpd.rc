@@ -1,0 +1,40 @@
+#! /bin/sh
+#
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/sbin/proftpd
+PID=/var/run/proftpd.pid
+NAME=proftpd
+DESC=proftpd
+
+
+test -f $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: "
+	$DAEMON
+	echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	if [ -f "$PID" ] ; then
+	kill -9 `cat $PID`
+	rm -f $PID
+	fi
+	echo "$NAME."
+	;;
+  restart|force-reload)
+	echo "Restarting $DESC: "                                      
+	kill -HUP `cat $PID`
+	echo "$NAME."
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

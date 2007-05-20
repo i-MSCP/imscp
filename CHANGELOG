@@ -11,6 +11,8 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-05-20 Benedikt Heintel
+	- DISTRIBUTIONS:
+		* added freeBSD
 	- ENGINE:
 		* fixed #297: wrong named awstats.ispcp_tpl.conf in domain manager
 
