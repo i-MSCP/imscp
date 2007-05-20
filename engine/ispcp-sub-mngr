@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -1370,7 +1370,7 @@ sub sub_add_httpd_file_data {
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
 		my $sub_dir = "$www_dir/$dmn_name/$sub_mount";
-  
+
     my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
@@ -1494,7 +1494,7 @@ sub sub_change_httpd_file_data {
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
     my $sub_dir = "$www_dir/$dmn_name$sub_mount";
-    
+
     my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
     my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);

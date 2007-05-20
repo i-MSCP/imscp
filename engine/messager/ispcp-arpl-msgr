@@ -1,8 +1,10 @@
 #!/usr/bin/perl
 
-# ISPCP(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
 #
 #
 # License:
@@ -23,9 +25,10 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP Home Page is at:
+# The ispCP ω Home Page is at:
 #
-#    http://www.isp-control.net
+#    http://isp-control.net
+#
 
 #
 # common code: BEGIN
@@ -700,7 +703,7 @@ sub arpl_msgr_engine {
        		 	#@edmn = split(/\./,$2,2);
 
        		 	#$edmn = $edmn[1];
-       		 	
+
        		 	$edmn = $2;
 
         		$sql = "select count(domain_id) as cnt from domain where domain_name = '$edmn'";
