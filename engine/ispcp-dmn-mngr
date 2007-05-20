@@ -3340,7 +3340,7 @@ sub dmn_add_awstats_cfg_data {
 
     ($rs, $entry) = get_tpl(
                             $tpl_dir,
-                            'awstats.vhcs_tpl.conf'
+                            'awstats.ispcp_tpl.conf'
                            );
 
     return $rs if ($rs != 0);
