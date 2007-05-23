@@ -1405,7 +1405,7 @@ sub setup_crontab {
 
 sub setup_resolver {
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $data) = (undef, undef);
 
 	push_el(\@main::el, 'setup_resolver()', 'Starting...');
 
