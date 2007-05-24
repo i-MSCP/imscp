@@ -1409,7 +1409,7 @@ sub setup_resolver {
 
 	push_el(\@main::el, 'setup_resolver()', 'Starting...');
 
-	my $data = "nameserver 127.0.0.1\n";
+	$data = "nameserver 127.0.0.1\n";
 
 	if ($main::cfg{'SECONDARY_DNS'} ne '') {
 		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";

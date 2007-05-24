@@ -112,6 +112,7 @@ class vfs {
 	function __construct($domain, &$db) {
 		$this->_domain =  $domain;
 		$this->_db     =& $db;
+		putenv("TMPDIR=" . VFS_TMP_DIR);
 	}
 
 	/**
@@ -197,7 +198,7 @@ SQL_QUERY;
 	 */
 	function open() {
 		// Check if we're already open
-		if ( $this->_handle ) {
+		if ( is_resource($this->_handle) ) {
 			return true;
 		}
 
@@ -216,7 +217,7 @@ SQL_QUERY;
 		// 'localhost' for testing purposes. I have to study if a better
 		// $this->_domain would work on all situations
 		$this->_handle = @ftp_connect('localhost');
-		if ( !$this->_handle ) {
+		if ( !is_resource($this->_handle) ) {
 			$this->close();
 		}
 

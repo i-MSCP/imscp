@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-24 Raphael Geissert
+	- GUI
+		* Fixed #287: choosing DIR not working when adding a new ftp-user
+	- SETUP
+		* Fixed #308: variable declaration during the setup
+
 2007-05-20 Benedikt Heintel
 	- DISTRIBUTIONS:
 		* added freeBSD
