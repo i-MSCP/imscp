@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-28 Raphael Geissert
+	- GUI
+		* Fixed #313: typo in gui/include/sql.php
+		* Fixed #324: typo in gui/client/update_hp.php
+	- SETUP
+		* Fixed #278: using get*nam() with UID/GID instead user/group names
+
 2007-05-24 Raphael Geissert
 	- GUI
 		* Fixed #287: choosing DIR not working when adding a new ftp-user

@@ -110,7 +110,7 @@ function check_query() {
                 }
             } else {
                 foreach($value as $skey=>$svalue) {
-                    if (!is_array($sval)) {
+                    if (!is_array($svalue)) {
                         if (match_sqlinjection($svalue, $matches)) {
                             $message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
                             write_log($message);

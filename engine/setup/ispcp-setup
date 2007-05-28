@@ -916,8 +916,8 @@ sub setup_system_users {
 	my ($muid, $mgid, $prefix) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'});
 	my ($vuuid, $vugid) = (undef, undef);
 
-	@gdata = getgrnam($mgid);
-	@udata = getpwnam($muid);
+	@gdata = getgrnam($prefix.$mgid);
+	@udata = getpwnam($prefix.$muid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
 		my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";

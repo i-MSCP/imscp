@@ -312,7 +312,7 @@ SQL_QUERY;
 	$to = $rs -> fields['reseller_mail'];
 
 
-	$form = $rs -> fields['user_mail'];
+	$from = $rs -> fields['user_mail'];
 
 	$subject = "[ISPCP OrderPanel] - You have update order";
 	$message = "You have update order for account ".$_SESSION['user_logged']."\r\n\r\n";
