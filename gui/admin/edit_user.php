@@ -204,14 +204,14 @@ SQL_QUERY;
 							}
 
   	          send_add_user_auto_msg ($user_id,
-																			$edit_username,
-    	                                clean_input($_POST['pass']),
+									  $edit_username,
+    	                              clean_input($_POST['pass']),
       	                              clean_input($_POST['email']),
-        	                            clean_input($_POST['fname']),
+        	                          clean_input($_POST['fname']),
           	                          clean_input($_POST['lname']),
-            	                        tr($admin_type));
+            	                      tr($admin_type));
 						}
-						
+
             $_SESSION['user_updated'] = 1;
 
             header( "Location: manage_users.php" );
@@ -286,7 +286,7 @@ if (isset($_POST['genpass'])) {
 
 	$tpl -> assign('VAL_PASSWORD', '');
 
-}	
+}
 
 $tpl -> assign(
                 array(
