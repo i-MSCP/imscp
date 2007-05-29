@@ -42,53 +42,74 @@ SQL_QUERY;
     }
 }
 
-
 function update_logo()
 {
     global $cfg;
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo') {
 
+            $user_id = $_SESSION['user_id'];
 
-            $file_type = $_FILES['logo_file']['type'];
+            if ($_POST['Submit'] == tr('Remove')) {
 
-            if(empty($_FILES['logo_file']['name'])) {
+                    update_user_gui_props('', $user_id);
+
+                    return;
+            }
+
+            if (empty($_FILES['logo_file']['name'])) {
 
                     set_page_message(tr('Upload file error!'));
 
                     return;
             }
-            if (!($file_type === "image/gif" || $file_type === "image/jpeg" || $file_type === "image/pjpeg" || $file_type === "image/png")){
 
-                    set_page_message(tr('You can upload only images!'));
+            $file_type = $_FILES['logo_file']['type'];
 
-                    return;
-
+            switch ($file_type) {
+                case 'image/gif':
+                    $fext = 'gif';
+                    break;
+                case 'image/jpeg':
+                case 'image/pjpeg':
+                    $file_type = 'image/jpeg';
+                    $fext = 'jpg';
+                    break;
+                case 'image/png':
+                    $fext = 'png';
+                    break;
+                default:
+                    set_page_message(tr('You can only upload images!'));
+                    return ;
+                    break;
             }
 
-            else {
+            $fname = $_FILES['logo_file']['name'];
 
-                $fname = $_FILES['logo_file']['name'];
-
-                $fsize = $_FILES['logo_file']['size'];
-
-                $user_id = $_SESSION['user_id'];
-
-                $path1 = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/admin/layout.php')+1);
-                $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
-                //
-                $file = $path1."/themes/user_logos/".get_user_name($user_id).".jpg";
-                move_uploaded_file($_FILES['logo_file']['tmp_name'], $file);
-                chmod($file, 0644);
-
-                update_user_gui_props(get_user_name($user_id).".jpg", $user_id);
-
-                set_page_message(tr('Your logo was successful uploaded!'));
+            // Make sure it is really an image
+            if (image_type_to_mime_type(exif_imagetype($fname)) != $file_type) {
+                set_page_message(tr('You can only upload images!'));
+                return ;
             }
+
+//            $fsize = $_FILES['logo_file']['size'];
+
+            $newFName = get_user_name($user_id) . '.' . $fext;
+
+            $path1 = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/admin/layout.php')+1);
+
+//            $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
+
+            $logoFile = $path1 . '/themes/user_logos/' . $newFName;
+            move_uploaded_file($_FILES['logo_file']['tmp_name'], $logoFile);
+            chmod ($logoFile, 0644);
+
+            update_user_gui_props($newFName, $user_id);
+
+            set_page_message(tr('Your logo was successful uploaded!'));
 
     }
 }
-
 
 function update_user_gui_props($file_name, $user_id)
 {
@@ -108,96 +129,32 @@ SQL_QUERY;
 }
 
 
-function gen_def_layout(&$tpl, &$sql, $user_def_layout)
+function gen_def_layout(&$tpl, $user_def_layout)
 {
+    $layouts = array('blue', 'green', 'red', 'yellow');
 
-    $layout = 'blue';
+    foreach ($layouts as $layout) {
 
-    if ($layout === $user_def_layout) {
+        if ($layout === $user_def_layout) {
 
-        $selected = 'selected';
+            $selected = 'selected';
 
-    } else {
+        } else {
 
-        $selected = '';
+            $selected = '';
 
+        }
+
+        $tpl -> assign(
+                        array(
+                                'LAYOUT_VALUE' => $layout,
+                                'LAYOUT_SELECTED' => $selected,
+                                'LAYOUT_NAME' => $layout
+                             )
+                      );
+
+        $tpl -> parse('DEF_LAYOUT', '.def_layout');
     }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-    $layout = 'green';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-    $layout = 'red';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-    $layout = 'yellow';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
 
 }
 
@@ -225,7 +182,7 @@ update_logo();
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-gen_def_layout($tpl, $sql, $_SESSION['user_theme']);
+gen_def_layout($tpl, $_SESSION['user_theme']);
 
 $tpl -> assign(
                 array(
@@ -256,6 +213,7 @@ $tpl -> assign(
 						'TR_UPLOAD_LOGO' => tr('Upload logo'),
 						'TR_LOGO_FILE' => tr('Logo file'),
 						'TR_UPLOAD' => tr('Upload'),
+						'TR_REMOVE' => tr('Remove'),
 						'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
 						'TR_LAYOUT' => tr('Layout'),
                      )

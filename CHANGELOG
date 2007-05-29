@@ -10,6 +10,19 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-29 Raphael Geissert
+	- CONFIGS
+		* Fixed #300: Disabling PHP with FastCGI has no effect
+		* Added support for mod_php5
+	- GUI
+		* Fixed #301: Missing % after the numbers in sysinfo.php
+		* Fixed #299: Reseller/Admin custom logo can't be removed
+		* Fixed non-jpg logo images being renamed to .jpg
+	- SETUP
+		* Fixed #298: Wrong /etc/hosts file being generated (thanks to sawoy)
+		* /etc/resolv.conf isn't replaced, nameservers are only prepended
+		* Added creation of backups of /etc/hosts and /etc/resolv.conf
+
 2007-05-28 Raphael Geissert
 	- GUI
 		* Fixed #313: typo in gui/include/sql.php

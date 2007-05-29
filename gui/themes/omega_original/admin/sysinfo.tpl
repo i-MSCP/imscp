@@ -33,7 +33,7 @@
 		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_SYSTEM_INFO}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -73,7 +73,7 @@
 		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_CPU_SYSTEM_INFO}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -115,7 +115,7 @@
 		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_MEMRY_SYSTEM_INFO}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -165,7 +165,7 @@
 		<td width="20"><img src="{THEME_COLOR_PATH}/images/content/table_icon_tools.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_FILE_SYSTEM_INFO}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -188,7 +188,7 @@
         <td class="{ITEM_CLASS}" nowrap="nowrap">{MOUNT}</td>
         <td class="{ITEM_CLASS}" nowrap="nowrap">{TYPE}</td>
         <td class="{ITEM_CLASS}" nowrap="nowrap">{PARTITION}</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap" align="center"> {PERCENT} </td>
+        <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{PERCENT} %</td>
         <td class="{ITEM_CLASS}" nowrap="nowrap" align="right">{FREE}</td>
         <td class="{ITEM_CLASS}" nowrap="nowrap" align="right">{USED}</td>
         <td class="{ITEM_CLASS}" nowrap="nowrap" align="right">{SIZE}</td>
@@ -202,7 +202,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>				  
+</table>
 				  </td>
 				</tr>
 			</table>

@@ -116,15 +116,14 @@ sub ask_hostname {
 
 	}
 
-	if ($rdata =~ /^(([\w][\w-]{0,253}[\w])\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+	if ($rdata =~ /^((([\w][\w-]{0,253}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 
 		 $main::ua{'hostname'} = $rdata;
-		 $main::ua{'hostname_local'} = $1;
+		 $main::ua{'hostname_local'} = ( ($1) ? $1 : $4);
++                $main::ua{'hostname_local'} =~ s/^([\w][\w-]{0,253}[\w])\.(.*?)$/$1/;
+	} else {
 
-	}
-	else {
-
-		print STDOUT "\n    Hostname not a valid domain name!\n";
+		print STDOUT "\n    Hostname is not a valid domain name!\n";
 		return 1;
 
 	}
@@ -1405,18 +1404,34 @@ sub setup_crontab {
 
 sub setup_resolver {
 
-	my ($rs, $data) = (undef, undef);
+	my ($rs, $data, $resolv_data, $cmd) = (undef, undef, undef, undef);
 
 	push_el(\@main::el, 'setup_resolver()', 'Starting...');
+	
+	my $resolv_file = "/etc/resolv.conf";
+
+	#Remove old nameservers
+
+	$cmd = "$main::cfg{'CMD_CP'} -p -f $resolv_file $resolv_file.bkp";
+	
+	$rs = sys_command_rs($cmd);
+	
+	return $rs if ($rs != 0);
 
 	$data = "nameserver 127.0.0.1\n";
 
 	if ($main::cfg{'SECONDARY_DNS'} ne '') {
 		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";
 	}
+	
+	$resolv_data = get_file($resolv_file);
+	
+	# Comment this line if removing the existing nameservers causes any problem
+	$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
+	
+	$data .= $resolv_data;
 
-	$rs = store_file("/etc/resolv.conf", $data, 'root', 'root', 0644);
-
+	$rs = store_file($resolv_file, $data, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_resolver()', 'Ending...');
@@ -1427,7 +1442,7 @@ sub setup_resolver {
 
 sub setup_hosts {
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $data, $cmd) = (undef, undef, undef);
 
 	push_el(\@main::el, 'setup_hosts()', 'Starting...');
 
@@ -1437,8 +1452,27 @@ sub setup_hosts {
 	my $hostname_local = "$hostname.local";
 
 	my $ip = $main::ua{'eth_ip'};
+	
+	my $hosts_file = "/etc/hosts";
+	
+	$cmd = "$main::cfg{'CMD_CP'} -p -f $hosts_file $hosts_file.bkp";
+	
+	$rs = sys_command_rs($cmd);
+	
+	return $rs if ($rs != 0);
+	
+	$data  = "# 'hosts' file configuration.\n\n";
+	$data .= "127.0.0.1\t$hostname_local\tlocalhost\n";
+	$data .= "$ip\t$hostname\t$host\n";
+	$data .= "::ffff:$ip\t$hostname\t$host\n";
+	$data .= "::1\tip6-localhost ip6-loopback\n";
+	$data .= "fe00::0\tip6-localnet\n";
+	$data .= "ff00::0\tip6-mcastprefix\n";
+	$data .= "ff02::1\tip6-allnodes\n";
+	$data .= "ff02::2\tip6-allrouters\n";
+	$data .= "ff02::3\tip6-allhosts\n";
 
-	$rs = store_file("/etc/hosts", "\n# 'hosts' file configuration.\n\n127.0.0.1\t$hostname_local\tlocalhost\n$ip\t$hostname\t$host\n::ffff:$ip\t$hostname\t$host\n::1\tip6-localhost ip6-loopback\nfe00::0\tip6-localnet\nff00::0\tip6-mcastprefix\nff02::1\tip6-allnodes\nff02::2\tip6-allrouters\nff02::3\tip6-allhosts", 'root', 'root', 0644);
+	$rs = store_file($hosts_file, $data, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 

@@ -6,19 +6,6 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
-<!--
-
-function sbmt(form, uaction) {
-
-    form.uaction.value = uaction;
-    form.submit();
-
-    return false;
-
-}
-//-->
-</script>
 </head>
 
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -67,8 +54,9 @@ function sbmt(form, uaction) {
                                       </td>
                                     </tr>
                                   </table>
-                                <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'upload_logo');">
-                                  <input type="hidden" name="uaction" value="">
+                                  <input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} "> &nbsp;&nbsp;&nbsp;
+                                  <input name="Submit" type="submit" class="button" value=" {TR_REMOVE} ">
+                                  <input type="hidden" name="uaction" value="upload_logo">
                                 </form>
                                   <!-- end of content -->
                                   <p><img src="{ISP_LOGO}" alt="reseller logo"><br>

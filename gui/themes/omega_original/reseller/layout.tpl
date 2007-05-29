@@ -61,7 +61,8 @@
                       </tr>
                       <tr>
                         <td nowrap>&nbsp;</td>
-                        <td colspan="2" nowrap><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} "></td>
+                        <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} "></td>
+                        <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_REMOVE} "></td>
                       </tr>
                       <tr>
                         <td nowrap>&nbsp;</td>
