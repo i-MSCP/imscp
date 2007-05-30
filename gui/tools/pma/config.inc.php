@@ -2,18 +2,18 @@
 /* $Id: config.sample.inc.php 9673 2006-11-03 09:05:54Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
- *  VHCS ω (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
- *  @author		VHCS Team, Benedikt Heintel (2007)
+ *  @author		ispCP Team (2007)
  */
 
 /**
  * phpMyAdmin Configuration File
  *
  * All directives are explained in Documentation.html
- * look http://your-server.com/vhcs2/tools/pma/Documentation.html#authentication_modes
+ * look http://your-server.com/ispcp/tools/pma/Documentation.html#authentication_modes
  */
 
 
@@ -57,7 +57,7 @@ $cfg['Servers'][$i]['history'] 			= 'pma_history';
  * cookie
  */
 /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
-$cfg['blowfish_secret'] 				= 'VhCsOm3g4kl631po0em3x33g1b.nehir3';
+$cfg['blowfish_secret'] 				= '1sPcPOm3g4kl631po0em3x33g1b.nehir3';
 
 /* Layout preferences */
 $cfg['LeftFrameLight'] 					= true;
@@ -92,4 +92,3 @@ $cfg['BrowseMIME'] 						= true;
 /* Changes the default Theme */
 $cfg['ThemeDefault'] 					= 'omega';
 ?>
-

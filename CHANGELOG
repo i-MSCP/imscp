@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-30 Benedikt Heintel
+	- GUI
+		* fixed #327: some old VHCS stuff found
+
 2007-05-29 Raphael Geissert
 	- CONFIGS
 		* Fixed #300: Disabling PHP with FastCGI has no effect
