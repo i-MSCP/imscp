@@ -1282,10 +1282,21 @@ sub setup_sql {
 
 	#
 	# Insert pma user and password to config file
+	# together with some other information
 	#
 
 	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
 	my $tmp_dir = "/var/www/ispcp/gui/phptmp";
+	
+	my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/', '-', '*', ',', ':', ';');
+
+	my ($i, $blowfish) = ('', '');
+	
+	for ($i = 0; $i < 100; $i++) {
+	
+		$blowfish .= $rand_data[ rand() * ($#rand_data + 1) ];
+	
+	}
 
 	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
 
@@ -1295,7 +1306,8 @@ sub setup_sql {
 					'{PMA_USER}' => $pma_sql_user,
 					'{PMA_PASS}' => $pma_sql_password,
 					'{HOSTNAME}' => $hostname,
-					'{TMP_DIR}'  => $tmp_dir
+					'{TMP_DIR}'  => $tmp_dir,
+					'{BLOWFISH}' => $blowfish
 				   );
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);

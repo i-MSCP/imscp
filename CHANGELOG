@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-30 Raphael Geissert
+	- GUI
+		* Fixed #303: Assigning more than 999 ftp/email/etc accounts is not possible
+	- SETUP/GUI
+		* PMA's blowfish key is now randomly generated at install-time
+
 2007-05-30 Benedikt Heintel
 	- GUI
 		* fixed #327: some old VHCS stuff found

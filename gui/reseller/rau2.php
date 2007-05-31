@@ -291,35 +291,35 @@ function check_user_data (&$tpl) {
 
 	}
 	else*/
-	if (!ispcp_limit_check($hp_sub, 999)) {
+	if (!ispcp_limit_check($hp_sub, 99999)) {
 
         $ehp_error = tr('Incorrect subdomain range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_als, 999)) {
+    } else if (!ispcp_limit_check($hp_als, 99999)) {
 
         $ehp_error = tr('Incorrect alias range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_mail, 999)) {
+    } else if (!ispcp_limit_check($hp_mail, 99999)) {
 
         $ehp_error = tr('Incorrect mail account range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_ftp, 999)) {
+    } else if (!ispcp_limit_check($hp_ftp, 99999)) {
 
         $ehp_error = tr('Incorrect FTP account range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_sql_user, 999)) {
+    } else if (!ispcp_limit_check($hp_sql_user, 99999)) {
 
         $ehp_error = tr('Incorrect SQL database range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_sql_db, 999)) {
+    } else if (!ispcp_limit_check($hp_sql_db, 99999)) {
 
         $ehp_error = tr('Incorrect SQL user range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_traff, 1024*1024)) {
+    } else if (!ispcp_limit_check($hp_traff, 1024*1024*1024)) {
 
         $ehp_error = tr('Incorrect traffic range or syntax!');
 
-    } else if (!ispcp_limit_check($hp_disk, 1024*1024)) {
+    } else if (!ispcp_limit_check($hp_disk, 1024*1024*1024)) {
 
         $ehp_error = tr('Incorrect disk range or syntax!');
 

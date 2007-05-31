@@ -2,7 +2,7 @@
 /* $Id: config.sample.inc.php 9673 2006-11-03 09:05:54Z nijel $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
- *  ispCP ω (OMEGA) a Virtual Hosting Control System
+ *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
@@ -57,7 +57,7 @@ $cfg['Servers'][$i]['history'] 			= 'pma_history';
  * cookie
  */
 /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
-$cfg['blowfish_secret'] 				= '1sPcPOm3g4kl631po0em3x33g1b.nehir3';
+$cfg['blowfish_secret'] 			= '{BLOWFISH}';
 
 /* Layout preferences */
 $cfg['LeftFrameLight'] 					= true;
