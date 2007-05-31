@@ -10,6 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-31 Henrik Schytte
+	- GUI 
+		* Fixed #214: Wrong size for ispCP - Logo 
+
+
 2007-05-31 Malte Geierhos
 	- GUI 
 		* Fixed #334: Reseller cannot confirm / add ordered domains 
