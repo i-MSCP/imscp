@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-31 Malte Geierhos
+	- GUI 
+		* Fixed #334: Reseller cannot confirm / add ordered domains 
+
 2007-05-30 Raphael Geissert
 	- GUI
 		* Fixed #303: Assigning more than 999 ftp/email/etc accounts is not possible

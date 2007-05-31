@@ -127,7 +127,7 @@ if ($err_msg != '_off_') {
 		header('Location: orders.php');
 		die();
 
-    } if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
+    } if (ispcp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
 		set_page_message(tr('Domain with that name already exists on the system!'));
 		unset($_SESSION['domain_ip']);
 		header('Location: orders.php');
@@ -250,8 +250,8 @@ SQL_QUERY;
 	send_request();
 
   $admin_login = $_SESSION['user_logged'];
-  write_log("$admin_login: add user: $dmn_user_name (for domain $dmn_name)");
-  write_log("$admin_login: add domain: $dmn_name");
+  write_log("$admin_login: add user: $dmn_user_name (for domain $dmn_user_name)");
+  write_log("$admin_login: add domain: $dmn_user_name");
 
 	au_update_reseller_props($reseller_id, $props);
 	set_page_message(tr('User added!'));
