@@ -3,7 +3,7 @@ create database {DATABASE_NAME};
 use {DATABASE_NAME};
 
 --
--- ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
+-- ISPCP ω (OMEGA) a Virtual Hosting Control Panel
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2007 by ispCP | http://isp-control.net
 --
@@ -36,7 +36,7 @@ CREATE TABLE `admin` (
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
   UNIQUE KEY `admin_name` (`admin_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE `auto_num` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `msg` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE `config` (
   `name` varchar(255) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_german1_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci COLLATE=utf8_general_ci_german1_ci;
 
 --
 -- Daten für Tabelle `auto_num`
@@ -103,7 +103,7 @@ CREATE TABLE `custom_menus` (
   `menu_link` varchar(200) default NULL,
   `menu_target` varchar(200) NOT NULL default '',
   PRIMARY KEY  (`menu_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -136,7 +136,7 @@ CREATE TABLE `domain` (
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -153,7 +153,7 @@ CREATE TABLE `domain_aliasses` (
   `alias_ip_id` int(10) unsigned default NULL,
   `url_forward` varchar(200) default NULL,
   PRIMARY KEY  (`alias_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -174,7 +174,7 @@ CREATE TABLE `domain_props` (
   `sec_master_dns` varchar(255) default NULL,
   `sec_master_dns_ip` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -195,7 +195,7 @@ CREATE TABLE `domain_traffic` (
   KEY `i_correction` (`correction`),
   KEY `i_domain_id` (`domain_id`),
   KEY `i_dtraff_time` (`dtraff_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -210,7 +210,7 @@ CREATE TABLE `email_tpls` (
   `subject` varchar(200) default NULL,
   `message` text,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -226,7 +226,7 @@ CREATE TABLE `error_pages` (
   `error_404` text NOT NULL,
   `error_500` text NOT NULL,
   PRIMARY KEY  (`ep_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -239,7 +239,7 @@ CREATE TABLE `ftp_group` (
   `gid` int(10) unsigned NOT NULL default '0',
   `members` text,
   UNIQUE KEY `groupname` (`groupname`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -255,7 +255,7 @@ CREATE TABLE `ftp_users` (
   `shell` varchar(255) default NULL,
   `homedir` varchar(255) default NULL,
   UNIQUE KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -275,7 +275,7 @@ CREATE TABLE `hosting_plans` (
   `payment` varchar(255) default NULL,
   `status` int(10) unsigned NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -292,12 +292,12 @@ CREATE TABLE `htaccess` (
   `dmn_id` int(10) unsigned NOT NULL default '0',
   `user_id` tinyint(4) default NULL,
   `group_id` tinyint(4) default NULL,
-  `auth_type` varchar(255) character set latin1 collate latin1_german1_ci default NULL,
-  `auth_name` varchar(255) character set latin1 collate latin1_german1_ci default NULL,
-  `path` varchar(255) character set latin1 collate latin1_german1_ci default NULL,
-  `status` varchar(255) character set latin1 collate latin1_german1_ci default NULL,
+  `auth_type` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
+  `auth_name` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
+  `path` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
+  `status` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -316,7 +316,7 @@ CREATE TABLE `htaccess_groups` (
   `members` text,
   `status` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -335,7 +335,7 @@ CREATE TABLE `htaccess_users` (
   `upass` varchar(255) default NULL,
   `status` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 -- Tabellenstruktur für Tabelle `log`
@@ -346,7 +346,7 @@ CREATE TABLE `log` (
   `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `log_message` varchar(250) default NULL,
   PRIMARY KEY  (`log_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -360,7 +360,7 @@ CREATE TABLE `login` (
   `lastaccess` int(10) unsigned default NULL,
   `login_count` tinyint(1) default NULL,
   `user_name` varchar(255) default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -381,7 +381,7 @@ CREATE TABLE `mail_users` (
   `quota` int(10) default '10485760',
   `mail_addr` varchar(200) default NULL,
   PRIMARY KEY  (`mail_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -409,7 +409,7 @@ CREATE TABLE `orders` (
   `street2` varchar(200) default NULL,
   `status` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -423,7 +423,7 @@ CREATE TABLE `orders_settings` (
   `header` text,
   `footer` text,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -442,7 +442,7 @@ CREATE TABLE `quotalimits` (
   `files_in_avail` int(10) unsigned NOT NULL default '0',
   `files_out_avail` int(10) unsigned NOT NULL default '0',
   `files_xfer_avail` int(10) unsigned NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -459,7 +459,7 @@ CREATE TABLE `quotatallies` (
   `files_in_used` int(10) unsigned NOT NULL default '0',
   `files_out_used` int(10) unsigned NOT NULL default '0',
   `files_xfer_used` int(10) unsigned NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -491,7 +491,7 @@ CREATE TABLE `reseller_props` (
   `customer_id` varchar(200) default NULL,
   `reseller_ips` text,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 
 
@@ -507,7 +507,7 @@ CREATE TABLE `server_ips` (
   `ip_domain` varchar(200) default NULL,
   `ip_alias` varchar(200) default NULL,
   UNIQUE KEY `ip_id` (`ip_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -530,7 +530,7 @@ CREATE TABLE `server_traffic` (
   PRIMARY KEY  (`straff_id`),
   KEY `i_correction` (`correction`),
   KEY `i_traff_time` (`traff_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -543,7 +543,7 @@ CREATE TABLE `sql_database` (
   `domain_id` int(10) unsigned default '0',
   `sqld_name` varchar(64) binary default 'n/a',
   UNIQUE KEY `sqld_id` (`sqld_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -557,7 +557,7 @@ CREATE TABLE `sql_user` (
   `sqlu_name` varchar(16) binary default 'n/a',
   `sqlu_pass` varchar(16) binary default 'n/a',
   UNIQUE KEY `sqlu_id` (`sqlu_id`)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) TYPE=MyISAM AUTO_INCREMENT=2 CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -569,7 +569,7 @@ CREATE TABLE `straff_settings` (
   `straff_max` int(10) unsigned default NULL,
   `straff_warn` int(10) unsigned default NULL,
   `straff_email` int(10) unsigned default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 --
 -- Daten für Tabelle `straff_settings`
@@ -590,7 +590,7 @@ CREATE TABLE `subdomain` (
   `subdomain_mount` varchar(200) default NULL,
   `subdomain_status` varchar(255) default NULL,
   PRIMARY KEY  (`subdomain_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -605,7 +605,7 @@ CREATE TABLE `suexec_props` (
   `usr` varchar(255) default NULL,
   `grp` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -621,7 +621,7 @@ CREATE TABLE `syslog` (
   `action` varchar(255) default NULL,
   `comment` text,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -641,7 +641,7 @@ CREATE TABLE `tickets` (
   `ticket_subject` varchar(255) default NULL,
   `ticket_message` text,
   PRIMARY KEY  (`ticket_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -656,4 +656,4 @@ CREATE TABLE `user_gui_props` (
   `layout` varchar(255) default NULL,
   `logo` varchar(255) NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci;
