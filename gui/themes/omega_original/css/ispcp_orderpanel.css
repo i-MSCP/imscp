@@ -10,7 +10,16 @@ a.link:link {color:#000099;text-decoration:underline;font-weight: normal;}
 a.link:visited {color:#000099; text-decoration:underline; font-weight:normal}
 a.link:hover {color:#000000; text-decoration: none;}
 a.link:active {color:#000000;text-decoration:none;}
+a.linkdark, a.linkdark:link, a.linkdark:visited {
+	color:				#cccccc;
+	text-decoration:	underline;
+	font-weight:		normal;
+}
 
+a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
+	color:				#f4dc6b;
+	text-decoration:	none;
+}
 .title {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 	font-size: 16px;

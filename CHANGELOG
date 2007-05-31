@@ -21,6 +21,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #214: Wrong size for ispCP - Logo
 		* Fixed #292: Color Contrast in pma not ok
 	        * Fixed #239: Order-Panel in old look
+		* Fixed colors in the order - panel
+		* Fixed width of table in support
 
 2007-05-31 Malte Geierhos
 	- GUI

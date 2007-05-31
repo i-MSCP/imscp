@@ -8,15 +8,15 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 <!--
-function MM_goToURL() { //v3.0
-  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
-  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
-}
 function action_delete(url) {
 	if (!confirm("{TR_MESSAGE_DELETE}"))
 		return false;
 
 	location = url;
+}
+function MM_goToURL() { //v3.0
+  var i, args=MM_goToURL.arguments; document.MM_returnValue = false;
+  for (i=0; i<(args.length-1); i+=2) eval(args[i]+".location='"+args[i+1]+"'");
 }
 //-->
 </script>
@@ -34,7 +34,7 @@ function action_delete(url) {
 	<tr>
 		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
 		<td style="height: 56px; width: 785px;"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0"></td>
-		<td style="width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)">&nbsp;</td>
+		<td style="width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg);">&nbsp;</td>
 		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0"></td>
 	</tr>
 	<tr>
@@ -56,55 +56,55 @@ function action_delete(url) {
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><table width="100%"  border="00" cellspacing="0" cellpadding="0">
+                <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="40">&nbsp;</td>
                       <td valign="top"><table width="100%" cellspacing="7">
-                          <!-- BDP: page_message -->
-                          <tr>
-                            <td colspan="6" class="title"><font color="#FF0000">{MESSAGE}</font></td>
-                          </tr>
-                          <!-- EDP: page_message -->
-                          <!-- BDP: tickets_list -->
-                          <tr>
-                            <td colspan="2" class="content3" nowrap align="center"><b>{TR_TICKET_FROM}</b></td>
-                            <td width="260" class="content3" nowrap align="center"><b>{TR_SUBJECT}</b></td>
-                            <td width="150" class="content3" nowrap align="center"><b>{TR_URGENCY}</b></td>
-                            <td width="100" class="content3" nowrap align="center"><b>{TR_LAST_DATA}</b></td>
-                            <td width="100" class="content3" nowrap align="center"><b>{TR_ACTION}</b></td>
-                          </tr>
-                          <!-- BDP: tickets_item -->
-                          <tr>
-                            <td width="25" nowrap class="{CONTENT}"><b>{NEW}</b></td>
-                            <td class="{CONTENT}" nowrap align="left">{FROM}</td>
-                            <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left">
-                                <script language="javascript">
+                        <!-- BDP: page_message -->
+                        <tr>
+                          <td colspan="6" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        </tr>
+                        <!-- EDP: page_message -->
+                        <!-- BDP: tickets_list -->
+                        <tr>
+                          <td colspan="2" class="content3" align="center"><b>{TR_TICKET_FROM}</b></td>
+                          <td width="260" class="content3" align="center"><b>{TR_SUBJECT}</b></td>
+                          <td width="150" class="content3" align="center"><b>{TR_URGENCY}</b></td>
+                          <td width="100" class="content3" align="center"><b>{TR_LAST_DATA}</b></td>
+                          <td width="100" class="content3" align="center"><b>{TR_ACTION}</b></td>
+                        </tr>
+                        <!-- BDP: tickets_item -->
+                        <tr>
+                          <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
+                          <td class="{CONTENT}" nowrap="nowrap" align="left">{FROM}</td>
+                          <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left" />
+                              <script language="JavaScript" type="text/javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 						</script>
-                              {SUBJECT}</a> </td>
-                            <td class="{CONTENT}" nowrap align="center">{URGENCY}</td>
-                            <td class="{CONTENT}" nowrap align="center">{LAST_DATE}</td>
-                            <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
-                          </tr>
-                          <!-- EDP: tickets_item -->
-                          <tr>
-                            <td colspan="3" nowrap><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','delete_ticket.php?delete=open');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
-                            <td colspan="3" nowrap><div align="right">
-                                <!-- BDP: scroll_prev_gray -->
-                                <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">
-                                <!-- EDP: scroll_prev_gray -->
-                                <!-- BDP: scroll_prev -->
-                                <a href="support_system.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0"></a>
-                                <!-- EDP: scroll_prev -->
-                                <!-- BDP: scroll_next_gray -->
-                              &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0">
-                              <!-- EDP: scroll_next_gray -->
-                              <!-- BDP: scroll_next -->
-                              &nbsp;<a href="support_system.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0"></a>
-                              <!-- EDP: scroll_next -->
-                            </div></td>
-                          </tr>
-                          <!-- EDP: tickets_list -->
+                            {SUBJECT}</a> </td>
+                          <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
+                          <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>
+                          <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onclick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
+                        </tr>
+                        <!-- EDP: tickets_item -->
+                        <tr>
+                          <td colspan="3" nowrap="nowrap"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','delete_ticket.php?delete=open');return document.MM_returnValue" value="{TR_DELETE_ALL}" /></td>
+                          <td colspan="3" nowrap="nowrap"><div align="right">
+                              <!-- BDP: scroll_prev_gray -->
+                              <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" />
+                              <!-- EDP: scroll_prev_gray -->
+                              <!-- BDP: scroll_prev -->
+                              <a href="support_system.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" /></a>
+                              <!-- EDP: scroll_prev -->
+                              <!-- BDP: scroll_next_gray -->
+                            &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" />
+                            <!-- EDP: scroll_next_gray -->
+                            <!-- BDP: scroll_next -->
+                            &nbsp;<a href="support_system.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" /></a>
+                            <!-- EDP: scroll_next -->
+                          </div></td>
+                        </tr>
+                        <!-- EDP: tickets_list -->
                       </table></td>
                     </tr>
                 </table></td>
