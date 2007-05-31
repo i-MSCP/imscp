@@ -10,23 +10,29 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-05-31 Benedikt Heintel
+	- DATABASE:
+		* changed Englisch language
+	- GUI:
+		* Fixed: missing $cfg in tr-function
+
 2007-05-31 Henrik Schytte
-	- GUI 
-		* Fixed #214: Wrong size for ispCP - Logo 
+	- GUI
+		* Fixed #214: Wrong size for ispCP - Logo
 		* Fixed #292: Color Contrast in pma not ok
-	        * Fixed #239: Order-Panel in old look	
+	        * Fixed #239: Order-Panel in old look
 
 2007-05-31 Malte Geierhos
-	- GUI 
-		* Fixed #334: Reseller cannot confirm / add ordered domains 
+	- GUI
+		* Fixed #334: Reseller cannot confirm / add ordered domains
 		* Fixed #333: upload of logo not possible (thx Sawoy)
 		* Fixed #304: subject of mails was wrong encoded
 		* Fixed #331: Theme Color Path missing for Servicemode
 		* Fixed #329: Wrong colors in admin log (thx Sawoy again)
-	
-	- SETUP 
-		* Fixed #332: Keylength for pma-blowfish secret fixed to be below 256bit 
-	        
+
+	- SETUP
+		* Fixed #332: Keylength for pma-blowfish secret fixed to be below 256bit
+
 	- CONFIGS
 		* Fixed #314: missing linefeed for fedora's bind in db_master_e.tpl
 		* Fixed #315: missing linefeed for fedora's bind in db_sub_entry.tpl

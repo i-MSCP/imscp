@@ -30,7 +30,7 @@
  * 	@return					translated or original string
  **/
 function tr($msgid, $js = false) {
-	global $sql, $default_lang;
+	global $sql, $default_lang, $cfg;
 
 	$default_lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
 
