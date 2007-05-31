@@ -1292,7 +1292,7 @@ sub setup_sql {
 
 	my ($i, $blowfish) = ('', '');
 	
-	for ($i = 0; $i < 100; $i++) {
+	for ($i = 0; $i < 31; $i++) {
 	
 		$blowfish .= $rand_data[ rand() * ($#rand_data + 1) ];
 	

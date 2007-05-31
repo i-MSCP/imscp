@@ -109,7 +109,7 @@ function update_logo()
                     return;
             }
 
-            if (empty($_FILES['logo_file']['name'])) {
+            if (empty($_FILES['logo_file']['tmp_name'])) {
 
                     set_page_message(tr('Upload file error!'));
 
@@ -136,7 +136,7 @@ function update_logo()
                     break;
             }
 
-            $fname = $_FILES['logo_file']['name'];
+            $fname = $_FILES['logo_file']['tmp_name'];
 
             // Make sure it is really an image
             if (image_type_to_mime_type(exif_imagetype($fname)) != $file_type) {
@@ -153,7 +153,7 @@ function update_logo()
 //            $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
 
             $logoFile = $path1 . '/themes/user_logos/' . $newFName;
-            move_uploaded_file($_FILES['logo_file']['tmp_name'], $logoFile);
+            move_uploaded_file($fname, $logoFile);
             chmod ($logoFile, 0644);
 
             update_user_gui_props($newFName, $user_id);

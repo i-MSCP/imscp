@@ -13,6 +13,8 @@ ispCP ω 1.0.0 Changelog
 2007-05-31 Malte Geierhos
 	- GUI 
 		* Fixed #334: Reseller cannot confirm / add ordered domains 
+		* Fixed #333: upload of logo not possible (thx Sawoy)
+		* Fixed #332: Keylength for pma-blowfish secret fixed to be below 256bit 
 
 2007-05-30 Raphael Geissert
 	- GUI
