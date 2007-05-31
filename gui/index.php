@@ -69,6 +69,7 @@ if ($cfg['SERVICEMODE'] == 1 AND !isset($_GET['admin'])) {
 
 	$tpl -> assign(array(
 						'TR_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
 						'TR_TIME' => gettimestr(),
 						'TR_DATE' => getdatestr(),

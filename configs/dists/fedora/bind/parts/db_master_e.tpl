@@ -22,3 +22,4 @@ webmail	CNAME	{DMN_NAME}.
 ftp		CNAME	{DMN_NAME}.
 ; sub [{SUB_NAME}] entry BEGIN.
 ; sub [{SUB_NAME}] entry END.
+

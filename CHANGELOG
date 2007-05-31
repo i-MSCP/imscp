@@ -14,7 +14,18 @@ ispCP ω 1.0.0 Changelog
 	- GUI 
 		* Fixed #334: Reseller cannot confirm / add ordered domains 
 		* Fixed #333: upload of logo not possible (thx Sawoy)
+		* Fixed #304: subject of mails was wrong encoded
+		* Fixed #331: Theme Color Path missing for Servicemode
+	
+	- SETUP 
 		* Fixed #332: Keylength for pma-blowfish secret fixed to be below 256bit 
+	        
+	- CONFIGS
+		* Fixed #314: missing linefeed for fedora's bind in db_master_e.tpl
+		* Fixed #315: missing linefeed for fedora's bind in db_sub_entry.tpl
+		* Fixed #316: wrong path in cfg_entry.tpl
+		* Fixed #320: wrong aliases for awstats on fedora systems
+		* Fixed #321: wrong path in ispcp.conf
 
 2007-05-30 Raphael Geissert
 	- GUI

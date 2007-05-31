@@ -17,6 +17,49 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+/*
+ * encode() - encode string to be valid as mail header
+ *
+ * source: php.net/manual/en/function.mail.php
+ * 
+ * input:
+ *   string $in_str - string to be encoded [should be in the $charset charset]
+ *   string $charset - chanrset in that string will be encoded
+ *
+ * output:
+ *   string - encoded string
+ *
+ * comment: need to check emails with ? and space in subject - some probs can occur
+ */
+function encode( $in_str, $charset = 'UTF-8' )
+{
+    $out_str = $in_str;
+    if ($out_str && $charset) 
+    {	
+        // define start delimimter, end delimiter and spacer
+        $end = "?=";
+        $start = "=?" . $charset . "?B?";
+        $spacer = $end . "\r\n " . $start;
+				
+        // determine length of encoded text within chunks
+        // and ensure length is even
+        $length = 75 - strlen($start) - strlen($end);
+        $length = floor($length/4) * 4;
+									
+        // encode the string and split it into chunks
+        // with spacers after each chunk
+        $out_str = base64_encode($out_str);
+        $out_str = chunk_split($out_str, $length, $spacer);
+										
+        // remove trailing spacer and
+        // add start and end delimiters
+        $spacer = preg_quote($spacer);
+        $out_str = preg_replace("/" . $spacer . "$/", "", $out_str);
+        $out_str = $start . $out_str . $end;
+    }
+    return $out_str;
+}
+
 function gen_admin_mainmenu(&$tpl, $menu_file) {
 		global $sql, $cfg;
 
@@ -426,6 +469,7 @@ SQL_QUERY;
 					'ADMIN_DELETE_SHOW' =>'',
 					'TR_DELETE' => tr('Delete'),
 					'URL_DELETE_ADMIN' => "delete_user.php?delete_id=".$rs -> fields['admin_id']."&delete_username=".$rs -> fields['admin_name'],
+	     				'ADMIN_USERNAME' => $rs -> fields['admin_name'], 
 					)
 			);
 			$tpl -> parse('ADMIN_DELETE_LINK', 'admin_delete_link');
@@ -791,6 +835,7 @@ SQL_QUERY;
 					'TR_CHANGE_USER_INTERFACE' => tr('Change user interface'),
 					'GO_TO_USER_INTERFACE' => tr('Change'),
 					'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=".$rs -> fields['domain_admin_id'],
+					'USR_USERNAME' => $rs -> fields['domain_name'],
 					)
 			);
 			$tpl -> parse('USR_DELETE_LINK', 'usr_delete_link');
@@ -1726,7 +1771,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$from_email = $data['sender_email'];
 
-	$subject = $data['subject'];
+	$subject = encode ($data['subject']);
 
 	$message = $data['message'];
 
@@ -1734,7 +1779,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	if ($from_name) {
 
-		$from = $from_name . "<" . $from_email . ">";
+		$from = encode($from_name) . "<" . $from_email . ">";
 
 	} else {
 
@@ -1743,7 +1788,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	if ($ufname && $ulname) {
 
-		$to = "$ufname $ulname <$uemail>";
+		$to = encode ($ufname.' '.$ulname) ." <$uemail>";
 
 		$name = "$ufname $ulname";
 
@@ -1768,7 +1813,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$headers = "From: $from\n";
 
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
+	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
 	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
 
