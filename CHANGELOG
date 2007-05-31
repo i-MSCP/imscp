@@ -16,6 +16,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #333: upload of logo not possible (thx Sawoy)
 		* Fixed #304: subject of mails was wrong encoded
 		* Fixed #331: Theme Color Path missing for Servicemode
+		* Fixed #329: Wrong colors in admin log (thx Sawoy again)
 	
 	- SETUP 
 		* Fixed #332: Keylength for pma-blowfish secret fixed to be below 256bit 

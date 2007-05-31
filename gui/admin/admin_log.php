@@ -169,19 +169,23 @@ SQL_QUERY;
                             )
                         );
             }
+           $log_message = $rs->fields['log_message'];
+           $replaces = array(
+               '/[^a-zA-Z](delete)[^a-zA-Z]/i' => '<font color="#FF0000"><strong>\\{1}</strong></font>',
+               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => '<font color="#CC6600"><strong>\\{1}</strong></font>',
+               '/[^a-zA-Z](change)[^a-zA-Z]/i' => '<font color="#3300FF"><strong>\\{1}</strong></font>',
+               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => '<font color="#CC6600"><strong>\\{1}</strong></font>',
+               '/[^a-zA-Z](unknown)[^a-zA-Z]/i'=> '<font color="#CC00FF"><strong>\\{1}</strong></font>',
+               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => '<font color="#339966"><strong>\\{1}</strong></font>',
+               '/(bad password login data)/i'  => '<font color="#FF0000"><strong>\\{1}</strong></font>'
+           );
 
-            $log_message = str_replace('delete','<font color="#FF0000"><strong>delete</strong></font>',$rs->fields['log_message']);
-            $log_message = str_replace('add','<font color="#CC6600"><strong>add</strong></font>',$log_message);
-            $log_message = str_replace('change','<font color="#3300FF"><strong>change</strong></font>',$log_message);
-            $log_message = str_replace('edit','<font color="#CC6600"><strong>edit</strong></font>',$log_message);
-			$log_message = str_replace('unknown','<font color="#CC00FF"><strong>unknown</strong></font>',$log_message);
-            $log_message = str_replace('unknow','<font color="#CC00FF"><strong>unknow</strong></font>',$log_message);
-			$log_message = str_replace('logged','<font color="#339966"><strong>logged</strong></font>',$log_message);
-			$log_message = str_replace('bad password login data','<font color="#FF0000"><strong>bad password login data</strong></font>',$log_message);
+           foreach ( $replaces as $pattern => $replacement)
+           {
+               $log_message = preg_replace($pattern, $replacement, $log_message);
+           }
 
-
-
-			$date_formt = $cfg['DATE_FORMAT']." H:i";
+	   $date_formt = $cfg['DATE_FORMAT']." H:i";
             $tpl -> assign(
                     array(
                         'MESSAGE' => $log_message,
