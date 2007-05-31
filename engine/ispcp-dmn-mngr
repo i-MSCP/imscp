@@ -3324,7 +3324,7 @@ sub dmn_add_awstats_cfg_data {
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
-    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+    my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
 
     my $tpl_dir = "$conf_dir/awstats";
 
@@ -3460,11 +3460,7 @@ sub dmn_del_awstats_cfg_data {
 
     my $dmn_name = @$dmn_data[1];
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
-
-    my $tpl_dir = "$conf_dir/awstats";
+    my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
 
     my $awstats_fname = "awstats.$dmn_name.conf";
 
@@ -3497,7 +3493,7 @@ sub dmn_add_data {
 
     my $rs = undef;
 
-    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
 
     push_el(\@main::el, 'dmn_add_data()', 'Starting...');
 
@@ -3509,8 +3505,8 @@ sub dmn_add_data {
 
     }
 
-    # check wether AWStats is enabled
-    if ($awstats_dir ne 'no') {
+    # check whether AWStats is enabled
+    if ($awstats ne 'no') {
         $rs = dmn_add_awstats_data($dmn_data);
         return $rs if ($rs != 0);
     }
@@ -3554,7 +3550,7 @@ sub dmn_change_data {
 
     }
 
-    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
 
     $rs = dmn_change_named_data($dmn_data);
 
@@ -3568,8 +3564,8 @@ sub dmn_change_data {
 
     return $rs if ($rs != 0);
 
-	# check wether AWStats is enabled
-	if ($awstats_dir ne 'no') {
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
     	$rs = dmn_change_awstats_data($dmn_data);
    		return $rs if ($rs != 0);
    	}
@@ -3591,7 +3587,7 @@ sub dmn_del_data {
 
     my $rs = undef;
 
-    my $awstats_dir = $main::cfg{'AWSTATS_DIR'};
+    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
 
     push_el(\@main::el, 'dmn_del_data()', 'Starting...');
 
@@ -3603,12 +3599,12 @@ sub dmn_del_data {
 
     }
 
-        # check wether AWStats is enabled
-        if ($awstats_dir ne 'no') {
+    # check whether AWStats is enabled
+    if ($awstats ne 'no') {
         $rs = dmn_del_awstats_data($dmn_data);
 
         return $rs if ($rs != 0);
-        }
+    }
 
     $rs = dmn_del_named_data($dmn_data);
 

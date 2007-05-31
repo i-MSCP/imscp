@@ -15,6 +15,7 @@ ispCP ω 1.0.0 Changelog
 		* changed Englisch language
 	- GUI:
 		* Fixed: missing $cfg in tr-function
+		* started build-in of AWStats (#7)
 
 2007-05-31 Henrik Schytte
 	- GUI

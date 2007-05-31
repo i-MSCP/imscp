@@ -120,7 +120,7 @@ sub ask_hostname {
 
 		 $main::ua{'hostname'} = $rdata;
 		 $main::ua{'hostname_local'} = ( ($1) ? $1 : $4);
-+                $main::ua{'hostname_local'} =~ s/^([\w][\w-]{0,253}[\w])\.(.*?)$/$1/;
+         $main::ua{'hostname_local'} =~ s/^([\w][\w-]{0,253}[\w])\.(.*?)$/$1/;
 	} else {
 
 		print STDOUT "\n    Hostname is not a valid domain name!\n";
@@ -593,6 +593,74 @@ sub ask_vhost {
 	return 0;
 }
 
+ask_awstats_on {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
+
+	my $qmsg = "\n    Activate AWStats [no]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'awstats_on'} = 'no';
+	}
+	else {
+		if ($rdata eq 'yes' || $rdata eq 'y') {
+			$main::ua{'awstats_on'} = 'yes';
+		}
+		else if ($rdata eq 'no' || $rdata eq 'n') {
+			$main::ua{'awstats_on'} = 'no';
+		}
+		else {
+			print STDOUT "\n    Only '(y)es' and '(n)o' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_awstats_on()', 'Ending...');
+
+	return 0;
+}
+
+ask_awstats_dyn {
+
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
+
+	my $qmsg = "\n    AWStats Mode ('(d)ynamic' or '(s)tatic') [dynamic]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'awstats_dyn'} = '0';
+	}
+	else {
+		if ($rdata eq 'dynamic' || $rdata eq 'd') {
+			$main::ua{'awstats_dyn'} = '0';
+		}
+		else if ($rdata eq 'static' || $rdata eq 's') {
+			$main::ua{'awstats_dyn'} = '1';
+		}
+		else {
+			print STDOUT "\n    Only '(d)ynamic' or '(s)tatic' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_awstats_dyn()', 'Ending...');
+
+	return 0;
+}
+
 sub user_dialog {
 
 	my ($rs, $rdata) = (undef, undef);
@@ -685,27 +753,44 @@ sub user_dialog {
 
 	} while ($rs == 1);
 
+	do {
+
+		$rs = ask_awstats_on();
+
+	} while ($rs == 1);
+
+	do {
+
+		$rs = ask_awstats_dyn();
+
+	} while ($rs == 1);
+
+
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
 
-	push_el(\@main::el, 'user_dialog()',  "eth: $main::ua{'eth_ip'}");
+	push_el(\@main::el, 'user_dialog()', "eth: $main::ua{'eth_ip'}");
 
-	push_el(\@main::el, 'user_dialog()',  "panel_vhost: $main::ua{'admin_vhost'}");
+	push_el(\@main::el, 'user_dialog()', "panel_vhost: $main::ua{'admin_vhost'}");
 
-	push_el(\@main::el, 'user_dialog()',  "db_host: $main::ua{'db_host'}");
+	push_el(\@main::el, 'user_dialog()', "db_host: $main::ua{'db_host'}");
 
-	push_el(\@main::el, 'user_dialog()',  "db_name: $main::ua{'db_name'}");
+	push_el(\@main::el, 'user_dialog()', "db_name: $main::ua{'db_name'}");
 
-	push_el(\@main::el, 'user_dialog()',  "db_user: $main::ua{'db_user'}");
+	push_el(\@main::el, 'user_dialog()', "db_user: $main::ua{'db_user'}");
 
-	push_el(\@main::el, 'user_dialog()',  "db_password: $main::ua{'db_password'}");
+	push_el(\@main::el, 'user_dialog()', "db_password: $main::ua{'db_password'}");
 
-	push_el(\@main::el, 'user_dialog()',  "admin: $main::ua{'admin'}");
+	push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
 
-	push_el(\@main::el, 'user_dialog()',  "admin_password: $main::ua{'admin_password'}");
+	push_el(\@main::el, 'user_dialog()', "admin_password: $main::ua{'admin_password'}");
 
-	push_el(\@main::el, 'user_dialog()',  "admin_email: $main::ua{'admin_email'}");
+	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
 
-	push_el(\@main::el, 'user_dialog()', 'Ending...');
+	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'awstats_on'}");
+
+	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'awstats_dyn'}");
+
+	push_el(\@main::el, 'user_dialog()', "Ending...");
 
 	return 0;
 
@@ -1054,6 +1139,14 @@ sub setup_config {
 
 	$rs = set_conf_val('DEFAULT_ADMIN_ADDRESS', $main::ua{'admin_email'});
 
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('AWSTATS_ACTIVE', $main::ua{'awstats_on'});
+
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'avstats_dyn'});
+
 	$rs = store_conf();
 
 	return $rs if ($rs != 0);
@@ -1287,15 +1380,15 @@ sub setup_sql {
 
 	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
 	my $tmp_dir = "/var/www/ispcp/gui/phptmp";
-	
+
 	my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/', '-', '*', ',', ':', ';');
 
 	my ($i, $blowfish) = ('', '');
-	
+
 	for ($i = 0; $i < 31; $i++) {
-	
+
 		$blowfish .= $rand_data[ rand() * ($#rand_data + 1) ];
-	
+
 	}
 
 	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
@@ -1364,12 +1457,20 @@ sub setup_crontab {
 
 		return $rs if ($rs != 0);
 
+		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'on') {
+			my $awstats = "15     6 * * * $main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
+		}
+		else {
+			my $awstats = '';
+		}
+
 		my %tag_hash = (
 						'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
 						'{QUOTA_ROOT_DIR}' => $main::cfg{'QUOTA_ROOT_DIR'},
 						'{TRAFF_ROOT_DIR}' => $main::cfg{'TRAFF_ROOT_DIR'},
 						'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
-						'{BACKUP_ROOT_DIR}' => $main::cfg{'BACKUP_ROOT_DIR'}
+						'{BACKUP_ROOT_DIR}' => $main::cfg{'BACKUP_ROOT_DIR'},
+						'{AWSTATS}' => $awstats
 					   );
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
@@ -1419,15 +1520,15 @@ sub setup_resolver {
 	my ($rs, $data, $resolv_data, $cmd) = (undef, undef, undef, undef);
 
 	push_el(\@main::el, 'setup_resolver()', 'Starting...');
-	
+
 	my $resolv_file = "/etc/resolv.conf";
 
 	#Remove old nameservers
 
 	$cmd = "$main::cfg{'CMD_CP'} -p -f $resolv_file $resolv_file.bkp";
-	
+
 	$rs = sys_command_rs($cmd);
-	
+
 	return $rs if ($rs != 0);
 
 	$data = "nameserver 127.0.0.1\n";
@@ -1435,12 +1536,12 @@ sub setup_resolver {
 	if ($main::cfg{'SECONDARY_DNS'} ne '') {
 		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";
 	}
-	
+
 	$resolv_data = get_file($resolv_file);
-	
+
 	# Comment this line if removing the existing nameservers causes any problem
 	$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
-	
+
 	$data .= $resolv_data;
 
 	$rs = store_file($resolv_file, $data, 'root', 'root', 0644);
@@ -1464,15 +1565,15 @@ sub setup_hosts {
 	my $hostname_local = "$hostname.local";
 
 	my $ip = $main::ua{'eth_ip'};
-	
+
 	my $hosts_file = "/etc/hosts";
-	
+
 	$cmd = "$main::cfg{'CMD_CP'} -p -f $hosts_file $hosts_file.bkp";
-	
+
 	$rs = sys_command_rs($cmd);
-	
+
 	return $rs if ($rs != 0);
-	
+
 	$data  = "# 'hosts' file configuration.\n\n";
 	$data .= "127.0.0.1\t$hostname_local\tlocalhost\n";
 	$data .= "$ip\t$hostname\t$host\n";
