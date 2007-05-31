@@ -15,7 +15,7 @@
       </tr>
     </table>
 	<!-- EDP: logged_from -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
+<table border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 	<tr>
 		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
 		<td style="height: 56px; width: 785px;"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0"></td>
@@ -26,7 +26,7 @@
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
 	    <td colspan=3 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
           <tr height="95";>
-            <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
+            <td style="padding-left:30px; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
             <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
           </tr>
           <tr height="*">
@@ -71,7 +71,7 @@
                             <input type="hidden" name="rid" value="{VALUE_RID}">
                           </form>
                         <br>
-                          <table cellspacing="3">
+                          <table width="100%" cellspacing="3">
                             <!-- BDP: no_domains -->
                             <tr>
                               <td class="title" colspan="13" width="550" align="center"><font color="#FF0000"> {TR_NO_DOMAINS}</font> </td>

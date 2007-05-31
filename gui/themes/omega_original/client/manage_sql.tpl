@@ -62,7 +62,7 @@ function action_delete(url) {
                           <!-- BDP: db_list -->
                           <tr>
                             <td class="content3" colspan="3"><b><strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.gif" width="15" height="16" align="left"></strong>{DB_NAME}</b></td>
-                            <td class="content3" width="150" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onClick="action_delete('delete_sql_database.php?id={DB_ID}')"><b>{TR_DELETE}</b></a> </td>
+                            <td class="content3" width="150" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="linkdark" onClick="action_delete('delete_sql_database.php?id={DB_ID}')"><b>{TR_DELETE}</b></a> </td>
                           </tr>
                           <tr>
                             <td class="content2" colspan="3"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" align="absmiddle"> {TR_DATABASE_USERS}</td>

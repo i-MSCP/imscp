@@ -18,6 +18,17 @@ a.link:hover, a.link:active, a.link:focus {
 	text-decoration:	none;
 }
 
+a.linkdark, a.linkdark:link, a.linkdark:visited {
+	color:				#cccccc;
+	text-decoration:	underline;
+	font-weight:		normal;
+}
+
+a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
+	color:				#f4dc6b;
+	text-decoration:	none;
+}
+
 a.menu, a.menu:link, a.menu:visited {
 	font-family:		arial, helvetica, sans-serif;
 	font-size:			9pt;
@@ -74,17 +85,17 @@ a.submenu:hover, a.submenu:active, a.submenu:focus {
 a.logout, a.logout:link, a.logout:visited {
 	font-family:		arial, helvetica, sans-serif;
 	font-weight:		bold;
-	font-size:			12px;
-	color:				#ffffff;
-	height:				18px;
-	padding:			1px;
+	font-size: 			10px;
+	color: 				#ffffff;
+	height: 			18px;
+	padding: 			1px;
 	padding-left:		5px;
-	white-space:		nowrap;
+	white-space: 		nowrap;
 	text-decoration:	none;
 }
 
 a.logout:hover, a.logout:active, a.logout:focus {
-	color:				#f4dc6b;
+	color: 				#f4dc6b;
 }
 
 .login {

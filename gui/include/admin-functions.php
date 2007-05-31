@@ -2624,95 +2624,15 @@ $header = <<<RIC
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
+<link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
 <title>ISPCP - Order Panel</title>
-<style type="text/css">
-<!--
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	background-color: #FFFFFF;
-}
-a.link {color:#000099;text-decoration:underline;font-weight: normal;}
-a.link:link {color:#000099;text-decoration:underline;font-weight: normal;}
-a.link:visited {color:#000099; text-decoration:underline; font-weight:normal}
-a.link:hover {color:#000000; text-decoration: none;}
-a.link:active {color:#000000;text-decoration:none;}
-
-.title {
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-	font-size: 16px;
-	font-weight: bold;
-	text-decoration: none;
-}
-
-td {
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
-
-td.content {
-	font-size: 12px;
-	color: #333333;
-	white-space: nowrap;
-	background: #F9F9F9;
-	white-space: nowrap;
-	BORDER-TOP: #EFF0F7 1px solid;
-	BORDER-LEFT: #EFF0F7 1px solid;
-	BORDER-RIGHT: #EFF0F7 1px solid;
-	BORDER-BOTTOM: #EFF0F7 1px solid;
-	height: 22px;
-	padding: 2px;
-}
-
-td.content2 {
-	font-size: 12px;
-	color: #333333;
-	white-space: nowrap;
-	background: #E1EFFF;
-	white-space: nowrap;
-	BORDER-TOP: #EFF0F7 1px solid;
-	BORDER-LEFT: #EFF0F7 1px solid;
-	BORDER-RIGHT: #EFF0F7 1px solid;
-	BORDER-BOTTOM: #EFF0F7 1px solid;
-	height: 22px;
-	padding: 2px;
-}
-
-td.content3 {
-	font-size: 12px;
-	color: #000000;
-	white-space: nowrap;
-	background: #B6D5F8;
-	white-space: nowrap;
-	BORDER-TOP: #6C98D9 1px solid;
-	BORDER-LEFT: #6C98D9 1px solid;
-	BORDER-RIGHT: #6C98D9 1px solid;
-	BORDER-BOTTOM: #6C98D9 1px solid;
-	height: 30px;
-	padding: 2px;
-
-.button
-{
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-	height: 22px;
-	font-size: 12px;
-	color: #000000;
-	text-align: center;
-	background-image: url(/ispcp/themes/omega_original/images/button.gif);
-	background-repeat: repeat-x;
-	border: 1px solid #326BC0;
-}
-
-}
 -->
 </style>
 </head>
 <center>
 <table width="100%" height="95%">
   <tr align="center">
-	<td align="center">
+  <td align="center">
 RIC;
 
 
