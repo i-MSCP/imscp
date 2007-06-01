@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -213,7 +213,7 @@ SQL_QUERY;
 							array(
 								'PORT_READONLY' => 'readonly',
 								'PROTOCOL_READONLY' => 'disabled',
-								'TR_DELETE' => tr('Delete'),
+								'TR_DELETE' => '-',
 								'PORT_DELETE_LINK' => ''
 							)
 					);

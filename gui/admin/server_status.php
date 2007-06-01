@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -16,7 +16,7 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
- 
+
 include '../include/ispcp-lib.php';
 
 check_login();
@@ -153,19 +153,6 @@ SQL_QUERY;
 		$rs->MoveNext();
 	} //while
 
-	/*
-	$ispcp_status->AddService('localhost', 21, 'FTP', 'tcp');
-	$ispcp_status->AddService('localhost', 22, 'SSH', 'tcp');
-	$ispcp_status->AddService('localhost', 23, 'Telnet', 'tcp');
-	$ispcp_status->AddService('localhost', 25, 'SMTP', 'tcp');
-	$ispcp_status->AddService('localhost', 53, 'DNS', 'tcp');
-	$ispcp_status->AddService('localhost', 80, 'HTTP', 'tcp');
-	$ispcp_status->AddService('localhost', 443, 'HTTP-SSL', 'tcp');
-	$ispcp_status->AddService('localhost', 110, 'POP3', 'tcp');
-	$ispcp_status->AddService('localhost', 995, 'POP3-SSL', 'tcp');
-	$ispcp_status->AddService('localhost', 143, 'IMAP', 'tcp');
-	$ispcp_status->AddService('localhost', 993, 'IMAP-SSL', 'tcp');
-	*/
 	$ispcp_status->CheckStatus(5);
 	$data = $ispcp_status->GetStatus();
 

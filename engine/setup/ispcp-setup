@@ -2745,9 +2745,9 @@ sub setup_ispcpd {
 
 	push_el(\@main::el, 'setup_ispcpd()', 'Starting...');
 
-	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ispCPD'} $main::cfg{'CMD_ispCPN'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
 
-	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ispCPD'} $main::cfg{'CMD_ispCPN'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
 
 	if ( -e "/usr/sbin/update-rc.d" ) {
 
@@ -2755,11 +2755,11 @@ sub setup_ispcpd {
 
 	}
 
-	sys_command_rs("$main::cfg{'CMD_ispCPD'} stop &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-setup-services.log");
 
 	sleep(3);
 
-	sys_command_rs("$main::cfg{'CMD_ispCPD'} start &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
 
 	$rs = del_file("/tmp/ispcp-setup-services.log");
 

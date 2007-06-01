@@ -19,8 +19,12 @@ ispCP ω 1.0.0 Changelog
 	- SETUP
 		* fixed serveral install bugs
 	- GUI
+		* Fixed #279: '-' and '_' not allowed in e-mail passwords
 		* Fixed #333: Variables "{1}" in the Admin Log
+		* Fixed #337: uninitialized value in concatenation during setup warning
+		* Fixed #338: welcome e-mail subject not parsed
 		* Fixed #340: Logo upload not possible
+		* Fixed #341: Serverports not deleteable - deleted delete text
 
 2007-05-31 Benedikt Heintel
 	- DATABASE

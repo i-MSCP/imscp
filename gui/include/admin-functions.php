@@ -21,7 +21,7 @@
  * encode() - encode string to be valid as mail header
  *
  * source: php.net/manual/en/function.mail.php
- * 
+ *
  * input:
  *   string $in_str - string to be encoded [should be in the $charset charset]
  *   string $charset - chanrset in that string will be encoded
@@ -34,23 +34,23 @@
 function encode( $in_str, $charset = 'UTF-8' )
 {
     $out_str = $in_str;
-    if ($out_str && $charset) 
-    {	
+    if ($out_str && $charset)
+    {
         // define start delimimter, end delimiter and spacer
         $end = "?=";
         $start = "=?" . $charset . "?B?";
         $spacer = $end . "\r\n " . $start;
-				
+
         // determine length of encoded text within chunks
         // and ensure length is even
         $length = 75 - strlen($start) - strlen($end);
         $length = floor($length/4) * 4;
-									
+
         // encode the string and split it into chunks
         // with spacers after each chunk
         $out_str = base64_encode($out_str);
         $out_str = chunk_split($out_str, $length, $spacer);
-										
+
         // remove trailing spacer and
         // add start and end delimiters
         $spacer = preg_quote($spacer);
@@ -469,7 +469,7 @@ SQL_QUERY;
 					'ADMIN_DELETE_SHOW' =>'',
 					'TR_DELETE' => tr('Delete'),
 					'URL_DELETE_ADMIN' => "delete_user.php?delete_id=".$rs -> fields['admin_id']."&delete_username=".$rs -> fields['admin_name'],
-	     				'ADMIN_USERNAME' => $rs -> fields['admin_name'], 
+	     				'ADMIN_USERNAME' => $rs -> fields['admin_name'],
 					)
 			);
 			$tpl -> parse('ADMIN_DELETE_LINK', 'admin_delete_link');
@@ -1771,8 +1771,6 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$from_email = $data['sender_email'];
 
-	$subject = encode ($data['subject']);
-
 	$message = $data['message'];
 
 	$base_vhost = $cfg['BASE_SERVER_VHOST'];
@@ -1810,6 +1808,8 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$message = preg_replace("/\{NAME\}/", $name, $message);
 	$message = preg_replace("/\{PASSWORD\}/", $password, $message);
 	$message = preg_replace("/\{BASE_SERVER_VHOST\}/", $base_vhost, $message);
+
+	$subject = encode($data['subject']);
 
 	$headers = "From: $from\n";
 
