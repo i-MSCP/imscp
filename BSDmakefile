@@ -2,16 +2,6 @@
 .include <Makefile.inc>
 
 install:
-	sh ./docs/OpenBSD/openbsd-packages-install.sh
-	wget ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.0a.tar.bz2
-	bunzip2 proftpd-1.3.0a.tar.bz2
-	tar -xvf proftpd-1.3.0a.tar
-	cd proftpd-1.3.0a
-	./configure --sysconfdir=/etc --enable-ctrls --enable-ipv6 --enable-endfile --enable-facl --with-modules=mod_sql:mod_sql_mysql:mod_tls:mod_rewrite:mod_ratio:mod_readme:mod_ifsession:mod_ctrls_admin:mod_quotatab:mod_quotatab_file:mod_quotaab_sql --with-includes=/usr/local/include/mysql --with-libraries=/usr/local/lib --localstatedir=/var/run
-	make
-	make install
-	rm -rf ./proftpd-1.3.0a.tar
-	rm -rf ./proftpd-1.3.0a
 	groupadd -o -g 0 root
 	ln -s /usr/local/libexec/makedatprog /usr/local/bin/makedatprog
 	cd ./tools && $(MAKE) install
@@ -21,7 +11,6 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/ispcp-arpl-msgr
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_FCGI)
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_AWSTATS)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_MAIL_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_APACHE_BACK_LOG)
 	cd ./configs && $(MAKE) install
@@ -31,6 +20,7 @@ install:
 	cd ${INST_PREF} && cp -R * /
 	rm -rf ${INST_PREF}
 	/usr/local/share/mysql/mysql.server start
+	/usr/local/bin/mysql_install_db
 	mysqladmin password 'your-new-password'
 	/var/www/ispcp/engine/setup/ispcp-setup
 	echo "mkdir -p /var/run/courier-imap" >> /etc/rc.local
