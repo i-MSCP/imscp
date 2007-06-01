@@ -60,7 +60,7 @@ CREATE TABLE `config` (
   `name` varchar(255) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci COLLATE=utf8_general_ci_german1_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Daten für Tabelle `auto_num`
@@ -292,10 +292,10 @@ CREATE TABLE `htaccess` (
   `dmn_id` int(10) unsigned NOT NULL default '0',
   `user_id` tinyint(4) default NULL,
   `group_id` tinyint(4) default NULL,
-  `auth_type` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
-  `auth_name` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
-  `path` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
-  `status` varchar(255) character set utf8_general_ci collate utf8_general_ci_german1_ci default NULL,
+  `auth_type` varchar(255) default NULL,
+  `auth_name` varchar(255) default NULL,
+  `path` varchar(255) default NULL,
+  `status` varchar(255) default NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -557,7 +557,7 @@ CREATE TABLE `sql_user` (
   `sqlu_name` varchar(16) binary default 'n/a',
   `sqlu_pass` varchar(16) binary default 'n/a',
   UNIQUE KEY `sqlu_id` (`sqlu_id`)
-) TYPE=MyISAM AUTO_INCREMENT=2 CHARSET=utf8_general_ci;
+) TYPE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2;
 
 -- --------------------------------------------------------
 

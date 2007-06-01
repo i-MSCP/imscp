@@ -15,6 +15,8 @@ SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/var/www/log/backup
 
 SYSTEM_VIRTUAL=$(INST_PREF)/var/www/virtual
 
+SYSTEM_AWSTATS=$(INST_PREF)/var/www/awstats
+
 SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
