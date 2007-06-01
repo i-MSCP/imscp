@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -171,13 +171,13 @@ SQL_QUERY;
             }
            $log_message = $rs->fields['log_message'];
            $replaces = array(
-               '/[^a-zA-Z](delete)[^a-zA-Z]/i' => '<font color="#FF0000"><strong>\\{1}</strong></font>',
-               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => '<font color="#CC6600"><strong>\\{1}</strong></font>',
-               '/[^a-zA-Z](change)[^a-zA-Z]/i' => '<font color="#3300FF"><strong>\\{1}</strong></font>',
-               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => '<font color="#CC6600"><strong>\\{1}</strong></font>',
-               '/[^a-zA-Z](unknown)[^a-zA-Z]/i'=> '<font color="#CC00FF"><strong>\\{1}</strong></font>',
-               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => '<font color="#339966"><strong>\\{1}</strong></font>',
-               '/(bad password login data)/i'  => '<font color="#FF0000"><strong>\\{1}</strong></font>'
+               '/[^a-zA-Z](delete)[^a-zA-Z]/i' => '<font color="#FF0000"><strong>\\1</strong></font>',
+               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => '<font color="#CC6600"><strong>\\1</strong></font>',
+               '/[^a-zA-Z](change)[^a-zA-Z]/i' => '<font color="#3300FF"><strong>\\1</strong></font>',
+               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => '<font color="#CC6600"><strong>\\1</strong></font>',
+               '/[^a-zA-Z](unknown)[^a-zA-Z]/i'=> '<font color="#CC00FF"><strong>\\1</strong></font>',
+               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => '<font color="#339966"><strong>\\1</strong></font>',
+               '/(bad password login data)/i'  => '<font color="#FF0000"><strong>\\1</strong></font>'
            );
 
            foreach ( $replaces as $pattern => $replacement)
@@ -208,68 +208,68 @@ function clear_log()
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 
     	switch ($_POST['uaction_clear']) {
-    		
-    		case 0: 
+
+    		case 0:
     				$query = <<<SQL_QUERY
             delete
                 from
             log
 SQL_QUERY;
        			break;
-   			
+
     		case 2:
     			//2 Weeks
-    			
+
     				$query = <<<SQL_QUERY
             delete
                 from
             log
-            	where 
+            	where
             DATE_SUB(CURDATE(), INTERVAL 14 DAY)
-           		>= log_time  
-           
+           		>= log_time
+
 SQL_QUERY;
 
     			break;
-    		
+
     		case 4:
     				$query = <<<SQL_QUERY
             delete
                 from
             log
-            	where 
+            	where
             DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-           		>= log_time         
+           		>= log_time
 SQL_QUERY;
-  			
+
     			break;
     		case 26:
     				$query = <<<SQL_QUERY
             delete
                 from
             log
-            	where 
+            	where
             DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-           		>= log_time         
+           		>= log_time
 SQL_QUERY;
     			break;
-    			
+
     		case 52;
     				$query = <<<SQL_QUERY
             delete
                 from
             log
-            	where 
+            	where
             DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-           		>= log_time         
+           		>= log_time
 SQL_QUERY;
-    		
+
     			break;
-				 	    		    		    		
+
     	}
-        
-    	$rs = exec_query($sql, $query, array());	
-    	
+
+    	$rs = exec_query($sql, $query, array());
+
     }
 }
 

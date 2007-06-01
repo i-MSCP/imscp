@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -17,8 +17,11 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-function save_layout(&$sql)
-{
+include '../include/ispcp-lib.php';
+
+check_login();
+
+function save_layout(&$sql) {
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
@@ -42,8 +45,7 @@ SQL_QUERY;
     }
 }
 
-function update_logo()
-{
+function update_logo() {
     global $cfg;
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo') {
@@ -84,7 +86,7 @@ function update_logo()
                     break;
             }
 
-            $fname = $_FILES['logo_file']['name'];
+            $fname = $_FILES['logo_file']['tmp_name'];
 
             // Make sure it is really an image
             if (image_type_to_mime_type(exif_imagetype($fname)) != $file_type) {
@@ -92,16 +94,16 @@ function update_logo()
                 return ;
             }
 
-//            $fsize = $_FILES['logo_file']['size'];
+			// $fsize = $_FILES['logo_file']['size'];
 
             $newFName = get_user_name($user_id) . '.' . $fext;
 
             $path1 = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/admin/layout.php')+1);
 
-//            $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
+			// $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
 
             $logoFile = $path1 . '/themes/user_logos/' . $newFName;
-            move_uploaded_file($_FILES['logo_file']['tmp_name'], $logoFile);
+            move_uploaded_file($fname, $logoFile);
             chmod ($logoFile, 0644);
 
             update_user_gui_props($newFName, $user_id);
@@ -111,8 +113,7 @@ function update_logo()
     }
 }
 
-function update_user_gui_props($file_name, $user_id)
-{
+function update_user_gui_props($file_name, $user_id) {
     global $sql;
 
     $query = <<<SQL_QUERY
@@ -129,8 +130,9 @@ SQL_QUERY;
 }
 
 
-function gen_def_layout(&$tpl, $user_def_layout)
-{
+// unused? can be deleted?
+/*
+function gen_def_layout(&$tpl, $user_def_layout) {
     $layouts = array('blue', 'green', 'red', 'yellow');
 
     foreach ($layouts as $layout) {
@@ -157,10 +159,7 @@ function gen_def_layout(&$tpl, $user_def_layout)
     }
 
 }
-
-include '../include/ispcp-lib.php';
-
-check_login();
+*/
 
 $tpl = new pTemplate();
 
@@ -172,14 +171,10 @@ $tpl -> define_dynamic('hosting_plans', 'page');
 $tpl -> define_dynamic('def_layout', 'page');
 
 
-
-
-
 save_layout($sql);
 
 update_logo();
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 gen_def_layout($tpl, $_SESSION['user_theme']);

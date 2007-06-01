@@ -10,14 +10,17 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-06-01 Henrik Schytte 
+2007-06-01 Henrik Schytte
 	- GUI
 		* Fixed #325: ispCP wasn't ready for small Screens (1024x768)
-		* Fixed new Icons for the Filemanager, too ;) 
+		* Fixed new Icons for the Filemanager, too ;)
 
 2007-06-01 Benedikt Heintel
 	- SETUP
 		* fixed serveral install bugs
+	- GUI
+		* Fixed #333: Variables "{1}" in the Admin Log
+		* Fixed #340: Logo upload not possible
 
 2007-05-31 Benedikt Heintel
 	- DATABASE
