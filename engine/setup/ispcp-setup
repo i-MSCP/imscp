@@ -54,8 +54,8 @@ sub welcome_note {
 
 	my $welcome_message = <<MSG;
 
-    Welcome to ISPCP '$main::cfg{'Version'}' Setup Dialog.
-    This program will set up ISPCP OMEGA system on your server.
+    Welcome to ispCP '$main::cfg{'Version'}' Setup Dialog.
+    This program will set up ispCP OMEGA system on your server.
 MSG
 
 	print STDOUT $welcome_message;
@@ -341,7 +341,7 @@ sub ask_db_ftp_user {
 
 	my $db_user = 'vftp';
 
-	my $qmsg = "\n    Please enter ISPCP ftp SQL user (Enter for defaults) [$db_user]: ";
+	my $qmsg = "\n    Please enter ispCP ftp SQL user (Enter for defaults) [$db_user]: ";
 
 	print STDOUT $qmsg;
 
@@ -371,7 +371,7 @@ sub ask_db_ftp_password {
 
 	my $db_password = 'none';
 
-	my $qmsg = "\n    Please enter ISPCP ftp SQL user password (Enter for defaults) [$db_password]: ";
+	my $qmsg = "\n    Please enter ispCP ftp SQL user password (Enter for defaults) [$db_password]: ";
 
 	$pass1 = read_password($qmsg);
 
@@ -381,7 +381,7 @@ sub ask_db_ftp_password {
 
 	} else {
 
-		$qmsg = "    Please repeat ISPCP ftp SQL user password: ";
+		$qmsg = "    Please repeat ispCP ftp SQL user password: ";
 
 		$pass2 = read_password($qmsg);
 
@@ -409,7 +409,7 @@ sub ask_db_pma_user {
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
 	my $db_user = 'pma';
 
-	my $qmsg = "\n    Please enter ISPCP phpMyAdmin Control user (Enter for defaults) [$db_user]: ";
+	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user (Enter for defaults) [$db_user]: ";
 	print STDOUT $qmsg;
 	$rdata = readline(\*STDIN); chop($rdata);
 
@@ -429,13 +429,13 @@ sub ask_db_pma_password {
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
 	my $db_password = 'none';
 
-	my $qmsg = "\n    Please enter ISPCP phpMyAdmin Control user password (Enter for defaults) [$db_password]: ";
+	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user password (Enter for defaults) [$db_password]: ";
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
 		$main::ua{'db_pma_password'} = '';
 	} else {
-		$qmsg = "    Please repeat ISPCP phpMyAdmin Control user password: ";
+		$qmsg = "    Please repeat ispCP phpMyAdmin Control user password: ";
 		$pass2 = read_password($qmsg);
 
 		if ($pass1 eq $pass2) {
@@ -567,7 +567,7 @@ sub ask_vhost {
 
 	my $vhost = "admin.$addr";
 
-	my $qmsg = "\n    Please enter the domain name ISPCP OMEGA will run on [$vhost]: ";
+	my $qmsg = "\n    Please enter the domain name ispCP OMEGA will run on [$vhost]: ";
 
 	print STDOUT $qmsg;
 
@@ -585,7 +585,6 @@ sub ask_vhost {
 			print STDOUT "\n    Vhost not valid!";
 			return 1;
 		}
-
 	}
 
 	push_el(\@main::el, 'ask_vhost()', 'Ending...');
@@ -593,9 +592,9 @@ sub ask_vhost {
 	return 0;
 }
 
-ask_awstats_on {
+sub ask_awstats_on {
 
-	my ($rs, $rdata) = (undef, undef);
+	my $rdata = undef;
 
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
@@ -613,7 +612,7 @@ ask_awstats_on {
 		if ($rdata eq 'yes' || $rdata eq 'y') {
 			$main::ua{'awstats_on'} = 'yes';
 		}
-		else if ($rdata eq 'no' || $rdata eq 'n') {
+		elsif ($rdata eq 'no' || $rdata eq 'n') {
 			$main::ua{'awstats_on'} = 'no';
 		}
 		else {
@@ -627,9 +626,9 @@ ask_awstats_on {
 	return 0;
 }
 
-ask_awstats_dyn {
+sub ask_awstats_dyn {
 
-	my ($rs, $rdata) = (undef, undef);
+	my $rdata = undef;
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
 
@@ -647,7 +646,7 @@ ask_awstats_dyn {
 		if ($rdata eq 'dynamic' || $rdata eq 'd') {
 			$main::ua{'awstats_dyn'} = '0';
 		}
-		else if ($rdata eq 'static' || $rdata eq 's') {
+		elsif ($rdata eq 'static' || $rdata eq 's') {
 			$main::ua{'awstats_dyn'} = '1';
 		}
 		else {
@@ -663,7 +662,7 @@ ask_awstats_dyn {
 
 sub user_dialog {
 
-	my ($rs, $rdata) = (undef, undef);
+	my $rs = undef;
 
 	push_el(\@main::el, 'user_dialog()', 'Starting...');
 
@@ -712,7 +711,7 @@ sub user_dialog {
 	} while ($rs == 1);
 
 	#
-	# ISPCP ftp SQL user questions;
+	# ispCP ftp SQL user questions;
 	#
 
 	$rs = ask_db_ftp_user();
@@ -782,15 +781,15 @@ sub user_dialog {
 
 	push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
 
-	push_el(\@main::el, 'user_dialog()', "admin_password: $main::ua{'admin_password'}");
+	push_el(\@main::el, 'user_dialog()', "admin_password");
 
 	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
 
-	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'awstats_on'}");
+	push_el(\@main::el, 'user_dialog()', "awstats_on: $main::ua{'awstats_on'}");
 
-	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'awstats_dyn'}");
+	push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
 
-	push_el(\@main::el, 'user_dialog()', "Ending...");
+	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
 	return 0;
 
@@ -836,7 +835,7 @@ sub setup_shut_down {
 
 	Congratulations !
 
-	ISPCP '$main::cfg{'Version'}' Setup completed successfully !
+	ispCP '$main::cfg{'Version'}' Setup completed successfully !
 
 	Please type http://$main::ua{'admin_vhost'} in your
 	browser!
@@ -1145,7 +1144,7 @@ sub setup_config {
 
 	return $rs if ($rs != 0);
 
-	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'avstats_dyn'});
+	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
 
 	$rs = store_conf();
 
@@ -1270,7 +1269,7 @@ sub setup_sql {
 	return $rs if ($rs != 0);
 
 	#
-	# we'll add ISPCP ftp SQL user here.
+	# we'll add ispCP ftp SQL user here.
 	#
 	$main::db = undef;
 
@@ -1419,7 +1418,7 @@ sub setup_sql {
 
 sub setup_crontab {
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $awstats) = (undef, undef, undef);
 
 	push_el(\@main::el, 'setup_crontab()', 'Starting...');
 
@@ -1457,11 +1456,11 @@ sub setup_crontab {
 
 		return $rs if ($rs != 0);
 
-		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'on') {
-			my $awstats = "15     6 * * * $main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
+		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+			$awstats = "15     6 * * * $main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
 		}
 		else {
-			my $awstats = '';
+			$awstats = "";
 		}
 
 		my %tag_hash = (
@@ -2746,9 +2745,9 @@ sub setup_ispcpd {
 
 	push_el(\@main::el, 'setup_ispcpd()', 'Starting...');
 
-	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ispCPD'} $main::cfg{'CMD_ispCPN'} &> /tmp/ispcp-setup-services.log");
 
-	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ispCPD'} $main::cfg{'CMD_ispCPN'} &> /tmp/ispcp-setup-services.log");
 
 	if ( -e "/usr/sbin/update-rc.d" ) {
 
@@ -2756,11 +2755,11 @@ sub setup_ispcpd {
 
 	}
 
-	sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_ispCPD'} stop &> /tmp/ispcp-setup-services.log");
 
 	sleep(3);
 
-	sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_ispCPD'} start &> /tmp/ispcp-setup-services.log");
 
 	$rs = del_file("/tmp/ispcp-setup-services.log");
 
