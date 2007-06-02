@@ -1380,7 +1380,9 @@ sub setup_sql {
 	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
 	my $tmp_dir = "/var/www/ispcp/gui/phptmp";
 
-	my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/', '-', '*', ',', ':', ';');
+	my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/', '-', '*', ',', ':',
+	                 ';', '_', '?', '%', '=', '(', ')', '#', '!', '<', '>', '+',
+	                 '[', ']', '{', '}', '"', '@', '&');
 
 	my ($i, $blowfish) = ('', '');
 

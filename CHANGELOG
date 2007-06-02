@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-01 Raphael Geissert
+	- GUI
+		* Added colouring and improved browsing of rkhunter's log
+	- SETUP
+		* Added more characters to PMA's blowfish key generation code
+
 2007-06-01 Henrik Schytte
 	- GUI
 		* Fixed #325: ispCP wasn't ready for small Screens (1024x768)

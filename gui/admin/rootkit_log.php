@@ -47,18 +47,48 @@ $filename = "/var/log/rkhunter.log";
 
 if (!is_readable($filename)) {
 
-	$contents = "<b><font color='#FF0000'>The file doesn't exist or can't be opened.</font><b>" ;
+	$contents = "<b><font color='#FF0000'>" . tr("The file doesn't exist or can't be read.") . "</font><b>" ;
 
-}
-else {
+} else {
 
-	$handle = fopen($filename, "r");
+	$handle = fopen($filename, 'r');
 
 	$log = fread($handle, filesize($filename));
 
+	fclose($handle);
+
 	$contents = nl2br($log);
 
-	fclose($handle);
+	$contents = '<div>' . $contents;
+
+	$search = array();
+	$replace = array();
+
+	$search [] = '/[^\-]WARNING/i';
+	$replace[] = '<strong><font color="orange">$0</font></strong>';
+    $search [] = '/([^a-z])(OK)([^a-z])/i';
+	$replace[] = '$1<font color="green">$2</font>$3';
+	$search [] = '/[ \t]+clean[ \t]+/i';
+	$replace[] = '<font color="green">$0</font>';
+	$search [] = '/Not found/i';
+	$replace[] = '<font color="blue">$0</font>';
+	$search [] = '/Skipped/i';
+	$replace[] = '<font color="blue">$0</font>';
+	$search [] = '/unknown[^)]/i';
+	$replace[] = '<strong><font color="#bf55bf">$0</font></strong>';
+	$search [] = '/Unsafe/i';
+	$replace[] = '<strong><font color="#dddd00">$0</font></strong>';
+	$search [] = '/[1-9][0-9]*[ \t]+vulnerable/i';
+	$replace[] = '<strong><font color="red">$0</font></strong>';
+	$search [] = '/0[ \t]+vulnerable/i';
+	$replace[] = '<font color="green">$0</font>';
+	$search [] = '#(\[[0-9]{2}:[[0-9]{2}:[[0-9]{2}\][ \t]+-{20,35}[ \t]+)([a-zA-Z0-9 ]+)([ \t]+-{20,35})<br />#e';
+	$replace[] = '"</div><a href=\"#\" onclick=\"showHideBlocks(\'rkhuntb" . $blocksCount . "\');return false;\">$1<b>$2</b>$3</a><br /><div id=\"rkhuntb" . $blocksCount++ . "\">"';
+
+	$blocksCount = 0;
+
+	$contents = preg_replace($search, $replace, $contents);
+
 }
 $tpl -> assign(
 				array(
