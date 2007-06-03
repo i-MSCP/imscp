@@ -10,6 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-03 Raphael Geissert
+	- GUI
+		* Fixed #357: Missing argument for exec_query()
+		* Fixed #355: Variable variables doesn't work with superglobals
+
 2007-06-02 Raphael Geissert
 	- GUI
 		* Fixed error when a password with length > 20 is rejected

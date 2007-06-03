@@ -1058,10 +1058,10 @@ SQL_QUERY;
     //
 
     $query = <<<SQL_QUERY
-        drop database $db_name
+        drop database ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query);
+    $rs = exec_query($sql, $query, array($db_name));
 
     write_log($_SESSION['user_logged'].": delete SQL database: ".$db_name);
     //
