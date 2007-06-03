@@ -54,7 +54,7 @@ function update_password()
 
             set_page_message(tr('Please fill up all data fields!'));
 
-        } else if (!ispcp_password_check($_POST['pass'], 20)) {
+        } else if (!chk_password($_POST['pass'])) {
 
             set_page_message(tr('Incorrect password range or syntax!'));
 
@@ -62,9 +62,9 @@ function update_password()
 
             set_page_message(tr('Passwords does not match!'));
 
-				} else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
+        } else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
 
-        	set_page_message(tr('The current password is wrong!'));
+            set_page_message(tr('The current password is wrong!'));
 
         } else {
 
@@ -108,11 +108,11 @@ SQL_QUERY;
   $rs = exec_query($sql, $query, array($id));
 
   if ($rs -> RecordCount() == 1) {
-  	
+
 		$rs = $rs -> FetchRow();
 
   	if ( (crypt($pass, $rs['admin_pass']) == $rs['admin_pass']) || (md5($pass) == $rs['admin_pass']) ) {
-		  	
+
 			return true;
 
 		}

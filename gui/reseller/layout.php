@@ -17,7 +17,9 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+include '../include/ispcp-lib.php';
 
+check_login();
 
 function gen_def_layout(&$tpl, $user_def_layout)
 {
@@ -47,10 +49,6 @@ function gen_def_layout(&$tpl, $user_def_layout)
     }
 
 }
-
-include '../include/ispcp-lib.php';
-
-check_login();
 
 $tpl = new pTemplate();
 

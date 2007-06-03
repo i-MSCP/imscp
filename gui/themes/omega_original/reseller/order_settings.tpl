@@ -97,7 +97,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         <td>&nbsp;</td>
                         <td><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}">
                           &nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onClick="MM_openBrWindow('/ispcp2/orderpanel/','preview','width=770,height=480')" value="{TR_PREVIEW}"></td>
+                          <input name="Button" type="button" class="button" onClick="MM_openBrWindow('/orderpanel/','preview','width=770,height=480')" value="{TR_PREVIEW}"></td>
                       </tr>
                     </table>
                 </form></td>

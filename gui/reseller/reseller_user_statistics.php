@@ -69,7 +69,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name)
 {
   global $sql, $cfg;
 
-  $rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE']/2;
+  $rows_per_page = (int)($cfg['DOMAIN_ROWS_PER_PAGE']/2);
 
   if (isset($_GET['psi'])) {
     $start_index = trim($_GET['psi']);
@@ -108,9 +108,9 @@ SQL_QUERY;
         ORDER BY
             admin_name ASC
         LIMIT
-			$start_index, $rows_per_page
+			?, ?
 SQL_QUERY;
-  $rs = exec_query($sql, $query, array($reseller_id));
+  $rs = exec_query($sql, $query, array($reseller_id, $start_index, $rows_per_page));
   $tpl -> assign(array('RESELLER_NAME' => $reseller_name,
                        'RESELLER_ID' => $reseller_id));
 

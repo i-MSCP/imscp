@@ -44,30 +44,23 @@ $tpl -> assign(
                      )
               );
 
-function kill_session($tpl, $sql)
+function kill_session($sql)
 {
-	if (isset($_GET['kill']) && $_GET['kill'] !== '' && $_GET['kill'] !== $_SESSION['user_logged']){
+    if (isset($_GET['kill']) && $_GET['kill'] !== '' && $_GET['kill'] !== $_SESSION['user_logged']) {
 
-		$admin_name = $_GET['kill'];
-		$query = <<<SQL_QUERY
+        $admin_name = $_GET['kill'];
+        $query = <<<SQL_QUERY
         delete from
             login
         where
             session_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($admin_name));
-	set_page_message(tr('User session was killed!'));
-	write_log($_SESSION['user_logged'].": killed user session: $admin_name!");
+        $rs = exec_query($sql, $query, array($admin_name));
+        set_page_message(tr('User session was killed!'));
+        write_log($_SESSION['user_logged'].": killed user session: $admin_name!");
 
-
-
-	} else {
-
-		return;
-	}
-
-
+    }
 }
 
 
@@ -131,7 +124,7 @@ SQL_QUERY;
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 
-kill_session($tpl, $sql);
+kill_session($sql);
 
 gen_user_sessions($tpl, $sql);
 

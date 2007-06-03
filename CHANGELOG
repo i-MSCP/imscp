@@ -10,6 +10,18 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-02 Raphael Geissert
+	- GUI
+		* Fixed error when a password with length > 20 is rejected
+		* Fixed #346: Call to undefined function: gen_def_layout() in gui/admin/layout.php
+		* Fixed #353: Preview in order settings doesn't work due to usage of wrong URL
+		* Fixed #355: Class to string conversion error in gui/include/debug.php
+		* Fixed #252: vfs::open() not always returning false
+		* Fixed #338: Undefined $subject (Also replaced preg_replace usage with str_replace)
+		* Fixed #350: Admin can modify own information in manage_users.php and modified account's sessions are left
+		* Fixed #354: white page on Reseller user stats if domain per page is odd number
+		* Fixed #352: Extra "-->" on top of Orderpanel's page
+
 2007-06-01 Raphael Geissert
 	- GUI
 		* Added colouring and improved browsing of rkhunter's log

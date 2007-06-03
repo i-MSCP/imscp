@@ -62,160 +62,176 @@ function update_data(&$sql)
 {
     global $edit_id;
 
-if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
+    if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 
-	if(check_user_data()){
+    	if(check_user_data()) {
 
-        $user_id = $_SESSION['user_id'];
+            $user_id = $_SESSION['user_id'];
 
-        $fname 		= clean_input($_POST['fname']);
-        $lname 		= clean_input($_POST['lname']);
-        $firm 		= clean_input($_POST['firm']);
-        $zip 		= clean_input($_POST['zip']);
-        $city 		= clean_input($_POST['city']);
-        $country	= clean_input($_POST['country']);
-        $email 		= clean_input($_POST['email']);
-        $phone 		= clean_input($_POST['phone']);
-        $fax 		= clean_input($_POST['fax']);
-        $street1 	= clean_input($_POST['street1']);
-        $street2 	= clean_input($_POST['street2']);
+            $fname 		= clean_input($_POST['fname']);
+            $lname 		= clean_input($_POST['lname']);
+            $firm 		= clean_input($_POST['firm']);
+            $zip 		= clean_input($_POST['zip']);
+            $city 		= clean_input($_POST['city']);
+            $country	= clean_input($_POST['country']);
+            $email 		= clean_input($_POST['email']);
+            $phone 		= clean_input($_POST['phone']);
+            $fax 		= clean_input($_POST['fax']);
+            $street1 	= clean_input($_POST['street1']);
+            $street2 	= clean_input($_POST['street2']);
 
-        if(empty($_POST['pass']))
-        {
-
-        $query = <<<SQL_QUERY
-
-                update
-
-                    admin
-
-                set
-
-                    fname = ?,
-                    lname = ?,
-                    firm = ?,
-                    zip = ?,
-                    city = ?,
-                    country = ?,
-                    email = ?,
-                    phone = ?,
-                    fax = ?,
-                    street1 = ?,
-                    street2 = ?
-
-            where
-
-                admin_id= ?
-
-
-SQL_QUERY;
-		$rs = exec_query($sql, $query, array($fname,
-                                             $lname,
-                                             $firm,
-                                             $zip,
-                                             $city,
-                                             $country,
-                                             $email,
-                                             $phone,
-                                             $fax,
-                                             $street1,
-                                             $street2,
-                                             $edit_id));
-
-           }
-            else{
-
-                $edit_id = $_POST['edit_id'];
-
-                if (chk_password($_POST['pass'])) {
-
-                    set_page_message( tr("Incorrect password range or syntax!"));
-
-                    header( "Location: edit_user.php?edit_id=$edit_id" );
-                    die();
-                }
-                    if ($_POST['pass'] != $_POST['pass_rep']) {
-
-                    set_page_message( tr("Entered passwords does not match!"));
-
-                    header( "Location: edit_user.php?edit_id=$edit_id" );
-                    die();
-                }
-
-                $upass = crypt_user_pass($_POST['pass']);
+            if(empty($_POST['pass'])) {
 
                 $query = <<<SQL_QUERY
-                    update
-                        admin
-                    set
-                        admin_pass = ?,
-                        fname = ?,
-                        lname = ?,
-                        firm = ?,
-                        zip = ?,
-                        city = ?,
-                        country = ?,
-                        email = ?,
-                        phone = ?,
-                        fax = ?,
-                        street1 = ?,
-                        street2 = ?
+
+                        update
+
+                            admin
+
+                        set
+
+                            fname = ?,
+                            lname = ?,
+                            firm = ?,
+                            zip = ?,
+                            city = ?,
+                            country = ?,
+                            email = ?,
+                            phone = ?,
+                            fax = ?,
+                            street1 = ?,
+                            street2 = ?
+
                     where
-                        admin_id = ?
+
+                        admin_id= ?
+SQL_QUERY;
+        		$rs = exec_query($sql, $query, array($fname,
+                                                     $lname,
+                                                     $firm,
+                                                     $zip,
+                                                     $city,
+                                                     $country,
+                                                     $email,
+                                                     $phone,
+                                                     $fax,
+                                                     $street1,
+                                                     $street2,
+                                                     $edit_id));
+
+               } else {
+
+                    $edit_id = $_POST['edit_id'];
+
+                    if ($_POST['pass'] != $_POST['pass_rep']) {
+
+                        set_page_message( tr("Entered passwords does not match!"));
+
+                        header( "Location: edit_user.php?edit_id=$edit_id" );
+                        die();
+                    }
+
+                    if (chk_password($_POST['pass'])) {
+
+                        set_page_message( tr("Incorrect password range or syntax!"));
+
+                        header( "Location: edit_user.php?edit_id=$edit_id" );
+                        die();
+                    }
+
+                    $upass = crypt_user_pass($_POST['pass']);
+
+                    $query = <<<SQL_QUERY
+                        update
+                            admin
+                        set
+                            admin_pass = ?,
+                            fname = ?,
+                            lname = ?,
+                            firm = ?,
+                            zip = ?,
+                            city = ?,
+                            country = ?,
+                            email = ?,
+                            phone = ?,
+                            fax = ?,
+                            street1 = ?,
+                            street2 = ?
+                        where
+                            admin_id = ?
 SQL_QUERY;
 
-			$rs = exec_query($sql, $query, array($upass,
-                                                 $fname,
-                                                 $lname,
-                                                 $firm,
-                                                 $zip,
-                                                 $city,
-                                                 $country,
-                                                 $email,
-                                                 $phone,
-                                                 $fax,
-                                                 $street1,
-                                                 $street2,
-                                                 $edit_id));
-            }
+        			$rs = exec_query($sql, $query, array($upass,
+                                                         $fname,
+                                                         $lname,
+                                                         $firm,
+                                                         $zip,
+                                                         $city,
+                                                         $country,
+                                                         $email,
+                                                         $phone,
+                                                         $fax,
+                                                         $street1,
+                                                         $street2,
+                                                         $edit_id));
+                    //
+                    // Kill any existing session of the edited user
+                    //
+                    $admin_name = get_user_name($edit_id);
+                    $query = <<<SQL_QUERY
+                    delete from
+                        login
+                    where
+                        user_name = ?
+SQL_QUERY;
+
+                    $rs = exec_query($sql, $query, array($admin_name));
+                    if ($rs -> RecordCount() != 0) {
+                        set_page_message(tr('User session was killed!'));
+                        write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");
+                    }
+                }
 
 
-            $edit_username = clean_input($_POST['edit_username']);
+                $edit_username = clean_input($_POST['edit_username']);
 
-            $user_logged = $_SESSION['user_logged'];
+                $user_logged = $_SESSION['user_logged'];
 
+                write_log("$user_logged: change data/password for $edit_username!");
 
-            write_log("$user_logged: change data/password for $edit_username!");
+                if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 
-						if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
+                    $query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";
 
-							$query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";
+                    $res = exec_query($sql, $query, array());
 
-  						$res = exec_query($sql, $query, array());
+                    if($res->fields['admin_type'] == 'admin') {
 
-      				if($res->fields['admin_type'] == 'admin') {
+                        $admin_type = tr('Administrator');
 
-								$admin_type = 'Administrator';
+                    } else if($res->fields['admin_type'] == 'reseller') {
 
-							} else {
+                        $admin_type = tr('Reseller');
 
-								$admin_type = 'Domain account';
+                    } else {
 
-							}
+                        $admin_type = tr('Domain account');
 
-  	          send_add_user_auto_msg ($user_id,
-									  $edit_username,
-    	                              clean_input($_POST['pass']),
-      	                              clean_input($_POST['email']),
-        	                          clean_input($_POST['fname']),
-          	                          clean_input($_POST['lname']),
-            	                      tr($admin_type));
-						}
+                    }
 
-            $_SESSION['user_updated'] = 1;
+                    send_add_user_auto_msg ($user_id,
+                                            $edit_username,
+                                            clean_input($_POST['pass']),
+                                            clean_input($_POST['email']),
+                                            clean_input($_POST['fname']),
+                                            clean_input($_POST['lname']),
+                                            tr($admin_type));
+                }
 
-            header( "Location: manage_users.php" );
-            die();
+                $_SESSION['user_updated'] = 1;
+
+                header( "Location: manage_users.php" );
+                die();
 
 		}
 	}
@@ -225,7 +241,7 @@ SQL_QUERY;
 
 function check_user_data()
 {
-  if (chk_email($_POST['email'])) {
+    if (chk_email($_POST['email'])) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
 
@@ -233,9 +249,12 @@ function check_user_data()
     }
 
     return true;
-
 }
 
+if ($user_id == $_SESSION['user_id']) {
+    header( 'Location: change_personal.php' );
+    die();
+}
 
 /*
  *
@@ -243,33 +262,31 @@ function check_user_data()
  *
  */
 
-            $query = <<<SQL_QUERY
-                select
-                    admin_name,
-                    fname,
-                    lname,
-                    firm,
-                    zip,
-                    city,
-                    country,
-                    email,
-                    phone,
-                    fax,
-                    street1,
-                    street2
-                from
-                    admin
-                where
-                    admin_id=?
-
+$query = <<<SQL_QUERY
+    select
+        admin_name,
+        fname,
+        lname,
+        firm,
+        zip,
+        city,
+        country,
+        phone,
+        fax,
+        street1,
+        street2
+    from
+        admin
+    where
+        admin_id=?
 SQL_QUERY;
 
-     $rs = exec_query($sql, $query, array($edit_id));
+$rs = exec_query($sql, $query, array($edit_id));
 
-    if ($rs->RecordCount() <= 0 ) {
-        header( 'Location: manage_users.php' );
-        die();
-    }
+if ($rs->RecordCount() <= 0 ) {
+    header( 'Location: manage_users.php' );
+    die();
+}
 
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_manage_users.tpl');

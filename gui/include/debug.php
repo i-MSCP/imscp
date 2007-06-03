@@ -17,66 +17,18 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-
-
 function dump_gui_debug() {
 
-	print '<font color="#0000FF"><u><b>$_SESSION[]</b> Contents:</u><br></font>';
+    $source = array ('_SESSION', '_POST', '_GET', '_COOKIE',
+                     '_FILES', 'GLOBALS','_SERVER');
 
-	foreach ($_SESSION as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
-
-
-	print '<font color="#0000FF"><u><b>$_POST[]</b> Contents:</u><br></font>';
-
-	foreach ($_POST as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
-
-	print '<font color="#0000FF"><u><b>$_GET[]</b> Contents:</u><br></font>';
-
-	foreach ($_GET as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
-
-	print '<font color="#0000FF"><u><b>$_COOKIE[]</b> Contents:</u><br></font>';
-
-	foreach ($_COOKIE as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
-
-	print '<font color="#0000FF"><u><b>$_FILES[]</b> Contents:</u><br></font>';
-
-	foreach ($_FILES as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
-
-	print '<font color="#0000FF"><u><b>$GLOBALS[]</b> Contents:</u><br></font>';
-
-	foreach ($GLOBALS as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
-
-	print '<font color="#0000FF"><u><b>$_SERVER[]</b> Contents:</u><br></font>';
-
-	foreach ($_SERVER as $key => $value) {
-
-		print "$key = $value <br>";
-
-	}
+    foreach ($source as $vname)
+    {
+        echo "<font color='#0000FF'><u>Content of <b>\$$vname</b>:</u><br /></font>";
+        echo '<pre>';
+        echo htmlentities(print_r($$vname, true));
+        echo '</pre>';
+    }
 
 }
 

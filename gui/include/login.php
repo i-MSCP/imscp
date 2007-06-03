@@ -37,23 +37,23 @@ function init_login() {
 
 function register_user($uname, $upass) {
 
-  global $sql, $cfg;
+    global $sql, $cfg;
 
-	$ipaddr = getipaddr();
+    $ipaddr = getipaddr();
 
-	check_ipaddr($ipaddr);
+    check_ipaddr($ipaddr);
 
-	if (!username_exists($uname)) {
+    if (!username_exists($uname)) {
 
-		write_log("Login error, <b><i>".htmlspecialchars($uname, ENT_QUOTES, "UTF-8")."</i></b> unknown username");
+        write_log("Login error, <b><i>".htmlspecialchars($uname, ENT_QUOTES, "UTF-8")."</i></b> unknown username");
 
-    return false;
+        return false;
 
-  }
+    }
 
-	$udata = array();
+    $udata = array();
 
-  $udata = get_userdata($uname);
+    $udata = get_userdata($uname);
 
   if ($cfg['SERVICEMODE'] == 1 AND $udata['admin_type'] != 'admin') {
 
@@ -77,19 +77,19 @@ function register_user($uname, $upass) {
 
    	}
 
-		if (!is_userdomain_ok($uname)) {
+   	if (!is_userdomain_ok($uname)) {
 
-			write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." Domain status is not OK - user can not login");
+   	    write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." Domain status is not OK - user can not login");
 
-      system_message(tr('Domain status is not OK - Login aborted.'));
+   	    system_message(tr('Domain status is not OK - Login aborted.'));
 
-			return false;
+   	    return false;
 
-		}
+   	}
 
-		$sess_id = session_id();
+   	$sess_id = session_id();
 
-		$query = <<<SQL_QUERY
+   	$query = <<<SQL_QUERY
 			update
 				login
 			set
@@ -99,7 +99,7 @@ function register_user($uname, $upass) {
 				session_id = ?
 SQL_QUERY;
 
-		exec_query($sql, $query, array($uname, time(), $sess_id));
+   	exec_query($sql, $query, array($uname, time(), $sess_id));
 
     $_SESSION['user_logged'] = $udata['admin_name'];
 
@@ -129,84 +129,84 @@ SQL_QUERY;
 
 function check_user_login() {
 
-	global $cfg, $sql;
+    global $cfg, $sql;
 
-  $sess_id = session_id();
+    $sess_id = session_id();
 
-	/* kill timedout sessions */
-	do_session_timeout();
+    /* kill timedout sessions */
+    do_session_timeout();
 
-	$user_logged = isset($_SESSION['user_logged'])? $_SESSION['user_logged'] : false;
+    $user_logged = isset($_SESSION['user_logged'])? $_SESSION['user_logged'] : false;
 
 
-  if (!$user_logged) {
+    if (!$user_logged) {
 
-//		write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " bad session data.");
+        return false;
+    }
 
-   	 	return false;
-  	}
+    $user_pass = $_SESSION['user_pass'];
 
-  $user_pass = $_SESSION['user_pass'];
+    $user_type = $_SESSION['user_type'];
 
-  $user_type = $_SESSION['user_type'];
+    $user_id = $_SESSION['user_id'];
 
-  $user_id = $_SESSION['user_id'];
-
-		// verify sessiondata with database
-		$query = <<<SQL_QUERY
-    	select
-	   		*
-      from
-	   		admin, login
-      where
-      	admin.admin_name = ?
-			and
+    // verify sessiondata with database
+    $query = <<<SQL_QUERY
+        select
+            *
+        from
+            admin, login
+        where
+                admin.admin_name = ?
+            and
 				admin.admin_pass = ?
-      and
-      	admin.admin_type = ?
-      and
-      	admin.admin_id = ?
-      and
-      	login.session_id = ?
+            and
+                admin.admin_type = ?
+            and
+                admin.admin_id = ?
+            and
+                login.session_id = ?
 SQL_QUERY;
 
-  	$rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
+    $rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
 
-  	if ($rs -> RecordCount() != 1) {
+    if ($rs -> RecordCount() != 1) {
 
-    	write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " session manipulating detected !");
+        write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " session manipulation detected !");
 
-      return false;
- 		}
+        unset_user_login_data();
 
-  	if ($cfg['SERVICEMODE'] == 1 AND $user_type != 'admin') {
+        return false;
+    }
 
-  	    unset_user_login_data();
+    if ($cfg['SERVICEMODE'] == 1 AND $user_type != 'admin') {
 
-			write_log("<b><i>".htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8")."</i></b> system currently in servicemode. User logged out...");
+        unset_user_login_data();
 
-			header("Location: ../index.php");
+        write_log("<b><i>".htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8")."</i></b> system currently in servicemode. User logged out...");
 
-			return false;
+        header("Location: ../index.php");
 
-		}
-		/* userlogindata correct - update session and lastaccess */
-		$_SESSION['user_login_time'] = time();
+        return false;
 
-		$query = <<<SQL_QUERY
-    	update
-      	login
-      set
-      	lastaccess = ?
-      where
-      	session_id = ?
+    }
+    /* userlogindata correct - update session and lastaccess */
+    $_SESSION['user_login_time'] = time();
+
+    $query = <<<SQL_QUERY
+        update
+            login
+        set
+            lastaccess = ?
+        where
+            session_id = ?
 SQL_QUERY;
 
-			exec_query($sql, $query, array(time(), $sess_id));
+    exec_query($sql, $query, array(time(), $sess_id));
 
-      goto_user_location();
+    goto_user_location();
 
-      return true;
+    return true;
 
 }
 

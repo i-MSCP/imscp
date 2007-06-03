@@ -119,6 +119,7 @@ function gen_page_message(&$tpl) {
     if (!isset($_SESSION['user_page_message'])) {
 
         $tpl -> assign('PAGE_MESSAGE', '');
+        $tpl -> assign('MESSAGE',      '');
 
     } else {
 

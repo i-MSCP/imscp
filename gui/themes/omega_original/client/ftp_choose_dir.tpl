@@ -71,6 +71,11 @@ td.content3 {
 </style></head>
 <body text="#000000">
 <table width="450" cellpadding="5" cellspacing="5">
+              <!-- BDP: page_message -->
+              <tr>
+                <td width="100%" nowrap class="content3"><font color="#FF0000">{MESSAGE}</font></td>
+              </tr>
+              <!-- EDP: page_message -->
               <tr>
                 <td  width="410" class="content3" nowrap colspan="4"><b>{TR_DIRECTORY_TREE}</b></td>
               </tr>
@@ -80,7 +85,7 @@ td.content3 {
                 <td width="60" class="content2" nowrap align="center"><b>{TR__ACTION}</b></td>
               </tr><form>
               <!-- BDP: dir_item -->
-			  
+
               <tr>
 			  	<!-- BDP: list_item -->
                 <td  width="40" class="content" colspan="2" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/bc_{ICON}.png"></td>
@@ -93,7 +98,7 @@ td.content3 {
 				<!-- EDP: action_link -->
 				<!-- EDP: list_item -->
               </tr>
-			  
+
               <!-- EDP: dir_item -->
 			  </form>
 </table>

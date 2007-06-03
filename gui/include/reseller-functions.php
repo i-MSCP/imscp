@@ -740,7 +740,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 			$rau_error = tr('Passwords does not match!');
 
-		}else if (!ispcp_password_check($inpass, 20)) {
+		}else if (!chk_password($inpass)) {
 
 			$rau_error = tr('Incorrect password range or syntax!');
 		}

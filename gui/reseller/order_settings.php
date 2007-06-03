@@ -52,7 +52,7 @@ function save_haf(&$tpl, &$sql)
 	$user_id = $_SESSION['user_id'];
 	$header = $_POST['header'];
 	$footer = $_POST['footer'];
-	
+
 	$query = <<<SQL_QUERY
         select
             id
@@ -62,27 +62,27 @@ function save_haf(&$tpl, &$sql)
             user_id = ?
 SQL_QUERY;
  	$rs = exec_query($sql, $query, array($user_id));
-	
+
 	if ($rs -> RecordCount() !== 0) {
-		 
+
 		 //update query
-		 
+
 		   $query = <<<SQL_QUERY
         update
             orders_settings
         set
-            header = ?, 
+            header = ?,
 			footer = ?
         where
             user_id = ?
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($header, $footer, $user_id));
-	
+
 	} else {
 	//create query
 	    $query = <<<SQL_QUERY
-              insert into 
+              insert into
 			  		orders_settings(user_id, header, footer)
               values
                  (?, ?, ?)
@@ -107,7 +107,7 @@ SQL_QUERY;
  */
 if (isset($_POST['header']) && $_POST['header'] !== '' && isset ($_POST['footer']) && $_POST['footer'] !== '')
 	save_haf($tpl, $sql);
-	
+
 gen_purchase_haf($tpl, $sql, $_SESSION['user_id']);
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_orders.tpl');
@@ -121,7 +121,7 @@ $tpl -> assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
 					 'TR_HEADER' => tr('Header'),
 					 'TR_PREVIEW' => tr('Preview'),
 					 'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
-					 'TR_IMPLEMENT_URL' => 'http://www.Your-ISPCP-Domain/ispcp/orderpanel/index.php?user_id='.$_SESSION['user_id'],
+					 'TR_IMPLEMENT_URL' => 'http://admin.Your-ISPCP-Domain.tld/orderpanel/index.php?user_id='.$_SESSION['user_id'],
                      'TR_FOOTER' => tr('Footer')));
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');

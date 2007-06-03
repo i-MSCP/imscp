@@ -64,8 +64,8 @@ function action_delete(url) {
                           <tr>
                             <td colspan="4" nowrap class="title"><font color="#FF0000">{MESSAGE}</font></td>
                           </tr>
+                          <!-- EDP: page_message -->
                           <tr>
-                            <!-- EDP: page_message -->
                             <td nowrap class="content3"><b>{TR_DOMAIN}</b></td>
                             <td nowrap class="content3"><b>{TR_CATCHALL}</b></td>
                             <td nowrap class="content3" align="center" width="100"><b>{TR_STATUS}</b></td>

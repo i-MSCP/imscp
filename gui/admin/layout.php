@@ -130,8 +130,6 @@ SQL_QUERY;
 }
 
 
-// unused? can be deleted?
-/*
 function gen_def_layout(&$tpl, $user_def_layout) {
     $layouts = array('blue', 'green', 'red', 'yellow');
 
@@ -159,7 +157,6 @@ function gen_def_layout(&$tpl, $user_def_layout) {
     }
 
 }
-*/
 
 $tpl = new pTemplate();
 

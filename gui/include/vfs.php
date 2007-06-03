@@ -219,12 +219,14 @@ SQL_QUERY;
 		$this->_handle = @ftp_connect('localhost');
 		if ( !is_resource($this->_handle) ) {
 			$this->close();
+			return false;
 		}
 
 		// Perform actual login
 		$response = @ftp_login( $this->_handle, $this->_user, $this->_passwd);
 		if ( !$response ) {
 			$this->close();
+			return false;
 		}
 
 		// All went ok! :)

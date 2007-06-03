@@ -16,7 +16,7 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
- 
+
 require '../include/vfs.php';
 include '../include/ispcp-lib.php';
 
@@ -41,14 +41,14 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 function gen_directories( &$tpl ) {
 	global $sql;
-	
+
 	// Initialize variables
 	$path   = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
-	
+
 	// Create the virtual file system and open it so it can be used
 	$vfs =& new vfs($domain,$sql);
-	
+
 	// Get the directory listing
 	$list = $vfs->ls($path);
 	if (!$list) {
@@ -68,26 +68,26 @@ function gen_directories( &$tpl ) {
 				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,
 			));
 	$tpl -> parse('DIR_ITEM', '.dir_item');
-	
+
 	// Show directories only
 	foreach ($list as $entry) {
-		
+
 		// Skip non-directory entries
 		if ( $entry['type'] != VFS_TYPE_DIR )
 			continue;
 		// Skip '.' and '..'
 		if ( $entry['file'] == '.' || $entry['file'] == '..')
 			continue;
-	
+
 		// Check for .htaccess existance to display another icon
 		$dr = $path.'/'.$entry['file'];
 		$tfile = $dr . '/.htaccess';
 		if ($vfs->exists($tfile)) {
 			$image = "locked";
-		} else { 
+		} else {
 			$image = "folder";
 		}
-	
+
 		// Create the directory link
 		$tpl->assign( array(
 			'ACTION' => tr('Protect it'),
@@ -118,16 +118,13 @@ $tpl -> assign(
 
 gen_directories($tpl);
 
-			  
+
 $tpl -> assign(
                 array(
 						'TR_DIRECTORY_TREE' => tr('Directory tree'),
 						'TR_DIRS' => tr('Directories'),
 						'TR__ACTION' => tr('Action'),
-						'CHOOSE' => tr('Choose'),
-						
-
-						
+						'CHOOSE' => tr('Choose')
 					  )
 				);
 

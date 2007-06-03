@@ -1777,12 +1777,12 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	if ($from_name) {
 
-		$from = encode($from_name) . "<" . $from_email . ">";
+	    $from = encode($from_name) . "<" . $from_email . ">";
 
 	} else {
 
-		$from = $from_email;
-		}
+	    $from = $from_email;
+	}
 
 	if ($ufname && $ulname) {
 
@@ -1802,14 +1802,24 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$password = $upass;
 
-	$subject = preg_replace("/\{USERNAME\}/", $username, $subject);
-	$message = preg_replace("/\{USERTYPE\}/", $utype, $message);
-	$message = preg_replace("/\{USERNAME\}/", $username, $message);
-	$message = preg_replace("/\{NAME\}/", $name, $message);
-	$message = preg_replace("/\{PASSWORD\}/", $password, $message);
-	$message = preg_replace("/\{BASE_SERVER_VHOST\}/", $base_vhost, $message);
-
 	$subject = encode($data['subject']);
+
+	$search  = array();
+	$replace = array();
+
+	$search [] = '{USERNAME}';
+	$replace[] = $username;
+	$search [] = '{USERTYPE}';
+	$replace[] = $utype;
+	$search [] = '{NAME}';
+	$replace[] = $name;
+	$search [] = '{PASSWORD}';
+	$replace[] = $password;
+	$search [] = '{BASE_SERVER_VHOST}';
+	$replace[] = $base_vhost;
+
+	$subject = str_replace($search, $replace, $subject);
+	$message = str_replace($search, $replace, $message);
 
 	$headers = "From: $from\n";
 
@@ -2626,7 +2636,6 @@ $header = <<<RIC
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
 <title>ISPCP - Order Panel</title>
--->
 </style>
 </head>
 <center>

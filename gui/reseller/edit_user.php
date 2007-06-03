@@ -119,26 +119,24 @@ if (isset($_POST['genpass'])) {
 
 	$tpl -> assign('VAL_PASSWORD', '');
 
-}	
+}
 
 if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
 // Process data
 	global $dmn_user_name;
 
-	if(isset($_SESSION['edit_ID']))
+	if (isset($_SESSION['edit_ID'])) {
 		$hpid = $_SESSION['edit_ID'];
-	else{
-		unset($_SESSION['edit_ID']);
+	} else {
 		$_SESSION['edit'] = '_no_';
 
 		Header('Location: users.php');
 		die();
 	}
 
-	if(isset($_SESSION['user_name']))
+	if (isset($_SESSION['user_name'])) {
 		$dmn_user_name = $_SESSION['user_name'];
-	else{
-		unset($_SESSION['user_name']);
+	} else {
 		$_SESSION['edit'] = '_no_';
 
 		Header('Location: users.php');
@@ -149,7 +147,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 		update_data_in_db($hpid);
 	}
 
-}else{
+} else {
 	// Get user id that come for edit
 	$hpid = $edit_id;
 
@@ -241,7 +239,7 @@ function gen_edituser_page(&$tpl)
 	global $street_two, $mail, $phone;
 	global $fax;
 
-	if ($customer_id == NULL){
+	if ($customer_id == NULL) {
 		$customer_id = '';
 	}
 
@@ -282,7 +280,7 @@ function update_data_in_db($hpid)
   global $fax, $inpass, $domain_ip;
   global $admin_login;
 
-	$reseller_id = $_SESSION['user_id'];
+  $reseller_id = $_SESSION['user_id'];
 
   $first_name 	= clean_input($first_name);
   $last_name 	= clean_input($last_name);
@@ -315,6 +313,7 @@ function update_data_in_db($hpid)
                 customer_id=?
             where
                 admin_id=?
+                created_by=?
 SQL_QUERY;
     exec_query($sql, $query, array($first_name,
                                    $last_name,
@@ -328,28 +327,29 @@ SQL_QUERY;
                                    $street_one,
                                    $street_two,
                                    $customer_id,
-                                   $hpid));
+                                   $hpid,
+                                   $reseller_id));
   } else {
-    // Change password
-  if (chk_password($_POST['userpassword'])) {
+      // Change password
+      if (chk_password($_POST['userpassword'])) {
 
-  	set_page_message( tr("Incorrect password range or syntax!"));
+          set_page_message( tr("Incorrect password range or syntax!"));
 
-   	header( "Location: edit_user.php?edit_id=$edit_id" );
-    die();
- 	}
-  if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
+          header( "Location: edit_user.php?edit_id=$hpid" );
+          die();
+      }
+      if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
-  	set_page_message( tr("Entered passwords does not match!"));
+          set_page_message( tr("Entered passwords does not match!"));
 
-    header( "Location: edit_user.php?edit_id=$edit_id" );
-    die();
-	}
-    $pure_user_pass = $inpass;
+          header( "Location: edit_user.php?edit_id=$hpid" );
+          die();
+      }
+      $pure_user_pass = $inpass;
 
-    $inpass = crypt_user_pass($inpass);
+      $inpass = crypt_user_pass($inpass);
 
-    $query = <<<SQL_QUERY
+      $query = <<<SQL_QUERY
             update
                 admin
             set
@@ -368,8 +368,9 @@ SQL_QUERY;
                 customer_id=?
             where
                 admin_id=?
+                created_by=?
 SQL_QUERY;
-    exec_query($sql, $query, array($inpass,
+      exec_query($sql, $query, array($inpass,
                                    $first_name,
                                    $last_name,
                                    $firm,
@@ -382,7 +383,25 @@ SQL_QUERY;
                                    $street_one,
                                    $street_two,
                                    $customer_id,
-                                   $hpid));
+                                   $hpid,
+                                   $reseller_id));
+
+      //
+      // Kill any existing session of the edited user
+      //
+      $admin_name = get_user_name($hpid);
+      $query = <<<SQL_QUERY
+                    delete from
+                        login
+                    where
+                        user_name = ?
+SQL_QUERY;
+
+      $rs = exec_query($sql, $query, array($admin_name));
+      if ($rs -> RecordCount() != 0) {
+          set_page_message(tr('User session was killed!'));
+          write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");
+      }
   }
 
 	$admin_login = $_SESSION['user_logged'];
@@ -399,7 +418,7 @@ SQL_QUERY;
             	              tr('Domain account'));
 
 	}
-	
+
 	unset($_SESSION['edit_ID']);
 	unset($_SESSION['user_name']);
 

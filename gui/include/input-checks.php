@@ -119,21 +119,21 @@ function clean_input($input) {
 
 function ispcp_password_check ( $data, $num) {
 
-	global $cfg;
+    global $cfg;
 
-  $len = strlen($data);
+    $len = strlen($data);
 
-  if ($len < $cfg['PASSWD_CHARS'] || $len > $num ) return false;
+    if ($len < $cfg['PASSWD_CHARS'] || $len > $num ) return false;
 
-	if ($cfg['PASSWD_STRONG'] == 1) {
+    if ($cfg['PASSWD_STRONG'] == 1) {
 
-		return (preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
+        return (preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
 
-	} else {
+    } else {
 
-		return true;
+        return true;
 
-	}
+    }
 
 }
 
