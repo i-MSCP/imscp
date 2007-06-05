@@ -184,7 +184,7 @@ SQL_QUERY;
 function check_user_data()
 {
 
-    global $reseller_ips, $sql;
+    global $reseller_ips;
 
     if(!empty($_POST['pass']) || !empty($_POST['pass_rep'])){
         if (chk_password($_POST['pass'])) {
@@ -567,7 +567,7 @@ SQL_QUERY;
             return true;
 
         }
-        
+
         $res -> MoveNext();
 
     }
@@ -724,7 +724,7 @@ SQL_QUERY;
             write_log("$user_logged: change data/password for reseller: $edit_username!");
 
 						if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
-  
+
   	          send_add_user_auto_msg ($user_id,
     	                                $edit_username,
     	                                clean_input($_POST['pass']),
@@ -948,7 +948,7 @@ if (isset($_POST['genpass'])) {
 
 	$tpl -> assign('VAL_PASSWORD', '');
 
-}	
+}
 
 gen_page_message($tpl);
 

@@ -16,7 +16,7 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
- 
+
 include '../include/ispcp-lib.php';
 
 check_login();
@@ -51,7 +51,7 @@ $tpl -> assign(
 
 // ** Functions
 
-function get_htuser_name(&$sql, &$uuser_id, &$dmn_id)
+function get_htuser_name(&$sql, $uuser_id, $dmn_id)
 {
 
 $query = <<<SQL_QUERY
@@ -82,9 +82,6 @@ SQL_QUERY;
 
 		return $rs;
 	}
-
-
-
 }
 
 
@@ -179,7 +176,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id)
 	//end of all groups
 }
 
-function add_user_to_group(&$tpl)
+function add_user_to_group()
 {
 	if(isset($_POST['uaction']) && $_POST['uaction'] == 'add' && isset($_POST['groups'])
 		&& !empty($_POST['groups']) && isset($_POST['nadmin_name']))
@@ -284,7 +281,7 @@ check_permissions($tpl);
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-//add_user_to_group($tpl, $sql, $dmn_id);
+//add_user_to_group($sql, $dmn_id);
 
 //delete_user_from_group($tpl, $sql, $dmn_id);
 

@@ -72,6 +72,8 @@ class status {
 				$ip = $this->all[$i]['ip'];
 				$port = $this->all[$i]['port'];
 				$service = $this->all[$i]['service'];
+				$errno  = null;
+				$errstr = null;
 				if($this->all[$i]['type'] == 'tcp')	{
 					$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
 				}
@@ -104,6 +106,8 @@ class status {
 
 		# GetSingleStatus will get the status of single address
 		function GetSingleStatus($ip, $port, $type, $timeout = 5) {
+		    $errno  = null;
+		    $errstr = null;
 			if($type == 'tcp'){
 				$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
 			}

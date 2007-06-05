@@ -189,7 +189,7 @@ SQL_QUERY;
 
 }
 
-function get_ticket_from(&$tpl, &$sql, &$ticket_id)
+function get_ticket_from(&$tpl, &$sql, $ticket_id)
 {
   $query = <<<SQL_QUERY
       SELECT

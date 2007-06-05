@@ -38,18 +38,24 @@ $tpl -> assign(array('TR_CLIENT_CHANGE_PASSWORD_PAGE_TITLE' => tr('ISPCP - Clien
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
-  if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
-    set_page_message(tr('Please fill up all data fields!'));
-  } else if ($_POST['pass'] !== $_POST['pass_rep']) {
-    set_page_message(tr('Passwords does not match!'));
-  } else if (chk_password($_POST['pass']) > 0) {
-	set_page_message(tr('Incorrect password range or syntax!'));
 
-	} else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
+    if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
+
+        set_page_message(tr('Please fill up all data fields!'));
+
+    } else if ($_POST['pass'] !== $_POST['pass_rep']) {
+
+        set_page_message(tr('Passwords does not match!'));
+
+    } else if (chk_password($_POST['pass'])) {
+
+        set_page_message(tr('Incorrect password range or syntax!'));
+
+    } else if (!check_udata($_SESSION['user_id'], $_POST['curr_pass'])) {
 
         set_page_message(tr('The current password is wrong!'));
 
-  } else {
+    } else {
 
     $upass = crypt_user_pass($_POST['pass']);
 

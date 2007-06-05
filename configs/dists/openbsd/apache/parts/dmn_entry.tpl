@@ -1,8 +1,6 @@
 <VirtualHost {DMN_IP}:80>
 
-    <IfModule mod_fastcgi.c>
-        SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
-    </IfModule>
+    SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
 
     ServerAdmin     root@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
@@ -29,17 +27,13 @@
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 
-    <IfModule mod_fastcgi.c>
-        ScriptAlias /php4/ {STARTER_DIR}/{DMN_NAME}/
-        <Directory "{STARTER_DIR}/{DMN_NAME}">
-            AllowOverride None
-            Options +ExecCGI -MultiViews -Indexes
-            Order allow,deny
-            Allow from all
+    <IfModule mod_php4.c>
+        <Directory {GUI_ROOT_DIR}>
+            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+            php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
         </Directory>
     </IfModule>
-
-    <IfModule mod_php4.c>
+    <IfModule mod_php5.c>
         <Directory {GUI_ROOT_DIR}>
             php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
             php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"

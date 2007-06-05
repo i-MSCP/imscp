@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH

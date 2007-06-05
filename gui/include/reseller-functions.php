@@ -736,11 +736,11 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 			$rau_error = tr('Please fill up both data fields for password!');
 
-		}else if ($inpass_re !== $inpass ){
+		} else if ($inpass_re !== $inpass ){
 
 			$rau_error = tr('Passwords does not match!');
 
-		}else if (!chk_password($inpass)) {
+		} else if (chk_password($inpass)) {
 
 			$rau_error = tr('Incorrect password range or syntax!');
 		}

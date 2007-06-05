@@ -61,7 +61,7 @@ function padd_group(&$tpl, &$sql, &$dmn_id)
 	// we have user to add
 		if(isset($_POST['groupname']))
 		{
-			if (chk_username($_POST['groupname']) > 0 ) {
+			if (chk_username($_POST['groupname'])) {
      		   set_page_message(tr('Wrong username!'));
 			   return;
     		}
@@ -99,7 +99,7 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
         $rs = exec_query($sql, $query, array($dmn_id, $groupname, $change_status));
-		
+
         $change_status = $cfg['ITEM_CHANGE_STATUS'];
 
 		$query = <<<SQL_QUERY
@@ -114,8 +114,8 @@ SQL_QUERY;
 
 			check_for_lock_file();
 			send_request();
-        
-        
+
+
         $admin_login = $_SESSION['user_logged'];
 		write_log("$admin_login: add group (protected areas): $groupname");
 		$gadd = 1;

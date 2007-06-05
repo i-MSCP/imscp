@@ -115,7 +115,7 @@ SQL_QUERY;
 }
 
 function delete_service($port_name) {
-	global $sql, $cfg;
+	global $sql;
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -142,8 +142,7 @@ SQL_QUERY;
 
 		set_page_message('Service port was removed!');
 
-	}
-	else {
+	} else {
 		set_page_message('ERROR: You are not allowed to remove Systemports!');
 	}
 

@@ -47,7 +47,7 @@ SQL_QUERY;
 		$menu_name = $rs -> fields['menu_name'];
 		$menu_link = $rs -> fields['menu_link'];
 
-		
+
 		if ($menu_level === 'admin'){
 
 			$menu_level = tr('Administrator');
@@ -88,14 +88,14 @@ SQL_QUERY;
 
 }
 
-function add_new_button(&$tpl, &$sql)
+function add_new_button(&$sql)
 {
 
-	if (!isset($_POST['uaction'])) { return; }
-
-	else if ($_POST['uaction'] != 'new_button')  { return; }
-
-	else {
+    if (!isset($_POST['uaction'])) {
+        return;
+    } else if ($_POST['uaction'] != 'new_button') {
+        return;
+    } else {
 
 		$button_name = clean_input($_POST['bname']);
 		$button_link = clean_input($_POST['blink']);
@@ -134,7 +134,7 @@ SQL_QUERY;
 	}
 }
 
-function delete_button(&$tpl, &$sql)
+function delete_button(&$sql)
 {
 
 	 if ($_GET['delete_id'] === '' || !is_numeric($_GET['delete_id']))  {
@@ -243,7 +243,7 @@ SQL_QUERY;
 	}
 }
 
-function update_button(&$tpl, &$sql)
+function update_button(&$sql)
 {
 
 	if (!isset($_POST['uaction'])) { return; }
@@ -324,18 +324,18 @@ $tpl -> assign(
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
-add_new_button($tpl, $sql);
+add_new_button($sql);
 
 if (isset($_GET['delete_id'])){
 
-	delete_button($tpl, $sql);
+	delete_button($sql);
 }
 
 if (isset($_GET['edit_id'])){
 	edit_button($tpl, $sql);
 }
 
-update_button($tpl, $sql);
+update_button($sql);
 
 gen_button_list($tpl, $sql);
 

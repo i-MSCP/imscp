@@ -60,8 +60,8 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
 	// we have user to add
 		if(isset($_POST['pass']) && isset($_POST['pass_rep']))
 		{
-			
-		if (chk_password($_POST['pass']) > 0) {
+
+		if (chk_password($_POST['pass'])) {
 			set_page_message(tr('Incorrect password range or syntax!'));
 			return;
 		}
@@ -70,7 +70,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
 			return;
 		}
 
-			if (CRYPT_BLOWFISH == 1) { 
+			if (CRYPT_BLOWFISH == 1) {
 				// suhosin enables blowfish, but apache cannot crypt this, so we don't need that
 				if (CRYPT_MD5 == 1) { // use md5 if available: salt is $1$.microseconds.$
 					$nadmin_password = crypt($_POST['pass'], '$1$'.microtime().'$');

@@ -10,6 +10,17 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-05 Raphael Geissert
+	- GUI
+		* Fixed #364, #362: Can't create User because of Incorrect password range or syntax!
+		* Fixed #363: Undefined variables when editting users in admin side
+		* Fixed #338: Welcome e-mail's subject is encoded before tags are replaced
+	- SETUP
+		* Fixed #360: Bashism in set-engine-permissions.sh
+	- CONFIGS
+		* Fixed #300: Now also remove handler and type
+		* Added support for mod_php5 in dist-specific configs
+
 2007-06-03 Raphael Geissert
 	- GUI
 		* Fixed #357: Missing argument for exec_query()

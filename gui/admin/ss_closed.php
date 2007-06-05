@@ -50,7 +50,7 @@ $tpl -> define_dynamic('scroll_next', 'page');
 //
 // page functions.
 //
-function get_last_date(&$tpl, &$sql, &$ticket_id)
+function get_last_date(&$tpl, &$sql, $ticket_id)
 {
 $query = <<<SQL_QUERY
         SELECT

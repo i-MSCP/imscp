@@ -50,7 +50,7 @@ $tpl -> define_dynamic('scroll_next', 'page');
 //
 // page functions.
 //
-function get_last_date(&$tpl, &$sql, &$ticket_id)
+function get_last_date(&$tpl, &$sql, $ticket_id)
 {
 $query = <<<SQL_QUERY
     SELECT
@@ -184,7 +184,7 @@ SQL_QUERY;
 	while (!$rs -> EOF) {
 
 			$ticket_id  = $rs -> fields['ticket_id'];
-			$from = get_ticket_from($tpl, $sql, $ticket_id);
+			$from = get_ticket_from($sql, $ticket_id);
 			get_last_date($tpl, $sql, $ticket_id);
 			$ticket_urgency = $rs -> fields['ticket_urgency'];
 
@@ -264,7 +264,7 @@ SQL_QUERY;
     }
 }
 
-function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
+function get_ticket_from(&$sql, $ticket_id) {
 	$query = <<<SQL_QUERY
 		select
 			ticket_from,

@@ -71,7 +71,7 @@ $tpl -> assign(array('TR_HOSTING_PLANS' => tr('Hosting plans'),
                      'TR_TITLE_BACK' => tr('Return to previous menu'),
                      'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')));
 
-gen_hp_message($tpl);
+gen_hp_message();
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();
@@ -81,7 +81,7 @@ $tpl -> prnt();
 //
 
 
-function gen_hp_message (&$tpl) {
+function gen_hp_message () {
 	//global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 //	global $external_event;
 
@@ -108,9 +108,9 @@ function gen_hp_message (&$tpl) {
 } // End of gen_hp_message()
 
 
-// Extract and show data for hosting plants
+// Extract and show data for hosting plans
 function gen_hp_table(&$tpl, $reseller_id) {
-	global $sql, $cfg;
+	global $sql;
 
 	$query = <<<SQL_QUERY
 	    SELECT
@@ -149,7 +149,7 @@ SQL_QUERY;
 
 		$i = 1;
 
-		while ($data = $rs -> FetchRow()) {
+		while (($data = $rs -> FetchRow())) {
 			if ($i % 2 == 0) {
 				$tpl -> assign(array('CLASS_TYPE_ROW' => 'content'));
 			} else {

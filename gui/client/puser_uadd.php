@@ -63,11 +63,11 @@ function padd_user(&$tpl, &$sql, &$dmn_id)
 	// we have user to add
 		if(isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep']))
 		{
-			if (chk_username($_POST['username']) > 0 ) {
+			if (chk_username($_POST['username'])) {
 				set_page_message(tr('Wrong username!'));
 				return;
     		}
-		    if (chk_password($_POST['pass']) > 0) {
+		    if (chk_password($_POST['pass'])) {
 				set_page_message(tr('Incorrect password range or syntax!'));
 				return;
 		    }

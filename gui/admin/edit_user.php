@@ -251,7 +251,7 @@ function check_user_data()
     return true;
 }
 
-if ($user_id == $_SESSION['user_id']) {
+if ($edit_id == $_SESSION['user_id']) {
     header( 'Location: change_personal.php' );
     die();
 }
@@ -274,7 +274,8 @@ $query = <<<SQL_QUERY
         phone,
         fax,
         street1,
-        street2
+        street2,
+        email
     from
         admin
     where

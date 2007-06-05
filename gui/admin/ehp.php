@@ -95,7 +95,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
   if (check_data_iscorrect($tpl)) { // Save data to db
     save_data_to_db();
   } else {
-  	restore_form($tpl, $sql);
+  	restore_form($tpl);
   }
 } else {
   // Get hosting plan id tha come for edit
@@ -119,7 +119,7 @@ if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
 //*
 
 // Restore form on any error
-function restore_form(&$tpl, &$sql) {
+function restore_form(&$tpl) {
 	$tpl -> assign(array(
 						 'HP_NAME_VALUE' => clean_input($_POST['hp_name']),
 						 'HP_DESCRIPTION_VALUE' => clean_input($_POST['hp_description']),

@@ -1777,7 +1777,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	if ($from_name) {
 
-	    $from = encode($from_name) . "<" . $from_email . ">";
+	    $from = encode($from_name) . " <" . $from_email . ">";
 
 	} else {
 
@@ -1802,8 +1802,6 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$password = $upass;
 
-	$subject = encode($data['subject']);
-
 	$search  = array();
 	$replace = array();
 
@@ -1820,6 +1818,8 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
+
+	$subject = encode($data['subject']);
 
 	$headers = "From: $from\n";
 

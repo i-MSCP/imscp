@@ -127,7 +127,7 @@ function ispcp_password_check ( $data, $num) {
 
     if ($cfg['PASSWD_STRONG'] == 1) {
 
-        return (preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
+        return (bool)(preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
 
     } else {
 
@@ -140,24 +140,15 @@ function ispcp_password_check ( $data, $num) {
 /* check for valid username  */
 function chk_username( $username ) {
 
-    if ( ispcp_username_check($username,50) == 0 ) {
-        return 1;
-    }
-
-    /* seems ok ! */
-    return 0;
+    return !ispcp_username_check($username, 50);
 
 }
 
 /* check for valid password  */
 function chk_password( $password ) {
 
-	if ( ispcp_password_check($password, 50) == 0 ) {
-        return 1;
-    }
+	return !ispcp_password_check($password, 50);
 
-    /* seems ok ! */
-    return 0;
 }
 
 function ispcp_username_check($data, $num) {
@@ -440,6 +431,8 @@ function ispcp_domain_check($data) {
 	$res = rsl_full_domain_check($data);
 
 	if ($res == 0) return 0;
+
+	$match = array();
 
 	$res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
 
