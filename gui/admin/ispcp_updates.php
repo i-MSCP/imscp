@@ -31,9 +31,16 @@ function get_update_infos(&$tpl) {
     // Fake the browser type
     ini_set('user_agent','Mozilla/5.0');
 
-	$dh2 = @fopen($last_update,'r');
-	$last_update_result = (int)@fread($dh2, 8);
-	fclose($dh2);
+	if ($cfg["DUMP_GUI_DEBUG"]) {
+		$dh2 = fopen($last_update,'r');
+		$last_update_result = (int)@fread($dh2, 8);
+		fclose($dh2);
+	}
+	else {
+		$dh2 = @fopen($last_update,'r');
+		$last_update_result = (int)@fread($dh2, 8);
+		@fclose($dh2);
+	}
 
 	$current_version = (int)$cfg['BuildDate'];
 	if ($current_version < $last_update_result) {

@@ -1,12 +1,12 @@
 $TTL 86400
 @	IN	SOA	ns.{DMN_NAME}. root.{DMN_NAME}. (
 ; dmn [{DMN_NAME}] timestamp entry BEGIN.
-			{TIMESTAMP}
+			{TIMESTAMP}	; Serial
 ; dmn [{DMN_NAME}] timestamp entry END.
-			8H
-			2H
-			4W
-			1D
+			8H		; Refresh
+			2H		; Retry
+			4W		; Expire
+			1D		; minimum
 )
 		IN	NS	ns1.{DMN_NAME}.
 		IN	NS	ns2.{DMN_NAME}.

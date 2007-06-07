@@ -18,7 +18,6 @@
  **/
 
 
-
 include '../include/ispcp-lib.php';
 
 check_login();
@@ -57,8 +56,7 @@ $tpl -> assign(
 
 
 
- function generate_page ( &$tpl)
-{
+ function generate_page (&$tpl) {
 
     global $sql,$cfg;
 
@@ -171,17 +169,16 @@ SQL_QUERY;
             }
            $log_message = $rs->fields['log_message'];
            $replaces = array(
-               '/[^a-zA-Z](delete)[^a-zA-Z]/i' => '<font color="#FF0000"><strong>\\1</strong></font>',
-               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => '<font color="#CC6600"><strong>\\1</strong></font>',
-               '/[^a-zA-Z](change)[^a-zA-Z]/i' => '<font color="#3300FF"><strong>\\1</strong></font>',
-               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => '<font color="#CC6600"><strong>\\1</strong></font>',
-               '/[^a-zA-Z](unknown)[^a-zA-Z]/i'=> '<font color="#CC00FF"><strong>\\1</strong></font>',
-               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => '<font color="#339966"><strong>\\1</strong></font>',
-               '/(bad password login data)/i'  => '<font color="#FF0000"><strong>\\1</strong></font>'
+               '/[^a-zA-Z](delete)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => ' <strong style="color:#CC6600">\\1</strong> ',
+               '/[^a-zA-Z](change)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
+               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => ' <strong style="color:#CC6600">\\1</strong> ',
+               '/[^a-zA-Z](unknown)[^a-zA-Z]/i'=> ' <strong style="color:#CC00FF">\\1</strong> ',
+               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => ' <strong style="color:#339966">\\1</strong> ',
+               '/(bad password login data)/i'  => ' <strong style="color:#FF0000">\\1</strong> '
            );
 
-           foreach ( $replaces as $pattern => $replacement)
-           {
+           foreach ( $replaces as $pattern => $replacement) {
                $log_message = preg_replace($pattern, $replacement, $log_message);
            }
 
@@ -201,8 +198,7 @@ SQL_QUERY;
 }
 
 
-function clear_log()
-{
+function clear_log() {
     global $sql;
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {

@@ -758,11 +758,13 @@ sub user_dialog {
 
 	} while ($rs == 1);
 
-	do {
+	if ($main::ua{'awstats_on'} eq 'yes') {
+		do {
 
-		$rs = ask_awstats_dyn();
+			$rs = ask_awstats_dyn();
 
-	} while ($rs == 1);
+		} while ($rs == 1);
+	}
 
 
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");

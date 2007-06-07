@@ -12,7 +12,7 @@
 	endscript
 	postrotate
 	if [ -f /var/run/httpd.pid ]; then
-		/etc/init.d/httpd restart > /dev/null
+		/etc/init.d/httpd reload > /dev/null
 	fi
 	endscript
 }

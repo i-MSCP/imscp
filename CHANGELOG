@@ -10,7 +10,19 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-06-08 Benedikt Heintel
+2007-06-07 Benedikt Heintel
+	- CONFIGS
+		* Fedora: fixed #318: views in named.conf
+		* Fixed #373: proftpd config (>1.3) logging not correct
+	- GUI
+		* Fixed #361: apache2 reload after logrotate
+		* Fixed #366: when tying to add an subdomain without a mount point
+		* Fixed #368: missing spaces in adminlog
+		* Fixed #371: php warning if server can't read latest.txt from isp-control.net
+	- SETUP
+		* Fixed #370: no need to ask about awstats mode if i don't install awstats
+
+2007-06-06 Benedikt Heintel
 	- CONFIGS
 		* Added a new set of php.ini files (PHP 4.4.7 & PHP 5.2.3 compatible)
 
