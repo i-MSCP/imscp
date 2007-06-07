@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-08 Benedikt Heintel
+	- CONFIGS
+		* Added a new set of php.ini files (PHP 4.4.7 & PHP 5.2.3 compatible)
+
 2007-06-05 Raphael Geissert
 	- GUI
 		* Fixed #364, #362: Can't create User because of Incorrect password range or syntax!
