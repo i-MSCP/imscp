@@ -1816,10 +1816,9 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$search [] = '{BASE_SERVER_VHOST}';
 	$replace[] = $base_vhost;
 
-	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
 
-	$subject = encode($data['subject']);
+	$subject = encode(str_replace($search, $replace, $subject));
 
 	$headers = "From: $from\n";
 
