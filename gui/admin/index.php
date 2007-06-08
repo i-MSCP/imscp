@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -91,22 +91,23 @@ function get_update_infos(&$tpl) {
     // Fake the browser type
     ini_set('user_agent','Mozilla/5.0');
 
-	$dh2 = @fopen($last_update,'r');
-
-	if (!is_resource($dh2)) {
-		$tpl -> assign(array('UPDATE' =>  tr("Couldn't check for updates!")));
-		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
-		return ;
+	if ($cfg["DUMP_GUI_DEBUG"]) {
+		$dh2 = fopen($last_update,'r');
+		$last_update_result = (int)@fread($dh2, 8);
+		fclose($dh2);
 	}
-
-	$last_update_result = (int)fread($dh2, 8);
-	fclose($dh2);
+	else {
+		$dh2 = @fopen($last_update,'r');
+		$last_update_result = (int)@fread($dh2, 8);
+		@fclose($dh2);
+	}
 
 	$current_version = (int)$cfg['BuildDate'];
 	if ($current_version < $last_update_result) {
 		$tpl -> assign(array('UPDATE' =>  tr('New ISPCP update is now available')));
 		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
-	} else {
+	}
+	else {
 		$tpl -> assign(array('UPDATE_MESSAGE' => ''));
 	}
 }
@@ -148,7 +149,7 @@ SQL_QUERY;
 		$pr = 0;
 	}
    	else{
-    $pr = ($traff/$straff_max)*100;
+    	$pr = ($traff/$straff_max)*100;
    	}
 
 	$pr = sprintf("%.2f", $pr);
@@ -169,7 +170,8 @@ SQL_QUERY;
 
 	if ($straff_max == 0) {
 		$show_straf_max = tr('unlimited');
-	} else {
+	}
+	else {
 		$show_straf_max = sizeit($straff_max);
 	}
 
@@ -219,7 +221,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 
