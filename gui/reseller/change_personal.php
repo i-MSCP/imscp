@@ -145,7 +145,7 @@ gen_reseller_personal_data($tpl, $sql, $_SESSION['user_id']);
  * static page messages.
  *
  */
- 
+
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_general_information.tpl');
 
@@ -176,7 +176,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

@@ -184,6 +184,8 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 	    	$sub_mnt_pt = strtolower($_POST['subdomain_mnt_pt']);
 			$sub_mnt_pt = decode_idna($sub_mnt_pt);
 	    }
+	    else
+	    	$sub_mnt_pt = "/";
 
 	    if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
 	      	set_page_message(tr('Subdomain already exists!'));
@@ -251,6 +253,6 @@ gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 ?>

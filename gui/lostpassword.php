@@ -20,7 +20,7 @@
 include 'include/ispcp-lib.php';
 
 
-if ($cfg['LOSTPASSWORD'] != 1) {
+if (!$cfg['LOSTPASSWORD']) {
 	system_message(tr('Lost password function currently disabled'));
 	die();
 }
@@ -77,7 +77,7 @@ if (isset($_GET['key'])) {
 
 		$tpl -> prnt();
 
-		if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+		if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 		exit(0);
 	}
 }
@@ -125,7 +125,7 @@ if (isset($_POST['uname'])) {
 
 		$tpl -> prnt();
 
-		if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+		if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 		exit(0);
 	}
 }
@@ -156,6 +156,6 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 ?>

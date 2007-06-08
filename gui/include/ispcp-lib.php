@@ -19,7 +19,6 @@
  **/
 
 
-
 session_name("ISPCP");
 
 if (!isset($_SESSION))
@@ -81,19 +80,21 @@ $cfg['HOSTING_PLANS_LEVEL'] = 'reseller';
 */
 
 // variable for developmetn edition => shows all php variables under the pages
-//$cfg['DUMP_GUI_DEBUG'] = '_on_';
+/* false = disable */
+/* true = enable */
+$cfg['DUMP_GUI_DEBUG'] = false;
 
 $cfg['USER_INITIAL_LANG'] = 'lang_English';
 
 /* enable or disable supportsystem */
-/* 0 = disable */
-/* 1 = enable */
-$cfg['ISPCP_SUPPORT_SYSTEM'] = 1;
+/* false = disable */
+/* true = enable */
+$cfg['ISPCP_SUPPORT_SYSTEM'] = true;
 
 /* enable or disable lostpassword function */
-/* 0 = disable */
-/* 1 = enable */
-$cfg['LOSTPASSWORD'] = 1;
+/* false = disable */
+/* true = enable */
+$cfg['LOSTPASSWORD'] = true;
 
 /* uniqkeytimeout in minuntes */
 $cfg['LOSTPASSWORD_TIMEOUT'] = 30;
@@ -114,9 +115,9 @@ $cfg['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(0,53,92);
 $cfg['LOSTPASSWORD_CAPTCHA_FONT'] = $cfg['LOGIN_TEMPLATE_PATH'].'/font/cap.ttf';
 
 /* enable or disable bruteforcedetection */
-/* 0 = disable */
-/* 1 = enable */
-$cfg['BRUTEFORCE'] = 1;
+/* false = disable */
+/* true = enable */
+$cfg['BRUTEFORCE'] = true;
 
 /* blocktime in minutes */
 $cfg['BRUTEFORCE_BLOCK_TIME'] = 30;
@@ -125,17 +126,17 @@ $cfg['BRUTEFORCE_BLOCK_TIME'] = 30;
 $cfg['BRUTEFORCE_MAX_LOGIN'] = 3;
 
 /* enable or disable time between logins */
-/* 0 = disable */
-/* 1 = enable */
-$cfg['BRUTEFORCE_BETWEEN'] = 1;
+/* true = disable */
+/* false = enable */
+$cfg['BRUTEFORCE_BETWEEN'] = true;
 
 /* time between logins in seconds */
 $cfg['BRUTEFORCE_BETWEEN_TIME'] = 30;
 
 /* enable or disable servicemode */
-/* 0 = disable */
-/* 1 = enable */
-$cfg['SERVICEMODE'] = 0;
+/* true = disable */
+/* false = enable */
+$cfg['SERVICEMODE'] = false;
 
 /* servicemode message */
 $cfg['SERVICEMODE_MESSAGE'] = 'The system currently in servicemode!';
@@ -144,9 +145,9 @@ $cfg['SERVICEMODE_MESSAGE'] = 'The system currently in servicemode!';
 $cfg['PASSWD_CHARS'] = 6;
 
 /* enable or disable strong passwords */
-/* 0 = disable */
-/* 1 = enable */
-$cfg['PASSWD_STRONG'] = 1;
+/* false = disable */
+/* true = enable */
+$cfg['PASSWD_STRONG'] = true;
 
 /* security level
  * none     - Default behavior in earlier X-Panel versions
@@ -212,20 +213,14 @@ require_once(realpath($include_path.'/security/core.inc.php'));
 
 $query = "SELECT name, value FROM config";
 
-if( !$res = exec_query($sql, $query, array()) ) {
-
+if(!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));
-
 	die();
-
-} else {
-
+}
+else {
 	while( $row = $res -> FetchRow() ) {
-
 		$cfg[$row['name']] = $row['value'];
-
 	}
-
 }
 
 ?>

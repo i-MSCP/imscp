@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
@@ -94,21 +94,21 @@ SQL_QUERY;
 
     header("Location: index.php?user_id=$user_id");
 	die();
-	
+
   } else {
-  
+
   $props = $rs -> fields['props'];
   list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $props);
-	
+
 	$price = $rs -> fields['price'];
 	$setup_fee = $rs -> fields['setup_fee'];
-	
+
 	if ($price == 0 || $price == '') {
 		$price = tr('free of charge');
 	} else {
 		$price = $price." ".$rs -> fields['value']." ".$rs -> fields['payment'];
 	}
-	
+
 	if ($setup_fee == 0 || $setup_fee == '') {
 		$setup_fee = tr('free of charge');
 	} else {
@@ -117,13 +117,13 @@ SQL_QUERY;
 	$description = $rs -> fields['description'];
 	if ($description == '')
 		$description = '';
-		
+
 	if (is_numeric(translate_value($hp_disk))){
 			$hp_disk = sizeit($hp_disk*1024*1024)."<br>";
 		} else {
 			$hp_disk = translate_value($hp_disk)."<br>";
 		}
-		
+
 		if (is_numeric(translate_value($hp_traff))){
 			$hp_traff = sizeit($hp_traff*1024*1024);
 		} else {
@@ -149,7 +149,7 @@ SQL_QUERY;
 									'SQL_USR' => translate_value($hp_sql_user),
 									'PRICE' => $price,
 									'SETUP' => $setup_fee,
-									
+
                                  )
                           );
 
@@ -179,7 +179,7 @@ if (isset($_GET['id'])){
 	$_SESSION['plan_id'] = $plan_id;
 	if(isset($_SESSION['user_id'])){
 		$user_id = $_SESSION['user_id'];
-	} else if (isset($_GET['user_id'])){ 
+	} else if (isset($_GET['user_id'])){
 		$user_id = $_GET['user_id'];
 		$_SESSION['user_id'] = $user_id;
 	} else  {
@@ -226,11 +226,11 @@ gen_page_message($tpl);
 						'TRR_PRICE' => tr('Package Price'),
 						'TR_SETUP_FEE' => tr('Setup Fee'),
 						'TR_PERFORMANCE' => tr('Performance'),
-						
+
 						'TR_PURCHASE' => tr('Purchase'),
 						'TR_BACK' => tr('Back'),
 						'YES' => tr('Yes'),
-						
+
 
 					)
 			);
@@ -240,7 +240,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

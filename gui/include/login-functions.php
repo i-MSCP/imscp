@@ -127,7 +127,8 @@ function check_ipaddr($ipaddr) {
 
 	}
 
-	if ($cfg['BRUTEFORCE'] != 1) return false;
+	if (!$cfg['BRUTEFORCE'])
+		return false;
 
 	$data = $res -> FetchRow();
 
@@ -151,14 +152,11 @@ function check_ipaddr($ipaddr) {
 
 	}
 
-	if ($cfg['BRUTEFORCE_BETWEEN'] == 1) {
-
+	if ($cfg['BRUTEFORCE_BETWEEN']) {
 		$btime = $lastaccess + $cfg['BRUTEFORCE_BETWEEN_TIME'];
-
-	} else {
-
+	}
+	else {
 		$btime = 0;
-
 	}
 
 	if ($btime < time()) {

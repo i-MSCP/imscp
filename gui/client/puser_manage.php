@@ -132,7 +132,7 @@ SQL_QUERY;
 
 			$members = $rs -> fields['members'];
 			$status = $rs -> fields['status'];
-			
+
 			$tpl -> assign(
 						array(
 								'GNAME' => $rs -> fields['ugroup'],
@@ -237,7 +237,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

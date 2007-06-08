@@ -22,7 +22,8 @@ function init_login() {
 
 	global $cfg;
 
-	if ($cfg['BRUTEFORCE'] != 1) return;
+	if (!$cfg['BRUTEFORCE'])
+		return false;
 
 	unblock($cfg['BRUTEFORCE_BLOCK_TIME']);
 
@@ -55,7 +56,7 @@ function register_user($uname, $upass) {
 
     $udata = get_userdata($uname);
 
-  if ($cfg['SERVICEMODE'] == 1 AND $udata['admin_type'] != 'admin') {
+  if ($cfg['SERVICEMODE'] AND $udata['admin_type'] != 'admin') {
 
 		write_log("Login error, <b><i>".htmlspecialchars($uname, ENT_QUOTES, "UTF-8")."</i></b> system currently in servicemode");
 
@@ -179,7 +180,7 @@ SQL_QUERY;
         return false;
     }
 
-    if ($cfg['SERVICEMODE'] == 1 AND $user_type != 'admin') {
+    if ($cfg['SERVICEMODE'] AND $user_type != 'admin') {
 
         unset_user_login_data();
 

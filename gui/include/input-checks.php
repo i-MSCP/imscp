@@ -125,7 +125,7 @@ function ispcp_password_check ( $data, $num) {
 
     if ($len < $cfg['PASSWD_CHARS'] || $len > $num ) return false;
 
-    if ($cfg['PASSWD_STRONG'] == 1) {
+    if ($cfg['PASSWD_STRONG']) {
 
         return (bool)(preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
 

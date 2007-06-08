@@ -21,12 +21,9 @@ include '../include/ispcp-lib.php';
 
 check_login();
 
-if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
-
+if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 	header( "Location: index.php" );
-
-  die();
-
+	die();
 }
 
 $tpl = new pTemplate();
@@ -359,7 +356,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 

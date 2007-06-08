@@ -55,14 +55,10 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 
 }
 
-if ($cfg['SERVICEMODE'] == 1) {
-
+if ($cfg['SERVICEMODE']) {
 	$selected_on = 'selected';
-
 } else {
-
 	$selected_off = 'selected';
-
 }
 
 /*
@@ -94,7 +90,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

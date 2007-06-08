@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
@@ -45,9 +45,9 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$first_name = '';
 	}
-	
-	
-	
+
+
+
 	if (isset($_POST['lname'])){
 		$last_name = $_POST['lname'];
 	} else if(isset($_SESSION['lname'])){
@@ -55,7 +55,7 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$last_name = '';
 	}
-	
+
 	if (isset($_POST['email'])){
 		$email = $_POST['email'];
 	} else if(isset($_SESSION['email'])){
@@ -63,8 +63,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$email = '';
 	}
-	
-	
+
+
 	if (isset($_POST['firm'])){
 		$company = $_POST['firm'];
 	} else if(isset($_SESSION['firm'])){
@@ -72,8 +72,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$company = '';
 	}
-	
-	
+
+
 	if (isset($_POST['zip'])){
 		$postal_code = $_POST['zip'];
 	} else if(isset($_SESSION['zip'])){
@@ -81,8 +81,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$postal_code = '';
 	}
-	
-	
+
+
 	if (isset($_POST['city'])){
 		$city = $_POST['city'];
 	} else if(isset($_SESSION['city'])){
@@ -90,8 +90,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$city = '';
 	}
-	
-	
+
+
 	if (isset($_POST['country'])){
 		$country = $_POST['country'];
 	} else if(isset($_SESSION['country'])){
@@ -99,8 +99,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$country = '';
 	}
-	
-	
+
+
 	if (isset($_POST['street1'])){
 		$street1 = $_POST['street1'];
 	} else if(isset($_SESSION['street1'])){
@@ -108,8 +108,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$street1 = '';
 	}
-	
-	
+
+
 	if (isset($_POST['street2'])){
 		$street2 = $_POST['street2'];
 	} else if(isset($_SESSION['street2'])){
@@ -117,7 +117,7 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$street2 = '';
 	}
-	
+
 	if (isset($_POST['phone'])){
 		$phone = $_POST['phone'];
 	} else if(isset($_SESSION['phone'])){
@@ -125,7 +125,7 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$phone = '';
 	}
-	
+
 	if (isset($_POST['fax'])){
 		$fax = $_POST['fax'];
 	} else if(isset($_SESSION['fax'])){
@@ -174,7 +174,7 @@ if (
 	(isset($_POST['street1']) && $_POST['street1'] != '') and
 	(isset($_POST['phone']) && $_POST['phone'] != '')
 	) {
-	
+
 		$_SESSION['fname'] = $_POST['fname'];
 		$_SESSION['lname'] = $_POST['lname'];
 		$_SESSION['email'] = $_POST['email'];
@@ -183,27 +183,27 @@ if (
 		$_SESSION['country'] = $_POST['country'];
 		$_SESSION['street1'] = $_POST['street1'];
 		$_SESSION['phone'] = $_POST['phone'];
-		
+
 		if (isset($_POST['firm'])  && $_POST['firm'] != '') {
 			$_SESSION['firm'] = $_POST['firm'];
 		}
-		
+
 		if (isset($_POST['street2'])  && $_POST['street2'] != '') {
 			$_SESSION['street2'] = $_POST['street2'];
 		}
-		
+
 		if (isset($_POST['fax'])  && $_POST['fax'] != '') {
 			$_SESSION['fax'] = $_POST['fax'];
 		}
-		
+
 		header("Location: chart.php");
 		die();
-	
-	
+
+
 	} else {
 		set_page_message(tr('Please fill out all needed fields!'));
 		$_GET['edit'] = "yes";
-		
+
 	}
 
 
@@ -212,10 +212,6 @@ if (
 /*
 * Functions end
 */
-
-
-
-
 
 
 /*
@@ -282,7 +278,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

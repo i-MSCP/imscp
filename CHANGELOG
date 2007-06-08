@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-08 Benedikt Heintel
+	- GUI
+		* Fixed #366: mount point not set -> warning
+		* Fixed #375: Undefined index -> changed system variables from int to boolean
+	- SETUP
+		* Fixed #370: warning surpressed
+
 2007-06-07 Benedikt Heintel
 	- CONFIGS
 		* Fedora: fixed #318: views in named.conf

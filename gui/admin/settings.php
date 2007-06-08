@@ -88,7 +88,7 @@ $tpl -> assign(
 
 gen_def_language($tpl, $sql, $cfg['USER_INITIAL_LANG']);
 
-if ($cfg['LOSTPASSWORD'] == 1) {
+if ($cfg['LOSTPASSWORD']) {
 	$tpl -> assign('LOSTPASSWORD_SELECTED_ON', 'selected');
 	$tpl -> assign('LOSTPASSWORD_SELECTED_OFF', '');
 } else {
@@ -96,7 +96,7 @@ if ($cfg['LOSTPASSWORD'] == 1) {
 	$tpl -> assign('LOSTPASSWORD_SELECTED_OFF', 'selected');
 }
 
-if ($cfg['BRUTEFORCE'] == 1) {
+if ($cfg['BRUTEFORCE']) {
 	$tpl -> assign('BRUTEFORCE_SELECTED_ON', 'selected');
 	$tpl -> assign('BRUTEFORCE_SELECTED_OFF', '');
 } else {
@@ -104,7 +104,7 @@ if ($cfg['BRUTEFORCE'] == 1) {
 	$tpl -> assign('BRUTEFORCE_SELECTED_OFF', 'selected');
 }
 
-if ($cfg['BRUTEFORCE_BETWEEN'] == 1) {
+if ($cfg['BRUTEFORCE_BETWEEN']) {
 	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_ON', 'selected');
 	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
 } else {
@@ -112,7 +112,7 @@ if ($cfg['BRUTEFORCE_BETWEEN'] == 1) {
 	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected');
 }
 
-if ($cfg['ISPCP_SUPPORT_SYSTEM'] == 1) {
+if ($cfg['ISPCP_SUPPORT_SYSTEM']) {
 	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected');
 	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
@@ -158,7 +158,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

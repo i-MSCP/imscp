@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
@@ -42,13 +42,13 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id)
 	$domain_name = $_SESSION['domainname'];
 	$fname = $_SESSION['fname'];
 	$lname = $_SESSION['lname'];
-	
+
 	if (isset($_SESSION['firm'])){
 		$firm = $_SESSION['firm'];
 	} else {
 		$firm = '';
 	}
-	
+
 	$zip = $_SESSION['zip'];
 	$city = $_SESSION['city'];
 	$country = $_SESSION['country'];
@@ -60,35 +60,35 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id)
 	} else {
 		$fax = '';
 	}
-	
+
 	$street1 = $_SESSION['street1'];
-	
+
 	if (isset($_SESSION['street2'])){
 		$street2 = $_SESSION['street2'];
 	} else {
 		$street2 = '';
 	}
-	
+
 	$status = "new";
 
     $query = <<<SQL_QUERY
-              insert into 
+              insert into
 			  		orders
-					(user_id, 
-					plan_id, 
-					date, 
-					domain_name, 
-					fname, 
-					lname, 
-					firm, 
-					zip, 
-					city, 
-					country, 
-					email, 
-					phone, 
-					fax, 
-					street1, 
-					street2, 
+					(user_id,
+					plan_id,
+					date,
+					domain_name,
+					fname,
+					lname,
+					firm,
+					zip,
+					city,
+					country,
+					email,
+					phone,
+					fax,
+					street1,
+					street2,
 					status)
               values
                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -98,10 +98,10 @@ SQL_QUERY;
 	print $sql -> ErrorMsg();
 	$order_id = $sql -> Insert_ID();
 	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
-	
+
 	if (isset($_SESSION['details']))
 		unset($_SESSION['details']);
-	
+
 	if (isset($_SESSION['domainname']))
 		unset($_SESSION['domainname']);
 
@@ -113,7 +113,7 @@ SQL_QUERY;
 
 	if (isset($_SESSION['email']))
 		unset($_SESSION['email']);
-	
+
 	if (isset($_SESSION['firm']))
 		unset($_SESSION['firm']);
 
@@ -137,7 +137,7 @@ SQL_QUERY;
 
 	if (isset($_SESSION['fax']))
 		unset($_SESSION['fax']);
-		
+
 	if (isset($_SESSION['plan_id']))
 		unset($_SESSION['plan_id']);
 
@@ -174,9 +174,9 @@ if (
 	(isset($_SESSION['city']) && $_SESSION['city'] != '') and
 	(isset($_SESSION['country']) && $_SESSION['country'] != '') and
 	(isset($_SESSION['street1']) && $_SESSION['street1'] != '') and
-	(isset($_SESSION['phone']) && $_SESSION['phone'] != '') 
+	(isset($_SESSION['phone']) && $_SESSION['phone'] != '')
 	) {
-	
+
 	gen_checkout($tpl, $sql, $user_id, $plan_id);
 
 } else {
@@ -194,8 +194,6 @@ gen_page_message($tpl);
                 array(
                        	'CHECK_OUT' => tr('Check Out'),
 						'THANK_YOU_MESSAGE' => tr('<b>Thank You for purchasing</b><br>You will receive an email with more details and information'),
-
-
 					)
 			);
 
@@ -205,5 +203,5 @@ $tpl -> prnt();
 
 
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 ?>

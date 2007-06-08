@@ -333,13 +333,11 @@ SQL_QUERY;
 // dynamic page data.
 //
 
-if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
-
+if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 	header( "Location: index.php" );
-
-  die();
-
+	die();
 }
+
 
 $reseller_id = $_SESSION['user_created_by'];
 if (isset($_GET['ticket_id'])) {
@@ -388,6 +386,7 @@ $tpl -> assign(array('TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 ?>

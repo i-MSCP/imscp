@@ -53,7 +53,7 @@ function gen_order_details (&$tpl, &$sql, $user_id, $order_id)
            id = ?
 		and
 			user_id = ?
-			
+
 SQL_QUERY;
  	$rs = exec_query($sql, $query, array($order_id, $user_id));
 	if ($rs -> RecordCount() == 0) {
@@ -82,7 +82,7 @@ SQL_QUERY;
 		$phone = $_POST['phone'];
 		$fax = $_POST['fax'];
 	} else {
-		
+
 		$domain_name = $rs -> fields['domain_name'];
 		$customer_id = $rs -> fields['customer_id'];
 		$fname = $rs -> fields['fname'];
@@ -96,7 +96,7 @@ SQL_QUERY;
 		$fax = $rs -> fields['fax'];
 		$street1 = $rs -> fields['street1'];
 		$street2 = $rs -> fields['street2'];
-	}	
+	}
 		$query = <<<SQL_QUERY
         select
             name, description
@@ -104,15 +104,15 @@ SQL_QUERY;
             hosting_plans
         where
            id = ?
-			
+
 SQL_QUERY;
  	$rs = exec_query($sql, $query, array($plan_id));
 	$plan_name = $rs -> fields['name']."<br>".$rs -> fields['description'];
-	
+
 	generate_ip_list($tpl, $_SESSION['user_id']);
-	
+
 	if ($customer_id === NULL) $customer_id = '';
-	
+
 	$tpl -> assign(array('ID' => $order_id,
                      'DATE' => $date,
 					 'HP' => $plan_name,
@@ -129,7 +129,7 @@ SQL_QUERY;
 					 'FAX' => $fax,
 					 'STREET1' => $street1,
 					 'STREET2' => $street2));
-	
+
 
 }
 
@@ -174,7 +174,7 @@ $fax = strip_html($_POST['fax']);
 				user_id=?
 SQL_QUERY;
     exec_query($sql, $query, array($domain, $customer_id, $fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
-	
+
 
 }
 
@@ -188,7 +188,7 @@ SQL_QUERY;
  * static page messages.
  *
  */
- 
+
 if(isset($_GET['order_id']) && is_numeric($_GET['order_id'])){
 	$order_id = $_GET['order_id'];
 }else{
@@ -196,10 +196,10 @@ if(isset($_GET['order_id']) && is_numeric($_GET['order_id'])){
 	Header("Location: orders.php");
 	die();
 }
- 
+
 if (isset($_POST['uaction'])){
 	update_order_details($tpl, $sql, $_SESSION['user_id'], $order_id);
-	
+
 	if ($_POST['uaction'] === 'update_data') {
 		set_page_message(tr('Order data updated successfully!'));
 	} else if ($_POST['uaction'] === 'add_user') {
@@ -207,8 +207,8 @@ if (isset($_POST['uaction'])){
 		Header("Location: orders_add.php?order_id=".$order_id);
 		die();
 	}
-} 
- 
+}
+
 gen_order_details($tpl, $sql, $_SESSION['user_id'], $order_id);
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_orders.tpl');
@@ -245,7 +245,7 @@ gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 

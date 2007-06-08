@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
@@ -69,31 +69,31 @@ SQL_QUERY;
 
     header("Location: index.php");
 	die();
-	
+
   } else {
-  
+
 		$price = $rs -> fields['price'];
 		$setup_fee = $rs -> fields['setup_fee'];
 		$total = $price + $setup_fee;
-		
+
 			if ($price == 0 || $price == '') {
 				$price = tr('free of charge');
 			} else {
 				$price = $price." ".$rs -> fields['value']." ".$rs -> fields['payment'];
 			}
-			
+
 			if ($setup_fee == 0 || $setup_fee == '') {
 				$setup_fee = tr('free of charge');
 			} else {
 				$setup_fee = $setup_fee." ".$rs -> fields['value'];
 			}
-			
+
 			if ($total == 0 ) {
 				$total = tr('free of charge');
 			} else {
 				$total = $total." ".$rs -> fields['value'];
 			}
-		
+
 		$tpl -> assign(
                             array(
                                     'PRICE' => $price,
@@ -101,10 +101,10 @@ SQL_QUERY;
 									'TOTAL' => $total,
 									'TR_PACKAGE_NAME' => $rs -> fields['name'],
 
-									
+
                                  )
-                          );  
-  
+                          );
+
   }
 
 }
@@ -116,63 +116,63 @@ function gen_personal_data(&$tpl)
 	} else {
 		$first_name = '';
 	}
-	
-	
-	
+
+
+
 	if (isset($_SESSION['lname'])){
 		$last_name = $_SESSION['lname'];
 	} else {
 		$last_name = '';
 	}
-	
-	
+
+
 	if (isset($_SESSION['firm'])){
 		$company = $_SESSION['firm'];
 	} else {
 		$company = '';
 	}
-	
-	
+
+
 	if (isset($_SESSION['zip'])){
 		$postal_code = $_SESSION['zip'];
 	} else {
 		$postal_code = '';
 	}
-	
-	
+
+
 	if (isset($_SESSION['city'])){
 		$city = $_SESSION['city'];
 	} else {
 		$city = '';
 	}
-	
-	
+
+
 	if (isset($_SESSION['country'])){
 		$country = $_SESSION['country'];
 	} else {
 		$country = '';
 	}
-	
-	
+
+
 	if (isset($_SESSION['street1'])){
 		$street1 = $_SESSION['street1'];
 	} else {
 		$street1 = '';
 	}
-	
-	
+
+
 	if (isset($_SESSION['street2'])){
 		$street2 = $_SESSION['street2'];
 	} else {
 		$street2 = '';
 	}
-	
+
 	if (isset($_SESSION['phone'])){
 		$phone = $_SESSION['phone'];
 	} else {
 		$phone = '';
 	}
-	
+
 	if (isset($_SESSION['fax'])){
 		$fax = $_SESSION['fax'];
 	} else {
@@ -258,7 +258,7 @@ gen_page_message($tpl);
                      	'TR_FAX' => tr('Fax'),
 						'TR_EMAIL' => tr('Email'),
 						'TR_PERSONAL_DATA' => tr('Personal Data'),
-	
+
 
 					)
 			);
@@ -267,7 +267,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

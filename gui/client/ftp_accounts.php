@@ -59,11 +59,11 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name)
 {
     $query = <<<SQL_QUERY
         SELECT
-			gid, 
+			gid,
 			members
 		FROM
 			ftp_group
-		WHERE 
+		WHERE
 			groupname = ?
 SQL_QUERY;
 
@@ -216,7 +216,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 

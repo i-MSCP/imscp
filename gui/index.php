@@ -63,7 +63,7 @@ if (isset($_SESSION['user_theme'])) {
 
 $tpl = new pTemplate();
 
-if ($cfg['SERVICEMODE'] == 1 AND !isset($_GET['admin'])) {
+if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 
 	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/servicemode.tpl');
 
@@ -101,7 +101,7 @@ if ($cfg['SERVICEMODE'] == 1 AND !isset($_GET['admin'])) {
 
 }
 
-if ($cfg['LOSTPASSWORD'] == 1)
+if ($cfg['LOSTPASSWORD'])
 	$tpl->assign('TR_LOSTPW', tr('Lost password'));
 else
 	$tpl->assign('TR_LOSTPW', '');
@@ -110,6 +110,6 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 ?>

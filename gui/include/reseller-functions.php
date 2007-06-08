@@ -113,7 +113,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
+	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 
@@ -210,7 +210,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 
-	if ($cfg['ISPCP_SUPPORT_SYSTEM'] != 1) {
+	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 
 		$tpl -> assign('SUPPORT_SYSTEM', '');
 

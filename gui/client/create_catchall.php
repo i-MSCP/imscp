@@ -83,7 +83,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id)
   if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
     $item_id = $match[1];
     $item_type = $match[2];
-    
+
     if ($item_type === 'dmn') {
       $query = <<<SQL_QUERY
                 SELECT
@@ -170,10 +170,10 @@ SQL_QUERY;
                 FROM
                     mail_users AS t1,
                   	subdomain AS t2,
-                  	domain AS t3 
+                  	domain AS t3
                 WHERE
                     t1.sub_id = t2.subdomain_id
-                  AND 
+                  AND
                   	t2.domain_id = t3.domain_id
                   AND
                     t1.status = ?
@@ -182,7 +182,7 @@ SQL_QUERY;
 					or
 					t1.mail_type = 'subdom_forward')
 				  AND
-                    t2.subdomain_id = ?               
+                    t2.subdomain_id = ?
                 ORDER BY
                   t1.mail_type DESC, t1.mail_acc
 SQL_QUERY;
@@ -208,7 +208,7 @@ SQL_QUERY;
         $rs -> MoveNext();
       }
     }
-      
+
   } else {
     user_goto('catchall.php');
   }
@@ -257,7 +257,7 @@ SQL_QUERY;
         } elseif ($item_type === 'als') {
           $mail_type = 'alias_catchall';
         } elseif ($item_type === 'sub') {
-          $mail_type = 'subdom_catchall';	
+          $mail_type = 'subdom_catchall';
         }
 
         $query = <<<SQL_QUERY
@@ -403,7 +403,7 @@ gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 

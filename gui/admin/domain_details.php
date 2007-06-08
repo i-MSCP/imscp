@@ -16,7 +16,7 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
- 
+
 include '../include/ispcp-lib.php';
 
 check_login();
@@ -48,7 +48,7 @@ $tpl -> assign(
  * static page messages.
  *
  */
- 
+
 	$tpl -> assign(
 					array(
 							'TR_DOMAIN_DETAILS' => tr('Domain details'),
@@ -92,7 +92,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 

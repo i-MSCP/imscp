@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
  *
@@ -41,7 +41,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id)
 
 	global $cfg;
 	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin'){
-				
+
 		$query = <<<SQL_QUERY
 			select
 				t1.*,
@@ -72,15 +72,15 @@ SQL_QUERY;
 				  and
 					status = '1'
 SQL_QUERY;
-	
+
 	  $rs = exec_query($sql, $query, array($user_id));
-	} 
+	}
 
   if ($rs -> RecordCount() == 0) {
 
     system_message(tr('No available hosting packages'));
   } else {
-  
+
   	while (!$rs -> EOF) {
 			$description = $rs -> fields['description'];
 			if ($description == ''){
@@ -92,9 +92,9 @@ SQL_QUERY;
 			} else {
 				$price = "/ ".$price." ".$rs -> fields['value']." ".$rs -> fields['payment'];
 			}
-			
-			
-			
+
+
+
             $tpl -> assign(
                             array(
                                     'PACK_NAME' => $rs -> fields['name'],
@@ -105,25 +105,19 @@ SQL_QUERY;
 									'PRICE' => $price,
                                  )
                           );
-			
+
 			$tpl -> parse('PURCHASE_LIST', '.purchase_list');
 
-            $rs -> MoveNext();	
+            $rs -> MoveNext();
 	}
 
   }
 
 }
 
-
 /*
 * Functions end
 */
-
-
-
-
-
 
 /*
 *
@@ -132,10 +126,10 @@ SQL_QUERY;
 */
 
 if (isset($_GET['user_id']) && is_numeric($_GET['user_id'])){
-	
+
 	$user_id = $_GET['user_id'];
 	$_SESSION['user_id'] = $user_id;
-	
+
 } else if (isset($_SESSION['user_id'])){
 
 	$user_id = $_SESSION['user_id'];
@@ -155,7 +149,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>

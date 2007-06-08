@@ -765,6 +765,10 @@ sub user_dialog {
 
 		} while ($rs == 1);
 	}
+	else {
+		// Just a dummy to prevent warnings
+		$main::ua{'awstats_dyn'} = 0;
+	}
 
 
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");

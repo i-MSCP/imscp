@@ -23,7 +23,7 @@ include '../include/ispcp-lib.php';
 function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 {
 	$domain = $_SESSION['user_logged'];
-	
+
 	// Check if we already have an error page
 	$vfs   =& new vfs( $domain, $sql);
 	$error =  $vfs->get('/errors/' . $eid . '/index.php');
@@ -32,7 +32,7 @@ function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 		$tpl->assign( array('ERROR'=>$error) );
 		return;
 	}
-	
+
 	// No error info :'(
 	$tpl->assign( array('ERROR'=> '') );
 }
@@ -135,7 +135,7 @@ $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();
 
-if (isset($cfg['DUMP_GUI_DEBUG'])) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 ?>
