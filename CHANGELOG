@@ -10,6 +10,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-08 Raphael Geissert
+	- GUI
+		* Fixed undefined $subject in gui/include/admin-functions.php
+		* Fixed missing closing </div> in gui/admin/rootkit_log.php
+	- DOCS
+		* Related to #365: Added bash as dependency in Debian and Ubuntu packages list
+	- SETUP
+		* Fixed #380: Bareword found where operator expected
+
 2007-06-08 Benedikt Heintel
 	- CONFIGS
 		* Fixed error on masters php.ini files

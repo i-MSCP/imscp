@@ -59,7 +59,7 @@ if (!is_readable($filename)) {
 
 	$contents = nl2br($log);
 
-	$contents = '<div>' . $contents;
+	$contents = '<div>' . $contents . '</div>';
 
 	$search = array();
 	$replace = array();

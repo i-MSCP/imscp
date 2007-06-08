@@ -764,9 +764,8 @@ sub user_dialog {
 			$rs = ask_awstats_dyn();
 
 		} while ($rs == 1);
-	}
-	else {
-		// Just a dummy to prevent warnings
+	} else {
+		# Just a dummy to prevent warnings
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
