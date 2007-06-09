@@ -46,74 +46,74 @@ $CHECK_VARS[] = "/%0d/";
 
 function check_input($value = '') {
 
-	global $CHECK_VARS;
+    global $CHECK_VARS;
 
-	if (!empty($value)) {
+    if (!empty($value)) {
 
-		$value = strtolower($value);
+        $value = strtolower($value);
 
-		foreach($CHECK_VARS as $VAR) {
+        foreach($CHECK_VARS as $VAR) {
 
-			if (preg_match($VAR, $value) > 0) {
-				$message = "Possible hacking attempt. Script terminated.";
-				write_log($message);
-				system_message(tr($message));
-				die();
-			}
+            if (preg_match($VAR, $value) > 0) {
+                $message = "Possible hacking attempt. Script terminated.";
+                write_log($message);
+                system_message(tr($message));
+                die();
+            }
 
-		}
+        }
 
-	}
+    }
 
 }
 
 function clean_html($input = '') {
 
-	$suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
-               '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
-               '@([\r\n])[\s]+@',                // Leerr�ume entfernen
-               '@&(quot|#34);@i',                // HTML-Entit�ten ersetzen
-               '@&(amp|#38);@i',
-               '@&(lt|#60);@i',
-               '@&(gt|#62);@i',
-               '@&(nbsp|#160);@i',
-               '@&(iexcl|#161);@i',
-               '@&(cent|#162);@i',
-               '@&(pound|#163);@i',
-               '@&(copy|#169);@i',
-               '@&#(\d+);@e');                    // als PHP auswerten
+    $suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
+    '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
+    '@([\r\n])[\s]+@',                // Leerr�ume entfernen
+    '@&(quot|#34);@i',                // HTML-Entit�ten ersetzen
+    '@&(amp|#38);@i',
+    '@&(lt|#60);@i',
+    '@&(gt|#62);@i',
+    '@&(nbsp|#160);@i',
+    '@&(iexcl|#161);@i',
+    '@&(cent|#162);@i',
+    '@&(pound|#163);@i',
+    '@&(copy|#169);@i',
+    '@&#(\d+);@e');                    // als PHP auswerten
 
-	$ersetze = array ('',
-                 '',
-                 '\1',
-                 '"',
-                 '&',
-                 '<',
-                 '>',
-                 ' ',
-                 chr(161),
-                 chr(162),
-                 chr(163),
-                 chr(169),
-                 'chr(\1)');
+    $ersetze = array ('',
+    '',
+    '\1',
+    '"',
+    '&',
+    '<',
+    '>',
+    ' ',
+    chr(161),
+    chr(162),
+    chr(163),
+    chr(169),
+    'chr(\1)');
 
-	$text = preg_replace($suche, $ersetze, $input);
-	//and second one...
-	$text = strip_tags($text);
+    $text = preg_replace($suche, $ersetze, $input);
+    //and second one...
+    $text = strip_tags($text);
 
-	return $text;
+    return $text;
 
 }
 
 function clean_input($input) {
 
-	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
+    if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
 
-		$input = trim($input, "{..}");
+        $input = trim($input, "{..}");
 
-	}
+    }
 
-	return htmlentities(stripslashes($input), ENT_QUOTES, "UTF-8");
+    return htmlentities(stripslashes($input), ENT_QUOTES, "UTF-8");
 
 }
 
@@ -147,7 +147,7 @@ function chk_username( $username ) {
 /* check for valid password  */
 function chk_password( $password ) {
 
-	return !ispcp_password_check($password, 50);
+    return !ispcp_password_check($password, 50);
 
 }
 
@@ -177,58 +177,58 @@ function ispcp_username_check($data, $num) {
 
     if ( $len > $num ) return 0;
 
-	return 1;
+    return 1;
 }
 
 
 function ispcp_email_check($email, $num) {
-	// RegEx begin
+    // RegEx begin
 
-	$nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+    $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
-	$nqtext        = "[^\\\\$nonascii\015\012\"]";
-	$qchar         = "\\\\[^$nonascii]";
+    $nqtext        = "[^\\\\$nonascii\015\012\"]";
+    $qchar         = "\\\\[^$nonascii]";
 
-	$normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-	$quotedstring  = "\"(?:$nqtext|$qchar)+\"";
-	$user_part     = "(?:$normuser|$quotedstring)";
+    $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+    $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+    $user_part     = "(?:$normuser|$quotedstring)";
 
-	$dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
-	$dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
-	$dom_tldpart   = '[a-zA-Z]{2,5}';
-	$domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
+    $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
+    $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
+    $dom_tldpart   = '[a-zA-Z]{2,5}';
+    $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
 
-	$regex         = "$user_part\@$domain_part";
-	// RegEx end
+    $regex         = "$user_part\@$domain_part";
+    // RegEx end
 
-	if (!preg_match("/^$regex$/",$email)) return 0;
+    if (!preg_match("/^$regex$/",$email)) return 0;
 
-	if (strlen($email) > $num) return 0;
+    if (strlen($email) > $num) return 0;
 
-	return 1;
+    return 1;
 
 }
 
 function ispcp_check_local_part($email, $num="50") {
-	// RegEx begin
+    // RegEx begin
 
-	$nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
+    $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
 
-	$nqtext        = "[^\\\\$nonascii\015\012\"]";
-	$qchar         = "\\\\[^$nonascii]";
+    $nqtext        = "[^\\\\$nonascii\015\012\"]";
+    $qchar         = "\\\\[^$nonascii]";
 
-	$normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
-	$quotedstring  = "\"(?:$nqtext|$qchar)+\"";
-	$user_part     = "(?:$normuser|$quotedstring)";
+    $normuser      = '[a-zA-Z0-9][a-zA-Z0-9_.-]*';
+    $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
+    $user_part     = "(?:$normuser|$quotedstring)";
 
-	$regex         = $user_part;
-	// RegEx end
+    $regex         = $user_part;
+    // RegEx end
 
-	if (!preg_match("/^$regex$/D",$email)) return 0;
+    if (!preg_match("/^$regex$/D",$email)) return 0;
 
-	if (strlen($email) > $num) return 0;
+    if (strlen($email) > $num) return 0;
 
-	return 1;
+    return 1;
 
 }
 
@@ -247,14 +247,14 @@ function chk_email($email) {
 
 function full_domain_check($data) {
 
-	$data .= ".";
-	$match = array();
+    $data .= ".";
+    $match = array();
 
     $res = preg_match_all("/([^\.]*\.)/", $data, $match, PREG_PATTERN_ORDER);
 
     if ($res == 0) {
-		return 0;
-	}
+        return 0;
+    }
 
     $last = $res - 1;
 
@@ -265,28 +265,28 @@ function full_domain_check($data) {
         $res = check_dn_token($token);
 
         if ($res == 0) {
-			return 0;
-		}
+            return 0;
+        }
     }
 
 
     $res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last]);
 
     if ($res == 0) {
-		return 0;
-	}
+        return 0;
+    }
     return 1;
 }
 
 
 function check_dn_token($data) {
 
-	$match = array();
+    $match = array();
     $res = preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D",	$data, $match);
 
     if ($res == 0) {
-		return 0;
-	}
+        return 0;
+    }
 
     //$res = preg_match("/\-\-/", $match[2], $minus_match);
     //if ($res == 1) return 0;
@@ -294,176 +294,176 @@ function check_dn_token($data) {
     return 1;
 }
 
-	/**********************************************************************
-	*
- 	*Description:
-	*
-	*	Function for checking ispcp 'username' field syntax. This function
-	*	will also be used in ispcp_email_check() function;
-	*
-	*Input:
-	*
-	*	$data - ispcp 'username' field data;
-	*
-	*	$num - username maximum length;
-	*
-	*Output:
-	*
-	*	0 - incorrect syntax;
-	*
-	*	1 - correct syntax;
-	*
-	**********************************************************************/
+/**********************************************************************
+*
+*Description:
+*
+*	Function for checking ispcp 'username' field syntax. This function
+*	will also be used in ispcp_email_check() function;
+*
+*Input:
+*
+*	$data - ispcp 'username' field data;
+*
+*	$num - username maximum length;
+*
+*Output:
+*
+*	0 - incorrect syntax;
+*
+*	1 - correct syntax;
+*
+**********************************************************************/
 function ispcp_name_check ( $data, $num ) {
 
-	$res = preg_match("/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/D", $data);
+    $res = preg_match("/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/D", $data);
 
-	if ($res == 0) return 0;
+    if ($res == 0) return 0;
 
-	$res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data);
+    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data);
 
-	if ($res == 1) return 0;
+    if ($res == 1) return 0;
 
-	$res = preg_match("/(\.\-)|(\-\.)/", $data);
+    $res = preg_match("/(\.\-)|(\-\.)/", $data);
 
-	if ($res == 1) return 0;
+    if ($res == 1) return 0;
 
-	$res = preg_match("/(\.\_)|(\_\.)/", $data);
+    $res = preg_match("/(\.\_)|(\_\.)/", $data);
 
-	if ($res == 1) return 0;
+    if ($res == 1) return 0;
 
-	$res = preg_match("/(\-\_)|(\_\-)/", $data);
+    $res = preg_match("/(\-\_)|(\_\-)/", $data);
 
-	if ($res == 1) return 0;
+    if ($res == 1) return 0;
 
-	$len = strlen($data);
+    $len = strlen($data);
 
-	if ( $len > $num ) return 0;
+    if ( $len > $num ) return 0;
 
-	return 1;
+    return 1;
 }// End of ispcp_name_check()
 
 
 
 
-	/**********************************************************************
-	*
-	*Description:
-	*
-	*	Function for checking ispcp limits. The correct values for this
-	*	limits are in ranges -1, 0, [1, $num].
-	*
-	*Input:
-	*
-	*$data - ispcp 'limit' field data;
-	*
-	*Output:
-	*
-	*	0 - incorrect syntax (ranges);
-	*
-	*	1 - correct syntax (ranges);
-	*
-	**********************************************************************/
+/**********************************************************************
+*
+*Description:
+*
+*	Function for checking ispcp limits. The correct values for this
+*	limits are in ranges -1, 0, [1, $num].
+*
+*Input:
+*
+*$data - ispcp 'limit' field data;
+*
+*Output:
+*
+*	0 - incorrect syntax (ranges);
+*
+*	1 - correct syntax (ranges);
+*
+**********************************************************************/
 function ispcp_limit_check($data, $num) {
 
-	$res = preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data);
+    $res = preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data);
 
-	if ($res == 0)
-		return 0;
+    if ($res == 0)
+    return 0;
 
-	if ($data > $num)
-		return 0;
+    if ($data > $num)
+    return 0;
 
-	return 1;
+    return 1;
 }// End of ispcp_limit_check()
 
-	/**********************************************************************
-	*
-	* Description:
-	*
- 	*Function for checking domain name tokens; Internel function, for>
-    * usage in ispcp_* functions;
-	* Input:
-	*
-	* $data - token data. Without '\n' at the end;
-	*
-	* Output:
- 	*
-    * 0 - incorrect syntax;
- 	*
-    * 1 - correct syntax;
-	**********************************************************************/
+/**********************************************************************
+*
+* Description:
+*
+*Function for checking domain name tokens; Internel function, for>
+* usage in ispcp_* functions;
+* Input:
+*
+* $data - token data. Without '\n' at the end;
+*
+* Output:
+*
+* 0 - incorrect syntax;
+*
+* 1 - correct syntax;
+**********************************************************************/
 function check_dn_rsl_token($data) {
 
-	$match = array();
-	$res = preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/D", $data,	$match);
-	if ($res == 0) return 0;
+    $match = array();
+    $res = preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/D", $data,	$match);
+    if ($res == 0) return 0;
 
-	$res = preg_match("/\-\-/", $match[2]);
-	if ($res == 1) return 0;
+    $res = preg_match("/\-\-/", $match[2]);
+    if ($res == 1) return 0;
 
-	return 1;
+    return 1;
 }// End of check_dn_rsl_token()
 
 
 
 
 
-	/**********************************************************************
-	*
-	* Description:
-	*
-    *Function for checking ISPCP domains syntax. Here domains are limited
-    *to {dname}.{ext} parts.
-	*
-	*Input:
-	*
-    * $data - ispcp domain data;
-	*
-	* Output:
-	*
-    * 0 - incorrect syntax;
-	*
-    * 1 - correct syntax;
-	**********************************************************************/
+/**********************************************************************
+*
+* Description:
+*
+*Function for checking ISPCP domains syntax. Here domains are limited
+*to {dname}.{ext} parts.
+*
+*Input:
+*
+* $data - ispcp domain data;
+*
+* Output:
+*
+* 0 - incorrect syntax;
+*
+* 1 - correct syntax;
+**********************************************************************/
 function ispcp_domain_check($data) {
 
-	$res = rsl_full_domain_check($data);
+    $res = rsl_full_domain_check($data);
 
-	if ($res == 0) return 0;
+    if ($res == 0) return 0;
 
-	$match = array();
+    $match = array();
 
-	$res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
+    $res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
 
-	if ($res <= 0) return 0;
+    if ($res <= 0) return 0;
 
-	return 1;
+    return 1;
 
 }// End of ispcp_domain_check()
 
 
 
 
-	/**********************************************************************
-	*Description:
-	*
-	*	Function for checking full domain names syntax. /In ISPCP domains
-	*	are limited to domain and subdomain parts.
-	*
-	*Input:
-	*
-	*	$data - domain name data;
-	*
-	*Output:
-	*
-	*	0 - incorrect syntax;
-	*
-	*	1 - correct syntax;
-	*
-	**********************************************************************/
+/**********************************************************************
+*Description:
+*
+*	Function for checking full domain names syntax. /In ISPCP domains
+*	are limited to domain and subdomain parts.
+*
+*Input:
+*
+*	$data - domain name data;
+*
+*Output:
+*
+*	0 - incorrect syntax;
+*
+*	1 - correct syntax;
+*
+**********************************************************************/
 
-	/* check for valid domain name  */
+/* check for valid domain name  */
 function chk_dname( $dname ) {
 
     if ( ispcp_domain_check($dname) == 0 ) {
@@ -504,40 +504,40 @@ function ispcp_url_check ($data) {
 
 function ispcp_mountpt_check($data, $num) {
 
-	$res = !preg_match("/^\/(.*)$/D", $data);
+    $res = !preg_match("/^\/(.*)$/D", $data);
 
-	if ($res == 1) return 0;
+    if ($res == 1) return 0;
 
     $res = preg_match("/^\/htdocs$/D", $data);
 
     if ($res == 1) return 0;
 
-	 $res = preg_match("/^\/backups$/D", $data);
+    $res = preg_match("/^\/backups$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = preg_match("/^\/cgi-bin$/D", $data);
+    $res = preg_match("/^\/cgi-bin$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = preg_match("/^\/errors$/D", $data);
+    $res = preg_match("/^\/errors$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = preg_match("/^\/logs$/D", $data);
+    $res = preg_match("/^\/logs$/D", $data);
 
     if ($res == 1) return 0;
 
-	$res = explode("/", trim($data));
-	$cnt_res = count($res);
-	if ($cnt_res > 2) return 0;
+    $res = explode("/", trim($data));
+    $cnt_res = count($res);
+    if ($cnt_res > 2) return 0;
 
-	$match = array();
-	$res = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
+    $match = array();
+    $res = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
 
     if ($res == 0) {
-		return 0;
-	}
+        return 0;
+    }
 
     $count = $res;
 
@@ -548,8 +548,8 @@ function ispcp_mountpt_check($data, $num) {
         $res = ispcp_username_check($token, $num);
 
         if ($res == 0) {
-			return 0;
-		}
+            return 0;
+        }
     }
 
     return 1;
@@ -571,7 +571,7 @@ function chk_mountp($mountp) {
 /* return mail for a a id */
 function trans_mailid_to_mail(&$sql, $mailid) {
 
-	$query = <<<SQL_QUERY
+    $query = <<<SQL_QUERY
 
 	select *
 		from
@@ -581,108 +581,120 @@ function trans_mailid_to_mail(&$sql, $mailid) {
 		limit 1
 SQL_QUERY;
 
-	$res = exec_query($sql, $query, array($mailid));
+    $res = exec_query($sql, $query, array($mailid));
 
-	if ($res -> RowCount() == 1) {
+    if ($res -> RowCount() == 1) {
 
-		$data = $res -> FetchRow();
-		$mail_type = $data['mail_type'];
+        $data = $res -> FetchRow();
+        $mail_type = $data['mail_type'];
 
-		if ($mail_type === 'normal_mail') {
+        if ($mail_type === 'normal_mail') {
 
-        	$local_part = $data['mail_acc'];
-			$domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
-			$res = exec_query($sql, $domain_query, array($mailid));
-		    $domain_name = $res->fields['domain_name'];
+            $local_part = $data['mail_acc'];
+            $domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
+            $res = exec_query($sql, $domain_query, array($mailid));
+            $domain_name = $res->fields['domain_name'];
 
-		    return $local_part."@".$domain_name;
+            return $local_part."@".$domain_name;
 
-    	} else if ($mail_type === 'normal_forward') {
+        } else if ($mail_type === 'normal_forward') {
 
-        	$local_part = $data['mail_acc'];
-        	$domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
-			$res = exec_query($sql, $domain_query, array($mailid));
-		    $domain_name = $res->fields['domain_name'];
+            $local_part = $data['mail_acc'];
+            $domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
+            $res = exec_query($sql, $domain_query, array($mailid));
+            $domain_name = $res->fields['domain_name'];
 
-		    return $local_part."@".$domain_name;
+            return $local_part."@".$domain_name;
 
-    	} else if ($mail_type === 'alias_mail') {
+        } else if ($mail_type === 'alias_mail') {
 
-        	$local_part = $data['mail_acc'];
-        	$domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliasses as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
-			$res = exec_query($sql, $domain_query, array($mailid));
-		    $domain_name = $res->fields['alias_name'];
+            $local_part = $data['mail_acc'];
+            $domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliasses as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
+            $res = exec_query($sql, $domain_query, array($mailid));
+            $domain_name = $res->fields['alias_name'];
 
-		    return $local_part."@".$domain_name;
+            return $local_part."@".$domain_name;
 
-    	} else if ($mail_type === 'alias_forward') {
+        } else if ($mail_type === 'alias_forward') {
 
-        	$local_part = $data['mail_acc'];
-        	$domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliases as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
-			$res = exec_query($sql, $domain_query, array($mailid));
-		    $domain_name = $res->fields['alias'];
+            $local_part = $data['mail_acc'];
+            $domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliases as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
+            $res = exec_query($sql, $domain_query, array($mailid));
+            $domain_name = $res->fields['alias'];
 
-		    return $local_part."@".$domain_name;
+            return $local_part."@".$domain_name;
 
 
-    	} else if ($mail_type === 'subdom_mail') {
+        } else if ($mail_type === 'subdom_mail') {
 
-        	$local_part = $data['mail_acc'];
-        	$domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
+            $local_part = $data['mail_acc'];
+            $domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
 
-    	} else if ($mail_type === 'subdom_forward') {
+        } else if ($mail_type === 'subdom_forward') {
 
-        	$local_part = $data['mail_acc'];
-        	$domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
-			$res = exec_query($sql, $domain_query, array($mailid));
-		    $domain_name = $res->fields['subdomain_name'];
+            $local_part = $data['mail_acc'];
+            $domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
+            $res = exec_query($sql, $domain_query, array($mailid));
+            $domain_name = $res->fields['subdomain_name'];
 
-		    return $local_part."@".$domain_name;
+            return $local_part."@".$domain_name;
 
-    	} else if ($mail_type === 'normal_catchall') {
+        } else if ($mail_type === 'normal_catchall') {
 
-        	return tr('Catchall account');
+            return tr('Catchall account');
 
-    	} else if ($mail_type === 'alias_catchall') {
+        } else if ($mail_type === 'alias_catchall') {
 
-        	return tr('Catchall account');
+            return tr('Catchall account');
 
-    	} else {
+        } else {
 
-        	return tr('Unknown type');
+            return tr('Unknown type');
 
-    	}
+        }
 
-	}
+    }
 
 }
 
 function get_post($value) {
 
-	if(isset($_POST[$value])) {
+    if(isset($_POST[$value])) {
 
-		return $_POST[$value];
+        return $_POST[$value];
 
-	} else {
+    } else {
 
-		return null;
+        return null;
 
-	}
+    }
 
 }
 
 function get_session($value) {
 
-	if(isset($_SESSION[$value])) {
+    if(isset($_SESSION[$value])) {
 
-		return $_SESSION[$value];
+        return $_SESSION[$value];
 
-	} else {
+    } else {
 
-		return null;
+        return null;
 
-	}
+    }
 
+}
+
+function is_subdomain_of($base_domain, $subdomain, $realPath = true)
+{
+    if ($realPath) {
+        $base_domain = realpath($base_domain);
+        $subdomain   = realpath($subdomain);
+    }
+
+    $t = explode($base_domain, $subdomain);
+
+    return (count($t) > 1 && $t[0] === '');
 }
 
 ?>

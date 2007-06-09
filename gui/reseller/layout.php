@@ -94,18 +94,16 @@ SQL_QUERY;
 
 function update_logo()
 {
-    global $cfg;
 
-    if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo') {
+    $user_id = $_SESSION['user_id'];
 
-            $user_id = $_SESSION['user_id'];
+    if (isset($_POST['uaction']) && $_POST['uaction'] === 'delete_logo') {
 
-            if ($_POST['Submit'] == tr('Remove')) {
+        update_user_gui_props('', $user_id);
 
-                    update_user_gui_props('', $user_id);
+        return;
 
-                    return;
-            }
+    } else if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo') {
 
             if (empty($_FILES['logo_file']['tmp_name'])) {
 
@@ -142,15 +140,11 @@ function update_logo()
                 return ;
             }
 
-//            $fsize = $_FILES['logo_file']['size'];
-
             $newFName = get_user_name($user_id) . '.' . $fext;
 
-            $path1 = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/reseller/layout.php')+1);
+            $path = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/reseller/layout.php')+1);
 
-//            $path2 = substr($cfg['ROOT_TEMPLATE_PATH'],0, strpos($cfg['ROOT_TEMPLATE_PATH'], '/tpl')+1);
-
-            $logoFile = $path1 . '/themes/user_logos/' . $newFName;
+            $logoFile = $path . '/themes/user_logos/' . $newFName;
             move_uploaded_file($fname, $logoFile);
             chmod ($logoFile, 0644);
 

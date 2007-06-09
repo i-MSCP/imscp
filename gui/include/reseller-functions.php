@@ -1695,34 +1695,49 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	    $to = $uemail;
 	}
 
-	$subject = preg_replace("/\{DOMAIN\}/", $domain_name, $subject);
-	$message = preg_replace("/\{DOMAIN\}/", $domain_name, $message);
-	$message = preg_replace("/\{NAME\}/", $name, $message);
+	$search  = array();
+	$replace = array();
 
-	$headers  = "From: $from\n";
+	$search [] = '{DOMAIN}';
+	$replace[] = $domain_name;
+	$search [] = '{NAME}';
+	$replace[] = $name;
+
+	$subject = str_replace($search, $replace, $subject);
+	$message = str_replace($search, $replace, $message);
+
+	$subject = encode($subject);
+
+	$headers  = "From: " . encode($from) . "\n";
 	$headers .= "MIME-Version: 1.0\n" .
 	        	"Content-Type: text/plain;\n" .
-							"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
+	        	"Content-Transfer-Encoding: 8bit\n".
+				"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
 
-	$mail_result = mail($to, $subject, $message, $headers);
+	$mail_result = mail(encode($to), $subject, $message, $headers);
 
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
 	// lets send mail to the reseller => new order
 
 	$from = $to;
-	$subject = "You have a new order";
+	$subject = encode(tr("You have a new order"));
 
-	$message = <<<MSG
+	$message = tr('
 
-Dear $from_name,
-you have a new order from $to
+Dear {RESELLER},
+you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
 
 Please login into your ISPCP control panel for more details.
 
-MSG;
+');
+	$search [] = '{RESELLER}';
+	$replace[] = $from_name;
+	$search [] = '{MAIL}';
+	$replace[] = $to;
+	$message = str_replace($search, $replace, $message);
 
-	$mail_result = mail($from, $subject, $message, $headers);
+	$mail_result = mail(encode($from), $subject, $message, $headers);
 
 }
 

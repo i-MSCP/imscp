@@ -31,16 +31,17 @@ function get_update_infos(&$tpl) {
     // Fake the browser type
     ini_set('user_agent','Mozilla/5.0');
 
-	if ($cfg["DUMP_GUI_DEBUG"]) {
-		$dh2 = fopen($last_update,'r');
-		$last_update_result = (int)@fread($dh2, 8);
-		fclose($dh2);
+	$dh2 = @fopen($last_update,'r');
+
+	if (!is_resource($dh2)) {
+		$tpl -> assign(array('UPDATE_INFOS' =>  '',
+		                     'TR_MESSAGE'   => tr("Couldn't check for updates!")));
+		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
+		return ;
 	}
-	else {
-		$dh2 = @fopen($last_update,'r');
-		$last_update_result = (int)@fread($dh2, 8);
-		@fclose($dh2);
-	}
+
+	$last_update_result = (int)fread($dh2, 8);
+	fclose($dh2);
 
 	$current_version = (int)$cfg['BuildDate'];
 	if ($current_version < $last_update_result) {

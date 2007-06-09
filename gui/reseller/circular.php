@@ -17,7 +17,9 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+include '../include/ispcp-lib.php';
 
+check_login();
 
 function gen_page_data(&$tpl, &$sql)
 {
@@ -174,31 +176,21 @@ SQL_QUERY;
 }
 
 
-function send_circular_email ($to, $from, $subject, $message) {
-
-    global $user_logged;
-
-	$mail_date = date("r");
+function send_circular_email ($to, $from, $subject, $message)
+{
+    $to      = encode($to);
+    $from    = encode($from);
+    $subject = encode($subject);
 
     $headers = "From: $from\r\n";
 
-	//$headers .= "Date: ".$mail_date."\r\n";
+    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 8bit\n";
 
     $headers .= "X-Mailer: ISPCP marketing mailer";
 
-    $mail_result = mail($to, $subject, $message, $headers);
-
-    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
-    $user_logged= $_SESSION['user_logged'];
-
-    $log_message = "$user_logged: Circular Mail To: |$to|, From: |$from|, Status: |$mail_status| !";
-
+    mail($to, $subject, $message, $headers);
 
 }
-include '../include/ispcp-lib.php';
-
-check_login();
 
 $tpl = new pTemplate();
 

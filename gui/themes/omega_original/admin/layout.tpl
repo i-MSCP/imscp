@@ -54,12 +54,15 @@
                                       </td>
                                     </tr>
                                   </table>
-                                  <input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} "> &nbsp;&nbsp;&nbsp;
-                                  <input name="Submit" type="submit" class="button" value=" {TR_REMOVE} ">
-                                  <input type="hidden" name="uaction" value="upload_logo">
+                                  <input type="hidden" name="uaction" value="upload_logo" />
+                                  <input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} " />
+                                </form> &nbsp;&nbsp;&nbsp;
+                                <form method="post" action="layout.php">
+                                  <input type="hidden" name="uaction" value="delete_logo" />
+                                  <input name="Submit" type="submit" class="button" value=" {TR_REMOVE} " />
                                 </form>
                                   <!-- end of content -->
-                                  <p><img src="{ISP_LOGO}" alt="reseller logo"><br>
+                                  <p><img src="{ISP_LOGO}" alt="reseller logo"/></br>
                                 </p></td>
                             </tr>
                           </table>

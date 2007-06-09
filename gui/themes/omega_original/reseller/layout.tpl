@@ -61,8 +61,14 @@
                       </tr>
                       <tr>
                         <td nowrap>&nbsp;</td>
-                        <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} "></td>
-                        <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_REMOVE} "></td>
+                        <td nowrap><input name="Submit" type="submit" class="button" value=" {TR_UPLOAD} " />
+                                   <input type="hidden" name="uaction" value="upload_logo" />
+                                   </form></td>
+                        <td nowrap>
+                                   <form method="post" action="layout.php">
+                                   <input type="hidden" name="uaction" value="delete_logo" />
+                                   <input name="Submit" type="submit" class="button" value=" {TR_REMOVE} " />
+                                   </form></td>
                       </tr>
                       <tr>
                         <td nowrap>&nbsp;</td>
@@ -73,8 +79,6 @@
                         <td colspan="2" nowrap><img src="{OWN_LOGO}" alt="reseller logo"></td>
                       </tr>
                     </table>
-                  <input type="hidden" name="uaction" value="upload_logo">
-                  </form>
                     <!-- end of content -->
                 </td>
                 <td>&nbsp;</td>

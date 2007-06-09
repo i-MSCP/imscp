@@ -57,9 +57,11 @@ $query = <<<SQL_QUERY
             tickets
         WHERE
             ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($ticket_id));
+    $rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 
 		if ($rs -> RecordCount() == 0) {
 
@@ -198,9 +200,11 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id)
           tickets
       WHERE
           ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-		$rs = exec_query($sql, $query, array($ticket_id));
+		$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 
 		$ticket_from = $rs -> fields['ticket_from'];
 		$ticket_to = $rs -> fields['ticket_to'];
@@ -304,9 +308,11 @@ $query = <<<SQL_QUERY
                 tickets
             WHERE
                 ticket_id = ?
+                and
+                (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-		$rs = exec_query($sql, $query, array($ticket_reply));
+		$rs = exec_query($sql, $query, array($ticket_reply, $_SESSION['user_id'], $_SESSION['user_id']));
 
 			$ticket_to = $rs -> fields['ticket_from'];
 
@@ -339,7 +345,7 @@ SQL_QUERY;
                                          $user_message
 										));
 
-	set_page_message(tr('Message was send!'));
+	set_page_message(tr('Message was sent!'));
 
 
 // Update all Replays -> Status 1
@@ -374,9 +380,11 @@ function change_ticket_status($sql, $ticket_id)
             tickets
         WHERE
             ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-		$rs = exec_query($sql, $query, array($ticket_id));
+		$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 		$ch_ticket_status = $rs -> fields['ticket_status'];
 
 
@@ -397,9 +405,11 @@ $query = <<<SQL_QUERY
             ticket_status = ?
         WHERE
             ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-    	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
+    	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 // end of set status 3
 
 }
@@ -415,9 +425,11 @@ $query = <<<SQL_QUERY
           ticket_status = '0'
       WHERE
           ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-		$rs = exec_query($sql, $query, array($ticket_id));
+		$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 
 		set_page_message(tr('Ticket was closed!'));
 
@@ -435,9 +447,11 @@ $query = <<<SQL_QUERY
             ticket_status = ?
         WHERE
             ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-		$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
+		$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 
 		set_page_message(tr('Ticket was reopened!'));
 

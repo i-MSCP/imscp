@@ -136,7 +136,7 @@ SQL_QUERY;
   }
 }
 
-function get_ticket_from(&$tpl, &$sql, &$ticket_id)
+function get_ticket_from(&$tpl, &$sql, $ticket_id)
 {
   $query = <<<SQL_QUERY
     	select
@@ -148,9 +148,11 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id)
           tickets
       where
           ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($ticket_id));
+  $rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
   $ticket_from = $rs -> fields['ticket_from'];
   $ticket_to = $rs -> fields['ticket_to'];
   $ticket_status = $rs -> fields['ticket_status'];
@@ -270,19 +272,20 @@ function change_ticket_status($sql, $ticket_id)
             tickets
         where
             ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($ticket_id));
+  $rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
   $ch_ticket_status = $rs -> fields['ticket_status'];
 
   if ($ch_ticket_status == 0) {
-    $ticket_status = 0;
-	}
-	else if (!isset($_POST['uaction']) || $_POST['uaction'] == "open") {
-    	$ticket_status = 3;
-	} else {
-		$ticket_status = 4;
-	}
+      $ticket_status = 0;
+  } else if (!isset($_POST['uaction']) || $_POST['uaction'] == "open") {
+      $ticket_status = 3;
+  } else {
+      $ticket_status = 4;
+  }
 
   $query = <<<SQL_QUERY
     	update
@@ -291,9 +294,11 @@ SQL_QUERY;
         	ticket_status = ?
       where
         	ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
+  $rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
   // end of set status 3
 
 }
@@ -307,8 +312,10 @@ function close_ticket($sql, $ticket_id)
         	ticket_status = '0'
       where
         	ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
-  $rs = exec_query($sql, $query, array($ticket_id));
+  $rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
   set_page_message(tr('Ticket was closed!'));
 }
 
@@ -323,9 +330,11 @@ function open_ticket(&$sql, $ticket_id)
         	ticket_status = ?
       where
         	ticket_id = ?
+            and
+            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
+  $rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
   set_page_message(tr('Ticket was reopened!'));
 }
 

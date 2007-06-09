@@ -73,11 +73,9 @@ if ($rs -> fields['dcnt'] > 0) {
 SQL_QUERY;
 
     $res = exec_query($sql, $query, array());
-    $data = $res -> FetchRow();
-    $reseller_ips = $data['reseller_ips'];
 
     while (($data = $res -> FetchRow())) {
-      if (preg_match("/$delete_id;/", $reseller_ips) == 1) {
+      if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
         set_page_message(tr('Error we have reseller that use this IP!'));
         header( "Location: ip_manage.php" );
         die();
@@ -100,7 +98,7 @@ $user_logged= $_SESSION['user_logged'];
 
 $ip_number = $rs->fields['ip_number'];
 
-write_log("$user_logged: delete IP4 addres $ip_number");
+write_log("$user_logged: delete IP address $ip_number");
 
 /* delete it ! */
 $query = <<<SQL_QUERY

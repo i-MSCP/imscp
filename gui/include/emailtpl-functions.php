@@ -142,13 +142,13 @@ function get_welcome_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Welcome new ISPCP user {USERNAME}!';
+		$data['subject'] = tr('Welcome new ISPCP user {USERNAME}!');
 
 	}
 
 	if (!$data['message']) {
 
-  	$data['message'] = <<<MSG
+  	$data['message'] = tr('
 
 Hello {NAME}!
 
@@ -161,7 +161,7 @@ You can login at http://{BASE_SERVER_VHOST}
 Good luck with the ispCP system!
 The ispCP Team.
 
-MSG;
+');
 
 	}
 
@@ -181,13 +181,13 @@ function get_lostpassword_activation_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Please activate your new ISPCP login !';
+		$data['subject'] = tr('Please activate your new ISPCP login !');
 
 	}
 
 	if (!$data['message']) {
 
-  	$data['message'] = <<<MSG
+  	$data['message'] = tr('
 
 Hello {NAME}!
 Use this link to activate your new ISPCP password:
@@ -197,7 +197,7 @@ Use this link to activate your new ISPCP password:
 Good Luck with the ispCP System
 The ispCP Team
 
-MSG;
+');
 
 	}
 
@@ -217,13 +217,13 @@ function get_lostpassword_password_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Your new ISPCP login !';
+		$data['subject'] = tr('Your new ISPCP login !');
 
 	}
 
 	if (!$data['message']) {
 
-  	$data['message'] = <<<MSG
+  	$data['message'] = tr('
 
 Hello {NAME}!
 
@@ -235,7 +235,7 @@ You can login at http://{BASE_SERVER_VHOST}
 Good Luck with the ispCP System
 The ispCP Team
 
-MSG;
+');
 
 	}
 
@@ -255,13 +255,13 @@ function get_order_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = 'Confirmation for domain order {DOMAIN} !';
+		$data['subject'] = tr('Confirmation for domain order {DOMAIN} !');
 
 	}
 
 	if (!$data['message']) {
 
-  	$data['message'] = <<<MSG
+  	$data['message'] = tr('
 
 Dear {NAME},
 This is an automatic confirmation for the order of the domain:
@@ -271,7 +271,7 @@ This is an automatic confirmation for the order of the domain:
 Thank you for using ispCP services.
 The ISPCP Team
 
-MSG;
+');
 
 	}
 

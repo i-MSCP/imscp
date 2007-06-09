@@ -66,8 +66,7 @@ SQL_QUERY;
 
     if ($num_question == 0) {
         $tpl -> assign(array('MSG_ENTRY' => ''));
-    }
-    else {
+    } else {
         $tpl -> assign(
                          array(
                                  'TR_YOU_HAVE' => tr('You have'),
@@ -91,23 +90,22 @@ function get_update_infos(&$tpl) {
     // Fake the browser type
     ini_set('user_agent','Mozilla/5.0');
 
-	if ($cfg["DUMP_GUI_DEBUG"]) {
-		$dh2 = fopen($last_update,'r');
-		$last_update_result = (int)@fread($dh2, 8);
-		fclose($dh2);
+	$dh2 = @fopen($last_update,'r');
+
+	if (!is_resource($dh2)) {
+		$tpl -> assign(array('UPDATE' =>  tr("Couldn't check for updates!")));
+		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
+		return ;
 	}
-	else {
-		$dh2 = @fopen($last_update,'r');
-		$last_update_result = (int)@fread($dh2, 8);
-		@fclose($dh2);
-	}
+
+	$last_update_result = (int)fread($dh2, 8);
+	fclose($dh2);
 
 	$current_version = (int)$cfg['BuildDate'];
 	if ($current_version < $last_update_result) {
-		$tpl -> assign(array('UPDATE' =>  tr('New ISPCP update is now available')));
+		$tpl -> assign(array('UPDATE' =>  '<a href="ispcp_updates.php" class=\"link\">' . tr('New ISPCP update is now available') . '</a>'));
 		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
-	}
-	else {
+	} else {
 		$tpl -> assign(array('UPDATE_MESSAGE' => ''));
 	}
 }
@@ -147,9 +145,8 @@ SQL_QUERY;
 
    	if ($straff_max == 0){
 		$pr = 0;
-	}
-   	else{
-    	$pr = ($traff/$straff_max)*100;
+   	} else{
+   	    $pr = ($traff/$straff_max)*100;
    	}
 
 	$pr = sprintf("%.2f", $pr);
@@ -159,8 +156,7 @@ SQL_QUERY;
             $tpl -> assign(
                             'TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!')
                           );
-    }
-    else{
+    } else{
 
         $tpl -> assign('TRAFF_WARN', '');
 
@@ -170,8 +166,7 @@ SQL_QUERY;
 
 	if ($straff_max == 0) {
 		$show_straf_max = tr('unlimited');
-	}
-	else {
+	} else {
 		$show_straf_max = sizeit($straff_max);
 	}
 

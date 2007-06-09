@@ -14,6 +14,10 @@ ispCP ω 1.0.0 Changelog
 	- GUI
 		* Fixed undefined $subject in gui/include/admin-functions.php
 		* Fixed missing closing </div> in gui/admin/rootkit_log.php
+		* Fixed error where custom logo can be deleted
+		* Improved FTP ownership detection
+		* Improved tickets ownership detection
+		* Fixed #344: Emails not being sent as UTF8 and can't be translated, IP can be deleted even when assigned to reseller
 	- DOCS
 		* Related to #365: Added bash as dependency in Debian and Ubuntu packages list
 	- SETUP

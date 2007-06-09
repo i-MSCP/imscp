@@ -22,11 +22,11 @@ include '../include/ispcp-lib.php';
 check_login();
 
 if (isset($_GET['id'])) {
-  $ftp_acc = $_GET['id'];
+    $ftp_acc = $_GET['id'];
 } else if (isset($_POST['id'])) {
-  $ftp_acc = $_POST['id'];
+    $ftp_acc = $_POST['id'];
 } else {
-  user_goto('ftp_accounts.php');
+    user_goto('ftp_accounts.php');
 }
 
 $tpl = new pTemplate();
@@ -39,9 +39,9 @@ $tpl -> define_dynamic('logged_from', 'page');
 //
 function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc)
 {
-  global $cfg;
+    global $cfg;
 
-  $query = <<<SQL_QUERY
+    $query = <<<SQL_QUERY
         SELECT
 			homedir
 		FROM
@@ -50,54 +50,72 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc)
 			userid = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($ftp_acc));
+    $rs = exec_query($sql, $query, array($ftp_acc));
 
-  $homedir = $rs -> fields['homedir'];
-  $domain_ftp =  $_SESSION['user_logged'];
-  $nftp_dir = $cfg['FTP_HOMEDIR']."/".$domain_ftp;
+    $homedir = $rs -> fields['homedir'];
+    $domain_ftp =  $_SESSION['user_logged'];
+    $nftp_dir = $cfg['FTP_HOMEDIR']."/".$domain_ftp;
 
-  if ($nftp_dir == $homedir) {
-    $odir = "";
-    $oins = "";
-	} else {
-    $odir = " checked ";
-    $oins = substr($homedir, strlen($nftp_dir));
-	}
+    if ($nftp_dir == $homedir) {
+        $odir = "";
+        $oins = "";
+    } else {
+        $odir = " checked ";
+        $oins = substr($homedir, strlen($nftp_dir));
+    }
 
-  $tpl -> assign(array('FTP_ACCOUNT' => $ftp_acc,
-                       'ID' => $ftp_acc,
-                       'USE_OTHER_DIR_CHECKED' => $odir,
-                       'OTHER_DIR' => $oins));
+    $tpl -> assign(array('FTP_ACCOUNT' => $ftp_acc,
+                         'ID' => $ftp_acc,
+                         'USE_OTHER_DIR_CHECKED' => $odir,
+                         'OTHER_DIR' => $oins));
 }
 
 function update_ftp_account(&$sql, $ftp_acc)
 {
-  global $cfg, $ftp_acc;
-  global $other_dir;
+    global $cfg;
+    global $other_dir;
 
-  if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
-    if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
-      if ($_POST['pass'] !== $_POST['pass_rep']) {
-        set_page_message(tr('Entered passwords differ!'));
-        return;
-      }
-		if (chk_password($_POST['pass'])) {
-  			set_page_message( tr("Incorrect password range or syntax!"));
-    		return;
-  		}
+    $def = get_domain_default_props($sql, $_SESSION['user_id'], true);
+    $domain_id = $def['domain_id'];
 
-      $pass = crypt_user_ftp_pass($_POST['pass']);
-      if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
+    $query = 'SELECT members FROM ftp_group WHERE gid = ?';
+    $rs = exec_query($sql, $query, array($domain_id));
 
-		$other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
+    if ($rs -> RecordCount() == 0) {
+        write_log('WARNING! ' . $_SESSION['user_logged'].": doesn't own any FTP account but sent an update request");
+        user_goto('ftp_accounts.php');
+    }
 
-  	     $res = preg_match("/\.\./", clean_input($_POST['other_dir']), $match);
-		 if (!is_dir($other_dir) || $res !== 0) {
-				set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
-				return;
-		}
+    $members = explode(',', $rs -> fields['members']);
 
-        $query = <<<SQL_QUERY
+    if (!in_array($ftp_acc, $members)) {
+        write_log('WARNING! ' . $_SESSION['user_logged'].": tried to update not-owned account");
+        user_goto('ftp_accounts.php');
+    }
+
+
+    if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
+        if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
+            if ($_POST['pass'] !== $_POST['pass_rep']) {
+                set_page_message(tr('Entered passwords differ!'));
+                return;
+            }
+            if (chk_password($_POST['pass'])) {
+                set_page_message( tr("Incorrect password range or syntax!"));
+                return;
+            }
+
+            $pass = crypt_user_ftp_pass($_POST['pass']);
+            if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
+
+                $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
+
+                if (!is_dir($other_dir) || !is_subdomain_of($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'], $other_dir)) {
+                    set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
+                    return;
+                }//domain_id
+
+                $query = <<<SQL_QUERY
                     update
                         ftp_users
                     set
@@ -107,10 +125,10 @@ function update_ftp_account(&$sql, $ftp_acc)
                         userid = ?
 SQL_QUERY;
 
-        $rs = exec_query($sql, $query, array($pass, $other_dir, $ftp_acc));
+                $rs = exec_query($sql, $query, array($pass, $other_dir, $ftp_acc));
 
-      } else {
-        $query = <<<SQL_QUERY
+            } else {
+                $query = <<<SQL_QUERY
                     update
                         ftp_users
                     set
@@ -118,26 +136,26 @@ SQL_QUERY;
                     where
                         userid = ?
 SQL_QUERY;
-        $rs = exec_query(&$sql, $query, array($pass, $ftp_acc));
+                $rs = exec_query($sql, $query, array($pass, $ftp_acc));
 
-      }
+            }
 
-      write_log($_SESSION['user_logged'].": updated FTP ".$ftp_acc." account data");
-      set_page_message(tr('FTP account data updated!'));
-      user_goto('ftp_accounts.php');
-    } else {
-      if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-        $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
-		$res = preg_match("/\.\./", clean_input($_POST['other_dir']), $match);
-		 if (!is_dir($other_dir) || $res !== 0) {
-				set_page_message(clean_input($_POST['other_dir'])." ".tr('does not exist'));
-				return;
-		}
-    } else {
-      $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'];
-    }
+            write_log($_SESSION['user_logged'].": updated FTP ".$ftp_acc." account data");
+            set_page_message(tr('FTP account data updated!'));
+            user_goto('ftp_accounts.php');
+        } else {
+            if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
+                $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
 
-    $query = <<<SQL_QUERY
+                if (!is_dir($other_dir) || !is_subdomain_of($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'], $other_dir)) {
+                    set_page_message(clean_input($_POST['other_dir'])." ".tr('does not exist'));
+                    return;
+                }
+            } else {
+                $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'];
+            }
+
+            $query = <<<SQL_QUERY
                     update
                         ftp_users
                     set
@@ -146,11 +164,11 @@ SQL_QUERY;
                         userid = ?
 SQL_QUERY;
 
-      $rs = exec_query($sql, $query, array($other_dir, $ftp_acc));
-      set_page_message(tr('FTP account data updated!'));
-      user_goto('ftp_accounts.php');
+            $rs = exec_query($sql, $query, array($other_dir, $ftp_acc));
+            set_page_message(tr('FTP account data updated!'));
+            user_goto('ftp_accounts.php');
+        }
     }
-  }
 }
 
 //
@@ -188,7 +206,7 @@ check_permissions($tpl);
 $tpl -> assign(array('TR_EDIT_FTP_USER' => tr('Edit FTP user'),
                      'TR_FTP_ACCOUNT' => tr('FTP account'),
                      'TR_PASSWORD' => tr('Password'),
-                     'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+                     'TR_PASSWORD_REPEAT' => tr('Repeat password'),
                      'TR_USE_OTHER_DIR' => tr('Use other dir'),
                      'TR_EDIT' => tr('Save changes'),
                      'CHOOSE_DIR' => tr('Choose dir')));

@@ -1631,8 +1631,7 @@ SQL_QUERY;
 
 		return get_admin_logo($user_id);
 
-	}
-	else{
+	} else{
 
 		 return get_admin_logo($rs->fields['created_by']);
 
@@ -2725,17 +2724,27 @@ SQL_QUERY;
 		$to = $to_email;
 	}
 // Prepare and send mail
-	$subject = preg_replace("/\{SUBJ\}/", $ticket_subject, $subject);
-	$message = preg_replace("/\{TO_NAME\}/", $name, $message);
-	$message = preg_replace("/\{FROM_NAME\}/", $fromname, $message);
 
-	$headers = "From: $from\n";
+    $search  = array();
+    $replace = array();
 
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
+    $search [] = '{SUBJ}';
+    $replace[] = $ticket_subject;
+    $search [] = '{TO_NAME}';
+    $replace[] = $name;
+    $search [] = '{FROM_NAME}';
+    $replace[] = $fromname;
+
+    $subject = str_replace($search, $replace, $subject);
+    $message = str_replace($search, $replace, $message);
+
+	$headers = "From: " . encode($from) . "\n";
+
+	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
 	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Tickets Mailer";
 
-	$mail_result = mail($to, $subject, $message, $headers);
+	$mail_result = mail(encode($to), encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 	write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");
 }
