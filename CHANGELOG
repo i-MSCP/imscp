@@ -10,6 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-12 Benedikt Heintel
+	- GUI:
+		* Fixed #391: GUI's mail-sending does not work
+		* Changed: Changing Reseller's data
+
 2007-06-08 Raphael Geissert
 	- GUI
 		* Fixed undefined $subject in gui/include/admin-functions.php

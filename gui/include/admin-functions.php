@@ -31,11 +31,9 @@
  *
  * comment: need to check emails with ? and space in subject - some probs can occur
  */
-function encode( $in_str, $charset = 'UTF-8' )
-{
+function encode($in_str, $charset = 'UTF-8') {
     $out_str = $in_str;
-    if ($out_str && $charset)
-    {
+    if ($out_str && $charset) {
         // define start delimimter, end delimiter and spacer
         $end = "?=";
         $start = "=?" . $charset . "?B?";
@@ -1785,7 +1783,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	if ($ufname && $ulname) {
 
-		$to = encode ($ufname.' '.$ulname) ." <$uemail>";
+		$to = encode($ufname.' '.$ulname)." <$uemail>";
 
 		$name = "$ufname $ulname";
 
@@ -2738,13 +2736,13 @@ SQL_QUERY;
     $subject = str_replace($search, $replace, $subject);
     $message = str_replace($search, $replace, $message);
 
-	$headers = "From: " . encode($from) . "\n";
+	$headers = "From: " .$from. "\n";
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
 	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Tickets Mailer";
 
-	$mail_result = mail(encode($to), encode($subject), $message, $headers);
+	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 	write_log("$admin_login: Auto Ticket To: |$to|, From: |$from|, Status: |$mail_status|!");
 }

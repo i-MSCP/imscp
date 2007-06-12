@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -21,11 +21,26 @@
 
 function log_event(&$sql, $date, $user_id, $user_name, $action, $comment) {
 
-    $query = "insert into syslog (date, user_id, user_name, action, comment) values ('$date', '$user_id', '$user_name', '$action', '$comment')";
+    $query = <<<SQL
+		insert into
+			syslog
+				(date,
+				user_id,
+				user_name,
+				action,
+				comment)
+		values
+				('?',
+				'?',
+				'?',
+				'?',
+				'?');
+SQL;
 
-    $rs = $sql -> Execute($query);
+    $rs = exec_query($sql, $query, array($date, $user_id, $user_name, $action, $comment));
 
-    if (!$rs) system_message($sql -> ErrorMsg());
+    if (!$rs)
+		system_message($sql -> ErrorMsg());
 
 }
 

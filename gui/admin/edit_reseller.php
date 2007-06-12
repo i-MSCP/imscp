@@ -325,21 +325,24 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
     }
 
     if ($err == '_off_') {
-
-        calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Alias'));
-
+		if ($uals_max != $rals_current && $uals_current > 0)
+			$err = 'Inconsistency between current_als_cnt and actual alias count: '.$uals_max.' != '.$rals_current;
+		else
+			calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Alias'));
     }
 
     if ($err == '_off_') {
-
-        calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
-
+		if ($umail_max != $rmail_current && $umail_current > 0)
+			$err = 'Inconsistency between current_mail_cnt and actual mail count: '.$umail_max.' != '.$rmail_current;
+		else
+			calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
     }
 
     if ($err == '_off_') {
-
-        calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'));
-
+		if ($uftp_max != $rftp_current && $uftp_current > 0)
+			$err = 'Inconsistency between current_ftp_cnt and actual ftp count: '.$uftp_max.' != '.$rftp_current;
+		else
+			calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'));
     }
 
     if ($err == '_off_') {
