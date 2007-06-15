@@ -48,7 +48,6 @@ case "$1" in
 	echo -n "Starting $DESC: "
 	startproc -f $DAEMON -p $PID
 	rc_status -v
-        /etc/init.d/ispcp_network
 	;;
   stop)
 	echo -n "Stopping $DESC: "

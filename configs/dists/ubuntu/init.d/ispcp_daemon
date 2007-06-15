@@ -28,7 +28,6 @@ case "$1" in
   start)
 	echo -n "Starting $DESC: "
 	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
-	 /etc/init.d/ispcp_network
 	echo "$NAME."
 	;;
   stop)
@@ -42,7 +41,6 @@ case "$1" in
 	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON
 	rm $PID
 	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
-	/etc/init.d/ispcp_network
 	echo "$NAME."
 	;;
   *)

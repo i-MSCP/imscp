@@ -1,5 +1,12 @@
+#!/usr/bin/make -f
 
-INST_PREF=/tmp/ispcp-1.0.0
+INST_PREF=$(shell \
+	if [ $INST_PREF ]; then \
+		echo $INST_PREF; \
+	else \
+		echo "/tmp/ispcp-1.0.0"; \
+	fi; \
+)
 
 HOST_OS=debian
 
@@ -21,9 +28,7 @@ SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
-SYSTEM_MAKE_DIRS=/usr/sbin/ispcp-mkdirs.pl
-
-CODE_PHP=/usr/sbin/encode-file
+SYSTEM_MAKE_DIRS="/usr/bin/make -p"
 
 export
 
@@ -61,4 +66,6 @@ uninstall:
 	rm -rf $(SYSTEM_FCGI)
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
-	rm -rf ./*~
+	#rm -rf ./*~
+
+.PHONY: install uninstall

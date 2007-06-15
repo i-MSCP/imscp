@@ -21,6 +21,6 @@ SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
-SYSTEM_MAKE_DIRS=/usr/sbin/ispcp-mkdirs.pl
+SYSTEM_MAKE_DIRS="/usr/bin/make -p"
 
 CODE_PHP=/usr/sbin/encode-file

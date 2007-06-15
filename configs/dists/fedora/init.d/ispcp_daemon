@@ -56,7 +56,6 @@ status() {
 case "$1" in
   start)
         start
-		/etc/init.d/ispcp_network
         ;;
   stop)
         stop

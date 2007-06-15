@@ -1,4 +1,3 @@
-
 <?php
 /**
  *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version

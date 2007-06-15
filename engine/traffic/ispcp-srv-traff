@@ -102,11 +102,11 @@ sub srv_traff_engine {
 
     push_el(\@main::el, 'srv_traff_engine()', 'Starting...');
 
-    $rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL INPUT 1>$input_log");
+    $rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL ISPCP_INPUT 1>$input_log");
 
     return $rs if ($rs != 0);
 
-    $rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL OUTPUT 1>$output_log");
+    $rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL ISPCP_OUTPUT 1>$output_log");
 
     return $rs if ($rs != 0);
 
@@ -189,12 +189,12 @@ sub srv_traff_engine {
     return $rs if ($rs != 0);
 
 
-    $rs = sys_command("$main::cfg{CMD_IPTABLES} -Z INPUT");
+    $rs = sys_command("$main::cfg{CMD_IPTABLES} -Z ISPCP_INPUT");
 
     return $rs if ($rs != 0);
 
 
-    $rs = sys_command("$main::cfg{CMD_IPTABLES} -Z OUTPUT");
+    $rs = sys_command("$main::cfg{CMD_IPTABLES} -Z ISPCP_OUTPUT");
 
     return $rs if ($rs != 0);
 

@@ -10,6 +10,20 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-15 Raphael Geissert
+	- TOOLS:
+		* Removed ispcp-mkdirs.pl
+	- ENGINE:
+		* Now engine/tools/ispcpphptemp.sh uses per-domain php.ini (4 and 5) settings
+	- CONFIGS:
+		* Makefile now checks for ENV var INST_PREF and use it instead of default
+		* Added detection of lenny/sid and not just etch
+		* Fixed #390: Extra character in fedora's languages.sql
+		* Rewritten init.d/ispcp_network by adding start|stop|restart|force-restart targets, 
+			configurable via /etc/default/ispcp_network and added patch from #257
+	- GUI:
+		* Removed extra empty new line at the top of reseller/domain_statistics.php
+
 2007-06-13 Benedikt Heintel
 	- GUI:
 		* Fixed #396: Missing bind/parts/db_master_e.tpl in ubuntu and sles9

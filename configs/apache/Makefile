@@ -14,11 +14,11 @@ install:
 	cp ./httpd.conf ./working/ispcp.conf
 
 	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) == '4.0' ]] ; then \
+	if [ $(RELEASE) == '4.0' ] || [ $(RELEASE) == 'lenny/sid' ]; then \
 		cp ./fastcgi2.conf ./working/fastcgi.conf ; \
 	else \
 		cp ./fastcgi.conf ./working/fastcgi.conf ; \
-	fi \
+	fi
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
@@ -26,7 +26,7 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
+	cp -R ./working/fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
 
 uninstall:
 

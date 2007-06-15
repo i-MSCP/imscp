@@ -1131,4 +1131,4 @@ INSERT INTO `lang_English` (`id`, `msgid`, `msgstr`) VALUES
 (1102, 'Your request for hosting pack update was added successfully', ''),
 (1103, 'Your request for hosting pack update was removed successfully', ''),
 (1104, 'Zip / Postal code', ''),
-(1105, 'Zip/Postal code', '');s
+(1105, 'Zip/Postal code', '');
