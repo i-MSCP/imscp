@@ -75,25 +75,6 @@ function update_ftp_account(&$sql, $ftp_acc)
     global $cfg;
     global $other_dir;
 
-    $def = get_domain_default_props($sql, $_SESSION['user_id'], true);
-    $domain_id = $def['domain_id'];
-
-    $query = 'SELECT members FROM ftp_group WHERE gid = ?';
-    $rs = exec_query($sql, $query, array($domain_id));
-
-    if ($rs -> RecordCount() == 0) {
-        write_log('WARNING! ' . $_SESSION['user_logged'].": doesn't own any FTP account but sent an update request");
-        user_goto('ftp_accounts.php');
-    }
-
-    $members = explode(',', $rs -> fields['members']);
-
-    if (!in_array($ftp_acc, $members)) {
-        write_log('WARNING! ' . $_SESSION['user_logged'].": tried to update not-owned account");
-        user_goto('ftp_accounts.php');
-    }
-
-
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
         if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
             if ($_POST['pass'] !== $_POST['pass_rep']) {

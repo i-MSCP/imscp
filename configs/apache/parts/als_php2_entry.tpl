@@ -12,6 +12,7 @@
     </IfModule>
     <IfModule mod_fastcgi.c>
         ScriptAlias /php4/ {STARTER_DIR}/{DMN_NAME}/
+        ScriptAlias /php5/ {STARTER_DIR}/{DMN_NAME}/
         <Directory "{STARTER_DIR}/{DMN_NAME}">
             AllowOverride None
             Options +ExecCGI -MultiViews -Indexes

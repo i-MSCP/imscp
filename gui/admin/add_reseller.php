@@ -452,46 +452,46 @@ SQL_QUERY;
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], 999) || $_POST['nreseller_max_domain_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], 99999) || $_POST['nreseller_max_domain_cnt'] == -1) {
 
         set_page_message( tr("Incorrect max domain count or syntax!"));
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], 999) || $_POST['nreseller_max_subdomain_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], 99999)) {
 
         set_page_message( tr("Incorrect max subdomain count or syntax!"));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], 999) || $_POST['nreseller_max_alias_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], 99999)) {
 
         set_page_message(tr('Incorrect max alias count or syntax!'));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], 999) || $_POST['nreseller_max_ftp_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], 99999)) {
 
         set_page_message(tr('Incorrect max FTP count or syntax!'));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], 999) || $_POST['nreseller_max_mail_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], 99999)) {
 
         set_page_message(tr('Incorrect max mail count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], 999) || $_POST['nreseller_max_sql_db_cnt'] == -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], 99999)) {
 
         set_page_message(tr('Incorrect max SQL databases count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], 999) || $_POST['nreseller_max_sql_user_cnt'] == -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], 99999)) {
 
         set_page_message(tr('Incorrect max SQL users count or syntax!'));
 

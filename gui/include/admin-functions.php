@@ -1624,12 +1624,11 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	if($rs->fields['admin_type'] == 'admin')
-	{
+	if($rs->fields['admin_type'] == 'admin') {
 
 		return get_admin_logo($user_id);
 
-	} else{
+	} else {
 
 		 return get_admin_logo($rs->fields['created_by']);
 

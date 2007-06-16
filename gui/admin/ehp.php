@@ -62,8 +62,8 @@ $tpl -> assign(array('TR_HOSTING PLAN PROPS' => tr('Hosting plan properties'),
                      'TR_TEMPLATE_NAME' => tr('Template name'),
                      'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)'),
                      'TR_MAX_ALIASES' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)'),
-                     'TR_MAX_MAILACCOUNTS' => tr('Mail account limit<br><i>(0 unlimited)</i>'),
-                     'TR_MAX_FTP' => tr('FTP account limit<br><i>(0 unlimited)</i>'),
+                     'TR_MAX_MAILACCOUNTS' => tr('Mail account limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+                     'TR_MAX_FTP' => tr('FTP account limit<br><i>(-1 disabled, 0 unlimited)</i>'),
                      'TR_MAX_SQL' => tr('SQL databases Limit<br><i>(-1 disabled, 0 unlimited)</i>'),
                      'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
                      'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
@@ -290,17 +290,17 @@ function check_data_iscorrect(&$tpl)
 		$ahp_error = tr('Incorrect subdomain range or syntax!');
 	} else if (!ispcp_limit_check($hp_als, 999)) {
 		$ahp_error = tr('Incorrect alias range or syntax!');
-	} else if (!ispcp_limit_check($hp_mail, 999) || $hp_mail == -1) {
+	} else if (!ispcp_limit_check($hp_mail, 999)) {
 		$ahp_error = tr('Incorrect mail account range or syntax!');
-	} else if (!ispcp_limit_check($hp_ftp, 999) || $hp_ftp == -1) {
+	} else if (!ispcp_limit_check($hp_ftp, 999)) {
 		$ahp_error = tr('Incorrect FTP account range or syntax!');
 	} else if (!ispcp_limit_check($hp_sql_user, 999)) {
 		$ahp_error = tr('Incorrect SQL database range or syntax!');
 	} else if (!ispcp_limit_check($hp_sql_db, 999)) {
 		$ahp_error = tr('Incorrect SQL user range or syntax!');
-	} else if (!ispcp_limit_check($hp_traff, 1024*1024) || $hp_traff == -1) {
+	} else if (!ispcp_limit_check($hp_traff, 1024*1024*1024) || $hp_traff == -1) {
 		$ahp_error = tr('Incorrect traffic range or syntax!');
-	} else if (!ispcp_limit_check($hp_disk, 1024*1024) || $hp_disk == -1) {
+	} else if (!ispcp_limit_check($hp_disk, 1024*1024*1024) || $hp_disk == -1) {
 		$ahp_error = tr('Incorrect disk range or syntax!');
 	}
 

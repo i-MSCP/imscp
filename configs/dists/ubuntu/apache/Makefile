@@ -26,7 +26,7 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
+	cp -R ./working/fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
 
 uninstall:
 

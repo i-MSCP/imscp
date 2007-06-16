@@ -65,12 +65,12 @@ $tpl -> assign(
 							'TR_CGI_SUPP' => tr('CGI support'),
 							'TR_SUBDOMAINS' => tr('Subdomain(s)<br><i>(-1 disabled, 0 unlimited)'),
 							'TR_ALIAS' => tr('Alias(es)<br><i>(-1 disabled, 0 unlimited)'),
-							'TR_MAIL_ACCOUNT' => tr('Mail account(s)<br><i>(0 unlimited)'),
-							'TR_FTP_ACCOUNTS' => tr('FTP account(s)<br><i>(0 unlimited)'),
+							'TR_MAIL_ACCOUNT' => tr('Mail account(s)<br><i>(-1 disabled, 0 unlimited)'),
+							'TR_FTP_ACCOUNTS' => tr('FTP account(s)<br><i>(-1 disabled, 0 unlimited)'),
 							'TR_SQL_DB' => tr('SQL database(s)<br><i>(-1 disabled, 0 unlimited)'),
 							'TR_SQL_USERS' => tr('SQL user(s)<br><i>(-1 disabled, 0 unlimited)'),
-							'TR_TRAFFIC' => tr('Traffic [MB]<br><i>(0 unlimited)'),
-							'TR_DISK' => tr('Disk [MB]<br><i>(0 unlimited)'),
+							'TR_TRAFFIC' => tr('Traffic [MB]<br><i>(-1 disabled, 0 unlimited)'),
+							'TR_DISK' => tr('Disk [MB]<br><i>(-1 disabled, 0 unlimited)'),
 							'TR_USER_NAME' => tr('Username'),
 							'TR_UPDATE_DATA' => tr('Submit changes'),
 							'TR_CANCEL' => tr('Cancel'),
@@ -391,7 +391,7 @@ function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
 
         $ed_error = tr('Incorrect mail account range or syntax!');
 
-    } else if (!ispcp_limit_check($ftp, 99999) || $ftp == -1) {
+    } else if (!ispcp_limit_check($ftp, 99999)) {
 
         $ed_error = tr('Incorrect FTP account range or syntax!');
 

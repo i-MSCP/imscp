@@ -30,11 +30,6 @@ define('VFS_TYPE_LINK', 'l');
 define('VFS_TYPE_FILE', '-');
 
 /*
- * Temporary directory
- */
-define('VFS_TMP_DIR', '/var/www/ispcp/gui/phptmp');
-
-/*
  * Possible VFS Transfer modes
  */
 define('VFS_ASCII',  FTP_ASCII);
@@ -112,7 +107,6 @@ class vfs {
 	function __construct($domain, &$db) {
 		$this->_domain =  $domain;
 		$this->_db     =& $db;
-		putenv("TMPDIR=" . VFS_TMP_DIR);
 	}
 
 	/**
@@ -165,11 +159,15 @@ class vfs {
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array(
 			$user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
-			'/bin/bash', '/var/www/virtual/' . $this->_domain
+			$cfg['FTP_SHELL'], $cfg['FTP_HOMEDIR'].'/' . $this->_domain
 		));
 		if ( !$rs ) {
 			return false;
 		}
+
+		define("VFS_TMP_DIR", $cfg['FTP_HOMEDIR'].'/' . $this->_domain . '/phptmp');
+
+		putenv("TMPDIR=" . VFS_TMP_DIR);
 
 		// All ok
 		$this->_user   = $user;

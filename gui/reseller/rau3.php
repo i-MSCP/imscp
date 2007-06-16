@@ -397,4 +397,3 @@ SQL_QUERY;
 } // End of add_user_data()
 
 ?>
-

@@ -188,7 +188,7 @@ sub uninstall_system_users {
 
     my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
 
-		my ($upref) 			=	($main::cfg{'APACHE_SUEXEC_USER_PREF'});
+    my ($upref) = ($main::cfg{'APACHE_SUEXEC_USER_PREF'});
 
     my ($uid, $gid) = (undef, undef);
 
@@ -446,6 +446,29 @@ sub uninstall_crontab {
     }
 
     push_el(\@main::el, 'uninstall_crontab()', 'Ending...');
+
+    return 0;
+
+}
+
+sub uninstall_resolver {
+
+    push_el(\@main::el, 'uninstall_resolver()', 'Starting...');
+
+    my $resolv_file = "/etc/resolv.conf";
+
+    my ($rs, $cmd) = (undef, undef);
+
+    if ( -e "$resolv_file.bkp" ) {
+
+        $cmd = "$main::cfg{'CMD_MV'} $resolv_file.bkp $resolv_file";
+    
+        $rs = sys_command_rs($cmd);
+    
+        return $rs if ($rs != 0);
+    }
+
+    push_el(\@main::el, 'uninstall_resolver()', 'Ending...');
 
     return 0;
 
@@ -791,6 +814,8 @@ sub uninstall_ispcpd {
 
     sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-uninstall-services.log");
 
+    sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-uninstall-services.log");
+
     push_el(\@main::el, 'uninstall_ispcpd()', 'Ending...');
 
     return 0;
@@ -816,6 +841,10 @@ sub uninstall_host_system {
     return $rs if ($rs != 0);
 
     $rs = uninstall_crontab();
+
+    return $rs if ($rs != 0);
+
+    $rs = uninstall_resolver();
 
     return $rs if ($rs != 0);
 

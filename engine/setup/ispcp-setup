@@ -660,6 +660,40 @@ sub ask_awstats_dyn {
 	return 0;
 }
 
+sub ask_php_version {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_php_version()', 'Starting...');
+
+	my $qmsg = "\n    Use which PHP Version? (4 or 5) [4]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'php_version'} = '4';
+	}
+	else {
+		if ($rdata eq 'php4' || $rdata eq '4') {
+			$main::ua{'php_version'} = '4';
+		}
+		elsif ($rdata eq 'php5' || $rdata eq '5') {
+			$main::ua{'php_version'} = '5';
+		}
+		else {
+			print STDOUT "\n    Only 'php(4)' and 'php(5)' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+
+	return 0;
+}
+
 sub user_dialog {
 
 	my $rs = undef;
@@ -793,6 +827,8 @@ sub user_dialog {
 	push_el(\@main::el, 'user_dialog()', "awstats_on: $main::ua{'awstats_on'}");
 
 	push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
+
+	push_el(\@main::el, 'user_dialog()', "php_version: $main::ua{'php_version'}");
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
@@ -1151,6 +1187,10 @@ sub setup_config {
 
 	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
 
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
+
 	$rs = store_conf();
 
 	return $rs if ($rs != 0);
@@ -1383,7 +1423,7 @@ sub setup_sql {
 	#
 
 	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
-	my $tmp_dir = "/var/www/ispcp/gui/phptmp";
+	my $tmp_dir = "$main::cfg{'GUI_ROOT_DIR'}/phptmp";
 
 	my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/', '-', '*', ',', ':',
 	                 ';', '_', '?', '%', '=', '(', ')', '#', '!', '<', '>', '+',
@@ -1715,7 +1755,8 @@ sub setup_php {
 					'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
 					'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'},
 					'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'}
+					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+					'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'}
 					);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
@@ -2279,60 +2320,60 @@ sub setup_mta {
 
 	if (! -e "$bk_dir/main.cf.ispcp") {
 
-	if ( -e "$main::cfg{'POSTFIX_CONF_FILE'}") {
+            if ( -e "$main::cfg{'POSTFIX_CONF_FILE'}") {
+    
+                    $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_CONF_FILE'} $bk_dir/main.cf.system";
+    
+                    $rs = sys_command($cmd);
+    
+                    return $rs if ($rs != 0);
+    
+            }
+    
+            if ( -e "$main::cfg{'POSTFIX_MASTER_CONF_FILE'}") {
+    
+                    $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_MASTER_CONF_FILE'} $bk_dir/master.cf.system";
+    
+                    $rs = sys_command($cmd);
+    
+                    return $rs if ($rs != 0);
+    
+            }
+    
+            ($rs, $cfg_tpl) = get_tpl($cfg_dir, 'main.cf');
+    
+            return $rs if ($rs != 0);
+    
+            my %tag_hash = (
+                            '{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
+                            '{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
+                            '{MTA_VERSION}' => $main::cfg{'VersionH'},
+                            '{MTA_HOST_TYPE}' => $main::cfg{'Version'},
+                            '{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
+                            '{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
+                            '{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
+                            '{MTA_VIRTUAL_MAIL_DIR}' => $main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
+                            '{MTA_VIRTUAL_DMN_HASH}' => $main::cfg{'MTA_VIRTUAL_DMN_HASH'},
+                            '{MTA_VIRTUAL_MAILBOX_HASH}' => $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'},
+                            '{MTA_VIRTUAL_ALIAS_HASH}' => $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'},
+                            '{MTA_MAILBOX_MIN_UID}' => $main::cfg{'MTA_MAILBOX_MIN_UID'},
+                            '{MTA_MAILBOX_UID}' => $main::cfg{'MTA_MAILBOX_UID'},
+                            '{MTA_MAILBOX_GID}' => $main::cfg{'MTA_MAILBOX_GID'}
+                           );
 
-		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_CONF_FILE'} $bk_dir/main.cf.system";
+                ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 
-		$rs = sys_command($cmd);
+                return $rs if ($rs != 0);
 
-		return $rs if ($rs != 0);
+                $rs = store_file("$bk_dir/main.cf.ispcp", $cfg, 'root', 'root', 0644);
 
-	}
+                return $rs if ($rs != 0);
 
-	if ( -e "$main::cfg{'POSTFIX_MASTER_CONF_FILE'}") {
+                $cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/master.cf $bk_dir/master.cf.ispcp";
 
-		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_MASTER_CONF_FILE'} $bk_dir/master.cf.system";
+                $rs = sys_command($cmd);
 
-		$rs = sys_command($cmd);
-
-		return $rs if ($rs != 0);
-
-	}
-
-		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'main.cf');
-
-		return $rs if ($rs != 0);
-
-		my %tag_hash = (
-						'{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
-						'{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
-						'{MTA_VERSION}' => $main::cfg{'VersionH'},
-						'{MTA_HOST_TYPE}' => $main::cfg{'Version'},
-						'{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
-						'{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
-						'{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
-						'{MTA_VIRTUAL_MAIL_DIR}' => $main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
-						'{MTA_VIRTUAL_DMN_HASH}' => $main::cfg{'MTA_VIRTUAL_DMN_HASH'},
-						'{MTA_VIRTUAL_MAILBOX_HASH}' => $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'},
-						'{MTA_VIRTUAL_ALIAS_HASH}' => $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'},
-						'{MTA_MAILBOX_MIN_UID}' => $main::cfg{'MTA_MAILBOX_MIN_UID'},
-						'{MTA_MAILBOX_UID}' => $main::cfg{'MTA_MAILBOX_UID'},
-						'{MTA_MAILBOX_GID}' => $main::cfg{'MTA_MAILBOX_GID'}
-					   );
-
-		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-
-		return $rs if ($rs != 0);
-
-		$rs = store_file("$bk_dir/main.cf.ispcp", $cfg, 'root', 'root', 0644);
-
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/master.cf $bk_dir/master.cf.ispcp";
-
-		$rs = sys_command($cmd);
-
-		return $rs if ($rs != 0);
+                return $rs if ($rs != 0);
 
 	}
 
@@ -2753,20 +2794,25 @@ sub setup_ispcpd {
 	push_el(\@main::el, 'setup_ispcpd()', 'Starting...');
 
 	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 
 	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 
 	if ( -e "/usr/sbin/update-rc.d" ) {
 
 		sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon defaults 99 &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/sbin/update-rc.d ispcp_network defaults 99 &> /tmp/ispcp-setup-services.log");
 
 	}
 
 	sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-setup-services.log");
 
 	sleep(3);
 
 	sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_ISPCPN'} start &> /tmp/ispcp-setup-services.log");
 
 	$rs = del_file("/tmp/ispcp-setup-services.log");
 

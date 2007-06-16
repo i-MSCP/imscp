@@ -33,6 +33,10 @@ Alias /ispcp /var/www/ispcp/gui
         php_flag register_globals On
         php_admin_value open_basedir "/var/www/ispcp/gui/tools/filemanager/:/tmp/:/usr/share/php/"
     </IfModule>
+    <IfModule mod_php5.c>
+        php_flag register_globals On
+        php_admin_value open_basedir "/var/www/ispcp/gui/tools/filemanager/:/tmp/:/usr/share/php/"
+    </IfModule>
 </Directory>
 
 Alias /ispcp_images /var/www/ispcp/gui/images

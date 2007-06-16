@@ -23,8 +23,8 @@ install:
 	cp -R ./ispcp $(SYSTEM_CONF)/postfix
 	
 	cp -R ./ispcp $(ROOT_POSTFIX_CONF)
-	cp ./main.cf $(ROOT_POSTFIX_CONF)
-	cp ./master.cf $(ROOT_POSTFIX_CONF)
+#	cp ./main.cf $(ROOT_POSTFIX_CONF)
+#	cp ./master.cf $(ROOT_POSTFIX_CONF)
 
 uninstall:
 

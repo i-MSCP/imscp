@@ -19,10 +19,23 @@ ispCP ω 1.0.0 Changelog
 		* Makefile now checks for ENV var INST_PREF and use it instead of default
 		* Added detection of lenny/sid and not just etch
 		* Fixed #390: Extra character in fedora's languages.sql
-		* Rewritten init.d/ispcp_network by adding start|stop|restart|force-restart targets, 
+		* Rewritten init.d/ispcp_network by adding start|stop|restart|force-restart targets,
 			configurable via /etc/default/ispcp_network and added patch from #257
+		* Added PHP_VERSION which acts as 4/5 switch
+		* Fixed #323: main.cf and master.cf are installed before the backups are made
 	- GUI:
 		* Removed extra empty new line at the top of reseller/domain_statistics.php
+		* Removed hard-coded ftp-shell and phptmp dir
+		* Fixed #389: ftp users can't be edited
+		* Fixed #401: account with ftp accounts disabled can't be created
+		* Fixed #293: account with mail accounts disabled can't be created
+		* Custom logo is now deleted (not only removed from database)
+	- SETUP:
+		* Fixed #274: PHP4/5 switch added
+		* Removed hard-coded phptmp dir being set on PMA's config.inc.php
+		* Uninstaller now restores the resolver
+	- DOCS
+		* Fixed #398: error in Ubuntu list of packages to install
 
 2007-06-13 Benedikt Heintel
 	- GUI:

@@ -16,7 +16,7 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
- 
+
 include '../include/ispcp-lib.php';
 
 check_login();
@@ -121,7 +121,7 @@ if ($err_msg != '_off_') {
 
         $ed_error = tr('Incorrect mail account range or syntax!');
 
-    } else if (!ispcp_limit_check($ftp, 99999) || $ftp == -1) {
+    } else if (!ispcp_limit_check($ftp, 99999)) {
 
         $ed_error = tr('Incorrect FTP account range or syntax!');
 

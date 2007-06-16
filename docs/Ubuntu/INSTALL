@@ -62,7 +62,9 @@ Make sure you are logged in as root.
 
 3. Install the required modules:
 	# apt-get update && apt-get upgrade
-	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages`
+	# apt-get install `cat ./docs/Ubuntu/ubuntu-packages-VERSION`
+
+NOTES: Make sure you have the multiverse and universe repositories in your /etc/apt/sources.list
 
 	(when you get to the courier screen select no to web directories)
 	(when you get to the postfix screen select internet site and then type root

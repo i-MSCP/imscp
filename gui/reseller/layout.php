@@ -100,6 +100,7 @@ function update_logo()
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'delete_logo') {
 
         update_user_gui_props('', $user_id);
+        unlink(get_own_logo($user_id));
 
         return;
 
