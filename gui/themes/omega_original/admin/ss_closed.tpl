@@ -71,14 +71,14 @@ function action_delete(url) {
           <!-- BDP: tickets_item -->
           <tr>
             <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
-            <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.gif" width="12" height="15" align="left" />
+            <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left" />
                     <script language="JavaScript" type="text/javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
 						</script>
               {SUBJECT}</a> </td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>
-            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
+            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
           </tr>
           <!-- EDP: tickets_item -->
           <tr>

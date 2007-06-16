@@ -20,7 +20,7 @@ function action_delete(url) {
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.gif" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -61,8 +61,8 @@ function action_delete(url) {
                           <!-- EDP: page_message -->
                           <!-- BDP: db_list -->
                           <tr>
-                            <td class="content3" colspan="3"><b><strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.gif" width="15" height="16" align="left"></strong>{DB_NAME}</b></td>
-                            <td class="content3" width="150" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="linkdark" onClick="action_delete('delete_sql_database.php?id={DB_ID}')"><b>{TR_DELETE}</b></a> </td>
+                            <td class="content3" colspan="3"><b><strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.png" width="15" height="16" align="left"></strong>{DB_NAME}</b></td>
+                            <td class="content3" width="150" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="linkdark" onClick="action_delete('delete_sql_database.php?id={DB_ID}')"><b>{TR_DELETE}</b></a> </td>
                           </tr>
                           <tr>
                             <td class="content2" colspan="3"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" align="absmiddle"> {TR_DATABASE_USERS}</td>
@@ -76,9 +76,9 @@ function action_delete(url) {
                           <!-- BDP: user_list -->
                           <tr>
                             <td class="content">{DB_USER}</td>
-                            <td width="150" align="center" class="content"><img src="{THEME_COLOR_PATH}/images/icons/execute_query.gif" width="16" height="16" align="absmiddle"> <a href="sql_execute_query.php?id={USER_ID}" class="link" >{TR_EXECUTE_QUERY}</a></td>
-                            <td width="150" align="center" class="content"><img src="{THEME_COLOR_PATH}/images/icons/change_pass.gif" width="16" height="15" align="absmiddle"> <a href="sql_change_password.php?id={USER_ID}" class="link" >{TR_CHANGE_PASSWORD}</a></td>
-                            <td class="content" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onClick="action_delete('sql_delete_user.php?id={USER_ID}')">{TR_DELETE}</a></td>
+                            <td width="150" align="center" class="content"><img src="{THEME_COLOR_PATH}/images/icons/db_comit.png" width="16" height="16" align="absmiddle"> <a href="sql_execute_query.php?id={USER_ID}" class="link" >{TR_EXECUTE_QUERY}</a></td>
+                            <td width="150" align="center" class="content"><img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="16" height="15" align="absmiddle"> <a href="sql_change_password.php?id={USER_ID}" class="link" >{TR_CHANGE_PASSWORD}</a></td>
+                            <td class="content" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onClick="action_delete('sql_delete_user.php?id={USER_ID}')">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: user_list -->
                           <tr>

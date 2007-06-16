@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-16 Raphael Geissert
+	- GUI:
+		* Fixed #197: Link to user's domain
+		* Replaced some icons with new ones
+		* client/add_subdomain.php displays subdomain has no correct mount point when first opening
+
 2007-06-15 Raphael Geissert
 	- TOOLS:
 		* Removed ispcp-mkdirs.pl

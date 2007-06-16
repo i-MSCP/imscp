@@ -20,7 +20,7 @@ function MM_goToURL() { //v3.0
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.gif" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -71,8 +71,8 @@ function MM_goToURL() { //v3.0
                       <td class="{CLASS}" nowrap>{AREA_NAME}<br>
                           <u>{AREA_PATH}</u></td>
                       <td width="80" class="{CLASS}" nowrap align="center">{STATUS}</td>
-                      <td width="60" class="{CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.gif" width="18" height="18" border="0" align="absmiddle"> <a href="protect_it.php?id={PID}" class="link">{TR_EDIT}</a> </td>
-                      <td width="60" class="{CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="protect_delete.php?id={PID}" class="link">{TR_DELETE}</a></td>
+                      <td width="60" class="{CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle"> <a href="protect_it.php?id={PID}" class="link">{TR_EDIT}</a> </td>
+                      <td width="60" class="{CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="protect_delete.php?id={PID}" class="link">{TR_DELETE}</a></td>
                     </tr>
                     <!-- EDP: dir_item -->
                     <!-- EDP: protected_areas -->

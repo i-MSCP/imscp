@@ -69,7 +69,7 @@ function action_delete(url) {
                             <!-- BDP: lang_row -->
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
-                              <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/bullet.gif" width="16" height="16" align="left" /> {LANGUAGE}</td>
+                              <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/locale.png" width="16" height="16" align="left" /> {LANGUAGE}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{MESSAGES}</td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap" align="center"><!-- BDP: lang_def -->
                                 {DEFAULT}
@@ -78,8 +78,8 @@ function action_delete(url) {
                 <input type="radio" name="default_language" value="{LANG_VALUE}" />
                 <!-- EDP: lang_radio -->
                               </td>
-                              <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_EXPORT}" class="link" target="_blank">{TR_EXPORT}</a> </td>
-                              <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" />
+                              <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_EXPORT}" class="link" target="_blank">{TR_EXPORT}</a> </td>
+                              <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" />
                                   <!-- BDP: lang_delete_show -->
                                 {TR_UNINSTALL}
                                 <!-- EDP: lang_delete_show -->

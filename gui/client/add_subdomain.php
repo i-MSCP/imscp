@@ -169,41 +169,38 @@ SQL_QUERY;
 }
 
 function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
-  	$domain_id = get_user_domain_id($sql, $user_id);
+    $domain_id = get_user_domain_id($sql, $user_id);
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
-		if (empty($_POST['subdomain_name'])) {
-	    	set_page_message(tr('Please specify subdomain name!'));
-	      	return;
-		}
+    if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
+        if (empty($_POST['subdomain_name'])) {
+            set_page_message(tr('Please specify subdomain name!'));
+            return;
+        }
 
-	    $sub_name = strtolower($_POST['subdomain_name']);
-		$sub_name = get_punny($sub_name);
+        $sub_name = strtolower($_POST['subdomain_name']);
+        $sub_name = get_punny($sub_name);
 
-	    if (isset($_POST['subdomain_mnt_pt']) && $_POST['subdomain_mnt_pt'] !== '') {
-	    	$sub_mnt_pt = strtolower($_POST['subdomain_mnt_pt']);
-			$sub_mnt_pt = decode_idna($sub_mnt_pt);
-	    }
-	    else
-	    	$sub_mnt_pt = "/";
+        if (isset($_POST['subdomain_mnt_pt']) && $_POST['subdomain_mnt_pt'] !== '') {
+            $sub_mnt_pt = strtolower($_POST['subdomain_mnt_pt']);
+            $sub_mnt_pt = decode_idna($sub_mnt_pt);
+        } else {
+            $sub_mnt_pt = "/";
+        }
 
-	    if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
-	      	set_page_message(tr('Subdomain already exists!'));
-	    } else if (@chk_subdname($sub_name.".".$dmn_name) > 0) {
-	      	set_page_message(tr('Wrong subdomain syntax!'));
-	    } else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)) {
-	      	set_page_message(tr('Subdomain mount point already exists!'));
-	    } else if (@chk_mountp($sub_mnt_pt) > 0){
-	    	set_page_message(tr('Incorrect mount point syntax'));
-		} else {
-	     	subdomain_schedule($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt);
-	      	set_page_message(tr('Subdomain scheduled for addition!'));
-	      	header('Location:manage_domains.php');
-	      	exit(0);
-		}
-	}
-	else {
-    	set_page_message(tr('Subdomain has not correct mount point'));
+        if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
+            set_page_message(tr('Subdomain already exists!'));
+        } else if (@chk_subdname($sub_name.".".$dmn_name) > 0) {
+            set_page_message(tr('Wrong subdomain syntax!'));
+        } else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)) {
+            set_page_message(tr('Subdomain mount point already exists!'));
+        } else if (@chk_mountp($sub_mnt_pt) > 0){
+            set_page_message(tr('Incorrect mount point syntax'));
+        } else {
+            subdomain_schedule($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt);
+            set_page_message(tr('Subdomain scheduled for addition!'));
+            header('Location:manage_domains.php');
+            exit(0);
+        }
     }
 }
 

@@ -34,7 +34,7 @@ function MM_goToURL() { //v3.0
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.gif" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -104,13 +104,13 @@ function MM_goToURL() { //v3.0
                     <!-- BDP: table_item -->
                     <tr>
                       <td width="25" align="center">&nbsp;</td>
-                      <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.gif" width="15" height="14" align="left"> {NAME}<br>
+                      <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {NAME}<br>
                         {ALIAS_IP}</td>
                       <td class="{CONTENT}" nowrap>{REAL_DOMAIN}<br>
                         {REAL_DOMAIN_MOUNT}</td>
                       <td align="center" nowrap class="{CONTENT}"><a href="{EDIT_LINK}" class="link">{FORWARD} </a></td>
                       <td class="{CONTENT}" nowrap align="center">{STATUS}</td>
-                      <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('{DELETE_LINK}')" class="link">{DELETE}</a></td>
+                      <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('{DELETE_LINK}')" class="link">{DELETE}</a></td>
                     </tr>
                     <!-- EDP: table_item -->
                     <!-- EDP: table_list -->

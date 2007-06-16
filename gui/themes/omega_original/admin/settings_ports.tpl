@@ -96,7 +96,7 @@ return true;
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                 </select>
                               </td>
-                              <td class="{CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle">
+                              <td class="{CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
                                   <!-- BDP: port_delete_show -->
                                 {TR_DELETE}
                                 <!-- EDP: port_delete_show -->

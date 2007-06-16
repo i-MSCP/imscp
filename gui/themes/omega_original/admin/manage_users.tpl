@@ -96,7 +96,7 @@ function sbmt(form, uaction) {
               {TR_DELETE}
               <!-- EDP: admin_delete_show -->
               <!-- BDP: admin_delete_link -->
-              <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
+              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
               <!-- EDP: admin_delete_link -->
             </td>
           </tr>
@@ -146,8 +146,8 @@ function sbmt(form, uaction) {
         <td class="{RSL_CLASS}"><a href="{URL_EDIT_RSL}" class="link">{RSL_USERNAME} </a> </td>
         <td class="{RSL_CLASS}" align="center">{RESELLER_CREATED_ON}</td>
         <td class="{RSL_CLASS}" align="center">{RSL_CREATED_BY}</td>
-        <td width="150" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
-        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')" class="link">{TR_DELETE}</a></td>
+        <td width="150" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')" class="link">{TR_DELETE}</a></td>
       </tr>
       <!-- EDP: rsl_item -->
       <!-- EDP: rsl_list -->
@@ -198,7 +198,7 @@ function sbmt(form, uaction) {
             </tr>
           </table></td>
           <td colspan="2" align="right" nowrap="nowrap"><input type="hidden" name="details" value="" />
-                <img src="{THEME_COLOR_PATH}/images/icons/show_alias.jpg" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a> </td>
+                <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a> </td>
         </tr>
         <!-- BDP: usr_message -->
         <tr>
@@ -219,16 +219,16 @@ function sbmt(form, uaction) {
         <tr>
           <td width="25" align="center">&nbsp;</td>
           <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="18" height="18" border="0" /></a></td>
-          <td class="{USR_CLASS}"><a href="{URL_EDIT_USR}" class="link">{USR_USERNAME} </a> </td>
+          <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="18" height="18" border="0"/></a><a href="{URL_EDIT_USR}" class="link">{USR_USERNAME} </a> </td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
-          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/bullet.gif" width="18" height="18" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
-          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.gif" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="18" height="18" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
+          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
           <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><!-- BDP: usr_delete_show -->
             {TR_DELETE}
             <!-- EDP: usr_delete_show -->
                 <!-- BDP: usr_delete_link -->
-                <img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
+                <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
                 <!-- EDP: usr_delete_link -->
           </td>
         </tr>
@@ -236,7 +236,7 @@ function sbmt(form, uaction) {
         <tr>
           <td align="center">&nbsp;</td>
           <td class="content4" align="center">&nbsp;</td>
-          <td colspan="7" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/show_alias.jpg" width="15" height="16" align="absmiddle" />&nbsp;{ALIAS_DOMAIN}</td>
+          <td colspan="7" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" />&nbsp;{ALIAS_DOMAIN}</td>
         </tr>
         <!-- EDP: user_details -->
         <!-- EDP: usr_item -->

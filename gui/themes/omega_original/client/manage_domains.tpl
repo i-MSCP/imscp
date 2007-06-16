@@ -67,7 +67,7 @@ function MM_swapImage() { //v3.0
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
 <!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.gif" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -119,11 +119,11 @@ function MM_swapImage() { //v3.0
           </tr>
           <!-- BDP: als_item -->
           <tr>
-            <td class="{ITEM_CLASS}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.gif" width="15" height="14" align="left"> {ALS_NAME}</td>
+            <td class="{ITEM_CLASS}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {ALS_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap>{ALS_MOUNT}</td>
             <td width="74" class="{ITEM_CLASS}" nowrap align="center"><a href="{ALS_FWD_SCRIPT}" class="link">{ALS_FORWARD}</a> </td>
             <td width="100" class="{ITEM_CLASS}" nowrap align="center">{ALS_STATUS}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')">{ALS_ACTION}</a></td>
+            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')">{ALS_ACTION}</a></td>
           </tr>
           <!-- EDP: als_item -->
           <!-- EDP: als_list -->
@@ -168,10 +168,10 @@ function MM_swapImage() { //v3.0
           </tr>
           <!-- BDP: sub_item -->
           <tr>
-            <td class="{ITEM_CLASS}" colspan="2" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.gif" width="15" height="14" align="left">{SUB_NAME}</td>
+            <td class="{ITEM_CLASS}" colspan="2" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap>{SUB_MOUNT}</td>
             <td width="100" class="{ITEM_CLASS}" nowrap align="center">{SUB_STATUS}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
+            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
           </tr>
           <!-- EDP: sub_item -->
           <!-- EDP: sub_list -->

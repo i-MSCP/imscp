@@ -22,7 +22,7 @@ function delete_account(url) {
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.gif" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
+        <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
@@ -73,9 +73,9 @@ function delete_account(url) {
                       <td class="{CLASS_TYPE_ROW}" width="50" align="center">{PLAN_NOM}</td>
                       <td class="{CLASS_TYPE_ROW}"><a href="../orderpanel/package_info.php?user_id={RESELLER_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>
                       <td align="center" class="{CLASS_TYPE_ROW}">{PURCHASING}</td>
-                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.gif" width="16" height="16" border="0" align="absmiddle"> <a href="ehp.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
+                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="ehp.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
                       <!-- BDP: hp_delete -->
-                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.gif" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('dhp.php?hpid={HP_ID}')" class="link">{PLAN_ACTION}</a></td>
+                      <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('dhp.php?hpid={HP_ID}')" class="link">{PLAN_ACTION}</a></td>
                       <!-- EDP: hp_delete -->
                     </tr>
                     <!-- EDP: hp_entry -->
