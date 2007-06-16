@@ -338,8 +338,8 @@ FTP account added! =
 FTP account already exists! =
 FTP account data updated! =
 FTP account deleted successfully! =
-FTP account limit<br><i>(0 unlimited)</i> =
-FTP account(s)<br><i>(0 unlimited) =
+FTP account limit<br><i>(-1 disabled, 0 unlimited)</i>
+FTP account(s)<br><i>(-1 disabled, 0 unlimited) =
 FTP accounts =
 FTP Accounts =
 FTP accounts limit expired! =
@@ -546,11 +546,11 @@ Mail = e-mail
 Mail account =
 Mail account already exists! =
 Mail account errors =
-Mail account limit<br><i>(0 unlimited)</i> =
+Mail account limit<br><i>(-1 disabled, 0 unlimited)</i>
 Mail account scheduled for addition! =
 Mail account scheduled for modification! =
 Mail account scheduler for modification! =
-Mail account(s)<br><i>(0 unlimited) =
+Mail account(s)<br><i>(-1 disabled, 0 unlimited) =
 Mail accounts =
 Mail accounts limit expired! =
 Mail accounts list =

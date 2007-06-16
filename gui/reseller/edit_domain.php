@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -69,8 +69,8 @@ $tpl -> assign(
 							'TR_FTP_ACCOUNTS' => tr('FTP account(s)<br><i>(-1 disabled, 0 unlimited)'),
 							'TR_SQL_DB' => tr('SQL database(s)<br><i>(-1 disabled, 0 unlimited)'),
 							'TR_SQL_USERS' => tr('SQL user(s)<br><i>(-1 disabled, 0 unlimited)'),
-							'TR_TRAFFIC' => tr('Traffic [MB]<br><i>(-1 disabled, 0 unlimited)'),
-							'TR_DISK' => tr('Disk [MB]<br><i>(-1 disabled, 0 unlimited)'),
+							'TR_TRAFFIC' => tr('Traffic [MB]<br><i>(0 unlimited)'),
+							'TR_DISK' => tr('Disk [MB]<br><i>(0 unlimited)'),
 							'TR_USER_NAME' => tr('Username'),
 							'TR_UPDATE_DATA' => tr('Submit changes'),
 							'TR_CANCEL' => tr('Cancel'),
