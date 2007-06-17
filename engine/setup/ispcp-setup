@@ -786,6 +786,18 @@ sub user_dialog {
 
 	} while ($rs == 1);
 
+	#
+	# Configuration questions
+	#
+
+	do {
+		$rs = ask_php_version();
+	} while ($rs == 1);
+
+	#
+	# AWStats questions
+	#
+
 	do {
 
 		$rs = ask_awstats_on();
@@ -2321,29 +2333,29 @@ sub setup_mta {
 	if (! -e "$bk_dir/main.cf.ispcp") {
 
             if ( -e "$main::cfg{'POSTFIX_CONF_FILE'}") {
-    
+
                     $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_CONF_FILE'} $bk_dir/main.cf.system";
-    
+
                     $rs = sys_command($cmd);
-    
+
                     return $rs if ($rs != 0);
-    
+
             }
-    
+
             if ( -e "$main::cfg{'POSTFIX_MASTER_CONF_FILE'}") {
-    
+
                     $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'POSTFIX_MASTER_CONF_FILE'} $bk_dir/master.cf.system";
-    
+
                     $rs = sys_command($cmd);
-    
+
                     return $rs if ($rs != 0);
-    
+
             }
-    
+
             ($rs, $cfg_tpl) = get_tpl($cfg_dir, 'main.cf');
-    
+
             return $rs if ($rs != 0);
-    
+
             my %tag_hash = (
                             '{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
                             '{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",

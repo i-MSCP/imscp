@@ -10,6 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-17 Benedikt Heintel
+	- SETUP:
+		* Fixed: error on install; PHP Version was not asked
+		* Partly fixed #404: new makefile errors
+
 2007-06-16 Raphael Geissert
 	- GUI:
 		* Fixed #197: Link to user's domain

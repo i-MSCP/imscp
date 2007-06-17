@@ -1,12 +1,6 @@
 #!/usr/bin/make -f
 
-INST_PREF=$(shell \
-	if [ $INST_PREF ]; then \
-		echo $INST_PREF; \
-	else \
-		echo "/tmp/ispcp-1.0.0"; \
-	fi; \
-)
+INST_PREF=/tmp/ispcp-1.0.0
 
 HOST_OS=debian
 
@@ -28,7 +22,7 @@ SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
-SYSTEM_MAKE_DIRS="/usr/bin/make -p"
+SYSTEM_MAKE_DIRS=/bin/mkdir -p
 
 export
 
