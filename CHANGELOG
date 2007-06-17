@@ -11,6 +11,10 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-06-17 Benedikt Heintel
+	- CONFIGS:
+		* Fixed: FastCGI config missing </IfModule>
+	- GUI:
+		* Fixed #405: reload.gif instead of reload.png
 	- SETUP:
 		* Fixed: error on install; PHP Version was not asked
 		* Partly fixed #404: new makefile errors
@@ -45,7 +49,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #274: PHP4/5 switch added
 		* Removed hard-coded phptmp dir being set on PMA's config.inc.php
 		* Uninstaller now restores the resolver
-	- DOCS
+	- DOCS:
 		* Fixed #398: error in Ubuntu list of packages to install
 
 2007-06-13 Benedikt Heintel
