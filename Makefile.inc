@@ -1,5 +1,7 @@
 
-INST_PREF=/tmp/ispcp-1.0.0
+ifndef INST_PREF
+        INST_PREF=/tmp/ispcp-1.0.0
+endif
 
 HOST_OS=openbsd
 
@@ -23,4 +25,4 @@ SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
 
-CODE_PHP=/usr/sbin/encode-file
+.PHONY: install uninstall

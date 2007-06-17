@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 
-INST_PREF=/tmp/ispcp-1.0.0
+ifndef INST_PREF
+        INST_PREF=/tmp/ispcp-1.0.0
+endif
 
 HOST_OS=suse100
 
@@ -23,8 +25,6 @@ SYSTEM_FCGI=$(INST_PREF)/srv/www/fcgi
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
-
-CODE_PHP=/usr/sbin/encode-file
 
 export
 
@@ -63,3 +63,5 @@ uninstall:
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	rm -rf ./*~
+
+.PHONY: install uninstall

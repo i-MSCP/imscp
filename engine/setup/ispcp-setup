@@ -1557,7 +1557,7 @@ sub setup_crontab {
 
 	$rs = sys_command_rs($cmd);
 
-	$cmd = "$main::cfg{'CMD_CRONTAB'} -u root $bk_dir/crontab.conf";
+	$cmd = "$main::cfg{'CMD_CRONTAB'} -u root $wrk_dir/crontab.conf";
 
 	$rs = sys_command($cmd);
 

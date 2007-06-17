@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 
-INST_PREF=/tmp/ispcp-1.0.0
+ifndef INST_PREF
+        INST_PREF=/tmp/ispcp-1.0.0
+endif
 
 HOST_OS=debian
 
