@@ -10,6 +10,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-17 Raphael Geissert
+	- INSTALLATION:
+		* Replaced gen-keys.c with perl-only code
+	- SETUP:
+		* PMA's blowfish key generator replaced with new one
+	- ENGINE:
+		* Added save_file and gen_sys_rand_num
+
 2007-06-17 Benedikt Heintel
 	- CONFIGS:
 		* Fixed: FastCGI config missing </IfModule>
@@ -1763,7 +1771,7 @@ VHCS 2.4.8 Changelog
 		* Changed Apache Templates (indexing disabled)
 
 2006-04-19 Carsten Schoene / Marcus Moll
-	- INSTALLTION:
+	- INSTALLATION:
 		* Updated: master.cf entry for Sendmail Submission Port 587 (e.g. required for AOL users)
 
 2006-04-12 Carsten Schoene

@@ -507,6 +507,46 @@ sub store_file {
 
 }
 
+sub save_file {
+
+    my ($fname, $fdata) = @_;
+
+    push_el(\@main::el, 'save_file()', 'Starting...');
+
+    if ( !defined($fname) || $fname eq '' ) {
+        push_el(
+                \@main::el,
+                'save_file()',
+                "ERROR: Undefined input data, fname: |$fname|, fdata"
+               );
+
+        return -1;
+    }
+
+    my $res = open(F, '>', $fname);
+
+    if (!defined($res)) {
+
+        push_el(
+                \@main::el,
+                'save_file()',
+                "ERROR: Can't open file |$fname| for writing !"
+               );
+
+        return -1;
+
+    }
+
+    print F $fdata;
+
+    close(F);
+
+    push_el(\@main::el, 'save_file()', 'Ending...');
+
+    return 0;
+
+}
+
 sub del_file {
 
     my ($fname) = @_;
@@ -852,6 +892,62 @@ sub gen_rand_num {
     }
 
     push_el(\@main::el, 'gen_rand_num()', 'Ending...');
+
+    return (0, $rdata);
+
+}
+
+sub gen_sys_rand_num {
+
+    my ($len) = @_;
+
+    push_el(\@main::el, 'gen_sys_rand_num()', 'Starting...');
+
+    if (!defined($len) || ($len eq '')) {
+
+        push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Undefined input data, len: |$len| !");
+
+        return (-1, '');
+
+    }
+
+    if (0 >= $len ) {
+
+        push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Input data length '$len' is zero or negative !");
+
+        return (-1, '');
+
+    }
+    
+    my $rs = open(F, '<', '/dev/random');
+
+    if (!defined($rs)) {
+
+        push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Couldn't open the pseudo-random characters generator");
+
+        return (-1, '');
+    
+    }
+    
+    my ($i, $rdata, $rc, $rci) = (0, undef, undef, undef);
+    
+    while ($i < $len) {
+
+        read(F, $rc, 1);
+        
+        $rci = ord($rc);
+        
+        next if ($rci <= 32 || $rci >= 125 || $rci == 92 );
+        
+        $rdata .= $rc;
+        $rc = undef;
+        $i++;
+
+    }
+    
+    close(F);
+
+    push_el(\@main::el, 'gen_sys_rand_num()', 'Ending...');
 
     return (0, $rdata);
 

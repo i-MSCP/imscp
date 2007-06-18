@@ -1,33 +1,19 @@
 #!/usr/bin/perl
 
+use FindBin;
+
+use lib "$FindBin::Bin/../engine";
+require 'ispcp_common_code.pl';
+
 use strict;
 use warnings;
 
 die ("Undefined Input Data!") if (!defined($ARGV[0]) || !defined($ARGV[1]) || !defined($ARGV[2]));
 
 my ($php_fname, $perl_fname, $perl_fname2) = ($ARGV[0], $ARGV[1], $ARGV[2]);
-my @keys;
-my ($key, $iv);
 
-# get keys data;
-system("./gen-keys 32 8 > keys.txt");
-open(F, '<', 'keys.txt');
-@keys = <F>;
-close(F);
-($key, $iv) = ($keys[0], $keys[1]);
-
-# we do not want \ in our encryption key;
-while ($key =~ /\\/ || $iv =~ /\\/) {
-	chop($key);
-	chop($iv);
-	print("not good pair ($key, $iv). generating new...\n");sleep(1);
-	system("./gen-keys 32 8 > keys.txt");
-	open(F, '<', 'keys.txt');
-	@keys = <F>;
-	close(F);
-	($key, $iv) = ($keys[0], $keys[1]);
-}
-
+my $key = gen_sys_rand_num(32);
+my $iv  = gen_sys_rand_num(8);
 
 $key =~ s/'/\\'/gi;
 $iv =~ s/'/\\'/gi;
@@ -37,56 +23,40 @@ $iv =~ s/'/\\'/gi;
 chop($key);
 chop($iv);
 
-# do the durty work;
+my ($rs, $php_file, $perl_file) = (undef, undef, undef);
 
+my %tag_hash = (
+                    '{KEY}' => $key,
+                    '{IV}' =>  $iv
+                );
 
 # php lib;
 
-open(F, '<', $php_fname);
-my @php_file = <F>;
-close(F);
+$php_file = get_file($php_fname);
 
-$php_file[2] = "\t\$ispcp_db_pass_key = '$key';\n";
-$php_file[4] = "\t\$ispcp_db_pass_iv = '$iv';\n";
+($rs, $php_file) = prep_tpl(\%tag_hash, $php_file);
 
-open(F, '>', $php_fname);
-foreach(@php_file) {
-	
-	syswrite(F, $_);
-	
-}
-close(F);
+return $rs if ($rs != 0);
+
+$rs = save_file($php_fname, $php_file);
+
+return $rs if ($rs != 0);
 
 # perl lib;
 
-open(F, '<', $perl_fname);
-my @perl_file = <F>;
-close(F);
+$perl_file = get_file($perl_fname);
 
-$perl_file[1] = "\$main::db_pass_key = '$key';\n";
-$perl_file[3] = "\$main::db_pass_iv = '$iv';\n";
+($rs, $perl_file) = prep_tpl(\%tag_hash, $perl_file);
 
-open(F, '>', $perl_fname);
-foreach(@perl_file) {
-	
-	syswrite(F, $_);
-	
-}
-close(F);
+return $rs if ($rs != 0);
+
+$rs = save_file($perl_fname, $perl_file);
+
+return $rs if ($rs != 0);
+
 
 # perl lib for autoresponder;
 
-open(F, '<', $perl_fname2);
-my @perl_file2 = <F>;
-close(F);
+$rs = save_file($perl_fname2, $perl_file);
 
-$perl_file2[1] = "\$main::db_pass_key = '$key';\n";
-$perl_file2[3] = "\$main::db_pass_iv = '$iv';\n";
-
-open(F, '>', $perl_fname2);
-foreach(@perl_file2) {
-	
-	syswrite(F, $_);
-	
-}
-close(F);
+return $rs if ($rs != 0);

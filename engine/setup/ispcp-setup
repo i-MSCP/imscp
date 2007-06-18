@@ -1437,17 +1437,7 @@ sub setup_sql {
 	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
 	my $tmp_dir = "$main::cfg{'GUI_ROOT_DIR'}/phptmp";
 
-	my @rand_data = ('A'..'Z', 'a'..'z', '0'..'9', '.', '/', '-', '*', ',', ':',
-	                 ';', '_', '?', '%', '=', '(', ')', '#', '!', '<', '>', '+',
-	                 '[', ']', '{', '}', '"', '@', '&');
-
-	my ($i, $blowfish) = ('', '');
-
-	for ($i = 0; $i < 31; $i++) {
-
-		$blowfish .= $rand_data[ rand() * ($#rand_data + 1) ];
-
-	}
+	my $blowfish = gen_sys_rand_num(31);
 
 	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
 

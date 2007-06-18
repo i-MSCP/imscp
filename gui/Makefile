@@ -42,11 +42,9 @@ install:
 	cp -dR ./reseller $(SYSTEM_GUI_ROOT)
 	cp -dR ./client $(SYSTEM_GUI_ROOT)
 	cp -dR ./include $(SYSTEM_GUI_ROOT)
-	rm -rf $(SYSTEM_GUI_ROOT)/{admin,reseller,client,include}/Makefile
 
 	cp -dR ./domain_default_page $(SYSTEM_GUI_ROOT)
 	cp -dR ./errordocs $(SYSTEM_GUI_ROOT)
-	#cp -dR ./images $(SYSTEM_GUI_ROOT)
 	cp -dR ./themes $(SYSTEM_GUI_ROOT)
 	cp -dR ./tools $(SYSTEM_GUI_ROOT)
 	cp -dR ./orderpanel $(SYSTEM_GUI_ROOT)
@@ -57,3 +55,4 @@ uninstall:
 
 	rm -rf $(SYSTEM_GUI_ROOT)
 
+.PHONY: install uninstall
