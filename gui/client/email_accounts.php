@@ -461,7 +461,7 @@ $tpl -> assign(
                         'TR_ALS_MAILS' => tr('Alias mails'),
                         'TR_TOTAL_MAIL_ACCOUNTS' => tr('Mails total'),
                         'TR_DELETE' => tr('Delete'),
-						'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', 1),
+						'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true),
                      )
               );
 

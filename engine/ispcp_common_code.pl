@@ -1664,7 +1664,7 @@ sub decrypt_db_password {
     my $cipher = Crypt::CBC -> new(
                                     {
                                         'key'             => $main::db_pass_key,
-										'keysize' 		  => 32,
+					'keysize'	  => 32,
                                         'cipher'          => 'Blowfish',
                                         'iv'              => $main::db_pass_iv,
                                         'regenerate_key'  => 0,

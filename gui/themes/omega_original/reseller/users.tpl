@@ -114,7 +114,7 @@ function sbmt(form, uaction) {
                       <!-- BDP: user_entry -->
                       <tr>
                         <td align="center">&nbsp;</td>
-                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onClick="change_status('{URL_CHANGE_STATUS}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="18" height="18" border="0"></a></td>
+                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onClick="change_status('{URL_CHANGE_STATUS}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0"></a></td>
                         <td class="{CLASS_TYPE_ROW}"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="18" height="18" border="0"/></a><a href="edit_user.php?edit_id={USER_ID}" class="link">{NAME}</a></td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
                         <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="18" height="18" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>

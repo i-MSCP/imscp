@@ -10,6 +10,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-18 Raphael Geissert
+	- INSTALLATION:
+		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
+	- DOCS:
+		* Removed libnet-perl from Ubuntu fesity's packages list
+	- GUI:
+		* Fixed #408: Typo in i18n.php and object to string conversion
+		* Improved tr() function
+
 2007-06-17 Raphael Geissert
 	- INSTALLATION:
 		* Replaced gen-keys.c with perl-only code

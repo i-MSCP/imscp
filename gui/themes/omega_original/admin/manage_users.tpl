@@ -218,7 +218,7 @@ function sbmt(form, uaction) {
         <!-- BDP: usr_item -->
         <tr>
           <td width="25" align="center">&nbsp;</td>
-          <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="18" height="18" border="0" /></a></td>
+          <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
           <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="18" height="18" border="0"/></a><a href="{URL_EDIT_USR}" class="link">{USR_USERNAME} </a> </td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>

@@ -29,36 +29,52 @@
  * 	@param		$js			whether the input string is in javascript or not
  * 	@return					translated or original string
  **/
-function tr($msgid, $js = false) {
-	global $sql, $default_lang, $cfg;
+function tr($msgid, $as_is = false) {
+    global $sql, $default_lang, $cfg;
+    static $cache;
 
-	$default_lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+    $lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+    $encoding = 'UTF-8';
 
-	if (!$sql) {
-		return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, "UTF-8")));
-	} else {
-		$table 		= $default_lang;
-		$encoding 	= $sql->Execute("SELECT `msqstr` FROM `$table` WHERE `msgid` = 'encoding';");
-		$res		= $sql->Execute("SELECT `msgstr` FROM `$table` WHERE `msgid` = '$msgid';");
+    if (isset($cache[$lang][$msgid])) {
+        $msgstr = $cache[$lang][$msgid];
+    } else {
+        $msgstr = $msgid;
 
-		if (!$encoding) {
-			$encoding = "UTF-8";
-		}
+        if ($sql) {
+            if (!$as_is) {
+                $encoding = tr('encoding');
+            }
+            $msg_res = $sql->Execute("SELECT `msgstr` FROM `$lang` WHERE `msgid` = '$msgid';");
 
-		if (!$res) {
-			return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
-		} elseif ($res->RowCount() == 0) {
-			return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
-		} else {
-			$data = $res->FetchRow();
-			if ($data['msgstr'] == '') {
-				return ($js ? $msgid : replace_html(htmlentities($msgid, ENT_COMPAT, $encoding)));
-			}
-			else {
-				return ($js ? $data['msgstr'] : replace_html(htmlentities($data['msgstr'], ENT_COMPAT, $encoding)));
-			}
-		}
-	}
+            if ($msg_res && $msg_res->RowCount() > 0) {
+                $msg_d = $msg_res->FetchRow();
+                if ($msg_d['msgstr'] != '') {
+                    $msgstr = $msg_d['msgstr'];
+                }
+            }
+        }
+    }
+
+    if ($msgid == 'encoding' && $msgstr == $msgid) {
+        $msgstr = $encoding;
+    }
+
+    $cache[$lang][$msgid] = $msgstr;
+
+    // Replace values
+    if (func_num_args() > 2) {
+        $argv = func_get_args();
+        unset($argv[0]); //msgid
+        unset($argv[1]); //as_is
+        $msgstr = vsprintf($msgstr, $argv);
+    }
+
+    if (!$as_is) {
+        $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, $encoding));
+    }
+
+    return $msgstr;
 }
 
 /**
@@ -74,21 +90,21 @@ function tr($msgid, $js = false) {
  **/
 function replace_html($string) {
 
-	$pattern = array (
-						"=&lt;b&gt;=is",
-						"=&lt;/b&gt;=is",
-						"=&lt;i&gt;=is",
-						"=&lt;/i&gt;=is",
-						"=&lt;br&gt;=is"
-					 );
+    $pattern = array (
+                        '=&lt;b&gt;=is',
+                        '=&lt;/b&gt;=is',
+                        '=&lt;i&gt;=is',
+                        '=&lt;/i&gt;=is',
+                        '=&lt;br&gt;=is'
+                     );
 
-	$replacement = array (
-							"<b>",
-							"</b>",
-							"<i>",
-							"</i>",
-							"<br />"
-						 );
+    $replacement = array (
+                            '<b>',
+                            '</b>',
+                            '<i>',
+                            '</i>',
+                            '<br />'
+                         );
 
 	$string = preg_replace($pattern, $replacement, $string);
 

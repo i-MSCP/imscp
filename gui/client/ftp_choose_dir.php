@@ -62,7 +62,7 @@ function gen_directories( &$tpl ) {
 	$parent = implode('/',$parent);
 	$tpl -> assign('ACTION_LINK', '');
 	$tpl -> assign( array(
-				'ACTION' => tr(''),
+				'ACTION' => '',
 				'ICON' => "parent",
 				'DIR_NAME' => tr('Parent Directory'),
 				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,

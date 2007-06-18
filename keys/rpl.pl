@@ -1,10 +1,5 @@
 #!/usr/bin/perl
 
-use FindBin;
-
-use lib "$FindBin::Bin/../engine";
-require 'ispcp_common_code.pl';
-
 use strict;
 use warnings;
 
@@ -60,3 +55,56 @@ return $rs if ($rs != 0);
 $rs = save_file($perl_fname2, $perl_file);
 
 return $rs if ($rs != 0);
+
+
+sub gen_sys_rand_num {
+
+    my ($len) = @_;
+
+    if (!defined($len) || ($len eq '')) {
+
+        print STDERR "gen_sys_rand_num() ERROR: Undefined input data, len: |$len| !";
+
+        return (-1, '');
+
+    }
+
+    if (0 >= $len ) {
+
+        print STDERR "gen_sys_rand_num() ERROR: Input data length '$len' is zero or negative !";
+
+        return (-1, '');
+
+    }
+    
+    my $rs = open(F, '<', '/dev/random');
+
+    if (!defined($rs)) {
+
+        print STDERR "gen_sys_rand_num() ERROR: Couldn't open the pseudo-random characters generator";
+
+        return (-1, '');
+    
+    }
+    
+    my ($i, $rdata, $rc, $rci) = (0, undef, undef, undef);
+    
+    while ($i < $len) {
+
+        read(F, $rc, 1);
+        
+        $rci = ord($rc);
+        
+        next if ($rci <= 32 || $rci >= 125 || $rci == 92 );
+        
+        $rdata .= $rc;
+        $rc = undef;
+        $i++;
+
+    }
+    
+    close(F);
+
+    return (0, $rdata);
+
+}

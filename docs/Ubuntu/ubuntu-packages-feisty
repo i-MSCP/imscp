@@ -33,7 +33,6 @@ libmd5-perl
 libmime-perl
 libnet-dns-perl
 libnet-netmask-perl
-libnet-perl
 libnet-smtp-server-perl
 libperl5.8
 libsasl2

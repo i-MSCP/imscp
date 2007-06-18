@@ -353,8 +353,6 @@ function generate_users_list ( &$tpl, $admin_id ) {
 
 		while (!$rs -> EOF) {
 
-
-
 			if ($rs -> fields['domain_status'] == $cfg['ITEM_OK_STATUS']){
 
 				$status_icon = "ok.png";
