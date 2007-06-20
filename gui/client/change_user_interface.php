@@ -18,9 +18,9 @@
  **/
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 // lets back to admin or reseller interfase - am i admin/reseller or what ? :-)
 
@@ -29,42 +29,42 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && iss
 	// SESSIONS are OK -> so lets go back
 
 	$from_id = $_SESSION['user_id'];
-	
+
 	$to_id = $_SESSION['logged_from_id'];
 
 	// SESSIONS are OK -> so lets go back
 	$dest = change_user_interface($from_id, $to_id);
-	
+
 	if ($dest == false){
-	
+
 		//dumpass - don't try to change your interface
 		header('Location: index.php');
 		die();
-	
+
 	} else {
-	// ------------------------------------------				
-	// ------------------------------------------		
+	// ------------------------------------------
+	// ------------------------------------------
 		if (isset($_SESSION['logged_from']))
-		
+
 			unset($_SESSION['logged_from']);
-				
+
 		if (isset($_SESSION['logged_from_id']))
-		
+
 			unset($_SESSION['logged_from_id']);
-	// ------------------------------------------				
+	// ------------------------------------------
 	// ------------------------------------------
 		if (isset($GLOBALS['logged_from']))
-		
+
 			unset($GLOBALS['logged_from']);
-				
+
 		if (isset($GLOBALS['logged_from_id']))
-		
+
 			unset($GLOBALS['logged_from_id']);
-	// ------------------------------------------				
 	// ------------------------------------------
-		
+	// ------------------------------------------
+
         header("Location: $dest");
-	
+
 	}
         die();
 

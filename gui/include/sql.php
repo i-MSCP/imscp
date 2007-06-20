@@ -19,11 +19,11 @@
  **/
 $include_path = realpath(dirname(__FILE__));
 
-include_once (realpath($include_path.'/adodb/adodb.inc.php'));
+require ($include_path.'/adodb/adodb.inc.php');
 
-//include_once (realpath($include_path.'/adodb/tohtml.inc.php'));
+//require ($include_path.'/adodb/tohtml.inc.php');
 
-include_once (realpath($include_path.'/adodb/adodb-pager.inc.php'));
+require ($include_path.'/adodb/adodb-pager.inc.php');
 
 $cfg['DB_TYPE'] = $cfg['DATABASE_TYPE'];
 
@@ -55,31 +55,16 @@ unset($cfg['DB_PASS']);
 /* unset for safety */
 
 function execute_query (&$sql, $query) {
-	check_query($query);
 	$rs = $sql -> Execute($query);
 	if (!$rs) system_message($sql -> ErrorMsg());
 	return $rs;
 }
 
 function exec_query(&$sql, $query, $data) {
-	check_query($query);
 	$stmt = $sql->Prepare($query);
 	$rs = $sql->Execute($query, $data);
 	if (!$rs) system_message($sql->ErrorMsg());
 	return $rs;
-}
-
-function quoteIdentifier($identifier) {
-	global $cfg;
-
-	switch ($cfg['DB_TYPE']) {
-		case 'pgsql':
-			return '"' . $identifier . '"';
-		case 'mysql':
-			return '`' . $identifier . '`';
-		default: // is there a standard?
-			return $identifier;
-	}
 }
 
 function pg_get_record_id(&$sql, $table, $oid) {

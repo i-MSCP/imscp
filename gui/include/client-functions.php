@@ -724,7 +724,7 @@ SQL_QUERY;
 	if (count_sql_user_by_name($sql, $rs -> fields['sqlu_name']) == 0)	{
 
     	$db_id = $rs -> fields['sqld_id'];
-    	$db_name = quoteIdentifier($rs->fields['sqld_name']);
+    	$db_name = $rs->fields['sqld_name'];
     	$db_user_name = $rs -> fields['sqlu_name'];
 
    		 //
@@ -1014,7 +1014,7 @@ SQL_QUERY;
 
   }
 
-    $db_name = quoteIdentifier($rs -> fields['db_name']);
+    $db_name = $rs -> fields['db_name'];
 
     //
     // have we any users assigned to this database;

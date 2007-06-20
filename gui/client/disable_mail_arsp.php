@@ -18,9 +18,9 @@
  **/
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 function check_email_user(&$sql) {
 	$dmn_name = $_SESSION['user_logged'];

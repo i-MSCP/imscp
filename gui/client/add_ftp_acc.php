@@ -17,10 +17,10 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 require '../include/vfs.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 

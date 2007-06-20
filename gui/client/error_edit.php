@@ -18,7 +18,7 @@
  **/
 
 require '../include/vfs.php';
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
 function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 {
@@ -40,9 +40,9 @@ function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 

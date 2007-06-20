@@ -16,10 +16,10 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
- 
-include '../include/ispcp-lib.php';
 
-check_login();
+require '../include/ispcp-lib.php';
+
+check_login(__FILE__);
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 

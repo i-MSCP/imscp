@@ -18,9 +18,9 @@
  **/
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
@@ -36,11 +36,11 @@ global $cfg;
 $change_status = $cfg['ITEM_DELETE_STATUS'];
 
 $query = <<<SQL_QUERY
-        update 
+        update
         	htaccess_groups
         set
         	status = ?
-        where 
+        where
             id = ?
 		and
 			dmn_id = ?
@@ -68,11 +68,11 @@ SQL_QUERY;
 		$grp_id_splited = split(',', $grp_id);
 		for ($i = 0; $i < count($grp_id_splited); $i++) {
 				//Does this group affect some htaccess ?
-			if ($grp_id_splited[$i] == $group_id) {		
-				//oh -> our group was used in htaccess	
-				  if (count($grp_id_splited) < 2 && count($grp_id_splited) > 0){ 
-	 	            $status = $cfg['ITEM_DELETE_STATUS']; 
-	 	          } else {	
+			if ($grp_id_splited[$i] == $group_id) {
+				//oh -> our group was used in htaccess
+				  if (count($grp_id_splited) < 2 && count($grp_id_splited) > 0){
+	 	            $status = $cfg['ITEM_DELETE_STATUS'];
+	 	          } else {
 					$grp_id = preg_replace("/$group_id/", "", "$grp_id");
 					$grp_id = preg_replace("/,,/", ",", "$grp_id");
 					$grp_id = preg_replace("/^,/", "", "$grp_id");
@@ -90,15 +90,15 @@ SQL_QUERY;
 SQL_QUERY;
 
 		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
-				
-			} 
-			
+
+			}
+
 
 		}
 
 	$rs -> MoveNext();
 	}
-	
+
 	//we like to have our changes honoured to make group-deletion even without htaccess - relation possible!
 		$status = $cfg['ITEM_CHANGE_STATUS'];
 		$query = <<<SQL_QUERY
@@ -107,12 +107,12 @@ SQL_QUERY;
 					set
 						status = ?
 					where
-						dmn_id = ? 
-					and 
+						dmn_id = ?
+					and
 						status NOT like 'delete'
 SQL_QUERY;
-		 $rs = exec_query($sql, $query, array($status, $dmn_id));	
-		
+		 $rs = exec_query($sql, $query, array($status, $dmn_id));
+
 
 check_for_lock_file();
 send_request();

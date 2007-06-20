@@ -15,10 +15,10 @@ if ($cfg_obj->status == "err") {
 $cfg = $cfg_obj->getValues();
 
 class Config {
-/*
-	his class will parse config file and get all variables avaible in PHP
-	v. 0.1
-*/
+    /*
+    his class will parse config file and get all variables avaible in PHP
+    v. 0.1
+    */
     var $config_file;       /* config filename */
     var $cfg_values;        /* array with  options and values that you can get and user :P :) */
     var $status;
@@ -80,41 +80,41 @@ class Config {
 
 function decrypt_db_password ($db_pass) {
 
-	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
+    global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
-	if ($db_pass == '') return '';
-	
-	if (extension_loaded('mcrypt')) {
-	
-		$text = @base64_decode("$db_pass\n");
+    if ($db_pass == '') return '';
 
-  	/* Open the cipher */
-  	$td = @mcrypt_module_open ('blowfish', '', 'cbc', '');
+    if (extension_loaded('mcrypt') && !@dl('mcrypt.'.PHP_SHLIB_SUFFIX)) {
 
-  	/* Create key */
-		$key = $ispcp_db_pass_key;
+        $text = @base64_decode($db_pass."\n");
 
-  	/* Create the IV and determine the keysize length */
-		$iv = $ispcp_db_pass_iv;
+        /* Open the cipher */
+        $td = @mcrypt_module_open ('blowfish', '', 'cbc', '');
 
-  	/* Intialize encryption */
-  	@mcrypt_generic_init ($td, $key, $iv);
+        /* Create key */
+        $key = $ispcp_db_pass_key;
 
-	  /* Decrypt encrypted string */
-  	$decrypted = @mdecrypt_generic ($td, $text);
+        /* Create the IV and determine the keysize length */
+        $iv = $ispcp_db_pass_iv;
 
-  	@mcrypt_module_close ($td);
+        /* Intialize encryption */
+        @mcrypt_generic_init ($td, $key, $iv);
 
-  	/* Show string */
-  	return trim($decrypted);
+        /* Decrypt encrypted string */
+        $decrypted = @mdecrypt_generic ($td, $text);
 
-	} else {
+        @mcrypt_module_close ($td);
 
-		system_message("ERROR: The php-extension 'mcrypt' not loaded !");
-		
-		die();
+        /* Show string */
+        return trim($decrypted);
 
-	}
+    } else {
+
+        system_message("ERROR: The php-extension 'mcrypt' not loaded !");
+
+        die();
+
+    }
 
 }
 

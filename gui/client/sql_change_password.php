@@ -19,9 +19,9 @@
 
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/sql_change_password.tpl');

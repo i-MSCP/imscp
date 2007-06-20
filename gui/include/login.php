@@ -241,11 +241,30 @@ function goto_user_location() {
   	}
 }
 
-function check_login () {
+function check_login ($fName = null) {
 
-    if (!check_user_login()) { //check_user_login already performs all the check
+    // session-type check:
+    if (!check_user_login()) {
         header("Location: ../index.php");
         die();
+    }
+
+    if ($fName != null) {
+        $levels = explode('/', realpath(dirname($fName)));
+        $level = $levels[count($levels) - 1];
+
+        switch ($level) {
+            case 'user':
+                $level = 'client';
+            case 'admin':
+            case 'reseller':
+                if ($level != $_SESSION['user_type']) {
+                    write_log('Warning! user |'.$_SESSION['user_logged'].'| requested |'.$_SERVER["REQUEST_URI"].'| with REQUEST_METHOD |'.$_SERVER["REQUEST_METHOD"].'|');
+                    header("Location: ../index.php");
+                    die();
+                }
+                break;
+        }
     }
 }
 

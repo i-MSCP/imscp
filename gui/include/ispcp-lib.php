@@ -29,7 +29,7 @@ error_reporting(E_ALL); // setting for development edition - see all error messa
 
 $include_path = realpath(dirname(__FILE__));
 
-require_once (realpath($include_path.'/ispcp-config.php'));
+require ($include_path.'/ispcp-config.php');
 
 /* session timeout in minutes */
 $cfg['SESSION_TIMEOUT'] = 30;
@@ -166,50 +166,52 @@ $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/ispcp.conf";
 
-require_once(realpath($include_path.'/spGzip.php'));
+require ($include_path.'/spGzip.php');
 
-require_once(realpath($include_path.'/class.pTemplate.php'));
+require ($include_path.'/class.pTemplate.php');
 
-require_once(realpath($include_path.'/date-functions.php'));
+require ($include_path.'/date-functions.php');
 
-require_once(realpath($include_path.'/system-message.php'));
+require ($include_path.'/system-message.php');
 
-require_once(realpath($include_path.'/ispcp-db-keys.php'));
+require ($include_path.'/ispcp-db-keys.php');
 
-require_once(realpath($include_path.'/input-checks.php'));
+require ($include_path.'/input-checks.php');
 
-require_once(realpath($include_path.'/debug.php'));
+require ($include_path.'/debug.php');
 
-require_once(realpath($include_path.'/i18n.php'));
+require ($include_path.'/i18n.php');
 
-require_once(realpath($include_path.'/system-log.php'));
+require ($include_path.'/system-log.php');
 
-require_once(realpath($include_path.'/calc-functions.php'));
+require ($include_path.'/calc-functions.php');
 
-require_once(realpath($include_path.'/login-functions.php'));
+require ($include_path.'/login-functions.php');
 
-require_once(realpath($include_path.'/login.php'));
+require ($include_path.'/login.php');
 
-require_once(realpath($include_path.'/client-functions.php'));
+require ($include_path.'/client-functions.php');
 
-require_once(realpath($include_path.'/admin-functions.php'));
+require ($include_path.'/admin-functions.php');
 
-require_once(realpath($include_path.'/reseller-functions.php'));
+require ($include_path.'/reseller-functions.php');
 
-require_once(realpath($include_path.'/ispcp-functions.php'));
+require ($include_path.'/ispcp-functions.php');
 
-require_once(realpath($include_path.'/idna.php'));
+require ($include_path.'/idna.php');
 
-require_once(realpath($include_path.'/lostpassword-functions.php'));
+require ($include_path.'/lostpassword-functions.php');
 
-require_once(realpath($include_path.'/sql.php'));
+require ($include_path.'/sql.php');
 
-require_once(realpath($include_path.'/emailtpl-functions.php'));
+require ($include_path.'/emailtpl-functions.php');
 
-require_once(realpath($include_path.'/layout-functions.php'));
+require ($include_path.'/layout-functions.php');
 
 // If you comment this line out, you have no security level (none)
-require_once(realpath($include_path.'/security/core.inc.php'));
+require ($include_path.'/security/core.inc.php');
+
+check_query();
 
 $query = "SELECT name, value FROM config";
 

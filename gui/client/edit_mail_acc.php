@@ -18,9 +18,9 @@
  **/
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/edit_mail_acc.tpl');
@@ -152,7 +152,7 @@ function update_email_pass($sql)
     set_page_message(tr('Entered passwords differ!'));
     return;
   	// Not permitted chars
-  } else if (preg_match("/[`´'\"\\|<>^\x00-\x1f]/i", $pass)) {
+  } else if (preg_match("/[`ï¿½'\"\\|<>^\x00-\x1f]/i", $pass)) {
     set_page_message(tr('Password data includes not valid signs!'));
     return;
   }

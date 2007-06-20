@@ -19,9 +19,9 @@
 
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
@@ -52,9 +52,9 @@ $change_status=$cfg['ITEM_DELETE_STATUS'];
 $query = <<<SQL_QUERY
         update
         	htaccess_users
-        set 
-        	status = ?    
-        where 
+        set
+        	status = ?
+        where
         	id = ?
 		and
 			dmn_id = ?

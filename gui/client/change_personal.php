@@ -93,9 +93,9 @@ SQL_QUERY;
   set_page_message(tr('Personal data updated successfully!'));
 }
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/change_personal.tpl');

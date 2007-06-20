@@ -40,9 +40,9 @@ function update_error_page(&$sql, $user_id) {
 	}
 }
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/error_pages.tpl');
