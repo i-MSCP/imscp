@@ -274,10 +274,6 @@ function check_data_iscorrect(&$tpl)
   if (isset($_POST['cgi']))
     $hp_cgi		= $_POST['cgi'];;
 
-  // if (!ispcp_name_check($hp_name, 200)) {
-        // $ahp_error = tr('Incorrect template name range or syntax!');
-    // } else
-
 	if (!is_numeric($_POST['hp_price'])) {
 		$ahp_error = tr('Incorrect price. Example: 9.99');
 	}

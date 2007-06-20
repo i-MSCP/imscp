@@ -282,10 +282,6 @@ function check_data_iscorrect(&$tpl)
   if (isset($_POST['cgi']))
     $hp_cgi		= $_POST['cgi'];;
 
-  // if (!ispcp_name_check($hp_name, 200)) {
-        // $ahp_error = tr('Incorrect template name range or syntax!');
-    // } else
-
   if (!ispcp_limit_check($hp_sub, 99999)) {
     $ahp_error = tr('Incorrect subdomain range or syntax!');
   } else if (!ispcp_limit_check($hp_als, 99999)) {

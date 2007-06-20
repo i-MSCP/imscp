@@ -193,7 +193,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
             set_page_message(tr('Wrong subdomain syntax!'));
         } else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)) {
             set_page_message(tr('Subdomain mount point already exists!'));
-        } else if (@chk_mountp($sub_mnt_pt) > 0){
+        } else if (!chk_mountp($sub_mnt_pt)){
             set_page_message(tr('Incorrect mount point syntax'));
         } else {
             subdomain_schedule($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt);

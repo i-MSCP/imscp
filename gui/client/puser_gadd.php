@@ -61,7 +61,7 @@ function padd_group(&$tpl, &$sql, &$dmn_id)
 	// we have user to add
 		if(isset($_POST['groupname']))
 		{
-			if (chk_username($_POST['groupname'])) {
+			if (!chk_username($_POST['groupname'])) {
      		   set_page_message(tr('Wrong username!'));
 			   return;
     		}

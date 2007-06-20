@@ -152,7 +152,7 @@ function update_email_pass($sql)
     set_page_message(tr('Entered passwords differ!'));
     return;
   	// Not permitted chars
-  } else if (preg_match("/[`�'\"\\|<>^\x00-\x1f]/i", $pass)) {
+  } else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) {
     set_page_message(tr('Password data includes not valid signs!'));
     return;
   }

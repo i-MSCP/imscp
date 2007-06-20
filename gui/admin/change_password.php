@@ -54,7 +54,7 @@ function update_password()
 
             set_page_message(tr('Please fill up all data fields!'));
 
-        } else if (chk_password($_POST['pass'])) {
+        } else if (!chk_password($_POST['pass'])) {
 
             set_page_message(tr('Incorrect password range or syntax!'));
 

@@ -39,38 +39,37 @@ if (isset($_GET['id'])) {
 //
 // page functions.
 //
-function change_sql_user_pass(&$sql, $db_user_id, $db_user_name)
-{
-  global $cfg;
+function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
+	global $cfg;
 
-  if (!isset($_POST['uaction'])) return;
+	if (!isset($_POST['uaction'])) return;
 
-  if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
-    set_page_message(tr('Please type user password!'));
-    return;
-  }
+	if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
+		set_page_message(tr('Please type user password!'));
+		return;
+	}
 
-  if ($_POST['pass'] !== $_POST['pass_rep']) {
-    set_page_message(tr('Entered passwords does not match!'));
-    return;
-  }
+	if ($_POST['pass'] !== $_POST['pass_rep']) {
+		set_page_message(tr('Entered passwords does not match!'));
+		return;
+	}
 
-  if (strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH']) {
-    set_page_message(tr('Too long user password!'));
-    return;
-  }
+	if (strlen($_POST['pass']) > $cfg['MAX_SQL_PASS_LENGTH']) {
+		set_page_message(tr('Too long user password!'));
+		return;
+	}
 
-	if (chk_password($_POST['pass'])) {
-  	set_page_message( tr("Incorrect password range or syntax!"));
-    return;
-  }
+	if (!chk_password($_POST['pass'])) {
+		set_page_message( tr("Incorrect password range or syntax!"));
+		return;
+	}
 
-  $user_pass = $_POST['pass'];
+	$user_pass = $_POST['pass'];
 
-  //
-  // update user pass in the ispcp sql_user table;
-  //
-  $query = <<<SQL_QUERY
+	//
+	// update user pass in the ispcp sql_user table;
+	//
+	$query = <<<SQL_QUERY
         update
             sql_user
         set
@@ -79,12 +78,12 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name)
             sqlu_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($user_pass, $db_user_id));
+	$rs = exec_query($sql, $query, array($user_pass, $db_user_id));
 
-  //
-  // update user pass in the mysql system tables;
-  //
-  $query = <<<SQL_QUERY
+	//
+	// update user pass in the mysql system tables;
+	//
+	$query = <<<SQL_QUERY
 
         SET PASSWORD FOR '$db_user_name'@'%' = PASSWORD('$user_pass')
 
@@ -92,9 +91,9 @@ SQL_QUERY;
 
     $rs = execute_query($sql, $query);
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
 
-	SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')
+		SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')
 
 SQL_QUERY;
     $rs = execute_query($sql, $query);
@@ -104,8 +103,7 @@ SQL_QUERY;
     user_goto('manage_sql.php');
 }
 
-function gen_page_data(&$tpl, &$sql, $db_user_id)
-{
+function gen_page_data(&$tpl, &$sql, $db_user_id) {
   $query = <<<SQL_QUERY
         select sqlu_name from sql_user where sqlu_id = ?
 SQL_QUERY;

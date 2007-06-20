@@ -331,7 +331,7 @@ SQL_QUERY;
                                    $reseller_id));
   } else {
       // Change password
-      if (chk_password($_POST['userpassword'])) {
+      if (!chk_password($_POST['userpassword'])) {
 
           set_page_message( tr("Incorrect password range or syntax!"));
 

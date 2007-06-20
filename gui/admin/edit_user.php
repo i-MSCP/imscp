@@ -131,7 +131,7 @@ SQL_QUERY;
                         die();
                     }
 
-                    if (chk_password($_POST['pass'])) {
+                    if (!chk_password($_POST['pass'])) {
 
                         set_page_message( tr("Incorrect password range or syntax!"));
 

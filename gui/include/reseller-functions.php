@@ -593,9 +593,8 @@ function rsl_full_domain_check ( $data ) {
 
 		$token = chop($match[0][$i], ".");
 
-		$res = check_dn_rsl_token($token);
-
-		if ($res == 0) return 0;
+		if (!check_dn_rsl_token($token))
+			return 0;
 	}
 
 	$res = preg_match(
@@ -740,7 +739,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 			$rau_error = tr('Passwords does not match!');
 
-		} else if (chk_password($inpass)) {
+		} else if (!chk_password($inpass)) {
 
 			$rau_error = tr('Incorrect password range or syntax!');
 		}

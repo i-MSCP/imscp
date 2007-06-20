@@ -61,7 +61,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id)
 		if(isset($_POST['pass']) && isset($_POST['pass_rep']))
 		{
 
-		if (chk_password($_POST['pass'])) {
+		if (!chk_password($_POST['pass'])) {
 			set_page_message(tr('Incorrect password range or syntax!'));
 			return;
 		}

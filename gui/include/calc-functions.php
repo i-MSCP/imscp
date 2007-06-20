@@ -164,10 +164,8 @@ function passgen() {
 
 	if ($cfg['PASSWD_STRONG']) {
 
-		while ( chk_password($pw) || (!$pw) ) {
-
+		while ((!isset($pw)) OR !chk_password($pw)) {
 			$pw = _passgen();
-
 		}
 
 	}

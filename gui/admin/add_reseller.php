@@ -428,13 +428,13 @@ SQL_QUERY;
 
         return false;
     }
-    if (chk_username(clean_input($_POST['username']))) {
+    if (!chk_username(clean_input($_POST['username']))) {
 
         set_page_message( tr("Incorrect username range or syntax!"));
 
         return false;
     }
-    if (chk_password($_POST['pass'])) {
+    if (!chk_password($_POST['pass'])) {
 
         set_page_message( tr("Incorrect password range or syntax!"));
 

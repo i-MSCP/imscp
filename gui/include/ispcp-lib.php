@@ -18,6 +18,7 @@
  *
  **/
 
+define(INCLUDEPATH, realpath(dirname(__FILE__)));
 
 session_name("ISPCP");
 
@@ -27,9 +28,7 @@ if (!isset($_SESSION))
 //error_reporting(0);
 error_reporting(E_ALL); // setting for development edition - see all error messages
 
-$include_path = realpath(dirname(__FILE__));
-
-require ($include_path.'/ispcp-config.php');
+require_once(INCLUDEPATH.'/ispcp-config.php');
 
 /* session timeout in minutes */
 $cfg['SESSION_TIMEOUT'] = 30;
@@ -166,61 +165,66 @@ $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/ispcp.conf";
 
-require ($include_path.'/spGzip.php');
+require_once(INCLUDEPATH.'/spGzip.php');
 
-require ($include_path.'/class.pTemplate.php');
+require_once(INCLUDEPATH.'/class.pTemplate.php');
 
-require ($include_path.'/date-functions.php');
+require_once(INCLUDEPATH.'/date-functions.php');
 
-require ($include_path.'/system-message.php');
+require_once(INCLUDEPATH.'/system-message.php');
 
-require ($include_path.'/ispcp-db-keys.php');
+require_once(INCLUDEPATH.'/ispcp-db-keys.php');
 
-require ($include_path.'/input-checks.php');
+require_once(INCLUDEPATH.'/input-checks.php');
 
-require ($include_path.'/debug.php');
+require_once(INCLUDEPATH.'/debug.php');
 
-require ($include_path.'/i18n.php');
+require_once(INCLUDEPATH.'/i18n.php');
 
-require ($include_path.'/system-log.php');
+require_once(INCLUDEPATH.'/system-log.php');
 
-require ($include_path.'/calc-functions.php');
+require_once(INCLUDEPATH.'/calc-functions.php');
 
-require ($include_path.'/login-functions.php');
+require_once(INCLUDEPATH.'/login-functions.php');
 
-require ($include_path.'/login.php');
+require_once(INCLUDEPATH.'/login.php');
 
-require ($include_path.'/client-functions.php');
+require_once(INCLUDEPATH.'/client-functions.php');
 
-require ($include_path.'/admin-functions.php');
+require_once(INCLUDEPATH.'/admin-functions.php');
 
-require ($include_path.'/reseller-functions.php');
+require_once(INCLUDEPATH.'/reseller-functions.php');
 
-require ($include_path.'/ispcp-functions.php');
+require_once(INCLUDEPATH.'/ispcp-functions.php');
 
-require ($include_path.'/idna.php');
+require_once(INCLUDEPATH.'/idna.php');
 
-require ($include_path.'/lostpassword-functions.php');
+require_once(INCLUDEPATH.'/lostpassword-functions.php');
 
-require ($include_path.'/sql.php');
+require_once(INCLUDEPATH.'/sql.php');
 
-require ($include_path.'/emailtpl-functions.php');
+require_once(INCLUDEPATH.'/emailtpl-functions.php');
 
-require ($include_path.'/layout-functions.php');
+require_once(INCLUDEPATH.'/layout-functions.php');
 
 // If you comment this line out, you have no security level (none)
-require ($include_path.'/security/core.inc.php');
+require_once(INCLUDEPATH.'/security/core.inc.php');
 
 check_query();
 
-$query = "SELECT name, value FROM config";
+$query = <<<SQL
+	SELECT
+		name, value
+	FROM
+		config
+SQL;
 
 if(!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));
 	die();
 }
 else {
-	while( $row = $res -> FetchRow() ) {
+	while($row = $res -> FetchRow()) {
 		$cfg[$row['name']] = $row['value'];
 	}
 }

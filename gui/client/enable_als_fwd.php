@@ -175,7 +175,7 @@ function check_user_data ( &$tpl, $alias_id) {
     $ed_error = '_off_';
 	$admin_login = '';
 	if ($forward_url != 'no') {
-		if (chk_url($forward_url) > 0 ) {
+		if (!chk_url($forward_url)) {
 			$ed_error = tr("Incorrect forward syntax");
 		}
 	}

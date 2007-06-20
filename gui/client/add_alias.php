@@ -209,14 +209,14 @@ SQL_QUERY;
 	//$mount_point = "/".$mount_point;
 
 	// Fisrt check is the data correct
-	if (chk_dname($alias_name) > 0) {
+	if (!chk_dname($alias_name)) {
 		$err_al = tr("Incorrect domain name syntax");
 	}else if (ispcp_domain_exists($alias_name, 0)) {
         $err_al = tr('Domain with that name already exists on the system!');
-	}else if (chk_mountp($mount_point) > 0) {
+	}else if (!chk_mountp($mount_point)) {
 		$err_al = tr("Incorrect mount point syntax");
 	}else if ($forward != 'no') {
-		if (chk_url($forward) > 0 ) {
+		if (!chk_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
 	} else {

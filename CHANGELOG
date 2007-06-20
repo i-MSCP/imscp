@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-20 Benedikt Heintel
+	- GUI:
+		* Reorganized input check functions
+	- ENGINE:
+		* Further AWStats integration
+
 2007-06-20 Raphael Geissert
 	- GUI:
 		* Fixed #418: ERROR: The php-extension 'mcrypt' not loaded!

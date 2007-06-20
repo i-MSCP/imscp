@@ -356,7 +356,7 @@ function add_ftp_user(&$sql, $dmn_name)
 	return;
 	}
 
-	if (chk_username($username)) {
+	if (!chk_username($username)) {
 		set_page_message( tr("Incorrect username range or syntax!"));
 		return;
 	}
@@ -442,48 +442,46 @@ SQL_QUERY;
     exit(0);
 }
 
-function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name)
-{
-  if (!isset($_POST['username']) || $_POST['username'] === '') {
-    set_page_message(tr('Please enter FTP account username!'));
-    return;
-  }
+function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
+	if (!isset($_POST['username']) || $_POST['username'] === '') {
+		set_page_message(tr('Please enter FTP account username!'));
+		return;
+	}
 
-  if (!isset($_POST['pass']) || empty($_POST['pass']) || !isset($_POST['pass_rep']) || $_POST['pass_rep'] === '') {
-    set_page_message(tr('Password data is missing!'));
-    return;
-  }
+	if (!isset($_POST['pass']) || empty($_POST['pass']) || !isset($_POST['pass_rep']) || $_POST['pass_rep'] === '') {
+		set_page_message(tr('Password data is missing!'));
+		return;
+	}
 
-  if ($_POST['pass'] !== $_POST['pass_rep']) {
-    set_page_message(tr('Entered passwords differ from the another!'));
-    return;
-  }
+	if ($_POST['pass'] !== $_POST['pass_rep']) {
+		set_page_message(tr('Entered passwords differ from the another!'));
+		return;
+	}
 
-	if (chk_password($_POST['pass'])) {
-  	set_page_message( tr("Incorrect password range or syntax!"));
-    return;
-  }
+	if (!chk_password($_POST['pass'])) {
+  		set_page_message( tr("Incorrect password range or syntax!"));
+    	return;
+	}
 
-  if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] === 'n/a') {
-    set_page_message(tr('Subdomain list is empty! You can not add FTP accounts there!'));
-    return;
-  }
+	if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] === 'n/a') {
+		set_page_message(tr('Subdomain list is empty! You can not add FTP accounts there!'));
+		return;
+	}
 
-  if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] === 'n/a') {
-    set_page_message(tr('Alias list is empty! You can not add FTP accounts there!'));
-    return;
-  }
+	if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] === 'n/a') {
+		set_page_message(tr('Alias list is empty! You can not add FTP accounts there!'));
+		return;
+	}
 
-  if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on' && empty($_POST['other_dir'])) {
-    set_page_message(tr('Please specify other FTP account dir!'));
-    return;
-  }
+	if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on' && empty($_POST['other_dir'])) {
+		set_page_message(tr('Please specify other FTP account dir!'));
+		return;
+	}
 
-  add_ftp_user($sql, $dmn_name);
+	add_ftp_user($sql, $dmn_name);
 }
 
-function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id)
-{
+function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
   list($dmn_id,
        $dmn_name,
        $dmn_gid,

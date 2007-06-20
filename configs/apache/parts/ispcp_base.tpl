@@ -17,54 +17,6 @@
 LogFormat "%B" traff
 
 #
-# GUI Location.
-#
-
-Alias /ispcp /var/www/ispcp/gui
-<Directory /var/www/ispcp/gui>
-    AllowOverride none
-    Options MultiViews IncludesNoExec FollowSymLinks
-    ErrorDocument 404 /ispcp/errordocs/index.php
-    DirectoryIndex index.html index.php
-</Directory>
-
-<Directory /var/www/ispcp/gui/tools/filemanager>
-    <IfModule mod_php4.c>
-        php_flag register_globals On
-        php_admin_value open_basedir "/var/www/ispcp/gui/tools/filemanager/:/tmp/:/usr/share/php/"
-    </IfModule>
-    <IfModule mod_php5.c>
-        php_flag register_globals On
-        php_admin_value open_basedir "/var/www/ispcp/gui/tools/filemanager/:/tmp/:/usr/share/php/"
-    </IfModule>
-</Directory>
-
-Alias /ispcp_images /var/www/ispcp/gui/images
-<Directory /var/www/ispcp/gui/images>
-    AllowOverride none
-    Options MultiViews IncludesNoExec FollowSymLinks
-</Directory>
-
-#
-# AWStats
-#
-
-Alias /awstatsclasses "/var/www/awstats/classes/"
-Alias /awstatscss "/var/www/awstats/css/"
-Alias /awstatsicons "/var/www/awstats/icon/"
-Alias /awstatsjs "/var/www/awstats/js/"
-Alias /stats "/usr/lib/cgi-bin/awstats/"
-
-<Directory /usr/lib/cgi-bin/awstats>
-    AllowOverride AuthConfig
-    Options -Includes FollowSymLinks +ExecCGI MultiViews
-    AddHandler cgi-script cgi pl
-    DirectoryIndex awstats.pl
-    Order deny,allow
-    Allow from all
-</Directory>
-
-#
 # Header End
 #
 

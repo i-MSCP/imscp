@@ -47,7 +47,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
         set_page_message(tr('Passwords does not match!'));
 
-    } else if (chk_password($_POST['pass'])) {
+    } else if (!chk_password($_POST['pass'])) {
 
         set_page_message(tr('Incorrect password range or syntax!'));
 

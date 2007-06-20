@@ -117,71 +117,58 @@ function clean_input($input) {
 
 }
 
-function ispcp_password_check ( $data, $num) {
-
+/**
+ *  @function		chk_password
+ *  @description
+ *
+ * 	@param		String		$data		username to be checked
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					valid username or not
+ */
+function chk_password($password, $num = 50) {
     global $cfg;
 
-    $len = strlen($data);
+    $len = strlen($password);
+    if ($len < $cfg['PASSWD_CHARS'] || $len > $num )
+		return FALSE;
 
-    if ($len < $cfg['PASSWD_CHARS'] || $len > $num ) return false;
-
-    if ($cfg['PASSWD_STRONG']) {
-
-        return (bool)(preg_match("/[0-9]/", $data) && preg_match("/[a-zA-Z]/", $data));
-
-    } else {
-
-        return true;
-
-    }
-
+    if ($cfg['PASSWD_STRONG'])
+        return (bool)(preg_match("/[0-9]/", $password) AND preg_match("/[a-zA-Z]/", $password));
+    else
+        return TRUE;
 }
 
-/* check for valid username  */
-function chk_username( $username ) {
+/**
+ *  @function		chk_username
+ *  @description
+ *
+ * 	@param		String		$data		username to be checked
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					valid username or not
+ */
+function chk_username($username, $num = 50) {
 
-    return !ispcp_username_check($username, 50);
+	// Username contains only allowed chars
+    if (!preg_match("/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]$/D", $username))
+    	return FALSE;
 
-}
+    // Username has not two times .,- or _
+	if(preg_match("/(\.\.)|(\-\-)|(\_\_)/", $username))
+		return FALSE;
 
-/* check for valid password  */
-function chk_password( $password ) {
+	// Username has no not allowed concardination in it
+	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $username))
+		return FALSE;
 
-    return !ispcp_password_check($password, 50);
+	// String is not to long
+	if (strlen($data) > $num)
+		return FALSE;
 
-}
-
-function ispcp_username_check($data, $num) {
-
-    $res = preg_match("/^[-A-Za-z0-9\.-_]*[A-Za-z0-9]$/", $data);
-
-    if ($res == 0) return 0;
-
-    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/(\.\-)|(\-\.)/", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/(\.\_)|(\_\.)/", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/(\-\_)|(\_\-)/", $data);
-
-    if ($res == 1) return 0;
-
-    $len = strlen($data);
-
-    if ( $len > $num ) return 0;
-
-    return 1;
+    return TRUE;
 }
 
 
-function ispcp_email_check($email, $num) {
+function chk_email($email, $num = 50) {
     // RegEx begin
 
     $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
@@ -201,15 +188,17 @@ function ispcp_email_check($email, $num) {
     $regex         = "$user_part\@$domain_part";
     // RegEx end
 
-    if (!preg_match("/^$regex$/",$email)) return 0;
+    if (!preg_match("/^$regex$/",$email))
+		return FALSE;
 
-    if (strlen($email) > $num) return 0;
+    if (strlen($email) > $num)
+		return FALSE;
 
-    return 1;
+    return TRUE;
 
 }
 
-function ispcp_check_local_part($email, $num="50") {
+function ispcp_check_local_part($email, $num = 50) {
     // RegEx begin
 
     $nonascii      = "\x80-\xff"; # Non-ASCII-Chars are not allowed
@@ -224,23 +213,13 @@ function ispcp_check_local_part($email, $num="50") {
     $regex         = $user_part;
     // RegEx end
 
-    if (!preg_match("/^$regex$/D",$email)) return 0;
+    if (!preg_match("/^$regex$/D",$email))
+		return FALSE;
 
-    if (strlen($email) > $num) return 0;
+    if (strlen($email) > $num)
+		return FALSE;
 
-    return 1;
-
-}
-
-
-function chk_email($email) {
-
-    if ( ispcp_email_check($email, 50) == 0 ) {
-        return 1;
-    }
-
-    /* seems ok ! */
-    return 0;
+    return TRUE;
 
 }
 
@@ -252,8 +231,8 @@ function full_domain_check($data) {
 
     $res = preg_match_all("/([^\.]*\.)/", $data, $match, PREG_PATTERN_ORDER);
 
-    if ($res == 0) {
-        return 0;
+    if (!$res) {
+        return FALSE;
     }
 
     $last = $res - 1;
@@ -264,308 +243,174 @@ function full_domain_check($data) {
 
         $res = check_dn_token($token);
 
-        if ($res == 0) {
-            return 0;
-        }
+        if (!$res)
+            return FALSE;
     }
 
 
     $res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last]);
 
-    if ($res == 0) {
-        return 0;
-    }
-    return 1;
+    if (!$res)
+        return FALSE;
+
+    return TRUE;
 }
 
 
 function check_dn_token($data) {
 
     $match = array();
-    $res = preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D",	$data, $match);
 
-    if ($res == 0) {
-        return 0;
-    }
+    if (!preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D", $data, $match))
+        return FALSE;
 
-    //$res = preg_match("/\-\-/", $match[2], $minus_match);
-    //if ($res == 1) return 0;
+    // Username has not two times .,- or _
+	if(preg_match("/(\.\.)|(\-\-)|(\_\_)/", $username))
+		return FALSE;
 
-    return 1;
+	// Username has no not allowed concardination in it
+	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $username))
+		return FALSE;
+
+    return TRUE;
 }
 
-/**********************************************************************
-*
-*Description:
-*
-*	Function for checking ispcp 'username' field syntax. This function
-*	will also be used in ispcp_email_check() function;
-*
-*Input:
-*
-*	$data - ispcp 'username' field data;
-*
-*	$num - username maximum length;
-*
-*Output:
-*
-*	0 - incorrect syntax;
-*
-*	1 - correct syntax;
-*
-**********************************************************************/
-function ispcp_name_check ( $data, $num ) {
-
-    $res = preg_match("/^[A-Za-z][A-Za-z0-9\.\-\_]*[A-Za-z0-9]$/D", $data);
-
-    if ($res == 0) return 0;
-
-    $res = preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/(\.\-)|(\-\.)/", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/(\.\_)|(\_\.)/", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/(\-\_)|(\_\-)/", $data);
-
-    if ($res == 1) return 0;
-
-    $len = strlen($data);
-
-    if ( $len > $num ) return 0;
-
-    return 1;
-}// End of ispcp_name_check()
-
-
-
-
-/**********************************************************************
-*
-*Description:
-*
-*	Function for checking ispcp limits. The correct values for this
-*	limits are in ranges -1, 0, [1, $num].
-*
-*Input:
-*
-*$data - ispcp 'limit' field data;
-*
-*Output:
-*
-*	0 - incorrect syntax (ranges);
-*
-*	1 - correct syntax (ranges);
-*
-**********************************************************************/
+/**
+ *  @function		ispcp_limit_check
+ *  @description	Function for checking ispcp limits. The correct values for
+ * 					this limits are in ranges -1, 0, [1, $num]
+ *
+ * 	@param		String		$data		ispcp 'limit' field data
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					false	incorrect syntax (ranges)
+ * 										true	correct syntax (ranges)
+ */
 function ispcp_limit_check($data, $num) {
 
     $res = preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data);
 
-    if ($res == 0)
-    return 0;
+    if (!$res)
+    	return FALSE;
 
     if ($data > $num)
-    return 0;
+    	return FALSE;
 
-    return 1;
-}// End of ispcp_limit_check()
+    return TRUE;
+}
 
-/**********************************************************************
-*
-* Description:
-*
-*Function for checking domain name tokens; Internel function, for>
-* usage in ispcp_* functions;
-* Input:
-*
-* $data - token data. Without '\n' at the end;
-*
-* Output:
-*
-* 0 - incorrect syntax;
-*
-* 1 - correct syntax;
-**********************************************************************/
+/**
+ *  @function		check_dn_rsl_token
+ *  @description	Function for checking domain name tokens; Internel function,
+ * 					for usage in ispcp_* functions
+ *
+ * 	@param		String		$data		token data. Without '\n' at the end
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					false	incorrect syntax
+ * 										true	correct syntax
+ */
 function check_dn_rsl_token($data) {
 
-    $match = array();
-    $res = preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/D", $data,	$match);
-    if ($res == 0) return 0;
+	$match = array();
+    if (!preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/D", $data, $match))
+		return FALSE;
 
-    $res = preg_match("/\-\-/", $match[2]);
-    if ($res == 1) return 0;
+    if (preg_match("/\-\-/", $match[2]))
+		return FALSE;
 
-    return 1;
-}// End of check_dn_rsl_token()
+    return TRUE;
+}
 
+/**
+ *  @function		chk_dname
+ *  @description	Function for checking ISPCP domains syntax. Here domains are
+ * 					limited to {dname}.{ext} parts
+ *
+ * 	@param		String		$dname		ispcp domain data
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					false	incorrect syntax
+ * 										true	correct syntax
+ */
+function chk_dname($dname) {
 
-
-
-
-/**********************************************************************
-*
-* Description:
-*
-*Function for checking ISPCP domains syntax. Here domains are limited
-*to {dname}.{ext} parts.
-*
-*Input:
-*
-* $data - ispcp domain data;
-*
-* Output:
-*
-* 0 - incorrect syntax;
-*
-* 1 - correct syntax;
-**********************************************************************/
-function ispcp_domain_check($data) {
-
-    $res = rsl_full_domain_check($data);
-
-    if ($res == 0) return 0;
+    if (!rsl_full_domain_check($dname))
+		return FALSE;
 
     $match = array();
 
-    $res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
+    if (preg_match_all("/\./", $dname, $match, PREG_PATTERN_ORDER) <= 0)
+    	return FALSE;
 
-    if ($res <= 0) return 0;
-
-    return 1;
-
-}// End of ispcp_domain_check()
-
-
-
-
-/**********************************************************************
-*Description:
-*
-*	Function for checking full domain names syntax. /In ISPCP domains
-*	are limited to domain and subdomain parts.
-*
-*Input:
-*
-*	$data - domain name data;
-*
-*Output:
-*
-*	0 - incorrect syntax;
-*
-*	1 - correct syntax;
-*
-**********************************************************************/
-
-/* check for valid domain name  */
-function chk_dname( $dname ) {
-
-    if ( ispcp_domain_check($dname) == 0 ) {
-        return 1;
-    }
-
-    /* seems ok */
-    return 0;
+    return TRUE;
 
 }
 
-
-/* check for valid url addres  */
+/**
+ *  @function		chk_url
+ *  @description	Function for checking URL syntax
+ *
+ * 	@param		String		$url		URL data
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					false	incorrect syntax
+ * 										true	correct syntax
+ */
 function chk_url($url) {
 
-    if ( ispcp_url_check($url) == 0 ) {
-        return 1;
-    }
+    $url .= "\n";
 
-    /* seems ok ! */
-    return 0;
+    if (!preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/", $data))
+		return FALSE;
 
+    return TRUE;
 }
 
+/**
+ *  @function		chk_mountp
+ *  @description	Function checking for valid mount point
+ *
+ * 	@param		String		$data		mountpoint data
+ * 	@param		int			$num		number of max. chars
+ *  @return		boolean					false	incorrect syntax
+ * 										true	correct syntax
+ */
+function chk_mountp($data, $num = 50) {
 
-function ispcp_url_check ($data) {
+    if (!preg_match("/^\/(.*)$/D", $data))
+		return FALSE;
 
-    $data .= "\n";
+    if (preg_match("/^\/htdocs$/D", $data))
+		return FALSE;
 
-    $res = preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/",	$data);
+    if (preg_match("/^\/backups$/D", $data))
+    	return FALSE;
 
-    if ($res == 0) return 0;
+    if (preg_match("/^\/cgi-bin$/D", $data))
+		return FALSE;
 
-    return 1;
-}
+    if (preg_match("/^\/errors$/D", $data))
+    	return FALSE;
 
-
-
-function ispcp_mountpt_check($data, $num) {
-
-    $res = !preg_match("/^\/(.*)$/D", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/^\/htdocs$/D", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/^\/backups$/D", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/^\/cgi-bin$/D", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/^\/errors$/D", $data);
-
-    if ($res == 1) return 0;
-
-    $res = preg_match("/^\/logs$/D", $data);
-
-    if ($res == 1) return 0;
+    if (preg_match("/^\/logs$/D", $data))
+    	return FALSE;
 
     $res = explode("/", trim($data));
     $cnt_res = count($res);
-    if ($cnt_res > 2) return 0;
+    if ($cnt_res > 2)
+    	return FALSE;
 
     $match = array();
-    $res = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
+    $count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
 
-    if ($res == 0) {
-        return 0;
-    }
-
-    $count = $res;
+    if (!$count)
+        return FALSE;
 
     for ($i = 0; $i < $count; $i++) {
-
         $token = substr($match[0][$i], 1);
 
-        $res = ispcp_username_check($token, $num);
-
-        if ($res == 0) {
-            return 0;
-        }
+        if (!chk_username($token, $num))
+           	return FALSE;
     }
 
-    return 1;
-}
-
-
-/* check for valid mount point  */
-function chk_mountp($mountp) {
-
-    if ( ispcp_mountpt_check($mountp,50) == 0) {
-        return 1;
-    }
-
-    /* seems ok ! */
-    return 0;
-
+    return TRUE;
 }
 
 /* return mail for a a id */
@@ -597,7 +442,8 @@ SQL_QUERY;
 
             return $local_part."@".$domain_name;
 
-        } else if ($mail_type === 'normal_forward') {
+        }
+		else if ($mail_type === 'normal_forward') {
 
             $local_part = $data['mail_acc'];
             $domain_query = "select domain_name from domain as t1, mail_users as t2  where t2.domain_id=t1.domain_id and t2.mail_id = ?";
@@ -606,7 +452,8 @@ SQL_QUERY;
 
             return $local_part."@".$domain_name;
 
-        } else if ($mail_type === 'alias_mail') {
+        }
+		else if ($mail_type === 'alias_mail') {
 
             $local_part = $data['mail_acc'];
             $domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliasses as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
@@ -615,7 +462,8 @@ SQL_QUERY;
 
             return $local_part."@".$domain_name;
 
-        } else if ($mail_type === 'alias_forward') {
+        }
+		else if ($mail_type === 'alias_forward') {
 
             $local_part = $data['mail_acc'];
             $domain_query = "select alias_name from domain as t1, mail_users as t2, domain_aliases as t3  where t2.domain_id=t1.domain_id and t3.alias_id = t2.sub_id and t2.mail_id = ?";
@@ -625,12 +473,14 @@ SQL_QUERY;
             return $local_part."@".$domain_name;
 
 
-        } else if ($mail_type === 'subdom_mail') {
+        }
+		else if ($mail_type === 'subdom_mail') {
 
             $local_part = $data['mail_acc'];
             $domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
 
-        } else if ($mail_type === 'subdom_forward') {
+        }
+		else if ($mail_type === 'subdom_forward') {
 
             $local_part = $data['mail_acc'];
             $domain_query = "select subdomain_name from domain as t1, mail_users as t2, subdomain as t3  where t2.domain_id=t1.domain_id and t3.subdomain_id = t2.sub_id and t2.mail_id = ?";
@@ -639,18 +489,15 @@ SQL_QUERY;
 
             return $local_part."@".$domain_name;
 
-        } else if ($mail_type === 'normal_catchall') {
-
+        }
+		else if ($mail_type === 'normal_catchall') {
             return tr('Catchall account');
-
-        } else if ($mail_type === 'alias_catchall') {
-
+        }
+		else if ($mail_type === 'alias_catchall') {
             return tr('Catchall account');
-
-        } else {
-
+        }
+		else {
             return tr('Unknown type');
-
         }
 
     }
@@ -659,34 +506,21 @@ SQL_QUERY;
 
 function get_post($value) {
 
-    if(isset($_POST[$value])) {
-
+    if(isset($_POST[$value]))
         return $_POST[$value];
-
-    } else {
-
+    else
         return null;
-
-    }
-
 }
 
 function get_session($value) {
 
-    if(isset($_SESSION[$value])) {
-
+    if(isset($_SESSION[$value]))
         return $_SESSION[$value];
-
-    } else {
-
+    else
         return null;
-
-    }
-
 }
 
-function is_subdomain_of($base_domain, $subdomain, $realPath = true)
-{
+function is_subdomain_of($base_domain, $subdomain, $realPath = true) {
     if ($realPath) {
         $base_domain = realpath($base_domain);
         $subdomain   = realpath($subdomain);
@@ -694,7 +528,7 @@ function is_subdomain_of($base_domain, $subdomain, $realPath = true)
 
     $t = explode($base_domain, $subdomain);
 
-    return (count($t) > 1 && $t[0] === '');
+    return (count($t) > 1 AND $t[0] === '');
 }
 
 ?>

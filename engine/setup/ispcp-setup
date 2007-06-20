@@ -2186,30 +2186,99 @@ sub setup_httpd {
 	}
 
 	#
-	# Master file
+	# Apache Master file
 	#
 
 	($rs, $cfg_tpl) = get_file("$cfg_dir/00_master.conf");
 
 	return $rs if ($rs != 0);
 
-	my %tag_hash = (
-					'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
-					'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
-					'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
-					'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
-					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
-					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
-					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+
+		my $tpl_dir = "$conf_dir/apache/parts";
+
+		my (
+			$aw_b,
+			$aw_entry,
+			$aw_e,
+			$aw_b_cfg,
+			$aw_cfg,
+			$aw_e_cfg
+		) = ('', '', '', '', '', '');
+
+	    (
+	     $rs,
+	     $aw_b,
+	     $aw_entry,
+	     $aw_end
+	    ) = get_tpl (
+	                 $tpl_dir,
+	                 'awstats_b.tpl',
+	                 'awstats_mentry.tpl',
+	                 'awstats_e.tpl'
+	                );
+
+	    return $rs if ($rs != 0);
+
+		my %tag_hash = (
+						'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
+						'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
+						'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+						'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+						'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
+						'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
+						'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
+						'{AWSTATS_ENGINE_DIR}'		=> $main::cfg{'AWSTATS_ENGINE_DIR'}
+						);
+
+		($rs,
+		 $cfg,
+		 $aw_b_cfg,
+		 $aw_e_cfg
+		 $aw_cfg
+		) = prep_tpl(
+					\%tag_hash,
+					$cfg_tpl,
+					$aw_b,
+					$aw_e,
+					$aw_entry
 					);
 
-	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+		return $rs if ($rs != 0);
 
-	return $rs if ($rs != 0);
+		($rs, $cfg) = repl_tag(
+	                               $aw_b_cfg,
+	                               $aw_e_cfg,
+	                               $cfg,
+	                               $aw_cfg
+	                              );
 
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, 'root', 'root', 0644);
+  		return $rs if ($rs != 0);
 
-	return $rs if ($rs != 0);
+
+		$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, 'root', 'root', 0644);
+
+		return $rs if ($rs != 0);
+	}
+	else {
+		my %tag_hash = (
+						'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
+						'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
+						'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+						'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+						'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
+						'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
+						'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
+						);
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+		return $rs if ($rs != 0);
+
+		$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, 'root', 'root', 0644);
+
+		return $rs if ($rs != 0);
+	}
 
     $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
 
@@ -2245,7 +2314,6 @@ sub setup_httpd {
 
 		sys_command_rs("/usr/sbin/a2ensite ispcp.conf &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2ensite 00_master.conf &> /tmp/ispcp-setup-services.log");
-
 	}
 
 	#
@@ -2269,6 +2337,10 @@ sub setup_httpd {
 		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/ispcp-setup-services.log");
+
+		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+			sys_command_rs("/usr/sbin/a2enmod proxy &> /tmp/ispcp-setup-services.log");
+		}
 
 	}
 

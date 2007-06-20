@@ -187,7 +187,7 @@ function check_user_data()
     global $reseller_ips;
 
     if(!empty($_POST['pass']) || !empty($_POST['pass_rep'])){
-        if (chk_password($_POST['pass'])) {
+        if (!chk_password($_POST['pass'])) {
 
             set_page_message( tr("Incorrect password range or syntax!"));
 
