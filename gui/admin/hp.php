@@ -20,9 +20,9 @@
 
 
 // Begin page line
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
 

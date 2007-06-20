@@ -17,9 +17,9 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $query = <<<SQL_QUERY
 
@@ -83,7 +83,7 @@ print "Subdomains updated";
 SQL_QUERY;
 
 $rs = execute_query($sql, $query);
-print "Emails updated";		
+print "Emails updated";
 
 
 ?>

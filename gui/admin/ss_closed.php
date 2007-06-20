@@ -17,9 +17,9 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 	header( "Location: index.php" );

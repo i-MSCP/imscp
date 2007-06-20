@@ -17,9 +17,9 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 
@@ -27,7 +27,6 @@ $tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/add_user.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -214,26 +213,6 @@ function check_user_data()
 
     global $sql;
 
-    $username= clean_input($_POST['username']);
-
-    $query = <<<SQL_QUERY
-        select
-            admin_id
-        from
-            admin
-        where
-            admin_name = ?
-
-SQL_QUERY;
-
-        $rs = exec_query($sql, $query, array($username));
-
-    if($rs -> RecordCount() != 0){
-
-        set_page_message(tr('This user name already exist!'));
-
-        return false;
-    }
     if (chk_username($_POST['username'])) {
 
         set_page_message( tr("Incorrect username range or syntax!"));
@@ -255,6 +234,28 @@ SQL_QUERY;
     if (chk_email($_POST['email'])) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
+
+        return false;
+    }
+
+    $query = <<<SQL_QUERY
+        select
+            admin_id
+        from
+            admin
+        where
+            admin_name = ?
+
+SQL_QUERY;
+
+
+    $username = clean_input($_POST['username']);
+
+    $rs = exec_query($sql, $query, array($username));
+
+    if($rs -> RecordCount() != 0){
+
+        set_page_message(tr('This user name already exist!'));
 
         return false;
     }

@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-19 Raphael Geissert
+	- INSTALLATION:
+		* Fixed #410: Undefined subroutine &main::get_file called
+	- GUI:
+		* Improved security and removed redundant stuff
+		* Fixed #403: Can't remove Mysql database
+
 2007-06-18 Raphael Geissert
 	- INSTALLATION:
 		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher

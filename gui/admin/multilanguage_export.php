@@ -17,10 +17,10 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
 // Security
-check_login();
+check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== ''){
   $language_table = $_GET['export_lang'];

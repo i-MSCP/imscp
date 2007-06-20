@@ -21,7 +21,7 @@
 
 require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/circular.tpl');

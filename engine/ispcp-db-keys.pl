@@ -1,6 +1,6 @@
 
-$main::db_pass_key = '{KEY}';
+$main::db_pass_key = '{XXXXXXXXXXXXXXKEYXXXXXXXXXXXXX}';
 
-$main::db_pass_iv = '{IV}';
+$main::db_pass_iv = '{XXIVXX}';
 
 return 1;
