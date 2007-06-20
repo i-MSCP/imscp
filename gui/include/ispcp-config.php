@@ -84,7 +84,7 @@ function decrypt_db_password ($db_pass) {
 
     if ($db_pass == '') return '';
 
-    if (extension_loaded('mcrypt') && !@dl('mcrypt.'.PHP_SHLIB_SUFFIX)) {
+    if (extension_loaded('mcrypt') || @dl('mcrypt.'.PHP_SHLIB_SUFFIX)) {
 
         $text = @base64_decode($db_pass."\n");
 

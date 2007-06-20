@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-20 Raphael Geissert
+	- GUI:
+		* Fixed #418: ERROR: The php-extension 'mcrypt' not loaded!
+
 2007-06-19 Raphael Geissert
 	- INSTALLATION:
 		* Fixed #410: Undefined subroutine &main::get_file called
