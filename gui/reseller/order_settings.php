@@ -19,9 +19,9 @@
 
 
 // Begin page line
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $tpl = new pTemplate();
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/order_settings.tpl');

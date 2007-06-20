@@ -19,9 +19,9 @@
 
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
-check_login();
+check_login(__FILE__);
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 

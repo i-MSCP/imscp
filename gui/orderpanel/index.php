@@ -18,7 +18,7 @@
  **/
 
 
-include '../include/ispcp-lib.php';
+require '../include/ispcp-lib.php';
 
 $tpl = new pTemplate();
 
