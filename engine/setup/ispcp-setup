@@ -2179,6 +2179,8 @@ sub setup_httpd {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
+	my %tag_hash = ();
+
 	if ($main::cfg{'CMD_HTTPD'} ne 'no') {
 
 		sys_command_rs("$main::cfg{'CMD_HTTPD'} stop &> /tmp/ispcp-setup-services.log");
@@ -2195,7 +2197,7 @@ sub setup_httpd {
 
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
 
-		my $tpl_dir = "$conf_dir/apache/parts";
+		my $tpl_dir = "$cfg_dir/parts";
 
 		my (
 			$aw_b,
@@ -2210,7 +2212,7 @@ sub setup_httpd {
 	     $rs,
 	     $aw_b,
 	     $aw_entry,
-	     $aw_end
+	     $aw_e
 	    ) = get_tpl (
 	                 $tpl_dir,
 	                 'awstats_b.tpl',
@@ -2220,7 +2222,7 @@ sub setup_httpd {
 
 	    return $rs if ($rs != 0);
 
-		my %tag_hash = (
+		%tag_hash = (
 						'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
 						'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
 						'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
@@ -2234,7 +2236,7 @@ sub setup_httpd {
 		($rs,
 		 $cfg,
 		 $aw_b_cfg,
-		 $aw_e_cfg
+		 $aw_e_cfg,
 		 $aw_cfg
 		) = prep_tpl(
 					\%tag_hash,
@@ -2261,7 +2263,7 @@ sub setup_httpd {
 		return $rs if ($rs != 0);
 	}
 	else {
-		my %tag_hash = (
+		%tag_hash = (
 						'{BASE_SERVER_IP}' 			=> $main::cfg{'BASE_SERVER_IP'},
 						'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
 						'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
