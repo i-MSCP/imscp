@@ -14,6 +14,7 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #423: Undefined subroutine &main::dirname in ispcp_common_code.pl line 37
 		* Fixed #424: scalar being compared against integer
+		* Fixed #425: WARNING: KEY or IV has invalid length
 	- SETUP:
 		* Migration script now restarts the services
 		* Fixed #421: ispcp-setup errors in crontab file

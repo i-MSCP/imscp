@@ -1624,7 +1624,7 @@ sub encrypt_db_password {
 
         push_el(\@main::el, 'encrypt_db_password()', 'WARNING: KEY or IV has invalid length');
 
-        return (1, '');
+        return (0, '');
     }
 
     my $cipher = Crypt::CBC -> new(
@@ -1667,7 +1667,7 @@ sub decrypt_db_password {
 
         push_el(\@main::el, 'decrypt_db_password()', 'WARNING: KEY or IV has invalid length');
 
-        return (1, '');
+        return (0, '');
     }
 
     my $cipher = Crypt::CBC -> new(
