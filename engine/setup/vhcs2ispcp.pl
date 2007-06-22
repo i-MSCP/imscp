@@ -236,9 +236,17 @@ if($main::cfg{'DATABASE_NAME'} ne 'ispcp') {
     print STDOUT "\n\tin the new database called 'ispcp'; please rename this database";
     print STDOUT "\n\twith the one you choose at install time: $main::cfg{'DATABASE_NAME'}\n";
 
+} else {
+
+    print STDOUT "\nispCP's requests manager will now be executed...";
+
+    sys_command("$main::db{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+
+    print STDOUT "done\n";
+
 }
 
-print STDOUT "\nispCP's services will now be started:";
+print STDOUT "\nispCP's services will now be started:\n";
 
 start_services();
 
