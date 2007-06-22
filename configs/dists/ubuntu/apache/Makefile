@@ -15,9 +15,9 @@ install:
 
 	# Ubuntu 7.04?
 	if [[ $(RELEASE) == 'testing/unstable' ]] ; then \
-		cp ./fastcgi2.conf ./working/fastcgi.conf ; \
+		cp ./fastcgi2.conf ./working/fastcgi_ispcp.conf ; \
 	else \
-		cp ./fastcgi.conf ./working/fastcgi.conf ; \
+		cp ./fastcgi.conf ./working/fastcgi_ispcp.conf ; \
 	fi \
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
@@ -26,9 +26,10 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./working/fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi.conf
+	cp -R ./working/fastcgi_ispcp.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
 
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/apache
 	rm -rf $(ROOT_APACHE_CONF)/ispcp.conf
+	rm -rf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf

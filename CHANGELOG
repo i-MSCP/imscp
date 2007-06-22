@@ -14,11 +14,14 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #423: Undefined subroutine &main::dirname in ispcp_common_code.pl line 37
 		* Fixed #424: scalar being compared against integer
-	- INSTALLATION:
+	- SETUP:
 		* Migration script now restarts the services
+		* Fixed #421: ispcp-setup errors in crontab file
+		* make uninstall now also removes fastcgi.conf
+		* Renamed fastcgi.conf to fastcgi_ispcp.conf to prevent replacing existing fastcgi.conf
 
 2007-06-21 Raphael Geissert
-	- INSTALLATION:
+	- SETUP:
 		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
 	- ENGINE:
 		* Separated methods from ispcp_common_code.pl in ispcp_common_methods.pl
@@ -35,14 +38,14 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #418: ERROR: The php-extension 'mcrypt' not loaded!
 
 2007-06-19 Raphael Geissert
-	- INSTALLATION:
+	- SETUP:
 		* Fixed #410: Undefined subroutine &main::get_file called
 	- GUI:
 		* Improved security and removed redundant stuff
 		* Fixed #403: Can't remove Mysql database
 
 2007-06-18 Raphael Geissert
-	- INSTALLATION:
+	- SETUP:
 		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
 	- DOCS:
 		* Removed libnet-perl from Ubuntu fesity's packages list

@@ -1509,7 +1509,7 @@ sub setup_crontab {
 			$awstats = "15     6 * * * $main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
 		}
 		else {
-			$awstats = "";
+			$awstats = "# AWStats is disabled";
 		}
 
 		my %tag_hash = (
@@ -1750,7 +1750,7 @@ sub setup_php {
 
 	my $bk_dir = "$cfg_dir/backup";
 
-	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fastcgi.conf');
+	($rs, $cfg_tpl) = get_tpl("$cfg_dir/working", 'fastcgi_ispcp.conf');
 	return $rs if ($rs != 0);
 
 	my %tag_hash = (
@@ -1764,10 +1764,10 @@ sub setup_php {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$bk_dir/fastcgi.conf.ispcp", $cfg, 'root', 'root', 0644);
+	$rs = store_file("$bk_dir/fastcgi_ispcp.conf.ispcp", $cfg, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi.conf.ispcp $main::cfg{'APACHE_CONF_DIR'}/mods-available/fastcgi.conf";
+	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi_ispcp.conf.ispcp $main::cfg{'APACHE_CONF_DIR'}/mods-available/fastcgi_ispcp.conf";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
@@ -2337,7 +2337,7 @@ sub setup_httpd {
 
 		sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/ispcp-setup-services.log");
-		sys_command_rs("/usr/sbin/a2enmod fastcgi &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/ispcp-setup-services.log");
 
 		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
