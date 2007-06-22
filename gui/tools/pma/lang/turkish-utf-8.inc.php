@@ -1,5 +1,5 @@
 <?php
-/* $Id: turkish-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: turkish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 // phpMyAdmin Türkçe 01.09.2006 itibariyle önceki çeviriye göre çok daha 
 // iyi bir çeviriyle yeniden yapılmıştır. 
@@ -199,7 +199,6 @@ $strDanish = 'Danca';
 $strDatabaseEmpty = 'Veritabanı adı boş!';
 $strDatabaseExportOptions = 'Veritabanı dışarı aktarma seçenekleri';
 $strDatabaseHasBeenDropped = '%s veritabanı kaldırıldı.';
-$strDatabaseNoTable = 'Bu veritabanı tablo içermiyor!';
 $strDatabasesDropped = '%s veritabanları başarılı olarak kaldırıldı.';
 $strDatabasesStatsDisable = 'İstatistikler etkisiz';
 $strDatabasesStatsEnable = 'İstatistikler etkin';
@@ -428,7 +427,6 @@ $strKorean = 'Korece';
 
 $strLandscape = 'Peyzaj';
 $strLanguage = 'Dil';
-$strLanguageFileNotFound = 'Dil dosyası "%1$s" bulunamadı.';
 $strLanguageUnknown = 'Bilinmeyen dil: %1$s.';
 $strLatchedPages = 'Sabitlenmiş sayfalar';
 $strLatexCaption = 'Tablo başlığı';
@@ -824,7 +822,7 @@ $strShowStatusKey_readsDescr = 'Diskten anahtar bloğunun fiziksel okunma sayıs
 $strShowStatusKey_write_requestsDescr = 'Önbelleğe anahtar bloğu yazmak için istek sayısıdır.';
 $strShowStatusKey_writesDescr = 'Diske anahtar bloğunu fiziksel yazma sayısıdır.';
 $strShowStatusLast_query_costDescr = 'Sorgu en iyileyicisi tarafından hesaplanmış gibi son derlenen sorgunun toplam maliyetidir. Aynı sorgu için farklı sorgu planlarının maliyetini karşılaştırmak için yararlıdır. Varsayılan değer 0, henüz derlenmiş sorgu olmadığı anlamına gelir.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'INSERT DELAY sıralarında yazılmak için bekleyen satır sayısıdır.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'INSERT DELAYED sıralarında yazılmak için bekleyen satır sayısıdır.';
 $strShowStatusOpened_tablesDescr = 'Açık olan tablo sayısıdır. Eğer açık tablolar büyükse, tablo önbellek değeriniz muhtemelen çok küçüktür.';
 $strShowStatusOpen_filesDescr = 'Açık olan dosya sayısıdır.';
 $strShowStatusOpen_streamsDescr = 'Açık olan akış sayısıdır (başlıca günlükleme için kullanılır).';
@@ -1034,4 +1032,5 @@ $strZeroRemovesTheLimit = 'Not: Bu seçeneklerin 0 (sıfır)\'a ayarlanması sı
 $strZip = '"zip olarak"';
 
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

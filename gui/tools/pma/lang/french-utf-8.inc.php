@@ -1,5 +1,5 @@
 <?php
-/* $Id: french-utf-8.inc.php 10018 2007-02-26 17:26:53Z lem9 $ */
+/* $Id: french-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -191,7 +191,6 @@ $strDatabase = 'Base de données';
 $strDatabaseEmpty = 'Le nom de la base de données est vide!';
 $strDatabaseExportOptions = 'Options d\'exportation';
 $strDatabaseHasBeenDropped = 'La base de données %s a été effacée.';
-$strDatabaseNoTable = 'Cette base de données ne contient aucune table!';
 $strDatabases = 'Bases de données';
 $strDatabasesDropped = '%s bases de données ont été supprimées.';
 $strDatabasesStatsDisable = 'Désactiver les statistiques';
@@ -419,7 +418,6 @@ $strKnownExternalBug = 'La fonctionnalité %s est affectée par une anomalie con
 $strKorean = 'coréen';
 
 $strLandscape = 'Paysage';
-$strLanguageFileNotFound = 'Fichier de langue "%1$s" inexistant.';
 $strLanguage = 'Langue';
 $strLanguageUnknown = 'Langue inconnue: %1$s.';
 $strLatchedPages = 'Pages verrouillées';
@@ -816,7 +814,7 @@ $strShowStatusKey_readsDescr = 'Le nombre de lectures physiques d\'un bloc de cl
 $strShowStatusKey_write_requestsDescr = 'Le nombre de requêtes en vue d\'écrire un bloc de clé dans la cache.';
 $strShowStatusKey_writesDescr = 'Le nombre d\'écritures physiques d\'un bloc de clés vers le disque.';
 $strShowStatusLast_query_costDescr = 'Le coût total de la dernière requête compilée, tel que calculé par l\'optimiseur de requêtes. Utile pour comparer le coût de diverses stratégies pour une même requête. La valeur de 0 indique qu\'aucune requête n\'a encore été compilée.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Le nombre d\'enregistrements en attente d\'écriture (INSERT DELAY).';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Le nombre d\'enregistrements en attente d\'écriture (INSERT DELAYED).';
 $strShowStatusOpened_tablesDescr = 'Le nombre tables qui ont été ouvertes. Si trop élevé, votre cache de table est probablement trop petite.';
 $strShowStatusOpen_filesDescr = 'Le nombre de fichiers qui sont ouverts.';
 $strShowStatusOpen_streamsDescr = 'Le nombre de flux de données qui sont ouverts.';
@@ -1025,4 +1023,5 @@ $strYes = 'Oui';
 $strZeroRemovesTheLimit = 'Note: Une valeur de 0 (zero) enlève la limite.';
 $strZip = '"zippé"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

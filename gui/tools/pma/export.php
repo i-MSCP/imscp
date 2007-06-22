@@ -1,5 +1,5 @@
 <?php
-/* $Id: export.php 10259 2007-04-09 15:35:21Z lem9 $ */
+/* $Id: export.php 10408 2007-05-21 17:13:49Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -436,7 +436,7 @@ if ($export_type == 'server') {
                 if (isset($GLOBALS[$what . '_structure'])) {
                     // for a view, export a stand-in definition of the table
                     // to resolve view dependencies
-                    if (!PMA_exportStructure($current_db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, $is_view ? 'stand_in' : 'create_table')) {
+                    if (!PMA_exportStructure($current_db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, $is_view ? 'stand_in' : 'create_table', $export_type)) {
                         break 3;
                     }
                 }
@@ -450,7 +450,7 @@ if ($export_type == 'server') {
             foreach($views as $view) {
                 // no data export for a view
                 if (isset($GLOBALS[$what . '_structure'])) {
-                    if (!PMA_exportStructure($current_db, $view, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, 'create_view')) {
+                    if (!PMA_exportStructure($current_db, $view, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, 'create_view', $export_type)) {
                         break 3;
                     }
                 }
@@ -477,7 +477,7 @@ if ($export_type == 'server') {
         if (isset($GLOBALS[$what . '_structure'])) {
             // for a view, export a stand-in definition of the table
             // to resolve view dependencies
-            if (!PMA_exportStructure($db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, $is_view ? 'stand_in' : 'create_table')) {
+            if (!PMA_exportStructure($db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, $is_view ? 'stand_in' : 'create_table', $export_type)) {
                 break 2;
             }
         }
@@ -491,7 +491,7 @@ if ($export_type == 'server') {
     foreach ($views as $view) {
         // no data export for a view
         if (isset($GLOBALS[$what . '_structure'])) {
-            if (!PMA_exportStructure($db, $view, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, 'create_view')) {
+            if (!PMA_exportStructure($db, $view, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, 'create_view', $export_type)) {
                 break 2;
             }
         }
@@ -516,7 +516,7 @@ if ($export_type == 'server') {
 
     $is_view = PMA_Table::isView($db, $table);
     if (isset($GLOBALS[$what . '_structure'])) {
-        if (!PMA_exportStructure($db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, $is_view ? 'create_view' : 'create_table')) {
+        if (!PMA_exportStructure($db, $table, $crlf, $err_url, $do_relation, $do_comments, $do_mime, $do_dates, $is_view ? 'create_view' : 'create_table', $export_type)) {
             break;
         }
     }

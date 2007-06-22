@@ -1,5 +1,5 @@
 <?php
-/* $Id: croatian-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: croatian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  *   Croatian language file by
@@ -189,7 +189,6 @@ $strDatabase = 'Baza podataka';
 $strDatabaseEmpty = 'Naziv baze podataka je prazan!';
 $strDatabaseExportOptions = 'Opcije izvoza baze podataka';
 $strDatabaseHasBeenDropped = 'Baza podataka %s je odbačena.';
-$strDatabaseNoTable = 'Ova baza podataka ne sadrži tablice!';
 $strDatabases = 'Baze podataka';
 $strDatabasesDropped = 'Baza podataka %s uspješno je odbačena.';
 $strDatabasesStatsDisable = 'Onemogući statistike';
@@ -396,7 +395,6 @@ $strKill = 'Eliminiraj';
 $strKorean = 'Korejski';
 
 $strLandscape = 'Položeno';
-$strLanguageFileNotFound = 'Jezična datoteka "%1$s" nije pronađena.';
 $strLanguage = 'Jezik';
 $strLanguageUnknown = 'Nepoznati jezik: %1$s.';
 $strLatchedPages = 'Vezane stranice';
@@ -780,7 +778,7 @@ $strShowStatusKey_readsDescr = 'Broj fizičkih čitanja ključnih blokova s disk
 $strShowStatusKey_write_requestsDescr = 'Broj zahtjeva za zapisivanje ključnog bloka u pohranu.';
 $strShowStatusKey_writesDescr = 'Broj fizičkih zapisivanja ključnih blokova na disk. ';
 $strShowStatusLast_query_costDescr = 'Ukupan trošak posljednjeg složenog upita, izračunat od strane optimizatora upita. Korisno za uspoređivanje troškova različitih planova upita za isti upit. Zadana vrijednost je 0 i podrazumijeva da još nema složenog upita.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Broj redaka koji čekaju svoje upisivanje u red čekanja INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Broj redaka koji čekaju svoje upisivanje u red čekanja INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Broj tablica koje su otvorene. Ako je iznos otvorenih tablica velik, vaša vrijednost za pohranu tablica vjerojatno je premala.';
 $strShowStatusOpen_filesDescr = 'Broj otvorenih datoteka.';
 $strShowStatusOpen_streamsDescr = 'Broj otvorenih protoka (uglavnom se upotrebljava za vođenje zapisnika).';
@@ -1027,4 +1025,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

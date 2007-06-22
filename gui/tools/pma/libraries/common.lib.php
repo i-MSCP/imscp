@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 10318 2007-04-24 03:54:30Z lem9 $ */
+/* $Id: common.lib.php 10431 2007-06-10 19:47:14Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -290,7 +290,7 @@ function PMA_arrayWalkRecursive(&$array, $function, $apply_to_keys_also = false)
             }
         }
     }
-    $recursive_counter++;
+    $recursive_counter--;
 }
 
 /**
@@ -492,7 +492,7 @@ if (!defined('PMA_MINIMUM_COMMON')) {
                 $pow = bcpow($base, $exp);
                 break;
             case 'gmp_pow' :
-                $pow = gmp_strval(gmp_pow($base, $exp));
+                $pow = gmp_strval($exp >= 0 ? gmp_pow($base, $exp) : 0);
                 break;
             case 'pow' :
                 $base = (float) $base;
@@ -2609,6 +2609,7 @@ if (get_magic_quotes_gpc()) {
     PMA_arrayWalkRecursive($_COOKIE, 'stripslashes', true);
     PMA_arrayWalkRecursive($_REQUEST, 'stripslashes', true);
 }
+
 /**
  * In some cases, this one is not set
  *

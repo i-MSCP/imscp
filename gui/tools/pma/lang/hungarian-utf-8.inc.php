@@ -172,7 +172,6 @@ $strDatabase = 'Adatbázis';
 $strDatabaseEmpty = 'Az adatbázis néz mez&#337; üres!';  
 $strDatabaseExportOptions = 'Adatbázis export beállítások';
 $strDatabaseHasBeenDropped = '%s adatbázist eldobtam.';
-$strDatabaseNoTable = 'Az adatbázis nem tartalmaz táblákat!';
 $strDatabases = 'adatbázisok';
 $strDatabasesDropped = '%s adatbázist sikeresen töröltem.';  
 $strDatabasesStats = 'Adatbázis statisztika';
@@ -643,7 +642,7 @@ $strShowStatusInnodb_rows_deletedDescr = 'InnoDB táblákból törölt sorok sz�
 $strShowStatusInnodb_rows_insertedDescr = 'InnoDB táblákba beszúrt sorok száma.';
 $strShowStatusInnodb_rows_readDescr = 'InnoDB táblákból olvasott sorok száma.';
 $strShowStatusInnodb_rows_updatedDescr = 'InnoDB táblákban frissített sorok száma.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Írásra várakozó sorok az INSERT DELAY sorokban.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Írásra várakozó sorok az INSERT DELAYED sorokban.';
 $strShowStatusOpen_filesDescr = 'Megnyitott fájlok száma.';
 $strShowStatusOpen_tablesDescr = 'Megnyitott táblák száma.';
 $strShowStatusQcache_free_blocksDescr = 'Szabad memóriablokkok a lekérdezés cache-ben.';
@@ -844,7 +843,6 @@ $strJoins = 'Joins';  //to translate
 
 $strKeyCache = 'Key cache';  //to translate
 
-$strLanguageFileNotFound = 'Language file "%1$s" not found.';  //to translate
 $strLanguageUnknown = 'Unknown language: %1$s.';  //to translate
 
 $strMbExtensionMissing = 'The mbstring PHP extension was not found and you seem to be using multibyte charset. Without mbstring extension phpMyAdmin is unable to split strings correctly and it may result in unexpected results.';  //to translate
@@ -1046,4 +1044,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-utf-8.inc.php 9925 2007-02-05 17:53:36Z lem9 $ */
+/* $Id: japanese-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>
@@ -196,7 +196,6 @@ $strDatabase = 'データベース';
 $strDatabaseEmpty = 'データベース名が空です!';
 $strDatabaseExportOptions = 'データベースエクスポートオプション';
 $strDatabaseHasBeenDropped = 'データベース %s を削除しました';
-$strDatabaseNoTable = 'このデータベースにはテーブルがありません!';
 $strDatabases = 'データベース';
 $strDatabasesDropped = 'データベース %s を正常に削除しました';
 $strDatabasesStats = 'データベースの統計';
@@ -426,7 +425,6 @@ $strKorean = '韓国語';
 
 $strLandscape = '横向き';
 $strLanguage = '言語';
-$strLanguageFileNotFound = '言語ファイル「%1$s」が見つかりません';
 $strLanguageUnknown = '言語ファイルが登録されていません: %1$s';
 $strLatchedPages = 'ラッチされているページ';
 $strLatexCaption = 'テーブルのキャプション';
@@ -822,7 +820,7 @@ $strShowStatusKey_readsDescr = 'ディスクからキーブロックを物理読
 $strShowStatusKey_write_requestsDescr = 'キャッシュにキーブロックを書き込んだリクエストの数';
 $strShowStatusKey_writesDescr = 'ディスクにキーブロックを物理書き込みした回数';
 $strShowStatusLast_query_costDescr = 'クエリオプティマイザーの計算による、最後にコンパイルされたクエリの総コスト。クエリのプランを変えたときにコストがどう変わるか比較するときに便利です。デフォルト値の 0 はまだ一度もクエリをコンパイルしていないという意味です';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'INSERT DELAY キューの中で書き込まれるのを待っている行数';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'INSERT DELAYED キューの中で書き込まれるのを待っている行数';
 $strShowStatusOpened_tablesDescr = '開いているテーブルの数。開いているテーブルが多い場合はおそらくテーブルキャッシュの値が小さすぎます';
 $strShowStatusOpen_filesDescr = '開いているファイルの数';
 $strShowStatusOpen_streamsDescr = '開いているストリームの数 (主にログの記録用です)';
@@ -1032,4 +1030,5 @@ $strYes = 'はい';
 $strZeroRemovesTheLimit = '注意: オプションを 0 (ゼロ)に設定すると制限を解除します';
 $strZip = '"zip 形式"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

@@ -368,7 +368,7 @@ require_once './libraries/PMA_List.class.php';
 	$return = '<ul id="databaseList" xml:lang="en" dir="ltr">' . "\n";
         foreach ($this->getGroupedDetails() as $group => $dbs) {
             if (count($dbs) > 1) {
-                $return .= '<li>' . $group . '<ul>' . "\n";
+		$return .= '<li>' . $group . '<ul>' . "\n";
                 // wether display db_name cuted by the group part
                 $cut = true;
             } else {

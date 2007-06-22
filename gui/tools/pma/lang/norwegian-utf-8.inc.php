@@ -1,5 +1,5 @@
 <?php
-/* $Id: norwegian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: norwegian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * Translated by Sven-Erik Andersen <sven DOT erik DOT andersen AT gmail DOT com>
@@ -188,7 +188,6 @@ $strDatabase = 'Database';
 $strDatabaseEmpty = 'Databasen er uten navn!';
 $strDatabaseExportOptions = 'Databaseeksportinnstillinger';
 $strDatabaseHasBeenDropped = 'Databasen %s har blitt slettet';
-$strDatabaseNoTable = 'Denne databasen har ingen tabeller!';
 $strDatabases = 'databaser';
 $strDatabasesDropped = '%s databasene har blitt slettet.';
 $strDatabasesStatsDisable = 'Slå av statistikk';
@@ -395,7 +394,6 @@ $strKill = 'Avslutt';
 $strKorean = 'koreansk';
 
 $strLandscape = 'Landskapsformat';
-$strLanguageFileNotFound = 'Språkfil "%1$s" ble ikke funnet.';
 $strLanguage = 'Språk';
 $strLanguageUnknown = 'Ukjent språk: %1$s.';
 $strLatchedPages = 'Tilknyttede sider';
@@ -778,7 +776,7 @@ $strShowStatusKey_readsDescr = 'Antall fysiske lesninger av en nøkkelblokk fra 
 $strShowStatusKey_write_requestsDescr = 'Antall forespørsler for å skrive en nøkkelblokk til mellomlageret.';
 $strShowStatusKey_writesDescr = 'Antall fysiske skrivinger av en nøkkelblokk til disk.';
 $strShowStatusLast_query_costDescr = 'Den totale kostnad ved siste kompilerte spørring slik den ble utregnet av spørringsoptimisereren. Nyttig for å kunne sammenligne kostnader ved forskjellige spørringsplaner for den samme spørringen. Standardverdien på 0 betyr at ingen spørring har blitt kompilert ennå.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Antall rader som venter på å bli skrevet i INSERT DELAY køer.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Antall rader som venter på å bli skrevet i INSERT DELAYED køer.';
 $strShowStatusOpened_tablesDescr = 'Antall tabeller som har blitt åpnet. Hvis denne er stor er nok din tabellmellomlagerverdi for liten.';
 $strShowStatusOpen_filesDescr = 'Antall åpne filer.';
 $strShowStatusOpen_streamsDescr = 'Antall åpne dataflyter (hovedsaklig brukt til logging).';
@@ -1026,4 +1024,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

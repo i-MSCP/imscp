@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: spanish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -190,7 +190,6 @@ $strDatabase = 'Base de datos';
 $strDatabaseEmpty = '¡El nombre de la base de datos está vacío!';
 $strDatabaseExportOptions = 'Opciones de exportación de la base de datos';
 $strDatabaseHasBeenDropped = 'La base de datos %s ha sido eliminada.';
-$strDatabaseNoTable = '¡Esta base de datos no contiene tablas!';
 $strDatabases = 'Bases de datos';
 $strDatabasesDropped = '%s bases de datos han sido eliminadas exitosamente.';
 $strDatabasesStatsDisable = 'Desactivar las estadísticas';
@@ -418,7 +417,6 @@ $strKnownExternalBug = 'La funcionalidad %s está afectada por un fallo conocido
 $strKorean = 'Coreano';
 
 $strLandscape = 'Orientación horizontal';
-$strLanguageFileNotFound = 'No se halló el archivo de idioma "%1$s".';
 $strLanguage = 'Idioma';
 $strLanguageUnknown = 'Idioma desconocido: %1$s.';
 $strLatchedPages = 'Páginas vinculadas';
@@ -815,7 +813,7 @@ $strShowStatusKey_readsDescr = 'El número de lecturas físicas del key block de
 $strShowStatusKey_write_requestsDescr = 'El número de solicitudes para escribir un key block al cache.';
 $strShowStatusKey_writesDescr = 'El número de escrituras físicas a un key block al disco.';
 $strShowStatusLast_query_costDescr = 'El costo total de la última consulta compilada como fuera computada por el optimizador de consultas. Es útil para comparar el costo de diferentes planes de consulta para una misma consulta. El valor por omisión de 0 significa que ninguna consulta ha sido compilada todavía.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'El número de filas esperando ser escritas en las colas INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'El número de filas esperando ser escritas en las colas INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'El número de tablas que han sido abiertas. Si el número de tablas abiertas es grande, su valor del cache de tabla probablemente es muy pequeño.';
 $strShowStatusOpen_filesDescr = 'El número de archivos que están abiertos.';
 $strShowStatusOpen_streamsDescr = 'El número de flujos de datos que están abiertos (usado principalmente para alimentar a los logs).';
@@ -1024,4 +1022,5 @@ $strYes = 'Sí';
 $strZeroRemovesTheLimit = 'Nota: si cambia los parámetros de estas opciones a 0 (cero), remueve el límite.';
 $strZip = '"comprimido con zip"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

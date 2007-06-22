@@ -9,13 +9,14 @@
  * @author     Michal Čihař <michal@cihar.com>
  * @copyright  2006 Michal Čihař <michal@cihar.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    Subversion $Id: setup.php 9697 2006-11-13 08:32:28Z nijel $
+ * @version    Subversion $Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $
  */
-/* $Id: setup.php 9697 2006-11-13 08:32:28Z nijel $ */
+/* $Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Grab phpMyAdmin version and PMA_dl function
 define( 'PMA_MINIMUM_COMMON', TRUE );
+define( 'PMA_SETUP', TRUE );
 chdir('..');
 require_once('./libraries/common.lib.php');
 
@@ -26,7 +27,7 @@ $PMA_Config_Setup = new PMA_Config();
 
 // Script information
 $script_info = 'phpMyAdmin ' . $PMA_Config_Setup->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
-$script_version = '$Id: setup.php 9697 2006-11-13 08:32:28Z nijel $';
+$script_version = '$Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $';
 
 // Grab action
 if (isset($_POST['action'])) {

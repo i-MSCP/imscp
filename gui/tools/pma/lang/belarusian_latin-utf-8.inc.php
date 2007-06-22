@@ -1,5 +1,5 @@
 <?php
-/* $Id: belarusian_latin-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: belarusian_latin-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
 * Translated by:
@@ -190,7 +190,6 @@ $strDatabase = 'Baza dadzienych';
 $strDatabaseEmpty = 'Imia bazy dadzienych nie paznačanaje!';
 $strDatabaseExportOptions = 'Nałady ekspartu bazy dadzienych';
 $strDatabaseHasBeenDropped = 'Baza dadzienych %s była vydalenaja.';
-$strDatabaseNoTable = 'Heta baza dadzienych nia ŭtrymlivaje tablic!';
 $strDatabases = 'Bazy dadzienych';
 $strDatabasesDropped = '%s bazaŭ dadzienych byli paśpiachova vydalenyja.';
 $strDatabasesStatsDisable = 'Adklučyć statystyku';
@@ -397,7 +396,6 @@ $strKill = 'Spynić';
 $strKorean = 'Karejskaja';
 
 $strLandscape = 'Krajavid';
-$strLanguageFileNotFound = 'Moŭny fajł "%1$s" nia znojdzieny.';
 $strLanguage = 'Mova';
 $strLanguageUnknown = 'Nieviadomaja mova: %1$s.';
 $strLatchedPages = 'Fiksavanyja staronki';
@@ -781,7 +779,7 @@ $strShowStatusKey_readsDescr = 'Kolkaść fizyčnych čytańniaŭ bloku klučoŭ
 $strShowStatusKey_write_requestsDescr = 'Kolkaść zapytaŭ na zapis bloku klučoŭ u keš.';
 $strShowStatusKey_writesDescr = 'Kolkaść fizyčnych zapisaŭ bloku klučoŭ na dysk.';
 $strShowStatusLast_query_costDescr = 'Ahulny košt apošniaha zkampilavanaha zapytu, padličanaha aptymizataram zapytaŭ. Karysna dla paraŭnańnia roznych sposabaŭ realizacyi adnaho zapytu. Značeńnie pa zmoŭčańni 0 aznačaje, što nivodny zapyt jašče nia byŭ zkampilavany.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Kolkaść radkoŭ dla zapisu, adkładzienych zapytami INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Kolkaść radkoŭ dla zapisu, adkładzienych zapytami INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Kolkaść tablic, jakija byli adkrytyja. Kali adkrytyja tablicy vialikija, značeńnie kešu tablic imavierna vielmi małoje.';
 $strShowStatusOpen_filesDescr = 'Kolkaść adkrytych fajłaŭ.';
 $strShowStatusOpen_streamsDescr = 'Kolkaść adkrytych patokaŭ (vykarystoŭvajucca pieravažna dla łahavańnia).';
@@ -1028,4 +1026,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

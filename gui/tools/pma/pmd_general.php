@@ -1,5 +1,5 @@
 <?php
-/* $Id: pmd_general.php 9929 2007-02-06 09:56:31Z cybot_tm $ */
+/* $Id: pmd_general.php 10413 2007-05-26 18:31:40Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /*
@@ -32,6 +32,7 @@ $hidden           = "hidden";
 <?php 
 echo '
 <script>
+var server = "' . $server . '";
 var db = "' . $db . '";
 var token = "' . $token . '";
 var LangSelectReferencedKey = "' . $strSelectReferencedKey . '";

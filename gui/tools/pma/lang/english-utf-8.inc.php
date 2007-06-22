@@ -1,5 +1,5 @@
 <?php
-/* $Id: english-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: english-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -194,7 +194,6 @@ $strDatabase = 'Database';
 $strDatabaseEmpty = 'The database name is empty!';
 $strDatabaseExportOptions = 'Database export options';
 $strDatabaseHasBeenDropped = 'Database %s has been dropped.';
-$strDatabaseNoTable = 'This database contains no table!';
 $strDatabases = 'Databases';
 $strDatabasesDropped = '%s databases have been dropped successfully.';
 $strDatabasesStats = 'Databases statistics';
@@ -422,7 +421,6 @@ $strKnownExternalBug = 'The %s functionality is affected by a known bug, see %s'
 $strKorean = 'Korean';
 
 $strLandscape = 'Landscape';
-$strLanguageFileNotFound = 'Language file "%1$s" not found.';
 $strLanguage = 'Language';
 $strLanguageUnknown = 'Unknown language: %1$s.';
 $strLatchedPages = 'Latched pages';
@@ -730,6 +728,7 @@ $strServerTabVariables = 'Variables';
 $strServerTrafficNotes = '<b>Server traffic</b>: These tables show the network traffic statistics of this MySQL server since its startup.';
 $strServerVars = 'Server variables and settings';
 $strServerVersion = 'Server version';
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';
 $strSessionValue = 'Session value';
 $strSetEnumVal = 'If field type is "enum" or "set", please enter the values using this format: \'a\',\'b\',\'c\'...<br />If you ever need to put a backslash ("\") or a single quote ("\'") amongst those values, precede it with a backslash (for example \'\\\\xyz\' or \'a\\\'b\').';
 $strShowAll = 'Show all';
@@ -819,7 +818,7 @@ $strShowStatusKey_readsDescr = 'The number of physical reads of a key block from
 $strShowStatusKey_write_requestsDescr = 'The number of requests to write a key block to the cache.';
 $strShowStatusKey_writesDescr = 'The number of physical writes of a key block to disk.';
 $strShowStatusLast_query_costDescr = 'The total cost of the last compiled query as computed by the query optimizer. Useful for comparing the cost of different query plans for the same query. The default value of 0 means that no query has been compiled yet.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'The number of rows waiting to be written in INSERT DELAY queues.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'The number of rows waiting to be written in INSERT DELAYED queues.';
 $strShowStatusOpened_tablesDescr = 'The number of tables that have been opened. If opened tables is big, your table cache value is probably too small.';
 $strShowStatusOpen_filesDescr = 'The number of files that are open.';
 $strShowStatusOpen_streamsDescr = 'The number of streams that are open (used mainly for logging).';

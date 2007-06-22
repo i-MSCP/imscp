@@ -1,5 +1,5 @@
 <?php
-/* $Id: select_lang.lib.php 9712 2006-11-17 09:32:19Z nijel $ */
+/* $Id: select_lang.lib.php 10430 2007-06-10 19:28:56Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -337,7 +337,8 @@ if (empty($convcharset)) {
     if (isset($_COOKIE['pma_charset'])) {
         $convcharset = $_COOKIE['pma_charset'];
     } else {
-        $convcharset = $GLOBALS['cfg']['DefaultCharset'];
+        // session.save_path might point to a bad folder
+        $convcharset = isset($GLOBALS['cfg']['DefaultCharset']) ? $GLOBALS['cfg']['DefaultCharset'] : 'en-utf-8';
     }
 }
 
@@ -371,6 +372,6 @@ if ($lang_failed_request) {
     $GLOBALS['PMA_errors'][] = sprintf($strLanguageUnknown, htmlspecialchars($lang_failed_request));
 }
 
-unset($strLanguageFileNotFound, $line, $fall_back_lang,
+unset($line, $fall_back_lang,
     $lang_failed_cfg, $lang_failed_cookie, $lang_failed_request, $strLanguageUnknown);
 ?>

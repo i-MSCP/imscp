@@ -1,5 +1,5 @@
 <?php
-/* $Id: tbl_structure.php 9761 2006-11-26 09:53:45Z lem9 $ */
+/* $Id: tbl_structure.php 10379 2007-05-11 17:11:39Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/common.lib.php';
@@ -35,6 +35,8 @@ if ((!empty($submit_mult) && isset($selected_fld))
     || isset($mult_btn)) {
     $action = 'tbl_structure.php';
     $err_url = 'tbl_structure.php?' . PMA_generate_common_url($db, $table);
+    require_once('./libraries/header.inc.php');
+    require_once './libraries/tbl_links.inc.php';
     require './libraries/mult_submits.inc.php';
 }
 

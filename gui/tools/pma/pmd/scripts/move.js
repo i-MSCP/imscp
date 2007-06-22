@@ -1,5 +1,5 @@
 /*
-$Id: move.js 10044 2007-03-02 14:13:13Z cybot_tm $
+$Id: move.js 10416 2007-05-30 16:55:18Z lem9 $
 @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
 */
 var dx, dy, dy2;
@@ -373,7 +373,7 @@ function Get_url_pos()
 
 function Save2()
 {
-  var poststr = 'IS_AJAX=1&db='+db+'&token='+token+'&die_save_pos=1';
+  var poststr = 'IS_AJAX=1&server='+server+'&db='+db+'&token='+token+'&die_save_pos=1';
   poststr += Get_url_pos();
   makeRequest('pmd_save_pos.php', poststr);
 }
@@ -486,14 +486,14 @@ function Click_field(T,f,PK) // table field
     document.getElementById('hint').innerHTML = "";
     document.getElementById('hint').style.visibility = "hidden";
     document.getElementById('display_field_button').className = 'M_butt';
-    makeRequest('pmd_display_field.php', 'T=' + T + '&F=' + f + '&db=' + db + '&token=' + token );
+    makeRequest('pmd_display_field.php', 'T=' + T + '&F=' + f + '&server=' + server + '&db=' + db + '&token=' + token );
   }
 }
 
 function New_relation()
 {
   document.getElementById('layer_new_relation').style.visibility = 'hidden';
-  link_relation += '&db=' + db + '&token=' + token + '&die_save_pos=0';
+  link_relation += '&server=' + server + '&db=' + db + '&token=' + token + '&die_save_pos=0';
   link_relation += '&on_delete=' + document.getElementById('on_delete').value + '&on_update=' + document.getElementById('on_update').value;
   link_relation += Get_url_pos();
   
@@ -505,12 +505,12 @@ function New_relation()
 
 function Start_table_new()
 {
-  window.location.href='db_operations.php?db='+db+'&token='+token;
+  window.location.href='db_operations.php?server='+server+'&db='+db+'&token='+token;
 }
 
 function Start_tab_upd(table)
 {
-  window.location.href='tbl_structure.php?db='+db+'&token='+token+'&table='+table;
+  window.location.href='tbl_structure.php?server='+server+'&db='+db+'&token='+token+'&table='+table;
 }
 //----------------------------------------------------- hide tables -----------------------------------------------------
 
@@ -651,7 +651,7 @@ function Canvas_click(id)
 function Upd_relation()
 {
   document.getElementById('layer_upd_relation').style.visibility = 'hidden';
-  link_relation += '&db=' + db + '&token=' + token + '&die_save_pos=0';
+  link_relation += '&server=' + server + '&db=' + db + '&token=' + token + '&die_save_pos=0';
   link_relation += Get_url_pos();
   makeRequest('pmd_relation_upd.php', link_relation);
 }
@@ -719,7 +719,7 @@ function PDF_save()
 {
   // var WinPDF = 
   // window.open("pmd_pdf.php?token="+token+"&db="+db,"wind1", "top=200,left=200,width=200,height=100,resizable=yes,scrollbars=yes,menubar=no");
- Save('pmd_pdf.php?token='+token+'&db='+db);
+ Save('pmd_pdf.php?server=' + server + '&token=' + token + '&db=' + db);
 }
 
 

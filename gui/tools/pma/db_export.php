@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_export.php 9602 2006-10-25 12:25:01Z nijel $ */
+/* $Id: db_export.php 10390 2007-05-14 16:03:38Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * dumps a database
@@ -27,7 +27,7 @@ $export_page_title = $strViewDumpDB;
 
 // exit if no tables in db found
 if ( $num_tables < 1 ) {
-    echo $strDatabaseNoTable;
+    echo '<div class="warning">' . $strNoTablesFound . '</div>';
     require('./libraries/footer.inc.php');
     exit;
 } // end if

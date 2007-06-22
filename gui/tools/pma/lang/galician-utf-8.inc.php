@@ -1,5 +1,5 @@
 <?php
-/* $Id: galician-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: galician-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * Translated by Xosé Calvo <xosecalvo at terra.es>
@@ -189,7 +189,6 @@ $strDatabase = 'Base de Datos';
 $strDatabaseEmpty = 'O nome da base de datos non existe!';
 $strDatabaseExportOptions = 'Opcións de exportación da base de datos';
 $strDatabaseHasBeenDropped = 'A base de datos %s foi eliminada.';
-$strDatabaseNoTable = 'Esta base de datos non contén nengunha tabela';
 $strDatabases = 'Bases de Datos';
 $strDatabasesDropped = 'Elimináronse %s bases de datos sen problemas.';
 $strDatabasesStatsDisable = 'Deshabilitar as estatísticas';
@@ -395,7 +394,6 @@ $strKill = 'Matar (kill)';
 $strKorean = 'Coreano';
 
 $strLandscape = 'Horizontal';
-$strLanguageFileNotFound = 'Non se atopou o ficheiro da lingua "%1$s".';
 $strLanguageUnknown = 'Linguaxe descoñecida: %1$s.';
 $strLatchedPages = 'Páxinas fechadas';
 $strLatexCaption = 'Título da tabela';
@@ -778,7 +776,7 @@ $strShowStatusKey_readsDescr = 'Número de lecturas físicas dun bloque chave de
 $strShowStatusKey_write_requestsDescr = 'Número de peticións para escribir un bloque chave na caché.';
 $strShowStatusKey_writesDescr = 'Número de escritas físicas dun bloque chave no disco.';
 $strShowStatusLast_query_costDescr = 'Custo total da última procura compilada tal e como se computa mediante o optimizador de procuras. Resulta útil para comparar o custo de planos de procura diferentes para a mesma pesquisa. O valor por omisión é 0, que significa que ainda non se compilou nengunha procura.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Número de procuras que están a agardar para seren escritas nas filas INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Número de procuras que están a agardar para seren escritas nas filas INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Número de tabelas abertas en total. Se a cantidade é grande, o valor da caché de tabelas posibelmente é demasiado pequeno.';
 $strShowStatusOpen_filesDescr = 'Número de ficheiros abertos.';
 $strShowStatusOpen_streamsDescr = 'Número de fluxos abertos (utilizado principalmente para o rexistro).';
@@ -1031,4 +1029,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

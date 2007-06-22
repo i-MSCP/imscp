@@ -1,5 +1,5 @@
 <?php
-/* $Id: german-utf-8.inc.php 10253 2007-04-06 20:04:46Z lem9 $ */
+/* $Id: german-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * For suggestions concerning this file please contact
@@ -194,7 +194,6 @@ $strDatabase = 'Datenbank';
 $strDatabaseEmpty = 'Der Datenbankname ist leer!';
 $strDatabaseExportOptions = 'Export-Optionen der Datenbank';
 $strDatabaseHasBeenDropped = 'Datenbank %s wurde gelöscht.';
-$strDatabaseNoTable = 'Diese Datenbank enthält keine Tabelle!';
 $strDatabases = 'Datenbanken';
 $strDatabasesDropped = 'Es wurden %s Datenbanken gelöscht.';
 $strDatabasesStatsDisable = 'Datenbankstatistiken deaktivieren';
@@ -402,7 +401,6 @@ $strKorean = 'Koreanisch';
 
 $strLandscape = 'Querformat';
 $strLanguage = 'Sprache';
-$strLanguageFileNotFound = 'Sprachdatei "%1$s" nicht gefunden.';
 $strLanguageUnknown = 'Unbekannte Sprache: "%1$s".';
 $strLatchedPages = 'Belegte Seiten';
 $strLatexCaption = 'Tabellenbeschriftung';
@@ -784,7 +782,7 @@ $strShowStatusKey_readsDescr = 'Die Anzahl physikalischer Lesezugriffe eines Sch
 $strShowStatusKey_write_requestsDescr = 'Die Anzahl der Anfragen, einen Schlüssel-Block in den Cache zu schreiben.';
 $strShowStatusKey_writesDescr = 'Die Anzahl physikalischer Schreibvorgänge eines Schlüssel-Blocks auf Platte.';
 $strShowStatusLast_query_costDescr = 'Die Kosten für die zuletzt verarbeitete Abfrage wie vom Abfrage-Optimierer berechnet. Nützlich um verschiedene Formulierungen für eine Abfrage zu vergleichen. Der Wert 0 besagt das bisher keine Abfrage übersetzt wurde.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Anzahl der Zeilen, die in INSERT-DELAY-Warteschleifen darauf warten, geschrieben zu werden.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Anzahl der Zeilen, die in INSERT-DELAYED-Warteschleifen darauf warten, geschrieben zu werden.';
 $strShowStatusOpened_tablesDescr = 'Anzahl der Tabellen, die geöffnet wurden. Wenn Opened_tables hoch ist, ist Ihre table_cache-Variable wahrscheinlich zu niedrig.';
 $strShowStatusOpen_filesDescr = 'Anzahl der geöffneten Dateien.';
 $strShowStatusOpen_streamsDescr = 'Anzahl der geöffneten Streams (hauptsächlich zum Loggen benutzt).';
@@ -1031,4 +1029,5 @@ $strErrorRelationExists = 'Fehler: Verknüpfung existiert bereits.';
 $strErrorSaveTable = 'Fehler beim speichern der Koordinaten für den Designer.';
 $strSnapToGrid = 'Am Gitter anordnen';
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

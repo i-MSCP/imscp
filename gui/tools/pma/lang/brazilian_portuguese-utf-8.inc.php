@@ -1,5 +1,5 @@
 <?php
-/* $Id: brazilian_portuguese-utf-8.inc.php 10243 2007-04-02 16:55:39Z lem9 $ */
+/* $Id: brazilian_portuguese-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * translated by: 
@@ -198,7 +198,6 @@ $strDatabase = 'Banco de Dados';
 $strDatabaseEmpty = 'O nome do Banco de Dados está em branco!'; 
 $strDatabaseExportOptions = 'Opções de exportação do Banco de Dados'; 
 $strDatabaseHasBeenDropped = 'Banco de Dados %s foi eliminado.'; 
-$strDatabaseNoTable = 'Esse Banco de Dados não possui tabelas!'; 
 $strDatabases = 'Banco de Dados'; 
 $strDatabasesDropped = 'Banco de Dados %s foi eliminado com sucesso!'; 
 $strDatabasesStatsDisable = 'Disabilitar estatísticas'; 
@@ -426,7 +425,6 @@ $strKnownExternalBug = 'A funcionalidade %s é afetada por um bug conhecido, vej
 $strKorean = 'Coreano'; 
 
 $strLandscape = 'Paisagem'; 
-$strLanguageFileNotFound = 'Arquivo da linguagem "%1$s" não encontrado.';
 $strLanguage = 'Linguagem';
 $strLanguageUnknown = 'Linguagem desconhecida: %1$s.';
 $strLatchedPages = 'Páginas trancadas';
@@ -823,7 +821,7 @@ $strShowStatusKey_readsDescr = 'O número de leituras físicas de um bloco chave
 $strShowStatusKey_write_requestsDescr = 'O número de requisições para escrever um bloco chave para o cache.';
 $strShowStatusKey_writesDescr = 'O número de escritas físicas para um bloco chave para o disco.';
 $strShowStatusLast_query_costDescr = 'O custo total da última consulta compilada como computado pelo otimizador de consultas. Útil para comparar o custo de diferentes planos de consulta para a mesma consulta. O valor padrão 0 significa que nenhuma consulta foi compilada ainda.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'O número de linhas esperando para serem escritas na fila de INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'O número de linhas esperando para serem escritas na fila de INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'O número de tabelas que devem estar abertas. Se aberta, as tabelas são grandes, o valor do cache de suas tabelas é provavelmente muito pequeno.';
 $strShowStatusOpen_filesDescr = 'O número de arquivos que estão abertos.';
 $strShowStatusOpen_streamsDescr = 'O número de streams que estão abertos (usados principalmente para log).';
@@ -1032,4 +1030,5 @@ $strYes = 'Sim';
 $strZeroRemovesTheLimit = 'Nota: Ajustar essa opção para 0 (zero) remove os limites.'; 
 $strZip = '"compactado com zip"'; 
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

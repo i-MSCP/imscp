@@ -1,5 +1,5 @@
 <?php
-/* $Id: server_databases.php 9422 2006-09-20 11:15:56Z cybot_tm $ */
+/* $Id: server_databases.php 10421 2007-06-04 17:03:26Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -374,10 +374,12 @@ unset($databases_count);
 /**
  * Create new database.
  */
-echo '<ul><li id="li_create_database">' . "\n";
-require './libraries/display_create_database.lib.php';
-echo '    </li>' . "\n";
-echo '</ul>' . "\n";
+if ($cfg['ShowCreateDb']) {
+    echo '<ul><li id="li_create_database">' . "\n";
+    require './libraries/display_create_database.lib.php';
+    echo '    </li>' . "\n";
+    echo '</ul>' . "\n";
+}
 
 /**
  * Sends the footer

@@ -1,5 +1,5 @@
 <?php
-/* $Id: db_qbe.php 9602 2006-10-25 12:25:01Z nijel $ */
+/* $Id: db_qbe.php 10380 2007-05-12 09:56:36Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -100,6 +100,12 @@ if (!empty($TableList)) {
  */
 $tbl_result     = PMA_DBI_query('SHOW TABLES FROM ' . PMA_backquote($db) . ';', null, PMA_DBI_QUERY_STORE);
 $tbl_result_cnt = PMA_DBI_num_rows($tbl_result);
+if (0 == $tbl_result_cnt) {
+    echo '<div class="warning">' . $strNoTablesFound . '</div>';
+    require_once './libraries/footer.inc.php';
+    exit;
+}
+
 $i              = 0;
 $k              = 0;
 

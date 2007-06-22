@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 10305 2007-04-19 17:45:22Z lem9 $
+ * @version $Id: tbl_replace.php 10355 2007-05-08 18:16:08Z cybot_tm $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -309,9 +309,7 @@ foreach ($query as $single_query) {
     } else {
         $result = PMA_DBI_query($single_query);
     }
-    if (isset($GLOBALS['warning'])) {
-        $warning_message .= $GLOBALS['warning'] . '[br]';
-    }
+    
     if (! $result) {
         $message .= PMA_DBI_getError();
     } else {
@@ -331,6 +329,12 @@ foreach ($query as $single_query) {
         }
         PMA_DBI_free_result($result);
     } // end if
+
+    foreach (PMA_DBI_get_warnings() as $warning) {
+        $warning_message .= $warning['Level'] . ': #' . $warning['Code'] 
+            . ' ' . $warning['Message'] . '[br]';
+    }
+    
     unset($result);
 }
 unset($single_query, $query);

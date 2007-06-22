@@ -1,5 +1,5 @@
 <?php
-/* $Id: polish-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: polish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -184,7 +184,6 @@ $strDatabase = 'Baza danych';
 $strDatabaseEmpty = 'Nazwa bazy danych jest pusta!';
 $strDatabaseExportOptions = 'Opcje eksportu bazy danych';
 $strDatabaseHasBeenDropped = 'Baza danych %s została usunięta.';
-$strDatabaseNoTable = 'Ta baza danych nie zawiera żadnej tabeli!';
 $strDatabases = 'Bazy danych';
 $strDatabasesDropped = '%s baz danych zostało pomyślnie usuniętych.';
 $strDatabasesStatsDisable = 'Wyłącz statystyki';
@@ -391,7 +390,6 @@ $strKill = 'Unicestwij';
 $strKorean = 'Koreański';
 
 $strLandscape = 'Orientacja pozioma';
-$strLanguageFileNotFound = 'Nie znaleziono pliku językowego "%1$s".';
 $strLanguage = 'Język';
 $strLanguageUnknown = 'Nieznany język: %1$s.';
 $strLatchedPages = 'Stron zatrzaśniętych';
@@ -775,7 +773,7 @@ $strShowStatusKey_readsDescr = 'Liczba fizycznych odczytów bloków indeksów z 
 $strShowStatusKey_write_requestsDescr = 'Liczba żądań zapisów bloków indeksów to bufora podręcznego.';
 $strShowStatusKey_writesDescr = 'Liczba fizycznych zapisów bloków indeksów na dysk.';
 $strShowStatusLast_query_costDescr = 'Całkowity koszta ostatnio skompilowanego zapytania, wyliczony przez optymalizator zapytań. Przydatny do porównań kosztów różnych planów wykonania tego samego zapytania. Domyślna wartość 0 oznacza, że jeszcze żadne zapytanie nie zostało skompilowane.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Liczba rekordów oczekujących na zapisanie w kolejkach INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Liczba rekordów oczekujących na zapisanie w kolejkach INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Liczba kiedykolwiek otwartych tabel. Jeśli ta wartość jest duża, prawdopodobnie wielkość pamięci podręcznej tabel jest zbyt mała.';
 $strShowStatusOpen_filesDescr = 'Liczba otwartych plików.';
 $strShowStatusOpen_streamsDescr = 'Liczba otwartych strumieni (używanych głownie do rejestracji w dzienniku).';
@@ -1022,4 +1020,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

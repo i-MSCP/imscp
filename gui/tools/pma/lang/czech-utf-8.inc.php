@@ -1,5 +1,5 @@
 <?php
-/* $Id: czech-utf-8.inc.php 9857 2007-01-22 15:24:43Z nijel $ */
+/* $Id: czech-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * Czech language file by
@@ -194,7 +194,6 @@ $strDatabase = 'Databáze';
 $strDatabaseEmpty = 'Jméno databáze je prázdné!';
 $strDatabaseExportOptions = 'Nastavení exportu databází';
 $strDatabaseHasBeenDropped = 'Databáze %s byla zrušena.';
-$strDatabaseNoTable = 'Tato databáze neobsahuje žádné tabulky!';
 $strDatabases = 'Databáze';
 $strDatabasesDropped = '%s databáze byla úspěšně zrušena.';
 $strDatabasesStatsDisable = 'Skrýt podrobnosti';
@@ -422,7 +421,6 @@ $strKnownExternalBug = 'Funkčnost %s je omezena známou chybou, viz %s.';
 $strKorean = 'Korejština';
 
 $strLandscape = 'Na šířku';
-$strLanguageFileNotFound = 'Jazykový soubor "%1$s" nebyl nalezen.';
 $strLanguage = 'Jazyk';
 $strLanguageUnknown = 'Neznámý jazyk: %1$s.';
 $strLatchedPages = 'Zamčených stránek';
@@ -1028,4 +1026,5 @@ $strYes = 'Ano';
 $strZeroRemovesTheLimit = 'Poznámka: Nastavení těchto parametrů na 0 (nulu) odstraní omezení.';
 $strZip = '&bdquo;zazipováno&ldquo;';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

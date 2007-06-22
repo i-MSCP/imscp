@@ -1,5 +1,5 @@
 <?php
-/* $Id: finnish-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: finnish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /*
  * Translated by Jouni Kähkönen, <address withdrawn>
@@ -196,7 +196,6 @@ $strDanish = 'Tanskalainen';
 $strDatabaseEmpty = 'Tietokannan nimi on tyhjä!';
 $strDatabaseExportOptions = 'Tietokannan tulostusvalinnat';
 $strDatabaseHasBeenDropped = 'Tietokanta %s on pudotettu.';
-$strDatabaseNoTable = 'Tämä tietokanta ei sisällä yhtään taulua!';
 $strDatabasesDropped = '%s tietokantaa pudotettiin onnistuneesti.';
 $strDatabasesStatsDisable = 'Poista tilastot käytöstä';
 $strDatabasesStatsEnable = 'Ota tilastot käyttöön';
@@ -425,7 +424,6 @@ $strKnownExternalBug = 'Toimintoon %s vaikuttaa tunnettu vika, katso %s';
 $strKorean = 'Korealainen';
 
 $strLandscape = 'Landscape';
-$strLanguageFileNotFound = 'Kielitiedostoa "%1$s" ei löydy.';
 $strLanguage = 'Kieli';
 $strLanguageUnknown = 'Tuntematon kieli: %1$s.';
 $strLatchedPages = "Lukitut sivut";
@@ -822,7 +820,7 @@ $strShowStatusKey_readsDescr = 'Kertoo, kuinka monta kertaa levyltä on fyysises
 $strShowStatusKey_write_requestsDescr = 'Kertoo, kuinka monta kertaa välimuistiin on kirjoitettu avainlohko.';
 $strShowStatusKey_writesDescr = 'Kertoo, kuinka monta kertaa levylle on fyysisesti kirjoitettu avainlohko.';
 $strShowStatusLast_query_costDescr = 'Viimeksi kootun (compiled) kyselyn kokonaiskulut kyselynoptimoija laskemana. Hyödyllinen suunniteltaessa erilaisia kyselyvaihtoehtoja samaa kyselyä varten. Oletusarvo 0 tarkoittaa, että yhtään kyselyä ei ole vielä koottu.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Niiden rivien määrä, joita odotetaan kirjoitettavan INSERT DELAY -jonoissa.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Niiden rivien määrä, joita odotetaan kirjoitettavan INSERT DELAYED -jonoissa.';
 $strShowStatusOpened_tablesDescr = 'Avattujen taulujen määrä. Jos määrä on suuri, tauluvälimuistin arvo saattaa olla liian alhainen.';
 $strShowStatusOpen_filesDescr = 'Avoinna olevien tiedostojen määrä.';
 $strShowStatusOpen_streamsDescr = 'Avoinna olevien voiden määrä (käytetään enimmäkseen kirjausta varten).';
@@ -1031,4 +1029,5 @@ $strYes = 'Kyllä';
 $strZeroRemovesTheLimit = 'Huom: Näiden valintojen asettaminen nollaksi (0) poistaa rajoituksen.';
 $strZip = '"zip-pakattu"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

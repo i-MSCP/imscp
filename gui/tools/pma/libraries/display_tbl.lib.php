@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php 10235 2007-03-31 13:07:59Z lem9 $ */
+/* $Id: display_tbl.lib.php 10415 2007-05-28 16:48:39Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';
@@ -98,7 +98,7 @@ function PMA_setDisplayMode(&$the_disp_mode, &$the_total)
             $do_display['nav_bar']   = (string) '0';
             $do_display['ins_row']   = (string) '0';
             $do_display['bkm_form']  = (string) '1';
-            if ($GLOBALS['is_analyse']) {
+            if ($GLOBALS['is_maint']) {
                 $do_display['text_btn']  = (string) '1';
             } else {
                 $do_display['text_btn']  = (string) '0';
@@ -1724,9 +1724,6 @@ function PMA_displayTable(&$dt_result, &$the_disp_mode, $analyzed_sql)
     //     displayed
     $total      = '';
     $is_display = PMA_setDisplayMode($the_disp_mode, $total);
-    if ($total == '') {
-        unset($total);
-    }
 
     // 1.2 Defines offsets for the next and previous pages
     if ($is_display['nav_bar'] == '1') {
@@ -1832,12 +1829,12 @@ function PMA_displayTable(&$dt_result, &$the_disp_mode, $analyzed_sql)
     $url_query='';
     echo '<tbody>' . "\n";
     PMA_displayTableBody($dt_result, $is_display, $map, $analyzed_sql);
-    echo '</tbody>' . "\n";
     // vertical output case
     if ($disp_direction == 'vertical') {
         PMA_displayVerticalTable();
     } // end if
     unset($vertical_display);
+    echo '</tbody>' . "\n";
     ?>
 </table>
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: italian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: italian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * translated by: Pietro Danesi <danone at users.sourceforge.net>  2002-03-29
@@ -190,7 +190,6 @@ $strDatabase = 'Database';
 $strDatabaseEmpty = 'Il nome del DataBase è vuoto!';
 $strDatabaseExportOptions = 'Opzioni di esportazione del database';
 $strDatabaseHasBeenDropped = 'Il Database %s è stato eliminato.';
-$strDatabaseNoTable = 'Questo database non contiene tabelle!';
 $strDatabases = 'Database';
 $strDatabasesDropped = '%s databases sono stati cancellati correttamente.';
 $strDatabasesStatsDisable = 'Disabilita le Statistiche';
@@ -397,7 +396,6 @@ $strKill = 'Rimuovi';
 $strKorean = 'Coreano';
 
 $strLandscape = 'Orizzontale';
-$strLanguageFileNotFound = 'File di lingua "%1$s" non trovato.';
 $strLanguage = 'Lingua';
 $strLanguageUnknown = 'Lingua non conosciuta : %1$s.';
 $strLatchedPages = 'Latched pages';
@@ -781,7 +779,7 @@ $strShowStatusKey_readsDescr = 'Il numero di letture fisiche dal disco di un blo
 $strShowStatusKey_write_requestsDescr = 'Il numero di richieste per scrivere una blocco chiave nella cache.';
 $strShowStatusKey_writesDescr = 'Il numero di scritture fisiche di un blocco chiave sul disco.';
 $strShowStatusLast_query_costDescr = 'Il costo totale dell\'ultima query compilata così come computato dall\'ottimizzatore delle query. Utile per comparare il costo di differenti query per la stessa operazione di query. Il valore di default è 0, che significa che nessuna query è stata ancora compilata.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'In numero di righe in attesa di essere scritte nella coda INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'In numero di righe in attesa di essere scritte nella coda INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Il numero di tabelle che sono state aperte. Se il valore opened_tables è grande, probabilmente il valore di table cache è troppo piccolo.';
 $strShowStatusOpen_filesDescr = 'Il numero di files che sono aperti.';
 $strShowStatusOpen_streamsDescr = 'il numero di stream che sono aperti (usato principalmente per il logging).';
@@ -1028,4 +1026,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

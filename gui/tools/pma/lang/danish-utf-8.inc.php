@@ -1,5 +1,5 @@
 <?php
-/* $Id: danish-utf-8.inc.php 10258 2007-04-07 15:27:37Z lem9 $ */ /* danish - Dansk v 2.162 (based on english 2.159) 2006/09/25 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
+/* $Id: danish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */ /* danish - Dansk v 2.162 (based on english 2.159) 2006/09/25 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -194,7 +194,6 @@ $strDatabase = 'Database';
 $strDatabaseEmpty = 'Databasenavnet er tomt!';
 $strDatabaseExportOptions = 'Database eksportindstillinger';
 $strDatabaseHasBeenDropped = 'Database %s er slettet.';
-$strDatabaseNoTable = 'Denne database indeholder ikke nogen tabel!';
 $strDatabases = 'Databaser';
 $strDatabasesDropped = '%s databaser er blevet droppet korrekt.';
 $strDatabasesStats = 'Databasestatistik';
@@ -422,7 +421,6 @@ $strKnownExternalBug = 'Funktionaliteten af %s er påvirket af en kendt fejl, se
 $strKorean = 'Koreansk';
 
 $strLandscape = 'Liggende';
-$strLanguageFileNotFound = 'Sprogfil \"%1$s\" ikke fundet.';
 $strLanguage = 'Sprog';
 $strLanguageUnknown = 'Ukendt sprog: %1$s.';
 $strLatchedPages = 'Eksklusivt låste (latched) sider';
@@ -819,7 +817,7 @@ $strShowStatusKey_readsDescr = 'Antallet af fysiske læsninger af en nøgleblok 
 $strShowStatusKey_write_requestsDescr = 'Antallet af anmodninger om at skrive en nøgleblok til mellemlageret.';
 $strShowStatusKey_writesDescr = 'Antallet af fysiske skrivninger af en nøgleblok til disk.';
 $strShowStatusLast_query_costDescr = 'Totale omkostninger for den seneste kompilerede forespørgsel som beregnet af forespørgsels-optimeringsrutinen. Brugbart til at sammenligne omkostninger på forskellige forespørgselsplaner for den samme forespørgsel. En standardværdi på 0 betyder at der ikke er kompileret nogen forespørgsler endnu.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Antallet af rækker der venter på at blive skrevet i INSERT DELAY køer.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Antallet af rækker der venter på at blive skrevet i INSERT DELAYED køer.';
 $strShowStatusOpened_tablesDescr = 'Antallet af tabeller der er blevet åbnet. Hvis åbnede tabeller er stor, er dit tabelmellemlager sandsynligvis for lille.';
 $strShowStatusOpen_filesDescr = 'Antallet af filer der er åbne.';
 $strShowStatusOpen_streamsDescr = 'Antallet af streams der er åbne (bruges hovedsageligt til logning).';
@@ -1028,4 +1026,5 @@ $strYes = 'Ja';
 $strZeroRemovesTheLimit = 'Bemærk: Indstilling af disse værdier til 0 (nul) fjerner begrænsningen.';
 $strZip = '"zippet"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

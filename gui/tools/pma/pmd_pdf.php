@@ -1,5 +1,5 @@
 <?php
-/* $Id: pmd_pdf.php 9929 2007-02-06 09:56:31Z cybot_tm $ */
+/* $Id: pmd_pdf.php 10416 2007-05-30 16:55:18Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 include_once 'pmd_common.php';
@@ -53,7 +53,7 @@ if (isset($scale)) {
 <body>
 <br>
 <div style="text-align:center; font-weight:bold;">
-  <form name="form1" method="post" action="pmd_pdf.php?db=<?php echo $db ?>&token=<?php echo $token ?>">
+  <form name="form1" method="post" action="pmd_pdf.php?server=<?php echo $server; ?>&db=<?php echo $db; ?>&token=<?php echo $token; ?>">
     <p><?php echo $strExportImportToScale; ?>:
       <select name="scale">
         <option value="1">1:1</option>

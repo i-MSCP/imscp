@@ -1,5 +1,5 @@
 <?php
-/* $Id: catalan-utf-8.inc.php 9879 2007-01-29 17:36:33Z lem9 $ */
+/* $Id: catalan-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -188,7 +188,6 @@ $strDatabase = 'Base de dades';
 $strDatabaseEmpty = 'El nom de la base de dades és buit!';
 $strDatabaseExportOptions = 'Opcions d\'exportació de Bases de Dades';
 $strDatabaseHasBeenDropped = 'La Base de Dades %s s\'ha eliminat.';
-$strDatabaseNoTable = 'Aquesta base de dades no té taules!';
 $strDatabases = 'bases de dades';
 $strDatabasesDropped = '%s Bases de dades s\'han esborrat correctament.';
 $strDatabasesStatsDisable = 'Desactiva Estadístiques';
@@ -416,7 +415,6 @@ $strKnownExternalBug = 'La funcionalitat %s es veu afectada per un error conegut
 $strKorean = 'Coreà';
 
 $strLandscape = 'Horitzontal';
-$strLanguageFileNotFound = 'Arxiu d\'idioma "%1$s" no trobat.';
 $strLanguage = 'Idioma';
 $strLanguageUnknown = 'Idioma desconegut: %1$s.';
 $strLatchedPages = 'Pàgines inalterables';
@@ -813,7 +811,7 @@ $strShowStatusKey_readsDescr = 'El nombre de lectures físiques d\'un bloc de cl
 $strShowStatusKey_write_requestsDescr = 'El nombre de peticions d\'escriptura d\'un bloc de clau a la memòria cau.';
 $strShowStatusKey_writesDescr = 'El nombre d\'escriptures físiques d\'un bloc de clau a disc.';
 $strShowStatusLast_query_costDescr = 'El cost total de la darrera consulta compilada tal com el valora l\'optimitzador de consultes. És útil per comparar el cost de diferents plans de consulta per a la mateixa consulta. El valor 0 vol dr que encara no s\'ha compilat cap consulta.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'El nombre de files esperant a ser escrites en cues INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'El nombre de files esperant a ser escrites en cues INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'El nombre de taules que han estat obertes. Si el nombre de taules obertes és gran, probablement el valor de memòria cau de taula és massa petit.';
 $strShowStatusOpen_filesDescr = 'El nombre d\'arxius que estàn oberts.';
 $strShowStatusOpen_streamsDescr = 'El nombre de fluxes que estàn oberts (usats principalment per a registre).';
@@ -1022,4 +1020,5 @@ $strYes = 'Si';
 $strZeroRemovesTheLimit = 'Nota: Es treu el limit establint aquestes opcions a 0 (zero).';
 $strZip = '"comprimit amb zip"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

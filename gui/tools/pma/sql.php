@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 9768 2006-11-29 11:04:16Z lem9 $ */
+/* $Id: sql.php 10365 2007-05-09 12:55:29Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
@@ -654,6 +654,10 @@ if ($num_rows < 1 || $is_affected) {
         $active_page = $goto;
         require './' . $goto;
     } else {
+        // avoid a redirect loop when last record was deleted
+        if ('sql.php' == $cfg['DefaultTabTable']) {
+            $goto = str_replace('sql.php','tbl_structure.php',$goto);
+        }
         PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . str_replace('&amp;', '&', $goto) . '&message=' . urlencode($message));
     } // end else
     exit();

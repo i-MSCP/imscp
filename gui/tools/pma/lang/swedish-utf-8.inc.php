@@ -1,5 +1,5 @@
 <?php
-/* $Id: swedish-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: swedish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /*
  * Translated by Björn T. Hallberg <bjornth at users.sourceforge.net>
@@ -193,7 +193,6 @@ $strDatabase = 'Databas';
 $strDatabaseEmpty = 'Databasens namn är tomt!';
 $strDatabaseExportOptions = 'Exportalternativ för databas';
 $strDatabaseHasBeenDropped = 'Databasen %s har tagits bort.';
-$strDatabaseNoTable = 'Denna databas innehåller ingen tabell!';
 $strDatabases = 'Databaser';
 $strDatabasesDropped = '%s databaser har tagits bort.';
 $strDatabasesStats = 'Databas-statistik';
@@ -421,7 +420,6 @@ $strKnownExternalBug = 'Funktionaliteten för %s påverkas av en känd bugg, se 
 $strKorean = 'Koreansk';
 
 $strLandscape = 'Liggande';
-$strLanguageFileNotFound = 'Språkfil "%1$s" hittades inte.';
 $strLanguage = 'Språk';
 $strLanguageUnknown = 'Okänt språk: %1$s.';
 $strLatchedPages = 'Låsta sidor';
@@ -1027,4 +1025,5 @@ $strYes = 'Ja';
 $strZeroRemovesTheLimit = 'Anm: Genom att sätta dessa alternativ till 0 (noll) tas begränsningarna bort.';
 $strZip = '"zippad"';
 
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

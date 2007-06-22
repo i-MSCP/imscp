@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_traditional-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: chinese_traditional-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * Last translation by: Siu Sun <siusun@best-view.net>
@@ -186,7 +186,6 @@ $strDatabase = '資料庫';
 $strDatabaseEmpty = '資料庫名稱並未輸入!!';
 $strDatabaseExportOptions = '資料庫輸出選項';
 $strDatabaseHasBeenDropped = '資料庫 %s 已被刪除';
-$strDatabaseNoTable = '這資料庫沒有資料表!';
 $strDatabases = '資料庫';
 $strDatabasesDropped = '%s 個資料庫已成功刪除.';
 $strDatabasesStats = '資料庫統計';
@@ -384,7 +383,6 @@ $strKill = 'Kill'; //should expressed in English
 $strKorean = '韓語';
 
 $strLandscape = '橫向';
-$strLanguageFileNotFound = '找不到語言檔案 "%1$s".';
 $strLanguageUnknown = '不知名語言: %1$s.';
 $strLatchedPages = '鎖上頁';
 $strLaTeX = 'LaTeX';  // use eng
@@ -921,7 +919,7 @@ $strShowStatusKey_readsDescr = 'The number of physical reads of a key block from
 $strShowStatusKey_write_requestsDescr = 'The number of requests to write a key block to the cache.';  //to translate
 $strShowStatusKey_writesDescr = 'The number of physical writes of a key block to disk.';  //to translate
 $strShowStatusLast_query_costDescr = 'The total cost of the last compiled query as computed by the query optimizer. Useful for comparing the cost of different query plans for the same query. The default value of 0 means that no query has been compiled yet.';  //to translate
-$strShowStatusNot_flushed_delayed_rowsDescr = 'The number of rows waiting to be written in INSERT DELAY queues.';  //to translate
+$strShowStatusNot_flushed_delayed_rowsDescr = 'The number of rows waiting to be written in INSERT DELAYED queues.';  //to translate
 $strShowStatusOpen_filesDescr = 'The number of files that are open.';  //to translate
 $strShowStatusOpen_streamsDescr = 'The number of streams that are open (used mainly for logging).';  //to translate
 $strShowStatusOpen_tablesDescr = 'The number of tables that are open.';  //to translate
@@ -1033,4 +1031,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

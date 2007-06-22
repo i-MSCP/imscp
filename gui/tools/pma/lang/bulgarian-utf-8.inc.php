@@ -1,5 +1,5 @@
 <?php
-/* $Id: bulgarian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: bulgarian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  * Translated by Stanislav Yordanov <stanprog at stanprog.com>
@@ -169,7 +169,6 @@ $strDatabase = 'БД';
 $strDatabaseEmpty = 'Името на базата от данни е празно!';
 $strDatabaseExportOptions = 'Опции за експортиране на база от данни';
 $strDatabaseHasBeenDropped = 'Базата данни %s беше изтрита.';
-$strDatabaseNoTable = 'Базата данни не съдържа таблица!';
 $strDatabasesDropped = '%s бази от данни бяха изтрити успешно.';
 $strDatabasesStatsDisable = 'Забрани статистика';
 $strDatabasesStatsEnable = 'Разрешаване на статистика';
@@ -349,7 +348,6 @@ $strKill = 'СТОП';
 $strKorean = 'Корейски';
 
 $strLandscape = 'Пейзажно';
-$strLanguageFileNotFound = 'Езиковият файл "%1$s" не е намерен.';
 $strLanguage = 'Език';
 $strLatexCaption = 'Заглавие на таблицата';
 $strLatexContent = 'Съдържание на таблица __TABLE__';
@@ -952,7 +950,7 @@ $strShowStatusKey_readsDescr = 'The number of physical reads of a key block from
 $strShowStatusKey_write_requestsDescr = 'The number of requests to write a key block to the cache.';  //to translate
 $strShowStatusKey_writesDescr = 'The number of physical writes of a key block to disk.';  //to translate
 $strShowStatusLast_query_costDescr = 'The total cost of the last compiled query as computed by the query optimizer. Useful for comparing the cost of different query plans for the same query. The default value of 0 means that no query has been compiled yet.';  //to translate
-$strShowStatusNot_flushed_delayed_rowsDescr = 'The number of rows waiting to be written in INSERT DELAY queues.';  //to translate
+$strShowStatusNot_flushed_delayed_rowsDescr = 'The number of rows waiting to be written in INSERT DELAYED queues.';  //to translate
 $strShowStatusOpened_tablesDescr = 'The number of tables that have been opened. If opened tables is big, your table cache value is probably too small.';  //to translate
 $strShowStatusQcache_free_blocksDescr = 'The number of free memory blocks in query cache.';  //to translate
 $strShowStatusQcache_free_memoryDescr = 'The amount of free memory for query cache.';  //to translate
@@ -1049,4 +1047,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

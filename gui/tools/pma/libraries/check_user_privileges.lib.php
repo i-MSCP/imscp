@@ -1,5 +1,5 @@
 <?php
-/* $Id: check_user_privileges.lib.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
+/* $Id: check_user_privileges.lib.php 10405 2007-05-19 18:08:38Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // Get user's global privileges and some db-specific privileges
@@ -28,7 +28,11 @@ function PMA_analyseShowGrant($rs_usr, &$is_create_db_priv, &$db_to_create, &$is
         if ($show_grants_str == 'RELOAD') {
             $is_reload_priv = true;
         }
-        if (($show_grants_str == 'ALL') || ($show_grants_str == 'ALL PRIVILEGES') || ($show_grants_str == 'CREATE') || strpos($show_grants_str, 'CREATE')) {
+        /**
+         * @todo if we find CREATE VIEW but not CREATE, do not offer  
+         * the create database dialog box
+         */
+        if (($show_grants_str == 'ALL') || ($show_grants_str == 'ALL PRIVILEGES') || ($show_grants_str == 'CREATE') || strpos($show_grants_str, 'CREATE,') !== false) {
             if ($show_grants_dbname == '*') {
                 // a global CREATE privilege
                 $is_create_db_priv = true;

@@ -1,5 +1,5 @@
 <?php
-/* $Id: Table.class.php 9856 2007-01-21 13:13:42Z lem9 $ */
+/* $Id: Table.class.php 10401 2007-05-17 21:57:15Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 class PMA_Table {
@@ -466,7 +466,7 @@ class PMA_Table {
     {
         $last_id = -1;
 
-        if ($GLOBALS['cfgRelation'][$work]) {
+        if (isset($GLOBALS['cfgRelation']) && $GLOBALS['cfgRelation'][$work]) {
             $select_parts = array();
             $row_fields = array();
             foreach ($get_fields as $get_field) {

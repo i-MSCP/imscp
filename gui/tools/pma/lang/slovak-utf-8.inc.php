@@ -1,5 +1,5 @@
 <?php
-/* $Id: slovak-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: slovak-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /* By: lubos klokner <erkac@vault-tec.sk> */
 /* and Ivan Kuriscak <shylauda69@yahoo.com>
@@ -188,7 +188,6 @@ $strDatabase = 'Databáza';
 $strDatabaseEmpty = 'Meno databázy je prázdne!';
 $strDatabaseExportOptions = 'Nastavenia exportu databáz';
 $strDatabaseHasBeenDropped = 'Databáza %s bola zmazaná.';
-$strDatabaseNoTable = 'Táto databáza neobsahuje žiadne tabuľky!';
 $strDatabases = 'Databázy';
 $strDatabasesDropped = 'Úspešne zrušených databáz: %s.';
 $strDatabasesStatsDisable = 'Skryť štatistiky';
@@ -394,7 +393,6 @@ $strKill = 'Zabiť';
 $strKorean = 'Kórejčina';
 
 $strLandscape = 'Na šírku';
-$strLanguageFileNotFound = 'Jazykový súbor "%1$s" nebol nájdený.';
 $strLanguageUnknown = 'Neznámy jazyk: %1$s.';
 $strLatchedPages = 'Uzavretých stránok';
 $strLatexCaption = 'Nadpis tabuľky';
@@ -775,7 +773,7 @@ $strShowStatusKey_readsDescr = 'Počet načítaní kľúčového bloku priamo z 
 $strShowStatusKey_write_requestsDescr = 'Počet požiadavkov na zápis kľúčového bloku do vyrovnávacej pamäti.';
 $strShowStatusKey_writesDescr = 'Počet fyzických zápisov kľúčového bloku na disk.';
 $strShowStatusLast_query_costDescr = 'Celkové náklady na posledný kompilovaný príkaz, vypočítané optimizérom príkazov. Užitočné na porovnávanie nákladov na rôzne príkazy pre tú istú požiadavku. Prednastavená hodnota 0 znamená, že doposiaľ neboli skompilované žiadne príkazy.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Počet riadkov čakajúcich na zápis cez INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Počet riadkov čakajúcich na zápis cez INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Počet doposiaľ otvorených tabuliek. Ak je táto hodnota príliš vysoká, pravdepodobne je vyrovnávacia pamäť pre tabuľky príliš malá.';
 $strShowStatusOpen_filesDescr = 'Počet otvorených súborov.';
 $strShowStatusOpen_streamsDescr = 'Počet otvorených streamov (väčšinou využívané na logovanie).';
@@ -1029,4 +1027,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

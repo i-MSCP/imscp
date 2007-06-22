@@ -1,5 +1,5 @@
 <?php
-/* $Id: session.inc.php 9922 2007-02-05 12:37:18Z cybot_tm $ */
+/* $Id: session.inc.php 10422 2007-06-05 16:32:49Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * session handling
@@ -23,7 +23,7 @@ if (!@function_exists('session_name')) {
     require_once('./libraries/select_lang.lib.php');
     // Displays the error message
     // (do not use &amp; for parameters sent by header)
-    header('Location: error.php'
+    header('Location: ' . (defined('PMA_SETUP') ? '../' : '') . 'error.php'
             . '?lang='  . urlencode($available_languages[$lang][2])
             . '&dir='   . urlencode($text_dir)
             . '&type='  . urlencode($strError)
@@ -104,13 +104,14 @@ if (! isset($_COOKIE[$session_name])) {
     $session_error = ob_get_contents();
     ob_end_clean();
     if ($r !== true || ! empty($session_error)) {
+        setcookie($session_name, '', 1);
         $cfg = array('DefaultLang'           => 'en-iso-8859-1',
                      'AllowAnywhereRecoding' => false);
         // Loads the language file
         require_once './libraries/select_lang.lib.php';
         // Displays the error message
         // (do not use &amp; for parameters sent by header)
-        header('Location: error.php'
+        header('Location: ' . (defined('PMA_SETUP') ? '../' : '') . 'error.php'
                 . '?lang='  . urlencode($available_languages[$lang][2])
                 . '&dir='   . urlencode($text_dir)
                 . '&type='  . urlencode($strError)

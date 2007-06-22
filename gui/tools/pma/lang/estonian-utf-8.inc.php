@@ -1,5 +1,5 @@
 <?php
-/* $Id: estonian-utf-8.inc.php 10110 2007-03-15 21:11:38Z lem9 $ */
+/* $Id: estonian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /*
  * Translated by Marko Ellermaa, <marko.ellermaa@nlkp.net>
@@ -196,7 +196,6 @@ $strDatabase = 'Andmebaas';
 $strDatabaseEmpty = 'Andmebaasi nimi on tühi!';
 $strDatabaseExportOptions = 'Andmebaasi eksportimise seaded';
 $strDatabaseHasBeenDropped = 'Andmebaas %s kustutatud.';
-$strDatabaseNoTable = 'See andmebaas ei sisalda tabelit!';
 $strDatabases = 'Andmebaasid';
 $strDatabasesDropped = 'andmebaasid %s kustutati õnnestunult.';
 $strDatabasesStats = 'Andmebaaside statistika';
@@ -418,7 +417,6 @@ $strKnownExternalBug = 'See %s funktionaalsus on mõjutatud tuntud viga, vaata %
 $strKorean = 'Korea';
 
 $strLandscape = 'Laipilt';
-$strLanguageFileNotFound = 'Ei leia keele fail "%1$s" .';
 $strLanguage = 'Keel';  
 $strLanguageUnknown = 'Tundmatu keel: %1$s.';
 $strLatchedPages = 'Lukustatud lehed';
@@ -815,7 +813,7 @@ $strShowStatusKey_readsDescr = 'Mitu füüsilist lugemist lugeda võtme plokk ke
 $strShowStatusKey_write_requestsDescr = 'Mitu päringut et kirjutada võtme plokk vahemällu.';
 $strShowStatusKey_writesDescr = 'Mitu füüsilist kirjutamist kirjutada võtme plokk kettale.';
 $strShowStatusLast_query_costDescr = 'Viimase kompileeritud päringu arvuatud tulemus päringu optimiseerija vastu. Kasulik võrdlemaks erinevaid päringu plaane ühelt ja samalt päringult. Vaikimisi väärtus 0 tähendab et päring pole veel töödeldud.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Mitu rida on ootel INSERT DELAY päringutes.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Mitu rida on ootel INSERT DELAYED päringutes.';
 $strShowStatusOpened_tablesDescr = 'Mitu tabelit on avatud. Avatud tabeleid on palju siis sinu tabeli vahemälus kindlasti liiga väike.';
 $strShowStatusOpen_filesDescr = 'Mitu faili on avatud.';
 $strShowStatusOpen_streamsDescr = 'Mitu voogu on hetkel avatud (enamasti logimiseks).';
@@ -1034,4 +1032,5 @@ $strToggleSmallBig = 'Toggle small/big';  //to translate
 
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

@@ -1,5 +1,5 @@
 <?php
-/* $Id: belarusian_cyrillic-utf-8.inc.php 9853 2007-01-19 18:14:44Z lem9 $ */
+/* $Id: belarusian_cyrillic-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
 
 /**
  *     Translated by:
@@ -192,7 +192,6 @@ $strDatabase = 'База дадзеных';
 $strDatabaseEmpty = 'Імя базы дадзеных не пазначанае!';
 $strDatabaseExportOptions = 'Налады экспарту базы дадзеных';
 $strDatabaseHasBeenDropped = 'База дадзеных %s была выдаленая.';
-$strDatabaseNoTable = 'Гэта база дадзеных ня ўтрымлівае табліц!';
 $strDatabases = 'Базы дадзеных';
 $strDatabasesDropped = '%s базаў дадзеных былі пасьпяхова выдаленыя.';
 $strDatabasesStatsDisable = 'Адключыць статыстыку';
@@ -398,7 +397,6 @@ $strKill = 'Спыніць';
 $strKorean = 'Карэйская';
 
 $strLandscape = 'Краявід';
-$strLanguageFileNotFound = 'Моўны файл "%1$s" ня знойдзены.';
 $strLanguage = 'Мова';
 $strLanguageUnknown = 'Невядомая мова: %1$s.';
 $strLatchedPages = 'Фіксаваныя старонкі';
@@ -782,7 +780,7 @@ $strShowStatusKey_readsDescr = 'Колькасьць фізычных чытан
 $strShowStatusKey_write_requestsDescr = 'Колькасьць запытаў на запіс блёку ключоў у кэш.';
 $strShowStatusKey_writesDescr = 'Колькасьць фізычных запісаў блёку ключоў на дыск.';
 $strShowStatusLast_query_costDescr = 'Агульны кошт апошняга зкампіляванага запыту, падлічанага аптымізатарам запытаў. Карысна для параўнаньня розных спосабаў рэалізацыі аднаго запыту. Значэньне па змоўчаньні 0 азначае, што ніводны запыт яшчэ ня быў зкампіляваны.';
-$strShowStatusNot_flushed_delayed_rowsDescr = 'Колькасьць радкоў для запісу, адкладзеных запытамі INSERT DELAY.';
+$strShowStatusNot_flushed_delayed_rowsDescr = 'Колькасьць радкоў для запісу, адкладзеных запытамі INSERT DELAYED.';
 $strShowStatusOpened_tablesDescr = 'Колькасьць табліц, якія былі адкрытыя. Калі адкрытыя табліцы вялікія, значэньне кэшу табліц імаверна вельмі малое.';
 $strShowStatusOpen_filesDescr = 'Колькасьць адкрытых файлаў.';
 $strShowStatusOpen_streamsDescr = 'Колькасьць адкрытых патокаў (выкарыстоўваюцца пераважна для лагаваньня).';
@@ -1029,4 +1027,5 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>
