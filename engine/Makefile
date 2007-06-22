@@ -38,6 +38,8 @@ install:
 
 	$(CMD_INSTALL) ./ispcp_common_code.pl $(SYSTEM_ENGINE_ROOT)
 
+	$(CMD_INSTALL) ./ispcp_common_methods.pl $(SYSTEM_ENGINE_ROOT)
+
 	# keys needed for ISPCP engine;
 	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)
 
@@ -65,6 +67,8 @@ install:
 	$(CMD_INSTALL) ./setup/reset-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/vhcs2ispcp.pl $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/vhcs2ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/copy-errordocs.sh $(SYSTEM_ENGINE_ROOT)/setup
 
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr

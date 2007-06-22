@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-21 Raphael Geissert
+	- INSTALLATION:
+		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
+	- ENGINE:
+		* Separated methods from ispcp_common_code.pl in ispcp_common_methods.pl
+		* Added VHCS 2.4.7.1 to ispCP Omega migration script
+
 2007-06-20 Benedikt Heintel
 	- GUI:
 		* Reorganized input check functions

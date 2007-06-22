@@ -3,7 +3,7 @@
 use FindBin;
 
 use lib "$FindBin::Bin/../engine";
-require 'ispcp_common_code.pl';
+require 'ispcp_common_methods.pl';
 
 use strict;
 use warnings;
@@ -26,8 +26,8 @@ chop($iv);
 my ($rs, $php_file, $perl_file) = (undef, undef, undef);
 
 my %tag_hash = (
-                    '{XXXXXXXXXXXXXXKEYXXXXXXXXXXXXX}' => $key,
-                    '{XXIVXX}' =>  $iv
+                    '{KEY}' => $key,
+                    '{IV}'  => $iv
                 );
 
 # php lib;

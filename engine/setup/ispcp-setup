@@ -2881,14 +2881,18 @@ sub setup_ispcpd {
 		sys_command_rs("/usr/sbin/update-rc.d ispcp_network defaults 99 &> /tmp/ispcp-setup-services.log");
 
 	}
+        
+        if ( ! -e "/etc/init.d/vhcs2_daemon" ) {
 
-	sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-setup-services.log");
-	sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-setup-services.log");
+            sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-setup-services.log");
+            sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-setup-services.log");
+    
+            sleep(3);
+    
+            sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
+            sys_command_rs("$main::cfg{'CMD_ISPCPN'} start &> /tmp/ispcp-setup-services.log");
 
-	sleep(3);
-
-	sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
-	sys_command_rs("$main::cfg{'CMD_ISPCPN'} start &> /tmp/ispcp-setup-services.log");
+        }
 
 	$rs = del_file("/tmp/ispcp-setup-services.log");
 
