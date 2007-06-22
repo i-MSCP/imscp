@@ -34,11 +34,9 @@ use strict;
 
 use warnings;
 
-my $scriptDir = dirname(__FILE__);
+require 'ispcp_common_methods.pl';
 
-require $scriptDir . 'ispcp_common_methods.pl';
-
-require $scriptDir . '/ispcp-db-keys.pl';
+require 'ispcp-db-keys.pl';
 
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
 

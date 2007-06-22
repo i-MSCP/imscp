@@ -84,8 +84,28 @@ sub start_services {
     }
 	print STDOUT "done\n";
     
-    sys_command("/etc/init.d/ispcp_daemon start");
-    sys_command("/etc/init.d/ispcp_network start");
+    sys_command("$main::cfg{'CMD_ISPCPD'} start");
+    sys_command("$main::cfg{'CMD_ISPCPN'} start");
+    sleep(2);
+    
+    #Restart servers to make them use the newly generated config
+    sys_command("$main::cfg{'CMD_HTTPD'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_MTA'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_NAMED'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_POP'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_POP_SSL'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_IMAP'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_IMAP_SSL'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_FTPD'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_AUTHD'} restart");    
     
     return 0;
 }

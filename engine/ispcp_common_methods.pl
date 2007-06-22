@@ -1620,7 +1620,7 @@ sub encrypt_db_password {
 
     }
     
-    if ($main::db_pass_key != 32 || $main::db_pass_iv != 8) {
+    if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 
         push_el(\@main::el, 'encrypt_db_password()', 'WARNING: KEY or IV has invalid length');
 
@@ -1663,7 +1663,7 @@ sub decrypt_db_password {
 
     }
     
-    if ($main::db_pass_key != 32 || $main::db_pass_iv != 8) {
+    if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 
         push_el(\@main::el, 'decrypt_db_password()', 'WARNING: KEY or IV has invalid length');
 

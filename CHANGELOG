@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-22 Raphael Geissert
+	- ENGINE:
+		* Fixed #423: Undefined subroutine &main::dirname in ispcp_common_code.pl line 37
+		* Fixed #424: scalar being compared against integer
+	- INSTALLATION:
+		* Migration script now restarts the services
+
 2007-06-21 Raphael Geissert
 	- INSTALLATION:
 		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
