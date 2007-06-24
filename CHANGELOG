@@ -10,14 +10,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-<<<<<<< .mine
-<<<<<<< .mine
+2007-06-24 Raphael Geissert
+	- ENGINE:
+		* Fixed #425: WARNING: KEY or IV has invalid length
+	- SETUP:
+		* Fixed #428: ERROR: External command '/usr/bin/mysql --host=localhost --user=root --pass= < /tmp/db.sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr' returned '1' 
+
 2007-06-21 Benedikt Heintel
 	- GUI:
 		* PMA Version 2.10.2
 
-=======
-=======
 2007-06-22 Raphael Geissert
 	- ENGINE:
 		* Fixed #423: Undefined subroutine &main::dirname in ispcp_common_code.pl line 37
@@ -29,7 +31,6 @@ ispCP ω 1.0.0 Changelog
 		* make uninstall now also removes fastcgi.conf
 		* Renamed fastcgi.conf to fastcgi_ispcp.conf to prevent replacing existing fastcgi.conf
 
->>>>>>> .r672
 2007-06-21 Raphael Geissert
 	- SETUP:
 		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
@@ -37,7 +38,6 @@ ispCP ω 1.0.0 Changelog
 		* Separated methods from ispcp_common_code.pl in ispcp_common_methods.pl
 		* Added VHCS 2.4.7.1 to ispCP Omega migration script
 
->>>>>>> .r669
 2007-06-20 Benedikt Heintel
 	- GUI:
 		* Reorganized input check functions

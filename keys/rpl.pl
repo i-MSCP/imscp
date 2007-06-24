@@ -12,8 +12,8 @@ die ("Undefined Input Data!") if (!defined($ARGV[0]) || !defined($ARGV[1]) || !d
 
 my ($php_fname, $perl_fname, $perl_fname2) = ($ARGV[0], $ARGV[1], $ARGV[2]);
 
-my $key = gen_sys_rand_num(32);
-my $iv  = gen_sys_rand_num(8);
+my $key = gen_sys_rand_num(33);
+my $iv  = gen_sys_rand_num(9);
 
 $key =~ s/'/\\'/gi;
 $iv =~ s/'/\\'/gi;
