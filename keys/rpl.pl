@@ -1,5 +1,35 @@
 #!/usr/bin/perl
 
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# http://www.molesoftware.com
+# Copyright (c) 2006-2007 by isp Control Panel
+# http://isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ispCP ω Home Page is at:
+#
+#    http://isp-control.net
+#
+
 use FindBin;
 
 use lib "$FindBin::Bin/../engine";
@@ -12,8 +42,8 @@ die ("Undefined Input Data!") if (!defined($ARGV[0]) || !defined($ARGV[1]) || !d
 
 my ($php_fname, $perl_fname, $perl_fname2) = ($ARGV[0], $ARGV[1], $ARGV[2]);
 
-my $key = gen_sys_rand_num(33);
-my $iv  = gen_sys_rand_num(9);
+my $key = gen_sys_rand_num(32);
+my $iv  = gen_sys_rand_num(8);
 
 $key =~ s/'/\\'/gi;
 $iv =~ s/'/\\'/gi;

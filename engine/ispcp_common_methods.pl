@@ -5,7 +5,6 @@
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
 # http://isp-control.net
-# Copyright (c) 2007 by Raphael Geissert
 #
 #
 # License:
@@ -26,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP ω Home Page is at:
+# The ispCP ω Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -935,7 +934,7 @@ sub gen_sys_rand_num {
         return (-1, '');
 
     }
-    
+
     my $rs = open(F, '<', '/dev/random');
 
     if (!defined($rs)) {
@@ -943,25 +942,25 @@ sub gen_sys_rand_num {
         push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Couldn't open the pseudo-random characters generator");
 
         return (-1, '');
-    
+
     }
-    
+
     my ($i, $rdata, $rc, $rci) = (0, undef, undef, undef);
-    
-    while ($i < $len) {
+
+    while ($i <= $len) {
 
         read(F, $rc, 1);
-        
+
         $rci = ord($rc);
-        
+
         next if ($rci <= 32 || $rci >= 125 || $rci == 92 );
-        
+
         $rdata .= $rc;
         $rc = undef;
         $i++;
 
     }
-    
+
     close(F);
 
     push_el(\@main::el, 'gen_sys_rand_num()', 'Ending...');
@@ -1619,7 +1618,7 @@ sub encrypt_db_password {
         return (1, '');
 
     }
-    
+
     if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 
         push_el(\@main::el, 'encrypt_db_password()', 'WARNING: KEY or IV has invalid length');
@@ -1662,7 +1661,7 @@ sub decrypt_db_password {
         return (1, '');
 
     }
-    
+
     if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 
         push_el(\@main::el, 'decrypt_db_password()', 'WARNING: KEY or IV has invalid length');
@@ -1714,7 +1713,7 @@ sub setup_main_vars {
         my $rs = undef;
 
         ($rs, $main::db_pwd) = decrypt_db_password($main::db_pwd);
-        
+
         # Silently quit
         return 0 if ($rs != 0);
 

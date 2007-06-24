@@ -25,17 +25,15 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP ω Home Page is at:
+# The ispCP ω Home Page is at:
 #
 #    http://isp-control.net
 #
 
 use strict;
-
 use warnings;
 
 require 'ispcp_common_methods.pl';
-
 require 'ispcp-db-keys.pl';
 
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
@@ -119,26 +117,6 @@ $main::ispcp_srv_traff_el = "$main::log_dir/ispcp-srv-traff.el";
 
 $main::ispcp_dsk_quota_el = "$main::log_dir/ispcp-dsk-quota.el";
 
-
-$main::level1_license = "S2F10-144BD";
-
-$main::level1_dmn_count = 10;
-
-$main::level2_license = "37FD1-ED3DB";
-
-$main::level2_dmn_count = 30;
-
-$main::level3_license = "QDA53-HE4CC";
-
-$main::level3_dmn_count = 100;
-
-$main::level4_license = "A5F26-AC7DF";
-
-$main::level4_dmn_count = "unlimited";
-
-$main::working_license = $main::level1_license;
-
 ########################################################################
 
 return 1;
-
