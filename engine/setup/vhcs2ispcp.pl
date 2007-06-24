@@ -1,8 +1,9 @@
 #!/usr/bin/perl
 
 # VHCS 2.4.7.1 to ispCP Omega migration script
-# Copyright (c) 2007 by Raphael Geissert <atomo64@gmail.com>
-#
+# Copyright (c) 2007 by Raphael Geissert <atomo64@gmail.com> (original author)
+# Copyright (c) 2007 by isp Control Panel
+# http://isp-control.net
 #
 # License:
 #  This library is free software; you can redistribute it and/or
@@ -105,7 +106,7 @@ sub start_services {
     sleep(2);
     sys_command("$main::cfg{'CMD_FTPD'} restart");
     sleep(2);
-    sys_command("$main::cfg{'CMD_AUTHD'} restart");    
+    sys_command("$main::cfg{'CMD_AUTHD'} restart");
     
     return 0;
 }
@@ -193,8 +194,6 @@ sub install_language {
     return 0;
 }
 
-my $rs = undef;
-
 my $welcome_message = <<MSG;
 
 \tWelcome to the VHCS 2.4.7.1 to ispCP Omega migration script.
@@ -228,12 +227,12 @@ get_conf();
 
 require $main::cfg{'ROOT_DIR'} . '/ispcp-db-keys.pl';
 
-# This time we connect to the database
-get_conf();
+# Let's connect to the database
+setup_main_vars();
 
 print STDOUT "\nVHCS2's services will now be stopped:\n";
 
-$rs = stop_services("/tmp/vhcs2-backup-all.lock");
+stop_services("/tmp/vhcs2-backup-all.lock");
 
 print STDOUT "\nVHCS2's database will now be converted:\n";
 
@@ -244,21 +243,26 @@ print STDOUT "\nInstalling default language...";
 # Now let's load the new config
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
 
-# Load new config and connect to the database as the new user
+# Load new config
 get_conf();
+
+require $main::cfg{'ROOT_DIR'} . '/ispcp-db-keys.pl';
+
+# Now we connect
+setup_main_vars();
 
 install_language();
 
 if($main::cfg{'DATABASE_NAME'} ne 'ispcp') {
 
-    print STDOUT "\nIMPORTANT: you have installed ispCP in a non-default directory";
+    print STDOUT "\nIMPORTANT: you have installed ispCP in a non-default database";
     print STDOUT "\n\tThe migration script has converted your old VHCS database";
     print STDOUT "\n\tin the new database called 'ispcp'; please rename this database";
-    print STDOUT "\n\twith the one you choose at install time: $main::cfg{'DATABASE_NAME'}\n";
+    print STDOUT "\n\twith the one you choose at ispCP install time: $main::cfg{'DATABASE_NAME'}\n";
 
 } else {
 
-    print STDOUT "\nispCP's requests manager will now be executed...";
+    print STDOUT "\nRunning ispCP's requests manager...";
 
     sys_command("$main::db{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
 
@@ -266,7 +270,7 @@ if($main::cfg{'DATABASE_NAME'} ne 'ispcp') {
 
 }
 
-print STDOUT "\nispCP's services will now be started:\n";
+print STDOUT "\nStarting ispCP's services:\n";
 
 start_services();
 

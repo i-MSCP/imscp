@@ -17,13 +17,12 @@
  *  http://opensource.org | osi@opensource.org
  *
  **/
-$include_path = realpath(dirname(__FILE__));
 
-require ($include_path.'/adodb/adodb.inc.php');
+require (INCLUDEPATH.'/adodb/adodb.inc.php');
 
-//require ($include_path.'/adodb/tohtml.inc.php');
+//require (INCLUDEPATH.'/adodb/tohtml.inc.php');
 
-require ($include_path.'/adodb/adodb-pager.inc.php');
+require (INCLUDEPATH.'/adodb/adodb-pager.inc.php');
 
 $cfg['DB_TYPE'] = $cfg['DATABASE_TYPE'];
 
@@ -34,7 +33,6 @@ $cfg['DB_USER'] = $cfg['DATABASE_USER'];
 $cfg['DB_PASS'] = decrypt_db_password($cfg['DATABASE_PASSWORD']);
 
 $cfg['DB_NAME'] = $cfg['DATABASE_NAME'];
-
 
 if ($cfg['DB_TYPE'] === 'pgsql') {
 	$sql = &ADONewConnection('postgres7');

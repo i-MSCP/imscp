@@ -30,8 +30,8 @@
  * 	@return					translated or original string
  **/
 function tr($msgid, $as_is = false) {
-    global $sql, $default_lang, $cfg;
-    static $cache;
+    global $sql, $cfg;
+    static $cache = array();
 
     $lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
     $encoding = 'UTF-8';
@@ -42,7 +42,7 @@ function tr($msgid, $as_is = false) {
         $msgstr = $msgid;
 
         if ($sql) {
-            if (!$as_is) {
+            if (!$as_is && 'encoding' != $msgid) {
                 $encoding = tr('encoding');
             }
             $msg_res = $sql->Execute("SELECT `msgstr` FROM `$lang` WHERE `msgid` = '$msgid';");
@@ -63,10 +63,13 @@ function tr($msgid, $as_is = false) {
     $cache[$lang][$msgid] = $msgstr;
 
     // Replace values
-    if (func_num_args() > 2) {
+    if (func_num_args() > 1) {
         $argv = func_get_args();
         unset($argv[0]); //msgid
-        unset($argv[1]); //as_is
+
+        if (is_bool($argv[1])) {
+            unset($argv[1]); //as_is
+        }
         $msgstr = vsprintf($msgstr, $argv);
     }
 

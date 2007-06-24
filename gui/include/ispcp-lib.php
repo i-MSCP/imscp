@@ -18,9 +18,9 @@
  *
  **/
 
-define(INCLUDEPATH, realpath(dirname(__FILE__)));
+define('INCLUDEPATH', realpath(dirname(__FILE__)));
 
-session_name("ISPCP");
+session_name('ispCP');
 
 if (!isset($_SESSION))
 	session_start();
@@ -59,15 +59,15 @@ $cfg['ROOT_TEMPLATE_PATH'] = 'themes/';
 
 $cfg['LOGIN_TEMPLATE_PATH'] = $cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'];
 
-$cfg['ADMIN_TEMPLATE_PATH'] = "../".$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/admin';
+$cfg['ADMIN_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/admin';
 
-$cfg['RESELLER_TEMPLATE_PATH'] = "../".$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/reseller';
+$cfg['RESELLER_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/reseller';
 
-$cfg['CLIENT_TEMPLATE_PATH'] = "../".$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/client';
+$cfg['CLIENT_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/client';
 
-$cfg['IPS_LOGO_PATH'] = "../themes/user_logos";
+$cfg['IPS_LOGO_PATH'] = '../themes/user_logos';
 
-$cfg['PURCHASE_TEMPLATE_PATH'] = "../".$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/orderpanel';
+$cfg['PURCHASE_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/orderpanel';
 
 $cfg['DOMAIN_ROWS_PER_PAGE'] = 10;
 
@@ -163,7 +163,7 @@ $cfg['PASSWD_STRONG'] = true;
 $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing (nope, we are not paranoid... ;) )
 
 // The virtual host file from Apache which contains our virtual host entries
-$cfg['SERVER_VHOST_FILE'] = "/etc/apache2/sites-available/ispcp.conf";
+$cfg['SERVER_VHOST_FILE'] = '/etc/apache2/sites-available/ispcp.conf';
 
 require_once(INCLUDEPATH.'/spGzip.php');
 
@@ -221,7 +221,6 @@ SQL;
 
 if(!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));
-	die();
 }
 else {
 	while($row = $res -> FetchRow()) {

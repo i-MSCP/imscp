@@ -36,7 +36,7 @@ class Config {
 
     function parseFile(){
         /* open file ... parse it and put it in $cfg_values */
-        @@$fd = fopen($this->config_file,'r');
+        @$fd = fopen($this->config_file,'r');
         if ($fd == FALSE) {
             /* ooops error */
             $this->status = "err";

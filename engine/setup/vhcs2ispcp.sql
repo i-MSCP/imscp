@@ -18,7 +18,13 @@ ALTER TABLE `domain_traffic` ADD INDEX `i_correction` ( `correction` ) ;
 
 ALTER TABLE `htaccess_groups` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 
-ALTER TABLE `htaccess_users` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci iNULL ;
+ALTER TABLE `htaccess_users` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+
+ALTER TABLE `login` ADD `ipaddr` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER TABLE `login` ADD `user_name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER TABLE `login` ADD `login_count` TINYINT( 1 ) NULL;
+
+-- Drop existing languages (they are outdated anyways)
 
 DROP TABLE IF EXISTS `lang_English`;
 DROP TABLE IF EXISTS `lang_Chinese`;
@@ -31,10 +37,6 @@ DROP TABLE IF EXISTS `lang_Portugues`;
 DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 DROP TABLE IF EXISTS `lang_French`;
-
-ALTER TABLE `login` ADD `ipaddr` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
-ALTER TABLE `login` ADD `user_name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
-ALTER TABLE `login` ADD `login_count` TINYINT( 1 ) NULL;
 
 -- Add Primary and possibly an index to login table!
 

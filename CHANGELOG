@@ -14,7 +14,10 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #425: WARNING: KEY or IV has invalid length
 	- SETUP:
-		* Fixed #428: ERROR: External command '/usr/bin/mysql --host=localhost --user=root --pass= < /tmp/db.sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr' returned '1' 
+		* Fixed #428: ERROR: External command '/usr/bin/mysql --host=localhost --user=root --pass= < /tmp/db.sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr' returned '1'
+		* Fixed #430: Error in sql query of vhcs2ispcp.sql
+	- GUI:
+		* Fixed #419: Error 500: segfault
 
 2007-06-21 Benedikt Heintel
 	- GUI:
