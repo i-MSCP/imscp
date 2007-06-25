@@ -252,7 +252,7 @@ function add_user_data ($reseller_id)
     // $street_two = escape_user_data($street_two);
     // $customer_id = escape_user_data($customer_id);
 
-  if (!ispcp_domain_check($dmn_user_name)) {
+  if (!chk_dname($dmn_user_name)) {
 //    set_page_message(tr("Wrong domain name syntax!"));
     return;
   }

@@ -39,7 +39,7 @@ function addon_domain($dmn_name)
 	$dmn_name = strtolower($dmn_name);
 	$dmn_name = get_punny($dmn_name);
 
-	if (!ispcp_domain_check($dmn_name)) {
+	if (!chk_dname($dmn_name)) {
 
         set_page_message(tr('Wrong domain name syntax!'));
 		return;

@@ -1438,6 +1438,7 @@ sub setup_sql {
 	my $tmp_dir = "$main::cfg{'GUI_ROOT_DIR'}/phptmp";
 
 	my $blowfish = gen_sys_rand_num(31);
+	$blowfish =~ s/'/\\'/gi;
 
 	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
 

@@ -121,7 +121,7 @@ if ($err_msg != '_off_') {
 	$pure_user_pass = substr($timestamp,0,6);
 	$inpass = crypt_user_pass($pure_user_pass);
 
-	if (!ispcp_domain_check($dmn_user_name)) {
+	if (!chk_dname($dmn_user_name)) {
         set_page_message(tr('Wrong domain name syntax!'));
 		unset($_SESSION['domain_ip']);
 		header('Location: orders.php');

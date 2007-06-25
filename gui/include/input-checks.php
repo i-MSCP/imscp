@@ -161,7 +161,7 @@ function chk_username($username, $num = 50) {
 		return FALSE;
 
 	// String is not to long
-	if (strlen($data) > $num)
+	if (strlen($username) > $num)
 		return FALSE;
 
     return TRUE;
@@ -528,7 +528,7 @@ function is_subdomain_of($base_domain, $subdomain, $realPath = true) {
 
     $t = explode($base_domain, $subdomain);
 
-    return (count($t) > 1 AND $t[0] === '');
+    return (count($t) > 1 && $t[0] === '');
 }
 
 ?>

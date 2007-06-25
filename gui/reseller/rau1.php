@@ -76,7 +76,7 @@ get_hp_data_list($tpl, $_SESSION['user_id']);
 
 if (isset($_POST['uaction'])) {
 
-    if(!check_user_data($tpl))
+    if(!check_user_data())
 		get_data_au1_page($tpl);
 
 }else
@@ -97,7 +97,7 @@ unset_messages();
 //
 
 // Check correction of entered user's data
-function check_user_data(&$tpl)
+function check_user_data()
 {
     global $dmn_name;			// Domain name
     global $dmn_chp;			// choosed hosting plan;
@@ -119,7 +119,7 @@ function check_user_data(&$tpl)
 	if(isset($_POST['chtpl']))
 		$dmn_pt	  = $_POST['chtpl'];
 
-    if (!ispcp_domain_check($dmn_name)) {
+    if (!chk_dname($dmn_name)) {
 
         $even_txt = tr('Wrong domain name syntax!');
 
@@ -280,7 +280,7 @@ SQL_QUERY;
 	$res = exec_query($sql, $query, array($reseller_id));
 	*/
 	if (0 !== $rs->RowCount()) { // There are data
-		while ($data = $rs->FetchRow()) {
+		while (($data = $rs->FetchRow())) {
 
 			$tpl -> assign(
             			array(

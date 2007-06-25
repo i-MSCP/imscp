@@ -280,7 +280,7 @@ function check_user_data (&$tpl) {
 
 
 	// Begin checking...
-  /*  if (!ispcp_name_check($hp_name, 200)) {
+  /*  if (!chk_username($hp_name, 200)) {
 
         $ehp_error = tr('Incorrect template name range or syntax!');
 
