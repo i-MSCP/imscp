@@ -74,7 +74,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id)
        $als_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $dmn_id);
 
 	if ($dmn_mailacc_limit != 0 &&  $mail_acc_cnt >= $dmn_mailacc_limit) {
-		set_page_message(tr('Mail accounts limit expired!'));
+		set_page_message(tr('Mail accounts limit reached!'));
 		header("Location: catchall.php");
 		die();
 	}
@@ -320,7 +320,7 @@ SQL_QUERY;
 
     	  foreach ($faray as $value) {
 	        $value = trim($value);
-        	if (chk_email($value) > 0 && $value !== '') {
+        	if (!chk_email($value) && $value !== '') {
     	      /* ERR .. strange :) not email in this line - warning */
 	          set_page_message(tr("Mail forward list error!"));
         	  return;

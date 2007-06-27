@@ -92,7 +92,7 @@ function update_ftp_account(&$sql, $ftp_acc)
                 $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
 
                 if (!is_dir($other_dir) || !is_subdomain_of($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'], $other_dir)) {
-                    set_page_message(clean_input($_POST['other_dir'])." ".tr('do not exist'));
+                    set_page_message(tr('%s do not exist', clean_input($_POST['other_dir'])));
                     return;
                 }//domain_id
 
@@ -129,7 +129,7 @@ SQL_QUERY;
                 $other_dir = $cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'].clean_input($_POST['other_dir']);
 
                 if (!is_dir($other_dir) || !is_subdomain_of($cfg['FTP_HOMEDIR']."/".$_SESSION['user_logged'], $other_dir)) {
-                    set_page_message(clean_input($_POST['other_dir'])." ".tr('does not exist'));
+                    set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])));
                     return;
                 }
             } else {

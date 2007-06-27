@@ -47,9 +47,6 @@ if (isset($_GET['id'])) {
 //
 function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available)
 {
-  if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-    header("Location: index.php");
-  }
 
   list($dmn_id,
        $dmn_name,
@@ -317,10 +314,10 @@ SQL_QUERY;
   // add user in the mysql system tables;
   //
   $new_db_name = ereg_replace("_", "\\_", $db_name);
-  $query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'localhost\' identified by ?';
-  $rs = exec_query($sql, $query, array($db_user, $user_pass));
-  $query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'%\' identified by ?';
-  $rs = exec_query($sql, $query, array($db_user, $user_pass));
+  $query = 'grant all on ?.* to ?@\'localhost\' identified by ?';
+  $rs = exec_query($sql, $query, array($new_db_name, $db_user, $user_pass));
+  $query = 'grant all on ?.* to ?@\'%\' identified by ?';
+  $rs = exec_query($sql, $query, array($new_db_name, $db_user, $user_pass));
 
   write_log($_SESSION['user_logged'].": add SQL user: ".$db_name );
   set_page_message(tr('SQL user successfully added!'));
@@ -371,10 +368,9 @@ function gen_page_post_data(&$tpl, $db_id)
 //
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no")
 {
-  header("Location: index.php");
+  user_goto('index.php');
 }
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl -> assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ISPCP - Client/Add SQL User'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -412,7 +408,7 @@ $tpl -> assign(array('TR_ADD_SQL_USER' => tr('Add SQL user'),
 					 'TR_CANCEL' => tr('Cancel'),
 					 'TR_ADD_EXIST' => tr('Add existing user'),
                      'TR_PASS' => tr('Password'),
-                     'TR_PASS_REP' => tr('Password repeat'),
+                     'TR_PASS_REP' => tr('Repeat password'),
 					 'TR_SQL_USER_NAME' => tr('Existing SQL users')));
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');

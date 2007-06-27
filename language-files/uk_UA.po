@@ -1,0 +1,5556 @@
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-26 22:31-05:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+Array
+#. 
+#: :1
+#, fuzzy
+msgid "ISPCP - Virtual Hosting Control System"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :2
+msgid "encoding"
+msgstr "UTF-8"
+
+#. 
+#: :3
+msgid "Administrator login"
+msgstr ""
+
+#. 
+#: :4
+msgid "Login"
+msgstr "Ввійти"
+
+#. 
+#: :5
+msgid "Username"
+msgstr "Ім'я користувача"
+
+#. 
+#: :6
+msgid "Password"
+msgstr "Пароль"
+
+#. 
+#: :7
+msgid "Please enter your login information"
+msgstr "Введіть Ваш логін і пароль"
+
+#. 
+#: :8
+msgid "Lost password"
+msgstr "Відновити пароль"
+
+#. 
+#: :9
+msgid "Lost password function currently disabled"
+msgstr ""
+
+#. 
+#: :10
+msgid "Password sent"
+msgstr ""
+
+#. 
+#: :11
+msgid "ERROR: Password was not sent"
+msgstr ""
+
+#. 
+#: :12
+msgid "The password was requested"
+msgstr "Запит на відновлення паролю виконаний"
+
+#. 
+#: :13
+msgid "Back"
+msgstr "Назад"
+
+#. 
+#: :14
+msgid "ERROR: Unknown user"
+msgstr "ПОМИЛКА: Невідомий користувач"
+
+#. 
+#: :15
+msgid "Retry"
+msgstr "Повторити"
+
+#. 
+#: :16
+msgid "ERROR: Security code was not correct!"
+msgstr "ПОМИЛКА: Невірний код безпеки!"
+
+#. 
+#: :17
+msgid "Security code"
+msgstr "Код безпеки"
+
+#. 
+#: :18
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \\"Security code\\")"
+msgstr ""
+
+#. 
+#: :19
+msgid "Request password"
+msgstr "Запит пароля"
+
+#. 
+#: :20
+msgid "ispCP - Admin/Manage users/Add reseller"
+msgstr ""
+
+#. 
+#: :21
+msgid "Reseller IP list is empty!"
+msgstr "Список IP реселера порожній!"
+
+#. 
+#: :22
+msgid "No."
+msgstr "№"
+
+#. 
+#: :23
+msgid "Assign"
+msgstr "Призначити"
+
+#. 
+#: :24
+msgid "Label"
+msgstr "Мітка"
+
+#. 
+#: :25
+msgid "Number"
+msgstr "Номер"
+
+#. 
+#: :26
+msgid "Reseller"
+msgstr "Реселер"
+
+#. 
+#: :27
+msgid "This user name already exist!"
+msgstr "Цей користувач уже існує!"
+
+#. 
+#: :28
+msgid "Incorrect username range or syntax!"
+msgstr "Ім'я користувача має невірний формат!"
+
+#. 
+#: :29
+msgid "Incorrect password range or syntax!"
+msgstr "Некоректний пароль!"
+
+#. 
+#: :30
+msgid "Entered passwords does not match!"
+msgstr "Паролі не співпадають!"
+
+#. 
+#: :31
+msgid "Incorrect email range or syntax!"
+msgstr "Невірний синтаксис <i>електронної пошти</i>!"
+
+#. 
+#: :32
+msgid "Incorrect max domain count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту доменів</i>!"
+
+#. 
+#: :33
+msgid "Incorrect max subdomain count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
+
+#. 
+#: :34
+msgid "Incorrect max alias count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту аліасів</i>!"
+
+#. 
+#: :35
+msgid "Incorrect max FTP count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#. 
+#: :36
+msgid "Incorrect max mail count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#. 
+#: :37
+msgid "Incorrect max SQL databases count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
+
+#. 
+#: :38
+msgid "Incorrect max SQL users count or syntax!"
+msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
+
+#. 
+#: :39
+msgid "Incorrect max traffic amount or syntax!"
+msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
+
+#. 
+#: :40
+msgid "Incorrect max disk amount or syntax!"
+msgstr "Невірний синтаксис <i>обсягу диску</i>!"
+
+#. 
+#: :41
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Ви маєте призначити хоча б одну IP-адресу реселеру!"
+
+#. 
+#: :42
+msgid "Add reseller"
+msgstr "Додати реселера"
+
+#. 
+#: :43
+msgid "Core data"
+msgstr "Загальні відомості"
+
+#. 
+#: :44
+msgid "Repeat password"
+msgstr ""
+
+#. 
+#: :45
+msgid "Email"
+msgstr "Електронна пошта"
+
+#. 
+#: :46
+msgid "unlimited"
+msgstr "необмежено"
+
+#. 
+#: :47
+msgid "Domains limit"
+msgstr ""
+
+#. 
+#: :48
+msgid "Subdomains limit"
+msgstr ""
+
+#. 
+#: :49
+msgid "Aliases limit"
+msgstr ""
+
+#. 
+#: :50
+msgid "Mail accounts limit"
+msgstr ""
+
+#. 
+#: :51
+msgid "FTP accounts limit"
+msgstr ""
+
+#. 
+#: :52
+msgid "SQL databases limit"
+msgstr ""
+
+#. 
+#: :53
+msgid "SQL users limit"
+msgstr ""
+
+#. 
+#: :54
+msgid "Traffic limit [MB]"
+msgstr ""
+
+#. 
+#: :55
+msgid "Disk limit [MB]"
+msgstr ""
+
+#. 
+#: :56
+#, fuzzy
+msgid "PHP"
+msgstr "PHP"
+
+#. 
+#: :57
+#, fuzzy
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+#. 
+#: :58
+#, fuzzy
+msgid "JSP"
+msgstr "JSP"
+
+#. 
+#: :59
+#, fuzzy
+msgid "SSI"
+msgstr "SSI"
+
+#. 
+#: :60
+msgid "Frontpage extensions"
+msgstr ""
+
+#. 
+#: :61
+msgid "Backup and restore"
+msgstr "Резервне копіювання та відновлення"
+
+#. 
+#: :62
+msgid "Custom error pages"
+msgstr "Індивідуальні сторінки помилок"
+
+#. 
+#: :63
+msgid "Protected areas"
+msgstr "Захищені зони"
+
+#. 
+#: :64
+#, fuzzy
+msgid "Webmail"
+msgstr "Webmail"
+
+#. 
+#: :65
+msgid "Directory listing"
+msgstr "Список директорій"
+
+#. 
+#: :66
+msgid "Apache logfiles"
+msgstr "Журнали веб-сервера"
+
+#. 
+#: :67
+msgid "AwStats"
+msgstr "AWStats"
+
+#. 
+#: :68
+msgid "Logo upload"
+msgstr "Завантаження логотипа"
+
+#. 
+#: :69
+msgid "yes"
+msgstr "так"
+
+#. 
+#: :70
+msgid "no"
+msgstr "ні"
+
+#. 
+#: :71
+msgid "Reseller IPs"
+msgstr "IP реселера"
+
+#. 
+#: :72
+msgid "Additional data"
+msgstr "Додаткові відомості"
+
+#. 
+#: :73
+msgid "Customer ID"
+msgstr "ID користувача"
+
+#. 
+#: :74
+msgid "First name"
+msgstr "Ім'я"
+
+#. 
+#: :75
+msgid "Last name"
+msgstr "Прізвище"
+
+#. 
+#: :76
+msgid "Company"
+msgstr "Компанія"
+
+#. 
+#: :77
+msgid "Zip/Postal code"
+msgstr "Поштовий індекс"
+
+#. 
+#: :78
+msgid "City"
+msgstr "Місто"
+
+#. 
+#: :79
+msgid "Country"
+msgstr "Країна"
+
+#. 
+#: :80
+msgid "Street 1"
+msgstr "Вулиця 1"
+
+#. 
+#: :81
+msgid "Street 2"
+msgstr "Вулиця 2"
+
+#. 
+#: :82
+msgid "Phone"
+msgstr "Телефон"
+
+#. 
+#: :83
+msgid "Fax"
+msgstr "Факс"
+
+#. 
+#: :84
+msgid "Add"
+msgstr "Додати"
+
+#. 
+#: :85
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Додавання користувача"
+
+#. 
+#: :86
+msgid "Administrator"
+msgstr "Адміністратор"
+
+#. 
+#: :87
+msgid "Empty data or wrong field!"
+msgstr "Не введені або невірні дані!"
+
+#. 
+#: :88
+msgid "Passwords don't match!"
+msgstr ""
+
+#. 
+#: :89
+msgid "Add admin"
+msgstr "Додати адміністратора"
+
+#. 
+#: :90
+msgid "ISPCP - Admin/Admin Log"
+msgstr "ISPCP - Адміністратор/Журнал адміністратора"
+
+#. 
+#: :91
+msgid "Log is empty!"
+msgstr "Журнал порожній!"
+
+#. 
+#: :92
+msgid "Invalid time period!"
+msgstr ""
+
+#. 
+#: :93
+msgid "Admin Log"
+msgstr "Журнал адміністратора"
+
+#. 
+#: :94
+msgid "Clear log"
+msgstr "Очистити журнал"
+
+#. 
+#: :95
+msgid "Date"
+msgstr "Дата"
+
+#. 
+#: :96
+msgid "Message"
+msgstr "Повідомлення"
+
+#. 
+#: :97
+msgid "Delete from log:"
+msgstr "Видалити з журналу:"
+
+#. 
+#: :98
+msgid "everything"
+msgstr "усе"
+
+#. 
+#: :99
+msgid "older than 2 weeks"
+msgstr "давніші за 2 тижні"
+
+#. 
+#: :100
+msgid "older than 1 month"
+msgstr "давніші за 1 місяць"
+
+#. 
+#: :101
+msgid "older than 3 months"
+msgstr "давніші за 3 місяці"
+
+#. 
+#: :102
+msgid "older than 6 months"
+msgstr "давніші за 6 місяців"
+
+#. 
+#: :103
+msgid "older than 12 months"
+msgstr "давніші за 12 місяців"
+
+#. 
+#: :104
+msgid "ISPCP - Administrator/Add hosting plan"
+msgstr "ISPCP - Адміністратор/Додавання хостінг-плану"
+
+#. 
+#: :105
+msgid "Add hosting plan"
+msgstr "Додати хостинґ-план"
+
+#. 
+#: :106
+msgid "Hosting plan properties"
+msgstr "Властивості хостінг-плану"
+
+#. 
+#: :107
+msgid "Template name"
+msgstr "Назва шаблону"
+
+#. 
+#: :108
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :109
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :110
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :111
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :112
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#. 
+#: :113
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#. 
+#: :114
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
+
+#. 
+#: :115
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+#. 
+#: :116
+msgid "Billing Settings"
+msgstr "Налаштування рахунків"
+
+#. 
+#: :117
+msgid "Price"
+msgstr "Ціна"
+
+#. 
+#: :118
+msgid "Setup fee"
+msgstr "Плата за установку"
+
+#. 
+#: :119
+msgid "Currency"
+msgstr "Валюта"
+
+#. 
+#: :120
+msgid "Payment period"
+msgstr "Термін оплати"
+
+#. 
+#: :121
+msgid "Available for purchasing"
+msgstr "Замовлення можливе"
+
+#. 
+#: :122
+msgid "Description"
+msgstr "Опис"
+
+#. 
+#: :123
+msgid "(e.g. EUR)"
+msgstr "(Наприклад, UAH)"
+
+#. 
+#: :124
+msgid "Add plan"
+msgstr "Додати план"
+
+#. 
+#: :125
+msgid "Incorrect template name range or syntax!"
+msgstr "Назва шаблону має невірний формат!"
+
+#. 
+#: :126
+msgid "Incorrect template description range or syntax!"
+msgstr "Опис шаблону має невірний формат!"
+
+#. 
+#: :127
+msgid "Incorrect price range or syntax!"
+msgstr "Ціна має невірний формат!"
+
+#. 
+#: :128
+msgid "Incorrect setup fee range or syntax!"
+msgstr "Установочна плата має невірний формат!"
+
+#. 
+#: :129
+msgid "Incorrect subdomain range or syntax!"
+msgstr "Піддомен має невірний формат!"
+
+#. 
+#: :130
+msgid "Incorrect alias range or syntax!"
+msgstr "Невірний синтаксис <i>аліасу домену</i>!"
+
+#. 
+#: :131
+msgid "Incorrect mail account range or syntax!"
+msgstr "Невірний синтаксис <i>поштової скриньки</i>!"
+
+#. 
+#: :132
+msgid "Incorrect FTP account range or syntax!"
+msgstr "Невірний синтаксис <i>користувача FTP</i>!"
+
+#. 
+#: :133
+msgid "Incorrect SQL database range or syntax!"
+msgstr "База даних MySQL має невірний формат!"
+
+#. 
+#: :134
+msgid "Incorrect SQL user range or syntax!"
+msgstr "Користувач MySQL має невірний формат!"
+
+#. 
+#: :135
+msgid "Incorrect traffic range or syntax!"
+msgstr "Трафік має невірний формат!"
+
+#. 
+#: :136
+msgid "Incorrect disk range or syntax!"
+msgstr "Невірний <i>дисковий простір</i>!"
+
+#. 
+#: :137
+msgid "Hosting plan with entered name already exists!"
+msgstr "Хостінг-план із введеною назвою вже існує!"
+
+#. 
+#: :138
+msgid "ISPCP - Admin/Change Password"
+msgstr "ISPCP - Адміністратор/Зміна пароля"
+
+#. 
+#: :139
+msgid "Please fill up all data fields!"
+msgstr "Будь ласка, заповніть усі поля!"
+
+#. 
+#: :140
+msgid "Passwords does not match!"
+msgstr "Паролі не співпадають!"
+
+#. 
+#: :141
+msgid "The current password is wrong!"
+msgstr "Поточний пароль невірний"
+
+#. 
+#: :142
+msgid "User password updated successfully!"
+msgstr "Пароль користувача успішно оновлений!"
+
+#. 
+#: :143
+msgid "Change password"
+msgstr "Змінити пароль"
+
+#. 
+#: :144
+msgid "Password data"
+msgstr "Пароль"
+
+#. 
+#: :145
+msgid "Update password"
+msgstr "Оновити пароль"
+
+#. 
+#: :146
+msgid "Current password"
+msgstr "Поточний пароль"
+
+#. 
+#: :147
+msgid "Personal data updated successfully!"
+msgstr "Персональні дані успішно оновлені!"
+
+#. 
+#: :148
+msgid "ISPCP - Admin/Change Personal Data"
+msgstr "ISPCP - Адміністратор/Зміна персональних даних"
+
+#. 
+#: :149
+msgid "Change personal data"
+msgstr "Змінити персональні дані"
+
+#. 
+#: :150
+msgid "Personal data"
+msgstr "Персональні дані"
+
+#. 
+#: :151
+msgid "Update data"
+msgstr "Оновити відомості"
+
+#. 
+#: :152
+msgid "User does not exist!"
+msgstr "Користувач не існує!"
+
+#. 
+#: :153
+msgid "ispCP - Admin - Email Marketing"
+msgstr ""
+
+#. 
+#: :154
+msgid "Please specify a message subject!"
+msgstr "Укажіть тему повідомлення!"
+
+#. 
+#: :155
+msgid "Please specify a message content!"
+msgstr "Укажіть текст повідомлення!"
+
+#. 
+#: :156
+msgid "Please specify a sender name!"
+msgstr "Укажіть ім'я відправника!"
+
+#. 
+#: :157
+msgid "Please specify a sender email!"
+msgstr "Укажіть скриньку відправника!"
+
+#. 
+#: :158
+msgid "You send email to your users successfully!"
+msgstr "Повідомлення користувачам надіслане успішно!"
+
+#. 
+#: :159
+msgid "Email marketing"
+msgstr "Розсилка користувачам"
+
+#. 
+#: :160
+msgid "Send message to"
+msgstr "Надіслати повідомлення:"
+
+#. 
+#: :161
+msgid "All users"
+msgstr "Усі користувачі"
+
+#. 
+#: :162
+msgid "All resellers"
+msgstr "Усі реселери"
+
+#. 
+#: :163
+msgid "All users & resellers"
+msgstr "Усі користувачі й реселери"
+
+#. 
+#: :164
+msgid "Message subject"
+msgstr "Тема повідомлення"
+
+#. 
+#: :165
+msgid "Senders email"
+msgstr "E-mail відправника"
+
+#. 
+#: :166
+msgid "Senders name"
+msgstr "Ім'я відправника"
+
+#. 
+#: :167
+msgid "Send message"
+msgstr "Надіслати повідомлення"
+
+#. 
+#: :168
+msgid "You have no custom menus."
+msgstr "Ви не маєте персональних меню."
+
+#. 
+#: :169
+msgid "User"
+msgstr "Користувач"
+
+#. 
+#: :170
+msgid "All"
+msgstr "Усі"
+
+#. 
+#: :171
+msgid "Are you sure you want to delete"
+msgstr "Ви впевнені, що бажаєте видалити?"
+
+#. 
+#: :172
+msgid "Missing or incorrect data input!"
+msgstr "Введені дані невірні або відсутні!"
+
+#. 
+#: :173
+msgid "Custom menu data updated successful!"
+msgstr "Дані персональних меню успішно оновлені!"
+
+#. 
+#: :174
+msgid "Custom menu deleted successful!"
+msgstr "Персональне меню успішно видалене!"
+
+#. 
+#: :175
+msgid "ISPCP - Admin - Manage custom menus"
+msgstr "ISPCP - Адміністратор - Керування персональними меню"
+
+#. 
+#: :176
+msgid "Manage custom menus"
+msgstr "Керування персональними меню"
+
+#. 
+#: :177
+msgid "Add new button"
+msgstr "Додати нову кнопку"
+
+#. 
+#: :178
+msgid "Button name"
+msgstr "Назва кнопки"
+
+#. 
+#: :179
+msgid "Button link"
+msgstr "Посилання"
+
+#. 
+#: :180
+msgid "Button target"
+msgstr "Вікно (_top, _blank)"
+
+#. 
+#: :181
+msgid "Show in"
+msgstr "Показати в"
+
+#. 
+#: :182
+msgid "Administrator level"
+msgstr ""
+
+#. 
+#: :183
+msgid "Reseller level"
+msgstr "Рівень реселера"
+
+#. 
+#: :184
+msgid "Enduser level"
+msgstr "Рівень користувача"
+
+#. 
+#: :185
+msgid "Reseller and enduser level"
+msgstr "Рівень реселера й користувача"
+
+#. 
+#: :186
+msgid "Menu button"
+msgstr "Кнопка меню"
+
+#. 
+#: :187
+msgid "Action"
+msgstr "Дія"
+
+#. 
+#: :188
+msgid "Edit"
+msgstr "Редагувати"
+
+#. 
+#: :189
+msgid "Delete"
+msgstr "Видалити"
+
+#. 
+#: :190
+msgid "Level"
+msgstr "Рівень"
+
+#. 
+#: :191
+msgid "Save"
+msgstr "Зберегти"
+
+#. 
+#: :192
+msgid "Edit button"
+msgstr "Редагувати кнопку"
+
+#. 
+#: :193
+msgid "Error: we have a domain using this IP!"
+msgstr ""
+
+#. 
+#: :194
+msgid "Error: we have a reseller using this IP!"
+msgstr ""
+
+#. 
+#: :195
+msgid "IP was deleted!"
+msgstr "IP видалено!"
+
+#. 
+#: :196
+msgid "Support ticket deleted successfully!"
+msgstr "Запит підтримки успішно видалено!"
+
+#. 
+#: :197
+msgid "All open support tickets deleted successfully!"
+msgstr "Усі незакриті заявки успішно видалено!"
+
+#. 
+#: :198
+msgid "All closed support tickets deleted successfully!"
+msgstr "Усі закриті заявки успішно видалено!"
+
+#. 
+#: :199
+msgid "ISPCP - Domain/Details"
+msgstr "ISPCP - Домен/Деталі"
+
+#. 
+#: :200
+msgid "Domain details"
+msgstr "Деталі домену"
+
+#. 
+#: :201
+msgid "Domain name"
+msgstr "Ім'я домену"
+
+#. 
+#: :202
+msgid "Domain IP"
+msgstr "IP домену"
+
+#. 
+#: :203
+msgid "Status"
+msgstr "Стан"
+
+#. 
+#: :204
+msgid "PHP support"
+msgstr "Підтримка PHP"
+
+#. 
+#: :205
+msgid "CGI support"
+msgstr "Підтримка CGI"
+
+#. 
+#: :206
+msgid "MySQL support"
+msgstr "Підтримка MySQL"
+
+#. 
+#: :207
+msgid "Traffic in MB"
+msgstr "Трафік у МБ"
+
+#. 
+#: :208
+msgid "Disk in MB"
+msgstr "Диск у МБ"
+
+#. 
+#: :209
+msgid "Feature"
+msgstr "Функція"
+
+#. 
+#: :210
+msgid "Used"
+msgstr "Використано"
+
+#. 
+#: :211
+msgid "Limit"
+msgstr "Ліміт"
+
+#. 
+#: :212
+msgid "Mail accounts"
+msgstr "Поштові скриньки"
+
+#. 
+#: :213
+msgid "FTP accounts"
+msgstr "Користувачі FTP"
+
+#. 
+#: :214
+msgid "SQL databases"
+msgstr "Бази даних SQL"
+
+#. 
+#: :215
+msgid "SQL users"
+msgstr "Користувачі SQL"
+
+#. 
+#: :216
+msgid "Subdomains"
+msgstr "Піддомени"
+
+#. 
+#: :217
+msgid "Domain aliases"
+msgstr "Аліаси домену"
+
+#. 
+#: :218
+msgid "Submit changes"
+msgstr "Внести зміни"
+
+#. 
+#: :219
+msgid "None"
+msgstr "Ні"
+
+#. 
+#: :220
+msgid "ISPCP - Domain Statistics Data"
+msgstr "ISPCP - Статистика домену"
+
+#. 
+#: :221
+msgid "Domain statistics"
+msgstr "Статистика домену"
+
+#. 
+#: :222
+msgid "Month"
+msgstr "Місяць"
+
+#. 
+#: :223
+msgid "Year"
+msgstr "Рік"
+
+#. 
+#: :224
+msgid "Show"
+msgstr "Показати"
+
+#. 
+#: :225
+msgid "Web traffic"
+msgstr "Web-трафік"
+
+#. 
+#: :226
+msgid "FTP traffic"
+msgstr "Трафік FTP"
+
+#. 
+#: :227
+msgid "SMTP traffic"
+msgstr "Трафік SMTP"
+
+#. 
+#: :228
+msgid "POP3/IMAP traffic"
+msgstr "Трафік POP/IMAP"
+
+#. 
+#: :229
+msgid "All traffic"
+msgstr "Весь трафік"
+
+#. 
+#: :230
+msgid "Day"
+msgstr "День"
+
+#. 
+#: :231
+msgid "ISPCP - Admin/Manage users/Edit Reseller"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Редагування реселера"
+
+#. 
+#: :232
+msgid "Domain"
+msgstr "Домен"
+
+#. 
+#: :233
+msgid "Subdomain"
+msgstr "Піддомен"
+
+#. 
+#: :234
+msgid "Alias"
+msgstr "Аліас"
+
+#. 
+#: :235
+msgid "Mail"
+msgstr "Пошта"
+
+#. 
+#: :236
+#, fuzzy
+msgid "FTP"
+msgstr "FTP"
+
+#. 
+#: :237
+msgid "SQL Database"
+msgstr "База даних SQL"
+
+#. 
+#: :238
+msgid "SQL User"
+msgstr "Користувач SQL"
+
+#. 
+#: :239
+msgid "Traffic"
+msgstr "Трафік"
+
+#. 
+#: :240
+msgid "Disk"
+msgstr "Диск"
+
+#. 
+#: :241
+msgid "Undefined user accounting error!"
+msgstr "Невизначена системна помилка!"
+
+#. 
+#: :242
+msgid "This reseller has already dispatched more <b>"
+msgstr "Цей реселер уже координує більше <b>"
+
+#. 
+#: :243
+msgid "Then the value you are trying to enter now !<br>"
+msgstr "Ніж значення, що Ви вводите!<br>"
+
+#. 
+#: :244
+msgid "Edit reseller aborted!"
+msgstr "Редагування реселера перервано!"
+
+#. 
+#: :245
+msgid "This reseller has more <b>"
+msgstr "Цей реселер має більше <b>"
+
+#. 
+#: :246
+msgid "Then the value you are trying to enter now!<br>"
+msgstr "Ніж значення, що Ви вводите!<br>"
+
+#. 
+#: :247
+msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgstr ""
+
+#. 
+#: :248
+msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+msgstr "Якщо Ви бажаєте обмежити реселера, спочатку Ви маєте обмежити його користувачів!<br>"
+
+#. 
+#: :249
+msgid "This reseller has domains assigned To <b>"
+msgstr "Цей реселер має домени, призначені <b>"
+
+#. 
+#: :250
+msgid "</b> Address !<br>Edit reseller aborted!"
+msgstr "Адреса! <br> Зміна реселера припинена!"
+
+#. 
+#: :251
+msgid "Edit reseller"
+msgstr "Редагувати реселера"
+
+#. 
+#: :252
+msgid "E-mail"
+msgstr "Електронна пошта"
+
+#. 
+#: :253
+msgid "Max domain count"
+msgstr "Макс. кількість доменів"
+
+#. 
+#: :254
+msgid "Max subdomain count"
+msgstr "Макс. кількість піддоменів"
+
+#. 
+#: :255
+msgid "Max aliases count"
+msgstr "Макс. кількість аліасів"
+
+#. 
+#: :256
+msgid "Max mail users count"
+msgstr "Макс. кількість поштових скриньок"
+
+#. 
+#: :257
+msgid "Max FTP users count"
+msgstr "Макс. кількість користувачів FTP"
+
+#. 
+#: :258
+msgid "Max SQL databases count"
+msgstr "Макс. кількість баз MySQL"
+
+#. 
+#: :259
+msgid "Max SQL users count"
+msgstr "Макс. кількість користувачів MySQL"
+
+#. 
+#: :260
+msgid "Max traffic amount [MB]"
+msgstr "Макс. обсяг трафіку [МБ]"
+
+#. 
+#: :261
+msgid "Max disk amount [MB]"
+msgstr "Макс. обсяг диску [МБ]"
+
+#. 
+#: :262
+msgid "Update"
+msgstr "Оновити"
+
+#. 
+#: :263
+msgid "Send new login data"
+msgstr "Надіслати нові дані автентифікації"
+
+#. 
+#: :264
+msgid "Password generate"
+msgstr "Ґенерація пароля"
+
+#. 
+#: :265
+msgid "ISPCP - Admin/Manage users/Edit User"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Редагування користувача"
+
+#. 
+#: :266
+msgid "User session was killed!"
+msgstr "Сесія користувача знищена!"
+
+#. 
+#: :267
+msgid "Domain account"
+msgstr "Обліковий запис домену"
+
+#. 
+#: :268
+msgid "Edit admin"
+msgstr "Редагувати адміністратора"
+
+#. 
+#: :269
+msgid "ISPCP - Administrator/Edit hosting plan"
+msgstr "ISPCP - Адміністратор/Редагування хостінг-плану"
+
+#. 
+#: :270
+msgid "Price Style"
+msgstr ""
+
+#. 
+#: :271
+msgid "Update plan"
+msgstr "Оновити план"
+
+#. 
+#: :272
+msgid "Edit hosting plan"
+msgstr "Редагувати хостинг-план"
+
+#. 
+#: :273
+msgid "Undefined reference to data!"
+msgstr "Невизначене посилання на дані!"
+
+#. 
+#: :274
+msgid "Incorrect price. Example: 9.99"
+msgstr ""
+
+#. 
+#: :275
+msgid "Incorrect setup fee. Example: 19.99"
+msgstr ""
+
+#. 
+#: :276
+msgid "Please specify a subject!"
+msgstr "Укажіть тему!"
+
+#. 
+#: :277
+msgid "Please specify message!"
+msgstr "Будь ласка, укажіть повідомлення!"
+
+#. 
+#: :278
+msgid "Auto email template data updated!"
+msgstr "Шаблон автовідповідача пошти оновлено!"
+
+#. 
+#: :279
+msgid "ISPCP - Admin/Manage users/Email setup"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
+
+#. 
+#: :280
+msgid "Email setup"
+msgstr "Налаштування електронної пошти"
+
+#. 
+#: :281
+msgid "Message template info"
+msgstr "Інформація про шаблон"
+
+#. 
+#: :282
+msgid "User login (system) name"
+msgstr "Логін користувача"
+
+#. 
+#: :283
+msgid "User password"
+msgstr "Пароль користувача"
+
+#. 
+#: :284
+msgid "User real (first and last) Name"
+msgstr "Ім'я й прізвище користувача"
+
+#. 
+#: :285
+msgid "Message template"
+msgstr "Шаблон повідомлення"
+
+#. 
+#: :286
+msgid "Subject"
+msgstr "Тема"
+
+#. 
+#: :287
+msgid "Apply changes"
+msgstr "Застосувати зміни"
+
+#. 
+#: :288
+msgid "ISPCP - Administrator/Hosting Plan Management"
+msgstr "ISPCP - Адміністратор/Керування хостінг-планами"
+
+#. 
+#: :289
+msgid "Hosting plans"
+msgstr "Хостінг-плани"
+
+#. 
+#: :290
+msgid "Manage hosting plans"
+msgstr "Керування хостінг-планами"
+
+#. 
+#: :291
+msgid "Purchasing"
+msgstr "Замовлення"
+
+#. 
+#: :292
+msgid "Add new user hosting plan"
+msgstr "Додати новий хостінґ-план"
+
+#. 
+#: :293
+msgid "Return to previous menu"
+msgstr "Повернутися до попереднього меню"
+
+#. 
+#: :294
+msgid "Hosting plan added!"
+msgstr "Додано хостінг-план!"
+
+#. 
+#: :295
+msgid "Hosting plan deleted!"
+msgstr "Видалено хостінг-план!"
+
+#. 
+#: :296
+msgid "Hosting plan updated!"
+msgstr "Оновлено хостінг-план!"
+
+#. 
+#: :297
+msgid "Hosting plans not found!"
+msgstr "Хостінг-плани не знайдені!"
+
+#. 
+#: :298
+msgid "Name"
+msgstr "Ім'я"
+
+#. 
+#: :299
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#. 
+#: :300
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#. 
+#: :301
+msgid "Show hosting plan"
+msgstr ""
+
+#. 
+#: :302
+msgid "You have"
+msgstr "Ви маєте"
+
+#. 
+#: :303
+msgid "Support question(s)"
+msgstr "Питання підтримки"
+
+#. 
+#: :304
+msgid "New"
+msgstr "Новий"
+
+#. 
+#: :305
+msgid "View"
+msgstr "Переглянути"
+
+#. 
+#: :306
+msgid "Couldn't check for updates!"
+msgstr ""
+
+#. 
+#: :307
+msgid "New ISPCP update is now available"
+msgstr "Доступне оновлення ISPCP"
+
+#. 
+#: :308
+msgid "You are exceeding your traffic limit!"
+msgstr "Ви вичерпали ліміт трафіку!"
+
+#. 
+#: :309
+msgid "of"
+msgstr "з"
+
+#. 
+#: :310
+msgid "ISPCP - Admin/Main Index"
+msgstr "ISPCP - Адміністратор/Головна"
+
+#. 
+#: :311
+msgid "ISPCP - Admin/IP manage"
+msgstr "ISPCP - Адміністратор/Керування IP"
+
+#. 
+#: :312
+msgid "New IP was added!"
+msgstr "Нова адреса IP додана!"
+
+#. 
+#: :313
+msgid "Wrong IP number!"
+msgstr "Невірний номер IP!"
+
+#. 
+#: :314
+msgid "Please specify domain!"
+msgstr "Будь ласка, укажіть домен!"
+
+#. 
+#: :315
+msgid "Please specify alias!"
+msgstr "Будь ласка, укажіть аліас!"
+
+#. 
+#: :316
+msgid "This IP already exist!"
+msgstr "Цей IP уже існує!"
+
+#. 
+#: :317
+msgid "Manage IPs"
+msgstr "Керування IP"
+
+#. 
+#: :318
+msgid "Available IPs"
+msgstr "Доступні IP"
+
+#. 
+#: :319
+#, fuzzy
+msgid "IP"
+msgstr "IP"
+
+#. 
+#: :320
+msgid "Uninstall"
+msgstr "Видалити"
+
+#. 
+#: :321
+msgid "Add new IP"
+msgstr "Додати новий IP"
+
+#. 
+#: :322
+msgid "No domain system errors"
+msgstr "Немає помилок системи доменів"
+
+#. 
+#: :323
+msgid "No domain alias system errors"
+msgstr "Немає помилок системи аліасів доменів"
+
+#. 
+#: :324
+msgid "No subdomain system errors"
+msgstr "Немає помилок системи піддоменів"
+
+#. 
+#: :325
+msgid "No email account system errors"
+msgstr "Немає помилок системи електронних скриньок"
+
+#. 
+#: :326
+msgid "ISPCP debugger"
+msgstr "Налагоджувач ISPCP"
+
+#. 
+#: :327
+msgid "Domain errors"
+msgstr "Помилки системи доменів"
+
+#. 
+#: :328
+msgid "Domain alias errors"
+msgstr "Помилки аліасів домену"
+
+#. 
+#: :329
+msgid "Subdomain errors"
+msgstr "Помилки піддомену"
+
+#. 
+#: :330
+msgid "Mail account errors"
+msgstr "Помилки поштових скриньок"
+
+#. 
+#: :331
+msgid "Get it at"
+msgstr "Завантажити з"
+
+#. 
+#: :332
+msgid "ISPCP updates"
+msgstr "Оновлення ISPCP"
+
+#. 
+#: :333
+msgid "Available ISPCP updates"
+msgstr "Доступні оновлення ISPCP"
+
+#. 
+#: :334
+msgid "No new ISPCP updates available"
+msgstr "Немає нових оновлень ISPCP"
+
+#. 
+#: :335
+msgid "Update details"
+msgstr "Деталі оновлення"
+
+#. 
+#: :336
+msgid "Upload file error!"
+msgstr "Помилка завантаження файлу!"
+
+#. 
+#: :337
+msgid "You can only upload images!"
+msgstr ""
+
+#. 
+#: :338
+msgid "Your logo was successful uploaded!"
+msgstr "Логотип успішно завантажено!"
+
+#. 
+#: :339
+msgid "Layout settings"
+msgstr "Налаштування макету"
+
+#. 
+#: :340
+msgid "Installed layouts"
+msgstr "Установлені макети"
+
+#. 
+#: :341
+msgid "Layout name"
+msgstr "Назва макету"
+
+#. 
+#: :342
+msgid "default"
+msgstr "довільне"
+
+#. 
+#: :343
+msgid "Upload logo"
+msgstr "Завантажити логотип"
+
+#. 
+#: :344
+msgid "Logo file"
+msgstr "Файл логотипа"
+
+#. 
+#: :345
+msgid "Upload"
+msgstr "Завантажити"
+
+#. 
+#: :346
+msgid "Remove"
+msgstr "Видалити"
+
+#. 
+#: :347
+msgid "Choose default layout"
+msgstr "Вибір основного оформлення"
+
+#. 
+#: :348
+msgid "Layout"
+msgstr "Макет"
+
+#. 
+#: :349
+msgid "ISPCP - Admin/Lostpw email setup"
+msgstr "ISPCP - Адміністратор/Налаштування втрати пароля"
+
+#. 
+#: :350
+msgid "Lostpw email"
+msgstr "E-mail для відновлення пароля"
+
+#. 
+#: :351
+msgid "Activation E-Mail"
+msgstr ""
+
+#. 
+#: :352
+msgid "Password E-Mail"
+msgstr ""
+
+#. 
+#: :353
+msgid "User (first and last) name"
+msgstr "Ім'я й прізвище користувача"
+
+#. 
+#: :354
+msgid "Lostpw link"
+msgstr "Посилання на відновлення пароля"
+
+#. 
+#: :355
+msgid "Reseller list is empty!"
+msgstr "Список реселерів порожній!"
+
+#. 
+#: :356
+msgid "ISPCP - Admin/Manage users/Reseller assignment"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Призначення реселера"
+
+#. 
+#: :357
+msgid "Reseller assignment"
+msgstr "Призначення реселера"
+
+#. 
+#: :358
+msgid "Reseller users"
+msgstr "Користувачі реселера"
+
+#. 
+#: :359
+msgid "Mark"
+msgstr "Відмітка"
+
+#. 
+#: :360
+msgid "Reseller name"
+msgstr "Ім'я реселера"
+
+#. 
+#: :361
+msgid "Owner"
+msgstr "Власник"
+
+#. 
+#: :362
+msgid "To Admin"
+msgstr "Адміністратору"
+
+#. 
+#: :363
+msgid "Move"
+msgstr "Перемістити"
+
+#. 
+#: :364
+msgid "Reseller or user list is empty!"
+msgstr "Список реселерів або користувачів порожній!"
+
+#. 
+#: :365
+msgid "User list is empty!"
+msgstr "Список користувачів порожній!"
+
+#. 
+#: :366
+msgid "User was moved"
+msgstr "Користувача переміщено"
+
+#. 
+#: :367
+msgid "Please select some user(s)!"
+msgstr "Оберіть користувача (користувачів)!"
+
+#. 
+#: :368
+msgid "Source and destination reseller are the same!"
+msgstr "Вихідний і кінцевий реселери співпадають!"
+
+#. 
+#: :369
+#, c-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgstr ""
+
+#. 
+#: :370
+#, c-format
+msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr ""
+
+#. 
+#: :371
+#, c-format
+msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgstr ""
+
+#. 
+#: :372
+msgid "Moving aborted!"
+msgstr "Переміщення перерване!"
+
+#. 
+#: :373
+#, c-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
+msgstr ""
+
+#. 
+#: :374
+msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgstr ""
+
+#. 
+#: :375
+msgid "ISPCP - Admin/Manage users/User assignment"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Призначення користувача"
+
+#. 
+#: :376
+msgid "User assignment"
+msgstr "Призначення користувача"
+
+#. 
+#: :377
+msgid "Users"
+msgstr "Користувачі"
+
+#. 
+#: :378
+msgid "User name"
+msgstr "Ім'я користувача"
+
+#. 
+#: :379
+msgid "From reseller"
+msgstr "Від реселера"
+
+#. 
+#: :380
+msgid "To reseller"
+msgstr "Реселеру"
+
+#. 
+#: :381
+msgid "ISPCP - Admin/Manage Sessions"
+msgstr "ISPCP - Адміністратор/Керування сесіями"
+
+#. 
+#: :382
+msgid "Manage user sessions"
+msgstr "Керування сесіями користувача"
+
+#. 
+#: :383
+msgid "User type"
+msgstr "Тип користувача"
+
+#. 
+#: :384
+msgid "Last access"
+msgstr "Останній доступ"
+
+#. 
+#: :385
+msgid "Options"
+msgstr "Параметри"
+
+#. 
+#: :386
+msgid "Kill session"
+msgstr "Завершити сесію"
+
+#. 
+#: :387
+msgid "ISPCP - Admin/Manage Users"
+msgstr "ISPCP - Адміністратор/Керування користувачами"
+
+#. 
+#: :388
+msgid "User added"
+msgstr "Користувача додано"
+
+#. 
+#: :389
+msgid "Reseller added"
+msgstr "Реселер доданий"
+
+#. 
+#: :390
+msgid "User updated"
+msgstr "Користувача оновлено"
+
+#. 
+#: :391
+msgid "User deleted"
+msgstr "Користувача видалено"
+
+#. 
+#: :392
+msgid "Email Updated"
+msgstr "Поштова скринька оновлена"
+
+#. 
+#: :393
+msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgstr "Цей користувач має домен!<br>Для видалення користувача спочатку видаліть домен!"
+
+#. 
+#: :394
+msgid "User was disabled"
+msgstr "Користувача заблоковано"
+
+#. 
+#: :395
+msgid "Incorrect data input!"
+msgstr "Невірне введення даних!"
+
+#. 
+#: :396
+msgid "ISPCP - Admin/Internationalisation"
+msgstr ""
+
+#. 
+#: :397
+msgid "Default language changed!"
+msgstr "Довільна мова змінена!"
+
+#. 
+#: :398
+msgid "You can upload only text files!"
+msgstr "Можна завантажувати лише текстові файли!"
+
+#. 
+#: :399
+msgid "Can not read ispcp language file!"
+msgstr "Неможливо прочитати файл мови!"
+
+#. 
+#: :400
+msgid "New language installed!"
+msgstr "Нова мова встановлена!"
+
+#. 
+#: :401
+msgid "Update language installed!"
+msgstr "Оновлення мови встановлене!"
+
+#. 
+#: :402
+msgid "Unknown"
+msgstr "Невідомо"
+
+#. 
+#: :403
+msgid "uninstall"
+msgstr "видалити"
+
+#. 
+#: :404
+msgid "%d messages translated"
+msgstr ""
+
+#. 
+#: :405
+msgid "Multilingual"
+msgstr ""
+
+#. 
+#: :406
+msgid "Installed languages"
+msgstr "Установлені мови"
+
+#. 
+#: :407
+msgid "Language"
+msgstr "Мова"
+
+#. 
+#: :408
+msgid "Messages"
+msgstr "Повідомлення"
+
+#. 
+#: :409
+msgid "Default"
+msgstr "Довільне"
+
+#. 
+#: :410
+msgid "Install new language"
+msgstr "Установити нову мову"
+
+#. 
+#: :411
+msgid "Language file"
+msgstr "Файл мови"
+
+#. 
+#: :412
+msgid "Install"
+msgstr "Установити"
+
+#. 
+#: :413
+msgid "Export"
+msgstr "Експорт"
+
+#. 
+#: :414
+msgid "ISPCP - Reseller statistics"
+msgstr "ISPCP - Статистика реселера"
+
+#. 
+#: :415
+msgid "Not found reseller(s) in your system!"
+msgstr "У системі не знайдено реселера(-ів)!"
+
+#. 
+#: :416
+msgid "Reseller statistics table"
+msgstr "Таблиця статистики реселера"
+
+#. 
+#: :417
+msgid "SQL database"
+msgstr "База даних SQL"
+
+#. 
+#: :418
+msgid "SQL user"
+msgstr "Користувач SQL"
+
+#. 
+#: :419
+msgid "ISPCP - Admin/Reseller User Statistics"
+msgstr "ISPCP - Адміністратор/Статистика реселера"
+
+#. 
+#: :420
+msgid "disabled"
+msgstr "вимкнено"
+
+#. 
+#: :421
+msgid "Reseller users table"
+msgstr "Таблиця користувачів реселера"
+
+#. 
+#: :422
+msgid "This reseller has no domains."
+msgstr "Цей реселер не має доменів."
+
+#. 
+#: :423
+msgid "Traffic<br>usage"
+msgstr "Використання<br>трафіку"
+
+#. 
+#: :424
+msgid "Disk<br>usage"
+msgstr "Використання<br>диску"
+
+#. 
+#: :425
+msgid "Web<br>traffic"
+msgstr "Web<br>трафік"
+
+#. 
+#: :426
+msgid "FTP<br>traffic"
+msgstr "Трафік<br>FTP"
+
+#. 
+#: :427
+msgid "SMTP<br>traffic"
+msgstr "Трафік<br>SMTP"
+
+#. 
+#: :428
+msgid "POP3/IMAP<br>traffic"
+msgstr "Трафік<br>POP/IMAP"
+
+#. 
+#: :429
+msgid "SQL<br>database"
+msgstr "БД<br>SQL"
+
+#. 
+#: :430
+msgid "SQL<br>user"
+msgstr "Користувач<br>SQL"
+
+#. 
+#: :431
+msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgstr ""
+
+#. 
+#: :432
+msgid "The file doesn't exist or can't be read."
+msgstr ""
+
+#. 
+#: :433
+msgid "Rootkit Log Checker"
+msgstr ""
+
+#. 
+#: :434
+msgid "ISPCP - Admin/Server day stats"
+msgstr "ISPCP - Адміністратор/Денна статистика сервера"
+
+#. 
+#: :435
+msgid "Server day statistics"
+msgstr "Денна статистика сервера"
+
+#. 
+#: :436
+msgid "Month:"
+msgstr "Місяць:"
+
+#. 
+#: :437
+msgid "Year:"
+msgstr "Рік:"
+
+#. 
+#: :438
+msgid "Day:"
+msgstr "День:"
+
+#. 
+#: :439
+msgid "Hour"
+msgstr "Година"
+
+#. 
+#: :440
+#, fuzzy
+msgid "Web in"
+msgstr "Web in"
+
+#. 
+#: :441
+#, fuzzy
+msgid "Web out"
+msgstr "Web out"
+
+#. 
+#: :442
+msgid "Mail in"
+msgstr "Пошта в"
+
+#. 
+#: :443
+msgid "Mail out"
+msgstr "Пошта з"
+
+#. 
+#: :444
+msgid "Pop/IMAP in"
+msgstr "POP/IMAP in"
+
+#. 
+#: :445
+msgid "Pop/IMAP out"
+msgstr "POP/IMAP out"
+
+#. 
+#: :446
+msgid "Other in"
+msgstr "Інші в"
+
+#. 
+#: :447
+msgid "Other out"
+msgstr "Інші за"
+
+#. 
+#: :448
+msgid "All in"
+msgstr "Усі в"
+
+#. 
+#: :449
+msgid "All out"
+msgstr "Усі за"
+
+#. 
+#: :450
+msgid "ISPCP - Admin/Server statistics"
+msgstr "ISPCP - Адміністратор/Статистика сервера"
+
+#. 
+#: :451
+msgid "Server statistics"
+msgstr "Статистика сервера"
+
+#. 
+#: :452
+msgid "ISPCP Admin / System Tools / Server Status"
+msgstr "Адміністратор ISPCP / Системні інструменти / Стан сервера"
+
+#. 
+#: :453
+msgid "Host"
+msgstr "Хост"
+
+#. 
+#: :454
+msgid "Service"
+msgstr "Сервіс"
+
+#. 
+#: :455
+msgid "Server status"
+msgstr "Стан сервера"
+
+#. 
+#: :456
+msgid "ISPCP - Admin/Server Traffic Settings"
+msgstr "ISPCP - Адміністратор/Налаштування трафіка сервера"
+
+#. 
+#: :457
+msgid "Wrong data input!"
+msgstr "Невірно введені дані!"
+
+#. 
+#: :458
+msgid "Warning traffic is bigger then max traffic!"
+msgstr "Ліміт трафіка більший за максимальний трафік!"
+
+#. 
+#: :459
+msgid "Server traffic settings updated successfully!"
+msgstr "Налаштування трафіку сервера успішно оновлені!"
+
+#. 
+#: :460
+msgid "Modify"
+msgstr "Змінити"
+
+#. 
+#: :461
+msgid "Server traffic settings"
+msgstr "Налаштування трафіку сервера"
+
+#. 
+#: :462
+msgid "Set server traffic settings"
+msgstr "Налаштувати трафік сервера"
+
+#. 
+#: :463
+msgid "Max traffic [MB]"
+msgstr "Макс. трафік [MB]"
+
+#. 
+#: :464
+msgid "Warning traffic [MB]"
+msgstr "Ліміт трафіка [МБ]"
+
+#. 
+#: :465
+msgid "ISPCP - Admin/Servicemode"
+msgstr ""
+
+#. 
+#: :466
+msgid "Settings saved !"
+msgstr "Налаштування збережені!"
+
+#. 
+#: :467
+msgid "Servicemode"
+msgstr "Стан обслуговування"
+
+#. 
+#: :468
+msgid "In this mode only administrators can login"
+msgstr "Лише адміністратори можуть входити в цьому режимі"
+
+#. 
+#: :469
+msgid "ISPCP - Admin/Settings"
+msgstr ""
+
+#. 
+#: :470
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr ""
+
+#. 
+#: :471
+msgid "General settings"
+msgstr "Головні налаштування"
+
+#. 
+#: :472
+msgid "Settings"
+msgstr "Налаштування"
+
+#. 
+#: :473
+msgid "Lostpassword"
+msgstr "Відновити пароль"
+
+#. 
+#: :474
+msgid "Activationlink valid (minutes)"
+msgstr "Час життя посилання активації"
+
+#. 
+#: :475
+msgid "Bruteforce detection"
+msgstr "Визначення перебором"
+
+#. 
+#: :476
+msgid "Time between logins"
+msgstr "Час між входами"
+
+#. 
+#: :477
+msgid "Number of login attempts"
+msgstr "Кількість спроб входу"
+
+#. 
+#: :478
+msgid "Blocktime (minutes)"
+msgstr "Час блокування (хвилини)"
+
+#. 
+#: :479
+msgid "Time between logins (seconds)"
+msgstr "Час між входами (сек.)"
+
+#. 
+#: :480
+msgid "Other settings"
+msgstr "Налаштування замовлення"
+
+#. 
+#: :481
+msgid "Default language"
+msgstr "Довільна мова"
+
+#. 
+#: :482
+msgid "Support system"
+msgstr "Система підтримки"
+
+#. 
+#: :483
+msgid "Serverports"
+msgstr ""
+
+#. 
+#: :484
+msgid "Domains per page"
+msgstr "Доменів на сторінку"
+
+#. 
+#: :485
+msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
+msgstr ""
+
+#. 
+#: :486
+msgid "ERROR: Port already exists!"
+msgstr ""
+
+#. 
+#: :487
+msgid "You have no custom service ports defined."
+msgstr ""
+
+#. 
+#: :488
+msgid "udp"
+msgstr ""
+
+#. 
+#: :489
+msgid "tcp"
+msgstr ""
+
+#. 
+#: :490
+msgid "Services"
+msgstr ""
+
+#. 
+#: :491
+msgid "Port"
+msgstr ""
+
+#. 
+#: :492
+msgid "Protocol"
+msgstr "Протокол"
+
+#. 
+#: :493
+msgid "You have no support tickets."
+msgstr "Ви не маєте запитів підтримки."
+
+#. 
+#: :494
+msgid "Low"
+msgstr "Низький"
+
+#. 
+#: :495
+msgid "Medium"
+msgstr "Середній"
+
+#. 
+#: :496
+msgid "High"
+msgstr "Високий"
+
+#. 
+#: :497
+msgid "Very high"
+msgstr "Невідкладний"
+
+#. 
+#: :498
+msgid "ISPCP - Client/Questions & Comments"
+msgstr "ISPCP - Клієнт/Питання та пропозиції"
+
+#. 
+#: :499
+msgid "Support tickets"
+msgstr "Запити підтримки"
+
+#. 
+#: :500
+msgid "Priority"
+msgstr "Пріоритет"
+
+#. 
+#: :501
+msgid "Last reply"
+msgstr "Остання відповідь"
+
+#. 
+#: :502
+msgid "Delete all"
+msgstr "Видалити все"
+
+#. 
+#: :503
+msgid "Open tickets"
+msgstr "Відкриті запити"
+
+#. 
+#: :504
+msgid "Closed tickets"
+msgstr "Закриті запити"
+
+#. 
+#: :505
+msgid "[New]"
+msgstr "[Нове]"
+
+#. 
+#: :506
+msgid "[Re]"
+msgstr "[Відповідь]"
+
+#. 
+#: :507
+msgid "ISPCP - Client/Enable Mail Autoresponder"
+msgstr "ISPCP - Клієнт/Активація автовідповідача"
+
+#. 
+#: :508
+msgid "From"
+msgstr "Від"
+
+#. 
+#: :509
+msgid "days"
+msgstr "дні"
+
+#. 
+#: :510
+msgid "hours"
+msgstr "год."
+
+#. 
+#: :511
+msgid "minutes"
+msgstr "хвилин"
+
+#. 
+#: :512
+msgid "System info"
+msgstr "Системна інформація"
+
+#. 
+#: :513
+msgid "Vital system info"
+msgstr "Істотна системна інформація"
+
+#. 
+#: :514
+msgid "CPU system Info"
+msgstr "Системна інформація CPU"
+
+#. 
+#: :515
+msgid "CPU model"
+msgstr "Модель процесора"
+
+#. 
+#: :516
+msgid "CPU MHz"
+msgstr "Швидкість процесора (MHz)"
+
+#. 
+#: :517
+msgid "CPU cache"
+msgstr "Кеш процесора"
+
+#. 
+#: :518
+#, fuzzy
+msgid "CPU bogomips"
+msgstr "CPU bogomips"
+
+#. 
+#: :519
+msgid "Memory system info"
+msgstr "Інформація про пам'ять"
+
+#. 
+#: :520
+#, fuzzy
+msgid "RAM"
+msgstr "RAM"
+
+#. 
+#: :521
+msgid "Total"
+msgstr "Разом"
+
+#. 
+#: :522
+msgid "Free"
+msgstr "Вільно"
+
+#. 
+#: :523
+msgid "Swap"
+msgstr "Своп"
+
+#. 
+#: :524
+msgid "Up time"
+msgstr "Час роботи"
+
+#. 
+#: :525
+#, fuzzy
+msgid "Kernel"
+msgstr "Kernel"
+
+#. 
+#: :526
+msgid "Load"
+msgstr "Завантаження"
+
+#. 
+#: :527
+msgid "Filesystem system Info"
+msgstr "Інформація про файлову систему"
+
+#. 
+#: :528
+msgid "Mount"
+msgstr "Монтувати"
+
+#. 
+#: :529
+msgid "Type"
+msgstr "Тип"
+
+#. 
+#: :530
+msgid "Partition"
+msgstr "Розділ"
+
+#. 
+#: :531
+msgid "Percent"
+msgstr "Процент(ів)"
+
+#. 
+#: :532
+msgid "Size"
+msgstr "Розмір"
+
+#. 
+#: :533
+msgid "Ticket not found!"
+msgstr "Запит не знайдено!"
+
+#. 
+#: :534
+msgid "Open ticket"
+msgstr "Відкритий запит"
+
+#. 
+#: :535
+msgid "Close ticket"
+msgstr "Закрити запит підтримки"
+
+#. 
+#: :536
+msgid "ISPCP - Client : Support System: View Tickets"
+msgstr "ISPCP - Клієнт : Система підтримки: Перегляд запитів"
+
+#. 
+#: :537
+msgid "Please type your message!"
+msgstr "Будь ласка, введіть повідомлення!"
+
+#. 
+#: :538
+msgid "Message was sent!"
+msgstr ""
+
+#. 
+#: :539
+msgid "Ticket was closed!"
+msgstr "Запит закрито!"
+
+#. 
+#: :540
+msgid "Ticket was reopened!"
+msgstr ""
+
+#. 
+#: :541
+msgid "ISPCP - Admin : Support System: View Tickets"
+msgstr ""
+
+#. 
+#: :542
+msgid "View support ticket"
+msgstr "Перегляд запиту підтримки"
+
+#. 
+#: :543
+msgid "Send message reply"
+msgstr "Надіслати відповідь"
+
+#. 
+#: :544
+msgid "Send reply"
+msgstr "Надіслати відповідь"
+
+#. 
+#: :545
+msgid "ISPCP Client : Add Alias"
+msgstr "Клієнт ISPCP : Додавання аліасу"
+
+#. 
+#: :546
+msgid "Manage domain alias"
+msgstr "Керування аліасами домену"
+
+#. 
+#: :547
+msgid "Add domain alias"
+msgstr "Додати аліас домену"
+
+#. 
+#: :548
+msgid "User account"
+msgstr "Обліковий запис користувача"
+
+#. 
+#: :549
+msgid "Directory mount point"
+msgstr "Точка монтування (директорія)"
+
+#. 
+#: :550
+msgid "Forward to URL"
+msgstr "Переслати на URL"
+
+#. 
+#: :551
+msgid "Add alias"
+msgstr "Додати аліас"
+
+#. 
+#: :552
+msgid "Domain alias limit reached!"
+msgstr ""
+
+#. 
+#: :553
+msgid "Incorrect domain name syntax"
+msgstr "Невірний синтаксис <i>доменного імені</i>"
+
+#. 
+#: :554
+msgid "Domain with that name already exists on the system!"
+msgstr "Такий домен уже існує в системі!"
+
+#. 
+#: :555
+msgid "Incorrect mount point syntax"
+msgstr "Невірний синтаксис <i>точки монтування</i>!"
+
+#. 
+#: :556
+msgid "Incorrect forward syntax"
+msgstr "Невірний синтаксис <i>пересилання</i>!"
+
+#. 
+#: :557
+msgid "Domain with this name already exist"
+msgstr "Такий домен уже існує!"
+
+#. 
+#: :558
+msgid "There are alias with same mount point"
+msgstr "Існують аліаси з ідентичною точкою монтування"
+
+#. 
+#: :559
+msgid "Alias scheduled for addition!"
+msgstr "Триває додавання аліасу!"
+
+#. 
+#: :560
+msgid "Empty List"
+msgstr "Порожній список"
+
+#. 
+#: :561
+msgid "Empty list"
+msgstr "Порожній список"
+
+#. 
+#: :562
+msgid "FTP account already exists!"
+msgstr "Користувач FTP уже існує!"
+
+#. 
+#: :563
+msgid "Unknown domain type"
+msgstr ""
+
+#. 
+#: :564
+msgid "Incorrect mount point range or syntax"
+msgstr ""
+
+#. 
+#: :565
+msgid "%s does not exist"
+msgstr ""
+
+#. 
+#: :566
+msgid "FTP account added!"
+msgstr "Користувача FTP додано!"
+
+#. 
+#: :567
+msgid "Please enter FTP account username!"
+msgstr "Введіть користувача FTP!"
+
+#. 
+#: :568
+msgid "Password data is missing!"
+msgstr "Пароль порожній!"
+
+#. 
+#: :569
+msgid "Entered passwords differ from the another!"
+msgstr "Паролі не співпадають!"
+
+#. 
+#: :570
+msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgstr "Список піддоменів порожній! Неможливо додати користувача FTP!"
+
+#. 
+#: :571
+msgid "Alias list is empty! You can not add FTP accounts there!"
+msgstr "Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
+
+#. 
+#: :572
+msgid "Please specify other FTP account dir!"
+msgstr "Будь ласка, укажіть іншу директорію користувача FTP!"
+
+#. 
+#: :573
+msgid "FTP accounts limit reached!"
+msgstr ""
+
+#. 
+#: :574
+msgid "ISPCP - Client/Add FTP User"
+msgstr "ISPCP - Клієнт/Додавання користувача FTP"
+
+#. 
+#: :575
+msgid "Add FTP user"
+msgstr "Додати користувача FTP"
+
+#. 
+#: :576
+msgid "To main domain"
+msgstr "Головному домену"
+
+#. 
+#: :577
+msgid "To domain alias"
+msgstr "Аліасу домену"
+
+#. 
+#: :578
+msgid "To subdomain"
+msgstr "Піддомену"
+
+#. 
+#: :579
+msgid "Use other dir"
+msgstr "Використовувати іншу директорію"
+
+#. 
+#: :580
+msgid "Choose dir"
+msgstr "Вибір директорії"
+
+#. 
+#: :581
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Використано невірний формат Mail Localpart"
+
+#. 
+#: :582
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr ""
+
+#. 
+#: :583
+msgid "Mail forward list empty!"
+msgstr "Список пересилань порожній!"
+
+#. 
+#: :584
+msgid "Mail account already exists!"
+msgstr "Поштова скринька вже існує!"
+
+#. 
+#: :585
+msgid "Mail account scheduled for addition!"
+msgstr "Триває додавання поштової скриньки!"
+
+#. 
+#: :586
+msgid "Please enter mail account username!"
+msgstr "Введіть користувача електронної пошти!"
+
+#. 
+#: :587
+msgid "Password data includes not permitted signs!"
+msgstr "Пароль містить недозволені символи!"
+
+#. 
+#: :588
+msgid "Subdomain list is empty! You can not add mail accounts!"
+msgstr "Список піддоменів порожній! Неможливо додати поштову скриньку!"
+
+#. 
+#: :589
+msgid "Alias list is empty! You can not add mail accounts!"
+msgstr "Список аліасів порожній! Ви не можете додавати тут поштові скриньки!"
+
+#. 
+#: :590
+msgid "Forward list is empty!"
+msgstr "Список пересилання порожній!"
+
+#. 
+#: :591
+msgid "Mail accounts limit reached!"
+msgstr ""
+
+#. 
+#: :592
+msgid "ISPCP - Client/Add Mail User"
+msgstr "ISPCP - Клієнт/Додавання поштової скриньки"
+
+#. 
+#: :593
+msgid "Add mail users"
+msgstr "Додати поштові скриньки"
+
+#. 
+#: :594
+msgid "Normal mail"
+msgstr "Нормальний E-mail"
+
+#. 
+#: :595
+msgid "Forward mail"
+msgstr "Пересилання пошти"
+
+#. 
+#: :596
+msgid "Forward to"
+msgstr "Переслати:"
+
+#. 
+#: :597
+msgid "Please type database name!"
+msgstr "Будь ласка, введіть назву бази даних!"
+
+#. 
+#: :598
+msgid "Too long database name!"
+msgstr "Занадто довга назва БД!"
+
+#. 
+#: :599
+msgid "Specified database name already exists!"
+msgstr "Вказане ім'я бази даних уже існує!"
+
+#. 
+#: :600
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Маски (% та ?) заборонені!"
+
+#. 
+#: :601
+msgid "SQL database created successfully!"
+msgstr "База даних SQL успішно створена!"
+
+#. 
+#: :602
+msgid "SQL accounts limit reached!"
+msgstr ""
+
+#. 
+#: :603
+msgid "ISPCP - Client/Add SQL Database"
+msgstr "ISPCP - Клієнт/Додавання бази даних SQL"
+
+#. 
+#: :604
+msgid "Add SQL database"
+msgstr "Додати SQL базу"
+
+#. 
+#: :605
+msgid "Database name"
+msgstr "Назва бази даних"
+
+#. 
+#: :606
+msgid "Use numeric ID"
+msgstr "Використовувати числовий ID"
+
+#. 
+#: :607
+msgid "Before the name"
+msgstr ""
+
+#. 
+#: :608
+msgid "After the name"
+msgstr ""
+
+#. 
+#: :609
+msgid "Subdomains limit reached!"
+msgstr ""
+
+#. 
+#: :610
+msgid "Please specify subdomain name!"
+msgstr "Будь ласка, укажіть назву піддомена!"
+
+#. 
+#: :611
+msgid "Subdomain already exists!"
+msgstr "Піддомен уже існує!"
+
+#. 
+#: :612
+msgid "Wrong subdomain syntax!"
+msgstr "Невірний запис субдомену!"
+
+#. 
+#: :613
+msgid "Subdomain mount point already exists!"
+msgstr "Точка монтування піддомену вже існує!"
+
+#. 
+#: :614
+msgid "Subdomain scheduled for addition!"
+msgstr "Триває додавання піддомену!"
+
+#. 
+#: :615
+msgid "ISPCP - Client/Add Subdomain"
+msgstr "ISPCP - Клієнт/Додавання піддомену"
+
+#. 
+#: :616
+msgid "Add subdomain"
+msgstr "Додати піддомен"
+
+#. 
+#: :617
+msgid "Subdomain data"
+msgstr "Відомості піддомену"
+
+#. 
+#: :618
+msgid "Subdomain name"
+msgstr "Ім'я піддомену"
+
+#. 
+#: :619
+msgid "Directory tree<br>mount point"
+msgstr "Точка монтування (директорія)"
+
+#. 
+#: :620
+msgid "Backup archive scheduled for restoring!"
+msgstr "Триває відновлення архівів..."
+
+#. 
+#: :621
+msgid "ISPCP - Client/Daily Backup"
+msgstr "ISPCP - Клієнт/Щоденна архівація"
+
+#. 
+#: :622
+msgid "Backup"
+msgstr "Резервне копіювання"
+
+#. 
+#: :623
+msgid "Daily backup"
+msgstr "Щоденна архівація"
+
+#. 
+#: :624
+msgid "Direction download today backup"
+msgstr "Завантаження щоденного архівування"
+
+#. 
+#: :625
+msgid "Login with your FTP account"
+msgstr "Ввійти як користувач FTP"
+
+#. 
+#: :626
+msgid "Switch to backup directory"
+msgstr "Обрати директорію резервних архівів"
+
+#. 
+#: :627
+msgid "Download the files stored in this directory"
+msgstr ""
+
+#. 
+#: :628
+msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+msgstr ""
+
+#. 
+#: :629
+msgid "Restore backup"
+msgstr "Відновити резервний архів"
+
+#. 
+#: :630
+msgid "Click Restore button and the system will restore last daily backup"
+msgstr "Натисність кнопку Відновити, і система відновить останню щоденну копію!"
+
+#. 
+#: :631
+msgid "Restore"
+msgstr "Відновити"
+
+#. 
+#: :632
+#, fuzzy
+msgid "N/A"
+msgstr "N/A"
+
+#. 
+#: :633
+msgid "Enable"
+msgstr "Увімкнути"
+
+#. 
+#: :634
+msgid "Disable"
+msgstr "Вимкнути"
+
+#. 
+#: :635
+msgid "Delete CatchAll"
+msgstr "Видалити перехоплювач пошти"
+
+#. 
+#: :636
+msgid "Create catch all"
+msgstr "Створити перехоплення всього"
+
+#. 
+#: :637
+msgid "Catch all mail account can not be created!"
+msgstr "Неможливо створити поштову скриньку перехоплення!"
+
+#. 
+#: :638
+msgid "Mail accounts list is empty!"
+msgstr "Список поштових скриньок порожній!"
+
+#. 
+#: :639
+msgid "ISPCP - Client/Manage Users"
+msgstr "ISPCP - Клієнт/Керування користувачами"
+
+#. 
+#: :640
+msgid "Manage users"
+msgstr "Керування користувачами"
+
+#. 
+#: :641
+msgid "Mail users"
+msgstr "Користувачі пошти"
+
+#. 
+#: :642
+msgid "Auto respond"
+msgstr "Автовідповідач"
+
+#. 
+#: :643
+msgid "Domain mails"
+msgstr "Пошта домену"
+
+#. 
+#: :644
+msgid "Subdomain mails"
+msgstr "Пошта піддомена"
+
+#. 
+#: :645
+msgid "Alias mails"
+msgstr "Поштові аліаси"
+
+#. 
+#: :646
+msgid "Mails total"
+msgstr "Усього поштових скриньок"
+
+#. 
+#: :647
+msgid "FTPs total"
+msgstr "Усього FTP"
+
+#. 
+#: :648
+msgid "Catch all account"
+msgstr "перехопити всю пошту"
+
+#. 
+#: :649
+msgid "Catch all"
+msgstr "Перехопити все"
+
+#. 
+#: :650
+msgid "FTP users"
+msgstr "Користувачі FTP"
+
+#. 
+#: :651
+msgid "FTP account"
+msgstr "Користувач FTP"
+
+#. 
+#: :652
+msgid "ISPCP - Client/Change Password"
+msgstr "ISPCP - Клієнт/Зміна пароля"
+
+#. 
+#: :653
+msgid "ISPCP - Client/Change Personal Data"
+msgstr "ISPCP - Клієнт/Зміна персональних даних"
+
+#. 
+#: :654
+msgid "Zip / Postal code"
+msgstr "Поштовий індекс"
+
+#. 
+#: :655
+msgid "Catch all account scheduled for creation!"
+msgstr "Перехоплення всього в процесі створення!"
+
+#. 
+#: :656
+msgid "Mail forward list error!"
+msgstr "Помилка списку пересилання пошти!"
+
+#. 
+#: :657
+msgid "ISPCP - Client/Create CatchAll Mail Account"
+msgstr "ISPCP - Клієнт/Створення \"перехоплювача пошти\""
+
+#. 
+#: :658
+msgid "Create catch all mail account"
+msgstr "Створити перехоплення всіх поштових облікових записів"
+
+#. 
+#: :659
+msgid "Mail accounts list"
+msgstr "Список поштових скриньок"
+
+#. 
+#: :660
+msgid "ISPCP - Client/Cronjob Manager"
+msgstr "ISPCP - Клієнт/Керування завданнями Cron"
+
+#. 
+#: :661
+msgid "Cronjob Manager"
+msgstr "Менеджер завдань Cron'a"
+
+#. 
+#: :662
+msgid "Add Cronjob"
+msgstr "Додати завдання в Cron"
+
+#. 
+#: :663
+msgid "Active"
+msgstr "Активне"
+
+#. 
+#: :664
+msgid "Yes"
+msgstr "Так"
+
+#. 
+#: :665
+msgid "No"
+msgstr "Ні"
+
+#. 
+#: :666
+msgid "Cronjob"
+msgstr "Завдання Cron'a"
+
+#. 
+#: :667
+msgid "Command to run:"
+msgstr "Команда для виконання"
+
+#. 
+#: :668
+msgid "Minute(s):"
+msgstr "Хвилин:"
+
+#. 
+#: :669
+msgid "Hour(s):"
+msgstr "Година(и):"
+
+#. 
+#: :670
+msgid "Day(s):"
+msgstr "День(днів):"
+
+#. 
+#: :671
+msgid "Months(s):"
+msgstr "Місяць(і):"
+
+#. 
+#: :672
+msgid "Weekday(s):"
+msgstr "Дні тижня:"
+
+#. 
+#: :673
+msgid "Reset"
+msgstr "Очистити"
+
+#. 
+#: :674
+msgid "Cancel"
+msgstr "Скасувати"
+
+#. 
+#: :675
+msgid "Edit Cronjob"
+msgstr "Редагувати завдання Cron"
+
+#. 
+#: :676
+msgid "Cronjobs"
+msgstr "Завдання Cron'a"
+
+#. 
+#: :677
+msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку видаліть їх!"
+
+#. 
+#: :678
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr "Аліас домену, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку видаліть їх!"
+
+#. 
+#: :679
+msgid "Alias scheduled for deletion!"
+msgstr "Триває видалення аліасу!"
+
+#. 
+#: :680
+msgid "Catch all account scheduled for deletion!"
+msgstr "Перехоплення всього в процесі видалення!"
+
+#. 
+#: :681
+msgid "FTP account deleted successfully!"
+msgstr "Користувача FTP успішно видалено!"
+
+#. 
+#: :682
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Видаліть спочатку \"перехоплювач усіх\" для цієї скриньки!"
+
+#. 
+#: :683
+msgid "SQL database was removed successfully!"
+msgstr "База даних SQL успішно видалена!"
+
+#. 
+#: :684
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку видаліть їх!"
+
+#. 
+#: :685
+msgid "Subdomain scheduled for deletion!"
+msgstr "Триває видалення піддомену!"
+
+#. 
+#: :686
+msgid "You have no permission to disable this alias forward"
+msgstr ""
+
+#. 
+#: :687
+msgid "Alias scheduled for modification!"
+msgstr "Триває зміна аліасу!"
+
+#. 
+#: :688
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
+
+#. 
+#: :689
+msgid "Mail account scheduled for modification!"
+msgstr "Триває оновлення поштової скриньки!"
+
+#. 
+#: :690
+msgid "ISPCP - Client/Domain Statistics"
+msgstr "ISPCP - Клієнт/Статистика домену"
+
+#. 
+#: :691
+msgid "Web Stats"
+msgstr ""
+
+#. 
+#: :692
+#, fuzzy
+msgid "WEB"
+msgstr "WEB"
+
+#. 
+#: :693
+#, fuzzy
+msgid "SMTP"
+msgstr "SMTP"
+
+#. 
+#: :694
+#, fuzzy
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+#. 
+#: :695
+msgid "Sum"
+msgstr "Сума"
+
+#. 
+#: :696
+msgid "Entered passwords differ!"
+msgstr "Паролі не співпадають!"
+
+#. 
+#: :697
+msgid "%s do not exist"
+msgstr ""
+
+#. 
+#: :698
+msgid "FTP account data updated!"
+msgstr "Дані користувача FTP оновлені!"
+
+#. 
+#: :699
+msgid "ISPCP - Client/Edit FTP Account"
+msgstr "ISPCP - Клієнт/Редагування облікового запису FTP"
+
+#. 
+#: :700
+msgid "Edit FTP user"
+msgstr "Редагувати користувача FTP"
+
+#. 
+#: :701
+msgid "Save changes"
+msgstr "Зберегти зміни"
+
+#. 
+#: :702
+msgid "Email account not found!"
+msgstr ""
+
+#. 
+#: :703
+msgid "Missing or wrong data!"
+msgstr "Відсутні або невірні дані!"
+
+#. 
+#: :704
+msgid "Password data includes not valid signs!"
+msgstr ""
+
+#. 
+#: :705
+msgid "Mail were updated successfully!"
+msgstr "Пошта успішно оновлена!"
+
+#. 
+#: :706
+msgid "ISPCP - Manage Mail and FTP / Edit mail account"
+msgstr "ISPCP - Керування поштою та FTP / Редагування поштової скриньки"
+
+#. 
+#: :707
+msgid "Edit email account"
+msgstr "Редагувати поштову скриньку"
+
+#. 
+#: :708
+msgid "Please type your mail autorespond message!"
+msgstr "Будь ласка, введіть повідомлення автовідповідача!"
+
+#. 
+#: :709
+msgid "Mail account scheduler for modification!"
+msgstr "Оновлення поштової скриньки!"
+
+#. 
+#: :710
+msgid "ISPCP - Client/Enable Mail Auto Responder"
+msgstr "ISPCP - Клієнт/Активація автовідповідача"
+
+#. 
+#: :711
+msgid "Edit mail auto responder"
+msgstr "Редагувати поштовий автовідповідач"
+
+#. 
+#: :712
+msgid "Your message"
+msgstr "Ваше повідомлення"
+
+#. 
+#: :713
+msgid "Please wait for update"
+msgstr "Будь ласка, зачекайте оновлення!"
+
+#. 
+#: :714
+msgid "ISPCP - Manage Domain Alias/Edit Alias"
+msgstr "ISPCP - Керування аліасами домену/Редагування аліасів"
+
+#. 
+#: :715
+msgid "Edit domain alias"
+msgstr "Редагувати аліас домену"
+
+#. 
+#: :716
+msgid "Alias name"
+msgstr "Назва аліасу"
+
+#. 
+#: :717
+msgid "Enable mail auto responder"
+msgstr "Увімкнути автовідповідач"
+
+#. 
+#: :718
+msgid "ISPCP - Client/Manage Error Custom Pages"
+msgstr "ISPCP - Клієнт/Керування власними сторінками помилок"
+
+#. 
+#: :719
+msgid "Server error - please choose error page"
+msgstr "Серверна помилка - оберіть сторінку помилки"
+
+#. 
+#: :720
+msgid "Edit error page"
+msgstr "Редагувати сторінку помилок"
+
+#. 
+#: :721
+msgid "Custom error page was updated!"
+msgstr "Сторінка помилки оновлена!"
+
+#. 
+#: :722
+msgid "System error - custom error page was NOT updated!"
+msgstr "Системна помилка - сторінка помилок НЕ оновлена!"
+
+#. 
+#: :723
+msgid "Error 401 (unauthorised)"
+msgstr ""
+
+#. 
+#: :724
+msgid "Error 403 (forbidden)"
+msgstr "Помилка 403 (доступ заборонено)"
+
+#. 
+#: :725
+msgid "Error 404 (not found)"
+msgstr "Помилка 404 (сторінку не знайдено)"
+
+#. 
+#: :726
+msgid "Error 500 (internal server error)"
+msgstr "Помилка 500 (внутрішня помилка серверу)"
+
+#. 
+#: :727
+msgid "Error pages"
+msgstr "Сторінки помилок"
+
+#. 
+#: :728
+msgid "FTP list is empty!"
+msgstr "Список FTP порожній!"
+
+#. 
+#: :729
+msgid "Can not open directory !<br>Please contact your administrator !"
+msgstr "Не можу відкрити директорію!<br>Зверніться до Вашого системного адміністратора!"
+
+#. 
+#: :730
+msgid "Parent Directory"
+msgstr "Батьківська директорія"
+
+#. 
+#: :731
+msgid "Protect it"
+msgstr "Захистити"
+
+#. 
+#: :732
+msgid "ISPCP - Client/Webtools"
+msgstr "ISPCP - Клієнт/Web-інструменти"
+
+#. 
+#: :733
+msgid "Directory tree"
+msgstr "Дерево директорій"
+
+#. 
+#: :734
+msgid "Directories"
+msgstr "Директорії"
+
+#. 
+#: :735
+msgid "Choose"
+msgstr "Вибрати"
+
+#. 
+#: :736
+#, c-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr ""
+
+#. 
+#: :737
+#, c-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr ""
+
+#. 
+#: :738
+msgid "You are exceeding your disk limit!"
+msgstr "Ви вичерпали ліміт дискового простору!"
+
+#. 
+#: :739
+msgid "You have no new support questions!"
+msgstr "Немає нових питань підтримки!"
+
+#. 
+#: :740
+msgid "support question(s)"
+msgstr "питання підтримки"
+
+#. 
+#: :741
+msgid "new"
+msgstr "новий"
+
+#. 
+#: :742
+msgid "ISPCP - Client/Main Index"
+msgstr "ISPCP - Клієнт/Головна"
+
+#. 
+#: :743
+msgid "General information"
+msgstr "Загальна інформація"
+
+#. 
+#: :744
+msgid "Account name"
+msgstr "Обліковий запис"
+
+#. 
+#: :745
+msgid "Main domain"
+msgstr "Головний домен"
+
+#. 
+#: :746
+msgid "SQL support"
+msgstr "Підтримка SQL"
+
+#. 
+#: :747
+msgid "Choose default language"
+msgstr "Вибір основної мови"
+
+#. 
+#: :748
+msgid "Traffic usage"
+msgstr "Використання трафіку"
+
+#. 
+#: :749
+msgid "Disk usage"
+msgstr "Використання дискового простору"
+
+#. 
+#: :750
+msgid "User language updated successfully!"
+msgstr "Мова користувача успішно оновлена!"
+
+#. 
+#: :751
+msgid "ISPCP - Client/Change Language"
+msgstr "ISPCP - Клієнт/Зміна мови"
+
+#. 
+#: :752
+msgid "Subdomain list is empty!"
+msgstr "Список піддоменів порожній!"
+
+#. 
+#: :753
+msgid "Alias list is empty!"
+msgstr "Список аліасів порожній!"
+
+#. 
+#: :754
+msgid "ISPCP - Client/Manage Domains"
+msgstr "ISPCP - Клієнт/Керування доменами"
+
+#. 
+#: :755
+msgid "Manage domains"
+msgstr "Керування доменами"
+
+#. 
+#: :756
+msgid "Mount point"
+msgstr "Точка монтування"
+
+#. 
+#: :757
+msgid "Forward"
+msgstr "Переслати"
+
+#. 
+#: :758
+msgid "Database user list is empty!"
+msgstr "Список користувачів баз даних порожній!"
+
+#. 
+#: :759
+msgid "Database list is empty!"
+msgstr "Список баз даних порожній!"
+
+#. 
+#: :760
+msgid "ISPCP - Client/Manage SQL"
+msgstr "ISPCP - Клієнт/Керування SQL"
+
+#. 
+#: :761
+msgid "Manage SQL"
+msgstr "Керування SQL"
+
+#. 
+#: :762
+msgid "Database users"
+msgstr "Користувачі баз даних"
+
+#. 
+#: :763
+msgid "Add SQL user"
+msgstr "Додати SQL користувача"
+
+#. 
+#: :764
+msgid "Execute query"
+msgstr "Виконати запит"
+
+#. 
+#: :765
+msgid "Please specify message subject!"
+msgstr "Будь ласка, укажіть тему повідомлення!"
+
+#. 
+#: :766
+msgid "Your message was sent!"
+msgstr "Ваше повідомлення надіслане!"
+
+#. 
+#: :767
+msgid "ISPCP - Support system - New ticket"
+msgstr "ISPCP - Система підтримки"
+
+#. 
+#: :768
+msgid "New ticket"
+msgstr "Новий запит"
+
+#. 
+#: :769
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr ""
+
+#. 
+#: :770
+msgid "Protected area deleted successfully!"
+msgstr "Захищена зона успішно видалена!"
+
+#. 
+#: :771
+msgid "Permission deny!"
+msgstr "Доступ заборонено!"
+
+#. 
+#: :772
+msgid "You do not have protected areas"
+msgstr "Ви не маєте захищених зон"
+
+#. 
+#: :773
+msgid "Manage users and groups"
+msgstr "Керування користувачами й групами"
+
+#. 
+#: :774
+msgid "Add user"
+msgstr "Додати користувача"
+
+#. 
+#: :775
+msgid "Group name"
+msgstr "Назва групи"
+
+#. 
+#: :776
+msgid "Group members"
+msgstr "Члени групи"
+
+#. 
+#: :777
+msgid "Add group"
+msgstr "Додати групу"
+
+#. 
+#: :778
+msgid "Group"
+msgstr "Група"
+
+#. 
+#: :779
+msgid "Add new protected area"
+msgstr "Додати захищену зону"
+
+#. 
+#: :780
+msgid "Please choose user or group"
+msgstr "Оберіть користувача або групу"
+
+#. 
+#: :781
+msgid "Please enter area name"
+msgstr "Введіть назву зони"
+
+#. 
+#: :782
+msgid "Please enter area path"
+msgstr "Введіть шлях зони"
+
+#. 
+#: :783
+msgid "%s doesn't exist"
+msgstr ""
+
+#. 
+#: :784
+msgid "You can not protect area without selected user(s)"
+msgstr ""
+
+#. 
+#: :785
+msgid "You can not protect area without selected group(s)"
+msgstr "Ви не можете створити захищену зону без вибору групи або груп"
+
+#. 
+#: :786
+msgid "Protected area updated successfully!"
+msgstr "Захищена зона успішно оновлена!"
+
+#. 
+#: :787
+msgid "Protected area created successfully!"
+msgstr "Захищена зона успішно створена!"
+
+#. 
+#: :788
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr ""
+
+#. 
+#: :789
+msgid "You have no users !"
+msgstr "Ви не маєте користувачів!"
+
+#. 
+#: :790
+msgid "You have no groups!"
+msgstr "Ви не маєте груп!"
+
+#. 
+#: :791
+msgid "Protect this area"
+msgstr "Захистити цю зону"
+
+#. 
+#: :792
+msgid "Path"
+msgstr "Шлях"
+
+#. 
+#: :793
+msgid "Groups"
+msgstr "Групи"
+
+#. 
+#: :794
+msgid "User auth"
+msgstr "Авторизація користувача"
+
+#. 
+#: :795
+msgid "Group auth"
+msgstr "Авторизація групи"
+
+#. 
+#: :796
+msgid "Area name"
+msgstr "Ім'я зони"
+
+#. 
+#: :797
+msgid "Unprotect it"
+msgstr "Відкрити"
+
+#. 
+#: :798
+msgid "Can not open file! Please contact your administrator !"
+msgstr "Не можу відкрити файл! Зверніться до Вашого системного адміністратора!"
+
+#. 
+#: :799
+msgid "User was assigned to group "
+msgstr ""
+
+#. 
+#: :800
+msgid "User was deleted from group "
+msgstr ""
+
+#. 
+#: :801
+msgid "User assign"
+msgstr "Призначення користувача"
+
+#. 
+#: :802
+msgid "Already in:"
+msgstr "Уже в групі:"
+
+#. 
+#: :803
+msgid "Not in:"
+msgstr "Не в групі:"
+
+#. 
+#: :804
+msgid "User was assigned to group"
+msgstr "Користувача призначено до групи"
+
+#. 
+#: :805
+msgid "Member of group:"
+msgstr ""
+
+#. 
+#: :806
+msgid "Select group:"
+msgstr ""
+
+#. 
+#: :807
+msgid "Update user"
+msgstr "Оновити користувача"
+
+#. 
+#: :808
+msgid "Wrong username!"
+msgstr "Невірне ім'я користувача!"
+
+#. 
+#: :809
+msgid "Group already exist !"
+msgstr "Група вже існує!"
+
+#. 
+#: :810
+msgid "Manage user"
+msgstr "Керування користувачем"
+
+#. 
+#: :811
+msgid "You have no users!"
+msgstr "Ви не маєте користувачів!"
+
+#. 
+#: :812
+msgid "User already exist !"
+msgstr "Користувач уже існує!"
+
+#. 
+#: :813
+msgid "SQL-user limit expired!"
+msgstr "Ліміт користувачів SQL вичерпаний!"
+
+#. 
+#: :814
+msgid "Please type user name!"
+msgstr "Будь ласка, введіть ім'я користувача!"
+
+#. 
+#: :815
+msgid "Please type user password!"
+msgstr "Будь ласка, введіть пароль користувача!"
+
+#. 
+#: :816
+msgid "Too user long password!"
+msgstr "Занадто довгий пароль користувача!"
+
+#. 
+#: :817
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr ""
+
+#. 
+#: :818
+msgid "User name too long!"
+msgstr "Занадто довге ім'я користувача!"
+
+#. 
+#: :819
+msgid "Specified SQL username name already exists!"
+msgstr "Вказаний користувач бази даних уже існує!"
+
+#. 
+#: :820
+msgid "SQL user successfully added!"
+msgstr "Користувач SQL успішно доданий!"
+
+#. 
+#: :821
+msgid "ISPCP - Client/Add SQL User"
+msgstr "ISPCP - Клієнт/Додавання користувача SQL"
+
+#. 
+#: :822
+msgid "SQL user name"
+msgstr "Користувач SQL"
+
+#. 
+#: :823
+msgid "In front the name"
+msgstr "На початку назви"
+
+#. 
+#: :824
+msgid "Behind the name"
+msgstr "У кінці імені"
+
+#. 
+#: :825
+msgid "Add existing user"
+msgstr "Додати існуючого користувача"
+
+#. 
+#: :826
+msgid "Existing SQL users"
+msgstr "Існуючі користувачі SQL"
+
+#. 
+#: :827
+msgid "Too long user password!"
+msgstr "Занадто довгий пароль користувача!"
+
+#. 
+#: :828
+msgid "SQL user password was successfully changed!"
+msgstr "Пароль користувача SQL успішно змінений!"
+
+#. 
+#: :829
+msgid "ISPCP - Client/Change SQL User Password"
+msgstr "ISPCP - Клієнт/Зміна пароля користувача SQL"
+
+#. 
+#: :830
+msgid "Change SQL user password"
+msgstr "Змінити пароль користувача SQL"
+
+#. 
+#: :831
+msgid "Change"
+msgstr "Змінити"
+
+#. 
+#: :832
+msgid "SQL user was removed successfully!"
+msgstr "Користувач SQL успішно видалений!"
+
+#. 
+#: :833
+msgid "Please enter SQL query!"
+msgstr "Введіть запит SQL!"
+
+#. 
+#: :834
+msgid "Cannot connect as MySQL administrator!"
+msgstr "Неможливо під'єднатись з правами адміністратора MySQL!"
+
+#. 
+#: :835
+msgid "SQL query has error"
+msgstr "Запит SQL містить помилку"
+
+#. 
+#: :836
+msgid "SQL query is ok"
+msgstr "Запит SQL успішно виконаний"
+
+#. 
+#: :837
+msgid "ISPCP - Client/Execute SQL Query"
+msgstr "ISPCP - Клієнт/Виконання запиту SQL"
+
+#. 
+#: :838
+msgid "Execute SQL query"
+msgstr "Виконати запит SQL"
+
+#. 
+#: :839
+msgid "SQL query"
+msgstr "Запит SQL"
+
+#. 
+#: :840
+msgid "Query status"
+msgstr "Стан запиту"
+
+#. 
+#: :841
+msgid "Query result"
+msgstr "Результат запиту"
+
+#. 
+#: :842
+msgid "Execute"
+msgstr "Виконати"
+
+#. 
+#: :843
+msgid "Protected area was deleted successful!"
+msgstr "Захищена зона успішно видалена!"
+
+#. 
+#: :844
+msgid "Hosting plans available for update"
+msgstr "Хостінг-плани, доступні для оновлення"
+
+#. 
+#: :845
+msgid "Cancel order"
+msgstr "Скасувати замовлення"
+
+#. 
+#: :846
+msgid "Your order"
+msgstr "Ваше замовлення"
+
+#. 
+#: :847
+msgid "Purchase"
+msgstr "Замовлення"
+
+#. 
+#: :848
+msgid "There are no available updates"
+msgstr "Немає наявних оновлень"
+
+#. 
+#: :849
+msgid "PHP Support: enabled"
+msgstr "Підтрика PHP: увімкнена"
+
+#. 
+#: :850
+msgid "PHP Support: disabled"
+msgstr "Підтримка PHP: вимкнена"
+
+#. 
+#: :851
+msgid "CGI Support: enabled"
+msgstr "Підтримка CGI: увімкнено"
+
+#. 
+#: :852
+msgid "CGI Support: disabled"
+msgstr "Підтримка CGI: вимкнено"
+
+#. 
+#: :853
+#, fuzzy
+msgid "HDD"
+msgstr "HDD"
+
+#. 
+#: :854
+msgid "Aliases"
+msgstr "Аліаси"
+
+#. 
+#: :855
+msgid "Emails"
+msgstr ""
+
+#. 
+#: :856
+msgid "FTPs"
+msgstr ""
+
+#. 
+#: :857
+msgid "SQL Databases"
+msgstr ""
+
+#. 
+#: :858
+msgid "SQL Users"
+msgstr ""
+
+#. 
+#: :859
+msgid "free of charge"
+msgstr "безкоштовно"
+
+#. 
+#: :860
+msgid "There are no available hosting plans for update"
+msgstr "Немає хостінг-планів для переходу"
+
+#. 
+#: :861
+msgid "ISPCP - Update hosting plan"
+msgstr "ISPCP - Оновлення хостінг-плану"
+
+#. 
+#: :862
+msgid "Your request for hosting pack update was added successfully"
+msgstr "Ваш запит на зміну хостінг-плану успішно доданий"
+
+#. 
+#: :863
+msgid "Your request for hosting pack update was removed successfully"
+msgstr "Ваш запит на зміну хостінг-плану успішно видалений"
+
+#. 
+#: :864
+msgid "Message was send!"
+msgstr "Повідомлення відправлене!"
+
+#. 
+#: :865
+msgid "Webtools"
+msgstr "Web-інструменти"
+
+#. 
+#: :866
+msgid "Customise error pages for your domain"
+msgstr ""
+
+#. 
+#: :867
+msgid "Backup and restore settings"
+msgstr "Налаштування резервного копіювання та відновлення"
+
+#. 
+#: :868
+msgid "Access your mail through the web interface"
+msgstr "Доступ до Вашої пошти через веб-інтерфейс"
+
+#. 
+#: :869
+msgid "Access your files through the web interface"
+msgstr "Доступ до Ваших файлів через веб-інтерфейс"
+
+#. 
+#: :870
+msgid "Manage protected areas, users and groups"
+msgstr "Керування захищеними зонами, користувачами й групами"
+
+#. 
+#: :871
+msgid "System tools"
+msgstr "Системні інструменти"
+
+#. 
+#: :872
+msgid "Statistics"
+msgstr "Статистика"
+
+#. 
+#: :873
+msgid "Reseller statistics"
+msgstr "Статистика реселера"
+
+#. 
+#: :874
+msgid "Admin log"
+msgstr "Журнал адміністратора"
+
+#. 
+#: :875
+msgid "Logout"
+msgstr "Вийти"
+
+#. 
+#: :876
+msgid "Custom menus"
+msgstr "Персональні меню"
+
+#. 
+#: :877
+msgid "Overview"
+msgstr "Перегляд"
+
+#. 
+#: :878
+msgid "User sessions"
+msgstr "Сесії користувачів"
+
+#. 
+#: :879
+msgid "Lostpw email setup"
+msgstr "Налаштування E-mail для відновлення пароля"
+
+#. 
+#: :880
+msgid "Rootkit Log"
+msgstr ""
+
+#. 
+#: :881
+msgid "Admin users"
+msgstr "Користувачі-адміни"
+
+#. 
+#: :882
+msgid "Normal users"
+msgstr "Нормальні користувачі"
+
+#. 
+#: :883
+msgid "Domains"
+msgstr "Домени"
+
+#. 
+#: :884
+msgid "System messages"
+msgstr "Системні повідомлення"
+
+#. 
+#: :885
+msgid "No new messages"
+msgstr "Немає нових повідомлень"
+
+#. 
+#: :886
+msgid "Server traffic"
+msgstr "Трафік сервера"
+
+#. 
+#: :887
+msgid "Administrators list is empty!"
+msgstr ""
+
+#. 
+#: :888
+msgid "Created by"
+msgstr "Створено"
+
+#. 
+#: :889
+msgid "Resellers list is empty!"
+msgstr "Список реселерів порожній!"
+
+#. 
+#: :890
+msgid "Change user interface"
+msgstr "Змінити інтерфейс користувача"
+
+#. 
+#: :891
+msgid "Not found user records matching the search criteria!"
+msgstr "Згідно пошукового запиту не знайдено жодного користувача!"
+
+#. 
+#: :892
+msgid "view aliases"
+msgstr "переглянути аліаси"
+
+#. 
+#: :893
+msgid "Users list is empty!"
+msgstr "Список користувачів порожній!"
+
+#. 
+#: :894
+msgid "S"
+msgstr "Стан"
+
+#. 
+#: :895
+msgid "D"
+msgstr "Д"
+
+#. 
+#: :896
+msgid "Details"
+msgstr "Деталі"
+
+#. 
+#: :897
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Ви впевнені, що бажаєте змінити статус облікового запису домена?"
+
+#. 
+#: :898
+msgid "Are you sure you want to delete this account?"
+msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
+
+#. 
+#: :899
+msgid "Administrators"
+msgstr "Адміністратори"
+
+#. 
+#: :900
+msgid "Resellers"
+msgstr "Реселери"
+
+#. 
+#: :901
+msgid "Search"
+msgstr "Пошук"
+
+#. 
+#: :902
+msgid "Creation date"
+msgstr "Дата створення"
+
+#. 
+#: :903
+#, c-format
+msgid "%1$s you are now logged as %2$s"
+msgstr ""
+
+#. 
+#: :904
+msgid "Go back"
+msgstr "Назад"
+
+#. 
+#: :905
+#, fuzzy
+msgid "OK"
+msgstr "OK"
+
+#. 
+#: :906
+msgid "Suspended"
+msgstr "Блоковано"
+
+#. 
+#: :907
+msgid "Error"
+msgstr "Помилка"
+
+#. 
+#: :908
+msgid "[Ticket] {SUBJ}"
+msgstr ""
+
+#. 
+#: :909
+msgid "Hello {TO_NAME} !\n\nYou have a new ticket to read"
+msgstr ""
+
+#. 
+#: :910
+msgid "Email and FTP accounts"
+msgstr "Користувачі E-mail і FTP"
+
+#. 
+#: :911
+msgid "Add mail user"
+msgstr "Додати поштову скриньку"
+
+#. 
+#: :912
+#, fuzzy
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+#. 
+#: :913
+msgid "Filemanager"
+msgstr "Менеджер файлів"
+
+#. 
+#: :914
+msgid "Webstatistics"
+msgstr "Статистика Web"
+
+#. 
+#: :915
+msgid "Group - Usermanagement"
+msgstr "Група - Керування користувачами"
+
+#. 
+#: :916
+msgid "Email Accounts"
+msgstr "Поштові скриньки"
+
+#. 
+#: :917
+msgid "FTP Accounts"
+msgstr "Користувачі FTP"
+
+#. 
+#: :918
+msgid "Update Hosting Package"
+msgstr ""
+
+#. 
+#: :919
+msgid "Addition in progress"
+msgstr "Додавання..."
+
+#. 
+#: :920
+msgid "ok"
+msgstr "OK"
+
+#. 
+#: :921
+msgid "Modification in progress"
+msgstr "Триває зміна"
+
+#. 
+#: :922
+msgid "Deletion in progress"
+msgstr "Триває видалення"
+
+#. 
+#: :923
+msgid "Unknown Error"
+msgstr ""
+
+#. 
+#: :924
+msgid "Domain mail"
+msgstr "Пошта домену"
+
+#. 
+#: :925
+msgid "Email forward"
+msgstr "Пересилання пошти"
+
+#. 
+#: :926
+msgid "Alias mail"
+msgstr "Поштовий аліас"
+
+#. 
+#: :927
+msgid "Alias forward"
+msgstr "Перенаправити аліас"
+
+#. 
+#: :928
+msgid "Subdomain mail"
+msgstr "Пошта піддомена"
+
+#. 
+#: :929
+msgid "Subdomain forward"
+msgstr "Перенаправлення піддомену"
+
+#. 
+#: :930
+msgid "Unknown type"
+msgstr "Невідомий тип"
+
+#. 
+#: :931
+msgid "Catchall account"
+msgstr ""
+
+#. 
+#: :932
+msgid "Could not get config from database"
+msgstr ""
+
+#. 
+#: :933
+msgid "You have to wait"
+msgstr "Зачекайте"
+
+#. 
+#: :934
+msgid "seconds"
+msgstr "секунд"
+
+#. 
+#: :935
+msgid "You have been blocked for"
+msgstr "Ви заблоковані за"
+
+#. 
+#: :936
+msgid "System is currently in servicemode! At time only administrators can login."
+msgstr "Система знаходиться в стані обслуговування! Лише адміністратори можуть входити до системи."
+
+#. 
+#: :937
+msgid "User already logged or session sharing problem! Aborting..."
+msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
+
+#. 
+#: :938
+msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+#. 
+#: :939
+msgid "Domain alias"
+msgstr "Аліас домену"
+
+#. 
+#: :940
+msgid "Manage Orders"
+msgstr "Керування замовленнями"
+
+#. 
+#: :941
+msgid "Order settings"
+msgstr "Налаштування замовлення"
+
+#. 
+#: :942
+msgid "Order email setup"
+msgstr "Налаштування повідомлення замовлення"
+
+#. 
+#: :943
+msgid "Please fill up both data fields for password!"
+msgstr "Будь ласка, введіть пароль двічі!"
+
+#. 
+#: :944
+msgid "wait to be added"
+msgstr "триває додавання"
+
+#. 
+#: :945
+msgid "wait to be modified"
+msgstr "триває зміна"
+
+#. 
+#: :946
+msgid "wait to be deleted"
+msgstr "триває видалення"
+
+#. 
+#: :947
+msgid "suspended"
+msgstr "блоковано"
+
+#. 
+#: :948
+msgid "wait to be enabled"
+msgstr "триває активація"
+
+#. 
+#: :949
+msgid "wait to be suspended"
+msgstr "триває блокування"
+
+#. 
+#: :950
+msgid "unknown status"
+msgstr "невідомий статус"
+
+#. 
+#: :951
+msgid "hide aliases"
+msgstr "приховати аліаси"
+
+#. 
+#: :952
+msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgstr ""
+
+#. 
+#: :953
+msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgstr ""
+
+#. 
+#: :954
+msgid "You are exceeding your subdomains limit!"
+msgstr ""
+
+#. 
+#: :955
+msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgstr ""
+
+#. 
+#: :956
+msgid "You Are Exceeding Your Alias Limit!"
+msgstr "Ви вичерпали ліміт аліасів!"
+
+#. 
+#: :957
+msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgstr ""
+
+#. 
+#: :958
+msgid "You are exceeding your mail accounts limit!"
+msgstr ""
+
+#. 
+#: :959
+msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgstr ""
+
+#. 
+#: :960
+msgid "You are exceeding your FTP accounts limit!"
+msgstr ""
+
+#. 
+#: :961
+msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgstr ""
+
+#. 
+#: :962
+msgid "You are exceeding your SQL databases limit!"
+msgstr ""
+
+#. 
+#: :963
+msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgstr ""
+
+#. 
+#: :964
+msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgstr "Бази даних для цього користувача заблоковані.<br>Ви не можете мати користувачів SQL!"
+
+#. 
+#: :965
+msgid "You are exceeding your SQL database limit!"
+msgstr ""
+
+#. 
+#: :966
+msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgstr ""
+
+#. 
+#: :967
+msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgstr ""
+
+#. 
+#: :968
+msgid "You have a new order"
+msgstr ""
+
+#. 
+#: :969
+msgid "\n\nDear {RESELLER},\nyou have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n\nPlease login into your ISPCP control panel for more details.\n\n"
+msgstr ""
+
+#. 
+#: :970
+msgid "Wrong domain name syntax!"
+msgstr "Невірний запис доменного імені!"
+
+#. 
+#: :971
+msgid "You do not have permission to access this interface!"
+msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
+
+#. 
+#: :972
+msgid "Add On A Domain"
+msgstr "Додати домен"
+
+#. 
+#: :973
+msgid "Continue"
+msgstr "Далі"
+
+#. 
+#: :974
+msgid "(e.g. domain-of-your-choice.com)"
+msgstr ""
+
+#. 
+#: :975
+msgid "Please fill out all needed fields!"
+msgstr "Будь ласка, заповніть усі потрібні поля!"
+
+#. 
+#: :976
+msgid "Enter Address"
+msgstr "Введіть адресу"
+
+#. 
+#: :977
+msgid "* denotes mandatory field."
+msgstr "* позначені обов'язкові для заповнення поля"
+
+#. 
+#: :978
+msgid "Your Chart"
+msgstr "Ваша схема"
+
+#. 
+#: :979
+msgid "Costs"
+msgstr "Ціни"
+
+#. 
+#: :980
+msgid "Personal Data"
+msgstr "Персональні дані"
+
+#. 
+#: :981
+msgid "Check Out"
+msgstr "Перевірено"
+
+#. 
+#: :982
+msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgstr "<b>Дякуємо за замовлення</b><br>Ви отримаєте електронне повідомлення з більш детальною інформацією"
+
+#. 
+#: :983
+msgid "No available hosting packages"
+msgstr "Хостінг-плани відсутні"
+
+#. 
+#: :984
+msgid "Webspace"
+msgstr "Місце на диску"
+
+#. 
+#: :985
+msgid "Domain Features"
+msgstr "Характеристики домену"
+
+#. 
+#: :986
+msgid "Package Features"
+msgstr "Характеристика хостінг-плану"
+
+#. 
+#: :987
+msgid "Backup and Restore"
+msgstr "Резервне копіювання та відновлення"
+
+#. 
+#: :988
+msgid "Custom Error Pages"
+msgstr "Індивідуальні сторінки помилок"
+
+#. 
+#: :989
+msgid "Protected Areas"
+msgstr "Захищені зони"
+
+#. 
+#: :990
+msgid "Custom Apache Logs"
+msgstr "Журнали Apache"
+
+#. 
+#: :991
+msgid "Web & E-Mail Support"
+msgstr "Web & E-mail підтримка"
+
+#. 
+#: :992
+msgid "Your Own Domain"
+msgstr "Ваш власний домен"
+
+#. 
+#: :993
+msgid "ISPCP Control Panel"
+msgstr "Контрольна панель ISPCP"
+
+#. 
+#: :994
+msgid "Automatic Updates"
+msgstr "Автоматичні оновлення"
+
+#. 
+#: :995
+msgid "Package Price"
+msgstr "Ціна"
+
+#. 
+#: :996
+msgid "Setup Fee"
+msgstr "Плата за установку"
+
+#. 
+#: :997
+msgid "Performance"
+msgstr "Виконання"
+
+#. 
+#: :998
+msgid "ISPCP Reseller : Add Alias"
+msgstr "Реселер ISPCP : Додавання аліасу"
+
+#. 
+#: :999
+msgid "You have no user records."
+msgstr "Ви не маєте записів користувачів."
+
+#. 
+#: :1000
+msgid "ISPCP - Reseller/Add hosting plan"
+msgstr "ISPCP - Реселер/Додавання хостінг-плану"
+
+#. 
+#: :1001
+msgid "ISPCP - Reseller/Change Password"
+msgstr "ISPCP - Реселер/Зміна пароля"
+
+#. 
+#: :1002
+msgid "ISPCP - Reseller/Change Personal Data"
+msgstr "ISPCP - Реселер/Зміна персональних даних"
+
+#. 
+#: :1003
+msgid "ISPCP - Circular"
+msgstr "ISPCP - Адміністратор/Реклама"
+
+#. 
+#: :1004
+msgid "Circular"
+msgstr "Масова розсилка пошти"
+
+#. 
+#: :1005
+msgid "Wrong domain ID!"
+msgstr "Невірний ID домену!"
+
+#. 
+#: :1006
+msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr "Домен, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку видаліть їх!"
+
+#. 
+#: :1007
+msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr "Домен, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку видаліть їх!"
+
+#. 
+#: :1008
+msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr "Домен, що Ви намагаєтеся видалити, містить аліаси!<br>Спочатку видаліть їх!"
+
+#. 
+#: :1009
+msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgstr "Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть їх!"
+
+#. 
+#: :1010
+msgid "ISPCP - Manage Domain/Alias"
+msgstr "ISPCP - Керування доменами/Аліаси"
+
+#. 
+#: :1011
+msgid "Manage alias"
+msgstr "Керування аліасами"
+
+#. 
+#: :1012
+msgid "Real domain"
+msgstr "Реальний домен"
+
+#. 
+#: :1013
+msgid "You have no alias records."
+msgstr "Ви не маєте записів аліасів."
+
+#. 
+#: :1014
+msgid "enabled"
+msgstr "увімкнено"
+
+#. 
+#: :1015
+msgid "delete"
+msgstr "видалити"
+
+#. 
+#: :1016
+msgid "Domain alias added for termination!"
+msgstr "Видалення аліаса домену!"
+
+#. 
+#: :1017
+msgid "Domain alias not added for termination!"
+msgstr "Аліас домену не може бути видалений!"
+
+#. 
+#: :1018
+msgid "Domain alias added!"
+msgstr "Аліас домену додано!"
+
+#. 
+#: :1019
+msgid "Domain alias not added!"
+msgstr "Аліас домену не додано!"
+
+#. 
+#: :1020
+msgid "Domain alias modified!"
+msgstr "Аліас домену змінено!"
+
+#. 
+#: :1021
+msgid "Domain alias not modified!"
+msgstr "Аліас домену не змінено!"
+
+#. 
+#: :1022
+msgid "User terminated!"
+msgstr "Користувач видалений!"
+
+#. 
+#: :1023
+msgid "ISPCP - Domain/Edit"
+msgstr "ISPCP - Домен/Редагування"
+
+#. 
+#: :1024
+msgid "Edit Domain"
+msgstr "Редагувати домен"
+
+#. 
+#: :1025
+msgid "Domain properties"
+msgstr "Властивості домену"
+
+#. 
+#: :1026
+msgid "Domain properties updated successfully!"
+msgstr "Властивості домену успішно оновлені!"
+
+#. 
+#: :1027
+msgid "<b>%s</b> Service can not be disabled !<br>"
+msgstr ""
+
+#. 
+#: :1028
+msgid "There are <b>%s</b> records on the system!"
+msgstr ""
+
+#. 
+#: :1029
+msgid "<b>%s</b> Service can not be limited !<br>"
+msgstr ""
+
+#. 
+#: :1030
+msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
+msgstr ""
+
+#. 
+#: :1031
+msgid "<b>%s</b> Service can not be unlimited !<br>"
+msgstr ""
+
+#. 
+#: :1032
+msgid "There are reseller limits for the <b>%s</b> service!"
+msgstr ""
+
+#. 
+#: :1033
+msgid "You are exceeding reseller limits for the <b>%s</b> service!"
+msgstr ""
+
+#. 
+#: :1034
+msgid "<b>%s</b> service can not be limited !<br>"
+msgstr ""
+
+#. 
+#: :1035
+msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
+msgstr ""
+
+#. 
+#: :1036
+msgid "ISPCP - Users/Edit"
+msgstr "ISPCP - Користувачі/Редагування"
+
+#. 
+#: :1037
+msgid "Edit user"
+msgstr "Редагувати користувача"
+
+#. 
+#: :1038
+msgid "Users list"
+msgstr "Список користувачів"
+
+#. 
+#: :1039
+msgid "ISPCP - Reseller/Edit hosting plan"
+msgstr "ISPCP - Реселер/Редагування хостінг-плану"
+
+#. 
+#: :1040
+msgid "View hosting plan"
+msgstr "Перегляд хостінг-плану"
+
+#. 
+#: :1041
+msgid "Incorrect price!"
+msgstr ""
+
+#. 
+#: :1042
+msgid "Incorrect setup fee!"
+msgstr ""
+
+#. 
+#: :1043
+msgid "ISPCP - Reseller/Manage users/Email setup"
+msgstr ""
+
+#. 
+#: :1044
+msgid "ISPCP - Reseller/Main Index"
+msgstr "ISPCP - Реселер/Головна"
+
+#. 
+#: :1045
+msgid "View details"
+msgstr "Перегляд деталей"
+
+#. 
+#: :1046
+msgid "User accounts"
+msgstr "Облікові записи користувачів"
+
+#. 
+#: :1047
+msgid "Mail account"
+msgstr "Поштова скринька"
+
+#. 
+#: :1048
+msgid "Extras"
+msgstr "Додатково"
+
+#. 
+#: :1049
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
+
+#. 
+#: :1050
+msgid "ISPCP - Reseller/Lostpw email setup"
+msgstr "ISPCP - Реселер/Налаштування відновлення пароля"
+
+#. 
+#: :1051
+msgid "ISPCP - Reseller/Order email setup"
+msgstr "ISPCP - Реселер/Налаштування замовлення"
+
+#. 
+#: :1052
+msgid "Manage orders"
+msgstr "Керування замовленнями"
+
+#. 
+#: :1053
+msgid "Wrong order ID!"
+msgstr "Невірний ID замовлення!"
+
+#. 
+#: :1054
+msgid "User added!"
+msgstr "Користувача додано!"
+
+#. 
+#: :1055
+msgid "Customer order was removed successful!"
+msgstr "Замовлення було успішно видалене!"
+
+#. 
+#: :1056
+msgid "ISPCP - Reseller/Order details"
+msgstr "ISPCP - Реселер/Деталі замовлення"
+
+#. 
+#: :1057
+msgid "Order data updated successfully!"
+msgstr "Дані про замовлення успішно оновлені!"
+
+#. 
+#: :1058
+msgid "Order date"
+msgstr "Дата замовлення"
+
+#. 
+#: :1059
+msgid "Hosting plan"
+msgstr "Хостінг-план"
+
+#. 
+#: :1060
+msgid "Hosting details"
+msgstr "Детально"
+
+#. 
+#: :1061
+msgid "Order details"
+msgstr "Деталі замовлення"
+
+#. 
+#: :1062
+msgid "Customer data"
+msgstr "Дані користувача"
+
+#. 
+#: :1063
+msgid "Delete order"
+msgstr "Видалити замовлення"
+
+#. 
+#: :1064
+msgid "Are you sure you want to delete this order?"
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+#. 
+#: :1065
+msgid "Add to the system"
+msgstr "Додати в систему"
+
+#. 
+#: :1066
+msgid "ISPCP - Reseller/Order settings"
+msgstr "ISPCP - Реселер/Налаштування замовлення"
+
+#. 
+#: :1067
+msgid "Header"
+msgstr "Верхня частина"
+
+#. 
+#: :1068
+msgid "Preview"
+msgstr "Перегляд"
+
+#. 
+#: :1069
+msgid "Implementation URL"
+msgstr "Робочий URL"
+
+#. 
+#: :1070
+msgid "Footer"
+msgstr "Нижня частина"
+
+#. 
+#: :1071
+msgid "ISPCP - Reseller/Order management"
+msgstr "ISPCP - Реселер/Керування замовленнями"
+
+#. 
+#: :1072
+msgid "You do not have new orders!"
+msgstr "Ви не маєте нових замовлень!"
+
+#. 
+#: :1073
+msgid "New order"
+msgstr "Нове замовлення"
+
+#. 
+#: :1074
+msgid "Update order"
+msgstr "Оновити замовлення"
+
+#. 
+#: :1075
+#, fuzzy
+msgid "ID"
+msgstr "ID"
+
+#. 
+#: :1076
+msgid "Order"
+msgstr "Замовлення"
+
+#. 
+#: :1077
+msgid "Add/Details"
+msgstr "Додати/Деталі"
+
+#. 
+#: :1078
+msgid "ISPCP - Users/Add user"
+msgstr "ISPCP - Користувачі/Додавання користувача"
+
+#. 
+#: :1079
+msgid "Choose hosting plan"
+msgstr "Вибір хостінґ-плану"
+
+#. 
+#: :1080
+msgid "Personalise template"
+msgstr ""
+
+#. 
+#: :1081
+msgid "Next step"
+msgstr "Наступний крок"
+
+#. 
+#: :1082
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr ""
+
+#. 
+#: :1083
+msgid "ISPCP - User/Add user(step2)"
+msgstr "ISPCP - Користувач/Додавання користувача (крок 2)"
+
+#. 
+#: :1084
+msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :1085
+msgid "Backup / Restore"
+msgstr "Резервне копіювання / Відновлення"
+
+#. 
+#: :1086
+msgid "Apache logs"
+msgstr "Журнали веб-сервера"
+
+#. 
+#: :1087
+msgid "Awstats"
+msgstr "AWStats"
+
+#. 
+#: :1088
+msgid "ISPCP - User/Add user"
+msgstr "ISPCP - Користувач/Додавання користувача"
+
+#. 
+#: :1089
+msgid "Add other domains to this account"
+msgstr "Додати інші домени до цього облікового запису"
+
+#. 
+#: :1090
+msgid "There's a conflicting admin / reseller fix that first!"
+msgstr ""
+
+#. 
+#: :1091
+msgid "System error with Domain ID "
+msgstr ""
+
+#. 
+#: :1092
+msgid "Done"
+msgstr "Завершено"
+
+#. 
+#: :1093
+msgid "This reseller has no domains yet."
+msgstr "Цей реселер не має доменів."
+
+#. 
+#: :1094
+msgid "ISPCP - Users"
+msgstr "ISPCP - Користувачі"
+
+#. 
+#: :1095
+msgid "Stats"
+msgstr "Статистика"
+
+#. 
+#: :1096
+msgid "Edit properties"
+msgstr "Редагувати властивості"
+
+#. 
+#: :1097
+msgid "You have no users."
+msgstr "Ви не маєте користувачів."
+
+#. 
+#: :1098
+msgid "User data updated!"
+msgstr "Дані користувача оновлені!"
+
+#. 
+#: :1099
+msgid "User data not updated!"
+msgstr "Дані користувача не оновлені!"
+
+#. 
+#: :1100
+msgid "This user has domain record !<br>First remove the domain from the system!"
+msgstr "Цей користувач має домен!<br>Спочатку видаліть домен із системи!"
+
+#. 
+#: :1101
+msgid "User not terminated!"
+msgstr "Користувач не видалений!"
+
+#. 
+#: :1102
+msgid "ISPCP - Reseller : Support System: View Tickets"
+msgstr "ISPCP - Реселер : Система підтримки: Перегляд запитів"
+
+#. 
+#: :1103
+msgid "Message was sent."
+msgstr "Повідомлення відправлене."

@@ -95,9 +95,9 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max)
 {
   list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
   if ($max_usage != 0) {
-    $traffic_usage_data = sprintf("%s%% [%s ".tr('of')." %s]", $percent, sizeit($usage), sizeit($max_usage));
+    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
   } else {
-    $traffic_usage_data = sprintf("%s%% [%s ".tr('of')." %s]", $percent, sizeit($usage),  tr('unlimited'));
+    $traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
   }
 
   $tpl -> assign(array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
@@ -115,9 +115,9 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max)
   list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
 
   if ($max_usage != 0) {
-    $traffic_usage_data = sprintf("%s%% [%s ".tr('of')." %s]", $percent, sizeit($usage), sizeit($max_usage));
+    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
   } else {
-    $traffic_usage_data = sprintf("%s%% [%s ".tr('of')." %s]", $percent, sizeit($usage),  tr('unlimited'));
+    $traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
   }
 
   $tpl -> assign(array('DISK_USAGE_DATA' => $traffic_usage_data,
@@ -472,7 +472,7 @@ $tpl -> assign(
                         'TR_CGI_SUPPORT' => tr('CGI support'),
                         'TR_MYSQL_SUPPORT' => tr('SQL support'),
                         'TR_SUBDOMAINS' => tr('Subdomains'),
-                        'TR_DOMAIN_ALIASES' => tr('Domain aliasses'),
+                        'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
                         'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
                         'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
                         'TR_SQL_DATABASES' => tr('SQL databases'),

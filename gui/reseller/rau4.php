@@ -96,7 +96,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($domain_id, $ok_status, $add_status));
 	if ($rs -> RecordCount() == 0) {
 
-		set_page_message(tr('System error with Doman ID ')."$domain_id");
+		set_page_message(tr('System error with Domain ID ')."$domain_id");
 		header('Location: users.php');
 		die();
 	}

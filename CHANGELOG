@@ -10,12 +10,19 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-26 Raphael Geissert
+	- GUI:
+		* Fixed #438: Incorrect e-mail range or syntax! when adding a reseller
+		* Deleting from admin log everything older than 3 months wasn't supported by code
+		* Corrected many spelling mistakes and made improvements on i18n
+
 2007-06-25 Raphael Geissert
 	- SETUP:
 		* Fixed #433: PMA's blowfish key contains a single quote character
 	- GUI:
 		* Fixed #432: Call to undefined function ispcp_domain_check()
 		* Fixed #431: Undefined variable: data
+		* Fixed #435: Incorrect e-mail range or syntax! caused by new function names
 
 2007-06-24 Raphael Geissert
 	- ENGINE:

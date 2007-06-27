@@ -1128,7 +1128,7 @@ sub repl_tag {
 
     if (!defined ($rwith)) {
 
-        push_el(\@main::el, 'repl_tag()', "ERROR: Undefined input data, rwith: |$rwith| !");
+        push_el(\@main::el, 'repl_tag()', "ERROR: Undefined rwith!");
 
         return (-1, '');
 

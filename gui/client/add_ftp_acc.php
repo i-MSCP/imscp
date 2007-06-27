@@ -414,7 +414,7 @@ function add_ftp_user(&$sql, $dmn_name)
 		$res = $vfs->exists($ftp_vhome);
 
 		if ( !$res ) {
-			set_page_message($ftp_vhome." ".tr('does not exist'));
+			set_page_message(tr('%s does not exist', $ftp_vhome));
 			return;
 		}
 
@@ -506,7 +506,7 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
   list($ftp_acc_cnt, $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt) = get_domain_running_ftp_acc_cnt($sql, $dmn_id);
 
   if ($dmn_ftpacc_limit != 0 &&  $ftp_acc_cnt >= $dmn_ftpacc_limit) {
-    set_page_message(tr('FTP accounts limit expired!'));
+    set_page_message(tr('FTP accounts limit reached!'));
     header("Location: ftp_accounts.php");
     die();
   } else {
@@ -595,7 +595,7 @@ $tpl -> assign(array('TR_ADD_FTP_USER' => tr('Add FTP user'),
                      'TR_TO_DOMAIN_ALIAS' => tr('To domain alias'),
                      'TR_TO_SUBDOMAIN' => tr('To subdomain'),
                      'TR_PASSWORD' => tr('Password'),
-                     'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+                     'TR_PASSWORD_REPEAT' => tr('Repeat password'),
                      'TR_USE_OTHER_DIR' => tr('Use other dir'),
                      'TR_ADD' => tr('Add'),
                      'CHOOSE_DIR' => tr('Choose dir'),

@@ -200,7 +200,7 @@ function check_user_data()
             return false;
         }
     }
-    if (chk_email($_POST['email'])) {
+    if (!chk_email($_POST['email'])) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
 
@@ -467,7 +467,7 @@ function calculate_new_reseller_vals ($data, $r, &$rmax, $u, $umax, $uf, &$err, 
 
         if ($data > 0) {
 
-            $err = tr('This reseller has user(s) with unlimited rights for <b>').$obj.tr('</b> Service !<br>');
+            $err = tr('This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>', $obj);
 
             $err .= tr('If you want to limit the reseller, fist you must limit its users !<br>');
 
@@ -861,12 +861,12 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_manage_users.tpl');
 $tpl -> assign(
     array(
         'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
-        'TR_PASSWORD_NOT_MATCH' => tr('Password not match!'),
+        'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
         'TR_EDIT_RESELLER' => tr('Edit reseller'),
         'TR_CORE_DATA' => tr('Core data'),
         'TR_USERNAME' => tr('Username'),
         'TR_PASSWORD' => tr('Password'),
-        'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+        'TR_PASSWORD_REPEAT' => tr('Repeat password'),
         'TR_EMAIL' => tr('E-mail'),
         'TR_UNLIMITED' => tr('unlimited'),
         'TR_MAX_DOMAIN_COUNT' => tr('Max domain count'),
@@ -882,7 +882,7 @@ $tpl -> assign(
         'TR_PERL_CGI' => tr('CGI / Perl'),
         'TR_JSP' => tr('JSP'),
         'TR_SSI' => tr('SSI'),
-        'TR_FRONTPAGE_EXT' => tr('Fronpage extensions'),
+        'TR_FRONTPAGE_EXT' => tr('Frontpage extensions'),
         'TR_BACKUP_RESTORE' => tr('Backup and restore'),
         'TR_CUSTOM_ERROR_PAGES' => tr('Custom error pages'),
         'TR_PROTECTED_AREAS' => tr('Protected areas'),

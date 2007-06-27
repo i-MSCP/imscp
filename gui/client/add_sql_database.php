@@ -137,8 +137,8 @@ function add_sql_database(&$sql, $user_id)
     return;
   }
 
-  $query = 'create database ' . quoteIdentifier($db_name);
-  $rs = exec_query($sql, $query, array());
+  $query = 'create database ?';
+  $rs = exec_query($sql, $query, array($db_name));
 
   $query = <<<SQL_QUERY
         insert into sql_database
@@ -189,7 +189,7 @@ function check_sql_permissions($sql, $user_id)
   list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($sql, $dmn_id);
 
   if ($dmn_sqld_limit != 0 &&  $sqld_acc_cnt >= $dmn_sqld_limit) {
-    set_page_message(tr('SQL accounts limit expired!'));
+    set_page_message(tr('SQL accounts limit reached!'));
     header("Location: manage_sql.php");
     die();
   }
@@ -225,8 +225,8 @@ check_permissions($tpl);
 $tpl -> assign(array('TR_ADD_DATABASE' => tr('Add SQL database'),
                      'TR_DB_NAME' => tr('Database name'),
                      'TR_USE_DMN_ID' => tr('Use numeric ID'),
-                     'TR_START_ID_POS' => tr('In front the name'),
-                     'TR_END_ID_POS' => tr('Behind the name'),
+                     'TR_START_ID_POS' => tr('Before the name'),
+                     'TR_END_ID_POS' => tr('After the name'),
                      'TR_ADD' => tr('Add')));
 
 gen_page_message($tpl);

@@ -483,11 +483,9 @@ function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$
 
     } else if ($dest_max > 0 && $src_max == 0 && $umax == 0) {
 
-        $err = "<b>$uname</b>".tr('Has unlimited rights for a <b>').$obj.tr('</b> Service !<br>');
+        $err = tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>', $uname, $obj);
 
-        $err .= tr('You can not move <b>').$uname.tr('</b> in a destination reseller,<br>');
-
-        $err .= tr('which has limits for the <b>').$obj.tr('</b> service!');
+        $err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
 
         return;
 
@@ -495,9 +493,7 @@ function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$
 
         if ($dest + $umax > $dest_max) {
 
-            $err = "<b>$uname</b>"." ".tr('is exceeding limits for a')." <b>".$obj.tr('</b>');
-
-            $err .= tr('<br>service in destination reseller!<br>');
+            $err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
             $err .= tr('Moving aborted!');
 
@@ -525,11 +521,9 @@ function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$
 
         if ($dest + $umax > $dest_max) {
 
-            $err = "<b>$uname</b>"." ".tr('is exceeding limits for a')." <b>".$obj.tr('</b><br>');
+             $err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
-            $err .= tr('Service in destination reseller!<br>');
-
-            $err .= tr('Moving aborted!');
+             $err .= tr('Moving aborted!');
 
         } else {
 
@@ -576,11 +570,9 @@ function calculate_reseller_vals (&$dest, $dest_max, &$src, $src_max, $umax, &$e
 
     } else if ($dest_max > 0 && $src_max == 0 && $umax == 0) {
 
-        $err = "<b>$uname</b>".tr(' Has unlimited rights for a <b>').$obj.tr('</b> Service !<br>');
+        $err = tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>', $uname, $obj);
 
-        $err .= tr('You can not move <b>').$uname.tr('</b> In a destination reseller,<br>');
-
-        $err .= tr('Which has limits for the <b>').$obj.tr('</b> service!');
+        $err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
 
         return;
 
@@ -588,9 +580,7 @@ function calculate_reseller_vals (&$dest, $dest_max, &$src, $src_max, $umax, &$e
 
         if ($dest + $umax > $dest_max) {
 
-            $err = "<b>$uname</b>"." ".tr('is exceeding limits for a')." <b>".$obj.tr('</b>');
-
-            $err .= tr('<br>service in destination reseller!<br>');
+            $err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
             $err .= tr('Moving aborted!');
 
@@ -614,9 +604,7 @@ function calculate_reseller_vals (&$dest, $dest_max, &$src, $src_max, $umax, &$e
 
         if ($dest + $umax > $dest_max) {
 
-            $err = "<b>$uname</b>"." ".tr('is exceeding limits for a')." <b>".$obj.tr('</b><br>');
-
-            $err .= tr('Service in destination reseller!<br>');
+            $err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
             $err .= tr('Moving aborted!');
 
@@ -660,7 +648,7 @@ SQL_QUERY;
 
         if (!preg_match("/$domain_ip_id;/", $dest)) {
 
-            $err = "<b>$domain_name</b>".tr(' Has IP address that can not be managed from the destination reseller !<br>This user can not be moved!');
+            $err = tr('<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!', $domain_name);
 
             return false;
 

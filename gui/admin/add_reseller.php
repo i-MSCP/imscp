@@ -446,7 +446,7 @@ SQL_QUERY;
 
         return false;
     }
-    if (chk_email(clean_input($_POST['email']))) {
+    if (!chk_email(clean_input($_POST['email']))) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
 
@@ -540,23 +540,23 @@ $tpl -> assign(
         'TR_CORE_DATA' => tr('Core data'),
         'TR_USERNAME' => tr('Username'),
         'TR_PASSWORD' => tr('Password'),
-        'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+        'TR_PASSWORD_REPEAT' => tr('Repeat password'),
         'TR_EMAIL' => tr('Email'),
         'TR_UNLIMITED' => tr('unlimited'),
-        'TR_MAX_DOMAIN_COUNT' => tr('Max Domain count'),
-        'TR_MAX_SUBDOMAIN_COUNT' => tr('Max subdomain count'),
-        'TR_MAX_ALIASES_COUNT' => tr('Max aliases count'),
-        'TR_MAX_MAIL_USERS_COUNT' => tr('Max mail users count'),
-        'TR_MAX_FTP_USERS_COUNT' => tr('Max FTP users count'),
-        'TR_MAX_SQLDB_COUNT' => tr('Max SQL databases count'),
-        'TR_MAX_SQL_USERS_COUNT' => tr('Max SQL users count'),
-        'TR_MAX_TRAFFIC_AMOUNT' => tr('Max traffic amount [MB]'),
-        'TR_MAX_DISK_AMOUNT' => tr('Max disk amount [MB]'),
+        'TR_MAX_DOMAIN_COUNT' => tr('Domains limit'),
+        'TR_MAX_SUBDOMAIN_COUNT' => tr('Subdomains limit'),
+        'TR_MAX_ALIASES_COUNT' => tr('Aliases limit'),
+        'TR_MAX_MAIL_USERS_COUNT' => tr('Mail accounts limit'),
+        'TR_MAX_FTP_USERS_COUNT' => tr('FTP accounts limit'),
+        'TR_MAX_SQLDB_COUNT' => tr('SQL databases limit'),
+        'TR_MAX_SQL_USERS_COUNT' => tr('SQL users limit'),
+        'TR_MAX_TRAFFIC_AMOUNT' => tr('Traffic limit [MB]'),
+        'TR_MAX_DISK_AMOUNT' => tr('Disk limit [MB]'),
         'TR_PHP' => tr('PHP'),
         'TR_PERL_CGI' => tr('CGI / Perl'),
         'TR_JSP' => tr('JSP'),
         'TR_SSI' => tr('SSI'),
-        'TR_FRONTPAGE_EXT' => tr('Fronpage extensions'),
+        'TR_FRONTPAGE_EXT' => tr('Frontpage extensions'),
         'TR_BACKUP_RESTORE' => tr('Backup and restore'),
         'TR_CUSTOM_ERROR_PAGES' => tr('Custom error pages'),
         'TR_PROTECTED_AREAS' => tr('Protected areas'),

@@ -226,7 +226,7 @@ $tpl -> assign(
 						'TR_GROUPS' => tr('Groups'),
 						'TR_PASSWORD' => tr('Password'),
 						'TR_STATUS' => tr('Status'),
-						'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+						'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 
 					  )
 				);

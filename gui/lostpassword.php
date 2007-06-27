@@ -61,14 +61,14 @@ if (isset($_GET['key'])) {
 
 		if (sendpassword($_GET['key'])) {
 			$tpl -> assign(array(
-								'TR_MESSAGE' => tr('Password send'),
+								'TR_MESSAGE' => tr('Password sent'),
 								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 								)
 							);
 
 		} else {
 			$tpl -> assign(array(
-								'TR_MESSAGE' => tr('ERROR: Password not send'),
+								'TR_MESSAGE' => tr('ERROR: Password was not sent'),
 								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 								)
 							);

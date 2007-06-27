@@ -69,16 +69,16 @@ SQL_QUERY;
 
     if ($ticket_urgency == 1) {
       $tpl -> assign(array('URGENCY' => tr("Low"),
-                           'URGENCY_ID' => tr("1")));
+                           'URGENCY_ID' => '1'));
     } elseif ($ticket_urgency == 2) {
       $tpl -> assign(array('URGENCY' => tr("Medium"),
-                           'URGENCY_ID' => tr("2")));
+                           'URGENCY_ID' => '2'));
     } elseif ($ticket_urgency == 3) {
       $tpl -> assign(array('URGENCY' => tr("High"),
-                           'URGENCY_ID' => tr("3")));
+                           'URGENCY_ID' => '3'));
     } elseif ($ticket_urgency == 4){
       $tpl -> assign(array('URGENCY' => tr("Very high"),
-                           'URGENCY_ID' => tr("4")));
+                           'URGENCY_ID' => '4'));
     }
 
     get_ticket_from($tpl, $sql, $ticket_id);

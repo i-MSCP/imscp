@@ -97,7 +97,7 @@ SQL_QUERY;
 						write_log(get_session('user_logged').": add service port $name ({$port})!");
 					}
 					else {
-						set_page_message(tr('ERROR: Port allready exists!'));
+						set_page_message(tr('ERROR: Port already exists!'));
 						return;
 					}
 				}

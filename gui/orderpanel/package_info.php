@@ -211,7 +211,7 @@ gen_page_message($tpl);
                         'TR_CGI_SUPPORT' => tr('CGI support'),
                         'TR_MYSQL_SUPPORT' => tr('SQL support'),
                         'TR_SUBDOMAINS' => tr('Subdomains'),
-                        'TR_DOMAIN_ALIAS' => tr('Domain aliasses'),
+                        'TR_DOMAIN_ALIAS' => tr('Domain aliases'),
                         'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
                         'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
                         'TR_SQL_DATABASES' => tr('SQL databases'),

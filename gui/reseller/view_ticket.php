@@ -88,19 +88,19 @@ SQL_QUERY;
 			}
 			if ($ticket_urgency == 1){
 				$urgency = tr("Low");
-				$urgency_id = "1";
+				$urgency_id = '1';
 			}
 			else if ($ticket_urgency == 2){
 				$urgency = tr("Medium");
-				$urgency_id = "2";
+				$urgency_id = '2';
 			}
 			else if ($ticket_urgency == 3){
 				$urgency = tr("High");
-				$urgency_id = "3";
+				$urgency_id = '3';
 			}
 			else if ($ticket_urgency == 4){
 				$urgency = tr("Very high");
-				$urgency_id = "4";
+				$urgency_id = '4';
 			}
 
 			get_ticket_from($tpl, $sql, $ticket_id);

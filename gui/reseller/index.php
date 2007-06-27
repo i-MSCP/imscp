@@ -126,7 +126,7 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max)
 		$max_usage  = tr('unlimited');
 	}
 
-    $traffic_usage_data = sprintf("%s%% [%s ".tr('of')." %s]", $percent, sizeit($usage), $max_usage);
+    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);
 
     $tpl -> assign(
                     array(
@@ -151,7 +151,7 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max)
 		$max_usage  = tr('unlimited');
 	}
 
-    $traffic_usage_data = sprintf("%s%% [%s ".tr('of')." %s]", $percent, sizeit($usage), $max_usage);
+    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);;
 
     $tpl -> assign(
                     array(
@@ -249,7 +249,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
 
     } else {
         if ($utraff_current > 1024 * 1024 * 1024 * 1024) {
-            $tpl -> assign('TR_TRAFFIC_WARNING', tr('You are exceeding your UNLIMITED traffic limit!'));
+//            $tpl -> assign('TR_TRAFFIC_WARNING', tr('You are exceeding your UNLIMITED traffic limit!'));
         } else {
             $tpl -> assign('TRAFF_WARN', '');
         }
@@ -272,7 +272,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
 
     } else {
         if ($udisk_current > 1024 * 1024 * 1024 * 1024) {
-            $tpl -> assign('TR_DISK_WARNING', tr('You are exceeding your UNLIMITED disk limit!'));
+//            $tpl -> assign('TR_DISK_WARNING', tr('You are exceeding your UNLIMITED disk limit!'));
         } else {
             $tpl -> assign('DISK_WARN', '');
         }
@@ -379,12 +379,9 @@ SQL_QUERY;
 
         $tpl -> assign(
                          array(
+                                 'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $questions),
                                  'NO_MESSAGES' => '',
-                                 'TR_YOU_HAVE' => tr('You have'),
-                                 'TR_NEW' => tr('new'),
-                                 'TR_VIEW' => tr('View'),
-								 'TR_MSG_TYPE' => tr('support questions'),
-								 'MSG_NUM' => $questions,
+                                 'TR_VIEW' => tr('View')
                               )
                       );
 

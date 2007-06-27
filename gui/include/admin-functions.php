@@ -97,7 +97,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_ADMIN_LOG' => tr('Admin log'),
 						'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
 						'TR_MENU_SYSTEM_INFO' => tr('System info'),
-						'TR_MENU_I18N' => tr('Multilanguage'),
+						'TR_MENU_I18N' => tr('Multilingual'),
 						'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
 						'TR_MENU_LOGOUT' => tr('Logout'),
 						'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
@@ -208,7 +208,7 @@ $tpl -> assign(
 				'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
 				'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 				'TR_MENU_SYSTEM_INFO' => tr('System info'),
-				'TR_MENU_I18N' => tr('Multilanguage'),
+				'TR_MENU_I18N' => tr('Multilingual'),
 				'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
 				'TR_MENU_LOGOUT' => tr('Logout'),
 				'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
@@ -419,7 +419,7 @@ SQL_QUERY;
 
 	$tpl -> assign(
 						array(
-								'ADMIN_MESSAGE' => tr('Adminitrators list is empty!'),
+								'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
 								'ADMIN_LIST' => ''
 							 )
 					  );
@@ -1910,7 +1910,7 @@ function gen_logged_from(&$tpl)
 
 			$tpl -> assign(
 				array(
-						'YOU_ARE_LOGGED_AS' => $_SESSION['logged_from'].", ".tr('you are logged now as')." ".$_SESSION['user_logged'],
+						'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $_SESSION['user_logged']),
 						'TR_GO_BACK' => tr('Go back'),
 					 )
 			  );
@@ -2703,7 +2703,7 @@ SQL_QUERY;
 	$from_uname = $res -> fields['admin_name'];
 
 // Prepare message
-	$subject = tr('[Ticket]')." {SUBJ}";
+	$subject = tr('[Ticket] {SUBJ}');
 	$message = tr("Hello {TO_NAME} !\n\nYou have a new ticket to read");
 // Format adresses
 	if ($from_fname && $from_lname) {

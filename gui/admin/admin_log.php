@@ -203,6 +203,8 @@ function clear_log() {
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 
+        $query = null;
+
     	switch ($_POST['uaction_clear']) {
 
     		case 0:
@@ -239,6 +241,18 @@ SQL_QUERY;
 SQL_QUERY;
 
     			break;
+
+    		case 12:
+    				$query = <<<SQL_QUERY
+            delete
+                from
+            log
+            	where
+            DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+           		>= log_time
+SQL_QUERY;
+    			break;
+
     		case 26:
     				$query = <<<SQL_QUERY
             delete
@@ -261,6 +275,9 @@ SQL_QUERY;
 SQL_QUERY;
 
     			break;
+    			default:
+    			    system_message(tr('Invalid time period!'));
+    			    break;
 
     	}
 

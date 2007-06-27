@@ -267,9 +267,9 @@ SQL_QUERY;
 
             foreach ($faray as $value) {
                 $value = trim($value);
-                if (chk_email($value) > 0 && $value !== '') {
+                if (!chk_email($value) && $value !== '') {
                     /* ERR .. strange :) not email in this line - warning */
-                    set_page_message(tr("Mailformat of an adress in your forward list is incorrect!"));
+                    set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
                     return;
                 }
 				else if ($value === '') {
@@ -288,9 +288,9 @@ SQL_QUERY;
 
             foreach ($faray as $value) {
                 $value = trim($value);
-                if (chk_email($value) > 0 && $value !== '') {
+                if (!chk_email($value) && $value !== '') {
                     /* ERR .. strange :) not email in this line - warrning */
-                    set_page_message(tr("Mailformat of an adress in your forward list is incorrect!"));
+                    set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
                     return;
                 }
 				else if ($value === '') {
@@ -309,9 +309,9 @@ SQL_QUERY;
 
             foreach ($faray as $value) {
                 $value = trim($value);
-                if (chk_email($value) > 0 && $value !== '') {
+                if (!chk_email($value) && $value !== '') {
                     /* ERR .. strange :) not email in this line - warrning */
-                    set_page_message(tr("Mailformat of an adress in your forward list is incorrect!"));
+                    set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
 
                     return;
                 }
@@ -483,7 +483,7 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
         $als_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $dmn_id);
 
     if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
-        set_page_message(tr('Mail accounts limit expired!'));
+        set_page_message(tr('Mail accounts limit reached!'));
         header("Location: email_accounts.php");
         die();
     }
@@ -576,7 +576,7 @@ $tpl->assign(array('TR_ADD_MAIL_USER' => tr('Add mail users'),
         'TR_TO_SUBDOMAIN' => tr('To subdomain'),
         'TR_NORMAL_MAIL' => tr('Normal mail'),
         'TR_PASSWORD' => tr('Password'),
-        'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+        'TR_PASSWORD_REPEAT' => tr('Repeat password'),
         'TR_FORWARD_MAIL' => tr('Forward mail'),
         'TR_FORWARD_TO' => tr('Forward to'),
         'TR_ADD' => tr('Add')));

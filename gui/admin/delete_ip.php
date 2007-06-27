@@ -57,7 +57,7 @@ $rs = exec_query($sql, $query, array($delete_id));
 if ($rs -> fields['dcnt'] > 0) {
     /* ERR - we have domain that use this ip */
 
-    set_page_message(tr('Error we have domain that use this IP!'));
+    set_page_message(tr('Error: we have a domain using this IP!'));
 
     header( "Location: ip_manage.php" );
     die();
@@ -76,7 +76,7 @@ SQL_QUERY;
 
     while (($data = $res -> FetchRow())) {
       if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
-        set_page_message(tr('Error we have reseller that use this IP!'));
+        set_page_message(tr('Error: we have a reseller using this IP!'));
         header( "Location: ip_manage.php" );
         die();
       }

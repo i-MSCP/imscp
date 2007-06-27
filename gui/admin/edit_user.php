@@ -241,7 +241,7 @@ SQL_QUERY;
 
 function check_user_data()
 {
-    if (chk_email($_POST['email'])) {
+    if (!chk_email($_POST['email'])) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
 
@@ -309,12 +309,12 @@ if (isset($_POST['genpass'])) {
 $tpl -> assign(
                 array(
                         'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
-                        'TR_PASSWORD_NOT_MATCH' => tr('Password not match!'),
+                        'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
                         'TR_EDIT_ADMIN' => tr('Edit admin'),
                         'TR_CORE_DATA' => tr('Core data'),
                         'TR_USERNAME' => tr('Username'),
                         'TR_PASSWORD' => tr('Password'),
-                        'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+                        'TR_PASSWORD_REPEAT' => tr('Repeat password'),
                         'TR_EMAIL' => tr('Email'),
                         'TR_ADDITIONAL_DATA' => tr('Additional data'),
                         'TR_FIRST_NAME' => tr('First name'),

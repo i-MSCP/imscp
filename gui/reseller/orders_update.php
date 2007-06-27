@@ -327,7 +327,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > 0) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be disabled !<br>There is <b>').$obj.tr('</b> records on the system!');
+                $err = tr('<b>%s</b> Service can not be disabled !<br>', $obj).tr('There are <b>%s</b> records on the system!', $obj);
 
             } else {
 
@@ -345,7 +345,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > $data) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>Specified number is smaller than <b>').$obj.tr('</b> records, present on the system!');
+                $err = tr('<b>%s</b> Service can not be limited !<br>', $obj).tr('Specified number is smaller than <b>%s</b> records, present on the system!', $obj);
 
             } else {
 
@@ -365,7 +365,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > 0) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be disabled !<br>There is <b>').$obj.tr('</b> records on the system!');
+                $err = tr('<b>%s</b> Service can not be disabled !<br>', $obj).tr('There are <b>%s</b> records on the system!', $obj);
 
             } else {
 
@@ -389,7 +389,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > $data) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>Specified number is smaller than <b>').$obj.tr('</b> records, present on the system!');
+                $err = tr('<b>%s</b> Service can not be limited !<br>', $obj).tr('Specified number is smaller than <b>%s</b> records, present on the system!', $obj);
 
             } else {
 
@@ -423,7 +423,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
         } else if ($data == 0) {
 
-            $err = '<b>'.$obj.tr('</b> Service can not be unlimited !<br>There is reseller limits for the <b>').$obj.tr('</b> service!');
+            $err = tr('<b>%s</b> Service can not be unlimited !<br>', $obj).tr('There are reseller limits for the <b>%s</b> service!', $obj);
 
             return;
 
@@ -431,7 +431,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($r + $data > $rmax) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>You are exceeding reseller limits for the <b>').$obj.tr('</b> service!');
+                $err = tr('<b>%s</b> Service can not be limited !<br>', $obj).tr('You are exceeding reseller limits for the <b>%s</b> service!', $obj);
 
             } else {
 
@@ -467,7 +467,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > 0) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be disabled !<br>There is <b>').$obj.tr('</b> records on the system!');
+                $err = tr('<b>%s</b> Service can not be disabled !<br>', $obj).tr('There are <b>%s</b> records on the system!', $obj);
 
             } else {
 
@@ -481,7 +481,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
         } else if ($data == 0) {
 
-            $err = '<b>'.$obj.tr('</b> Service can not be unlimited !<br>There is reseller limits for the <b>').$obj.tr('</b> service!');
+            $err = tr('<b>%s</b> Service can not be unlimited !<br>', $obj).tr('There are reseller limits for the <b>%s</b> service!', $obj);
 
             return;
 
@@ -489,7 +489,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > $data) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>Specified number is smaller than <b>').$obj.tr('</b> records, present on the system!');
+                $err = tr('<b>%s</b> Service can not be limited !<br>', $obj).tr('Specified number is smaller than <b>%s</b> records, present on the system!', $obj);
 
             } else {
 
@@ -505,7 +505,7 @@ function calculate_user_dvals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
                     if ($r + $data_inc > $rmax) {
 
-                       $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>You are exceeding reseller limits for the <b>').$obj.tr('</b> service!');
+                       $err = tr('<b>%s</b> Service can not be limited !<br>', $obj).tr('You are exceeding reseller limits for the <b>%s</b> service!', $obj);
 
                        return;
 
@@ -541,7 +541,7 @@ function calculate_user_vals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > $data) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>Specified number is smaller than <b>').$obj.tr('</b> amount, present on the system!');
+                $err = tr('<b>%s</b> service can not be limited !<br>', $obj).tr('Specified number is smaller than <b>%s</b> amount, present on the system!', $obj);
 
             } else {
 
@@ -569,7 +569,7 @@ function calculate_user_vals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > $data) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>Specified number is smaller than <b>').$obj.tr('</b> amount, present on the system!');
+                $err = tr('<b>%s</b> service can not be limited !<br>', $obj).tr('Specified number is smaller than <b>%s</b> amount, present on the system!', $obj);
 
             } else {
 
@@ -613,7 +613,7 @@ function calculate_user_vals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
         if ($data == 0) {
 
-            $err = '<b>'.$obj.tr('</b> Service can not be unlimited !<br>There is reseller limits for the <b>').$obj.tr('</b> service!');
+            $err = tr('<b>%s</b> Service can not be unlimited !<br>', $obj).tr('There are reseller limits for the <b>%s</b> service!', $obj);
 
             return;
 
@@ -621,7 +621,7 @@ function calculate_user_vals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
             if ($u > $data) {
 
-                $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>Specified number is smaller than <b>').$obj.tr('</b> amount, present on the system!');
+                $err = tr('<b>%s</b> service can not be limited !<br>', $obj).tr('Specified number is smaller than <b>%s</b> amount, present on the system!', $obj);
 
             } else {
 
@@ -637,7 +637,7 @@ function calculate_user_vals ( $data, $u, &$umax, &$r, $rmax, &$err, $obj ) {
 
                     if ($r + $data_inc > $rmax) {
 
-                       $err = '<b>'.$obj.tr('</b> Service can not be limited !<br>You are exceeding reseller limits for the <b>').$obj.tr('</b> service!');
+                       $err = tr('<b>%s</b> Service can not be limited !<br>', $obj).tr('You are exceeding reseller limits for the <b>%s</b> service!', $obj);
 
                        return;
 

@@ -65,7 +65,7 @@ $tpl -> assign(
 						'TR_CORE_DATA' => tr('Core data'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),
 						'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
-						'TR_PERSONALIZE_TEMPLATE' => tr('Personalize template'),
+						'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),
 						'TR_YES' => tr('yes'),
 						'TR_NO' => tr('no'),
 						'TR_NEXT_STEP' => tr('Next step')

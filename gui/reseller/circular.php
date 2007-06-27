@@ -100,7 +100,7 @@ function check_user_data ( &$tpl ) {
 
         $err_message = tr('Please specify a sender email!');
 
-    } else if (chk_email($sender_email)) {
+    } else if (!chk_email($sender_email)) {
 
         set_page_message( tr("Incorrect email range or syntax!"));
 

@@ -200,7 +200,7 @@ function update_email_forward(&$tpl, &$sql)
 
   foreach ($faray as $value) {
     $value = trim($value);
-    if (chk_email($value) > 0 && $value !== '') {
+    if (!chk_email($value) && $value !== '') {
       /* ERR .. strange :) not email in this line - warrning */
       set_page_message(tr("Mail forward list error!"));
       return;
@@ -269,7 +269,7 @@ check_permissions($tpl);
 $tpl -> assign(array('TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
                      'TR_SAVE' => tr('Save'),
                      'TR_PASSWORD' => tr('Password'),
-                     'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+                     'TR_PASSWORD_REPEAT' => tr('Repeat password'),
                      'TR_EDIT' => tr('Edit')));
 
 gen_page_message($tpl);

@@ -39,7 +39,7 @@
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_general.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{GENERAL_INFO}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -98,7 +98,7 @@
           </tr>
           <!-- BDP: msg_entry -->
           <td>&nbsp;</td>
-            <td colspan="2" class="title"><font color="#FF0000">{TR_YOU_HAVE}&nbsp;<b>{MSG_NUM}</b>&nbsp;{TR_NEW}&nbsp;{TR_MSG_TYPE}</font></td>
+            <td colspan="2" class="title"><font color="#FF0000">{TR_NEW_MSGS}</font></td>
           </tr>
           <!-- EDP: msg_entry -->
           <!--
@@ -125,7 +125,7 @@
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_traffic.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_TRAFFIC_USAGE}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -173,7 +173,7 @@
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_diskusage.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_DISK_USAGE}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -212,7 +212,7 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>			
+</table>
 			</td>
           </tr>
         </table>

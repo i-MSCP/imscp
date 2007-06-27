@@ -70,7 +70,7 @@ $tpl -> assign(
 							'TR_CORE_DATA' => tr('Core data'),
 							'TR_USERNAME' => tr('Username'),
 							'TR_PASSWORD' => tr('Password'),
-							'TR_REP_PASSWORD' => tr('Password(repeat)'),
+							'TR_REP_PASSWORD' => tr('Repeat password'),
 							'TR_DMN_IP' => tr('Domain IP'),
 							'TR_USREMAIL' => tr('Email'),
 							'TR_ADDITIONAL_DATA' => tr('Additional data'),

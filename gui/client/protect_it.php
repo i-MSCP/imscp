@@ -81,7 +81,7 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 		$vfs =& new vfs($domain, $sql);
 		$res = $vfs->exists($path);
 		if (!$res) {
-			  set_page_message($path.tr(" doesn't exist"));
+			  set_page_message(tr("%s doesn't exist", $path));
 			  return;
 		}
 
@@ -107,7 +107,7 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 				if (count($users) == 1 || count($users) == $i+1){
 					$user_id .= $users[$i];
 					if ($user_id == '-1' ||$user_id == '') {
-						set_page_message(tr('You can not protect area without selected usre(s)'));
+						set_page_message(tr('You can not protect area without selected user(s)'));
 					return;
 					}
 				} else {

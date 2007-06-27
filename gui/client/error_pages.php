@@ -88,7 +88,7 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl -> assign(array('TR_ERROR_401' => tr('Error 401 (unauthorized)'),
+$tpl -> assign(array('TR_ERROR_401' => tr('Error 401 (unauthorised)'),
                      'TR_ERROR_403' => tr('Error 403 (forbidden)'),
                      'TR_ERROR_404' => tr('Error 404 (not found)'),
                      'TR_ERROR_500' => tr('Error 500 (internal server error)'),

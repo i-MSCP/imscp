@@ -90,7 +90,7 @@ SQL_QUERY;
 				$tpl -> assign(
                             array(
                                     'URGENCY' => tr("Low"),
-									'URGENCY_ID' => tr("1"),
+									'URGENCY_ID' => '1',
                                  )
                           );
 
@@ -99,7 +99,7 @@ SQL_QUERY;
 					$tpl -> assign(
                             array(
                                     'URGENCY' => tr("Medium"),
-									'URGENCY_ID' => tr("2"),
+									'URGENCY_ID' => '2',
                                  )
                           );
 			}
@@ -107,7 +107,7 @@ SQL_QUERY;
 					$tpl -> assign(
                             array(
                                     'URGENCY' => tr("High"),
-									'URGENCY_ID' => tr("3"),
+									'URGENCY_ID' => '3',
                                  )
                           );
 			}
@@ -115,7 +115,7 @@ SQL_QUERY;
 					$tpl -> assign(
                             array(
                                     'URGENCY' => tr("Very high"),
-									'URGENCY_ID' => tr("4"),
+									'URGENCY_ID' => '4',
                                  )
                           );
 			}

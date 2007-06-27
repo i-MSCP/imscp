@@ -1744,7 +1744,7 @@ sub setup_php {
 	push_el(\@main::el, 'setup_php()', 'Starting...');
 
 	#
-	# Configure the fastcgi.conf
+	# Configure the fastcgi_ispcp.conf
 	#
 
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";

@@ -168,7 +168,7 @@ $tpl -> assign(
 						'TR_DELETE' => tr('Delete'),
 						'TR_GROUPS' => tr('Groups'),
 						'TR_PASSWORD' => tr('Password'),
-						'TR_PASSWORD_REPEAT' => tr('Password repeat'),
+						'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 						'TR_CANCEL' => tr('Cancel'),
 
 					  )

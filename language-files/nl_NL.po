@@ -1,0 +1,5598 @@
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-26 22:31-05:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+Array
+#. 
+#: :1
+#, fuzzy
+msgid "ISPCP - Virtual Hosting Control System"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :2
+msgid "encoding"
+msgstr "UTF-8"
+
+#. 
+#: :3
+msgid "Administrator login"
+msgstr ""
+
+#. 
+#: :4
+#, fuzzy
+msgid "Login"
+msgstr "Login"
+
+#. 
+#: :5
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#. 
+#: :6
+msgid "Password"
+msgstr "Wachtwoord"
+
+#. 
+#: :7
+msgid "Please enter your login information"
+msgstr "Geef uw login gegevens in"
+
+#. 
+#: :8
+msgid "Lost password"
+msgstr "Wachtwoord verloren"
+
+#. 
+#: :9
+msgid "Lost password function currently disabled"
+msgstr ""
+
+#. 
+#: :10
+msgid "Password sent"
+msgstr ""
+
+#. 
+#: :11
+msgid "ERROR: Password was not sent"
+msgstr ""
+
+#. 
+#: :12
+msgid "The password was requested"
+msgstr "Het wachtwoord is aangevraagd"
+
+#. 
+#: :13
+msgid "Back"
+msgstr "Terug"
+
+#. 
+#: :14
+msgid "ERROR: Unknown user"
+msgstr "ERROR: Onbekende gebruiker"
+
+#. 
+#: :15
+msgid "Retry"
+msgstr "Probeer opnieuw"
+
+#. 
+#: :16
+msgid "ERROR: Security code was not correct!"
+msgstr "ERROR: Veiligheidscode is niet correct"
+
+#. 
+#: :17
+msgid "Security code"
+msgstr "Veiligheidscode"
+
+#. 
+#: :18
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \\"Security code\\")"
+msgstr ""
+
+#. 
+#: :19
+msgid "Request password"
+msgstr "Vraag wachtwoord aan"
+
+#. 
+#: :20
+msgid "ispCP - Admin/Manage users/Add reseller"
+msgstr ""
+
+#. 
+#: :21
+msgid "Reseller IP list is empty!"
+msgstr "Er zijn nog geen IPs"
+
+#. 
+#: :22
+msgid "No."
+msgstr "Nr."
+
+#. 
+#: :23
+msgid "Assign"
+msgstr "Toewijzen"
+
+#. 
+#: :24
+#, fuzzy
+msgid "Label"
+msgstr "Label"
+
+#. 
+#: :25
+msgid "Number"
+msgstr "Nummer"
+
+#. 
+#: :26
+#, fuzzy
+msgid "Reseller"
+msgstr "Reseller"
+
+#. 
+#: :27
+msgid "This user name already exist!"
+msgstr "Deze gebruikersnaam bestaat al!"
+
+#. 
+#: :28
+msgid "Incorrect username range or syntax!"
+msgstr "Onjuiste gebruikersnaam lengte of syntax!"
+
+#. 
+#: :29
+msgid "Incorrect password range or syntax!"
+msgstr "Onjuist wachtwoord lengte of syntax!"
+
+#. 
+#: :30
+msgid "Entered passwords does not match!"
+msgstr "Ingevulde wachtwoorden komen niet overeen!"
+
+#. 
+#: :31
+msgid "Incorrect email range or syntax!"
+msgstr "Onjuiste e-mail lengte of syntax!"
+
+#. 
+#: :32
+msgid "Incorrect max domain count or syntax!"
+msgstr "Onjuiste max domein telling of syntax!"
+
+#. 
+#: :33
+msgid "Incorrect max subdomain count or syntax!"
+msgstr "Onjuiste max subdomein telling of syntax!"
+
+#. 
+#: :34
+msgid "Incorrect max alias count or syntax!"
+msgstr "Onjuiste max alias telling of syntax!"
+
+#. 
+#: :35
+msgid "Incorrect max FTP count or syntax!"
+msgstr "Onjuiste max FTP telling of syntax!"
+
+#. 
+#: :36
+msgid "Incorrect max mail count or syntax!"
+msgstr "Onjuiste max mail telling of syntax!"
+
+#. 
+#: :37
+msgid "Incorrect max SQL databases count or syntax!"
+msgstr "Onjuiste max MySQL databanken telling of syntax!"
+
+#. 
+#: :38
+msgid "Incorrect max SQL users count or syntax!"
+msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
+
+#. 
+#: :39
+msgid "Incorrect max traffic amount or syntax!"
+msgstr "Onjuiste max verkeer hoeveelheid of syntax!"
+
+#. 
+#: :40
+msgid "Incorrect max disk amount or syntax!"
+msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+
+#. 
+#: :41
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "U moet minstens één IP nummer voor een reseller toewijzen !"
+
+#. 
+#: :42
+msgid "Add reseller"
+msgstr "Reseller toevoegen"
+
+#. 
+#: :43
+msgid "Core data"
+msgstr "Kern gegevens"
+
+#. 
+#: :44
+msgid "Repeat password"
+msgstr ""
+
+#. 
+#: :45
+msgid "Email"
+msgstr "E-mail"
+
+#. 
+#: :46
+msgid "unlimited"
+msgstr "ongelimiteerd"
+
+#. 
+#: :47
+msgid "Domains limit"
+msgstr ""
+
+#. 
+#: :48
+msgid "Subdomains limit"
+msgstr ""
+
+#. 
+#: :49
+msgid "Aliases limit"
+msgstr ""
+
+#. 
+#: :50
+msgid "Mail accounts limit"
+msgstr ""
+
+#. 
+#: :51
+msgid "FTP accounts limit"
+msgstr ""
+
+#. 
+#: :52
+msgid "SQL databases limit"
+msgstr ""
+
+#. 
+#: :53
+msgid "SQL users limit"
+msgstr ""
+
+#. 
+#: :54
+msgid "Traffic limit [MB]"
+msgstr ""
+
+#. 
+#: :55
+msgid "Disk limit [MB]"
+msgstr ""
+
+#. 
+#: :56
+#, fuzzy
+msgid "PHP"
+msgstr "PHP"
+
+#. 
+#: :57
+#, fuzzy
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+#. 
+#: :58
+#, fuzzy
+msgid "JSP"
+msgstr "JSP"
+
+#. 
+#: :59
+#, fuzzy
+msgid "SSI"
+msgstr "SSI"
+
+#. 
+#: :60
+msgid "Frontpage extensions"
+msgstr ""
+
+#. 
+#: :61
+msgid "Backup and restore"
+msgstr "Backup en herstel"
+
+#. 
+#: :62
+msgid "Custom error pages"
+msgstr "Aangepaste error paginas"
+
+#. 
+#: :63
+msgid "Protected areas"
+msgstr "Beschermde gebieden"
+
+#. 
+#: :64
+#, fuzzy
+msgid "Webmail"
+msgstr "Webmail"
+
+#. 
+#: :65
+msgid "Directory listing"
+msgstr "Mappenlijst"
+
+#. 
+#: :66
+msgid "Apache logfiles"
+msgstr "Apache logbestanden"
+
+#. 
+#: :67
+msgid "AwStats"
+msgstr "AWStats"
+
+#. 
+#: :68
+#, fuzzy
+msgid "Logo upload"
+msgstr "Logo upload"
+
+#. 
+#: :69
+msgid "yes"
+msgstr "ja"
+
+#. 
+#: :70
+msgid "no"
+msgstr "nee"
+
+#. 
+#: :71
+msgid "Reseller IPs"
+msgstr "Resellers IPs"
+
+#. 
+#: :72
+msgid "Additional data"
+msgstr "Extra gegevens"
+
+#. 
+#: :73
+msgid "Customer ID"
+msgstr "Klant ID"
+
+#. 
+#: :74
+msgid "First name"
+msgstr "Voornaam"
+
+#. 
+#: :75
+msgid "Last name"
+msgstr "Achternaam"
+
+#. 
+#: :76
+msgid "Company"
+msgstr "Bedrijf"
+
+#. 
+#: :77
+msgid "Zip/Postal code"
+msgstr "Postcode"
+
+#. 
+#: :78
+msgid "City"
+msgstr "Stad"
+
+#. 
+#: :79
+msgid "Country"
+msgstr "Land"
+
+#. 
+#: :80
+msgid "Street 1"
+msgstr "Straat 1"
+
+#. 
+#: :81
+msgid "Street 2"
+msgstr "Straat 2"
+
+#. 
+#: :82
+msgid "Phone"
+msgstr "Telefoon"
+
+#. 
+#: :83
+#, fuzzy
+msgid "Fax"
+msgstr "Fax"
+
+#. 
+#: :84
+msgid "Add"
+msgstr "Toevoegen"
+
+#. 
+#: :85
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :86
+msgid "Administrator"
+msgstr "Beheerder"
+
+#. 
+#: :87
+msgid "Empty data or wrong field!"
+msgstr "Geen gegevens of verkeerd veld!"
+
+#. 
+#: :88
+msgid "Passwords don't match!"
+msgstr ""
+
+#. 
+#: :89
+msgid "Add admin"
+msgstr "Beheerder toevoegen"
+
+#. 
+#: :90
+msgid "ISPCP - Admin/Admin Log"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :91
+msgid "Log is empty!"
+msgstr "Log is leeg"
+
+#. 
+#: :92
+msgid "Invalid time period!"
+msgstr ""
+
+#. 
+#: :93
+msgid "Admin Log"
+msgstr "Beheerders Log"
+
+#. 
+#: :94
+msgid "Clear log"
+msgstr "Log leegmaken"
+
+#. 
+#: :95
+msgid "Date"
+msgstr "Datum"
+
+#. 
+#: :96
+msgid "Message"
+msgstr "Bericht"
+
+#. 
+#: :97
+msgid "Delete from log:"
+msgstr "Verwijder van log:"
+
+#. 
+#: :98
+msgid "everything"
+msgstr "alles"
+
+#. 
+#: :99
+msgid "older than 2 weeks"
+msgstr "ouder dan 2 weken"
+
+#. 
+#: :100
+msgid "older than 1 month"
+msgstr "ouder dan 1 maand"
+
+#. 
+#: :101
+msgid "older than 3 months"
+msgstr "ouder dan 3 maanden"
+
+#. 
+#: :102
+msgid "older than 6 months"
+msgstr "ouder dan 6 maanden"
+
+#. 
+#: :103
+msgid "older than 12 months"
+msgstr "ouder dan 12 maanden"
+
+#. 
+#: :104
+msgid "ISPCP - Administrator/Add hosting plan"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :105
+msgid "Add hosting plan"
+msgstr "hostingpakket toevoegen"
+
+#. 
+#: :106
+msgid "Hosting plan properties"
+msgstr "hostingpakket eigenschappen"
+
+#. 
+#: :107
+msgid "Template name"
+msgstr "Template naam"
+
+#. 
+#: :108
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :109
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :110
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :111
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :112
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#. 
+#: :113
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#. 
+#: :114
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Traffic limit [Mb]<br><i>(0 unlimited)</i>"
+
+#. 
+#: :115
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Schijf limiet [Mb]<br><i>(0 ongelimiteerd)</i>"
+
+#. 
+#: :116
+msgid "Billing Settings"
+msgstr "Facturatie instellingen"
+
+#. 
+#: :117
+msgid "Price"
+msgstr "Prijs"
+
+#. 
+#: :118
+msgid "Setup fee"
+msgstr "Opstartkosten"
+
+#. 
+#: :119
+msgid "Currency"
+msgstr "Munteenheid"
+
+#. 
+#: :120
+msgid "Payment period"
+msgstr "Bestalingsperiode"
+
+#. 
+#: :121
+msgid "Available for purchasing"
+msgstr "Beschikbaar voor verkoop"
+
+#. 
+#: :122
+msgid "Description"
+msgstr "Omschrijving"
+
+#. 
+#: :123
+msgid "(e.g. EUR)"
+msgstr "(bijv. EUR)"
+
+#. 
+#: :124
+msgid "Add plan"
+msgstr "Pakket toevoegen"
+
+#. 
+#: :125
+msgid "Incorrect template name range or syntax!"
+msgstr "Onjuiste template naam lengte of syntax!"
+
+#. 
+#: :126
+msgid "Incorrect template description range or syntax!"
+msgstr "Onjuiste lay-out omschrijving lengte of syntax"
+
+#. 
+#: :127
+msgid "Incorrect price range or syntax!"
+msgstr "Onjuiste prijs lengte of syntax"
+
+#. 
+#: :128
+msgid "Incorrect setup fee range or syntax!"
+msgstr "Onjuiste opstartkosten lengte of syntax"
+
+#. 
+#: :129
+msgid "Incorrect subdomain range or syntax!"
+msgstr "Onjuiste subdomein lengte of syntax!"
+
+#. 
+#: :130
+msgid "Incorrect alias range or syntax!"
+msgstr "Onjuiste alias lengte of syntax"
+
+#. 
+#: :131
+msgid "Incorrect mail account range or syntax!"
+msgstr "Onjuiste mail account lengte of syntax!"
+
+#. 
+#: :132
+msgid "Incorrect FTP account range or syntax!"
+msgstr "Onjuiste FTP account lengte of syntac!"
+
+#. 
+#: :133
+msgid "Incorrect SQL database range or syntax!"
+msgstr "Onjuiste MySQL databank lengte of syntax!"
+
+#. 
+#: :134
+msgid "Incorrect SQL user range or syntax!"
+msgstr "Onjuiste SQL gebruiker lengte of syntax!"
+
+#. 
+#: :135
+msgid "Incorrect traffic range or syntax!"
+msgstr "Onjuiste verkeer lengte of syntax!"
+
+#. 
+#: :136
+msgid "Incorrect disk range or syntax!"
+msgstr "Onjuiste schijf lengte or syntax!"
+
+#. 
+#: :137
+msgid "Hosting plan with entered name already exists!"
+msgstr "hostingpakket met ingevulde naam bestaat al"
+
+#. 
+#: :138
+msgid "ISPCP - Admin/Change Password"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :139
+msgid "Please fill up all data fields!"
+msgstr "Vult u A.U.B. alle velden in."
+
+#. 
+#: :140
+msgid "Passwords does not match!"
+msgstr "Wachtwoorden komen niet overeen"
+
+#. 
+#: :141
+msgid "The current password is wrong!"
+msgstr "Het huidige wachtwoord is incorrect."
+
+#. 
+#: :142
+msgid "User password updated successfully!"
+msgstr "Gebruikerswachtwoord succesvol gewijzigd!"
+
+#. 
+#: :143
+msgid "Change password"
+msgstr "Verander wachtwoord"
+
+#. 
+#: :144
+msgid "Password data"
+msgstr "Wachtwoord informatie"
+
+#. 
+#: :145
+msgid "Update password"
+msgstr "Wijzig wachtwoord"
+
+#. 
+#: :146
+msgid "Current password"
+msgstr "Huidige wachtwoord"
+
+#. 
+#: :147
+msgid "Personal data updated successfully!"
+msgstr "Persoonlijke gegevens succesvol gewijzigd"
+
+#. 
+#: :148
+msgid "ISPCP - Admin/Change Personal Data"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :149
+msgid "Change personal data"
+msgstr "Verander persoonlijke informatie"
+
+#. 
+#: :150
+msgid "Personal data"
+msgstr "Persoonlijke gegevens"
+
+#. 
+#: :151
+msgid "Update data"
+msgstr "Wijzig gegevens"
+
+#. 
+#: :152
+msgid "User does not exist!"
+msgstr "Gebruiker bestaat niet!"
+
+#. 
+#: :153
+msgid "ispCP - Admin - Email Marketing"
+msgstr ""
+
+#. 
+#: :154
+msgid "Please specify a message subject!"
+msgstr "Gelieve een bericht inhoud te specificeren"
+
+#. 
+#: :155
+msgid "Please specify a message content!"
+msgstr "Gelieve bericht inhoud te specificeren"
+
+#. 
+#: :156
+msgid "Please specify a sender name!"
+msgstr "Gelieve de naam van de afzender te specificeren"
+
+#. 
+#: :157
+msgid "Please specify a sender email!"
+msgstr "Gelieve een afzender te specificeren"
+
+#. 
+#: :158
+msgid "You send email to your users successfully!"
+msgstr "U heeft succesvol een e-mail naar de gebruikers gestuurd"
+
+#. 
+#: :159
+msgid "Email marketing"
+msgstr "E-mail marketing"
+
+#. 
+#: :160
+msgid "Send message to"
+msgstr "Verstuur bericht naar"
+
+#. 
+#: :161
+msgid "All users"
+msgstr "Alle gebruikers"
+
+#. 
+#: :162
+msgid "All resellers"
+msgstr "Alle resellers"
+
+#. 
+#: :163
+msgid "All users & resellers"
+msgstr "Alle gebruikers en resellers"
+
+#. 
+#: :164
+msgid "Message subject"
+msgstr "Bericht onderwerp"
+
+#. 
+#: :165
+msgid "Senders email"
+msgstr "Verstuurders email"
+
+#. 
+#: :166
+msgid "Senders name"
+msgstr "Verstuurders naam"
+
+#. 
+#: :167
+msgid "Send message"
+msgstr "Verstuur bericht"
+
+#. 
+#: :168
+msgid "You have no custom menus."
+msgstr "U kunt geen gebruik maken van aangepaste menus"
+
+#. 
+#: :169
+msgid "User"
+msgstr "gebruiker"
+
+#. 
+#: :170
+msgid "All"
+msgstr "Alles"
+
+#. 
+#: :171
+msgid "Are you sure you want to delete"
+msgstr "Weet u zeker dat u dit wilt verwijderen?"
+
+#. 
+#: :172
+msgid "Missing or incorrect data input!"
+msgstr "Vermiste of onjuiste data input"
+
+#. 
+#: :173
+msgid "Custom menu data updated successful!"
+msgstr "Aangepast menuitem informatie succesvol gewijzigd!"
+
+#. 
+#: :174
+msgid "Custom menu deleted successful!"
+msgstr "Eigen menuitem succesvol verwijderd!"
+
+#. 
+#: :175
+msgid "ISPCP - Admin - Manage custom menus"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :176
+msgid "Manage custom menus"
+msgstr "Beheer aangepaste menus"
+
+#. 
+#: :177
+msgid "Add new button"
+msgstr "Nieuwe knop toevoegen"
+
+#. 
+#: :178
+msgid "Button name"
+msgstr "Knopnaam"
+
+#. 
+#: :179
+msgid "Button link"
+msgstr "Knop link"
+
+#. 
+#: :180
+msgid "Button target"
+msgstr "Knop doel"
+
+#. 
+#: :181
+msgid "Show in"
+msgstr "Toon in"
+
+#. 
+#: :182
+msgid "Administrator level"
+msgstr "Beheerdersniveau"
+
+#. 
+#: :183
+msgid "Reseller level"
+msgstr "Reseller niveau"
+
+#. 
+#: :184
+msgid "Enduser level"
+msgstr "Eindgebruiker niveau"
+
+#. 
+#: :185
+msgid "Reseller and enduser level"
+msgstr "Reseller en eindgebruiker niveau"
+
+#. 
+#: :186
+msgid "Menu button"
+msgstr "Menu knop"
+
+#. 
+#: :187
+msgid "Action"
+msgstr "Actie"
+
+#. 
+#: :188
+msgid "Edit"
+msgstr "Wijzig"
+
+#. 
+#: :189
+msgid "Delete"
+msgstr "Verwijder"
+
+#. 
+#: :190
+msgid "Level"
+msgstr "Niveau"
+
+#. 
+#: :191
+msgid "Save"
+msgstr "Opslaan"
+
+#. 
+#: :192
+msgid "Edit button"
+msgstr "Wijzig knop"
+
+#. 
+#: :193
+msgid "Error: we have a domain using this IP!"
+msgstr ""
+
+#. 
+#: :194
+msgid "Error: we have a reseller using this IP!"
+msgstr ""
+
+#. 
+#: :195
+msgid "IP was deleted!"
+msgstr "IP is verwijderd"
+
+#. 
+#: :196
+msgid "Support ticket deleted successfully!"
+msgstr "Ondersteuning ticket succesvol verwijderd"
+
+#. 
+#: :197
+msgid "All open support tickets deleted successfully!"
+msgstr "Alle open support tickets succesvol verwijderd!"
+
+#. 
+#: :198
+msgid "All closed support tickets deleted successfully!"
+msgstr "Alle gesloten support tickets succesvol verwijderd!"
+
+#. 
+#: :199
+msgid "ISPCP - Domain/Details"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :200
+msgid "Domain details"
+msgstr "Domein details"
+
+#. 
+#: :201
+msgid "Domain name"
+msgstr "Domeinnaam"
+
+#. 
+#: :202
+msgid "Domain IP"
+msgstr "Domein IP"
+
+#. 
+#: :203
+#, fuzzy
+msgid "Status"
+msgstr "Status"
+
+#. 
+#: :204
+msgid "PHP support"
+msgstr "PHP ondersteuning"
+
+#. 
+#: :205
+msgid "CGI support"
+msgstr "CGI ondersteuning"
+
+#. 
+#: :206
+msgid "MySQL support"
+msgstr "MySQL ondersteuning"
+
+#. 
+#: :207
+msgid "Traffic in MB"
+msgstr "Verkeer in MB"
+
+#. 
+#: :208
+msgid "Disk in MB"
+msgstr "Schijf in MB"
+
+#. 
+#: :209
+msgid "Feature"
+msgstr "Optie"
+
+#. 
+#: :210
+msgid "Used"
+msgstr "In gebruik"
+
+#. 
+#: :211
+msgid "Limit"
+msgstr "Limiet"
+
+#. 
+#: :212
+#, fuzzy
+msgid "Mail accounts"
+msgstr "Mail accounts"
+
+#. 
+#: :213
+#, fuzzy
+msgid "FTP accounts"
+msgstr "FTP accounts"
+
+#. 
+#: :214
+msgid "SQL databases"
+msgstr "MySQL databanken"
+
+#. 
+#: :215
+msgid "SQL users"
+msgstr "MySQL gebruikers"
+
+#. 
+#: :216
+msgid "Subdomains"
+msgstr "Subdomeinen"
+
+#. 
+#: :217
+msgid "Domain aliases"
+msgstr "Domeinaliassen"
+
+#. 
+#: :218
+msgid "Submit changes"
+msgstr "Aanpassen"
+
+#. 
+#: :219
+msgid "None"
+msgstr "Geen"
+
+#. 
+#: :220
+msgid "ISPCP - Domain Statistics Data"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :221
+msgid "Domain statistics"
+msgstr "Domein statistieken"
+
+#. 
+#: :222
+msgid "Month"
+msgstr "Maand"
+
+#. 
+#: :223
+msgid "Year"
+msgstr "Jaar"
+
+#. 
+#: :224
+msgid "Show"
+msgstr "Toon"
+
+#. 
+#: :225
+msgid "Web traffic"
+msgstr "Web verkeer"
+
+#. 
+#: :226
+msgid "FTP traffic"
+msgstr "FTP verkeer"
+
+#. 
+#: :227
+msgid "SMTP traffic"
+msgstr "SMTP verkeer"
+
+#. 
+#: :228
+msgid "POP3/IMAP traffic"
+msgstr "POP3/IMAP verkeer"
+
+#. 
+#: :229
+msgid "All traffic"
+msgstr "Al het verkeer"
+
+#. 
+#: :230
+msgid "Day"
+msgstr "Dag"
+
+#. 
+#: :231
+msgid "ISPCP - Admin/Manage users/Edit Reseller"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :232
+msgid "Domain"
+msgstr "Domein"
+
+#. 
+#: :233
+msgid "Subdomain"
+msgstr "Subdomein"
+
+#. 
+#: :234
+#, fuzzy
+msgid "Alias"
+msgstr "Alias"
+
+#. 
+#: :235
+#, fuzzy
+msgid "Mail"
+msgstr "Mail"
+
+#. 
+#: :236
+#, fuzzy
+msgid "FTP"
+msgstr "FTP"
+
+#. 
+#: :237
+msgid "SQL Database"
+msgstr "MySQL databank"
+
+#. 
+#: :238
+msgid "SQL User"
+msgstr "MySQL gebruiker"
+
+#. 
+#: :239
+msgid "Traffic"
+msgstr "Verkeer"
+
+#. 
+#: :240
+msgid "Disk"
+msgstr "Schijf"
+
+#. 
+#: :241
+msgid "Undefined user accounting error!"
+msgstr "Niet gedefinieerde fout!"
+
+#. 
+#: :242
+msgid "This reseller has already dispatched more <b>"
+msgstr "Deze reseller heeft al meer doorgestuurd <b>"
+
+#. 
+#: :243
+msgid "Then the value you are trying to enter now !<br>"
+msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
+
+#. 
+#: :244
+msgid "Edit reseller aborted!"
+msgstr "Wijziging reseller afgebroken!"
+
+#. 
+#: :245
+msgid "This reseller has more <b>"
+msgstr "Deze reseller heeft meer <b>"
+
+#. 
+#: :246
+msgid "Then the value you are trying to enter now!<br>"
+msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
+
+#. 
+#: :247
+msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgstr ""
+
+#. 
+#: :248
+msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+msgstr "ALs u de reseller wil limiteren, limiteer dan eerst zijn gebruikers<br>"
+
+#. 
+#: :249
+msgid "This reseller has domains assigned To <b>"
+msgstr "Deze reseller heeft domein toegewezen aan <b>"
+
+#. 
+#: :250
+msgid "</b> Address !<br>Edit reseller aborted!"
+msgstr "</b> Adres!<br>Bewerken reseller mislukt!"
+
+#. 
+#: :251
+msgid "Edit reseller"
+msgstr "Wijzig reseller"
+
+#. 
+#: :252
+#, fuzzy
+msgid "E-mail"
+msgstr "E-mail"
+
+#. 
+#: :253
+msgid "Max domain count"
+msgstr "Max aantal domeinen"
+
+#. 
+#: :254
+msgid "Max subdomain count"
+msgstr "Max aantal subdomeinen"
+
+#. 
+#: :255
+msgid "Max aliases count"
+msgstr "Max aantal aliassen"
+
+#. 
+#: :256
+msgid "Max mail users count"
+msgstr "Max aantal mailgebruikers"
+
+#. 
+#: :257
+msgid "Max FTP users count"
+msgstr "Max aantal FTP gebruikers"
+
+#. 
+#: :258
+msgid "Max SQL databases count"
+msgstr "Max aantal MySQL databanken"
+
+#. 
+#: :259
+msgid "Max SQL users count"
+msgstr "Max aantal MySQL gebruikers"
+
+#. 
+#: :260
+msgid "Max traffic amount [MB]"
+msgstr "Max aantal verkeer [MB]"
+
+#. 
+#: :261
+msgid "Max disk amount [MB]"
+msgstr "Max schijfruimte [MB]"
+
+#. 
+#: :262
+msgid "Update"
+msgstr "Actualiseren"
+
+#. 
+#: :263
+msgid "Send new login data"
+msgstr "Verstuur nieuwe login informatie"
+
+#. 
+#: :264
+msgid "Password generate"
+msgstr "Wachtwoord aanmaken"
+
+#. 
+#: :265
+msgid "ISPCP - Admin/Manage users/Edit User"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :266
+msgid "User session was killed!"
+msgstr "Gebruikerssessie is beeindigd"
+
+#. 
+#: :267
+msgid "Domain account"
+msgstr "Domein account"
+
+#. 
+#: :268
+msgid "Edit admin"
+msgstr "Wijzig beheerder"
+
+#. 
+#: :269
+msgid "ISPCP - Administrator/Edit hosting plan"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :270
+msgid "Price Style"
+msgstr ""
+
+#. 
+#: :271
+msgid "Update plan"
+msgstr "Wijzig pakket"
+
+#. 
+#: :272
+msgid "Edit hosting plan"
+msgstr "Wijzig hostingpakket"
+
+#. 
+#: :273
+msgid "Undefined reference to data!"
+msgstr "Niet gedefinieerde gegevens!"
+
+#. 
+#: :274
+msgid "Incorrect price. Example: 9.99"
+msgstr ""
+
+#. 
+#: :275
+msgid "Incorrect setup fee. Example: 19.99"
+msgstr ""
+
+#. 
+#: :276
+msgid "Please specify a subject!"
+msgstr "Gelieve een onderwerp te specificeren"
+
+#. 
+#: :277
+msgid "Please specify message!"
+msgstr "Gelieve een bericht te specificeren"
+
+#. 
+#: :278
+msgid "Auto email template data updated!"
+msgstr "Auto e-mail template gewijzigd!"
+
+#. 
+#: :279
+msgid "ISPCP - Admin/Manage users/Email setup"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :280
+msgid "Email setup"
+msgstr "E-mail setup"
+
+#. 
+#: :281
+msgid "Message template info"
+msgstr "Bericht template info"
+
+#. 
+#: :282
+msgid "User login (system) name"
+msgstr "Gebruikers(login-)naam"
+
+#. 
+#: :283
+msgid "User password"
+msgstr "Gebruikerswachtwoord"
+
+#. 
+#: :284
+msgid "User real (first and last) Name"
+msgstr "Gebruikers (voor- en achter-) naam"
+
+#. 
+#: :285
+msgid "Message template"
+msgstr "Bericht template"
+
+#. 
+#: :286
+msgid "Subject"
+msgstr "Onderwerp"
+
+#. 
+#: :287
+msgid "Apply changes"
+msgstr "Wijzigingen toepassen"
+
+#. 
+#: :288
+msgid "ISPCP - Administrator/Hosting Plan Management"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :289
+msgid "Hosting plans"
+msgstr "hostingpakketten"
+
+#. 
+#: :290
+msgid "Manage hosting plans"
+msgstr "Beheer hostingpakketten"
+
+#. 
+#: :291
+msgid "Purchasing"
+msgstr "Kopen"
+
+#. 
+#: :292
+msgid "Add new user hosting plan"
+msgstr "Nieuw gebruiker hostingpakket toevoegen"
+
+#. 
+#: :293
+msgid "Return to previous menu"
+msgstr "Keer terug naar vorig menu"
+
+#. 
+#: :294
+msgid "Hosting plan added!"
+msgstr "hostingpakket toegevoegd"
+
+#. 
+#: :295
+msgid "Hosting plan deleted!"
+msgstr "hostingpakket verwijderd"
+
+#. 
+#: :296
+msgid "Hosting plan updated!"
+msgstr "hostingpakket gewijzigd"
+
+#. 
+#: :297
+msgid "Hosting plans not found!"
+msgstr "hostingpakketten zijn niet gevonden"
+
+#. 
+#: :298
+msgid "Name"
+msgstr "Naam"
+
+#. 
+#: :299
+msgid "Enabled"
+msgstr "Ingeschakeld"
+
+#. 
+#: :300
+msgid "Disabled"
+msgstr "Uitgeschakeld"
+
+#. 
+#: :301
+msgid "Show hosting plan"
+msgstr "Toon hostingpakket"
+
+#. 
+#: :302
+msgid "You have"
+msgstr "U hebt"
+
+#. 
+#: :303
+msgid "Support question(s)"
+msgstr "Ondersteuning vragen"
+
+#. 
+#: :304
+msgid "New"
+msgstr "Nieuw"
+
+#. 
+#: :305
+msgid "View"
+msgstr "Bekijk"
+
+#. 
+#: :306
+msgid "Couldn't check for updates!"
+msgstr ""
+
+#. 
+#: :307
+msgid "New ISPCP update is now available"
+msgstr "Er is een nieuwe ISPCP update beschikbaar"
+
+#. 
+#: :308
+msgid "You are exceeding your traffic limit!"
+msgstr "U overschrijdt uw verkeer limiet!"
+
+#. 
+#: :309
+msgid "of"
+msgstr "van"
+
+#. 
+#: :310
+msgid "ISPCP - Admin/Main Index"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :311
+msgid "ISPCP - Admin/IP manage"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :312
+msgid "New IP was added!"
+msgstr "Nieuw IP is toegevoegd"
+
+#. 
+#: :313
+msgid "Wrong IP number!"
+msgstr "Verkeerd IP nummer"
+
+#. 
+#: :314
+msgid "Please specify domain!"
+msgstr "Gelieve een domein te specificeren"
+
+#. 
+#: :315
+msgid "Please specify alias!"
+msgstr "Gelieve een alias te specificeren"
+
+#. 
+#: :316
+msgid "This IP already exist!"
+msgstr "Dit IP adres bestaat al"
+
+#. 
+#: :317
+msgid "Manage IPs"
+msgstr "Beheer IP adressen"
+
+#. 
+#: :318
+msgid "Available IPs"
+msgstr "Beschikbare IP adressen"
+
+#. 
+#: :319
+msgid "IP"
+msgstr "IP adres"
+
+#. 
+#: :320
+msgid "Uninstall"
+msgstr "Verwijderen"
+
+#. 
+#: :321
+msgid "Add new IP"
+msgstr "Nieuw IP adress toevoegen"
+
+#. 
+#: :322
+msgid "No domain system errors"
+msgstr "Geen domein systeemfouten"
+
+#. 
+#: :323
+msgid "No domain alias system errors"
+msgstr "Geen domeinalias systeemfouten"
+
+#. 
+#: :324
+msgid "No subdomain system errors"
+msgstr "Geen subdomein systeemfouten"
+
+#. 
+#: :325
+msgid "No email account system errors"
+msgstr "Geen e-mailaccount systeemfouten"
+
+#. 
+#: :326
+msgid "ISPCP debugger"
+msgstr "ISPCP Debugger"
+
+#. 
+#: :327
+msgid "Domain errors"
+msgstr "Domein fouten"
+
+#. 
+#: :328
+msgid "Domain alias errors"
+msgstr "Domeinalias fouten"
+
+#. 
+#: :329
+msgid "Subdomain errors"
+msgstr "Subdomain fouten"
+
+#. 
+#: :330
+msgid "Mail account errors"
+msgstr "Mail account fouten"
+
+#. 
+#: :331
+msgid "Get it at"
+msgstr "Downloaden op"
+
+#. 
+#: :332
+msgid "ISPCP updates"
+msgstr "ISPCP Updates"
+
+#. 
+#: :333
+msgid "Available ISPCP updates"
+msgstr "Beschikbare ISPCP updates"
+
+#. 
+#: :334
+msgid "No new ISPCP updates available"
+msgstr "Geen nieuwe ISPCP updates beschikbaar"
+
+#. 
+#: :335
+msgid "Update details"
+msgstr "Update informatie"
+
+#. 
+#: :336
+msgid "Upload file error!"
+msgstr "Upload bestand fout!"
+
+#. 
+#: :337
+msgid "You can only upload images!"
+msgstr ""
+
+#. 
+#: :338
+msgid "Your logo was successful uploaded!"
+msgstr "Uw logo is succesvol geuploaded!"
+
+#. 
+#: :339
+msgid "Layout settings"
+msgstr "Lay-out instellingen"
+
+#. 
+#: :340
+msgid "Installed layouts"
+msgstr "Geinstalleerde lay-outs"
+
+#. 
+#: :341
+msgid "Layout name"
+msgstr "Lay-out naam"
+
+#. 
+#: :342
+msgid "default"
+msgstr "standaard"
+
+#. 
+#: :343
+msgid "Upload logo"
+msgstr "Upload logo (190x60)"
+
+#. 
+#: :344
+msgid "Logo file"
+msgstr "Logo bestand"
+
+#. 
+#: :345
+#, fuzzy
+msgid "Upload"
+msgstr "Upload"
+
+#. 
+#: :346
+msgid "Remove"
+msgstr "Verwijder"
+
+#. 
+#: :347
+msgid "Choose default layout"
+msgstr "Kies standaard lay-out"
+
+#. 
+#: :348
+msgid "Layout"
+msgstr "Lay-out"
+
+#. 
+#: :349
+msgid "ISPCP - Admin/Lostpw email setup"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :350
+msgid "Lostpw email"
+msgstr "E-mail"
+
+#. 
+#: :351
+msgid "Activation E-Mail"
+msgstr "Activatie E-mail"
+
+#. 
+#: :352
+msgid "Password E-Mail"
+msgstr "Paswoord E-mail"
+
+#. 
+#: :353
+msgid "User (first and last) name"
+msgstr "Gebruikers (voor- en achter-) naam"
+
+#. 
+#: :354
+msgid "Lostpw link"
+msgstr "Link"
+
+#. 
+#: :355
+msgid "Reseller list is empty!"
+msgstr "Er zijn nog geen resellers"
+
+#. 
+#: :356
+msgid "ISPCP - Admin/Manage users/Reseller assignment"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :357
+msgid "Reseller assignment"
+msgstr "Reseller taak"
+
+#. 
+#: :358
+msgid "Reseller users"
+msgstr "Reseller gebruikers"
+
+#. 
+#: :359
+msgid "Mark"
+msgstr "Markeer"
+
+#. 
+#: :360
+msgid "Reseller name"
+msgstr "Reseller naam"
+
+#. 
+#: :361
+msgid "Owner"
+msgstr "Eigenaar"
+
+#. 
+#: :362
+msgid "To Admin"
+msgstr "Naar beheer"
+
+#. 
+#: :363
+msgid "Move"
+msgstr "Verplaats"
+
+#. 
+#: :364
+msgid "Reseller or user list is empty!"
+msgstr "Er zijn geen resellers of gebruikers"
+
+#. 
+#: :365
+msgid "User list is empty!"
+msgstr "Gebruikerslijst is leeg!"
+
+#. 
+#: :366
+msgid "User was moved"
+msgstr "Gebruiker is verhuist"
+
+#. 
+#: :367
+msgid "Please select some user(s)!"
+msgstr "Gelieve gebruiker(s) te selecteren"
+
+#. 
+#: :368
+msgid "Source and destination reseller are the same!"
+msgstr "Bron en doel reseller zijn dezelfde"
+
+#. 
+#: :369
+#, c-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgstr ""
+
+#. 
+#: :370
+#, c-format
+msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr ""
+
+#. 
+#: :371
+#, c-format
+msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgstr ""
+
+#. 
+#: :372
+msgid "Moving aborted!"
+msgstr "Verplaatsing geannuleerd"
+
+#. 
+#: :373
+#, c-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
+msgstr ""
+
+#. 
+#: :374
+msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgstr ""
+
+#. 
+#: :375
+msgid "ISPCP - Admin/Manage users/User assignment"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :376
+msgid "User assignment"
+msgstr "Gebruikerstoekenning"
+
+#. 
+#: :377
+msgid "Users"
+msgstr "Gebruikers"
+
+#. 
+#: :378
+msgid "User name"
+msgstr "Gebruikersnaam"
+
+#. 
+#: :379
+msgid "From reseller"
+msgstr "Van reseller"
+
+#. 
+#: :380
+msgid "To reseller"
+msgstr "Naar reseller"
+
+#. 
+#: :381
+msgid "ISPCP - Admin/Manage Sessions"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :382
+msgid "Manage user sessions"
+msgstr "Beheer gebruikerssessies"
+
+#. 
+#: :383
+msgid "User type"
+msgstr "Gebruikerstype"
+
+#. 
+#: :384
+msgid "Last access"
+msgstr "Laatste toegang"
+
+#. 
+#: :385
+msgid "Options"
+msgstr "Opties"
+
+#. 
+#: :386
+msgid "Kill session"
+msgstr "Beeindig sessie"
+
+#. 
+#: :387
+msgid "ISPCP - Admin/Manage Users"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :388
+msgid "User added"
+msgstr "Gebruiker toegevoegd"
+
+#. 
+#: :389
+msgid "Reseller added"
+msgstr "Reseller toegevoegd"
+
+#. 
+#: :390
+msgid "User updated"
+msgstr "Gebruiker gewijzigd"
+
+#. 
+#: :391
+msgid "User deleted"
+msgstr "Gebruiker verwijderd"
+
+#. 
+#: :392
+msgid "Email Updated"
+msgstr "E-mail gewijzigd"
+
+#. 
+#: :393
+msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgstr "Deze gebruiker heeft nog een domein.<br>Als u de gebruiker wilt verwijderen, dient u eerst de domein te verwijderen."
+
+#. 
+#: :394
+msgid "User was disabled"
+msgstr "Gebruiker is gedeactiveerd"
+
+#. 
+#: :395
+msgid "Incorrect data input!"
+msgstr "Onjuiste gegevens invoer"
+
+#. 
+#: :396
+msgid "ISPCP - Admin/Internationalisation"
+msgstr ""
+
+#. 
+#: :397
+msgid "Default language changed!"
+msgstr "Standaard taal gewijzigd!"
+
+#. 
+#: :398
+msgid "You can upload only text files!"
+msgstr "U kunt alleen tekst bestanden uploaden"
+
+#. 
+#: :399
+msgid "Can not read ispcp language file!"
+msgstr "Kan ISPCP taalbestand niet lezen!"
+
+#. 
+#: :400
+msgid "New language installed!"
+msgstr "Nieuwe taal geinstalleerd"
+
+#. 
+#: :401
+msgid "Update language installed!"
+msgstr "Taal vernieuwd"
+
+#. 
+#: :402
+msgid "Unknown"
+msgstr "Onbekend"
+
+#. 
+#: :403
+msgid "uninstall"
+msgstr "Verwijderen"
+
+#. 
+#: :404
+msgid "%d messages translated"
+msgstr ""
+
+#. 
+#: :405
+msgid "Multilingual"
+msgstr ""
+
+#. 
+#: :406
+msgid "Installed languages"
+msgstr "Geinstalleerde talen"
+
+#. 
+#: :407
+msgid "Language"
+msgstr "Taal"
+
+#. 
+#: :408
+msgid "Messages"
+msgstr "Berichten"
+
+#. 
+#: :409
+msgid "Default"
+msgstr "Standaard"
+
+#. 
+#: :410
+msgid "Install new language"
+msgstr "Installeer een nieuwe taal"
+
+#. 
+#: :411
+msgid "Language file"
+msgstr "Taal bestand"
+
+#. 
+#: :412
+msgid "Install"
+msgstr "Installeer"
+
+#. 
+#: :413
+msgid "Export"
+msgstr "Exporteren"
+
+#. 
+#: :414
+msgid "ISPCP - Reseller statistics"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :415
+msgid "Not found reseller(s) in your system!"
+msgstr "Geen reseller(s) gevonden in uw systeem!"
+
+#. 
+#: :416
+msgid "Reseller statistics table"
+msgstr "Reseller statistieken tabel"
+
+#. 
+#: :417
+msgid "SQL database"
+msgstr "MySQL databank"
+
+#. 
+#: :418
+msgid "SQL user"
+msgstr "MySQL gebruiker"
+
+#. 
+#: :419
+msgid "ISPCP - Admin/Reseller User Statistics"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :420
+msgid "disabled"
+msgstr "uitgeschakeld"
+
+#. 
+#: :421
+msgid "Reseller users table"
+msgstr "Reseller gebruikerstabel"
+
+#. 
+#: :422
+msgid "This reseller has no domains."
+msgstr "Deze reseller heeft geen domeinen"
+
+#. 
+#: :423
+msgid "Traffic<br>usage"
+msgstr "Dataverkeer<br>gebruik"
+
+#. 
+#: :424
+msgid "Disk<br>usage"
+msgstr "Schijf<br>gebruik"
+
+#. 
+#: :425
+msgid "Web<br>traffic"
+msgstr "Web<br>verkeer"
+
+#. 
+#: :426
+msgid "FTP<br>traffic"
+msgstr "FTP<br>verkeer"
+
+#. 
+#: :427
+msgid "SMTP<br>traffic"
+msgstr "SMTP<br>verkeer"
+
+#. 
+#: :428
+msgid "POP3/IMAP<br>traffic"
+msgstr "POP3/IMAP<br>verkeer"
+
+#. 
+#: :429
+msgid "SQL<br>database"
+msgstr "MySQL<br>databank"
+
+#. 
+#: :430
+msgid "SQL<br>user"
+msgstr "MySQL<br>gebruiker"
+
+#. 
+#: :431
+msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgstr ""
+
+#. 
+#: :432
+msgid "The file doesn't exist or can't be read."
+msgstr ""
+
+#. 
+#: :433
+msgid "Rootkit Log Checker"
+msgstr ""
+
+#. 
+#: :434
+msgid "ISPCP - Admin/Server day stats"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :435
+msgid "Server day statistics"
+msgstr "Server dag statistieken"
+
+#. 
+#: :436
+msgid "Month:"
+msgstr "Maand:"
+
+#. 
+#: :437
+msgid "Year:"
+msgstr "Jaar:"
+
+#. 
+#: :438
+msgid "Day:"
+msgstr "Dag:"
+
+#. 
+#: :439
+msgid "Hour"
+msgstr "Uur"
+
+#. 
+#: :440
+#, fuzzy
+msgid "Web in"
+msgstr "Web in"
+
+#. 
+#: :441
+msgid "Web out"
+msgstr "Web uit"
+
+#. 
+#: :442
+#, fuzzy
+msgid "Mail in"
+msgstr "Mail in"
+
+#. 
+#: :443
+msgid "Mail out"
+msgstr "Mail uit"
+
+#. 
+#: :444
+#, fuzzy
+msgid "Pop/IMAP in"
+msgstr "Pop/IMAP in"
+
+#. 
+#: :445
+msgid "Pop/IMAP out"
+msgstr "Pop/IMAP uit"
+
+#. 
+#: :446
+msgid "Other in"
+msgstr "Andere in"
+
+#. 
+#: :447
+msgid "Other out"
+msgstr "Andere uit"
+
+#. 
+#: :448
+msgid "All in"
+msgstr "Alles inkomend"
+
+#. 
+#: :449
+msgid "All out"
+msgstr "Alles uitgaand"
+
+#. 
+#: :450
+msgid "ISPCP - Admin/Server statistics"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :451
+msgid "Server statistics"
+msgstr "Server statistieken"
+
+#. 
+#: :452
+msgid "ISPCP Admin / System Tools / Server Status"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :453
+#, fuzzy
+msgid "Host"
+msgstr "Host"
+
+#. 
+#: :454
+msgid "Service"
+msgstr "Dienst"
+
+#. 
+#: :455
+#, fuzzy
+msgid "Server status"
+msgstr "Server status"
+
+#. 
+#: :456
+msgid "ISPCP - Admin/Server Traffic Settings"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :457
+msgid "Wrong data input!"
+msgstr "Verkeerde data input"
+
+#. 
+#: :458
+msgid "Warning traffic is bigger then max traffic!"
+msgstr "Waarschuwing verkeer is groter dan huidige verkeer!"
+
+#. 
+#: :459
+msgid "Server traffic settings updated successfully!"
+msgstr "Server verkeer instellingen succesvol gewijzigd!"
+
+#. 
+#: :460
+msgid "Modify"
+msgstr "Aanpassen"
+
+#. 
+#: :461
+msgid "Server traffic settings"
+msgstr "Server verkeer instellingen"
+
+#. 
+#: :462
+msgid "Set server traffic settings"
+msgstr "Stel server verkeer in"
+
+#. 
+#: :463
+msgid "Max traffic [MB]"
+msgstr "Max verkeer [MB]"
+
+#. 
+#: :464
+msgid "Warning traffic [MB]"
+msgstr "Waarschuwing verkeer [MB]"
+
+#. 
+#: :465
+msgid "ISPCP - Admin/Servicemode"
+msgstr ""
+
+#. 
+#: :466
+msgid "Settings saved !"
+msgstr "Instellingen opgeslagen !"
+
+#. 
+#: :467
+msgid "Servicemode"
+msgstr "Dienstmodus"
+
+#. 
+#: :468
+msgid "In this mode only administrators can login"
+msgstr "In deze modus kunnen enkel beheerders inloggen"
+
+#. 
+#: :469
+msgid "ISPCP - Admin/Settings"
+msgstr ""
+
+#. 
+#: :470
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr ""
+
+#. 
+#: :471
+msgid "General settings"
+msgstr "Algemene instellingen"
+
+#. 
+#: :472
+msgid "Settings"
+msgstr "Instellingen"
+
+#. 
+#: :473
+msgid "Lostpassword"
+msgstr "Wachtwoord verloren"
+
+#. 
+#: :474
+msgid "Activationlink valid (minutes)"
+msgstr "Activatielink geldig (minuten)"
+
+#. 
+#: :475
+msgid "Bruteforce detection"
+msgstr "Bruteforce detectie"
+
+#. 
+#: :476
+msgid "Time between logins"
+msgstr "Tijd tussen inloggen"
+
+#. 
+#: :477
+msgid "Number of login attempts"
+msgstr "Aantal inlogpogingen"
+
+#. 
+#: :478
+msgid "Blocktime (minutes)"
+msgstr "Geblokkeerd (minuten)"
+
+#. 
+#: :479
+msgid "Time between logins (seconds)"
+msgstr "Tijd tussen inloggen (seconden)"
+
+#. 
+#: :480
+msgid "Other settings"
+msgstr "Andere instellingen"
+
+#. 
+#: :481
+msgid "Default language"
+msgstr "Standaard taal"
+
+#. 
+#: :482
+msgid "Support system"
+msgstr "Ondersteuning systeem"
+
+#. 
+#: :483
+msgid "Serverports"
+msgstr "Serverpoorten"
+
+#. 
+#: :484
+msgid "Domains per page"
+msgstr "Domeinen per pagina"
+
+#. 
+#: :485
+msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
+msgstr ""
+
+#. 
+#: :486
+msgid "ERROR: Port already exists!"
+msgstr ""
+
+#. 
+#: :487
+msgid "You have no custom service ports defined."
+msgstr ""
+
+#. 
+#: :488
+msgid "udp"
+msgstr ""
+
+#. 
+#: :489
+msgid "tcp"
+msgstr ""
+
+#. 
+#: :490
+msgid "Services"
+msgstr ""
+
+#. 
+#: :491
+msgid "Port"
+msgstr "Poort"
+
+#. 
+#: :492
+#, fuzzy
+msgid "Protocol"
+msgstr "Protocol"
+
+#. 
+#: :493
+msgid "You have no support tickets."
+msgstr "U heeft geen support tickets"
+
+#. 
+#: :494
+msgid "Low"
+msgstr "Laag"
+
+#. 
+#: :495
+msgid "Medium"
+msgstr "Normaal"
+
+#. 
+#: :496
+msgid "High"
+msgstr "Hoog"
+
+#. 
+#: :497
+msgid "Very high"
+msgstr "Zeer hoog"
+
+#. 
+#: :498
+msgid "ISPCP - Client/Questions & Comments"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :499
+msgid "Support tickets"
+msgstr "Ondersteuning tickets"
+
+#. 
+#: :500
+msgid "Priority"
+msgstr "Prioriteit"
+
+#. 
+#: :501
+msgid "Last reply"
+msgstr "Laatste antwoord"
+
+#. 
+#: :502
+msgid "Delete all"
+msgstr "Verwijder alles"
+
+#. 
+#: :503
+#, fuzzy
+msgid "Open tickets"
+msgstr "Open tickets"
+
+#. 
+#: :504
+msgid "Closed tickets"
+msgstr "Gesloten tickets"
+
+#. 
+#: :505
+msgid "[New]"
+msgstr "[Nieuw]"
+
+#. 
+#: :506
+#, fuzzy
+msgid "[Re]"
+msgstr "[Re]"
+
+#. 
+#: :507
+msgid "ISPCP - Client/Enable Mail Autoresponder"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :508
+msgid "From"
+msgstr "Van"
+
+#. 
+#: :509
+msgid "days"
+msgstr "dagen"
+
+#. 
+#: :510
+msgid "hours"
+msgstr "uren"
+
+#. 
+#: :511
+msgid "minutes"
+msgstr "minuten"
+
+#. 
+#: :512
+msgid "System info"
+msgstr "Systeem info"
+
+#. 
+#: :513
+msgid "Vital system info"
+msgstr "Vitale systeem info"
+
+#. 
+#: :514
+msgid "CPU system Info"
+msgstr "CPU systeem info"
+
+#. 
+#: :515
+#, fuzzy
+msgid "CPU model"
+msgstr "CPU model"
+
+#. 
+#: :516
+#, fuzzy
+msgid "CPU MHz"
+msgstr "CPU MHz"
+
+#. 
+#: :517
+#, fuzzy
+msgid "CPU cache"
+msgstr "CPU cache"
+
+#. 
+#: :518
+#, fuzzy
+msgid "CPU bogomips"
+msgstr "CPU bogomips"
+
+#. 
+#: :519
+msgid "Memory system info"
+msgstr "Geheugen systeem info"
+
+#. 
+#: :520
+#, fuzzy
+msgid "RAM"
+msgstr "RAM"
+
+#. 
+#: :521
+msgid "Total"
+msgstr "Totaal"
+
+#. 
+#: :522
+msgid "Free"
+msgstr "Vrij"
+
+#. 
+#: :523
+#, fuzzy
+msgid "Swap"
+msgstr "Swap"
+
+#. 
+#: :524
+msgid "Up time"
+msgstr "Uptime"
+
+#. 
+#: :525
+#, fuzzy
+msgid "Kernel"
+msgstr "Kernel"
+
+#. 
+#: :526
+msgid "Load"
+msgstr "Belasting"
+
+#. 
+#: :527
+msgid "Filesystem system Info"
+msgstr "Filesysteem info"
+
+#. 
+#: :528
+#, fuzzy
+msgid "Mount"
+msgstr "Mount"
+
+#. 
+#: :529
+#, fuzzy
+msgid "Type"
+msgstr "Type"
+
+#. 
+#: :530
+msgid "Partition"
+msgstr "Partitie"
+
+#. 
+#: :531
+msgid "Percent"
+msgstr "Procent"
+
+#. 
+#: :532
+msgid "Size"
+msgstr "Grootte"
+
+#. 
+#: :533
+msgid "Ticket not found!"
+msgstr "Ticket niet gevonden!"
+
+#. 
+#: :534
+#, fuzzy
+msgid "Open ticket"
+msgstr "Open ticket"
+
+#. 
+#: :535
+msgid "Close ticket"
+msgstr "Sluit ticket"
+
+#. 
+#: :536
+msgid "ISPCP - Client : Support System: View Tickets"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :537
+msgid "Please type your message!"
+msgstr "Gelieve uw bericht te typen"
+
+#. 
+#: :538
+msgid "Message was sent!"
+msgstr ""
+
+#. 
+#: :539
+msgid "Ticket was closed!"
+msgstr "Ticket is gesloten!"
+
+#. 
+#: :540
+msgid "Ticket was reopened!"
+msgstr ""
+
+#. 
+#: :541
+msgid "ISPCP - Admin : Support System: View Tickets"
+msgstr ""
+
+#. 
+#: :542
+msgid "View support ticket"
+msgstr "Bekijk ondersteuning ticket"
+
+#. 
+#: :543
+msgid "Send message reply"
+msgstr "Verstuur bericht antwoord"
+
+#. 
+#: :544
+msgid "Send reply"
+msgstr "Verstuur antwoord"
+
+#. 
+#: :545
+msgid "ISPCP Client : Add Alias"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :546
+msgid "Manage domain alias"
+msgstr "Beheer domein alias"
+
+#. 
+#: :547
+msgid "Add domain alias"
+msgstr "Domeinalias toevoegen"
+
+#. 
+#: :548
+msgid "User account"
+msgstr "Gebruikersaccount"
+
+#. 
+#: :549
+msgid "Directory mount point"
+msgstr "Map mount point"
+
+#. 
+#: :550
+msgid "Forward to URL"
+msgstr "Doorsturen naar URL"
+
+#. 
+#: :551
+msgid "Add alias"
+msgstr "Alias toevoegen"
+
+#. 
+#: :552
+msgid "Domain alias limit reached!"
+msgstr ""
+
+#. 
+#: :553
+msgid "Incorrect domain name syntax"
+msgstr "Onjuiste domeinnaam syntax!"
+
+#. 
+#: :554
+msgid "Domain with that name already exists on the system!"
+msgstr "Domein met die naam bestaat al!"
+
+#. 
+#: :555
+msgid "Incorrect mount point syntax"
+msgstr "Onjuist mount point syntax"
+
+#. 
+#: :556
+msgid "Incorrect forward syntax"
+msgstr "Onjuiste doorsturing syntax"
+
+#. 
+#: :557
+msgid "Domain with this name already exist"
+msgstr "Domein met die naam bestaat al!"
+
+#. 
+#: :558
+msgid "There are alias with same mount point"
+msgstr "Er zijn aliassen met hetzelfde mount point"
+
+#. 
+#: :559
+msgid "Alias scheduled for addition!"
+msgstr "Alias gepland voor toevoeging"
+
+#. 
+#: :560
+msgid "Empty List"
+msgstr "Geen gegevens"
+
+#. 
+#: :561
+msgid "Empty list"
+msgstr "Geen gegevens"
+
+#. 
+#: :562
+msgid "FTP account already exists!"
+msgstr "FTP account bestaat al"
+
+#. 
+#: :563
+msgid "Unknown domain type"
+msgstr ""
+
+#. 
+#: :564
+msgid "Incorrect mount point range or syntax"
+msgstr ""
+
+#. 
+#: :565
+msgid "%s does not exist"
+msgstr ""
+
+#. 
+#: :566
+msgid "FTP account added!"
+msgstr "FTP account toegevoegd!"
+
+#. 
+#: :567
+msgid "Please enter FTP account username!"
+msgstr "Gelieve een FTP account gebruikersnaam in te vullen"
+
+#. 
+#: :568
+msgid "Password data is missing!"
+msgstr "Wachtwoord informatie is onvindbaar"
+
+#. 
+#: :569
+msgid "Entered passwords differ from the another!"
+msgstr "Ingevulde wachtwoorden verschillen van elkaar!"
+
+#. 
+#: :570
+msgid "Subdomain list is empty! You can not add FTP accounts there!"
+msgstr "Er zijn geen subdomeinen. U kunt er geen FTP account aan toegoeven"
+
+#. 
+#: :571
+msgid "Alias list is empty! You can not add FTP accounts there!"
+msgstr "Er zijn geen aliassen, u kunt hier geen FTP accounts aanmaken."
+
+#. 
+#: :572
+msgid "Please specify other FTP account dir!"
+msgstr "Gelieve een andere FTP account map te specificeren"
+
+#. 
+#: :573
+msgid "FTP accounts limit reached!"
+msgstr ""
+
+#. 
+#: :574
+msgid "ISPCP - Client/Add FTP User"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :575
+msgid "Add FTP user"
+msgstr "FTP gebruiker toevoegen"
+
+#. 
+#: :576
+msgid "To main domain"
+msgstr "Naar hoofddomein"
+
+#. 
+#: :577
+msgid "To domain alias"
+msgstr "Naar domein alias"
+
+#. 
+#: :578
+msgid "To subdomain"
+msgstr "Naar subdomein"
+
+#. 
+#: :579
+msgid "Use other dir"
+msgstr "Gebruik andere map"
+
+#. 
+#: :580
+msgid "Choose dir"
+msgstr "Kies map"
+
+#. 
+#: :581
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Ongeldig Mail Localpart formaat gebruikt!"
+
+#. 
+#: :582
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr ""
+
+#. 
+#: :583
+msgid "Mail forward list empty!"
+msgstr "Mail doorsturingslijst is leeg!"
+
+#. 
+#: :584
+msgid "Mail account already exists!"
+msgstr "Mail account bestaat al"
+
+#. 
+#: :585
+msgid "Mail account scheduled for addition!"
+msgstr "Mail account gepland voor toevoeging"
+
+#. 
+#: :586
+msgid "Please enter mail account username!"
+msgstr "Gelieve een mail account gebruikersnaam in te vullen"
+
+#. 
+#: :587
+msgid "Password data includes not permitted signs!"
+msgstr "Het paswoord bevat niet toegestane tekens!"
+
+#. 
+#: :588
+msgid "Subdomain list is empty! You can not add mail accounts!"
+msgstr "Er zijn geen subdomeinen. U kan geen mail accounts toevoegen"
+
+#. 
+#: :589
+msgid "Alias list is empty! You can not add mail accounts!"
+msgstr "Er zijn geen aliassen, u kunt hier geen e-mail accounts aanmaken."
+
+#. 
+#: :590
+msgid "Forward list is empty!"
+msgstr "Er zijn geen verwijzingen"
+
+#. 
+#: :591
+msgid "Mail accounts limit reached!"
+msgstr ""
+
+#. 
+#: :592
+msgid "ISPCP - Client/Add Mail User"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :593
+msgid "Add mail users"
+msgstr "Mail gebruikers toevoegen"
+
+#. 
+#: :594
+msgid "Normal mail"
+msgstr "Normale mail"
+
+#. 
+#: :595
+msgid "Forward mail"
+msgstr "Doorsturen mail"
+
+#. 
+#: :596
+msgid "Forward to"
+msgstr "Doorsturen naar"
+
+#. 
+#: :597
+msgid "Please type database name!"
+msgstr "Gelieve een databank naam in te vullen"
+
+#. 
+#: :598
+msgid "Too long database name!"
+msgstr "Te lange databank naam!"
+
+#. 
+#: :599
+msgid "Specified database name already exists!"
+msgstr "Gespecificeerde databank naam bestaat al"
+
+#. 
+#: :600
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Wildcards zoals % en ? zijn niet toegestaan!"
+
+#. 
+#: :601
+msgid "SQL database created successfully!"
+msgstr "MySQL databank succesvol aangemaakt"
+
+#. 
+#: :602
+msgid "SQL accounts limit reached!"
+msgstr ""
+
+#. 
+#: :603
+msgid "ISPCP - Client/Add SQL Database"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :604
+msgid "Add SQL database"
+msgstr "MySQL databank toevoegen"
+
+#. 
+#: :605
+msgid "Database name"
+msgstr "Database naam"
+
+#. 
+#: :606
+msgid "Use numeric ID"
+msgstr "Gebruik numeriek ID"
+
+#. 
+#: :607
+msgid "Before the name"
+msgstr ""
+
+#. 
+#: :608
+msgid "After the name"
+msgstr ""
+
+#. 
+#: :609
+msgid "Subdomains limit reached!"
+msgstr ""
+
+#. 
+#: :610
+msgid "Please specify subdomain name!"
+msgstr "Gelieve een subdomein naam te specificeren"
+
+#. 
+#: :611
+msgid "Subdomain already exists!"
+msgstr "Subdomein bestaat al"
+
+#. 
+#: :612
+msgid "Wrong subdomain syntax!"
+msgstr "Verkeerde subdomein syntax"
+
+#. 
+#: :613
+msgid "Subdomain mount point already exists!"
+msgstr "Subdomein mount point bestaat al"
+
+#. 
+#: :614
+msgid "Subdomain scheduled for addition!"
+msgstr "Subdomein gepland voor toevoeging"
+
+#. 
+#: :615
+msgid "ISPCP - Client/Add Subdomain"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :616
+msgid "Add subdomain"
+msgstr "Subdomein toevoegen"
+
+#. 
+#: :617
+msgid "Subdomain data"
+msgstr "Subdomein gegevens"
+
+#. 
+#: :618
+msgid "Subdomain name"
+msgstr "Subdomein naam"
+
+#. 
+#: :619
+msgid "Directory tree<br>mount point"
+msgstr "Mappenboom<br>mount point"
+
+#. 
+#: :620
+msgid "Backup archive scheduled for restoring!"
+msgstr "Backup archief gepland voor herstel"
+
+#. 
+#: :621
+msgid "ISPCP - Client/Daily Backup"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :622
+#, fuzzy
+msgid "Backup"
+msgstr "Backup"
+
+#. 
+#: :623
+msgid "Daily backup"
+msgstr "Dagelijkse backup"
+
+#. 
+#: :624
+msgid "Direction download today backup"
+msgstr "Verwijzing backup vandaag"
+
+#. 
+#: :625
+msgid "Login with your FTP account"
+msgstr "Log in met uw FTP account"
+
+#. 
+#: :626
+msgid "Switch to backup directory"
+msgstr "Schakel over naar backup directory"
+
+#. 
+#: :627
+msgid "Download the files stored in this directory"
+msgstr "Download het enige bestand in deze directory"
+
+#. 
+#: :628
+msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+msgstr "(meestal backup_YYY_MM_DD.tar genaamd)"
+
+#. 
+#: :629
+msgid "Restore backup"
+msgstr "Herstel backup"
+
+#. 
+#: :630
+msgid "Click Restore button and the system will restore last daily backup"
+msgstr "Klik op herstelknop en het stystem zal de laatst genomen backup terug zetten"
+
+#. 
+#: :631
+msgid "Restore"
+msgstr "Herstel"
+
+#. 
+#: :632
+msgid "N/A"
+msgstr "N/B"
+
+#. 
+#: :633
+msgid "Enable"
+msgstr "Inschakelen"
+
+#. 
+#: :634
+msgid "Disable"
+msgstr "Uitschakelen"
+
+#. 
+#: :635
+msgid "Delete CatchAll"
+msgstr "Verwijder catch all"
+
+#. 
+#: :636
+msgid "Create catch all"
+msgstr "Maak catch all"
+
+#. 
+#: :637
+msgid "Catch all mail account can not be created!"
+msgstr "Catch all mail account kan niet aangemaakt worden!"
+
+#. 
+#: :638
+msgid "Mail accounts list is empty!"
+msgstr "Mail accounts lijst is leeg"
+
+#. 
+#: :639
+msgid "ISPCP - Client/Manage Users"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :640
+msgid "Manage users"
+msgstr "Beheer gebruikers"
+
+#. 
+#: :641
+#, fuzzy
+msgid "Mail users"
+msgstr "Mail users"
+
+#. 
+#: :642
+msgid "Auto respond"
+msgstr "Automatisch antwoord"
+
+#. 
+#: :643
+msgid "Domain mails"
+msgstr "Domein mails"
+
+#. 
+#: :644
+msgid "Subdomain mails"
+msgstr "Subdomein mails"
+
+#. 
+#: :645
+#, fuzzy
+msgid "Alias mails"
+msgstr "Alias mails"
+
+#. 
+#: :646
+msgid "Mails total"
+msgstr "Mails totaal"
+
+#. 
+#: :647
+msgid "FTPs total"
+msgstr "Totaal FTP gebruikers"
+
+#. 
+#: :648
+#, fuzzy
+msgid "Catch all account"
+msgstr "Catch all account"
+
+#. 
+#: :649
+#, fuzzy
+msgid "Catch all"
+msgstr "Catch all"
+
+#. 
+#: :650
+msgid "FTP users"
+msgstr "FTP gebruikers"
+
+#. 
+#: :651
+#, fuzzy
+msgid "FTP account"
+msgstr "FTP account"
+
+#. 
+#: :652
+msgid "ISPCP - Client/Change Password"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :653
+msgid "ISPCP - Client/Change Personal Data"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :654
+msgid "Zip / Postal code"
+msgstr "Postcode"
+
+#. 
+#: :655
+msgid "Catch all account scheduled for creation!"
+msgstr "Catch all account gepland voor toevoeging!"
+
+#. 
+#: :656
+msgid "Mail forward list error!"
+msgstr "Mail doorsturingslijst fout!"
+
+#. 
+#: :657
+msgid "ISPCP - Client/Create CatchAll Mail Account"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :658
+msgid "Create catch all mail account"
+msgstr "Maak catch all mail account"
+
+#. 
+#: :659
+msgid "Mail accounts list"
+msgstr "Mail accounts lijst"
+
+#. 
+#: :660
+msgid "ISPCP - Client/Cronjob Manager"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :661
+msgid "Cronjob Manager"
+msgstr "Cronjob beheer"
+
+#. 
+#: :662
+msgid "Add Cronjob"
+msgstr "Cronjob toevoegen"
+
+#. 
+#: :663
+msgid "Active"
+msgstr "Actief"
+
+#. 
+#: :664
+msgid "Yes"
+msgstr "ja"
+
+#. 
+#: :665
+msgid "No"
+msgstr "Nee"
+
+#. 
+#: :666
+#, fuzzy
+msgid "Cronjob"
+msgstr "Cronjob"
+
+#. 
+#: :667
+msgid "Command to run:"
+msgstr "Commando om uit te voeren:"
+
+#. 
+#: :668
+msgid "Minute(s):"
+msgstr "Minuten:"
+
+#. 
+#: :669
+msgid "Hour(s):"
+msgstr "Uren"
+
+#. 
+#: :670
+msgid "Day(s):"
+msgstr "Dag(en)"
+
+#. 
+#: :671
+msgid "Months(s):"
+msgstr "Maanden"
+
+#. 
+#: :672
+msgid "Weekday(s):"
+msgstr "Weekdagen"
+
+#. 
+#: :673
+msgid "Reset"
+msgstr "Herstel"
+
+#. 
+#: :674
+msgid "Cancel"
+msgstr "Annuleer"
+
+#. 
+#: :675
+msgid "Edit Cronjob"
+msgstr "Wijzig cronjob"
+
+#. 
+#: :676
+#, fuzzy
+msgid "Cronjobs"
+msgstr "Cronjobs"
+
+#. 
+#: :677
+msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgstr "De domeinalias die u wilt verwijderen heeft e-mail acoounts!<br>U dient deze eerst te verwijderen!"
+
+#. 
+#: :678
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr "De domeinalias die u wilt verwijderen heeft FTP accounts!<br>U dient deze eerst te verwijderen!"
+
+#. 
+#: :679
+msgid "Alias scheduled for deletion!"
+msgstr "Alias gepland voor verwijdering"
+
+#. 
+#: :680
+msgid "Catch all account scheduled for deletion!"
+msgstr "Catch all account gepland voor verwijdering!"
+
+#. 
+#: :681
+msgid "FTP account deleted successfully!"
+msgstr "FTP account succesvol verwijderd"
+
+#. 
+#: :682
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Gelieve eerst de Catch All account te verwijderen voor dit e-mail account"
+
+#. 
+#: :683
+msgid "SQL database was removed successfully!"
+msgstr "MySQL databank is succesvol verwijderd"
+
+#. 
+#: :684
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Het subdomein dat u wilt verwijderen bevat e-mail accounts! Verwijder deze eerst!"
+
+#. 
+#: :685
+msgid "Subdomain scheduled for deletion!"
+msgstr "Subdomein gepland voor verwijdering"
+
+#. 
+#: :686
+msgid "You have no permission to disable this alias forward"
+msgstr ""
+
+#. 
+#: :687
+msgid "Alias scheduled for modification!"
+msgstr "Alias gepland voor aanpassing"
+
+#. 
+#: :688
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Gebruiker bestaat niet of u heeft niet voldoende rechten om deze te bekijken"
+
+#. 
+#: :689
+msgid "Mail account scheduled for modification!"
+msgstr "Mail account gepland voor aanpassing"
+
+#. 
+#: :690
+msgid "ISPCP - Client/Domain Statistics"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :691
+msgid "Web Stats"
+msgstr ""
+
+#. 
+#: :692
+#, fuzzy
+msgid "WEB"
+msgstr "WEB"
+
+#. 
+#: :693
+#, fuzzy
+msgid "SMTP"
+msgstr "SMTP"
+
+#. 
+#: :694
+#, fuzzy
+msgid "POP/IMAP"
+msgstr "POP/IMAP"
+
+#. 
+#: :695
+msgid "Sum"
+msgstr "Som"
+
+#. 
+#: :696
+msgid "Entered passwords differ!"
+msgstr "Ingevulde wachtwoorden verschillen!"
+
+#. 
+#: :697
+msgid "%s do not exist"
+msgstr ""
+
+#. 
+#: :698
+msgid "FTP account data updated!"
+msgstr "FTP account data gewijzigd"
+
+#. 
+#: :699
+msgid "ISPCP - Client/Edit FTP Account"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :700
+msgid "Edit FTP user"
+msgstr "Wijzig FTP user"
+
+#. 
+#: :701
+msgid "Save changes"
+msgstr "Veranderingen opslaan"
+
+#. 
+#: :702
+msgid "Email account not found!"
+msgstr ""
+
+#. 
+#: :703
+msgid "Missing or wrong data!"
+msgstr "Vermiste of verkeerde data"
+
+#. 
+#: :704
+msgid "Password data includes not valid signs!"
+msgstr ""
+
+#. 
+#: :705
+msgid "Mail were updated successfully!"
+msgstr "Mail is succesvol gewijzigd!"
+
+#. 
+#: :706
+msgid "ISPCP - Manage Mail and FTP / Edit mail account"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :707
+msgid "Edit email account"
+msgstr "Wijzig e-mail account"
+
+#. 
+#: :708
+msgid "Please type your mail autorespond message!"
+msgstr "Gelieve uw autoantwoord bericht in te vullen"
+
+#. 
+#: :709
+msgid "Mail account scheduler for modification!"
+msgstr "Mail account gepland voor aanpassing"
+
+#. 
+#: :710
+msgid "ISPCP - Client/Enable Mail Auto Responder"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :711
+msgid "Edit mail auto responder"
+msgstr "Wijzig automatische e-mail beantwoorder"
+
+#. 
+#: :712
+msgid "Your message"
+msgstr "Uw bericht"
+
+#. 
+#: :713
+msgid "Please wait for update"
+msgstr "Even geduld voor update"
+
+#. 
+#: :714
+msgid "ISPCP - Manage Domain Alias/Edit Alias"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :715
+msgid "Edit domain alias"
+msgstr "Wijzig domeinalias"
+
+#. 
+#: :716
+msgid "Alias name"
+msgstr "Alias naam"
+
+#. 
+#: :717
+msgid "Enable mail auto responder"
+msgstr "Mail automatisch antwoord inschakelen"
+
+#. 
+#: :718
+msgid "ISPCP - Client/Manage Error Custom Pages"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :719
+msgid "Server error - please choose error page"
+msgstr "Server error - kies een error pagina a.u.b."
+
+#. 
+#: :720
+msgid "Edit error page"
+msgstr "Wijzig error pagina"
+
+#. 
+#: :721
+msgid "Custom error page was updated!"
+msgstr "Aangepaste error pagina is gewijzigd!"
+
+#. 
+#: :722
+msgid "System error - custom error page was NOT updated!"
+msgstr "Systeem fout - standaard fout pagina is NIET gewijzigd!"
+
+#. 
+#: :723
+msgid "Error 401 (unauthorised)"
+msgstr ""
+
+#. 
+#: :724
+msgid "Error 403 (forbidden)"
+msgstr "Error 403 (verboden)"
+
+#. 
+#: :725
+msgid "Error 404 (not found)"
+msgstr "Error 404 (niet gevonden)"
+
+#. 
+#: :726
+msgid "Error 500 (internal server error)"
+msgstr "Error 500 (interne server error)"
+
+#. 
+#: :727
+msgid "Error pages"
+msgstr "Error paginas"
+
+#. 
+#: :728
+msgid "FTP list is empty!"
+msgstr "Er zijn geen FTP gebruikers"
+
+#. 
+#: :729
+msgid "Can not open directory !<br>Please contact your administrator !"
+msgstr "Kan deze map niet openen, neem contact op met de beheerder."
+
+#. 
+#: :730
+msgid "Parent Directory"
+msgstr "Map hoger"
+
+#. 
+#: :731
+msgid "Protect it"
+msgstr "Beschermen"
+
+#. 
+#: :732
+msgid "ISPCP - Client/Webtools"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :733
+msgid "Directory tree"
+msgstr "Mappenboom"
+
+#. 
+#: :734
+msgid "Directories"
+msgstr "Mappen"
+
+#. 
+#: :735
+msgid "Choose"
+msgstr "Kies"
+
+#. 
+#: :736
+#, c-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr ""
+
+#. 
+#: :737
+#, c-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr ""
+
+#. 
+#: :738
+msgid "You are exceeding your disk limit!"
+msgstr "U overschrijdt uw schijf limiet!"
+
+#. 
+#: :739
+msgid "You have no new support questions!"
+msgstr "U hebt geen nieuwe ondersteuning vragen!"
+
+#. 
+#: :740
+msgid "support question(s)"
+msgstr "ondersteuning vragen"
+
+#. 
+#: :741
+msgid "new"
+msgstr "nieuw"
+
+#. 
+#: :742
+msgid "ISPCP - Client/Main Index"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :743
+msgid "General information"
+msgstr "Algemene informatie"
+
+#. 
+#: :744
+msgid "Account name"
+msgstr "Account naam"
+
+#. 
+#: :745
+msgid "Main domain"
+msgstr "Hoofddomein"
+
+#. 
+#: :746
+msgid "SQL support"
+msgstr "MySQL ondersteuning"
+
+#. 
+#: :747
+msgid "Choose default language"
+msgstr "Kies standaard taal"
+
+#. 
+#: :748
+msgid "Traffic usage"
+msgstr "Dataverkeer gebruik"
+
+#. 
+#: :749
+msgid "Disk usage"
+msgstr "Schijfgebruik"
+
+#. 
+#: :750
+msgid "User language updated successfully!"
+msgstr "Gebruikerstaal succesvol gewijzigd"
+
+#. 
+#: :751
+msgid "ISPCP - Client/Change Language"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :752
+msgid "Subdomain list is empty!"
+msgstr "Er zijn geen subdomeinen"
+
+#. 
+#: :753
+msgid "Alias list is empty!"
+msgstr "Er zijn nog geen aliassen"
+
+#. 
+#: :754
+msgid "ISPCP - Client/Manage Domains"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :755
+msgid "Manage domains"
+msgstr "Beheer domeinen"
+
+#. 
+#: :756
+#, fuzzy
+msgid "Mount point"
+msgstr "Mount point"
+
+#. 
+#: :757
+msgid "Forward"
+msgstr "Doorsturen"
+
+#. 
+#: :758
+msgid "Database user list is empty!"
+msgstr "Er zijn geen gebruikers voor deze database"
+
+#. 
+#: :759
+msgid "Database list is empty!"
+msgstr "Er zijn geen databases"
+
+#. 
+#: :760
+msgid "ISPCP - Client/Manage SQL"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :761
+msgid "Manage SQL"
+msgstr "Beheer MySQL"
+
+#. 
+#: :762
+msgid "Database users"
+msgstr "Database gebruikers"
+
+#. 
+#: :763
+msgid "Add SQL user"
+msgstr "MySQL gebruiker toevoegen"
+
+#. 
+#: :764
+msgid "Execute query"
+msgstr "Query uitvoeren"
+
+#. 
+#: :765
+msgid "Please specify message subject!"
+msgstr "Gelieve een bericht onderwerp te specificeren"
+
+#. 
+#: :766
+msgid "Your message was sent!"
+msgstr "Uw bericht is verzonden"
+
+#. 
+#: :767
+msgid "ISPCP - Support system - New ticket"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :768
+msgid "New ticket"
+msgstr "Nieuw ticket"
+
+#. 
+#: :769
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr ""
+
+#. 
+#: :770
+msgid "Protected area deleted successfully!"
+msgstr "Beschermd gebied succesvol verwijderd"
+
+#. 
+#: :771
+msgid "Permission deny!"
+msgstr "Geen toestemming!"
+
+#. 
+#: :772
+msgid "You do not have protected areas"
+msgstr "U heeft geen beschermde gebieden"
+
+#. 
+#: :773
+msgid "Manage users and groups"
+msgstr "Beheer gebruikers en groepen"
+
+#. 
+#: :774
+msgid "Add user"
+msgstr "Gebruiker toevoegen"
+
+#. 
+#: :775
+msgid "Group name"
+msgstr "Groepsnaam"
+
+#. 
+#: :776
+msgid "Group members"
+msgstr "Groepsleden"
+
+#. 
+#: :777
+msgid "Add group"
+msgstr "Groep toevoegen"
+
+#. 
+#: :778
+msgid "Group"
+msgstr "Groep"
+
+#. 
+#: :779
+msgid "Add new protected area"
+msgstr "Nieuwe beveiligde map toevoegen"
+
+#. 
+#: :780
+msgid "Please choose user or group"
+msgstr "Kies een gebruiker of groep"
+
+#. 
+#: :781
+msgid "Please enter area name"
+msgstr "Vul gebiedsnaam in"
+
+#. 
+#: :782
+msgid "Please enter area path"
+msgstr "Gelieve gebiedspad in te voeren"
+
+#. 
+#: :783
+msgid "%s doesn't exist"
+msgstr ""
+
+#. 
+#: :784
+msgid "You can not protect area without selected user(s)"
+msgstr ""
+
+#. 
+#: :785
+msgid "You can not protect area without selected group(s)"
+msgstr "U kunt geen gebied beschermen zonder een geselecteerde groep(en)"
+
+#. 
+#: :786
+msgid "Protected area updated successfully!"
+msgstr "Beschermd gebied succesvol gewijzigd"
+
+#. 
+#: :787
+msgid "Protected area created successfully!"
+msgstr "Beschermd gebied succesvol toegevoegd"
+
+#. 
+#: :788
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr ""
+
+#. 
+#: :789
+msgid "You have no users !"
+msgstr "U heeft geen gebruikers"
+
+#. 
+#: :790
+msgid "You have no groups!"
+msgstr "U heeft geen groepen"
+
+#. 
+#: :791
+msgid "Protect this area"
+msgstr "Bescherm dit gebied"
+
+#. 
+#: :792
+msgid "Path"
+msgstr "Pad"
+
+#. 
+#: :793
+msgid "Groups"
+msgstr "Groepen"
+
+#. 
+#: :794
+msgid "User auth"
+msgstr "Gebruikersauthenticatie"
+
+#. 
+#: :795
+msgid "Group auth"
+msgstr "Groep authenticatie"
+
+#. 
+#: :796
+msgid "Area name"
+msgstr "Gebiedsnaam"
+
+#. 
+#: :797
+msgid "Unprotect it"
+msgstr "Verwijder beveiliging"
+
+#. 
+#: :798
+msgid "Can not open file! Please contact your administrator !"
+msgstr "Kan dit bestand niet openen, neem contact op met de beheerder."
+
+#. 
+#: :799
+msgid "User was assigned to group "
+msgstr ""
+
+#. 
+#: :800
+msgid "User was deleted from group "
+msgstr "Gebruiker is van de groep verwijderd"
+
+#. 
+#: :801
+msgid "User assign"
+msgstr "Gebruiker toewijzing"
+
+#. 
+#: :802
+msgid "Already in:"
+msgstr "Al aanwezig:"
+
+#. 
+#: :803
+msgid "Not in:"
+msgstr "Niet in"
+
+#. 
+#: :804
+msgid "User was assigned to group"
+msgstr "Gebruiker is toegewezen aan groep"
+
+#. 
+#: :805
+msgid "Member of group:"
+msgstr ""
+
+#. 
+#: :806
+msgid "Select group:"
+msgstr ""
+
+#. 
+#: :807
+msgid "Update user"
+msgstr "Wijzig gebruiker"
+
+#. 
+#: :808
+msgid "Wrong username!"
+msgstr "Verkeerde gebruikersnaam"
+
+#. 
+#: :809
+msgid "Group already exist !"
+msgstr "Groep bestaat al"
+
+#. 
+#: :810
+msgid "Manage user"
+msgstr "Beheer gebruikers"
+
+#. 
+#: :811
+msgid "You have no users!"
+msgstr "U heeft geen gebruikers"
+
+#. 
+#: :812
+msgid "User already exist !"
+msgstr "Gebruiker bestaat al"
+
+#. 
+#: :813
+msgid "SQL-user limit expired!"
+msgstr "MySQL gebruikers limiet overschreden"
+
+#. 
+#: :814
+msgid "Please type user name!"
+msgstr "Gelieve een gebruikersnaam in te vullen"
+
+#. 
+#: :815
+msgid "Please type user password!"
+msgstr "Gelieve een gebruiker wachtwoord in te vullen"
+
+#. 
+#: :816
+msgid "Too user long password!"
+msgstr "Te lang gebruikerswachtwoord!"
+
+#. 
+#: :817
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr ""
+
+#. 
+#: :818
+msgid "User name too long!"
+msgstr "Gebruikersnaam is te lang"
+
+#. 
+#: :819
+msgid "Specified SQL username name already exists!"
+msgstr "gegeven MySQL gebruikersnaam bestaat al"
+
+#. 
+#: :820
+msgid "SQL user successfully added!"
+msgstr "MySQL gebruiker succesvol toegevoegd"
+
+#. 
+#: :821
+msgid "ISPCP - Client/Add SQL User"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :822
+msgid "SQL user name"
+msgstr "MySQL gebruikersnaam"
+
+#. 
+#: :823
+msgid "In front the name"
+msgstr "Voor de naam"
+
+#. 
+#: :824
+msgid "Behind the name"
+msgstr "Achter de naam"
+
+#. 
+#: :825
+msgid "Add existing user"
+msgstr "Voeg bestaande gebruiker toe"
+
+#. 
+#: :826
+msgid "Existing SQL users"
+msgstr "Bestaande SQL gebruikers"
+
+#. 
+#: :827
+msgid "Too long user password!"
+msgstr "Te lang gebruikerswachtwoord!"
+
+#. 
+#: :828
+msgid "SQL user password was successfully changed!"
+msgstr "MySQL gebruikerswachtwoord is succesvol verandert"
+
+#. 
+#: :829
+msgid "ISPCP - Client/Change SQL User Password"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :830
+msgid "Change SQL user password"
+msgstr "Verander wachtwoord MySQL gebruiker"
+
+#. 
+#: :831
+msgid "Change"
+msgstr "Verander"
+
+#. 
+#: :832
+msgid "SQL user was removed successfully!"
+msgstr "MySQL gebruiker is succesvol verwijderd"
+
+#. 
+#: :833
+msgid "Please enter SQL query!"
+msgstr "Gelieve een MySQL query in te vullen"
+
+#. 
+#: :834
+msgid "Cannot connect as MySQL administrator!"
+msgstr "Kan niet verbinden als MySQL beheerder!"
+
+#. 
+#: :835
+msgid "SQL query has error"
+msgstr "MySQL query geeft een error"
+
+#. 
+#: :836
+msgid "SQL query is ok"
+msgstr "MySQL query is ok"
+
+#. 
+#: :837
+msgid "ISPCP - Client/Execute SQL Query"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :838
+msgid "Execute SQL query"
+msgstr "SQL query uitvoeren"
+
+#. 
+#: :839
+msgid "SQL query"
+msgstr "MySQL query"
+
+#. 
+#: :840
+#, fuzzy
+msgid "Query status"
+msgstr "Query status"
+
+#. 
+#: :841
+msgid "Query result"
+msgstr "Query resultaat"
+
+#. 
+#: :842
+msgid "Execute"
+msgstr "Uitvoeren"
+
+#. 
+#: :843
+msgid "Protected area was deleted successful!"
+msgstr "Beschermd gebied succesvol verwijderd"
+
+#. 
+#: :844
+msgid "Hosting plans available for update"
+msgstr "Hostingpakket beschikbaar voor updates"
+
+#. 
+#: :845
+msgid "Cancel order"
+msgstr "Annuleer bestelling"
+
+#. 
+#: :846
+msgid "Your order"
+msgstr "Uw bestelling"
+
+#. 
+#: :847
+msgid "Purchase"
+msgstr "Koop"
+
+#. 
+#: :848
+msgid "There are no available updates"
+msgstr "Er zijn geen updates beschikbaar"
+
+#. 
+#: :849
+msgid "PHP Support: enabled"
+msgstr "PHP ondersteuning: ingeschakeld"
+
+#. 
+#: :850
+msgid "PHP Support: disabled"
+msgstr "PHP ondersteuning: uitgeschakeld"
+
+#. 
+#: :851
+msgid "CGI Support: enabled"
+msgstr "CGI ondersteuning: ingeschakeld"
+
+#. 
+#: :852
+msgid "CGI Support: disabled"
+msgstr "CGI ondersteuning: uitgeschakeld"
+
+#. 
+#: :853
+msgid "HDD"
+msgstr "Harde schijf"
+
+#. 
+#: :854
+msgid "Aliases"
+msgstr "Aliassen"
+
+#. 
+#: :855
+msgid "Emails"
+msgstr ""
+
+#. 
+#: :856
+msgid "FTPs"
+msgstr ""
+
+#. 
+#: :857
+msgid "SQL Databases"
+msgstr ""
+
+#. 
+#: :858
+msgid "SQL Users"
+msgstr ""
+
+#. 
+#: :859
+msgid "free of charge"
+msgstr "Gratis"
+
+#. 
+#: :860
+msgid "There are no available hosting plans for update"
+msgstr "Er zijn geen hostingpakketten beschikbaar"
+
+#. 
+#: :861
+msgid "ISPCP - Update hosting plan"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :862
+msgid "Your request for hosting pack update was added successfully"
+msgstr "Uw aanvraag voor een hostingpakket is succesvol toegevoegd"
+
+#. 
+#: :863
+msgid "Your request for hosting pack update was removed successfully"
+msgstr "Uw aanvraag voor een hostingpakket is succesvol verwijderd"
+
+#. 
+#: :864
+msgid "Message was send!"
+msgstr "Bericht is verzonden"
+
+#. 
+#: :865
+#, fuzzy
+msgid "Webtools"
+msgstr "Webtools"
+
+#. 
+#: :866
+msgid "Customise error pages for your domain"
+msgstr ""
+
+#. 
+#: :867
+msgid "Backup and restore settings"
+msgstr "Backup en herstel instellingen"
+
+#. 
+#: :868
+msgid "Access your mail through the web interface"
+msgstr "Toegang tot mail via web interface"
+
+#. 
+#: :869
+msgid "Access your files through the web interface"
+msgstr "Toegang tot bestanden via web interface"
+
+#. 
+#: :870
+msgid "Manage protected areas, users and groups"
+msgstr "Beheer beschermde gebieden, gebruikers en groepen"
+
+#. 
+#: :871
+msgid "System tools"
+msgstr "Systeem tools"
+
+#. 
+#: :872
+msgid "Statistics"
+msgstr "Statistieken"
+
+#. 
+#: :873
+msgid "Reseller statistics"
+msgstr "Reseller statistieken"
+
+#. 
+#: :874
+msgid "Admin log"
+msgstr "Beheerders Log"
+
+#. 
+#: :875
+msgid "Logout"
+msgstr "Log uit"
+
+#. 
+#: :876
+msgid "Custom menus"
+msgstr "Standaard menus"
+
+#. 
+#: :877
+msgid "Overview"
+msgstr "Overzicht"
+
+#. 
+#: :878
+msgid "User sessions"
+msgstr "Gebruikerssessies"
+
+#. 
+#: :879
+msgid "Lostpw email setup"
+msgstr "E-mail"
+
+#. 
+#: :880
+msgid "Rootkit Log"
+msgstr ""
+
+#. 
+#: :881
+msgid "Admin users"
+msgstr "Beheerders"
+
+#. 
+#: :882
+msgid "Normal users"
+msgstr "Normale gebruikers"
+
+#. 
+#: :883
+msgid "Domains"
+msgstr "Domeinen"
+
+#. 
+#: :884
+msgid "System messages"
+msgstr "Systeem berichten"
+
+#. 
+#: :885
+msgid "No new messages"
+msgstr "Geen nieuwe berichten"
+
+#. 
+#: :886
+msgid "Server traffic"
+msgstr "Server verkeer"
+
+#. 
+#: :887
+msgid "Administrators list is empty!"
+msgstr ""
+
+#. 
+#: :888
+msgid "Created by"
+msgstr "Gemaakt door"
+
+#. 
+#: :889
+msgid "Resellers list is empty!"
+msgstr "Er zijn nog geen resellers"
+
+#. 
+#: :890
+msgid "Change user interface"
+msgstr "Verander lay-out"
+
+#. 
+#: :891
+msgid "Not found user records matching the search criteria!"
+msgstr "Geen resultaten gevonden die aan uw zoekopdracht voldoen"
+
+#. 
+#: :892
+msgid "view aliases"
+msgstr "Bekijk aliassen"
+
+#. 
+#: :893
+msgid "Users list is empty!"
+msgstr "Er zijn nog geen gebruikers"
+
+#. 
+#: :894
+msgid "S"
+msgstr "Status"
+
+#. 
+#: :895
+msgid "D"
+msgstr "Details"
+
+#. 
+#: :896
+#, fuzzy
+msgid "Details"
+msgstr "Details"
+
+#. 
+#: :897
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Weet u zeker dat u de status van het account wilt wijzigen?"
+
+#. 
+#: :898
+msgid "Are you sure you want to delete this account?"
+msgstr "Weet u zeker dat u dit account wilt verwijderen?"
+
+#. 
+#: :899
+msgid "Administrators"
+msgstr "Beheerders"
+
+#. 
+#: :900
+#, fuzzy
+msgid "Resellers"
+msgstr "Resellers"
+
+#. 
+#: :901
+msgid "Search"
+msgstr "Zoeken"
+
+#. 
+#: :902
+msgid "Creation date"
+msgstr "Aangemaakt op"
+
+#. 
+#: :903
+#, c-format
+msgid "%1$s you are now logged as %2$s"
+msgstr ""
+
+#. 
+#: :904
+msgid "Go back"
+msgstr "Ga terug"
+
+#. 
+#: :905
+msgid "OK"
+msgstr "Ok"
+
+#. 
+#: :906
+msgid "Suspended"
+msgstr "Opgeschort"
+
+#. 
+#: :907
+msgid "Error"
+msgstr "Fout"
+
+#. 
+#: :908
+msgid "[Ticket] {SUBJ}"
+msgstr ""
+
+#. 
+#: :909
+msgid "Hello {TO_NAME} !\n\nYou have a new ticket to read"
+msgstr ""
+
+#. 
+#: :910
+msgid "Email and FTP accounts"
+msgstr "E-mail en FTP accounts"
+
+#. 
+#: :911
+msgid "Add mail user"
+msgstr "Mail gebruiker toevoegen"
+
+#. 
+#: :912
+#, fuzzy
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+#. 
+#: :913
+#, fuzzy
+msgid "Filemanager"
+msgstr "Filemanager"
+
+#. 
+#: :914
+msgid "Webstatistics"
+msgstr "Webstatistieken"
+
+#. 
+#: :915
+msgid "Group - Usermanagement"
+msgstr "Groep - Gebruikersbeheer"
+
+#. 
+#: :916
+msgid "Email Accounts"
+msgstr "E-mail accounts"
+
+#. 
+#: :917
+#, fuzzy
+msgid "FTP Accounts"
+msgstr "FTP Accounts"
+
+#. 
+#: :918
+msgid "Update Hosting Package"
+msgstr ""
+
+#. 
+#: :919
+msgid "Addition in progress"
+msgstr "Bezig met toevoeging"
+
+#. 
+#: :920
+msgid "ok"
+msgstr "Ok"
+
+#. 
+#: :921
+msgid "Modification in progress"
+msgstr "Bezig met aanpassing"
+
+#. 
+#: :922
+msgid "Deletion in progress"
+msgstr "Bezig met verwijderen"
+
+#. 
+#: :923
+msgid "Unknown Error"
+msgstr ""
+
+#. 
+#: :924
+msgid "Domain mail"
+msgstr "Domein mail"
+
+#. 
+#: :925
+msgid "Email forward"
+msgstr "E-mail doorsturing"
+
+#. 
+#: :926
+#, fuzzy
+msgid "Alias mail"
+msgstr "Alias mail"
+
+#. 
+#: :927
+msgid "Alias forward"
+msgstr "Alias doorsturing"
+
+#. 
+#: :928
+msgid "Subdomain mail"
+msgstr "Subdomein mail"
+
+#. 
+#: :929
+msgid "Subdomain forward"
+msgstr "Subdomein doorsturing"
+
+#. 
+#: :930
+msgid "Unknown type"
+msgstr "Onbekend type"
+
+#. 
+#: :931
+msgid "Catchall account"
+msgstr ""
+
+#. 
+#: :932
+msgid "Could not get config from database"
+msgstr ""
+
+#. 
+#: :933
+msgid "You have to wait"
+msgstr "U moet wachten"
+
+#. 
+#: :934
+msgid "seconds"
+msgstr "seconden"
+
+#. 
+#: :935
+msgid "You have been blocked for"
+msgstr "U bent geblokkeerd voor"
+
+#. 
+#: :936
+msgid "System is currently in servicemode! At time only administrators can login."
+msgstr "Systeem is momenteel in service modus!  Enkel de beheerders kunnen inloggen."
+
+#. 
+#: :937
+msgid "User already logged or session sharing problem! Aborting..."
+msgstr "Gebruiker is al ingelogd of er is een session sharing probleem. Afgebroken..."
+
+#. 
+#: :938
+msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+#. 
+#: :939
+msgid "Domain alias"
+msgstr "Domeinalias"
+
+#. 
+#: :940
+msgid "Manage Orders"
+msgstr "Beheer bestellingen"
+
+#. 
+#: :941
+msgid "Order settings"
+msgstr "Bestellingsinstellingen"
+
+#. 
+#: :942
+msgid "Order email setup"
+msgstr "Bestellingse-mail instellingen"
+
+#. 
+#: :943
+msgid "Please fill up both data fields for password!"
+msgstr "Gelieve allebei de wachtwoordvelden in te vullen"
+
+#. 
+#: :944
+msgid "wait to be added"
+msgstr "Wachten op toevoeging"
+
+#. 
+#: :945
+msgid "wait to be modified"
+msgstr "Wachten op aanpassing"
+
+#. 
+#: :946
+msgid "wait to be deleted"
+msgstr "Wachten op verwijdering"
+
+#. 
+#: :947
+msgid "suspended"
+msgstr "Opgeschort"
+
+#. 
+#: :948
+msgid "wait to be enabled"
+msgstr "Wachten op activering"
+
+#. 
+#: :949
+msgid "wait to be suspended"
+msgstr "Wachten op opschorting"
+
+#. 
+#: :950
+msgid "unknown status"
+msgstr "onbekende status"
+
+#. 
+#: :951
+msgid "hide aliases"
+msgstr "verberg aliassen"
+
+#. 
+#: :952
+msgid "You have reached your domains limit.<br>You can not add more domains!"
+msgstr ""
+
+#. 
+#: :953
+msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgstr ""
+
+#. 
+#: :954
+msgid "You are exceeding your subdomains limit!"
+msgstr ""
+
+#. 
+#: :955
+msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgstr ""
+
+#. 
+#: :956
+msgid "You Are Exceeding Your Alias Limit!"
+msgstr "U overschrijdt uw alias limiet!"
+
+#. 
+#: :957
+msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgstr ""
+
+#. 
+#: :958
+msgid "You are exceeding your mail accounts limit!"
+msgstr ""
+
+#. 
+#: :959
+msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgstr ""
+
+#. 
+#: :960
+msgid "You are exceeding your FTP accounts limit!"
+msgstr ""
+
+#. 
+#: :961
+msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgstr ""
+
+#. 
+#: :962
+msgid "You are exceeding your SQL databases limit!"
+msgstr ""
+
+#. 
+#: :963
+msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgstr ""
+
+#. 
+#: :964
+msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgstr "U hebt MySQL databanken uitgeschakeld voor deze gebruiker!<br>U kan geen MySQL gebruikers hebben!"
+
+#. 
+#: :965
+msgid "You are exceeding your SQL database limit!"
+msgstr ""
+
+#. 
+#: :966
+msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgstr ""
+
+#. 
+#: :967
+msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
+msgstr ""
+
+#. 
+#: :968
+msgid "You have a new order"
+msgstr ""
+
+#. 
+#: :969
+msgid "\n\nDear {RESELLER},\nyou have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n\nPlease login into your ISPCP control panel for more details.\n\n"
+msgstr ""
+
+#. 
+#: :970
+msgid "Wrong domain name syntax!"
+msgstr "Verkeerde domeinnaam syntax"
+
+#. 
+#: :971
+msgid "You do not have permission to access this interface!"
+msgstr "U heeft geen rechten deze interface te gebruiken"
+
+#. 
+#: :972
+msgid "Add On A Domain"
+msgstr "Voeg toe aan een domein"
+
+#. 
+#: :973
+msgid "Continue"
+msgstr "Ga verder"
+
+#. 
+#: :974
+msgid "(e.g. domain-of-your-choice.com)"
+msgstr "(bijv. domein-van-uw-keuze.nl)"
+
+#. 
+#: :975
+msgid "Please fill out all needed fields!"
+msgstr "Gelieve alle benodigde velden in te vullen"
+
+#. 
+#: :976
+msgid "Enter Address"
+msgstr "Voeg adres in"
+
+#. 
+#: :977
+msgid "* denotes mandatory field."
+msgstr "* geeft verplichte velden aan"
+
+#. 
+#: :978
+msgid "Your Chart"
+msgstr "Uw grafiek"
+
+#. 
+#: :979
+msgid "Costs"
+msgstr "Kosten"
+
+#. 
+#: :980
+msgid "Personal Data"
+msgstr "Persoonlijke gegevens"
+
+#. 
+#: :981
+msgid "Check Out"
+msgstr "Controleer"
+
+#. 
+#: :982
+msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgstr "<b>Dank u voor uw bestelling</b><br>U ontvangt zo snel mogelijk een e-mail met meer details en informatie."
+
+#. 
+#: :983
+msgid "No available hosting packages"
+msgstr "Geen beschikbare hostingpakketten"
+
+#. 
+#: :984
+msgid "Webspace"
+msgstr "Webruimte"
+
+#. 
+#: :985
+msgid "Domain Features"
+msgstr "Domeineigenschappen"
+
+#. 
+#: :986
+msgid "Package Features"
+msgstr "Pakketeigenschappen"
+
+#. 
+#: :987
+msgid "Backup and Restore"
+msgstr "Backup en herstel"
+
+#. 
+#: :988
+msgid "Custom Error Pages"
+msgstr "Aangepaste error paginas"
+
+#. 
+#: :989
+msgid "Protected Areas"
+msgstr "Beschermde gebieden"
+
+#. 
+#: :990
+msgid "Custom Apache Logs"
+msgstr "Aangepaste Apache Logs"
+
+#. 
+#: :991
+msgid "Web & E-Mail Support"
+msgstr "Web en e-mail ondersteuning"
+
+#. 
+#: :992
+msgid "Your Own Domain"
+msgstr "Uw eigen domein"
+
+#. 
+#: :993
+msgid "ISPCP Control Panel"
+msgstr "ISPCP Controle paneel"
+
+#. 
+#: :994
+msgid "Automatic Updates"
+msgstr "Automatische updates"
+
+#. 
+#: :995
+msgid "Package Price"
+msgstr "Pakketprijs"
+
+#. 
+#: :996
+msgid "Setup Fee"
+msgstr "Opstartkosten"
+
+#. 
+#: :997
+msgid "Performance"
+msgstr "Prestaties"
+
+#. 
+#: :998
+msgid "ISPCP Reseller : Add Alias"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :999
+msgid "You have no user records."
+msgstr "U heeft geen gebruikers"
+
+#. 
+#: :1000
+msgid "ISPCP - Reseller/Add hosting plan"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1001
+msgid "ISPCP - Reseller/Change Password"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1002
+msgid "ISPCP - Reseller/Change Personal Data"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1003
+msgid "ISPCP - Circular"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1004
+msgid "Circular"
+msgstr "E-mail marketing"
+
+#. 
+#: :1005
+msgid "Wrong domain ID!"
+msgstr "Verkeerd domein ID"
+
+#. 
+#: :1006
+msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr "Het domein dat u wilt verwijderen heeft e-mail accounts !<br>U dient deze eerst te verwijderen!"
+
+#. 
+#: :1007
+msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr "Het domein dat u wilt verwijderen heeft FTP accounts!<br>U dient deze eerst te verwijderen!"
+
+#. 
+#: :1008
+msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr "Het domein dat u wilt verwijderen heeft domein aliassen !<br>U dient deze eerst te verwijderen!"
+
+#. 
+#: :1009
+msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgstr "Het domein dat u wilt verwijderen heeft subdomeinen!<br>U dient deze eerst te verwijderen!"
+
+#. 
+#: :1010
+msgid "ISPCP - Manage Domain/Alias"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1011
+msgid "Manage alias"
+msgstr "Beheer alias"
+
+#. 
+#: :1012
+msgid "Real domain"
+msgstr "Echt domein"
+
+#. 
+#: :1013
+msgid "You have no alias records."
+msgstr "U heeft geen aliassen"
+
+#. 
+#: :1014
+msgid "enabled"
+msgstr "ingeschakeld"
+
+#. 
+#: :1015
+msgid "delete"
+msgstr "verwijder"
+
+#. 
+#: :1016
+msgid "Domain alias added for termination!"
+msgstr "Domeinalias toegevoegd voor verwijdering"
+
+#. 
+#: :1017
+msgid "Domain alias not added for termination!"
+msgstr "Domeinalias niet verwijderd"
+
+#. 
+#: :1018
+msgid "Domain alias added!"
+msgstr "Domeinalias toegevoegd"
+
+#. 
+#: :1019
+msgid "Domain alias not added!"
+msgstr "Domeinalias niet toegevoegd"
+
+#. 
+#: :1020
+msgid "Domain alias modified!"
+msgstr "Domeinalias aangepast"
+
+#. 
+#: :1021
+msgid "Domain alias not modified!"
+msgstr "Domeinalias niet aangepast"
+
+#. 
+#: :1022
+msgid "User terminated!"
+msgstr "Gebruiker beeindigd"
+
+#. 
+#: :1023
+msgid "ISPCP - Domain/Edit"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1024
+msgid "Edit Domain"
+msgstr "Wijzig domein"
+
+#. 
+#: :1025
+msgid "Domain properties"
+msgstr "Domein eigenschappen"
+
+#. 
+#: :1026
+msgid "Domain properties updated successfully!"
+msgstr "Domein eigenschappen succesvol gewijzigd!"
+
+#. 
+#: :1027
+msgid "<b>%s</b> Service can not be disabled !<br>"
+msgstr ""
+
+#. 
+#: :1028
+msgid "There are <b>%s</b> records on the system!"
+msgstr ""
+
+#. 
+#: :1029
+msgid "<b>%s</b> Service can not be limited !<br>"
+msgstr ""
+
+#. 
+#: :1030
+msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
+msgstr ""
+
+#. 
+#: :1031
+msgid "<b>%s</b> Service can not be unlimited !<br>"
+msgstr ""
+
+#. 
+#: :1032
+msgid "There are reseller limits for the <b>%s</b> service!"
+msgstr ""
+
+#. 
+#: :1033
+msgid "You are exceeding reseller limits for the <b>%s</b> service!"
+msgstr ""
+
+#. 
+#: :1034
+msgid "<b>%s</b> service can not be limited !<br>"
+msgstr ""
+
+#. 
+#: :1035
+msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
+msgstr ""
+
+#. 
+#: :1036
+msgid "ISPCP - Users/Edit"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1037
+msgid "Edit user"
+msgstr "Wijzig gebruiker"
+
+#. 
+#: :1038
+msgid "Users list"
+msgstr "Gebruikerslijst"
+
+#. 
+#: :1039
+msgid "ISPCP - Reseller/Edit hosting plan"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1040
+msgid "View hosting plan"
+msgstr "Bekijk hostingpakket"
+
+#. 
+#: :1041
+msgid "Incorrect price!"
+msgstr ""
+
+#. 
+#: :1042
+msgid "Incorrect setup fee!"
+msgstr ""
+
+#. 
+#: :1043
+msgid "ISPCP - Reseller/Manage users/Email setup"
+msgstr ""
+
+#. 
+#: :1044
+msgid "ISPCP - Reseller/Main Index"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1045
+msgid "View details"
+msgstr "Bekijk details"
+
+#. 
+#: :1046
+msgid "User accounts"
+msgstr "Gebruikersaccounts"
+
+#. 
+#: :1047
+#, fuzzy
+msgid "Mail account"
+msgstr "Mail account"
+
+#. 
+#: :1048
+#, fuzzy
+msgid "Extras"
+msgstr "Extras"
+
+#. 
+#: :1049
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
+
+#. 
+#: :1050
+msgid "ISPCP - Reseller/Lostpw email setup"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1051
+msgid "ISPCP - Reseller/Order email setup"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1052
+msgid "Manage orders"
+msgstr "Beheer bestellingen"
+
+#. 
+#: :1053
+msgid "Wrong order ID!"
+msgstr "Verkeerde bestellings ID"
+
+#. 
+#: :1054
+msgid "User added!"
+msgstr "Gebruiker toegevoegd!"
+
+#. 
+#: :1055
+msgid "Customer order was removed successful!"
+msgstr "Klant bestelling is succesvol verwijderd"
+
+#. 
+#: :1056
+msgid "ISPCP - Reseller/Order details"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1057
+msgid "Order data updated successfully!"
+msgstr "Bestellingsgegevens succesvol gewijzigd"
+
+#. 
+#: :1058
+msgid "Order date"
+msgstr "Bestellingsgegevens"
+
+#. 
+#: :1059
+msgid "Hosting plan"
+msgstr "Hostingpakket"
+
+#. 
+#: :1060
+#, fuzzy
+msgid "Hosting details"
+msgstr "Hosting details"
+
+#. 
+#: :1061
+msgid "Order details"
+msgstr "Bestellingsdetails"
+
+#. 
+#: :1062
+msgid "Customer data"
+msgstr "Klant gegevens"
+
+#. 
+#: :1063
+msgid "Delete order"
+msgstr "Verwijder bestelling"
+
+#. 
+#: :1064
+msgid "Are you sure you want to delete this order?"
+msgstr "Weet u zeker dat u deze bestelling wilt verwijderen?"
+
+#. 
+#: :1065
+msgid "Add to the system"
+msgstr "Voeg toe aan het systeem"
+
+#. 
+#: :1066
+msgid "ISPCP - Reseller/Order settings"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1067
+msgid "Header"
+msgstr "Bovenkant"
+
+#. 
+#: :1068
+msgid "Preview"
+msgstr "Voorbeeld"
+
+#. 
+#: :1069
+msgid "Implementation URL"
+msgstr "Implementatie URL"
+
+#. 
+#: :1070
+msgid "Footer"
+msgstr "Onderkant"
+
+#. 
+#: :1071
+msgid "ISPCP - Reseller/Order management"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1072
+msgid "You do not have new orders!"
+msgstr "U heeft geen nieuwe bestellingen"
+
+#. 
+#: :1073
+msgid "New order"
+msgstr "Nieuwe bestelling"
+
+#. 
+#: :1074
+msgid "Update order"
+msgstr "Bestelling wijzigen"
+
+#. 
+#: :1075
+#, fuzzy
+msgid "ID"
+msgstr "ID"
+
+#. 
+#: :1076
+msgid "Order"
+msgstr "Bestelling"
+
+#. 
+#: :1077
+msgid "Add/Details"
+msgstr "Voeg toe/Details"
+
+#. 
+#: :1078
+msgid "ISPCP - Users/Add user"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1079
+msgid "Choose hosting plan"
+msgstr "Kies hostingpakket"
+
+#. 
+#: :1080
+msgid "Personalise template"
+msgstr ""
+
+#. 
+#: :1081
+msgid "Next step"
+msgstr "Volgende stap"
+
+#. 
+#: :1082
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr ""
+
+#. 
+#: :1083
+msgid "ISPCP - User/Add user(step2)"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1084
+msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#. 
+#: :1085
+msgid "Backup / Restore"
+msgstr "Backup / Herstel"
+
+#. 
+#: :1086
+#, fuzzy
+msgid "Apache logs"
+msgstr "Apache logs"
+
+#. 
+#: :1087
+msgid "Awstats"
+msgstr "AWStats"
+
+#. 
+#: :1088
+msgid "ISPCP - User/Add user"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1089
+msgid "Add other domains to this account"
+msgstr "Andere domeinen aan dit account toevoegen"
+
+#. 
+#: :1090
+msgid "There's a conflicting admin / reseller fix that first!"
+msgstr ""
+
+#. 
+#: :1091
+msgid "System error with Domain ID "
+msgstr ""
+
+#. 
+#: :1092
+msgid "Done"
+msgstr "Gereed"
+
+#. 
+#: :1093
+msgid "This reseller has no domains yet."
+msgstr "Deze reseller heeft nog geen domeinen"
+
+#. 
+#: :1094
+msgid "ISPCP - Users"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1095
+#, fuzzy
+msgid "Stats"
+msgstr "Stats"
+
+#. 
+#: :1096
+msgid "Edit properties"
+msgstr "Wijzig instellingen"
+
+#. 
+#: :1097
+msgid "You have no users."
+msgstr "U heeft geen gebruikers"
+
+#. 
+#: :1098
+msgid "User data updated!"
+msgstr "Gebruikersinformatie gewijzigd"
+
+#. 
+#: :1099
+msgid "User data not updated!"
+msgstr "Gebruikersinformatie niet gewijzigd"
+
+#. 
+#: :1100
+msgid "This user has domain record !<br>First remove the domain from the system!"
+msgstr "Deze gebruiker heeft een domein!<br>Verwijder eerst dit domein van het systeem!"
+
+#. 
+#: :1101
+msgid "User not terminated!"
+msgstr "Gebruiker niet beeindigd"
+
+#. 
+#: :1102
+msgid "ISPCP - Reseller : Support System: View Tickets"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+#. 
+#: :1103
+msgid "Message was sent."
+msgstr "Bericht is verzonden"

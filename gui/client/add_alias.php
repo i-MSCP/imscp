@@ -134,7 +134,7 @@ function check_domainalias_permissions($sql, $user_id)
 					if ($dmn_als_limit != 0 &&  $als_cnt >= $dmn_als_limit)
 					{
 
-							set_page_message(tr('Domain alias limit expired!'));
+							set_page_message(tr('Domain alias limit reached!'));
 
 							header("Location: manage_domains.php");
 

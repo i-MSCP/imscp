@@ -64,7 +64,7 @@ $tpl -> assign(
                        'TR_WEBTOOLS' => tr('Webtools'),
 					   'TR_BACKUP' => tr('Backup'),
 					   'TR_ERROR_PAGES' => tr('Error pages'),
-					   'TR_ERROR_PAGES_TEXT' => tr('Customize error pages for your domain'),
+					   'TR_ERROR_PAGES_TEXT' => tr('Customise error pages for your domain'),
 					   'TR_BACKUP_TEXT' => tr('Backup and restore settings'),
 					   'TR_WEBMAIL_TEXT' => tr('Access your mail through the web interface'),
 					   'TR_FILEMANAGER_TEXT' => tr('Access your files through the web interface'),
