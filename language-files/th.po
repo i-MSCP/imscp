@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-29 11:43-0500\n"
-"PO-Revision-Date: 2007-06-29 11:30-0500\n"
+"PO-Revision-Date: 2007-06-29 11:31-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Danish <da_DK@li.org>\n"
+"Language-Team: Thai <th@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,12 +15,11 @@ msgstr ""
 
 #: :1
 msgid "_: Localised language"
-msgstr "Dansk"
+msgstr "Thai"
 
 #: :2
-#, fuzzy
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #. Please ingore this entry
 #: :3
@@ -33,23 +32,23 @@ msgstr ""
 
 #: :5
 msgid "Login"
-msgstr "Log ind"
+msgstr ""
 
 #: :6
 msgid "Username"
-msgstr "Brugernavn"
+msgstr ""
 
 #: :7
 msgid "Password"
-msgstr "Adgangskode"
+msgstr ""
 
 #: :8
 msgid "Please enter your login information"
-msgstr "Venligst indtast dine logind informationer"
+msgstr ""
 
 #: :9
 msgid "Lost password"
-msgstr "Glemt Adgangskode"
+msgstr ""
 
 #: :10
 msgid "Lost password function currently disabled"
@@ -65,27 +64,27 @@ msgstr ""
 
 #: :13
 msgid "The password was requested"
-msgstr "Adgangskode nødvendig"
+msgstr ""
 
 #: :14
 msgid "Back"
-msgstr "Tilbage"
+msgstr ""
 
 #: :15
 msgid "ERROR: Unknown user"
-msgstr "Fejl: Ukendt bruger."
+msgstr ""
 
 #: :16
 msgid "Retry"
-msgstr "Prøv igen"
+msgstr ""
 
 #: :17
 msgid "ERROR: Security code was not correct!"
-msgstr "Fejl: Sikkerhedskoden var ikke korrekt."
+msgstr ""
 
 #: :18
 msgid "Security code"
-msgstr "Sikkerhedskode"
+msgstr ""
 
 #: :19
 msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
@@ -93,7 +92,7 @@ msgstr ""
 
 #: :20
 msgid "Request password"
-msgstr "Anmod om Adgangskode"
+msgstr ""
 
 #: :21
 msgid "ispCP - Admin/Manage users/Add reseller"
@@ -101,95 +100,95 @@ msgstr ""
 
 #: :22
 msgid "Reseller IP list is empty!"
-msgstr "Forhandler IP liste er tom!"
+msgstr ""
 
 #: :23
 msgid "No."
-msgstr "Nr."
+msgstr ""
 
 #: :24
 msgid "Assign"
-msgstr "Tildel"
+msgstr ""
 
 #: :25
 msgid "Label"
-msgstr "Afmærk"
+msgstr ""
 
 #: :26
 msgid "Number"
-msgstr "IP Nummer"
+msgstr ""
 
 #: :27
 msgid "Reseller"
-msgstr "Forhandler"
+msgstr ""
 
 #: :28
 msgid "This user name already exist!"
-msgstr "Dette brugernavn eksisterer allerede!"
+msgstr ""
 
 #: :29
 msgid "Incorrect username range or syntax!"
-msgstr "Ukorrekt brugernavnlængde eller syntaks!"
+msgstr ""
 
 #: :30
 msgid "Incorrect password range or syntax!"
-msgstr "Ukorrekt kodeordslængde eller syntaks!"
+msgstr ""
 
 #: :31
 msgid "Entered passwords does not match!"
-msgstr "De indtastede kodeord er ikke ens."
+msgstr ""
 
 #: :32
 msgid "Incorrect email range or syntax!"
-msgstr "Ukorrekt emaillængde  eller syntaks!"
+msgstr "Incorrect <i>e-mail</i> range or syntax!"
 
 #: :33
 msgid "Incorrect max domain count or syntax!"
-msgstr "Ukorrekt max domæne antal eller syntaks!"
+msgstr "Incorrect <i>max domain</i> count or syntax!"
 
 #: :34
 msgid "Incorrect max subdomain count or syntax!"
-msgstr "Ukorrekt max underdomæneantal eller syntaks!"
+msgstr "Incorrect <i>max subdomain</i> count or syntax!"
 
 #: :35
 msgid "Incorrect max alias count or syntax!"
-msgstr "Ukorrekt max alias antal eller syntaks!"
+msgstr "Incorrect <i>max alias</i> count or syntax!"
 
 #: :36
 msgid "Incorrect max FTP count or syntax!"
-msgstr "Ukorrekt max FTP antal eller syntaks!"
+msgstr "Incorrect <i>max FTP</i> count or syntax!"
 
 #: :37
 msgid "Incorrect max mail count or syntax!"
-msgstr "Ukorrekt max mail antal eller syntaks!"
+msgstr "Incorrect <i>max e-mail</i> count or syntax!"
 
 #: :38
 msgid "Incorrect max SQL databases count or syntax!"
-msgstr "Ukorrekt max SQL databaser antal eller syntaks!"
+msgstr "Incorrect <i>max mySQL databases</i> count or syntax!"
 
 #: :39
 msgid "Incorrect max SQL users count or syntax!"
-msgstr "Ukorrekt max SQL brugerantal eller syntaks!"
+msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
 
 #: :40
 msgid "Incorrect max traffic amount or syntax!"
-msgstr "Ukorrekt max traffikværdi eller syntaks!"
+msgstr "Incorrect <i>max traffic</i> amount or syntax!"
 
 #: :41
 msgid "Incorrect max disk amount or syntax!"
-msgstr "Ukorrekt max disk plads eller syntaks!"
+msgstr "Incorrect <i>max disk</i> amount or syntax!"
 
 #: :42
 msgid "You must assign at least one IP number for a reseller!"
-msgstr "Du skal tildele mindst et IP nummer til din forhandler!"
+msgstr "คุณต้องกำหนดอย่างน้อย 1 IP สำหรับตัวแทนจำหน่าย"
 
 #: :43
 msgid "Add reseller"
-msgstr "Tilføj forhandlere"
+msgstr "เพิ่มตัวแทนจำหน่าย"
 
 #: :44
 msgid "Core data"
-msgstr "Hoved Data"
+msgstr ""
 
 #: :45
 msgid "Repeat password"
@@ -197,11 +196,11 @@ msgstr ""
 
 #: :46
 msgid "Email"
-msgstr "E-mail"
+msgstr ""
 
 #: :47
 msgid "unlimited"
-msgstr "ubegrænset"
+msgstr ""
 
 #: :48
 msgid "Domains limit"
@@ -240,23 +239,20 @@ msgid "Disk limit [MB]"
 msgstr ""
 
 #: :57
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
 #: :58
 msgid "CGI / Perl"
-msgstr "CGI / Perl support"
+msgstr ""
 
 #: :59
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
 #: :60
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 #: :61
 msgid "Frontpage extensions"
@@ -264,116 +260,111 @@ msgstr ""
 
 #: :62
 msgid "Backup and restore"
-msgstr "Backup og reetablering"
+msgstr ""
 
 #: :63
 msgid "Custom error pages"
-msgstr "Egne Fejl-sider"
+msgstr ""
 
 #: :64
 msgid "Protected areas"
-msgstr "Beskyttet områder"
+msgstr ""
 
 #: :65
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 #: :66
 msgid "Directory listing"
-msgstr "Mappeliste"
+msgstr ""
 
 #: :67
 msgid "Apache logfiles"
-msgstr "Apache logfiler"
+msgstr "ไฟล์บันทึก Apache"
 
 #: :68
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 #: :69
-#, fuzzy
 msgid "Logo upload"
-msgstr "Logo upload"
+msgstr ""
 
 #: :70
 msgid "yes"
-msgstr "ja"
+msgstr "ใช่"
 
 #: :71
 msgid "no"
-msgstr "nej"
+msgstr ""
 
 #: :72
 msgid "Reseller IPs"
-msgstr "Forhandler IP'er"
+msgstr ""
 
 #: :73
 msgid "Additional data"
-msgstr "Ekstra data"
+msgstr "ข้อมูลเพิ่มเติม"
 
 #: :74
 msgid "Customer ID"
-msgstr "Kunde nummer (ID)"
+msgstr ""
 
 #: :75
 msgid "First name"
-msgstr "Fornavn"
+msgstr ""
 
 #: :76
 msgid "Last name"
-msgstr "Efternavn"
+msgstr ""
 
 #: :77
 msgid "Company"
-msgstr "Firma"
+msgstr "บริษัท"
 
 #: :78
 msgid "Zip/Postal code"
-msgstr "Postnummer"
+msgstr "รหัสไปรษณีย์"
 
 #: :79
 msgid "City"
-msgstr "By"
+msgstr "เมือง"
 
 #: :80
 msgid "Country"
-msgstr "Land"
+msgstr "ประเทศ"
 
 #: :81
 msgid "Street 1"
-msgstr "Adresse 1"
+msgstr ""
 
 #: :82
 msgid "Street 2"
-msgstr "Adresse 2"
+msgstr ""
 
 #: :83
 msgid "Phone"
-msgstr "Telefon"
+msgstr ""
 
 #: :84
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 #: :85
 msgid "Add"
-msgstr "Tilføj"
+msgstr "เพิ่ม"
 
 #: :86
 msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Håndtére bruger/Tilføj Bruger"
+msgstr ""
 
 #: :87
-#, fuzzy
 msgid "Administrator"
-msgstr "Administrator"
+msgstr "ผู้ดูแลระบบ"
 
 #: :88
 msgid "Empty data or wrong field!"
-msgstr "Tom data eller forkert felt!"
+msgstr ""
 
 #: :89
 msgid "Passwords don't match!"
@@ -381,81 +372,79 @@ msgstr ""
 
 #: :90
 msgid "Add admin"
-msgstr "Tilføj admin"
+msgstr "เพิ่มผู้ดูแลระบบ"
 
 #: :91
-#, fuzzy
 msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Admin/Admin Log"
+msgstr ""
 
 #: :92
 msgid "Log is empty!"
-msgstr "Loggen er tom!"
+msgstr ""
 
 #: :93
 msgid "Invalid time period!"
 msgstr ""
 
 #: :94
-#, fuzzy
 msgid "Admin Log"
-msgstr "Admin Log"
+msgstr "บันทึกผู้ดูแลระบบ"
 
 #: :95
 msgid "Clear log"
-msgstr "Slet log"
+msgstr ""
 
 #: :96
 msgid "Date"
-msgstr "Dato"
+msgstr ""
 
 #: :97
 msgid "Message"
-msgstr "Meddelse"
+msgstr ""
 
 #: :98
 msgid "Delete from log:"
-msgstr "Slet fra log:"
+msgstr ""
 
 #: :99
 msgid "everything"
-msgstr "alt"
+msgstr ""
 
 #: :100
 msgid "older than 2 weeks"
-msgstr "ældre end 2 uger"
+msgstr ""
 
 #: :101
 msgid "older than 1 month"
-msgstr "ældre end 1 måned"
+msgstr ""
 
 #: :102
 msgid "older than 3 months"
-msgstr "ældre end 3 måneder"
+msgstr ""
 
 #: :103
 msgid "older than 6 months"
-msgstr "ældre end 6 måneder"
+msgstr ""
 
 #: :104
 msgid "older than 12 months"
-msgstr "ældre end 2 måneder"
+msgstr ""
 
 #: :105
 msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Administrator/Tilføj hosting plan"
+msgstr ""
 
 #: :106
 msgid "Add hosting plan"
-msgstr "Tilføj hosting plan"
+msgstr "เพิ่ม hosting plan"
 
 #: :107
 msgid "Hosting plan properties"
-msgstr "Hosting plan egenskaber"
+msgstr ""
 
 #: :108
 msgid "Template name"
-msgstr "Hosting Pakkenavn"
+msgstr ""
 
 #: :109
 msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -475,167 +464,167 @@ msgstr ""
 
 #: :113
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL database grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
+msgstr ""
 
 #: :114
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL bruger grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
+msgstr ""
 
 #: :115
 msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Trafik grænse [MB]<br><i>(0"
+msgstr ""
 
 #: :116
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Disk grænse [MB]<br><i>(0 ubegrænset)</i>"
+msgstr ""
 
 #: :117
 msgid "Billing Settings"
-msgstr "Faktura Indstillinger"
+msgstr "การตั้งค่า Billing"
 
 #: :118
 msgid "Price"
-msgstr "Pris"
+msgstr ""
 
 #: :119
 msgid "Setup fee"
-msgstr "Setup gebyr"
+msgstr ""
 
 #: :120
 msgid "Currency"
-msgstr "Valuta"
+msgstr ""
 
 #: :121
 msgid "Payment period"
-msgstr "Betalingsperiode"
+msgstr ""
 
 #: :122
 msgid "Available for purchasing"
-msgstr "Tilføjet salgssiden"
+msgstr ""
 
 #: :123
 msgid "Description"
-msgstr "Beskrivelse"
+msgstr ""
 
 #: :124
 msgid "(e.g. EUR)"
-msgstr "(f.eks.: DKK, Kr. eller EUR)"
+msgstr "(เช่น : EUR)"
 
 #: :125
 msgid "Add plan"
-msgstr "Tilføj produkt"
+msgstr "เพิ่ม plan"
 
 #: :126
 msgid "Incorrect template name range or syntax!"
-msgstr "Ukorrekt skabelonnavn længde eller syntaks!"
+msgstr ""
 
 #: :127
 msgid "Incorrect template description range or syntax!"
-msgstr "Ukorrekt skabelonbeskrivelse eller syntaks!"
+msgstr ""
 
 #: :128
 msgid "Incorrect price range or syntax!"
-msgstr "Ukkorekt Prisangivelse!"
+msgstr ""
 
 #: :129
 msgid "Incorrect setup fee range or syntax!"
-msgstr "Ukorrekt Setup Prisangivelse!"
+msgstr ""
 
 #: :130
 msgid "Incorrect subdomain range or syntax!"
-msgstr "Ukorrekt underdomæne eller syntaks!"
+msgstr ""
 
 #: :131
 msgid "Incorrect alias range or syntax!"
-msgstr "Ukorrekt aliaslængde eller syntaks!"
+msgstr "Incorrect <i>domain alias</i> range or syntax!"
 
 #: :132
 msgid "Incorrect mail account range or syntax!"
-msgstr "Ukorrekt mailkonto længde eller syntaks!"
+msgstr "Incorrect <i>e-mail account</i> range or syntax!"
 
 #: :133
 msgid "Incorrect FTP account range or syntax!"
-msgstr "Ukorrekt FTP konto-længde eller syntaks!"
+msgstr "Incorrect <i>FTP account</i> range or syntax!"
 
 #: :134
 msgid "Incorrect SQL database range or syntax!"
-msgstr "Ukorrekt SQL database længde eller syntaks!"
+msgstr ""
 
 #: :135
 msgid "Incorrect SQL user range or syntax!"
-msgstr "Ukorrekt SQL bruger længde eller syntaks!"
+msgstr ""
 
 #: :136
 msgid "Incorrect traffic range or syntax!"
-msgstr "Ukorrekt traffiklængde eller syntaks!"
+msgstr ""
 
 #: :137
 msgid "Incorrect disk range or syntax!"
-msgstr "Ukorrekt disklængde eller syntaks!"
+msgstr "Incorrect <i>disk range</i> or syntax!"
 
 #: :138
 msgid "Hosting plan with entered name already exists!"
-msgstr "Der findes allerede en hosting plan med det indtastede navn!"
+msgstr ""
 
 #: :139
 msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Admin/Ændre Adgangskode"
+msgstr ""
 
 #: :140
 msgid "Please fill up all data fields!"
-msgstr "Udfyld venligst alle data felter!"
+msgstr ""
 
 #: :141
 msgid "Passwords does not match!"
-msgstr "Adgangskoder matcher ikke!"
+msgstr ""
 
 #: :142
 msgid "The current password is wrong!"
-msgstr "Nuværende adgangskode er forkert!"
+msgstr ""
 
 #: :143
 msgid "User password updated successfully!"
-msgstr "Bruger adgangskode blev opdateret!"
+msgstr ""
 
 #: :144
 msgid "Change password"
-msgstr "Ændre adgangskode"
+msgstr "เปลี่ยนรหัสผ่าน"
 
 #: :145
 msgid "Password data"
-msgstr "Adgangskode data"
+msgstr ""
 
 #: :146
 msgid "Update password"
-msgstr "Opdater adgangskode"
+msgstr ""
 
 #: :147
 msgid "Current password"
-msgstr "Nuværende adgangskode"
+msgstr "รหัสผ่านปัจจุบัน"
 
 #: :148
 msgid "Personal data updated successfully!"
-msgstr "Personlig data opdateret!"
+msgstr ""
 
 #: :149
 msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Admin/Ændre Personlige Data"
+msgstr ""
 
 #: :150
 msgid "Change personal data"
-msgstr "Ændre personlig data"
+msgstr "เปลี่ยนข้อมูลส่วนตัว"
 
 #: :151
 msgid "Personal data"
-msgstr "Personlig data!"
+msgstr ""
 
 #: :152
 msgid "Update data"
-msgstr "Opdater data"
+msgstr ""
 
 #: :153
 msgid "User does not exist!"
-msgstr "Bruger eksisterer ikke!"
+msgstr ""
 
 #: :154
 msgid "ispCP - Admin - Email Marketing"
@@ -643,160 +632,159 @@ msgstr ""
 
 #: :155
 msgid "Please specify a message subject!"
-msgstr "Indtast et emne!"
+msgstr ""
 
 #: :156
 msgid "Please specify a message content!"
-msgstr "Indtast en Meddelse!"
+msgstr ""
 
 #: :157
 msgid "Please specify a sender name!"
-msgstr "Indtast et afsender navn!"
+msgstr ""
 
 #: :158
 msgid "Please specify a sender email!"
-msgstr "Indtast en afsender email!"
+msgstr ""
 
 #: :159
 msgid "You send email to your users successfully!"
-msgstr "Du har afsendt E-Mails til dine bruger!"
+msgstr "คุณได้ส่งอีเมล์ไปยังผู้ใช้ของคุณเรียบร้อยแล้ว"
 
 #: :160
-#, fuzzy
 msgid "Email marketing"
-msgstr "Email marketing"
+msgstr ""
 
 #: :161
 msgid "Send message to"
-msgstr "Send Meddelse til"
+msgstr ""
 
 #: :162
 msgid "All users"
-msgstr "Alle brugere"
+msgstr "ผู้ใช้ทั้งหมด"
 
 #: :163
 msgid "All resellers"
-msgstr "Alle forhandlere"
+msgstr "ตัวแทนจำหน่ายทั้งหมด"
 
 #: :164
 msgid "All users & resellers"
-msgstr "Alle brugere & forhandlere"
+msgstr "ผู้ใช้และตัวแทนจำหน่ายทั้งหมด"
 
 #: :165
 msgid "Message subject"
-msgstr "Meddelse emne"
+msgstr ""
 
 #: :166
 msgid "Senders email"
-msgstr "Afsenders email"
+msgstr ""
 
 #: :167
 msgid "Senders name"
-msgstr "Afsenders navn"
+msgstr ""
 
 #: :168
 msgid "Send message"
-msgstr "Send Meddelse"
+msgstr ""
 
 #: :169
 msgid "You have no custom menus."
-msgstr "Du har ingen Kunde menuer."
+msgstr ""
 
 #: :170
 msgid "User"
-msgstr "Bruger"
+msgstr ""
 
 #: :171
 msgid "All"
-msgstr "Alle"
+msgstr "ทั้งหมด"
 
 #: :172
 msgid "Are you sure you want to delete"
-msgstr "Er du sikker på du vil slette?"
+msgstr "คุณแน่ใจที่จะต้องการลบ"
 
 #: :173
 msgid "Missing or incorrect data input!"
-msgstr "Manglende eller ukorrekt datainput"
+msgstr ""
 
 #: :174
 msgid "Custom menu data updated successful!"
-msgstr "Special menu data opdateret!"
+msgstr ""
 
 #: :175
 msgid "Custom menu deleted successful!"
-msgstr "Special menu slettet!"
+msgstr ""
 
 #: :176
 msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Admin - Håndtére kunde menuer"
+msgstr ""
 
 #: :177
 msgid "Manage custom menus"
-msgstr "Håndtér Kunde menuer"
+msgstr ""
 
 #: :178
 msgid "Add new button"
-msgstr "Tilføj ny knap"
+msgstr "เพิ่มปุ่มใหม่"
 
 #: :179
 msgid "Button name"
-msgstr "Knap navn"
+msgstr ""
 
 #: :180
 msgid "Button link"
-msgstr "Knap link (URL)"
+msgstr ""
 
 #: :181
 msgid "Button target"
-msgstr "Knap mål (_top, _blank)"
+msgstr ""
 
 #: :182
 msgid "Show in"
-msgstr "Vis i"
+msgstr ""
 
 #: :183
 msgid "Administrator level"
-msgstr "Administrator Niveau"
+msgstr ""
 
 #: :184
 msgid "Reseller level"
-msgstr "Forhandler niveau"
+msgstr ""
 
 #: :185
 msgid "Enduser level"
-msgstr "Bruger niveau"
+msgstr ""
 
 #: :186
 msgid "Reseller and enduser level"
-msgstr "Forhandler og Bruger niveau"
+msgstr ""
 
 #: :187
 msgid "Menu button"
-msgstr "Menuknap"
+msgstr ""
 
 #: :188
 msgid "Action"
-msgstr "Handling"
+msgstr ""
 
 #: :189
 msgid "Edit"
-msgstr "Rediger"
+msgstr ""
 
 #: :190
 msgid "Delete"
-msgstr "Slet"
+msgstr ""
 
 #: :191
 msgid "Level"
-msgstr "Niveau"
+msgstr ""
 
 #: :192
 msgid "Save"
-msgstr "Gem"
+msgstr ""
 
 #: :193
 msgid "Edit button"
-msgstr "Rediger knap"
+msgstr ""
 
 #: :194
 msgid "Error: we have a domain using this IP!"
@@ -808,220 +796,211 @@ msgstr ""
 
 #: :196
 msgid "IP was deleted!"
-msgstr "IP er slettet"
+msgstr ""
 
 #: :197
 msgid "Support ticket deleted successfully!"
-msgstr "Support sag er slettet!"
+msgstr ""
 
 #: :198
 msgid "All open support tickets deleted successfully!"
-msgstr "Alle åbne support sager blev slettet!"
+msgstr ""
 
 #: :199
 msgid "All closed support tickets deleted successfully!"
-msgstr "Alle lukkede support sager blev slettet!"
+msgstr ""
 
 #: :200
 msgid "ISPCP - Domain/Details"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :201
 msgid "Domain details"
-msgstr "Domænedetaljer"
+msgstr ""
 
 #: :202
 msgid "Domain name"
-msgstr "Domænenavn"
+msgstr ""
 
 #: :203
 msgid "Domain IP"
-msgstr "Domæne IP Adresse"
+msgstr ""
 
 #: :204
-#, fuzzy
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: :205
-#, fuzzy
 msgid "PHP support"
-msgstr "PHP support"
+msgstr ""
 
 #: :206
-#, fuzzy
 msgid "CGI support"
-msgstr "CGI support"
+msgstr ""
 
 #: :207
-#, fuzzy
 msgid "MySQL support"
-msgstr "MySQL support"
+msgstr ""
 
 #: :208
 msgid "Traffic in MB"
-msgstr "Trafik i MB<br> (Forbrugt/Grænse)"
+msgstr ""
 
 #: :209
 msgid "Disk in MB"
-msgstr "Disk i MB"
+msgstr ""
 
 #: :210
 msgid "Feature"
-msgstr "Mulighed"
+msgstr ""
 
 #: :211
 msgid "Used"
-msgstr "Brugt"
+msgstr ""
 
 #: :212
 msgid "Limit"
-msgstr "Begrænsning"
+msgstr ""
 
 #: :213
 msgid "Mail accounts"
-msgstr "Mailkonti"
+msgstr ""
 
 #: :214
 msgid "FTP accounts"
-msgstr "FTP konti"
+msgstr ""
 
 #: :215
 msgid "SQL databases"
-msgstr "SQL databaser"
+msgstr ""
 
 #: :216
 msgid "SQL users"
-msgstr "SQL brugere"
+msgstr ""
 
 #: :217
 msgid "Subdomains"
-msgstr "Subdomæner"
+msgstr ""
 
 #: :218
 msgid "Domain aliases"
-msgstr "Domænealiaser"
+msgstr ""
 
 #: :219
 msgid "Submit changes"
-msgstr "Tilføj ændringer"
+msgstr ""
 
 #: :220
 msgid "None"
-msgstr "Ingen"
+msgstr ""
 
 #: :221
 msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :222
 msgid "Domain statistics"
-msgstr "Domænestatistik"
+msgstr ""
 
 #: :223
 msgid "Month"
-msgstr "Måned"
+msgstr ""
 
 #: :224
 msgid "Year"
-msgstr "År"
+msgstr "ปี"
 
 #: :225
 msgid "Show"
-msgstr "Vis"
+msgstr ""
 
 #: :226
 msgid "Web traffic"
-msgstr "Web Trafik"
+msgstr ""
 
 #: :227
 msgid "FTP traffic"
-msgstr "FTP trafik"
+msgstr ""
 
 #: :228
 msgid "SMTP traffic"
-msgstr "SMTP trafik"
+msgstr ""
 
 #: :229
 msgid "POP3/IMAP traffic"
-msgstr "POP/IMAP<br>trafik"
+msgstr ""
 
 #: :230
 msgid "All traffic"
-msgstr "Alt trafik"
+msgstr ""
 
 #: :231
 msgid "Day"
-msgstr "Dag"
+msgstr ""
 
 #: :232
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Admin/Håndtére bruger/Rediger Forhandler"
+msgstr ""
 
 #: :233
 msgid "Domain"
-msgstr "Domæne"
+msgstr ""
 
 #: :234
 msgid "Subdomain"
-msgstr "Subdomæne"
+msgstr ""
 
 #: :235
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
 #: :236
-#, fuzzy
 msgid "Mail"
-msgstr "Mail"
+msgstr "e-mail"
 
 #: :237
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 #: :238
-#, fuzzy
 msgid "SQL Database"
-msgstr "SQL Database"
+msgstr ""
 
 #: :239
 msgid "SQL User"
-msgstr "SQL Bruger"
+msgstr ""
 
 #: :240
 msgid "Traffic"
-msgstr "Trafikforbrug"
+msgstr ""
 
 #: :241
-#, fuzzy
 msgid "Disk"
-msgstr "Disk"
+msgstr ""
 
 #: :242
 msgid "Undefined user accounting error!"
-msgstr "Udefineret bruger konto fejl!"
+msgstr ""
 
 #: :243
 msgid "This reseller has already dispatched more <b>"
-msgstr "Denne forhandler har allerede tildelt flere <b>"
+msgstr ""
 
 #: :244
 msgid "Then the value you are trying to enter now !<br>"
-msgstr "Så den værdi du prøver at taste nu!<br>"
+msgstr ""
 
 #: :245
 msgid "Edit reseller aborted!"
-msgstr "Rediger forhandler afsluttet!"
+msgstr ""
 
 #: :246
 msgid "This reseller has more <b>"
-msgstr "Denne forhandler har flere <b>"
+msgstr ""
 
 #: :247
 msgid "Then the value you are trying to enter now!<br>"
-msgstr "Så den værdi du prøver at taste nu!<br>"
+msgstr ""
 
 #: :248
 msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
@@ -1029,91 +1008,91 @@ msgstr ""
 
 #: :249
 msgid "If you want to limit the reseller, fist you must limit its users !<br>"
-msgstr "Hvis du vil begrænse forhandleren, må du først begrænset dets brugere !<br>"
+msgstr ""
 
 #: :250
 msgid "This reseller has domains assigned To <b>"
-msgstr "Denne forhandler har domæner tildelt til <b>"
+msgstr ""
 
 #: :251
 msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> Adresse !<br>Redigering af forhandler afbrudt!"
+msgstr "</b> ที่อยู่ !<br>การแก้ไขตัวแทนจำหน่ายถูกยกเลิก!"
 
 #: :252
 msgid "Edit reseller"
-msgstr "Rediger forhandler"
+msgstr ""
 
 #: :253
 msgid "E-mail"
-msgstr "E-Mail"
+msgstr ""
 
 #: :254
 msgid "Max domain count"
-msgstr "Max domæneantal"
+msgstr ""
 
 #: :255
 msgid "Max subdomain count"
-msgstr "Max underdomæneantal"
+msgstr ""
 
 #: :256
 msgid "Max aliases count"
-msgstr "Max aliases antal"
+msgstr ""
 
 #: :257
 msgid "Max mail users count"
-msgstr "Max mail brugerantal"
+msgstr ""
 
 #: :258
 msgid "Max FTP users count"
-msgstr "Max FTP brugerantal"
+msgstr ""
 
 #: :259
 msgid "Max SQL databases count"
-msgstr "Max SQL databaseantal"
+msgstr ""
 
 #: :260
 msgid "Max SQL users count"
-msgstr "Max SQL brugerantal"
+msgstr ""
 
 #: :261
 msgid "Max traffic amount [MB]"
-msgstr "Max trafik [MB]"
+msgstr ""
 
 #: :262
 msgid "Max disk amount [MB]"
-msgstr "Max diskstørrelse [MB]"
+msgstr ""
 
 #: :263
 msgid "Update"
-msgstr "Opdater"
+msgstr ""
 
 #: :264
 msgid "Send new login data"
-msgstr "Send ny logind data"
+msgstr ""
 
 #: :265
 msgid "Password generate"
-msgstr "Adgangskode generer"
+msgstr ""
 
 #: :266
 msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Admin/Håndtére bruger/Rediger Bruger"
+msgstr ""
 
 #: :267
 msgid "User session was killed!"
-msgstr "Bruger session blev afslutet!"
+msgstr ""
 
 #: :268
 msgid "Domain account"
-msgstr "Domænekonto"
+msgstr ""
 
 #: :269
 msgid "Edit admin"
-msgstr "Rediger admin"
+msgstr ""
 
 #: :270
 msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Administrator/Rediger hosting plan"
+msgstr ""
 
 #: :271
 msgid "Price Style"
@@ -1121,15 +1100,15 @@ msgstr ""
 
 #: :272
 msgid "Update plan"
-msgstr "Opdater plan"
+msgstr ""
 
 #: :273
 msgid "Edit hosting plan"
-msgstr "Rediger hosting plan"
+msgstr ""
 
 #: :274
 msgid "Undefined reference to data!"
-msgstr "Udefineret refferencer til data"
+msgstr ""
 
 #: :275
 msgid "Incorrect price. Example: 9.99"
@@ -1141,123 +1120,123 @@ msgstr ""
 
 #: :277
 msgid "Please specify a subject!"
-msgstr "Indtast et emne!"
+msgstr ""
 
 #: :278
 msgid "Please specify message!"
-msgstr "Indtast en Meddelse!"
+msgstr ""
 
 #: :279
 msgid "Auto email template data updated!"
-msgstr "Auto Email skabelon, data er opdateret"
+msgstr ""
 
 #: :280
 msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Admin/Håndtére bruger/Email setup"
+msgstr ""
 
 #: :281
 msgid "Email setup"
-msgstr "Email opstilling"
+msgstr ""
 
 #: :282
 msgid "Message template info"
-msgstr "Meddelseskabelon info"
+msgstr ""
 
 #: :283
 msgid "User login (system) name"
-msgstr "Bruger login navn"
+msgstr ""
 
 #: :284
 msgid "User password"
-msgstr "Bruger adgangskode"
+msgstr ""
 
 #: :285
 msgid "User real (first and last) Name"
-msgstr "Brugerens for- og efternavn"
+msgstr ""
 
 #: :286
 msgid "Message template"
-msgstr "Meddelseskabelon"
+msgstr ""
 
 #: :287
 msgid "Subject"
-msgstr "Emne"
+msgstr ""
 
 #: :288
 msgid "Apply changes"
-msgstr "Tilføj ændringer"
+msgstr ""
 
 #: :289
 msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Administrator/Hosting Plan Håndtéring"
+msgstr ""
 
 #: :290
 msgid "Hosting plans"
-msgstr "Hosting Planer"
+msgstr ""
 
 #: :291
 msgid "Manage hosting plans"
-msgstr "Håndtér hosting planer"
+msgstr ""
 
 #: :292
 msgid "Purchasing"
-msgstr "Køb"
+msgstr ""
 
 #: :293
 msgid "Add new user hosting plan"
-msgstr "Tilføj nyt bruger-hosting produkt"
+msgstr "เพิ่มผู้ใช้ hosting plan ใหม่"
 
 #: :294
 msgid "Return to previous menu"
-msgstr "Tilbage til foregående menu"
+msgstr ""
 
 #: :295
 msgid "Hosting plan added!"
-msgstr "Hosting plan tilføjet!"
+msgstr ""
 
 #: :296
 msgid "Hosting plan deleted!"
-msgstr "Hosting plan slettet!"
+msgstr ""
 
 #: :297
 msgid "Hosting plan updated!"
-msgstr "Hosting plan opdateret!"
+msgstr ""
 
 #: :298
 msgid "Hosting plans not found!"
-msgstr "Hosting planer ikke fundet!"
+msgstr ""
 
 #: :299
 msgid "Name"
-msgstr "Navn"
+msgstr ""
 
 #: :300
 msgid "Enabled"
-msgstr "Aktiveret"
+msgstr ""
 
 #: :301
 msgid "Disabled"
-msgstr "Deaktiveret"
+msgstr ""
 
 #: :302
 msgid "Show hosting plan"
-msgstr "Vis hosting plan"
+msgstr ""
 
 #: :303
 msgid "You have"
-msgstr "Du har"
+msgstr ""
 
 #: :304
 msgid "Support question(s)"
-msgstr "Support spørgsmål"
+msgstr ""
 
 #: :305
 msgid "New"
-msgstr "Ny"
+msgstr ""
 
 #: :306
 msgid "View"
-msgstr "Se"
+msgstr ""
 
 #: :307
 msgid "Couldn't check for updates!"
@@ -1265,124 +1244,123 @@ msgstr ""
 
 #: :308
 msgid "New ISPCP update is now available"
-msgstr "Ny opdatering til rådighed"
+msgstr ""
 
 #: :309
 msgid "You are exceeding your traffic limit!"
-msgstr "Du overskrider din trafik grænse!"
+msgstr ""
 
 #: :310
 msgid "of"
-msgstr "af"
+msgstr ""
 
 #: :311
 msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Admin/Hoved Index"
+msgstr ""
 
 #: :312
 msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Admin/IP håndtering"
+msgstr ""
 
 #: :313
 msgid "New IP was added!"
-msgstr "Ny IP er tilføjet"
+msgstr ""
 
 #: :314
 msgid "Wrong IP number!"
-msgstr "Forkert IP nummer!"
+msgstr ""
 
 #: :315
 msgid "Please specify domain!"
-msgstr "Indtast et domæne!"
+msgstr ""
 
 #: :316
 msgid "Please specify alias!"
-msgstr "Indtast et alias!"
+msgstr ""
 
 #: :317
 msgid "This IP already exist!"
-msgstr "Denne IP eksistere allerede!"
+msgstr ""
 
 #: :318
 msgid "Manage IPs"
-msgstr "Håndtér IP'er"
+msgstr ""
 
 #: :319
 msgid "Available IPs"
-msgstr "Tilgænglige IP'er"
+msgstr ""
 
 #: :320
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 #: :321
 msgid "Uninstall"
-msgstr "Fjern"
+msgstr ""
 
 #: :322
 msgid "Add new IP"
-msgstr "Tilføj ny IP"
+msgstr "เพิ่ม IP ใหม่"
 
 #: :323
 msgid "No domain system errors"
-msgstr "Ingen domæne systemfejl"
+msgstr ""
 
 #: :324
 msgid "No domain alias system errors"
-msgstr "Ingen domænealiases systemfejl"
+msgstr ""
 
 #: :325
 msgid "No subdomain system errors"
-msgstr "Ingen subdomæne system fejl"
+msgstr ""
 
 #: :326
 msgid "No email account system errors"
-msgstr "Ingen emailkonto systemfejl"
+msgstr ""
 
 #: :327
 msgid "ISPCP debugger"
-msgstr "ISPCP Fejlliste"
+msgstr ""
 
 #: :328
 msgid "Domain errors"
-msgstr "Domænefejl"
+msgstr ""
 
 #: :329
 msgid "Domain alias errors"
-msgstr "Domænealias fejl"
+msgstr ""
 
 #: :330
 msgid "Subdomain errors"
-msgstr "Subdomæne fejl"
+msgstr ""
 
 #: :331
 msgid "Mail account errors"
-msgstr "Mailkonto fejl"
+msgstr ""
 
 #: :332
 msgid "Get it at"
-msgstr "Hent den på"
+msgstr ""
 
 #: :333
 msgid "ISPCP updates"
-msgstr "ISPCP Opdatering"
+msgstr ""
 
 #: :334
 msgid "Available ISPCP updates"
-msgstr "Tilgænglige opdateringer"
+msgstr ""
 
 #: :335
 msgid "No new ISPCP updates available"
-msgstr "Ingen nye opdateringer til rådighed"
+msgstr ""
 
 #: :336
 msgid "Update details"
-msgstr "Opdater detaljer"
+msgstr ""
 
 #: :337
 msgid "Upload file error!"
-msgstr "Fejl under upload af fil!"
+msgstr ""
 
 #: :338
 msgid "You can only upload images!"
@@ -1390,130 +1368,127 @@ msgstr ""
 
 #: :339
 msgid "Your logo was successful uploaded!"
-msgstr "Dit logo blev uploadet!"
+msgstr ""
 
 #: :340
 msgid "Layout settings"
-msgstr "Layout indstillinger"
+msgstr ""
 
 #: :341
 msgid "Installed layouts"
-msgstr "Installerede udseender"
+msgstr ""
 
 #: :342
 msgid "Layout name"
-msgstr "Layout navn"
+msgstr ""
 
 #: :343
 msgid "default"
-msgstr "standard"
+msgstr ""
 
 #: :344
-#, fuzzy
 msgid "Upload logo"
-msgstr "Upload logo"
+msgstr ""
 
 #: :345
 msgid "Logo file"
-msgstr "Logo fil"
+msgstr ""
 
 #: :346
-#, fuzzy
 msgid "Upload"
-msgstr "Upload"
+msgstr ""
 
 #: :347
 msgid "Remove"
-msgstr "Fjern"
+msgstr ""
 
 #: :348
 msgid "Choose default layout"
-msgstr "Vælg standard layout"
+msgstr ""
 
 #: :349
-#, fuzzy
 msgid "Layout"
-msgstr "Layout"
+msgstr ""
 
 #: :350
 msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - Admin/Setup Glemt Adgangskode email"
+msgstr ""
 
 #: :351
 msgid "Lostpw email"
-msgstr "Glemt Adgangskode til E-Mail"
+msgstr ""
 
 #: :352
 msgid "Activation E-Mail"
-msgstr "Aktiverings E-Mail"
+msgstr ""
 
 #: :353
 msgid "Password E-Mail"
-msgstr "Adgangskode E-Mail"
+msgstr ""
 
 #: :354
 msgid "User (first and last) name"
-msgstr "Bruger (for og efter) navn"
+msgstr ""
 
 #: :355
 msgid "Lostpw link"
-msgstr "Aktiveringslink"
+msgstr ""
 
 #: :356
 msgid "Reseller list is empty!"
-msgstr "Forhandler liste er tom!"
+msgstr ""
 
 #: :357
 msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP - Admin/Håndtére bruger/Forhandler tildeling"
+msgstr ""
 
 #: :358
 msgid "Reseller assignment"
-msgstr "Forhandler tildeling"
+msgstr ""
 
 #: :359
 msgid "Reseller users"
-msgstr "Forhandler brugere"
+msgstr ""
 
 #: :360
 msgid "Mark"
-msgstr "Afmærk"
+msgstr ""
 
 #: :361
 msgid "Reseller name"
-msgstr "Forhandler navn"
+msgstr ""
 
 #: :362
 msgid "Owner"
-msgstr "Ejer"
+msgstr ""
 
 #: :363
 msgid "To Admin"
-msgstr "til Administrator"
+msgstr ""
 
 #: :364
 msgid "Move"
-msgstr "Flyt"
+msgstr ""
 
 #: :365
 msgid "Reseller or user list is empty!"
-msgstr "Forhandler- eller Brugerliste er tom"
+msgstr ""
 
 #: :366
 msgid "User list is empty!"
-msgstr "Brugerlisten er tom!"
+msgstr ""
 
 #: :367
 msgid "User was moved"
-msgstr "Bruger blev flyttet"
+msgstr ""
 
 #: :368
 msgid "Please select some user(s)!"
-msgstr "Vælg nogle brugere!"
+msgstr ""
 
 #: :369
 msgid "Source and destination reseller are the same!"
-msgstr "Kilde og mål forhandler er den samme"
+msgstr ""
 
 #: :370
 #, c-format
@@ -1532,7 +1507,7 @@ msgstr ""
 
 #: :373
 msgid "Moving aborted!"
-msgstr "Flytning afbrudt!"
+msgstr ""
 
 #: :374
 #, c-format
@@ -1545,87 +1520,87 @@ msgstr ""
 
 #: :376
 msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Admin/Håndtére bruger/Bruger tildeling"
+msgstr ""
 
 #: :377
 msgid "User assignment"
-msgstr "Bruger tildeling"
+msgstr ""
 
 #: :378
 msgid "Users"
-msgstr "Brugere"
+msgstr ""
 
 #: :379
 msgid "User name"
-msgstr "Bruger navn"
+msgstr ""
 
 #: :380
 msgid "From reseller"
-msgstr "Fra forhandler"
+msgstr ""
 
 #: :381
 msgid "To reseller"
-msgstr "til Forhandler"
+msgstr ""
 
 #: :382
 msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - Admin/Håndtére Sessioner"
+msgstr ""
 
 #: :383
 msgid "Manage user sessions"
-msgstr "Håndtér brugere og sessioner"
+msgstr ""
 
 #: :384
 msgid "User type"
-msgstr "Bruger type"
+msgstr ""
 
 #: :385
 msgid "Last access"
-msgstr "Sidste adgang"
+msgstr ""
 
 #: :386
 msgid "Options"
-msgstr "Muligheder"
+msgstr ""
 
 #: :387
 msgid "Kill session"
-msgstr "Afslut session"
+msgstr ""
 
 #: :388
 msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Admin/Håndtére Bruger"
+msgstr ""
 
 #: :389
 msgid "User added"
-msgstr "Bruger tilføjet"
+msgstr ""
 
 #: :390
 msgid "Reseller added"
-msgstr "Forhandler tilføjet!"
+msgstr ""
 
 #: :391
 msgid "User updated"
-msgstr "Bruger opdateret"
+msgstr ""
 
 #: :392
 msgid "User deleted"
-msgstr "Bruger slettet!"
+msgstr ""
 
 #: :393
 msgid "Email Updated"
-msgstr "Email opdateret"
+msgstr ""
 
 #: :394
 msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Denne bruger har et domæne! <br>For at slette brugere skal du første slette domænet!"
+msgstr ""
 
 #: :395
 msgid "User was disabled"
-msgstr "Bruger blev deaktiveret"
+msgstr ""
 
 #: :396
 msgid "Incorrect data input!"
-msgstr "Ukorrekt data input!"
+msgstr ""
 
 #: :397
 msgid "ISPCP - Admin/Internationalisation"
@@ -1633,31 +1608,31 @@ msgstr ""
 
 #: :398
 msgid "Default language changed!"
-msgstr "Standardsproget er ændret!"
+msgstr ""
 
 #: :399
 msgid "You can upload only text files!"
-msgstr "Du kan kun uploade tekst filer!"
+msgstr ""
 
 #: :400
 msgid "Can not read ispcp language file!"
-msgstr "Kan ikke læse sprog fil!"
+msgstr ""
 
 #: :401
 msgid "New language installed!"
-msgstr "Nyt sprog installeret!"
+msgstr ""
 
 #: :402
 msgid "Update language installed!"
-msgstr "Opdater installerede sprog!"
+msgstr ""
 
 #: :403
 msgid "Unknown"
-msgstr "Ukendt"
+msgstr ""
 
 #: :404
 msgid "uninstall"
-msgstr "fjern"
+msgstr ""
 
 #: :405
 msgid "%d messages translated"
@@ -1669,105 +1644,103 @@ msgstr ""
 
 #: :407
 msgid "Installed languages"
-msgstr "Installerede sprog"
+msgstr ""
 
 #: :408
 msgid "Language"
-msgstr "Vælg Sprog"
+msgstr ""
 
 #: :409
 msgid "Messages"
-msgstr "Meddelser"
+msgstr ""
 
 #: :410
 msgid "Default"
-msgstr "Standard"
+msgstr ""
 
 #: :411
 msgid "Install new language"
-msgstr "Installér nyt sprog"
+msgstr ""
 
 #: :412
 msgid "Language file"
-msgstr "Sprogfil"
+msgstr ""
 
 #: :413
 msgid "Install"
-msgstr "Installér"
+msgstr ""
 
 #: :414
 msgid "Export"
-msgstr "Eksportér"
+msgstr ""
 
 #: :415
 msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :416
 msgid "Not found reseller(s) in your system!"
-msgstr "Fandt ingen forhandlere i systemet!"
+msgstr ""
 
 #: :417
 msgid "Reseller statistics table"
-msgstr "Forhandler statistik tabel"
+msgstr ""
 
 #: :418
-#, fuzzy
 msgid "SQL database"
-msgstr "SQL database"
+msgstr ""
 
 #: :419
 msgid "SQL user"
-msgstr "SQL bruger"
+msgstr ""
 
 #: :420
 msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Admin/Forhandler Bruger Statistiker"
+msgstr ""
 
 #: :421
 msgid "disabled"
-msgstr "deaktiveret"
+msgstr ""
 
 #: :422
 msgid "Reseller users table"
-msgstr "Forhandler forbrugs tabel"
+msgstr ""
 
 #: :423
 msgid "This reseller has no domains."
-msgstr "Denne Forhandler har ingen Domæner."
+msgstr ""
 
 #: :424
 msgid "Traffic<br>usage"
-msgstr "Trafik<br>forbrug"
+msgstr ""
 
 #: :425
 msgid "Disk<br>usage"
-msgstr "Disk<br>forbrug"
+msgstr ""
 
 #: :426
 msgid "Web<br>traffic"
-msgstr "Web<br>Trafik"
+msgstr ""
 
 #: :427
 msgid "FTP<br>traffic"
-msgstr "FTP<br>trafik"
+msgstr ""
 
 #: :428
 msgid "SMTP<br>traffic"
-msgstr "SMTP<br>Trafik"
+msgstr ""
 
 #: :429
 msgid "POP3/IMAP<br>traffic"
-msgstr "POP/IMAP<br>trafik"
+msgstr ""
 
 #: :430
-#, fuzzy
 msgid "SQL<br>database"
-msgstr "SQL<br>database"
+msgstr ""
 
 #: :431
 msgid "SQL<br>user"
-msgstr "SQL<br>bruger"
+msgstr ""
 
 #: :432
 msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
@@ -1783,130 +1756,127 @@ msgstr ""
 
 #: :435
 msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Admin/Server dag statistiker"
+msgstr ""
 
 #: :436
 msgid "Server day statistics"
-msgstr "Server statistik pr. dag"
+msgstr ""
 
 #: :437
 msgid "Month:"
-msgstr "Måned:"
+msgstr ""
 
 #: :438
 msgid "Year:"
-msgstr "År:"
+msgstr "ปี:"
 
 #: :439
 msgid "Day:"
-msgstr "Dag:"
+msgstr ""
 
 #: :440
 msgid "Hour"
-msgstr "Time"
+msgstr ""
 
 #: :441
 msgid "Web in"
-msgstr "Web<br>Indgående"
+msgstr ""
 
 #: :442
 msgid "Web out"
-msgstr "Web<br>Udgående"
+msgstr ""
 
 #: :443
 msgid "Mail in"
-msgstr "Mail<br>ind"
+msgstr ""
 
 #: :444
 msgid "Mail out"
-msgstr "Mail<br>ud"
+msgstr ""
 
 #: :445
 msgid "Pop/IMAP in"
-msgstr "POP/IMAP<br>Indgående"
+msgstr ""
 
 #: :446
 msgid "Pop/IMAP out"
-msgstr "POP/IMAP<br>udgående"
+msgstr ""
 
 #: :447
 msgid "Other in"
-msgstr "Andet<br>indgående"
+msgstr ""
 
 #: :448
 msgid "Other out"
-msgstr "Andet<br>udgående"
+msgstr ""
 
 #: :449
 msgid "All in"
-msgstr "Alle<br>indgående"
+msgstr ""
 
 #: :450
 msgid "All out"
-msgstr "Alle<br>udgående"
+msgstr ""
 
 #: :451
 msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP – Admin/Server statistiker"
+msgstr ""
 
 #: :452
 msgid "Server statistics"
-msgstr "Server statistik"
+msgstr ""
 
 #: :453
 msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :454
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 #: :455
-#, fuzzy
 msgid "Service"
-msgstr "Service"
+msgstr ""
 
 #: :456
-#, fuzzy
 msgid "Server status"
-msgstr "Server status"
+msgstr ""
 
 #: :457
 msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP – Admin/Server Trafik Indstillinger"
+msgstr ""
 
 #: :458
 msgid "Wrong data input!"
-msgstr "Forkert data input!"
+msgstr ""
 
 #: :459
 msgid "Warning traffic is bigger then max traffic!"
-msgstr "Advarsel, trafik er større en max. Trafik"
+msgstr ""
 
 #: :460
 msgid "Server traffic settings updated successfully!"
-msgstr "Server trafik indstillinger blev opdateret!"
+msgstr ""
 
 #: :461
 msgid "Modify"
-msgstr "Redigér"
+msgstr ""
 
 #: :462
 msgid "Server traffic settings"
-msgstr "Server trafik indstillinger"
+msgstr ""
 
 #: :463
 msgid "Set server traffic settings"
-msgstr "Rediger server trafik indstillinger"
+msgstr ""
 
 #: :464
 msgid "Max traffic [MB]"
-msgstr "Max trafik [MB]"
+msgstr ""
 
 #: :465
 msgid "Warning traffic [MB]"
-msgstr "Advarsel trafik [MB]"
+msgstr ""
 
 #: :466
 msgid "ISPCP - Admin/Servicemode"
@@ -1914,16 +1884,15 @@ msgstr ""
 
 #: :467
 msgid "Settings saved !"
-msgstr "Indstillinger gemt !"
+msgstr ""
 
 #: :468
-#, fuzzy
 msgid "Servicemode"
-msgstr "Servicemode"
+msgstr ""
 
 #: :469
 msgid "In this mode only administrators can login"
-msgstr "Her kan kun administratorer logge ind"
+msgstr ""
 
 #: :470
 msgid "ISPCP - Admin/Settings"
@@ -1935,61 +1904,59 @@ msgstr ""
 
 #: :472
 msgid "General settings"
-msgstr "Generel indstillinger"
+msgstr ""
 
 #: :473
 msgid "Settings"
-msgstr "Indstillinger"
+msgstr ""
 
 #: :474
 msgid "Lostpassword"
-msgstr "Glemt Adgangskode"
+msgstr ""
 
 #: :475
 msgid "Activationlink valid (minutes)"
-msgstr "Aktiveringslinket gyldigt (minutter)"
+msgstr ""
 
 #: :476
-#, fuzzy
 msgid "Bruteforce detection"
-msgstr "Bruteforce detection"
+msgstr ""
 
 #: :477
 msgid "Time between logins"
-msgstr "Tid mellem logind"
+msgstr ""
 
 #: :478
 msgid "Number of login attempts"
-msgstr "Antal logind forsøg"
+msgstr ""
 
 #: :479
 msgid "Blocktime (minutes)"
-msgstr "Blocktid (minutter)"
+msgstr ""
 
 #: :480
 msgid "Time between logins (seconds)"
-msgstr "Tid mellem logind (sekunder)"
+msgstr ""
 
 #: :481
 msgid "Other settings"
-msgstr "Andre indstillinger"
+msgstr ""
 
 #: :482
 msgid "Default language"
-msgstr "Standard sprog"
+msgstr ""
 
 #: :483
-#, fuzzy
 msgid "Support system"
-msgstr "Support system"
+msgstr ""
 
 #: :484
 msgid "Serverports"
-msgstr "Serverporte"
+msgstr ""
 
 #: :485
 msgid "Domains per page"
-msgstr "Domæner pr side"
+msgstr ""
 
 #: :486
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
@@ -2016,97 +1983,96 @@ msgid "Services"
 msgstr ""
 
 #: :492
-#, fuzzy
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
 #: :493
 msgid "Protocol"
-msgstr "Protokol"
+msgstr ""
 
 #: :494
 msgid "You have no support tickets."
-msgstr "Du har ingen Support sager."
+msgstr ""
 
 #: :495
 msgid "Low"
-msgstr "Lav"
+msgstr ""
 
 #: :496
 msgid "Medium"
-msgstr "Mellem"
+msgstr ""
 
 #: :497
 msgid "High"
-msgstr "Høj"
+msgstr ""
 
 #: :498
 msgid "Very high"
-msgstr "Meget høj"
+msgstr ""
 
 #: :499
 msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :500
 msgid "Support tickets"
-msgstr "Support sager"
+msgstr ""
 
 #: :501
 msgid "Priority"
-msgstr "Prioritet"
+msgstr ""
 
 #: :502
 msgid "Last reply"
-msgstr "Sidste svar"
+msgstr ""
 
 #: :503
 msgid "Delete all"
-msgstr "Slet alt"
+msgstr ""
 
 #: :504
 msgid "Open tickets"
-msgstr "Åbne Support sager"
+msgstr ""
 
 #: :505
 msgid "Closed tickets"
-msgstr "Lukkede Support sager"
+msgstr ""
 
 #: :506
 msgid "[New]"
-msgstr "[Ny]"
+msgstr "[ใหม่]"
 
 #: :507
 msgid "[Re]"
-msgstr "[Vedr.]"
+msgstr "[ตอบ]"
 
 #: :508
 msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Kundenbereich / E-Mail Autobeantwortung einrichten"
+msgstr ""
 
 #: :509
 msgid "From"
-msgstr "Fra"
+msgstr ""
 
 #: :510
 msgid "days"
-msgstr "dage"
+msgstr ""
 
 #: :511
 msgid "hours"
-msgstr "timer"
+msgstr ""
 
 #: :512
 msgid "minutes"
-msgstr "minutter"
+msgstr ""
 
 #: :513
 msgid "System info"
-msgstr "System Information"
+msgstr ""
 
 #: :514
 msgid "Vital system info"
-msgstr "System informationer"
+msgstr ""
 
 #: :515
 #, fuzzy
@@ -2119,8 +2085,9 @@ msgid "CPU model"
 msgstr "CPU model"
 
 #: :517
+#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHZ"
+msgstr "CPU MHz"
 
 #: :518
 #, fuzzy
@@ -2134,84 +2101,79 @@ msgstr "CPU bogomips"
 
 #: :520
 msgid "Memory system info"
-msgstr "Hukommelses info"
+msgstr ""
 
 #: :521
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 #: :522
-#, fuzzy
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #: :523
 msgid "Free"
-msgstr "Fri"
+msgstr ""
 
 #: :524
 msgid "Swap"
-msgstr "SWAP"
+msgstr ""
 
 #: :525
 msgid "Up time"
-msgstr "Oppetid"
+msgstr ""
 
 #: :526
 msgid "Kernel"
-msgstr "Kerne"
+msgstr ""
 
 #: :527
-#, fuzzy
 msgid "Load"
-msgstr "Load"
+msgstr ""
 
 #: :528
 msgid "Filesystem system Info"
-msgstr "Filsystem info"
+msgstr ""
 
 #: :529
 msgid "Mount"
-msgstr "Montering"
+msgstr ""
 
 #: :530
-#, fuzzy
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #: :531
-#, fuzzy
 msgid "Partition"
-msgstr "Partition"
+msgstr ""
 
 #: :532
 msgid "Percent"
-msgstr "Procent"
+msgstr ""
 
 #: :533
 msgid "Size"
-msgstr "Størrelse"
+msgstr ""
 
 #: :534
 msgid "Ticket not found!"
-msgstr "Sag ikke fundet!"
+msgstr ""
 
 #: :535
 msgid "Open ticket"
-msgstr "Åben Support sag"
+msgstr ""
 
 #: :536
 msgid "Close ticket"
-msgstr "Luk Support Sag"
+msgstr ""
 
 #: :537
 msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :538
 msgid "Please type your message!"
-msgstr "Indtast din Meddelse!"
+msgstr ""
 
 #: :539
 msgid "Message was sent!"
@@ -2219,7 +2181,7 @@ msgstr ""
 
 #: :540
 msgid "Ticket was closed!"
-msgstr "Sagen blev lukket!"
+msgstr ""
 
 #: :541
 msgid "Ticket was reopened!"
@@ -2231,44 +2193,43 @@ msgstr ""
 
 #: :543
 msgid "View support ticket"
-msgstr "Se Support sag"
+msgstr ""
 
 #: :544
 msgid "Send message reply"
-msgstr "Besvar til"
+msgstr ""
 
 #: :545
 msgid "Send reply"
-msgstr "Send svar"
+msgstr ""
 
 #: :546
-#, fuzzy
 msgid "ISPCP Client : Add Alias"
-msgstr "ISPCP Client : Add Alias"
+msgstr ""
 
 #: :547
 msgid "Manage domain alias"
-msgstr "Håndtér domænealias"
+msgstr ""
 
 #: :548
 msgid "Add domain alias"
-msgstr "Tilføj domæne alias"
+msgstr "เพิ่ม domain alias"
 
 #: :549
 msgid "User account"
-msgstr "Bruger konto"
+msgstr ""
 
 #: :550
 msgid "Directory mount point"
-msgstr "Monteringspunkt"
+msgstr ""
 
 #: :551
 msgid "Forward to URL"
-msgstr "Videresend til URL"
+msgstr ""
 
 #: :552
 msgid "Add alias"
-msgstr "Tilføj alias"
+msgstr "เพิ่ม alias"
 
 #: :553
 msgid "Domain alias limit reached!"
@@ -2276,43 +2237,43 @@ msgstr ""
 
 #: :554
 msgid "Incorrect domain name syntax"
-msgstr "Ukorrekt domænenavn eller syntaks"
+msgstr "Incorrect <i>domain name</i> syntax"
 
 #: :555
 msgid "Domain with that name already exists on the system!"
-msgstr "Der eksisterer allerede et domæne med det navn i systemet!"
+msgstr ""
 
 #: :556
 msgid "Incorrect mount point syntax"
-msgstr "Ukorrekt Mount Point syntaks"
+msgstr "Incorrect <i>mount point</i> syntax!"
 
 #: :557
 msgid "Incorrect forward syntax"
-msgstr "Ukorrekt videresend syntaks"
+msgstr "Incorrect <i>forward</i> syntax!"
 
 #: :558
 msgid "Domain with this name already exist"
-msgstr "Der eksisterer allerede et domæne med det navn"
+msgstr ""
 
 #: :559
 msgid "There are alias with same mount point"
-msgstr "Der er Aliaser med samme monteringspunkt"
+msgstr ""
 
 #: :560
 msgid "Alias scheduled for addition!"
-msgstr "Alias planlagt for tilføjelse!"
+msgstr ""
 
 #: :561
 msgid "Empty List"
-msgstr "Tom Liste"
+msgstr ""
 
 #: :562
 msgid "Empty list"
-msgstr "Tom liste"
+msgstr ""
 
 #: :563
 msgid "FTP account already exists!"
-msgstr "FTP konto eksisterer allerede!"
+msgstr ""
 
 #: :564
 msgid "Unknown domain type"
@@ -2328,31 +2289,31 @@ msgstr ""
 
 #: :567
 msgid "FTP account added!"
-msgstr "FTP konto tilføjet!"
+msgstr ""
 
 #: :568
 msgid "Please enter FTP account username!"
-msgstr "Indtast FTP brugernavn!"
+msgstr ""
 
 #: :569
 msgid "Password data is missing!"
-msgstr "Adgangskode data mangler"
+msgstr ""
 
 #: :570
 msgid "Entered passwords differ from the another!"
-msgstr "De indtastede kodeord er forskellige fra hinanden."
+msgstr ""
 
 #: :571
 msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr "Subdomæne liste er tom! Du kan ikke tilføje FTP konti der!"
+msgstr ""
 
 #: :572
 msgid "Alias list is empty! You can not add FTP accounts there!"
-msgstr "Alias listen er tom! Du kan ikke tilføje FTP konti der!"
+msgstr "รายการ Alias ว่างเปล่า! คุณไม่สามารถเพิ่มบัญชี FTP ได้!"
 
 #: :573
 msgid "Please specify other FTP account dir!"
-msgstr "Vælg en anden FTP konto mappe!"
+msgstr ""
 
 #: :574
 msgid "FTP accounts limit reached!"
@@ -2360,35 +2321,35 @@ msgstr ""
 
 #: :575
 msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :576
 msgid "Add FTP user"
-msgstr "Tilføj FTP bruger"
+msgstr "เพิ่มผู้ใช้ FTP"
 
 #: :577
 msgid "To main domain"
-msgstr "til Hoved domæne"
+msgstr ""
 
 #: :578
 msgid "To domain alias"
-msgstr "til Domæne Alias"
+msgstr ""
 
 #: :579
 msgid "To subdomain"
-msgstr "til Subdomæne"
+msgstr ""
 
 #: :580
 msgid "Use other dir"
-msgstr "Brug en anden mappe"
+msgstr ""
 
 #: :581
 msgid "Choose dir"
-msgstr "Vælg bibliotek"
+msgstr ""
 
 #: :582
 msgid "Invalid Mail Localpart Format used!"
-msgstr "Ugyldigt Mail Lokalpart Format brugt!"
+msgstr ""
 
 #: :583
 msgid "Mailformat of an address in your forward list is incorrect!"
@@ -2396,35 +2357,35 @@ msgstr ""
 
 #: :584
 msgid "Mail forward list empty!"
-msgstr " Mail videresend liste tom!"
+msgstr ""
 
 #: :585
 msgid "Mail account already exists!"
-msgstr "Mailkonto eksisterer allerede!"
+msgstr ""
 
 #: :586
 msgid "Mail account scheduled for addition!"
-msgstr "Mailkonto planlagt til tilføjelse!"
+msgstr ""
 
 #: :587
 msgid "Please enter mail account username!"
-msgstr "Indtast email adresse brugernavn!"
+msgstr ""
 
 #: :588
 msgid "Password data includes not permitted signs!"
-msgstr "Adgangskode indeholder ugyldige tegn"
+msgstr ""
 
 #: :589
 msgid "Subdomain list is empty! You can not add mail accounts!"
-msgstr "Subdomæne liste er tom! Du kan ikke tilføje email konti!"
+msgstr ""
 
 #: :590
 msgid "Alias list is empty! You can not add mail accounts!"
-msgstr "Alias listen er tom! Du kan ikke tilføje email konti!"
+msgstr "รายการ Alias ว่างเปล่า! คุณไม่สามารถเพิ่มบัญชีอีเมล์ได้!"
 
 #: :591
 msgid "Forward list is empty!"
-msgstr "Videresend-listen er tom"
+msgstr ""
 
 #: :592
 msgid "Mail accounts limit reached!"
@@ -2432,44 +2393,43 @@ msgstr ""
 
 #: :593
 msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :594
 msgid "Add mail users"
-msgstr "Tilføj email adresser"
+msgstr "เพิ่มผู้ใช้อีเมล์"
 
 #: :595
-#, fuzzy
 msgid "Normal mail"
-msgstr "Normal mail"
+msgstr ""
 
 #: :596
 msgid "Forward mail"
-msgstr "Videresend mail"
+msgstr ""
 
 #: :597
 msgid "Forward to"
-msgstr "Videresend til"
+msgstr ""
 
 #: :598
 msgid "Please type database name!"
-msgstr "Indtast database navn!"
+msgstr ""
 
 #: :599
 msgid "Too long database name!"
-msgstr "SQL databasenavn er for langt!"
+msgstr ""
 
 #: :600
 msgid "Specified database name already exists!"
-msgstr "SQL database eksisterer allerede"
+msgstr ""
 
 #: :601
 msgid "Wildcards as % and ? are not allowed!"
-msgstr "Wildcards som % og ? er ikke tilladte!"
+msgstr ""
 
 #: :602
 msgid "SQL database created successfully!"
-msgstr "SQL database oprettet!"
+msgstr ""
 
 #: :603
 msgid "SQL accounts limit reached!"
@@ -2477,19 +2437,19 @@ msgstr ""
 
 #: :604
 msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :605
 msgid "Add SQL database"
-msgstr "Tilføj SQL database"
+msgstr "เพิ่มฐานข้อมูล SQL"
 
 #: :606
 msgid "Database name"
-msgstr "Databasenavn"
+msgstr ""
 
 #: :607
 msgid "Use numeric ID"
-msgstr "Brug nummerisk ID"
+msgstr ""
 
 #: :608
 msgid "Before the name"
@@ -2505,227 +2465,224 @@ msgstr ""
 
 #: :611
 msgid "Please specify subdomain name!"
-msgstr "Indtast subdomain navn!"
+msgstr ""
 
 #: :612
 msgid "Subdomain already exists!"
-msgstr "Subdomæne eksistere allerede!"
+msgstr ""
 
 #: :613
 msgid "Wrong subdomain syntax!"
-msgstr "Forkert subdomæne syntax!"
+msgstr ""
 
 #: :614
 msgid "Subdomain mount point already exists!"
-msgstr "Subdomæne monteringspunkt eksisterer allerede!"
+msgstr ""
 
 #: :615
 msgid "Subdomain scheduled for addition!"
-msgstr "Subdomæne planlagt til oprettelse!"
+msgstr ""
 
 #: :616
 msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :617
 msgid "Add subdomain"
-msgstr "Tilføj Subdomæne"
+msgstr "เพิ่ม subdomain"
 
 #: :618
 msgid "Subdomain data"
-msgstr "Subdomæne data"
+msgstr ""
 
 #: :619
 msgid "Subdomain name"
-msgstr "Subdomæne navn"
+msgstr ""
 
 #: :620
 msgid "Directory tree<br>mount point"
-msgstr "Monteringspunkt"
+msgstr ""
 
 #: :621
 msgid "Backup archive scheduled for restoring!"
-msgstr "Backup er planlagt til reetablering"
+msgstr ""
 
 #: :622
 msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :623
-#, fuzzy
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 #: :624
 msgid "Daily backup"
-msgstr "Bestil backup"
+msgstr ""
 
 #: :625
 msgid "Direction download today backup"
-msgstr "Download backup via FTP efter kl. 00:00"
+msgstr ""
 
 #: :626
 msgid "Login with your FTP account"
-msgstr "Login med din FTP konto"
+msgstr ""
 
 #: :627
 msgid "Switch to backup directory"
-msgstr "Skift til backup mappe"
+msgstr ""
 
 #: :628
 msgid "Download the files stored in this directory"
-msgstr "Download den eneste fil i denne mappe"
+msgstr ""
 
 #: :629
 msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(normalt kaldet: domæne.tld-backup-ÅÅÅÅ.MM.DD-TTMMSS.tar.bz2)"
+msgstr ""
 
 #: :630
 msgid "Restore backup"
-msgstr "Gendan backup"
+msgstr ""
 
 #: :631
 msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Tryk på Gendan knappen og systemet vil genskabes fra sidste backup!"
+msgstr ""
 
 #: :632
 msgid "Restore"
-msgstr "Gendan"
+msgstr ""
 
 #: :633
-#, fuzzy
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 #: :634
 msgid "Enable"
-msgstr "Aktiver"
+msgstr ""
 
 #: :635
 msgid "Disable"
-msgstr "Deaktiver"
+msgstr ""
 
 #: :636
 msgid "Delete CatchAll"
-msgstr "Slet FangAlle"
+msgstr ""
 
 #: :637
 msgid "Create catch all"
-msgstr "Opret FangAlle"
+msgstr "สร้าง catch all"
 
 #: :638
 msgid "Catch all mail account can not be created!"
-msgstr "FangAlle mail konto kan ikke oprettes"
+msgstr ""
 
 #: :639
 msgid "Mail accounts list is empty!"
-msgstr "Mailkonti liste er tom!"
+msgstr ""
 
 #: :640
 msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :641
 msgid "Manage users"
-msgstr "Håndtér brugere"
+msgstr ""
 
 #: :642
 msgid "Mail users"
-msgstr "Mailbrugere"
+msgstr ""
 
 #: :643
 msgid "Auto respond"
-msgstr "Autosvar"
+msgstr ""
 
 #: :644
 msgid "Domain mails"
-msgstr "Domæne mails"
+msgstr ""
 
 #: :645
 msgid "Subdomain mails"
-msgstr "Normal<br>(Subdomæne)"
+msgstr ""
 
 #: :646
 msgid "Alias mails"
-msgstr "Alias emails"
+msgstr ""
 
 #: :647
-#, fuzzy
 msgid "Mails total"
-msgstr "Mails total"
+msgstr ""
 
 #: :648
 msgid "FTPs total"
-msgstr "FTP'er total"
+msgstr ""
 
 #: :649
 msgid "Catch all account"
-msgstr "FangAlle konto"
+msgstr ""
 
 #: :650
 msgid "Catch all"
-msgstr "FangAlle"
+msgstr ""
 
 #: :651
 msgid "FTP users"
-msgstr "FTP brugere"
+msgstr ""
 
 #: :652
 msgid "FTP account"
-msgstr "FTP konto"
+msgstr ""
 
 #: :653
 msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :654
 msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :655
 msgid "Catch all account scheduled for creation!"
-msgstr "FangAlle planlagt for oprettelse!"
+msgstr ""
 
 #: :656
 msgid "Mail forward list error!"
-msgstr "Mail videresend liste fejl!"
+msgstr ""
 
 #: :657
 msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :658
 msgid "Create catch all mail account"
-msgstr "Opret FangAlle email-konto"
+msgstr "สร้างบัญชีเมล์ catch all"
 
 #: :659
 msgid "Mail accounts list"
-msgstr "Mailkonti liste"
+msgstr ""
 
 #: :660
-#, fuzzy
 msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - Client/Cronjob Manager"
+msgstr ""
 
 #: :661
+#, fuzzy
 msgid "Cronjob Manager"
-msgstr "Cronjob Håndtering"
+msgstr "Cronjob Manager"
 
 #: :662
 msgid "Add Cronjob"
-msgstr "Tilføj Cronjob"
+msgstr "เพิ่ม Cronjob"
 
 #: :663
 msgid "Active"
-msgstr "Aktiv"
+msgstr ""
 
 #: :664
 msgid "Yes"
-msgstr "Ja"
+msgstr "ใช่"
 
 #: :665
 msgid "No"
-msgstr "Nej"
+msgstr ""
 
 #: :666
 #, fuzzy
@@ -2734,40 +2691,39 @@ msgstr "Cronjob"
 
 #: :667
 msgid "Command to run:"
-msgstr "Kør Kommando:"
+msgstr ""
 
 #: :668
 msgid "Minute(s):"
-msgstr "Minut(ter):"
+msgstr ""
 
 #: :669
 msgid "Hour(s):"
-msgstr "Time(r):"
+msgstr ""
 
 #: :670
 msgid "Day(s):"
-msgstr "Dag(e):"
+msgstr ""
 
 #: :671
 msgid "Months(s):"
-msgstr "Måned(er):"
+msgstr ""
 
 #: :672
 msgid "Weekday(s):"
-msgstr "Ugedag(e):"
+msgstr ""
 
 #: :673
-#, fuzzy
 msgid "Reset"
-msgstr "Reset"
+msgstr ""
 
 #: :674
 msgid "Cancel"
-msgstr "Anullér"
+msgstr "ยกเลิก"
 
 #: :675
 msgid "Edit Cronjob"
-msgstr "Rediger Cronjob"
+msgstr ""
 
 #: :676
 #, fuzzy
@@ -2776,39 +2732,39 @@ msgstr "Cronjobs"
 
 #: :677
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Domænealiaset du prøver at fjerne har email konti !<br>Fjern dem først!"
+msgstr ""
 
 #: :678
 msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr "Domænealiaset du prøver at fjerne har FTP konti !<br>Fjern dem først"
+msgstr ""
 
 #: :679
 msgid "Alias scheduled for deletion!"
-msgstr "Alias planlagt for sletning!"
+msgstr ""
 
 #: :680
 msgid "Catch all account scheduled for deletion!"
-msgstr "FangAlle planlagt for sletning!"
+msgstr ""
 
 #: :681
 msgid "FTP account deleted successfully!"
-msgstr "FTP konto slettet succesfuldt!"
+msgstr ""
 
 #: :682
 msgid "Please delete first CatchAll account for this email!"
-msgstr "Slet først Fang Alle konto for denne email!"
+msgstr ""
 
 #: :683
 msgid "SQL database was removed successfully!"
-msgstr "SQL database blev fjernet!"
+msgstr ""
 
 #: :684
 msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Subdomainet du er ved at slette indeholder stadig email konti!<br>Slet venligst disse først!"
+msgstr ""
 
 #: :685
 msgid "Subdomain scheduled for deletion!"
-msgstr "Subdomæne planlagt til sletning!"
+msgstr ""
 
 #: :686
 msgid "You have no permission to disable this alias forward"
@@ -2816,47 +2772,43 @@ msgstr ""
 
 #: :687
 msgid "Alias scheduled for modification!"
-msgstr "Alias planlagt forredigering!"
+msgstr ""
 
 #: :688
 msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
+msgstr ""
 
 #: :689
 msgid "Mail account scheduled for modification!"
-msgstr "Mailkonto planlagt til redigering!"
+msgstr ""
 
 #: :690
 msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :691
 msgid "Web Stats"
 msgstr ""
 
 #: :692
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
 #: :693
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
 #: :694
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 #: :695
-#, fuzzy
 msgid "Sum"
-msgstr "Sum"
+msgstr ""
 
 #: :696
 msgid "Entered passwords differ!"
-msgstr "De indtastede kodeord er forskellige!"
+msgstr ""
 
 #: :697
 msgid "%s do not exist"
@@ -2864,19 +2816,19 @@ msgstr ""
 
 #: :698
 msgid "FTP account data updated!"
-msgstr "FTP konto data opdateret!"
+msgstr ""
 
 #: :699
 msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :700
 msgid "Edit FTP user"
-msgstr "Rediger FTP-bruger"
+msgstr ""
 
 #: :701
 msgid "Save changes"
-msgstr "Gem ændringer"
+msgstr ""
 
 #: :702
 msgid "Email account not found!"
@@ -2884,7 +2836,7 @@ msgstr ""
 
 #: :703
 msgid "Missing or wrong data!"
-msgstr "Mangledende eller forkert data!"
+msgstr ""
 
 #: :704
 msgid "Password data includes not valid signs!"
@@ -2892,76 +2844,75 @@ msgstr ""
 
 #: :705
 msgid "Mail were updated successfully!"
-msgstr "Mail blev opdateret succesfuldt!"
+msgstr ""
 
 #: :706
 msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :707
 msgid "Edit email account"
-msgstr "Rediger email konto"
+msgstr ""
 
 #: :708
 msgid "Please type your mail autorespond message!"
-msgstr "Indtast din autosvar Meddelse!"
+msgstr ""
 
 #: :709
 msgid "Mail account scheduler for modification!"
-msgstr "Mailkonto planlagt til redigering!"
+msgstr ""
 
 #: :710
 msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :711
 msgid "Edit mail auto responder"
-msgstr "Rediger Autorespond"
+msgstr ""
 
 #: :712
 msgid "Your message"
-msgstr "Din Meddelse"
+msgstr "ข้อความของคุณ"
 
 #: :713
 msgid "Please wait for update"
-msgstr "Vent venligst på opdatering"
+msgstr ""
 
 #: :714
 msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :715
 msgid "Edit domain alias"
-msgstr "Rediger domænealias"
+msgstr ""
 
 #: :716
 msgid "Alias name"
-msgstr "Alias navn"
+msgstr ""
 
 #: :717
 msgid "Enable mail auto responder"
-msgstr "Aktiver mail autosvarer"
+msgstr ""
 
 #: :718
-#, fuzzy
 msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Client/Manage Error Custom Pages"
+msgstr ""
 
 #: :719
 msgid "Server error - please choose error page"
-msgstr "Server fejl - vælg venligst fejl side"
+msgstr ""
 
 #: :720
 msgid "Edit error page"
-msgstr "Rediger fejlside"
+msgstr ""
 
 #: :721
 msgid "Custom error page was updated!"
-msgstr "Fejl sider blev opdateret!"
+msgstr ""
 
 #: :722
 msgid "System error - custom error page was NOT updated!"
-msgstr "System fejl – Egen Fejl side blev IKKE opdateret!"
+msgstr ""
 
 #: :723
 msgid "Error 401 (unauthorised)"
@@ -2969,51 +2920,51 @@ msgstr ""
 
 #: :724
 msgid "Error 403 (forbidden)"
-msgstr "Fejl 403 (Forbudt)"
+msgstr ""
 
 #: :725
 msgid "Error 404 (not found)"
-msgstr "Fejl 404 (Ikke fundet)"
+msgstr ""
 
 #: :726
 msgid "Error 500 (internal server error)"
-msgstr "Fejl 500 (Intern serverfejl)"
+msgstr ""
 
 #: :727
 msgid "Error pages"
-msgstr "Fejlsider"
+msgstr ""
 
 #: :728
 msgid "FTP list is empty!"
-msgstr "FTP liste er tom!"
+msgstr ""
 
 #: :729
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr "Kan ikke åbne bibliotek ! <br> Kontakt venligst din administrator!"
+msgstr ""
 
 #: :730
 msgid "Parent Directory"
-msgstr "Ovenliggende mappe"
+msgstr ""
 
 #: :731
 msgid "Protect it"
-msgstr "Beskyt det"
+msgstr ""
 
 #: :732
 msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :733
 msgid "Directory tree"
-msgstr "Monteringspunkt"
+msgstr ""
 
 #: :734
 msgid "Directories"
-msgstr "Mapper"
+msgstr ""
 
 #: :735
 msgid "Choose"
-msgstr "Vælg"
+msgstr "เลือก"
 
 #: :736
 #, c-format
@@ -3027,129 +2978,127 @@ msgstr ""
 
 #: :738
 msgid "You are exceeding your disk limit!"
-msgstr "Du overskrider din disk grænse!"
+msgstr ""
 
 #: :739
 msgid "You have no new support questions!"
-msgstr "Du har ingen support spørgsmål!"
+msgstr ""
 
 #: :740
 msgid "support question(s)"
-msgstr "Support spørgsmål"
+msgstr ""
 
 #: :741
 msgid "new"
-msgstr "ny"
+msgstr ""
 
 #: :742
 msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :743
 msgid "General information"
-msgstr "Generel information"
+msgstr ""
 
 #: :744
 msgid "Account name"
-msgstr "Kontonavn"
+msgstr ""
 
 #: :745
 msgid "Main domain"
-msgstr "Hoveddomæne"
+msgstr ""
 
 #: :746
-#, fuzzy
 msgid "SQL support"
-msgstr "SQL support"
+msgstr ""
 
 #: :747
 msgid "Choose default language"
-msgstr "Vælg standard sprog"
+msgstr ""
 
 #: :748
 msgid "Traffic usage"
-msgstr "Trafik forbrug"
+msgstr ""
 
 #: :749
 msgid "Disk usage"
-msgstr "Diskforbrug"
+msgstr ""
 
 #: :750
 msgid "User language updated successfully!"
-msgstr "Bruger sprog opdateret!"
+msgstr ""
 
 #: :751
-#, fuzzy
 msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Client/Change Language"
+msgstr ""
 
 #: :752
 msgid "Subdomain list is empty!"
-msgstr "Subdomæne liste er tom!"
+msgstr ""
 
 #: :753
 msgid "Alias list is empty!"
-msgstr "Alias listen er tom!"
+msgstr "รายการ Alias ว่างเปล่า!"
 
 #: :754
 msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :755
 msgid "Manage domains"
-msgstr "Håndtér domæner"
+msgstr ""
 
 #: :756
 msgid "Mount point"
-msgstr "Monteringspunkt"
+msgstr ""
 
 #: :757
 msgid "Forward"
-msgstr "Videresend"
+msgstr ""
 
 #: :758
 msgid "Database user list is empty!"
-msgstr "Databasebrugerlisten er tom!"
+msgstr ""
 
 #: :759
 msgid "Database list is empty!"
-msgstr "Databaselisten er tom!"
+msgstr ""
 
 #: :760
 msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :761
 msgid "Manage SQL"
-msgstr "Håndtér SQL"
+msgstr ""
 
 #: :762
 msgid "Database users"
-msgstr "Databasebrugere"
+msgstr ""
 
 #: :763
 msgid "Add SQL user"
-msgstr "Tilføj SQL bruger"
+msgstr "เพิ่มผู้ใช้ SQL"
 
 #: :764
 msgid "Execute query"
-msgstr "Udfør forespørgsel"
+msgstr ""
 
 #: :765
 msgid "Please specify message subject!"
-msgstr "Indtast meddelses emne!"
+msgstr ""
 
 #: :766
 msgid "Your message was sent!"
-msgstr "Din Meddelse er sendt!"
+msgstr "ข้อความของคุณได้ส่งเรียบร้อยแล้ว"
 
 #: :767
 msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :768
 msgid "New ticket"
-msgstr "Ny Sag"
+msgstr ""
 
 #: :769
 msgid "Protected area status should be OK if you want to delete it!"
@@ -3157,55 +3106,55 @@ msgstr ""
 
 #: :770
 msgid "Protected area deleted successfully!"
-msgstr "Beskyttet Område blev slettet!"
+msgstr ""
 
 #: :771
 msgid "Permission deny!"
-msgstr "Tilladelse nægtet!"
+msgstr ""
 
 #: :772
 msgid "You do not have protected areas"
-msgstr "Du har ingen beskyttet områder!"
+msgstr ""
 
 #: :773
 msgid "Manage users and groups"
-msgstr "Håndtér brugere og grupper"
+msgstr ""
 
 #: :774
 msgid "Add user"
-msgstr "Tilføj bruger"
+msgstr "เพิ่มผู้ใช้"
 
 #: :775
 msgid "Group name"
-msgstr "Gruppenavn"
+msgstr ""
 
 #: :776
 msgid "Group members"
-msgstr "Gruppemedlemmer"
+msgstr ""
 
 #: :777
 msgid "Add group"
-msgstr "Tilføj gruppe"
+msgstr "เพิ่มกลุ่ม"
 
 #: :778
 msgid "Group"
-msgstr "Gruppe"
+msgstr ""
 
 #: :779
 msgid "Add new protected area"
-msgstr "Tilføj nyt beskyttet område"
+msgstr "เพิ่ม protected area ใหม่"
 
 #: :780
 msgid "Please choose user or group"
-msgstr "Vælg brugere eller grupper!"
+msgstr ""
 
 #: :781
 msgid "Please enter area name"
-msgstr "Indtast område navn!"
+msgstr ""
 
 #: :782
 msgid "Please enter area path"
-msgstr "Indtast område sti"
+msgstr ""
 
 #: :783
 msgid "%s doesn't exist"
@@ -3217,15 +3166,15 @@ msgstr ""
 
 #: :785
 msgid "You can not protect area without selected group(s)"
-msgstr "Du kan ikke beskytte områder uden at have valgt Gruppe( r)"
+msgstr ""
 
 #: :786
 msgid "Protected area updated successfully!"
-msgstr "Beskyttet område blev opdateret!"
+msgstr ""
 
 #: :787
 msgid "Protected area created successfully!"
-msgstr "Beskyttet Område blev oprette!"
+msgstr ""
 
 #: :788
 msgid "Protected area status should be OK if you want to edit it!"
@@ -3233,43 +3182,43 @@ msgstr ""
 
 #: :789
 msgid "You have no users !"
-msgstr "Du har ingen brugere !"
+msgstr "คุณยังไม่มีผู้ใช้ !"
 
 #: :790
 msgid "You have no groups!"
-msgstr "Du har ingen grupper!"
+msgstr ""
 
 #: :791
 msgid "Protect this area"
-msgstr "Beskyt dette område"
+msgstr ""
 
 #: :792
 msgid "Path"
-msgstr "Sti"
+msgstr ""
 
 #: :793
 msgid "Groups"
-msgstr "Grupper"
+msgstr ""
 
 #: :794
 msgid "User auth"
-msgstr "Brugerrettigheder"
+msgstr ""
 
 #: :795
 msgid "Group auth"
-msgstr "Grupperettigeheder"
+msgstr ""
 
 #: :796
 msgid "Area name"
-msgstr "Område navn"
+msgstr ""
 
 #: :797
 msgid "Unprotect it"
-msgstr "Fjern beskyttelse"
+msgstr ""
 
 #: :798
 msgid "Can not open file! Please contact your administrator !"
-msgstr "Kan ikke åbne fil ! Kontakt venligst din administrator!"
+msgstr ""
 
 #: :799
 msgid "User was assigned to group "
@@ -3277,23 +3226,23 @@ msgstr ""
 
 #: :800
 msgid "User was deleted from group "
-msgstr "Bruger blev slettet fra gruppe"
+msgstr ""
 
 #: :801
 msgid "User assign"
-msgstr "Bruger tildel"
+msgstr ""
 
 #: :802
 msgid "Already in:"
-msgstr "Allerede i:"
+msgstr ""
 
 #: :803
 msgid "Not in:"
-msgstr "Ikke i:"
+msgstr ""
 
 #: :804
 msgid "User was assigned to group"
-msgstr "Brugeren blev tilføjet gruppen"
+msgstr ""
 
 #: :805
 msgid "Member of group:"
@@ -3305,43 +3254,43 @@ msgstr ""
 
 #: :807
 msgid "Update user"
-msgstr "Opdater bruger"
+msgstr ""
 
 #: :808
 msgid "Wrong username!"
-msgstr "Forkert brugernavn"
+msgstr "ชื่อผู้ใช้ไม่ถูกต้อง!"
 
 #: :809
 msgid "Group already exist !"
-msgstr "Gruppen eksisterer allerede"
+msgstr ""
 
 #: :810
 msgid "Manage user"
-msgstr "Håndtér bruger"
+msgstr ""
 
 #: :811
 msgid "You have no users!"
-msgstr "Du har ingen brugere!"
+msgstr "คุณยังไม่มีผู้ใช้!"
 
 #: :812
 msgid "User already exist !"
-msgstr "Bruger eksisterer allerede!"
+msgstr ""
 
 #: :813
 msgid "SQL-user limit expired!"
-msgstr "SQL bruger grænse overskredet!"
+msgstr ""
 
 #: :814
 msgid "Please type user name!"
-msgstr "Indtast brugernavn!"
+msgstr ""
 
 #: :815
 msgid "Please type user password!"
-msgstr "Indtast bruger adgangskode!"
+msgstr ""
 
 #: :816
 msgid "Too user long password!"
-msgstr "For lang bruger adgangskode!"
+msgstr ""
 
 #: :817
 msgid "SQL-user not found! Maybe it was deleted by another user!"
@@ -3349,154 +3298,151 @@ msgstr ""
 
 #: :818
 msgid "User name too long!"
-msgstr "Brugernavn er for langt!"
+msgstr ""
 
 #: :819
 msgid "Specified SQL username name already exists!"
-msgstr "SQL brugernavn eksisterer allerede!"
+msgstr ""
 
 #: :820
 msgid "SQL user successfully added!"
-msgstr "SQL bruger til tilføjet!"
+msgstr ""
 
 #: :821
 msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :822
 msgid "SQL user name"
-msgstr "SQL Brugernavn"
+msgstr ""
 
 #: :823
 msgid "In front the name"
-msgstr "Foran navnet"
+msgstr ""
 
 #: :824
 msgid "Behind the name"
-msgstr "Bagved navnet"
+msgstr ""
 
 #: :825
 msgid "Add existing user"
-msgstr "Tilføj eksisterende bruger"
+msgstr "เพิ่มผู้ใช้ที่มีอยู่แล้ว"
 
 #: :826
 msgid "Existing SQL users"
-msgstr "Eksisterende MySQL Bruger"
+msgstr ""
 
 #: :827
 msgid "Too long user password!"
-msgstr "For lang bruger adgangskode!"
+msgstr ""
 
 #: :828
 msgid "SQL user password was successfully changed!"
-msgstr "SQL bruger adgangskode blev opdateret!"
+msgstr ""
 
 #: :829
 msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :830
 msgid "Change SQL user password"
-msgstr "Ændre SQL bruger adgangskode"
+msgstr ""
 
 #: :831
 msgid "Change"
-msgstr "Redigér"
+msgstr "เปลี่ยน"
 
 #: :832
 msgid "SQL user was removed successfully!"
-msgstr "SQL bruger blev fjernet"
+msgstr ""
 
 #: :833
 msgid "Please enter SQL query!"
-msgstr "Indtast en SQL query!"
+msgstr ""
 
 #: :834
 msgid "Cannot connect as MySQL administrator!"
-msgstr "Kan ikke forbinde som MySQL administrator!"
+msgstr "ไม่สามารถติดต่อในฐานะผู้ดูแลระบบ MySQL"
 
 #: :835
 msgid "SQL query has error"
-msgstr "SQL query har fejl"
+msgstr ""
 
 #: :836
 msgid "SQL query is ok"
-msgstr "SQL query er OK"
+msgstr ""
 
 #: :837
 msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :838
 msgid "Execute SQL query"
-msgstr "Udfør SQL forespørgsel"
+msgstr ""
 
 #: :839
-#, fuzzy
 msgid "SQL query"
-msgstr "SQL query"
+msgstr ""
 
 #: :840
-#, fuzzy
 msgid "Query status"
-msgstr "Query status"
+msgstr ""
 
 #: :841
 msgid "Query result"
-msgstr "Querys resultat"
+msgstr ""
 
 #: :842
 msgid "Execute"
-msgstr "Udfør"
+msgstr ""
 
 #: :843
 msgid "Protected area was deleted successful!"
-msgstr "Beskyttet område blev slettet!"
+msgstr ""
 
 #: :844
 msgid "Hosting plans available for update"
-msgstr "Hosting Planer for opdatering"
+msgstr ""
 
 #: :845
 msgid "Cancel order"
-msgstr "Annuller Ordre"
+msgstr "ยกเลิกการสั่งซื้อ"
 
 #: :846
 msgid "Your order"
-msgstr "Din Bestilling"
+msgstr ""
 
 #: :847
 msgid "Purchase"
-msgstr "Bestil"
+msgstr ""
 
 #: :848
 msgid "There are no available updates"
-msgstr "Der er ingen tilgængelige opdateringer."
+msgstr ""
 
 #: :849
 msgid "PHP Support: enabled"
-msgstr "PHP Support: aktiveret"
+msgstr ""
 
 #: :850
 msgid "PHP Support: disabled"
-msgstr "PHP Support: deaktiveret"
+msgstr ""
 
 #: :851
 msgid "CGI Support: enabled"
-msgstr "CGI Service: aktiveret"
+msgstr ""
 
 #: :852
 msgid "CGI Support: disabled"
-msgstr "CGI Service: deaktiveret"
+msgstr ""
 
 #: :853
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 #: :854
 msgid "Aliases"
-msgstr "Aliaser"
+msgstr ""
 
 #: :855
 msgid "Emails"
@@ -3516,32 +3462,31 @@ msgstr ""
 
 #: :859
 msgid "free of charge"
-msgstr "Ub."
+msgstr ""
 
 #: :860
 msgid "There are no available hosting plans for update"
-msgstr "Der er ingen tilgængelige Hosting Planer til opdatering"
+msgstr ""
 
 #: :861
-#, fuzzy
 msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Update hosting plan"
+msgstr ""
 
 #: :862
 msgid "Your request for hosting pack update was added successfully"
-msgstr "Din anmodning for opdatering af hosting pakker er tilføjet systemet."
+msgstr ""
 
 #: :863
 msgid "Your request for hosting pack update was removed successfully"
-msgstr "Din anmodning for opdatering af hosting pakker er fjernet fra systemet."
+msgstr ""
 
 #: :864
 msgid "Message was send!"
-msgstr "Meddelsen blev sendt!"
+msgstr ""
 
 #: :865
 msgid "Webtools"
-msgstr "Webværktøjer"
+msgstr ""
 
 #: :866
 msgid "Customise error pages for your domain"
@@ -3549,56 +3494,55 @@ msgstr ""
 
 #: :867
 msgid "Backup and restore settings"
-msgstr "Backup og reetablerings indstillinger"
+msgstr ""
 
 #: :868
 msgid "Access your mail through the web interface"
-msgstr "Adgang til email via browser"
+msgstr ""
 
 #: :869
 msgid "Access your files through the web interface"
-msgstr "Adgang til dine filer via browser"
+msgstr ""
 
 #: :870
 msgid "Manage protected areas, users and groups"
-msgstr "Håndtér beskyttede områder, brugere og grupper"
+msgstr ""
 
 #: :871
 msgid "System tools"
-msgstr "System værktøjer"
+msgstr ""
 
 #: :872
 msgid "Statistics"
-msgstr "Statistiker"
+msgstr ""
 
 #: :873
 msgid "Reseller statistics"
-msgstr "Forhandler statistik"
+msgstr ""
 
 #: :874
-#, fuzzy
 msgid "Admin log"
-msgstr "Admin log"
+msgstr "บันทึกผู้ดูแลระบบ"
 
 #: :875
 msgid "Logout"
-msgstr "Log ud"
+msgstr ""
 
 #: :876
 msgid "Custom menus"
-msgstr "Kunde menuer"
+msgstr ""
 
 #: :877
 msgid "Overview"
-msgstr "Overblik"
+msgstr ""
 
 #: :878
 msgid "User sessions"
-msgstr "Bruger sessions"
+msgstr ""
 
 #: :879
 msgid "Lostpw email setup"
-msgstr "Glemt Adgangskode, E-Mail."
+msgstr ""
 
 #: :880
 msgid "Rootkit Log"
@@ -3606,27 +3550,27 @@ msgstr ""
 
 #: :881
 msgid "Admin users"
-msgstr "Admin brugere"
+msgstr ""
 
 #: :882
 msgid "Normal users"
-msgstr "Normal brugere"
+msgstr ""
 
 #: :883
 msgid "Domains"
-msgstr "Domæner"
+msgstr ""
 
 #: :884
 msgid "System messages"
-msgstr "System Meddelser"
+msgstr ""
 
 #: :885
 msgid "No new messages"
-msgstr "Ingen nye Meddelser"
+msgstr ""
 
 #: :886
 msgid "Server traffic"
-msgstr "Server trafik"
+msgstr ""
 
 #: :887
 msgid "Administrators list is empty!"
@@ -3634,27 +3578,27 @@ msgstr ""
 
 #: :888
 msgid "Created by"
-msgstr "Oprettet af"
+msgstr "สร้างโดย"
 
 #: :889
 msgid "Resellers list is empty!"
-msgstr "Forhandler liste er tom!"
+msgstr ""
 
 #: :890
 msgid "Change user interface"
-msgstr "Ændre bruger interface"
+msgstr ""
 
 #: :891
 msgid "Not found user records matching the search criteria!"
-msgstr "Fandt ikke bruger matchende data fra søgningen!"
+msgstr ""
 
 #: :892
 msgid "view aliases"
-msgstr "Se Aliaser"
+msgstr ""
 
 #: :893
 msgid "Users list is empty!"
-msgstr "Bruger listen er tom"
+msgstr ""
 
 #: :894
 msgid "S"
@@ -3662,35 +3606,35 @@ msgstr "Status"
 
 #: :895
 msgid "D"
-msgstr "Detaljer"
+msgstr "Details"
 
 #: :896
 msgid "Details"
-msgstr "Detaljer"
+msgstr ""
 
 #: :897
 msgid "Are you sure you want to change the status of domain account?"
-msgstr "Er du sikker på du vil ændre status for domæne kontoen?"
+msgstr "คุณแน่ใจที่จะต้องการเปลี่ยนสถานะของโดเมน?"
 
 #: :898
 msgid "Are you sure you want to delete this account?"
-msgstr "Er du sikker på du vil slette denne konto?"
+msgstr "คุณแน่ใจที่จะต้องการลบบัญชีนี้?"
 
 #: :899
 msgid "Administrators"
-msgstr "Administratorer"
+msgstr "ผู้ดูแลระบบ"
 
 #: :900
 msgid "Resellers"
-msgstr "Forhandlere"
+msgstr ""
 
 #: :901
 msgid "Search"
-msgstr "Søg"
+msgstr ""
 
 #: :902
 msgid "Creation date"
-msgstr "Oprettelsesdato"
+msgstr "วันที่สร้าง"
 
 #: :903
 #, c-format
@@ -3699,20 +3643,19 @@ msgstr ""
 
 #: :904
 msgid "Go back"
-msgstr "Gå tilbage"
+msgstr ""
 
 #: :905
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: :906
 msgid "Suspended"
-msgstr "Suspenderet"
+msgstr ""
 
 #: :907
 msgid "Error"
-msgstr "Fejl"
+msgstr ""
 
 #: :908
 msgid "[Ticket] {SUBJ}"
@@ -3724,35 +3667,35 @@ msgstr ""
 
 #: :910
 msgid "Email and FTP accounts"
-msgstr "Email og FTP konti"
+msgstr ""
 
 #: :911
 msgid "Add mail user"
-msgstr "Tilføj email adresse"
+msgstr "เพิ่มผู้ใช้อีเมล์"
 
 #: :912
 msgid "PhpMyAdmin"
-msgstr "PHPMyAdmin"
+msgstr ""
 
 #: :913
 msgid "Filemanager"
-msgstr "Filmanager"
+msgstr ""
 
 #: :914
 msgid "Webstatistics"
-msgstr "Web Statistikker"
+msgstr ""
 
 #: :915
 msgid "Group - Usermanagement"
-msgstr "Gruppe - Brugerhåndtering"
+msgstr ""
 
 #: :916
 msgid "Email Accounts"
-msgstr "Email konto"
+msgstr ""
 
 #: :917
 msgid "FTP Accounts"
-msgstr "FTP Konti"
+msgstr ""
 
 #: :918
 msgid "Update Hosting Package"
@@ -3760,15 +3703,15 @@ msgstr ""
 
 #: :919
 msgid "Addition in progress"
-msgstr "Tilføjelse udføres"
+msgstr ""
 
 #: :920
 msgid "Modification in progress"
-msgstr "Redigering i gang"
+msgstr ""
 
 #: :921
 msgid "Deletion in progress"
-msgstr "Sletning i gang..."
+msgstr ""
 
 #: :922
 msgid "Unknown Error"
@@ -3776,31 +3719,31 @@ msgstr ""
 
 #: :923
 msgid "Domain mail"
-msgstr "Domæne mail"
+msgstr ""
 
 #: :924
 msgid "Email forward"
-msgstr "Email videresend"
+msgstr ""
 
 #: :925
 msgid "Alias mail"
-msgstr "Alias email"
+msgstr ""
 
 #: :926
 msgid "Alias forward"
-msgstr "Alias viderstilling"
+msgstr ""
 
 #: :927
 msgid "Subdomain mail"
-msgstr "Normal<br>(Subdomæne)"
+msgstr ""
 
 #: :928
 msgid "Subdomain forward"
-msgstr "Vidersend<br>(Subdomæne)"
+msgstr ""
 
 #: :929
 msgid "Unknown type"
-msgstr "Ukendt type"
+msgstr ""
 
 #: :930
 msgid "Catchall account"
@@ -3812,23 +3755,23 @@ msgstr ""
 
 #: :932
 msgid "You have to wait"
-msgstr "Du må vente"
+msgstr "คุณต้องรอ"
 
 #: :933
 msgid "seconds"
-msgstr "sekunder"
+msgstr ""
 
 #: :934
 msgid "You have been blocked for"
-msgstr "Du er blevet blokkeret for"
+msgstr ""
 
 #: :935
 msgid "System is currently in servicemode! At time only administrators can login."
-msgstr "Systemet er i servicemode! Kun Administratorer kan logge ind."
+msgstr ""
 
 #: :936
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr "Bruger er allerede logget på eller session delings problemer! Afbryder...."
+msgstr ""
 
 #: :937
 msgid "Domain status is not OK - Login aborted."
@@ -3836,55 +3779,55 @@ msgstr ""
 
 #: :938
 msgid "Domain alias"
-msgstr "Domænealias"
+msgstr ""
 
 #: :939
 msgid "Manage Orders"
-msgstr "Håndtér Bestillinger"
+msgstr ""
 
 #: :940
 msgid "Order settings"
-msgstr "Ordre Indstillinger"
+msgstr ""
 
 #: :941
 msgid "Order email setup"
-msgstr "Setup Ordre Email"
+msgstr ""
 
 #: :942
 msgid "Please fill up both data fields for password!"
-msgstr "Udfyld begge adgangskodefelter!"
+msgstr ""
 
 #: :943
 msgid "wait to be added"
-msgstr "venter på at blive tilføjet"
+msgstr ""
 
 #: :944
 msgid "wait to be modified"
-msgstr "venter på at blive redigeret"
+msgstr ""
 
 #: :945
 msgid "wait to be deleted"
-msgstr "venter på at blive slettet"
+msgstr ""
 
 #: :946
 msgid "suspended"
-msgstr "suspenderet"
+msgstr ""
 
 #: :947
 msgid "wait to be enabled"
-msgstr "venter på at blive aktiveret"
+msgstr ""
 
 #: :948
 msgid "wait to be suspended"
-msgstr "venter på at blive suspenderet"
+msgstr ""
 
 #: :949
 msgid "unknown status"
-msgstr "ukendt status"
+msgstr ""
 
 #: :950
 msgid "hide aliases"
-msgstr "Skjul aliaser"
+msgstr ""
 
 #: :951
 msgid "You have reached your domains limit.<br>You can not add more domains!"
@@ -3904,7 +3847,7 @@ msgstr ""
 
 #: :955
 msgid "You Are Exceeding Your Alias Limit!"
-msgstr "Du overskrider din alias grænse!"
+msgstr ""
 
 #: :956
 msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
@@ -3936,7 +3879,7 @@ msgstr ""
 
 #: :963
 msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr "Du har deaktiveret SQL databaser for denne bruger!<br>Du kan ikke have SQL brugere her!"
+msgstr ""
 
 #: :964
 msgid "You are exceeding your SQL database limit!"
@@ -3960,232 +3903,231 @@ msgstr ""
 
 #: :969
 msgid "Wrong domain name syntax!"
-msgstr "Forkert domæne navn syntax!"
+msgstr ""
 
 #: :970
 msgid "You do not have permission to access this interface!"
-msgstr "Du har ikke adgang til denne brugerflade!"
+msgstr ""
 
 #: :971
 msgid "Add On A Domain"
-msgstr "Tilføj et domæne"
+msgstr "เพิ่มบน A Domain"
 
 #: :972
 msgid "Continue"
-msgstr "Forsæt"
+msgstr "ดำเนินการต่อ"
 
 #: :973
 msgid "(e.g. domain-of-your-choice.com)"
-msgstr "(f.eks.: ditdomæne.tld)"
+msgstr ""
 
 #: :974
 msgid "Please fill out all needed fields!"
-msgstr "Udfyld venligst alle nødvendige felter!"
+msgstr ""
 
 #: :975
 msgid "Enter Address"
-msgstr "Indtast Adresse"
+msgstr ""
 
 #: :976
 msgid "* denotes mandatory field."
-msgstr "* -markeret felter skal udfyldes."
+msgstr "* หมายถึงข้อมูลที่ต้องกรอก"
 
 #: :977
 msgid "Your Chart"
-msgstr "Din tabel"
+msgstr "แผนภูมิของคุณ"
 
 #: :978
 msgid "Costs"
-msgstr "Pris"
+msgstr ""
 
 #: :979
 msgid "Personal Data"
-msgstr "Personlig Data!"
+msgstr ""
 
 #: :980
 msgid "Check Out"
-msgstr "Afslut Bestilling"
+msgstr ""
 
 #: :981
 msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr "<b>Tak for din bestilling</b><br>Du vil modtage en E-Mail med flere Detaljer og Information"
+msgstr ""
 
 #: :982
 msgid "No available hosting packages"
-msgstr "Ingen Hosting Pakker til rådighed"
+msgstr ""
 
 #: :983
 msgid "Webspace"
-msgstr "Diskplads / Trafik"
+msgstr ""
 
 #: :984
 msgid "Domain Features"
-msgstr "Domæne Muligheder"
+msgstr ""
 
 #: :985
 msgid "Package Features"
-msgstr "Hosting Pakke indeholder"
+msgstr ""
 
 #: :986
 msgid "Backup and Restore"
-msgstr "Backup og Reetablering"
+msgstr ""
 
 #: :987
 msgid "Custom Error Pages"
-msgstr "Egne Fejl-sider"
+msgstr ""
 
 #: :988
 msgid "Protected Areas"
-msgstr "Beskyttet Områder"
+msgstr ""
 
 #: :989
 msgid "Custom Apache Logs"
-msgstr "Apache Logdata"
+msgstr ""
 
 #: :990
-#, fuzzy
 msgid "Web & E-Mail Support"
-msgstr "Web & E-Mail Support"
+msgstr ""
 
 #: :991
 msgid "Your Own Domain"
-msgstr "Dit Eget Domæne"
+msgstr ""
 
 #: :992
 msgid "ISPCP Control Panel"
-msgstr "ISPCP Administrationsoberfläche"
+msgstr ""
 
 #: :993
 msgid "Automatic Updates"
-msgstr "Automatisk opdateringer"
+msgstr ""
 
 #: :994
 msgid "Package Price"
-msgstr "Hosting Pakke Pris"
+msgstr ""
 
 #: :995
 msgid "Setup Fee"
-msgstr "Setup Gebyr"
+msgstr ""
 
 #: :996
 msgid "Performance"
-msgstr "Præstation"
+msgstr ""
 
 #: :997
 msgid "ISPCP Reseller : Add Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :998
 msgid "You have no user records."
-msgstr "Du har ingen bruger records."
+msgstr ""
 
 #: :999
 msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1000
 msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1001
 msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1002
 msgid "ISPCP - Circular"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1003
 msgid "Circular"
-msgstr "Rundsend"
+msgstr ""
 
 #: :1004
 msgid "Wrong domain ID!"
-msgstr "Forkert domæne ID!"
+msgstr ""
 
 #: :1005
 msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr "Domænet du prøver at fjerne har email konti !<br>Fjern dem først"
+msgstr ""
 
 #: :1006
 msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr "Domænet du prøver at fjerne har FTP konto !<br>Fjern dem først !"
+msgstr ""
 
 #: :1007
 msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr "Domænet du prøver at fjerne har domænealias!<br>Fjern dem først !"
+msgstr ""
 
 #: :1008
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
-msgstr "Domænet du prøver at fjerne har underdomæne konti !<br> Fjern dem først."
+msgstr ""
 
 #: :1009
 msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1010
 msgid "Manage alias"
-msgstr "Håndtér alias"
+msgstr ""
 
 #: :1011
 msgid "Real domain"
-msgstr "Hoved domæne"
+msgstr ""
 
 #: :1012
 msgid "You have no alias records."
-msgstr "Du har ingen Alias records."
+msgstr ""
 
 #: :1013
 msgid "enabled"
-msgstr "aktiveret"
+msgstr ""
 
 #: :1014
 msgid "delete"
-msgstr "slet"
+msgstr ""
 
 #: :1015
 msgid "Domain alias added for termination!"
-msgstr "Domænealias tilføjet for sletning"
+msgstr ""
 
 #: :1016
 msgid "Domain alias not added for termination!"
-msgstr "Domænealias ikke tiljøjet til sletning!"
+msgstr ""
 
 #: :1017
 msgid "Domain alias added!"
-msgstr "Domænealias tilføjet!"
+msgstr ""
 
 #: :1018
 msgid "Domain alias not added!"
-msgstr "Domænealias ikke tilføjet!"
+msgstr ""
 
 #: :1019
 msgid "Domain alias modified!"
-msgstr "Domænealias ændret!"
+msgstr ""
 
 #: :1020
 msgid "Domain alias not modified!"
-msgstr "Domænealias ikke ændret!"
+msgstr ""
 
 #: :1021
 msgid "User terminated!"
-msgstr "Bruger slettet!"
+msgstr ""
 
 #: :1022
 msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1023
 msgid "Edit Domain"
-msgstr "Rediger domæne"
+msgstr ""
 
 #: :1024
 msgid "Domain properties"
-msgstr "Domæne Egenskaber"
+msgstr ""
 
 #: :1025
 msgid "Domain properties updated successfully!"
-msgstr "Domæne Egenskaber opdateret succesfuldt."
+msgstr ""
 
 #: :1026
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -4225,23 +4167,23 @@ msgstr ""
 
 #: :1035
 msgid "ISPCP - Users/Edit"
-msgstr "ISPCP Benutzer bearbeiten"
+msgstr ""
 
 #: :1036
 msgid "Edit user"
-msgstr "Rediger bruger"
+msgstr ""
 
 #: :1037
 msgid "Users list"
-msgstr "Bruger liste"
+msgstr ""
 
 #: :1038
 msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1039
 msgid "View hosting plan"
-msgstr "Se Hosting Pakker"
+msgstr ""
 
 #: :1040
 msgid "Incorrect price!"
@@ -4257,23 +4199,23 @@ msgstr ""
 
 #: :1043
 msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1044
 msgid "View details"
-msgstr "Se Detaljer"
+msgstr ""
 
 #: :1045
 msgid "User accounts"
-msgstr "Bruger kontoer"
+msgstr ""
 
 #: :1046
 msgid "Mail account"
-msgstr "Mailkonto"
+msgstr ""
 
 #: :1047
 msgid "Extras"
-msgstr "Ekstra"
+msgstr ""
 
 #: :1048
 msgid "You have <b>%d</b> new support questions"
@@ -4281,128 +4223,123 @@ msgstr ""
 
 #: :1049
 msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
+msgstr ""
 
 #: :1050
-#, fuzzy
 msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Reseller/Order email setup"
+msgstr ""
 
 #: :1051
 msgid "Manage orders"
-msgstr "Håndtér bestillinger"
+msgstr ""
 
 #: :1052
 msgid "Wrong order ID!"
-msgstr "Forkert Bestillings ID"
+msgstr ""
 
 #: :1053
 msgid "User added!"
-msgstr "Bruger tilføjet!"
+msgstr ""
 
 #: :1054
 msgid "Customer order was removed successful!"
-msgstr "Kunde Ordre er slettet!"
+msgstr ""
 
 #: :1055
-#, fuzzy
 msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Reseller/Order details"
+msgstr ""
 
 #: :1056
 msgid "Order data updated successfully!"
-msgstr "Bestillings data er opdateret!"
+msgstr ""
 
 #: :1057
 msgid "Order date"
-msgstr "Bestillings dato"
+msgstr ""
 
 #: :1058
 msgid "Hosting plan"
-msgstr "Hosting Plan"
+msgstr ""
 
 #: :1059
 msgid "Hosting details"
-msgstr "Hosting Plan detaljer"
+msgstr ""
 
 #: :1060
 msgid "Order details"
-msgstr "Bestillings detaljer"
+msgstr ""
 
 #: :1061
 msgid "Customer data"
-msgstr "Kunde Data"
+msgstr ""
 
 #: :1062
 msgid "Delete order"
-msgstr "Slet Ordre"
+msgstr ""
 
 #: :1063
 msgid "Are you sure you want to delete this order?"
-msgstr "Er du sikker på du vil slette denne ordre?"
+msgstr "คุณแน่ใจที่จะต้องการลบการสั่งซื้อนี้?"
 
 #: :1064
 msgid "Add to the system"
-msgstr "Tilføj til systemet"
+msgstr "เพิ่มไปยังระบบ"
 
 #: :1065
-#, fuzzy
 msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Reseller/Order settings"
+msgstr ""
 
 #: :1066
 msgid "Header"
-msgstr "Hoved"
+msgstr ""
 
 #: :1067
 msgid "Preview"
-msgstr "Prøvese"
+msgstr ""
 
 #: :1068
 msgid "Implementation URL"
-msgstr " URL"
+msgstr ""
 
 #: :1069
 msgid "Footer"
-msgstr "Fod"
+msgstr ""
 
 #: :1070
-#, fuzzy
 msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Reseller/Order management"
+msgstr ""
 
 #: :1071
 msgid "You do not have new orders!"
-msgstr "Du har ingen nye Bestillinger!"
+msgstr ""
 
 #: :1072
 msgid "New order"
-msgstr "Ny Bestilling"
+msgstr ""
 
 #: :1073
 msgid "Update order"
-msgstr "Opdater Bestilling"
+msgstr ""
 
 #: :1074
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #: :1075
 msgid "Order"
-msgstr "Bestilling"
+msgstr ""
 
 #: :1076
 msgid "Add/Details"
-msgstr "Tilfø/Detaljer"
+msgstr "เพิ่ม/รายละเอียด"
 
 #: :1077
 msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1078
 msgid "Choose hosting plan"
-msgstr "Vælg hosting plan"
+msgstr ""
 
 #: :1079
 msgid "Personalise template"
@@ -4410,7 +4347,7 @@ msgstr ""
 
 #: :1080
 msgid "Next step"
-msgstr "Næste trin"
+msgstr ""
 
 #: :1081
 msgid "You have no hosting plans. Please contact your system administrator."
@@ -4418,7 +4355,7 @@ msgstr ""
 
 #: :1082
 msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1083
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -4426,25 +4363,23 @@ msgstr ""
 
 #: :1084
 msgid "Backup / Restore"
-msgstr "Backup / Gendannelse"
+msgstr ""
 
 #: :1085
-#, fuzzy
 msgid "Apache logs"
-msgstr "Apache logs"
+msgstr "บันทึก Apache"
 
 #: :1086
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 #: :1087
 msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1088
 msgid "Add other domains to this account"
-msgstr "Tilføj andre domæner til denne konto"
+msgstr "เพิ่มโดเมนอื่นให้บัญชีนี้"
 
 #: :1089
 msgid "There's a conflicting admin / reseller fix that first!"
@@ -4456,48 +4391,48 @@ msgstr ""
 
 #: :1091
 msgid "Done"
-msgstr "Færdig"
+msgstr ""
 
 #: :1092
 msgid "This reseller has no domains yet."
-msgstr "Denne Forhandler har endnu ingen Domæner."
+msgstr ""
 
 #: :1093
 msgid "ISPCP - Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1094
 msgid "Stats"
-msgstr "Statistik"
+msgstr ""
 
 #: :1095
 msgid "Edit properties"
-msgstr "Rediger egenskaber"
+msgstr ""
 
 #: :1096
 msgid "You have no users."
-msgstr "Du har ingen brugere."
+msgstr "คุณยังไม่มีผู้ใช้."
 
 #: :1097
 msgid "User data updated!"
-msgstr "Bruger data opdateret!"
+msgstr ""
 
 #: :1098
 msgid "User data not updated!"
-msgstr "Bruger data ikke uploadet!"
+msgstr ""
 
 #: :1099
 msgid "This user has domain record !<br>First remove the domain from the system!"
-msgstr "Denne bruger har et domæne! <br>For at slette brugere skal du første slette domænet!"
+msgstr ""
 
 #: :1100
 msgid "User not terminated!"
-msgstr "Bruger ikke slettet!"
+msgstr ""
 
 #: :1101
 msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 #: :1102
 msgid "Message was sent."
-msgstr "Meddelsen blev sendt!"
+msgstr ""

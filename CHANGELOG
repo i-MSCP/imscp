@@ -10,6 +10,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-06-29 Raphael Geissert
+	- DOCS:
+		* Added rkhunter to Ubuntu edgy's packages list
+	- GUI:
+		* Fixed some i18n stuff
+		* Fixed #434: Undefined variable: cfg in /var/www/ispcp/gui/include/vfs.php on line 162
+		* Fixed #442: Cant create or delete mysql databases
+
 2007-06-26 Raphael Geissert
 	- GUI:
 		* Fixed #438: Incorrect e-mail range or syntax! when adding a reseller

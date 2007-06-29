@@ -135,6 +135,7 @@ class vfs {
 	 * @return boolean Returns TRUE on succes or FALSE on failure.
 	 */
 	function _createTmpUser() {
+	    global $cfg;
 
 		// Get domain data
 		$query = 'select domain_uid, domain_gid

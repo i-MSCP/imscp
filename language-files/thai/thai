@@ -1,6 +1,6 @@
 ispcp_table = Thai
 ispcp_language = Thai
-ispcp_languageSetlocaleValue = en_GB
+ispcp_languageSetlocaleValue = th
 encoding = UTF-8
 do not exist =
 Has IP address that can not be managed from the destination reseller !<br>This user can not be moved! = มีหมายเลขไอพีที่ไม่สามารถจัดการได้ด้วย reseller ที่กำหนด! <br>ผู้ใช้นี้ไม่สามารถย้ายได้

@@ -789,7 +789,7 @@ function translate_dmn_status ($status) {
 
     if ( $status == $cfg['ITEM_OK_STATUS']) {
 
-        return tr('ok');
+        return tr('OK');
 
     } else if ( $status == $cfg['ITEM_ADD_STATUS']) {
 

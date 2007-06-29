@@ -259,7 +259,7 @@ gen_page_message($tpl);
 					 'TR_FIRSTNAME' => tr('First name'),
                      'TR_LASTNAME' => tr('Last name'),
                      'TR_COMPANY' => tr('Company'),
-                     'TR_POST_CODE' => tr('Zip / Postal code'),
+                     'TR_POST_CODE' => tr('Zip/Postal code'),
                      'TR_CITY' => tr('City'),
                      'TR_COUNTRY' => tr('Country'),
                      'TR_STREET1' => tr('Street 1'),

@@ -59,7 +59,7 @@ function execute_query (&$sql, $query) {
 }
 
 function exec_query(&$sql, $query, $data) {
-	$stmt = $sql->Prepare($query);
+	$query = $sql->Prepare($query);
 	$rs = $sql->Execute($query, $data);
 	if (!$rs) system_message($sql->ErrorMsg());
 	return $rs;

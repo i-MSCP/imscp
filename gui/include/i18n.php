@@ -22,8 +22,8 @@
  * 	Description:	translates a given string into the selected language, if exists
  *
  * 	@access			public
- * 	@version		2.1
- *  @author			ISPCP Team, Benedikt Heintel (2007)
+ * 	@version		2.2
+ *  @author			ISPCP Team, Benedikt Heintel (2007), 2007 Raphael Geissert
  *
  * 	@param		$msgid		string to translate
  * 	@param		$js			whether the input string is in javascript or not
@@ -42,16 +42,13 @@ function tr($msgid, $as_is = false) {
         $msgstr = $msgid;
 
         if ($sql) {
-            if (!$as_is && 'encoding' != $msgid) {
-                $encoding = tr('encoding');
+            if (!$as_is) {
+                $encoding = tr('encoding', true);
             }
             $msg_res = $sql->Execute("SELECT `msgstr` FROM `$lang` WHERE `msgid` = '$msgid';");
 
-            if ($msg_res && $msg_res->RowCount() > 0) {
-                $msg_d = $msg_res->FetchRow();
-                if ($msg_d['msgstr'] != '') {
-                    $msgstr = $msg_d['msgstr'];
-                }
+            if ($msg_res && $msg_res->RowCount() > 0 && $msg_res->fields['msgstr'] != '') {
+                $msgstr = $msg_res->fields['msgstr'];
             }
         }
     }
