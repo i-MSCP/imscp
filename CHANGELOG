@@ -10,6 +10,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-01 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #451: reload of apache after logrotate
+	- DISTS:
+		* Dropped support for SuSE 9.3
+		* Changed SuSE 10.0 to SuSE 10 to support all SuSE versions above 10
+
 2007-07-01 Raphael Geissert
 	- GUI:
 		* Corrected some i18n strings

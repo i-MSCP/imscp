@@ -94,7 +94,6 @@ b) manualy
 
    These are the Variables you have to look at:
 
-	AWSTATS_DIR = no			# Either no or path to the awstats configs dir
 	SECONDARY_DNS =
 	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
 								# infront or behind for MYSQL_PREFIX = no

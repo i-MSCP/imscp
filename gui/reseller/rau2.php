@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -16,8 +16,6 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
-
-
 
 require '../include/ispcp-lib.php';
 
@@ -253,7 +251,7 @@ function check_user_data (&$tpl) {
 	if(isset($_POST['nreseller_max_mail_cnt']))
 		$hp_mail = clean_input($_POST['nreseller_max_mail_cnt']);
 
-	if(isset($_POST['nreseller_max_ftp_cnt']))
+	if(isset($_POST['nreseller_max_ftp_cnt']) || $hp_ftp == -1)
 		$hp_ftp	 = clean_input($_POST['nreseller_max_ftp_cnt']);
 
 	if(isset($_POST['nreseller_max_sql_db_cnt']))

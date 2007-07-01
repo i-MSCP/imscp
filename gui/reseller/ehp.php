@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -16,8 +16,6 @@
  *  this program; if not, write to the Open Source Initiative (OSI)
  *  http://opensource.org | osi@opensource.org
  **/
-
-
 
 require '../include/ispcp-lib.php';
 
@@ -288,7 +286,7 @@ function check_data_iscorrect(&$tpl)
     $ahp_error = tr('Incorrect alias length or syntax!');
   } else if (!ispcp_limit_check($hp_mail, 99999)) {
     $ahp_error = tr('Incorrect mail account length or syntax!');
-  } else if (!ispcp_limit_check($hp_ftp, 99999)) {
+  } else if (!ispcp_limit_check($hp_ftp, 99999) || $hp_ftp == -1) {
     $ahp_error = tr('Incorrect FTP account length or syntax!');
   } else if (!ispcp_limit_check($hp_sql_user, 99999)) {
     $ahp_error = tr('Incorrect SQL database length or syntax!');
