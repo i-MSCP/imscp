@@ -56,11 +56,11 @@ function update_password()
 
         } else if (!chk_password($_POST['pass'])) {
 
-            set_page_message(tr('Incorrect password range or syntax!'));
+            set_page_message(tr('Incorrect password length or syntax!'));
 
         } else if ($_POST['pass'] !== $_POST['pass_rep']) {
 
-            set_page_message(tr('Passwords does not match!'));
+            set_page_message(tr('Passwords do not match!'));
 
         } else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
 

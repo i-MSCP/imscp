@@ -82,7 +82,7 @@ function update_ftp_account(&$sql, $ftp_acc)
                 return;
             }
             if (!chk_password($_POST['pass'])) {
-                set_page_message( tr("Incorrect password range or syntax!"));
+                set_page_message( tr("Incorrect password length or syntax!"));
                 return;
             }
 

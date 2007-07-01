@@ -741,12 +741,12 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 		} else if (!chk_password($inpass)) {
 
-			$rau_error = tr('Incorrect password range or syntax!');
+			$rau_error = tr('Incorrect password length or syntax!');
 		}
     }
 
     if ($user_email == NULL) {
-    	$rau_error = tr('Incorrect email range or syntax!');
+    	$rau_error = tr('Incorrect email length or syntax!');
     }
 	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
 
@@ -756,13 +756,13 @@ function check_ruser_data (&$tpl, $NoPass) {
 	}
 	else if(!chk_username($first_name, 40)){
 
-		$rau_error = tr('Incorrect first name range or syntax!');
+		$rau_error = tr('Incorrect first name length or syntax!');
 	}else if(!chk_username($last_name, 40)){
 
-		$rau_error = tr('Incorrect second name range or syntax!');
+		$rau_error = tr('Incorrect second name length or syntax!');
 	}else if(!ispcp_limit_check($zip, 999999)){
 
-		$rau_error = tr('Incorrect post code range or syntax!');
+		$rau_error = tr('Incorrect post code length or syntax!');
 	} */
 
 

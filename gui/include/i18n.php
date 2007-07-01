@@ -111,4 +111,9 @@ function replace_html($string) {
 	return $string;
 }
 
+// Dirty hack to make gettext add this entry to the .pot file
+if (false) {
+    tr('_: Localised language');
+}
+
 ?>

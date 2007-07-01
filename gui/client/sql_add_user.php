@@ -215,7 +215,7 @@ function add_sql_user(&$sql, $user_id, $db_id)
   }
 
   if ((isset($_POST['pass ']) AND isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep'] AND !isset($_POST['Add_Exist'])) {
-    set_page_message(tr('Entered passwords does not match!'));
+    set_page_message(tr('Entered passwords do not match!'));
     return;
   }
 
@@ -225,7 +225,7 @@ function add_sql_user(&$sql, $user_id, $db_id)
   }
 
 	if (isset($_POST['pass']) AND !chk_password($_POST['pass']) AND !isset($_POST['Add_Exist'])) {
-  	set_page_message( tr("Incorrect password range or syntax!"));
+  	set_page_message( tr("Incorrect password length or syntax!"));
     return;
   }
 

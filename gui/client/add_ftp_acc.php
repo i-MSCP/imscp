@@ -352,12 +352,12 @@ function add_ftp_user(&$sql, $dmn_name)
 	$username = strtolower(clean_input($_POST['username']));
 	$res_uname = preg_match("/\./", $username, $match);
 	if ($res_uname == 1) {
-		set_page_message( tr("Incorrect username range or syntax!"));
+		set_page_message( tr("Incorrect username length or syntax!"));
 	return;
 	}
 
 	if (!chk_username($username)) {
-		set_page_message( tr("Incorrect username range or syntax!"));
+		set_page_message( tr("Incorrect username length or syntax!"));
 		return;
 	}
 
@@ -400,7 +400,7 @@ function add_ftp_user(&$sql, $dmn_name)
 		// Check for updirs ".."
 		$res = preg_match("/\.\./", $ftp_vhome);
 		if ($res !== 0) {
-			set_page_message( tr('Incorrect mount point range or syntax') );
+			set_page_message( tr('Incorrect mount point length or syntax') );
 			return;
 		}
 		$ftp_home  = $cfg['FTP_HOMEDIR']."/$dmn_name/" . $ftp_vhome;
@@ -459,7 +459,7 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	}
 
 	if (!chk_password($_POST['pass'])) {
-  		set_page_message( tr("Incorrect password range or syntax!"));
+  		set_page_message( tr("Incorrect password length or syntax!"));
     	return;
 	}
 

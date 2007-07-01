@@ -68,11 +68,11 @@ function padd_user(&$tpl, &$sql, &$dmn_id)
 				return;
     		}
 		    if (!chk_password($_POST['pass'])) {
-				set_page_message(tr('Incorrect password range or syntax!'));
+				set_page_message(tr('Incorrect password length or syntax!'));
 				return;
 		    }
 			if ($_POST['pass'] !== $_POST['pass_rep']){
-				set_page_message(tr('Passwords does not match!'));
+				set_page_message(tr('Passwords do not match!'));
 				return;
 			}
 			global $cfg;

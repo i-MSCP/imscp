@@ -10,6 +10,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-01 Raphael Geissert
+	- GUI:
+		* Corrected some i18n strings
+		* Fixed #450: duplicated require '../include/ispcp-lib.php';
+		* Fixed #444: move gui/include/imagecode.php to gui/imagecode.php
+	- SETUP:
+		* Fixed #453: hard coded path for apache module
+
 2007-06-29 Raphael Geissert
 	- DOCS:
 		* Added rkhunter to Ubuntu edgy's packages list

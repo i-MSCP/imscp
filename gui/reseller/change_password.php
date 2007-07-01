@@ -50,10 +50,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		set_page_message(tr('Please fill up all data fields!'));
     }
 	else if ($_POST['pass'] !== $_POST['pass_rep']) {
-        set_page_message(tr('Passwords does not match!'));
+        set_page_message(tr('Passwords do not match!'));
     }
 	else if (!chk_password($_POST['pass'])) {
-		set_page_message(tr('Incorrect password range or syntax!'));
+		set_page_message(tr('Incorrect password length or syntax!'));
 	}
 	else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
         set_page_message(tr('The current password is wrong!'));

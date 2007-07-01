@@ -4,4427 +4,3373 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-29 11:43-0500\n"
-"PO-Revision-Date: 2007-06-03 13:49-0500\n"
+"POT-Creation-Date: 2007-07-01 16:52-0500\n"
+"PO-Revision-Date: 2007-07-01 17:15-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=GB2312\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#: :1
+#. Please ignore this entry
+msgid "encoding"
+msgstr "GB2312"
+
 msgid "_: Localised language"
 msgstr "Chinese"
 
-#: :2
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr ""
+msgstr "ISPCP - ĞéÄâÖ÷»ú¿ØÖÆÏµÍ³"
 
-#. Please ingore this entry
-#: :3
-msgid "encoding"
-msgstr "UTF-8"
-
-#: :4
 msgid "Administrator login"
 msgstr ""
 
-#: :5
 msgid "Login"
-msgstr ""
+msgstr "µÇÂ¼"
 
-#: :6
 msgid "Username"
-msgstr ""
+msgstr "ÓÃ»§Ãû"
 
-#: :7
 msgid "Password"
-msgstr ""
+msgstr "ÃÜÂë"
 
-#: :8
 msgid "Please enter your login information"
 msgstr ""
 
-#: :9
 msgid "Lost password"
-msgstr ""
+msgstr "¶ªÊ§ÃÜÂë"
 
-#: :10
 msgid "Lost password function currently disabled"
 msgstr ""
 
-#: :11
 msgid "Password sent"
 msgstr ""
 
-#: :12
 msgid "ERROR: Password was not sent"
 msgstr ""
 
-#: :13
 msgid "The password was requested"
-msgstr ""
+msgstr "ÃÜÂëÒÑ¾­±»ÇëÇó"
 
-#: :14
 msgid "Back"
-msgstr ""
+msgstr "ºóÍË"
 
-#: :15
 msgid "ERROR: Unknown user"
-msgstr ""
+msgstr "´íÎó£ºÎ´ÖªÓÃ»§"
 
-#: :16
 msgid "Retry"
-msgstr ""
+msgstr "ÖØÊÔ"
 
-#: :17
 msgid "ERROR: Security code was not correct!"
-msgstr ""
+msgstr "´íÎó£º°²È«´úÂë²»ÕıÈ·"
 
-#: :18
 msgid "Security code"
-msgstr ""
+msgstr "°²È«´úÂë"
 
-#: :19
 msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
 msgstr ""
 
-#: :20
 msgid "Request password"
-msgstr ""
+msgstr "ÇëÇóÃÜÂë"
 
-#: :21
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
-#: :22
 msgid "Reseller IP list is empty!"
-msgstr ""
+msgstr "´úÀíµÄIPÁĞ±íÎª¿Õ£¡"
 
-#: :23
+#, fuzzy
 msgid "No."
-msgstr ""
+msgstr "No."
 
-#: :24
 msgid "Assign"
-msgstr ""
+msgstr "·ÖÅä"
 
-#: :25
 msgid "Label"
-msgstr ""
+msgstr "±êÇ©"
 
-#: :26
 msgid "Number"
-msgstr ""
+msgstr "Êı×Ö"
 
-#: :27
 msgid "Reseller"
-msgstr ""
+msgstr "´úÀí"
 
-#: :28
 msgid "This user name already exist!"
+msgstr "ÓÃ»§Ãû³ÆÒÑ´æÔÚ£¡"
+
+msgid "Incorrect username length or syntax!"
 msgstr ""
 
-#: :29
-msgid "Incorrect username range or syntax!"
+msgid "Incorrect password length or syntax!"
 msgstr ""
 
-#: :30
-msgid "Incorrect password range or syntax!"
+msgid "Entered passwords do not match!"
 msgstr ""
 
-#: :31
-msgid "Entered passwords does not match!"
+msgid "Incorrect email length or syntax!"
 msgstr ""
 
-#: :32
-msgid "Incorrect email range or syntax!"
-msgstr "Incorrect <i>e-mail</i> range or syntax!"
-
-#: :33
 msgid "Incorrect max domain count or syntax!"
-msgstr "Incorrect <i>max domain</i> count or syntax!"
+msgstr "×î´óÓòÃû¸öÊıÓĞÎó"
 
-#: :34
 msgid "Incorrect max subdomain count or syntax!"
-msgstr "Incorrect <i>max subdomain</i> count or syntax!"
+msgstr "×î´ó×ÓÓòÃû¸öÊıÓĞÎó"
 
-#: :35
 msgid "Incorrect max alias count or syntax!"
-msgstr "Incorrect <i>max alias</i> count or syntax!"
+msgstr "×î´ó±ğÃûÊıÄ¿ÓĞÎó"
 
-#: :36
 msgid "Incorrect max FTP count or syntax!"
-msgstr "Incorrect <i>max FTP</i> count or syntax!"
+msgstr "×î´óFTPÕÊºÅ¸öÊıÓĞÎó"
 
-#: :37
 msgid "Incorrect max mail count or syntax!"
-msgstr "Incorrect <i>max e-mail</i> count or syntax!"
+msgstr "×î´óÓÊ¼şÕÊºÅ¸öÊıÓĞÎó"
 
-#: :38
 msgid "Incorrect max SQL databases count or syntax!"
-msgstr "Incorrect <i>max mySQL databases</i> count or syntax!"
+msgstr "×î´óSQLÊı¾İ¿â¸öÊıÓĞÎó"
 
-#: :39
 msgid "Incorrect max SQL users count or syntax!"
-msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
+msgstr "×î´óSQLÓÃ»§¸öÊıÓĞÎó"
 
-#: :40
 msgid "Incorrect max traffic amount or syntax!"
-msgstr "Incorrect <i>max traffic</i> amount or syntax!"
+msgstr "×î´óÁ÷Á¿ÓĞÎó"
 
-#: :41
 msgid "Incorrect max disk amount or syntax!"
-msgstr "Incorrect <i>max disk</i> amount or syntax!"
+msgstr "×î´ó¿Õ¼äÈİÁ¿ÓĞÎó"
 
-#: :42
 msgid "You must assign at least one IP number for a reseller!"
-msgstr ""
+msgstr "Äú±ØĞëÖÁÉÙ¸ø´úÀíÖ¸ÅÉÒ»¸öIP£¡"
 
-#: :43
 msgid "Add reseller"
-msgstr ""
+msgstr "Ìí¼Ó´úÀí"
 
-#: :44
 msgid "Core data"
-msgstr ""
+msgstr "¹Ø¼üÊı¾İ"
 
-#: :45
 msgid "Repeat password"
 msgstr ""
 
-#: :46
+#, fuzzy
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
-#: :47
 msgid "unlimited"
-msgstr ""
+msgstr "²»ÏŞÖÆ"
 
-#: :48
 msgid "Domains limit"
 msgstr ""
 
-#: :49
 msgid "Subdomains limit"
 msgstr ""
 
-#: :50
 msgid "Aliases limit"
 msgstr ""
 
-#: :51
 msgid "Mail accounts limit"
 msgstr ""
 
-#: :52
 msgid "FTP accounts limit"
 msgstr ""
 
-#: :53
 msgid "SQL databases limit"
 msgstr ""
 
-#: :54
 msgid "SQL users limit"
 msgstr ""
 
-#: :55
 msgid "Traffic limit [MB]"
 msgstr ""
 
-#: :56
 msgid "Disk limit [MB]"
 msgstr ""
 
-#: :57
+#, fuzzy
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
-#: :58
+#, fuzzy
 msgid "CGI / Perl"
-msgstr ""
+msgstr "CGI / Perl"
 
-#: :59
+#, fuzzy
 msgid "JSP"
-msgstr ""
+msgstr "JSP"
 
-#: :60
+#, fuzzy
 msgid "SSI"
-msgstr ""
+msgstr "SSI"
 
-#: :61
 msgid "Frontpage extensions"
 msgstr ""
 
-#: :62
 msgid "Backup and restore"
-msgstr ""
+msgstr "±¸·İºÍ»¹Ô­"
 
-#: :63
 msgid "Custom error pages"
-msgstr ""
+msgstr "×Ô¶¨Òå´íÎóÒ³Ãæ"
 
-#: :64
 msgid "Protected areas"
-msgstr ""
+msgstr "ÊÜ°üº¬ÇøÓò"
 
-#: :65
 msgid "Webmail"
-msgstr ""
+msgstr "ÍøÉÏÓÊ¾Ö"
 
-#: :66
 msgid "Directory listing"
-msgstr ""
+msgstr "Ä¿Â¼ÁĞ±í"
 
-#: :67
 msgid "Apache logfiles"
-msgstr ""
+msgstr "Apache ÈÕÖ¾ÎÄ¼ş"
 
-#: :68
 msgid "AwStats"
-msgstr ""
+msgstr "Awstats"
 
-#: :69
 msgid "Logo upload"
-msgstr ""
+msgstr "ÉÏ´«Í¼±êÎÄ¼ş"
 
-#: :70
 msgid "yes"
-msgstr ""
+msgstr "ÊÇ"
 
-#: :71
 msgid "no"
-msgstr ""
+msgstr "·ñ"
 
-#: :72
 msgid "Reseller IPs"
-msgstr ""
+msgstr "´úÀíIP"
 
-#: :73
 msgid "Additional data"
-msgstr ""
+msgstr "¶îÍâÊı¾İ"
 
-#: :74
 msgid "Customer ID"
-msgstr ""
+msgstr "¿Í»§ID"
 
-#: :75
 msgid "First name"
-msgstr ""
+msgstr "Ãû×Ö"
 
-#: :76
 msgid "Last name"
-msgstr ""
+msgstr "ĞÕÊÏ"
 
-#: :77
 msgid "Company"
-msgstr ""
+msgstr "¹«Ë¾"
 
-#: :78
 msgid "Zip/Postal code"
-msgstr ""
+msgstr "ÓÊÕş±àÂë"
 
-#: :79
 msgid "City"
-msgstr ""
+msgstr "³ÇÊĞ"
 
-#: :80
 msgid "Country"
-msgstr ""
+msgstr "¹ú¼Ò"
 
-#: :81
 msgid "Street 1"
-msgstr ""
+msgstr "½ÖµÀ£¨µÚ1ĞĞ£©"
 
-#: :82
 msgid "Street 2"
-msgstr ""
+msgstr "½ÖµÀ£¨µÚ2ĞĞ£©"
 
-#: :83
 msgid "Phone"
-msgstr ""
+msgstr "µç»°ºÅÂë"
 
-#: :84
 msgid "Fax"
-msgstr ""
+msgstr "´«Õæ"
 
-#: :85
 msgid "Add"
-msgstr ""
+msgstr "Ìí¼Ó"
 
-#: :86
 msgid "ISPCP - Admin/Manage users/Add User"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§/Ìí¼ÓÓÃ»§"
 
-#: :87
 msgid "Administrator"
-msgstr ""
+msgstr "¹ÜÀíÔ±"
 
-#: :88
 msgid "Empty data or wrong field!"
-msgstr ""
+msgstr "¿Õ°×Êı¾İ»ò´íÎóµÄÇøÓò"
 
-#: :89
 msgid "Passwords don't match!"
 msgstr ""
 
-#: :90
 msgid "Add admin"
-msgstr ""
+msgstr "Ìí¼Ó¹ÜÀíÔ±"
 
-#: :91
 msgid "ISPCP - Admin/Admin Log"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÈÕÖ¾"
 
-#: :92
 msgid "Log is empty!"
-msgstr ""
+msgstr "ÈÕÖ¾Îª¿Õ£¡"
 
-#: :93
 msgid "Invalid time period!"
 msgstr ""
 
-#: :94
 msgid "Admin Log"
-msgstr ""
+msgstr "¹ÜÀíÈÕÖ¾"
 
-#: :95
 msgid "Clear log"
-msgstr ""
+msgstr "Çå³ıÈÕÖ¾"
 
-#: :96
 msgid "Date"
-msgstr ""
+msgstr "ÈÕÆÚ"
 
-#: :97
 msgid "Message"
-msgstr ""
+msgstr "ÏûÏ¢"
 
-#: :98
 msgid "Delete from log:"
 msgstr ""
 
-#: :99
 msgid "everything"
 msgstr ""
 
-#: :100
 msgid "older than 2 weeks"
 msgstr ""
 
-#: :101
 msgid "older than 1 month"
 msgstr ""
 
-#: :102
 msgid "older than 3 months"
 msgstr ""
 
-#: :103
 msgid "older than 6 months"
 msgstr ""
 
-#: :104
 msgid "older than 12 months"
 msgstr ""
 
-#: :105
 msgid "ISPCP - Administrator/Add hosting plan"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀíÔ±/Ìí¼ÓÍĞ¹Ü¼Æ»®"
 
-#: :106
 msgid "Add hosting plan"
-msgstr ""
+msgstr "Ìí¼ÓÍĞ¹Ü¼Æ»®"
 
-#: :107
 msgid "Hosting plan properties"
-msgstr ""
+msgstr "ÍĞ¹Ü¼Æ»®ÊôĞÔ"
 
-#: :108
 msgid "Template name"
-msgstr ""
+msgstr "Ä£°åÃû³Æ"
 
-#: :109
 msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#: :110
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#: :111
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#: :112
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#: :113
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "SQLÊı¾İ¿âÏŞÖÆ<br><i>(-1 ½ûÓÃ, 0Îª²»ÏŞÖÆ)</i>"
 
-#: :114
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "SQLÓÃ»§ÏŞÖÆ<br><i>(-1 ½ûÓÃ, 0Îª²»ÏŞÖÆ)</i>"
 
-#: :115
 msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Á÷Á¿ÏŞÖÆ[MB]<br><i>(0Îª²»ÏŞÖÆ)</i>"
 
-#: :116
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "´ÅÅÌ¿Õ¼äÏŞÖÆ[MB]<br><i>(0 ²»ÏŞÖÆ)</i>"
 
-#: :117
 msgid "Billing Settings"
-msgstr ""
+msgstr "¸¶¿îÉèÖÃ"
 
-#: :118
 msgid "Price"
-msgstr ""
+msgstr "¼Û¸ñ"
 
-#: :119
 msgid "Setup fee"
-msgstr ""
+msgstr "ÉèÖÃ·Ñ"
 
-#: :120
 msgid "Currency"
-msgstr ""
+msgstr "»õ±Ò"
 
-#: :121
 msgid "Payment period"
-msgstr ""
+msgstr "¸¶¿îÆÚ"
 
-#: :122
 msgid "Available for purchasing"
-msgstr ""
+msgstr "¿É¹ºÂò"
 
-#: :123
 msgid "Description"
-msgstr ""
+msgstr "ÃèÊö"
 
-#: :124
 msgid "(e.g. EUR)"
-msgstr "(å¦‚ï¼šRMB)"
+msgstr "(Èç. EUR)"
 
-#: :125
 msgid "Add plan"
+msgstr "Ìí¼Ó¼Æ»®"
+
+msgid "Incorrect template name length!"
 msgstr ""
 
-#: :126
-msgid "Incorrect template name range or syntax!"
+msgid "Incorrect template description length!"
 msgstr ""
 
-#: :127
-msgid "Incorrect template description range or syntax!"
+msgid "Incorrect price syntax!"
 msgstr ""
 
-#: :128
-msgid "Incorrect price range or syntax!"
+msgid "Incorrect setup fee syntax!"
 msgstr ""
 
-#: :129
-msgid "Incorrect setup fee range or syntax!"
+msgid "Incorrect subdomain length or syntax!"
 msgstr ""
 
-#: :130
-msgid "Incorrect subdomain range or syntax!"
+msgid "Incorrect alias length or syntax!"
 msgstr ""
 
-#: :131
-msgid "Incorrect alias range or syntax!"
-msgstr "Incorrect <i>domain alias</i> range or syntax!"
-
-#: :132
-msgid "Incorrect mail account range or syntax!"
-msgstr "Incorrect <i>e-mail account</i> range or syntax!"
-
-#: :133
-msgid "Incorrect FTP account range or syntax!"
-msgstr "Incorrect <i>FTP account</i> range or syntax!"
-
-#: :134
-msgid "Incorrect SQL database range or syntax!"
+msgid "Incorrect mail account length or syntax!"
 msgstr ""
 
-#: :135
-msgid "Incorrect SQL user range or syntax!"
+msgid "Incorrect FTP account length or syntax!"
 msgstr ""
 
-#: :136
-msgid "Incorrect traffic range or syntax!"
+msgid "Incorrect SQL database length or syntax!"
 msgstr ""
 
-#: :137
-msgid "Incorrect disk range or syntax!"
-msgstr "Incorrect <i>disk range</i> or syntax!"
+msgid "Incorrect SQL user length or syntax!"
+msgstr ""
 
-#: :138
+msgid "Incorrect traffic length or syntax!"
+msgstr ""
+
+msgid "Incorrect disk length or syntax!"
+msgstr ""
+
 msgid "Hosting plan with entered name already exists!"
-msgstr ""
+msgstr "ÒÑÓĞÒ»¸öÏàÍ¬Ãû³ÆµÄÍĞ¹Ü¼Æ»®£¡"
 
-#: :139
 msgid "ISPCP - Admin/Change Password"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¸ü¸ÄÃÜÂë"
 
-#: :140
 msgid "Please fill up all data fields!"
+msgstr "‚‘í”Ü«èîÜ„Áì”£Á"
+
+msgid "Passwords do not match!"
 msgstr ""
 
-#: :141
-msgid "Passwords does not match!"
-msgstr ""
-
-#: :142
 msgid "The current password is wrong!"
-msgstr ""
+msgstr "ïĞÌ†å‘«’ë—£Á"
 
-#: :143
 msgid "User password updated successfully!"
-msgstr ""
+msgstr "ÓÃ»§ÃÜÂë³É¹¦¸üĞÂ£¡"
 
-#: :144
 msgid "Change password"
-msgstr ""
+msgstr "¸Ä±äÃÜÂë"
 
-#: :145
 msgid "Password data"
-msgstr ""
+msgstr "ÃÜÂëÊı¾İ"
 
-#: :146
 msgid "Update password"
-msgstr ""
+msgstr "¸üĞÂÃÜÂë"
 
-#: :147
 msgid "Current password"
-msgstr ""
+msgstr "ïĞÌ†å‘"
 
-#: :148
 msgid "Personal data updated successfully!"
-msgstr ""
+msgstr "³É¹¦¸üĞÂ¸öÈËÊı¾İ£¡"
 
-#: :149
 msgid "ISPCP - Admin/Change Personal Data"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¸ü¸Ä¸öÈËÊı¾İ"
 
-#: :150
 msgid "Change personal data"
-msgstr ""
+msgstr "¸Ä±ä¸öÈËÊı¾İ"
 
-#: :151
 msgid "Personal data"
-msgstr ""
+msgstr "¸öÈËÊı¾İ"
 
-#: :152
 msgid "Update data"
-msgstr ""
+msgstr "¸üĞÂÊı¾İ"
 
-#: :153
 msgid "User does not exist!"
-msgstr ""
+msgstr "ÓÃ»§²»´æÔÚ£¡"
 
-#: :154
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
 
-#: :155
 msgid "Please specify a message subject!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨ÏûÏ¢±êÌâ"
 
-#: :156
 msgid "Please specify a message content!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨ÏûÏ¢ÄÚÈİ"
 
-#: :157
 msgid "Please specify a sender name!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨·¢ĞÅÈËÓÊ¼şµØÖ·"
 
-#: :158
 msgid "Please specify a sender email!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨·¢ĞÅÈËÓÊ¼şµØÖ·£¡"
 
-#: :159
 msgid "You send email to your users successfully!"
-msgstr ""
+msgstr "Äú³É¹¦½«ÓÊ¼ş·¢ËÍ¸øÓÃ»§¡£"
 
-#: :160
 msgid "Email marketing"
-msgstr ""
+msgstr "ÓÊ¼şĞû´«"
 
-#: :161
 msgid "Send message to"
-msgstr ""
+msgstr "·¢ËÍÏûÏ¢¸ø"
 
-#: :162
 msgid "All users"
-msgstr ""
+msgstr "È«²¿ÓÃ»§"
 
-#: :163
 msgid "All resellers"
-msgstr ""
+msgstr "È«²¿´úÀí"
 
-#: :164
 msgid "All users & resellers"
-msgstr ""
+msgstr "È«²¿ÓÃ»§ºÍ´úÀí"
 
-#: :165
 msgid "Message subject"
-msgstr ""
+msgstr "ÏûÏ¢Ö÷Ìâ"
 
-#: :166
 msgid "Senders email"
-msgstr ""
+msgstr "·¢¼şÈËµç×ÓÓÊ¼ş"
 
-#: :167
 msgid "Senders name"
-msgstr ""
+msgstr "·¢¼şÈËÃû³Æ"
 
-#: :168
 msgid "Send message"
-msgstr ""
+msgstr "·¢ËÍÏûÏ¢"
 
-#: :169
 msgid "You have no custom menus."
-msgstr ""
+msgstr "ÄúÃ»ÓĞ×Ô¶¨Òå²Ëµ¥"
 
-#: :170
 msgid "User"
-msgstr ""
+msgstr "ÓÃ»§"
 
-#: :171
 msgid "All"
-msgstr ""
+msgstr "È«²¿"
 
-#: :172
 msgid "Are you sure you want to delete"
-msgstr ""
+msgstr "ÄúÈ·¶¨ÒªÉ¾³ıÂğ£¿"
 
-#: :173
 msgid "Missing or incorrect data input!"
-msgstr ""
+msgstr "Ã»ÓĞÊäÈëÊı¾İ»òÊı¾İ²»ÕıÈ·"
 
-#: :174
 msgid "Custom menu data updated successful!"
-msgstr ""
+msgstr "×Ô¶¨Òå²Ëµ¥Êı¾İ³É¹¦¸üĞÂ£¡"
 
-#: :175
 msgid "Custom menu deleted successful!"
-msgstr ""
+msgstr "×Ô¶¨Òå²Ëµ¥³É¹¦É¾³ı£¡"
 
-#: :176
 msgid "ISPCP - Admin - Manage custom menus"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí - ¹ÜÀí×Ô¶¨Òå²Ëµ¥"
 
-#: :177
 msgid "Manage custom menus"
-msgstr ""
+msgstr "¹ÜÀí×Ô¶¨Òå²Ëµ¥"
 
-#: :178
 msgid "Add new button"
-msgstr ""
+msgstr "Ìí¼ÓĞÂµÄ°´Å¥"
 
-#: :179
 msgid "Button name"
-msgstr ""
+msgstr "°´Å¥µÄÃû³Æ"
 
-#: :180
 msgid "Button link"
-msgstr ""
+msgstr "°´Å¥µÄÁ´½Ó"
 
-#: :181
 msgid "Button target"
-msgstr ""
+msgstr "°´Å¥µÄÄ¿±ê"
 
-#: :182
 msgid "Show in"
-msgstr ""
+msgstr "ÏÔÊ¾Á÷Èë"
 
-#: :183
 msgid "Administrator level"
 msgstr ""
 
-#: :184
 msgid "Reseller level"
-msgstr ""
+msgstr "´úÀí¼¶±ğ"
 
-#: :185
 msgid "Enduser level"
-msgstr ""
+msgstr "×îÖÕÓÃ»§¼¶±ğ"
 
-#: :186
 msgid "Reseller and enduser level"
-msgstr ""
+msgstr "´úÀíºÍ×îÖÕÓÃ»§¼¶±ğ"
 
-#: :187
 msgid "Menu button"
-msgstr ""
+msgstr "²Ëµ¥°´Å¥"
 
-#: :188
 msgid "Action"
-msgstr ""
+msgstr "¶¯×÷"
 
-#: :189
 msgid "Edit"
-msgstr ""
+msgstr "±à¼­"
 
-#: :190
 msgid "Delete"
-msgstr ""
+msgstr "É¾³ı"
 
-#: :191
 msgid "Level"
-msgstr ""
+msgstr "¼¶±ğ"
 
-#: :192
 msgid "Save"
-msgstr ""
+msgstr "±£´æ"
 
-#: :193
 msgid "Edit button"
-msgstr ""
+msgstr "±à¼­°´Å¥"
 
-#: :194
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
-#: :195
 msgid "Error: we have a reseller using this IP!"
 msgstr ""
 
-#: :196
 msgid "IP was deleted!"
-msgstr ""
+msgstr "IPÉ¾³ı³É¹¦£¡"
 
-#: :197
 msgid "Support ticket deleted successfully!"
-msgstr ""
+msgstr "ÇóÖúĞÅÏ¢³É¹¦É¾³ı£¡Support tickets"
 
-#: :198
 msgid "All open support tickets deleted successfully!"
-msgstr ""
+msgstr "È«²¿´ò¿ªµÄÇóÖúĞÅÏ¢³É¹¦É¾³ı£¡"
 
-#: :199
 msgid "All closed support tickets deleted successfully!"
-msgstr ""
+msgstr "È«²¿ÒÑ¹Ø±ÕµÄÇóÖúĞÅÏ¢³É¹¦É¾³ı£¡"
 
-#: :200
 msgid "ISPCP - Domain/Details"
-msgstr ""
+msgstr "ISPCP - ÓòÃû/ÏêÇé"
 
-#: :201
 msgid "Domain details"
-msgstr ""
+msgstr "ÏêÇé"
 
-#: :202
 msgid "Domain name"
-msgstr ""
+msgstr "ÓòÃûÃû³Æ"
 
-#: :203
 msgid "Domain IP"
-msgstr ""
+msgstr "ÓòÃûIP"
 
-#: :204
 msgid "Status"
-msgstr ""
+msgstr "×´Ì¬"
 
-#: :205
 msgid "PHP support"
-msgstr ""
+msgstr "PHPÖ§³Ö"
 
-#: :206
 msgid "CGI support"
-msgstr ""
+msgstr "Ö§³ÖCGI"
 
-#: :207
 msgid "MySQL support"
-msgstr ""
+msgstr "MySQLÖ§³Ö"
 
-#: :208
 msgid "Traffic in MB"
-msgstr ""
+msgstr "Á÷Á¿(MB)"
 
-#: :209
 msgid "Disk in MB"
-msgstr ""
+msgstr "´ÅÅÌ¿Õ¼ä(MB)"
 
-#: :210
 msgid "Feature"
-msgstr ""
+msgstr "¹¦ÄÜ"
 
-#: :211
 msgid "Used"
-msgstr ""
+msgstr "ÒÑÓÃ"
 
-#: :212
 msgid "Limit"
-msgstr ""
+msgstr "ÏŞÖÆ"
 
-#: :213
 msgid "Mail accounts"
-msgstr ""
+msgstr "ÓÊÏäÕÊºÅ"
 
-#: :214
 msgid "FTP accounts"
-msgstr ""
+msgstr "FTPÕÊºÅ"
 
-#: :215
 msgid "SQL databases"
-msgstr ""
+msgstr "SQLÊı¾İ¿â"
 
-#: :216
 msgid "SQL users"
-msgstr ""
+msgstr "SQLÓÃ»§"
 
-#: :217
 msgid "Subdomains"
-msgstr ""
+msgstr "×ÓÓòÃû"
 
-#: :218
 msgid "Domain aliases"
-msgstr ""
+msgstr "ÓòÃû±ğÃû"
 
-#: :219
 msgid "Submit changes"
-msgstr ""
+msgstr "Ìá½»¸ü¸Ä"
 
-#: :220
 msgid "None"
-msgstr ""
+msgstr "È«ÎŞ"
 
-#: :221
 msgid "ISPCP - Domain Statistics Data"
-msgstr ""
+msgstr "ISPCP - ÓòÃûÍ³¼ÆÁĞ±íÊı¾İ"
 
-#: :222
 msgid "Domain statistics"
-msgstr ""
+msgstr "ÓòÃûÍ³¼ÆĞÅÏ¢"
 
-#: :223
 msgid "Month"
-msgstr ""
+msgstr "ÔÂ"
 
-#: :224
 msgid "Year"
-msgstr ""
+msgstr "Äê"
 
-#: :225
 msgid "Show"
-msgstr ""
+msgstr "ÏÔÊ¾"
 
-#: :226
 msgid "Web traffic"
-msgstr ""
+msgstr "WebÁ÷Á¿"
 
-#: :227
 msgid "FTP traffic"
-msgstr ""
+msgstr "FTPÁ÷Á¿"
 
-#: :228
 msgid "SMTP traffic"
-msgstr ""
+msgstr "SMTPÁ÷Á¿"
 
-#: :229
 msgid "POP3/IMAP traffic"
-msgstr ""
+msgstr "POP3/IMAP Á÷Á¿"
 
-#: :230
 msgid "All traffic"
-msgstr ""
+msgstr "È«²¿Á÷Á¿"
 
-#: :231
 msgid "Day"
-msgstr ""
+msgstr "Ìì"
 
-#: :232
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§/±à¼­´úÀí"
 
-#: :233
 msgid "Domain"
-msgstr ""
+msgstr "ÓòÃû"
 
-#: :234
 msgid "Subdomain"
-msgstr ""
+msgstr "×ÓÓòÃû"
 
-#: :235
 msgid "Alias"
-msgstr ""
+msgstr "±ğÃû"
 
-#: :236
 msgid "Mail"
-msgstr "e-mail"
+msgstr "ÓÊ¼ş"
 
-#: :237
+#, fuzzy
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
-#: :238
 msgid "SQL Database"
-msgstr ""
+msgstr "SQLÊı¾İ¿â"
 
-#: :239
 msgid "SQL User"
-msgstr ""
+msgstr "SQLÓÃ»§"
 
-#: :240
 msgid "Traffic"
-msgstr ""
+msgstr "Á÷Á¿"
 
-#: :241
 msgid "Disk"
-msgstr ""
+msgstr "´ÅÅÌ"
 
-#: :242
 msgid "Undefined user accounting error!"
-msgstr ""
+msgstr "Î´¶¨ÒåµÄÓÃ»§ÕÊ»§´íÎó£¡"
 
-#: :243
+#, fuzzy
 msgid "This reseller has already dispatched more <b>"
-msgstr ""
+msgstr "This reseller has already dispatched more <b>"
 
-#: :244
 msgid "Then the value you are trying to enter now !<br>"
-msgstr ""
+msgstr "È»ºóÊÇÄúÕı³¢ÊÔÊäÈëµÄÊıÖµ!<br>"
 
-#: :245
 msgid "Edit reseller aborted!"
-msgstr ""
+msgstr "È¡Ïû´úÀí±à¼­"
 
-#: :246
 msgid "This reseller has more <b>"
-msgstr ""
+msgstr "¸Ã´úÀíÓĞ<b>"
 
-#: :247
 msgid "Then the value you are trying to enter now!<br>"
-msgstr ""
+msgstr "È»ºóÊÇÄúÕı³¢ÊÔÊäÈëµÄÊıÖµ!<br>"
 
-#: :248
 msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
 msgstr ""
 
-#: :249
 msgid "If you want to limit the reseller, fist you must limit its users !<br>"
-msgstr ""
+msgstr "Èç¹ûÄúÒªÏŞÖÆ´Ë´úÀí£¬Äú±ØĞëÏÈÏŞÖÆËûµÄÓÃ»§£¡<br>"
 
-#: :250
 msgid "This reseller has domains assigned To <b>"
-msgstr ""
+msgstr "¸Ã´úÀíÓµÓĞ·ÖÅäµÄÓòÃû<b>"
 
-#: :251
 msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> åœ°å€ !<br>å–æ¶ˆç¼–è¾‘é”€å”®å•†!"
+msgstr "</b> µØÖ· !<br>±à¼­´úÀíÖĞ¶Ï"
 
-#: :252
 msgid "Edit reseller"
-msgstr ""
+msgstr "±à¼­´úÀí"
 
-#: :253
+#, fuzzy
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
-#: :254
 msgid "Max domain count"
-msgstr ""
+msgstr "×î´óÓòÃûÊıÁ¿"
 
-#: :255
 msgid "Max subdomain count"
-msgstr ""
+msgstr "×î´ó×ÓÓòÃûÊıÁ¿"
 
-#: :256
 msgid "Max aliases count"
-msgstr ""
+msgstr "×î´ó±ğÃûÊıÁ¿"
 
-#: :257
 msgid "Max mail users count"
-msgstr ""
+msgstr "×î´óÓÊÏäÓÃ»§ÊıÁ¿"
 
-#: :258
 msgid "Max FTP users count"
-msgstr ""
+msgstr "×î´óFTPÓÃ»§ÊıÁ¿"
 
-#: :259
 msgid "Max SQL databases count"
-msgstr ""
+msgstr "×î´óSQLÊı¾İ¿âÊıÁ¿"
 
-#: :260
 msgid "Max SQL users count"
-msgstr ""
+msgstr "×î´óSQLÓÃ»§ÊıÁ¿"
 
-#: :261
 msgid "Max traffic amount [MB]"
-msgstr ""
+msgstr "×î´óÁ÷Á¿[MB]"
 
-#: :262
 msgid "Max disk amount [MB]"
-msgstr ""
+msgstr "×î´ó´ÅÅÌ¿Õ¼ä[MB]"
 
-#: :263
 msgid "Update"
-msgstr ""
+msgstr "¸üĞÂ"
 
-#: :264
 msgid "Send new login data"
 msgstr ""
 
-#: :265
 msgid "Password generate"
 msgstr ""
 
-#: :266
 msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§/±à¼­ÓÃ»§"
 
-#: :267
 msgid "User session was killed!"
-msgstr ""
+msgstr "ÓÃ»§»á»°ÒÑ±»É±ËÀ£¡"
 
-#: :268
 msgid "Domain account"
-msgstr ""
+msgstr "ÓòÃûÕÊºÅ"
 
-#: :269
 msgid "Edit admin"
-msgstr ""
+msgstr "±à¼­¹ÜÀíÔ±"
 
-#: :270
 msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀíÔ±/±à¼­ÍĞ¹Ü¼Æ»®"
 
-#: :271
 msgid "Price Style"
 msgstr ""
 
-#: :272
 msgid "Update plan"
-msgstr ""
+msgstr "¸üĞÂ¼Æ»®"
 
-#: :273
 msgid "Edit hosting plan"
-msgstr ""
+msgstr "±à¼­ÍĞ¹Ü¼Æ»®"
 
-#: :274
 msgid "Undefined reference to data!"
-msgstr ""
+msgstr "Î´¶¨ÒåµÄÊı¾İ²Î¿¼£¡"
 
-#: :275
 msgid "Incorrect price. Example: 9.99"
 msgstr ""
 
-#: :276
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr ""
 
-#: :277
 msgid "Please specify a subject!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨±êÌâ"
 
-#: :278
 msgid "Please specify message!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨ÏûÏ¢"
 
-#: :279
 msgid "Auto email template data updated!"
-msgstr ""
+msgstr "ÓÊ¼ş×Ô¶¯»Ø¸´Ä£°åÊı¾İÒÑ¸üĞÂ£¡"
 
-#: :280
 msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§/µç×ÓÓÊ¼şÉèÖÃ"
 
-#: :281
 msgid "Email setup"
-msgstr ""
+msgstr "µç×ÓÓÊ¼şÉèÖÃ"
 
-#: :282
 msgid "Message template info"
-msgstr ""
+msgstr "ÏûÏ¢Ä£°åĞÅÏ¢"
 
-#: :283
 msgid "User login (system) name"
-msgstr ""
+msgstr "ÓÃ»§µÇÂ¼Ãû³Æ"
 
-#: :284
 msgid "User password"
-msgstr ""
+msgstr "ÓÃ»§ÃÜÂë"
 
-#: :285
 msgid "User real (first and last) Name"
-msgstr ""
+msgstr "ÓÃ»§ÕæÊµĞÕÃû"
 
-#: :286
 msgid "Message template"
-msgstr ""
+msgstr "ÏûÏ¢Ä£°å"
 
-#: :287
 msgid "Subject"
-msgstr ""
+msgstr "±êÌâ"
 
-#: :288
 msgid "Apply changes"
-msgstr ""
+msgstr "Ó¦ÓÃ¸ü¸Ä"
 
-#: :289
 msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀíÔ±/ÍĞ¹Ü¼Æ»®¹ÜÀí"
 
-#: :290
 msgid "Hosting plans"
-msgstr ""
+msgstr "ÍĞ¹Ü¼Æ»®"
 
-#: :291
 msgid "Manage hosting plans"
-msgstr ""
+msgstr "¹ÜÀíÍĞ¹Ü¼Æ»®"
 
-#: :292
 msgid "Purchasing"
-msgstr ""
+msgstr "¹ºÂò"
 
-#: :293
 msgid "Add new user hosting plan"
-msgstr ""
+msgstr "Ìí¼ÓĞÂµÄÍĞ¹Ü¼Æ»®"
 
-#: :294
 msgid "Return to previous menu"
-msgstr ""
+msgstr "·µ»ØÉÏ¼¶²Ëµ¥"
 
-#: :295
 msgid "Hosting plan added!"
-msgstr ""
+msgstr "ÍĞ¹Ü¼Æ»®³É¹¦Ìí¼Ó£¡"
 
-#: :296
 msgid "Hosting plan deleted!"
-msgstr ""
+msgstr "ÍĞ¹Ü¼Æ»®³É¹¦É¾³ı£¡"
 
-#: :297
 msgid "Hosting plan updated!"
-msgstr ""
+msgstr "ÍĞ¹Ü¼Æ»®³É¹¦¸üĞÂ£¡"
 
-#: :298
 msgid "Hosting plans not found!"
-msgstr ""
+msgstr "Î´ÕÒµ½ÍĞ¹Ü¼Æ»®£¡"
 
-#: :299
 msgid "Name"
-msgstr ""
+msgstr "Ãû×Ö"
 
-#: :300
 msgid "Enabled"
-msgstr ""
+msgstr "ÒÑÆôÓÃ"
 
-#: :301
 msgid "Disabled"
-msgstr ""
+msgstr "ÒÑÈ¡Ïû"
 
-#: :302
 msgid "Show hosting plan"
 msgstr ""
 
-#: :303
 msgid "You have"
-msgstr ""
+msgstr "Äú´æÔÚ"
 
-#: :304
 msgid "Support question(s)"
-msgstr ""
+msgstr "Ö§³ÖÎÊÌâ"
 
-#: :305
 msgid "New"
-msgstr ""
+msgstr "ĞÂ"
 
-#: :306
 msgid "View"
-msgstr ""
+msgstr "²é¿´"
 
-#: :307
 msgid "Couldn't check for updates!"
 msgstr ""
 
-#: :308
 msgid "New ISPCP update is now available"
-msgstr ""
+msgstr "ÓĞĞÂµÄISPCP¸üĞÂ"
 
-#: :309
 msgid "You are exceeding your traffic limit!"
-msgstr ""
+msgstr "Äú´ïµ½Á÷Á¿ÏŞÖÆ£¡"
 
-#: :310
 msgid "of"
-msgstr ""
+msgstr "Ö®"
 
-#: :311
 msgid "ISPCP - Admin/Main Index"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/Ö÷Ë÷Òı"
 
-#: :312
 msgid "ISPCP - Admin/IP manage"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/IP¹ÜÀí"
 
-#: :313
 msgid "New IP was added!"
-msgstr ""
+msgstr "ĞÂIPÌí¼Ó³É¹¦£¡"
 
-#: :314
 msgid "Wrong IP number!"
-msgstr ""
+msgstr "´íÎóµÄIP£¡"
 
-#: :315
 msgid "Please specify domain!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨ÓòÃû"
 
-#: :316
 msgid "Please specify alias!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨±ğÃû"
 
-#: :317
 msgid "This IP already exist!"
-msgstr ""
+msgstr "IPÒÑ¾­´æÔÚ"
 
-#: :318
 msgid "Manage IPs"
-msgstr ""
+msgstr "¹ÜÀíIP"
 
-#: :319
 msgid "Available IPs"
-msgstr ""
+msgstr "¿ÉÓÃµÄIP"
 
-#: :320
+#, fuzzy
 msgid "IP"
-msgstr ""
+msgstr "IP"
 
-#: :321
 msgid "Uninstall"
-msgstr ""
+msgstr "Ğ¶ÔØ"
 
-#: :322
 msgid "Add new IP"
-msgstr ""
+msgstr "Ìí¼ÓĞÂµÄIP"
 
-#: :323
 msgid "No domain system errors"
-msgstr ""
+msgstr "Ã»ÓĞÓòÃûÏµÍ³´íÎó"
 
-#: :324
 msgid "No domain alias system errors"
-msgstr ""
+msgstr "Ã»ÓĞÓòÃû±ğÃûÏµÍ³´íÎó"
 
-#: :325
 msgid "No subdomain system errors"
-msgstr ""
+msgstr "Ã»ÓĞ×ÓÓòÃûÏµÍ³´íÎó"
 
-#: :326
 msgid "No email account system errors"
-msgstr ""
+msgstr "Ã»ÓĞÓÊÏäÕÊºÅÏµÍ³´íÎó"
 
-#: :327
 msgid "ISPCP debugger"
-msgstr ""
+msgstr "ISPCPµ÷ÊÔÆ÷"
 
-#: :328
 msgid "Domain errors"
-msgstr ""
+msgstr " ´íÎó"
 
-#: :329
 msgid "Domain alias errors"
-msgstr ""
+msgstr "ÓòÃû±ğÃû³ö´í"
 
-#: :330
 msgid "Subdomain errors"
-msgstr ""
+msgstr "×ÓÓòÃû´íÎó"
 
-#: :331
 msgid "Mail account errors"
-msgstr ""
+msgstr "ÓÊ¼şÕÊºÅ´íÎó"
 
-#: :332
 msgid "Get it at"
 msgstr ""
 
-#: :333
 msgid "ISPCP updates"
-msgstr ""
+msgstr "ISPCP ¸üĞÂ"
 
-#: :334
 msgid "Available ISPCP updates"
-msgstr ""
+msgstr "¿ÉÓÃµÄISPCP¸üĞÂ"
 
-#: :335
 msgid "No new ISPCP updates available"
-msgstr ""
+msgstr "Ã»ÓĞĞÂµÄISPCP¸üĞÂ"
 
-#: :336
 msgid "Update details"
-msgstr ""
+msgstr "¸üĞÂÏêÇé"
 
-#: :337
 msgid "Upload file error!"
-msgstr ""
+msgstr "ÉÏ´«ÎÄ¼ş´íÎó£¡"
 
-#: :338
 msgid "You can only upload images!"
 msgstr ""
 
-#: :339
 msgid "Your logo was successful uploaded!"
-msgstr ""
+msgstr "ÄúµÄÍ¼±ê³É¹¦ÉÏ´«£¡"
 
-#: :340
 msgid "Layout settings"
-msgstr ""
+msgstr "½çÃæÉèÖÃ"
 
-#: :341
 msgid "Installed layouts"
-msgstr ""
+msgstr "ÒÑ°²×°½çÃæ"
 
-#: :342
 msgid "Layout name"
-msgstr ""
+msgstr "½çÃæÃû³Æ"
 
-#: :343
 msgid "default"
-msgstr ""
+msgstr "Ä¬ÈÏ"
 
-#: :344
 msgid "Upload logo"
-msgstr ""
+msgstr "ÉÏ´«Í¼±ê"
 
-#: :345
 msgid "Logo file"
-msgstr ""
+msgstr "Í¼±êÎÄ¼ş"
 
-#: :346
 msgid "Upload"
-msgstr ""
+msgstr "ÉÏ´«"
 
-#: :347
 msgid "Remove"
-msgstr ""
+msgstr "É¾³ı"
 
-#: :348
 msgid "Choose default layout"
-msgstr ""
+msgstr "Ñ¡ÔñÄ¬ÈÏ½çÃæ"
 
-#: :349
 msgid "Layout"
-msgstr ""
+msgstr "½çÃæ"
 
-#: :350
 msgid "ISPCP - Admin/Lostpw email setup"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¶ªÊ§ÃÜÂëÓÊ¼şÉèÖÃ"
 
-#: :351
 msgid "Lostpw email"
-msgstr ""
+msgstr "¶ªÊ§ÃÜÂëÓÊ¼ş"
 
-#: :352
 msgid "Activation E-Mail"
 msgstr ""
 
-#: :353
 msgid "Password E-Mail"
 msgstr ""
 
-#: :354
 msgid "User (first and last) name"
-msgstr ""
+msgstr "ÓÃ»§ĞÕÃû"
 
-#: :355
 msgid "Lostpw link"
-msgstr ""
+msgstr "¶ªÊ§ÃÜÂëÁ´½Ó"
 
-#: :356
 msgid "Reseller list is empty!"
-msgstr ""
+msgstr "´úÀíÁĞ±íÎª¿Õ"
 
-#: :357
 msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§/´úÀíÖ¸ÅÉ"
 
-#: :358
 msgid "Reseller assignment"
-msgstr ""
+msgstr "Ö¸ÅÉ´úÀí"
 
-#: :359
 msgid "Reseller users"
-msgstr ""
+msgstr "ÓÃ»§"
 
-#: :360
 msgid "Mark"
-msgstr ""
+msgstr "±ê¼Ç"
 
-#: :361
 msgid "Reseller name"
-msgstr ""
+msgstr "´úÀíÃû³Æ"
 
-#: :362
 msgid "Owner"
-msgstr ""
+msgstr "ÊôÖ÷"
 
-#: :363
 msgid "To Admin"
-msgstr ""
+msgstr "¸ø¹ÜÀíÔ±"
 
-#: :364
 msgid "Move"
-msgstr ""
+msgstr "ÒÆ¶¯"
 
-#: :365
 msgid "Reseller or user list is empty!"
-msgstr ""
+msgstr "´úÀí»òÓÃ»§ÁĞ±íÎª¿Õ£¡"
 
-#: :366
 msgid "User list is empty!"
 msgstr ""
 
-#: :367
 msgid "User was moved"
-msgstr ""
+msgstr "ÓÃ»§ÒÆ¶¯³É¹¦"
 
-#: :368
 msgid "Please select some user(s)!"
-msgstr ""
+msgstr "ÇëÑ¡ÔñÓÃ»§"
 
-#: :369
 msgid "Source and destination reseller are the same!"
-msgstr ""
+msgstr "Ô´´úÀíºÍÄ¿±ê´úÀíÏàÍ¬£¡"
 
-#: :370
 #, c-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr ""
 
-#: :371
 #, c-format
 msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
 msgstr ""
 
-#: :372
 #, c-format
 msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
 msgstr ""
 
-#: :373
 msgid "Moving aborted!"
-msgstr ""
+msgstr "ÖÕÖ¹ÒÆ¶¯"
 
-#: :374
 #, c-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
 msgstr ""
 
-#: :375
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-#: :376
 msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§/ÓÃ»§Ö¸ÅÉ"
 
-#: :377
 msgid "User assignment"
-msgstr ""
+msgstr "ÓÃ»§·ÖÅä"
 
-#: :378
 msgid "Users"
-msgstr ""
+msgstr "ÓÃ»§"
 
-#: :379
 msgid "User name"
-msgstr ""
+msgstr "ÓÃ»§Ãû"
 
-#: :380
 msgid "From reseller"
-msgstr ""
+msgstr "´Ó´úÀí"
 
-#: :381
 msgid "To reseller"
-msgstr ""
+msgstr "¸ø´úÀí"
 
-#: :382
 msgid "ISPCP - Admin/Manage Sessions"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀí»á»°"
 
-#: :383
 msgid "Manage user sessions"
-msgstr ""
+msgstr "¹ÜÀí»á»°"
 
-#: :384
 msgid "User type"
-msgstr ""
+msgstr "ÓÃ»§ÀàĞÍ"
 
-#: :385
 msgid "Last access"
-msgstr ""
+msgstr "×îºóÒ»´Î·ÃÎÊ"
 
-#: :386
 msgid "Options"
-msgstr ""
+msgstr "Ñ¡Ïî"
 
-#: :387
 msgid "Kill session"
-msgstr ""
+msgstr "É±ËÀ»á»°"
 
-#: :388
 msgid "ISPCP - Admin/Manage Users"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/¹ÜÀíÓÃ»§"
 
-#: :389
 msgid "User added"
-msgstr ""
+msgstr "ÓÃ»§ÒÑÌí¼Ó"
 
-#: :390
 msgid "Reseller added"
-msgstr ""
+msgstr "³É¹¦Ìí¼Ó´úÀí"
 
-#: :391
 msgid "User updated"
-msgstr ""
+msgstr "ÒÑ¸üĞÂÓÃ»§"
 
-#: :392
 msgid "User deleted"
-msgstr ""
+msgstr "É¾³ıÁËÓÃ»§"
 
-#: :393
 msgid "Email Updated"
-msgstr ""
+msgstr "µç×ÓÓÊ¼şÉèÖÃ³É¹¦¸üĞÂ"
 
-#: :394
 msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr ""
+msgstr "¸ÃÓÃ»§ÓµÓĞÓòÃû£¡<br>ÒªÉ¾³ıÓÃ»§£¬±ØĞëÏÈÉ¾³ıÓòÃû£¡"
 
-#: :395
 msgid "User was disabled"
-msgstr ""
+msgstr "ÓÃ»§±»½ûÓÃ"
 
-#: :396
 msgid "Incorrect data input!"
-msgstr ""
+msgstr "Êı¾İÊäÈëÓĞÎó£¡"
 
-#: :397
 msgid "ISPCP - Admin/Internationalisation"
 msgstr ""
 
-#: :398
 msgid "Default language changed!"
-msgstr ""
+msgstr "Ä¬ÈÏÓïÑÔ³É¹¦¸Ä±ä£¡"
 
-#: :399
 msgid "You can upload only text files!"
-msgstr ""
+msgstr "ÄúÖ»ÄÜÉÏ´«ÎÄ±¾ÎÄ¼ş£¡"
 
-#: :400
 msgid "Can not read ispcp language file!"
-msgstr ""
+msgstr "ÎŞ·¨¶ÁÈ¡ispcpÓïÑÔÎÄ¼ş£¡"
 
-#: :401
 msgid "New language installed!"
-msgstr ""
+msgstr "ĞÂÓïÑÔ³É¹¦°²×°£¡"
 
-#: :402
 msgid "Update language installed!"
-msgstr ""
+msgstr "¸üĞÂÒÑ°²×°µÄÓïÑÔ£¡"
 
-#: :403
 msgid "Unknown"
-msgstr ""
+msgstr "Î´Öª"
 
-#: :404
 msgid "uninstall"
-msgstr ""
+msgstr "Ğ¶ÔØ"
 
-#: :405
 msgid "%d messages translated"
 msgstr ""
 
-#: :406
 msgid "Multilingual"
 msgstr ""
 
-#: :407
 msgid "Installed languages"
-msgstr ""
+msgstr "ÒÑ°²×°ÓïÑÔ"
 
-#: :408
 msgid "Language"
-msgstr ""
+msgstr "ÓïÑÔ"
 
-#: :409
 msgid "Messages"
-msgstr ""
+msgstr "ÏûÏ¢"
 
-#: :410
 msgid "Default"
-msgstr ""
+msgstr "Ä¬ÈÏ"
 
-#: :411
 msgid "Install new language"
-msgstr ""
+msgstr "°²×°ĞÂµÄÓïÑÔ"
 
-#: :412
 msgid "Language file"
-msgstr ""
+msgstr "ÓïÑÔÎÄ¼ş"
 
-#: :413
 msgid "Install"
-msgstr ""
+msgstr "°²×°"
 
-#: :414
 msgid "Export"
-msgstr ""
+msgstr "µ¼³ö"
 
-#: :415
 msgid "ISPCP - Reseller statistics"
-msgstr ""
+msgstr "ISPCP - ´úÀíÍ³¼ÆĞÅÏ¢"
 
-#: :416
 msgid "Not found reseller(s) in your system!"
-msgstr ""
+msgstr "ÄúµÄÏµÍ³Ã»ÓĞ´úÀí£¡"
 
-#: :417
 msgid "Reseller statistics table"
-msgstr ""
+msgstr "´úÀíÍ³¼ÆĞÅÏ¢ÁĞ±í"
 
-#: :418
 msgid "SQL database"
-msgstr ""
+msgstr "SQLÊı¾İ¿â"
 
-#: :419
 msgid "SQL user"
-msgstr ""
+msgstr "SQLÓÃ»§"
 
-#: :420
 msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/´úÀíÓÃ»§Í³¼ÆÁĞ±í"
 
-#: :421
 msgid "disabled"
-msgstr ""
+msgstr "ÒÑÈ¡Ïû"
 
-#: :422
 msgid "Reseller users table"
-msgstr ""
+msgstr "ÓÃ»§ÁĞ±í"
 
-#: :423
 msgid "This reseller has no domains."
-msgstr ""
+msgstr "´Ë´úÀíÎŞÓòÃû¡£"
 
-#: :424
 msgid "Traffic<br>usage"
-msgstr ""
+msgstr "Á÷Á¿<br>Ê¹ÓÃ"
 
-#: :425
 msgid "Disk<br>usage"
-msgstr ""
+msgstr "´ÅÅÌ¿Õ¼ä<br>Ê¹ÓÃ"
 
-#: :426
 msgid "Web<br>traffic"
-msgstr ""
+msgstr "Web<br>Á÷Á¿"
 
-#: :427
 msgid "FTP<br>traffic"
-msgstr ""
+msgstr "FTP<br>Á÷Á¿"
 
-#: :428
 msgid "SMTP<br>traffic"
-msgstr ""
+msgstr "SMTP<br>Á÷Á¿"
 
-#: :429
 msgid "POP3/IMAP<br>traffic"
-msgstr ""
+msgstr "POP3/IMAP<br>Á÷Á¿"
 
-#: :430
 msgid "SQL<br>database"
-msgstr ""
+msgstr "SQL<br>Êı¾İ¿â"
 
-#: :431
 msgid "SQL<br>user"
-msgstr ""
+msgstr "SQL<br>ÓÃ»§"
 
-#: :432
 msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
-#: :433
 msgid "The file doesn't exist or can't be read."
 msgstr ""
 
-#: :434
 msgid "Rootkit Log Checker"
 msgstr ""
 
-#: :435
 msgid "ISPCP - Admin/Server day stats"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/·şÎñÆ÷Ã¿ÈÕÍ³¼ÆÁĞ±í"
 
-#: :436
 msgid "Server day statistics"
-msgstr ""
+msgstr "·şÎñÆ÷ÈÕÆÚÍ³¼ÆĞÅÏ¢"
 
-#: :437
 msgid "Month:"
-msgstr ""
+msgstr "ÔÂ£º"
 
-#: :438
 msgid "Year:"
-msgstr ""
+msgstr "Äê£º"
 
-#: :439
 msgid "Day:"
-msgstr ""
+msgstr "Ìì£º"
 
-#: :440
 msgid "Hour"
-msgstr ""
+msgstr "Ğ¡Ê±"
 
-#: :441
 msgid "Web in"
-msgstr ""
+msgstr "WebÁ÷Èë"
 
-#: :442
 msgid "Web out"
-msgstr ""
+msgstr "WebÁ÷³ö"
 
-#: :443
 msgid "Mail in"
-msgstr ""
+msgstr "½ÓÊÕµÄÓÊ¼ş"
 
-#: :444
 msgid "Mail out"
-msgstr ""
+msgstr "·¢³öµÄÓÊ¼ş"
 
-#: :445
 msgid "Pop/IMAP in"
-msgstr ""
+msgstr "Pop/IMAP Á÷Èë"
 
-#: :446
 msgid "Pop/IMAP out"
-msgstr ""
+msgstr "Pop/IMAP Á÷³ö"
 
-#: :447
 msgid "Other in"
-msgstr ""
+msgstr "ÆäËûÁ÷ÈëÁ÷Á¿"
 
-#: :448
 msgid "Other out"
-msgstr ""
+msgstr "ÆäËûÁ÷³öÁ÷Á¿"
 
-#: :449
 msgid "All in"
-msgstr ""
+msgstr "È«²¿Á÷ÈëÁ÷Á¿"
 
-#: :450
 msgid "All out"
-msgstr ""
+msgstr "È«²¿Á÷³öÁ÷Á¿"
 
-#: :451
 msgid "ISPCP - Admin/Server statistics"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/·şÎñÆ÷Í³¼ÆÁĞ±í"
 
-#: :452
 msgid "Server statistics"
-msgstr ""
+msgstr "·şÎñÆ÷Í³¼ÆĞÅÏ¢"
 
-#: :453
 msgid "ISPCP Admin / System Tools / Server Status"
-msgstr ""
+msgstr "ISPCP ¹ÜÀí/ÏµÍ³¹¤¾ß/·şÎñÆ÷×´Ì¬"
 
-#: :454
 msgid "Host"
-msgstr ""
+msgstr "ÍĞ¹Ü"
 
-#: :455
 msgid "Service"
-msgstr ""
+msgstr "·şÎñ"
 
-#: :456
 msgid "Server status"
-msgstr ""
+msgstr "·şÎñÆ÷×´Ì¬"
 
-#: :457
 msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀí/·şÎñÆ÷Á÷Á¿ÉèÖÃ"
 
-#: :458
 msgid "Wrong data input!"
-msgstr ""
+msgstr "´íÎóµÄÊäÈëÊı¾İ£¡"
 
-#: :459
 msgid "Warning traffic is bigger then max traffic!"
-msgstr ""
+msgstr "¾¯¸æÁ÷Á¿´óÓÚ×î´óÁ÷Á¿£¡"
 
-#: :460
 msgid "Server traffic settings updated successfully!"
-msgstr ""
+msgstr "·şÎñÆ÷Á÷Á¿ÉèÖÃ³É¹¦¸üĞÂ£¡"
 
-#: :461
 msgid "Modify"
-msgstr ""
+msgstr "¸ü¸Ä"
 
-#: :462
 msgid "Server traffic settings"
-msgstr ""
+msgstr "·şÎñÆ÷Á÷Á¿ÉèÖÃ"
 
-#: :463
 msgid "Set server traffic settings"
-msgstr ""
+msgstr "¸ü¸Ä·şÎñÆ÷Á÷Á¿ÉèÖÃ"
 
-#: :464
 msgid "Max traffic [MB]"
-msgstr ""
+msgstr "×î´óÁ÷Á¿[MB]"
 
-#: :465
 msgid "Warning traffic [MB]"
-msgstr ""
+msgstr "¾¯¸æÁ÷Á¿[MB]"
 
-#: :466
 msgid "ISPCP - Admin/Servicemode"
 msgstr ""
 
-#: :467
 msgid "Settings saved !"
 msgstr ""
 
-#: :468
 msgid "Servicemode"
 msgstr ""
 
-#: :469
 msgid "In this mode only administrators can login"
 msgstr ""
 
-#: :470
 msgid "ISPCP - Admin/Settings"
 msgstr ""
 
-#: :471
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr ""
 
-#: :472
 msgid "General settings"
 msgstr ""
 
-#: :473
 msgid "Settings"
 msgstr ""
 
-#: :474
 msgid "Lostpassword"
 msgstr ""
 
-#: :475
 msgid "Activationlink valid (minutes)"
 msgstr ""
 
-#: :476
 msgid "Bruteforce detection"
 msgstr ""
 
-#: :477
 msgid "Time between logins"
 msgstr ""
 
-#: :478
 msgid "Number of login attempts"
 msgstr ""
 
-#: :479
 msgid "Blocktime (minutes)"
 msgstr ""
 
-#: :480
 msgid "Time between logins (seconds)"
 msgstr ""
 
-#: :481
 msgid "Other settings"
 msgstr ""
 
-#: :482
 msgid "Default language"
 msgstr ""
 
-#: :483
 msgid "Support system"
-msgstr ""
+msgstr "Ö§³ÖÏµÍ³"
 
-#: :484
 msgid "Serverports"
 msgstr ""
 
-#: :485
 msgid "Domains per page"
 msgstr ""
 
-#: :486
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr ""
 
-#: :487
 msgid "ERROR: Port already exists!"
 msgstr ""
 
-#: :488
 msgid "You have no custom service ports defined."
 msgstr ""
 
-#: :489
 msgid "udp"
 msgstr ""
 
-#: :490
 msgid "tcp"
 msgstr ""
 
-#: :491
 msgid "Services"
 msgstr ""
 
-#: :492
 msgid "Port"
 msgstr ""
 
-#: :493
 msgid "Protocol"
 msgstr ""
 
-#: :494
 msgid "You have no support tickets."
-msgstr ""
+msgstr "ÄúÃ»ÓĞÇóÖúĞÅÏ¢¡£"
 
-#: :495
 msgid "Low"
-msgstr ""
+msgstr "µÍ"
 
-#: :496
 msgid "Medium"
-msgstr ""
+msgstr "ÖĞ"
 
-#: :497
 msgid "High"
-msgstr ""
+msgstr "¸ß"
 
-#: :498
 msgid "Very high"
-msgstr ""
+msgstr "·Ç³£¸ß"
 
-#: :499
 msgid "ISPCP - Client/Questions & Comments"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/ÎÊÌâ¼°½¨Òé"
 
-#: :500
 msgid "Support tickets"
-msgstr ""
+msgstr "ÇóÖúĞÅÏ¢"
 
-#: :501
 msgid "Priority"
-msgstr ""
+msgstr "ÓÅÏÈ¼¶"
 
-#: :502
 msgid "Last reply"
-msgstr ""
+msgstr "×îºó»Ø¸´"
 
-#: :503
 msgid "Delete all"
-msgstr ""
+msgstr "È«²¿É¾³ı"
 
-#: :504
 msgid "Open tickets"
-msgstr ""
+msgstr "´ò¿ªÇóÖúĞÅÏ¢"
 
-#: :505
 msgid "Closed tickets"
-msgstr ""
+msgstr "ÒÑ¹Ø±ÕµÄÇóÖúĞÅÏ¢"
 
-#: :506
 msgid "[New]"
-msgstr "[æ–°]"
+msgstr "[ĞÂ]"
 
-#: :507
+#, fuzzy
 msgid "[Re]"
-msgstr "[å›å¤]"
+msgstr "[Re]"
 
-#: :508
 msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/ÆôÓÃÓÊ¼ş×Ô¶¯»Ø¸´"
 
-#: :509
 msgid "From"
-msgstr ""
+msgstr "´Ó"
 
-#: :510
 msgid "days"
 msgstr ""
 
-#: :511
 msgid "hours"
 msgstr ""
 
-#: :512
 msgid "minutes"
 msgstr ""
 
-#: :513
 msgid "System info"
-msgstr ""
+msgstr "ÏµÍ³ĞÅÏ¢"
 
-#: :514
 msgid "Vital system info"
-msgstr ""
+msgstr "ÖØÒªµÄÏµÍ³ĞÅÏ¢"
 
-#: :515
 msgid "CPU system Info"
-msgstr ""
+msgstr "CPUÏµÍ³ĞÅÏ¢"
 
-#: :516
 msgid "CPU model"
-msgstr ""
+msgstr "CPUĞÍºÅ"
 
-#: :517
+#, fuzzy
 msgid "CPU MHz"
-msgstr ""
+msgstr "CPU MHz"
 
-#: :518
 msgid "CPU cache"
-msgstr ""
+msgstr "CPU»º´æ"
 
-#: :519
+#, fuzzy
 msgid "CPU bogomips"
-msgstr ""
+msgstr "CPU bogomips"
 
-#: :520
 msgid "Memory system info"
-msgstr ""
+msgstr "ÏµÍ³ÄÚ´æĞÅÏ¢"
 
-#: :521
+#, fuzzy
 msgid "RAM"
-msgstr ""
+msgstr "RAM"
 
-#: :522
 msgid "Total"
-msgstr ""
+msgstr "È«²¿"
 
-#: :523
 msgid "Free"
-msgstr ""
+msgstr "¿ÉÓÃ"
 
-#: :524
 msgid "Swap"
-msgstr ""
+msgstr "½»»»"
 
-#: :525
 msgid "Up time"
-msgstr ""
+msgstr "¿ª»úÊ±¼ä"
 
-#: :526
 msgid "Kernel"
-msgstr ""
+msgstr "ÄÚºË"
 
-#: :527
 msgid "Load"
-msgstr ""
+msgstr "ÔØÈë"
 
-#: :528
 msgid "Filesystem system Info"
-msgstr ""
+msgstr "ÎÄ¼şÏµÍ³ĞÅÏ¢"
 
-#: :529
 msgid "Mount"
-msgstr ""
+msgstr "¼ÓÔØ"
 
-#: :530
 msgid "Type"
-msgstr ""
+msgstr "Àà±ğ"
 
-#: :531
 msgid "Partition"
-msgstr ""
+msgstr "·ÖÇø"
 
-#: :532
 msgid "Percent"
-msgstr ""
+msgstr "°Ù·Ö±È"
 
-#: :533
 msgid "Size"
-msgstr ""
+msgstr "´óĞ¡"
 
-#: :534
 msgid "Ticket not found!"
-msgstr ""
+msgstr "Ã»ÓĞÕÒµ½ÇóÖúĞÅÏ¢£¡"
 
-#: :535
 msgid "Open ticket"
-msgstr ""
+msgstr "´ò¿ªÇóÖúĞÅÏ¢"
 
-#: :536
 msgid "Close ticket"
-msgstr ""
+msgstr "¹Ø±ÕÇóÖúĞÅÏ¢"
 
-#: :537
 msgid "ISPCP - Client : Support System: View Tickets"
-msgstr ""
+msgstr "ISPCP - ¿Í»§:Ö§³ÖÏµÍ³:²é¿´ÇóÖúĞÅÏ¢"
 
-#: :538
 msgid "Please type your message!"
-msgstr ""
+msgstr "ÇëÊäÈëÄúµÄÏûÏ¢£¡"
 
-#: :539
 msgid "Message was sent!"
 msgstr ""
 
-#: :540
 msgid "Ticket was closed!"
-msgstr ""
+msgstr "ÇóÖúĞÅÏ¢ÒÑ¹Ø±Õ£¡"
 
-#: :541
 msgid "Ticket was reopened!"
 msgstr ""
 
-#: :542
 msgid "ISPCP - Admin : Support System: View Tickets"
 msgstr ""
 
-#: :543
 msgid "View support ticket"
-msgstr ""
+msgstr "²é¿´ÇóÖúĞÅÏ¢"
 
-#: :544
 msgid "Send message reply"
-msgstr ""
+msgstr "·¢ËÍ»Ø¸´ÏûÏ¢"
 
-#: :545
 msgid "Send reply"
-msgstr ""
+msgstr "·¢ËÍ»Ø¸´"
 
-#: :546
 msgid "ISPCP Client : Add Alias"
-msgstr ""
+msgstr "ISPCP¿Í»§£ºÌí¼Ó±ğÃû"
 
-#: :547
 msgid "Manage domain alias"
-msgstr ""
+msgstr "¹ÜÀíÓòÃû±ğÃû"
 
-#: :548
 msgid "Add domain alias"
-msgstr ""
+msgstr "Ìí¼ÓÓòÃû±ğÃû"
 
-#: :549
 msgid "User account"
-msgstr ""
+msgstr "ÓÃ»§ÕËºÅ"
 
-#: :550
 msgid "Directory mount point"
-msgstr ""
+msgstr "Ä¿Â¼¼ÓÔØµã"
 
-#: :551
 msgid "Forward to URL"
-msgstr ""
+msgstr "×ª·¢µ½URL"
 
-#: :552
 msgid "Add alias"
-msgstr ""
+msgstr "Ìí¼Ó±ğÃû"
 
-#: :553
 msgid "Domain alias limit reached!"
 msgstr ""
 
-#: :554
 msgid "Incorrect domain name syntax"
-msgstr "Incorrect <i>domain name</i> syntax"
+msgstr "ÓòÃûÓĞÎó"
 
-#: :555
 msgid "Domain with that name already exists on the system!"
-msgstr ""
+msgstr "ÏµÍ³ÄÚÒÑÓĞÒ»¸öÏàÍ¬Ãû³ÆµÄÓòÃû£¡"
 
-#: :556
 msgid "Incorrect mount point syntax"
-msgstr "Incorrect <i>mount point</i> syntax!"
+msgstr "¼ÓÔØµãÓĞÎó"
 
-#: :557
 msgid "Incorrect forward syntax"
-msgstr "Incorrect <i>forward</i> syntax!"
+msgstr "×ª·¢Ãû³ÆÓĞÎó"
 
-#: :558
 msgid "Domain with this name already exist"
-msgstr ""
+msgstr "ÏàÍ¬Ãû³ÆµÄÓòÃûÒÑ¾­´æÔÚ"
 
-#: :559
 msgid "There are alias with same mount point"
-msgstr ""
+msgstr "´æÔÚÏàÍ¬¼ÓÔØµãµÄ±ğÃû"
 
-#: :560
 msgid "Alias scheduled for addition!"
-msgstr ""
+msgstr "Õı¼Æ»®Ìí¼Ó±ğÃû"
 
-#: :561
 msgid "Empty List"
-msgstr ""
+msgstr "¿Õ°×ÁĞ±í"
 
-#: :562
 msgid "Empty list"
-msgstr ""
+msgstr "¿Õ°×ÁĞ±í"
 
-#: :563
 msgid "FTP account already exists!"
-msgstr ""
+msgstr "ÒÑ´æÔÚ´ËFTPÕÊºÅ"
 
-#: :564
 msgid "Unknown domain type"
 msgstr ""
 
-#: :565
-msgid "Incorrect mount point range or syntax"
+msgid "Incorrect mount point length or syntax"
 msgstr ""
 
-#: :566
 msgid "%s does not exist"
 msgstr ""
 
-#: :567
 msgid "FTP account added!"
-msgstr ""
+msgstr "FTPÕÊºÅ³É¹¦Ìí¼Ó£¡"
 
-#: :568
 msgid "Please enter FTP account username!"
-msgstr ""
+msgstr "ÇëÊäÈëFTPÕËºÅÓÃ»§Ãû"
 
-#: :569
 msgid "Password data is missing!"
-msgstr ""
+msgstr "ÃÜÂëÊı¾İ²»´æÔÚ£¡"
 
-#: :570
 msgid "Entered passwords differ from the another!"
-msgstr ""
+msgstr "ÊäÈëµÄÃÜÂë²»Ò»ÖÂ"
 
-#: :571
 msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr ""
+msgstr "×ÓÓòÃûÁĞ±íÎª¿Õ£¡Äú²»ÄÜÔÚÕâÀïÌí¼ÓFTPÕÊ»§£¡"
 
-#: :572
 msgid "Alias list is empty! You can not add FTP accounts there!"
-msgstr ""
+msgstr "±ğÃûÁĞ±íÎª¿Õ£¡ÄúÎŞ·¨Ìí¼ÓFTPÓÃ»§"
 
-#: :573
 msgid "Please specify other FTP account dir!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨ÆäËüµÄFTPÕËºÅÄ¿Â¼£¡"
 
-#: :574
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-#: :575
 msgid "ISPCP - Client/Add FTP User"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ìí¼ÓFTPÓÃ»§"
 
-#: :576
 msgid "Add FTP user"
-msgstr ""
+msgstr "Ìí¼ÓFTPÓÃ»§"
 
-#: :577
 msgid "To main domain"
-msgstr ""
+msgstr "¸øÖ÷ÓòÃû"
 
-#: :578
 msgid "To domain alias"
-msgstr ""
+msgstr "¸øÓòÃû±ğÃû"
 
-#: :579
 msgid "To subdomain"
-msgstr ""
+msgstr "¸ø×ÓÓòÃû"
 
-#: :580
 msgid "Use other dir"
-msgstr ""
+msgstr "Ê¹ÓÃÆäËûÄ¿Â¼"
 
-#: :581
 msgid "Choose dir"
-msgstr ""
+msgstr "Ñ¡ÔñÄ¿Â¼"
 
-#: :582
 msgid "Invalid Mail Localpart Format used!"
 msgstr ""
 
-#: :583
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
 
-#: :584
 msgid "Mail forward list empty!"
 msgstr ""
 
-#: :585
 msgid "Mail account already exists!"
-msgstr ""
+msgstr "¸ÃÓÊ¼şÕÊºÅÒÑ´æÔÚ"
 
-#: :586
 msgid "Mail account scheduled for addition!"
-msgstr ""
+msgstr "¼Æ»®Ìí¼ÓµÄÓÊÏäÕÊºÅ"
 
-#: :587
 msgid "Please enter mail account username!"
-msgstr ""
+msgstr "ÇëÊäÈëÓÊ¼şÕËºÅÓÃ»§Ãû"
 
-#: :588
 msgid "Password data includes not permitted signs!"
 msgstr ""
 
-#: :589
 msgid "Subdomain list is empty! You can not add mail accounts!"
-msgstr ""
+msgstr "×ÓÓòÃûÁĞ±íÎª¿Õ£¡Äú²»ÄÜÔÚÕâÀïÌí¼ÓÓÊÏäÕÊ»§£¡"
 
-#: :590
 msgid "Alias list is empty! You can not add mail accounts!"
-msgstr ""
+msgstr "±ğÃûÁĞ±íÎª¿Õ£¡ÄúÎŞ·¨Ìí¼ÓemailÓÃ»§"
 
-#: :591
 msgid "Forward list is empty!"
-msgstr ""
+msgstr "×ª·¢ÁĞ±íÎª¿Õ"
 
-#: :592
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-#: :593
 msgid "ISPCP - Client/Add Mail User"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ìí¼ÓÓÊ¼şÓÃ»§"
 
-#: :594
 msgid "Add mail users"
-msgstr ""
+msgstr "Ìí¼ÓemailÓÃ»§"
 
-#: :595
 msgid "Normal mail"
-msgstr ""
+msgstr "Ò»°ãÓÊ¼ş"
 
-#: :596
 msgid "Forward mail"
-msgstr ""
+msgstr "×ª·¢ÓÊ¼ş"
 
-#: :597
 msgid "Forward to"
-msgstr ""
+msgstr "×ª·¢µ½"
 
-#: :598
 msgid "Please type database name!"
-msgstr ""
+msgstr "ÇëÊäÈëÊı¾İ¿âÃû³Æ£¡"
 
-#: :599
 msgid "Too long database name!"
-msgstr ""
+msgstr "Êı¾İ¿âÃû³ÆÌ«³¤£¡"
 
-#: :600
 msgid "Specified database name already exists!"
-msgstr ""
+msgstr "Ö¸¶¨µÄÊı¾İ¿âÃû³ÆÒÑ¾­´æÔÚ£¡"
 
-#: :601
 msgid "Wildcards as % and ? are not allowed!"
-msgstr ""
+msgstr "²»ÔÊĞíÊ¹ÓÃÍ¨Åä·û % ºÍ ? £¡"
 
-#: :602
 msgid "SQL database created successfully!"
-msgstr ""
+msgstr "³É¹¦´´½¨SQLÊı¾İ¿â£¡"
 
-#: :603
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-#: :604
 msgid "ISPCP - Client/Add SQL Database"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ìí¼ÓSQLÊı¾İ¿â"
 
-#: :605
 msgid "Add SQL database"
-msgstr ""
+msgstr "Ìí¼ÓSQLÊı¾İ¿â"
 
-#: :606
 msgid "Database name"
-msgstr ""
+msgstr "Êı¾İ¿âÃû³Æ"
 
-#: :607
 msgid "Use numeric ID"
-msgstr ""
+msgstr "Ê¹ÓÃÊı×ÖID"
 
-#: :608
 msgid "Before the name"
 msgstr ""
 
-#: :609
 msgid "After the name"
 msgstr ""
 
-#: :610
 msgid "Subdomains limit reached!"
 msgstr ""
 
-#: :611
 msgid "Please specify subdomain name!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨×ÓÓòÃû£¡"
 
-#: :612
 msgid "Subdomain already exists!"
-msgstr ""
+msgstr "ÒÑ´æÔÚÏàÍ¬µÄ×ÓÓòÃû"
 
-#: :613
 msgid "Wrong subdomain syntax!"
-msgstr ""
+msgstr "×ÓÓòÃûÓï·¨´íÎó£¡"
 
-#: :614
 msgid "Subdomain mount point already exists!"
-msgstr ""
+msgstr "×ÓÓòÃû¼ÓÔØµãÒÑ¾­´æÔÚ£¡"
 
-#: :615
 msgid "Subdomain scheduled for addition!"
-msgstr ""
+msgstr "×ÓÓòÃû¼Æ»®Ìí¼Ó£¡"
 
-#: :616
 msgid "ISPCP - Client/Add Subdomain"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ìí¼Ó×ÓÓòÃû"
 
-#: :617
 msgid "Add subdomain"
-msgstr ""
+msgstr "Ìí¼Ó×ÓÓòÃû"
 
-#: :618
 msgid "Subdomain data"
-msgstr ""
+msgstr "×ÓÓòÃûÊı¾İ"
 
-#: :619
 msgid "Subdomain name"
-msgstr ""
+msgstr "×ÓÓòÃûÃû³Æ"
 
-#: :620
 msgid "Directory tree<br>mount point"
-msgstr ""
+msgstr "Ä¿Â¼Ê÷<br>¼ÓÔØµã"
 
-#: :621
 msgid "Backup archive scheduled for restoring!"
-msgstr ""
+msgstr "¼Æ»®ÓÃ±¸·İÎÄµµÓÃ»¹Ô­"
 
-#: :622
 msgid "ISPCP - Client/Daily Backup"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ã¿ÈÕ±¸·İ"
 
-#: :623
 msgid "Backup"
-msgstr ""
+msgstr "±¸·İ"
 
-#: :624
 msgid "Daily backup"
-msgstr ""
+msgstr "Ã¿ÈÕ±¸·İ"
 
-#: :625
 msgid "Direction download today backup"
-msgstr ""
+msgstr "Ö±½ÓÏÂÔØ½ñÌì±¸·İ"
 
-#: :626
 msgid "Login with your FTP account"
-msgstr ""
+msgstr "ÓÃÄúµÄFTPÕÊºÅµÇÂ¼"
 
-#: :627
 msgid "Switch to backup directory"
-msgstr ""
+msgstr "ÇĞ»»µ½±¸·İÄ¿Â¼"
 
-#: :628
 msgid "Download the files stored in this directory"
 msgstr ""
 
-#: :629
 msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 msgstr ""
 
-#: :630
 msgid "Restore backup"
-msgstr ""
+msgstr "»Ö¸´±¸·İ"
 
-#: :631
 msgid "Click Restore button and the system will restore last daily backup"
-msgstr ""
+msgstr "µ¥»÷»¹Ô­°´Å¥ÏµÍ³½«»á<br>»¹Ô­µ½×îºóÒ»ÈÕµÄ±¸·İ"
 
-#: :632
 msgid "Restore"
-msgstr ""
+msgstr "»Ö¸´"
 
-#: :633
 msgid "N/A"
-msgstr ""
+msgstr "²»¿ÉÓÃ"
 
-#: :634
 msgid "Enable"
-msgstr ""
+msgstr "ÆôÓÃ"
 
-#: :635
 msgid "Disable"
-msgstr ""
+msgstr "È¡Ïû"
 
-#: :636
 msgid "Delete CatchAll"
-msgstr ""
+msgstr "É¾³ıÑ¡ÔñµÄÈ«²¿"
 
-#: :637
 msgid "Create catch all"
-msgstr ""
+msgstr "´´½¨ÅúÁ¿Ñ¡Ôñ"
 
-#: :638
 msgid "Catch all mail account can not be created!"
-msgstr ""
+msgstr "Ñ¡È¡È«²¿ÎŞ·¨´´½¨µÄÓÊ¼şÕÊºÅ"
 
-#: :639
 msgid "Mail accounts list is empty!"
-msgstr ""
+msgstr "ÓÊÏäÕÊºÅÁĞ±íÎª¿Õ£¡"
 
-#: :640
 msgid "ISPCP - Client/Manage Users"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¹ÜÀíÓÃ»§"
 
-#: :641
 msgid "Manage users"
-msgstr ""
+msgstr "¹ÜÀíÓÃ»§"
 
-#: :642
 msgid "Mail users"
-msgstr ""
+msgstr "ÓÊÏäÓÃ»§"
 
-#: :643
 msgid "Auto respond"
-msgstr ""
+msgstr "×Ô¶¯»Ø¸´"
 
-#: :644
 msgid "Domain mails"
-msgstr ""
+msgstr "ÓòÃûÓÊ¼ş"
 
-#: :645
 msgid "Subdomain mails"
-msgstr ""
+msgstr "×ÓÓòÃûÓÊÏä"
 
-#: :646
 msgid "Alias mails"
-msgstr ""
+msgstr "±ğÃûÓÊ¼ş"
 
-#: :647
 msgid "Mails total"
-msgstr ""
+msgstr "ÓÊ¼şºÏ¼Æ"
 
-#: :648
 msgid "FTPs total"
-msgstr ""
+msgstr "FTP×Ü¼Æ"
 
-#: :649
 msgid "Catch all account"
-msgstr ""
+msgstr "Ñ¡ÔñÈ«²¿ÕÊºÅ"
 
-#: :650
 msgid "Catch all"
-msgstr ""
+msgstr "Ñ¡ÔñÈ«²¿"
 
-#: :651
 msgid "FTP users"
-msgstr ""
+msgstr "FTPÓÃ»§"
 
-#: :652
 msgid "FTP account"
-msgstr ""
+msgstr "FTPÕÊºÅ"
 
-#: :653
 msgid "ISPCP - Client/Change Password"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¸ü¸ÄÃÜÂë"
 
-#: :654
 msgid "ISPCP - Client/Change Personal Data"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¸ü¸Ä¸öÈËÊı¾İ"
 
-#: :655
 msgid "Catch all account scheduled for creation!"
-msgstr ""
+msgstr "Ñ¡È¡È«²¿ÕÊºÅÒÔ±¸´´½¨"
 
-#: :656
 msgid "Mail forward list error!"
-msgstr ""
+msgstr "ÓÊÏä×ª·¢ÁĞ±í³ö´í£¡"
 
-#: :657
 msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/´´½¨ÓÊ¼şÕÊ»§ÁĞ±í"
 
-#: :658
 msgid "Create catch all mail account"
-msgstr ""
+msgstr "´´½¨ÅúÁ¿Ñ¡ÔñÓÊÏäÕÊºÅ"
 
-#: :659
 msgid "Mail accounts list"
-msgstr ""
+msgstr "ÓÊÏäÕÊºÅÁĞ±í"
 
-#: :660
 msgid "ISPCP - Client/Cronjob Manager"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¼Æ»®ÈÎÎñ¹ÜÀíÆ÷"
 
-#: :661
 msgid "Cronjob Manager"
-msgstr ""
+msgstr "¼Æ»®ÈÎÎñ¹ÜÀíÆ÷"
 
-#: :662
 msgid "Add Cronjob"
-msgstr ""
+msgstr "Ìí¼Ó¼Æ»®ÈÎÎñ"
 
-#: :663
 msgid "Active"
-msgstr ""
+msgstr "»îÔ¾"
 
-#: :664
 msgid "Yes"
-msgstr ""
+msgstr "ÊÇ"
 
-#: :665
 msgid "No"
-msgstr ""
+msgstr "·ñ"
 
-#: :666
 msgid "Cronjob"
-msgstr ""
+msgstr "¼Æ»®ÈÎÎñ"
 
-#: :667
 msgid "Command to run:"
-msgstr ""
+msgstr "ÔËĞĞµÄÃüÁî£º"
 
-#: :668
 msgid "Minute(s):"
-msgstr ""
+msgstr "·ÖÖÓ£º"
 
-#: :669
 msgid "Hour(s):"
-msgstr ""
+msgstr "Ğ¡Ê±£º"
 
-#: :670
 msgid "Day(s):"
-msgstr ""
+msgstr "Ìì£º"
 
-#: :671
 msgid "Months(s):"
-msgstr ""
+msgstr "ÔÂ£º"
 
-#: :672
 msgid "Weekday(s):"
-msgstr ""
+msgstr "ĞÇÆÚ£º"
 
-#: :673
 msgid "Reset"
-msgstr ""
+msgstr "ÖØÉè"
 
-#: :674
 msgid "Cancel"
-msgstr ""
+msgstr "È¡Ïû"
 
-#: :675
 msgid "Edit Cronjob"
-msgstr ""
+msgstr "±à¼­¼Æ»®ÈÎÎñ"
 
-#: :676
 msgid "Cronjobs"
-msgstr ""
+msgstr "¼Æ»®ÈÎÎñ"
 
-#: :677
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
+msgstr "ÄúÒªÉ¾³ıµÄÓòÃû±ğÃûÓµÓĞemailÕËºÅ!<br>ÇëÏÈÉ¾³ıËüÃÇ!"
 
-#: :678
 msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
+msgstr "ÄúÒªÉ¾³ıµÄÓòÃû±ğÃûÓµÓĞFTPÕËºÅ!<br>ÇëÏÈÉ¾³ıËüÃÇ!"
 
-#: :679
 msgid "Alias scheduled for deletion!"
-msgstr ""
+msgstr "¼Æ»®É¾³ıµÄ±ğÃû"
 
-#: :680
 msgid "Catch all account scheduled for deletion!"
-msgstr ""
+msgstr "Ñ¡È¡È«²¿ÕÊºÅÒÔ±¸É¾³ı"
 
-#: :681
 msgid "FTP account deleted successfully!"
-msgstr ""
+msgstr "FTPÕÊºÅ³É¹¦É¾³ı£¡"
 
-#: :682
 msgid "Please delete first CatchAll account for this email!"
-msgstr ""
+msgstr "ÇëÏÈÉ¾³ı±¾ÓÊ¼şµÄÊ×´ÎÅúÁ¿Ñ¡È¡ÕËºÅ"
 
-#: :683
 msgid "SQL database was removed successfully!"
-msgstr ""
+msgstr "³É¹¦É¾³ıSQLÊı¾İ¿â£¡"
 
-#: :684
 msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
+msgstr "€‹ñ»ƒ²Òàµ€×îî˜ÌîµîÜµ×îîæ¹ß£Á<br>‚‘ìéƒ²Òàµ×îîæ¹ßÍè¼"
 
-#: :685
 msgid "Subdomain scheduled for deletion!"
-msgstr ""
+msgstr "×ÓÓòÃû¼Æ»®É¾³ı£¡"
 
-#: :686
 msgid "You have no permission to disable this alias forward"
 msgstr ""
 
-#: :687
 msgid "Alias scheduled for modification!"
-msgstr ""
+msgstr "¼Æ»®¸ü¸ÄµÄ±ğÃû"
 
-#: :688
 msgid "User does not exist or you do not have permission to access this interface!"
-msgstr ""
+msgstr "ÓÃ»§²»´æÔÚ»òÄúÃ»ÓĞÈ¨ÏŞ·ÃÎÊ´Ë½çÃæ£¡"
 
-#: :689
 msgid "Mail account scheduled for modification!"
-msgstr ""
+msgstr "¼Æ»®¸Ä±äµÄÓÊÏäÕÊºÅ"
 
-#: :690
 msgid "ISPCP - Client/Domain Statistics"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/ÓòÃûÍ³¼ÆĞÅÏ¢ÁĞ±í"
 
-#: :691
 msgid "Web Stats"
 msgstr ""
 
-#: :692
+#, fuzzy
 msgid "WEB"
-msgstr ""
+msgstr "WEB"
 
-#: :693
+#, fuzzy
 msgid "SMTP"
-msgstr ""
+msgstr "SMTP"
 
-#: :694
+#, fuzzy
 msgid "POP/IMAP"
-msgstr ""
+msgstr "POP/IMAP"
 
-#: :695
 msgid "Sum"
-msgstr ""
+msgstr "ºÏ¼Æ"
 
-#: :696
 msgid "Entered passwords differ!"
-msgstr ""
+msgstr "ÊäÈëµÄÃÜÂë²»Ò»ÖÂ"
 
-#: :697
 msgid "%s do not exist"
 msgstr ""
 
-#: :698
 msgid "FTP account data updated!"
-msgstr ""
+msgstr "FTPÕÊºÅÊı¾İ³É¹¦¸üĞÂ£¡"
 
-#: :699
 msgid "ISPCP - Client/Edit FTP Account"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/±à¼­FTPÕËºÅ"
 
-#: :700
 msgid "Edit FTP user"
-msgstr ""
+msgstr "±à¼­FTPÓÃ»§"
 
-#: :701
 msgid "Save changes"
-msgstr ""
+msgstr "±£´æ±ä¸ü"
 
-#: :702
 msgid "Email account not found!"
 msgstr ""
 
-#: :703
 msgid "Missing or wrong data!"
-msgstr ""
+msgstr "Êı¾İ¶ªÊ§»ò´íÎó"
 
-#: :704
 msgid "Password data includes not valid signs!"
 msgstr ""
 
-#: :705
 msgid "Mail were updated successfully!"
-msgstr ""
+msgstr "ÓÊÏä³É¹¦¸üĞÂ"
 
-#: :706
 msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀíÓÊÏä¼°FTP/±à¼­ÓÊÏäÕËºÅ"
 
-#: :707
 msgid "Edit email account"
-msgstr ""
+msgstr "±à¼­emailÕËºÅ"
 
-#: :708
 msgid "Please type your mail autorespond message!"
-msgstr ""
+msgstr "ÇëÊäÈëÄúµÄÓÊ¼ş×Ô¶¯»Ø¸´ÏûÏ¢£¡"
 
-#: :709
 msgid "Mail account scheduler for modification!"
-msgstr ""
+msgstr "¼Æ»®¸Ä±äµÄÓÊÏäÕÊºÅ"
 
-#: :710
 msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/ÆôÓÃÓÊ¼ş×Ô¶¯»Ø¸´"
 
-#: :711
 msgid "Edit mail auto responder"
-msgstr ""
+msgstr "±à¼­ÓÊ¼ş×Ô¶¯»Ø¸´"
 
-#: :712
 msgid "Your message"
-msgstr ""
+msgstr "ÄúµÄÏûÏ¢"
 
-#: :713
 msgid "Please wait for update"
 msgstr ""
 
-#: :714
 msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀíÓòÃû±ğÃû/±à¼­±ğÃû"
 
-#: :715
 msgid "Edit domain alias"
-msgstr ""
+msgstr "±à¼­ÓòÃû±ğÃû"
 
-#: :716
 msgid "Alias name"
-msgstr ""
+msgstr "±ğÃû"
 
-#: :717
 msgid "Enable mail auto responder"
-msgstr ""
+msgstr "ÆôÓÃÓÊ¼ş×Ô¶¯»Ø¸´"
 
-#: :718
 msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¹ÜÀí×Ô¶¨Òå´íÎóÒ³Ãæ"
 
-#: :719
 msgid "Server error - please choose error page"
-msgstr ""
+msgstr "·şÎñÆ÷´íÎó - ÇëÑ¡Ôñ³ö´íÒ³Ãæ"
 
-#: :720
 msgid "Edit error page"
-msgstr ""
+msgstr "±à¼­´íÎóÒ³Ãæ"
 
-#: :721
 msgid "Custom error page was updated!"
-msgstr ""
+msgstr "×Ô¶¨Òå´íÎóÒ³Ãæ³É¹¦¸üĞÂ£¡"
 
-#: :722
 msgid "System error - custom error page was NOT updated!"
-msgstr ""
+msgstr "ÏµÍ³´íÎó - ×Ô¶¨Òå´íÎóÒ³ÃæÃ»ÓĞ¸üĞÂ£¡"
 
-#: :723
 msgid "Error 401 (unauthorised)"
 msgstr ""
 
-#: :724
 msgid "Error 403 (forbidden)"
-msgstr ""
+msgstr "´íÎó403(½ûÖ¹·ÃÎÊ)"
 
-#: :725
 msgid "Error 404 (not found)"
-msgstr ""
+msgstr "´íÎó404(ÕÒ²»µ½ÎÄ¼ş)"
 
-#: :726
 msgid "Error 500 (internal server error)"
-msgstr ""
+msgstr "´íÎó500(ÄÚ²¿·şÎñÆ÷´íÎó)"
 
-#: :727
 msgid "Error pages"
-msgstr ""
+msgstr "³ö´íÒ³Ãæ"
 
-#: :728
 msgid "FTP list is empty!"
-msgstr ""
+msgstr "FTPÁĞ±íÎª¿Õ£¡"
 
-#: :729
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr ""
+msgstr "ÎŞ·¨´ò¿ªÄ¿Â¼£¡<br>ÇëÓëÄúµÄ¹ÜÀíÔ±ÁªÏµ"
 
-#: :730
 msgid "Parent Directory"
-msgstr ""
+msgstr "ÉÏÒ»¼¶Ä¿Â¼"
 
-#: :731
 msgid "Protect it"
-msgstr ""
+msgstr "±£»¤Ëü£¡"
 
-#: :732
 msgid "ISPCP - Client/Webtools"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/ÍøÒ³¹¤¾ß"
 
-#: :733
 msgid "Directory tree"
-msgstr ""
+msgstr "Ä¿Â¼Ê÷"
 
-#: :734
 msgid "Directories"
-msgstr ""
+msgstr "Ä¿Â¼"
 
-#: :735
 msgid "Choose"
-msgstr ""
+msgstr "Ñ¡Ôñ"
 
-#: :736
 #, c-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
 
-#: :737
 #, c-format
 msgid "%1$s%% [%2$s of unlimited]"
 msgstr ""
 
-#: :738
 msgid "You are exceeding your disk limit!"
-msgstr ""
+msgstr "Äú´ïµ½´ÅÅÌ¿Õ¼äÏŞÖÆ£¡"
 
-#: :739
 msgid "You have no new support questions!"
-msgstr ""
+msgstr "ÄúÃ»ÓĞĞÂµÄÖ§³ÖÎÊÌâ£¡"
 
-#: :740
 msgid "support question(s)"
-msgstr ""
+msgstr "Ö§³ÖÎÊÌâ"
 
-#: :741
 msgid "new"
-msgstr ""
+msgstr "ĞÂ"
 
-#: :742
 msgid "ISPCP - Client/Main Index"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ö÷Ë÷Òı"
 
-#: :743
 msgid "General information"
-msgstr ""
+msgstr "Ò»°ãĞÅÏ¢"
 
-#: :744
 msgid "Account name"
-msgstr ""
+msgstr "ÕÊºÅÃû³Æ"
 
-#: :745
 msgid "Main domain"
-msgstr ""
+msgstr "Ö÷ÓòÃû"
 
-#: :746
 msgid "SQL support"
-msgstr ""
+msgstr "SQLÖ§³Ö"
 
-#: :747
 msgid "Choose default language"
-msgstr ""
+msgstr "Ñ¡ÔñÄ¬ÈÏÓïÑÔ"
 
-#: :748
 msgid "Traffic usage"
-msgstr ""
+msgstr "Á÷Á¿Ê¹ÓÃ"
 
-#: :749
 msgid "Disk usage"
-msgstr ""
+msgstr "´ÅÅÌ¿Õ¼äÊ¹ÓÃ"
 
-#: :750
 msgid "User language updated successfully!"
-msgstr ""
+msgstr "ÓÃ»§ÓïÑÔ³É¹¦¸üĞÂ£¡"
 
-#: :751
 msgid "ISPCP - Client/Change Language"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¸Ä±äÓïÑÔ"
 
-#: :752
 msgid "Subdomain list is empty!"
-msgstr ""
+msgstr "×ÓÓòÃûÁĞ±íÎª¿Õ£¡"
 
-#: :753
 msgid "Alias list is empty!"
-msgstr ""
+msgstr "±ğÃûÁĞ±íÎª¿Õ"
 
-#: :754
 msgid "ISPCP - Client/Manage Domains"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¹ÜÀíÓòÃû"
 
-#: :755
 msgid "Manage domains"
-msgstr ""
+msgstr "¹ÜÀíÓòÃû±ğÃû"
 
-#: :756
 msgid "Mount point"
-msgstr ""
+msgstr "¼ÓÔØµã"
 
-#: :757
 msgid "Forward"
-msgstr ""
+msgstr "×ª·¢"
 
-#: :758
 msgid "Database user list is empty!"
-msgstr ""
+msgstr "Êı¾İ¿âÓÃ»§ÁĞ±íÎª¿Õ£¡"
 
-#: :759
 msgid "Database list is empty!"
-msgstr ""
+msgstr "Êı¾İ¿âÁĞ±íÎª¿Õ£¡"
 
-#: :760
 msgid "ISPCP - Client/Manage SQL"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¹ÜÀíSQL"
 
-#: :761
 msgid "Manage SQL"
-msgstr ""
+msgstr "¹ÜÀíSQL"
 
-#: :762
 msgid "Database users"
-msgstr ""
+msgstr "Êı¾İ¿âÓÃ»§"
 
-#: :763
 msgid "Add SQL user"
-msgstr ""
+msgstr "Ìí¼ÓSQLÓÃ»§"
 
-#: :764
 msgid "Execute query"
-msgstr ""
+msgstr "Ö´ĞĞ²éÑ¯"
 
-#: :765
 msgid "Please specify message subject!"
-msgstr ""
+msgstr "ÇëÖ¸¶¨ÏûÏ¢±êÌâ"
 
-#: :766
 msgid "Your message was sent!"
-msgstr ""
+msgstr "ĞÅÏ¢ÒÑ·¢³ö£¡"
 
-#: :767
 msgid "ISPCP - Support system - New ticket"
-msgstr ""
+msgstr "ISPCP - Ö§³ÖÏµÍ³ - ĞÂµÄÇóÖúĞÅÏ¢"
 
-#: :768
 msgid "New ticket"
-msgstr ""
+msgstr "ĞÂµÄÇóÖúĞÅÏ¢"
 
-#: :769
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr ""
 
-#: :770
 msgid "Protected area deleted successfully!"
-msgstr ""
+msgstr "±£»¤ÇøÓò³É¹¦É¾³ı£¡"
 
-#: :771
 msgid "Permission deny!"
-msgstr ""
+msgstr "½ûÖ¹·ÃÎÊ£¡"
 
-#: :772
 msgid "You do not have protected areas"
-msgstr ""
+msgstr "ÄúÃ»ÓĞ±£»¤ÇøÓò"
 
-#: :773
 msgid "Manage users and groups"
-msgstr ""
+msgstr "¹ÜÀíÓÃ»§ºÍ×é"
 
-#: :774
 msgid "Add user"
-msgstr ""
+msgstr "Ìí¼ÓÓÃ»§"
 
-#: :775
 msgid "Group name"
-msgstr ""
+msgstr "×éÃû³Æ"
 
-#: :776
 msgid "Group members"
-msgstr ""
+msgstr "×é³ÉÔ±"
 
-#: :777
 msgid "Add group"
-msgstr ""
+msgstr "Ìí¼Ó×é"
 
-#: :778
 msgid "Group"
-msgstr ""
+msgstr "×é"
 
-#: :779
 msgid "Add new protected area"
-msgstr ""
+msgstr "Ìí¼ÓĞÂµÄ±£»¤ÇøÓò"
 
-#: :780
 msgid "Please choose user or group"
-msgstr ""
+msgstr "ÇëÑ¡ÔñÓÃ»§»ò×é"
 
-#: :781
 msgid "Please enter area name"
-msgstr ""
+msgstr "ÇëÊäÈëµØÇøÃû"
 
-#: :782
 msgid "Please enter area path"
-msgstr ""
+msgstr "ÇëÊäÈëÂ·¾¶"
 
-#: :783
 msgid "%s doesn't exist"
 msgstr ""
 
-#: :784
 msgid "You can not protect area without selected user(s)"
 msgstr ""
 
-#: :785
 msgid "You can not protect area without selected group(s)"
-msgstr ""
+msgstr "Ã»ÓĞÑ¡Ôñ×éÖ®Ç°ÄúÎŞ·¨±£»¤ÇøÓò"
 
-#: :786
 msgid "Protected area updated successfully!"
-msgstr ""
+msgstr "±£»¤ÇøÓò³É¹¦¸üĞÂ£¡"
 
-#: :787
 msgid "Protected area created successfully!"
-msgstr ""
+msgstr "±£»¤ÇøÓò³É¹¦´´½¨£¡"
 
-#: :788
 msgid "Protected area status should be OK if you want to edit it!"
 msgstr ""
 
-#: :789
 msgid "You have no users !"
-msgstr ""
+msgstr "ÄúÃ»ÓĞÓÃ»§£¡"
 
-#: :790
 msgid "You have no groups!"
-msgstr ""
+msgstr "ÄúÃ»ÓĞ×é"
 
-#: :791
 msgid "Protect this area"
-msgstr ""
+msgstr "±£»¤±¾ÇøÓò"
 
-#: :792
 msgid "Path"
-msgstr ""
+msgstr "Â·¾¶"
 
-#: :793
 msgid "Groups"
-msgstr ""
+msgstr "×é"
 
-#: :794
 msgid "User auth"
-msgstr ""
+msgstr "ÓÃ»§ÈÏÖ¤"
 
-#: :795
 msgid "Group auth"
-msgstr ""
+msgstr "×éÈÏÖ¤"
 
-#: :796
 msgid "Area name"
-msgstr ""
+msgstr "µØÇøÃû"
 
-#: :797
 msgid "Unprotect it"
-msgstr ""
+msgstr "È¡Ïû±£»¤"
 
-#: :798
 msgid "Can not open file! Please contact your administrator !"
-msgstr ""
+msgstr "ÎŞ·¨´ò¿ªÎÄ¼ş£¡ÇëÁªÏµ¹ÜÀíÔ±"
 
-#: :799
 msgid "User was assigned to group "
 msgstr ""
 
-#: :800
 msgid "User was deleted from group "
 msgstr ""
 
-#: :801
 msgid "User assign"
-msgstr ""
+msgstr "ÓÃ»§·ÖÅä"
 
-#: :802
 msgid "Already in:"
-msgstr ""
+msgstr "ÒÑ¾­´æÔÚÓÚ£º"
 
-#: :803
 msgid "Not in:"
-msgstr ""
+msgstr "²»´æÔÚ£º"
 
-#: :804
 msgid "User was assigned to group"
-msgstr ""
+msgstr "ÓÃ»§±»·ÖÅäµ½×é"
 
-#: :805
 msgid "Member of group:"
 msgstr ""
 
-#: :806
 msgid "Select group:"
 msgstr ""
 
-#: :807
 msgid "Update user"
-msgstr ""
+msgstr "¸üĞÂÓÃ»§"
 
-#: :808
 msgid "Wrong username!"
-msgstr ""
+msgstr "ÓÃ»§ÃûÓĞÎó£¡"
 
-#: :809
 msgid "Group already exist !"
-msgstr ""
+msgstr "×éÒÑ¾­´æÔÚ"
 
-#: :810
 msgid "Manage user"
-msgstr ""
+msgstr "¹ÜÀíÓÃ»§"
 
-#: :811
 msgid "You have no users!"
-msgstr ""
+msgstr "ÄúÃ»ÓĞÓÃ»§£¡"
 
-#: :812
 msgid "User already exist !"
-msgstr ""
+msgstr "ÓÃ»§ÒÑ´æÔÚ"
 
-#: :813
 msgid "SQL-user limit expired!"
-msgstr ""
+msgstr "SQLÓÃ»§³¬¹ıÏŞÖÆ£¡"
 
-#: :814
 msgid "Please type user name!"
-msgstr ""
+msgstr "ÇëÊäÈëÓÃ»§Ãû³Æ£¡"
 
-#: :815
 msgid "Please type user password!"
-msgstr ""
+msgstr "ÇëÊäÈëÓÃ»§ÃÜÂë£¡"
 
-#: :816
 msgid "Too user long password!"
-msgstr ""
+msgstr "ÓÃ»§ÃÜÂëÌ«³¤£¡"
 
-#: :817
 msgid "SQL-user not found! Maybe it was deleted by another user!"
 msgstr ""
 
-#: :818
 msgid "User name too long!"
-msgstr ""
+msgstr "ÓÃ»§ÃûÌ«³¤£¡"
 
-#: :819
 msgid "Specified SQL username name already exists!"
-msgstr ""
+msgstr "Ö¸¶¨µÄSQLÓÃ»§ÃûÒÑ¾­´æÔÚ£¡"
 
-#: :820
 msgid "SQL user successfully added!"
-msgstr ""
+msgstr "Ìí¼ÓSQLÓÃ»§³É¹¦£¡"
 
-#: :821
 msgid "ISPCP - Client/Add SQL User"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ìí¼ÓSQLÓÃ»§"
 
-#: :822
 msgid "SQL user name"
-msgstr ""
+msgstr "SQLÓÃ»§Ãû³Æ"
 
-#: :823
 msgid "In front the name"
-msgstr ""
+msgstr "Ãû×ÖÇ°Ãæ"
 
-#: :824
 msgid "Behind the name"
-msgstr ""
+msgstr "Ãû×ÖºóÃæ"
 
-#: :825
 msgid "Add existing user"
-msgstr ""
+msgstr "Ìí¼ÓµÄÓÃ»§ÒÑ´æÔÚ"
 
-#: :826
 msgid "Existing SQL users"
-msgstr ""
+msgstr "ÒÑ´æÔÚµÄSQLÓÃ»§"
 
-#: :827
 msgid "Too long user password!"
-msgstr ""
+msgstr "ÓÃ»§ÃÜÂëÌ«³¤£¡"
 
-#: :828
 msgid "SQL user password was successfully changed!"
-msgstr ""
+msgstr "SQLÓÃ»§ÃÜÂë³É¹¦¸ü¸Ä£¡"
 
-#: :829
 msgid "ISPCP - Client/Change SQL User Password"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/¸ü¸ÄSQLÓÃ»§ÃÜÂë"
 
-#: :830
 msgid "Change SQL user password"
-msgstr ""
+msgstr "¸Ä±äSQLÓÃ»§ÃÜÂë"
 
-#: :831
 msgid "Change"
-msgstr ""
+msgstr "ÇĞ»»"
 
-#: :832
 msgid "SQL user was removed successfully!"
-msgstr ""
+msgstr "É¾³ıSQLÓÃ»§³É¹¦£¡"
 
-#: :833
 msgid "Please enter SQL query!"
-msgstr ""
+msgstr "ÇëÊäÈëSQL²éÑ¯"
 
-#: :834
 msgid "Cannot connect as MySQL administrator!"
-msgstr ""
+msgstr "ÎŞ·¨ÒÔMYSQL¹ÜÀíÔ±Éí·İÁ¬½Ó"
 
-#: :835
 msgid "SQL query has error"
-msgstr ""
+msgstr "SQL²éÑ¯³ö´í"
 
-#: :836
 msgid "SQL query is ok"
-msgstr ""
+msgstr "SQL²éÑ¯Õı³£"
 
-#: :837
 msgid "ISPCP - Client/Execute SQL Query"
-msgstr ""
+msgstr "ISPCP - ¿Í»§/Ö´ĞĞSQL²éÑ¯"
 
-#: :838
 msgid "Execute SQL query"
-msgstr ""
+msgstr "Ö´ĞĞSQL²éÑ¯"
 
-#: :839
 msgid "SQL query"
-msgstr ""
+msgstr "SQL²éÑ¯"
 
-#: :840
 msgid "Query status"
-msgstr ""
+msgstr "²éÑ¯×´Ì¬"
 
-#: :841
 msgid "Query result"
-msgstr ""
+msgstr "²éÑ¯½á¹û"
 
-#: :842
 msgid "Execute"
-msgstr ""
+msgstr "Ö´ĞĞ"
 
-#: :843
 msgid "Protected area was deleted successful!"
-msgstr ""
+msgstr "³É¹¦É¾³ıÊÜ±£»¤ÇøÓò£¡"
 
-#: :844
 msgid "Hosting plans available for update"
-msgstr ""
+msgstr "¿É¸üĞÂµÄÍĞ¹Ü¼Æ»®"
 
-#: :845
 msgid "Cancel order"
-msgstr ""
+msgstr "È¡Ïû¶©¹º"
 
-#: :846
 msgid "Your order"
-msgstr ""
+msgstr "ÄúµÄ¶©¹º"
 
-#: :847
 msgid "Purchase"
-msgstr ""
+msgstr "¹ºÂò"
 
-#: :848
 msgid "There are no available updates"
-msgstr ""
+msgstr "Ã»ÓĞ¿ÉÓÃµÄ¸üĞÂ"
 
-#: :849
 msgid "PHP Support: enabled"
-msgstr ""
+msgstr "PHPÖ§³Ö£ºÆôÓÃ"
 
-#: :850
 msgid "PHP Support: disabled"
-msgstr ""
+msgstr "PHPÖ§³Ö£º½ûÓÃ"
 
-#: :851
 msgid "CGI Support: enabled"
-msgstr ""
+msgstr "CGI Ö§³Ö£º ÆôÓÃ"
 
-#: :852
 msgid "CGI Support: disabled"
-msgstr ""
+msgstr "CGI Ö§³Ö£º ½ûÓÃ"
 
-#: :853
+#, fuzzy
 msgid "HDD"
-msgstr ""
+msgstr "HDD"
 
-#: :854
 msgid "Aliases"
-msgstr ""
+msgstr "±ğÃû"
 
-#: :855
 msgid "Emails"
 msgstr ""
 
-#: :856
 msgid "FTPs"
 msgstr ""
 
-#: :857
 msgid "SQL Databases"
 msgstr ""
 
-#: :858
 msgid "SQL Users"
 msgstr ""
 
-#: :859
 msgid "free of charge"
-msgstr ""
+msgstr "Ãâ·Ñ"
 
-#: :860
 msgid "There are no available hosting plans for update"
-msgstr ""
+msgstr "Ã»ÓĞ¿É¸üĞÂµÄÍĞ¹Ü¼Æ»®"
 
-#: :861
 msgid "ISPCP - Update hosting plan"
-msgstr ""
+msgstr "ISPCP - ¸üĞÂÍĞ¹Ü¼Æ»®"
 
-#: :862
 msgid "Your request for hosting pack update was added successfully"
-msgstr ""
+msgstr "ÄúµÄÍĞ¹Ü¼Æ»®ÒªÇóÒÑ¾­³É¹¦Ìí¼Ó"
 
-#: :863
 msgid "Your request for hosting pack update was removed successfully"
-msgstr ""
+msgstr "ÄúµÄÍĞ¹Ü¼Æ»®ÒªÇóÒÑ¾­³É¹¦É¾³ı"
 
-#: :864
 msgid "Message was send!"
-msgstr ""
+msgstr "ÏûÏ¢ÒÑ·¢³ö£¡"
 
-#: :865
 msgid "Webtools"
-msgstr ""
+msgstr "ÍøÒ³¹¤¾ß"
 
-#: :866
 msgid "Customise error pages for your domain"
 msgstr ""
 
-#: :867
 msgid "Backup and restore settings"
-msgstr ""
+msgstr "±¸·İºÍ»¹Ô­ÉèÖÃ"
 
-#: :868
 msgid "Access your mail through the web interface"
-msgstr ""
+msgstr "Í¨¹ıÍøÒ³·½Ê½À´·ÃÎÊÄúµÄÓÊ¼ş"
 
-#: :869
 msgid "Access your files through the web interface"
-msgstr ""
+msgstr "Í¨¹ıÍøÒ³·½Ê½À´·ÃÎÊÄúµÄÎÄ¼ş"
 
-#: :870
 msgid "Manage protected areas, users and groups"
-msgstr ""
+msgstr "¹ÜÀí±£»¤ÇøÓò£¬ÓÃ»§ºÍ×é"
 
-#: :871
 msgid "System tools"
-msgstr ""
+msgstr "ÏµÍ³¹¤¾ß"
 
-#: :872
 msgid "Statistics"
-msgstr ""
+msgstr "Í³¼ÆĞÅÏ¢"
 
-#: :873
 msgid "Reseller statistics"
-msgstr ""
+msgstr "´úÀíÍ³¼ÆĞÅÏ¢"
 
-#: :874
 msgid "Admin log"
-msgstr ""
+msgstr "¹ÜÀíÈÕÖ¾"
 
-#: :875
 msgid "Logout"
-msgstr ""
+msgstr "×¢Ïú"
 
-#: :876
 msgid "Custom menus"
-msgstr ""
+msgstr "×Ô¶¨Òå²Ëµ¥"
 
-#: :877
 msgid "Overview"
-msgstr ""
+msgstr "¸Å¹Û"
 
-#: :878
 msgid "User sessions"
-msgstr ""
+msgstr "ÓÃ»§»á»°"
 
-#: :879
 msgid "Lostpw email setup"
-msgstr ""
+msgstr "¶ªÊ§ÃÜÂëÓÊ¼şÉèÖÃ"
 
-#: :880
 msgid "Rootkit Log"
 msgstr ""
 
-#: :881
 msgid "Admin users"
-msgstr ""
+msgstr "¹ÜÀíÓÃ»§"
 
-#: :882
 msgid "Normal users"
-msgstr ""
+msgstr "Ò»°ãÓÃ»§"
 
-#: :883
 msgid "Domains"
-msgstr ""
+msgstr "ÓòÃû"
 
-#: :884
 msgid "System messages"
-msgstr ""
+msgstr "ÏµÍ³ÏûÏ¢"
 
-#: :885
 msgid "No new messages"
-msgstr ""
+msgstr "Ã»ÓĞĞÂĞÅÏ¢"
 
-#: :886
 msgid "Server traffic"
-msgstr ""
+msgstr "·şÎñÆ÷Á÷Á¿"
 
-#: :887
 msgid "Administrators list is empty!"
 msgstr ""
 
-#: :888
 msgid "Created by"
-msgstr ""
+msgstr "´´½¨ÈË"
 
-#: :889
 msgid "Resellers list is empty!"
-msgstr ""
+msgstr "´úÀíÁĞ±íÎª¿Õ£¡"
 
-#: :890
 msgid "Change user interface"
-msgstr ""
+msgstr "ÇĞ»»ÓÃ»§½çÃæ"
 
-#: :891
 msgid "Not found user records matching the search criteria!"
-msgstr ""
+msgstr "Ã»ÓĞ·¢ÏÖ·ûºÏËÑË÷Ìõ¼şµÄÓÃ»§¼ÇÂ¼"
 
-#: :892
 msgid "view aliases"
-msgstr ""
+msgstr "²é¿´±ğÃû"
 
-#: :893
 msgid "Users list is empty!"
-msgstr ""
+msgstr "ÓÃ»§ÁĞ±íÎª¿Õ"
 
-#: :894
+#, fuzzy
 msgid "S"
-msgstr "Status"
+msgstr "S"
 
-#: :895
+#, fuzzy
 msgid "D"
-msgstr "Details"
+msgstr "D"
 
-#: :896
 msgid "Details"
-msgstr ""
+msgstr "ÏêÇé"
 
-#: :897
 msgid "Are you sure you want to change the status of domain account?"
-msgstr ""
+msgstr "ÄúÈ·¶¨Òª¸Ä±äÓòÃûÓÊ¼şµÄ×´Ì¬Âğ£¿"
 
-#: :898
 msgid "Are you sure you want to delete this account?"
-msgstr ""
+msgstr "ÄúÈ·¶¨ÒªÉ¾³ıÕâ¸öÕÊºÅ£¿"
 
-#: :899
 msgid "Administrators"
-msgstr ""
+msgstr "¹ÜÀíÔ±"
 
-#: :900
 msgid "Resellers"
-msgstr ""
+msgstr "´úÀí"
 
-#: :901
 msgid "Search"
-msgstr ""
+msgstr "ËÑË÷"
 
-#: :902
 msgid "Creation date"
-msgstr ""
+msgstr "´´½¨ÈÕÆÚ"
 
-#: :903
 #, c-format
 msgid "%1$s you are now logged as %2$s"
 msgstr ""
 
-#: :904
 msgid "Go back"
-msgstr ""
+msgstr "ºóÍË"
 
-#: :905
 msgid "OK"
-msgstr ""
+msgstr "Õı³£"
 
-#: :906
 msgid "Suspended"
-msgstr ""
+msgstr "¹ÒÆğ"
 
-#: :907
 msgid "Error"
-msgstr ""
+msgstr "´íÎó"
 
-#: :908
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
-#: :909
 msgid "Hello {TO_NAME} !\n\nYou have a new ticket to read"
 msgstr ""
 
-#: :910
 msgid "Email and FTP accounts"
-msgstr ""
+msgstr "µç×ÓÓÊ¼ş¼°FTPÕËºÅ"
 
-#: :911
 msgid "Add mail user"
-msgstr ""
+msgstr "Ìí¼ÓemailÓÃ»§"
 
-#: :912
+#, fuzzy
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
-#: :913
 msgid "Filemanager"
-msgstr ""
+msgstr "ÎÄ¼ş¹ÜÀíÆ÷"
 
-#: :914
 msgid "Webstatistics"
-msgstr ""
+msgstr "WebÍ³¼ÆĞÅÏ¢"
 
-#: :915
 msgid "Group - Usermanagement"
 msgstr ""
 
-#: :916
 msgid "Email Accounts"
-msgstr ""
+msgstr "ÓÊÏäÕËºÅ"
 
-#: :917
 msgid "FTP Accounts"
-msgstr ""
+msgstr "FTPÕÊºÅ"
 
-#: :918
 msgid "Update Hosting Package"
 msgstr ""
 
-#: :919
 msgid "Addition in progress"
-msgstr ""
+msgstr "ÕıÔÚ´¦Àí"
 
-#: :920
 msgid "Modification in progress"
-msgstr ""
+msgstr "ÕıÔÚ¸ü¸Ä"
 
-#: :921
 msgid "Deletion in progress"
-msgstr ""
+msgstr "ÕıÔÚÉ¾³ı"
 
-#: :922
 msgid "Unknown Error"
 msgstr ""
 
-#: :923
 msgid "Domain mail"
-msgstr ""
+msgstr "ÓòÃûÓÊ¼ş"
 
-#: :924
 msgid "Email forward"
-msgstr ""
+msgstr "µç×ÓÓÊ¼ş×ª·¢"
 
-#: :925
 msgid "Alias mail"
-msgstr ""
+msgstr "±ğÃûÓÊ¼ş"
 
-#: :926
 msgid "Alias forward"
-msgstr ""
+msgstr "±ğÃû×ª·¢"
 
-#: :927
 msgid "Subdomain mail"
-msgstr ""
+msgstr "×ÓÓòÃûÓÊÏä"
 
-#: :928
 msgid "Subdomain forward"
-msgstr ""
+msgstr "×ÓÓòÃû×ª·¢"
 
-#: :929
 msgid "Unknown type"
+msgstr "Î´ÖªÀà±ğ"
+
+msgid "Welcome new ispCP user {USERNAME}!"
 msgstr ""
 
-#: :930
+msgid "\n\nHello {NAME}!\n\nYour ispCP user type is: {USERTYPE}\nYour ispCP login is: {USERNAME}\nYour ispCP password is: {PASSWORD}\n\nYou can login at http://{BASE_SERVER_VHOST}\n\nGood luck with the ispCP system!\nThe ispCP Team.\n\n"
+msgstr ""
+
+msgid "Please activate your new ispCP login!"
+msgstr ""
+
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgstr ""
+
+msgid "Your new ispCP login!"
+msgstr ""
+
+msgid "\n\nHello {NAME}!\n\nYour ispCP login is: {USERNAME}\nYour ispCP password is: {PASSWORD}\n\nYou can login at http://{BASE_SERVER_VHOST}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgstr ""
+
+msgid "Confirmation for domain order {DOMAIN}!"
+msgstr ""
+
+msgid "\n\nDear {NAME},\nThis is an automatic confirmation for the order of the domain:\n\n{DOMAIN}\n\nThank you for using ispCP services.\nThe ispCP Team\n\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr ""
 
-#: :931
 msgid "Could not get config from database"
 msgstr ""
 
-#: :932
 msgid "You have to wait"
 msgstr ""
 
-#: :933
 msgid "seconds"
 msgstr ""
 
-#: :934
 msgid "You have been blocked for"
 msgstr ""
 
-#: :935
 msgid "System is currently in servicemode! At time only administrators can login."
 msgstr ""
 
-#: :936
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
+msgstr "ÓÃ»§ÒÑ¾­µÇÂ¼»ò»á»°¹²ÏíÎÊÌâ£¡È¡Ïû..."
 
-#: :937
 msgid "Domain status is not OK - Login aborted."
 msgstr ""
 
-#: :938
 msgid "Domain alias"
-msgstr ""
+msgstr "ÓòÃû±ğÃû"
 
-#: :939
 msgid "Manage Orders"
-msgstr ""
+msgstr "¹ÜÀí¶©¹º"
 
-#: :940
 msgid "Order settings"
-msgstr ""
+msgstr "¶©¹ºÉèÖÃ"
 
-#: :941
 msgid "Order email setup"
-msgstr ""
+msgstr "¶©¹ºÓÊ¼şÉèÖÃ"
 
-#: :942
 msgid "Please fill up both data fields for password!"
-msgstr ""
+msgstr "ÇëÌîĞ´ÃÜÂëµÄÁ½¸öÊı¾İÀ¸"
 
-#: :943
 msgid "wait to be added"
-msgstr ""
+msgstr "µÈ´ıÌí¼Ó"
 
-#: :944
 msgid "wait to be modified"
-msgstr ""
+msgstr "µÈ´ı¸ü¸Ä"
 
-#: :945
 msgid "wait to be deleted"
-msgstr ""
+msgstr "µÈ´ıÉ¾³ı"
 
-#: :946
 msgid "suspended"
-msgstr ""
+msgstr "¹ÒÆğ"
 
-#: :947
 msgid "wait to be enabled"
-msgstr ""
+msgstr "µÈ´ıÆôÓÃ"
 
-#: :948
 msgid "wait to be suspended"
-msgstr ""
+msgstr "µÈ´ı¹ÒÆğ"
 
-#: :949
 msgid "unknown status"
-msgstr ""
+msgstr "Î´Öª×´Ì¬"
 
-#: :950
 msgid "hide aliases"
-msgstr ""
+msgstr "Òş²Ø±ğÃû"
 
-#: :951
 msgid "You have reached your domains limit.<br>You can not add more domains!"
 msgstr ""
 
-#: :952
 msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
 msgstr ""
 
-#: :953
 msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
-#: :954
 msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
 msgstr ""
 
-#: :955
 msgid "You Are Exceeding Your Alias Limit!"
-msgstr ""
+msgstr "Äú´ïµ½±ğÃûÊıÁ¿ÏŞÖÆ£¡"
 
-#: :956
 msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
 msgstr ""
 
-#: :957
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-#: :958
 msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
 msgstr ""
 
-#: :959
 msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
-#: :960
 msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
 msgstr ""
 
-#: :961
 msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
-#: :962
 msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
 msgstr ""
 
-#: :963
 msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr ""
+msgstr "ÄúÈ¡ÏûÁËÕâ¸öÓÃ»§µÄSQLÊı¾İ¿âÖ§³Ö£¡<br>Äú²»ÄÜÎªËûÌí¼ÓSQLÓÃ»§£¡"
 
-#: :964
 msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
-#: :965
 msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
 msgstr ""
 
-#: :966
 msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
 msgstr ""
 
-#: :967
 msgid "You have a new order"
 msgstr ""
 
-#: :968
 msgid "\n\nDear {RESELLER},\nyou have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n\nPlease login into your ISPCP control panel for more details.\n\n"
 msgstr ""
 
-#: :969
 msgid "Wrong domain name syntax!"
-msgstr ""
+msgstr "´íÎóµÄÓòÃûÓï·¨£¡"
 
-#: :970
 msgid "You do not have permission to access this interface!"
-msgstr ""
+msgstr "ÄúÃ»ÓĞÈ¨ÏŞ²é¿´´Ë½çÃæ£¡"
 
-#: :971
 msgid "Add On A Domain"
-msgstr ""
+msgstr "ÔÙÌí¼ÓÒ»¸öÓòÃû"
 
-#: :972
 msgid "Continue"
-msgstr ""
+msgstr "¼ÌĞø"
 
-#: :973
 msgid "(e.g. domain-of-your-choice.com)"
-msgstr "(å¦‚ï¼šisp-control.cn)"
+msgstr "(Èç£º domain-of-your-choice.com)"
 
-#: :974
 msgid "Please fill out all needed fields!"
-msgstr ""
+msgstr "ÇëÌîĞ´È«²¿±ØĞèµÄÇøÓò£¡"
 
-#: :975
 msgid "Enter Address"
-msgstr ""
+msgstr "ÊäÈëµØÖ·"
 
-#: :976
 msgid "* denotes mandatory field."
-msgstr "* ä¸ºå¿…å¡«é¡¹"
+msgstr "* ±íÃ÷ÍĞ¹ÜÇøÓò."
 
-#: :977
 msgid "Your Chart"
-msgstr ""
+msgstr "ÄúµÄÍ¼±í"
 
-#: :978
 msgid "Costs"
-msgstr ""
+msgstr "»¨·Ñ"
 
-#: :979
 msgid "Personal Data"
-msgstr ""
+msgstr "¸öÈËÊı¾İ"
 
-#: :980
 msgid "Check Out"
-msgstr ""
+msgstr "¸¶¿î"
 
-#: :981
 msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr "<b>å¤šè°¢æƒ é¡¾ï¼</b><br>æ‚¨ä¼šæ”¶åˆ°æœ‰è¯¦ç»†æœåŠ¡ä¿¡æ¯çš„ç”µå­é‚®ä»¶"
+msgstr "<b>¸ĞĞ»ÄúµÄ¹ºÂò</b><br>Äú½«»áÊÕµ½Ò»·âµç×ÓÓÊ¼ş£¬ÀïÃæÓĞ¸ü¶àµÄÏ¸½ÚĞÅÏ¢"
 
-#: :982
 msgid "No available hosting packages"
-msgstr ""
+msgstr "Ã»ÓĞ¿ÉÓÃµÄÍĞ¹Ü¼Æ»®"
 
-#: :983
 msgid "Webspace"
-msgstr ""
+msgstr "ÍøÒ³¿Õ¼ä"
 
-#: :984
 msgid "Domain Features"
-msgstr ""
+msgstr "¿Õ¼ä¹¦ÄÜ"
 
-#: :985
 msgid "Package Features"
-msgstr ""
+msgstr "¼Æ»®¹¦ÄÜ"
 
-#: :986
 msgid "Backup and Restore"
-msgstr ""
+msgstr "±¸·İºÍ»¹Ô­"
 
-#: :987
 msgid "Custom Error Pages"
-msgstr ""
+msgstr "×Ô¶¨Òå´íÎóÒ³Ãæ"
 
-#: :988
 msgid "Protected Areas"
-msgstr ""
+msgstr "ÊÜ°üº¬ÇøÓò"
 
-#: :989
 msgid "Custom Apache Logs"
-msgstr ""
+msgstr "×Ô¶¨ÒåApacheÈÕÖ¾"
 
-#: :990
 msgid "Web & E-Mail Support"
-msgstr ""
+msgstr "ÍøÒ³ºÍÓÊ¼şÖ§³Ö"
 
-#: :991
 msgid "Your Own Domain"
-msgstr ""
+msgstr "Äú×Ô¼ºµÄÓòÃû"
 
-#: :992
 msgid "ISPCP Control Panel"
-msgstr ""
+msgstr "ISPCP¿ØÖÆÃæ°å"
 
-#: :993
 msgid "Automatic Updates"
-msgstr ""
+msgstr "×Ô¶¯¸üĞÂ"
 
-#: :994
 msgid "Package Price"
-msgstr ""
+msgstr "¼Æ»®¼Û¸ñ"
 
-#: :995
 msgid "Setup Fee"
 msgstr ""
 
-#: :996
 msgid "Performance"
-msgstr ""
+msgstr "ĞÔÄÜ"
 
-#: :997
 msgid "ISPCP Reseller : Add Alias"
-msgstr ""
+msgstr "ISPCP ´úÀí£ºÌí¼Ó±ğÃû"
 
-#: :998
 msgid "You have no user records."
-msgstr ""
+msgstr "ÄúÃ»ÓĞÓÃ»§¼ÇÂ¼¡£"
 
-#: :999
 msgid "ISPCP - Reseller/Add hosting plan"
-msgstr ""
+msgstr "ISPCP - ´úÀí/Ìí¼ÓÍĞ¹Ü¼Æ»®"
 
-#: :1000
 msgid "ISPCP - Reseller/Change Password"
-msgstr ""
+msgstr "ISPCP - ´úÀí/¸ü¸ÄÃÜÂë"
 
-#: :1001
 msgid "ISPCP - Reseller/Change Personal Data"
-msgstr ""
+msgstr "ISPCP - ´úÀí/¸ü¸Ä¸öÈËÊı¾İ"
 
-#: :1002
 msgid "ISPCP - Circular"
-msgstr ""
+msgstr "ISPCP - Ñ­»·"
 
-#: :1003
 msgid "Circular"
-msgstr ""
+msgstr "Ñ­»·"
 
-#: :1004
 msgid "Wrong domain ID!"
-msgstr ""
+msgstr "´íÎóµÄÓòÃûID£¡"
 
-#: :1005
 msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
+msgstr "ÄúÒªÉ¾³ıµÄÓòÃûÓµÓĞÓÊ¼şÕËºÅ£¡<br>ÇëÏÈÉ¾³ıËüÃÇ£¡"
 
-#: :1006
 msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
+msgstr "ÄúÒªÉ¾³ıµÄÓòÃûÓµÓĞFTPÕËºÅ£¡<br>ÇëÏÈÉ¾³ıËüÃÇ£¡"
 
-#: :1007
 msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
+msgstr "ÄúÒªÉ¾³ıµÄÓòÃûÓµÓĞ±ğÃû¼ÇÂ¼£¡<br>ÇëÏÈÉ¾³ıËüÃÇ£¡"
 
-#: :1008
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
-msgstr ""
+msgstr "ÄúÒªÉ¾³ıµÄÓòÃûÓµÓĞ×ÓÓòÃûÕËºÅ£¡<br>ÇëÏÈÉ¾³ıËüÃÇ£¡"
 
-#: :1009
 msgid "ISPCP - Manage Domain/Alias"
-msgstr ""
+msgstr "ISPCP - ¹ÜÀíÓòÃû/±ğÃû"
 
-#: :1010
 msgid "Manage alias"
-msgstr ""
+msgstr "¹ÜÀí±ğÃû"
 
-#: :1011
 msgid "Real domain"
-msgstr ""
+msgstr "ÕæÊµÓòÃû"
 
-#: :1012
 msgid "You have no alias records."
-msgstr ""
+msgstr "ÄúÃ»ÓĞ±ğÃû¼ÇÂ¼"
 
-#: :1013
 msgid "enabled"
-msgstr ""
+msgstr "ÒÑÆôÓÃ"
 
-#: :1014
 msgid "delete"
-msgstr ""
+msgstr "É¾³ı"
 
-#: :1015
 msgid "Domain alias added for termination!"
-msgstr ""
+msgstr "Ìí¼ÓÓòÃû±ğÃû±»ÖĞÖ¹!"
 
-#: :1016
 msgid "Domain alias not added for termination!"
-msgstr ""
+msgstr "ÓòÃû±ğÃûÌí¼Ó±»ÖĞÖ¹!"
 
-#: :1017
 msgid "Domain alias added!"
-msgstr ""
+msgstr "ÓòÃû±ğÃûÒÑÌí¼Ó£¡"
 
-#: :1018
 msgid "Domain alias not added!"
-msgstr ""
+msgstr "ÓòÃû±ğÃûÃ»ÓĞÌí¼Ó£¡"
 
-#: :1019
 msgid "Domain alias modified!"
-msgstr ""
+msgstr "ÓòÃû±ğÃû³É¹¦¸ü¸Ä£¡"
 
-#: :1020
 msgid "Domain alias not modified!"
-msgstr ""
+msgstr "ÓòÃû±ğÃûÃ»ÓĞ¸ü¸Ä£¡"
 
-#: :1021
 msgid "User terminated!"
-msgstr ""
+msgstr "ÓÃ»§ÖĞ¶Ï£¡"
 
-#: :1022
 msgid "ISPCP - Domain/Edit"
-msgstr ""
+msgstr "ISPCP - ÓòÃû/±à¼­"
 
-#: :1023
 msgid "Edit Domain"
-msgstr ""
+msgstr "±à¼­ÓòÃû"
 
-#: :1024
 msgid "Domain properties"
-msgstr ""
+msgstr "ÊôĞÔ"
 
-#: :1025
 msgid "Domain properties updated successfully!"
-msgstr ""
+msgstr "ÊôĞÔ³É¹¦¸üĞÂ£¡"
 
-#: :1026
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr ""
 
-#: :1027
 msgid "There are <b>%s</b> records on the system!"
 msgstr ""
 
-#: :1028
 msgid "<b>%s</b> Service can not be limited !<br>"
 msgstr ""
 
-#: :1029
 msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
 msgstr ""
 
-#: :1030
 msgid "<b>%s</b> Service can not be unlimited !<br>"
 msgstr ""
 
-#: :1031
 msgid "There are reseller limits for the <b>%s</b> service!"
 msgstr ""
 
-#: :1032
 msgid "You are exceeding reseller limits for the <b>%s</b> service!"
 msgstr ""
 
-#: :1033
 msgid "<b>%s</b> service can not be limited !<br>"
 msgstr ""
 
-#: :1034
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-#: :1035
 msgid "ISPCP - Users/Edit"
-msgstr ""
+msgstr "ISPCP - ÓÃ»§/±à¼­"
 
-#: :1036
 msgid "Edit user"
-msgstr ""
+msgstr "±à¼­ÓÃ»§"
 
-#: :1037
 msgid "Users list"
-msgstr ""
+msgstr "ÓÃ»§ÁĞ±í"
 
-#: :1038
 msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr ""
+msgstr "ISPCP - ´úÀí/±à¼­ÍĞ¹Ü¼Æ»®"
 
-#: :1039
 msgid "View hosting plan"
-msgstr ""
+msgstr "²é¿´ÍĞ¹Ü¼Æ»®"
 
-#: :1040
 msgid "Incorrect price!"
 msgstr ""
 
-#: :1041
 msgid "Incorrect setup fee!"
 msgstr ""
 
-#: :1042
 msgid "ISPCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-#: :1043
 msgid "ISPCP - Reseller/Main Index"
-msgstr ""
+msgstr "ISPCP - ´úÀí/Ö÷Ë÷Òı"
 
-#: :1044
 msgid "View details"
-msgstr ""
+msgstr "²é¿´ÏêÇé"
 
-#: :1045
 msgid "User accounts"
-msgstr ""
+msgstr "ÓÃ»§ÕËºÅ"
 
-#: :1046
 msgid "Mail account"
-msgstr ""
+msgstr "ÓÊ¼şÕÊºÅ"
 
-#: :1047
 msgid "Extras"
-msgstr ""
+msgstr "¶îÍâĞÅÏ¢"
 
-#: :1048
 msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
-#: :1049
 msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr ""
+msgstr "ISPCP"
 
-#: :1050
 msgid "ISPCP - Reseller/Order email setup"
-msgstr ""
+msgstr "ISPCP - ´úÀí/¶©¹ºÓÊ¼şÉèÖÃ"
 
-#: :1051
 msgid "Manage orders"
-msgstr ""
+msgstr "¹ÜÀí¶©¹º"
 
-#: :1052
 msgid "Wrong order ID!"
-msgstr ""
+msgstr "¶©¹ºIDÓĞÎó£¡"
 
-#: :1053
 msgid "User added!"
-msgstr ""
+msgstr "ÓÃ»§ÒÑÌí¼Ó£¡"
 
-#: :1054
 msgid "Customer order was removed successful!"
-msgstr ""
+msgstr "¿Í»§¶©¹ºÒÑ±»³É¹¦É¾³ı£¡"
 
-#: :1055
 msgid "ISPCP - Reseller/Order details"
-msgstr ""
+msgstr "ISPCP - ´úÀí/¶©¹ºÏêÇé"
 
-#: :1056
 msgid "Order data updated successfully!"
-msgstr ""
+msgstr "¶©¹ºÊı¾İ³É¹¦¸üĞÂ£¡"
 
-#: :1057
 msgid "Order date"
-msgstr ""
+msgstr "¶©¹ºÈÕÆÚ"
 
-#: :1058
 msgid "Hosting plan"
-msgstr ""
+msgstr "ÍĞ¹Ü¼Æ»®"
 
-#: :1059
 msgid "Hosting details"
-msgstr ""
+msgstr "¿Õ¼äÏêÇé"
 
-#: :1060
 msgid "Order details"
-msgstr ""
+msgstr "¶©¹ºÏêÇé"
 
-#: :1061
 msgid "Customer data"
-msgstr ""
+msgstr "¿Í»§Êı¾İ"
 
-#: :1062
 msgid "Delete order"
-msgstr ""
+msgstr "É¾³ı¶©¹º"
 
-#: :1063
 msgid "Are you sure you want to delete this order?"
-msgstr ""
+msgstr "È·ÈÏÒªÉ¾³ı±¾¶©¹ºĞÅÏ¢£¿"
 
-#: :1064
 msgid "Add to the system"
-msgstr ""
+msgstr "Ìí¼Óµ½ÏµÍ³"
 
-#: :1065
 msgid "ISPCP - Reseller/Order settings"
-msgstr ""
+msgstr "ISPCP - ´úÀí/¶©¹ºÉèÖÃ"
 
-#: :1066
 msgid "Header"
-msgstr ""
+msgstr "Ò³Ã¼"
 
-#: :1067
 msgid "Preview"
-msgstr ""
+msgstr "Ô¤ÀÀ"
 
-#: :1068
 msgid "Implementation URL"
-msgstr ""
+msgstr "Ö´ĞĞURL"
 
-#: :1069
 msgid "Footer"
-msgstr ""
+msgstr "Ò³½Å"
 
-#: :1070
 msgid "ISPCP - Reseller/Order management"
-msgstr ""
+msgstr "ISPCP - ´úÀí/¶©¹º¹ÜÀí"
 
-#: :1071
 msgid "You do not have new orders!"
-msgstr ""
+msgstr "ÄúÃ»ÓĞĞÂµÄ¶©¹º£¡"
 
-#: :1072
 msgid "New order"
-msgstr ""
+msgstr "ĞÂ¶©¹º"
 
-#: :1073
 msgid "Update order"
-msgstr ""
+msgstr "¸üĞÂ¶©¹º"
 
-#: :1074
+#, fuzzy
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
-#: :1075
 msgid "Order"
-msgstr ""
+msgstr "¶©¹º"
 
-#: :1076
 msgid "Add/Details"
-msgstr ""
+msgstr "Ìí¼Ó/ÏêÇé"
 
-#: :1077
 msgid "ISPCP - Users/Add user"
-msgstr ""
+msgstr "ISPCP - ÓÃ»§/Ìí¼ÓÓÃ»§"
 
-#: :1078
 msgid "Choose hosting plan"
-msgstr ""
+msgstr "Ñ¡ÔñÍĞ¹Ü¼Æ»®"
 
-#: :1079
 msgid "Personalise template"
 msgstr ""
 
-#: :1080
 msgid "Next step"
-msgstr ""
+msgstr "ÏÂÒ»²½"
 
-#: :1081
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-#: :1082
 msgid "ISPCP - User/Add user(step2)"
-msgstr ""
+msgstr "ISPCP - ÓÃ»§/Ìí¼ÓÓÃ»§£¨µÚ2²½£©"
 
-#: :1083
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-#: :1084
 msgid "Backup / Restore"
-msgstr ""
+msgstr "±¸·İ/»¹Ô­"
 
-#: :1085
 msgid "Apache logs"
-msgstr ""
+msgstr "ApacheÈÕÖ¾"
 
-#: :1086
+#, fuzzy
 msgid "Awstats"
-msgstr ""
+msgstr "Awstats"
 
-#: :1087
 msgid "ISPCP - User/Add user"
-msgstr ""
+msgstr "ISPCP - ÓÃ»§/Ìí¼ÓÓÃ»§"
 
-#: :1088
 msgid "Add other domains to this account"
-msgstr ""
+msgstr "Ìí¼ÓÆäËûÓòÃûµ½´ËÕËºÅ"
 
-#: :1089
 msgid "There's a conflicting admin / reseller fix that first!"
 msgstr ""
 
-#: :1090
 msgid "System error with Domain ID "
 msgstr ""
 
-#: :1091
 msgid "Done"
-msgstr ""
+msgstr "Íê³É"
 
-#: :1092
 msgid "This reseller has no domains yet."
-msgstr ""
+msgstr "´Ë´úÀíÉĞÎŞÓòÃû¡£"
 
-#: :1093
 msgid "ISPCP - Users"
-msgstr ""
+msgstr "ISPCP - ÓÃ»§"
 
-#: :1094
 msgid "Stats"
-msgstr ""
+msgstr "Í³¼ÆĞÅÏ¢"
 
-#: :1095
 msgid "Edit properties"
-msgstr ""
+msgstr "±à¼­ÊôĞÔ"
 
-#: :1096
 msgid "You have no users."
-msgstr ""
+msgstr "ÄúÃ»ÓĞÓÃ»§¡£"
 
-#: :1097
 msgid "User data updated!"
-msgstr ""
+msgstr "ÓÃ»§Êı¾İ³É¹¦¸üĞÂ£¡"
 
-#: :1098
 msgid "User data not updated!"
-msgstr ""
+msgstr "ÓÃ»§Êı¾İÃ»ÓĞ¸üĞÂ£¡"
 
-#: :1099
 msgid "This user has domain record !<br>First remove the domain from the system!"
-msgstr ""
+msgstr "¸ÃÓÃ»§ÓµÓĞÓòÃû¼ÇÂ¼£¡<br>ÇëÏÈ´ÓÏµÍ³ÖĞÉ¾³ıËûµÄÓòÃû£¡"
 
-#: :1100
 msgid "User not terminated!"
-msgstr ""
+msgstr "ÓÃ»§Ã»ÓĞÖĞ¶Ï£¡"
 
-#: :1101
 msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr ""
+msgstr "ISPCP - ´úÀí£ºÖ§³ÖÏµÍ³£º²é¿´ÇóÖúĞÅÏ¢"
 
-#: :1102
 msgid "Message was sent."
-msgstr ""
+msgstr "ÏûÏ¢ÒÑ·¢³ö¡£"

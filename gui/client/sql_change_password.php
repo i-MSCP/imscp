@@ -50,7 +50,7 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords does not match!'));
+		set_page_message(tr('Entered passwords do not match!'));
 		return;
 	}
 
@@ -60,7 +60,7 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 	}
 
 	if (!chk_password($_POST['pass'])) {
-		set_page_message( tr("Incorrect password range or syntax!"));
+		set_page_message( tr("Incorrect password length or syntax!"));
 		return;
 	}
 

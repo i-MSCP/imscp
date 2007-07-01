@@ -40,7 +40,7 @@ function createImage($strSessionVar) {
 
 	$y = $cfg['LOSTPASSWORD_CAPTCHA_HEIGHT'];
 
-	$font = "../" . $cfg['LOSTPASSWORD_CAPTCHA_FONT'];
+	$font = $cfg['LOSTPASSWORD_CAPTCHA_FONT'];
 
   	$iRandVal = strrand(8, $strSessionVar);
 
@@ -284,11 +284,20 @@ SQL_QUERY;
         	$from = $from_email;
 		}
 
-	    $subject = preg_replace("/\{USERNAME\}/", $admin_name, $subject);
-	    $message = preg_replace("/\{USERNAME\}/", $admin_name, $message);
-	    $message = preg_replace("/\{NAME\}/", $admin_fname . " " . $admin_lname, $message);
-	    $message = preg_replace("/\{PASSWORD\}/", $upass, $message);
-	    $message = preg_replace("/\{BASE_SERVER_VHOST\}/", $base_vhost, $message);
+		$search  = array();
+		$replace = array();
+
+		$search [] = '{USERNAME}';
+		$replace[] = $admin_name;
+		$search [] = '{NAME}';
+		$replace[] = $admin_fname . " " . $admin_lname;
+		$search [] = '{PASSWORD}';
+		$replace[] = $upass;
+		$search [] = '{BASE_SERVER_VHOST}';
+		$replace[] = $base_vhost;
+
+		$subject = str_replace($search, $replace, $subject);
+		$message = str_replace($search, $replace, $message);
 
 	    $headers = "From: $from\n";
 

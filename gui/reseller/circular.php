@@ -102,7 +102,7 @@ function check_user_data ( &$tpl ) {
 
     } else if (!chk_email($sender_email)) {
 
-        set_page_message( tr("Incorrect email range or syntax!"));
+        set_page_message( tr("Incorrect email length or syntax!"));
 
         return false;
     }

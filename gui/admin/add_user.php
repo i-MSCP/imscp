@@ -214,25 +214,25 @@ function check_user_data() {
 
     if (!chk_username($_POST['username'])) {
 
-        set_page_message( tr("Incorrect username range or syntax!"));
+        set_page_message( tr("Incorrect username length or syntax!"));
 
         return false;
     }
     if (!chk_password($_POST['pass'])) {
 
-        set_page_message( tr("Incorrect password range or syntax!"));
+        set_page_message( tr("Incorrect password length or syntax!"));
 
         return false;
     }
     if ($_POST['pass'] != $_POST['pass_rep']) {
 
-        set_page_message( tr("Entered passwords does not match!"));
+        set_page_message( tr("Entered passwords do not match!"));
 
         return false;
     }
     if (!chk_email($_POST['email'])) {
 
-        set_page_message( tr("Incorrect email range or syntax!"));
+        set_page_message( tr("Incorrect email length or syntax!"));
 
         return false;
     }

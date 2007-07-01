@@ -381,35 +381,35 @@ function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
 
     if (!ispcp_limit_check($sub, 99999)) {
 
-        $ed_error = tr('Incorrect subdomain range or syntax!');
+        $ed_error = tr('Incorrect subdomain length or syntax!');
 
     } else if (!ispcp_limit_check($als, 99999)) {
 
-        $ed_error = tr('Incorrect alias range or syntax!');
+        $ed_error = tr('Incorrect alias length or syntax!');
 
     } else if (!ispcp_limit_check($mail, 99999)) {
 
-        $ed_error = tr('Incorrect mail account range or syntax!');
+        $ed_error = tr('Incorrect mail account length or syntax!');
 
     } else if (!ispcp_limit_check($ftp, 99999)) {
 
-        $ed_error = tr('Incorrect FTP account range or syntax!');
+        $ed_error = tr('Incorrect FTP account length or syntax!');
 
     } else if (!ispcp_limit_check($sql_db, 99999)) {
 
-        $ed_error = tr('Incorrect SQL user range or syntax!');
+        $ed_error = tr('Incorrect SQL user length or syntax!');
 
     } else if (!ispcp_limit_check($sql_user, 99999)) {
 
-        $ed_error = tr('Incorrect SQL database range or syntax!');
+        $ed_error = tr('Incorrect SQL database length or syntax!');
 
     } else if (!ispcp_limit_check($traff, 1024*1024*1024) || $traff == -1) {
 
-        $ed_error = tr('Incorrect traffic range or syntax!');
+        $ed_error = tr('Incorrect traffic length or syntax!');
 
     } else if (!ispcp_limit_check($disk, 1024*1024*1024) || $disk == -1) {
 
-        $ed_error = tr('Incorrect disk range or syntax!');
+        $ed_error = tr('Incorrect disk length or syntax!');
 
     }
 

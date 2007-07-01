@@ -18,7 +18,7 @@
  **/
 
 
-include 'ispcp-lib.php';
+require 'include/ispcp-lib.php';
 
 createImage('image');
 

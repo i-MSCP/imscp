@@ -430,25 +430,25 @@ SQL_QUERY;
     }
     if (!chk_username(clean_input($_POST['username']))) {
 
-        set_page_message( tr("Incorrect username range or syntax!"));
+        set_page_message( tr("Incorrect username length or syntax!"));
 
         return false;
     }
     if (!chk_password($_POST['pass'])) {
 
-        set_page_message( tr("Incorrect password range or syntax!"));
+        set_page_message( tr("Incorrect password length or syntax!"));
 
         return false;
     }
     if ($_POST['pass'] != $_POST['pass_rep']) {
 
-        set_page_message( tr("Entered passwords does not match!"));
+        set_page_message( tr("Entered passwords do not match!"));
 
         return false;
     }
     if (!chk_email(clean_input($_POST['email']))) {
 
-        set_page_message( tr("Incorrect email range or syntax!"));
+        set_page_message( tr("Incorrect email length or syntax!"));
 
         return false;
     }
@@ -497,13 +497,13 @@ SQL_QUERY;
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'] , 999999) || $_POST['nreseller_max_traffic'] == -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'] , 1024*1024*1024) || $_POST['nreseller_max_traffic'] == -1) {
 
         set_page_message(tr('Incorrect max traffic amount or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'], 999999) || $_POST['nreseller_max_disk']== -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'], 1024*1024*1024) || $_POST['nreseller_max_disk']== -1) {
 
         set_page_message(tr('Incorrect max disk amount or syntax!'));
 

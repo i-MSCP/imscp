@@ -1768,7 +1768,7 @@ sub setup_php {
 	$rs = store_file("$bk_dir/fastcgi_ispcp.conf.ispcp", $cfg, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi_ispcp.conf.ispcp $main::cfg{'APACHE_CONF_DIR'}/mods-available/fastcgi_ispcp.conf";
+	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi_ispcp.conf.ispcp $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 

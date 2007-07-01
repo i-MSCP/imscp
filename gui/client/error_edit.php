@@ -17,8 +17,11 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-require '../include/vfs.php';
 require '../include/ispcp-lib.php';
+
+check_login(__FILE__);
+
+require '../include/vfs.php';
 
 function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 {
@@ -37,13 +40,6 @@ function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
 	$tpl->assign( array('ERROR'=> '') );
 }
 
-
-
-
-require '../include/ispcp-lib.php';
-
-check_login(__FILE__);
-
 $tpl = new pTemplate();
 
 $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/error_edit.tpl');
@@ -52,14 +48,6 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('logged_from', 'page');
 
-//
-// page functions.
-//
-
-function update_error_page(&$sql, $user_id)
-{
-
-}
 
 //
 // common page data.
