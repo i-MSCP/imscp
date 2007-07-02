@@ -13,7 +13,7 @@
 </script>
 </head>
 
-<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/logout_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
@@ -56,7 +56,7 @@
                       <td width="25">&nbsp;</td>
                       <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td width="55"><a href="error_edit.php?eid=401"><img src="{THEME_COLOR_PATH}/images/icons/error401.gif" width="38" height="44" border="0"></a></td>
+                            <td width="55"><a href="error_edit.php?eid=401"><img src="{THEME_COLOR_PATH}/images/icons/error401.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_401}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=401" class="link">{TR_EDIT}</a></td>
                             <td><a href="{DOMAIN}/errors/401/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
@@ -67,7 +67,7 @@
                       <td>&nbsp;</td>
                       <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td width="55"><a href="error_edit.php?eid=403"><img src="{THEME_COLOR_PATH}/images/icons/error403.gif" width="38" height="44" border="0"></a></td>
+                            <td width="55"><a href="error_edit.php?eid=403"><img src="{THEME_COLOR_PATH}/images/icons/error403.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_403}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=403" class="link">{TR_EDIT}</a></td>
                             <td><a href="{DOMAIN}/errors/403/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
@@ -78,7 +78,7 @@
                       <td>&nbsp;</td>
                       <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td width="55"><a href="error_edit.php?eid=404"><img src="{THEME_COLOR_PATH}/images/icons/error404.gif" width="38" height="44" border="0"></a></td>
+                            <td width="55"><a href="error_edit.php?eid=404"><img src="{THEME_COLOR_PATH}/images/icons/error404.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_404}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=404" class="link">{TR_EDIT}</a></td>
                             <td><a href="{DOMAIN}/errors/404/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
@@ -89,7 +89,7 @@
                       <td>&nbsp;</td>
                       <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td width="55"><a href="error_edit.php?eid=500"><img src="{THEME_COLOR_PATH}/images/icons/error500.gif" width="38" height="44" border="0"></a></td>
+                            <td width="55"><a href="error_edit.php?eid=500"><img src="{THEME_COLOR_PATH}/images/icons/error500.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_500}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=500" class="link">{TR_EDIT}</a></td>
                             <td><a href="{DOMAIN}/errors/500/index.php" target="_blank" class="link">{TR_VIEW}</a></td>

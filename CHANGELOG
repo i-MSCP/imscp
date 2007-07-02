@@ -10,6 +10,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-01 Raphael Geissert
+	- GUI:
+		* Other minor i18n corrections
+		* Fixed extra > in reseller order email setup
+		* Replaced, deleted and optimised some images
+		* Fixed Makefile so imagecode.php is now correctly copied
+		* Fixed #442: Can't create or delete mysql databases
+	- SETUP:
+		* Fixed #436: PHP files are downloadable and not interpreted
+
 2007-07-01 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #451: reload of apache after logrotate
