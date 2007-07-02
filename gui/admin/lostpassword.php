@@ -86,7 +86,7 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
 
 gen_logged_from($tpl);
 
-$tpl -> assign(array('TR_LOSTPW_EMAIL' => tr('Lostpw email'),
+$tpl -> assign(array('TR_LOSTPW_EMAIL' => tr('Lost password e-mail'),
                      'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
                      'TR_MESSAGE_TEMPLATE' => tr('Message template'),
 					 'SUBJECT_VALUE1' => $data_1['subject'],
@@ -100,7 +100,7 @@ $tpl -> assign(array('TR_LOSTPW_EMAIL' => tr('Lostpw email'),
                      'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
                      'TR_USER_PASSWORD' => tr('User password'),
                      'TR_USER_REAL_NAME' => tr('User (first and last) name'),
-					 'TR_LOSTPW_LINK' => tr('Lostpw link'),
+					 'TR_LOSTPW_LINK' => tr('Lost password link'),
 					 'TR_SUBJECT' => tr('Subject'),
                      'TR_MESSAGE' => tr('Message'),
                      'TR_SENDER_EMAIL' => tr('Senders email'),

@@ -79,7 +79,7 @@ $tpl -> assign(array(
         	'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
         	'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
         	'TR_USER_PASSWORD' => tr('User password'),
-        	'TR_USER_REAL_NAME' => tr('User real (first and last) Name'),
+        	'TR_USER_REAL_NAME' => tr('User real (first and last) name'),
         	'TR_MESSAGE_TEMPLATE' => tr('Message template'),
         	'TR_SUBJECT' => tr('Subject'),
         	'TR_MESSAGE' => tr('Message'),

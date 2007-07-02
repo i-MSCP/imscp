@@ -32,31 +32,39 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($admin_id));
 
-	if ( ($rs->fields('fname') != '') && ($rs->fields('lname') != '') ) {
+	if ( (trim($rs->fields('fname')) != '') && (trim($rs->fields('lname')) != '') ) {
 
-  	$data['sender_name'] = $rs->fields('fname') . " " . $rs->fields('lname');
+	    $data['sender_name'] = $rs->fields('fname') . ' ' . $rs->fields('lname');
+
+	} else if (trim($rs->fields('fname')) != '') {
+
+	    $data['sender_name'] = $rs->fields('fname');
+
+	} else if (trim($rs->fields('lname')) != '') {
+
+	    $data['sender_name'] = $rs->fields('lname');
 
 	} else {
 
-		$data['sender_name'] = '';
-
-  }
-
-	if ($rs->fields('firm') != '') {
-
-		if ($data['sender_name'] != '') {
-
-			$data['sender_name'] = $data['sender_name'] . " " . "[" . $rs->fields('firm') . "]";
-
-		} else {
-
-			$data['sender_name'] = $rs->fields('firm');
-
-		}
+	    $data['sender_name'] = '';
 
 	}
 
-  $data['sender_email'] = $rs->fields('email');
+	if ($rs->fields('firm') != '') {
+
+	    if ($data['sender_name'] != '') {
+
+	        $data['sender_name'] = $data['sender_name'] . ' ' . '[' . $rs->fields('firm') . ']';
+
+	    } else {
+
+	        $data['sender_name'] = $rs->fields('firm');
+
+	    }
+
+	}
+
+	$data['sender_email'] = $rs->fields('email');
 
 	$query = <<<SQL_QUERY
 						SELECT
@@ -73,16 +81,15 @@ SQL_QUERY;
 
 	if ($rs ->RowCount() == 1 ) {
 
-		$data['subject'] = utf8_encode(html_entity_decode($rs->fields['subject'], ENT_COMPAT));
+	    $data['subject'] = utf8_encode(html_entity_decode($rs->fields['subject'], ENT_COMPAT));
 
-    	$data['message'] = utf8_encode(html_entity_decode($rs->fields['message'], ENT_COMPAT));
+	    $data['message'] = utf8_encode(html_entity_decode($rs->fields['message'], ENT_COMPAT));
 
-	}
-	else {
+	} else {
 
-		$data['subject'] = '';
+	    $data['subject'] = '';
 
-		$data['message'] = '';
+	    $data['message'] = '';
 
 	}
 
@@ -148,7 +155,7 @@ function get_welcome_email($admin_id) {
 
 	if (!$data['message']) {
 
-  	$data['message'] = tr('
+	    $data['message'] = tr('
 
 Hello {NAME}!
 
@@ -187,10 +194,10 @@ function get_lostpassword_activation_email($admin_id) {
 
 	if (!$data['message']) {
 
-  	$data['message'] = tr('
+	    $data['message'] = tr('
 
 Hello {NAME}!
-Use this link to activate your new ISPCP password:
+Use this link to activate your new ispCP password:
 
 {LINK}
 
@@ -223,7 +230,7 @@ function get_lostpassword_password_email($admin_id) {
 
 	if (!$data['message']) {
 
-  	$data['message'] = tr('
+	    $data['message'] = tr('
 
 Hello {NAME}!
 
@@ -261,7 +268,7 @@ function get_order_email($admin_id) {
 
 	if (!$data['message']) {
 
-  	$data['message'] = tr('
+	    $data['message'] = tr('
 
 Dear {NAME},
 This is an automatic confirmation for the order of the domain:

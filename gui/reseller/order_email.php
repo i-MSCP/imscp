@@ -75,7 +75,7 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_orders.tpl');
 gen_logged_from($tpl);
 
 $tpl -> assign(array('TR_EMAIL_SETUP' => tr('Email setup'),
-					  				 'TR_MANAGE_ORDERS' => tr('Manage orders'),
+					 'TR_MANAGE_ORDERS' => tr('Manage orders'),
                      'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
                      'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
                      'TR_USER_DOMAIN' => tr('Domain name'),
@@ -86,7 +86,7 @@ $tpl -> assign(array('TR_EMAIL_SETUP' => tr('Email setup'),
                      'TR_SENDER_EMAIL' => tr('Senders email'),
                      'TR_SENDER_NAME' => tr('Senders name'),
                      'TR_APPLY_CHANGES' => tr('Apply changes'),
-										 'SUBJECT_VALUE' => $data['subject'],
+                     'SUBJECT_VALUE' => $data['subject'],
                      'MESSAGE_VALUE' => $data['message'],
                      'SENDER_EMAIL_VALUE' => $data['sender_email'],
                      'SENDER_NAME_VALUE' => $data['sender_name']));

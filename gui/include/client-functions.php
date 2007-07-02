@@ -411,15 +411,15 @@ $tpl -> assign(
                         'TR_FILEMANAGER' => tr('Filemanager'),
                         'TR_MENU_WEBTOOLS' => tr('Webtools'),
                         'TR_HTACCESS' => tr('Protected areas'),
-                        'TR_AWSTATS' => tr('Webstatistics'),
-                        'TR_HTACCESS_USER' => tr('Group - Usermanagement'),
+                        'TR_AWSTATS' => tr('Web statistics'),
+                        'TR_HTACCESS_USER' => tr('Group/User management'),
                         'TR_MENU_OVERVIEW' => tr('Overview'),
                         'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
                         'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
                         'TR_MENU_LANGUAGE'  => tr('Language'),
                         'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
                         'TR_MENU_ADD_ALIAS' => tr('Add alias'),
-			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
+		              	'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
                         'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
                         'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
                         'WEBMAIL_PATH' => $cfg['WEBMAIL_PATH'],
@@ -524,8 +524,8 @@ $tpl -> assign(
                         'TR_FILEMANAGER' => tr('Filemanager'),
                         'TR_MENU_WEBTOOLS' => tr('Webtools'),
                         'TR_HTACCESS' => tr('Protected areas'),
-                        'TR_AWSTATS' => tr('Webstatistics'),
-                        'TR_HTACCESS_USER' => tr('Group - Usermanagement'),
+                        'TR_AWSTATS' => tr('Web statistics'),
+                        'TR_HTACCESS_USER' => tr('Group/User management'),
                         'TR_MENU_OVERVIEW' => tr('Overview'),
                         'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
                         'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
@@ -1058,10 +1058,12 @@ SQL_QUERY;
     //
 
     $query = <<<SQL_QUERY
-        drop database ?
+        drop database
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($db_name));
+    $query .= $db_name;
+
+    $rs = exec_query($sql, $query, array());
 
     write_log($_SESSION['user_logged'].": delete SQL database: ".$db_name);
     //

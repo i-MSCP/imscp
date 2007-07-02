@@ -83,13 +83,13 @@ check_permissions($tpl);
 
 $tpl -> assign(array('TR_BACKUP' => tr('Backup'),
                      'TR_DAILY_BACKUP' => tr('Daily backup'),
-                     'TR_DOWNLOAD_DIRECTION' => tr('Direction download today backup'),
+                     'TR_DOWNLOAD_DIRECTION' => tr("Instructions to download today's backup"),
                      'TR_FTP_LOG_ON' => tr('Login with your FTP account'),
-                     'TR_SWITCH_TO_BACKUP' => tr('Switch to backup directory'),
+                     'TR_SWITCH_TO_BACKUP' => tr('Switch to backups/ directory'),
                      'TR_DOWNLOAD_FILE' => tr('Download the files stored in this directory'),
                      'TR_USUALY_NAMED' => tr('(usually named backup_YYYY_MM_DD.tar.bz2)'),
                      'TR_RESTORE_BACKUP' => tr('Restore backup'),
-                     'TR_RESTORE_DIRECTIONS' => tr('Click Restore button and the system will restore last daily backup'),
+                     'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
                      'TR_RESTORE' => tr('Restore')));
 
 gen_page_message($tpl);

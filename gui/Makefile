@@ -36,6 +36,7 @@ install:
 
 	cp ./index.php $(SYSTEM_GUI_ROOT)/index.php
 	cp ./lostpassword.php $(SYSTEM_GUI_ROOT)/lostpassword.php
+	cp ./imagecode.php $(SYSTEM_GUI_ROOT)/imagecode.php
 	cp ./robots.txt $(SYSTEM_GUI_ROOT)/robots.txt
 
 	cp -dR ./admin $(SYSTEM_GUI_ROOT)

@@ -139,7 +139,7 @@ else if (isset($_SESSION['hdomain'])){
 
         unset($_SESSION['hdomain']);
 
-	set_page_message(tr('This user have domain !<br>To delete user  - first delete domain!'));
+	set_page_message(tr('This user has a domain!<br>To delete the user first delete the domain!'));
 
 }
 else if (isset($_SESSION['user_disabled'])){

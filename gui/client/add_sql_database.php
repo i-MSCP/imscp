@@ -118,7 +118,7 @@ function add_sql_database(&$sql, $user_id)
   }
 
   if (strlen($db_name) > $cfg['MAX_SQL_DATABASE_LENGTH']) {
-    set_page_message(tr('Too long database name!'));
+    set_page_message(tr('Database name is too long!'));
     return;
   }
 
@@ -133,12 +133,12 @@ function add_sql_database(&$sql, $user_id)
    // are wildcards used?
   //
   if (preg_match("/[%|\?]+/", $db_name)) {
-    set_page_message(tr('Wildcards as % and ? are not allowed!'));
+    set_page_message(tr('Wildcards such as %% and ? are not allowed!'));
     return;
   }
 
-  $query = 'create database ?';
-  $rs = exec_query($sql, $query, array($db_name));
+  $query = 'create database ' . $sql->QMagic($db_name);
+  $rs = exec_query($sql, $query, array());
 
   $query = <<<SQL_QUERY
         insert into sql_database
