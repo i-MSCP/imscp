@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -150,9 +150,8 @@ msgstr "Данные ядра"
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr ""
@@ -184,13 +183,11 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
 msgid "JSP"
 msgstr ""
@@ -219,9 +216,8 @@ msgstr "Список Папок"
 msgid "Apache logfiles"
 msgstr "Файлы журнала Apache"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 msgid "Logo upload"
 msgstr "Загрузить логотоп"
@@ -727,9 +723,8 @@ msgstr "Алиас"
 msgid "Mail"
 msgstr "e-mail"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "База данных SQL"
@@ -872,8 +867,8 @@ msgstr "Системное имя (логин) пользователя"
 msgid "User password"
 msgstr "Пароль пользователя"
 
-msgid "User real (first and last) Name"
-msgstr "Реальные имя и фамилия пользователя"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Шаблон сообщения"
@@ -1070,7 +1065,7 @@ msgstr ""
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr ""
 
-msgid "Lostpw email"
+msgid "Lost password e-mail"
 msgstr ""
 
 msgid "Activation E-Mail"
@@ -1082,7 +1077,7 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr "Имя и фамилия пользователя"
 
-msgid "Lostpw link"
+msgid "Lost password link"
 msgstr ""
 
 msgid "Reseller list is empty!"
@@ -1203,7 +1198,7 @@ msgstr "Пользователь удален"
 msgid "Email Updated"
 msgstr "Ящик обновлён"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
 msgstr ""
 
 msgid "User was disabled"
@@ -1443,26 +1438,23 @@ msgstr "Общие настройки"
 msgid "Settings"
 msgstr ""
 
-msgid "Lostpassword"
-msgstr ""
-
-msgid "Activationlink valid (minutes)"
+msgid "Activation link expire time (minutes)"
 msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "регистрация атаки-перебора"
 
-msgid "Time between logins"
-msgstr "Время между входами"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Число попыток входа"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Время блокировки (в минутах)"
 
-msgid "Time between logins (seconds)"
-msgstr "Время между входами (в секундах)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr ""
@@ -1542,9 +1534,8 @@ msgstr "Закрытые билеты"
 msgid "[New]"
 msgstr "[Новый]"
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr ""
@@ -1573,16 +1564,14 @@ msgstr "CPU системная информация"
 msgid "CPU model"
 msgstr "Модель CPU"
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
 msgid "CPU cache"
 msgstr "CPU кеш"
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr ""
@@ -1821,13 +1810,13 @@ msgstr ""
 msgid "Please type database name!"
 msgstr ""
 
-msgid "Too long database name!"
-msgstr "Слишком длинное имя базы данных!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
+msgid "Wildcards such as %% and ? are not allowed!"
 msgstr ""
 
 msgid "SQL database created successfully!"
@@ -1899,13 +1888,13 @@ msgstr "Резервное копирование"
 msgid "Daily backup"
 msgstr "Ежедневный бэкап"
 
-msgid "Direction download today backup"
+msgid "Instructions to download today's backup"
 msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Войти как Ваш FTP аккаунт"
 
-msgid "Switch to backup directory"
+msgid "Switch to backups/ directory"
 msgstr ""
 
 msgid "Download the files stored in this directory"
@@ -1917,7 +1906,7 @@ msgstr "(Обычное имя архива: backup_YYYY_MM_DD.tar.bz2)"
 msgid "Restore backup"
 msgstr ""
 
-msgid "Click Restore button and the system will restore last daily backup"
+msgid "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2103,9 +2092,8 @@ msgstr ""
 msgid "WEB"
 msgstr "Веб"
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
 msgid "POP/IMAP"
 msgstr " POP/IMAP"
@@ -2484,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Имя пользователя слишком длинное!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr ""
+
 msgid "Specified SQL username name already exists!"
 msgstr ""
 
@@ -2586,9 +2577,8 @@ msgstr "Поддержка CGI: Включена"
 msgid "CGI Support: disabled"
 msgstr "Поддержка CGI: Отключена"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Алиасы"
@@ -2744,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Назад"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr ""
@@ -2766,17 +2755,16 @@ msgstr "Почтовые и FTP эккоунты"
 msgid "Add mail user"
 msgstr "Добавить почтовый ящик"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Менеджер файлов"
 
-msgid "Webstatistics"
-msgstr "Статистика"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
+msgid "Group/User management"
 msgstr ""
 
 msgid "Email Accounts"
@@ -2830,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3203,6 +3191,12 @@ msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
+msgstr ""
+
+msgid "Lostpw email"
+msgstr ""
+
+msgid "Lostpw link"
 msgstr ""
 
 msgid "ISPCP - Reseller/Order email setup"

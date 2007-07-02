@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:15-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,9 +81,8 @@ msgstr ""
 msgid "Reseller IP list is empty!"
 msgstr "代理的IP列表为空！"
 
-#, fuzzy
 msgid "No."
-msgstr "No."
+msgstr ""
 
 msgid "Assign"
 msgstr "分配"
@@ -151,9 +150,8 @@ msgstr "关键数据"
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr "不限制"
@@ -185,21 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -729,9 +723,8 @@ msgstr "别名"
 msgid "Mail"
 msgstr "邮件"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "SQL数据库"
@@ -748,9 +741,8 @@ msgstr "磁盘"
 msgid "Undefined user accounting error!"
 msgstr "未定义的用户帐户错误！"
 
-#, fuzzy
 msgid "This reseller has already dispatched more <b>"
-msgstr "This reseller has already dispatched more <b>"
+msgstr ""
 
 msgid "Then the value you are trying to enter now !<br>"
 msgstr "然后是您正尝试输入的数值!<br>"
@@ -779,9 +771,8 @@ msgstr "</b> 地址 !<br>编辑代理中断"
 msgid "Edit reseller"
 msgstr "编辑代理"
 
-#, fuzzy
 msgid "E-mail"
-msgstr "E-mail"
+msgstr ""
 
 msgid "Max domain count"
 msgstr "最大域名数量"
@@ -876,8 +867,8 @@ msgstr "用户登录名称"
 msgid "User password"
 msgstr "用户密码"
 
-msgid "User real (first and last) Name"
-msgstr "用户真实姓名"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "消息模板"
@@ -981,9 +972,8 @@ msgstr "管理IP"
 msgid "Available IPs"
 msgstr "可用的IP"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "卸载"
@@ -1075,8 +1065,8 @@ msgstr "界面"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - 管理/丢失密码邮件设置"
 
-msgid "Lostpw email"
-msgstr "丢失密码邮件"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr ""
@@ -1087,8 +1077,8 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr "用户姓名"
 
-msgid "Lostpw link"
-msgstr "丢失密码链接"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "代理列表为空"
@@ -1208,8 +1198,8 @@ msgstr "删除了用户"
 msgid "Email Updated"
 msgstr "电子邮件设置成功更新"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "该用户拥有域名！<br>要删除用户，必须先删除域名！"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "用户被禁用"
@@ -1448,25 +1438,22 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-msgid "Lostpassword"
-msgstr ""
-
-msgid "Activationlink valid (minutes)"
+msgid "Activation link expire time (minutes)"
 msgstr ""
 
 msgid "Bruteforce detection"
 msgstr ""
 
-msgid "Time between logins"
+msgid "Block time between logins"
 msgstr ""
 
-msgid "Number of login attempts"
+msgid "Max number of login attempts"
 msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr ""
 
-msgid "Time between logins (seconds)"
+msgid "Block time between logins (seconds)"
 msgstr ""
 
 msgid "Other settings"
@@ -1547,9 +1534,8 @@ msgstr "已关闭的求助信息"
 msgid "[New]"
 msgstr "[新]"
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr "ISPCP - 客户/启用邮件自动回复"
@@ -1578,23 +1564,20 @@ msgstr "CPU系统信息"
 msgid "CPU model"
 msgstr "CPU型号"
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
 msgid "CPU cache"
 msgstr "CPU缓存"
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr "系统内存信息"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Total"
 msgstr "全部"
@@ -1827,14 +1810,14 @@ msgstr "转发到"
 msgid "Please type database name!"
 msgstr "请输入数据库名称！"
 
-msgid "Too long database name!"
-msgstr "数据库名称太长！"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "指定的数据库名称已经存在！"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "不允许使用通配符 % 和 ? ！"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "成功创建SQL数据库！"
@@ -1905,14 +1888,14 @@ msgstr "备份"
 msgid "Daily backup"
 msgstr "每日备份"
 
-msgid "Direction download today backup"
-msgstr "直接下载今天备份"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "用您的FTP帐号登录"
 
-msgid "Switch to backup directory"
-msgstr "切换到备份目录"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr ""
@@ -1923,8 +1906,8 @@ msgstr ""
 msgid "Restore backup"
 msgstr "恢复备份"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "单击还原按钮系统将会<br>还原到最后一日的备份"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "恢复"
@@ -2106,17 +2089,14 @@ msgstr "ISPCP - 客户/域名统计信息列表"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr "合计"
@@ -2492,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "用户名太长！"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "不允许使用通配符 % 和 ? ！"
+
 msgid "Specified SQL username name already exists!"
 msgstr "指定的SQL用户名已经存在！"
 
@@ -2594,9 +2577,8 @@ msgstr "CGI 支持： 启用"
 msgid "CGI Support: disabled"
 msgstr "CGI 支持： 禁用"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "别名"
@@ -2718,13 +2700,11 @@ msgstr "查看别名"
 msgid "Users list is empty!"
 msgstr "用户列表为空"
 
-#, fuzzy
 msgid "S"
-msgstr "S"
+msgstr ""
 
-#, fuzzy
 msgid "D"
-msgstr "D"
+msgstr ""
 
 msgid "Details"
 msgstr "详情"
@@ -2775,17 +2755,16 @@ msgstr "电子邮件及FTP账号"
 msgid "Add mail user"
 msgstr "添加email用户"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "文件管理器"
 
-msgid "Webstatistics"
-msgstr "Web统计信息"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
+msgid "Group/User management"
 msgstr ""
 
 msgid "Email Accounts"
@@ -2839,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3214,6 +3193,12 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP"
 
+msgid "Lostpw email"
+msgstr "丢失密码邮件"
+
+msgid "Lostpw link"
+msgstr "丢失密码链接"
+
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - 代理/订购邮件设置"
 
@@ -3286,9 +3271,8 @@ msgstr "新订购"
 msgid "Update order"
 msgstr "更新订购"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "订购"
@@ -3323,9 +3307,8 @@ msgstr "备份/还原"
 msgid "Apache logs"
 msgstr "Apache日志"
 
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 msgid "ISPCP - User/Add user"
 msgstr "ISPCP - 用户/添加用户"

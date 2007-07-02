@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Deutsch"
 
-#, fuzzy
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 msgid "Administrator login"
 msgstr ""
@@ -190,13 +189,11 @@ msgstr "PHP Unterstützung"
 msgid "CGI / Perl"
 msgstr "CGI / Perl Unterstützung"
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -210,9 +207,8 @@ msgstr "Eigene Fehlerseiten"
 msgid "Protected areas"
 msgstr "Geschützte Bereiche"
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Verzeichnis Übersicht"
@@ -277,9 +273,8 @@ msgstr "Anlegen"
 msgid "ISPCP - Admin/Manage users/Add User"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Administrator"
-msgstr "Administrator"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "Keine oder falsche Eingabe!"
@@ -332,9 +327,8 @@ msgstr "alles älter als 6 Monate"
 msgid "older than 12 months"
 msgstr "alles älter als 1 Jahr"
 
-#, fuzzy
 msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Administrator/Add hosting plan"
+msgstr ""
 
 msgid "Add hosting plan"
 msgstr "Hosting Paket anlegen"
@@ -621,9 +615,8 @@ msgstr "Alle abgeschlossenen Supportanfragen wurden erfolgreich gelöscht!"
 msgid "ISPCP - Domain/Details"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Domain details"
-msgstr "Domain details"
+msgstr ""
 
 msgid "Domain name"
 msgstr "Domain Name"
@@ -631,9 +624,8 @@ msgstr "Domain Name"
 msgid "Domain IP"
 msgstr "Domain IP Adresse"
 
-#, fuzzy
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "PHP support"
 msgstr "PHP Unterstützung"
@@ -671,9 +663,8 @@ msgstr "MySQL Datenbanken"
 msgid "SQL users"
 msgstr "MySQL Benutzer"
 
-#, fuzzy
 msgid "Subdomains"
-msgstr "Subdomains"
+msgstr ""
 
 msgid "Domain aliases"
 msgstr "Domain Aliase"
@@ -831,9 +822,8 @@ msgstr "Domain Konto"
 msgid "Edit admin"
 msgstr "Administrator bearbeiten"
 
-#, fuzzy
 msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Administrator/Edit hosting plan"
+msgstr ""
 
 msgid "Price Style"
 msgstr ""
@@ -877,8 +867,8 @@ msgstr "Benutzeranmeldung (System Name)"
 msgid "User password"
 msgstr "Benutzerpasswort"
 
-msgid "User real (first and last) Name"
-msgstr "Kundenname (Vor- und Nachname)"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Nachrichten Vorlage"
@@ -889,9 +879,8 @@ msgstr "Betreff"
 msgid "Apply changes"
 msgstr "Änderungen übernehmen"
 
-#, fuzzy
 msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Administrator/Hosting Plan Management"
+msgstr ""
 
 msgid "Hosting plans"
 msgstr "Hosting Pakete"
@@ -920,9 +909,8 @@ msgstr "Hosting Paket wurde aktualisiert!"
 msgid "Hosting plans not found!"
 msgstr "Es sind keine Hosting Pakete im System vorhanden!"
 
-#, fuzzy
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgid "Enabled"
 msgstr "Aktiviert"
@@ -1077,8 +1065,8 @@ msgstr "Design Einstellungen"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Admin/Kennwort vergessen E-Mmail Einstellungen'"
 
-msgid "Lostpw email"
-msgstr "Kennwort vergessen E-Mail Einstellungen"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "Aktivierungs eMail"
@@ -1089,8 +1077,8 @@ msgstr "Kennwort eMail"
 msgid "User (first and last) name"
 msgstr "Benutzer Vor- und Nachname"
 
-msgid "Lostpw link"
-msgstr "Aktivierungslink"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Es sind keine Wiederverkäufer im System vorhanden!"
@@ -1174,9 +1162,8 @@ msgstr "von Wiederverkäufer"
 msgid "To reseller"
 msgstr "an Wiederverkäufer"
 
-#, fuzzy
 msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - Admin/Manage Sessions"
+msgstr ""
 
 msgid "Manage user sessions"
 msgstr "Angemeldete Benutzer verwalten"
@@ -1211,8 +1198,8 @@ msgstr "Benutzer wurde gelöscht!"
 msgid "Email Updated"
 msgstr "eMail Konto wurde aktualisiert!"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Der zu löschende Benutzer hat noch Domains!<br> Löschen Sie diese zuerst!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "Benutzer wurde gesperrt!"
@@ -1391,9 +1378,8 @@ msgstr "Serverstatistiken"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 msgid "Service"
 msgstr "Dienste"
@@ -1452,26 +1438,23 @@ msgstr "Allgemeine Einstellungen"
 msgid "Settings"
 msgstr "Einstellungen"
 
-msgid "Lostpassword"
-msgstr "Verlorenes Passwort"
-
-msgid "Activationlink valid (minutes)"
-msgstr "Gültigkeitsdauer des Aktivierungslinks (Minuten)"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce Schutz"
 
-msgid "Time between logins"
-msgstr "Zeit zwischen Anmeldeversuchen"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Anzahl der Anmeldeversuche"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Sperrzeit (Minuten)"
 
-msgid "Time between logins (seconds)"
-msgstr "Zeit zwischen Anmeldeversuchen (Sekunden)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Andere Einstellungen"
@@ -1506,9 +1489,8 @@ msgstr ""
 msgid "Services"
 msgstr ""
 
-#, fuzzy
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
 msgid "Protocol"
 msgstr "Protokoll"
@@ -1582,9 +1564,8 @@ msgstr "CPU Systeminformation"
 msgid "CPU model"
 msgstr "CPU Model"
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
 msgid "CPU cache"
 msgstr "CPU Cache"
@@ -1610,9 +1591,8 @@ msgstr "Auslagerungsdatei (Swap)"
 msgid "Up time"
 msgstr "Online Zeit"
 
-#, fuzzy
 msgid "Kernel"
-msgstr "Kernel"
+msgstr ""
 
 msgid "Load"
 msgstr "Auslastung (Load)"
@@ -1620,16 +1600,14 @@ msgstr "Auslastung (Load)"
 msgid "Filesystem system Info"
 msgstr "Dateisystem Systeminformation"
 
-#, fuzzy
 msgid "Mount"
-msgstr "Mount"
+msgstr ""
 
 msgid "Type"
 msgstr "Typ"
 
-#, fuzzy
 msgid "Partition"
-msgstr "Partition"
+msgstr ""
 
 msgid "Percent"
 msgstr "Prozent"
@@ -1673,9 +1651,8 @@ msgstr "Nachricht beantworten"
 msgid "Send reply"
 msgstr "Antwort senden"
 
-#, fuzzy
 msgid "ISPCP Client : Add Alias"
-msgstr "ISPCP Client : Add Alias"
+msgstr ""
 
 msgid "Manage domain alias"
 msgstr "Domain Aliase verwalten"
@@ -1833,14 +1810,14 @@ msgstr "Weiterleiten an"
 msgid "Please type database name!"
 msgstr "Bitte geben Sie einen Datenbanknamen an!"
 
-msgid "Too long database name!"
-msgstr "MySQL Datebankname ist zu lang!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "MySQL Datenbankname ist bereits vergeben!"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Wildcards ausser % aund ? sind nicht erlaubt!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "MySQL Datenbank wurde erfolgreich angelegt!"
@@ -1911,14 +1888,14 @@ msgstr "Tägliche Sicherung"
 msgid "Daily backup"
 msgstr "Tägliche Sicherung"
 
-msgid "Direction download today backup"
-msgstr "Um Ihre Serversicherung herunterzuladen gehen sie wie folgt vor:"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Melden Sie sich via FTP an"
 
-msgid "Switch to backup directory"
-msgstr "Wechseln Sie in das Verzeichnis <i>backups</i></b>"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr "Laden Sie die darin befindliche Datei herunter"
@@ -1929,8 +1906,8 @@ msgstr "<i>(Bezeichnung: backup_jjjj_MM_TT.tar.bz2)<i>"
 msgid "Restore backup"
 msgstr "Sicherung wiederherstellen"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Klicken Sie auf den <i>Wiederherstellen</i></b> Button und das System wird auf die Sicherung des letzten Tages wiederhergestellt!"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Wiederherstellen"
@@ -2016,9 +1993,8 @@ msgstr "Catch All E-Mail anlegen"
 msgid "Mail accounts list"
 msgstr "E-Mail Konten"
 
-#, fuzzy
 msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - Client/Cronjob Manager"
+msgstr ""
 
 msgid "Cronjob Manager"
 msgstr "Cronjob Verwaltung"
@@ -2035,9 +2011,8 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#, fuzzy
 msgid "Cronjob"
-msgstr "Cronjob"
+msgstr ""
 
 msgid "Command to run:"
 msgstr "Auszufürende Befehle:"
@@ -2066,9 +2041,8 @@ msgstr "Abbrechen"
 msgid "Edit Cronjob"
 msgstr "Cronjob bearbeiten"
 
-#, fuzzy
 msgid "Cronjobs"
-msgstr "Cronjobs"
+msgstr ""
 
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
 msgstr "Die zu löschende Domain Alias hat noch E-Mail Konten!<br> Löschen Sie diese zuerst!"
@@ -2193,9 +2167,8 @@ msgstr "Domain Aliasname"
 msgid "Enable mail auto responder"
 msgstr "Autobeantwortung aktivieren"
 
-#, fuzzy
 msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Client/Manage Error Custom Pages"
+msgstr ""
 
 msgid "Server error - please choose error page"
 msgstr "Systemfehler - bitte wählen Sie Fehlerseite"
@@ -2295,9 +2268,8 @@ msgstr "Speicherplatzverbrauch"
 msgid "User language updated successfully!"
 msgstr "Sprache wurde erfolgreich aktualisiert!"
 
-#, fuzzy
 msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Client/Change Language"
+msgstr ""
 
 msgid "Subdomain list is empty!"
 msgstr "Es sind keine Subdomains im System vorhanden!"
@@ -2500,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Benutzername ist zu lang!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Wildcards ausser % aund ? sind nicht erlaubt!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "MySQL Benutzername ist bereits vergeben!"
 
@@ -2602,9 +2577,8 @@ msgstr "CGI Service: aktiviert"
 msgid "CGI Support: disabled"
 msgstr "CGI Service: deaktiviert"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Domain Aliase"
@@ -2627,9 +2601,8 @@ msgstr "keine"
 msgid "There are no available hosting plans for update"
 msgstr "Es sind keine Hosting Pakete zum Ändern vorhanden"
 
-#, fuzzy
 msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Update hosting plan"
+msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ihre Bestellung für das Hosting Paket Update wurde erfolgreich in das System eingetragen."
@@ -2640,9 +2613,8 @@ msgstr "Ihre Bestellung für das Hosting Paket Update wurde erfolgreich aus dem 
 msgid "Message was send!"
 msgstr "Nachricht wurde versandt!"
 
-#, fuzzy
 msgid "Webtools"
-msgstr "Webtools"
+msgstr ""
 
 msgid "Customise error pages for your domain"
 msgstr ""
@@ -2695,9 +2667,8 @@ msgstr "Administratoren"
 msgid "Normal users"
 msgstr "Benutzer"
 
-#, fuzzy
 msgid "Domains"
-msgstr "Domains"
+msgstr ""
 
 msgid "System messages"
 msgstr "System Nachrichten"
@@ -2735,9 +2706,8 @@ msgstr "Status"
 msgid "D"
 msgstr "Details"
 
-#, fuzzy
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Sind Sie sicher, dass Sie den Status dieser Domain ändern wollen?"
@@ -2764,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Zurück"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr "Gesperrt"
@@ -2792,11 +2761,11 @@ msgstr "phpMyAdmin"
 msgid "Filemanager"
 msgstr "Datei Manager"
 
-msgid "Webstatistics"
-msgstr "Web Statistiken"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Benutzer/ Gruppen"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "eMail Konten"
@@ -2849,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3224,9 +3193,14 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
 
-#, fuzzy
+msgid "Lostpw email"
+msgstr "Kennwort vergessen E-Mail Einstellungen"
+
+msgid "Lostpw link"
+msgstr "Aktivierungslink"
+
 msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Reseller/Order email setup"
+msgstr ""
 
 msgid "Manage orders"
 msgstr "Bestellungen verwalten"
@@ -3240,9 +3214,8 @@ msgstr "Benutzer wurde erfolgreich angelegt!"
 msgid "Customer order was removed successful!"
 msgstr "Die Bestellung wurde erfolgreich gelöscht!"
 
-#, fuzzy
 msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Reseller/Order details"
+msgstr ""
 
 msgid "Order data updated successfully!"
 msgstr "Bestelldaten erfolgreich aktualisiert!"
@@ -3271,9 +3244,8 @@ msgstr "Sind Sie sicher, dass Sie diese Bestellung löschen wollen?"
 msgid "Add to the system"
 msgstr "Hinzufügen"
 
-#, fuzzy
 msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Reseller/Order settings"
+msgstr ""
 
 msgid "Header"
 msgstr "Kopfzeile"
@@ -3287,9 +3259,8 @@ msgstr " Ziel URL"
 msgid "Footer"
 msgstr "Fußzeile"
 
-#, fuzzy
 msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Reseller/Order management"
+msgstr ""
 
 msgid "You do not have new orders!"
 msgstr "Es sind keine neuen Bestellungen im System vorhanden!"
@@ -3300,9 +3271,8 @@ msgstr "Neue Bestellung"
 msgid "Update order"
 msgstr "Update Bestellung"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Bestellung"

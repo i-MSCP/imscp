@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,16 +21,14 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Dutch"
 
-#, fuzzy
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 msgid "Administrator login"
 msgstr ""
 
-#, fuzzy
 msgid "Login"
-msgstr "Login"
+msgstr ""
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -89,16 +87,14 @@ msgstr "Nr."
 msgid "Assign"
 msgstr "Toewijzen"
 
-#, fuzzy
 msgid "Label"
-msgstr "Label"
+msgstr ""
 
 msgid "Number"
 msgstr "Nummer"
 
-#, fuzzy
 msgid "Reseller"
-msgstr "Reseller"
+msgstr ""
 
 msgid "This user name already exist!"
 msgstr "Deze gebruikersnaam bestaat al!"
@@ -187,21 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -215,9 +207,8 @@ msgstr "Aangepaste error paginas"
 msgid "Protected areas"
 msgstr "Beschermde gebieden"
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Mappenlijst"
@@ -228,9 +219,8 @@ msgstr "Apache logbestanden"
 msgid "AwStats"
 msgstr "AWStats"
 
-#, fuzzy
 msgid "Logo upload"
-msgstr "Logo upload"
+msgstr ""
 
 msgid "yes"
 msgstr "ja"
@@ -274,9 +264,8 @@ msgstr "Straat 2"
 msgid "Phone"
 msgstr "Telefoon"
 
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Add"
 msgstr "Toevoegen"
@@ -635,9 +624,8 @@ msgstr "Domeinnaam"
 msgid "Domain IP"
 msgstr "Domein IP"
 
-#, fuzzy
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "PHP support"
 msgstr "PHP ondersteuning"
@@ -663,13 +651,11 @@ msgstr "In gebruik"
 msgid "Limit"
 msgstr "Limiet"
 
-#, fuzzy
 msgid "Mail accounts"
-msgstr "Mail accounts"
+msgstr ""
 
-#, fuzzy
 msgid "FTP accounts"
-msgstr "FTP accounts"
+msgstr ""
 
 msgid "SQL databases"
 msgstr "MySQL databanken"
@@ -731,17 +717,14 @@ msgstr "Domein"
 msgid "Subdomain"
 msgstr "Subdomein"
 
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
-#, fuzzy
 msgid "Mail"
-msgstr "Mail"
+msgstr ""
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "MySQL databank"
@@ -788,9 +771,8 @@ msgstr "</b> Adres!<br>Bewerken reseller mislukt!"
 msgid "Edit reseller"
 msgstr "Wijzig reseller"
 
-#, fuzzy
 msgid "E-mail"
-msgstr "E-mail"
+msgstr ""
 
 msgid "Max domain count"
 msgstr "Max aantal domeinen"
@@ -885,8 +867,8 @@ msgstr "Gebruikers(login-)naam"
 msgid "User password"
 msgstr "Gebruikerswachtwoord"
 
-msgid "User real (first and last) Name"
-msgstr "Gebruikers (voor- en achter-) naam"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Bericht template"
@@ -1068,9 +1050,8 @@ msgstr "Upload logo (190x60)"
 msgid "Logo file"
 msgstr "Logo bestand"
 
-#, fuzzy
 msgid "Upload"
-msgstr "Upload"
+msgstr ""
 
 msgid "Remove"
 msgstr "Verwijder"
@@ -1084,8 +1065,8 @@ msgstr "Lay-out"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-msgid "Lostpw email"
-msgstr "E-mail"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "Activatie E-mail"
@@ -1096,8 +1077,8 @@ msgstr "Paswoord E-mail"
 msgid "User (first and last) name"
 msgstr "Gebruikers (voor- en achter-) naam"
 
-msgid "Lostpw link"
-msgstr "Link"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Er zijn nog geen resellers"
@@ -1217,8 +1198,8 @@ msgstr "Gebruiker verwijderd"
 msgid "Email Updated"
 msgstr "E-mail gewijzigd"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Deze gebruiker heeft nog een domein.<br>Als u de gebruiker wilt verwijderen, dient u eerst de domein te verwijderen."
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "Gebruiker is gedeactiveerd"
@@ -1358,23 +1339,20 @@ msgstr "Dag:"
 msgid "Hour"
 msgstr "Uur"
 
-#, fuzzy
 msgid "Web in"
-msgstr "Web in"
+msgstr ""
 
 msgid "Web out"
 msgstr "Web uit"
 
-#, fuzzy
 msgid "Mail in"
-msgstr "Mail in"
+msgstr ""
 
 msgid "Mail out"
 msgstr "Mail uit"
 
-#, fuzzy
 msgid "Pop/IMAP in"
-msgstr "Pop/IMAP in"
+msgstr ""
 
 msgid "Pop/IMAP out"
 msgstr "Pop/IMAP uit"
@@ -1400,16 +1378,14 @@ msgstr "Server statistieken"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 msgid "Service"
 msgstr "Dienst"
 
-#, fuzzy
 msgid "Server status"
-msgstr "Server status"
+msgstr ""
 
 msgid "ISPCP - Admin/Server Traffic Settings"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -1462,26 +1438,23 @@ msgstr "Algemene instellingen"
 msgid "Settings"
 msgstr "Instellingen"
 
-msgid "Lostpassword"
-msgstr "Wachtwoord verloren"
-
-msgid "Activationlink valid (minutes)"
-msgstr "Activatielink geldig (minuten)"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce detectie"
 
-msgid "Time between logins"
-msgstr "Tijd tussen inloggen"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Aantal inlogpogingen"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Geblokkeerd (minuten)"
 
-msgid "Time between logins (seconds)"
-msgstr "Tijd tussen inloggen (seconden)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Andere instellingen"
@@ -1519,9 +1492,8 @@ msgstr ""
 msgid "Port"
 msgstr "Poort"
 
-#, fuzzy
 msgid "Protocol"
-msgstr "Protocol"
+msgstr ""
 
 msgid "You have no support tickets."
 msgstr "U heeft geen support tickets"
@@ -1553,9 +1525,8 @@ msgstr "Laatste antwoord"
 msgid "Delete all"
 msgstr "Verwijder alles"
 
-#, fuzzy
 msgid "Open tickets"
-msgstr "Open tickets"
+msgstr ""
 
 msgid "Closed tickets"
 msgstr "Gesloten tickets"
@@ -1563,9 +1534,8 @@ msgstr "Gesloten tickets"
 msgid "[New]"
 msgstr "[Nieuw]"
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -1591,28 +1561,23 @@ msgstr "Vitale systeem info"
 msgid "CPU system Info"
 msgstr "CPU systeem info"
 
-#, fuzzy
 msgid "CPU model"
-msgstr "CPU model"
+msgstr ""
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
-#, fuzzy
 msgid "CPU cache"
-msgstr "CPU cache"
+msgstr ""
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr "Geheugen systeem info"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Total"
 msgstr "Totaal"
@@ -1620,16 +1585,14 @@ msgstr "Totaal"
 msgid "Free"
 msgstr "Vrij"
 
-#, fuzzy
 msgid "Swap"
-msgstr "Swap"
+msgstr ""
 
 msgid "Up time"
 msgstr "Uptime"
 
-#, fuzzy
 msgid "Kernel"
-msgstr "Kernel"
+msgstr ""
 
 msgid "Load"
 msgstr "Belasting"
@@ -1637,13 +1600,11 @@ msgstr "Belasting"
 msgid "Filesystem system Info"
 msgstr "Filesysteem info"
 
-#, fuzzy
 msgid "Mount"
-msgstr "Mount"
+msgstr ""
 
-#, fuzzy
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 msgid "Partition"
 msgstr "Partitie"
@@ -1657,9 +1618,8 @@ msgstr "Grootte"
 msgid "Ticket not found!"
 msgstr "Ticket niet gevonden!"
 
-#, fuzzy
 msgid "Open ticket"
-msgstr "Open ticket"
+msgstr ""
 
 msgid "Close ticket"
 msgstr "Sluit ticket"
@@ -1850,14 +1810,14 @@ msgstr "Doorsturen naar"
 msgid "Please type database name!"
 msgstr "Gelieve een databank naam in te vullen"
 
-msgid "Too long database name!"
-msgstr "Te lange databank naam!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "Gespecificeerde databank naam bestaat al"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Wildcards zoals % en ? zijn niet toegestaan!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "MySQL databank succesvol aangemaakt"
@@ -1922,21 +1882,20 @@ msgstr "Backup archief gepland voor herstel"
 msgid "ISPCP - Client/Daily Backup"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Dagelijkse backup"
 
-msgid "Direction download today backup"
-msgstr "Verwijzing backup vandaag"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Log in met uw FTP account"
 
-msgid "Switch to backup directory"
-msgstr "Schakel over naar backup directory"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr "Download het enige bestand in deze directory"
@@ -1947,8 +1906,8 @@ msgstr "(meestal backup_YYY_MM_DD.tar genaamd)"
 msgid "Restore backup"
 msgstr "Herstel backup"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Klik op herstelknop en het stystem zal de laatst genomen backup terug zetten"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Herstel"
@@ -1980,9 +1939,8 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Manage users"
 msgstr "Beheer gebruikers"
 
-#, fuzzy
 msgid "Mail users"
-msgstr "Mail users"
+msgstr ""
 
 msgid "Auto respond"
 msgstr "Automatisch antwoord"
@@ -1993,9 +1951,8 @@ msgstr "Domein mails"
 msgid "Subdomain mails"
 msgstr "Subdomein mails"
 
-#, fuzzy
 msgid "Alias mails"
-msgstr "Alias mails"
+msgstr ""
 
 msgid "Mails total"
 msgstr "Mails totaal"
@@ -2003,20 +1960,17 @@ msgstr "Mails totaal"
 msgid "FTPs total"
 msgstr "Totaal FTP gebruikers"
 
-#, fuzzy
 msgid "Catch all account"
-msgstr "Catch all account"
+msgstr ""
 
-#, fuzzy
 msgid "Catch all"
-msgstr "Catch all"
+msgstr ""
 
 msgid "FTP users"
 msgstr "FTP gebruikers"
 
-#, fuzzy
 msgid "FTP account"
-msgstr "FTP account"
+msgstr ""
 
 msgid "ISPCP - Client/Change Password"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -2057,9 +2011,8 @@ msgstr "ja"
 msgid "No"
 msgstr "Nee"
 
-#, fuzzy
 msgid "Cronjob"
-msgstr "Cronjob"
+msgstr ""
 
 msgid "Command to run:"
 msgstr "Commando om uit te voeren:"
@@ -2088,9 +2041,8 @@ msgstr "Annuleer"
 msgid "Edit Cronjob"
 msgstr "Wijzig cronjob"
 
-#, fuzzy
 msgid "Cronjobs"
-msgstr "Cronjobs"
+msgstr ""
 
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
 msgstr "De domeinalias die u wilt verwijderen heeft e-mail acoounts!<br>U dient deze eerst te verwijderen!"
@@ -2137,17 +2089,14 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr "Som"
@@ -2334,9 +2283,8 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Manage domains"
 msgstr "Beheer domeinen"
 
-#, fuzzy
 msgid "Mount point"
-msgstr "Mount point"
+msgstr ""
 
 msgid "Forward"
 msgstr "Doorsturen"
@@ -2524,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Gebruikersnaam is te lang"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Wildcards zoals % en ? zijn niet toegestaan!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "gegeven MySQL gebruikersnaam bestaat al"
 
@@ -2587,9 +2538,8 @@ msgstr "SQL query uitvoeren"
 msgid "SQL query"
 msgstr "MySQL query"
 
-#, fuzzy
 msgid "Query status"
-msgstr "Query status"
+msgstr ""
 
 msgid "Query result"
 msgstr "Query resultaat"
@@ -2663,9 +2613,8 @@ msgstr "Uw aanvraag voor een hostingpakket is succesvol verwijderd"
 msgid "Message was send!"
 msgstr "Bericht is verzonden"
 
-#, fuzzy
 msgid "Webtools"
-msgstr "Webtools"
+msgstr ""
 
 msgid "Customise error pages for your domain"
 msgstr ""
@@ -2757,9 +2706,8 @@ msgstr "Status"
 msgid "D"
 msgstr "Details"
 
-#, fuzzy
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 msgid "Are you sure you want to change the status of domain account?"
 msgstr "Weet u zeker dat u de status van het account wilt wijzigen?"
@@ -2770,9 +2718,8 @@ msgstr "Weet u zeker dat u dit account wilt verwijderen?"
 msgid "Administrators"
 msgstr "Beheerders"
 
-#, fuzzy
 msgid "Resellers"
-msgstr "Resellers"
+msgstr ""
 
 msgid "Search"
 msgstr "Zoeken"
@@ -2808,26 +2755,23 @@ msgstr "E-mail en FTP accounts"
 msgid "Add mail user"
 msgstr "Mail gebruiker toevoegen"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
-#, fuzzy
 msgid "Filemanager"
-msgstr "Filemanager"
+msgstr ""
 
-msgid "Webstatistics"
-msgstr "Webstatistieken"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Groep - Gebruikersbeheer"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "E-mail accounts"
 
-#, fuzzy
 msgid "FTP Accounts"
-msgstr "FTP Accounts"
+msgstr ""
 
 msgid "Update Hosting Package"
 msgstr ""
@@ -2850,9 +2794,8 @@ msgstr "Domein mail"
 msgid "Email forward"
 msgstr "E-mail doorsturing"
 
-#, fuzzy
 msgid "Alias mail"
-msgstr "Alias mail"
+msgstr ""
 
 msgid "Alias forward"
 msgstr "Alias doorsturing"
@@ -2875,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3238,19 +3181,23 @@ msgstr "Bekijk details"
 msgid "User accounts"
 msgstr "Gebruikersaccounts"
 
-#, fuzzy
 msgid "Mail account"
-msgstr "Mail account"
+msgstr ""
 
-#, fuzzy
 msgid "Extras"
-msgstr "Extras"
+msgstr ""
 
 msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Virtual Hosting Control System"
+
+msgid "Lostpw email"
+msgstr "E-mail"
+
+msgid "Lostpw link"
+msgstr "Link"
 
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -3279,9 +3226,8 @@ msgstr "Bestellingsgegevens"
 msgid "Hosting plan"
 msgstr "Hostingpakket"
 
-#, fuzzy
 msgid "Hosting details"
-msgstr "Hosting details"
+msgstr ""
 
 msgid "Order details"
 msgstr "Bestellingsdetails"
@@ -3325,9 +3271,8 @@ msgstr "Nieuwe bestelling"
 msgid "Update order"
 msgstr "Bestelling wijzigen"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Bestelling"
@@ -3359,9 +3304,8 @@ msgstr ""
 msgid "Backup / Restore"
 msgstr "Backup / Herstel"
 
-#, fuzzy
 msgid "Apache logs"
-msgstr "Apache logs"
+msgstr ""
 
 msgid "Awstats"
 msgstr "AWStats"
@@ -3387,9 +3331,8 @@ msgstr "Deze reseller heeft nog geen domeinen"
 msgid "ISPCP - Users"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Stats"
-msgstr "Stats"
+msgstr ""
 
 msgid "Edit properties"
 msgstr "Wijzig instellingen"

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Ukrainian"
 
-#, fuzzy
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 msgid "Administrator login"
 msgstr ""
@@ -184,21 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -212,9 +207,8 @@ msgstr "Індивідуальні сторінки помилок"
 msgid "Protected areas"
 msgstr "Захищені зони"
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Список директорій"
@@ -729,9 +723,8 @@ msgstr "Аліас"
 msgid "Mail"
 msgstr "Пошта"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "База даних SQL"
@@ -874,8 +867,8 @@ msgstr "Логін користувача"
 msgid "User password"
 msgstr "Пароль користувача"
 
-msgid "User real (first and last) Name"
-msgstr "Ім'я й прізвище користувача"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Шаблон повідомлення"
@@ -979,9 +972,8 @@ msgstr "Керування IP"
 msgid "Available IPs"
 msgstr "Доступні IP"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Видалити"
@@ -1073,8 +1065,8 @@ msgstr "Макет"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Адміністратор/Налаштування втрати пароля"
 
-msgid "Lostpw email"
-msgstr "E-mail для відновлення пароля"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr ""
@@ -1085,8 +1077,8 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr "Ім'я й прізвище користувача"
 
-msgid "Lostpw link"
-msgstr "Посилання на відновлення пароля"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Список реселерів порожній!"
@@ -1206,8 +1198,8 @@ msgstr "Користувача видалено"
 msgid "Email Updated"
 msgstr "Поштова скринька оновлена"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Цей користувач має домен!<br>Для видалення користувача спочатку видаліть домен!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "Користувача заблоковано"
@@ -1347,13 +1339,11 @@ msgstr "День:"
 msgid "Hour"
 msgstr "Година"
 
-#, fuzzy
 msgid "Web in"
-msgstr "Web in"
+msgstr ""
 
-#, fuzzy
 msgid "Web out"
-msgstr "Web out"
+msgstr ""
 
 msgid "Mail in"
 msgstr "Пошта в"
@@ -1448,26 +1438,23 @@ msgstr "Головні налаштування"
 msgid "Settings"
 msgstr "Налаштування"
 
-msgid "Lostpassword"
-msgstr "Відновити пароль"
-
-msgid "Activationlink valid (minutes)"
-msgstr "Час життя посилання активації"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Визначення перебором"
 
-msgid "Time between logins"
-msgstr "Час між входами"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Кількість спроб входу"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Час блокування (хвилини)"
 
-msgid "Time between logins (seconds)"
-msgstr "Час між входами (сек.)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Налаштування замовлення"
@@ -1583,16 +1570,14 @@ msgstr "Швидкість процесора (MHz)"
 msgid "CPU cache"
 msgstr "Кеш процесора"
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr "Інформація про пам'ять"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Total"
 msgstr "Разом"
@@ -1606,9 +1591,8 @@ msgstr "Своп"
 msgid "Up time"
 msgstr "Час роботи"
 
-#, fuzzy
 msgid "Kernel"
-msgstr "Kernel"
+msgstr ""
 
 msgid "Load"
 msgstr "Завантаження"
@@ -1826,14 +1810,14 @@ msgstr "Переслати:"
 msgid "Please type database name!"
 msgstr "Будь ласка, введіть назву бази даних!"
 
-msgid "Too long database name!"
-msgstr "Занадто довга назва БД!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "Вказане ім'я бази даних уже існує!"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Маски (% та ?) заборонені!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "База даних SQL успішно створена!"
@@ -1904,14 +1888,14 @@ msgstr "Резервне копіювання"
 msgid "Daily backup"
 msgstr "Щоденна архівація"
 
-msgid "Direction download today backup"
-msgstr "Завантаження щоденного архівування"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Ввійти як користувач FTP"
 
-msgid "Switch to backup directory"
-msgstr "Обрати директорію резервних архівів"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr ""
@@ -1922,15 +1906,14 @@ msgstr ""
 msgid "Restore backup"
 msgstr "Відновити резервний архів"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Натисність кнопку Відновити, і система відновить останню щоденну копію!"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Відновити"
 
-#, fuzzy
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 msgid "Enable"
 msgstr "Увімкнути"
@@ -2106,17 +2089,14 @@ msgstr "ISPCP - Клієнт/Статистика домену"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr "Сума"
@@ -2492,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Занадто довге ім'я користувача!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Маски (% та ?) заборонені!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "Вказаний користувач бази даних уже існує!"
 
@@ -2594,9 +2577,8 @@ msgstr "Підтримка CGI: увімкнено"
 msgid "CGI Support: disabled"
 msgstr "Підтримка CGI: вимкнено"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Аліаси"
@@ -2752,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Назад"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr "Блоковано"
@@ -2774,18 +2755,17 @@ msgstr "Користувачі E-mail і FTP"
 msgid "Add mail user"
 msgstr "Додати поштову скриньку"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Менеджер файлів"
 
-msgid "Webstatistics"
-msgstr "Статистика Web"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Група - Керування користувачами"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "Поштові скриньки"
@@ -2838,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3213,6 +3193,12 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Реселер/Налаштування відновлення пароля"
 
+msgid "Lostpw email"
+msgstr "E-mail для відновлення пароля"
+
+msgid "Lostpw link"
+msgstr "Посилання на відновлення пароля"
+
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - Реселер/Налаштування замовлення"
 
@@ -3285,9 +3271,8 @@ msgstr "Нове замовлення"
 msgid "Update order"
 msgstr "Оновити замовлення"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Замовлення"

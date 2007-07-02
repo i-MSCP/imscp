@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -183,20 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
 msgid "JSP"
 msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -219,9 +216,8 @@ msgstr "ディレクトリ一覧"
 msgid "Apache logfiles"
 msgstr "Apacheログファイル"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 msgid "Logo upload"
 msgstr "ロゴのアップロード"
@@ -727,9 +723,8 @@ msgstr "エイリアス"
 msgid "Mail"
 msgstr "電子メール"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "データベース"
@@ -872,8 +867,8 @@ msgstr "ユーザーのログイン名"
 msgid "User password"
 msgstr "ユーザーパスワード"
 
-msgid "User real (first and last) Name"
-msgstr "ユーザーの氏名"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "メッセージのテンプレート"
@@ -1070,8 +1065,8 @@ msgstr "レイアウト"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - 管理者/パスワード紛失時 メール設定"
 
-msgid "Lostpw email"
-msgstr "パスワード紛失時の送信メール"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "アクティベーションメール"
@@ -1082,7 +1077,7 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr "ユーザーの氏名"
 
-msgid "Lostpw link"
+msgid "Lost password link"
 msgstr ""
 
 msgid "Reseller list is empty!"
@@ -1203,7 +1198,7 @@ msgstr "ユーザー情報は削除されました"
 msgid "Email Updated"
 msgstr "メールの設定が更新されました"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
 msgstr ""
 
 msgid "User was disabled"
@@ -1356,13 +1351,11 @@ msgstr ""
 msgid "Mail out"
 msgstr ""
 
-#, fuzzy
 msgid "Pop/IMAP in"
-msgstr "Pop/IMAP in"
+msgstr ""
 
-#, fuzzy
 msgid "Pop/IMAP out"
-msgstr "Pop/IMAP out"
+msgstr ""
 
 msgid "Other in"
 msgstr ""
@@ -1445,26 +1438,23 @@ msgstr "基本設定"
 msgid "Settings"
 msgstr "設定"
 
-msgid "Lostpassword"
-msgstr "パスワードを忘れたとき教える"
-
-msgid "Activationlink valid (minutes)"
-msgstr "アクティベーションリンクの有効時間（分）"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "ブルートフォース検知"
 
-msgid "Time between logins"
-msgstr "ログインからの時間"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
+msgid "Max number of login attempts"
 msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "ログイン拒否時間(分)"
 
-msgid "Time between logins (seconds)"
-msgstr "ログインからの時間(秒)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "その他設定"
@@ -1541,13 +1531,11 @@ msgstr "チケットを開く"
 msgid "Closed tickets"
 msgstr "処理済チケット"
 
-#, fuzzy
 msgid "[New]"
-msgstr "[New]"
+msgstr ""
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr ""
@@ -1582,9 +1570,8 @@ msgstr "CPUクロック(MHz)"
 msgid "CPU cache"
 msgstr "CPUキャッシュメモリ"
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr "システムメモリー情報"
@@ -1823,13 +1810,13 @@ msgstr "転送先アドレス"
 msgid "Please type database name!"
 msgstr ""
 
-msgid "Too long database name!"
-msgstr "データベース名が長すぎます"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
+msgid "Wildcards such as %% and ? are not allowed!"
 msgstr ""
 
 msgid "SQL database created successfully!"
@@ -1901,13 +1888,13 @@ msgstr "バックアップ"
 msgid "Daily backup"
 msgstr "日次バックアップ"
 
-msgid "Direction download today backup"
+msgid "Instructions to download today's backup"
 msgstr ""
 
 msgid "Login with your FTP account"
 msgstr ""
 
-msgid "Switch to backup directory"
+msgid "Switch to backups/ directory"
 msgstr ""
 
 msgid "Download the files stored in this directory"
@@ -1919,8 +1906,8 @@ msgstr "(backup_YYYY_MM_DD.tar.bz2の形で保存されます)"
 msgid "Restore backup"
 msgstr "バックアップからリストア"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "復元ボタンをクリックしてください システムは最後にバックアップされた時点へ復元されます。"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "リストア"
@@ -2024,9 +2011,8 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#, fuzzy
 msgid "Cronjob"
-msgstr "Cronjob"
+msgstr ""
 
 msgid "Command to run:"
 msgstr "起動コマンド："
@@ -2106,13 +2092,11 @@ msgstr ""
 msgid "WEB"
 msgstr "ウェブ"
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr "合計"
@@ -2488,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "ユーザー名が長すぎます"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr ""
+
 msgid "Specified SQL username name already exists!"
 msgstr ""
 
@@ -2768,18 +2755,17 @@ msgstr "メールとFTPのアカウント"
 msgid "Add mail user"
 msgstr "メールユーザー追加"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "ファイルマネージャー"
 
-msgid "Webstatistics"
-msgstr "Web統計"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "グループとユーザーの管理"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "メールアカウント"
@@ -2832,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3205,6 +3191,12 @@ msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
+msgstr ""
+
+msgid "Lostpw email"
+msgstr "パスワード紛失時の送信メール"
+
+msgid "Lostpw link"
 msgstr ""
 
 msgid "ISPCP - Reseller/Order email setup"

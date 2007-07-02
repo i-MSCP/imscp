@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -150,9 +150,8 @@ msgstr ""
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr ""
@@ -184,17 +183,14 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
 msgid "SSI"
 msgstr ""
@@ -211,9 +207,8 @@ msgstr ""
 msgid "Protected areas"
 msgstr ""
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Klasör listeleme"
@@ -653,9 +648,8 @@ msgstr "Özellik"
 msgid "Used"
 msgstr ""
 
-#, fuzzy
 msgid "Limit"
-msgstr "Limit"
+msgstr ""
 
 msgid "Mail accounts"
 msgstr "Mail hesapları"
@@ -726,13 +720,11 @@ msgstr ""
 msgid "Alias"
 msgstr "Takma ad"
 
-#, fuzzy
 msgid "Mail"
-msgstr "Mail"
+msgstr ""
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr ""
@@ -743,9 +735,8 @@ msgstr ""
 msgid "Traffic"
 msgstr ""
 
-#, fuzzy
 msgid "Disk"
-msgstr "Disk"
+msgstr ""
 
 msgid "Undefined user accounting error!"
 msgstr ""
@@ -876,7 +867,7 @@ msgstr ""
 msgid "User password"
 msgstr ""
 
-msgid "User real (first and last) Name"
+msgid "User real (first and last) name"
 msgstr ""
 
 msgid "Message template"
@@ -981,9 +972,8 @@ msgstr ""
 msgid "Available IPs"
 msgstr "Kullanılabilir IPler"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr ""
@@ -1075,7 +1065,7 @@ msgstr "Taslak"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr ""
 
-msgid "Lostpw email"
+msgid "Lost password e-mail"
 msgstr ""
 
 msgid "Activation E-Mail"
@@ -1087,7 +1077,7 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr ""
 
-msgid "Lostpw link"
+msgid "Lost password link"
 msgstr ""
 
 msgid "Reseller list is empty!"
@@ -1208,7 +1198,7 @@ msgstr ""
 msgid "Email Updated"
 msgstr "Email güncellendi"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
 msgstr ""
 
 msgid "User was disabled"
@@ -1388,9 +1378,8 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr ""
 
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 msgid "Service"
 msgstr ""
@@ -1449,25 +1438,22 @@ msgstr "Genel ayarlar"
 msgid "Settings"
 msgstr ""
 
-msgid "Lostpassword"
+msgid "Activation link expire time (minutes)"
 msgstr ""
-
-msgid "Activationlink valid (minutes)"
-msgstr "Etkinleştirme linki geçerliliği (dakika)"
 
 msgid "Bruteforce detection"
 msgstr ""
 
-msgid "Time between logins"
+msgid "Block time between logins"
 msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Giriş denemesi sayısı"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Engelleme süresi"
 
-msgid "Time between logins (seconds)"
+msgid "Block time between logins (seconds)"
 msgstr ""
 
 msgid "Other settings"
@@ -1575,21 +1561,17 @@ msgstr "Hayati sistem hakkında bilgi"
 msgid "CPU system Info"
 msgstr ""
 
-#, fuzzy
 msgid "CPU model"
-msgstr "CPU model"
+msgstr ""
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
-#, fuzzy
 msgid "CPU cache"
-msgstr "CPU cache"
+msgstr ""
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr ""
@@ -1816,9 +1798,8 @@ msgstr ""
 msgid "Add mail users"
 msgstr "Mail kullanıcıları ekle"
 
-#, fuzzy
 msgid "Normal mail"
-msgstr "Normal mail"
+msgstr ""
 
 msgid "Forward mail"
 msgstr "Mail yönlendir"
@@ -1829,14 +1810,14 @@ msgstr "Yönlendir"
 msgid "Please type database name!"
 msgstr ""
 
-msgid "Too long database name!"
+msgid "Database name is too long!"
 msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Wilcard olarak % ve ? kabul edilmiyor!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr ""
@@ -1907,13 +1888,13 @@ msgstr "Yedek"
 msgid "Daily backup"
 msgstr ""
 
-msgid "Direction download today backup"
+msgid "Instructions to download today's backup"
 msgstr ""
 
 msgid "Login with your FTP account"
 msgstr ""
 
-msgid "Switch to backup directory"
+msgid "Switch to backups/ directory"
 msgstr ""
 
 msgid "Download the files stored in this directory"
@@ -1925,15 +1906,14 @@ msgstr "(örn. yedek_YIL_AY_GUN.tar.bz2)"
 msgid "Restore backup"
 msgstr ""
 
-msgid "Click Restore button and the system will restore last daily backup"
+msgid "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
 msgstr ""
 
-#, fuzzy
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 msgid "Enable"
 msgstr "Açık"
@@ -2109,16 +2089,14 @@ msgstr ""
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
 msgid "SMTP"
 msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr ""
@@ -2344,9 +2322,8 @@ msgstr ""
 msgid "New ticket"
 msgstr "Yeni etiket"
 
-#, fuzzy
 msgid "Protected area status should be OK if you want to delete it!"
-msgstr "Protected area status should be OK if you want to delete it!"
+msgstr ""
 
 msgid "Protected area deleted successfully!"
 msgstr ""
@@ -2402,9 +2379,8 @@ msgstr ""
 msgid "Protected area created successfully!"
 msgstr ""
 
-#, fuzzy
 msgid "Protected area status should be OK if you want to edit it!"
-msgstr "Protected area status should be OK if you want to edit it!"
+msgstr ""
 
 msgid "You have no users !"
 msgstr "Kullanıcınız yok !"
@@ -2495,6 +2471,9 @@ msgstr ""
 
 msgid "User name too long!"
 msgstr ""
+
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Wilcard olarak % ve ? kabul edilmiyor!"
 
 msgid "Specified SQL username name already exists!"
 msgstr ""
@@ -2598,9 +2577,8 @@ msgstr "CGI Desteği: açık"
 msgid "CGI Support: disabled"
 msgstr "CGI Desteği: kapalı"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr ""
@@ -2777,17 +2755,16 @@ msgstr "Email ve FTP hesapları"
 msgid "Add mail user"
 msgstr "Mail kullanıcısı ekle"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Dosya yöneticisi"
 
-msgid "Webstatistics"
-msgstr "Web istatistikleri"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
+msgid "Group/User management"
 msgstr ""
 
 msgid "Email Accounts"
@@ -2841,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3216,6 +3193,12 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr ""
 
+msgid "Lostpw email"
+msgstr ""
+
+msgid "Lostpw link"
+msgstr ""
+
 msgid "ISPCP - Reseller/Order email setup"
 msgstr ""
 
@@ -3288,9 +3271,8 @@ msgstr "Yeni sipariş"
 msgid "Update order"
 msgstr ""
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Sipariş"

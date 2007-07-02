@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -150,9 +150,8 @@ msgstr "Alap információk"
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr "korlátlan"
@@ -184,21 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -221,9 +216,8 @@ msgstr "Könyvtár lista"
 msgid "Apache logfiles"
 msgstr "Apache naplófájlok"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 msgid "Logo upload"
 msgstr "Logó feltöltés"
@@ -270,9 +264,8 @@ msgstr "Utca 2"
 msgid "Phone"
 msgstr "Telefon"
 
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Add"
 msgstr "Hozzáad"
@@ -499,9 +492,8 @@ msgstr "Add meg a feladó címét!"
 msgid "You send email to your users successfully!"
 msgstr "Email sikeresen elküldve a felhasználódnak!"
 
-#, fuzzy
 msgid "Email marketing"
-msgstr "Email marketing"
+msgstr ""
 
 msgid "Send message to"
 msgstr "Üzenet küldése:"
@@ -629,9 +621,8 @@ msgstr "Domain részletek"
 msgid "Domain name"
 msgstr "Domain név"
 
-#, fuzzy
 msgid "Domain IP"
-msgstr "Domain IP"
+msgstr ""
 
 msgid "Status"
 msgstr "Állapot"
@@ -720,23 +711,20 @@ msgstr "Nap"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr "ISPCP - Admin/Felhasználók/Viszonteladó módosítása"
 
-#, fuzzy
 msgid "Domain"
-msgstr "Domain"
+msgstr ""
 
 msgid "Subdomain"
 msgstr "Aldomain"
 
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
 msgid "Mail"
 msgstr "Email"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "SQL Adatbázis"
@@ -783,9 +771,8 @@ msgstr "</b> Cím!<br> Viszonteladó szerkesztése megszakítva!"
 msgid "Edit reseller"
 msgstr "Viszonteladó szerkesztése"
 
-#, fuzzy
 msgid "E-mail"
-msgstr "E-mail"
+msgstr ""
 
 msgid "Max domain count"
 msgstr "Max domain szám"
@@ -880,8 +867,8 @@ msgstr "Felhasználó bejelentkezés (rendszer) név"
 msgid "User password"
 msgstr "Felhasználó jelszó"
 
-msgid "User real (first and last) Name"
-msgstr "Felhasználó valós (vezeték és kereszt) Neve"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Üzenet sablon"
@@ -985,9 +972,8 @@ msgstr "IP címek kezelése"
 msgid "Available IPs"
 msgstr "Rendelkezésre álló IP címek"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Eltávolít"
@@ -1079,8 +1065,8 @@ msgstr "Kinézet"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Admin/Elveszett jelszó email beállítás"
 
-msgid "Lostpw email"
-msgstr "Elveszett jelszó email"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr ""
@@ -1091,8 +1077,8 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr "Felhasználó (vezeték és kereszt) név"
 
-msgid "Lostpw link"
-msgstr "Elveszett jelszó link"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Viszonteladó lista üres!"
@@ -1212,8 +1198,8 @@ msgstr "Felhasználó törölve"
 msgid "Email Updated"
 msgstr "Email Frisssítve"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Ennek a felhasználónak létezik domainje!<br>Felhasználó törléséhez - elõször töröld a domaint!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "A felhasználó letiltva"
@@ -1272,9 +1258,8 @@ msgstr "Nyelvi fájl"
 msgid "Install"
 msgstr "Telepít"
 
-#, fuzzy
 msgid "Export"
-msgstr "Export"
+msgstr ""
 
 msgid "ISPCP - Reseller statistics"
 msgstr "ISPCP - Viszonteladói statisztika"
@@ -1453,25 +1438,22 @@ msgstr "Általános Beállítások"
 msgid "Settings"
 msgstr ""
 
-msgid "Lostpassword"
+msgid "Activation link expire time (minutes)"
 msgstr ""
-
-msgid "Activationlink valid (minutes)"
-msgstr "Aktivációs link érvényes (perc)"
 
 msgid "Bruteforce detection"
 msgstr ""
 
-msgid "Time between logins"
+msgid "Block time between logins"
 msgstr ""
 
-msgid "Number of login attempts"
+msgid "Max number of login attempts"
 msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr ""
 
-msgid "Time between logins (seconds)"
+msgid "Block time between logins (seconds)"
 msgstr ""
 
 msgid "Other settings"
@@ -1594,9 +1576,8 @@ msgstr "Processzor bogomips"
 msgid "Memory system info"
 msgstr "Memória Infó"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Total"
 msgstr "Összes"
@@ -1604,16 +1585,14 @@ msgstr "Összes"
 msgid "Free"
 msgstr "Szabad"
 
-#, fuzzy
 msgid "Swap"
-msgstr "Swap"
+msgstr ""
 
 msgid "Up time"
 msgstr "Üzemidõ"
 
-#, fuzzy
 msgid "Kernel"
-msgstr "Kernel"
+msgstr ""
 
 msgid "Load"
 msgstr "Terhelés"
@@ -1831,14 +1810,14 @@ msgstr "Továbbítás erre:"
 msgid "Please type database name!"
 msgstr "Írd be az adatbázis nevét!"
 
-msgid "Too long database name!"
-msgstr "Túl hosszú adatbázisnév!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "A megadott adatbázis név már létezik!"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Különleges karakterek mint % és ? nem engedélyezettek!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "SQL adatbázis sikeresen létrehozva!"
@@ -1909,14 +1888,14 @@ msgstr "Mentés"
 msgid "Daily backup"
 msgstr "Napi mentés"
 
-msgid "Direction download today backup"
-msgstr "Napi mentés letöltése"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Lépj be az FTP hozzáféréseddel!"
 
-msgid "Switch to backup directory"
-msgstr "Válts a backup könyvtárra"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr "Töltsd le a könyvtárban található egyetlen fájlt!"
@@ -1927,8 +1906,8 @@ msgstr "(rendszerint elnevezve: domain-backup-ÉÉÉÉ.HH.NN-ÓÓPPMM.tar.bz2)"
 msgid "Restore backup"
 msgstr "Mentés visszaállítása"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Kattints a Visszaállítás gombra<br>és a rendszer visszatölti a napi mentést"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Visszaállítás"
@@ -2110,17 +2089,14 @@ msgstr "ISPCP - Kliens/Domain Statisztika"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr "Össz"
@@ -2496,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Felhasználó név túl hosszú!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Különleges karakterek mint % és ? nem engedélyezettek!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "A megadott SQL felhasználó már létezik!"
 
@@ -2598,9 +2577,8 @@ msgstr "CGI Támogatás: engedélyezve"
 msgid "CGI Support: disabled"
 msgstr "CGI Támogatás: tiltva"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Aliasok"
@@ -2722,9 +2700,8 @@ msgstr "aliasok mutatása"
 msgid "Users list is empty!"
 msgstr "A felhasználó lista üres!"
 
-#, fuzzy
 msgid "S"
-msgstr "S"
+msgstr ""
 
 msgid "D"
 msgstr "R"
@@ -2757,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Vissza"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr "Felfüggesztve"
@@ -2779,17 +2755,16 @@ msgstr "Email és FTP hozzáférések"
 msgid "Add mail user"
 msgstr "Email felhasználó hozzáadása"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Fájlkezelõ"
 
-msgid "Webstatistics"
-msgstr "Web statisztikák"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
+msgid "Group/User management"
 msgstr ""
 
 msgid "Email Accounts"
@@ -2843,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -2882,9 +2857,8 @@ msgstr "A felhasználó már be van lépve, vagy folyamat megosztási probléma!
 msgid "Domain status is not OK - Login aborted."
 msgstr ""
 
-#, fuzzy
 msgid "Domain alias"
-msgstr "Domain alias"
+msgstr ""
 
 msgid "Manage Orders"
 msgstr "Rendelések Kezelése"
@@ -3219,6 +3193,12 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Viszonteladó/Elveszett jelszó email beállítás"
 
+msgid "Lostpw email"
+msgstr "Elveszett jelszó email"
+
+msgid "Lostpw link"
+msgstr "Elveszett jelszó link"
+
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - Viszonteladó/Rendelés email beállítás"
 
@@ -3327,9 +3307,8 @@ msgstr "Mentés / Visszaállítás"
 msgid "Apache logs"
 msgstr "Apache napló"
 
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 msgid "ISPCP - User/Add user"
 msgstr "ISPCP - Felhasználó/Új felhasználó"

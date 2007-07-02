@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -150,9 +150,8 @@ msgstr "Zdroj dat"
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr "Bez omezení"
@@ -217,9 +216,8 @@ msgstr "Výpis adresáře"
 msgid "Apache logfiles"
 msgstr "Soubory protokolů Apache"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 msgid "Logo upload"
 msgstr "Uložení loga"
@@ -266,9 +264,8 @@ msgstr ""
 msgid "Phone"
 msgstr "telefon"
 
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Add"
 msgstr "Přidat"
@@ -288,9 +285,8 @@ msgstr ""
 msgid "Add admin"
 msgstr "Přidat administrátora"
 
-#, fuzzy
 msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Admin/Admin Log"
+msgstr ""
 
 msgid "Log is empty!"
 msgstr "Log je prázdný!"
@@ -652,9 +648,8 @@ msgstr "Funkce"
 msgid "Used"
 msgstr ""
 
-#, fuzzy
 msgid "Limit"
-msgstr "Limit"
+msgstr ""
 
 msgid "Mail accounts"
 msgstr "Poštovní účty"
@@ -722,16 +717,14 @@ msgstr "Doména"
 msgid "Subdomain"
 msgstr ""
 
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
 msgid "Mail"
 msgstr "e-mail"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr ""
@@ -742,9 +735,8 @@ msgstr ""
 msgid "Traffic"
 msgstr ""
 
-#, fuzzy
 msgid "Disk"
-msgstr "Disk"
+msgstr ""
 
 msgid "Undefined user accounting error!"
 msgstr ""
@@ -779,9 +771,8 @@ msgstr "</b> Chybná adresa!<br>Úprava partnera byla zrušena."
 msgid "Edit reseller"
 msgstr "Editovat prodejce"
 
-#, fuzzy
 msgid "E-mail"
-msgstr "E-mail"
+msgstr ""
 
 msgid "Max domain count"
 msgstr ""
@@ -876,8 +867,8 @@ msgstr "Přihlašovací jméno uživatele (systémové)"
 msgid "User password"
 msgstr "Uživatelské heslo"
 
-msgid "User real (first and last) Name"
-msgstr "Skutečné jméno (křestní i příjmení) uživatele"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Šablona zprávy"
@@ -981,9 +972,8 @@ msgstr ""
 msgid "Available IPs"
 msgstr "Dostupná IP"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Odinstalovat"
@@ -1003,9 +993,8 @@ msgstr ""
 msgid "No email account system errors"
 msgstr ""
 
-#, fuzzy
 msgid "ISPCP debugger"
-msgstr "ISPCP debugger"
+msgstr ""
 
 msgid "Domain errors"
 msgstr "Chyby pro doménu"
@@ -1076,7 +1065,7 @@ msgstr "rozvržení"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr ""
 
-msgid "Lostpw email"
+msgid "Lost password e-mail"
 msgstr ""
 
 msgid "Activation E-Mail"
@@ -1088,7 +1077,7 @@ msgstr "e-mail s heslem"
 msgid "User (first and last) name"
 msgstr "Uživatelské jméno (jméno i příjmení)"
 
-msgid "Lostpw link"
+msgid "Lost password link"
 msgstr ""
 
 msgid "Reseller list is empty!"
@@ -1209,7 +1198,7 @@ msgstr "Uživatel odstraněn"
 msgid "Email Updated"
 msgstr "Email aktualizován"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
 msgstr ""
 
 msgid "User was disabled"
@@ -1389,9 +1378,8 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP Admin / Sytémové nástroje / Stav serveru"
 
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 msgid "Service"
 msgstr "služba"
@@ -1450,25 +1438,22 @@ msgstr "Obecné nastavení"
 msgid "Settings"
 msgstr "nastavení"
 
-msgid "Lostpassword"
-msgstr "Zapomenuté heslo"
-
-msgid "Activationlink valid (minutes)"
+msgid "Activation link expire time (minutes)"
 msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Vynucená detekce"
 
-msgid "Time between logins"
+msgid "Block time between logins"
 msgstr ""
 
-msgid "Number of login attempts"
+msgid "Max number of login attempts"
 msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr ""
 
-msgid "Time between logins (seconds)"
+msgid "Block time between logins (seconds)"
 msgstr ""
 
 msgid "Other settings"
@@ -1549,9 +1534,8 @@ msgstr "Zavřené tikety"
 msgid "[New]"
 msgstr "[Nový]"
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr "ISPCP - Klient/Povolit Mail Autoresponder"
@@ -1577,17 +1561,14 @@ msgstr "Nezbytné systémová informace"
 msgid "CPU system Info"
 msgstr "CPU systémové informace"
 
-#, fuzzy
 msgid "CPU model"
-msgstr "CPU model"
+msgstr ""
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
-#, fuzzy
 msgid "CPU cache"
-msgstr "CPU cache"
+msgstr ""
 
 msgid "CPU bogomips"
 msgstr "CPU bogomipsy"
@@ -1829,14 +1810,14 @@ msgstr "Předat komu"
 msgid "Please type database name!"
 msgstr ""
 
-msgid "Too long database name!"
+msgid "Database name is too long!"
 msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Znaky jako % a ? nejsou povoleny!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr ""
@@ -1907,13 +1888,13 @@ msgstr "Záloha"
 msgid "Daily backup"
 msgstr "Denní záloha"
 
-msgid "Direction download today backup"
+msgid "Instructions to download today's backup"
 msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Přihlásit pod FTP účtem"
 
-msgid "Switch to backup directory"
+msgid "Switch to backups/ directory"
 msgstr ""
 
 msgid "Download the files stored in this directory"
@@ -1925,7 +1906,7 @@ msgstr "(obvykle se jménem zaloha_RRRR_MM_DD.tar.bz2)"
 msgid "Restore backup"
 msgstr ""
 
-msgid "Click Restore button and the system will restore last daily backup"
+msgid "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2108,9 +2089,8 @@ msgstr ""
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
 msgid "SMTP"
 msgstr ""
@@ -2492,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Uživatelské jméno příliš dlouhé!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Znaky jako % a ? nejsou povoleny!"
+
 msgid "Specified SQL username name already exists!"
 msgstr ""
 
@@ -2594,9 +2577,8 @@ msgstr "Podpora CGI: zapnuta"
 msgid "CGI Support: disabled"
 msgstr "Podpora CGI: vypnuta"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Aliasy"
@@ -2779,10 +2761,10 @@ msgstr ""
 msgid "Filemanager"
 msgstr "Souborový manažer"
 
-msgid "Webstatistics"
-msgstr "Webové statistiky"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
+msgid "Group/User management"
 msgstr ""
 
 msgid "Email Accounts"
@@ -2836,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3211,6 +3193,12 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr ""
 
+msgid "Lostpw email"
+msgstr ""
+
+msgid "Lostpw link"
+msgstr ""
+
 msgid "ISPCP - Reseller/Order email setup"
 msgstr ""
 
@@ -3283,9 +3271,8 @@ msgstr "nová zakázka"
 msgid "Update order"
 msgstr "Pořadí aktualizace"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "pořádek"
@@ -3320,9 +3307,8 @@ msgstr "Záloha / Obnova"
 msgid "Apache logs"
 msgstr "Protokoly Apache"
 
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 msgid "ISPCP - User/Add user"
 msgstr "ISPCP - Uživatel/Přidat uživatele"

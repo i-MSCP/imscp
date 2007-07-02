@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:43-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -867,7 +867,7 @@ msgstr ""
 msgid "User password"
 msgstr ""
 
-msgid "User real (first and last) Name"
+msgid "User real (first and last) name"
 msgstr ""
 
 msgid "Message template"
@@ -1065,7 +1065,7 @@ msgstr ""
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr ""
 
-msgid "Lostpw email"
+msgid "Lost password e-mail"
 msgstr ""
 
 msgid "Activation E-Mail"
@@ -1077,7 +1077,7 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr ""
 
-msgid "Lostpw link"
+msgid "Lost password link"
 msgstr ""
 
 msgid "Reseller list is empty!"
@@ -1198,7 +1198,7 @@ msgstr ""
 msgid "Email Updated"
 msgstr ""
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
 msgstr ""
 
 msgid "User was disabled"
@@ -1438,25 +1438,22 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-msgid "Lostpassword"
-msgstr ""
-
-msgid "Activationlink valid (minutes)"
+msgid "Activation link expire time (minutes)"
 msgstr ""
 
 msgid "Bruteforce detection"
 msgstr ""
 
-msgid "Time between logins"
+msgid "Block time between logins"
 msgstr ""
 
-msgid "Number of login attempts"
+msgid "Max number of login attempts"
 msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr ""
 
-msgid "Time between logins (seconds)"
+msgid "Block time between logins (seconds)"
 msgstr ""
 
 msgid "Other settings"
@@ -1813,13 +1810,13 @@ msgstr ""
 msgid "Please type database name!"
 msgstr ""
 
-msgid "Too long database name!"
+msgid "Database name is too long!"
 msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
+msgid "Wildcards such as %% and ? are not allowed!"
 msgstr ""
 
 msgid "SQL database created successfully!"
@@ -1891,13 +1888,13 @@ msgstr ""
 msgid "Daily backup"
 msgstr ""
 
-msgid "Direction download today backup"
+msgid "Instructions to download today's backup"
 msgstr ""
 
 msgid "Login with your FTP account"
 msgstr ""
 
-msgid "Switch to backup directory"
+msgid "Switch to backups/ directory"
 msgstr ""
 
 msgid "Download the files stored in this directory"
@@ -1909,7 +1906,7 @@ msgstr ""
 msgid "Restore backup"
 msgstr ""
 
-msgid "Click Restore button and the system will restore last daily backup"
+msgid "Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2475,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr ""
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr ""
+
 msgid "Specified SQL username name already exists!"
 msgstr ""
 
@@ -2761,10 +2761,10 @@ msgstr ""
 msgid "Filemanager"
 msgstr ""
 
-msgid "Webstatistics"
+msgid "Web statistics"
 msgstr ""
 
-msgid "Group - Usermanagement"
+msgid "Group/User management"
 msgstr ""
 
 msgid "Email Accounts"
@@ -2818,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3191,6 +3191,12 @@ msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
+msgstr ""
+
+msgid "Lostpw email"
+msgstr ""
+
+msgid "Lostpw link"
 msgstr ""
 
 msgid "ISPCP - Reseller/Order email setup"

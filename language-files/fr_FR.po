@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr_FR@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,9 +81,8 @@ msgstr ""
 msgid "Reseller IP list is empty!"
 msgstr "La liste des IP du revendeur est vide!"
 
-#, fuzzy
 msgid "No."
-msgstr "No."
+msgstr ""
 
 msgid "Assign"
 msgstr "Assigner"
@@ -151,9 +150,8 @@ msgstr "Données essentielles"
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr "illimité"
@@ -185,21 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -213,9 +207,8 @@ msgstr "Pages d'erreurs personnalisées"
 msgid "Protected areas"
 msgstr "Zones protégées"
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Liste des dossiers"
@@ -223,9 +216,8 @@ msgstr "Liste des dossiers"
 msgid "Apache logfiles"
 msgstr "Fichiers journaux d'Apache"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 msgid "Logo upload"
 msgstr "Envoyer le logo"
@@ -272,9 +264,8 @@ msgstr "Rue 2"
 msgid "Phone"
 msgstr "Téléphone"
 
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Add"
 msgstr "Ajouter"
@@ -309,13 +300,11 @@ msgstr "Journal Admin"
 msgid "Clear log"
 msgstr "Effacer le journal"
 
-#, fuzzy
 msgid "Date"
-msgstr "Date"
+msgstr ""
 
-#, fuzzy
 msgid "Message"
-msgstr "Message"
+msgstr ""
 
 msgid "Delete from log:"
 msgstr "Effacer du journal :"
@@ -392,9 +381,8 @@ msgstr "Période de paiement"
 msgid "Available for purchasing"
 msgstr "Disponible à l'achat"
 
-#, fuzzy
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 msgid "(e.g. EUR)"
 msgstr "(Ex. EUR)"
@@ -588,9 +576,8 @@ msgstr "Niveau revendeur et utilisateur"
 msgid "Menu button"
 msgstr "Bouton menu"
 
-#, fuzzy
 msgid "Action"
-msgstr "Action"
+msgstr ""
 
 msgid "Edit"
 msgstr "Edition"
@@ -730,16 +717,14 @@ msgstr "Domaine"
 msgid "Subdomain"
 msgstr "Sous-domaine"
 
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
 msgid "Mail"
 msgstr "Courrier"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "Base de données SQL"
@@ -882,8 +867,8 @@ msgstr "Identifiant de l'utilisateur"
 msgid "User password"
 msgstr "Mot de passe utilisateur"
 
-msgid "User real (first and last) Name"
-msgstr "Prénom de l'utilisateur"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Mise en page du message"
@@ -987,9 +972,8 @@ msgstr "Gérer les adresses IP"
 msgid "Available IPs"
 msgstr "IP disponibles"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Désinstaller"
@@ -1081,8 +1065,8 @@ msgstr "Affichage"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Admin/Recouvrement de mot de passe configuration du email"
 
-msgid "Lostpw email"
-msgstr "Lostpwd email"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "Activation par Email"
@@ -1093,8 +1077,8 @@ msgstr "Mot de passe par Email"
 msgid "User (first and last) name"
 msgstr "Prénom de l'utilisateur"
 
-msgid "Lostpw link"
-msgstr "Lostpw lien"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "La liste du revendeur est vide!"
@@ -1190,9 +1174,8 @@ msgstr "Type d'utilisateur"
 msgid "Last access"
 msgstr "Dernier accès"
 
-#, fuzzy
 msgid "Options"
-msgstr "Options"
+msgstr ""
 
 msgid "Kill session"
 msgstr "Fermeture forcée de la session"
@@ -1215,8 +1198,8 @@ msgstr "Utilisateur supprimé"
 msgid "Email Updated"
 msgstr "Email mis à jour"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Cet utilisateur possède un domaine!<br>Pour supprimer l'utilisateur  - supprimez d'abord le domaine!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "L'utilisateur a été désactivé"
@@ -1260,9 +1243,8 @@ msgstr "Langues installées"
 msgid "Language"
 msgstr "Langue"
 
-#, fuzzy
 msgid "Messages"
-msgstr "Messages"
+msgstr ""
 
 msgid "Default"
 msgstr "Par défaut"
@@ -1399,9 +1381,8 @@ msgstr "ISPCP Admin / Outils Systèmes / Statut Serveur"
 msgid "Host"
 msgstr "Machine"
 
-#, fuzzy
 msgid "Service"
-msgstr "Service"
+msgstr ""
 
 msgid "Server status"
 msgstr "Statut du serveur"
@@ -1457,26 +1438,23 @@ msgstr "Configuration générale"
 msgid "Settings"
 msgstr "Configuration"
 
-msgid "Lostpassword"
-msgstr "Mot de passe perdu"
-
-msgid "Activationlink valid (minutes)"
-msgstr "Validité du lien d'activation (minutes)"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Détection de Bruteforce"
 
-msgid "Time between logins"
-msgstr "Temps entre les accès"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Nombres de tentatives"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Temps limite (minutes)"
 
-msgid "Time between logins (seconds)"
-msgstr "Temps entre les accès (secondes)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Autres configurations"
@@ -1511,9 +1489,8 @@ msgstr ""
 msgid "Services"
 msgstr ""
 
-#, fuzzy
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
 msgid "Protocol"
 msgstr "Protocole"
@@ -1557,9 +1534,8 @@ msgstr "Messages fermés"
 msgid "[New]"
 msgstr "[Nouveau]"
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr "ISPCP - Client/Activer l'Autorépondeur d'Email"
@@ -1573,9 +1549,8 @@ msgstr "jours"
 msgid "hours"
 msgstr "heures"
 
-#, fuzzy
 msgid "minutes"
-msgstr "minutes"
+msgstr ""
 
 msgid "System info"
 msgstr "Infos système"
@@ -1601,13 +1576,11 @@ msgstr "Bogomips CPU"
 msgid "Memory system info"
 msgstr "Infos mémoire système"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
-#, fuzzy
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 msgid "Free"
 msgstr "Libre"
@@ -1618,9 +1591,8 @@ msgstr "Echange"
 msgid "Up time"
 msgstr "Durée de fonctionnement"
 
-#, fuzzy
 msgid "Kernel"
-msgstr "Kernel"
+msgstr ""
 
 msgid "Load"
 msgstr "Charge"
@@ -1631,13 +1603,11 @@ msgstr "Infos sur le système de fichiers"
 msgid "Mount"
 msgstr "Monté"
 
-#, fuzzy
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
-#, fuzzy
 msgid "Partition"
-msgstr "Partition"
+msgstr ""
 
 msgid "Percent"
 msgstr "Pourcentage"
@@ -1840,14 +1810,14 @@ msgstr "Transférer à"
 msgid "Please type database name!"
 msgstr "Entrez le nom de la base de données!"
 
-msgid "Too long database name!"
-msgstr "Nom de la base de donnée trop long!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "Le nom de la base de données existe déjà!"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Les jokers comme % et ? ne sont pas permis."
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "Base de données SQL crée avec succès!"
@@ -1918,14 +1888,14 @@ msgstr "Sauvegarde"
 msgid "Daily backup"
 msgstr "Sauvegardes journalières"
 
-msgid "Direction download today backup"
-msgstr "Pour télécharger la sauvegarde journalière"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Identifiez vous avec votre compte FTP"
 
-msgid "Switch to backup directory"
-msgstr "Aller au dossier de sauvegarde nommé backups"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr "Téléchargez le seul fichier dans le dossier de sauvegarde"
@@ -1936,8 +1906,8 @@ msgstr "(habituellement nommé backup_YYYY_MM_JJ.tar.bz2)"
 msgid "Restore backup"
 msgstr "Restaurer la sauvegarde"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "En cliquant sur le bouton Restaurer<br>et le système va restaurer la sauvegarde<br>journalière"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Restaurer"
@@ -1987,16 +1957,14 @@ msgstr "Alias emails"
 msgid "Mails total"
 msgstr "Total des emails"
 
-#, fuzzy
 msgid "FTPs total"
-msgstr "FTPs total"
+msgstr ""
 
 msgid "Catch all account"
 msgstr "Compte catch all"
 
-#, fuzzy
 msgid "Catch all"
-msgstr "Catch all"
+msgstr ""
 
 msgid "FTP users"
 msgstr "Utilisateurs FTP"
@@ -2049,9 +2017,8 @@ msgstr "Planificateur de tâches"
 msgid "Command to run:"
 msgstr "Commande à exécuté:"
 
-#, fuzzy
 msgid "Minute(s):"
-msgstr "Minute(s):"
+msgstr ""
 
 msgid "Hour(s):"
 msgstr "Heure(s):"
@@ -2122,13 +2089,11 @@ msgstr "ISPCP - Client/Statistiques de Domaine"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
 msgid "POP/IMAP"
 msgstr "POP3/IMAP"
@@ -2507,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Nom d'utilisateur trop long!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Les jokers comme % et ? ne sont pas permis."
+
 msgid "Specified SQL username name already exists!"
 msgstr "Le nom d'utilisateur de la base SQL existe déjà!"
 
@@ -2609,13 +2577,11 @@ msgstr "Support CGI: activé"
 msgid "CGI Support: disabled"
 msgstr "Support CGI: désactivé"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
-#, fuzzy
 msgid "Aliases"
-msgstr "Aliases"
+msgstr ""
 
 msgid "Emails"
 msgstr ""
@@ -2734,13 +2700,11 @@ msgstr "voir les aliases"
 msgid "Users list is empty!"
 msgstr "Liste d'utilisateur est vide!"
 
-#, fuzzy
 msgid "S"
-msgstr "S"
+msgstr ""
 
-#, fuzzy
 msgid "D"
-msgstr "D"
+msgstr ""
 
 msgid "Details"
 msgstr "Détails"
@@ -2770,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Aller en arrière"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr "Suspendu"
@@ -2792,18 +2755,17 @@ msgstr "Comptes email et FTP"
 msgid "Add mail user"
 msgstr "Ajouter un utilisateur email"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Gestionnaire de fichiers"
 
-msgid "Webstatistics"
-msgstr "Statistiques web"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Groupe - Gestion des utilisateurs"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "Comptes email"
@@ -2856,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3069,9 +3031,8 @@ msgstr "Prix du forfait"
 msgid "Setup Fee"
 msgstr "Frais d'installation"
 
-#, fuzzy
 msgid "Performance"
-msgstr "Performance"
+msgstr ""
 
 msgid "ISPCP Reseller : Add Alias"
 msgstr "ISPCP Revendeur : Ajouter des Alias"
@@ -3223,15 +3184,20 @@ msgstr "Comptes utilisateur"
 msgid "Mail account"
 msgstr "Compte email"
 
-#, fuzzy
 msgid "Extras"
-msgstr "Extras"
+msgstr ""
 
 msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Revendeur/Recouvrement de mot de passe configuration du email"
+
+msgid "Lostpw email"
+msgstr "Lostpwd email"
+
+msgid "Lostpw link"
+msgstr "Lostpw lien"
 
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - Revendeur/Commande configuration d'email"
@@ -3305,9 +3271,8 @@ msgstr "Nouvelle commande"
 msgid "Update order"
 msgstr "Mettre-à-jour la demande"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Commande"
@@ -3342,9 +3307,8 @@ msgstr "Sauvegarder / Restaurer"
 msgid "Apache logs"
 msgstr "Journaux d'Apache"
 
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 msgid "ISPCP - User/Add user"
 msgstr "ISPCP - Utilisateur/Ajout utilisateur"
@@ -3367,9 +3331,8 @@ msgstr "Ce revendeur n'a pas encore de domaines!"
 msgid "ISPCP - Users"
 msgstr "ISPCP - Utilisateurs"
 
-#, fuzzy
 msgid "Stats"
-msgstr "Stats"
+msgstr ""
 
 msgid "Edit properties"
 msgstr "Edition des propriétés"

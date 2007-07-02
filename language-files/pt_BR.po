@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:13-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -867,8 +867,8 @@ msgstr "Identificação do usuário no sistema"
 msgid "User password"
 msgstr "Senha do usuário"
 
-msgid "User real (first and last) Name"
-msgstr "Nome real (primeiro e último) do usuário"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Layout da mensagem"
@@ -1065,8 +1065,8 @@ msgstr ""
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Admin/Configuração do E-mail de senha perdida"
 
-msgid "Lostpw email"
-msgstr "E-mail de senha perdida"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "E-Mail de ativação"
@@ -1077,8 +1077,8 @@ msgstr "Senha E-mail"
 msgid "User (first and last) name"
 msgstr "Nome (primeiro e último) do usuário"
 
-msgid "Lostpw link"
-msgstr "Link da senha perdida"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Lista de representantes vazia!"
@@ -1198,8 +1198,8 @@ msgstr "Usuário excluído"
 msgid "Email Updated"
 msgstr "E-mail atualizado"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Este cliente tem um domínio!<br>Para excluir o usuário, remova primeiro o domínio!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "Usuário desabilitado"
@@ -1438,26 +1438,23 @@ msgstr "Configurações Gerais"
 msgid "Settings"
 msgstr "Configurações"
 
-msgid "Lostpassword"
-msgstr "Senha perdida"
-
-msgid "Activationlink valid (minutes)"
-msgstr "Validade do link de ativação(em minutos)"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Detecção de tentativas de ataque \"força bruta\" (bruteforce)"
 
-msgid "Time between logins"
-msgstr "Tempo entre logins"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Número de tentativas e login"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Tempo de bloqueio(em minutos)"
 
-msgid "Time between logins (seconds)"
-msgstr "Tempo entre logins (em segundos)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Outras configurações"
@@ -1813,14 +1810,14 @@ msgstr "Responder para"
 msgid "Please type database name!"
 msgstr "Por favor, informe o nome do banco de dados!"
 
-msgid "Too long database name!"
-msgstr "Nome do banco de dados muito grande"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "Nome do bando de dados já existe!"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Curingas como % e ? não são permitidos!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "Banco de dados criado com sucesso!"
@@ -1891,14 +1888,14 @@ msgstr ""
 msgid "Daily backup"
 msgstr "Backup diário"
 
-msgid "Direction download today backup"
-msgstr "Caminho para o bacup diário"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Login com sua conta de FTP"
 
-msgid "Switch to backup directory"
-msgstr "Alterar diretório de backup"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr ""
@@ -1909,8 +1906,8 @@ msgstr "(nome do backup?  backup_AAA_MM_DD.tar)"
 msgid "Restore backup"
 msgstr "Restaurar backup"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Clique no botão Restore para restaurar o último backup"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Restaurar"
@@ -2475,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Nome de usuário muito longo!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Curingas como % e ? não são permitidos!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "usuário do SQL já existe!"
 
@@ -2761,11 +2761,11 @@ msgstr ""
 msgid "Filemanager"
 msgstr "Gerenciador de arquivos"
 
-msgid "Webstatistics"
-msgstr "Estatísticas WEB"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Gerenciamento de Usuários - Grupos"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "Contas de e-mail"
@@ -2818,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3192,6 +3192,12 @@ msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Representante/Configuração do E-mail de senha perdida"
+
+msgid "Lostpw email"
+msgstr "E-mail de senha perdida"
+
+msgid "Lostpw link"
+msgstr "Link da senha perdida"
 
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - Representante/Configuração do E-mail de pedido"

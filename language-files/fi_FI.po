@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Finnish"
 
-#, fuzzy
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 msgid "Administrator login"
 msgstr ""
@@ -82,9 +81,8 @@ msgstr ""
 msgid "Reseller IP list is empty!"
 msgstr "Jälleenmyyjän IP-lista on tyhjä!"
 
-#, fuzzy
 msgid "No."
-msgstr "No."
+msgstr ""
 
 msgid "Assign"
 msgstr "Määritä"
@@ -152,9 +150,8 @@ msgstr "Päätiedot"
 msgid "Repeat password"
 msgstr ""
 
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "unlimited"
 msgstr "rajoittamaton"
@@ -186,21 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
-#, fuzzy
 msgid "CGI / Perl"
-msgstr "CGI / Perl"
+msgstr ""
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -214,9 +207,8 @@ msgstr "Vaihtoehtoiset virhesivut"
 msgid "Protected areas"
 msgstr "Suojatut alueet"
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Hakemistolistaus"
@@ -224,9 +216,8 @@ msgstr "Hakemistolistaus"
 msgid "Apache logfiles"
 msgstr "Apachen logitiedostot"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
 msgid "Logo upload"
 msgstr "Logon lähetys"
@@ -273,9 +264,8 @@ msgstr "Katuosoite 2"
 msgid "Phone"
 msgstr "Puhelin"
 
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Add"
 msgstr "Lisää"
@@ -631,9 +621,8 @@ msgstr "Domainin tiedot"
 msgid "Domain name"
 msgstr "Domain-nimi"
 
-#, fuzzy
 msgid "Domain IP"
-msgstr "Domain IP"
+msgstr ""
 
 msgid "Status"
 msgstr "Tila"
@@ -722,23 +711,20 @@ msgstr "Päivä"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr "ISPCP - Ylläpito / Hallitse käyttäjiä / Muokkaa jälleenmyyjää"
 
-#, fuzzy
 msgid "Domain"
-msgstr "Domain"
+msgstr ""
 
 msgid "Subdomain"
 msgstr "Alidomain"
 
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
 msgid "Mail"
 msgstr "Sähköposti"
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
 msgid "SQL Database"
 msgstr "SQL-tietokanta"
@@ -785,9 +771,8 @@ msgstr "</b> Osoite!<br>Jälleenmyyjän muokkaus keskeytetty!"
 msgid "Edit reseller"
 msgstr "Muokkaa jälleenmyyjää"
 
-#, fuzzy
 msgid "E-mail"
-msgstr "E-mail"
+msgstr ""
 
 msgid "Max domain count"
 msgstr "Max domainien määrä"
@@ -882,8 +867,8 @@ msgstr "Käyttäjän kirjautumisnimi"
 msgid "User password"
 msgstr "Käyttäjän salasana"
 
-msgid "User real (first and last) Name"
-msgstr "Käyttäjän oikea (etu ja suku) nimi"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Viestipohja"
@@ -987,9 +972,8 @@ msgstr "Hallitse IP-osoitteita"
 msgid "Available IPs"
 msgstr "Saatavilla olevat IP-osoitteet"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Poista"
@@ -1081,8 +1065,8 @@ msgstr "Teema"
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Ylläpito / Salasanamuistuttajan sähköpostiasetukset"
 
-msgid "Lostpw email"
-msgstr "Salasanamuistuttaja"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "Aktivointisähköposti"
@@ -1093,8 +1077,8 @@ msgstr ""
 msgid "User (first and last) name"
 msgstr "Käyttäjän (etu ja suku) nimi"
 
-msgid "Lostpw link"
-msgstr "Salasanamuistuttajan linkki"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Jälleenmyyjälista on tyhjä!"
@@ -1214,8 +1198,8 @@ msgstr "Käyttäjä poistettu!"
 msgid "Email Updated"
 msgstr "Email päivitetty"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Tällä käyttäjällä on domain!<br>Poistaaksesi käyttäjän - poista domain ensin!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "Käyttäjä poistettu käytöstä"
@@ -1394,9 +1378,8 @@ msgstr "Palvelinstatistiikka"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP Ylläpitäjä / Järjestelmätyökalut / Palvelimen tila"
 
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 msgid "Service"
 msgstr "Palvelu"
@@ -1455,26 +1438,23 @@ msgstr "Yleiset asetukset"
 msgid "Settings"
 msgstr "Asetukset"
 
-msgid "Lostpassword"
-msgstr "Salasana hukassa"
-
-msgid "Activationlink valid (minutes)"
-msgstr "Aktivointilinkin voimassaoloaika (minuuttia)"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
 msgid "Bruteforce detection"
 msgstr "Bruteforce-tunnistus"
 
-msgid "Time between logins"
-msgstr "Aika kirjautumisten välillä"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Kirjautumisyritysten määrä"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Estoaika (minuuttia)"
 
-msgid "Time between logins (seconds)"
-msgstr "Aika kirjautumisten välillä (sekuntia)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Muut asetukset"
@@ -1554,9 +1534,8 @@ msgstr "Suljetut kysymykset"
 msgid "[New]"
 msgstr "[Uusi]"
 
-#, fuzzy
 msgid "[Re]"
-msgstr "[Re]"
+msgstr ""
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
 msgstr "ISPCP - Asiakas / Aktivoi sähköpostin automaattivastaus"
@@ -1585,9 +1564,8 @@ msgstr "CPU tiedot"
 msgid "CPU model"
 msgstr "CPU malli"
 
-#, fuzzy
 msgid "CPU MHz"
-msgstr "CPU MHz"
+msgstr ""
 
 msgid "CPU cache"
 msgstr "CPU välimuisti"
@@ -1598,9 +1576,8 @@ msgstr "CPU bogomipsit"
 msgid "Memory system info"
 msgstr "Muistin tiedot"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
 msgid "Total"
 msgstr "Yhteensä"
@@ -1614,9 +1591,8 @@ msgstr "Vaihto"
 msgid "Up time"
 msgstr "Uptime"
 
-#, fuzzy
 msgid "Kernel"
-msgstr "Kernel"
+msgstr ""
 
 msgid "Load"
 msgstr "Kuorma"
@@ -1834,14 +1810,14 @@ msgstr "Ohjaa:"
 msgid "Please type database name!"
 msgstr "Anna tietokannan nimi!"
 
-msgid "Too long database name!"
-msgstr "Liian pitkä tietokannan nimi!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "Määritelty tietokanta on jo olemassa!"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Merkit % ja ? eivät ole sallittuja!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "SQL-tietokanta luotu onnistuneesti!"
@@ -1912,14 +1888,14 @@ msgstr "Varmuuskopio"
 msgid "Daily backup"
 msgstr "Päivittäinen varmuuskopio"
 
-msgid "Direction download today backup"
-msgstr "Ohjeet varmuuskopion lataamiseen"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Kirjaudu FTP-tunnuksellasi"
 
-msgid "Switch to backup directory"
-msgstr "Vaihda varmuuskopiohakemistoon"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr "Lataa tämän hakemiston ainoa tiedosto"
@@ -1930,15 +1906,14 @@ msgstr "(nimetty yleensä backup_YYYY_MM_DD.tar.bz2)"
 msgid "Restore backup"
 msgstr "Palauta varmuuskopio"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Paina Palauta -nappia ja järjestelmä<br>palauttaa edellisen varmuuskopion"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Palauta"
 
-#, fuzzy
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 msgid "Enable"
 msgstr "Aktivoi"
@@ -2036,9 +2011,8 @@ msgstr "Kyllä"
 msgid "No"
 msgstr "Ei"
 
-#, fuzzy
 msgid "Cronjob"
-msgstr "Cronjob"
+msgstr ""
 
 msgid "Command to run:"
 msgstr "Suoritettava komento"
@@ -2115,17 +2089,14 @@ msgstr "ISPCP - Asiakas / Domainstatistiikka"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
 msgid "Sum"
 msgstr "Yht"
@@ -2501,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Liian pitkä käyttäjänimi!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Merkit % ja ? eivät ole sallittuja!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "Määritelty SQL-käyttäjä on jo olemassa!"
 
@@ -2603,9 +2577,8 @@ msgstr "CGI-tuki: käytössä"
 msgid "CGI Support: disabled"
 msgstr "CGI-tuki: pois käytöstä"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Aliakset"
@@ -2727,13 +2700,11 @@ msgstr "näytä aliakset"
 msgid "Users list is empty!"
 msgstr "Käyttäjälista on tyhjä!"
 
-#, fuzzy
 msgid "S"
-msgstr "S"
+msgstr ""
 
-#, fuzzy
 msgid "D"
-msgstr "D"
+msgstr ""
 
 msgid "Details"
 msgstr "Tiedot"
@@ -2763,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Takaisin"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr "Pysäytetty"
@@ -2785,18 +2755,17 @@ msgstr "Email ja FTP-tunnukset"
 msgid "Add mail user"
 msgstr "Lisää sähköpostikäyttäjä"
 
-#, fuzzy
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr ""
 
 msgid "Filemanager"
 msgstr "Tiedostonhallinta"
 
-msgid "Webstatistics"
-msgstr "Web-tilastot"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Ryhmä - Käyttäjähallinta"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "Sähköpostitunnukset"
@@ -2849,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3083,9 +3052,8 @@ msgstr "ISPCP - Jälleenmyyjä / Muokkaa henkilökohtaisia tietoja"
 msgid "ISPCP - Circular"
 msgstr "ISPCP - Keskus"
 
-#, fuzzy
 msgid "Circular"
-msgstr "Circular"
+msgstr ""
 
 msgid "Wrong domain ID!"
 msgstr "Virheellinen domain ID!"
@@ -3225,6 +3193,12 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Jälleenmyyjä / Salasanamuistuttajan sähköpostiasetukset"
 
+msgid "Lostpw email"
+msgstr "Salasanamuistuttaja"
+
+msgid "Lostpw link"
+msgstr "Salasanamuistuttajan linkki"
+
 msgid "ISPCP - Reseller/Order email setup"
 msgstr "ISPCP - Jälleenmyyjä / Tilauksen email-asetukset"
 
@@ -3297,9 +3271,8 @@ msgstr "Uusi tilaus"
 msgid "Update order"
 msgstr "Päivitä tilaus"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Tilaus"
@@ -3334,9 +3307,8 @@ msgstr "Varmuuskopio / palautus"
 msgid "Apache logs"
 msgstr "Apachen logit"
 
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 msgid "ISPCP - User/Add user"
 msgstr "ISPCP - Käyttäjät / Lisää käyttäjä"

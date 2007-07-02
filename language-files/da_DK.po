@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-01 16:52-0500\n"
-"PO-Revision-Date: 2007-07-01 17:16-0500\n"
+"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Dansk"
 
-#, fuzzy
 msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr ""
 
 msgid "Administrator login"
 msgstr ""
@@ -184,20 +183,17 @@ msgstr ""
 msgid "Disk limit [MB]"
 msgstr ""
 
-#, fuzzy
 msgid "PHP"
-msgstr "PHP"
+msgstr ""
 
 msgid "CGI / Perl"
 msgstr "CGI / Perl support"
 
-#, fuzzy
 msgid "JSP"
-msgstr "JSP"
+msgstr ""
 
-#, fuzzy
 msgid "SSI"
-msgstr "SSI"
+msgstr ""
 
 msgid "Frontpage extensions"
 msgstr ""
@@ -211,9 +207,8 @@ msgstr "Egne Fejl-sider"
 msgid "Protected areas"
 msgstr "Beskyttet områder"
 
-#, fuzzy
 msgid "Webmail"
-msgstr "Webmail"
+msgstr ""
 
 msgid "Directory listing"
 msgstr "Mappeliste"
@@ -221,13 +216,11 @@ msgstr "Mappeliste"
 msgid "Apache logfiles"
 msgstr "Apache logfiler"
 
-#, fuzzy
 msgid "AwStats"
-msgstr "AwStats"
+msgstr ""
 
-#, fuzzy
 msgid "Logo upload"
-msgstr "Logo upload"
+msgstr ""
 
 msgid "yes"
 msgstr "ja"
@@ -271,9 +264,8 @@ msgstr "Adresse 2"
 msgid "Phone"
 msgstr "Telefon"
 
-#, fuzzy
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 msgid "Add"
 msgstr "Tilføj"
@@ -281,9 +273,8 @@ msgstr "Tilføj"
 msgid "ISPCP - Admin/Manage users/Add User"
 msgstr "ISPCP - Admin/Håndtére bruger/Tilføj Bruger"
 
-#, fuzzy
 msgid "Administrator"
-msgstr "Administrator"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "Tom data eller forkert felt!"
@@ -294,9 +285,8 @@ msgstr ""
 msgid "Add admin"
 msgstr "Tilføj admin"
 
-#, fuzzy
 msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Admin/Admin Log"
+msgstr ""
 
 msgid "Log is empty!"
 msgstr "Loggen er tom!"
@@ -304,9 +294,8 @@ msgstr "Loggen er tom!"
 msgid "Invalid time period!"
 msgstr ""
 
-#, fuzzy
 msgid "Admin Log"
-msgstr "Admin Log"
+msgstr ""
 
 msgid "Clear log"
 msgstr "Slet log"
@@ -503,9 +492,8 @@ msgstr "Indtast en afsender email!"
 msgid "You send email to your users successfully!"
 msgstr "Du har afsendt E-Mails til dine bruger!"
 
-#, fuzzy
 msgid "Email marketing"
-msgstr "Email marketing"
+msgstr ""
 
 msgid "Send message to"
 msgstr "Send Meddelse til"
@@ -636,21 +624,17 @@ msgstr "Domænenavn"
 msgid "Domain IP"
 msgstr "Domæne IP Adresse"
 
-#, fuzzy
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
-#, fuzzy
 msgid "PHP support"
-msgstr "PHP support"
+msgstr ""
 
-#, fuzzy
 msgid "CGI support"
-msgstr "CGI support"
+msgstr ""
 
-#, fuzzy
 msgid "MySQL support"
-msgstr "MySQL support"
+msgstr ""
 
 msgid "Traffic in MB"
 msgstr "Trafik i MB<br> (Forbrugt/Grænse)"
@@ -733,21 +717,17 @@ msgstr "Domæne"
 msgid "Subdomain"
 msgstr "Subdomæne"
 
-#, fuzzy
 msgid "Alias"
-msgstr "Alias"
+msgstr ""
 
-#, fuzzy
 msgid "Mail"
-msgstr "Mail"
+msgstr ""
 
-#, fuzzy
 msgid "FTP"
-msgstr "FTP"
+msgstr ""
 
-#, fuzzy
 msgid "SQL Database"
-msgstr "SQL Database"
+msgstr ""
 
 msgid "SQL User"
 msgstr "SQL Bruger"
@@ -755,9 +735,8 @@ msgstr "SQL Bruger"
 msgid "Traffic"
 msgstr "Trafikforbrug"
 
-#, fuzzy
 msgid "Disk"
-msgstr "Disk"
+msgstr ""
 
 msgid "Undefined user accounting error!"
 msgstr "Udefineret bruger konto fejl!"
@@ -888,8 +867,8 @@ msgstr "Bruger login navn"
 msgid "User password"
 msgstr "Bruger adgangskode"
 
-msgid "User real (first and last) Name"
-msgstr "Brugerens for- og efternavn"
+msgid "User real (first and last) name"
+msgstr ""
 
 msgid "Message template"
 msgstr "Meddelseskabelon"
@@ -993,9 +972,8 @@ msgstr "Håndtér IP'er"
 msgid "Available IPs"
 msgstr "Tilgænglige IP'er"
 
-#, fuzzy
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Fjern"
@@ -1066,16 +1044,14 @@ msgstr "Layout navn"
 msgid "default"
 msgstr "standard"
 
-#, fuzzy
 msgid "Upload logo"
-msgstr "Upload logo"
+msgstr ""
 
 msgid "Logo file"
 msgstr "Logo fil"
 
-#, fuzzy
 msgid "Upload"
-msgstr "Upload"
+msgstr ""
 
 msgid "Remove"
 msgstr "Fjern"
@@ -1083,15 +1059,14 @@ msgstr "Fjern"
 msgid "Choose default layout"
 msgstr "Vælg standard layout"
 
-#, fuzzy
 msgid "Layout"
-msgstr "Layout"
+msgstr ""
 
 msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISPCP - Admin/Setup Glemt Adgangskode email"
 
-msgid "Lostpw email"
-msgstr "Glemt Adgangskode til E-Mail"
+msgid "Lost password e-mail"
+msgstr ""
 
 msgid "Activation E-Mail"
 msgstr "Aktiverings E-Mail"
@@ -1102,8 +1077,8 @@ msgstr "Adgangskode E-Mail"
 msgid "User (first and last) name"
 msgstr "Bruger (for og efter) navn"
 
-msgid "Lostpw link"
-msgstr "Aktiveringslink"
+msgid "Lost password link"
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Forhandler liste er tom!"
@@ -1223,8 +1198,8 @@ msgstr "Bruger slettet!"
 msgid "Email Updated"
 msgstr "Email opdateret"
 
-msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr "Denne bruger har et domæne! <br>For at slette brugere skal du første slette domænet!"
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
 
 msgid "User was disabled"
 msgstr "Bruger blev deaktiveret"
@@ -1295,9 +1270,8 @@ msgstr "Fandt ingen forhandlere i systemet!"
 msgid "Reseller statistics table"
 msgstr "Forhandler statistik tabel"
 
-#, fuzzy
 msgid "SQL database"
-msgstr "SQL database"
+msgstr ""
 
 msgid "SQL user"
 msgstr "SQL bruger"
@@ -1332,9 +1306,8 @@ msgstr "SMTP<br>Trafik"
 msgid "POP3/IMAP<br>traffic"
 msgstr "POP/IMAP<br>trafik"
 
-#, fuzzy
 msgid "SQL<br>database"
-msgstr "SQL<br>database"
+msgstr ""
 
 msgid "SQL<br>user"
 msgstr "SQL<br>bruger"
@@ -1405,17 +1378,14 @@ msgstr "Server statistik"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
-#, fuzzy
 msgid "Service"
-msgstr "Service"
+msgstr ""
 
-#, fuzzy
 msgid "Server status"
-msgstr "Server status"
+msgstr ""
 
 msgid "ISPCP - Admin/Server Traffic Settings"
 msgstr "ISPCP – Admin/Server Trafik Indstillinger"
@@ -1450,9 +1420,8 @@ msgstr ""
 msgid "Settings saved !"
 msgstr "Indstillinger gemt !"
 
-#, fuzzy
 msgid "Servicemode"
-msgstr "Servicemode"
+msgstr ""
 
 msgid "In this mode only administrators can login"
 msgstr "Her kan kun administratorer logge ind"
@@ -1469,27 +1438,23 @@ msgstr "Generel indstillinger"
 msgid "Settings"
 msgstr "Indstillinger"
 
-msgid "Lostpassword"
-msgstr "Glemt Adgangskode"
+msgid "Activation link expire time (minutes)"
+msgstr ""
 
-msgid "Activationlink valid (minutes)"
-msgstr "Aktiveringslinket gyldigt (minutter)"
-
-#, fuzzy
 msgid "Bruteforce detection"
-msgstr "Bruteforce detection"
+msgstr ""
 
-msgid "Time between logins"
-msgstr "Tid mellem logind"
+msgid "Block time between logins"
+msgstr ""
 
-msgid "Number of login attempts"
-msgstr "Antal logind forsøg"
+msgid "Max number of login attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Blocktid (minutter)"
 
-msgid "Time between logins (seconds)"
-msgstr "Tid mellem logind (sekunder)"
+msgid "Block time between logins (seconds)"
+msgstr ""
 
 msgid "Other settings"
 msgstr "Andre indstillinger"
@@ -1497,9 +1462,8 @@ msgstr "Andre indstillinger"
 msgid "Default language"
 msgstr "Standard sprog"
 
-#, fuzzy
 msgid "Support system"
-msgstr "Support system"
+msgstr ""
 
 msgid "Serverports"
 msgstr "Serverporte"
@@ -1525,9 +1489,8 @@ msgstr ""
 msgid "Services"
 msgstr ""
 
-#, fuzzy
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
 msgid "Protocol"
 msgstr "Protokol"
@@ -1595,35 +1558,29 @@ msgstr "System Information"
 msgid "Vital system info"
 msgstr "System informationer"
 
-#, fuzzy
 msgid "CPU system Info"
-msgstr "CPU system Info"
+msgstr ""
 
-#, fuzzy
 msgid "CPU model"
-msgstr "CPU model"
+msgstr ""
 
 msgid "CPU MHz"
 msgstr "CPU MHZ"
 
-#, fuzzy
 msgid "CPU cache"
-msgstr "CPU cache"
+msgstr ""
 
-#, fuzzy
 msgid "CPU bogomips"
-msgstr "CPU bogomips"
+msgstr ""
 
 msgid "Memory system info"
 msgstr "Hukommelses info"
 
-#, fuzzy
 msgid "RAM"
-msgstr "RAM"
+msgstr ""
 
-#, fuzzy
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 msgid "Free"
 msgstr "Fri"
@@ -1637,9 +1594,8 @@ msgstr "Oppetid"
 msgid "Kernel"
 msgstr "Kerne"
 
-#, fuzzy
 msgid "Load"
-msgstr "Load"
+msgstr ""
 
 msgid "Filesystem system Info"
 msgstr "Filsystem info"
@@ -1647,13 +1603,11 @@ msgstr "Filsystem info"
 msgid "Mount"
 msgstr "Montering"
 
-#, fuzzy
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
-#, fuzzy
 msgid "Partition"
-msgstr "Partition"
+msgstr ""
 
 msgid "Percent"
 msgstr "Procent"
@@ -1697,9 +1651,8 @@ msgstr "Besvar til"
 msgid "Send reply"
 msgstr "Send svar"
 
-#, fuzzy
 msgid "ISPCP Client : Add Alias"
-msgstr "ISPCP Client : Add Alias"
+msgstr ""
 
 msgid "Manage domain alias"
 msgstr "Håndtér domænealias"
@@ -1845,9 +1798,8 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Add mail users"
 msgstr "Tilføj email adresser"
 
-#, fuzzy
 msgid "Normal mail"
-msgstr "Normal mail"
+msgstr ""
 
 msgid "Forward mail"
 msgstr "Videresend mail"
@@ -1858,14 +1810,14 @@ msgstr "Videresend til"
 msgid "Please type database name!"
 msgstr "Indtast database navn!"
 
-msgid "Too long database name!"
-msgstr "SQL databasenavn er for langt!"
+msgid "Database name is too long!"
+msgstr ""
 
 msgid "Specified database name already exists!"
 msgstr "SQL database eksisterer allerede"
 
-msgid "Wildcards as % and ? are not allowed!"
-msgstr "Wildcards som % og ? er ikke tilladte!"
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
 
 msgid "SQL database created successfully!"
 msgstr "SQL database oprettet!"
@@ -1930,21 +1882,20 @@ msgstr "Backup er planlagt til reetablering"
 msgid "ISPCP - Client/Daily Backup"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "Backup"
-msgstr "Backup"
+msgstr ""
 
 msgid "Daily backup"
 msgstr "Bestil backup"
 
-msgid "Direction download today backup"
-msgstr "Download backup via FTP efter kl. 00:00"
+msgid "Instructions to download today's backup"
+msgstr ""
 
 msgid "Login with your FTP account"
 msgstr "Login med din FTP konto"
 
-msgid "Switch to backup directory"
-msgstr "Skift til backup mappe"
+msgid "Switch to backups/ directory"
+msgstr ""
 
 msgid "Download the files stored in this directory"
 msgstr "Download den eneste fil i denne mappe"
@@ -1955,15 +1906,14 @@ msgstr "(normalt kaldet: domæne.tld-backup-ÅÅÅÅ.MM.DD-TTMMSS.tar.bz2)"
 msgid "Restore backup"
 msgstr "Gendan backup"
 
-msgid "Click Restore button and the system will restore last daily backup"
-msgstr "Tryk på Gendan knappen og systemet vil genskabes fra sidste backup!"
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr ""
 
 msgid "Restore"
 msgstr "Gendan"
 
-#, fuzzy
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 msgid "Enable"
 msgstr "Aktiver"
@@ -2004,9 +1954,8 @@ msgstr "Normal<br>(Subdomæne)"
 msgid "Alias mails"
 msgstr "Alias emails"
 
-#, fuzzy
 msgid "Mails total"
-msgstr "Mails total"
+msgstr ""
 
 msgid "FTPs total"
 msgstr "FTP'er total"
@@ -2044,9 +1993,8 @@ msgstr "Opret FangAlle email-konto"
 msgid "Mail accounts list"
 msgstr "Mailkonti liste"
 
-#, fuzzy
 msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - Client/Cronjob Manager"
+msgstr ""
 
 msgid "Cronjob Manager"
 msgstr "Cronjob Håndtering"
@@ -2063,9 +2011,8 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nej"
 
-#, fuzzy
 msgid "Cronjob"
-msgstr "Cronjob"
+msgstr ""
 
 msgid "Command to run:"
 msgstr "Kør Kommando:"
@@ -2085,9 +2032,8 @@ msgstr "Måned(er):"
 msgid "Weekday(s):"
 msgstr "Ugedag(e):"
 
-#, fuzzy
 msgid "Reset"
-msgstr "Reset"
+msgstr ""
 
 msgid "Cancel"
 msgstr "Anullér"
@@ -2095,9 +2041,8 @@ msgstr "Anullér"
 msgid "Edit Cronjob"
 msgstr "Rediger Cronjob"
 
-#, fuzzy
 msgid "Cronjobs"
-msgstr "Cronjobs"
+msgstr ""
 
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
 msgstr "Domænealiaset du prøver at fjerne har email konti !<br>Fjern dem først!"
@@ -2144,21 +2089,17 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Web Stats"
 msgstr ""
 
-#, fuzzy
 msgid "WEB"
-msgstr "WEB"
+msgstr ""
 
-#, fuzzy
 msgid "SMTP"
-msgstr "SMTP"
+msgstr ""
 
-#, fuzzy
 msgid "POP/IMAP"
-msgstr "POP/IMAP"
+msgstr ""
 
-#, fuzzy
 msgid "Sum"
-msgstr "Sum"
+msgstr ""
 
 msgid "Entered passwords differ!"
 msgstr "De indtastede kodeord er forskellige!"
@@ -2226,9 +2167,8 @@ msgstr "Alias navn"
 msgid "Enable mail auto responder"
 msgstr "Aktiver mail autosvarer"
 
-#, fuzzy
 msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Client/Manage Error Custom Pages"
+msgstr ""
 
 msgid "Server error - please choose error page"
 msgstr "Server fejl - vælg venligst fejl side"
@@ -2313,9 +2253,8 @@ msgstr "Kontonavn"
 msgid "Main domain"
 msgstr "Hoveddomæne"
 
-#, fuzzy
 msgid "SQL support"
-msgstr "SQL support"
+msgstr ""
 
 msgid "Choose default language"
 msgstr "Vælg standard sprog"
@@ -2329,9 +2268,8 @@ msgstr "Diskforbrug"
 msgid "User language updated successfully!"
 msgstr "Bruger sprog opdateret!"
 
-#, fuzzy
 msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Client/Change Language"
+msgstr ""
 
 msgid "Subdomain list is empty!"
 msgstr "Subdomæne liste er tom!"
@@ -2534,6 +2472,9 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Brugernavn er for langt!"
 
+msgid "Wildcards as % and ? are not allowed!"
+msgstr "Wildcards som % og ? er ikke tilladte!"
+
 msgid "Specified SQL username name already exists!"
 msgstr "SQL brugernavn eksisterer allerede!"
 
@@ -2594,13 +2535,11 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Execute SQL query"
 msgstr "Udfør SQL forespørgsel"
 
-#, fuzzy
 msgid "SQL query"
-msgstr "SQL query"
+msgstr ""
 
-#, fuzzy
 msgid "Query status"
-msgstr "Query status"
+msgstr ""
 
 msgid "Query result"
 msgstr "Querys resultat"
@@ -2638,9 +2577,8 @@ msgstr "CGI Service: aktiveret"
 msgid "CGI Support: disabled"
 msgstr "CGI Service: deaktiveret"
 
-#, fuzzy
 msgid "HDD"
-msgstr "HDD"
+msgstr ""
 
 msgid "Aliases"
 msgstr "Aliaser"
@@ -2663,9 +2601,8 @@ msgstr "Ub."
 msgid "There are no available hosting plans for update"
 msgstr "Der er ingen tilgængelige Hosting Planer til opdatering"
 
-#, fuzzy
 msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Update hosting plan"
+msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Din anmodning for opdatering af hosting pakker er tilføjet systemet."
@@ -2703,9 +2640,8 @@ msgstr "Statistiker"
 msgid "Reseller statistics"
 msgstr "Forhandler statistik"
 
-#, fuzzy
 msgid "Admin log"
-msgstr "Admin log"
+msgstr ""
 
 msgid "Logout"
 msgstr "Log ud"
@@ -2798,9 +2734,8 @@ msgstr ""
 msgid "Go back"
 msgstr "Gå tilbage"
 
-#, fuzzy
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "Suspended"
 msgstr "Suspenderet"
@@ -2826,11 +2761,11 @@ msgstr "PHPMyAdmin"
 msgid "Filemanager"
 msgstr "Filmanager"
 
-msgid "Webstatistics"
-msgstr "Web Statistikker"
+msgid "Web statistics"
+msgstr ""
 
-msgid "Group - Usermanagement"
-msgstr "Gruppe - Brugerhåndtering"
+msgid "Group/User management"
+msgstr ""
 
 msgid "Email Accounts"
 msgstr "Email konto"
@@ -2883,7 +2818,7 @@ msgstr ""
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ISPCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
@@ -3078,9 +3013,8 @@ msgstr "Beskyttet Områder"
 msgid "Custom Apache Logs"
 msgstr "Apache Logdata"
 
-#, fuzzy
 msgid "Web & E-Mail Support"
-msgstr "Web & E-Mail Support"
+msgstr ""
 
 msgid "Your Own Domain"
 msgstr "Dit Eget Domæne"
@@ -3259,9 +3193,14 @@ msgstr ""
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
 
-#, fuzzy
+msgid "Lostpw email"
+msgstr "Glemt Adgangskode til E-Mail"
+
+msgid "Lostpw link"
+msgstr "Aktiveringslink"
+
 msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Reseller/Order email setup"
+msgstr ""
 
 msgid "Manage orders"
 msgstr "Håndtér bestillinger"
@@ -3275,9 +3214,8 @@ msgstr "Bruger tilføjet!"
 msgid "Customer order was removed successful!"
 msgstr "Kunde Ordre er slettet!"
 
-#, fuzzy
 msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Reseller/Order details"
+msgstr ""
 
 msgid "Order data updated successfully!"
 msgstr "Bestillings data er opdateret!"
@@ -3306,9 +3244,8 @@ msgstr "Er du sikker på du vil slette denne ordre?"
 msgid "Add to the system"
 msgstr "Tilføj til systemet"
 
-#, fuzzy
 msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Reseller/Order settings"
+msgstr ""
 
 msgid "Header"
 msgstr "Hoved"
@@ -3322,9 +3259,8 @@ msgstr " URL"
 msgid "Footer"
 msgstr "Fod"
 
-#, fuzzy
 msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Reseller/Order management"
+msgstr ""
 
 msgid "You do not have new orders!"
 msgstr "Du har ingen nye Bestillinger!"
@@ -3335,9 +3271,8 @@ msgstr "Ny Bestilling"
 msgid "Update order"
 msgstr "Opdater Bestilling"
 
-#, fuzzy
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 msgid "Order"
 msgstr "Bestilling"
@@ -3369,13 +3304,11 @@ msgstr ""
 msgid "Backup / Restore"
 msgstr "Backup / Gendannelse"
 
-#, fuzzy
 msgid "Apache logs"
-msgstr "Apache logs"
+msgstr ""
 
-#, fuzzy
 msgid "Awstats"
-msgstr "Awstats"
+msgstr ""
 
 msgid "ISPCP - User/Add user"
 msgstr "ISPCP - Virtual Hosting Control System"
