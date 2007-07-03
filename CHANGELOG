@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-03 Raphael Geissert
+	- GUI:
+		* Fixed (really) #442: Can't create or delete mysql databases
+
 2007-07-01 Raphael Geissert
 	- GUI:
 		* Other minor i18n corrections

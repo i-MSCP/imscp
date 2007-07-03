@@ -65,14 +65,12 @@ function exec_query(&$sql, $query, $data) {
 	return $rs;
 }
 
-function pg_get_record_id(&$sql, $table, $oid) {
+function quoteIdentifier($identifier) {
+    global $sql;
 
-  $query = "select id from $table where oid = '$oid'";
+    $identifier = str_replace($sql->nameQuote, '\\' . $sql->nameQuote, $identifier);
 
-  $rs = execute_query($sql, $query);
-
-  return $rs -> fields['id'];
-
+    return $sql->nameQuote . $identifier . $sql->nameQuote;
 }
 
 function match_sqlinjection($value, &$matches) {

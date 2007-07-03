@@ -314,10 +314,10 @@ SQL_QUERY;
   // add user in the mysql system tables;
   //
   $new_db_name = ereg_replace("_", "\\_", $db_name);
-  $query = 'grant all on ?.* to ?@\'localhost\' identified by ?';
-  $rs = exec_query($sql, $query, array($new_db_name, $db_user, $user_pass));
-  $query = 'grant all on ?.* to ?@\'%\' identified by ?';
-  $rs = exec_query($sql, $query, array($new_db_name, $db_user, $user_pass));
+  $query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'localhost\' identified by ?';
+  $rs = exec_query($sql, $query, array($db_user, $user_pass));
+  $query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'%\' identified by ?';
+  $rs = exec_query($sql, $query, array($db_user, $user_pass));
 
   write_log($_SESSION['user_logged'].": add SQL user: ".$db_name );
   set_page_message(tr('SQL user successfully added!'));

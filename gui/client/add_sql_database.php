@@ -137,7 +137,7 @@ function add_sql_database(&$sql, $user_id)
     return;
   }
 
-  $query = 'create database ' . $sql->QMagic($db_name);
+  $query = 'create database ' . quoteIdentifier($db_name);
   $rs = exec_query($sql, $query, array());
 
   $query = <<<SQL_QUERY
