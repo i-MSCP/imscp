@@ -4,9 +4,9 @@ export
 DAEMON_DIR=$(SYSTEM_ROOT)/daemon
 
 build:
-    (cd ./daemon; \
-    $(MAKE) ispcp_daemon;)
-    touch build
+	(cd ./daemon; \
+	$(MAKE) ispcp_daemon; )
+	touch build
 
 install: build
 	$(SYSTEM_MAKE_DIRS) $(DAEMON_DIR)
@@ -15,7 +15,7 @@ install: build
 uninstall:
 
 	(cd ./daemon; \
-	$(MAKE) uninstall;)
+	$(MAKE) uninstall; )
 	rm -rf $(DAEMON_DIR)
 	rm -rf build
 
