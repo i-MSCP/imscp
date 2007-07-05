@@ -16,7 +16,7 @@ if [ -r /etc/default/$NAME ]; then
 	. /etc/default/$NAME
 fi
 
-if [ START -eq 0 ]; then
+if [ $START -eq 0 ]; then
 	echo "$DESC: not starting, edit /etc/default/$NAME."
 	exit 0
 fi

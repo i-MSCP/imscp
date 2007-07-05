@@ -47,21 +47,21 @@ sub stop_services {
 
     }
     
-    if (sys_command("/etc/init.d/vhcs2_daemon stop") != 0) {
-        exit_werror();
-    }
+    print STDOUT "\t";
+    
+    sys_command("/etc/init.d/vhcs2_daemon stop");
+    
+    print STDOUT "\t";
     
     # The daemon and the network traffic logger should not be running.
     #  Here we make sure about that
-    if (sys_command("/etc/init.d/ispcp_daemon stop") != 0) {
-        exit_werror();
-    }
+    sys_command("/etc/init.d/ispcp_daemon stop");
     
-    if (sys_command("/etc/init.d/ispcp_network stop") != 0) {
-        exit_werror();
-    }
+    print STDOUT "\t";
     
-    print STDOUT "\tBlocking access to /etc/vhcs2/vhcs2.conf...";
+    sys_command("/etc/init.d/ispcp_network stop");
+    
+    print STDOUT "\n\tBlocking access to /etc/vhcs2/vhcs2.conf...";
     
     if (sys_command("chmod a-r /etc/vhcs2/vhcs2.conf") != 0) {
         print STDOUT "failed!\n";
@@ -83,11 +83,20 @@ sub start_services {
         print STDOUT "failed!\n";
         exit_werror();
     }
-	print STDOUT "done\n";
+    print STDOUT "done\n";
     
     sys_command("$main::cfg{'CMD_ISPCPD'} start");
     sys_command("$main::cfg{'CMD_ISPCPN'} start");
     sleep(2);
+    
+    print STDOUT "\tDisabling vhcs2's apache2 sites ...";
+    
+    if (-e "/etc/apache2/sites-enabled/vhcs2.conf" &&
+        sys_command("unlink /etc/apache2/sites-enabled/vhcs2.conf") != 0) {
+        print STDOUT "failed!\n";
+        exit_werror();
+    }
+    print STDOUT "done\n";
     
     #Restart servers to make them use the newly generated config
     sys_command("$main::cfg{'CMD_HTTPD'} restart");
@@ -98,12 +107,16 @@ sub start_services {
     sleep(2);
     sys_command("$main::cfg{'CMD_POP'} restart");
     sleep(2);
-    sys_command("$main::cfg{'CMD_POP_SSL'} restart");
-    sleep(2);
+    if (-e "$main::cfg{'CMD_POP_SSL'}") {
+        sys_command("$main::cfg{'CMD_POP_SSL'} restart");
+        sleep(2);
+    }
     sys_command("$main::cfg{'CMD_IMAP'} restart");
     sleep(2);
-    sys_command("$main::cfg{'CMD_IMAP_SSL'} restart");
-    sleep(2);
+    if (-e "$main::cfg{'CMD_IMAP_SSL'}") {
+        sys_command("$main::cfg{'CMD_IMAP_SSL'} restart");
+        sleep(2);
+    }
     sys_command("$main::cfg{'CMD_FTPD'} restart");
     sleep(2);
     sys_command("$main::cfg{'CMD_AUTHD'} restart");
@@ -142,14 +155,18 @@ sub upgrade_database {
 
     print STDOUT "done\n";
 
-    print STDOUT "\tCopying database...";
+    print STDOUT "\tCreating new database...";
     
-    if (sys_command("mysqladmin -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::cfg{'DATABASE_PASSWORD'}\' create ispcp ") != 0) {
+    if (sys_command("mysqladmin -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' create ispcp ") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
+
+    print STDOUT "done\n";
+
+    print STDOUT "\tCopying database...";
     
-    if (sys_command("mysqldump --opt -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::cfg{'DATABASE_PASSWORD'}\' $main::cfg{'DATABASE_NAME'} | mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::cfg{'DATABASE_PASSWORD'}\' ispcp") != 0) {
+    if (sys_command("mysqldump --opt -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' $main::cfg{'DATABASE_NAME'} | mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' ispcp") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -158,15 +175,9 @@ sub upgrade_database {
 
     print STDOUT "\tUpgrading database structure...";
     
-    ($rs, $sql) = get_file('vhcs2ispcp.sql');
-    
-    exit_werror("SQL structure changes file couldn't be loaded", $rs) if ($rs != 0);
-    
-    ($rs, $rdata) = doSQL($sql);
-    
-    if ($rs != 0) {
+    if (sys_command("mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' < vhcs2ispcp.sql") != 0) {
         print STDOUT "failed!\n";
-        exit_werror($rdata, $rs);
+        exit_werror();
     }
 
     print STDOUT "done\n";
@@ -176,17 +187,9 @@ sub upgrade_database {
 
 sub install_language {
     
-    my ($rs, $sql, $rdata) = (undef, undef, undef);
-    
-    ($rs, $sql) = get_file("$main::db{'CONF_DIR'}/languages.sql");
-    
-    exit_werror("languages SQL file couldn't be retrieved", $rs) if ($rs != 0);
-    
-    ($rs, $rdata) = doSQL($sql);
-    
-    if ($rs != 0) {
+    if (sys_command("mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' ispcp < $main::db{'CONF_DIR'}/database/languages.sql") != 0) {
         print STDOUT "failed!\n";
-        exit_werror($rdata, $rs);
+        exit_werror();
     }
 
     print STDOUT "done\n";
@@ -225,7 +228,7 @@ $main::cfg_file = '/etc/vhcs2/vhcs2.conf';
 # First call won't connect to DB because the keys haven't been loaded yet
 get_conf();
 
-require $main::cfg{'ROOT_DIR'} . '/ispcp-db-keys.pl';
+require $main::cfg{'ROOT_DIR'} . '/engine/vhcs2-db-keys.pl';
 
 # Let's connect to the database
 setup_main_vars();
@@ -246,7 +249,7 @@ $main::cfg_file = '/etc/ispcp/ispcp.conf';
 # Load new config
 get_conf();
 
-require $main::cfg{'ROOT_DIR'} . '/ispcp-db-keys.pl';
+require $main::cfg{'ROOT_DIR'} . '/engine/ispcp-db-keys.pl';
 
 # Now we connect
 setup_main_vars();

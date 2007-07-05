@@ -13,6 +13,8 @@ ispCP ω 1.0.0 Changelog
 2007-07-04 Raphael Geissert
 	- MAKEFILE:
 		* Fixed #463: Makefile error
+	- SETUP:
+		* Made some fixes to the vhcs2ispcp.pl migration script
 
 2007-07-03 Raphael Geissert
 	- GUI:

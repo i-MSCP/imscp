@@ -37,6 +37,7 @@ DROP TABLE IF EXISTS `lang_Portugues`;
 DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 DROP TABLE IF EXISTS `lang_French`;
+DROP TABLE IF EXISTS `lang_Russian`;
 
 -- Add Primary and possibly an index to login table!
 
