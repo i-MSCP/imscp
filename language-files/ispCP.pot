@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-02 15:56-0500\n"
+"POT-Creation-Date: 2007-07-06 16:02-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2709,12 +2709,6 @@ msgid "view aliases"
 msgstr ""
 
 msgid "Users list is empty!"
-msgstr ""
-
-msgid "S"
-msgstr ""
-
-msgid "D"
 msgstr ""
 
 msgid "Details"

@@ -1,5 +1,5 @@
-iscp_language = English
 ispcp_table = English
+iscp_language = English
 ispcp_languageSetlocaleValue = en_GB
 encoding = UTF-8
 _: Localised language = English
@@ -16,5 +16,3 @@ Mail = e-mail
 Incorrect domain name syntax = Incorrect <i>domain name</i> syntax
 Incorrect mount point syntax = Incorrect <i>mount point</i> syntax!
 Incorrect forward syntax = Incorrect <i>forward</i> syntax!
-S = Status
-D = Details

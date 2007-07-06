@@ -265,11 +265,11 @@ function check_dn_token($data) {
         return FALSE;
 
     // Username has not two times .,- or _
-	if(preg_match("/(\.\.)|(\-\-)|(\_\_)/", $username))
+	if(preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data))
 		return FALSE;
 
 	// Username has no not allowed concardination in it
-	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $username))
+	if (preg_match("/(\.\-)|(\-\.)|(\.\_)|(\_\.)|(\-\_)|(\_\-)/", $data))
 		return FALSE;
 
     return TRUE;
@@ -357,7 +357,7 @@ function chk_url($url) {
 
     $url .= "\n";
 
-    if (!preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/", $data))
+    if (!preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/", $url))
 		return FALSE;
 
     return TRUE;

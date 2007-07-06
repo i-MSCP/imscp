@@ -1,5 +1,5 @@
-iscp_language = Español (España)
 ispcp_table = SpanishSpain
+iscp_language = Español (España)
 ispcp_languageSetlocaleValue = es_ES
 encoding = UTF-8
 _: Localised language = Español (España)
@@ -749,8 +749,6 @@ Change user interface = Cambiar interfaz de usuario
 Not found user records matching the search criteria! = ¡No se encontraron registros de usuario que coincidan con el criterio de busqueda!
 view aliases = Ver alias
 Users list is empty! = ¡La lista de usuarios está vacía!
-S = Estado
-D = Detalles
 Details = Detalles
 Are you sure you want to change the status of domain account? = ¿Está seguro que quiere cambiar el estado de su cuenta de dominio?
 Are you sure you want to delete this account? = ¿Está seguro que quiere eliminar esta cuenta?

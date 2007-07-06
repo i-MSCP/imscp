@@ -105,7 +105,7 @@ function sbmt(form, uaction) {
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="content3" width="20" align="center"><b>{TR_NO}</b></td>
+                        <td class="content3" width="20" align="center"><b>{TR_USER_STATUS}</b></td>
                         <td class="content3"><b>{TR_USERNAME}</b></td>
                         <td class="content3" width="90" align="center"><b>{TR_CREATION_DATE}</b></td>
                         <td colspan="5" align="center" class="content3"><b>{TR_ACTION}</b></td>

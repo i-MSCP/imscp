@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-02 15:56-0500\n"
-"PO-Revision-Date: 2007-07-02 15:46-0500\n"
+"POT-Creation-Date: 2007-07-06 16:02-0500\n"
+"PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2699,12 +2699,6 @@ msgstr "näytä aliakset"
 
 msgid "Users list is empty!"
 msgstr "Käyttäjälista on tyhjä!"
-
-msgid "S"
-msgstr ""
-
-msgid "D"
-msgstr ""
 
 msgid "Details"
 msgstr "Tiedot"

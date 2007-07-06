@@ -1,5 +1,5 @@
-iscp_language = Chinese
 ispcp_table = Chinese
+iscp_language = Chinese
 ispcp_languageSetlocaleValue = zh_CN
 encoding = GB2312
 _: Localised language = Chinese

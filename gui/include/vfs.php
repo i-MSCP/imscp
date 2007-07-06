@@ -107,6 +107,10 @@ class vfs {
 	function __construct($domain, &$db) {
 		$this->_domain =  $domain;
 		$this->_db     =& $db;
+
+		define("VFS_TMP_DIR", $cfg['FTP_HOMEDIR'].'/' . $this->_domain . '/phptmp');
+		putenv("TMPDIR=" . VFS_TMP_DIR);
+		$_ENV['TMPDIR'] = VFS_TMP_DIR;
 	}
 
 	/**
@@ -165,10 +169,6 @@ SQL_QUERY;
 		if ( !$rs ) {
 			return false;
 		}
-
-		define("VFS_TMP_DIR", $cfg['FTP_HOMEDIR'].'/' . $this->_domain . '/phptmp');
-
-		putenv("TMPDIR=" . VFS_TMP_DIR);
 
 		// All ok
 		$this->_user   = $user;

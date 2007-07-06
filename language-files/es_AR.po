@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-02 15:56-0500\n"
-"PO-Revision-Date: 2007-07-02 15:46-0500\n"
+"POT-Creation-Date: 2007-07-06 16:02-0500\n"
+"PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish Argentina <es_AR@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2699,12 +2699,6 @@ msgstr "Ver aliases"
 
 msgid "Users list is empty!"
 msgstr "La lista de usuarios está vacía!"
-
-msgid "S"
-msgstr "Estado"
-
-msgid "D"
-msgstr "Detalles"
 
 msgid "Details"
 msgstr "Detalles"

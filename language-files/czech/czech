@@ -1,5 +1,5 @@
-iscp_language = Česky
 ispcp_table = Czech
+iscp_language = Česky
 ispcp_languageSetlocaleValue = cs_CZ
 encoding = UTF-8
 _: Localised language = Česky
@@ -473,8 +473,6 @@ Created by = Vytvořil
 Change user interface = Nastavit uživatelské rozhraní
 view aliases = Zobrazit aliasy
 Users list is empty! = Seznam uživatelů je prázdný!
-S = Status
-D = Details
 Details = Detaily
 Are you sure you want to change the status of domain account? = Opravdu chcete změnit stav doménového účtu?
 Are you sure you want to delete this account? = Opravdu odstranit tento účet?

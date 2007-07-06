@@ -1,5 +1,5 @@
-iscp_language = French
 ispcp_table = French
+iscp_language = French
 ispcp_languageSetlocaleValue = fr_FR
 encoding = UTF-8
 _: Localised language = French

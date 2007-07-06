@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-06 Raphael Geissert
+	- GUI:
+		* Fixed #468: translation's messages order
+		* Merged some proposed changes (from en_GB.po)
+		* Fixed #466: wrong variable name was being used
+
 2007-07-04 Raphael Geissert
 	- MAKEFILE:
 		* Fixed #463: Makefile error

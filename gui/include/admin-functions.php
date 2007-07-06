@@ -768,8 +768,7 @@ function gen_user_list(&$tpl, &$sql)
 						'TR_USR_USERNAME' => tr('Username'),
 						'TR_USR_CREATED_BY' => tr('Created by'),
 						'TR_USR_OPTIONS' => tr('Options'),
-						'TR_USER_STATUS' => tr('S'),
-						'TR_D' => tr('D'),
+						'TR_USER_STATUS' => tr('Status'),
 						'TR_DETAILS' => tr('Details'),
 
 					 )

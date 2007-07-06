@@ -1,5 +1,5 @@
-iscp_language = Italian
 ispcp_table = Italian
+iscp_language = Italian
 ispcp_languageSetlocaleValue = it_IT
 encoding = UTF-8
 _: Localised language = Italian

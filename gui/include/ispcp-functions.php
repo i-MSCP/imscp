@@ -19,7 +19,7 @@
 
 function check_for_lock_file() {
 
-    global $lock_file_name, $wait_lock_timeout, $cfg;
+    global $cfg;
 
 	$wait_lock_timeout = 500000;
 

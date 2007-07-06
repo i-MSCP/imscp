@@ -128,7 +128,7 @@ $tpl -> assign(
                 array(
 							'TR_MANAGE_USERS' => tr('Manage users'),
 							'TR_USERS' => tr('Users'),
-							'TR_NO' => tr('S'),
+						    'TR_USER_STATUS' => tr('Status'),
 							'TR_DETAILS' => tr('Details'),
 							'TR_SEARCH' => tr('Search'),
 							'TR_USERNAME' => tr('Username'),

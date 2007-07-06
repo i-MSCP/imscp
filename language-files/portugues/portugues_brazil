@@ -1,5 +1,5 @@
-iscp_language = Portugues (Brazil)
 ispcp_table = PortuguesBrazil
+iscp_language = Portugues (Brazil)
 ispcp_languageSetlocaleValue = pt_BR
 encoding = UTF-8
 _: Localised language = Portugues (Brazil)
