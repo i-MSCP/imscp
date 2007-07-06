@@ -15,6 +15,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #468: translation's messages order
 		* Merged some proposed changes (from en_GB.po)
 		* Fixed #466: wrong variable name was being used
+		* Fixed #467: Bad default location for the lock file
 
 2007-07-04 Raphael Geissert
 	- MAKEFILE:

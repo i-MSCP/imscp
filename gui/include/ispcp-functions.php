@@ -18,6 +18,9 @@
  **/
 
 function check_for_lock_file() {
+    // This function is useless right now
+    //The daemon/engine never sets such lock file
+    return ;
 
     global $cfg;
 
