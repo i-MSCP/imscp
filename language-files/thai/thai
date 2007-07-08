@@ -1,5 +1,5 @@
 ispcp_table = Thai
-iscp_language = Thai
+ispcp_language = Thai
 ispcp_languageSetlocaleValue = th_TH
 encoding = UTF-8
 _: Localised language = Thai

@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-01 Raphael Geissert
+	- SETUP:
+		* Fixed #459: Apache2 doesn't start after setup
+	- GUI:
+		* Fixed #470: typos in translations
+
 2007-07-06 Raphael Geissert
 	- GUI:
 		* Fixed #468: translation's messages order

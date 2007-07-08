@@ -1,5 +1,5 @@
 ispcp_table = SpanishArgentina
-iscp_language = Español (Argentina)
+ispcp_language = Español (Argentina)
 ispcp_languageSetlocaleValue = es_AR
 encoding = UTF-8
 _: Localised language = Español (Argentina)

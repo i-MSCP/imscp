@@ -1,5 +1,5 @@
 ispcp_table = SpanishSpain
-iscp_language = Español (España)
+ispcp_language = Español (España)
 ispcp_languageSetlocaleValue = es_ES
 encoding = UTF-8
 _: Localised language = Español (España)

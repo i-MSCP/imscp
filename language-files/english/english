@@ -1,5 +1,5 @@
 ispcp_table = English
-iscp_language = English
+ispcp_language = English
 ispcp_languageSetlocaleValue = en_GB
 encoding = UTF-8
 _: Localised language = English

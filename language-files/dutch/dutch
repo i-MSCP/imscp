@@ -1,5 +1,5 @@
 ispcp_table = Dutch
-iscp_language = Dutch
+ispcp_language = Dutch
 ispcp_languageSetlocaleValue = nl_NL
 encoding = UTF-8
 _: Localised language = Dutch

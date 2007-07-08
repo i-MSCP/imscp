@@ -1,5 +1,5 @@
 ispcp_table = Hungarian
-iscp_language = Hungarian
+ispcp_language = Hungarian
 ispcp_languageSetlocaleValue = hu_HU
 encoding = UTF-8
 _: Localised language = Hungarian

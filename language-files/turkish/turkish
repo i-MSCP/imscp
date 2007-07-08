@@ -1,5 +1,5 @@
 ispcp_table = Turkish
-iscp_language = Türkçe
+ispcp_language = Türkçe
 ispcp_languageSetlocaleValue = tr_TR
 encoding = UTF-8
 _: Localised language = Türkçe

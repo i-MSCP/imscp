@@ -1,5 +1,5 @@
 ispcp_table = Russian
-iscp_language = Russian
+ispcp_language = Russian
 ispcp_languageSetlocaleValue = ru_RU
 encoding = UTF-8
 _: Localised language = Russian

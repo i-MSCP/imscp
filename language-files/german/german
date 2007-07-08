@@ -1,5 +1,5 @@
 ispcp_table = German
-iscp_language = Deutsch
+ispcp_language = Deutsch
 ispcp_languageSetlocaleValue = de_DE
 encoding = UTF-8
 _: Localised language = Deutsch
