@@ -10,7 +10,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-07-01 Raphael Geissert
+2007-07-09 Raphael Geissert
+	- SETUP:
+		* Fixed #472: error in fastcgi_ispcp.load
+
+2007-07-08 Raphael Geissert
 	- SETUP:
 		* Fixed #459: Apache2 doesn't start after setup
 	- GUI:

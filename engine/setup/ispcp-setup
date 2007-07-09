@@ -1773,16 +1773,16 @@ sub setup_php {
 	return $rs if ($rs != 0);
 
 	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi.load" ) {
-    	$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load";
-    	$rs = sys_command($cmd);
-    	return $rs if ($rs != 0);
-
-    	($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
-    	return $rs if ($rs != 0);
-
-    	$rdata = "<!IfModule mod_fastcgi.c>\n" . $rdata . "\n</IfModule>";
-    	$rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
-    	return $rs if ($rs != 0);
+            $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load";
+            $rs = sys_command($cmd);
+            return $rs if ($rs != 0);
+    
+            ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
+            return $rs if ($rs != 0);
+    
+            $rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
+            $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
+            return $rs if ($rs != 0);
 	}
 
 	#
