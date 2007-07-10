@@ -40,7 +40,9 @@ $tpl->define_dynamic('js_not_domain', 'page'); 			//JavaScript has to be generat
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
     $dmn_name = decode_idna($dmn_name);
+
     if ($post_check === 'no') {
+
         $tpl->assign(array('USERNAME' => '',
                 'DOMAIN_NAME' => $dmn_name,
                 'MAIL_DMN_CHECKED' => 'checked',
@@ -49,23 +51,22 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
                 'NORMAL_MAIL_CHECKED' => 'checked',
                 'FORWARD_MAIL_CHECKED' => '',
                 'FORWARD_LIST' => ''));
-    }
-	else {
-        if (!isset($_POST['forward_list'])) {
-            $f_list = "";
-        }
-		else {
-            $f_list = $_POST['forward_list'];
-        }
 
-        $tpl->assign(array('USERNAME' => clean_input($_POST['username']),
-                'DOMAIN_NAME' => $dmn_name,
-                'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked' : '',
-                'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked' : '',
-                'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked' : '',
-                'NORMAL_MAIL_CHECKED' => ($_POST['mail_type'] === 'normal') ? 'checked' : '',
-                'FORWARD_MAIL_CHECKED' => ($_POST['mail_type'] === 'forward') ? 'checked' : '',
-                'FORWARD_LIST' => $f_list));
+    } else {
+            if (!isset($_POST['forward_list'])) {
+                $f_list = '';
+            } else {
+                $f_list = $_POST['forward_list'];
+            }
+
+            $tpl->assign(array('USERNAME' => clean_input($_POST['username']),
+                    'DOMAIN_NAME' => $dmn_name,
+                    'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked' : '',
+                    'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked' : '',
+                    'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked' : '',
+                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type'] === 'normal') ? 'checked' : '',
+                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type'] === 'forward') ? 'checked' : '',
+                    'FORWARD_LIST' => $f_list));
     }
 }
 
@@ -202,20 +203,17 @@ SQL_QUERY;
     }
 }
 
-function schedule_mail_account(&$sql, $dmn_id, $dmn_name) {
+function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
     global $cfg;
 
-    $domain_id = $dmn_id;
     // standard whithout encoding
     // $mail_acc = $_POST['username'];
     // lets encode the mail ??? only crazy ones encode the local_part
     $mail_acc_tmp = strtolower(clean_input($_POST['username']));
     if (ispcp_check_local_part($mail_acc_tmp) == "0") {
         set_page_message(tr("Invalid Mail Localpart Format used!"));
-
         return;
-    }
-	else {
+    } else {
         $mail_acc = $mail_acc_tmp;
     }
 
@@ -240,6 +238,9 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name) {
             $mail_forward = '_no_';
             $mail_type = 'alias_mail';
             $sub_id = $_POST['als_id'];
+        } else {
+            set_page_message(tr('Unknown domain type'));
+            return ;
         }
 
         $check_acc_query = <<<SQL_QUERY
@@ -258,71 +259,37 @@ function schedule_mail_account(&$sql, $dmn_id, $dmn_name) {
 SQL_QUERY;
 
         $rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
-    }
-	else if ($_POST['mail_type'] === 'forward') {
+
+    } else if ($_POST['mail_type'] === 'forward') {
         if ($_POST['dmn_type'] === 'dmn') {
-            $mail_pass = '_no_';
-            $mail_forward = $_POST['forward_list'];
-            $faray = preg_split ("/[\n]+/", $mail_forward);
-
-            foreach ($faray as $value) {
-                $value = trim($value);
-                if (!chk_email($value) && $value !== '') {
-                    /* ERR .. strange :) not email in this line - warning */
-                    set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
-                    return;
-                }
-				else if ($value === '') {
-                    set_page_message(tr("Mail forward list empty!"));
-                    return;
-                }
-            }
-
             $mail_type = 'normal_forward';
             $sub_id = '0';
-        }
-		else if ($_POST['dmn_type'] === 'sub') {
-            $mail_pass = '_no_';
-            $mail_forward = $_POST['forward_list'];
-            $faray = preg_split ("/[\n]+/", $mail_forward);
-
-            foreach ($faray as $value) {
-                $value = trim($value);
-                if (!chk_email($value) && $value !== '') {
-                    /* ERR .. strange :) not email in this line - warrning */
-                    set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
-                    return;
-                }
-				else if ($value === '') {
-                    set_page_message(tr("Mail forward list empty!"));
-                    return;
-                }
-            }
-
+        } else if ($_POST['dmn_type'] === 'sub') {
             $mail_type = 'subdom_forward';
             $sub_id = $_POST['sub_id'];
-        }
-		else if ($_POST['dmn_type'] === 'als') {
-            $mail_pass = '_no_';
-            $mail_forward = $_POST['forward_list'];
-            $faray = preg_split ("/[\n]+/", $mail_forward);
-
-            foreach ($faray as $value) {
-                $value = trim($value);
-                if (!chk_email($value) && $value !== '') {
-                    /* ERR .. strange :) not email in this line - warrning */
-                    set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
-
-                    return;
-                }
-				else if ($value === '') {
-                    set_page_message(tr("Mail forward list empty!"));
-                    return;
-                }
-            }
-
+        } else if ($_POST['dmn_type'] === 'als') {
             $mail_type = 'alias_forward';
             $sub_id = $_POST['als_id'];
+        } else {
+            set_page_message(tr('Unknown domain type'));
+            return ;
+        }
+
+        $mail_pass = '_no_';
+        $mail_forward = $_POST['forward_list'];
+        $faray = preg_split ("/[\n]+/", $mail_forward);
+
+        foreach ($faray as $value) {
+            $value = trim($value);
+            if (!chk_email($value) && $value !== '') {
+                /* ERR .. strange :) not email in this line - warning */
+                set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
+                return;
+            }
+            else if ($value === '') {
+                set_page_message(tr("Mail forward list empty!"));
+                return;
+            }
         }
 
         $check_acc_query = <<<SQL_QUERY
@@ -409,7 +376,7 @@ SQL_QUERY;
     exit(0);
 }
 
-function check_mail_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
+function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
     if ($_POST['mail_type'] != 'forward') {
         $pass = escapeshellcmd($_POST['pass']);
         $pass_rep = escapeshellcmd($_POST['pass_rep']);
@@ -498,7 +465,7 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
             gen_page_form_data($tpl, $dmn_name, 'yes');
             gen_dmn_als_list($tpl, $sql, $dmn_id, 'yes');
             gen_dmn_sub_list($tpl, $sql, $dmn_id, $dmn_name, 'yes');
-            check_mail_acc_data($tpl, $sql, $dmn_id, $dmn_name);
+            check_mail_acc_data($sql, $dmn_id, $dmn_name);
         }
     }
 }

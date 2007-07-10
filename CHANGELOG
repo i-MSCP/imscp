@@ -10,6 +10,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-10 Raphael Geissert
+	- GUI:
+		* Fixed #473: Undefined variable: cfg in /var/www/ispcp/gui/include/vfs.php on line 111
+	- SETUP:
+		* ispcp-uninstall now removes some files that were being left
+
 2007-07-09 Raphael Geissert
 	- SETUP:
 		* Fixed #472: error in fastcgi_ispcp.load

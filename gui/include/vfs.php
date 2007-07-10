@@ -105,6 +105,7 @@ class vfs {
 	 * @return vfs
 	 */
 	function __construct($domain, &$db) {
+	    global $cfg;
 		$this->_domain =  $domain;
 		$this->_db     =& $db;
 

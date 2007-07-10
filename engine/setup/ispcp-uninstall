@@ -445,6 +445,12 @@ sub uninstall_crontab {
 
     }
 
+    if ( -e "/etc/cron.d/ispcp.phptemp") {
+        $rs = del_file("/etc/cron.d/ispcp.phptemp");
+
+        return $rs if ($rs != 0);
+    }
+
     push_el(\@main::el, 'uninstall_crontab()', 'Ending...');
 
     return 0;
@@ -462,13 +468,34 @@ sub uninstall_resolver {
     if ( -e "$resolv_file.bkp" ) {
 
         $cmd = "$main::cfg{'CMD_MV'} $resolv_file.bkp $resolv_file";
-    
+
         $rs = sys_command_rs($cmd);
-    
+
         return $rs if ($rs != 0);
     }
 
     push_el(\@main::el, 'uninstall_resolver()', 'Ending...');
+
+    return 0;
+
+}
+
+sub uninstall_logrotate {
+
+    push_el(\@main::el, 'uninstall_logrotate()', 'Starting...');
+
+    my ($rs, $cmd) = (undef, undef);
+
+    my $logrorate_d = "/etc/logrorate.d";
+
+    if ( -e "$logrorate_d/ispcp" ) {
+
+        $rs = del_file("$logrorate_d/ispcp");
+
+        return $rs if ($rs != 0);
+    }
+
+    push_el(\@main::el, 'uninstall_logrotate()', 'Ending...');
 
     return 0;
 
@@ -550,6 +577,10 @@ sub uninstall_httpd {
 
     return $rs if ($rs != 0);
 
+    $rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
+
+    return $rs if ($rs != 0);
+
     sleep(5);
 
     sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/ispcp-uninstall-services.log");
@@ -608,6 +639,12 @@ sub uninstall_mta {
 
         return $rs if ($rs != 0);
 
+    }
+
+    if ( -e "/var/spool/postfix/private/ispcp-arpl" ) {
+        $rs = del_file("/var/spool/postfix/private/ispcp-arpl");
+
+        return $rs if ($rs != 0);
     }
 
     $rs = sys_command("$main::cfg{'CMD_NEWALIASES'} &> /tmp/ispcp-uninstall-services.log");
@@ -815,6 +852,21 @@ sub uninstall_ispcpd {
     sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-uninstall-services.log");
 
     sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-uninstall-services.log");
+
+    $rs = del_file("$main::cfg{'CMD_ISPCPD'}");
+
+    return $rs if ($rs != 0);
+
+    $rs = del_file("$main::cfg{'CMD_ISPCPN'}");
+
+    return $rs if ($rs != 0);
+
+    if ( -e "/usr/sbin/update-rc.d" ) {
+
+		sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon remove &> /tmp/ispcp-uninstall-services.log");
+		sys_command_rs("/usr/sbin/update-rc.d ispcp_network remove &> /tmp/ispcp-uninstall-services.log");
+
+	}
 
     push_el(\@main::el, 'uninstall_ispcpd()', 'Ending...');
 
