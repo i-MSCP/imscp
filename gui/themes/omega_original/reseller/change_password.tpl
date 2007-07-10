@@ -52,17 +52,17 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2"> {TR_CURR_PASSWORD}</td>
-                        <td class="content"><input type="password" name="curr_pass" value="" style="width:170px" class="textinput"></td>
+                        <td class="content"><input type="password" name="curr_pass" value="" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="203" class="content2"> {TR_PASSWORD}</td>
-                        <td class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput"></td>
+                        <td class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2"> {TR_PASSWORD_REPEAT}</td>
-                        <td width="516" class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput"></td>
+                        <td width="516" class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

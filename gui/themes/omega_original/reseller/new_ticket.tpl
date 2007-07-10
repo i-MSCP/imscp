@@ -64,7 +64,7 @@ function action_delete(url) {
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
-                              <td class="content2" width="150">{TR_URGENCY}</td>
+                              <td class="content2" style="width:200px;">{TR_URGENCY}</td>
                               <td class="content"><select name="urgency">
                                   <option value="1">{TR_LOW}</option>
                                   <option value="2">{TR_MEDIUM}</option>
@@ -74,13 +74,13 @@ function action_delete(url) {
                               </td>
                             </tr>
                             <tr>
-                              <td class="content2" width="150">{TR_SUBJECT}</td>
-                              <td class="content"><input type="text" name="subj" style="width:270px" class="textinput">
+                              <td class="content2" style="width:200px;">{TR_SUBJECT}</td>
+                              <td class="content"><input type="text" name="subj" style="width:80%" class="textinput">
                               </td>
                             </tr>
                             <tr>
-                              <td class="content2" width="150">{TR_YOUR_MESSAGE}</td>
-                              <td class="content"><textarea name="user_message" style="width:270px" class="textinput2" rows="12"></textarea>
+                              <td class="content2" style="width:200px;vertical-align:top;">{TR_YOUR_MESSAGE}</td>
+                              <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" rows="12"></textarea>
                               </td>
                             </tr>
                             <tr>

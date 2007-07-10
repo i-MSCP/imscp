@@ -64,8 +64,8 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2" width="200">{TR_MESSAGE_TEXT}</td>
-                              <td class="content"><textarea name="msg_text" style="width:270px" class="textinput2" rows="8">{MESSAGE_TEXT}</textarea>
+                              <td class="content2" style="width:200px; vertical-align:top;">{TR_MESSAGE_TEXT}</td>
+                              <td class="content"><textarea name="msg_text" style="width:80%" class="textinput2" rows="20">{MESSAGE_TEXT}</textarea>
                               </td>
                             </tr>
                             <tr>

@@ -2,13 +2,15 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
-|        - FastCGI:                                               |
-|               * apache: check if stats are working with FastCGI |
-|                                                                 |
 |         - AWStats:                                              |
+|				* apache: check if stats are working with FastCGI |
 |               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-07-11 Benedikt Heintel
+	- GUI:
+		* Fixed #409: Increase the size of the textareas
 
 2007-07-10 Raphael Geissert
 	- GUI:

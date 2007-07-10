@@ -73,13 +73,13 @@
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_SUBJECT}</td>
-                        <td class="content"><input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:270px" class="textinput">
+                        <td class="content"><input type="text" name="auto_subject" value="{SUBJECT_VALUE}" style="width:90%" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_MESSAGE}</td>
-                        <td class="content"><textarea name="auto_message" style="width:270px" class="textinput2" rows="8">{MESSAGE_VALUE}</textarea>
+                        <td class="content"><textarea name="auto_message" style="width:90%" class="textinput2" rows="30" />{MESSAGE_VALUE}</textarea>
                         </td>
                       </tr>
                       <tr>

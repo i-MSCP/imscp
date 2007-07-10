@@ -75,7 +75,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td class="content"><textarea name="header" rows="15" class="textinput2" id="header" style="width:580px"><!-- BDP: purchase_header -->
+                        <td class="content"><textarea name="header" rows="15" class="textinput2" id="header" style="width:90%"><!-- BDP: purchase_header -->
 				<!-- EDP: purchase_header -->
             </textarea></td>
                       </tr>
@@ -89,7 +89,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="content"><textarea name="footer" rows="15" class="textinput2" id="footer" style="width:580px"><!-- BDP: purchase_footer -->
+                        <td class="content"><textarea name="footer" rows="15" class="textinput2" id="footer" style="width:90%"><!-- BDP: purchase_footer -->
 				<!-- EDP: purchase_footer -->
             </textarea></td>
                       </tr>

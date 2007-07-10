@@ -1,5 +1,5 @@
 # translation of sk_SK.po to Slovak language
-# Copyright (C) 2007 ispCP Team
+# Copyright (C) YEAR ispCP Team
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Tomas Srnka <tomas.srnka@linuxsro.sk>, 2007.
@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-29 11:43-0500\n"
-"PO-Revision-Date: 2007-07-01 13:12+0200\n"
+"PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak language <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
+
+msgid "_: Localised language"
+msgstr "Slovenský jazyk"
 
 msgid "ISPCP - Virtual Hosting Control System"
 msgstr "ISPCP - Ovladacie centrum virtuálneho hostingu"
@@ -23,7 +26,7 @@ msgid "encoding"
 msgstr "UTF-8 "
 
 msgid "Administrator login"
-msgstr ""
+msgstr "Prihlásennie administrátora"
 
 msgid "Login"
 msgstr "Prihlásenie"
@@ -68,7 +71,7 @@ msgid "Security code"
 msgstr "Bezpečnostný kód"
 
 msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
-msgstr ""
+msgstr "(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v obrázku nad do políčka \"Bezpečnostný kód\")"
 
 msgid "Request password"
 msgstr "Vyžiadať heslo"
@@ -143,7 +146,7 @@ msgid "Add reseller"
 msgstr "Pridať predajcu"
 
 msgid "Core data"
-msgstr ""
+msgstr "Základné data"
 
 msgid "Repeat password"
 msgstr "Zopakovať heslo"
@@ -155,31 +158,31 @@ msgid "unlimited"
 msgstr "Bez obmedzení"
 
 msgid "Domains limit"
-msgstr ""
+msgstr "Limit domén"
 
 msgid "Subdomains limit"
-msgstr ""
+msgstr "Limit sub-domén"
 
 msgid "Aliases limit"
-msgstr ""
+msgstr "Limit aliasov"
 
 msgid "Mail accounts limit"
-msgstr ""
+msgstr "Limit e-mailových kont"
 
 msgid "FTP accounts limit"
-msgstr ""
+msgstr "Limit FTP kont"
 
 msgid "SQL databases limit"
-msgstr ""
+msgstr "Limit SQL databáz"
 
 msgid "SQL users limit"
-msgstr ""
+msgstr "Limit SQL užívateľov"
 
 msgid "Traffic limit [MB]"
-msgstr ""
+msgstr "Limit prenesených dát [MB]"
 
 msgid "Disk limit [MB]"
-msgstr ""
+msgstr "Limit diskového priestoru [MB]"
 
 msgid "PHP"
 msgstr "PHP"
@@ -602,13 +605,13 @@ msgid "IP was deleted!"
 msgstr "IP adresa bola zmazaná!"
 
 msgid "Support ticket deleted successfully!"
-msgstr ""
+msgstr "Podporný tiket úspešne zmazaný!"
 
 msgid "All open support tickets deleted successfully!"
-msgstr ""
+msgstr "Všetky otvorené tikety úspešne zmazané!"
 
 msgid "All closed support tickets deleted successfully!"
-msgstr ""
+msgstr "Všetky zavreté tikety úspešno zmazané!"
 
 msgid "ISPCP - Domain/Details"
 msgstr "ISCPCP - Doména/Detaily"
@@ -924,7 +927,7 @@ msgid "You have"
 msgstr "Máte"
 
 msgid "Support question(s)"
-msgstr ""
+msgstr "Otázky podpory"
 
 msgid "New"
 msgstr "Nový"
@@ -1065,1873 +1068,1876 @@ msgid "ISPCP - Admin/Lostpw email setup"
 msgstr "ISCPCP - Admin/Nastavenie zabudnutého hesla"
 
 msgid "Lostpw email"
-msgstr ""
+msgstr "Stratené heslo e-mail"
 
 msgid "Activation E-Mail"
-msgstr ""
+msgstr "Aktivačný E-mail"
 
 msgid "Password E-Mail"
-msgstr ""
+msgstr "Heslo E-mail"
 
 msgid "User (first and last) name"
-msgstr ""
+msgstr "Užívateľské meno (krstné aj priezvisko)"
 
 msgid "Lostpw link"
-msgstr ""
+msgstr "Stratené heslo link"
 
 msgid "Reseller list is empty!"
-msgstr ""
+msgstr "Zoznam predajcov je prázdny!"
 
 msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr ""
+msgstr "ISPCP Admin/Spravovať užívateľov/Priradenie predajcu"
 
 msgid "Reseller assignment"
-msgstr ""
+msgstr "Priradenie predajcu"
 
 msgid "Reseller users"
-msgstr ""
+msgstr "Užívatelia predajcu"
 
 msgid "Mark"
-msgstr ""
+msgstr "Značka"
 
 msgid "Reseller name"
-msgstr ""
+msgstr "Meno predajcu"
 
 msgid "Owner"
-msgstr ""
+msgstr "Vlastník"
 
 msgid "To Admin"
-msgstr ""
+msgstr "Pre administrátora"
 
 msgid "Move"
-msgstr ""
+msgstr "Presunúť"
 
 msgid "Reseller or user list is empty!"
-msgstr ""
+msgstr "Zoznam predajcov alebo užívateľov je prázdy!"
 
 msgid "User list is empty!"
-msgstr ""
+msgstr "Zoznam užívateľov je prázdny!"
 
 msgid "User was moved"
-msgstr ""
+msgstr "Užívateľ bol presunutý"
 
 msgid "Please select some user(s)!"
-msgstr ""
+msgstr "Prosím vyberte užívateľa/užívateľov"
 
 msgid "Source and destination reseller are the same!"
-msgstr ""
+msgstr "Zdroj a cieľ predajcu je rovnaký!"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
-msgstr ""
+msgstr "<b>%1$s</b> má neobmedzené práva <b>%2$s</b> Služby !<br>"
 
 #, php-format
 msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
-msgstr ""
+msgstr "Nemôžete presunúť <b>%1$s</b> do destinácie predajcu,<br>ktorý má limit pre <b>%2$s</b> službu!"
 
 #, php-format
 msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
-msgstr ""
+msgstr "<b>%1$s</b> prekročil limit pre <b>%2$s</b><br>službu v mieste určenia predajcu!<br>"
 
 msgid "Moving aborted!"
-msgstr ""
+msgstr "Presun zrušený!"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr ""
+msgstr "<b>%1$s</b> má neobmedzené práva pre <b>%2$s</b> službu !<br>"
 
 #, php-format
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
-msgstr ""
+msgstr "<b>%s</b> má IP adresu, ktorá nemože byť spravovaná z miesta pre predajcu !<br>Tento užívateľ nemôže byť presunutý!"
 
 msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr ""
+msgstr "ISPCP - Admin/Spravovať užívateľov/Priradenie užívateľov"
 
 msgid "User assignment"
-msgstr ""
+msgstr "Priradenie užívateľov"
 
 msgid "Users"
-msgstr ""
+msgstr "Užívatelia"
 
 msgid "User name"
-msgstr ""
+msgstr "Užívateľské meno"
 
 msgid "From reseller"
-msgstr ""
+msgstr "Od predajcu"
 
 msgid "To reseller"
-msgstr ""
+msgstr "Pre predajcu"
 
 msgid "ISPCP - Admin/Manage Sessions"
-msgstr ""
+msgstr "ISCP - Admin/Spravovať sedenie"
 
 msgid "Manage user sessions"
-msgstr ""
+msgstr "Spravovať užívateľské sedenie"
 
 msgid "User type"
-msgstr ""
+msgstr "Typ užívateľa"
 
 msgid "Last access"
-msgstr ""
+msgstr "Posledný prístup"
 
 msgid "Options"
-msgstr ""
+msgstr "Nastavenia"
 
 msgid "Kill session"
-msgstr ""
+msgstr "Zrušiť sedenie"
 
 msgid "ISPCP - Admin/Manage Users"
-msgstr ""
+msgstr "ISPCP - Admin/Spravovať užívateľov"
 
 msgid "User added"
-msgstr ""
+msgstr "Užívateľ pridaný"
 
 msgid "Reseller added"
-msgstr ""
+msgstr "Predajca pridaný"
 
 msgid "User updated"
-msgstr ""
+msgstr "Užívateľ aktualizovaný"
 
 msgid "User deleted"
-msgstr ""
+msgstr "Užívateľ zmazaný"
 
 msgid "Email Updated"
-msgstr ""
+msgstr "E-mail aktualizovaný"
 
 msgid "This user have domain !<br>To delete user  - first delete domain!"
-msgstr ""
+msgstr "Tento používateľ má doménu !<br>Pre zmazanie užívateľa - najprv zmažte doménu!"
 
 msgid "User was disabled"
-msgstr ""
+msgstr "Užívateľ bol zablokovaný"
 
 msgid "Incorrect data input!"
-msgstr ""
+msgstr "Nesprávne data!"
 
 msgid "ISPCP - Admin/Internationalisation"
-msgstr ""
+msgstr "ISPCP - Admin/Zmedzinárodnenie"
 
 msgid "Default language changed!"
-msgstr ""
+msgstr "Predvolený jazyk zmenený!"
 
 msgid "You can upload only text files!"
-msgstr ""
+msgstr "Možete nahrať iba textové súbory!"
 
 msgid "Can not read ispcp language file!"
-msgstr ""
+msgstr "Nemože prečítať ispcp súbor s prekladom!"
 
 msgid "New language installed!"
-msgstr ""
+msgstr "Nový jazyk nainštalovaný!"
 
 msgid "Update language installed!"
-msgstr ""
+msgstr "Aktualizovať nainštalovaný jazyk!"
 
 msgid "Unknown"
-msgstr ""
+msgstr "Neznámy"
 
 msgid "uninstall"
-msgstr ""
+msgstr "odinštalovať"
 
 #, php-format
 msgid "%d messages translated"
-msgstr ""
+msgstr "%d správ preložených"
 
 msgid "Multilingual"
-msgstr ""
+msgstr "Viac-jazyčný"
 
 msgid "Installed languages"
-msgstr ""
+msgstr "Nainštalované jazyky"
 
 msgid "Language"
-msgstr ""
+msgstr "Jazyky"
 
 msgid "Messages"
-msgstr ""
+msgstr "Správy"
 
 msgid "Default"
-msgstr ""
+msgstr "Predvolený"
 
 msgid "Install new language"
-msgstr ""
+msgstr "Nainštalovať nový jazyk"
 
 msgid "Language file"
-msgstr ""
+msgstr "Súbor s prekladom"
 
 msgid "Install"
-msgstr ""
+msgstr "Nainštalovať"
 
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "ISPCP - Reseller statistics"
-msgstr ""
+msgstr "ISPCP - Štatistiky predajcu"
 
 msgid "Not found reseller(s) in your system!"
-msgstr ""
+msgstr "Nebol nájdený žiaden predajca vo Vašom systéme!"
 
 msgid "Reseller statistics table"
-msgstr ""
+msgstr "Tabulka štatistík predajcu"
 
 msgid "SQL database"
-msgstr ""
+msgstr "SQL databáza"
 
 msgid "SQL user"
-msgstr ""
+msgstr "SQL užívateľ"
 
 msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr ""
+msgstr "ISPCP - Admin/Štatistika užívateľov predajcu"
 
 msgid "disabled"
-msgstr ""
+msgstr "zakázané"
 
 msgid "Reseller users table"
-msgstr ""
+msgstr "Štatistika užívateľov predajcu"
 
 msgid "This reseller has no domains."
-msgstr ""
+msgstr "Tento predajca nemá žiadne domény."
 
 msgid "Traffic<br>usage"
-msgstr ""
+msgstr "Využitie<br>prenesených dát"
 
 msgid "Disk<br>usage"
-msgstr ""
+msgstr "Využitie<br>diskového priestoru"
 
 msgid "Web<br>traffic"
-msgstr ""
+msgstr "Využitie<br>prenesených dát cez web"
 
 msgid "FTP<br>traffic"
-msgstr ""
+msgstr "Využitie<br>prenesených dát cez FTP"
 
 msgid "SMTP<br>traffic"
-msgstr ""
+msgstr "Využitie<br>prenesených dát cez SMTP"
 
 msgid "POP3/IMAP<br>traffic"
-msgstr ""
+msgstr "Využitie<br>prenesených dát cez POP3/IMAP"
 
 msgid "SQL<br>database"
-msgstr ""
+msgstr "SQL<br>databáza"
 
 msgid "SQL<br>user"
-msgstr ""
+msgstr "SQL<br>užívateľ"
 
 msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
-msgstr ""
+msgstr "ISPCP Admin / Systémové nástroje / Log Rootkit Hunter-a"
 
 msgid "The file doesn't exist or can't be read."
-msgstr ""
+msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
 
 msgid "Rootkit Log Checker"
-msgstr ""
+msgstr "Log kontroly Rootkit"
 
 msgid "ISPCP - Admin/Server day stats"
-msgstr ""
+msgstr "ISPCP - Admin/Denné štatistiky servra"
 
 msgid "Server day statistics"
-msgstr ""
+msgstr "Denné štatistiky servra"
 
 msgid "Month:"
-msgstr ""
+msgstr "Mesiac:"
 
 msgid "Year:"
-msgstr ""
+msgstr "Rok:"
 
 msgid "Day:"
-msgstr ""
+msgstr "Deň:"
 
 msgid "Hour"
-msgstr ""
+msgstr "Hodina"
 
 msgid "Web in"
-msgstr ""
+msgstr "Web prichádzajúce"
 
 msgid "Web out"
-msgstr ""
+msgstr "Web odchádzajúca"
 
 msgid "Mail in"
-msgstr ""
+msgstr "Mail prichádzajúce"
 
 msgid "Mail out"
-msgstr ""
+msgstr "Mail odchádzajúce"
 
 msgid "Pop/IMAP in"
-msgstr ""
+msgstr "POP3/IMAP prichádzajúce"
 
 msgid "Pop/IMAP out"
-msgstr ""
+msgstr "POP3/IMAP odchádzajúce"
 
 msgid "Other in"
-msgstr ""
+msgstr "Ostatné odchádzajúce"
 
 msgid "Other out"
-msgstr ""
+msgstr "Ostatné prichádzajúce"
 
 msgid "All in"
-msgstr ""
+msgstr "Všetky prichádzajúce"
 
 msgid "All out"
-msgstr ""
+msgstr "Všetky odchádzajúce"
 
 msgid "ISPCP - Admin/Server statistics"
-msgstr ""
+msgstr "ISPCP - Admin/Štatistiky servra"
 
 msgid "Server statistics"
-msgstr ""
+msgstr "Štatistiky servra"
 
 msgid "ISPCP Admin / System Tools / Server Status"
-msgstr ""
+msgstr "ISPCP Admin / Systémové nástroje / Status servra"
 
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 msgid "Service"
-msgstr ""
+msgstr "Služba"
 
 msgid "Server status"
-msgstr ""
+msgstr "Status servra"
 
 msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr ""
+msgstr "ISPCP- Admin/Nastavenia prenesených dát servra"
 
 msgid "Wrong data input!"
-msgstr ""
+msgstr "Chýbné vstupné data!"
 
 msgid "Warning traffic is bigger then max traffic!"
-msgstr ""
+msgstr "Upozornenie: prenesené dáta sú väčšie ako maximálne prenesené dáta!"
 
 msgid "Server traffic settings updated successfully!"
-msgstr ""
+msgstr "Nastavenia prenesených dát na servri úspešne aktualizované!"
 
 msgid "Modify"
-msgstr ""
+msgstr "Zmeniť"
 
 msgid "Server traffic settings"
-msgstr ""
+msgstr "Nastavenia prenesených dát servra"
 
 msgid "Set server traffic settings"
-msgstr ""
+msgstr "Nastaviť prenesené data na servri"
 
 msgid "Max traffic [MB]"
-msgstr ""
+msgstr "Maximálny počet prenesených dát [MB]"
 
 msgid "Warning traffic [MB]"
-msgstr ""
+msgstr "Upozornenie prenesených dát [MB]"
 
 msgid "ISPCP - Admin/Servicemode"
-msgstr ""
+msgstr "ISPCP - Admin/Servisný mód"
 
 msgid "Settings saved !"
-msgstr ""
+msgstr "Uložit nastavenia !"
 
 msgid "Servicemode"
-msgstr ""
+msgstr "Servisný mód"
 
 msgid "In this mode only administrators can login"
-msgstr ""
+msgstr "V tomto móde môže byť prihlásený iba administrátor"
 
 msgid "ISPCP - Admin/Settings"
-msgstr ""
+msgstr "ISPCP - Admin/Nastavenia"
 
 msgid "ERROR: Only positive numbers are allowed !"
-msgstr ""
+msgstr "CHYBA: Iba kladné čísla sú povolené !"
 
 msgid "General settings"
-msgstr ""
+msgstr "Všeobecné nastavenia"
 
 msgid "Settings"
-msgstr ""
+msgstr "Nastavenia"
 
 msgid "Lostpassword"
-msgstr ""
+msgstr "Stratené heslo"
 
 msgid "Activationlink valid (minutes)"
-msgstr ""
+msgstr "Platnosť aktivačného odkazu (minúty)"
 
 msgid "Bruteforce detection"
-msgstr ""
+msgstr "Bruteforce detekcia"
 
 msgid "Time between logins"
-msgstr ""
+msgstr "Čas medzi prihláseniami"
 
 msgid "Number of login attempts"
-msgstr ""
+msgstr "Počet pokusov prihlásenia"
 
 msgid "Blocktime (minutes)"
-msgstr ""
+msgstr "Čas zablokovania (minúty)"
 
 msgid "Time between logins (seconds)"
-msgstr ""
+msgstr "Čas medzi prihláseniami (minúty)"
 
 msgid "Other settings"
-msgstr ""
+msgstr "Ostatné nastavenia"
 
 msgid "Default language"
-msgstr ""
+msgstr "Predvolený jazyk"
 
 msgid "Support system"
-msgstr ""
+msgstr "Podporný systém"
 
 msgid "Serverports"
-msgstr ""
+msgstr "Porty servra"
 
 msgid "Domains per page"
-msgstr ""
+msgstr "Domén na stránku"
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
-msgstr ""
+msgstr "CHYBA: Povolené sú iba písmená, čisla, pomlčky a podčiarkovník!"
 
 msgid "ERROR: Port already exists!"
-msgstr ""
+msgstr "CHYBA: Port už existuje!"
 
 msgid "You have no custom service ports defined."
-msgstr ""
+msgstr ".Nemáte nastavené žiadne vlastné porty"
 
 msgid "udp"
-msgstr ""
+msgstr "udp"
 
 msgid "tcp"
-msgstr ""
+msgstr "tcp"
 
 msgid "Services"
-msgstr ""
+msgstr "Služby"
 
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 msgid "Protocol"
-msgstr ""
+msgstr "Protokol"
 
 msgid "You have no support tickets."
-msgstr ""
+msgstr "Nemátie žiadne podporné tikety."
 
 msgid "Low"
-msgstr ""
+msgstr "Málo"
 
 msgid "Medium"
-msgstr ""
+msgstr "Stredne"
 
 msgid "High"
-msgstr ""
+msgstr "Veľa"
 
 msgid "Very high"
-msgstr ""
+msgstr "Veľmi veľa"
 
 msgid "ISPCP - Client/Questions & Comments"
-msgstr ""
+msgstr "ISPCP - Klient/Otázky a Komentáre"
 
 msgid "Support tickets"
-msgstr ""
+msgstr "Podporné tikety"
 
 msgid "Priority"
-msgstr ""
+msgstr "Priorita"
 
 msgid "Last reply"
-msgstr ""
+msgstr "Posledná odpoveď"
 
 msgid "Delete all"
-msgstr ""
+msgstr "Odstrániť všetko"
 
 msgid "Open tickets"
-msgstr ""
+msgstr "Otvorené tikety"
 
 msgid "Closed tickets"
-msgstr ""
+msgstr "Zatvorené tikety"
 
 msgid "[New]"
-msgstr ""
+msgstr "[Nový]"
 
 msgid "[Re]"
-msgstr ""
+msgstr "[Re]"
 
 msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr ""
+msgstr "ISPCP - Klient/Povoliť automatíckú odpoveď e-mailom"
 
 msgid "From"
-msgstr ""
+msgstr "Od"
 
 msgid "days"
-msgstr ""
+msgstr "dni"
 
 msgid "hours"
-msgstr ""
+msgstr "hodiny"
 
 msgid "minutes"
-msgstr ""
+msgstr "minúty"
 
 msgid "System info"
-msgstr ""
+msgstr "Systémové informácie"
 
 msgid "Vital system info"
-msgstr ""
+msgstr "Rozhodujúce systémove informácie"
 
 msgid "CPU system Info"
-msgstr ""
+msgstr "CPU systémové informácie"
 
 msgid "CPU model"
-msgstr ""
+msgstr "model CPU"
 
 msgid "CPU MHz"
-msgstr ""
+msgstr "CPU MHz"
 
 msgid "CPU cache"
-msgstr ""
+msgstr "CPU cache"
 
 msgid "CPU bogomips"
-msgstr ""
+msgstr "CPU bogomips"
 
 msgid "Memory system info"
-msgstr ""
+msgstr "Pamäť systémové informácie"
 
 msgid "RAM"
-msgstr ""
+msgstr "RAM"
 
 msgid "Total"
-msgstr ""
+msgstr "Spolu"
 
 msgid "Free"
-msgstr ""
+msgstr "Voľné"
 
 msgid "Swap"
-msgstr ""
+msgstr "Swap"
 
 msgid "Up time"
-msgstr ""
+msgstr "Uptime"
 
 msgid "Kernel"
-msgstr ""
+msgstr "Jadro"
 
 msgid "Load"
-msgstr ""
+msgstr "Zaťaženie"
 
 msgid "Filesystem system Info"
-msgstr ""
+msgstr "Informácie o súborových systémoch"
 
 msgid "Mount"
-msgstr ""
+msgstr "Pripojené"
 
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 msgid "Partition"
-msgstr ""
+msgstr "Partícia"
 
 msgid "Percent"
-msgstr ""
+msgstr "Percent"
 
 msgid "Size"
-msgstr ""
+msgstr "Veľkosť"
 
 msgid "Ticket not found!"
-msgstr ""
+msgstr "Tiket nebol nájdený!"
 
 msgid "Open ticket"
-msgstr ""
+msgstr "Otvorený tiket"
 
 msgid "Close ticket"
-msgstr ""
+msgstr "Zatvorený tiket"
 
 msgid "ISPCP - Client : Support System: View Tickets"
-msgstr ""
+msgstr "ISPCP - Klient : Podporný systém: Zobraziť Tikety"
 
 msgid "Please type your message!"
-msgstr ""
+msgstr "Prosím napíšte svoju správu!"
 
 msgid "Message was sent!"
-msgstr ""
+msgstr "Správa odoslaná!"
 
 msgid "Ticket was closed!"
-msgstr ""
+msgstr "Tiket bol zatvorený!"
 
 msgid "Ticket was reopened!"
-msgstr ""
+msgstr "Tiket bol znovu otvorený!"
 
 msgid "ISPCP - Admin : Support System: View Tickets"
-msgstr ""
+msgstr "ISPCP - Admin : Podporný systém: Zobraziť Tikety"
 
 msgid "View support ticket"
-msgstr ""
+msgstr "Zobraziť podporný tiket"
 
 msgid "Send message reply"
-msgstr ""
+msgstr "Odoslať odpoveď správy"
 
 msgid "Send reply"
-msgstr ""
+msgstr "Odoslať odpoveď"
 
 msgid "ISPCP Client : Add Alias"
-msgstr ""
+msgstr "ISPCP Klient : Pridať Alias"
 
 msgid "Manage domain alias"
-msgstr ""
+msgstr "Spravať alias domény"
 
 msgid "Add domain alias"
-msgstr ""
+msgstr "Pridať alias domény"
 
 msgid "User account"
-msgstr ""
+msgstr "Užívateľské konto"
 
 msgid "Directory mount point"
-msgstr ""
+msgstr "Bod pripojenia adresára"
 
 msgid "Forward to URL"
-msgstr ""
+msgstr "Presmerovať na URL"
 
 msgid "Add alias"
-msgstr ""
+msgstr "Pridať alias"
 
 msgid "Domain alias limit reached!"
-msgstr ""
+msgstr "Limit aliasov domény dosiahnutý!"
 
 msgid "Incorrect domain name syntax"
-msgstr ""
+msgstr "Nesprávna syntax mena domény"
 
 msgid "Domain with that name already exists on the system!"
-msgstr ""
+msgstr "Doména s rovnakým menom už existuje v systéme!"
 
 msgid "Incorrect mount point syntax"
-msgstr ""
+msgstr "Nesprávna syntax prípojného bodu"
 
 msgid "Incorrect forward syntax"
-msgstr ""
+msgstr "Nesprávna syntax presmerovania"
 
 msgid "Domain with this name already exist"
-msgstr ""
+msgstr "Doména s rovnakým menom už existuje"
 
 msgid "There are alias with same mount point"
-msgstr ""
+msgstr "Už existuje alias s rovnakým bodom pripojenia"
 
 msgid "Alias scheduled for addition!"
-msgstr ""
+msgstr "Alias načasovaný na pridanie!"
 
 msgid "Empty List"
-msgstr ""
+msgstr "Prázdny Zoznam"
 
 msgid "Empty list"
-msgstr ""
+msgstr "Prázdny zoznam"
 
 msgid "FTP account already exists!"
-msgstr ""
+msgstr "FTP konto už existuje! "
 
 msgid "Unknown domain type"
-msgstr ""
+msgstr "Neznámy typ domény"
 
 msgid "Incorrect mount point range or syntax"
-msgstr ""
+msgstr "Nesprávna syntax alebo dľžka bodu pripojenia"
 
 #, php-format
 msgid "%s does not exist"
-msgstr ""
+msgstr "%s neexistuje"
 
 msgid "FTP account added!"
-msgstr ""
+msgstr "FTP konto pridané!"
 
 msgid "Please enter FTP account username!"
-msgstr ""
+msgstr "Prosím zadajte užívateľské meo FTP konta!"
 
 msgid "Password data is missing!"
-msgstr ""
+msgstr "Chýba hesla!"
 
 msgid "Entered passwords differ from the another!"
-msgstr ""
+msgstr "Zadané heslá sú rôzne!"
 
 msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr ""
+msgstr "Zoznam subdomén je prázdny! Tu nemôžete pridať FTP konto!"
 
 msgid "Alias list is empty! You can not add FTP accounts there!"
-msgstr ""
+msgstr "Zoznam aliasov je prázdny! Tu nemôžete pridať FTP konto!"
 
 msgid "Please specify other FTP account dir!"
-msgstr ""
+msgstr "Prosím zadajte iný adresár FTP konta!"
 
 msgid "FTP accounts limit reached!"
-msgstr ""
+msgstr "FTP konto dosiahlo limit!"
 
 msgid "ISPCP - Client/Add FTP User"
-msgstr ""
+msgstr "ISPCP - Klient/Pridať FTP konto"
 
 msgid "Add FTP user"
-msgstr ""
+msgstr "Pridať FTP konto"
 
 msgid "To main domain"
-msgstr ""
+msgstr "K hlavnej doméne"
 
 msgid "To domain alias"
-msgstr ""
+msgstr "K aliasu domény"
 
 msgid "To subdomain"
-msgstr ""
+msgstr "K sub-doméne"
 
 msgid "Use other dir"
-msgstr ""
+msgstr "Použiť iný adresár"
 
 msgid "Choose dir"
-msgstr ""
+msgstr "Voľba adresára"
 
 msgid "Invalid Mail Localpart Format used!"
-msgstr ""
+msgstr "Použitý zlý formát lokálnej časti e-mailu"
 
 msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr ""
+msgstr "Formát e-mailu v zozname presmerovaní je nesprávny!"
 
 msgid "Mail forward list empty!"
-msgstr ""
+msgstr "Zoznam presmerovania je prázdny!"
 
 msgid "Mail account already exists!"
-msgstr ""
+msgstr "E-mailové konto už existuje!"
 
 msgid "Mail account scheduled for addition!"
-msgstr ""
+msgstr "E-mailové konto načasované pre pridanie!"
 
 msgid "Please enter mail account username!"
-msgstr ""
+msgstr "Prosím zadajte meno e-mailového konta!"
 
 msgid "Password data includes not permitted signs!"
-msgstr ""
+msgstr "Heslá obsahujú nepovolené znaky!"
 
 msgid "Subdomain list is empty! You can not add mail accounts!"
-msgstr ""
+msgstr "Zoznam sub-domén je prázdny! Tu nemôžete pridať e-mailové konto!"
 
 msgid "Alias list is empty! You can not add mail accounts!"
-msgstr ""
+msgstr "Zoznam aliasov je prázdny! Tu nemôžete pridať e-mailové konto!"
 
 msgid "Forward list is empty!"
-msgstr ""
+msgstr "Zoznam presmerovania je prázadny!"
 
 msgid "Mail accounts limit reached!"
-msgstr ""
+msgstr "Limit e-mailových kont dosiahnutý!"
 
 msgid "ISPCP - Client/Add Mail User"
-msgstr ""
+msgstr "ISPCP - Klient/Pridať E-mailové konto"
 
 msgid "Add mail users"
-msgstr ""
+msgstr "Pridať E-mailové konto"
 
 msgid "Normal mail"
-msgstr ""
+msgstr "Normálny e-mail"
 
 msgid "Forward mail"
-msgstr ""
+msgstr "Presmerovný e-mail"
 
 msgid "Forward to"
-msgstr ""
+msgstr "Presmerovať do"
 
 msgid "Please type database name!"
-msgstr ""
+msgstr "Prosím zadajte meno databázi!"
 
 msgid "Too long database name!"
-msgstr ""
+msgstr "Meno databázi je príliš dlhé!"
 
 msgid "Specified database name already exists!"
-msgstr ""
+msgstr "Zadané meno databázi už existuje!"
 
 msgid "Wildcards as % and ? are not allowed!"
-msgstr ""
+msgstr "Znaky ako % ako ? nie sú povolené!"
 
 msgid "SQL database created successfully!"
-msgstr ""
+msgstr "SQL databáza bola vytvorená úspešne!"
 
 msgid "SQL accounts limit reached!"
-msgstr ""
+msgstr "Limit SQL kont dosiahnutý!"
 
 msgid "ISPCP - Client/Add SQL Database"
-msgstr ""
+msgstr "ISPCP - Klient/Pridať SQL databázu"
 
 msgid "Add SQL database"
-msgstr ""
+msgstr "Pridať SQL databázu"
 
 msgid "Database name"
-msgstr ""
+msgstr "Meno databázi"
 
 msgid "Use numeric ID"
-msgstr ""
+msgstr "Použite číselné ID"
 
 msgid "Before the name"
-msgstr ""
+msgstr "Pred meno"
 
 msgid "After the name"
-msgstr ""
+msgstr "Po mene"
 
 msgid "Subdomains limit reached!"
-msgstr ""
+msgstr "Limit sub-domén dosiahnutý!"
 
 msgid "Please specify subdomain name!"
-msgstr ""
+msgstr "Posím zadajte meno sub-domén!"
 
 msgid "Subdomain already exists!"
-msgstr ""
+msgstr "Sub-doména už existuje!"
 
 msgid "Wrong subdomain syntax!"
-msgstr ""
+msgstr "Zlá syntax sub-domény!"
 
 msgid "Subdomain mount point already exists!"
-msgstr ""
+msgstr "Bod pripojenia sub-domény už existuje!"
 
 msgid "Subdomain scheduled for addition!"
-msgstr ""
+msgstr "Subdoména načasovaná na pridanie!"
 
 msgid "ISPCP - Client/Add Subdomain"
-msgstr ""
+msgstr "ISPCP - Klient/Pridať sub-doménu"
 
 msgid "Add subdomain"
-msgstr ""
+msgstr "Pridať sub-doménu"
 
 msgid "Subdomain data"
-msgstr ""
+msgstr "Data sub-domény"
 
 msgid "Subdomain name"
-msgstr ""
+msgstr "Meno sub-domény"
 
 msgid "Directory tree<br>mount point"
-msgstr ""
+msgstr "Strom adresárov<br>prípojný bod"
 
 msgid "Backup archive scheduled for restoring!"
-msgstr ""
+msgstr "Záložný archív načasovaný na pridanie!"
 
 msgid "ISPCP - Client/Daily Backup"
-msgstr ""
+msgstr "ISPCP - Klient/Denná záloha"
 
 msgid "Backup"
-msgstr ""
+msgstr "Záloha"
 
 msgid "Daily backup"
-msgstr ""
+msgstr "Denná záloha"
 
 msgid "Direction download today backup"
-msgstr ""
+msgstr "Cesta stiahnutia dnešnej zálohy"
 
 msgid "Login with your FTP account"
-msgstr ""
+msgstr "Prihlasiť sa cez FTP konto"
 
 msgid "Switch to backup directory"
-msgstr ""
+msgstr "Zmeniť do adresára so zálohami"
 
 msgid "Download the files stored in this directory"
-msgstr ""
+msgstr "Stiahnuť súbory uložené v adresári"
 
 msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr ""
+msgstr "(zvyčajne pomenované ako backuo_YYYY_MM_DD.tar.bz2)"
 
 msgid "Restore backup"
-msgstr ""
+msgstr "Obnoviť zálohu"
 
 msgid "Click Restore button and the system will restore last daily backup"
-msgstr ""
+msgstr "Kliknutím na tlačidlo obnovenia zálohy obnovíte poslednú dennú zálohu"
 
 msgid "Restore"
-msgstr ""
+msgstr "Obnoviť"
 
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 msgid "Enable"
-msgstr ""
+msgstr "Zapnúť"
 
 msgid "Disable"
-msgstr ""
+msgstr "Vypnúť"
 
 msgid "Delete CatchAll"
-msgstr ""
+msgstr "Vymazať \"zachytiť všetko\""
 
 msgid "Create catch all"
-msgstr ""
+msgstr "Vytvoriť \"zachytiť všetko\""
 
 msgid "Catch all mail account can not be created!"
-msgstr ""
+msgstr "Konto \"zachytiť všetko\" nemôže byť vytvorená!"
 
 msgid "Mail accounts list is empty!"
-msgstr ""
+msgstr "Zoznam e-mailových kont je prázdny!"
 
 msgid "ISPCP - Client/Manage Users"
-msgstr ""
+msgstr "ISPCP - Klient/Spravovať užívateľov"
 
 msgid "Manage users"
-msgstr ""
+msgstr "Spravovat užívateľov"
 
 msgid "Mail users"
-msgstr ""
+msgstr "E-mailový užívatelia"
 
 msgid "Auto respond"
-msgstr ""
+msgstr "Automatická odpoveď"
 
 msgid "Domain mails"
-msgstr ""
+msgstr "Doménové e-maily"
 
 msgid "Subdomain mails"
-msgstr ""
+msgstr "Sub-doménové e-maily"
 
 msgid "Alias mails"
-msgstr ""
+msgstr "Aliasové e-maily"
 
 msgid "Mails total"
-msgstr ""
+msgstr "E-maily spolu"
 
 msgid "FTPs total"
-msgstr ""
+msgstr "FTP kontá spolu"
 
 msgid "Catch all account"
-msgstr ""
+msgstr "\"Zachytiť všetko\" konto"
 
 msgid "Catch all"
-msgstr ""
+msgstr "\"Zachytiť všetko\""
 
 msgid "FTP users"
-msgstr ""
+msgstr "FTP kontá"
 
 msgid "FTP account"
-msgstr ""
+msgstr "FTP konto"
 
 msgid "ISPCP - Client/Change Password"
-msgstr ""
+msgstr "ISPCP - Klient/Zmeniť heslo"
 
 msgid "ISPCP - Client/Change Personal Data"
-msgstr ""
+msgstr "ISPCP - Klient/Zmeniť osobné údaje"
 
 msgid "Catch all account scheduled for creation!"
-msgstr ""
+msgstr "\"Zachytiť všetko\" konto načasované na pridanie!"
 
 msgid "Mail forward list error!"
-msgstr ""
+msgstr "Chyba v zozname presmerovania!"
 
 msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr ""
+msgstr "ISPCP - Client/Vytvoriť \"Zachytiť všetko\" konto"
 
 msgid "Create catch all mail account"
-msgstr ""
+msgstr "Vytvoriť \"zachytiť všetko\" konto "
 
 msgid "Mail accounts list"
-msgstr ""
+msgstr "Zoznam e-mailových kont"
 
 msgid "ISPCP - Client/Cronjob Manager"
-msgstr ""
+msgstr "ISPCP - Klient/Crontab manažér"
 
 msgid "Cronjob Manager"
-msgstr ""
+msgstr "Crontab Manažér"
 
 msgid "Add Cronjob"
-msgstr ""
+msgstr "Pridať do crontabu"
 
 msgid "Active"
-msgstr ""
+msgstr "Aktívny"
 
 msgid "Yes"
-msgstr ""
+msgstr "Áno"
 
 msgid "No"
-msgstr ""
+msgstr "Nie"
 
 msgid "Cronjob"
-msgstr ""
+msgstr "Crontab"
 
 msgid "Command to run:"
-msgstr ""
+msgstr "Príkaz na spustenie:"
 
 msgid "Minute(s):"
-msgstr ""
+msgstr "Minúty:"
 
 msgid "Hour(s):"
-msgstr ""
+msgstr "Hodiny:"
 
 msgid "Day(s):"
-msgstr ""
+msgstr "Dni:"
 
 msgid "Months(s):"
-msgstr ""
+msgstr "Mesiace:"
 
 msgid "Weekday(s):"
-msgstr ""
+msgstr "Týždne:"
 
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušiť"
 
 msgid "Edit Cronjob"
-msgstr ""
+msgstr "Zmeniť crontab"
 
 msgid "Cronjobs"
-msgstr ""
+msgstr "Crontab"
 
 msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
+msgstr "Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
 
 msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
+msgstr "Alias domény, ktorý sa snažíte odstrániť má FTP kontá!<br>Najpr ich odstránte!"
 
 msgid "Alias scheduled for deletion!"
-msgstr ""
+msgstr "Alias načasovný na zmazanie!"
 
 msgid "Catch all account scheduled for deletion!"
-msgstr ""
+msgstr "\"Zachytiť všetko\" konto načasované na zmazanie!"
 
 msgid "FTP account deleted successfully!"
-msgstr ""
+msgstr "FTP konto zmazané úspešne!"
 
 msgid "Please delete first CatchAll account for this email!"
-msgstr ""
+msgstr "Prosím zmažte najprv \"zachytiť všetko\" konto pre tento e-mail!"
 
 msgid "SQL database was removed successfully!"
-msgstr ""
+msgstr "SQL databáza zmazaná úspešne!"
 
 msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
+msgstr "Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
 
 msgid "Subdomain scheduled for deletion!"
-msgstr ""
+msgstr "Sub-doména načasovaná na zmazanie!"
 
 msgid "You have no permission to disable this alias forward"
-msgstr ""
+msgstr "Nemáte oprávnenie na zablkovoanie tohto aliasu presmerovania"
 
 msgid "Alias scheduled for modification!"
-msgstr ""
+msgstr "Alias načasovaný na zmenu!"
 
 msgid "User does not exist or you do not have permission to access this interface!"
-msgstr ""
+msgstr "Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
 
 msgid "Mail account scheduled for modification!"
-msgstr ""
+msgstr "Mail konto načasované na zmenu!"
 
 msgid "ISPCP - Client/Domain Statistics"
-msgstr ""
+msgstr "ISPCP - Klient/Štatistiky domény"
 
 msgid "Web Stats"
-msgstr ""
+msgstr "Štatistiky webu"
 
 msgid "WEB"
-msgstr ""
+msgstr "WEB"
 
 msgid "SMTP"
-msgstr ""
+msgstr "SMTP"
 
 msgid "POP/IMAP"
-msgstr ""
+msgstr "POP/IMAP"
 
 msgid "Sum"
-msgstr ""
+msgstr "Spolu"
 
 msgid "Entered passwords differ!"
-msgstr ""
+msgstr "Zadané heslá sú rozdielne!"
 
 #, php-format
 msgid "%s do not exist"
-msgstr ""
+msgstr "%s neexistuje"
 
 msgid "FTP account data updated!"
-msgstr ""
+msgstr "Informacie o FTP konte aktualizované!"
 
 msgid "ISPCP - Client/Edit FTP Account"
-msgstr ""
+msgstr "ISPCP - Klient/Editovať FTP konto"
 
 msgid "Edit FTP user"
-msgstr ""
+msgstr "Editovať FTP konto"
 
 msgid "Save changes"
-msgstr ""
+msgstr "Uložiť zmeny"
 
 msgid "Email account not found!"
-msgstr ""
+msgstr "E-mailové konto nenájdené!"
 
 msgid "Missing or wrong data!"
-msgstr ""
+msgstr "Chýbajúce alebo zlé data!"
 
 msgid "Password data includes not valid signs!"
-msgstr ""
+msgstr "Heslo obsahuje nepovolné znaky!"
 
 msgid "Mail were updated successfully!"
-msgstr ""
+msgstr "E-maily boli aktualizované úspešne!"
 
 msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr ""
+msgstr "ISPCP - Spravovať E-mail a FTP / Editovať E-mailové konto"
 
 msgid "Edit email account"
-msgstr ""
+msgstr "Editovať FTP konto"
 
 msgid "Please type your mail autorespond message!"
-msgstr ""
+msgstr "Prosím zadajte Vašu automatickú odpoveď e-mailom!"
 
 msgid "Mail account scheduler for modification!"
-msgstr ""
+msgstr "E-mailové konto načasované na aktualizáciu!"
 
 msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr ""
+msgstr "ISPCP - Klient/Zapnúť automatickú odpoveď e-mailom"
 
 msgid "Edit mail auto responder"
-msgstr ""
+msgstr "Upraviť odpovedajúceho pri automatickej odpovedi e-mailom"
 
 msgid "Your message"
-msgstr ""
+msgstr "Vaša správa"
 
 msgid "Please wait for update"
-msgstr ""
+msgstr "Prosím počkajte na aktualizovanie"
 
 msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr ""
+msgstr "ISPCP - Spravovať doménu/Zmeniť Alias"
 
 msgid "Edit domain alias"
-msgstr ""
+msgstr "Zmeniť alias domény"
 
 msgid "Alias name"
-msgstr ""
+msgstr "Meno aliasu"
 
 msgid "Enable mail auto responder"
-msgstr ""
+msgstr "Povoliť odpovedajúceho pri automatickej odpovedi e-mailom"
 
 msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr ""
+msgstr "ISPCP - Klient/Spravovať vlastné chybové stránky;"
 
 msgid "Server error - please choose error page"
-msgstr ""
+msgstr "Chyba servra - prosím vyberte chybovú hlášku"
 
 msgid "0"
-msgstr ""
+msgstr "0"
 
 msgid "Edit error page"
-msgstr ""
+msgstr "Upraviť chybovú stránku"
 
 msgid "Custom error page was updated!"
-msgstr ""
+msgstr "Vlastné chybové stránky boli aktulizované!"
 
 msgid "System error - custom error page was NOT updated!"
-msgstr ""
+msgstr "Systémová chyba - vlastné chybové stránky neboli aktulizované!"
 
 msgid "Error 401 (unauthorised)"
-msgstr ""
+msgstr "Chyba 401 (neautorizovaný)"
 
 msgid "Error 403 (forbidden)"
-msgstr ""
+msgstr "Chyba 403 (zakázaný)"
 
 msgid "Error 404 (not found)"
-msgstr ""
+msgstr "Chyba 404 (nenájdený)"
 
 msgid "Error 500 (internal server error)"
-msgstr ""
+msgstr "Chyba 500 (interná chyba servra)"
 
 msgid "Error pages"
-msgstr ""
+msgstr "Chybové stránky"
 
 msgid "FTP list is empty!"
-msgstr ""
+msgstr "Zoznam FTP je prázdny"
 
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr ""
+msgstr " Nemôžem otvoriť aresár! <br>Prosím kontaktujte Vášho adminstrátora !"
 
 msgid "Parent Directory"
-msgstr ""
+msgstr "Rodičovský adresár"
 
 msgid "Protect it"
-msgstr ""
+msgstr "Ochráň to"
 
 msgid "ISPCP - Client/Webtools"
-msgstr ""
+msgstr "ISPCP - Klient/Web nástroje"
 
 msgid "Directory tree"
-msgstr ""
+msgstr "Strom adresárov"
 
 msgid "Directories"
-msgstr ""
+msgstr "Adresáre"
 
 msgid "Choose"
-msgstr ""
+msgstr "Vyberať"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
-msgstr ""
+msgstr "%1$s%% [%2$s z %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$s%% [%2$s of nebmedzených]"
 
 msgid "You are exceeding your disk limit!"
-msgstr ""
+msgstr "Prekračujete Váš limit diskového priestoru!"
 
 msgid "You have no new support questions!"
-msgstr ""
+msgstr "Nemáte žiadne nové podporné otázky!"
 
 msgid "support question(s)"
-msgstr ""
+msgstr "podporné otázky"
 
 msgid "new"
-msgstr ""
+msgstr "nová"
 
 msgid "ISPCP - Client/Main Index"
-msgstr ""
+msgstr "ISPCP - Klient/Hlavný index"
 
 msgid "General information"
-msgstr ""
+msgstr "Všeobecné informácie"
 
 msgid "Account name"
-msgstr ""
+msgstr "Názov konta"
 
 msgid "Main domain"
-msgstr ""
+msgstr "Hlavná doména"
 
 msgid "SQL support"
-msgstr ""
+msgstr "podpora SQL"
 
 msgid "Choose default language"
-msgstr ""
+msgstr "Vyberte predvolený jazyk"
 
 msgid "Traffic usage"
-msgstr ""
+msgstr "Prenesené dáta"
 
 msgid "Disk usage"
-msgstr ""
+msgstr "Využitie diskového priestoru"
 
 msgid "User language updated successfully!"
-msgstr ""
+msgstr "Jazyk užívateľa úspešne zmenený!"
 
 msgid "ISPCP - Client/Change Language"
-msgstr ""
+msgstr "ISPCP - Klient/Zmeniť jazyk"
 
 msgid "Subdomain list is empty!"
-msgstr ""
+msgstr "Zoznam sub-domén je prázdny!"
 
 msgid "Alias list is empty!"
-msgstr ""
+msgstr "Zoznam aliasov je prázdny"
 
 msgid "ISPCP - Client/Manage Domains"
-msgstr ""
+msgstr "ISPCP - Klient/Spravovať domány"
 
 msgid "Manage domains"
-msgstr ""
+msgstr "Spravovať domény"
 
 msgid "Mount point"
-msgstr ""
+msgstr "Bod propojenia"
 
 msgid "Forward"
-msgstr ""
+msgstr "Presmerovanie"
 
 msgid "Database user list is empty!"
-msgstr ""
+msgstr "Zoznam databázovych kont je prázdny!"
 
 msgid "Database list is empty!"
-msgstr ""
+msgstr "Zoznam databáz je prázdny"
 
 msgid "ISPCP - Client/Manage SQL"
-msgstr ""
+msgstr "ISPCP - Klient/Spravovať SQL"
 
 msgid "Manage SQL"
-msgstr ""
+msgstr "Spravovať SQL"
 
 msgid "Database users"
-msgstr ""
+msgstr "Užívateľia databázy"
 
 msgid "Add SQL user"
-msgstr ""
+msgstr "Pridať SQL konto"
 
 msgid "Execute query"
-msgstr ""
+msgstr "Vykonať príkaz"
 
 msgid "Please specify message subject!"
-msgstr ""
+msgstr "Prosím vyplňte predmet správy!"
 
 msgid "Your message was sent!"
-msgstr ""
+msgstr "Vaša správa bola odoslaná!"
 
 msgid "ISPCP - Support system - New ticket"
-msgstr ""
+msgstr "ISPCP - Podporný systém - Nový tiket"
 
 msgid "New ticket"
-msgstr ""
+msgstr "Nový tiket"
 
 msgid "Protected area status should be OK if you want to delete it!"
-msgstr ""
+msgstr "Status chránených oblasté by mal byť OK ak to chcete zmazať"
 
 msgid "Protected area deleted successfully!"
-msgstr ""
+msgstr "Chránené oblasti zmazané úspešne!"
 
 msgid "Permission deny!"
-msgstr ""
+msgstr "Prístup zamietnutý!"
 
 msgid "You do not have protected areas"
-msgstr ""
+msgstr "Nemáte prístup k chráneným územiam"
 
 msgid "Manage users and groups"
-msgstr ""
+msgstr "Spravovať užívateľov a skupiny"
 
 msgid "Add user"
-msgstr ""
+msgstr "Pridať uživateľa"
 
 msgid "Group name"
-msgstr ""
+msgstr "Názov skupiny"
 
 msgid "Group members"
-msgstr ""
+msgstr "Členovia skupiny"
 
 msgid "Add group"
-msgstr ""
+msgstr "Pridať skupinu"
 
 msgid "Group"
-msgstr ""
+msgstr "Skupina"
 
 msgid "Add new protected area"
-msgstr ""
+msgstr "Pridať nové chránené územia"
 
 msgid "Please choose user or group"
-msgstr ""
+msgstr "Prosím vyberte užívateľa a skupinu"
 
 msgid "Please enter area name"
-msgstr ""
+msgstr "Prosím zadajte meno oblasti"
 
 msgid "Please enter area path"
-msgstr ""
+msgstr "Prosím zadajte cestu oblasti"
 
 #, php-format
 msgid "%s doesn't exist"
-msgstr ""
+msgstr "%s neexistuje"
 
 msgid "You can not protect area without selected user(s)"
-msgstr ""
+msgstr "Nemôžete chrániť oblasť bez vybraných uživateľov"
 
 msgid "You can not protect area without selected group(s)"
-msgstr ""
+msgstr "Nemôžete chrániť oblasť bez vybraných skupín"
 
 msgid "Protected area updated successfully!"
-msgstr ""
+msgstr "Chránené územie úspešne zmenené!"
 
 msgid "Protected area created successfully!"
-msgstr ""
+msgstr "Chránené územie úspešne pridané!"
 
 msgid "Protected area status should be OK if you want to edit it!"
-msgstr ""
+msgstr "Status chránenej oblasti by mal byť OK ak ho chcete editovať!"
 
 msgid "You have no users !"
-msgstr ""
+msgstr "Nemáte žiadneho užívateľa !"
 
 msgid "You have no groups!"
-msgstr ""
+msgstr "Nemáte žiadnu skupinu!"
 
 msgid "Protect this area"
-msgstr ""
+msgstr "Chrániť túto oblasť"
 
 msgid "Path"
-msgstr ""
+msgstr "Cesta"
 
 msgid "Groups"
-msgstr ""
+msgstr "Skupiny"
 
 msgid "User auth"
-msgstr ""
+msgstr "Autorizácie uživateľa"
 
 msgid "Group auth"
-msgstr ""
+msgstr "Autorizácie skupiny"
 
 msgid "Area name"
-msgstr ""
+msgstr "Názov oblasti"
 
 msgid "Unprotect it"
-msgstr ""
+msgstr "Nechrániť ju"
 
 msgid "Can not open file! Please contact your administrator !"
-msgstr ""
+msgstr "Nemôžem otvoriť súbor! Prosím kontaktujte Vášho administrátora!"
 
 msgid "User was assigned to group "
-msgstr ""
+msgstr "Užívateľ bol priradený k skupine"
 
 msgid "User was deleted from group "
-msgstr ""
+msgstr "Užívateľ bol zmazaný zo skupiny "
 
 msgid "User assign"
-msgstr ""
+msgstr "Uživateľ priradený"
 
 msgid "Already in:"
-msgstr ""
+msgstr "Už v: "
 
 msgid "Not in:"
-msgstr ""
+msgstr "Nie je v:"
 
 msgid "User was assigned to group"
-msgstr ""
+msgstr "Užívateľ bol priradený k skupine"
 
 msgid "Member of group:"
-msgstr ""
+msgstr "Člen skupiny:"
 
 msgid "Select group:"
-msgstr ""
+msgstr "Vybrať skupinu:"
 
 msgid "Update user"
-msgstr ""
+msgstr "Aktualizovať užívateľa"
 
 msgid "Wrong username!"
-msgstr ""
+msgstr "Zlé užvateľské meno!"
 
 msgid "Group already exist !"
-msgstr ""
+msgstr "Skupina už existuje !"
 
 msgid "Manage user"
-msgstr ""
+msgstr "Spravovať užívateľa"
 
 msgid "You have no users!"
-msgstr ""
+msgstr "Nemáte užívateľov!"
 
 msgid "User already exist !"
-msgstr ""
+msgstr "Užívateľ už existuje !"
 
 msgid "SQL-user limit expired!"
-msgstr ""
+msgstr "Limit SQL konta expiroval!"
 
 msgid "Please type user name!"
-msgstr ""
+msgstr "Prosím zadajte užívateľské meno!"
 
 msgid "Please type user password!"
-msgstr ""
+msgstr "Prosím zadajte heslo užívateľa!"
 
 msgid "Too user long password!"
-msgstr ""
+msgstr "Príliš dlhé heslo užívateľa!"
 
 msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr ""
+msgstr "SQL konto nenájdené! Možno bolo zmazané iným užívateľom!"
 
 msgid "User name too long!"
-msgstr ""
+msgstr "Uživateľské meno príliš dlhé!"
 
 msgid "Specified SQL username name already exists!"
-msgstr ""
+msgstr "Zadané SQL užívateľské meno už existuje!"
 
 msgid "SQL user successfully added!"
-msgstr ""
+msgstr "SQL konto pridané úspešne!"
 
 msgid "ISPCP - Client/Add SQL User"
-msgstr ""
+msgstr "ISPCP - Klient/Pridať SQL konto"
 
 msgid "SQL user name"
-msgstr ""
+msgstr "SQL užívateľské meno"
 
 msgid "In front the name"
-msgstr ""
+msgstr "Pred meno"
 
 msgid "Behind the name"
-msgstr ""
+msgstr "Za menom"
 
 msgid "Add existing user"
-msgstr ""
+msgstr "Pridať existujúce konto"
 
 msgid "Existing SQL users"
-msgstr ""
+msgstr "Existujúce SQL kontá"
 
 msgid "Too long user password!"
-msgstr ""
+msgstr "Príliš dlhé heslo!"
 
 msgid "SQL user password was successfully changed!"
-msgstr ""
+msgstr "Heslo SQL konta úspešne zmenené!"
 
 msgid "ISPCP - Client/Change SQL User Password"
-msgstr ""
+msgstr "ISPCP- Klient/Zmeniť heslo SQL konta"
 
 msgid "Change SQL user password"
-msgstr ""
+msgstr "Zmeniť heslo SQL konta"
 
 msgid "Change"
-msgstr ""
+msgstr "Zmeniť"
 
 msgid "SQL user was removed successfully!"
-msgstr ""
+msgstr "SQL konto bolo zmazané úspešne!"
 
 msgid "Please enter SQL query!"
-msgstr ""
+msgstr "Prosím zadajte SQL príkaz!"
 
 msgid "Cannot connect as MySQL administrator!"
-msgstr ""
+msgstr "Nemôžem sa pripojiť do MySQL ako administrátor!"
 
 msgid "SQL query has error"
-msgstr ""
+msgstr "SQL príkaz má chybu"
 
 msgid "SQL query is ok"
-msgstr ""
+msgstr "SQL príkaz je OK"
 
 msgid "ISPCP - Client/Execute SQL Query"
-msgstr ""
+msgstr "ISPCP - Klient/Vykonať SQL príkaz"
 
 msgid "Execute SQL query"
-msgstr ""
+msgstr "Vykonať SQL príkaz"
 
 msgid "SQL query"
-msgstr ""
+msgstr "SQL príkaz"
 
 msgid "Query status"
-msgstr ""
+msgstr "Status príkazu"
 
 msgid "Query result"
-msgstr ""
+msgstr "Výsledok príkazu"
 
 msgid "Execute"
-msgstr ""
+msgstr "Vykonať"
 
 msgid "Protected area was deleted successful!"
-msgstr ""
+msgstr "Chránené oblasti boli zmazané úspešne!"
 
 msgid "Hosting plans available for update"
-msgstr ""
+msgstr "Hostingové plány dostupné na update!"
 
 msgid "Cancel order"
-msgstr ""
+msgstr "Zrušit objednávku"
 
 msgid "Your order"
-msgstr ""
+msgstr "Objednávate"
 
 msgid "Purchase"
-msgstr ""
+msgstr "Kúpiť"
 
 msgid "There are no available updates"
-msgstr ""
+msgstr "Nie sú dostupné žiadne update-y"
 
 msgid "PHP Support: enabled"
-msgstr ""
+msgstr "PHP podpora: zapnutá"
 
 msgid "PHP Support: disabled"
-msgstr ""
+msgstr "PHP podpora: vypnutá"
 
 msgid "CGI Support: enabled"
-msgstr ""
+msgstr "CGI podpora: zapnutá"
 
 msgid "CGI Support: disabled"
-msgstr ""
+msgstr "CGI podpora: vypnutá"
 
 msgid "HDD"
-msgstr ""
+msgstr "Disková priestor"
 
 msgid "Aliases"
-msgstr ""
+msgstr "Aliasy"
 
 msgid "Emails"
-msgstr ""
+msgstr "E-maily"
 
 msgid "FTPs"
-msgstr ""
+msgstr "FTP kontá"
 
 msgid "SQL Databases"
-msgstr ""
+msgstr "SQL databázy"
 
 msgid "SQL Users"
-msgstr ""
+msgstr "SQL kontá"
 
 msgid "free of charge"
-msgstr ""
+msgstr "zadarmo"
 
 msgid "There are no available hosting plans for update"
-msgstr ""
+msgstr "Nie sú dostupné žiadne hostingové plány na update"
 
 msgid "ISPCP - Update hosting plan"
-msgstr ""
+msgstr "ISPCP - Update hostingového plánu"
 
 msgid "Your request for hosting pack update was added successfully"
-msgstr ""
+msgstr "Váša požiadavka na update hostingového plánu bola pridaná úspešne"
 
 msgid "Your request for hosting pack update was removed successfully"
-msgstr ""
+msgstr "Váša požiadavka na update hostingového plánu bola odstránená úspešne"
 
 msgid "Message was send!"
-msgstr ""
+msgstr "Správa bola odoslaná!"
 
 msgid "Webtools"
-msgstr ""
+msgstr "Web nástroje"
 
 msgid "Customise error pages for your domain"
-msgstr ""
+msgstr "Zmeňte chybové stránky pre Vašu doménu"
 
 msgid "Backup and restore settings"
-msgstr ""
+msgstr "Nastavenia zálohy a obnovenia"
 
 msgid "Access your mail through the web interface"
-msgstr ""
+msgstr "Pristupujte na Váš e-mail cez webové rozhranie"
 
 msgid "Access your files through the web interface"
-msgstr ""
+msgstr "Pristupujte na Váš súbory cez webové rozhranie"
 
 msgid "Manage protected areas, users and groups"
-msgstr ""
+msgstr "Spravovať chránené oblasti, užívateľov a skupiny"
 
 msgid "System tools"
-msgstr ""
+msgstr "Systémové nástroje"
 
 msgid "Statistics"
-msgstr ""
+msgstr "Štatistiky"
 
 msgid "Reseller statistics"
-msgstr ""
+msgstr "Štatistiky predajcu"
 
 msgid "Admin log"
-msgstr ""
+msgstr "Admin log"
 
 msgid "Logout"
-msgstr ""
+msgstr "Odhlásiť sa"
 
 msgid "Custom menus"
-msgstr ""
+msgstr "Vlastné menu"
 
 msgid "Overview"
-msgstr ""
+msgstr "Prehľad"
 
 msgid "User sessions"
-msgstr ""
+msgstr "Sedenia užívateľa"
 
 msgid "Lostpw email setup"
-msgstr ""
+msgstr "Nastavenia e-mailu strateného hesla"
 
 msgid "Rootkit Log"
-msgstr ""
+msgstr "Rootkit Log"
 
 msgid "Admin users"
-msgstr ""
+msgstr "Admin užívatelia"
 
 msgid "Normal users"
-msgstr ""
+msgstr "Normálny užívatelia"
 
 msgid "Domains"
-msgstr ""
+msgstr "Domény"
 
 msgid "System messages"
-msgstr ""
+msgstr "Systémové správy"
 
 msgid "No new messages"
-msgstr ""
+msgstr "Žiadne nové správy"
 
 msgid "Server traffic"
-msgstr ""
+msgstr "Prenesené dáta servra"
 
 msgid "Administrators list is empty!"
-msgstr ""
+msgstr "Zoznam administrátorov je prázdny!"
 
 msgid "Created by"
-msgstr ""
+msgstr "Vytvorené"
 
 msgid "Resellers list is empty!"
-msgstr ""
+msgstr "Zoznam predajcov je prázdny!"
 
 msgid "Change user interface"
-msgstr ""
+msgstr "Zmeniť užívateľské rozhranie"
 
 msgid "Not found user records matching the search criteria!"
-msgstr ""
+msgstr "Nenájdené záznamy užívateľa, ktoré by vyhovovali kritériu!"
 
 msgid "view aliases"
-msgstr ""
+msgstr "zozbraziť aliasy"
 
 msgid "Users list is empty!"
-msgstr ""
+msgstr "Zoznam užívateľov je prázdny!"
 
 msgid "S"
-msgstr ""
+msgstr "S"
 
 msgid "D"
-msgstr ""
+msgstr "D"
 
 msgid "Details"
-msgstr ""
+msgstr "Detaily"
 
 msgid "Are you sure you want to change the status of domain account?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmeniž status účtu domény?"
 
 msgid "Are you sure you want to delete this account?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmazať tento účet?"
 
 msgid "Administrators"
-msgstr ""
+msgstr "Administrátori"
 
 msgid "Resellers"
-msgstr ""
+msgstr "Predajci"
 
 msgid "Search"
-msgstr ""
+msgstr "Vyhľadať"
 
 msgid "Creation date"
-msgstr ""
+msgstr "Dátum vytvorenia"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr ""
+msgstr "%1$s teraz ste prihlásený ako %2$s"
 
 msgid "Go back"
-msgstr ""
+msgstr "Ísť späť"
 
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 msgid "Suspended"
-msgstr ""
+msgstr "Uspať"
 
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 msgid "[Ticket] {SUBJ}"
-msgstr ""
+msgstr "[Tiket] {SUBJ}"
 
 msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
 msgstr ""
+"Dobrý deň {TO_NAME} !\n"
+"\n"
+"Máte nový tiket"
 
 msgid "Email and FTP accounts"
-msgstr ""
+msgstr "E-mail a FTP kontá"
 
 msgid "Add mail user"
-msgstr ""
+msgstr "Pridať e-mailové konto"
 
 msgid "PhpMyAdmin"
-msgstr ""
+msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
-msgstr ""
+msgstr "Filemanager"
 
 msgid "Webstatistics"
-msgstr ""
+msgstr "Štatistikywebu"
 
 msgid "Group - Usermanagement"
-msgstr ""
+msgstr "Skupina - SpravovanieUžívateľov"
 
 msgid "Email Accounts"
-msgstr ""
+msgstr "E-mailové kontá"
 
 msgid "FTP Accounts"
-msgstr ""
+msgstr "FTP kontá"
 
 msgid "Update Hosting Package"
-msgstr ""
+msgstr "Aktualizovať hostingová balík"
 
 msgid "Addition in progress"
-msgstr ""
+msgstr "Prebieha pridanie"
 
 msgid "Modification in progress"
-msgstr ""
+msgstr "Prebieha zmena"
 
 msgid "Deletion in progress"
-msgstr ""
+msgstr "Prebieha zmazanie"
 
 msgid "Unknown Error"
-msgstr ""
+msgstr "Neznáma chyba"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Mail domény"
 
 msgid "Email forward"
-msgstr ""
+msgstr "Presmerovanie e-mailu"
 
 msgid "Alias mail"
-msgstr ""
+msgstr "Alias e-mailu"
 
 msgid "Alias forward"
-msgstr ""
+msgstr "Alias presmerovania"
 
 msgid "Subdomain mail"
-msgstr ""
+msgstr "E-mail sub-domény"
 
 msgid "Subdomain forward"
-msgstr ""
+msgstr "Presmerovanie sub-domeny"
 
 msgid "Unknown type"
-msgstr ""
+msgstr "Neznámy typ"
 
 msgid "Catchall account"
-msgstr ""
+msgstr "\"Zachyť všetko\" konto"
 
 msgid "Could not get config from database"
-msgstr ""
+msgstr "Nemôžem získať konfiguráciu z databázy"
 
 msgid "You have to wait"
-msgstr ""
+msgstr "Musíte čakať"
 
 msgid "seconds"
-msgstr ""
+msgstr "sekundy"
 
 msgid "You have been blocked for"
-msgstr ""
+msgstr "Boli ste zablkovaný na"
 
 msgid "System is currently in servicemode! At time only administrators can login."
-msgstr ""
+msgstr "Systém je momentálne v servisnom móde! Teraz sa môžu prihlásiť iba administrátori."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
+msgstr "Užívateľ uz prihlásený alebo problém pri zdielaní sedenia! Ukončujem..."
 
 msgid "Domain status is not OK - Login aborted."
-msgstr ""
+msgstr "Status domény nie je OK - Login zrušený."
 
 msgid "Domain alias"
-msgstr ""
+msgstr "Alias domény"
 
 msgid "Manage Orders"
-msgstr ""
+msgstr "Spravovať objednávky"
 
 msgid "Order settings"
-msgstr ""
+msgstr "Nastavaenia objednávky"
 
 msgid "Order email setup"
-msgstr ""
+msgstr "Nastavenia e-mail objednváky"
 
 msgid "Please fill up both data fields for password!"
-msgstr ""
+msgstr "Prosím vyplňte obe polia s heslami!"
 
 msgid "wait to be added"
-msgstr ""
+msgstr "čaká na pridanie"
 
 msgid "wait to be modified"
-msgstr ""
+msgstr "čaká na zmenu"
 
 msgid "wait to be deleted"
-msgstr ""
+msgstr "čaká na zmazanie"
 
 msgid "suspended"
-msgstr ""
+msgstr "uspať"
 
 msgid "wait to be enabled"
-msgstr ""
+msgstr "čaká na povolenie"
 
 msgid "wait to be suspended"
-msgstr ""
+msgstr "čaká na uspatie"
 
 msgid "unknown status"
-msgstr ""
+msgstr "neznámy status"
 
 msgid "hide aliases"
-msgstr ""
+msgstr "skovať aliasy"
 
 msgid "You have reached your domains limit.<br>You can not add more domains!"
-msgstr ""
+msgstr "Dosiahli ste limit domén.<br>Nemôžete pridať viac domény!"
 
 msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
-msgstr ""
+msgstr "Dosiahli ste limit sub-domén.<br>Nemôžete pridať viac sub-domény!"
 
 msgid "You are exceeding your subdomains limit!"
-msgstr ""
+msgstr "Prekračujete Váš limit sub-domén!"
 
 msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
-msgstr ""
+msgstr "Máte limit aliasov!<br>Nemôžete pridať užívateľa s neomedzeným počtom aliasov!"
 
 msgid "You Are Exceeding Your Alias Limit!"
-msgstr ""
+msgstr "Prekračujete svoj limit aliasov!"
 
 msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
-msgstr ""
+msgstr " Máte limit e-mailovych kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom e-mailov!"
 
 msgid "You are exceeding your mail accounts limit!"
-msgstr ""
+msgstr "Prekračujete limit e-mailových kont!"
 
 msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
-msgstr ""
+msgstr " Máte limit FTP kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom FTP kont!"
 
 msgid "You are exceeding your FTP accounts limit!"
-msgstr ""
+msgstr "Prekračujete limit FTP kont!"
 
 msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
-msgstr ""
+msgstr " Máte limit SQL databáz!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL databáz!"
 
 msgid "You are exceeding your SQL databases limit!"
-msgstr ""
+msgstr "Prekračujete limit SQL databáz!"
 
 msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
-msgstr ""
+msgstr " Máte limit SQL kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL kont!"
 
 msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr ""
+msgstr "Zablokovali ste SQL databázu pre tohto užívateľa!<br>Nemôžete mať SQL užívateľa tu!"
 
 msgid "You are exceeding your SQL database limit!"
-msgstr ""
+msgstr "Prekračujete limit SQL kont!"
 
 msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
-msgstr ""
+msgstr " Máte limit prenesených dát!<br>Nemôžete pridať užívateľa s neobmedzenými prenesenými dátami!"
 
 msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
-msgstr ""
+msgstr " Máte limit diskového priestoru!<br>Nemôžete pridať užívateľa s neobmedzeným diskovým priestorom!"
 
 msgid "You have a new order"
-msgstr ""
+msgstr "Máte novúobjednávku"
 
 msgid ""
 "\n"
@@ -2942,416 +2948,423 @@ msgid ""
 "Please login into your ISPCP control panel for more details.\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Milý {RESELLER},\n"
+"Máte novú objednávku od {NAME} <{MAIL}> pre doménu {DOMAIN}\n"
+"\n"
+"Prosím prihlíste sa do ISPCP pre detialy.\n"
+"\n"
 
 msgid "Wrong domain name syntax!"
-msgstr ""
+msgstr "Zlá syntax domény!"
 
 msgid "You do not have permission to access this interface!"
-msgstr ""
+msgstr "Nemáte oprávnenie na prístup k tomuto zariadeniu!"
 
 msgid "Add On A Domain"
-msgstr ""
+msgstr "Pridať na doménu"
 
 msgid "Continue"
-msgstr ""
+msgstr "Pokračovat"
 
 msgid "(e.g. domain-of-your-choice.com)"
-msgstr ""
+msgstr "(napr. domena-podla-vyberu.sk)"
 
 msgid "Please fill out all needed fields!"
-msgstr ""
+msgstr "Prosím vyplňte všetky potrebné políčka!"
 
 msgid "Enter Address"
-msgstr ""
+msgstr "Zadajte adresu"
 
 msgid "* denotes mandatory field."
-msgstr ""
+msgstr "* označuje povinnú položku"
 
 msgid "Your Chart"
-msgstr ""
+msgstr "Vaša schéma"
 
 msgid "Costs"
-msgstr ""
+msgstr "Náklady"
 
 msgid "Personal Data"
-msgstr ""
+msgstr "Osobné údaje"
 
 msgid "Check Out"
-msgstr ""
+msgstr "Skontrolovať"
 
 msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr ""
+msgstr "<b>Dakujeme vám za nakupenie</b><br>Za chviľuobdržíte e-mail s podrobnostami"
 
 msgid "No available hosting packages"
-msgstr ""
+msgstr "Žiaden hostinhový baliček nie je dostupný"
 
 msgid "Webspace"
-msgstr ""
+msgstr "Web preistor"
 
 msgid "Domain Features"
-msgstr ""
+msgstr "Vlastnosti domény"
 
 msgid "Package Features"
-msgstr ""
+msgstr "Vlastnoosti balíčku"
 
 msgid "Backup and Restore"
-msgstr ""
+msgstr "Zaláha a obnovenie"
 
 msgid "Custom Error Pages"
-msgstr ""
+msgstr "Vlastné chybové stránky"
 
 msgid "Protected Areas"
-msgstr ""
+msgstr "Chránené oblasti"
 
 msgid "Custom Apache Logs"
-msgstr ""
+msgstr "Vlastné Apache Logy"
 
 msgid "Web & E-Mail Support"
-msgstr ""
+msgstr "Podpora WEBu a E-mail-u"
 
 msgid "Your Own Domain"
-msgstr ""
+msgstr "Vaša vlastná doména"
 
 msgid "ISPCP Control Panel"
-msgstr ""
+msgstr "ISPCP Kontrol Panel"
 
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Automatické aktualizácie"
 
 msgid "Package Price"
-msgstr ""
+msgstr "Cena balíčku"
 
 msgid "Setup Fee"
-msgstr ""
+msgstr "Zriaďovací poplatok"
 
 msgid "Performance"
-msgstr ""
+msgstr "Výkon"
 
 msgid "ISPCP Reseller : Add Alias"
-msgstr ""
+msgstr "ISPCP Predajca : Pridať alias"
 
 msgid "You have no user records."
-msgstr ""
+msgstr "Nemáte žiaden záznam o užívateľovi."
 
 msgid "ISPCP - Reseller/Add hosting plan"
-msgstr ""
+msgstr "ISPCP - Predajca/Pridať hostingový plán"
 
 msgid "ISPCP - Reseller/Change Password"
-msgstr ""
+msgstr "ISPCP - Predajca/Zmeniť heslo"
 
 msgid "ISPCP - Reseller/Change Personal Data"
-msgstr ""
+msgstr "ISPCP - Predajca/Zmeniť osobné údaje"
 
 msgid "ISPCP - Circular"
-msgstr ""
+msgstr "ISPCP- Obežník"
 
 msgid "Circular"
-msgstr ""
+msgstr "Obežník"
 
 msgid "Wrong domain ID!"
-msgstr ""
+msgstr "Zlé ID domény!"
 
 msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
+msgstr "Doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>najprv ich odtráňte!"
 
 msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
+msgstr "Doména, ktorú sa snažíte odstrániť má FTP kontá!<br>najprv ich odtráňte!"
 
 msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr ""
+msgstr "Doména, ktorú sa snažíte odstrániť má aliasy!<br>najprv ich odtráňte!"
 
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
-msgstr ""
+msgstr "Doména, ktorú sa snažíte odstrániť má sub-domény !<br>najprv ich odtráňte!"
 
 msgid "ISPCP - Manage Domain/Alias"
-msgstr ""
+msgstr "ISPCP - Spravovať doménu/alias"
 
 msgid "Manage alias"
-msgstr ""
+msgstr "Spravovať alias"
 
 msgid "Real domain"
-msgstr ""
+msgstr "Reálna doména"
 
 msgid "You have no alias records."
-msgstr ""
+msgstr "Nemáte žiaden záznam o aliase."
 
 msgid "enabled"
-msgstr ""
+msgstr "zapnuté"
 
 msgid "delete"
-msgstr ""
+msgstr "zmazať"
 
 msgid "Domain alias added for termination!"
-msgstr ""
+msgstr "Doménový alias pridaný pre zrušenie!"
 
 msgid "Domain alias not added for termination!"
-msgstr ""
+msgstr "Doménový alias nepridaný pre zrušenie!"
 
 msgid "Domain alias added!"
-msgstr ""
+msgstr "Doménový alias pridaný!"
 
 msgid "Domain alias not added!"
-msgstr ""
+msgstr "Doménový alias nepridaný!"
 
 msgid "Domain alias modified!"
-msgstr ""
+msgstr "Doménový alias upravený!"
 
 msgid "Domain alias not modified!"
-msgstr ""
+msgstr "Doménový alias nebol upravený!"
 
 msgid "User terminated!"
-msgstr ""
+msgstr "Užívateľ zrušený!"
 
 msgid "ISPCP - Domain/Edit"
-msgstr ""
+msgstr "ISPCP - Domána/Upraviť"
 
 msgid "Edit Domain"
-msgstr ""
+msgstr "Upraviť doménu"
 
 msgid "Domain properties"
-msgstr ""
+msgstr "Vlastnosti domény"
 
 msgid "Domain properties updated successfully!"
-msgstr ""
+msgstr "Vlastnosti domény úspešne aktualizované!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
-msgstr ""
+msgstr "<b>%s</b> Služba nemôže byť vypnutá !<br>"
 
 #, php-format
 msgid "There are <b>%s</b> records on the system!"
-msgstr ""
+msgstr "Tu je <b>%s</b> záznamov v systéme!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be limited !<br>"
-msgstr ""
+msgstr "<b>%s</b> Služba nemôže byť limitovaná !<br>"
 
 #, php-format
 msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
-msgstr ""
+msgstr "Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be unlimited !<br>"
-msgstr ""
+msgstr "<b>%s</b> Služba nemôže byť nemodzená !<br>"
 
 #, php-format
 msgid "There are reseller limits for the <b>%s</b> service!"
-msgstr ""
+msgstr "Existujú limiti predajcu pre službu <b>%s</b> !"
 
 #, php-format
 msgid "You are exceeding reseller limits for the <b>%s</b> service!"
-msgstr ""
+msgstr "Prekračujete limity predajcu pre službu <b>%s</b> !"
 
 #, php-format
 msgid "<b>%s</b> service can not be limited !<br>"
-msgstr ""
+msgstr "<b>%s</b> služba nemôže byť limitovaná !<br>"
 
 #, php-format
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
-msgstr ""
+msgstr "Zadané číslo je menšie ako <b>%s</b> to , ktoré je v systéme!"
 
 msgid "ISPCP - Users/Edit"
-msgstr ""
+msgstr "ISPCP - Užívateľ/Upraviť"
 
 msgid "Edit user"
-msgstr ""
+msgstr "Upraviť užívateľa"
 
 msgid "Users list"
-msgstr ""
+msgstr "Zoznam užívateľov"
 
 msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr ""
+msgstr "ISPCP - Predajca/Editovať hostingový plán"
 
 msgid "View hosting plan"
-msgstr ""
+msgstr "Zobraziť hostingový plán"
 
 msgid "Incorrect price!"
-msgstr ""
+msgstr "Nesprávna cena!"
 
 msgid "Incorrect setup fee!"
-msgstr ""
+msgstr "Nesprávny zriaďovací poplatok!"
 
 msgid "ISPCP - Reseller/Manage users/Email setup"
-msgstr ""
+msgstr "ISPCP - Predajca/Spravovať užívateľa/E-mail setup"
 
 msgid "ISPCP - Reseller/Main Index"
-msgstr ""
+msgstr "ISPCP - Klient/Hlavný index"
 
 msgid "View details"
-msgstr ""
+msgstr "Zobraziť detaily"
 
 msgid "User accounts"
-msgstr ""
+msgstr "Užívateľský účet"
 
 msgid "Mail account"
-msgstr ""
+msgstr "Poštové konto"
 
 msgid "Extras"
-msgstr ""
+msgstr "Extra"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
-msgstr ""
+msgstr "Máte <b>%d</b> nových porporných otázok"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr ""
+msgstr "ISPCP - Predajca/Nastavenie e-mailu strateného hesla"
 
 msgid "ISPCP - Reseller/Order email setup"
-msgstr ""
+msgstr "ISPCP - Predajca/Nastavenie e-mailu objednávok"
 
 msgid "Manage orders"
-msgstr ""
+msgstr "Spravovať objednávky"
 
 msgid "Wrong order ID!"
-msgstr ""
+msgstr "Zlé ID objednávky!"
 
 msgid "User added!"
-msgstr ""
+msgstr "Užívateľ pridaný!"
 
 msgid "Customer order was removed successful!"
-msgstr ""
+msgstr "Zákazníkova objednávka odstránená úspešne!"
 
 msgid "ISPCP - Reseller/Order details"
-msgstr ""
+msgstr "ISPCP - Predajca/Detaily objednávky"
 
 msgid "Order data updated successfully!"
-msgstr ""
+msgstr "Detaily objednávky úspešne aktualizované!"
 
 msgid "Order date"
-msgstr ""
+msgstr "Čas objednávky"
 
 msgid "Hosting plan"
-msgstr ""
+msgstr "Hostingový plán"
 
 msgid "Hosting details"
-msgstr ""
+msgstr "Hostingové detaily"
 
 msgid "Order details"
-msgstr ""
+msgstr "Detaily objednávky"
 
 msgid "Customer data"
-msgstr ""
+msgstr "Data zákazníka"
 
 msgid "Delete order"
-msgstr ""
+msgstr "Zḿazať objednávku"
 
 msgid "Are you sure you want to delete this order?"
-msgstr ""
+msgstr "Ste si istý, že chcete zmazať objenávku?"
 
 msgid "Add to the system"
-msgstr ""
+msgstr "Pridať do systému"
 
 msgid "ISPCP - Reseller/Order settings"
-msgstr ""
+msgstr "ISPCP - Predajca/Nastavenia objenávok"
 
 msgid "Header"
-msgstr ""
+msgstr "Hlavička"
 
 msgid "Preview"
-msgstr ""
+msgstr "Náhľad"
 
 msgid "Implementation URL"
-msgstr ""
+msgstr "Implementácia URL"
 
 msgid "Footer"
-msgstr ""
+msgstr "Záhlavie"
 
 msgid "ISPCP - Reseller/Order management"
-msgstr ""
+msgstr "ISPCP - Predajca/Spravovať objednávky"
 
 msgid "You do not have new orders!"
-msgstr ""
+msgstr "Nemáte nové objednávky!"
 
 msgid "New order"
-msgstr ""
+msgstr "Nová objednávka"
 
 msgid "Update order"
-msgstr ""
+msgstr "Aktualizovať objednávku"
 
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 msgid "Order"
-msgstr ""
+msgstr "Objednávka"
 
 msgid "Add/Details"
-msgstr ""
+msgstr "Pridať/Detaily"
 
 msgid "ISPCP - Users/Add user"
-msgstr ""
+msgstr "ISPCP - Užívatelia/Pridať užívateľa"
 
 msgid "Choose hosting plan"
-msgstr ""
+msgstr "Vyberte hostingový plán"
 
 msgid "Personalise template"
-msgstr ""
+msgstr "Prispôsobiť template"
 
 msgid "Next step"
-msgstr ""
+msgstr "Ďalší krok"
 
 msgid "You have no hosting plans. Please contact your system administrator."
-msgstr ""
+msgstr "Nemáte žiaden hostingový plán. Prosím kontaktujte Vášho administrátora"
 
 msgid "ISPCP - User/Add user(step2)"
-msgstr ""
+msgstr "ISPCP - Užívateľ/Pridať užívateľa(krok2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Maximálny počet domén<br><i>(-1 zablokované, 0 neobmedzené)</i>"
 
 msgid "Backup / Restore"
-msgstr ""
+msgstr "Záloha / Obnovenie"
 
 msgid "Apache logs"
-msgstr ""
+msgstr "Apachelohy"
 
 msgid "Awstats"
-msgstr ""
+msgstr "Aw štatistiky"
 
 msgid "ISPCP - User/Add user"
-msgstr ""
+msgstr "ISPCP - Užívateľ/Pridať užívateľa"
 
 msgid "Add other domains to this account"
-msgstr ""
+msgstr "Pridaž ostatné domény k tomuto kontu"
 
 msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
+msgstr "Je tu konfliktný administrátor / predajca najprv to oprav !"
 
 msgid "System error with Domain ID "
-msgstr ""
+msgstr "Systémová chyba s doménovým ID"
 
 msgid "Done"
-msgstr ""
+msgstr "Hotovo"
 
 msgid "This reseller has no domains yet."
-msgstr ""
+msgstr "Tento predajca nemá žiadne domény zatiaľ"
 
 msgid "ISPCP - Users"
-msgstr ""
+msgstr "ISPCP - Užívatelia"
 
 msgid "Stats"
-msgstr ""
+msgstr "Štatistiky"
 
 msgid "Edit properties"
-msgstr ""
+msgstr "Upraviť vlastnosti"
 
 msgid "You have no users."
-msgstr ""
+msgstr "Nemáte žiadneho užívateľa."
 
 msgid "User data updated!"
-msgstr ""
+msgstr "Užívateľské dáta aktualizované!"
 
 msgid "User data not updated!"
-msgstr ""
+msgstr "Užívateľské dáta neboli aktualizované!"
 
 msgid "This user has domain record !<br>First remove the domain from the system!"
-msgstr ""
+msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo systému!"
 
 msgid "User not terminated!"
-msgstr ""
+msgstr "Užívateľ nebol zrušený!"
 
 msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr ""
+msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
-msgstr ""
+msgstr "Správa bola poslaná"
 

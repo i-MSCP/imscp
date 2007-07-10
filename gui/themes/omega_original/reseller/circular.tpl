@@ -74,13 +74,13 @@ function delete_account(url) {
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_MESSAGE_SUBJECT}</td>
-                        <td class="content"><input type="text" name=msg_subject value="{MESSAGE_SUBJECT}" style="width:270px" class="textinput">
+                        <td class="content"><input type="text" name=msg_subject value="{MESSAGE_SUBJECT}" style="width:80%" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_MESSAGE_TEXT}</td>
-                        <td class="content"><textarea name="msg_text" style="width:270px" class="textinput2" rows="8">{MESSAGE_TEXT}</textarea>
+                        <td class="content"><textarea name="msg_text" style="width:80%" class="textinput2" rows="20">{MESSAGE_TEXT}</textarea>
                         </td>
                       </tr>
                       <tr>

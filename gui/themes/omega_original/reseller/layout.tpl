@@ -56,7 +56,7 @@
                       <tr>
                         <td width="40" nowrap>&nbsp;</td>
                         <td width="200" class="content2" nowrap>{TR_LOGO_FILE}</td>
-                        <td class="content" nowrap><input type="file" name="logo_file">
+                        <td class="content" nowrap><input type="file" name="logo_file" size="40">
                         </td>
                       </tr>
                       <tr>

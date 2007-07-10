@@ -107,7 +107,7 @@ function action_delete(url) {
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
                               <td width="230" class="content2" nowrap="nowrap">{TR_LANGUAGE_FILE}</td>
-                              <td nowrap="nowrap" class="content"><input type="file" name="lang_file" class="textinput" />
+                              <td nowrap="nowrap" class="content"><input type="file" name="lang_file" class="textinput" size="60" />
                               </td>
                             </tr>
                             <tr>

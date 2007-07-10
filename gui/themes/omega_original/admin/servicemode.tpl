@@ -50,13 +50,13 @@
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_MESSAGE}</td>
-                              <td><textarea name="servicemode_message" style="width:270px" class="textinput2" rows="8">{MESSAGE_VALUE}</textarea>
+                              <td class="content"><textarea name="servicemode_message" style="width:80%" class="textinput2" rows="30">{MESSAGE_VALUE}</textarea>
                               </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_SERVICEMODE}</td>
-                              <td><select name="servicemode">
+                              <td class="content"><select name="servicemode">
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>

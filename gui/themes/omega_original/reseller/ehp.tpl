@@ -73,7 +73,7 @@ function delete_account(url) {
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2"> {TR_TEMPLATE_DESCRIPTON}</td>
-                        <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px">{HP_DESCRIPTION_VALUE}</textarea></td>
+                        <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px" rows="8">{HP_DESCRIPTION_VALUE}</textarea></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
