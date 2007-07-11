@@ -2,7 +2,6 @@ ispcp_table = Hungarian
 ispcp_language = Hungarian
 ispcp_languageSetlocaleValue = hu_HU
 encoding = UTF-8
-_: Localised language = Hungarian
 ISPCP - Virtual Hosting Control System = ISPCP - Virtuális Szolgáltatás Irányító Rendszer
 Login = Belépés
 Username = Felhasználónév

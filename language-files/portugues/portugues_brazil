@@ -2,7 +2,6 @@ ispcp_table = PortuguesBrazil
 ispcp_language = Portugues (Brazil)
 ispcp_languageSetlocaleValue = pt_BR
 encoding = UTF-8
-_: Localised language = Portugues (Brazil)
 ISPCP - Virtual Hosting Control System = ISPCP - Sistema de Controle de Hospedagem Virtual
 Username = Usuário
 Password = Senha

@@ -2,7 +2,6 @@ ispcp_table = Italian
 ispcp_language = Italian
 ispcp_languageSetlocaleValue = it_IT
 encoding = UTF-8
-_: Localised language = Italian
 ISPCP - Virtual Hosting Control System = ISPCP - Sistema virtuale di controllo dell'hosting
 Login = Identificante
 Please enter your login information = Inserisci i tuoi dati di accesso

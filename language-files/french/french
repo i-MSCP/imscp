@@ -2,7 +2,6 @@ ispcp_table = French
 ispcp_language = French
 ispcp_languageSetlocaleValue = fr_FR
 encoding = UTF-8
-_: Localised language = French
 ISPCP - Virtual Hosting Control System = ISPCP - Système Virtuel de Controle d'Hébergement
 Login = Identifiant
 Username = Identifiant

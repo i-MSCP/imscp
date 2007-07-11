@@ -2,7 +2,6 @@ ispcp_table = Romanian
 ispcp_language = Romanian
 ispcp_languageSetlocaleValue = ro_RO
 encoding = UTF-8
-_: Localised language = Romanian
 Back = Inapoi
 ERROR: Unknown user = EROARE: Utilizator necunoscut
 ERROR: Security code was not correct! = EROARE: Cod de securitate incorect

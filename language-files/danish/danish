@@ -2,7 +2,6 @@ ispcp_table = Danish
 ispcp_language = Dansk
 ispcp_languageSetlocaleValue = da_DK
 encoding = UTF-8
-_: Localised language = Dansk
 Login = Log ind
 Username = Brugernavn
 Password = Adgangskode

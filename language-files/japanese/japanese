@@ -2,7 +2,6 @@ ispcp_table = Japanese
 ispcp_language = Japanese
 ispcp_languageSetlocaleValue = ja_JP
 encoding = UTF-8
-_: Localised language = Japanese
 Login = ログイン
 Username = ユーザ名
 Password = パスワード

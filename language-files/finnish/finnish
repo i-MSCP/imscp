@@ -2,7 +2,6 @@ ispcp_table = Finnish
 ispcp_language = Finnish
 ispcp_languageSetlocaleValue = fi_FI
 encoding = UTF-8
-_: Localised language = Finnish
 Login = Kirjaudu
 Username = Käyttäjänimi
 Password = Salasana

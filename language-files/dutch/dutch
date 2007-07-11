@@ -2,7 +2,6 @@ ispcp_table = Dutch
 ispcp_language = Dutch
 ispcp_languageSetlocaleValue = nl_NL
 encoding = UTF-8
-_: Localised language = Dutch
 Username = Gebruikersnaam
 Password = Wachtwoord
 Please enter your login information = Geef uw login gegevens in

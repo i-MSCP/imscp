@@ -141,7 +141,7 @@ function net2ftp($action) {
 	}
 
 // Set the PHP temporary directory
-//	putenv("TMPDIR=" . $net2ftp_globals["application_tempdir"]);
+	putenv("TMPDIR=" . $net2ftp_globals["application_tempdir"]);
 
 // -------------------------------------------------------------------------
 // Function libraries:

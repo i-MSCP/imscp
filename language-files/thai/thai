@@ -2,7 +2,6 @@ ispcp_table = Thai
 ispcp_language = Thai
 ispcp_languageSetlocaleValue = th_TH
 encoding = UTF-8
-_: Localised language = Thai
 Incorrect max domain count or syntax! = Incorrect <i>max domain</i> count or syntax!
 Incorrect max subdomain count or syntax! = Incorrect <i>max subdomain</i> count or syntax!
 Incorrect max alias count or syntax! = Incorrect <i>max alias</i> count or syntax!

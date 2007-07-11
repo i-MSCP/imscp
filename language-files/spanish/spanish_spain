@@ -2,7 +2,6 @@ ispcp_table = SpanishSpain
 ispcp_language = Español (España)
 ispcp_languageSetlocaleValue = es_ES
 encoding = UTF-8
-_: Localised language = Español (España)
 Login = Iniciar sesión
 Username = Nombre de usuario
 Password = Contraseña

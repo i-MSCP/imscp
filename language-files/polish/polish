@@ -2,7 +2,6 @@ ispcp_table = Polish
 ispcp_language = Polski
 ispcp_languageSetlocaleValue = pl_PL
 encoding = UTF-8
-_: Localised language = Polski
 Username = Nazwa użytkownika
 Password = Hasło
 Please enter your login information = Podaj dane logowania

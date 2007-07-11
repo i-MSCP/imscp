@@ -6,8 +6,7 @@ done
 
 WEBDIRS=`ls -d ${APACHE_WWW_DIR}/* `
 
-for wdir in ${WEBDIRS}
-do
+for wdir in ${WEBDIRS}; do
 	tmpdir="${wdir}/phptmp"
 	fcgidir=${PHP_STARTER_DIR}`echo ${wdir} | awk "-F${APACHE_WWW_DIR}" '{print $2}'`
 
@@ -32,7 +31,7 @@ do
 		if [ "$cur" -gt "$max" ]; then
 			max=$cur
 		fi
-	fi
+	done
 
 	max=$(($max/60))
 

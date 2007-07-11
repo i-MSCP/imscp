@@ -2,7 +2,6 @@ ispcp_table = Russian
 ispcp_language = Russian
 ispcp_languageSetlocaleValue = ru_RU
 encoding = UTF-8
-_: Localised language = Russian
 ISPCP - Virtual Hosting Control System = ISPCP - Виртуальная Система Управления Хостингом
 Login = Войти
 Username = Имя пользователя

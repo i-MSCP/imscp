@@ -2,7 +2,6 @@ ispcp_table = Chinese
 ispcp_language = Chinese
 ispcp_languageSetlocaleValue = zh_CN
 encoding = GB2312
-_: Localised language = Chinese
 ISPCP - Virtual Hosting Control System = ISPCP - 虚拟主机控制系统
 Login = 登录
 Username = 用户名

@@ -2,7 +2,6 @@ ispcp_table = German
 ispcp_language = Deutsch
 ispcp_languageSetlocaleValue = de_DE
 encoding = UTF-8
-_: Localised language = Deutsch
 Login = Anmelden
 Username = Benutzername
 Password = Passwort

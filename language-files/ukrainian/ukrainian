@@ -2,7 +2,6 @@ ispcp_table = Ukrainian
 ispcp_language = Ukrainian
 ispcp_languageSetlocaleValue = uk_UA
 encoding = UTF-8
-_: Localised language = Ukrainian
 Login = Ввійти
 Username = Ім'я користувача
 Password = Пароль

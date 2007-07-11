@@ -2,7 +2,6 @@ ispcp_table = SpanishArgentina
 ispcp_language = Español (Argentina)
 ispcp_languageSetlocaleValue = es_AR
 encoding = UTF-8
-_: Localised language = Español (Argentina)
 Login = Iniciar sesión
 Username = Nombre de usuario
 Password = Contraseña
