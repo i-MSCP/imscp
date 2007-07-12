@@ -73,9 +73,16 @@ function MM_goToURL() { //v3.0
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td width="200" class="content2">{TR_FORWARD}</td>
-                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}">
+                        <td width="200" class="content2" style="vertical-align:top;">{TR_ENABLE_FWD}</td>
+                        <td class="content">
+                            <input type="radio" name="status" {CHECK_EN} value="1" /> {TR_ENABLE}<br />
+                            <input type="radio" name="status" {CHECK_DIS} value="0" /> {TR_DISABLE}
                         </td>
+                      </tr>
+                      <tr>
+                        <td width="25">&nbsp;</td>
+                        <td width="200" class="content2">{TR_FORWARD}</td>
+                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}"></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -95,8 +102,8 @@ function MM_goToURL() { //v3.0
             </table></td>
           </tr>
         </table>
-	  </td>
-	</tr>
+      </td>
+    </tr>
 </table>
 </body>
 </html>

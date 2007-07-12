@@ -36,22 +36,21 @@ $tpl -> define_dynamic('sub_item', 'sub_list');
 //
 // page functions.
 //
-function gen_user_sub_action($sub_id, $sub_status)
-{
-  global $cfg;
+function gen_user_sub_action($sub_id, $sub_status) {
+	global $cfg;
 
-  if ($sub_status === $cfg['ITEM_OK_STATUS']) {
-    return array(tr('Delete'), "delete_sub.php?id=$sub_id");
-  } else {
-    return array(tr('N/A'), '#');
-  }
+	if ($sub_status === $cfg['ITEM_OK_STATUS']) {
+		return array(tr('Delete'), "delete_sub.php?id=$sub_id");
+	}
+	else {
+		return array(tr('N/A'), '#');
+	}
 }
 
-function gen_user_sub_list(&$tpl, &$sql, $user_id)
-{
-  $domain_id = get_user_domain_id($sql, $user_id);
+function gen_user_sub_list(&$tpl, &$sql, $user_id) {
+	$domain_id = get_user_domain_id($sql, $user_id);
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         SELECT
             subdomain_id, subdomain_name, subdomain_mount, subdomain_status
         FROM
@@ -62,47 +61,50 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id)
             subdomain_name
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, array($domain_id));
 
-  if ($rs -> RecordCount() == 0) {
-    $tpl -> assign(array('SUB_MSG' => tr('Subdomain list is empty!'),
-                         'SUB_LIST' => ''));
-    $tpl -> parse('SUB_MESSAGE', 'sub_message');
-  } else {
-    $counter = 0;
-    while (!$rs -> EOF) {
-      if ($counter % 2 == 0) {
-        $tpl -> assign('ITEM_CLASS', 'content');
-      } else {
-        $tpl -> assign('ITEM_CLASS', 'content2');
-      }
+	if ($rs->RecordCount() == 0) {
+    	$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty!'), 'SUB_LIST' => ''));
+    	$tpl -> parse('SUB_MESSAGE', 'sub_message');
+  	}
+	else {
+    	$counter = 0;
+    	while (!$rs->EOF) {
+			if ($counter % 2 == 0) {
+				$tpl->assign('ITEM_CLASS', 'content');
+			}
+			else {
+				$tpl->assign('ITEM_CLASS', 'content2');
+			}
 
-      list($sub_action, $sub_action_script) = gen_user_sub_action($rs -> fields['subdomain_id'], $rs -> fields['subdomain_status']);
-      $sbd_name = decode_idna($rs -> fields['subdomain_name']);
-      $tpl -> assign(array('SUB_NAME' => $sbd_name,
-                           'SUB_MOUNT' => $rs -> fields['subdomain_mount'],
-                           'SUB_STATUS' => translate_dmn_status($rs -> fields['subdomain_status']),
-                           'SUB_ACTION' => $sub_action,
-                           'SUB_ACTION_SCRIPT' => $sub_action_script));
-      $tpl -> parse('SUB_ITEM', '.sub_item');
-      $rs -> MoveNext();
-      $counter ++;
-    }
+			list($sub_action, $sub_action_script) = gen_user_sub_action($rs -> fields['subdomain_id'], $rs -> fields['subdomain_status']);
+			$sbd_name = decode_idna($rs -> fields['subdomain_name']);
+			$tpl->assign(array(
+			                   'SUB_NAME' => $sbd_name,
+			                   'SUB_MOUNT' => $rs -> fields['subdomain_mount'],
+			                   'SUB_STATUS' => translate_dmn_status($rs -> fields['subdomain_status']),
+			                   'SUB_ACTION' => $sub_action,
+			                   'SUB_ACTION_SCRIPT' => $sub_action_script
+						 ));
+			$tpl->parse('SUB_ITEM', '.sub_item');
+			$rs->MoveNext();
+			$counter++;
+		}
 
-    $tpl -> parse('SUB_LIST', 'sub_list');
-    $tpl -> assign('SUB_MESSAGE', '');
-  }
+		$tpl->parse('SUB_LIST', 'sub_list');
+		$tpl->assign('SUB_MESSAGE', '');
+	}
 }
 
-function gen_user_als_action($als_id, $als_status)
-{
-  global $cfg;
+function gen_user_als_action($als_id, $als_status) {
+	global $cfg;
 
-  if ($als_status === $cfg['ITEM_OK_STATUS']) {
-    return array(tr('Delete'), "delete_als.php?id=$als_id");
-  } else {
-    return array(tr('N/A'), '#');
-  }
+	if ($als_status === $cfg['ITEM_OK_STATUS']) {
+    	return array(tr('Delete'), "delete_als.php?id=$als_id");
+	}
+	else {
+    	return array(tr('N/A'), '#');
+	}
 }
 
 function gen_user_als_forward($als_id, $als_status, $url_forward) {
@@ -110,7 +112,7 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 
 	if ($url_forward === 'no') {
 		if ($als_status === 'ok') {
-			return array("-", "enable_als_fwd.php?id=$als_id", tr("Enable"));
+			return array("-", "edit_alias.php?edit_id=".$als_id, tr("Edit"));
 		}
 		else {
 			return array(tr("N/A"), "#", tr("N/A"));
@@ -118,7 +120,7 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 	}
 	else {
 		if ($als_status === 'ok') {
-			return array($url_forward, "disable_als_fwd.php?id=$als_id", tr("Disable"));
+			return array($url_forward, "edit_alias.php?edit_id=".$als_id, tr("Edit"));
 		}
 		else {
 			return array(tr("N/A"), "#", tr("N/A"));
@@ -126,11 +128,10 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 	}
 }
 
-function gen_user_als_list(&$tpl, &$sql, $user_id)
-{
-  $domain_id = get_user_domain_id($sql, $user_id);
+function gen_user_als_list(&$tpl, &$sql, $user_id) {
+	$domain_id = get_user_domain_id($sql, $user_id);
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         SELECT
             alias_id, alias_name, alias_status, alias_mount, alias_ip_id, url_forward
         FROM
@@ -142,43 +143,45 @@ function gen_user_als_list(&$tpl, &$sql, $user_id)
             alias_name
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, array($domain_id));
 
-  if ($rs -> RecordCount() == 0) {
-    $tpl -> assign(array('ALS_MSG' => tr('Alias list is empty!'),
-                         'ALS_LIST' => ''));
-    $tpl -> parse('ALS_MESSAGE', 'als_message');
-  } else {
-    $counter = 0;
-    while (!$rs -> EOF) {
-      if ($counter % 2 == 0) {
-        $tpl -> assign('ITEM_CLASS', 'content');
-      } else {
-        $tpl -> assign('ITEM_CLASS', 'content2');
-      }
-      list($als_action, $als_action_script) = gen_user_als_action($rs -> fields['alias_id'], $rs -> fields['alias_status']);
-      list($als_forward, $als_forward_script, $als_status) = gen_user_als_forward($rs -> fields['alias_id'], $rs -> fields['alias_status'], $rs -> fields['url_forward']);
+	if ($rs->RecordCount() == 0) {
+    	$tpl->assign(array('ALS_MSG' => tr('Alias list is empty!'), 'ALS_LIST' => ''));
+    	$tpl->parse('ALS_MESSAGE', 'als_message');
+  	}
+	else {
+    	$counter = 0;
+    	while (!$rs->EOF) {
+      		if ($counter % 2 == 0) {
+        		$tpl -> assign('ITEM_CLASS', 'content');
+      		}
+			else {
+        		$tpl -> assign('ITEM_CLASS', 'content2');
+      		}
+      		list($als_action, $als_action_script) = gen_user_als_action($rs->fields['alias_id'], $rs->fields['alias_status']);
+      		list($als_forward, $alias_edit_link, $als_edit) = gen_user_als_forward($rs->fields['alias_id'], $rs->fields['alias_status'], $rs->fields['url_forward']);
 
-      $IDN = new idna_convert();
-      $alias_name = $IDN->decode($rs -> fields['alias_name']);
-      $alias_name = utf8_decode($alias_name);
-      $tpl -> assign(array('ALS_NAME' => $alias_name,
-                           'ALS_MOUNT' => $rs -> fields['alias_mount'],
-                           'ALS_STATUS' => translate_dmn_status($rs -> fields['alias_status']),
-                           'ALS_FORWARD' => $als_forward,
-                           'ALS_FWD_SCRIPT' => $als_forward_script,
-                           'ALS_CHANGE_SCRIPT' => "enable_als_fwd.php?id=".$rs->fields['alias_id'],
-                           'ALS_ACTION' => $als_action,
-                           'ALS_ACTION_SCRIPT' => $als_action_script,
-						   'ALS_CHANGE' => $als_status));
-      $tpl -> parse('ALS_ITEM', '.als_item');
-      $rs -> MoveNext();
-      $counter ++;
-    }
+			$IDN = new idna_convert();
+			$alias_name = $IDN->decode($rs -> fields['alias_name']);
+			$alias_name = utf8_decode($alias_name);
+			$tpl -> assign(array(
+			                   'ALS_NAME' => $alias_name,
+			                   'ALS_MOUNT' => $rs -> fields['alias_mount'],
+			                   'ALS_STATUS' => translate_dmn_status($rs -> fields['alias_status']),
+			                   'ALS_FORWARD' => $als_forward,
+			                   'ALS_EDIT_LINK' => $alias_edit_link,
+			                   'ALS_EDIT' => $als_edit,
+			                   'ALS_ACTION' => $als_action,
+			                   'ALS_ACTION_SCRIPT' => $als_action_script,
+			            ));
+			$tpl->parse('ALS_ITEM', '.als_item');
+			$rs->MoveNext();
+			$counter ++;
+    	}
 
-    $tpl -> parse('ALS_LIST', 'als_list');
-    $tpl -> assign('ALS_MESSAGE', '');
-  }
+		$tpl->parse('ALS_LIST', 'als_list');
+		$tpl->assign('ALS_MESSAGE', '');
+	}
 }
 
 //
@@ -224,7 +227,6 @@ $tpl -> assign(array('TR_MANAGE_DOMAINS' => tr('Manage domains'),
                      'TR_SUB_MOUNT' => tr('Mount point'),
                      'TR_SUB_STATUS' => tr('Status'),
                      'TR_SUB_ACTION' => tr('Actions'),
-                     'ALS_EDIT' => tr("Edit"),
                      'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')));
 
 gen_page_message($tpl);

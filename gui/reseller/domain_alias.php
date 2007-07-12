@@ -17,7 +17,6 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -25,19 +24,12 @@ check_login(__FILE__);
 $tpl = new pTemplate();
 
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/domain_alias.tpl');
-
 $tpl -> define_dynamic('page_message', 'page');
-
 $tpl -> define_dynamic('logged_from', 'page');
-
 $tpl -> define_dynamic('table_list', 'page');
-
 $tpl -> define_dynamic('table_item', 'table_list');
-
 $tpl -> define_dynamic('scroll_prev', 'page');
-
 $tpl -> define_dynamic('scroll_next_gray', 'page');
-
 $tpl -> define_dynamic('scroll_next', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
@@ -97,9 +89,8 @@ unset_messages();
 
 
 // Generate domain alias list
-function generate_als_list(&$tpl, $reseller_id, &$als_err)
-{
-    global $sql, $cfg;
+function generate_als_list(&$tpl, $reseller_id, &$als_err) {
+	global $sql, $cfg;
 
     $have_aliases = '_no_';
 
@@ -325,7 +316,6 @@ SQL_QUERY;
 										'NEXT_PSI' => $next_si
 									 )
 							  );
-
 		}
 	}
 
@@ -368,13 +358,13 @@ SQL_QUERY;
 				if ($als_status === 'ok'){
 					$delete_link = "delete_domainalias.php?del_id=".$als_id;
 					$edit_link = "edit_alias.php?edit_id=".$als_id;
-					$action_text = tr('Delete');
-					$change_text = ($als_fwd === 'no') ? tr("Enable") : tr("Disable");
+					$action_text = tr("Delete");
+					$edit_text = tr("Edit");
 				} else {
 					$delete_link = "#";
 					$edit_link = "#";
 					$action_text = tr('N/A');
-					$change_text = tr('N/A');
+					$edit_text = tr('N/A');
 				}
 				$als_status = translate_dmn_status($als_status);
 				$als_name = decode_idna($als_name);
@@ -401,8 +391,7 @@ SQL_QUERY;
                                         'CONTENT' => $page_cont,
                                         'DELETE_LINK' => $delete_link,
                                         'EDIT_LINK' => $edit_link,
-                                        'CHANGE' => $change_text,
-                                        'FWD_SCRIPT' => "edit_alias.php?change_id=".$als_id,
+                                        'EDIT' => $edit_text,
                                         'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
                                         'M_ACCOUN_NAME_SELECTED' => $account_name_selected,
                                      )
@@ -429,7 +418,7 @@ function generate_als_messages(&$tpl, $als_err) {
 		$tpl -> parse('PAGE_MESSAGE', 'page_message');
         return;
 
-    }else 	if (isset($_SESSION["dahavemail"])) {
+    } else if (isset($_SESSION["dahavemail"])) {
 
         $tpl -> assign('MESSAGE', tr('Domain alias you are trying to remove has email accounts !<br>First remove them!'));
         unset($_SESSION['dahavemail']);

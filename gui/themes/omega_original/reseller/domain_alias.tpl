@@ -108,9 +108,9 @@ function MM_goToURL() { //v3.0
                         {ALIAS_IP}</td>
                       <td class="{CONTENT}" nowrap>{REAL_DOMAIN}<br />
                         {REAL_DOMAIN_MOUNT}</td>
-                      <td align="center" nowrap class="{CONTENT}"><a href="{EDIT_LINK}" class="link">{FORWARD}</a></td>
+                      <td align="center" nowrap class="{CONTENT}">{FORWARD}</td>
                       <td class="{CONTENT}" nowrap align="center">{STATUS}</td>
-                      <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('{DELETE_LINK}')" class="link">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{FWD_SCRIPT}" class="link" title="{CHANGE}">{CHANGE}</a></td>
+                      <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('{DELETE_LINK}')" class="link">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{EDIT_LINK}" class="link" title="{CHANGE}">{EDIT}</a></td>
                     </tr>
                     <!-- EDP: table_item -->
                     <!-- EDP: table_list -->

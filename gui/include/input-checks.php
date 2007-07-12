@@ -180,8 +180,8 @@ function chk_email($email, $num = 50) {
     $quotedstring  = "\"(?:$nqtext|$qchar)+\"";
     $user_part     = "(?:$normuser|$quotedstring)";
 
-    $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9._-]*\\.';
-    $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*';
+    $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9]\\.';
+    $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\\.)*';
     $dom_tldpart   = '[a-zA-Z]{2,5}';
     $domain_part   = "$dom_subpart$dom_mainpart$dom_tldpart";
 
@@ -248,7 +248,7 @@ function full_domain_check($data) {
     }
 
 
-    $res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last]);
+    $res = preg_match("/^[A-Za-z0-9][A-Za-z0-9]*[A-Za-z0-9]\.$/", $match[0][$last]);
 
     if (!$res)
         return FALSE;
@@ -349,15 +349,17 @@ function chk_dname($dname) {
  *  @description	Function for checking URL syntax
  *
  * 	@param		String		$url		URL data
- * 	@param		int			$num		number of max. chars
  *  @return		boolean					false	incorrect syntax
  * 										true	correct syntax
  */
 function chk_url($url) {
 
-    $url .= "\n";
+    $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\.';
+    $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\.)*';
+    $dom_tldpart   = '[a-zA-Z]{2,5}';
+    $domain   	   = $dom_subpart.$dom_mainpart.$dom_tldpart;
 
-    if (!preg_match("/^(http|https|ftp)\:\/\/[^\n]+\n$/", $url))
+    if (!preg_match("/^(http|https|ftp)\:\/\/".$domain."$/", $url))
 		return FALSE;
 
     return TRUE;

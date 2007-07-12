@@ -121,9 +121,9 @@ function MM_swapImage() { //v3.0
           <tr>
             <td class="{ITEM_CLASS}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {ALS_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap>{ALS_MOUNT}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><a href="{ALS_CHANGE_SCRIPT}" class="link" title="{ALS_EDIT}">{ALS_FORWARD}</a></td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center">{ALS_STATUS}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_FWD_SCRIPT}" class="link" title="{ALS_CHANGE}">{ALS_CHANGE}</a></td>
+            <td class="{ITEM_CLASS}" nowrap align="center">{ALS_FORWARD}</td>
+            <td class="{ITEM_CLASS}" nowrap align="center">{ALS_STATUS}</td>
+            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
           </tr>
           <!-- EDP: als_item -->
           <!-- EDP: als_list -->
@@ -163,15 +163,15 @@ function MM_swapImage() { //v3.0
           <tr>
             <td class="content3" colspan="2" nowrap><b>{TR_SUB_NAME}</b></td>
             <td class="content3" nowrap><b>{TR_SUB_MOUNT}</b></td>
-            <td width="100" class="content3" nowrap align="center"><b>{TR_SUB_STATUS}</b></td>
-            <td width="100" class="content3" nowrap align="center"><b>{TR_SUB_ACTION}</b></td>
+            <td class="content3" nowrap align="center"><b>{TR_SUB_STATUS}</b></td>
+            <td class="content3" nowrap align="center"><b>{TR_SUB_ACTION}</b></td>
           </tr>
           <!-- BDP: sub_item -->
           <tr>
             <td class="{ITEM_CLASS}" colspan="2" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap>{SUB_MOUNT}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center">{SUB_STATUS}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
+            <td class="{ITEM_CLASS}" nowrap align="center">{SUB_STATUS}</td>
+            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
           </tr>
           <!-- EDP: sub_item -->
           <!-- EDP: sub_list -->
