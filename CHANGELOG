@@ -8,6 +8,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-12 Benedikt Heintel
+	- SETUP:
+		* Force of strikt administrator password
+	- GUI:
+		* Fixed #409: Increase the size of the textareas (Part II)
+		* Fixed #475: Alias Forward domain shown and editable
+
 2007-07-11 Raphael Geissert
 	- ENGINE:
 		* Fixed #477: unexpected token `fi' /var/www/ispcp/engine/tools/ispcpphptemp.sh: line 35

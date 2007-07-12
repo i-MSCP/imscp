@@ -95,7 +95,7 @@ function MM_swapImage() { //v3.0
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_DOMAIN_ALIASES}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -121,9 +121,9 @@ function MM_swapImage() { //v3.0
           <tr>
             <td class="{ITEM_CLASS}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {ALS_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap>{ALS_MOUNT}</td>
-            <td width="74" class="{ITEM_CLASS}" nowrap align="center"><a href="{ALS_FWD_SCRIPT}" class="link">{ALS_FORWARD}</a> </td>
+            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><a href="{ALS_CHANGE_SCRIPT}" class="link" title="{ALS_EDIT}">{ALS_FORWARD}</a></td>
             <td width="100" class="{ITEM_CLASS}" nowrap align="center">{ALS_STATUS}</td>
-            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')">{ALS_ACTION}</a></td>
+            <td width="100" class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_FWD_SCRIPT}" class="link" title="{ALS_CHANGE}">{ALS_CHANGE}</a></td>
           </tr>
           <!-- EDP: als_item -->
           <!-- EDP: als_list -->
@@ -145,7 +145,7 @@ function MM_swapImage() { //v3.0
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_doc.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_SUBDOMAINS}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -184,7 +184,7 @@ function MM_swapImage() { //v3.0
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>			
+</table>
 			</td>
           </tr>
         </table>

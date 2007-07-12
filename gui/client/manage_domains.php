@@ -110,18 +110,18 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 
 	if ($url_forward === 'no') {
 		if ($als_status === 'ok') {
-			return array(tr('Enable'), "enable_als_fwd.php?id=$als_id");
+			return array("-", "enable_als_fwd.php?id=$als_id", tr("Enable"));
 		}
 		else {
-			return array(tr('N/A'), '#');
+			return array(tr("N/A"), "#", tr("N/A"));
 		}
 	}
 	else {
 		if ($als_status === 'ok') {
-			return array(tr('Disable'), "disable_als_fwd.php?id=$als_id");
+			return array($url_forward, "disable_als_fwd.php?id=$als_id", tr("Disable"));
 		}
 		else {
-			return array(tr('N/A'), '#');
+			return array(tr("N/A"), "#", tr("N/A"));
 		}
 	}
 }
@@ -157,7 +157,7 @@ SQL_QUERY;
         $tpl -> assign('ITEM_CLASS', 'content2');
       }
       list($als_action, $als_action_script) = gen_user_als_action($rs -> fields['alias_id'], $rs -> fields['alias_status']);
-      list($als_forward, $als_forward_script) = gen_user_als_forward($rs -> fields['alias_id'], $rs -> fields['alias_status'], $rs -> fields['url_forward']);
+      list($als_forward, $als_forward_script, $als_status) = gen_user_als_forward($rs -> fields['alias_id'], $rs -> fields['alias_status'], $rs -> fields['url_forward']);
 
       $IDN = new idna_convert();
       $alias_name = $IDN->decode($rs -> fields['alias_name']);
@@ -167,8 +167,10 @@ SQL_QUERY;
                            'ALS_STATUS' => translate_dmn_status($rs -> fields['alias_status']),
                            'ALS_FORWARD' => $als_forward,
                            'ALS_FWD_SCRIPT' => $als_forward_script,
+                           'ALS_CHANGE_SCRIPT' => "enable_als_fwd.php?id=".$rs->fields['alias_id'],
                            'ALS_ACTION' => $als_action,
-                           'ALS_ACTION_SCRIPT' => $als_action_script));
+                           'ALS_ACTION_SCRIPT' => $als_action_script,
+						   'ALS_CHANGE' => $als_status));
       $tpl -> parse('ALS_ITEM', '.als_item');
       $rs -> MoveNext();
       $counter ++;
@@ -221,7 +223,8 @@ $tpl -> assign(array('TR_MANAGE_DOMAINS' => tr('Manage domains'),
                      'TR_SUB_NAME' => tr('Name'),
                      'TR_SUB_MOUNT' => tr('Mount point'),
                      'TR_SUB_STATUS' => tr('Status'),
-                     'TR_SUB_ACTION' => tr('Action'),
+                     'TR_SUB_ACTION' => tr('Actions'),
+                     'ALS_EDIT' => tr("Edit"),
                      'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')));
 
 gen_page_message($tpl);

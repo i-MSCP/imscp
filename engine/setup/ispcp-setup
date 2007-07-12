@@ -492,6 +492,7 @@ sub ask_admin_password {
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
+		print STDOUT "\n    Password too short!";
 		return 1;
 	} else {
 		if (length($pass1) < 5) {
@@ -501,10 +502,17 @@ sub ask_admin_password {
 		$qmsg = "    Please repeat administrator password: ";
 		$pass2 = read_password($qmsg);
 
-		if ($pass1 eq $pass2) {
-			$main::ua{'admin_password'} = $pass1;
-		} else {
-			print STDOUT "\n    Passwords do not match!";
+		if ($pass1 =~ m/[a-zA-Z]/ && $pass1 =~ m/[0-9]/) {
+
+			if ($pass1 eq $pass2) {
+				$main::ua{'admin_password'} = $pass1;
+			} else {
+				print STDOUT "\n    Passwords do not match!";
+				return 1;
+			}
+		}
+		else {
+			print STDOUT "\n    Passwords must contain at least digits and chars!";
 			return 1;
 		}
 	}
@@ -1776,10 +1784,10 @@ sub setup_php {
             $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/fastcgi.load $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load";
             $rs = sys_command($cmd);
             return $rs if ($rs != 0);
-    
+
             ($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
             return $rs if ($rs != 0);
-    
+
             $rdata = "<IfModule !mod_fastcgi.c>\n" . $rdata . "</IfModule>\n";
             $rs = save_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load", $rdata);
             return $rs if ($rs != 0);

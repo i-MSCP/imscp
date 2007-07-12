@@ -343,7 +343,7 @@ SQL_QUERY;
                 $als_status = $rs -> fields['alias_status'];
                 $als_ip_id = $rs -> fields['alias_ip_id'];
                 $als_fwd = $rs -> fields['url_forward'];
-                $als_fwd = ($als_fwd == 'no') ? tr('disabled') : $als_fwd;
+                $show_als_fwd = ($als_fwd == 'no') ? "-" : $als_fwd;
 
 				$domain_name = decode_idna($rs -> fields['domain_name']);
 
@@ -368,11 +368,13 @@ SQL_QUERY;
 				if ($als_status === 'ok'){
 					$delete_link = "delete_domainalias.php?del_id=".$als_id;
 					$edit_link = "edit_alias.php?edit_id=".$als_id;
-					$action_text = tr('delete');
+					$action_text = tr('Delete');
+					$change_text = ($als_fwd === 'no') ? tr("Enable") : tr("Disable");
 				} else {
 					$delete_link = "#";
 					$edit_link = "#";
 					$action_text = tr('N/A');
+					$change_text = tr('N/A');
 				}
 				$als_status = translate_dmn_status($als_status);
 				$als_name = decode_idna($als_name);
@@ -392,15 +394,17 @@ SQL_QUERY;
                                         'ALIAS_IP' => "$als_ip ($als_ip_name)",
                                         'REAL_DOMAIN' => $domain_name,
                                         'REAL_DOMAIN_MOUNT' => $als_mount_point,
-                                        'FORWARD' => $als_fwd,
+                                        'FORWARD' => $show_als_fwd,
                                         'STATUS' => $als_status,
                                         'ID' => $als_id,
-										'DELETE' => $action_text,
-										'CONTENT' => $page_cont,
-										'DELETE_LINK' => $delete_link,
-										'EDIT_LINK' => $edit_link,
-										'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
-										'M_ACCOUN_NAME_SELECTED' => $account_name_selected,
+                                        'DELETE' => $action_text,
+                                        'CONTENT' => $page_cont,
+                                        'DELETE_LINK' => $delete_link,
+                                        'EDIT_LINK' => $edit_link,
+                                        'CHANGE' => $change_text,
+                                        'FWD_SCRIPT' => "edit_alias.php?change_id=".$als_id,
+                                        'M_DOMAIN_NAME_SELECTED' => $domain_name_selected,
+                                        'M_ACCOUN_NAME_SELECTED' => $account_name_selected,
                                      )
                               );
 

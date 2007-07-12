@@ -21,7 +21,6 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-
 $tpl = new pTemplate();
 
 $tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/edit_alias.tpl');
@@ -59,8 +58,9 @@ $tpl -> assign(
 							'TR_CANCEL' => tr('Cancel'),
 						)
 				);
-if (isset($_GET['edit_id']) ) {
-    check_for_disable($_GET['edit_id']);
+
+if (isset($_GET['change_id'])) {
+	check_for_disable($_GET["change_id"]);
 }
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_manage_users.tpl');
