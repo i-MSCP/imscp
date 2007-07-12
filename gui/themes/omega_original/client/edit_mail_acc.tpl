@@ -12,7 +12,7 @@ function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
@@ -76,12 +76,12 @@ function sbmt(form, uaction) {
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="200" class="content2">{TR_PASSWORD}</td>
-                              <td class="content"><input type="password" name="pass" value="" style="width:170px" class="textinput">
+                              <td class="content"><input type="password" name="pass" value="" style="width:210px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td width="200" class="content2">{TR_PASSWORD_REPEAT}</td>
-                              <td class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                              <td class="content"><input type="password" name="pass_rep" value="" style="width:210px" class="textinput">
                               </td>
                             </tr>
                           </table>
@@ -89,7 +89,7 @@ function sbmt(form, uaction) {
                           <!-- BDP: forward_mail -->
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
-                              <td  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual">{FORWARD_LIST}</textarea></td>
+                              <td  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea></td>
                             </tr>
                           </table>
                         <!-- EDP: forward_mail -->

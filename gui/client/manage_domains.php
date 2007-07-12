@@ -105,23 +105,25 @@ function gen_user_als_action($als_id, $als_status)
   }
 }
 
-function gen_user_als_forward($als_id, $als_status, $url_forward)
-{
-  global $cfg;
+function gen_user_als_forward($als_id, $als_status, $url_forward) {
+	global $cfg;
 
-  if ($url_forward === 'no') {
-    if ($als_status === 'ok') {
-      return array(tr('Enable'), "enable_als_fwd.php?id=$als_id");
-    } else {
-      return array(tr('N/A'), '#');
-    }
-  } else {
-    if ($als_status === 'ok') {
-      return array(tr('Disable'), "disable_als_fwd.php?id=$als_id");
-    } else {
-      return array(tr('N/A'), '#');
-    }
-  }
+	if ($url_forward === 'no') {
+		if ($als_status === 'ok') {
+			return array(tr('Enable'), "enable_als_fwd.php?id=$als_id");
+		}
+		else {
+			return array(tr('N/A'), '#');
+		}
+	}
+	else {
+		if ($als_status === 'ok') {
+			return array(tr('Disable'), "disable_als_fwd.php?id=$als_id");
+		}
+		else {
+			return array(tr('N/A'), '#');
+		}
+	}
 }
 
 function gen_user_als_list(&$tpl, &$sql, $user_id)

@@ -67,7 +67,7 @@ function action_delete(url) {
                             </tr>
                             <tr>
                               <td width="200" class="content2">{TR_SQL_QUERY}</td>
-                              <td class="content"><textarea name="sql_query" cols="35" rows="5" wrap="virtual">{SQL_QUERY}</textarea>
+                              <td class="content"><textarea name="sql_query" cols="35" rows="5" wrap="virtual" style="width:80%">{SQL_QUERY}</textarea>
                               </td>
                             </tr>
                             <!-- BDP: sql_result -->

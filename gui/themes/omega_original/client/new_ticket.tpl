@@ -77,12 +77,12 @@ function action_delete(url) {
                             </tr>
                             <tr>
                               <td class="content2" width="150">{TR_SUBJECT}</td>
-                              <td class="content"><input type="text" name="subj" style="width:270px" class="textinput">
+                              <td class="content"><input type="text" name="subj" style="width:80%" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td class="content2" width="150">{TR_YOUR_MESSAGE}</td>
-                              <td class="content"><textarea name="user_message" style="width:270px" class="textinput2" rows="12"></textarea>
+                              <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" rows="12"></textarea>
                               </td>
                             </tr>
                             <tr>

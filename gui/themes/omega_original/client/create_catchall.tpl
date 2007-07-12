@@ -12,11 +12,11 @@
 
     	form.uaction.value = uaction;
 	    form.submit();
-    
+
     	return false;
 
 	}
-	
+
 	function checkForm(){
             var forw   = document.forms[0].elements['forward_list'].value;
 
@@ -32,13 +32,13 @@
                 }
             }
     }
-	
+
     function begin_js(){
             document.forms[0].forward_list.disabled = true;
 	        document.forms[0].mail_id.disabled = false;
 			document.forms[0].mail_id.focus();
     }
-	
+
     function changeType(wath){
         if (wath == "normal") {
 	        document.forms[0].mail_id.disabled = false;
@@ -117,7 +117,7 @@
                             </tr>
                             <tr>
                               <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
-                              <td nowrap  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual"></textarea>
+                              <td nowrap  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea>
                               </td>
                             </tr>
                           </table>

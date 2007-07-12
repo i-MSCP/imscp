@@ -17,8 +17,6 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);

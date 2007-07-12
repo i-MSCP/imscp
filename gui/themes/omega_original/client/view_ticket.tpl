@@ -51,7 +51,7 @@ function sbmt(form, uaction) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_support.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_VIEW_SUPPORT_TICKET}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -100,7 +100,7 @@ function sbmt(form, uaction) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_doc.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_NEW_TICKET_REPLY}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -111,7 +111,7 @@ function sbmt(form, uaction) {
         <td valign="top"><form name="question_frm" method="post" action="view_ticket.php?ticket_id={ID}&screenwidth={SCREENWIDTH}">
           <table width="100%" cellspacing="5">
             <tr>
-              <td class="content"><textarea name="user_message" style="width:500px" class="textinput2" rows="12"></textarea>
+              <td class="content"><textarea name="user_message" style="width:80%" class="textinput2" rows="12"></textarea>
                       <input name="subject" type="hidden" value="{SUBJECT}">
                       <input name="urgency" type="hidden" value="{URGENCY_ID}">
               </td>
@@ -136,7 +136,7 @@ function sbmt(form, uaction) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>			
+</table>
 			</td>
           </tr>
         </table>

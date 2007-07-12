@@ -343,7 +343,7 @@ SQL_QUERY;
                 $als_status = $rs -> fields['alias_status'];
                 $als_ip_id = $rs -> fields['alias_ip_id'];
                 $als_fwd = $rs -> fields['url_forward'];
-                $als_fwd = ($als_fwd == 'no') ? tr('disabled') : tr('enabled');
+                $als_fwd = ($als_fwd == 'no') ? tr('disabled') : $als_fwd;
 
 				$domain_name = decode_idna($rs -> fields['domain_name']);
 

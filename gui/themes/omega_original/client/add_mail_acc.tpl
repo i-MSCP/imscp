@@ -209,7 +209,7 @@ function sbmt(form, uaction) {
               <tr>
                 <td nowrap class="content2" width="200">{TR_USERNAME}</td>
                 <td valign="middle" nowrap class="content">
-                  <input type="text" name="username" value="{USERNAME}" style="width:170px" class="textinput">
+                  <input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput">
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">
@@ -249,13 +249,13 @@ function sbmt(form, uaction) {
               <tr>
                 <td nowrap class="content2" width="200">{TR_PASSWORD}</td>
                 <td nowrap  class="content">
-                  <input type="password" name="pass" value="" style="width:170px" class="textinput">
+                  <input type="password" name="pass" value="" style="width:210px" class="textinput">
                 </td>
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
                 <td nowrap class="content">
-                  <input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                  <input type="password" name="pass_rep" value="" style="width:210px" class="textinput">
                 </td>
               </tr>
               <tr>
@@ -265,7 +265,7 @@ function sbmt(form, uaction) {
               <tr>
                 <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
                 <td nowrap  class="content">
-                  <textarea name="forward_list" cols="35" rows="5" wrap="virtual">{FORWARD_LIST}</textarea>
+                  <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
 	    	        </td>
 	              </tr>
               <tr>
