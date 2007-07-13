@@ -89,7 +89,7 @@ else{
 $tpl -> assign(
                 array(
                         'ERROR' => tr('Server error - please choose error page'),
-						'EID' => tr('0')
+						'EID' => '0'
 
                      )
               );

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-06 16:02-0500\n"
+"POT-Creation-Date: 2007-07-13 14:51-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -69,7 +68,9 @@ msgstr "Fejl: Sikkerhedskoden var ikke korrekt."
 msgid "Security code"
 msgstr "Sikkerhedskode"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
 msgstr ""
 
 msgid "Request password"
@@ -756,11 +757,14 @@ msgstr "Denne forhandler har flere <b>"
 msgid "Then the value you are trying to enter now!<br>"
 msgstr "Så den værdi du prøver at taste nu!<br>"
 
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+#, php-format
+msgid ""
+"This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
 msgstr ""
 
 msgid "If you want to limit the reseller, fist you must limit its users !<br>"
-msgstr "Hvis du vil begrænse forhandleren, må du først begrænset dets brugere !<br>"
+msgstr ""
+"Hvis du vil begrænse forhandleren, må du først begrænset dets brugere !<br>"
 
 msgid "This reseller has domains assigned To <b>"
 msgstr "Denne forhandler har domæner tildelt til <b>"
@@ -1122,26 +1126,33 @@ msgstr "Vælg nogle brugere!"
 msgid "Source and destination reseller are the same!"
 msgstr "Kilde og mål forhandler er den samme"
 
-#, c-format
+#, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr ""
 
-#, c-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+#, php-format
+msgid ""
+"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr ""
 
-#, c-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+#, php-format
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr ""
 
 msgid "Moving aborted!"
 msgstr "Flytning afbrudt!"
 
-#, c-format
+#, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
 msgstr ""
 
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+#, php-format
+msgid ""
+"<b>%s</b> has IP address that can not be managed from the destination "
+"reseller !<br>This user can not be moved!"
 msgstr ""
 
 msgid "ISPCP - Admin/Manage users/User assignment"
@@ -1231,6 +1242,7 @@ msgstr "Ukendt"
 msgid "uninstall"
 msgstr "fjern"
 
+#, php-format
 msgid "%d messages translated"
 msgstr ""
 
@@ -1711,6 +1723,7 @@ msgstr ""
 msgid "Incorrect mount point length or syntax"
 msgstr ""
 
+#, php-format
 msgid "%s does not exist"
 msgstr ""
 
@@ -1807,6 +1820,9 @@ msgstr "Videresend mail"
 msgid "Forward to"
 msgstr "Videresend til"
 
+msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
 msgid "Please type database name!"
 msgstr "Indtast database navn!"
 
@@ -1816,6 +1832,7 @@ msgstr ""
 msgid "Specified database name already exists!"
 msgstr "SQL database eksisterer allerede"
 
+#, php-format
 msgid "Wildcards such as %% and ? are not allowed!"
 msgstr ""
 
@@ -1906,7 +1923,8 @@ msgstr "(normalt kaldet: domæne.tld-backup-ÅÅÅÅ.MM.DD-TTMMSS.tar.bz2)"
 msgid "Restore backup"
 msgstr "Gendan backup"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2044,10 +2062,14 @@ msgstr "Rediger Cronjob"
 msgid "Cronjobs"
 msgstr ""
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Domænealiaset du prøver at fjerne har email konti !<br>Fjern dem først!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Domænealiaset du prøver at fjerne har email konti !<br>Fjern dem først!"
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr "Domænealiaset du prøver at fjerne har FTP konti !<br>Fjern dem først"
 
 msgid "Alias scheduled for deletion!"
@@ -2065,19 +2087,17 @@ msgstr "Slet først Fang Alle konto for denne email!"
 msgid "SQL database was removed successfully!"
 msgstr "SQL database blev fjernet!"
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Subdomainet du er ved at slette indeholder stadig email konti!<br>Slet venligst disse først!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Subdomainet du er ved at slette indeholder stadig email konti!<br>Slet "
+"venligst disse først!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomæne planlagt til sletning!"
 
-msgid "You have no permission to disable this alias forward"
-msgstr ""
-
-msgid "Alias scheduled for modification!"
-msgstr "Alias planlagt forredigering!"
-
-msgid "User does not exist or you do not have permission to access this interface!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
 msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
 
 msgid "Mail account scheduled for modification!"
@@ -2101,9 +2121,23 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
+msgid "ISPCP - Manage Domain Alias/Edit Alias"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+msgid "Edit domain alias"
+msgstr "Rediger domænealias"
+
+msgid "Alias name"
+msgstr "Alias navn"
+
+#, fuzzy
+msgid "Enable Forward"
+msgstr "Email videresend"
+
 msgid "Entered passwords differ!"
 msgstr "De indtastede kodeord er forskellige!"
 
+#, php-format
 msgid "%s do not exist"
 msgstr ""
 
@@ -2154,15 +2188,6 @@ msgstr "Din Meddelse"
 
 msgid "Please wait for update"
 msgstr "Vent venligst på opdatering"
-
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
-
-msgid "Edit domain alias"
-msgstr "Rediger domænealias"
-
-msgid "Alias name"
-msgstr "Alias navn"
 
 msgid "Enable mail auto responder"
 msgstr "Aktiver mail autosvarer"
@@ -2221,11 +2246,11 @@ msgstr "Mapper"
 msgid "Choose"
 msgstr "Vælg"
 
-#, c-format
+#, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
 
-#, c-format
+#, php-format
 msgid "%1$s%% [%2$s of unlimited]"
 msgstr ""
 
@@ -2288,6 +2313,10 @@ msgstr "Monteringspunkt"
 
 msgid "Forward"
 msgstr "Videresend"
+
+#, fuzzy
+msgid "Actions"
+msgstr "Handling"
 
 msgid "Database user list is empty!"
 msgstr "Databasebrugerlisten er tom!"
@@ -2364,6 +2393,7 @@ msgstr "Indtast område navn!"
 msgid "Please enter area path"
 msgstr "Indtast område sti"
 
+#, php-format
 msgid "%s doesn't exist"
 msgstr ""
 
@@ -2608,7 +2638,8 @@ msgid "Your request for hosting pack update was added successfully"
 msgstr "Din anmodning for opdatering af hosting pakker er tilføjet systemet."
 
 msgid "Your request for hosting pack update was removed successfully"
-msgstr "Din anmodning for opdatering af hosting pakker er fjernet fra systemet."
+msgstr ""
+"Din anmodning for opdatering af hosting pakker er fjernet fra systemet."
 
 msgid "Message was send!"
 msgstr "Meddelsen blev sendt!"
@@ -2721,7 +2752,7 @@ msgstr "Søg"
 msgid "Creation date"
 msgstr "Oprettelsesdato"
 
-#, c-format
+#, php-format
 msgid "%1$s you are now logged as %2$s"
 msgstr ""
 
@@ -2740,7 +2771,10 @@ msgstr "Fejl"
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
-msgid "Hello {TO_NAME} !\n\nYou have a new ticket to read"
+msgid ""
+"Hello {TO_NAME} !\n"
+"\n"
+"You have a new ticket to read"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -2806,25 +2840,70 @@ msgstr "Ukendt type"
 msgid "Welcome new ispCP user {USERNAME}!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\n\nYour ispCP user type is: {USERTYPE}\nYour ispCP login is: {USERNAME}\nYour ispCP password is: {PASSWORD}\n\nYou can login at http://{BASE_SERVER_VHOST}\n\nGood luck with the ispCP system!\nThe ispCP Team.\n\n"
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"Your ispCP user type is: {USERTYPE}\n"
+"Your ispCP login is: {USERNAME}\n"
+"Your ispCP password is: {PASSWORD}\n"
+"\n"
+"You can login at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Good luck with the ispCP system!\n"
+"The ispCP Team.\n"
+"\n"
 msgstr ""
 
 msgid "Please activate your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\nUse this link to activate your new ispCP password:\n\n{LINK}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"Use this link to activate your new ispCP password:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Good Luck with the ispCP System\n"
+"The ispCP Team\n"
+"\n"
 msgstr ""
 
 msgid "Your new ispCP login!"
 msgstr ""
 
-msgid "\n\nHello {NAME}!\n\nYour ispCP login is: {USERNAME}\nYour ispCP password is: {PASSWORD}\n\nYou can login at http://{BASE_SERVER_VHOST}\n\nGood Luck with the ispCP System\nThe ispCP Team\n\n"
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"Your ispCP login is: {USERNAME}\n"
+"Your ispCP password is: {PASSWORD}\n"
+"\n"
+"You can login at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Good Luck with the ispCP System\n"
+"The ispCP Team\n"
+"\n"
 msgstr ""
 
 msgid "Confirmation for domain order {DOMAIN}!"
 msgstr ""
 
-msgid "\n\nDear {NAME},\nThis is an automatic confirmation for the order of the domain:\n\n{DOMAIN}\n\nThank you for using ispCP services.\nThe ispCP Team\n\n"
+msgid ""
+"\n"
+"\n"
+"Dear {NAME},\n"
+"This is an automatic confirmation for the order of the domain:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
 msgstr ""
 
 msgid "Catchall account"
@@ -2842,11 +2921,13 @@ msgstr "sekunder"
 msgid "You have been blocked for"
 msgstr "Du er blevet blokkeret for"
 
-msgid "System is currently in servicemode! At time only administrators can login."
+msgid ""
+"System is currently in servicemode! At time only administrators can login."
 msgstr "Systemet er i servicemode! Kun Administratorer kan logge ind."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr "Bruger er allerede logget på eller session delings problemer! Afbryder...."
+msgstr ""
+"Bruger er allerede logget på eller session delings problemer! Afbryder...."
 
 msgid "Domain status is not OK - Login aborted."
 msgstr ""
@@ -2893,46 +2974,62 @@ msgstr "Skjul aliaser"
 msgid "You have reached your domains limit.<br>You can not add more domains!"
 msgstr ""
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You can not add an user with unlimited "
+"subdomains!"
 msgstr ""
 
 msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Du overskrider din alias grænse!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"mail accounts!"
 msgstr ""
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"accounts!"
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"SQL databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"users!"
 msgstr ""
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr "Du har deaktiveret SQL databaser for denne bruger!<br>Du kan ikke have SQL brugere her!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"here!"
+msgstr ""
+"Du har deaktiveret SQL databaser for denne bruger!<br>Du kan ikke have SQL "
+"brugere her!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid ""
+"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
 msgstr ""
 
 msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
@@ -2941,7 +3038,14 @@ msgstr ""
 msgid "You have a new order"
 msgstr ""
 
-msgid "\n\nDear {RESELLER},\nyou have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n\nPlease login into your ISPCP control panel for more details.\n\n"
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
+"\n"
+"Please login into your ISPCP control panel for more details.\n"
+"\n"
 msgstr ""
 
 msgid "Wrong domain name syntax!"
@@ -2980,8 +3084,12 @@ msgstr "Personlig Data!"
 msgid "Check Out"
 msgstr "Afslut Bestilling"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr "<b>Tak for din bestilling</b><br>Du vil modtage en E-Mail med flere Detaljer og Information"
+msgid ""
+"<b>Thank You for purchasing</b><br>You will receive an email with more "
+"details and information"
+msgstr ""
+"<b>Tak for din bestilling</b><br>Du vil modtage en E-Mail med flere Detaljer "
+"og Information"
 
 msgid "No available hosting packages"
 msgstr "Ingen Hosting Pakker til rådighed"
@@ -3052,17 +3160,23 @@ msgstr "Rundsend"
 msgid "Wrong domain ID!"
 msgstr "Forkert domæne ID!"
 
-msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
 msgstr "Domænet du prøver at fjerne har email konti !<br>Fjern dem først"
 
-msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
 msgstr "Domænet du prøver at fjerne har FTP konto !<br>Fjern dem først !"
 
-msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
 msgstr "Domænet du prøver at fjerne har domænealias!<br>Fjern dem først !"
 
-msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
-msgstr "Domænet du prøver at fjerne har underdomæne konti !<br> Fjern dem først."
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
+msgstr ""
+"Domænet du prøver at fjerne har underdomæne konti !<br> Fjern dem først."
 
 msgid "ISPCP - Manage Domain/Alias"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -3075,12 +3189,6 @@ msgstr "Hoved domæne"
 
 msgid "You have no alias records."
 msgstr "Du har ingen Alias records."
-
-msgid "enabled"
-msgstr "aktiveret"
-
-msgid "delete"
-msgstr "slet"
 
 msgid "Domain alias added for termination!"
 msgstr "Domænealias tilføjet for sletning"
@@ -3115,31 +3223,42 @@ msgstr "Domæne Egenskaber"
 msgid "Domain properties updated successfully!"
 msgstr "Domæne Egenskaber opdateret succesfuldt."
 
+#, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr ""
 
+#, php-format
 msgid "There are <b>%s</b> records on the system!"
 msgstr ""
 
+#, php-format
 msgid "<b>%s</b> Service can not be limited !<br>"
 msgstr ""
 
-msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
+#, php-format
+msgid ""
+"Specified number is smaller than <b>%s</b> records, present on the system!"
 msgstr ""
 
+#, php-format
 msgid "<b>%s</b> Service can not be unlimited !<br>"
 msgstr ""
 
+#, php-format
 msgid "There are reseller limits for the <b>%s</b> service!"
 msgstr ""
 
+#, php-format
 msgid "You are exceeding reseller limits for the <b>%s</b> service!"
 msgstr ""
 
+#, php-format
 msgid "<b>%s</b> service can not be limited !<br>"
 msgstr ""
 
-msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
+#, php-format
+msgid ""
+"Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
 msgid "ISPCP - Users/Edit"
@@ -3181,6 +3300,7 @@ msgstr "Mailkonto"
 msgid "Extras"
 msgstr "Ekstra"
 
+#, php-format
 msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
@@ -3340,8 +3460,11 @@ msgstr "Bruger data opdateret!"
 msgid "User data not updated!"
 msgstr "Bruger data ikke uploadet!"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
-msgstr "Denne bruger har et domæne! <br>For at slette brugere skal du første slette domænet!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
+msgstr ""
+"Denne bruger har et domæne! <br>For at slette brugere skal du første slette "
+"domænet!"
 
 msgid "User not terminated!"
 msgstr "Bruger ikke slettet!"
@@ -3351,3 +3474,12 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
+
+#~ msgid "Alias scheduled for modification!"
+#~ msgstr "Alias planlagt forredigering!"
+
+#~ msgid "enabled"
+#~ msgstr "aktiveret"
+
+#~ msgid "delete"
+#~ msgstr "slet"

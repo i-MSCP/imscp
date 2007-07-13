@@ -8,6 +8,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-13 Raphael Geissert
+	- LANGUAGES
+		* Updated ispCP.pot catalogue
+		* Updated translations to latest catalogue
+	- DOCS
+		* Added information about the GUI images
+	- GUI:
+		* Fixed #473: The "Choose directory" function does not work
+
 2007-07-13 Benedikt Heintel
 	- GUI:
 		* Fixed #416: Help-Text at the textarea for mail-forwarding

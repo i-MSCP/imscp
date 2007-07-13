@@ -42,11 +42,15 @@ Version 1.1. We cannot change this licensing and the copyright of the parts
 we're using out of the ispCP project.
 All new and changed files are licensed under the GPL (GNU Public License)
 Version 2.
+The icons used by the omega_original theme for ispCP are copyrighted 
+2006-2007 by Everaldo Coelho <everaldo@everaldo.com> and released under
+the Lesser General Public License (LGPL) license.
 
 Please have a look at these Licenses if intrested. They are shipped with
-this release in the files
+this release in the next files: 
 
 LICENSE-MPL1.1
 LICENSE-GPL2
+LICENSE-LGPL2.1
 
 ================================================================

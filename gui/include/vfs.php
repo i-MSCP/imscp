@@ -110,8 +110,8 @@ class vfs {
 		$this->_db     =& $db;
 
 		define("VFS_TMP_DIR", $cfg['FTP_HOMEDIR'].'/' . $this->_domain . '/phptmp');
-		putenv("TMPDIR=" . VFS_TMP_DIR);
-		$_ENV['TMPDIR'] = VFS_TMP_DIR;
+		$_ENV['TMPDIR'] = $cfg['GUI_ROOT_DIR'] . '/phptmp';
+		putenv("TMPDIR=" . $_ENV['TMPDIR']);
 	}
 
 	/**

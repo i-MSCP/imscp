@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-06 16:02-0500\n"
+"POT-Creation-Date: 2007-07-13 14:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1812,6 +1812,9 @@ msgstr ""
 msgid "Forward to"
 msgstr ""
 
+msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
 msgid "Please type database name!"
 msgstr ""
 
@@ -2077,12 +2080,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "You have no permission to disable this alias forward"
-msgstr ""
-
-msgid "Alias scheduled for modification!"
-msgstr ""
-
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr ""
 
@@ -2105,6 +2102,18 @@ msgid "POP/IMAP"
 msgstr ""
 
 msgid "Sum"
+msgstr ""
+
+msgid "ISPCP - Manage Domain Alias/Edit Alias"
+msgstr ""
+
+msgid "Edit domain alias"
+msgstr ""
+
+msgid "Alias name"
+msgstr ""
+
+msgid "Enable Forward"
 msgstr ""
 
 msgid "Entered passwords differ!"
@@ -2162,15 +2171,6 @@ msgstr ""
 msgid "Please wait for update"
 msgstr ""
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr ""
-
-msgid "Edit domain alias"
-msgstr ""
-
-msgid "Alias name"
-msgstr ""
-
 msgid "Enable mail auto responder"
 msgstr ""
 
@@ -2178,9 +2178,6 @@ msgid "ISPCP - Client/Manage Error Custom Pages"
 msgstr ""
 
 msgid "Server error - please choose error page"
-msgstr ""
-
-msgid "0"
 msgstr ""
 
 msgid "Edit error page"
@@ -2297,6 +2294,9 @@ msgid "Mount point"
 msgstr ""
 
 msgid "Forward"
+msgstr ""
+
+msgid "Actions"
 msgstr ""
 
 msgid "Database user list is empty!"
@@ -3140,12 +3140,6 @@ msgid "Real domain"
 msgstr ""
 
 msgid "You have no alias records."
-msgstr ""
-
-msgid "enabled"
-msgstr ""
-
-msgid "delete"
 msgstr ""
 
 msgid "Domain alias added for termination!"

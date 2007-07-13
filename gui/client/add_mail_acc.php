@@ -546,7 +546,7 @@ $tpl->assign(array('TR_ADD_MAIL_USER' => tr('Add mail users'),
         'TR_PASSWORD_REPEAT' => tr('Repeat password'),
         'TR_FORWARD_MAIL' => tr('Forward mail'),
         'TR_FORWARD_TO' => tr('Forward to'),
-        'TR_FWD_HELP' => tr("Seperate multiple email-addresses by line-break."),
+        'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
         'TR_ADD' => tr('Add')));
 
 gen_page_message($tpl);
