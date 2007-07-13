@@ -159,12 +159,16 @@ function sbmt(form, uaction) {
 </head>
 
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); begin_js();">
-<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<!-- BDP: logged_from -->
+     <table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
     </table>
 	<!-- EDP: logged_from -->
+<!-- ToolTip -->
+<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;width:200px;position:absolute;top:495px;left:315px;">{TR_FWD_HELP}</div>
+<!-- ToolTip end -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 	<tr>
 		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
@@ -263,11 +267,13 @@ function sbmt(form, uaction) {
                   <input type="radio" name="mail_type" value="forward" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
+                <td class="content2" style="width:200px;vertical-align:top;">
+				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="document.getElementById('fwd_help').style.display='block'" onmouseout="document.getElementById('fwd_help').style.display='none'" />
+				</td>
                 <td nowrap  class="content">
                   <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
-	    	        </td>
-	              </tr>
+	    	    </td>
+	          </tr>
               <tr>
              <td colspan="2">
             <input name="Submit" type="submit" class="button" value=" {TR_ADD} ">
@@ -287,5 +293,6 @@ function sbmt(form, uaction) {
 	  </td>
 	</tr>
 </table>
+
 </body>
 </html>

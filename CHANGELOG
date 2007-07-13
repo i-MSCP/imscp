@@ -8,6 +8,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-13 Benedikt Heintel
+	- GUI:
+		* Fixed #416: Help-Text at the textarea for mail-forwarding
+
 2007-07-12 Benedikt Heintel
 	- SETUP:
 		* Force of strikt administrator password

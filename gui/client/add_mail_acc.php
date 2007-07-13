@@ -43,14 +43,14 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
     if ($post_check === 'no') {
 
-        $tpl->assign(array('USERNAME' => '',
+        $tpl->assign(array('USERNAME' => "",
                 'DOMAIN_NAME' => $dmn_name,
-                'MAIL_DMN_CHECKED' => 'checked',
-                'MAIL_ALS_CHECKED' => '',
-                'MAIL_SUB_CHECKED' => '',
-                'NORMAL_MAIL_CHECKED' => 'checked',
-                'FORWARD_MAIL_CHECKED' => '',
-                'FORWARD_LIST' => ''));
+                'MAIL_DMN_CHECKED' => "checked=\"checked\"",
+                'MAIL_ALS_CHECKED' => "",
+                'MAIL_SUB_CHECKED' => "",
+                'NORMAL_MAIL_CHECKED' => "checked=\"checked\"",
+                'FORWARD_MAIL_CHECKED' => "",
+                'FORWARD_LIST' => ""));
 
     } else {
             if (!isset($_POST['forward_list'])) {
@@ -61,11 +61,11 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
             $tpl->assign(array('USERNAME' => clean_input($_POST['username']),
                     'DOMAIN_NAME' => $dmn_name,
-                    'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked' : '',
-                    'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked' : '',
-                    'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked' : '',
-                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type'] === 'normal') ? 'checked' : '',
-                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type'] === 'forward') ? 'checked' : '',
+                    'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? "checked=\"checked\"" : "",
+                    'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? "checked=\"checked\"" : "",
+                    'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? "checked=\"checked\"" : "",
+                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type'] === 'normal') ? "checked=\"checked\"" : "",
+                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type'] === 'forward') ? "checked=\"checked\"" : "",
                     'FORWARD_LIST' => $f_list));
     }
 }
@@ -546,6 +546,7 @@ $tpl->assign(array('TR_ADD_MAIL_USER' => tr('Add mail users'),
         'TR_PASSWORD_REPEAT' => tr('Repeat password'),
         'TR_FORWARD_MAIL' => tr('Forward mail'),
         'TR_FORWARD_TO' => tr('Forward to'),
+        'TR_FWD_HELP' => tr("Seperate multiple email-addresses by line-break."),
         'TR_ADD' => tr('Add')));
 
 gen_page_message($tpl);
