@@ -5,7 +5,7 @@
     **  Copyright (c) 1999-2006 The SquirrelMail Project Team
     **  Licensed under the GNU GPL. For full terms see the file COPYING.
     **  
-    **  $Id: spamcop.php,v 1.14.2.11 2006/07/13 10:13:23 tokul Exp $                                                         
+    **  $Id: spamcop.php 11393 2006-07-13 10:13:23Z tokul $                                                         
     **/
 
 define('SM_PATH','../../');

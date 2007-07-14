@@ -1,7 +1,7 @@
 /*****************************************************************
- * Release Notes: SquirrelMail 1.4.4                             *
- * The "Did I Leave The Gas On?" Release                         *
- *                                                               *
+ * Release Notes: SquirrelMail 1.4.9a                            *
+ * The "Brinky Brinkers Reloaded" Release                        *
+ * 3 December 2006                                               *
  *****************************************************************/
 
 In this edition of SquirrelMail Release Notes:
@@ -13,53 +13,58 @@ In this edition of SquirrelMail Release Notes:
    * Reporting my favorite SquirrelMail 1.4 bug
 
 
-All about this Release!
-=======================
+All about this release
+======================
 
-This is the fifth release of the stable 1.4.x series. It fixes many
-bugs discovered since the last release, separates out the translations
-to a separate package, greatly improves charset decoding and fixes
-some different security issues.
-
-See the Major Updates section of this file for more about the 
-1.4.x stable series.  For changes in this release, please refer to
-the ChangeLog.
+This version, 1.4.9a is a maintenance release, addressing
+the following problems since 1.4.8:
+- Some security fixes (see below)
+- Small enhancements
+- A collection of bugfixes
+(see ChangeLog for a full list)
 
 
 Locales / Translations / Charsets
 =================================
 
-From this release on, the translations for SquirrelMail are no longer
-part of the main package but have to be downloaded separately; either
-in one large file or an individual language. You can find these
+Since the release of 1.4.4, the the translations for SquirrelMail are
+no longer part of the main package but have to be downloaded separately;
+either in one large file or an individual language. You can find these
 packages through our homepage. They also contain instructions on how
 to install.
 
-This release also introduces a backport of the new Character set
+That release also introduced a backport of the new Character set
 decoding functions from the development branch, vastly increasing the
 number of supported character sets and decoding performance.
 
 
-Security Issues
+Security issues
 ===============
 
-This release addresses a remotely exploitable cross site scripting
-vulnerability in the decodeHeader() function, known as CAN-2004-1036.
-Thanks go to Joost Pol for notifying us about this issue.
+This release addresses security issues found since the release of 1.4.8:
 
-Also fixed is an issue in prefs.php which allowed for insecure file
-inclusion. The problem was introduced in version 1.4.3 and is known
-as CAN-2005-0075.
+Cross site scripting via malicious input the mailto parameter of
+webmail.php, the session and delete_draft parameters of compose.php and
+via a shortcoming in the magicHTML filter.
 
-In webmail.php an issue was closed which allowed the contents of the
-right frame to be replaced by manipulating an URL variabale. Thanks
-to Manoel Zaninetti for discovering this (CAN-2005-0104). In the
-same place, two integer variables turned out also not sanitized,
-CAN-2005-0104.
+This is CVE-2006-6142. Thanks for Martijn Brinkers for his continued research
+that uncovered these issues.
+
+We've also changed SquirrelMail attachment handling to work around an issue
+in Internet Explorer: the browser will attempt to guess the MIME type of
+attachments based on content, not the MIME header we send. Attachments could
+fake to be an 'harmless' image/jpeg, while they were in fact HTML that
+Internet Explorer would render.
+
+After release 1.4.9 Martijn Brinkers again discovered new cross site
+scripting issues in the magicHtml filter. The new discovered security issues
+have to do with the wide intepretation of the words expression and url by IE
+browsers. As second issue Martijn Brinkers that the @import statement in
+stylesheets could be misused.
 
 
-Major updates
-==============
+Major updates in 1.4
+====================
 
 The 1.4.x series (as a result of 1.3 developent series) brings:
 
@@ -96,7 +101,7 @@ Reporting my favorite SquirrelMail 1.4 bug
 
 We constantly aim to make SquirrelMail even better. So we need you to
 submit any bug you come across! Also, please mention that the bug is
-in this 1.4.4 release, and list your IMAP server and webserver details.
+in this 1.4.9a release, and list your IMAP server and webserver details.
 
    http://www.squirrelmail.org/bugs
 

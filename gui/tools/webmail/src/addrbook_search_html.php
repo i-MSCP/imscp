@@ -7,9 +7,9 @@
  *
  * This file is included from compose.php
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addrbook_search_html.php,v 1.58.2.10 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: addrbook_search_html.php 12310 2007-03-06 01:12:44Z kink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -43,7 +43,7 @@ sqgetGlobalVar('backend',   $backend,   SQ_POST);
  */
 function addr_insert_hidden() {
     global $body, $subject, $send_to, $send_to_cc, $send_to_bcc, $mailbox,
-           $identity, $session;
+           $mailprio, $request_mdn, $request_dr, $identity, $session;
 
    if (substr($body, 0, 1) == "\r") {
        echo addHidden('body', "\n".$body);
@@ -56,6 +56,9 @@ function addr_insert_hidden() {
         addHidden('send_to', $send_to).
         addHidden('send_to_bcc', $send_to_bcc).
         addHidden('send_to_cc', $send_to_cc).
+        addHidden('mailprio', $mailprio).
+        addHidden('request_mdn', $request_mdn).
+        addHidden('request_dr', $request_dr).
         addHidden('identity', $identity).
         addHidden('mailbox', $mailbox).
         addHidden('from_htmladdr_search', 'true');

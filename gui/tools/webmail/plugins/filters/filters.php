@@ -18,7 +18,7 @@
  *
  * Also view plugins/README.plugins for more information.
  *
- * @version $Id: filters.php,v 1.45.2.18 2006/07/29 08:46:57 tokul Exp $
+ * @version $Id: filters.php 12330 2007-03-10 04:03:46Z jangliss $
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package plugins
@@ -194,7 +194,7 @@ function start_filters() {
 
         $AllowSpamFilters = false;
         foreach($spamfilters as $filterkey=>$value) {
-            if ($value['enabled'] == 'yes') {
+            if ($value['enabled'] == SMPREF_ON) {
                 $AllowSpamFilters = true;
                 break;
             }
@@ -501,8 +501,13 @@ function filters_spam_check_site($a, $b, $c, $d, &$filters) {
     foreach ($filters as $key => $value) {
         if ($filters[$key]['enabled']) {
             if ($filters[$key]['dns']) {
+                
+                /**
+                 *  RFC allows . on end of hostname to ensure search domain
+                 *  isn't used if no hostname is found
+                 */
                 $filter_revip = $d . '.' . $c . '.' . $b . '.' . $a . '.' .
-                                $filters[$key]['dns'];
+                                $filters[$key]['dns'] . '.';
 
                 if(!isset($SpamFilters_DNScache[$filter_revip]['L']))
                         $SpamFilters_DNScache[$filter_revip]['L'] = '';
@@ -516,8 +521,12 @@ function filters_spam_check_site($a, $b, $c, $d, &$filters) {
                     $SpamFilters_DNScache[$filter_revip]['T'] =
                                        time() + $SpamFilters_CacheTTL;
                 }
-                if ($SpamFilters_DNScache[$filter_revip]['L'] ==
-                    $filters[$key]['result']) {
+                
+                /**
+                 *  gethostbyname returns ip if resolved, or returns original host
+                 *  supplied to function if there is no resolution
+                 */
+                if ($SpamFilters_DNScache[$filter_revip]['L'] != $filter_revip) {
                     return 1;
                 }
             }
@@ -599,14 +608,6 @@ function load_spam_filters() {
         $filters['MAPS RBLplus-DUL']['comment'] =
             _("COMMERCIAL - RBL+ Dial-up entries.");
     }
-
-    $filters['ORDB']['prefname'] = 'filters_spam_ordb';
-    $filters['ORDB']['name'] = 'Open Relay Database List';
-    $filters['ORDB']['link'] = 'http://www.ordb.org/';
-    $filters['ORDB']['dns'] = 'relays.ordb.org';
-    $filters['ORDB']['result'] = '127.0.0.2';
-    $filters['ORDB']['comment'] =
-        _("FREE - ORDB was born when ORBS went off the air. It seems to have fewer false positives than ORBS did though.");
 
     $filters['FiveTen Direct']['prefname'] = 'filters_spam_fiveten_src';
     $filters['FiveTen Direct']['name'] = 'Five-Ten-sg.com Direct SPAM Sources';
@@ -817,8 +818,7 @@ function load_spam_filters() {
         _("FREE - Distributed Sender Boycott List - UN-Confirmed Relays");
 
     foreach ($filters as $Key => $Value) {
-        $filters[$Key]['enabled'] = getPref($data_dir, $username,
-            $filters[$Key]['prefname']);
+        $filters[$Key]['enabled'] = (bool)getPref($data_dir, $username, $filters[$Key]['prefname']);
     }
 
     return $filters;

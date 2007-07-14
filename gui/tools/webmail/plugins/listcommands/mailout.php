@@ -5,7 +5,7 @@
  * Copyright (c) 1999-2006 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * $Id: mailout.php,v 1.13.2.9 2006/02/03 22:27:52 jervfors Exp $
+ * $Id: mailout.php 12279 2007-02-27 17:27:12Z kink $
  * @package plugins
  * @subpackage listcommands
  */
@@ -73,11 +73,10 @@ if (count($idents) > 1) {
     echo htmlspecialchars('"'.$idents[0]['full_name'].'" <'.$idents[0]['email_address'].'>');
 }
 
-echo '<br />'
+echo '<br /><br />'
 . '<input type="hidden" name="send_to" value="' . htmlspecialchars($send_to) . '">'
 . '<input type="hidden" name="subject" value="' . htmlspecialchars($subject) . '">'
 . '<input type="hidden" name="body" value="' . htmlspecialchars($body) . '">'
 . '<input type="hidden" name="mailbox" value="' . htmlspecialchars($mailbox) . '">'
-. '<input type="submit" name="send" value="' . _("Send Mail") . '"><br /><br /></center>'
-. '</form></td></tr></table></p></body></html>';
-?>
+. '<input type="submit" name="send" value="' . _("Send Mail") . '"><br /><br />'
+. '</form></td></tr></table></body></html>';

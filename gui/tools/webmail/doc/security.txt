@@ -43,4 +43,4 @@ the underlying OS, which users can login, etc. Searching the web will turn
 up lots of information.
 
 
-$Id: security.txt,v 1.1.2.3 2006/06/08 15:53:30 kink Exp $
+$Id: security.txt 11186 2006-06-08 15:53:54Z kink $

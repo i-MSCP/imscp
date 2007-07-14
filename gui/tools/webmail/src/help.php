@@ -5,9 +5,9 @@
  *
  * Displays help for the user
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: help.php,v 1.42.2.13 2006/06/15 21:27:24 jervfors Exp $
+ * @version $Id: help.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

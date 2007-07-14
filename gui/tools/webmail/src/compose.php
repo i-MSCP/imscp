@@ -11,9 +11,9 @@
  *    - Send mail
  *    - Save As Draft
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: compose.php,v 1.319.2.71 2006/12/02 15:10:13 kink Exp $
+ * @version $Id: compose.php 12382 2007-05-10 08:22:49Z kink $
  * @package squirrelmail
  */
 
@@ -50,30 +50,38 @@ sqgetGlobalVar('composesession',    $composesession,    SQ_SESSION);
 sqgetGlobalVar('compose_messages',  $compose_messages,  SQ_SESSION);
 
 /** SESSION/POST/GET VARS */
-sqgetGlobalVar('smaction',$action);
-sqgetGlobalVar('session',$session);
-sqgetGlobalVar('mailbox',$mailbox);
-sqgetGlobalVar('identity',$identity);
-sqgetGlobalVar('send_to',$send_to);
-sqgetGlobalVar('send_to_cc',$send_to_cc);
-sqgetGlobalVar('send_to_bcc',$send_to_bcc);
-sqgetGlobalVar('subject',$subject);
-sqgetGlobalVar('body',$body);
-sqgetGlobalVar('mailprio',$mailprio);
-sqgetGlobalVar('request_mdn',$request_mdn);
-sqgetGlobalVar('request_dr',$request_dr);
-sqgetGlobalVar('html_addr_search',$html_addr_search);
-sqgetGlobalVar('mail_sent',$mail_sent);
-sqgetGlobalVar('passed_id',$passed_id);
-sqgetGlobalVar('passed_ent_id',$passed_ent_id);
-sqgetGlobalVar('send',$send);
+sqgetGlobalVar('send', $send, SQ_POST);
+// Send can only be achieved by setting $_POST var. If Send = true then
+// retrieve other form fields from $_POST
+if (isset($send) && $send) {
+    $SQ_GLOBAL = SQ_POST;
+} else {
+    $SQ_GLOBAL = SQ_FORM;
+}
+sqgetGlobalVar('smaction',$action, $SQ_GLOBAL);
+sqgetGlobalVar('session',$session, $SQ_GLOBAL);
+sqgetGlobalVar('mailbox',$mailbox, $SQ_GLOBAL);
+if ( !sqgetGlobalVar('identity',$identity, $SQ_GLOBAL) ) {
+    $identity = 0;
+}
+sqgetGlobalVar('send_to',$send_to, $SQ_GLOBAL);
+sqgetGlobalVar('send_to_cc',$send_to_cc, $SQ_GLOBAL);
+sqgetGlobalVar('send_to_bcc',$send_to_bcc, $SQ_GLOBAL);
+sqgetGlobalVar('subject',$subject, $SQ_GLOBAL);
+sqgetGlobalVar('body',$body, $SQ_GLOBAL);
+sqgetGlobalVar('mailprio',$mailprio, $SQ_GLOBAL);
+sqgetGlobalVar('request_mdn',$request_mdn, $SQ_GLOBAL);
+sqgetGlobalVar('request_dr',$request_dr, $SQ_GLOBAL);
+sqgetGlobalVar('html_addr_search',$html_addr_search, SQ_FORM);
+sqgetGlobalVar('mail_sent',$mail_sent, SQ_FORM);
+sqgetGlobalVar('passed_id',$passed_id, $SQ_GLOBAL);
+sqgetGlobalVar('passed_ent_id',$passed_ent_id, $SQ_GLOBAL);
 
-sqgetGlobalVar('attach',$attach);
-
-sqgetGlobalVar('draft',$draft);
-sqgetGlobalVar('draft_id',$draft_id);
-sqgetGlobalVar('ent_num',$ent_num);
-sqgetGlobalVar('saved_draft',$saved_draft);
+sqgetGlobalVar('attach',$attach, SQ_POST);
+sqgetGlobalVar('draft',$draft, SQ_POST);
+sqgetGlobalVar('draft_id',$draft_id, $SQ_GLOBAL);
+sqgetGlobalVar('ent_num',$ent_num, $SQ_GLOBAL);
+sqgetGlobalVar('saved_draft',$saved_draft, SQ_FORM);
 
 if ( sqgetGlobalVar('delete_draft',$delete_draft) ) {
     $delete_draft = (int)$delete_draft;
@@ -110,7 +118,7 @@ if ( sqgetGlobalVar('mailtodata', $mailtodata, SQ_GET) ) {
                  'body'         => 'body',
                  'subject'      => 'subject');
     $mtdata = unserialize($mailtodata);
-    
+
     foreach ($trtable as $f => $t) {
         if ( !empty($mtdata[$f]) ) {
             $$t = $mtdata[$f];
@@ -121,6 +129,8 @@ if ( sqgetGlobalVar('mailtodata', $mailtodata, SQ_GET) ) {
 
 /* Location (For HTTP 1.1 Header("Location: ...") redirects) */
 $location = get_location();
+/* Identities (fetch only once) */
+$idents = get_identities();
 
 /* --------------------- Specific Functions ------------------------------ */
 
@@ -131,16 +141,16 @@ function replyAllString($header) {
      * 1) Remove the addresses we'll be sending the message 'to'
      */
     $url_replytoall_avoid_addrs = '';
-    if (isset($header->replyto)) {
-        $excl_ar = $header->getAddr_a('replyto');
+    if (isset($header->reply_to)) {
+        $excl_ar = $header->getAddr_a('reply_to');
     }
     /**
      * 2) Remove our identities from the CC list (they still can be in the
      * TO list) only if $include_self_reply_all is turned off
      */
     if (!$include_self_reply_all) {
-        $ids = get_identities();
-        foreach($ids as $id) {
+        global $idents;
+        foreach($idents as $id) {
             $excl_ar[strtolower(trim($id['email_address']))] = '';
         }
     }
@@ -253,7 +263,7 @@ function getforwardHeader($orig_header) {
     $bodyTop =  str_pad(' '._("Original Message").' ',$editor_size -2,'-',STR_PAD_BOTH) .
         "\n". $display[_("Subject")] . $subject . "\n" .
         $display[_("From")] . $from . "\n" .
-        $display[_("Date")] . getLongDateString( $orig_header->date ). "\n" .
+        $display[_("Date")] . getLongDateString( $orig_header->date, $orig_header->date_unparsed ). "\n" .
         $display[_("To")] . $to . "\n";
     if ($orig_header->cc != array() && $orig_header->cc !='') {
         $cc = decodeHeader($orig_header->getAddr_s('cc',"\n$indent"),false,false,true);
@@ -281,7 +291,7 @@ if (sqsession_is_registered('session_expired_post')) {
         sqsession_unregister('session_expired_post');
         session_write_close();
     } else {
-        // these are the vars that we can set from the expired composed session   
+        // these are the vars that we can set from the expired composed session
         $compo_var_list = array ( 'send_to', 'send_to_cc','body','startMessage',
             'passed_body','use_signature','signature','attachments','subject','newmail',
             'send_to_bcc', 'passed_id', 'mailbox', 'from_htmladdr_search', 'identity',
@@ -290,7 +300,7 @@ if (sqsession_is_registered('session_expired_post')) {
 
         foreach ($compo_var_list as $var) {
             if ( isset($session_expired_post[$var]) && !isset($$var) ) {
-	        $$var = $session_expired_post[$var];
+                $$var = $session_expired_post[$var];
             }
         }
 
@@ -411,7 +421,7 @@ if ($send) {
     if (checkInput(false) && !isset($AttachFailure)) {
         if ($mailbox == "All Folders") {
             /* We entered compose via the search results page */
-            $mailbox="INBOX"; /* Send 'em to INBOX, that's safe enough */
+            $mailbox = 'INBOX'; /* Send 'em to INBOX, that's safe enough */
         }
         $urlMailbox = urlencode (trim($mailbox));
         if (! isset($passed_id)) {
@@ -460,6 +470,7 @@ if ($send) {
             exit();
         }
         unset($compose_messages[$session]);
+
         /* if it is resumed draft, delete draft message */
         if ( isset($delete_draft)) {
             Header("Location: $location/delete_message.php?mailbox=" . urlencode( $draft_folder ).
@@ -545,15 +556,8 @@ if ($send) {
     showInputForm($session);
 }
 elseif (isset($sigappend)) {
-    $idents = getPref($data_dir, $username, 'identities', 0);
-    if ($idents > 1) {
-       if ($identity == 'default') {
-          $no = 'g';
-       } else {
-          $no = $identity;
-       }
-       $signature = getSig($data_dir, $username, $no);
-    }
+    $signature = $idents[$identity]['signature'];
+    
     $body .= "\n\n".($prefix_sig==true? "-- \n":'').$signature;
     if ($compose_new_win == '1') {
         compose_Header($color, $mailbox);
@@ -571,7 +575,6 @@ elseif (isset($sigappend)) {
     if (isset($delete) && is_array($delete)) {
         $composeMessage = $compose_messages[$session];
         foreach($delete as $index) {
-
             if (!empty($composeMessage->entities) && isset($composeMessage->entities[$index])) {
                 $composeMessage->entities[$index]->purgeAttachments();
                 unset ($composeMessage->entities[$index]);
@@ -638,7 +641,7 @@ exit();
 
 /* This function is used when not sending or adding attachments */
 function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $session='') {
-    global $editor_size, $default_use_priority, $body,
+    global $editor_size, $default_use_priority, $body, $idents,
         $use_signature, $composesession, $data_dir, $username,
         $username, $key, $imapServerAddress, $imapPort, $compose_messages,
         $composeMessage, $body_quote;
@@ -733,7 +736,6 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
         }
 
         $identity = '';
-        $idents = getPref($data_dir, $username, 'identities');
         $from_o = $orig_header->from;
         if (is_array($from_o)) {
             if (isset($from_o[0])) {
@@ -747,16 +749,11 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
         }
 
         $identities = array();
-        if (!empty($idents) && $idents > 1) {
-            $identities[]  = '"'. getPref($data_dir, $username, 'full_name').
-                '" <'.getPref($data_dir, $username, 'email_address').'>';
-            for ($i = 1; $i < $idents; $i++) {
-                $enc_from_name = '"'.
-                    getPref($data_dir, $username, 'full_name' . $i) .
-                    '" <' .
-                    getPref($data_dir, $username, 'email_address' . $i) . '>';
-                if ($enc_from_name == $orig_from && $i) {
-                    $identity = $i;
+        if (count($idents) > 1) {
+            foreach($idents as $nr=>$data) {
+                $enc_from_name = '"'.$data['full_name'].'" <'. $data['email_address'].'>';
+                if($enc_from_name == $orig_from) {
+                    $identity = $nr;
                     break;
                 }
                 $identities[] = $enc_from_name;
@@ -775,6 +772,7 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
                 $send_to = decodeHeader($orig_header->getAddr_s('to'),false,false,true);
                 $send_to_cc = decodeHeader($orig_header->getAddr_s('cc'),false,false,true);
                 $send_to_bcc = decodeHeader($orig_header->getAddr_s('bcc'),false,false,true);
+                // FIXME: ident support?
                 $subject = decodeHeader($orig_header->subject,false,false,true);
                 /* remember the references and in-reply-to headers in case of an reply */
                 $composeMessage->rfc822_header->more_headers['References'] = $orig_header->references;
@@ -844,7 +842,7 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
                 }
                 /* this corrects some wrapping/quoting problems on replies */
                 $rewrap_body = explode("\n", $body);
-                $from =  (is_array($orig_header->from)) ? $orig_header->from[0] : $orig_header->from;
+                $from = (is_array($orig_header->from) && !empty($orig_header->from)) ? $orig_header->from[0] : $orig_header->from;
                 sqUnWordWrap($body);
                 $body = '';
                 $cnt = count($rewrap_body);
@@ -907,6 +905,7 @@ function getAttachments($message, &$composeMessage, $passed_id, $entities, $imap
                     $filename = $message->getFilename();
                     break;
             }
+
             $filename = decodeHeader($filename, false, false);
             if (isset($languages[$squirrelmail_language]['XTRA_CODE']) &&
                     function_exists($languages[$squirrelmail_language]['XTRA_CODE'])) {
@@ -918,16 +917,19 @@ function getAttachments($message, &$composeMessage, $passed_id, $entities, $imap
                 $localfilename = GenerateRandomString(32, '', 7);
                 $full_localfilename = "$hashed_attachment_dir/$localfilename";
             }
+            $fp = fopen ("$hashed_attachment_dir/$localfilename", 'wb');
+
             $message->att_local_name = $full_localfilename;
 
             $composeMessage->initAttachment($message->type0.'/'.$message->type1,$filename,
                     $full_localfilename);
 
-            /* Write Attachment to file */
-            $fp = fopen ("$hashed_attachment_dir/$localfilename", 'wb');
-            fputs($fp, decodeBody(mime_fetch_body($imapConnection,
-                            $passed_id, $message->entity_id),
-                        $message->header->encoding));
+            /* Write Attachment to file 
+               The function mime_print_body_lines writes directly to the 
+               provided resource $fp. That prohibits large memory consumption in
+               case of forwarding mail with large attachments.
+            */
+            mime_print_body_lines ($imapConnection, $passed_id, $message->entity_id, $message->header->encoding, $fp);
             fclose ($fp);
         }
     } else {
@@ -977,7 +979,7 @@ function showInputForm ($session, $values=false) {
         $editor_size, $editor_height, $attachments, $subject, $newmail,
         $use_javascript_addr_book, $send_to_bcc, $passed_id, $mailbox,
         $from_htmladdr_search, $location_of_buttons, $attachment_dir,
-        $username, $data_dir, $identity, $draft_id, $delete_draft,
+        $username, $data_dir, $identity, $idents, $draft_id, $delete_draft,
         $mailprio, $default_use_mdn, $mdn_user_support, $compose_new_win,
         $saved_draft, $mail_sent, $sig_first, $edit_as_new, $action,
         $username, $compose_messages, $composesession, $default_charset,
@@ -1037,10 +1039,10 @@ function showInputForm ($session, $values=false) {
     }
 
     if ($saved_draft == 'yes') {
-        echo '<br /><center><b>'. _("Draft Saved").'</center></b>';
+        echo '<br /><center><b>'. _("Your draft has been saved.").'</center></b>';
     }
     if ($mail_sent == 'yes') {
-        echo '<br /><center><b>'. _("Your Message has been sent.").'</center></b>';
+        echo '<br /><center><b>'. _("Your mail has been sent.").'</center></b>';
     }
     if ($compose_new_win == '1') {
         echo '<table align="center" bgcolor="'.$color[0].'" width="100%" border="0">'."\n" .
@@ -1053,44 +1055,24 @@ function showInputForm ($session, $values=false) {
     if ($location_of_buttons == 'top') {
         showComposeButtonRow();
     }
-
+    
     /* display select list for identities */
-    $idents = getPref($data_dir, $username, 'identities', 0);
-    if ($idents > 1) {
-        $fn = getPref($data_dir, $username, 'full_name');
-        $em = getPref($data_dir, $username, 'email_address');
+    if (count($idents) > 1) {
         echo '   <tr>' . "\n" .
             html_tag( 'td', '', 'right', $color[4], 'width="10%"' ) .
             _("From:") . '</td>' . "\n" .
             html_tag( 'td', '', 'left', $color[4], 'width="90%"' ) .
-            '         <select name="identity">' . "\n" .
-            '         <option value="default">' .
-            htmlspecialchars($fn);
-        if ($em != '') {
-            if ($fn != '') {
-                echo htmlspecialchars(' <' . $em . '>') . "\n";
-            } else {
-                echo htmlspecialchars($em) . "\n";
-            }
-        }
-        echo '</option>';
-        for ($i = 1; $i < $idents; $i ++) {
-            $fn = getPref($data_dir, $username, 'full_name' . $i);
-            $em = getPref($data_dir, $username, 'email_address' . $i);
+            '         <select name="identity">' . "\n";
 
-            echo '<option value="' . $i . '"';
-            if (isset($identity) && $identity == $i) {
+        foreach($idents as $nr => $data) {
+            echo '<option value="' . $nr . '"';
+            if (isset($identity) && $identity == $nr) {
                 echo ' selected="selected"';
             }
-            echo '>' . htmlspecialchars($fn);
-            if ($em != '') {
-                if ($fn != '') {
-                    echo htmlspecialchars(' <' . $em . '>') . "\n";
-                } else {
-                    echo htmlspecialchars($em) . "\n";
-                }
-            }
-            echo '</option>';
+            echo '>' . htmlspecialchars(
+                    $data['full_name'] . ' <' .
+                    $data['email_address'] . '>') .
+                "</option>\n";
         }
 
         echo '</select>' . "\n" .
@@ -1100,28 +1082,28 @@ function showInputForm ($session, $values=false) {
 
     echo '   <tr>' . "\n" .
         html_tag( 'td', '', 'right', $color[4], 'width="10%"' ) .
-        _("To") . ':</td>' . "\n" .
+        _("To:") . '</td>' . "\n" .
         html_tag( 'td', '', 'left', $color[4], 'width="90%"' ) .
         substr(addInput('send_to', $send_to, 60), 0, -3). $onfocus . ' /><br />' . "\n" .
         '      </td>' . "\n" .
         '   </tr>' . "\n" .
         '   <tr>' . "\n" .
         html_tag( 'td', '', 'right', $color[4] ) .
-        _("Cc") . ':</td>' . "\n" .
+        _("Cc:") . '</td>' . "\n" .
         html_tag( 'td', '', 'left', $color[4] ) .
         substr(addInput('send_to_cc', $send_to_cc, 60), 0, -3). $onfocus . ' /><br />' . "\n" .
         '      </td>' . "\n" .
         '   </tr>' . "\n" .
         '   <tr>' . "\n" .
         html_tag( 'td', '', 'right', $color[4] ) .
-        _("Bcc") . ':</td>' . "\n" .
+        _("Bcc:") . '</td>' . "\n" .
         html_tag( 'td', '', 'left', $color[4] ) .
         substr(addInput('send_to_bcc', $send_to_bcc, 60), 0, -3). $onfocus . ' /><br />' . "\n" .
         '      </td>' . "\n" .
         '   </tr>' . "\n" .
         '   <tr>' . "\n" .
         html_tag( 'td', '', 'right', $color[4] ) .
-        _("Subject") . ':</td>' . "\n" .
+        _("Subject:") . '</td>' . "\n" .
         html_tag( 'td', '', 'left', $color[4] ) . "\n";
     echo '         '.substr(addInput('subject', $subject, 60), 0, -3). $onfocus .
         ' />      </td>' . "\n" .
@@ -1146,14 +1128,7 @@ function showInputForm ($session, $values=false) {
     }
 
     if ($use_signature == true && $newmail == true && !isset($from_htmladdr_search)) {
-        if ($idents > 1) {
-            if ($identity == 'default') {
-                $no = 'g';
-            } else {
-                $no = $identity;
-            }
-            $signature = getSig($data_dir, $username, $no);
-        }
+        $signature = $idents[$identity]['signature'];
 
         if ($sig_first == '1') {
             if ($default_charset == 'iso-2022-jp') {
@@ -1324,8 +1299,8 @@ function showComposeButtonRow() {
     echo '      </td>' . "\n" .
         '   </tr>' . "\n" .
         '   <tr>'  . "\n" .
-        '      <td colspan="2">' . "\n" .
-        '               <div align="center">' . "\n" .
+        '      <td></td>' . "\n" .
+        '      <td>' . "\n" .
         '         <input type="submit" name="sigappend" value="' . _("Signature") . '" />' . "\n";
     if ($use_javascript_addr_book) {
         echo "         <script language=\"JavaScript\"><!--\n document.write(\"".
@@ -1347,7 +1322,7 @@ function showComposeButtonRow() {
     echo '         <input type="submit" name="send" value="'. _("Send") . '" />' . "\n";
     do_hook('compose_button_row');
 
-    echo '      </div></td>' . "\n" .
+    echo '      </td>' . "\n" .
         '   </tr>' . "\n\n";
 }
 
@@ -1436,13 +1411,13 @@ function getByteSize($ini_size) {
 
 /**
  * temporary function to make use of the deliver class.
- * In the future the responsable backend should be automaticly loaded
+ * In the future the responsible backend should be automaticly loaded
  * and conf.pl should show a list of available backends.
  * The message also should be constructed by the message class.
  */
 function deliverMessage($composeMessage, $draft=false) {
     global $send_to, $send_to_cc, $send_to_bcc, $mailprio, $subject, $body,
-        $username, $popuser, $usernamedata, $identity, $data_dir,
+        $username, $popuser, $usernamedata, $identity, $idents, $data_dir,
         $request_mdn, $request_dr, $default_charset, $color, $useSendmail,
         $domain, $action, $default_move_to_sent, $move_to_sent;
     global $imapServerAddress, $imapPort, $sent_folder, $key;
@@ -1475,15 +1450,9 @@ function deliverMessage($composeMessage, $draft=false) {
         $popuser = $username;
     }
     $reply_to = '';
-    if (isset($identity) && $identity != 'default') {
-        $from_mail = getPref($data_dir, $username,'email_address' . $identity);
-        $full_name = getPref($data_dir, $username,'full_name' . $identity);
-        $reply_to = getPref($data_dir, $username,'reply_to' . $identity);
-    } else {
-        $from_mail = getPref($data_dir, $username, 'email_address');
-        $full_name = getPref($data_dir, $username, 'full_name');
-        $reply_to = getPref($data_dir, $username,'reply_to');
-    }
+    $from_mail = $idents[$identity]['email_address'];
+    $full_name = $idents[$identity]['full_name'];
+    $reply_to  = $idents[$identity]['reply_to'];
     if (!$from_mail) {
         $from_mail = "$popuser@$domain";
     }
@@ -1506,10 +1475,12 @@ function deliverMessage($composeMessage, $draft=false) {
     if (isset($request_mdn) && $request_mdn) {
         $rfc822_header->dnt = $rfc822_header->parseAddress($from_mail,true);
     }
+
     /* Receipt: On Delivery */
     if (isset($request_dr) && $request_dr) {
         $rfc822_header->more_headers['Return-Receipt-To'] = $from_mail;
     }
+
     /* multipart messages */
     if (count($composeMessage->entities)) {
         $message_body = new Message();
@@ -1612,9 +1583,10 @@ function deliverMessage($composeMessage, $draft=false) {
         $succes = $deliver->finalizeStream($stream);
     }
     if (!$succes) {
-        $msg  = $deliver->dlv_msg . '<br />' .
-            _("Server replied:") . ' ' . $deliver->dlv_ret_nr . ' ' .
-            $deliver->dlv_server_msg;
+        $msg  = _("Message not sent.") .' '.  _("Server replied:") .
+            "\n<blockquote>\n" . $deliver->dlv_msg . '<br />' .
+            $deliver->dlv_ret_nr . ' ' .
+            $deliver->dlv_server_msg . "</blockquote>\n\n";
         plain_error_message($msg, $color);
     } else {
         unset ($deliver);

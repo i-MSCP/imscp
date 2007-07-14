@@ -5,9 +5,9 @@
  *
  * Displays all options relating to folders
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folder.php,v 1.6.2.13 2006/07/09 18:09:04 tokul Exp $
+ * @version $Id: folder.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

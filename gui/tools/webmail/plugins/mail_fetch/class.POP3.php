@@ -13,7 +13,7 @@
     *
     * pop3 class
     *
-    * $Id: class.POP3.php,v 1.10.2.9 2006/02/03 22:27:52 jervfors Exp $
+    * $Id: class.POP3.php 10633 2006-02-03 22:27:56Z jervfors $
     */
 
 class POP3 {

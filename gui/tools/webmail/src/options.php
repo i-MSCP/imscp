@@ -6,9 +6,9 @@
  * Displays the options page. Pulls from proper user preference files
  * and config.php. Displays preferences as selected and other options.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php,v 1.121.2.14 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: options.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage prefs
  */

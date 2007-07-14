@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 2002-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: calendar.php,v 1.13.2.9 2006/05/06 07:52:17 tokul Exp $
+ * @version $Id: calendar.php 11118 2006-05-06 07:52:19Z tokul $
  * @package plugins
  * @subpackage calendar
  */

@@ -3,9 +3,9 @@
 /**
  * validate.php
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: validate.php,v 1.9.2.7 2006/08/07 19:07:44 kink Exp $
+ * @version $Id: validate.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

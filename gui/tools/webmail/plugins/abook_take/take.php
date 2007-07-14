@@ -9,7 +9,7 @@
  * Address Take -- steals addresses from incoming email messages. Searches
  * the To, Cc, From and Reply-To headers.
  *
- * $Id: take.php,v 1.8.2.5 2006/02/03 22:27:51 jervfors Exp $
+ * $Id: take.php 10633 2006-02-03 22:27:56Z jervfors $
  */
    
 /* Path for SquirrelMail required files. */

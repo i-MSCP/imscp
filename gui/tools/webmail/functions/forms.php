@@ -9,9 +9,9 @@
  * @link http://www.section508.gov/ Section 508
  * @link http://www.w3.org/WAI/ Web Accessibility Initiative (WAI)
  * @link http://www.w3.org/TR/html4/ W3.org HTML 4.01 form specs
- * @copyright &copy; 2004-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2004-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: forms.php,v 1.3.2.13 2006/04/14 22:27:07 jervfors Exp $
+ * @version $Id: forms.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage forms
  * @since 1.4.3 and 1.5.1

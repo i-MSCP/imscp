@@ -5,9 +5,9 @@
  *
  * Displays all optinos about display preferences
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display.php,v 1.4.2.25 2006/05/06 11:50:46 kink Exp $
+ * @version $Id: display.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

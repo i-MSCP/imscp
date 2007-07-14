@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Administrator plugin - Option definitions
  *
- * @version $Id: defines.php,v 1.32.2.14 2006/08/01 05:47:32 tokul Exp $
  * @author Philippe Mingo
- * @copyright (c) 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id: defines.php 12324 2007-03-07 22:00:04Z jervfors $
  * @package plugins
  * @subpackage administrator
  */
@@ -106,7 +107,9 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                                                                    'courier' => _("Courier IMAP server"),
                                                                    'macosx' => _("Mac OS X Mailserver"),
                                                                    'hmailserver' => _("hMailServer IMAP server"),
+                                                                   'mercury32' => _("Mercury/32 IMAP server"),
                                                                    'bincimap' => _("Binc IMAP server"),
+                                                                   'dovecot' => _("Dovecot IMAP server"),
                                                                    'other' => _("Not one of the above servers") ) ),
                  '$optional_delimiter' => array( 'name' => _("IMAP Folder Delimiter"),
                                                  'type' => SMOPT_TYPE_STRING,
@@ -126,10 +129,10 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                  '$useSendmail' => array( 'name' => _("Use Sendmail Binary"),
                                           'type' => SMOPT_TYPE_BOOLEAN,
                                           'comment' => _("Choose &quot;no&quot; for SMTP") ),
-                 '$sendmail_args' => array( 'name' => _("Sendmail Arguments"),
+                 '$sendmail_path' => array( 'name' => _("Sendmail Path"),
                                             'type' => SMOPT_TYPE_STRING,
                                             'size' => 40 ),
-                 '$sendmail_path' => array( 'name' => _("Sendmail Path"),
+                 '$sendmail_args' => array( 'name' => _("Sendmail Arguments"),
                                             'type' => SMOPT_TYPE_STRING,
                                             'size' => 40 ),
                  '$smtpServerAddress' => array( 'name' => _("SMTP Server Address"),
@@ -254,7 +257,7 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                                            'type' => SMOPT_TYPE_HIDDEN ),
                  '$config_location_base' => array( 'name' => _("Location base"),
                                                    'type' => SMOPT_TYPE_STRING,
-                                                   'size' => 40,				
+                                                   'size' => 40,
                                                    'default' => '' ),
                  /* --------------------------------------------------------*/
                  'Group5' => array( 'name' => _("Message of the Day"),
@@ -262,7 +265,7 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                  '$motd' => array( 'name' => _("Message of the Day"),
                                    'type' => SMOPT_TYPE_TEXTAREA,
                                    'size' => 40 ),
-                 /* --------------------------------------------------------*/
+                 /* ---- Database settings ---- */
                  'Group6' => array( 'name' => _("Database"),
                                     'type' => SMOPT_TYPE_TITLE ),
                  '$addrbook_dsn' => array( 'name' => _("Address book DSN"),
@@ -347,7 +350,6 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                                             'type' => SMOPT_TYPE_INTEGER,
                                             'default' => 0,
                                             'comment' => _("Use index number of theme") ),
-                 /* ---- Group8 is for plugins ---- */
                  /* --------------------------------------------------------*/
                  '$config_use_color' => array( 'name' => '',
                                                'type' => SMOPT_TYPE_HIDDEN ),
@@ -356,5 +358,3 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                  /* --------------------------------------------------------*/
 
                );
-
-?>

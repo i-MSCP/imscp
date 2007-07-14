@@ -12,7 +12,7 @@
  * the interface window.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: check_me.mod,v 1.10.2.12 2006/02/03 22:27:53 jervfors Exp $
+ * @version $Id: check_me.mod 12340 2007-03-19 13:44:39Z avel $
  * @package plugins
  * @subpackage squirrelspell
  */
@@ -265,8 +265,9 @@ if ($errors){
    */
   $extrajs.= "var sqspell_lines=new Array();\n";
   for ($i=0; $i<sizeof($sqspell_lines); $i++){
+    // use addcslashes for compatibility with magic_quotes_sybase
     $extrajs.= "sqspell_lines[$i] = \""
-      . chop(addslashes($sqspell_lines[$i])) . "\";\n";
+      . chop(addcslashes($sqspell_lines[$i], "'\"\\\x0")) . "\";\n";
   }
   $extrajs.= "\n\n";
 
@@ -313,7 +314,7 @@ if ($errors){
 
 
   /**
-   * Did I mention that I hate dots on the end of contcatenated lines?
+   * Did I mention that I hate dots on the end of concatenated lines?
    * Dots at the beginning make so much more sense!
    */
   $extrajs.= "//-->\n"

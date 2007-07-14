@@ -7,9 +7,9 @@
  * a delivery backend.
  *
  * @author Marc Groot Koerkamp
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php,v 1.18.2.29 2006/05/13 19:56:59 tokul Exp $
+ * @version $Id: Deliver.class.php 12144 2007-01-18 16:15:10Z kink $
  * @package squirrelmail
  */
 
@@ -549,7 +549,9 @@ class Deliver {
                 $aRefs = explode(' ',$sRefs);
                 $sLine = 'References:';
                 foreach ($aRefs as $sReference) {
-                    if (strlen($sLine)+strlen($sReference) >76) {
+                    if ( trim($sReference) == '' ) {
+                        /* Don't add spaces. */
+                    } elseif (strlen($sLine)+strlen($sReference) >76) {
                         $hdr_s .= $sLine;
                         $sLine = $rn . '    ' . $sReference;
                     } else {

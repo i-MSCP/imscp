@@ -92,7 +92,7 @@ Each of these steps is covered in detail below.
   SquirrelMail is constantly being improved. Therefore you should always
   get the newest version around. Look at http://www.squirrelmail.org
   to see what it is. If you want to be bleeding edge you might want to
-  consider using the latest CVS version (with the latest and most
+  consider using the latest SVN version (with the latest and most
   fashionable bugs).
 
 a. Download SquirrelMail

@@ -7,7 +7,7 @@
  * Grabs the text from the SquirrelMail field and submits it to
  * the squirrelspell.
  *
- * $Id: init.js,v 1.2.4.3 2006/02/03 22:27:53 jervfors Exp $
+ * $Id: init.js 10633 2006-02-03 22:27:56Z jervfors $
  */
 
 /**

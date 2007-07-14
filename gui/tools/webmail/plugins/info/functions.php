@@ -11,7 +11,7 @@
  * to options.php.
  * by: Jason Munro jason@stdbev.com
  *
- * $Id: functions.php,v 1.3.2.8 2006/02/03 22:27:52 jervfors Exp $ 
+ * $Id: functions.php 10633 2006-02-03 22:27:56Z jervfors $ 
  *
  */
 

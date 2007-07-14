@@ -6,9 +6,9 @@
  * This implements functions that manipulate messages
  * NOTE: Quite a few functions in this file are obsolete
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php,v 1.134.2.31 2006/09/30 10:15:11 tokul Exp $
+ * @version $Id: imap_messages.php 12322 2007-03-06 16:26:18Z kink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -709,6 +709,7 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
         $messages[$msgi]['CC'] = $cc; //parseAddress($cc);
         $messages[$msgi]['SIZE'] = $size;
         $messages[$msgi]['TYPE0'] = $type[0];
+        $messages[$msgi]['TYPE1'] = $type[1];
         $messages[$msgi]['FLAG_DELETED'] = $flag_deleted;
         $messages[$msgi]['FLAG_ANSWERED'] = $flag_answered;
         $messages[$msgi]['FLAG_SEEN'] = $flag_seen;
@@ -945,4 +946,3 @@ function sqimap_get_small_header($imap_stream, $id, $sent) {
     return $res[0];
 }
 
-?>

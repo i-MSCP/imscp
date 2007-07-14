@@ -3,13 +3,12 @@
 /**
  * folders_delete.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * Deletes folders from the IMAP server. 
  * Called from the folders.php
  *
- * @version $Id: folders_delete.php,v 1.60.2.7 2006/08/15 17:42:32 tokul Exp $
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id: folders_delete.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

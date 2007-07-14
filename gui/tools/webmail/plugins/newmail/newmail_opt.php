@@ -8,7 +8,7 @@
  *
  * Displays all options relating to new mail sounds
  *
- * $Id: newmail_opt.php,v 1.17.2.10 2006/02/03 22:27:52 jervfors Exp $
+ * $Id: newmail_opt.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage newmail
  */

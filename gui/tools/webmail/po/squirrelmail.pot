@@ -1,5 +1,5 @@
 # LANGUAGE (xx_XX) SquirrelMail Translation
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2007 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail VERSION\n"
 "Report-Msgid-Bugs-To: squirrelmail-i18n@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-12-03 23:04+0100\n"
+"POT-Creation-Date: 2007-03-07 22:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <squirrelmail-i18n@lists.sourceforge.net>\n"
@@ -176,13 +176,25 @@ msgstr ""
 msgid "Could not move/copy file. File not attached"
 msgstr ""
 
-msgid "Draft Saved"
+msgid "Your draft has been saved."
 msgstr ""
 
-msgid "Your Message has been sent."
+msgid "Your mail has been sent."
 msgstr ""
 
 msgid "From:"
+msgstr ""
+
+msgid "To:"
+msgstr ""
+
+msgid "Cc:"
+msgstr ""
+
+msgid "Bcc:"
+msgstr ""
+
+msgid "Subject:"
 msgstr ""
 
 msgid "Send"
@@ -237,6 +249,9 @@ msgstr ""
 
 #, php-format
 msgid "Error: Draft folder %s does not exist."
+msgstr ""
+
+msgid "Message not sent."
 msgstr ""
 
 msgid "Server replied:"
@@ -1859,7 +1874,13 @@ msgstr ""
 msgid "hMailServer IMAP server"
 msgstr ""
 
+msgid "Mercury/32 IMAP server"
+msgstr ""
+
 msgid "Binc IMAP server"
+msgstr ""
+
+msgid "Dovecot IMAP server"
 msgstr ""
 
 msgid "Not one of the above servers"
@@ -1889,10 +1910,10 @@ msgstr ""
 msgid "Choose &quot;no&quot; for SMTP"
 msgstr ""
 
-msgid "Sendmail Arguments"
+msgid "Sendmail Path"
 msgstr ""
 
-msgid "Sendmail Path"
+msgid "Sendmail Arguments"
 msgstr ""
 
 msgid "SMTP Server Address"
@@ -2387,11 +2408,6 @@ msgid "COMMERCIAL - RBL+ OpenRelay entries."
 msgstr ""
 
 msgid "COMMERCIAL - RBL+ Dial-up entries."
-msgstr ""
-
-msgid ""
-"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
-"false positives than ORBS did though."
 msgstr ""
 
 msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
@@ -3788,9 +3804,6 @@ msgid "Translation direction"
 msgstr ""
 
 msgid "Arabic"
-msgstr ""
-
-msgid "Chinese (Simplified)"
 msgstr ""
 
 msgid "Delivery error report"

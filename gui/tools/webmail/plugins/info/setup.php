@@ -6,7 +6,7 @@
  *   
  * by: Jason Munro jason@stdbev.com
  * 
- * $Id: setup.php,v 1.4.2.5 2006/02/03 22:27:52 jervfors Exp $
+ * $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
  * 
  */
 

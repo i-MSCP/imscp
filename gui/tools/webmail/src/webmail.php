@@ -7,9 +7,9 @@
  * shown can be given as parameters. If the user is not logged in
  * this file will verify username and password.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: webmail.php,v 1.92.2.20 2006/12/02 15:10:13 kink Exp $
+ * @version $Id: webmail.php 12352 2007-03-28 05:09:33Z jangliss $
  * @package squirrelmail
  */
 
@@ -20,19 +20,9 @@
 define('SM_PATH','../');
 
 /* SquirrelMail required files. */
-require_once(SM_PATH . 'functions/global.php');
-require_once(SM_PATH . 'functions/strings.php');
-require_once(SM_PATH . 'config/config.php');
-require_once(SM_PATH . 'functions/prefs.php');
+require_once(SM_PATH . 'include/validate.php');
 require_once(SM_PATH . 'functions/imap.php');
-require_once(SM_PATH . 'functions/plugin.php');
-require_once(SM_PATH . 'functions/i18n.php');
-require_once(SM_PATH . 'functions/auth.php');
 
-
-if (!function_exists('sqm_baseuri')){
-    require_once(SM_PATH . 'functions/display_messages.php');
-}
 $base_uri = sqm_baseuri();
 
 sqsession_is_active();
@@ -77,25 +67,11 @@ if ($my_language != $squirrelmail_language) {
 
 set_up_language(getPref($data_dir, $username, 'language'));
 
-global $theme_css, $custom_css, $pageheader_sent;
-
 $output = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\">\n".
           "<html><head>\n" .
           "<meta name=\"robots\" content=\"noindex,nofollow\">\n" .
-          "<title>$org_title</title>\n";
-
-
-	 if ( !isset( $custom_css ) || $custom_css == 'none' ) {
-        if ($theme_css != '') {
-            $output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$theme_css."\" />";
-        }
-    } else {
-        $output .='<link rel="stylesheet" type="text/css" href="' .
-             $base_uri . 'themes/css/'.$custom_css.'" />';
-    }
-
-
-$output .= "</head>";
+          "<title>$org_title</title>\n".
+          "</head>";
 
 $left_size = getPref($data_dir, $username, 'left_size');
 $location_of_bar = getPref($data_dir, $username, 'location_of_bar');
@@ -122,10 +98,10 @@ if ($left_size == "") {
 }
 
 if ($location_of_bar == 'right') {
-    $output .= "<frameset cols=\"*, $left_size\" frameborder=\"0\" border=\"0\" framespacing=\"0\">\n";
+    $output .= "<frameset cols=\"*, $left_size\" id=\"fs1\">\n";
 }
 else {
-    $output .= "<frameset cols=\"$left_size, *\" frameborder=\"0\" border=\"0\" framespacing=\"0\">\n";
+    $output .= "<frameset cols=\"$left_size, *\" id=\"fs1\">\n";
 }
 
 /*
@@ -178,12 +154,12 @@ switch($right_frame_file) {
 } 
 
 if ($location_of_bar == 'right') {
-    $output .= "<frame src=\"$right_frame_url\" id=\"f1\" name=\"right\" />\n" .
-               "<frame src=\"left_main.php\" id=\"f2\" name=\"left\" />\n";
+    $output .= "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\" />\n" .
+               "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\" />\n";
 }
 else {
-    $output .= "<frame src=\"left_main.php\" id=\"f1\" name=\"left\" />\n".
-               "<frame src=\"$right_frame_url\" id=\"f2\" name=\"right\" />\n";
+    $output .= "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\" />\n".
+               "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\" />\n";
 }
 $ret = concat_hook_function('webmail_bottom', $output);
 if($ret != '') {

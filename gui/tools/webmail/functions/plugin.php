@@ -7,9 +7,9 @@
  *
  * Documentation on how to write plugins might show up some time.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: plugin.php,v 1.30.2.7 2006/07/18 07:58:34 tokul Exp $
+ * @version $Id: plugin.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

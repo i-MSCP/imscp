@@ -8,7 +8,7 @@
  **
  **  Setup of the mailfetch plugin.
  **
- **  $Id: setup.php,v 1.15.2.9 2006/02/03 22:27:52 jervfors Exp $
+ **  $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
  **/
 
 /** @ignore*/
@@ -20,7 +20,7 @@ require_once(SM_PATH . 'plugins/mail_fetch/functions.php' );
 function squirrelmail_plugin_init_mail_fetch() {
     global $squirrelmail_plugin_hooks;
 
-    $squirrelmail_plugin_hooks['fetchmail']['mail_fetch'] = 'mail_fetch_link';
+    $squirrelmail_plugin_hooks['menuline']['mail_fetch'] = 'mail_fetch_link';
     $squirrelmail_plugin_hooks['loading_prefs']['mail_fetch'] = 'mail_fetch_load_pref';
     $squirrelmail_plugin_hooks['login_verified']['mail_fetch'] = 'mail_fetch_setnew';
     $squirrelmail_plugin_hooks['left_main_before']['mail_fetch'] = 'mail_fetch_login';
@@ -29,9 +29,8 @@ function squirrelmail_plugin_init_mail_fetch() {
 }
 
 function mail_fetch_link() {
-        global $base_uri;
-		displayInternalLink('plugins/mail_fetch/fetch.php', '<div id="fetchmail_button" title="'._("Fetch").'">&nbsp;&nbsp;&nbsp;</div>', '');
-
+    displayInternalLink('plugins/mail_fetch/fetch.php', _("Fetch"), '');
+    echo '&nbsp;&nbsp;';
 }
 
 function mail_fetch_load_pref() {

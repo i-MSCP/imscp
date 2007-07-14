@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 2005-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: decrypt_headers.php,v 1.1.2.5 2006/10/07 11:58:42 tokul Exp $
+ * @version $Id: decrypt_headers.php 11857 2006-10-07 11:58:42Z tokul $
  * @package squirrelmail
  */
 

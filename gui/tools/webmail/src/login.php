@@ -6,9 +6,9 @@
  * This a simple login screen. Some housekeeping is done to clean
  * cookies and find language.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: login.php,v 1.98.2.15 2006/12/02 15:10:13 kink Exp $
+ * @version $Id: login.php 12352 2007-03-28 05:09:33Z jangliss $
  * @package squirrelmail
  */
 
@@ -35,12 +35,6 @@ require_once(SM_PATH . 'functions/forms.php');
  */
 set_up_language($squirrelmail_language, TRUE, TRUE);
 
-/**
- * Find out the base URI to set cookies.
- */
-if (!function_exists('sqm_baseuri')){
-    require_once(SM_PATH . 'functions/display_messages.php');
-}
 $base_uri = sqm_baseuri();
 
 /**
@@ -64,6 +58,7 @@ if ( !empty($_SESSION['session_expired_post']) && !empty($_SESSION['session_expi
 header('Pragma: no-cache');
 
 do_hook('login_cookie');
+
 $loginname_value = (sqGetGlobalVar('loginname', $loginname) ? htmlspecialchars($loginname) : '');
 
 /* Output the javascript onload function. */
@@ -197,7 +192,7 @@ h1 {
 	width: 375px;
 
 	margin: 65px 20px 0px 0px;
-	
+
 	position: absolute;
 
 	top: -10px;
@@ -209,13 +204,13 @@ h1 {
 h2 {
 
 	color: #666666;
-		
+
 	text-align: right;
 
 	font-size: .6em;
 
 	margin: 15px 30px;
-	
+
 	position: absolute;
 
 	top: 90px;
@@ -275,12 +270,12 @@ p.4 {
 .input {
 
 	margin: 3px 12px 0px 7px;
-	
+
 	background-color: #FFFFFF;
 
 	height: 16px;
 
-	width: 8.5em;
+	width: 10em;
 
 	border: 1px solid #c0c0c0;
 
@@ -331,21 +326,21 @@ p.logout {
 </style>
 
 
-<div id="container"> 
+<div id="container">
   <h1>WebMail Login</h1>
 
-  
+
   <fieldset>
-  <font size="2" color="#FFFFFF">Username:</font><?php echo "<input type=\"text\" name=\"$username_form_name\" VALUE=\"\" tabindex=\"1\" class=\"input\">"; ?>
+  <font size="2" color="#FFFFFF">Username:</font><?php echo "<input type=\"text\" name=\"$username_form_name\" value=\"\" tabindex=\"1\" class=\"input\">"; ?>
   <font size="2" color="#FFFFFF">Password:</font><input name="<?php echo $password_form_name; ?>" type="password" class="input" tabindex=\"2\">
   <input type=hidden name="js_autodetect_results" value="SMPREF_JS_OFF">
   <input type=hidden name="just_logged_in" value=1>
-  <p class="3"> 
+  <p class="3">
     <input name="button" type="submit" value="login" class="button">
   </p>
-  <p class="3"> 
+  <p class="3">
   <?php do_hook('login_form'); ?>
-    </p> 
+    </p>
   </fieldset>
 </div>
 </form>

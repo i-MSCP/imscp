@@ -8,9 +8,9 @@
  *       <Tue,> 29 Jun 1999 09:52:11 -0500 (EDT)
  * (as specified in RFC 822) -- 'Tue' is optional
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: date.php,v 1.46.2.14 2006/10/20 08:45:38 kink Exp $
+ * @version $Id: date.php 12285 2007-02-27 19:07:02Z kink $
  * @package squirrelmail
  * @subpackage date
  */
@@ -303,14 +303,15 @@ function date_intl( $date_format, $stamp ) {
  * and taking localization into accout.
  *
  * @param int stamp the timestamp
+ * @param string fallback string to use when stamp not valid
  * @return string the long date string
  */
-function getLongDateString( $stamp ) {
+function getLongDateString( $stamp, $fallback = '' ) {
 
     global $hour_format;
 
     if ($stamp == -1) {
-        return '';
+        return $fallback;
     }
 
     if ( $hour_format == SMPREF_TIME_12HR ) {

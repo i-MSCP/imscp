@@ -6,9 +6,9 @@
  * Handles deleting messages from the trash folder without
  * deleting subfolders.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: empty_trash.php,v 1.44.2.8 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: empty_trash.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

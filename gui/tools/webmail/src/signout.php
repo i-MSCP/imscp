@@ -5,9 +5,9 @@
  *
  *  Cleans up after the user. Resets cookies and terminates session.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: signout.php,v 1.66.2.13 2006/07/30 19:37:38 tokul Exp $
+ * @version $Id: signout.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 
@@ -17,8 +17,8 @@
  */
 define('SM_PATH','../');
 
-    require_once(SM_PATH . 'include/validate.php');
-    require_once(SM_PATH . 'functions/prefs.php');
+require_once(SM_PATH . 'include/validate.php');
+require_once(SM_PATH . 'functions/prefs.php');
 require_once(SM_PATH . 'functions/plugin.php');
 require_once(SM_PATH . 'functions/strings.php');
 require_once(SM_PATH . 'functions/html.php');

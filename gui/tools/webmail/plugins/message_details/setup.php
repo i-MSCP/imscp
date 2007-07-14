@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
  * @copyright Copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: setup.php,v 1.2.2.5 2006/02/03 22:27:52 jervfors Exp $
+ * @version $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage message_details
  **/

@@ -3,13 +3,12 @@
 /**
  * folders_rename_getname.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * Gets folder names and enables renaming
  * Called from folders.php
  *
- * @version $Id: folders_rename_getname.php,v 1.47.2.5 2006/02/03 22:27:55 jervfors Exp $
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id: folders_rename_getname.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

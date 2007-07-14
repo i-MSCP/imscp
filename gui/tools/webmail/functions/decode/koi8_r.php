@@ -34,7 +34,7 @@
  *
  * @copyright &copy; 2003-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: koi8_r.php,v 1.3.2.6 2006/02/03 22:27:47 jervfors Exp $
+ * @version $Id: koi8_r.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package squirrelmail
  * @subpackage decode
  */

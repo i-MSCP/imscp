@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: index.php,v 1.1.8.3 2006/02/03 22:27:53 jervfors Exp $
+ * @version $Id: index.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package squirrelmail
  * @subpackage themes
  */

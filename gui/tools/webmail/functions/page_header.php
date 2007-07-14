@@ -5,9 +5,9 @@
  *
  * Prints the page header (duh)
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: page_header.php,v 1.148.2.27 2006/06/14 14:25:41 indiri69 Exp $
+ * @version $Id: page_header.php 12153 2007-01-19 23:21:21Z pdontthink $
  * @package squirrelmail
  */
 
@@ -157,7 +157,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
                       "\n<!--\n" . $js . "// -->\n</script>\n";
             }
 
-            displayHtmlHeader ('SquirrelMail', $js);
+            displayHtmlHeader($org_title, $js);
             $onload = $xtra;
           break;
         case 'src/compose.php':
@@ -202,7 +202,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
             $js .= "// -->\n".
                  "</script>\n";
             $onload = 'onload="checkForm();"';
-            displayHtmlHeader ('SquirrelMail', $js);
+            displayHtmlHeader($org_title, $js);
             break;
 
         default:
@@ -252,11 +252,11 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 
 
         $onload = 'onload="checkForm();"';
-        displayHtmlHeader ('SquirrelMail', $js);
+        displayHtmlHeader($org_title, $js);
       } // end switch module
     } else {
         // JavaScript off
-        displayHtmlHeader ('SquirrelMail');
+        displayHtmlHeader($org_title);
         $onload = '';
     }
 

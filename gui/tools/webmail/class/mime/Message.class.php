@@ -5,9 +5,9 @@
  *
  * This file contains functions needed to handle mime messages.
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php,v 1.17.2.15 2006/11/26 21:23:52 stekkel Exp $
+ * @version $Id: Message.class.php 12287 2007-02-27 19:43:58Z kink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -146,16 +146,41 @@ class Message {
      * @since 1.3.2
      */
     function getFilename() {
-        $filename = '';
-        $filename = $this->header->getParameter('filename');
-        if (!$filename) {
-            $filename = $this->header->getParameter('name');
-        }
-
-        if (!$filename) {
-            $filename = 'untitled-'.$this->entity_id;
-        }
-        return $filename;
+         $filename = '';
+         $header = $this->header;
+         if (is_object($header->disposition)) {
+              $filename = $header->disposition->getProperty('filename');
+              if (trim($filename) == '') {
+                  $name = decodeHeader($header->disposition->getProperty('name'));
+                  if (!trim($name)) {
+                      $name = $header->getParameter('name');
+                      if(!trim($name)) {
+                          if (!trim( $header->id )) {
+                              $filename = 'untitled-[' . $this->entity_id . ']' ;
+                          } else {
+                              $filename = 'cid: ' . $header->id;
+                          }
+                      } else {
+                          $filename = $name;
+                      }
+                  } else {
+                      $filename = $name;
+                  }
+              }
+         } else {
+              $filename = $header->getParameter('filename');
+              if (!trim($filename)) {
+                  $filename = $header->getParameter('name');
+                  if (!trim($filename)) {
+                      if (!trim( $header->id )) {
+                          $filename = 'untitled-[' . $this->entity_id . ']' ;
+                      } else {
+                          $filename = 'cid: ' . $header->id;
+                      }
+                  }
+              }
+         }
+         return $filename;
     }
 
     /**
@@ -589,18 +614,19 @@ class Message {
 
         if (count($arg_a) > 9) {
             $d = strtr($arg_a[0], array('  ' => ' '));
-            $d = explode(' ', $d);
-        if (!$arg_a[1]) $arg_a[1] = _("(no subject)");
+            $d_parts = explode(' ', $d);
+            if (!$arg_a[1]) $arg_a[1] = _("(no subject)");
 
-            $hdr->date = getTimeStamp($d); /* argument 1: date */
+            $hdr->date = getTimeStamp($d_parts); /* argument 1: date */
+            $hdr->date_unparsed = strtr($d,'<>','  '); /* original date */
             $hdr->subject = $arg_a[1];     /* argument 2: subject */
             $hdr->from = is_array($arg_a[2]) ? $arg_a[2][0] : '';     /* argument 3: from        */
             $hdr->sender = is_array($arg_a[3]) ? $arg_a[3][0] : '';   /* argument 4: sender      */
-            $hdr->replyto = is_array($arg_a[4]) ? $arg_a[4][0] : '';  /* argument 5: reply-to    */
+            $hdr->reply_to = is_array($arg_a[4]) ? $arg_a[4][0] : '';  /* argument 5: reply-to    */
             $hdr->to = $arg_a[5];          /* argument 6: to          */
             $hdr->cc = $arg_a[6];          /* argument 7: cc          */
             $hdr->bcc = $arg_a[7];         /* argument 8: bcc         */
-            $hdr->inreplyto = $arg_a[8];   /* argument 9: in-reply-to */
+            $hdr->in_reply_to = $arg_a[8];   /* argument 9: in-reply-to */
             $hdr->message_id = $arg_a[9];  /* argument 10: message-id */
         }
         return $hdr;
@@ -1089,4 +1115,3 @@ class Message {
     }
 }
 
-?>

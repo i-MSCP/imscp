@@ -6,9 +6,9 @@
  * This contains all messages, including information, error, and just
  * about any other message you can think of.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display_messages.php,v 1.57.2.23 2006/12/02 09:57:21 pdontthink Exp $
+ * @version $Id: display_messages.php 12317 2007-03-06 15:40:12Z kink $
  * @package squirrelmail
  */
 
@@ -108,7 +108,7 @@ function logout_error( $errString, $errTitle = '' ) {
 }
 
 function error_box($string, $color) {
-    global $pageheader_sent;
+    global $pageheader_sent, $org_title;
 
     if ( !isset( $color ) ) {
         $color = array();
@@ -119,6 +119,9 @@ function error_box($string, $color) {
         $color[7]  = '#0000cc';  /* blue          Links                  */
         $color[8]  = '#000000';  /* black         Normal text            */
         $color[9]  = '#ababab';  /* mid-gray      Darker version of #0   */
+    }
+    if ( !isset( $org_title ) ) {
+        $org_title = "SquirrelMail";
     }
 
     $err = _("ERROR");
@@ -132,7 +135,7 @@ function error_box($string, $color) {
     if(!isset($pageheader_sent) && !$pageheader_sent) {
         /* include this just to be sure */
         include_once( SM_PATH . 'functions/page_header.php' );
-        displayHtmlHeader('SquirrelMail: '.$err);
+        displayHtmlHeader($org_title.': '.$err);
         $pageheader_sent = TRUE;
         echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\">\n\n";
     }

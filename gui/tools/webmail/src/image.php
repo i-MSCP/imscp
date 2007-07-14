@@ -5,9 +5,9 @@
  *
  * This file shows an attached image
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: image.php,v 1.19.2.6 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: image.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

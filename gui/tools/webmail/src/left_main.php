@@ -6,9 +6,9 @@
  * This is the code for the left bar. The left bar shows the folders
  * available, and has cookie information.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: left_main.php,v 1.154.2.28 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: left_main.php 12319 2007-03-06 16:03:45Z kink $
  * @package squirrelmail
  */
 
@@ -22,9 +22,8 @@ define('SM_PATH','../');
 require_once(SM_PATH . 'include/validate.php');
 require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/plugin.php');
-//require_once(SM_PATH . 'functions/page_header.php');
+require_once(SM_PATH . 'functions/page_header.php');
 require_once(SM_PATH . 'functions/html.php');
-
 
 /* These constants are used for folder stuff. */
 define('SM_BOX_UNCOLLAPSED', 0);
@@ -315,7 +314,7 @@ if (isset($left_refresh) && ($left_refresh != '') &&
     $xtra = '';
 }
 
-displayHtmlHeader( 'SquirrelMail', $xtra );
+displayHtmlHeader( $org_title, $xtra );
 
 /* If requested and not yet complete, attempt to autocreate folders. */
 if ($auto_create_special && !$auto_create_done) {
@@ -429,7 +428,6 @@ if ( $collapse_folders ) {
     }
 }
 
-
 sqgetGlobalVar('force_refresh',$force_refresh,SQ_GET);
 if (!isset($boxes)) { // auto_create_done
     $boxes = sqimap_mailbox_list($imapConnection,$force_refresh);
@@ -460,10 +458,8 @@ for ($i = 0; $i < count($boxes); $i++) {
         } else {
             $prefix = str_replace(' ','&nbsp;&nbsp;',$prefix);
 		$line = "<br><span style=\"white-space: nowrap;\"><tt>&nbsp;&nbsp;$prefix<img src=\"../images/folder.png\" align=\"absmiddle\"  vspace=\"2\">&nbsp;</tt>"; 
-
         }
 		
-
 		
 //=====Mailbox and Folders=======
 
@@ -517,7 +513,7 @@ for ($i = 0; $i < count($boxes); $i++) {
         }
 
         /* Put the final touches on our folder line. */
-        $line .= "</span>\n";
+        $line .= "</span><br />\n";
 
         /* Output the line for this folder. */
         echo $line;
@@ -525,7 +521,6 @@ for ($i = 0; $i < count($boxes); $i++) {
 }
 
 do_hook('left_main_after');
-
 sqimap_logout($imapConnection);
 
 echo "</div></td></tr></table>";

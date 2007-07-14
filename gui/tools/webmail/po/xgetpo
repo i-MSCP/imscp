@@ -5,7 +5,7 @@
 # **
 # ** Philipe Mingo <mingo@rotedic.com>
 # ** 
-# **  $Id: xgetpo,v 1.22.2.3 2005/08/06 06:14:31 tokul Exp $ 
+# **  $Id: xgetpo 9918 2005-08-06 06:14:31Z tokul $ 
 
 # force use of same locale in order to keep same sorting order
 LC_ALL=en_US.ISO8859-1

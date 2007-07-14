@@ -5,9 +5,9 @@
  *
  * This is the code to view the message header.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: view_header.php,v 1.16.2.11 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: view_header.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

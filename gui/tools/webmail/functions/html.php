@@ -7,9 +7,9 @@
  * the right to left implementation by "functionize" some
  * html outputs.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: html.php,v 1.14.2.8 2006/04/14 22:27:07 jervfors Exp $
+ * @version $Id: html.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @since 1.3.0
  */

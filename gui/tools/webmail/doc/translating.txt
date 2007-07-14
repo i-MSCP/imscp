@@ -1,7 +1,7 @@
 How to translate SquirrelMail into another language?
 ====================================================
 
-This document does not deal with CVS and how to upload translations to
+This document does not deal with Subversion and how to upload translations to
 the repository.
 
 1. First time translation
@@ -70,4 +70,4 @@ strings and updates po/squirrelmail.pot file.
 
 
 
-$Id: translating.txt,v 1.11.2.1 2003/10/06 16:47:28 tokul Exp $
+$Id: translating.txt 12125 2007-01-13 19:04:49Z kink $

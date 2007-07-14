@@ -3,9 +3,9 @@
 /**
  * SquirrelMail configtest script
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: configtest.php,v 1.9.2.24 2006/10/07 11:58:42 tokul Exp $
+ * @version $Id: configtest.php 12159 2007-01-20 07:01:43Z pdontthink $
  * @package squirrelmail
  * @subpackage config
  */
@@ -120,6 +120,20 @@ if ((bool) ini_get('register_globals') &&
     do_err($rg_error,false);
 }
 
+/**
+ * Do not use SquirrelMail with magic_quotes_* on.
+ */
+if ( get_magic_quotes_runtime() || get_magic_quotes_gpc() ||
+    ( (bool) ini_get('magic_quotes_sybase') && ini_get('magic_quotes_sybase') != 'off' )
+    ) {
+    $magic_quotes_warning='You have enabled any one of <tt>magic_quotes_runtime</tt>, '
+        .'<tt>magic_quotes_gpc</tt> or <tt>magic_quotes_sybase</tt> in your PHP '
+        .'configuration. We recommend all those settings to be off. SquirrelMail '
+        .'may work with them on, but when experiencing stray backslashes in your mail '
+        .'or other strange behaviour, it may be advisable to turn them off.';
+    do_err($magic_quotes_warning,false);
+}
+
 /* checking paths */
 
 echo "Checking paths...<br />\n";
@@ -164,7 +178,31 @@ if (isset($plugins[0])) {
             do_err('You have enabled the <i>'.$plugin.'</i> plugin but I cannot read its setup.php file.', FALSE);
         }
     }
-    echo $IND . "Plugins OK.<br />\n";
+    // load plugin functions
+    include_once(SM_PATH . 'functions/plugin.php');
+    // turn on output buffering in order to prevent output of new lines
+    ob_start();
+    foreach ($plugins as $name) {
+        use_plugin($name);
+    }
+    // get output and remove whitespace
+    $output = trim(ob_get_contents());
+    ob_end_clean();
+    // if plugins output more than newlines and spacing, stop script execution.
+    if (!empty($output)) {
+        $plugin_load_error = 'Some output is produced when plugins are loaded. Usually this means there is an error in one of the plugin setup or configuration files. The output was: '.htmlspecialchars($output);
+        do_err($plugin_load_error);
+    }
+    /**
+     * This hook was added in 1.5.2 and 1.4.10. Each plugins should print an error
+     * message and return TRUE if there are any errors in its setup/configuration.
+     */
+    $plugin_err = boolean_hook_function('configtest', NULL, 1);
+    if($plugin_err) {
+        do_err('Some plugin tests failed.');
+    } else {
+        echo $IND . "Plugins OK.<br />\n";
+    }
 } else {
     echo $IND . "Plugins are not enabled in config.<br />\n";
 }

@@ -5,9 +5,9 @@
  *
  * Contains functions used to do authentication.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php,v 1.34.2.12 2006/08/03 14:48:09 kink Exp $
+ * @version $Id: auth.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

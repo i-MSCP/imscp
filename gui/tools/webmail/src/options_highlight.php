@@ -5,9 +5,9 @@
  *
  * Displays message highlighting options
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options_highlight.php,v 1.47.2.10 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: options_highlight.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage prefs
  */

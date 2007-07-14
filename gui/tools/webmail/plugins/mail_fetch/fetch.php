@@ -8,7 +8,7 @@
  *
  * Fetch code.
  *
- * $Id: fetch.php,v 1.19.2.15 2006/02/03 22:27:52 jervfors Exp $
+ * $Id: fetch.php 10633 2006-02-03 22:27:56Z jervfors $
  */
 
 define('SM_PATH','../../');

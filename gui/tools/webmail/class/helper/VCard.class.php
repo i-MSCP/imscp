@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 2003-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: VCard.class.php,v 1.3.2.4 2006/02/03 22:27:46 jervfors Exp $
+ * @version $Id: VCard.class.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package squirrelmail
  * @since 1.3.2
  */

@@ -5,7 +5,7 @@
  *  Copyright (c) 1999-2006 The SquirrelMail Project Team
  *  Licensed under the GNU GPL. For full terms see the file COPYING.
  *  
- *  $Id: setup.php,v 1.10.2.12 2006/02/03 22:27:52 jervfors Exp $                                                         
+ *  $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $                                                         
  */
 
 /** Disable Quick Reporting by default */

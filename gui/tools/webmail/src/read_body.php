@@ -6,9 +6,9 @@
  * This file is used for reading the msgs array and displaying
  * the resulting emails in the right frame.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: read_body.php,v 1.283.2.31 2006/08/01 05:47:32 tokul Exp $
+ * @version $Id: read_body.php 12285 2007-02-27 19:07:02Z kink $
  * @package squirrelmail
  */
 
@@ -218,7 +218,7 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     }
 
     // part 1 (RFC2298)
-    $senton = getLongDateString( $header->date );
+    $senton = getLongDateString( $header->date, $header->date_unparsed );
     $to_array = $header->to;
     $to = '';
     foreach ($to_array as $line) {
@@ -326,9 +326,10 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
         $success = $deliver->finalizeStream($stream);
     }
     if (!$success) {
-        $msg  = $deliver->dlv_msg . '<br />' .
-                _("Server replied:") . ' ' . $deliver->dlv_ret_nr . ' '.
-                $deliver->dlv_server_msg;
+        $msg  = _("Message not sent.") .' '.  _("Server replied:") .
+            "\n<blockquote>\n" . $deliver->dlv_msg . '<br />' .
+            $deliver->dlv_ret_nr . ' ' .
+            $deliver->dlv_server_msg . "</blockquote>\n\n";
         require_once(SM_PATH . 'functions/display_messages.php');
         plain_error_message($msg, $color);
     } else {
@@ -422,7 +423,7 @@ function formatEnvheader($mailbox, $passed_id, $passed_ent_id, $message,
         }
     }
     $env[_("From")] = decodeHeader($from_name);
-    $env[_("Date")] = getLongDateString($header->date);
+    $env[_("Date")] = getLongDateString($header->date, $header->date_unparsed);
     $env[_("To")] = formatRecipientString($header->to, "to");
     $env[_("Cc")] = formatRecipientString($header->cc, "cc");
     $env[_("Bcc")] = formatRecipientString($header->bcc, "bcc");
@@ -443,10 +444,10 @@ function formatEnvheader($mailbox, $passed_id, $passed_ent_id, $message,
                           $message->is_deleted ||
                           $passed_ent_id)) {
                         $mdn_url = $PHP_SELF;
-                        $mdn_url = set_url_var($PHP_SELF, 'mailbox', urlencode($mailbox));
-                        $mdn_url = set_url_var($PHP_SELF, 'passed_id', $passed_id);
-                        $mdn_url = set_url_var($PHP_SELF, 'passed_ent_id', $passed_ent_id);
-                        $mdn_url = set_url_var($PHP_SELF, 'sendreceipt', 1);
+                        $mdn_url = set_url_var($mdn_url, 'mailbox', urlencode($mailbox));
+                        $mdn_url = set_url_var($mdn_url, 'passed_id', $passed_id);
+                        $mdn_url = set_url_var($mdn_url, 'passed_ent_id', $passed_ent_id);
+                        $mdn_url = set_url_var($mdn_url, 'sendreceipt', 1);
                         if ($FirstTimeSee && $javascript_on) {
                             $script  = '<script language="JavaScript" type="text/javascript">' . "\n";
                             $script .= '<!--'. "\n";
@@ -467,8 +468,8 @@ function formatEnvheader($mailbox, $passed_id, $passed_ent_id, $message,
         }
     }
 
-    $s  = '<table class="messageinfo_table" width="100%" cellpadding="0" cellspacing="1" border="0"';
-    $s .= ' align="center" bgcolor="'.$color[0].'">'; //Message headers box subject from to
+    $s  = '<table width="100%" cellpadding="0" cellspacing="2" border="0"';
+    $s .= ' align="center" bgcolor="'.$color[0].'">';
     foreach ($env as $key => $val) {
         if ($val) {
             $s .= '<tr>';
@@ -509,7 +510,6 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
         $msgs_url .= 'right_main.php?sort=' . $sort . '&amp;startMessage=' .
                      $startMessage . '&amp;mailbox=' . $urlMailbox;
         $msgs_str  = '<img src="../images/inbox_small.png" border="0" align="absmiddle" alt="'._("Message List").'">&nbsp;'._("Message List");
-
     }
     $s .= '<a href="' . $msgs_url . '">' . $msgs_str . '</a>';
 

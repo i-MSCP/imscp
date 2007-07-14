@@ -11,7 +11,7 @@
  * his/her personal dictionary and explains the caveats of such a decision.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: enc_setup.mod,v 1.4.2.5 2006/02/03 22:27:53 jervfors Exp $
+ * @version $Id: enc_setup.mod 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage squirrelspell
  */

@@ -5,9 +5,9 @@
  *
  * IMAP search page
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: search.php,v 1.92.2.18 2006/07/27 18:58:48 tokul Exp $
+ * @version $Id: search.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage search
  */
@@ -228,6 +228,12 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
 
         $msg_cnt_str = get_msgcnt_str(1, $cnt, $cnt);
         $toggle_all = get_selectall_link(1, $sort);
+    
+        $safe_name = preg_replace("/[^0-9A-Za-z_]/", '_', $mailbox);
+        $form_name = "FormMsgs" . $safe_name;
+        echo '<form name="' . $form_name . '" method="post" action="move_messages.php">' ."\n" .
+             '<input type="hidden" name="mailbox" value="'.htmlspecialchars($mailbox).'">' . "\n" .
+             '<input type="hidden" name="startMessage" value="1">' . "\n";
 
         echo '<table border="0" width="100%" cellpadding="0" cellspacing="0">';
         echo '<tr><td>';
@@ -250,7 +256,7 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
 
         echo '</td></tr></table></td></tr></table>';
         mail_message_listing_end($cnt, '', $msg_cnt_str, $color); 
-        echo '</td></tr></table>';
+        echo '</td></tr></table>' . "\n</form>\n\n";
     }
 }
 
@@ -278,7 +284,7 @@ if ($mailbox == 'All Folders') {
 
 if (isset($composenew) && $composenew) {
     $comp_uri = "../src/compose.php?mailbox=". urlencode($mailbox).
-        "&session=$composesession&attachedmessages=true&amp";
+        "&amp;session=$composesession&amp;attachedmessages=true&amp";
     displayPageHeader($color, $mailbox, "comp_in_new('$comp_uri');", false);
 } else {
     displayPageHeader($color, $mailbox);
@@ -457,6 +463,7 @@ $what_disp = str_replace(',', ' ', $what);
 $what_disp = str_replace('\\\\', '\\', $what_disp);
 $what_disp = str_replace('\\"', '"', $what_disp);
 $what_disp = str_replace('"', '&quot;', $what_disp);
+
 echo html_tag( 'td', '<input type="text" size="35" name="what" value="' . $what_disp . '" />' . "\n", 'center' )
      . html_tag( 'td', '', 'right' )
      . "<select name=\"where\">";
@@ -470,9 +477,8 @@ echo "         </select>\n" .
      "        </td>\n".
      html_tag( 'td', '<input type="submit" name="submit" value="' . _("Search") . '" />' . "\n", 'center', '', 'colspan="3"' ) .
      "     </tr>\n".
-     "</form>\n".
      "   </table>\n".
-     "</td></tr></table>\n";
+     "</form>\n";
 
 
 do_hook('search_after_form');

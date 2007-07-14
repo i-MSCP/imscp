@@ -5,9 +5,9 @@
  *
  * This file contains functions needed to handle headers in mime messages.
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php,v 1.17.2.27 2006/11/10 16:53:19 perlstalker Exp $
+ * @version $Id: Rfc822Header.class.php 12287 2007-02-27 19:43:58Z kink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -29,6 +29,11 @@ class Rfc822Header {
      * @var mixed
      */
     var $date = -1;
+    /**
+     * Original date header as fallback for unparsable dates
+     * @var mixed
+     */
+    var $date_unparsed = '';
     /**
      * Subject header
      * @var string
@@ -217,6 +222,7 @@ class Rfc822Header {
                 $d = strtr($value, array('  ' => ' '));
                 $d = explode(' ', $d);
                 $this->date = getTimeStamp($d);
+                $this->date_unparsed = strtr($value,'<>','  ');
                 break;
             case 'subject':
                 $this->subject = $value;
@@ -313,7 +319,7 @@ class Rfc822Header {
                 $value = $this->stripComments($value);
                 $this->mlist('id', $value);
                 break;
-	    case 'x-spam-status':
+            case 'x-spam-status':
                 $this->x_spam_status = $this->parseSpamStatus($value);
                 break;
             default:
@@ -977,4 +983,3 @@ class Rfc822Header {
     }
 }
 
-?>

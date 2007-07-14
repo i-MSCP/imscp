@@ -7,9 +7,9 @@
  * Before 1.3.2 functions were stored in imap_utf7_decode_local.php and
  * imap_utf7_encode_local.php files.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_utf7_local.php,v 1.3.2.8 2006/07/30 14:01:39 tokul Exp $
+ * @version $Id: imap_utf7_local.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage imap
  * @since 1.3.2

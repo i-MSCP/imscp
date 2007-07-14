@@ -10,7 +10,7 @@
  * Copyright (c) 1999-2006 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * $Id: setup.php,v 1.23.2.12 2006/06/08 14:59:19 kink Exp $
+ * $Id: setup.php 11182 2006-06-08 14:59:19Z kink $
  * @package plugins
  * @subpackage delete_move_next
  */

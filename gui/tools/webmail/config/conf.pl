@@ -1,12 +1,12 @@
 #!/usr/bin/env perl
 # conf.pl
 #
-# Copyright (c) 1999-2006 The SquirrelMail Project Team
+# Copyright (c) 1999-2007 The SquirrelMail Project Team
 # Licensed under the GNU GPL. For full terms see COPYING.
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl,v 1.154.2.35 2006/10/07 11:58:42 tokul Exp $
+# $Id: conf.pl 12316 2007-03-06 15:34:57Z kink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -300,7 +300,6 @@ $frame_top = "_top"                    if ( !$frame_top );
 $provider_uri = "http://www.squirrelmail.org/" if ( !$provider_uri );
 $provider_name = "SquirrelMail"        if ( !$provider_name );
 
-$license = "your license key"          if ( !$license );
 $edit_identity = "true"                if ( !$edit_identity );
 $edit_name = "true"                    if ( !$edit_name );
 $allow_thread_sort = 'false'           if ( !$allow_thread_sort ) ;
@@ -344,6 +343,7 @@ if ( !$sendmail_args && $sendmail_path =~ /qmail-inject/ ) {
 } elsif ( !$sendmail_args ) {
     $sendmail_args = '-i -t';
 }
+
 # Added in 1.4.9
 $abook_global_file_listing = 'true'     if ( !$abook_global_file_listing );
 $abook_file_line_length = 2048          if ( !$abook_file_line_length );
@@ -364,6 +364,22 @@ if ( $ARGV[0] eq '--install-plugin' ) {
     save_data();
     exit(0);
 }
+
+
+
+####################################################################################
+
+# used in multiple places, define once
+$list_supported_imap_servers = 
+    "    bincimap    = Binc IMAP server\n" .
+    "    courier     = Courier IMAP server\n" .
+    "    cyrus       = Cyrus IMAP server\n" .
+    "    dovecot     = Dovecot Secure IMAP server\n" .
+    "    exchange    = Microsoft Exchange IMAP server\n" .
+    "    hmailserver = hMailServer\n" .
+    "    macosx      = Mac OS X Mailserver\n" .
+    "    mercury32   = Mercury/32\n" .
+    "    uw          = University of Washington's IMAP server\n";
 
 #####################################################################################
 if ( $config_use_color == 1 ) {
@@ -408,7 +424,6 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
         print "6.  Top Frame              : $WHT$frame_top$NRM\n";
         print "7.  Provider link          : $WHT$provider_uri$NRM\n";
         print "8.  Provider name          : $WHT$provider_name$NRM\n";
-        print "9.  License key            : $WHT$license$NRM\n";
 
         print "\n";
         print "R   Return to Main Menu\n";
@@ -672,7 +687,6 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
             elsif ( $command == 6 ) { $frame_top                     = command6(); }
             elsif ( $command == 7 ) { $provider_uri                  = command7(); }
             elsif ( $command == 8 ) { $provider_name                 = command8(); }
-            elsif ( $command == 9 ) { $license                       = command9(); }
 
         } elsif ( $menu == 2 ) {
             if ( $command eq "a" )    { $show_imap_settings = 1; $show_smtp_settings = 0; }
@@ -940,20 +954,6 @@ sub command8 {
     return $new_provider_name;
 }
 
-sub command9 {
-     print "Enter your Nutsmail.com license key.\n";
-     print "\n";
-     print "[$WHT$license$NRM]: $WHT";
-     $new_license = <STDIN>;
-     if ( $new_license eq "\n" ) {
-         $new_license = 'your license key';
-     } else {
-         $new_license =~ s/[\r|\n]//g;
-         $new_license=~ s/^\s+$//g;
-     }
-     return $new_license;
-}
-
 ####################################################################################
 #### Server settings ####
 # domain
@@ -967,7 +967,7 @@ sub command11 {
     if ( $new_domain eq "\n" ) {
         $new_domain = $domain;
     } else {
-        $new_domain =~ s/[\r|\n]//g;
+        $new_domain =~ s/\s//g;
     }
     return $new_domain;
 }
@@ -1127,12 +1127,7 @@ sub command19 {
     print "these servers.  If you would like to use them, please select your\n";
     print "IMAP server.  If you do not wish to use these work-arounds, you can\n";
     print "set this to \"other\", and none will be used.\n";
-    print "    cyrus       = Cyrus IMAP server\n";
-    print "    uw          = University of Washington's IMAP server\n";
-    print "    exchange    = Microsoft Exchange IMAP server\n";
-    print "    courier     = Courier IMAP server\n";
-    print "    macosx      = Mac OS X Mailserver\n";
-    print "    hmailserver = hMailServer\n";
+    print $list_supported_imap_servers;
     print "    other       = Not one of the above servers\n";
     print "[$WHT$imap_server_type$NRM]: $WHT";
     $new_imap_server_type = <STDIN>;
@@ -1863,7 +1858,7 @@ sub command214 {
 
 # Automatically delete folders 
 sub command215 {
-    if ( $imap_server_type == "uw" ) {
+    if ( $imap_server_type eq "uw" ) {
         print "UW IMAP servers will not allow folders containing";
         print "mail to also contain folders.\n";
         print "Deleting folders will bypass the trash folder and";
@@ -1893,7 +1888,7 @@ sub command215 {
 
 #noselect fix
 sub command216 {
-    print "Some IMAP server allow subfolders to exist even if the parent\n";
+    print "Some IMAP servers allow subfolders to exist even if the parent\n";
     print "folders do not. This fixes some problems with the folder list\n";
     print "when this is the case, causing the /NoSelect folders to be displayed\n";
     print "\n";
@@ -1919,8 +1914,8 @@ sub command216 {
 sub command31 {
     print "Specify the location for your data directory.\n";
     print "The path name can be absolute or relative (to the config directory).\n";
-    print "It doesn't matter.  Here are two examples:\n";
-    print "  Absolute:    /var/lib/squirrelmail/data/\n";
+    print "You probably need to create this directory yourself. Here are two examples:\n";
+    print "  Absolute:    /var/local/squirrelmail/data/\n";
     print "  Relative:    ../data/\n";     
     print "Relative paths to directories outside of the SquirrelMail distribution\n";
     print "will be converted to their absolute path equivalents in config.php.\n\n";
@@ -3283,6 +3278,7 @@ sub save_data {
             print CF ");\n";
             print CF "\n";
         }
+
         # Global file based address book
         # string
         print CF "\$abook_global_file = '$abook_global_file';\n";
@@ -3372,15 +3368,7 @@ sub set_defaults {
     $continue = 0;
     while ( $continue != 1 ) {
         print "Please select your IMAP server:\n";
-        print "    bincimap    = Binc IMAP server\n";
-        print "    courier     = Courier IMAP server\n";
-        print "    cyrus       = Cyrus IMAP server\n";
-        print "    dovecot     = Dovecot Secure IMAP server\n";
-        print "    exchange    = Microsoft Exchange IMAP server\n";
-        print "    hmailserver = hMailServer\n";
-        print "    macosx      = Mac OS X Mailserver\n";
-        print "    mercury32   = Mercury/32\n";
-        print "    uw          = University of Washington's IMAP server\n";
+	print $list_supported_imap_servers;
         print "\n";
         print "    quit        = Do not change anything\n";
         print "Command >> ";

@@ -5,9 +5,9 @@
  *
  * This file loads classes needed to handle mime messages.
  *
- * @copyright &copy; 2003-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.class.php,v 1.40.2.4 2006/02/03 22:27:46 jervfors Exp $
+ * @version $Id: mime.class.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage mime
  */

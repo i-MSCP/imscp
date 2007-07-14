@@ -11,7 +11,7 @@
  * if the user so chooses from the options page.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: crypto.mod,v 1.4.2.6 2006/02/03 22:27:53 jervfors Exp $
+ * @version $Id: crypto.mod 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage squirrelspell
  */

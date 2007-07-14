@@ -9,7 +9,7 @@
  * Written by: Jason Munro 
  * jason@stdbev.com
  * 
- * $Id: options.php,v 1.6.2.7 2006/06/12 13:31:55 kink Exp $
+ * $Id: options.php 11199 2006-06-12 13:31:55Z kink $
  * 
  */
 

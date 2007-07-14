@@ -8,9 +8,9 @@
  *
  * - this is the page that does all the work, really.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: printer_friendly_bottom.php,v 1.29.2.13 2006/04/14 22:27:08 jervfors Exp $
+ * @version $Id: printer_friendly_bottom.php 12285 2007-02-27 19:07:02Z kink $
  * @package squirrelmail
  */
 
@@ -55,7 +55,7 @@ if ($passed_ent_id) {
 $rfc822_header = $message->rfc822_header; 
 /* From and Date are usually fine as they are... */
 $from = $rfc822_header->getAddr_s('from');
-$date = getLongDateString($rfc822_header->date);
+$date = getLongDateString($rfc822_header->date, $rfc822_header->date_unparsed);
 $subject = trim($rfc822_header->subject);
 
 /* we can clean these up if the list is too long... */

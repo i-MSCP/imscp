@@ -8,6 +8,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-13 Benedikt Heintel
+	- GUI:
+		* Updated: Squirrelmail to 1.4.10a
+		* Fixed #479: username input field is too short
+
 2007-07-13 Raphael Geissert
 	- LANGUAGES
 		* Updated ispCP.pot catalogue

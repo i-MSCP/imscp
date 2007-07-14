@@ -9,9 +9,9 @@
  * Internally the output character set is used. Other characters are
  * encoded using Unicode entities according to HTML 4.0.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php,v 1.129.2.49 2006/04/30 04:49:34 tokul Exp $
+ * @version $Id: i18n.php 12368 2007-05-06 10:49:06Z jervfors $
  * @package squirrelmail
  * @subpackage i18n
  */
@@ -21,6 +21,87 @@ if (!defined('SM_PATH')) define('SM_PATH','../');
 
 /** Everything uses global.php... */
 require_once(SM_PATH . 'functions/global.php');
+
+/**
+ * Wrapper for textdomain(), bindtextdomain() and
+ * bind_textdomain_codeset() primarily intended for
+ * plugins when changing into their own text domain
+ * and back again.
+ *
+ * Note that if plugins using this function have
+ * their translation files located in the SquirrelMail
+ * locale directory, the second argument is optional.
+ *
+ * @param string $domain_name The name of the text domain
+ *                            (usually the plugin name, or
+ *                            "squirrelmail") being switched to.
+ * @param string $directory   The directory that contains 
+ *                            all translations for the domain
+ *                            (OPTIONAL; default is SquirrelMail
+ *                            locale directory).
+ *
+ * @return void
+ *
+ * @since 1.5.2 and 1.4.10
+ */
+function sq_change_text_domain($domain_name, $directory='') {
+
+    if (empty($directory)) $directory = SM_PATH . 'locale/'; 
+
+    global $use_gettext;
+    static $domains_already_seen = array();
+
+    // only need to call bindtextdomain() once unless
+    // $use_gettext is turned on
+    //
+    if (!$use_gettext && in_array($domain_name, $domains_already_seen)) {
+        textdomain($domain_name);
+        return;
+    }
+
+    $domains_already_seen[] = $domain_name;
+
+    sq_bindtextdomain($domain_name, $directory);
+    textdomain($domain_name);
+
+}
+
+/**
+ * Gettext bindtextdomain wrapper.
+ *
+ * This provides a bind_textdomain_codeset call to make sure the
+ * domain's encoding will not be overridden.
+ *
+ * @since 1.4.10
+ *
+ * @param string $domain gettext domain name
+ * @param string $dir directory that contains all translations
+ *
+ * @return string path to translation directory
+ */
+function sq_bindtextdomain($domain,$dir) {
+
+    global $languages, $sm_notAlias;
+
+    $dir = bindtextdomain($domain, $dir);
+
+    // set codeset in order to avoid gettext charset conversions
+    //
+    if (function_exists('bind_textdomain_codeset')
+     && isset($languages[$sm_notAlias]['CHARSET'])) {
+
+        // Japanese translation uses different internal charset
+        //
+        if ($sm_notAlias == 'ja_JP') {
+            bind_textdomain_codeset ($domain, 'EUC-JP');
+        } else {
+            bind_textdomain_codeset ($domain, $languages[$sm_notAlias]['CHARSET']);
+        }
+
+    }
+
+    return $dir;
+}
 
 /**
  * php setlocale function wrapper
@@ -107,7 +188,7 @@ function charset_decode ($charset, $string, $force_decode=false, $save_html=fals
 
     $decode=fixcharset($charset);
     $decodefile=SM_PATH . 'functions/decode/' . $decode . '.php';
-    if (file_exists($decodefile)) {
+    if ($decode != 'index' && file_exists($decodefile)) {
       include_once($decodefile);
       $ret = call_user_func('charset_decode_'.$decode, $string, $save_html);
     } else {
@@ -130,7 +211,7 @@ function charset_encode($string,$charset,$htmlencode=true) {
 
     $encode=fixcharset($charset);
     $encodefile=SM_PATH . 'functions/encode/' . $encode . '.php';
-    if (file_exists($encodefile)) {
+    if ($encode != 'index' && file_exists($encodefile)) {
         include_once($encodefile);
         $ret = call_user_func('charset_encode_'.$encode, $string);
     } elseif(file_exists(SM_PATH . 'functions/encode/us_ascii.php')) {
@@ -713,6 +794,10 @@ $languages['fr_FR']['CHARSET'] = 'iso-8859-1';
 $languages['fr_FR']['LOCALE']  = array('fr_FR.ISO8859-1','fr_FR.ISO-8859-1','fr_FR');
 $languages['fr']['ALIAS']      = 'fr_FR';
 
+$languages['fy']['NAME']       = 'Frisian';
+$languages['fy']['CHARSET']    = 'utf-8';
+$languages['fy']['LOCALE']     = array('fy.UTF-8','fy_NL.UTF-8');
+
 $languages['hr_HR']['NAME']    = 'Croatian';
 $languages['hr_HR']['CHARSET'] = 'iso-8859-2';
 $languages['hr_HR']['LOCALE']  = array('hr_HR.ISO8859-2','hr_HR.ISO-8859-2','hr_HR');
@@ -915,4 +1000,3 @@ elseif ($gettext_flags == 0) {
         }
     }
 }
-?>

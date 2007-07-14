@@ -6,14 +6,14 @@
  * Copyright (c) 1999-2006 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * @version $Id: setup.php,v 1.11.2.14 2006/10/18 19:17:14 kink Exp $
+ * @version $Id: setup.php 12256 2007-02-13 07:54:18Z jervfors $
  * @package plugins
  * @subpackage translate
  */
 
 /* Easy plugin that sends the body of the message to a new browser
 window using the specified translator.  It can also translate your
-outgoing message if you send it to someone in a different country. 
+outgoing message if you send it to someone in a different country.
 
   Languages from i18n, incorporated in the auto-language selection:
     en - English
@@ -52,7 +52,7 @@ function translate_read_form() {
     if (!$translate_show_read) {
         return;
     }
-    
+
     $translate_dir = 'to';
 
     $trans_ar = $message->findDisplayEntity(array(), array('text/plain'));
@@ -76,17 +76,17 @@ function translate_read_form() {
 
     $new_body = urldecode($new_body);
     $new_body = strip_tags($new_body);
-              
+
     /* I really don't like this next part ... */
     $new_body = str_replace('"', "''", $new_body);
     $new_body = strtr($new_body, "\n", ' ');
-    
+
     $function = 'translate_form_' . $translate_server;
     $function($new_body);
 }
 
 /** Closes translation engine form */
-function translate_table_end() {                     
+function translate_table_end() {
     ?></td>
           </tr>
         </table>
@@ -100,7 +100,7 @@ function translate_table_end() {
 /** Unimplemented. Translation in compose*/
 function translate_button() {
     global $translate_show_send;
-  
+
     if (! $translate_show_send) {
         return;
     }
@@ -118,7 +118,7 @@ function translate_optpage_register_block() {
 }
 
 /** gets translation preferences */
-function translate_pref() { 
+function translate_pref() {
     global $username, $data_dir;
     global $translate_server, $translate_location;
     global $translate_show_send, $translate_show_read;
@@ -128,12 +128,12 @@ function translate_pref() {
     if ($translate_server == '') {
         $translate_server = 'babelfish';
     }
-    
+
     $translate_location = getPref($data_dir, $username, 'translate_location');
     if ($translate_location == '') {
         $translate_location = 'center';
     }
-    
+
     $translate_show_send = getPref($data_dir, $username, 'translate_show_send');
     $translate_show_read = getPref($data_dir, $username, 'translate_show_read');
     $translate_same_window = getPref($data_dir, $username, 'translate_same_window');
@@ -151,21 +151,21 @@ function translate_does_it_match_language($test) {
     $false = 0;
     $index = 0;
     $smindex = 0;
-  
+
     if (! $test || ! $squirrelmail_language) {
         return $false;
     }
-      
+
     if ($test[$index] == '!') {
         $index ++;
         $true = 0;
         $false = 1;
     }
-    
+
     if (($index == 0) && ($test == $squirrelmail_language)) {
         return $true;
     }
-      
+
     while (isset($test[$index]) && $test[$index]) {
         if ($test[$index] == '*') {
             return $true;
@@ -176,7 +176,7 @@ function translate_does_it_match_language($test) {
         $index ++;
         $smindex ++;
     }
-      
+
     return $false;
 }
 
@@ -203,7 +203,7 @@ function translate_lang_opt($from, $to, $value, $text) {
  * Starts translation box
  *
  * @param string $action url that has to recieve message for translation
- * @param string $charset (since sm 1.5.1 and 1.4.9) character set, that 
+ * @param string $charset (since sm 1.5.1 and 1.4.9) character set, that
  * should be used to submit 8bit information.
  * @access private
  */
@@ -212,15 +212,15 @@ function translate_new_form($action,$charset=null) {
     global $color, $translate_same_window;
 
     echo '<form action="';
-  
+
     if ($translate_dir == 'to') {
         echo $action;
     } else {
         echo 'translate.php';
     }
-  
+
     echo '" method="post"';
-  
+
     if (!$translate_same_window) {
         echo ' target="_blank"';
     }
@@ -230,7 +230,7 @@ function translate_new_form($action,$charset=null) {
 
     echo ">\n";
 
-    ?><table align="<?php echo $translate_location ?>" cellpadding="3" 
+    ?><table align="<?php echo $translate_location ?>" cellpadding="3"
         cellspacing="0" border="0" bgcolor="<?php echo $color[10] ?>">
     <tr>
       <td>
@@ -711,7 +711,7 @@ function translate_form_google($message) {
          translate_lang_opt('en_US', 'ko_KR', 'en|ko',
                             sprintf( _("%s to %s"),_("English"),_("Korean"))) .
          translate_lang_opt('en_US', 'zh_CN', 'en|zh-CN',
-                            sprintf( _("%s to %s"),_("English"),_("Chinese (Simplified)"))) .
+                            sprintf( _("%s to %s"),_("English"),_("Chinese, Simplified"))) .
          translate_lang_opt('de_DE', 'en_US', 'de|en',
                             sprintf( _("%s to %s"),_("German"),_("English"))) .
          translate_lang_opt('de_DE', '', 'de|fr',
@@ -733,7 +733,7 @@ function translate_form_google($message) {
          translate_lang_opt('ko_KR', '', 'ko|en',
                             sprintf( _("%s to %s"),_("Korean"),_("English"))).
          translate_lang_opt('zh_CN', '', 'zh-CN|en',
-                            sprintf( _("%s to %s"),_("Chinese (Simplified)"),_("English")));
+                            sprintf( _("%s to %s"),_("Chinese, Simplified"),_("English")));
     echo '</select>'.
         '<input type="hidden" name="hl" value="en" />' .
         '<input type="hidden" name="ie" value="UTF8" />' .

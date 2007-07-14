@@ -11,7 +11,7 @@
  * are not into the code. For example strings that can come
  * through an external source like emails.
  *
- * $Id: independent_strings.txt,v 1.2.2.3 2006/02/03 22:27:53 jervfors Exp $
+ * $Id: independent_strings.txt 10633 2006-02-03 22:27:56Z jervfors $
  */
 
 

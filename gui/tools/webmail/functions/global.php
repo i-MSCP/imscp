@@ -7,9 +7,9 @@
  * It also has some session register functions that work across various
  * php versions.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php,v 1.27.2.19 2006/07/29 08:57:52 tokul Exp $
+ * @version $Id: global.php 12352 2007-03-28 05:09:33Z jangliss $
  * @package squirrelmail
  */
 
@@ -226,9 +226,8 @@ function sqsession_register ($var, $name) {
         global $HTTP_SESSION_VARS;
         $HTTP_SESSION_VARS[$name] = $var;
     } else {
-        $_SESSION["$name"] = $var;
+        $_SESSION[$name] = $var;
     }
-    session_register("$name");
 }
 
 /**
@@ -399,11 +398,7 @@ function sqsession_destroy() {
  */
 
 function sqsession_is_active() {
-
-    $sessid = session_id();
-    if ( empty( $sessid ) ) {
-        session_start();
-    }
+    @session_start();
 }
 
 // vim: et ts=4

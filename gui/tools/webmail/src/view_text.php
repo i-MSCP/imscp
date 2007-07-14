@@ -7,9 +7,9 @@
  * A SINGLE FREAKING COMMENT IN! Whoever is responsible for this,
  * be very ashamed.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: view_text.php,v 1.17.2.11 2006/09/29 08:48:50 kink Exp $
+ * @version $Id: view_text.php 12370 2007-05-09 13:46:30Z kink $
  * @package squirrelmail
  */
 
@@ -78,10 +78,10 @@ if (isset($languages[$squirrelmail_language]['XTRA_CODE']) &&
 
 if ($type1 == 'html' || (isset($override_type1) &&  $override_type1 == 'html')) {
     $ishtml = TRUE;
-    $body = MagicHTML( $body, $passed_id, $message, $mailbox);
     // html attachment with character set information
     if (! empty($charset))
         $body = charset_decode($charset,$body,false,true);
+    $body = magicHTML( $body, $passed_id, $message, $mailbox);
 } else {
     $ishtml = FALSE;
     translateText($body, $wrap_at, $charset);

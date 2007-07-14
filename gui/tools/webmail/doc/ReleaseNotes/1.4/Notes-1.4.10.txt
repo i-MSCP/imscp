@@ -1,7 +1,7 @@
 /*****************************************************************
- * Release Notes: SquirrelMail 1.4.5                             *
- * The "Squishy Squirrel" Release                                *
- *    June 2005                                                  *
+ * Release Notes: SquirrelMail 1.4.10                            *
+ * The "Visculamia" Release                                      *
+ * 9 May 2007                                                    *
  *****************************************************************/
 
 In this edition of SquirrelMail Release Notes:
@@ -16,25 +16,12 @@ In this edition of SquirrelMail Release Notes:
 All about this release
 ======================
 
-This 1.4.5 release is a maintentance release, featuring:
-- Security fixes (see below)
-- A lot of bugfixes
-- Stability and interoperability enhancements
-
-
-Security Issues
-===============
-
-A couple of different Cross Site Scripting issues were discovered
-and fixed in this release. Thanks go to Martijn Brinkers who helped
-us a great deal in uncovering these. They are referenced under CVE
-number CAN-2005-1769.
-
-A different vulnerability has been found in the identities options
-page that would in some circumstances allow for modifying other
-people's preferences and possible cross site scripting. Thanks to
-James Bercegay from GulfTech Security Research for finding this
-issue, which is referenced as CAN-2005-2095.
+This version, 1.4.10 is a maintenance release, addressing
+the following problems since 1.4.9a:
+- Some security fixes (see below)
+- Small enhancements
+- A collection of bugfixes and stability enhancements
+(see ChangeLog for a full list)
 
 
 Locales / Translations / Charsets
@@ -51,8 +38,32 @@ decoding functions from the development branch, vastly increasing the
 number of supported character sets and decoding performance.
 
 
-Major updates
-==============
+Security issues
+===============
+
+This release addresses security issues found since the release of 1.4.9a:
+
+There's an ongoing battle to further secure the HTML filter against malicious
+HTML mail and the browsers that accept almost any malformed piece of HTML.
+
+This release contains fixes for the following:
+- HTML attachments containing "data:" URLs;
+- Internet Explorer in various versions accepts many permutations of HTML
+  and JavaScript in many charsets. We now properly canonicalize the incoming
+  HTML to us-ascii before applying further filters. IE only.
+- Request forgery through images. It was possible to include "images" in
+  HTML mails which were in fact GET requests for the compose.php page sending
+  mail. These images are now properly detected, and the compose form will only
+  send mail through a POST request.
+
+Thanks to Mikhail Markin, Tomas Kuliavas and Michael Jordon for reporting
+(parts of) these issues and working with us to get them resolved.
+
+These are known as CVE-2007-1262.
+
+
+Major updates in 1.4
+====================
 
 The 1.4.x series (as a result of 1.3 developent series) brings:
 
@@ -89,7 +100,7 @@ Reporting my favorite SquirrelMail 1.4 bug
 
 We constantly aim to make SquirrelMail even better. So we need you to
 submit any bug you come across! Also, please mention that the bug is
-in this 1.4.5 release, and list your IMAP server and webserver details.
+in this 1.4.9a release, and list your IMAP server and webserver details.
 
    http://www.squirrelmail.org/bugs
 
@@ -100,7 +111,7 @@ it again. This would help to eliminate duplicate reports, and
 increase the time we can spend CODING by DECREASING the time we
 spend sorting through bug reports. And remember, check not only OPEN
 bug reports, but also closed ones as a bug that you report MAY have
-been fixed in CVS already.
+been fixed in our source code repository already.
 
 Any questions about installing or using SquirrelMail can be directed
 to our user support list:

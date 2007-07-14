@@ -1,7 +1,7 @@
 /*****************************************************************
- * Release Notes: SquirrelMail 1.4.9a                            *
- * The "Brinky Brinkers Reloaded" Release                        *
- * 3 December 2006                                               *
+ * Release Notes: SquirrelMail 1.4.10a                           *
+ * The "Visculamia Reloaded" Release                             *
+ * 10 May 2007                                                   *
  *****************************************************************/
 
 In this edition of SquirrelMail Release Notes:
@@ -16,12 +16,15 @@ In this edition of SquirrelMail Release Notes:
 All about this release
 ======================
 
-This version, 1.4.9a is a maintenance release, addressing
-the following problems since 1.4.8:
+This version, 1.4.10a is a maintenance release, addressing
+the following problems since 1.4.9a:
 - Some security fixes (see below)
 - Small enhancements
-- A collection of bugfixes
+- A collection of bugfixes and stability enhancements
 (see ChangeLog for a full list)
+
+Version 1.4.10a was released shortly after 1.4.10 which
+had a regression in compose with just one identity defined.
 
 
 Locales / Translations / Charsets
@@ -41,26 +44,25 @@ number of supported character sets and decoding performance.
 Security issues
 ===============
 
-This release addresses security issues found since the release of 1.4.8:
+This release addresses security issues found since the release of 1.4.9a:
 
-Cross site scripting via malicious input the mailto parameter of
-webmail.php, the session and delete_draft parameters of compose.php and
-via a shortcoming in the magicHTML filter.
+There's an ongoing battle to further secure the HTML filter against malicious
+HTML mail and the browsers that accept almost any malformed piece of HTML.
 
-This is CVE-2006-6142. Thanks for Martijn Brinkers for his continued research
-that uncovered these issues.
+This release contains fixes for the following:
+- HTML attachments containing "data:" URLs;
+- Internet Explorer in various versions accepts many permutations of HTML
+  and JavaScript in many charsets. We now properly canonicalize the incoming
+  HTML to us-ascii before applying further filters. IE only.
+- Request forgery through images. It was possible to include "images" in
+  HTML mails which were in fact GET requests for the compose.php page sending
+  mail. These images are now properly detected, and the compose form will only
+  send mail through a POST request.
 
-We've also changed SquirrelMail attachment handling to work around an issue
-in Internet Explorer: the browser will attempt to guess the MIME type of
-attachments based on content, not the MIME header we send. Attachments could
-fake to be an 'harmless' image/jpeg, while they were in fact HTML that
-Internet Explorer would render.
+Thanks to Mikhail Markin, Tomas Kuliavas and Michael Jordon for reporting
+(parts of) these issues and working with us to get them resolved.
 
-After release 1.4.9 Martijn Brinkers again discovered new cross site
-scripting issues in the magicHtml filter. The new discovered security issues
-have to do with the wide intepretation of the words expression and url by IE
-browsers. As second issue Martijn Brinkers that the @import statement in
-stylesheets could be misused.
+These are known as CVE-2007-1262.
 
 
 Major updates in 1.4
@@ -112,7 +114,7 @@ it again. This would help to eliminate duplicate reports, and
 increase the time we can spend CODING by DECREASING the time we
 spend sorting through bug reports. And remember, check not only OPEN
 bug reports, but also closed ones as a bug that you report MAY have
-been fixed in CVS already.
+been fixed in our source code repository already.
 
 Any questions about installing or using SquirrelMail can be directed
 to our user support list:

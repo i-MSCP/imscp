@@ -8,7 +8,7 @@
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: setup.php,v 1.10.2.6 2006/02/03 22:27:52 jervfors Exp $
+ * @version $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage squirrelspell
  */

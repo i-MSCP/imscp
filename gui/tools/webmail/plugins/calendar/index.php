@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: index.php,v 1.3.2.6 2006/05/06 07:52:19 tokul Exp $
+ * @version $Id: index.php 11118 2006-05-06 07:52:19Z tokul $
  * @package plugins
  * @subpackage calendar
  */

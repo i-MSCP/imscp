@@ -1,5 +1,5 @@
 ##
-# $Id: squirrelmail.spec,v 1.2.2.5 2005/08/03 21:24:34 kink Exp $
+# $Id: squirrelmail.spec 9899 2005-08-03 21:24:35Z kink $
 %define spec_release 1
 
 ##

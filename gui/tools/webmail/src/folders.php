@@ -7,9 +7,9 @@
  * scripts which do most of the work. Also handles the Special
  * Folders.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders.php,v 1.112.2.18 2006/10/07 12:58:42 tokul Exp $
+ * @version $Id: folders.php 12245 2007-02-08 22:06:59Z pdontthink $
  * @package squirrelmail
  */
 
@@ -289,8 +289,9 @@ if(!$no_list_for_subscribe) {
      . _("Subscribe to:") . '<br />'
      . '<tt><input type="text" name="mailbox[]" size="35" />'
      . '<input type="submit" value="'. _("Subscribe") . "\" />\n"
-     . "</form></td></tr></table><br />\n";
+     . "</form></td></tr></table>\n";
 }
+echo "\n<br /><br />\n";
 
 do_hook('folders_bottom');
 ?>

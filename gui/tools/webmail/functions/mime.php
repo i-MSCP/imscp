@@ -6,9 +6,9 @@
  * This contains the functions necessary to detect and decode MIME
  * messages.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php,v 1.265.2.71 2006/12/03 23:06:45 stekkel Exp $
+ * @version $Id: mime.php 12370 2007-05-09 13:46:30Z kink $
  * @package squirrelmail
  */
 
@@ -159,7 +159,7 @@ function mime_fetch_body($imap_stream, $id, $ent_id=1, $fetch_size=0) {
     return $ret;
 }
 
-function mime_print_body_lines ($imap_stream, $id, $ent_id=1, $encoding) {
+function mime_print_body_lines ($imap_stream, $id, $ent_id=1, $encoding, $rStream='php://stdout') {
     global $uid_support;
 
     /* Don't kill the connection if the browser is over a dialup
@@ -178,10 +178,14 @@ function mime_print_body_lines ($imap_stream, $id, $ent_id=1, $encoding) {
         } else {
             $query = "FETCH $id BODY[$ent_id]";
         }
-        sqimap_run_command($imap_stream,$query,true,$response,$message,$uid_support,'sqimap_base64_decode','php://stdout',true);
-    } else {
+        sqimap_run_command($imap_stream,$query,true,$response,$message,$uid_support,'sqimap_base64_decode',$rStream,true);
+   } else {
         $body = mime_fetch_body ($imap_stream, $id, $ent_id);
-        echo decodeBody($body, $encoding);
+        if ($rStream !== 'php://stdout') {
+            fwrite($rStream, decodeBody($body, $encoding));
+        } else {
+            echo decodeBody($body, $encoding);
+        }
     }
     return;
 }
@@ -349,8 +353,10 @@ function formatBody($imap_stream, $message, $color, $wrap_at, $ent_num, $id, $ma
                 translateText($body, $wrap_at,
                         $body_message->header->getParameter('charset'));
             } else {
+                $charset = $body_message->header->getParameter('charset');
+                if (!empty($charset))
+                    $body = charset_decode($charset,$body,false,true);
                 $body = magicHTML($body, $id, $message, $mailbox);
-                $body = charset_decode($body_message->header->getParameter('charset'),$body,false,true);
             }
         } else {
             translateText($body, $wrap_at,
@@ -422,6 +428,10 @@ function formatAttachments($message, $exclude_id, $mailbox, $id) {
             $from_o = $rfc822_header->from;
             if (is_object($from_o)) {
                 $from_name = $from_o->getAddress(false);
+            } elseif (is_array($from_o) && count($from_o) && is_object($from_o[0])) {
+                // when a digest message is opened and you return to the digest
+                // now the from object is part of an array. This is a workaround.
+                $from_name = $from_o[0]->getAddress(false);
             } else {
                 $from_name = _("Unknown sender");
             }
@@ -1027,7 +1037,7 @@ function sq_unspace(&$attvalue){
 }
 
 /**
- * Translate all dangerous Unicode or Shift_JIS characters which are acepted by
+ * Translate all dangerous Unicode or Shift_JIS characters which are accepted by
  * IE as regular characters.
  *
  * @param  attvalue  The attribute value before dangerous characters are translated.
@@ -1040,15 +1050,15 @@ function sq_fixIE_idiocy(&$attvalue) {
     // remove comments
     $attvalue = preg_replace("/(\/\*.*?\*\/)/","",$attvalue);
 
-    // IE has the evil habit of excepting every possible value for the attribute expression
-    // The table below contain characters which are valid in IE if they are used in the "expression"
+    // IE has the evil habit of accepting every possible value for the attribute expression.
+    // The table below contains characters which are parsed by IE if they are used in the "expression"
     // attribute value.
     $aDangerousCharsReplacementTable = array(
                         array('&#x029F;', '&#0671;' ,/* L UNICODE IPA Extension */
                               '&#x0280;', '&#0640;' ,/* R UNICODE IPA Extension */
                               '&#x0274;', '&#0628;' ,/* N UNICODE IPA Extension */
-                              '&#xFF25;', '&#65317' ,/* Unicode FULLWIDTH LATIN CAPITAL LETTER E */
-                              '&#xFF45;', '&#65349' ,/* Unicode FULLWIDTH LATIN SMALL LETTER E */
+                              '&#xFF25;', '&#65317;' ,/* Unicode FULLWIDTH LATIN CAPITAL LETTER E */
+                              '&#xFF45;', '&#65349;' ,/* Unicode FULLWIDTH LATIN SMALL LETTER E */
                               '&#xFF38;', '&#65336;',/* Unicode FULLWIDTH LATIN CAPITAL LETTER X */
                               '&#xFF58;', '&#65368;',/* Unicode FULLWIDTH LATIN SMALL LETTER X */
                               '&#xFF30;', '&#65328;',/* Unicode FULLWIDTH LATIN CAPITAL LETTER P */
@@ -1068,30 +1078,38 @@ function sq_fixIE_idiocy(&$attvalue) {
                               '&#xFF35;', '&#65333;',/* Unicode FULLWIDTH LATIN CAPITAL LETTER U */
                               '&#xFF55;', '&#65365;',/* Unicode FULLWIDTH LATIN SMALL LETTER U */
                               '&#x207F;', '&#8319;' ,/* Unicode SUPERSCRIPT LATIN SMALL LETTER N */
-                              '&#x8264;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER E */   // in unicode this is some chinese char range
-                              '&#x8285;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER E */
-                              '&#x8277;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER X */
-                              '&#x8298;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER X */
-                              '&#x826F;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER P */
-                              '&#x8290;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER P */
-                              '&#x8271;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER R */
-                              '&#x8292;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER R */
-                              '&#x8272;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER S */
-                              '&#x8293;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER S */
-                              '&#x8268;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER I */
-                              '&#x8289;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER I */
-                              '&#x826E;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER O */
-                              '&#x828F;', /* Shift JIS FULLWIDTH LATIN SMALL LETTER O */
-                              '&#x826D;', /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER N */
-                              '&#x828E;'), /* Shift JIS FULLWIDTH LATIN SMALL LETTER N */
+                              "\xEF\xBC\xA5", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER E */   // in unicode this is some Chinese char range
+                              "\xEF\xBD\x85", /* Shift JIS FULLWIDTH LATIN SMALL LETTER E */
+                              "\xEF\xBC\xB8", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER X */
+                              "\xEF\xBD\x98", /* Shift JIS FULLWIDTH LATIN SMALL LETTER X */
+                              "\xEF\xBC\xB0", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER P */
+                              "\xEF\xBD\x90", /* Shift JIS FULLWIDTH LATIN SMALL LETTER P */
+                              "\xEF\xBC\xB2", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER R */
+                              "\xEF\xBD\x92", /* Shift JIS FULLWIDTH LATIN SMALL LETTER R */
+                              "\xEF\xBC\xB3", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER S */
+                              "\xEF\xBD\x93", /* Shift JIS FULLWIDTH LATIN SMALL LETTER S */
+                              "\xEF\xBC\xA9", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER I */
+                              "\xEF\xBD\x89", /* Shift JIS FULLWIDTH LATIN SMALL LETTER I */
+                              "\xEF\xBC\xAF", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER O */
+                              "\xEF\xBD\x8F", /* Shift JIS FULLWIDTH LATIN SMALL LETTER O */
+                              "\xEF\xBC\xAE", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER N */
+                              "\xEF\xBD\x8E", /* Shift JIS FULLWIDTH LATIN SMALL LETTER N */
+                              "\xEF\xBC\xAC", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER L */
+                              "\xEF\xBD\x8C", /* Shift JIS FULLWIDTH LATIN SMALL LETTER L */
+                              "\xEF\xBC\xB5", /* Shift JIS FULLWIDTH LATIN CAPITAL LETTER U */
+                              "\xEF\xBD\x95", /* Shift JIS FULLWIDTH LATIN SMALL LETTER U */
+                              "\xE2\x81\xBF", /* Shift JIS FULLWIDTH SUPERSCRIPT N */
+                              "\xCA\x9F", /* L UNICODE IPA Extension */
+                              "\xCA\x80", /* R UNICODE IPA Extension */
+                              "\xC9\xB4"),  /* N UNICODE IPA Extension */
                        array('l', 'l', 'r','r','n','n',
-                             'E','E','e','e','X','X','x','x','P','P','p','p','S','S','s','s','I','I',
-                             'i','i','O','O','o','o','N','N','n','n','L','L','l','l','U','U','u','u','n',
-                             'E','e','X','x','P','p','S','s','I','i','O','o','N','n'));
+                             'E','E','e','e','X','X','x','x','P','P','p','p','R','R','r','r','S','S','s','s','I','I',
+                             'i','i','O','O','o','o','N','N','n','n','L','L','l','l','U','U','u','u','n','n',
+                             'E','e','X','x','P','p','R','r','S','s','I','i','O','o','N','n','L','l','U','u','n','l','r','n'));
     $attvalue = str_replace($aDangerousCharsReplacementTable[0],$aDangerousCharsReplacementTable[1],$attvalue);
 
-    // Escapes are usefull for special characters like "{}[]()'&. In other cases they are
-    // used for XSS
+    // Escapes are useful for special characters like "{}[]()'&. In other cases they are
+    // used for XSS.
     $attvalue = preg_replace("/(\\\\)([a-zA-Z]{1})/",'$2',$attvalue);
 }
 
@@ -1600,38 +1618,34 @@ function sq_fixatts($tagname,
                             preg_replace($valmatch, $valrepl, $attvalue);
                         if ($newvalue != $attvalue){
                             $attary{$attname} = $newvalue;
+                            $attvalue = $newvalue;
                         }
                     }
                 }
             }
         }
-
-        /**
-         * Replace empty src tags with the blank image.  src is only used
-         * for frames, images, and image inputs.  Doing a replace should
-         * not affect them working as should be, however it will stop
-         * IE from being kicked off when src for img tags are not set
-         */
-        if (($attname == 'src') && ($attvalue == '""')) {
-            $attary{$attname} = '"' . SM_PATH . 'images/blank.png"';
+        if ($attname == 'style') {
+            if (preg_match('/[\0-\37\200-\377]+/',$attvalue)) {
+                // 8bit and control characters in style attribute values can be used for XSS, remove them
+                $attary{$attname} = '"disallowed character"';
+            }
+            preg_match_all("/url\s*\((.+)\)/si",$attvalue,$aMatch);
+            if (count($aMatch)) {
+                foreach($aMatch[1] as $sMatch) {
+                    // url value
+                    $urlvalue = $sMatch;
+                    sq_fix_url($attname, $urlvalue, $message, $id, $mailbox,"'");
+                    $attary{$attname} = str_replace($sMatch,$urlvalue,$attvalue);
+                }
+            }
         }
-
         /**
-         * Turn cid: urls into http-friendly ones.
+         * Use white list based filtering on attributes which can contain url's
          */
-        if (preg_match("/^[\'\"]\s*cid:/si", $attvalue)){
-            $attary{$attname} = sq_cid2http($message, $id, $attvalue, $mailbox);
+        else if ($attname == 'href' || $attname == 'src' || $attname == 'background') {
+            sq_fix_url($attname, $attvalue, $message, $id, $mailbox);
+            $attary{$attname} = $attvalue;
         }
-
-        /**
-         * "Hack" fix for Outlook using propriatary outbind:// protocol in img tags.
-         * One day MS might actually make it match something useful, for now, falling
-         * back to using cid2http, so we can grab the blank.png.
-         */
-        if (preg_match("/^[\'\"]\s*outbind:\/\//si", $attvalue)) {
-            $attary{$attname} = sq_cid2http($message, $id, $attvalue, $mailbox);
-        }
-
     }
     /**
      * See if we need to append any attributes to this tag.
@@ -1642,6 +1656,98 @@ function sq_fixatts($tagname,
         }
     }
     return $attary;
+}
+
+/**
+ * This function filters url's
+ *
+ * @param  $attvalue        String with attribute value to filter
+ * @param  $message         message object
+ * @param  $id               message id
+ * @param  $mailbox         mailbox
+ * @param  $sQuote          quoting characters around url's
+ */
+function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"') {
+    $attvalue = trim($attvalue);
+    if ($attvalue && ($attvalue[0] =='"'|| $attvalue[0] == "'")) {
+        // remove the double quotes
+        $sQuote = $attvalue[0];
+        $attvalue = trim(substr($attvalue,1,-1));
+    }
+
+    if( !sqgetGlobalVar('view_unsafe_images', $view_unsafe_images, SQ_GET) ) {
+        $view_unsafe_images = false;
+    }
+    $secremoveimg = '../images/' . _("sec_remove_eng.png");
+
+    /**
+     * Replace empty src tags with the blank image.  src is only used
+     * for frames, images, and image inputs.  Doing a replace should
+     * not affect them working as should be, however it will stop
+     * IE from being kicked off when src for img tags are not set
+     */
+    if ($attvalue == '') {
+        $attvalue = '"' . SM_PATH . 'images/blank.png"';
+    } else {
+        // first, disallow 8 bit characters and control characters
+        if (preg_match('/[\0-\37\200-\377]+/',$attvalue)) {
+            switch ($attname) {
+                case 'href':
+                    $attvalue = $sQuote . 'http://invalid-stuff-detected.example.com' . $sQuote;
+                    break;
+                default:
+                    $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
+                    break;
+            }
+        } else {
+            $aUrl = parse_url($attvalue);
+            if (isset($aUrl['scheme'])) {
+                switch(strtolower($aUrl['scheme'])) {
+                    case 'http':
+                    case 'https':
+                    case 'ftp':
+                        if ($attname != 'href') {
+                            if ($view_unsafe_images == false) {
+                                $attvalue = $sQuote . $secremoveimg . $sQuote;
+                            } else {
+                                if (isset($aUrl['path'])) {
+                                    // validate image extension.
+                                    $ext = strtolower(substr($aUrl['path'],strrpos($aUrl['path'],'.')));
+                                    if (!in_array($ext,array('.jpeg','.jpg','xjpeg','.gif','.bmp','.jpe','.png','.xbm'))) {
+                                        $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
+                                    }
+                                } else {
+                                    $attvalue = $sQuote . SM_PATH . 'images/blank.png'. $sQuote;
+                                }
+                            }
+                        }
+                        break;
+                    case 'outbind':
+                        /**
+                         * "Hack" fix for Outlook using propriatary outbind:// protocol in img tags.
+                         * One day MS might actually make it match something useful, for now, falling
+                         * back to using cid2http, so we can grab the blank.png.
+                         */
+                        $attvalue = sq_cid2http($message, $id, $attvalue, $mailbox);
+                        break;
+                    case 'cid':
+                        /**
+                            * Turn cid: urls into http-friendly ones.
+                            */
+                        $attvalue = sq_cid2http($message, $id, $attvalue, $mailbox);
+                        break;
+                    default:
+                        $attvalue = $sQuote . SM_PATH . 'images/blank.png' . $sQuote;
+                        break;
+                }
+            } else {
+                if (!(isset($aUrl['path']) && $aUrl['path'] == $secremoveimg)) {
+                    // parse_url did not lead to satisfying result
+                    $attvalue = $sQuote . SM_PATH . 'images/blank.png' . $sQuote;
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -1729,6 +1835,12 @@ function sq_fixstyle($body, $pos, $message, $id, $mailbox){
     $content = preg_replace("|body(\s*\{.*?\})|si", ".bodyclass\\1", $content);
     $secremoveimg = '../images/' . _("sec_remove_eng.png");
 
+    // first check for 8bit sequences and disallowed control characters
+    if (preg_match('/[\16-\37\200-\377]+/',$content)) {
+        $content = '<!-- style block removed by html filter due to presence of 8bit characters -->';
+        return array($content, $newpos);
+    }
+
     // IE Sucks hard. We have a special function for it.
     sq_fixIE_idiocy($content);
 
@@ -1741,50 +1853,18 @@ function sq_fixstyle($body, $pos, $message, $id, $mailbox){
     // translate ur\l and variations into url (IE parses that)
     // TODO check if the sq_fixIE_idiocy function already handles this.
     $content = preg_replace("/(\\\\)?u(\\\\)?r(\\\\)?l(\\\\)?/i",'url', $content);
-    // NB I insert NUL characters to keep to avoid an infinite loop. They are removed after the loop.
-    while (preg_match("/url\s*\(\s*[\'\"]?([^:]+):(.*)?[\'\"]?\s*\)/si", $content, $matches)) {
-        $sProto = strtolower($matches[1]);
-        switch ($sProto) {
-            /**
-             * Fix url('https*://.*) declarations but only if $view_unsafe_images
-             * is false.
-             */
-            case 'https':
-            case 'http':
-                if (!$view_unsafe_images){
-
-                    $sExpr = "/url\s*\(\s*[\'\"]?\s*$sProto*:.*[\'\"]?\s*\)/si";
-                    $content = preg_replace($sExpr, "u\0r\0l(\\1$secremoveimg\\2)", $content);
-
-                } else {
-                    $content = preg_replace('/url/i',"u\0r\0l",$content);
-                }
-                break;
-
-            /**
-             * Fix urls that refer to cid:
-             */
-            case 'cid':
-                $cidurl = 'cid:'. $matches[2];
-                $httpurl = sq_cid2http($message, $id, $cidurl, $mailbox);
-                // escape parentheses that can modify the regular expression
-                $cidurl = str_replace(array('(',')'),array('\\(','\\)'),$cidurl);
-                $content = preg_replace("|url\s*\(\s*$cidurl\s*\)|si",
-                                        "u\0r\0l($httpurl)", $content);
-                break;
-            default:
-                /**
-                 * replace url with protocol other then the white list
-                 * http,https and cid by an empty string.
-                 */
-                $content = preg_replace("/url\s*\(\s*[\'\"]?([^:]+):(.*)?[\'\"]?\s*\)/si",
-                                 "", $content);
-                break;
+    preg_match_all("/url\s*\((.+)\)/si",$content,$aMatch);
+    if (count($aMatch)) {
+        $aValue = $aReplace = array();
+        foreach($aMatch[1] as $sMatch) {
+            // url value
+            $urlvalue = $sMatch;
+            sq_fix_url('style',$urlvalue, $message, $id, $mailbox,"'");
+            $aValue[] = $sMatch;
+            $aReplace[] = $urlvalue;
         }
-        break;
+        $content = str_replace($aValue,$aReplace,$content);
     }
-    // remove NUL
-    $content = str_replace("\0", "", $content);
 
     /**
      * Remove any backslashes, entities, and extraneous whitespace.
@@ -2204,7 +2284,7 @@ function magicHTML($body, $id, $message, $mailbox = 'INBOX') {
                     "idiocy",
                     "idiocy",
                     "idiocy",
-                    "",
+                    "idiocy",
                     "url",
                     "url(\\1#\\1)",
                     "url(\\1#\\1)",
@@ -2250,7 +2330,7 @@ function magicHTML($body, $id, $message, $mailbox = 'INBOX') {
                            $id,
                            $mailbox
                            );
-    if (preg_match("|$secremoveimg|i", $trusted)){
+    if (strpos($trusted,$secremoveimg)){
         $has_unsafe_images = true;
     }
     return $trusted;

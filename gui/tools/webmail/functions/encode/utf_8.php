@@ -12,7 +12,7 @@
  *
  * @copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: utf_8.php,v 1.7.2.5 2006/02/03 22:27:47 jervfors Exp $
+ * @version $Id: utf_8.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package squirrelmail
  * @subpackage encode
  */

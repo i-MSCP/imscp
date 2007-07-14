@@ -15,9 +15,9 @@
  * passwords being leaked to e.g. other system users. Take extra care when
  * the webserver is shared with untrusted users.
  *
- * @copyright &copy; 2000-2006 The SquirrelMail Project Team
+ * @copyright &copy; 2000-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: config_default.php,v 1.84.2.19 2006/08/01 05:47:32 tokul Exp $
+ * @version $Id: config_default.php 12302 2007-03-04 02:07:59Z jervfors $
  * @package squirrelmail
  * @subpackage config
  */
@@ -25,15 +25,7 @@
 /* Do not change this value. */
 global $version;
 global $config_version;
-$config_version = '1.4.9a';
-
-/**
-Here you need to put your license number 
-which you will find when logging into your 
-nutsmail members area under View licenses.
-*/
-
-$license = "Enter your license number here...";
+$config_version = '1.4.0';
 
 /*** Organization preferences ***/
 /**
@@ -66,7 +58,7 @@ $org_logo_height = '111';
  * This is the web page title that appears at the top of the browser window.
  * @global string $org_title
  */
-$org_title = "";
+$org_title = "ispCP Omega";
 
 /**
  * Signout page
@@ -157,6 +149,7 @@ $smtpServerAddress = 'localhost';
  * @global integer $smtpPort
  */
 $smtpPort = 25;
+
 /**
  * SquirrelMail header encryption
  *
@@ -454,16 +447,21 @@ $noselect_fix_enable = false;
  *
  *   It is a possible security hole to have a writable directory
  *   under the web server's root directory (ex: /home/httpd/html).
- *   For this reason, it is possible to put the data directory
- *   anywhere you would like. The path name can be absolute or
- *   relative (to the config directory). It doesn't matter. Here
- *   are two examples:
+ *   It is possible to put the data directory anywhere you would like;
+ *   it is strongly advised that it is directly web-accessible.
+ *
+ *   The path name can be absolute or relative (to the config directory).
+ *   If it is relative, it must use the SM_PATH constant.
+ *   Here are two examples:
  *
  * Absolute:
- *   $data_dir = '/usr/local/squirrelmail/data/';
+ *   $data_dir = '/var/local/squirrelmail/data/';
  *
  * Relative (to main SM directory):
  *   $data_dir = SM_PATH . 'data/';
+ *   (NOT recommended: you need to secure apache to make sure these
+ *   files are not world readable)
+ *
  * @global string $data_dir
  */
 $data_dir = SM_PATH . 'data/';
@@ -479,8 +477,8 @@ $data_dir = SM_PATH . 'data/';
  *      list files in this directory. Confidential data might be laying
  *      around there.
  *    + Since the webserver is not able to list the files in the content
- *       is also impossible for the webserver to delete files lying around 
- *       there for too long.
+ *      is also impossible for the webserver to delete files lying around 
+ *      there for too long.
  *    + It should probably be another directory than data_dir.
  * @global string $attachment_dir
  */
@@ -557,6 +555,7 @@ $default_use_mdn = true;
  */
 $edit_identity = true;
 $edit_name = true;
+
 /**
  * SquirrelMail adds username information to every sent email.
  * It is done in order to prevent possible sender forging when 
@@ -717,6 +716,31 @@ $abook_global_file = '';
 $abook_global_file_writeable = false;
 
 /**
+ * Listing of shared address book control
+ * @global bool $abook_global_file_listing
+ * @since 1.5.1 and 1.4.9
+ */
+$abook_global_file_listing = true;
+
+/**
+ * Controls file based address book entry size
+ * 
+ * This setting controls space allocated to file based address book records.
+ * End users will be unable to save address book entry, if total entry size 
+ * (quoted address book fields + 4 delimiters + linefeed) exceeds allowed
+ * address book length size.
+ *
+ * Same setting is applied to personal and global file based address books.
+ *
+ * It is strongly recommended to keep default setting value. Change it only
+ * if you really want to store address book entries that are bigger than two
+ * kilobytes (2048).
+ * @global integer $abook_file_line_length
+ * @since 1.5.2 and 1.4.9
+ */
+$abook_file_line_length = 2048;
+
+/**
  * MOTD
  *
  * This is a message that is displayed immediately after a user logs in. 
@@ -765,13 +789,13 @@ $plugins[24] = 'todo';
 
 /*** Database ***/
 /**
- * Read doc/database.txt in order to get more information 
+ * Read the administrator's manual in order to get more information 
  * about these settings.
  */
 /**
  * Database-driven private addressbooks
  *   DSN (Data Source Name) for a database where the private
- *   addressbooks are stored.  See doc/db-backend.txt for more info.
+ *   addressbooks are stored.  See the administrator's manual for more info.
  *   If it is not set, the addressbooks are stored in files
  *   in the data dir.
  *   The DSN is in the format: mysql://user:pass@hostname/dbname
@@ -791,6 +815,7 @@ $prefs_table = 'userprefs';
 $prefs_key_field = 'prefkey';
 $prefs_user_field = 'user';
 $prefs_val_field = 'prefval';
+
 /*** Global sql database options ***/
 /**
  * DSN of global address book database

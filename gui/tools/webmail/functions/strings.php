@@ -6,9 +6,9 @@
  * This code provides various string manipulation functions that are
  * used by the rest of the SquirrelMail code.
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php,v 1.184.2.61 2006/12/03 23:05:43 stekkel Exp $
+ * @version $Id: strings.php 12383 2007-05-10 08:28:31Z kink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.9a';
+$version = '1.4.10a';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,9);
+$SQM_INTERNAL_VERSION = array(1,4,10);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -212,9 +212,14 @@ function readShortMailboxName($haystack, $needle) {
  * @return string the complete url for this page
  */
 function php_self () {
-    if ( sqgetGlobalVar('REQUEST_URI', $req_uri, SQ_SERVER) && !empty($req_uri) ) {
-      return $req_uri;
-    }
+    /*
+     * PHP 4.4.4 is giving the wrong REQUEST_URI. The Query string is missing.
+     * => I (stekkel) commented out the code because it's not realy needed. PHP_SELF in combinatiob
+     * with QUERY_STRING should do the job.
+     */
+//    if ( sqgetGlobalVar('REQUEST_URI', $req_uri, SQ_SERVER) && !empty($req_uri) ) {
+//      return $req_uri;
+//    }
 
     if ( sqgetGlobalVar('PHP_SELF', $php_self, SQ_SERVER) && !empty($php_self) ) {
 

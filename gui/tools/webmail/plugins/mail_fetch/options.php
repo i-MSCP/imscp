@@ -8,7 +8,7 @@
  *
  * Setup of the mailfetch plugin.
  *
- * $Id: options.php,v 1.21.2.11 2006/02/03 22:27:52 jervfors Exp $
+ * $Id: options.php 12258 2007-02-13 22:44:38Z pdontthink $
  */
 
 define('SM_PATH','../../');
@@ -64,7 +64,6 @@ sqgetGlobalVar('submit_mailfetch', $submit_mailfetch, SQ_POST);
         setPref($data_dir,$username,"mailfetch_alias_$mf_sn", (isset($mf_alias)?$mf_alias:""));
         setPref($data_dir,$username,"mailfetch_user_$mf_sn",(isset($mf_user)?$mf_user:""));
         setPref($data_dir,$username,"mailfetch_pass_$mf_sn",(isset($mf_pass)?encrypt( $mf_pass )    :""));
-        if( isset($mf_cypher) && $mf_cypher <> 'on' ) SetPref($data_dir,$username,'mailfetch_cypher',    'on');
         setPref($data_dir,$username,"mailfetch_lmos_$mf_sn",(isset($mf_lmos)?$mf_lmos:""));
         setPref($data_dir,$username,"mailfetch_login_$mf_sn",(isset($mf_login)?$mf_login:""));
         setPref($data_dir,$username,"mailfetch_fref_$mf_sn",(isset($mf_fref)?$mf_fref:""));
@@ -81,7 +80,7 @@ sqgetGlobalVar('submit_mailfetch', $submit_mailfetch, SQ_POST);
         setPref($data_dir,$username,"mailfetch_alias_$mf_sn", (isset($mf_alias)?$mf_alias:""));
         setPref($data_dir,$username,"mailfetch_user_$mf_sn",(isset($mf_user)?$mf_user:""));
         setPref($data_dir,$username,"mailfetch_pass_$mf_sn",(isset($mf_pass)?encrypt( $mf_pass )    :""));
-        if( $mf_cypher <> 'on' ) setPref($data_dir,$username,"mailfetch_cypher", 'on');
+        setPref($data_dir,$username,"mailfetch_cypher", ($mf_cypher == 'on' ? 'on' : ''));
         setPref($data_dir,$username,"mailfetch_lmos_$mf_sn",(isset($mf_lmos)?$mf_lmos:""));
         setPref($data_dir,$username,"mailfetch_login_$mf_sn",(isset($mf_login)?$mf_login:""));
         setPref($data_dir,$username,"mailfetch_fref_$mf_sn",(isset($mf_fref)?$mf_fref:""));

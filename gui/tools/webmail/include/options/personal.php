@@ -5,9 +5,9 @@
  *
  * Displays all options relating to personal information
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: personal.php,v 1.8.2.8 2006/02/03 22:27:51 jervfors Exp $
+ * @version $Id: personal.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

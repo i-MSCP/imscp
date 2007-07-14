@@ -5,9 +5,9 @@
  *
  * Derived from webmail.php by Ralf Kraudelt <kraude@wiwi.uni-rostock.de>
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: redirect.php,v 1.72.2.14 2006/12/02 15:10:13 kink Exp $
+ * @version $Id: redirect.php 12352 2007-03-28 05:09:33Z jangliss $
  * @package squirrelmail
  */
 
@@ -28,11 +28,6 @@ require_once(SM_PATH . 'functions/plugin.php');
 require_once(SM_PATH . 'functions/constants.php');
 require_once(SM_PATH . 'functions/page_header.php');
 
-/* Before starting the session, the base URI must be known. Assuming */
-/* that this file is in the src/ subdirectory (or something).        */
-if (!function_exists('sqm_baseuri')){
-    require_once(SM_PATH . 'functions/display_messages.php');
-}
 $base_uri = sqm_baseuri();
 
 header('Pragma: no-cache');

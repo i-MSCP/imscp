@@ -3,12 +3,12 @@
 /**
  * move_messages.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * Enables message moving between folders on the IMAP server.
  *
- * $Id: move_messages.php,v 1.81.2.11 2006/05/13 20:01:15 tokul Exp $
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id: move_messages.php 12127 2007-01-13 20:07:24Z kink $
+ * @package squirrelmail
  */
 
 /* Path for SquirrelMail required files. */
@@ -29,7 +29,7 @@ if ( !sqgetGlobalVar('composesession', $composesession, SQ_SESSION) ) {
 
 function attachSelectedMessages($msg, $imapConnection) {
     global $username, $attachment_dir, $startMessage,
-           $data_dir, $composesession, $uid_support,
+           $data_dir, $composesession, $uid_support, $mailbox,
        $msgs, $thread_sort_messages, $allow_server_sort, $show_num,
        $compose_messages;
 
@@ -66,18 +66,19 @@ function attachSelectedMessages($msg, $imapConnection) {
     while ($j < count($msg)) {
         if (isset($msg[$i])) {
             $id = $msg[$i];
+            
             $body_a = sqimap_run_command($imapConnection, "FETCH $id RFC822",true, $response, $readmessage, $uid_support);
-
+            
             if ($response == 'OK') {
+                $message = sqimap_get_message($imapConnection, $id, $mailbox);
 
-                // fetch the subject for the message with $id from msgs.
-                // is there a more efficient way to do this?
-                foreach($msgs as $k => $vals) {
-                    if($vals['ID'] == $id) {
-                        $subject = $msgs[$k]['SUBJECT'];
-                        break;
-                    }
+                // fetch the subject for the message from the object
+                $filename = $message->rfc822_header->subject;
+                if ( empty($filename) ) {
+                    $filename = "untitled-".$message->entity_id;
                 }
+                $filename .= '.msg';
+                $filename = decodeHeader($filename, false, false);
 
                 array_shift($body_a);
                 array_pop($body_a);
@@ -86,11 +87,15 @@ function attachSelectedMessages($msg, $imapConnection) {
 
                 $localfilename = GenerateRandomString(32, 'FILE', 7);
                 $full_localfilename = "$hashed_attachment_dir/$localfilename";
+                while (file_exists($full_localfilename)) {
+                    $localfilename = GenerateRandomString(32, 'FILE', 7);
+                    $full_localfilename = "$hashed_attachment_dir/$localfilename";
+                }
 
                 $fp = fopen( $full_localfilename, 'wb');
                 fwrite ($fp, $body);
                 fclose($fp);
-                $composeMessage->initAttachment('message/rfc822',$subject.'.msg',
+                $composeMessage->initAttachment('message/rfc822',$filename,
                      $full_localfilename);
             }
             $j++;
@@ -129,8 +134,7 @@ sqgetGlobalVar('markRead',        $markRead,        SQ_POST);
 sqgetGlobalVar('markUnread',      $markUnread,      SQ_POST);
 sqgetGlobalVar('attache',         $attache,         SQ_POST);
 sqgetGlobalVar('location',        $location,        SQ_POST);
-sqgetGlobalVar('markFlagged',     $markFlagged,     SQ_POST); /* Added for Msg_Flags */
-sqgetGlobalVar('markUnflagged',   $markUnflagged,   SQ_POST); /* Added for Msg_Flags */
+
 /* end of get globals */
 
 $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
@@ -139,6 +143,7 @@ $mbx_response=sqimap_mailbox_select($imapConnection, $mailbox);
 $location = set_url_var($location,'composenew',0,false);
 $location = set_url_var($location,'composesession',0,false);
 $location = set_url_var($location,'session',0,false);
+
 // make sure that cache is not used
 $location = set_url_var($location,'use_mailbox_cache',0,false);
 
@@ -193,10 +198,6 @@ if(isset($expungeButton)) {
                 sqimap_toggle_flag($imapConnection, $id, '\\Seen',true,true);
             } else if (isset($markUnread)) {
                 sqimap_toggle_flag($imapConnection, $id, '\\Seen',false,true);
-            } else if (isset($markFlagged)) {
-              	sqimap_toggle_flag($imapConnection, $id, '\\Flagged',true,true);
-            } else if (isset($markUnflagged)) {
-                sqimap_toggle_flag($imapConnection, $id, '\\Flagged',false,true);
             } else  {
                 sqimap_msgs_list_delete($imapConnection, $mailbox, $id);
                 if ($auto_expunge) {
@@ -224,7 +225,6 @@ if(isset($expungeButton)) {
         $exception = true;
     }
 } else {    // Move messages
-
     if (count($id)) {
         // move messages only when target mailbox is not the same as source mailbox
         if ($mailbox!=$targetMailbox) {

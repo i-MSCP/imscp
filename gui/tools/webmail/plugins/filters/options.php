@@ -18,7 +18,7 @@
  *
  * Also view plugins/README.plugins for more information.
  *
- * @version $Id: options.php,v 1.26.2.12 2006/05/15 16:10:41 tokul Exp $
+ * @version $Id: options.php 11140 2006-05-15 16:10:41Z tokul $
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package plugins

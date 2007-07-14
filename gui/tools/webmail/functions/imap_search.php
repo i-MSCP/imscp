@@ -3,12 +3,11 @@
 /**
  * imap_search.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * IMAP search routines
  *
- * @version $Id: imap_search.php,v 1.63.2.7 2006/02/03 22:27:47 jervfors Exp $
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id: imap_search.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage imap
  * @deprecated This search interface has been largely replaced by asearch

@@ -11,7 +11,7 @@
  * for the user. Called after LANG_SETUP module.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: lang_change.mod,v 1.4.2.7 2006/02/03 22:27:53 jervfors Exp $
+ * @version $Id: lang_change.mod 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage squirrelspell
  */

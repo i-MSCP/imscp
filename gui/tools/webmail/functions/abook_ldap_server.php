@@ -5,9 +5,9 @@
  *
  * Address book backend for LDAP server
  *
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: abook_ldap_server.php,v 1.18.2.9 2006/04/14 22:27:07 jervfors Exp $
+ * @version $Id: abook_ldap_server.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  * @subpackage addressbook
  */

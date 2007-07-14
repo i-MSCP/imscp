@@ -11,9 +11,9 @@
  * Use the following url to use mailto:
  * http://<your server>/<squirrelmail base dir>/src/mailto.php?emailaddress=%1
  * see ../contrib/squirrelmail.mailto.reg for a Windows Registry file
- * @copyright &copy; 1999-2006 The SquirrelMail Project Team
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailto.php,v 1.11.2.5 2006/12/02 15:10:13 kink Exp $
+ * @version $Id: mailto.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 

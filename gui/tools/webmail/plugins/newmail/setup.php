@@ -22,7 +22,7 @@
  * This was tested with IE5.0 - but I hear Netscape works well,
  * too (with a plugin).
  *
- * @version $Id: setup.php,v 1.17.2.10 2006/02/03 22:27:52 jervfors Exp $
+ * @version $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage new_mail
  */

@@ -34,7 +34,7 @@ This is an options commented sqspell_config.php
     *
     *
     *
-    *  $Id: INSTALL,v 1.3.4.5 2006/02/03 22:27:52 jervfors Exp $
+    *  $Id: INSTALL 10633 2006-02-03 22:27:56Z jervfors $
     */
 
     /* Just for poor wretched souls with E_ALL. :) */

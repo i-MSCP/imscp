@@ -3,10 +3,10 @@
  * -------------------
  * Some client-side checks. Nothing fancy.
  *
- * $Id: crypto_settings.js,v 1.2 2002/01/31 03:45:53 graf25 Exp $
+ * $Id: crypto_settings.js 2301 2002-01-31 03:45:53Z graf25 $
  *
  * @author Konstantin Riabitsev <icon@duke.edu> ($Author: graf25 $)
- * @version $Date: 2002/01/31 03:45:53 $
+ * @version $Date: 2002-01-31 04:45:53 +0100 (Thu, 31 Jan 2002) $
  */
 
 /**

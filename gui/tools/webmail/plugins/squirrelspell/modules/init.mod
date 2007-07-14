@@ -10,7 +10,7 @@
  * Initial loading of the popup window interface.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: init.mod,v 1.3.2.4 2006/02/03 22:27:53 jervfors Exp $
+ * @version $Id: init.mod 10633 2006-02-03 22:27:56Z jervfors $
  * @package plugins
  * @subpackage squirrelspell
  */

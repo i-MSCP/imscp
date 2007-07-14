@@ -3,13 +3,12 @@
 /**
  * folders_create.php
  *
- * Copyright (c) 1999-2006 The SquirrelMail Project Team
- * Licensed under the GNU GPL. For full terms see the file COPYING.
- *
  * Creates folders on the IMAP server.
  * Called from folders.php
  *
- * @version $Id: folders_create.php,v 1.64.2.7 2006/08/24 20:00:09 kink Exp $
+ * @copyright &copy; 1999-2007 The SquirrelMail Project Team
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @version $Id: folders_create.php 12127 2007-01-13 20:07:24Z kink $
  * @package squirrelmail
  */
 
