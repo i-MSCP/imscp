@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -37,132 +37,93 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_id));
 
-    if($rs -> RecordCount() == 0){
-        // values for user id
-        // some default staff
+    if($rs->RecordCount() == 0){
+        // values for user id, some default staff
         return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
-
-	} else if ($rs -> fields['lang'] === '' && $rs -> fields['layout'] === '') {
-
+	}
+	else if ($rs->fields['lang'] === '' && $rs->fields['layout'] === '') {
 		return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
-
-	} else if ($rs -> fields['lang'] === '') {
-
-		return array($cfg['USER_INITIAL_LANG'],  $rs -> fields['layout']);
-
-	} else if ($rs -> fields['layout'] === '') {
-
-		return array($rs -> fields['lang'], $cfg['USER_INITIAL_THEME']);
-
-	} else if ($rs -> fields['layout'] === 'blue' || $rs -> fields['layout'] === 'green' || $rs -> fields['layout'] === 'red' || $rs -> fields['layout'] === 'yellow') {
-
-		return array($rs -> fields['lang'], $rs -> fields['layout']);
-
+	}
+	else if ($rs->fields['lang'] === '') {
+		return array($cfg['USER_INITIAL_LANG'],  $rs->fields['layout']);
+	}
+	else if ($rs->fields['layout'] === '') {
+		return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
 	}
 
-
-    return array($rs -> fields['lang'], $cfg['USER_INITIAL_THEME']);
+    return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
 
 }
 
 if (isset($_GET['tc'])) {
-
     $tc = $_GET['tc'];
-
-} else {
-
+}
+else {
     if (isset($_SESSION['user_theme'])) {
-
         $tc = $_SESSION['user_theme'];
-
-    } else {
-
+    }
+	else {
         $tc = $cfg['USER_INITIAL_THEME'];
         $_SESSION['user_theme'] = $tc;
-
     }
 }
 
-
-
-
 if (isset($_SESSION['user_def_lang'])) {
-
 	$tl = $_SESSION['user_def_lang'];
-
- } else {
-
+}
+else {
  	$tl = $cfg['USER_INITIAL_LANG'];
 }
-
-    $_SESSION['user_def_lang'] = $tl;
-
+$_SESSION['user_def_lang'] = $tl;
 
 if (isset($_SESSION['user_id'])) {
+    global $sql;
 
-        global $sql;
-
-	if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id']))
-	{
+	if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 
 		list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 
 		$_SESSION['user_theme'] = $user_def_layout;
 		$_SESSION['user_def_lang'] = $user_def_lang;
-
 	}
-
 }
 
 function gen_page_message(&$tpl) {
 
     if (!isset($_SESSION['user_page_message'])) {
-
         $tpl -> assign('PAGE_MESSAGE', '');
         $tpl -> assign('MESSAGE',      '');
-
-    } else {
-
+    }
+	else {
         $tpl -> assign('MESSAGE', $_SESSION['user_page_message']);
-
         unset($_SESSION['user_page_message']);
-
     }
 
 }
 
-function check_language_exist($lang_table)
-{
-
+function check_language_exist($lang_table) {
 global $sql;
 
  			$tables = $sql->MetaTables();
             $nlang = count($tables);
-            for($i=0 ; $i < $nlang; $i++){
+            for ($i=0 ; $i < $nlang; $i++) {
                 $data= $tables[$i];
-                if($data == $lang_table){
+                if ($data == $lang_table) {
                     return true;
                 }
             }
 			return false;
-
 }
-
 
 function set_page_message($message) {
 
     if (isset($_SESSION['user_page_message']))
-
         $_SESSION['user_page_message'] .= "<br><br>$message<br><br>";
-
     else
-
         $_SESSION['user_page_message'] = $message;
-
 }
 
 function get_menu_vars($menu_link) {
-
 	global $sql;
 
 	$user_id = $_SESSION['user_id'];
@@ -205,9 +166,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	$menu_link = preg_replace("/\{domain_name\}/", $rs -> fields['domain_name'], $menu_link);
-
 	return $menu_link;
-
 }
 
 ?>

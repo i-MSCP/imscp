@@ -129,29 +129,27 @@ $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = '/etc/apache2/sites-available/ispcp.conf';
 
-require_once(INCLUDEPATH.'/admin-functions.php');
-require_once(INCLUDEPATH.'/calc-functions.php');
+require_once(INCLUDEPATH.'/spGzip.php');
 require_once(INCLUDEPATH.'/class.pTemplate.php');
-require_once(INCLUDEPATH.'/client-functions.php');
 require_once(INCLUDEPATH.'/date-functions.php');
-require_once(INCLUDEPATH.'/debug.php');
-require_once(INCLUDEPATH.'/emailtpl-functions.php');
-require_once(INCLUDEPATH.'/i18n.php');
-require_once(INCLUDEPATH.'/idna.php');
-require_once(INCLUDEPATH.'/input-checks.php');
+require_once(INCLUDEPATH.'/system-message.php');
 require_once(INCLUDEPATH.'/ispcp-db-keys.php');
-require_once(INCLUDEPATH.'/ispcp-functions.php');
-require_once(INCLUDEPATH.'/layout-functions.php');
-require_once(INCLUDEPATH.'/login.php');
+require_once(INCLUDEPATH.'/input-checks.php');
+require_once(INCLUDEPATH.'/debug.php');
+require_once(INCLUDEPATH.'/i18n.php');
+require_once(INCLUDEPATH.'/system-log.php');
+require_once(INCLUDEPATH.'/calc-functions.php');
 require_once(INCLUDEPATH.'/login-functions.php');
+require_once(INCLUDEPATH.'/login.php');
+require_once(INCLUDEPATH.'/client-functions.php');
+require_once(INCLUDEPATH.'/admin-functions.php');
+require_once(INCLUDEPATH.'/reseller-functions.php');
+require_once(INCLUDEPATH.'/ispcp-functions.php');
+require_once(INCLUDEPATH.'/idna.php');
 require_once(INCLUDEPATH.'/lostpassword-functions.php');
 require_once(INCLUDEPATH.'/sql.php');
-require_once(INCLUDEPATH.'/reseller-functions.php');
-// If you comment this line out, you have no security level (none)
-require_once(INCLUDEPATH.'/security/core.inc.php');
-require_once(INCLUDEPATH.'/spGzip.php');
-require_once(INCLUDEPATH.'/system-log.php');
-require_once(INCLUDEPATH.'/system-message.php');
+require_once(INCLUDEPATH.'/emailtpl-functions.php');
+require_once(INCLUDEPATH.'/layout-functions.php');
 
 check_query();
 

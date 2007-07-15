@@ -1,28 +1,42 @@
 <?php
+/**
+ *  ispCP ω (OMEGA) a Virtual Hosting Control Panel
+ *
+ *  @copyright 	2001-2006 by moleSoftware GmbH
+ *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @link 		http://isp-control.net
+ *  @author		ispCP Team (2007)
+ *
+ *  @license
+ *  This program is free software; you can redistribute it and/or modify it under
+ *  the terms of the MPL General Public License as published by the Free Software
+ *  Foundation; either version 1.1 of the License, or (at your option) any later
+ *  version.
+ *  You should have received a copy of the MPL Mozilla Public License along with
+ *  this program; if not, write to the Open Source Initiative (OSI)
+ *  http://opensource.org | osi@opensource.org
+ *
+ **/
+
 
 $cfg_obj = new Config("/etc/ispcp/ispcp.conf");
 
 if ($cfg_obj->status == "err") {
-
     /* cannot open ispcp.conf file - we must show warning */
-
     print "<center><b><font color=red>Cannot open the ispcp.conf config file !<br><br>Please contact your system administrator</font></b></center>";
-
     die();
-
 }
 
 $cfg = $cfg_obj->getValues();
 
 class Config {
     /*
-    his class will parse config file and get all variables avaible in PHP
-    v. 0.1
-    */
+    this class will parse config file and get all variables avaible in PHP */
     var $config_file;       /* config filename */
     var $cfg_values;        /* array with  options and values that you can get and user :P :) */
     var $status;
-    function Config($cfg = "/etc/ispcp/ispcp.conf"){
+
+	function Config($cfg = "/etc/ispcp/ispcp.conf") {
         $this -> config_file = $cfg;
         $this -> status = "ok";
         if ($this->parseFile() == FALSE) {
@@ -73,16 +87,17 @@ class Config {
         fclose($fd);
         return TRUE;
     }
-    function getValues(){
+
+    function getValues() {
         return $this->cfg_values;
     }
 }
 
 function decrypt_db_password ($db_pass) {
-
     global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
-    if ($db_pass == '') return '';
+    if ($db_pass == '')
+		return '';
 
     if (extension_loaded('mcrypt') || @dl('mcrypt.'.PHP_SHLIB_SUFFIX)) {
 

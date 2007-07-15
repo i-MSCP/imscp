@@ -62,7 +62,7 @@ if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/servicemode.tpl');
 
 	$tpl -> assign(array(
-						'TR_PAGE_TITLE' => tr('ispCP a Virtual Hosting Control System'),
+						'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
 						'TR_TIME' => gettimestr(),
