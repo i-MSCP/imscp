@@ -10,6 +10,10 @@ ispCP ω 1.0.0 Changelog
 
 2007-07-13 Benedikt Heintel
 	- GUI:
+		* Fixed #457: Add max-attempts limit for lost password's CAPTCHA
+
+2007-07-13 Benedikt Heintel
+	- GUI:
 		* Updated: Squirrelmail to 1.4.10a
 		* Fixed #479: username input field is too short
 

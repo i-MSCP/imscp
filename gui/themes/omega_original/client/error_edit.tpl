@@ -54,7 +54,7 @@ function MM_goToURL() { //v3.0
                     <table width="100%" cellspacing="7">
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="content"><textarea name="error" rows="20" class="textinput2" id="error" style="width:210px">{ERROR}</textarea></td>
+                        <td class="content"><textarea name="error" rows="35" class="textinput2" id="error" style="width:80%">{ERROR}</textarea></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

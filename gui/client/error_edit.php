@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω OMEGA a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -17,37 +17,31 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+require '../include/vfs.php';
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-require '../include/vfs.php';
+$tpl = new pTemplate();
+$tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/error_edit.tpl');
+$tpl -> define_dynamic('page_message', 'page');
+$tpl -> define_dynamic('logged_from', 'page');
 
-function gen_error_page_data(&$tpl, &$sql, $user_id, $eid)
-{
+function gen_error_page_data(&$tpl, &$sql, $user_id, $eid) {
 	$domain = $_SESSION['user_logged'];
 
 	// Check if we already have an error page
-	$vfs   =& new vfs( $domain, $sql);
-	$error =  $vfs->get('/errors/' . $eid . '/index.php');
+	$vfs   =& new vfs($domain, $sql);
+	$error =  $vfs->get('/errors/'.$eid.'/index.php');
 	if (false !== $error) {
 		// We already have an error page, return it
-		$tpl->assign( array('ERROR'=>$error) );
+		$tpl->assign(array('ERROR' => $error));
 		return;
 	}
 
 	// No error info :'(
-	$tpl->assign( array('ERROR'=> '') );
+	$tpl->assign( array('ERROR' => '') );
 }
-
-$tpl = new pTemplate();
-
-$tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/error_edit.tpl');
-
-$tpl -> define_dynamic('page_message', 'page');
-
-$tpl -> define_dynamic('logged_from', 'page');
-
 
 //
 // common page data.
@@ -69,28 +63,23 @@ $tpl -> assign(
 //
 // dynamic page data.
 //
-if (!isset( $_GET['eid'])) {
-
-        set_page_message(tr('Server error - please choose error page'));
-
-		 header("Location: error_pages.php");
-
-		 die();
+if (!isset($_GET['eid'])) {
+	set_page_message(tr('Server error - please choose error page'));
+	header("Location: error_pages.php");
+	die();
 }
 else{
 	$eid = intval($_GET['eid']);
 }
 
-
-if ($eid==401 or $eid==403 or $eid==404 or $eid==500){
+if ($eid == 401 OR $eid == 403 OR $eid == 404 OR $eid == 500) {
 	gen_error_page_data($tpl, $sql, $_SESSION['user_id'], $_GET['eid']);
 }
 else{
-$tpl -> assign(
+	$tpl -> assign(
                 array(
                         'ERROR' => tr('Server error - please choose error page'),
 						'EID' => '0'
-
                      )
               );
 }
@@ -113,14 +102,12 @@ $tpl -> assign(
                         'TR_SAVE' => tr('Save'),
 						'TR_CANCEL' => tr('Cancel'),
 						'EID' => $eid
-
                      )
               );
 
 gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
-
 $tpl -> prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();

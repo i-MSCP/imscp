@@ -24,7 +24,7 @@
              <td align="center" valign="middle" bgcolor="#FFFFFF"><strong><font color="#FF0000">&nbsp;{MESSAGE}&nbsp;</font></strong></td>
             </tr>
             <tr>
-             <td align="right"><a class="login" href="index.php" target="_self">{TR_BACK}</a></td>
+             <td align="right"><a class="login" href="javascript:history.go(-1)" target="_self">{TR_BACK}</a></td>
             </tr>
            </table>
 	      </td>

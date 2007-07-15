@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -41,7 +41,6 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 
 	header('Location: index.php');
 	exit;
-
 }
 
 if (check_user_login()) {
@@ -50,15 +49,10 @@ if (check_user_login()) {
     }
 }
 
-
 if (isset($_SESSION['user_theme'])) {
-
 	$theme_color = $_SESSION['user_theme'];
-
 } else {
-
 	$theme_color = $cfg['USER_INITIAL_THEME'];
-
 }
 
 $tpl = new pTemplate();
@@ -68,7 +62,7 @@ if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/servicemode.tpl');
 
 	$tpl -> assign(array(
-						'TR_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+						'TR_PAGE_TITLE' => tr('ispCP a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
 						'TR_TIME' => gettimestr(),
@@ -83,7 +77,7 @@ if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/index.tpl');
 
 	$tpl -> assign(array(
-						'TR_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+						'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
 						'TR_TIME' => gettimestr(),
@@ -107,7 +101,6 @@ else
 	$tpl->assign('TR_LOSTPW', '');
 
 $tpl -> parse('PAGE', 'page');
-
 $tpl -> prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();

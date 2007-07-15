@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -26,21 +26,19 @@ if (!$cfg['LOSTPASSWORD']) {
 }
 
 // check for gd >= 2.x
-if (check_gd() == false) system_message("ERROR: php-extension 'gd' not loaded !");
+if (check_gd() == false)
+	system_message("ERROR: php-extension 'gd' not loaded !");
 
-if (captcha_fontfile_exists() == false) system_message("ERROR: captcha fontfile not found !");
+if (captcha_fontfile_exists() == false)
+	system_message("ERROR: captcha fontfile not found !");
 
 // remove old uniqkeys
 removeOldKeys($cfg['LOSTPASSWORD_TIMEOUT']);
 
 if (isset($_SESSION['user_theme'])) {
-
 	$theme_color = $_SESSION['user_theme'];
-
 } else {
-
 	$theme_color = $cfg['USER_INITIAL_THEME'];
-
 }
 
 if (isset($_GET['key'])) {
@@ -49,8 +47,8 @@ if (isset($_GET['key'])) {
 		check_input($_GET['key']);
 
 		$tpl = new pTemplate();
-		$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword_message.tpl');
-		$tpl -> assign(array(
+		$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword_message.tpl');
+		$tpl->assign(array(
 							'TR_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
 							'THEME_COLOR_PATH' => "themes/$theme_color",
 							'THEME_CHARSET' => tr('encoding'),
@@ -60,22 +58,22 @@ if (isset($_GET['key'])) {
 						);
 
 		if (sendpassword($_GET['key'])) {
-			$tpl -> assign(array(
+			$tpl->assign(array(
 								'TR_MESSAGE' => tr('Password sent'),
 								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 								)
 							);
 
 		} else {
-			$tpl -> assign(array(
+			$tpl->assign(array(
 								'TR_MESSAGE' => tr('ERROR: Password was not sent'),
 								'TR_LINK' => "<a class=\"link\" href=\"index.php\">".tr('Login')."</a>"
 								)
 							);
 		}
-		$tpl -> parse('PAGE', 'page');
 
-		$tpl -> prnt();
+		$tpl->parse('PAGE', 'page');
+		$tpl->prnt();
 
 		if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 		exit(0);
@@ -83,10 +81,12 @@ if (isset($_GET['key'])) {
 }
 
 if (isset($_POST['uname'])) {
+
+	check_ipaddr(getipaddr(), 2);
+
 	if (($_POST['uname'] != "") AND isset($_SESSION['image']) AND isset($_POST['capcode'])) {
 
 		check_input($_POST['uname']);
-
 		check_input($_POST['capcode']);
 
 		$tpl = new pTemplate();
@@ -121,8 +121,8 @@ if (isset($_POST['uname'])) {
 								)
 							);
 		}
-		$tpl -> parse('PAGE', 'page');
 
+		$tpl -> parse('PAGE', 'page');
 		$tpl -> prnt();
 
 		if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
@@ -133,10 +133,8 @@ if (isset($_POST['uname'])) {
 
 
 $tpl = new pTemplate();
-
-$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword.tpl');
-
-$tpl -> assign(
+$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword.tpl');
+$tpl->assign(
                 array(
 					'TR_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
 					'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
@@ -152,9 +150,8 @@ $tpl -> assign(
 					)
 				);
 
-$tpl -> parse('PAGE', 'page');
-
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 

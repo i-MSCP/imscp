@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω OMEGA a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -18,28 +18,6 @@
  **/
 
 require '../include/vfs.php';
-
-function write_error_page(&$sql, &$user_id, $eid)
-{
-  $error =  stripslashes($_POST['error']);
-  $file  =  '/errors/' . $eid . '/index.php';
-  $vfs   =& new vfs($_SESSION['user_logged'], $sql);
-  return $vfs->put($file, $error);
-}
-
-
-function update_error_page(&$sql, $user_id) {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
-	  	$eid = intval($_POST['eid']);
-	  	if (  in_array($eid, array(401,402,403,404,500) )
-		   && write_error_page($sql, $_SESSION['user_id'], $eid) ) {
-			set_page_message(tr('Custom error page was updated!'));
-		} else {
-			set_page_message(tr('System error - custom error page was NOT updated!'));
-		}
-	}
-}
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -49,12 +27,30 @@ $tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/error_pages.tpl');
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('logged_from', 'page');
 
-$theme_color = $cfg['USER_INITIAL_THEME'];
-
 //
 // page functions.
 //
 
+function write_error_page(&$sql, &$user_id, $eid) {
+  $error =  stripslashes($_POST['error']);
+  $file  =  '/errors/' . $eid . '/index.php';
+  $vfs   =& new vfs($_SESSION['user_logged'], $sql);
+  return $vfs->put($file, $error);
+}
+
+function update_error_page(&$sql, $user_id) {
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
+	  	$eid = intval($_POST['eid']);
+	  	if (in_array($eid, array(401,402,403,404,500)) && write_error_page($sql, $_SESSION['user_id'], $eid)) {
+			set_page_message(tr('Custom error page was updated!'));
+		}
+		else {
+			set_page_message(tr('System error - custom error page was NOT updated!'));
+		}
+	}
+}
+
+$theme_color = $cfg['USER_INITIAL_THEME'];
 
 //
 // common page data.
@@ -69,7 +65,8 @@ $tpl -> assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ISPCP - Client/Manage E
                      'TID' => $_SESSION['layout_id'],
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                     'DOMAIN' => $domain));
+                     'DOMAIN' => $domain
+				));
 
 //
 // dynamic page data.
@@ -94,7 +91,8 @@ $tpl -> assign(array('TR_ERROR_401' => tr('Error 401 (unauthorised)'),
                      'TR_ERROR_500' => tr('Error 500 (internal server error)'),
                      'TR_ERROR_PAGES' => tr('Error pages'),
                      'TR_EDIT' => tr('Edit'),
-                     'TR_VIEW' => tr('View')));
+                     'TR_VIEW' => tr('View')
+				));
 
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');
@@ -103,5 +101,4 @@ $tpl -> prnt();
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
-
 ?>
