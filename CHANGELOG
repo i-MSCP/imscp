@@ -8,6 +8,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-16 Raphael Geissert
+	- GUI:
+		* Fixed #457: Improved max-attempts limit for lost password's CAPTCHA
+		* Fixed open_basedir problem with vfs.php while getting/putting files
+
 2007-07-15 Benedikt Heintel
 	- GUI:
 		* Fixed #457: Add max-attempts limit for lost password's CAPTCHA
