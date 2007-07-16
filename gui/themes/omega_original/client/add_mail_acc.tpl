@@ -6,16 +6,19 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
+
 <script>
 <!--
-function sbmt(form, uaction) {
+	function sbmt(form, uaction) {
 
-    form.uaction.value = uaction;
-    form.submit();
+	    form.uaction.value = uaction;
+	    form.submit();
 
-    return false;
+	    return false;
 
-}
+	}
+
 	function checkForm(){
             var aname  = document.forms[0].elements['username'].value;
             var apass  = document.forms[0].elements['pass'].value;
@@ -167,7 +170,7 @@ function sbmt(form, uaction) {
     </table>
 	<!-- EDP: logged_from -->
 <!-- ToolTip -->
-<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;top:495px;left:315px;">{TR_FWD_HELP}</div>
+<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_FWD_HELP}</div>
 <!-- ToolTip end -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 	<tr>
@@ -268,7 +271,7 @@ function sbmt(form, uaction) {
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="document.getElementById('fwd_help').style.display='block'" onmouseout="document.getElementById('fwd_help').style.display='none'" />
+				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
 				</td>
                 <td nowrap  class="content">
                   <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>

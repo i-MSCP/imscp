@@ -82,7 +82,7 @@ if (isset($_GET['key'])) {
 
 if (isset($_POST['uname'])) {
 
-	check_ipaddr(getipaddr(), $cfg['BRUTEFORCE_MAX_CAPTCHA']);
+	check_ipaddr(getipaddr(), "capcha");
 
 	if (($_POST['uname'] != "") AND isset($_SESSION['image']) AND isset($_POST['capcode'])) {
 

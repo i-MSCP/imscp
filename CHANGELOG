@@ -8,6 +8,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-16 Benedikt Heintel
+	- GUI:
+		* Fixed #457: Improved max-attempts limit for lost password's CAPTCHA
+		* Fixed serveral errors.
+	- SQL:
+		* Added: cpatcha_count on table login in database.sql
+
 2007-07-16 Raphael Geissert
 	- GUI:
 		* Fixed #457: Improved max-attempts limit for lost password's CAPTCHA

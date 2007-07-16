@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
@@ -50,6 +50,7 @@ $tpl->assign(
 				'TR_ALIAS_NAME' => tr('Alias name'),
 				'TR_DOMAIN_IP' => tr('Domain IP'),
 				'TR_FORWARD' => tr('Forward to URL'),
+				'TR_Mount_POINT' => tr('Mount Point'),
 				'TR_MODIFY' => tr('Modify'),
 				'TR_CANCEL' => tr('Cancel'),
 				'TR_ENABLE_FWD' => tr("Enable Forward"),
@@ -150,6 +151,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
                        	'ALIAS_NAME' => $data['alias_name'],
 						'DOMAIN_IP' => $ip_data,
 						'FORWARD' => $url_forward,
+						'MOUNT_POINT' => $data['alias_mount'],
 						'CHECK_EN' => $check_en,
 						'CHECK_DIS' => $check_dis,
 						'ID' => $edit_id

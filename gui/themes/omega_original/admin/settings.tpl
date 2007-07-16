@@ -109,6 +109,13 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td class="content2">{TR_BRUTEFORCE_MAX_CAPTCHA}</td>
+                              <td class="content">
+                                <input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_OTHER_SETTINGS}</strong></td>
                             </tr>
                             <tr>

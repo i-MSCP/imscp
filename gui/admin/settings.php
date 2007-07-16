@@ -82,6 +82,7 @@ $tpl -> assign(
 					'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg['BRUTEFORCE_MAX_LOGIN'],
 					'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg['BRUTEFORCE_BLOCK_TIME'],
 					'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg['BRUTEFORCE_BETWEEN_TIME'],
+					'BRUTEFORCE_MAX_CAPTCHA' => $cfg['BRUTEFORCE_MAX_CAPTCHA'],
 					'DOMAIN_ROWS_PER_PAGE' => $cfg['DOMAIN_ROWS_PER_PAGE']
 					)
 			);
@@ -140,6 +141,7 @@ $tpl -> assign(
                        'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
                        'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime (minutes)'),
                        'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Block time between logins (seconds)'),
+                       'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Max number of Chapcha geraneration'),
                        'TR_OTHER_SETTINGS' => tr('Other settings'),
                        'TR_USER_INITIAL_LANG' => tr('Default language'),
                        'TR_SUPPORT_SYSTEM' => tr('Support system'),

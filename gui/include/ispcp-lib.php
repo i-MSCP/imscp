@@ -94,8 +94,8 @@ $cfg['BRUTEFORCE'] = true;
 $cfg['BRUTEFORCE_BLOCK_TIME'] = 30;
 // max login before block
 $cfg['BRUTEFORCE_MAX_LOGIN'] = 3;
-// max captcha (extra) failed attempts before block
-$cfg['BRUTEFORCE_MAX_CAPTCHA'] = 3;
+// max captcha failed attempts before block
+$cfg['BRUTEFORCE_MAX_CAPTCHA'] = 5;
 // enable or disable time between logins
 // true = disable, false = enable
 $cfg['BRUTEFORCE_BETWEEN'] = true;

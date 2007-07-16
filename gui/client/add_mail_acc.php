@@ -1,6 +1,6 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ *  ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2007 by ispCP | http://isp-control.net
