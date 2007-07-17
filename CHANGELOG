@@ -19,6 +19,11 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #457: Improved max-attempts limit for lost password's CAPTCHA
 		* Fixed open_basedir problem with vfs.php while getting/putting files
+	- ENGINE:
+		* php{4,5} fcgi starter directories are now created, as necessary, when status is 'change'
+		* Added partial fix for #465
+	- CONFIGS:
+		* Removed unecessary data from apache config parts
 
 2007-07-15 Benedikt Heintel
 	- GUI:

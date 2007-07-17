@@ -1773,36 +1773,42 @@ sub dmn_add_httpd_file_data {
 	#
 
 	if(!(-e "$starter_dir/$dmn_name")) {
-	$rs = make_dir(
-					"$starter_dir/$dmn_name",
-					$sys_user,
-					$sys_group,
-					0755
-					);
+            $rs = make_dir(
+                                            "$starter_dir/$dmn_name",
+                                            $sys_user,
+                                            $sys_group,
+                                            0755
+                                            );
+    
+            return $rs if ($rs != 0);
+        }
+        
+        #
+        # PHP4 and PHP5 Directory for usual user
+        #
+        
+        if (! -e "$starter_dir/$dmn_name/php4") {
+    
+            $rs = make_dir(
+                                            "$starter_dir/$dmn_name/php4",
+                                            $sys_user,
+                                            $sys_group,
+                                            0750
+                                            );
+    
+            return $rs if ($rs != 0);
+        }
+        
+        if (! -e "$starter_dir/$dmn_name/php5") {
 
-	return $rs if ($rs != 0);
-
-	#
-	# PHP4 and PHP5 Directory for usual user
-	#
-
-	$rs = make_dir(
-					"$starter_dir/$dmn_name/php4",
-					$sys_user,
-					$sys_group,
-					0750
-					);
-
-	return $rs if ($rs != 0);
-
-	$rs = make_dir(
-					"$starter_dir/$dmn_name/php5",
-					$sys_user,
-					$sys_group,
-					0750
-					);
-
-	return $rs if ($rs != 0);
+            $rs = make_dir(
+                                            "$starter_dir/$dmn_name/php5",
+                                            $sys_user,
+                                            $sys_group,
+                                            0750
+                                            );
+    
+            return $rs if ($rs != 0);
 	}
 
 	#
@@ -1935,8 +1941,29 @@ sub dmn_add_httpd_file_data {
 	#
 	# Default error page template;
 	#
+        
+        # Copy HTML versions of the error pages if they exist
+        if (-e "$root_dir/gui/errordocs/404.html") {
+        
+                my @errordocs = (401, 403, 404, 500);
+                
+                my ($i, $key) = ('', '');
 
-	if (-e "$root_dir/gui/errordocs/index.php") {
+                for($i = 0; $i < scalar(@errordocs); $i++) {
+                    $key = @errordocs[$i];
+                    
+                    if (-e "$root_dir/gui/errordocs/$key.html") {
+                    
+                        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/$key");
+                        return $rs if ($rs != 0);
+                        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/$key");
+                        return $rs if ($rs != 0);
+                        $rs = setfmode("$www_dir/$dmn_name/errors/$key/error_top.jpg", $sys_user, $sys_group, 0644);
+                        return $rs if ($rs != 0);
+                    }
+                }
+
+	} else if (-e "$root_dir/gui/errordocs/index.php") {
 
 		my $err_tpl = '';
 
@@ -1959,7 +1986,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/401");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
+			$rs = setfmode("$www_dir/$dmn_name/errors/401/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 
@@ -1978,7 +2005,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/403");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
+			$rs = setfmode("$www_dir/$dmn_name/errors/403/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 
@@ -1997,7 +2024,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/404");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
+			$rs = setfmode("$www_dir/$dmn_name/errors/404/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 
@@ -2016,7 +2043,7 @@ sub dmn_add_httpd_file_data {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/500");
 			return $rs if ($rs != 0);
 
-			$rs = setfmode("$root_dir/gui/errordocs/error_top.jpg", $sys_user, $sys_group, 0644);
+			$rs = setfmode("$www_dir/$dmn_name/errors/500/error_top.jpg", $sys_user, $sys_group, 0644);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2221,6 +2248,34 @@ sub dmn_change_httpd_file_data {
 						);
 
 		return $rs if ($rs != 0);
+	}
+        
+        #
+        # PHP4 and PHP5 Directory for usual user
+        #
+        
+        if (! -d "$starter_dir/$dmn_name/php4") {
+    
+            $rs = make_dir(
+                                            "$starter_dir/$dmn_name/php4",
+                                            $sys_user,
+                                            $sys_group,
+                                            0750
+                                            );
+    
+            return $rs if ($rs != 0);
+        }
+        
+        if (! -d "$starter_dir/$dmn_name/php5") {
+
+            $rs = make_dir(
+                                            "$starter_dir/$dmn_name/php5",
+                                            $sys_user,
+                                            $sys_group,
+                                            0750
+                                            );
+    
+            return $rs if ($rs != 0);
 	}
 
 	#

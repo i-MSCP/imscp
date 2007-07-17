@@ -7,7 +7,7 @@
 
     SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
 
-    ServerAdmin     root@{DMN_NAME}
+    ServerAdmin     webmaster@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs
 
     ServerName      {SUB_NAME}
@@ -25,6 +25,9 @@
         <IfModule mod_php4.c>
             php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
         </IfModule>
+        <IfModule mod_php5.c>
+            php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
+        </IfModule>
     </Directory>
 
     ErrorDocument 401 /errors/401/index.php
@@ -34,19 +37,6 @@
 
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.
-
-    <IfModule mod_php4.c>
-        <Directory {GUI_ROOT_DIR}>
-            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-            php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
-        </Directory>
-    </IfModule>
-    <IfModule mod_php5.c>
-        <Directory {GUI_ROOT_DIR}>
-            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/tmp/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-            php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
-        </Directory>
-    </IfModule>
 
     # httpd sub entry PHP2 support BEGIN.
     # httpd sub entry PHP2 support END.
