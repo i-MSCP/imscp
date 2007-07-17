@@ -1654,6 +1654,22 @@ sub als_add_httpd_file_data {
     my $sys_user = "$suexec_user_pref$sys_uid";
 
     my $sys_group = $main::cfg{'APACHE_GROUP'};
+
+    #
+    # Skip data creation if the mount point already exists
+    #
+
+    return 0 if ($als_mount eq '/' || $als_mount eq '');
+
+    my $sql = "select count(alias_id) from domain_aliasses where domain_id=$dmn_id and alias_mount='$als_mount'";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    return 0 if (@{@$rdata[0]}[0] > 1);
+
+
     #
     # Domain WWW directories;
     #
@@ -1721,42 +1737,6 @@ sub als_add_httpd_file_data {
 
     return $rs if ($rs != 0);
 
-    $rs = make_dir(
-                   "$www_dir/$als_name/errors/401",
-                   $sys_user,
-                   $sys_group,
-                   0770
-                  );
-
-    return $rs if ($rs != 0);
-
-    $rs = make_dir(
-                   "$www_dir/$als_name/errors/403",
-                   $sys_user,
-                   $sys_group,
-                   0770
-                  );
-
-    return $rs if ($rs != 0);
-
-    $rs = make_dir(
-                   "$www_dir/$als_name/errors/404",
-                   $sys_user,
-                   $sys_group,
-                   0770
-                  );
-
-    return $rs if ($rs != 0);
-
-    $rs = make_dir(
-                   "$www_dir/$als_name/errors/500",
-                   $sys_user,
-                   $sys_group,
-                   0770
-                  );
-
-    return $rs if ($rs != 0);
-
     #
     # Domain WWW files;
     #
@@ -1782,54 +1762,25 @@ sub als_add_httpd_file_data {
     return $rs if ($rs != 0);
 
     #
-    # Default error page template;
+    # Default error pages;
     #
 
-    my $err_tpl = '';
+    my @errordocs = (401, 403, 404, 500);
 
-    ($rs, $err_tpl) = get_file("$root_dir/gui/errordocs/index.php");
+    my ($i, $key) = ('', '');
 
+    for($i = 0; $i < scalar(@errordocs); $i++) {
+        $key = $errordocs[$i];
+
+        if (-e "$root_dir/gui/errordocs/$key.html") {
+
+            $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$als_name/errors/");
+            return $rs if ($rs != 0);
+        }
+    }
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$als_name/errors/");
     return $rs if ($rs != 0);
-
-
-    ($rs, $rdata) = store_file(
-                               "$www_dir/$als_name/errors/401/index.php",
-                               $err_tpl,
-                               $sys_user,
-                               $sys_group,
-                               0660
-                              );
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = store_file(
-                               "$www_dir/$als_name/errors/403/index.php",
-                               $err_tpl,
-                               $sys_user,
-                               $sys_group,
-                               0660
-                              );
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = store_file(
-                               "$www_dir/$als_name/errors/404/index.php",
-                               $err_tpl,
-                               $sys_user,
-                               $sys_group,
-                               0660
-                              );
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = store_file(
-                               "$www_dir/$als_name/errors/500/index.php",
-                               $err_tpl,
-                               $sys_user,
-                               $sys_group,
-                               0660
-                              );
-
+    $rs = setfmode("$www_dir/$als_name/errors/error_top.jpg", $sys_user, $sys_group, 0644);
     return $rs if ($rs != 0);
 
     #
@@ -1953,11 +1904,27 @@ sub als_del_httpd_file_data {
 
     my $dmn_name = @$als_data[8];
 
+    my $dmn_id = @$als_data[7];
+
     my $als_name = "$dmn_name$als_mount";
 
     my $root_dir = $main::cfg{'ROOT_DIR'};
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+    #
+    # Skip data deletion if the mount point is shared
+    #
+
+    return 0 if ($als_mount eq '/' || $als_mount eq '');
+
+    my $sql = "select count(alias_id) from domain_aliasses where domain_id=$dmn_id and alias_mount='$als_mount'";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    return 0 if (@{@$rdata[0]}[0] > 1);
 
     #
     # Domain WWW directories;

@@ -6,11 +6,6 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script language="JavaScript" type="text/JavaScript">
-<!--
-
-//-->
-</script>
 </head>
 
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -59,7 +54,7 @@
                             <td width="55"><a href="error_edit.php?eid=401"><img src="{THEME_COLOR_PATH}/images/icons/error401.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_401}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=401" class="link">{TR_EDIT}</a></td>
-                            <td><a href="{DOMAIN}/errors/401/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
+                            <td><a href="{DOMAIN}/errors/401.html" target="_blank" class="link">{TR_VIEW}</a></td>
                           </tr>
                       </table></td>
                     </tr>
@@ -70,7 +65,7 @@
                             <td width="55"><a href="error_edit.php?eid=403"><img src="{THEME_COLOR_PATH}/images/icons/error403.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_403}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=403" class="link">{TR_EDIT}</a></td>
-                            <td><a href="{DOMAIN}/errors/403/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
+                            <td><a href="{DOMAIN}/errors/403.html" target="_blank" class="link">{TR_VIEW}</a></td>
                           </tr>
                       </table></td>
                     </tr>
@@ -81,7 +76,7 @@
                             <td width="55"><a href="error_edit.php?eid=404"><img src="{THEME_COLOR_PATH}/images/icons/error404.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_404}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=404" class="link">{TR_EDIT}</a></td>
-                            <td><a href="{DOMAIN}/errors/404/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
+                            <td><a href="{DOMAIN}/errors/404.html" target="_blank" class="link">{TR_VIEW}</a></td>
                           </tr>
                       </table></td>
                     </tr>
@@ -92,7 +87,7 @@
                             <td width="55"><a href="error_edit.php?eid=500"><img src="{THEME_COLOR_PATH}/images/icons/error500.png" width="38" height="44" border="0"></a></td>
                             <td width="300">{TR_ERROR_500}</td>
                             <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=500" class="link">{TR_EDIT}</a></td>
-                            <td><a href="{DOMAIN}/errors/500/index.php" target="_blank" class="link">{TR_VIEW}</a></td>
+                            <td><a href="{DOMAIN}/errors/500.html" target="_blank" class="link">{TR_VIEW}</a></td>
                           </tr>
                       </table></td>
                     </tr>

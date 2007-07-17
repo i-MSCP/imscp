@@ -141,7 +141,7 @@ $tpl -> assign(
                        'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
                        'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime (minutes)'),
                        'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Block time between logins (seconds)'),
-                       'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Max number of Chapcha geraneration'),
+                       'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Max number of CAPTCHA validation attempts'),
                        'TR_OTHER_SETTINGS' => tr('Other settings'),
                        'TR_USER_INITIAL_LANG' => tr('Default language'),
                        'TR_SUPPORT_SYSTEM' => tr('Support system'),

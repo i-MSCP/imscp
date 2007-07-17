@@ -1878,42 +1878,6 @@ sub dmn_add_httpd_file_data {
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir(
-					"$www_dir/$dmn_name/errors/401",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
-	return $rs if ($rs != 0);
-
-	$rs = make_dir(
-					"$www_dir/$dmn_name/errors/403",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
-	return $rs if ($rs != 0);
-
-	$rs = make_dir(
-					"$www_dir/$dmn_name/errors/404",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
-	return $rs if ($rs != 0);
-
-	$rs = make_dir(
-					"$www_dir/$dmn_name/errors/500",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
-	return $rs if ($rs != 0);
-
 	#
 	# Domain WWW files;
 	#
@@ -1939,114 +1903,26 @@ sub dmn_add_httpd_file_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Default error page template;
+	# Default error pages;
 	#
         
-        # Copy HTML versions of the error pages if they exist
-        if (-e "$root_dir/gui/errordocs/404.html") {
+        my @errordocs = (401, 403, 404, 500);
         
-                my @errordocs = (401, 403, 404, 500);
-                
-                my ($i, $key) = ('', '');
+        my ($i, $key) = ('', '');
 
-                for($i = 0; $i < scalar(@errordocs); $i++) {
-                    $key = $errordocs[$i];
-                    
-                    if (-e "$root_dir/gui/errordocs/$key.html") {
-                    
-                        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/$key");
-                        return $rs if ($rs != 0);
-                        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/$key");
-                        return $rs if ($rs != 0);
-                        $rs = setfmode("$www_dir/$dmn_name/errors/$key/error_top.jpg", $sys_user, $sys_group, 0644);
-                        return $rs if ($rs != 0);
-                    }
-                }
-
-	} elsif (-e "$root_dir/gui/errordocs/index.php") {
-
-		my $err_tpl = '';
-
-		($rs, $err_tpl) = get_file("$root_dir/gui/errordocs/index.php");
-
-		return $rs if ($rs != 0);
-
-		if (!(-e "$www_dir/$dmn_name/errors/401/index.php")) {
-
-			($rs, $rdata) = store_file(
-										"$www_dir/$dmn_name/errors/401/index.php",
-										$err_tpl,
-										$sys_user,
-										$sys_group,
-										0644
-										);
-
-			return $rs if ($rs != 0);
-
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/401");
-			return $rs if ($rs != 0);
-
-			$rs = setfmode("$www_dir/$dmn_name/errors/401/error_top.jpg", $sys_user, $sys_group, 0644);
-			return $rs if ($rs != 0);
-		}
-
-		if (!(-e "$www_dir/$dmn_name/errors/403/index.php")) {
-
-			($rs, $rdata) = store_file(
-										"$www_dir/$dmn_name/errors/403/index.php",
-										$err_tpl,
-										$sys_user,
-										$sys_group,
-										0644
-										);
-
-			return $rs if ($rs != 0);
-
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/403");
-			return $rs if ($rs != 0);
-
-			$rs = setfmode("$www_dir/$dmn_name/errors/403/error_top.jpg", $sys_user, $sys_group, 0644);
-			return $rs if ($rs != 0);
-		}
-
-		if (!(-e "$www_dir/$dmn_name/errors/404/index.php")) {
-
-			($rs, $rdata) = store_file(
-										"$www_dir/$dmn_name/errors/404/index.php",
-										$err_tpl,
-										$sys_user,
-										$sys_group,
-										0644
-										);
-
-			return $rs if ($rs != 0);
-
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/404");
-			return $rs if ($rs != 0);
-
-			$rs = setfmode("$www_dir/$dmn_name/errors/404/error_top.jpg", $sys_user, $sys_group, 0644);
-			return $rs if ($rs != 0);
-		}
-
-		if (!(-e "$www_dir/$dmn_name/errors/500/index.php")) {
-
-			($rs, $rdata) = store_file(
-										"$www_dir/$dmn_name/errors/500/index.php",
-										$err_tpl,
-										$sys_user,
-										$sys_group,
-										0644
-										);
-
-			return $rs if ($rs != 0);
-
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/500");
-			return $rs if ($rs != 0);
-
-			$rs = setfmode("$www_dir/$dmn_name/errors/500/error_top.jpg", $sys_user, $sys_group, 0644);
-			return $rs if ($rs != 0);
-		}
-	}
+        for($i = 0; $i < scalar(@errordocs); $i++) {
+            $key = $errordocs[$i];
+            
+            if (-e "$root_dir/gui/errordocs/$key.html") {
+            
+                $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
+                return $rs if ($rs != 0);
+            }
+        }
+        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$dmn_name/errors/");
+        return $rs if ($rs != 0);
+        $rs = setfmode("$www_dir/$dmn_name/errors/error_top.jpg", $sys_user, $sys_group, 0644);
+        return $rs if ($rs != 0);
 
 	#
 	# Default domain page template;

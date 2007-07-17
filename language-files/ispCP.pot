@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-13 14:51-0500\n"
+"POT-Creation-Date: 2007-07-17 13:41-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,13 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr ""
 
 msgid "_: Localised language"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr ""
 
 msgid "Administrator login"
@@ -44,6 +45,9 @@ msgid "Lost password"
 msgstr ""
 
 msgid "Lost password function currently disabled"
+msgstr ""
+
+msgid "ISPCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -1460,6 +1464,9 @@ msgstr ""
 msgid "Block time between logins (seconds)"
 msgstr ""
 
+msgid "Max number of CAPTCHA validation attempts"
+msgstr ""
+
 msgid "Other settings"
 msgstr ""
 
@@ -1694,7 +1701,7 @@ msgstr ""
 msgid "Domain with this name already exist"
 msgstr ""
 
-msgid "There are alias with same mount point"
+msgid "There is a subdomain with the same mount point!"
 msgstr ""
 
 msgid "Alias scheduled for addition!"
@@ -2111,6 +2118,9 @@ msgid "Edit domain alias"
 msgstr ""
 
 msgid "Alias name"
+msgstr ""
+
+msgid "Mount Point"
 msgstr ""
 
 msgid "Enable Forward"

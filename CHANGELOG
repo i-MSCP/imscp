@@ -8,9 +8,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-07-17 Malte Geierhos
-	- GUI: 	
-		* Fixed #482: perl is using another syntax ;) 
+2007-07-17 Raphael Geissert
+	- GUI:
+		* Made changes to reflect fix for #465
+		* Made changes to reflect fix for #483
+	- ENGINE:
+		* Fixed #482: Error into the script ispcp-dmn-mngr
+		* Fixed #465: Error pages can't be displayed when PHP is disabled
+		* Fixed #483: Domain aliases with same mount point (thanks to greg@proxyconcept.net)
+	- CONFIGS:
+		* Made changes to reflect fix for #465
 
 2007-07-16 Benedikt Heintel
 	- GUI:

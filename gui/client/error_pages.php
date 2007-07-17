@@ -33,7 +33,7 @@ $tpl -> define_dynamic('logged_from', 'page');
 
 function write_error_page(&$sql, &$user_id, $eid) {
   $error =  stripslashes($_POST['error']);
-  $file  =  '/errors/' . $eid . '/index.php';
+  $file  =  '/errors/' . $eid . '.html';
   $vfs   =& new vfs($_SESSION['user_logged'], $sql);
   return $vfs->put($file, $error);
 }

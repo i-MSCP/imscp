@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-13 14:51-0500\n"
+"POT-Creation-Date: 2007-07-17 13:41-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -16,13 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8 "
 
 msgid "_: Localised language"
 msgstr "Slovenský jazyk"
 
-msgid "ISPCP - Virtual Hosting Control System"
+#, fuzzy
+msgid "ispCP Omega a Virtual Hosting Control System"
 msgstr "ISPCP - Ovladacie centrum virtuálneho hostingu"
 
 msgid "Administrator login"
@@ -45,6 +47,9 @@ msgstr "Zabudnuté heslo"
 
 msgid "Lost password function currently disabled"
 msgstr "Funkcia zabudnutého hesla je momentálne zablokovaná"
+
+msgid "ISPCP - Virtual Hosting Control System"
+msgstr "ISPCP - Ovladacie centrum virtuálneho hostingu"
 
 msgid "Password sent"
 msgstr "Heslo poslané"
@@ -70,12 +75,8 @@ msgstr "CHYBA: Bezpečnostný kód nebol správny!"
 msgid "Security code"
 msgstr "Bezpečnostný kód"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr ""
-"(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v obrázku "
-"nad do políčka \"Bezpečnostný kód\")"
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgstr "(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v obrázku nad do políčka \"Bezpečnostný kód\")"
 
 msgid "Request password"
 msgstr "Vyžiadať heslo"
@@ -355,8 +356,7 @@ msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximálny počet aliasov<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-"Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+msgstr "Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Limit FTP kont<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
@@ -780,15 +780,11 @@ msgid "Then the value you are trying to enter now!<br>"
 msgstr "Potom hodnota, ktorú teraz zadávate !<br>"
 
 #, php-format
-msgid ""
-"This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
-msgstr ""
-"Tento predajca má užívateľa/užívateľov s neobmedzenými právami na <b>%s</b> "
-"službu !<br>"
+msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgstr "Tento predajca má užívateľa/užívateľov s neobmedzenými právami na <b>%s</b> službu !<br>"
 
 msgid "If you want to limit the reseller, fist you must limit its users !<br>"
-msgstr ""
-"Ak chcete obmedziť predajcu, najprv musíte limitovat jeho užívateľov!<br>"
+msgstr "Ak chcete obmedziť predajcu, najprv musíte limitovat jeho užívateľov!<br>"
 
 msgid "This reseller has domains assigned To <b>"
 msgstr "Tento predajca priradil domény k <b>"
@@ -1158,20 +1154,12 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> má neobmedzené práva <b>%2$s</b> Služby !<br>"
 
 #, php-format
-msgid ""
-"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service!"
-msgstr ""
-"Nemôžete presunúť <b>%1$s</b> do destinácie predajcu,<br>ktorý má limit pre "
-"<b>%2$s</b> službu!"
+msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgstr "Nemôžete presunúť <b>%1$s</b> do destinácie predajcu,<br>ktorý má limit pre <b>%2$s</b> službu!"
 
 #, php-format
-msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller!<br>"
-msgstr ""
-"<b>%1$s</b> prekročil limit pre <b>%2$s</b><br>službu v mieste určenia "
-"predajcu!<br>"
+msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgstr "<b>%1$s</b> prekročil limit pre <b>%2$s</b><br>službu v mieste určenia predajcu!<br>"
 
 msgid "Moving aborted!"
 msgstr "Presun zrušený!"
@@ -1181,12 +1169,8 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
 msgstr "<b>%1$s</b> má neobmedzené práva pre <b>%2$s</b> službu !<br>"
 
 #, php-format
-msgid ""
-"<b>%s</b> has IP address that can not be managed from the destination "
-"reseller !<br>This user can not be moved!"
-msgstr ""
-"<b>%s</b> má IP adresu, ktorá nemože byť spravovaná z miesta pre predajcu !"
-"<br>Tento užívateľ nemôže byť presunutý!"
+msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgstr "<b>%s</b> má IP adresu, ktorá nemože byť spravovaná z miesta pre predajcu !<br>Tento užívateľ nemôže byť presunutý!"
 
 msgid "ISPCP - Admin/Manage users/User assignment"
 msgstr "ISPCP - Admin/Spravovať užívateľov/Priradenie užívateľov"
@@ -1244,9 +1228,7 @@ msgstr "E-mail aktualizovaný"
 
 #, fuzzy
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr ""
-"Tento používateľ má doménu !<br>Pre zmazanie užívateľa - najprv zmažte "
-"doménu!"
+msgstr "Tento používateľ má doménu !<br>Pre zmazanie užívateľa - najprv zmažte doménu!"
 
 msgid "User was disabled"
 msgstr "Užívateľ bol zablokovaný"
@@ -1508,6 +1490,10 @@ msgstr "Čas zablokovania (minúty)"
 msgid "Block time between logins (seconds)"
 msgstr "Čas medzi prihláseniami (minúty)"
 
+#, fuzzy
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Počet pokusov prihlásenia"
+
 msgid "Other settings"
 msgstr "Ostatné nastavenia"
 
@@ -1742,7 +1728,8 @@ msgstr "Nesprávna syntax presmerovania"
 msgid "Domain with this name already exist"
 msgstr "Doména s rovnakým menom už existuje"
 
-msgid "There are alias with same mount point"
+#, fuzzy
+msgid "There is a subdomain with the same mount point!"
 msgstr "Už existuje alias s rovnakým bodom pripojenia"
 
 msgid "Alias scheduled for addition!"
@@ -1968,8 +1955,7 @@ msgid "Restore backup"
 msgstr "Obnoviť zálohu"
 
 #, fuzzy
-msgid ""
-"Click the Restore button and the system will restore the last daily backup"
+msgid "Click the Restore button and the system will restore the last daily backup"
 msgstr "Kliknutím na tlačidlo obnovenia zálohy obnovíte poslednú dennú zálohu"
 
 msgid "Restore"
@@ -2107,18 +2093,11 @@ msgstr "Zmeniť crontab"
 msgid "Cronjobs"
 msgstr "Crontab"
 
-msgid ""
-"Domain alias you are trying to remove has email accounts !<br>First remove "
-"them!"
-msgstr ""
-"Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
-"odstránte!"
+msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr ""
-"Alias domény, ktorý sa snažíte odstrániť má FTP kontá!<br>Najpr ich "
-"odstránte!"
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr "Alias domény, ktorý sa snažíte odstrániť má FTP kontá!<br>Najpr ich odstránte!"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Alias načasovný na zmazanie!"
@@ -2135,19 +2114,14 @@ msgstr "Prosím zmažte najprv \"zachytiť všetko\" konto pre tento e-mail!"
 msgid "SQL database was removed successfully!"
 msgstr "SQL databáza zmazaná úspešne!"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr ""
-"Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
-"odstránte!"
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr "Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sub-doména načasovaná na zmazanie!"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
 
 msgid "Mail account scheduled for modification!"
 msgstr "Mail konto načasované na zmenu!"
@@ -2178,6 +2152,10 @@ msgstr "Zmeniť alias domény"
 
 msgid "Alias name"
 msgstr "Meno aliasu"
+
+#, fuzzy
+msgid "Mount Point"
+msgstr "Bod propojenia"
 
 #, fuzzy
 msgid "Enable Forward"
@@ -2975,15 +2953,11 @@ msgstr "sekundy"
 msgid "You have been blocked for"
 msgstr "Boli ste zablkovaný na"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
-msgstr ""
-"Systém je momentálne v servisnom móde! Teraz sa môžu prihlásiť iba "
-"administrátori."
+msgid "System is currently in servicemode! At time only administrators can login."
+msgstr "Systém je momentálne v servisnom móde! Teraz sa môžu prihlásiť iba administrátori."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
-"Užívateľ uz prihlásený alebo problém pri zdielaní sedenia! Ukončujem..."
+msgstr "Užívateľ uz prihlásený alebo problém pri zdielaní sedenia! Ukončujem..."
 
 msgid "Domain status is not OK - Login aborted."
 msgstr "Status domény nie je OK - Login zrušený."
@@ -3030,80 +3004,50 @@ msgstr "skovať aliasy"
 msgid "You have reached your domains limit.<br>You can not add more domains!"
 msgstr "Dosiahli ste limit domén.<br>Nemôžete pridať viac domény!"
 
-msgid ""
-"You have a subdomains limit!<br>You can not add an user with unlimited "
-"subdomains!"
+msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
 msgstr "Dosiahli ste limit sub-domén.<br>Nemôžete pridať viac sub-domény!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Prekračujete Váš limit sub-domén!"
 
-msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
-msgstr ""
-"Máte limit aliasov!<br>Nemôžete pridať užívateľa s neomedzeným počtom "
-"aliasov!"
+msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgstr "Máte limit aliasov!<br>Nemôžete pridať užívateľa s neomedzeným počtom aliasov!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Prekračujete svoj limit aliasov!"
 
-msgid ""
-"You have a mail accounts limit!<br>You can not add an user with unlimited "
-"mail accounts!"
-msgstr ""
-" Máte limit e-mailovych kont!<br>Nemôžete pridať užívateľa s neobmedzeným "
-"počtom e-mailov!"
+msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgstr " Máte limit e-mailovych kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom e-mailov!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Prekračujete limit e-mailových kont!"
 
-msgid ""
-"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
-"accounts!"
-msgstr ""
-" Máte limit FTP kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom FTP "
-"kont!"
+msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgstr " Máte limit FTP kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom FTP kont!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Prekračujete limit FTP kont!"
 
-msgid ""
-"You have a SQL databases limit!<br>You can not add an user with unlimited "
-"SQL databases!"
-msgstr ""
-" Máte limit SQL databáz!<br>Nemôžete pridať užívateľa s neobmedzeným počtom "
-"SQL databáz!"
+msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgstr " Máte limit SQL databáz!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL databáz!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Prekračujete limit SQL databáz!"
 
-msgid ""
-"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
-"users!"
-msgstr ""
-" Máte limit SQL kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL "
-"kont!"
+msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgstr " Máte limit SQL kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL kont!"
 
-msgid ""
-"You have disabled SQL databases for this user!<br>You can not have SQL users "
-"here!"
-msgstr ""
-"Zablokovali ste SQL databázu pre tohto užívateľa!<br>Nemôžete mať SQL "
-"užívateľa tu!"
+msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
+msgstr "Zablokovali ste SQL databázu pre tohto užívateľa!<br>Nemôžete mať SQL užívateľa tu!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Prekračujete limit SQL kont!"
 
-msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
-msgstr ""
-" Máte limit prenesených dát!<br>Nemôžete pridať užívateľa s neobmedzenými "
-"prenesenými dátami!"
+msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgstr " Máte limit prenesených dát!<br>Nemôžete pridať užívateľa s neobmedzenými prenesenými dátami!"
 
 msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
-msgstr ""
-" Máte limit diskového priestoru!<br>Nemôžete pridať užívateľa s neobmedzeným "
-"diskovým priestorom!"
+msgstr " Máte limit diskového priestoru!<br>Nemôžete pridať užívateľa s neobmedzeným diskovým priestorom!"
 
 msgid "You have a new order"
 msgstr "Máte novúobjednávku"
@@ -3161,11 +3105,8 @@ msgstr "Osobné údaje"
 msgid "Check Out"
 msgstr "Skontrolovať"
 
-msgid ""
-"<b>Thank You for purchasing</b><br>You will receive an email with more "
-"details and information"
-msgstr ""
-"<b>Dakujeme vám za nakupenie</b><br>Za chviľuobdržíte e-mail s podrobnostami"
+msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
+msgstr "<b>Dakujeme vám za nakupenie</b><br>Za chviľuobdržíte e-mail s podrobnostami"
 
 msgid "No available hosting packages"
 msgstr "Žiaden hostinhový baliček nie je dostupný"
@@ -3236,26 +3177,17 @@ msgstr "Obežník"
 msgid "Wrong domain ID!"
 msgstr "Zlé ID domény!"
 
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr ""
-"Doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>najprv ich "
-"odtráňte!"
+msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr "Doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>najprv ich odtráňte!"
 
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr ""
-"Doména, ktorú sa snažíte odstrániť má FTP kontá!<br>najprv ich odtráňte!"
+msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr "Doména, ktorú sa snažíte odstrániť má FTP kontá!<br>najprv ich odtráňte!"
 
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
 msgstr "Doména, ktorú sa snažíte odstrániť má aliasy!<br>najprv ich odtráňte!"
 
-msgid ""
-"Domain you are trying to remove has subdomains accounts !<br> first remove "
-"them !"
-msgstr ""
-"Doména, ktorú sa snažíte odstrániť má sub-domény !<br>najprv ich odtráňte!"
+msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
+msgstr "Doména, ktorú sa snažíte odstrániť má sub-domény !<br>najprv ich odtráňte!"
 
 msgid "ISPCP - Manage Domain/Alias"
 msgstr "ISPCP - Spravovať doménu/alias"
@@ -3315,10 +3247,8 @@ msgid "<b>%s</b> Service can not be limited !<br>"
 msgstr "<b>%s</b> Služba nemôže byť limitovaná !<br>"
 
 #, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
-msgstr ""
-"Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
+msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
+msgstr "Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be unlimited !<br>"
@@ -3337,8 +3267,7 @@ msgid "<b>%s</b> service can not be limited !<br>"
 msgstr "<b>%s</b> služba nemôže byť limitovaná !<br>"
 
 #, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
+msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr "Zadané číslo je menšie ako <b>%s</b> to , ktoré je v systéme!"
 
 msgid "ISPCP - Users/Edit"
@@ -3540,8 +3469,7 @@ msgstr "Užívateľské dáta aktualizované!"
 msgid "User data not updated!"
 msgstr "Užívateľské dáta neboli aktualizované!"
 
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
+msgid "This user has domain record !<br>First remove the domain from the system!"
 msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo systému!"
 
 msgid "User not terminated!"

@@ -21,19 +21,10 @@
 
     Alias /errors {WWW_DIR}/{DMN_NAME}/errors/
 
-    <Directory {WWW_DIR}/{DMN_NAME}/errors/>
-        <IfModule mod_php4.c>
-            php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
-        </IfModule>
-        <IfModule mod_php5.c>
-            php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/errors/"
-        </IfModule>
-    </Directory>
-
-    ErrorDocument 401 /errors/401/index.php
-    ErrorDocument 403 /errors/403/index.php
-    ErrorDocument 404 /errors/404/index.php
-    ErrorDocument 500 /errors/500/index.php
+    ErrorDocument 401 /errors/401.html
+    ErrorDocument 403 /errors/403.html
+    ErrorDocument 404 /errors/404.html
+    ErrorDocument 500 /errors/500.html
 
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.

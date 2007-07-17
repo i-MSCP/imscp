@@ -4,6 +4,18 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
+  <script type="text/javascript">
+  //<![CDATA[
+    function get_path()
+    {
+        if (document.location.pathname != undefined) {
+            return replace(replace(document.location.pathname, '<', '&lt;'), '>', '&gt;');
+        } else {
+            return "&nbsp;";
+        }
+    }
+  //]]>
+  </script>
  </head>
  <body style="color:#000000;">
  <table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
@@ -14,34 +26,16 @@
        <td>
         <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
          <tr>
-          <td width="453" height="69" background="/errors/<?php echo $_SERVER['REDIRECT_STATUS']; ?>/error_top.jpg">&nbsp;</td>
+          <td width="453" height="69" background="/errors/error_top.jpg">&nbsp;</td>
          </tr>
          <tr>
           <td>
            <table width="453" border="0" cellpadding="0" cellspacing="1">
             <tr>
              <td align="center" valign="middle" bgcolor="#FFFFFF"></strong>
-              <h2><font color="#FF0000">Error <?php print htmlspecialchars($_SERVER['REDIRECT_STATUS']);?>!</font></h2><br />
-              <b><?php print htmlspecialchars($_SERVER['REQUEST_URI']);?></b><br />
-              <?php
-				switch ($_SERVER['REDIRECT_STATUS']) {
-					case 401:
-						print "Unauthorized!\n";
-						break;
-					case 403:
-						print "Forbidden!\n";
-						break;
-					case 404:
-						print "File Not Found!\n";
-						break;
-					case 500:
-						print "Internal Server Error!\n";
-						break;
-					default:
-						print "Unknown Error!\n";
-						break;
-				}
-             ?>
+              <h2><font color="#FF0000">Error 403!</font></h2><br />
+              <b><script type="text/javascript"> document.write(get_path()); </script><noscript>&nbsp;</noscript></b><br />
+              Forbidden!
             </td>
            </tr>
           </table>

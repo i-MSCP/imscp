@@ -32,7 +32,7 @@ function gen_error_page_data(&$tpl, &$sql, $user_id, $eid) {
 
 	// Check if we already have an error page
 	$vfs   =& new vfs($domain, $sql);
-	$error =  $vfs->get('/errors/'.$eid.'/index.php');
+	$error =  $vfs->get('/errors/' . $eid . '.html');
 	if (false !== $error) {
 		// We already have an error page, return it
 		$tpl->assign(array('ERROR' => $error));
@@ -67,19 +67,17 @@ if (!isset($_GET['eid'])) {
 	set_page_message(tr('Server error - please choose error page'));
 	header("Location: error_pages.php");
 	die();
-}
-else{
+} else {
 	$eid = intval($_GET['eid']);
 }
 
-if ($eid == 401 OR $eid == 403 OR $eid == 404 OR $eid == 500) {
+if ($eid == 401 || $eid == 403 || $eid == 404 | $eid == 500) {
 	gen_error_page_data($tpl, $sql, $_SESSION['user_id'], $_GET['eid']);
-}
-else{
+} else {
 	$tpl -> assign(
                 array(
                         'ERROR' => tr('Server error - please choose error page'),
-						'EID' => '0'
+                        'EID' => '0'
                      )
               );
 }
@@ -100,8 +98,8 @@ $tpl -> assign(
                 array(
                         'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
                         'TR_SAVE' => tr('Save'),
-						'TR_CANCEL' => tr('Cancel'),
-						'EID' => $eid
+                        'TR_CANCEL' => tr('Cancel'),
+                        'EID' => $eid
                      )
               );
 

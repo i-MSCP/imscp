@@ -271,24 +271,17 @@ function add_domain_alias(&$sql, &$err_al)
             $err_al = tr("Domain with this name already exist");
         }
 
-        // all seems ok - add it
-        $mres = exec_query($sql,
-                           "select count(alias_id) as cnt from domain_aliasses where domain_id=? and alias_mount=?",
-                           array($cr_user_id, $mount_point));
-        $mdata = $mres->FetchRow();
         $subdomres = exec_query($sql,
                                 "select count(subdomain_id) as cnt from subdomain where domain_id=? and subdomain_mount=?",
                                 array($cr_user_id, $mount_point));
         $subdomdata = $subdomres->FetchRow();
-        if ($mdata['cnt'] > 0 || $subdomdata['cnt'] > 0) {
-            // whe have alias with same mount point !!! ERROR
-            $err_al = tr("There are alias with same mount point");
+        if ($subdomdata['cnt'] > 0) {
+            $err_al = tr("There is a subdomain with the same mount point!");
         }
 	}
 
 
-	if('_off_' !== $err_al)
-	{
+	if('_off_' !== $err_al) {
 		set_page_message($err_al);
 		return;
 	}

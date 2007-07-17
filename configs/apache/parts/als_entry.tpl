@@ -21,10 +21,10 @@
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/errors/
 
-    ErrorDocument   401 /errors/401/index.php
-    ErrorDocument   403 /errors/403/index.php
-    ErrorDocument   404 /errors/404/index.php
-    ErrorDocument   500 /errors/500/index.php
+    ErrorDocument 401 /errors/401.html
+    ErrorDocument 403 /errors/403.html
+    ErrorDocument 404 /errors/404.html
+    ErrorDocument 500 /errors/500.html
 
     # httpd als entry redirect entry BEGIN.
     # httpd als entry redirect entry END.
