@@ -1950,7 +1950,7 @@ sub dmn_add_httpd_file_data {
                 my ($i, $key) = ('', '');
 
                 for($i = 0; $i < scalar(@errordocs); $i++) {
-                    $key = @errordocs[$i];
+                    $key = $errordocs[$i];
                     
                     if (-e "$root_dir/gui/errordocs/$key.html") {
                     
@@ -1963,7 +1963,7 @@ sub dmn_add_httpd_file_data {
                     }
                 }
 
-	} else if (-e "$root_dir/gui/errordocs/index.php") {
+	} elsif (-e "$root_dir/gui/errordocs/index.php") {
 
 		my $err_tpl = '';
 

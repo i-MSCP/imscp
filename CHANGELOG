@@ -8,6 +8,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-17 Malte Geierhos
+	- GUI: 	
+		* Fixed #482: perl is using another syntax ;) 
+
 2007-07-16 Benedikt Heintel
 	- GUI:
 		* Fixed #457: Improved max-attempts limit for lost password's CAPTCHA
