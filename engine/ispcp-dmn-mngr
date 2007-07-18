@@ -2873,24 +2873,20 @@ sub dmn_add_crontab_data {
 
     my $backup_root_dir = $main::cfg{'BACKUP_ROOT_DIR'};
 
-    my $cmd_crontab = $main::cfg{'CMD_CRONTAB'};
-
     my $log_dir = $main::cfg{'LOG_DIR'};
 
 
-    my $tpl_dir = "$conf_dir/crontab/parts";
+    my $tpl_dir = "$conf_dir/cron.d/parts";
 
-    my $working_dir = "$conf_dir/crontab/working";
+    my $working_dir = "$conf_dir/cron.d/working";
 
-    my $backup_dir = "$conf_dir/crontab/backup";
+    my $backup_dir = "$conf_dir/cron.d/backup";
 
-
-    my $working_cfg = "$working_dir/crontab.conf";
-
+    my $working_cfg = "$working_dir/ispcp";
 
     my $timestamp = time;
 
-    my $backup_cfg = "$backup_dir/crontab.conf.$timestamp";
+    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
     #
     # Getting needed templates;
@@ -3012,9 +3008,11 @@ sub dmn_add_crontab_data {
     # Now we'll proceed system config;
     #
 
-    $rs = sys_command_rs("$cmd_crontab -u root -l &> $backup_cfg");
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
 
-    $rs = sys_command("$cmd_crontab -u root $working_cfg");
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
 
     return $rs if ($rs != 0);
 
@@ -3057,24 +3055,21 @@ sub dmn_del_crontab_data {
 
     my $backup_root_dir = $main::cfg{'BACKUP_ROOT_DIR'};
 
-    my $cmd_crontab = $main::cfg{'CMD_CRONTAB'};
-
     my $log_dir = $main::cfg{'LOG_DIR'};
 
 
-    my $tpl_dir = "$conf_dir/crontab/parts";
+    my $tpl_dir = "$conf_dir/cron.d/parts";
 
-    my $working_dir = "$conf_dir/crontab/working";
+    my $working_dir = "$conf_dir/cron.d/working";
 
-    my $backup_dir = "$conf_dir/crontab/backup";
+    my $backup_dir = "$conf_dir/cron.d/backup";
 
 
-    my $working_cfg = "$working_dir/crontab.conf";
-
+    my $working_cfg = "$working_dir/ispcp";
 
     my $timestamp = time;
 
-    my $backup_cfg = "$backup_dir/crontab.conf.$timestamp";
+    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
     #
     # Getting needed templates;
@@ -3182,9 +3177,11 @@ sub dmn_del_crontab_data {
     # Now we'll proceed system config;
     #
 
-    $rs = sys_command_rs("$cmd_crontab -u root -l &> $backup_cfg");
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
 
-    $rs = sys_command("$cmd_crontab -u root $working_cfg");
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
 
     return $rs if ($rs != 0);
 

@@ -4,4 +4,4 @@
 #  files, or 24 minutes if not defined.  See /usr/lib/php4/maxlifetime
 
 # Look for and purge old sessions every 30 minutes
-09,39 *     * * *     root   /var/www/ispcp/engine/tools/ispcpphptemp.sh >/dev/null 2>&1
+09,39 *     * * *     root   {TOOLS_ROOT_DIR}/ispcpphptemp.sh >/dev/null 2>&1

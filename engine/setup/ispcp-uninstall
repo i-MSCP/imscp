@@ -404,45 +404,14 @@ sub uninstall_sql {
 
 sub uninstall_crontab {
 
-    my ($rs, $rdata) = (undef, undef);
+    my $rs = undef;
 
     push_el(\@main::el, 'uninstall_crontab()', 'Starting...');
 
-    my $cfg_dir = "$main::cfg{'CONF_DIR'}/crontab";
-
-    my $bk_dir = "$cfg_dir/backup";
-
-    my $wrk_dir = "$cfg_dir/working";
-
-    my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-
-    $cmd = "$main::cfg{'CMD_CRONTAB'} -u root -r &> /tmp/ispcp-uninstall-crontab.log";
-
-    $rs = sys_command_rs($cmd);
-
-    $rs = del_file("/tmp/ispcp-uninstall-crontab.log");
-
-    return $rs if ($rs != 0);
-
-    if (-e "$bk_dir/crontab.conf.system") { # We are running uninstall for the first time.
-
-        ($rs, $rdata) = get_file("$bk_dir/crontab.conf.system");
+    if ( -e "/etc/cron.d/ispcp") {
+        $rs = del_file("/etc/cron.d/ispcp");
 
         return $rs if ($rs != 0);
-
-        if ($rdata !~ /no crontab/) {
-
-            $cmd = "$main::cfg{'CMD_CRONTAB'} -u root $bk_dir/crontab.conf.system";
-
-            $rs = sys_command_rs($cmd);
-
-        }
-
-        $rs = del_file("$bk_dir/crontab.conf.system");
-
-        return $rs if ($rs != 0);
-
     }
 
     if ( -e "/etc/cron.d/ispcp.phptemp") {

@@ -11,6 +11,7 @@ ispCP ω 1.0.0 Changelog
 2007-07-18 Raphael Geissert
 	- CONFIGS:
 		* Fixed #494: email from webmaster@gui
+		* Fixed #397: Running ispcp-setup in an already installed system duplicates the cronjobs
 	- ENGINE:
 		* Fixed #489: /lib/iptables/libipt_ISPCP_INPUT.so missing
 		* Added doHashSQL

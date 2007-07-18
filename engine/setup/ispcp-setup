@@ -1480,7 +1480,7 @@ sub setup_crontab {
 
 	push_el(\@main::el, 'setup_crontab()', 'Starting...');
 
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/crontab";
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/cron.d";
 
 	my $bk_dir = "$cfg_dir/backup";
 
@@ -1488,36 +1488,15 @@ sub setup_crontab {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	if (! -e "$bk_dir/crontab.conf") { # We are running setup for the first time.
+	if (! -e "$bk_dir/ispcp") {
 
-		# Let's backup system crontab (if any);
-
-		$cmd = "$main::cfg{'CMD_CRONTAB'} -u root -l &> $bk_dir/crontab.conf.system";
-
-		$rs = sys_command_rs($cmd);
-
-		if ($rs != 0) {
-
-				$rs = del_file("$bk_dir/crontab.conf.system");
-
-				return $rs if ($rs != 0);
-
-				$cmd = "touch $bk_dir/crontab.conf.system";
-
-				$rs = sys_command_rs($cmd);
-
-				return $rs if ($rs != 0);
-
-		}
-
-		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'crontab.conf');
+		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'ispcp');
 
 		return $rs if ($rs != 0);
 
 		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
 			$awstats = "15	6	*	*	*	$main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
-		}
-		else {
+		} else {
 			$awstats = "# AWStats is disabled";
 		}
 
@@ -1534,17 +1513,11 @@ sub setup_crontab {
 
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$bk_dir/crontab.conf.ispcp", $cfg, 'root', 'root', 0644);
+		$rs = store_file("$bk_dir/ispcp", $cfg, 'root', 'root', 0644);
 
 		return $rs if ($rs != 0);
 
-		$cmd = "$main::cfg{'CMD_CAT'} $bk_dir/crontab.conf.ispcp $bk_dir/crontab.conf.system > $bk_dir/crontab.conf";
-
-		$rs = sys_command_rs($cmd);
-
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p -f $bk_dir/crontab.conf $wrk_dir/";
+		$cmd = "$main::cfg{'CMD_CP'} -p -f $bk_dir/ispcp $wrk_dir/";
 
 		$rs = sys_command_rs($cmd);
 
@@ -1552,17 +1525,41 @@ sub setup_crontab {
 
 	}
 
-	$cmd = "$main::cfg{'CMD_CRONTAB'} -u root -r &> /tmp/ispcp-setup-crontab.log";
+	if (! -e "$bk_dir/ispcp.phptemp") {
+
+		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'ispcp.phptemp');
+
+		return $rs if ($rs != 0);
+
+		my %tag_hash = (
+					'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
+				);
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+		return $rs if ($rs != 0);
+
+		$rs = store_file("$bk_dir/ispcp.phptemp", $cfg, 'root', 'root', 0644);
+
+		return $rs if ($rs != 0);
+
+		$cmd = "$main::cfg{'CMD_CP'} -p -f $bk_dir/ispcp.phptemp $wrk_dir/";
+
+		$rs = sys_command_rs($cmd);
+
+		return $rs if ($rs != 0);
+
+	}
+
+	$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp /etc/cron.d/";
 
 	$rs = sys_command_rs($cmd);
 
-	$cmd = "$main::cfg{'CMD_CRONTAB'} -u root $wrk_dir/crontab.conf";
-
-	$rs = sys_command($cmd);
-
 	return $rs if ($rs != 0);
 
-	$rs = del_file("/tmp/ispcp-setup-crontab.log");
+	$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp.phptemp /etc/cron.d/";
+
+	$rs = sys_command_rs($cmd);
 
 	return $rs if ($rs != 0);
 
