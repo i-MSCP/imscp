@@ -17,133 +17,105 @@
 int readlink(char *pathname, char *buf, int bufsize);
 #endif
 
-int lr_syntax(int fd, license_data_type *ld, char *buff)
+int lr_syntax(int fd, char *buff)
 {
 
 	char *ptr;
 
-	char *ptr1;
-
 	time_t tim;
 
-	ptr = strstr(buff, message(MSG_LS_CMD));
-	ptr1 = strstr(buff, message(MSG_EQ_CMD));
+	ptr = strstr(buff, message(MSG_EQ_CMD));
 
-	if (ptr != buff && ptr1 != buff) {
-
-		if (send_line(fd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) < 0) {
-
-			return (-1);
-
-		}
+	if (ptr != buff) {
 
 		return (1);
 
 	} else {
 
 		char *lr_ans = calloc(MAX_MSG_SIZE, sizeof(char));
+		#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+		char fname1[MAXPATHLEN];
+		char fname2[MAXPATHLEN];
+		char daemon_path[MAXPATHLEN];
+		#endif
 
-		if (ptr1 == buff) {
-			#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-			char fname1[MAXPATHLEN];
-			char fname2[MAXPATHLEN];
-			char daemon_path[MAXPATHLEN];
-			#endif
+		if (fork() == 0 ) {
+
+			int fdres, dupres;
+			char logfile[MAXPATHLEN];
+
 			/*
-			 execute query:
-			 chek do we have license status
-			 if we have it - execute query and send ok
-			 else send ERROR
+			 execute it
 			 */
 
-			if (fork() == 0 ) {
+			close(fd);
 
-				 int fdres, dupres;
-				 char logfile[MAXPATHLEN];
+			tim = time(NULL);
 
-				/*
-				 execute it
-				 */
+			/*
+			 make command with timestamps
+			 */
+			#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+			sprintf (fname1, "/proc/%ld/exe", (long int) getpid());
+			memset (fname2, 0, sizeof (fname2));
+			if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
+				strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/ispcp_daemon"));
+				strcat(daemon_path, "engine/ispcp-rqst-mngr");
 
-				close(fd);
-
-				tim = time(NULL);
-
-				/*
-				 make command with timestamps
-				 */
-				#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
-				sprintf (fname1, "/proc/%ld/exe", (long int) getpid());
-				memset (fname2, 0, sizeof (fname2));
-				if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
-					strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/ispcp_daemon"));
-					strcat(daemon_path, "engine/ispcp-rqst-mngr");
-
-					fdres = open ( "/dev/null", O_RDONLY );
-                                        if(fdres == -1)
-                                        {
-                                                say("Error in reopening stdin: %s",  strerror(errno) );
-                                                exit(128);
-                                        }
-                                        dupres = dup2(fdres, 0); /* reassign 0*/
-                                        if( dupres == -1)
-                                        {
-                                                say("Error in reassigning stdin: %s",  strerror(errno) );
-                                                exit(128);
-                                        }
-                                        else if( dupres != fdres) close (fdres);
-
-                                        memset(logfile, 0, sizeof (logfile));
-                                        sprintf(logfile, "%s.%ld", LOG_DIR"/"STDOUT_LOG , (long int) tim);
-                                        fdres = creat( logfile, S_IRUSR | S_IWUSR );
-                                        if(fdres == -1)
-                                        {
-                                                say("Error in opening stdout: %s",  strerror(errno) );
-                                                exit(128);
-                                        }
-                                        dupres = dup2(fdres, 0); /* reassign 0*/
-                                        if( dupres == -1)
-                                        {
-					 say("Error in reassigning stdout: %s",  strerror(errno) );
-                                                exit(128);
-                                        }
-                                        else if( dupres != fdres) close (fdres);
-
-                                        memset(logfile, 0, sizeof (logfile));
-                                        sprintf(logfile, "%s.%ld", LOG_DIR"/"STDERR_LOG , (long int) tim);
-                                        fdres = creat( logfile,  S_IRUSR | S_IWUSR );
-                                        if(fdres == -1)
-                                        {
-                                                say("Error in opening stderr: %s",  strerror(errno) );
-                                                exit(128);
-                                        }
-                                        dupres = dup2(fdres, 0); /* reassign 0*/
-                                        if( dupres == -1)
-                                        {
-                                                say("Error in reassigning stderr: %s",  strerror(errno) );
-                                                exit(128);
-                                        }
-                                        else if( dupres != fdres) close (fdres);
-
-                                        execl( daemon_path, "ispcp-rqst-mngr" ,(char*)NULL );
-					#endif
-
-					exit(0);
-				#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+				fdres = open ( "/dev/null", O_RDONLY );
+				if(fdres == -1) {
+					say("Error in reopening stdin: %s",  strerror(errno) );
+					exit(128);
 				}
-				#endif
+				dupres = dup2(fdres, 0); /* reassign 0*/
+				if( dupres == -1) {
+					say("Error in reassigning stdin: %s",  strerror(errno) );
+					exit(128);
+				}
+				else if( dupres != fdres) close (fdres);
+
+				memset(logfile, 0, sizeof (logfile));
+				sprintf(logfile, "%s.%ld", LOG_DIR"/"STDOUT_LOG , (long int) tim);
+				fdres = creat( logfile, S_IRUSR | S_IWUSR );
+				if(fdres == -1) {
+					say("Error in opening stdout: %s",  strerror(errno) );
+					exit(128);
+				}
+				dupres = dup2(fdres, 0); /* reassign 0*/
+				if( dupres == -1) {
+					say("Error in reassigning stdout: %s",  strerror(errno) );
+					exit(128);
+				}
+				else if( dupres != fdres) close (fdres);
+
+				memset(logfile, 0, sizeof (logfile));
+				sprintf(logfile, "%s.%ld", LOG_DIR"/"STDERR_LOG , (long int) tim);
+				fdres = creat( logfile,  S_IRUSR | S_IWUSR );
+				if(fdres == -1) {
+					say("Error in opening stderr: %s",  strerror(errno) );
+					exit(128);
+				}
+				dupres = dup2(fdres, 0); /* reassign 0*/
+				if( dupres == -1) {
+					say("Error in reassigning stderr: %s",  strerror(errno) );
+					exit(128);
+				}
+				else if( dupres != fdres) close (fdres);
+
+				execl( daemon_path, "ispcp-rqst-mngr" ,(char*)NULL );
 			}
+			#endif
+			exit(0);
+		}
 
-			strcat(lr_ans, message(MSG_CMD_OK));
-			strcat(lr_ans, " query scheduled for execution.\r\n");
+		strcat(lr_ans, message(MSG_CMD_OK));
+		strcat(lr_ans, "request is being processed.\r\n");
 
-			if (send_line(fd, lr_ans, strlen(lr_ans)) < 0) {
+		if (send_line(fd, lr_ans, strlen(lr_ans)) < 0) {
 
-				free(lr_ans);
+			free(lr_ans);
 
-				return (-1);
-
-			}
+			return (-1);
 
 		}
 

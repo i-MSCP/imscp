@@ -22,6 +22,7 @@ ALTER TABLE `htaccess_users` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLL
 
 ALTER TABLE `login` ADD `ipaddr` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 ALTER TABLE `login` ADD `user_name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER TABLE `login` ADD `captcha_count` TINYINT( 1 ) NULL ;
 ALTER TABLE `login` ADD `login_count` TINYINT( 1 ) NULL;
 
 -- Drop existing languages (they are outdated anyways)

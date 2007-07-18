@@ -2249,6 +2249,7 @@ sub setup_httpd {
 						'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
 						'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
 						'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+						'{APACHE_WWW_DIR}'      	=> $main::cfg{'APACHE_WWW_DIR'},
 						'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
 						'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
 						'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
@@ -2290,6 +2291,7 @@ sub setup_httpd {
 						'{BASE_SERVER_VHOST}' 		=> $main::cfg{'BASE_SERVER_VHOST'},
 						'{DEFAULT_ADMIN_ADDRESS}' 	=> $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
 						'{ROOT_DIR}' 				=> $main::cfg{'ROOT_DIR'},
+						'{APACHE_WWW_DIR}'      	=> $main::cfg{'APACHE_WWW_DIR'},
 						'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
 						'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
 						'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
@@ -2341,7 +2343,7 @@ sub setup_httpd {
 	}
 
 	#
-	# Disable default site --> 000-default (if not, ispcp is not working)
+	# Disable default site --> 000-default (if not, ispcp does not work)
 	#
 
 	if (-e "/usr/sbin/a2dissite") {
@@ -2352,7 +2354,6 @@ sub setup_httpd {
 
 	#
 	# start fastcgi, suexec and rewrite mod
-	# Disable default site (if not, ispcp not working)
 	#
 
 	if ( -e "/usr/sbin/a2enmod" ) {
@@ -2365,6 +2366,16 @@ sub setup_httpd {
 		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
 			sys_command_rs("/usr/sbin/a2enmod proxy &> /tmp/ispcp-setup-services.log");
 		}
+
+	}
+
+	#
+	# Disable default fastcgi, otherwise FastCgiIpcDir is already defined
+	#
+
+	if (-e "/usr/sbin/a2dismod") {
+
+		sys_command_rs("/usr/sbin/a2dismod fastcgi &> /tmp/ispcp-setup-services.log");
 
 	}
 

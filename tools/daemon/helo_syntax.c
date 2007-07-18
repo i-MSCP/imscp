@@ -1,7 +1,7 @@
 
 #include "helo_syntax.h"
 
-int helo_syntax(int fd, license_data_type *ld, char *buff)
+int helo_syntax(int fd, char *buff)
 {
 	char *ptr;
 
@@ -16,24 +16,18 @@ int helo_syntax(int fd, license_data_type *ld, char *buff)
 		return (1);
 
 	} else {
-        char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
-		memset(ld -> ip, '\0', MAX_MSG_SIZE);
-
-		memset(ld -> host, '\0', MAX_MSG_SIZE);
-
-		strcat(ld -> ip, client_ip);
+        	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
 
 		ptr = strstr(buff, " ");
 
-		strncat(ld -> host, ptr + 1, strlen(ptr + 1) - 2);
-
-        strcat(helo_ans, message(MSG_CMD_OK));
-		strcat(helo_ans, ld -> host);
+		strcat(helo_ans, message(MSG_CMD_OK));
+		strcat(helo_ans, client_ip);
+		strcat(helo_ans, "/");
+		strncat(helo_ans, ptr + 1, strlen(ptr + 1) - 2);
 		strcat(helo_ans, "\r\n");
 
-
-		if (send_line(fd, helo_ans,  strlen(helo_ans)) < 0) {
-            free(helo_ans);
+		if (send_line(fd, helo_ans, strlen(helo_ans)) < 0) {
+			free(helo_ans);
 			return (-1);
 		}
 

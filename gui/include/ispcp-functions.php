@@ -52,6 +52,8 @@ function send_request() {
 
 	global $Version;
 
+	$code = 999;
+
     @$socket = socket_create (AF_INET, SOCK_STREAM, 0);
     if ($socket < 0) {
         $errno =  "socket_create() failed.\n";
@@ -67,6 +69,11 @@ function send_request() {
     /* read one line with welcome string */
     $out = read_line($socket);
 
+    list($code) = explode(' ', $out);
+    if ($code == 999) {
+        return $out;
+    }
+
     /* send hello query */
     $query = "helo  $Version\r\n";
     socket_write ($socket, $query, strlen ($query));
@@ -74,11 +81,21 @@ function send_request() {
     /* read one line with helo answer */
     $out = read_line($socket);
 
+    list($code) = explode(' ', $out);
+    if ($code == 999) {
+        return $out;
+    }
+
     /* send reg check query */
     $query = "execute query\r\n";
     socket_write ($socket, $query, strlen ($query));
     /* read one line key replay */
     $execute_replay = read_line($socket);
+
+    list($code) = explode(' ', $execute_replay);
+    if ($code == 999) {
+        return $out;
+    }
 
     /* send quit query */
     $quit_query = "bye\r\n";
@@ -86,13 +103,15 @@ function send_request() {
     /* read quit answer */
     $quit_replay = read_line($socket);
 
-    /* analyze key replay */
-    $answer = $execute_replay;
+    list($code) = explode(' ', $quit_replay);
+    if ($code == 999) {
+        return $out;
+    }
 
-    /* close socket */
+    list($answer) = explode(' ', $execute_replay);
+
     socket_close ($socket);
 
-    /* return function result */
     return $answer;
 
 }

@@ -6,7 +6,7 @@
 #		Written by Miquel van Smoorenburg <miquels@cistron.nl>.
 #		Modified for Debian GNU/Linux
 #		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
-#		Modified for Debian 
+#		Modified for Debian
 #		by Erik Lehmann <erik.lehmann@ispcp.net>
 #
 # Version:	@(#)skeleton  1.8  03-Mar-1998  miquels@cistron.nl
@@ -26,26 +26,32 @@ set -e
 
 case "$1" in
   start)
-	echo -n "Starting $DESC: "
 	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
-	echo "$NAME."
 	;;
   stop)
-	echo -n "Stopping $DESC: "
-	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON
-        rm $PID
-	echo "$NAME."
+	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
+    rm $PID
 	;;
   restart|force-reload)
-	echo "Restarting $DESC: "                                      
-	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON
+	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
 	rm $PID
 	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
-	echo "$NAME."
+	;;
+  status)
+    if [ -s $PID ]; then
+        RPID=`cat $PID`
+        kill -0 $RPID 2> /dev/null
+        if [ "$?" = 0 ] ; then
+            echo "$NAME is started"
+            exit 0
+        fi
+    fi
+    echo "$NAME is stopped"
+    exit 1
 	;;
   *)
 	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
 	exit 1
 	;;
 esac

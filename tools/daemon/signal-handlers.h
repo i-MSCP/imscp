@@ -2,6 +2,8 @@
 
 #define _SIGNAL_HANDLERS_H
 
+#include "defs.h"
+
 #include <sys/types.h>
 
 #include <sys/wait.h>
@@ -11,10 +13,6 @@
 #include <stdio.h>
 
 #include <string.h>
-
-#define MSG_SIG_CHLD            10005
-
-#define MSG_SIG_PIPE            10006
 
 #if defined(__OpenBSD__) || defined(__FreeBSD__)
 
@@ -32,6 +30,4 @@ void sig_child (int signo);
 
 void sig_pipe(int signo);
 
-#else
-#
 #endif

@@ -1,5 +1,5 @@
 
-#include "defs.h"
+#include "ispcp_daemon.h"
 
 int getopt(int argc, char * const argv[], const char *optstring);
 extern char *optarg;

@@ -25,6 +25,4 @@
 
 void daemon_init(const char *pname, int facility);
 
-#else
-#
 #endif

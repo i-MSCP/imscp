@@ -20,3 +20,28 @@
 	done
 	endscript
 }
+
+/var/log/proftpd/xferlog {
+  daily
+  rotate 7
+  missingok
+  compress
+  delaycompress
+  postrotate
+    /usr/bin/killall -HUP syslogd
+  endscript
+}
+
+/var/log/proftpd/ftp_traff.log {
+  daily
+  rotate 7
+  missingok
+  compress
+  delaycompress
+  prerotate
+    /var/www/ispcp/engine/traffic/ispcp-vrl-traff &> /var/log/ispcp/ispcp-vrl-traff.log
+  endscript
+  postrotate
+    /usr/bin/killall -HUP syslogd
+  endscript
+}

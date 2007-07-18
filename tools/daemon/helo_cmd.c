@@ -1,12 +1,12 @@
 
 #include "helo_cmd.h"
 
-int helo_cmd(int fd, license_data_type *ld)
+int helo_cmd(int fd)
 {
 	char *buff = calloc(MAX_MSG_SIZE, sizeof(char));
 	int res;
 
-	for ( ; ; ) {
+	while (1) {
 		memset(buff, '\0', MAX_MSG_SIZE);
 
 		if (recv_line(fd, buff, MAX_MSG_SIZE - 1) <= 0) {
@@ -14,7 +14,7 @@ int helo_cmd(int fd, license_data_type *ld)
 			return (-1);
 		}
 
-		res = helo_syntax(fd, ld, buff);
+		res = helo_syntax(fd, buff);
 
 		if (res == -1) {
 			free(buff);

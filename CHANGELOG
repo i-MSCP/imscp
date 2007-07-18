@@ -18,10 +18,16 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #483: Domain aliases with same mount point (thanks to greg@proxyconcept.net)
 	- CONFIGS:
 		* Made changes to reflect fix for #465
+		* Removed hardcoded /var/www/virtual path from 00_master.conf
+		* Fixed #427: /etc/init.d/ispcp_daemon doesn't support "status"
+		* Updated vhcs2ispcp.sql to reflect recent DB changes caused by #457
+		* Added rotation of proftpd's log files (fixes incorrect ftp traffic counting when logs are big)
+	- DAEMON:
+		* Cleaned up code (also removed useless license-related stuff)
 
 2007-07-16 Benedikt Heintel
 	- GUI:
-		* Fixed #457: Improved max-attempts limit for lost password's CAPTCHA
+		* Fixed #457: Improve max-attempts limit for lost password's CAPTCHA
 		* Fixed serveral errors.
 	- SQL:
 		* Added: cpatcha_count on table login in database.sql

@@ -2,9 +2,7 @@
 
 #define _BYE_CMD_H
 
-#define NO_ERROR                0
-
-#define MAX_MSG_SIZE	        1025
+#include "defs.h"
 
 #include <sys/types.h>
 
@@ -16,8 +14,6 @@ extern int recv_line(int fd, char *dest, size_t n);
 
 extern int bye_syntax(int fd, char *buff);
 
-int bye_cmd(int fd);
+int bye_cmd(int fd, char *msg);
 
-#else
-#
 #endif

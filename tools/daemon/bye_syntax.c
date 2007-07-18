@@ -9,10 +9,6 @@ int bye_syntax(int fd, char *buff)
 
 	if (ptr != buff) {
 
-		if (send_line(fd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) < 0) {
-			return (-1);
-		}
-
 		return (1);
 
 	} else {
