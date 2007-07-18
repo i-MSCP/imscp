@@ -8,6 +8,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-18 Raphael Geissert
+	- CONFIGS:
+		* Fixed #494: email from webmaster@gui
+	- ENGINE:
+		* Fixed #489: /lib/iptables/libipt_ISPCP_INPUT.so missing
+		* Added doHashSQL
+	- GUI:
+		* When telnetd is running it is now marked with red
+
 2007-07-17 Raphael Geissert
 	- GUI:
 		* Made changes to reflect fix for #465

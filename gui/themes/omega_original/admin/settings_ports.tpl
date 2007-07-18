@@ -96,11 +96,12 @@ return true;
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                 </select>
                               </td>
-                              <td class="{CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
-                                  <!-- BDP: port_delete_show -->
+                              <td class="{CLASS}" width="100" nowrap="nowrap">
+                                <!-- BDP: port_delete_show -->
                                 {TR_DELETE}
                                 <!-- EDP: port_delete_show -->
                                 <!-- BDP: port_delete_link -->
+                                <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
                                 <a href="#" onClick="action_delete('{URL_DELETE}')" class="link">{TR_DELETE}</a>
                                 <!-- EDP: port_delete_link -->
                               </td>

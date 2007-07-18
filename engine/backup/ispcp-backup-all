@@ -104,11 +104,11 @@ sub backup_all_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from domain where domain_status = 'ok' ;";
+    #my $sql = "select * from domain where domain_status = 'ok' ;";
 
-    ($rs, $rdata) = doSQL($sql);
+    #($rs, $rdata) = doSQL($sql);
 
-    return $rs if ($rs != 0);
+    #return $rs if ($rs != 0);
 
     push_el(\@main::el, 'backup_all_start_up()', 'Ending...');
 
@@ -271,7 +271,7 @@ sub backup_all_engine {
 		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
 		#
 
-    	$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+                $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 		($rs,my $rdata3) = doSQL($sql);
 
 		foreach(@$rdata3) {
@@ -315,29 +315,28 @@ sub backup_all_engine {
 
 		$rs = sys_command($backup_cmd);
 
-		# do not return if backup throws an error, or other domains will not be backuped
+		# do not return if backup throws an error, otherwise other domains will not be backuped
 		if ($rs == 0) {
 
 			$rs = sys_command("$cmd_rm -rf $dmn_dir/$backup_filename.log");
 
 			return $rs if ($rs != 0);
-		}
+		} else {
+                        if ( -e "$dmn_dir/$backup_filename" ) {
+                        
+                            $rs = del_file("$dmn_dir/$backup_filename");
+                            return $rs if ($rs != 0);
+                            
+                        }
+                }
 
-		$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*");
+		$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*");
 
 		return $rs if ($rs != 0);
 
 		$rs = sys_command("$cmd_mv -f $dmn_dir/$backup_filename $dmn_backup_dir");
 
 		return $rs if ($rs != 0);
-
-#		my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
-#
-#		my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-#
-#		my $sys_user = "$suexec_user_pref$sys_uid";
-#
-#		my $sys_group = "$suexec_user_pref$sys_gid";
 
 		$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
 

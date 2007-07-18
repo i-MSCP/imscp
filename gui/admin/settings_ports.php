@@ -216,7 +216,7 @@ SQL_QUERY;
 								'PORT_DELETE_LINK' => ''
 							)
 					);
-			$tpl -> parse('PORT_DELETE_SHOW', 'port_delete_show');
+			$tpl -> parse('PORT_DELETE_SHOW', '');
 		}
 		else {
 			$tpl -> assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name\" value=\"".$name."\" class=\"textinput\" maxlength=\"25\" />"));
@@ -276,8 +276,8 @@ $tpl -> assign(
 					'TR_ACTION' => tr('Action'),
 					'TR_UDP' => tr('udp'),
 					'TR_TCP' => tr('tcp'),
-					'TR_ENABLED' => tr('Enabled'),
-					'TR_DISABLED' => tr('Disabled'),
+					'TR_ENABLED' => tr('Yes'),
+					'TR_DISABLED' => tr('No'),
 					'TR_APPLY_CHANGES' => tr('Apply changes'),
 					'TR_SERVERPORTS' => tr('Serverports'),
 					'TR_SERVICES' => tr('Services'),

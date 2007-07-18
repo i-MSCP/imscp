@@ -296,6 +296,69 @@ sub doSQL {
 
 }
 
+sub doHashSQL {
+
+    my ($sql) = @_;
+
+    my $qr = undef;
+
+    push_el(\@main::el, 'doHashSQL()', 'Starting...');
+
+    if (!defined($sql) || ($sql eq '')) {
+
+        push_el(\@main::el, 'doHashSQL()', 'ERROR: Undefined SQL query !');
+
+        return (-1, '');
+
+    }
+
+    if (!defined($main::db) || !ref($main::db)) {
+
+        $main::db = DBI -> connect(@main::db_connect, {PrintError => 0});
+
+        if ( !defined($main::db) ) {
+
+            push_el(
+                    \@main::el,
+                    'doHashSQL()',
+                    'ERROR: Unable to connect SQL server !'
+                   );
+
+            return (-1, '');
+
+        }
+    }
+
+    if ($sql =~ /select/i) {
+
+        $qr = $main::db -> selectall_hashref($sql);
+
+    } elsif ($sql =~ /show/i) {
+
+        $qr = $main::db -> selectall_hashref($sql);
+
+    } else {
+
+        $qr = $main::db -> do($sql);
+
+    }
+
+    if (defined($qr)) {
+
+        push_el(\@main::el, 'doHashSQL()', 'Ending...');
+
+        return (0, $qr);
+
+    } else {
+
+        push_el(\@main::el, 'doHashSQL()', 'ERROR: Incorrect SQL Query -> '.$main::db -> errstr);
+
+        return (-1, '');
+
+    }
+
+}
+
 sub setfmode {
 
     my ($fname, $fuid, $fgid, $fperms) = @_;

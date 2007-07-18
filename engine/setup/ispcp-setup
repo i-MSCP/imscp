@@ -1597,7 +1597,7 @@ sub setup_resolver {
 	$resolv_data = get_file($resolv_file);
 
 	# Comment this line if removing the existing nameservers causes any problem
-	$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
+	#$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
 
 	$data .= $resolv_data;
 
@@ -2916,11 +2916,6 @@ sub setup_ispcpd {
 	}
 
         if ( ! -e "/etc/init.d/vhcs2_daemon" ) {
-
-            sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop &> /tmp/ispcp-setup-services.log");
-            sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-setup-services.log");
-
-            sleep(3);
 
             sys_command_rs("$main::cfg{'CMD_ISPCPD'} start &> /tmp/ispcp-setup-services.log");
             sys_command_rs("$main::cfg{'CMD_ISPCPN'} start &> /tmp/ispcp-setup-services.log");

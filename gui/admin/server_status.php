@@ -76,8 +76,7 @@ class status {
 				$errstr = null;
 				if($this->all[$i]['type'] == 'tcp')	{
 					$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
-				}
-				else {
+				} else {
 					$fp = @fsockopen('udp://'.$ip, $port, $errno, $errstr, $timeout);
 				}
 
@@ -87,8 +86,7 @@ class status {
 						$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'TRUE');
 						// $this->StatusUp(mysql_insert_id());
 					}
-				}
-				else {
+				} else {
 					$this->all[$i]['status'] = FALSE;
 					if($this->log){
 						$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'FALSE');
@@ -110,15 +108,13 @@ class status {
 		    $errstr = null;
 			if($type == 'tcp'){
 				$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
-			}
-			else {
+			} else {
 				$fp = @fsockopen('udp://'.$ip, $port, $errno, $errstr, $timeout);
 			}
 			if($fp)	{
 				fclose($fp);
 				return TRUE;
-			}
-			else {
+			} else {
 				return FALSE;
 			}
 		}
@@ -145,7 +141,7 @@ SQL_QUERY;
 	$ispcp_status = new status;
 	// Enable logging?
 	$ispcp_status->log = FALSE; // Default is false
-	$ispcp_status->AddService('localhost', 9876, 'ISPCP Daemon', 'tcp');
+	$ispcp_status->AddService('localhost', 9876, 'ispCP Daemon', 'tcp');
 	// Dynamic added Ports
 	while(!$rs->EOF) {
 
@@ -159,17 +155,29 @@ SQL_QUERY;
 
 	$ispcp_status->CheckStatus(5);
 	$data = $ispcp_status->GetStatus();
+        $up   = tr('UP');
+        $down = tr('DOWN');
 
 
 	for($i = 0; $i <= count($data) - 1; $i++) {
 		if($data[$i]['status'])	{
-			$img = $on = 'UP';
-			$class = "content";
+			$img = $up;
+			$class = "content up";
+		} else {
+			$img = '<b>' . $down . '</b>';
+			$class = "content down";
 		}
-		else {
-			$img = $off ='<b><font color="#FF0000">DOWN</font></b>';
-			$class = "content2";
-		}
+                
+                if ($data[$i]['port'] == 23 /*telnet*/) {
+                    if ($data[$i]['status']) {
+                        $class = 'content2 down';
+                        $img = '<b>' . $up . '</b>';
+                    } else {
+                        $class = 'content2 up';
+                        $img = $down;
+                    }
+                }
+                
 
 		$tpl -> assign(
 						array(
