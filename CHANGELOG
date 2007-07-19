@@ -8,12 +8,23 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-19 Raphael Geissert
+	- CONFIGS:
+		* Fixed #498: </IfModule> without matching <IfModule> section
+	- SETUP:
+		* Fixed #502: on every reinstall ispcp adds localhost as nameserver to /etc/resolv.conf
+	- GUI:
+		* Fixed error where the order panel sends the notification for the reseller to the client
+	- ENGINE:
+		* Fixed #497: Make mail homedirs unique per user (thanks to fenn_b@smktech.com.au for the patch)
+
 2007-07-18 Raphael Geissert
 	- CONFIGS:
 		* Fixed #494: email from webmaster@gui
 		* Fixed #397: Running ispcp-setup in an already installed system duplicates the cronjobs
-	- ENGINE:
+	- SETUP:
 		* Fixed #489: /lib/iptables/libipt_ISPCP_INPUT.so missing
+	- ENGINE:
 		* Added doHashSQL
 	- GUI:
 		* When telnetd is running it is now marked with red

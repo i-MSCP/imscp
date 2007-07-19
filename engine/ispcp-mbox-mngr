@@ -2488,7 +2488,7 @@ sub mbox_add_po_data {
 
         $hash_key = "$mail_acc\@$dmn_name";
 
-        $hash_value = "uid=$mbox_uid|gid=$mbox_gid|home=$virtual_mail_dir|shell=/bin/false|systempw=$rdata|mail=$virtual_mail_dir/$dmn_name/$mail_acc";
+        $hash_value = "uid=$mbox_uid|gid=$mbox_gid|home=$virtual_mail_dir/$dmn_name/$mail_acc|shell=/bin/false|systempw=$rdata|mail=$virtual_mail_dir/$dmn_name/$mail_acc";
 
         $rs = set_mta_hash_value($userdb_working_cfg, $hash_key, $hash_value);
 
@@ -2507,7 +2507,7 @@ sub mbox_add_po_data {
 
         $hash_key = "$mail_acc\@$dmn_name";
 
-        $hash_value = "uid=$mbox_uid|gid=$mbox_gid|home=$virtual_mail_dir|shell=/bin/false|systempw=$rdata|mail=$virtual_mail_dir/$dmn_name/$mail_acc";
+        $hash_value = "uid=$mbox_uid|gid=$mbox_gid|home=$virtual_mail_dir/$dmn_name/$mail_acc|shell=/bin/false|systempw=$rdata|mail=$virtual_mail_dir/$dmn_name/$mail_acc";
 
         $rs = set_mta_hash_value($userdb_working_cfg, $hash_key, $hash_value);
 
@@ -2530,7 +2530,7 @@ sub mbox_add_po_data {
 
         $hash_key = "$mail_acc\@$sub_name";
 
-        $hash_value = "uid=$mbox_uid|gid=$mbox_gid|home=$virtual_mail_dir|shell=/bin/false|systempw=$rdata|mail=$virtual_mail_dir/$sub_name/$mail_acc";
+        $hash_value = "uid=$mbox_uid|gid=$mbox_gid|home=$virtual_mail_dir/$dmn_name/$mail_acc|shell=/bin/false|systempw=$rdata|mail=$virtual_mail_dir/$sub_name/$mail_acc";
 
         $rs = set_mta_hash_value($userdb_working_cfg, $hash_key, $hash_value);
 

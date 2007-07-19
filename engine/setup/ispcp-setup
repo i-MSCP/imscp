@@ -1593,6 +1593,7 @@ sub setup_resolver {
 
 	$resolv_data = get_file($resolv_file);
 
+	$resolv_data =~ s/^nameserver[[:space:]]+127\.0\.0\.1$//g;
 	# Comment this line if removing the existing nameservers causes any problem
 	#$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
 

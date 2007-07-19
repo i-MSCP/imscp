@@ -1672,23 +1672,19 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	if ($from_name) {
 	  	$from = $from_name . "<" . $from_email . ">";
-	}
-	else {
+	} else {
 	  	$from = $from_email;
 	}
 
-	if ($ufname AND $ulname) {
+	if ($ufname && $ulname) {
 	  	$to = "$ufname $ulname <$uemail>";
-    	$name = "$ufname $ulname";
-	}
-	else {
+	  	$name = "$ufname $ulname";
+	} else {
    		if($ufname) {
 			$name = $ufname;
-		}
-	   	else if($ulname) {
+		} else if($ulname) {
    			$name = $ulname;
-   		}
-		else {
+   		} else {
 	   		$name = $uname;
 	   	}
 	    $to = $uemail;
@@ -1711,7 +1707,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$headers .= "MIME-Version: 1.0\n" .
 	        	"Content-Type: text/plain;\n" .
 	        	"Content-Transfer-Encoding: 8bit\n".
-				"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
+	        	"X-Mailer: ispCP ".$cfg['Version']." Service Mailer";
 
 	$mail_result = mail(encode($to), $subject, $message, $headers);
 
@@ -1719,7 +1715,6 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	// lets send mail to the reseller => new order
 
-	$from = $to;
 	$subject = encode(tr("You have a new order"));
 
 	$message = tr('
