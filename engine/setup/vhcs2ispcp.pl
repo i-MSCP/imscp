@@ -49,17 +49,29 @@ sub stop_services {
     
     print STDOUT "\t";
     
-    sys_command("/etc/init.d/vhcs2_daemon stop");
+    if ( -e "/etc/init.d/vhcs2_daemon" ) {
     
-    print STDOUT "\t";
+        sys_command("/etc/init.d/vhcs2_daemon stop");
+        
+        print STDOUT "\t";
+        
+    }
     
-    # The daemon and the network traffic logger should not be running.
-    #  Here we make sure about that
-    sys_command("/etc/init.d/ispcp_daemon stop");
+    if ( -e "/etc/init.d/ispcp_daemon" ) {
     
-    print STDOUT "\t";
+        sys_command("/etc/init.d/ispcp_daemon stop");
+        
+        print STDOUT "\t";
     
-    sys_command("/etc/init.d/ispcp_network stop");
+    }    
+    
+    if ( -e "/etc/init.d/ispcp_network" ) {
+    
+        sys_command("/etc/init.d/ispcp_network stop");
+        
+        print STDOUT "\t";
+    
+    }
     
     print STDOUT "\n\tBlocking access to /etc/vhcs2/vhcs2.conf...";
     
@@ -74,8 +86,6 @@ sub stop_services {
 }
 
 sub start_services {
-
-    my ($lock_file) = @_;
     
     print STDOUT "\tAllowing access to /etc/vhcs2/vhcs2.conf ...";
 
@@ -210,15 +220,39 @@ MSG
 
 print STDOUT $welcome_message;
 
-print STDOUT "\tAre you sure you want to proceed? (type 'yes') [no]: ";
-
+print STDOUT "\tVHCS2 must first be partially removed from the system\n";
+print STDOUT "\tDo you want me to run the remover (it will only remove the config files)? (yes|skip|abort) [abort]: ";
 my $cont = readline(\*STDIN);
 chop($cont);
 
-if (!defined($cont) || $cont ne 'yes') {
+if (!defined($cont) || $cont eq 'abort') {
 
     exit_werror("Script was aborted by user");
 
+}
+
+if ( $cont eq 'yes' ) {
+    # Remove unecessary VHCS2 stuff
+    my $rs = sys_command_rs("./vhcs2-remover.pl");
+    exit_werror(undef, $rs) if ($rs != 0);
+}
+
+print STDOUT "\n\tispCP should now be setup\n";
+print STDOUT "\tDo you want me to run the setup program? (yes|skip|abort) [yes]: ";
+$cont = readline(\*STDIN);
+chop($cont);
+
+if ($cont eq 'abort') {
+
+    exit_werror("Script was aborted by user");
+
+}
+
+if ( $cont ne 'skip' ) {
+    print STDOUT "\n\tRemember to use 'ispcp' as the database name so the migration script works correctly\n";
+    # Now let's setup ispCP
+    $rs = sys_command("./ispcp-setup");
+    exit_werror($rs) if ($rs != 0);
 }
 
 # Now we load the config before we lock the system
@@ -280,6 +314,7 @@ start_services();
 my $bye_message = <<MSG;
 
 The migration script has finished.
+To update the email templates to the new ones clear their content via the GUI and save the changes, it will then use the new ones.
 
 \tHave a nice day
 --

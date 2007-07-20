@@ -8,6 +8,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-20 Raphael Geissert
+	- GUI:
+		* Fixed #505: Notice message on page class.pTemplate.php
+	- DOCS
+		* Fixed #503: gcc is missing on Fedora-package
+	- SETUP:
+		* Added the VHCS2 remover for the migration script
+
 2007-07-19 Raphael Geissert
 	- CONFIGS:
 		* Fixed #498: </IfModule> without matching <IfModule> section

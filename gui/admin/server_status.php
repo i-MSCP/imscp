@@ -155,29 +155,28 @@ SQL_QUERY;
 
 	$ispcp_status->CheckStatus(5);
 	$data = $ispcp_status->GetStatus();
-        $up   = tr('UP');
-        $down = tr('DOWN');
+	$up   = tr('UP');
+	$down = tr('DOWN');
 
+	for($i = 0, $c = count($data); $i < $c; $i++) {
+	    if($data[$i]['status'])	{
+	        $img = $up;
+	        $class = "content up";
+	    } else {
+	        $img = '<b>' . $down . '</b>';
+	        $class = "content down";
+	    }
 
-	for($i = 0; $i <= count($data) - 1; $i++) {
-		if($data[$i]['status'])	{
-			$img = $up;
-			$class = "content up";
-		} else {
-			$img = '<b>' . $down . '</b>';
-			$class = "content down";
-		}
-                
-                if ($data[$i]['port'] == 23 /*telnet*/) {
-                    if ($data[$i]['status']) {
-                        $class = 'content2 down';
-                        $img = '<b>' . $up . '</b>';
-                    } else {
-                        $class = 'content2 up';
-                        $img = $down;
-                    }
-                }
-                
+	    if ($data[$i]['port'] == 23 /*telnet*/) {
+	        if ($data[$i]['status']) {
+	            $class = 'content2 down';
+	            $img = '<b>' . $up . '</b>';
+	        } else {
+	            $class = 'content2 up';
+	            $img = $down;
+	        }
+	    }
+
 
 		$tpl -> assign(
 						array(

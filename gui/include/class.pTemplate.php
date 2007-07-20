@@ -263,7 +263,7 @@ class pTemplate {
         }  while (true);
 
     }
-        
+
     function find_next_curl($data, $spos)
     {
 
@@ -451,7 +451,7 @@ class pTemplate {
             return true;
 
         }
-        
+
         return false;
     }
 
@@ -576,14 +576,14 @@ class pTemplate {
 
         if (!preg_match('/[A-Z0-9][A-Z0-9\_]*/', $pname)) {
 
-            return $false;
+            return false;
 
         }
 
         if (!preg_match('/[A-Za-z0-9][A-Za-z0-9\_]*/', $tname)) {
-        
-           return $false;
-        
+
+           return false;
+
         }
 
         $ADD_FLAG = false;

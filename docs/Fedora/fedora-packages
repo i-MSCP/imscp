@@ -75,7 +75,7 @@ unrar
 tar
 wget
 patch
-
+gcc
 # external
 proftpd
 courier-authlib
