@@ -1131,7 +1131,7 @@ sub setup_system_dirs {
 
 	# AWStats dir
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
-		$rs = make_dir($main::cfg{'AWSTATS_CACHE_DIR'}, 'www-data', 'www-data', 0755);
+		$rs = make_dir($main::cfg{'AWSTATS_CACHE_DIR'}, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0755);
 
 		return $rs if ($rs != 0);
 	}
