@@ -3,10 +3,12 @@ ispCP ω 1.0.0 Changelog
  _________________________________________________________________
 / @TODO:                                                          \
 |         - AWStats:                                              |
-|               * apache: check if stats are working with FastCGI |
-|               * apache: set statsdir if awstats is enabled      |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-07-21 Benedikt Heintel
+	- ENGINE:
+		* Fixed #490: ispcp-db-keys.php has invalid escape character
 
 2007-07-20 Raphael Geissert
 	- GUI:

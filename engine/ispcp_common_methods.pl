@@ -1016,7 +1016,8 @@ sub gen_sys_rand_num {
 
         $rci = ord($rc);
 
-        next if ($rci <= 32 || $rci >= 125 || $rci == 92 );
+        # Excludes all chars below Space (incl.) and bove }, the escape char (\) and the '
+        next if ($rci <= 32 || $rci >= 126 || $rci == 92 || $rci == 39);
 
         $rdata .= $rc;
         $rc = undef;

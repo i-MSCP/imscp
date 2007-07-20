@@ -1129,6 +1129,13 @@ sub setup_system_dirs {
 
 	return $rs if ($rs != 0);
 
+	# AWStats dir
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+		$rs = make_dir($main::cfg{'AWSTATS_CACHE_DIR'}, 'www-data', 'www-data', 0755);
+
+		return $rs if ($rs != 0);
+	}
+
 	push_el(\@main::el, 'setup_system_dirs()', 'Ending...');
 
 	return 0;
@@ -2356,6 +2363,7 @@ sub setup_httpd {
 
 	if ( -e "/usr/sbin/a2enmod" ) {
 
+		sys_command_rs("/usr/sbin/a2enmod cgi &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod actions &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod rewrite &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
