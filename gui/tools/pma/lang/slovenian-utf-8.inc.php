@@ -1,5 +1,5 @@
 <?php
-/* $Id: slovenian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: slovenian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /* By: urska.colner, agenda d.o.o. <urska.colner@agenda.si>, uros kositer, agenda d.o.o. <urosh@agenda.si> */
 
@@ -57,7 +57,6 @@ $strAscending = 'Naraščajoče';
 $strAtBeginningOfTable = 'Na začetku tabele';
 $strAtEndOfTable = 'Na koncu tabele';
 $strAttr = 'Atributi';
-$strAutodetect = 'Samodejno zaznaj';
 $strAutomaticLayout = 'Samodejna postavitev';
 
 $strBack = 'Nazaj';

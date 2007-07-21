@@ -1,5 +1,5 @@
 <?php
-/* $Id: belarusian_cyrillic-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: belarusian_cyrillic-utf-8.inc.php 10445 2007-06-16 12:35:08Z lem9 $ */
 
 /**
  *     Translated by:
@@ -33,7 +33,7 @@ $strAddClause = 'Дадаць %s';
 $strAddConstraints = 'Дадаць абмежаваньні';
 $strAddDeleteColumn = 'Дадаць/выдаліць калёнку крытэру';
 $strAddDeleteRow = 'Дадаць/выдаліць радок крытэру';
-$strAddFields = 'Дадаць новыя палі';
+$strAddFields = 'Дадаць %s новыя палі';
 $strAddHeaderComment = 'Дадаць прыватны камэнтар у загаловак (\\n падзяляе радкі)';
 $strAddIntoComments = 'Дадаць у камэнтары';
 $strAddNewField = 'Дадаць новае поле';
@@ -69,7 +69,6 @@ $strAscending = 'прамы';
 $strAtBeginningOfTable = 'У пачатку табліцы';
 $strAtEndOfTable = 'У канцы табліцы';
 $strAttr = 'Атрыбуты';
-$strAutodetect = 'Аўтавызначэньне';
 $strAutomaticLayout = 'Аўтаматычнае разьмяшчэньне';
 
 $strBack = 'Назад';

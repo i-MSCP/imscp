@@ -1,5 +1,5 @@
 <?php
-/* $Id: bosnian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: bosnian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  *     Translated by:
@@ -58,7 +58,6 @@ $strAscending = 'Rastući';
 $strAtBeginningOfTable = 'Na početku tabele';
 $strAtEndOfTable = 'Na kraju tabele';
 $strAttr = 'Atributi';
-$strAutodetect = 'automatski';
 $strAutomaticLayout = 'Automatski raspored';
 
 $strBack = 'Nazad';

@@ -1,5 +1,5 @@
 <?php
-/* $Id: swedish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: swedish-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /*
  * Translated by Björn T. Hallberg <bjornth at users.sourceforge.net>
@@ -68,7 +68,6 @@ $strAscending = 'Stigande';
 $strAtBeginningOfTable = 'I början av tabellen';
 $strAtEndOfTable = 'I slutet av tabellen';
 $strAttr = 'Attribut';
-$strAutodetect = 'Autodetektera';
 $strAutomaticLayout = 'Automatisk layout';
 
 $strBack = 'Bakåt';

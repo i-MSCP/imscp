@@ -1,5 +1,5 @@
 <?php
-/* $Id: sqlparser.lib.php 10247 2007-04-03 10:23:49Z lem9 $ */
+/* $Id: sqlparser.lib.php 10432 2007-06-11 17:00:56Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /** SQL Parser Functions for phpMyAdmin
@@ -147,7 +147,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 10247 2007-04-03 10:23:49Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 10432 2007-06-11 17:00:56Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -2315,10 +2315,13 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                     }
                     break;
                 case 'quote_backtick':
-                    if ($typearr[3] != 'punct_qualifier' && $typearr[3] != 'alpha_variable') {
+                    // here we check for punct_user to handle correctly
+                    // DEFINER = `username`@`%`
+                    // where @ is the punct_user and `%` is the quote_backtick 
+                    if ($typearr[3] != 'punct_qualifier' && $typearr[3] != 'alpha_variable' && $typearr[3] != 'punct_user') {
                         $after     .= ' ';
                     }
-                    if ($typearr[1] != 'punct_qualifier' && $typearr[1] != 'alpha_variable') {
+                    if ($typearr[1] != 'punct_qualifier' && $typearr[1] != 'alpha_variable' && $typearr[1] != 'punct_user') {
                         $before    .= ' ';
                     }
                     break;

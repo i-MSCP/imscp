@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_traditional-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: chinese_traditional-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Last translation by: Siu Sun <siusun@best-view.net>
@@ -68,7 +68,6 @@ $strAscending = '遞增';
 $strAtBeginningOfTable = '於資料表開頭';
 $strAtEndOfTable = '於資料表尾端';
 $strAttr = '屬性';
-$strAutodetect = '自動偵測';
 $strAutomaticLayout = '自動格式';
 
 $strBack = '回上一頁';

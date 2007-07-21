@@ -1,5 +1,5 @@
 <?php
-/* $Id: korean-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: korean-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /* Translated by WooSuhan <kjh@unews.NOSPAM.co.kr> */
 
@@ -46,7 +46,6 @@ $strAscending = '오름차순';
 $strAtBeginningOfTable = '테이블의 처음';
 $strAtEndOfTable = '테이블의 마지막';
 $strAttr = '보기';
-$strAutodetect = '자동';
 
 $strBack = '뒤로';
 $strBinary = '바이너리';

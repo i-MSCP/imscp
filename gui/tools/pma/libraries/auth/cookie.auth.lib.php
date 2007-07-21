@@ -1,5 +1,5 @@
 <?php
-/* $Id: cookie.auth.lib.php 9991 2007-02-14 21:18:38Z lem9 $ */
+/* $Id: cookie.auth.lib.php 10471 2007-07-03 00:28:32Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 // +--------------------------------------------------------------------------+
@@ -17,7 +17,6 @@ if (!isset($coming_from_common)) {
 $current_time  = time();
 
 // Uses faster mcrypt library if available
-// (Note: mcrypt.lib.php needs $cookie_path and $is_https)
 if (function_exists('mcrypt_encrypt') || PMA_dl('mcrypt')) {
     require_once './libraries/mcrypt.lib.php';
 } else {

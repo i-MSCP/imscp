@@ -1,5 +1,5 @@
 <?php
-/* $Id: mongolian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: mongolian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Translated by Bayarsaikhan Enkhtaivan
@@ -64,7 +64,6 @@ $strAscending = 'Өсөхөөр';
 $strAtBeginningOfTable = 'Хүснэгтийн эхэнд';
 $strAtEndOfTable = 'Хүснэгтийн төгсгөлд';
 $strAttr = 'Атрибутууд';
-$strAutodetect = 'Авто шалгах';
 $strAutomaticLayout = 'Автомат байрлал';
 
 $strBack = 'Өмнөх';

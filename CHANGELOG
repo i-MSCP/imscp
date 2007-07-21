@@ -9,6 +9,8 @@ ispCP ω 1.0.0 Changelog
 2007-07-21 Benedikt Heintel
 	- ENGINE:
 		* Fixed #490: ispcp-db-keys.php has invalid escape character
+	- GUI:
+		* Updated PMA to 2.10.3
 
 2007-07-20 Raphael Geissert
 	- GUI:

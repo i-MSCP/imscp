@@ -1,5 +1,5 @@
 <?php
-/* $Id: thai-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: thai-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 // first created 2002/04/29 Arthit Suriyawongkul & Warit Wanasathian
 // last modified 2004/08/22 Arthit Suriyawongkul
@@ -54,7 +54,6 @@ $strAscending = 'น้อยไปมาก';
 $strAtBeginningOfTable = 'ที่จุดเริ่มต้นของตาราง';
 $strAtEndOfTable = 'ที่จุดสุดท้ายของตาราง';
 $strAttr = 'แอตทริบิวต์';
-$strAutodetect = 'ตรวจหาอัตโนมัติ';
 $strAutomaticLayout = 'จัดตำแหน่งอัตโนมัติ';
 
 $strBack = 'ย้อนกลับ';

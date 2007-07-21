@@ -1,5 +1,5 @@
 <?php
-/* $Id: danish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */ /* danish - Dansk v 2.162 (based on english 2.159) 2006/09/25 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
+/* $Id: danish-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */ /* danish - Dansk v 2.162 (based on english 2.159) 2006/09/25 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -69,7 +69,6 @@ $strAscending = 'Stigende';
 $strAtBeginningOfTable = 'I begyndelsen af tabel';
 $strAtEndOfTable = 'I slutningen af tabel';
 $strAttr = 'Attributter';
-$strAutodetect = 'Fastslå automatisk';
 $strAutomaticLayout = 'Automatisk layout';
 
 $strBack = 'Tilbage';

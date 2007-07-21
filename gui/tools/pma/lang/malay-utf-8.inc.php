@@ -1,5 +1,5 @@
 <?php
-/* $Id: malay-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: malay-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /*
 Projek Penterjemahan (l10n) phpmyadmin.net boleh diakses di laman http://shapik.johordt.com/l10n
@@ -454,7 +454,6 @@ $strAndThen = 'and then';  //to translate
 $strApproximateCount = 'May be approximate. See FAQ 3.11';  //to translate
 $strArabic = 'Arabic';  //to translate
 $strArmenian = 'Armenian';  //to translate
-$strAutodetect = 'Autodetect';  //to translate
 $strAutomaticLayout = 'Automatic layout';  //to translate
 
 $strBaltic = 'Baltic';  //to translate

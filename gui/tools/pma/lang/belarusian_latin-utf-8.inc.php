@@ -1,5 +1,5 @@
 <?php
-/* $Id: belarusian_latin-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: belarusian_latin-utf-8.inc.php 10445 2007-06-16 12:35:08Z lem9 $ */
 
 /**
 * Translated by:
@@ -32,7 +32,7 @@ $strAddClause = 'Dadać %s';
 $strAddConstraints = 'Dadać abmiežavańni';
 $strAddDeleteColumn = 'Dadać/vydalić kalonku kryteru';
 $strAddDeleteRow = 'Dadać/vydalić radok kryteru';
-$strAddFields = 'Dadać novyja pali';
+$strAddFields = 'Dadać novyja %s pali';
 $strAddHeaderComment = 'Dadać pryvatny kamentar u zahałovak (\\n padzialaje radki)';
 $strAddIntoComments = 'Dadać u kamentary';
 $strAddNewField = 'Dadać novaje pole';
@@ -68,7 +68,6 @@ $strAscending = 'pramy';
 $strAtBeginningOfTable = 'U pačatku tablicy';
 $strAtEndOfTable = 'U kancy tablicy';
 $strAttr = 'Atrybuty';
-$strAutodetect = 'Aŭtavyznačeńnie';
 $strAutomaticLayout = 'Aŭtamatyčnaje raźmiaščeńnie';
 
 $strBack = 'Nazad';

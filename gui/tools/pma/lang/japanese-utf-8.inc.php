@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: japanese-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>
@@ -70,7 +70,6 @@ $strAscending = '昇順';
 $strAtBeginningOfTable = 'テーブルの先頭';
 $strAtEndOfTable = 'テーブルの末尾';
 $strAttr = '属性';
-$strAutodetect = '自動検知する';
 $strAutomaticLayout = '自動レイアウト';
 
 $strBack = '戻る';

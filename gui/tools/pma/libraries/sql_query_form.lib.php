@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql_query_form.lib.php 9602 2006-10-25 12:25:01Z nijel $ */
+/* $Id: sql_query_form.lib.php 10439 2007-06-15 17:13:29Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * functions for displaying the sql query form
@@ -470,7 +470,6 @@ function PMA_sqlQueryFormBookmark()
  * @uses    $GLOBALS['cfg']['UploadDir']
  * @uses    $GLOBALS['cfg']['AvailableCharsets']
  * @uses    $GLOBALS['cfg']['AllowAnywhereRecoding']
- * @uses    $GLOBALS['strAutodetect']
  * @uses    $GLOBALS['strBzip']
  * @uses    $GLOBALS['strCharsetOfFile']
  * @uses    $GLOBALS['strCompression']

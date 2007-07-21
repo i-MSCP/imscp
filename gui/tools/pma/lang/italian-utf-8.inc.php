@@ -1,5 +1,5 @@
 <?php
-/* $Id: italian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: italian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * translated by: Pietro Danesi <danone at users.sourceforge.net>  2002-03-29
@@ -68,7 +68,6 @@ $strAscending = 'Crescente';
 $strAtBeginningOfTable = 'All\'inizio della tabella';
 $strAtEndOfTable = 'Alla fine della tabella';
 $strAttr = 'Attributi';
-$strAutodetect = 'Autorilevazione';
 $strAutomaticLayout = 'Impaginazione automatica';
 
 $strBack = 'Indietro';

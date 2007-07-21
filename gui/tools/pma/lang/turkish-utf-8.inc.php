@@ -1,5 +1,5 @@
 <?php
-/* $Id: turkish-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: turkish-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 // phpMyAdmin Türkçe 01.09.2006 itibariyle önceki çeviriye göre çok daha 
 // iyi bir çeviriyle yeniden yapılmıştır. 
@@ -75,7 +75,6 @@ $strAscending = 'Küçükten Büyüğe';
 $strAtBeginningOfTable = 'Tablonun Başında';
 $strAtEndOfTable = 'Tablonun Sonunda';
 $strAttr = 'Öznitelikler';
-$strAutodetect = 'Otomatik Sapta';
 $strAutomaticLayout = 'Otomatik yerleşim';
 
 $strBack = 'Geri';

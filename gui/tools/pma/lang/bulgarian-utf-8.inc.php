@@ -1,5 +1,5 @@
 <?php
-/* $Id: bulgarian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: bulgarian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Translated by Stanislav Yordanov <stanprog at stanprog.com>
@@ -66,7 +66,6 @@ $strAscending = 'Възходящо';
 $strAtBeginningOfTable = 'в началото на таблицата';
 $strAtEndOfTable = 'в края на таблицата';
 $strAttr = 'Атрибути';
-$strAutodetect = 'автоматично откриване';
 $strAutomaticLayout = 'Автоматичен лейаут';
 
 $strBack = 'Назад';

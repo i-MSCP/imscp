@@ -1,5 +1,5 @@
 <?php
-/* $Id: indonesian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: indonesian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -59,7 +59,6 @@ $strAscending = 'Urutan menaik';
 $strAtBeginningOfTable = 'pada awal tabel';
 $strAtEndOfTable = 'pada akhir tabel';
 $strAttr = 'Atribut';
-$strAutodetect = 'Deteksi otomatis';
 $strAutomaticLayout = 'Layout otomatis';
 
 $strBack = 'Kembali';

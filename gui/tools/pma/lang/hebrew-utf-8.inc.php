@@ -1,5 +1,5 @@
 <?php
-/* $Id: hebrew-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ 
+/* $Id: hebrew-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ 
  * Translated by Hadar Porat <hadar at banner.co.il> */
 
 $charset = 'utf-8';
@@ -60,7 +60,6 @@ $strAscending = 'עולה';
 $strAtBeginningOfTable = 'בתחילת טבלה';
 $strAtEndOfTable = 'בסוף טבלה';
 $strAttr = 'תכונות';
-$strAutodetect = 'זיהוי אוטומטי';
 $strAutomaticLayout = 'עיצוב אוטומטי';
 
 $strBack = 'חזרה';

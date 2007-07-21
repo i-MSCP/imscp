@@ -1,5 +1,5 @@
 <?php
-/* $Id: brazilian_portuguese-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: brazilian_portuguese-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * translated by: 
@@ -73,7 +73,6 @@ $strAscending = 'Ascendente';
 $strAtBeginningOfTable = 'No início da tabela'; 
 $strAtEndOfTable = 'No final da tabela'; 
 $strAttr = 'Atributos'; 
-$strAutodetect = 'Auto-detectar'; 
 $strAutomaticLayout = 'Leiaute automático'; 
 
 $strBack = 'Voltar'; 

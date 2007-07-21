@@ -1,5 +1,5 @@
 <?php
-/* $Id: arabic-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: arabic-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Original translation to Arabic by Fisal <fisal77 at hotmail.com>
@@ -61,7 +61,6 @@ $strAscending = 'تصاعدياً';
 $strAtBeginningOfTable = 'في بداية الجدول';
 $strAtEndOfTable = 'في نهاية الجدول';
 $strAttr = 'الخواص';
-$strAutodetect = 'التفحص التلقائي';
 $strAutomaticLayout = 'مظهر تلقائي';
 
 $strBack = 'رجوع';

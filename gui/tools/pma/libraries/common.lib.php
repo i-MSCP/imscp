@@ -1,5 +1,5 @@
 <?php
-/* $Id: common.lib.php 10431 2007-06-10 19:47:14Z lem9 $ */
+/* $Id: common.lib.php 10473 2007-07-05 12:26:42Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -1405,8 +1405,9 @@ if (typeof(window.parent) != 'undefined'
             }
 
             $max_characters = 1000;
-            if (strlen($query_base) > $max_characters) {
+            if (! defined('PMA_QUERY_TOO_BIG') && strlen($query_base) > $max_characters) {
                 define('PMA_QUERY_TOO_BIG',1);
+                $query_base = nl2br(htmlspecialchars($sql_query));
             }
 
             // Parse SQL if needed
@@ -2195,7 +2196,7 @@ if (typeof(window.parent) != 'undefined'
      * @param   array       $row            current row
      *
      * @access  public
-     * @author  Michal Cihar (michal@cihar.com)
+     * @author  Michal Cihar (michal@cihar.com) and others...
      * @return  string      calculated condition
      */
     function PMA_getUniqueCondition($handle, $fields_cnt, $fields_meta, $row)
@@ -2209,7 +2210,7 @@ if (typeof(window.parent) != 'undefined'
             $field_flags = PMA_DBI_field_flags($handle, $i);
             $meta        = $fields_meta[$i];
 
-            // do not use an alias in a condition
+            // do not use a column alias in a condition
             if (! isset($meta->orgname) || ! strlen($meta->orgname)) {
                 $meta->orgname = $meta->name;
 
@@ -2227,6 +2228,16 @@ if (typeof(window.parent) != 'undefined'
                 }
             }
 
+            // Do not use a table alias in a condition.
+            // Test case is:
+            // select * from galerie x WHERE
+            //(select count(*) from galerie y where y.datum=x.datum)>1 
+            //
+            // But orgtable is present only with mysqli extension so the
+            // fix is only for mysqli.
+            if (isset($meta->orgtable) && $meta->table != $meta->orgtable) {
+                $meta->table = $meta->orgtable;
+            }
 
             // to fix the bug where float fields (primary or not)
             // can't be matched because of the imprecision of

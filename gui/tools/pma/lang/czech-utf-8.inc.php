@@ -1,5 +1,5 @@
 <?php
-/* $Id: czech-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: czech-utf-8.inc.php 10489 2007-07-15 14:32:26Z nijel $ */
 
 /**
  * Czech language file by
@@ -69,7 +69,6 @@ $strAscending = 'Vzestupně';
 $strAtBeginningOfTable = 'Na začátku tabulky';
 $strAtEndOfTable = 'Na konci tabulky';
 $strAttr = 'Vlastnosti';
-$strAutodetect = 'Automaticky zjistit';
 $strAutomaticLayout = 'automatické rozvržení';
 
 $strBack = 'Zpět';
@@ -728,6 +727,7 @@ $strServerTabVariables = 'Proměnné';
 $strServerTrafficNotes = '<b>Provoz serveru</b>: Informace o&nbsp;síťovém provozu MySQL serveru od jeho spuštění.';
 $strServerVars = 'Proměnné a nastavení serveru';
 $strServerVersion = 'Verze MySQL';
+$strSessionStartupErrorGeneral = 'Vytváření sezení selhalo, prosím zkontrolujte chyby v logu PHP a/nebo webserveru a pečlivě nastavte podporu sezení v PHP.';
 $strSessionValue = 'Hodnota sezení';
 $strSetEnumVal = 'Pokud je sloupec typu &bdquo;enum&ldquo; nebo &bdquo;set", zadávejte hodnoty v&nbsp;následujícím formátu: \'a\',\'b\',\'c\'...<br />Pokud potřebujete zadat zpětné lomítko (&bdquo;\&ldquo;) nebo jednoduché uvozovky (&bdquo;\'&ldquo;) mezi těmito hodnotami, napište před ně zpětné lomítko (příklad: \'\\\\xyz\' nebo \'a\\\'b\').';
 $strShowAll = 'Zobrazit vše';
@@ -1026,5 +1026,4 @@ $strYes = 'Ano';
 $strZeroRemovesTheLimit = 'Poznámka: Nastavení těchto parametrů na 0 (nulu) odstraní omezení.';
 $strZip = '&bdquo;zazipováno&ldquo;';
 
-$strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
 ?>

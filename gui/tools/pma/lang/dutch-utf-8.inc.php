@@ -1,5 +1,5 @@
 <?php
-/* $Id: dutch-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: dutch-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /*
  * Updated by "CaliMonk" <calimonk at gmx.net> on 2005/01/04.
@@ -62,7 +62,6 @@ $strAscending = 'Oplopend';
 $strAtBeginningOfTable = 'Aan het begin van de tabel';
 $strAtEndOfTable = 'Aan het eind van de tabel';
 $strAttr = 'Attributen';
-$strAutodetect = 'Auto detectie';
 $strAutomaticLayout = 'Automatische lay-out';
 
 $strBack = 'Terug';

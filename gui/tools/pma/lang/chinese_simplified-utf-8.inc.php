@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_simplified-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: chinese_simplified-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Last translation by: Funda Wang <fundawang@en2china.com>
@@ -66,7 +66,6 @@ $strAscending = '递增';
 $strAtBeginningOfTable = '于表开头';
 $strAtEndOfTable = '于表结尾';
 $strAttr = '属性';
-$strAutodetect = '自动检测';
 $strAutomaticLayout = '自动套用格式';
 
 $strBack = '返回';

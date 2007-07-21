@@ -1,5 +1,5 @@
 <?php
-/* $Id: lithuanian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: lithuanian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -58,7 +58,6 @@ $strAscending = 'Didėjimo tvarka';
 $strAtBeginningOfTable = 'Lentelės pradžioje';
 $strAtEndOfTable = 'Lentelės pabaigoje';
 $strAttr = 'Atributai';
-$strAutodetect = 'Automatinis nustatymas';
 $strAutomaticLayout = 'Automatinis išdėstymas';
 
 $strBack = 'Atgal';

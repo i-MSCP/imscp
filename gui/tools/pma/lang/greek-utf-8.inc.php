@@ -1,5 +1,5 @@
 <?php
-/* $Id: greek-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: greek-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /* Translated by Kyriakos Xagoraris <theremon at users.sourceforge.net> */
 
@@ -57,7 +57,6 @@ $strAscending = 'Αύξουσα';
 $strAtBeginningOfTable = 'Στην αρχή του Πίνακα';
 $strAtEndOfTable = 'Στο τέλος του Πίνακα';
 $strAttr = 'Χαρακτηριστικά';
-$strAutodetect = 'Αυτόματη ανίχνευση';  
 $strAutomaticLayout = 'Αυτόματη διάταξη';  
 
 $strBack = 'Επιστροφή';

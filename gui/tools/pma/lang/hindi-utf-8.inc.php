@@ -1,5 +1,5 @@
 <?php
-/* $Id: hindi-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: hindi-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 // Hindi translation
 // 1st release   :   by Girish Nair <girishn@nagpur.dot.net.in(outdated)> : 08-Aug-2002
@@ -289,7 +289,6 @@ $strAndThen = 'and then';  //to translate
 $strApproximateCount = 'May be approximate. See FAQ 3.11';  //to translate
 $strArmenian = 'Armenian';  //to translate
 $strAscending = 'Ascending'; //to translate
-$strAutodetect = 'Autodetect';  //to translate
 $strAutomaticLayout = 'Automatic layout';  //to translate
 
 $strBaltic = 'Baltic';  //to translate

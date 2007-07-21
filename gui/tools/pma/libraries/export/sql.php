@@ -1,5 +1,5 @@
 <?php
-/* $Id: sql.php 10408 2007-05-21 17:13:49Z lem9 $ */
+/* $Id: sql.php 10437 2007-06-14 17:10:25Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 /**
  * Set of functions used to build SQL dumps of tables
@@ -366,7 +366,11 @@ function PMA_exportDBFooter($db)
  * @access  public
  */
 function PMA_getTableDefStandIn($db, $view, $crlf) {
-    $create_query = 'CREATE TABLE ' . PMA_backquote($view) . ' (' . $crlf;
+    $create_query = 'CREATE TABLE ';
+    if (isset($GLOBALS['sql_if_not_exists']) && $GLOBALS['sql_if_not_exists']) {
+        $create_query .= 'IF NOT EXISTS ';
+        }
+    $create_query .= PMA_backquote($view) . ' (' . $crlf;
     $tmp = array();
     $columns = PMA_DBI_get_columns_full($db, $view);
     foreach($columns as $column_name => $definition) {

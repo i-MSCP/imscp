@@ -1,5 +1,5 @@
 <?php
-/* $Id: galician-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: galician-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Translated by Xosé Calvo <xosecalvo at terra.es>
@@ -67,7 +67,6 @@ $strAscending = 'Ascendente';
 $strAtBeginningOfTable = 'No comezo da tabela';
 $strAtEndOfTable = 'Ao final da tabela';
 $strAttr = 'Atributos';
-$strAutodetect = 'Autodetectar';
 $strAutomaticLayout = 'Distribución automática';
 
 $strBack = 'Voltar';

@@ -1,5 +1,5 @@
 <?php
-/* $Id: portuguese-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: portuguese-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Portuguese language file by
@@ -62,7 +62,6 @@ $strAscending = 'Ascendente';
 $strAtBeginningOfTable = 'No Início da Tabela';
 $strAtEndOfTable = 'No Fim da Tabela';
 $strAttr = 'Atributos';
-$strAutodetect = 'Detecção automática';
 $strAutomaticLayout = 'Layout automático';
 
 $strBack = 'Voltar';

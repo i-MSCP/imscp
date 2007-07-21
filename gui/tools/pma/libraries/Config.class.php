@@ -1,5 +1,5 @@
 <?php
-/* $Id: Config.class.php 10440 2007-06-15 17:25:23Z lem9 $ */
+/* $Id: Config.class.php 10510 2007-07-20 13:03:09Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 /**
@@ -81,7 +81,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.10.2');
+        $this->set('PMA_VERSION', '2.10.3');
         /**
          * @deprecated
          */

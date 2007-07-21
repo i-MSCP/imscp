@@ -1,5 +1,5 @@
 <?php
-/* $Id: english-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: english-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -69,7 +69,6 @@ $strAscending = 'Ascending';
 $strAtBeginningOfTable = 'At Beginning of Table';
 $strAtEndOfTable = 'At End of Table';
 $strAttr = 'Attributes';
-$strAutodetect = 'Autodetect';
 $strAutomaticLayout = 'Automatic layout';
 
 $strBack = 'Back';

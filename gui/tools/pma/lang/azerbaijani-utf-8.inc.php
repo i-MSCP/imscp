@@ -1,5 +1,5 @@
 <?php
-/* $Id: azerbaijani-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: azerbaijani-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 // tercümedeki eksiklerimi ve ya sehv olduğunu düşündüyünüz yerleri shehriyari@trcomm.net adresine göndere bilersiniz...
 // Şehriyar İmanov 30 Avqust 2003... Shehi
@@ -57,7 +57,6 @@ $strAscending = 'Artan sırada';
 $strAtBeginningOfTable = 'Cedvelin başına';
 $strAtEndOfTable = 'Cedvelin sonuna';
 $strAttr = 'Xüsusiyyetler';
-$strAutodetect = 'Avtomatik';
 $strAutomaticLayout = 'Automatik şablon';
 
 $strBack = 'Geri';

@@ -1,5 +1,5 @@
 <?php
-/* $Id: display_tbl.lib.php 10415 2007-05-28 16:48:39Z lem9 $ */
+/* $Id: display_tbl.lib.php 10479 2007-07-10 15:01:45Z lem9 $ */
 // vim: expandtab sw=4 ts=4 sts=4:
 
 require_once './libraries/Table.class.php';
@@ -173,7 +173,11 @@ function PMA_setDisplayMode(&$the_disp_mode, &$the_total)
     //    false
     if ($do_display['nav_bar'] == '1' || $do_display['sort_lnk'] == '1') {
 
-        if (isset($unlim_num_rows) && $unlim_num_rows < 2) {
+        // - Do not display sort links if less than 2 rows.
+        // - For a VIEW we (probably) did not count the number of rows
+        //   so don't test this number here, it would remove the possibility
+        //   of sorting VIEW results.
+        if (isset($unlim_num_rows) && $unlim_num_rows < 2  && ! PMA_Table::isView($db, $table)) {
             // garvin: force display of navbar for vertical/horizontal display-choice.
             // $do_display['nav_bar']  = (string) '0';
             $do_display['sort_lnk'] = (string) '0';
@@ -286,8 +290,12 @@ function PMA_displayTableNavigation($pos_next, $pos_prev, $encoded_query)
     &nbsp;&nbsp;&nbsp;
 </td>
 <td align="center">
+<?php // if displaying a VIEW, $unlim_num_rows could be zero because
+      // of $cfg['MaxExactCountViews']; in this case, avoid passing
+      // the 5th parameter to checkFormElementInRange() 
+      // (this means we can't validate the upper limit ?>
     <form action="sql.php" method="post"
-        onsubmit="return (checkFormElementInRange(this, 'session_max_rows', '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidRowNumber']); ?>', 1) &amp;&amp; checkFormElementInRange(this, 'pos', '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidRowNumber']); ?>', 0, <?php echo $unlim_num_rows - 1; ?>))">
+onsubmit="return (checkFormElementInRange(this, 'session_max_rows', '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidRowNumber']); ?>', 1) &amp;&amp; checkFormElementInRange(this, 'pos', '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidRowNumber']); ?>', 0<?php echo $unlim_num_rows > 0 ? ',' . $unlim_num_rows - 1 : ''; ?>))">
         <?php echo PMA_generate_common_hidden_inputs($db, $table); ?>
         <input type="hidden" name="sql_query" value="<?php echo $encoded_query; ?>" />
         <input type="hidden" name="goto" value="<?php echo $goto; ?>" />

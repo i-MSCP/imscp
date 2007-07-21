@@ -1,5 +1,5 @@
 <?php
-/* $Id: latvian-utf-8.inc.php 10430 2007-06-10 19:28:56Z lem9 $ */
+/* $Id: latvian-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
 
 /**
  * Latvian language file by Sandis Jērics <sandisj at parks.lv>
@@ -62,7 +62,6 @@ $strAscending = 'Augošā secībā';
 $strAtBeginningOfTable = 'Tabulas sākumā';
 $strAtEndOfTable = 'Tabulas beigās';
 $strAttr = 'Atribūti';
-$strAutodetect = 'Noteikt automātiski';
 $strAutomaticLayout = 'Automātiskais izvietojums';
 
 $strBack = 'Atpakaļ';

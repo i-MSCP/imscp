@@ -1,5 +1,5 @@
 <?php
-/* $Id: calendar.php 8063 2005-12-04 23:14:41Z nijel $ */
+/* $Id: calendar.php 10474 2007-07-08 17:39:06Z lem9 $ */
 
 require_once('./libraries/common.lib.php');
 require_once('./libraries/header_http.inc.php');
@@ -11,7 +11,7 @@ require('./libraries/header_meta_style.inc.php');
 //<![CDATA[
 var month_names = new Array("<?php echo implode('","', $month); ?>");
 var day_names = new Array("<?php echo implode('","', $day_of_week); ?>");
-var submit_text = "<?php echo $strGo; ?>";
+var submit_text = "<?php echo $strGo . ' (' . $strTime . ')'; ?>";
 //]]>
 </script>
 </head>
