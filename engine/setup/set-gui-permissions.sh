@@ -30,11 +30,18 @@
 #    http://isp-control.net
 #
 
+# for activating debug, please set to 1;
+DEBUG=0
+
 # read needed entries from ispcp.conf
 for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ //g'`
 do
 export $a
 done
+
+if [ $DEBUG -eq 0 ]; then
+	echo -n "Setting GUI Permissions: ";
+fi
 
 #
 # fixing gui permissions;
@@ -44,14 +51,20 @@ for i in `find $ROOT_DIR/gui/`; do
 
 	if [[ -f $i ]]; then
 
-		echo -e "\t0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
+		if [ $DEBUG -eq 1 ]; then
+			echo -e "\t0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
+		fi
 
 		chmod 0444 $i;
 		chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 	elif [[ -d $i ]]; then
 
-		echo "0555 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+		if [ $DEBUG -eq 1 ]; then
+			echo "0555 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+		else
+			echo -n ".";
+		fi
 
 		chmod 0555 $i;
 		chown $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
@@ -65,7 +78,11 @@ done
 
 i="$ROOT_DIR/gui/tools/webmail/data"
 
-echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+else
+	echo -n ".";
+fi
 
 chmod -R 0755 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
@@ -76,7 +93,12 @@ chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
 i="$ROOT_DIR/gui/tools/filemanager/temp"
 
-echo "0777 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0777 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+else
+	echo -n ".";
+fi
+
 chmod -R 0777 $i;
 
 #
@@ -85,7 +107,11 @@ chmod -R 0777 $i;
 
 i="$ROOT_DIR/gui/themes/user_logos"
 
-echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+else
+	echo -n ".";
+fi
 
 chmod -R 0644 $i;
 chmod 0755 $i;
@@ -111,7 +137,15 @@ chown  $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $APACHE_WWW_
 
 i="$ROOT_DIR/gui/phptmp"
 
-echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0755 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP [$i]";
+else
+	echo -n ".";
+fi
 
 chmod -R 0755 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
+
+if [ $DEBUG -eq 0 ]; then
+	echo "done";
+fi

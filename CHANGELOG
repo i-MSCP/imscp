@@ -11,6 +11,10 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #490: ispcp-db-keys.php has invalid escape character
 	- GUI:
 		* Updated PMA to 2.10.3
+	- SETUP:
+		* Changed: setting permissions; status instead of files
+	- SQL:
+		* Fixed #491: database has missing indices
 
 2007-07-20 Raphael Geissert
 	- GUI:

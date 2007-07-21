@@ -361,6 +361,7 @@ CREATE TABLE `login` (
   `login_count` tinyint(1) default '0',
   `captcha_count` tinyint(1) default '0',
   `user_name` varchar(255) default NULL
+  PRIMARY KEY ( `session_id` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -443,6 +444,7 @@ CREATE TABLE `quotalimits` (
   `files_in_avail` int(10) unsigned NOT NULL default '0',
   `files_out_avail` int(10) unsigned NOT NULL default '0',
   `files_xfer_avail` int(10) unsigned NOT NULL default '0'
+  PRIMARY KEY ( `name` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -460,6 +462,7 @@ CREATE TABLE `quotatallies` (
   `files_in_used` int(10) unsigned NOT NULL default '0',
   `files_out_used` int(10) unsigned NOT NULL default '0',
   `files_xfer_used` int(10) unsigned NOT NULL default '0'
+  PRIMARY KEY ( `name` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

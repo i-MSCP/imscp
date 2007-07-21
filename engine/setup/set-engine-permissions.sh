@@ -30,8 +30,11 @@
 #    http://isp-control.net
 #
 
+# for activating debug, please set to 1;
+DEBUG=0
+
 #
-# ISPCP engine permissions setter v1.1;
+# ispCP engine permissions setter v1.1;
 #
 
 # read needed entries from ispcp.conf
@@ -44,19 +47,28 @@ done
 # fixing engine permissions;
 #
 
+if [ $DEBUG -eq 0 ]; then
+	echo -n "Setting Engine Permissions: ";
+fi
 
 for i in `find $ROOT_DIR/engine/`; do
 
 	if [[ -f $i ]]; then
 
-		echo -e "\t0700 root:root $i";
+		if [ $DEBUG -eq 1 ]; then
+			echo -e "\t0700 root:root $i";
+		fi
 
 		chmod 0700 $i;
 		chown root:root $i;
 
 	elif [[ -d $i ]]; then
 
-		echo "0700 root:root [$i]";
+		if [ $DEBUG -eq 1 ]; then
+			echo "0700 root:root [$i]";
+		else
+			echo -n ".";
+		fi
 
 		chmod 0700 $i;
 		chown root:root $i;
@@ -77,7 +89,11 @@ done
 
 i="$ROOT_DIR/engine/messager"
 
-echo "0700 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0700 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME [$i]";
+else
+	echo -n ".";
+fi
 
 		chmod -R 0700 $i;
 		chown -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
@@ -89,7 +105,12 @@ echo "0700 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME [$i]";
 
 i="$ROOT_DIR/engine/messager"
 
-echo "0755 root:root folder [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0755 root:root folder [$i]";
+else
+	echo -n ".";
+fi
+
 
 		chmod 0755 $i;
 		chown root:root $i;
@@ -101,8 +122,13 @@ echo "0755 root:root folder [$i]";
 
 i="${LOG_DIR}/ispcp-arpl-msgr"
 
-echo "0755 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME folder [$i]";
+if [ $DEBUG -eq 1 ]; then
+	echo "0755 $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME folder [$i]";
+else
+	echo -n ".";
+fi
 
 		chmod 0755 $i;
 		chown -R $MTA_MAILBOX_UID_NAME:$MTA_MAILBOX_GID_NAME $i;
 
+echo "done";
