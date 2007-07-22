@@ -120,7 +120,7 @@ sub ask_hostname {
 
 		 $main::ua{'hostname'} = $rdata;
 		 $main::ua{'hostname_local'} = ( ($1) ? $1 : $4);
-         $main::ua{'hostname_local'} =~ s/^([\w][\w-]{0,253}[\w])\.(.*?)$/$1/;
+         $main::ua{'hostname_local'} =~ s/^([^.]+).+$/$1/;
 	} else {
 
 		print STDOUT "\n    Hostname is not a valid domain name!\n";

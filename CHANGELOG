@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-23 Benedikt Heintel
+	- GUI:
+		* Fixed #513: Error in client-functions.php
+	- SQL:
+		* Fixed #511: Missing Commas in database.sql...
+
 2007-07-21 Benedikt Heintel
 	- ENGINE:
 		* Fixed #490: ispcp-db-keys.php has invalid escape character
