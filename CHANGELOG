@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-24 Benedikt Heintel
+	- GUI:
+		* Fixed #517: update_hp.php is sending notification to wrong user
+
 2007-07-23 Benedikt Heintel
 	- GUI:
 		* Fixed #513: Error in client-functions.php

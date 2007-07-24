@@ -1779,26 +1779,26 @@ sub dmn_add_httpd_file_data {
                                             $sys_group,
                                             0755
                                             );
-    
+
             return $rs if ($rs != 0);
         }
-        
+
         #
         # PHP4 and PHP5 Directory for usual user
         #
-        
+
         if (! -e "$starter_dir/$dmn_name/php4") {
-    
+
             $rs = make_dir(
                                             "$starter_dir/$dmn_name/php4",
                                             $sys_user,
                                             $sys_group,
                                             0750
                                             );
-    
+
             return $rs if ($rs != 0);
         }
-        
+
         if (! -e "$starter_dir/$dmn_name/php5") {
 
             $rs = make_dir(
@@ -1807,7 +1807,7 @@ sub dmn_add_httpd_file_data {
                                             $sys_group,
                                             0750
                                             );
-    
+
             return $rs if ($rs != 0);
 	}
 
@@ -1905,16 +1905,16 @@ sub dmn_add_httpd_file_data {
 	#
 	# Default error pages;
 	#
-        
+
         my @errordocs = (401, 403, 404, 500);
-        
+
         my ($i, $key) = ('', '');
 
         for($i = 0; $i < scalar(@errordocs); $i++) {
             $key = $errordocs[$i];
-            
+
             if (-e "$root_dir/gui/errordocs/$key.html") {
-            
+
                 $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
                 return $rs if ($rs != 0);
             }
@@ -2125,23 +2125,23 @@ sub dmn_change_httpd_file_data {
 
 		return $rs if ($rs != 0);
 	}
-        
+
         #
         # PHP4 and PHP5 Directory for usual user
         #
-        
+
         if (! -d "$starter_dir/$dmn_name/php4") {
-    
+
             $rs = make_dir(
                                             "$starter_dir/$dmn_name/php4",
                                             $sys_user,
                                             $sys_group,
                                             0750
                                             );
-    
+
             return $rs if ($rs != 0);
         }
-        
+
         if (! -d "$starter_dir/$dmn_name/php5") {
 
             $rs = make_dir(
@@ -2150,7 +2150,7 @@ sub dmn_change_httpd_file_data {
                                             $sys_group,
                                             0750
                                             );
-    
+
             return $rs if ($rs != 0);
 	}
 

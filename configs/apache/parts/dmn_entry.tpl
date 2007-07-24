@@ -21,7 +21,6 @@
     ErrorDocument 404 /errors/404.html
     ErrorDocument 500 /errors/500.html
 
-    Redirect /stats http://{DMN_NAME}/awstats/awstats.pl
     Redirect /ispcp http://{BASE_SERVER_VHOST}
 
     # httpd dmn entry cgi support BEGIN.
