@@ -8,6 +8,13 @@ ispCP ω 1.0.0 Changelog
 
 2007-07-24 Benedikt Heintel
 	- GUI:
+		* Fixed #520: Warning in Edit ftp user
+	- SQL:
+		* Fixed #518: int(10) unsigned is too small for a traffic counter => bigint(20)
+		* Deleted: unused table domain_probs
+
+2007-07-24 Benedikt Heintel
+	- GUI:
 		* Fixed #517: update_hp.php is sending notification to wrong user
 
 2007-07-23 Benedikt Heintel

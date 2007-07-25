@@ -15,6 +15,21 @@ CREATE TABLE `config` (
 
 ALTER TABLE `domain_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
 ALTER TABLE `domain_traffic` ADD INDEX `i_correction` ( `correction` ) ;
+ALTER TABLE `domain_traffic` CHANGE `dtraff_time` `dtraff_time` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `dtraff_web` `dtraff_web` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `dtraff_mail` `dtraff_mail` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `dtraff_pop` `dtraff_pop` BIGINT UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE `server_traffic` CHANGE `traff_time` `traff_time` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_in` `bytes_in` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_out` `bytes_out` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_mail_in` `bytes_mail_in` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_mail_out` `bytes_mail_out` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_pop_in` `bytes_pop_in` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_pop_out` `bytes_pop_out` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_web_in` `bytes_web_in` BIGINT UNSIGNED NULL DEFAULT NULL ,
+CHANGE `bytes_web_out` `bytes_web_out` BIGINT UNSIGNED NULL DEFAULT NULL;
 
 ALTER TABLE `htaccess_groups` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 
@@ -44,6 +59,7 @@ DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 DROP TABLE IF EXISTS `lang_French`;
 DROP TABLE IF EXISTS `lang_Russian`;
+DROP TABLE IF EXISTS `domain_props`;
 
 -- Add Primary and possibly an index to login table!
 

@@ -158,38 +158,17 @@ CREATE TABLE `domain_aliasses` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `domain_props`
---
-
-CREATE TABLE `domain_props` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `dmn_id` int(10) unsigned default NULL,
-  `dmn_type` varchar(255) default NULL,
-  `suexec_support` varchar(255) default NULL,
-  `suexec_id` int(10) unsigned default NULL,
-  `ssl_support` varchar(255) default NULL,
-  `ssl_id` int(10) unsigned default NULL,
-  `pri_master_dns` varchar(255) default NULL,
-  `pri_master_dns_ip` varchar(255) default NULL,
-  `sec_master_dns` varchar(255) default NULL,
-  `sec_master_dns_ip` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `domain_traffic`
 --
 
 CREATE TABLE `domain_traffic` (
   `dtraff_id` int(10) unsigned NOT NULL auto_increment,
   `domain_id` int(10) unsigned default NULL,
-  `dtraff_time` int(10) unsigned default NULL,
-  `dtraff_web` int(10) unsigned default NULL,
-  `dtraff_ftp` int(10) unsigned default NULL,
-  `dtraff_mail` int(10) unsigned default NULL,
-  `dtraff_pop` int(10) unsigned default NULL,
+  `dtraff_time` bigint(20) unsigned default NULL,
+  `dtraff_web` bigint(20) unsigned default NULL,
+  `dtraff_ftp` bigint(20) unsigned default NULL,
+  `dtraff_mail` bigint(20) unsigned default NULL,
+  `dtraff_pop` bigint(20) unsigned default NULL,
   `correction` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`dtraff_id`),
   KEY `i_correction` (`correction`),
@@ -523,14 +502,14 @@ CREATE TABLE `server_ips` (
 CREATE TABLE `server_traffic` (
   `straff_id` int(10) unsigned NOT NULL auto_increment,
   `traff_time` int(10) unsigned default NULL,
-  `bytes_in` int(10) unsigned default NULL,
-  `bytes_out` int(10) unsigned default NULL,
-  `bytes_mail_in` int(10) unsigned default NULL,
-  `bytes_mail_out` int(10) unsigned default NULL,
-  `bytes_pop_in` int(10) unsigned default NULL,
-  `bytes_pop_out` int(10) unsigned default NULL,
-  `bytes_web_in` int(10) unsigned default NULL,
-  `bytes_web_out` int(10) unsigned default NULL,
+  `bytes_in` bigint(20) unsigned default NULL,
+  `bytes_out` bigint(20) unsigned default NULL,
+  `bytes_mail_in` bigint(20) unsigned default NULL,
+  `bytes_mail_out` bigint(20) unsigned default NULL,
+  `bytes_pop_in` bigint(20) unsigned default NULL,
+  `bytes_pop_out` bigint(20) unsigned default NULL,
+  `bytes_web_in` bigint(20) unsigned default NULL,
+  `bytes_web_out` bigint(20) unsigned default NULL,
   `correction` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`straff_id`),
   KEY `i_correction` (`correction`),
