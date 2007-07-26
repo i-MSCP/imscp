@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-07-25 Benedikt Heintel
+	- GUI:
+		* Fixed #509: Client Execute SQL query shows blank screen when no result set is returned
+	- SETUP:
+		* Updated: Debian Makefile for Apache
+
 2007-07-24 Benedikt Heintel
 	- GUI:
 		* Fixed #520: Warning in Edit ftp user

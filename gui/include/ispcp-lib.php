@@ -153,7 +153,9 @@ require_once(INCLUDEPATH.'/sql.php');
 require_once(INCLUDEPATH.'/emailtpl-functions.php');
 require_once(INCLUDEPATH.'/layout-functions.php');
 
-check_query();
+if ($_SERVER['SCRIPT_NAME'] != "/client/sql_execute_query.php") {
+	check_query();
+}
 
 $query = <<<SQL
 	SELECT

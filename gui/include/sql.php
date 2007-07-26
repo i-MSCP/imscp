@@ -87,7 +87,7 @@ function check_query() {
                     $message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
                     write_log($message);
                     system_message($message);
-                    die();
+                    die("WARNING: Possible SQL injection detected. Script terminated.");
                 }
             } else {
                 foreach($value as $skey=>$svalue) {
@@ -96,12 +96,15 @@ function check_query() {
                             $message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
                             write_log($message);
                             system_message($message);
-                            die();
+                            die("WARNING: Possible SQL injection detected. Script terminated.");
                         }
                     }
                 }
             }
         }
+	}
+	else {
+		die("ERROR: Your PHP-Version is lesser than 4.2.2!");
 	}
 }
 ?>

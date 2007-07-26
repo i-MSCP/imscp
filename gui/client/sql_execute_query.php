@@ -64,7 +64,7 @@ function sql_rs2html(&$rs, $tbl_props = false, $tpl_col_names = false, $htmlspec
         // print " $field->name $field->type $typearr[$i] ";
         if (strlen($fname) == 0)
 			$fname = '&nbsp;';
-        $hdr .= "\t\t<td class=\"content\">$fname</td>\n";
+        $hdr .= "\t\t<td class=\"content4\"><b>$fname</b></td>\n";
     }
     // print $hdr."\t</tr>\n";
     $res .= $hdr . "\t</tr>\n";
@@ -79,20 +79,20 @@ function sql_rs2html(&$rs, $tbl_props = false, $tpl_col_names = false, $htmlspec
             $type = $typearr[$i];
             switch ($type) {
                 case 'T':
-                    $s .= "\t\t<td class=\"content3\">\n" . $rs->UserTimeStamp($v, "D d, M Y, h:i:s") . "&nbsp;</td>\n";
+                    $s .= "\t\t<td class=\"content4\">\n" . $rs->UserTimeStamp($v, "D d, M Y, h:i:s") . "&nbsp;</td>\n";
                     break;
                 case 'D':
-                    $s .= "\t\t<td class=\"content3\">\n" . $rs->UserDate($v, "D d, M Y") . "&nbsp;</td>\n";
+                    $s .= "\t\t<td class=\"content4\">\n" . $rs->UserDate($v, "D d, M Y") . "&nbsp;</td>\n";
                     break;
                 case 'I':
                 case 'R':
                 case 'N':
-                    $s .= "\t\t<td class=\"content3\">\n" . stripslashes((trim($v))) . "&nbsp;</td>\n";
+                    $s .= "\t\t<td class=\"content4\">\n" . stripslashes((trim($v))) . "&nbsp;</td>\n";
                     break;
                 default:
                     if ($htmlspecialchars)
 						$v = htmlspecialchars($v);
-                    $s .= "\t\t<td class=\"content3\">\n" . str_replace("\n", '<br />', stripslashes((trim($v)))) . "&nbsp;</td>\n";
+                    $s .= "\t\t<td class=\"content4\">\n" . str_replace("\n", '<br />', stripslashes((trim($v)))) . "&nbsp;</td>\n";
             }
         }
 
@@ -188,8 +188,12 @@ SQL_QUERY;
 
 function gen_page_post_data(&$tpl, &$sql, $db_user_id) {
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'execute_query') {
-        $tpl->assign(array('USER_NAME' => clean_input($_POST['user_name']),
-                'SQL_QUERY' => mysql_escape_string(stripslashes($_POST['sql_query']))));
+        $tpl->assign(
+					array(
+						'USER_NAME' => clean_input($_POST['user_name']),
+                		'SQL_QUERY' => stripslashes($_POST['sql_query'])
+						)
+					);
     } else {
         $query = <<<SQL_QUERY
             select
@@ -201,9 +205,13 @@ function gen_page_post_data(&$tpl, &$sql, $db_user_id) {
 SQL_QUERY;
 
         $rs = exec_query($sql, $query, array($db_user_id));
-        $tpl->assign(array('USER_NAME' => $rs->fields['db_user_name'],
-                'SQL_QUERY' => '',
-                'SQL_RESULT' => ''));
+        $tpl->assign(
+					array(
+						'USER_NAME' => $rs->fields['db_user_name'],
+                		'SQL_QUERY' => '',
+                		'SQL_RESULT' => ''
+						)
+					);
     }
 
     $tpl->assign('ID', $db_user_id);
@@ -213,18 +221,23 @@ SQL_QUERY;
 
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
     header("Location: index.php");
+    die();
 }
 
 global $cfg;
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl->assign(array('TR_CLIENT_SQL_EXECUTE_QUERY_PAGE_TITLE' => tr('ISPCP - Client/Execute SQL Query'),
-        'THEME_COLOR_PATH' => "../themes/$theme_color",
-        'THEME_CHARSET' => tr('encoding'),
-        'TID' => $_SESSION['layout_id'],
-        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-        'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+$tpl->assign(
+			array(
+				'TR_CLIENT_SQL_EXECUTE_QUERY_PAGE_TITLE' => tr('ISPCP - Client/Execute SQL Query'),
+        		'THEME_COLOR_PATH' => "../themes/$theme_color",
+        		'THEME_CHARSET' => tr('encoding'),
+        		'TID' => $_SESSION['layout_id'],
+        		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+        		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+				)
+			);
 
 // dynamic page data.
 
@@ -241,12 +254,16 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(array('TR_EXECUTE_SQL_QUERY' => tr('Execute SQL query'),
-        'TR_USER_NAME' => tr('User name'),
-        'TR_SQL_QUERY' => tr('SQL query'),
-        'TR_QUERY_STATUS' => tr('Query status'),
-        'TR_QUERY_RESULT' => tr('Query result'),
-        'TR_EXECUTE' => tr('Execute')));
+$tpl->assign(
+			array(
+				'TR_EXECUTE_SQL_QUERY' => tr('Execute SQL query'),
+		        'TR_USER_NAME' => tr('User name'),
+		        'TR_SQL_QUERY' => tr('SQL query'),
+		        'TR_QUERY_STATUS' => tr('Query status'),
+		        'TR_QUERY_RESULT' => tr('Query result'),
+		        'TR_EXECUTE' => tr('Execute')
+				)
+			);
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');

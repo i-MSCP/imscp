@@ -22,6 +22,7 @@ install:
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
+	cp ./01_awstats.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache

@@ -66,18 +66,18 @@ function action_delete(url) {
                               </td>
                             </tr>
                             <tr>
-                              <td width="200" class="content2">{TR_SQL_QUERY}</td>
-                              <td class="content"><textarea name="sql_query" cols="35" rows="5" wrap="virtual" style="width:80%">{SQL_QUERY}</textarea>
+                              <td width="200" class="content2" style="vertical-align:top;">{TR_SQL_QUERY}</td>
+                              <td class="content"><textarea name="sql_query" rows="15" wrap="virtual" style="width:80%">{SQL_QUERY}</textarea>
                               </td>
                             </tr>
                             <!-- BDP: sql_result -->
                             <tr>
-                              <td width="200" class="content2">{TR_QUERY_STATUS}</td>
+                              <td width="200" class="content2" style="vertical-align:top;">{TR_QUERY_STATUS}</td>
                               <td class="content">{QUERY_STATUS}</td>
                             </tr>
                             <tr>
-                              <td width="200" class="content2">{TR_QUERY_RESULT}</td>
-                              <td class="content">{QUERY_RESULT}</td>
+                              <td width="200" class="content2" style="vertical-align:top;">{TR_QUERY_RESULT}</td>
+                              <td class="content2">{QUERY_RESULT}</td>
                             </tr>
                             <!-- EDP: sql_result -->
                             <tr>
