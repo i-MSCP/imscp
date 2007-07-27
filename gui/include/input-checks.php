@@ -522,7 +522,7 @@ function get_session($value) {
         return null;
 }
 
-function is_subdomain_of($base_domain, $subdomain, $realPath = true) {
+function is_subdir_of($base_domain, $subdomain, $realPath = true) {
     if ($realPath) {
         $base_domain = realpath($base_domain);
         $subdomain   = realpath($subdomain);
@@ -531,6 +531,43 @@ function is_subdomain_of($base_domain, $subdomain, $realPath = true) {
     $t = explode($base_domain, $subdomain);
 
     return (count($t) > 1 && $t[0] === '');
+}
+
+/**
+* Description:
+*
+* Function for checking ISPCP subdomain syntax. Here subdomains are
+* limited to {subname}.{dname}.{ext} parts. Data passed to this
+* function must be in the upper form, not only subdomain part for
+* example.
+*
+* Input:
+*
+* $data - ispcp subdomain data;
+*
+* Output:
+*
+* false - incorrect syntax;
+*
+* true - correct syntax;
+*/
+function chk_subdname($subdname) {
+
+    if (!full_domain_check($subdname)) {
+        return false;
+    }
+
+    $match = array();
+
+    $res = preg_match_all("/\./", $subdname, $match, PREG_PATTERN_ORDER);
+
+    if ($res <= 1) {
+        return false;
+    }
+
+    $res = preg_match("/^(www|ftp|mail|ns)\./", $subdname);
+
+    return !($res == 1);
 }
 
 ?>

@@ -92,7 +92,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
             if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
                 $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
 
-                if (!$vfs->exists($other_dir) || !is_subdomain_of($cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'], $other_dir)) {
+                if (!$vfs->exists($other_dir) || !is_subdir_of($cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'], $other_dir)) {
                     set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])));
                     return;
                 } //domain_id
@@ -126,7 +126,7 @@ SQL_QUERY;
             if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
                 $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
 
-                if (!$vfs->exists($other_dir) || !is_subdomain_of($cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'], $other_dir)) {
+                if (!$vfs->exists($other_dir) || !is_subdir_of($cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'], $other_dir)) {
                     set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])));
                     return;
                 }

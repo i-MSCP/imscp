@@ -426,7 +426,7 @@ SQL_QUERY;
             $menu_name = $rs->fields['menu_name'];
             $menu_link = get_menu_vars($rs->fields['menu_link']);
             $menu_target = $rs->fields['menu_target'];
-            $menu_link = preg_replace("/\{ispcp_uname\}/", $_SESSION['user_logged'], $menu_link);
+            $menu_link = str_replace('{ispcp_uname}', $_SESSION['user_logged'], $menu_link);
 
             if ($menu_target === '') {
                 $menu_target = "";
@@ -658,16 +658,14 @@ SQL_QUERY;
 
     // remove from ispcp sql_user table.
 
-    $query_1 = <<<SQL_QUERY
-      	 	 delete from sql_user where sqlu_id = ?
-SQL_QUERY;
+    $query = 'delete from sql_user where sqlu_id = ?';
 
-    $rs_1 = exec_query($sql, $query_1, array($db_user_id));
+    exec_query($sql, $query, array($db_user_id));
+    $db_name = quoteIdentifier($rs->fields['sqld_name']);
+    $db_user_name = $rs->fields['sqlu_name'];
 
     if (count_sql_user_by_name($sql, $rs->fields['sqlu_name']) == 0) {
         $db_id = $rs->fields['sqld_id'];
-        $db_name = quoteIdentifier($rs->fields['sqld_name']);
-        $db_user_name = $rs->fields['sqlu_name'];
 
         // revoke grants on global level, if any;
 
@@ -677,23 +675,6 @@ SQL_QUERY;
         $rs = exec_query($sql, $query, array($db_user_name));
         $query = <<<SQL_QUERY
 		revoke all on *.* from ?@localhost
-SQL_QUERY;
-        $rs = exec_query($sql, $query, array($db_user_name));
-
-        // revoke grants on db level, if any;
-
-        /*
-    	$query = <<<SQL_QUERY
-       	 revoke all on $db_name.* from ?@localhost
-SQL_QUERY;
-		*/
-        $new_db_name = ereg_replace("_", "\\_", $db_name);
-        $query = <<<SQL_QUERY
-       	 	revoke all on $new_db_name.* from ?@'%'
-SQL_QUERY;
-        $rs = exec_query($sql, $query, array($db_user_name));
-        $query = <<<SQL_QUERY
-		revoke all on $new_db_name.* from ?@localhost
 SQL_QUERY;
         $rs = exec_query($sql, $query, array($db_user_name));
 
@@ -725,6 +706,18 @@ SQL_QUERY;
         	flush privileges
 SQL_QUERY;
         $rs = exec_query($sql, $query, array());
+    } else {
+
+        $new_db_name = str_replace("_", "\\_", $db_name);
+        $query = <<<SQL_QUERY
+       	 	revoke all on $new_db_name.* from ?@'%'
+SQL_QUERY;
+        $rs = exec_query($sql, $query, array($db_user_name));
+        $query = <<<SQL_QUERY
+		revoke all on $new_db_name.* from ?@localhost
+SQL_QUERY;
+        $rs = exec_query($sql, $query, array($db_user_name));
+
     }
 }
 
@@ -754,56 +747,6 @@ function check_permissions(&$tpl) {
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == "no" && isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
         $tpl->assign('DMN_MNGMNT', '');
     }
-}
-
-function chk_subdname($subdname) {
-    if (ispcp_subdomain_check($subdname) == 0) {
-        return 1;
-    }
-
-    /* seems ok */
-    return 0;
-}
-
-/**
-* Description:
-*
-* Function for checking ISPCP subdomain syntax. Here subdomains are
-* limited to {subname}.{dname}.{ext} parts. Data passed to this
-* function must be in the upper form, not only subdomain part for
-* example.
-*
-* Input:
-*
-* $data - ispcp subdomain data;
-*
-* Output:
-*
-* 0 - incorrect syntax;
-*
-* 1 - correct syntax;
-*/
-
-function ispcp_subdomain_check ($data) {
-    $res = full_domain_check($data);
-
-    if ($res == 0) {
-        return 0;
-    }
-
-    $match = array();
-
-    $res = preg_match_all("/\./", $data, $match, PREG_PATTERN_ORDER);
-
-    if ($res <= 1) {
-        return 0;
-    }
-
-    $res = preg_match("/^(www|ftp|mail|ns)\./", $data);
-
-    if ($res == 1) return 0;
-
-    return 1;
 }
 
 function check_usr_sql_perms(&$sql, &$db_user_id) {
@@ -853,7 +796,7 @@ SQL_QUERY;
     }
 }
 
-function check_db_sql_perms(&$sql, &$db_id) {
+function check_db_sql_perms(&$sql, $db_id) {
     $dmn_name = $_SESSION['user_logged'];
 
     $query = <<<SQL_QUERY

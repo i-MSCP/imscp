@@ -107,12 +107,11 @@ SQL_QUERY;
 
 
 // check User sql permision
-if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no")
-{
-  header("Location: index.php");
+if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
+    header("Location: index.php");
+    exit;
 }
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl -> assign(array('TR_CLIENT_MANAGE_SQL_PAGE_TITLE' => tr('ISPCP - Client/Manage SQL'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",

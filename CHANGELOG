@@ -14,6 +14,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed error where messages being returned by tr() were not being encoded
 		* Fixed error where trying to delete the custom logo would actually delete the default one
+		* Fixed #508: SQL user privileges aren't revoked when user is assigned to more than one database
 
 2007-07-25 Benedikt Heintel
 	- GUI:

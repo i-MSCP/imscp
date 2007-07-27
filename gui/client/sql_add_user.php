@@ -248,25 +248,26 @@ function add_sql_user(&$sql, $user_id, $db_id)
 
   if (!isset($_POST['Add_Exist'])) {
 
-    //
-    // we'll use domain_id in the name of the database;
-    //
-    if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
-      $db_user = $dmn_id."_".clean_input($_POST['user_name']);
-    } else if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
-      $db_user = clean_input($_POST['user_name'])."_".$dmn_id;
-    } else {
-      $db_user = clean_input($_POST['user_name']);
-    }
-  } else if (isset($_POST['Add_Exist'])) {
+      //
+      // we'll use domain_id in the name of the database;
+      //
+      if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'start') {
+          $db_user = $dmn_id."_".clean_input($_POST['user_name']);
+      } else if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on' && isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') {
+          $db_user = clean_input($_POST['user_name'])."_".$dmn_id;
+      } else {
+          $db_user = clean_input($_POST['user_name']);
+      }
+
+  } else {
       $query = "SELECT sqlu_name FROM sql_user WHERE sqlu_id = ?";
-	  $rs = exec_query($sql, $query, array($_POST['sqluser_id']));
-	  $db_user = $rs -> fields['sqlu_name'];
+      $rs = exec_query($sql, $query, array($_POST['sqluser_id']));
+      $db_user = $rs -> fields['sqlu_name'];
   }
 
   if (strlen($db_user) > $cfg['MAX_SQL_USER_LENGTH']) {
-    set_page_message(tr('User name too long!'));
-    return;
+      set_page_message(tr('User name too long!'));
+      return;
   }
 
   // are wildcards used?
@@ -280,8 +281,8 @@ function add_sql_user(&$sql, $user_id, $db_id)
   // have we such sql user in the system?!
   //
   if (check_db_user($sql, $db_user) && !isset($_POST['Add_Exist'])) {
-    set_page_message(tr('Specified SQL username name already exists!'));
-    return;
+      set_page_message(tr('Specified SQL username name already exists!'));
+      return;
   }
 
   //
