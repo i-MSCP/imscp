@@ -21,99 +21,6 @@
 // page functions.
 //
 
-function gen_def_layout(&$tpl, &$sql, $user_def_layout)
-{
-
-    $layout = 'blue';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-    $layout = 'green';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-    $layout = 'red';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-    $layout = 'yellow';
-
-    if ($layout === $user_def_layout) {
-
-        $selected = 'selected';
-
-    } else {
-
-        $selected = '';
-
-    }
-
-    $tpl -> assign(
-                    array(
-                            'LAYOUT_VALUE' => $layout,
-                            'LAYOUT_SELECTED' => $selected,
-                            'LAYOUT_NAME' => $layout
-                         )
-                  );
-
-    $tpl -> parse('DEF_LAYOUT', '.def_layout');
-
-}
-
 function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max)
 {
 	if(0 !== $max_usage) {
@@ -420,28 +327,6 @@ $tpl -> define_dynamic('logged_from', 'page');
 
 $tpl -> define_dynamic('traff_warn', 'page');
 
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
-
-    $user_id = $_SESSION['user_id'];
-
-    $user_lang = $_POST['def_language'];
-
-    $query = <<<SQL_QUERY
-        update
-            user_gui_props
-        set
-            lang = ?
-        where
-            user_id = ?
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($user_lang, $user_id));
-
-	unset($_SESSION['user_def_lang']);
-	$_SESSION['user_def_lang'] = $user_lang;
-
-}
-
 //
 // common page data.
 //
@@ -492,7 +377,7 @@ gen_logged_from($tpl);
 
 gen_def_language($tpl, $sql, $user_def_lang);
 
-gen_def_layout($tpl, $sql, $user_def_layout);
+gen_def_layout($tpl, $user_def_layout);
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_general_information.tpl');

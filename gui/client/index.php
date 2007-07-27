@@ -52,68 +52,6 @@ function gen_num_limit_msg($num, $limit) {
     return "$num&nbsp;/&nbsp;$limit";
 }
 
-function gen_def_layout(&$tpl, &$sql, $user_def_layout) {
-    global $tid;
-
-    $layout = 'blue';
-    if ($layout === $user_def_layout) {
-        $selected = 'selected';
-        $tid = 0;
-    } else {
-        $selected = '';
-    }
-
-    $tpl->assign(array('LAYOUT_VALUE' => $layout,
-            'LAYOUT_SELECTED' => $selected,
-            'LAYOUT_NAME' => $layout,
-            'TID' => $tid));
-    $tpl->parse('DEF_LAYOUT', '.def_layout');
-    $layout = 'green';
-
-    if ($layout === $user_def_layout) {
-        $selected = 'selected';
-        $tid = 1;
-    } else {
-        $selected = '';
-    }
-
-    $tpl->assign(array('LAYOUT_VALUE' => $layout,
-            'LAYOUT_SELECTED' => $selected,
-            'LAYOUT_NAME' => $layout,
-            'TID' => $tid));
-
-    $tpl->parse('DEF_LAYOUT', '.def_layout');
-    $layout = 'red';
-
-    if ($layout === $user_def_layout) {
-        $selected = 'selected';
-        $tid = 3;
-    } else {
-        $selected = '';
-    }
-
-    $tpl->assign(array('LAYOUT_VALUE' => $layout,
-            'LAYOUT_SELECTED' => $selected,
-            'LAYOUT_NAME' => $layout,
-            'TID' => $tid));
-    $tpl->parse('DEF_LAYOUT', '.def_layout');
-    $layout = 'yellow';
-
-    if ($layout === $user_def_layout) {
-        $selected = 'selected';
-        $tid = 2;
-    } else {
-        $selected = '';
-    }
-
-    $tpl->assign(array('LAYOUT_VALUE' => $layout,
-            'LAYOUT_SELECTED' => $selected,
-            'LAYOUT_NAME' => $layout,
-            'TID' => $tid));
-    $_SESSION['layout_id'] = $tid;
-    $tpl->parse('DEF_LAYOUT', '.def_layout');
-}
-
 function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
     list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
     if ($max_usage != 0) {
@@ -123,7 +61,7 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
     }
 
     $tpl->assign(array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-            'TRAFFIC_BARS' => $bars));
+                       'TRAFFIC_BARS' => $bars));
 
     if ($max_usage != 0 && $usage > $max_usage) {
         $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
@@ -267,23 +205,6 @@ SQL_QUERY;
  *
  */
 
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
-    $user_id = $_SESSION['user_id'];
-    $user_lang = $_POST['def_language'];
-    $query = <<<SQL_QUERY
-        update
-            user_gui_props
-        set
-            lang = ?
-        where
-            user_id = ?
-SQL_QUERY;
-    $rs = exec_query($sql, $query, array($user_lang, $user_id));
-
-    unset($_SESSION['user_def_lang']);
-    $_SESSION['user_def_lang'] = $user_lang;
-}
-
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
@@ -379,7 +300,6 @@ $tpl->assign(
     array('TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Client/Main Index'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
         'THEME_CHARSET' => tr('encoding'),
-        'TID' => $_SESSION['layout_id'],
         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         'ISP_LOGO' => get_logo($_SESSION['user_id'])
         )

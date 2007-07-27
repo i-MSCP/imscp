@@ -2,9 +2,18 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
-|         - AWStats:                                              |
-|               * gui: disable stats-alias in client menu         |
+|        - AWStats:                                                |
+|           * gui: disable stats-alias in client menu              |
+|           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
+
+2007-07-26 Raphael Geissert
+	- CONFIGS:
+		* Reduced PHP_FCGI_MAX_REQUESTS to 500
+		* Adding umask 022 to the fcgi starter script
+	- GUI:
+		* Fixed error where messages being returned by tr() were not being encoded
+		* Fixed error where trying to delete the custom logo would actually delete the default one
 
 2007-07-25 Benedikt Heintel
 	- GUI:
@@ -22,6 +31,11 @@ ispCP ω 1.0.0 Changelog
 2007-07-24 Benedikt Heintel
 	- GUI:
 		* Fixed #517: update_hp.php is sending notification to wrong user
+
+2007-07-23 Raphael Geissert
+	- GUI:
+		* Error pages editor now converts the data to its right entities
+		* Error pages now correctly display the requested file
 
 2007-07-23 Benedikt Heintel
 	- GUI:

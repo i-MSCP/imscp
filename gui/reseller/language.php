@@ -60,7 +60,6 @@ SQL_QUERY;
 	set_page_message(tr('User language updated successfully!'));
 }
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
@@ -79,10 +78,6 @@ if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 }
 
 gen_def_language($tpl, $sql, $user_def_lang);
-
-
-
-
 
 $tpl -> assign(
                 array(

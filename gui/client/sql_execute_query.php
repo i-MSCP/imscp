@@ -121,11 +121,6 @@ function sql_rs2html(&$rs, $tbl_props = false, $tpl_col_names = false, $htmlspec
 }
 
 function execute_sql_query(&$tpl, &$sql, $user_id, $db_user_id) {
-    // add_sql_user($sql, $_SESSION['user_id'], $db_id);
-    // $query = "insert into log (log_time, log_message) values ('2', 'def')";
-    // $query = "select * from mail_users;";
-    // $rs = execute_query($sql, $query);
-    // $query_tbl_result = sql_rs2html($rs);
     global $cfg;
 
     if (!isset($_POST['uaction'])) return;

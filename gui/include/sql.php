@@ -20,8 +20,6 @@
 
 require (INCLUDEPATH.'/adodb/adodb.inc.php');
 
-//require (INCLUDEPATH.'/adodb/tohtml.inc.php');
-
 require (INCLUDEPATH.'/adodb/adodb-pager.inc.php');
 
 $cfg['DB_TYPE'] = $cfg['DATABASE_TYPE'];
@@ -34,14 +32,7 @@ $cfg['DB_PASS'] = decrypt_db_password($cfg['DATABASE_PASSWORD']);
 
 $cfg['DB_NAME'] = $cfg['DATABASE_NAME'];
 
-if ($cfg['DB_TYPE'] === 'pgsql') {
-	$sql = &ADONewConnection('postgres7');
-} else if ($cfg['DB_TYPE'] === 'mysql') {
-	$sql = &ADONewConnection('mysql');
-} else {
-	$sql = NULL;
-    system_message('ERROR: unknown DATABASE_TYPE !');
-}
+$sql = &ADONewConnection('mysql');
 
 @$sql -> Connect($cfg['DB_HOST'], $cfg['DB_USER'], $cfg['DB_PASS'], $cfg['DB_NAME']) OR
 	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: '.$sql -> ErrorMsg() );
@@ -78,33 +69,42 @@ function match_sqlinjection($value, &$matches) {
 	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value, $matches)>0);
 }
 
-function check_query() {
+function check_query($exclude = array()) {
     $matches = null;
-    if (phpversion() > '4.2.2') {
-        foreach($_REQUEST as $key=>$value) {
-            if (!is_array($value)) {
-                if (match_sqlinjection($value, $matches)) {
-                    $message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
-                    write_log($message);
-                    system_message($message);
-                    die("WARNING: Possible SQL injection detected. Script terminated.");
-                }
-            } else {
-                foreach($value as $skey=>$svalue) {
-                    if (!is_array($svalue)) {
-                        if (match_sqlinjection($svalue, $matches)) {
-                            $message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
-                            write_log($message);
-                            system_message($message);
-                            die("WARNING: Possible SQL injection detected. Script terminated.");
-                        }
+
+    if (phpversion() <= '4.2.2') { //why? _ REQUEST was introduced in 4.1.0, not 4.2.2
+        die('ERROR: Your PHP version is older than 4.2.2!');
+    }
+
+    if (!is_array($exclude)) {
+        $exclude = array($exclude);
+    }
+
+    foreach($_REQUEST as $key => $value) {
+
+        if (in_array($key, $exclude)) {
+            continue;
+        }
+
+        if (!is_array($value)) {
+            if (match_sqlinjection($value, $matches)) {
+                $message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
+                write_log($message);
+                system_message($message);
+                die('<b>WARNING</b>: Possible SQL injection detected. Script terminated.');
+            }
+        } else {
+            foreach($value as $skey=>$svalue) {
+                if (!is_array($svalue)) {
+                    if (match_sqlinjection($svalue, $matches)) {
+                        $message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
+                        write_log($message);
+                        system_message($message);
+                        die('<b>WARNING</b>: Possible SQL injection detected. Script terminated.');
                     }
                 }
             }
         }
-	}
-	else {
-		die("ERROR: Your PHP-Version is lesser than 4.2.2!");
-	}
+    }
 }
 ?>

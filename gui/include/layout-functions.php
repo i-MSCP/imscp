@@ -37,47 +37,22 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_id));
 
-    if($rs->RecordCount() == 0){
+    if($rs->RecordCount() == 0) {
         // values for user id, some default staff
         return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
-	}
-	else if ($rs->fields['lang'] === '' && $rs->fields['layout'] === '') {
-		return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
-	}
-	else if ($rs->fields['lang'] === '') {
-		return array($cfg['USER_INITIAL_LANG'],  $rs->fields['layout']);
-	}
-	else if ($rs->fields['layout'] === '') {
-		return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
-	}
+    } else if ($rs->fields['lang'] === '' && $rs->fields['layout'] === '') {
+        return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
+    } else if ($rs->fields['lang'] === '') {
+        return array($cfg['USER_INITIAL_LANG'],  $rs->fields['layout']);
+    } else if ($rs->fields['layout'] === '') {
+        return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
+    }
 
     return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
 
 }
 
-if (isset($_GET['tc'])) {
-    $tc = $_GET['tc'];
-}
-else {
-    if (isset($_SESSION['user_theme'])) {
-        $tc = $_SESSION['user_theme'];
-    }
-	else {
-        $tc = $cfg['USER_INITIAL_THEME'];
-        $_SESSION['user_theme'] = $tc;
-    }
-}
-
-if (isset($_SESSION['user_def_lang'])) {
-	$tl = $_SESSION['user_def_lang'];
-}
-else {
- 	$tl = $cfg['USER_INITIAL_LANG'];
-}
-$_SESSION['user_def_lang'] = $tl;
-
 if (isset($_SESSION['user_id'])) {
-    global $sql;
 
 	if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 
@@ -93,8 +68,7 @@ function gen_page_message(&$tpl) {
     if (!isset($_SESSION['user_page_message'])) {
         $tpl -> assign('PAGE_MESSAGE', '');
         $tpl -> assign('MESSAGE',      '');
-    }
-	else {
+    } else {
         $tpl -> assign('MESSAGE', $_SESSION['user_page_message']);
         unset($_SESSION['user_page_message']);
     }
@@ -102,17 +76,17 @@ function gen_page_message(&$tpl) {
 }
 
 function check_language_exist($lang_table) {
-global $sql;
+    global $sql;
 
- 			$tables = $sql->MetaTables();
-            $nlang = count($tables);
-            for ($i=0 ; $i < $nlang; $i++) {
-                $data= $tables[$i];
-                if ($data == $lang_table) {
-                    return true;
-                }
-            }
-			return false;
+    $tables = $sql->MetaTables();
+    $nlang = count($tables);
+    for ($i=0 ; $i < $nlang; $i++) {
+        $data= $tables[$i];
+        if ($data == $lang_table) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function set_page_message($message) {
@@ -139,20 +113,37 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	$menu_link = preg_replace("/\{uid\}/", $_SESSION['user_id'], $menu_link);
-	$menu_link = preg_replace("/\{uname\}/", $_SESSION['user_logged'], $menu_link);
-	$menu_link = preg_replace("/\{cid\}/", $rs -> fields['customer_id'], $menu_link);
-	$menu_link = preg_replace("/\{fname\}/", $rs -> fields['fname'], $menu_link);
-	$menu_link = preg_replace("/\{lname\}/", $rs -> fields['lname'], $menu_link);
-	$menu_link = preg_replace("/\{company\}/", $rs -> fields['firm'], $menu_link);
-	$menu_link = preg_replace("/\{zip\}/", $rs -> fields['zip'], $menu_link);
-	$menu_link = preg_replace("/\{city\}/", $rs -> fields['city'], $menu_link);
-	$menu_link = preg_replace("/\{country\}/", $rs -> fields['country'], $menu_link);
-	$menu_link = preg_replace("/\{email\}/", $rs -> fields['email'], $menu_link);
-	$menu_link = preg_replace("/\{phone\}/", $rs -> fields['phone'], $menu_link);
-	$menu_link = preg_replace("/\{fax\}/", $rs -> fields['fax'], $menu_link);
-	$menu_link = preg_replace("/\{street1\}/", $rs -> fields['street1'], $menu_link);
-	$menu_link = preg_replace("/\{street2\}/", $rs -> fields['street2'], $menu_link);
+	$search  = array();
+	$replace = array();
+
+	$search [] = '{uid}';
+	$replace[] = $_SESSION['user_id'];
+	$search [] = '{uname}';
+	$replace[] = $_SESSION['user_logged'];
+	$search [] = '{cid}';
+	$replace[] = $rs -> fields['customer_id'];
+	$search [] = '{fname}';
+	$replace[] = $rs -> fields['fname'];
+	$search [] = '{lname}';
+	$replace[] = $rs -> fields['lname'];
+	$search [] = '{company}';
+	$replace[] = $rs -> fields['firm'];
+	$search [] = '{zip}';
+	$replace[] = $rs -> fields['zip'];
+	$search [] = '{city}';
+	$replace[] = $rs -> fields['city'];
+	$search [] = '{country}';
+	$replace[] = $rs -> fields['country'];
+	$search [] = '{email}';
+	$replace[] = $rs -> fields['email'];
+	$search [] = '{phone}';
+	$replace[] = $rs -> fields['phone'];
+	$search [] = '{fax}';
+	$replace[] = $rs -> fields['fax'];
+	$search [] = '{street1}';
+	$replace[] = $rs -> fields['street1'];
+	$search [] = '{street2}';
+	$replace[] = $rs -> fields['street2'];
 
 	$query = <<<SQL_QUERY
         SELECT
@@ -165,8 +156,41 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	$menu_link = preg_replace("/\{domain_name\}/", $rs -> fields['domain_name'], $menu_link);
+	$search [] = '{domain_name}';
+	$replace[] = $rs -> fields['domain_name'];
+
+	$menu_link = str_replace($search, $replace, $menu_link);
 	return $menu_link;
+}
+
+// curently not being used because there's only one layout/theme
+function gen_def_layout(&$tpl, $user_def_layout) {
+
+    $layouts = array('blue', 'green', 'red', 'yellow');
+
+    foreach ($layouts as $layout) {
+
+        if ($layout === $user_def_layout) {
+
+            $selected = 'selected';
+
+        } else {
+
+            $selected = '';
+
+        }
+
+        $tpl -> assign(
+        array(
+        'LAYOUT_VALUE' => $layout,
+        'LAYOUT_SELECTED' => $selected,
+        'LAYOUT_NAME' => $layout
+        )
+        );
+
+        $tpl -> parse('DEF_LAYOUT', '.def_layout');
+    }
+
 }
 
 ?>

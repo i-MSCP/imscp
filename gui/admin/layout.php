@@ -52,8 +52,14 @@ function update_logo()
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'delete_logo') {
 
+        $logo = get_own_logo($user_id);
+
+        if (basename($logo) == 'isp_logo.gif') { //default logo
+            return ;
+        }
+
         update_user_gui_props('', $user_id);
-        unlink(get_own_logo($user_id));
+        unlink($logo);
 
         return;
 
@@ -122,35 +128,6 @@ function update_user_gui_props($file_name, $user_id) {
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($file_name, $user_id));
-
-}
-
-
-function gen_def_layout(&$tpl, $user_def_layout) {
-    $layouts = array('blue', 'green', 'red', 'yellow');
-
-    foreach ($layouts as $layout) {
-
-        if ($layout === $user_def_layout) {
-
-            $selected = 'selected';
-
-        } else {
-
-            $selected = '';
-
-        }
-
-        $tpl -> assign(
-                        array(
-                                'LAYOUT_VALUE' => $layout,
-                                'LAYOUT_SELECTED' => $selected,
-                                'LAYOUT_NAME' => $layout
-                             )
-                      );
-
-        $tpl -> parse('DEF_LAYOUT', '.def_layout');
-    }
 
 }
 

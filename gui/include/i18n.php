@@ -33,6 +33,10 @@ function tr($msgid, $as_is = false) {
     global $sql, $cfg;
     static $cache = array();
 
+    if (!is_bool($as_is)) {
+        $as_is = false;
+    }
+
     $lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
     $encoding = 'UTF-8';
 

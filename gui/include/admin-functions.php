@@ -1611,6 +1611,8 @@ function get_logo($user_id)
 	global $sql;
 
 
+	// check what logo we should return:
+
 	$query = <<<SQL_QUERY
 		SELECT
 			admin_id, created_by, admin_type
@@ -1625,11 +1627,11 @@ SQL_QUERY;
 
 	if($rs->fields['admin_type'] == 'admin') {
 
-		return get_admin_logo($user_id);
+	    return get_admin_logo($user_id);
 
 	} else {
 
-		 return get_admin_logo($rs->fields['created_by']);
+	    return get_admin_logo($rs->fields['created_by']);
 
 	}
 }
@@ -1646,7 +1648,6 @@ function get_admin_logo($user_id)
 
    global $sql, $cfg;
 
-
 	$query = <<<SQL_QUERY
 		SELECT
 			logo
@@ -1661,14 +1662,13 @@ SQL_QUERY;
 
 	$user_logo = $rs -> fields['logo'];
 
-	if($user_logo == '0' || $user_logo == '') { // default logo
+	if (empty($user_logo)) { // default logo
 
-	   return "../themes/user_logos/isp_logo.gif";
+	    return '../themes/user_logos/isp_logo.gif';
 
-	} else{ // we have logo uploaded
+	} else {
 
-		 return $cfg['IPS_LOGO_PATH']."/".$rs -> fields['logo'];
-
+	    return $cfg['IPS_LOGO_PATH'] . '/' . $user_logo;
 
 	}
 
@@ -1676,15 +1676,15 @@ SQL_QUERY;
 
 function calc_bar_value($value, $value_max , $bar_width)
 {
+    if ($value_max == 0) {
+        return 0;
+    } else {
 
+        $ret_value = ($value * $bar_width)/ $value_max;
 
-	if( $value_max== 0 )
-		return 0;
-	else
+        return ($ret_value > $bar_width)? $bar_width : $ret_value;
 
-		$ret_value = ($value * $bar_width)/ $value_max;
-
-		return ($ret_value > $bar_width)?$bar_width :$ret_value ;
+    }
 }
 
 
@@ -1923,22 +1923,21 @@ function gen_logged_from(&$tpl)
 
 }
 
-function change_domain_status(&$sql, &$domain_id, &$domain_name, &$action, &$location)
+function change_domain_status(&$sql, $domain_id, $domain_name, $action, $location)
 {
 	global $cfg;
 
 	check_for_lock_file();
 
-
 	if ($action == 'disable') {
-		$new_status = $cfg['ITEM_TODISABLED_STATUS'];
+	    $new_status = $cfg['ITEM_TODISABLED_STATUS'];
 	} else if ($action == 'enable') {
-		$new_status = $cfg['ITEM_TOENABLE_STATUS'];
+	    $new_status = $cfg['ITEM_TOENABLE_STATUS'];
 	} else {
-		return;
+	    return;
 	}
 
-$query = <<<SQL_QUERY
+    $query = <<<SQL_QUERY
 	  SELECT
 		  mail_id,
 		  mail_pass
@@ -1951,9 +1950,6 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
-
-
-
 
 	while (!$rs -> EOF) {
 
@@ -1972,8 +1968,6 @@ SQL_QUERY;
 			} else {
 				return;
 			}
-
-
 
 			$mail_status = $cfg['ITEM_CHANGE_STATUS'];
 				// and lets update the pass

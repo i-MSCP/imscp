@@ -35,7 +35,7 @@ function gen_error_page_data(&$tpl, &$sql, $user_id, $eid) {
 	$error =  $vfs->get('/errors/' . $eid . '.html');
 	if (false !== $error) {
 		// We already have an error page, return it
-		$tpl->assign(array('ERROR' => $error));
+		$tpl->assign(array('ERROR' => htmlentities($error)));
 		return;
 	}
 

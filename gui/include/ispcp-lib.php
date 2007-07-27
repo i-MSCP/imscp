@@ -153,8 +153,10 @@ require_once(INCLUDEPATH.'/sql.php');
 require_once(INCLUDEPATH.'/emailtpl-functions.php');
 require_once(INCLUDEPATH.'/layout-functions.php');
 
-if ($_SERVER['SCRIPT_NAME'] != "/client/sql_execute_query.php") {
-	check_query();
+if ($_SERVER['SCRIPT_NAME'] != '/client/sql_execute_query.php') {
+    check_query();
+} else {
+	check_query(array('sql_query'));
 }
 
 $query = <<<SQL
@@ -164,10 +166,9 @@ $query = <<<SQL
 		config
 SQL;
 
-if(!$res = exec_query($sql, $query, array())) {
+if (!$res = exec_query($sql, $query, array())) {
 	system_message(tr('Could not get config from database'));
-}
-else {
+} else {
 	while($row = $res -> FetchRow()) {
 		$cfg[$row['name']] = $row['value'];
 	}
