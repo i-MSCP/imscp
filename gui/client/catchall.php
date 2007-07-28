@@ -72,193 +72,6 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
     }
 }
 
-function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-    $dmn_query = <<<SQL_QUERY
-        select
-            mail_id, mail_acc, mail_type, status, mail_auto_respond
-        from
-            mail_users
-        where
-            domain_id = '$dmn_id'
-          and
-            sub_id = 0
-		and
-				(mail_type  = 'normal_mail'
-			or
-				mail_type  = 'normal_forward')
-        order by
-            mail_type desc,
-            mail_id
-SQL_QUERY;
-
-    $rs = execute_query($sql, $dmn_query);
-
-    if ($rs->RecordCount() == 0) {
-        return 0;
-    } else {
-        while (!$rs->EOF) {
-            list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
-            $mail_acc = decode_idna($rs->fields['mail_acc']);
-            $show_dmn_name = decode_idna($dmn_name);
-
-            $tpl->assign(
-                array('MAIL_ACC' => $mail_acc . "@" . $show_dmn_name,
-                    'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
-                    'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
-                    'MAIL_ACTION' => $mail_action,
-                    'MAIL_ACTION_SCRIPT' => $mail_action_script,
-                    'MAIL_EDIT_SCRIPT' => $mail_edit_script
-                    )
-                );
-
-            gen_user_mail_auto_respond($tpl,
-                $rs->fields['mail_id'],
-                $rs->fields['mail_type'],
-                $rs->fields['status'],
-                $rs->fields['mail_auto_respond']);
-
-            $tpl->parse('MAIL_ITEM', '.mail_item');
-            $rs->MoveNext();
-        }
-
-        return $rs->RecordCount();
-    }
-}
-
-function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-    $sub_query = <<<SQL_QUERY
-
-        select
-
-            t1.subdomain_id as sub_id,
-            t1.subdomain_name as sub_name,
-            t2.mail_id,
-            t2.mail_acc,
-            t2.mail_type,
-            t2.status,
-            t2.mail_auto_respond
-        from
-            subdomain as t1,
-            mail_users as t2
-        where
-            t1.domain_id = '$dmn_id'
-          and
-    	     t2.domain_id = '$dmn_id'
-		and
-				(t2.mail_type = 'subdom_mail'
-			or
-				t2.mail_type = 'subdom_forward')
-          and
-            t1.subdomain_id = t2.sub_id
-        order by
-            t2.mail_type desc, t2.mail_id
-SQL_QUERY;
-
-    $rs = execute_query($sql, $sub_query);
-
-    if ($rs->RecordCount() == 0) {
-        return 0;
-    } else {
-        while (!$rs->EOF) {
-            list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
-
-            $mail_acc = decode_idna($rs->fields['mail_acc']);
-
-            $show_sub_name = decode_idna($rs->fields['sub_name']);
-
-            $show_dmn_name = decode_idna($dmn_name);
-
-            $tpl->assign(
-                array('MAIL_ACC' => $mail_acc . "@" . $show_sub_name . "." . $show_dmn_name,
-                    'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
-                    'MAIL_STATUS' => user_trans_item_status($rs->fields['status']),
-                    'MAIL_ACTION' => $mail_action,
-                    'MAIL_ACTION_SCRIPT' => $mail_action_script,
-                    'MAIL_EDIT_SCRIPT' => $mail_edit_script
-                    )
-                );
-
-            gen_user_mail_auto_respond($tpl,
-                $rs->fields['mail_id'],
-                $rs->fields['mail_type'],
-                $rs->fields['status'],
-                $rs->fields['mail_auto_respond']);
-
-            $tpl->parse('MAIL_ITEM', '.mail_item');
-
-            $rs->MoveNext();
-        }
-
-        return $rs->RecordCount();
-    }
-}
-
-function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-    $als_query = <<<SQL_QUERY
-        select
-            t1.alias_id as als_id,
-            t1.alias_name as als_name,
-            t2.mail_id,
-            t2.mail_acc,
-            t2.mail_type,
-            t2.status,
-            t2.mail_auto_respond
-        from
-            domain_aliasses as t1,
-            mail_users as t2
-        where
-            t1.domain_id = '$dmn_id'
-          and
-            t2.domain_id = '$dmn_id'
-          and
-            t1.alias_id = t2.sub_id
-		and
-				(t2.mail_type = 'alias_mail'
-			or
-				t2.mail_type = 'alias_forward')
-        order by
-            t2.mail_type desc, t2.mail_id
-SQL_QUERY;
-
-    $rs = execute_query($sql, $als_query);
-
-    if ($rs->RecordCount() == 0) {
-        return 0;
-    } else {
-        while (!$rs->EOF) {
-            list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
-
-            $mail_acc = decode_idna($rs->fields['mail_acc']);
-
-            $show_dmn_name = decode_idna($dmn_name);
-
-            $show_als_name = decode_idna($rs->fields['als_name']);
-
-            $tpl->assign(
-                array('MAIL_ACC' => $mail_acc . "@" . $show_als_name,
-                    'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
-                    'MAIL_STATUS' => user_trans_item_status($rs->fields['status']),
-                    'MAIL_ACTION' => $mail_action,
-                    'MAIL_ACTION_SCRIPT' => $mail_action_script,
-                    'MAIL_EDIT_SCRIPT' => $mail_edit_script
-                    )
-                );
-
-            gen_user_mail_auto_respond($tpl,
-                $rs->fields['mail_id'],
-                $rs->fields['mail_type'],
-                $rs->fields['status'],
-                $rs->fields['mail_auto_respond']);
-
-            $tpl->parse('MAIL_ITEM', '.mail_item');
-
-            $rs->MoveNext();
-        }
-
-        return $rs->RecordCount();
-    }
-}
-
 function gen_user_catchall_action($mail_id, $mail_status) {
     global $cfg;
 
@@ -304,28 +117,11 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
     }
 }
 
-function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name, $dmn_mails, $als_mails, $sub_mails) {
+function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
     global $counter;
-    $total_mails = $dmn_mails + $als_mails + $sub_mails;
-
-    if ($total_mails == 0) {
-        $tpl->assign(
-            array('CATCHALL_MSG' => tr('Catch all mail account can not be created!'),
-                'CATCHALL_ITEM' => '',
-                'ITEM_CLASS' => 'content',
-                )
-            );
-
-        $tpl->parse('CATCHALL_MESSAGE', 'catchall_message');
-
-        return;
-    }
 
     $tpl->assign('CATCHALL_MESSAGE', '');
 
-    // Have We Any Domain Mails?
-
-    if ($dmn_mails > 0) {
         $query = <<<SQL_QUERY
             select
                 mail_id, mail_acc, status
@@ -358,11 +154,7 @@ SQL_QUERY;
             );
 
         $tpl->parse('CATCHALL_ITEM', 'catchall_item');
-    }
 
-    // Have We Any Alias Mails?
-
-    if ($als_mails > 0) {
         $query = <<<SQL_QUERY
             select
                 alias_id, alias_name
@@ -417,11 +209,7 @@ SQL_QUERY;
             $rs->MoveNext();
             $counter ++;
         }
-    }
 
-    // Have We Any Subdomain Mails?
-
-    if ($sub_mails > 0) {
         $query = <<<SQL_QUERY
             select
                 a.subdomain_id, CONCAT(a.subdomain_name,'.',b.domain_name) as subdomain_name
@@ -478,7 +266,6 @@ SQL_QUERY;
             $rs->MoveNext();
             $counter ++;
         }
-    }
 }
 
 function gen_page_lists(&$tpl, &$sql, $user_id)
@@ -504,42 +291,13 @@ function gen_page_lists(&$tpl, &$sql, $user_id)
         $dmn_php,
         $dmn_cgi) = get_domain_default_props($sql, $user_id);
 
-    $dmn_mails = gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-
-    $sub_mails = gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-
-    $als_mails = gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-
-    $total_mails = $dmn_mails + $sub_mails + $als_mails;
-
-    if ($total_mails > 0) {
-        $tpl->assign(
-            array('MAIL_MESSAGE' => '',
-                'DMN_TOTAL' => $dmn_mails,
-                'SUB_TOTAL' => $sub_mails,
-                'ALS_TOTAL' => $als_mails,
-                'TOTAL_MAIL_ACCOUNTS' => $total_mails
-                )
-            );
-    } else {
-        $tpl->assign(
-            array('MAIL_MSG' => tr('Mail accounts list is empty!'),
-                'MAIL_ITEM' => '',
-                'MAILS_TOTAL' => ''
-                )
-            );
-
-        $tpl->parse('MAIL_MESSAGE', 'mail_message');
-    }
-
-    gen_page_catchall_list($tpl, $sql, $dmn_id, $dmn_name, $dmn_mails, $als_mails, $sub_mails);
+    gen_page_catchall_list($tpl, $sql, $dmn_id, $dmn_name);
     // gen_page_ftp_list($tpl, $sql, $dmn_id, $dmn_name);
     return $total_mails;
 }
 
 // common page data.
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(

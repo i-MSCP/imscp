@@ -1,3 +1,4 @@
+--
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT=0;
 
@@ -12,6 +13,31 @@ CREATE TABLE `config` (
   `value` varchar(255) collate utf8_unicode_ci NOT NULL default '',
   PRIMARY KEY  (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `config` ( `name` , `value` )
+VALUES (
+    'PORT_FTP', '21;tcp;FTP;1;0'
+), (
+    'PORT_SSH', '22;tcp;SSH;1;0'
+),(
+    'PORT_TELNET', '23;tcp;TELNET;1;0'
+),(
+    'PORT_SMTP', '25;tcp;SMTP;1;0'
+),(
+    'PORT_DNS', '53;tcp;DNS;1;0'
+),(
+    'PORT_HTTP', '80;tcp;HTTP;1;0'
+),(
+    'PORT_HTTPS', '443;tcp;HTTPS;1;0'
+),(
+    'PORT_POP3', '110;tcp;POP3;1;0'
+),(
+    'PORT_POP3-SSL', '995;tcp;POP3-SSL;1;0'
+),(
+    'PORT_IMAP', '143;tcp;IMAP;1;0'
+),(
+    'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'
+);
 
 ALTER TABLE `domain_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
 ALTER TABLE `domain_traffic` ADD INDEX `i_correction` ( `correction` ) ;
@@ -59,6 +85,9 @@ DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 DROP TABLE IF EXISTS `lang_French`;
 DROP TABLE IF EXISTS `lang_Russian`;
+
+-- Drop useless tables
+
 DROP TABLE IF EXISTS `domain_props`;
 
 -- Add Primary and possibly an index to login table!
@@ -68,12 +97,16 @@ ALTER TABLE `mail_users` ADD `mail_addr` VARCHAR( 200 ) CHARACTER SET utf8 COLLA
 
 ALTER TABLE `server_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
 
--- END: Upgrade database structure:
+-- END: Upgrade database structure
 
 -- BEGIN: Regenerate config files:
 UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
 UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
 UPDATE `domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
--- END: Regenerate config files:
+-- END: Regenerate config files
+
+-- Change charset:
+
+ALTER DATABASE `ispcp` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
 
 COMMIT;

@@ -570,4 +570,253 @@ function chk_subdname($subdname) {
     return !($res == 1);
 }
 
+/**
+ * All in one function to check who owns what =)
+ *
+ * @param misc $id FTP/mail/domain/alias/subdomain/etc id to check
+ * @param string $type What kind of id $id is
+ * @return numeric The id of the admin who owns the id $id of $type type
+ */
+function who_owns_this($id, $type = 'dmn')
+{
+    global $sql;
+
+    $who = null;
+
+    // Fix $type according to type or by alias
+    switch ($type) {
+        case 'dmn_id':
+            $type = 'domain_id';
+            break;
+        case 'sub_id':
+            $type = 'subdomain_id';
+            break;
+        case 'als_id':
+            $type = 'alias_id';
+            break;
+        case 'user':
+            $type = 'client';
+            break;
+        case 'domain_uid':
+            $type = 'uid';
+            break;
+        case 'ticket':
+            $type = 'ticket_id';
+            break;
+        case 'domain_gid':
+            $type = 'gid';
+            break;
+        case 'sqlu_id':
+        case 'sqluser_id':
+            $type = 'sql_user_id';
+            break;
+        case 'sqld_id':
+        case 'sqldatabase_id':
+            $type = 'sql_database_id';
+            break;
+        case 'ftpuser':
+        case 'ftpuserid':
+        case 'ftp_userid':
+            $type = 'ftp_user';
+            break;
+        case 'sqluser':
+        case 'sqlu':
+        case 'sqlu_name':
+            // Can't guess by type
+            $type = 'sql_user';
+            break;
+        case 'sqldatabase':
+        case 'sqld':
+        case 'sqld_name':
+            // Can't guess by type
+            $type = 'sql_database';
+            break;
+        case 'dmn':
+        case 'domain':
+            if (!is_numeric($id)) {
+                $type = 'domain';
+            } else {
+                $type = 'domain_id';
+            }
+            break;
+        case 'als':
+        case 'alias':
+        case 'domain_alias':
+            if (!is_numeric($id)) {
+                $type = 'alias';
+            } else {
+                $type = 'alias_id';
+            }
+            break;
+        case 'sub':
+        case 'subdomain':
+            if (!is_numeric($id)) {
+                $type = 'subdomain';
+            } else {
+                $type = 'subdomain_id';
+            }
+            break;
+    }
+
+    $resolvers = array();
+    /**
+     * $resolvers is a multi-dimensional array.
+     * It's elements keys are the value that will be matched by $type.
+     * Each element is an array, containing at least two elements:
+     *  'query' and 'is_final'
+     * The former is the SQL query that should only SELECT one item; or false in case a query isn't used.
+     * The latter is a boolean which specifies whether the result of that 'resolver' is an admin id or not
+     *
+     * Other elements might be:
+     *  'next', 'separator', 'pos'
+     *
+     * 'next' is the $type value for the next call to who_owns_this (only used when 'is_final' is false)
+     * 'separator' is the separator to be used when exploding the $id (only used when 'query' is false)
+     * 'post' is the position in the array/result of exploding $id (only used when 'query' is false)
+     *
+     * NOTE: 'query' MUST be formated like: 'SELECT something FROM...' in order to correctly detect the field being selected
+     *
+     */
+    $resolvers['domain_id'] = array();
+    $resolvers['domain_id']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_id = ? LIMIT 1;';
+    $resolvers['domain_id']['is_final'] = true;
+
+    $resolvers['alias_id'] = array();
+    $resolvers['alias_id']['query'] = 'SELECT domain_id FROM domain_aliasses WHERE alias_id = ? LIMIT 1;';
+    $resolvers['alias_id']['is_final'] = false;
+    $resolvers['alias_id']['next'] = 'dmn';
+
+    $resolvers['alias'] = array();
+    $resolvers['alias']['query'] = 'SELECT domain_id FROM domain_aliasses WHERE alias_name = ? LIMIT 1;';
+    $resolvers['alias']['is_final'] = false;
+    $resolvers['alias']['next'] = 'dmn';
+
+    $resolvers['subdomain_id'] = array();
+    $resolvers['subdomain_id']['query'] = 'SELECT domain_id FROM subdomain WHERE subdomain_id = ? LIMIT 1;';
+    $resolvers['subdomain_id']['is_final'] = false;
+    $resolvers['subdomain_id']['next'] = 'dmn';
+
+    $resolvers['subdomain'] = array();
+    $resolvers['subdomain']['query'] = false;
+    $resolvers['subdomain']['separator'] = '.';
+    $resolvers['subdomain']['pos'] = 1;
+    $resolvers['subdomain']['is_final'] = false;
+    $resolvers['subdomain']['next'] = 'dmn';
+
+    $resolvers['client'] = array();
+    $resolvers['client']['query'] = 'SELECT created_by FROM admin WHERE admin_id = ? LIMIT 1;';
+    $resolvers['client']['is_final'] = true;
+
+    $resolvers['reseller'] = $resolvers['admin'] = $resolvers['client'];
+
+    $resolvers['domain'] = array();
+    $resolvers['domain']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain = ? LIMIT 1;';
+    $resolvers['domain']['is_final'] = true;
+
+    $resolvers['ticket_id'] = array();
+    $resolvers['ticket_id']['query'] = 'SELECT ticket_from FROM ticket WHERE ticket_id = ? LIMIT 1;';
+    $resolvers['ticket_id']['is_final'] = true;
+
+    $resolvers['uid'] = array();
+    $resolvers['uid']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_uid = ? LIMIT 1;';
+    $resolvers['uid']['is_final'] = true;
+
+    $resolvers['gid'] = array();
+    $resolvers['gid']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_gid = ? LIMIT 1;';
+    $resolvers['gid']['is_final'] = true;
+
+    $resolvers['gid'] = array();
+    $resolvers['gid']['query'] = 'SELECT domain_admin_id FROM domain WHERE domain_gid = ? LIMIT 1;';
+    $resolvers['gid']['is_final'] = true;
+
+    $resolvers['ftp_user'] = array();
+    $resolvers['ftp_user']['query'] = 'SELECT uid FROM ftp_users WHERE userid = ? LIMIT 1;';
+    $resolvers['ftp_user']['is_final'] = false;
+    $resolvers['ftp_user']['next'] = 'dmn';
+
+    $resolvers['sql_user_id'] = array();
+    $resolvers['sql_user_id']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_id = ? LIMIT 1;';
+    $resolvers['sql_user_id']['is_final'] = false;
+    $resolvers['sql_user_id']['next'] = 'sqld_id';
+
+    $resolvers['sql_database_id'] = array();
+    $resolvers['sql_database_id']['query'] = 'SELECT domain_id FROM sql_database WHERE sqld_id = ? LIMIT 1;';
+    $resolvers['sql_database_id']['is_final'] = false;
+    $resolvers['sql_database_id']['next'] = 'dmn';
+
+    $resolvers['sql_user'] = array();
+    $resolvers['sql_user']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_name = ? LIMIT 1;';
+    $resolvers['sql_user']['is_final'] = false;
+    $resolvers['sql_user']['next'] = 'sqld_id';
+
+    $resolvers['sql_database'] = array();
+    $resolvers['sql_database']['query'] = 'SELECT domain_id FROM sql_database WHERE sqld_name = ? LIMIT 1;';
+    $resolvers['sql_database']['is_final'] = false;
+    $resolvers['sql_database']['next'] = 'dmn';
+
+    $resolvers['mail_id'] = array();
+    $resolvers['mail_id']['query'] = 'SELECT domain_id FROM mail_users WHERE mail_id = ? LIMIT 1;';
+    $resolvers['mail_id']['is_final'] = false;
+    $resolvers['mail_id']['next'] = 'dmn';
+
+    $resolvers['mail'] = array();
+    $resolvers['mail']['query'] = false;
+    $resolvers['mail']['separator'] = '@';
+    $resolvers['mail']['post'] = 1;
+    $resolvers['mail']['is_final'] = false;
+    $resolvers['mail']['next'] = 'dmn';
+
+    $resolvers['htaccess_id'] = array();
+    $resolvers['htaccess_id']['query'] = 'SELECT dmn_id FROM htaccess WHERE id = ? LIMIT 1;';
+    $resolvers['htaccess_id']['is_final'] = false;
+    $resolvers['htaccess_id']['next'] = 'dmn';
+
+    $resolvers['htaccess_group_id'] = array();
+    $resolvers['htaccess_group_id']['query'] = 'SELECT dmn_id FROM htaccess_groups WHERE id = ? LIMIT 1;';
+    $resolvers['htaccess_group_id']['is_final'] = false;
+    $resolvers['htaccess_group_id']['next'] = 'dmn';
+
+    $resolvers['htaccess_user_id'] = array();
+    $resolvers['htaccess_user_id']['query'] = 'SELECT dmn_id FROM htaccess_users WHERE id = ? LIMIT 1;';
+    $resolvers['htaccess_user_id']['is_final'] = false;
+    $resolvers['htaccess_user_id']['next'] = 'dmn';
+
+    $resolvers['hosting_plan_id'] = array();
+    $resolvers['hosting_plan_id']['query'] = 'SELECT reseller_id FROM hosting_plans WHERE id = ? LIMIT 1;';
+    $resolvers['hosting_plan_id']['is_final'] = true;
+
+    if (isset($resolvers[$type])) {
+        $r = $resolvers[$type];
+        if ($r['query']) {
+            $matches = array();
+            if (!preg_match('/SELECT[ \t]+([a-z0-9\_]+)[ \t]+FROM/i', $r['query'], $matches)) {
+                system_message(tr('Unknown Error'));
+            }
+            $select = $matches[1];
+            $rs = exec_query($sql, $r['query'], $id);
+            if ($rs->RecordCount() != 0) {
+                if ($r['is_final']) {
+                    $who = $rs->fields[$select];
+                } else {
+                    $who = who_owns_this($rs->fields[$select], $r['next']);
+                }
+            }
+        } else {
+            $ex = explode($r['separator'], $id);
+            if (!$r['is_final']) {
+                $who = who_owns_this($r['pos'], $r['next']);
+            } else {
+                $who = $ex[$r['pos']];
+            }
+        }
+    }
+
+    if ($type != 'admin' && (empty($who) || $who <= 0)) {
+        $who = null;
+    }
+
+    return $who;
+
+}
+
 ?>

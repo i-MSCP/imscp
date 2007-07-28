@@ -29,11 +29,11 @@ $tpl -> define_dynamic('logged_from', 'page');
 $tpl -> define_dynamic('mail_list', 'page');
 
 if (isset($_GET['id'])) {
-  $item_id = $_GET['id'];
+    $item_id = $_GET['id'];
 } else if (isset($_POST['id'])) {
-  $item_id = $_POST['id'];
+    $item_id = $_POST['id'];
 } else {
-  user_goto('catchall.php');
+    user_goto('catchall.php');
 }
 
 //
@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
 
 function gen_dynamic_page_data(&$tpl, &$sql, $id)
 {
-  global $_SESSION, $cfg;
+  global $cfg;
   global $domain_id;
 
   list($dmn_id,
@@ -80,6 +80,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id)
 	}
 
   $ok_status = $cfg['ITEM_OK_STATUS'];
+  $match = array();
   if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
     $item_id = $match[1];
     $item_type = $match[2];
@@ -105,22 +106,26 @@ SQL_QUERY;
 
       $rs = exec_query($sql, $query, array($item_id, $item_id, $ok_status));
       if ($rs -> RecordCount() == 0) {
-        user_goto('catchall.php');
-      }
+          $tpl -> parse('MAIL_LIST', '');
+          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected'));
+      } else {
 
-      while (!$rs -> EOF) {
-        $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
-        $show_domain_name = decode_idna($rs -> fields['domain_name']);
-        $mail_acc = $rs -> fields['mail_acc'];
-        $domain_name = $rs -> fields['domain_name'];
-        $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
-                             'MAIL_ACCOUNT' => $show_mail_acc."@".$show_domain_name, // this will be show in the templates
-                             'MAIL_ACCOUNT_PUNNY' => $mail_acc."@".$domain_name //this will be updated wenn we crate cach all
-                            )
-                      );
+          $tpl -> assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => ''));
 
-        $tpl -> parse('MAIL_LIST', '.mail_list');
-        $rs -> MoveNext();
+          while (!$rs -> EOF) {
+            $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
+            $show_domain_name = decode_idna($rs -> fields['domain_name']);
+            $mail_acc = $rs -> fields['mail_acc'];
+            $domain_name = $rs -> fields['domain_name'];
+            $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
+                                 'MAIL_ACCOUNT' => $show_mail_acc."@".$show_domain_name, // this will be show in the templates
+                                 'MAIL_ACCOUNT_PUNNY' => $mail_acc."@".$domain_name //this will be updated wenn we crate cach all
+                                )
+                          );
+
+            $tpl -> parse('MAIL_LIST', '.mail_list');
+            $rs -> MoveNext();
+          }
       }
 
     } else if ($item_type === 'als') {
@@ -144,22 +149,26 @@ SQL_QUERY;
       $rs = exec_query($sql, $query, array($ok_status, $item_id));
 
       if ($rs -> RecordCount() == 0) {
-        user_goto('catchall.php');
-      }
+          $tpl -> parse('MAIL_LIST', '');
+          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected'));
+      } else {
 
-      while (!$rs -> EOF) {
-        $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
-        $show_alias_name = decode_idna($rs -> fields['alias_name']);
-        $mail_acc = $rs -> fields['mail_acc'];
-        $alias_name = $rs -> fields['alias_name'];
-        $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
-                             'MAIL_ACCOUNT' => $show_mail_acc."@".$show_alias_name, // this will be show in the templates
-                             'MAIL_ACCOUNT_PUNNY' =>  $mail_acc."@".$alias_name //this will be updated wenn we crate cach all
-                             )
-                      );
+          $tpl -> assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => ''));
 
-        $tpl -> parse('MAIL_LIST', '.mail_list');
-        $rs -> MoveNext();
+          while (!$rs -> EOF) {
+            $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
+            $show_alias_name = decode_idna($rs -> fields['alias_name']);
+            $mail_acc = $rs -> fields['mail_acc'];
+            $alias_name = $rs -> fields['alias_name'];
+            $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
+                                 'MAIL_ACCOUNT' => $show_mail_acc."@".$show_alias_name, // this will be show in the templates
+                                 'MAIL_ACCOUNT_PUNNY' =>  $mail_acc."@".$alias_name //this will be updated wenn we crate cach all
+                                 )
+                          );
+
+            $tpl -> parse('MAIL_LIST', '.mail_list');
+            $rs -> MoveNext();
+          }
       }
 
     } else if ($item_type === 'sub') {
@@ -190,22 +199,26 @@ SQL_QUERY;
       $rs = exec_query($sql, $query, array($ok_status, $item_id));
 
       if ($rs -> RecordCount() == 0) {
-        user_goto('catchall.php');
-      }
+          $tpl -> parse('MAIL_LIST', '');
+          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected'));
+      } else {
 
-      while (!$rs -> EOF) {
-        $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
-        $show_alias_name = decode_idna($rs -> fields['subdomain_name']);
-        $mail_acc = $rs -> fields['mail_acc'];
-        $alias_name = $rs -> fields['subdomain_name'];
-        $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
-                             'MAIL_ACCOUNT' => $show_mail_acc."@".$show_alias_name, // this will be show in the templates
-                             'MAIL_ACCOUNT_PUNNY' =>  $mail_acc."@".$alias_name //this will be updated wenn we create catch all
-                             )
-                      );
+          $tpl -> assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => ''));
 
-        $tpl -> parse('MAIL_LIST', '.mail_list');
-        $rs -> MoveNext();
+          while (!$rs -> EOF) {
+            $show_mail_acc = decode_idna($rs -> fields['mail_acc']);
+            $show_alias_name = decode_idna($rs -> fields['subdomain_name']);
+            $mail_acc = $rs -> fields['mail_acc'];
+            $alias_name = $rs -> fields['subdomain_name'];
+            $tpl -> assign(array('MAIL_ID' => $rs -> fields['mail_id'],
+                                 'MAIL_ACCOUNT' => $show_mail_acc."@".$show_alias_name, // this will be show in the templates
+                                 'MAIL_ACCOUNT_PUNNY' =>  $mail_acc."@".$alias_name //this will be updated wenn we create catch all
+                                 )
+                          );
+
+            $tpl -> parse('MAIL_LIST', '.mail_list');
+            $rs -> MoveNext();
+          }
       }
     }
 
@@ -217,34 +230,18 @@ SQL_QUERY;
 
 function create_catchall_mail_account(&$sql, $id)
 {
+    list($realId, $type) = explode(';',$id);
+
 	// Check if user is owner of the domain
-/*	$query = <<<SQL_QUERY
-		SELECT
-			COUNT(mail_id) as cnt
-		FROM
-			mail_users
-		WHERE
-			domain_id = ?
-		AND
-			mail_id = ?
-SQL_QUERY;
+    if (!preg_match('(dmn|als|sub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
+        set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+        user_goto('catchall.php');
+    }
 
-	global $domain_id;
-	$eid = explode(';', $_POST['id']);
-	$mail_id = $eid[0];
-	$rs = exec_query($sql, $query, array($domain_id, $mail_id));
-
-	if ($rs -> fields['cnt'] == 0) {
-		set_page_message(tr('0!'.$domain_id.$mail_id));
-		header("Location: catchall.php");
-		die();
-		header("Location: catchall.php");
-	}
-*/
   global $cfg;
 
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'normal') {
-    if (preg_match("/(\d+);(dmn|als|sub)/", $_POST['id'], $match) == 1) {
+    if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
       $item_id = $match[1];
       $item_type = $match[2];
       $post_mail_id = $_POST['mail_id'];
@@ -365,7 +362,6 @@ SQL_QUERY;
 //
 // common page data.
 //
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('ISPCP - Client/Create CatchAll Mail Account'),

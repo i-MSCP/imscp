@@ -7,6 +7,16 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-07-27 Raphael Geissert
+	- ENGINE:
+		* Mailbox data is now also counted in disk quota
+		* Apparent size is not used anymore when counting disk quota
+	- GUI:
+		* Error pages now correctly escape all the < and > characters
+		* Fixed error where admin's own logo is not displayed
+		* Added the 'super powerful' all in one who_owns_this function
+		* Fixed #359: adding a catchall requires an existent mail account
+
 2007-07-26 Raphael Geissert
 	- CONFIGS:
 		* Reduced PHP_FCGI_MAX_REQUESTS to 500

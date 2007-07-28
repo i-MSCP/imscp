@@ -353,10 +353,12 @@ SQL_QUERY;
 
 	}
 
-	$lang = $_SESSION['user_def_lang'];
+	if (isset($_SESSION['user_def_lang'])) {
+	    $lang = $_SESSION['user_def_lang'];
 
-	$_SESSION = array();
-	$_SESSION['user_def_lang'] = $lang;
+	    $_SESSION = array();
+	    $_SESSION['user_def_lang'] = $lang;
+	}
 
 }
 

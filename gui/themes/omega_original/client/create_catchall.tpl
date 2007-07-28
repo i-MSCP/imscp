@@ -39,8 +39,8 @@
 			document.forms[0].mail_id.focus();
     }
 
-    function changeType(wath){
-        if (wath == "normal") {
+    function changeType(what){
+        if (what == "normal") {
 	        document.forms[0].mail_id.disabled = false;
             document.forms[0].forward_list.disabled = true;
         }
@@ -102,7 +102,7 @@
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
-                              <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" checked onClick="changeType('normal');">
+                              <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onClick="changeType('normal');">
                                 {TR_MAIL_LIST} </td>
                               <td nowrap class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
@@ -112,7 +112,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" onClick="changeType('forward');">
+                              <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onClick="changeType('forward');">
                                 {TR_FORWARD_MAIL} </td>
                             </tr>
                             <tr>

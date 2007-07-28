@@ -74,7 +74,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 
   if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
   	if (!$sqluser_available) {
-   	 	set_page_message(tr('SQL-user limit expired!'));
+   	 	set_page_message(tr('SQL users limit reached!'));
     	header("Location: manage_sql.php");
     	die();
 	} else {

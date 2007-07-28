@@ -749,46 +749,9 @@ function check_permissions(&$tpl) {
     }
 }
 
-function check_usr_sql_perms(&$sql, &$db_user_id) {
-    $query = <<<SQL_QUERY
-	        select
-	            sqld_id
-	        from
-	            sql_user
-	        where
-	            sqlu_id  = ?
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($db_user_id));
-
-    if ($rs->RecordCount() == 0) {
-        set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-
-        header('Location: manage_sql.php');
-        die();
-    }
-
-    $db_id = $rs->fields('sqld_id');
-
-    $dmn_name = $_SESSION['user_logged'];
-
-    $query = <<<SQL_QUERY
-        select
-            t1.sqld_id, t2.domain_id, t2.domain_name
-        from
-            sql_database as t1,
-            domain as t2
-        where
-            t1.sqld_id = ?
-          and
-            t2.domain_id = t1.domain_id
-          and
-            t2.domain_name = ?
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($db_id, $dmn_name));
-
-    if ($rs->RecordCount() == 0) {
+function check_usr_sql_perms(&$sql, $db_user_id)
+{
+    if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
         set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
         header('Location: manage_sql.php');
@@ -796,26 +759,9 @@ SQL_QUERY;
     }
 }
 
-function check_db_sql_perms(&$sql, $db_id) {
-    $dmn_name = $_SESSION['user_logged'];
-
-    $query = <<<SQL_QUERY
-        select
-            t1.sqld_id, t2.domain_id, t2.domain_name
-        from
-            sql_database as t1,
-            domain as t2
-        where
-            t1.sqld_id = ?
-          and
-            t2.domain_id = t1.domain_id
-          and
-            t2.domain_name = ?
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($db_id, $dmn_name));
-
-    if ($rs->RecordCount() == 0) {
+function check_db_sql_perms(&$sql, $db_id)
+{
+    if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
         set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
         header('Location: manage_sql.php');
@@ -823,24 +769,9 @@ SQL_QUERY;
     }
 }
 
-function check_ftp_perms($sql, $ftp_acc) {
-    $dmn_name = $_SESSION['user_logged'];
-
-    $query = <<<SQL_QUERY
-        select
-            groupname, members
-        from
-            ftp_group
-        where
-            groupname = ?
-          and
-            members rlike ?
-
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($dmn_name, $ftp_acc));
-
-    if ($rs->RecordCount() == 0) {
+function check_ftp_perms($sql, $ftp_acc)
+{
+    if (who_owns_this($ftp_acc, 'ftp_user') != $_SESSION['user_id']) {
         set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
         header('Location: manage_users.php');

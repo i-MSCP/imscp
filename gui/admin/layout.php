@@ -154,6 +154,7 @@ $tpl -> assign(
                         'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                        'OWN_LOGO' => get_own_logo($_SESSION['user_id']),
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
                      )

@@ -42,7 +42,7 @@ use warnings;
 
 sub dsk_quota_start_up {
 
-    my ($rs, $rdata) = (undef, undef);
+    my ($rs) = (undef, undef);
 
     push_el(\@main::el, 'dsk_quota_start_up()', 'Starting...');
 
@@ -59,16 +59,6 @@ sub dsk_quota_start_up {
     # config check;
 
     $rs = get_conf();
-
-    return $rs if ($rs != 0);
-
-    #
-    # getting initial data also must be done here;
-    #
-
-    my $sql = "select * from domain;";
-
-    ($rs, $rdata) = doSQL($sql);
 
     return $rs if ($rs != 0);
 
@@ -113,9 +103,15 @@ sub dsk_quota_engine {
 
         my $domain_id   = @$_[0];
 
-        my $size = `$cmd_du --exclude="backups/*.bz2" -sb $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+        my $size = 0;
 
-        $size =~ /^(\d+)/; $size = $1;
+        my $s = `$cmd_du --exclude="backups/*.bz2" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+
+        $s =~ /^(\d+)/; $size += $1;
+
+        $s = `$cmd_du -s -B1 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
+
+        $s =~ /^(\d+)/; $size += $1;
 
         if ($size > 0) {
 
