@@ -190,10 +190,7 @@ SQL_QUERY;
                 'MSG_ENTRY' => ''));
     } else {
         $tpl->assign(array('NO_MESSAGES' => '',
-                'TR_YOU_HAVE' => tr('You have'),
-                'MSG_NUM' => $num_question,
-                'TR_MSG_TYPE' => tr('support question(s)'),
-                'TR_NEW' => tr('new'),
+                'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
                 'TR_VIEW' => tr('View')));
         $tpl->parse('MSG_ENTRY', '.msg_entry');
     }

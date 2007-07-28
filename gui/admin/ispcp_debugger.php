@@ -17,9 +17,11 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+require '../include/ispcp-lib.php';
+
+check_login(__FILE__);
 
 
-/* BEGIN common functions */
 function get_error_domains(&$sql, &$tpl)
 {
 	global $cfg;
@@ -450,11 +452,6 @@ SQL_QUERY;
 	}
 
 }
-/* END system functions */
-
-require '../include/ispcp-lib.php';
-
-check_login(__FILE__);
 
 $tpl = new pTemplate();
 
@@ -481,8 +478,6 @@ $tpl -> define_dynamic('mail_list', 'page');
 
 
 
-
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -516,6 +511,72 @@ $tpl -> assign(
                 )
         );
 
+// Handy way to change domain/subdomain/alias/mail status
+// TODO: write implementation in the GUI
+if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'run_engine') {
+        check_for_lock_file();
+        $c = send_request();
+        set_page_message(tr('Daemon returned %d as status code', $c));
+    } else if ($_GET['action'] == 'change_status' && (
+                isset($_GET['account_id']) &&
+                isset($_GET['new_status']) &&
+                isset($_GET['type']))) {
+
+        switch ($_GET['new_status']) {
+            case $cfg['ITEM_OK_STATUS']:
+            case $cfg['ITEM_DISABLED_STATUS']:
+            case $cfg['ITEM_ADD_STATUS']:
+            case $cfg['ITEM_CHANGE_STATUS']:
+            case $cfg['ITEM_TOENABLE_STATUS']:
+            case $cfg['ITEM_RESTORE_STATUS']:
+            case $cfg['ITEM_TODISABLED_STATUS']:
+            case $cfg['ITEM_DELETE_STATUS']:
+                break;
+            default:
+                set_page_message(tr('Unknown domain status!'));
+                user_goto('ispcp_debugger.php');
+                break;
+        }
+
+        switch ($_GET['type']) {
+            case 'domain':
+                $query = 'UPDATE domain SET domain_status = ? WHERE domain_id = ?';
+                break;
+            case 'alias':
+                $query = 'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?';
+                break;
+            case 'subdomain':
+                $query = 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?';
+                break;
+            case 'mail':
+                $query = 'UPDATE mail_users SET status = ? WHERE mail_id = ?';
+                break;
+            default:
+                set_page_message(tr('Unknown account type!'));
+                user_goto('ispcp_debugger.php');
+                break;
+        }
+
+        if (!is_int($_GET['account_id'])) {
+            set_page_message(tr('Invalid account id!'));
+            user_goto('ispcp_debugger.php');
+        }
+
+        $rs = exec_query($sql, $query, array($_GET['new_status'], $_GET['account_id']));
+
+        if ($rs !== false) {
+            set_page_message(tr('Done'));
+            user_goto('ispcp_debugger.php');
+        } else {
+            $msg = tr('Unknown Error') . '<br/>'. $sql->ErrorMsg();
+            set_page_message($msg);
+            user_goto('ispcp_debugger.php');
+        }
+
+    }
+}
+
 gen_page_message($tpl);
 
 get_error_domains($sql, $tpl);
@@ -525,6 +586,7 @@ get_error_aliases($sql, $tpl);
 get_error_subdomains($sql, $tpl);
 
 get_error_mails($sql, $tpl);
+
 
 $tpl -> parse('PAGE', 'page');
 

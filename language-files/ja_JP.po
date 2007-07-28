@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -38,6 +38,12 @@ msgstr "パスワード"
 
 msgid "Please enter your login information"
 msgstr "ログイン情報を入力してください"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "パスワードを忘れたとき"
@@ -925,13 +931,8 @@ msgstr "無効"
 msgid "Show hosting plan"
 msgstr "ホスティングプラン閲覧"
 
-msgid "You have"
-msgstr ""
-
-msgid "Support question(s)"
-msgstr ""
-
-msgid "New"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "View"
@@ -1011,6 +1012,28 @@ msgstr "サブドメインエラー"
 
 msgid "Mail account errors"
 msgstr "メールアカウントエラー"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "不明"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "不明"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "メールアカウント"
+
+msgid "Done"
+msgstr ""
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr ""
@@ -1384,6 +1407,12 @@ msgstr "サーバー統計情報"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr ""
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr "ホスト"
 
@@ -1493,6 +1522,12 @@ msgid "udp"
 msgstr ""
 
 msgid "tcp"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
 msgstr ""
 
 msgid "Services"
@@ -1941,12 +1976,6 @@ msgstr "キャッチオール削除"
 msgid "Create catch all"
 msgstr "キャッチオール作成"
 
-msgid "Catch all mail account can not be created!"
-msgstr ""
-
-msgid "Mail accounts list is empty!"
-msgstr "メールアカウントリストが空です!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - クライアント/ユーザー管理"
 
@@ -1992,6 +2021,9 @@ msgstr "ISPCP - クライアント/パスワード変更"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - クライアント/パーソナルデータ修正"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "ユーザーが存在しないか、アクセスできません"
+
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2018,12 +2050,6 @@ msgstr "Cronjob追加"
 
 msgid "Active"
 msgstr "アクティブ"
-
-msgid "Yes"
-msgstr ""
-
-msgid "No"
-msgstr ""
 
 msgid "Cronjob"
 msgstr ""
@@ -2085,9 +2111,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "ユーザーが存在しないか、アクセスできません"
-
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
@@ -2128,10 +2151,6 @@ msgstr "転送メール"
 
 msgid "Entered passwords differ!"
 msgstr "入力されたパスワードが異なります!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTPユーザー情報が更新されました"
@@ -2180,6 +2199,9 @@ msgstr "本文"
 
 msgid "Please wait for update"
 msgstr ""
+
+msgid "Mail accounts list is empty!"
+msgstr "メールアカウントリストが空です!"
 
 msgid "Enable mail auto responder"
 msgstr "メール自動返信を有効にする"
@@ -2251,12 +2273,6 @@ msgstr "ディスク容量の最大量に到達しました"
 
 msgid "You have no new support questions!"
 msgstr "新しい質問はありません!"
-
-msgid "support question(s)"
-msgstr ""
-
-msgid "new"
-msgstr ""
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - クライアント/メインインデックス"
@@ -2476,7 +2492,8 @@ msgstr "ユーザーが登録されていません!"
 msgid "User already exist !"
 msgstr "ユーザーは既に存在しています"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "SQLユーザーの最大数を超えています"
 
 msgid "Please type user name!"
@@ -2628,6 +2645,16 @@ msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "ホスティングパック更新のリクエストが追加されました"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "ホスティングパック更新のリクエストは削除されました"
@@ -2804,9 +2831,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr "削除中"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "ドメインメール"
 
@@ -2919,6 +2943,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3262,7 +3289,11 @@ msgid "Extras"
 msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3395,9 +3426,6 @@ msgid "There's a conflicting admin / reseller fix that first!"
 msgstr ""
 
 msgid "System error with Domain ID "
-msgstr ""
-
-msgid "Done"
 msgstr ""
 
 msgid "This reseller has no domains yet."

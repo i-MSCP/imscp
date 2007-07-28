@@ -114,6 +114,11 @@ $cfg['PASSWD_CHARS'] = 6;
 // false = disable, true = enable
 $cfg['PASSWD_STRONG'] = true;
 
+// The virtual host file from Apache which contains our virtual host entries
+$cfg['SERVER_VHOST_FILE'] = '/etc/apache2/sites-available/ispcp.conf';
+
+require_once(INCLUDEPATH.'/spGzip.php');
+
 /* security level
  * none     - Default behavior in earlier X-Panel versions
  * easy     - some simple checks, e.g. PHP_SELF secured, regex-check on IP no, hostname
@@ -128,10 +133,10 @@ $cfg['PASSWD_STRONG'] = true;
 //$cfg['SECURITY_LEVEL'] = 'high';     // For experienced users only
 $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing (nope, we are not paranoid... ;) )
 
-// The virtual host file from Apache which contains our virtual host entries
-$cfg['SERVER_VHOST_FILE'] = '/etc/apache2/sites-available/ispcp.conf';
+// *WARNING* By enabling this you: might get tons of warning emails about filtered access attempts (usually false positives)
+// *WARNING* By enabling this you: will be violating the GPL2 license which is used by the security/* scripts
+//require_once(INCLUDEPATH.'security/core.inc.php');
 
-require_once(INCLUDEPATH.'/spGzip.php');
 require_once(INCLUDEPATH.'/class.pTemplate.php');
 require_once(INCLUDEPATH.'/date-functions.php');
 require_once(INCLUDEPATH.'/system-message.php');

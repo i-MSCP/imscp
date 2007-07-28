@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -38,6 +38,12 @@ msgid "Password"
 msgstr "Jelszó"
 
 msgid "Please enter your login information"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
 msgstr ""
 
 msgid "Lost password"
@@ -926,14 +932,9 @@ msgstr "Tiltva"
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
-msgstr "Neked van"
-
-msgid "Support question(s)"
-msgstr "Ügyfélszolgálati kérdés(ek)"
-
-msgid "New"
-msgstr "Új"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
 
 msgid "View"
 msgstr "Megnéz"
@@ -1012,6 +1013,28 @@ msgstr "Aldomain hibák"
 
 msgid "Mail account errors"
 msgstr "Email hozzáférés hibák"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "ismeretlen státusz"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Ismeretlen típus"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Email hozzáférés"
+
+msgid "Done"
+msgstr "Kész"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr ""
@@ -1385,6 +1408,12 @@ msgstr "Szerver statisztikák"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP Admin / Rendszereszközök / Szerverállapot"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr "Hoszt"
 
@@ -1495,6 +1524,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "No"
+msgstr "Nem"
 
 msgid "Services"
 msgstr ""
@@ -1943,12 +1978,6 @@ msgstr "Gyûjtõ cím törlése"
 msgid "Create catch all"
 msgstr "Gyûjtõ cím létrehozása"
 
-msgid "Catch all mail account can not be created!"
-msgstr "Nem hozható létre gyûjtõ email!"
-
-msgid "Mail accounts list is empty!"
-msgstr ""
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Kliens/Felhasználók Kezelése"
 
@@ -1994,6 +2023,9 @@ msgstr "ISPCP - Kliens/Jelszóváltás"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Kliens/Személyes Adatok"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Nincs ilyen felhasználó, vagy nincs jogosultságod ehez a menühöz!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Gyûjtõ email létrehozása beütemezve!"
 
@@ -2020,12 +2052,6 @@ msgstr "Ütemezés hozzáadása"
 
 msgid "Active"
 msgstr "Aktív"
-
-msgid "Yes"
-msgstr "Igen"
-
-msgid "No"
-msgstr "Nem"
 
 msgid "Cronjob"
 msgstr "Ütemezés"
@@ -2087,9 +2113,6 @@ msgstr "Az aldomainhez amit törölni próbálsz email hozzáférések tartoznak
 msgid "Subdomain scheduled for deletion!"
 msgstr "Aldomain törlés beütemezve!"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Nincs ilyen felhasználó, vagy nincs jogosultságod ehez a menühöz!"
-
 msgid "Mail account scheduled for modification!"
 msgstr "Email hozzáférés módosítás beütemezve!"
 
@@ -2130,10 +2153,6 @@ msgstr "Levél továbbítása"
 
 msgid "Entered passwords differ!"
 msgstr "A megadott jelszavak különbözõek!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP hozzáférés módosítva!"
@@ -2181,6 +2200,9 @@ msgid "Your message"
 msgstr "Az üzeneted"
 
 msgid "Please wait for update"
+msgstr ""
+
+msgid "Mail accounts list is empty!"
 msgstr ""
 
 msgid "Enable mail auto responder"
@@ -2253,12 +2275,6 @@ msgstr "Túllépted a felhasználható helyek maximélis méretét!"
 
 msgid "You have no new support questions!"
 msgstr "Nincs új ügyfélszolgálati kérdés!"
-
-msgid "support question(s)"
-msgstr "Ügyfélszolgálati kérdés(ek)"
-
-msgid "new"
-msgstr "új"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Kliens/Kezdõlap"
@@ -2478,7 +2494,8 @@ msgstr "Nincs felhasználód!"
 msgid "User already exist !"
 msgstr "Felhasználó már létezik !"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "SQL felhasználó limit túllépve!"
 
 msgid "Please type user name!"
@@ -2630,6 +2647,16 @@ msgstr "ISPCP - Szolgáltatási csomag frissítés"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Az általad kért szolgáltatási csomag sikeresen hozzáadva!"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Az általad kért szolgáltatási csomag sikeresen eltávolítva!"
@@ -2806,9 +2833,6 @@ msgstr "Módosítás folyamatban"
 msgid "Deletion in progress"
 msgstr "Törlés folyamatban"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Domain email"
 
@@ -2921,6 +2945,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "A felhasználó már be van lépve, vagy folyamat megosztási probléma! Megszakítva..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3264,7 +3291,11 @@ msgid "Extras"
 msgstr "Extrák"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3399,9 +3430,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Kész"
-
 msgid "This reseller has no domains yet."
 msgstr "A viszonteladónak nincs domainje."
 
@@ -3434,6 +3462,24 @@ msgstr "ISPCP - Viszonteladó : Ügyfélszolgálati Rendszer: Bejelentések"
 
 msgid "Message was sent."
 msgstr "Üzenet elküldve."
+
+#~ msgid "You have"
+#~ msgstr "Neked van"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Ügyfélszolgálati kérdés(ek)"
+
+#~ msgid "New"
+#~ msgstr "Új"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Nem hozható létre gyûjtõ email!"
+
+#~ msgid "support question(s)"
+#~ msgstr "Ügyfélszolgálati kérdés(ek)"
+
+#~ msgid "new"
+#~ msgstr "új"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias módosítása beütemezve!"

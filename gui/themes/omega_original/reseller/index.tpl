@@ -54,47 +54,47 @@
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{DOMAINS}</td>
-            <td width="230" class="content2">{DMN_USED}&nbsp;/&nbsp;{DMN_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{DMN_MAX}</b></td>
+            <td width="230" class="content2">{DMN_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{SUBDOMAINS}</td>
-            <td width="230" class="content2">{SUB_USED}&nbsp;/&nbsp;{SUB_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{SUB_MAX}</b></td>
+            <td width="230" class="content2">{SUB_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{ALIASES}</td>
-            <td width="230" class="content2">{ALS_USED}&nbsp;/&nbsp;{ALS_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{ALS_MAX}</b></td>
+            <td width="230" class="content2">{ALS_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{MAIL_ACCOUNTS}</td>
-            <td width="230" class="content2">{MAIL_USED}&nbsp;/&nbsp;{MAIL_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{MAIL_MAX}</b></td>
+            <td width="230" class="content2">{MAIL_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TR_FTP_ACCOUNTS}</td>
-            <td width="230" class="content2">{FTP_USED}&nbsp;/&nbsp;{FTP_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{FTP_MAX}</b></td>
+            <td width="230" class="content2">{FTP_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{SQL_DATABASES}</td>
-            <td width="230" class="content2">{SQL_DB_USED}&nbsp;/&nbsp;{SQL_DB_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{SQL_DB_MAX}</b></td>
+            <td width="230" class="content2">{SQL_DB_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{SQL_USERS}</td>
-            <td width="230" class="content2">{SQL_USER_USED}&nbsp;/&nbsp;{SQL_USER_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{SQL_USER_MAX}</b></td>
+            <td width="230" class="content2">{SQL_USER_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TRAFFIC}</td>
-            <td width="230" class="content2">{TRAFF_USED}&nbsp;/&nbsp;{TRAFF_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{TRAFF_MAX}</b></td>
+            <td width="230" class="content2">{TRAFF_MSG}</b></td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{DISK}</td>
-            <td width="230" class="content2">{DISK_USED}&nbsp;/&nbsp;{DISK_CURRENT}&nbsp;{TR_OF}&nbsp;<b>{DISK_MAX}</b></td>
+            <td width="230" class="content2">{DISK_MSG}</b></td>
           </tr>
           <!-- BDP: msg_entry -->
           <td>&nbsp;</td>

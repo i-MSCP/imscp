@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -38,6 +38,12 @@ msgstr "Wachtwoord"
 
 msgid "Please enter your login information"
 msgstr "Geef uw login gegevens in"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Wachtwoord verloren"
@@ -925,14 +931,9 @@ msgstr "Uitgeschakeld"
 msgid "Show hosting plan"
 msgstr "Toon hostingpakket"
 
-msgid "You have"
-msgstr "U hebt"
-
-msgid "Support question(s)"
-msgstr "Ondersteuning vragen"
-
-msgid "New"
-msgstr "Nieuw"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
 
 msgid "View"
 msgstr "Bekijk"
@@ -1011,6 +1012,28 @@ msgstr "Subdomain fouten"
 
 msgid "Mail account errors"
 msgstr "Mail account fouten"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "onbekende status"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Onbekend type"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Mail accounts lijst"
+
+msgid "Done"
+msgstr "Gereed"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr "Downloaden op"
@@ -1384,6 +1407,12 @@ msgstr "Server statistieken"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP - Virtual Hosting Control System"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1494,6 +1523,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "ja"
+
+msgid "No"
+msgstr "Nee"
 
 msgid "Services"
 msgstr ""
@@ -1942,12 +1977,6 @@ msgstr "Verwijder catch all"
 msgid "Create catch all"
 msgstr "Maak catch all"
 
-msgid "Catch all mail account can not be created!"
-msgstr "Catch all mail account kan niet aangemaakt worden!"
-
-msgid "Mail accounts list is empty!"
-msgstr "Mail accounts lijst is leeg"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Virtual Hosting Control System"
 
@@ -1993,6 +2022,9 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Virtual Hosting Control System"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Gebruiker bestaat niet of u heeft niet voldoende rechten om deze te bekijken"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Catch all account gepland voor toevoeging!"
 
@@ -2019,12 +2051,6 @@ msgstr "Cronjob toevoegen"
 
 msgid "Active"
 msgstr "Actief"
-
-msgid "Yes"
-msgstr "ja"
-
-msgid "No"
-msgstr "Nee"
 
 msgid "Cronjob"
 msgstr ""
@@ -2086,9 +2112,6 @@ msgstr "Het subdomein dat u wilt verwijderen bevat e-mail accounts! Verwijder de
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomein gepland voor verwijdering"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Gebruiker bestaat niet of u heeft niet voldoende rechten om deze te bekijken"
-
 msgid "Mail account scheduled for modification!"
 msgstr "Mail account gepland voor aanpassing"
 
@@ -2128,10 +2151,6 @@ msgstr "E-mail doorsturing"
 
 msgid "Entered passwords differ!"
 msgstr "Ingevulde wachtwoorden verschillen!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP account data gewijzigd"
@@ -2180,6 +2199,9 @@ msgstr "Uw bericht"
 
 msgid "Please wait for update"
 msgstr "Even geduld voor update"
+
+msgid "Mail accounts list is empty!"
+msgstr "Mail accounts lijst is leeg"
 
 msgid "Enable mail auto responder"
 msgstr "Mail automatisch antwoord inschakelen"
@@ -2251,12 +2273,6 @@ msgstr "U overschrijdt uw schijf limiet!"
 
 msgid "You have no new support questions!"
 msgstr "U hebt geen nieuwe ondersteuning vragen!"
-
-msgid "support question(s)"
-msgstr "ondersteuning vragen"
-
-msgid "new"
-msgstr "nieuw"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -2476,7 +2492,8 @@ msgstr "U heeft geen gebruikers"
 msgid "User already exist !"
 msgstr "Gebruiker bestaat al"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "MySQL gebruikers limiet overschreden"
 
 msgid "Please type user name!"
@@ -2628,6 +2645,16 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Uw aanvraag voor een hostingpakket is succesvol toegevoegd"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Uw aanvraag voor een hostingpakket is succesvol verwijderd"
@@ -2804,9 +2831,6 @@ msgstr "Bezig met aanpassing"
 msgid "Deletion in progress"
 msgstr "Bezig met verwijderen"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Domein mail"
 
@@ -2919,6 +2943,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Gebruiker is al ingelogd of er is een session sharing probleem. Afgebroken..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3262,7 +3289,11 @@ msgid "Extras"
 msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3397,9 +3428,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Gereed"
-
 msgid "This reseller has no domains yet."
 msgstr "Deze reseller heeft nog geen domeinen"
 
@@ -3432,6 +3460,24 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#~ msgid "You have"
+#~ msgstr "U hebt"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Ondersteuning vragen"
+
+#~ msgid "New"
+#~ msgstr "Nieuw"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Catch all mail account kan niet aangemaakt worden!"
+
+#~ msgid "support question(s)"
+#~ msgstr "ondersteuning vragen"
+
+#~ msgid "new"
+#~ msgstr "nieuw"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias gepland voor aanpassing"

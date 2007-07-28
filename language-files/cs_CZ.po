@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -38,6 +38,12 @@ msgid "Password"
 msgstr "Heslo"
 
 msgid "Please enter your login information"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
 msgstr ""
 
 msgid "Lost password"
@@ -926,14 +932,9 @@ msgstr "Vypnuto"
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
-msgstr "Máte"
-
-msgid "Support question(s)"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
 msgstr ""
-
-msgid "New"
-msgstr " nový"
 
 msgid "View"
 msgstr "Náhled"
@@ -1011,6 +1012,28 @@ msgid "Subdomain errors"
 msgstr ""
 
 msgid "Mail account errors"
+msgstr ""
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "Špatná syntaxe subdomény!"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Neznámý typ"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "poštovní účet"
+
+msgid "Done"
+msgstr "Hotovo"
+
+msgid "Unknown Error"
 msgstr ""
 
 msgid "Get it at"
@@ -1385,6 +1408,12 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP Admin / Sytémové nástroje / Stav serveru"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1495,6 +1524,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Ano"
+
+msgid "No"
+msgstr "ne"
 
 msgid "Services"
 msgstr ""
@@ -1942,12 +1977,6 @@ msgstr "Odtranit všezachytávající"
 msgid "Create catch all"
 msgstr ""
 
-msgid "Catch all mail account can not be created!"
-msgstr "Nelze vytvořit všezachytávající účet!"
-
-msgid "Mail accounts list is empty!"
-msgstr ""
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Klient/Údržba uživatelů"
 
@@ -1993,6 +2022,9 @@ msgstr "ISPCP - Klient/Změnit Heslo"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Klient/Změnit osobní údaje"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Uživatel neexistuje nebo nemáte práva přístupu k rozhraní!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Všezachytávající účet naplánován k vytvoření!"
 
@@ -2019,12 +2051,6 @@ msgstr "Přidat úlohu"
 
 msgid "Active"
 msgstr "Aktivní"
-
-msgid "Yes"
-msgstr "Ano"
-
-msgid "No"
-msgstr "ne"
 
 msgid "Cronjob"
 msgstr "Naplánovaná úloha"
@@ -2086,9 +2112,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Uživatel neexistuje nebo nemáte práva přístupu k rozhraní!"
-
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
@@ -2129,10 +2152,6 @@ msgstr "Postoupit email"
 
 msgid "Entered passwords differ!"
 msgstr "Zadaná hesla se neshodují!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "Data FTP účtu byla aktualizována!"
@@ -2180,6 +2199,9 @@ msgid "Your message"
 msgstr "Vaše zpráva"
 
 msgid "Please wait for update"
+msgstr ""
+
+msgid "Mail accounts list is empty!"
 msgstr ""
 
 msgid "Enable mail auto responder"
@@ -2252,12 +2274,6 @@ msgstr "Překročil jste diskový limit!"
 
 msgid "You have no new support questions!"
 msgstr "Nemáte novou podporu otázek!"
-
-msgid "support question(s)"
-msgstr ""
-
-msgid "new"
-msgstr " nový"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Klient/Hlavní rejstřík"
@@ -2477,7 +2493,7 @@ msgstr "Nemáte zvoleny uživatele!"
 msgid "User already exist !"
 msgstr "Uživatel již existuje!"
 
-msgid "SQL-user limit expired!"
+msgid "SQL users limit reached!"
 msgstr ""
 
 msgid "Please type user name!"
@@ -2629,6 +2645,16 @@ msgstr "ISPCP - Zaktualizovat hosting plán"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Váš požadavek na update hostingového balíčku byl uspěšně přidán."
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Váš požadavek na update hostingového balíčku byl uspěšně odebrán."
@@ -2805,9 +2831,6 @@ msgstr "Probíhají změny"
 msgid "Deletion in progress"
 msgstr "Probíhá odstraňování"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Doménový mail"
 
@@ -2920,6 +2943,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Uživatel je již přihlášen nebo došlo k chybě sdílení relace! Ruším akci..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3263,7 +3289,11 @@ msgid "Extras"
 msgstr "Doplnky"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3398,9 +3428,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Hotovo"
-
 msgid "This reseller has no domains yet."
 msgstr ""
 
@@ -3433,6 +3460,18 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Zpráva byla poslána."
+
+#~ msgid "You have"
+#~ msgstr "Máte"
+
+#~ msgid "New"
+#~ msgstr " nový"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Nelze vytvořit všezachytávající účet!"
+
+#~ msgid "new"
+#~ msgstr " nový"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Změna aliasu naplánována!"

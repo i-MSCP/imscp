@@ -166,7 +166,7 @@ if (isset($_GET['edit']))
 if (
 	(isset($_POST['fname']) && $_POST['fname'] != '') and
 	(isset($_POST['email']) && $_POST['email'] != '') and
-	!chk_email($_POST['email']) and
+	chk_email($_POST['email']) and
 	(isset($_POST['lname']) && $_POST['lname'] != '') and
 	(isset($_POST['zip']) && $_POST['zip'] != '') and
 	(isset($_POST['city']) && $_POST['city'] != '') and

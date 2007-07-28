@@ -69,10 +69,7 @@ SQL_QUERY;
     } else {
         $tpl -> assign(
                          array(
-                                 'TR_YOU_HAVE' => tr('You have'),
-								 'TR_MSG_TYPE' => tr('Support question(s)'),
-                                 'TR_NEW' => tr('New'),
-								 'MSG_NUM' => $num_question,
+                                 'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
                                  'TR_VIEW' => tr('View')
                               )
                       );

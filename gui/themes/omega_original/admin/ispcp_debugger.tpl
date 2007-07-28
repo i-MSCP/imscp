@@ -39,6 +39,12 @@
                     <tr>
                       <td><!-- BDP: props_list -->
                           <table width="100%" cellpadding="5" cellspacing="5">
+                            <!-- BDP: page_message -->
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                            </tr>
+                            <!-- EDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td class="content3"><b>{TR_DOMAIN_ERRORS}</b></td>

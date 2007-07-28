@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -41,6 +41,12 @@ msgstr "Heslo"
 
 msgid "Please enter your login information"
 msgstr "Prosím vyplňte Vaše prihlasovacie údaje"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Zabudnuté heslo"
@@ -946,14 +952,9 @@ msgstr "Zakázané"
 msgid "Show hosting plan"
 msgstr "Zobraziť hostingový plán"
 
-msgid "You have"
-msgstr "Máte"
-
-msgid "Support question(s)"
-msgstr "Otázky podpory"
-
-msgid "New"
-msgstr "Nový"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr "Máte <b>%d</b> nových porporných otázok"
 
 msgid "View"
 msgstr "Zobraziť"
@@ -1032,6 +1033,28 @@ msgstr "Chyby pre sub-domény"
 
 msgid "Mail account errors"
 msgstr "Chyby pre e-mailové kontá"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "Neznámy typ domény"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Neznámy typ domény"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Zlé časové obdobie!"
+
+msgid "Done"
+msgstr "Hotovo"
+
+msgid "Unknown Error"
+msgstr "Neznáma chyba"
 
 msgid "Get it at"
 msgstr "Získať to na"
@@ -1408,6 +1431,12 @@ msgstr "Štatistiky servra"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP Admin / Systémové nástroje / Status servra"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr "Host"
 
@@ -1523,6 +1552,12 @@ msgstr "udp"
 
 msgid "tcp"
 msgstr "tcp"
+
+msgid "Yes"
+msgstr "Áno"
+
+msgid "No"
+msgstr "Nie"
 
 msgid "Services"
 msgstr "Služby"
@@ -1976,12 +2011,6 @@ msgstr "Vymazať \"zachytiť všetko\""
 msgid "Create catch all"
 msgstr "Vytvoriť \"zachytiť všetko\""
 
-msgid "Catch all mail account can not be created!"
-msgstr "Konto \"zachytiť všetko\" nemôže byť vytvorená!"
-
-msgid "Mail accounts list is empty!"
-msgstr "Zoznam e-mailových kont je prázdny!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Klient/Spravovať užívateľov"
 
@@ -2027,6 +2056,9 @@ msgstr "ISPCP - Klient/Zmeniť heslo"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Klient/Zmeniť osobné údaje"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "\"Zachytiť všetko\" konto načasované na pridanie!"
 
@@ -2053,12 +2085,6 @@ msgstr "Pridať do crontabu"
 
 msgid "Active"
 msgstr "Aktívny"
-
-msgid "Yes"
-msgstr "Áno"
-
-msgid "No"
-msgstr "Nie"
 
 msgid "Cronjob"
 msgstr "Crontab"
@@ -2120,9 +2146,6 @@ msgstr "Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>N
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sub-doména načasovaná na zmazanie!"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
-
 msgid "Mail account scheduled for modification!"
 msgstr "Mail konto načasované na zmenu!"
 
@@ -2163,10 +2186,6 @@ msgstr "Presmerovanie e-mailu"
 
 msgid "Entered passwords differ!"
 msgstr "Zadané heslá sú rozdielne!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr "%s neexistuje"
 
 msgid "FTP account data updated!"
 msgstr "Informacie o FTP konte aktualizované!"
@@ -2215,6 +2234,9 @@ msgstr "Vaša správa"
 
 msgid "Please wait for update"
 msgstr "Prosím počkajte na aktualizovanie"
+
+msgid "Mail accounts list is empty!"
+msgstr "Zoznam e-mailových kont je prázdny!"
 
 msgid "Enable mail auto responder"
 msgstr "Povoliť odpovedajúceho pri automatickej odpovedi e-mailom"
@@ -2286,12 +2308,6 @@ msgstr "Prekračujete Váš limit diskového priestoru!"
 
 msgid "You have no new support questions!"
 msgstr "Nemáte žiadne nové podporné otázky!"
-
-msgid "support question(s)"
-msgstr "podporné otázky"
-
-msgid "new"
-msgstr "nová"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Klient/Hlavný index"
@@ -2511,8 +2527,9 @@ msgstr "Nemáte užívateľov!"
 msgid "User already exist !"
 msgstr "Užívateľ už existuje !"
 
-msgid "SQL-user limit expired!"
-msgstr "Limit SQL konta expiroval!"
+#, fuzzy
+msgid "SQL users limit reached!"
+msgstr "Limit SQL kont dosiahnutý!"
 
 msgid "Please type user name!"
 msgstr "Prosím zadajte užívateľské meno!"
@@ -2663,6 +2680,24 @@ msgstr "ISPCP - Update hostingového plánu"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Váša požiadavka na update hostingového plánu bola pridaná úspešne"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
+"\n"
+"\n"
+"Milý {RESELLER},\n"
+"Máte novú objednávku od {NAME} <{MAIL}> pre doménu {DOMAIN}\n"
+"\n"
+"Prosím prihlíste sa do ISPCP pre detialy.\n"
+"\n"
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Váša požiadavka na update hostingového plánu bola odstránená úspešne"
@@ -2844,9 +2879,6 @@ msgstr "Prebieha zmena"
 msgid "Deletion in progress"
 msgstr "Prebieha zmazanie"
 
-msgid "Unknown Error"
-msgstr "Neznáma chyba"
-
 msgid "Domain mail"
 msgstr "Mail domény"
 
@@ -2961,6 +2993,9 @@ msgstr "Užívateľ uz prihlásený alebo problém pri zdielaní sedenia! Ukonč
 
 msgid "Domain status is not OK - Login aborted."
 msgstr "Status domény nie je OK - Login zrušený."
+
+msgid "Request from foreign host was blocked!"
+msgstr ""
 
 msgid "Domain alias"
 msgstr "Alias domény"
@@ -3310,8 +3345,12 @@ msgid "Extras"
 msgstr "Extra"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
-msgstr "Máte <b>%d</b> nových porporných otázok"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr "%1$s%% [%2$s of nebmedzených]"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Predajca/Nastavenie e-mailu strateného hesla"
@@ -3445,9 +3484,6 @@ msgstr "Je tu konfliktný administrátor / predajca najprv to oprav !"
 msgid "System error with Domain ID "
 msgstr "Systémová chyba s doménovým ID"
 
-msgid "Done"
-msgstr "Hotovo"
-
 msgid "This reseller has no domains yet."
 msgstr "Tento predajca nemá žiadne domény zatiaľ"
 
@@ -3480,6 +3516,30 @@ msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "You have"
+#~ msgstr "Máte"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Otázky podpory"
+
+#~ msgid "New"
+#~ msgstr "Nový"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Konto \"zachytiť všetko\" nemôže byť vytvorená!"
+
+#~ msgid "%s do not exist"
+#~ msgstr "%s neexistuje"
+
+#~ msgid "support question(s)"
+#~ msgstr "podporné otázky"
+
+#~ msgid "new"
+#~ msgstr "nová"
+
+#~ msgid "SQL-user limit expired!"
+#~ msgstr "Limit SQL konta expiroval!"
 
 #~ msgid "0"
 #~ msgstr "0"

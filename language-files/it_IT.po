@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Italian <it_IT@li.org>\n"
@@ -39,6 +39,12 @@ msgstr ""
 
 msgid "Please enter your login information"
 msgstr "Inserisci i tuoi dati di accesso"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Password dimenticata"
@@ -926,14 +932,9 @@ msgstr "Disabilitato"
 msgid "Show hosting plan"
 msgstr "Piani Hosting"
 
-msgid "You have"
-msgstr "Avete"
-
-msgid "Support question(s)"
-msgstr "Domande di supporto"
-
-msgid "New"
-msgstr "Nuovo"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
 
 msgid "View"
 msgstr "Visualizza"
@@ -1012,6 +1013,28 @@ msgstr "Errori sottodominio"
 
 msgid "Mail account errors"
 msgstr "Errori account di posta"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "stato sconosciuto"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Tipo sconosciuto"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Lista degli account di posta"
+
+msgid "Done"
+msgstr "Fatto"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr "Prendi a"
@@ -1385,6 +1408,12 @@ msgstr "Statistiche server"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP Admin / Tool di sistema / Stato del Server"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1494,6 +1523,12 @@ msgid "udp"
 msgstr ""
 
 msgid "tcp"
+msgstr ""
+
+msgid "Yes"
+msgstr "Sì"
+
+msgid "No"
 msgstr ""
 
 msgid "Services"
@@ -1943,12 +1978,6 @@ msgstr "Eliminare CatchAll"
 msgid "Create catch all"
 msgstr "Creare un CatchAll"
 
-msgid "Catch all mail account can not be created!"
-msgstr "L'account catch all non può essere creato"
-
-msgid "Mail accounts list is empty!"
-msgstr "La lista degli account è vuota!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Client/Gestione Utente"
 
@@ -1994,6 +2023,9 @@ msgstr "ISPCP - Client/Modifica la password"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Client/Modificare i dati personali"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Utente inesistente o non avete il permesso di accedere a questa interfaccia!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Account catch all da creare!"
 
@@ -2020,12 +2052,6 @@ msgstr "Aggiungi un Cronjob"
 
 msgid "Active"
 msgstr "Attivo"
-
-msgid "Yes"
-msgstr "Sì"
-
-msgid "No"
-msgstr ""
 
 msgid "Cronjob"
 msgstr ""
@@ -2087,9 +2113,6 @@ msgstr "Il sottodominio che stai cercando di rimuovere ha accounts email!<br>Pri
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sottodominio da eliminare!"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Utente inesistente o non avete il permesso di accedere a questa interfaccia!"
-
 msgid "Mail account scheduled for modification!"
 msgstr "Account di posta da modificare!"
 
@@ -2129,10 +2152,6 @@ msgstr "Inoltro email"
 
 msgid "Entered passwords differ!"
 msgstr "Le password inserite sono diverse!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "Account FTP aggiornato!"
@@ -2181,6 +2200,9 @@ msgstr "Messaggio"
 
 msgid "Please wait for update"
 msgstr "Per favore, attendi per l'aggiornamento"
+
+msgid "Mail accounts list is empty!"
+msgstr "La lista degli account è vuota!"
 
 msgid "Enable mail auto responder"
 msgstr "Abilitare risponditore automatico"
@@ -2252,12 +2274,6 @@ msgstr "State superando il limite del disco!"
 
 msgid "You have no new support questions!"
 msgstr "Non avete nuove domande di supporto!"
-
-msgid "support question(s)"
-msgstr "domande di supporto"
-
-msgid "new"
-msgstr "nuovo"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Client/Indice generale"
@@ -2477,7 +2493,8 @@ msgstr "Non hai utenti!"
 msgid "User already exist !"
 msgstr "L`utente esiste già !"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "Il limite degli utenti SQL è stato raggiunto!"
 
 msgid "Please type user name!"
@@ -2629,6 +2646,16 @@ msgstr "ISPCP - Aggiorna il piano di hosting"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "La richiesta per il pacchetto di hosting è stata aggiunta con successo"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "La richiesta per il pacchetto di hosting è stata rimossa con successo"
@@ -2805,9 +2832,6 @@ msgstr "Modifica in corso"
 msgid "Deletion in progress"
 msgstr "Eliminazione in corso"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Email dominio"
 
@@ -2920,6 +2944,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Utente già  registrato o problema di condivisione della sessione! Fallito..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3263,7 +3290,11 @@ msgid "Extras"
 msgstr "Extra"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3398,9 +3429,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Fatto"
-
 msgid "This reseller has no domains yet."
 msgstr "Non hai ancora domini configurati"
 
@@ -3433,6 +3461,24 @@ msgstr "ISPCP - Rivenditore : Sistema di supporto: Vedere i Ticket"
 
 msgid "Message was sent."
 msgstr "Il messaggio è stato inviato"
+
+#~ msgid "You have"
+#~ msgstr "Avete"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Domande di supporto"
+
+#~ msgid "New"
+#~ msgstr "Nuovo"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "L'account catch all non può essere creato"
+
+#~ msgid "support question(s)"
+#~ msgstr "domande di supporto"
+
+#~ msgid "new"
+#~ msgstr "nuovo"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias da modificare!"

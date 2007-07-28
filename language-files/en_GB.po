@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English <en_GB@li.org>\n"
@@ -37,6 +37,12 @@ msgid "Password"
 msgstr ""
 
 msgid "Please enter your login information"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
 msgstr ""
 
 msgid "Lost password"
@@ -925,13 +931,8 @@ msgstr ""
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
-msgstr ""
-
-msgid "Support question(s)"
-msgstr ""
-
-msgid "New"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "View"
@@ -1010,6 +1011,25 @@ msgid "Subdomain errors"
 msgstr ""
 
 msgid "Mail account errors"
+msgstr ""
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+msgid "Unknown domain status!"
+msgstr ""
+
+msgid "Unknown account type!"
+msgstr ""
+
+msgid "Invalid account id!"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Unknown Error"
 msgstr ""
 
 msgid "Get it at"
@@ -1384,6 +1404,12 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr ""
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1493,6 +1519,12 @@ msgid "udp"
 msgstr ""
 
 msgid "tcp"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
 msgstr ""
 
 msgid "Services"
@@ -1941,12 +1973,6 @@ msgstr ""
 msgid "Create catch all"
 msgstr ""
 
-msgid "Catch all mail account can not be created!"
-msgstr ""
-
-msgid "Mail accounts list is empty!"
-msgstr ""
-
 msgid "ISPCP - Client/Manage Users"
 msgstr ""
 
@@ -1992,6 +2018,9 @@ msgstr ""
 msgid "ISPCP - Client/Change Personal Data"
 msgstr ""
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr ""
+
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2017,12 +2046,6 @@ msgid "Add Cronjob"
 msgstr ""
 
 msgid "Active"
-msgstr ""
-
-msgid "Yes"
-msgstr ""
-
-msgid "No"
 msgstr ""
 
 msgid "Cronjob"
@@ -2085,9 +2108,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr ""
-
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
@@ -2125,10 +2145,6 @@ msgid "Enable Forward"
 msgstr ""
 
 msgid "Entered passwords differ!"
-msgstr ""
-
-#, php-format
-msgid "%s do not exist"
 msgstr ""
 
 msgid "FTP account data updated!"
@@ -2177,6 +2193,9 @@ msgid "Your message"
 msgstr ""
 
 msgid "Please wait for update"
+msgstr ""
+
+msgid "Mail accounts list is empty!"
 msgstr ""
 
 msgid "Enable mail auto responder"
@@ -2248,12 +2267,6 @@ msgid "You are exceeding your disk limit!"
 msgstr ""
 
 msgid "You have no new support questions!"
-msgstr ""
-
-msgid "support question(s)"
-msgstr ""
-
-msgid "new"
 msgstr ""
 
 msgid "ISPCP - Client/Main Index"
@@ -2473,7 +2486,7 @@ msgstr ""
 msgid "User already exist !"
 msgstr ""
 
-msgid "SQL-user limit expired!"
+msgid "SQL users limit reached!"
 msgstr ""
 
 msgid "Please type user name!"
@@ -2624,6 +2637,16 @@ msgid "ISPCP - Update hosting plan"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
+msgstr ""
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
 msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -2801,9 +2824,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr ""
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr ""
 
@@ -2916,6 +2936,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3259,7 +3282,11 @@ msgid "Extras"
 msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3392,9 +3419,6 @@ msgid "There's a conflicting admin / reseller fix that first!"
 msgstr ""
 
 msgid "System error with Domain ID "
-msgstr ""
-
-msgid "Done"
 msgstr ""
 
 msgid "This reseller has no domains yet."

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -39,6 +39,12 @@ msgstr ""
 
 msgid "Please enter your login information"
 msgstr "Пожалуйста, введите Ваши данные для входа"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr ""
@@ -926,14 +932,9 @@ msgstr "Отключено"
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
-msgstr "У Вас"
-
-msgid "Support question(s)"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
 msgstr ""
-
-msgid "New"
-msgstr "Новый"
 
 msgid "View"
 msgstr "Смотреть"
@@ -1011,6 +1012,28 @@ msgid "Subdomain errors"
 msgstr ""
 
 msgid "Mail account errors"
+msgstr ""
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "неизвестный статус"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Неизвестный тип"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Эккоунт Домена"
+
+msgid "Done"
+msgstr "Готово"
+
+msgid "Unknown Error"
 msgstr ""
 
 msgid "Get it at"
@@ -1385,6 +1408,12 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP администратор / Системные инструменты / Статус сервера"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr "Хост"
 
@@ -1495,6 +1524,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Нет"
 
 msgid "Services"
 msgstr ""
@@ -1942,12 +1977,6 @@ msgstr ""
 msgid "Create catch all"
 msgstr "Создайте выгоду все"
 
-msgid "Catch all mail account can not be created!"
-msgstr ""
-
-msgid "Mail accounts list is empty!"
-msgstr ""
-
 msgid "ISPCP - Client/Manage Users"
 msgstr ""
 
@@ -1993,6 +2022,9 @@ msgstr ""
 msgid "ISPCP - Client/Change Personal Data"
 msgstr ""
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Пользователь не существует или Вы не имеете доступа в этот интерфейс!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2019,12 +2051,6 @@ msgstr "Добавить задачу Планировщика"
 
 msgid "Active"
 msgstr "Активно"
-
-msgid "Yes"
-msgstr "Да"
-
-msgid "No"
-msgstr "Нет"
 
 msgid "Cronjob"
 msgstr "Задача"
@@ -2086,9 +2112,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Пользователь не существует или Вы не имеете доступа в этот интерфейс!"
-
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
@@ -2128,10 +2151,6 @@ msgstr "Переадресация почты"
 
 msgid "Entered passwords differ!"
 msgstr "Введенные пароли различаются!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "Данные FTP аккаунта обновлены!"
@@ -2179,6 +2198,9 @@ msgid "Your message"
 msgstr "Ваше сообщение"
 
 msgid "Please wait for update"
+msgstr ""
+
+msgid "Mail accounts list is empty!"
 msgstr ""
 
 msgid "Enable mail auto responder"
@@ -2251,12 +2273,6 @@ msgstr "Вы превысили Ваше ограничение на диско�
 
 msgid "You have no new support questions!"
 msgstr "Запросов тех.поддержки нету!"
-
-msgid "support question(s)"
-msgstr ""
-
-msgid "new"
-msgstr "новый"
 
 msgid "ISPCP - Client/Main Index"
 msgstr ""
@@ -2476,7 +2492,7 @@ msgstr "Вы не имеете пользователей!"
 msgid "User already exist !"
 msgstr "Пользователь уже существует!"
 
-msgid "SQL-user limit expired!"
+msgid "SQL users limit reached!"
 msgstr ""
 
 msgid "Please type user name!"
@@ -2628,6 +2644,16 @@ msgstr "Обновить хостинг-план"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ваш запрос на пакет хостинг-услуг успешно добавлен"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Ваш запрос на пакет хостинг-услуг успешно удалён"
@@ -2804,9 +2830,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr "Удаляется"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Почта Домена"
 
@@ -2919,6 +2942,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Пользователь уже вошел или проблема общего доступа сеанса! Выход..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3262,7 +3288,11 @@ msgid "Extras"
 msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3397,9 +3427,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Готово"
-
 msgid "This reseller has no domains yet."
 msgstr ""
 
@@ -3432,6 +3459,15 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Сообщение отослано."
+
+#~ msgid "You have"
+#~ msgstr "У Вас"
+
+#~ msgid "New"
+#~ msgstr "Новый"
+
+#~ msgid "new"
+#~ msgstr "новый"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Алиас в процессе изменения!"

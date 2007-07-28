@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -38,6 +38,12 @@ msgstr "Adgangskode"
 
 msgid "Please enter your login information"
 msgstr "Venligst indtast dine logind informationer"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Glemt Adgangskode"
@@ -925,14 +931,9 @@ msgstr "Deaktiveret"
 msgid "Show hosting plan"
 msgstr "Vis hosting plan"
 
-msgid "You have"
-msgstr "Du har"
-
-msgid "Support question(s)"
-msgstr "Support spørgsmål"
-
-msgid "New"
-msgstr "Ny"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
 
 msgid "View"
 msgstr "Se"
@@ -1011,6 +1012,28 @@ msgstr "Subdomæne fejl"
 
 msgid "Mail account errors"
 msgstr "Mailkonto fejl"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "ukendt status"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Ukendt type"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Mailkonti liste"
+
+msgid "Done"
+msgstr "Færdig"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr "Hent den på"
@@ -1384,6 +1407,12 @@ msgstr "Server statistik"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP - Virtual Hosting Control System"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1494,6 +1523,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
 
 msgid "Services"
 msgstr ""
@@ -1942,12 +1977,6 @@ msgstr "Slet FangAlle"
 msgid "Create catch all"
 msgstr "Opret FangAlle"
 
-msgid "Catch all mail account can not be created!"
-msgstr "FangAlle mail konto kan ikke oprettes"
-
-msgid "Mail accounts list is empty!"
-msgstr "Mailkonti liste er tom!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Virtual Hosting Control System"
 
@@ -1993,6 +2022,9 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Virtual Hosting Control System"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "FangAlle planlagt for oprettelse!"
 
@@ -2019,12 +2051,6 @@ msgstr "Tilføj Cronjob"
 
 msgid "Active"
 msgstr "Aktiv"
-
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nej"
 
 msgid "Cronjob"
 msgstr ""
@@ -2086,9 +2112,6 @@ msgstr "Subdomainet du er ved at slette indeholder stadig email konti!<br>Slet v
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomæne planlagt til sletning!"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
-
 msgid "Mail account scheduled for modification!"
 msgstr "Mailkonto planlagt til redigering!"
 
@@ -2129,10 +2152,6 @@ msgstr "Email videresend"
 
 msgid "Entered passwords differ!"
 msgstr "De indtastede kodeord er forskellige!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP konto data opdateret!"
@@ -2181,6 +2200,9 @@ msgstr "Din Meddelse"
 
 msgid "Please wait for update"
 msgstr "Vent venligst på opdatering"
+
+msgid "Mail accounts list is empty!"
+msgstr "Mailkonti liste er tom!"
 
 msgid "Enable mail auto responder"
 msgstr "Aktiver mail autosvarer"
@@ -2252,12 +2274,6 @@ msgstr "Du overskrider din disk grænse!"
 
 msgid "You have no new support questions!"
 msgstr "Du har ingen support spørgsmål!"
-
-msgid "support question(s)"
-msgstr "Support spørgsmål"
-
-msgid "new"
-msgstr "ny"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -2477,7 +2493,8 @@ msgstr "Du har ingen brugere!"
 msgid "User already exist !"
 msgstr "Bruger eksisterer allerede!"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "SQL bruger grænse overskredet!"
 
 msgid "Please type user name!"
@@ -2629,6 +2646,16 @@ msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Din anmodning for opdatering af hosting pakker er tilføjet systemet."
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Din anmodning for opdatering af hosting pakker er fjernet fra systemet."
@@ -2805,9 +2832,6 @@ msgstr "Redigering i gang"
 msgid "Deletion in progress"
 msgstr "Sletning i gang..."
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Domæne mail"
 
@@ -2920,6 +2944,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Bruger er allerede logget på eller session delings problemer! Afbryder...."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3263,7 +3290,11 @@ msgid "Extras"
 msgstr "Ekstra"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3398,9 +3429,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Færdig"
-
 msgid "This reseller has no domains yet."
 msgstr "Denne Forhandler har endnu ingen Domæner."
 
@@ -3433,6 +3461,24 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
+
+#~ msgid "You have"
+#~ msgstr "Du har"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Support spørgsmål"
+
+#~ msgid "New"
+#~ msgstr "Ny"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "FangAlle mail konto kan ikke oprettes"
+
+#~ msgid "support question(s)"
+#~ msgstr "Support spørgsmål"
+
+#~ msgid "new"
+#~ msgstr "ny"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias planlagt forredigering!"

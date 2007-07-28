@@ -20,6 +20,7 @@
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
+goto_user_location();
 
 $query = <<<SQL_QUERY
 

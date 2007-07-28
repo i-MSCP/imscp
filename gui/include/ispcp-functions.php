@@ -38,13 +38,13 @@ function check_for_lock_file() {
     }
 }
 
-function read_line($socket) {
+function read_line(&$socket) {
     $ch = '';
     $line = '';
     do {
         $ch = socket_read($socket,1);
         $line = $line . $ch;
-    } while($ch != "\r");
+    } while($ch != "\r" || $ch != "\n");
     return $line;
 }
 
@@ -90,9 +90,9 @@ function send_request() {
     $query = "execute query\r\n";
     socket_write ($socket, $query, strlen ($query));
     /* read one line key replay */
-    $execute_replay = read_line($socket);
+    $execute_reply = read_line($socket);
 
-    list($code) = explode(' ', $execute_replay);
+    list($code) = explode(' ', $execute_reply);
     if ($code == 999) {
         return $out;
     }
@@ -101,14 +101,14 @@ function send_request() {
     $quit_query = "bye\r\n";
     socket_write ($socket, $quit_query, strlen ($quit_query));
     /* read quit answer */
-    $quit_replay = read_line($socket);
+    $quit_reply = read_line($socket);
 
-    list($code) = explode(' ', $quit_replay);
+    list($code) = explode(' ', $quit_reply);
     if ($code == 999) {
         return $out;
     }
 
-    list($answer) = explode(' ', $execute_replay);
+    list($answer) = explode(' ', $execute_reply);
 
     socket_close ($socket);
 

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -38,6 +38,12 @@ msgstr "Пароль"
 
 msgid "Please enter your login information"
 msgstr "Введіть Ваш логін і пароль"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Відновити пароль"
@@ -925,14 +931,9 @@ msgstr "Вимкнено"
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
-msgstr "Ви маєте"
-
-msgid "Support question(s)"
-msgstr "Питання підтримки"
-
-msgid "New"
-msgstr "Новий"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
 
 msgid "View"
 msgstr "Переглянути"
@@ -1011,6 +1012,28 @@ msgstr "Помилки піддомену"
 
 msgid "Mail account errors"
 msgstr "Помилки поштових скриньок"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "невідомий статус"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Невідомий тип"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Список поштових скриньок"
+
+msgid "Done"
+msgstr "Завершено"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr "Завантажити з"
@@ -1384,6 +1407,12 @@ msgstr "Статистика сервера"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "Адміністратор ISPCP / Системні інструменти / Стан сервера"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr "Хост"
 
@@ -1494,6 +1523,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Так"
+
+msgid "No"
+msgstr "Ні"
 
 msgid "Services"
 msgstr ""
@@ -1942,12 +1977,6 @@ msgstr "Видалити перехоплювач пошти"
 msgid "Create catch all"
 msgstr "Створити перехоплення всього"
 
-msgid "Catch all mail account can not be created!"
-msgstr "Неможливо створити поштову скриньку перехоплення!"
-
-msgid "Mail accounts list is empty!"
-msgstr "Список поштових скриньок порожній!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Клієнт/Керування користувачами"
 
@@ -1993,6 +2022,9 @@ msgstr "ISPCP - Клієнт/Зміна пароля"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Клієнт/Зміна персональних даних"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Перехоплення всього в процесі створення!"
 
@@ -2019,12 +2051,6 @@ msgstr "Додати завдання в Cron"
 
 msgid "Active"
 msgstr "Активне"
-
-msgid "Yes"
-msgstr "Так"
-
-msgid "No"
-msgstr "Ні"
 
 msgid "Cronjob"
 msgstr "Завдання Cron'a"
@@ -2086,9 +2112,6 @@ msgstr "Піддомен, що Ви бажаєте видалити, місти�
 msgid "Subdomain scheduled for deletion!"
 msgstr "Триває видалення піддомену!"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
-
 msgid "Mail account scheduled for modification!"
 msgstr "Триває оновлення поштової скриньки!"
 
@@ -2129,10 +2152,6 @@ msgstr "Пересилання пошти"
 
 msgid "Entered passwords differ!"
 msgstr "Паролі не співпадають!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "Дані користувача FTP оновлені!"
@@ -2181,6 +2200,9 @@ msgstr "Ваше повідомлення"
 
 msgid "Please wait for update"
 msgstr "Будь ласка, зачекайте оновлення!"
+
+msgid "Mail accounts list is empty!"
+msgstr "Список поштових скриньок порожній!"
 
 msgid "Enable mail auto responder"
 msgstr "Увімкнути автовідповідач"
@@ -2252,12 +2274,6 @@ msgstr "Ви вичерпали ліміт дискового простору!"
 
 msgid "You have no new support questions!"
 msgstr "Немає нових питань підтримки!"
-
-msgid "support question(s)"
-msgstr "питання підтримки"
-
-msgid "new"
-msgstr "новий"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Клієнт/Головна"
@@ -2477,7 +2493,8 @@ msgstr "Ви не маєте користувачів!"
 msgid "User already exist !"
 msgstr "Користувач уже існує!"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "Ліміт користувачів SQL вичерпаний!"
 
 msgid "Please type user name!"
@@ -2629,6 +2646,16 @@ msgstr "ISPCP - Оновлення хостінг-плану"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ваш запит на зміну хостінг-плану успішно доданий"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Ваш запит на зміну хостінг-плану успішно видалений"
@@ -2805,9 +2832,6 @@ msgstr "Триває зміна"
 msgid "Deletion in progress"
 msgstr "Триває видалення"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Пошта домену"
 
@@ -2920,6 +2944,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3263,7 +3290,11 @@ msgid "Extras"
 msgstr "Додатково"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3398,9 +3429,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Завершено"
-
 msgid "This reseller has no domains yet."
 msgstr "Цей реселер не має доменів."
 
@@ -3433,6 +3461,24 @@ msgstr "ISPCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "You have"
+#~ msgstr "Ви маєте"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Питання підтримки"
+
+#~ msgid "New"
+#~ msgstr "Новий"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Неможливо створити поштову скриньку перехоплення!"
+
+#~ msgid "support question(s)"
+#~ msgstr "питання підтримки"
+
+#~ msgid "new"
+#~ msgstr "новий"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Триває зміна аліасу!"

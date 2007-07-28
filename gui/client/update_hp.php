@@ -262,7 +262,7 @@ global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl->assign(
 		    array(
-				'TR_CLIENT_UPDATE_HP' => tr('ispCP - Update hosting plan'),
+				'TR_CLIENT_UPDATE_HP' => tr('ISPCP - Update hosting plan'),
 		        'THEME_COLOR_PATH' => "../themes/$theme_color",
 		        'THEME_CHARSET' => tr('encoding'),
 		        'TID' => $_SESSION['layout_id'],
@@ -323,10 +323,14 @@ SQL_QUERY;
     $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
     $headers .= "X-Mailer: ispCP auto mailer";
 
-    $subject = "[ispCP OrderPanel] - You have update order";
+    $subject = tr("[ispCP OrderPanel] - You have an update order");
 
-    $message = "You have update order for account " . $_SESSION['user_logged'] . "\r\n\r\n";
-    $message .= "Please login into your ispCP control panel for more details";
+    $message = tr('You have an update order for the account {ACCOUNT}
+
+
+Please login into your ispCP control panel for more details');
+
+    $message = str_replace('{ACCOUNT}', $_SESSION['user_logged'], $message);
 
     $mail_result = mail($to, $subject, $message, $headers);
 }

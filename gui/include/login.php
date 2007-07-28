@@ -195,7 +195,7 @@ function goto_user_location() {
   	}
 }
 
-function check_login ($fName = null) {
+function check_login ($fName = null, $checkReferer = true) {
 
     // session-type check:
     if (!check_user_login()) {
@@ -220,115 +220,124 @@ function check_login ($fName = null) {
                 break;
         }
     }
+
+    if ($checkReferer) {
+        if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+
+            $info = parse_url($_SERVER['HTTP_REFERER']);
+            if (isset($info['host']) && !empty($info['host'])) {
+                if ($info['host'] != $_SERVER['HTTP_HOST']) {
+                    set_page_message(tr('Request from foreign host was blocked!'));
+                    redirect_to_level_page();
+                }
+            }
+
+        }
+    }
 }
 
 function change_user_interface($form_id, $to_id) {
-	global $sql, $cfg;
+    global $sql, $cfg;
 
-	if ($cfg['DB_TYPE'] === 'mysql') {
-		$query_from = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
-    	$query_to = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
-	}
-	else {
-		die ("Other Databases than MySQL are not supported");
-	}
+    $query_from = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
+    $query_to = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
 
-  	$rs_from = exec_query($sql, $query_from, array($form_id));
-  	$rs_to = exec_query($sql, $query_to, array($to_id));
+    $rs_from = exec_query($sql, $query_from, array($form_id));
+    $rs_to = exec_query($sql, $query_to, array($to_id));
 
-  	if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
-		write_log("Change interface error => unknown from or to username");
-    	return false;
-	}
+    if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
+        write_log("Change interface error => unknown from or to username");
+        return false;
+    }
 
-  	$from_udata = $rs_from -> FetchRow();
-  	$to_udata = $rs_to -> FetchRow();
+    $from_udata = $rs_from -> FetchRow();
+    $to_udata = $rs_to -> FetchRow();
 
-	if (!is_userdomain_ok($to_udata['admin_name'])) {
-		write_log("Domain ID: ".$to_udata['admin_id']." - domain status PROBLEM -");
-		return false;
-	}
+    if (!is_userdomain_ok($to_udata['admin_name'])) {
+        write_log("Domain ID: ".$to_udata['admin_id']." - domain status PROBLEM -");
+        return false;
+    }
 
-	if ($from_udata['admin_type'] === 'admin' && $to_udata['admin_type'] === 'reseller') {
-  		$header = "../reseller/index.php";
-	} else if ($from_udata['admin_type'] === 'admin' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
-  		$header = "../client/index.php";
-	} else if ($from_udata['admin_type'] === 'reseller' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
-  		$header = "../client/index.php";
-	// lets check and go from bottom to top User -> Reseller -> Admin
-	// there is SESSION 'logged from' -> we can go from Buttom to TOP
-	} else if (isset($_SESSION['logged_from'])) {
-		if ($from_udata['admin_type'] === 'reseller' && $to_udata['admin_type'] == 'admin') {
-			$header = "../admin/manage_users.php";
-		// user to admin
-		} else if (($from_udata['admin_type'] != 'admin' || $from_udata['admin_type'] != 'reseller') && $to_udata['admin_type'] === 'admin') {
-			$header = "../admin/manage_users.php";
-		// user reseller
-		} else if (($from_udata['admin_type'] != 'admin' || $from_udata['admin_type'] != 'reseller') && $to_udata['admin_type'] === 'reseller') {
-			$header = "../reseller/users.php";
-		} else {
-			write_log("change interface error from: ".$from_udata['admin_name']." to: ".$to_udata['admin_name']);
-			return false;
-		}
-	} else {
-		write_log("change interface error from: ".$from_udata['admin_name']." to: ".$to_udata['admin_name']);
-		return false;
-	}
+    if ($from_udata['admin_type'] === 'admin' && $to_udata['admin_type'] === 'reseller') {
+        $header = "../reseller/index.php";
+    } else if ($from_udata['admin_type'] === 'admin' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
+        $header = "../client/index.php";
+    } else if ($from_udata['admin_type'] === 'reseller' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
+        $header = "../client/index.php";
+        // lets check and go from bottom to top User -> Reseller -> Admin
+        // there is SESSION 'logged from' -> we can go from Buttom to TOP
+    } else if (isset($_SESSION['logged_from'])) {
+        if ($from_udata['admin_type'] === 'reseller' && $to_udata['admin_type'] == 'admin') {
+            $header = "../admin/manage_users.php";
+            // user to admin
+        } else if (($from_udata['admin_type'] != 'admin' || $from_udata['admin_type'] != 'reseller') && $to_udata['admin_type'] === 'admin') {
+            $header = "../admin/manage_users.php";
+            // user reseller
+        } else if (($from_udata['admin_type'] != 'admin' || $from_udata['admin_type'] != 'reseller') && $to_udata['admin_type'] === 'reseller') {
+            $header = "../reseller/users.php";
+        } else {
+            write_log("change interface error from: ".$from_udata['admin_name']." to: ".$to_udata['admin_name']);
+            return false;
+        }
+    } else {
+        write_log("change interface error from: ".$from_udata['admin_name']." to: ".$to_udata['admin_name']);
+        return false;
+    }
 
-	// lets save layout and language from admin/reseler - they don't wannt to read user interface on china or arabic language
-	$user_language = $_SESSION['user_def_lang'];
-	$user_layout = $_SESSION['user_theme'];
+    // lets save layout and language from admin/reseler - they don't wannt to read user interface on china or arabic language
+    $user_language = $_SESSION['user_def_lang'];
+    $user_layout = $_SESSION['user_theme'];
 
-	// delete all sessions and globals data and set new one with SESSION logged_from
-	unset_user_login_data();
-// start new session here
-// session_start();
+    // delete all sessions and globals data and set new one with SESSION logged_from
+    unset_user_login_data();
+    // start new session here
+    // session_start();
 
-	if ($to_udata['admin_type'] != 'admin') {
+    if ($to_udata['admin_type'] != 'admin') {
 
-		$_SESSION['logged_from'] = $from_udata['admin_name'];
+        $_SESSION['logged_from'] = $from_udata['admin_name'];
 
-		$_SESSION['logged_from_id'] = $from_udata['admin_id'];
+        $_SESSION['logged_from_id'] = $from_udata['admin_id'];
 
-	}
+    }
 
-	// we gonna kill all sessions and globals if user get back to admin level
-	if (isset($_SESSION['admin_name']))
-		unset($_SESSION['admin_name']);
+    // we gonna kill all sessions and globals if user get back to admin level
+    if (isset($_SESSION['admin_name']))
+    unset($_SESSION['admin_name']);
 
-	if (isset($_SESSION['admin_id']))
-		unset($_SESSION['admin_id']);
+    if (isset($_SESSION['admin_id']))
+    unset($_SESSION['admin_id']);
 
-	if (isset($GLOBALS['admin_name']))
-		unset($GLOBALS['admin_name']);
+    if (isset($GLOBALS['admin_name']))
+    unset($GLOBALS['admin_name']);
 
-	if (isset($GLOBALS['admin_id']))
-		unset($GLOBALS['admin_id']);
-		// no more sessions and globals to kill - they were always killed - rest in peace
+    if (isset($GLOBALS['admin_id']))
+    unset($GLOBALS['admin_id']);
+    // no more sessions and globals to kill - they were always killed - rest in peace
 
-	$_SESSION['user_logged'] = $to_udata['admin_name'];
-	$_SESSION['user_pass'] = $to_udata['admin_pass'];
-	$_SESSION['user_type'] = $to_udata['admin_type'];
-	$_SESSION['user_id'] = $to_udata['admin_id'];
-	$_SESSION['user_created_by'] = $to_udata['created_by'];
-	$_SESSION['user_login_time'] = time();
-	$_SESSION['user_def_lang'] = $user_language;
-	$_SESSION['user_theme'] = $user_layout;
-	$user_login_time = time();
-	$sess_id = session_id();
-	$new_user_name = $to_udata['admin_name'];
+    $_SESSION['user_logged'] = $to_udata['admin_name'];
+    $_SESSION['user_pass'] = $to_udata['admin_pass'];
+    $_SESSION['user_type'] = $to_udata['admin_type'];
+    $_SESSION['user_id'] = $to_udata['admin_id'];
+    $_SESSION['user_created_by'] = $to_udata['created_by'];
+    $_SESSION['user_login_time'] = time();
+    $_SESSION['user_def_lang'] = $user_language;
+    $_SESSION['user_theme'] = $user_layout;
+    $user_login_time = time();
+    $sess_id = session_id();
+    $new_user_name = $to_udata['admin_name'];
 
-	$query = <<<SQL_QUERY
+    $query = <<<SQL_QUERY
   	insert into login
     	(session_id, user_name, lastaccess)
     values
     	(?, ?, ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($sess_id, $new_user_name, $user_login_time));
- 	write_log($from_udata['admin_name']." change into interface from ".$to_udata['admin_name']);
+    $rs = exec_query($sql, $query, array($sess_id, $new_user_name, $user_login_time));
+    write_log($from_udata['admin_name']." change into interface from ".$to_udata['admin_name']);
 
-	return $header;
+    return $header;
 }
 
 function unset_user_login_data () {
@@ -373,7 +382,7 @@ function redirect_to_level_page() {
             $user_type = 'client';
         case 'admin':
         case 'reseller':
-            header('Location: ' . $user_type . '/index.php');
+            header('Location: /' . $user_type . '/index.php');
             break;
         default:
             die("FIX ME! " . __FILE__ . ":" . __LINE__);

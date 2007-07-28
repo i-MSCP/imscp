@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -37,6 +37,12 @@ msgid "Password"
 msgstr "Parola"
 
 msgid "Please enter your login information"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
 msgstr ""
 
 msgid "Lost password"
@@ -925,14 +931,9 @@ msgstr "Kapalı"
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
 msgstr ""
-
-msgid "Support question(s)"
-msgstr ""
-
-msgid "New"
-msgstr "Yeni"
 
 msgid "View"
 msgstr "Görünüm"
@@ -1011,6 +1012,27 @@ msgstr ""
 
 msgid "Mail account errors"
 msgstr "Mail hesabı hataları"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "Yanlış alt alan adı yazımı!"
+
+msgid "Unknown account type!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Mail hesapları listesi"
+
+msgid "Done"
+msgstr "Bitti"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr ""
@@ -1384,6 +1406,12 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr ""
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1494,6 +1522,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Evet"
+
+msgid "No"
+msgstr "Hayır"
 
 msgid "Services"
 msgstr ""
@@ -1941,12 +1975,6 @@ msgstr ""
 msgid "Create catch all"
 msgstr ""
 
-msgid "Catch all mail account can not be created!"
-msgstr ""
-
-msgid "Mail accounts list is empty!"
-msgstr "Mail hesapları listesi boş!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr ""
 
@@ -1992,6 +2020,9 @@ msgstr ""
 msgid "ISPCP - Client/Change Personal Data"
 msgstr ""
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr ""
+
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -2018,12 +2049,6 @@ msgstr "Cronjob ekle"
 
 msgid "Active"
 msgstr "Etkinleştir"
-
-msgid "Yes"
-msgstr "Evet"
-
-msgid "No"
-msgstr "Hayır"
 
 msgid "Cronjob"
 msgstr ""
@@ -2085,9 +2110,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr ""
-
 msgid "Mail account scheduled for modification!"
 msgstr "Mail hesabı düzenlenmesi için kaydedildi"
 
@@ -2127,10 +2149,6 @@ msgstr "Email yönlendirme"
 
 msgid "Entered passwords differ!"
 msgstr "Girilen parolalar değişik!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP hesabı güncellendi!"
@@ -2179,6 +2197,9 @@ msgstr "Mesajınız"
 
 msgid "Please wait for update"
 msgstr ""
+
+msgid "Mail accounts list is empty!"
+msgstr "Mail hesapları listesi boş!"
 
 msgid "Enable mail auto responder"
 msgstr ""
@@ -2250,12 +2271,6 @@ msgstr "Disk limitini aştınız!"
 
 msgid "You have no new support questions!"
 msgstr "Yeni bir yardım isteği sorusu yok!"
-
-msgid "support question(s)"
-msgstr ""
-
-msgid "new"
-msgstr "yeni"
 
 msgid "ISPCP - Client/Main Index"
 msgstr ""
@@ -2475,7 +2490,7 @@ msgstr "Kullanıcınız yok!"
 msgid "User already exist !"
 msgstr ""
 
-msgid "SQL-user limit expired!"
+msgid "SQL users limit reached!"
 msgstr ""
 
 msgid "Please type user name!"
@@ -2627,6 +2642,16 @@ msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Hosting paketi güncellemesi isteğiniz eklendi"
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Hosting paketi güncellemesi isteğiniz silindi"
@@ -2803,9 +2828,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr ""
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr ""
 
@@ -2918,6 +2940,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3261,7 +3286,11 @@ msgid "Extras"
 msgstr "Ekstralar"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3396,9 +3425,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Bitti"
-
 msgid "This reseller has no domains yet."
 msgstr ""
 
@@ -3431,6 +3457,12 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Mesaj gönderildi."
+
+#~ msgid "New"
+#~ msgstr "Yeni"
+
+#~ msgid "new"
+#~ msgstr "yeni"
 
 #~ msgid "enabled"
 #~ msgstr "açık"

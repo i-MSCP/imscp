@@ -7,6 +7,13 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-07-28 Raphael Geissert
+	- GUI:
+		* Fixed #526: Undefined index: layout_id in gui/client/*.php
+		* Fixed #525: Wrong email validation in gui/orderpanel/address.php
+		* Added code functionality to ispcp_debugger.php to change a domain/alias/subdomain/mail account status
+		* Some i18n changes
+
 2007-07-27 Raphael Geissert
 	- ENGINE:
 		* Mailbox data is now also counted in disk quota

@@ -17,6 +17,11 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+
+require '../include/ispcp-lib.php';
+
+check_login(__FILE__);
+
 //
 // page functions.
 //
@@ -211,41 +216,42 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
                             'TRAFF_RED' => $traff_red * 3,
                             'TRAFF_GREEN' => $traff_green * 3,
                             'TRAFF_PERCENT' => $traff_percent,
-                            'TRAFF_USED' => make_hr($utraff_current),
-                            'TRAFF_CURRENT' => make_hr($rtraff_current),
-                            'TRAFF_MAX' => ($rtraff_max) ? make_hr($rtraff_max) : tr('unlimited'),
 
-                            'DISK_USED' => make_hr($udisk_current),
-                            'DISK_CURRENT' => make_hr($rdisk_current),
-                            'DISK_MAX' => ($rdisk_max) ? make_hr($rdisk_max) : tr('unlimited'),
+                            'TRAFF_MSG' => ($rtraff_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', make_hr($utraff_current), make_hr($rtraff_current), make_hr($rtraff_max)):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', make_hr($utraff_current), make_hr($rtraff_current)),
 
-                            'DMN_USED' => $udmn_current,
-                            'DMN_CURRENT' => $rdmn_current,
-                            'DMN_MAX' => ($rdmn_max) ? $rdmn_max : tr('unlimited'),
+                            'DISK_MSG' => ($rdisk_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', make_hr($udisk_current), make_hr($rdisk_current), make_hr($rdisk_max)):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', make_hr($udisk_current), make_hr($rdisk_current)),
 
-                            'SUB_USED' => $usub_current,
-                            'SUB_CURRENT' => $rsub_current,
-                            'SUB_MAX' => ($rsub_max) ? $rsub_max : tr('unlimited'),
+                            'DMN_MSG' => ($rdmn_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $udisk_current, $rdmn_current, $rdmn_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $udisk_current, $rdmn_current),
 
-                            'ALS_USED' => $uals_current,
-                            'ALS_CURRENT' => $rals_current,
-                            'ALS_MAX' => ($rals_max) ? $rals_max : tr('unlimited'),
+                            'SUB_MSG' => ($rsub_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $usub_current, $rsub_current),
 
-                            'MAIL_USED' => $umail_current,
-                            'MAIL_CURRENT' => $rmail_current,
-                            'MAIL_MAX' => ($rmail_max) ? $rmail_max : tr('unlimited'),
+                            'ALS_MSG' => ($rals_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $uals_current, $rals_current, $rals_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $uals_current, $rals_current),
 
-                            'FTP_USED' => $uftp_current,
-                            'FTP_CURRENT' => $rftp_current,
-                            'FTP_MAX' => ($rftp_max) ? $rftp_max : tr('unlimited'),
+                            'MAIL_MSG' => ($rmail_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rals_current),
 
-                            'SQL_DB_USED' => $usql_db_current,
-                            'SQL_DB_CURRENT' => $rsql_db_current,
-                            'SQL_DB_MAX' => ($rsql_db_max) ? $rsql_db_max : tr('unlimited'),
+                            'FTP_MSG' => ($rftp_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $uftp_current, $rftp_current),
 
-                            'SQL_USER_USED' => $usql_user_current,
-                            'SQL_USER_CURRENT' => $rsql_user_current,
-                            'SQL_USER_MAX' => ($rsql_user_max) ? $rsql_user_max : tr('unlimited'),
+                            'SQL_DB_MSG' => ($rsql_db_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $usql_db_current, $rsql_db_current),
+
+                            'SQL_USER_MSG' => ($rsql_user_max) ?
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $usql_user_current, $rsql_user_current),
 							'EXTRAS' => ''
 
                          )
@@ -299,13 +305,6 @@ SQL_QUERY;
 
 }
 
-//
-// Begin page path
-// ###############
-
-require '../include/ispcp-lib.php';
-
-check_login(__FILE__);
 
 $tpl = new pTemplate();
 

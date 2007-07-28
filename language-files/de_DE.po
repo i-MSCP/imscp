@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -38,6 +38,12 @@ msgstr "Passwort"
 
 msgid "Please enter your login information"
 msgstr "Bitte Benutzername und Passwort eingeben."
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
+msgstr ""
 
 msgid "Lost password"
 msgstr "Kennwort vergessen"
@@ -925,14 +931,9 @@ msgstr "Deaktiviert"
 msgid "Show hosting plan"
 msgstr "Hosting Pakete anzeigen"
 
-msgid "You have"
-msgstr "Sie haben"
-
-msgid "Support question(s)"
-msgstr "Supportanfrage(n)"
-
-msgid "New"
-msgstr "Neu"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
 
 msgid "View"
 msgstr "Anzeigen"
@@ -1011,6 +1012,28 @@ msgstr "Subdomain Fehler"
 
 msgid "Mail account errors"
 msgstr "Fehlerhafte E-Mail Konten"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown domain status!"
+msgstr "Unbekannter Status"
+
+#, fuzzy
+msgid "Unknown account type!"
+msgstr "Unbekannter Typ"
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "E-Mail Konten"
+
+msgid "Done"
+msgstr "Fertigstellen"
+
+msgid "Unknown Error"
+msgstr ""
 
 msgid "Get it at"
 msgstr "Donwload von"
@@ -1384,6 +1407,12 @@ msgstr "Serverstatistiken"
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr "ISPCP - Virtual Hosting Control System"
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1494,6 +1523,12 @@ msgstr ""
 
 msgid "tcp"
 msgstr ""
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
 
 msgid "Services"
 msgstr ""
@@ -1942,12 +1977,6 @@ msgstr "Löschen"
 msgid "Create catch all"
 msgstr "Catch All anlegen"
 
-msgid "Catch all mail account can not be created!"
-msgstr "Es sind keine Catch All E-Mail Konten im System vorhanden!"
-
-msgid "Mail accounts list is empty!"
-msgstr "Es sind keine E-Mail Benutzer im System vorhanden!"
-
 msgid "ISPCP - Client/Manage Users"
 msgstr "ISPCP - Virtual Hosting Control System"
 
@@ -1993,6 +2022,9 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "ISPCP - Client/Change Personal Data"
 msgstr "ISPCP - Virtual Hosting Control System"
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "Benutzer wurde nicht gefunden oder Sie dürfen sein Konto nicht verwalten!"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Catch All wird im System eingetragen!"
 
@@ -2019,12 +2051,6 @@ msgstr "Cronjob hinzufügen"
 
 msgid "Active"
 msgstr "Aktiv"
-
-msgid "Yes"
-msgstr "Ja"
-
-msgid "No"
-msgstr "Nein"
 
 msgid "Cronjob"
 msgstr ""
@@ -2086,9 +2112,6 @@ msgstr "Die Subdomain, die Sie löschen möchten hat noch E-Mail Konten!<br>Bitt
 msgid "Subdomain scheduled for deletion!"
 msgstr "Subdomain wird gelöscht!"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Benutzer wurde nicht gefunden oder Sie dürfen sein Konto nicht verwalten!"
-
 msgid "Mail account scheduled for modification!"
 msgstr "E-Mail Konto wird aktualisiert!"
 
@@ -2129,10 +2152,6 @@ msgstr "Weiterleitung<br>(Hauptdomain)"
 
 msgid "Entered passwords differ!"
 msgstr "Die eingegebenen Passwörter stimmen nicht überein!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP Daten wurden aktualisiert!"
@@ -2181,6 +2200,9 @@ msgstr "Nachricht"
 
 msgid "Please wait for update"
 msgstr "Wird aktualisiert"
+
+msgid "Mail accounts list is empty!"
+msgstr "Es sind keine E-Mail Benutzer im System vorhanden!"
 
 msgid "Enable mail auto responder"
 msgstr "Autobeantwortung aktivieren"
@@ -2252,12 +2274,6 @@ msgstr "Sie haben Ihre Speicherplatz Begrenzung erreicht!"
 
 msgid "You have no new support questions!"
 msgstr "Sie haben keine neuen Supportanfragen!"
-
-msgid "support question(s)"
-msgstr "Supportanfrage(n)"
-
-msgid "new"
-msgstr "neu"
 
 msgid "ISPCP - Client/Main Index"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -2477,7 +2493,8 @@ msgstr "Sie haben noch keine Benutzer!"
 msgid "User already exist !"
 msgstr "Benutzer ist bereit vorhanden!"
 
-msgid "SQL-user limit expired!"
+#, fuzzy
+msgid "SQL users limit reached!"
 msgstr "MySQL Benutzerbegrenzung wird überschritten!"
 
 msgid "Please type user name!"
@@ -2629,6 +2646,16 @@ msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ihre Bestellung für das Hosting Paket Update wurde erfolgreich in das System eingetragen."
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
+msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr "Ihre Bestellung für das Hosting Paket Update wurde erfolgreich aus dem System gelöscht."
@@ -2805,9 +2832,6 @@ msgstr "Wird aktualisiert..."
 msgid "Deletion in progress"
 msgstr "Wird gelöscht..."
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr "Normal<br>(Hauptdomain)"
 
@@ -2920,6 +2944,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Systemfehler! Benutzer ist bereits angemeldet! Abbruch..."
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3263,7 +3290,11 @@ msgid "Extras"
 msgstr "Extra"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3398,9 +3429,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Fertigstellen"
-
 msgid "This reseller has no domains yet."
 msgstr "Dieser Wiederverkäfer hat noch keine Domains."
 
@@ -3433,6 +3461,24 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
+
+#~ msgid "You have"
+#~ msgstr "Sie haben"
+
+#~ msgid "Support question(s)"
+#~ msgstr "Supportanfrage(n)"
+
+#~ msgid "New"
+#~ msgstr "Neu"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Es sind keine Catch All E-Mail Konten im System vorhanden!"
+
+#~ msgid "support question(s)"
+#~ msgstr "Supportanfrage(n)"
+
+#~ msgid "new"
+#~ msgstr "neu"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Domain Alias wird aktualisiert!"

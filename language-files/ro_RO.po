@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-17 13:41-0500\n"
+"POT-Creation-Date: 2007-07-28 15:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -37,6 +37,12 @@ msgid "Password"
 msgstr ""
 
 msgid "Please enter your login information"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Unsafe Connection"
 msgstr ""
 
 msgid "Lost password"
@@ -925,13 +931,8 @@ msgstr "Dezactivat"
 msgid "Show hosting plan"
 msgstr ""
 
-msgid "You have"
-msgstr "Aveti"
-
-msgid "Support question(s)"
-msgstr ""
-
-msgid "New"
+#, php-format
+msgid "You have <b>%d</b> new support questions"
 msgstr ""
 
 msgid "View"
@@ -1010,6 +1011,26 @@ msgid "Subdomain errors"
 msgstr ""
 
 msgid "Mail account errors"
+msgstr ""
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+msgid "Unknown domain status!"
+msgstr ""
+
+msgid "Unknown account type!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid account id!"
+msgstr "Cont domeniu"
+
+msgid "Done"
+msgstr "Gata"
+
+msgid "Unknown Error"
 msgstr ""
 
 msgid "Get it at"
@@ -1384,6 +1405,12 @@ msgstr ""
 msgid "ISPCP Admin / System Tools / Server Status"
 msgstr ""
 
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
 msgid "Host"
 msgstr ""
 
@@ -1493,6 +1520,12 @@ msgid "udp"
 msgstr ""
 
 msgid "tcp"
+msgstr ""
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
 msgstr ""
 
 msgid "Services"
@@ -1941,12 +1974,6 @@ msgstr "Sterge Cont Colector"
 msgid "Create catch all"
 msgstr ""
 
-msgid "Catch all mail account can not be created!"
-msgstr "Cont catch all nu poate fi creat!"
-
-msgid "Mail accounts list is empty!"
-msgstr ""
-
 msgid "ISPCP - Client/Manage Users"
 msgstr ""
 
@@ -1992,6 +2019,9 @@ msgstr ""
 msgid "ISPCP - Client/Change Personal Data"
 msgstr ""
 
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr ""
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Cont catch all programat pentru creare!"
 
@@ -2018,12 +2048,6 @@ msgstr "Adauga cronjob"
 
 msgid "Active"
 msgstr "Activ"
-
-msgid "Yes"
-msgstr "Da"
-
-msgid "No"
-msgstr ""
 
 msgid "Cronjob"
 msgstr ""
@@ -2085,9 +2109,6 @@ msgstr ""
 msgid "Subdomain scheduled for deletion!"
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr ""
-
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
@@ -2127,10 +2148,6 @@ msgstr "Pornit"
 
 msgid "Entered passwords differ!"
 msgstr "Parolele introduse difera!"
-
-#, php-format
-msgid "%s do not exist"
-msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "Datele contului de FTP au fost actualizate!"
@@ -2178,6 +2195,9 @@ msgid "Your message"
 msgstr "Mesajul dumneavoastra"
 
 msgid "Please wait for update"
+msgstr ""
+
+msgid "Mail accounts list is empty!"
 msgstr ""
 
 msgid "Enable mail auto responder"
@@ -2249,12 +2269,6 @@ msgid "You are exceeding your disk limit!"
 msgstr ""
 
 msgid "You have no new support questions!"
-msgstr ""
-
-msgid "support question(s)"
-msgstr ""
-
-msgid "new"
 msgstr ""
 
 msgid "ISPCP - Client/Main Index"
@@ -2475,7 +2489,7 @@ msgstr "Nu aveti nici un user!"
 msgid "User already exist !"
 msgstr ""
 
-msgid "SQL-user limit expired!"
+msgid "SQL users limit reached!"
 msgstr ""
 
 msgid "Please type user name!"
@@ -2626,6 +2640,16 @@ msgid "ISPCP - Update hosting plan"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
+msgstr ""
+
+msgid "[ispCP OrderPanel] - You have an update order"
+msgstr ""
+
+msgid ""
+"You have an update order for the account {ACCOUNT}\n"
+"\n"
+"\n"
+"Please login into your ispCP control panel for more details"
 msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -2803,9 +2827,6 @@ msgstr ""
 msgid "Deletion in progress"
 msgstr "Stergere in curs"
 
-msgid "Unknown Error"
-msgstr ""
-
 msgid "Domain mail"
 msgstr ""
 
@@ -2918,6 +2939,9 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 
 msgid "Domain status is not OK - Login aborted."
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "Domain alias"
@@ -3261,7 +3285,11 @@ msgid "Extras"
 msgstr "Extra"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"
@@ -3396,9 +3424,6 @@ msgstr ""
 msgid "System error with Domain ID "
 msgstr ""
 
-msgid "Done"
-msgstr "Gata"
-
 msgid "This reseller has no domains yet."
 msgstr ""
 
@@ -3431,6 +3456,12 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr ""
+
+#~ msgid "You have"
+#~ msgstr "Aveti"
+
+#~ msgid "Catch all mail account can not be created!"
+#~ msgstr "Cont catch all nu poate fi creat!"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias programat pentru modificare!"
