@@ -303,8 +303,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl->assign(
     array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ISPCP - Client/Manage Users'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
-        'THEME_CHARSET' => tr('encoding'),
-        'TID' => $_SESSION['layout_id'],
+        'THEME_CHARSET' => tr('encoding'), 
         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         'ISP_LOGO' => get_logo($_SESSION['user_id'])
         )

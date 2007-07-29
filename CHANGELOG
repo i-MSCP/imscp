@@ -7,6 +7,10 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-07-29 Raphael Geissert
+	- GUI:
+		* Fixed #527, #528, #529, #530: Undefined index: layout_id in gui/client/*.php
+
 2007-07-28 Raphael Geissert
 	- GUI:
 		* Fixed #526: Undefined index: layout_id in gui/client/*.php

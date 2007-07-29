@@ -227,8 +227,7 @@ $tpl->assign(
 			array(
 				'TR_CLIENT_SQL_EXECUTE_QUERY_PAGE_TITLE' => tr('ISPCP - Client/Execute SQL Query'),
         		'THEME_COLOR_PATH' => "../themes/$theme_color",
-        		'THEME_CHARSET' => tr('encoding'),
-        		'TID' => $_SESSION['layout_id'],
+        		'THEME_CHARSET' => tr('encoding'), 
         		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 				)
