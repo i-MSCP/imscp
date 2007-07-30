@@ -2840,11 +2840,6 @@ sub dmn_del_mta_data {
 
 ################################### CRONTAB ####################################
 
-################################################################################
-##
-## Add Crontab Data
-##
-
 sub dmn_add_crontab_data {
 
     my ($dmn_data) = @_;
@@ -2856,6 +2851,345 @@ sub dmn_add_crontab_data {
     if (!defined($dmn_data) || $dmn_data eq '') {
 
         push_el(\@main::el, 'dmn_add_crontab_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    my $dmn_userid = @$dmn_data[0];
+
+    my $dmn_name = @$dmn_data[1];
+
+    my $cronjob_minute = @$dmn_data[2];
+
+    my $cronjob_hour = @$dmn_data[3];
+
+    my $cronjob_day = @$dmn_data[4];
+
+    my $cronjob_month = @$dmn_data[5];
+
+    my $cronjob_dweek = @$dmn_data[6];
+
+    my $cronjob_command = @$dmn_data[7];
+
+    my $cronjob_id = @$dmn_data[8];
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $log_dir = $main::cfg{'LOG_DIR'};
+
+
+    my $tpl_dir = "$conf_dir/cron.d/parts";
+
+    my $working_dir = "$conf_dir/cron.d/working";
+
+    my $backup_dir = "$conf_dir/cron.d/backup";
+
+    my $working_cfg = "$working_dir/ispcp";
+
+    my $timestamp = time;
+
+    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+
+    #
+    # Getting needed templates;
+    #
+
+    my (
+        $dt_b,
+        $dt_e,
+        $dmn_custom_b,
+        $dmn_custom_entry,
+        $dmn_custom_e
+       ) = ('', '', '', '', '');
+
+    (
+     $rs,
+     $dt_b,
+     $dt_e,
+     $dmn_custom_b,
+     $dmn_custom_entry,
+     $dmn_custom_e
+    ) = get_tpl (
+                 $tpl_dir,
+                 'dt_b.tpl',
+                 'dt_e.tpl',
+                 'dmn_custom_b.tpl',
+                 'dmn_custom_entry.tpl',
+                 'dmn_custom_e.tpl'
+                );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Preparing templates;
+    #
+
+    my %tag_hash = (
+                    '{DMN_NAME}' => $dmn_name,
+                    '{USER}' => $dmn_userid,
+                    '{MINUTE}' => $cronjob_minute,
+                    '{HOUR}' => $cronjob_hour,
+                    '{DAY}' => $cronjob_day,
+                    '{MONTH}' => $cronjob_month,
+                    '{DWEEK}' => $cronjob_dweek,
+                    '{CRONJOB_ID}' => $cronjob_id,
+                    '{LOG_DIR}' => $log_dir
+                   );
+
+    my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
+
+    (
+     $rs,
+     $dmn_custom_b_val,
+     $dmn_custom_entry,
+     $dmn_custom_e_val
+    ) = prep_tpl (
+                  \%tag_hash,
+                  $dmn_custom_b,
+                  $dmn_custom_entry,
+                  $dmn_custom_e
+                 );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Creating working config data;
+    #
+
+    my ($sys, $working) = (undef, undef);
+
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs if ($rs != 0);
+
+
+    ($rs, $rdata) = get_tag(
+                            $dmn_custom_b_val,
+                            $dmn_custom_e_val,
+                            $working
+                           );
+
+    # it is safe to delete because cronjobs are handled by id
+    if ($rs == 0) {
+
+        ($rs, $working) = del_tag(
+                                  $dmn_custom_b_val,
+                                  "$dmn_custom_e_val\n",
+                                  $working
+                                 );
+
+        return $rs if ($rs != 0);
+
+    }
+
+    ($rs, $rdata) = get_tag(
+                            $dmn_custom_b,
+                            $dmn_custom_e,
+                            $working
+                           );
+
+    return $rs if ($rs != 0);
+
+    my $dmn_custom_task = "$dmn_custom_b_val$dmn_custom_entry$dmn_custom_e_val\n$dmn_custom_b$dmn_custom_e";
+
+    ($rs, $working) = repl_tag(
+                               $dmn_custom_b,
+                               $dmn_custom_e,
+                               $working,
+                               $dmn_custom_task
+                              );
+
+    return $rs if ($rs != 0);
+
+    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Now we'll proceed system config;
+    #
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_add_crontab_data()', 'Ending...');
+
+    return 0;
+
+}
+
+sub dmn_del_crontab_data {
+
+    my ($dmn_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'dmn_del_crontab_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_del_crontab_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    my $dmn_name = @$dmn_data[1];
+
+    my $cronjob_id = @$dmn_data[2];
+
+    my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $log_dir = $main::cfg{'LOG_DIR'};
+
+
+    my $tpl_dir = "$conf_dir/cron.d/parts";
+
+    my $working_dir = "$conf_dir/cron.d/working";
+
+    my $backup_dir = "$conf_dir/cron.d/backup";
+
+
+    my $working_cfg = "$working_dir/ispcp";
+
+    my $timestamp = time;
+
+    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+
+    #
+    # Getting needed templates;
+    #
+
+    my (
+        $dt_b,
+        $dt_e,
+        $dmn_custom_b,
+        $dmn_custom_entry,
+        $dmn_custom_e
+       ) = ('', '', '', '', '');
+
+    (
+     $rs,
+     $dt_b,
+     $dt_e,
+     $dmn_custom_b,
+     $dmn_custom_entry,
+     $dmn_custom_e
+    ) = get_tpl (
+                 $tpl_dir,
+                 'dt_b.tpl',
+                 'dt_e.tpl',
+                 'dmn_custom_b.tpl',
+                 'dmn_custom_entry.tpl',
+                 'dmn_custom_e.tpl'
+                );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Preparing templates;
+    #
+
+    my %tag_hash = (
+                    '{DMN_NAME}' => $dmn_name,
+                    '{CRONJOB_ID}' => $dmn_name,
+                    '{LOG_DIR}' => $log_dir
+                   );
+
+    my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
+
+    (
+     $rs,
+     $dmn_custom_b_val,
+     $dmn_custom_entry,
+     $dmn_custom_e_val
+    ) = prep_tpl (
+                  \%tag_hash,
+                  $dmn_custom_b,
+                  $dmn_custom_entry,
+                  $dmn_custom_e
+                 );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Creating working config data;
+    #
+
+    my ($sys, $working) = (undef, undef);
+
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs if ($rs != 0);
+
+
+    ($rs, $rdata) = get_tag(
+                            $dmn_custom_b_val,
+                            $dmn_custom_e_val,
+                            $working
+                           );
+
+    if ($rs == 0) {
+
+        ($rs, $working) = del_tag(
+                                  $dmn_custom_b_val,
+                                  "$dmn_custom_e_val\n",
+                                  $working
+                                 );
+
+        return $rs if ($rs != 0);
+
+    }
+
+    ($rs, $rdata) = get_tag(
+                            $dmn_custom_b,
+                            $dmn_custom_e,
+                            $working
+                           );
+
+    return $rs if ($rs != 0);
+
+    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Now we'll proceed system config;
+    #
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_del_crontab_data()', 'Ending...');
+
+    return 0;
+
+}
+
+sub dmn_add_bkp_crontab_data {
+
+    my ($dmn_data) = @_;
+
+    my ($rs, $rdata) = (undef, undef);
+
+    push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+
+        push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -3016,30 +3350,23 @@ sub dmn_add_crontab_data {
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_add_crontab_data()', 'Ending...');
+    push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Ending...');
 
     return 0;
 
 }
 
-################################### CRONTAB ####################################
-
-################################################################################
-##
-## Delete Crontab Data
-##
-
-sub dmn_del_crontab_data {
+sub dmn_del_bkp_crontab_data {
 
     my ($dmn_data) = @_;
 
     my ($rs, $rdata) = (undef, undef);
 
-    push_el(\@main::el, 'dmn_del_crontab_data()', 'Starting...');
+    push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
 
-        push_el(\@main::el, 'dmn_del_crontab_data()', 'ERROR: Undefined Input Data...');
+        push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
 
@@ -3185,7 +3512,7 @@ sub dmn_del_crontab_data {
 
     return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_del_crontab_data()', 'Ending...');
+    push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Ending...');
 
     return 0;
 

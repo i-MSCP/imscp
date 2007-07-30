@@ -1502,7 +1502,7 @@ sub setup_crontab {
 		return $rs if ($rs != 0);
 
 		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
-			$awstats = "15	6	*	*	*	$main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
+			$awstats = "15	6	*	*	*	root $main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
 		} else {
 			$awstats = "# AWStats is disabled";
 		}

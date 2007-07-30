@@ -7,6 +7,14 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-07-30 Raphael Geissert
+	- GUI:
+		* Fixed #538: who_owns_this' ftp_user next check was calling dmn instead of uid
+	- CONFIGS:
+		* Fixed #536: Error: bad username; while reading /etc/cron.d/ispcp
+	- ENGINE:
+		* Added initial custom cronjobs support
+
 2007-07-29 Raphael Geissert
 	- GUI:
 		* Fixed #527, #528, #529, #530: Undefined index: layout_id in gui/client/*.php

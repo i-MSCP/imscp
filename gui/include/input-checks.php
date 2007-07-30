@@ -732,7 +732,7 @@ function who_owns_this($id, $type = 'dmn')
     $resolvers['ftp_user'] = array();
     $resolvers['ftp_user']['query'] = 'SELECT uid FROM ftp_users WHERE userid = ? LIMIT 1;';
     $resolvers['ftp_user']['is_final'] = false;
-    $resolvers['ftp_user']['next'] = 'dmn';
+    $resolvers['ftp_user']['next'] = 'uid';
 
     $resolvers['sql_user_id'] = array();
     $resolvers['sql_user_id']['query'] = 'SELECT sqld_id FROM sql_user WHERE sqlu_id = ? LIMIT 1;';

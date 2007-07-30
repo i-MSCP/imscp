@@ -774,7 +774,7 @@ function check_ftp_perms($sql, $ftp_acc)
     if (who_owns_this($ftp_acc, 'ftp_user') != $_SESSION['user_id']) {
         set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-        header('Location: manage_users.php');
+        header('Location: ftp_accounts.php');
         die();
     }
 }
