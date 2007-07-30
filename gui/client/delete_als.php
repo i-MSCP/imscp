@@ -68,11 +68,14 @@ SQL_QUERY;
 		  	count(fg.gid) as ftpnum
 		from
 			ftp_group fg,
+            domain dmn,
 			domain_aliasses d
 		where
 			d.alias_id = ?
 		and
-			fg.groupname = d.alias_name
+			fg.groupname = dmn.domain_name
+        and
+            d.domain_id = dmn.domain_id
 SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($als_id));
