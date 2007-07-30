@@ -44,7 +44,7 @@ function read_line(&$socket) {
     do {
         $ch = socket_read($socket,1);
         $line = $line . $ch;
-    } while($ch != "\r" || $ch != "\n");
+    } while($ch != "\r" && $ch != "\n");
     return $line;
 }
 
