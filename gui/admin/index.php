@@ -23,7 +23,6 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl = new pTemplate();
@@ -208,6 +207,8 @@ get_update_infos($tpl);
 gen_system_message($tpl, $sql);
 
 gen_server_trafic($tpl, $sql);
+
+gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
 

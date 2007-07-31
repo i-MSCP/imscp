@@ -386,7 +386,7 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_general_informatio
 // static page messages.
 //
 
-// gen_page_message($tpl);
+gen_page_message($tpl);
 
 $tpl -> assign('LAYOUT', '');
 

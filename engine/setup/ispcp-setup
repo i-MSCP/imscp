@@ -1857,6 +1857,7 @@ sub setup_php {
 					'{DMN_NAME}' => "gui",
 					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
 					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+					'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
 					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
 					);
 
@@ -1876,6 +1877,7 @@ sub setup_php {
 					'{DMN_NAME}' => "gui",
 					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
 					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+					'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
 					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
 					);
 

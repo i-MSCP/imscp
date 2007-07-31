@@ -343,6 +343,8 @@ $tpl->assign(
         )
     );
 
+gen_page_message($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();

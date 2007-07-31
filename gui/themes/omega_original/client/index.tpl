@@ -46,6 +46,12 @@
   <tr>
     <td><!-- BDP: props_list -->
         <table width="100%" cellspacing="7">
+          <!-- BDP: page_message -->
+           <tr>
+             <td>&nbsp;</td>
+             <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
+           </tr>
+          <!-- EDP: page_message -->
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TR_ACCOUNT_NAME} / {TR_MAIN_DOMAIN}</td>

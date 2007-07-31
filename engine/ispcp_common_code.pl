@@ -42,6 +42,8 @@ my $rs = get_conf();
 
 return $rs if ($rs != 0);
 
+$main::lock_file = $main::cfg{'MR_LOCK_FILE'};
+
 $main::log_dir = $main::cfg{'LOG_DIR'};
 
 $main::root_dir = $main::cfg{'ROOT_DIR'};

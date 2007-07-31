@@ -293,7 +293,6 @@ function gen_page_lists(&$tpl, &$sql, $user_id)
 
     gen_page_catchall_list($tpl, $sql, $dmn_id, $dmn_name);
     // gen_page_ftp_list($tpl, $sql, $dmn_id, $dmn_name);
-    return $total_mails;
 }
 
 // common page data.
@@ -303,7 +302,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl->assign(
     array('TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('ISPCP - Client/Manage Users'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
-        'THEME_CHARSET' => tr('encoding'), 
+        'THEME_CHARSET' => tr('encoding'),
         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         'ISP_LOGO' => get_logo($_SESSION['user_id'])
         )

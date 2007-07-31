@@ -115,7 +115,7 @@ $cfg['PASSWD_CHARS'] = 6;
 $cfg['PASSWD_STRONG'] = true;
 
 // The virtual host file from Apache which contains our virtual host entries
-$cfg['SERVER_VHOST_FILE'] = '/etc/apache2/sites-available/ispcp.conf';
+$cfg['SERVER_VHOST_FILE'] = $cfg['APACHE_SITES_DIR'] . '/ispcp.conf';
 
 require_once(INCLUDEPATH.'/spGzip.php');
 

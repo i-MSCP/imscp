@@ -7,6 +7,16 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-07-31 Raphael Geissert
+	- GUI:
+		* Fixed #539: Undefined variable: total_mails
+		* Removed hardcoded path in include/ispcp-lib.php
+		* Re-enabled lock file check
+	- CONFIGS:
+		* Added status target to ispcp_network
+	- ENGINE:
+		* Fixed lock file location
+
 2007-07-30 Raphael Geissert
 	- GUI:
 		* Fixed #538: who_owns_this' ftp_user next check was calling dmn instead of uid

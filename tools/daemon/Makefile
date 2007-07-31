@@ -1,22 +1,24 @@
 # ISPCP(tm) - Virtual Hosting Control System
 # Copyright (c) 2001-2004 by moleSoftware GmbH
 # http://www.molesoftware.com
+# Copyright (c) 2007 by ispCP
+# http://isp-control.net
 #
 #
 # License:
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1    
+#    as published by the Free Software Foundation; either version 1.1
 #    of the License, or (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    MPL Mozilla Public License for more details.
-#    
+#
 #    You may have received a copy of the MPL Mozilla Public License
 #    along with this program.
-#    
+#
 #    An on-line copy of the MPL Mozilla Public License can be found
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
@@ -39,7 +41,7 @@ STRIP = strip -s
 ispcp_daemon: $(OBJS)
 	$(BUILD) ispcp_daemon $(OBJS)
 	$(STRIP) ispcp_daemon
-        
+
 %.o: %.c %.h
 	$(COMPILE) $@ $*.c
 

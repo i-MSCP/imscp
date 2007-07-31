@@ -1437,8 +1437,6 @@ sub prep_tpl {
     return @res;
 }
 
-$main::lock_file = '/tmp/ispcp.lock';
-
 sub lock_system {
 
     push_el(\@main::el, 'lock_system()', 'Starting...');

@@ -17,19 +17,12 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
-function check_for_lock_file() {
-    // This function is useless right now
-    //The daemon/engine never sets such lock file
-    return ;
+function check_for_lock_file($wait_lock_timeout = 500000) {
 
     global $cfg;
 
-	$wait_lock_timeout = 500000;
-
-	$lock_file_name = $cfg['MR_LOCK_FILE'];
-
 	set_time_limit(0);
-    while(file_exists($lock_file_name)) {
+    while(file_exists($cfg['MR_LOCK_FILE'])) {
 
 		usleep($wait_lock_timeout);
         clearstatcache();

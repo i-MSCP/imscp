@@ -106,8 +106,7 @@ SQL_QUERY;
 
       $rs = exec_query($sql, $query, array($item_id, $item_id, $ok_status));
       if ($rs -> RecordCount() == 0) {
-          $tpl -> parse('MAIL_LIST', '');
-          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected'));
+          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected', 'MAIL_LIST' => ''));
       } else {
 
           $tpl -> assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => ''));
@@ -149,8 +148,7 @@ SQL_QUERY;
       $rs = exec_query($sql, $query, array($ok_status, $item_id));
 
       if ($rs -> RecordCount() == 0) {
-          $tpl -> parse('MAIL_LIST', '');
-          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected'));
+          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected', 'MAIL_LIST' => ''));
       } else {
 
           $tpl -> assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => ''));
@@ -199,8 +197,7 @@ SQL_QUERY;
       $rs = exec_query($sql, $query, array($ok_status, $item_id));
 
       if ($rs -> RecordCount() == 0) {
-          $tpl -> parse('MAIL_LIST', '');
-          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected'));
+          $tpl -> assign(array('NORMAL_MAIL' => 'disabled', 'FORWARD_MAIL' => 'selected', 'MAIL_LIST' => ''));
       } else {
 
           $tpl -> assign(array('NORMAL_MAIL' => 'checked', 'FORWARD_MAIL' => ''));
@@ -239,7 +236,7 @@ function create_catchall_mail_account(&$sql, $id)
     }
 
   global $cfg;
-
+  $match = array();
   if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'normal') {
     if (preg_match("/(\d+);(dmn|als|sub)/", $id, $match) == 1) {
       $item_id = $match[1];
@@ -366,7 +363,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('ISPCP - Client/Create CatchAll Mail Account'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 

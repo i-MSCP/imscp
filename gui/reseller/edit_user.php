@@ -123,7 +123,6 @@ if (isset($_POST['genpass'])) {
 
 if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
 // Process data
-	global $dmn_user_name;
 
 	if (isset($_SESSION['edit_ID'])) {
 		$hpid = $_SESSION['edit_ID'];
@@ -405,7 +404,7 @@ SQL_QUERY;
   }
 
 	$admin_login = $_SESSION['user_logged'];
-    write_log("$admin_login change data/password for $dmn_user_name!");
+    write_log("$admin_login changed data/password for $dmn_user_name!");
 
 	if (isset($_POST['send_data']) && !empty($inpass)) {
 
