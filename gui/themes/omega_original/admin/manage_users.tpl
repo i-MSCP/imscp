@@ -56,24 +56,24 @@ function sbmt(form, uaction) {
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td align="left">
-<table width="100%" cellpadding="5" cellspacing="5">
-	<tr>
-		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
-		<td colspan="2" class="title">{TR_ADMINISTRATORS}</td>
-	</tr>
-</table>
+    <table width="100%" cellpadding="5" cellspacing="5">
+        <!-- BDP: page_message -->
+        <tr>
+            <td width="25">&nbsp;</td>
+            <td colspan="3" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+        </tr>
+        <!-- EDP: page_message -->
+	    <tr>
+		    <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_users.png" width="25" height="25"></td>
+		    <td colspan="2" class="title">{TR_ADMINISTRATORS}</td>
+	    </tr>
+    </table>
 	</td>
     <td width="27" align="right" >&nbsp;</td>
   </tr>
   <tr>
     <td valign="top"><!-- BDP: props_list -->
         <table width="100%" cellpadding="5" cellspacing="5">
-          <!-- BDP: page_message -->
-          <tr>
-            <td width="25">&nbsp;</td>
-            <td colspan="3" class="title"><font color="#FF0000">{MESSAGE}</font></td>
-          </tr>
-          <!-- EDP: page_message -->
           <!-- BDP: admin_message -->
           <tr>
             <td width="25" nowrap="nowrap">&nbsp;</td>
