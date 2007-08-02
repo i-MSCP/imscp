@@ -73,3 +73,4 @@ ssh
 tar
 wget
 bash
+libnet-libidn-perl

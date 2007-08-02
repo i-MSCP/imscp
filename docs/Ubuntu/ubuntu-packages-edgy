@@ -72,3 +72,4 @@ tar
 wget
 bash
 rkhunter
+libnet-libidn-perl

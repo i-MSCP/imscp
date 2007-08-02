@@ -7,6 +7,10 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-08-02 Raphael Geissert
+	- ENGINE:
+		* Creation of domain index page now decodes ACE domain names
+
 2007-08-01 Raphael Geissert
 	- GUI:
 		* Fixed some issues with create_catchall.php

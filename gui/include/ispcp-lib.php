@@ -159,7 +159,7 @@ require_once(INCLUDEPATH.'/emailtpl-functions.php');
 require_once(INCLUDEPATH.'/layout-functions.php');
 
 if ($_SERVER['SCRIPT_NAME'] != '/client/sql_execute_query.php') {
-    check_query();
+	check_query();
 } else {
 	check_query(array('sql_query'));
 }
