@@ -108,11 +108,11 @@ function check_user_data()
 	$even_txt	= "_off_";
 
 
-	if(isset($_POST['dmn_name']))
+	if(isset($_POST['dmn_name'])) {
 
-		$dmn_name = strtolower(clean_input($_POST['dmn_name']));
-		$dmn_name = get_punny($dmn_name);
-
+		$dmn_name = strtolower($_POST['dmn_name']);
+		$dmn_name  = get_punny($dmn_name);
+    }
 	if(isset($_POST['dmn_tpl']))
 		$dmn_chp  = $_POST['dmn_tpl'];
 

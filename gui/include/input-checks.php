@@ -332,6 +332,12 @@ function check_dn_rsl_token($data) {
  */
 function chk_dname($dname) {
 
+    // Check for invalid characters first
+    $f_dname = preg_replace('/[^a-z0-9\.\-]+/', '', $dname);
+    if ($f_dname != $dname) {
+        return false;
+    }
+    
     if (!rsl_full_domain_check($dname))
 		return FALSE;
 

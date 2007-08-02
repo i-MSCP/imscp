@@ -33,7 +33,18 @@ function system_message($msg) {
 
 	$tpl = new pTemplate();
 
-	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl');
+    // If we are on the login page, path will be like this
+    $template = $cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl';
+    
+    if (!is_file($template)) {
+        // But if we're inside the panel it will be like this
+        $template = '../'.$cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl';
+    }
+    if (!is_file($template)) {
+        // And if we don't find the template, we'll just die displaying error message
+        die($msg);
+    }
+	$tpl->define('page', $template);
 	$tpl->assign(
 					array(
 						'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ISPCP Error',

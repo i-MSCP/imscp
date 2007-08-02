@@ -312,6 +312,7 @@ function update_data_in_db($hpid)
                 customer_id=?
             where
                 admin_id=?
+            and
                 created_by=?
 SQL_QUERY;
     exec_query($sql, $query, array($first_name,
@@ -367,6 +368,7 @@ SQL_QUERY;
                 customer_id=?
             where
                 admin_id=?
+            and
                 created_by=?
 SQL_QUERY;
       exec_query($sql, $query, array($inpass,

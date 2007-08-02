@@ -309,34 +309,21 @@ $output -> normal string get out
 */
 function decode_idna($input)
 {
-
 	$IDN = new idna_convert();
-
 	$output = $IDN->decode($input);
 
-	$output = utf8_decode($output);
-
-	if ($output == FALSE){
-
+    if ($output == FALSE){
 		return $input;
-	}
-	else{
-
+	} else {
 		return $output;
 	}
 }
 
 function get_punny($input)
 {
-
 	$IDN = new idna_convert();
-
-	$output = utf8_encode($input);
-
-	$output = $IDN->encode($output);
-
+	$output = $IDN->encode($input);
 	return $output;
-
 }
 
 function strip_html($input)
