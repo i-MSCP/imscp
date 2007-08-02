@@ -1907,9 +1907,10 @@ function gen_logged_from(&$tpl)
 
 	if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 
+        $idna = new idna_convert;
 			$tpl -> assign(
 				array(
-						'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $_SESSION['user_logged']),
+						'YOU_ARE_LOGGED_AS' => tr('%1$s you are now logged as %2$s', $_SESSION['logged_from'], $idna->decode($_SESSION['user_logged'])),
 						'TR_GO_BACK' => tr('Go back'),
 					 )
 			  );
