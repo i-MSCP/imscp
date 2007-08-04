@@ -163,7 +163,6 @@ SQL_QUERY;
 
 			$IDN = new idna_convert();
 			$alias_name = $IDN->decode($rs -> fields['alias_name']);
-			$alias_name = utf8_decode($alias_name);
 			$tpl -> assign(array(
 			                   'ALS_NAME' => $alias_name,
 			                   'ALS_MOUNT' => $rs -> fields['alias_mount'],

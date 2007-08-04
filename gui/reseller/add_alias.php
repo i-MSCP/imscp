@@ -283,8 +283,6 @@ SQL_QUERY;
 
 		$domain_name = $IDN->decode($domain_name);
 
-		$domain_name = utf8_decode($domain_name);
-
 		$tpl -> assign(
 					array(
 							'USER' => $domain_id,

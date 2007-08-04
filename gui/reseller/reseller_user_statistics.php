@@ -209,7 +209,6 @@ function generate_domain_entry (&$tpl, $user_id, $row)
 
   $IDN = new idna_convert();
   $domain_name = $IDN->decode($domain_name);
-  $domain_name = utf8_decode($domain_name);
 
   $tpl -> assign(array('DOMAIN_NAME' => $domain_name,
                        'MONTH' => $crnt_month,

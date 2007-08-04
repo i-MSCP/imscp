@@ -7,6 +7,10 @@ ispCP ω 1.0.0 Changelog
 |           * make sure awstats is called in prerotate             |
 \_________________________________________________________________/
 
+2007-08-04 Raphael Geissert
+        - GUI:
+                * Fixed #544: Wrong display of special characters of domain names in some pages
+
 2007-08-02 Raphael Geissert
 	- ENGINE:
 		* Creation of domain index page now decodes ACE domain names
