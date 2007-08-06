@@ -2,14 +2,19 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
-|        - AWStats:                                                |
-|           * gui: disable stats-alias in client menu              |
-|           * make sure awstats is called in prerotate             |
+|         - AWStats:                                              |
+|               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-06 Benedikt Heintel
+	- ENGINE:
+		* Fixed #548: engine/Makefile - Spaces instead of tab
+	- SETUP:
+		* changed: style of install (only graphical)
+
 2007-08-04 Raphael Geissert
-        - GUI:
-                * Fixed #544: Wrong display of special characters of domain names in some pages
+	- GUI:
+		* Fixed #544: Wrong display of special characters of domain names in some pages
 
 2007-08-02 Raphael Geissert
 	- ENGINE:

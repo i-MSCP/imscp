@@ -894,12 +894,11 @@ sub setup_shut_down {
 
 	my $shut_down_message = <<MSG;
 
-	Congratulations !
+    Congratulations!
 
-	ispCP '$main::cfg{'Version'}' Setup completed successfully !
+    ispCP '$main::cfg{'Version'}' Setup completed successfully!
 
-	Please type http://$main::ua{'admin_vhost'} in your
-	browser!
+    Please type http://$main::ua{'admin_vhost'} in your browser!
 
 MSG
 	print STDOUT $shut_down_message;

@@ -40,7 +40,8 @@ export $a
 done
 
 if [ $DEBUG -eq 0 ]; then
-	echo -n "Setting GUI Permissions: ";
+	echo	"";
+	echo -n "    Setting GUI Permissions: ";
 fi
 
 #

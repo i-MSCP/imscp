@@ -33,10 +33,6 @@
 # for activating debug, please set to 1;
 DEBUG=0
 
-#
-# ispCP engine permissions setter v1.1;
-#
-
 # read needed entries from ispcp.conf
 for a in `cat /etc/ispcp/ispcp.conf | grep -E '(ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`
 do
@@ -48,7 +44,7 @@ done
 #
 
 if [ $DEBUG -eq 0 ]; then
-	echo -n "Setting Engine Permissions: ";
+	echo -n "    Setting Engine Permissions: ";
 fi
 
 for i in `find $ROOT_DIR/engine/`; do
