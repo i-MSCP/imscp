@@ -101,16 +101,23 @@
                               <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                             </tr>
                             <!-- EDP: page_message -->
-                            <!-- BDP: mail_list -->
-                            <tr>
+                            <tr style="display:none;" id='normal_mail_block'>
+                              <script type="text/javascript">
+
+                              if ("{NORMAL_MAIL}" == 'checked') {
+                                  document.getElementById('normal_mail_block').style.display = 'block';
+                              }
+
+                              </script>
                               <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onClick="changeType('normal');">
                                 {TR_MAIL_LIST} </td>
                               <td nowrap class="content"><select name="mail_id">
+                                  <!-- BDP: mail_list -->
                                   <option value="{MAIL_ID};{MAIL_ACCOUNT_PUNNY};">{MAIL_ACCOUNT}</option>
+                                  <!-- EDP: mail_list -->
                                 </select>
                               </td>
                             </tr>
-                            <!-- EDP: mail_list -->
                             <tr>
                               <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onClick="changeType('forward');">
                                 {TR_FORWARD_MAIL} </td>

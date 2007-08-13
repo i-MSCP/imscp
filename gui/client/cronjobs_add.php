@@ -36,7 +36,7 @@ $tpl -> assign(
                 array(
                         'TR_CLIENT_CRONJOBS_TITLE' => tr('ISPCP - Client/Cronjob Manager'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'), 
+                        'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id'])
                      )
@@ -84,7 +84,7 @@ $tpl -> assign(
 					   'TR_MIN' => tr('Minute(s):'),
 					   'TR_HOUR' => tr('Hour(s):'),
 					   'TR_DAY' => tr('Day(s):'),
-					   'TR_MONTHS' => tr('Months(s):'),
+					   'TR_MONTHS' => tr('Month(s):'),
 					   'TR_WEEKDAYS' => tr('Weekday(s):'),
 					   'TR_ADD' => tr('Add'),
 					   'TR_RESET' => tr('Reset'),

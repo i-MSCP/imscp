@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2065,7 +2064,8 @@ msgstr "Saat"
 msgid "Day(s):"
 msgstr "Gün"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Ay:"
 
 msgid "Weekday(s):"
@@ -2445,26 +2445,19 @@ msgstr "Kısım adı"
 msgid "Unprotect it"
 msgstr ""
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr ""
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Kullanıcı guruba eklendi"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
-msgstr ""
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "Kullanıcı guruba eklendi"
 
 msgid "User assign"
 msgstr ""
 
 msgid "Already in:"
 msgstr "Kullanıma hazır:"
-
-msgid "Not in:"
-msgstr ""
-
-msgid "User was assigned to group"
-msgstr "Kullanıcı guruba eklendi"
 
 msgid "Member of group:"
 msgstr ""
@@ -2478,8 +2471,9 @@ msgstr ""
 msgid "Wrong username!"
 msgstr "Yanlış kullanıcı adı!"
 
-msgid "Group already exist !"
-msgstr ""
+#, fuzzy
+msgid "Group already exists!"
+msgstr "Bu FTP hesabı mevcut!"
 
 msgid "Manage user"
 msgstr ""
@@ -2508,7 +2502,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Wilcard olarak % ve ? kabul edilmiyor!"
 
 msgid "Specified SQL username name already exists!"
@@ -2613,7 +2608,11 @@ msgstr "CGI Desteği: açık"
 msgid "CGI Support: disabled"
 msgstr "CGI Desteği: kapalı"
 
-msgid "HDD"
+#, fuzzy
+msgid "Disk limit"
+msgstr "MB cinsinden disk"
+
+msgid "Traffic limit"
 msgstr ""
 
 msgid "Aliases"
@@ -2819,15 +2818,6 @@ msgstr "FTP Hesapları"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Ekleniyor"
-
-msgid "Modification in progress"
-msgstr ""
-
-msgid "Deletion in progress"
-msgstr ""
-
 msgid "Domain mail"
 msgstr ""
 
@@ -2924,13 +2914,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "Bekleyin"
 
-msgid "seconds"
-msgstr ""
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "Bir süre için engellendiniz"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2960,26 +2949,26 @@ msgstr "Sipariş email ayarları"
 msgid "Please fill up both data fields for password!"
 msgstr ""
 
-msgid "wait to be added"
-msgstr "eklenmeyi bekliyor"
+msgid "Addition in progress"
+msgstr "Ekleniyor"
 
-msgid "wait to be modified"
-msgstr "güncellenmeyi bekliyor"
-
-msgid "wait to be deleted"
-msgstr "silinmeyi bekliyor"
-
-msgid "suspended"
+msgid "Modification in progress"
 msgstr ""
 
-msgid "wait to be enabled"
-msgstr "açılmayı bekliyor"
+msgid "Deletion in progress"
+msgstr ""
 
-msgid "wait to be suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "açık"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "kapanmayı bekliyor"
 
-msgid "unknown status"
-msgstr ""
+#, fuzzy
+msgid "Unknown error"
+msgstr "HATA: Bilinmeyen kullanıcı"
 
 msgid "hide aliases"
 msgstr ""
@@ -3458,14 +3447,23 @@ msgstr ""
 msgid "Message was sent."
 msgstr "Mesaj gönderildi."
 
+#~ msgid "wait to be added"
+#~ msgstr "eklenmeyi bekliyor"
+
+#~ msgid "wait to be modified"
+#~ msgstr "güncellenmeyi bekliyor"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "silinmeyi bekliyor"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "açılmayı bekliyor"
+
 #~ msgid "New"
 #~ msgstr "Yeni"
 
 #~ msgid "new"
 #~ msgstr "yeni"
-
-#~ msgid "enabled"
-#~ msgstr "açık"
 
 #~ msgid "delete"
 #~ msgstr "sil"

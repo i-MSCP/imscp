@@ -63,7 +63,7 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max)
 		$max_usage  = tr('unlimited');
 	}
 
-    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);;
+    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);
 
     $tpl -> assign(
                     array(
@@ -226,8 +226,8 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
                                             tr('%1$d / %2$d of <b>unlimited</b>', make_hr($udisk_current), make_hr($rdisk_current)),
 
                             'DMN_MSG' => ($rdmn_max) ?
-                                            tr('%1$d / %2$d of <b>%3$d</b>', $udisk_current, $rdmn_current, $rdmn_max):
-                                            tr('%1$d / %2$d of <b>unlimited</b>', $udisk_current, $rdmn_current),
+                                            tr('%1$d / %2$d of <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $udmn_current, $rdmn_current),
 
                             'SUB_MSG' => ($rsub_max) ?
                                             tr('%1$d / %2$d of <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max):
@@ -239,7 +239,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
 
                             'MAIL_MSG' => ($rmail_max) ?
                                             tr('%1$d / %2$d of <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max):
-                                            tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rals_current),
+                                            tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rmail_current),
 
                             'FTP_MSG' => ($rftp_max) ?
                                             tr('%1$d / %2$d of <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max):

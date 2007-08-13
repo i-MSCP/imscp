@@ -289,7 +289,7 @@ sub backup_all_engine {
 				}
 				if ($dbuser && $dbpass) {
 					my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
-					my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
+					my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
 					my $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
 					$rs = sys_command($db_backupcmd);
 

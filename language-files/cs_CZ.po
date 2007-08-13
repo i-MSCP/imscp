@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2067,8 +2066,9 @@ msgstr "Hodina(y):"
 msgid "Day(s):"
 msgstr "Den (Dny):"
 
-msgid "Months(s):"
-msgstr ""
+#, fuzzy
+msgid "Month(s):"
+msgstr "Měsíc:"
 
 msgid "Weekday(s):"
 msgstr ""
@@ -2448,26 +2448,19 @@ msgstr "Název zóny"
 msgid "Unprotect it"
 msgstr ""
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Nelze otevřít soubor! Kontaktujte administrátora!"
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Uživatel byl přiřazen do skupiny"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
-msgstr ""
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "Uživatel byl přiřazen do skupiny"
 
 msgid "User assign"
 msgstr ""
 
 msgid "Already in:"
 msgstr ""
-
-msgid "Not in:"
-msgstr ""
-
-msgid "User was assigned to group"
-msgstr "Uživatel byl přiřazen do skupiny"
 
 msgid "Member of group:"
 msgstr ""
@@ -2481,7 +2474,8 @@ msgstr "Aktualizovat uživatele"
 msgid "Wrong username!"
 msgstr "Špatné uživatelské jméno!"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Skupina už existuje!"
 
 msgid "Manage user"
@@ -2511,7 +2505,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Uživatelské jméno příliš dlouhé!"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Znaky jako % a ? nejsou povoleny!"
 
 msgid "Specified SQL username name already exists!"
@@ -2616,7 +2611,11 @@ msgstr "Podpora CGI: zapnuta"
 msgid "CGI Support: disabled"
 msgstr "Podpora CGI: vypnuta"
 
-msgid "HDD"
+#, fuzzy
+msgid "Disk limit"
+msgstr "Disk v MB"
+
+msgid "Traffic limit"
 msgstr ""
 
 msgid "Aliases"
@@ -2822,15 +2821,6 @@ msgstr "FTP účty"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Probíhá přidávání"
-
-msgid "Modification in progress"
-msgstr "Probíhají změny"
-
-msgid "Deletion in progress"
-msgstr "Probíhá odstraňování"
-
 msgid "Domain mail"
 msgstr "Doménový mail"
 
@@ -2927,13 +2917,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "Musíte počkat"
 
-msgid "seconds"
-msgstr ""
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "Byl jste zablokován pro"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2963,26 +2952,25 @@ msgstr ""
 msgid "Please fill up both data fields for password!"
 msgstr ""
 
-msgid "wait to be added"
+msgid "Addition in progress"
+msgstr "Probíhá přidávání"
+
+msgid "Modification in progress"
+msgstr "Probíhají změny"
+
+msgid "Deletion in progress"
+msgstr "Probíhá odstraňování"
+
+#, fuzzy
+msgid "Being enabled"
+msgstr "zapnuto"
+
+msgid "Being suspended"
 msgstr ""
 
-msgid "wait to be modified"
-msgstr ""
-
-msgid "wait to be deleted"
-msgstr ""
-
-msgid "suspended"
-msgstr ""
-
-msgid "wait to be enabled"
-msgstr ""
-
-msgid "wait to be suspended"
-msgstr ""
-
-msgid "unknown status"
-msgstr ""
+#, fuzzy
+msgid "Unknown error"
+msgstr "Neznámý typ"
 
 msgid "hide aliases"
 msgstr "Skrýt aliasy"
@@ -3461,6 +3449,9 @@ msgstr ""
 msgid "Message was sent."
 msgstr "Zpráva byla poslána."
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Nelze otevřít soubor! Kontaktujte administrátora!"
+
 #~ msgid "You have"
 #~ msgstr "Máte"
 
@@ -3475,9 +3466,6 @@ msgstr "Zpráva byla poslána."
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Změna aliasu naplánována!"
-
-#~ msgid "enabled"
-#~ msgstr "zapnuto"
 
 #~ msgid "delete"
 #~ msgstr "odstranit"

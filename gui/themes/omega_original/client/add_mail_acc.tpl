@@ -61,12 +61,12 @@
 
 
 
-    function changeDom(wath) {
-        if (wath == "alias") {
+    function changeDom(what) {
+        if (what == "alias") {
             document.forms[0].als_id.disabled = false;
             document.forms[0].sub_id.disabled = true;
         }
-        else if (wath == "real"){
+        else if (what == "real"){
             document.forms[0].als_id.disabled = true;
             document.forms[0].sub_id.disabled = true;
         }
@@ -98,11 +98,11 @@
 
 
 
-    function changeDom(wath) {
-        if (wath == "alias") {
+    function changeDom(what) {
+        if (what == "alias") {
             document.forms[0].sub_id.disabled = true;
         }
-        else if (wath == "real"){
+        else if (what == "real"){
             document.forms[0].sub_id.disabled = true;
         }
         else {
@@ -123,14 +123,12 @@
 
 
 
-    function changeDom(wath) {
-        if (wath == "alias") {
+    function changeDom(what) {
+        if (what == "alias") {
             document.forms[0].als_id.disabled = false;
-        }
-        else if (wath == "real"){
+        } else if (what == "real"){
             document.forms[0].als_id.disabled = true;
-        }
-        else {
+        } else {
             document.forms[0].als_id.disabled = true;
         }
     }
@@ -138,8 +136,8 @@
 
 
 
-    function changeType(wath){
-        if (wath == "normal") {
+    function changeType(what){
+        if (what == "normal") {
             document.forms[0].pass.disabled = false;
             document.forms[0].pass_rep.disabled = false;
             document.forms[0].forward_list.disabled = true;
@@ -251,23 +249,23 @@
 			  <!-- EDP: to_subdomain -->
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  <input type="radio" name="mail_type" value="normal" onClick="changeType('normal');" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
+                  &nbsp;&nbsp;<input type="radio" name="mail_type" value="normal" onClick="changeType('normal');" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200">{TR_PASSWORD}</td>
+                <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
                 <td nowrap  class="content">
                   <input type="password" name="pass" value="" style="width:210px" class="textinput">
                 </td>
               </tr>
               <tr>
-                <td nowrap class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
+                <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD_REPEAT}</td>
                 <td nowrap class="content">
                   <input type="password" name="pass_rep" value="" style="width:210px" class="textinput">
                 </td>
               </tr>
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  <input type="radio" name="mail_type" value="forward" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
+                  &nbsp;&nbsp;<input type="radio" name="mail_type" value="forward" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">

@@ -198,8 +198,8 @@ gen_page_message($tpl);
                 array(
                        	'TR_DOMAINS' => tr('Domains'),
 						'TR_WEBSPACE' => tr('Webspace'),
-						'TR_HDD' => tr('Disk usage'),
-						'TR_TRAFFIC' => tr('Traffic usage'),
+						'TR_HDD' => tr('Disk limit'),
+						'TR_TRAFFIC' => tr('Traffic limit'),
 						'TR_FEATURES' => tr('Domain Features'),
 						'TR_STANDARD_FEATURES' => tr('Package Features'),
 						'TR_WEBMAIL' => tr('Webmail'),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr ""
 
@@ -2065,7 +2064,7 @@ msgstr ""
 msgid "Day(s):"
 msgstr ""
 
-msgid "Months(s):"
+msgid "Month(s):"
 msgstr ""
 
 msgid "Weekday(s):"
@@ -2443,25 +2442,18 @@ msgstr ""
 msgid "Unprotect it"
 msgstr ""
 
-msgid "Can not open file! Please contact your administrator !"
+#, php-format
+msgid "User was assigned to the %s group"
 msgstr ""
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
+#, php-format
+msgid "User was deleted from the %s group "
 msgstr ""
 
 msgid "User assign"
 msgstr ""
 
 msgid "Already in:"
-msgstr ""
-
-msgid "Not in:"
-msgstr ""
-
-msgid "User was assigned to group"
 msgstr ""
 
 msgid "Member of group:"
@@ -2476,7 +2468,7 @@ msgstr ""
 msgid "Wrong username!"
 msgstr ""
 
-msgid "Group already exist !"
+msgid "Group already exists!"
 msgstr ""
 
 msgid "Manage user"
@@ -2506,7 +2498,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr ""
 
-msgid "Wildcards as % and ? are not allowed!"
+#, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr ""
 
 msgid "Specified SQL username name already exists!"
@@ -2611,7 +2604,10 @@ msgstr ""
 msgid "CGI Support: disabled"
 msgstr ""
 
-msgid "HDD"
+msgid "Disk limit"
+msgstr ""
+
+msgid "Traffic limit"
 msgstr ""
 
 msgid "Aliases"
@@ -2817,15 +2813,6 @@ msgstr ""
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr ""
-
-msgid "Modification in progress"
-msgstr ""
-
-msgid "Deletion in progress"
-msgstr ""
-
 msgid "Domain mail"
 msgstr ""
 
@@ -2922,13 +2909,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, php-format
+msgid "You have to wait %d seconds"
 msgstr ""
 
-msgid "seconds"
-msgstr ""
-
-msgid "You have been blocked for"
+#, php-format
+msgid "You have been blocked for %d minutes"
 msgstr ""
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2958,25 +2944,22 @@ msgstr ""
 msgid "Please fill up both data fields for password!"
 msgstr ""
 
-msgid "wait to be added"
+msgid "Addition in progress"
 msgstr ""
 
-msgid "wait to be modified"
+msgid "Modification in progress"
 msgstr ""
 
-msgid "wait to be deleted"
+msgid "Deletion in progress"
 msgstr ""
 
-msgid "suspended"
+msgid "Being enabled"
 msgstr ""
 
-msgid "wait to be enabled"
+msgid "Being suspended"
 msgstr ""
 
-msgid "wait to be suspended"
-msgstr ""
-
-msgid "unknown status"
+msgid "Unknown error"
 msgstr ""
 
 msgid "hide aliases"

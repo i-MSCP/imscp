@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2068,7 +2067,8 @@ msgstr "Óra(ák):"
 msgid "Day(s):"
 msgstr "Nap(ok):"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Hónap(ok):"
 
 msgid "Weekday(s):"
@@ -2449,13 +2449,12 @@ msgstr "Terület név"
 msgid "Unprotect it"
 msgstr "Védelem eltávolítása"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Nem lehet megnyitni a fájlt!<br>Lépj kapcsolatba az adminisztrátorral !"
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Felhasználó hozzárendelve a csoporthoz"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
 msgstr "Felhasználó törölve a csoportból"
 
 msgid "User assign"
@@ -2463,12 +2462,6 @@ msgstr "Felhasználó hozzárendelés"
 
 msgid "Already in:"
 msgstr "Már létezik:"
-
-msgid "Not in:"
-msgstr "Ebben nincs:"
-
-msgid "User was assigned to group"
-msgstr "Felhasználó hozzárendelve a csoporthoz"
 
 msgid "Member of group:"
 msgstr ""
@@ -2482,7 +2475,8 @@ msgstr "Felhasználó módosítás"
 msgid "Wrong username!"
 msgstr "Rossz felhasználónév!"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Csoport már létezik !"
 
 msgid "Manage user"
@@ -2513,7 +2507,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Felhasználó név túl hosszú!"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Különleges karakterek mint % és ? nem engedélyezettek!"
 
 msgid "Specified SQL username name already exists!"
@@ -2618,8 +2613,13 @@ msgstr "CGI Támogatás: engedélyezve"
 msgid "CGI Support: disabled"
 msgstr "CGI Támogatás: tiltva"
 
-msgid "HDD"
-msgstr ""
+#, fuzzy
+msgid "Disk limit"
+msgstr "Diszk MB-ban"
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Forgalom"
 
 msgid "Aliases"
 msgstr "Aliasok"
@@ -2824,15 +2824,6 @@ msgstr "FTP Hozzáférések"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Hozzáadás folyamatban"
-
-msgid "Modification in progress"
-msgstr "Módosítás folyamatban"
-
-msgid "Deletion in progress"
-msgstr "Törlés folyamatban"
-
 msgid "Domain mail"
 msgstr "Domain email"
 
@@ -2929,13 +2920,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
-msgstr ""
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
+msgstr "Nincsenek alias rekordok."
 
-msgid "seconds"
-msgstr ""
-
-msgid "You have been blocked for"
+#, php-format
+msgid "You have been blocked for %d minutes"
 msgstr ""
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2965,26 +2955,26 @@ msgstr "Rendelés email beállítás"
 msgid "Please fill up both data fields for password!"
 msgstr "Töltsd fel a jelszó mindkét mezõjét!"
 
-msgid "wait to be added"
-msgstr "hozzáadásra vár"
+msgid "Addition in progress"
+msgstr "Hozzáadás folyamatban"
 
-msgid "wait to be modified"
-msgstr "módosításra vár"
+msgid "Modification in progress"
+msgstr "Módosítás folyamatban"
 
-msgid "wait to be deleted"
-msgstr "törlésre vár"
+msgid "Deletion in progress"
+msgstr "Törlés folyamatban"
 
-msgid "suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "engedélyezve"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "felfüggeszt"
 
-msgid "wait to be enabled"
-msgstr "engedélyezésre vár"
-
-msgid "wait to be suspended"
-msgstr "felfüggesztésre vár"
-
-msgid "unknown status"
-msgstr "ismeretlen státusz"
+#, fuzzy
+msgid "Unknown error"
+msgstr "Ismeretlen típus"
 
 msgid "hide aliases"
 msgstr "aliasok elrejtése"
@@ -3463,6 +3453,30 @@ msgstr "ISPCP - Viszonteladó : Ügyfélszolgálati Rendszer: Bejelentések"
 msgid "Message was sent."
 msgstr "Üzenet elküldve."
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Nem lehet megnyitni a fájlt!<br>Lépj kapcsolatba az adminisztrátorral !"
+
+#~ msgid "Not in:"
+#~ msgstr "Ebben nincs:"
+
+#~ msgid "wait to be added"
+#~ msgstr "hozzáadásra vár"
+
+#~ msgid "wait to be modified"
+#~ msgstr "módosításra vár"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "törlésre vár"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "engedélyezésre vár"
+
+#~ msgid "wait to be suspended"
+#~ msgstr "felfüggesztésre vár"
+
+#~ msgid "unknown status"
+#~ msgstr "ismeretlen státusz"
+
 #~ msgid "You have"
 #~ msgstr "Neked van"
 
@@ -3483,9 +3497,6 @@ msgstr "Üzenet elküldve."
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias módosítása beütemezve!"
-
-#~ msgid "enabled"
-#~ msgstr "engedélyezve"
 
 #~ msgid "delete"
 #~ msgstr "törlés"

@@ -20,23 +20,19 @@
 
 function init_login() {
 	global $cfg;
+
 	if (!$cfg['BRUTEFORCE'])
 		return false;
 
 	unblock($cfg['BRUTEFORCE_BLOCK_TIME']);
-	$ipaddr = getipaddr();
 
-	if (is_ipaddr_blocked($ipaddr)) {
-		block_ipaddr($ipaddr);
-	}
+	is_ipaddr_blocked(null, 'bruteforce', true);
 }
 
 function register_user($uname, $upass) {
     global $sql, $cfg;
 
-    $ipaddr = getipaddr();
-
-    check_ipaddr($ipaddr);
+    check_ipaddr();
 
     if (!username_exists($uname)) {
         write_log("Login error, <b><i>".htmlspecialchars($uname, ENT_QUOTES, "UTF-8")."</i></b> unknown username");
@@ -54,23 +50,23 @@ function register_user($uname, $upass) {
 
 	if (crypt($upass, $udata['admin_pass']) == $udata['admin_pass'] || md5($upass) == $udata['admin_pass']) {
 
-  	if (isset($_SESSION['user_logged'])) {
-		write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." user already logged or session sharing problem! Aborting...");
-      	system_message(tr('User already logged or session sharing problem! Aborting...'));
-   		return false;
+	    if (isset($_SESSION['user_logged'])) {
+	        write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." user already logged or session sharing problem! Aborting...");
+	        system_message(tr('User already logged or session sharing problem! Aborting...'));
+	        return false;
 
-   	}
+	    }
 
-   	if (!is_userdomain_ok($uname)) {
-   	    write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." Domain status is not OK - user can not login");
-   	    system_message(tr('Domain status is not OK - Login aborted.'));
-   	    return false;
+	    if (!is_userdomain_ok($uname)) {
+	        write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." Domain status is not OK - user can not login");
+	        system_message(tr('Domain status is not OK - Login aborted.'));
+	        return false;
 
-   	}
+	    }
 
-   	$sess_id = session_id();
+	    $sess_id = session_id();
 
-   	$query = <<<SQL_QUERY
+	    $query = <<<SQL_QUERY
 			update
 				login
 			set
@@ -80,17 +76,17 @@ function register_user($uname, $upass) {
 				session_id = ?
 SQL_QUERY;
 
-	   	exec_query($sql, $query, array($uname, time(), $sess_id));
+	    exec_query($sql, $query, array($uname, time(), $sess_id));
 
 	    $_SESSION['user_logged'] = $udata['admin_name'];
 	    $_SESSION['user_pass'] = $udata['admin_pass'];
 	    $_SESSION['user_type'] = $udata['admin_type'];
 	    $_SESSION['user_id'] = $udata['admin_id'];
 	    $_SESSION['user_created_by'] = $udata['created_by'];
-    	$_SESSION['user_login_time'] = time();
+	    $_SESSION['user_login_time'] = time();
 
-		write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." user logged in.");
-    	return true;
+	    write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." user logged in.");
+	    return true;
 	} else {
 		write_log( htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." bad password login data.");
   		return false;

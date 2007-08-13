@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2067,7 +2066,8 @@ msgstr "Uren"
 msgid "Day(s):"
 msgstr "Dag(en)"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Maanden"
 
 msgid "Weekday(s):"
@@ -2447,13 +2447,12 @@ msgstr "Gebiedsnaam"
 msgid "Unprotect it"
 msgstr "Verwijder beveiliging"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Kan dit bestand niet openen, neem contact op met de beheerder."
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Gebruiker is toegewezen aan groep"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
 msgstr "Gebruiker is van de groep verwijderd"
 
 msgid "User assign"
@@ -2461,12 +2460,6 @@ msgstr "Gebruiker toewijzing"
 
 msgid "Already in:"
 msgstr "Al aanwezig:"
-
-msgid "Not in:"
-msgstr "Niet in"
-
-msgid "User was assigned to group"
-msgstr "Gebruiker is toegewezen aan groep"
 
 msgid "Member of group:"
 msgstr ""
@@ -2480,7 +2473,8 @@ msgstr "Wijzig gebruiker"
 msgid "Wrong username!"
 msgstr "Verkeerde gebruikersnaam"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Groep bestaat al"
 
 msgid "Manage user"
@@ -2511,7 +2505,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Gebruikersnaam is te lang"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Wildcards zoals % en ? zijn niet toegestaan!"
 
 msgid "Specified SQL username name already exists!"
@@ -2616,8 +2611,13 @@ msgstr "CGI ondersteuning: ingeschakeld"
 msgid "CGI Support: disabled"
 msgstr "CGI ondersteuning: uitgeschakeld"
 
-msgid "HDD"
-msgstr "Harde schijf"
+#, fuzzy
+msgid "Disk limit"
+msgstr "Schijf in MB"
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Verkeer"
 
 msgid "Aliases"
 msgstr "Aliassen"
@@ -2822,15 +2822,6 @@ msgstr ""
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Bezig met toevoeging"
-
-msgid "Modification in progress"
-msgstr "Bezig met aanpassing"
-
-msgid "Deletion in progress"
-msgstr "Bezig met verwijderen"
-
 msgid "Domain mail"
 msgstr "Domein mail"
 
@@ -2927,13 +2918,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "U moet wachten"
 
-msgid "seconds"
-msgstr "seconden"
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "U bent geblokkeerd voor"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2963,26 +2953,26 @@ msgstr "Bestellingse-mail instellingen"
 msgid "Please fill up both data fields for password!"
 msgstr "Gelieve allebei de wachtwoordvelden in te vullen"
 
-msgid "wait to be added"
-msgstr "Wachten op toevoeging"
+msgid "Addition in progress"
+msgstr "Bezig met toevoeging"
 
-msgid "wait to be modified"
-msgstr "Wachten op aanpassing"
+msgid "Modification in progress"
+msgstr "Bezig met aanpassing"
 
-msgid "wait to be deleted"
-msgstr "Wachten op verwijdering"
+msgid "Deletion in progress"
+msgstr "Bezig met verwijderen"
 
-msgid "suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "ingeschakeld"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "Opgeschort"
 
-msgid "wait to be enabled"
-msgstr "Wachten op activering"
-
-msgid "wait to be suspended"
-msgstr "Wachten op opschorting"
-
-msgid "unknown status"
-msgstr "onbekende status"
+#, fuzzy
+msgid "Unknown error"
+msgstr "Onbekend type"
 
 msgid "hide aliases"
 msgstr "verberg aliassen"
@@ -3461,6 +3451,36 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Kan dit bestand niet openen, neem contact op met de beheerder."
+
+#~ msgid "Not in:"
+#~ msgstr "Niet in"
+
+#~ msgid "HDD"
+#~ msgstr "Harde schijf"
+
+#~ msgid "seconds"
+#~ msgstr "seconden"
+
+#~ msgid "wait to be added"
+#~ msgstr "Wachten op toevoeging"
+
+#~ msgid "wait to be modified"
+#~ msgstr "Wachten op aanpassing"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "Wachten op verwijdering"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "Wachten op activering"
+
+#~ msgid "wait to be suspended"
+#~ msgstr "Wachten op opschorting"
+
+#~ msgid "unknown status"
+#~ msgstr "onbekende status"
+
 #~ msgid "You have"
 #~ msgstr "U hebt"
 
@@ -3481,9 +3501,6 @@ msgstr "Bericht is verzonden"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias gepland voor aanpassing"
-
-#~ msgid "enabled"
-#~ msgstr "ingeschakeld"
 
 #~ msgid "delete"
 #~ msgstr "verwijder"

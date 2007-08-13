@@ -76,7 +76,7 @@ function gen_user_catchall_action($mail_id, $mail_status) {
     global $cfg;
 
     if ($mail_status === $cfg['ITEM_ADD_STATUS']) {
-        return array(tr('N/A'), '#');
+        return array(tr('N/A'), '#');//Addition in progress
     } else if ($mail_status === $cfg['ITEM_OK_STATUS']) {
         return array(tr('Delete CatchAll'), "delete_catchall.php?id=$mail_id");
     } else if ($mail_status === $cfg['ITEM_CHANGE_STATUS']) {

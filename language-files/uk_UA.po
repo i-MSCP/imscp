@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2067,7 +2066,8 @@ msgstr "Година(и):"
 msgid "Day(s):"
 msgstr "День(днів):"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Місяць(і):"
 
 msgid "Weekday(s):"
@@ -2448,26 +2448,19 @@ msgstr "Ім'я зони"
 msgid "Unprotect it"
 msgstr "Відкрити"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Не можу відкрити файл! Зверніться до Вашого системного адміністратора!"
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Користувача призначено до групи"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
-msgstr ""
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "Користувача призначено до групи"
 
 msgid "User assign"
 msgstr "Призначення користувача"
 
 msgid "Already in:"
 msgstr "Уже в групі:"
-
-msgid "Not in:"
-msgstr "Не в групі:"
-
-msgid "User was assigned to group"
-msgstr "Користувача призначено до групи"
 
 msgid "Member of group:"
 msgstr ""
@@ -2481,7 +2474,8 @@ msgstr "Оновити користувача"
 msgid "Wrong username!"
 msgstr "Невірне ім'я користувача!"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Група вже існує!"
 
 msgid "Manage user"
@@ -2512,7 +2506,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Занадто довге ім'я користувача!"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Маски (% та ?) заборонені!"
 
 msgid "Specified SQL username name already exists!"
@@ -2617,8 +2612,13 @@ msgstr "Підтримка CGI: увімкнено"
 msgid "CGI Support: disabled"
 msgstr "Підтримка CGI: вимкнено"
 
-msgid "HDD"
-msgstr ""
+#, fuzzy
+msgid "Disk limit"
+msgstr "Диск у МБ"
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Трафік"
 
 msgid "Aliases"
 msgstr "Аліаси"
@@ -2823,15 +2823,6 @@ msgstr "Користувачі FTP"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Додавання..."
-
-msgid "Modification in progress"
-msgstr "Триває зміна"
-
-msgid "Deletion in progress"
-msgstr "Триває видалення"
-
 msgid "Domain mail"
 msgstr "Пошта домену"
 
@@ -2928,13 +2919,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "Зачекайте"
 
-msgid "seconds"
-msgstr "секунд"
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "Ви заблоковані за"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2964,26 +2954,26 @@ msgstr "Налаштування повідомлення замовлення"
 msgid "Please fill up both data fields for password!"
 msgstr "Будь ласка, введіть пароль двічі!"
 
-msgid "wait to be added"
-msgstr "триває додавання"
+msgid "Addition in progress"
+msgstr "Додавання..."
 
-msgid "wait to be modified"
-msgstr "триває зміна"
+msgid "Modification in progress"
+msgstr "Триває зміна"
 
-msgid "wait to be deleted"
-msgstr "триває видалення"
+msgid "Deletion in progress"
+msgstr "Триває видалення"
 
-msgid "suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "увімкнено"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "блоковано"
 
-msgid "wait to be enabled"
-msgstr "триває активація"
-
-msgid "wait to be suspended"
-msgstr "триває блокування"
-
-msgid "unknown status"
-msgstr "невідомий статус"
+#, fuzzy
+msgid "Unknown error"
+msgstr "Невідомий тип"
 
 msgid "hide aliases"
 msgstr "приховати аліаси"
@@ -3462,6 +3452,33 @@ msgstr "ISPCP - Реселер : Система підтримки: Перегл
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Не можу відкрити файл! Зверніться до Вашого системного адміністратора!"
+
+#~ msgid "Not in:"
+#~ msgstr "Не в групі:"
+
+#~ msgid "seconds"
+#~ msgstr "секунд"
+
+#~ msgid "wait to be added"
+#~ msgstr "триває додавання"
+
+#~ msgid "wait to be modified"
+#~ msgstr "триває зміна"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "триває видалення"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "триває активація"
+
+#~ msgid "wait to be suspended"
+#~ msgstr "триває блокування"
+
+#~ msgid "unknown status"
+#~ msgstr "невідомий статус"
+
 #~ msgid "You have"
 #~ msgstr "Ви маєте"
 
@@ -3482,9 +3499,6 @@ msgstr "Повідомлення відправлене."
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Триває зміна аліасу!"
-
-#~ msgid "enabled"
-#~ msgstr "увімкнено"
 
 #~ msgid "delete"
 #~ msgstr "видалити"

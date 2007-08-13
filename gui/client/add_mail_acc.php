@@ -404,18 +404,18 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
         }
     }
 
-    if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] == 0) {
+    if ($_POST['dmn_type'] === 'sub' && !isset($_POST['sub_id'])) {
         set_page_message(tr('Subdomain list is empty! You can not add mail accounts!'));
         return;
     }
 
-    if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] == 0) {
-        set_page_message(tr('Alias list is empty! You can not add mail accounts!') . $_POST['als_id']);
+    if ($_POST['dmn_type'] === 'als' && !isset($_POST['als_id'])) {
+        set_page_message(tr('Alias list is empty! You can not add mail accounts!'));
         return;
     }
 
-    if ($_POST['mail_type'] === 'forward' && $_POST['forward_list'] === '') {
-        set_page_message(tr('Forward list is empty!') . $_POST['mail_type'] . $_POST['forward_list']);
+    if ($_POST['mail_type'] === 'forward' && empty($_POST['forward_list'])) {
+        set_page_message(tr('Forward list is empty!'));
         return;
     }
 
@@ -518,7 +518,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(array('TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE' => tr('ISPCP - Client/Add Mail User'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
-        'THEME_CHARSET' => tr('encoding'), 
+        'THEME_CHARSET' => tr('encoding'),
         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 

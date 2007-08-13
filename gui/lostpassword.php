@@ -82,7 +82,7 @@ if (isset($_GET['key'])) {
 
 if (isset($_POST['uname'])) {
 
-	check_ipaddr(getipaddr(), "capcha");
+	check_ipaddr(getipaddr(), 'captcha');
 
 	if (($_POST['uname'] != "") AND isset($_SESSION['image']) AND isset($_POST['capcode'])) {
 
@@ -130,7 +130,8 @@ if (isset($_POST['uname'])) {
 	}
 }
 
-
+unblock($cfg['BRUTEFORCE_BLOCK_TIME'], 'captcha');
+is_ipaddr_blocked(null, 'captcha', true);
 
 $tpl = new pTemplate();
 $tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword.tpl');

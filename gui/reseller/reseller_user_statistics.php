@@ -71,12 +71,15 @@ function generate_page(&$tpl, $reseller_id, $reseller_name)
 
   $rows_per_page = (int)($cfg['DOMAIN_ROWS_PER_PAGE']/2);
 
+  $start_index = 0;
   if (isset($_GET['psi'])) {
     $start_index = trim($_GET['psi']);
   } else if (isset($_POST['psi'])) {
     $start_index = trim($_POST['psi']);
-  } else {
-  	$start_index = 0;
+  }
+
+  if (!is_numeric($start_index)) {
+      $start_index = 0;
   }
 
   $tpl -> assign(array('POST_PREV_PSI' => $start_index));

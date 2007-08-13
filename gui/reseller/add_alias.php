@@ -149,8 +149,8 @@ function add_domain_alias(&$sql, &$err_al)
 
 
 	$cr_user_id = $_POST['usraccounts'];
-	$alias_name	= strtolower(clean_input($_POST['ndomain_name']));
-	$mount_point = strtolower(clean_input($_POST['ndomain_mpoint']));
+	$alias_name	= strtolower($_POST['ndomain_name']);
+	$mount_point = strtolower($_POST['ndomain_mpoint']);
 	$forward = strtolower(clean_input($_POST['forward']));
 
 

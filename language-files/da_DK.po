@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2067,7 +2066,8 @@ msgstr "Time(r):"
 msgid "Day(s):"
 msgstr "Dag(e):"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Måned(er):"
 
 msgid "Weekday(s):"
@@ -2448,13 +2448,12 @@ msgstr "Område navn"
 msgid "Unprotect it"
 msgstr "Fjern beskyttelse"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Kan ikke åbne fil ! Kontakt venligst din administrator!"
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Brugeren blev tilføjet gruppen"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
 msgstr "Bruger blev slettet fra gruppe"
 
 msgid "User assign"
@@ -2462,12 +2461,6 @@ msgstr "Bruger tildel"
 
 msgid "Already in:"
 msgstr "Allerede i:"
-
-msgid "Not in:"
-msgstr "Ikke i:"
-
-msgid "User was assigned to group"
-msgstr "Brugeren blev tilføjet gruppen"
 
 msgid "Member of group:"
 msgstr ""
@@ -2481,7 +2474,8 @@ msgstr "Opdater bruger"
 msgid "Wrong username!"
 msgstr "Forkert brugernavn"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Gruppen eksisterer allerede"
 
 msgid "Manage user"
@@ -2512,7 +2506,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Brugernavn er for langt!"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Wildcards som % og ? er ikke tilladte!"
 
 msgid "Specified SQL username name already exists!"
@@ -2617,8 +2612,13 @@ msgstr "CGI Service: aktiveret"
 msgid "CGI Support: disabled"
 msgstr "CGI Service: deaktiveret"
 
-msgid "HDD"
-msgstr ""
+#, fuzzy
+msgid "Disk limit"
+msgstr "Disk i MB"
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Trafikforbrug"
 
 msgid "Aliases"
 msgstr "Aliaser"
@@ -2823,15 +2823,6 @@ msgstr "FTP Konti"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Tilføjelse udføres"
-
-msgid "Modification in progress"
-msgstr "Redigering i gang"
-
-msgid "Deletion in progress"
-msgstr "Sletning i gang..."
-
 msgid "Domain mail"
 msgstr "Domæne mail"
 
@@ -2928,13 +2919,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "Du må vente"
 
-msgid "seconds"
-msgstr "sekunder"
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "Du er blevet blokkeret for"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2964,26 +2954,26 @@ msgstr "Setup Ordre Email"
 msgid "Please fill up both data fields for password!"
 msgstr "Udfyld begge adgangskodefelter!"
 
-msgid "wait to be added"
-msgstr "venter på at blive tilføjet"
+msgid "Addition in progress"
+msgstr "Tilføjelse udføres"
 
-msgid "wait to be modified"
-msgstr "venter på at blive redigeret"
+msgid "Modification in progress"
+msgstr "Redigering i gang"
 
-msgid "wait to be deleted"
-msgstr "venter på at blive slettet"
+msgid "Deletion in progress"
+msgstr "Sletning i gang..."
 
-msgid "suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "aktiveret"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "suspenderet"
 
-msgid "wait to be enabled"
-msgstr "venter på at blive aktiveret"
-
-msgid "wait to be suspended"
-msgstr "venter på at blive suspenderet"
-
-msgid "unknown status"
-msgstr "ukendt status"
+#, fuzzy
+msgid "Unknown error"
+msgstr "Ukendt type"
 
 msgid "hide aliases"
 msgstr "Skjul aliaser"
@@ -3462,6 +3452,33 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Kan ikke åbne fil ! Kontakt venligst din administrator!"
+
+#~ msgid "Not in:"
+#~ msgstr "Ikke i:"
+
+#~ msgid "seconds"
+#~ msgstr "sekunder"
+
+#~ msgid "wait to be added"
+#~ msgstr "venter på at blive tilføjet"
+
+#~ msgid "wait to be modified"
+#~ msgstr "venter på at blive redigeret"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "venter på at blive slettet"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "venter på at blive aktiveret"
+
+#~ msgid "wait to be suspended"
+#~ msgstr "venter på at blive suspenderet"
+
+#~ msgid "unknown status"
+#~ msgstr "ukendt status"
+
 #~ msgid "You have"
 #~ msgstr "Du har"
 
@@ -3482,9 +3499,6 @@ msgstr "Meddelsen blev sendt!"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias planlagt forredigering!"
-
-#~ msgid "enabled"
-#~ msgstr "aktiveret"
 
 #~ msgid "delete"
 #~ msgstr "slet"

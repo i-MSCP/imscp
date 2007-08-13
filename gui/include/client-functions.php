@@ -575,19 +575,9 @@ SQL_QUERY;
 }
 
 function user_trans_item_status($item_status) {
-    global $cfg;
 
-    if ($item_status === $cfg['ITEM_ADD_STATUS']) {
-        return tr('Addition in progress');
-    } else if ($item_status === $cfg['ITEM_OK_STATUS']) {
-        return tr('OK');
-    } else if ($item_status === $cfg['ITEM_CHANGE_STATUS']) {
-        return tr('Modification in progress');
-    } else if ($item_status === $cfg['ITEM_DELETE_STATUS']) {
-        return tr('Deletion in progress');
-    } else {
-        return tr('Unknown Error');
-    }
+    //DEPRECATED
+    return translate_dmn_status($item_status);
 }
 
 function user_trans_mail_type($mail_type) {

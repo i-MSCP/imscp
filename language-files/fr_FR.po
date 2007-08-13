@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr_FR@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2068,7 +2067,8 @@ msgstr "Heure(s):"
 msgid "Day(s):"
 msgstr "Jour(s):"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Mois:"
 
 msgid "Weekday(s):"
@@ -2449,26 +2449,19 @@ msgstr "Nom de la zone"
 msgid "Unprotect it"
 msgstr "Déprotégez le"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Impossible d'ouvrir le fichier! Contactez votre administrateur !"
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "L'utilisateur a été ajouté au groupe"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
-msgstr ""
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "L'utilisateur a été ajouté au groupe"
 
 msgid "User assign"
 msgstr "Assignez l'utilisateur"
 
 msgid "Already in:"
 msgstr ""
-
-msgid "Not in:"
-msgstr "Pas à l'intérieur:"
-
-msgid "User was assigned to group"
-msgstr "L'utilisateur a été ajouté au groupe"
 
 msgid "Member of group:"
 msgstr ""
@@ -2482,7 +2475,8 @@ msgstr "Mettre l'utilisateur à jour"
 msgid "Wrong username!"
 msgstr "Mauvais identifiant!"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Le groupe existe déjà !"
 
 msgid "Manage user"
@@ -2513,7 +2507,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "Nom d'utilisateur trop long!"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Les jokers comme % et ? ne sont pas permis."
 
 msgid "Specified SQL username name already exists!"
@@ -2618,8 +2613,13 @@ msgstr "Support CGI: activé"
 msgid "CGI Support: disabled"
 msgstr "Support CGI: désactivé"
 
-msgid "HDD"
-msgstr ""
+#, fuzzy
+msgid "Disk limit"
+msgstr "Disque en MB"
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Trafic"
 
 msgid "Aliases"
 msgstr ""
@@ -2824,15 +2824,6 @@ msgstr "Comptes FTP"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "Ajout en cours"
-
-msgid "Modification in progress"
-msgstr "Modifications en cours"
-
-msgid "Deletion in progress"
-msgstr "Suppression en cours"
-
 msgid "Domain mail"
 msgstr "Email du domaine"
 
@@ -2929,13 +2920,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "Vous devez attendre"
 
-msgid "seconds"
-msgstr "secondes"
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "Vous avez été bloqué pour"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2965,26 +2955,26 @@ msgstr "Configurer email commande"
 msgid "Please fill up both data fields for password!"
 msgstr "Remplisses les champs de données pour le mot de passe!"
 
-msgid "wait to be added"
-msgstr "en attente pour être ajouté"
+msgid "Addition in progress"
+msgstr "Ajout en cours"
 
-msgid "wait to be modified"
-msgstr "en attente pour être modifié"
+msgid "Modification in progress"
+msgstr "Modifications en cours"
 
-msgid "wait to be deleted"
-msgstr "en attente pour être supprimé"
+msgid "Deletion in progress"
+msgstr "Suppression en cours"
 
-msgid "suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "activé"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "suspendu"
 
-msgid "wait to be enabled"
-msgstr "en attente pour être activé"
-
-msgid "wait to be suspended"
-msgstr "en attente pour être suspendu"
-
-msgid "unknown status"
-msgstr "statut inconnu"
+#, fuzzy
+msgid "Unknown error"
+msgstr "Type inconnu"
 
 msgid "hide aliases"
 msgstr "cacher les aliases"
@@ -3463,6 +3453,33 @@ msgstr "ISPCP - Revendeur : Système d'aide: Voir les Messages"
 msgid "Message was sent."
 msgstr "Le message a été envoyé!"
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Impossible d'ouvrir le fichier! Contactez votre administrateur !"
+
+#~ msgid "Not in:"
+#~ msgstr "Pas à l'intérieur:"
+
+#~ msgid "seconds"
+#~ msgstr "secondes"
+
+#~ msgid "wait to be added"
+#~ msgstr "en attente pour être ajouté"
+
+#~ msgid "wait to be modified"
+#~ msgstr "en attente pour être modifié"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "en attente pour être supprimé"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "en attente pour être activé"
+
+#~ msgid "wait to be suspended"
+#~ msgstr "en attente pour être suspendu"
+
+#~ msgid "unknown status"
+#~ msgstr "statut inconnu"
+
 #~ msgid "You have"
 #~ msgstr "Vous avez"
 
@@ -3483,9 +3500,6 @@ msgstr "Le message a été envoyé!"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias en cours de modification!"
-
-#~ msgid "enabled"
-#~ msgstr "activé"
 
 #~ msgid "delete"
 #~ msgstr "Supprimer"

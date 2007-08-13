@@ -63,44 +63,79 @@ function is_userdomain_ok($username) {
 	}
 }
 
-function unblock($ttl = 30) {
-	global $sql;
+function unblock($timeout = null, $type = 'bruteforce') {
+	global $sql, $cfg;
 
-	$boundary = time() - $ttl * 60;
-	$query = "DELETE FROM login WHERE user_name is NULL AND	lastaccess < '" . $boundary . "'";
+	if ($timeout === null) {
+	    $timeout = $cfg['BRUTEFORCE_BLOCK_TIME'];
+	}
+
+	$timeout = time() - ($timeout * 60);
+
+	switch ($type) {
+	    case 'bruteforce':
+	        $query = "UPDATE login SET login_count='1' WHERE login_count > " . $cfg['BRUTEFORCE_MAX_LOGIN'] . " AND lastaccess < " . $timeout . " AND user_name is NULL";
+	        break;
+	    case 'captcha':
+	        $query = "UPDATE login SET captcha_count='1' WHERE captcha_count > " . $cfg['BRUTEFORCE_MAX_CAPTCHA'] . " AND lastaccess < " . $timeout . " AND user_name is NULL";
+	        break;
+	    default:
+	        die('FIXME: '.__FILE__.':'.__LINE__);
+	        break;
+	}
 
 	exec_query($sql, $query, array());
 
 }
 
-function is_ipaddr_blocked($ipaddr) {
+function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = false) {
 	global $sql, $cfg;
 
-	$query = "SELECT * FROM login WHERE ipaddr='" . $ipaddr . "' AND login_count='" .  $cfg['BRUTEFORCE_MAX_LOGIN'] . "' OR captcha_count='" .  $cfg['BRUTEFORCE_MAX_CAPTCHA'] . "'";
-	$res = exec_query($sql, $query, array());
-
-	if ($res -> RecordCount() == 1) {
-		return TRUE;
+	if ($ipaddr === null) {
+	    $ipaddr = getipaddr();
 	}
 
-	return FALSE;
+	switch ($type) {
+	    case 'bruteforce':
+	        $query = "SELECT * FROM login WHERE ipaddr='" . $ipaddr . "' AND login_count='" .  $cfg['BRUTEFORCE_MAX_LOGIN'] . "'";
+	        break;
+	    case 'captcha':
+	        $query = "SELECT * FROM login WHERE ipaddr='" . $ipaddr . "' AND captcha_count='" .  $cfg['BRUTEFORCE_MAX_CAPTCHA'] . "'";
+	        break;
+	    default:
+	        die('FIXME: '.__FILE__.':'.__LINE__);
+	        break;
+	}
+	$res = exec_query($sql, $query, array());
+
+	if ($res -> RecordCount() == 0) {
+	    return false;
+	} else if (!$autodeny) {
+	    return true;
+	}
+
+	deny_access();
 }
 
-function check_ipaddr($ipaddr, $type = "brutefoce") {
+function check_ipaddr($ipaddr = null, $type = "brutefoce") {
 	global $sql, $cfg;
+
+	if (!$cfg['BRUTEFORCE'])
+	return false;
+
+	if ($ipaddr === null) {
+	    $ipaddr = getipaddr();
+	}
 
 	$sess_id = session_id();
 	$query = "SELECT session_id, ipaddr, user_name, lastaccess, login_count, captcha_count FROM login WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
 	$res = exec_query($sql, $query, array());
 
 	if ($res->RecordCount() == 0) {
-   		$query = "INSERT INTO login	(session_id, ipaddr, lastaccess, login_count, captcha_count) VALUES ('" . $sess_id . "','" . $ipaddr . "',UNIX_TIMESTAMP(),'1', '1')";
-   		exec_query($sql, $query, array());
+   		$query = "INSERT INTO login	(session_id, ipaddr, lastaccess, login_count, captcha_count) VALUES ('" . $sess_id . "','" . $ipaddr . "',UNIX_TIMESTAMP(),'?', '?')";
+   		exec_query($sql, $query, array((int)($type=='bruteforce'),(int)($type=='captcha')));
 	   	return false;
 	}
-
-	if (!$cfg['BRUTEFORCE'])
-		return false;
 
 	$data = $res->FetchRow();
 
@@ -108,52 +143,52 @@ function check_ipaddr($ipaddr, $type = "brutefoce") {
 	$logincount = $data['login_count'];
 	$capchacount = $data['captcha_count'];
 
-	if ($logincount > ($cfg['BRUTEFORCE_MAX_LOGIN'])) {
+	if ($type == 'bruteforce' && $logincount > $cfg['BRUTEFORCE_MAX_LOGIN']) {
+	    block_ipaddr($ipaddr, 'Login');
+	}
 
-		if (($lastaccess + 1800) < time()) {
-			if ($type == "bruteforce") {
-				$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	login_count='1' WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
-			}
-			else {
-				$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count='1' WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
-
-			}
-   			exec_query($sql, $query, array());
-			return false;
-		}
-		block_ipaddr($ipaddr);
+	if ($type == 'captcha' && $logincount > $cfg['BRUTEFORCE_MAX_CAPTCHA']) {
+	    block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 
 	if ($cfg['BRUTEFORCE_BETWEEN']) {
 		$btime = $lastaccess + $cfg['BRUTEFORCE_BETWEEN_TIME'];
-	}
-	else {
+	} else {
 		$btime = 0;
 	}
 
 	if ($btime < time()) {
+
 		if ($type == "bruteforce") {
+
 			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	login_count=login_count+1 WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
-		}
-		else {
+
+		} else if ($type == "captcha") {
+
 			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count=captcha_count+1 WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
+
 		}
-   		exec_query($sql, $query, array());
+
+   		exec_query($sql, $query);
 		return false;
-	}
-	else {
+
+	} else {
 		write_log("Login error, <b><i>".htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8")."</i></b> wait " . $cfg['BRUTEFORCE_BETWEEN_TIME'] . " seconds");
-		system_message(tr('You have to wait') . ' ' . $cfg['BRUTEFORCE_BETWEEN_TIME'] . ' ' . tr('seconds'));
+		system_message(tr('You have to wait %d seconds', $cfg['BRUTEFORCE_BETWEEN_TIME']));
 		return false;
 	}
 }
 
-function block_ipaddr($ipaddr) {
+function block_ipaddr($ipaddr, $type = 'General') {
 	global $cfg;
 
-	write_log("Login error, <b><i>".htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8")."</i></b> blocked for " . $cfg['BRUTEFORCE_BLOCK_TIME'] . " minutes.");
-	system_message(tr('You have been blocked for') . ' ' . $cfg['BRUTEFORCE_BLOCK_TIME'] . ' ' . tr('minutes'));
-	die();
+	write_log("$type protection, <b><i>".htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8")."</i></b> blocked for " . $cfg['BRUTEFORCE_BLOCK_TIME'] . " minutes.");
+	deny_access();
+}
+
+function deny_access() {
+	global $cfg;
+	system_message(tr('You have been blocked for %d minutes', $cfg['BRUTEFORCE_BLOCK_TIME']));
 }
 
 function getipaddr() {

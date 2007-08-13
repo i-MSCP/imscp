@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -16,7 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8 "
 
@@ -2101,7 +2100,8 @@ msgstr "Hodiny:"
 msgid "Day(s):"
 msgstr "Dni:"
 
-msgid "Months(s):"
+#, fuzzy
+msgid "Month(s):"
 msgstr "Mesiace:"
 
 msgid "Weekday(s):"
@@ -2482,13 +2482,12 @@ msgstr "Názov oblasti"
 msgid "Unprotect it"
 msgstr "Nechrániť ju"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr "Nemôžem otvoriť súbor! Prosím kontaktujte Vášho administrátora!"
-
-msgid "User was assigned to group "
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
 msgstr "Užívateľ bol priradený k skupine"
 
-msgid "User was deleted from group "
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
 msgstr "Užívateľ bol zmazaný zo skupiny "
 
 msgid "User assign"
@@ -2496,12 +2495,6 @@ msgstr "Uživateľ priradený"
 
 msgid "Already in:"
 msgstr "Už v: "
-
-msgid "Not in:"
-msgstr "Nie je v:"
-
-msgid "User was assigned to group"
-msgstr "Užívateľ bol priradený k skupine"
 
 msgid "Member of group:"
 msgstr "Člen skupiny:"
@@ -2515,7 +2508,8 @@ msgstr "Aktualizovať užívateľa"
 msgid "Wrong username!"
 msgstr "Zlé užvateľské meno!"
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "Skupina už existuje !"
 
 msgid "Manage user"
@@ -2546,7 +2540,8 @@ msgstr "SQL konto nenájdené! Možno bolo zmazané iným užívateľom!"
 msgid "User name too long!"
 msgstr "Uživateľské meno príliš dlhé!"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, fuzzy, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr "Znaky ako % ako ? nie sú povolené!"
 
 msgid "Specified SQL username name already exists!"
@@ -2651,8 +2646,13 @@ msgstr "CGI podpora: zapnutá"
 msgid "CGI Support: disabled"
 msgstr "CGI podpora: vypnutá"
 
-msgid "HDD"
-msgstr "Disková priestor"
+#, fuzzy
+msgid "Disk limit"
+msgstr "Limit diskového priestoru [MB]"
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Limit prenesených dát [MB]"
 
 msgid "Aliases"
 msgstr "Aliasy"
@@ -2870,15 +2870,6 @@ msgstr "FTP kontá"
 msgid "Update Hosting Package"
 msgstr "Aktualizovať hostingová balík"
 
-msgid "Addition in progress"
-msgstr "Prebieha pridanie"
-
-msgid "Modification in progress"
-msgstr "Prebieha zmena"
-
-msgid "Deletion in progress"
-msgstr "Prebieha zmazanie"
-
 msgid "Domain mail"
 msgstr "Mail domény"
 
@@ -2976,13 +2967,12 @@ msgstr "\"Zachyť všetko\" konto"
 msgid "Could not get config from database"
 msgstr "Nemôžem získať konfiguráciu z databázy"
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "Musíte čakať"
 
-msgid "seconds"
-msgstr "sekundy"
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "Boli ste zablkovaný na"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -3012,26 +3002,26 @@ msgstr "Nastavenia e-mail objednváky"
 msgid "Please fill up both data fields for password!"
 msgstr "Prosím vyplňte obe polia s heslami!"
 
-msgid "wait to be added"
-msgstr "čaká na pridanie"
+msgid "Addition in progress"
+msgstr "Prebieha pridanie"
 
-msgid "wait to be modified"
-msgstr "čaká na zmenu"
+msgid "Modification in progress"
+msgstr "Prebieha zmena"
 
-msgid "wait to be deleted"
-msgstr "čaká na zmazanie"
+msgid "Deletion in progress"
+msgstr "Prebieha zmazanie"
 
-msgid "suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "zapnuté"
+
+#, fuzzy
+msgid "Being suspended"
 msgstr "uspať"
 
-msgid "wait to be enabled"
-msgstr "čaká na povolenie"
-
-msgid "wait to be suspended"
-msgstr "čaká na uspatie"
-
-msgid "unknown status"
-msgstr "neznámy status"
+#, fuzzy
+msgid "Unknown error"
+msgstr "Neznáma chyba"
 
 msgid "hide aliases"
 msgstr "skovať aliasy"
@@ -3517,6 +3507,39 @@ msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
 
+#~ msgid "Can not open file! Please contact your administrator !"
+#~ msgstr "Nemôžem otvoriť súbor! Prosím kontaktujte Vášho administrátora!"
+
+#~ msgid "User was assigned to group "
+#~ msgstr "Užívateľ bol priradený k skupine"
+
+#~ msgid "Not in:"
+#~ msgstr "Nie je v:"
+
+#~ msgid "HDD"
+#~ msgstr "Disková priestor"
+
+#~ msgid "seconds"
+#~ msgstr "sekundy"
+
+#~ msgid "wait to be added"
+#~ msgstr "čaká na pridanie"
+
+#~ msgid "wait to be modified"
+#~ msgstr "čaká na zmenu"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "čaká na zmazanie"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "čaká na povolenie"
+
+#~ msgid "wait to be suspended"
+#~ msgstr "čaká na uspatie"
+
+#~ msgid "unknown status"
+#~ msgstr "neznámy status"
+
 #~ msgid "You have"
 #~ msgstr "Máte"
 
@@ -3549,9 +3572,6 @@ msgstr "Správa bola poslaná"
 
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Alias načasovaný na zmenu!"
-
-#~ msgid "enabled"
-#~ msgstr "zapnuté"
 
 #~ msgid "delete"
 #~ msgstr "zmazať"

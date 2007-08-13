@@ -154,9 +154,10 @@ SQL_QUERY;
     $tpl->assign('COLSPAN', $count);
     $i = 0;
     while (!$rs->EOF) {
-        $details = $rs->fields['props'];
-        list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $details);
+        list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk) = explode(";", $rs->fields['props']);
+
         $details = '';
+
         if ($hp_php === '_yes_') {
             $details = tr('PHP Support: enabled') . "<br>";
             $php = "yes";
@@ -166,24 +167,30 @@ SQL_QUERY;
         }
         if ($hp_cgi === '_yes_') {
             $cgi = "yes";
-            $details = $details . " " . tr('CGI Support: enabled') . "<br>";
+            $details .= tr('CGI Support: enabled') . "<br>";
         } else {
             $cgi = "no";
-            $details = $details . " " . tr('CGI Support: disabled') . "<br>";
+            $details .= tr('CGI Support: disabled') . "<br>";
         }
         if (is_numeric(gen_num_limit_msg($hp_disk))) {
-            $hdd_usage = tr('HDD') . ": " . sizeit(gen_num_limit_msg($hp_disk * 1024 * 1024)) . "<br>";
+            $hdd_usage = tr('Disk limit') . ": " . sizeit(gen_num_limit_msg($hp_disk * 1024 * 1024)) . "<br>";
         } else {
-            $hdd_usage = tr('HDD') . ": " . gen_num_limit_msg($hp_disk) . "<br>";
+            $hdd_usage = tr('Disk limit') . ": " . gen_num_limit_msg($hp_disk) . "<br>";
         }
 
         if (is_numeric(gen_num_limit_msg($hp_traff))) {
-            $traffic_usage = tr('Traffic') . ": " . sizeit(gen_num_limit_msg($hp_traff * 1024 * 1024));
+            $traffic_usage = tr('Traffic limit') . ": " . sizeit(gen_num_limit_msg($hp_traff * 1024 * 1024));
         } else {
-            $traffic_usage = tr('Traffic') . ": " . gen_num_limit_msg($hp_traff * 1024 * 1024);
+            $traffic_usage = tr('Traffic limit') . ": " . gen_num_limit_msg($hp_traff * 1024 * 1024);
         }
 
-        $details = $details . " " . tr('Aliases') . ": " . gen_num_limit_msg($hp_als) . "<br>" . tr('Subdomains') . ": " . gen_num_limit_msg($hp_sub) . "<br>" . tr('Emails') . ": " . gen_num_limit_msg($hp_mail) . "<br>" . tr('FTPs') . ": " . gen_num_limit_msg($hp_ftp) . "<br>" . tr('SQL Databases') . " " . gen_num_limit_msg($hp_sql_db) . "<br>" . tr('SQL Users') . ": " . gen_num_limit_msg($hp_sql_user) . "<br>" . $hdd_usage . $traffic_usage;
+        $details .= tr('Aliases') . ": " . gen_num_limit_msg($hp_als) . "<br>";
+        $details .= tr('Subdomains') . ": " . gen_num_limit_msg($hp_sub) . "<br>";
+        $details .= tr('Emails') . ": " . gen_num_limit_msg($hp_mail) . "<br>";
+        $details .= tr('FTPs') . ": " . gen_num_limit_msg($hp_ftp) . "<br>";
+        $details .= tr('SQL Databases') . ": " . gen_num_limit_msg($hp_sql_db) . "<br>";
+        $details .= tr('SQL Users') . ": " . gen_num_limit_msg($hp_sql_user) . "<br>";
+        $details .= $hdd_usage . $traffic_usage;
 
         $price = $rs->fields['price'];
         if ($price == 0 || $price == '') {
@@ -258,13 +265,12 @@ SQL_QUERY;
     }
 }
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl->assign(
 		    array(
 				'TR_CLIENT_UPDATE_HP' => tr('ISPCP - Update hosting plan'),
 		        'THEME_COLOR_PATH' => "../themes/$theme_color",
-		        'THEME_CHARSET' => tr('encoding'), 
+		        'THEME_CHARSET' => tr('encoding'),
 		        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 		        'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		        )

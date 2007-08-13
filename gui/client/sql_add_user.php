@@ -273,7 +273,7 @@ function add_sql_user(&$sql, $user_id, $db_id)
   // are wildcards used?
   //
   if (preg_match("/[%|\?]+/", $db_user)) {
-     set_page_message(tr('Wildcards as % and ? are not allowed!'));
+     set_page_message(tr('Wildcards as %% and ? are not allowed!'));
          return;
   }
 
@@ -375,7 +375,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no")
 $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl -> assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ISPCP - Client/Add SQL User'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 

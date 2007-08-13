@@ -793,31 +793,30 @@ function translate_dmn_status ($status) {
 
     } else if ( $status == $cfg['ITEM_ADD_STATUS']) {
 
-        return tr('wait to be added');
+        return tr('Addition in progress');
 
     } else if ( $status == $cfg['ITEM_CHANGE_STATUS']) {
 
-        return tr('wait to be modified');
+        return tr('Modification in progress');
 
     } else if ( $status == $cfg['ITEM_DELETE_STATUS']) {
 
-        return tr('wait to be deleted');
+        return tr('Deletion in progress');
 
     } else if ( $status == $cfg['ITEM_DISABLED_STATUS']) {
 
-        return tr('suspended');
+        return tr('Suspended');
 
     } else if ($status == $cfg['ITEM_TOENABLE_STATUS']) {
 
-        return tr('wait to be enabled');
+        return tr('Being enabled');
 
     } else if ($status == $cfg['ITEM_TODISABLED_STATUS']) {
 
-        return tr('wait to be suspended');
-    }
-	else {
+        return tr('Being suspended');
+    } else {
 
-        return tr('unknown status');
+        return tr('Unknown error');
 
     }
 

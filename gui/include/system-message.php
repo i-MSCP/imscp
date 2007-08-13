@@ -35,7 +35,7 @@ function system_message($msg) {
 
     // If we are on the login page, path will be like this
     $template = $cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl';
-    
+
     if (!is_file($template)) {
         // But if we're inside the panel it will be like this
         $template = '../'.$cfg['LOGIN_TEMPLATE_PATH'].'/system-message.tpl';
@@ -48,7 +48,7 @@ function system_message($msg) {
 	$tpl->assign(
 					array(
 						'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ISPCP Error',
-						'THEME_COLOR_PATH' => "themes/$theme_color",
+						'THEME_COLOR_PATH' => "/themes/$theme_color",
 						'THEME_CHARSET' => "UTF-8",
 						'TR_BACK' => tr('Back'),
 						'TR_ERROR_MESSAGE' => "Error Message",

@@ -17,6 +17,29 @@
  *  http://opensource.org | osi@opensource.org
  **/
 
+function curlang($newlang = null) {
+
+    static $language = null;
+
+    $_language = $language;
+
+    if ($language === null && ($newlang === null || $newlang == false)) {
+        // autodetect
+        $newlang = true;
+    }
+
+    if ($newlang !== null && $newlang != false) {
+        if ($newlang === true) {
+            $newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+        }
+
+        $language = $newlang;
+    }
+
+    return ($_language !== null)? $_language : $language;
+
+}
+
 /**
  * 	Function:		tr
  * 	Description:	translates a given string into the selected language, if exists
@@ -37,7 +60,7 @@ function tr($msgid, $as_is = false) {
         $as_is = false;
     }
 
-    $lang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+    $lang = curlang();
     $encoding = 'UTF-8';
 
     if (isset($cache[$lang][$msgid])) {

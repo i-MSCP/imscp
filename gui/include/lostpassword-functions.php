@@ -333,90 +333,73 @@ SQL_QUERY;
 
  	$res = exec_query($sql, $query, array($admin_name));
 
- 	if ($res -> RecordCount() == 1) {
-
- 	    $created_by = $res -> fields['created_by'];
-
- 	    $admin_fname = $res -> fields['fname'];
-
- 	    $admin_lname = $res -> fields['lname'];
-
- 	    $to = $res -> fields['email'];
-
- 	    $uniqkey = uniqkeygen();
-
- 	    setUniqKey($admin_name, $uniqkey);
-
- 	    write_log("Lostpassword: ".$admin_name.": uniqkey created");
-
- 	    if ($created_by == 0) $created_by = 1;
-
- 	    $data = get_lostpassword_activation_email($created_by);
-
- 	    $from_name = $data['sender_name'];
-
- 	    $from_email = $data['sender_email'];
-
- 	    $subject = $data['subject'];
-
- 	    $message = $data['message'];
-
- 	    $base_vhost = $cfg['BASE_SERVER_VHOST'];
-
- 	    if ($from_name) {
-
- 	        $from = $from_name . "<" . $from_email . ">";
-
- 	    }
- 	    else {
-
- 	        $from = $from_email;
- 	    }
-
- 	    switch( $_SERVER["SERVER_PORT"] ) {
-
- 	        case "80":
- 	            $prot = "http://";
- 	            break;
- 	        case "443":
- 	            $prot = "https://";
- 	            break;
- 	    }
-
- 	    $link = $prot . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
-
- 	    $search  = array();
- 	    $replace = array();
-
- 	    $search [] = '{USERNAME}';
- 	    $replace[] = $admin_name;
- 	    $search [] = '{NAME}';
- 	    $replace[] = $admin_fname . " " . $admin_lname;
- 	    $search [] = '{LINK}';
- 	    $replace[] = $link;
- 	    $search [] = '{BASE_SERVER_VHOST}';
- 	    $replace[] = $base_vhost;
-
- 	    $subject = str_replace($search, $replace, $subject);
- 	    $message = str_replace($search, $replace, $message);
-
- 	    $headers = "From: " .$from. "\n";
-
- 	    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-
- 	    $headers .= "X-Mailer: ISPCP lostpassword mailer";
-
- 	    $mail_result = mail($to, encode($subject), $message, $headers);
-
- 	    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
- 	    write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !");
-
- 	    return true;
-
+ 	if ($res -> RecordCount() == 0) {
+ 	    return false;
  	}
 
-	return false;
+ 	$created_by = $res -> fields['created_by'];
+ 	$admin_fname = $res -> fields['fname'];
+ 	$admin_lname = $res -> fields['lname'];
+ 	$to = $res -> fields['email'];
+
+ 	$uniqkey = uniqkeygen();
+
+ 	setUniqKey($admin_name, $uniqkey);
+
+ 	write_log("Lostpassword: ".$admin_name.": uniqkey created");
+
+ 	if ($created_by == 0) $created_by = 1;
+
+ 	$data = get_lostpassword_activation_email($created_by);
+
+ 	$from_name = $data['sender_name'];
+ 	$from_email = $data['sender_email'];
+ 	$subject = $data['subject'];
+ 	$message = $data['message'];
+
+ 	$base_vhost = $cfg['BASE_SERVER_VHOST'];
+
+ 	if ($from_name) {
+
+ 	    $from = $from_name . "<" . $from_email . ">";
+
+ 	} else {
+
+ 	    $from = $from_email;
+ 	}
+
+ 	$prot = isset($_SERVER['https'])? 'https' : 'http';
+
+ 	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
+
+ 	$search  = array();
+ 	$replace = array();
+
+ 	$search [] = '{USERNAME}';
+ 	$replace[] = $admin_name;
+ 	$search [] = '{NAME}';
+ 	$replace[] = $admin_fname . " " . $admin_lname;
+ 	$search [] = '{LINK}';
+ 	$replace[] = $link;
+ 	$search [] = '{BASE_SERVER_VHOST}';
+ 	$replace[] = $base_vhost;
+
+ 	$subject = str_replace($search, $replace, $subject);
+ 	$message = str_replace($search, $replace, $message);
+
+ 	$headers = "From: " .$from. "\n";
+
+ 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+
+ 	$headers .= "X-Mailer: ISPCP lostpassword mailer";
+
+ 	$mail_result = mail($to, encode($subject), $message, $headers);
+
+ 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+
+ 	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !");
+
+ 	return true;
 
 }
 

@@ -311,11 +311,11 @@ function ispcp_limit_check($data, $num) {
 function check_dn_rsl_token($data) {
 
 	$match = array();
-    if (!preg_match("/^([[^a-z0-9^A-Z^������\-]*)([A-Za-z0-9])$/D", $data, $match))
+    if (!preg_match("/^([A-Za-z0-9])([a-z0-9A-Z\-]*)([A-Za-z0-9])$/D", $data, $match))
 		return FALSE;
 
-    if (preg_match("/\-\-/", $match[2]))
-		return FALSE;
+    /*if (preg_match("/\-\-/", $match[2]))
+		return FALSE;*/
 
     return TRUE;
 }
@@ -336,7 +336,7 @@ function chk_dname($dname) {
     if (preg_match('/[^a-z0-9\.\-]+/', $dname)) {
         return false;
     }
-    
+
     if (!rsl_full_domain_check($dname))
 		return FALSE;
 

@@ -44,7 +44,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl -> assign(
                 array(
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'), 
+                        'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id'])
                      )
@@ -239,7 +239,7 @@ SQL_QUERY;
 
 				check_for_lock_file();
 				send_request();
-				set_page_message(tr('User was assigned to group')." - ".$rs -> fields['ugroup']);
+				set_page_message(tr('User was assigned to the %s group', $rs -> fields['ugroup']));
 
 	} else {
 		return;
@@ -308,7 +308,7 @@ SQL_QUERY;
 			send_request();
 
 
-			set_page_message(tr('User was deleted from group ')."- ".$rs -> fields['ugroup']);
+			set_page_message(tr('User was deleted from the %s group ', $rs -> fields['ugroup']));
 
 	} else {
 		return;

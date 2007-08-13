@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 15:05-0500\n"
+"POT-Creation-Date: 2007-08-12 22:05-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -2066,8 +2065,9 @@ msgstr ""
 msgid "Day(s):"
 msgstr "日:"
 
-msgid "Months(s):"
-msgstr ""
+#, fuzzy
+msgid "Month(s):"
+msgstr "月"
 
 msgid "Weekday(s):"
 msgstr ""
@@ -2447,26 +2447,19 @@ msgstr "エリア名"
 msgid "Unprotect it"
 msgstr "保護を解除する"
 
-msgid "Can not open file! Please contact your administrator !"
-msgstr ""
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "ユーザーがグループに追加されました"
 
-msgid "User was assigned to group "
-msgstr ""
-
-msgid "User was deleted from group "
-msgstr ""
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "ユーザーがグループに追加されました"
 
 msgid "User assign"
 msgstr "ユーザーのアサイン"
 
 msgid "Already in:"
 msgstr "既に入っています："
-
-msgid "Not in:"
-msgstr ""
-
-msgid "User was assigned to group"
-msgstr "ユーザーがグループに追加されました"
 
 msgid "Member of group:"
 msgstr ""
@@ -2480,7 +2473,8 @@ msgstr "ユーザの更新"
 msgid "Wrong username!"
 msgstr ""
 
-msgid "Group already exist !"
+#, fuzzy
+msgid "Group already exists!"
 msgstr "グループは既に存在しています"
 
 msgid "Manage user"
@@ -2511,7 +2505,8 @@ msgstr ""
 msgid "User name too long!"
 msgstr "ユーザー名が長すぎます"
 
-msgid "Wildcards as % and ? are not allowed!"
+#, php-format
+msgid "Wildcards as %% and ? are not allowed!"
 msgstr ""
 
 msgid "Specified SQL username name already exists!"
@@ -2616,8 +2611,12 @@ msgstr "CGIサポート: 有効"
 msgid "CGI Support: disabled"
 msgstr "CGIサポート: 無効"
 
-msgid "HDD"
-msgstr "ハードディスク"
+msgid "Disk limit"
+msgstr ""
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "トラフィック"
 
 msgid "Aliases"
 msgstr "エイリアス"
@@ -2822,15 +2821,6 @@ msgstr "FTPユーザー"
 msgid "Update Hosting Package"
 msgstr ""
 
-msgid "Addition in progress"
-msgstr "追加中"
-
-msgid "Modification in progress"
-msgstr ""
-
-msgid "Deletion in progress"
-msgstr "削除中"
-
 msgid "Domain mail"
 msgstr "ドメインメール"
 
@@ -2927,13 +2917,12 @@ msgstr ""
 msgid "Could not get config from database"
 msgstr ""
 
-msgid "You have to wait"
+#, fuzzy, php-format
+msgid "You have to wait %d seconds"
 msgstr "お待ちください"
 
-msgid "seconds"
-msgstr "秒"
-
-msgid "You have been blocked for"
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes"
 msgstr "ブロックされました"
 
 msgid "System is currently in servicemode! At time only administrators can login."
@@ -2963,25 +2952,24 @@ msgstr "オーダー電子メール設定"
 msgid "Please fill up both data fields for password!"
 msgstr ""
 
-msgid "wait to be added"
-msgstr "追加待ちです"
+msgid "Addition in progress"
+msgstr "追加中"
 
-msgid "wait to be modified"
-msgstr "作成待ちです"
-
-msgid "wait to be deleted"
-msgstr "削除待ちです"
-
-msgid "suspended"
+msgid "Modification in progress"
 msgstr ""
 
-msgid "wait to be enabled"
-msgstr "有効化待ちです"
+msgid "Deletion in progress"
+msgstr "削除中"
 
-msgid "wait to be suspended"
+#, fuzzy
+msgid "Being enabled"
+msgstr "有効"
+
+msgid "Being suspended"
 msgstr ""
 
-msgid "unknown status"
+#, fuzzy
+msgid "Unknown error"
 msgstr "不明"
 
 msgid "hide aliases"
@@ -3461,11 +3449,29 @@ msgstr ""
 msgid "Message was sent."
 msgstr "送信済み"
 
+#~ msgid "HDD"
+#~ msgstr "ハードディスク"
+
+#~ msgid "seconds"
+#~ msgstr "秒"
+
+#~ msgid "wait to be added"
+#~ msgstr "追加待ちです"
+
+#~ msgid "wait to be modified"
+#~ msgstr "作成待ちです"
+
+#~ msgid "wait to be deleted"
+#~ msgstr "削除待ちです"
+
+#~ msgid "wait to be enabled"
+#~ msgstr "有効化待ちです"
+
+#~ msgid "unknown status"
+#~ msgstr "不明"
+
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "変更予定のエイリアス"
-
-#~ msgid "enabled"
-#~ msgstr "有効"
 
 #~ msgid "delete"
 #~ msgstr "削除"

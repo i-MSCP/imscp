@@ -46,7 +46,7 @@ $tpl -> assign(
                 array(
                         'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ISPCP - Client/Webtools'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'), 
+                        'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id'])
                      )
@@ -123,7 +123,7 @@ SQL_QUERY;
 
 		} else {
 
-			set_page_message(tr('Group already exist !'));
+			set_page_message(tr('Group already exists!'));
 			return;
 		}
 

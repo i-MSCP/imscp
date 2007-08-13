@@ -6,6 +6,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-12 Raphael Geissert
+    - GUI:
+        * Fixed #558: bruteforce protection is bogus
+        * Fixed #552: wrong data in domain counters in reseller page
+        * Fixed several errors in domain syntax checks
+    - ENGINE:
+        * Fixed #559: error in /etc/courier/userdb home path for subdomains
+
 2007-08-06 Benedikt Heintel
 	- ENGINE:
 		* Fixed #548: engine/Makefile - Spaces instead of tab
