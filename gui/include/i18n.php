@@ -18,7 +18,7 @@
  **/
 
 function curlang($newlang = null) {
-
+    global $cfg;
     static $language = null;
 
     $_language = $language;

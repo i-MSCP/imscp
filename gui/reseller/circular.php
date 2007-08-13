@@ -163,9 +163,9 @@ SQL_QUERY;
 
     while (!$rs -> EOF) {
 
-        $to = $rs->fields['fname']." ".$rs->fields['lname']." <".$rs->fields['email'].">";
+        $to = encode($rs->fields['fname']." ".$rs->fields['lname'])." <".$rs->fields['email'].">";
 
-        send_circular_email($to, "$sender_name <$sender_email>", stripslashes($msg_subject), stripslashes($msg_text));
+        send_circular_email($to, encode($sender_name)." <$sender_email>", stripslashes($msg_subject), stripslashes($msg_text));
 
         $rs -> MoveNext();
     }

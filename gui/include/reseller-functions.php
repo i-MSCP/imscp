@@ -1670,14 +1670,14 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$message = $data['message'];
 
 	if ($from_name) {
-	  	$from = $from_name . "<" . $from_email . ">";
+	  	$from = encode($from_name) . "<" . $from_email . ">";
 	} else {
 	  	$from = $from_email;
 	}
 
 	if ($ufname && $ulname) {
-	  	$to = "$ufname $ulname <$uemail>";
 	  	$name = "$ufname $ulname";
+	  	$to = encode($name)." <$uemail>";
 	} else {
    		if($ufname) {
 			$name = $ufname;
@@ -1702,13 +1702,13 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$subject = encode($subject);
 
-	$headers  = "From: " . encode($from) . "\n";
+	$headers  = "From: $from\n";
 	$headers .= "MIME-Version: 1.0\n" .
 	        	"Content-Type: text/plain;\n" .
 	        	"Content-Transfer-Encoding: 8bit\n".
 	        	"X-Mailer: ispCP ".$cfg['Version']." Service Mailer";
 
-	$mail_result = mail(encode($to), $subject, $message, $headers);
+	$mail_result = mail($to, $subject, $message, $headers);
 
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 

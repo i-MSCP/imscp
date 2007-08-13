@@ -6,6 +6,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-13 Raphael Geissert
+    - GUI:
+        * Fixed #561: Undefined variable: cfg in gui/include/i18n.php on line 33
+        * Fixed #546: Blank page when trying to edit a domain alias (client)
+        * Fixed #547: encoded email from reseller doesnt work
+    - CONFIGS:
+        * Fixed #451: missing do in logrotate/ispcp
+
 2007-08-12 Raphael Geissert
     - GUI:
         * Fixed #558: bruteforce protection is bogus

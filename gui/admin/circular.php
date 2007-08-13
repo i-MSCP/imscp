@@ -173,8 +173,8 @@ SQL_QUERY;
 
         if ($_POST['rcpt_to'] == 'rslrs' || $_POST['rcpt_to'] == 'usrs_rslrs') {
 
-            $to = $rs->fields['fname']." ".$rs->fields['lname']." <".$rs->fields['email'].">";
-            send_circular_email($to, "$sender_name <$sender_email>", stripslashes($msg_subject),
+            $to = encode($rs->fields['fname']." ".$rs->fields['lname'])." <".$rs->fields['email'].">";
+            send_circular_email($to, encode($sender_name)." <$sender_email>", stripslashes($msg_subject),
 			                    stripslashes($msg_text));
 
         }
@@ -240,9 +240,9 @@ SQL_QUERY;
 
     while (!$rs -> EOF) {
 
-        $to = $rs->fields['fname']." ".$rs->fields['lname']." <".$rs->fields['email'].">";
+        $to = encode($rs->fields['fname']." ".$rs->fields['lname'])." <".$rs->fields['email'].">";
 
-        send_circular_email($to, "$sender_name <$sender_email>", stripslashes($msg_subject), stripslashes($msg_text));
+        send_circular_email($to, encode($sender_name)." <$sender_email>", stripslashes($msg_subject), stripslashes($msg_text));
 
         $rs -> MoveNext();
     }
@@ -252,8 +252,6 @@ SQL_QUERY;
 
 function send_circular_email ($to, $from, $subject, $message)
 {
-    $to      = encode($to);
-    $from    = encode($from);
     $subject = encode($subject);
 
     $headers = "From: $from\r\n";

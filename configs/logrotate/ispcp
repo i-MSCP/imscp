@@ -11,7 +11,7 @@
 		/var/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
 	endscript
 	postrotate
-	for i in `seq 1 10`;
+	for i in `seq 1 10`; do
 		if [ -f /var/run/apache2.pid ]; then
 			/etc/init.d/apache2 stop > /dev/null
 			sleep 5
