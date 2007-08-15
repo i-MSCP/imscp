@@ -69,7 +69,7 @@ sub mngr_start_up {
 
     # sql check;
 
-    my $sql = "select * from admin;";
+    my $sql = "select admin_id from admin where admin_id = 1;";
 
     ($rs, $rdata) = doSQL($sql);
 

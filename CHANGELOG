@@ -12,8 +12,10 @@ ispCP ω 1.0.0 Changelog
     - ENGINE:
         * Partially fixed #476: /etc/ispcp/ispcp.conf is world readable
         * Applied patch from #387
+        * Added mod_cband support
     - CONFIGS:
         * Fixed #563: old config backups should be removed
+        * Added mod_cband support
 
 2007-08-13 Raphael Geissert
     - GUI:

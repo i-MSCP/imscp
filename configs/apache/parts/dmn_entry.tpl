@@ -23,6 +23,10 @@
 
     Redirect /ispcp http://{BASE_SERVER_VHOST}
 
+    <IfModule mod_cband.c>
+        CBandUser {DMN_GRP}
+    </IfModule>
+
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 

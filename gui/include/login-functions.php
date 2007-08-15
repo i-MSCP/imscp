@@ -21,8 +21,8 @@
 function username_exists($username) {
 	global $sql;
 
-	$query = "SELECT * FROM admin WHERE admin_name='" . addslashes(htmlspecialchars($username)) . "'";
-	$res = exec_query($sql, $query, array());
+	$query = 'SELECT admin_id FROM admin WHERE admin_name=?';
+	$res = exec_query($sql, $query, array($username));
 
 	return  ($res -> RecordCount() == 1);
 }
@@ -30,8 +30,8 @@ function username_exists($username) {
 function get_userdata($username) {
 	global $sql;
 
-	$query = "SELECT * FROM admin WHERE admin_name='" . addslashes(htmlspecialchars($username)) . "'";
-	$res = exec_query($sql, $query, array());
+	$query = 'SELECT * FROM admin WHERE admin_name=?';
+	$res = exec_query($sql, $query, array($username));
 
 	return $res -> FetchRow();
 

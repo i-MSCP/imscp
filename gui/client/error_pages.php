@@ -31,7 +31,7 @@ $tpl -> define_dynamic('logged_from', 'page');
 // page functions.
 //
 
-function write_error_page(&$sql, &$user_id, $eid) {
+function write_error_page(&$sql, $user_id, $eid) {
   $error =  stripslashes($_POST['error']);
   $file  =  '/errors/' . $eid . '.html';
   $vfs   =& new vfs($_SESSION['user_logged'], $sql);
@@ -61,7 +61,7 @@ $domain = "http://www.".$domain;
 
 $tpl -> assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ISPCP - Client/Manage Error Custom Pages'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id']),
                      'DOMAIN' => $domain

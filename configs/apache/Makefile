@@ -12,6 +12,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
 
 	cp ./httpd.conf ./working/ispcp.conf
+	cp ./httpd.conf ./parts/ispcp_base.tpl
 
 	# Debian 4.0 "Etch"?
 	if [ $(RELEASE) == '4.0' ] || [ $(RELEASE) == 'lenny/sid' ]; then \

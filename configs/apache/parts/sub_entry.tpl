@@ -26,6 +26,10 @@
     ErrorDocument 404 /errors/404.html
     ErrorDocument 500 /errors/500.html
 
+    <IfModule mod_cband.c>
+        CBandUser {DMN_GRP}
+    </IfModule>
+
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.
 

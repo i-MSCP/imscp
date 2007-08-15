@@ -873,13 +873,23 @@ sub gen_httpd_dmn_group_entry {
 
     my $dmn_name = @$dmn_data[1];
 
+    my $dmn_grp = $dmn_name;
+
     my $dmn_ip = @$dmn_data[21];
+
+    my $dmn_traffic_limit = @$dmn_data[10];
 
     my ($dmn_php, $dmn_cgi) = (@$dmn_data[19], @$dmn_data[20]);
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
     my $tpl_dir = "$conf_dir/apache/parts";
+
+    my $bw_disabled = '';
+
+    if ($dmn_traffic_limit eq 0) {
+        $bw_disabled = '#';
+    }
 
     my (
         $dg_b,
@@ -944,11 +954,10 @@ sub gen_httpd_dmn_group_entry {
 
     my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");
 
-
     my %tag_hash =
 
         (
-         '{DMN_GRP}' => $dmn_name,
+         '{DMN_GRP}' => $dmn_grp,
          '{DMN_NAME}' => $dmn_name,
          '{DMN_IP}' => $dmn_ip,
          '{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
@@ -956,10 +965,13 @@ sub gen_httpd_dmn_group_entry {
          '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
+         '{SCOREBOARDS_DIR}' => $main::cfg{'SCOREBOARDS_DIR'},
          '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
          '{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
          '{SUEXEC_USER}' => $suexec_user,
-         '{SUEXEC_GROUP}' => $suexec_group
+         '{SUEXEC_GROUP}' => $suexec_group,
+         '{BWLIMIT}' => $dmn_traffic_limit,
+         '{BWLIMIT_DISABLED}' => $bw_disabled
         );
 
     (
@@ -1061,6 +1073,20 @@ sub gen_httpd_dmn_group_entry {
                                  $dmn_group_entry
                                );
 
+    #
+    # Create mod_cband scoreboard for domain group
+    #
+
+    my $scoreboard_file = "$main::cfg{'SCOREBOARDS_DIR'}/$dmn_grp";
+
+    $rs = sys_command_rs("$main::cfg{'CMD_TOUCH'} $scoreboard_file");
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'APACHE_USER'}:$main::cfg{'APACHE_GROUP'} $scoreboard_file");
+
+    return $rs if ($rs != 0);
+
     push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "\n$dg_entry");
 
     return (0,  $dg_entry);
@@ -1089,6 +1115,8 @@ sub dmn_add_httpd_cfg_data {
     }
 
     my $dmn_name = @$dmn_data[1];
+
+    my $dmn_grp = $dmn_name;
 
     my $dmn_id = @$dmn_data[0];
 
@@ -1200,7 +1228,7 @@ sub dmn_add_httpd_cfg_data {
 
     %tag_hash = (
                   '{IP}' => $dmn_ip,
-                  '{DMN_GRP}' => $dmn_name
+                  '{DMN_GRP}' => $dmn_grp
                 );
 
     (
@@ -1457,6 +1485,8 @@ sub dmn_del_httpd_cfg_data {
 
     my $dmn_name = @$dmn_data[1];
 
+    my $dmn_grp = $dmn_name;
+
     my $dmn_ip = @$dmn_data[21];
 
 
@@ -1544,7 +1574,7 @@ sub dmn_del_httpd_cfg_data {
 
     %tag_hash = (
                   '{IP}' => $dmn_ip,
-                  '{DMN_GRP}' => $dmn_name
+                  '{DMN_GRP}' => $dmn_grp
                 );
 
     (
