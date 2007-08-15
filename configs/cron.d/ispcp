@@ -13,6 +13,9 @@
 # Backup
 0	1	*	*	*  root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
 
+# Remove config backups older than seven days
+@daily root find /etc/ispcp/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs /bin/rm
+
 # AWStats
 {AWSTATS}
 

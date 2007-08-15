@@ -145,6 +145,12 @@ gen_packages_list($tpl, $sql, $user_id);
 
 gen_page_message($tpl);
 
+	$tpl -> assign(
+                array(
+						'THEME_CHARSET' => tr('encoding'),
+					)
+			);
+
 $tpl -> parse('PAGE', 'page');
 
 $tpl -> prnt();

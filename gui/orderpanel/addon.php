@@ -106,6 +106,7 @@ gen_page_message($tpl);
 						'TR_DOMAIN_NAME' => tr('Domain name'),
 						'TR_CONTINUE' => tr('Continue'),
 						'TR_EXAMPLE' => tr('(e.g. domain-of-your-choice.com)'),
+						'THEME_CHARSET' => tr('encoding'),
 
 
 					)

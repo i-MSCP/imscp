@@ -258,6 +258,7 @@ gen_page_message($tpl);
                      	'TR_FAX' => tr('Fax'),
 						'TR_EMAIL' => tr('Email'),
 						'TR_PERSONAL_DATA' => tr('Personal Data'),
+						'THEME_CHARSET' => tr('encoding'),
 
 
 					)

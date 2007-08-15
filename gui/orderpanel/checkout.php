@@ -194,6 +194,7 @@ gen_page_message($tpl);
                 array(
                        	'CHECK_OUT' => tr('Check Out'),
 						'THANK_YOU_MESSAGE' => tr('<b>Thank You for purchasing</b><br>You will receive an email with more details and information'),
+						'THEME_CHARSET' => tr('encoding'),
 					)
 			);
 

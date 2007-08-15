@@ -3255,7 +3255,8 @@ sub mbox_mngr_engine {
     push_el(\@main::el, 'mbox_mngr_engine()', 'Starting...');
 
 
-    my $sql = "select * from mail_users where mail_id = $main::mail_task_id";
+    my $sql = "SELECT mail_id, mail_acc, mail_pass, mail_forward, domain_id, mail_type,
+    sub_id, status, mail_auto_respond, quota, mail_addr	FROM mail_users WHERE mail_id = $main::mail_task_id";
 
     ($rs, $rows) = doSQL($sql);
 

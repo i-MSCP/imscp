@@ -2478,8 +2478,14 @@ sub als_mngr_engine {
 
     push_el(\@main::el, 'als_mngr_engine()', 'Starting...');
 
-
-    my $sql = "select t1.*, t2.* from domain_aliasses as t1, domain as t2 where t2.domain_id = t1.domain_id and t1.alias_id = $main::als_task_id";
+    my $sql = "SELECT t1.alias_id, t1.domain_id, t1.alias_name, t1.alias_status, t1.alias_mount,
+    t1.alias_ip_id, t1.url_forward, t2.domain_id, t2.domain_name, t2.domain_gid, t2.domain_uid,
+    t2.domain_admin_id, t2.domain_created_id, t2.domain_created, t2.domain_last_modified,
+    t2.domain_mailacc_limit, t2.domain_ftpacc_limit, t2.domain_traffic_limit, t2.domain_sqld_limit,
+    t2.domain_sqlu_limit, t2.domain_status, t2.domain_alias_limit, t2.domain_subd_limit,
+    t2.domain_ip_id, t2.domain_disk_limit, t2.domain_disk_usage, t2.domain_php, t2.domain_cgi
+    FROM domain_aliasses AS t1, domain AS t2
+    WHERE t2.domain_id = t1.domain_id AND t1.alias_id = $main::als_task_id";
 
     my $sql2 = undef;
 

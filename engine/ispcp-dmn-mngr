@@ -1940,7 +1940,7 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
                 my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
-		$index_tpl =~ s/{DOMAIN_NAME}/$dmn_name/gi;
+		$index_tpl =~ s/{DOMAIN_NAME}/$decoded_dmn_name/gi;
 		$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 
 		($rs, $rdata) = store_file(
@@ -4120,8 +4120,12 @@ sub dmn_mngr_engine {
 
     push_el(\@main::el, 'dmn_mngr_engine()', 'Starting...');
 
-
-    my $sql = "select t1.*, t2.ip_number from domain as t1, server_ips as t2 where t1.domain_ip_id = t2.ip_id and t1.domain_id = $main::dmn_task_id";
+    my $sql = "SELECT t1.domain_id, t1.domain_name, t1.domain_gid, t1.domain_uid, t1.domain_admin_id,
+    t1.domain_created_id, t1.domain_created, t1.domain_last_modified, t1.domain_mailacc_limit, t1.domain_ftpacc_limit,
+    t1.domain_traffic_limit, t1.domain_sqld_limit, t1.domain_sqlu_limit, t1.domain_status, t1.domain_alias_limit,
+    t1.domain_subd_limit, t1.domain_ip_id, t1.domain_disk_limit, t1.domain_disk_usage, t1.domain_php,
+    t1.domain_cgi, t2.ip_number FROM domain AS t1, server_ips AS t2 WHERE t1.domain_ip_id = t2.ip_id
+    AND t1.domain_id = $main::dmn_task_id";
 
     ($rs, $rows) = doSQL($sql);
 

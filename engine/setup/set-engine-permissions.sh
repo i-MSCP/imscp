@@ -34,18 +34,29 @@
 DEBUG=0
 
 # read needed entries from ispcp.conf
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`
-do
-export $a
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+    export $a
 done
 
 #
 # fixing engine permissions;
 #
 
-if [ $DEBUG -eq 0 ]; then
-	echo -n "    Setting Engine Permissions: ";
+echo -n "    Setting Engine Permissions: ";
+
+if [ $DEBUG -eq 1 ]; then
+    echo	"";
 fi
+
+# Fix ispcp.conf perms
+if [ $DEBUG -eq 1 ]; then
+    echo -e "\tug+r,u+w,o-r root:vu2000 /etc/ispcp/ispcp.conf";
+else
+    echo -n ".";
+fi
+
+#chmod ug+r,u+w,o-r /etc/ispcp/ispcp.conf
+chown root:vu2000 /etc/ispcp/ispcp.conf
 
 for i in `find $ROOT_DIR/engine/`; do
 

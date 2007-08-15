@@ -34,14 +34,14 @@
 DEBUG=0
 
 # read needed entries from ispcp.conf
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ //g'`
-do
-export $a
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ //g'`; do
+    export $a
 done
 
-if [ $DEBUG -eq 0 ]; then
-	echo	"";
-	echo -n "    Setting GUI Permissions: ";
+echo -n "    Setting GUI Permissions: ";
+
+if [ $DEBUG -eq 1 ]; then
+    echo	"";
 fi
 
 #
@@ -147,6 +147,4 @@ fi
 chmod -R 0755 $i;
 chown -R $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i;
 
-if [ $DEBUG -eq 0 ]; then
-	echo "done";
-fi
+echo "done";

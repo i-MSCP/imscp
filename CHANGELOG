@@ -6,6 +6,15 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-15 Raphael Geissert
+    - GUI:
+        * Fixed #566: Undefined template variable: THEME_CHARSET in orderpanel
+    - ENGINE:
+        * Partially fixed #476: /etc/ispcp/ispcp.conf is world readable
+        * Applied patch from #387
+    - CONFIGS:
+        * Fixed #563: old config backups should be removed
+
 2007-08-13 Raphael Geissert
     - GUI:
         * Fixed #561: Undefined variable: cfg in gui/include/i18n.php on line 33

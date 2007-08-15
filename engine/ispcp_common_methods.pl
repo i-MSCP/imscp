@@ -2178,3 +2178,26 @@ sub del_dmn_suexec_user {
     return 0;
 
 }
+
+sub sort_domains {
+
+    my @domains = @_;
+    my $len = scalar(@domains);
+
+    for (my ($i, $dmn) = (0, ''); $i < $len; $i++) {
+    	$dmn = $domains[$i];
+    	$dmn=join(".",reverse(split(/\./,$dmn)));
+    	$domains[$i] = $dmn;
+    }
+
+    @domains = sort(@domains);
+
+    for (my ($i, $dmn) = (0, ''); $i < $len; $i++) {
+            $dmn = $domains[$i];
+            $dmn=join(".",reverse(split(/\./,$dmn)));
+            $domains[$i] = $dmn;
+    }
+
+    return reverse(@domains);
+
+}

@@ -89,7 +89,7 @@ if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 						// Please make this configurable by ispcp-lib
 						'TR_SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://'.$_SERVER['HTTP_HOST'] : 'https://'.$_SERVER['HTTP_HOST'],
 						'TR_SSL_IMAGE' => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
-						'TR_SSL_DESCRIPTION' => isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Unsafe Connection')
+						'TR_SSL_DESCRIPTION' => isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
 						)
 					);
 

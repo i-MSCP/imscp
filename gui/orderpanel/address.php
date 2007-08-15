@@ -269,6 +269,7 @@ gen_page_message($tpl);
                      'TR_FAX' => tr('Fax'),
 					 'TR_CONTINUE' => tr('Continue'),
 					 'NEED_FILLED' => tr('* denotes mandatory field.'),
+					 'THEME_CHARSET' => tr('encoding'),
 
 
 					)
