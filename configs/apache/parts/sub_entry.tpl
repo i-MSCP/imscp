@@ -25,6 +25,7 @@
     ErrorDocument 403 /errors/403.html
     ErrorDocument 404 /errors/404.html
     ErrorDocument 500 /errors/500.html
+    ErrorDocument 503 /errors/503.html
 
     <IfModule mod_cband.c>
         CBandUser {DMN_GRP}

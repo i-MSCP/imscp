@@ -84,7 +84,7 @@ sub dmn_mngr_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from domain;";
+    my $sql = "select admin_id from admin where admin_id = 1;";
 
     ($rs, $rdata) = doSQL($sql);
 
@@ -1745,6 +1745,14 @@ sub dmn_del_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
+    #
+    # Remove mod_cband scoreboard
+    #
+
+    $rs = del_file("$main::cfg{'SCOREBOARDS_DIR'}/$dmn_grp");
+
+    return $rs if ($rs != 0);
+
     push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'Ending...');
 
     return 0;
@@ -1938,7 +1946,7 @@ sub dmn_add_httpd_file_data {
 	# Default error pages;
 	#
 
-        my @errordocs = (401, 403, 404, 500);
+        my @errordocs = (401, 403, 404, 500, 503);
 
         my ($i, $key) = ('', '');
 
@@ -1948,6 +1956,8 @@ sub dmn_add_httpd_file_data {
             if (-e "$root_dir/gui/errordocs/$key.html") {
 
                 $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
+                return $rs if ($rs != 0);
+                $rs = setfmode("$www_dir/$dmn_name/errors/$key.html", $sys_user, $sys_group, 0644);
                 return $rs if ($rs != 0);
             }
         }

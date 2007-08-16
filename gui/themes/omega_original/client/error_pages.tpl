@@ -91,6 +91,17 @@
                           </tr>
                       </table></td>
                     </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                      <td class="content"><table width="100%"  border="00" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="55"><a href="error_edit.php?eid=503"><img src="{THEME_COLOR_PATH}/images/icons/error503.png" width="38" height="44" border="0"></a></td>
+                            <td width="300">{TR_ERROR_503}</td>
+                            <td width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="left"> <a href="error_edit.php?eid=503" class="link">{TR_EDIT}</a></td>
+                            <td><a href="{DOMAIN}/errors/503.html" target="_blank" class="link">{TR_VIEW}</a></td>
+                          </tr>
+                      </table></td>
+                    </tr>
                 </table></td>
                 <td>&nbsp;</td>
               </tr>

@@ -6,6 +6,21 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-16 Raphael Geissert
+    - GUI:
+        * Updated error icons
+    - ENGINE:
+        * Fixed #569: error pages are not owned to the right user and group
+        * Added 503 error page
+        * Fixed #570: mod_cband scoreboards are not deleted when user account is deleted
+    - SETUP:
+        * Added check for Net::LibIDN
+        * Fixed #568: Incorrect SQL Query in Setup
+    - CONFIGS:
+        * Added 503 error page
+    - DOCS:
+        * Added Debian Lenny/Sid information
+
 2007-08-15 Raphael Geissert
     - GUI:
         * Fixed #566: Undefined template variable: THEME_CHARSET in orderpanel

@@ -32,7 +32,7 @@
 
 my @needed = (strict, warnings, IO::Socket, DBI, DBD::mysql, Mail::Address, MIME::Entity,
 MIME::Parser, Crypt::CBC, Crypt::Blowfish, MIME::Base64,
-Term::ReadPassword);
+Term::ReadPassword, Net::LibIDN);
 
 my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
@@ -67,10 +67,10 @@ for $mod (@needed) {
 
 if ($mod_err eq '_on_') {
 
-    print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your
+    print STDERR "\nModules [$mod_missing] WERE NOT FOUND in your
 system...\n";
 
-    print STDERR "\nPlease INSTALL them before using ISPCP software !\n";
+    print STDERR "\nPlease INSTALL them before using isCP Omega !\n";
 
     exit 1;
 
