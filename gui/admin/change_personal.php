@@ -26,6 +26,7 @@ function gen_admin_personal_data(&$tpl, &$sql, $user_id)
         select
             fname,
             lname,
+            gender,
             firm,
             zip,
             city,
@@ -55,7 +56,9 @@ SQL_QUERY;
                             'STREET_2' => $rs -> fields['street2'],
                             'EMAIL' => $rs -> fields['email'],
                             'PHONE' => $rs -> fields['phone'],
-                            'FAX' => $rs -> fields['fax']
+                            'FAX' => $rs -> fields['fax'],
+                            'VL_MALE' => ($rs -> fields['gender'] == 'M')? 'checked' : '',
+                            'VL_FEMALE' => ($rs -> fields['gender'] == 'F')? 'checked' : '',
 
                          )
                   );
@@ -67,6 +70,7 @@ function update_admin_personal_data(&$sql, $user_id)
 
     $fname 		= clean_input($_POST['fname']);
     $lname 		= clean_input($_POST['lname']);
+    $gender 	= clean_input($_POST['gender']);
     $firm 		= clean_input($_POST['firm']);
     $zip 		= clean_input($_POST['zip']);
     $city 		= clean_input($_POST['city']);
@@ -76,6 +80,10 @@ function update_admin_personal_data(&$sql, $user_id)
     $email 		= clean_input($_POST['email']);
     $phone 		= clean_input($_POST['phone']);
     $fax 		= clean_input($_POST['fax']);
+
+    if (get_gender_by_code($gender, true) === null) {
+        $gender = '';
+    }
 
     $query = <<<SQL_QUERY
         update
@@ -91,7 +99,8 @@ function update_admin_personal_data(&$sql, $user_id)
             street2 = ?,
             email = ?,
             phone = ?,
-            fax = ?
+            fax = ?,
+            gender = ?
         where
             admin_id = ?
 SQL_QUERY;
@@ -107,6 +116,7 @@ SQL_QUERY;
                                          $email,
                                          $phone,
                                          $fax,
+                                         $gender,
                                          $user_id));
 
     set_page_message(tr('Personal data updated successfully!'));
@@ -168,6 +178,9 @@ $tpl -> assign(
                         'TR_EMAIL' => tr('Email'),
                         'TR_PHONE' => tr('Phone'),
                         'TR_FAX' => tr('Fax'),
+                        'TR_GENDER' => tr('Gender'),
+                        'TR_MALE' => tr('Male'),
+                        'TR_FEMALE' => tr('Female'),
                         'TR_UPDATE_DATA' => tr('Update data'),
                      )
               );

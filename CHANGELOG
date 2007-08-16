@@ -9,6 +9,7 @@ ispCP ω 1.0.0 Changelog
 2007-08-15 Raphael Geissert
     - GUI:
         * Fixed #566: Undefined template variable: THEME_CHARSET in orderpanel
+        * Removed virtual limits
     - ENGINE:
         * Partially fixed #476: /etc/ispcp/ispcp.conf is world readable
         * Applied patch from #387

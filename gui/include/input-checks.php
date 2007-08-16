@@ -285,15 +285,25 @@ function check_dn_token($data) {
  *  @return		boolean					false	incorrect syntax (ranges)
  * 										true	correct syntax (ranges)
  */
-function ispcp_limit_check($data, $num) {
+function ispcp_limit_check($data, $num = null) {
 
     $res = preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data);
 
     if (!$res)
     	return FALSE;
 
-    if ($data > $num)
-    	return FALSE;
+    if ($num !== null) {
+        $inf = debug_backtrace();
+        if (isset($inf[1])) {
+            $inf = $inf[1];
+        } else {
+            $inf = array('file' => $inf[0]['file'], 'line' => $inf[0]['line'], 'function' => 'main');
+        }
+        printf('Deprecated usage of %s! Backtrace is: %s:%d->%s<br>'."\n", __FUNCTION__, $inf['file'], $inf['line'], $inf['function']);
+        if ($data > $num) {
+            return false;
+        }
+    }
 
     return TRUE;
 }

@@ -282,21 +282,21 @@ function check_data_iscorrect(&$tpl)
 		$ahp_error = tr('Incorrect setup fee. Example: 19.99');
 	}
 
-	if (!ispcp_limit_check($hp_sub, 999)) {
+	if (!ispcp_limit_check($hp_sub)) {
 		$ahp_error = tr('Incorrect subdomain length or syntax!');
-	} else if (!ispcp_limit_check($hp_als, 999)) {
+	} else if (!ispcp_limit_check($hp_als)) {
 		$ahp_error = tr('Incorrect alias length or syntax!');
-	} else if (!ispcp_limit_check($hp_mail, 999)) {
+	} else if (!ispcp_limit_check($hp_mail)) {
 		$ahp_error = tr('Incorrect mail account length or syntax!');
-	} else if (!ispcp_limit_check($hp_ftp, 999)) {
+	} else if (!ispcp_limit_check($hp_ftp)) {
 		$ahp_error = tr('Incorrect FTP account length or syntax!');
-	} else if (!ispcp_limit_check($hp_sql_user, 999)) {
+	} else if (!ispcp_limit_check($hp_sql_user)) {
 		$ahp_error = tr('Incorrect SQL database length or syntax!');
-	} else if (!ispcp_limit_check($hp_sql_db, 999)) {
+	} else if (!ispcp_limit_check($hp_sql_db)) {
 		$ahp_error = tr('Incorrect SQL user length or syntax!');
-	} else if (!ispcp_limit_check($hp_traff, 1024*1024*1024) || $hp_traff == -1) {
+	} else if (!ispcp_limit_check($hp_traff)) {
 		$ahp_error = tr('Incorrect traffic length or syntax!');
-	} else if (!ispcp_limit_check($hp_disk, 1024*1024*1024) || $hp_disk == -1) {
+	} else if (!ispcp_limit_check($hp_disk)) {
 		$ahp_error = tr('Incorrect disk length or syntax!');
 	}
 

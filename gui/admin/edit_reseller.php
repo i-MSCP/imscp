@@ -206,58 +206,58 @@ function check_user_data()
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], 99999) || $_POST['nreseller_max_domain_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'])) {
 
         set_page_message( tr("Incorrect max domain count or syntax!"));
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'])) {
 
         set_page_message( tr("Incorrect max subdomain count or syntax!"));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'])) {
 
         set_page_message(tr('Incorrect max alias count or syntax!'));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'])) {
 
         set_page_message(tr('Incorrect max FTP count or syntax!'));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'])) {
 
         set_page_message(tr('Incorrect max mail count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], 99999)) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'])) {
 
         set_page_message(tr('Incorrect max SQL databases count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], 99999)) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'])) {
 
         set_page_message(tr('Incorrect max SQL users count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'] , 999999) || $_POST['nreseller_max_traffic'] == -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'])) {
 
         set_page_message(tr('Incorrect max traffic amount or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'], 999999) || $_POST['nreseller_max_disk']== -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'])) {
 
         set_page_message(tr('Incorrect max disk amount or syntax!'));
 
@@ -316,56 +316,56 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 
     $err = '_off_';
 
-    	calculate_new_reseller_vals($reseller_max_domain_cnt, $rdmn_current, $rdmn_max, $udmn_current, $rdmn_current, $udmn_uf, $err, tr('Domain'));
+    	calculate_new_reseller_vals($reseller_max_domain_cnt, $rdmn_current, $rdmn_max, $udmn_current, $rdmn_current, $udmn_uf, $err, tr('Domains'));
 
     if ($err == '_off_') {
 
-        calculate_new_reseller_vals($reseller_max_subdomain_cnt, $rsub_current, $rsub_max, $usub_current, $rsub_current, $usub_uf, $err, tr('Subdomain'));
+        calculate_new_reseller_vals($reseller_max_subdomain_cnt, $rsub_current, $rsub_max, $usub_current, $rsub_current, $usub_uf, $err, tr('Subdomains'));
 
     }
 
     if ($err == '_off_') {
 		if ($uals_max != $rals_current && $uals_current > 0)
-			$err = 'Inconsistency between current_als_cnt and actual alias count: '.$uals_max.' != '.$rals_current;
+			$err = tr('Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d', $uals_max, $rals_current);
 		else
-			calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Alias'));
+			calculate_new_reseller_vals($reseller_max_alias_cnt, $rals_current, $rals_max, $uals_current, $uals_max, $uals_uf, $err, tr('Aliases'));
     }
 
     if ($err == '_off_') {
 		if ($umail_max != $rmail_current && $umail_current > 0)
-			$err = 'Inconsistency between current_mail_cnt and actual mail count: '.$umail_max.' != '.$rmail_current;
+			$err = tr('Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d',$umail_max, $rmail_current);
 		else
 			calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
     }
 
     if ($err == '_off_') {
 		if ($uftp_max != $rftp_current && $uftp_current > 0)
-			$err = 'Inconsistency between current_ftp_cnt and actual ftp count: '.$uftp_max.' != '.$rftp_current;
+			$err = tr('Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d', $uftp_max, $rftp_current);
 		else
 			calculate_new_reseller_vals($reseller_max_ftp_cnt, $rftp_current, $rftp_max, $uftp_current, $uftp_max, $uftp_uf, $err, tr('FTP'));
     }
 
     if ($err == '_off_') {
 
-        calculate_new_reseller_vals($reseller_max_sql_db_cnt, $rsql_db_current, $rsql_db_max, $usql_db_current, $usql_db_max, $usql_db_uf, $err, tr('SQL Database'));
+        calculate_new_reseller_vals($reseller_max_sql_db_cnt, $rsql_db_current, $rsql_db_max, $usql_db_current, $usql_db_max, $usql_db_uf, $err, tr('SQL Databases'));
 
     }
 
     if ($err == '_off_') {
 
-        calculate_new_reseller_vals($reseller_max_sql_user_cnt, $rsql_user_current, $rsql_user_max, $usql_user_current, $usql_user_max, $usql_user_uf, $err, tr('SQL User'));
+        calculate_new_reseller_vals($reseller_max_sql_user_cnt, $rsql_user_current, $rsql_user_max, $usql_user_current, $usql_user_max, $usql_user_uf, $err, tr('SQL Users'));
 
     }
 
     if ($err == '_off_') {
 
-        calculate_new_reseller_vals($reseller_max_traffic, $rtraff_current, $rtraff_max, $utraff_current / 1024 / 1024, $utraff_max, $utraff_uf, $err, tr('Traffic'));
+        calculate_new_reseller_vals($reseller_max_traffic, $rtraff_current, $rtraff_max, $utraff_current / 1024 / 1024, $utraff_max, $utraff_uf, $err, tr('Web Traffic'));
 
     }
 
     if ($err == '_off_') {
 
-        calculate_new_reseller_vals($reseller_max_disk, $rdisk_current, $rdisk_max, $udisk_current / 1024 / 1024, $udisk_max, $udisk_uf, $err, tr('Disk'));
+        calculate_new_reseller_vals($reseller_max_disk, $rdisk_current, $rdisk_max, $udisk_current / 1024 / 1024, $udisk_max, $udisk_uf, $err, tr('Disk storage'));
 		//							($data,               $r,           &$rmax,         $u,                         $umax,       $uf,    &$err, $obj)
     }
 
@@ -386,18 +386,29 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
     return true;
 }
 
-function calculate_new_reseller_vals ($data, $r, &$rmax, $u, $umax, $uf, &$err, $obj) {
+/**
+ * Function that seems to check if it is safe to set the new reseller limits (per 'service', e.g. mail, domains, etc)
+ *
+ * @param int $new_limit New limit
+ * @param int $r Service usage information of reseller (assigned, possibly being used or not)
+ * @param int $rmax Current reseller's limit
+ * @param int $u Service usage information of reseller's users (assigned, possibly being used or not)
+ * @param int $umax Current reseller users' limit
+ * @param int $unlimited Unlimited: _on_, limited: _off_
+ * @param string &$err Error message returned in case something is not good
+ * @param string $service The 'service' name, like domains, subdomains, mail accounts, sql users, etc
+ */
+function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
 
-    if ($uf == '_off_') {
+    if ($unlimited == '_off_') {
 
         //
         // We have something like that: $u <= ($umax = $r) <= $rmax
         //
 
-        if ($umax != $r && $u > 0) {
+        if ($umax != $r && $u > 0) { // ... && $u != unlimited
 
-            $err = tr('Undefined user accounting error!');
-
+            $err = tr('Reseller data inconsistency!'); //really?
 
 	        return;
 
@@ -405,57 +416,49 @@ function calculate_new_reseller_vals ($data, $r, &$rmax, $u, $umax, $uf, &$err, 
 
         $both = $umax = $r;
 
-        if ($rmax > 0) {
+        if ($rmax > 0) { // not unlimited
 
-            if ($data == 0 || $data >= $rmax) {
+            if ($new_limit == 0 || $new_limit >= $rmax) { // if we are increasing it's ok
 
-                $rmax = $data;
+                $rmax = $new_limit;
 
-            } else if ($both <= $data && $data < $rmax) {
+            } else if ($both <= $new_limit && $new_limit < $rmax) { // if reducing but the reseller isn't using more than the new limit it's ok
 
-                $rmax = $data;
+                $rmax = $new_limit;
 
-            } else if ($u < $data && $data < $both) {
+            } else if ($u < $new_limit && $r > $new_limit) { //reseller has assigned more than the new limit
 
-                $err = tr('This reseller has already dispatched more <b>').$obj.('</b> Service Numbers,<br>');
-
-                $err .= tr('Then the value you are trying to enter now !<br>');
+                $err = tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service);
 
                 $err .= tr('Edit reseller aborted!');
 
-            } else if ($data <= $u) {
+            } else if ($new_limit <= $u) { // users are using more than new limit
 
-                $err = tr('This reseller has more <b>').$obj.('</b> Service Numbers,<br>');
-
-                $err .= tr('Then the value you are trying to enter now!<br>');
+                $err = tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service);
 
                 $err .= tr('Edit reseller aborted!');
 
             }
 
-        } else {
+        } else { // if reseller is not limited
 
-            if ($data == 0) {
+            if ($new_limit == 0) { // == unlimited
 
-                $rmax = $data;
+                $rmax = $new_limit;
 
-            } else if ($both <= $data) {
+            } else if ($r <= $new_limit) {
 
-                $rmax = $data;
+                $rmax = $new_limit;
 
-            } else if ($u < $data && $data < $both) {
+            } else if ($u < $new_limit && $r > $new_limit) {
 
-                $err = tr('This reseller has already dispatched more <b>').$obj.('</b> Service Numbers,<br>');
-
-                $err .= tr('Then the value you are trying to enter now !<br>');
+                $err = tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service);
 
                 $err .= tr('Edit reseller aborted!');
 
-            } else if ($data <= $u) {
+            } else if ($new_limit <= $u) {
 
-                $err = tr('This reseller has more <b>').$obj.('</b> Service Numbers,<br>');
-
-                $err .= tr('Then the value you are trying to enter now !<br>');
+                $err = tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service);
 
                 $err .= tr('Edit reseller aborted!');
 
@@ -463,13 +466,13 @@ function calculate_new_reseller_vals ($data, $r, &$rmax, $u, $umax, $uf, &$err, 
 
         }
 
-    } else if ($uf == '_on_') {
+    } else if ($unlimited == '_on_') {
 
-        if ($data > 0) {
+        if ($new_limit > 0) {
 
-            $err = tr('This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>', $obj);
+            $err = tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>', $service);
 
-            $err .= tr('If you want to limit the reseller, fist you must limit its users !<br>');
+            $err .= tr('If you want to limit the reseller, you must first limit its customers!<br>');
 
             $err .= tr('Edit reseller aborted!');
 
@@ -501,9 +504,9 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 
                     $ip_msg = "$ip_num ($ip_name)";
 
-                    $err = tr('This reseller has domains assigned To <b>').$ip_msg;
+                    $err = tr('This reseller has domains assigned to the <b>%s</b> address!<br>', $ip_msg);
 
-                    $err .= tr('</b> Address !<br>Edit reseller aborted!');
+                    $err .= tr('Edit reseller aborted!');
 
                     return;
 
@@ -594,6 +597,7 @@ function update_reseller(&$sql)
 
             $fname 		= clean_input($_POST['fname']);
             $lname 		= clean_input($_POST['lname']);
+            $gender 	= clean_input($_POST['gender']);
             $firm 		= clean_input($_POST['firm']);
             $zip 		= clean_input($_POST['zip']);
             $city 		= clean_input($_POST['city']);
@@ -603,6 +607,10 @@ function update_reseller(&$sql)
             $fax		= clean_input($_POST['fax']);
             $street1 	= clean_input($_POST['street1']);
             $street2 	= clean_input($_POST['street2']);
+
+            if (get_gender_by_code($gender, true) === null) {
+                $gender = '';
+            }
 
             if(empty($_POST['pass']))
             {
@@ -621,7 +629,8 @@ function update_reseller(&$sql)
                         phone = ?,
                         fax = ?,
                         street1 = ?,
-                        street2 = ?
+                        street2 = ?,
+                        gender = ?
                     where
                         admin_id = ?
 SQL_QUERY;
@@ -636,6 +645,7 @@ SQL_QUERY;
                                                      $fax,
                                                      $street1,
                                                      $street2,
+                                                     $gender,
                                                      $edit_id));
             }
             else {
@@ -655,7 +665,8 @@ SQL_QUERY;
                         phone = ?,
                         fax = ?,
                         street1 = ?,
-                        street2 = ?
+                        street2 = ?,
+                        gender = ?
                     where
                         admin_id = ?
 SQL_QUERY;
@@ -671,6 +682,7 @@ SQL_QUERY;
                                                      $fax,
                                                      $street1,
                                                      $street2,
+                                                     $gender,
                                                      $edit_id));
             }
 
@@ -734,7 +746,8 @@ SQL_QUERY;
       	                              clean_input($_POST['email']),
         	                            clean_input($_POST['fname']),
           	                          clean_input($_POST['lname']),
-            	                        tr('Reseller'));
+            	                        tr('Reseller'),
+            	                        $gender);
 						}
 
             $_SESSION['user_updated'] = 1;
@@ -762,7 +775,7 @@ function get_reseller_prop(&$sql)
             zip, city,
             country, email,
             phone, fax,
-            street1, street2,
+            street1, street2, gender
 
             max_dmn_cnt, current_dmn_cnt,
             max_sub_cnt, current_sub_cnt,
@@ -822,7 +835,8 @@ SQL_QUERY;
                 $rs -> fields['max_disk_amnt'],
                 $rs -> fields['current_disk_amnt'],
                 $rs -> fields['customer_id'],
-                $rs -> fields['reseller_ips']);
+                $rs -> fields['reseller_ips'],
+                $rs -> fields['gender']);
 }
 
 /*
@@ -848,7 +862,8 @@ list(
     $max_sql_user_cnt, $current_sql_user_cnt,
     $max_traff_amnt, $current_traff_amnt,
     $max_disk_amnt, $current_disk_amnt,
-    $customer_id, $rip_lst
+    $customer_id, $rip_lst,
+    $gender
 ) = get_reseller_prop(&$sql);
 
 $reseller_ips = get_servers_IPs($tpl, $sql, $rip_lst);
@@ -900,6 +915,9 @@ $tpl -> assign(
         'TR_CUSTOMER_ID' => tr('Customer ID'),
         'TR_FIRST_NAME' => tr('First name'),
         'TR_LAST_NAME' => tr('Last name'),
+        'TR_GENDER' => tr('Gender'),
+        'TR_MALE' => tr('Male'),
+        'TR_FEMALE' => tr('Female'),
         'TR_COMPANY' => tr('Company'),
         'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
         'TR_CITY' => tr('City'),
@@ -910,8 +928,8 @@ $tpl -> assign(
         'TR_FAX' => tr('Fax'),
         'TR_PHONE' => tr('Phone'),
         'TR_UPDATE' => tr('Update'),
-				'TR_SEND_DATA' => tr('Send new login data'),
-				'TR_PASSWORD_GENERATE' => tr('Password generate'),
+        'TR_SEND_DATA' => tr('Send new login data'),
+        'TR_PASSWORD_GENERATE' => tr('Password generate'),
 
         'USERNAME'  =>$admin_name,
         'EMAIL'  =>$email,
@@ -929,6 +947,9 @@ $tpl -> assign(
         'CUSTOMER_ID' => $customer_id,
         'FIRST_NAME' => $fname,
         'LAST_NAME' => $lname,
+        'VL_MALE' => ($_POST['gender'] == 'M')? 'checked' : '',
+        'VL_FEMALE' => ($_POST['gender'] == 'F')? 'checked' : '',
+
         'FIRM' => $firm,
         'ZIP' => $zip,
         'CITY'  => $city,

@@ -71,6 +71,7 @@ function update_data(&$sql)
             $fname 		= clean_input($_POST['fname']);
             $lname 		= clean_input($_POST['lname']);
             $firm 		= clean_input($_POST['firm']);
+            $gender		= clean_input($_POST['gender']);
             $zip 		= clean_input($_POST['zip']);
             $city 		= clean_input($_POST['city']);
             $country	= clean_input($_POST['country']);
@@ -79,6 +80,10 @@ function update_data(&$sql)
             $fax 		= clean_input($_POST['fax']);
             $street1 	= clean_input($_POST['street1']);
             $street2 	= clean_input($_POST['street2']);
+
+            if (get_gender_by_code($gender, true) === null) {
+                $gender = '';
+            }
 
             if(empty($_POST['pass'])) {
 
@@ -101,7 +106,7 @@ function update_data(&$sql)
                             fax = ?,
                             street1 = ?,
                             street2 = ?
-
+                            gender = ?
                     where
 
                         admin_id= ?
@@ -117,6 +122,7 @@ SQL_QUERY;
                                                      $fax,
                                                      $street1,
                                                      $street2,
+                                                     $gender,
                                                      $edit_id));
 
                } else {
@@ -156,7 +162,8 @@ SQL_QUERY;
                             phone = ?,
                             fax = ?,
                             street1 = ?,
-                            street2 = ?
+                            street2 = ?,
+                            gender = ?
                         where
                             admin_id = ?
 SQL_QUERY;
@@ -173,6 +180,7 @@ SQL_QUERY;
                                                          $fax,
                                                          $street1,
                                                          $street2,
+                                                         $gender,
                                                          $edit_id));
                     //
                     // Kill any existing session of the edited user
@@ -225,7 +233,8 @@ SQL_QUERY;
                                             clean_input($_POST['email']),
                                             clean_input($_POST['fname']),
                                             clean_input($_POST['lname']),
-                                            tr($admin_type));
+                                            tr($admin_type),
+                                            $gender);
                 }
 
                 $_SESSION['user_updated'] = 1;
@@ -275,7 +284,8 @@ $query = <<<SQL_QUERY
         fax,
         street1,
         street2,
-        email
+        email,
+        gender
     from
         admin
     where
@@ -328,9 +338,12 @@ $tpl -> assign(
                         'TR_PHONE' => tr('Phone'),
                         'TR_FAX' => tr('Fax'),
                         'TR_PHONE' => tr('Phone'),
+                        'TR_GENDER' => tr('Gender'),
+                        'TR_MALE' => tr('Male'),
+                        'TR_FEMALE' => tr('Female'),
                         'TR_UPDATE' => tr('Update'),
-												'TR_SEND_DATA' => tr('Send new login data'),
-												'TR_PASSWORD_GENERATE' => tr('Password generate'),
+                        'TR_SEND_DATA' => tr('Send new login data'),
+                        'TR_PASSWORD_GENERATE' => tr('Password generate'),
 
                         'FIRST_NAME' =>$rs -> fields['fname'],
                         'LAST_NAME' =>$rs -> fields['lname'],
@@ -344,6 +357,8 @@ $tpl -> assign(
                         'FAX'  =>$rs -> fields['fax'],
                         'USERNAME'  => $admin_name,
                         'EMAIL'  =>$rs -> fields['email'],
+                        'VL_MALE' => ($rs -> fields['gender'] == 'M')? 'checked' : '',
+                        'VL_FEMALE' => ($rs -> fields['gender'] == 'F')? 'checked' : '',
                         'EDIT_ID'  => $edit_id,
 
                      )

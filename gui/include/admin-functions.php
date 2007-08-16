@@ -1754,7 +1754,7 @@ AUTO_LOG_MSG;
 
 }
 
-function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype) {
+function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype, $gender = '') {
 
 	global $cfg;
 

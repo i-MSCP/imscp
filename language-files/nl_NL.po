@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 13:07-0500\n"
+"POT-Creation-Date: 2007-08-15 22:03-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -250,6 +251,18 @@ msgstr "Voornaam"
 
 msgid "Last name"
 msgstr "Achternaam"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Bovenkant"
+
+#, fuzzy
+msgid "Male"
+msgstr "Inschakelen"
+
+#, fuzzy
+msgid "Female"
+msgstr "Optie"
 
 msgid "Company"
 msgstr "Bedrijf"
@@ -719,63 +732,70 @@ msgstr "Dag"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-msgid "Domain"
-msgstr "Domein"
+msgid "Domains"
+msgstr "Domeinen"
 
-msgid "Subdomain"
-msgstr "Subdomein"
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
 
-msgid "Alias"
+msgid "Aliases"
+msgstr "Aliassen"
+
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
 msgstr ""
 
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+
 msgid "FTP"
 msgstr ""
 
-msgid "SQL Database"
-msgstr "MySQL databank"
+msgid "SQL Databases"
+msgstr ""
 
-msgid "SQL User"
-msgstr "MySQL gebruiker"
+msgid "SQL Users"
+msgstr ""
 
-msgid "Traffic"
-msgstr "Verkeer"
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Web verkeer"
 
-msgid "Disk"
-msgstr "Schijf"
+#, fuzzy
+msgid "Disk storage"
+msgstr "Schijfgebruik"
 
-msgid "Undefined user accounting error!"
-msgstr "Niet gedefinieerde fout!"
+#, fuzzy
+msgid "Reseller data inconsistency!"
+msgstr "Reseller statistieken tabel"
 
-msgid "This reseller has already dispatched more <b>"
-msgstr "Deze reseller heeft al meer doorgestuurd <b>"
-
-msgid "Then the value you are trying to enter now !<br>"
-msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "Wijziging reseller afgebroken!"
 
-msgid "This reseller has more <b>"
-msgstr "Deze reseller heeft meer <b>"
-
-msgid "Then the value you are trying to enter now!<br>"
-msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
-
 #, php-format
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
-msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+#, php-format
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgstr ""
+
+#, fuzzy
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr "ALs u de reseller wil limiteren, limiteer dan eerst zijn gebruikers<br>"
 
-msgid "This reseller has domains assigned To <b>"
+#, fuzzy, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
 msgstr "Deze reseller heeft domein toegewezen aan <b>"
-
-msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> Adres!<br>Bewerken reseller mislukt!"
 
 msgid "Edit reseller"
 msgstr "Wijzig reseller"
@@ -978,6 +998,12 @@ msgstr "Beschikbare IP adressen"
 
 msgid "IP"
 msgstr "IP adres"
+
+msgid "Domain"
+msgstr "Domein"
+
+msgid "Alias"
+msgstr ""
 
 msgid "Uninstall"
 msgstr "Verwijderen"
@@ -1297,6 +1323,15 @@ msgstr "Geen reseller(s) gevonden in uw systeem!"
 
 msgid "Reseller statistics table"
 msgstr "Reseller statistieken tabel"
+
+msgid "Traffic"
+msgstr "Verkeer"
+
+msgid "Disk"
+msgstr "Schijf"
+
+msgid "Subdomain"
+msgstr "Subdomein"
 
 msgid "SQL database"
 msgstr "MySQL databank"
@@ -2619,19 +2654,10 @@ msgstr "Schijf in MB"
 msgid "Traffic limit"
 msgstr "Verkeer"
 
-msgid "Aliases"
-msgstr "Aliassen"
-
 msgid "Emails"
 msgstr ""
 
 msgid "FTPs"
-msgstr ""
-
-msgid "SQL Databases"
-msgstr ""
-
-msgid "SQL Users"
 msgstr ""
 
 msgid "free of charge"
@@ -2715,9 +2741,6 @@ msgstr "Beheerders"
 
 msgid "Normal users"
 msgstr "Normale gebruikers"
-
-msgid "Domains"
-msgstr "Domeinen"
 
 msgid "System messages"
 msgstr "Systeem berichten"
@@ -3203,6 +3226,12 @@ msgstr "Domein eigenschappen"
 msgid "Domain properties updated successfully!"
 msgstr "Domein eigenschappen succesvol gewijzigd!"
 
+msgid "SQL Database"
+msgstr "MySQL databank"
+
+msgid "SQL User"
+msgstr "MySQL gebruiker"
+
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr ""
@@ -3450,6 +3479,24 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#~ msgid "Undefined user accounting error!"
+#~ msgstr "Niet gedefinieerde fout!"
+
+#~ msgid "This reseller has already dispatched more <b>"
+#~ msgstr "Deze reseller heeft al meer doorgestuurd <b>"
+
+#~ msgid "Then the value you are trying to enter now !<br>"
+#~ msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
+
+#~ msgid "This reseller has more <b>"
+#~ msgstr "Deze reseller heeft meer <b>"
+
+#~ msgid "Then the value you are trying to enter now!<br>"
+#~ msgstr "Dan de waarde die u nu probeert in te vullen !<br>"
+
+#~ msgid "</b> Address !<br>Edit reseller aborted!"
+#~ msgstr "</b> Adres!<br>Bewerken reseller mislukt!"
 
 #~ msgid "Can not open file! Please contact your administrator !"
 #~ msgstr "Kan dit bestand niet openen, neem contact op met de beheerder."

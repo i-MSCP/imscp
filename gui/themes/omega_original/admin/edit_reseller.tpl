@@ -35,9 +35,9 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
   <tr>
-  
+
   <td valign="top">
-  
+
   <form name="admin_edit_reseller" method="post" action="edit_reseller.php">
     <table width="100%" cellpadding="5" cellspacing="5">
       <tr>
@@ -55,9 +55,9 @@
         <td width="200" class="content2">{TR_USERNAME}</td>
         <td class="content"> {USERNAME}</td>
       </td>
-      
+
       </tr>
-      
+
       <tr>
         <td width="25">&nbsp;</td>
         <td width="200" class="content2">{TR_PASSWORD}</td>
@@ -142,19 +142,19 @@
         </td>
       </tr>
       <!--
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_PHP}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="php" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="php" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_PERL_CGI}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="cgi" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="cgi" value="no">
                   {TR_NO}</td>
               </tr>
@@ -162,87 +162,87 @@
                 <td class="content2" width="175" height="23">{TR_JSP}</td>
                 <td width="254" class="content3" height="23">
                   <input type="radio" name="jsp" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="jsp" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175" height="23">{TR_SSI}</td>
-                <td width="254" class="content3" height="23"> 
+                <td width="254" class="content3" height="23">
                   <input type="radio" name="ssi" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="ssi" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_FRONTPAGE_EXT}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="fp" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="fp" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_BACKUP_RESTORE}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="backup_restore" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="backup_restore" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_CUSTOM_ERROR_PAGES}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="error_pages" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="error_pages" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_PROTECTED_AREAS}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="protected_areas" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="protected_areas" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_WEBMAIL}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="webmail" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="webmail" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_DIR_LIST}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="directorylisting" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="directorylisting" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_APACHE_LOGFILES}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="apachelogfiles" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="apachelogfiles" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_AWSTATS}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="awstats" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="awstats" value="no">
                   {TR_NO}</td>
               </tr>
-              <tr> 
+              <tr>
                 <td class="content2" width="175">{TR_LOGO_UPLOAD}</td>
-                <td width="254" class="content3"> 
+                <td width="254" class="content3">
                   <input type="radio" name="logo_upload" value="yes" checked>
-                  {TR_YES} 
+                  {TR_YES}
                   <input type="radio" name="logo_upload" value="no">
                   {TR_NO}</td>
               </tr>
@@ -298,6 +298,11 @@
         <td width="200" class="content2">{TR_LAST_NAME}</td>
         <td class="content"><input type="text" name="lname" value="{LAST_NAME}" style="width:210px" class="textinput">
         </td>
+      </tr>
+      <tr>
+        <td width="25">&nbsp;</td>
+        <td width="200" class="content2">{TR_GENDER}</td>
+        <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
@@ -360,7 +365,7 @@
     <input type="hidden" name="edit_username" value="{USERNAME}">
   </form>
   </td>
-  
+
   <td>&nbsp;</td>
   </tr>
   <tr>

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 13:07-0500\n"
+"POT-Creation-Date: 2007-08-15 22:03-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -250,6 +251,18 @@ msgstr "Ad"
 
 msgid "Last name"
 msgstr "Soyad"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Başlık"
+
+#, fuzzy
+msgid "Male"
+msgstr "Açık"
+
+#, fuzzy
+msgid "Female"
+msgstr "Özellik"
 
 msgid "Company"
 msgstr "Şirket"
@@ -719,63 +732,68 @@ msgstr "Gün"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
-msgid "Domain"
-msgstr "Alan adı"
+msgid "Domains"
+msgstr "Alan adları"
 
-msgid "Subdomain"
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
 
-msgid "Alias"
-msgstr "Takma ad"
+msgid "Aliases"
+msgstr ""
+
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgstr ""
 
 msgid "Mail"
+msgstr ""
+
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
 
 msgid "FTP"
 msgstr ""
 
-msgid "SQL Database"
+msgid "SQL Databases"
 msgstr ""
 
-msgid "SQL User"
+msgid "SQL Users"
 msgstr ""
 
-msgid "Traffic"
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Web trafiği"
+
+#, fuzzy
+msgid "Disk storage"
+msgstr "Disk kullanımı"
+
+msgid "Reseller data inconsistency!"
 msgstr ""
 
-msgid "Disk"
-msgstr ""
-
-msgid "Undefined user accounting error!"
-msgstr ""
-
-msgid "This reseller has already dispatched more <b>"
-msgstr ""
-
-msgid "Then the value you are trying to enter now !<br>"
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr ""
 
-msgid "This reseller has more <b>"
-msgstr ""
-
-msgid "Then the value you are trying to enter now!<br>"
+#, php-format
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
 msgstr ""
 
-msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr ""
 
-msgid "This reseller has domains assigned To <b>"
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
 msgstr ""
-
-msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> Adresi !<br>Bayi düzenleme işlemi durduruldu!"
 
 msgid "Edit reseller"
 msgstr "Bayi düzenle"
@@ -978,6 +996,12 @@ msgstr "Kullanılabilir IPler"
 
 msgid "IP"
 msgstr ""
+
+msgid "Domain"
+msgstr "Alan adı"
+
+msgid "Alias"
+msgstr "Takma ad"
 
 msgid "Uninstall"
 msgstr ""
@@ -1295,6 +1319,15 @@ msgid "Not found reseller(s) in your system!"
 msgstr ""
 
 msgid "Reseller statistics table"
+msgstr ""
+
+msgid "Traffic"
+msgstr ""
+
+msgid "Disk"
+msgstr ""
+
+msgid "Subdomain"
 msgstr ""
 
 msgid "SQL database"
@@ -2615,19 +2648,10 @@ msgstr "MB cinsinden disk"
 msgid "Traffic limit"
 msgstr ""
 
-msgid "Aliases"
-msgstr ""
-
 msgid "Emails"
 msgstr ""
 
 msgid "FTPs"
-msgstr ""
-
-msgid "SQL Databases"
-msgstr ""
-
-msgid "SQL Users"
 msgstr ""
 
 msgid "free of charge"
@@ -2711,9 +2735,6 @@ msgstr "Yönetici kullanıcılar"
 
 msgid "Normal users"
 msgstr "Normal kullanıcı"
-
-msgid "Domains"
-msgstr "Alan adları"
 
 msgid "System messages"
 msgstr ""
@@ -3199,6 +3220,12 @@ msgstr ""
 msgid "Domain properties updated successfully!"
 msgstr ""
 
+msgid "SQL Database"
+msgstr ""
+
+msgid "SQL User"
+msgstr ""
+
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr ""
@@ -3446,6 +3473,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Mesaj gönderildi."
+
+#~ msgid "</b> Address !<br>Edit reseller aborted!"
+#~ msgstr "</b> Adresi !<br>Bayi düzenleme işlemi durduruldu!"
 
 #~ msgid "wait to be added"
 #~ msgstr "eklenmeyi bekliyor"

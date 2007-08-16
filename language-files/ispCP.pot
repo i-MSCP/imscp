@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 13:07-0500\n"
+"POT-Creation-Date: 2007-08-15 22:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr ""
 
@@ -251,6 +252,15 @@ msgid "First name"
 msgstr ""
 
 msgid "Last name"
+msgstr ""
+
+msgid "Gender"
+msgstr ""
+
+msgid "Male"
+msgstr ""
+
+msgid "Female"
 msgstr ""
 
 msgid "Company"
@@ -721,62 +731,65 @@ msgstr ""
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
-msgid "Domain"
+msgid "Domains"
 msgstr ""
 
-msgid "Subdomain"
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
 
-msgid "Alias"
+msgid "Aliases"
+msgstr ""
+
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
 msgstr ""
 
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+
 msgid "FTP"
 msgstr ""
 
-msgid "SQL Database"
+msgid "SQL Databases"
 msgstr ""
 
-msgid "SQL User"
+msgid "SQL Users"
 msgstr ""
 
-msgid "Traffic"
+msgid "Web Traffic"
 msgstr ""
 
-msgid "Disk"
+msgid "Disk storage"
 msgstr ""
 
-msgid "Undefined user accounting error!"
+msgid "Reseller data inconsistency!"
 msgstr ""
 
-msgid "This reseller has already dispatched more <b>"
-msgstr ""
-
-msgid "Then the value you are trying to enter now !<br>"
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr ""
 
-msgid "This reseller has more <b>"
-msgstr ""
-
-msgid "Then the value you are trying to enter now!<br>"
+#, php-format
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
 msgstr ""
 
-msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr ""
 
-msgid "This reseller has domains assigned To <b>"
-msgstr ""
-
-msgid "</b> Address !<br>Edit reseller aborted!"
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
 msgstr ""
 
 msgid "Edit reseller"
@@ -979,6 +992,12 @@ msgid "Available IPs"
 msgstr ""
 
 msgid "IP"
+msgstr ""
+
+msgid "Domain"
+msgstr ""
+
+msgid "Alias"
 msgstr ""
 
 msgid "Uninstall"
@@ -1295,6 +1314,15 @@ msgid "Not found reseller(s) in your system!"
 msgstr ""
 
 msgid "Reseller statistics table"
+msgstr ""
+
+msgid "Traffic"
+msgstr ""
+
+msgid "Disk"
+msgstr ""
+
+msgid "Subdomain"
 msgstr ""
 
 msgid "SQL database"
@@ -2610,19 +2638,10 @@ msgstr ""
 msgid "Traffic limit"
 msgstr ""
 
-msgid "Aliases"
-msgstr ""
-
 msgid "Emails"
 msgstr ""
 
 msgid "FTPs"
-msgstr ""
-
-msgid "SQL Databases"
-msgstr ""
-
-msgid "SQL Users"
 msgstr ""
 
 msgid "free of charge"
@@ -2705,9 +2724,6 @@ msgid "Admin users"
 msgstr ""
 
 msgid "Normal users"
-msgstr ""
-
-msgid "Domains"
 msgstr ""
 
 msgid "System messages"
@@ -3189,6 +3205,12 @@ msgid "Domain properties"
 msgstr ""
 
 msgid "Domain properties updated successfully!"
+msgstr ""
+
+msgid "SQL Database"
+msgstr ""
+
+msgid "SQL User"
 msgstr ""
 
 #, php-format

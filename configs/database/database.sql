@@ -23,6 +23,7 @@ CREATE TABLE `admin` (
   `created_by` int(10) unsigned default NULL,
   `fname` varchar(200) default NULL,
   `lname` varchar(200) default NULL,
+  `gender` varchar(1) default NULL,
   `firm` varchar(200) default NULL,
   `zip` varchar(10) default NULL,
   `city` varchar(200) default NULL,

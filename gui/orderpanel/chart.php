@@ -183,6 +183,11 @@ function gen_personal_data(&$tpl)
 	} else {
 		$email = '';
 	}
+	if (isset($_SESSION['gender'])){
+		$gender = get_gender_by_code($_SESSION['gender']);
+	} else {
+		$gender = get_gender_by_code('');
+	}
 
 
 
@@ -193,6 +198,7 @@ function gen_personal_data(&$tpl)
 					 'VL_LAST_USRNAME' => $last_name,
                      'VL_USR_FIRM' => $company,
                      'VL_USR_POSTCODE' => $postal_code,
+                     'VL_USR_GENDER' => $gender,
                      'VL_USRCITY' => $city,
                      'VL_COUNTRY' => $country,
                      'VL_STREET1' => $street1,
@@ -247,6 +253,7 @@ gen_page_message($tpl);
 						'TR_CHANGE' => tr('Change'),
 						'TR_FIRSTNAME' => tr('First name'),
                   	    'TR_LASTNAME' => tr('Last name'),
+                  	    'TR_GENDER' => tr('Gender'),
                    	 	'TR_COMPANY' => tr('Company'),
                	      	'TR_POST_CODE' => tr('Zip/Postal code'),
                 	    'TR_CITY' => tr('City'),

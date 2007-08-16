@@ -846,4 +846,22 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($dmn_id, $db_id));
 }
 
+function get_gender_by_code($code, $nullOnBad = false) {
+    switch (strtolower($code)) {
+        case 'm':
+            return tr('Male');
+            break;
+        case 'f':
+            return tr('Female');
+            break;
+        default:
+            if (!$nullOnBad) {
+                return tr('Unknown');
+            } else {
+                return null;
+            }
+            break;
+    }
+}
+
 ?>

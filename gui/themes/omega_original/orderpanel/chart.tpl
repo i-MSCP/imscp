@@ -11,13 +11,13 @@
     <td colspan="2" class="content3"><strong>{YOUR_CHART}</strong> </td>
   </tr>
 
-	
+
 				 <!-- BDP: page_message -->
                   <tr>
                     <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
                   </tr>
                   <!-- EDP: page_message -->
-	
+
                   <tr>
                     <td colspan="2" class="content2"><span class="content"><strong>{TR_PERSONAL_DATA}</strong> &nbsp;&nbsp;<a href="address.php?edit=yes" class="link">{TR_CHANGE}</a></span></td>
                   </tr>
@@ -38,6 +38,11 @@
                 <tr>
                   <td class="content">{TR_COMPANY}</td>
                   <td class="content">{VL_USR_FIRM}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content">{TR_GENDER}</td>
+                  <td class="content">{VL_USR_GENDER}
                   </td>
                 </tr>
                 <tr>

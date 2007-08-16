@@ -168,6 +168,7 @@ function add_reseller(&$tpl, &$sql)
             $username 	= clean_input($_POST['username']);
             $fname 		= clean_input($_POST['fname']);
             $lname 		= clean_input($_POST['lname']);
+            $gender		= clean_input($_POST['gender']);
             $firm 		= clean_input($_POST['firm']);
             $zip 		= clean_input($_POST['zip']);
             $city 		= clean_input($_POST['city']);
@@ -177,6 +178,10 @@ function add_reseller(&$tpl, &$sql)
             $fax 		= clean_input($_POST['fax']);
             $street1 	= clean_input($_POST['street1']);
             $street2 	= clean_input($_POST['street2']);
+
+            if (get_gender_by_code($gender, true) === null) {
+                $gender = '';
+            }
 
             $query = <<<SQL_QUERY
                 insert into admin
@@ -196,7 +201,8 @@ function add_reseller(&$tpl, &$sql)
                     phone,
                     fax,
                     street1,
-                    street2
+                    street2,
+                    gender
                   )
                 values
                   (
@@ -204,6 +210,7 @@ function add_reseller(&$tpl, &$sql)
                     ?,
                     'reseller',
                     unix_timestamp(),
+                    ?,
                     ?,
                     ?,
                     ?,
@@ -231,7 +238,8 @@ SQL_QUERY;
                                                  $phone,
                                                  $fax,
                                                  $street1,
-                                                 $street2));
+                                                 $street2,
+                                                 $gender));
 
             $new_admin_id = $sql -> Insert_ID();
 
@@ -328,7 +336,8 @@ SQL_QUERY;
                                 clean_input($_POST['email']),
                                 clean_input($_POST['fname']),
                                 clean_input($_POST['lname']),
-                                tr('Reseller')
+                                tr('Reseller'),
+                                $gender
                                );
 
             $_SESSION['reseller_added'] = 1;
@@ -354,6 +363,8 @@ SQL_QUERY;
                             'STREET_2' => clean_input($_POST['street2']),
                             'PHONE' => clean_input($_POST['phone']),
                             'FAX' => clean_input($_POST['fax']),
+                            'VL_MALE' => ($_POST['gender'] == 'M')? 'checked' : '',
+                            'VL_FEMALE' => ($_POST['gender'] == 'F')? 'checked' : '',
 
                             'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt']),
                             'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt']),
@@ -387,6 +398,8 @@ SQL_QUERY;
                             'STREET_2'  =>'',
                             'PHONE'  =>'',
                             'FAX'  =>'',
+                            'VL_MALE'  =>'',
+                            'VL_FEMALE'  =>'',
 
                             'MAX_DOMAIN_COUNT' => '',
                             'MAX_SUBDOMAIN_COUNT' => '',
@@ -452,58 +465,58 @@ SQL_QUERY;
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], 99999) || $_POST['nreseller_max_domain_cnt'] == -1) {
+    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'])) {
 
         set_page_message( tr("Incorrect max domain count or syntax!"));
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'])) {
 
         set_page_message( tr("Incorrect max subdomain count or syntax!"));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'])) {
 
         set_page_message(tr('Incorrect max alias count or syntax!'));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'])) {
 
         set_page_message(tr('Incorrect max FTP count or syntax!'));
 
         return false;
 
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], 99999)) {
+    if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'])) {
 
         set_page_message(tr('Incorrect max mail count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], 99999)) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'])) {
 
         set_page_message(tr('Incorrect max SQL databases count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], 99999)) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'])) {
 
         set_page_message(tr('Incorrect max SQL users count or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'] , 1024*1024*1024) || $_POST['nreseller_max_traffic'] == -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'] , 1024*1024*1024)) {
 
         set_page_message(tr('Incorrect max traffic amount or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'], 1024*1024*1024) || $_POST['nreseller_max_disk']== -1) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'])) {
 
         set_page_message(tr('Incorrect max disk amount or syntax!'));
 
@@ -574,6 +587,10 @@ $tpl -> assign(
         'TR_CUSTOMER_ID' => tr('Customer ID'),
         'TR_FIRST_NAME' => tr('First name'),
         'TR_LAST_NAME' => tr('Last name'),
+        'TR_LAST_NAME' => tr('Last name'),
+        'TR_GENDER' => tr('Gender'),
+        'TR_MALE' => tr('Male'),
+        'TR_FEMALE' => tr('Female'),
         'TR_COMPANY' => tr('Company'),
         'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
         'TR_CITY' => tr('City'),

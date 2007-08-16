@@ -6,7 +6,7 @@ function sbmt(form, uaction) {
 
     form.uaction.value = uaction;
     form.submit();
-    
+
     return false;
 
 }
@@ -18,7 +18,7 @@ function sbmt(form, uaction) {
     <td  colspan="2" class="content3"><strong>{TR_ADRESS}</strong> </td>
   </tr>
 
-	
+
 				 <!-- BDP: page_message -->
                   <tr>
                     <td  colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
@@ -26,7 +26,7 @@ function sbmt(form, uaction) {
                   <!-- EDP: page_message -->
   <tr>
     <td>
-	
+
 
                 <tr>
                   <td width="200" class="content2">{TR_FIRSTNAME} <font color="#FF0000">*</font></td>
@@ -41,6 +41,10 @@ function sbmt(form, uaction) {
                 <tr>
                   <td class="content2">{TR_EMAIL} <font color="#FF0000">*</font></td>
                   <td class="content"><input name=email type="text" class="textinput" style="width:210px" value="{VL_EMAIL}"></td>
+                </tr>
+                <tr>
+                  <td class="content2">{TR_GENDER}</td>
+                  <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
                 </tr>
                 <tr>
                   <td width="200" class="content2">{TR_COMPANY}</td>

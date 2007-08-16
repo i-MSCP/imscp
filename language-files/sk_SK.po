@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 13:07-0500\n"
+"POT-Creation-Date: 2007-08-15 22:03-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8 "
 
@@ -257,6 +258,18 @@ msgstr "Krstné meno"
 
 msgid "Last name"
 msgstr "Priezvisko"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Hlavička"
+
+#, fuzzy
+msgid "Male"
+msgstr "E-mail"
+
+#, fuzzy
+msgid "Female"
+msgstr "Webmail"
 
 msgid "Company"
 msgstr "Spoločnosť"
@@ -739,63 +752,70 @@ msgstr "Deň"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr "ISPCP - Admin/Spravovať užívateľov/Upraviť predajcov"
 
-msgid "Domain"
-msgstr "Doména"
+msgid "Domains"
+msgstr "Domény"
 
-msgid "Subdomain"
-msgstr "Sub-doména"
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
 
-msgid "Alias"
-msgstr "Alias"
+msgid "Aliases"
+msgstr "Aliasy"
+
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgstr ""
 
 msgid "Mail"
 msgstr "E-mail"
 
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+
 msgid "FTP"
 msgstr "FTP"
 
-msgid "SQL Database"
-msgstr "SQL databáza"
+msgid "SQL Databases"
+msgstr "SQL databázy"
 
-msgid "SQL User"
-msgstr "SQL užívateľ"
+msgid "SQL Users"
+msgstr "SQL kontá"
 
-msgid "Traffic"
-msgstr "Prenesené dáta"
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Prenesené dáta cez web"
 
-msgid "Disk"
-msgstr "Diskový priestor"
+#, fuzzy
+msgid "Disk storage"
+msgstr "Využitie diskového priestoru"
 
-msgid "Undefined user accounting error!"
-msgstr "Nedefinovaná chyba uživateľského účtu!"
+#, fuzzy
+msgid "Reseller data inconsistency!"
+msgstr "Tabulka štatistík predajcu"
 
-msgid "This reseller has already dispatched more <b>"
-msgstr "Tento predajca už pridelil viac <b>"
-
-msgid "Then the value you are trying to enter now !<br>"
-msgstr "Potom hodnota, ktorú teraz zadávate !<br>"
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "Upravovanie predajcu zrušené!"
 
-msgid "This reseller has more <b>"
-msgstr "Tento predajca má viac <b>"
-
-msgid "Then the value you are trying to enter now!<br>"
-msgstr "Potom hodnota, ktorú teraz zadávate !<br>"
-
 #, php-format
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
 msgstr "Tento predajca má užívateľa/užívateľov s neobmedzenými právami na <b>%s</b> službu !<br>"
 
-msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+#, fuzzy
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr "Ak chcete obmedziť predajcu, najprv musíte limitovat jeho užívateľov!<br>"
 
-msgid "This reseller has domains assigned To <b>"
+#, fuzzy, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
 msgstr "Tento predajca priradil domény k <b>"
-
-msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> Adresy! <br>Upravovanie predajcu zrušené!"
 
 msgid "Edit reseller"
 msgstr "Upraviť predajcu"
@@ -999,6 +1019,12 @@ msgstr "Dostupné IP adresy"
 
 msgid "IP"
 msgstr "IP adresa"
+
+msgid "Domain"
+msgstr "Doména"
+
+msgid "Alias"
+msgstr "Alias"
 
 msgid "Uninstall"
 msgstr "Odinštalovať"
@@ -1321,6 +1347,15 @@ msgstr "Nebol nájdený žiaden predajca vo Vašom systéme!"
 
 msgid "Reseller statistics table"
 msgstr "Tabulka štatistík predajcu"
+
+msgid "Traffic"
+msgstr "Prenesené dáta"
+
+msgid "Disk"
+msgstr "Diskový priestor"
+
+msgid "Subdomain"
+msgstr "Sub-doména"
 
 msgid "SQL database"
 msgstr "SQL databáza"
@@ -2654,20 +2689,11 @@ msgstr "Limit diskového priestoru [MB]"
 msgid "Traffic limit"
 msgstr "Limit prenesených dát [MB]"
 
-msgid "Aliases"
-msgstr "Aliasy"
-
 msgid "Emails"
 msgstr "E-maily"
 
 msgid "FTPs"
 msgstr "FTP kontá"
-
-msgid "SQL Databases"
-msgstr "SQL databázy"
-
-msgid "SQL Users"
-msgstr "SQL kontá"
 
 msgid "free of charge"
 msgstr "zadarmo"
@@ -2758,9 +2784,6 @@ msgstr "Admin užívatelia"
 
 msgid "Normal users"
 msgstr "Normálny užívatelia"
-
-msgid "Domains"
-msgstr "Domény"
 
 msgid "System messages"
 msgstr "Systémové správy"
@@ -3259,6 +3282,12 @@ msgstr "Vlastnosti domény"
 msgid "Domain properties updated successfully!"
 msgstr "Vlastnosti domény úspešne aktualizované!"
 
+msgid "SQL Database"
+msgstr "SQL databáza"
+
+msgid "SQL User"
+msgstr "SQL užívateľ"
+
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr "<b>%s</b> Služba nemôže byť vypnutá !<br>"
@@ -3506,6 +3535,24 @@ msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "Undefined user accounting error!"
+#~ msgstr "Nedefinovaná chyba uživateľského účtu!"
+
+#~ msgid "This reseller has already dispatched more <b>"
+#~ msgstr "Tento predajca už pridelil viac <b>"
+
+#~ msgid "Then the value you are trying to enter now !<br>"
+#~ msgstr "Potom hodnota, ktorú teraz zadávate !<br>"
+
+#~ msgid "This reseller has more <b>"
+#~ msgstr "Tento predajca má viac <b>"
+
+#~ msgid "Then the value you are trying to enter now!<br>"
+#~ msgstr "Potom hodnota, ktorú teraz zadávate !<br>"
+
+#~ msgid "</b> Address !<br>Edit reseller aborted!"
+#~ msgstr "</b> Adresy! <br>Upravovanie predajcu zrušené!"
 
 #~ msgid "Can not open file! Please contact your administrator !"
 #~ msgstr "Nemôžem otvoriť súbor! Prosím kontaktujte Vášho administrátora!"

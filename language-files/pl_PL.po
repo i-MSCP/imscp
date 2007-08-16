@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 13:07-0500\n"
+"POT-Creation-Date: 2007-08-15 22:03-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -250,6 +251,18 @@ msgstr "Imię"
 
 msgid "Last name"
 msgstr "Nazwisko"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Nagłówek"
+
+#, fuzzy
+msgid "Male"
+msgstr "Poczta"
+
+#, fuzzy
+msgid "Female"
+msgstr "Cecha"
 
 msgid "Company"
 msgstr "Firma"
@@ -719,63 +732,70 @@ msgstr "Dzień"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Edytuj Resselera"
 
-msgid "Domain"
-msgstr "Domena"
+msgid "Domains"
+msgstr "Domeny"
 
-msgid "Subdomain"
-msgstr "Subdomena"
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
 
-msgid "Alias"
+msgid "Aliases"
+msgstr "Aliasy"
+
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
 msgstr "Poczta"
 
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+
 msgid "FTP"
 msgstr ""
 
-msgid "SQL Database"
-msgstr "Baza Danych SQL"
+msgid "SQL Databases"
+msgstr ""
 
-msgid "SQL User"
-msgstr "Użytkownik SQL"
+msgid "SQL Users"
+msgstr ""
 
-msgid "Traffic"
-msgstr "Transfer"
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Transfer sieciowy"
 
-msgid "Disk"
-msgstr "Dysk"
+#, fuzzy
+msgid "Disk storage"
+msgstr "Wykorzystanie dysku"
 
-msgid "Undefined user accounting error!"
-msgstr "Błąd niezdefiniowanego konta użytkownika!"
+#, fuzzy
+msgid "Reseller data inconsistency!"
+msgstr "Tabela statystyk resellera"
 
-msgid "This reseller has already dispatched more <b>"
-msgstr "Ten reseller już przesłał więcej <br>"
-
-msgid "Then the value you are trying to enter now !<br>"
-msgstr "Poźniej wartość którą chcesz wprowadzić teraz !<br>"
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "Edycja resellera przerwana!"
 
-msgid "This reseller has more <b>"
-msgstr "Ten reseller ma więcej <b>"
-
-msgid "Then the value you are trying to enter now!<br>"
-msgstr "Później wartość którą chcesz wprowadzić teraz!<br>"
-
 #, php-format
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
-msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+#, php-format
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgstr ""
+
+#, fuzzy
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr "Jeśli chcesz limitować resellera, najpierw musisz limitować jego użytkowników !<br>"
 
-msgid "This reseller has domains assigned To <b>"
+#, fuzzy, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
 msgstr "Ten resellet ma domeny przypisane do <b>"
-
-msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b> Adres !<br>Edycja resellera przerwana!"
 
 msgid "Edit reseller"
 msgstr "Edytuj resellera"
@@ -977,6 +997,12 @@ msgid "Available IPs"
 msgstr "Dostępne numery IP"
 
 msgid "IP"
+msgstr ""
+
+msgid "Domain"
+msgstr "Domena"
+
+msgid "Alias"
 msgstr ""
 
 msgid "Uninstall"
@@ -1297,6 +1323,15 @@ msgstr "Nie znaleziono resellera w systemie!"
 
 msgid "Reseller statistics table"
 msgstr "Tabela statystyk resellera"
+
+msgid "Traffic"
+msgstr "Transfer"
+
+msgid "Disk"
+msgstr "Dysk"
+
+msgid "Subdomain"
+msgstr "Subdomena"
 
 msgid "SQL database"
 msgstr "baza danych SQL"
@@ -2620,19 +2655,10 @@ msgstr "Dysk w MB"
 msgid "Traffic limit"
 msgstr "Transfer"
 
-msgid "Aliases"
-msgstr "Aliasy"
-
 msgid "Emails"
 msgstr ""
 
 msgid "FTPs"
-msgstr ""
-
-msgid "SQL Databases"
-msgstr ""
-
-msgid "SQL Users"
 msgstr ""
 
 msgid "free of charge"
@@ -2716,9 +2742,6 @@ msgstr "Administratorzy"
 
 msgid "Normal users"
 msgstr "Zwykli użytkownicy"
-
-msgid "Domains"
-msgstr "Domeny"
 
 msgid "System messages"
 msgstr "Wiadomości systemowe"
@@ -3204,6 +3227,12 @@ msgstr "Właściwości domeny"
 msgid "Domain properties updated successfully!"
 msgstr "Właściwości domeny zostały zaktualizowane!"
 
+msgid "SQL Database"
+msgstr "Baza Danych SQL"
+
+msgid "SQL User"
+msgstr "Użytkownik SQL"
+
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr ""
@@ -3451,6 +3480,24 @@ msgstr "ISPCP - Reseller : System Wsparcia: Przeglądaj Bilety"
 
 msgid "Message was sent."
 msgstr "Wiadomość została wysłana."
+
+#~ msgid "Undefined user accounting error!"
+#~ msgstr "Błąd niezdefiniowanego konta użytkownika!"
+
+#~ msgid "This reseller has already dispatched more <b>"
+#~ msgstr "Ten reseller już przesłał więcej <br>"
+
+#~ msgid "Then the value you are trying to enter now !<br>"
+#~ msgstr "Poźniej wartość którą chcesz wprowadzić teraz !<br>"
+
+#~ msgid "This reseller has more <b>"
+#~ msgstr "Ten reseller ma więcej <b>"
+
+#~ msgid "Then the value you are trying to enter now!<br>"
+#~ msgstr "Później wartość którą chcesz wprowadzić teraz!<br>"
+
+#~ msgid "</b> Address !<br>Edit reseller aborted!"
+#~ msgstr "</b> Adres !<br>Edycja resellera przerwana!"
 
 #~ msgid "Can not open file! Please contact your administrator !"
 #~ msgstr "Nie można otworzyć pliku! Skontaktuj się z administratorem !"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 13:07-0500\n"
+"POT-Creation-Date: 2007-08-15 22:03-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -251,6 +252,17 @@ msgstr "Имя"
 
 msgid "Last name"
 msgstr ""
+
+msgid "Gender"
+msgstr ""
+
+#, fuzzy
+msgid "Male"
+msgstr "e-mail"
+
+#, fuzzy
+msgid "Female"
+msgstr "Вебмыло"
 
 msgid "Company"
 msgstr "Компания"
@@ -720,63 +732,68 @@ msgstr "День"
 msgid "ISPCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
-msgid "Domain"
-msgstr "Домен"
+msgid "Domains"
+msgstr "Домены"
 
-msgid "Subdomain"
+#, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
 
-msgid "Alias"
-msgstr "Алиас"
+msgid "Aliases"
+msgstr "Алиасы"
+
+#, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgstr ""
 
 msgid "Mail"
 msgstr "e-mail"
 
+#, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+
 msgid "FTP"
 msgstr ""
 
-msgid "SQL Database"
-msgstr "База данных SQL"
-
-msgid "SQL User"
+msgid "SQL Databases"
 msgstr ""
 
-msgid "Traffic"
+msgid "SQL Users"
 msgstr ""
 
-msgid "Disk"
-msgstr "Диск"
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Вебтрафик"
 
-msgid "Undefined user accounting error!"
+#, fuzzy
+msgid "Disk storage"
+msgstr "Использование диска"
+
+msgid "Reseller data inconsistency!"
 msgstr ""
 
-msgid "This reseller has already dispatched more <b>"
-msgstr ""
-
-msgid "Then the value you are trying to enter now !<br>"
+#, php-format
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "Редактирование Спекулянта прервано!"
 
-msgid "This reseller has more <b>"
-msgstr ""
-
-msgid "Then the value you are trying to enter now!<br>"
+#, php-format
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
 msgstr ""
 
-msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr ""
 
-msgid "This reseller has domains assigned To <b>"
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
 msgstr ""
-
-msgid "</b> Address !<br>Edit reseller aborted!"
-msgstr "</b>Адрес!<br>Редактирование реселлера отменено!"
 
 msgid "Edit reseller"
 msgstr "Редактировать Спекулянта"
@@ -979,6 +996,12 @@ msgstr "Доступные IP"
 
 msgid "IP"
 msgstr ""
+
+msgid "Domain"
+msgstr "Домен"
+
+msgid "Alias"
+msgstr "Алиас"
 
 msgid "Uninstall"
 msgstr "Удалить"
@@ -1297,6 +1320,15 @@ msgid "Not found reseller(s) in your system!"
 msgstr ""
 
 msgid "Reseller statistics table"
+msgstr ""
+
+msgid "Traffic"
+msgstr ""
+
+msgid "Disk"
+msgstr "Диск"
+
+msgid "Subdomain"
 msgstr ""
 
 msgid "SQL database"
@@ -2617,19 +2649,10 @@ msgstr "Диск в МегаБайтах"
 msgid "Traffic limit"
 msgstr ""
 
-msgid "Aliases"
-msgstr "Алиасы"
-
 msgid "Emails"
 msgstr ""
 
 msgid "FTPs"
-msgstr ""
-
-msgid "SQL Databases"
-msgstr ""
-
-msgid "SQL Users"
 msgstr ""
 
 msgid "free of charge"
@@ -2713,9 +2736,6 @@ msgstr "Администраторы"
 
 msgid "Normal users"
 msgstr ""
-
-msgid "Domains"
-msgstr "Домены"
 
 msgid "System messages"
 msgstr ""
@@ -3201,6 +3221,12 @@ msgstr "Настройки Домена"
 msgid "Domain properties updated successfully!"
 msgstr "Настройки домена успешно изменены!"
 
+msgid "SQL Database"
+msgstr "База данных SQL"
+
+msgid "SQL User"
+msgstr ""
+
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
 msgstr ""
@@ -3448,6 +3474,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Сообщение отослано."
+
+#~ msgid "</b> Address !<br>Edit reseller aborted!"
+#~ msgstr "</b>Адрес!<br>Редактирование реселлера отменено!"
 
 #~ msgid "Can not open file! Please contact your administrator !"
 #~ msgstr "Невозможно открыть файл! Свяжитесь со своим администратором!"

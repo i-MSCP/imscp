@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+if [ $1 ] && [ -d $1 ]; then
+	GUI=${1}/
+else
+	GUI=gui/
+fi
+
+if [ ! -f ${GUI}/index.php ]; then
+	if [ -f ${GUI}/gui/index.php ]; then
+		GUI=${GUI}/gui/
+	fi
+fi
+
+if [ ! -f ${GUI}/index.php ]; then
+	echo "${GUI} isn't a valid gui/ location!"
+	exit 1
+fi
+
+#/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot
+/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}/include/i18n.php ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot --no-location
+
+exit 1

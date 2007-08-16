@@ -54,6 +54,7 @@ function add_user(&$tpl, &$sql)
                 $username 	= clean_input($_POST['username']);
                 $fname 		= clean_input($_POST['fname']);
                 $lname 		= clean_input($_POST['lname']);
+                $gender		= clean_input($_POST['gender']);
                 $firm 		= clean_input($_POST['firm']);
                 $zip 		= clean_input($_POST['zip']);
                 $city 		= clean_input($_POST['city']);
@@ -63,6 +64,10 @@ function add_user(&$tpl, &$sql)
                 $fax		= clean_input($_POST['fax']);
                 $street1 	= clean_input($_POST['street1']);
                 $street2 	= clean_input($_POST['street2']);
+
+                if (get_gender_by_code($gender, true) === null) {
+                    $gender = '';
+                }
 
                 $query = <<<SQL_QUERY
                     insert into
@@ -83,7 +88,8 @@ function add_user(&$tpl, &$sql)
                                 phone,
                                 fax,
                                 street1,
-                                street2
+                                street2,
+                                gender
                             )
                             values
                             (
@@ -91,6 +97,7 @@ function add_user(&$tpl, &$sql)
                                 ?,
                                 'admin',
                                 unix_timestamp(),
+                                ?,
                                 ?,
                                 ?,
                                 ?,
@@ -119,7 +126,8 @@ SQL_QUERY;
                                                      $phone,
                                                      $fax,
                                                      $street1,
-                                                     $street2));
+                                                     $street2,
+                                                     $gender));
 
                 $new_admin_id = $sql -> Insert_ID();
 
@@ -158,7 +166,8 @@ SQL_QUERY;
                                         clean_input($_POST['email']),
                                         clean_input($_POST['fname']),
                                         clean_input($_POST['lname']),
-                                        tr('Administrator')
+                                        tr('Administrator'),
+                                        $gender
                                     );
 
                 $_SESSION['user_added'] = 1;
@@ -181,7 +190,9 @@ SQL_QUERY;
                             'STREET_1' => clean_input($_POST['street1']),
                             'STREET_2' => clean_input($_POST['street2']),
                             'PHONE' => clean_input($_POST['phone']),
-                            'FAX' => clean_input($_POST['fax'])
+                            'FAX' => clean_input($_POST['fax']),
+                            'VL_MALE' => ($_POST['gender'] == 'M')? 'checked' : '',
+                            'VL_FEMALE' => ($_POST['gender'] == 'F')? 'checked' : '',
                         )
                 );
          }
@@ -202,6 +213,8 @@ SQL_QUERY;
                             'STREET_2'  =>'',
                             'PHONE'  =>'',
                             'FAX'  =>'',
+                            'VL_MALE'  =>'',
+                            'VL_FEMALE'  =>'',
                         )
                 );
 
@@ -285,6 +298,9 @@ $tpl -> assign(
                         'TR_ADDITIONAL_DATA' => tr('Additional data'),
                         'TR_FIRST_NAME' => tr('First name'),
                         'TR_LAST_NAME' => tr('Last name'),
+                        'TR_GENDER' => tr('Gender'),
+                        'TR_MALE' => tr('Male'),
+                        'TR_FEMALE' => tr('Female'),
                         'TR_COMPANY' => tr('Company'),
                         'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
                         'TR_CITY' => tr('City'),

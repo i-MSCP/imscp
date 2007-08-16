@@ -109,35 +109,35 @@ if ($err_msg != '_off_') {
 
     $ed_error = '_off_';
 
-    if (!ispcp_limit_check($sub, 99999)) {
+    if (!ispcp_limit_check($sub)) {
 
         $ed_error = tr('Incorrect subdomain length or syntax!');
 
-    } else if (!ispcp_limit_check($als, 99999)) {
+    } else if (!ispcp_limit_check($als)) {
 
         $ed_error = tr('Incorrect alias length or syntax!');
 
-    } else if (!ispcp_limit_check($mail, 99999)) {
+    } else if (!ispcp_limit_check($mail)) {
 
         $ed_error = tr('Incorrect mail account length or syntax!');
 
-    } else if (!ispcp_limit_check($ftp, 99999)) {
+    } else if (!ispcp_limit_check($ftp)) {
 
         $ed_error = tr('Incorrect FTP account length or syntax!');
 
-    } else if (!ispcp_limit_check($sql_db, 99999)) {
+    } else if (!ispcp_limit_check($sql_db)) {
 
         $ed_error = tr('Incorrect SQL user length or syntax!');
 
-    } else if (!ispcp_limit_check($sql_user, 99999)) {
+    } else if (!ispcp_limit_check($sql_user)) {
 
         $ed_error = tr('Incorrect SQL database length or syntax!');
 
-    } else if (!ispcp_limit_check($traff, 1024*1024*1024) || $traff == -1) {
+    } else if (!ispcp_limit_check($traff)) {
 
         $ed_error = tr('Incorrect traffic length or syntax!');
 
-    } else if (!ispcp_limit_check($disk, 1024*1024*1024) || $disk == -1) {
+    } else if (!ispcp_limit_check($disk)) {
 
         $ed_error = tr('Incorrect disk length or syntax!');
 

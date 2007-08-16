@@ -64,6 +64,14 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
 		$email = '';
 	}
 
+	if (isset($_POST['gender'])){
+		$gender = $_POST['gender'];
+	} else if(isset($_SESSION['gender'])){
+		$gender = $_SESSION['gender'];
+	} else {
+		$gender = '';
+	}
+
 
 	if (isset($_POST['firm'])){
 		$company = $_POST['firm'];
@@ -150,8 +158,8 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id)
                      'VL_STREET2' => $street2,
                      'VL_PHONE' => $phone,
                      'VL_FAX' => $fax,
-
-
+                     'VL_MALE' => ($gender == 'M')? 'checked' : '',
+                     'VL_FEMALE' => ($gender == 'F')? 'checked' : '',
 					)
 			);
 
@@ -186,6 +194,12 @@ if (
 
 		if (isset($_POST['firm'])  && $_POST['firm'] != '') {
 			$_SESSION['firm'] = $_POST['firm'];
+		}
+
+		if (isset($_POST['gender'])  && get_gender_by_code($_POST['gender'], true) !== null) {
+			$_SESSION['gender'] = $_POST['gender'];
+		} else {
+			$_SESSION['gender'] = '';
 		}
 
 		if (isset($_POST['street2'])  && $_POST['street2'] != '') {
@@ -266,6 +280,9 @@ gen_page_message($tpl);
                      'TR_STREET2' => tr('Street 2'),
                      'TR_EMAIL' => tr('Email'),
                      'TR_PHONE' => tr('Phone'),
+                     'TR_GENDER' => tr('Gender'),
+                     'TR_MALE' => tr('Male'),
+                     'TR_FEMALE' => tr('Female'),
                      'TR_FAX' => tr('Fax'),
 					 'TR_CONTINUE' => tr('Continue'),
 					 'NEED_FILLED' => tr('* denotes mandatory field.'),
