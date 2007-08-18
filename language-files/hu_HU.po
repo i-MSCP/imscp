@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -837,8 +836,9 @@ msgstr "Frissítés"
 msgid "Send new login data"
 msgstr ""
 
-msgid "Password generate"
-msgstr ""
+#, fuzzy
+msgid "Generate password"
+msgstr "Jelszó módosítás"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr "ISPCP - Admin/Felhasználók/Felhasználó módosítása"
@@ -1270,14 +1270,23 @@ msgstr "Alapértelmezett nyelv megválzotatva!"
 msgid "You can upload only text files!"
 msgstr "Csak szöveget tölthetsz fel!"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
 msgstr "Nem lehet olvasni a ispcp nyelvi fájlt!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Nem lehet olvasni a ispcp nyelvi fájlt!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr ""
 
 msgid "New language installed!"
 msgstr "Új nyelv telepítve!"
 
-msgid "Update language installed!"
-msgstr "Nyelvi fájl telepítve!"
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Egyedi hibalap frissítve!"
 
 msgid "Unknown"
 msgstr "Ismeretlen"
@@ -2269,6 +2278,9 @@ msgstr "Hiba 404 (nem található)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Hiba 500 (belsõ szerver hiba)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Hibalapok"
@@ -3481,6 +3493,9 @@ msgstr "ISPCP - Viszonteladó : Ügyfélszolgálati Rendszer: Bejelentések"
 
 msgid "Message was sent."
 msgstr "Üzenet elküldve."
+
+#~ msgid "Update language installed!"
+#~ msgstr "Nyelvi fájl telepítve!"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Definiálatlan felhasználói hozzáférés hiba!"

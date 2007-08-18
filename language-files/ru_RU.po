@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -834,8 +833,9 @@ msgstr "Изменить"
 msgid "Send new login data"
 msgstr ""
 
-msgid "Password generate"
-msgstr ""
+#, fuzzy
+msgid "Generate password"
+msgstr "Изменить пароль"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr ""
@@ -1267,14 +1267,23 @@ msgstr "Язык по умолчанию изменён!"
 msgid "You can upload only text files!"
 msgstr "Вы можете закачивать только текстовые файлы!"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
 msgstr "Невозможно прочитать файл языка!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Невозможно прочитать файл языка!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr ""
 
 msgid "New language installed!"
 msgstr ""
 
-msgid "Update language installed!"
-msgstr ""
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Страницы ошибок обновлены!"
 
 msgid "Unknown"
 msgstr "Неизвестный"
@@ -2264,6 +2273,9 @@ msgstr "Ошибка 404 (не найдено)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Ошибка 500 (внутренняя ошибка сервера)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Страницы Обшибок"

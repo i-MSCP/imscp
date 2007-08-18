@@ -67,7 +67,7 @@
           <td>&nbsp;</td>
           <td background="{THEME_COLOR_PATH}/images/login/content_line.gif">&nbsp;</td>
           <td>&nbsp;</td>
-          <td style="text-align:left;vertical-align:bottom;"><img alt="{TR_SSL_DESCRIPTION}" src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" border="0">&nbsp;&nbsp;</td>
+          <td style="text-align:left;vertical-align:bottom;"><img alt="" src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" border="0"/>&nbsp;&nbsp;</td>
           <td style="width:151px;text-align:left;vertical-align:middle;"><a class="submenu" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a></td>
          </tr>
 /* END SSL-Switch */ -->

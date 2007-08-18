@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -836,8 +835,9 @@ msgstr "Aktualizuj"
 msgid "Send new login data"
 msgstr "Wyślij nowe dane logowania"
 
-msgid "Password generate"
-msgstr "Generowanie hasła"
+#, fuzzy
+msgid "Generate password"
+msgstr "Aktualizuj hasło"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Edytuj użytkownika"
@@ -1269,14 +1269,23 @@ msgstr "Domyślny język zmieniony!"
 msgid "You can upload only text files!"
 msgstr "Możesz załadować jedynie pliki tekstowe!"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
 msgstr "Nie można odczytać pliku językowego ispcp!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Nie można odczytać pliku językowego ispcp!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr ""
 
 msgid "New language installed!"
 msgstr "Nowy język zainstalowany!"
 
-msgid "Update language installed!"
-msgstr "Aktualizacja języka zainstalowana!"
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Spersonalizowane strony błędów zostały zaktualizowane!"
 
 msgid "Unknown"
 msgstr "Nieznany"
@@ -2268,6 +2277,9 @@ msgstr "Błąd 404 (nie znaleziono)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Błąd 500 (wewnętrzny błąd serwera)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Strony błędów"
@@ -3480,6 +3492,12 @@ msgstr "ISPCP - Reseller : System Wsparcia: Przeglądaj Bilety"
 
 msgid "Message was sent."
 msgstr "Wiadomość została wysłana."
+
+#~ msgid "Password generate"
+#~ msgstr "Generowanie hasła"
+
+#~ msgid "Update language installed!"
+#~ msgstr "Aktualizacja języka zainstalowana!"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Błąd niezdefiniowanego konta użytkownika!"

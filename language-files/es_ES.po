@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -836,8 +835,9 @@ msgstr "Actualizar"
 msgid "Send new login data"
 msgstr "Envíe nuevos datos para su identificación"
 
-msgid "Password generate"
-msgstr "Generar contraseña"
+#, fuzzy
+msgid "Generate password"
+msgstr "Actualizar contraseña"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr "ISPCP - Admin/Administrar usuarios/Editar usuario"
@@ -1269,14 +1269,22 @@ msgstr "Idioma predeterminado cambiado!"
 msgid "You can upload only text files!"
 msgstr "¡Solo puede subir archivos de texto"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
+msgstr "Actualización de idioma instalada!"
+
+msgid "Uploaded file is not a valid language file!"
+msgstr ""
+
+msgid "Uploaded file does not contain the language information!"
 msgstr ""
 
 msgid "New language installed!"
 msgstr "¡Se ha instalado el nuevo idioma!"
 
-msgid "Update language installed!"
-msgstr "Actualización de idioma instalada!"
+#, fuzzy
+msgid "Language was updated!"
+msgstr "¡La pagina de error fue actualizada!"
 
 msgid "Unknown"
 msgstr "Desconocido"
@@ -2268,6 +2276,9 @@ msgstr "Error 404 (No se encuentra)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Error 500 (Error interno del servidor)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Paginas de error"
@@ -3480,6 +3491,9 @@ msgstr "ISPCP - Revendedor : Sistema de Soporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
+
+#~ msgid "Password generate"
+#~ msgstr "Generar contraseña"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "¡Error, cuenta de usuario no definida!"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -836,8 +835,9 @@ msgstr "Оновити"
 msgid "Send new login data"
 msgstr "Надіслати нові дані автентифікації"
 
-msgid "Password generate"
-msgstr "Ґенерація пароля"
+#, fuzzy
+msgid "Generate password"
+msgstr "Оновити пароль"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr "ISPCP - Адміністратор/Керування користувачами/Редагування користувача"
@@ -1269,14 +1269,23 @@ msgstr "Довільна мова змінена!"
 msgid "You can upload only text files!"
 msgstr "Можна завантажувати лише текстові файли!"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
 msgstr "Неможливо прочитати файл мови!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Неможливо прочитати файл мови!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr ""
 
 msgid "New language installed!"
 msgstr "Нова мова встановлена!"
 
-msgid "Update language installed!"
-msgstr "Оновлення мови встановлене!"
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Сторінка помилки оновлена!"
 
 msgid "Unknown"
 msgstr "Невідомо"
@@ -2268,6 +2277,9 @@ msgstr "Помилка 404 (сторінку не знайдено)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Помилка 500 (внутрішня помилка серверу)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Сторінки помилок"
@@ -3480,6 +3492,12 @@ msgstr "ISPCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "Password generate"
+#~ msgstr "Ґенерація пароля"
+
+#~ msgid "Update language installed!"
+#~ msgstr "Оновлення мови встановлене!"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Невизначена системна помилка!"

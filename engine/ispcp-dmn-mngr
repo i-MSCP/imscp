@@ -971,7 +971,8 @@ sub gen_httpd_dmn_group_entry {
          '{SUEXEC_USER}' => $suexec_user,
          '{SUEXEC_GROUP}' => $suexec_group,
          '{BWLIMIT}' => $dmn_traffic_limit,
-         '{BWLIMIT_DISABLED}' => $bw_disabled
+         '{BWLIMIT_DISABLED}' => $bw_disabled,
+         '##TEMPLATE' => '' #Used to prevent apache from parsing commands which are part of the template
         );
 
     (
@@ -1357,10 +1358,9 @@ sub dmn_add_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
+    $dg_entry_val = "$dg_b$dg_e";
 
-    $dg_entry_val = "$dg_b_val$dg_entry$dg_e_val\n";
-
-    $dg_entry_val .= "$dg_b$dg_e";
+    $dg_entry_val .= "$dg_b_val$dg_entry$dg_e_val\n";
 
     #
     # Constructing NEW Virtual Host Entry;

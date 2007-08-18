@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ ! -d language-files ]; then
+	echo 'language-files  is not a valid directory!'
+	exit 1
+fi
+
+cd language-files 
+
+for i in *.po; do
+	echo $i
+	msgmerge --no-wrap -U $i ispCP.pot
+done

@@ -343,7 +343,7 @@ $tpl -> assign(
                         'TR_FEMALE' => tr('Female'),
                         'TR_UPDATE' => tr('Update'),
                         'TR_SEND_DATA' => tr('Send new login data'),
-                        'TR_PASSWORD_GENERATE' => tr('Password generate'),
+                        'TR_PASSWORD_GENERATE' => tr('Generate password'),
 
                         'FIRST_NAME' =>$rs -> fields['fname'],
                         'LAST_NAME' =>$rs -> fields['lname'],

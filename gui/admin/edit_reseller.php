@@ -929,7 +929,7 @@ $tpl -> assign(
         'TR_PHONE' => tr('Phone'),
         'TR_UPDATE' => tr('Update'),
         'TR_SEND_DATA' => tr('Send new login data'),
-        'TR_PASSWORD_GENERATE' => tr('Password generate'),
+        'TR_PASSWORD_GENERATE' => tr('Generate password'),
 
         'USERNAME'  =>$admin_name,
         'EMAIL'  =>$email,

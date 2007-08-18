@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -16,7 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8 "
 
@@ -856,8 +855,9 @@ msgstr "Aktualizovať"
 msgid "Send new login data"
 msgstr "Pošli nové prihlasovacie údaje"
 
-msgid "Password generate"
-msgstr "Generátor hesiel"
+#, fuzzy
+msgid "Generate password"
+msgstr "Zopakovať heslo"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr "ISPCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
@@ -1293,14 +1293,23 @@ msgstr "Predvolený jazyk zmenený!"
 msgid "You can upload only text files!"
 msgstr "Možete nahrať iba textové súbory!"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
 msgstr "Nemože prečítať ispcp súbor s prekladom!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Nemože prečítať ispcp súbor s prekladom!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr ""
 
 msgid "New language installed!"
 msgstr "Nový jazyk nainštalovaný!"
 
-msgid "Update language installed!"
-msgstr "Aktualizovať nainštalovaný jazyk!"
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Vlastné chybové stránky boli aktulizované!"
 
 msgid "Unknown"
 msgstr "Neznámy"
@@ -2302,6 +2311,9 @@ msgstr "Chyba 404 (nenájdený)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Chyba 500 (interná chyba servra)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Chybové stránky"
@@ -3535,6 +3547,12 @@ msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "Password generate"
+#~ msgstr "Generátor hesiel"
+
+#~ msgid "Update language installed!"
+#~ msgstr "Aktualizovať nainštalovaný jazyk!"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Nedefinovaná chyba uživateľského účtu!"

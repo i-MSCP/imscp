@@ -1,12 +1,12 @@
 
 <IfModule mod_cband.c>
-    <CBandUser {DMN_GRP}>
-        {BWLIMIT_DISABLED} CBandUserLimit {BWLIMIT}Mi
-        {BWLIMIT_DISABLED} CBandUserScoreboard {SCOREBOARDS_DIR}/{DMN_GRP}
-        {BWLIMIT_DISABLED} CBandUserPeriod 4W
-        {BWLIMIT_DISABLED} CBandUserPeriodSlice 1W
-        {BWLIMIT_DISABLED} CBandUserExceededURL http://{BASE_SERVER_VHOST}/errordocs/bw_exceeded.html
-    </CBandUser>
+##TEMPLATE    <CBandUser {DMN_GRP}>
+##TEMPLATE        {BWLIMIT_DISABLED} CBandUserLimit {BWLIMIT}Mi
+##TEMPLATE        {BWLIMIT_DISABLED} CBandUserScoreboard {SCOREBOARDS_DIR}/{DMN_GRP}
+##TEMPLATE        {BWLIMIT_DISABLED} CBandUserPeriod 4W
+##TEMPLATE        {BWLIMIT_DISABLED} CBandUserPeriodSlice 1W
+##TEMPLATE        {BWLIMIT_DISABLED} CBandUserExceededURL http://{BASE_SERVER_VHOST}/errors/bw_exceeded.html
+##TEMPLATE    </CBandUser>
 </IfModule>
 
 

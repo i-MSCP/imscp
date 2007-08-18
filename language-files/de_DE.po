@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -14,7 +14,6 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -836,8 +835,9 @@ msgstr "Aktualisieren"
 msgid "Send new login data"
 msgstr "Neue Zugangsdaten an den Benutzer senden"
 
-msgid "Password generate"
-msgstr "Passwort generieren"
+#, fuzzy
+msgid "Generate password"
+msgstr "Passwort aktualisieren"
 
 msgid "ISPCP - Admin/Manage users/Edit User"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -1269,14 +1269,23 @@ msgstr "Standard Sprache wurde erfolgreich geändert!"
 msgid "You can upload only text files!"
 msgstr "Sie können nur Textdateien hochladen!"
 
-msgid "Can not read ispcp language file!"
+#, fuzzy
+msgid "Could not read language file!"
 msgstr "Die ISPCP Sprachdatei kann nicht gelesen weden!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Die ISPCP Sprachdatei kann nicht gelesen weden!"
+
+msgid "Uploaded file does not contain the language information!"
+msgstr ""
 
 msgid "New language installed!"
 msgstr "Neue Sprachdatei wurde erfolgreich hochgeladen!"
 
-msgid "Update language installed!"
-msgstr "Die Sprachaktualisierung wurde erfolgreich durchgeführt!"
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Fehlerseite wurde aktualisiert!"
 
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -2268,6 +2277,9 @@ msgstr "Fehlerseite 404 (Nicht gefunden)"
 
 msgid "Error 500 (internal server error)"
 msgstr "Fehlerseite 500 (Interner Server Fehler)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
 
 msgid "Error pages"
 msgstr "Fehlerseiten"
@@ -3480,6 +3492,12 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
+
+#~ msgid "Password generate"
+#~ msgstr "Passwort generieren"
+
+#~ msgid "Update language installed!"
+#~ msgstr "Die Sprachaktualisierung wurde erfolgreich durchgeführt!"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "Systemfehler! Abbruch..."

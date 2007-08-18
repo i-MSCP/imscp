@@ -107,7 +107,7 @@ $tpl -> assign(
               'TR_TITLE_BACK' => tr('Return to previous menu'),
               'TR_TABLE_NAME' => tr('Users list'),
 							'TR_SEND_DATA' => tr('Send new login data'),
-							'TR_PASSWORD_GENERATE' => tr('Password generate')
+							'TR_PASSWORD_GENERATE' => tr('Generate password')
                      )
               );
 

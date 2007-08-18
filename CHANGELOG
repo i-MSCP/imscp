@@ -8,6 +8,17 @@ ispCP ω 1.0.0 Changelog
 
 2007-08-16 Raphael Geissert
     - GUI:
+        * Improved language files installer
+    - CONFIGS:
+        * Improved languages table structure
+	- LANGUAGES
+		* Updated fr_FR.po (thanks to Vianney)
+    - ENGINE:
+        * Added workaround for #289
+        * Fixed #574: Invalid Command "CBandUser" at Apache start up
+
+2007-08-16 Raphael Geissert
+    - GUI:
         * Updated error icons
     - ENGINE:
         * Fixed #569: error pages are not owned to the right user and group

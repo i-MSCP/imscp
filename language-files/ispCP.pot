@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-15 22:03-0500\n"
+"POT-Creation-Date: 2007-08-17 19:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Please ignore this entry
 msgid "encoding"
 msgstr ""
 
@@ -831,7 +830,7 @@ msgstr ""
 msgid "Send new login data"
 msgstr ""
 
-msgid "Password generate"
+msgid "Generate password"
 msgstr ""
 
 msgid "ISPCP - Admin/Manage users/Edit User"
@@ -1261,13 +1260,19 @@ msgstr ""
 msgid "You can upload only text files!"
 msgstr ""
 
-msgid "Can not read ispcp language file!"
+msgid "Could not read language file!"
+msgstr ""
+
+msgid "Uploaded file is not a valid language file!"
+msgstr ""
+
+msgid "Uploaded file does not contain the language information!"
 msgstr ""
 
 msgid "New language installed!"
 msgstr ""
 
-msgid "Update language installed!"
+msgid "Language was updated!"
 msgstr ""
 
 msgid "Unknown"
@@ -2255,6 +2260,9 @@ msgid "Error 404 (not found)"
 msgstr ""
 
 msgid "Error 500 (internal server error)"
+msgstr ""
+
+msgid "Error 503 (service unavailable)"
 msgstr ""
 
 msgid "Error pages"

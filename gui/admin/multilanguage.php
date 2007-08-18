@@ -104,7 +104,7 @@ SQL_QUERY;
 function install_lang() {
 	global $sql;
 
-	if (isset($_POST['uaction']) AND $_POST['uaction'] === 'upload_language') {
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_language') {
 
 		// add lang pack now !
 		$file_type = $_FILES['lang_file']['type'];
@@ -114,82 +114,83 @@ function install_lang() {
 			return;
 		}
 
-		if (!($file_type === "text/plain") AND !($file_type === "application/octet-stream")){
+		if (!($file_type === "text/plain") && !($file_type === "application/octet-stream")){
 			set_page_message(tr('You can upload only text files!'));
 			return;
-		}
-		else {
+		} else {
 			$file = $_FILES['lang_file']['tmp_name'];
-			$fd = fopen($file, "r");
 
-			if (!$fd) {
-				set_page_message(tr('Can not read ispcp language file!'));
+			$fp = fopen($file, 'r');
+
+			if (!$fp) {
+				set_page_message(tr('Could not read language file!'));
 				return;
 			}
-			$table = fgets($fd, 4096);
-			$table = explode(" = ", trim($table));
-			if ($table[0] != "ispcp_table") {
-				set_page_message(tr('Can not read ispcp language file!'));
-				return;
-			}
-			$lang_table = 'lang_'.$table[1];
 
-			$tables = $sql->MetaTables();
-			$nlang = count($tables);
+			$t  = '';
+			$ab = array('ispcp_languageSetlocaleValue' => '', 'ispcp_table' => '', 'ispcp_language' => '');
+			$errors = 0;
+
+			while (!feof($fp) && $errors <= 3) {
+			    $t = fgets($fp);
+
+			    $msgid  = '';
+			    $msgstr = '';
+
+			    @list($msgid, $msgstr) = $t = explode(' = ', $t);
+
+			    if (count($t) != 1) {
+			        $ab[$msgid] = rtrim($msgstr);
+			    } else {
+			        $errors++;
+			    }
+			}
+
+			fclose($fp);
+
+			if ($errors > 3) {
+			    set_page_message(tr('Uploaded file is not a valid language file!'));
+			    return ;
+			}
+
+			if (empty($ab['ispcp_languageSetlocaleValue']) || empty($ab['ispcp_table']) || empty($ab['ispcp_language'])) {
+			    set_page_message(tr('Uploaded file does not contain the language information!'));
+			    return ;
+			}
+
+			$lang_table = 'lang_' . $ab['ispcp_table'];
+
 			$lang_update = false;
 
-			$i = 0;
-			do {
-				$data = $tables[$i];
-				if ($data == $lang_table) {
+			for ($i = 0, $tables = $sql->MetaTables(), $nlang = count($tables); $i < $nlang; $i++) {
+				if ($lang_table == $tables[$i]) {
 					$lang_update = true;
+					break;
 				}
-				$i++;
-			} while ($lang_update === false AND $i < $nlang);
+			}
 
-			reset($tables);
-			if (file_exists($file)) {
-				$fd = fopen($file, "r");
+			if ($lang_update) {
+			    $sql->Execute("DROP TABLE IF EXISTS `$lang_table`;");
+			}
 
-				if (!$fd) {
-					set_page_message(tr('Can not read ispcp language file!'));
-					return;
-				}
-
-				if ($lang_update === true) {
-					// clean up table if this is language update
-					$sql->Execute("DROP TABLE IF EXISTS `$lang_table`;");
-				}
-
-				$sql->Execute("CREATE TABLE `$lang_table` (
-								id int(10) unsigned NOT NULL auto_increment,
-								msgid text,
-								msgstr text,
-								UNIQUE id (id)
+			$sql->Execute("CREATE TABLE `$lang_table` (
+								msgid text collate utf8_unicode_ci,
+								msgstr text collate utf8_unicode_ci,
+								UNIQUE KEY `msgid` (`msgid`)
 								) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-							);
+								);
 
-				while(!feof($fd)) {
-					$buffer_id    = fgets($fd, 4096);
-					$buffer_id    = explode(" = ", trim($buffer_id));
-					$orig_string  = trim(@$buffer_id[0]);
-					$trans_string = trim(@$buffer_id[1]);
-
-					$query = "INSERT INTO `$lang_table` (msgid,msgstr) VALUES (?, ?)";
-					exec_query($sql, $query, array($orig_string, $trans_string));
-				}
-				fclose($fd);
+			foreach ($ab as $msgid => $msgstr) {
+			    $query = "INSERT INTO `?` (msgid, msgstr) VALUES (?, ?)";
+			    exec_query($sql, $query, array($lang_table, $msgid, $msgstr));
 			}
 
-			$user_logged = $_SESSION['user_logged'];
-
-			if ($lang_update == 0) {
-				write_log("$user_logged: add new language: $lang_table!");
+			if (!$lang_update) {
+				write_log(sprintf("%s added new language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
 				set_page_message(tr('New language installed!'));
-			}
-			else {
-				write_log("$user_logged: update language: $lang_table!");
-				set_page_message(tr('Update language installed!'));
+			} else {
+			    write_log(sprintf("%s updated language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
+				set_page_message(tr('Language was updated!'));
 			}
 		}
 	}
