@@ -113,9 +113,7 @@
                                   </tr>
                                 </table>
                                   <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br>
-                                {TRAFF_USED}<br>
-                                {TR_OF}<br>
-                                <b>{TRAFF_MAX}</b></td>
+                                {TRAFF_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20"></td>
@@ -130,29 +128,17 @@
                                   </tr>
                                 </table>
                                   <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br>
-                                {DISK_USED}<br>
-                                {TR_OF}<br>
-                                <b>{DISK_MAX}</b></td>
+                                {DISK_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap align="center">{WEB}</td>
                               <td class="{ITEM_CLASS}" nowrap align="center">{FTP}</td>
                               <td class="{ITEM_CLASS}" nowrap align="center">{SMTP}</td>
                               <td class="{ITEM_CLASS}" nowrap align="center">{POP3}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SUB_USED}<br>
-                                {TR_OF}<br>
-                                <b>{SUB_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{ALS_USED}</td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{MAIL_USED}<br>
-                                {TR_OF}<br>
-                                <b>{MAIL_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{FTP_USED}<br>
-                                {TR_OF}<br>
-                                <b>{FTP_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SQL_DB_USED}<br>
-                                {TR_OF}<br>
-                                <b>{SQL_DB_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap align="center">{SQL_USER_USED}<br>
-                                {TR_OF}<br>
-                                <b>{SQL_USER_MAX}</b></td>
+                              <td class="{ITEM_CLASS}" nowrap align="center">{SUB_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap align="center">{ALS_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap align="center">{MAIL_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap align="center">{FTP_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap align="center">{SQL_DB_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap align="center">{SQL_USER_MSG}</td>
                             </tr>
                             <!-- EDP: domain_entry -->
                             <!-- EDP: domain_list -->

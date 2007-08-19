@@ -217,34 +217,62 @@ function generate_domain_entry (&$tpl, $user_id, $row)
                        'MONTH' => $crnt_month,
                        'YEAR' => $crnt_year,
                        'DOMAIN_ID' => $domain_id,
-                       'TRAFF_PERCENT' => $traff_percent,
+
                        'TRAFF_SHOW_PERCENT' => $traff_show_percent,
+   					   'TRAFF_PERCENT' => $traff_percent,
                        'TRAFF_RED' => $traff_red,
                        'TRAFF_GREEN' => $traff_green,
-                       'TRAFF_USED' => make_hr($utraff_current),
-                       'TRAFF_MAX' => ($utraff_max) ? make_hr($utraff_max) : tr('unlimited'),
-                       'DISK_PERCENT' => $disk_percent,
+
+                       'TRAFF_MSG' => ($utraff_max)?
+                                       tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($utraff_current), make_hr($utraff_max)):
+                                       tr('%d <br/>of</br> <b>unlimited</b>', make_hr($utraff_current)),
+
                        'DISK_SHOW_PERCENT' => $disk_show_percent,
+    			       'DISK_PERCENT' => $disk_percent,
                        'DISK_RED' => $disk_red,
                        'DISK_GREEN' => $disk_green,
-                       'DISK_USED' => make_hr($udisk_current),
-                       'DISK_MAX' => ($udisk_max) ? make_hr($udisk_max) : tr('unlimited'),
+
+                       'DISK_MSG' => ($udisk_max)?
+                                       tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($udisk_current), make_hr($udisk_max)):
+                                       tr('%d <br/>of</br> <b>unlimited</b>', make_hr($udisk_current)),
+
                        'WEB' => make_hr($web),
                        'FTP' => make_hr($ftp),
                        'SMTP' => make_hr($smtp),
                        'POP3' => make_hr($pop3),
-                       'SUB_USED' => $usub_current,
-                       'SUB_MAX' => ($usub_max) ? (($usub_max > 0) ? $usub_max : tr('disabled')) : tr('unlimited'),
-                       'ALS_USED' => $uals_current,
-                       'ALS_MAX' => ($uals_max) ? (($uals_max > 0) ? $uals_max : tr('disabled')) : tr('unlimited'),
-                       'MAIL_USED' => $umail_current,
-                       'MAIL_MAX' => ($umail_max) ? $umail_max : tr('unlimited'),
-                       'FTP_USED' => $uftp_current,
-                       'FTP_MAX' => ($uftp_max) ? $uftp_max : tr('unlimited'),
-                       'SQL_DB_USED' => $usql_db_current,
-                       'SQL_DB_MAX' => ($usql_db_max) ? (($usql_db_max > 0) ? $usql_db_max : tr('disabled')) : tr('unlimited'),
-                       'SQL_USER_USED' => $usql_user_current,
-                       'SQL_USER_MAX' => ($usql_user_max) ? (($usql_user_max > 0) ? $usql_user_max : tr('disabled')) : tr('unlimited')));
+
+                       'SUB_MSG' => ($usub_max)? (
+                                           ($usub_max > 0) ?
+                                               tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($usub_current), $usub_max):
+                                               tr('<b>disabled</b>')
+                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', make_hr($usub_current)),
+
+                       'ALS_MSG' => ($uals_max)? (
+                                           ($uals_max > 0) ?
+                                               tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($uals_current), $uals_max):
+                                               tr('<b>disabled</b>')
+                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', make_hr($uals_current)),
+
+                       'MAIL_MSG' => ($umail_max)?
+                                       tr('%1$d <br/>of</br> <b>%2$d</b>', $umail_current, $umail_max):
+                                       tr('%d <br/>of</br> <b>unlimited</b>', $umail_current),
+
+                       'FTP_MSG' => ($uftp_max)?
+                                       tr('%1$d <br/>of</br> <b>%2$d</b>', $uftp_current, $uftp_max):
+                                       tr('%d <br/>of</br> <b>unlimited</b>', $uftp_current),
+
+                       'SQL_DB_MSG' => ($usql_db_max)? (
+                                           ($usql_db_max > 0) ?
+                                               tr('%1$d <br/>of</br> <b>%2$d</b>', $usql_db_current, $usql_db_max):
+                                               tr('<b>disabled</b>')
+                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', $usql_db_current),
+
+                       'SQL_USER_MSG' => ($usql_user_max)? (
+                                           ($usql_user_max > 0) ?
+                                               tr('%1$d <br/>of</br> <b>%2$d</b>', $usql_user_current, $usql_user_max):
+                                               tr('<b>disabled</b>')
+                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', $usql_user_current)
+                       ));
 }
 
 
@@ -279,7 +307,6 @@ $tpl -> assign(
                             'TR_FTP' => tr('FTP'),
                             'TR_SQL_DB' => tr('SQL<br>database'),
                             'TR_SQL_USER' => tr('SQL<br>user'),
-                            'TR_OF' => tr('of'),
 
                             'VALUE_NAME' => $name,
                             'VALUE_RID' => $rid

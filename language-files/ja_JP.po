@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -965,7 +966,7 @@ msgstr "ISPCPのアップデートが見つかりました"
 msgid "You are exceeding your traffic limit!"
 msgstr "サブドメインの制限に達しました"
 
-msgid "of"
+msgid "%1$d % [%2$d of %3$d]"
 msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
@@ -1329,6 +1330,14 @@ msgstr ""
 msgid "Not found reseller(s) in your system!"
 msgstr ""
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr ""
 
@@ -1350,7 +1359,16 @@ msgstr "SQLユーザー"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - 管理者/リセラーユーザー情報"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "無効"
 
 msgid "Reseller users table"
@@ -2306,6 +2324,9 @@ msgstr "ディレクトリ"
 msgid "Choose"
 msgstr "選択"
 
+msgid "disabled"
+msgstr "無効"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3232,14 +3253,14 @@ msgstr "ドメインの編集"
 msgid "Domain properties"
 msgstr "ドメイン情報"
 
-msgid "Domain properties updated successfully!"
-msgstr "ドメイン情報は更新されました"
-
 msgid "SQL Database"
 msgstr "データベース"
 
 msgid "SQL User"
 msgstr "SQLユーザー"
+
+msgid "Domain properties updated successfully!"
+msgstr "ドメイン情報は更新されました"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3322,6 +3343,9 @@ msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr ""
+
+msgid "of"
 msgstr ""
 
 msgid "ISPCP - Reseller/Lostpw email setup"

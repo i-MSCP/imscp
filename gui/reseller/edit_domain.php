@@ -316,50 +316,6 @@ function gen_editdomain_page(&$tpl)
 }// End of gen_editdomain_page()
 
 
-// Function to update changes into db
-function update_data_in_db($hpid)
-{
-	global $domain_name, $domain_ip, $php_sup;
-	global $cgi_supp ,$sub, $als;
-	global $mail, $ftp, $sql_db;
-	global $sql_user, $traff, $disk;
-	global $username, $domain_php, $domain_cgi;
-
-	$user_props  = "$usub_current;$usub_max;";
-	$user_props .= "$uals_current;$uals_max;";
-	$user_props .= "$umail_current;$umail_max;";
-	$user_props .= "$uftp_current;$uftp_max;";
-	$user_props .= "$usql_db_current;$usql_db_max;";
-	$user_props .= "$usql_user_current;$usql_user_max;";
-	$user_props .= "$utraff_max;";
-	$user_props .= "$udisk_max;";
-	//$user_props .= "$domain_ip;";
-	$user_props .= "$domain_php;";
-	$user_props .= "$domain_cgi;";
-
-	update_user_props($user_id, $user_props);
-
-	$reseller_props  = "$rdmn_current;$rdmn_max;";
-	$reseller_props .= "$rsub_current;$rsub_max;";
-	$reseller_props .= "$rals_current;$rals_max;";
-	$reseller_props .= "$rmail_current;$rmail_max;";
-	$reseller_props .= "$rftp_current;$rftp_max;";
-	$reseller_props .= "$rsql_db_current;$rsql_db_max;";
-	$reseller_props .= "$rsql_user_current;$rsql_user_max;";
-	$reseller_props .= "$rtraff_current;$rtraff_max;";
-	$reseller_props .= "$rdisk_current;$rdisk_max;";
-
-	update_reseller_props($reseller_id, $reseller_props);
-
-	//$tpl -> assign('MESSAGE', tr('Domain properties updated successfully!'));
-
-	unset($_SESSION['edit_id']);
-	set_page_message(tr('Domain properties updated successfully!'));
-	Header("Location: users.php");
-	die();
-}// End of update_data_in_db()
-
-
 //Check input data
 function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
 
@@ -425,6 +381,8 @@ function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
            $usql_db_current, $usql_db_max,
            $usql_user_current, $usql_user_max,
            $utraff_max, $udisk_max) = generate_user_props($user_id);
+
+    $previous_utraff_max = $utraff_max;
 
     list (
            $rdmn_current, $rdmn_max,
@@ -501,6 +459,14 @@ SQL_QUERY;
     }
 
     if ($ed_error == '_off_') {
+
+        //
+        // Set domain's status to 'change' to update mod_cband's limit
+        //
+        if ($previous_utraff_max != $utraff_max) {
+            $query = "UPDATE domain SET domain_status = 'change' WHERE domain_id = ?";
+            exec_query($sql, $query, array($user_id));
+        }
 
         $user_props  = "$usub_current;$usub_max;";
         $user_props .= "$uals_current;$uals_max;";

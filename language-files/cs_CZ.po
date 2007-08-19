@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -965,8 +966,8 @@ msgstr ""
 msgid "You are exceeding your traffic limit!"
 msgstr "Překročil jste váš přenosový limit!"
 
-msgid "of"
-msgstr "z"
+msgid "%1$d % [%2$d of %3$d]"
+msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
 msgstr " ISPCP - Admin/Hlavní rejstřík"
@@ -1329,6 +1330,14 @@ msgstr ""
 msgid "Not found reseller(s) in your system!"
 msgstr ""
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr ""
 
@@ -1350,7 +1359,16 @@ msgstr ""
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr ""
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "vypnuto"
 
 msgid "Reseller users table"
@@ -2306,6 +2324,9 @@ msgstr "Adresáře"
 msgid "Choose"
 msgstr "Vybrat"
 
+msgid "disabled"
+msgstr "vypnuto"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3231,14 +3252,14 @@ msgstr " Editovat doménu"
 msgid "Domain properties"
 msgstr "vlastnosti domény"
 
-msgid "Domain properties updated successfully!"
-msgstr "Vlastnosti domény úspěšně aktualizovány!"
-
 msgid "SQL Database"
 msgstr ""
 
 msgid "SQL User"
 msgstr ""
+
+msgid "Domain properties updated successfully!"
+msgstr "Vlastnosti domény úspěšně aktualizovány!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3322,6 +3343,9 @@ msgstr ""
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
+
+msgid "of"
+msgstr "z"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr ""

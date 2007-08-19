@@ -170,10 +170,7 @@ SQL_QUERY;
 
     $tpl -> assign(
             array(
-                    'TR_OF' => tr('of'),
-                    'PERCENT' => $pr,
-                    'VALUE' => sizeit($mtraff),
-                    'MAX_VALUE' => $show_straf_max,
+                    'TRAFFIC_WARNING' => tr('%1$d % [%2$d of %3$d]', $pr, sizeit($mtraff), $show_straf_max),
                     'BAR_VALUE' => $bar_value,
                     )
             );

@@ -7,10 +7,19 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-08-18 Raphael Geissert
+    - GUI:
+        * Fixed #571: mod_cband's limit is not updated when limit is change in the GUI
+        * Fixed some i18n issues
     - SETUP:
         * Fixed #573: Local name server in /etc/resolv.conf allows hijacking
+        * Fixed #562: Disable Named/Bind
     - CONFIGS:
         * Fixed #578: ERROR 1170 (42000) at line 18: BLOB/TEXT column 'msgid' used in key specification without a key length
+    - ENGINE:
+        * Fixed #562: Disable Named/Bind
+    - LANGUAGES:
+        * Fixed #575: Update german translation with old submission at mailinglist
+        * Merged French translation with Greg's
 
 2007-08-17 Raphael Geissert
     - GUI:

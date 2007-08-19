@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
-"PO-Revision-Date: 2007-07-06 16:02-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
+"PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -54,10 +55,10 @@ msgid "ISPCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
-msgstr ""
+msgstr "Das Kennwort wurde versendet"
 
 msgid "ERROR: Password was not sent"
-msgstr ""
+msgstr "Fehler: Das Kennwort wurde nicht versendet"
 
 msgid "The password was requested"
 msgstr "Das Kennwort wurde angefordert"
@@ -105,19 +106,19 @@ msgid "Reseller"
 msgstr "Wiederverkäufer"
 
 msgid "This user name already exist!"
-msgstr "Benutzername ist bereits vergeben!"
+msgstr "Der Benutzername ist bereits vergeben!"
 
 msgid "Incorrect username length or syntax!"
-msgstr ""
+msgstr "Der Benutzername hat eine ungültige Länge oder Syntax"
 
 msgid "Incorrect password length or syntax!"
-msgstr ""
+msgstr "Das Passwort hat eine ungültige Länge oder Syntax"
 
 msgid "Entered passwords do not match!"
-msgstr ""
+msgstr "Die eingegebenen Passwörter stimmen nicht überein"
 
 msgid "Incorrect email length or syntax!"
-msgstr ""
+msgstr "Die Mailadresse hat eine ungültige Länge oder Syntax"
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Ungültige <i>Max. Domains</i> Beschränkung!"
@@ -156,7 +157,7 @@ msgid "Core data"
 msgstr "Daten"
 
 msgid "Repeat password"
-msgstr ""
+msgstr "Passworteingabe wiederholen"
 
 msgid "Email"
 msgstr "E-Mail Adresse"
@@ -165,31 +166,31 @@ msgid "unlimited"
 msgstr "unbegrenzt"
 
 msgid "Domains limit"
-msgstr ""
+msgstr "Limit an Domains"
 
 msgid "Subdomains limit"
-msgstr ""
+msgstr "Limit an Subdomains"
 
 msgid "Aliases limit"
-msgstr ""
+msgstr "Limit an Aliasen"
 
 msgid "Mail accounts limit"
-msgstr ""
+msgstr "Limit an Mail Accounts"
 
 msgid "FTP accounts limit"
-msgstr ""
+msgstr "Limit an FTP Accounts"
 
 msgid "SQL databases limit"
-msgstr ""
+msgstr "Limit an Datenbanken"
 
 msgid "SQL users limit"
-msgstr ""
+msgstr "Limit an Datenbankbenutzern"
 
 msgid "Traffic limit [MB]"
-msgstr ""
+msgstr "Limit an Transferverbrauch [MB]"
 
 msgid "Disk limit [MB]"
-msgstr ""
+msgstr "Limit an Speicherplatz [MB]"
 
 msgid "PHP"
 msgstr "PHP Unterstützung"
@@ -198,13 +199,13 @@ msgid "CGI / Perl"
 msgstr "CGI / Perl Unterstützung"
 
 msgid "JSP"
-msgstr ""
+msgstr "JSP"
 
 msgid "SSI"
-msgstr ""
+msgstr "SSI"
 
 msgid "Frontpage extensions"
-msgstr ""
+msgstr "Frontpage Erweiterung"
 
 msgid "Backup and restore"
 msgstr "Datensicherung und Wiederherstellung"
@@ -216,7 +217,7 @@ msgid "Protected areas"
 msgstr "Geschützte Bereiche"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Webmail"
 
 msgid "Directory listing"
 msgstr "Verzeichnis Übersicht"
@@ -312,7 +313,7 @@ msgid "Log is empty!"
 msgstr "Protokoll ist leer!"
 
 msgid "Invalid time period!"
-msgstr ""
+msgstr "Ungültige Zeitdauer!"
 
 msgid "Admin Log"
 msgstr "Adminprotokoll"
@@ -348,7 +349,7 @@ msgid "older than 12 months"
 msgstr "alles älter als 1 Jahr"
 
 msgid "ISPCP - Administrator/Add hosting plan"
-msgstr ""
+msgstr "ISPCP - Administrator/Hosting Paket anlegen"
 
 msgid "Add hosting plan"
 msgstr "Hosting Paket anlegen"
@@ -360,16 +361,16 @@ msgid "Template name"
 msgstr "Hosting Paketname"
 
 msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Max. Subdomains<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Max. Aliase<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Max. Mail Accounts<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Max. FTP Accounts<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max. MySQL Datenbanken<br><i>(-1 nicht verfügbar,<br>0 unbegrenzt)</i>"
@@ -378,7 +379,7 @@ msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max. MySQL Benutzer<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Max. Transfer [MB]<br><i>(0 unbegrenzt)</i>"
+msgstr "Max. Transferverbrauch [MB]<br><i>(0 unbegrenzt)</i>"
 
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
 msgstr "Max. Speicherplatz [MB]<br><i>(0 unbegrenzt)</i>"
@@ -411,40 +412,40 @@ msgid "Add plan"
 msgstr "Hosting Paket anlegen"
 
 msgid "Incorrect template name length!"
-msgstr ""
+msgstr "Ungültige Länge des Template Namens!"
 
 msgid "Incorrect template description length!"
-msgstr ""
+msgstr "Ungültige Länge der Template Beschreibung!"
 
 msgid "Incorrect price syntax!"
-msgstr ""
+msgstr "Ungültige Syntax des Preises!"
 
 msgid "Incorrect setup fee syntax!"
-msgstr ""
+msgstr "Ungültige Syntax der Einrichtungsgebühr!"
 
 msgid "Incorrect subdomain length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax der Subdomain!"
 
 msgid "Incorrect alias length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax des Alias!"
 
 msgid "Incorrect mail account length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax des Mail Account!"
 
 msgid "Incorrect FTP account length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax des FTP Account!"
 
 msgid "Incorrect SQL database length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax der Datenbank!"
 
 msgid "Incorrect SQL user length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax des Datenbankbenutzers!"
 
 msgid "Incorrect traffic length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax des Transferverbrauch!"
 
 msgid "Incorrect disk length or syntax!"
-msgstr ""
+msgstr "Ungültige Länge oder Syntax des Speicherplatzes!"
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "Hosting Paket ist bereits im System vorhanden!"
@@ -456,7 +457,7 @@ msgid "Please fill up all data fields!"
 msgstr "Bitte alle Felder ausfüllen!"
 
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "Die Passwörter stimmen nicht überein!"
 
 msgid "The current password is wrong!"
 msgstr "Das aktuelle Kennwort ist nicht korrekt!"
@@ -495,7 +496,7 @@ msgid "User does not exist!"
 msgstr "Benutzer wurde nicht gefunden!"
 
 msgid "ispCP - Admin - Email Marketing"
-msgstr ""
+msgstr "ispCP - Admin - Email Marketing"
 
 msgid "Please specify a message subject!"
 msgstr "Bitte geben Sie einen Betreff ein!"
@@ -615,13 +616,13 @@ msgid "Edit button"
 msgstr "Menüpunkt bearbeiten"
 
 msgid "Error: we have a domain using this IP!"
-msgstr ""
+msgstr "Fehler: Die IP-Adresse ist bereits einer anderen Domain zugeordnet!"
 
 msgid "Error: we have a reseller using this IP!"
-msgstr ""
+msgstr "Fehler: Die IP-Adresse ist bereits einem anderen Wiederverkäufer zugeordnet!"
 
 msgid "IP was deleted!"
-msgstr "IP wurde gelöscht"
+msgstr "IP-Adresse wurde gelöscht"
 
 msgid "Support ticket deleted successfully!"
 msgstr "Supportanfrage wurden gelöscht!"
@@ -636,16 +637,16 @@ msgid "ISPCP - Domain/Details"
 msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Domain details"
-msgstr ""
+msgstr "Domain Detailinformationen"
 
 msgid "Domain name"
 msgstr "Domain Name"
 
 msgid "Domain IP"
-msgstr "Domain IP Adresse"
+msgstr "Domain IP-Adresse"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "PHP support"
 msgstr "PHP Unterstützung"
@@ -684,7 +685,7 @@ msgid "SQL users"
 msgstr "MySQL Benutzer"
 
 msgid "Subdomains"
-msgstr ""
+msgstr "Subdomains"
 
 msgid "Domain aliases"
 msgstr "Domain Aliase"
@@ -696,7 +697,7 @@ msgid "None"
 msgstr "keine"
 
 msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgstr "ISPCP - Domain Statistiken"
 
 msgid "Domain statistics"
 msgstr "Domain Statistik"
@@ -966,8 +967,8 @@ msgstr "Neues ISPCP Update ist verfügbar!"
 msgid "You are exceeding your traffic limit!"
 msgstr "Sie überschreiten bereits Ihr Transfer Limit!"
 
-msgid "of"
-msgstr "von"
+msgid "%1$d % [%2$d of %3$d]"
+msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -1330,6 +1331,14 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Not found reseller(s) in your system!"
 msgstr "Er wurden keine Wiederverkäufer im System gefunden!"
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr "Wiederverkäufer Statistiken"
 
@@ -1351,7 +1360,16 @@ msgstr "MySQL Benutzer"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "Deaktiviert"
 
 msgid "Reseller users table"
@@ -2308,6 +2326,9 @@ msgstr "Verzeichnisse"
 msgid "Choose"
 msgstr "Auswählen"
 
+msgid "disabled"
+msgstr "Deaktiviert"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3236,14 +3257,14 @@ msgstr "Domain bearbeiten"
 msgid "Domain properties"
 msgstr "Domain Eigenschaften"
 
-msgid "Domain properties updated successfully!"
-msgstr "Domain Eigenschaften wurden aktualisiert!"
-
 msgid "SQL Database"
 msgstr "MySQL Datenbank"
 
 msgid "SQL User"
 msgstr "MySQL Benutzer"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domain Eigenschaften wurden aktualisiert!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3327,6 +3348,9 @@ msgstr ""
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
+
+msgid "of"
+msgstr "von"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
@@ -3503,7 +3527,7 @@ msgstr "Nachricht wurde gesendet."
 #~ msgstr "Systemfehler! Abbruch..."
 
 #~ msgid "This reseller has already dispatched more <b>"
-#~ msgstr "Dieser Wiederverkäfer hat bereits mehr <b>"
+#~ msgstr "Dieser Wiederverkäufer hat bereits mehr <b>"
 
 #~ msgid "Then the value you are trying to enter now !<br>"
 #~ msgstr "als Sie versuchen einzugeben!<br>"
@@ -3567,3 +3591,12 @@ msgstr "Nachricht wurde gesendet."
 
 #~ msgid "delete"
 #~ msgstr "Löschen"
+
+#~ msgid "This reseller has user(s) with unlimited rights for <b>%s</b> service !<br>"
+#~ msgstr "Dieser Wiederverkäufer hat einen oder mehrere Benutzer mit unbeschränkten Rechten für den Service <b>%s</b>!"
+
+#~ msgid "If you want to limit the reseller, fist you must limit its users !<br>"
+#~ msgstr "Sie müssen zuerst die Benutzer dieses Wiederverkäufers begrenzen, um seine Begrenzung bearbeiten zu können!<br>"
+
+#~ msgid "This reseller has domains assigned To <b>"
+#~ msgstr "Dieser Wiederverkäfer hat Domains verschoben zu <b>"

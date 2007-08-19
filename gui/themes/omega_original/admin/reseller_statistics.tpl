@@ -100,9 +100,7 @@
                                   </tr>
                                 </table>
                                   <b>{TRAFF_SHOW_PERCENT}&nbsp;%</b><br />
-                                {TRAFF_USED}&nbsp;/&nbsp;{TRAFF_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{TRAFF_MAX}</b></td>
+                                {TRAFF_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                                   <tr>
                                     <td width="13"><img src="{THEME_COLOR_PATH}/images/stats_left_small.gif" width="13" height="20" /></td>
@@ -117,30 +115,14 @@
                                   </tr>
                                 </table>
                                   <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br />
-                                {DISK_USED}&nbsp;/&nbsp;{DISK_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{DISK_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DMN_USED}&nbsp;/&nbsp;{DMN_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{DMN_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_USED}&nbsp;/&nbsp;{SUB_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{SUB_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_USED}&nbsp;/&nbsp;{ALS_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{ALS_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_USED}&nbsp;/&nbsp;{MAIL_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{MAIL_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP_USED}&nbsp;/&nbsp;{FTP_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{FTP_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SQL_DB_USED}&nbsp;/&nbsp;{SQL_DB_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{SQL_DB_MAX}</b></td>
-                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SQL_USER_USED}&nbsp;/&nbsp;{SQL_USER_CURRENT}<br />
-                                {TR_OF}<br />
-                                <b>{SQL_USER_MAX}</b></td>
+                                {DISK_MSG}</b></td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DMN_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{MAIL_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{FTP_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SQL_DB_MSG}</td>
+                              <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SQL_USER_MSG}</td>
                             </tr>
                             <!-- EDP: reseller_entry -->
                           </table>

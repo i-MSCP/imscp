@@ -742,6 +742,8 @@ sub dmn_add_named_data {
 
     }
 
+    return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
     $rs = dmn_add_named_cfg_data($dmn_data);
 
     return $rs if ($rs != 0);
@@ -805,6 +807,8 @@ sub dmn_del_named_data {
         return -1;
 
     }
+
+    return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
     $rs = dmn_del_named_cfg_data($dmn_data);
 

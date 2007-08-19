@@ -55,15 +55,14 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max)
 	if(0 !== $max_usage) {
     	list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
 		$max_usage = sizeit($max_usage);
+		$traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);
 	}
 
 	else{
 		$percent	= 0;
 		$bars		= 0;
-		$max_usage  = tr('unlimited');
+		$traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
 	}
-
-    $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);
 
     $tpl -> assign(
                     array(
@@ -146,49 +145,35 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
 
     gen_disk_usage($tpl, $udisk_current, $rdisk_max, 400);
 
-    if ($rtraff_max > 0)
-	{
-        if ($utraff_current > $rtraff_max)
-		{
+    if ($rtraff_max > 0) {
+        if ($utraff_current > $rtraff_max) {
             $tpl -> assign(
-                            'TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!')
-                          );
+                          'TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!')
+            );
 
-        }else
-		{
+        } else {
             $tpl -> assign('TRAFF_WARN', '');
         }
 
     } else {
-        if ($utraff_current > 1024 * 1024 * 1024 * 1024) {
-//            $tpl -> assign('TR_TRAFFIC_WARNING', tr('You are exceeding your UNLIMITED traffic limit!'));
-        } else {
-            $tpl -> assign('TRAFF_WARN', '');
-        }
+        $tpl -> assign('TRAFF_WARN', '');
     }
 
 
 	//warning HDD Usage
-	if ($rdisk_max > 0)
-	{
-        if ($udisk_current > $rdisk_max)
-		{
-            $tpl -> assign(
-                            'TR_DISK_WARNING', tr('You are exceeding your disk limit!')
-                          );
+	if ($rdisk_max > 0) {
+	    if ($udisk_current > $rdisk_max) {
+	        $tpl -> assign(
+	                      'TR_DISK_WARNING', tr('You are exceeding your disk limit!')
+	        );
 
-        }else
-		{
-            $tpl -> assign('DISK_WARN', '');
-        }
+	    } else {
+	        $tpl -> assign('DISK_WARN', '');
+	    }
 
-    } else {
-        if ($udisk_current > 1024 * 1024 * 1024 * 1024) {
-//            $tpl -> assign('TR_DISK_WARNING', tr('You are exceeding your UNLIMITED disk limit!'));
-        } else {
-            $tpl -> assign('DISK_WARN', '');
-        }
-    }
+	} else {
+	    $tpl -> assign('DISK_WARN', '');
+	}
 
 
 

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -966,8 +967,8 @@ msgstr "Er is een nieuwe ISPCP update beschikbaar"
 msgid "You are exceeding your traffic limit!"
 msgstr "U overschrijdt uw verkeer limiet!"
 
-msgid "of"
-msgstr "van"
+msgid "%1$d % [%2$d of %3$d]"
+msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -1330,6 +1331,14 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Not found reseller(s) in your system!"
 msgstr "Geen reseller(s) gevonden in uw systeem!"
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr "Reseller statistieken tabel"
 
@@ -1351,7 +1360,16 @@ msgstr "MySQL gebruiker"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - Virtual Hosting Control System"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "uitgeschakeld"
 
 msgid "Reseller users table"
@@ -2307,6 +2325,9 @@ msgstr "Mappen"
 msgid "Choose"
 msgstr "Kies"
 
+msgid "disabled"
+msgstr "uitgeschakeld"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3235,14 +3256,14 @@ msgstr "Wijzig domein"
 msgid "Domain properties"
 msgstr "Domein eigenschappen"
 
-msgid "Domain properties updated successfully!"
-msgstr "Domein eigenschappen succesvol gewijzigd!"
-
 msgid "SQL Database"
 msgstr "MySQL databank"
 
 msgid "SQL User"
 msgstr "MySQL gebruiker"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domein eigenschappen succesvol gewijzigd!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3326,6 +3347,9 @@ msgstr ""
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
+
+msgid "of"
+msgstr "van"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Virtual Hosting Control System"

@@ -575,7 +575,7 @@ sub ask_vhost {
 
 	my $vhost = "admin.$addr";
 
-	my $qmsg = "\n    Please enter the domain name ispCP OMEGA will run on [$vhost]: ";
+	my $qmsg = "\n    Please enter the domain name where ispCP OMEGA will run on [$vhost]: ";
 
 	print STDOUT $qmsg;
 
@@ -1676,11 +1676,9 @@ sub setup_named {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	if ($main::cfg{'CMD_NAMED'} ne 'no') {
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
-		sys_command_rs("$main::cfg{'CMD_NAMED'} stop &> /tmp/ispcp-setup-services.log");
-
-	}
+	sys_command_rs("$main::cfg{'CMD_NAMED'} stop &> /tmp/ispcp-setup-services.log");
 
 	($rs, $cfg_tpl) = get_file("$cfg_dir/named.conf");
 
@@ -1714,11 +1712,7 @@ sub setup_named {
 
 	return $rs if ($rs != 0);
 
-	if ($main::cfg{'CMD_NAMED'} ne 'no') {
-
-		sys_command_rs("$main::cfg{'CMD_NAMED'} start &> /tmp/ispcp-setup-services.log");
-
-	}
+	sys_command_rs("$main::cfg{'CMD_NAMED'} start &> /tmp/ispcp-setup-services.log");
 
 	push_el(\@main::el, 'setup_named()', 'Ending...');
 

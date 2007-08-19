@@ -144,7 +144,7 @@
       <!-- EDP: traff_warn -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content">{PERCENT} % [{VALUE} {TR_OF} {MAX_VALUE}]</td>
+        <td class="content">{TRAFFIC_WARNING}</td>
       </tr>
       <tr>
         <td>&nbsp;</td>

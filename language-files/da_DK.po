@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -966,8 +967,8 @@ msgstr "Ny opdatering til rådighed"
 msgid "You are exceeding your traffic limit!"
 msgstr "Du overskrider din trafik grænse!"
 
-msgid "of"
-msgstr "af"
+msgid "%1$d % [%2$d of %3$d]"
+msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
 msgstr "ISPCP - Admin/Hoved Index"
@@ -1330,6 +1331,14 @@ msgstr "ISPCP - Virtual Hosting Control System"
 msgid "Not found reseller(s) in your system!"
 msgstr "Fandt ingen forhandlere i systemet!"
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr "Forhandler statistik tabel"
 
@@ -1351,7 +1360,16 @@ msgstr "SQL bruger"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - Admin/Forhandler Bruger Statistiker"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "deaktiveret"
 
 msgid "Reseller users table"
@@ -2308,6 +2326,9 @@ msgstr "Mapper"
 msgid "Choose"
 msgstr "Vælg"
 
+msgid "disabled"
+msgstr "deaktiveret"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3236,14 +3257,14 @@ msgstr "Rediger domæne"
 msgid "Domain properties"
 msgstr "Domæne Egenskaber"
 
-msgid "Domain properties updated successfully!"
-msgstr "Domæne Egenskaber opdateret succesfuldt."
-
 msgid "SQL Database"
 msgstr ""
 
 msgid "SQL User"
 msgstr "SQL Bruger"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domæne Egenskaber opdateret succesfuldt."
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3327,6 +3348,9 @@ msgstr ""
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
+
+msgid "of"
+msgstr "af"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"

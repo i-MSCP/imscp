@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -967,8 +968,8 @@ msgstr "Nova versão do ISPCP disponível"
 msgid "You are exceeding your traffic limit!"
 msgstr "Você excedeu o tráfego máximo!"
 
-msgid "of"
-msgstr "de"
+msgid "%1$d % [%2$d of %3$d]"
+msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
 msgstr "ISPCP - Admin/Índice Principal"
@@ -1331,6 +1332,14 @@ msgstr "ISPCP - Estatísticas de Representantes"
 msgid "Not found reseller(s) in your system!"
 msgstr "Não existe nenhum representante no sistema!"
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr "Tabela de estatísticas do representente"
 
@@ -1352,7 +1361,16 @@ msgstr "Usuário SQL"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - Admin/Estatísticas de Usuário Representante"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "desabilitado"
 
 msgid "Reseller users table"
@@ -2309,6 +2327,9 @@ msgstr "Diretórios"
 msgid "Choose"
 msgstr "Escolha"
 
+msgid "disabled"
+msgstr "desabilitado"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3237,14 +3258,14 @@ msgstr "Editar domínio"
 msgid "Domain properties"
 msgstr "Propriedades do domínio"
 
-msgid "Domain properties updated successfully!"
-msgstr "Propriedades do domínio atualizadas com sucesso!"
-
 msgid "SQL Database"
 msgstr "SQL"
 
 msgid "SQL User"
 msgstr "Usuário SQL"
+
+msgid "Domain properties updated successfully!"
+msgstr "Propriedades do domínio atualizadas com sucesso!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3328,6 +3349,9 @@ msgstr ""
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
+
+msgid "of"
+msgstr "de"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Representante/Configuração do E-mail de senha perdida"

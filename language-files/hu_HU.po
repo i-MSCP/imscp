@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "X-Generator: x64PoPot 0.2\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
@@ -967,8 +968,8 @@ msgstr "Új ISPCP verzió most elérhetõ"
 msgid "You are exceeding your traffic limit!"
 msgstr "Túllépted a forgalm maximális korlátját!"
 
-msgid "of"
-msgstr "max:"
+msgid "%1$d % [%2$d of %3$d]"
+msgstr ""
 
 msgid "ISPCP - Admin/Main Index"
 msgstr "ISPCP - Admin/Kezdõlap"
@@ -1331,6 +1332,14 @@ msgstr "ISPCP - Viszonteladói statisztika"
 msgid "Not found reseller(s) in your system!"
 msgstr "Nem található viszonteladó a rendszeredben!"
 
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
 msgid "Reseller statistics table"
 msgstr "Viszonteladó statisztikai tábla"
 
@@ -1352,7 +1361,16 @@ msgstr "SQL felhasználó"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - Admin/Viszonteladó Felhasználó statisztika"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "tiltva"
 
 msgid "Reseller users table"
@@ -2309,6 +2327,9 @@ msgstr "Könyvtárak"
 msgid "Choose"
 msgstr "Válassz"
 
+msgid "disabled"
+msgstr "tiltva"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr ""
@@ -3237,14 +3258,14 @@ msgstr "Domain szerkesztése"
 msgid "Domain properties"
 msgstr "Domain tulajdonságok"
 
-msgid "Domain properties updated successfully!"
-msgstr "Domain tulajdonságok sikeresen frissítve!"
-
 msgid "SQL Database"
 msgstr "SQL Adatbázis"
 
 msgid "SQL User"
 msgstr "SQL Felhasználó"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domain tulajdonságok sikeresen frissítve!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3328,6 +3349,9 @@ msgstr ""
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
+
+msgid "of"
+msgstr "max:"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Viszonteladó/Elveszett jelszó email beállítás"

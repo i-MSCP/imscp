@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-17 19:19-0500\n"
+"POT-Creation-Date: 2007-08-18 23:11-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
+#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8 "
 
@@ -987,8 +988,9 @@ msgstr "Nová aktualizácia ISPCP je dostupná"
 msgid "You are exceeding your traffic limit!"
 msgstr "Prekročili ste Váš limit!"
 
-msgid "of"
-msgstr "z"
+#, fuzzy
+msgid "%1$d % [%2$d of %3$d]"
+msgstr "%1$s%% [%2$s z %3$s]"
 
 msgid "ISPCP - Admin/Main Index"
 msgstr "ISPCP - Admin/Hlavný zoznam"
@@ -1354,6 +1356,14 @@ msgstr "ISPCP - Štatistiky predajcu"
 msgid "Not found reseller(s) in your system!"
 msgstr "Nebol nájdený žiaden predajca vo Vašom systéme!"
 
+#, fuzzy, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr "%1$s%% [%2$s of nebmedzených]"
+
+#, fuzzy, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$s%% [%2$s of nebmedzených]"
+
 msgid "Reseller statistics table"
 msgstr "Tabulka štatistík predajcu"
 
@@ -1375,7 +1385,16 @@ msgstr "SQL užívateľ"
 msgid "ISPCP - Admin/Reseller User Statistics"
 msgstr "ISPCP - Admin/Štatistika užívateľov predajcu"
 
-msgid "disabled"
+#, php-format
+msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%d <br/>of</br> <b>unlimited</b>"
+msgstr "%1$s%% [%2$s of nebmedzených]"
+
+#, fuzzy
+msgid "<b>disabled</b>"
 msgstr "zakázané"
 
 msgid "Reseller users table"
@@ -2342,6 +2361,9 @@ msgstr "Adresáre"
 msgid "Choose"
 msgstr "Vyberať"
 
+msgid "disabled"
+msgstr "zakázané"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr "%1$s%% [%2$s z %3$s]"
@@ -3291,14 +3313,14 @@ msgstr "Upraviť doménu"
 msgid "Domain properties"
 msgstr "Vlastnosti domény"
 
-msgid "Domain properties updated successfully!"
-msgstr "Vlastnosti domény úspešne aktualizované!"
-
 msgid "SQL Database"
 msgstr "SQL databáza"
 
 msgid "SQL User"
 msgstr "SQL užívateľ"
+
+msgid "Domain properties updated successfully!"
+msgstr "Vlastnosti domény úspešne aktualizované!"
 
 #, php-format
 msgid "<b>%s</b> Service can not be disabled !<br>"
@@ -3382,6 +3404,9 @@ msgstr ""
 #, fuzzy, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$s%% [%2$s of nebmedzených]"
+
+msgid "of"
+msgstr "z"
 
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Predajca/Nastavenie e-mailu strateného hesla"
