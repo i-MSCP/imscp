@@ -1581,32 +1581,38 @@ sub setup_resolver {
 
 	push_el(\@main::el, 'setup_resolver()', 'Starting...');
 
-	my $resolv_file = "/etc/resolv.conf";
+	push_el(\@main::el, 'setup_resolver()', 'Not doing anything because of security concerns');
 
-	#Remove old nameservers
+	if ( 0 ) {
 
-	$cmd = "$main::cfg{'CMD_CP'} -p -f $resolv_file $resolv_file.bkp";
+    	my $resolv_file = "/etc/resolv.conf";
 
-	$rs = sys_command_rs($cmd);
+    	#Remove old nameservers
 
-	return $rs if ($rs != 0);
+    	$cmd = "$main::cfg{'CMD_CP'} -p -f $resolv_file $resolv_file.bkp";
 
-	$data = "nameserver 127.0.0.1\n";
+    	$rs = sys_command_rs($cmd);
 
-	if ($main::cfg{'SECONDARY_DNS'} ne '') {
-		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";
+    	return $rs if ($rs != 0);
+
+    	$data = "nameserver 127.0.0.1\n";
+
+    	if ($main::cfg{'SECONDARY_DNS'} ne '') {
+    		$data .= "nameserver $main::cfg{'SECONDARY_DNS'}\n";
+    	}
+
+    	$resolv_data = get_file($resolv_file);
+
+    	$resolv_data =~ s/^nameserver[[:space:]]+127\.0\.0\.1$//g;
+    	# Comment this line if removing the existing nameservers causes any problem
+    	#$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
+
+    	$data .= $resolv_data;
+
+    	$rs = store_file($resolv_file, $data, 'root', 'root', 0644);
+    	return $rs if ($rs != 0);
+
 	}
-
-	$resolv_data = get_file($resolv_file);
-
-	$resolv_data =~ s/^nameserver[[:space:]]+127\.0\.0\.1$//g;
-	# Comment this line if removing the existing nameservers causes any problem
-	#$resolv_data =~ s/^nameserver[[:space:]]+[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$//g;
-
-	$data .= $resolv_data;
-
-	$rs = store_file($resolv_file, $data, 'root', 'root', 0644);
-	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_resolver()', 'Ending...');
 

@@ -22,9 +22,14 @@ require '../include/ispcp-lib.php';
 // Security
 check_login(__FILE__);
 
-if (isset($_GET['export_lang']) && $_GET['export_lang'] !== ''){
+if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
   $language_table = $_GET['export_lang'];
-  $encoding 	= $sql->Execute("SELECT `msqstr` FROM `$language_table` WHERE `msgid` = 'encoding';");
+  $encoding 	= $sql->Execute("SELECT `msgstr` FROM `$language_table` WHERE `msgid` = 'encoding';");
+  if ($encoding && $encoding->RowCount() > 0 && $encoding->fields['msgstr'] != '') {
+      $encoding = $encoding->fields['msgstr'];
+  } else {
+      $encoding = 'UTF-8';
+  }
   $query = <<<SQL_QUERY
 			SELECT
 				msgid,

@@ -18,7 +18,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE `lang_English` (
   `msgid` text collate utf8_unicode_ci,
   `msgstr` text collate utf8_unicode_ci,
-  UNIQUE KEY `msgid` (`msgid`)
+  KEY msgid (msgid(25))
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

@@ -6,7 +6,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-08-16 Raphael Geissert
+2007-08-18 Raphael Geissert
+    - SETUP:
+        * Fixed #573: Local name server in /etc/resolv.conf allows hijacking
+    - CONFIGS:
+        * Fixed #578: ERROR 1170 (42000) at line 18: BLOB/TEXT column 'msgid' used in key specification without a key length
+
+2007-08-17 Raphael Geissert
     - GUI:
         * Improved language files installer
     - CONFIGS:

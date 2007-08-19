@@ -176,7 +176,7 @@ function install_lang() {
 			$sql->Execute("CREATE TABLE `$lang_table` (
 								msgid text collate utf8_unicode_ci,
 								msgstr text collate utf8_unicode_ci,
-								UNIQUE KEY `msgid` (`msgid`)
+                                KEY msgid (msgid(25))
 								) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
 								);
 
