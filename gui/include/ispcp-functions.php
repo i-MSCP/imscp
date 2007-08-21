@@ -273,34 +273,6 @@ function escape_user_data ( $data ) {
 
 }
 
-function make_hr($bytes){
-    if ($bytes == '' || $bytes < 0 ) {
-        $ret = '0&nbsp;B';
-    }
-    else if ($bytes > 1073741824){
-        /* g bytes */
-        $bytes = $bytes/1073741824;
-        $ret   = sprintf("%.2f", $bytes) . "&nbsp;GB";
-    }
-    else if ($bytes > 1048576 ) {
-        /* m bytes */
-        $bytes = $bytes/1048576;
-        $ret   = sprintf("%.2f", $bytes) . "&nbsp;MB";
-    }
-    else if ($bytes > 1024) {
-        /* k bytes */
-        $bytes = $bytes/1024;
-        $ret   = sprintf("%.2f", $bytes) . "&nbsp;KB";
-    }
-    else {
-        /* bytes */
-        $ret = $bytes . "&nbsp;B";
-    }
-
-    return $ret;
-
-}
-
 /*
 fuction to decode punny to normal
 $input -> string get in punny or not punny
@@ -333,14 +305,14 @@ function strip_html($input)
 }
 
 function is_number($integer) {
-	if (preg_match('/^[0-9]+$/', $integer)) {
+	if (preg_match('/^[0-9]+$/D', $integer)) {
 		return true;
 	}
 	return false;
 }
 
 function is_basicString($sting) {
-	if (preg_match('=^[a-zA-Z0-9_-]+$=', $sting)) {
+	if (preg_match('/^[a-zA-Z0-9_-]+$/D', $sting)) {
 		return true;
 	}
 	return false;

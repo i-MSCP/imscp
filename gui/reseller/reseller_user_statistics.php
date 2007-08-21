@@ -224,8 +224,8 @@ function generate_domain_entry (&$tpl, $user_id, $row)
                        'TRAFF_GREEN' => $traff_green,
 
                        'TRAFF_MSG' => ($utraff_max)?
-                                       tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($utraff_current), make_hr($utraff_max)):
-                                       tr('%d <br/>of</br> <b>unlimited</b>', make_hr($utraff_current)),
+                                       tr('%1$d <br/>of</br> <b>%2$d</b>', sizeit($utraff_current), sizeit($utraff_max)):
+                                       tr('%d <br/>of</br> <b>unlimited</b>', sizeit($utraff_current)),
 
                        'DISK_SHOW_PERCENT' => $disk_show_percent,
     			       'DISK_PERCENT' => $disk_percent,
@@ -233,25 +233,25 @@ function generate_domain_entry (&$tpl, $user_id, $row)
                        'DISK_GREEN' => $disk_green,
 
                        'DISK_MSG' => ($udisk_max)?
-                                       tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($udisk_current), make_hr($udisk_max)):
-                                       tr('%d <br/>of</br> <b>unlimited</b>', make_hr($udisk_current)),
+                                       tr('%1$d <br/>of</br> <b>%2$d</b>', sizeit($udisk_current), sizeit($udisk_max)):
+                                       tr('%d <br/>of</br> <b>unlimited</b>', sizeit($udisk_current)),
 
-                       'WEB' => make_hr($web),
-                       'FTP' => make_hr($ftp),
-                       'SMTP' => make_hr($smtp),
-                       'POP3' => make_hr($pop3),
+                       'WEB' => sizeit($web),
+                       'FTP' => sizeit($ftp),
+                       'SMTP' => sizeit($smtp),
+                       'POP3' => sizeit($pop3),
 
                        'SUB_MSG' => ($usub_max)? (
                                            ($usub_max > 0) ?
-                                               tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($usub_current), $usub_max):
+                                               tr('%1$d <br/>of</br> <b>%2$d</b>', sizeit($usub_current), $usub_max):
                                                tr('<b>disabled</b>')
-                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', make_hr($usub_current)),
+                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', sizeit($usub_current)),
 
                        'ALS_MSG' => ($uals_max)? (
                                            ($uals_max > 0) ?
-                                               tr('%1$d <br/>of</br> <b>%2$d</b>', make_hr($uals_current), $uals_max):
+                                               tr('%1$d <br/>of</br> <b>%2$d</b>', sizeit($uals_current), $uals_max):
                                                tr('<b>disabled</b>')
-                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', make_hr($uals_current)),
+                                       ) : tr('%d <br/>of</br> <b>unlimited</b>', sizeit($uals_current)),
 
                        'MAIL_MSG' => ($umail_max)?
                                        tr('%1$d <br/>of</br> <b>%2$d</b>', $umail_current, $umail_max):

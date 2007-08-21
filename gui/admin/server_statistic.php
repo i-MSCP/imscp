@@ -150,17 +150,17 @@ SQL_QUERY;
       $tpl -> assign(array('DAY' => $i,
                            'YEAR' =>  $year,
                            'MONTH' => $month,
-                           'WEB_IN' => make_hr($web_in),
-                           'WEB_OUT' => make_hr($web_out),
-                           'MAIL_IN' => make_hr($mail_in),
-                           'MAIL_OUT' => make_hr($mail_out),
-                           'POP_IN' => make_hr($pop_in),
-                           'POP_OUT' => make_hr($pop_out),
-                           'OTHER_IN' => make_hr($other_in),
-                           'OTHER_OUT' => make_hr($other_out),
-                           'ALL_IN' => make_hr($all_in),
-                           'ALL_OUT' => make_hr($all_out),
-                           'ALL' => make_hr($all_in + $all_out)));
+                           'WEB_IN' => sizeit($web_in),
+                           'WEB_OUT' => sizeit($web_out),
+                           'MAIL_IN' => sizeit($mail_in),
+                           'MAIL_OUT' => sizeit($mail_out),
+                           'POP_IN' => sizeit($pop_in),
+                           'POP_OUT' => sizeit($pop_out),
+                           'OTHER_IN' => sizeit($other_in),
+                           'OTHER_OUT' => sizeit($other_out),
+                           'ALL_IN' => sizeit($all_in),
+                           'ALL_OUT' => sizeit($all_out),
+                           'ALL' => sizeit($all_in + $all_out)));
       $all[0] = $all[0] + $web_in;
       $all[1] = $all[1] + $web_out;
       $all[2] = $all[2] + $mail_in;
@@ -183,17 +183,17 @@ SQL_QUERY;
   $all_other_in  = $all[6] - ($all[0] + $all[2] + $all[4]);
   $all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);
 
-  $tpl -> assign(array('WEB_IN_ALL' => make_hr($all[0]),
-                       'WEB_OUT_ALL' => make_hr($all[1]),
-                       'MAIL_IN_ALL' => make_hr($all[2]),
-                       'MAIL_OUT_ALL' => make_hr($all[3]),
-                       'POP_IN_ALL' => make_hr($all[4]),
-                       'POP_OUT_ALL' => make_hr($all[5]),
-                       'OTHER_IN_ALL' => make_hr($all_other_in),
-                       'OTHER_OUT_ALL' => make_hr($all_other_out),
-                       'ALL_IN_ALL' => make_hr($all[6]),
-                       'ALL_OUT_ALL' => make_hr($all[7]),
-                       'ALL_ALL' => make_hr($all[6] + $all[7])));
+  $tpl -> assign(array('WEB_IN_ALL' => sizeit($all[0]),
+                       'WEB_OUT_ALL' => sizeit($all[1]),
+                       'MAIL_IN_ALL' => sizeit($all[2]),
+                       'MAIL_OUT_ALL' => sizeit($all[3]),
+                       'POP_IN_ALL' => sizeit($all[4]),
+                       'POP_OUT_ALL' => sizeit($all[5]),
+                       'OTHER_IN_ALL' => sizeit($all_other_in),
+                       'OTHER_OUT_ALL' => sizeit($all_other_out),
+                       'ALL_IN_ALL' => sizeit($all[6]),
+                       'ALL_OUT_ALL' => sizeit($all[7]),
+                       'ALL_ALL' => sizeit($all[6] + $all[7])));
 }
 
 

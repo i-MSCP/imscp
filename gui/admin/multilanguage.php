@@ -153,9 +153,12 @@ function install_lang() {
 			    return ;
 			}
 
-			if (empty($ab['ispcp_languageSetlocaleValue']) || empty($ab['ispcp_table']) || empty($ab['ispcp_language'])) {
-			    set_page_message(tr('Uploaded file does not contain the language information!'));
-			    return ;
+			if (empty($ab['ispcp_languageSetlocaleValue']) || empty($ab['ispcp_table']) || empty($ab['ispcp_language'])
+			     || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',$ab['ispcp_languageSetlocaleValue'])
+			     || !preg_match('/^[a-z0-9]+$/Di',$ab['ispcp_table'])) {
+
+    			    set_page_message(tr('Uploaded file does not contain the language information!'));
+    			    return ;
 			}
 
 			$lang_table = 'lang_' . $ab['ispcp_table'];
@@ -181,8 +184,8 @@ function install_lang() {
 								);
 
 			foreach ($ab as $msgid => $msgstr) {
-			    $query = "INSERT INTO `?` (msgid, msgstr) VALUES (?, ?)";
-			    exec_query($sql, $query, array($lang_table, $msgid, $msgstr));
+			    $query = "INSERT INTO `$lang_table` (msgid, msgstr) VALUES (?, ?)";
+			    exec_query($sql, $query, array($msgid, $msgstr));
 			}
 
 			if (!$lang_update) {

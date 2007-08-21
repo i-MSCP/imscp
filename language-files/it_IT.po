@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:11-0500\n"
+"POT-Creation-Date: 2007-08-18 23:33-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Italian <it_IT@li.org>\n"
@@ -3349,9 +3349,6 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "of"
-msgstr "di"
-
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Rivenditore/Setup EMail password dimenticata"
 
@@ -3516,6 +3513,9 @@ msgstr "ISPCP - Rivenditore : Sistema di supporto: Vedere i Ticket"
 
 msgid "Message was sent."
 msgstr "Il messaggio è stato inviato"
+
+#~ msgid "of"
+#~ msgstr "di"
 
 #~ msgid "Password generate"
 #~ msgstr "Generazione password"

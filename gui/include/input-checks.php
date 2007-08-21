@@ -132,10 +132,11 @@ function chk_password($password, $num = 50) {
     if ($len < $cfg['PASSWD_CHARS'] || $len > $num )
 		return FALSE;
 
-    if ($cfg['PASSWD_STRONG'])
-        return (bool)(preg_match("/[0-9]/", $password) AND preg_match("/[a-zA-Z]/", $password));
-    else
+    if ($cfg['PASSWD_STRONG']) {
+        return (bool)(preg_match("/[0-9]/", $password) && preg_match("/[a-zA-Z]/", $password));
+    } else {
         return TRUE;
+    }
 }
 
 /**
@@ -277,35 +278,32 @@ function check_dn_token($data) {
 
 /**
  *  @function		ispcp_limit_check
- *  @description	Function for checking ispcp limits. The correct values for
- * 					this limits are in ranges -1, 0, [1, $num]
+ *  @description	Function for checking ispcp limits.
  *
- * 	@param		String		$data		ispcp 'limit' field data
- * 	@param		int			$num		number of max. chars
+ * 	@param		string		$data		ispcp 'limit' field data (by default valids are: -1|0|1+)
+ * 	@param		misc		$extra		single extra permitted value or array of permitted values
  *  @return		boolean					false	incorrect syntax (ranges)
  * 										true	correct syntax (ranges)
+ * @example ispcp_limit_check($_POST['domains_limit'], null)
+ * @example ispcp_limit_check($_POST['ftp_accounts_limit'])
  */
-function ispcp_limit_check($data, $num = null) {
+function ispcp_limit_check($data, $extra = -1) {
 
-    $res = preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data);
-
-    if (!$res)
-    	return FALSE;
-
-    if ($num !== null) {
-        $inf = debug_backtrace();
-        if (isset($inf[1])) {
-            $inf = $inf[1];
+    if ($extra !== null && !is_bool($extra)) {
+        if (is_array($extra)) {
+            $nextra = '';
+            $max = count($extra);
+            foreach ($extra as $n => $element) {
+                $nextra = $element . ($n < $max)? '|' : '';
+            }
         } else {
-            $inf = array('file' => $inf[0]['file'], 'line' => $inf[0]['line'], 'function' => 'main');
+            $extra .= '|';
         }
-        printf('Deprecated usage of %s! Backtrace is: %s:%d->%s<br>'."\n", __FUNCTION__, $inf['file'], $inf['line'], $inf['function']);
-        if ($data > $num) {
-            return false;
-        }
+    } else {
+        $extra = '';
     }
 
-    return TRUE;
+    return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
 }
 
 /**

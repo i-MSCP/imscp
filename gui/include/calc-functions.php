@@ -37,39 +37,55 @@ function calc_bars($crnt, $max, $bars_max) {
 
 }
 
-function sizeit($crnt)
-{
-    $kb = 1024;
+function sizeit($bytes, $from = 'B') {
 
-    $mb = 1024*$kb;
-
-    $gb = 1024*$mb;
-
-    $tb = 1024*$gb;
-
-    if (0 <= $crnt && $crnt < $kb) {
-
-        $sz = $crnt; $name = 'B';
-
-    } else if ($kb <= $crnt && $crnt < $mb) {
-
-        $sz = ($crnt/$kb); $name = 'KB';
-
-    } else if ($mb <= $crnt && $crnt < $gb) {
-
-        $sz = ($crnt/$mb); $name = 'MB';
-
-    } else if ($gb <= $crnt && $crnt < $tb) {
-
-        $sz = ($crnt/$gb); $name = 'GB';
-
-    } else if ($tb <= $crnt) {
-
-        $sz = ($crnt/$tb); $name = 'TB';
-
+    switch ($from) {
+        case 'PiB':
+            $bytes = $bytes * pow(1024, 5);
+            break;
+        case 'TiB':
+            $bytes = $bytes * pow(1024, 4);
+            break;
+        case 'GiB':
+            $bytes = $bytes * pow(1024, 3);
+            break;
+        case 'MB':
+            $bytes = $bytes * pow(1024, 2);
+            break;
+        case 'KiB':
+            $bytes = $bytes * pow(1024, 1);
+            break;
+        case 'B':
+            break;
+        default:
+            die('FIXME: ' . __FILE__ . ':' . __LINE__);
+            break;
     }
 
-    return sprintf("%.2f %s", $sz, $name);
+    if ($bytes == '' || $bytes < 0 ) {
+        $bytes = 0;
+    }
+
+    if ($bytes > pow(1024, 5)) {
+        $bytes = $bytes/pow(1024, 5);
+        $ret   = tr('%.2f PB');
+    } else if ($bytes > pow(1024, 4)) {
+        $bytes = $bytes/pow(1024, 4);
+        $ret   = tr('%.2f TB');
+    } else if ($bytes > pow(1024, 3)) {
+        $bytes = $bytes/pow(1024, 3);
+        $ret   = tr('%.2f GB');
+    } else if ($bytes > pow(1024, 2) ) {
+        $bytes = $bytes/pow(1024, 2);
+        $ret   = tr('%.2f MB');
+    } else if ($bytes > pow(1024, 1)) {
+        $bytes = $bytes/pow(1024, 1);
+        $ret   = tr('%.2f KB');
+    } else {
+        $ret   = tr('%d B', $bytes);
+    }
+
+    return $ret;
 
 }
 
@@ -158,20 +174,29 @@ function _passgen() {
 
 function passgen() {
 
-	global $cfg;
+    $pw = null;
 
-	$pw = _passgen();
+    while ($pw == null || !chk_password($pw)) {
+        $pw = _passgen();
+    }
 
-	if ($cfg['PASSWD_STRONG']) {
+    return $pw;
 
-		while ((!isset($pw)) OR !chk_password($pw)) {
-			$pw = _passgen();
-		}
+}
 
-	}
-
-	return $pw;
-
+function translate_limit_value($value, $autosize = false)
+{
+    if ($value == -1) {
+        return tr('disabled');
+    } else if ($value == 0){
+        return tr('unlimited');
+    } else {
+        if (!$autosize) {
+            return $value;
+        } else {
+            return sizeit($value, 'MB');
+        }
+    }
 }
 
 ?>

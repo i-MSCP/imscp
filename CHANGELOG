@@ -1,10 +1,23 @@
-ispCP ω 1.0.0 Changelog
+ispCP Ï 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
 |         - AWStats:                                              |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-08-20 Raphael Geissert
+    - GUI:
+        * Fixed a SQL injection vulnerability in admin/multilanguage.php
+        * Fixed #577: Undefined index: gender in admin/edit_reseller.php
+        * Renamed admin/add_user.php to admin/add_admin.php
+        * Dropped useless/duplicated functions
+        * Some i18n improvements
+
+2007-08-20 Geoffrey McRae (from ssl-addon branch)
+    - ENGINE
+        * Fixed the rest of the "SELECT *" statments
+        * Cleaned up some of the long SQL statements to be easier to read.
 
 2007-08-18 Raphael Geissert
     - GUI:
@@ -863,7 +876,7 @@ ispCP ω 1.0.0 Changelog
 		* changed debugger layout
 	- TOOLS:
 		* PMA update 2.10.2-RC1
-	- RELEASE ispCP ω Omega 1.0.0 RC2
+	- RELEASE ispCP Ï Omega 1.0.0 RC2
 
 2007-04-17 Benedikt Heintel
 	- CONFIGS:
@@ -882,7 +895,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-04-11 Malte Geierhos
 	- RELEASE:
-		* name change of project: VHCS ω => ispCP ω
+		* name change of project: VHCS Ï => ispCP Ï
 
 2007-04-14 Jan Porath
 	- GUI:
@@ -949,9 +962,9 @@ ispCP ω 1.0.0 Changelog
 		* fixed: protected areas templates (Jan Porath)
 
 2007-03-31 Benedikt Heintel
-	- RELEASE: VHCS ω Omega 1.0.0 RC1
+	- RELEASE: VHCS Ï Omega 1.0.0 RC1
 
-VHCS ω 2.4.8 Changelog
+VHCS Ï 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2007-03-30 Benedikt Heintel
@@ -1373,7 +1386,7 @@ VHCS ω 2.4.8 Changelog
 
 2007-02-03 Benedikt Heintel
 	- CONFIGS:
-		* modified sql datafiles to VHCS 2.4.8 ω
+		* modified sql datafiles to VHCS 2.4.8 Ï
 		* fixed bug #14
 	- DOCS:
 		* changed SQL-Update-2.4.7.1-to-2.4.8.sql
@@ -2342,7 +2355,7 @@ VHCS 2.4.8 Changelog
 	- LANGUAGES:
 		* Added complete Magyar translation by Magyar Szilveszter, thanks!
 		* Changed: Updated translations for languages:
-			* Spanish translation by Maximiliano M�ller, thanks!
+			* Spanish translation by Maximiliano Mï¿½ller, thanks!
 
 2006-03-01 Carsten Schoene
 	- GUI:
@@ -2394,10 +2407,10 @@ VHCS 2.4.8 Changelog
 	- ENGINE:
 		* Fixed bug #0000306: vhcs2-backup-all was installed in the wrong directory
 	- LANGUAGES:
-		* Fixed bug #0000322: Portugu�s Brasil Language does not work because of problem with datbase table name
+		* Fixed bug #0000322: Portuguï¿½s Brasil Language does not work because of problem with datbase table name
 		* Changed: Updated lang_english table contents
 		* Changed: Updated translations for languages:
-			* Finnish translation by Petri M�kel�, thanks!
+			* Finnish translation by Petri Mï¿½kelï¿½, thanks!
 			* Italian translation by Ugo Viti, thanks!
 			* Dutch translation by Casper Bakker, thanks!
 			* German translation
@@ -2460,7 +2473,7 @@ VHCS 2.4.8 Changelog
 	- ENGINE:
 		* Changed: autoresponder no longer send mails with "From: user@vhcs2-arpl.domain.com"
 	- LANGUAGES:
-		* Added complete Spanish translation by Maximiliano M�ller, thanks!
+		* Added complete Spanish translation by Maximiliano Mï¿½ller, thanks!
 
 2006-01-24 Erik Lehmann
 	- GUI:
@@ -2590,7 +2603,7 @@ VHCS 2.4.7 Changelog
 	- LANGUAGES:
 		* Changed: updated lang_english table contents
 		* Changed: Completed translations for languages:
-			* Finnish translation by Petri M�kel�, thanks!
+			* Finnish translation by Petri Mï¿½kelï¿½, thanks!
 			* Chinese translation by Xu hiei, thanks!
 			* German translation by Mauric Rene Oberlaender, thanks!
 			* Italian translation by Ugo Viti, thanks!
@@ -2784,7 +2797,7 @@ VHCS 2.4.7 Changelog
 2005-11-23 Erik Lehmann
 
 	- GUI:
-		* Added: allow mysql remote connect per default in database. Determining factor is now only the option in the my.cf to activate oder deactivate (thanks to Carsten Sch�ne) (only for new dbs or after password change)
+		* Added: allow mysql remote connect per default in database. Determining factor is now only the option in the my.cf to activate oder deactivate (thanks to Carsten Schï¿½ne) (only for new dbs or after password change)
 	- INSTALLATION:
 		* Fixed bug #0000232: Global symbol "$cmd" requires explicit package name at ./vhcs2-setup
 		* Fixed bug #0000230: error in hosting_plans table update in HOWTO Update

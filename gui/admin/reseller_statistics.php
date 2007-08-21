@@ -300,15 +300,15 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 							'TRAFF_PERCENT' => $traff_percent,
 
                             'TRAFF_MSG' => ($rtraff_max) ?
-                                            tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', make_hr($utraff_current), make_hr($rtraff_current), make_hr($rtraff_max)):
-                                            tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', make_hr($utraff_current), make_hr($rtraff_current)),
+                                            tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)):
+                                            tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
                             'DISK_SHOW_PERCENT' => $disk_show_percent,
 							'DISK_PERCENT' => $disk_percent,
 
                             'DISK_MSG' => ($rdisk_max) ?
-                                            tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', make_hr($udisk_current), make_hr($rdisk_current), make_hr($rdisk_max)):
-                                            tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', make_hr($udisk_current), make_hr($rdisk_current)),
+                                            tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)):
+                                            tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
                             'DMN_MSG' => ($rdmn_max) ?
                                             tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):

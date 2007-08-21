@@ -465,7 +465,7 @@ SQL_QUERY;
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'])) {
+    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
 
         set_page_message( tr("Incorrect max domain count or syntax!"));
 
@@ -510,13 +510,13 @@ SQL_QUERY;
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'] , 1024*1024*1024)) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
 
         set_page_message(tr('Incorrect max traffic amount or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'])) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'], null)) {
 
         set_page_message(tr('Incorrect max disk amount or syntax!'));
 

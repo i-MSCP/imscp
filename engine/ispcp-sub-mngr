@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# ispCP Ï (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP ω Home Page is at:
+# The ISPCP Ï Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -84,7 +84,16 @@ sub sub_mngr_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from subdomain;";
+    my $sql = "
+    	SELECT
+		subdomain_id,
+		domain_id,
+		subdomain_name,
+		subdomain_mount,
+		subdomain_status
+	FROM
+		subdomain
+    ";
 
     ($rs, $rdata) = doSQL($sql);
 
@@ -2134,13 +2143,44 @@ sub sub_mngr_engine {
 
     push_el(\@main::el, 'sub_mngr_engine()', 'Starting...');
 
-    my $sql = "SELECT t1.subdomain_id, t1.domain_id, t1.subdomain_name, t1.subdomain_mount, t1.subdomain_status,
-    t2.domain_id, t2.domain_name, t2.domain_gid, t2.domain_uid, t2.domain_admin_id, t2.domain_created_id, t2.domain_created,
-    t2.domain_last_modified, t2.domain_mailacc_limit, t2.domain_ftpacc_limit, t2.domain_traffic_limit, t2.domain_sqld_limit,
-    t2.domain_sqlu_limit, t2.domain_status, t2.domain_alias_limit, t2.domain_subd_limit, t2.domain_ip_id, t2.domain_disk_limit,
-    t2.domain_disk_usage, t2.domain_php, t2.domain_cgi, t3.ip_number FROM subdomain as t1, domain as t2, server_ips as t3
-    WHERE t1.domain_id = t2.domain_id AND t2.domain_ip_id = t3.ip_id AND t1.subdomain_id = $main::sub_task_id";
-
+    my $sql = "
+      SELECT
+        t1.subdomain_id,
+        t1.domain_id,
+        t1.subdomain_name,
+        t1.subdomain_mount,
+        t1.subdomain_status,
+        t2.domain_id,
+        t2.domain_name,
+        t2.domain_gid,
+        t2.domain_uid,
+        t2.domain_admin_id,
+        t2.domain_created_id,
+        t2.domain_created,
+        t2.domain_last_modified,
+        t2.domain_mailacc_limit,
+        t2.domain_ftpacc_limit,
+        t2.domain_traffic_limit,
+        t2.domain_sqld_limit,
+        t2.domain_sqlu_limit,
+        t2.domain_status,
+        t2.domain_alias_limit,
+        t2.domain_subd_limit,
+        t2.domain_ip_id,
+        t2.domain_disk_limit,
+        t2.domain_disk_usage,
+        t2.domain_php,
+        t2.domain_cgi,
+        t3.ip_number
+      FROM
+        subdomain AS t1,
+        domain AS t2,
+        server_ips AS t3
+      WHERE
+            t1.domain_id    = t2.domain_id
+        AND t2.domain_ip_id = t3.ip_id
+        AND t1.subdomain_id = $main::sub_task_id
+    ";
 
     ($rs, $rows) = doSQL($sql);
 

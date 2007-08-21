@@ -203,12 +203,12 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name)
                             'TRAFF_PERCENT' => $traff_percent,
 
                             'TRAFF_MSG' => ($rtraff_max) ?
-                                            tr('%1$d / %2$d of <b>%3$d</b>', make_hr($utraff_current), make_hr($rtraff_current), make_hr($rtraff_max)):
-                                            tr('%1$d / %2$d of <b>unlimited</b>', make_hr($utraff_current), make_hr($rtraff_current)),
+                                            tr('%1$d / %2$d of <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
                             'DISK_MSG' => ($rdisk_max) ?
-                                            tr('%1$d / %2$d of <b>%3$d</b>', make_hr($udisk_current), make_hr($rdisk_current), make_hr($rdisk_max)):
-                                            tr('%1$d / %2$d of <b>unlimited</b>', make_hr($udisk_current), make_hr($rdisk_current)),
+                                            tr('%1$d / %2$d of <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)):
+                                            tr('%1$d / %2$d of <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
                             'DMN_MSG' => ($rdmn_max) ?
                                             tr('%1$d / %2$d of <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):
@@ -323,7 +323,6 @@ $tpl -> assign(
                 array(
                         'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Reseller/Main Index'),
 						'TR_SAVE' => tr('Save'),
-						'TR_OF' => tr('of'),
 						'TR_MESSAGES' => tr('Messages'),
 						'TR_LANGUAGE' => tr('Language'),
 						'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),

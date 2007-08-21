@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# ispCP Ï (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ispCP ω Home Page is at:
+# The ispCP Ï Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -595,7 +595,31 @@ sub arpl_msgr_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from domain;";
+    my $sql = "
+    	SELECT
+		domain_id,
+		domain_name,
+		domain_gid,
+		domain_uid,
+		domain_admin_id,
+		domain_created_id,
+		domain_created,
+		domain_last_modified,
+		domain_mailacc_limit,
+		domain_ftpacc_limit,
+		domain_traffic_limit,
+		domain_sqld_limit,
+		domain_sqlu_limit,
+		domain_status,
+		domain_alias_limit,
+		domain_ip_id,
+		domain_disk_limit,
+		domain_disk_usage,
+		domain_php,
+		domain_cgi
+	FROM
+		domain
+    ";
 
     ($rs, $rdata) = doSQL($sql);
 

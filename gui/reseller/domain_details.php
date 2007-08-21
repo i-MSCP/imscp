@@ -147,25 +147,25 @@ SQL_QUERY;
 	$dstatus = translate_dmn_status($data['domain_status']);
 
 
-	if($data['domain_php'] == 'yes'){
-		$php_stat = 'Enabled';
+	if($data['domain_php'] == 'yes') {
+		$php_stat = tr('Enabled');
 	}
 	else {
-		$php_stat = 'disabled';
+		$php_stat = tr('Disabled');
 	}
 
 	if($data['domain_cgi'] == 'yes'){
-		$cgi_stat = 'Enabled';
+		$cgi_stat = tr('Enabled');
 	}
 	else {
-		$cgi_stat = 'disabled';
+		$cgi_stat = tr('Disabled');
 	}
 
 	if($data['domain_sqld_limit'] >= 0){
-		$sql_stat = 'Enabled';
+		$sql_stat = tr('Enabled');
 	}
 	else {
-		$sql_stat = 'disabled';
+		$sql_stat = tr('Disabled');
 	}
 
 
@@ -225,23 +225,14 @@ SQL_QUERY;
 	}
 
 	$dindx  = (int) $dpr;
-	$domduh = make_hr($domdu);
+	$domduh = sizeit($domdu);
 
 	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
 
 	// Get current mail count
 	$res6 = exec_query($sql, "SELECT COUNT(mail_id) AS mcnt FROM mail_users WHERE domain_id = ? AND mail_type NOT RLIKE '_catchall'", array($data['domain_id']));
     $dat3 = $res6->FetchRow();
-
-	if ($data['domain_mailacc_limit'] == 0) {
-		$mail_limit = tr('unlimited');
-	}
-	else if ($data['domain_mailacc_limit'] == -1) {
-		$mail_limit = tr('None');
-	}
-	else {
-		$mail_limit = $data['domain_mailacc_limit'];
-	}
+	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 
 	// FTP stat
 	$res4     = exec_query($sql, "select gid from ftp_group where groupname=?", array($data['domain_name']));
@@ -256,68 +247,31 @@ SQL_QUERY;
 
 		$used_ftp_acc = $dat2['ftp_cnt'];
 	}
-	if ($data['domain_ftpacc_limit'] == 0) {
-		$ftp_limit = tr('unlimited');
-	}
-	else {
-		$ftp_limit =  $data['domain_ftpacc_limit'];
-	}
+	$ftp_limit =  translate_limit_value($data['domain_ftpacc_limit']);
 
 
 	// Get sql database count
 	$res = exec_query($sql, "select count(sqld_id) as dnum from sql_database where domain_id=?", array($data['domain_id']));
     $dat5 = $res->FetchRow();
-	if ($data['domain_sqld_limit'] == 0) {
-		$sql_db = tr('unlimited');
-	}
-	else if ($data['domain_sqld_limit'] == -1) {
-		$sql_db = tr('None');
-	}
-	else {
-		$sql_db = $data['domain_sqld_limit'];
-	}
+    $sql_db = translate_limit_value($data['domain_sqld_limit']);
 
 	// Get sql users count
 	$res = exec_query($sql,
                     "select count(u.sqlu_id) as ucnt from sql_user u,sql_database d where u.sqld_id=d.sqld_id and d.domain_id=?",
                     array($data['domain_id']));
 	$dat6 = $res->FetchRow();
-	 if ($data['domain_sqlu_limit'] == 0) {
-		$sql_users = tr('unlimited');
-	}
-	else if ($data['domain_sqlu_limit'] == -1) {
-		$sql_users = tr('None');
-	}
-	else {
-		$sql_users =  $data['domain_sqlu_limit'];
-	}
+	$sql_users =  translate_limit_value($data['domain_sqlu_limit']);
 
 	// Get sub domain
 	$res1 = exec_query($sql, "select count(subdomain_id) as sub_num from subdomain where domain_id=?", array($domain_id));
 	$sub_num_data = $res1->FetchRow();
-	if ($data['domain_subd_limit'] == 0) {
-		$sub_dom = tr('unlimited');
-	}
-	else if ($data['domain_subd_limit'] == -1) {
-		$sub_dom = tr('None');
-	}
-	else {
-		$sub_dom =  $data['domain_subd_limit'];
-	}
+	$sub_dom =  translate_limit_value($data['domain_subd_limit']);
 
 	//Get domain aliases
 	$res1 = exec_query($sql, "select count(alias_id) as alias_num from domain_aliasses where domain_id=?", array($domain_id));
 	$alias_num_data = $res1->FetchRow();
 
-	if ($data['domain_alias_limit'] == 0) {
-		$dom_alias = tr('unlimited');
-	}
-	else if ($data['domain_alias_limit'] == -1) {
-		$dom_alias = tr('None');
-	}
-	else {
-		$dom_alias =  $data['domain_alias_limit'];
-	}
+	$dom_alias =  translate_limit_value($data['domain_alias_limit']);
 
 	// Fill in the fileds
 	$tpl -> assign(
@@ -330,11 +284,11 @@ SQL_QUERY;
                       'VL_CGI_SUPP' => tr($cgi_stat),
                       'VL_MYSQL_SUPP' => tr($sql_stat),
                       'VL_TRAFFIC_PERCENT' => $traffic_percent,
-                      'VL_TRAFFIC_USED' => make_hr($domain_all_traffic),
-                      'VL_TRAFFIC_LIMIT' => make_hr($domain_traffic_limit*1024*1024),
-                      'VL_DISK_PERCENT' => $disk_percent*2,
+                      'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
+                      'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),
+                      'VL_DISK_PERCENT' => $disk_percent,
                       'VL_DISK_USED' => $domduh,
-                      'VL_DISK_LIMIT' => make_hr($data['domain_disk_limit']*1024*1024),
+                      'VL_DISK_LIMIT' => sizeit($data['domain_disk_limit'], 'MB'),
                       'VL_MAIL_ACCOUNTS_USED' => $dat3['mcnt'],
                       'VL_MAIL_ACCOUNTS_LIIT' => $mail_limit,
                       'VL_FTP_ACCOUNTS_USED' => $used_ftp_acc,

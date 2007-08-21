@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# ispCP Ï (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP ω Home Page is at:
+# The ISPCP Ï Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -75,7 +75,32 @@ sub als_mngr_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from domain;";
+    my $sql = "
+    	SELECT
+		domain_id,
+		domain_name,
+		domain_gid,
+		domain_uid,
+		domain_admin_id,
+		domain_created_id,
+		domain_created,
+		domain_last_modified,
+		domain_mailacc_limit,
+		domain_ftpacc_limit,
+		domain_traffic_limit,
+		domain_sqld_limit,
+		domain_sqlu_limit,
+		domain_status,
+		domain_alias_limit,
+		domain_subd_limit,
+		domain_ip_id,
+		domain_disk_limit,
+		domain_disk_usage,
+		domain_php,
+		domain_cgi
+	FROM
+		domain
+    ";
 
     ($rs, $rdata) = doSQL($sql);
 
@@ -2484,14 +2509,39 @@ sub als_mngr_engine {
 
     push_el(\@main::el, 'als_mngr_engine()', 'Starting...');
 
-    my $sql = "SELECT t1.alias_id, t1.domain_id, t1.alias_name, t1.alias_status, t1.alias_mount,
-    t1.alias_ip_id, t1.url_forward, t2.domain_id, t2.domain_name, t2.domain_gid, t2.domain_uid,
-    t2.domain_admin_id, t2.domain_created_id, t2.domain_created, t2.domain_last_modified,
-    t2.domain_mailacc_limit, t2.domain_ftpacc_limit, t2.domain_traffic_limit, t2.domain_sqld_limit,
-    t2.domain_sqlu_limit, t2.domain_status, t2.domain_alias_limit, t2.domain_subd_limit,
-    t2.domain_ip_id, t2.domain_disk_limit, t2.domain_disk_usage, t2.domain_php, t2.domain_cgi
-    FROM domain_aliasses AS t1, domain AS t2
-    WHERE t2.domain_id = t1.domain_id AND t1.alias_id = $main::als_task_id";
+    my $sql = "
+      SELECT
+        t1.alias_id,
+        t1.domain_id,
+        t1.alias_name,
+        t1.alias_status,
+        t1.alias_mount,
+        t1.alias_ip_id,
+        t1.url_forward,
+        t2.domain_id,
+        t2.domain_name,
+        t2.domain_gid,
+        t2.domain_uid,
+        t2.domain_admin_id,
+        t2.domain_last_modified,
+        t2.domain_mailacc_limit,
+        t2.domain_ftpacc_limit,
+        t2.domain_sqlu_limit,
+        t2.domain_status,
+        t2.domain_alias_limit,
+        t2.domain_subd_limit,
+        t2.domain_ip_id,
+        t2.domain_disk_limit,
+        t2.domain_disk_usage,
+        t2.domain_php,
+        t2.domain_cgi
+      FROM
+        domain_aliasses AS t1,
+        domain          AS t2
+       WHERE
+             t2.domain_id = t1.domain_id
+         AND t1.alias_id  = $main::als_task_id
+    ";
 
     my $sql2 = undef;
 

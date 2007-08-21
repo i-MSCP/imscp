@@ -35,16 +35,6 @@ $tpl->define_dynamic('hp_order', 'page');
  *
  */
 
-function gen_num_limit_msg($limit) {
-    if ($limit == -1) {
-        return tr('disabled');
-    } else if ($limit == 0) {
-        return tr('unlimited');
-    } else {
-        return $limit;
-    }
-}
-
 function gen_hp(&$tpl, &$sql, $user_id) {
     global $cfg;
 
@@ -172,24 +162,16 @@ SQL_QUERY;
             $cgi = "no";
             $details .= tr('CGI Support: disabled') . "<br>";
         }
-        if (is_numeric(gen_num_limit_msg($hp_disk))) {
-            $hdd_usage = tr('Disk limit') . ": " . sizeit(gen_num_limit_msg($hp_disk * 1024 * 1024)) . "<br>";
-        } else {
-            $hdd_usage = tr('Disk limit') . ": " . gen_num_limit_msg($hp_disk) . "<br>";
-        }
+        $hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br>";
 
-        if (is_numeric(gen_num_limit_msg($hp_traff))) {
-            $traffic_usage = tr('Traffic limit') . ": " . sizeit(gen_num_limit_msg($hp_traff * 1024 * 1024));
-        } else {
-            $traffic_usage = tr('Traffic limit') . ": " . gen_num_limit_msg($hp_traff * 1024 * 1024);
-        }
+        $traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
 
-        $details .= tr('Aliases') . ": " . gen_num_limit_msg($hp_als) . "<br>";
-        $details .= tr('Subdomains') . ": " . gen_num_limit_msg($hp_sub) . "<br>";
-        $details .= tr('Emails') . ": " . gen_num_limit_msg($hp_mail) . "<br>";
-        $details .= tr('FTPs') . ": " . gen_num_limit_msg($hp_ftp) . "<br>";
-        $details .= tr('SQL Databases') . ": " . gen_num_limit_msg($hp_sql_db) . "<br>";
-        $details .= tr('SQL Users') . ": " . gen_num_limit_msg($hp_sql_user) . "<br>";
+        $details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br>";
+        $details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br>";
+        $details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br>";
+        $details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br>";
+        $details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br>";
+        $details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br>";
         $details .= $hdd_usage . $traffic_usage;
 
         $price = $rs->fields['price'];

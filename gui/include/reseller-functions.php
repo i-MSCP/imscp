@@ -750,7 +750,7 @@ function check_ruser_data (&$tpl, $NoPass) {
     }
 	/* we don't wannt to validate Customer ID, First and Second name and also ZIP
 
-	else if(!ispcp_limit_check($customer_id, 999)){
+	else if(!ispcp_limit_check($customer_id)){
 
 		$rau_error = tr('Incorrect customer ID syntax!');
 	}
@@ -760,7 +760,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 	}else if(!chk_username($last_name, 40)){
 
 		$rau_error = tr('Incorrect second name length or syntax!');
-	}else if(!ispcp_limit_check($zip, 999999)){
+	}else if(!ispcp_limit_check($zip)){
 
 		$rau_error = tr('Incorrect post code length or syntax!');
 	} */

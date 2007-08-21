@@ -359,11 +359,11 @@ function check_user_data ( &$tpl, &$sql, $reseller_id, $user_id) {
 
         $ed_error = tr('Incorrect SQL database length or syntax!');
 
-    } else if (!ispcp_limit_check($traff)) {
+    } else if (!ispcp_limit_check($traff, null)) {
 
         $ed_error = tr('Incorrect traffic length or syntax!');
 
-    } else if (!ispcp_limit_check($disk)) {
+    } else if (!ispcp_limit_check($disk, null)) {
 
         $ed_error = tr('Incorrect disk length or syntax!');
 

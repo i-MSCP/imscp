@@ -206,7 +206,7 @@ function check_user_data()
 
         return false;
     }
-    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'])) {
+    if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
 
         set_page_message( tr("Incorrect max domain count or syntax!"));
 
@@ -251,13 +251,13 @@ function check_user_data()
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'])) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
 
         set_page_message(tr('Incorrect max traffic amount or syntax!'));
 
         return false;
 
-    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'])) {
+    } else if (!ispcp_limit_check($_POST['nreseller_max_disk'], null)) {
 
         set_page_message(tr('Incorrect max disk amount or syntax!'));
 
@@ -786,7 +786,7 @@ function get_reseller_prop(&$sql)
             max_sql_user_cnt, current_sql_user_cnt,
             max_traff_amnt, current_traff_amnt,
             max_disk_amnt, current_disk_amnt,
-            r.customer_id as customer_id, reseller_ips
+            r.customer_id as customer_id, reseller_ips, gender
         from
             admin as a,
             reseller_props as r
@@ -947,8 +947,8 @@ $tpl -> assign(
         'CUSTOMER_ID' => $customer_id,
         'FIRST_NAME' => $fname,
         'LAST_NAME' => $lname,
-        'VL_MALE' => ($_POST['gender'] == 'M')? 'checked' : '',
-        'VL_FEMALE' => ($_POST['gender'] == 'F')? 'checked' : '',
+        'VL_MALE' => (isset($_POST['gender']) && $_POST['gender'] == 'M')? 'checked' : '',
+        'VL_FEMALE' => (isset($_POST['gender']) && $_POST['gender'] == 'F')? 'checked' : '',
 
         'FIRM' => $firm,
         'ZIP' => $zip,

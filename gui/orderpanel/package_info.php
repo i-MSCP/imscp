@@ -50,18 +50,6 @@ function translate_sse($value)
 
 }
 
-function translate_value($value)
-{
-	if ($value == -1) {
-    return tr('disabled');
-	} else if ($value == 0){
-		return tr('unlimited');
-	} else {
-		return $value;
-	}
-
-}
-
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id)
 {
 global $cfg;
@@ -115,20 +103,10 @@ SQL_QUERY;
 		$setup_fee = $setup_fee." ".$rs -> fields['value'];
 	}
 	$description = $rs -> fields['description'];
-	if ($description == '')
-		$description = '';
 
-	if (is_numeric(translate_value($hp_disk))){
-			$hp_disk = sizeit($hp_disk*1024*1024)."<br>";
-		} else {
-			$hp_disk = translate_value($hp_disk)."<br>";
-		}
+	$hp_disk = translate_limit_value($hp_disk, true)."<br>";
 
-		if (is_numeric(translate_value($hp_traff))){
-			$hp_traff = sizeit($hp_traff*1024*1024);
-		} else {
-			$hp_traff = translate_value($hp_traff*1024*1024);
-		}
+	$hp_traff = translate_limit_value($hp_traff, true);
 
   	$tpl -> assign(
                             array(
@@ -137,16 +115,16 @@ SQL_QUERY;
                                     'PACK_ID' => $rs -> fields['id'],
                                     'USER_ID' => $user_id,
                                     'PURCHASE' => tr('Purchase'),
-									'ALIAS' => translate_value($hp_als),
-									'SUBDOMAIN' => translate_value($hp_sub),
+									'ALIAS' => translate_limit_value($hp_als),
+									'SUBDOMAIN' => translate_limit_value($hp_sub),
 									'HDD' => $hp_disk,
 									'TRAFFIC' => $hp_traff,
 									'PHP' => translate_sse($hp_php),
 									'CGI' => translate_sse($hp_cgi),
-									'MAIL' => translate_value($hp_mail),
-									'FTP' => translate_value($hp_ftp),
-									'SQL_DB' => translate_value($hp_sql_db),
-									'SQL_USR' => translate_value($hp_sql_user),
+									'MAIL' => translate_limit_value($hp_mail),
+									'FTP' => translate_limit_value($hp_ftp),
+									'SQL_DB' => translate_limit_value($hp_sql_db),
+									'SQL_USR' => translate_limit_value($hp_sql_user),
 									'PRICE' => $price,
 									'SETUP' => $setup_fee,
 

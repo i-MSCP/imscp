@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# ispCP Ï (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ispCP ω Home Page is at:
+# The ispCP Ï Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -155,7 +155,15 @@ sub backup_all_mail_task {
 
 	push_el(\@main::el, 'backup_all_mail_task()', 'Starting...');
 
-	$sql = "select admin_name, email from admin where created_by = 0";
+	$sql = "
+		SELECT
+	    		admin_name,
+	    		email
+		FROM
+			admin
+		WHERE
+			created_by = 0
+	";
 
 	($rs, $rdata) = doSQL($sql);
 
@@ -225,7 +233,24 @@ sub backup_all_engine {
 	push_el(\@main::el, 'backup_all_engine()', 'Starting...');
 
 
-	$sql = "select t1.domain_id, t1.domain_name, t1.domain_status, t1.domain_uid, t1.domain_gid, t2.admin_name, t2.email from domain as t1, admin as t2 where t1.domain_status = 'ok' and t1.domain_admin_id = t2.admin_id order by t1.domain_id";
+	$sql = "
+		SELECT
+			t1.domain_id,
+			t1.domain_name,
+			t1.domain_status,
+			t1.domain_uid,
+			t1.domain_gid,
+			t2.admin_name,
+			t2.email
+		FROM
+			domain AS t1,
+			admin AS t2
+		WHERE
+				t1.domain_status	= 'ok'
+			AND	t1.domain_admin_id	= t2.admin_id
+		ORDER BY
+			t1.domain_id
+	";
 
 	($rs, $rdata) = doSQL($sql);
 
@@ -268,7 +293,7 @@ sub backup_all_engine {
 		#
 		# User Database Backup
 		# Vorgehensweise - zu der Domain die entsprechenden Datenbanken aus der ISPCP-DB auslesen
-		# MYSQLDUMP mit den Datenbanken durchführen und die Ausgabe in das Backup-Verzeichnis umleiten
+		# MYSQLDUMP mit den Datenbanken durchfÃ¼hren und die Ausgabe in das Backup-Verzeichnis umleiten
 		#
 
                 $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";

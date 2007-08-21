@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:11-0500\n"
+"POT-Creation-Date: 2007-08-18 23:33-0500\n"
 "PO-Revision-Date: 2007-07-13 07:33+0100\n"
 "Last-Translator: greg <greg@proxyconcept.net>\n"
 "Language-Team: French France <fr_FR@li.org>\n"
@@ -3404,9 +3404,6 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "of"
-msgstr "de"
-
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Revendeur/Recouvrement de mot de passe configuration du email"
 
@@ -3571,6 +3568,9 @@ msgstr "ISPCP - Revendeur : Système de support :  Voir les Tickets"
 
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
+
+#~ msgid "of"
+#~ msgstr "de"
 
 #~ msgid "Password generate"
 #~ msgstr "Mot de passe généré"

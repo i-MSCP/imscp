@@ -313,11 +313,11 @@ function check_user_data (&$tpl) {
 
         $ehp_error = tr('Incorrect SQL user length or syntax!');
 
-    } else if (!ispcp_limit_check($hp_traff)) {
+    } else if (!ispcp_limit_check($hp_traff, null)) {
 
         $ehp_error = tr('Incorrect traffic length or syntax!');
 
-    } else if (!ispcp_limit_check($hp_disk)) {
+    } else if (!ispcp_limit_check($hp_disk, null)) {
 
         $ehp_error = tr('Incorrect disk length or syntax!');
 

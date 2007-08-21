@@ -237,9 +237,9 @@ function check_data_correction(&$tpl)
 		$ahp_error = tr('Incorrect SQL database length or syntax!');
 	} else if (!ispcp_limit_check($hp_sql_db)) {
 		$ahp_error = tr('Incorrect SQL user length or syntax!');
-	} else if (!ispcp_limit_check($hp_traff)) {
+	} else if (!ispcp_limit_check($hp_traff, null)) {
 		$ahp_error = tr('Incorrect traffic length or syntax!');
-	} else if (!ispcp_limit_check($hp_disk)) {
+	} else if (!ispcp_limit_check($hp_disk, null)) {
 		$ahp_error = tr('Incorrect disk length or syntax!');
 	}
 

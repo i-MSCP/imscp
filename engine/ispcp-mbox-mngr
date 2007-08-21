@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# ispCP Ï (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2007 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP ω Home Page is at:
+# The ISPCP Ï Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -186,7 +186,22 @@ sub mbox_mngr_start_up {
     # getting initial data also must be done here;
     #
 
-    my $sql = "select * from mail_users;";
+    my $sql = "
+    	SELECT
+		mail_id,
+		mail_acc,
+		mail_pass,
+		mail_forward,
+		domain_id,
+		mail_type,
+		sub_id,
+		status,
+		mail_auto_respond,
+		quota,
+		mail_addr
+	FROM
+		mail_users
+    ";
 
     ($rs, $rdata) = doSQL($sql);
 

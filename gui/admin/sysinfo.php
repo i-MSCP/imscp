@@ -101,9 +101,9 @@ function gen_mount_point(&$tpl)
                         'TYPE' => $row['fstype'],
                         'PARTITION' => $row['disk'],
                         'PERCENT' => $row['percent'],
-                        'FREE' => make_hr($row['free']*1014),
-                        'USED' => make_hr($row['used']*1024),
-                        'SIZE' => make_hr($row['size']*1024),
+                        'FREE' => sizeit($row['free'], 'KB'),
+                        'USED' => sizeit($row['used'], 'KB'),
+                        'SIZE' => sizeit($row['size'], 'KB'),
                      )
               );
 
@@ -129,9 +129,6 @@ $kernel = $sysinfo->kernel();
 $text['days'] = tr('days');
 $text['hours'] = tr('hours');
 $text['minutes'] = tr('minutes');
-$text['gb'] = "GB";
-$text['mb'] = "MB";
-$text['kb'] = "KB";
 
 $uptime = uptime($sysinfo->uptime());
 $load = $sysinfo->loadavg();
@@ -174,12 +171,12 @@ $tpl -> assign(
                 'TR_LOAD' => tr('Load'),
                 'LOAD' => $load['avg'][0] . ' ' . $load['avg'][1] . '  '. $load['avg'][2] ,
                 'RAM' => tr('RAM'),
-                'RAM_TOTAL' => format_bytesize($mem['ram']['total']),
-                'RAM_USED' => format_bytesize($mem['ram']['used']),
-                'RAM_FREE' => format_bytesize($mem['ram']['free']),
-                'SWAP_TOTAL' => format_bytesize($mem['swap']['total']),
-                'SWAP_USED' => format_bytesize($mem['swap']['used']),
-                'SWAP_FREE' => format_bytesize($mem['swap']['free']),
+                'RAM_TOTAL' => sizeit($mem['ram']['total'], 'KB'),
+                'RAM_USED' => sizeit($mem['ram']['used'], 'KB'),
+                'RAM_FREE' => sizeit($mem['ram']['free'], 'KB'),
+                'SWAP_TOTAL' => sizeit($mem['swap']['total'], 'KB'),
+                'SWAP_USED' => sizeit($mem['swap']['used'], 'KB'),
+                'SWAP_FREE' => sizeit($mem['swap']['free'], 'KB'),
                 'TR_FILE_SYSTEM_INFO' => tr('Filesystem system Info'),
                 'TR_MOUNT' => tr('Mount'),
                 'TR_TYPE' => tr('Type'),

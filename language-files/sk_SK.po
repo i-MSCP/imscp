@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:11-0500\n"
+"POT-Creation-Date: 2007-08-18 23:33-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -3405,9 +3405,6 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$s%% [%2$s of nebmedzených]"
 
-msgid "of"
-msgstr "z"
-
 msgid "ISPCP - Reseller/Lostpw email setup"
 msgstr "ISPCP - Predajca/Nastavenie e-mailu strateného hesla"
 
@@ -3572,6 +3569,9 @@ msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "of"
+#~ msgstr "z"
 
 #~ msgid "Password generate"
 #~ msgstr "Generátor hesiel"

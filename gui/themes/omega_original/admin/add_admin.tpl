@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                       <td valign="top"><!-- BDP: props_list -->
-                          <form name="admin_add_user" method="post" action="add_user.php">
+                          <form name="admin_add_user" method="post" action="add_admin.php">
                             <table width="100%" cellpadding="5" cellspacing="5">
                               <tr>
                                 <td width="25">&nbsp;</td>
