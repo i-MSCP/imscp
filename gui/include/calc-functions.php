@@ -40,19 +40,19 @@ function calc_bars($crnt, $max, $bars_max) {
 function sizeit($bytes, $from = 'B') {
 
     switch ($from) {
-        case 'PiB':
+        case 'PB':
             $bytes = $bytes * pow(1024, 5);
             break;
-        case 'TiB':
+        case 'TB':
             $bytes = $bytes * pow(1024, 4);
             break;
-        case 'GiB':
+        case 'GB':
             $bytes = $bytes * pow(1024, 3);
             break;
         case 'MB':
             $bytes = $bytes * pow(1024, 2);
             break;
-        case 'KiB':
+        case 'KB':
             $bytes = $bytes * pow(1024, 1);
             break;
         case 'B':
@@ -68,19 +68,19 @@ function sizeit($bytes, $from = 'B') {
 
     if ($bytes > pow(1024, 5)) {
         $bytes = $bytes/pow(1024, 5);
-        $ret   = tr('%.2f PB');
+        $ret   = tr('%.2f PB', $bytes);
     } else if ($bytes > pow(1024, 4)) {
         $bytes = $bytes/pow(1024, 4);
-        $ret   = tr('%.2f TB');
+        $ret   = tr('%.2f TB', $bytes);
     } else if ($bytes > pow(1024, 3)) {
         $bytes = $bytes/pow(1024, 3);
-        $ret   = tr('%.2f GB');
+        $ret   = tr('%.2f GB', $bytes);
     } else if ($bytes > pow(1024, 2) ) {
         $bytes = $bytes/pow(1024, 2);
-        $ret   = tr('%.2f MB');
+        $ret   = tr('%.2f MB', $bytes);
     } else if ($bytes > pow(1024, 1)) {
         $bytes = $bytes/pow(1024, 1);
-        $ret   = tr('%.2f KB');
+        $ret   = tr('%.2f KB', $bytes);
     } else {
         $ret   = tr('%d B', $bytes);
     }
@@ -136,39 +136,25 @@ function check_user_pass($crdata, $data ) {
     return ($udata == $crdata);
 }
 
-function count_array($array) {
-
-	$count = 0;
-	reset($array);
-
-	while(list($key, $val) = each($array)) $count += count($val);
-
-	return $count - 1;
-
-}
-
 function _passgen() {
 
-	global $cfg;
+    global $cfg;
 
-	$pw = '';
+    $pw = '';
 
-	$chars = "2,3,4,7,8,9,A,B,C,D,E,F,G,H,K,M,N,P,R,T,W,U,Y,a,b,c,d,e,f,g,h,k,m,n,p,q,r,t,w,u,y";
+    for($i = 0; $i <= $cfg['PASSWD_CHARS']; $i++) {
 
-  	$chars_array = explode(",", $chars);
+        $z = 0;
 
-	$chars_count = count_array($chars_array);
+        do {
+            $z = mt_rand(42, 123);
+        } while($z >= 91 && $z <= 96);
 
-  	for($i=0; $i < $cfg['PASSWD_CHARS']; $i++) {
+        $pw .= chr($z);
 
-  		mt_srand((double)microtime() * 1000000);
+    }
 
-    	$z = mt_rand(0, $chars_count);
-
-    	$pw .= "" . $chars_array[$z] . "";
-
-  	}
-	return $pw;
+    return $pw;
 
 }
 

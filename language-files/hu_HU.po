@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -85,6 +85,93 @@ msgstr ""
 msgid "Request password"
 msgstr "Jelszó kérés"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Admin/Felhasználók/Új Felhasználó"
+
+msgid "Administrator"
+msgstr "Adminisztrátor"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr "Ez a felhasználó név már létezik!"
+
+msgid "Empty data or wrong field!"
+msgstr "Nincs adat, vagy rossz mezõ!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "Adminisztrátor hozzáadása"
+
+msgid "Core data"
+msgstr "Alap információk"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Additional data"
+msgstr "További adatok"
+
+msgid "First name"
+msgstr "Vezetéknév"
+
+msgid "Last name"
+msgstr "Keresztnév"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Fejléc"
+
+#, fuzzy
+msgid "Male"
+msgstr "Email"
+
+#, fuzzy
+msgid "Female"
+msgstr "Webes levelezés"
+
+msgid "Company"
+msgstr "Cég"
+
+msgid "Zip/Postal code"
+msgstr "Irányítószám"
+
+msgid "City"
+msgstr "Város"
+
+msgid "Country"
+msgstr "Ország"
+
+msgid "Street 1"
+msgstr "Utca 1"
+
+msgid "Street 2"
+msgstr "Utca 2"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Fax"
+msgstr ""
+
+msgid "Add"
+msgstr "Hozzáad"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -105,21 +192,6 @@ msgstr "Szám"
 
 msgid "Reseller"
 msgstr "Viszonteladó"
-
-msgid "This user name already exist!"
-msgstr "Ez a felhasználó név már létezik!"
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
-msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Hibás max domain szám vagy hibás formátum!"
@@ -153,15 +225,6 @@ msgstr "Legalább egy IP címet rendelj hozzá egy viszonteladóhoz!"
 
 msgid "Add reseller"
 msgstr "Viszonteladó hozzáadása"
-
-msgid "Core data"
-msgstr "Alap információk"
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr ""
 
 msgid "unlimited"
 msgstr "korlátlan"
@@ -241,77 +304,38 @@ msgstr "nem"
 msgid "Reseller IPs"
 msgstr "Viszonteladó IP címe"
 
-msgid "Additional data"
-msgstr "További adatok"
-
 msgid "Customer ID"
 msgstr "Ügyfél azonosító"
-
-msgid "First name"
-msgstr "Vezetéknév"
-
-msgid "Last name"
-msgstr "Keresztnév"
-
-#, fuzzy
-msgid "Gender"
-msgstr "Fejléc"
-
-#, fuzzy
-msgid "Male"
-msgstr "Email"
-
-#, fuzzy
-msgid "Female"
-msgstr "Webes levelezés"
-
-msgid "Company"
-msgstr "Cég"
-
-msgid "Zip/Postal code"
-msgstr "Irányítószám"
-
-msgid "City"
-msgstr "Város"
-
-msgid "Country"
-msgstr "Ország"
-
-msgid "Street 1"
-msgstr "Utca 1"
-
-msgid "Street 2"
-msgstr "Utca 2"
-
-msgid "Phone"
-msgstr "Telefon"
-
-msgid "Fax"
-msgstr ""
-
-msgid "Add"
-msgstr "Hozzáad"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Felhasználók/Új Felhasználó"
-
-msgid "Administrator"
-msgstr "Adminisztrátor"
-
-msgid "Empty data or wrong field!"
-msgstr "Nincs adat, vagy rossz mezõ!"
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "Adminisztrátor hozzáadása"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr "ISPCP - Admin/Admin Napló"
 
 msgid "Log is empty!"
 msgstr "Üres naplófájl!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr ""
@@ -694,8 +718,11 @@ msgstr "Domain aliasok"
 msgid "Submit changes"
 msgstr "Változások mentése"
 
-msgid "None"
-msgstr "Nincs"
+msgid "Enabled"
+msgstr "Engedélyezve"
+
+msgid "Disabled"
+msgstr "Tiltva"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr "ISPCP - Domain Statisztikai Adatok"
@@ -942,12 +969,6 @@ msgstr "Szolgálltatási csomag nem található!"
 
 msgid "Name"
 msgstr "Név"
-
-msgid "Enabled"
-msgstr "Engedélyezve"
-
-msgid "Disabled"
-msgstr "Tiltva"
 
 msgid "Show hosting plan"
 msgstr ""
@@ -2036,6 +2057,9 @@ msgstr "Letilt"
 msgid "Delete CatchAll"
 msgstr "Gyûjtõ cím törlése"
 
+msgid "None"
+msgstr "Nincs"
+
 msgid "Create catch all"
 msgstr "Gyûjtõ cím létrehozása"
 
@@ -2621,17 +2645,21 @@ msgstr "Vált"
 msgid "SQL user was removed successfully!"
 msgstr "SQL felhasználó sikeresen törölve!"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Add meg az SQL kérést!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Sikertelen csatlakozás mint MySQL adminisztrátor!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "SQL kérés hibás"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "SQL kérés végrehajtása"
 
-msgid "SQL query is ok"
-msgstr "SQL kérés OK"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "SQL kérés végrehajtása"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - Kliens/SQL Kérés Végrehajtása"
@@ -2851,6 +2879,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3514,6 +3566,15 @@ msgstr "ISPCP - Viszonteladó : Ügyfélszolgálati Rendszer: Bejelentések"
 
 msgid "Message was sent."
 msgstr "Üzenet elküldve."
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Sikertelen csatlakozás mint MySQL adminisztrátor!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "SQL kérés hibás"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "SQL kérés OK"
 
 #~ msgid "of"
 #~ msgstr "max:"

@@ -1,10 +1,19 @@
-ispCP Ï 1.0.0 Changelog
+ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
 / @TODO:                                                          \
 |         - AWStats:                                              |
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
+
+2007-08-21 Raphael Geissert
+    - GUI:
+        * Fixed #582: FIXME: /var/www/ispcp/gui/include/calc-functions.php:61
+        * Fixed an error where system information was not displayed correctly in admin/server_statistic.php
+        * Improved passwords generator
+    - SETUP:
+        * Fixed #584: $main::db{'CONF_DIR'} is not read by vhcs2ispcp.pl Line 200
+        * Fixed #583: missing semicolon in vhcs2ispcp.sql
 
 2007-08-20 Raphael Geissert
     - GUI:
@@ -964,7 +973,7 @@ ispCP Ï 1.0.0 Changelog
 2007-03-31 Benedikt Heintel
 	- RELEASE: VHCS Ï Omega 1.0.0 RC1
 
-VHCS Ï 2.4.8 Changelog
+VHCS ω 2.4.8 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2007-03-30 Benedikt Heintel

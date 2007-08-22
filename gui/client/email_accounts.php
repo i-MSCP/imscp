@@ -236,7 +236,7 @@ SQL_QUERY;
                             array(
                                     'MAIL_ACC' => $mail_acc."@".$show_sub_name.".".$show_dmn_name,
                                     'MAIL_TYPE' => user_trans_mail_type($rs -> fields['mail_type']),
-                                    'MAIL_STATUS' => user_trans_item_status($rs -> fields['status']),
+                                    'MAIL_STATUS' => translate_dmn_status($rs -> fields['status']),
                                     'MAIL_ACTION' => $mail_action,
                                     'MAIL_ACTION_SCRIPT' => $mail_action_script,
 									'MAIL_EDIT_SCRIPT' => $mail_edit_script
@@ -317,7 +317,7 @@ SQL_QUERY;
                             array(
                                     'MAIL_ACC' => $mail_acc."@".$show_als_name,
                                     'MAIL_TYPE' => user_trans_mail_type($rs -> fields['mail_type']),
-                                    'MAIL_STATUS' => user_trans_item_status($rs -> fields['status']),
+                                    'MAIL_STATUS' => translate_dmn_status($rs -> fields['status']),
                                     'MAIL_ACTION' => $mail_action,
                                     'MAIL_ACTION_SCRIPT' => $mail_action_script,
 									'MAIL_EDIT_SCRIPT' => $mail_edit_script

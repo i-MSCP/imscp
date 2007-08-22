@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -84,6 +84,93 @@ msgstr ""
 msgid "Request password"
 msgstr "Запит пароля"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Адміністратор/Керування користувачами/Додавання користувача"
+
+msgid "Administrator"
+msgstr "Адміністратор"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr "Цей користувач уже існує!"
+
+msgid "Empty data or wrong field!"
+msgstr "Не введені або невірні дані!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "Додати адміністратора"
+
+msgid "Core data"
+msgstr "Загальні відомості"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr "Електронна пошта"
+
+msgid "Additional data"
+msgstr "Додаткові відомості"
+
+msgid "First name"
+msgstr "Ім'я"
+
+msgid "Last name"
+msgstr "Прізвище"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Верхня частина"
+
+#, fuzzy
+msgid "Male"
+msgstr "Пошта"
+
+#, fuzzy
+msgid "Female"
+msgstr "Функція"
+
+msgid "Company"
+msgstr "Компанія"
+
+msgid "Zip/Postal code"
+msgstr "Поштовий індекс"
+
+msgid "City"
+msgstr "Місто"
+
+msgid "Country"
+msgstr "Країна"
+
+msgid "Street 1"
+msgstr "Вулиця 1"
+
+msgid "Street 2"
+msgstr "Вулиця 2"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Add"
+msgstr "Додати"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -104,21 +191,6 @@ msgstr "Номер"
 
 msgid "Reseller"
 msgstr "Реселер"
-
-msgid "This user name already exist!"
-msgstr "Цей користувач уже існує!"
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
-msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Невірний синтаксис <i>ліміту доменів</i>!"
@@ -152,15 +224,6 @@ msgstr "Ви маєте призначити хоча б одну IP-адрес�
 
 msgid "Add reseller"
 msgstr "Додати реселера"
-
-msgid "Core data"
-msgstr "Загальні відомості"
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr "Електронна пошта"
 
 msgid "unlimited"
 msgstr "необмежено"
@@ -240,77 +303,38 @@ msgstr "ні"
 msgid "Reseller IPs"
 msgstr "IP реселера"
 
-msgid "Additional data"
-msgstr "Додаткові відомості"
-
 msgid "Customer ID"
 msgstr "ID користувача"
-
-msgid "First name"
-msgstr "Ім'я"
-
-msgid "Last name"
-msgstr "Прізвище"
-
-#, fuzzy
-msgid "Gender"
-msgstr "Верхня частина"
-
-#, fuzzy
-msgid "Male"
-msgstr "Пошта"
-
-#, fuzzy
-msgid "Female"
-msgstr "Функція"
-
-msgid "Company"
-msgstr "Компанія"
-
-msgid "Zip/Postal code"
-msgstr "Поштовий індекс"
-
-msgid "City"
-msgstr "Місто"
-
-msgid "Country"
-msgstr "Країна"
-
-msgid "Street 1"
-msgstr "Вулиця 1"
-
-msgid "Street 2"
-msgstr "Вулиця 2"
-
-msgid "Phone"
-msgstr "Телефон"
-
-msgid "Fax"
-msgstr "Факс"
-
-msgid "Add"
-msgstr "Додати"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Додавання користувача"
-
-msgid "Administrator"
-msgstr "Адміністратор"
-
-msgid "Empty data or wrong field!"
-msgstr "Не введені або невірні дані!"
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "Додати адміністратора"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr "ISPCP - Адміністратор/Журнал адміністратора"
 
 msgid "Log is empty!"
 msgstr "Журнал порожній!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr ""
@@ -693,8 +717,11 @@ msgstr "Аліаси домену"
 msgid "Submit changes"
 msgstr "Внести зміни"
 
-msgid "None"
-msgstr "Ні"
+msgid "Enabled"
+msgstr "Увімкнено"
+
+msgid "Disabled"
+msgstr "Вимкнено"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr "ISPCP - Статистика домену"
@@ -941,12 +968,6 @@ msgstr "Хостінг-плани не знайдені!"
 
 msgid "Name"
 msgstr "Ім'я"
-
-msgid "Enabled"
-msgstr "Увімкнено"
-
-msgid "Disabled"
-msgstr "Вимкнено"
 
 msgid "Show hosting plan"
 msgstr ""
@@ -2035,6 +2056,9 @@ msgstr "Вимкнути"
 msgid "Delete CatchAll"
 msgstr "Видалити перехоплювач пошти"
 
+msgid "None"
+msgstr "Ні"
+
 msgid "Create catch all"
 msgstr "Створити перехоплення всього"
 
@@ -2620,17 +2644,21 @@ msgstr "Змінити"
 msgid "SQL user was removed successfully!"
 msgstr "Користувач SQL успішно видалений!"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Введіть запит SQL!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Неможливо під'єднатись з правами адміністратора MySQL!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "Запит SQL містить помилку"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Виконати запит SQL"
 
-msgid "SQL query is ok"
-msgstr "Запит SQL успішно виконаний"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Виконати запит SQL"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - Клієнт/Виконання запиту SQL"
@@ -2850,6 +2878,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3513,6 +3565,15 @@ msgstr "ISPCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Неможливо під'єднатись з правами адміністратора MySQL!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "Запит SQL містить помилку"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "Запит SQL успішно виконаний"
 
 #~ msgid "of"
 #~ msgstr "з"

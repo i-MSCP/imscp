@@ -65,10 +65,10 @@ ALTER TABLE `login` ADD `ipaddr` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_u
 ALTER TABLE `login` ADD `user_name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 ALTER TABLE `login` ADD `captcha_count` TINYINT( 1 ) default '0';
 ALTER TABLE `login` ADD `login_count` TINYINT( 1 ) default '0';
-ALTER TABLE `login` ADD PRIMARY KEY ( `session_id` )
+ALTER TABLE `login` ADD PRIMARY KEY ( `session_id` );
 
-ALTER TABLE `quotalimits` ADD PRIMARY KEY ( `name` )
-ALTER TABLE `quotatallies` ADD PRIMARY KEY ( `name` )
+ALTER TABLE `quotalimits` ADD PRIMARY KEY ( `name` );
+ALTER TABLE `quotatallies` ADD PRIMARY KEY ( `name` );
 
 -- Drop existing languages (they are outdated anyways)
 
@@ -103,10 +103,11 @@ ALTER TABLE `server_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
 UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
 UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
 UPDATE `domain_aliasses` SET `alias_status` = 'change' WHERE `alias_status` = 'ok';
+UPDATE `mail_users` SET `status` = 'change' WHERE `status` = 'ok';
 -- END: Regenerate config files
 
 -- Change charset:
 
-ALTER DATABASE `ispcp` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+ALTER DATABASE `ispcp` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 COMMIT;

@@ -32,7 +32,7 @@ $cfg['DB_PASS'] = decrypt_db_password($cfg['DATABASE_PASSWORD']);
 
 $cfg['DB_NAME'] = $cfg['DATABASE_NAME'];
 
-$sql = &ADONewConnection('mysql');
+$sql = &ADONewConnection($cfg['DB_TYPE']);
 
 @$sql -> Connect($cfg['DB_HOST'], $cfg['DB_USER'], $cfg['DB_PASS'], $cfg['DB_NAME']) OR
 	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: '.$sql -> ErrorMsg() );
@@ -49,10 +49,14 @@ function execute_query (&$sql, $query) {
 	return $rs;
 }
 
-function exec_query(&$sql, $query, $data = array()) {
+function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 	$query = $sql->Prepare($query);
 	$rs = $sql->Execute($query, $data);
-	if (!$rs) system_message($sql->ErrorMsg());
+
+	if (!$rs && $failDie) {
+	    system_message($sql->ErrorMsg());
+	}
+
 	return $rs;
 }
 

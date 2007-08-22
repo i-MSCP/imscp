@@ -204,6 +204,7 @@ function clear_log() {
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 
         $query = null;
+        $msg = '';
 
     	switch ($_POST['uaction_clear']) {
 
@@ -213,6 +214,7 @@ function clear_log() {
                 from
             log
 SQL_QUERY;
+                    $msg = tr('%s deleted the full admin log!', $_SESSION['user_logged']);
        			break;
 
     		case 2:
@@ -227,6 +229,7 @@ SQL_QUERY;
            		>= log_time
 
 SQL_QUERY;
+                    $msg = tr('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
 
     			break;
 
@@ -239,6 +242,7 @@ SQL_QUERY;
             DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
            		>= log_time
 SQL_QUERY;
+                    $msg = tr('%s deleted the admin log older than one month!', $_SESSION['user_logged']);
 
     			break;
 
@@ -251,6 +255,7 @@ SQL_QUERY;
             DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
            		>= log_time
 SQL_QUERY;
+                    $msg = tr('%s deleted the admin log older than three months!', $_SESSION['user_logged']);
     			break;
 
     		case 26:
@@ -262,6 +267,7 @@ SQL_QUERY;
             DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
            		>= log_time
 SQL_QUERY;
+                    $msg = tr('%s deleted the admin log older than six months!', $_SESSION['user_logged']);
     			break;
 
     		case 52;
@@ -273,6 +279,7 @@ SQL_QUERY;
             DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
            		>= log_time
 SQL_QUERY;
+                    $msg = tr('%s deleted the admin log older than one year!', $_SESSION['user_logged']);
 
     			break;
     			default:
@@ -281,7 +288,8 @@ SQL_QUERY;
 
     	}
 
-    	$rs = exec_query($sql, $query, array());
+    	$rs = execute_query($sql, $query);
+    	write_log($msg);
 
     }
 }

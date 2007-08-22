@@ -157,38 +157,7 @@ SQL_QUERY;
 SQL_QUERY;
 
     exec_query($sql, $query, array(time(), $sess_id));
-    goto_user_location();
     return true;
-}
-
-function goto_user_location() {
-
-	$path = explode("/", $_SERVER['SCRIPT_NAME']);
-  	$found = false;
-
-  	for($i = count($path) - 2 ; $i < count($path); $i++) {
-  		if($path[$i] == $_SESSION['user_type']){
-    		$found= true;
-    	}
-		else if ($_SESSION['user_type'] == 'user' && $path[$i] == 'client') {
-    		$found= true;
-  		}
-	}
-
-	if(!$found) {
-		if ($_SESSION['user_type'] == 'admin') {
-    		header("Location: ../admin/manage_users.php");
-	    	die();
-    	}
-		else if ($_SESSION['user_type'] == 'reseller') {
-	    	header("Location: ../reseller/index.php");
-		    die();
-	    }
-		else if ($_SESSION['user_type'] == 'user') {
-	    	header("Location: ../client/index.php");
-		    die();
-	    }
-  	}
 }
 
 function check_login ($fName = null, $checkReferer = true) {
@@ -210,7 +179,7 @@ function check_login ($fName = null, $checkReferer = true) {
             case 'reseller':
                 if ($level != $_SESSION['user_type']) {
                     write_log('Warning! user |'.$_SESSION['user_logged'].'| requested |'.$_SERVER["REQUEST_URI"].'| with REQUEST_METHOD |'.$_SERVER["REQUEST_METHOD"].'|');
-                    header("Location: ../index.php");
+                    header("Location: /index.php");
                     die();
                 }
                 break;
@@ -368,6 +337,7 @@ SQL_QUERY;
 }
 
 function redirect_to_level_page() {
+
     if (!isset($_SESSION['user_type']))
     return false;
 

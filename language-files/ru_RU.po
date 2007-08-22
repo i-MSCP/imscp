@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -85,6 +85,92 @@ msgstr ""
 msgid "Request password"
 msgstr ""
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr ""
+
+msgid "Administrator"
+msgstr "Администратор"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr ""
+
+msgid "Empty data or wrong field!"
+msgstr "Пусто или поле не правильно заполнено!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "Добавить админа"
+
+msgid "Core data"
+msgstr "Данные ядра"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Additional data"
+msgstr "Дополнительные данные"
+
+msgid "First name"
+msgstr "Имя"
+
+msgid "Last name"
+msgstr ""
+
+msgid "Gender"
+msgstr ""
+
+#, fuzzy
+msgid "Male"
+msgstr "e-mail"
+
+#, fuzzy
+msgid "Female"
+msgstr "Вебмыло"
+
+msgid "Company"
+msgstr "Компания"
+
+msgid "Zip/Postal code"
+msgstr "Почтовый индекс"
+
+msgid "City"
+msgstr "Город"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "Street 1"
+msgstr "Улица 1"
+
+msgid "Street 2"
+msgstr "Улица 2"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Add"
+msgstr "Добавить"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -104,21 +190,6 @@ msgid "Number"
 msgstr "Число"
 
 msgid "Reseller"
-msgstr ""
-
-msgid "This user name already exist!"
-msgstr ""
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
 msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
@@ -153,15 +224,6 @@ msgstr "Вы должны дать хотя-бы один IP адрес для �
 
 msgid "Add reseller"
 msgstr "Добавить реселлера"
-
-msgid "Core data"
-msgstr "Данные ядра"
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr ""
 
 msgid "unlimited"
 msgstr ""
@@ -241,76 +303,38 @@ msgstr "нет"
 msgid "Reseller IPs"
 msgstr ""
 
-msgid "Additional data"
-msgstr "Дополнительные данные"
-
 msgid "Customer ID"
 msgstr "ID Покупателя"
-
-msgid "First name"
-msgstr "Имя"
-
-msgid "Last name"
-msgstr ""
-
-msgid "Gender"
-msgstr ""
-
-#, fuzzy
-msgid "Male"
-msgstr "e-mail"
-
-#, fuzzy
-msgid "Female"
-msgstr "Вебмыло"
-
-msgid "Company"
-msgstr "Компания"
-
-msgid "Zip/Postal code"
-msgstr "Почтовый индекс"
-
-msgid "City"
-msgstr "Город"
-
-msgid "Country"
-msgstr "Страна"
-
-msgid "Street 1"
-msgstr "Улица 1"
-
-msgid "Street 2"
-msgstr "Улица 2"
-
-msgid "Phone"
-msgstr "Телефон"
-
-msgid "Fax"
-msgstr "Факс"
-
-msgid "Add"
-msgstr "Добавить"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr ""
-
-msgid "Administrator"
-msgstr "Администратор"
-
-msgid "Empty data or wrong field!"
-msgstr "Пусто или поле не правильно заполнено!"
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "Добавить админа"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
 msgstr "Лог пуст!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr ""
@@ -693,8 +717,11 @@ msgstr "Псевдоним домена"
 msgid "Submit changes"
 msgstr ""
 
-msgid "None"
-msgstr ""
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "Disabled"
+msgstr "Отключено"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr ""
@@ -939,12 +966,6 @@ msgstr ""
 
 msgid "Name"
 msgstr "Имя"
-
-msgid "Enabled"
-msgstr "Включено"
-
-msgid "Disabled"
-msgstr "Отключено"
 
 msgid "Show hosting plan"
 msgstr ""
@@ -2032,6 +2053,9 @@ msgstr "Отключить"
 msgid "Delete CatchAll"
 msgstr ""
 
+msgid "None"
+msgstr ""
+
 msgid "Create catch all"
 msgstr "Создайте выгоду все"
 
@@ -2615,17 +2639,21 @@ msgstr "Изменить"
 msgid "SQL user was removed successfully!"
 msgstr ""
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Пожалуйста, введите SQL запрос!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Невозможно соедениться под учетной записью MySQL администратора!"
-
-msgid "SQL query has error"
-msgstr "Ошибка в SQL запросе"
-
-msgid "SQL query is ok"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
 msgstr ""
+
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Выполнить SQL запрос"
+
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Выполнить SQL запрос"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr ""
@@ -2844,6 +2872,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3507,6 +3559,12 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Сообщение отослано."
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Невозможно соедениться под учетной записью MySQL администратора!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "Ошибка в SQL запросе"
 
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b>Адрес!<br>Редактирование реселлера отменено!"

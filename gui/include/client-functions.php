@@ -574,12 +574,6 @@ SQL_QUERY;
     return $rs->fields['domain_id'];
 }
 
-function user_trans_item_status($item_status) {
-
-    //DEPRECATED
-    return translate_dmn_status($item_status);
-}
-
 function user_trans_mail_type($mail_type) {
     if ($mail_type === 'normal_mail') {
         return tr('Domain mail');

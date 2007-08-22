@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -84,6 +84,93 @@ msgstr ""
 msgid "Request password"
 msgstr "Solicitar contraseña"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Admin/Administrar usuarios/Añadir usuario"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr "¡Ya existe este nombre de usuario!"
+
+msgid "Empty data or wrong field!"
+msgstr "¡Falta información o campo incorrecto!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "Añadir administrador"
+
+msgid "Core data"
+msgstr "Datos importantes"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Additional data"
+msgstr "Información adicional"
+
+msgid "First name"
+msgstr "Nombre"
+
+msgid "Last name"
+msgstr "Apellido"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Encabezado"
+
+#, fuzzy
+msgid "Male"
+msgstr "Correo"
+
+#, fuzzy
+msgid "Female"
+msgstr "Funciones"
+
+msgid "Company"
+msgstr "Compañia"
+
+msgid "Zip/Postal code"
+msgstr "Código postal"
+
+msgid "City"
+msgstr "Ciudad"
+
+msgid "Country"
+msgstr "País"
+
+msgid "Street 1"
+msgstr "Domicilio 1"
+
+msgid "Street 2"
+msgstr "Domicilio 2"
+
+msgid "Phone"
+msgstr "Teléfono"
+
+msgid "Fax"
+msgstr ""
+
+msgid "Add"
+msgstr "Añadir"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -104,21 +191,6 @@ msgstr "Dirección IP"
 
 msgid "Reseller"
 msgstr "Revendedor"
-
-msgid "This user name already exist!"
-msgstr "¡Ya existe este nombre de usuario!"
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
-msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "¡Cantidad max de dominios o sintaxis incorrectos!"
@@ -152,15 +224,6 @@ msgstr "¡Debe asignar al menos una dirección IP para un revendedor!"
 
 msgid "Add reseller"
 msgstr "Añadir revendedor"
-
-msgid "Core data"
-msgstr "Datos importantes"
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr ""
 
 msgid "unlimited"
 msgstr "ilimitado"
@@ -240,77 +303,38 @@ msgstr ""
 msgid "Reseller IPs"
 msgstr "IPs del revendedor"
 
-msgid "Additional data"
-msgstr "Información adicional"
-
 msgid "Customer ID"
 msgstr "ID de cliente"
-
-msgid "First name"
-msgstr "Nombre"
-
-msgid "Last name"
-msgstr "Apellido"
-
-#, fuzzy
-msgid "Gender"
-msgstr "Encabezado"
-
-#, fuzzy
-msgid "Male"
-msgstr "Correo"
-
-#, fuzzy
-msgid "Female"
-msgstr "Funciones"
-
-msgid "Company"
-msgstr "Compañia"
-
-msgid "Zip/Postal code"
-msgstr "Código postal"
-
-msgid "City"
-msgstr "Ciudad"
-
-msgid "Country"
-msgstr "País"
-
-msgid "Street 1"
-msgstr "Domicilio 1"
-
-msgid "Street 2"
-msgstr "Domicilio 2"
-
-msgid "Phone"
-msgstr "Teléfono"
-
-msgid "Fax"
-msgstr ""
-
-msgid "Add"
-msgstr "Añadir"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Administrar usuarios/Añadir usuario"
-
-msgid "Administrator"
-msgstr "Administrador"
-
-msgid "Empty data or wrong field!"
-msgstr "¡Falta información o campo incorrecto!"
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "Añadir administrador"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr "ISPCP - Admin/Log de Administración"
 
 msgid "Log is empty!"
 msgstr "¡El log está vacio!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr ""
@@ -693,8 +717,11 @@ msgstr "Alias de dominio"
 msgid "Submit changes"
 msgstr "Enviar cambios"
 
-msgid "None"
-msgstr "Ninguno"
+msgid "Enabled"
+msgstr "Habilitado"
+
+msgid "Disabled"
+msgstr "Desactivado"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr "ISPCP - Datos de estadistica del dominio"
@@ -941,12 +968,6 @@ msgstr "¡Planes de hosting no encontrados!"
 
 msgid "Name"
 msgstr "Nombre"
-
-msgid "Enabled"
-msgstr "Habilitado"
-
-msgid "Disabled"
-msgstr "Desactivado"
 
 msgid "Show hosting plan"
 msgstr "Mostrar los planes de alojamiento"
@@ -2034,6 +2055,9 @@ msgstr "Deshabilitar"
 msgid "Delete CatchAll"
 msgstr "Eliminar Catch-All"
 
+msgid "None"
+msgstr "Ninguno"
+
 msgid "Create catch all"
 msgstr "Crear Catch-All"
 
@@ -2619,17 +2643,21 @@ msgstr "Cambiar"
 msgid "SQL user was removed successfully!"
 msgstr "¡El usuario SQL fue eliminado satisfactoriamente!"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Por favor introduzca la petición SQL"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "¡No se puede conectar como el administrador de MySQL!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "¡La consulta SQL contiene errores!"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Ejecutar consulta SQL"
 
-msgid "SQL query is ok"
-msgstr "La consulta SQL es correcta"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Ejecutar consulta SQL"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - Cliente/Ejecutar consulta SQL"
@@ -2849,6 +2877,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3512,6 +3564,15 @@ msgstr "ISPCP - Revendedor : Sistema de Soporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "¡No se puede conectar como el administrador de MySQL!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "¡La consulta SQL contiene errores!"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "La consulta SQL es correcta"
 
 #~ msgid "of"
 #~ msgstr "de"

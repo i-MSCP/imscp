@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -84,6 +84,91 @@ msgstr ""
 msgid "Request password"
 msgstr ""
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr ""
+
+msgid "Administrator"
+msgstr "ผู้ดูแลระบบ"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr ""
+
+msgid "Empty data or wrong field!"
+msgstr ""
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "เพิ่มผู้ดูแลระบบ"
+
+msgid "Core data"
+msgstr ""
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Additional data"
+msgstr "ข้อมูลเพิ่มเติม"
+
+msgid "First name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Gender"
+msgstr ""
+
+#, fuzzy
+msgid "Male"
+msgstr "e-mail"
+
+msgid "Female"
+msgstr ""
+
+msgid "Company"
+msgstr "บริษัท"
+
+msgid "Zip/Postal code"
+msgstr "รหัสไปรษณีย์"
+
+msgid "City"
+msgstr "เมือง"
+
+msgid "Country"
+msgstr "ประเทศ"
+
+msgid "Street 1"
+msgstr ""
+
+msgid "Street 2"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Fax"
+msgstr ""
+
+msgid "Add"
+msgstr "เพิ่ม"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -103,21 +188,6 @@ msgid "Number"
 msgstr ""
 
 msgid "Reseller"
-msgstr ""
-
-msgid "This user name already exist!"
-msgstr ""
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
 msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
@@ -152,15 +222,6 @@ msgstr "คุณต้องกำหนดอย่างน้อย 1 IP ส
 
 msgid "Add reseller"
 msgstr "เพิ่มตัวแทนจำหน่าย"
-
-msgid "Core data"
-msgstr ""
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr ""
 
 msgid "unlimited"
 msgstr ""
@@ -240,74 +301,37 @@ msgstr ""
 msgid "Reseller IPs"
 msgstr ""
 
-msgid "Additional data"
-msgstr "ข้อมูลเพิ่มเติม"
-
 msgid "Customer ID"
 msgstr ""
-
-msgid "First name"
-msgstr ""
-
-msgid "Last name"
-msgstr ""
-
-msgid "Gender"
-msgstr ""
-
-#, fuzzy
-msgid "Male"
-msgstr "e-mail"
-
-msgid "Female"
-msgstr ""
-
-msgid "Company"
-msgstr "บริษัท"
-
-msgid "Zip/Postal code"
-msgstr "รหัสไปรษณีย์"
-
-msgid "City"
-msgstr "เมือง"
-
-msgid "Country"
-msgstr "ประเทศ"
-
-msgid "Street 1"
-msgstr ""
-
-msgid "Street 2"
-msgstr ""
-
-msgid "Phone"
-msgstr ""
-
-msgid "Fax"
-msgstr ""
-
-msgid "Add"
-msgstr "เพิ่ม"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr ""
-
-msgid "Administrator"
-msgstr "ผู้ดูแลระบบ"
-
-msgid "Empty data or wrong field!"
-msgstr ""
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "เพิ่มผู้ดูแลระบบ"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
 msgstr ""
 
 msgid "Invalid time period!"
@@ -691,7 +715,10 @@ msgstr ""
 msgid "Submit changes"
 msgstr ""
 
-msgid "None"
+msgid "Enabled"
+msgstr ""
+
+msgid "Disabled"
 msgstr ""
 
 msgid "ISPCP - Domain Statistics Data"
@@ -934,12 +961,6 @@ msgid "Hosting plans not found!"
 msgstr ""
 
 msgid "Name"
-msgstr ""
-
-msgid "Enabled"
-msgstr ""
-
-msgid "Disabled"
 msgstr ""
 
 msgid "Show hosting plan"
@@ -2021,6 +2042,9 @@ msgstr ""
 msgid "Delete CatchAll"
 msgstr ""
 
+msgid "None"
+msgstr ""
+
 msgid "Create catch all"
 msgstr "สร้าง catch all"
 
@@ -2600,16 +2624,17 @@ msgstr "เปลี่ยน"
 msgid "SQL user was removed successfully!"
 msgstr ""
 
-msgid "Please enter SQL query!"
+msgid "Please enter an SQL query!"
 msgstr ""
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "ไม่สามารถติดต่อในฐานะผู้ดูแลระบบ MySQL"
-
-msgid "SQL query has error"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
 msgstr ""
 
-msgid "SQL query is ok"
+msgid "Execution of SQL query failed!"
+msgstr ""
+
+msgid "Execution of SQL query succeeded!"
 msgstr ""
 
 msgid "ISPCP - Client/Execute SQL Query"
@@ -2828,6 +2853,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3488,6 +3537,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr ""
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "ไม่สามารถติดต่อในฐานะผู้ดูแลระบบ MySQL"
 
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> ที่อยู่ !<br>การแก้ไขตัวแทนจำหน่ายถูกยกเลิก!"

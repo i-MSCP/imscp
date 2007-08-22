@@ -109,7 +109,7 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
         $tpl->assign(
             array('CATCHALL_DOMAIN' => $show_dmn_name,
                 'CATCHALL_ACC' => $show_mail_acc,
-                'CATCHALL_STATUS' => user_trans_item_status($mail_status),
+                'CATCHALL_STATUS' => translate_dmn_status($mail_status),
                 'CATCHALL_ACTION' => $catchall_action,
                 'CATCHALL_ACTION_SCRIPT' => $catchall_action_script
                 )

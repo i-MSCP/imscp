@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -84,6 +84,93 @@ msgstr ""
 msgid "Request password"
 msgstr "パスワードの"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - 管理者/ユーザー管理/ユーザー追加"
+
+msgid "Administrator"
+msgstr "管理者"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr "既に同名のユーザーが存在しています！"
+
+msgid "Empty data or wrong field!"
+msgstr ""
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "管理者追加"
+
+msgid "Core data"
+msgstr "基本情報"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr "電子メール"
+
+msgid "Additional data"
+msgstr "追加データ"
+
+msgid "First name"
+msgstr "名字"
+
+msgid "Last name"
+msgstr "名前"
+
+#, fuzzy
+msgid "Gender"
+msgstr "ヘッダー"
+
+#, fuzzy
+msgid "Male"
+msgstr "電子メール"
+
+#, fuzzy
+msgid "Female"
+msgstr "Webメール"
+
+msgid "Company"
+msgstr "会社"
+
+msgid "Zip/Postal code"
+msgstr "郵便番号"
+
+msgid "City"
+msgstr "市区町村"
+
+msgid "Country"
+msgstr "国"
+
+msgid "Street 1"
+msgstr "建物名"
+
+msgid "Street 2"
+msgstr "番地"
+
+msgid "Phone"
+msgstr "電話番号"
+
+msgid "Fax"
+msgstr "FAX番号"
+
+msgid "Add"
+msgstr "追加"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -104,21 +191,6 @@ msgstr "IPアドレス"
 
 msgid "Reseller"
 msgstr "リセラー"
-
-msgid "This user name already exist!"
-msgstr "既に同名のユーザーが存在しています！"
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
-msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Incorrect <i>max domain</i> count or syntax!"
@@ -152,15 +224,6 @@ msgstr "あなたは少なくともひとつのIPアドレスをリセラーへ�
 
 msgid "Add reseller"
 msgstr "リセラー追加"
-
-msgid "Core data"
-msgstr "基本情報"
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr "電子メール"
 
 msgid "unlimited"
 msgstr "無制限"
@@ -240,77 +303,38 @@ msgstr "無効"
 msgid "Reseller IPs"
 msgstr "リセラーのIPアドレスリスト"
 
-msgid "Additional data"
-msgstr "追加データ"
-
 msgid "Customer ID"
 msgstr "顧客ID"
-
-msgid "First name"
-msgstr "名字"
-
-msgid "Last name"
-msgstr "名前"
-
-#, fuzzy
-msgid "Gender"
-msgstr "ヘッダー"
-
-#, fuzzy
-msgid "Male"
-msgstr "電子メール"
-
-#, fuzzy
-msgid "Female"
-msgstr "Webメール"
-
-msgid "Company"
-msgstr "会社"
-
-msgid "Zip/Postal code"
-msgstr "郵便番号"
-
-msgid "City"
-msgstr "市区町村"
-
-msgid "Country"
-msgstr "国"
-
-msgid "Street 1"
-msgstr "建物名"
-
-msgid "Street 2"
-msgstr "番地"
-
-msgid "Phone"
-msgstr "電話番号"
-
-msgid "Fax"
-msgstr "FAX番号"
-
-msgid "Add"
-msgstr "追加"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - 管理者/ユーザー管理/ユーザー追加"
-
-msgid "Administrator"
-msgstr "管理者"
-
-msgid "Empty data or wrong field!"
-msgstr ""
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "管理者追加"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr "ISPCP - 管理者/管理ログ"
 
 msgid "Log is empty!"
 msgstr "ログが存在していません"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr ""
@@ -693,8 +717,11 @@ msgstr "ドメインの別名"
 msgid "Submit changes"
 msgstr "変更を送信"
 
-msgid "None"
-msgstr ""
+msgid "Enabled"
+msgstr "無効"
+
+msgid "Disabled"
+msgstr "無効"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr ""
@@ -940,12 +967,6 @@ msgstr "ホスティングプランが見つかりません"
 
 msgid "Name"
 msgstr "名前"
-
-msgid "Enabled"
-msgstr "無効"
-
-msgid "Disabled"
-msgstr "無効"
 
 msgid "Show hosting plan"
 msgstr "ホスティングプラン閲覧"
@@ -2033,6 +2054,9 @@ msgstr "無効"
 msgid "Delete CatchAll"
 msgstr "キャッチオール削除"
 
+msgid "None"
+msgstr ""
+
 msgid "Create catch all"
 msgstr "キャッチオール作成"
 
@@ -2618,17 +2642,21 @@ msgstr "変更"
 msgid "SQL user was removed successfully!"
 msgstr "SQLユーザは削除されました"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "SQLクエリーを入力してください"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "MySQL管理者として接続できません!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "SQLクエリーが失敗しました"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "SQLクエリーの実行"
 
-msgid "SQL query is ok"
-msgstr "SQLクエリーは成功しました"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "SQLクエリーの実行"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - クライアント/SQLクエリー実行"
@@ -2847,6 +2875,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3509,6 +3561,15 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "送信済み"
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "MySQL管理者として接続できません!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "SQLクエリーが失敗しました"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "SQLクエリーは成功しました"
 
 #~ msgid "Password generate"
 #~ msgstr "パスワード作成"

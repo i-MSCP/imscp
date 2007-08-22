@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -84,6 +84,93 @@ msgstr ""
 msgid "Request password"
 msgstr "Kennwort anfordern"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Virtual Hosting Control System"
+
+msgid "Administrator"
+msgstr ""
+
+msgid "Incorrect username length or syntax!"
+msgstr "Der Benutzername hat eine ungültige Länge oder Syntax"
+
+msgid "Incorrect password length or syntax!"
+msgstr "Das Passwort hat eine ungültige Länge oder Syntax"
+
+msgid "Entered passwords do not match!"
+msgstr "Die eingegebenen Passwörter stimmen nicht überein"
+
+msgid "Incorrect email length or syntax!"
+msgstr "Die Mailadresse hat eine ungültige Länge oder Syntax"
+
+msgid "This user name already exist!"
+msgstr "Der Benutzername ist bereits vergeben!"
+
+msgid "Empty data or wrong field!"
+msgstr "Keine oder falsche Eingabe!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "Administrator anlegen"
+
+msgid "Core data"
+msgstr "Daten"
+
+msgid "Repeat password"
+msgstr "Passworteingabe wiederholen"
+
+msgid "Email"
+msgstr "E-Mail Adresse"
+
+msgid "Additional data"
+msgstr "Zusätzliche Daten"
+
+msgid "First name"
+msgstr "Vorname"
+
+msgid "Last name"
+msgstr "Nachname"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Kopfzeile"
+
+#, fuzzy
+msgid "Male"
+msgstr "E-Mail Konten"
+
+#, fuzzy
+msgid "Female"
+msgstr "Funktion"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Zip/Postal code"
+msgstr "Postleitzahl"
+
+msgid "City"
+msgstr "Stadt"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Street 1"
+msgstr "Strasse 1"
+
+msgid "Street 2"
+msgstr "Strasse 2"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Fax"
+msgstr "Telefax"
+
+msgid "Add"
+msgstr "Anlegen"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -104,21 +191,6 @@ msgstr "IP Adresse"
 
 msgid "Reseller"
 msgstr "Wiederverkäufer"
-
-msgid "This user name already exist!"
-msgstr "Der Benutzername ist bereits vergeben!"
-
-msgid "Incorrect username length or syntax!"
-msgstr "Der Benutzername hat eine ungültige Länge oder Syntax"
-
-msgid "Incorrect password length or syntax!"
-msgstr "Das Passwort hat eine ungültige Länge oder Syntax"
-
-msgid "Entered passwords do not match!"
-msgstr "Die eingegebenen Passwörter stimmen nicht überein"
-
-msgid "Incorrect email length or syntax!"
-msgstr "Die Mailadresse hat eine ungültige Länge oder Syntax"
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Ungültige <i>Max. Domains</i> Beschränkung!"
@@ -152,15 +224,6 @@ msgstr "Sie müssen einem Wiederverkäufer mindestens eine IP Adresse zuweisen!"
 
 msgid "Add reseller"
 msgstr "Wiederverkäufer anlegen"
-
-msgid "Core data"
-msgstr "Daten"
-
-msgid "Repeat password"
-msgstr "Passworteingabe wiederholen"
-
-msgid "Email"
-msgstr "E-Mail Adresse"
 
 msgid "unlimited"
 msgstr "unbegrenzt"
@@ -240,77 +303,38 @@ msgstr "Nein"
 msgid "Reseller IPs"
 msgstr "Wiederverkäufer IP Adressen"
 
-msgid "Additional data"
-msgstr "Zusätzliche Daten"
-
 msgid "Customer ID"
 msgstr "Kundennummer"
-
-msgid "First name"
-msgstr "Vorname"
-
-msgid "Last name"
-msgstr "Nachname"
-
-#, fuzzy
-msgid "Gender"
-msgstr "Kopfzeile"
-
-#, fuzzy
-msgid "Male"
-msgstr "E-Mail Konten"
-
-#, fuzzy
-msgid "Female"
-msgstr "Funktion"
-
-msgid "Company"
-msgstr "Firma"
-
-msgid "Zip/Postal code"
-msgstr "Postleitzahl"
-
-msgid "City"
-msgstr "Stadt"
-
-msgid "Country"
-msgstr "Land"
-
-msgid "Street 1"
-msgstr "Strasse 1"
-
-msgid "Street 2"
-msgstr "Strasse 2"
-
-msgid "Phone"
-msgstr "Telefon"
-
-msgid "Fax"
-msgstr "Telefax"
-
-msgid "Add"
-msgstr "Anlegen"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Virtual Hosting Control System"
-
-msgid "Administrator"
-msgstr ""
-
-msgid "Empty data or wrong field!"
-msgstr "Keine oder falsche Eingabe!"
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "Administrator anlegen"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr "ISPCP - Administrator Log"
 
 msgid "Log is empty!"
 msgstr "Protokoll ist leer!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr "Ungültige Zeitdauer!"
@@ -693,8 +717,11 @@ msgstr "Domain Aliase"
 msgid "Submit changes"
 msgstr "Aktualisieren"
 
-msgid "None"
-msgstr "keine"
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgid "Disabled"
+msgstr "Deaktiviert"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr "ISPCP - Domain Statistiken"
@@ -941,12 +968,6 @@ msgstr "Es sind keine Hosting Pakete im System vorhanden!"
 
 msgid "Name"
 msgstr ""
-
-msgid "Enabled"
-msgstr "Aktiviert"
-
-msgid "Disabled"
-msgstr "Deaktiviert"
 
 msgid "Show hosting plan"
 msgstr "Hosting Pakete anzeigen"
@@ -2035,6 +2056,9 @@ msgstr "Deaktivieren"
 msgid "Delete CatchAll"
 msgstr "Löschen"
 
+msgid "None"
+msgstr "keine"
+
 msgid "Create catch all"
 msgstr "Catch All anlegen"
 
@@ -2620,17 +2644,21 @@ msgstr "Wechseln"
 msgid "SQL user was removed successfully!"
 msgstr "MySQL Benutzer wurde erfolgreich gelöscht!"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Bitte MySQL Query angeben!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Kann nicht als MySQL Administrator verbinden!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "MySQL Query Fehler!"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "MySQL Query ausführen"
 
-msgid "SQL query is ok"
-msgstr "MySQL Query ist OK"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "MySQL Query ausführen"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -2850,6 +2878,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3513,6 +3565,15 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Kann nicht als MySQL Administrator verbinden!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "MySQL Query Fehler!"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "MySQL Query ist OK"
 
 #~ msgid "of"
 #~ msgstr "von"

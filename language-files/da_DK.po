@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -84,6 +84,93 @@ msgstr ""
 msgid "Request password"
 msgstr "Anmod om Adgangskode"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Admin/Håndtére bruger/Tilføj Bruger"
+
+msgid "Administrator"
+msgstr ""
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Incorrect password length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "This user name already exist!"
+msgstr "Dette brugernavn eksisterer allerede!"
+
+msgid "Empty data or wrong field!"
+msgstr "Tom data eller forkert felt!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+msgid "Add admin"
+msgstr "Tilføj admin"
+
+msgid "Core data"
+msgstr "Hoved Data"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Additional data"
+msgstr "Ekstra data"
+
+msgid "First name"
+msgstr "Fornavn"
+
+msgid "Last name"
+msgstr "Efternavn"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Hoved"
+
+#, fuzzy
+msgid "Male"
+msgstr "Aktiver"
+
+#, fuzzy
+msgid "Female"
+msgstr "Mulighed"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Zip/Postal code"
+msgstr "Postnummer"
+
+msgid "City"
+msgstr "By"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Street 1"
+msgstr "Adresse 1"
+
+msgid "Street 2"
+msgstr "Adresse 2"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Fax"
+msgstr ""
+
+msgid "Add"
+msgstr "Tilføj"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr ""
 
@@ -104,21 +191,6 @@ msgstr "IP Nummer"
 
 msgid "Reseller"
 msgstr "Forhandler"
-
-msgid "This user name already exist!"
-msgstr "Dette brugernavn eksisterer allerede!"
-
-msgid "Incorrect username length or syntax!"
-msgstr ""
-
-msgid "Incorrect password length or syntax!"
-msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr ""
-
-msgid "Incorrect email length or syntax!"
-msgstr ""
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Ukorrekt max domæne antal eller syntaks!"
@@ -152,15 +224,6 @@ msgstr "Du skal tildele mindst et IP nummer til din forhandler!"
 
 msgid "Add reseller"
 msgstr "Tilføj forhandlere"
-
-msgid "Core data"
-msgstr "Hoved Data"
-
-msgid "Repeat password"
-msgstr ""
-
-msgid "Email"
-msgstr "E-mail"
 
 msgid "unlimited"
 msgstr "ubegrænset"
@@ -240,77 +303,38 @@ msgstr "nej"
 msgid "Reseller IPs"
 msgstr "Forhandler IP'er"
 
-msgid "Additional data"
-msgstr "Ekstra data"
-
 msgid "Customer ID"
 msgstr "Kunde nummer (ID)"
-
-msgid "First name"
-msgstr "Fornavn"
-
-msgid "Last name"
-msgstr "Efternavn"
-
-#, fuzzy
-msgid "Gender"
-msgstr "Hoved"
-
-#, fuzzy
-msgid "Male"
-msgstr "Aktiver"
-
-#, fuzzy
-msgid "Female"
-msgstr "Mulighed"
-
-msgid "Company"
-msgstr "Firma"
-
-msgid "Zip/Postal code"
-msgstr "Postnummer"
-
-msgid "City"
-msgstr "By"
-
-msgid "Country"
-msgstr "Land"
-
-msgid "Street 1"
-msgstr "Adresse 1"
-
-msgid "Street 2"
-msgstr "Adresse 2"
-
-msgid "Phone"
-msgstr "Telefon"
-
-msgid "Fax"
-msgstr ""
-
-msgid "Add"
-msgstr "Tilføj"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Håndtére bruger/Tilføj Bruger"
-
-msgid "Administrator"
-msgstr ""
-
-msgid "Empty data or wrong field!"
-msgstr "Tom data eller forkert felt!"
-
-msgid "Passwords don't match!"
-msgstr ""
-
-msgid "Add admin"
-msgstr "Tilføj admin"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
 msgstr "Loggen er tom!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr ""
@@ -693,8 +717,11 @@ msgstr "Domænealiaser"
 msgid "Submit changes"
 msgstr "Tilføj ændringer"
 
-msgid "None"
-msgstr "Ingen"
+msgid "Enabled"
+msgstr "Aktiveret"
+
+msgid "Disabled"
+msgstr "Deaktiveret"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -941,12 +968,6 @@ msgstr "Hosting planer ikke fundet!"
 
 msgid "Name"
 msgstr "Navn"
-
-msgid "Enabled"
-msgstr "Aktiveret"
-
-msgid "Disabled"
-msgstr "Deaktiveret"
 
 msgid "Show hosting plan"
 msgstr "Vis hosting plan"
@@ -2035,6 +2056,9 @@ msgstr "Deaktiver"
 msgid "Delete CatchAll"
 msgstr "Slet FangAlle"
 
+msgid "None"
+msgstr "Ingen"
+
 msgid "Create catch all"
 msgstr "Opret FangAlle"
 
@@ -2620,17 +2644,21 @@ msgstr "Redigér"
 msgid "SQL user was removed successfully!"
 msgstr "SQL bruger blev fjernet"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Indtast en SQL query!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Kan ikke forbinde som MySQL administrator!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "SQL query har fejl"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Udfør SQL forespørgsel"
 
-msgid "SQL query is ok"
-msgstr "SQL query er OK"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Udfør SQL forespørgsel"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - Virtual Hosting Control System"
@@ -2850,6 +2878,30 @@ msgid ""
 "Hello {TO_NAME} !\n"
 "\n"
 "You have a new ticket to read"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
 msgstr ""
 
 msgid "Email and FTP accounts"
@@ -3513,6 +3565,15 @@ msgstr "ISPCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Kan ikke forbinde som MySQL administrator!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "SQL query har fejl"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "SQL query er OK"
 
 #~ msgid "of"
 #~ msgstr "af"

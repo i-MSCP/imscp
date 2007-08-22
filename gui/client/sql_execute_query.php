@@ -128,7 +128,7 @@ function execute_sql_query(&$tpl, &$sql, $user_id, $db_user_id) {
     // let's check user input;
 
     if ($_POST['sql_query'] === '') {
-        set_page_message(tr('Please enter SQL query!'));
+        set_page_message(tr('Please enter an SQL query!'));
         $tpl->assign('SQL_RESULT', '');
         return;
     }
@@ -157,10 +157,10 @@ SQL_QUERY;
     $db_user_name = $rs->fields['sqlu_name'];
     $db_user_pass = $rs->fields['sqlu_pass'];
     $db_name = $rs->fields['sqld_name'];
-    $sql_user = &ADONewConnection('mysql');
+    $sql_user = &ADONewConnection($cfg['DB_TYPE']);
 
     if (!@$sql_user->Connect($cfg['DB_HOST'], $db_user_name, $db_user_pass, $db_name)) {
-        set_page_message(tr('Cannot connect as MySQL administrator!'));
+        set_page_message(tr('Could not connect to the SQL server as %s!', $db_user_name));
         $tpl->assign('SQL_RESULT', '');
         return;
     }
@@ -170,11 +170,11 @@ SQL_QUERY;
     $rs = $sql_user->Execute($query);
 
     if (!$rs) {
-        $tpl->assign(array('QUERY_STATUS' => tr('SQL query has error'),
+        $tpl->assign(array('QUERY_STATUS' => tr('Execution of SQL query failed!'),
                 'QUERY_RESULT' => $sql_user->ErrorMsg()));
     } else {
         write_log($_SESSION['user_logged'] . ": execute SQL query!");
-        $tpl->assign(array('QUERY_STATUS' => tr('SQL query is ok'),
+        $tpl->assign(array('QUERY_STATUS' => tr('Execution of SQL query succeeded!'),
                 'QUERY_RESULT' => sql_rs2html($rs)));
     }
 
@@ -227,7 +227,7 @@ $tpl->assign(
 			array(
 				'TR_CLIENT_SQL_EXECUTE_QUERY_PAGE_TITLE' => tr('ISPCP - Client/Execute SQL Query'),
         		'THEME_COLOR_PATH' => "../themes/$theme_color",
-        		'THEME_CHARSET' => tr('encoding'), 
+        		'THEME_CHARSET' => tr('encoding'),
         		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 				)

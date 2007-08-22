@@ -108,17 +108,17 @@ function install_lang() {
 
 		// add lang pack now !
 		$file_type = $_FILES['lang_file']['type'];
+		$file = $_FILES['lang_file']['tmp_name'];
 
-		if (empty($_FILES['lang_file']['name'])) {
+		if (empty($_FILES['lang_file']['name']) || !file_exists($file) || is_readable($file)) {
 			set_page_message(tr('Upload file error!'));
 			return;
 		}
 
-		if (!($file_type === "text/plain") && !($file_type === "application/octet-stream")){
+		if ($file_type !== "text/plain" && $file_type !== "application/octet-stream") {
 			set_page_message(tr('You can upload only text files!'));
 			return;
 		} else {
-			$file = $_FILES['lang_file']['tmp_name'];
 
 			$fp = fopen($file, 'r');
 
@@ -154,8 +154,8 @@ function install_lang() {
 			}
 
 			if (empty($ab['ispcp_languageSetlocaleValue']) || empty($ab['ispcp_table']) || empty($ab['ispcp_language'])
-			     || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',$ab['ispcp_languageSetlocaleValue'])
-			     || !preg_match('/^[a-z0-9]+$/Di',$ab['ispcp_table'])) {
+			     || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $ab['ispcp_languageSetlocaleValue'])
+			     || !preg_match('/^[a-z0-9]+$/Di', $ab['ispcp_table'])) {
 
     			    set_page_message(tr('Uploaded file does not contain the language information!'));
     			    return ;

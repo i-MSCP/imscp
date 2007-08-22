@@ -1697,9 +1697,11 @@ function write_log($msg) {
 	} else {
 		$client_ip = "unknown";
 	}
-	$msg2 = $msg."<br><small>User IP: ".$client_ip."</small>";
+	$msg2 = htmlentities($msg) . "<br><small>User IP: ".$client_ip."</small>";
 
-	$sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$msg2')" );
+	$query = "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)";
+
+	exec_query($sql, $query, $msg2, false);
 
 
 	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRESS'];
@@ -1707,7 +1709,7 @@ function write_log($msg) {
 	/* now send email if DEFAULT_ADMIN_ADDRESS != '' */
 	if ($send_log_to != '') {
 
-		global $cfg, $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
+		global $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
 
 		$admin_email = $cfg['DEFAULT_ADMIN_ADDRESS'];
 		$default_hostname =  $cfg['SERVER_HOSTNAME'];
@@ -1716,7 +1718,7 @@ function write_log($msg) {
 		$Version = $cfg['Version'];
 		$BuildDate = $cfg['BuildDate'];
 
-		$subject = "ISPCP $Version on $default_hostname ($default_base_server_ip)";
+		$subject = "ispCP $Version on $default_hostname ($default_base_server_ip)";
 
 		$to	  = $send_log_to;
 
@@ -1740,7 +1742,7 @@ AUTO_LOG_MSG;
 
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .=	"X-Mailer: ISPCP $Version Logging Mailer";
+		$headers .=	"X-Mailer: ispCP $Version Logging Mailer";
 
 		$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1748,7 +1750,7 @@ AUTO_LOG_MSG;
 
 		$log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
 
-		$sql->Execute( "INSERT INTO log (log_time,log_message) VALUES(NOW(),'$log_message')" );
+		exec_query($sql, "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)", $log_message, false);
 
 	}
 

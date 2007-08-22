@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-18 23:33-0500\n"
+"POT-Creation-Date: 2007-08-21 20:56-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -87,6 +87,97 @@ msgstr "(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v
 msgid "Request password"
 msgstr "Vyžiadať heslo"
 
+msgid "ISPCP - Admin/Manage users/Add User"
+msgstr "ISPCP - Admin/Správa užívateľov/pridať užívateľa"
+
+msgid "Administrator"
+msgstr "Administrátor"
+
+#, fuzzy
+msgid "Incorrect username length or syntax!"
+msgstr "Zlá dľžka alebo syntax užívateľského mena!"
+
+#, fuzzy
+msgid "Incorrect password length or syntax!"
+msgstr "Zlá dľžka alebo syntax hesla!"
+
+#, fuzzy
+msgid "Entered passwords do not match!"
+msgstr "Zadané heslá sa nezhodujú!"
+
+#, fuzzy
+msgid "Incorrect email length or syntax!"
+msgstr "Zlá dľžka alebo syntax emailu!"
+
+msgid "This user name already exist!"
+msgstr "Toto užívateľské meno už existujeň!"
+
+msgid "Empty data or wrong field!"
+msgstr "Prázdne údaje alebo zlé pole!"
+
+msgid "Passwords don't match!"
+msgstr "Heslá sa nezhodujú!"
+
+msgid "Add admin"
+msgstr "Pridať administrátora"
+
+msgid "Core data"
+msgstr "Základné data"
+
+msgid "Repeat password"
+msgstr "Zopakovať heslo"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Additional data"
+msgstr "Doplňujúce údaje"
+
+msgid "First name"
+msgstr "Krstné meno"
+
+msgid "Last name"
+msgstr "Priezvisko"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Hlavička"
+
+#, fuzzy
+msgid "Male"
+msgstr "E-mail"
+
+#, fuzzy
+msgid "Female"
+msgstr "Webmail"
+
+msgid "Company"
+msgstr "Spoločnosť"
+
+msgid "Zip/Postal code"
+msgstr "PSČ"
+
+msgid "City"
+msgstr "Mesto"
+
+msgid "Country"
+msgstr "Krajina"
+
+msgid "Street 1"
+msgstr "Ulica 1"
+
+msgid "Street 2"
+msgstr "Ulica 2"
+
+msgid "Phone"
+msgstr "Telefón"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Add"
+msgstr "Pridať"
+
 msgid "ispCP - Admin/Manage users/Add reseller"
 msgstr "ispCP - Admin/Spravovať užívateľov/Pridať predajcu"
 
@@ -107,25 +198,6 @@ msgstr "Číslo"
 
 msgid "Reseller"
 msgstr "Predajca"
-
-msgid "This user name already exist!"
-msgstr "Toto užívateľské meno už existujeň!"
-
-#, fuzzy
-msgid "Incorrect username length or syntax!"
-msgstr "Zlá dľžka alebo syntax užívateľského mena!"
-
-#, fuzzy
-msgid "Incorrect password length or syntax!"
-msgstr "Zlá dľžka alebo syntax hesla!"
-
-#, fuzzy
-msgid "Entered passwords do not match!"
-msgstr "Zadané heslá sa nezhodujú!"
-
-#, fuzzy
-msgid "Incorrect email length or syntax!"
-msgstr "Zlá dľžka alebo syntax emailu!"
 
 msgid "Incorrect max domain count or syntax!"
 msgstr "Zlá dľžka alebo syntax"
@@ -159,15 +231,6 @@ msgstr "Musíte priradiť aspoň jednu IP adresu pre predajcu!"
 
 msgid "Add reseller"
 msgstr "Pridať predajcu"
-
-msgid "Core data"
-msgstr "Základné data"
-
-msgid "Repeat password"
-msgstr "Zopakovať heslo"
-
-msgid "Email"
-msgstr "E-mail"
 
 msgid "unlimited"
 msgstr "Bez obmedzení"
@@ -247,77 +310,38 @@ msgstr "nie"
 msgid "Reseller IPs"
 msgstr "Predajove IP adresy"
 
-msgid "Additional data"
-msgstr "Doplňujúce údaje"
-
 msgid "Customer ID"
 msgstr "ID zákazníka"
-
-msgid "First name"
-msgstr "Krstné meno"
-
-msgid "Last name"
-msgstr "Priezvisko"
-
-#, fuzzy
-msgid "Gender"
-msgstr "Hlavička"
-
-#, fuzzy
-msgid "Male"
-msgstr "E-mail"
-
-#, fuzzy
-msgid "Female"
-msgstr "Webmail"
-
-msgid "Company"
-msgstr "Spoločnosť"
-
-msgid "Zip/Postal code"
-msgstr "PSČ"
-
-msgid "City"
-msgstr "Mesto"
-
-msgid "Country"
-msgstr "Krajina"
-
-msgid "Street 1"
-msgstr "Ulica 1"
-
-msgid "Street 2"
-msgstr "Ulica 2"
-
-msgid "Phone"
-msgstr "Telefón"
-
-msgid "Fax"
-msgstr "Fax"
-
-msgid "Add"
-msgstr "Pridať"
-
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Správa užívateľov/pridať užívateľa"
-
-msgid "Administrator"
-msgstr "Administrátor"
-
-msgid "Empty data or wrong field!"
-msgstr "Prázdne údaje alebo zlé pole!"
-
-msgid "Passwords don't match!"
-msgstr "Heslá sa nezhodujú!"
-
-msgid "Add admin"
-msgstr "Pridať administrátora"
 
 msgid "ISPCP - Admin/Admin Log"
 msgstr "ISPCP - Admin/Admin Log"
 
 msgid "Log is empty!"
 msgstr "Log je prázdny!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
 
 msgid "Invalid time period!"
 msgstr "Zlé časové obdobie!"
@@ -713,8 +737,11 @@ msgstr "Aliasy domén"
 msgid "Submit changes"
 msgstr "Odoslať zmeny"
 
-msgid "None"
-msgstr "Žiadny"
+msgid "Enabled"
+msgstr "Povolené"
+
+msgid "Disabled"
+msgstr "Zakázané"
 
 msgid "ISPCP - Domain Statistics Data"
 msgstr "ISPCP - Štatistiky domény"
@@ -962,12 +989,6 @@ msgstr "Hostingový plán nenájdený!"
 
 msgid "Name"
 msgstr "Meno"
-
-msgid "Enabled"
-msgstr "Povolené"
-
-msgid "Disabled"
-msgstr "Zakázané"
 
 msgid "Show hosting plan"
 msgstr "Zobraziť hostingový plán"
@@ -2070,6 +2091,9 @@ msgstr "Vypnúť"
 msgid "Delete CatchAll"
 msgstr "Vymazať \"zachytiť všetko\""
 
+msgid "None"
+msgstr "Žiadny"
+
 msgid "Create catch all"
 msgstr "Vytvoriť \"zachytiť všetko\""
 
@@ -2655,17 +2679,21 @@ msgstr "Zmeniť"
 msgid "SQL user was removed successfully!"
 msgstr "SQL konto bolo zmazané úspešne!"
 
-msgid "Please enter SQL query!"
+#, fuzzy
+msgid "Please enter an SQL query!"
 msgstr "Prosím zadajte SQL príkaz!"
 
-msgid "Cannot connect as MySQL administrator!"
-msgstr "Nemôžem sa pripojiť do MySQL ako administrátor!"
+#, php-format
+msgid "Could not connect to the SQL server as %s!"
+msgstr ""
 
-msgid "SQL query has error"
-msgstr "SQL príkaz má chybu"
+#, fuzzy
+msgid "Execution of SQL query failed!"
+msgstr "Vykonať SQL príkaz"
 
-msgid "SQL query is ok"
-msgstr "SQL príkaz je OK"
+#, fuzzy
+msgid "Execution of SQL query succeeded!"
+msgstr "Vykonať SQL príkaz"
 
 msgid "ISPCP - Client/Execute SQL Query"
 msgstr "ISPCP - Klient/Vykonať SQL príkaz"
@@ -2897,6 +2925,30 @@ msgstr ""
 "Dobrý deň {TO_NAME} !\n"
 "\n"
 "Máte nový tiket"
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
+msgstr ""
 
 msgid "Email and FTP accounts"
 msgstr "E-mail a FTP kontá"
@@ -3569,6 +3621,15 @@ msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "Cannot connect as MySQL administrator!"
+#~ msgstr "Nemôžem sa pripojiť do MySQL ako administrátor!"
+
+#~ msgid "SQL query has error"
+#~ msgstr "SQL príkaz má chybu"
+
+#~ msgid "SQL query is ok"
+#~ msgstr "SQL príkaz je OK"
 
 #~ msgid "of"
 #~ msgstr "z"
