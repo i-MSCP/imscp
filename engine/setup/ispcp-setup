@@ -1333,6 +1333,12 @@ sub setup_sql {
 
 	return $rs if ($rs != 0);
 
+	$sql = "INSERT INTO user_gui_props (user_id) values (1)";
+
+	($rs, $rdata) = doSQL($sql);
+
+	return $rs if ($rs != 0);
+
 	$sql = "INSERT INTO server_ips VALUES (1, '$main::ua{'eth_ip'}', '$main::ua{'hostname'}', '$main::ua{'hostname'}');";
 
 	($rs, $rdata) = doSQL($sql);

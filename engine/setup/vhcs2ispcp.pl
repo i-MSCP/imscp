@@ -113,8 +113,10 @@ sub start_services {
     sleep(2);
     sys_command("$main::cfg{'CMD_MTA'} restart");
     sleep(2);
-    sys_command("$main::cfg{'CMD_NAMED'} restart");
-    sleep(2);
+    if (-e "$main::cfg{'CMD_NAMED'}") {
+        sys_command("$main::cfg{'CMD_NAMED'} restart");
+        sleep(2);
+    }
     sys_command("$main::cfg{'CMD_POP'} restart");
     sleep(2);
     if (-e "$main::cfg{'CMD_POP_SSL'}") {
@@ -207,6 +209,8 @@ sub install_language {
     return 0;
 }
 
+my $rs = 0;
+
 my $welcome_message = <<MSG;
 
 \tWelcome to the VHCS 2.4.7.1 to ispCP Omega migration script.
@@ -219,6 +223,12 @@ my $welcome_message = <<MSG;
 MSG
 
 print STDOUT $welcome_message;
+
+# Make sure we are in the right dir
+if ( ! -e "./ispcp-setup") {
+    print STDOUT "Please first change to the directory where this script is";
+    exit 1;
+}
 
 print STDOUT "\tVHCS2 must first be partially removed from the system\n";
 print STDOUT "\tDo you want me to run the remover (it will only remove the config files)? (yes|skip|abort) [abort]: ";
@@ -233,7 +243,7 @@ if (!defined($cont) || $cont eq 'abort') {
 
 if ( $cont eq 'yes' ) {
     # Remove unecessary VHCS2 stuff
-    my $rs = sys_command_rs("./vhcs2-remover.pl");
+    $rs = sys_command_rs("./vhcs2-remover.pl");
     exit_werror(undef, $rs) if ($rs != 0);
 }
 
@@ -290,18 +300,19 @@ setup_main_vars();
 
 install_language();
 
-if($main::cfg{'DATABASE_NAME'} ne 'ispcp') {
+if ($main::cfg{'DATABASE_NAME'} ne 'ispcp') {
 
     print STDOUT "\nIMPORTANT: you have installed ispCP in a non-default database";
     print STDOUT "\n\tThe migration script has converted your old VHCS database";
     print STDOUT "\n\tin the new database called 'ispcp'; please rename this database";
-    print STDOUT "\n\twith the one you choose at ispCP install time: $main::cfg{'DATABASE_NAME'}\n";
+    print STDOUT "\n\twith the one you chosen at ispCP install time: $main::cfg{'DATABASE_NAME'}\n";
+    print STDOUT "\nAfter that you should run the requests manager: $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr\n";
 
 } else {
 
     print STDOUT "\nRunning ispCP's requests manager...";
 
-    sys_command("$main::db{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+    sys_command("$main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
 
     print STDOUT "done\n";
 

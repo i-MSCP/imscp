@@ -46,7 +46,7 @@ function curlang($newlang = null) {
  *
  * 	@access			public
  * 	@version		2.2
- *  @author			ISPCP Team, Benedikt Heintel (2007), 2007 Raphael Geissert
+ *  @author			ispCP Team, Benedikt Heintel (2007), 2007 Raphael Geissert
  *
  * 	@param		$msgid		string to translate
  * 	@param		$js			whether the input string is in javascript or not
@@ -80,8 +80,16 @@ function tr($msgid, $as_is = false) {
         }
     }
 
-    if ($msgid == 'encoding' && $msgstr == $msgid) {
+    if ($msgid == 'encoding' && $msgstr == 'encoding') {
         $msgstr = $encoding;
+    }
+
+    // Detect comments and strip them if $msgid == $msgstr
+    // e.g.
+    // tr('_: This is just a comment\nReal message to translate here')
+    if ($msgid == $msgstr && substr($msgid, 0, 3) == '_: ' && count($l = explode("\n", $msgid)) > 1) {
+        unset($l[0]);
+        $msgstr = implode("\n", $l);
     }
 
     $cache[$lang][$msgid] = $msgstr;
@@ -110,19 +118,18 @@ function tr($msgid, $as_is = false) {
  *
  * 	@access			public
  * 	@version		1.0
- *  @author			ISPCP Team, Benedikt Heintel (2007)
+ *  @author			ispCP Team, Benedikt Heintel (2007)
  *
  * 	@param		$string		string to replace chars
  * 	@return					string with replaced chars
  **/
 function replace_html($string) {
-
     $pattern = array (
-                        '=&lt;b&gt;=is',
-                        '=&lt;/b&gt;=is',
-                        '=&lt;i&gt;=is',
-                        '=&lt;/i&gt;=is',
-                        '=&lt;br&gt;=is'
+                        '#&lt;[ ]*b[ ]*&gt;#i',
+                        '#&lt;[ ]*/[ ]*b[ ]*&gt;#i',
+                        '#&lt;[ ]*i[ ]*&gt;#i',
+                        '#&lt;[ ]*/[ ]*i[ ]*&gt;#i',
+                        '#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i'
                      );
 
     $replacement = array (

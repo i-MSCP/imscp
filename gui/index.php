@@ -65,8 +65,6 @@ if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 						'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
-						'TR_TIME' => gettimestr(),
-						'TR_DATE' => getdatestr(),
 						'TR_MESSAGE' => nl2br($cfg['SERVICEMODE_MESSAGE']),
 						'TR_ADMINLOGIN' => tr('Administrator login')
 						)
@@ -80,8 +78,6 @@ if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
 						'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
-						'TR_TIME' => gettimestr(),
-						'TR_DATE' => getdatestr(),
 						'TR_LOGIN' => tr('Login'),
 						'TR_USERNAME' => tr('Username'),
 						'TR_PASSWORD' => tr('Password'),

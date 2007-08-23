@@ -49,11 +49,9 @@ if (isset($_GET['key'])) {
 		$tpl = new pTemplate();
 		$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword_message.tpl');
 		$tpl->assign(array(
-							'TR_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+							'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
 							'THEME_COLOR_PATH' => "themes/$theme_color",
-							'THEME_CHARSET' => tr('encoding'),
-							'TR_TIME' => gettimestr(),
-							'TR_DATE' => getdatestr()
+							'THEME_CHARSET' => tr('encoding')
 							)
 						);
 
@@ -92,11 +90,9 @@ if (isset($_POST['uname'])) {
 		$tpl = new pTemplate();
 		$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword_message.tpl');
 		$tpl -> assign(array(
-							'TR_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+							'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
 							'THEME_COLOR_PATH' => "themes/$theme_color",
-							'THEME_CHARSET' => tr('encoding'),
-							'TR_TIME' => gettimestr(),
-							'TR_DATE' => getdatestr()
+							'THEME_CHARSET' => tr('encoding')
 							)
 						);
 
@@ -137,7 +133,7 @@ $tpl = new pTemplate();
 $tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/lostpassword.tpl');
 $tpl->assign(
                 array(
-					'TR_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+					'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
 					'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 					'THEME_CHARSET' => tr('encoding'),
 					'TR_CAPCODE' => tr('Security code'),
@@ -145,9 +141,7 @@ $tpl->assign(
 					'TR_IMGCAPCODE' => "<img src=\"imagecode.php\" border=\"0\" nosave alt=\"\">",
 					'TR_USERNAME' => tr('Username'),
 					'TR_SEND' => tr('Request password'),
-					'TR_BACK' => tr('Back'),
-					'TR_TIME' => gettimestr(),
-					'TR_DATE' => getdatestr()
+					'TR_BACK' => tr('Back')
 					)
 				);
 

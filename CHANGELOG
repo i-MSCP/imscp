@@ -6,6 +6,23 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-22 Raphael Geissert
+    - GUI:
+        * Fixed #586: deleting domain-alias does not work when domain has ftp accounts
+        * Fixed #589: wrong image names
+        * Added comments support to the tr() function
+        * Replaced all ISPCP with ispCP
+        * Fixed #417: Add gender field
+        * Fixed a missing double percent sign
+        * Fixed #594: Blank page on Add Admin
+    - SETUP:
+        * Fixed #588: $rs not always defined
+        * Added missing user_gui_props entry for primary administrator
+    - CONFIGS:
+        * Added postgrey, AMaViS and spamassassin to the server_ports list
+    - LANGUAGES:
+        * Updated es_ES.po (thanks to Albert Garcia)
+
 2007-08-21 Raphael Geissert
     - GUI:
         * Fixed #582: FIXME: /var/www/ispcp/gui/include/calc-functions.php:61

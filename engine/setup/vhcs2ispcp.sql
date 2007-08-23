@@ -37,6 +37,12 @@ VALUES (
     'PORT_IMAP', '143;tcp;IMAP;1;0'
 ),(
     'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'
+),(
+    'PORT_POSTGREY', '60000;tcp;POSTGREYL;1;1'
+),(
+    'PORT_AMAVIS', '10024;tcp;AMaVis;1;1'
+),(
+    'PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1'
 );
 
 ALTER TABLE `domain_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
@@ -85,6 +91,7 @@ DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 DROP TABLE IF EXISTS `lang_French`;
 DROP TABLE IF EXISTS `lang_Russian`;
+DROP TABLE IF EXISTS `lang_Danish`;
 
 -- Drop useless tables
 
