@@ -74,6 +74,8 @@ SQL_QUERY;
 			d.alias_id = ?
 		and
 			fg.groupname = dmn.domain_name
+		and
+			fg.members RLIKE d.alias_name
         and
             d.domain_id = dmn.domain_id
 SQL_QUERY;

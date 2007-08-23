@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Відновити пароль"
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Запит пароля"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Додавання користувача"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Адміністратор/Керування користувачами/Додавання користувача"
 
 msgid "Administrator"
 msgstr "Адміністратор"
@@ -306,8 +306,8 @@ msgstr "IP реселера"
 msgid "Customer ID"
 msgstr "ID користувача"
 
-msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Адміністратор/Журнал адміністратора"
+msgid "ispCP - Admin/Admin Log"
+msgstr "ispCP - Адміністратор/Журнал адміністратора"
 
 msgid "Log is empty!"
 msgstr "Журнал порожній!"
@@ -372,8 +372,8 @@ msgstr "давніші за 6 місяців"
 msgid "older than 12 months"
 msgstr "давніші за 12 місяців"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Адміністратор/Додавання хостінг-плану"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Адміністратор/Додавання хостінг-плану"
 
 msgid "Add hosting plan"
 msgstr "Додати хостинґ-план"
@@ -474,8 +474,8 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr "Хостінг-план із введеною назвою вже існує!"
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Адміністратор/Зміна пароля"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Адміністратор/Зміна пароля"
 
 msgid "Please fill up all data fields!"
 msgstr "Будь ласка, заповніть усі поля!"
@@ -504,8 +504,8 @@ msgstr "Поточний пароль"
 msgid "Personal data updated successfully!"
 msgstr "Персональні дані успішно оновлені!"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Адміністратор/Зміна персональних даних"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Адміністратор/Зміна персональних даних"
 
 msgid "Change personal data"
 msgstr "Змінити персональні дані"
@@ -585,8 +585,8 @@ msgstr "Дані персональних меню успішно оновлен
 msgid "Custom menu deleted successful!"
 msgstr "Персональне меню успішно видалене!"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Адміністратор - Керування персональними меню"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Адміністратор - Керування персональними меню"
 
 msgid "Manage custom menus"
 msgstr "Керування персональними меню"
@@ -657,8 +657,8 @@ msgstr "Усі незакриті заявки успішно видалено!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Усі закриті заявки успішно видалено!"
 
-msgid "ISPCP - Domain/Details"
-msgstr "ISPCP - Домен/Деталі"
+msgid "ispCP - Domain/Details"
+msgstr "ispCP - Домен/Деталі"
 
 msgid "Domain details"
 msgstr "Деталі домену"
@@ -723,8 +723,8 @@ msgstr "Увімкнено"
 msgid "Disabled"
 msgstr "Вимкнено"
 
-msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Статистика домену"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Статистика домену"
 
 msgid "Domain statistics"
 msgstr "Статистика домену"
@@ -756,8 +756,8 @@ msgstr "Весь трафік"
 msgid "Day"
 msgstr "День"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Редагування реселера"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
 
 msgid "Domains"
 msgstr "Домени"
@@ -867,8 +867,8 @@ msgstr "Надіслати нові дані автентифікації"
 msgid "Generate password"
 msgstr "Оновити пароль"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Редагування користувача"
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Адміністратор/Керування користувачами/Редагування користувача"
 
 msgid "User session was killed!"
 msgstr "Сесія користувача знищена!"
@@ -879,8 +879,8 @@ msgstr "Обліковий запис домену"
 msgid "Edit admin"
 msgstr "Редагувати адміністратора"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Адміністратор/Редагування хостінг-плану"
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
 
 msgid "Price Style"
 msgstr ""
@@ -909,8 +909,8 @@ msgstr "Будь ласка, укажіть повідомлення!"
 msgid "Auto email template data updated!"
 msgstr "Шаблон автовідповідача пошти оновлено!"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
 
 msgid "Email setup"
 msgstr "Налаштування електронної пошти"
@@ -936,8 +936,8 @@ msgstr "Тема"
 msgid "Apply changes"
 msgstr "Застосувати зміни"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Адміністратор/Керування хостінг-планами"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Адміністратор/Керування хостінг-планами"
 
 msgid "Hosting plans"
 msgstr "Хостінг-плани"
@@ -982,20 +982,21 @@ msgstr "Переглянути"
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
-msgstr "Доступне оновлення ISPCP"
+msgid "New ispCP update is now available"
+msgstr "Доступне оновлення ispCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Ви вичерпали ліміт трафіку!"
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Адміністратор/Головна"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Адміністратор/Головна"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Адміністратор/Керування IP"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Адміністратор/Керування IP"
 
 msgid "New IP was added!"
 msgstr "Нова адреса IP додана!"
@@ -1045,8 +1046,8 @@ msgstr "Немає помилок системи піддоменів"
 msgid "No email account system errors"
 msgstr "Немає помилок системи електронних скриньок"
 
-msgid "ISPCP debugger"
-msgstr "Налагоджувач ISPCP"
+msgid "ispCP debugger"
+msgstr "Налагоджувач ispCP"
 
 msgid "Domain errors"
 msgstr "Помилки системи доменів"
@@ -1085,17 +1086,30 @@ msgstr ""
 msgid "Get it at"
 msgstr "Завантажити з"
 
-msgid "ISPCP updates"
-msgstr "Оновлення ISPCP"
+msgid "ispCP updates"
+msgstr "Оновлення ispCP"
 
-msgid "Available ISPCP updates"
-msgstr "Доступні оновлення ISPCP"
+msgid "Available ispCP updates"
+msgstr "Доступні оновлення ispCP"
 
-msgid "No new ISPCP updates available"
-msgstr "Немає нових оновлень ISPCP"
+msgid "No new ispCP updates available"
+msgstr "Немає нових оновлень ispCP"
 
 msgid "Update details"
 msgstr "Деталі оновлення"
+
+msgid "User language updated successfully!"
+msgstr "Мова користувача успішно оновлена!"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Клієнт/Зміна мови"
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "Choose default language"
+msgstr "Вибір основної мови"
 
 msgid "Upload file error!"
 msgstr "Помилка завантаження файлу!"
@@ -1136,8 +1150,8 @@ msgstr "Вибір основного оформлення"
 msgid "Layout"
 msgstr "Макет"
 
-msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - Адміністратор/Налаштування втрати пароля"
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Адміністратор/Налаштування втрати пароля"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1157,8 +1171,8 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr "Список реселерів порожній!"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Призначення реселера"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP - Адміністратор/Керування користувачами/Призначення реселера"
 
 msgid "Reseller assignment"
 msgstr "Призначення реселера"
@@ -1219,8 +1233,8 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Адміністратор/Керування користувачами/Призначення користувача"
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Адміністратор/Керування користувачами/Призначення користувача"
 
 msgid "User assignment"
 msgstr "Призначення користувача"
@@ -1237,8 +1251,8 @@ msgstr "Від реселера"
 msgid "To reseller"
 msgstr "Реселеру"
 
-msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - Адміністратор/Керування сесіями"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Адміністратор/Керування сесіями"
 
 msgid "Manage user sessions"
 msgstr "Керування сесіями користувача"
@@ -1255,8 +1269,8 @@ msgstr "Параметри"
 msgid "Kill session"
 msgstr "Завершити сесію"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Адміністратор/Керування користувачами"
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Адміністратор/Керування користувачами"
 
 msgid "User added"
 msgstr "Користувача додано"
@@ -1282,7 +1296,7 @@ msgstr "Користувача заблоковано"
 msgid "Incorrect data input!"
 msgstr "Невірне введення даних!"
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1319,14 +1333,11 @@ msgstr "видалити"
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
 msgstr "Установлені мови"
-
-msgid "Language"
-msgstr "Мова"
 
 msgid "Messages"
 msgstr "Повідомлення"
@@ -1346,8 +1357,8 @@ msgstr "Установити"
 msgid "Export"
 msgstr "Експорт"
 
-msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Статистика реселера"
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Статистика реселера"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "У системі не знайдено реселера(-ів)!"
@@ -1378,15 +1389,15 @@ msgstr "База даних SQL"
 msgid "SQL user"
 msgstr "Користувач SQL"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Адміністратор/Статистика реселера"
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Адміністратор/Статистика реселера"
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
@@ -1423,7 +1434,7 @@ msgstr "БД<br>SQL"
 msgid "SQL<br>user"
 msgstr "Користувач<br>SQL"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1432,8 +1443,8 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr ""
 
-msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Адміністратор/Денна статистика сервера"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Адміністратор/Денна статистика сервера"
 
 msgid "Server day statistics"
 msgstr "Денна статистика сервера"
@@ -1480,14 +1491,14 @@ msgstr "Усі в"
 msgid "All out"
 msgstr "Усі за"
 
-msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP - Адміністратор/Статистика сервера"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Адміністратор/Статистика сервера"
 
 msgid "Server statistics"
 msgstr "Статистика сервера"
 
-msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "Адміністратор ISPCP / Системні інструменти / Стан сервера"
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "Адміністратор ispCP / Системні інструменти / Стан сервера"
 
 msgid "UP"
 msgstr ""
@@ -1504,8 +1515,8 @@ msgstr "Сервіс"
 msgid "Server status"
 msgstr "Стан сервера"
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP - Адміністратор/Налаштування трафіка сервера"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Адміністратор/Налаштування трафіка сервера"
 
 msgid "Wrong data input!"
 msgstr "Невірно введені дані!"
@@ -1531,7 +1542,7 @@ msgstr "Макс. трафік [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Ліміт трафіка [МБ]"
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1543,7 +1554,7 @@ msgstr "Стан обслуговування"
 msgid "In this mode only administrators can login"
 msgstr "Лише адміністратори можуть входити в цьому режимі"
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1636,8 +1647,8 @@ msgstr "Високий"
 msgid "Very high"
 msgstr "Невідкладний"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Клієнт/Питання та пропозиції"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Клієнт/Питання та пропозиції"
 
 msgid "Support tickets"
 msgstr "Запити підтримки"
@@ -1663,8 +1674,8 @@ msgstr "[Нове]"
 msgid "[Re]"
 msgstr "[Відповідь]"
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Клієнт/Активація автовідповідача"
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Клієнт/Активація автовідповідача"
 
 msgid "From"
 msgstr "Від"
@@ -1750,8 +1761,8 @@ msgstr "Відкритий запит"
 msgid "Close ticket"
 msgstr "Закрити запит підтримки"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Клієнт : Система підтримки: Перегляд запитів"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Клієнт : Система підтримки: Перегляд запитів"
 
 msgid "Please type your message!"
 msgstr "Будь ласка, введіть повідомлення!"
@@ -1765,7 +1776,7 @@ msgstr "Запит закрито!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1777,8 +1788,8 @@ msgstr "Надіслати відповідь"
 msgid "Send reply"
 msgstr "Надіслати відповідь"
 
-msgid "ISPCP Client : Add Alias"
-msgstr "Клієнт ISPCP : Додавання аліасу"
+msgid "ispCP Client : Add Alias"
+msgstr "Клієнт ispCP : Додавання аліасу"
 
 msgid "Manage domain alias"
 msgstr "Керування аліасами домену"
@@ -1866,8 +1877,8 @@ msgstr "Будь ласка, укажіть іншу директорію кор
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Клієнт/Додавання користувача FTP"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Клієнт/Додавання користувача FTP"
 
 msgid "Add FTP user"
 msgstr "Додати користувача FTP"
@@ -1920,8 +1931,8 @@ msgstr "Список пересилання порожній!"
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Клієнт/Додавання поштової скриньки"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Клієнт/Додавання поштової скриньки"
 
 msgid "Add mail users"
 msgstr "Додати поштові скриньки"
@@ -1957,8 +1968,8 @@ msgstr "База даних SQL успішно створена!"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Клієнт/Додавання бази даних SQL"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Клієнт/Додавання бази даних SQL"
 
 msgid "Add SQL database"
 msgstr "Додати SQL базу"
@@ -1993,8 +2004,8 @@ msgstr "Точка монтування піддомену вже існує!"
 msgid "Subdomain scheduled for addition!"
 msgstr "Триває додавання піддомену!"
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Клієнт/Додавання піддомену"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Клієнт/Додавання піддомену"
 
 msgid "Add subdomain"
 msgstr "Додати піддомен"
@@ -2011,8 +2022,8 @@ msgstr "Точка монтування (директорія)"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Триває відновлення архівів..."
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Клієнт/Щоденна архівація"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Клієнт/Щоденна архівація"
 
 msgid "Backup"
 msgstr "Резервне копіювання"
@@ -2062,8 +2073,8 @@ msgstr "Ні"
 msgid "Create catch all"
 msgstr "Створити перехоплення всього"
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Клієнт/Керування користувачами"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Клієнт/Керування користувачами"
 
 msgid "Manage users"
 msgstr "Керування користувачами"
@@ -2101,11 +2112,11 @@ msgstr "Користувачі FTP"
 msgid "FTP account"
 msgstr "Користувач FTP"
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Клієнт/Зміна пароля"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Клієнт/Зміна пароля"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Клієнт/Зміна персональних даних"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Клієнт/Зміна персональних даних"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
@@ -2116,8 +2127,8 @@ msgstr "Перехоплення всього в процесі створенн
 msgid "Mail forward list error!"
 msgstr "Помилка списку пересилання пошти!"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Клієнт/Створення \"перехоплювача пошти\""
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Клієнт/Створення \"перехоплювача пошти\""
 
 msgid "Create catch all mail account"
 msgstr "Створити перехоплення всіх поштових облікових записів"
@@ -2125,8 +2136,8 @@ msgstr "Створити перехоплення всіх поштових об
 msgid "Mail accounts list"
 msgstr "Список поштових скриньок"
 
-msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - Клієнт/Керування завданнями Cron"
+msgid "ispCP - Client/Cronjob Manager"
+msgstr "ispCP - Клієнт/Керування завданнями Cron"
 
 msgid "Cronjob Manager"
 msgstr "Менеджер завдань Cron'a"
@@ -2201,8 +2212,8 @@ msgstr "Триває видалення піддомену!"
 msgid "Mail account scheduled for modification!"
 msgstr "Триває оновлення поштової скриньки!"
 
-msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Клієнт/Статистика домену"
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Клієнт/Статистика домену"
 
 msgid "Web Stats"
 msgstr ""
@@ -2219,8 +2230,8 @@ msgstr ""
 msgid "Sum"
 msgstr "Сума"
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Керування аліасами домену/Редагування аліасів"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Керування аліасами домену/Редагування аліасів"
 
 msgid "Edit domain alias"
 msgstr "Редагувати аліас домену"
@@ -2242,8 +2253,8 @@ msgstr "Паролі не співпадають!"
 msgid "FTP account data updated!"
 msgstr "Дані користувача FTP оновлені!"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Клієнт/Редагування облікового запису FTP"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Клієнт/Редагування облікового запису FTP"
 
 msgid "Edit FTP user"
 msgstr "Редагувати користувача FTP"
@@ -2263,8 +2274,8 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr "Пошта успішно оновлена!"
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Керування поштою та FTP / Редагування поштової скриньки"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Керування поштою та FTP / Редагування поштової скриньки"
 
 msgid "Edit email account"
 msgstr "Редагувати поштову скриньку"
@@ -2275,8 +2286,8 @@ msgstr "Будь ласка, введіть повідомлення автов�
 msgid "Mail account scheduler for modification!"
 msgstr "Оновлення поштової скриньки!"
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Клієнт/Активація автовідповідача"
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Клієнт/Активація автовідповідача"
 
 msgid "Edit mail auto responder"
 msgstr "Редагувати поштовий автовідповідач"
@@ -2293,8 +2304,8 @@ msgstr "Список поштових скриньок порожній!"
 msgid "Enable mail auto responder"
 msgstr "Увімкнути автовідповідач"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Клієнт/Керування власними сторінками помилок"
+msgid "ispCP - Client/Manage Error Custom Pages"
+msgstr "ispCP - Клієнт/Керування власними сторінками помилок"
 
 msgid "Server error - please choose error page"
 msgstr "Серверна помилка - оберіть сторінку помилки"
@@ -2338,8 +2349,8 @@ msgstr "Батьківська директорія"
 msgid "Protect it"
 msgstr "Захистити"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Клієнт/Web-інструменти"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Клієнт/Web-інструменти"
 
 msgid "Directory tree"
 msgstr "Дерево директорій"
@@ -2367,8 +2378,8 @@ msgstr "Ви вичерпали ліміт дискового простору!"
 msgid "You have no new support questions!"
 msgstr "Немає нових питань підтримки!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Клієнт/Головна"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Клієнт/Головна"
 
 msgid "General information"
 msgstr "Загальна інформація"
@@ -2382,20 +2393,14 @@ msgstr "Головний домен"
 msgid "SQL support"
 msgstr "Підтримка SQL"
 
-msgid "Choose default language"
-msgstr "Вибір основної мови"
-
 msgid "Traffic usage"
 msgstr "Використання трафіку"
 
 msgid "Disk usage"
 msgstr "Використання дискового простору"
 
-msgid "User language updated successfully!"
-msgstr "Мова користувача успішно оновлена!"
-
-msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Клієнт/Зміна мови"
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Клієнт/Зміна мови"
 
 msgid "Subdomain list is empty!"
 msgstr "Список піддоменів порожній!"
@@ -2403,8 +2408,8 @@ msgstr "Список піддоменів порожній!"
 msgid "Alias list is empty!"
 msgstr "Список аліасів порожній!"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Клієнт/Керування доменами"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Клієнт/Керування доменами"
 
 msgid "Manage domains"
 msgstr "Керування доменами"
@@ -2425,8 +2430,8 @@ msgstr "Список користувачів баз даних порожній
 msgid "Database list is empty!"
 msgstr "Список баз даних порожній!"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Клієнт/Керування SQL"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Клієнт/Керування SQL"
 
 msgid "Manage SQL"
 msgstr "Керування SQL"
@@ -2446,8 +2451,8 @@ msgstr "Будь ласка, укажіть тему повідомлення!"
 msgid "Your message was sent!"
 msgstr "Ваше повідомлення надіслане!"
 
-msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - Система підтримки"
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Система підтримки"
 
 msgid "New ticket"
 msgstr "Новий запит"
@@ -2608,8 +2613,8 @@ msgstr "Вказаний користувач бази даних уже існ�
 msgid "SQL user successfully added!"
 msgstr "Користувач SQL успішно доданий!"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Клієнт/Додавання користувача SQL"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Клієнт/Додавання користувача SQL"
 
 msgid "SQL user name"
 msgstr "Користувач SQL"
@@ -2632,8 +2637,8 @@ msgstr "Занадто довгий пароль користувача!"
 msgid "SQL user password was successfully changed!"
 msgstr "Пароль користувача SQL успішно змінений!"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - Клієнт/Зміна пароля користувача SQL"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Клієнт/Зміна пароля користувача SQL"
 
 msgid "Change SQL user password"
 msgstr "Змінити пароль користувача SQL"
@@ -2660,8 +2665,8 @@ msgstr "Виконати запит SQL"
 msgid "Execution of SQL query succeeded!"
 msgstr "Виконати запит SQL"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Клієнт/Виконання запиту SQL"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Клієнт/Виконання запиту SQL"
 
 msgid "Execute SQL query"
 msgstr "Виконати запит SQL"
@@ -2728,8 +2733,8 @@ msgstr "безкоштовно"
 msgid "There are no available hosting plans for update"
 msgstr "Немає хостінг-планів для переходу"
 
-msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Оновлення хостінг-плану"
+msgid "ispCP - Update hosting plan"
+msgstr "ispCP - Оновлення хостінг-плану"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ваш запит на зміну хостінг-плану успішно доданий"
@@ -3143,7 +3148,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3216,8 +3221,8 @@ msgstr "Web & E-mail підтримка"
 msgid "Your Own Domain"
 msgstr "Ваш власний домен"
 
-msgid "ISPCP Control Panel"
-msgstr "Контрольна панель ISPCP"
+msgid "ispCP Control Panel"
+msgstr "Контрольна панель ispCP"
 
 msgid "Automatic Updates"
 msgstr "Автоматичні оновлення"
@@ -3231,23 +3236,23 @@ msgstr "Плата за установку"
 msgid "Performance"
 msgstr "Виконання"
 
-msgid "ISPCP Reseller : Add Alias"
-msgstr "Реселер ISPCP : Додавання аліасу"
+msgid "ispCP Reseller : Add Alias"
+msgstr "Реселер ispCP : Додавання аліасу"
 
 msgid "You have no user records."
 msgstr "Ви не маєте записів користувачів."
 
-msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Реселер/Додавання хостінг-плану"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Реселер/Додавання хостінг-плану"
 
-msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Реселер/Зміна пароля"
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Реселер/Зміна пароля"
 
-msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Реселер/Зміна персональних даних"
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Реселер/Зміна персональних даних"
 
-msgid "ISPCP - Circular"
-msgstr "ISPCP - Адміністратор/Реклама"
+msgid "ispCP - Circular"
+msgstr "ispCP - Адміністратор/Реклама"
 
 msgid "Circular"
 msgstr "Масова розсилка пошти"
@@ -3267,8 +3272,8 @@ msgstr "Домен, що Ви намагаєтеся видалити, міст�
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr "Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть їх!"
 
-msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Керування доменами/Аліаси"
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Керування доменами/Аліаси"
 
 msgid "Manage alias"
 msgstr "Керування аліасами"
@@ -3300,8 +3305,8 @@ msgstr "Аліас домену не змінено!"
 msgid "User terminated!"
 msgstr "Користувач видалений!"
 
-msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Домен/Редагування"
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Домен/Редагування"
 
 msgid "Edit Domain"
 msgstr "Редагувати домен"
@@ -3354,8 +3359,8 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
-msgstr "ISPCP - Користувачі/Редагування"
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Користувачі/Редагування"
 
 msgid "Edit user"
 msgstr "Редагувати користувача"
@@ -3363,8 +3368,8 @@ msgstr "Редагувати користувача"
 msgid "Users list"
 msgstr "Список користувачів"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Реселер/Редагування хостінг-плану"
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Реселер/Редагування хостінг-плану"
 
 msgid "View hosting plan"
 msgstr "Перегляд хостінг-плану"
@@ -3375,11 +3380,11 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Реселер/Головна"
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Реселер/Головна"
 
 msgid "View details"
 msgstr "Перегляд деталей"
@@ -3401,8 +3406,12 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Реселер/Налаштування відновлення пароля"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Клієнт/Зміна мови"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Реселер/Налаштування відновлення пароля"
 
 msgid "Lostpw email"
 msgstr "E-mail для відновлення пароля"
@@ -3410,8 +3419,8 @@ msgstr "E-mail для відновлення пароля"
 msgid "Lostpw link"
 msgstr "Посилання на відновлення пароля"
 
-msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Реселер/Налаштування замовлення"
+msgid "ispCP - Reseller/Order email setup"
+msgstr "ispCP - Реселер/Налаштування замовлення"
 
 msgid "Manage orders"
 msgstr "Керування замовленнями"
@@ -3425,8 +3434,8 @@ msgstr "Користувача додано!"
 msgid "Customer order was removed successful!"
 msgstr "Замовлення було успішно видалене!"
 
-msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Реселер/Деталі замовлення"
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Реселер/Деталі замовлення"
 
 msgid "Order data updated successfully!"
 msgstr "Дані про замовлення успішно оновлені!"
@@ -3455,8 +3464,8 @@ msgstr "Ви впевнені, що бажаєте видалити це зам�
 msgid "Add to the system"
 msgstr "Додати в систему"
 
-msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Реселер/Налаштування замовлення"
+msgid "ispCP - Reseller/Order settings"
+msgstr "ispCP - Реселер/Налаштування замовлення"
 
 msgid "Header"
 msgstr "Верхня частина"
@@ -3467,11 +3476,15 @@ msgstr "Перегляд"
 msgid "Implementation URL"
 msgstr "Робочий URL"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "Нижня частина"
 
-msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Реселер/Керування замовленнями"
+msgid "ispCP - Reseller/Order management"
+msgstr "ispCP - Реселер/Керування замовленнями"
 
 msgid "You do not have new orders!"
 msgstr "Ви не маєте нових замовлень!"
@@ -3491,8 +3504,8 @@ msgstr "Замовлення"
 msgid "Add/Details"
 msgstr "Додати/Деталі"
 
-msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Користувачі/Додавання користувача"
+msgid "ispCP - Users/Add user"
+msgstr "ispCP - Користувачі/Додавання користувача"
 
 msgid "Choose hosting plan"
 msgstr "Вибір хостінґ-плану"
@@ -3506,8 +3519,8 @@ msgstr "Наступний крок"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Користувач/Додавання користувача (крок 2)"
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Користувач/Додавання користувача (крок 2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3521,8 +3534,8 @@ msgstr "Журнали веб-сервера"
 msgid "Awstats"
 msgstr "AWStats"
 
-msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Користувач/Додавання користувача"
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Користувач/Додавання користувача"
 
 msgid "Add other domains to this account"
 msgstr "Додати інші домени до цього облікового запису"
@@ -3536,8 +3549,8 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr "Цей реселер не має доменів."
 
-msgid "ISPCP - Users"
-msgstr "ISPCP - Користувачі"
+msgid "ispCP - Users"
+msgstr "ispCP - Користувачі"
 
 msgid "Stats"
 msgstr "Статистика"
@@ -3560,8 +3573,8 @@ msgstr "Цей користувач має домен!<br>Спочатку ви�
 msgid "User not terminated!"
 msgstr "Користувач не видалений!"
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Реселер : Система підтримки: Перегляд запитів"
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Реселер : Система підтримки: Перегляд запитів"
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."

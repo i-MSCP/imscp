@@ -59,7 +59,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 $domain = $_SESSION['user_logged'];
 $domain = "http://www.".$domain;
 
-$tpl -> assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ISPCP - Client/Manage Error Custom Pages'),
+$tpl -> assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Error Custom Pages'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

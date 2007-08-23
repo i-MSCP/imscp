@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -25,7 +25,7 @@ msgstr "Slovenský jazyk"
 
 #, fuzzy
 msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr "ISPCP - Ovladacie centrum virtuálneho hostingu"
+msgstr "ispCP - Ovladacie centrum virtuálneho hostingu"
 
 msgid "Administrator login"
 msgstr "Prihlásennie administrátora"
@@ -54,8 +54,8 @@ msgstr "Zabudnuté heslo"
 msgid "Lost password function currently disabled"
 msgstr "Funkcia zabudnutého hesla je momentálne zablokovaná"
 
-msgid "ISPCP - Virtual Hosting Control System"
-msgstr "ISPCP - Ovladacie centrum virtuálneho hostingu"
+msgid "ispCP - Virtual Hosting Control System"
+msgstr "ispCP - Ovladacie centrum virtuálneho hostingu"
 
 msgid "Password sent"
 msgstr "Heslo poslané"
@@ -87,8 +87,8 @@ msgstr "(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v
 msgid "Request password"
 msgstr "Vyžiadať heslo"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Správa užívateľov/pridať užívateľa"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Admin/Správa užívateľov/pridať užívateľa"
 
 msgid "Administrator"
 msgstr "Administrátor"
@@ -313,8 +313,8 @@ msgstr "Predajove IP adresy"
 msgid "Customer ID"
 msgstr "ID zákazníka"
 
-msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Admin/Admin Log"
+msgid "ispCP - Admin/Admin Log"
+msgstr "ispCP - Admin/Admin Log"
 
 msgid "Log is empty!"
 msgstr "Log je prázdny!"
@@ -379,8 +379,8 @@ msgstr "staršie ako pol roka"
 msgid "older than 12 months"
 msgstr "staršie ako rok"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Administrator/Pridať hostingový plán"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Pridať hostingový plán"
 
 msgid "Add hosting plan"
 msgstr "Pridať hostingový plán"
@@ -493,8 +493,8 @@ msgstr "Zlá veľkosť alebo syntax diskového priestoru!"
 msgid "Hosting plan with entered name already exists!"
 msgstr "Hostingový plán so zadaným menom už existuje!"
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Admin/Zmena hesla"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Admin/Zmena hesla"
 
 msgid "Please fill up all data fields!"
 msgstr "Prosím vyplňte všetky položky!"
@@ -524,8 +524,8 @@ msgstr "Súčasné heslo"
 msgid "Personal data updated successfully!"
 msgstr "Osobné údaje úspešne zmenené!"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Admin/Zmeniť osobné údaje"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Admin/Zmeniť osobné údaje"
 
 msgid "Change personal data"
 msgstr "Zmeniť osobné údaje"
@@ -605,8 +605,8 @@ msgstr "Vlastné menu bolo úspešne aktualizované!"
 msgid "Custom menu deleted successful!"
 msgstr "Vlastné menu úspešne zmazané!"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Admin - Spravovať vlastné menu"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Admin - Spravovať vlastné menu"
 
 msgid "Manage custom menus"
 msgstr "Spravovať vlastné menu"
@@ -677,7 +677,7 @@ msgstr "Všetky otvorené tikety úspešne zmazané!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Všetky zavreté tikety úspešno zmazané!"
 
-msgid "ISPCP - Domain/Details"
+msgid "ispCP - Domain/Details"
 msgstr "ISCPCP - Doména/Detaily"
 
 msgid "Domain details"
@@ -743,8 +743,8 @@ msgstr "Povolené"
 msgid "Disabled"
 msgstr "Zakázané"
 
-msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Štatistiky domény"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Štatistiky domény"
 
 msgid "Domain statistics"
 msgstr "Štatistiky domény"
@@ -776,8 +776,8 @@ msgstr "Všetky prenesené dáta"
 msgid "Day"
 msgstr "Deň"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Admin/Spravovať užívateľov/Upraviť predajcov"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť predajcov"
 
 msgid "Domains"
 msgstr "Domény"
@@ -887,8 +887,8 @@ msgstr "Pošli nové prihlasovacie údaje"
 msgid "Generate password"
 msgstr "Zopakovať heslo"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
 
 msgid "User session was killed!"
 msgstr "Užívateľské sedenie bolo zrušené!"
@@ -899,8 +899,8 @@ msgstr "Doménový účet"
 msgid "Edit admin"
 msgstr "Upraviť administrátora"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Administrátor/Upraviť hostingový plán"
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - Administrátor/Upraviť hostingový plán"
 
 msgid "Price Style"
 msgstr "Cenový štýl"
@@ -929,8 +929,8 @@ msgstr "Prosím vyplňte správu!"
 msgid "Auto email template data updated!"
 msgstr "Šablóna pre automatický e-mail zaktualizovaná!"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Admin/Spravovať užívateľov/Nastavenie e-mailu"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Admin/Spravovať užívateľov/Nastavenie e-mailu"
 
 msgid "Email setup"
 msgstr "Nastavenie E-mailu"
@@ -957,8 +957,8 @@ msgstr "Predmet"
 msgid "Apply changes"
 msgstr "Vykonať zmeny"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Administrator/Spravovať hostingový plán"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrator/Spravovať hostingový plán"
 
 msgid "Hosting plans"
 msgstr "Hostingový plán"
@@ -1003,21 +1003,21 @@ msgstr "Zobraziť"
 msgid "Couldn't check for updates!"
 msgstr "Nemôže skontrolovať aktualizácie!"
 
-msgid "New ISPCP update is now available"
-msgstr "Nová aktualizácia ISPCP je dostupná"
+msgid "New ispCP update is now available"
+msgstr "Nová aktualizácia ispCP je dostupná"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Prekročili ste Váš limit!"
 
-#, fuzzy
-msgid "%1$d % [%2$d of %3$d]"
+#, fuzzy, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr "%1$s%% [%2$s z %3$s]"
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Admin/Hlavný zoznam"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Admin/Hlavný zoznam"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Admin/Spravovať IP adresy"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Admin/Spravovať IP adresy"
 
 msgid "New IP was added!"
 msgstr "Nová IP adresa pridaná!"
@@ -1067,8 +1067,8 @@ msgstr "Žiadne chyby na systéme sub-domén"
 msgid "No email account system errors"
 msgstr "Žiadne chyby na systéme e-mailových kont"
 
-msgid "ISPCP debugger"
-msgstr "ISPCP debugger"
+msgid "ispCP debugger"
+msgstr "ispCP debugger"
 
 msgid "Domain errors"
 msgstr "Chyby pre doménu"
@@ -1107,17 +1107,30 @@ msgstr "Neznáma chyba"
 msgid "Get it at"
 msgstr "Získať to na"
 
-msgid "ISPCP updates"
-msgstr "ISPCP aktualizácie"
+msgid "ispCP updates"
+msgstr "ispCP aktualizácie"
 
-msgid "Available ISPCP updates"
-msgstr "Dostupné aktualizácie ISPCP"
+msgid "Available ispCP updates"
+msgstr "Dostupné aktualizácie ispCP"
 
-msgid "No new ISPCP updates available"
-msgstr "Žiadné nové aktualizácie ISPCP"
+msgid "No new ispCP updates available"
+msgstr "Žiadné nové aktualizácie ispCP"
 
 msgid "Update details"
 msgstr "Detialy aktualizácie"
+
+msgid "User language updated successfully!"
+msgstr "Jazyk užívateľa úspešne zmenený!"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Klient/Zmeniť jazyk"
+
+msgid "Language"
+msgstr "Jazyky"
+
+msgid "Choose default language"
+msgstr "Vyberte predvolený jazyk"
 
 msgid "Upload file error!"
 msgstr "Chyba pri nahrávaní súboru!"
@@ -1158,7 +1171,7 @@ msgstr "Vyberte predvolené rozmiestnenie"
 msgid "Layout"
 msgstr "Rozmiestnenie"
 
-msgid "ISPCP - Admin/Lostpw email setup"
+msgid "ispCP - Admin/Lostpw email setup"
 msgstr "ISCPCP - Admin/Nastavenie zabudnutého hesla"
 
 #, fuzzy
@@ -1181,8 +1194,8 @@ msgstr "Zabudnuté heslo"
 msgid "Reseller list is empty!"
 msgstr "Zoznam predajcov je prázdny!"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP Admin/Spravovať užívateľov/Priradenie predajcu"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP Admin/Spravovať užívateľov/Priradenie predajcu"
 
 msgid "Reseller assignment"
 msgstr "Priradenie predajcu"
@@ -1243,8 +1256,8 @@ msgstr "<b>%1$s</b> má neobmedzené práva pre <b>%2$s</b> službu !<br>"
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr "<b>%s</b> má IP adresu, ktorá nemože byť spravovaná z miesta pre predajcu !<br>Tento užívateľ nemôže byť presunutý!"
 
-msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Admin/Spravovať užívateľov/Priradenie užívateľov"
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Admin/Spravovať užívateľov/Priradenie užívateľov"
 
 msgid "User assignment"
 msgstr "Priradenie užívateľov"
@@ -1261,7 +1274,7 @@ msgstr "Od predajcu"
 msgid "To reseller"
 msgstr "Pre predajcu"
 
-msgid "ISPCP - Admin/Manage Sessions"
+msgid "ispCP - Admin/Manage Sessions"
 msgstr "ISCP - Admin/Spravovať sedenie"
 
 msgid "Manage user sessions"
@@ -1279,8 +1292,8 @@ msgstr "Nastavenia"
 msgid "Kill session"
 msgstr "Zrušiť sedenie"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Admin/Spravovať užívateľov"
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Admin/Spravovať užívateľov"
 
 msgid "User added"
 msgstr "Užívateľ pridaný"
@@ -1307,8 +1320,8 @@ msgstr "Užívateľ bol zablokovaný"
 msgid "Incorrect data input!"
 msgstr "Nesprávne data!"
 
-msgid "ISPCP - Admin/Internationalisation"
-msgstr "ISPCP - Admin/Zmedzinárodnenie"
+msgid "ispCP - Admin/Internationalisation"
+msgstr "ispCP - Admin/Zmedzinárodnenie"
 
 msgid "Default language changed!"
 msgstr "Predvolený jazyk zmenený!"
@@ -1344,14 +1357,12 @@ msgstr "odinštalovať"
 msgid "%d messages translated"
 msgstr "%d správ preložených"
 
-msgid "Multilingual"
-msgstr "Viac-jazyčný"
+#, fuzzy
+msgid "Internationalisation"
+msgstr "ispCP - Admin/Zmedzinárodnenie"
 
 msgid "Installed languages"
 msgstr "Nainštalované jazyky"
-
-msgid "Language"
-msgstr "Jazyky"
 
 msgid "Messages"
 msgstr "Správy"
@@ -1371,8 +1382,8 @@ msgstr "Nainštalovať"
 msgid "Export"
 msgstr "Export"
 
-msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Štatistiky predajcu"
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Štatistiky predajcu"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Nebol nájdený žiaden predajca vo Vašom systéme!"
@@ -1403,15 +1414,15 @@ msgstr "SQL databáza"
 msgid "SQL user"
 msgstr "SQL užívateľ"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Admin/Štatistika užívateľov predajcu"
-
-#, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
-msgstr ""
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Admin/Štatistika užívateľov predajcu"
 
 #, fuzzy, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgstr "%1$s%% [%2$s of nebmedzených]"
+
+#, fuzzy, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr "%1$s%% [%2$s of nebmedzených]"
 
 #, fuzzy
@@ -1448,8 +1459,8 @@ msgstr "SQL<br>databáza"
 msgid "SQL<br>user"
 msgstr "SQL<br>užívateľ"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
-msgstr "ISPCP Admin / Systémové nástroje / Log Rootkit Hunter-a"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+msgstr "ispCP Admin / Systémové nástroje / Log Rootkit Hunter-a"
 
 msgid "The file doesn't exist or can't be read."
 msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
@@ -1457,8 +1468,8 @@ msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
 msgid "Rootkit Log Checker"
 msgstr "Log kontroly Rootkit"
 
-msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Admin/Denné štatistiky servra"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Denné štatistiky servra"
 
 msgid "Server day statistics"
 msgstr "Denné štatistiky servra"
@@ -1505,14 +1516,14 @@ msgstr "Všetky prichádzajúce"
 msgid "All out"
 msgstr "Všetky odchádzajúce"
 
-msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP - Admin/Štatistiky servra"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Štatistiky servra"
 
 msgid "Server statistics"
 msgstr "Štatistiky servra"
 
-msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "ISPCP Admin / Systémové nástroje / Status servra"
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "ispCP Admin / Systémové nástroje / Status servra"
 
 msgid "UP"
 msgstr ""
@@ -1529,8 +1540,8 @@ msgstr "Služba"
 msgid "Server status"
 msgstr "Status servra"
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP- Admin/Nastavenia prenesených dát servra"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP- Admin/Nastavenia prenesených dát servra"
 
 msgid "Wrong data input!"
 msgstr "Chýbné vstupné data!"
@@ -1556,8 +1567,8 @@ msgstr "Maximálny počet prenesených dát [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Upozornenie prenesených dát [MB]"
 
-msgid "ISPCP - Admin/Servicemode"
-msgstr "ISPCP - Admin/Servisný mód"
+msgid "ispCP - Admin/Servicemode"
+msgstr "ispCP - Admin/Servisný mód"
 
 msgid "Settings saved !"
 msgstr "Uložit nastavenia !"
@@ -1568,8 +1579,8 @@ msgstr "Servisný mód"
 msgid "In this mode only administrators can login"
 msgstr "V tomto móde môže byť prihlásený iba administrátor"
 
-msgid "ISPCP - Admin/Settings"
-msgstr "ISPCP - Admin/Nastavenia"
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Admin/Nastavenia"
 
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr "CHYBA: Iba kladné čísla sú povolené !"
@@ -1666,8 +1677,8 @@ msgstr "Veľa"
 msgid "Very high"
 msgstr "Veľmi veľa"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Klient/Otázky a Komentáre"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Klient/Otázky a Komentáre"
 
 msgid "Support tickets"
 msgstr "Podporné tikety"
@@ -1693,8 +1704,8 @@ msgstr "[Nový]"
 msgid "[Re]"
 msgstr "[Re]"
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Klient/Povoliť automatíckú odpoveď e-mailom"
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Klient/Povoliť automatíckú odpoveď e-mailom"
 
 msgid "From"
 msgstr "Od"
@@ -1780,8 +1791,8 @@ msgstr "Otvorený tiket"
 msgid "Close ticket"
 msgstr "Zatvorený tiket"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Klient : Podporný systém: Zobraziť Tikety"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Klient : Podporný systém: Zobraziť Tikety"
 
 msgid "Please type your message!"
 msgstr "Prosím napíšte svoju správu!"
@@ -1795,8 +1806,8 @@ msgstr "Tiket bol zatvorený!"
 msgid "Ticket was reopened!"
 msgstr "Tiket bol znovu otvorený!"
 
-msgid "ISPCP - Admin : Support System: View Tickets"
-msgstr "ISPCP - Admin : Podporný systém: Zobraziť Tikety"
+msgid "ispCP - Admin : Support System: View Tickets"
+msgstr "ispCP - Admin : Podporný systém: Zobraziť Tikety"
 
 msgid "View support ticket"
 msgstr "Zobraziť podporný tiket"
@@ -1807,8 +1818,8 @@ msgstr "Odoslať odpoveď správy"
 msgid "Send reply"
 msgstr "Odoslať odpoveď"
 
-msgid "ISPCP Client : Add Alias"
-msgstr "ISPCP Klient : Pridať Alias"
+msgid "ispCP Client : Add Alias"
+msgstr "ispCP Klient : Pridať Alias"
 
 msgid "Manage domain alias"
 msgstr "Spravať alias domény"
@@ -1897,8 +1908,8 @@ msgstr "Prosím zadajte iný adresár FTP konta!"
 msgid "FTP accounts limit reached!"
 msgstr "FTP konto dosiahlo limit!"
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Klient/Pridať FTP konto"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Klient/Pridať FTP konto"
 
 msgid "Add FTP user"
 msgstr "Pridať FTP konto"
@@ -1951,8 +1962,8 @@ msgstr "Zoznam presmerovania je prázadny!"
 msgid "Mail accounts limit reached!"
 msgstr "Limit e-mailových kont dosiahnutý!"
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Klient/Pridať E-mailové konto"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Klient/Pridať E-mailové konto"
 
 msgid "Add mail users"
 msgstr "Pridať E-mailové konto"
@@ -1989,8 +2000,8 @@ msgstr "SQL databáza bola vytvorená úspešne!"
 msgid "SQL accounts limit reached!"
 msgstr "Limit SQL kont dosiahnutý!"
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Klient/Pridať SQL databázu"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Klient/Pridať SQL databázu"
 
 msgid "Add SQL database"
 msgstr "Pridať SQL databázu"
@@ -2025,8 +2036,8 @@ msgstr "Bod pripojenia sub-domény už existuje!"
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdoména načasovaná na pridanie!"
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Klient/Pridať sub-doménu"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Klient/Pridať sub-doménu"
 
 msgid "Add subdomain"
 msgstr "Pridať sub-doménu"
@@ -2043,8 +2054,8 @@ msgstr "Strom adresárov<br>prípojný bod"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Záložný archív načasovaný na pridanie!"
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Klient/Denná záloha"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Klient/Denná záloha"
 
 msgid "Backup"
 msgstr "Záloha"
@@ -2097,8 +2108,8 @@ msgstr "Žiadny"
 msgid "Create catch all"
 msgstr "Vytvoriť \"zachytiť všetko\""
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Klient/Spravovať užívateľov"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Klient/Spravovať užívateľov"
 
 msgid "Manage users"
 msgstr "Spravovat užívateľov"
@@ -2136,11 +2147,11 @@ msgstr "FTP kontá"
 msgid "FTP account"
 msgstr "FTP konto"
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Klient/Zmeniť heslo"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Klient/Zmeniť heslo"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Klient/Zmeniť osobné údaje"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Klient/Zmeniť osobné údaje"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
@@ -2151,8 +2162,8 @@ msgstr "\"Zachytiť všetko\" konto načasované na pridanie!"
 msgid "Mail forward list error!"
 msgstr "Chyba v zozname presmerovania!"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Client/Vytvoriť \"Zachytiť všetko\" konto"
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Client/Vytvoriť \"Zachytiť všetko\" konto"
 
 msgid "Create catch all mail account"
 msgstr "Vytvoriť \"zachytiť všetko\" konto "
@@ -2160,8 +2171,8 @@ msgstr "Vytvoriť \"zachytiť všetko\" konto "
 msgid "Mail accounts list"
 msgstr "Zoznam e-mailových kont"
 
-msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - Klient/Crontab manažér"
+msgid "ispCP - Client/Cronjob Manager"
+msgstr "ispCP - Klient/Crontab manažér"
 
 msgid "Cronjob Manager"
 msgstr "Crontab Manažér"
@@ -2236,8 +2247,8 @@ msgstr "Sub-doména načasovaná na zmazanie!"
 msgid "Mail account scheduled for modification!"
 msgstr "Mail konto načasované na zmenu!"
 
-msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Klient/Štatistiky domény"
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Klient/Štatistiky domény"
 
 msgid "Web Stats"
 msgstr "Štatistiky webu"
@@ -2254,8 +2265,8 @@ msgstr "POP/IMAP"
 msgid "Sum"
 msgstr "Spolu"
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Spravovať doménu/Zmeniť Alias"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Spravovať doménu/Zmeniť Alias"
 
 msgid "Edit domain alias"
 msgstr "Zmeniť alias domény"
@@ -2277,8 +2288,8 @@ msgstr "Zadané heslá sú rozdielne!"
 msgid "FTP account data updated!"
 msgstr "Informacie o FTP konte aktualizované!"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Klient/Editovať FTP konto"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Klient/Editovať FTP konto"
 
 msgid "Edit FTP user"
 msgstr "Editovať FTP konto"
@@ -2298,8 +2309,8 @@ msgstr "Heslo obsahuje nepovolné znaky!"
 msgid "Mail were updated successfully!"
 msgstr "E-maily boli aktualizované úspešne!"
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Spravovať E-mail a FTP / Editovať E-mailové konto"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Spravovať E-mail a FTP / Editovať E-mailové konto"
 
 msgid "Edit email account"
 msgstr "Editovať FTP konto"
@@ -2310,8 +2321,8 @@ msgstr "Prosím zadajte Vašu automatickú odpoveď e-mailom!"
 msgid "Mail account scheduler for modification!"
 msgstr "E-mailové konto načasované na aktualizáciu!"
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Klient/Zapnúť automatickú odpoveď e-mailom"
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Klient/Zapnúť automatickú odpoveď e-mailom"
 
 msgid "Edit mail auto responder"
 msgstr "Upraviť odpovedajúceho pri automatickej odpovedi e-mailom"
@@ -2328,8 +2339,8 @@ msgstr "Zoznam e-mailových kont je prázdny!"
 msgid "Enable mail auto responder"
 msgstr "Povoliť odpovedajúceho pri automatickej odpovedi e-mailom"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Klient/Spravovať vlastné chybové stránky;"
+msgid "ispCP - Client/Manage Error Custom Pages"
+msgstr "ispCP - Klient/Spravovať vlastné chybové stránky;"
 
 msgid "Server error - please choose error page"
 msgstr "Chyba servra - prosím vyberte chybovú hlášku"
@@ -2373,8 +2384,8 @@ msgstr "Rodičovský adresár"
 msgid "Protect it"
 msgstr "Ochráň to"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Klient/Web nástroje"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Klient/Web nástroje"
 
 msgid "Directory tree"
 msgstr "Strom adresárov"
@@ -2402,8 +2413,8 @@ msgstr "Prekračujete Váš limit diskového priestoru!"
 msgid "You have no new support questions!"
 msgstr "Nemáte žiadne nové podporné otázky!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Klient/Hlavný index"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Klient/Hlavný index"
 
 msgid "General information"
 msgstr "Všeobecné informácie"
@@ -2417,20 +2428,14 @@ msgstr "Hlavná doména"
 msgid "SQL support"
 msgstr "podpora SQL"
 
-msgid "Choose default language"
-msgstr "Vyberte predvolený jazyk"
-
 msgid "Traffic usage"
 msgstr "Prenesené dáta"
 
 msgid "Disk usage"
 msgstr "Využitie diskového priestoru"
 
-msgid "User language updated successfully!"
-msgstr "Jazyk užívateľa úspešne zmenený!"
-
-msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Klient/Zmeniť jazyk"
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Klient/Zmeniť jazyk"
 
 msgid "Subdomain list is empty!"
 msgstr "Zoznam sub-domén je prázdny!"
@@ -2438,8 +2443,8 @@ msgstr "Zoznam sub-domén je prázdny!"
 msgid "Alias list is empty!"
 msgstr "Zoznam aliasov je prázdny"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Klient/Spravovať domány"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Klient/Spravovať domány"
 
 msgid "Manage domains"
 msgstr "Spravovať domény"
@@ -2460,8 +2465,8 @@ msgstr "Zoznam databázovych kont je prázdny!"
 msgid "Database list is empty!"
 msgstr "Zoznam databáz je prázdny"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Klient/Spravovať SQL"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Klient/Spravovať SQL"
 
 msgid "Manage SQL"
 msgstr "Spravovať SQL"
@@ -2481,8 +2486,8 @@ msgstr "Prosím vyplňte predmet správy!"
 msgid "Your message was sent!"
 msgstr "Vaša správa bola odoslaná!"
 
-msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - Podporný systém - Nový tiket"
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Podporný systém - Nový tiket"
 
 msgid "New ticket"
 msgstr "Nový tiket"
@@ -2643,8 +2648,8 @@ msgstr "Zadané SQL užívateľské meno už existuje!"
 msgid "SQL user successfully added!"
 msgstr "SQL konto pridané úspešne!"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Klient/Pridať SQL konto"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Klient/Pridať SQL konto"
 
 msgid "SQL user name"
 msgstr "SQL užívateľské meno"
@@ -2667,8 +2672,8 @@ msgstr "Príliš dlhé heslo!"
 msgid "SQL user password was successfully changed!"
 msgstr "Heslo SQL konta úspešne zmenené!"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP- Klient/Zmeniť heslo SQL konta"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP- Klient/Zmeniť heslo SQL konta"
 
 msgid "Change SQL user password"
 msgstr "Zmeniť heslo SQL konta"
@@ -2695,8 +2700,8 @@ msgstr "Vykonať SQL príkaz"
 msgid "Execution of SQL query succeeded!"
 msgstr "Vykonať SQL príkaz"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Klient/Vykonať SQL príkaz"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Klient/Vykonať SQL príkaz"
 
 msgid "Execute SQL query"
 msgstr "Vykonať SQL príkaz"
@@ -2763,8 +2768,8 @@ msgstr "zadarmo"
 msgid "There are no available hosting plans for update"
 msgstr "Nie sú dostupné žiadne hostingové plány na update"
 
-msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Update hostingového plánu"
+msgid "ispCP - Update hosting plan"
+msgstr "ispCP - Update hostingového plánu"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Váša požiadavka na update hostingového plánu bola pridaná úspešne"
@@ -2784,7 +2789,7 @@ msgstr ""
 "Milý {RESELLER},\n"
 "Máte novú objednávku od {NAME} <{MAIL}> pre doménu {DOMAIN}\n"
 "\n"
-"Prosím prihlíste sa do ISPCP pre detialy.\n"
+"Prosím prihlíste sa do ispCP pre detialy.\n"
 "\n"
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -3192,7 +3197,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 "\n"
@@ -3200,7 +3205,7 @@ msgstr ""
 "Milý {RESELLER},\n"
 "Máte novú objednávku od {NAME} <{MAIL}> pre doménu {DOMAIN}\n"
 "\n"
-"Prosím prihlíste sa do ISPCP pre detialy.\n"
+"Prosím prihlíste sa do ispCP pre detialy.\n"
 "\n"
 
 msgid "Wrong domain name syntax!"
@@ -3272,8 +3277,8 @@ msgstr "Podpora WEBu a E-mail-u"
 msgid "Your Own Domain"
 msgstr "Vaša vlastná doména"
 
-msgid "ISPCP Control Panel"
-msgstr "ISPCP Kontrol Panel"
+msgid "ispCP Control Panel"
+msgstr "ispCP Kontrol Panel"
 
 msgid "Automatic Updates"
 msgstr "Automatické aktualizácie"
@@ -3287,23 +3292,23 @@ msgstr "Zriaďovací poplatok"
 msgid "Performance"
 msgstr "Výkon"
 
-msgid "ISPCP Reseller : Add Alias"
-msgstr "ISPCP Predajca : Pridať alias"
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP Predajca : Pridať alias"
 
 msgid "You have no user records."
 msgstr "Nemáte žiaden záznam o užívateľovi."
 
-msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Predajca/Pridať hostingový plán"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Predajca/Pridať hostingový plán"
 
-msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Predajca/Zmeniť heslo"
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Predajca/Zmeniť heslo"
 
-msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Predajca/Zmeniť osobné údaje"
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Predajca/Zmeniť osobné údaje"
 
-msgid "ISPCP - Circular"
-msgstr "ISPCP- Obežník"
+msgid "ispCP - Circular"
+msgstr "ispCP- Obežník"
 
 msgid "Circular"
 msgstr "Obežník"
@@ -3323,8 +3328,8 @@ msgstr "Doména, ktorú sa snažíte odstrániť má aliasy!<br>najprv ich odtr�
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr "Doména, ktorú sa snažíte odstrániť má sub-domény !<br>najprv ich odtráňte!"
 
-msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Spravovať doménu/alias"
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Spravovať doménu/alias"
 
 msgid "Manage alias"
 msgstr "Spravovať alias"
@@ -3356,8 +3361,8 @@ msgstr "Doménový alias nebol upravený!"
 msgid "User terminated!"
 msgstr "Užívateľ zrušený!"
 
-msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Domána/Upraviť"
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Domána/Upraviť"
 
 msgid "Edit Domain"
 msgstr "Upraviť doménu"
@@ -3410,8 +3415,8 @@ msgstr "<b>%s</b> služba nemôže byť limitovaná !<br>"
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr "Zadané číslo je menšie ako <b>%s</b> to , ktoré je v systéme!"
 
-msgid "ISPCP - Users/Edit"
-msgstr "ISPCP - Užívateľ/Upraviť"
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Užívateľ/Upraviť"
 
 msgid "Edit user"
 msgstr "Upraviť užívateľa"
@@ -3419,8 +3424,8 @@ msgstr "Upraviť užívateľa"
 msgid "Users list"
 msgstr "Zoznam užívateľov"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Predajca/Editovať hostingový plán"
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Predajca/Editovať hostingový plán"
 
 msgid "View hosting plan"
 msgstr "Zobraziť hostingový plán"
@@ -3431,11 +3436,11 @@ msgstr "Nesprávna cena!"
 msgid "Incorrect setup fee!"
 msgstr "Nesprávny zriaďovací poplatok!"
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
-msgstr "ISPCP - Predajca/Spravovať užívateľa/E-mail setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
+msgstr "ispCP - Predajca/Spravovať užívateľa/E-mail setup"
 
-msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Klient/Hlavný index"
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Klient/Hlavný index"
 
 msgid "View details"
 msgstr "Zobraziť detaily"
@@ -3457,8 +3462,12 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$s%% [%2$s of nebmedzených]"
 
-msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Predajca/Nastavenie e-mailu strateného hesla"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Klient/Zmeniť jazyk"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Predajca/Nastavenie e-mailu strateného hesla"
 
 msgid "Lostpw email"
 msgstr "Stratené heslo e-mail"
@@ -3466,8 +3475,8 @@ msgstr "Stratené heslo e-mail"
 msgid "Lostpw link"
 msgstr "Stratené heslo link"
 
-msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Predajca/Nastavenie e-mailu objednávok"
+msgid "ispCP - Reseller/Order email setup"
+msgstr "ispCP - Predajca/Nastavenie e-mailu objednávok"
 
 msgid "Manage orders"
 msgstr "Spravovať objednávky"
@@ -3481,8 +3490,8 @@ msgstr "Užívateľ pridaný!"
 msgid "Customer order was removed successful!"
 msgstr "Zákazníkova objednávka odstránená úspešne!"
 
-msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Predajca/Detaily objednávky"
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Predajca/Detaily objednávky"
 
 msgid "Order data updated successfully!"
 msgstr "Detaily objednávky úspešne aktualizované!"
@@ -3511,8 +3520,8 @@ msgstr "Ste si istý, že chcete zmazať objenávku?"
 msgid "Add to the system"
 msgstr "Pridať do systému"
 
-msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Predajca/Nastavenia objenávok"
+msgid "ispCP - Reseller/Order settings"
+msgstr "ispCP - Predajca/Nastavenia objenávok"
 
 msgid "Header"
 msgstr "Hlavička"
@@ -3523,11 +3532,15 @@ msgstr "Náhľad"
 msgid "Implementation URL"
 msgstr "Implementácia URL"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "Záhlavie"
 
-msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Predajca/Spravovať objednávky"
+msgid "ispCP - Reseller/Order management"
+msgstr "ispCP - Predajca/Spravovať objednávky"
 
 msgid "You do not have new orders!"
 msgstr "Nemáte nové objednávky!"
@@ -3547,8 +3560,8 @@ msgstr "Objednávka"
 msgid "Add/Details"
 msgstr "Pridať/Detaily"
 
-msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Užívatelia/Pridať užívateľa"
+msgid "ispCP - Users/Add user"
+msgstr "ispCP - Užívatelia/Pridať užívateľa"
 
 msgid "Choose hosting plan"
 msgstr "Vyberte hostingový plán"
@@ -3562,8 +3575,8 @@ msgstr "Ďalší krok"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr "Nemáte žiaden hostingový plán. Prosím kontaktujte Vášho administrátora"
 
-msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Užívateľ/Pridať užívateľa(krok2)"
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Užívateľ/Pridať užívateľa(krok2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximálny počet domén<br><i>(-1 zablokované, 0 neobmedzené)</i>"
@@ -3577,8 +3590,8 @@ msgstr "Apachelohy"
 msgid "Awstats"
 msgstr "Aw štatistiky"
 
-msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Užívateľ/Pridať užívateľa"
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Užívateľ/Pridať užívateľa"
 
 msgid "Add other domains to this account"
 msgstr "Pridaž ostatné domény k tomuto kontu"
@@ -3592,8 +3605,8 @@ msgstr "Systémová chyba s doménovým ID"
 msgid "This reseller has no domains yet."
 msgstr "Tento predajca nemá žiadne domény zatiaľ"
 
-msgid "ISPCP - Users"
-msgstr "ISPCP - Užívatelia"
+msgid "ispCP - Users"
+msgstr "ispCP - Užívatelia"
 
 msgid "Stats"
 msgstr "Štatistiky"
@@ -3616,11 +3629,14 @@ msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo 
 msgid "User not terminated!"
 msgstr "Užívateľ nebol zrušený!"
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Predajca : Podporný systém: Zobraziť tiket"
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "Multilingual"
+#~ msgstr "Viac-jazyčný"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Nemôžem sa pripojiť do MySQL ako administrátor!"

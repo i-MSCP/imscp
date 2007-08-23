@@ -51,7 +51,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_CLIENT_ERROR_PAGE_TITLE' => tr('ISPCP - Client/Manage Error Custom Pages'),
+                        'TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Error Custom Pages'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

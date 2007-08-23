@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Wachtwoord verloren"
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Vraag wachtwoord aan"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Administrator"
 msgstr "Beheerder"
@@ -306,8 +306,8 @@ msgstr "Resellers IPs"
 msgid "Customer ID"
 msgstr "Klant ID"
 
-msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Admin Log"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Log is empty!"
 msgstr "Log is leeg"
@@ -372,8 +372,8 @@ msgstr "ouder dan 6 maanden"
 msgid "older than 12 months"
 msgstr "ouder dan 12 maanden"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add hosting plan"
 msgstr "hostingpakket toevoegen"
@@ -474,8 +474,8 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr "hostingpakket met ingevulde naam bestaat al"
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Please fill up all data fields!"
 msgstr "Vult u A.U.B. alle velden in."
@@ -504,8 +504,8 @@ msgstr "Huidige wachtwoord"
 msgid "Personal data updated successfully!"
 msgstr "Persoonlijke gegevens succesvol gewijzigd"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Change personal data"
 msgstr "Verander persoonlijke informatie"
@@ -585,8 +585,8 @@ msgstr "Aangepast menuitem informatie succesvol gewijzigd!"
 msgid "Custom menu deleted successful!"
 msgstr "Eigen menuitem succesvol verwijderd!"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage custom menus"
 msgstr "Beheer aangepaste menus"
@@ -657,8 +657,8 @@ msgstr "Alle open support tickets succesvol verwijderd!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Alle gesloten support tickets succesvol verwijderd!"
 
-msgid "ISPCP - Domain/Details"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain/Details"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domain details"
 msgstr "Domein details"
@@ -723,8 +723,8 @@ msgstr "Ingeschakeld"
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domain statistics"
 msgstr "Domein statistieken"
@@ -756,8 +756,8 @@ msgstr "Al het verkeer"
 msgid "Day"
 msgstr "Dag"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domains"
 msgstr "Domeinen"
@@ -867,8 +867,8 @@ msgstr "Verstuur nieuwe login informatie"
 msgid "Generate password"
 msgstr "Wijzig wachtwoord"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User session was killed!"
 msgstr "Gebruikerssessie is beeindigd"
@@ -879,8 +879,8 @@ msgstr "Domein account"
 msgid "Edit admin"
 msgstr "Wijzig beheerder"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Price Style"
 msgstr ""
@@ -909,8 +909,8 @@ msgstr "Gelieve een bericht te specificeren"
 msgid "Auto email template data updated!"
 msgstr "Auto e-mail template gewijzigd!"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Email setup"
 msgstr "E-mail setup"
@@ -936,8 +936,8 @@ msgstr "Onderwerp"
 msgid "Apply changes"
 msgstr "Wijzigingen toepassen"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Hosting plans"
 msgstr "hostingpakketten"
@@ -982,20 +982,21 @@ msgstr "Bekijk"
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
-msgstr "Er is een nieuwe ISPCP update beschikbaar"
+msgid "New ispCP update is now available"
+msgstr "Er is een nieuwe ispCP update beschikbaar"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "U overschrijdt uw verkeer limiet!"
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "New IP was added!"
 msgstr "Nieuw IP is toegevoegd"
@@ -1045,8 +1046,8 @@ msgstr "Geen subdomein systeemfouten"
 msgid "No email account system errors"
 msgstr "Geen e-mailaccount systeemfouten"
 
-msgid "ISPCP debugger"
-msgstr "ISPCP Debugger"
+msgid "ispCP debugger"
+msgstr "ispCP Debugger"
 
 msgid "Domain errors"
 msgstr "Domein fouten"
@@ -1085,17 +1086,30 @@ msgstr ""
 msgid "Get it at"
 msgstr "Downloaden op"
 
-msgid "ISPCP updates"
-msgstr "ISPCP Updates"
+msgid "ispCP updates"
+msgstr "ispCP Updates"
 
-msgid "Available ISPCP updates"
-msgstr "Beschikbare ISPCP updates"
+msgid "Available ispCP updates"
+msgstr "Beschikbare ispCP updates"
 
-msgid "No new ISPCP updates available"
-msgstr "Geen nieuwe ISPCP updates beschikbaar"
+msgid "No new ispCP updates available"
+msgstr "Geen nieuwe ispCP updates beschikbaar"
 
 msgid "Update details"
 msgstr "Update informatie"
+
+msgid "User language updated successfully!"
+msgstr "Gebruikerstaal succesvol gewijzigd"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Choose default language"
+msgstr "Kies standaard taal"
 
 msgid "Upload file error!"
 msgstr "Upload bestand fout!"
@@ -1136,8 +1150,8 @@ msgstr "Kies standaard lay-out"
 msgid "Layout"
 msgstr "Lay-out"
 
-msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1157,8 +1171,8 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr "Er zijn nog geen resellers"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Reseller assignment"
 msgstr "Reseller taak"
@@ -1219,8 +1233,8 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User assignment"
 msgstr "Gebruikerstoekenning"
@@ -1237,8 +1251,8 @@ msgstr "Van reseller"
 msgid "To reseller"
 msgstr "Naar reseller"
 
-msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage user sessions"
 msgstr "Beheer gebruikerssessies"
@@ -1255,8 +1269,8 @@ msgstr "Opties"
 msgid "Kill session"
 msgstr "Beeindig sessie"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User added"
 msgstr "Gebruiker toegevoegd"
@@ -1282,7 +1296,7 @@ msgstr "Gebruiker is gedeactiveerd"
 msgid "Incorrect data input!"
 msgstr "Onjuiste gegevens invoer"
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1293,11 +1307,11 @@ msgstr "U kunt alleen tekst bestanden uploaden"
 
 #, fuzzy
 msgid "Could not read language file!"
-msgstr "Kan ISPCP taalbestand niet lezen!"
+msgstr "Kan ispCP taalbestand niet lezen!"
 
 #, fuzzy
 msgid "Uploaded file is not a valid language file!"
-msgstr "Kan ISPCP taalbestand niet lezen!"
+msgstr "Kan ispCP taalbestand niet lezen!"
 
 msgid "Uploaded file does not contain the language information!"
 msgstr ""
@@ -1319,14 +1333,11 @@ msgstr "Verwijderen"
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
 msgstr "Geinstalleerde talen"
-
-msgid "Language"
-msgstr "Taal"
 
 msgid "Messages"
 msgstr "Berichten"
@@ -1346,8 +1357,8 @@ msgstr "Installeer"
 msgid "Export"
 msgstr "Exporteren"
 
-msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Geen reseller(s) gevonden in uw systeem!"
@@ -1378,15 +1389,15 @@ msgstr "MySQL databank"
 msgid "SQL user"
 msgstr "MySQL gebruiker"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
@@ -1423,7 +1434,7 @@ msgstr "MySQL<br>databank"
 msgid "SQL<br>user"
 msgstr "MySQL<br>gebruiker"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1432,8 +1443,8 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr ""
 
-msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Server day statistics"
 msgstr "Server dag statistieken"
@@ -1480,14 +1491,14 @@ msgstr "Alles inkomend"
 msgid "All out"
 msgstr "Alles uitgaand"
 
-msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Server statistics"
 msgstr "Server statistieken"
 
-msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "UP"
 msgstr ""
@@ -1504,8 +1515,8 @@ msgstr "Dienst"
 msgid "Server status"
 msgstr ""
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Wrong data input!"
 msgstr "Verkeerde data input"
@@ -1531,7 +1542,7 @@ msgstr "Max verkeer [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Waarschuwing verkeer [MB]"
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1543,7 +1554,7 @@ msgstr "Dienstmodus"
 msgid "In this mode only administrators can login"
 msgstr "In deze modus kunnen enkel beheerders inloggen"
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1636,8 +1647,8 @@ msgstr "Hoog"
 msgid "Very high"
 msgstr "Zeer hoog"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Support tickets"
 msgstr "Ondersteuning tickets"
@@ -1663,8 +1674,8 @@ msgstr "[Nieuw]"
 msgid "[Re]"
 msgstr ""
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "From"
 msgstr "Van"
@@ -1750,8 +1761,8 @@ msgstr ""
 msgid "Close ticket"
 msgstr "Sluit ticket"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Please type your message!"
 msgstr "Gelieve uw bericht te typen"
@@ -1765,7 +1776,7 @@ msgstr "Ticket is gesloten!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1777,8 +1788,8 @@ msgstr "Verstuur bericht antwoord"
 msgid "Send reply"
 msgstr "Verstuur antwoord"
 
-msgid "ISPCP Client : Add Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Client : Add Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage domain alias"
 msgstr "Beheer domein alias"
@@ -1866,8 +1877,8 @@ msgstr "Gelieve een andere FTP account map te specificeren"
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add FTP user"
 msgstr "FTP gebruiker toevoegen"
@@ -1920,8 +1931,8 @@ msgstr "Er zijn geen verwijzingen"
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add mail users"
 msgstr "Mail gebruikers toevoegen"
@@ -1957,8 +1968,8 @@ msgstr "MySQL databank succesvol aangemaakt"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add SQL database"
 msgstr "MySQL databank toevoegen"
@@ -1993,8 +2004,8 @@ msgstr "Subdomein mount point bestaat al"
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomein gepland voor toevoeging"
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add subdomain"
 msgstr "Subdomein toevoegen"
@@ -2011,8 +2022,8 @@ msgstr "Mappenboom<br>mount point"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Backup archief gepland voor herstel"
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Backup"
 msgstr ""
@@ -2062,8 +2073,8 @@ msgstr "Geen"
 msgid "Create catch all"
 msgstr "Maak catch all"
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage users"
 msgstr "Beheer gebruikers"
@@ -2101,11 +2112,11 @@ msgstr "FTP gebruikers"
 msgid "FTP account"
 msgstr ""
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Gebruiker bestaat niet of u heeft niet voldoende rechten om deze te bekijken"
@@ -2116,8 +2127,8 @@ msgstr "Catch all account gepland voor toevoeging!"
 msgid "Mail forward list error!"
 msgstr "Mail doorsturingslijst fout!"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Create catch all mail account"
 msgstr "Maak catch all mail account"
@@ -2125,8 +2136,8 @@ msgstr "Maak catch all mail account"
 msgid "Mail accounts list"
 msgstr "Mail accounts lijst"
 
-msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Cronjob Manager"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Cronjob Manager"
 msgstr "Cronjob beheer"
@@ -2201,8 +2212,8 @@ msgstr "Subdomein gepland voor verwijdering"
 msgid "Mail account scheduled for modification!"
 msgstr "Mail account gepland voor aanpassing"
 
-msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Web Stats"
 msgstr ""
@@ -2219,8 +2230,8 @@ msgstr ""
 msgid "Sum"
 msgstr "Som"
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit domain alias"
 msgstr "Wijzig domeinalias"
@@ -2241,8 +2252,8 @@ msgstr "Ingevulde wachtwoorden verschillen!"
 msgid "FTP account data updated!"
 msgstr "FTP account data gewijzigd"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit FTP user"
 msgstr "Wijzig FTP user"
@@ -2262,8 +2273,8 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr "Mail is succesvol gewijzigd!"
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit email account"
 msgstr "Wijzig e-mail account"
@@ -2274,8 +2285,8 @@ msgstr "Gelieve uw autoantwoord bericht in te vullen"
 msgid "Mail account scheduler for modification!"
 msgstr "Mail account gepland voor aanpassing"
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit mail auto responder"
 msgstr "Wijzig automatische e-mail beantwoorder"
@@ -2292,8 +2303,8 @@ msgstr "Mail accounts lijst is leeg"
 msgid "Enable mail auto responder"
 msgstr "Mail automatisch antwoord inschakelen"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Error Custom Pages"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Server error - please choose error page"
 msgstr "Server error - kies een error pagina a.u.b."
@@ -2337,8 +2348,8 @@ msgstr "Map hoger"
 msgid "Protect it"
 msgstr "Beschermen"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Directory tree"
 msgstr "Mappenboom"
@@ -2366,8 +2377,8 @@ msgstr "U overschrijdt uw schijf limiet!"
 msgid "You have no new support questions!"
 msgstr "U hebt geen nieuwe ondersteuning vragen!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "General information"
 msgstr "Algemene informatie"
@@ -2381,20 +2392,14 @@ msgstr "Hoofddomein"
 msgid "SQL support"
 msgstr "MySQL ondersteuning"
 
-msgid "Choose default language"
-msgstr "Kies standaard taal"
-
 msgid "Traffic usage"
 msgstr "Dataverkeer gebruik"
 
 msgid "Disk usage"
 msgstr "Schijfgebruik"
 
-msgid "User language updated successfully!"
-msgstr "Gebruikerstaal succesvol gewijzigd"
-
-msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Subdomain list is empty!"
 msgstr "Er zijn geen subdomeinen"
@@ -2402,8 +2407,8 @@ msgstr "Er zijn geen subdomeinen"
 msgid "Alias list is empty!"
 msgstr "Er zijn nog geen aliassen"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage domains"
 msgstr "Beheer domeinen"
@@ -2424,8 +2429,8 @@ msgstr "Er zijn geen gebruikers voor deze database"
 msgid "Database list is empty!"
 msgstr "Er zijn geen databases"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage SQL"
 msgstr "Beheer MySQL"
@@ -2445,8 +2450,8 @@ msgstr "Gelieve een bericht onderwerp te specificeren"
 msgid "Your message was sent!"
 msgstr "Uw bericht is verzonden"
 
-msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "New ticket"
 msgstr "Nieuw ticket"
@@ -2607,8 +2612,8 @@ msgstr "gegeven MySQL gebruikersnaam bestaat al"
 msgid "SQL user successfully added!"
 msgstr "MySQL gebruiker succesvol toegevoegd"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "SQL user name"
 msgstr "MySQL gebruikersnaam"
@@ -2631,8 +2636,8 @@ msgstr "Te lang gebruikerswachtwoord!"
 msgid "SQL user password was successfully changed!"
 msgstr "MySQL gebruikerswachtwoord is succesvol verandert"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Change SQL user password"
 msgstr "Verander wachtwoord MySQL gebruiker"
@@ -2659,8 +2664,8 @@ msgstr "SQL query uitvoeren"
 msgid "Execution of SQL query succeeded!"
 msgstr "SQL query uitvoeren"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Execute SQL query"
 msgstr "SQL query uitvoeren"
@@ -2727,8 +2732,8 @@ msgstr "Gratis"
 msgid "There are no available hosting plans for update"
 msgstr "Er zijn geen hostingpakketten beschikbaar"
 
-msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Update hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Uw aanvraag voor een hostingpakket is succesvol toegevoegd"
@@ -3142,7 +3147,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3215,8 +3220,8 @@ msgstr "Web en e-mail ondersteuning"
 msgid "Your Own Domain"
 msgstr "Uw eigen domein"
 
-msgid "ISPCP Control Panel"
-msgstr "ISPCP Controle paneel"
+msgid "ispCP Control Panel"
+msgstr "ispCP Controle paneel"
 
 msgid "Automatic Updates"
 msgstr "Automatische updates"
@@ -3230,23 +3235,23 @@ msgstr "Opstartkosten"
 msgid "Performance"
 msgstr "Prestaties"
 
-msgid "ISPCP Reseller : Add Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "You have no user records."
 msgstr "U heeft geen gebruikers"
 
-msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Circular"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Circular"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Circular"
 msgstr "E-mail marketing"
@@ -3266,8 +3271,8 @@ msgstr "Het domein dat u wilt verwijderen heeft domein aliassen !<br>U dient dez
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr "Het domein dat u wilt verwijderen heeft subdomeinen!<br>U dient deze eerst te verwijderen!"
 
-msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage alias"
 msgstr "Beheer alias"
@@ -3299,8 +3304,8 @@ msgstr "Domeinalias niet aangepast"
 msgid "User terminated!"
 msgstr "Gebruiker beeindigd"
 
-msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit Domain"
 msgstr "Wijzig domein"
@@ -3353,8 +3358,8 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit user"
 msgstr "Wijzig gebruiker"
@@ -3362,8 +3367,8 @@ msgstr "Wijzig gebruiker"
 msgid "Users list"
 msgstr "Gebruikerslijst"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View hosting plan"
 msgstr "Bekijk hostingpakket"
@@ -3374,11 +3379,11 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View details"
 msgstr "Bekijk details"
@@ -3400,8 +3405,12 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Virtual Hosting Control System"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Lostpw email"
 msgstr "E-mail"
@@ -3409,8 +3418,8 @@ msgstr "E-mail"
 msgid "Lostpw link"
 msgstr "Link"
 
-msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Order email setup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage orders"
 msgstr "Beheer bestellingen"
@@ -3424,8 +3433,8 @@ msgstr "Gebruiker toegevoegd!"
 msgid "Customer order was removed successful!"
 msgstr "Klant bestelling is succesvol verwijderd"
 
-msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Order data updated successfully!"
 msgstr "Bestellingsgegevens succesvol gewijzigd"
@@ -3454,8 +3463,8 @@ msgstr "Weet u zeker dat u deze bestelling wilt verwijderen?"
 msgid "Add to the system"
 msgstr "Voeg toe aan het systeem"
 
-msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Order settings"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Header"
 msgstr "Bovenkant"
@@ -3466,11 +3475,15 @@ msgstr "Voorbeeld"
 msgid "Implementation URL"
 msgstr "Implementatie URL"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "Onderkant"
 
-msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Order management"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "You do not have new orders!"
 msgstr "U heeft geen nieuwe bestellingen"
@@ -3490,8 +3503,8 @@ msgstr "Bestelling"
 msgid "Add/Details"
 msgstr "Voeg toe/Details"
 
-msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users/Add user"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Choose hosting plan"
 msgstr "Kies hostingpakket"
@@ -3505,8 +3518,8 @@ msgstr "Volgende stap"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3520,8 +3533,8 @@ msgstr ""
 msgid "Awstats"
 msgstr "AWStats"
 
-msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add other domains to this account"
 msgstr "Andere domeinen aan dit account toevoegen"
@@ -3535,8 +3548,8 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr "Deze reseller heeft nog geen domeinen"
 
-msgid "ISPCP - Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Stats"
 msgstr ""
@@ -3559,8 +3572,8 @@ msgstr "Deze gebruiker heeft een domein!<br>Verwijder eerst dit domein van het s
 msgid "User not terminated!"
 msgstr "Gebruiker niet beeindigd"
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"

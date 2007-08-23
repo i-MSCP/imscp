@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Kennwort vergessen"
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Kennwort anfordern"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Administrator"
 msgstr ""
@@ -306,8 +306,8 @@ msgstr "Wiederverkäufer IP Adressen"
 msgid "Customer ID"
 msgstr "Kundennummer"
 
-msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - Administrator Log"
+msgid "ispCP - Admin/Admin Log"
+msgstr "ispCP - Administrator Log"
 
 msgid "Log is empty!"
 msgstr "Protokoll ist leer!"
@@ -372,8 +372,8 @@ msgstr "alles älter als 6 Monate"
 msgid "older than 12 months"
 msgstr "alles älter als 1 Jahr"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Administrator/Hosting Paket anlegen"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Hosting Paket anlegen"
 
 msgid "Add hosting plan"
 msgstr "Hosting Paket anlegen"
@@ -474,8 +474,8 @@ msgstr "Ungültige Länge oder Syntax des Speicherplatzes!"
 msgid "Hosting plan with entered name already exists!"
 msgstr "Hosting Paket ist bereits im System vorhanden!"
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Administrator Passwort ändern"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Administrator Passwort ändern"
 
 msgid "Please fill up all data fields!"
 msgstr "Bitte alle Felder ausfüllen!"
@@ -504,8 +504,8 @@ msgstr "Aktuelles Kennwort"
 msgid "Personal data updated successfully!"
 msgstr "Persönliche Daten wurden aktualisiert!"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Administrator Daten ändern"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Administrator Daten ändern"
 
 msgid "Change personal data"
 msgstr "Persönliche Daten ändern"
@@ -585,8 +585,8 @@ msgstr "Menüpunkt wurde aktualisiert!"
 msgid "Custom menu deleted successful!"
 msgstr "Menüpunkt wurde gelöscht!"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Eigene Menüs verwalten"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Eigene Menüs verwalten"
 
 msgid "Manage custom menus"
 msgstr "Individuelle Menüpunkte verwalten"
@@ -657,8 +657,8 @@ msgstr "Alle offenen Supportanfragen wurden erfolgreich gelöscht!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Alle abgeschlossenen Supportanfragen wurden erfolgreich gelöscht!"
 
-msgid "ISPCP - Domain/Details"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain/Details"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domain details"
 msgstr "Domain Detailinformationen"
@@ -723,8 +723,8 @@ msgstr "Aktiviert"
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Domain Statistiken"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Domain Statistiken"
 
 msgid "Domain statistics"
 msgstr "Domain Statistik"
@@ -756,8 +756,8 @@ msgstr "Gesamttransfer"
 msgid "Day"
 msgstr "Tag"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domains"
 msgstr ""
@@ -867,8 +867,8 @@ msgstr "Neue Zugangsdaten an den Benutzer senden"
 msgid "Generate password"
 msgstr "Passwort aktualisieren"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User session was killed!"
 msgstr "Die Sitzung für diesen Benutzer wurde erfolgreich beendet!"
@@ -879,7 +879,7 @@ msgstr "Domain Konto"
 msgid "Edit admin"
 msgstr "Administrator bearbeiten"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
+msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Price Style"
@@ -909,8 +909,8 @@ msgstr "Bitte geben Sie eine Nachricht ein!"
 msgid "Auto email template data updated!"
 msgstr "Auto E-Mail Vorlagendaten wurden erfolgreich aktualisiert!"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Email setup"
 msgstr "Willkommens eMail"
@@ -936,7 +936,7 @@ msgstr "Betreff"
 msgid "Apply changes"
 msgstr "Änderungen übernehmen"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
+msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr ""
 
 msgid "Hosting plans"
@@ -982,20 +982,21 @@ msgstr "Anzeigen"
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
-msgstr "Neues ISPCP Update ist verfügbar!"
+msgid "New ispCP update is now available"
+msgstr "Neues ispCP Update ist verfügbar!"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Sie überschreiten bereits Ihr Transfer Limit!"
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "New IP was added!"
 msgstr "IP wurde hinzugefügt"
@@ -1045,8 +1046,8 @@ msgstr "Keine fehlerhaften Subdomains im System vorhanden"
 msgid "No email account system errors"
 msgstr "Keine fehlerhafte E-Mail Konten im System vorhanden"
 
-msgid "ISPCP debugger"
-msgstr "ISPCP Debugger"
+msgid "ispCP debugger"
+msgstr "ispCP Debugger"
 
 msgid "Domain errors"
 msgstr "Fehlerhafte Domains"
@@ -1085,17 +1086,30 @@ msgstr ""
 msgid "Get it at"
 msgstr "Donwload von"
 
-msgid "ISPCP updates"
-msgstr "ISPCP Updates"
+msgid "ispCP updates"
+msgstr "ispCP Updates"
 
-msgid "Available ISPCP updates"
-msgstr "Verfügbare ISPCP Updates"
+msgid "Available ispCP updates"
+msgstr "Verfügbare ispCP Updates"
 
-msgid "No new ISPCP updates available"
-msgstr "Das ISPCP System ist auf dem neuesten Stand!"
+msgid "No new ispCP updates available"
+msgstr "Das ispCP System ist auf dem neuesten Stand!"
 
 msgid "Update details"
 msgstr "Update Informationen"
+
+msgid "User language updated successfully!"
+msgstr "Sprache wurde erfolgreich aktualisiert!"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "Language"
+msgstr "Sprache ändern"
+
+msgid "Choose default language"
+msgstr "Standard Sprache auswählen"
 
 msgid "Upload file error!"
 msgstr "Fehler beim Hochladen der Datei!"
@@ -1136,8 +1150,8 @@ msgstr "Standard Design auswählen"
 msgid "Layout"
 msgstr "Design Einstellungen"
 
-msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - Admin/Kennwort vergessen E-Mmail Einstellungen'"
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Admin/Kennwort vergessen E-Mmail Einstellungen'"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1157,8 +1171,8 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr "Es sind keine Wiederverkäufer im System vorhanden!"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Reseller assignment"
 msgstr "Wiederverkäufer zuweisen"
@@ -1219,8 +1233,8 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User assignment"
 msgstr "Kunden zuweisen"
@@ -1237,7 +1251,7 @@ msgstr "von Wiederverkäufer"
 msgid "To reseller"
 msgstr "an Wiederverkäufer"
 
-msgid "ISPCP - Admin/Manage Sessions"
+msgid "ispCP - Admin/Manage Sessions"
 msgstr ""
 
 msgid "Manage user sessions"
@@ -1255,8 +1269,8 @@ msgstr "Aktionen"
 msgid "Kill session"
 msgstr "Beenden"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User added"
 msgstr "Benutzer wurde erfolgreich angelegt!"
@@ -1282,7 +1296,7 @@ msgstr "Benutzer wurde gesperrt!"
 msgid "Incorrect data input!"
 msgstr "Falsche Dateneingabe!"
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1293,11 +1307,11 @@ msgstr "Sie können nur Textdateien hochladen!"
 
 #, fuzzy
 msgid "Could not read language file!"
-msgstr "Die ISPCP Sprachdatei kann nicht gelesen weden!"
+msgstr "Die ispCP Sprachdatei kann nicht gelesen weden!"
 
 #, fuzzy
 msgid "Uploaded file is not a valid language file!"
-msgstr "Die ISPCP Sprachdatei kann nicht gelesen weden!"
+msgstr "Die ispCP Sprachdatei kann nicht gelesen weden!"
 
 msgid "Uploaded file does not contain the language information!"
 msgstr ""
@@ -1319,14 +1333,11 @@ msgstr "Löschen"
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
 msgstr "Verfügbare Sprachen"
-
-msgid "Language"
-msgstr "Sprache ändern"
 
 msgid "Messages"
 msgstr "Anzahl der übersetzten Wörter / Sätze"
@@ -1346,8 +1357,8 @@ msgstr "Hochladen"
 msgid "Export"
 msgstr "Exportieren"
 
-msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Er wurden keine Wiederverkäufer im System gefunden!"
@@ -1378,15 +1389,15 @@ msgstr "MySQL Datenbanken"
 msgid "SQL user"
 msgstr "MySQL Benutzer"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
@@ -1423,7 +1434,7 @@ msgstr "MySQL<br>Datenbanken"
 msgid "SQL<br>user"
 msgstr "MySQL<br>Benutzer"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1432,8 +1443,8 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr ""
 
-msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Server day statistics"
 msgstr "Tägliche Serverstatistiken"
@@ -1480,14 +1491,14 @@ msgstr "Alle<br>Eingänge"
 msgid "All out"
 msgstr "Alle<br>Ausgänge"
 
-msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Server statistics"
 msgstr "Serverstatistiken"
 
-msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "UP"
 msgstr ""
@@ -1504,8 +1515,8 @@ msgstr "Dienste"
 msgid "Server status"
 msgstr "Serverstatus"
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Wrong data input!"
 msgstr "Ungültige Dateneingaben"
@@ -1531,7 +1542,7 @@ msgstr "Max. Transfer [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Transfer Warnung bei [MB]"
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1543,7 +1554,7 @@ msgstr "Wartungsmodus"
 msgid "In this mode only administrators can login"
 msgstr "In diesem Modus können sich nur Administratoren anmelden!"
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1636,8 +1647,8 @@ msgstr "Hoch"
 msgid "Very high"
 msgstr "Sehr hoch"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Support tickets"
 msgstr "Supportanfragen"
@@ -1663,8 +1674,8 @@ msgstr "[Neu]"
 msgid "[Re]"
 msgstr "[AW]"
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Kundenbereich / E-Mail Autobeantwortung einrichten"
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Kundenbereich / E-Mail Autobeantwortung einrichten"
 
 msgid "From"
 msgstr "Von"
@@ -1750,8 +1761,8 @@ msgstr "Supportanfrage öffnen"
 msgid "Close ticket"
 msgstr "Supportanfrage schließen"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Please type your message!"
 msgstr "Bitte geben Sie eine Nachricht ein!"
@@ -1765,7 +1776,7 @@ msgstr "Supportanfrage wurde abgeschloßen"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1777,7 +1788,7 @@ msgstr "Nachricht beantworten"
 msgid "Send reply"
 msgstr "Antwort senden"
 
-msgid "ISPCP Client : Add Alias"
+msgid "ispCP Client : Add Alias"
 msgstr ""
 
 msgid "Manage domain alias"
@@ -1866,8 +1877,8 @@ msgstr "Bitte geben Sie einen anderen FTP Benutzer ein!"
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add FTP user"
 msgstr "FTP Konto anlegen"
@@ -1920,8 +1931,8 @@ msgstr "Liste ist leer!"
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add mail users"
 msgstr "E-Mail Konto anlegen"
@@ -1957,8 +1968,8 @@ msgstr "MySQL Datenbank wurde erfolgreich angelegt!"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add SQL database"
 msgstr "Datenbank anlegen"
@@ -1993,8 +2004,8 @@ msgstr "Subdomain Zielverzeichnis (Mount Point) ist bereits vergeben!"
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomain wird angelegt!"
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add subdomain"
 msgstr "Subdomain anlegen"
@@ -2011,8 +2022,8 @@ msgstr "Zielverzeichnis (Mount Point)"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Datensicherung wird wiederhergestellt..."
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Backup"
 msgstr "Tägliche Sicherung"
@@ -2062,8 +2073,8 @@ msgstr "keine"
 msgid "Create catch all"
 msgstr "Catch All anlegen"
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage users"
 msgstr "Benutzer verwalten"
@@ -2101,11 +2112,11 @@ msgstr "FTP Benutzer"
 msgid "FTP account"
 msgstr "FTP Konten"
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Benutzer wurde nicht gefunden oder Sie dürfen sein Konto nicht verwalten!"
@@ -2116,8 +2127,8 @@ msgstr "Catch All wird im System eingetragen!"
 msgid "Mail forward list error!"
 msgstr "Keine E-Mail Weiterleitungen im System vorhanden!"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Create catch all mail account"
 msgstr "Catch All E-Mail anlegen"
@@ -2125,7 +2136,7 @@ msgstr "Catch All E-Mail anlegen"
 msgid "Mail accounts list"
 msgstr "E-Mail Konten"
 
-msgid "ISPCP - Client/Cronjob Manager"
+msgid "ispCP - Client/Cronjob Manager"
 msgstr ""
 
 msgid "Cronjob Manager"
@@ -2201,8 +2212,8 @@ msgstr "Subdomain wird gelöscht!"
 msgid "Mail account scheduled for modification!"
 msgstr "E-Mail Konto wird aktualisiert!"
 
-msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Web Stats"
 msgstr ""
@@ -2219,8 +2230,8 @@ msgstr "POP3 / IMAP Transfer"
 msgid "Sum"
 msgstr "Gesamttransfer"
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit domain alias"
 msgstr "Domain Alias bearbeiten"
@@ -2242,8 +2253,8 @@ msgstr "Die eingegebenen Passwörter stimmen nicht überein!"
 msgid "FTP account data updated!"
 msgstr "FTP Daten wurden aktualisiert!"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit FTP user"
 msgstr "Benutzer bearbeiten"
@@ -2263,8 +2274,8 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr "E-Mail wurde aktualisiert!"
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit email account"
 msgstr "E-Mail Konto bearbeiten"
@@ -2275,8 +2286,8 @@ msgstr "Bitte geben Sie eine Nachricht für den Autoresponder an!"
 msgid "Mail account scheduler for modification!"
 msgstr "E-Mail Konto wird aktualisiert!"
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit mail auto responder"
 msgstr "Autobeantwortung bearbeiten"
@@ -2293,7 +2304,7 @@ msgstr "Es sind keine E-Mail Benutzer im System vorhanden!"
 msgid "Enable mail auto responder"
 msgstr "Autobeantwortung aktivieren"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
+msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr ""
 
 msgid "Server error - please choose error page"
@@ -2338,8 +2349,8 @@ msgstr "Hauptverzeichnis"
 msgid "Protect it"
 msgstr "Schützen"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Directory tree"
 msgstr "Verzeichnisbaum"
@@ -2367,8 +2378,8 @@ msgstr "Sie haben Ihre Speicherplatz Begrenzung erreicht!"
 msgid "You have no new support questions!"
 msgstr "Sie haben keine neuen Supportanfragen!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "General information"
 msgstr "Allgemeine Informationen"
@@ -2382,19 +2393,13 @@ msgstr "Hauptdomain"
 msgid "SQL support"
 msgstr "MySQL Unterstützung"
 
-msgid "Choose default language"
-msgstr "Standard Sprache auswählen"
-
 msgid "Traffic usage"
 msgstr "Transferverbrauch"
 
 msgid "Disk usage"
 msgstr "Speicherplatzverbrauch"
 
-msgid "User language updated successfully!"
-msgstr "Sprache wurde erfolgreich aktualisiert!"
-
-msgid "ISPCP - Client/Change Language"
+msgid "ispCP - Client/Change Language"
 msgstr ""
 
 msgid "Subdomain list is empty!"
@@ -2403,8 +2408,8 @@ msgstr "Es sind keine Subdomains im System vorhanden!"
 msgid "Alias list is empty!"
 msgstr "Es sind keine Domain Aliase im System vorhanden!"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage domains"
 msgstr "Domains verwalten"
@@ -2425,8 +2430,8 @@ msgstr "MySQL Datenbankbenutzerliste ist leer!"
 msgid "Database list is empty!"
 msgstr "Es sind keine MySQL Datenbanken im System vorhanden!"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage SQL"
 msgstr "MySQL Datenbanken"
@@ -2446,8 +2451,8 @@ msgstr "Bitte geben Sie einen Betreff ein!"
 msgid "Your message was sent!"
 msgstr "Ihre Supportanfrage wurde erfolgreich gesendet!"
 
-msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "New ticket"
 msgstr "Neue Supportanfrage"
@@ -2608,8 +2613,8 @@ msgstr "MySQL Benutzername ist bereits vergeben!"
 msgid "SQL user successfully added!"
 msgstr "MySQL Benutzer wurde erfolgreich angelegt!"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "SQL user name"
 msgstr "MySQL Benutzername"
@@ -2632,8 +2637,8 @@ msgstr "Benutzerpasswort ist zu lang!"
 msgid "SQL user password was successfully changed!"
 msgstr "MySQL Benutzer Passwort wurde aktualisiert!"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Change SQL user password"
 msgstr "Passwort ändern"
@@ -2660,8 +2665,8 @@ msgstr "MySQL Query ausführen"
 msgid "Execution of SQL query succeeded!"
 msgstr "MySQL Query ausführen"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Execute SQL query"
 msgstr "MySQL Query ausführen"
@@ -2728,7 +2733,7 @@ msgstr "keine"
 msgid "There are no available hosting plans for update"
 msgstr "Es sind keine Hosting Pakete zum Ändern vorhanden"
 
-msgid "ISPCP - Update hosting plan"
+msgid "ispCP - Update hosting plan"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -3143,7 +3148,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3216,8 +3221,8 @@ msgstr "Web & E-Mail Service"
 msgid "Your Own Domain"
 msgstr "Ihre eigene Domain"
 
-msgid "ISPCP Control Panel"
-msgstr "ISPCP Administrationsoberfläche"
+msgid "ispCP Control Panel"
+msgstr "ispCP Administrationsoberfläche"
 
 msgid "Automatic Updates"
 msgstr "Automatische Updates"
@@ -3231,23 +3236,23 @@ msgstr "Einrichtungskosten"
 msgid "Performance"
 msgstr "Leisung"
 
-msgid "ISPCP Reseller : Add Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "You have no user records."
 msgstr "Sie haben keine Benutzereinträge."
 
-msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Circular"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Circular"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Circular"
 msgstr "Rundschreiben"
@@ -3267,8 +3272,8 @@ msgstr "Die Domain, die Sie löschen möchten hat noch Domain Aliase!<br>Bitte l
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr "Die Domain, die Sie löschen möchten hat noch Subdomains!<br>Bitte löschen Sie diese zuerst!"
 
-msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage alias"
 msgstr "Domain Aliase verwalten"
@@ -3300,8 +3305,8 @@ msgstr "Domain Alias wurde nicht</b> aktualisiert!"
 msgid "User terminated!"
 msgstr "Benutzer wurde gelöscht!"
 
-msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit Domain"
 msgstr "Domain bearbeiten"
@@ -3354,8 +3359,8 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
-msgstr "ISPCP Benutzer bearbeiten"
+msgid "ispCP - Users/Edit"
+msgstr "ispCP Benutzer bearbeiten"
 
 msgid "Edit user"
 msgstr "Benutzer bearbeiten"
@@ -3363,8 +3368,8 @@ msgstr "Benutzer bearbeiten"
 msgid "Users list"
 msgstr "Benutzerliste"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View hosting plan"
 msgstr "Hosting Paket anzeigen"
@@ -3375,11 +3380,11 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View details"
 msgstr "Details anzeigen"
@@ -3401,8 +3406,12 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
 
 msgid "Lostpw email"
 msgstr "Kennwort vergessen E-Mail Einstellungen"
@@ -3410,7 +3419,7 @@ msgstr "Kennwort vergessen E-Mail Einstellungen"
 msgid "Lostpw link"
 msgstr "Aktivierungslink"
 
-msgid "ISPCP - Reseller/Order email setup"
+msgid "ispCP - Reseller/Order email setup"
 msgstr ""
 
 msgid "Manage orders"
@@ -3425,7 +3434,7 @@ msgstr "Benutzer wurde erfolgreich angelegt!"
 msgid "Customer order was removed successful!"
 msgstr "Die Bestellung wurde erfolgreich gelöscht!"
 
-msgid "ISPCP - Reseller/Order details"
+msgid "ispCP - Reseller/Order details"
 msgstr ""
 
 msgid "Order data updated successfully!"
@@ -3455,7 +3464,7 @@ msgstr "Sind Sie sicher, dass Sie diese Bestellung löschen wollen?"
 msgid "Add to the system"
 msgstr "Hinzufügen"
 
-msgid "ISPCP - Reseller/Order settings"
+msgid "ispCP - Reseller/Order settings"
 msgstr ""
 
 msgid "Header"
@@ -3467,10 +3476,14 @@ msgstr "Voransicht"
 msgid "Implementation URL"
 msgstr " Ziel URL"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "Fußzeile"
 
-msgid "ISPCP - Reseller/Order management"
+msgid "ispCP - Reseller/Order management"
 msgstr ""
 
 msgid "You do not have new orders!"
@@ -3491,8 +3504,8 @@ msgstr "Bestellung"
 msgid "Add/Details"
 msgstr "Konto Updaten"
 
-msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users/Add user"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Choose hosting plan"
 msgstr "Hosting Paket auswählen"
@@ -3506,8 +3519,8 @@ msgstr "Nächster Schritt"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3521,8 +3534,8 @@ msgstr "Apache Logdateien"
 msgid "Awstats"
 msgstr "AWStats"
 
-msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add other domains to this account"
 msgstr "Weitere Domains diesem Konto hinzufügen"
@@ -3536,8 +3549,8 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr "Dieser Wiederverkäfer hat noch keine Domains."
 
-msgid "ISPCP - Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Stats"
 msgstr "Statistiken"
@@ -3560,8 +3573,8 @@ msgstr "Dieser Benutzer hat noch Domains!<br>Löschen Sie diese zuerst!"
 msgid "User not terminated!"
 msgstr "Benutzer wurde nicht</b> gelöscht!"
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."

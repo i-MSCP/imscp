@@ -198,7 +198,7 @@ function check_sql_permissions($sql, $user_id)
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ISPCP - Client/Add SQL Database'),
+$tpl -> assign(array('TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ispCP - Client/Add SQL Database'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'), 
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

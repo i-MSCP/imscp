@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,7 +84,7 @@ msgstr ""
 msgid "Request password"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/Add User"
+msgid "ispCP - Admin/Manage users/Add User"
 msgstr ""
 
 msgid "Administrator"
@@ -304,7 +304,7 @@ msgstr ""
 msgid "Customer ID"
 msgstr ""
 
-msgid "ISPCP - Admin/Admin Log"
+msgid "ispCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
@@ -370,7 +370,7 @@ msgstr ""
 msgid "older than 12 months"
 msgstr ""
 
-msgid "ISPCP - Administrator/Add hosting plan"
+msgid "ispCP - Administrator/Add hosting plan"
 msgstr ""
 
 msgid "Add hosting plan"
@@ -472,7 +472,7 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr ""
 
-msgid "ISPCP - Admin/Change Password"
+msgid "ispCP - Admin/Change Password"
 msgstr ""
 
 msgid "Please fill up all data fields!"
@@ -502,7 +502,7 @@ msgstr "รหัสผ่านปัจจุบัน"
 msgid "Personal data updated successfully!"
 msgstr ""
 
-msgid "ISPCP - Admin/Change Personal Data"
+msgid "ispCP - Admin/Change Personal Data"
 msgstr ""
 
 msgid "Change personal data"
@@ -583,7 +583,7 @@ msgstr ""
 msgid "Custom menu deleted successful!"
 msgstr ""
 
-msgid "ISPCP - Admin - Manage custom menus"
+msgid "ispCP - Admin - Manage custom menus"
 msgstr ""
 
 msgid "Manage custom menus"
@@ -655,7 +655,7 @@ msgstr ""
 msgid "All closed support tickets deleted successfully!"
 msgstr ""
 
-msgid "ISPCP - Domain/Details"
+msgid "ispCP - Domain/Details"
 msgstr ""
 
 msgid "Domain details"
@@ -721,7 +721,7 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-msgid "ISPCP - Domain Statistics Data"
+msgid "ispCP - Domain Statistics Data"
 msgstr ""
 
 msgid "Domain statistics"
@@ -754,7 +754,7 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
 msgid "Domains"
@@ -861,7 +861,7 @@ msgstr ""
 msgid "Generate password"
 msgstr "รหัสผ่านปัจจุบัน"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
+msgid "ispCP - Admin/Manage users/Edit User"
 msgstr ""
 
 msgid "User session was killed!"
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Edit admin"
 msgstr ""
 
-msgid "ISPCP - Administrator/Edit hosting plan"
+msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Price Style"
@@ -903,7 +903,7 @@ msgstr ""
 msgid "Auto email template data updated!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/Email setup"
+msgid "ispCP - Admin/Manage users/Email setup"
 msgstr ""
 
 msgid "Email setup"
@@ -930,7 +930,7 @@ msgstr ""
 msgid "Apply changes"
 msgstr ""
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
+msgid "ispCP - Administrator/Hosting Plan Management"
 msgstr ""
 
 msgid "Hosting plans"
@@ -976,19 +976,20 @@ msgstr ""
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
+msgid "New ispCP update is now available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
 msgstr ""
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
+msgid "ispCP - Admin/Main Index"
 msgstr ""
 
-msgid "ISPCP - Admin/IP manage"
+msgid "ispCP - Admin/IP manage"
 msgstr ""
 
 msgid "New IP was added!"
@@ -1039,7 +1040,7 @@ msgstr ""
 msgid "No email account system errors"
 msgstr ""
 
-msgid "ISPCP debugger"
+msgid "ispCP debugger"
 msgstr ""
 
 msgid "Domain errors"
@@ -1076,16 +1077,28 @@ msgstr ""
 msgid "Get it at"
 msgstr ""
 
-msgid "ISPCP updates"
+msgid "ispCP updates"
 msgstr ""
 
-msgid "Available ISPCP updates"
+msgid "Available ispCP updates"
 msgstr ""
 
-msgid "No new ISPCP updates available"
+msgid "No new ispCP updates available"
 msgstr ""
 
 msgid "Update details"
+msgstr ""
+
+msgid "User language updated successfully!"
+msgstr ""
+
+msgid "ispCP - Admin/Change Language"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Choose default language"
 msgstr ""
 
 msgid "Upload file error!"
@@ -1127,7 +1140,7 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-msgid "ISPCP - Admin/Lostpw email setup"
+msgid "ispCP - Admin/Lostpw email setup"
 msgstr ""
 
 msgid "Lost password e-mail"
@@ -1148,7 +1161,7 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
 msgstr ""
 
 msgid "Reseller assignment"
@@ -1210,7 +1223,7 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
+msgid "ispCP - Admin/Manage users/User assignment"
 msgstr ""
 
 msgid "User assignment"
@@ -1228,7 +1241,7 @@ msgstr ""
 msgid "To reseller"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage Sessions"
+msgid "ispCP - Admin/Manage Sessions"
 msgstr ""
 
 msgid "Manage user sessions"
@@ -1246,7 +1259,7 @@ msgstr ""
 msgid "Kill session"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage Users"
+msgid "ispCP - Admin/Manage Users"
 msgstr ""
 
 msgid "User added"
@@ -1273,7 +1286,7 @@ msgstr ""
 msgid "Incorrect data input!"
 msgstr ""
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1307,13 +1320,10 @@ msgstr ""
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
-msgstr ""
-
-msgid "Language"
 msgstr ""
 
 msgid "Messages"
@@ -1334,7 +1344,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-msgid "ISPCP - Reseller statistics"
+msgid "ispCP - Reseller statistics"
 msgstr ""
 
 msgid "Not found reseller(s) in your system!"
@@ -1366,15 +1376,15 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
-msgid "ISPCP - Admin/Reseller User Statistics"
+msgid "ispCP - Admin/Reseller User Statistics"
 msgstr ""
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 msgid "<b>disabled</b>"
@@ -1410,7 +1420,7 @@ msgstr ""
 msgid "SQL<br>user"
 msgstr ""
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1419,7 +1429,7 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr ""
 
-msgid "ISPCP - Admin/Server day stats"
+msgid "ispCP - Admin/Server day stats"
 msgstr ""
 
 msgid "Server day statistics"
@@ -1467,13 +1477,13 @@ msgstr ""
 msgid "All out"
 msgstr ""
 
-msgid "ISPCP - Admin/Server statistics"
+msgid "ispCP - Admin/Server statistics"
 msgstr ""
 
 msgid "Server statistics"
 msgstr ""
 
-msgid "ISPCP Admin / System Tools / Server Status"
+msgid "ispCP Admin / System Tools / Server Status"
 msgstr ""
 
 msgid "UP"
@@ -1491,7 +1501,7 @@ msgstr ""
 msgid "Server status"
 msgstr ""
 
-msgid "ISPCP - Admin/Server Traffic Settings"
+msgid "ispCP - Admin/Server Traffic Settings"
 msgstr ""
 
 msgid "Wrong data input!"
@@ -1518,7 +1528,7 @@ msgstr ""
 msgid "Warning traffic [MB]"
 msgstr ""
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1530,7 +1540,7 @@ msgstr ""
 msgid "In this mode only administrators can login"
 msgstr ""
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1623,7 +1633,7 @@ msgstr ""
 msgid "Very high"
 msgstr ""
 
-msgid "ISPCP - Client/Questions & Comments"
+msgid "ispCP - Client/Questions & Comments"
 msgstr ""
 
 msgid "Support tickets"
@@ -1650,7 +1660,7 @@ msgstr "[ใหม่]"
 msgid "[Re]"
 msgstr "[ตอบ]"
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
+msgid "ispCP - Client/Enable Mail Autoresponder"
 msgstr ""
 
 msgid "From"
@@ -1737,7 +1747,7 @@ msgstr ""
 msgid "Close ticket"
 msgstr ""
 
-msgid "ISPCP - Client : Support System: View Tickets"
+msgid "ispCP - Client : Support System: View Tickets"
 msgstr ""
 
 msgid "Please type your message!"
@@ -1752,7 +1762,7 @@ msgstr ""
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1764,7 +1774,7 @@ msgstr ""
 msgid "Send reply"
 msgstr ""
 
-msgid "ISPCP Client : Add Alias"
+msgid "ispCP Client : Add Alias"
 msgstr ""
 
 msgid "Manage domain alias"
@@ -1852,7 +1862,7 @@ msgstr ""
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
+msgid "ispCP - Client/Add FTP User"
 msgstr ""
 
 msgid "Add FTP user"
@@ -1906,7 +1916,7 @@ msgstr ""
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
+msgid "ispCP - Client/Add Mail User"
 msgstr ""
 
 msgid "Add mail users"
@@ -1943,7 +1953,7 @@ msgstr ""
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
+msgid "ispCP - Client/Add SQL Database"
 msgstr ""
 
 msgid "Add SQL database"
@@ -1979,7 +1989,7 @@ msgstr ""
 msgid "Subdomain scheduled for addition!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Subdomain"
+msgid "ispCP - Client/Add Subdomain"
 msgstr ""
 
 msgid "Add subdomain"
@@ -1997,7 +2007,7 @@ msgstr ""
 msgid "Backup archive scheduled for restoring!"
 msgstr ""
 
-msgid "ISPCP - Client/Daily Backup"
+msgid "ispCP - Client/Daily Backup"
 msgstr ""
 
 msgid "Backup"
@@ -2048,7 +2058,7 @@ msgstr ""
 msgid "Create catch all"
 msgstr "สร้าง catch all"
 
-msgid "ISPCP - Client/Manage Users"
+msgid "ispCP - Client/Manage Users"
 msgstr ""
 
 msgid "Manage users"
@@ -2087,10 +2097,10 @@ msgstr ""
 msgid "FTP account"
 msgstr ""
 
-msgid "ISPCP - Client/Change Password"
+msgid "ispCP - Client/Change Password"
 msgstr ""
 
-msgid "ISPCP - Client/Change Personal Data"
+msgid "ispCP - Client/Change Personal Data"
 msgstr ""
 
 msgid "User does not exist or you do not have permission to access this interface!"
@@ -2102,7 +2112,7 @@ msgstr ""
 msgid "Mail forward list error!"
 msgstr ""
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
+msgid "ispCP - Client/Create CatchAll Mail Account"
 msgstr ""
 
 msgid "Create catch all mail account"
@@ -2111,7 +2121,7 @@ msgstr "สร้างบัญชีเมล์ catch all"
 msgid "Mail accounts list"
 msgstr ""
 
-msgid "ISPCP - Client/Cronjob Manager"
+msgid "ispCP - Client/Cronjob Manager"
 msgstr ""
 
 msgid "Cronjob Manager"
@@ -2186,7 +2196,7 @@ msgstr ""
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
-msgid "ISPCP - Client/Domain Statistics"
+msgid "ispCP - Client/Domain Statistics"
 msgstr ""
 
 msgid "Web Stats"
@@ -2204,7 +2214,7 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
 msgstr ""
 
 msgid "Edit domain alias"
@@ -2225,7 +2235,7 @@ msgstr ""
 msgid "FTP account data updated!"
 msgstr ""
 
-msgid "ISPCP - Client/Edit FTP Account"
+msgid "ispCP - Client/Edit FTP Account"
 msgstr ""
 
 msgid "Edit FTP user"
@@ -2246,7 +2256,7 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr ""
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
 msgstr ""
 
 msgid "Edit email account"
@@ -2258,7 +2268,7 @@ msgstr ""
 msgid "Mail account scheduler for modification!"
 msgstr ""
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
+msgid "ispCP - Client/Enable Mail Auto Responder"
 msgstr ""
 
 msgid "Edit mail auto responder"
@@ -2276,7 +2286,7 @@ msgstr ""
 msgid "Enable mail auto responder"
 msgstr ""
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
+msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr ""
 
 msgid "Server error - please choose error page"
@@ -2321,7 +2331,7 @@ msgstr ""
 msgid "Protect it"
 msgstr ""
 
-msgid "ISPCP - Client/Webtools"
+msgid "ispCP - Client/Webtools"
 msgstr ""
 
 msgid "Directory tree"
@@ -2350,7 +2360,7 @@ msgstr ""
 msgid "You have no new support questions!"
 msgstr ""
 
-msgid "ISPCP - Client/Main Index"
+msgid "ispCP - Client/Main Index"
 msgstr ""
 
 msgid "General information"
@@ -2365,19 +2375,13 @@ msgstr ""
 msgid "SQL support"
 msgstr ""
 
-msgid "Choose default language"
-msgstr ""
-
 msgid "Traffic usage"
 msgstr ""
 
 msgid "Disk usage"
 msgstr ""
 
-msgid "User language updated successfully!"
-msgstr ""
-
-msgid "ISPCP - Client/Change Language"
+msgid "ispCP - Client/Change Language"
 msgstr ""
 
 msgid "Subdomain list is empty!"
@@ -2386,7 +2390,7 @@ msgstr ""
 msgid "Alias list is empty!"
 msgstr "รายการ Alias ว่างเปล่า!"
 
-msgid "ISPCP - Client/Manage Domains"
+msgid "ispCP - Client/Manage Domains"
 msgstr ""
 
 msgid "Manage domains"
@@ -2407,7 +2411,7 @@ msgstr ""
 msgid "Database list is empty!"
 msgstr ""
 
-msgid "ISPCP - Client/Manage SQL"
+msgid "ispCP - Client/Manage SQL"
 msgstr ""
 
 msgid "Manage SQL"
@@ -2428,7 +2432,7 @@ msgstr ""
 msgid "Your message was sent!"
 msgstr "ข้อความของคุณได้ส่งเรียบร้อยแล้ว"
 
-msgid "ISPCP - Support system - New ticket"
+msgid "ispCP - Support system - New ticket"
 msgstr ""
 
 msgid "New ticket"
@@ -2588,7 +2592,7 @@ msgstr ""
 msgid "SQL user successfully added!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL User"
+msgid "ispCP - Client/Add SQL User"
 msgstr ""
 
 msgid "SQL user name"
@@ -2612,7 +2616,7 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr ""
 
-msgid "ISPCP - Client/Change SQL User Password"
+msgid "ispCP - Client/Change SQL User Password"
 msgstr ""
 
 msgid "Change SQL user password"
@@ -2637,7 +2641,7 @@ msgstr ""
 msgid "Execution of SQL query succeeded!"
 msgstr ""
 
-msgid "ISPCP - Client/Execute SQL Query"
+msgid "ispCP - Client/Execute SQL Query"
 msgstr ""
 
 msgid "Execute SQL query"
@@ -2703,7 +2707,7 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr ""
 
-msgid "ISPCP - Update hosting plan"
+msgid "ispCP - Update hosting plan"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -3115,7 +3119,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3188,7 +3192,7 @@ msgstr ""
 msgid "Your Own Domain"
 msgstr ""
 
-msgid "ISPCP Control Panel"
+msgid "ispCP Control Panel"
 msgstr ""
 
 msgid "Automatic Updates"
@@ -3203,22 +3207,22 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
-msgid "ISPCP Reseller : Add Alias"
+msgid "ispCP Reseller : Add Alias"
 msgstr ""
 
 msgid "You have no user records."
 msgstr ""
 
-msgid "ISPCP - Reseller/Add hosting plan"
+msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
-msgid "ISPCP - Reseller/Change Password"
+msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
-msgid "ISPCP - Reseller/Change Personal Data"
+msgid "ispCP - Reseller/Change Personal Data"
 msgstr ""
 
-msgid "ISPCP - Circular"
+msgid "ispCP - Circular"
 msgstr ""
 
 msgid "Circular"
@@ -3239,7 +3243,7 @@ msgstr ""
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr ""
 
-msgid "ISPCP - Manage Domain/Alias"
+msgid "ispCP - Manage Domain/Alias"
 msgstr ""
 
 msgid "Manage alias"
@@ -3272,7 +3276,7 @@ msgstr ""
 msgid "User terminated!"
 msgstr ""
 
-msgid "ISPCP - Domain/Edit"
+msgid "ispCP - Domain/Edit"
 msgstr ""
 
 msgid "Edit Domain"
@@ -3326,7 +3330,7 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
+msgid "ispCP - Users/Edit"
 msgstr ""
 
 msgid "Edit user"
@@ -3335,7 +3339,7 @@ msgstr ""
 msgid "Users list"
 msgstr ""
 
-msgid "ISPCP - Reseller/Edit hosting plan"
+msgid "ispCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
@@ -3347,10 +3351,10 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
+msgid "ispCP - Reseller/Main Index"
 msgstr ""
 
 msgid "View details"
@@ -3373,7 +3377,10 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
+msgid "ispCP - Reseller/Change Language"
+msgstr ""
+
+msgid "ispCP - Reseller/Lostpw email setup"
 msgstr ""
 
 msgid "Lostpw email"
@@ -3382,7 +3389,7 @@ msgstr ""
 msgid "Lostpw link"
 msgstr ""
 
-msgid "ISPCP - Reseller/Order email setup"
+msgid "ispCP - Reseller/Order email setup"
 msgstr ""
 
 msgid "Manage orders"
@@ -3397,7 +3404,7 @@ msgstr ""
 msgid "Customer order was removed successful!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Order details"
+msgid "ispCP - Reseller/Order details"
 msgstr ""
 
 msgid "Order data updated successfully!"
@@ -3427,7 +3434,7 @@ msgstr "คุณแน่ใจที่จะต้องการลบกา
 msgid "Add to the system"
 msgstr "เพิ่มไปยังระบบ"
 
-msgid "ISPCP - Reseller/Order settings"
+msgid "ispCP - Reseller/Order settings"
 msgstr ""
 
 msgid "Header"
@@ -3439,10 +3446,14 @@ msgstr ""
 msgid "Implementation URL"
 msgstr ""
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr ""
 
-msgid "ISPCP - Reseller/Order management"
+msgid "ispCP - Reseller/Order management"
 msgstr ""
 
 msgid "You do not have new orders!"
@@ -3463,7 +3474,7 @@ msgstr ""
 msgid "Add/Details"
 msgstr "เพิ่ม/รายละเอียด"
 
-msgid "ISPCP - Users/Add user"
+msgid "ispCP - Users/Add user"
 msgstr ""
 
 msgid "Choose hosting plan"
@@ -3478,7 +3489,7 @@ msgstr ""
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
+msgid "ispCP - User/Add user(step2)"
 msgstr ""
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -3493,7 +3504,7 @@ msgstr "บันทึก Apache"
 msgid "Awstats"
 msgstr ""
 
-msgid "ISPCP - User/Add user"
+msgid "ispCP - User/Add user"
 msgstr ""
 
 msgid "Add other domains to this account"
@@ -3508,7 +3519,7 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr ""
 
-msgid "ISPCP - Users"
+msgid "ispCP - Users"
 msgstr ""
 
 msgid "Stats"
@@ -3532,7 +3543,7 @@ msgstr ""
 msgid "User not terminated!"
 msgstr ""
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller : Support System: View Tickets"
 msgstr ""
 
 msgid "Message was sent."

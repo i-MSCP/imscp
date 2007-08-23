@@ -241,7 +241,7 @@ SQL_QUERY;
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ISPCP - Manage Mail and FTP / Edit mail account'),
+$tpl -> assign(array('TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'), 
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

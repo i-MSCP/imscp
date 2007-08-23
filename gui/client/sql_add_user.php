@@ -373,7 +373,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no")
 }
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
-$tpl -> assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ISPCP - Client/Add SQL User'),
+$tpl -> assign(array('TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ispCP - Client/Add SQL User'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

@@ -81,7 +81,7 @@ gen_def_language($tpl, $sql, $user_def_lang);
 
 $tpl -> assign(
                 array(
-                        'TR_CLIENT_LANGUAGE_TITLE' => tr('ISPCP - Client/Change Language'),
+                        'TR_CLIENT_LANGUAGE_TITLE' => tr('ispCP - Client/Change Language'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'), 
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

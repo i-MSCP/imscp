@@ -60,7 +60,7 @@ check_permissions($tpl);
 
 $tpl -> assign(
                 array(
-						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ISPCP Client : Add Alias'),
+						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Client : Add Alias'),
 						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 						'TR_ADD_ALIAS' => tr('Add domain alias'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Zapomniane hasło"
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Przypomnienie hasła"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Dodaj użytkownika"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Dodaj użytkownika"
 
 msgid "Administrator"
 msgstr ""
@@ -306,7 +306,7 @@ msgstr "Numery IP resellera"
 msgid "Customer ID"
 msgstr "ID Użytkownika"
 
-msgid "ISPCP - Admin/Admin Log"
+msgid "ispCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
@@ -372,8 +372,8 @@ msgstr "starsze niż 6 miesięcy"
 msgid "older than 12 months"
 msgstr "starsze niż 12 miesięcy"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Administrator/Dodaj plan hostingowy"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Dodaj plan hostingowy"
 
 msgid "Add hosting plan"
 msgstr "Dodaj plan hostingowy"
@@ -474,8 +474,8 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr "Plan hostingowy z podaną nazwą już istnieje!"
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Admin/Zmiana hasła"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Admin/Zmiana hasła"
 
 msgid "Please fill up all data fields!"
 msgstr "Wypełnij wszystkie pola!"
@@ -504,8 +504,8 @@ msgstr "Obecne hasło"
 msgid "Personal data updated successfully!"
 msgstr "Dane osobowe zostały zaktualizowane!"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Admin/Zmiana Danych Osobowych"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Admin/Zmiana Danych Osobowych"
 
 msgid "Change personal data"
 msgstr "Zmień dane osobowe"
@@ -585,8 +585,8 @@ msgstr "Spersonalizowane dane menu zostały zaktualizowane!"
 msgid "Custom menu deleted successful!"
 msgstr "Spersonalizowane menu zostało usunięte!"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Admin - Zarządzaj menu spersonalizowanymi"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Admin - Zarządzaj menu spersonalizowanymi"
 
 msgid "Manage custom menus"
 msgstr "Zarządzaj spersonalizowanymi menu"
@@ -657,8 +657,8 @@ msgstr "Wszystkie otwarte bilety wsparcia usunięte!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Wszystkie zamknięte bilety usunięte pomyślnie!"
 
-msgid "ISPCP - Domain/Details"
-msgstr "ISPCP - Domena/Szczegóły"
+msgid "ispCP - Domain/Details"
+msgstr "ispCP - Domena/Szczegóły"
 
 msgid "Domain details"
 msgstr "Szczególy domeny"
@@ -723,8 +723,8 @@ msgstr "Włączone"
 msgid "Disabled"
 msgstr "Wyłączone"
 
-msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Dane Statystyczne Domeny"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Dane Statystyczne Domeny"
 
 msgid "Domain statistics"
 msgstr "Statystyki domeny"
@@ -756,8 +756,8 @@ msgstr "Cały transfer"
 msgid "Day"
 msgstr "Dzień"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Edytuj Resselera"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Edytuj Resselera"
 
 msgid "Domains"
 msgstr "Domeny"
@@ -867,8 +867,8 @@ msgstr "Wyślij nowe dane logowania"
 msgid "Generate password"
 msgstr "Aktualizuj hasło"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Edytuj użytkownika"
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Edytuj użytkownika"
 
 msgid "User session was killed!"
 msgstr "Sesja użytkownika została zabita!"
@@ -879,8 +879,8 @@ msgstr "Konto domeny"
 msgid "Edit admin"
 msgstr "Edytuj administratora"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Administrator/Edytuj plan hostingowy"
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - Administrator/Edytuj plan hostingowy"
 
 msgid "Price Style"
 msgstr ""
@@ -909,8 +909,8 @@ msgstr "Wpisz wiadomość!"
 msgid "Auto email template data updated!"
 msgstr " Szablon auto poczty zaktualizowany!"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Ustaw pocztę"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Ustaw pocztę"
 
 msgid "Email setup"
 msgstr "Ustawienia poczty"
@@ -936,8 +936,8 @@ msgstr "Temat"
 msgid "Apply changes"
 msgstr "Zatwierdź zmiany"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Administrator/Zarządzaj planem hostingowym"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrator/Zarządzaj planem hostingowym"
 
 msgid "Hosting plans"
 msgstr "Plany hostingowe"
@@ -982,20 +982,21 @@ msgstr "Przeglądaj"
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
+msgid "New ispCP update is now available"
 msgstr "Jest dostępna nowa aktualizacja VHSC!"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Przekraczasz limit transferu!"
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Admin/Indeks główny"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Admin/Indeks główny"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Admin/Zarządzaj IP"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Admin/Zarządzaj IP"
 
 msgid "New IP was added!"
 msgstr "Nowy numer IP dodany!"
@@ -1045,7 +1046,7 @@ msgstr "Brak błędów systemowych subdomen"
 msgid "No email account system errors"
 msgstr "Brak błedów systemowych poczty"
 
-msgid "ISPCP debugger"
+msgid "ispCP debugger"
 msgstr ""
 
 msgid "Domain errors"
@@ -1085,17 +1086,30 @@ msgstr ""
 msgid "Get it at"
 msgstr "Pobierz na"
 
-msgid "ISPCP updates"
-msgstr "ISPCP uaktualnienia"
+msgid "ispCP updates"
+msgstr "ispCP uaktualnienia"
 
-msgid "Available ISPCP updates"
-msgstr "Dostępne uaktualnienia ISPCP"
+msgid "Available ispCP updates"
+msgstr "Dostępne uaktualnienia ispCP"
 
-msgid "No new ISPCP updates available"
-msgstr "Brak uaktualnień ISPCP"
+msgid "No new ispCP updates available"
+msgstr "Brak uaktualnień ispCP"
 
 msgid "Update details"
 msgstr "Aktualizuj szczegóły"
+
+msgid "User language updated successfully!"
+msgstr "Język użytkownika został zaktualizowany!"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Klient/Zmień Język"
+
+msgid "Language"
+msgstr "Język"
+
+msgid "Choose default language"
+msgstr "Wybierz domyślny język"
 
 msgid "Upload file error!"
 msgstr "Błąd ładowania pliku!"
@@ -1136,8 +1150,8 @@ msgstr "Wybierz domyślny szablon"
 msgid "Layout"
 msgstr "Szablon"
 
-msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - ustawienia Admin/Zgub.hasło ustawienia poczty"
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - ustawienia Admin/Zgub.hasło ustawienia poczty"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1157,8 +1171,8 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr "Lista resellera jest pusta!"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Przypisanie resellera"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Przypisanie resellera"
 
 msgid "Reseller assignment"
 msgstr "Przypisanie resellera"
@@ -1219,8 +1233,8 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami/Przypisanie użytkownika"
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami/Przypisanie użytkownika"
 
 msgid "User assignment"
 msgstr "Przypisanie użytkownika"
@@ -1237,8 +1251,8 @@ msgstr "Od resellera"
 msgid "To reseller"
 msgstr "Do resellera"
 
-msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - Admin/Zarządzaj Sesjami"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Admin/Zarządzaj Sesjami"
 
 msgid "Manage user sessions"
 msgstr "Zarządzaj sesjami użytkownika"
@@ -1255,8 +1269,8 @@ msgstr "Opcje"
 msgid "Kill session"
 msgstr "Zabij sesję"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Admin/Zarządzaj użytkownikami"
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Admin/Zarządzaj użytkownikami"
 
 msgid "User added"
 msgstr "Użytkownik dodany"
@@ -1282,7 +1296,7 @@ msgstr "Użytkownik został wyłączony"
 msgid "Incorrect data input!"
 msgstr "Nieprawidłowe dane!"
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1319,14 +1333,11 @@ msgstr "odinstaluj"
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
 msgstr "Zainstalowane języki"
-
-msgid "Language"
-msgstr "Język"
 
 msgid "Messages"
 msgstr "Wiadomości"
@@ -1346,8 +1357,8 @@ msgstr "Instaluj"
 msgid "Export"
 msgstr "Eksportuj"
 
-msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Reseller statystyki"
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Reseller statystyki"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Nie znaleziono resellera w systemie!"
@@ -1378,15 +1389,15 @@ msgstr "baza danych SQL"
 msgid "SQL user"
 msgstr "Użytkownik SQL"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Admin/Statystyki resellera"
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Admin/Statystyki resellera"
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
@@ -1423,7 +1434,7 @@ msgstr "SQL<br>baza danych"
 msgid "SQL<br>user"
 msgstr "SQL<br>użytkownik"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1432,8 +1443,8 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr ""
 
-msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Admin/Dzienne statystykii serwera"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Dzienne statystykii serwera"
 
 msgid "Server day statistics"
 msgstr "Dzienne statystyki serwera"
@@ -1480,14 +1491,14 @@ msgstr "Wszystkie w"
 msgid "All out"
 msgstr "Wszystkie zewnętrzne"
 
-msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP - Admin/Statystyki serwera"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Statystyki serwera"
 
 msgid "Server statistics"
 msgstr "Statystyki serwera"
 
-msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "ISPCP Admin / Narzędzia systemowe / Status Serwera"
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "ispCP Admin / Narzędzia systemowe / Status Serwera"
 
 msgid "UP"
 msgstr ""
@@ -1504,8 +1515,8 @@ msgstr "Usługa"
 msgid "Server status"
 msgstr "Status serwera"
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP - Admin/Ustawienie transferu serwera"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - Admin/Ustawienie transferu serwera"
 
 msgid "Wrong data input!"
 msgstr "Niepoprawne dane!"
@@ -1531,7 +1542,7 @@ msgstr "Maksymalny transfer [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Transfer ostrzegawczy [MB]"
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1543,7 +1554,7 @@ msgstr "Tryb serwisowy"
 msgid "In this mode only administrators can login"
 msgstr "W tym trybie tylko administratorzy mogą się zalogować"
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1636,8 +1647,8 @@ msgstr "Wysoki"
 msgid "Very high"
 msgstr "Bardzo wysoki"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Klient/Pytania i Komentarze"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Klient/Pytania i Komentarze"
 
 msgid "Support tickets"
 msgstr "Bilety wsparcia"
@@ -1663,8 +1674,8 @@ msgstr "[Nowy]"
 msgid "[Re]"
 msgstr ""
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Klient/Włącz Funkcję Autoodpowiedzi w Poczcie"
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Klient/Włącz Funkcję Autoodpowiedzi w Poczcie"
 
 msgid "From"
 msgstr "Od"
@@ -1750,8 +1761,8 @@ msgstr "Otwórz bilet"
 msgid "Close ticket"
 msgstr "Zamknij bilet"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Klient : System Wsparcia: Przeglądaj Bilety"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Klient : System Wsparcia: Przeglądaj Bilety"
 
 msgid "Please type your message!"
 msgstr "Wpisz wiadomość!"
@@ -1765,7 +1776,7 @@ msgstr "Bilety zostały zamknięte!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1777,8 +1788,8 @@ msgstr "Wyślij odpowiedź"
 msgid "Send reply"
 msgstr "Wyślij odpowiedź"
 
-msgid "ISPCP Client : Add Alias"
-msgstr "ISPCP Klient : Dodaj Alias"
+msgid "ispCP Client : Add Alias"
+msgstr "ispCP Klient : Dodaj Alias"
 
 msgid "Manage domain alias"
 msgstr "Zarządzaj domenami aliasu"
@@ -1866,8 +1877,8 @@ msgstr "Podaj inny katalog konta FTP!"
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Klient/Dodaj Użytkownika FTP"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Klient/Dodaj Użytkownika FTP"
 
 msgid "Add FTP user"
 msgstr "Dodaj użytkownika FTP"
@@ -1920,8 +1931,8 @@ msgstr "Lista przekierowań jest pusta!"
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Klient/Dodaj Użytkownika Poczty"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Klient/Dodaj Użytkownika Poczty"
 
 msgid "Add mail users"
 msgstr "Dodaj użytkowników poczty"
@@ -1957,8 +1968,8 @@ msgstr "Baza danych SQL została utworzona!"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Klient/Dodaj Bazę SQL"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Klient/Dodaj Bazę SQL"
 
 msgid "Add SQL database"
 msgstr "Dodaj bazę SQL"
@@ -1993,8 +2004,8 @@ msgstr "Punkt montowania subdomeny już istnieje!"
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomena została przeznaczona do dodania!"
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Klient/Dodaj subdomenę"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Klient/Dodaj subdomenę"
 
 msgid "Add subdomain"
 msgstr "Dodaj subdomenę"
@@ -2011,8 +2022,8 @@ msgstr "Drzewo katalogu<br>punkt montowania"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Kopia zapasowa ustawiona do przywrócenia!"
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Klient/Dzienna Kopia Zapasowa"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Klient/Dzienna Kopia Zapasowa"
 
 msgid "Backup"
 msgstr "Kopia zapasowa"
@@ -2062,8 +2073,8 @@ msgstr "Brak"
 msgid "Create catch all"
 msgstr "Stwórz przechwycenie wszystkiego"
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Klient/Zarządzaj Użytkownikami"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Klient/Zarządzaj Użytkownikami"
 
 msgid "Manage users"
 msgstr "Zarządzaj użytkownikami"
@@ -2101,11 +2112,11 @@ msgstr "Użytkownicy FTP"
 msgid "FTP account"
 msgstr "Konto FTP"
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Klient/Zmień Hasło"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Klient/Zmień Hasło"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Klient/Zmień Dane Osobowe"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Klient/Zmień Dane Osobowe"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Użytkownik nie istnieje lub nie masz dostępu do tego interfejsu!"
@@ -2116,8 +2127,8 @@ msgstr "Przechwytywanie wszystkich kont zostało przeznaczone do utworzenia!"
 msgid "Mail forward list error!"
 msgstr "Błąd listy przekierowań pocztowych!"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Klient/Utwórz Konto Poczty PrzechwyćWszystkie"
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Klient/Utwórz Konto Poczty PrzechwyćWszystkie"
 
 msgid "Create catch all mail account"
 msgstr "Stwórz przechwycenie wszystkich kont pocztowych"
@@ -2125,8 +2136,8 @@ msgstr "Stwórz przechwycenie wszystkich kont pocztowych"
 msgid "Mail accounts list"
 msgstr "Lista kont pocztowych"
 
-msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP -Klient/Menadżer zadań Cron'a"
+msgid "ispCP - Client/Cronjob Manager"
+msgstr "ispCP -Klient/Menadżer zadań Cron'a"
 
 msgid "Cronjob Manager"
 msgstr "Menadżer zadań Cron'a"
@@ -2201,8 +2212,8 @@ msgstr "Subdomena została przeznaczona do usunięcia!"
 msgid "Mail account scheduled for modification!"
 msgstr "Konto pocztowe zostało przeznaczone do modyfikacji!"
 
-msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Klient/Statystyki Domeny"
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Klient/Statystyki Domeny"
 
 msgid "Web Stats"
 msgstr ""
@@ -2219,8 +2230,8 @@ msgstr ""
 msgid "Sum"
 msgstr "Suma"
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Zarządzaj Aliasem Domeny/Edytuj Alias"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Zarządzaj Aliasem Domeny/Edytuj Alias"
 
 msgid "Edit domain alias"
 msgstr "Edytuj alias domeny"
@@ -2242,8 +2253,8 @@ msgstr "Wprowadzone hasła różnią się!"
 msgid "FTP account data updated!"
 msgstr "Dane konta FTP zostało zaktualizowane!"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Klient/Edytuj Konto FTP"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Klient/Edytuj Konto FTP"
 
 msgid "Edit FTP user"
 msgstr "Edytuj użytkownika FTP"
@@ -2263,8 +2274,8 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr "Poczta została uaktualniona!"
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Zarządzaj Pocztą i FTP / Edytuj konto pocztowe"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Zarządzaj Pocztą i FTP / Edytuj konto pocztowe"
 
 msgid "Edit email account"
 msgstr "Edytuj konto pocztowe"
@@ -2275,8 +2286,8 @@ msgstr "Wipisz wiadomość do autoodpowiedzi!"
 msgid "Mail account scheduler for modification!"
 msgstr "Konto pocztowe zostało przeznaczone do modyfikacji!"
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Klient/Włącz Funkcję Autoodpowiedzi w Poczcie"
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Klient/Włącz Funkcję Autoodpowiedzi w Poczcie"
 
 msgid "Edit mail auto responder"
 msgstr "Edytuj auto odpowiedź pocztową"
@@ -2293,8 +2304,8 @@ msgstr "Lista kont pocztowych jest pusta"
 msgid "Enable mail auto responder"
 msgstr "Włącz automatyczne odpowiedzi na pocztę"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - Klient/Zarządzaj własnymi stronami błędów"
+msgid "ispCP - Client/Manage Error Custom Pages"
+msgstr "ispCP - Klient/Zarządzaj własnymi stronami błędów"
 
 msgid "Server error - please choose error page"
 msgstr "Błąd serwera - wybierz stronę błędu"
@@ -2338,8 +2349,8 @@ msgstr "Poprzedni Katalog"
 msgid "Protect it"
 msgstr "Chroń"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Klient/Narzedzia sieciowe"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Klient/Narzedzia sieciowe"
 
 msgid "Directory tree"
 msgstr "Drzewo katalogu"
@@ -2367,8 +2378,8 @@ msgstr "Przekraczasz limit dyskowy!"
 msgid "You have no new support questions!"
 msgstr "Nie masz żadnych nowych pytań o wsparcie!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Klient/Indeks Główny"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Klient/Indeks Główny"
 
 msgid "General information"
 msgstr "Ogólne informacje"
@@ -2382,20 +2393,14 @@ msgstr "Domena poczty"
 msgid "SQL support"
 msgstr "Obsługa SQL"
 
-msgid "Choose default language"
-msgstr "Wybierz domyślny język"
-
 msgid "Traffic usage"
 msgstr "Wykorzystanie transferu"
 
 msgid "Disk usage"
 msgstr "Wykorzystanie dysku"
 
-msgid "User language updated successfully!"
-msgstr "Język użytkownika został zaktualizowany!"
-
-msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - Klient/Zmień Język"
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - Klient/Zmień Język"
 
 msgid "Subdomain list is empty!"
 msgstr "Lista subdomen jest pusta!"
@@ -2403,8 +2408,8 @@ msgstr "Lista subdomen jest pusta!"
 msgid "Alias list is empty!"
 msgstr "Lista aliasów jest pusta!"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Klient/Zarządzaj Domenami"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Klient/Zarządzaj Domenami"
 
 msgid "Manage domains"
 msgstr "Zarządzaj domenami"
@@ -2425,8 +2430,8 @@ msgstr "Lista użytkowników baz danych jest pusta!"
 msgid "Database list is empty!"
 msgstr "Lista baz danych jest pusta!"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Klient/Zarządzaj SQL"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Klient/Zarządzaj SQL"
 
 msgid "Manage SQL"
 msgstr "Zarządzaj bazami SQL"
@@ -2446,8 +2451,8 @@ msgstr "Podaj temat wiadomości!"
 msgid "Your message was sent!"
 msgstr "Twoja wiadomość została wysłana!"
 
-msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - System Wsparcia - Nowy Bilet"
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - System Wsparcia - Nowy Bilet"
 
 msgid "New ticket"
 msgstr "Nowy bilet"
@@ -2608,8 +2613,8 @@ msgstr "Podana nazwa użytkownika SQL już istnieje!"
 msgid "SQL user successfully added!"
 msgstr "Użytkownik SQL został dodany!"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Klient/Dodaj Użytkownika SQL"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Klient/Dodaj Użytkownika SQL"
 
 msgid "SQL user name"
 msgstr "Nazwa użytkownika SQL"
@@ -2632,8 +2637,8 @@ msgstr "Hasło użytkownika jest za długie!"
 msgid "SQL user password was successfully changed!"
 msgstr "Hasło użytkownika SQL zostało zmienione!"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - Klient/Zmień Hasło Użytkownika SQL"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Klient/Zmień Hasło Użytkownika SQL"
 
 msgid "Change SQL user password"
 msgstr "Zmień hasło użytkownika bazy SQL"
@@ -2660,8 +2665,8 @@ msgstr "Wykonaj zapytanie SQL"
 msgid "Execution of SQL query succeeded!"
 msgstr "Wykonaj zapytanie SQL"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Klient/Wykonaj Zapytanie SQL"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Klient/Wykonaj Zapytanie SQL"
 
 msgid "Execute SQL query"
 msgstr "Wykonaj zapytanie SQL"
@@ -2728,8 +2733,8 @@ msgstr "bezpłatnie"
 msgid "There are no available hosting plans for update"
 msgstr "Nie ma żadnych dostępnych planów hostingowych"
 
-msgid "ISPCP - Update hosting plan"
-msgstr "ISPCP - Uaktualnij plan hostingowy"
+msgid "ispCP - Update hosting plan"
+msgstr "ispCP - Uaktualnij plan hostingowy"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Twoja prośba o uaktualnienie pakietu hostingowego została dodana!"
@@ -3143,7 +3148,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3216,8 +3221,8 @@ msgstr "Wsparcie dla poczty i www"
 msgid "Your Own Domain"
 msgstr "Twoja własna domena"
 
-msgid "ISPCP Control Panel"
-msgstr "ISPCP Panel Kontrolny"
+msgid "ispCP Control Panel"
+msgstr "ispCP Panel Kontrolny"
 
 msgid "Automatic Updates"
 msgstr "Automatyczne uaktualnienia"
@@ -3231,23 +3236,23 @@ msgstr "Opłata instalacyjna"
 msgid "Performance"
 msgstr "Wydajność"
 
-msgid "ISPCP Reseller : Add Alias"
-msgstr "ISPCP Reseller : Dodaj Alias"
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP Reseller : Dodaj Alias"
 
 msgid "You have no user records."
 msgstr "Nie masz wpisów użytkownika."
 
-msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Reseller/Dodaj plan hostingowy"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Reseller/Dodaj plan hostingowy"
 
-msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Reseller/Zmień Hasło"
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Reseller/Zmień Hasło"
 
-msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Reseller/Zmień Dane Osobowe"
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Reseller/Zmień Dane Osobowe"
 
-msgid "ISPCP - Circular"
-msgstr "ISPCP - Cykliczne"
+msgid "ispCP - Circular"
+msgstr "ispCP - Cykliczne"
 
 msgid "Circular"
 msgstr "Okólnik"
@@ -3267,8 +3272,8 @@ msgstr "Domena którą próbujesz usunąć ma przypisane aliasy!<br> najpierw je
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr "Domena którą próbujesz usunąc ma przypisane subdomeny !<br> najpierw je usuń !"
 
-msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Zarządzaj Domeną/Alias"
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Zarządzaj Domeną/Alias"
 
 msgid "Manage alias"
 msgstr "Zarządzaj aliasami"
@@ -3300,8 +3305,8 @@ msgstr "Alias domeny nie został zmodyfikowany!"
 msgid "User terminated!"
 msgstr "Użytkownik usunięty!"
 
-msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Domena/Edytuj"
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Domena/Edytuj"
 
 msgid "Edit Domain"
 msgstr "Edytuj domenę"
@@ -3354,8 +3359,8 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
-msgstr "ISPCP - Użytkownicy/Edytuj"
+msgid "ispCP - Users/Edit"
+msgstr "ispCP - Użytkownicy/Edytuj"
 
 msgid "Edit user"
 msgstr "Edytuj użytkownika"
@@ -3363,8 +3368,8 @@ msgstr "Edytuj użytkownika"
 msgid "Users list"
 msgstr "Lista użytkowników"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Reseller/Edytuj plan hostingowy"
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Reseller/Edytuj plan hostingowy"
 
 msgid "View hosting plan"
 msgstr "Pokaż plan hostingowy"
@@ -3375,11 +3380,11 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Reseller/Indeks Główny"
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Reseller/Indeks Główny"
 
 msgid "View details"
 msgstr "Pokaż szczegóły"
@@ -3401,8 +3406,12 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Reseller/Zgub.hasło ustawienia poczty"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Klient/Zmień Język"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Reseller/Zgub.hasło ustawienia poczty"
 
 msgid "Lostpw email"
 msgstr "Zapomniane hasło email"
@@ -3410,8 +3419,8 @@ msgstr "Zapomniane hasło email"
 msgid "Lostpw link"
 msgstr "Zapomnianie hasło link"
 
-msgid "ISPCP - Reseller/Order email setup"
-msgstr "ISPCP - Reseller/Zamówienia ustawienia poczty"
+msgid "ispCP - Reseller/Order email setup"
+msgstr "ispCP - Reseller/Zamówienia ustawienia poczty"
 
 msgid "Manage orders"
 msgstr "Zarządzaj zamówieniami"
@@ -3425,8 +3434,8 @@ msgstr "Użytkownik dodany!"
 msgid "Customer order was removed successful!"
 msgstr "Zamówienie zostało usunięte!"
 
-msgid "ISPCP - Reseller/Order details"
-msgstr "ISPCP - Reseller/Zamówienia szczegóły"
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Reseller/Zamówienia szczegóły"
 
 msgid "Order data updated successfully!"
 msgstr "Dane zamówienia zaktualizowane!"
@@ -3455,8 +3464,8 @@ msgstr "Czy napewno usunąć to zamówienie?"
 msgid "Add to the system"
 msgstr "Dodaj do systemu"
 
-msgid "ISPCP - Reseller/Order settings"
-msgstr "ISPCP - Reseller/Zamówienia ustawienia"
+msgid "ispCP - Reseller/Order settings"
+msgstr "ispCP - Reseller/Zamówienia ustawienia"
 
 msgid "Header"
 msgstr "Nagłówek"
@@ -3467,11 +3476,15 @@ msgstr "Podgląd"
 msgid "Implementation URL"
 msgstr "Adres do zaimplementowania"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "Stopka"
 
-msgid "ISPCP - Reseller/Order management"
-msgstr "ISPCP - Reseller/Zamówienia zarządzanie"
+msgid "ispCP - Reseller/Order management"
+msgstr "ispCP - Reseller/Zamówienia zarządzanie"
 
 msgid "You do not have new orders!"
 msgstr "Nie masz nowych zamówień!"
@@ -3491,8 +3504,8 @@ msgstr "Zamówienie"
 msgid "Add/Details"
 msgstr "Dodaj/Szczegóły"
 
-msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Użytkownicy/Dodaj użytkownika"
+msgid "ispCP - Users/Add user"
+msgstr "ispCP - Użytkownicy/Dodaj użytkownika"
 
 msgid "Choose hosting plan"
 msgstr "Wybierz plan hostingowy"
@@ -3506,8 +3519,8 @@ msgstr "Następny krok"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Użytkownik/Dodaj użytkownika(krok2)"
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Użytkownik/Dodaj użytkownika(krok2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3521,8 +3534,8 @@ msgstr "Logi Apache'a"
 msgid "Awstats"
 msgstr ""
 
-msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Użytkownik/Dodaj użytkownika"
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Użytkownik/Dodaj użytkownika"
 
 msgid "Add other domains to this account"
 msgstr "Dodaj inne domeny do tego konta"
@@ -3536,8 +3549,8 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr "Ten reseller nie ma jeszcze domen."
 
-msgid "ISPCP - Users"
-msgstr "ISPCP - Użytkownicy"
+msgid "ispCP - Users"
+msgstr "ispCP - Użytkownicy"
 
 msgid "Stats"
 msgstr ""
@@ -3560,8 +3573,8 @@ msgstr "Ten user ma wpis domeny !<br>Najpierw usuń domenę z systemu!"
 msgid "User not terminated!"
 msgstr "Użytkownik nie usunięty!"
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Reseller : System Wsparcia: Przeglądaj Bilety"
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Reseller : System Wsparcia: Przeglądaj Bilety"
 
 msgid "Message was sent."
 msgstr "Wiadomość została wysłana."

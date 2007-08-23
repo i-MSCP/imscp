@@ -152,7 +152,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE' => tr('ISPCP - Client/Enable Mail Auto Responder'),
+$tpl -> assign(array('TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE' => tr('ispCP - Client/Enable Mail Auto Responder'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'), 
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

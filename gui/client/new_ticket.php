@@ -85,7 +85,7 @@ SQL_QUERY;
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ISPCP - Support system - New ticket'),
+$tpl -> assign(array('TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'), 
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

@@ -216,7 +216,7 @@ if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('ISPCP - Client/Add Subdomain'),
+$tpl -> assign(array('TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('ispCP - Client/Add Subdomain'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'), 
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

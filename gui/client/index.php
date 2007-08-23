@@ -294,7 +294,7 @@ $tpl->assign(
     );
 
 $tpl->assign(
-    array('TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Client/Main Index'),
+    array('TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Client/Main Index'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
         'THEME_CHARSET' => tr('encoding'),
         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

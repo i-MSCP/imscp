@@ -34,7 +34,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_CLIENT_CRONJOBS_TITLE' => tr('ISPCP - Client/Cronjob Manager'),
+                        'TR_CLIENT_CRONJOBS_TITLE' => tr('ispCP - Client/Cronjob Manager'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

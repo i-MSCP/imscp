@@ -169,7 +169,7 @@ SQL_QUERY;
 //
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
-$tpl -> assign(array('TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ISPCP - Client/Questions & Comments'),
+$tpl -> assign(array('TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'), 
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

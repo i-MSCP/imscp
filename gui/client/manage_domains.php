@@ -190,7 +190,7 @@ SQL_QUERY;
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE' => tr('ISPCP - Client/Manage Domains'),
+$tpl -> assign(array('TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE' => tr('ispCP - Client/Manage Domains'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

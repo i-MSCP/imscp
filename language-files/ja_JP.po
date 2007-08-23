@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "パスワードを忘れたとき"
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Request password"
 msgstr "パスワードの"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - 管理者/ユーザー管理/ユーザー追加"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - 管理者/ユーザー管理/ユーザー追加"
 
 msgid "Administrator"
 msgstr "管理者"
@@ -306,8 +306,8 @@ msgstr "リセラーのIPアドレスリスト"
 msgid "Customer ID"
 msgstr "顧客ID"
 
-msgid "ISPCP - Admin/Admin Log"
-msgstr "ISPCP - 管理者/管理ログ"
+msgid "ispCP - Admin/Admin Log"
+msgstr "ispCP - 管理者/管理ログ"
 
 msgid "Log is empty!"
 msgstr "ログが存在していません"
@@ -372,8 +372,8 @@ msgstr "過去6ヶ月のオーダー"
 msgid "older than 12 months"
 msgstr "過去1年のオーダー"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - アドミニストレータ/ホスティングプラン追加"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - アドミニストレータ/ホスティングプラン追加"
 
 msgid "Add hosting plan"
 msgstr "ホスティングプラン追加"
@@ -474,8 +474,8 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr ""
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - 管理者/パスワード変更"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - 管理者/パスワード変更"
 
 msgid "Please fill up all data fields!"
 msgstr "すべてのフィールドを埋めてください"
@@ -504,8 +504,8 @@ msgstr "現在のパスワード"
 msgid "Personal data updated successfully!"
 msgstr "パーソナルデータは更新されてました"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - 管理者/パーソナルデータ更新"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - 管理者/パーソナルデータ更新"
 
 msgid "Change personal data"
 msgstr "個人情報変更"
@@ -585,8 +585,8 @@ msgstr "カスタムメニューデータが更新されました"
 msgid "Custom menu deleted successful!"
 msgstr "カスタムメニューを削除しました"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - 管理者 - Manage custom menus"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - 管理者 - Manage custom menus"
 
 msgid "Manage custom menus"
 msgstr "カスタムメニュー管理"
@@ -657,7 +657,7 @@ msgstr "すべてのオープンチケットを削除しました。"
 msgid "All closed support tickets deleted successfully!"
 msgstr "すべてのクローズチケットを削除しました。"
 
-msgid "ISPCP - Domain/Details"
+msgid "ispCP - Domain/Details"
 msgstr ""
 
 msgid "Domain details"
@@ -723,7 +723,7 @@ msgstr "無効"
 msgid "Disabled"
 msgstr "無効"
 
-msgid "ISPCP - Domain Statistics Data"
+msgid "ispCP - Domain Statistics Data"
 msgstr ""
 
 msgid "Domain statistics"
@@ -756,8 +756,8 @@ msgstr "すべてのトラフィック"
 msgid "Day"
 msgstr "日"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - 管理者/ユーザー管理/リセラー情報修正"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - 管理者/ユーザー管理/リセラー情報修正"
 
 msgid "Domains"
 msgstr "ドメイン数"
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Generate password"
 msgstr "パスワードの更新"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
+msgid "ispCP - Admin/Manage users/Edit User"
 msgstr "管理者/ユーザー管理/ユーザー情報修正"
 
 msgid "User session was killed!"
@@ -878,8 +878,8 @@ msgstr "ドメインアカウント"
 msgid "Edit admin"
 msgstr "アドミンの編集"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - アドミニストレータ/ホスティングプラン修正"
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - アドミニストレータ/ホスティングプラン修正"
 
 msgid "Price Style"
 msgstr ""
@@ -908,7 +908,7 @@ msgstr ""
 msgid "Auto email template data updated!"
 msgstr "自動送信メールのテンプレート情報が更新されました!"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
+msgid "ispCP - Admin/Manage users/Email setup"
 msgstr "管理者/ユーザー管理/電子メール設定"
 
 msgid "Email setup"
@@ -935,8 +935,8 @@ msgstr "タイトル"
 msgid "Apply changes"
 msgstr "変更を適用"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - アドミニストレータ/ホスティングプラン管理t"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - アドミニストレータ/ホスティングプラン管理t"
 
 msgid "Hosting plans"
 msgstr "ホスティングプラン"
@@ -981,20 +981,21 @@ msgstr "ビュー"
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
-msgstr "ISPCPのアップデートが見つかりました"
+msgid "New ispCP update is now available"
+msgstr "ispCPのアップデートが見つかりました"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "サブドメインの制限に達しました"
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - 管理者/メイン インデックス"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - 管理者/メイン インデックス"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - 管理者/IPアドレス管理"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - 管理者/IPアドレス管理"
 
 msgid "New IP was added!"
 msgstr "新規IPアドレスが追加されました"
@@ -1044,8 +1045,8 @@ msgstr "サブドメインに障害は発生していません"
 msgid "No email account system errors"
 msgstr "メールアカウントに障害は発生していません"
 
-msgid "ISPCP debugger"
-msgstr "ISPCPデバッガー"
+msgid "ispCP debugger"
+msgstr "ispCPデバッガー"
 
 msgid "Domain errors"
 msgstr "ドメインエラー"
@@ -1084,17 +1085,30 @@ msgstr ""
 msgid "Get it at"
 msgstr ""
 
-msgid "ISPCP updates"
-msgstr "ISPCPアップデート"
+msgid "ispCP updates"
+msgstr "ispCPアップデート"
 
-msgid "Available ISPCP updates"
-msgstr "利用可能なISPCPアップデート"
+msgid "Available ispCP updates"
+msgstr "利用可能なispCPアップデート"
 
-msgid "No new ISPCP updates available"
-msgstr "ISPCPのアップデートは有りません"
+msgid "No new ispCP updates available"
+msgstr "ispCPのアップデートは有りません"
 
 msgid "Update details"
 msgstr "更新情報詳細"
+
+msgid "User language updated successfully!"
+msgstr "ユーザーの言語が更新されてました"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - クライアント/言語変更"
+
+msgid "Language"
+msgstr "言語"
+
+msgid "Choose default language"
+msgstr "デフォルト言語を選択"
 
 msgid "Upload file error!"
 msgstr "ファイルのアップロードに失敗"
@@ -1135,8 +1149,8 @@ msgstr "デフォルトレイアウトを選択"
 msgid "Layout"
 msgstr "レイアウト"
 
-msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - 管理者/パスワード紛失時 メール設定"
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - 管理者/パスワード紛失時 メール設定"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1156,7 +1170,7 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr "リセラーが登録されていません"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
 msgstr "管理者/ユーザー管理/リセラーのアサイン"
 
 msgid "Reseller assignment"
@@ -1218,7 +1232,7 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
+msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "管理者/ユーザー管理/ユーザーのアサイン"
 
 msgid "User assignment"
@@ -1236,8 +1250,8 @@ msgstr "リセラーから"
 msgid "To reseller"
 msgstr "リセラーへ"
 
-msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - 管理者/セッション管理"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - 管理者/セッション管理"
 
 msgid "Manage user sessions"
 msgstr "ユーザーセッション管理"
@@ -1254,8 +1268,8 @@ msgstr "オプション"
 msgid "Kill session"
 msgstr "セッションの切断"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr " ISPCP - 管理者/ユーザー管理"
+msgid "ispCP - Admin/Manage Users"
+msgstr " ispCP - 管理者/ユーザー管理"
 
 msgid "User added"
 msgstr "ユーザーが追加されました"
@@ -1281,7 +1295,7 @@ msgstr "ユーザーが無効になりました"
 msgid "Incorrect data input!"
 msgstr ""
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1292,11 +1306,11 @@ msgstr "テキストファイルのみアップロードできます!"
 
 #, fuzzy
 msgid "Could not read language file!"
-msgstr "ISPCP言語ファイルを読み込めません!"
+msgstr "ispCP言語ファイルを読み込めません!"
 
 #, fuzzy
 msgid "Uploaded file is not a valid language file!"
-msgstr "ISPCP言語ファイルを読み込めません!"
+msgstr "ispCP言語ファイルを読み込めません!"
 
 msgid "Uploaded file does not contain the language information!"
 msgstr ""
@@ -1318,14 +1332,11 @@ msgstr "削除"
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
 msgstr "インストールされた言語ファイル"
-
-msgid "Language"
-msgstr "言語"
 
 msgid "Messages"
 msgstr "メッセージ"
@@ -1345,7 +1356,7 @@ msgstr "インストール"
 msgid "Export"
 msgstr "エキスポート"
 
-msgid "ISPCP - Reseller statistics"
+msgid "ispCP - Reseller statistics"
 msgstr ""
 
 msgid "Not found reseller(s) in your system!"
@@ -1377,15 +1388,15 @@ msgstr "データベース"
 msgid "SQL user"
 msgstr "SQLユーザー"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - 管理者/リセラーユーザー情報"
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - 管理者/リセラーユーザー情報"
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
@@ -1422,7 +1433,7 @@ msgstr "SQLデータベース"
 msgid "SQL<br>user"
 msgstr "SQLユーザー"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1431,7 +1442,7 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr "ルートキットのログチェック"
 
-msgid "ISPCP - Admin/Server day stats"
+msgid "ispCP - Admin/Server day stats"
 msgstr ""
 
 msgid "Server day statistics"
@@ -1479,13 +1490,13 @@ msgstr "全体 in"
 msgid "All out"
 msgstr "全体 out"
 
-msgid "ISPCP - Admin/Server statistics"
+msgid "ispCP - Admin/Server statistics"
 msgstr ""
 
 msgid "Server statistics"
 msgstr "サーバー統計情報"
 
-msgid "ISPCP Admin / System Tools / Server Status"
+msgid "ispCP Admin / System Tools / Server Status"
 msgstr ""
 
 msgid "UP"
@@ -1503,8 +1514,8 @@ msgstr "サービス"
 msgid "Server status"
 msgstr "サーバーのステータス"
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP - 管理者/サーバートラフィック設定"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP - 管理者/サーバートラフィック設定"
 
 msgid "Wrong data input!"
 msgstr ""
@@ -1530,7 +1541,7 @@ msgstr "最大トラフィック [MB]"
 msgid "Warning traffic [MB]"
 msgstr "警告トラフィック [MB]"
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1542,7 +1553,7 @@ msgstr "サービスモード"
 msgid "In this mode only administrators can login"
 msgstr "このモードにすると、アドミニストレーター権限以外のログインが出来なくなります"
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1635,8 +1646,8 @@ msgstr "高"
 msgid "Very high"
 msgstr "緊急"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - クライアント/質問と回答"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - クライアント/質問と回答"
 
 msgid "Support tickets"
 msgstr "サポートチケット"
@@ -1662,7 +1673,7 @@ msgstr ""
 msgid "[Re]"
 msgstr ""
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
+msgid "ispCP - Client/Enable Mail Autoresponder"
 msgstr ""
 
 msgid "From"
@@ -1749,8 +1760,8 @@ msgstr "チケットを開く"
 msgid "Close ticket"
 msgstr "チケットの処理"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - クライアント : システムサポート: チケット閲覧"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - クライアント : システムサポート: チケット閲覧"
 
 msgid "Please type your message!"
 msgstr ""
@@ -1764,7 +1775,7 @@ msgstr "チケットは既にCloseしています"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1776,7 +1787,7 @@ msgstr "メッセージ返信"
 msgid "Send reply"
 msgstr ""
 
-msgid "ISPCP Client : Add Alias"
+msgid "ispCP Client : Add Alias"
 msgstr ""
 
 msgid "Manage domain alias"
@@ -1864,8 +1875,8 @@ msgstr ""
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - クライアント/FTPユーザー追加"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - クライアント/FTPユーザー追加"
 
 msgid "Add FTP user"
 msgstr "FTPユーザー追加"
@@ -1918,8 +1929,8 @@ msgstr ""
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - クライアント/メールユーザー追加"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - クライアント/メールユーザー追加"
 
 msgid "Add mail users"
 msgstr "メールユーザー追加"
@@ -1955,8 +1966,8 @@ msgstr "データベースの作成に成功しました"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - クライアント/データベース追加"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - クライアント/データベース追加"
 
 msgid "Add SQL database"
 msgstr "SQLデータベース追加"
@@ -1991,8 +2002,8 @@ msgstr ""
 msgid "Subdomain scheduled for addition!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - クライアント/サブドメイン追加"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - クライアント/サブドメイン追加"
 
 msgid "Add subdomain"
 msgstr "サブドメイン追加"
@@ -2009,8 +2020,8 @@ msgstr "ディレクトリーツリー<br>マウントポイント"
 msgid "Backup archive scheduled for restoring!"
 msgstr "バックアップスケジュール"
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - クライアント/日次バックアップ"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - クライアント/日次バックアップ"
 
 msgid "Backup"
 msgstr "バックアップ"
@@ -2060,8 +2071,8 @@ msgstr ""
 msgid "Create catch all"
 msgstr "キャッチオール作成"
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - クライアント/ユーザー管理"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - クライアント/ユーザー管理"
 
 msgid "Manage users"
 msgstr "ユーザ管理"
@@ -2099,11 +2110,11 @@ msgstr "FTPユーザー"
 msgid "FTP account"
 msgstr "FTPユーザー"
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - クライアント/パスワード変更"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - クライアント/パスワード変更"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - クライアント/パーソナルデータ修正"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - クライアント/パーソナルデータ修正"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "ユーザーが存在しないか、アクセスできません"
@@ -2114,7 +2125,7 @@ msgstr ""
 msgid "Mail forward list error!"
 msgstr "メールアカウント管理でエラーが発生しました"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
+msgid "ispCP - Client/Create CatchAll Mail Account"
 msgstr ""
 
 msgid "Create catch all mail account"
@@ -2123,8 +2134,8 @@ msgstr "キャッチオールメールアカウント作成"
 msgid "Mail accounts list"
 msgstr ""
 
-msgid "ISPCP - Client/Cronjob Manager"
-msgstr "ISPCP - クライアント/Cronjob マネージャー"
+msgid "ispCP - Client/Cronjob Manager"
+msgstr "ispCP - クライアント/Cronjob マネージャー"
 
 msgid "Cronjob Manager"
 msgstr "Cronjob管理者"
@@ -2199,7 +2210,7 @@ msgstr ""
 msgid "Mail account scheduled for modification!"
 msgstr ""
 
-msgid "ISPCP - Client/Domain Statistics"
+msgid "ispCP - Client/Domain Statistics"
 msgstr ""
 
 msgid "Web Stats"
@@ -2217,7 +2228,7 @@ msgstr ""
 msgid "Sum"
 msgstr "合計"
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
 msgstr ""
 
 msgid "Edit domain alias"
@@ -2240,8 +2251,8 @@ msgstr "入力されたパスワードが異なります!"
 msgid "FTP account data updated!"
 msgstr "FTPユーザー情報が更新されました"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - クライアント/FTPユーザー修正"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - クライアント/FTPユーザー修正"
 
 msgid "Edit FTP user"
 msgstr "FTPユーザーの編集"
@@ -2261,7 +2272,7 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr ""
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
 msgstr ""
 
 msgid "Edit email account"
@@ -2273,7 +2284,7 @@ msgstr ""
 msgid "Mail account scheduler for modification!"
 msgstr ""
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
+msgid "ispCP - Client/Enable Mail Auto Responder"
 msgstr ""
 
 msgid "Edit mail auto responder"
@@ -2291,8 +2302,8 @@ msgstr "メールアカウントリストが空です!"
 msgid "Enable mail auto responder"
 msgstr "メール自動返信を有効にする"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
-msgstr "ISPCP - クライアント/カスタムエラーページ管理"
+msgid "ispCP - Client/Manage Error Custom Pages"
+msgstr "ispCP - クライアント/カスタムエラーページ管理"
 
 msgid "Server error - please choose error page"
 msgstr ""
@@ -2336,8 +2347,8 @@ msgstr ""
 msgid "Protect it"
 msgstr "保護する"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - クライアント/Webツール"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - クライアント/Webツール"
 
 msgid "Directory tree"
 msgstr "ディレクトリツリー"
@@ -2365,8 +2376,8 @@ msgstr "ディスク容量の最大量に到達しました"
 msgid "You have no new support questions!"
 msgstr "新しい質問はありません!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - クライアント/メインインデックス"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - クライアント/メインインデックス"
 
 msgid "General information"
 msgstr "基本情報"
@@ -2380,20 +2391,14 @@ msgstr "メインドメイン"
 msgid "SQL support"
 msgstr "SQLサポート"
 
-msgid "Choose default language"
-msgstr "デフォルト言語を選択"
-
 msgid "Traffic usage"
 msgstr "トラフィック量"
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
 
-msgid "User language updated successfully!"
-msgstr "ユーザーの言語が更新されてました"
-
-msgid "ISPCP - Client/Change Language"
-msgstr "ISPCP - クライアント/言語変更"
+msgid "ispCP - Client/Change Language"
+msgstr "ispCP - クライアント/言語変更"
 
 msgid "Subdomain list is empty!"
 msgstr "サブドメインは登録されていません"
@@ -2401,8 +2406,8 @@ msgstr "サブドメインは登録されていません"
 msgid "Alias list is empty!"
 msgstr "エイリアスリストが空です!"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - クライアント/ドメイン管理"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - クライアント/ドメイン管理"
 
 msgid "Manage domains"
 msgstr "ドメイン管理"
@@ -2423,8 +2428,8 @@ msgstr "データベースユーザーリストが空です!"
 msgid "Database list is empty!"
 msgstr "データベースリストが空です!"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - クライアント/データベース管理"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - クライアント/データベース管理"
 
 msgid "Manage SQL"
 msgstr "SQL管理"
@@ -2444,7 +2449,7 @@ msgstr ""
 msgid "Your message was sent!"
 msgstr "あなたのメッセージは送信されました"
 
-msgid "ISPCP - Support system - New ticket"
+msgid "ispCP - Support system - New ticket"
 msgstr ""
 
 msgid "New ticket"
@@ -2606,8 +2611,8 @@ msgstr ""
 msgid "SQL user successfully added!"
 msgstr "SQLユーザーは追加されました"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - クライアント/データベースユーザー追加"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - クライアント/データベースユーザー追加"
 
 msgid "SQL user name"
 msgstr "SQLユーザー名"
@@ -2630,8 +2635,8 @@ msgstr "ユーザのパスワードが長すぎます"
 msgid "SQL user password was successfully changed!"
 msgstr "SQLユーザーのパスワードは変更されました"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - クライアント/データベースユーザーパスワード変更"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - クライアント/データベースユーザーパスワード変更"
 
 msgid "Change SQL user password"
 msgstr "SQLユーザーのパスワード変更"
@@ -2658,8 +2663,8 @@ msgstr "SQLクエリーの実行"
 msgid "Execution of SQL query succeeded!"
 msgstr "SQLクエリーの実行"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - クライアント/SQLクエリー実行"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - クライアント/SQLクエリー実行"
 
 msgid "Execute SQL query"
 msgstr "SQLクエリーの実行"
@@ -2725,7 +2730,7 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr ""
 
-msgid "ISPCP - Update hosting plan"
+msgid "ispCP - Update hosting plan"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -3139,7 +3144,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3212,7 +3217,7 @@ msgstr "WebとEメールサポート"
 msgid "Your Own Domain"
 msgstr "あなたのドメイン"
 
-msgid "ISPCP Control Panel"
+msgid "ispCP Control Panel"
 msgstr "コントロールパネル"
 
 msgid "Automatic Updates"
@@ -3227,22 +3232,22 @@ msgstr "セットアップ料金"
 msgid "Performance"
 msgstr "パフォーマンス"
 
-msgid "ISPCP Reseller : Add Alias"
+msgid "ispCP Reseller : Add Alias"
 msgstr ""
 
 msgid "You have no user records."
 msgstr "ユーザーの記録がありません"
 
-msgid "ISPCP - Reseller/Add hosting plan"
+msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
-msgid "ISPCP - Reseller/Change Password"
+msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
-msgid "ISPCP - Reseller/Change Personal Data"
+msgid "ispCP - Reseller/Change Personal Data"
 msgstr ""
 
-msgid "ISPCP - Circular"
+msgid "ispCP - Circular"
 msgstr ""
 
 msgid "Circular"
@@ -3263,7 +3268,7 @@ msgstr ""
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr ""
 
-msgid "ISPCP - Manage Domain/Alias"
+msgid "ispCP - Manage Domain/Alias"
 msgstr ""
 
 msgid "Manage alias"
@@ -3296,7 +3301,7 @@ msgstr "ドメインエイリアスが変更されませんでした!"
 msgid "User terminated!"
 msgstr ""
 
-msgid "ISPCP - Domain/Edit"
+msgid "ispCP - Domain/Edit"
 msgstr ""
 
 msgid "Edit Domain"
@@ -3350,7 +3355,7 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
+msgid "ispCP - Users/Edit"
 msgstr ""
 
 msgid "Edit user"
@@ -3359,7 +3364,7 @@ msgstr "ユーザーの編集"
 msgid "Users list"
 msgstr "ユーザーリスト"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
+msgid "ispCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
@@ -3371,10 +3376,10 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
+msgid "ispCP - Reseller/Main Index"
 msgstr ""
 
 msgid "View details"
@@ -3397,7 +3402,11 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - クライアント/言語変更"
+
+msgid "ispCP - Reseller/Lostpw email setup"
 msgstr ""
 
 msgid "Lostpw email"
@@ -3406,7 +3415,7 @@ msgstr "パスワード紛失時の送信メール"
 msgid "Lostpw link"
 msgstr ""
 
-msgid "ISPCP - Reseller/Order email setup"
+msgid "ispCP - Reseller/Order email setup"
 msgstr ""
 
 msgid "Manage orders"
@@ -3421,7 +3430,7 @@ msgstr "ユーザーが追加されました"
 msgid "Customer order was removed successful!"
 msgstr "顧客オーダーが削除されました!"
 
-msgid "ISPCP - Reseller/Order details"
+msgid "ispCP - Reseller/Order details"
 msgstr ""
 
 msgid "Order data updated successfully!"
@@ -3451,7 +3460,7 @@ msgstr "このオーダーを削除してよろしいですか?"
 msgid "Add to the system"
 msgstr "システムへ追加"
 
-msgid "ISPCP - Reseller/Order settings"
+msgid "ispCP - Reseller/Order settings"
 msgstr ""
 
 msgid "Header"
@@ -3463,10 +3472,14 @@ msgstr "プレビュー"
 msgid "Implementation URL"
 msgstr "埋め込まれるURL"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "フッター"
 
-msgid "ISPCP - Reseller/Order management"
+msgid "ispCP - Reseller/Order management"
 msgstr ""
 
 msgid "You do not have new orders!"
@@ -3487,7 +3500,7 @@ msgstr "オーダー"
 msgid "Add/Details"
 msgstr "追加/詳細"
 
-msgid "ISPCP - Users/Add user"
+msgid "ispCP - Users/Add user"
 msgstr ""
 
 msgid "Choose hosting plan"
@@ -3502,7 +3515,7 @@ msgstr "次へ"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
+msgid "ispCP - User/Add user(step2)"
 msgstr ""
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -3517,7 +3530,7 @@ msgstr "Apacheログ"
 msgid "Awstats"
 msgstr "AwStats"
 
-msgid "ISPCP - User/Add user"
+msgid "ispCP - User/Add user"
 msgstr ""
 
 msgid "Add other domains to this account"
@@ -3532,7 +3545,7 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr "このユーザにドメインが登録されていません"
 
-msgid "ISPCP - Users"
+msgid "ispCP - Users"
 msgstr ""
 
 msgid "Stats"
@@ -3556,7 +3569,7 @@ msgstr ""
 msgid "User not terminated!"
 msgstr ""
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
+msgid "ispCP - Reseller : Support System: View Tickets"
 msgstr ""
 
 msgid "Message was sent."

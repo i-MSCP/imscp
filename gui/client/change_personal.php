@@ -24,6 +24,7 @@ function gen_user_personal_data(&$tpl, &$sql, $user_id)
         select
             fname,
             lname,
+            gender,
             firm,
             zip,
             city,
@@ -51,13 +52,16 @@ SQL_QUERY;
                          'STREET_2' => $rs -> fields['street2'],
                          'EMAIL' => $rs -> fields['email'],
                          'PHONE' => $rs -> fields['phone'],
-                         'FAX' => $rs -> fields['fax']));
+                         'FAX' => $rs -> fields['fax'],
+                         'VL_MALE' => ($rs -> fields['gender'] == 'M')? 'checked' : '',
+                         'VL_FEMALE' => ($rs -> fields['gender'] == 'F')? 'checked' : ''));
 }
 
 function update_user_personal_data(&$sql, $user_id)
 {
 	$fname 		= clean_input($_POST['fname']);
 	$lname 		= clean_input($_POST['lname']);
+    $gender 	= clean_input($_POST['gender']);
 	$firm 		= clean_input($_POST['firm']);
 	$zip 		= clean_input($_POST['zip']);
 	$city 		= clean_input($_POST['city']);
@@ -67,6 +71,10 @@ function update_user_personal_data(&$sql, $user_id)
 	$email 		= clean_input($_POST['email']);
 	$phone 		= clean_input($_POST['phone']);
 	$fax 		= clean_input($_POST['fax']);
+
+    if (get_gender_by_code($gender, true) === null) {
+        $gender = '';
+    }
 
   $query = <<<SQL_QUERY
         update
@@ -82,12 +90,13 @@ function update_user_personal_data(&$sql, $user_id)
             street2 = ?,
             email = ?,
             phone = ?,
-            fax = ?
+            fax = ?,
+            gender = ?
         where
             admin_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $country, $street1, $street2, $email, $phone, $fax, $user_id));
+  $rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $country, $street1, $street2, $email, $phone, $fax, $gender, $user_id));
 
   write_log($_SESSION['user_logged'].": update personal data");
   set_page_message(tr('Personal data updated successfully!'));
@@ -104,9 +113,9 @@ $tpl -> define_dynamic('logged_from', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ISPCP - Client/Change Personal Data'),
+$tpl -> assign(array('TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Client/Change Personal Data'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
@@ -142,6 +151,9 @@ $tpl -> assign(array('TR_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
                      'TR_EMAIL' => tr('Email'),
                      'TR_PHONE' => tr('Phone'),
                      'TR_FAX' => tr('Fax'),
+                     'TR_GENDER' => tr('Gender'),
+                     'TR_MALE' => tr('Male'),
+                     'TR_FEMALE' => tr('Female'),
                      'TR_UPDATE_DATA' => tr('Update data')));
 
 gen_page_message($tpl);
