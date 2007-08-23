@@ -157,7 +157,7 @@ gen_def_layout($tpl, $theme_color);
 
 $tpl -> assign(
                 array(
-                        'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE' => tr('ISPCP - Reseller/Change Personal Data'),
+                        'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'OWN_LOGO' => get_own_logo($_SESSION['user_id']),
                         'THEME_CHARSET' => tr('encoding'),

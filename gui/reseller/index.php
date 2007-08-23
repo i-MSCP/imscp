@@ -321,7 +321,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Reseller/Main Index'),
+                        'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
 						'TR_SAVE' => tr('Save'),
 						'TR_MESSAGES' => tr('Messages'),
 						'TR_LANGUAGE' => tr('Language'),

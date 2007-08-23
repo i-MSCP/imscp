@@ -33,7 +33,7 @@ $tpl -> define_dynamic('traffic_table_item', 'traffic_table');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ISPCP - Domain Statistics Data'),
+$tpl -> assign(array('TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

@@ -36,7 +36,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ALIAS_PAGE_TITLE' => tr('ISPCP - Manage Domain/Alias'),
+                        'TR_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain/Alias'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

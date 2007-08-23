@@ -53,7 +53,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ISPCP - Users'),
+                        'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Users'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

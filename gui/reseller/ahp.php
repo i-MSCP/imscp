@@ -36,7 +36,7 @@ $tpl -> define_dynamic('logged_from', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Reseller/Add hosting plan'),
+$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Add hosting plan'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

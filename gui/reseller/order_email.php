@@ -63,7 +63,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'order_email') {
  *
  */
 
-$tpl -> assign(array('TR_RESELLER_ORDER_EMAL' => tr('ISPCP - Reseller/Order email setup'),
+$tpl -> assign(array('TR_RESELLER_ORDER_EMAL' => tr('ispCP - Reseller/Order email setup'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

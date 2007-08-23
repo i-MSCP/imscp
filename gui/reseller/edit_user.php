@@ -51,7 +51,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_EDIT_USER_PAGE_TITLE' => tr('ISPCP - Users/Edit'),
+                        'TR_EDIT_USER_PAGE_TITLE' => tr('ispCP - Users/Edit'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

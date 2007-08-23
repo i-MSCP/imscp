@@ -42,7 +42,7 @@ if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin
 
 $tpl -> assign(
                 array(
-                        'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ISPCP - Domain/Edit'),
+                        'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ispCP - Domain/Edit'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

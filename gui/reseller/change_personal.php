@@ -24,6 +24,7 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id)
         select
             fname,
             lname,
+            gender,
             firm,
             zip,
             city,
@@ -53,7 +54,9 @@ SQL_QUERY;
                             'PHONE' => $rs -> fields['phone'],
                             'FAX' => $rs -> fields['fax'],
 							'STREET1' => $rs -> fields['street1'],
-                            'STREET2' => $rs -> fields['street2']
+                            'STREET2' => $rs -> fields['street2'],
+                            'VL_MALE' => ($rs -> fields['gender'] == 'M')? 'checked' : '',
+                            'VL_FEMALE' => ($rs -> fields['gender'] == 'F')? 'checked' : ''
 
                          )
                   );
@@ -68,6 +71,7 @@ function update_reseller_personal_data(&$sql, $user_id)
 
     $fname 		= clean_input($_POST['fname']);
     $lname 		= clean_input($_POST['lname']);
+    $gender 	= clean_input($_POST['gender']);
     $firm 		= clean_input($_POST['firm']);
     $zip 		= clean_input($_POST['zip']);
     $city 		= clean_input($_POST['city']);
@@ -77,6 +81,10 @@ function update_reseller_personal_data(&$sql, $user_id)
     $email 		= clean_input($_POST['email']);
     $phone 		= clean_input($_POST['phone']);
     $fax 		= clean_input($_POST['fax']);
+
+    if (get_gender_by_code($gender, true) === null) {
+        $gender = '';
+    }
 
     $query = <<<SQL_QUERY
         update
@@ -92,12 +100,13 @@ function update_reseller_personal_data(&$sql, $user_id)
             phone = ?,
             fax = ?,
             street1 = ?,
-            street2 = ?
+            street2 = ?,
+            gender = ?
         where
             admin_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $user_id));
+    $rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $country, $email, $phone, $fax, $street1, $street2, $gender, $user_id));
 
     set_page_message(tr('Personal data updated successfully!'));
 
@@ -124,7 +133,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ISPCP - Reseller/Change Personal Data'),
+                        'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
@@ -166,6 +175,9 @@ $tpl -> assign(
                         'TR_EMAIL' => tr('Email'),
                         'TR_PHONE' => tr('Phone'),
                         'TR_FAX' => tr('Fax'),
+                        'TR_GENDER' => tr('Gender'),
+                        'TR_MALE' => tr('Male'),
+                        'TR_FEMALE' => tr('Female'),
                         'TR_UPDATE_DATA' => tr('Update data'),
                      )
               );

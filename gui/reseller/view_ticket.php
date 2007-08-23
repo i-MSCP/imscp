@@ -232,7 +232,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
 				array(
-						'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ISPCP - Reseller : Support System: View Tickets'),
+						'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller : Support System: View Tickets'),
 						'THEME_COLOR_PATH' => "../themes/$theme_color",
 						'THEME_CHARSET' => tr('encoding'),
 						'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

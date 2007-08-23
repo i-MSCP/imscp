@@ -186,7 +186,7 @@ function send_circular_email ($to, $from, $subject, $message)
 
     $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 8bit\n";
 
-    $headers .= "X-Mailer: ISPCP marketing mailer";
+    $headers .= "X-Mailer: ispCP marketing mailer";
 
     mail($to, $subject, $message, $headers);
 
@@ -204,7 +204,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_RESELLER_CIRCULAR_PAGE_TITLE' => tr('ISPCP - Circular'),
+                        'TR_RESELLER_CIRCULAR_PAGE_TITLE' => tr('ispCP - Circular'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

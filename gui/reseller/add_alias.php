@@ -61,7 +61,7 @@ gen_logged_from($tpl);
 
 $tpl -> assign(
                 array(
-						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ISPCP Reseller : Add Alias'),
+						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Reseller : Add Alias'),
 						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 						'TR_ADD_ALIAS' => tr('Add domain alias'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),

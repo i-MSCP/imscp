@@ -43,7 +43,7 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_hp.tpl');
 
 gen_logged_from($tpl);
 
-$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Reseller/Edit hosting plan'),
+$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Edit hosting plan'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

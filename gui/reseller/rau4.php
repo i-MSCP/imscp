@@ -132,7 +132,7 @@ gen_logged_from($tpl);
 
 $tpl -> assign(
                 array(
-						'TR_ADD_USER_PAGE_TITLE' => tr('ISPCP - User/Add user'),
+						'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
 						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 						'TR_ADD_ALIAS' => tr('Add domain alias'),
 						'TR_DOMAIN_NAME' => tr('Domain name'),

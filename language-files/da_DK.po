@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 20:56-0500\n"
+"POT-Creation-Date: 2007-08-23 13:37-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Glemt Adgangskode"
 msgid "Lost password function currently disabled"
 msgstr ""
 
-msgid "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Password sent"
@@ -84,8 +84,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Anmod om Adgangskode"
 
-msgid "ISPCP - Admin/Manage users/Add User"
-msgstr "ISPCP - Admin/Håndtére bruger/Tilføj Bruger"
+msgid "ispCP - Admin/Manage users/Add User"
+msgstr "ispCP - Admin/Håndtére bruger/Tilføj Bruger"
 
 msgid "Administrator"
 msgstr ""
@@ -306,7 +306,7 @@ msgstr "Forhandler IP'er"
 msgid "Customer ID"
 msgstr "Kunde nummer (ID)"
 
-msgid "ISPCP - Admin/Admin Log"
+msgid "ispCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
@@ -372,8 +372,8 @@ msgstr "ældre end 6 måneder"
 msgid "older than 12 months"
 msgstr "ældre end 2 måneder"
 
-msgid "ISPCP - Administrator/Add hosting plan"
-msgstr "ISPCP - Administrator/Tilføj hosting plan"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Tilføj hosting plan"
 
 msgid "Add hosting plan"
 msgstr "Tilføj hosting plan"
@@ -474,8 +474,8 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr "Der findes allerede en hosting plan med det indtastede navn!"
 
-msgid "ISPCP - Admin/Change Password"
-msgstr "ISPCP - Admin/Ændre Adgangskode"
+msgid "ispCP - Admin/Change Password"
+msgstr "ispCP - Admin/Ændre Adgangskode"
 
 msgid "Please fill up all data fields!"
 msgstr "Udfyld venligst alle data felter!"
@@ -504,8 +504,8 @@ msgstr "Nuværende adgangskode"
 msgid "Personal data updated successfully!"
 msgstr "Personlig data opdateret!"
 
-msgid "ISPCP - Admin/Change Personal Data"
-msgstr "ISPCP - Admin/Ændre Personlige Data"
+msgid "ispCP - Admin/Change Personal Data"
+msgstr "ispCP - Admin/Ændre Personlige Data"
 
 msgid "Change personal data"
 msgstr "Ændre personlig data"
@@ -585,8 +585,8 @@ msgstr "Special menu data opdateret!"
 msgid "Custom menu deleted successful!"
 msgstr "Special menu slettet!"
 
-msgid "ISPCP - Admin - Manage custom menus"
-msgstr "ISPCP - Admin - Håndtére kunde menuer"
+msgid "ispCP - Admin - Manage custom menus"
+msgstr "ispCP - Admin - Håndtére kunde menuer"
 
 msgid "Manage custom menus"
 msgstr "Håndtér Kunde menuer"
@@ -657,8 +657,8 @@ msgstr "Alle åbne support sager blev slettet!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Alle lukkede support sager blev slettet!"
 
-msgid "ISPCP - Domain/Details"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain/Details"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domain details"
 msgstr "Domænedetaljer"
@@ -723,8 +723,8 @@ msgstr "Aktiveret"
 msgid "Disabled"
 msgstr "Deaktiveret"
 
-msgid "ISPCP - Domain Statistics Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain Statistics Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Domain statistics"
 msgstr "Domænestatistik"
@@ -756,8 +756,8 @@ msgstr "Alt trafik"
 msgid "Day"
 msgstr "Dag"
 
-msgid "ISPCP - Admin/Manage users/Edit Reseller"
-msgstr "ISPCP - Admin/Håndtére bruger/Rediger Forhandler"
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Håndtére bruger/Rediger Forhandler"
 
 msgid "Domains"
 msgstr "Domæner"
@@ -867,8 +867,8 @@ msgstr "Send ny logind data"
 msgid "Generate password"
 msgstr "Opdater adgangskode"
 
-msgid "ISPCP - Admin/Manage users/Edit User"
-msgstr "ISPCP - Admin/Håndtére bruger/Rediger Bruger"
+msgid "ispCP - Admin/Manage users/Edit User"
+msgstr "ispCP - Admin/Håndtére bruger/Rediger Bruger"
 
 msgid "User session was killed!"
 msgstr "Bruger session blev afslutet!"
@@ -879,8 +879,8 @@ msgstr "Domænekonto"
 msgid "Edit admin"
 msgstr "Rediger admin"
 
-msgid "ISPCP - Administrator/Edit hosting plan"
-msgstr "ISPCP - Administrator/Rediger hosting plan"
+msgid "ispCP - Administrator/Edit hosting plan"
+msgstr "ispCP - Administrator/Rediger hosting plan"
 
 msgid "Price Style"
 msgstr ""
@@ -909,8 +909,8 @@ msgstr "Indtast en Meddelse!"
 msgid "Auto email template data updated!"
 msgstr "Auto Email skabelon, data er opdateret"
 
-msgid "ISPCP - Admin/Manage users/Email setup"
-msgstr "ISPCP - Admin/Håndtére bruger/Email setup"
+msgid "ispCP - Admin/Manage users/Email setup"
+msgstr "ispCP - Admin/Håndtére bruger/Email setup"
 
 msgid "Email setup"
 msgstr "Email opstilling"
@@ -936,8 +936,8 @@ msgstr "Emne"
 msgid "Apply changes"
 msgstr "Tilføj ændringer"
 
-msgid "ISPCP - Administrator/Hosting Plan Management"
-msgstr "ISPCP - Administrator/Hosting Plan Håndtéring"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrator/Hosting Plan Håndtéring"
 
 msgid "Hosting plans"
 msgstr "Hosting Planer"
@@ -982,20 +982,21 @@ msgstr "Se"
 msgid "Couldn't check for updates!"
 msgstr ""
 
-msgid "New ISPCP update is now available"
+msgid "New ispCP update is now available"
 msgstr "Ny opdatering til rådighed"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Du overskrider din trafik grænse!"
 
-msgid "%1$d % [%2$d of %3$d]"
+#, php-format
+msgid "%1$d %% [%2$d of %3$d]"
 msgstr ""
 
-msgid "ISPCP - Admin/Main Index"
-msgstr "ISPCP - Admin/Hoved Index"
+msgid "ispCP - Admin/Main Index"
+msgstr "ispCP - Admin/Hoved Index"
 
-msgid "ISPCP - Admin/IP manage"
-msgstr "ISPCP - Admin/IP håndtering"
+msgid "ispCP - Admin/IP manage"
+msgstr "ispCP - Admin/IP håndtering"
 
 msgid "New IP was added!"
 msgstr "Ny IP er tilføjet"
@@ -1045,8 +1046,8 @@ msgstr "Ingen subdomæne system fejl"
 msgid "No email account system errors"
 msgstr "Ingen emailkonto systemfejl"
 
-msgid "ISPCP debugger"
-msgstr "ISPCP Fejlliste"
+msgid "ispCP debugger"
+msgstr "ispCP Fejlliste"
 
 msgid "Domain errors"
 msgstr "Domænefejl"
@@ -1085,17 +1086,30 @@ msgstr ""
 msgid "Get it at"
 msgstr "Hent den på"
 
-msgid "ISPCP updates"
-msgstr "ISPCP Opdatering"
+msgid "ispCP updates"
+msgstr "ispCP Opdatering"
 
-msgid "Available ISPCP updates"
+msgid "Available ispCP updates"
 msgstr "Tilgænglige opdateringer"
 
-msgid "No new ISPCP updates available"
+msgid "No new ispCP updates available"
 msgstr "Ingen nye opdateringer til rådighed"
 
 msgid "Update details"
 msgstr "Opdater detaljer"
+
+msgid "User language updated successfully!"
+msgstr "Bruger sprog opdateret!"
+
+#, fuzzy
+msgid "ispCP - Admin/Change Language"
+msgstr "ispCP - Admin/IP håndtering"
+
+msgid "Language"
+msgstr "Vælg Sprog"
+
+msgid "Choose default language"
+msgstr "Vælg standard sprog"
 
 msgid "Upload file error!"
 msgstr "Fejl under upload af fil!"
@@ -1136,8 +1150,8 @@ msgstr "Vælg standard layout"
 msgid "Layout"
 msgstr ""
 
-msgid "ISPCP - Admin/Lostpw email setup"
-msgstr "ISPCP - Admin/Setup Glemt Adgangskode email"
+msgid "ispCP - Admin/Lostpw email setup"
+msgstr "ispCP - Admin/Setup Glemt Adgangskode email"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1157,8 +1171,8 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr "Forhandler liste er tom!"
 
-msgid "ISPCP - Admin/Manage users/Reseller assignment"
-msgstr "ISPCP - Admin/Håndtére bruger/Forhandler tildeling"
+msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgstr "ispCP - Admin/Håndtére bruger/Forhandler tildeling"
 
 msgid "Reseller assignment"
 msgstr "Forhandler tildeling"
@@ -1219,8 +1233,8 @@ msgstr ""
 msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
 msgstr ""
 
-msgid "ISPCP - Admin/Manage users/User assignment"
-msgstr "ISPCP - Admin/Håndtére bruger/Bruger tildeling"
+msgid "ispCP - Admin/Manage users/User assignment"
+msgstr "ispCP - Admin/Håndtére bruger/Bruger tildeling"
 
 msgid "User assignment"
 msgstr "Bruger tildeling"
@@ -1237,8 +1251,8 @@ msgstr "Fra forhandler"
 msgid "To reseller"
 msgstr "til Forhandler"
 
-msgid "ISPCP - Admin/Manage Sessions"
-msgstr "ISPCP - Admin/Håndtére Sessioner"
+msgid "ispCP - Admin/Manage Sessions"
+msgstr "ispCP - Admin/Håndtére Sessioner"
 
 msgid "Manage user sessions"
 msgstr "Håndtér brugere og sessioner"
@@ -1255,8 +1269,8 @@ msgstr "Muligheder"
 msgid "Kill session"
 msgstr "Afslut session"
 
-msgid "ISPCP - Admin/Manage Users"
-msgstr "ISPCP - Admin/Håndtére Bruger"
+msgid "ispCP - Admin/Manage Users"
+msgstr "ispCP - Admin/Håndtére Bruger"
 
 msgid "User added"
 msgstr "Bruger tilføjet"
@@ -1282,7 +1296,7 @@ msgstr "Bruger blev deaktiveret"
 msgid "Incorrect data input!"
 msgstr "Ukorrekt data input!"
 
-msgid "ISPCP - Admin/Internationalisation"
+msgid "ispCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Default language changed!"
@@ -1319,14 +1333,11 @@ msgstr "fjern"
 msgid "%d messages translated"
 msgstr ""
 
-msgid "Multilingual"
+msgid "Internationalisation"
 msgstr ""
 
 msgid "Installed languages"
 msgstr "Installerede sprog"
-
-msgid "Language"
-msgstr "Vælg Sprog"
 
 msgid "Messages"
 msgstr "Meddelser"
@@ -1346,8 +1357,8 @@ msgstr "Installér"
 msgid "Export"
 msgstr "Eksportér"
 
-msgid "ISPCP - Reseller statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Fandt ingen forhandlere i systemet!"
@@ -1378,15 +1389,15 @@ msgstr ""
 msgid "SQL user"
 msgstr "SQL bruger"
 
-msgid "ISPCP - Admin/Reseller User Statistics"
-msgstr "ISPCP - Admin/Forhandler Bruger Statistiker"
+msgid "ispCP - Admin/Reseller User Statistics"
+msgstr "ispCP - Admin/Forhandler Bruger Statistiker"
 
 #, php-format
-msgid "%1$d <br/>of</br> <b>%2$d</b>"
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of</br> <b>unlimited</b>"
+msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
@@ -1423,7 +1434,7 @@ msgstr ""
 msgid "SQL<br>user"
 msgstr "SQL<br>bruger"
 
-msgid "ISPCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
 msgstr ""
 
 msgid "The file doesn't exist or can't be read."
@@ -1432,8 +1443,8 @@ msgstr ""
 msgid "Rootkit Log Checker"
 msgstr ""
 
-msgid "ISPCP - Admin/Server day stats"
-msgstr "ISPCP - Admin/Server dag statistiker"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Server dag statistiker"
 
 msgid "Server day statistics"
 msgstr "Server statistik pr. dag"
@@ -1480,14 +1491,14 @@ msgstr "Alle<br>indgående"
 msgid "All out"
 msgstr "Alle<br>udgående"
 
-msgid "ISPCP - Admin/Server statistics"
-msgstr "ISPCP – Admin/Server statistiker"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP – Admin/Server statistiker"
 
 msgid "Server statistics"
 msgstr "Server statistik"
 
-msgid "ISPCP Admin / System Tools / Server Status"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Admin / System Tools / Server Status"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "UP"
 msgstr ""
@@ -1504,8 +1515,8 @@ msgstr ""
 msgid "Server status"
 msgstr ""
 
-msgid "ISPCP - Admin/Server Traffic Settings"
-msgstr "ISPCP – Admin/Server Trafik Indstillinger"
+msgid "ispCP - Admin/Server Traffic Settings"
+msgstr "ispCP – Admin/Server Trafik Indstillinger"
 
 msgid "Wrong data input!"
 msgstr "Forkert data input!"
@@ -1531,7 +1542,7 @@ msgstr "Max trafik [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Advarsel trafik [MB]"
 
-msgid "ISPCP - Admin/Servicemode"
+msgid "ispCP - Admin/Servicemode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1543,7 +1554,7 @@ msgstr ""
 msgid "In this mode only administrators can login"
 msgstr "Her kan kun administratorer logge ind"
 
-msgid "ISPCP - Admin/Settings"
+msgid "ispCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1636,8 +1647,8 @@ msgstr "Høj"
 msgid "Very high"
 msgstr "Meget høj"
 
-msgid "ISPCP - Client/Questions & Comments"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Questions & Comments"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Support tickets"
 msgstr "Support sager"
@@ -1663,8 +1674,8 @@ msgstr "[Ny]"
 msgid "[Re]"
 msgstr "[Vedr.]"
 
-msgid "ISPCP - Client/Enable Mail Autoresponder"
-msgstr "ISPCP - Kundenbereich / E-Mail Autobeantwortung einrichten"
+msgid "ispCP - Client/Enable Mail Autoresponder"
+msgstr "ispCP - Kundenbereich / E-Mail Autobeantwortung einrichten"
 
 msgid "From"
 msgstr "Fra"
@@ -1750,8 +1761,8 @@ msgstr "Åben Support sag"
 msgid "Close ticket"
 msgstr "Luk Support Sag"
 
-msgid "ISPCP - Client : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client : Support System: View Tickets"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Please type your message!"
 msgstr "Indtast din Meddelse!"
@@ -1765,7 +1776,7 @@ msgstr "Sagen blev lukket!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ISPCP - Admin : Support System: View Tickets"
+msgid "ispCP - Admin : Support System: View Tickets"
 msgstr ""
 
 msgid "View support ticket"
@@ -1777,7 +1788,7 @@ msgstr "Besvar til"
 msgid "Send reply"
 msgstr "Send svar"
 
-msgid "ISPCP Client : Add Alias"
+msgid "ispCP Client : Add Alias"
 msgstr ""
 
 msgid "Manage domain alias"
@@ -1866,8 +1877,8 @@ msgstr "Vælg en anden FTP konto mappe!"
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add FTP User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add FTP User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add FTP user"
 msgstr "Tilføj FTP bruger"
@@ -1920,8 +1931,8 @@ msgstr "Videresend-listen er tom"
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add Mail User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add Mail User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add mail users"
 msgstr "Tilføj email adresser"
@@ -1957,8 +1968,8 @@ msgstr "SQL database oprettet!"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ISPCP - Client/Add SQL Database"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add SQL Database"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add SQL database"
 msgstr "Tilføj SQL database"
@@ -1993,8 +2004,8 @@ msgstr "Subdomæne monteringspunkt eksisterer allerede!"
 msgid "Subdomain scheduled for addition!"
 msgstr "Subdomæne planlagt til oprettelse!"
 
-msgid "ISPCP - Client/Add Subdomain"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add Subdomain"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add subdomain"
 msgstr "Tilføj Subdomæne"
@@ -2011,8 +2022,8 @@ msgstr "Monteringspunkt"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Backup er planlagt til reetablering"
 
-msgid "ISPCP - Client/Daily Backup"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Daily Backup"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Backup"
 msgstr ""
@@ -2062,8 +2073,8 @@ msgstr "Ingen"
 msgid "Create catch all"
 msgstr "Opret FangAlle"
 
-msgid "ISPCP - Client/Manage Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage users"
 msgstr "Håndtér brugere"
@@ -2101,11 +2112,11 @@ msgstr "FTP brugere"
 msgid "FTP account"
 msgstr "FTP konto"
 
-msgid "ISPCP - Client/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Client/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "User does not exist or you do not have permission to access this interface!"
 msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
@@ -2116,8 +2127,8 @@ msgstr "FangAlle planlagt for oprettelse!"
 msgid "Mail forward list error!"
 msgstr "Mail videresend liste fejl!"
 
-msgid "ISPCP - Client/Create CatchAll Mail Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Create CatchAll Mail Account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Create catch all mail account"
 msgstr "Opret FangAlle email-konto"
@@ -2125,7 +2136,7 @@ msgstr "Opret FangAlle email-konto"
 msgid "Mail accounts list"
 msgstr "Mailkonti liste"
 
-msgid "ISPCP - Client/Cronjob Manager"
+msgid "ispCP - Client/Cronjob Manager"
 msgstr ""
 
 msgid "Cronjob Manager"
@@ -2201,8 +2212,8 @@ msgstr "Subdomæne planlagt til sletning!"
 msgid "Mail account scheduled for modification!"
 msgstr "Mailkonto planlagt til redigering!"
 
-msgid "ISPCP - Client/Domain Statistics"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Web Stats"
 msgstr ""
@@ -2219,8 +2230,8 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
-msgid "ISPCP - Manage Domain Alias/Edit Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit domain alias"
 msgstr "Rediger domænealias"
@@ -2242,8 +2253,8 @@ msgstr "De indtastede kodeord er forskellige!"
 msgid "FTP account data updated!"
 msgstr "FTP konto data opdateret!"
 
-msgid "ISPCP - Client/Edit FTP Account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Edit FTP Account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit FTP user"
 msgstr "Rediger FTP-bruger"
@@ -2263,8 +2274,8 @@ msgstr ""
 msgid "Mail were updated successfully!"
 msgstr "Mail blev opdateret succesfuldt!"
 
-msgid "ISPCP - Manage Mail and FTP / Edit mail account"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit email account"
 msgstr "Rediger email konto"
@@ -2275,8 +2286,8 @@ msgstr "Indtast din autosvar Meddelse!"
 msgid "Mail account scheduler for modification!"
 msgstr "Mailkonto planlagt til redigering!"
 
-msgid "ISPCP - Client/Enable Mail Auto Responder"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Enable Mail Auto Responder"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit mail auto responder"
 msgstr "Rediger Autorespond"
@@ -2293,7 +2304,7 @@ msgstr "Mailkonti liste er tom!"
 msgid "Enable mail auto responder"
 msgstr "Aktiver mail autosvarer"
 
-msgid "ISPCP - Client/Manage Error Custom Pages"
+msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr ""
 
 msgid "Server error - please choose error page"
@@ -2338,8 +2349,8 @@ msgstr "Ovenliggende mappe"
 msgid "Protect it"
 msgstr "Beskyt det"
 
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Webtools"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Directory tree"
 msgstr "Monteringspunkt"
@@ -2367,8 +2378,8 @@ msgstr "Du overskrider din disk grænse!"
 msgid "You have no new support questions!"
 msgstr "Du har ingen support spørgsmål!"
 
-msgid "ISPCP - Client/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "General information"
 msgstr "Generel information"
@@ -2382,19 +2393,13 @@ msgstr "Hoveddomæne"
 msgid "SQL support"
 msgstr ""
 
-msgid "Choose default language"
-msgstr "Vælg standard sprog"
-
 msgid "Traffic usage"
 msgstr "Trafik forbrug"
 
 msgid "Disk usage"
 msgstr "Diskforbrug"
 
-msgid "User language updated successfully!"
-msgstr "Bruger sprog opdateret!"
-
-msgid "ISPCP - Client/Change Language"
+msgid "ispCP - Client/Change Language"
 msgstr ""
 
 msgid "Subdomain list is empty!"
@@ -2403,8 +2408,8 @@ msgstr "Subdomæne liste er tom!"
 msgid "Alias list is empty!"
 msgstr "Alias listen er tom!"
 
-msgid "ISPCP - Client/Manage Domains"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage Domains"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage domains"
 msgstr "Håndtér domæner"
@@ -2425,8 +2430,8 @@ msgstr "Databasebrugerlisten er tom!"
 msgid "Database list is empty!"
 msgstr "Databaselisten er tom!"
 
-msgid "ISPCP - Client/Manage SQL"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Manage SQL"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
@@ -2446,8 +2451,8 @@ msgstr "Indtast meddelses emne!"
 msgid "Your message was sent!"
 msgstr "Din Meddelse er sendt!"
 
-msgid "ISPCP - Support system - New ticket"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Support system - New ticket"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "New ticket"
 msgstr "Ny Sag"
@@ -2608,8 +2613,8 @@ msgstr "SQL brugernavn eksisterer allerede!"
 msgid "SQL user successfully added!"
 msgstr "SQL bruger til tilføjet!"
 
-msgid "ISPCP - Client/Add SQL User"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Add SQL User"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "SQL user name"
 msgstr "SQL Brugernavn"
@@ -2632,8 +2637,8 @@ msgstr "For lang bruger adgangskode!"
 msgid "SQL user password was successfully changed!"
 msgstr "SQL bruger adgangskode blev opdateret!"
 
-msgid "ISPCP - Client/Change SQL User Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Change SQL User Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Change SQL user password"
 msgstr "Ændre SQL bruger adgangskode"
@@ -2660,8 +2665,8 @@ msgstr "Udfør SQL forespørgsel"
 msgid "Execution of SQL query succeeded!"
 msgstr "Udfør SQL forespørgsel"
 
-msgid "ISPCP - Client/Execute SQL Query"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Client/Execute SQL Query"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Execute SQL query"
 msgstr "Udfør SQL forespørgsel"
@@ -2728,7 +2733,7 @@ msgstr "Ub."
 msgid "There are no available hosting plans for update"
 msgstr "Der er ingen tilgængelige Hosting Planer til opdatering"
 
-msgid "ISPCP - Update hosting plan"
+msgid "ispCP - Update hosting plan"
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -3143,7 +3148,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ISPCP control panel for more details.\n"
+"Please login into your ispCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -3216,8 +3221,8 @@ msgstr ""
 msgid "Your Own Domain"
 msgstr "Dit Eget Domæne"
 
-msgid "ISPCP Control Panel"
-msgstr "ISPCP Administrationsoberfläche"
+msgid "ispCP Control Panel"
+msgstr "ispCP Administrationsoberfläche"
 
 msgid "Automatic Updates"
 msgstr "Automatisk opdateringer"
@@ -3231,23 +3236,23 @@ msgstr "Setup Gebyr"
 msgid "Performance"
 msgstr "Præstation"
 
-msgid "ISPCP Reseller : Add Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP Reseller : Add Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "You have no user records."
 msgstr "Du har ingen bruger records."
 
-msgid "ISPCP - Reseller/Add hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Add hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Reseller/Change Password"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Change Password"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Reseller/Change Personal Data"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Change Personal Data"
+msgstr "ispCP - Virtual Hosting Control System"
 
-msgid "ISPCP - Circular"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Circular"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Circular"
 msgstr "Rundsend"
@@ -3267,8 +3272,8 @@ msgstr "Domænet du prøver at fjerne har domænealias!<br>Fjern dem først !"
 msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
 msgstr "Domænet du prøver at fjerne har underdomæne konti !<br> Fjern dem først."
 
-msgid "ISPCP - Manage Domain/Alias"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Manage Domain/Alias"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Manage alias"
 msgstr "Håndtér alias"
@@ -3300,8 +3305,8 @@ msgstr "Domænealias ikke ændret!"
 msgid "User terminated!"
 msgstr "Bruger slettet!"
 
-msgid "ISPCP - Domain/Edit"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Domain/Edit"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Edit Domain"
 msgstr "Rediger domæne"
@@ -3354,8 +3359,8 @@ msgstr ""
 msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
-msgid "ISPCP - Users/Edit"
-msgstr "ISPCP Benutzer bearbeiten"
+msgid "ispCP - Users/Edit"
+msgstr "ispCP Benutzer bearbeiten"
 
 msgid "Edit user"
 msgstr "Rediger bruger"
@@ -3363,8 +3368,8 @@ msgstr "Rediger bruger"
 msgid "Users list"
 msgstr "Bruger liste"
 
-msgid "ISPCP - Reseller/Edit hosting plan"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Edit hosting plan"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View hosting plan"
 msgstr "Se Hosting Pakker"
@@ -3375,11 +3380,11 @@ msgstr ""
 msgid "Incorrect setup fee!"
 msgstr ""
 
-msgid "ISPCP - Reseller/Manage users/Email setup"
+msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ISPCP - Reseller/Main Index"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View details"
 msgstr "Se Detaljer"
@@ -3401,8 +3406,12 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ISPCP - Reseller/Lostpw email setup"
-msgstr "ISPCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
+#, fuzzy
+msgid "ispCP - Reseller/Change Language"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "ispCP - Reseller/Lostpw email setup"
+msgstr "ispCP - Reseller/Kennwort vergessen E-Mmail Einstellungen'"
 
 msgid "Lostpw email"
 msgstr "Glemt Adgangskode til E-Mail"
@@ -3410,7 +3419,7 @@ msgstr "Glemt Adgangskode til E-Mail"
 msgid "Lostpw link"
 msgstr "Aktiveringslink"
 
-msgid "ISPCP - Reseller/Order email setup"
+msgid "ispCP - Reseller/Order email setup"
 msgstr ""
 
 msgid "Manage orders"
@@ -3425,7 +3434,7 @@ msgstr "Bruger tilføjet!"
 msgid "Customer order was removed successful!"
 msgstr "Kunde Ordre er slettet!"
 
-msgid "ISPCP - Reseller/Order details"
+msgid "ispCP - Reseller/Order details"
 msgstr ""
 
 msgid "Order data updated successfully!"
@@ -3455,7 +3464,7 @@ msgstr "Er du sikker på du vil slette denne ordre?"
 msgid "Add to the system"
 msgstr "Tilføj til systemet"
 
-msgid "ISPCP - Reseller/Order settings"
+msgid "ispCP - Reseller/Order settings"
 msgstr ""
 
 msgid "Header"
@@ -3467,10 +3476,14 @@ msgstr "Prøvese"
 msgid "Implementation URL"
 msgstr " URL"
 
+#, php-format
+msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
+msgstr ""
+
 msgid "Footer"
 msgstr "Fod"
 
-msgid "ISPCP - Reseller/Order management"
+msgid "ispCP - Reseller/Order management"
 msgstr ""
 
 msgid "You do not have new orders!"
@@ -3491,8 +3504,8 @@ msgstr "Bestilling"
 msgid "Add/Details"
 msgstr "Tilfø/Detaljer"
 
-msgid "ISPCP - Users/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users/Add user"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Choose hosting plan"
 msgstr "Vælg hosting plan"
@@ -3506,8 +3519,8 @@ msgstr "Næste trin"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ISPCP - User/Add user(step2)"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - User/Add user(step2)"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -3521,8 +3534,8 @@ msgstr ""
 msgid "Awstats"
 msgstr ""
 
-msgid "ISPCP - User/Add user"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - User/Add user"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Add other domains to this account"
 msgstr "Tilføj andre domæner til denne konto"
@@ -3536,8 +3549,8 @@ msgstr ""
 msgid "This reseller has no domains yet."
 msgstr "Denne Forhandler har endnu ingen Domæner."
 
-msgid "ISPCP - Users"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Users"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Stats"
 msgstr "Statistik"
@@ -3560,8 +3573,8 @@ msgstr "Denne bruger har et domæne! <br>For at slette brugere skal du første s
 msgid "User not terminated!"
 msgstr "Bruger ikke slettet!"
 
-msgid "ISPCP - Reseller : Support System: View Tickets"
-msgstr "ISPCP - Virtual Hosting Control System"
+msgid "ispCP - Reseller : Support System: View Tickets"
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"

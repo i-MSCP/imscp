@@ -198,7 +198,7 @@ gen_page_message($tpl);
 						'TR_CUSTOM_LOGS' => tr('Custom Apache Logs'),
 						'TR_ONLINE_SUPPORT' => tr('Web & E-Mail Support'),
 						'TR_OWN_DOMAIN' => tr('Your Own Domain'),
-						'TR_ISPCP' => tr('ISPCP Control Panel'),
+						'TR_ISPCP' => tr('ispCP Control Panel'),
 						'TR_UPDATES' => tr('Automatic Updates'),
 						'TR_PRICE' => tr('Price'),
 						'TRR_PRICE' => tr('Package Price'),
