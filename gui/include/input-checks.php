@@ -330,7 +330,7 @@ function check_dn_rsl_token($data) {
 
 /**
  *  @function		chk_dname
- *  @description	Function for checking ISPCP domains syntax. Here domains are
+ *  @description	Function for checking ispCP domains syntax. Here domains are
  * 					limited to {dname}.{ext} parts
  *
  * 	@param		String		$dname		ispcp domain data
@@ -549,7 +549,7 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 /**
 * Description:
 *
-* Function for checking ISPCP subdomain syntax. Here subdomains are
+* Function for checking ispCP subdomain syntax. Here subdomains are
 * limited to {subname}.{dname}.{ext} parts. Data passed to this
 * function must be in the upper form, not only subdomain part for
 * example.

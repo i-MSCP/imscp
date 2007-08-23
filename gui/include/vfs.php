@@ -38,7 +38,7 @@ define('VFS_BINARY', FTP_BINARY);
 /**
  * Virtual File System main class
  *
- * This class allows the ISPCP Control panel to browse and
+ * This class allows the ispCP Control panel to browse and
  * edit all of the user files
  */
 class vfs {
@@ -125,7 +125,7 @@ class vfs {
 	}
 
 	/**
-	 * Set ISPCP DB handler
+	 * Set ispCP DB handler
 	 *
 	 * The system uses a "global" $sql variable to store the DB
 	 * handler, but we're a "black box" ;).

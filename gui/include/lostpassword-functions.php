@@ -391,7 +391,7 @@ SQL_QUERY;
 
  	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
- 	$headers .= "X-Mailer: ISPCP lostpassword mailer";
+ 	$headers .= "X-Mailer: ispCP lostpassword mailer";
 
  	$mail_result = mail($to, encode($subject), $message, $headers);
 

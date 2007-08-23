@@ -34,7 +34,7 @@ $tpl -> define_dynamic('day_list', 'page');
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('ISPCP - Admin/Server statistics'),
+$tpl -> assign(array('TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('ispCP - Admin/Server statistics'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISP_LOGO' => get_logo($_SESSION['user_id']),

@@ -34,7 +34,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ISPCP Admin / System Tools / Server Status'),
+                        'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ispCP Admin / System Tools / Server Status'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -74,10 +74,12 @@ class status {
 				$service = $this->all[$i]['service'];
 				$errno  = null;
 				$errstr = null;
-				if($this->all[$i]['type'] == 'tcp')	{
+				if ($this->all[$i]['type'] == 'tcp') {
 					$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
-				} else {
+				} else if ($this->all[$i]['type'] == 'udp') {
 					$fp = @fsockopen('udp://'.$ip, $port, $errno, $errstr, $timeout);
+				} else {
+					die('FIXME: ' . __FILE__ . ':' . __LINE__);
 				}
 
 				if($fp) {
@@ -108,9 +110,12 @@ class status {
 		    $errstr = null;
 			if($type == 'tcp'){
 				$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
+			} else if ($type == 'udp') {
+			    $fp = @fsockopen('udp://'.$ip, $port, $errno, $errstr, $timeout);
 			} else {
-				$fp = @fsockopen('udp://'.$ip, $port, $errno, $errstr, $timeout);
+			    die('FIXME: ' . __FILE__ . ':' . __LINE__);
 			}
+
 			if($fp)	{
 				fclose($fp);
 				return TRUE;

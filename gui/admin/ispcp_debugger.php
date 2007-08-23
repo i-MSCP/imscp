@@ -482,7 +482,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+                        'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -502,7 +502,7 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(
         array(
-                'TR_DEBUGGER_TITLE' => tr('ISPCP debugger'),
+                'TR_DEBUGGER_TITLE' => tr('ispCP debugger'),
 				'TR_DOMAIN_ERRORS' => tr('Domain errors'),
 				'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
 				'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),

@@ -224,7 +224,7 @@ SQL_QUERY;
 
 $tpl -> assign(
     array(
-        'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ISPCP - Admin/Manage users/Reseller assignment'),
+        'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
         'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),

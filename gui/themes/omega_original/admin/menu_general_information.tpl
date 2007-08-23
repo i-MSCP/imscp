@@ -30,6 +30,12 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
   <tr>
+    <td><a href="language.php" class="submenu">{TR_MENU_LANGUAGE}</a></td>
+  </tr>
+  <tr>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
+  </tr>
+  <tr>
     <td><a href="server_status.php" class="submenu">{TR_MENU_SERVER_STATUS}</a></td>
   </tr>
   <tr>

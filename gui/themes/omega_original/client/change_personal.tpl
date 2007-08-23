@@ -60,6 +60,11 @@
                         <td width="516" class="content"><input type="text" name="lname" value="{LAST_NAME}" style="width:210px" class="textinput"></td>
                       </tr>
                       <tr>
+                        <td width="25">&nbsp;</td>
+                        <td width="200" class="content2">{TR_GENDER}</td>
+                        <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
+                      </tr>
+                      <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_COMPANY}</td>
                         <td class="content"><input type="text" name="firm" value="{FIRM}" style="width:210px" class="textinput"></td>

@@ -58,7 +58,7 @@ function update_logo()
             return ;
         }
 
-        update_user_gui_props('', $user_id);
+        update_user_logo('', $user_id);
         unlink($logo);
 
         return;
@@ -108,14 +108,14 @@ function update_logo()
             move_uploaded_file($fname, $logoFile);
             chmod ($logoFile, 0644);
 
-            update_user_gui_props($newFName, $user_id);
+            update_user_logo($newFName, $user_id);
 
             set_page_message(tr('Your logo was successful uploaded!'));
 
     }
 }
 
-function update_user_gui_props($file_name, $user_id) {
+function update_user_logo($file_name, $user_id) {
     global $sql;
 
     $query = <<<SQL_QUERY
@@ -151,7 +151,7 @@ gen_def_layout($tpl, $_SESSION['user_theme']);
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+                        'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
                         'OWN_LOGO' => get_own_logo($_SESSION['user_id']),

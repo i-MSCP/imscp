@@ -65,7 +65,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_SYSTEM_INFO_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+                        'TR_ADMIN_SYSTEM_INFO_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),

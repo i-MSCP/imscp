@@ -314,7 +314,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
     array(
-            'TR_ADMIN_CUSTOM_MENUS_PAGE_TITLE' => tr('ISPCP - Admin - Manage custom menus'),
+            'TR_ADMIN_CUSTOM_MENUS_PAGE_TITLE' => tr('ispCP - Admin - Manage custom menus'),
             'THEME_COLOR_PATH' => "../themes/$theme_color",
             'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),

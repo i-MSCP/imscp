@@ -36,7 +36,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
     array(
-        'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('ISPCP - Admin/Server day stats'),
+        'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('ispCP - Admin/Server day stats'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
         'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),

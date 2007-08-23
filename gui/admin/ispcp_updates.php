@@ -49,7 +49,7 @@ function get_update_infos(&$tpl) {
 	   $tpl -> assign(
 				array(
 						'UPDATE_MESSAGE' =>  '',
-						'UPDATE' =>  tr('New ISPCP update is now available'),
+						'UPDATE' =>  tr('New ispCP update is now available'),
 						'INFOS' => tr('Get it at')." <a href=\"".$info_url."\" class=\"link\" target=\"ispcp\">".$info_url."</a>"
 					 )
 			  );
@@ -78,7 +78,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ISPCP - Virtual Hosting Control System'),
+                        'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -99,9 +99,9 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(
         array(
-                'TR_UPDATES_TITLE' => tr('ISPCP updates'),
-				'TR_AVAILABLE_UPDATES' => tr('Available ISPCP updates'),
-				'TR_MESSAGE' => tr('No new ISPCP updates available'),
+                'TR_UPDATES_TITLE' => tr('ispCP updates'),
+				'TR_AVAILABLE_UPDATES' => tr('Available ispCP updates'),
+				'TR_MESSAGE' => tr('No new ispCP updates available'),
 				'TR_UPDATE' => tr('Update'),
 				'TR_INFOS' => tr('Update details'),
 

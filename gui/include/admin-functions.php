@@ -97,14 +97,15 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_ADMIN_LOG' => tr('Admin log'),
 						'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
 						'TR_MENU_SYSTEM_INFO' => tr('System info'),
-						'TR_MENU_I18N' => tr('Multilingual'),
+						'TR_MENU_I18N' => tr('Internationalisation'),
+		                'TR_MENU_LANGUAGE' => tr('Language'),
 						'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
 						'TR_MENU_LOGOUT' => tr('Logout'),
 						'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
 						'TR_MENU_SERVER_TRAFFIC_SETTINGS'=> tr('Server traffic settings'),
 						'TR_MENU_SERVER_STATUS'=> tr('Server status'),
-						'TR_MENU_ISPCP_UPDATE'=> tr('ISPCP updates'),
-						'TR_MENU_ISPCP_DEBUGGER'=> tr('ISPCP debugger'),
+						'TR_MENU_ISPCP_UPDATE'=> tr('ispCP updates'),
+						'TR_MENU_ISPCP_DEBUGGER'=> tr('ispCP debugger'),
 						'TR_CUSTOM_MENUS' => tr('Custom menus'),
 						'TR_MENU_OVERVIEW' => tr('Overview'),
 						'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
@@ -208,7 +209,8 @@ $tpl -> assign(
 				'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
 				'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 				'TR_MENU_SYSTEM_INFO' => tr('System info'),
-				'TR_MENU_I18N' => tr('Multilingual'),
+				'TR_MENU_I18N' => tr('Internationalisation'),
+		        'TR_MENU_LANGUAGE' => tr('Language'),
 				'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
 				'TR_MENU_LOGOUT' => tr('Logout'),
 				'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
@@ -216,8 +218,8 @@ $tpl -> assign(
 				'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 				'TR_MENU_SERVER_TRAFFIC_SETTINGS'=> tr('Server traffic settings'),
 				'TR_MENU_SERVER_STATUS'=> tr('Server status'),
-				'TR_MENU_ISPCP_UPDATE'=> tr('ISPCP updates'),
-				'TR_MENU_ISPCP_DEBUGGER'=> tr('ISPCP debugger'),
+				'TR_MENU_ISPCP_UPDATE'=> tr('ispCP updates'),
+				'TR_MENU_ISPCP_DEBUGGER'=> tr('ispCP debugger'),
 				'TR_CUSTOM_MENUS' => tr('Custom menus'),
 				'TR_MENU_OVERVIEW' => tr('Overview'),
 				'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
@@ -1738,7 +1740,7 @@ Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-		$headers = "From: ISPCP  Logging Daemon <$admin_email>\n";
+		$headers = "From: ispCP  Logging Daemon <$admin_email>\n";
 
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
@@ -1824,7 +1826,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
-	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Service Mailer";
+	$headers .=	"X-Mailer: ispCP ".$cfg['Version']." Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -2629,7 +2631,7 @@ $header = <<<RIC
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
-<title>ISPCP - Order Panel</title>
+<title>ispCP - Order Panel</title>
 </style>
 </head>
 <center>
@@ -2735,7 +2737,7 @@ SQL_QUERY;
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
-	$headers .=	"X-Mailer: ISPCP ".$cfg['Version']." Tickets Mailer";
+	$headers .=	"X-Mailer: ispCP ".$cfg['Version']." Tickets Mailer";
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';

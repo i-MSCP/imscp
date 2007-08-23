@@ -81,37 +81,4 @@ function split_date($date) {
 
 }
 
-function gettimestr() {
-	global $cfg;
-
-	if (isset($_SESSION['user_def_lang']))
-		$lang = strtolower($_SESSION['user_def_lang']);
-	else
-		$lang = '';
-	switch ($lang) {
-		case "lang_german";
-			return date("G:i");
-		break;
-	default:
-		return date("g:i a");
-	}
-}
-
-function getdatestr() {
-	global $cfg;
-
-	if (isset($_SESSION['user_def_lang']))
-		$lang = strtolower($_SESSION['user_def_lang']);
-	else
-		$lang = '';
-	switch ($lang) {
-		case "lang_german";
-			setlocale (LC_TIME, 'de_DE');
-			return strftime('%A, %d. %B %Y');
-		break;
-	default:
-		return date("l dS \o\f F Y");
-	}
-}
-
 ?>

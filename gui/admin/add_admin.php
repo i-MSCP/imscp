@@ -23,7 +23,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/add_user.tpl');
+$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/add_admin.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
 
@@ -31,7 +31,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('ISPCP - Admin/Manage users/Add User'),
+                        'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Add User'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),

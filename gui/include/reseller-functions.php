@@ -1721,7 +1721,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 Dear {RESELLER},
 you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
 
-Please login into your ISPCP control panel for more details.
+Please login into your ispCP control panel for more details.
 
 ');
 	$search [] = '{RESELLER}';

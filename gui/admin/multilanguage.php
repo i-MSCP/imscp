@@ -34,7 +34,7 @@ $theme = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
 	array(
-			'TR_ADMIN_I18N_PAGE_TITLE' => tr('ISPCP - Admin/Internationalisation'),
+			'TR_ADMIN_I18N_PAGE_TITLE' => tr('ispCP - Admin/Internationalisation'),
 			'THEME_COLOR_PATH' => "../themes/$theme",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -326,7 +326,7 @@ show_lang($tpl, $sql);
 
 $tpl -> assign(
 	array(
-		'TR_MULTILANGUAGE' => tr('Multilingual'),
+		'TR_MULTILANGUAGE' => tr('Internationalisation'),
 		'TR_INSTALLED_LANGUAGES' => tr('Installed languages'),
 		'TR_LANGUAGE' => tr('Language'),
 		'TR_MESSAGES' => tr('Messages'),

@@ -65,7 +65,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
  */
 
 $tpl -> assign(array(
-        	'TR_ADMIN_MANAGE_EMAIL_SETUP_PAGE_TITLE' => tr('ISPCP - Admin/Manage users/Email setup'),
+        	'TR_ADMIN_MANAGE_EMAIL_SETUP_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Email setup'),
         	'THEME_COLOR_PATH' => "../themes/$theme_color",
         	'THEME_CHARSET' => tr('encoding'),
         	'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

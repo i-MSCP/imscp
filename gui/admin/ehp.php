@@ -52,7 +52,7 @@ global	$hpid;
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_hp.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_hp.tpl');
 
-$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Administrator/Edit hosting plan'),
+$tpl -> assign(array('TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Edit hosting plan'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

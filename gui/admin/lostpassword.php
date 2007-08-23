@@ -75,7 +75,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
  *
  */
 
-$tpl -> assign(array('TR_LOSTPW_EMAL_SETUP' => tr('ISPCP - Admin/Lostpw email setup'),
+$tpl -> assign(array('TR_LOSTPW_EMAL_SETUP' => tr('ispCP - Admin/Lostpw email setup'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
                      'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

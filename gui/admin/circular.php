@@ -258,7 +258,7 @@ function send_circular_email ($to, $from, $subject, $message)
 
     $headers .= "MIME-Version: 1.0\nContent-Type: text/plain\nContent-Transfer-Encoding: 8bit\n";
 
-    $headers .= "X-Mailer: ISPCP marketing mailer";
+    $headers .= "X-Mailer: ispCP marketing mailer";
 
 	mail($to, $subject, $message, $headers);
 

@@ -248,7 +248,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ISPCP - Client : Support System: View Tickets'),
+                        'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client : Support System: View Tickets'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -508,7 +508,7 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_support_system.tpl');
 
 $tpl -> assign(
                 array(
-						'TR_SUPPORT_SYSTEM' => tr('ISPCP - Admin : Support System: View Tickets'),
+						'TR_SUPPORT_SYSTEM' => tr('ispCP - Admin : Support System: View Tickets'),
                         'TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 						'TR_TICKET_URGENCY' => tr('Priority'),
 						'TR_TICKET_SUBJECT' => tr('Subject'),

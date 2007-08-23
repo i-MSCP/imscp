@@ -77,7 +77,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_MANAGE_USERS_PAGE_TITLE' => tr('ISPCP - Admin/Manage Users'),
+                        'TR_ADMIN_MANAGE_USERS_PAGE_TITLE' => tr('ispCP - Admin/Manage Users'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),

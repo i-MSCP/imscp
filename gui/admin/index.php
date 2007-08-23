@@ -99,7 +99,7 @@ function get_update_infos(&$tpl) {
 
 	$current_version = (int)$cfg['BuildDate'];
 	if ($current_version < $last_update_result) {
-		$tpl -> assign(array('UPDATE' =>  '<a href="ispcp_updates.php" class=\"link\">' . tr('New ISPCP update is now available') . '</a>'));
+		$tpl -> assign(array('UPDATE' =>  '<a href="ispcp_updates.php" class=\"link\">' . tr('New ispCP update is now available') . '</a>'));
 		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
 	} else {
 		$tpl -> assign(array('UPDATE_MESSAGE' => ''));
@@ -170,7 +170,7 @@ SQL_QUERY;
 
     $tpl -> assign(
             array(
-                    'TRAFFIC_WARNING' => tr('%1$d % [%2$d of %3$d]', $pr, sizeit($mtraff), $show_straf_max),
+                    'TRAFFIC_WARNING' => tr('%1$d %% [%2$d of %3$d]', $pr, sizeit($mtraff), $show_straf_max),
                     'BAR_VALUE' => $bar_value,
                     )
             );
@@ -186,7 +186,7 @@ SQL_QUERY;
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ISPCP - Admin/Main Index'),
+                        'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Admin/Main Index'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'ISP_LOGO' => get_logo($_SESSION['user_id']),
                         'THEME_CHARSET' => tr('encoding'),

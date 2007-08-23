@@ -35,7 +35,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
 				array(
-						'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ISPCP - Admin/Settings'),
+						'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
 						'THEME_COLOR_PATH' => "../themes/$theme_color",
 						'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo(get_session('user_id')),
@@ -117,6 +117,11 @@ SQL_QUERY;
 function delete_service($port_name) {
 	global $sql;
 
+	if (!is_basicString($port_name)) {
+	    set_page_message(tr('ERROR: Only Letters, Numbers, Dash and Underscore are allowed!'));
+	    return;
+	}
+
 	$query = <<<SQL_QUERY
 		SELECT
 			*
@@ -143,7 +148,7 @@ SQL_QUERY;
 		set_page_message('Service port was removed!');
 
 	} else {
-		set_page_message('ERROR: You are not allowed to remove Systemports!');
+		set_page_message('ERROR: You are not allowed to remove this port entry!');
 	}
 
 	header( "Location: settings_ports.php" );
