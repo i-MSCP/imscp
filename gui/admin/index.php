@@ -145,8 +145,6 @@ SQL_QUERY;
    	    $pr = ($traff/$straff_max)*100;
    	}
 
-	$pr = sprintf("%.2f", $pr);
-
     if(($straff_max != 0 || $straff_max != '') && ($mtraff > $straff_max)){
 
             $tpl -> assign(
@@ -160,17 +158,18 @@ SQL_QUERY;
 
     $bar_value = calc_bar_value($traff, $straff_max , 400);
 
+    $traff_msg = '';
 	if ($straff_max == 0) {
-		$show_straf_max = tr('unlimited');
+	    $traff_msg = tr('%1$.2f %% [%2$d of unlimited]', $pr, sizeit($mtraff));
 	} else {
-		$show_straf_max = sizeit($straff_max);
+	    $traff_msg = tr('%1$.2f %% [%2$d of %3$d]', $pr, sizeit($mtraff), sizeit($straff_max));
 	}
 
 
 
     $tpl -> assign(
             array(
-                    'TRAFFIC_WARNING' => tr('%1$d %% [%2$d of %3$d]', $pr, sizeit($mtraff), $show_straf_max),
+                    'TRAFFIC_WARNING' => $traff_msg,
                     'BAR_VALUE' => $bar_value,
                     )
             );

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-23 13:37-0500\n"
+"POT-Creation-Date: 2007-08-23 15:09-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1010,7 +1010,11 @@ msgid "You are exceeding your traffic limit!"
 msgstr "Prekročili ste Váš limit!"
 
 #, fuzzy, php-format
-msgid "%1$d %% [%2$d of %3$d]"
+msgid "%1$.2f %% [%2$d of unlimited]"
+msgstr "%1$s%% [%2$s of nebmedzených]"
+
+#, fuzzy, php-format
+msgid "%1$.2f %% [%2$d of %3$d]"
 msgstr "%1$s%% [%2$s z %3$s]"
 
 msgid "ispCP - Admin/Main Index"

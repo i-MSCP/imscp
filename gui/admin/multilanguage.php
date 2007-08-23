@@ -110,7 +110,7 @@ function install_lang() {
 		$file_type = $_FILES['lang_file']['type'];
 		$file = $_FILES['lang_file']['tmp_name'];
 
-		if (empty($_FILES['lang_file']['name']) || !file_exists($file) || is_readable($file)) {
+		if (empty($_FILES['lang_file']['name']) || !file_exists($file) || !is_readable($file)) {
 			set_page_message(tr('Upload file error!'));
 			return;
 		}

@@ -7,6 +7,7 @@ USE ispcp;
 
 -- BEGIN: Upgrade database structure:
 ALTER TABLE `admin` ADD `uniqkey_time` TIMESTAMP NULL ;
+ALTER TABLE `admin` ADD `gender` varchar(1) default NULL ;
 
 CREATE TABLE `config` (
   `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',

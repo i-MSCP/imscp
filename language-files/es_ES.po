@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-23 13:37-0500\n"
+"POT-Creation-Date: 2007-08-23 15:09-0500\n"
 "PO-Revision-Date: 2007-08-22 20:13+0100\n"
 "Last-Translator: Albert Garcia <albert@twentic.com>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -985,7 +985,11 @@ msgid "You are exceeding your traffic limit!"
 msgstr "¡Está excediendo su limite de trafico!"
 
 #, fuzzy, php-format
-msgid "%1$d %% [%2$d of %3$d]"
+msgid "%1$.2f %% [%2$d of unlimited]"
+msgstr "%1$s%% [%2$s de ilimitados]"
+
+#, fuzzy, php-format
+msgid "%1$.2f %% [%2$d of %3$d]"
 msgstr "%1$d % [%2$d de %3$d]"
 
 msgid "ispCP - Admin/Main Index"

@@ -60,47 +60,47 @@
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{DOMAINS}</td>
-            <td width="230" class="content2">{DMN_MSG}</b></td>
+            <td width="230" class="content2">{DMN_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{SUBDOMAINS}</td>
-            <td width="230" class="content2">{SUB_MSG}</b></td>
+            <td width="230" class="content2">{SUB_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{ALIASES}</td>
-            <td width="230" class="content2">{ALS_MSG}</b></td>
+            <td width="230" class="content2">{ALS_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{MAIL_ACCOUNTS}</td>
-            <td width="230" class="content2">{MAIL_MSG}</b></td>
+            <td width="230" class="content2">{MAIL_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TR_FTP_ACCOUNTS}</td>
-            <td width="230" class="content2">{FTP_MSG}</b></td>
+            <td width="230" class="content2">{FTP_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{SQL_DATABASES}</td>
-            <td width="230" class="content2">{SQL_DB_MSG}</b></td>
+            <td width="230" class="content2">{SQL_DB_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{SQL_USERS}</td>
-            <td width="230" class="content2">{SQL_USER_MSG}</b></td>
+            <td width="230" class="content2">{SQL_USER_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TRAFFIC}</td>
-            <td width="230" class="content2">{TRAFF_MSG}</b></td>
+            <td width="230" class="content2">{TRAFF_MSG}</td>
           </tr>
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{DISK}</td>
-            <td width="230" class="content2">{DISK_MSG}</b></td>
+            <td width="230" class="content2">{DISK_MSG}</td>
           </tr>
           <!-- BDP: msg_entry -->
           <td>&nbsp;</td>

@@ -6,6 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-23 Raphael Geissert
+    - GUI:
+        * Fixed #592: Upload file error! message when installing a new language
+        * Fixed #593: errors in transfer display
+        * Fixed #577: Undefined index: gender in admin/add_reseller.php
+    - SETUP:
+        * Missing alter table in vhcs2ispcp.sql for gender
+    - ENGINE:
+        * Fixed #587: error in restore-function
+
 2007-08-22 Raphael Geissert
     - GUI:
         * Fixed #586: deleting domain-alias does not work when domain has ftp accounts

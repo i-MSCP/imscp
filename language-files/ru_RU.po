@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-23 13:37-0500\n"
+"POT-Creation-Date: 2007-08-23 15:09-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -987,7 +987,11 @@ msgid "You are exceeding your traffic limit!"
 msgstr "Вы превысили Ваше ограничение трафика!"
 
 #, php-format
-msgid "%1$d %% [%2$d of %3$d]"
+msgid "%1$.2f %% [%2$d of unlimited]"
+msgstr ""
+
+#, php-format
+msgid "%1$.2f %% [%2$d of %3$d]"
 msgstr ""
 
 msgid "ispCP - Admin/Main Index"

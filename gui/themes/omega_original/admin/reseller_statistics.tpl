@@ -115,7 +115,7 @@
                                   </tr>
                                 </table>
                                   <b>{DISK_SHOW_PERCENT}&nbsp;%</b><br />
-                                {DISK_MSG}</b></td>
+                                {DISK_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DMN_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_MSG}</td>
                               <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_MSG}</td>

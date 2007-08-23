@@ -191,8 +191,8 @@ SQL_QUERY;
                             'STREET_2' => clean_input($_POST['street2']),
                             'PHONE' => clean_input($_POST['phone']),
                             'FAX' => clean_input($_POST['fax']),
-                            'VL_MALE' => ($_POST['gender'] == 'M')? 'checked' : '',
-                            'VL_FEMALE' => ($_POST['gender'] == 'F')? 'checked' : '',
+                            'VL_MALE' => (isset($_POST['gender']) && $_POST['gender'] == 'M')? 'checked' : '',
+                            'VL_FEMALE' => (isset($_POST['gender']) && $_POST['gender'] == 'F')? 'checked' : ''
                         )
                 );
          }
