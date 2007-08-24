@@ -74,3 +74,4 @@ tar
 wget
 bash
 libnet-libidn-perl
+php4-idn

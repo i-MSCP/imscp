@@ -156,7 +156,7 @@ SQL_QUERY;
 	$ip_data =  $ipdat['ip_number'].' ('.$ipdat['ip_alias'].')';
 
 	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify'))
-		$url_forward = get_punny($_POST['forward']);
+		$url_forward = encode_idna($_POST['forward']);
 	else
 		$url_forward = $data['url_forward'];
 

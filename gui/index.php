@@ -29,7 +29,7 @@ init_login();
 
 if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) && !empty($_POST['upass'])) {
 
-	$uname = get_punny($_POST['uname']);
+	$uname = encode_idna($_POST['uname']);
 
 	check_input($_POST['uname']);
 

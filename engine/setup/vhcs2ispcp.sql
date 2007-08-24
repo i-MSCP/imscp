@@ -7,7 +7,7 @@ USE ispcp;
 
 -- BEGIN: Upgrade database structure:
 ALTER TABLE `admin` ADD `uniqkey_time` TIMESTAMP NULL ;
-ALTER TABLE `admin` ADD `gender` varchar(1) default NULL ;
+ALTER TABLE `admin` ADD `gender` varchar(1) default '' ;
 
 CREATE TABLE `config` (
   `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',
@@ -39,7 +39,7 @@ VALUES (
 ),(
     'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'
 ),(
-    'PORT_POSTGREY', '60000;tcp;POSTGREYL;1;1'
+    'PORT_POSTGREY', '60000;tcp;POSTGREY;1;1'
 ),(
     'PORT_AMAVIS', '10024;tcp;AMaVis;1;1'
 ),(
@@ -97,6 +97,7 @@ DROP TABLE IF EXISTS `lang_Danish`;
 -- Drop useless tables
 
 DROP TABLE IF EXISTS `domain_props`;
+DROP TABLE IF EXISTS `syslog`;
 
 -- Add Primary and possibly an index to login table!
 

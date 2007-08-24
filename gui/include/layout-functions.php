@@ -37,18 +37,20 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_id));
 
-    if($rs->RecordCount() == 0) {
-        // values for user id, some default staff
-        return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
-    } else if ($rs->fields['lang'] === '' && $rs->fields['layout'] === '') {
-        return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
-    } else if ($rs->fields['lang'] === '') {
-        return array($cfg['USER_INITIAL_LANG'],  $rs->fields['layout']);
-    } else if ($rs->fields['layout'] === '') {
-        return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
-    }
+    if ($rs->RecordCount() == 0 || (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
 
-    return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
+        // values for user id, some default stuff
+        return array($cfg['USER_INITIAL_LANG'], $cfg['USER_INITIAL_THEME']);
+
+    } else if (empty($rs->fields['lang'])) {
+
+        return array($cfg['USER_INITIAL_LANG'],  $rs->fields['layout']);
+
+    } else if (empty($rs->fields['layout'])) {
+
+        return array($rs->fields['lang'], $cfg['USER_INITIAL_THEME']);
+
+    }
 
 }
 

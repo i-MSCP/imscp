@@ -166,7 +166,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($cr_user_id));
 	$domain_ip = $rs -> fields['domain_ip_id'];
 
-	$alias_name = get_punny($alias_name);
+	$alias_name = encode_idna($alias_name);
 
 	//$mount_point = "/".$mount_point;
 
@@ -279,9 +279,7 @@ SQL_QUERY;
 		else if($cr_user_id == $domain_id)
 			$selected = 'selected';
 
-		$IDN = new idna_convert();
-
-		$domain_name = $IDN->decode($domain_name);
+		$domain_name = decode_idna($domain_name);
 
 		$tpl -> assign(
 					array(

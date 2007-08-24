@@ -119,6 +119,11 @@ function delete_account(url) {
                         </td>
                       </tr>
                       <tr>
+                        <td width="25">&nbsp;</td>
+                        <td width="200" class="content2">{TR_GENDER}</td>
+                        <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
+                      </tr>
+                      <tr>
                         <td width="35">&nbsp;</td>
                         <td width="200" class="content2">{TR_COMPANY}</td>
                         <td class="content"><input type="text" name=userfirm value="{VL_USR_FIRM}" style="width:210px" class="textinput">
@@ -174,7 +179,7 @@ function delete_account(url) {
                           {TR_SEND_DATA}</td>
                       </tr>
                       </font>
-                      
+
                     </table>
                   <input type="hidden" name="uaction" value="save_changes">
                     <input type="hidden" name="edit_id" value="{EDIT_ID}">

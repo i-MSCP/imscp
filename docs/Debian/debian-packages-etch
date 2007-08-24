@@ -77,3 +77,5 @@ wget
 bash
 libnet-libidn-perl
 libapache2-mod-cband
+php4-idn
+php5-idn

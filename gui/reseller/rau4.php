@@ -249,7 +249,7 @@ function add_domain_alias(&$sql, &$err_al)
 	$mount_point = strtolower(clean_input($_POST['ndomain_mpoint']));
 	$forward = strtolower(clean_input($_POST['forward']));
 
-	$alias_name = get_punny($alias_name);
+	$alias_name = encode_idna($alias_name);
 
 
 	// Fisrt check is the data correct

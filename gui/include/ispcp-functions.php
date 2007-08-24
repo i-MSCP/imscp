@@ -281,6 +281,10 @@ $output -> normal string get out
 */
 function decode_idna($input)
 {
+    if (function_exists('idn_to_unicode')) {
+        return idn_to_unicode($input, 'utf-8');
+    }
+
 	$IDN = new idna_convert();
 	$output = $IDN->decode($input);
 
@@ -291,8 +295,12 @@ function decode_idna($input)
 	}
 }
 
-function get_punny($input)
+function encode_idna($input)
 {
+    if (function_exists('idn_to_ascii')) {
+        return idn_to_ascii($input, 'utf-8');
+    }
+
 	$IDN = new idna_convert();
 	$output = $IDN->encode($input);
 	return $output;

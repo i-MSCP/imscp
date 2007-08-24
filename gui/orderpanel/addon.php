@@ -37,7 +37,7 @@ $tpl -> define_dynamic('purchase_footer', 'page');
 function addon_domain($dmn_name)
 {
 	$dmn_name = strtolower($dmn_name);
-	$dmn_name = get_punny($dmn_name);
+	$dmn_name = encode_idna($dmn_name);
 
 	if (!chk_dname($dmn_name)) {
 

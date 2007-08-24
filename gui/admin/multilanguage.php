@@ -218,19 +218,19 @@ function show_lang(&$tpl, &$sql) {
 		$pos = strpos($data, "lang_");
 		if ($pos === false) {
 			/* not found... ... next :) */
+			continue;
 		}
-		else {
-			$dat  = explode('_',$data);
+		$dat  = explode('_',$data);
 
-			$query = <<<SQL_QUERY
+		$query = <<<SQL_QUERY
 				select
 					count(msgid) as cnt
 				from
 					$tables[$i]
 SQL_QUERY;
-			$rs = exec_query($sql, $query, array());
+		$rs = exec_query($sql, $query, array());
 
-			$query = <<<SQL_QUERY
+		$query = <<<SQL_QUERY
 				select
 					msgstr
 				from
@@ -238,72 +238,68 @@ SQL_QUERY;
 				where
 					msgid = 'ispcp_language'
 SQL_QUERY;
-			$res = exec_query($sql, $query, array());
+		$res = exec_query($sql, $query, array());
 
-			if ($res -> RecordCount() == 0) {
-			  $language_name = tr('Unknown');
-			} else {
-			  $language_name = $res->fields['msgstr'];
-			}
+		if ($res -> RecordCount() == 0) {
+		    $language_name = tr('Unknown');
+		} else {
+		    $language_name = $res->fields['msgstr'];
+		}
 
-			if ($row++ % 2 == 0) {
-				$tpl -> assign('LANG_CLASS', 'content2');
-			}
-			else{
-				$tpl -> assign('LANG_CLASS', 'content');
-			}
+		if ($row++ % 2 == 0) {
+		    $tpl -> assign('LANG_CLASS', 'content2');
+		} else{
+		    $tpl -> assign('LANG_CLASS', 'content');
+		}
 
-			if ($usr_def_lng[1] == $dat[1]) {
-				$tpl -> assign(
+		if ($usr_def_lng[1] == $dat[1]) {
+		    $tpl -> assign(
 					array(
 						'DEFAULT' => tr('yes'),
 						'LANG_RADIO' =>'',
 						)
 					);
-				$tpl->parse('LANG_DEF', 'lang_def');
-			}
-			else {
-				$tpl -> assign(
+			$tpl->parse('LANG_DEF', 'lang_def');
+		} else {
+		    $tpl -> assign(
 					array(
 						'LANG_DEF' =>'',
 						'LANG_VALUE' =>'lang_'.$dat[1],
 						)
 					);
-				$tpl->parse('LANG_RADIO', 'lang_radio');
-			}
+			$tpl->parse('LANG_RADIO', 'lang_radio');
+		}
 
-			if ($cfg['USER_INITIAL_LANG'] == 'lang_'.$dat[1] || $usr_def_lng[1] == $dat[1]) {
-				$tpl -> assign(
+		if ($cfg['USER_INITIAL_LANG'] == 'lang_'.$dat[1] || $usr_def_lng[1] == $dat[1]) {
+		    $tpl -> assign(
 					array(
 						'TR_UNINSTALL' => tr('uninstall'),
 						'LANG_DELETE_LINK' =>'',
 						)
 					);
-				$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
-			}
-			else {
-				$tpl -> assign(
-					array(
+			$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
+		} else {
+		    $tpl -> assign(
+		            array(
 						'TR_UNINSTALL' => tr('uninstall'),
 						'URL_DELETE' => 'delete_lang.php?delete_lang=lang_'.$dat[1],
 						'LANG_DELETE_SHOW' =>'',
 						)
 					);
-				$tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
-			}
-			//'LANGUAGE' => $dat[1],
-			//$res
-
-			$tpl -> assign(
-				array(
-				'LANGUAGE' => $language_name,
-				'MESSAGES' => tr('%d messages translated', $rs->fields['cnt']),
-				'URL_EXPORT' => 'multilanguage_export.php?export_lang=lang_'.$dat[1],
-				)
-			);
-
-			$tpl->parse('LANG_ROW','.lang_row');
+			$tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
 		}
+		//'LANGUAGE' => $dat[1],
+		//$res
+
+		$tpl -> assign(
+				array(
+    				'LANGUAGE' => $language_name,
+	   			    'MESSAGES' => tr('%d messages translated', $rs->fields['cnt']),
+		      		'URL_EXPORT' => 'multilanguage_export.php?export_lang=lang_'.$dat[1],
+				    )
+			    );
+
+		$tpl->parse('LANG_ROW','.lang_row');
 	}
 }
 

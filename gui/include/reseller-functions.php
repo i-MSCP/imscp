@@ -669,7 +669,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 	global $dmn_name, $hpid , $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip;
+    global $last_name, $firm, $zip, $gender;
     global $city, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
@@ -709,7 +709,7 @@ function check_ruser_data (&$tpl, $NoPass) {
 		$city = $_POST['usercity'];
 
 	if(isset($_POST['usercountry']))
-		$country = $_POST['usercountry'];
+	   $country = $_POST['usercountry'];
 
 	if(isset($_POST['userstreet1']))
 		$street_one = $_POST['userstreet1'];
@@ -725,6 +725,12 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 	if(isset($_POST['userfax']))
 		$fax = $_POST['userfax'];
+
+	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) === null) {
+	    $gender = '';
+	} else {
+	    $gender = $_POST['gender'];
+	}
 
 	//if(isset($_SESSION['local_data']) )
 	//	list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);

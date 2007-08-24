@@ -1327,7 +1327,7 @@ sub setup_sql {
 
 	my $admin_password = crypt_data($main::ua{'admin_password'});
 
-	$sql = "INSERT INTO admin VALUES  (1, '$main::ua{'admin'}','$admin_password', 'admin', 0, '', 0, '', '', '', '', '', '', '','$main::ua{'admin_email'}', '', '', '', '', '', '')";
+	$sql = "INSERT INTO admin (admin_id, admin_name, admin_pass, admin_type, email) VALUES  (1, '$main::ua{'admin'}','$admin_password', 'admin','$main::ua{'admin_email'}')";
 
 	($rs, $rdata) = doSQL($sql);
 

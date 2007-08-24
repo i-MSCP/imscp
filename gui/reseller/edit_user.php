@@ -86,6 +86,9 @@ $tpl -> assign(
 							'TR_MAIL' => tr('Email'),
 							'TR_PHONE' => tr('Phone'),
 							'TR_FAX' => tr('Fax'),
+                            'TR_GENDER' => tr('Gender'),
+                            'TR_MALE' => tr('Male'),
+                            'TR_FEMALE' => tr('Female'),
 			        'EDIT_ID'  => $edit_id,
 						'TR_BTN_ADD_USER' => tr('Submit changes')
 						)
@@ -104,8 +107,8 @@ $tpl -> assign(
 							'TR_USERNAME' => tr('Username'),
 							'TR_ACTION' => tr('Action'),
 							'TR_BACK' => tr('Back'),
-              'TR_TITLE_BACK' => tr('Return to previous menu'),
-              'TR_TABLE_NAME' => tr('Users list'),
+                            'TR_TITLE_BACK' => tr('Return to previous menu'),
+                            'TR_TABLE_NAME' => tr('Users list'),
 							'TR_SEND_DATA' => tr('Send new login data'),
 							'TR_PASSWORD_GENERATE' => tr('Generate password')
                      )
@@ -177,7 +180,7 @@ function load_user_data_page($user_id)
 	global $sql;
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip;
+    global $last_name, $firm, $zip, $gender;
     global $city, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
@@ -186,7 +189,7 @@ function load_user_data_page($user_id)
 
 	$query = <<<SQL_QUERY
 		select
-			admin_name, created_by, fname, lname, firm,zip,city,country,email,phone,fax,street1,street2, customer_id
+			admin_name, created_by, fname, lname, firm,zip,city,country,email,phone,fax,street1,street2, customer_id, gender
 		from
 			admin
 		where
@@ -212,6 +215,7 @@ SQL_QUERY;
 		$customer_id	=	$data['customer_id'];
 		$first_name		=	$data['fname'];
     	$last_name		=	$data['lname'];
+    	$gender		    =  	$data['gender'];
 		$firm			=	$data['firm'];
 		$zip			=	$data['zip'];
     	$city			=	$data['city'];
@@ -233,7 +237,7 @@ function gen_edituser_page(&$tpl)
 {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip;
+    global $last_name, $firm, $zip, $gender;
     global $city, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
@@ -257,6 +261,8 @@ function gen_edituser_page(&$tpl)
 						'VL_STREET1' => $street_one,
 						'VL_STREET2' => $street_two,
 						'VL_MAIL' => $mail,
+                        'VL_MALE' => ($gender == 'M')? 'checked' : '',
+                        'VL_FEMALE' => ($gender == 'F')? 'checked' : '',
 						'VL_PHONE' => $phone,
 						'VL_FAX' => $fax
 					)
@@ -273,7 +279,7 @@ function update_data_in_db($hpid)
   global $sql;
   global $dmn_user_name;
   global $user_email, $customer_id, $first_name;
-  global $last_name, $firm, $zip;
+  global $last_name, $firm, $zip, $gender;
   global $city, $country, $street_one;
   global $street_two, $mail, $phone;
   global $fax, $inpass, $domain_ip;
@@ -284,6 +290,7 @@ function update_data_in_db($hpid)
   $first_name 	= clean_input($first_name);
   $last_name 	= clean_input($last_name);
   $firm 		= clean_input($firm);
+  $gender		= clean_input($gender);
   $zip 			= clean_input($zip);
   $city 		= clean_input($city);
   $country 		= clean_input($country);
@@ -309,6 +316,7 @@ function update_data_in_db($hpid)
                 fax=?,
                 street1=?,
                 street2=?,
+                gender=?,
                 customer_id=?
             where
                 admin_id=?
@@ -326,6 +334,7 @@ SQL_QUERY;
                                    $fax,
                                    $street_one,
                                    $street_two,
+                                   $gender,
                                    $customer_id,
                                    $hpid,
                                    $reseller_id));
@@ -365,6 +374,7 @@ SQL_QUERY;
                 fax=?,
                 street1=?,
                 street2=?,
+                gender=?,
                 customer_id=?
             where
                 admin_id=?
@@ -383,6 +393,7 @@ SQL_QUERY;
                                    $fax,
                                    $street_one,
                                    $street_two,
+                                   $gender,
                                    $customer_id,
                                    $hpid,
                                    $reseller_id));

@@ -178,7 +178,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
         }
 
         $sub_name = strtolower($_POST['subdomain_name']);
-        $sub_name = get_punny($sub_name);
+        $sub_name = encode_idna($sub_name);
 
         if (isset($_POST['subdomain_mnt_pt']) && $_POST['subdomain_mnt_pt'] !== '') {
             $sub_mnt_pt = strtolower($_POST['subdomain_mnt_pt']);

@@ -161,8 +161,7 @@ SQL_QUERY;
       		list($als_action, $als_action_script) = gen_user_als_action($rs->fields['alias_id'], $rs->fields['alias_status']);
       		list($als_forward, $alias_edit_link, $als_edit) = gen_user_als_forward($rs->fields['alias_id'], $rs->fields['alias_status'], $rs->fields['url_forward']);
 
-			$IDN = new idna_convert();
-			$alias_name = $IDN->decode($rs -> fields['alias_name']);
+			$alias_name = decode_idna($rs -> fields['alias_name']);
 			$tpl -> assign(array(
 			                   'ALS_NAME' => $alias_name,
 			                   'ALS_MOUNT' => $rs -> fields['alias_mount'],

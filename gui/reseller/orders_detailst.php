@@ -137,7 +137,7 @@ function update_order_details(&$tpl, &$sql, $user_id, $order_id)
 {
 
 $domain = strtolower($_POST['domain']);
-$domain = get_punny($domain);
+$domain = encode_idna($domain);
 $customer_id = strip_html($_POST['customer_id']);
 $fname = strip_html($_POST['fname']);
 $lname = strip_html($_POST['lname']);

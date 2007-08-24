@@ -204,7 +204,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($cr_user_id));
 	$domain_ip = $rs -> fields['domain_ip_id'];
 
-	$alias_name = get_punny($alias_name);
+	$alias_name = encode_idna($alias_name);
 
 	//$mount_point = "/".$mount_point;
 

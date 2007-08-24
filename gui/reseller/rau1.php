@@ -111,7 +111,7 @@ function check_user_data()
 	if(isset($_POST['dmn_name'])) {
 
 		$dmn_name = strtolower($_POST['dmn_name']);
-		$dmn_name  = get_punny($dmn_name);
+		$dmn_name  = encode_idna($dmn_name);
     }
 	if(isset($_POST['dmn_tpl']))
 		$dmn_chp  = $_POST['dmn_tpl'];

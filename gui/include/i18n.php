@@ -129,6 +129,8 @@ function replace_html($string) {
                         '#&lt;[ ]*/[ ]*b[ ]*&gt;#i',
                         '#&lt;[ ]*i[ ]*&gt;#i',
                         '#&lt;[ ]*/[ ]*i[ ]*&gt;#i',
+                        '#&lt;[ ]*small[ ]*&gt;#i',
+                        '#&lt;[ ]*/[ ]*small[ ]*&gt;#i',
                         '#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i'
                      );
 

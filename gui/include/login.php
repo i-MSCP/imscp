@@ -35,7 +35,7 @@ function register_user($uname, $upass) {
     check_ipaddr();
 
     if (!username_exists($uname)) {
-        write_log("Login error, <b><i>".htmlspecialchars($uname, ENT_QUOTES, "UTF-8")."</i></b> unknown username");
+        write_log("Login error, <b><i>".$uname."</i></b> unknown username");
         return false;
     }
 
@@ -43,7 +43,7 @@ function register_user($uname, $upass) {
     $udata = get_userdata($uname);
 
   	if ($cfg['SERVICEMODE'] AND $udata['admin_type'] != 'admin') {
-		write_log("Login error, <b><i>".htmlspecialchars($uname, ENT_QUOTES, "UTF-8")."</i></b> system currently in servicemode");
+		write_log("Login error, <b><i>".$uname."</i></b> system currently in servicemode");
   		system_message(tr('System is currently in servicemode! At time only administrators can login.'));
 		return false;
 	}
@@ -51,14 +51,14 @@ function register_user($uname, $upass) {
 	if (crypt($upass, $udata['admin_pass']) == $udata['admin_pass'] || md5($upass) == $udata['admin_pass']) {
 
 	    if (isset($_SESSION['user_logged'])) {
-	        write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." user already logged or session sharing problem! Aborting...");
+	        write_log($uname." user already logged or session sharing problem! Aborting...");
 	        system_message(tr('User already logged or session sharing problem! Aborting...'));
 	        return false;
 
 	    }
 
 	    if (!is_userdomain_ok($uname)) {
-	        write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." Domain status is not OK - user can not login");
+	        write_log($uname." Domain status is not OK - user can not login");
 	        system_message(tr('Domain status is not OK - Login aborted.'));
 	        return false;
 
@@ -85,10 +85,10 @@ SQL_QUERY;
 	    $_SESSION['user_created_by'] = $udata['created_by'];
 	    $_SESSION['user_login_time'] = time();
 
-	    write_log(htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." user logged in.");
+	    write_log($uname." user logged in.");
 	    return true;
 	} else {
-		write_log( htmlspecialchars($uname, ENT_QUOTES, "UTF-8")." bad password login data.");
+		write_log($uname." bad password login data.");
   		return false;
 	}
 
@@ -131,7 +131,7 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
 
     if ($rs -> RecordCount() != 1) {
-        write_log(htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8") . " session manipulation detected !");
+        write_log($user_logged . " session manipulation detected !");
         unset_user_login_data();
         return false;
     }
@@ -139,7 +139,7 @@ SQL_QUERY;
     if ($cfg['SERVICEMODE'] AND $user_type != 'admin') {
 
         unset_user_login_data();
-        write_log("<b><i>".htmlspecialchars($user_logged, ENT_QUOTES, "UTF-8")."</i></b> system currently in servicemode. User logged out...");
+        write_log("<b><i>".$user_logged."</i></b> system currently in servicemode. User logged out...");
         header("Location: ../index.php");
         return false;
 
