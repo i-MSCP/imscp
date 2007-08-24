@@ -3991,66 +3991,66 @@ sub dmn_restore_data {
 	# Restore bzip2 files
 	if ($fname =~ m/.tar.bz2/i) {
 
-            $cmd = "$cmd_tar --extract --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-    
+            $cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+
             $rs = sys_command($cmd);
-    
+
             return $rs if ($rs != 0)
         }
 
         # Restore gz files
         if ($fname =~ m/.tar.gz/i) {
-    
-            $cmd = "$cmd_tar --extract --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-    
+
+            $cmd = "$cmd_tar --extract --preserve-permissions --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+
             $rs = sys_command($cmd);
-    
+
             return $rs if ($rs != 0)
         }
 
         # Restore SQL files
         if ($fname =~ m/.sql.bz2/i) {
-    
+
             # Extract databasename
             $fname =~ /(.*).sql.bz2/;
             my $dbf_name = $1;
-    
+
             $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
             ($rs,$rdata3) = doSQL($sql);
-    
+
             return $rs if ($rs != 0);
-    
+
             foreach(@$rdata3) {
-    
+
                 my $db_id=@$_[0];
                 my $db_name=@$_[1];
-    
+
                 # if databasename eq filedatabasename get SQL user and pass
                 if ($db_name eq $dbf_name) {
-    
+
                     $sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
                     ($rs,$rdata2) = doSQL($sql);
-    
+
                     return $rs if ($rs != 0);
-    
+
                     $rdata2=@$rdata2[0];
-    
+
                     my $dbuser = @$rdata2[0];
                     my $dbpass = @$rdata2[1];
-    
+
                     # if username and pass for db exists - restore database from file
                     if ($dbuser && $dbpass) {
-    
+
                         $cmd = "bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
-    
+
                         $rs = sys_command($cmd);
-    
+
                         return $rs if ($rs != 0);
-    
+
                     }
-    
+
                 }
-    
+
             }
 
         }

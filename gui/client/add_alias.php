@@ -1,48 +1,43 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 2001-2006 by moleSoftware GmbH
+ * @copyright 2006-2007 by ispCP | http://isp-control.net
+ * @link http://isp-control.net
+ * @author ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ * 	This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
-$tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/add_alias.tpl');
-
-$tpl -> define_dynamic('page_message', 'page');
-
-$tpl -> define_dynamic('logged_from', 'page');
-
-$tpl -> define_dynamic('user_entry', 'page');
-
-$tpl -> define_dynamic('ip_entry', 'page');
+$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/add_alias.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('user_entry', 'page');
+$tpl->define_dynamic('ip_entry', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(
-                array(
-                        'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'),
-                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                     )
-              );
+$tpl->assign(
+            array(
+                'THEME_COLOR_PATH' => "../themes/$theme_color",
+                'THEME_CHARSET' => tr('encoding'),
+                'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+				'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                )
+        	);
 
 
 /*
@@ -58,7 +53,7 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl -> assign(
+$tpl->assign(
                 array(
 						'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Client : Add Alias'),
 						'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
@@ -92,9 +87,9 @@ gen_page_msg($tpl, $err_txt);
 
 //gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
+$tpl->parse('PAGE', 'page');
 
-$tpl -> prnt();
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
@@ -103,9 +98,7 @@ if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 // Begin function declaration lines
 //
 
-function check_domainalias_permissions($sql, $user_id)
-{
-
+function check_domainalias_permissions($sql, $user_id) {
 
 		    list($dmn_id,
 				 $dmn_name,
@@ -145,8 +138,7 @@ function check_domainalias_permissions($sql, $user_id)
 
 }
 
-function init_empty_data()
-{
+function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 	$cr_user_id = "";
@@ -159,8 +151,7 @@ function init_empty_data()
 
 
 // Show data fiels
-function gen_al_page(&$tpl, $reseller_id)
-{
+function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 	if (isset($_POST['forward']))
@@ -181,8 +172,7 @@ function gen_al_page(&$tpl, $reseller_id)
 
 }// End of gen_al_page()
 
-function add_domain_alias(&$sql, &$err_al)
-{
+function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 
@@ -208,7 +198,7 @@ SQL_QUERY;
 
 	//$mount_point = "/".$mount_point;
 
-	// Fisrt check if the data is correct
+	// First check if the data is correct
 	if (!chk_dname($alias_name)) {
 		$err_al = tr("Incorrect domain name syntax");
 	}else if (ispcp_domain_exists($alias_name, 0)) {
@@ -262,11 +252,7 @@ SQL_QUERY;
 }// End of add_domain_alias();
 
 
-
-
-
-function gen_page_msg(&$tpl, $erro_txt)
-{
+function gen_page_msg(&$tpl, $erro_txt) {
 
 	if ($erro_txt != '_off_') {
 
@@ -278,4 +264,5 @@ function gen_page_msg(&$tpl, $erro_txt)
         $tpl -> assign('PAGE_MESSAGE', '');
     }
 }//End of gen_page_msg()
+
 ?>

@@ -119,8 +119,9 @@ $cfg['SERVER_VHOST_FILE'] = $cfg['APACHE_SITES_DIR'] . '/ispcp.conf';
 
 require_once(INCLUDEPATH.'/spGzip.php');
 
+// DEPRECATED
 /* security level
- * none     - Default behavior in earlier X-Panel versions
+ * none     - Default behavior in earlier VHCS versions
  * easy     - some simple checks, e.g. PHP_SELF secured, regex-check on IP no, hostname
  * medium   - checks on request method and server protocol (HTTP/x.y)
  * high     - checks through $_GET, $_COOKIE for dangerous data and strips it, this may drive some programs in trouble
@@ -136,6 +137,7 @@ $cfg['SECURITY_LEVEl'] = 'paranoid';   // developers may choose this for testing
 // *WARNING* By enabling this you: might get tons of warning emails about filtered access attempts (usually false positives)
 // *WARNING* By enabling this you: will be violating the GPL2 license which is used by the security/* scripts
 //require_once(INCLUDEPATH.'security/core.inc.php');
+// DEPRECATED
 
 require_once(INCLUDEPATH.'/class.pTemplate.php');
 require_once(INCLUDEPATH.'/date-functions.php');
@@ -144,7 +146,6 @@ require_once(INCLUDEPATH.'/ispcp-db-keys.php');
 require_once(INCLUDEPATH.'/input-checks.php');
 require_once(INCLUDEPATH.'/debug.php');
 require_once(INCLUDEPATH.'/i18n.php');
-require_once(INCLUDEPATH.'/system-log.php');
 require_once(INCLUDEPATH.'/calc-functions.php');
 require_once(INCLUDEPATH.'/login-functions.php');
 require_once(INCLUDEPATH.'/login.php');

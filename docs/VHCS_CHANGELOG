@@ -1,0 +1,1287 @@
+For historical reasons, the VHCS changelog until VHCS 2.4.8 (never released).
+
+VHCS 2.4.8 Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2006-10-15 Carsten Schoene:
+	- GUI:
+		* updated phpmyadmin to 2.9.0.2
+
+2006-10-01 Carsten Schoene:
+	- GUI:
+		* updated phpmyadmin to 2.9.0.1
+		* reverted backup-mgr changes from Benedikt, because this was already fixed by me
+
+2006-09-23 Benedikt Heintel
+	- GUI:
+		* added missing files for phpMyAdmin 2.9.0
+		* fixed bug #420: backup routine killed if user has deleted his backupdir
+
+2006-09-21 Carsten Schoene:
+	- GUI:
+		* updated phpmyadmin to 2.9.0
+
+2006-09-15 Benedikt Heintel
+	- CONF:
+		* Changed: TLS in proftpd.conf and commented
+
+2006-09-12 Mark Henning
+	- GUI:
+		* Fixed Bug: adminlevel - reseller ip can be switched on/off
+		* Fixed Bug: missing variable $port at server_status.php added
+		* Fixed Bug: some bugs in adminlevel serverports fixed
+
+2006-09-12 Carsten Schoene
+	- ENGINE:
+		* fixed column index in logs manager
+
+2006-09-10 Benedikt Heintel
+	-LANGUAGES
+		* Updated lang_german
+
+2006-09-06 Marcus Moll
+	- GUI:
+		* Fixed Bug: client level / closed tickets link id fixed
+
+2006-09-05 Malte Geierhos
+	- GUI:
+		* Added Support for Subdomain - Catchall in GUI
+
+2006-09-05 Mark Henning
+	- GUI:
+		* Fixed Bug 398: typo fixed
+		* Fixed Bug 404: invalid mail headers fixed / linebreaks fixed
+		* Fixed Bug 405: invalid mail headers fixed
+
+2006-09-04 Malte Geierhos
+	- ENGINE :
+		* Fixed Bug: Use Servername as Hostname when creating vftp - mysql user (needed for remote mysql-servers)
+
+2006-09-03 Mark Henning
+	- GUI:
+		* Fixed Bug: change password for admin needs the current password
+
+2006-09-01 Mark Henning
+	- GUI:
+		* Fixed Bug: javascript to set autodefault for mountpoint client/add_alias.tpl
+
+2006-08-31 Mark Henning
+	- GUI:
+		* Fixed Bug: added missing supportsystem menu for admin level
+
+2006-08-31 Carsten Schoene
+	- ENGINE:
+		* Fixed Bug -> vhcs2-backup-all: backup directory not created if missing
+		* Fixed Bug -> vhcs2-httpd-logs-mngr: logs directory not created nor checked
+
+2006-08-30 Mark Henning
+	- GUI:
+		* Added: admin/reseller - button 'password generate' on pages where users can be edited
+		* Fixed Bug: reseller - password check was absent in edit_users.php
+
+2006-08-29 Benedikt Heintel
+	- GUI:
+		* Fixed: Warnings in ticketsystem
+		* Fixed: reseller: closed tickets not deleteable
+		* Fixed: admin search for country
+		* Deleted: admin/reseller_fix.php
+		* Changed: layout of admin/mange_users.php
+		* Changed: logo in reseller/edit_user.php
+
+2006-08-29 Mark Henning
+	- GUI:
+		* Changed: phpsysinfo moved to a separate directory
+		* Changed: lostpassword fontfile moved to themes/font directory
+		* Added: function to check if the fontfile exists for the captcha-graphic
+		* Added: custom menus for administrator level
+		* Fixed Bug: reseller logged from menu was absent in edit_user.php
+		* Fixed Bug: correction to bugfix 0000372
+
+2006-08-28 Benedikt Heintel
+	- GUI:
+		* Fixed: small fixes in layout
+
+2006-08-27 Mark Henning
+	- GUI:
+		* Changed: some functions in welcome-, order- and lostpassword-email
+			companyname can set as sender
+		* Added: admin/reseller - an email with login data can be sent if a userpassword was changed.
+		* Fixed: reseller-> unneeded inputfield username removed (edit_user.tpl)
+		* Fixed: invalid mail headers - linebreak after content-type was absent
+
+2006-08-27 Carsten Schoene
+	- GUI:
+		* Fixed Bug: invalid mail headers in admin & reseller functions
+
+2006-08-25 Benedikt Heintel
+	- RELEASE:
+		* VHCS 2.4.8 RC1
+	- GUI:
+		* Fixed Bug 391: not all variables parsed
+		* Fixed: no menu at daily statistics
+
+2006-08-23 Benedikt Heintel
+	- CONFIG:
+		* Added: comments to main.cf and master.cf
+		* Added: parameters for quota support, TSL, AMaViS
+		* Changed: prarameters in main.cf and master.cf
+		* Added: proftpd.conf TSL support
+		* Changed: proftpd.conf tab layout
+	- GUI:
+		* Fixed Webmail: wrong timestamp on 64bit systems
+		* Changed: manage_domains.php now sorted by mountpoint and alias
+		* Changed: layout of server_status.tpl
+		* Deleted folder: images_delete_if_unused
+		* Updated: phpMyAdmin to 2.8.2.4
+
+2006-08-23 Mark Henning
+	- GUI:
+		* Fixed Bug: client->edit->ftpuser passwordcheck was wrong
+		* Added: strong password check (client)
+		* Changed: default passwords are strong passwords if required
+		* Changed: lostpassword can generate strong passwords if required
+
+2006-08-22 Carsten Schoene
+	- GUI:
+		* updated phpmyadmin to 2.8.2.3
+		* fix default value for $newprops in function reseller_limits_check
+
+2006-08-21 Mark Henning
+	- GUI:
+		* Added: vhcs_password_check checks simple for strong passwords
+						 password must contain numbers and letters
+
+2006-08-19 Mark Henning
+	- GUI:
+		* Fixed Bug: Service ports - check if no ports defined
+		* Added: New functions to get values easier from _POST _GET _SESSION _COOKIE _SERVER
+
+2006-08-15 Mark Henning
+	- GUI:
+		* Fixed Bug: Custom menus
+
+2006-08-15 Mark Henning
+	- GUI:
+		* Fixed Bug #378: This was not a bug.
+		* Added: menu var 'domain_name' for custom menus
+
+2006-08-15 Carsten Schoene
+	- INSTALLATION:
+		* Fixed: database.sql, index definitions broke traffic tables
+		* Fixed: rpl.pl, generation of db-keys php file didn't work, since some useless blank-line cleanups
+		* Fixed: synced all proftpd.conf files for the distros, reverted some non working changes, because of non-existend files & dirs
+	- GUI:
+		* updated phpmyadmin to 2.8.2.2 & adodb to 4.91
+	- ALL:
+		* Complete version change from 2.4.7.2 to 2.4.8 in all relevant files
+
+2006-08-12 Mark Henning
+	- GUI:
+		* Fixed Bug #372: Special strings produces endless loop.
+
+2006-08-12 Benedikt Heintel
+	- DOCS:
+		* Updated: HowTo Update 2.4.7.1 -> 2.4.8
+
+2006-08-10 Benedikt Heintel
+	- CONFIG:
+		* Changed: Release: VHCS 2.4.8 (Status: Beta 4) - Codename: Rhea
+		* Changed: proftpd.conf
+
+2006-08-09 Benedikt Heintel
+	- GUI:
+		* Updated: Fixed serveral bugs in port settings
+		* Updated: Domain sort
+		* Fixed Bug #371 for Admin: domain search not working as expected
+		* Fixed Bug #382 for Admin: stripslashes on magic_quote on
+		* Fixed Bug #382 for Client: stripslashes on magic_quote on
+
+2006-08-08 Benedikt Heintel
+	- GUI:
+		* Updated: phpMyAdmin to phpMyAdmin-2.8.2
+		* Fixed Bug #371 for Reseller: domain search not working as expected
+		* Fixed Bug #382 for Reseller: stripslashes on magic_quote on
+
+2006-07-21 Malte Geierhos
+	- DOCS:
+		* Updated: SQL upgrade instructions
+	- CONF:
+		* Added INDEX for dtraff_times & traff_times to speedup vhcs2-vrl-traff
+
+2006-07-15 Benedikt Heintel
+	- DOCS:
+		* Updated: small HowTo fix
+	- GUI:
+		* Fixed: Changed Messages (mail, ftp)
+		* Fixed: Warnings in Supportystem
+		* Fixed bug #371: Possible Cross Site Scripting
+	- LANGUAGES:
+		* Fixed: German v1: typos
+
+2006-06-24 Malte Geierhos
+	- GUI:
+		* Fixed : Several Index's missing in mail_acc_
+			  Minor Bugs in Autoresponder
+		* Added : Introduced new function trans_mailid_to_mail (which returns the correct mailadress for a given mailid)
+			  Possibility to do admin-selectable log-cleaning (for admin - log)
+
+2006-06-22 Benedikt Heintel
+	- GUI:
+		* Fixed: Problem with webmail and PHP > 4.4
+
+2006-06-22 Malte Geierhos
+	- GUI:
+		* Fixed Bug #288: Hostingplans where not checked until a domain is created
+
+2006-06-21 Malte Geierhos
+	- GUI:
+		* Fixed: Translation of message in lostpassword missing due to wrong sheme used.
+			  Added english Translation and updated german translation accordingly
+
+2006-06-21 Benedikt Heintel
+	- GUI:
+		* Deleted: unused file
+		* Changed: Logmail
+
+2006-06-20 Carsten Schoene
+	- ENGINE:
+		* Updated: shell script interpreters set to /bin/sh instead of /bin/bash which is not always in /bin
+	- DOCS:
+		* Updated: some small HowTO-Update additions
+
+2006-06-16 Benedikt Heintel
+	- ENGINE:
+		* Fixed: DNS creation for alias Domains
+		* Fixed: deleted space in bind-template
+
+2006-06-17 Malte Geierhos
+	- GUI:
+		* Updated: Translation Germany to include admin/general Settings and some error messages from add_mail_acc.php
+		* Fixed : #366 (invalid Mail Format when used with valid Mails)
+		* Fixed : mismatch of functions in admin-functions/reseller-functions -> moved all input & validation functions
+			  into input-checks.php
+		* Fixed : Unkown Constant "Version" in admin-functions.php -> changed to $cfg['Version']
+		* Fixed : #368  SupportSystem showing <br> -> heavy use of clean_html & co now
+
+2006-06-16 Benedikt Heintel
+	- GUI:
+		* Updated: Functionality of Mailer (Changed Headers)
+
+2006-06-16 Benedikt Heintel
+	- GUI:
+		* Fixed: No Error Message displayed in rau3.php
+		* Fixed: Status (Reseller) 'delete': wrong symbol (|| instead of working-arrows)
+
+2006-06-16 Malte Geierhos
+	- GUI:
+		* Fixed: Missing } in ss_close.php
+		* Fixed: changed STATUS_TODELETE to ITEM_DELETE_STATUS
+
+2006-06-16 Carsten Schoene
+	- GUI:
+		* Fixed: location of isp_logo in filemanager
+
+2006-06-15 Benedikt Heintel
+	- GUI:
+		* Fixed: ITEM_DELETE_STATUS not defined
+	- ENGINE:
+		* Fixed: converted back to unix linebreaks
+		* Fixed: DNS creation
+	- TEMPLATES:
+		* Fixed: valid DNS records to rfc1918
+
+2006-06-14 Malte Geierhos
+	- Engine:
+		* Fixed bug #0000297: .htpasswd,.htgroup files got deleted upon changes
+	- GUI:
+		* Updated: Make Htaccess Manager own menu - point under Webtools
+		* Updated: User + Group Status is now displayed in GUI
+		* Fixed: Every Change (password change, group change and many more is now processed)
+		* updated vhcs_email_check to comply to rfc2822
+
+2006-06-14 Carsten Schoene
+	- GUI:
+		* Fixed: a date display bug (function:getdatestr) which may occour on some php5 installations
+
+2006-06-12 Carsten Schoene
+	- INSTALLATION:
+		* Updated: make copy-errordocs.sh more portable and read settings from vhcs.conf
+	- GUI:
+		* Updated: phpMyAdmin to 2.8.1 and ADODB to 4.90
+		* Updated: location of isp_logo.gif
+
+2006-06-11 Benedikt Heintel
+	- GUI:
+		* Patch from bug #0000341: Security enhancing against Invalid Hostnames/IPs, inspired by Roland Haeder
+		* Unused images mark as delete
+	- INSTALLATION:
+		* Securing error docs (/engine/setup/copy-errordocs.sh)
+
+2006-06-10 Benedikt Heintel
+	- GUI:
+		* Fixed bug #0000353: ' and ` (and a lot more) in mail password not longer allowed
+		* Fixed: Domain adding without eMail-Adress possible
+		* Updated: vhcs_email_check.php
+
+2006-06-05 Malte Geierhos
+	- ENGINE:
+		* Fixed bug #0000316: .htaccess in folders would be replaced by engine
+						  (incompatible to existing .htaccess-files, we have to develope a fix [Benedikt Heintel])
+
+2006-06-04 Benedikt Heintel
+	- GUI:
+		* Redesigned: Admin menus
+		* Added: Serverport are made changeable
+		* Fixed: Status (Admin) 'delete': wrong symbol (|| instead of working-arrows)
+
+2006-05-31 Benedikt Heintel
+	- GUI:
+		* Fixed: Tabs after code input in order_settings.tpl
+		* Added: Comments in scriptarea for older browsers in edit_user.tpl
+		* Added: New status for unknown Error (errordoc)
+		* Updated: Made Licence compatible for orderpanel (very old version with typos, etc.)
+
+2006-05-29 Mark Henning
+	- GUI:
+		* Fixed: Admin does not loose his rights any more by change the interface to reseller or client
+
+2006-05-28 Carsten Schoene
+	- GUI:
+		* Fixed: Change password of first admin user didn't work, because setup uses an initial crypt password.
+				 To be backward compatible, both will be checked. New password will be a md5 password.
+
+2006-05-27 Benedikt Heintel
+	- GUI:
+		* Fixed: Forgotten Bracket & Updated: Layout in protected_areas.php
+
+2006-05-26 Carsten Schoene
+	- INSTALLATION:
+		* Added: SuSE Linux Enterprise 9 configuration files
+		* Status: RPM Packages available for: SuSE 9.3, 10.0, 10.1, SLES9, Fedora 4, Fedora 5, CentOS 4.3
+	- GUI:
+		* Fixed: parse error in enable_mail_arsp.php
+
+2006-05-21 Mark Henning
+	- GUI:
+		* Fixed: bug in multilanguage.php
+		* Fixed: remove unneeded sql connections / unset sqluser and sqlpass for safety
+		* Added: Defaultlanguage can set by the gui
+		* Changed: tools/filemanager - remove server dropdown list if only one server is configured
+		* Changed: Focuscontrol lospasswordpage
+
+2006-05-23 Benedikt Heintel
+	- GUI
+		* Fixed: Hard coded templates direction
+		* Fixed: Typo in settings
+		* Added: Domains per row over Settings
+
+2006-05-21 Mark Henning
+	- GUI:
+		* Added: Interface to change some pre/settings
+			store vars from vhcs-lib.php in mysqldb
+		* Added: Supportsystem is en/disable by the gui
+
+2006-05-21 Mark Henning
+	- GUI:
+		* Changed: Some codelayout changes on sql functions
+			gui displays a message if a error occured
+
+2006-05-21 Benedikt Heintel
+	- LANGUAGES:
+		* Added: French v1.0
+	- GUI:
+		* Fixed bug #0000360: Domain aliases not searchable
+		* Fixed bug #0000351: IPs not deleteable, because of hard coded user
+
+2006-05-20 Benedikt Heintel
+	- GUI:
+		* Changed: Personal data forms (street before zip code)
+		* Changed: Domain alias sorted ascending
+	- SQL:
+		* Solved: Conflict
+
+2006-05-19 Benedikt Heintel
+	- GUI:
+		* Fixed bug #0000357: see if a(n) domain/user was deleted
+		* Fixed: Unified Admin-Log
+
+2006-05-16 Carsten Schoene
+	- GUI:
+		* updated phpmyadmin & adodb
+		* converted templates back to unix linebreaks
+
+2006-05-16 Benedikt Heintel
+	- GUI:
+		* Fixed: Cross Scripting attemps in Admin and Reseller
+		* Partly Fixed bug #0000296: Invalid Mountpoint was accepted
+
+2006-05-05 Mark Henning
+	- GUI:
+		* Added: New menutemplates
+				makes easier to integrate menus to the gui
+
+2006-05-05 Mark Henning
+	- GUI:
+		* Fixed: makefile gui
+		* Fixed: typos index.php
+		* Fixed: Link for Lostpassword on indexpage
+		* Fixed: Datetimedisplay on indexpage
+		* Changed: Some login functions
+
+2006-05-04 Benedikt Heintel
+	- GUI:
+		* Fixed bug #0000313: downgrading MySQL user blocked even if no user exists
+		* Changed: error.php (Style)
+		* Changed: login pages (Style)
+
+2006-04-21 Marcus Moll
+	- ENGINE:
+		* Changed Apache Templates (indexing disabled)
+
+2006-04-19 Carsten Schoene / Marcus Moll
+	- INSTALLATION:
+		* Updated: master.cf entry for Sendmail Submission Port 587 (e.g. required for AOL users)
+
+2006-04-12 Carsten Schoene
+	- INSTALLATION:
+		* Fixed: some check before copying files in vhcs2-setup
+		* Fixed: check if debian specific commads are available in vhcs2-setup
+		* Fixed: detection of IP in vhcs2-setup now works on Linux & OpenBSD
+		* Fixed: removed CHARSET from database.sql because it breaks MySQL < 4.1
+				 use following in my.cnf instead:
+				 default-character-set   = latin1
+				 default-collation	   = latin1_german1_ci
+		* Added: helper script to install OpenBSD packages
+		* Fixed: paths to vhcs2_daemon/vhcs2_network init scripts in OpenBSD vhcs2.conf
+	- DOCUMENTATION:
+		* Updated: OpenBSD package list (use only default packages)
+		* Updated: OpenBSD install notes
+	- GUI:
+		* Fixed: some typos
+
+2006-04-10 Carsten Schoene
+	- ENGINE:
+		* Added: cleanup cron script for php session files in new phptmp directorys
+		* Fixed bug #0000338: delete domain_dir.disabled if it was previously deactived
+		* Fixed bug #0000293: delete logs if domain is deleted
+
+2006-04-05 Marcus Moll
+	- ENGINE:
+		* Fixed VHCS2-ARPL-MGR Now everything is working
+		* Added ^^ support for Autoresponder on Subdomains
+
+2006-03-17 Carsten Schoene
+	- GUI: * Updated: phpMyAdmin to Version 2.8.0.2
+
+2006-03-13 Mauric Rene Oberlaender
+	- LANGUAGES:
+		* Changed: German language file updated
+
+2006-03-13 Mark Henning
+	- GUI:
+		* Fixed: Some fixes on login functions
+
+2006-03-12 Mark Henning
+	- GUI:
+		* Fixed: Some fixes on servicemode functions
+		* Fixed: Some fixes on login functions
+
+2006-03-11 Mark Henning
+	- GUI:
+		* Changed: Lostpassword function enable/disable by vhcs-lib.php
+		* Changed: Finshed work on Bruteforcedetection
+				all features are configurable by vhcs-lib.php
+				Enable/Disable, Blocktime, Maxlogins, Time between logins
+
+2006-03-11 Mauric Rene Oberlaender
+	- GUI:
+		* Fixed: Path to some icons in the GUI (Reseller - Supportsystem - Abgeschlossene Supportanfragen)
+		* Fixed: After change the sql table lang_deutsch to lang_german you have to change the value USER_INITIAL_LANG = lang_Deutsch to USER_INITIAL_LANG = lang_German in the /etc/vhcs2/vhcs2.conf
+					 - after change this value the language based time and date of the index.php does not work - this is fixed now.
+
+
+2006-03-11 Mark Henning
+	- GUI:
+		* Added: Bruteforce detection
+		* Changed: some functions and procedures on login
+
+2006-03-09 Carsten Schoene
+	- GUI:
+		* Fixed: removed two notice messages in sysinfo and reseller user statistics
+		* Fixed: wrong colum name in resellers clsoe ticket page (came from capitalization of MySQL querys)
+
+2006-03-07 Erik Lehmann
+	- LANGUAGES:
+		* Changed: German and PortuguesBrasil database table names into english language description
+
+2006-03-07 Carsten Schoene
+	- GUI:
+		* Fixed Bug: introduced by rats, during updated SQL querys
+					thanks to erik, mark and rene for testing
+		* Fixed Bug: MIME header in lostpassword was not valid,
+					mail messages didn't contain valid linebreaks
+
+2006-03-07 Mark Henning
+	- GUI:
+		* Fixed bugs #0000327 & #0000339: eMails from Loginpage
+		* Added: Detection for possible sql injection
+		* Added: Detection for possible hacking attempts
+		* Added: login checks for empty username or password
+
+2006-03-07 Benedikt Heintel
+	- GUI:
+		* Maybe fixed bug #0000327: forge in unsecured login input field
+		* Updated: Code of the login pages and templates (small changes)
+
+2006-03-07 Carsten Schoene
+	- GUI:
+		* Updated: phpMyAdmin to version 2.8.0
+		* Updated: typos in SQL clauses
+		* Added: missing icon image
+		* Added: missing meta tags for servicemode templates
+	- DOCUMENTATION:
+		* Updated: Howto-Update, added SQL update querys, mention locales configuration
+		* Added: extra file containing SQL update querys
+	- INSTALLATION:
+		* Fixed: added missgin ) in rpl.pl
+
+2006-03-06 Mark Henning
+	- GUI:
+		* Added: new feature 'servicemode'
+		* Added: systemchecks for mysql, php-mcrypt, php-gd added
+
+2006-03-06 Benedikt Heintel
+	- GUI:
+		* Changed: Order of sortings (MySQL)
+		* Changed: Capitalization of some MySQL statements
+
+2006-03-04 Erik Lehmann
+	- INSTALLATION:
+		* Fixed: during "make install" the autoresponder didn't get the correct vhcs2-db-keys.pl
+
+2006-03-03 Mark Henning
+	- GUI:
+		* Many changes to integrate the lostpasswordfunction
+			- size, color and more is now configurable by vhcs-lib.php
+			- timeout for uniqkeys added
+
+2006-03-03 Erik Lehmann
+	- ENGINE:
+		* Changed: added status row in htaccess database tables
+		* Fixed: autoresponder "From" email address had a "." before domain name, so the mail couldn't be answered
+		* Fixed: problem with cipher's key length with Crypt-CBC-2.17
+	-GUI:
+		* Fixed bug #0000328: problem with deleting an ftp acc with alternate FTP_USERNAME_SEPERATOR
+		* Changed: cleaned out some unneeded webmail themes
+		* Updated: webmail update to uebimiau version 2.7.10
+			fixed bugs are:
+				- Removed the session_id from url
+				- Fixed security vulnerability BUGTRAQ:20060129
+				- Added extra security option $require_same_ip = yes in config.security.php
+
+2006-03-03 Carsten Schoene
+	- DOCUMENTATION:
+		* Updated: HOWTO-Update 2.4.7.1 -> 2.4.7.2 : mention session.save_path, OpenBSD installation notes
+
+2006-03-02 Mark Henning
+	- GUI:
+		* Changed: datetime on indexpages translated in german
+
+2006-03-02 Carsten Schoene
+	- GUI:
+		* Fixed: missing units in sysinfo output
+	- INSTALLATION:
+		* Updated: dmn/als/sub_entry.tpl & dmn/als/sub_php2_entry.tpl
+
+2006-03-01 Mark Henning
+	- GUI:
+		* Added: login.php userdb verification
+		* Changed: sessionmanagement changed to uniqe sessionid
+
+2006-03-01 Erik Lehmann
+	- LANGUAGES:
+		* Added complete Magyar translation by Magyar Szilveszter, thanks!
+		* Changed: Updated translations for languages:
+			* Spanish translation by Maximiliano Mï¿½ller, thanks!
+
+2006-03-01 Carsten Schoene
+	- GUI:
+		* Updated: Sysinfo now uses all possible class functions of phpsysinfo
+				and now works on other Operating Systems than linux.
+
+2006-03-01 Benedikt Heintel
+	- GUI:
+		* Fixed bug #0000312: catchall email domains do not count as email accounts any more .
+
+2006-02-28 Carsten Schoene
+	- GUI:
+		* Added: robots.txt to prevent spydering vhcs web by google and other bots
+
+2006-02-28 Benedikt Heintel
+	- GUI:
+		* Changed: spelling mistakes.
+
+2006-02-28 Erik Lehmann
+	- GUI:
+		* Changed: VHCS_LICENSE code is no longer shown on login screen per default
+	- LANGUAGES:
+		* Changed: Updated translations for languages:
+			* Chinese translation by Xu hiei, thanks!
+			* Russian translation by Lord Daedra, thanks!
+
+2006-02-27 Carsten Schoene
+	- ENGINE:
+		* Changed: paths to touch and rm in locking functions are no more hardcoded
+	- INSTALLATION:
+		* Changed: name of sasldb2 in OpenBSD vhcs2.conf
+		* Added: create new logpath for vhcs2 autoresponder logs
+	- DOCUMENTATION:
+		* Added: OpenBSD package list and install notes
+	- GUI:
+		* Changed: read version numbers and license strings from vhcs2.conf
+
+2006-02-27 Erik Lehmann
+	- ENGINE:
+		 * Changed: Autoresponder improvement - added debug mode - no longer error messages in the mails - reduce the file size - fix some warnings
+
+2006-02-26 Carsten Schoene
+	- INSTALLATION:
+		* Fixed: some missing dirs/files for OpenBSD
+
+2006-02-26 Erik Lehmann
+	- GUI:
+		* Fixed bug #0000324: Any registered user have privilegies for view folders a other users through ftp_choose_dir.php
+	- ENGINE:
+		* Fixed bug #0000306: vhcs2-backup-all was installed in the wrong directory
+	- LANGUAGES:
+		* Fixed bug #0000322: Portuguï¿½s Brasil Language does not work because of problem with datbase table name
+		* Changed: Updated lang_english table contents
+		* Changed: Updated translations for languages:
+			* Finnish translation by Petri Mï¿½kelï¿½, thanks!
+			* Italian translation by Ugo Viti, thanks!
+			* Dutch translation by Casper Bakker, thanks!
+			* German translation
+
+2006-02-24 Erik Lehmann
+	- GUI:
+		* Update: ADOdb to version 4.72
+	- ENGINE:
+		* Added: every Domain/Subdomain/Alias get a phptmp folder to secure the user data.
+		* Added: changed the apache templates for php2 new tmp path for upload_tmp_dir, session.save_path and open_basedir
+		* Added: Set default return path 'vuXXXX' for php sendmail_path in template
+
+2006-02-24 Carsten Schoene
+	- INSTALLATION:
+		* Added: SuSE 9.3 configuration & packages backported from SuSE 10.0
+
+2006-02-21 Mark Henning
+	- GUI:
+		* Fixed: Size of captcha image (210x65), added cap.ttf, only use selected digits and letters
+
+2006-02-20 Mark Henning
+	- GUI:
+		* Fixed bug: change_password did not ask for old passwords (Bug #2 from RoMaNSoFt)
+
+2006-02-19 Carsten Schoene
+	- GUI:
+		* Fixed bug: in login.php function goto_user_location fix from RoMaNSoFt
+	- INSTALLATION:
+		* Added: BSDmakefiles and configuration files for OpenBSD
+
+2006-02-15 Carsten Schoene
+	- DAEMON:
+		* Added: ported the daemon to OpenBSD (compile tested on OpenBSD-current-sparc64)
+
+2006-02-05 Carsten Schoene
+	- ENGINE:
+		* Fixed bug: Added patch for mbox-mngr from KB_MR, cleaned up some comment lines
+					(Deleting a mailbox resultet in an unchanged aliases file, which still
+					includes the mailbox)
+	- GUI:
+		* Update: phpMyAdmin to 2.7.0-pl2
+
+2006-02-01 Erik Lehmann
+	- GUI:
+		* Fixed bug: Some things could be changed without login because of error in login_function
+	- INSTALLATION:
+		* Fixed bug: backup manager is installed in wrong path
+
+2006-02-01 Carsten Schoene
+	- INSTALLATION:
+		* Fixed bug: updated suse postfix master.cf
+	- DAEMON:
+		* Fixed bug: remove procfs.h include - fixes build on non-x86
+
+2006-01-31 Erik Lehmann
+	- INSTALLATION:
+		* Fixed bug #0000307: Problem by using another database location then localhost.
+
+2006-01-26 Erik Lehmann
+	- ENGINE:
+		* Changed: autoresponder no longer send mails with "From: user@vhcs2-arpl.domain.com"
+	- LANGUAGES:
+		* Added complete Spanish translation by Maximiliano Mï¿½ller, thanks!
+
+2006-01-24 Erik Lehmann
+	- GUI:
+		* Fixed bug #0000291: filemanager messages in apache-error-log (php5 related)
+		* Fixed bug: wrong path to trans.gif in reseller_user_statistics.tpl
+		* Fixed bug #0000295: fixed some typo's in gui/themes/modern_blue/reseller/view_ticket.tpl
+		* Update: ADOdb to version 4.71
+
+2006-01-17 Carsten Schoene
+	- ALL:
+		* Fixed: broken icons & pictures from linebreak commit
+	- INSTALLATION:
+		* Update: top makefiles to new version number
+
+2006-01-14 Carsten Schoene
+	- INSTALLATION:
+		* Fixed bug: updated fedora postfix master.cf
+
+2006-01-12 Carsten Schoene
+	- ALL:
+		* Fixed bug: some files contained DOS linebreaks
+
+2006-01-12 Erik Lehmann
+	- ENGINE:
+		* Fixed bug: fixed missing CPAN perl modul in engine/setup/vhcs2-check-perl-moduls
+	- GUI:
+		* Fixed bug: fixed session problem in htaccess management
+		* Fixed bug: fixed cosmetic bug in webmail
+		* Fixed bug: fixed bug in webmail modern_blue theme clean out not needed images
+
+2006-01-11 Erik Lehmann
+	- ENGINE:
+		* Fixed bug: fixed problem during copy if MTA_SASLDB_FILE and ETC_SASLDB_FILE in vhcs2.conf are equal
+
+2006-01-11 Carsten Schoene
+	- INSTALLATION:
+		* Added: fc4-packages.txt (package list) to docs
+		* Added: contrib/mysql_fix.php to docs, it's needed for updates from vhcs versions prior any 2.4.7.x releases
+		* Added: fedora core4 configuration files
+
+2006-01-10 Erik Lehmann
+	- ENGINE:
+		* Change: Apache vhost parts are changed: AllowOverride All to AllowOverride AuthConfig FileInfo
+	- GUI:
+		* Fixed bug: fixed bug in webmail modern_blue theme
+		* Update: ADOdb to version 4.70
+		* Fixed bug #0000283: mails from subdomain will not be deleted
+		* Fixed bug: fixed regex bug in vhcs_username_check for email accounts allow name with 1 character
+
+2006-01-09 Erik Lehmann
+	- GUI:
+		* Fixed bug #0000286: fix spellings/typos in auto email message when add reseller
+		* Fixed bug #0000282: fix several typo errors in GUI
+	- LANGUAGES:
+		* Updated: the italian language file was updated
+	- ENGINE:
+		* Fixed bug: added vhcs2-arpl_destination_recipient_limit = 1 to postfix main.cf
+		* Added: added amavis preconfiguration to postfix master.cf
+
+VHCS 2.4.7.1 Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2006-01-03 Erik Lehmann
+	- RELEASE:
+		* vhcs2.4.7.1-stable
+
+2006-01-02 Erik Lehmann
+	- INSTALLATION:
+		* Fixed bug #0000276: remove /engine/setup/vhcs2-cfg-subst from vhcs2-setup
+	- ENGINE:
+		* Fixed bug #0000276: delete file /engine/setup/vhcs2-cfg-subst
+	- LANGUAGES:
+		* Fixed bug #0000280: updated all languages ("Update hosting packet" should be "Update hosting package")
+	- GUI:
+		* Fixed bug #0000280: General Information->Update Hosting Packet should be "Package"
+
+2005-12-28 Erik Lehmann
+
+	- GUI:
+		* Fixed bug #0000277: catchall mail adresses are wrong added in postfix and not shown in gui
+		* Changed: resize file edit textarea in filemanager
+	- INSTALLATION:
+		* Fixed bug: backup crontab entry has wrong path (only after new installation of 2.4.7)
+
+2005-12-27 Erik Lehmann
+
+	- GUI:
+		* Fixed bug #0000275: email marketing - send an email to users with multiple domains user recive mail more then once
+		* Fixed bug #0000273: webmail - attachments, the filenames are displayed wrong and the links do not work
+		* Fixed bug #0000272: The lists of domains is ordered by the internal id changed to domainname or alias name
+	- DOCS:
+		* Fixed bug: Updated howtos for 2.4.7 releases
+		* Added: Howto for Update from 2.4.7 to 2.4.7.1
+
+2005-12-26 Erik Lehmann
+
+	- GUI:
+		* Fixed bug #0000268: Add SQL user results in always a numeric prefix
+	- ENGINE:
+		* Fixed bug #0000271: All mails are send to the catchall mail account (if there is one)
+		* Fixed bug #0000269: auto-responder - the sender gets a "Undelivered mail returned to sender" message
+		* Fixed bug: auto responder didn't work with subdomain mail acc
+
+VHCS 2.4.7 Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2005-12-24 Erik Lehmann
+
+	- RELEASE:
+		* vhcs2.4.7-stable
+
+2005-12-23 Erik Lehmann
+
+	- GUI:
+		* Changed: Switched position of go-to and delete in admin manage_user.php template
+		* Fixed bug #0000263: cant add catchall email if email account is a forward
+
+2005-12-23 Carsten Schoene
+
+	- INSTALLATION:
+		* Added: logrotate script for debian & SuSE
+
+2005-12-22 Erik Lehmann
+
+	- ENGINE:
+		* Fixed bug #0000265: typo @ ../init.d/vhcs2_daemon (only in rc1)
+	- LANGUAGES:
+		* Changed: updated lang_english table contents
+		* Changed: Completed translations for languages:
+			* Finnish translation by Petri Mï¿½kelï¿½, thanks!
+			* Chinese translation by Xu hiei, thanks!
+			* German translation by Mauric Rene Oberlaender, thanks!
+			* Italian translation by Ugo Viti, thanks!
+			* Dutch translation by Casper Bakker, thanks!
+			* Russian translation by Lord Daedra, thanks!
+			* Brazilian Portuguese translation by Decio A.Alves, thanks!
+
+2005-12-22 Carsten Schoene
+
+	- INSTALLATION:
+		* Added: SuSE configuration files for courier-imap-ssl & courier-pop-ssl services
+	- GUI:
+		* Fixed: build version string to 2005-12-24
+
+2005-12-21 Carsten Schoene
+
+	- GUI:
+		* Fixed: MySQL user hostmask ('%') patch reworked, now users will be added with localhost and % as hostmask to mysql permission tables
+
+2005-12-21 Erik Lehmann
+
+	- ENGINE:
+		* Changed: disable debug mode
+	- LANGUAGES:
+		* Fixed bug #0000262: Finnish language file isn't newest one in RC1
+
+2005-12-20 Erik Lehmann
+
+	- ENGINE:
+		* Fixed bug #0000259: SOA record does not confirm RFC's in /etc/vhcs2/bind/parts/db_e.tpl
+
+2005-12-19 Erik Lehmann
+
+	- RELEASE:
+		* vhcs2.4.7-RC1
+
+2005-12-19 Carsten Schoene
+
+	- INSTALLATION:
+		* Fixed: gen-keys now uses urandom instead of random (hopefully fix hang while generating new keys)
+
+2005-12-14 Carsten Schoene
+
+	- INSTALLATION:
+		* Changed: SuSE apache configuration
+		* Changed: domain templates (AllowOverride changed from AuthConfig to All)
+		* Changed: PID path in pop3d & imapd configuration for SuSE systems
+
+2005-12-13 Carsten Schoene
+
+	- INSTALLATION/ENGINE:
+		* Added: AUTHLIB_CONF_DIR to vhcs2.conf (location for userdb,authdaemonrc,authmodulelist on systems != debian)
+		* Added: use AUTHLIB_CONF_DIR in vhcs2-setup, vhcs2-uninstall & vhcs2-mbox-mngr if it's set in vhcs2.conf
+		* Changed: IP detection in vhcs2-setup if interface is not eth0
+
+2005-12-13 Erik Lehmann
+
+	- DAEMON:
+		* Added: parameter -p to create a pidfile at given path
+		* Changed: changed the init.d/vhcs_daemon to work with pidfile
+		* Changed: changed hardcoded path /var/www/vhcs2/engine/vhcs2-rqst-mngr in daemon
+
+2005-12-12 Erik Lehmann
+
+	- GUI:
+		* Changed: changed hardcoded '/var/www/vhcs2/' to vhcs2.conf based solution
+		* Deleted: deleted some empty files in gui/admin (only part of vhcs2.4.7-alpha and vhcs2.4.7-beta)
+	- ENGINE:
+		* Fixed bug: fix problem in vhcs2-setup during detecting ip
+		* Changed: changed hardcoded '/var/www/vhcs2/' to vhcs2.conf based solution
+		* Changed: set-engine-permissions.sh now use to variables from vhcs2.conf (no longer hardcoded path/owners)
+		* Changed: set-gui-permissions.sh now use to variables from vhcs2.conf (no longer hardcoded path/owners)
+
+2005-12-11 Erik Lehmann
+
+	- GUI:
+		* Updated: gui/tools/pma to phpMyAdmin-2.7.0-pl1
+
+2005-12-10 Erik Lehmann
+
+	- INSTALLATION:
+		* Fixed bug: typo error in HOWTO-Update
+
+2005-12-09 Carsten Schoene
+
+	- INSTALLATION:
+		* Added: SuSE configuration files
+
+2005-12-08 Erik Lehmann
+
+	- MISC:
+		* Added: New docs folder in package
+	- GUI:
+		* Deleted: some unneeded files from webmail and filemanager
+	- ENGINE:
+		* Fixed bug #0000256: typo error at DATABASE_NAME in vhcs2.conf
+
+2005-12-07 Erik Lehmann
+
+	- GUI
+		* Fixed bug #0000255: hardcoded page titles in some admin gui templates and one client template
+
+2005-12-06 Erik Lehmann
+
+	- INSTALLATION:
+		* Fixed bug #0000248: "set permission script not found" in vhcs2-setup during execute from /tmp
+	- GUI
+		* Fixed bug #0000253: Wrong set page titels in some admin templates
+		* Fixed bug #0000252: Message typo errors in reseller and admin lostpw_email_setup.php
+	- MISC
+		* Fixed bug #0000251: Typo errors in filename
+
+2005-12-04 Erik Lehmann
+
+	- RELEASE
+		* vhcs2.4.7-beta1
+
+2005-12-03 Erik Lehmann
+
+	- GUI
+		* Fixed bug #0000247: Cross-Site-Scripting bug in gui/errordocs/index.php
+
+2005-12-02 Erik Lehmann
+
+	- GUI
+		* Fixed bug #0000244: Useless code in /client/email-account.tpl
+
+2005-12-01 Freres Frederic
+
+	- GUI
+		* Fixed: CatchAll Hijacking
+
+2005-12-01 Erik Lehmann
+
+	- ENGINE:
+		* Fixed bug #0000243: Name "main::cfg" used only once: possible typo at /var/www/vhcs2/engine/vhcs2-db-passwd line 145.
+
+2005-11-30 Erik Lehmann
+
+	- GUI:
+		* Added: Catchall now works for forward acc, and for external mail accounts
+
+2005-11-28 Erik Lehmann
+
+	- INSTALLATION:
+		* Fixed bug #0000241: change chown sytax for gui in vhcs2-setup
+
+2005-11-27 Erik Lehmann
+
+	- ENGINE:
+		* Added: corrected wrong homedir setting per systemuser (only for new added user), thanks to Markus Petzsch
+		* Added: restart amavis service if new mail user is added / if you are using amavis, thanks to Markus Petzsch
+		* Added: catchall adresses are moved from /etc/postfix/vhcs2/mailboxes to /etc/postfix/vhcs2/aliases
+	- INSTALLATION:
+		* Fixed: set missing permissions for /etc/init.d/vhcs2_daemon and /etc/init.d/vhcs2_network during setup
+
+2005-11-26 Frederic Freres
+
+	- GUI:
+		* Fixed: Auto respond: [ ] isn't show anymore for email forward
+		* Fixed: Javascript error in add_alias.tpl
+		* Optimized: Every . is now replaced by _ in add_alias.tpl to create the mount point (Javascript)
+		* Optimized: Every . is now replaced by _ in add_subdomain.tpl to create the mount point (Javascript)
+		* Fixed: Error in add_subdomain.tpl, there was a <table> to mutch
+		* Fixed: Error in manage_domains.tpl --> page_message area declared twice
+		* Fixed: Field "Forward to URL" in enable alias forwarding is now set to '' instead of 'no'
+
+2005-11-25 Erik Lehmann
+
+	- GUI:
+		* Changed: set $cfg['HOSTING_PLANS_LEVEL'] = 'reseller' in vhcs-lib.php as default
+		* Changed: status of autoresponder is no longer shown twice on page email_accounts.php
+	- ENGINE:
+		* Changed: little fix for the updated autoresponder vhcs2-arpl-msgr
+	- INSTALLATION:
+		* Added: set vhcs2_daemon runlevel for starting at system startup
+		* Added: enable apache vhcs2.conf in sites-enabled during setup
+		* Added: vhcs2-setup propose now your network address (ip) during setup
+		* Fixed: typo error in vhcs2-setup
+
+2005-11-24 Erik Lehmann
+
+	- ENGINE:
+		* Added: mysql database sizes will be counted to diskspace quota
+		* Added: function mysqldb_quota_by_dir_engine() in vhcs2-dsk-quota default used, less exact results
+		* Added: function mysqldb_quota_by_mysql_engine() in vhcs2-dsk-quota, needs more cpu power for mysql querys and calculating
+	- INSTALLATION:
+		* Fixed bug #0000233: Lost password failure, missing /vhcs2/lostpw.php after installation
+		* Fixed bug #0000231: Error in keys/Makefile
+
+2005-11-23 Erik Lehmann
+
+	- GUI:
+		* Added: allow mysql remote connect per default in database. Determining factor is now only the option in the my.cf to activate oder deactivate (thanks to Carsten Schï¿½ne) (only for new dbs or after password change)
+	- INSTALLATION:
+		* Fixed bug #0000232: Global symbol "$cmd" requires explicit package name at ./vhcs2-setup
+		* Fixed bug #0000230: error in hosting_plans table update in HOWTO Update
+		* Fixed bug #0000229: set-engine-permissions.sh and set-gui-permissions.sh would not copied during make
+
+2005-11-22 Frederic Freres
+
+	- DATABASE:
+		* Fixed bug #0000227: typo error in quotalimits table "vbytes_xfer_avail" changed to "bytes_xfer_avail"
+
+2005-11-22 Erik Lehmann
+
+	- ENGINE:
+		* Fixed bug #0000200: No apache working config causes error output into database field (vhcs2-dmn-mngr)
+		* Added: speedup apache, by change vhosts to IP based with port 80, that fix also apache warnings
+		* Added: Catch all domains in the apache templates
+	- GUI:
+		* Fixed bug #0000225: Language string hardcoded in ip management in admin area
+		* Update: ADOdb to version 4.67 -> brings much more performance to vhcs 2.4.7
+		* Fixed bug #0000221: {TR_MESSAGE_DELETE} not parsed in admin/manage_users.php if user list is nil
+		* Fixed bug #0000219: Template broken in gui/client/add_subdomain.php
+	- INSTALLATION:
+		* Fixed bug #0000225: make install breaks because of missing system user vmail
+		* Added: run set-gui-permissions.sh and set-engine-permissions.sh at the end of install
+		* Fixed bug: typo error in HOWTO Update
+		* Fixed bug #0000224: typo error in INSTALL
+		* Fixed bug #0000223: unset permissions for some files in /usr/sbin during make install
+		* Fixed bug #0000222: typo error in engine/setup/vhcs-setup
+
+2005-11-21 Erik Lehmann
+
+	- DAEMON:
+		* Changed: init.d daemon restart function
+		* Changed: default iptables path to sarge default in /etc/init.d/vhcs_network
+	- GUI:
+		* Fixed bug #0000218: language strings hardcoded
+	- INSTALLATION:
+		* Fixed bug #0000217: in INSERT statement of first admin data insert in /engine/setup/vhcs-setup
+		* Fixed bug #0000216: deleting /tmp/db.sql twice in vhcs2-setup
+		* Fixed bug #0000215: some missing files in the make files
+		* Fixed bug #0000214: typo error in the database.sql
+
+2005-11-20 Erik Lehmann
+
+	- RELEASE
+		* vhcs2.4.7-alpha1
+
+before vhcs2.4.7-alpha1 Frederic Freres
+
+	- GUI:
+		* Fixed: better character converting for suggested mountpoints, not showing "add subdomain" in the menu if now subdomains are available
+		* Fixed: Not showing aliasdomain and subdomain parts in manage_domains content area if this functions are not available for the client
+		* Fixed: better Cross Site Scripting prevention
+		* Added: a sql user can have more than one database
+		* Changed: Hosting Plan Management reviewed
+		* Fixed: Hosting Plan now has decimal numbers (SQL Structure Update)
+		* Fixed: Some template errors (layout + Javascript) are fixed
+		* Added: autoresponder text can now be edited
+		* Fixed: 2 security leaks in the autoresponder (SQL Injection)
+		* Changed: Domains and reseller are now sorted alphabetically
+		* Added: Email notification on support request
+		* Fixed bug #0000138: Cross-Site-Scripting Issues in VHCS-GUI
+		* Fixed bug #0000162: Add Alias is shown in enable alias forward even if alias are disabled by reseller
+		* Fixed bug #0000164: Cross Site Scripting in GUI
+		* Fixed bug #0000166: HTML Format error + typo error
+		* Fixed bug #0000195: Install doesn't start on debian
+		* Fixed bug #0000197: email password length check
+		* Fixed bug #0000201: Cannot create subdomains as domains
+		* Fixed bug #0000206: PHP Warning when /proc/swaps doesn't exist
+		* Fixed bug #0000207: no "Custom buttons" under /reseller/language.php
+		* Fixed bug #0000208: Order_settings.php -> spaces in texareas
+		* Fixed bug #0000209: Orderpanel site (with more than 1 reseller)
+		* Fixed bug #0000210: Protected pages return error
+
+before vhcs2.4.7-alpha1 Erik Lehmann
+
+	- ENGINE:
+		* Changed: pop(-ssl)/imap(-ssl)/smtp/ftp traffic for alias domains will be counted;
+		* Changed: pop(-ssl)/imap(-ssl)/smtp/ftp traffic for sub domains will be counted;
+		* Changed: not counting pop(-ssl)/imap(-ssl) traffic from localhost produced by webmail;
+		* Changed: different traffic analyse method if amavis is used or not. With the MAIL_LOG_INC_AMAVIS switches the method;
+		* Added: spezial version for SUSE engine/traffic/vhcs2-vrl-traff-SUSE must renamed into vhcs2-vrl-traff;
+		* Fixed bug #0000191: fix bug in get_human_date() in vhcs2_common_code.pl
+		* Changed: function arpl_msgr_engine; autoresponder work with domain/subdomain/alias domain, don't send "_no_" any longer, improved mail header parser;
+		* Changed: fixed mail loop problem with responding on autoresponder messages;
+		* Fixed bug #0000161 in mbox_check_sasl_user() added CMD_SASLDB_LISTUSERS2 to vhcs2.conf;
+		* Fixed bug #0000101 (fix postfix waring "/var/spool/postfix/etc/sasldb2 and /etc/sasldb2 differ" changed: MTA_SASLDB_FILE and added: ETC_SASLDB_FILE in vhcs2.conf;
+		* Changed: now mail passwords would be encoded in md5 used by courier, so passwords with more then 8 characters could be used;
+		* Fixed: locking if user backup folder did not exist; fixed error message in the backup manager logfile in /var/log/vhcs ;
+		* Fixed: non copying the errorpages and default index page (was a fix for 2.4.7-dev);
+		* Fixed bug #0000086: Wrong permissions for Autoresponder
+		* Fixed bug #0000104: Autoresponder tool is broken
+		* Fixed bug #0000130: User can provoke LOCK on VHCS Backup Manager
+		* Fixed bug #0000203: Autoresponder dies on mailprocessing
+
+	- GUI:
+		* Fixed: Every date in the GUI use now the DATE_FORMAT
+		* Fixed: Every FTP Seperator comes now from FTP_USERNAME_SEPARATOR (this means only the new added FTP accounts, all other accounts must be changed manually by a SQL query.)
+		* Fixed: deleted some unused templates
+		* Updated: phpMyAdmin update to phpMyAdmin-2.6.4-pl4
+		* Updated: webmail update to uebimiau version 2.7.9
+		* Updated: filemanager update to weeble version 1.2.2-CVS
+		* Added: HTML-SSL, POP3-SSL, IMAP-SSL to server status overview in admin section
+		* Added: Password reminder, thanks to Mark Henning (tirex)
+			Features:
+			* mail templates for admin and reseller
+			* verification with activationlink and captcha-grafic
+			* created passwords are build out of numbers and letters
+		* Fixed bug #0000034: Error in vhcs2/gui/admin/sysinfo.php
+		* Fixed bug #0000037: webmail logout produces error message
+		* Fixed bug #0000192: Autoreply English spelling
+		* Fixed bug #0000199: Orderpanel - does not use the correct language
+
+	- LANGUAGES:
+		* Added: All language files are included into the build and in the database
+		* Added: Seperate language tables out of database.sql
+
+before vhcs2.4.7-alpha1 Ico Dimov
+
+	- ENGINE:
+		* Changed: Postfix master.cf config file was synced with postfix 2.2.x mainstream;
+		* Fixed bug #0000261: vhcs2_network script does not run -F INPUT/OUTPUT/FORWARD now. This makes a lots of troubles on servers with firewalls;
+		* Fixed: DNS timestamp fix by 'Puuhis' (finally .db timestamps will look according to the specs);
+		* Changed: Since we made all of the perl engine scripts read/write/execute only by 'root' vhcs2-arpl-msgr stopped to work becouse it uses vmail:mail user:group pair. Not it has its own db decoding subs and works fine with other root permissions;
+		* Fixed: htacces management fix - .htaccess files are now remove successfully upon delete;
+		* Fixed: backup during suspend fix - domains in suspend mode are now excluded from automatic backup;
+		* Fixed: vhcs2-vrl-traff fix - .perv files are removed if they are greater then PREV_TRAFF_LOG_MAX_SIZE bytes; Thus we reduce the chance for them to become big;
+
+before vhcs2.4.7-alpha1 Alexander Kotov
+
+	- GUI:
+		* Added: Optional Hosting Plan Managemnt in admin or reseller level
+				At a moment this can be definded in /gui/include/vhcs-lib.php
+				and should be defined in the variable $cfg['HOSTING_PLANS_LEVEL']
+		* Changed: several gui bug fixes
+		* Fixed bug #0000043: Wrong heading is shown in vhcs2/client/add_alias.php using template modern_blue
+		* Fixed bug #0000060: error in domain statistics overview
+		* Fixed bug #0000067: Adding Users with .htaccess Management
+		* Fixed bug #0000125: webmail themes/templates loads a lot of not existing files
+		* Fixed bug #0000142: Subdomains don't get error docs defined
+		* Fixed bug #0000189: Update hosting plan
+		* Fixed bug #0000190: new domain user login problems
+
+VHCS 2.4.6.1 Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bugfixes:	- add new Version of phpMyAdmin
+		- Fix: Domainovertake due to inconvinent SQL Querry (0000089)
+		- Fix: Creation of FTP Accounts works again
+
+New Features:	NONE
+
+DB Changes:	NONE
+
+
+VHCS 2.4.6 Changelog
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bugfixes:	- 17.08.05 :: Bug 0000124 :: Database names with wildcards fixed
+		- 10.08.05 :: Bug 0000126 :: Login encoding template fix
+		- 06.08.05 :: Bug 0000135 :: Webmail small optic fix
+		- 06.08.05 :: Bug 0000134 :: Admin Level - /admin/admin_log.php
+		- 25.05.05 :: Bug 0000045 :: Admin level reseller assigment bug fix - /admin/manage_reseller_owners.php
+		- 25.05.05 :: Bug 0000088 :: support system small bug fix admin/reseller/enduser level => view_ticket.php
+		- 25.05.05 :: Bug 0000122 :: small css bug in the webmail css file
+		- 25.05.05 :: Bug 0000123 :: enhancement - strtolower(); for all new gui system entries
+		- 25.05.05 :: Bug 0000121 :: Enduserlevel /client/edit_ftp_acc.php typo fix
+		- 25.07.05 :: Bug 0000120 :: Enduserlevel /client/add_ftp_acc.php username rangecheck enhancement
+		- 22.07.05 :: Bug 0000089 :: fix in /include/reseller-functions.php
+		- 22.07.05 :: Bug 0000117 :: Count ftp accounts to subdomains
+		- 22.07.05 :: Bug 0000109 :: End user level :: mail account additional
+		- 21.07.05 :: Bug 0000108 :: Mount pint range check was extended
+		- 21.07.05 :: Bug 0000102 :: Pakacge / Engine :: htaccess manager
+		- 21.07.05 :: Bug 0000115 :: Enduser level :: Edit custom error pages
+		- 26.06.05 :: Bug 0000083 :: Admin level :: Multilanguage management :: Install Language
+		- 26.06.05 :: Bug 0000080 :: Reseller Level :: Domain-Alias-Error
+		- 26.06.05 :: Bug 0000077 :: Admin level :: User session typo error
+		- 26.06.05 :: Bug 0000066 :: Reseller Level :: /reseller/edit_domain.php missed variable
+
+New Features:   - Purchasing module :: User part is done
+		- Purchasing module :: Reseller level :: Management of customer orders - done
+		- Purchasing module :: Enduser level :: Users can order hosting package update - done
+		-User related variables for the custom menus (expl. {uid} for user id)
+
+DB Changes:	 New tables => "orders" and "orders_settings" => needed for the purchasing modul
+
+		CREATE TABLE `orders` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+ 		`user_id` int(10) unsigned NOT NULL default '0',
+		`plan_id` int(10) unsigned NOT NULL default '0',
+		`date` int(10) unsigned NOT NULL default '0',
+		`domain_name` varchar(200) default NULL,
+		`fname` varchar(200) default NULL,
+		`lname` varchar(200) default NULL,
+		`firm` varchar(200) default NULL,
+		`zip` varchar(10) default NULL,
+		`city` varchar(200) default NULL,
+		`country` varchar(200) default NULL,
+		`email` varchar(200) default NULL,
+		`phone` varchar(200) default NULL,
+		`fax` varchar(200) default NULL,
+		`street1` varchar(200) default NULL,
+		`street2` varchar(200) default NULL,
+		`status` varchar(255) default NULL,
+		PRIMARY KEY  (`id`)
+		) TYPE=MyISAM AUTO_INCREMENT=36 ;
+
+		CREATE TABLE `orders_settings` (
+		`id` int(10) unsigned NOT NULL default '0',
+		`user_id` int(10) unsigned NOT NULL default '0',
+		`header` text,
+		`footer` text,
+		PRIMARY KEY  (`id`)
+		) TYPE=MyISAM;
+
+		Changes in the existing tables => "hosting_plans"
+		New fields are
+
+		`description` varchar(255) default NULL
+		`price` int(10) unsigned NOT NULL default '0',
+		`setup_fee` int(10) unsigned NOT NULL default '0',
+		`value` varchar(255) default NULL,
+		`payment` varchar(255) default NULL,
+		`status` int(10) unsigned NOT NULL default '0',
+
+		here the structure:
+
+		CREATE TABLE `hosting_plans` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+		`reseller_id` int(10) unsigned NOT NULL default '0',
+		`name` varchar(255) default NULL,
+		`description` varchar(255) default NULL,
+		`props` text,
+		`price` int(10) unsigned NOT NULL default '0',
+		`setup_fee` int(10) unsigned NOT NULL default '0',
+		`value` varchar(255) default NULL,
+		`payment` varchar(255) default NULL,
+		`status` int(10) unsigned NOT NULL default '0',
+		UNIQUE KEY `id` (`id`)
+		  	) TYPE=MyISAM AUTO_INCREMENT=22 ;

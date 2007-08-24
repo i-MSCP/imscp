@@ -1227,16 +1227,17 @@ function gen_manage_domain_search_options  (&$tpl,
 function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 
 	$matches = array();
-    $query = <<<SQL_QUERY
-        show tables
+	$languages = array();
+	$query = <<<SQL_QUERY
+		show tables
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query, array());
 
-	while (!$rs -> EOF) {
+	while (!$rs->EOF) {
 		$lang_table = $rs -> fields[0];
 
-        if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/",$lang_table , $matches)) {
+		if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/", $lang_table , $matches)) {
 
 			$query = <<<SQL_QUERY
                 select
@@ -1247,44 +1248,42 @@ SQL_QUERY;
                     msgid = 'ispcp_language'
 SQL_QUERY;
 
-      $res = exec_query($sql, $query, array());
+			$res = exec_query($sql, $query, array());
 
-			if ($res -> RecordCount() == 0) {
+			if ($res->RecordCount() == 0) {
 				$language_name = tr('Unknown');
 			} else {
 				$language_name = $res->fields['msgstr'];
 			}
 
+			if ($matches[0] === $user_def_language) {
+				$selected = 'selected';
+			} else {
+				$selected = '';
+			}
 
-
-            if ($matches[0] === $user_def_language) {
-
-                $selected = 'selected';
-
-            } else {
-
-                $selected = '';
-
-            }
-
-            $tpl -> assign(
-                            array(
-                                    'LANG_VALUE' => $matches[0],
-                                    'LANG_SELECTED' => $selected,
-                                    'LANG_NAME' => $language_name
-                                 )
-                          );
-
-            $tpl -> parse('DEF_LANGUAGE', '.def_language');
+			array_push($languages, array($matches[0], $selected, $language_name));
 		}
 
-        $rs -> MoveNext();
+		$rs->MoveNext();
+
+	}
+
+	asort($languages[0], SORT_STRING);
+	foreach ($languages as $lang) {
+			$tpl->assign(
+						array(
+							'LANG_VALUE' => $lang[0],
+							'LANG_SELECTED' => $lang[1],
+							'LANG_NAME' => $lang[2]
+							)
+						);
+			$tpl->parse('DEF_LANGUAGE', '.def_language');
 	}
 
 }
 
-function gen_domain_details(&$tpl, &$sql, &$domain_id)
-{
+function gen_domain_details(&$tpl, &$sql, &$domain_id) {
 
 	$tpl -> assign('USER_DETAILS', '');
 

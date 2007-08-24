@@ -1,21 +1,22 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 2001-2006 by moleSoftware GmbH
+ * @copyright 2006-2007 by ispCP | http://isp-control.net
+ * @link http://isp-control.net
+ * @author ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ * 	This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
+
 
 
 require '../include/ispcp-lib.php';
@@ -23,28 +24,19 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/admin_log.tpl');
-
-$tpl -> define_dynamic('page_message', 'page');
-
-$tpl -> define_dynamic('log_row', 'page');
-
-$tpl -> define_dynamic('scroll_prev_gray', 'page');
-
-$tpl -> define_dynamic('scroll_prev', 'page');
-
-$tpl -> define_dynamic('scroll_next_gray', 'page');
-
-$tpl -> define_dynamic('scroll_next', 'page');
-
-$tpl -> define_dynamic('clear_log', 'page');
-
+$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/admin_log.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('log_row', 'page');
+$tpl->define_dynamic('scroll_prev_gray', 'page');
+$tpl->define_dynamic('scroll_prev', 'page');
+$tpl->define_dynamic('scroll_next_gray', 'page');
+$tpl->define_dynamic('scroll_next', 'page');
+$tpl->define_dynamic('clear_log', 'page');
 
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(
+$tpl->assign(
                 array(
                         'TR_ADMIN_ADMIN_LOG_PAGE_TITLE' => tr('ispCP - Admin/Admin Log'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -56,15 +48,15 @@ $tpl -> assign(
 
 
 
- function generate_page (&$tpl) {
+function generate_page (&$tpl) {
 
     global $sql,$cfg;
 
 	$start_index = 0;
-
 	$rows_per_page = 15;
 
-	if (isset($_GET['psi']) && is_numeric($_GET['psi'])) $start_index = $_GET['psi'];
+	if (isset($_GET['psi']) && is_numeric($_GET['psi']))
+		$start_index = $_GET['psi'];
 
 
     $count_query = <<<SQL_QUERY
@@ -83,20 +75,20 @@ SQL_QUERY;
         ORDER BY
             log_time DESC
         LIMIT
-            $start_index, $rows_per_page
+           ?, ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $count_query, array());
+    $rs = exec_query($sql, $count_query, array($start_index, $rows_per_page));
 
     $records_count = $rs -> fields['cnt'];
 
 	$rs = execute_query($sql, $query);
 
 
-    if ($rs -> RowCount() == 0) {
+    if ($rs->RowCount() == 0) {
 
 //        set_page_message(tr('Log is empty!'));
-        $tpl -> assign(
+        $tpl->assign(
             array(
                 'LOG_ROW' => '',
                 'PAG_MESSAGE' => tr('Log is empty!'),
@@ -112,11 +104,11 @@ SQL_QUERY;
 
 		if ($start_index == 0) {
 
-				$tpl -> assign('SCROLL_PREV', '');
+				$tpl->assign('SCROLL_PREV', '');
 
 		} else {
 
-				$tpl -> assign(
+				$tpl->assign(
 								array(
 										'SCROLL_PREV_GRAY' => '',
 										'PREV_PSI' => $prev_si
@@ -129,11 +121,11 @@ SQL_QUERY;
 
 		if ($next_si + 1 > $records_count) {
 
-				$tpl -> assign('SCROLL_NEXT', '');
+				$tpl->assign('SCROLL_NEXT', '');
 
 		} else {
 
-				$tpl -> assign(
+				$tpl->assign(
 								array(
 										'SCROLL_NEXT_GRAY' => '',
 										'NEXT_PSI' => $next_si
@@ -143,7 +135,7 @@ SQL_QUERY;
 		}
 
 
-	 $tpl -> assign(
+	 $tpl->assign(
             array(
                 'PAGE_MESSAGE' => ''
                 )
@@ -151,17 +143,17 @@ SQL_QUERY;
 
         $row = 1;
 
-        while (!$rs -> EOF) {
+        while (!$rs->EOF) {
 
             if ($row++ % 2 == 0) {
-                $tpl -> assign(
+                $tpl->assign(
                         array(
                             'ROW_CLASS' => 'content',
                             )
                         );
             }
             else{
-                $tpl -> assign(
+                $tpl->assign(
                         array(
                             'ROW_CLASS' => 'content2',
                             )
@@ -190,9 +182,9 @@ SQL_QUERY;
                         )
               );
 
-            $tpl -> parse('LOG_ROW', '.log_row');
+            $tpl->parse('LOG_ROW', '.log_row');
 
-            $rs ->MoveNext();
+            $rs->MoveNext();
         }//while
     }
 }
@@ -326,9 +318,8 @@ $tpl -> assign(
 
 //gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
-
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 

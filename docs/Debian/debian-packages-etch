@@ -2,6 +2,7 @@ apache2
 apache2-mpm-worker
 apache2.2-common
 apache2-utils
+bash
 bind9
 bzip2
 courier-authdaemon
@@ -15,6 +16,7 @@ gcc
 postgrey
 gzip
 iptables
+libapache2-mod-cband
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
@@ -32,6 +34,7 @@ libmcrypt4
 libmd5-perl
 libmime-perl
 libnet-dns-perl
+libnet-libidn-perl
 libnet-netmask-perl
 libnet-perl
 libnet-smtp-server-perl
@@ -55,11 +58,13 @@ perl-modules
 php4
 php4-cgi
 php4-gd
+php4-idn
 php4-mcrypt
 php4-mysql
 php4-pear
 php5-cgi
 php5-gd
+php5-idn
 php5-imap
 php5-mcrypt
 php5-mhash
@@ -74,8 +79,3 @@ sasl2-bin
 ssh
 tar
 wget
-bash
-libnet-libidn-perl
-libapache2-mod-cband
-php4-idn
-php5-idn

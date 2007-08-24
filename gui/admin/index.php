@@ -1,22 +1,21 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 2001-2006 by moleSoftware GmbH
+ * @copyright 2006-2007 by ispCP | http://isp-control.net
+ * @link http://isp-control.net
+ * @author ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
+ * @license
+ * 	This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 
 require '../include/ispcp-lib.php';
@@ -26,19 +25,12 @@ check_login(__FILE__);
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl = new pTemplate();
-
 $tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/index.tpl');
-
 $tpl -> define_dynamic('def_language', 'page');
-
 $tpl -> define_dynamic('def_layout', 'page');
-
 $tpl -> define_dynamic('no_messages', 'page');
-
 $tpl -> define_dynamic('msg_entry', 'page');
-
 $tpl -> define_dynamic('update_message', 'page');
-
 $tpl -> define_dynamic('traff_warn', 'page');
 
 
@@ -64,16 +56,16 @@ SQL_QUERY;
     $num_question = $rs->fields('cnum');
 
     if ($num_question == 0) {
-        $tpl -> assign(array('MSG_ENTRY' => ''));
+        $tpl->assign(array('MSG_ENTRY' => ''));
     } else {
-        $tpl -> assign(
+        $tpl->assign(
                          array(
                                  'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
                                  'TR_VIEW' => tr('View')
                               )
                       );
 
-        $tpl -> parse('MSG_ENTRY', 'msg_entry');
+        $tpl->parse('MSG_ENTRY', 'msg_entry');
     }
 }
 
@@ -116,7 +108,7 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array());
 
-    $straff_max= (($rs -> fields['straff_max'])*1024)*1024;
+    $straff_max= (($rs->fields['straff_max'])*1024)*1024;
 
     $fdofmnth = mktime(0,0,0,date("m"),1,date("Y"));
 
@@ -135,7 +127,7 @@ SQL_QUERY;
 
     $rs1 = exec_query($sql, $query, array($fdofmnth, $ldofmnth));
 
-    $traff  = $rs1 -> fields['traffic'];
+    $traff  = $rs1->fields['traffic'];
 
     $mtraff = sprintf("%.2f",$traff);
 
@@ -160,9 +152,9 @@ SQL_QUERY;
 
     $traff_msg = '';
 	if ($straff_max == 0) {
-	    $traff_msg = tr('%1$.2f %% [%2$d of unlimited]', $pr, sizeit($mtraff));
+	    $traff_msg = tr('%1$d%% [%2$s of unlimited]', $pr, sizeit($mtraff));
 	} else {
-	    $traff_msg = tr('%1$.2f %% [%2$d of %3$d]', $pr, sizeit($mtraff), sizeit($straff_max));
+	    $traff_msg = tr('%1$d%% [%2$s of %3$s]', $pr, sizeit($mtraff), sizeit($straff_max));
 	}
 
 
@@ -206,9 +198,8 @@ gen_server_trafic($tpl, $sql);
 
 gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
-
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 

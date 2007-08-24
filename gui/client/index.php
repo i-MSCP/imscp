@@ -1,21 +1,21 @@
 <?php
 /**
-* ispCP ω (OMEGA) a Virtual Hosting Control System
-*
-* @copyright 2001-2006 by moleSoftware GmbH
-* @copyright 2006-2007 by ispCP | http://isp-control.net
-* @link http://isp-control.net
-* @author ispCP Team (2007)
-*
-* @license
-* 	This program is free software; you can redistribute it and/or modify it under
-*   the terms of the MPL General Public License as published by the Free Software
-*   Foundation; either version 1.1 of the License, or (at your option) any later
-*   version.
-*   You should have received a copy of the MPL Mozilla Public License along with
-*   this program; if not, write to the Open Source Initiative (OSI)
-*   http://opensource.org | osi@opensource.org
-*/
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
+ *
+ * @copyright 2001-2006 by moleSoftware GmbH
+ * @copyright 2006-2007 by ispCP | http://isp-control.net
+ * @link http://isp-control.net
+ * @author ispCP Team (2007)
+ *
+ * @license
+ * 	This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
@@ -55,9 +55,9 @@ function gen_num_limit_msg($num, $limit) {
 function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
     list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
     if ($max_usage != 0) {
-        $traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
+        $traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
     } else {
-        $traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
+        $traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, sizeit($usage));
     }
 
     $tpl->assign(array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
