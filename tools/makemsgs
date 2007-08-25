@@ -5,7 +5,7 @@ set -e
 if [ $1 ] && [ -d $1 ]; then
 	GUI=${1}/
 else
-	GUI=gui/
+	GUI=../gui/
 fi
 
 if [ ! -f ${GUI}/index.php ]; then

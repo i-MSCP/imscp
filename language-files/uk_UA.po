@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-23 15:09-0500\n"
+"POT-Creation-Date: 2007-08-24 19:47-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -78,7 +78,9 @@ msgstr "ПОМИЛКА: Невірний код безпеки!"
 msgid "Security code"
 msgstr "Код безпеки"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
 msgstr ""
 
 msgid "Request password"
@@ -763,21 +765,24 @@ msgid "Domains"
 msgstr "Домени"
 
 #, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
 
 msgid "Aliases"
 msgstr "Аліаси"
 
 #, php-format
-msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
 msgstr "Пошта"
 
 #, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
 
 msgid "FTP"
@@ -802,23 +807,32 @@ msgid "Reseller data inconsistency!"
 msgstr "Таблиця статистики реселера"
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "Редагування реселера перервано!"
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
 msgstr ""
 
 #, fuzzy
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr "Якщо Ви бажаєте обмежити реселера, спочатку Ви маєте обмежити його користувачів!<br>"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"Якщо Ви бажаєте обмежити реселера, спочатку Ви маєте обмежити його "
+"користувачів!<br>"
 
 #, fuzzy, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
@@ -910,7 +924,8 @@ msgid "Auto email template data updated!"
 msgstr "Шаблон автовідповідача пошти оновлено!"
 
 msgid "ispCP - Admin/Manage users/Email setup"
-msgstr "ispCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
+msgstr ""
+"ispCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
 
 msgid "Email setup"
 msgstr "Налаштування електронної пошти"
@@ -989,11 +1004,11 @@ msgid "You are exceeding your traffic limit!"
 msgstr "Ви вичерпали ліміт трафіку!"
 
 #, php-format
-msgid "%1$.2f %% [%2$d of unlimited]"
+msgid "%1$d%% [%2$s of unlimited]"
 msgstr ""
 
 #, php-format
-msgid "%1$.2f %% [%2$d of %3$d]"
+msgid "%1$d%% [%2$s of %3$s]"
 msgstr ""
 
 msgid "ispCP - Admin/Main Index"
@@ -1219,11 +1234,15 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr ""
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid ""
+"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr ""
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr ""
 
 msgid "Moving aborted!"
@@ -1234,7 +1253,9 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid ""
+"<b>%s</b> has IP address that can not be managed from the destination "
+"reseller !<br>This user can not be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -1873,7 +1894,8 @@ msgid "Subdomain list is empty! You can not add FTP accounts there!"
 msgstr "Список піддоменів порожній! Неможливо додати користувача FTP!"
 
 msgid "Alias list is empty! You can not add FTP accounts there!"
-msgstr "Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
+msgstr ""
+"Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
 
 msgid "Please specify other FTP account dir!"
 msgstr "Будь ласка, укажіть іншу директорію користувача FTP!"
@@ -2053,7 +2075,8 @@ msgstr ""
 msgid "Restore backup"
 msgstr "Відновити резервний архів"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2122,8 +2145,10 @@ msgstr "ispCP - Клієнт/Зміна пароля"
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Клієнт/Зміна персональних даних"
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
 
 msgid "Catch all account scheduled for creation!"
 msgstr "Перехоплення всього в процесі створення!"
@@ -2186,11 +2211,18 @@ msgstr "Редагувати завдання Cron"
 msgid "Cronjobs"
 msgstr "Завдання Cron'a"
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку видаліть їх!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!"
+"<br>Спочатку видаліть їх!"
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr "Аліас домену, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку видаліть їх!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить користувачів FTP!"
+"<br>Спочатку видаліть їх!"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Триває видалення аліасу!"
@@ -2207,8 +2239,11 @@ msgstr "Видаліть спочатку \"перехоплювач усіх\" 
 msgid "SQL database was removed successfully!"
 msgstr "База даних SQL успішно видалена!"
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку видаліть їх!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
+"видаліть їх!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Триває видалення піддомену!"
@@ -2345,7 +2380,9 @@ msgid "FTP list is empty!"
 msgstr "Список FTP порожній!"
 
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr "Не можу відкрити директорію!<br>Зверніться до Вашого системного адміністратора!"
+msgstr ""
+"Не можу відкрити директорію!<br>Зверніться до Вашого системного "
+"адміністратора!"
 
 msgid "Parent Directory"
 msgstr "Батьківська директорія"
@@ -3044,8 +3081,11 @@ msgstr "Зачекайте"
 msgid "You have been blocked for %d minutes"
 msgstr "Ви заблоковані за"
 
-msgid "System is currently in servicemode! At time only administrators can login."
-msgstr "Система знаходиться в стані обслуговування! Лише адміністратори можуть входити до системи."
+msgid ""
+"System is currently in servicemode! At time only administrators can login."
+msgstr ""
+"Система знаходиться в стані обслуговування! Лише адміністратори можуть "
+"входити до системи."
 
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
@@ -3098,46 +3138,62 @@ msgstr "приховати аліаси"
 msgid "You have reached your domains limit.<br>You can not add more domains!"
 msgstr ""
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You can not add an user with unlimited "
+"subdomains!"
 msgstr ""
 
 msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Ви вичерпали ліміт аліасів!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"mail accounts!"
 msgstr ""
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"accounts!"
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"SQL databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"users!"
 msgstr ""
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr "Бази даних для цього користувача заблоковані.<br>Ви не можете мати користувачів SQL!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"here!"
+msgstr ""
+"Бази даних для цього користувача заблоковані.<br>Ви не можете мати "
+"користувачів SQL!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid ""
+"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
 msgstr ""
 
 msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
@@ -3192,8 +3248,12 @@ msgstr "Персональні дані"
 msgid "Check Out"
 msgstr "Перевірено"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr "<b>Дякуємо за замовлення</b><br>Ви отримаєте електронне повідомлення з більш детальною інформацією"
+msgid ""
+"<b>Thank You for purchasing</b><br>You will receive an email with more "
+"details and information"
+msgstr ""
+"<b>Дякуємо за замовлення</b><br>Ви отримаєте електронне повідомлення з більш "
+"детальною інформацією"
 
 msgid "No available hosting packages"
 msgstr "Хостінг-плани відсутні"
@@ -3264,17 +3324,29 @@ msgstr "Масова розсилка пошти"
 msgid "Wrong domain ID!"
 msgstr "Невірний ID домену!"
 
-msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr "Домен, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку видаліть їх!"
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить поштові скриньки!<br>Спочатку "
+"видаліть їх!"
 
-msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr "Домен, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку видаліть їх!"
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить користувачів FTP!<br>Спочатку "
+"видаліть їх!"
 
-msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr "Домен, що Ви намагаєтеся видалити, містить аліаси!<br>Спочатку видаліть їх!"
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить аліаси!<br>Спочатку видаліть їх!"
 
-msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
-msgstr "Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть їх!"
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
+msgstr ""
+"Домен, що Ви намагаєтеся видалити, містить піддомени!<br>Спочатку видаліть "
+"їх!"
 
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Керування доменами/Аліаси"
@@ -3324,6 +3396,10 @@ msgstr "База даних SQL"
 msgid "SQL User"
 msgstr "Користувач SQL"
 
+#, fuzzy
+msgid "Domain properties could not be updated!"
+msgstr "Властивості домену успішно оновлені!"
+
 msgid "Domain properties updated successfully!"
 msgstr "Властивості домену успішно оновлені!"
 
@@ -3340,7 +3416,8 @@ msgid "<b>%s</b> Service can not be limited !<br>"
 msgstr ""
 
 #, php-format
-msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
+msgid ""
+"Specified number is smaller than <b>%s</b> records, present on the system!"
 msgstr ""
 
 #, php-format
@@ -3360,7 +3437,8 @@ msgid "<b>%s</b> service can not be limited !<br>"
 msgstr ""
 
 #, php-format
-msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
+msgid ""
+"Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
@@ -3571,7 +3649,8 @@ msgstr "Дані користувача оновлені!"
 msgid "User data not updated!"
 msgstr "Дані користувача не оновлені!"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
 msgstr "Цей користувач має домен!<br>Спочатку видаліть домен із системи!"
 
 msgid "User not terminated!"
@@ -3620,7 +3699,8 @@ msgstr "Повідомлення відправлене."
 #~ msgstr "Адреса! <br> Зміна реселера припинена!"
 
 #~ msgid "Can not open file! Please contact your administrator !"
-#~ msgstr "Не можу відкрити файл! Зверніться до Вашого системного адміністратора!"
+#~ msgstr ""
+#~ "Не можу відкрити файл! Зверніться до Вашого системного адміністратора!"
 
 #~ msgid "Not in:"
 #~ msgstr "Не в групі:"

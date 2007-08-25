@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-24 Raphael Geissert
+    - GUI:
+        * Dropped the include/security code
+    - CONFIGS:
+        * Updated Ubuntu config files
+
 2007-08-24 Benedikt Heintel
 	- DOCU:
 		* Separated VHCS and ispCP change logs

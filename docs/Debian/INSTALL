@@ -172,7 +172,14 @@ b) manually
 6) FAQ
 ------
 
-Please check http://isp-control.net for any questions not answered in this file.
+Q.- How can I prevent websites using more than their bandwidth limit to stop working?
+A.- If you have installed the apache2-mod-cband (available for etch and lenny/sid)
+     all you need to do is:
+       # a2enmod cband
+     note that you might want to review /etc/apache2/mods-available/cband.conf
+     to disable the /cband-status and /cband-status-me handlers.
+
+Please check http://www.isp-control.net for any questions not answered in this file.
 
 ================================================================================
 7) Credits

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-23 15:09-0500\n"
+"POT-Creation-Date: 2007-08-24 19:47-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -78,7 +78,9 @@ msgstr "VIRHE: Tarkistuskoodi on virheellinen!"
 msgid "Security code"
 msgstr "Tarkistuskoodi"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
 msgstr ""
 
 msgid "Request password"
@@ -763,21 +765,24 @@ msgid "Domains"
 msgstr "Domainit"
 
 #, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
 
 msgid "Aliases"
 msgstr "Aliakset"
 
 #, php-format
-msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
 msgstr "S�hk�posti"
 
 #, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
 
 msgid "FTP"
@@ -802,23 +807,31 @@ msgid "Reseller data inconsistency!"
 msgstr "J�lleenmyyj�tilastotaulukko"
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
 msgstr ""
 
 msgid "Edit reseller aborted!"
 msgstr "J�lleenmyyj�n muokkaus keskeytetty!"
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
 msgstr ""
 
 #, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
 msgstr ""
 
 #, fuzzy
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr "Jos haluat rajoittaa j�lleenmyyj��, sinun pit�� rajoittaa k�ytt�i� ensin!<br>"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"Jos haluat rajoittaa j�lleenmyyj��, sinun pit�� rajoittaa k�ytt�i� ensin!<br>"
 
 #, fuzzy, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
@@ -989,11 +1002,11 @@ msgid "You are exceeding your traffic limit!"
 msgstr "Olet ylitt�m�ss� kaistanm��r�rajoitusta!"
 
 #, php-format
-msgid "%1$.2f %% [%2$d of unlimited]"
+msgid "%1$d%% [%2$s of unlimited]"
 msgstr ""
 
 #, php-format
-msgid "%1$.2f %% [%2$d of %3$d]"
+msgid "%1$d%% [%2$s of %3$s]"
 msgstr ""
 
 msgid "ispCP - Admin/Main Index"
@@ -1219,11 +1232,15 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr ""
 
 #, php-format
-msgid "You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
+msgid ""
+"You can not move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
 msgstr ""
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
 msgstr ""
 
 msgid "Moving aborted!"
@@ -1234,7 +1251,9 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!"
+msgid ""
+"<b>%s</b> has IP address that can not be managed from the destination "
+"reseller !<br>This user can not be moved!"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/User assignment"
@@ -2053,7 +2072,8 @@ msgstr "(nimetty yleens� backup_YYYY_MM_DD.tar.bz2)"
 msgid "Restore backup"
 msgstr "Palauta varmuuskopio"
 
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr ""
 
 msgid "Restore"
@@ -2122,7 +2142,8 @@ msgstr "ispCP - Asiakas / Vaihda salasana"
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Asiakas / Muuta henkil�kohtaisia tietoja"
 
-msgid "User does not exist or you do not have permission to access this interface!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
 msgstr "K�ytt�j�� ei ole olemassa tai sinulla ei ole oikeuksia t�h�n paikkaan!"
 
 msgid "Catch all account scheduled for creation!"
@@ -2186,11 +2207,17 @@ msgstr "Muokkaa Cronjobia"
 msgid "Cronjobs"
 msgstr "Cronjobit"
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Domain-alias jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia!<br>Poista ne ensin!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Domain-alias jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia!<br>Poista ne "
+"ensin!"
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr "Domain-alias jota yrit�t muokata sis�lt�� FTP-tunnuksia!<br>Poista ne ensin!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr ""
+"Domain-alias jota yrit�t muokata sis�lt�� FTP-tunnuksia!<br>Poista ne ensin!"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Alias poistojonossa!"
@@ -2207,8 +2234,11 @@ msgstr "Poista ensin Nappaa kaikki -tunnus s�hk�postilta!"
 msgid "SQL database was removed successfully!"
 msgstr "SQL-tietokanta poistettu onnistuneesti!"
 
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Alidomain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia! <br>Poista ensin ne!"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Alidomain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia! <br>Poista ensin "
+"ne!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Alidomain poistojonossa!"
@@ -3044,11 +3074,13 @@ msgstr "Sinun t�ytyy odottaa"
 msgid "You have been blocked for %d minutes"
 msgstr ""
 
-msgid "System is currently in servicemode! At time only administrators can login."
+msgid ""
+"System is currently in servicemode! At time only administrators can login."
 msgstr "J�rjestelm� on huoltotilassa! Vain yll�pit�j�t voivat kirjautua."
 
 msgid "User already logged or session sharing problem! Aborting..."
-msgstr "K�ytt�j� on jo kirjautuneena sis��n tai session jakamisongelma! Keskeytys.."
+msgstr ""
+"K�ytt�j� on jo kirjautuneena sis��n tai session jakamisongelma! Keskeytys.."
 
 msgid "Domain status is not OK - Login aborted."
 msgstr ""
@@ -3098,46 +3130,62 @@ msgstr "piilota aliakset"
 msgid "You have reached your domains limit.<br>You can not add more domains!"
 msgstr ""
 
-msgid "You have a subdomains limit!<br>You can not add an user with unlimited subdomains!"
+msgid ""
+"You have a subdomains limit!<br>You can not add an user with unlimited "
+"subdomains!"
 msgstr ""
 
 msgid "You are exceeding your subdomains limit!"
 msgstr ""
 
-msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid ""
+"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
 msgstr ""
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Olet ylitt�m�ss� aliasten m��r��!"
 
-msgid "You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!"
+msgid ""
+"You have a mail accounts limit!<br>You can not add an user with unlimited "
+"mail accounts!"
 msgstr ""
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr ""
 
-msgid "You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!"
+msgid ""
+"You have a FTP accounts limit!<br>You can not add an user with unlimited FTP "
+"accounts!"
 msgstr ""
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr ""
 
-msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
+msgid ""
+"You have a SQL databases limit!<br>You can not add an user with unlimited "
+"SQL databases!"
 msgstr ""
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr ""
 
-msgid "You have an SQL users limit!<br>You can not add an user with unlimited SQL users!"
+msgid ""
+"You have an SQL users limit!<br>You can not add an user with unlimited SQL "
+"users!"
 msgstr ""
 
-msgid "You have disabled SQL databases for this user!<br>You can not have SQL users here!"
-msgstr "Olet ottanut tietokannat pois k�yt�st� t�ll� k�ytt�j�ll�!<br>Et voi lis�t� tietokantak�ytt�ji�!"
+msgid ""
+"You have disabled SQL databases for this user!<br>You can not have SQL users "
+"here!"
+msgstr ""
+"Olet ottanut tietokannat pois k�yt�st� t�ll� k�ytt�j�ll�!<br>Et voi lis�t� "
+"tietokantak�ytt�ji�!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
-msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid ""
+"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
 msgstr ""
 
 msgid "You have a disk limit!<br>You can not add an user with unlimited disk!"
@@ -3192,8 +3240,12 @@ msgstr "Henkil�kohtaiset tiedot"
 msgid "Check Out"
 msgstr "Kuittaus"
 
-msgid "<b>Thank You for purchasing</b><br>You will receive an email with more details and information"
-msgstr "<b>Kiitoksia tilauksesta</b><br>Sinulle on l�hetetty s�hk�posti miss� tarkemmat tiedot tilauksesta"
+msgid ""
+"<b>Thank You for purchasing</b><br>You will receive an email with more "
+"details and information"
+msgstr ""
+"<b>Kiitoksia tilauksesta</b><br>Sinulle on l�hetetty s�hk�posti miss� "
+"tarkemmat tiedot tilauksesta"
 
 msgid "No available hosting packages"
 msgstr "Ei saatavilla olevia hosting-paketteja"
@@ -3264,17 +3316,26 @@ msgstr ""
 msgid "Wrong domain ID!"
 msgstr "Virheellinen domain ID!"
 
-msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
-msgstr "Domain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia!<br> poista ensin ne!"
+msgid ""
+"Domain you are trying to remove has email accounts !<br> first remove them !"
+msgstr ""
+"Domain jota yrit�t poistaa sis�lt�� s�hk�postitunnuksia!<br> poista ensin ne!"
 
-msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-msgstr "Domain jota yrit�t poistaa sis�lt�� FTP-tunnuksia!<br> poista ne ensin!"
+msgid ""
+"Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgstr ""
+"Domain jota yrit�t poistaa sis�lt�� FTP-tunnuksia!<br> poista ne ensin!"
 
-msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
-msgstr "Domain jota yrit�t poistaa sis�lt�� domain-aliaksia!<br> poista ensin ne!"
+msgid ""
+"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgstr ""
+"Domain jota yrit�t poistaa sis�lt�� domain-aliaksia!<br> poista ensin ne!"
 
-msgid "Domain you are trying to remove has subdomains accounts !<br> first remove them !"
-msgstr "Domain jota yrit�t poistaa sis�lt�� alidomaintunnuksia!<br>poista ensin ne!"
+msgid ""
+"Domain you are trying to remove has subdomains accounts !<br> first remove "
+"them !"
+msgstr ""
+"Domain jota yrit�t poistaa sis�lt�� alidomaintunnuksia!<br>poista ensin ne!"
 
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Hallitse Domain / Alias"
@@ -3324,6 +3385,10 @@ msgstr "SQL-tietokanta"
 msgid "SQL User"
 msgstr "SQL-k�ytt�j�"
 
+#, fuzzy
+msgid "Domain properties could not be updated!"
+msgstr "Domainin ominaisuuksia p�ivitetty onnistuneesti!"
+
 msgid "Domain properties updated successfully!"
 msgstr "Domainin ominaisuuksia p�ivitetty onnistuneesti!"
 
@@ -3340,7 +3405,8 @@ msgid "<b>%s</b> Service can not be limited !<br>"
 msgstr ""
 
 #, php-format
-msgid "Specified number is smaller than <b>%s</b> records, present on the system!"
+msgid ""
+"Specified number is smaller than <b>%s</b> records, present on the system!"
 msgstr ""
 
 #, php-format
@@ -3360,7 +3426,8 @@ msgid "<b>%s</b> service can not be limited !<br>"
 msgstr ""
 
 #, php-format
-msgid "Specified number is smaller than <b>%s</b> amount, present on the system!"
+msgid ""
+"Specified number is smaller than <b>%s</b> amount, present on the system!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
@@ -3571,7 +3638,8 @@ msgstr "K�ytt�j�tiedot p�ivitetty!"
 msgid "User data not updated!"
 msgstr "K�ytt�j�tietoja ei p�ivitetty!"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
 msgstr "T�ll� k�ytt�j�ll� on domain!<br>Poista ensin domain j�rjestelm�st�!"
 
 msgid "User not terminated!"

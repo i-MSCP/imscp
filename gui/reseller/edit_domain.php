@@ -415,7 +415,13 @@ SQL_QUERY;
 		$reseller_props .= "$rtraff_current;$rtraff_max;";
 		$reseller_props .= "$rdisk_current;$rdisk_max";
 
-		update_reseller_props($reseller_id, $reseller_props);
+		if (!update_reseller_props($reseller_id, $reseller_props)) {
+
+		    set_page_message(tr('Domain properties could not be updated!'));
+
+		    return false;
+		}
+
 		// update the sql quotas too
 		$query = "SELECT domain_name FROM domain WHERE domain_id=?";
 		$rs = exec_query($sql, $query, array($user_id));

@@ -169,7 +169,7 @@ sub upgrade_database {
 
     print STDOUT "\tCreating new database...";
 
-    if (sys_command("mysqladmin -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' create ispcp ") != 0) {
+    if (sys_command("mysqladmin -u\'$main::db_user\' -p\'$main::db_pwd\' create ispcp ") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -178,7 +178,7 @@ sub upgrade_database {
 
     print STDOUT "\tCopying database...";
 
-    if (sys_command("mysqldump --opt -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' $main::cfg{'DATABASE_NAME'} | mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' ispcp") != 0) {
+    if (sys_command("mysqldump --opt -u\'$main::db_user\' -p\'$main::db_pwd\' $main::db_name | mysql -u\'$main::db_user\' -p\'$main::db_pwd\' ispcp") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -187,7 +187,7 @@ sub upgrade_database {
 
     print STDOUT "\tUpgrading database structure...";
 
-    if (sys_command("mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' < vhcs2ispcp.sql") != 0) {
+    if (sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < vhcs2ispcp.sql") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -199,7 +199,7 @@ sub upgrade_database {
 
 sub install_language {
 
-    if (sys_command("mysql -u\'$main::cfg{'DATABASE_USER'}\' -p\'$main::db_pwd\' ispcp < $main::cfg{'CONF_DIR'}/database/languages.sql") != 0) {
+    if (sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' ispcp < $main::cfg{'CONF_DIR'}/database/languages.sql") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }

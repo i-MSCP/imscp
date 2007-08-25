@@ -518,7 +518,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
 			array(
-				'TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE' => tr('ISPCP - Client/Add Mail User'),
+				'TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE' => tr('ispCP - Client/Add Mail User'),
         		'THEME_COLOR_PATH' => "../themes/$theme_color",
         		'THEME_CHARSET' => tr('encoding'),
         		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],

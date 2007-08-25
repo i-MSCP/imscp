@@ -1903,7 +1903,7 @@ SQL_QUERY;
 										  $disk_current,
 										  $disk_max,
 										  $reseller_id));
-
+    return $res;
 }
 
 function gen_logged_from(&$tpl)
