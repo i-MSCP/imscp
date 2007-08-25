@@ -19,7 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// $Id: common_functions.php,v 1.54 2007/01/21 12:39:01 bigmichi1 Exp $
+// $Id: common_functions.php,v 1.55 2007/02/20 19:20:20 bigmichi1 Exp $
 
 // usefull during development
 if( isset($showerrors) && $showerrors ) {
@@ -170,29 +170,50 @@ function execute_program ($strProgramname, $strArgs = '', $booErrorRep = true ) 
 			}
 		}
 	}
-	$descriptorspec = array(
-		0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-		1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-		2 => array("pipe", "w")   // stderr is a pipe that the child will write to
-	);
-	$process = proc_open( $strProgram . " " . $strArgs, $descriptorspec, $pipes );
-	if( is_resource( $process ) ) {
-		while( !feof( $pipes[1] ) ) {
-			$strBuffer .= fgets( $pipes[1], 1024 );
+	// no proc_open() below php 4.3
+	if( function_exists( 'proc_open' ) ) {
+		$descriptorspec = array(
+			0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+			2 => array("pipe", "w")   // stderr is a pipe that the child will write to
+		);
+		$process = proc_open( $strProgram . " " . $strArgs, $descriptorspec, $pipes );
+		if( is_resource( $process ) ) {
+			while( !feof( $pipes[1] ) ) {
+				$strBuffer .= fgets( $pipes[1], 1024 );
+			}
+			fclose( $pipes[1] );
+			while( !feof( $pipes[2] ) ) {
+				$strError .= fgets( $pipes[2], 1024 );
+			}
+			fclose( $pipes[2] );
 		}
-		fclose( $pipes[1] );
-		while( !feof( $pipes[2] ) ) {
-			$strError .= fgets( $pipes[2], 1024 );
+		$return_value = proc_close( $process );
+	} else {
+		if( $fp = popen( "(" . $strProgram . " " . $strArgs . " > /dev/null) 3>&1 1>&2 2>&3", 'r' ) ) {
+			while( ! feof( $fp ) ) {
+				$strError .= fgets( $fp, 4096 );
+			}
+			pclose( $fp );
 		}
-		fclose( $pipes[2] );
+		$strError = trim( $strError );
+		if( $fp = popen( $strProgram . " " . $strArgs, 'r' ) ) {
+			while( ! feof( $fp ) ) {
+				$strBuffer .= fgets( $fp, 4096 );
+			}
+			$return_value = pclose( $fp );
+		}
 	}
-	$return_value = proc_close( $process );
+
+	$strError = trim( $strError );
+	$strBuffer = trim( $strBuffer );
+	
 	if( ! empty( $strError ) || $return_value <> 0 ) {
 		if( $booErrorRep ) {
 			$error->addError( $strProgram, $strError . "\nReturn value: " . $return_value, __LINE__, __FILE__);
 		}
 	}
-	return trim( $strBuffer );
+	return $strBuffer;
 }
 
 // A helper function, when passed a number representing KB,

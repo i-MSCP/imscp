@@ -1,6 +1,9 @@
 <?php
-/* $Id: main.php 9991 2007-02-14 21:18:38Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: main.php 10561 2007-08-17 20:52:07Z lem9 $
+ */
 
 /**
  * Don't display the page heading
@@ -12,15 +15,11 @@ if (!defined('PMA_DISPLAY_HEADING')) {
 /**
  * Gets some core libraries and displays a top message if required
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 
 // Handles some variables that may have been sent by the calling script
-if (isset($db)) {
-    unset($db);
-}
-if (isset($table)) {
-    unset($table);
-}
+$GLOBALS['db'] = '';
+$GLOBALS['table'] = '';
 $show_query = '1';
 require_once './libraries/header.inc.php';
 
@@ -310,7 +309,7 @@ PMA_printListItem($strHomepageOfficial, 'li_pma_homepage', 'http://www.phpMyAdmi
 ?>
     <li><bdo xml:lang="en" dir="ltr">
         [<a href="changelog.php" target="_blank">ChangeLog</a>]
-        [<a href="http://svn.sourceforge.net/viewvc/phpmyadmin/"
+        [<a href="http://phpmyadmin.svn.sourceforge.net/viewvc/phpmyadmin/"
             target="_blank">Subversion</a>]
         [<a href="http://sourceforge.net/mail/?group_id=23067"
             target="_blank">Lists</a>]
@@ -345,8 +344,8 @@ if (! empty($GLOBALS['PMA_errors']) && is_array($GLOBALS['PMA_errors'])) {
  * modified: 2004-05-05 mkkeck
  */
 if ($server != 0
-    && $cfg['Server']['user'] == 'root'
-    && $cfg['Server']['password'] == '') {
+ && $cfg['Server']['user'] == 'root'
+ && $cfg['Server']['password'] == '') {
     echo '<div class="warning">' . $strInsecureMySQL . '</div>' . "\n";
 }
 
@@ -354,7 +353,6 @@ if ($server != 0
  * Warning for PHP 4.2.3
  * modified: 2004-05-05 mkkeck
  */
-
 if (PMA_PHP_INT_VERSION == 40203 && @extension_loaded('mbstring')) {
     echo '<div class="warning">' . $strPHP40203 . '</div>' . "\n";
 }
@@ -363,7 +361,6 @@ if (PMA_PHP_INT_VERSION == 40203 && @extension_loaded('mbstring')) {
  * Nijel: As we try to hadle charsets by ourself, mbstring overloads just
  * break it, see bug 1063821.
  */
-
 if (@extension_loaded('mbstring') && @ini_get('mbstring.func_overload') > 1) {
     echo '<div class="warning">' . $strMbOverloadWarning . '</div>' . "\n";
 }
@@ -380,7 +377,6 @@ if ($GLOBALS['using_mb_charset'] && !@extension_loaded('mbstring')) {
  * Warning for old PHP version
  * modified: 2004-05-05 mkkeck
  */
-
 if (PMA_PHP_INT_VERSION < 40100) {
     echo '<div class="warning">' . sprintf($strUpgrade, 'PHP', '4.1.0') . '</div>' . "\n";
 }
@@ -392,6 +388,25 @@ if (PMA_PHP_INT_VERSION < 40100) {
 // not yet defined before the server choice
 if (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION < 32332) {
     echo '<div class="warning">' . sprintf($strUpgrade, 'MySQL', '3.23.32') . '</div>' . "\n";
+}
+
+/**
+ * Warning about different MySQL library and server version
+ */
+if ($server > 0 && PMA_MYSQL_CLIENT_API !== PMA_MYSQL_INT_VERSION) {
+    echo '<div class="warning">'
+     . PMA_sanitize(sprintf($strMysqlLibDiffersServerVersion,
+            PMA_DBI_get_client_info(),
+            substr(PMA_MYSQL_STR_VERSION, 0, strpos(PMA_MYSQL_STR_VERSION . '-', '-'))))
+     . '</div>' . "\n";
+}
+
+/**
+ * Warning about wrong controluser settings
+ */
+$strControluserFailed = 'Connection for controluser as defined in your config.inc.php failed.';
+if (defined('PMA_DBI_CONNECT_FAILED_CONTROLUSER')) {
+    echo '<div class="warning">' . $strControluserFailed . '</div>' . "\n";
 }
 
 if (defined('PMA_WARN_FOR_MCRYPT')) {

@@ -1,14 +1,19 @@
 <?php
-/* $Id: display_tbl_links.lib.php 9782 2006-12-10 12:32:41Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * modified 2004-05-08 by Michael Keck <mail_at_michaelkeck_dot_de>
+ * - bugfix for select all checkboxes
+ * - copy right to left (or left to right) if user click on a check box
+ * - reversed the right modify links: 1. drop, 2. edit, 3. checkbox
+ * - also changes made in js/functions.js
+ *
+ * @version $Id: display_tbl_links.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-// modified 2004-05-08 by Michael Keck <mail_at_michaelkeck_dot_de>
-// - bugfix for select all checkboxes
-// - copy right to left (or left to right) if user click on a check box
-// - reversed the right modify links: 1. drop, 2. edit, 3. checkbox
-// - also changes made in js/functions.js
-
-if ( $doWriteModifyAt == 'left' ){
+/**
+ *
+ */
+if ($doWriteModifyAt == 'left') {
 
     if (!empty($del_url) && $is_display['del_lnk'] != 'kp') {
         echo '    <td align="center">' . "\n"

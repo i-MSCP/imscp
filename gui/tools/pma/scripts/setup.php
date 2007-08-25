@@ -1,4 +1,5 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * phpMyAdmin setup script
  *
@@ -9,16 +10,14 @@
  * @author     Michal Čihař <michal@cihar.com>
  * @copyright  2006 Michal Čihař <michal@cihar.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    Subversion $Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $
+ * @version    $Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $
  */
-/* $Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
 
 // Grab phpMyAdmin version and PMA_dl function
-define( 'PMA_MINIMUM_COMMON', TRUE );
-define( 'PMA_SETUP', TRUE );
+define('PMA_MINIMUM_COMMON', TRUE);
+define('PMA_SETUP', TRUE);
 chdir('..');
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 
 // Grab configuration defaults
 // Do not use $PMA_Config, it interferes with the one in $_SESSION
@@ -56,7 +55,7 @@ if ($eoltype == 'dos') {
     $crlf = "\n";
 }
 
-if (isset($_POST['configuration']) && $action != 'clear' ) {
+if (isset($_POST['configuration']) && $action != 'clear') {
     // Grab previous configuration, if it should not be cleared
     $configuration = unserialize($_POST['configuration']);
 } else {
@@ -96,7 +95,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
     <title>phpMyAdmin <?php echo $PMA_Config_Setup->get('PMA_VERSION'); ?> setup</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <script type="text/javascript" language="javascript">
+    <script type="text/javascript">
     //<![CDATA[
     // show this window in top frame
     if (top != self) {
@@ -1044,7 +1043,7 @@ function show_left_form($defaults = array()) {
             array('Show logo', 'LeftDisplayLogo', 'Whether to show logo in left frame', TRUE),
             array('Display servers selection', 'LeftDisplayServers', 'Whether to show server selection in left frame', FALSE),
             array('Display servers as list', 'DisplayServersList', 'Whether to show server listing as list instead of drop down', FALSE),
-            array('Display databases as list', 'DisplayDatabasesList', 'Whether to show database listing in navigation as list instead of drop down', FALSE),
+            array('Display databases as list', 'DisplayDatabasesList', 'Whether to show database listing in navigation as list instead of drop down', array('auto', 'yes', 'no')),
             array('Enable pointer highlighting', 'LeftPointerEnable', 'Whether you want to highlight server under mouse', TRUE),
             ),
             'Configure navigation frame',
@@ -1231,17 +1230,17 @@ function get_server_selection($cfg) {
  * @return  mixed   FALSE on failure, new config array on success
  */
 function load_config($config_file) {
-    if ( file_exists( $config_file ) ) {
+    if (file_exists($config_file)) {
         $success_apply_user_config = FALSE;
-        $old_error_reporting = error_reporting( 0 );
-        if ( function_exists( 'file_get_contents' ) ) {
+        $old_error_reporting = error_reporting(0);
+        if (function_exists('file_get_contents')) {
             $success_apply_user_config = eval('?>' . trim(file_get_contents($config_file)));
         } else {
             $success_apply_user_config =
                 eval('?>' . trim(implode("\n", file($config_file))));
         }
-        error_reporting( $old_error_reporting );
-        unset( $old_error_reporting );
+        error_reporting($old_error_reporting);
+        unset($old_error_reporting);
         if ($success_apply_user_config === FALSE) {
             message('error', 'Error while parsing configuration file!');
         } elseif (!isset($cfg) || count($cfg) == 0) {
@@ -1291,7 +1290,7 @@ switch ($action) {
         echo htmlspecialchars(get_cfg_string($configuration));
         echo '</textarea></form>' . "\n";
         ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
     var bodyWidth=null; var bodyHeight=null;
     if (document.getElementById('textconfig')) {
@@ -1362,7 +1361,7 @@ switch ($action) {
                 message('error', 'Empty signon URL while using signon authentication method!');
                 $err = TRUE;
             }
-            if ( isset($new_server['pmadb']) && strlen($new_server['pmadb'])) {
+            if (isset($new_server['pmadb']) && strlen($new_server['pmadb'])) {
                 // Just use defaults, should be okay for most users
                 $pmadb = array();
                 $pmadb['bookmarktable'] = 'pma_bookmark';
@@ -1383,6 +1382,30 @@ switch ($action) {
                 if (empty($new_server['controlpass'])) {
                     message('error', 'Empty phpMyAdmin control user password while using pmadb!');
                     $err = TRUE;
+                }
+                /* Check whether we can connect as control user */
+                if (!empty($new_server['controluser']) && !empty($new_server['controlpass'])) {
+                    if ($new_server['extension'] == 'mysql') {
+                        $socket = empty($new_server['socket']) || $new_server['connect_type'] == 'tcp' ? '' : ':' . $new_server['socket'];
+                        $port = empty($new_server['port']) || $new_server['connect_type'] == 'socket' ? '' : ':' . $new_server['port'];
+                        $conn = @mysql_connect($new_server['host'] . $socket . $port, $new_server['controluser'], $new_server['controlpass']);
+                        if ($conn === FALSE) {
+                            message('error', 'Could not connect as control user!');
+                            $err = TRUE;
+                        } else {
+                            mysql_close($conn);
+                        }
+                    } else { 
+                        $socket = empty($new_server['socket']) || $new_server['connect_type'] == 'tcp' ? NULL : $new_server['socket'];
+                        $port = empty($new_server['port']) || $new_server['connect_type'] == 'socket' ? NULL : $new_server['port'];
+                        $conn = @mysqli_connect($new_server['host'], $new_server['controluser'], $new_server['controlpass'], NULL, $port, $socket);
+                        if ($conn === FALSE) {
+                            message('error', 'Could not connect as control user!');
+                            $err = TRUE;
+                        } else {
+                            mysqli_close($conn);
+                        }
+                    }
                 }
             } else {
                 message('warning', 'You didn\'t set phpMyAdmin database, so you can not use all phpMyAdmin features.');
@@ -1664,8 +1687,15 @@ switch ($action) {
 
     case 'lay_navigation_real':
         if (isset($_POST['submit_save'])) {
-            $vals = grab_values('LeftFrameLight:bool;LeftFrameDBTree:bool;LeftFrameDBSeparator;LeftFrameTableSeparator;LeftFrameTableLevel:int;LeftDisplayLogo:bool;LeftDisplayServers:bool;DisplayServersList:bool;DisplayDatabasesList:bool;LeftPointerEnable:bool');
+            $vals = grab_values('LeftFrameLight:bool;LeftFrameDBTree:bool;LeftFrameDBSeparator;LeftFrameTableSeparator;LeftFrameTableLevel:int;LeftDisplayLogo:bool;LeftDisplayServers:bool;DisplayServersList:bool;DisplayDatabasesList;LeftPointerEnable:bool');
             $err = FALSE;
+            if (isset($vals['DisplayDatabasesList'])) {
+                if ($vals['DisplayDatabasesList'] == 'yes') {
+                    $vals['DisplayDatabasesList'] = true;
+                } elseif ($vals['DisplayDatabasesList'] == 'no') {
+                    $vals['DisplayDatabasesList'] = false;
+                }
+            }
             if (isset($vals['LeftFrameTableLevel']) && $vals['LeftFrameTableLevel'] < 1) {
                 message('error', 'Invalid value for maximum table nesting level!');
                 $err = TRUE;
@@ -1881,7 +1911,7 @@ switch ($action) {
             break;
         }
 
-        $version_local = version_to_int( $PMA_Config_Setup->get('PMA_VERSION') );
+        $version_local = version_to_int($PMA_Config_Setup->get('PMA_VERSION'));
         if ($version_local === FALSE) {
             message('error', 'Unparsable version string.');
             break;
@@ -1909,7 +1939,7 @@ switch ($action) {
     case '':
         message('notice', 'You want to configure phpMyAdmin using web interface. Please note that this only allows basic setup, please read <a href="../Documentation.html#config">documentation</a> to see full description of all configuration directives.', 'Welcome');
 
-        if ( $PMA_Config_Setup->get( 'PMA_PHP_INT_VERSION' ) < 40100) {
+        if ($PMA_Config_Setup->get('PMA_PHP_INT_VERSION') < 40100) {
             message('warning', 'Please upgrade to PHP 4.1.0, it is required for phpMyAdmin.', 'Too old PHP');
         }
 
@@ -1996,9 +2026,9 @@ echo get_action('load', 'Load', '', !$fail_dir);
 echo get_action('clear', 'Clear');
 echo get_action('seteol', 'Change end of line',
         '<select name="neweol">' .
-        '<option value="unix" ' . ( $eoltype == 'unix' ? ' selected="selected"' : '' ) . '>UNIX/Linux (\\n)</option>' .
-        '<option value="dos" ' . ( $eoltype == 'dos' ? ' selected="selected"' : '' ) . '>DOS/Windows (\\r\\n)</option>' .
-        '<option value="mac" ' . ( $eoltype == 'mac' ? ' selected="selected"' : '' ) . '>Macintosh (\\r)</option>' . '
+        '<option value="unix" ' . ($eoltype == 'unix' ? ' selected="selected"' : '') . '>UNIX/Linux (\\n)</option>' .
+        '<option value="dos" ' . ($eoltype == 'dos' ? ' selected="selected"' : '') . '>DOS/Windows (\\r\\n)</option>' .
+        '<option value="mac" ' . ($eoltype == 'mac' ? ' selected="selected"' : '') . '>Macintosh (\\r)</option>' . '
         </select>');
 echo '</fieldset>' . "\n\n";
 

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: sanitizing.lib.php 10299 2007-04-17 17:13:20Z lem9 $
+ * @version $Id: sanitizing.lib.php 10298 2007-04-17 17:08:12Z lem9 $
  */
 
 /**

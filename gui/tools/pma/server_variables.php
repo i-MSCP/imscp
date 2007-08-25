@@ -1,11 +1,17 @@
 <?php
-/* $Id: server_variables.php 9779 2006-12-06 18:07:06Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: server_variables.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-if ( ! defined( 'PMA_NO_VARIABLES_IMPORT' ) ) {
-    define( 'PMA_NO_VARIABLES_IMPORT', true );
+/**
+ *
+ */
+if (! defined('PMA_NO_VARIABLES_IMPORT')) {
+    define('PMA_NO_VARIABLES_IMPORT', true);
 }
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 
 /**
  * Does the common work
@@ -23,7 +29,7 @@ require './libraries/server_links.inc.php';
  * Displays the sub-page heading
  */
 echo '<h2>' . "\n"
-   . ($cfg['MainPageIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 's_vars.png" width="16" height="16" alt="" />' : '' )
+   . ($cfg['MainPageIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 's_vars.png" width="16" height="16" alt="" />' : '')
    . '' . $strServerVars . "\n"
    . '</h2>' . "\n";
 

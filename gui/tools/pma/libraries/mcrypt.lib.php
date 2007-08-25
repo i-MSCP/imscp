@@ -1,16 +1,16 @@
 <?php
-
-/* $Id: mcrypt.lib.php 9657 2006-11-02 10:51:57Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: mcrypt.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
 /**
  * Initialization
+ * Store the initialization vector because it will be needed for
+ * further decryption. I don't think necessary to have one iv
+ * per server so I don't put the server number in the cookie name.
  */
-
-// Store the initialization vector because it will be needed for
-// further decryption. I don't think necessary to have one iv
-// per server so I don't put the server number in the cookie name.
-
 if (!isset($_COOKIE['pma_mcrypt_iv'])) {
     srand((double) microtime() * 1000000);
     $iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC), MCRYPT_RAND);

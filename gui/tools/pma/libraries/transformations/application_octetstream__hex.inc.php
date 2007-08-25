@@ -1,10 +1,16 @@
 <?php
-/* $Id: application_octetstream__hex.inc.php 8705 2006-03-02 17:27:07Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: application_octetstream__hex.inc.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
 
+/**
+ *
+ */
 function PMA_transformation_application_octetstream__hex($buffer, $options = array(), $meta = '') {
     // possibly use a global transform and feed it with special options:
-    // include('./libraries/transformations/global.inc.php');
+    // include './libraries/transformations/global.inc.php';
     if (!isset($options[0])) {
         $options[0] = 2;
     } else {

@@ -1,11 +1,11 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * manipulation of table data like inserting, replacing and updating
- * vim: expandtab sw=4 ts=4 sts=4:
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 10355 2007-05-08 18:16:08Z cybot_tm $
+ * @version $Id: tbl_replace.php 10436 2007-06-14 16:52:26Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -52,7 +52,7 @@ if (! defined('PMA_NO_VARIABLES_IMPORT')) {
 /**
  * Gets some core libraries
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 
 // Check parameters
 PMA_checkParameters(array('db', 'table', 'goto'));
@@ -62,23 +62,16 @@ PMA_DBI_select_db($GLOBALS['db']);
 /**
  * Initializes some variables
  */
-if (isset($_REQUEST['dontlimitchars'])) {
-    $url_params['dontlimitchars'] = $_REQUEST['dontlimitchars'];
-}
-if (isset($_REQUEST['pos'])) {
-    $url_params['pos'] = (int) $_REQUEST['pos'];
-}
-if (isset($_REQUEST['session_max_rows'])) {
-    $url_params['session_max_rows'] = (int) $_REQUEST['session_max_rows'];
-}
-if (isset($_REQUEST['disp_direction'])) {
-    $url_params['disp_direction'] = $_REQUEST['disp_direction'];
-}
-if (isset($_REQUEST['repeat_cells'])) {
-    $url_params['repeat_cells'] = (int) $_REQUEST['repeat_cells'];
+$goto_include = false;
+
+if (isset($_REQUEST['insert_rows']) && is_numeric($_REQUEST['insert_rows']) && $_REQUEST['insert_rows'] != $cfg['InsertRows']) {
+    $cfg['InsertRows'] = $_REQUEST['insert_rows'];
+    $js_to_run = 'tbl_change.js';
+    require_once './libraries/header.inc.php';
+    require './tbl_change.php';
+    exit;
 }
 
-$goto_include = false;
 if (isset($_REQUEST['after_insert'])
  && in_array($_REQUEST['after_insert'], array('new_insert', 'same_insert', 'edit_next'))) {
     $url_params['after_insert'] = $_REQUEST['after_insert'];
@@ -98,7 +91,12 @@ if (isset($_REQUEST['after_insert'])
                 $res            = PMA_DBI_query($local_query);
                 $row            = PMA_DBI_fetch_row($res);
                 $meta           = PMA_DBI_get_fields_meta($res);
-                $url_params['primary_key'][] = PMA_getUniqueCondition($res, count($row), $meta, $row);
+                // must find a unique condition based on unique key,
+                // not a combination of all fields
+                if ($tmp = PMA_getUniqueCondition($res, count($meta), $meta, $row, true)) {
+                    $_SESSION['edit_next'] = $tmp;
+                }
+                unset($tmp);
             }
         }
     }
@@ -110,13 +108,13 @@ if (isset($_REQUEST['after_insert'])
     } else {
         $goto_include = $GLOBALS['goto'];
     }
-    if ($GLOBALS['goto'] == 'db_sql.php' && isset($GLOBALS['table'])) {
-        unset($GLOBALS['table']);
+    if ($GLOBALS['goto'] == 'db_sql.php' && strlen($GLOBALS['table'])) {
+        $GLOBALS['table'] = '';
     }
 }
 
 if (! $goto_include) {
-    if (! isset($GLOBALS['table']) || ! strlen($GLOBALS['table'])) {
+    if (! strlen($GLOBALS['table'])) {
         $goto_include = 'db_sql.php';
     } else {
         $goto_include = 'tbl_sql.php';
@@ -167,7 +165,7 @@ $func_no_param = array(
     'LAST_INSERT_ID',
 );
 
-foreach ($loop_array as $primary_key) {
+foreach ($loop_array as $rowcount => $primary_key) {
     // skip fields to be ignored
     if (! $using_key && isset($_REQUEST['insert_ignore_' . $primary_key])) {
         continue;
@@ -178,32 +176,32 @@ foreach ($loop_array as $primary_key) {
 
     // Map multi-edit keys to single-level arrays, dependent on how we got the fields
     $me_fields =
-        isset($_REQUEST['fields']['multi_edit'][$primary_key])
-        ? $_REQUEST['fields']['multi_edit'][$primary_key]
+        isset($_REQUEST['fields']['multi_edit'][$rowcount])
+        ? $_REQUEST['fields']['multi_edit'][$rowcount]
         : array();
     $me_fields_prev =
-        isset($_REQUEST['fields_prev']['multi_edit'][$primary_key])
-        ? $_REQUEST['fields_prev']['multi_edit'][$primary_key]
+        isset($_REQUEST['fields_prev']['multi_edit'][$rowcount])
+        ? $_REQUEST['fields_prev']['multi_edit'][$rowcount]
         : null;
     $me_funcs =
-        isset($_REQUEST['funcs']['multi_edit'][$primary_key])
-        ? $_REQUEST['funcs']['multi_edit'][$primary_key]
+        isset($_REQUEST['funcs']['multi_edit'][$rowcount])
+        ? $_REQUEST['funcs']['multi_edit'][$rowcount]
         : null;
     $me_fields_type =
-        isset($_REQUEST['fields_type']['multi_edit'][$primary_key])
-        ? $_REQUEST['fields_type']['multi_edit'][$primary_key]
+        isset($_REQUEST['fields_type']['multi_edit'][$rowcount])
+        ? $_REQUEST['fields_type']['multi_edit'][$rowcount]
         : null;
     $me_fields_null =
-        isset($_REQUEST['fields_null']['multi_edit'][$primary_key])
-        ? $_REQUEST['fields_null']['multi_edit'][$primary_key]
+        isset($_REQUEST['fields_null']['multi_edit'][$rowcount])
+        ? $_REQUEST['fields_null']['multi_edit'][$rowcount]
         : null;
     $me_fields_null_prev =
-        isset($_REQUEST['fields_null_prev']['multi_edit'][$primary_key])
-        ? $_REQUEST['fields_null_prev']['multi_edit'][$primary_key]
+        isset($_REQUEST['fields_null_prev']['multi_edit'][$rowcount])
+        ? $_REQUEST['fields_null_prev']['multi_edit'][$rowcount]
         : null;
     $me_auto_increment =
-        isset($_REQUEST['auto_increment']['multi_edit'][$primary_key])
-        ? $_REQUEST['auto_increment']['multi_edit'][$primary_key]
+        isset($_REQUEST['auto_increment']['multi_edit'][$rowcount])
+        ? $_REQUEST['auto_increment']['multi_edit'][$rowcount]
         : null;
 
     foreach ($me_fields as $key => $val) {
@@ -276,12 +274,12 @@ if ($is_insert && count($value_sets) > 0) {
 
     unset($query_fields, $value_sets);
 
-    $message = $GLOBALS['strInsertedRows'] . '&nbsp;';
+    $message .= $GLOBALS['strInsertedRows'] . '&nbsp;';
 } elseif (! empty($query)) {
-    $message = $GLOBALS['strAffectedRows'] . '&nbsp;';
+    $message .= $GLOBALS['strAffectedRows'] . '&nbsp;';
 } else {
     // No change -> move back to the calling script
-    $message = $GLOBALS['strNoModification'];
+    $message .= $GLOBALS['strNoModification'];
     $js_to_run = 'functions.js';
     $active_page = $goto_include;
     require_once './libraries/header.inc.php';

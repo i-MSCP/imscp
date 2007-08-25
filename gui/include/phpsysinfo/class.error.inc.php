@@ -19,7 +19,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// $Id: class.error.inc.php,v 1.8 2006/07/03 08:18:14 bigmichi1 Exp $
+// $Id: class.error.inc.php,v 1.9 2007/02/11 15:57:17 bigmichi1 Exp $
 
 class Error {
 
@@ -87,13 +87,13 @@ class Error {
 		if( $this->errors > 0 ) {
 			foreach( $this->arrErrorList as $arrLine ) {
 				if( $arrLine['command'] == "WARN" ) {
-					$strWARNString .= "<font size=\"-1\"><b>WARNING: " . str_replace( "\n", "<br/>", htmlspecialchars( $arrLine['message'] ) ) . "</b></font><br/>\n";
+					$strWARNString .= "<font size=\"-1\"><b>WARNING: " . str_replace( "\n", "<br>", htmlspecialchars( $arrLine['message'] ) ) . "</b></font><br>\n";
 				} else {
 					$strHTMLString .= "\t<tr>\n"
 							. "\t\t<td><font size=\"-1\">" . htmlspecialchars( $arrLine['file'] ) . "</font></td>\n"
 							. "\t\t<td><font size=\"-1\">" . $arrLine['line'] . "</font></td>\n"
 							. "\t\t<td><font size=\"-1\">" . htmlspecialchars( $arrLine['command'] ) . "</font></td>\n"
-							. "\t\t<td><font size=\"-1\">" . str_replace( "\n", "<br/>", htmlspecialchars( $arrLine['message'] ) ) . "</font></td>\n"
+							. "\t\t<td><font size=\"-1\">" . str_replace( "\n", "<br>", htmlspecialchars( $arrLine['message'] ) ) . "</font></td>\n"
 							. "\t</tr>\n";
 				}
 			}

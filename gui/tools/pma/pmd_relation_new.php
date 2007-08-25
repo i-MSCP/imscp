@@ -1,12 +1,19 @@
 <?php
-/* $Id: pmd_relation_new.php 9828 2007-01-05 17:30:36Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: pmd_relation_new.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @package phpMyAdmin-Designer
+ */
 
+/**
+ *
+ */
 include_once 'pmd_common.php';
 $die_save_pos = 0;
 include_once 'pmd_save_pos.php';
 require_once './libraries/relation.lib.php';
-extract($_POST); 
+extract($_POST);
 
 $tables = PMA_DBI_get_tables_full($db, $T1);
 $type_T1 = strtoupper($tables[$T1]['ENGINE']);
@@ -18,10 +25,10 @@ $type_T2 = strtoupper($tables[$T2]['ENGINE']);
 //  I n n o D B
 if ($type_T1 == 'INNODB' and $type_T2 == 'INNODB') {
     // relation exists?
-    $existrel_innodb = PMA_getForeigners($db, $T2, '', 'innodb'); 
-    if (isset($existrel_innodb[$F2]) 
+    $existrel_innodb = PMA_getForeigners($db, $T2, '', 'innodb');
+    if (isset($existrel_innodb[$F2])
      && isset($existrel_innodb[$F2]['constraint'])) {
-	     PMD_return(0,'strErrorRelationExists');
+         PMD_return(0,'strErrorRelationExists');
     }
 // note: in InnoDB, the index does not requires to be on a PRIMARY
 // or UNIQUE key
@@ -31,10 +38,10 @@ if ($type_T1 == 'INNODB' and $type_T2 == 'INNODB') {
     while ($row = PMA_DBI_fetch_assoc($result))
         $index_array1[$row['Column_name']] = 1;
     PMA_DBI_free_result($result);
-  
+
     $result     = PMA_DBI_query('SHOW INDEX FROM ' . PMA_backquote($T2) . ';');
     $index_array2  = array(); // will be used to emphasis prim. keys in the table view
-    while ($row = PMA_DBI_fetch_assoc($result)) 
+    while ($row = PMA_DBI_fetch_assoc($result))
         $index_array2[$row['Column_name']] = 1;
     PMA_DBI_free_result($result);
 
@@ -47,7 +54,7 @@ if ($type_T1 == 'INNODB' and $type_T2 == 'INNODB') {
                  . PMA_backquote($T1) . '('
                  . PMA_backquote($F1) . ')';
 
-        if ($on_delete != 'nix') { 
+        if ($on_delete != 'nix') {
             $upd_query   .= ' ON DELETE ' . $on_delete;
         }
         if ($on_update != 'nix') {
@@ -74,11 +81,11 @@ if ($type_T1 == 'INNODB' and $type_T2 == 'INNODB') {
                             . '\'' . PMA_sqlAddslashes($db) . '\', '
                             . '\'' . PMA_sqlAddslashes($T1) . '\','
                             . '\'' . PMA_sqlAddslashes($F1) . '\')';
-        
-        if (PMA_query_as_cu( $q , false, PMA_DBI_QUERY_STORE)) {
-            PMD_return(1, 'strInternalRelationAdded'); 
+
+        if (PMA_query_as_cu($q , false, PMA_DBI_QUERY_STORE)) {
+            PMD_return(1, 'strInternalRelationAdded');
         } else {
-            PMD_return(0, 'strErrorRelationAdded'); 
+            PMD_return(0, 'strErrorRelationAdded');
         }
    }
 }

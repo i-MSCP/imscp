@@ -1,9 +1,9 @@
 <?php
-/* $Id: bookmark.lib.php 9763 2006-11-26 10:57:48Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used with the bookmark feature
+ *
+ * @version $Id: bookmark.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
 
@@ -103,7 +103,7 @@ function PMA_queryBookmarks($db, $cfgBookmark, $id, $id_field = 'id', $action_bo
     $query          = 'SELECT query FROM ' . PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
                     . ' WHERE dbase = \'' . PMA_sqlAddslashes($db) . '\''
                     . ($action_bookmark_all? '' : ' AND (user = \'' . PMA_sqlAddslashes($cfgBookmark['user']) . '\''
-                    . '      OR user = \'\')' )
+                    . '      OR user = \'\')')
                     . ' AND ' . PMA_backquote($id_field) . ' = ' . $id;
     $result = PMA_DBI_try_query($query, $controllink);
     if (!$result) {

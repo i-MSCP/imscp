@@ -1,15 +1,21 @@
 <?php
-/* $Id: tbl_export.php 10144 2007-03-20 11:22:31Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_export.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-require_once('./libraries/common.lib.php');
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 
 /**
  * Gets tables informations and displays top links
  */
-require_once('./libraries/tbl_common.php');
+require_once './libraries/tbl_common.php';
 $url_query .= '&amp;goto=tbl_export.php&amp;back=tbl_export.php';
-require_once('./libraries/tbl_info.inc.php');
+require_once './libraries/tbl_info.inc.php';
 
 // Dump of a table
 
@@ -18,7 +24,7 @@ $export_page_title = $strViewDump;
 // When we have some query, we need to remove LIMIT from that and possibly
 // generate WHERE clause (if we are asked to export specific rows)
 
-if (isset($sql_query)) {
+if (! empty($sql_query)) {
     // Parse query so we can work with tokens
     $parsed_sql = PMA_SQP_parse($sql_query);
 
@@ -50,7 +56,7 @@ if (isset($sql_query)) {
             $wheres[] = $analyzed_sql[0]['where_clause'];
         }
 
-        if (count($wheres) > 0 ) {
+        if (count($wheres) > 0) {
             $sql_query .= ' WHERE (' . implode(') AND (', $wheres) . ')';
         }
 
@@ -77,20 +83,20 @@ if (isset($sql_query)) {
             }
             if (!$inside_bracket && $parsed_sql[$i]['type'] == 'alpha_reservedWord' && strtoupper($parsed_sql[$i]['data']) == 'LIMIT') {
                 // We found LIMIT to remove
-                
+
                 $sql_query = '';
-                
+
                 // Concatenate parts before
                 for ($j = 0; $j < $i; $j++) {
                     $sql_query .= $parsed_sql[$j]['data'] . ' ';
                 }
-                
+
                 // Skip LIMIT
                 $i++;
                 while ($i < $parsed_sql['len'] &&
-                    ($parsed_sql[$i]['type'] != 'alpha_reservedWord' || 
-                    ($parsed_sql[$i]['type'] == 'alpha_reservedWord' && $parsed_sql[$i]['data'] == 'OFFSET'))) { 
-                    $i++; 
+                    ($parsed_sql[$i]['type'] != 'alpha_reservedWord' ||
+                    ($parsed_sql[$i]['type'] == 'alpha_reservedWord' && $parsed_sql[$i]['data'] == 'OFFSET'))) {
+                    $i++;
                 }
 
                 // Add remaining parts
@@ -108,14 +114,14 @@ if (isset($sql_query)) {
 /**
  * Displays top menu links
  */
-require('./libraries/tbl_links.inc.php');
+require './libraries/tbl_links.inc.php';
 
 $export_type = 'table';
-require_once('./libraries/display_export.lib.php');
+require_once './libraries/display_export.lib.php';
 
 
 /**
  * Displays the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 ?>

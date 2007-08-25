@@ -1,7 +1,5 @@
 <?php
-/* $Id: sqlparser.lib.php 10432 2007-06-11 17:00:56Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /** SQL Parser Functions for phpMyAdmin
  *
  * Copyright 2002 Robin Johnson <robbat2@users.sourceforge.net>
@@ -28,23 +26,25 @@
  * (note that that you need to have syntax.css.php included somehow in your
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
+ *
+ * @version $Id: sqlparser.lib.php 10432 2007-06-11 17:00:56Z lem9 $
  */
 
 
 /**
  * Minimum inclusion? (i.e. for the stylesheet builder)
  */
-if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
+if (! defined('PMA_MINIMUM_COMMON')) {
     /**
      * Include the string library as we use it heavily
      */
-    require_once('./libraries/string.lib.php');
+    require_once './libraries/string.lib.php';
 
     /**
      * Include data for the SQL Parser
      */
-    require_once('./libraries/sqlparser.data.php');
-    require_once('./libraries/mysql_charsets.lib.php');
+    require_once './libraries/sqlparser.data.php';
+    require_once './libraries/mysql_charsets.lib.php';
     if (!isset($mysql_charsets)) {
         $mysql_charsets = array();
         $mysql_charsets_count = 0;
@@ -406,6 +406,18 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                 continue;
             }
 
+            /* DEBUG
+            echo '<pre>1';
+            var_dump(PMA_STR_isSqlIdentifier($c, false));
+            var_dump($c == '@');
+            var_dump($c == '.');
+            var_dump(PMA_STR_isDigit(PMA_substr($sql, $count2 + 1, 1)));
+            var_dump($previous_was_space);
+            var_dump($previous_was_bracket);
+            var_dump($previous_was_listsep);
+            echo '</pre>';
+            */
+
             // Checks for identifier (alpha or numeric)
             if (PMA_STR_isSqlIdentifier($c, false)
              || $c == '@'
@@ -418,7 +430,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                 echo '<hr />';
                 */
 
-                $count2 ++;
+                $count2++;
 
                 /**
                  * @todo a @ can also be present in expressions like
@@ -432,6 +444,15 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                 $is_hex_digit            = $is_digit && $c == '0' && $count2 < $len && PMA_substr($sql, $count2, 1) == 'x';
                 $is_float_digit          = $c == '.';
                 $is_float_digit_exponent = FALSE;
+
+                /* DEBUG
+                echo '<pre>2';
+                var_dump($is_identifier);
+                var_dump($is_sql_variable);
+                var_dump($is_digit);
+                var_dump($is_float_digit);
+                echo '</pre>';
+                 */
 
                 // Nijel: Fast skip is especially needed for huge BLOB data, requires PHP at least 4.3.0:
                 if (PMA_PHP_INT_VERSION >= 40300) {
@@ -530,6 +551,13 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
 
                 // Special case, sometimes, althought two characters are
                 // adjectent directly, they ACTUALLY need to be seperate
+                /* DEBUG
+                echo '<pre>';
+                var_dump($l);
+                var_dump($punct_data);
+                echo '</pre>';
+                */
+
                 if ($l == 1) {
                     $t_suffix         = '';
                     switch ($punct_data) {
@@ -560,7 +588,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                     if (($first == ',') || ($first == ';') || ($first == '.') || ($first == '*')) {
                         $count2     = $count1 + 1;
                         $punct_data = $first;
-                    } elseif (($last2 == '/*') || (($last2 == '--') && ($count2 == $len || PMA_substr($sql, $count2, 1) <= ' ') )) {
+                    } elseif (($last2 == '/*') || (($last2 == '--') && ($count2 == $len || PMA_substr($sql, $count2, 1) <= ' '))) {
                         $count2     -= 2;
                         $punct_data = PMA_substr($sql, $count1, $count2 - $count1);
                     } elseif (($last == '-') || ($last == '+') || ($last == '!')) {
@@ -594,6 +622,11 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
 
         } // end while ($count2 < $len)
 
+        /*
+        echo '<pre>';
+        print_r($sql_array);
+        echo '</pre>';
+        */
 
         if ($arraysize > 0) {
             $t_next           = $sql_array[0]['type'];
@@ -791,12 +824,15 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
         $number_of_brackets_in_extract = 0;
         $number_of_brackets_in_group_concat = 0;
 
+        $number_of_brackets = 0;
+        $in_subquery = false;
+
         // for SELECT EXTRACT(YEAR_MONTH FROM CURDATE())
         // we must not use CURDATE as a table_ref
         // so we track wether we are in the EXTRACT()
         $in_extract          = FALSE;
 
-        // for GROUP_CONCAT( ... )
+        // for GROUP_CONCAT(...)
         $in_group_concat     = FALSE;
 
 /* Description of analyzer results by lem9
@@ -983,6 +1019,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
 
 // ==============================================================
             if ($arr[$i]['type'] == 'punct_bracket_open_round') {
+                $number_of_brackets++;
                 if ($in_extract) {
                     $number_of_brackets_in_extract++;
                 }
@@ -992,6 +1029,10 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
             }
 // ==============================================================
             if ($arr[$i]['type'] == 'punct_bracket_close_round') {
+                $number_of_brackets--;
+                if ($number_of_brackets == 0) {
+                    $in_subquery = false;
+                }
                 if ($in_extract) {
                     $number_of_brackets_in_extract--;
                     if ($number_of_brackets_in_extract == 0) {
@@ -1004,6 +1045,18 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                        $in_group_concat = FALSE;
                     }
                 }
+            }
+
+            if ($in_subquery) {
+                /**
+                 * skip the subquery to avoid setting
+                 * select_expr or table_ref with the contents
+                 * of this subquery; this is to avoid a bug when
+                 * trying to edit the results of
+                 * select * from child where not exists (select id from
+                 * parent where child.parent_id = parent.id);
+                 */
+                continue;
             }
 // ==============================================================
             if ($arr[$i]['type'] == 'alpha_functionName') {
@@ -1041,11 +1094,16 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                  */
 
                 if ($upper_data == 'SELECT') {
+                    if ($number_of_brackets > 0) {
+                        $in_subquery = true;
+                        // this is a subquery so do not analyze inside it
+                        continue;
+                    }
                     $seen_from = FALSE;
                     $previous_was_identifier = FALSE;
                     $current_select_expr = -1;
                     $seen_end_of_table_ref = FALSE;
-                } // end if ( data == SELECT)
+                } // end if (data == SELECT)
 
                 if ($upper_data =='FROM' && !$in_extract) {
                     $current_table_ref = -1;
@@ -1115,7 +1173,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                         } // end if ($save_table_ref &&!$seen_end_of_table_ref)
                     } // end if (!$seen_from)
                 } // end if (querytype SELECT)
-            } // end if ( quote_backtick or double quote or alpha_identifier)
+            } // end if (quote_backtick or double quote or alpha_identifier)
 
 // ===================================
             if ($arr[$i]['type'] == 'punct_qualifier') {
@@ -1139,9 +1197,8 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
             // the "*" is not saved
 
             if (isset($chain) && !$seen_end_of_table_ref
-               && (   (!$seen_from
-                   && $arr[$i]['type'] == 'punct_listsep')
-                  || ($arr[$i]['type'] == 'alpha_reservedWord' && $upper_data == 'FROM')) ) {
+             && ((!$seen_from && $arr[$i]['type'] == 'punct_listsep')
+              || ($arr[$i]['type'] == 'alpha_reservedWord' && $upper_data == 'FROM'))) {
                 $size_chain = count($chain);
                 $current_select_expr++;
                 $subresult['select_expr'][$current_select_expr] = array(
@@ -1208,7 +1265,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
              && ($arr[$i]['type'] == 'punct_listsep'
                || ($arr[$i]['type'] == 'alpha_reservedWord' && $upper_data!="AS")
                || $seen_end_of_table_ref
-               || $i==$size-1 )) {
+               || $i==$size-1)) {
 
                 $size_chain = count($chain);
                 $current_table_ref++;
@@ -1329,9 +1386,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
 
         } // end for $i (loop #1)
 
-        // -------------------------------------------------------
-        // This is a big hunk of debugging code by Marc for this.
-        // -------------------------------------------------------
+        //DEBUG
         /*
           if (isset($current_select_expr)) {
            for ($trace=0; $trace<=$current_select_expr; $trace++) {
@@ -1729,7 +1784,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                 // (we got a bug report about not being able to use
                 // 'no' as an identifier)
                            || ($arr[$i+2]['type'] == 'alpha_identifier'
-                              && strtoupper($arr[$i+2]['data'])=='NO') )
+                              && strtoupper($arr[$i+2]['data'])=='NO'))
                           ) {
                             $third_upper_data = strtoupper($arr[$i+2]['data']);
                             if ($third_upper_data == 'CASCADE'
@@ -2214,7 +2269,7 @@ if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
                             // the alpha_identifier exception is there to
                             // catch cases like
                             // GRANT SELECT ON mydb.mytable TO myuser@localhost
-                            // (else, we get mydb.mytableTO )
+                            // (else, we get mydb.mytableTO)
                             //
                             // the quote_single exception is there to
                             // catch cases like
@@ -2397,7 +2452,7 @@ function PMA_SQP_buildCssData()
     return $css_string;
 } // end of the "PMA_SQP_buildCssData()" function
 
-if ( ! defined( 'PMA_MINIMUM_COMMON' ) ) {
+if (! defined('PMA_MINIMUM_COMMON')) {
     /**
      * Gets SQL queries with no format
      *

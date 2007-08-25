@@ -1,33 +1,29 @@
 <?php
-/* $Id: browse_foreigners.php 10308 2007-04-20 16:41:22Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * display selection for relational field values
+ *
+ * @version $Id: browse_foreigners.php 10560 2007-08-15 16:46:47Z lem9 $
  */
 
 /**
  * Gets a core script and starts output buffering work
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 
 PMA_checkParameters(array('db', 'table', 'field'));
 
-require_once('./libraries/ob.lib.php');
-if ($cfg['OBGzip']) {
-    $ob_mode = PMA_outBufferModeGet();
-    if ($ob_mode) {
-        PMA_outBufferPre($ob_mode);
-    }
-}
-require_once('./libraries/header_http.inc.php');
-$field = urldecode($field);
+require_once './libraries/ob.lib.php';
+PMA_outBufferPre();
+
+require_once './libraries/header_http.inc.php';
 
 /**
  * Displays the frame
  */
 $per_page = 200;
-require_once('./libraries/relation.lib.php'); // foreign keys
-require_once('./libraries/transformations.lib.php'); // Transformations
+require_once './libraries/relation.lib.php'; // foreign keys
+require_once './libraries/transformations.lib.php'; // Transformations
 $cfgRelation = PMA_getRelationsParam();
 $foreigners  = ($cfgRelation['relwork'] ? PMA_getForeigners($db, $table) : FALSE);
 
@@ -42,12 +38,12 @@ if (isset($foreign_navig) && $foreign_navig == $strShowAll) {
     unset($foreign_limit);
 }
 
-require('./libraries/get_foreign.lib.php');
+require './libraries/get_foreign.lib.php';
 
 if (isset($pk)) {
     $pk_uri = '&amp;pk=' . urlencode($pk);
     ?>
-<input type="hidden" name="pk" value="<?php echo urlencode($pk); ?>" />
+<input type="hidden" name="pk" value="<?php echo htmlspecialchars($pk); ?>" />
     <?php
 } else {
     $pk_uri = '';
@@ -59,7 +55,7 @@ $showall = '';
 
 if (isset($disp_row) && is_array($disp_row)) {
 
-    if ( $cfg['ShowAll'] && ($the_total > $per_page) ) {
+    if ($cfg['ShowAll'] && ($the_total > $per_page)) {
         $showall = '<input type="submit" name="foreign_navig" value="' . $strShowAll . '" />';
     }
 
@@ -67,17 +63,23 @@ if (isset($disp_row) && is_array($disp_row)) {
     $pageNow = @floor($pos / $session_max_rows) + 1;
     $nbTotalPage = @ceil($the_total / $session_max_rows);
 
-    if ( $the_total > $per_page ) {
+    if ($the_total > $per_page) {
         $gotopage = PMA_pageselector(
                       'browse_foreigners.php?field='    . urlencode($field) .
                                        '&amp;'          . PMA_generate_common_url($db, $table)
                                                         . $pk_uri .
-                                       '&amp;fieldkey=' . (isset($fieldkey) ? $fieldkey : '') .
-                                       '&amp;foreign_filter=' . (isset($foreign_filter) ? htmlspecialchars($foreign_filter) : '') .
+                                       '&amp;fieldkey=' . (isset($fieldkey) ? urlencode($fieldkey) : '') .
+                                       '&amp;foreign_filter=' . (isset($foreign_filter) ? urlencode($foreign_filter) : '') .
                                        '&amp;',
                       $session_max_rows,
                       $pageNow,
-                      $nbTotalPage
+                      $nbTotalPage,
+                      200,
+                      5,
+                      5,
+                      20,
+                      10,
+                      $GLOBALS['strPageNumber']
                     );
     }
 }
@@ -93,22 +95,22 @@ if (isset($disp_row) && is_array($disp_row)) {
     <title>phpMyAdmin</title>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
     <link rel="stylesheet" type="text/css"
-        href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url( '', '' ); ?>&amp;js_frame=right&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
-    <script src="./js/functions.js" type="text/javascript" language="javascript"></script>
-    <script type="text/javascript" language="javascript">
+        href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=right&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
+    <script src="./js/functions.js" type="text/javascript"></script>
+    <script type="text/javascript">
     //<![CDATA[
     self.focus();
-    function formupdate( field, key ) {
+    function formupdate(field, key) {
         if (opener && opener.document && opener.document.insertForm) {
             var field = 'field_' + field;
 
-            <?php if ( isset( $pk ) ) { ?>
-            var element_name = field + '[multi_edit][<?php echo urlencode( $pk ); ?>][]';
+            <?php if (isset($pk)) { ?>
+            var element_name = field + '[multi_edit][<?php echo htmlspecialchars($pk); ?>][]';
             <?php } else { ?>
             var element_name = field + '[]';
             <?php } ?>
 
-            <?php if ( isset( $fieldkey ) && is_numeric($fieldkey) ) { ?>
+            <?php if (isset($fieldkey) && is_numeric($fieldkey)) { ?>
             var element_name_alt = field + '[<?php echo $fieldkey; ?>]';
             <?php } else { ?>
             var element_name_alt = field + '[0]';
@@ -137,12 +139,12 @@ if (isset($disp_row) && is_array($disp_row)) {
 
 <form action="browse_foreigners.php" method="post">
 <fieldset>
-<?php echo PMA_generate_common_hidden_inputs( $db, $table ); ?>
-<input type="hidden" name="field" value="<?php echo urlencode($field); ?>" />
+<?php echo PMA_generate_common_hidden_inputs($db, $table); ?>
+<input type="hidden" name="field" value="<?php echo htmlspecialchars($field); ?>" />
 <input type="hidden" name="fieldkey"
-    value="<?php echo isset($fieldkey) ? $fieldkey : ''; ?>" />
-<?php if ( isset( $pk ) ) { ?>
-<input type="hidden" name="pk" value="<?php echo urlencode($pk); ?>" />
+    value="<?php echo isset($fieldkey) ? htmlspecialchars($fieldkey) : ''; ?>" />
+<?php if (isset($pk)) { ?>
+<input type="hidden" name="pk" value="<?php echo htmlspecialchars($pk); ?>" />
 <?php } ?>
 <span class="formelement">
     <label for="input_foreign_filter"><?php echo $strSearch . ':'; ?></label>
@@ -176,7 +178,7 @@ if (isset($disp_row) && is_array($disp_row)) {
 
     $values = array();
     $keys   = array();
-    foreach ( $disp_row as $relrow ) {
+    foreach ($disp_row as $relrow) {
         if ($foreign_display != FALSE) {
             $values[] = $relrow[$foreign_display];
         } else {
@@ -186,15 +188,15 @@ if (isset($disp_row) && is_array($disp_row)) {
         $keys[] = $relrow[$foreign_field];
     }
 
-    asort( $keys );
+    asort($keys);
 
     $hcount = 0;
     $odd_row = true;
     $val_ordered_current_row = 0;
     $val_ordered_current_equals_data = false;
     $key_ordered_current_equals_data = false;
-    foreach ( $keys as $key_ordered_current_row => $value ) {
-    //for ( $i = 0; $i < $count; $i++ ) {
+    foreach ($keys as $key_ordered_current_row => $value) {
+    //for ($i = 0; $i < $count; $i++) {
         $hcount++;
 
         if ($cfg['RepeatCells'] > 0 && $hcount > $cfg['RepeatCells']) {
@@ -211,28 +213,28 @@ if (isset($disp_row) && is_array($disp_row)) {
 
         $val_ordered_current_row++;
 
-        if (PMA_strlen( $val_ordered_current_val ) <= $cfg['LimitChars']) {
+        if (PMA_strlen($val_ordered_current_val) <= $cfg['LimitChars']) {
             $val_ordered_current_val = htmlspecialchars($val_ordered_current_val);
             $val_ordered_current_val_title = '';
         } else {
             $val_ordered_current_val_title =
-                htmlspecialchars( $val_ordered_current_val );
+                htmlspecialchars($val_ordered_current_val);
             $val_ordered_current_val =
-                htmlspecialchars( PMA_substr( $val_ordered_current_val, 0,
-                    $cfg['LimitChars'] ) . '...' );
+                htmlspecialchars(PMA_substr($val_ordered_current_val, 0,
+                    $cfg['LimitChars']) . '...');
         }
-        if (PMA_strlen( $key_ordered_current_val ) <= $cfg['LimitChars']) {
+        if (PMA_strlen($key_ordered_current_val) <= $cfg['LimitChars']) {
             $key_ordered_current_val = htmlspecialchars($key_ordered_current_val);
             $key_ordered_current_val_title = '';
         } else {
             $key_ordered_current_val_title =
-                htmlspecialchars( $key_ordered_current_val );
+                htmlspecialchars($key_ordered_current_val);
             $key_ordered_current_val =
-                htmlspecialchars( PMA_substr( $key_ordered_current_val, 0,
-                    $cfg['LimitChars'] ) . '...' );
+                htmlspecialchars(PMA_substr($key_ordered_current_val, 0,
+                    $cfg['LimitChars']) . '...');
         }
 
-        if ( ! empty( $data ) ) {
+        if (! empty($data)) {
             $val_ordered_current_equals_data = $val_ordered_current_key == $data;
             $key_ordered_current_equals_data = $key_ordered_current_key == $data;
         }
@@ -296,14 +298,5 @@ if (isset($controllink) && $controllink) {
 }
 if (isset($userlink) && $userlink) {
     @PMA_DBI_close($userlink);
-}
-
-
-/**
- * Sends bufferized data
- */
-if (isset($cfg['OBGzip']) && $cfg['OBGzip']
-    && isset($ob_mode) && $ob_mode) {
-     PMA_outBufferPost($ob_mode);
 }
 ?>

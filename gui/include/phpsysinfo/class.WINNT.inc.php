@@ -13,7 +13,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // WINNT implementation written by Carl C. Longnecker, longneck@iname.com
-// $Id: class.WINNT.inc.php,v 1.24 2006/06/15 22:24:56 bigmichi1 Exp $
+// $Id: class.WINNT.inc.php,v 1.25 2007/03/07 20:21:27 bigmichi1 Exp $
 
 class sysinfo {
   // $wmi holds the COM object that we pull all the WMI data from
@@ -87,6 +87,19 @@ class sysinfo {
     }
 
     return $list;
+  }
+  
+  // get our apache SERVER_NAME or vhost
+  function vhostname () {
+    if (! ($result = getenv('SERVER_NAME'))) {
+      $result = 'N.A.';
+    } 
+    return $result;
+  } 
+
+  // get the IP address of our vhost name
+  function vip_addr () {
+    return gethostbyname($this->vhostname());
   }
 
   // get our canonical hostname

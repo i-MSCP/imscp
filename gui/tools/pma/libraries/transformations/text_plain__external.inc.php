@@ -1,7 +1,13 @@
 <?php
-/* $Id: text_plain__external.inc.php 8340 2006-01-19 15:39:29Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: text_plain__external.inc.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
 
+/**
+ *
+ */
 function PMA_transformation_text_plain__external_nowrap($options = array()) {
     if (!isset($options[3]) || $options[3] == '') {
         $nowrap = true;
@@ -16,7 +22,7 @@ function PMA_transformation_text_plain__external_nowrap($options = array()) {
 
 function PMA_transformation_text_plain__external($buffer, $options = array(), $meta = '') {
     // possibly use a global transform and feed it with special options:
-    // include('./libraries/transformations/global.inc.php');
+    // include './libraries/transformations/global.inc.php';
 
     // further operations on $buffer using the $options[] array.
 
@@ -76,7 +82,7 @@ function PMA_transformation_text_plain__external($buffer, $options = array(), $m
             $newstring .= fgets($pipes[1], 1024);
         }
         fclose($pipes[1]);
-        // we don't currently use the return value 
+        // we don't currently use the return value
         $return_value = proc_close($process);
     }
 

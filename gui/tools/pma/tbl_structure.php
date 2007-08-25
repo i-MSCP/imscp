@@ -1,8 +1,14 @@
 <?php
-/* $Id: tbl_structure.php 10379 2007-05-11 17:11:39Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_structure.php 10379 2007-05-11 17:11:39Z lem9 $
+ */
 
-require_once './libraries/common.lib.php';
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 require_once './libraries/mysql_charsets.lib.php';
 require_once './libraries/relation.lib.php';
 
@@ -814,6 +820,9 @@ if ($cfg['ShowStats']) {
     <?php
 }
 // END - Calc Table Space
+
+require './libraries/tbl_triggers.lib.php';
+
 echo '<div class="clearfloat"></div>' . "\n";
 echo '</div>' . "\n";
 

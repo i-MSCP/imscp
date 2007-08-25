@@ -1,7 +1,13 @@
 <?php
-/* $Id: header_http.inc.php 7900 2005-11-24 08:15:00Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: header_http.inc.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
+/**
+ *
+ */
 if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])) {
     die("GLOBALS overwrite attempt");
 }

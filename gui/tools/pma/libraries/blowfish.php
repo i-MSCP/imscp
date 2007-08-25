@@ -1,8 +1,5 @@
 <?php
-
-/* $Id: blowfish.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * The Cipher_blowfish:: class implements the Cipher interface enryption data
  * using the Blowfish algorithm.
@@ -15,7 +12,7 @@
  * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
  *
  * @author  Mike Cochrane <mike@graftonhall.co.nz>
- * @version $Revision: 8301 $
+ * @version $Id: blowfish.php 10142 2007-03-20 10:32:13Z cybot_tm $
  * @since   Horde 2.2
  * @package horde.cipher
  */
@@ -389,7 +386,7 @@ class Horde_Cipher_blowfish {
         $parts = $this->_encryptBlock($L, $R);
         return pack("NN", $parts['L'], $parts['R']);
     }
-    
+
     /**
      * Encrypt a block on data.
      *

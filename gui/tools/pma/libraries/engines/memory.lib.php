@@ -1,6 +1,9 @@
 <?php
-/* $Id: memory.lib.php 8100 2005-12-07 10:01:43Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * @version $Id: memory.lib.php 10137 2007-03-19 17:55:39Z cybot_tm $
+ */
+
 /**
  * the MEMORY (HEAP) storage engine
  */

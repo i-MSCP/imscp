@@ -1,16 +1,21 @@
 <?php
-/* $Id: display_create_table.lib.php 8348 2006-01-19 17:13:20Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Displays form for creating a table (if user has privileges for that)
+ *
+ * @version $Id: display_create_table.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-// Displays form for creating a table (if user has privileges for that)
-
-require_once('./libraries/check_user_privileges.lib.php');
+/**
+ *
+ */
+require_once './libraries/check_user_privileges.lib.php';
 
 // for MySQL >= 4.1.0, we should be able to detect if user has a CREATE
 // privilege by looking at SHOW GRANTS output;
 // for < 4.1.0, it could be more difficult because the logic tries to
 // detect the current host and it might be expressed in many ways; also
-// on a shared server, the user might be unable to define a controluser 
+// on a shared server, the user might be unable to define a controluser
 // that has the proper rights to the "mysql" db;
 // so we give up and assume that user has the right to create a table
 //
@@ -34,7 +39,7 @@ if (PMA_MYSQL_INT_VERSION >= 40100) {
     $is_create_table_priv = true;
 }
 
-foreach ( $dbs_where_create_table_allowed as $allowed_db ) {
+foreach ($dbs_where_create_table_allowed as $allowed_db) {
 
     // if we find the exact db name, we stop here
     if ($allowed_db == $db) {
@@ -99,14 +104,14 @@ unset($i, $max_position, $chunk, $pattern);
 <fieldset>
     <legend>
 <?php
-if ( $GLOBALS['cfg']['PropertiesIconic'] ) {
+if ($GLOBALS['cfg']['PropertiesIconic']) {
     echo '<img class="icon" src="' . $pmaThemeImage . 'b_newtbl.png" width="16" height="16" alt="" />';
 }
-echo sprintf( $strCreateNewTable, PMA_getDbLink() );
+echo sprintf($strCreateNewTable, PMA_getDbLink());
 ?>
     </legend>
-<?php if ( $is_create_table_priv ) { ?>
-    <?php echo PMA_generate_common_hidden_inputs( $db ); ?>
+<?php if ($is_create_table_priv) { ?>
+    <?php echo PMA_generate_common_hidden_inputs($db); ?>
     <div class="formelement">
         <?php echo $strName; ?>:
         <input type="text" name="table" maxlength="64" size="30" />

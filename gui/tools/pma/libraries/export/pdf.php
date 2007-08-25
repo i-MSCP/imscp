@@ -3,7 +3,7 @@
 /**
  * Produce a PDF report (export) from a query
  *
- * @version $Id: pdf.php 10375 2007-05-10 00:04:29Z lem9 $
+ * @version $Id: pdf.php 10263 2007-04-13 17:26:10Z lem9 $
  */
 
 /**
@@ -20,7 +20,7 @@ if (isset($plugin_list)) {
             array('type' => 'text', 'name' => 'report_title', 'text' => 'strPDFReportTitle'),
             array('type' => 'hidden', 'name' => 'data'),
             ),
-        'options_text' => 'strPDFOptions',
+        'options_text' => 'strOptions',
         );
 } else {
 

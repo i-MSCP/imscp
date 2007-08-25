@@ -1,13 +1,15 @@
 <?php
-/* $Id: relation_cleanup.lib.php 8214 2005-12-17 17:36:58Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used for cleaning up phpMyAdmin tables
+ *
+ * @version $Id: relation_cleanup.lib.php 10239 2007-04-01 09:51:41Z cybot_tm $
  */
 
-
-require_once('./libraries/relation.lib.php');
+/**
+ *
+ */
+require_once './libraries/relation.lib.php';
 $cfgRelation = PMA_getRelationsParam();
 
 function PMA_relationsCleanupColumn($db, $table, $column) {

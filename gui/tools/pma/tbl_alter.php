@@ -1,15 +1,18 @@
 <?php
-/* $Id: tbl_alter.php 9601 2006-10-25 10:55:20Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_alter.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/Table.class.php');
+require_once './libraries/common.inc.php';
+require_once './libraries/Table.class.php';
 
 $js_to_run = 'functions.js';
-require_once('./libraries/header.inc.php');
+require_once './libraries/header.inc.php';
 
 // Check parameters
 PMA_checkParameters(array('db', 'table'));
@@ -17,14 +20,14 @@ PMA_checkParameters(array('db', 'table'));
 /**
  * Gets tables informations
  */
-require_once('./libraries/tbl_common.php');
-require_once('./libraries/tbl_info.inc.php');
+require_once './libraries/tbl_common.php';
+require_once './libraries/tbl_info.inc.php';
 /**
  * Displays top menu links
  */
 $active_page = 'tbl_structure.php';
 // I don't see the need to display the links here, they will be displayed later
-//require('./libraries/tbl_links.inc.php');
+//require './libraries/tbl_links.inc.php';
 
 
 /**
@@ -75,8 +78,8 @@ if (isset($do_save_data)) {
         $btnDrop   = 'Fake';
 
         // garvin: If comments were sent, enable relation stuff
-        require_once('./libraries/relation.lib.php');
-        require_once('./libraries/transformations.lib.php');
+        require_once './libraries/relation.lib.php';
+        require_once './libraries/transformations.lib.php';
 
         $cfgRelation = PMA_getRelationsParam();
 
@@ -138,7 +141,7 @@ if (isset($do_save_data)) {
         }
 
         $active_page = 'tbl_structure.php';
-        require('./tbl_structure.php');
+        require './tbl_structure.php';
     } else {
         PMA_mysqlDie('', '', '', $err_url, FALSE);
         // garvin: An error happened while inserting/updating a table definition.
@@ -196,15 +199,15 @@ if ($abort == FALSE) {
 
     $show_create_table = PMA_DBI_fetch_value(
         'SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table),
-        0, 1 );
-    $analyzed_sql = PMA_SQP_analyze( PMA_SQP_parse( $show_create_table ) );
+        0, 1);
+    $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
 
-    require('./libraries/tbl_properties.inc.php');
+    require './libraries/tbl_properties.inc.php';
 }
 
 
 /**
  * Displays the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 ?>

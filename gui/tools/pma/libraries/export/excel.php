@@ -1,11 +1,14 @@
 <?php
-/* $Id: excel.php 9533 2006-10-10 14:20:58Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build CSV dumps of tables
+ *
+ * @version $Id: excel.php 10239 2007-04-01 09:51:41Z cybot_tm $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $plugin_list['excel'] = array(
         'text' => 'strStrucExcelCSV',
@@ -17,10 +20,10 @@ if (isset($plugin_list)) {
             array('type' => 'select', 'name' => 'edition', 'values' => array('win' => 'Windows', 'mac' => 'Excel 2003 / Macintosh'), 'text' => 'strExcelEdition'),
             array('type' => 'hidden', 'name' => 'data'),
             ),
-        'options_text' => 'strExcelOptions',
+        'options_text' => 'strOptions',
         );
 } else {
     /* Everything rest is coded in csv plugin */
-    require('./libraries/export/csv.php');
+    require './libraries/export/csv.php';
 }
 ?>

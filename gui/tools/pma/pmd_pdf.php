@@ -1,9 +1,16 @@
 <?php
-/* $Id: pmd_pdf.php 10416 2007-05-30 16:55:18Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: pmd_pdf.php 10416 2007-05-30 16:55:18Z lem9 $
+ * @package phpMyAdmin-Designer
+ */
 
+/**
+ *
+ */
 include_once 'pmd_common.php';
-if ( ! isset($scale)) {
+if (! isset($scale)) {
     $no_die_save_pos = 1;
     include_once 'pmd_save_pos.php';
 }
@@ -13,7 +20,7 @@ if (isset($scale)) {
     if (empty($pdf_page_number)) {
         die("<script>alert('Pages not found!');history.go(-2);</script>");
     }
-  
+
     $pmd_table = PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['designer_coords']);
     $pma_table = PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_coords']);
 
@@ -23,14 +30,14 @@ if (isset($scale)) {
 
         PMA_query_as_cu($sql,TRUE,PMA_DBI_QUERY_STORE);
     }
-    
+
     if (isset($imp)) {
         PMA_query_as_cu(
-        'UPDATE ' . $pma_table . ',' . $pmd_table . 
+        'UPDATE ' . $pma_table . ',' . $pmd_table .
         ' SET ' . $pmd_table . '.`x`= ' . $pma_table . '.`x` * '. $scale . ',
         ' . $pmd_table . '.`y`= ' . $pma_table . '.`y` * '.$scale.'
         WHERE
-        ' . $pmd_table . '.`db_name`=' . $pma_table . '.`db_name` 
+        ' . $pmd_table . '.`db_name`=' . $pma_table . '.`db_name`
         AND
         ' . $pmd_table . '.`table_name` = ' . $pma_table . '.`table_name`
         AND

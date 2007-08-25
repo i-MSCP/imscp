@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id: create-release.sh 10494 2007-07-16 15:47:27Z lem9 $
+# $Id: create-release.sh 10065 2007-03-04 14:34:10Z lem9 $
 # vim: expandtab sw=4 ts=4 sts=4:
 #
 # 2005-09-13, lem9@users.sourceforge.net

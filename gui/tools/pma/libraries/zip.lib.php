@@ -1,7 +1,9 @@
 <?php
-/* $Id: zip.lib.php 6461 2004-11-03 13:56:52Z garvinhicking $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: zip.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * Zip file creation class.
@@ -143,14 +145,14 @@ class zipfile
         $cdrec .= pack('V', $crc);           // crc32
         $cdrec .= pack('V', $c_len);         // compressed filesize
         $cdrec .= pack('V', $unc_len);       // uncompressed filesize
-        $cdrec .= pack('v', strlen($name) ); // length of filename
-        $cdrec .= pack('v', 0 );             // extra field length
-        $cdrec .= pack('v', 0 );             // file comment length
-        $cdrec .= pack('v', 0 );             // disk number start
-        $cdrec .= pack('v', 0 );             // internal file attributes
-        $cdrec .= pack('V', 32 );            // external file attributes - 'archive' bit set
+        $cdrec .= pack('v', strlen($name)); // length of filename
+        $cdrec .= pack('v', 0);             // extra field length
+        $cdrec .= pack('v', 0);             // file comment length
+        $cdrec .= pack('v', 0);             // disk number start
+        $cdrec .= pack('v', 0);             // internal file attributes
+        $cdrec .= pack('V', 32);            // external file attributes - 'archive' bit set
 
-        $cdrec .= pack('V', $this -> old_offset ); // relative offset of local header
+        $cdrec .= pack('V', $this -> old_offset); // relative offset of local header
         $this -> old_offset += strlen($fr);
 
         $cdrec .= $name;

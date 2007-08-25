@@ -1,9 +1,9 @@
 <?php
-/* $Id: sql_query_form.lib.php 10439 2007-06-15 17:13:29Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * functions for displaying the sql query form
  *
+ * @version $Id: sql_query_form.lib.php 10439 2007-06-15 17:13:29Z lem9 $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
@@ -11,6 +11,9 @@
  * @usedby  querywindow.php
  */
 
+/**
+ *
+ */
 require_once './libraries/file_listing.php'; // used for file listing
 require_once './libraries/bookmark.lib.php'; // used for file listing
 
@@ -26,7 +29,7 @@ require_once './libraries/bookmark.lib.php'; // used for file listing
  * @uses    $GLOBALS['db']
  * @uses    $GLOBALS['server']
  * @uses    $GLOBALS['goto']
- * @uses    $GLOBALS['is_upload']           from common.lib.php
+ * @uses    $GLOBALS['is_upload']           from common.inc.php
  * @uses    $GLOBALS['sql_query']           from grab_globals.lib.php
  * @uses    $GLOBALS['cfg']['DefaultQueryTable']
  * @uses    $GLOBALS['cfg']['DefaultQueryDatabase']
@@ -57,8 +60,9 @@ require_once './libraries/bookmark.lib.php'; // used for file listing
  * @param   boolean|string  $display_tab    sql|files|history|full|FALSE
  *                                          what part to display
  *                                          false if not inside querywindow
+ * @param   string          $delimiter
  */
-function PMA_sqlQueryForm($query = true, $display_tab = false)
+function PMA_sqlQueryForm($query = true, $display_tab = false, $delimiter = ';')
 {
     // check tab to display if inside querywindow
     if (! $display_tab) {
@@ -70,7 +74,7 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
 
     // query to show
     if (true === $query) {
-        $query = empty($GLOBALS['sql_query']) ? '' : $GLOBALS['sql_query'];
+        $query = $GLOBALS['sql_query'];
     }
 
     // set enctype to multipart for file uploads
@@ -82,11 +86,11 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
 
     $table  = '';
     $db     = '';
-    if (! isset($GLOBALS['db']) || ! strlen($GLOBALS['db'])) {
+    if (! strlen($GLOBALS['db'])) {
         // prepare for server related
         $goto   = empty($GLOBALS['goto']) ?
                     'server_sql.php' : $GLOBALS['goto'];
-    } elseif (! isset($GLOBALS['table']) || ! strlen($GLOBALS['table'])) {
+    } elseif (! strlen($GLOBALS['table'])) {
         // prepare for db related
         $db     = $GLOBALS['db'];
         $goto   = empty($GLOBALS['goto']) ?
@@ -104,10 +108,13 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
         ?>
         <form method="post" id="sqlqueryform" target="frame_content"
               action="import.php"<?php echo $enctype; ?> name="sqlform"
-              onsubmit="var save_name = window.opener.parent.frame_content.name;
-                        window.opener.parent.frame_content.name = save_name + '<?php echo time(); ?>';
-                        this.target = window.opener.parent.frame_content.name;
-                        return checkSqlQuery( this );" >
+              onsubmit="
+              // <![CDATA[
+              var save_name = window.opener.parent.frame_content.name;
+              window.opener.parent.frame_content.name = save_name + '<?php echo time(); ?>';
+              this.target = window.opener.parent.frame_content.name;
+              return checkSqlQuery(this);
+              // ]]" >
         <?php
     } else {
         echo '<form method="post" action="import.php" ' . $enctype . ' id="sqlqueryform"'
@@ -134,7 +141,7 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
 
     // display querybox
     if ($display_tab === 'full' || $display_tab === 'sql') {
-        PMA_sqlQueryFormInsert($query, $is_querywindow);
+        PMA_sqlQueryFormInsert($query, $is_querywindow, $delimiter);
     }
 
     // display uploads
@@ -144,7 +151,7 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
 
     // Bookmark Support
     if ($display_tab === 'full' || $display_tab === 'history') {
-        if (! empty( $GLOBALS['cfg']['Bookmark'])
+        if (! empty($GLOBALS['cfg']['Bookmark'])
           && $GLOBALS['cfg']['Bookmark']['db']
           && $GLOBALS['cfg']['Bookmark']['table']) {
             PMA_sqlQueryFormBookmark();
@@ -159,7 +166,7 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
     echo '</form>' . "\n";
     if ($is_querywindow) {
         ?>
-        <script type="text/javascript" language="javascript">
+        <script type="text/javascript">
         //<![CDATA[
             if (window.opener) {
                 window.opener.parent.insertQuery();
@@ -186,13 +193,14 @@ function PMA_sqlQueryForm($query = true, $display_tab = false)
  * @uses    htmlspecialchars()
  * @param   string      $query          query to display in the textarea
  * @param   boolean     $is_querywindow if inside querywindow or not
+ * @param   string      $delimiter      default delimiter to use
  */
-function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
+function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter = ';')
 {
 
     // enable auto select text in textarea
     if ($GLOBALS['cfg']['TextareaAutoSelect']) {
-        $auto_sel = ' onfocus="selectContent( this, sql_box_locked, true )"';
+        $auto_sel = ' onfocus="selectContent(this, sql_box_locked, true)"';
     } else {
         $auto_sel = '';
     }
@@ -210,12 +218,12 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
     $table          = '';
     $db             = '';
     $fields_list    = array();
-    if (! isset($GLOBALS['db']) || ! strlen($GLOBALS['db'])) {
+    if (! strlen($GLOBALS['db'])) {
         // prepare for server related
         $legend = sprintf($GLOBALS['strRunSQLQueryOnServer'],
-            htmlspecialchars(
-                $GLOBALS['cfg']['Servers'][$GLOBALS['server']]['host']));
-    } elseif (! isset($GLOBALS['table']) || ! strlen($GLOBALS['table'])) {
+            '&quot;' . htmlspecialchars(
+                ! empty($GLOBALS['cfg']['Servers'][$GLOBALS['server']]['verbose']) ? $GLOBALS['cfg']['Servers'][$GLOBALS['server']]['verbose'] : $GLOBALS['cfg']['Servers'][$GLOBALS['server']]['host']) . '&quot;');
+    } elseif (! strlen($GLOBALS['table'])) {
         // prepare for db related
         $db     = $GLOBALS['db'];
         // if you want navigation:
@@ -264,7 +272,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
                 str_replace('%d', PMA_backquote($db),
                     str_replace('%t', PMA_backquote($table),
                         str_replace('%f',
-                            implode(', ', $field_names ),
+                            implode(', ', $field_names),
                             $GLOBALS['cfg']['DefaultQueryTable'])));
             unset($field_names);
         }
@@ -302,11 +310,11 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
             if (isset($field['Field']) && strlen($field['Field']) && isset($field['Comment'])) {
                 echo ' title="' . htmlspecialchars($field['Comment']) . '"';
             }
-            echo '>' . htmlspecialchars( $field['Field'] ) . '</option>' . "\n";
+            echo '>' . htmlspecialchars($field['Field']) . '</option>' . "\n";
         }
         echo '</select>' . "\n"
             .'<div id="tablefieldinsertbuttoncontainer">' . "\n";
-        if ( $GLOBALS['cfg']['PropertiesIconic'] ) {
+        if ($GLOBALS['cfg']['PropertiesIconic']) {
             echo '<input type="button" name="insert" value="&lt;&lt;"'
                 .' onclick="insertValueQuery()"'
                 .' title="' . $GLOBALS['strInsert'] . '" />' . "\n";
@@ -356,7 +364,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
     echo '<div class="formelement">' . "\n";
     if ($is_querywindow) {
         ?>
-        <script type="text/javascript" language="javascript">
+        <script type="text/javascript">
         //<![CDATA[
             document.writeln(' <input type="checkbox" name="LockFromUpdate" value="1" id="checkbox_lock" /> <label for="checkbox_lock"><?php echo $GLOBALS['strQueryWindowLock']; ?></label> ');
         //]]>
@@ -368,7 +376,8 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
     if (PMA_MYSQL_INT_VERSION >= 50000) {
         echo '<label for="id_sql_delimiter">[ ' . $GLOBALS['strDelimiter']
             .'</label>' . "\n";
-        echo '<input type="text" name="sql_delimiter" size="3" value=";" '
+        echo '<input type="text" name="sql_delimiter" size="3" '
+            .'value="' . $delimiter . '" '
             .'id="id_sql_delimiter" /> ]' . "\n";
     }
 
@@ -405,7 +414,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false)
  */
 function PMA_sqlQueryFormBookmark()
 {
-    $bookmark_list = PMA_listBookmarks(isset($GLOBALS['db']) ? $GLOBALS['db'] : '', $GLOBALS['cfg']['Bookmark'] );
+    $bookmark_list = PMA_listBookmarks($GLOBALS['db'], $GLOBALS['cfg']['Bookmark']);
     if (! $bookmark_list || count($bookmark_list) < 1) {
         return;
     }
@@ -530,9 +539,9 @@ function PMA_sqlQueryFormUpload(){
 
 
     echo '<fieldset id="" class="tblFooters">';
-    if ( PMA_MYSQL_INT_VERSION < 40100
+    if (PMA_MYSQL_INT_VERSION < 40100
       && $GLOBALS['cfg']['AllowAnywhereRecoding']
-      && $GLOBALS['allow_recoding'] ) {
+      && $GLOBALS['allow_recoding']) {
         echo $GLOBALS['strCharsetOfFile'] . "\n"
              . '<select name="charset_of_file" size="1">' . "\n";
         foreach ($GLOBALS['cfg']['AvailableCharsets'] as $temp_charset) {
@@ -553,7 +562,7 @@ function PMA_sqlQueryFormUpload(){
     echo '<div class="clearfloat"></div>' . "\n";
     echo '</fieldset>';
 
-    foreach ( $errors as $error => $message ) {
+    foreach ($errors as $error => $message) {
         echo '<div>' . $error . '</div>';
         echo '<div>' . $message . '</div>';
     }

@@ -1,11 +1,14 @@
 <?php
-/* $Id: tbl_addfield.php 9601 2006-10-25 10:55:20Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_addfield.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
 
 /**
  * Get some core libraries
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 
 $js_to_run = 'functions.js';
@@ -160,8 +163,8 @@ if (isset($submit_num_fields)) {
         } // end if
 
         // garvin: If comments were sent, enable relation stuff
-        require_once('./libraries/relation.lib.php');
-        require_once('./libraries/transformations.lib.php');
+        require_once './libraries/relation.lib.php';
+        require_once './libraries/transformations.lib.php';
 
         $cfgRelation = PMA_getRelationsParam();
 
@@ -188,7 +191,7 @@ if (isset($submit_num_fields)) {
         unset($sql_query_cpy);
         $message   = $strTable . ' ' . htmlspecialchars($table) . ' ' . $strHasBeenAltered;
         $active_page = 'tbl_structure.php';
-        require('./tbl_structure.php');
+        require './tbl_structure.php';
     } else {
         PMA_mysqlDie('', '', '', $err_url, FALSE);
         // garvin: An error happened while inserting/updating a table definition.
@@ -212,22 +215,22 @@ if ($abort == FALSE) {
     /**
      * Gets tables informations
      */
-    require_once('./libraries/tbl_common.php');
-    require_once('./libraries/tbl_info.inc.php');
+    require_once './libraries/tbl_common.php';
+    require_once './libraries/tbl_info.inc.php';
     /**
      * Displays top menu links
      */
     $active_page = 'tbl_structure.php';
-    require_once('./libraries/tbl_links.inc.php');
+    require_once './libraries/tbl_links.inc.php';
     /**
      * Display the form
      */
     $action = 'tbl_addfield.php';
-    require_once('./libraries/tbl_properties.inc.php');
+    require_once './libraries/tbl_properties.inc.php';
 
     // Diplays the footer
     echo "\n";
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 }
 
 ?>

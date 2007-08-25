@@ -1,13 +1,15 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * holds the PMA_List_Database class
  *
+ * @version $Id: List_Database.class.php 10449 2007-06-20 11:52:06Z lem9 $
  */
 
 /**
  * the list base class
  */
-require_once './libraries/PMA_List.class.php';
+require_once './libraries/List.class.php';
 
 /**
  * handles database lists
@@ -104,11 +106,7 @@ require_once './libraries/PMA_List.class.php';
      * @uses    PMA_List_Database::$items
      * @uses    PMA_List_Database::$_need_to_reindex to set it if reuqired
      * @uses    preg_match()
-     * @uses    $GLOBALS['cfg']
-     * @uses    $GLOBALS['cfg']['Server']
-     * @uses    $GLOBALS['cfg']['Server']['hide_db']
-     * @global  array $GLOBALS['cfg']
-     * @global  array $cfg
+     * @uses    $cfg['Server']['hide_db']
      */
     function _checkHideDatabase()
     {
@@ -135,8 +133,8 @@ require_once './libraries/PMA_List.class.php';
      * @uses    PMA_List_Database::$_db_link_control in case of SHOW DATABASES is disabled for userlink
      * @uses    PMA_DBI_fetch_result()
      * @uses    PMA_DBI_getError()
-     * @global  boolean $error_showdatabases to alert not allowed SHOW DATABASE
-     * @global  integer $errno from PMA_DBI_getError()
+     * @uses    $GLOBALS['error_showdatabases']
+     * @uses    $GLOBALS['errno']
      * @param   string  $like_db_name   usally a db_name containing wildcards
      */
     function _retrieve($like_db_name = '')
@@ -186,7 +184,7 @@ require_once './libraries/PMA_List.class.php';
      * @uses    PMA_MYSQL_INT_VERSION
      * @uses    array_values()
      * @uses    natsort()
-     * @global  array   $cfg
+     * @uses    $cfg['NaturalOrder']
      */
     function build()
     {
@@ -194,7 +192,6 @@ require_once './libraries/PMA_List.class.php';
 
         if (! $this->_checkOnlyDatabase()) {
             $this->items = $this->_retrieve();
-
             if ($GLOBALS['cfg']['NaturalOrder']) {
                 natsort($this->items);
                 $this->_need_to_reindex = true;
@@ -227,7 +224,7 @@ require_once './libraries/PMA_List.class.php';
      * @uses    is_array()
      * @uses    strlen()
      * @uses    is_string()
-     * @global  array   $cfg
+     * @uses    $cfg['Server']['only_db']
      * @return  boolean false if there is no only_db, otherwise true
      */
     function _checkOnlyDatabase()
@@ -275,8 +272,8 @@ require_once './libraries/PMA_List.class.php';
      * returns default item
      *
      * @uses    PMA_List::getEmpty()
+     * @uses    $GLOBALS['db']
      * @uses    strlen()
-     * @global  string  $db
      * @return  string  default item
      */
     function getDefault()
@@ -293,23 +290,25 @@ require_once './libraries/PMA_List.class.php';
      *
      * @uses    $GLOBALS['PMA_List_Database']
      * @uses    $GLOBALS['cfgRelation']['commwork']
-     * @uses    $GLOBALS['cfg']['ShowTooltip']
-     * @uses    $GLOBALS['cfg']['LeftFrameDBTree']
-     * @uses    $GLOBALS['cfg']['LeftFrameDBSeparator']
-     * @uses    $GLOBALS['cfg']['ShowTooltipAliasDB']
+     * @uses    $cfg['ShowTooltip']
+     * @uses    $cfg['LeftFrameDBTree']
+     * @uses    $cfg['LeftFrameDBSeparator']
+     * @uses    $cfg['ShowTooltipAliasDB']
      * @uses    PMA_getTableCount()
      * @uses    PMA_getComments()
      * @uses    is_array()
      * @uses    implode()
      * @uses    strstr()
      * @uses    explode()
+     * @param   integer $offset
+     * @param   integer $count
      * @return  array   db list
      */
-    function getGroupedDetails()
+    function getGroupedDetails($offset, $count)
     {
         $dbgroups   = array();
         $parts      = array();
-        foreach ($this->items as $key => $db) {
+        foreach ($this->getLimitedItems($offset, $count) as $key => $db) {
             // garvin: Get comments from PMA comments table
             $db_tooltip = '';
             if ($GLOBALS['cfg']['ShowTooltip']
@@ -355,20 +354,34 @@ require_once './libraries/PMA_List.class.php';
     }
 
     /**
+     * returns a part of the items 
+     *
+     * @uses    PMA_List_Database::$items
+     * @uses    array_slice()
+     * @param   integer $offset
+     * @param   integer $count
+     * @return  array  some items 
+     */
+    function getLimitedItems($offset, $count)
+    {
+        return(array_slice($this->items, $offset, $count));
+    }
+
+    /**
      * returns html code for list with dbs
      *
      * @return  string  html code list
      */
-    function getHtmlListGrouped($selected = '')
+    function getHtmlListGrouped($selected = '', $offset, $count)
     {
         if (true === $selected) {
             $selected = $this->getDefault();
         }
 
-	$return = '<ul id="databaseList" xml:lang="en" dir="ltr">' . "\n";
-        foreach ($this->getGroupedDetails() as $group => $dbs) {
+    $return = '<ul id="databaseList" xml:lang="en" dir="ltr">' . "\n";
+        foreach ($this->getGroupedDetails($offset, $count) as $group => $dbs) {
             if (count($dbs) > 1) {
-		$return .= '<li>' . $group . '<ul>' . "\n";
+                $return .= '<li>' . $group . '<ul>' . "\n";
                 // wether display db_name cuted by the group part
                 $cut = true;
             } else {
@@ -376,14 +389,14 @@ require_once './libraries/PMA_List.class.php';
                 $cut = false;
             }
             foreach ($dbs as $db) {
-	    	$return .= '<li';
-		if ($db['name'] == $selected) {
-		    $return .= ' class="selected"';
-		}
-                $return .= '><a' . (! empty($db['comment']) ? ' title="' . $db['comment'] . '"' : '') . ' href="index.php?' . PMA_generate_common_url($db['name']) . '" target="_parent">';
+            $return .= '<li';
+            if ($db['name'] == $selected) {
+                $return .= ' class="selected"';
+            }
+        $return .= '><a' . (! empty($db['comment']) ? ' title="' . $db['comment'] . '"' : '') . ' href="index.php?' . PMA_generate_common_url($db['name']) . '" target="_parent">';
                 $return .= ($cut ? $db['disp_name_cut'] : $db['disp_name'])
-			.' (' . $db['num_tables'] . ')';
-		$return .= '</a></li>' . "\n";
+            .' (' . $db['num_tables'] . ')';
+        $return .= '</a></li>' . "\n";
             }
             if (count($dbs) > 1) {
                 $return .= '</ul></li>' . "\n";
@@ -403,7 +416,7 @@ require_once './libraries/PMA_List.class.php';
      *
      * @return  string  html code select
      */
-    function getHtmlSelectGrouped($selected = '')
+    function getHtmlSelectGrouped($selected = '', $offset, $count)
     {
         if (true === $selected) {
             $selected = $this->getDefault();
@@ -413,7 +426,7 @@ require_once './libraries/PMA_List.class.php';
             . ' onchange="if (this.value != \'\') window.parent.openDb(this.value);">' . "\n"
             . '<option value="" dir="' . $GLOBALS['text_dir'] . '">'
             . '(' . $GLOBALS['strDatabases'] . ') ...</option>' . "\n";
-        foreach ($this->getGroupedDetails() as $group => $dbs) {
+        foreach ($this->getGroupedDetails($offset, $count) as $group => $dbs) {
             if (count($dbs) > 1) {
                 $return .= '<optgroup label="' . htmlspecialchars($group)
                     . '">' . "\n";

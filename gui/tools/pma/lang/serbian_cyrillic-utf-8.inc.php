@@ -1,5 +1,5 @@
 <?php
-/* $Id: serbian_cyrillic-utf-8.inc.php 10439 2007-06-15 17:13:29Z lem9 $ */
+/* $Id: serbian_cyrillic-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
 
 /**
  * Translated by:
@@ -163,7 +163,6 @@ $strCreate = 'Направи';
 $strCreationDates = 'Датуми креирања/ажурирања/провере';
 $strCriteria = 'Критеријум';
 $strCroatian = 'Хрватски';
-$strCSVOptions = 'CSV опције';
 $strCyrillic = 'Ћирилични';
 $strCzechSlovak = 'Чешко-словачки';
 $strCzech = 'Чешки';
@@ -241,7 +240,6 @@ $strError = 'Грешка';
 $strEscapeWildcards = 'Пре џокера _ и % треба ставити знак \ ако их користите самостално';
 $strEstonian = 'Естонски';
 $strExcelEdition = 'Excel издање';
-$strExcelOptions = 'Excel опције';
 $strExecuteBookmarked = 'Изврши упамћен упит';
 $strExplain = 'Објасни SQL';
 $strExport = 'Извоз';
@@ -250,7 +248,6 @@ $strExtra = 'Додатно';
 
 $strFailedAttempts = 'Неуспелих покушаја';
 $strFieldHasBeenDropped = 'Поље %s је обрисано';
-$strFieldsEmpty = ' Број поља је нула! ';
 $strFieldsEnclosedBy = 'Поља ограничена са';
 $strFieldsEscapedBy = 'Ескејп карактер &nbsp; &nbsp; &nbsp;';
 $strFieldsTerminatedBy = 'Поља раздвојена са';
@@ -288,15 +285,12 @@ $strHasBeenAltered = 'је промењен(а).';
 $strHasBeenCreated = 'је креиран(а).';
 $strHaveToShow = 'Морате изабрати бар једну колону за приказ';
 $strHebrew = 'Хебрејски';
-$strHexForBinary = 'Користи хексадецимално за бинарна поља';
 $strHomepageOfficial = 'phpMyAdmin веб сајт';
 $strHome = 'Почетна страна';
 $strHostEmpty = 'Име домаћина је празно!';
 $strHost = 'Домаћин';
 $strHTMLExcel = 'Microsoft Excel 2000';
-$strHTMLExcelOptions = 'Опције извоза у Microsoft Excel 2000';
 $strHTMLWord = 'Microsoft Word 2000';
-$strHTMLWordOptions = 'Опције извоза у Microsoft Word 2000';
 $strHungarian = 'Мађарски';
 
 $strIcelandic = 'Исландски';
@@ -309,10 +303,7 @@ $strIndexes = 'Кључеви';
 $strIndexHasBeenDropped = 'Кључ %s је обрисан';
 $strIndexName = 'Име кључа :';
 $strIndexType = 'Тип кључа :';
-$strIndexWarningMultiple = 'Више од једног %s кључа је направљено за колону `%s`';
-$strIndexWarningPrimary = 'PRIMARY и INDEX кључеви не би требали да буду истовремено постављени за колону `%s`';
 $strIndexWarningTable = 'Проблем при индексирању табеле `%s`';
-$strIndexWarningUnique = 'UNIQUE и INDEX кључеви не би требали да буду истовремено постављени за колону `%s`';
 $strIndex = 'Кључ';
 $strInnoDBAutoextendIncrementDesc = ' Величина корака проширења величине табела које се аутоматски проширују када се напуне.';
 $strInnoDBAutoextendIncrement = 'Корак аутоматског проширења';
@@ -355,7 +346,6 @@ $strLatexContinued = '(настављено)';
 $strLatexIncludeCaption = 'Укључи коментар табеле';
 $strLatexLabel = 'Ознака кључа';
 $strLaTeX = 'LaTeX';
-$strLaTeXOptions = 'LaTeX опције';
 $strLatexStructure = 'Структура табеле __TABLE__';
 $strLatvian = 'Летонски';
 $strLengthSet = 'Дужина/Вредност*';
@@ -638,7 +628,6 @@ $strSpaceUsage = 'Заузеће';
 $strSpanish = 'Шпански';
 $strSplitWordsWithSpace = 'Речи се одвајају размаком (" ").';
 $strSQLExportType = 'Тип извоза';
-$strSQLOptions = 'SQL опције';
 $strSQLParserBugMessage = 'Постоји могућност да сте пронашли баг у SQL парсеру. Молимо испитајте свој упит пажљиво, и проверите да су наводници исправни и да не недостају. Остали могући разлози грешке могу бити да сте послали бинарну датотеку ван области за обичан текст. Можете пробати свој упит у MySQL сучељу командне линије. Доња порука о грешци MySQL сервера, ако је има, може вам помоћи у откривању проблема. Ако и даље имате проблеме или ако парсер не успева тамо где успева сучеље командне линије, сведите свој SQL упит на један једини упит који ствара проблеме и пошаљите нам извештај о грешци са делом кода у доњој РЕЗ секцији:';
 $strSQLParserUserError = 'Изгледа да постоји грешка у вашем SQL упиту. Овде је порука о грешки MySQL сервера, која вам може помоћи у откривању проблема';
 $strSQLQuery = 'SQL упит';
@@ -774,7 +763,6 @@ $strCanNotLoadImportPlugins = 'Could not load import plugins, please check your 
 $strCompressionWillBeDetected = 'Imported file compression will be automatically detected from: %s';  //to translate
 $strConfigDefaultFileError = 'Could not load default configuration from: "%1$s"';  //to translate
 $strCSV = 'CSV';  //to translate
-$strCSVImportOptions = 'CSV options';  //to translate
 
 $strDeleteNoUsersSelected = 'No users selected for deleting!';  //to translate
 
@@ -810,7 +798,6 @@ $strKeyCache = 'Key cache';  //to translate
 
 $strLanguageUnknown = 'Unknown language: %1$s.';  //to translate
 $strLDI = 'CSV using LOAD DATA';  //to translate
-$strLDIImportOptions = 'Options for CSV import using LOAD DATA';  //to translate
 $strLDILocal = 'Use LOCAL keyword';  //to translate
 
 $strMaxConnects = 'max. concurrent connections';  //to translate
@@ -823,7 +810,6 @@ $strNumberOfFields = 'Number of fields';  //to translate
 $strOpenNewWindow = 'Open new phpMyAdmin window';  //to translate
 
 $strPartialImport = 'Partial import';  //to translate
-$strPDFOptions = 'PDF options';  //to translate
 $strPDF = 'PDF';  //to translate
 $strPDFReportTitle = 'Report title';  //to translate
 $strPrivDescMaxUserConnections = 'Limits the number of simultaneous connections the user may have.';  //to translate
@@ -950,7 +936,6 @@ $strShowStatusThreads_runningDescr = 'The number of threads that are not sleepin
 $strSkipQueries = 'Number of records(queries) to skip from start';  //to translate
 $strSorting = 'Sorting';  //to translate
 $strSQLCompatibility = 'SQL compatibility mode';  //to translate
-$strSQLImportOptions = 'SQL options';  //to translate
 $strStatisticsOverrun = 'On a busy server, the byte counters may overrun, so those statistics as reported by the MySQL server may be incorrect.';  //to translate
 
 $strTableAlreadyExists = 'Table %s already exists!';  //to translate
@@ -977,16 +962,12 @@ $strQueryResultsOperations = 'Query results operations';  //to translate
 $strAddClause = 'Add %s';  //to translate
 $strUploadsNotAllowed = 'File uploads are not allowed on this server.';  //to translate
 $strOpenDocumentSpreadsheet = 'Open Document Spreadsheet';  //to translate
-$strOpenDocumentSpreadsheetOptions = 'Open Document Spreadsheet options';  //to translate
 $strExportMustBeFile = 'Selected export type has to be saved in file!';  //to translate
-$strXMLOptions = 'XML options';  //to translate
-$strStrucNativeExcelOptions = 'Native Excel export options';  //to translate
 $strCreateUserDatabase = 'Database for user';  //to translate
 $strCreateUserDatabaseNone = 'None';  //to translate
 $strCreateUserDatabaseName = 'Create database with same name and grant all privileges';  //to translate
 $strCreateUserDatabaseWildcard = 'Grant all privileges on wildcard name (username\_%)';  //to translate
 $strOpenDocumentText = 'Open Document Text';  //to translate
-$strOpenDocumentTextOptions = 'Open Document Text options';  //to translate
 $strNoDataReceived = 'No data was received to import. Either no file name was submitted, or the file size exceeded the maximum size permitted by your PHP configuration. See FAQ 1.16.';  //to translate
 $strCanNotLoadExportPlugins = 'Could not load export plugins, please check your installation!';  //to translate
 $strErrorRenamingTable = 'Error renaming table %1$s to %2$s';  //to translate
@@ -1002,7 +983,6 @@ $strLanguage = 'Language';  //to translate
 $strPmaWiki = 'phpMyAdmin wiki';  //to translate
 $strTransformation_text_plain__dateformat = 'Displays a TIME, TIMESTAMP, DATETIME or numeric unix timestamp field as formatted date. The first option is the offset (in hours) which will be added to the timestamp (Default: 0). Use second option to specify a different date/time format string. Third option determines whether you want to see local date or UTC one (use "local" or "utc" strings) for that. According to that, date format has different value - for "local" see the documentation for PHP\'s strftime() function and for "utc" it is done using gmdate() function.';  //to translate
 $strDocSQL = 'DocSQL';  //to translate
-$strDocSQLOptions = 'DocSQL options';  //to translate
 $strTableName = 'Table name';  //to translate
 $strTableIsEmpty = 'Table seems to be empty!';  //to translate
 $strDbIsEmpty = 'Database seems to be empty!';  //to translate
@@ -1047,5 +1027,26 @@ $strErrorRelationExists = 'Error: relation already exists.';  //to translate
 $strErrorSaveTable = 'Error saving coordinates for Designer.';  //to translate
 $strSnapToGrid = 'Snap to grid';  //to translate
 $strDesignerHelpDisplayField = 'The display field is shown in pink. To set/unset a field as the display field, click the "Choose field to display" icon, then click on the appropriate field name.';  //to translate
+$strUploadErrorIniSize = 'The uploaded file exceeds the upload_max_filesize directive in php.ini.';  //to translate
+$strUploadErrorFormSize = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.';  //to translate
+$strUploadErrorPartial = 'The uploaded file was only partially uploaded.';  //to translate
+$strUploadErrorNoTempDir = 'Missing a temporary folder.';  //to translate
+$strUploadErrorCantWrite = 'Failed to write file to disk.';  //to translate
+$strUploadErrorExtension = 'File upload stopped by extension.';  //to translate
+$strUploadErrorUnknown = 'Unknown error in file upload.';  //to translate
 $strSessionStartupErrorGeneral = 'Cannot start session without errors, please check errors given in your PHP and/or webserver log file and configure your PHP installation properly.';  //to translate
+$strFieldInsertFromFileTempDirNotExists = 'Error moving the uploaded file, see FAQ 1.11';  //to translate
+$strViewName = 'VIEW name';  //to translate
+$strOptions = 'Options';  //to translate
+$strFiles = 'Files';  //to translate
+$strIndexesSeemEqual = 'The following indexes appear to be equal and one of them should be removed:';  //to translate
+$strMysqlLibDiffersServerVersion = 'Your PHP MySQL library version %s differs from your MySQL server version %s. This may cause unpredictable behavior.';  //to translate
+$strRoutines = 'Routines';  //to translate
+$strRoutineReturnType = 'Return type';  //to translate
+$strControluserFailed = 'Connection for controluser as defined in your configuration failed.';  //to translate
+$strHexForBLOB = 'Use hexadecimal for BLOB';  //to translate
+$strRestartInsertion = 'Restart insertion with %s rows';  //to translate
+$strTriggers = 'Triggers';  //to translate
+$strEvent = 'Event';  //to translate
+$strProfiling = 'Profiling';  //to translate
 ?>

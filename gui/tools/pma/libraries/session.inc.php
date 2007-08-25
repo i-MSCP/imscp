@@ -1,9 +1,9 @@
 <?php
-/* $Id: session.inc.php 10422 2007-06-05 16:32:49Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * session handling
  *
+ * @version $Id: session.inc.php 10422 2007-06-05 16:32:49Z lem9 $
  * @todo    add failover or warn if sessions are not configured properly
  * @todo    add an option to use mm-module for session handler
  * @see     http://www.php.net/session
@@ -17,18 +17,7 @@
 // verify if PHP supports session, die if it does not
 
 if (!@function_exists('session_name')) {
-    $cfg = array('DefaultLang'           => 'en-iso-8859-1',
-                 'AllowAnywhereRecoding' => false);
-    // Loads the language file
-    require_once('./libraries/select_lang.lib.php');
-    // Displays the error message
-    // (do not use &amp; for parameters sent by header)
-    header('Location: ' . (defined('PMA_SETUP') ? '../' : '') . 'error.php'
-            . '?lang='  . urlencode($available_languages[$lang][2])
-            . '&dir='   . urlencode($text_dir)
-            . '&type='  . urlencode($strError)
-            . '&error=' . urlencode(sprintf($strCantLoad, 'session')));
-    exit();
+    PMA_fatalError('strCantLoad', 'session');
 } elseif (ini_get('session.auto_start') == true && session_name() != 'phpMyAdmin') {
     $_SESSION = array();
     if (isset($_COOKIE[session_name()])) {
@@ -83,11 +72,11 @@ session_cache_limiter('private');
 
 $session_name = 'phpMyAdmin';
 @session_name($session_name);
-// strictly, PHP 4 since 4.4.2 would not need a verification 
-if (version_compare(PHP_VERSION, '5.1.2', 'lt') 
- && isset($_COOKIE[$session_name]) 
+// strictly, PHP 4 since 4.4.2 would not need a verification
+if (version_compare(PHP_VERSION, '5.1.2', 'lt')
+ && isset($_COOKIE[$session_name])
  && eregi("\r|\n", $_COOKIE[$session_name])) {
-    die('attacked'); 
+    die('attacked');
 }
 
 if (! isset($_COOKIE[$session_name])) {
@@ -105,18 +94,7 @@ if (! isset($_COOKIE[$session_name])) {
     ob_end_clean();
     if ($r !== true || ! empty($session_error)) {
         setcookie($session_name, '', 1);
-        $cfg = array('DefaultLang'           => 'en-iso-8859-1',
-                     'AllowAnywhereRecoding' => false);
-        // Loads the language file
-        require_once './libraries/select_lang.lib.php';
-        // Displays the error message
-        // (do not use &amp; for parameters sent by header)
-        header('Location: ' . (defined('PMA_SETUP') ? '../' : '') . 'error.php'
-                . '?lang='  . urlencode($available_languages[$lang][2])
-                . '&dir='   . urlencode($text_dir)
-                . '&type='  . urlencode($strError)
-                . '&error=' . urlencode($strSessionStartupErrorGeneral));
-        exit();
+        PMA_fatalError('strSessionStartupErrorGeneral');
     }
 } else {
     @session_start();

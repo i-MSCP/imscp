@@ -1,135 +1,41 @@
 <?php
-/* $Id: server_engines.php 8099 2005-12-07 09:52:16Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * display list of server enignes and additonal information about them
+ *
+ * @version $Id: server_engines.php 10358 2007-05-09 10:55:52Z cybot_tm $
+ * @todo falcon storage enginge is not listed under dev.mysql.com/doc/refman but dev.mysql.com/doc/falcon/
  */
 
-if ( ! defined( 'PMA_NO_VARIABLES_IMPORT' ) ) {
-    define( 'PMA_NO_VARIABLES_IMPORT', true );
+/**
+ *
+ */
+if (! defined('PMA_NO_VARIABLES_IMPORT')) {
+    define('PMA_NO_VARIABLES_IMPORT', true);
 }
 
 /**
  * requirements
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 
 /**
  * Does the common work
  */
-require('./libraries/server_common.inc.php');
-require('./libraries/storage_engines.lib.php');
+require './libraries/server_common.inc.php';
+require './libraries/StorageEngine.class.php';
 
 
 /**
  * Displays the links
  */
-require('./libraries/server_links.inc.php');
-
-/**
- * defines
- */
-define('PMA_ENGINE_DETAILS_TYPE_PLAINTEXT', 0);
-define('PMA_ENGINE_DETAILS_TYPE_SIZE',      1);
-define('PMA_ENGINE_DETAILS_TYPE_NUMERIC',   2); //Has no effect yet...
-define('PMA_ENGINE_DETAILS_TYPE_BOOLEAN',   3); // 'ON' or 'OFF'
-
-/**
- * Function for displaying the table of an engine's parameters
- *
- * @param   array   List of MySQL variables and corresponding localized descriptions.
- *                  The array elements should have the following format:
- *                      $variable => array('title' => $title, 'desc' => $description);
- * @param   string  Prefix for the SHOW VARIABLES query.
- * @return  string  The table that was generated based on the given information.
- */
-function PMA_generateEngineDetails($variables, $like = null) {
-
-    /**
-     * Get the variables!
-     */
-    if (!empty($variables)) {
-        $sql_query = 'SHOW '
-                   . (PMA_MYSQL_INT_VERSION >= 40102 ? 'GLOBAL ' : '')
-                   . 'VARIABLES'
-                   . (empty($like) ? '' : ' LIKE \'' . $like . '\'')
-                   . ';';
-        $res = PMA_DBI_query($sql_query);
-        $mysql_vars = array();
-        while ($row = PMA_DBI_fetch_row($res)) {
-            if (isset($variables[$row[0]])) {
-                $mysql_vars[$row[0]] = $row[1];
-            }
-        }
-        PMA_DBI_free_result($res);
-        unset($res, $row, $sql_query);
-    }
-
-    if (empty($mysql_vars)) {
-        return '<p>' . "\n"
-             . '    ' . $GLOBALS['strNoDetailsForEngine'] . "\n"
-             . '</p>' . "\n";
-    }
-
-    $dt_table       = '<table class="data">' . "\n";
-    $odd_row        = false;
-    $has_content    = false;
-
-    foreach ($variables as $var => $details) {
-        if (!isset($mysql_vars[$var])) {
-            continue;
-        }
-
-        if (!isset($details['type'])) {
-            $details['type'] = PMA_ENGINE_DETAILS_TYPE_PLAINTEXT;
-        }
-        $is_num = $details['type'] == PMA_ENGINE_DETAILS_TYPE_SIZE
-            || $details['type'] == PMA_ENGINE_DETAILS_TYPE_NUMERIC;
-
-        $dt_table     .= '<tr class="' . ( $odd_row ? 'odd' : 'even' ) . '">' . "\n"
-                       . '    <td>' . "\n";
-        if (!empty($variables[$var]['desc'])) {
-            $dt_table .= '        ' . PMA_showHint($details['desc']) . "\n";
-        }
-        $dt_table     .= '    </td>' . "\n"
-                       . '    <th>'
-                       . htmlspecialchars( empty($details['title'])
-                            ? $var : $details['title'] ) . "\n"
-                       . '    </th>' . "\n"
-                       . '    <td class="value">';
-        switch ($details['type']) {
-            case PMA_ENGINE_DETAILS_TYPE_SIZE:
-                $parsed_size = PMA_formatByteDown($mysql_vars[$var]);
-                $dt_table .= $parsed_size[0] . '&nbsp;' . $parsed_size[1];
-                unset($parsed_size);
-            break;
-            case PMA_ENGINE_DETAILS_TYPE_NUMERIC:
-                $dt_table .= PMA_formatNumber($mysql_vars[$var]) . ' ';
-            break;
-            default:
-                $dt_table .= htmlspecialchars($mysql_vars[$var]) . '   ';
-        }
-        $dt_table     .= '</td>' . "\n"
-                      . '</tr>' . "\n";
-        $odd_row    = !$odd_row;
-        $has_content   = true;
-    }
-
-    if (!$has_content) {
-        return '';
-    }
-
-    $dt_table       .= '</table>' . "\n";
-
-    return $dt_table;
-}
-
+require './libraries/server_links.inc.php';
 
 /**
  * Did the user request information about a certain storage engine?
  */
-if ( empty($_REQUEST['engine'])
-  || empty($mysql_storage_engines[$_REQUEST['engine']]) ) {
+if (empty($_REQUEST['engine'])
+ || ! PMA_StorageEngine::isValid($_REQUEST['engine'])) {
 
     /**
      * Displays the sub-page heading
@@ -137,7 +43,7 @@ if ( empty($_REQUEST['engine'])
     echo '<h2>' . "\n"
        . ($GLOBALS['cfg']['MainPageIconic']
             ? '<img class="icon" src="' . $pmaThemeImage . 'b_engine.png"'
-                .' width="16" height="16" alt="" />' : '' )
+                .' width="16" height="16" alt="" />' : '')
        . "\n" . $strStorageEngines . "\n"
        . '</h2>' . "\n";
 
@@ -160,7 +66,7 @@ if ( empty($_REQUEST['engine'])
      * Listing the storage engines
      */
     $odd_row = true;
-    foreach ($mysql_storage_engines as $engine => $details) {
+    foreach (PMA_StorageEngine::getStorageEngines() as $engine => $details) {
         echo '<tr class="'
            . ($odd_row ? 'odd' : 'even')
            . ($details['Support'] == 'NO' || $details['Support'] == 'DISABLED'
@@ -168,7 +74,7 @@ if ( empty($_REQUEST['engine'])
                 : '')
            . '">' . "\n"
            . '    <td><a href="./server_engines.php'
-           . PMA_generate_common_url(array( 'engine' => $engine )) . '">' . "\n"
+           . PMA_generate_common_url(array('engine' => $engine)) . '">' . "\n"
            . '            ' . htmlspecialchars($details['Engine']) . "\n"
            . '        </a>' . "\n"
            . '    </td>' . "\n";
@@ -193,9 +99,9 @@ if ( empty($_REQUEST['engine'])
     echo '<h2>' . "\n"
        . ($GLOBALS['cfg']['MainPageIconic']
             ? '<img class="icon" src="' . $pmaThemeImage . 'b_engine.png"'
-                .' width="16" height="16" alt="" />' : '' )
+                .' width="16" height="16" alt="" />' : '')
        . '    ' . htmlspecialchars($engine_plugin->getTitle()) . "\n"
-       . '    ' . PMA_showMySQLDocu( '', $engine_plugin->getMysqlHelpPage() ) . "\n"
+       . '    ' . PMA_showMySQLDocu('', $engine_plugin->getMysqlHelpPage()) . "\n"
        . '</h2>' . "\n\n";
     if (PMA_MYSQL_INT_VERSION >= 40102) {
         echo '<p>' . "\n"
@@ -212,7 +118,7 @@ if ( empty($_REQUEST['engine'])
             echo '    <strong>' . $strServerTabVariables . '</strong>' . "\n";
         } else {
             echo '    <a href="./server_engines.php'
-                . PMA_generate_common_url(array( 'engine' => $_REQUEST['engine'] )) . '">'
+                . PMA_generate_common_url(array('engine' => $_REQUEST['engine'])) . '">'
                 . $strServerTabVariables . '</a>' . "\n";
         }
         foreach ($infoPages as $current => $label) {
@@ -222,7 +128,7 @@ if ( empty($_REQUEST['engine'])
             } else {
                 echo '    <a href="./server_engines.php'
                     . PMA_generate_common_url(
-                        array( 'engine' => $_REQUEST['engine'], 'page' => $current ))
+                        array('engine' => $_REQUEST['engine'], 'page' => $current))
                     . '">' . htmlspecialchars($label) . '</a>' . "\n";
             }
         }
@@ -239,14 +145,13 @@ if ( empty($_REQUEST['engine'])
     } else {
         echo '<p> ' . $engine_plugin->getSupportInformationMessage() . "\n"
            . '</p>' . "\n"
-           . PMA_generateEngineDetails($engine_plugin->getVariables(),
-                $engine_plugin->getVariablesLikePattern());
+           . $engine_plugin->getHtmlVariables();
     }
 }
 
 /**
  * Sends the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 
 ?>

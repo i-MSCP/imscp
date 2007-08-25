@@ -1,13 +1,16 @@
 <?php
-/* $Id: export.php 10408 2007-05-21 17:13:49Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * @todo    too much die here, or?
+ * @version $Id: export.php 10408 2007-05-21 17:13:49Z lem9 $
+ */
 
 /**
  * Get the variables sent or posted to this script and a core script
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/zip.lib.php');
-require_once('./libraries/plugin_interface.lib.php');
+require_once './libraries/common.inc.php';
+require_once './libraries/zip.lib.php';
+require_once './libraries/plugin_interface.lib.php';
 
 PMA_checkParameters(array('what', 'export_type'));
 
@@ -58,16 +61,16 @@ if (isset($export_list[$type]['force_file']) && ! $asfile) {
     $message = $strExportMustBeFile;
     $GLOBALS['show_error_header'] = true;
     $js_to_run = 'functions.js';
-    require_once('./libraries/header.inc.php');
+    require_once './libraries/header.inc.php';
     if ($export_type == 'server') {
         $active_page = 'server_export.php';
-        require('./server_export.php');
+        require './server_export.php';
     } elseif ($export_type == 'database') {
         $active_page = 'db_export.php';
-        require('./db_export.php');
+        require './db_export.php';
     } else {
         $active_page = 'tbl_export.php';
-        require('./tbl_export.php');
+        require './tbl_export.php';
     }
     exit();
 }
@@ -79,7 +82,7 @@ if ($export_type == 'server') {
     $err_url = 'db_export.php?' . PMA_generate_common_url($db);
     // Check if we have something to export
     if (isset($table_select)) {
-        $tables = $table_select; 
+        $tables = $table_select;
     } else {
         $tables = array();
     }
@@ -90,7 +93,7 @@ if ($export_type == 'server') {
 }
 
 // Get the functions specific to the export type
-require('./libraries/export/' . PMA_securePath($type) . '.php');
+require './libraries/export/' . PMA_securePath($type) . '.php';
 
 /**
  * Increase time limit for script execution and initializes some variables
@@ -149,8 +152,8 @@ function PMA_exportOutputHandler($line)
                     $write_result = @fwrite($GLOBALS['file_handle'], $dump_buffer);
                     if (!$write_result || ($write_result != strlen($dump_buffer))) {
                         $GLOBALS['message'] = sprintf($GLOBALS['strNoSpace'], htmlspecialchars($save_filename));
-                        $GLOBALS['show_error_header'] = TRUE;
-                        return FALSE;
+                        $GLOBALS['show_error_header'] = true;
+                        return false;
                     }
                 } else {
                     echo $dump_buffer;
@@ -171,8 +174,8 @@ function PMA_exportOutputHandler($line)
                 $write_result = @fwrite($GLOBALS['file_handle'], $line);
                 if (!$write_result || ($write_result != strlen($line))) {
                     $GLOBALS['message'] = sprintf($GLOBALS['strNoSpace'], htmlspecialchars($save_filename));
-                    $GLOBALS['show_error_header'] = TRUE;
-                    return FALSE;
+                    $GLOBALS['show_error_header'] = true;
+                    return false;
                 }
                 $time_now = time();
                 if ($time_start >= $time_now + 30) {
@@ -191,7 +194,7 @@ function PMA_exportOutputHandler($line)
             echo htmlspecialchars($line);
         }
     }
-    return TRUE;
+    return true;
 } // end of the 'PMA_exportOutputHandler()' function
 
 // Defines the default <CR><LF> format. For SQL always use \n as MySQL wants this on all platforms.
@@ -299,30 +302,30 @@ if ($save_on_server) {
     unset($message);
     if (file_exists($save_filename) && empty($onserverover)) {
         $message = sprintf($strFileAlreadyExists, htmlspecialchars($save_filename));
-        $GLOBALS['show_error_header'] = TRUE;
+        $GLOBALS['show_error_header'] = true;
     } else {
         if (is_file($save_filename) && !is_writable($save_filename)) {
             $message = sprintf($strNoPermission, htmlspecialchars($save_filename));
-            $GLOBALS['show_error_header'] = TRUE;
+            $GLOBALS['show_error_header'] = true;
         } else {
             if (!$file_handle = @fopen($save_filename, 'w')) {
                 $message = sprintf($strNoPermission, htmlspecialchars($save_filename));
-                $GLOBALS['show_error_header'] = TRUE;
+                $GLOBALS['show_error_header'] = true;
             }
         }
     }
     if (isset($message)) {
         $js_to_run = 'functions.js';
-        require_once('./libraries/header.inc.php');
+        require_once './libraries/header.inc.php';
         if ($export_type == 'server') {
             $active_page = 'server_export.php';
-            require('./server_export.php');
+            require './server_export.php';
         } elseif ($export_type == 'database') {
             $active_page = 'db_export.php';
-            require('./db_export.php');
+            require './db_export.php';
         } else {
             $active_page = 'tbl_export.php';
-            require('./tbl_export.php');
+            require './tbl_export.php';
         }
         exit();
     }
@@ -333,7 +336,7 @@ if ($save_on_server) {
  * or not
  */
 if (!$save_on_server) {
-    if ($asfile ) {
+    if ($asfile) {
         // Download
         if (!empty($content_encoding)) {
             header('Content-Encoding: ' . $content_encoding);
@@ -360,14 +363,14 @@ if (!$save_on_server) {
             if ($num_tables == 0) {
                 $message = $strNoTablesFound;
                 $js_to_run = 'functions.js';
-                require_once('./libraries/header.inc.php');
+                require_once './libraries/header.inc.php';
                 $active_page = 'db_export.php';
-                require('./db_export.php');
+                require './db_export.php';
                 exit();
             }
         }
         $backup_cfgServer = $cfg['Server'];
-        require_once('./libraries/header.inc.php');
+        require_once './libraries/header.inc.php';
         $cfg['Server'] = $backup_cfgServer;
         unset($backup_cfgServer);
         echo "\n" . '<div align="' . $cell_align_left . '">' . "\n";
@@ -395,11 +398,11 @@ $do_relation = isset($GLOBALS[$what . '_relation']);
 $do_comments = isset($GLOBALS[$what . '_comments']);
 $do_mime     = isset($GLOBALS[$what . '_mime']);
 if ($do_relation || $do_comments || $do_mime) {
-    require_once('./libraries/relation.lib.php');
+    require_once './libraries/relation.lib.php';
     $cfgRelation = PMA_getRelationsParam();
 }
 if ($do_mime) {
-    require_once('./libraries/transformations.lib.php');
+    require_once './libraries/transformations.lib.php';
 }
 
 // Include dates in export?
@@ -546,21 +549,21 @@ if (!PMA_exportFooter()) {
     break;
 }
 
-} while (FALSE);
+} while (false);
 // End of fake loop
 
 if ($save_on_server && isset($message)) {
     $js_to_run = 'functions.js';
-    require_once('./libraries/header.inc.php');
+    require_once './libraries/header.inc.php';
     if ($export_type == 'server') {
         $active_page = 'server_export.php';
-        require('./server_export.php');
+        require './server_export.php';
     } elseif ($export_type == 'database') {
         $active_page = 'db_export.php';
-        require('./db_export.php');
+        require './db_export.php';
     } else {
         $active_page = 'tbl_export.php';
-        require('./tbl_export.php');
+        require './tbl_export.php';
     }
     exit();
 }
@@ -588,9 +591,9 @@ if (!empty($asfile)) {
         if (@function_exists('bzcompress')) {
             $dump_buffer = bzcompress($dump_buffer);
             if ($dump_buffer === -8) {
-                require_once('./libraries/header.inc.php');
+                require_once './libraries/header.inc.php';
                 echo sprintf($strBzError, '<a href="http://bugs.php.net/bug.php?id=17300" target="_blank">17300</a>');
-                require_once('./libraries/footer.inc.php');
+                require_once './libraries/footer.inc.php';
             }
         }
     }
@@ -613,16 +616,16 @@ if (!empty($asfile)) {
         }
 
         $js_to_run = 'functions.js';
-        require_once('./libraries/header.inc.php');
+        require_once './libraries/header.inc.php';
         if ($export_type == 'server') {
             $active_page = 'server_export.php';
-            require_once('./server_export.php');
+            require_once './server_export.php';
         } elseif ($export_type == 'database') {
             $active_page = 'db_export.php';
-            require_once('./db_export.php');
+            require_once './db_export.php';
         } else {
             $active_page = 'tbl_export.php';
-            require_once('./tbl_export.php');
+            require_once './tbl_export.php';
         }
         exit();
     } else {
@@ -642,7 +645,7 @@ else {
     echo '</div>' . "\n";
     echo "\n";
 ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
     var bodyWidth=null; var bodyHeight=null;
     if (document.getElementById('textSQLDUMP')) {
@@ -663,6 +666,6 @@ else {
 //]]>
 </script>
 <?php
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 } // end if
 ?>

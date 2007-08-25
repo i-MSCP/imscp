@@ -1,12 +1,15 @@
 <?php
-/* $Id: xml.php 9082 2006-05-30 06:43:00Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build XML dumps of tables
+ *
+ * @version $Id: xml.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
-if (isset($GLOBALS['db']) && strlen($GLOBALS['db'])) { /* Can't do server export */
+/**
+ *
+ */
+if (strlen($GLOBALS['db'])) { /* Can't do server export */
 
 if (isset($plugin_list)) {
     $plugin_list['xml'] = array(
@@ -16,7 +19,7 @@ if (isset($plugin_list)) {
         'options' => array(
             array('type' => 'hidden', 'name' => 'data'),
             ),
-        'options_text' => 'strXMLOptions',
+        'options_text' => 'strOptions',
         );
 } else {
 
@@ -154,7 +157,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
     while ($record = PMA_DBI_fetch_row($result)) {
         $buffer         = '    <' . $table . '>' . $crlf;
         for ($i = 0; $i < $columns_cnt; $i++) {
-            if ( isset($record[$i]) && !is_null($record[$i])) {
+            if (isset($record[$i]) && !is_null($record[$i])) {
                 $buffer .= '        <' . $columns[$i] . '>' . htmlspecialchars($record[$i])
                         .  '</' . $columns[$i] . '>' . $crlf;
             }

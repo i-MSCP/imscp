@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.10.3 Documentation
+phpMyAdmin 2.11.0 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.10.3 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 10510 2007-07-20 13:03:09Z
+  * Documentation version: $Id: Documentation.html 10574 2007-08-19 12:02:39Z
     lem9 $
 
 Requirements
@@ -31,11 +31,11 @@ Requirements
         ("image/jpeg: inline") with their original aspect ratio
       + You need PHP 4.3.0 or newer to use the "text/plain: external"
         MIME-based transformation
+      + When using the "cookie" authentication method, the mcrypt extension is
+        strongly suggested for most users and is required for 64?bit machines.
+        Not using mcrypt will cause phpMyAdmin to load pages significantly
+        slower.
   * MySQL 3.23.32 or newer (details);
-  * Not really a requirement but a strong suggestion: if you are using the
-    "cookie" authentication method, having the mcrypt PHP extension on your web
-    server accelerates not only the login phase but every other action that you
-    do in phpMyAdmin.
   * Web browser with cookies enabled.
 
 Introduction
@@ -67,7 +67,7 @@ Currently phpMyAdmin can:
     like displaying BLOB-data as image or download-link
   * support InnoDB tables and foreign keys (see FAQ 3.6)
   * support mysqli, the improved MySQL extension (see FAQ 1.17)
-  * communicate in 50 different languages
+  * communicate in 54 different languages
 
 A word about users:
 
@@ -117,8 +117,8 @@ Quick Install
  4. Now you must configure your installation. There are two methods that can be
     used. Traditionally, users have hand-edited a copy of config.inc.php, but
     now a wizard-style setup script is provided for those who prefer a
-    graphical installation. Creating a config.inc.php is still a quick way to
-    get started and needed for some advanced features.
+    graphical installation. Creating a config.inc.php file is still a quick way
+    to get started and needed for some advanced features.
       + To manually create the file, simply use your text editor to create the
         file config.inc.php (you can copy config.sample.inc.php to get minimal
         configuration file) in the main (top-level) phpMyAdmin directory (the
@@ -233,13 +233,15 @@ below).
 Upgrading from an older version
 
 Simply copy ./config.inc.php from your previous installation into the newly
-unpacked one. Configuration files from very old versions (2.3.0 or older) may
-require some tweaking as some options have been changed or removed.
+unpacked one. Configuration files from very old versions (2.3.0 or before) may
+require some tweaking as some options have been changed or removed. For
+compatibility with PHP 6, remove a set_magic_quotes_runtime(0); statement that
+you might find near the end of your configuration file.
 
 You should not copy libraries/config.default.php over config.inc.php because
 the default configuration file is version-specific.
 
-If you have upgraded your MySQL server from a version older than 4.1.2 to
+If you have upgraded your MySQL server from a version previous to 4.1.2 to
 version 4.1.2 or newer and if you use the pmadb/linked table infrastructure,
 you should run the SQL script found in scripts/upgrade_tables_mysql_4_1_2+.sql.
 
@@ -262,7 +264,7 @@ Using authentication modes
     In cookie mode, the password is stored, encrypted with the blowfish
     algorithm, in a temporary cookie.
   * Note: starting with phpMyAdmin 2.6.1, this section is only applicable if
-    your MySQL server is older than 4.1.2, or is running with
+    your MySQL server is previous to 4.1.2, or is running with
     --skip-show-database.
 
     For 'HTTP' and 'cookie' modes, phpMyAdmin needs a controluser that has only
@@ -343,6 +345,13 @@ Using authentication modes
     directive.
   * As mentioned in the requirements section, having the mcrypt extension will
     speed up access considerably, but is not required.
+
+'signon' authentication mode
+
+  * This mode is a convenient way of using credentials from another application
+    to authenticate to phpMyAdmin.
+  * The other application has to store login information into session data.
+  * More details in the auth_type section.
 
 'config' authentication mode
 
@@ -459,7 +468,7 @@ $cfg['Servers'][$i]['controluser'] string
     $cfg['Servers'][$i]['controlpass'] string
     This special account is used for 2 distinct purposes: to make possible all
     relational features (see $cfg['Servers'][$i]['pmadb']) and, for a MySQL
-    server older than 4.1.2 or running with --skip-show-database, to enable a
+    server previous to 4.1.2 or running with --skip-show-database, to enable a
     multi-user installation (HTTP or cookie authentication mode).
 
     When using HTTP or cookie authentication modes (or 'config' authentication
@@ -483,9 +492,9 @@ $cfg['Servers'][$i]['auth_type'] string ['HTTP'|'http'|'cookie'|'config'|
         cookies. Username and password are stored in cookies during the session
         and password is deleted when it ends. This can also allow you to log in
         in arbitrary server if $cfg['AllowArbitraryServer'] enabled.
-      + 'HTTP' authentication (was called 'advanced' in older versions and can
-        be written also as 'http') ($auth_type = 'HTTP') as introduced in 1.3.0
-        allows you to log in as any valid MySQL user via HTTP-Auth.
+      + 'HTTP' authentication (was called 'advanced' in previous versions and
+        can be written also as 'http') ($auth_type = 'HTTP') as introduced in
+        1.3.0 allows you to log in as any valid MySQL user via HTTP-Auth.
       + 'signon' authentication mode ($auth_type = 'signon') as introduced in
         2.10.0 allows you to log in from prepared PHP session data. This is
         useful for implementing single signon from another application. Sample
@@ -548,7 +557,8 @@ $cfg['Servers'][$i]['verbose'] string
     Only useful when using phpMyAdmin with multiple server entries. If set,
     this string will be displayed instead of the hostname in the pull-down menu
     on the main page. This can be useful if you want to show only certain
-    databases on your system, for example.
+    databases on your system, for example. For HTTP auth, all non-US-ASCII
+    characters will be stripped.
 $cfg['Servers'][$i]['pmadb'] string
     The name of the database containing the linked-tables infrastructure.
 
@@ -752,6 +762,18 @@ $cfg['ServerDefault'] integer
     logging in.
     If you have only one server configured, $cfg['ServerDefault'] MUST be set
     to that server.
+$cfg['MaxDbList'] integer
+    The maximum number of database names to be displayed in the navigation
+    frame and the database list.
+$cfg['MaxTableList'] integer
+    The maximum number of table names to be displayed in the main panel's list
+    (except on the Export page). This limit is also enforced in the navigation
+    panel when in Light mode.
+$cfg['MaxCharactersInDisplayedSQL'] integer
+    The maximum number of characters when a SQL query is displayed. The default
+    limit of 1000 should be correct to avoid the display of tons of hexadecimal
+    codes that represent BLOBs, but some users have real SQL queries that are
+    longer than 1000 characters.
 $cfg['OBGzip'] string/boolean
     Defines whether to use GZip output buffering for increased speed in HTTP
     transfers.
@@ -863,16 +885,17 @@ $cfg['LeftLogoLink'] string
     this is main.php.
 $cfg['LeftLogoLinkWindow'] string
     Whether to open the linked page in the main window (main) or in a new one
-    (new).
+    (new). Note: use new if you are linking to phpmyadmin.net.
 $cfg['LeftDisplayServers'] boolean
     Defines whether or not to display a server choice at the top of the left
     frame. Defaults to FALSE.
 $cfg['DisplayServersList'] boolean
     Defines whether to display this server choice as links instead of in a
     drop-down. Defaults to FALSE (drop-down).
-$cfg['DisplayDatabasesList'] boolean
+$cfg['DisplayDatabasesList'] boolean or text
     Defines whether to display database choice in light navigation frame as
-    links instead of in a drop-down. Defaults to FALSE (drop-down).
+    links instead of in a drop-down. Defaults to 'auto' - on main page list is
+    shown, when database is selected, only drop down is displayed.
 $cfg['ShowStats'] boolean
     Defines whether or not to display space usage and statistics about
     databases and tables.
@@ -1073,6 +1096,9 @@ $cfg['NaviPointerBackground'] string [valid css code for background]
     $cfg['NaviPointerColor'] string [valid css color]
     The style used for the pointer in the navi frame. See themes/themename/
     layout.inc.php.
+$cfg['NaviDatabaseNameColor'] string [valid css code]
+    The color used for the database name in the navi frame. See themes/
+    themename/layout.inc.php.
 $cfg['LeftPointerEnable'] boolean
     A value of TRUE activates the navi pointer (when LeftFrameLight is FALSE).
 $cfg['Border'] integer
@@ -1167,11 +1193,10 @@ $cfg['SQLQuery']['Validate'] boolean
 $cfg['SQLQuery']['Refresh'] boolean
     Whether to display a link to refresh a query in any SQL Query box.
 $cfg['UploadDir'] string
-    The name of the directory where
-$cfg['UploadDir'] string
     The name of the directory where SQL files have been uploaded by other means
     than phpMyAdmin (for example, ftp). Those files are available under a
-    drop-down box when you click the database name, then the SQL tab.
+    drop-down box when you click the database or table name, then the Import
+    tab.
 
     If you want different directory for each user, %u will be replaced with
     username.
@@ -1192,8 +1217,8 @@ $cfg['SaveDir'] string
     If you want different directory for each user, %u will be replaced with
     username.
 
-    Please note that the directory has to be writable for user running
-    webserver.
+    Please note that the directory must exist and has to be writable for the
+    user running the webserver.
 
     Please note that if PHP is running in safe mode, this directory must be
     owned by the same user as the owner of the phpMyAdmin scripts.
@@ -1488,10 +1513,9 @@ Go to your tbl_structure.php page (i.e. reached through clicking on the
 there you will see three new fields at the end of the line. They are called
 'MIME-type', 'Browser transformation' and 'Transformation options'.
 
-  * The field 'MIME-type' is a dropdown field. You have the options to leave
-    that field empty or to use 'auto' [this feature is not yet available].
-    Please note that transformations are inactive as long as no MIME-type is
-    selected.
+  * The field 'MIME-type' is a drop-down field. Select the MIME-type that
+    corresponds to the column's contents. Please note that transformations are
+    inactive as long as no MIME-type is selected.
   * The field 'Browser transformation' is a drop-down field. You can choose
     from a hopefully growing amount of pre-defined transformations. See below
     for information on how to build your own transformation.
@@ -1784,7 +1808,7 @@ increase it.
 
 1.15 I have problems with mysql.user field names.
 
-In older MySQL versions, the User and Password fields were named user and
+In previous MySQL versions, the User and Password fields were named user and
 password. Please modify your field names to align with current standards.
 
 1.16 I cannot upload big dump files (memory, HTTP or timeout problems).
@@ -2039,7 +2063,10 @@ sent by ..." is displayed, what's the problem?
 
 Edit your config.inc.php file and ensure there is nothing (I.E. no blank lines,
 no spaces, no characters...) neither before the <?php tag at the beginning,
-neither after the ?> tag at the end.
+neither after the ?> tag at the end. We also got a report from a user under
+IIS, that used a zipped distribution kit: the file libraries/Config.class.php
+contained an end-of-line character (hex 0A) at the end; removing this character
+cleared his errors.
 
 2.2 phpMyAdmin can't connect to MySQL. What's wrong?
 
@@ -2282,6 +2309,12 @@ hyphen.
 The tests I have made with current MySQL 4.1.11 API shows that the API does not
 accept this syntax for the USE command. Enclosing the db name with backquotes
 works. For further confusion, no backquotes are needed with command-line mysql.
+
+3.14 I am not able to browse a table when I don't have the right to SELECT one
+of the columns.
+
+This has been a known limitation of phpMyAdmin since the beginning and it's not
+likely to be solved in the future.
 
 ISPs, multi-user installations
 
@@ -2540,7 +2573,7 @@ a ".sql" file?
 
 Click on a database name in the left frame, the properties will be displayed.
 Select "Import" from the list of tabs in the right?hand frame (or "SQL" if your
-phpMyAdmin version is older than 2.7.0). In the "Location of the text file"
+phpMyAdmin version is previous to 2.7.0). In the "Location of the text file"
 section, type in the path to your dump filename, or use the Browse button. Then
 click Go.
 
@@ -2896,7 +2929,8 @@ proceed?
 The following method is preferred for new developers:
 
  1. fetch the current SVN tree over anonymous SVN:
-    svn co https://svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin
+    svn co https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/
+    phpMyAdmin
  2. add your stuff
  3. generate patch with your changes: svn diff
  4. put the patch inside the patch tracker of the phpMyAdmin project.

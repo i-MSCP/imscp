@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-24 Benedikt Heintel
+	- TOOLS:
+		* Updated: PHPmyAdmin to 2.11.0
+		* Updated: PHPSysInfo to 2.5.4
+
 2007-08-24 Raphael Geissert
     - GUI:
         * Dropped the include/security code

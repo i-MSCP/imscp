@@ -1,8 +1,5 @@
 <?php
-/* $Id: decode_bug.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4 foldmarker={,} fdm=marker:
-
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Parser BUG decoder
  *
@@ -10,8 +7,10 @@
  * Throw the bug data in teh query box, and hit submit for output.
  *
  * Copyright 2002 Robin Johnson <robbat2@users.sourceforge.net>
+ *
+ * @version $Id: decode_bug.php 10289 2007-04-16 13:32:45Z cybot_tm $
+ * @package phpMyAdmin-debug
  */
-
 
 /**
  * Displays the form
@@ -81,7 +80,7 @@ if (!empty($_POST) && isset($_POST['bug_encoded'])) {
 }
 
 if (!empty($bug_encoded)) {
-    if (get_magic_quotes_gpc()) {
+    if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
         $bug_encoded = stripslashes($bug_encoded);
     }
 

@@ -1,7 +1,5 @@
 <?php
-/* $Id: db_operations.php 9696 2006-11-13 08:30:25Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * handles miscellaneous db operations:
  *  - move/rename
@@ -10,19 +8,21 @@
  *  - changing comment
  *  - adding tables
  *  - viewing PDF schemas
+ *
+ * @version $Id: db_operations.php 10554 2007-08-11 12:35:12Z lem9 $
  */
 
 /**
  * requirements
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 require_once './libraries/mysql_charsets.lib.php';
 
 /**
  * Rename/move or copy database
  */
-if (isset($db) &&
+if (strlen($db) &&
     ((isset($db_rename) && $db_rename == 'true') ||
     (isset($db_copy) && $db_copy == 'true'))) {
 
@@ -38,6 +38,19 @@ if (isset($db) &&
         $sql_query = ''; // in case target db exists
         if ($move ||
            (isset($create_database_before_copying) && $create_database_before_copying)) {
+            /**
+             * @todo activate this with the correct version of MySQL
+             *       when they fix the problem when the db contains a VIEW 
+             *       (problem exists in 5.1.20)
+             *       also, in 6.0.0 when the db contains a Falcon table,
+             *       renaming it results in a unusable db!
+             */
+            //if (PMA_MYSQL_INT_VERSION >= 50107) {
+            //    $local_query = 'RENAME DATABASE ' . PMA_backquote($db) . ' TO ' . PMA_backquote($newname) . ';';
+            //    $sql_query = $local_query;
+            //    PMA_DBI_query($local_query);
+            //} else {
+            // please indent ->
             $local_query = 'CREATE DATABASE ' . PMA_backquote($newname);
             if (isset($db_collation)) {
                 $local_query .= ' DEFAULT' . PMA_generateCharsetQueryPart($db_collation);
@@ -56,15 +69,15 @@ if (isset($db) &&
 
         $tables_full = PMA_DBI_get_tables_full($db);
         $views = array();
-        foreach ($tables_full as $table => $tmp) {
+        foreach ($tables_full as $each_table => $tmp) {
             // to be able to rename a db containing views, we
             // first collect in $views all the views we find and we
             // will handle them after the tables
             /**
              * @todo support a view of a view
              */
-            if (PMA_Table::isView($db, $table)) {
-                $views[] = $table;
+            if (PMA_Table::isView($db, $each_table)) {
+                $views[] = $each_table;
                 continue;
             }
 
@@ -74,12 +87,12 @@ if (isset($db) &&
             // value of $what for this table only
             $this_what = $what;
 
-            if (!isset($tables_full[$table]['Engine'])) {
-                $tables_full[$table]['Engine'] = $tables_full[$table]['Type'];
+            if (!isset($tables_full[$each_table]['Engine'])) {
+                $tables_full[$each_table]['Engine'] = $tables_full[$each_table]['Type'];
             }
             // do not copy the data from a Merge table
             // note: on the calling FORM, 'data' means 'structure and data'
-            if ($tables_full[$table]['Engine'] == 'MRG_MyISAM') {
+            if ($tables_full[$each_table]['Engine'] == 'MRG_MyISAM') {
                 if ($this_what == 'data') {
                     $this_what = 'structure';
                 }
@@ -89,7 +102,7 @@ if (isset($db) &&
             }
 
             if ($this_what != 'nocopy') {
-                PMA_Table::moveCopy($db, $table, $newname, $table,
+                PMA_Table::moveCopy($db, $each_table, $newname, $each_table,
                     isset($this_what) ? $this_what : 'data', $move, 'db_copy');
                 if (isset($GLOBALS['add_constraints'])) {
                     $GLOBALS['sql_constraints_query_full_db'] .= $GLOBALS['sql_constraints_query'];
@@ -99,7 +112,7 @@ if (isset($db) &&
 
             $sql_query = $back . $sql_query;
         } // end (foreach)
-        unset($table);
+        unset($each_table);
 
         // handle the views
         foreach ($views as $view) {
@@ -121,6 +134,8 @@ if (isset($db) &&
             $GLOBALS['sql_query'] .= "\n" . $GLOBALS['sql_constraints_query_full_db'];
             unset($GLOBALS['sql_constraints_query_full_db']);
         }
+// see the previous todo
+//        } // end else MySQL < 50107
 
         // Duplicate the bookmarks for this db (done once for each db)
         if ($db != $newname) {
@@ -136,9 +151,11 @@ if (isset($db) &&
             require_once './libraries/relation_cleanup.lib.php';
             PMA_relationsCleanupDatabase($db);
 
-            $local_query = 'DROP DATABASE ' . PMA_backquote($db) . ';';
-            $sql_query .= "\n" . $local_query;
-            PMA_DBI_query($local_query);
+            if (PMA_MYSQL_INT_VERSION <  50107) {
+                $local_query = 'DROP DATABASE ' . PMA_backquote($db) . ';';
+                $sql_query .= "\n" . $local_query;
+                PMA_DBI_query($local_query);
+            }
             $message    = sprintf($strRenameDatabaseOK, htmlspecialchars($db),
                 htmlspecialchars($newname));
         } else {
@@ -252,6 +269,17 @@ if (!$is_information_schema) {
     ?>
         </legend>
         <input type="text" name="newname" size="30" class="textfield" value="" />
+        <?php
+    echo '(' . $strCommand . ': ';
+    /**
+     * @todo (see explanations above in a previous todo) 
+     */
+    //if (PMA_MYSQL_INT_VERSION >= 50107) {
+    //    echo 'RENAME DATABASE';
+    //} else {
+        echo 'INSERT INTO ... SELECT';
+    //}
+    echo ')'; ?>
         <input type="submit" value="<?php echo $strGo; ?>" />
     </fieldset>
     </form>
@@ -340,7 +368,7 @@ if (!$is_information_schema) {
     // MySQL supports setting default charsets / collations for databases since
     // version 4.1.1.
         echo '<form method="post" action="./db_operations.php">' . "\n"
-           . PMA_generate_common_hidden_inputs($db, isset($table) ? $table : '')
+           . PMA_generate_common_hidden_inputs($db, $table)
            . '<fieldset>' . "\n"
            . '    <legend>';
         if ($cfg['PropertiesIconic']) {
@@ -371,13 +399,7 @@ if (!$is_information_schema) {
 } // end if (!$is_information_schema)
 
 
-// not sure about leaving the PDF dialog for information_schema
-if ($num_tables > 0 && isset($table)) {
-    $takeaway = $url_query . '&amp;table=' . urlencode($table);
-} else {
-    $takeaway = '';
-}
-
+// not sure about displaying the PDF dialog in case db is information_schema
 if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
     <!-- Work on PDF Pages -->
 
@@ -455,20 +477,12 @@ if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
     </form>
         <?php
     }   // end if
-    ?>
-    <ul>
-        <li>
-    <?php
-        echo '<a href="pdf_pages.php?' . $takeaway . '">';
-        if ($cfg['PropertiesIconic']) {
-            echo '<img class="icon" src="' . $pmaThemeImage . 'b_edit.png"'
-                .' alt="" width="16" height="16" />';
-        }
-        echo $strEditPDFPages . '</a>';
-    ?>
-        </li>
-    </ul>
-    <?php
+    echo '<br /><a href="pdf_pages.php?' . $url_query . '">';
+    if ($cfg['PropertiesIconic']) {
+        echo '<img class="icon" src="' . $pmaThemeImage . 'b_edit.png"'
+            .' alt="" width="16" height="16" />';
+    }
+    echo $strEditPDFPages . '</a>';
 } // end if
 
 /**

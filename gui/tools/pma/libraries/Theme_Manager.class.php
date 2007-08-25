@@ -1,11 +1,20 @@
 <?php
-/* $Id: Theme_Manager.class.php 9839 2007-01-12 18:41:38Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: Theme_Manager.class.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
+/**
+ *
+ */
 require_once './libraries/Theme.class.php';
 
-class PMA_Theme_Manager {
-
+/**
+ *
+ */
+class PMA_Theme_Manager
+{
     /**
      * @var string path to theme folder
      * @protected
@@ -99,8 +108,8 @@ class PMA_Theme_Manager {
         $this->theme = new PMA_Theme;
 
 
-        if ( ! $this->checkTheme($GLOBALS['cfg']['ThemeDefault'])) {
-            $GLOBALS['PMA_errors'][] = sprintf( $GLOBALS['strThemeDefaultNotFound'],
+        if (! $this->checkTheme($GLOBALS['cfg']['ThemeDefault'])) {
+            $GLOBALS['PMA_errors'][] = sprintf($GLOBALS['strThemeDefaultNotFound'],
                 htmlspecialchars($GLOBALS['cfg']['ThemeDefault']));
             trigger_error(
                 sprintf($GLOBALS['strThemeDefaultNotFound'],
@@ -139,7 +148,7 @@ class PMA_Theme_Manager {
 
     function setActiveTheme($theme = null)
     {
-        if ( ! $this->checkTheme($theme)) {
+        if (! $this->checkTheme($theme)) {
             $GLOBALS['PMA_errors'][] = sprintf($GLOBALS['strThemeNotFound'],
                 htmlspecialchars($theme));
             /* Following code can lead to path disclossure, because headers will be sent later */

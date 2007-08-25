@@ -1,9 +1,9 @@
 <?php
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Simple script to set correct charset for changelog
  *
- * @id      $Id: changelog.php 9546 2006-10-13 08:03:06Z nijel $
+ * @version $Id: changelog.php 10561 2007-08-17 20:52:07Z lem9 $
  */
 
 $changelog = htmlspecialchars(file_get_contents('ChangeLog'));
@@ -34,7 +34,7 @@ $replaces = array(
 
     // linking files
     '/(\s+)([\\/a-z_0-9\.]+\.(?:php3?|html|pl|js|sh))/i'
-    => '\\1<a href="http://svn.sourceforge.net/viewvc/phpmyadmin/trunk/phpMyAdmin/\\2?annotate=HEAD">\\2</a>',
+    => '\\1<a href="http://phpmyadmin.svn.sourceforge.net/viewvc/phpmyadmin/trunk/phpMyAdmin/\\2?annotate=HEAD">\\2</a>',
 
     // FAQ entries
     '/FAQ ([0-9]+)\.([0-9a-z]+)/i'

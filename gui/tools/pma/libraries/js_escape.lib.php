@@ -1,12 +1,12 @@
 <?php
-/* $Id: common.lib.php 9832 2007-01-09 09:50:49Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Javascript escaping functions.
  *
  * @author Michal Čihař <michal@cihar.com>
  * @package phpMyAdmin
+ *
+ * @version $Id: js_escape.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
  */
 
 /**
@@ -29,16 +29,16 @@
  */
 function PMA_jsFormat($a_string = '', $add_backquotes = true)
 {
-	if (is_string($a_string)) {
-		$a_string = htmlspecialchars($a_string);
-		$a_string = PMA_escapeJsString($a_string);
-		/**
-		 * @todo what is this good for?
-		 */
-		$a_string = str_replace('#', '\\#', $a_string);
-	}
+    if (is_string($a_string)) {
+        $a_string = htmlspecialchars($a_string);
+        $a_string = PMA_escapeJsString($a_string);
+        /**
+         * @todo what is this good for?
+         */
+        $a_string = str_replace('#', '\\#', $a_string);
+    }
 
-	return (($add_backquotes) ? PMA_backquote($a_string) : $a_string);
+    return (($add_backquotes) ? PMA_backquote($a_string) : $a_string);
 } // end of the 'PMA_jsFormat()' function
 
 /**
@@ -53,12 +53,12 @@ function PMA_jsFormat($a_string = '', $add_backquotes = true)
  */
 function PMA_escapeJsString($string)
 {
-	return preg_replace('@</script@i', '</\' + \'script',
-						strtr($string, array(
-								'\\' => '\\\\',
-								'\'' => '\\\'',
-								"\n" => '\n',
-								"\r" => '\r')));
+    return preg_replace('@</script@i', '</\' + \'script',
+                        strtr($string, array(
+                                '\\' => '\\\\',
+                                '\'' => '\\\'',
+                                "\n" => '\n',
+                                "\r" => '\r')));
 }
 
 ?>

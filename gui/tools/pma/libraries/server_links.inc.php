@@ -1,11 +1,15 @@
 <?php
-/* $Id: server_links.inc.php 8637 2006-02-22 11:31:32Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: server_links.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-// Check parameters
-
-require_once('./libraries/common.lib.php');
-require_once('./libraries/server_common.inc.php');
+/**
+ * Check parameters
+ */
+require_once './libraries/common.inc.php';
+require_once './libraries/server_common.inc.php';
 
 PMA_checkParameters(array('is_superuser', 'url_query'), TRUE, FALSE);
 
@@ -59,7 +63,8 @@ if ($is_superuser) {
     $tabs['rights']['link'] = 'server_privileges.php';
     $tabs['rights']['text'] = $strPrivileges;
 }
-if ($has_binlogs) {
+
+if (! empty($binary_logs)) {
     $tabs['binlog']['icon'] = 's_tbl.png';
     $tabs['binlog']['link'] = 'server_binlog.php';
     $tabs['binlog']['text'] = $strBinaryLog;
@@ -76,8 +81,8 @@ $tabs['import']['icon'] = 'b_import.png';
 $tabs['import']['link'] = 'server_import.php';
 $tabs['import']['text'] = $strImport;
 
-echo PMA_getTabs( $tabs );
-unset( $tabs );
+echo PMA_getTabs($tabs);
+unset($tabs);
 
 
 /**

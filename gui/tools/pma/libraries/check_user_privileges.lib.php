@@ -1,11 +1,16 @@
 <?php
-/* $Id: check_user_privileges.lib.php 10405 2007-05-19 18:08:38Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Get user's global privileges and some db-specific privileges
+ * ($controllink and $userlink are links to MySQL defined in the "common.inc.php" library)
+ * Note: if no controluser is defined, $controllink contains $userlink
+ *
+ * @version $Id: check_user_privileges.lib.php 10405 2007-05-19 18:08:38Z lem9 $
+ */
 
-// Get user's global privileges and some db-specific privileges
-// ($controllink and $userlink are links to MySQL defined in the "common.lib.php" library)
-// Note: if no controluser is defined, $controllink contains $userlink
-
+/**
+ *
+ */
 $is_create_db_priv  = false;
 $is_process_priv = true;
 $is_reload_priv  = false;

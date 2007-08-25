@@ -1,16 +1,22 @@
 <?php
-/* $Id: display_export.lib.php 9791 2006-12-13 13:02:42Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: display_export.lib.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ */
 
+/**
+ *
+ */
 require_once './libraries/Table.class.php';
 
 // Get relations & co. status
-require_once('./libraries/relation.lib.php');
+require_once './libraries/relation.lib.php';
 $cfgRelation = PMA_getRelationsParam();
 
 
-require_once('./libraries/file_listing.php');
-require_once('./libraries/plugin_interface.lib.php');
+require_once './libraries/file_listing.php';
+require_once './libraries/plugin_interface.lib.php';
 
 function PMA_exportCheckboxCheck($str) {
     if (isset($GLOBALS['cfg']['Export'][$str]) && $GLOBALS['cfg']['Export'][$str]) {
@@ -32,7 +38,7 @@ if (empty($export_list)) {
     $GLOBALS['show_error_header'] = TRUE;
     PMA_showMessage($strCanNotLoadExportPlugins);
     unset($GLOBALS['show_error_header']);
-    require('./libraries/footer.inc.php');
+    require './libraries/footer.inc.php';
 }
 ?>
 
@@ -54,7 +60,7 @@ if (isset($single_table)) {
 
 echo '<input type="hidden" name="export_type" value="' . $export_type . '" />' . "\n";
 
-if (isset($sql_query)) {
+if (! empty($sql_query)) {
     echo '<input type="hidden" name="sql_query" value="' . htmlspecialchars($sql_query) . '" />' . "\n";
 }
 echo PMA_pluginGetJavascript($export_list);
@@ -74,7 +80,7 @@ echo PMA_pluginGetJavascript($export_list);
 <fieldset id="exportoptions">
 <legend><?php echo $strExport; ?></legend>
 
-    <?php if ( ! empty( $multi_values ) ) { ?>
+    <?php if (! empty($multi_values)) { ?>
     <div class="formelementrow">
         <?php echo $multi_values; ?>
     </div>
@@ -90,18 +96,18 @@ echo PMA_pluginGetJavascript($export_list);
 </div>
 </td></tr></table>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
     init_options();
 //]]>
 </script>
 
-<?php if ( isset($table) && strlen($table) && ! isset( $num_tables ) ) { ?>
+<?php if (strlen($table) && ! isset($num_tables)) { ?>
     <div class="formelementrow">
         <?php
-        echo sprintf( $strDumpXRows,
+        echo sprintf($strDumpXRows,
             '<input type="text" name="limit_to" size="5" value="'
-            . ( isset( $unlim_num_rows ) ? $unlim_num_rows : PMA_Table::countRecords( $db, $table, TRUE ) )
+            . (isset($unlim_num_rows) ? $unlim_num_rows : PMA_Table::countRecords($db, $table, TRUE))
             . '" onfocus="this.select()" />',
             '<input type="text" name="limit_from" value="0" size="5"'
             .' onfocus="this.select()" /> ');
@@ -195,11 +201,11 @@ echo PMA_pluginGetJavascript($export_list);
 
 <?php
 // zip, gzip and bzip2 encode features
-$is_zip  = ( $cfg['ZipDump']  && @function_exists('gzcompress') );
-$is_gzip = ( $cfg['GZipDump'] && @function_exists('gzencode') );
-$is_bzip = ( $cfg['BZipDump'] && @function_exists('bzcompress') );
+$is_zip  = ($cfg['ZipDump']  && @function_exists('gzcompress'));
+$is_gzip = ($cfg['GZipDump'] && @function_exists('gzencode'));
+$is_bzip = ($cfg['BZipDump'] && @function_exists('bzcompress'));
 
-if ( $is_zip || $is_gzip || $is_bzip ) { ?>
+if ($is_zip || $is_gzip || $is_bzip) { ?>
     <div class="formelementrow">
         <?php echo $strCompression; ?>:
         <input type="radio" name="compression" value="none"

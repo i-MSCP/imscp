@@ -1,5 +1,9 @@
-/* $Id: indexes.js 7886 2005-11-23 19:10:30Z nijel $ */
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * function used for index manipulation pages
+ *
+ * @version $Id: indexes.js 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
 /**
  * Ensures a value submitted in a form is numeric and is in a range

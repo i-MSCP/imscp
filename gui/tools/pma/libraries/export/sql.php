@@ -1,10 +1,14 @@
 <?php
-/* $Id: sql.php 10437 2007-06-14 17:10:25Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build SQL dumps of tables
+ *
+ * @version $Id: sql.php 10555 2007-08-11 13:01:36Z lem9 $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $hide_sql       = false;
     $hide_structure = false;
@@ -22,7 +26,7 @@ if (isset($plugin_list)) {
                 array('type' => 'bool', 'name' => 'use_transaction', 'text' => 'strEncloseInTransaction'),
                 array('type' => 'bool', 'name' => 'disable_fk', 'text' => 'strDisableForeignChecks'),
                 ),
-            'options_text' => 'strSQLOptions',
+            'options_text' => 'strOptions',
             );
         $compats = PMA_DBI_getCompatibilities();
         if (count($compats) > 0) {
@@ -109,7 +113,7 @@ if (isset($plugin_list)) {
         $plugin_list['sql']['options'][] =
             array('type' => 'bool', 'name' => 'ignore', 'text' => 'strIgnoreInserts');
         $plugin_list['sql']['options'][] =
-            array('type' => 'bool', 'name' => 'hex_for_binary', 'text' => 'strHexForBinary');
+            array('type' => 'bool', 'name' => 'hex_for_blob', 'text' => 'strHexForBLOB');
         $plugin_list['sql']['options'][] =
             array('type' => 'select', 'name' => 'type', 'text' => 'strSQLExportType', 'values' => array('INSERT', 'UPDATE', 'REPLACE'));
         $plugin_list['sql']['options'][] =
@@ -118,14 +122,9 @@ if (isset($plugin_list)) {
 } else {
 
 /**
- * Marker for comments, -- is needed for ANSI SQL.
- */
-$GLOBALS['comment_marker'] = '-- ';
-
-/**
  * Avoids undefined variables, use NULL so isset() returns false
  */
-if ( ! isset( $sql_backquotes ) ) {
+if (! isset($sql_backquotes)) {
     $sql_backquotes = null;
 }
 
@@ -134,11 +133,12 @@ if ( ! isset( $sql_backquotes ) ) {
  *
  * @param   string      Text of comment
  *
- * @return  bool        Whether it suceeded
+ * @return  string      The formatted comment 
  */
-function PMA_exportComment($text)
+function PMA_exportComment($text = '')
 {
-    return PMA_exportOutputHandler($GLOBALS['comment_marker'] . $text . $GLOBALS['crlf']);
+    // see http://dev.mysql.com/doc/refman/5.0/en/ansi-diff-comments.html
+    return '--' . (empty($text) ? '' : ' ') . $text . $GLOBALS['crlf'];
 }
 
 /**
@@ -168,8 +168,8 @@ function PMA_exportFooter()
     $charset_of_file = isset($GLOBALS['charset_of_file']) ? $GLOBALS['charset_of_file'] : '';
     if (!empty($GLOBALS['asfile']) && isset($mysql_charset_map[$charset_of_file])) {
         $foot .=  $crlf
-               . '/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;' . $crlf 
-               . '/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;' . $crlf 
+               . '/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;' . $crlf
+               . '/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;' . $crlf
                . '/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;' . $crlf;
     }
 
@@ -192,25 +192,25 @@ function PMA_exportHeader()
     if (PMA_MYSQL_INT_VERSION >= 40100 && isset($GLOBALS['sql_compatibility']) && $GLOBALS['sql_compatibility'] != 'NONE') {
         PMA_DBI_try_query('SET SQL_MODE="' . $GLOBALS['sql_compatibility'] . '"');
     }
-
-    $head  =  $GLOBALS['comment_marker'] . 'phpMyAdmin SQL Dump' . $crlf
-           .  $GLOBALS['comment_marker'] . 'version ' . PMA_VERSION . $crlf
-           .  $GLOBALS['comment_marker'] . 'http://www.phpmyadmin.net' . $crlf
-           .  $GLOBALS['comment_marker'] . $crlf
-           .  $GLOBALS['comment_marker'] . $GLOBALS['strHost'] . ': ' . $cfg['Server']['host'];
-    if (!empty($cfg['Server']['port'])) {
-         $head .= ':' . $cfg['Server']['port'];
-    }
-    $head .= $crlf
-           .  $GLOBALS['comment_marker'] . $GLOBALS['strGenTime'] . ': ' . PMA_localisedDate() . $crlf
-           .  $GLOBALS['comment_marker'] . $GLOBALS['strServerVersion'] . ': ' . substr(PMA_MYSQL_INT_VERSION, 0, 1) . '.' . (int) substr(PMA_MYSQL_INT_VERSION, 1, 2) . '.' . (int) substr(PMA_MYSQL_INT_VERSION, 3) . $crlf
-           .  $GLOBALS['comment_marker'] . $GLOBALS['strPHPVersion'] . ': ' . phpversion() . $crlf;
+    $head  =  PMA_exportComment('phpMyAdmin SQL Dump')
+           .  PMA_exportComment('version ' . PMA_VERSION)
+           .  PMA_exportComment('http://www.phpmyadmin.net')
+           .  PMA_exportComment();
+    $head .= empty($cfg['Server']['port']) ? PMA_exportComment($GLOBALS['strHost'] . ': ' . $cfg['Server']['host']) : PMA_exportComment($GLOBALS['strHost'] . ': ' .  $cfg['Server']['host'] . ':' . $cfg['Server']['port']);
+    $head .=  PMA_exportComment($GLOBALS['strGenTime']
+           . ': ' .  PMA_localisedDate())
+           .  PMA_exportComment($GLOBALS['strServerVersion'] . ': ' . substr(PMA_MYSQL_INT_VERSION, 0, 1) . '.' . (int) substr(PMA_MYSQL_INT_VERSION, 1, 2) . '.' . (int) substr(PMA_MYSQL_INT_VERSION, 3))
+           .  PMA_exportComment($GLOBALS['strPHPVersion'] . ': ' . phpversion());
 
     if (isset($GLOBALS['sql_header_comment']) && !empty($GLOBALS['sql_header_comment'])) {
+        // '\n' is not a newline (like "\n" would be), it's the characters
+        // backslash and n, as explained on the export interface
         $lines = explode('\n', $GLOBALS['sql_header_comment']);
-        $head .= $GLOBALS['comment_marker'] . $crlf
-               . $GLOBALS['comment_marker'] . implode($crlf . $GLOBALS['comment_marker'], $lines) . $crlf
-               . $GLOBALS['comment_marker'] . $crlf;
+        $head .= PMA_exportComment();
+        foreach($lines as $one_line) {
+            $head .= PMA_exportComment($one_line);
+        } 
+        $head .= PMA_exportComment();
     }
 
     if (isset($GLOBALS['sql_disable_fk'])) {
@@ -218,7 +218,7 @@ function PMA_exportHeader()
     }
 
     /* We want exported AUTO_INCREMENT fields to have still same value, do this only for recent MySQL exports */
-    if (!isset($GLOBALS['sql_compatibility']) || $GLOBALS['sql_compatibility'] == 'NONE') { 
+    if (!isset($GLOBALS['sql_compatibility']) || $GLOBALS['sql_compatibility'] == 'NONE') {
         $head .=  $crlf . 'SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";' . $crlf;
     }
 
@@ -226,7 +226,7 @@ function PMA_exportHeader()
         $head .=  $crlf .'SET AUTOCOMMIT=0;' . $crlf
                 . 'START TRANSACTION;' . $crlf;
     }
-   
+
     $head .= $crlf;
 
     $charset_of_file = isset($GLOBALS['charset_of_file']) ? $GLOBALS['charset_of_file'] : '';
@@ -288,10 +288,9 @@ function PMA_exportDBCreate($db)
  */
 function PMA_exportDBHeader($db)
 {
-    global $crlf;
-    $head = $GLOBALS['comment_marker'] . $crlf
-          . $GLOBALS['comment_marker'] . $GLOBALS['strDatabase'] . ': ' . (isset($GLOBALS['sql_backquotes']) ? PMA_backquote($db) : '\'' . $db . '\''). $crlf
-          . $GLOBALS['comment_marker'] . $crlf;
+    $head = PMA_exportComment() 
+          . PMA_exportComment($GLOBALS['strDatabase'] . ': ' . (isset($GLOBALS['sql_backquotes']) ? PMA_backquote($db) : '\'' . $db . '\''))
+          . PMA_exportComment();
     return PMA_exportOutputHandler($head);
 }
 
@@ -306,7 +305,7 @@ function PMA_exportDBHeader($db)
  */
 function PMA_exportDBFooter($db)
 {
-    global $crlf, $comment_marker;
+    global $crlf;
 
     $result = TRUE;
     if (isset($GLOBALS['sql_constraints'])) {
@@ -321,35 +320,35 @@ function PMA_exportDBFooter($db)
         if ($procedure_names) {
             $delimiter = '$$';
             $procs_funcs = $crlf
-              . $comment_marker . $crlf
-              . $comment_marker . $GLOBALS['strProcedures'] . $crlf 
-              . $comment_marker . $crlf
+              . PMA_exportComment() 
+              . PMA_exportComment($GLOBALS['strProcedures'])
+              . PMA_exportComment() 
               . 'DELIMITER ' . $delimiter . $crlf
-              . $comment_marker . $crlf;
+              . PMA_exportComment();
 
             foreach($procedure_names as $procedure_name) {
                 $procs_funcs .= PMA_DBI_get_procedure_or_function_def($db, 'PROCEDURE', $procedure_name) . $delimiter . $crlf . $crlf;
             }
 
-            $procs_funcs .= $comment_marker . $crlf
+            $procs_funcs .= PMA_exportComment() 
               . 'DELIMITER ;' . $crlf
-              . $comment_marker . $crlf;
+              . PMA_exportComment();
         }
 
         $function_names = PMA_DBI_get_procedures_or_functions($db, 'FUNCTION');
 
         if ($function_names) {
-            $procs_funcs .= $comment_marker . $GLOBALS['strFunctions'] . $crlf
-              . $comment_marker . $crlf . $crlf;
+            $procs_funcs .= PMA_exportComment($GLOBALS['strFunctions'])
+              . PMA_exportComment() . $crlf;
 
             foreach($function_names as $function_name) {
                 $procs_funcs .= PMA_DBI_get_procedure_or_function_def($db, 'FUNCTION', $function_name) . $crlf . $crlf;
             }
         }
-        if ( !empty($procs_funcs)) {
+        if (!empty($procs_funcs)) {
             $result = PMA_exportOutputHandler($procs_funcs);
         }
-    } 
+    }
     return $result;
 }
 
@@ -361,7 +360,7 @@ function PMA_exportDBFooter($db)
  * @param   string   the vew name
  * @param   string   the end of line sequence
  *
- * @return  string   resulting definition 
+ * @return  string   resulting definition
  *
  * @access  public
  */
@@ -369,14 +368,14 @@ function PMA_getTableDefStandIn($db, $view, $crlf) {
     $create_query = 'CREATE TABLE ';
     if (isset($GLOBALS['sql_if_not_exists']) && $GLOBALS['sql_if_not_exists']) {
         $create_query .= 'IF NOT EXISTS ';
-        }
+    }
     $create_query .= PMA_backquote($view) . ' (' . $crlf;
     $tmp = array();
     $columns = PMA_DBI_get_columns_full($db, $view);
     foreach($columns as $column_name => $definition) {
         $tmp[] = PMA_backquote($column_name) . ' ' . $definition['Type'] . $crlf;
     }
-    $create_query .= implode(',', $tmp) . ');'; 
+    $create_query .= implode(',', $tmp) . ');';
     return($create_query);
 }
 
@@ -422,18 +421,18 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
             }
 
             if ($show_dates && isset($tmpres['Create_time']) && !empty($tmpres['Create_time'])) {
-                $schema_create .= $GLOBALS['comment_marker'] . $GLOBALS['strStatCreateTime'] . ': ' . PMA_localisedDate(strtotime($tmpres['Create_time'])) . $crlf;
-                $new_crlf = $GLOBALS['comment_marker'] . $crlf . $crlf;
+                $schema_create .= PMA_exportComment($GLOBALS['strStatCreateTime'] . ': ' . PMA_localisedDate(strtotime($tmpres['Create_time'])));
+                $new_crlf = PMA_exportComment() . $crlf;
             }
 
             if ($show_dates && isset($tmpres['Update_time']) && !empty($tmpres['Update_time'])) {
-                $schema_create .= $GLOBALS['comment_marker'] . $GLOBALS['strStatUpdateTime'] . ': ' . PMA_localisedDate(strtotime($tmpres['Update_time'])) . $crlf;
-                $new_crlf = $GLOBALS['comment_marker'] . $crlf . $crlf;
+                $schema_create .= PMA_exportComment($GLOBALS['strStatUpdateTime'] . ': ' . PMA_localisedDate(strtotime($tmpres['Update_time'])));
+                $new_crlf = PMA_exportComment() . $crlf;
             }
 
             if ($show_dates && isset($tmpres['Check_time']) && !empty($tmpres['Check_time'])) {
-                $schema_create .= $GLOBALS['comment_marker'] . $GLOBALS['strStatCheckTime'] . ': ' . PMA_localisedDate(strtotime($tmpres['Check_time'])) . $crlf;
-                $new_crlf = $GLOBALS['comment_marker'] . $crlf . $crlf;
+                $schema_create .= PMA_exportComment($GLOBALS['strStatCheckTime'] . ': ' . PMA_localisedDate(strtotime($tmpres['Check_time'])));
+                $new_crlf = PMA_exportComment() . $crlf;
             }
         }
         PMA_DBI_free_result($result);
@@ -508,17 +507,19 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
                     if (isset($GLOBALS['no_constraints_comments'])) {
                         $sql_constraints = '';
                     } else {
-                        $sql_constraints = $crlf . $GLOBALS['comment_marker'] .
-                                           $crlf . $GLOBALS['comment_marker'] . $GLOBALS['strConstraintsForDumped'] .
-                                           $crlf . $GLOBALS['comment_marker'] . $crlf;
+                        $sql_constraints = $crlf
+                                         . PMA_exportComment() 
+                                         . PMA_exportComment($GLOBALS['strConstraintsForDumped'])
+                                         . PMA_exportComment();
                     }
                 }
 
                 // comments for current table
                 if (!isset($GLOBALS['no_constraints_comments'])) {
-                    $sql_constraints .= $crlf . $GLOBALS['comment_marker'] .
-                                        $crlf . $GLOBALS['comment_marker'] . $GLOBALS['strConstraintsForTable'] . ' ' . PMA_backquote($table) .
-                                        $crlf . $GLOBALS['comment_marker'] . $crlf;
+                    $sql_constraints .= $crlf
+                                     . PMA_exportComment()
+                                     . PMA_exportComment($GLOBALS['strConstraintsForTable'] . ' ' . PMA_backquote($table))
+                                     . PMA_exportComment();
                 }
 
                 // let's do the work
@@ -534,11 +535,11 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
                         if (strpos($sql_lines[$j], 'CONSTRAINT') === FALSE) {
                             $str_tmp = preg_replace('/(FOREIGN[\s]+KEY)/', 'ADD \1', $sql_lines[$j]);
                             $sql_constraints_query .= $str_tmp;
-                            $sql_constraints .= $str_tmp; 
+                            $sql_constraints .= $str_tmp;
                         } else {
                             $str_tmp = preg_replace('/(CONSTRAINT)/', 'ADD \1', $sql_lines[$j]);
                             $sql_constraints_query .= $str_tmp;
-                            $sql_constraints .= $str_tmp; 
+                            $sql_constraints .= $str_tmp;
                         }
                         $first = FALSE;
                     } else {
@@ -558,7 +559,7 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
     // remove a possible "AUTO_INCREMENT = value" clause
     // that could be there starting with MySQL 5.0.24
     $schema_create = preg_replace('/AUTO_INCREMENT\s*=\s*([0-9])+/', '', $schema_create);
-    
+
     $schema_create .= $auto_increment;
 
     PMA_DBI_free_result($result);
@@ -617,35 +618,38 @@ function PMA_getTableComments($db, $table, $crlf, $do_relation = false, $do_comm
     }
 
     if (isset($comments_map) && count($comments_map) > 0) {
-        $schema_create .= $crlf . $GLOBALS['comment_marker'] . $crlf
-                       . $GLOBALS['comment_marker'] . $GLOBALS['strCommentsForTable']. ' ' . PMA_backquote($table, $sql_backquotes) . ':' . $crlf;
+        $schema_create .= $crlf
+                       . PMA_exportComment() 
+                       . PMA_exportComment($GLOBALS['strCommentsForTable']. ' ' . PMA_backquote($table, $sql_backquotes) . ':');
         foreach ($comments_map AS $comment_field => $comment) {
-            $schema_create .= $GLOBALS['comment_marker'] . '  ' . PMA_backquote($comment_field, $sql_backquotes) . $crlf
-                            . $GLOBALS['comment_marker'] . '      ' . PMA_backquote($comment, $sql_backquotes) . $crlf;
+            $schema_create .= PMA_exportComment('  ' . PMA_backquote($comment_field, $sql_backquotes))
+                            . PMA_exportComment('      ' . PMA_backquote($comment, $sql_backquotes));
         }
-        $schema_create .= $GLOBALS['comment_marker'] . $crlf;
+        $schema_create .= PMA_exportComment();
     }
 
     if (isset($mime_map) && count($mime_map) > 0) {
-        $schema_create .= $crlf . $GLOBALS['comment_marker'] . $crlf
-                       . $GLOBALS['comment_marker'] . $GLOBALS['strMIMETypesForTable']. ' ' . PMA_backquote($table, $sql_backquotes) . ':' . $crlf;
+        $schema_create .= $crlf
+                       . PMA_exportComment() 
+                       . PMA_exportComment($GLOBALS['strMIMETypesForTable']. ' ' . PMA_backquote($table, $sql_backquotes) . ':');
         @reset($mime_map);
         foreach ($mime_map AS $mime_field => $mime) {
-            $schema_create .= $GLOBALS['comment_marker'] . '  ' . PMA_backquote($mime_field, $sql_backquotes) . $crlf
-                            . $GLOBALS['comment_marker'] . '      ' . PMA_backquote($mime['mimetype'], $sql_backquotes) . $crlf;
+            $schema_create .= PMA_exportComment('  ' . PMA_backquote($mime_field, $sql_backquotes))
+                            . PMA_exportComment('      ' . PMA_backquote($mime['mimetype'], $sql_backquotes));
         }
-        $schema_create .= $GLOBALS['comment_marker'] . $crlf;
+        $schema_create .= PMA_exportComment(); 
     }
 
     if ($have_rel) {
-        $schema_create .= $crlf . $GLOBALS['comment_marker'] . $crlf
-                       . $GLOBALS['comment_marker'] . $GLOBALS['strRelationsForTable']. ' ' . PMA_backquote($table, $sql_backquotes) . ':' . $crlf;
+        $schema_create .= $crlf
+                       . PMA_exportComment() 
+                       . PMA_exportComment($GLOBALS['strRelationsForTable']. ' ' . PMA_backquote($table, $sql_backquotes) . ':');
         foreach ($res_rel AS $rel_field => $rel) {
-            $schema_create .= $GLOBALS['comment_marker'] . '  ' . PMA_backquote($rel_field, $sql_backquotes) . $crlf
-                            . $GLOBALS['comment_marker'] . '      ' . PMA_backquote($rel['foreign_table'], $sql_backquotes)
-                            . ' -> ' . PMA_backquote($rel['foreign_field'], $sql_backquotes) . $crlf;
+            $schema_create .= PMA_exportComment('  ' . PMA_backquote($rel_field, $sql_backquotes))
+                            . PMA_exportComment('      ' . PMA_backquote($rel['foreign_table'], $sql_backquotes)
+                            . ' -> ' . PMA_backquote($rel['foreign_field'], $sql_backquotes));
         }
-        $schema_create .= $GLOBALS['comment_marker'] . $crlf;
+        $schema_create .= PMA_exportComment(); 
     }
 
     return $schema_create;
@@ -662,7 +666,7 @@ function PMA_getTableComments($db, $table, $crlf, $do_relation = false, $do_comm
  * @param   boolean  whether to include relation comments
  * @param   boolean  whether to include column comments
  * @param   boolean  whether to include mime comments
- * @param   string   'stand_in', 'create_table', 'create_view' 
+ * @param   string   'stand_in', 'create_table', 'create_view'
  * @param   string   'server', 'database', 'table' 
  *
  * @return  bool     Whether it suceeded
@@ -675,18 +679,33 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $relation = FALSE, 
                           ? PMA_backquote($table)
                           : '\'' . $table . '\'';
     $dump = $crlf
-          .  $GLOBALS['comment_marker'] . '--------------------------------------------------------' . $crlf
-          .  $crlf . $GLOBALS['comment_marker'] . $crlf;
+          . PMA_exportComment(str_repeat('-', 56))
+          . $crlf
+          . PMA_exportComment(); 
 
     switch($export_mode) {
         case 'create_table':
-            $dump .=  $GLOBALS['comment_marker'] . $GLOBALS['strTableStructure'] . ' ' . $formatted_table_name . $crlf
-                  .  $GLOBALS['comment_marker'] . $crlf;
+            $dump .=  PMA_exportComment($GLOBALS['strTableStructure'] . ' ' . $formatted_table_name)
+                  . PMA_exportComment(); 
             $dump .= PMA_getTableDef($db, $table, $crlf, $error_url, $dates) . ';' . $crlf;
+            $triggers = PMA_DBI_get_triggers($db, $table);
+            if ($triggers) {
+                $dump .=  $crlf
+                      . PMA_exportComment() 
+                      . PMA_exportComment($GLOBALS['strTriggers'] . ' ' . $formatted_table_name)
+                      . PMA_exportComment(); 
+                $delimiter = '//';
+                foreach ($triggers as $trigger) {
+                    $dump .= $trigger['drop'] . ';' . $crlf;
+                    $dump .= 'DELIMITER ' . $delimiter . $crlf;
+                    $dump .= $trigger['create'];
+                    $dump .= 'DELIMITER ;' . $crlf;
+                }
+            }
             break;
         case 'create_view':
-            $dump .=  $GLOBALS['comment_marker'] . $GLOBALS['strStructureForView'] . ' ' . $formatted_table_name . $crlf
-                  .  $GLOBALS['comment_marker'] . $crlf;
+            $dump .= PMA_exportComment($GLOBALS['strStructureForView'] . ' ' . $formatted_table_name)
+                  .  PMA_exportComment();
             // delete the stand-in table previously created (if any)
             if ($export_type != 'table') {
                 $dump .= 'DROP TABLE IF EXISTS ' . PMA_backquote($table) . ';' . $crlf;
@@ -694,8 +713,8 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $relation = FALSE, 
             $dump .= PMA_getTableDef($db, $table, $crlf, $error_url, $dates) . ';' . $crlf;
             break;
         case 'stand_in':
-            $dump .=  $GLOBALS['comment_marker'] . $GLOBALS['strStandInStructureForView'] . ' ' . $formatted_table_name . $crlf
-                .  $GLOBALS['comment_marker'] . $crlf;
+            $dump .=  PMA_exportComment($GLOBALS['strStandInStructureForView'] . ' ' . $formatted_table_name)
+                  .  PMA_exportComment();
             // export a stand-in definition to resolve view dependencies
             $dump .= PMA_getTableDefStandIn($db, $table, $crlf);
     } // end switch
@@ -740,12 +759,31 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
     $formatted_table_name = (isset($GLOBALS['sql_backquotes']))
                           ? PMA_backquote($table)
                           : '\'' . $table . '\'';
-    $head = $crlf
-          . $GLOBALS['comment_marker'] . $crlf
-          . $GLOBALS['comment_marker'] . $GLOBALS['strDumpingData'] . ' ' . $formatted_table_name . $crlf
-          . $GLOBALS['comment_marker'] . $crlf .$crlf;
 
-    if (!PMA_exportOutputHandler($head)) {
+    // Do not export data for a VIEW
+    // (For a VIEW, this is called only when exporting a single VIEW)
+    if (PMA_Table::_isView($db, $table)) {
+        $head = $crlf
+          . PMA_exportComment() 
+          . PMA_exportComment('VIEW ' . ' ' . $formatted_table_name)
+          . PMA_exportComment($GLOBALS['strData'] . ': ' . $GLOBALS['strNone']) 
+          . PMA_exportComment() 
+          . $crlf;
+
+        if (! PMA_exportOutputHandler($head)) {
+            return FALSE;
+        }
+        return true;
+    }
+
+    // it's not a VIEW
+    $head = $crlf
+          . PMA_exportComment() 
+          . PMA_exportComment($GLOBALS['strDumpingData'] . ' ' . $formatted_table_name)
+          . PMA_exportComment() 
+          . $crlf;
+
+    if (! PMA_exportOutputHandler($head)) {
         return FALSE;
     }
 
@@ -781,7 +819,8 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
             if (isset($GLOBALS['sql_ignore'])) {
                 $schema_insert .= 'IGNORE ';
             }
-            $schema_insert .= PMA_backquote($table, $sql_backquotes) . ' SET ';
+            // avoid EOL blank
+            $schema_insert .= PMA_backquote($table, $sql_backquotes) . ' SET';
         } else {
             // insert or replace
             if (isset($GLOBALS['sql_type']) && $GLOBALS['sql_type'] == 'REPLACE') {
@@ -806,10 +845,11 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
             if (isset($GLOBALS['sql_columns'])) {
                 $fields        = implode(', ', $field_set);
                 $schema_insert = $sql_command . $insert_delayed .' INTO ' . PMA_backquote($table, $sql_backquotes)
-                               . ' (' . $fields . ') VALUES ';
+            // avoid EOL blank
+                               . ' (' . $fields . ') VALUES';
             } else {
                 $schema_insert = $sql_command . $insert_delayed .' INTO ' . PMA_backquote($table, $sql_backquotes)
-                               . ' VALUES ';
+                               . ' VALUES';
             }
         }
 
@@ -835,16 +875,15 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
                 } elseif ($fields_meta[$j]->numeric && $fields_meta[$j]->type != 'timestamp'
                         && ! $fields_meta[$j]->blob) {
                     $values[] = $row[$j];
-                // a binary field
-                // Note: with mysqli, under MySQL 4.1.3, we get the flag
-                // "binary" for those field types (I don't know why)
+                // a true BLOB
+                // - mysqldump only generates hex data when the --hex-blob
+                //   option is used, for fields having the binary attribute
+                //   no hex is generated
+                // - a TEXT field returns type blob but a real blob
+                //   returns also the 'binary' flag
                 } elseif (stristr($field_flags[$j], 'BINARY')
-                        && isset($GLOBALS['sql_hex_for_binary'])
-                        && $fields_meta[$j]->type != 'datetime'
-                        && $fields_meta[$j]->type != 'date'
-                        && $fields_meta[$j]->type != 'time'
-                        && $fields_meta[$j]->type != 'timestamp'
-                       ) {
+                        && $fields_meta[$j]->blob
+                        && isset($GLOBALS['sql_hex_for_blob'])) {
                     // empty blobs need to be different, but '0' is also empty :-(
                     if (empty($row[$j]) && $row[$j] != '0') {
                         $values[] = '\'\'';
@@ -862,8 +901,12 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
 
                 $insert_line = $schema_insert;
                 for ($i = 0; $i < $fields_cnt; $i++) {
+                    if (0 == $i) {
+                        $insert_line .= ' ';
+                    }
                     if ($i > 0) {
-                        $insert_line .= ', ';
+                        // avoid EOL blank
+                        $insert_line .= ',';
                     }
                     $insert_line .= $field_set[$i] . ' = ' . $values[$i];
                 }

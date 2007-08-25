@@ -1,7 +1,13 @@
 <?php
-/* $Id: information_schema_relations.lib.php 6836 2005-03-27 23:26:00Z rabus $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: information_schema_relations.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
+/**
+ *
+ */
 $GLOBALS['information_schema_relations'] = array(
     'CHARACTER_SETS' => array(
         'DEFAULT_COLLATE_NAME' => array(

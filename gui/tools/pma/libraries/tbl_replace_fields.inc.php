@@ -1,6 +1,7 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * handle field values (possibly uploaded from a file)  
+ * handle field values (possibly uploaded from a file)
  *
  * garvin: original if-clause checked, whether input was stored in a possible
  * fields_upload_XX var. Now check, if the field is set. If it is empty or a
@@ -16,37 +17,17 @@
  *
  * note: grab_globals has extracted the fields from _FILES or HTTP_POST_FILES
  *
- * @version $Id: tbl_replace_fields.inc.php 10232 2007-03-31 12:18:40Z lem9 $
- * vim: expandtab sw=4 ts=4 sts=4:
+ * @version $Id: tbl_replace_fields.inc.php 10536 2007-07-27 14:50:37Z lem9 $
  *
- * @uses $GLOBALS['cfg']['UploadDir']
- * @uses $_FILES
  * @uses $_REQUEST
  * @uses defined()
  * @uses define()
- * @uses is_uploaded_file()
- * @uses ini_get()
- * @uses is_dir()
- * @uses mkdir()
- * @uses chmod()
- * @uses is_writable()
- * @uses is_readable()
- * @uses move_uploaded_file()
- * @uses basename()
- * @uses preg_replace()
  * @uses bin2hex()
- * @uses fread()
- * @uses fopen()
- * @uses filesize()
- * @uses unlink()
  * @uses strlen()
  * @uses md5()
  * @uses implode()
- * @uses PMA_IS_WINDOWS
  * @uses PMA_NO_VARIABLES_IMPORT
- * @uses PMA_checkParameters()
  * @uses PMA_sqlAddslashes()
- * @uses PMA_userDir()
  */
 
 /**
@@ -58,99 +39,23 @@ if (! defined('PMA_NO_VARIABLES_IMPORT')) {
 /**
  * Gets some core libraries
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
+require_once './libraries/File.class.php';
 
-$valid_file_was_uploaded = false;
+$file_to_insert = new PMA_File();
+$file_to_insert->checkTblChangeForm($key, $rowcount);
 
-// Check if a multi-edit row was found
+$possibly_uploaded_val = $file_to_insert->getContent();
 
-$me_fields_upload =
-    (isset($_FILES['fields_upload_' . $key]['tmp_name']['multi_edit'][$primary_key])
-    ? $_FILES['fields_upload_' . $key]['tmp_name']['multi_edit'][$primary_key]
-    : (isset($_FILES['fields_upload_' . $key]['tmp_name'])
-        ? $_FILES['fields_upload_' . $key]['tmp_name']
-        : 'none'));
-
-$me_fields_uploadlocal =
-    (isset($_REQUEST['fields_uploadlocal_' . $key]['multi_edit'])
-    ? $_REQUEST['fields_uploadlocal_' . $key]['multi_edit'][$primary_key]
-    : (isset($_REQUEST['fields_uploadlocal_' . $key])
-        ? $_REQUEST['fields_uploadlocal_' . $key]
-        : null));
-
-if ($me_fields_upload != 'none') {
-    // garvin: This fields content is a blob-file upload.
-
-    $file_to_insert = false;
-    $unlink = false;
-
-    if (is_uploaded_file($me_fields_upload)) {
-        // whether we insert form uploaded file ...
-
-        $file_to_insert = $me_fields_upload;
-
-        // If we are on a server with open_basedir, we must move the file
-        // before opening it. The FAQ 1.11 explains how to create the "./tmp"
-        // directory - if needed
-        if ('' != ini_get('open_basedir')) {
-            $tmp_subdir = (PMA_IS_WINDOWS ? '.\\tmp\\' : './tmp/');
-
-            if (! is_dir($tmp_subdir)) {
-                // try to create the tmp directory if not exists
-                if (mkdir($tmp_subdir, 0777)) {
-                    chmod($tmp_subdir, 0777);
-                }
-            }
-
-            if (! is_writable($tmp_subdir)) {
-                // if we cannot move the file don't change blob fields
-                $file_to_insert = false;
-            } else {
-                $new_file_to_upload = $tmp_subdir . basename($file_to_insert);
-
-                move_uploaded_file($file_to_insert, $new_file_to_upload);
-
-                $file_to_insert = $new_file_to_upload;
-                $unlink = true;
-                unset($new_file_to_upload);
-            }
-            unset($tmp_subdir);
-        }
-    } elseif (! empty($me_fields_uploadlocal)) {
-        // ... or selected file from $cfg['UploadDir']
-
-        $file_to_insert = PMA_userDir($GLOBALS['cfg']['UploadDir']) . preg_replace('@\.\.*@', '.', $me_fields_uploadlocal);
-
-        if (! is_readable($file_to_insert)) {
-            $file_to_insert = false;
-        }
-    }
-    // garvin: else: Post-field contains no data. Blob-fields are preserved, see below. ($protected$)
-
-    if ($file_to_insert) {
-        $val = '';
-        // check if file is not empty
-        if (function_exists('file_get_contents')) {
-            $val = file_get_contents($file_to_insert);
-        } elseif ($file_to_insert_size = filesize($file_to_insert)) {
-            $val = fread(fopen($file_to_insert, 'rb'), $file_to_insert_size);
-        }
-
-        if (! empty($val)) {
-            $val = '0x' . bin2hex($val);
-            $seen_binary = true;
-            $valid_file_was_uploaded = true;
-        }
-
-        if ($unlink == true) {
-            unlink($file_to_insert);
-        }
-    }
-
-    unset($file_to_insert, $file_to_insert_size, $unlink);
+if ($file_to_insert->isError()) {
+    $message .= $file_to_insert->getError();
 }
+$file_to_insert->cleanUp();
 
-if (false === $valid_file_was_uploaded) {
+if (false !== $possibly_uploaded_val) {
+    $seen_binary = true;
+    $val = $possibly_uploaded_val;
+} else {
 
     // f i e l d    v a l u e    i n    t h e    f o r m
 
@@ -173,8 +78,8 @@ if (false === $valid_file_was_uploaded) {
                 // if we have a set, then construct the value
             case 'foreign':
                 // if we have a foreign key, then construct the value
-                if (! empty($_REQUEST[$f]['multi_edit'][$primary_key])) {
-                    $val = implode(',', $_REQUEST[$f]['multi_edit'][$primary_key]);
+                if (! empty($_REQUEST[$f]['multi_edit'][$rowcount])) {
+                    $val = implode(',', $_REQUEST[$f]['multi_edit'][$rowcount]);
                     $val = "'" . PMA_sqlAddslashes($val) . "'";
                 }
                 break;
@@ -202,6 +107,9 @@ if (false === $valid_file_was_uploaded) {
                 }
                 break;
         }
+    } elseif ($type == 'bit') {
+        $val = preg_replace('/[^01]/', '0', $val);
+        $val = "b'" . PMA_sqlAddslashes($val) . "'";
     } elseif (! ($type == 'timestamp' && $val == 'CURRENT_TIMESTAMP')) {
         $val = "'" . PMA_sqlAddslashes($val) . "'";
     }
@@ -219,5 +127,5 @@ if (false === $valid_file_was_uploaded) {
         $val = "''";
     }
 }  // end else (field value in the form)
-unset($valid_file_was_uploaded, $me_fields_upload, $me_fields_uploadlocal, $type, $f);
+unset($type, $f);
 ?>

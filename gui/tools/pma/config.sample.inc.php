@@ -1,14 +1,13 @@
 <?php
-
-/* $Id: config.sample.inc.php 9689 2006-11-10 20:05:49Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * phpMyAdmin sample configuration, you can use it as base for
  * manual configuration. For easier setup you can use scripts/setup.php
  *
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.cihar.com>.
+ *
+ * @version $Id: config.sample.inc.php 10142 2007-03-20 10:32:13Z cybot_tm $
  */
 
 /*

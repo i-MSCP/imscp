@@ -1,10 +1,9 @@
 <?php
-/* $Id: charset_conversion.lib.php 8629 2006-02-22 08:26:32Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Charset conversion functions.
+ *
+ * @version $Id: charset_conversion.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
 
@@ -86,10 +85,10 @@ if (isset($cfg['AllowAnywhereRecoding'])
             $PMA_recoding_engine = PMA_CHARSET_NONE;
 
             if (!isset($GLOBALS['is_header_sent'])) {
-                include('./libraries/header.inc.php');
+                include './libraries/header.inc.php';
             }
             echo $strCantUseRecodeIconv;
-            require_once('./libraries/footer.inc.php');
+            require_once './libraries/footer.inc.php';
             exit();
         }
     } elseif ($PMA_recoding_engine == 'recode') {
@@ -98,9 +97,9 @@ if (isset($cfg['AllowAnywhereRecoding'])
         } else {
             $PMA_recoding_engine = PMA_CHARSET_NONE;
 
-            require_once('./libraries/header.inc.php');
+            require_once './libraries/header.inc.php';
             echo $strCantUseRecodeIconv;
-            require_once('./libraries/footer.inc.php');
+            require_once './libraries/footer.inc.php';
             exit;
         }
     } else {
@@ -117,9 +116,9 @@ if (isset($cfg['AllowAnywhereRecoding'])
         } else {
             $PMA_recoding_engine = PMA_CHARSET_NONE;
 
-            require_once('./libraries/header.inc.php');
+            require_once './libraries/header.inc.php';
             echo $strCantUseRecodeIconv;
-            require_once('./libraries/footer.inc.php');
+            require_once './libraries/footer.inc.php';
             exit;
         }
     }
@@ -129,7 +128,7 @@ if (isset($cfg['AllowAnywhereRecoding'])
 
 /* Load AIX iconv wrapper if needed */
 if ($PMA_recoding_engine == PMA_CHARSET_ICONV_AIX) {
-    require_once('./libraries/iconv_wrapper.lib.php');
+    require_once './libraries/iconv_wrapper.lib.php';
 }
 
 /**
@@ -154,7 +153,7 @@ function PMA_convert_display_charset($what) {
     if (!(isset($cfg['AllowAnywhereRecoding']) && $cfg['AllowAnywhereRecoding'] && $allow_recoding)
         || $convcharset == $charset // rabus: if input and output charset are the same, we don't have to do anything...
         // this constant is not defined before the login:
-        || (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 40100) ) {  // lem9: even if AllowAnywhereRecoding is TRUE, do not recode for MySQL >= 4.1.x since MySQL does the job
+        || (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 40100)) {  // lem9: even if AllowAnywhereRecoding is TRUE, do not recode for MySQL >= 4.1.x since MySQL does the job
         return $what;
     } elseif (is_array($what)) {
         $result = array();

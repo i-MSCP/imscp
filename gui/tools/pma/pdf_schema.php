@@ -1,20 +1,21 @@
 <?php
-/* $Id: pdf_schema.php 9658 2006-11-02 12:56:57Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Contributed by Maxime Delorme and merged by lem9
+ *
+ * @version $Id: pdf_schema.php 10239 2007-04-01 09:51:41Z cybot_tm $
  */
 
 /**
  * Gets some core scripts
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 
 /**
  * Settings for relation stuff
  */
-require_once('./libraries/relation.lib.php');
-require_once('./libraries/transformations.lib.php');
+require_once './libraries/relation.lib.php';
+require_once './libraries/transformations.lib.php';
 
 $cfgRelation = PMA_getRelationsParam();
 
@@ -38,7 +39,7 @@ if (!$cfgRelation['pdfwork']) {
  * @todo Make this configuratble (at least Sans/Serif).
  */
 define('PMA_PDF_FONT', 'DejaVuSans');
-require_once('./libraries/tcpdf/tcpdf.php');
+require_once './libraries/tcpdf/tcpdf.php';
 
 /**
  * Extends the "FPDF" class and prepares the work
@@ -90,7 +91,7 @@ class PMA_PDF extends TCPDF {
             $nb = $this->page;
             foreach ($this->Alias AS $alias => $value) {
                 for ($n = 1;$n <= $nb;$n++)
-					$this->pages[$n]=str_replace($alias, $value, $this->pages[$n]);
+                    $this->pages[$n]=str_replace($alias, $value, $this->pages[$n]);
             }
         }
         parent::_putpages();
@@ -227,7 +228,7 @@ class PMA_PDF extends TCPDF {
         global $server, $lang, $convcharset, $db;
         global $charset, $text_dir, $strRunning, $strDatabase;
 
-        require_once('./libraries/header.inc.php');
+        require_once './libraries/header.inc.php';
 
         echo '<p><b>PDF - ' . $GLOBALS['strError'] . '</b></p>' . "\n";
         if (!empty($error_message)) {
@@ -241,7 +242,7 @@ class PMA_PDF extends TCPDF {
          . '">' . $GLOBALS['strBack'] . '</a>';
         echo "\n";
 
-        require_once('./libraries/footer.inc.php');
+        require_once './libraries/footer.inc.php';
     } // end of the "PMA_PDF_die()" function
     /**
      * Aliases the "Error()" function from the FPDF class to the

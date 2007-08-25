@@ -1,7 +1,12 @@
 <?php
-/* $Id: ndbcluster.lib.php 8103 2005-12-07 10:41:35Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * @version $Id: ndbcluster.lib.php 10137 2007-03-19 17:55:39Z cybot_tm $
+ */
 
+/**
+ *
+ */
 class PMA_StorageEngine_ndbcluster extends PMA_StorageEngine
 {
     /**

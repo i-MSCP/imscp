@@ -1,25 +1,25 @@
 <?php
-/* $Id: navigation_header.inc.php 9963 2007-02-12 00:35:16Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * displays the pma logo, links and db and server selection in left frame
  *
+ * @version $Id: navigation_header.inc.php 10520 2007-07-22 19:05:42Z lem9 $
  */
 
-if ( empty( $query_url ) ) {
-    $db     = ! isset( $db )      ? '' : $db;
-    $table  = ! isset( $table )   ? '' : $table;
-    $query_url = PMA_generate_common_url( $db, $table );
+/**
+ *
+ */
+if (empty($query_url)) {
+    $query_url = PMA_generate_common_url($db, $table);
 }
 
 // display Logo, depending on $GLOBALS['cfg']['LeftDisplayLogo']
-if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
+if ($GLOBALS['cfg']['LeftDisplayLogo']) {
     $logo = 'phpMyAdmin';
-    if ( @file_exists( $GLOBALS['pmaThemeImage'] . 'logo_left.png' ) ) {
+    if (@file_exists($GLOBALS['pmaThemeImage'] . 'logo_left.png')) {
         $logo = '<img src="' . $GLOBALS['pmaThemeImage'] . 'logo_left.png" '
             .'alt="' . $logo . '" id="imgpmalogo" />';
-    } elseif ( @file_exists( $GLOBALS['pmaThemeImage'] . 'pma_logo2.png' ) ) {
+    } elseif (@file_exists($GLOBALS['pmaThemeImage'] . 'pma_logo2.png')) {
         $logo = '<img src="' . $GLOBALS['pmaThemeImage'] . 'pma_logo2.png" '
             .'alt="' . $logo . '" id="imgpmalogo" />';
     }
@@ -31,7 +31,12 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
             echo '" target="_blank"';
             break;
         case 'main':
-            echo '?' . $query_url . '" target="frame_content"';
+            // do not add our parameters for an external link
+            if (substr(strtolower($GLOBALS['cfg']['LeftLogoLink']), 0, 4) !== 'http') {
+                echo '?' . $query_url . '" target="frame_content"';
+            } else {
+                echo '"';
+            }
     }
     echo '>' . $logo . '</a>' . "\n"
         .'</div>' . "\n";
@@ -41,27 +46,27 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
 <?php
     echo '<a href="main.php?' . $query_url . '"'
         .' title="' . $strHome . '">'
-        .( $GLOBALS['cfg']['MainPageIconic']
+        .($GLOBALS['cfg']['MainPageIconic']
             ? '<img class="icon" src="' . $pmaThemeImage . 'b_home.png" width="16" '
                 .' height="16" alt="' . $strHome . '" />'
-            : $strHome )
+            : $strHome)
         .'</a>' . "\n";
     // if we have chosen server
-    if ( $server != 0 ) {
+    if ($server != 0) {
         // Logout for advanced authentication
-        if ( $GLOBALS['cfg']['Server']['auth_type'] != 'config' ) {
+        if ($GLOBALS['cfg']['Server']['auth_type'] != 'config') {
             echo ($GLOBALS['cfg']['MainPageIconic'] ? '' : ' - ');
             echo '<a href="index.php?' . $query_url . '&amp;old_usr='
                 .urlencode($PHP_AUTH_USER) . '" target="_parent"'
                 .' title="' . $strLogout . '" >'
-                .( $GLOBALS['cfg']['MainPageIconic']
+                .($GLOBALS['cfg']['MainPageIconic']
                     ? '<img class="icon" src="' . $pmaThemeImage . 's_loggoff.png" '
                      .' width="16" height="16" alt="' . $strLogout . '" />'
-                    : $strLogout )
+                    : $strLogout)
                 .'</a>' . "\n";
         } // end if ($GLOBALS['cfg']['Server']['auth_type'] != 'config'
 
-        $anchor = 'querywindow.php?' . PMA_generate_common_url( $db, $table );
+        $anchor = 'querywindow.php?' . PMA_generate_common_url($db, $table);
 
         if ($GLOBALS['cfg']['MainPageIconic']) {
             $query_frame_link_text =
@@ -73,8 +78,7 @@ if ( $GLOBALS['cfg']['LeftDisplayLogo'] ) {
         }
         echo '<a href="' . $anchor . '&amp;no_js=true"'
             .' title="' . $strQueryFrame . '"';
-        echo ' onclick="javascript:window.parent.open_querywindow();'
-            .' return false;"';
+        echo ' onclick="javascript:if (window.parent.open_querywindow()) return false;"';
         echo '>' . $query_frame_link_text . '</a>' . "\n";
     } // end if ($server != 0)
 
@@ -91,8 +95,9 @@ echo '</div>' . "\n";
  * Displays the MySQL servers choice form
  */
 if ($GLOBALS['cfg']['LeftDisplayServers'] && (count($GLOBALS['cfg']['Servers']) > 1 || $server == 0 && count($GLOBALS['cfg']['Servers']) == 1)) {
-    include('./libraries/select_server.lib.php');
+    echo '<div id="serverinfo">';
+    include './libraries/select_server.lib.php';
     PMA_select_server(true, true);
-    echo '<hr />';
+    echo '</div><hr />';
 } // end if LeftDisplayServers
 ?>

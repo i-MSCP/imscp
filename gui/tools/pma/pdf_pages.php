@@ -1,18 +1,21 @@
 <?php
-/* $Id: pdf_pages.php 9819 2007-01-02 14:52:51Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: pdf_pages.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/db_common.inc.php');
+require_once './libraries/common.inc.php';
+require_once './libraries/db_common.inc.php';
 
 
 /**
  * Settings for relation stuff
  */
-require_once('./libraries/relation.lib.php');
+require_once './libraries/relation.lib.php';
 $cfgRelation = PMA_getRelationsParam();
 
 // This is to avoid "Command out of sync" errors. Before switching this to
@@ -31,13 +34,13 @@ $query_default_option = PMA_DBI_QUERY_STORE;
 if (!$cfgRelation['relwork']) {
     echo sprintf($strNotSet, 'relation', 'config.inc.php') . '<br />' . "\n"
          . '<a href="./Documentation.html#relation" target="documentation">' . $strDocu . '</a>' . "\n";
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 }
 
 if (!$cfgRelation['displaywork']) {
     echo sprintf($strNotSet, 'table_info', 'config.inc.php') . '<br />' . "\n"
          . '<a href="./Documentation.html#table_info" target="documentation">' . $strDocu . '</a>' . "\n";
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 }
 
 if (!isset($cfgRelation['table_coords'])){
@@ -85,7 +88,7 @@ if ($cfgRelation['pdfwork']) {
                 if (isset($auto_layout_internal) || isset($auto_layout_innodb)) {
                     $all_tables = array();
                 }
-              
+
                 if (isset($auto_layout_innodb)) {
                     // get the tables list
                     $tables = PMA_DBI_get_tables_full($db);
@@ -184,8 +187,8 @@ if ($cfgRelation['pdfwork']) {
                                 $delta *= $delta_mult;
                                 break;
                         } // end switch
-                    } // end foreach 
-                } // end if some auto-layout to do 
+                    } // end foreach
+                } // end if some auto-layout to do
 
                 $chpage = $pdf_page_number;
 
@@ -332,7 +335,7 @@ if ($cfg['WYSIWYG-PDF']) {
         $with_field_names = TRUE;
     }
 ?>
-<script type="text/javascript" language="javascript" src="./js/dom-drag.js"></script>
+<script type="text/javascript" src="./js/dom-drag.js"></script>
 <form method="post" action="pdf_pages.php" name="dragdrop">
 <input type="button" name="dragdrop" value="<?php echo $strToggleScratchboard; ?>" onclick="ToggleDragDrop('pdflayout');" />
  <input type="button" name="dragdropreset" value="<?php echo $strReset; ?>" onclick="resetDrag();" />
@@ -353,7 +356,7 @@ foreach ($array_sh_page AS $key => $temp_sh_page) {
     $reset_draginit .= '    document.edcoord.elements["c_table_' . $i . '[y]"].value = "' . (15 * $i) . '"' . "\n";
 
     $local_query = 'SHOW FIELDS FROM '
-                 .  PMA_backquote($temp_sh_page['table_name'] )
+                 .  PMA_backquote($temp_sh_page['table_name'])
                 . ' FROM ' . PMA_backquote($db);
     $fields_rs = PMA_DBI_query($local_query);
     unset($local_query);
@@ -373,7 +376,7 @@ foreach ($array_sh_page AS $key => $temp_sh_page) {
 }
 ?>
 </div>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 function init() {
     refreshLayout();
@@ -549,7 +552,7 @@ function resetDrag() {
 <?php
         if ((isset($showwysiwyg) && $showwysiwyg == '1')) {
 ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 ToggleDragDrop('pdflayout');
 //]]>
@@ -564,5 +567,5 @@ ToggleDragDrop('pdflayout');
  * Displays the footer
  */
 echo "\n";
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 ?>

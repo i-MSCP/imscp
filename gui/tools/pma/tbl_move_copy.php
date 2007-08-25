@@ -1,11 +1,14 @@
 <?php
-/* $Id: tbl_move_copy.php 9657 2006-11-02 10:51:57Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_move_copy.php 10146 2007-03-20 14:16:18Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 
 // Check parameters

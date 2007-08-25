@@ -1,5 +1,6 @@
-<?PHP
-    /* $Id: unzip.lib.php 9747 2006-11-19 20:57:24Z nijel $ */
+<?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/* $Id: unzip.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $ */
 
     /**
      *  ZIP file unpack classes. Contributed to the phpMyAdmin project.

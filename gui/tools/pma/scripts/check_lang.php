@@ -1,11 +1,15 @@
 <?php
-/* $Id: check_lang.php 5152 2003-11-18 15:20:45Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4 foldmarker={,} fdm=marker:
-
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * This test script checks all the language files to ensure there is no errors
  * inside and nothing is displayed on screen (eg no extra no blank line).
+ *
+ * @version $Id: check_lang.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @package phpMyAdmin-test
+ */
+
+/**
+ *
  */
 $failed = array();
 $passed = array();
@@ -15,7 +19,7 @@ $languageDirectory = dir('../lang');
 while ($name = $languageDirectory->read()) {
     if (strpos($name, '.inc.php')) {
         // 1.1 Checks parse errors and extra blank line
-        include('../lang/' . $name);
+        include '../lang/' . $name;
         header('X-Ping: pong');
         // 1.1 Checks "^M"
         $content = fread(fopen('../lang/' . $name, 'r'), filesize('../lang/' . $name));

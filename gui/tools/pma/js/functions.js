@@ -1,4 +1,9 @@
-/* $Id: functions.js 10297 2007-04-17 16:43:24Z lem9 $ */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * general function, usally for data manipulation pages
+ *
+ * @version $Id: functions.js 10303 2007-04-19 16:58:55Z lem9 $
+ */
 
 /**
  * @var sql_box_locked lock for the sqlbox textarea in the querybox/querywindow
@@ -363,7 +368,7 @@ function checkTableEditForm(theForm, fieldsCnt)
     {
         id = "field_" + i + "_2";
         elm = getElement(id);
-        if (elm.value == 'VARCHAR' || elm.value == 'CHAR') {
+        if (elm.value == 'VARCHAR' || elm.value == 'CHAR' || elm.value == 'BIT') {
             elm2 = getElement("field_" + i + "_3");
             val = parseInt(elm2.value);
             elm3 = getElement("field_" + i + "_1");

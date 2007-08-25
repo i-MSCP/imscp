@@ -17,7 +17,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: class.HP-UX.inc.php,v 1.19 2006/06/11 09:57:20 bigmichi1 Exp $
+// $Id: class.HP-UX.inc.php,v 1.20 2007/02/18 18:59:54 bigmichi1 Exp $
 
 class sysinfo {
   // get our apache SERVER_NAME or vhost
@@ -27,6 +27,10 @@ class sysinfo {
     } 
     return $result;
   } 
+  // get the IP address of our vhost name
+  function vip_addr () {
+    return gethostbyname($this->vhostname());
+  }
   // get our canonical hostname
   function chostname () {
     return execute_program('hostname');

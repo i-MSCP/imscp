@@ -12,7 +12,7 @@
 --                                                  
 -- Please don't forget to set up the tablenames in config.inc.php                                 
 -- 
--- $Id: create_tables.sql 10256 2007-04-07 14:39:41Z lem9 $
+-- $Id: create_tables.sql 10257 2007-04-07 14:40:24Z lem9 $
 
 -- --------------------------------------------------------
 

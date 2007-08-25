@@ -1,21 +1,27 @@
 <?php
-/* $Id: transformation_wrapper.php 8755 2006-03-10 13:44:49Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: transformation_wrapper.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
+/**
+ *
+ */
 define('IS_TRANSFORMATION_WRAPPER', true);
 
 /**
  * Gets a core script and starts output buffering work
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/relation.lib.php'); // foreign keys
-require_once('./libraries/transformations.lib.php'); // Transformations
+require_once './libraries/common.inc.php';
+require_once './libraries/relation.lib.php'; // foreign keys
+require_once './libraries/transformations.lib.php'; // Transformations
 $cfgRelation = PMA_getRelationsParam();
 
 /**
  * Ensures db and table are valid, else moves to the "parent" script
  */
-require_once('./libraries/db_table_exists.lib.php');
+require_once './libraries/db_table_exists.lib.php';
 
 
 /**
@@ -53,7 +59,7 @@ if ($cfgRelation['commwork'] && $cfgRelation['mimework']) {
 // to a seperate file. It can now be included by libraries/header.inc.php,
 // querywindow.php.
 
-require_once('./libraries/header_http.inc.php');
+require_once './libraries/header_http.inc.php';
 // [MIME]
 if (isset($ct) && !empty($ct)) {
     $content_type = 'Content-Type: ' . urldecode($ct);
@@ -73,8 +79,8 @@ if (!isset($resize)) {
     // it sets $resize to jpeg or png
 
     $srcImage = imagecreatefromstring($row[urldecode($transform_key)]);
-    $srcWidth = ImageSX( $srcImage );
-    $srcHeight = ImageSY( $srcImage );
+    $srcWidth = ImageSX($srcImage);
+    $srcHeight = ImageSY($srcImage);
 
     // Check to see if the width > height or if width < height
     // if so adjust accordingly to make sure the image
@@ -92,21 +98,21 @@ if (!isset($resize)) {
     }
 
     if ($resize) {
-        $destImage = ImageCreateTrueColor( $destWidth, $destHeight);
+        $destImage = ImageCreateTrueColor($destWidth, $destHeight);
     }
 
-//    ImageCopyResized( $destImage, $srcImage, 0, 0, 0, 0, $destWidth, $destHeight, $srcWidth, $srcHeight );
+//    ImageCopyResized($destImage, $srcImage, 0, 0, 0, 0, $destWidth, $destHeight, $srcWidth, $srcHeight);
 // better quality but slower:
-    ImageCopyResampled( $destImage, $srcImage, 0, 0, 0, 0, $destWidth, $destHeight, $srcWidth, $srcHeight );
+    ImageCopyResampled($destImage, $srcImage, 0, 0, 0, 0, $destWidth, $destHeight, $srcWidth, $srcHeight);
 
     if ($resize == 'jpeg') {
-        ImageJPEG( $destImage, '', 75 );
+        ImageJPEG($destImage, '', 75);
     }
     if ($resize == 'png') {
-        ImagePNG( $destImage);
+        ImagePNG($destImage);
     }
-    ImageDestroy( $srcImage );
-    ImageDestroy( $destImage );
+    ImageDestroy($srcImage);
+    ImageDestroy($destImage);
 }
 
 /**

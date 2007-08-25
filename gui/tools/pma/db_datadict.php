@@ -1,22 +1,25 @@
 <?php
-/* $Id: db_datadict.php 9602 2006-10-25 12:25:01Z nijel $ */
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: db_datadict.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ */
 
 /**
  * Gets the variables sent or posted to this script, then displays headers
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 
 if (!isset($selected_tbl)) {
-    require_once('./libraries/header.inc.php');
+    require_once './libraries/header.inc.php';
 }
 
 
 /**
  * Gets the relations settings
  */
-require_once('./libraries/relation.lib.php');
-require_once('./libraries/transformations.lib.php');
+require_once './libraries/relation.lib.php';
+require_once './libraries/transformations.lib.php';
 
 $cfgRelation  = PMA_getRelationsParam();
 
@@ -28,7 +31,7 @@ PMA_checkParameters(array('db'));
 /**
  * Defines the url to return to in case of error in a sql statement
  */
-if (isset($table)) {
+if (strlen($table)) {
     $err_url = 'tbl_sql.php?' . PMA_generate_common_url($db, $table);
 } else {
     $err_url = 'db_sql.php?' . PMA_generate_common_url($db);
@@ -43,7 +46,7 @@ if ($cfgRelation['commwork']) {
     if (is_array($comment)) {
         ?>
     <p> <?php echo $strDBComment; ?>
-        <i><?php echo htmlspecialchars( implode( ' ', $comment ) ); ?></i></p>
+        <i><?php echo htmlspecialchars(implode(' ', $comment)); ?></i></p>
         <?php
     } // end if
 }
@@ -74,10 +77,10 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
      * Gets table informations
      */
     // The 'show table' statement works correct since 3.23.03
-    $showtable    = PMA_DBI_get_tables_full( $db, $table );
+    $showtable    = PMA_DBI_get_tables_full($db, $table);
     $num_rows     = (isset($showtable[$table]['TABLE_ROWS']) ? $showtable[$table]['TABLE_ROWS'] : 0);
     $show_comment = (isset($showtable[$table]['TABLE_COMMENT']) ? $showtable[$table]['TABLE_COMMENT'] : '');
-    unset( $showtable );
+    unset($showtable);
 
 
     /**
@@ -100,7 +103,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
             $pk_array[$row['Column_name']] = 1;
         }
         // Retains keys informations
-        if ($row['Key_name'] != $lastIndex ){
+        if ($row['Key_name'] != $lastIndex){
             $indexes[] = $row['Key_name'];
             $lastIndex = $row['Key_name'];
         }
@@ -291,7 +294,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
 </tr>
         <?php
     } // end while
-    PMA_DBI_free_result( $result );
+    PMA_DBI_free_result($result);
     $count++;
     ?>
 </table>
@@ -303,7 +306,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
  * Displays the footer
  */
 ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 function printPage()
 {
@@ -319,5 +322,5 @@ function printPage()
 <?php
 echo '<br /><br /><input type="button" id="print" value="' . $strPrint . '" onclick="printPage()" />';
 
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 ?>

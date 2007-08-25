@@ -1,11 +1,14 @@
 <?php
-/* $Id: odt.php 9805 2006-12-26 16:10:47Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build CSV dumps of tables
+ *
+ * @version $Id: odt.php 10239 2007-04-01 09:51:41Z cybot_tm $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $hide_structure = false;
     if ($plugin_param['export_type'] == 'table' && !$plugin_param['single_table']) {
@@ -17,7 +20,7 @@ if (isset($plugin_list)) {
         'mime_type' => 'application/vnd.oasis.opendocument.text',
         'force_file' => true,
         'options' => array(), /* Filled later */
-        'options_text' => 'strOpenDocumentTextOptions',
+        'options_text' => 'strOptions',
         );
     /* Structure options */
     if (!$hide_structure) {
@@ -50,7 +53,7 @@ if (isset($plugin_list)) {
 } else {
 
 $GLOBALS['odt_buffer'] = '';
-require_once('./libraries/opendocument.lib.php');
+require_once './libraries/opendocument.lib.php';
 
 /**
  * Outputs comment
@@ -183,16 +186,9 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
                 $GLOBALS['odt_buffer'] .= '<table:table-cell office:value-type="string">'
                     . '<text:p>' . htmlspecialchars($GLOBALS[$what . '_null']) . '</text:p>'
                     . '</table:table-cell>';
-            // ignore binary field
-            // Note: with mysqli, under MySQL 4.1.3, we get the flag
-            // "binary" for those field types (I don't know why)
+            // ignore BLOB
             } elseif (stristr($field_flags[$j], 'BINARY')
-                    && isset($GLOBALS['sql_hex_for_binary'])
-                    && $fields_meta[$j]->type != 'datetime'
-                    && $fields_meta[$j]->type != 'date'
-                    && $fields_meta[$j]->type != 'time'
-                    && $fields_meta[$j]->type != 'timestamp'
-                   ) {
+                    && $fields_meta[$j]->blob) {
                 $GLOBALS['odt_buffer'] .= '<table:table-cell office:value-type="string">'
                     . '<text:p></text:p>'
                     . '</table:table-cell>';
@@ -225,7 +221,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
  * @param   boolean  whether to include relation comments
  * @param   boolean  whether to include column comments
  * @param   boolean  whether to include mime comments
- * @param   string   future feature: support view dependencies 
+ * @param   string   future feature: support view dependencies
  *
  * @return  bool     Whether it suceeded
  *

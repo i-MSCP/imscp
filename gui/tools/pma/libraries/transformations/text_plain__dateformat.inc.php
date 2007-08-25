@@ -1,10 +1,16 @@
 <?php
-/* $Id: text_plain__dateformat.inc.php 9577 2006-10-18 08:09:03Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: text_plain__dateformat.inc.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
 
+/**
+ *
+ */
 function PMA_transformation_text_plain__dateformat($buffer, $options = array(), $meta = '') {
     // possibly use a global transform and feed it with special options:
-    // include('./libraries/transformations/global.inc.php');
+    // include './libraries/transformations/global.inc.php';
 
     // further operations on $buffer using the $options[] array.
     if (empty($options[0])) {

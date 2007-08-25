@@ -1,7 +1,9 @@
 <?php
-/*
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
  * Code for displaying server selection written by nijel
- * $Id: select_server.lib.php 9438 2006-09-21 14:28:46Z cybot_tm $
+ *
+ * @version $Id: select_server.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
  */
 
 /**
@@ -65,14 +67,13 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
                 $label .= ':' . $server['port'];
             }
         }
-        // loic1: if 'only_db' is an array and there is more than one
-        //        value, displaying such informations may not be a so good
-        //        idea
-        if (!empty($server['only_db'])) {
-            /**
-             * @todo this can become a really big/long/wide selectbox ...
-             */
-            $label .= ' - ' . (is_array($server['only_db']) ? implode(', ', $server['only_db']) : $server['only_db']);
+        if (! empty($server['only_db'])) {
+            if (! is_array($server['only_db'])) {
+                $label .= ' - ' . $server['only_db'];
+            // try to avoid displaying a too wide selector
+            } elseif (count($server['only_db']) < 4) {
+                $label .= ' - ' . implode(', ', $server['only_db']);
+            }
         }
         if (!empty($server['user']) && $server['auth_type'] == 'config') {
             $label .= '  (' . $server['user'] . ')';

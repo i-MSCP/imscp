@@ -1,6 +1,9 @@
 <?php
-/* $Id: transformation_overview.php 8941 2006-04-25 15:21:33Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: transformation_overview.php 10146 2007-03-20 14:16:18Z cybot_tm $
+ */
 
 /**
  * Don't display the page heading
@@ -10,7 +13,7 @@ define('PMA_DISPLAY_HEADING', 0);
 /**
  * Gets some core libraries and displays a top message if required
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 require_once './libraries/header.inc.php';
 require_once './libraries/relation.lib.php';
 require_once './libraries/transformations.lib.php';

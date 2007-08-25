@@ -1,18 +1,20 @@
 <?php
-/* $Id: tbl_common.php 9601 2006-10-25 10:55:20Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_common.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/bookmark.lib.php');
+require_once './libraries/common.inc.php';
+require_once './libraries/bookmark.lib.php';
 
 // Check parameters
 PMA_checkParameters(array('db', 'table'));
 
-if ( PMA_MYSQL_INT_VERSION >= 50002 && $db === 'information_schema' ) {
+if (PMA_MYSQL_INT_VERSION >= 50002 && $db === 'information_schema') {
     $db_is_information_schema = true;
 } else {
     $db_is_information_schema = false;
@@ -30,13 +32,13 @@ $url_params['table'] = $table;
 /**
  * Defines the urls to return to in case of error in a sql statement
  */
-$err_url_0 = $cfg['DefaultTabDatabase'] . PMA_generate_common_url( array( 'db' => $db, ) );
-$err_url   = $cfg['DefaultTabTable'] . PMA_generate_common_url( $url_params );
+$err_url_0 = $cfg['DefaultTabDatabase'] . PMA_generate_common_url(array('db' => $db,));
+$err_url   = $cfg['DefaultTabTable'] . PMA_generate_common_url($url_params);
 
 
 /**
  * Ensures the database and the table exist (else move to the "parent" script)
  */
-require_once('./libraries/db_table_exists.lib.php');
+require_once './libraries/db_table_exists.lib.php';
 
 ?>

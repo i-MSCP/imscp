@@ -1,12 +1,10 @@
 <?php
-/* $Id: url_generating.lib.php 9712 2006-11-17 09:32:19Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * URL/hidden inputs generating.
+ *
+ * @version $Id: url_generating.lib.php 10229 2007-03-30 09:12:05Z cybot_tm $
  */
-
 
 /**
  * Generates text with hidden inputs.
@@ -39,10 +37,10 @@ function PMA_generate_common_hidden_inputs($db = '', $table = '', $indent = 0, $
         $skip    =& $_skip;
     } else {
         $params = array();
-        if (isset($db) && strlen($db)) {
+        if (strlen($db)) {
             $params['db'] = $db;
         }
-        if (isset($table) && strlen($table)) {
+        if (strlen($table)) {
             $params['table'] = $table;
         }
     }
@@ -144,10 +142,10 @@ function PMA_generate_common_url ($db = '', $table = '', $delim = '&amp;')
         $questionmark = '?';
     } else {
         $params = array();
-        if (isset($db) && strlen($db)) {
+        if (strlen($db)) {
             $params['db'] = $db;
         }
-        if (isset($table) && strlen($table)) {
+        if (strlen($table)) {
             $params['table'] = $table;
         }
         $questionmark = '';

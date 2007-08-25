@@ -1,26 +1,19 @@
 <?php
-/* $Id: sql.php 10365 2007-05-09 12:55:29Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          what returns 0 rows - to prevent cyclic redirects or includes
+ * @version $Id: sql.php 10468 2007-06-27 21:01:13Z lem9 $
  */
 
 /**
  * Gets some core libraries
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 require_once './libraries/tbl_indexes.lib.php';
 require_once './libraries/check_user_privileges.lib.php';
 require_once './libraries/bookmark.lib.php';
-
-/**
- * Could be coming from a subform ("T" column expander)
- */
-if (isset($_REQUEST['dontlimitchars'])) {
-    $dontlimitchars = $_REQUEST['dontlimitchars'];
-}
 
 /**
  * Defines the url to return to in case of error in a sql statement
@@ -36,13 +29,13 @@ if (!empty($goto)) {
 } // end if (security checkings)
 
 if (empty($goto)) {
-    $goto = (! isset($table) || ! strlen($table)) ? $cfg['DefaultTabDatabase'] : $cfg['DefaultTabTable'];
+    $goto = (! strlen($table)) ? $cfg['DefaultTabDatabase'] : $cfg['DefaultTabTable'];
     $is_gotofile  = true;
 } // end if
 if (!isset($err_url)) {
     $err_url = (!empty($back) ? $back : $goto)
-             . '?' . PMA_generate_common_url(isset($db) ? $db : '')
-             . ((strpos(' ' . $goto, 'db_') != 1 && isset($table)) ? '&amp;table=' . urlencode($table) : '');
+             . '?' . PMA_generate_common_url($db)
+             . ((strpos(' ' . $goto, 'db_') != 1 && strlen($table)) ? '&amp;table=' . urlencode($table) : '');
 } // end if
 
 // Coming from a bookmark dialog
@@ -57,7 +50,7 @@ if (isset($fields['dbase'])) {
 
 // Default to browse if no query set an we have table
 // (needed for browsing from DefaultTabTable)
-if (! isset($sql_query) && isset($table) && isset($db)) {
+if (empty($sql_query) && strlen($table) && strlen($db)) {
     require_once './libraries/bookmark.lib.php';
     $book_sql_query = PMA_queryBookmarks($db,
         $GLOBALS['cfg']['Bookmark'], '\'' . PMA_sqlAddslashes($table) . '\'',
@@ -89,31 +82,24 @@ $is_drop_database = preg_match('/DROP[[:space:]]+(DATABASE|SCHEMA)[[:space:]]+/i
  * into account this case.
  */
 if (!defined('PMA_CHK_DROP')
-    && !$cfg['AllowUserDropDatabase']
-    && $is_drop_database
-    && !$is_superuser) {
+ && !$cfg['AllowUserDropDatabase']
+ && $is_drop_database
+ && !$is_superuser) {
     require_once './libraries/header.inc.php';
     PMA_mysqlDie($strNoDropDatabases, '', '', $err_url);
 } // end if
 
+require_once './libraries/display_tbl.lib.php';
+PMA_displayTable_checkConfigParams();
 
 /**
  * Need to find the real end of rows?
  */
-
 if (isset($find_real_end) && $find_real_end) {
     $unlim_num_rows = PMA_Table::countRecords($db, $table, true, true);
-    $pos = @((ceil($unlim_num_rows / $session_max_rows) - 1) * $session_max_rows);
+    $_SESSION['userconf']['pos'] = @((ceil($unlim_num_rows / $_SESSION['userconf']['max_rows']) - 1) * $_SESSION['userconf']['max_rows']);
 }
-/**
- * Avoids undefined variables
- */
-elseif (!isset($pos)) {
-    $pos = 0;
-} else {
-    /* We need this to be a integer */
-    $pos = (int)$pos;
-}
+
 
 /**
  * Bookmark add
@@ -136,7 +122,7 @@ if (isset($btnDrop) || isset($navig)) {
 /**
  * Parse and analyze the query
  */
-require_once('./libraries/parse_analyze.lib.php');
+require_once './libraries/parse_analyze.lib.php';
 
 /**
  * Sets or modifies the $goto variable if required
@@ -145,7 +131,6 @@ if ($goto == 'sql.php') {
     $is_gotofile = false;
     $goto = 'sql.php?'
           . PMA_generate_common_url($db, $table)
-          . '&amp;pos=' . $pos
           . '&amp;sql_query=' . urlencode($sql_query);
 } // end if
 
@@ -158,8 +143,8 @@ if (isset($btnDrop) && $btnDrop == $strNo) {
         $goto = $back;
     }
     if ($is_gotofile) {
-        if (strpos(' ' . $goto, 'db_') == 1 && isset($table) && strlen($table)) {
-            unset($table);
+        if (strpos(' ' . $goto, 'db_') == 1 && strlen($table)) {
+            $table = '';
         }
         $active_page = $goto;
         require './' . PMA_securePath($goto);
@@ -179,16 +164,12 @@ if (isset($btnDrop) && $btnDrop == $strNo) {
  *
  * Also bypassed if only showing php code.or validating a SQL query
  */
-if (!$cfg['Confirm']
-    || (isset($is_js_confirmed) && $is_js_confirmed)
-    || isset($btnDrop)
-
-    // if we are coming from a "Create PHP code" or a "Without PHP Code"
-    // dialog, we won't execute the query anyway, so don't confirm
-    //|| !empty($GLOBALS['show_as_php'])
-    || isset($GLOBALS['show_as_php'])
-
-    || !empty($GLOBALS['validatequery'])) {
+if (! $cfg['Confirm'] || isset($_REQUEST['is_js_confirmed']) || isset($btnDrop)
+ // if we are coming from a "Create PHP code" or a "Without PHP Code"
+ // dialog, we won't execute the query anyway, so don't confirm
+ //|| !empty($GLOBALS['show_as_php'])
+ || isset($GLOBALS['show_as_php'])
+ || !empty($GLOBALS['validatequery'])) {
     $do_confirm = false;
 } else {
     $do_confirm = isset($analyzed_sql[0]['queryflags']['need_confirm']);
@@ -201,7 +182,7 @@ if ($do_confirm) {
         echo '<h1 class="warning">' . $strDropDatabaseStrongWarning . '</h1>';
     }
     echo '<form action="sql.php" method="post">' . "\n"
-        .PMA_generate_common_hidden_inputs($db, (isset($table)?$table:''));
+        .PMA_generate_common_hidden_inputs($db, $table);
     ?>
     <input type="hidden" name="sql_query" value="<?php echo urlencode($sql_query); ?>" />
     <input type="hidden" name="zero_rows" value="<?php echo isset($zero_rows) ? PMA_sanitize($zero_rows) : ''; ?>" />
@@ -232,13 +213,6 @@ if ($do_confirm) {
 } // end if $do_confirm
 
 
-/**
- * Executes the query and displays results
- */
-if (!isset($sql_query)) {
-    $sql_query = '';
-}
-
 // Defines some variables
 // A table has to be created or renamed -> left frame should be reloaded
 /**
@@ -248,19 +222,6 @@ if (!isset($sql_query)) {
 if (empty($reload)
     && preg_match('/^(CREATE|ALTER|DROP)\s+(VIEW|TABLE|DATABASE|SCHEMA)\s+/i', $sql_query)) {
     $reload           = 1;
-}
-// Gets the number of rows per page
-if (empty($session_max_rows)) {
-    $session_max_rows = $cfg['MaxRows'];
-} elseif ($session_max_rows != 'all') {
-    $cfg['MaxRows']   = $session_max_rows;
-}
-// Defines the display mode (horizontal/vertical) and header "frequency"
-if (empty($disp_direction)) {
-    $disp_direction   = $cfg['DefaultDisplay'];
-}
-if (empty($repeat_cells)) {
-    $repeat_cells     = $cfg['RepeatCells'];
 }
 
 // SK -- Patch: $is_group added for use in calculation of total number of
@@ -301,13 +262,13 @@ if ($is_select) { // see line 141
 }
 
 // Do append a "LIMIT" clause?
-if (isset($pos)
-    && (!$cfg['ShowAll'] || $session_max_rows != 'all')
-    && !($is_count || $is_export || $is_func || $is_analyse)
-    && isset($analyzed_sql[0]['queryflags']['select_from'])
-    && !isset($analyzed_sql[0]['queryflags']['offset'])
-    && !preg_match('@[[:space:]]LIMIT[[:space:]0-9,-]+(;)?$@i', $sql_query)) {
-    $sql_limit_to_append = " LIMIT $pos, ".$cfg['MaxRows'] . " ";
+if ((!$cfg['ShowAll'] || $_SESSION['userconf']['max_rows'] != 'all')
+ && !($is_count || $is_export || $is_func || $is_analyse)
+ && isset($analyzed_sql[0]['queryflags']['select_from'])
+ && !isset($analyzed_sql[0]['queryflags']['offset'])
+ && !preg_match('@[[:space:]]LIMIT[[:space:]0-9,-]+(;)?$@i', $sql_query)
+ ) {
+    $sql_limit_to_append = ' LIMIT ' . $_SESSION['userconf']['pos'] . ', ' . $_SESSION['userconf']['max_rows'] . " ";
 
     $full_sql_query  = $analyzed_sql[0]['section_before_limit'] . "\n" . $sql_limit_to_append . $analyzed_sql[0]['section_after_limit'];
     /**
@@ -328,7 +289,7 @@ if (isset($pos)
     $full_sql_query      = $sql_query;
 } // end if...else
 
-if (isset($db)) {
+if (strlen($db)) {
     PMA_DBI_select_db($db);
 }
 
@@ -358,6 +319,10 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
     unset($result);
     $num_rows = 0;
 } else {
+    if (isset($_SESSION['profiling'])) {
+        PMA_DBI_query('SET PROFILING=1;');
+    }
+        
     // garvin: Measure query time.
     // TODO-Item http://sourceforge.net/tracker/index.php?func=detail&aid=571934&group_id=23067&atid=377411
     $querytime_before = array_sum(explode(' ', microtime()));
@@ -388,11 +353,16 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
         $num_rows = @PMA_DBI_affected_rows();
     }
 
+    // Grabs the profiling results
+    if (isset($_SESSION['profiling'])) {
+        $profiling_results = PMA_DBI_fetch_result('SHOW PROFILE;');
+    }
+        
     // Checks if the current database has changed
     // This could happen if the user sends a query like "USE `database`;"
     $res = PMA_DBI_query('SELECT DATABASE() AS \'db\';');
     $row = PMA_DBI_fetch_row($res);
-    if (isset($db) && is_array($row) && isset($row[0]) && (strcasecmp($db, $row[0]) != 0)) {
+    if (strlen($db) && is_array($row) && isset($row[0]) && (strcasecmp($db, $row[0]) != 0)) {
         $db     = $row[0];
         $reload = 1;
     }
@@ -412,149 +382,149 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
         $unlim_num_rows         = $num_rows;
         // if we did not append a limit, set this to get a correct
         // "Showing rows..." message
-        $GLOBALS['session_max_rows'] = 'all';
+        //$_SESSION['userconf']['max_rows'] = 'all';
     } elseif ($is_select) {
 
-            //    c o u n t    q u e r y
+        //    c o u n t    q u e r y
 
-            // If we are "just browsing", there is only one table,
-            // and no where clause (or just 'WHERE 1 '),
-            // so we do a quick count (which uses MaxExactCount)
-            // because SQL_CALC_FOUND_ROWS
-            // is not quick on large InnoDB tables
+        // If we are "just browsing", there is only one table,
+        // and no where clause (or just 'WHERE 1 '),
+        // so we do a quick count (which uses MaxExactCount)
+        // because SQL_CALC_FOUND_ROWS
+        // is not quick on large InnoDB tables
 
-            // but do not count again if we did it previously
-            // due to $find_real_end == true
+        // but do not count again if we did it previously
+        // due to $find_real_end == true
 
-            if (!$is_group
-             && !isset($analyzed_sql[0]['queryflags']['union'])
-             && !isset($analyzed_sql[0]['table_ref'][1]['table_name'])
-             && (empty($analyzed_sql[0]['where_clause'])
-               || $analyzed_sql[0]['where_clause'] == '1 ')
-             && !isset($find_real_end)
-             ) {
+        if (!$is_group
+         && !isset($analyzed_sql[0]['queryflags']['union'])
+         && !isset($analyzed_sql[0]['table_ref'][1]['table_name'])
+         && (empty($analyzed_sql[0]['where_clause'])
+           || $analyzed_sql[0]['where_clause'] == '1 ')
+         && !isset($find_real_end)
+        ) {
 
-                // "j u s t   b r o w s i n g"
-                $unlim_num_rows = PMA_Table::countRecords($db, $table, true);
+            // "j u s t   b r o w s i n g"
+            $unlim_num_rows = PMA_Table::countRecords($db, $table, true);
 
-            } else { // n o t   " j u s t   b r o w s i n g "
+        } else { // n o t   " j u s t   b r o w s i n g "
 
-                if (PMA_MYSQL_INT_VERSION < 40000) {
+            if (PMA_MYSQL_INT_VERSION < 40000) {
 
-                    // detect this case:
-                    // SELECT DISTINCT x AS foo, y AS bar FROM sometable
+                // detect this case:
+                // SELECT DISTINCT x AS foo, y AS bar FROM sometable
 
-                    if (isset($analyzed_sql[0]['queryflags']['distinct'])) {
-                        $count_what = 'DISTINCT ';
-                        $first_expr = true;
-                        foreach ($analyzed_sql[0]['select_expr'] as $part) {
-                            $count_what .= (!$first_expr ? ', ' : '') . $part['expr'];
-                            $first_expr = false;
-                        }
-                     } else {
-                         $count_what = '*';
-                     }
-                    // this one does not apply to VIEWs
-                    $count_query = 'SELECT COUNT(' . $count_what . ') AS count';
-                }
-
-                // add the remaining of select expression if there is
-                // a GROUP BY or HAVING clause
-                if (PMA_MYSQL_INT_VERSION < 40000
-                 && $count_what =='*'
-                 && (!empty($analyzed_sql[0]['group_by_clause'])
-                    || !empty($analyzed_sql[0]['having_clause']))) {
-                    $count_query .= ' ,' . $analyzed_sql[0]['select_expr_clause'];
-                }
-
-                if (PMA_MYSQL_INT_VERSION >= 40000) {
-                     // add select expression after the SQL_CALC_FOUND_ROWS
-
-                        // for UNION, just adding SQL_CALC_FOUND_ROWS
-                        // after the first SELECT works.
-
-                        // take the left part, could be:
-                        // SELECT
-                        // (SELECT
-                        $count_query = PMA_SQP_formatHtml($parsed_sql, 'query_only', 0, $analyzed_sql[0]['position_of_first_select'] + 1);
-                        $count_query .= ' SQL_CALC_FOUND_ROWS ';
-                        // add everything that was after the first SELECT
-                        $count_query .= PMA_SQP_formatHtml($parsed_sql, 'query_only', $analyzed_sql[0]['position_of_first_select']+1);
-                        // ensure there is no semicolon at the end of the
-                        // count query because we'll probably add
-                        // a LIMIT 1 clause after it
-                        $count_query = rtrim($count_query);
-                        $count_query = rtrim($count_query, ';');
-                } else { // PMA_MYSQL_INT_VERSION < 40000
-
-                    if (!empty($analyzed_sql[0]['from_clause'])) {
-                        $count_query .= ' FROM ' . $analyzed_sql[0]['from_clause'];
-                    }
-                    if (!empty($analyzed_sql[0]['where_clause'])) {
-                        $count_query .= ' WHERE ' . $analyzed_sql[0]['where_clause'];
-                    }
-                    if (!empty($analyzed_sql[0]['group_by_clause'])) {
-                        $count_query .= ' GROUP BY ' . $analyzed_sql[0]['group_by_clause'];
-                    }
-                    if (!empty($analyzed_sql[0]['having_clause'])) {
-                        $count_query .= ' HAVING ' . $analyzed_sql[0]['having_clause'];
-                    }
-                } // end if
-
-                // if using SQL_CALC_FOUND_ROWS, add a LIMIT to avoid
-                // long delays. Returned count will be complete anyway.
-                // (but a LIMIT would disrupt results in an UNION)
-
-                if (PMA_MYSQL_INT_VERSION >= 40000
-                && !isset($analyzed_sql[0]['queryflags']['union'])) {
-                    $count_query .= ' LIMIT 1';
-                }
-
-                // run the count query
-
-                if (PMA_MYSQL_INT_VERSION < 40000) {
-                    if ($cnt_all_result = PMA_DBI_try_query($count_query)) {
-                        if ($is_group && $count_what == '*') {
-                            $unlim_num_rows = @PMA_DBI_num_rows($cnt_all_result);
-                        } else {
-                            $unlim_num_rows = PMA_DBI_fetch_assoc($cnt_all_result);
-                            $unlim_num_rows = $unlim_num_rows['count'];
-                        }
-                        PMA_DBI_free_result($cnt_all_result);
-                    } else {
-                        if (PMA_DBI_getError()) {
-
-                            // there are some cases where the generated
-                            // count_query (for MySQL 3) is wrong,
-                            // so we get here.
-                            /**
-                             * @todo use a big unlimited query to get the correct
-                             * number of rows (depending on a config variable?)
-                             */
-                            $unlim_num_rows = 0;
-                        }
+                if (isset($analyzed_sql[0]['queryflags']['distinct'])) {
+                    $count_what = 'DISTINCT ';
+                    $first_expr = true;
+                    foreach ($analyzed_sql[0]['select_expr'] as $part) {
+                        $count_what .= (!$first_expr ? ', ' : '') . $part['expr'];
+                        $first_expr = false;
                     }
                 } else {
-                    PMA_DBI_try_query($count_query);
-                    // if (mysql_error()) {
-                    // void.
-                    // I tried the case
-                    // (SELECT `User`, `Host`, `Db`, `Select_priv` FROM `db`)
-                    // UNION (SELECT `User`, `Host`, "%" AS "Db",
-                    // `Select_priv`
-                    // FROM `user`) ORDER BY `User`, `Host`, `Db`;
-                    // and although the generated count_query is wrong
-                    // the SELECT FOUND_ROWS() work! (maybe it gets the
-                    // count from the latest query that worked)
-                    //
-                    // another case where the count_query is wrong:
-                    // SELECT COUNT(*), f1 from t1 group by f1
-                    // and you click to sort on count(*)
-                    // }
-                    $cnt_all_result       = PMA_DBI_query('SELECT FOUND_ROWS() as count;');
-                    list($unlim_num_rows) = PMA_DBI_fetch_row($cnt_all_result);
-                    @PMA_DBI_free_result($cnt_all_result);
+                    $count_what = '*';
                 }
+                // this one does not apply to VIEWs
+                $count_query = 'SELECT COUNT(' . $count_what . ') AS count';
+            }
+
+            // add the remaining of select expression if there is
+            // a GROUP BY or HAVING clause
+            if (PMA_MYSQL_INT_VERSION < 40000
+             && $count_what =='*'
+             && (!empty($analyzed_sql[0]['group_by_clause'])
+                || !empty($analyzed_sql[0]['having_clause']))) {
+                $count_query .= ' ,' . $analyzed_sql[0]['select_expr_clause'];
+            }
+
+            if (PMA_MYSQL_INT_VERSION >= 40000) {
+                // add select expression after the SQL_CALC_FOUND_ROWS
+
+                // for UNION, just adding SQL_CALC_FOUND_ROWS
+                // after the first SELECT works.
+
+                // take the left part, could be:
+                // SELECT
+                // (SELECT
+                $count_query = PMA_SQP_formatHtml($parsed_sql, 'query_only', 0, $analyzed_sql[0]['position_of_first_select'] + 1);
+                $count_query .= ' SQL_CALC_FOUND_ROWS ';
+                // add everything that was after the first SELECT
+                $count_query .= PMA_SQP_formatHtml($parsed_sql, 'query_only', $analyzed_sql[0]['position_of_first_select']+1);
+                // ensure there is no semicolon at the end of the
+                // count query because we'll probably add
+                // a LIMIT 1 clause after it
+                $count_query = rtrim($count_query);
+                $count_query = rtrim($count_query, ';');
+            } else { // PMA_MYSQL_INT_VERSION < 40000
+
+                if (!empty($analyzed_sql[0]['from_clause'])) {
+                    $count_query .= ' FROM ' . $analyzed_sql[0]['from_clause'];
+                }
+                if (!empty($analyzed_sql[0]['where_clause'])) {
+                    $count_query .= ' WHERE ' . $analyzed_sql[0]['where_clause'];
+                }
+                if (!empty($analyzed_sql[0]['group_by_clause'])) {
+                    $count_query .= ' GROUP BY ' . $analyzed_sql[0]['group_by_clause'];
+                }
+                if (!empty($analyzed_sql[0]['having_clause'])) {
+                    $count_query .= ' HAVING ' . $analyzed_sql[0]['having_clause'];
+                }
+            } // end if
+
+            // if using SQL_CALC_FOUND_ROWS, add a LIMIT to avoid
+            // long delays. Returned count will be complete anyway.
+            // (but a LIMIT would disrupt results in an UNION)
+
+            if (PMA_MYSQL_INT_VERSION >= 40000
+             && !isset($analyzed_sql[0]['queryflags']['union'])) {
+                $count_query .= ' LIMIT 1';
+            }
+
+            // run the count query
+
+            if (PMA_MYSQL_INT_VERSION < 40000) {
+                if ($cnt_all_result = PMA_DBI_try_query($count_query)) {
+                    if ($is_group && $count_what == '*') {
+                        $unlim_num_rows = @PMA_DBI_num_rows($cnt_all_result);
+                    } else {
+                        $unlim_num_rows = PMA_DBI_fetch_assoc($cnt_all_result);
+                        $unlim_num_rows = $unlim_num_rows['count'];
+                    }
+                    PMA_DBI_free_result($cnt_all_result);
+                } else {
+                    if (PMA_DBI_getError()) {
+
+                        // there are some cases where the generated
+                        // count_query (for MySQL 3) is wrong,
+                        // so we get here.
+                        /**
+                         * @todo use a big unlimited query to get the correct
+                         * number of rows (depending on a config variable?)
+                         */
+                        $unlim_num_rows = 0;
+                    }
+                }
+            } else {
+                PMA_DBI_try_query($count_query);
+                // if (mysql_error()) {
+                // void.
+                // I tried the case
+                // (SELECT `User`, `Host`, `Db`, `Select_priv` FROM `db`)
+                // UNION (SELECT `User`, `Host`, "%" AS "Db",
+                // `Select_priv`
+                // FROM `user`) ORDER BY `User`, `Host`, `Db`;
+                // and although the generated count_query is wrong
+                // the SELECT FOUND_ROWS() work! (maybe it gets the
+                // count from the latest query that worked)
+                //
+                // another case where the count_query is wrong:
+                // SELECT COUNT(*), f1 from t1 group by f1
+                // and you click to sort on count(*)
+                // }
+                $cnt_all_result       = PMA_DBI_query('SELECT FOUND_ROWS() as count;');
+                list($unlim_num_rows) = PMA_DBI_fetch_row($cnt_all_result);
+                @PMA_DBI_free_result($cnt_all_result);
+            }
         } // end else "just browsing"
 
     } else { // not $is_select
@@ -565,19 +535,18 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
     if (isset($purge) && $purge == '1') {
         require_once './libraries/relation_cleanup.lib.php';
 
-        if (isset($table) && isset($db) && strlen($table) && strlen($db)) {
+        if (strlen($table) && strlen($db)) {
             PMA_relationsCleanupTable($db, $table);
-        } elseif (isset($db) && strlen($db)) {
+        } elseif (strlen($db)) {
             PMA_relationsCleanupDatabase($db);
         } else {
             // garvin: VOID. No DB/Table gets deleted.
         } // end if relation-stuff
-     } // end if ($purge)
+    } // end if ($purge)
 
     // garvin: If a column gets dropped, do relation magic.
     if (isset($cpurge) && $cpurge == '1' && isset($purgekey)
-      && isset($db) && isset($table)
-      && strlen($db) && strlen($table) && !empty($purgekey)) {
+     && strlen($db) && strlen($table) && !empty($purgekey)) {
         require_once './libraries/relation_cleanup.lib.php';
         PMA_relationsCleanupColumn($db, $table, $purgekey);
 
@@ -632,14 +601,14 @@ if ($num_rows < 1 || $is_affected) {
         $is_db = $is_table = false;
         include 'libraries/db_table_exists.lib.php';
         if (strpos($goto, 'tbl_') === 0 && ! $is_table) {
-            if (isset($table)) {
-                unset($table);
+            if (strlen($table)) {
+                $table = '';
             }
             $goto = 'db_sql.php';
         }
         if (strpos($goto, 'db_') === 0 && ! $is_db) {
-            if (isset($db)) {
-                unset($db);
+            if (strlen($db)) {
+                $db = '';
             }
             $goto = 'main.php';
         }
@@ -674,12 +643,12 @@ else {
     } else {
         $js_to_run = 'functions.js';
         unset($message);
-        if (isset($table) && strlen($table)) {
+        if (strlen($table)) {
             require './libraries/tbl_common.php';
             $url_query .= '&amp;goto=tbl_sql.php&amp;back=tbl_sql.php';
             require './libraries/tbl_info.inc.php';
             require './libraries/tbl_links.inc.php';
-        } elseif (isset($db) && strlen($db)) {
+        } elseif (strlen($db)) {
             require './libraries/db_common.inc.php';
             require './libraries/db_info.inc.php';
         } else {
@@ -688,7 +657,7 @@ else {
         }
     }
 
-    if (isset($db) && strlen($db)) {
+    if (strlen($db)) {
         require_once './libraries/relation.lib.php';
         $cfgRelation = PMA_getRelationsParam();
     }
@@ -707,19 +676,19 @@ else {
         $GLOBALS['sql_query'] = $tmp_sql_query;
     }
 
+    if (isset($profiling_results)) {
+        PMA_profilingResults($profiling_results);
+    }
+
     // Displays the results in a table
-    require_once './libraries/display_tbl.lib.php';
     if (empty($disp_mode)) {
         // see the "PMA_setDisplayMode()" function in
         // libraries/display_tbl.lib.php
         $disp_mode = 'urdr111101';
     }
-    if (!isset($dontlimitchars)) {
-        $dontlimitchars = 0;
-    }
 
     // hide edit and delete links for information_schema
-    if (PMA_MYSQL_INT_VERSION >= 50002 && isset($db) && $db == 'information_schema') {
+    if (PMA_MYSQL_INT_VERSION >= 50002 && $db == 'information_schema') {
         $disp_mode = 'nnnn110111';
     }
 
@@ -728,15 +697,9 @@ else {
 
     // BEGIN INDEX CHECK See if indexes should be checked.
     if (isset($query_type) && $query_type == 'check_tbl' && isset($selected) && is_array($selected)) {
-        foreach ($selected AS $idx => $tbl_name) {
-            $indexes        = $indexes_info = $indexes_data = array();
-            $tbl_ret_keys   = PMA_get_indexes(urldecode($tbl_name), $err_url_0);
-
-            PMA_extract_indexes($tbl_ret_keys, $indexes, $indexes_info, $indexes_data);
-
-            $idx_collection = PMA_show_indexes(urldecode($tbl_name), $indexes, $indexes_info, $indexes_data, false);
-            $check          = PMA_check_indexes($idx_collection);
-            if (!empty($check)) {
+        foreach ($selected as $idx => $tbl_name) {
+            $check = PMA_check_indexes($tbl_name);
+            if (! empty($check)) {
                 ?>
 <table border="0" cellpadding="2" cellspacing="0">
     <tr>
@@ -757,11 +720,6 @@ else {
 
         $goto = 'sql.php?'
               . PMA_generate_common_url($db, $table)
-              . '&amp;pos=' . $pos
-              . '&amp;session_max_rows=' . $session_max_rows
-              . '&amp;disp_direction=' . $disp_direction
-              . '&amp;repeat_cells=' . $repeat_cells
-              . '&amp;dontlimitchars=' . $dontlimitchars
               . '&amp;sql_query=' . urlencode($sql_query)
               . '&amp;id_bookmark=1';
 
@@ -801,7 +759,7 @@ else {
     // Do print the page if required
     if (isset($printview) && $printview == '1') {
         ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 // Do print the page
 window.onload = function()

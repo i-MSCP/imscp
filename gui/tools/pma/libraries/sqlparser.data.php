@@ -1,9 +1,7 @@
 <?php
-/* $Id: sqlparser.data.php 10061 2007-03-04 14:07:42Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-
-/** SQL Parser Matching Data
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * SQL Parser Matching Data
  *
  * Copyright 2002 Robin Johnson <robbat2@users.sourceforge.net>
  * http://www.orbis-terrarum.net/?l=people.robbat2
@@ -15,13 +13,18 @@
  *
  * Note: before adding a value in the arrays, ensure that you respect
  * proper sorting, especially with underscores. And don't forget to
- * update the _cnt variable at the end of each array. 
+ * update the _cnt variable at the end of each array.
  * (It's slower to have PHP do the count).
  *
  * It's easier to use only uppercase for proper sorting. In case of
- * doubt, use the DEBUG code after this function's definition. 
+ * doubt, use the DEBUG code after this function's definition.
+ *
+ * @version$Id: sqlparser.data.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
+/**
+ * @global array MySQL function names
+ */
 $PMA_SQPdata_function_name = array (
     'ABS',
     'ACOS',
@@ -323,18 +326,27 @@ $PMA_SQPdata_function_name = array (
     'YEAR',
     'YEARWEEK'
 );
-//$PMA_SQPdata_function_name_cnt = count($PMA_SQPdata_function_name);
+/**
+ * $PMA_SQPdata_function_name_cnt = count($PMA_SQPdata_function_name);
+ *
+ * @global integer MySQL attributes count
+ */
 $PMA_SQPdata_function_name_cnt = 299;
-// DEBUG
-//$test_PMA_SQPdata_function_name = $PMA_SQPdata_function_name;
-//sort($PMA_SQPdata_function_name);
-//if ($PMA_SQPdata_function_name != $test_PMA_SQPdata_function_name) {
-//    echo 'sort properly like this<pre>';
-//    print_r($PMA_SQPdata_function_name);
-//    echo '</pre>';
-//}
 
+/*
+ * DEBUG
+$test_PMA_SQPdata_function_name = $PMA_SQPdata_function_name;
+sort($PMA_SQPdata_function_name);
+if ($PMA_SQPdata_function_name != $test_PMA_SQPdata_function_name) {
+    echo 'sort properly like this<pre>';
+    print_r($PMA_SQPdata_function_name);
+    echo '</pre>';
+}
+ */
 
+/**
+ * @global array MySQL attributes
+ */
 $PMA_SQPdata_column_attrib = array (
     'ARCHIVE',          // Engine
     'ASCII',
@@ -366,9 +378,20 @@ $PMA_SQPdata_column_attrib = array (
     'VARYING',
     'ZEROFILL'
 );
-//$PMA_SQPdata_column_attrib_cnt = count($PMA_SQPdata_column_attrib);
+/**
+ * $PMA_SQPdata_column_attrib_cnt = count($PMA_SQPdata_column_attrib);
+ *
+ * @global integer MySQL attributes count
+ */
 $PMA_SQPdata_column_attrib_cnt = 29;
 
+/**
+ * words that are reserved by MySQL and may not be used as identifiers without quotes
+ *
+ * @see http://dev.mysql.com/doc/refman/5.1/en/reserved-words.html
+ *
+ * @global array MySQL reserved words
+ */
 $PMA_SQPdata_reserved_word = array (
     'ACCESSIBLE',       // 5.1
     'ACTION',
@@ -652,11 +675,19 @@ $PMA_SQPdata_reserved_word = array (
     'XOR',
     'YEAR_MONTH'
 );
-//$PMA_SQPdata_reserved_word_cnt = count($PMA_SQPdata_reserved_word);
+/**
+ * $PMA_SQPdata_reserved_word_cnt = count($PMA_SQPdata_reserved_word);
+ *
+ * @global integer MySQL reserved words count
+ */
 $PMA_SQPdata_reserved_word_cnt = 279;
 
-// words forbidden to be used as column or table name,
-// as seen in http://dev.mysql.com/doc/mysql/en/reserved-words.html
+/**
+ * words forbidden to be used as column or table name wihtout quotes
+ * as seen in http://dev.mysql.com/doc/mysql/en/reserved-words.html
+ *
+ * @global array MySQL forbidden words
+ */
 $PMA_SQPdata_forbidden_word = array (
     'ACCESSIBLE',       // 5.1
     'ACTION',
@@ -1142,16 +1173,28 @@ $PMA_SQPdata_forbidden_word = array (
     'YEAR_MONTH',
     'ZEROFILL'
 );
-// echo count($PMA_SQPdata_forbidden_word);
+/**
+ * count($PMA_SQPdata_forbidden_word);
+ *
+ * @global integer MySQL forbidden words count
+ */
 $PMA_SQPdata_forbidden_word_cnt = 483;
 
+/**
+ * the MySQL column/data types
+ *
+ * @see http://dev.mysql.com/doc/refman/5.1/en/data-types.html
+ * @see http://dev.mysql.com/doc/refman/5.1/en/mysql-spatial-datatypes.html
+ *
+ * @global array MySQL column types
+ */
 $PMA_SQPdata_column_type = array (
     'BIGINT',
     'BINARY',
     'BIT',
     'BLOB',
     'BOOL',
-    'BOOLEAN',                  // numeric-type-overview.html
+    'BOOLEAN',              // numeric-type-overview.html
     'CHAR',
     'CHARACTER',
     'DATE',
@@ -1201,13 +1244,17 @@ $PMA_SQPdata_column_type = array (
     'VARCHAR',
     'YEAR'
 );
-//$PMA_SQPdata_column_type_cnt = count($PMA_SQPdata_column_type);
+/**
+ * $PMA_SQPdata_column_type_cnt = count($PMA_SQPdata_column_type);
+ *
+ * @global integer MySQL column types count
+ */
 $PMA_SQPdata_column_type_cnt = 54;
 
-// check counts
 /*
-foreach ( $GLOBALS as $n => $a ) {
-    echo is_array( $a ) ? $n . ': ' . count( $a ) . '<br />' : '';
+ * check counts
+foreach ($GLOBALS as $n => $a) {
+    echo is_array($a) ? $n . ': ' . count($a) . '<br />' : '';
 }
-*/
+ */
 ?>

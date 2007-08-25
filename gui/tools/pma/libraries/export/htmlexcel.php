@@ -1,11 +1,14 @@
 <?php
-/* $Id: htmlexcel.php 9315 2006-08-16 09:10:23Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build CSV dumps of tables
+ *
+ * @version $Id: htmlexcel.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $plugin_list['htmlexcel'] = array(
         'text' => 'strHTMLExcel',
@@ -17,7 +20,7 @@ if (isset($plugin_list)) {
             array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
             array('type' => 'hidden', 'name' => 'data'),
             ),
-        'options_text' => 'strHTMLExcelOptions',
+        'options_text' => 'strOptions',
         );
 } else {
 
@@ -68,7 +71,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-type" content="text/html;charset=' . ( isset($charset_of_file) ? $charset_of_file : $charset ) .'" />
+    <meta http-equiv="Content-type" content="text/html;charset=' . (isset($charset_of_file) ? $charset_of_file : $charset) .'" />
 <style id="Classeur1_16681_Styles">
 </style>
 

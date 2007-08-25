@@ -1,8 +1,14 @@
 <?php
-/* $Id: tbl_operations.php 9608 2006-10-26 07:46:45Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_operations.php 10357 2007-05-09 07:19:37Z cybot_tm $
+ */
 
-require_once './libraries/common.lib.php';
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 
 $pma_table = new PMA_Table($GLOBALS['table'], $GLOBALS['db']);
@@ -24,7 +30,7 @@ $cfgRelation = PMA_getRelationsParam();
  * Gets available MySQL charsets and storage engines
  */
 require_once './libraries/mysql_charsets.lib.php';
-require_once './libraries/storage_engines.lib.php';
+require_once './libraries/StorageEngine.class.php';
 
 // reselect current db (needed in some cases probably due to
 // the calling of relation.lib.php)
@@ -252,7 +258,7 @@ if (strstr($show_comment, '; InnoDB free') === false) {
     <tr><td><?php echo $strStorageEngine; ?>
             <?php echo PMA_showMySQLDocu('Storage_engines', 'Storage_engines'); ?>
         </td>
-        <td><?php echo PMA_generateEnginesDropdown('new_tbl_type', null, false, $tbl_type, 4); ?>
+        <td><?php echo PMA_StorageEngine::getHtmlSelect('new_tbl_type', null, $tbl_type); ?>
         </td>
     </tr>
 

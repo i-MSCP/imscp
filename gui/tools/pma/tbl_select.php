@@ -1,16 +1,18 @@
 <?php
-/* $Id: tbl_select.php 9601 2006-10-25 10:55:20Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_select.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/relation.lib.php'); // foreign keys
-require_once('./libraries/mysql_charsets.lib.php');
+require_once './libraries/common.inc.php';
+require_once './libraries/relation.lib.php'; // foreign keys
+require_once './libraries/mysql_charsets.lib.php';
 
-if ( $GLOBALS['cfg']['PropertiesIconic'] == true ) {
+if ($GLOBALS['cfg']['PropertiesIconic'] == true) {
     $titles['Browse'] =
         '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
         .'b_browse.png" alt="' . $strBrowseForeignValues . '" title="'
@@ -28,19 +30,19 @@ if ( $GLOBALS['cfg']['PropertiesIconic'] == true ) {
  */
 if (!isset($param) || $param[0] == '') {
     // Gets some core libraries
-    require_once('./libraries/tbl_common.php');
+    require_once './libraries/tbl_common.php';
     //$err_url   = 'tbl_select.php' . $err_url;
     $url_query .= '&amp;goto=tbl_select.php&amp;back=tbl_select.php';
 
     /**
      * Gets tables informations
      */
-    require_once('./libraries/tbl_info.inc.php');
+    require_once './libraries/tbl_info.inc.php';
 
     /**
      * Displays top menu links
      */
-    require_once('./libraries/tbl_links.inc.php');
+    require_once './libraries/tbl_links.inc.php';
 
     if (!isset($goto)) {
         $goto = $GLOBALS['cfg']['DefaultTabTable'];
@@ -92,12 +94,12 @@ if (!isset($param) || $param[0] == '') {
     //$foreigners  = ($cfgRelation['relwork'] ? PMA_getForeigners($db, $table) : FALSE);
     $foreigners  = PMA_getForeigners($db, $table);
     ?>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 // <![CDATA[
 function PMA_tbl_select_operator(f, index, multiple) {
     switch (f.elements["func[" + index + "]"].options[f.elements["func[" + index + "]"].selectedIndex].value) {
 <?php
-reset( $GLOBALS['cfg']['UnaryOperators'] );
+reset($GLOBALS['cfg']['UnaryOperators']);
 while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     echo '        case "' . $operator . "\":\r\n";
 }
@@ -125,10 +127,10 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         multiple="multiple">
     <?php
     // Displays the list of the fields
-    foreach ( $fields_list as $each_field ) {
+    foreach ($fields_list as $each_field) {
         echo '        '
-            .'<option value="' . htmlspecialchars( $each_field ) . '"'
-            .' selected="selected">' . htmlspecialchars( $each_field )
+            .'<option value="' . htmlspecialchars($each_field) . '"'
+            .' selected="selected">' . htmlspecialchars($each_field)
             .'</option>' . "\n";
     }
     ?>
@@ -148,10 +150,10 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     <select name="orderField" style="vertical-align: middle">
         <option value="--nil--"></option>
     <?php
-    foreach ( $fields_list as $each_field ) {
+    foreach ($fields_list as $each_field) {
         echo '        '
-            .'<option value="' . htmlspecialchars( $each_field ) . '">'
-            .htmlspecialchars( $each_field ) . '</option>' . "\n";
+            .'<option value="' . htmlspecialchars($each_field) . '">'
+            .htmlspecialchars($each_field) . '</option>' . "\n";
     } // end for
     ?>
     </select>
@@ -193,7 +195,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     <?php
     $odd_row = true;
 ?>
-<script type="text/javascript" language="javascript" src="./js/tbl_change.js"></script>
+<script type="text/javascript" src="./js/tbl_change.js"></script>
 <?php
     for ($i = 0; $i < $fields_cnt; $i++) {
         ?>
@@ -240,7 +242,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         $field = $fields_list[$i];
 
         // do not use require_once here
-        require('./libraries/get_foreign.lib.php');
+        require './libraries/get_foreign.lib.php';
 
         // we got a bug report: in some cases, even if $disp is true,
         // there are no rows, so we add a fetch_array
@@ -261,8 +263,10 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
             <input type="text" name="fields[<?php echo $i; ?>]"
                 id="field_<?php echo md5($field); ?>[<?php echo $i; ?>]"
                 class="textfield" />
-            <script type="text/javascript" language="javascript">
+            <script type="text/javascript">
+            // <![CDATA[
                 document.writeln('<a target="_blank" onclick="window.open(this.href, \'foreigners\', \'width=640,height=240,scrollbars=yes\'); return false" href="browse_foreigners.php?<?php echo PMA_generate_common_url($db, $table); ?>&amp;field=<?php echo urlencode($field); ?>&amp;fieldkey=<?php echo $i; ?>"><?php echo str_replace("'", "\'", $titles['Browse']); ?></a>');
+            // ]]>
             </script>
             <?php
         } elseif (strncasecmp($fields_type[$i], 'enum', 4) == 0) {
@@ -284,13 +288,13 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         $type = $fields_type[$i];
         if ($type == 'date' || $type == 'datetime' || substr($type, 0, 9) == 'timestamp') {
         ?>
-                    <script type="text/javascript" language="javascript">
+                    <script type="text/javascript">
                     //<![CDATA[
                     document.write('<a title="<?php echo $strCalendar;?>" href="javascript:openCalendar(\'<?php echo PMA_generate_common_url();?>\', \'insertForm\', \'field_<?php echo ($i); ?>\', \'<?php echo (PMA_MYSQL_INT_VERSION >= 40100 && substr($type, 0, 9) == 'timestamp') ? 'datetime' : substr($type, 0, 9); ?>\')"><img class="calendar" src="<?php echo $pmaThemeImage; ?>b_calendar.png" alt="<?php echo $strCalendar; ?>"/></a>');
                     //]]>
                     </script>
         <?php
-        } 
+        }
         ?>
             <input type="hidden" name="names[<?php echo $i; ?>]"
                 value="<?php echo htmlspecialchars($fields_list[$i]); ?>" />
@@ -313,7 +317,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
 </fieldset>
 </form>
     <?php
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 }
 
 
@@ -332,9 +336,9 @@ else {
     if (count($param) == $max_number_of_fields) {
         $sql_query .= '* ';
     } else {
-        $param = PMA_backquote( $param );
-        $sql_query .= implode( ', ', $param );
-        unset( $param );
+        $param = PMA_backquote($param);
+        $sql_query .= implode(', ', $param);
+        unset($param);
     } // end if
 
     $sql_query .= ' FROM ' . PMA_backquote($table);
@@ -430,7 +434,7 @@ else {
     if ($orderField != '--nil--') {
         $sql_query .= ' ORDER BY ' . PMA_backquote(urldecode($orderField)) . ' ' . $order;
     } // end if
-    include('./sql.php');
+    include './sql.php';
 }
 
 ?>

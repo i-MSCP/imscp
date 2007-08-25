@@ -1,15 +1,15 @@
 <?php
-/* $Id: db_qbe.php 10380 2007-05-12 09:56:36Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * query by example the whole database
+ *
+ * @version $Id: db_qbe.php 10526 2007-07-24 13:34:40Z lem9 $
  */
 
 /**
  * requirements
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 require_once './libraries/relation.lib.php';
 
@@ -166,7 +166,7 @@ function showColumnSelectCell($columns, $column_number, $selected = '')
         }
         echo '                ';
         echo '<option value="' . htmlspecialchars($column) . '"' . $sel . '>'
-            . htmlspecialchars($column) . '</option>' . "\n";
+            . str_replace(' ', '&nbsp;', htmlspecialchars($column)) . '</option>' . "\n";
     }
     ?>
         </select>
@@ -175,7 +175,7 @@ function showColumnSelectCell($columns, $column_number, $selected = '')
 }
 
 ?>
-
+<fieldset>
 <form action="db_qbe.php" method="post">
 <table class="data" style="width: 100%;">
 <tr class="odd noclick">
@@ -184,7 +184,7 @@ function showColumnSelectCell($columns, $column_number, $selected = '')
 $z = 0;
 for ($x = 0; $x < $col; $x++) {
     if (isset($ins_col[$x]) && $ins_col[$x] == 'on') {
-        showColumnSelectCell( $fld, $z );
+        showColumnSelectCell($fld, $z);
         $z++;
     }
 
@@ -586,6 +586,7 @@ $url_params['col_cnt']  = $z;
 $url_params['rows']     = $w;
 echo PMA_generate_common_hidden_inputs($url_params);
 ?>
+</fieldset>
 <fieldset class="tblFooters">
 <table border="0" cellpadding="2" cellspacing="1">
 <tr>
@@ -629,7 +630,8 @@ $strTableListOptions = '';
 $numTableListOptions = 0;
 foreach ($tbl_names AS $key => $val) {
     $strTableListOptions .= '                        ';
-    $strTableListOptions .= '<option value="' . htmlspecialchars($key) . '"' . $val . '>' . htmlspecialchars($key) . '</option>' . "\n";
+    $strTableListOptions .= '<option value="' . htmlspecialchars($key) . '"' . $val . '>'
+        . str_replace(' ', '&nbsp;', htmlspecialchars($key)) . '</option>' . "\n";
     $numTableListOptions++;
 }
 ?>
@@ -739,7 +741,7 @@ if (isset($Field) && count($Field) > 0) {
             $master = key($tab_wher);
         } else {
             // Now let's find out which of the tables has an index
-            // ( When the control user is the same as the normal user
+            // (When the control user is the same as the normal user
             // because he is using one of his databases as pmadb,
             // the last db selected is not always the one where we need to work)
             PMA_DBI_select_db($db);
@@ -812,7 +814,7 @@ if (isset($Field) && count($Field) > 0) {
                 // Of course we only want to check each table once
                 $checked_tables = $col_cand;
                 foreach ($col_cand AS $tab) {
-                    if ($checked_tables[$tab] != 1 ) {
+                    if ($checked_tables[$tab] != 1) {
                         $tsize[$tab] = PMA_Table::countRecords($db, $tab, true, false);
                         $checked_tables[$tab] = 1;
                     }

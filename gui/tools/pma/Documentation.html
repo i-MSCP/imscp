@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 10510 2007-07-20 13:03:09Z lem9 $ -->
+<!-- $Id: Documentation.html 10574 2007-08-19 12:02:39Z lem9 $ -->
 <!--
     vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
@@ -11,7 +11,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <title>phpMyAdmin 2.10.3 - Documentation</title>
+    <title>phpMyAdmin 2.11.0 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -33,7 +33,7 @@
     <li><a href="#glossary">Glossary</a></li>
 </ul>
 
-<h1>phpMyAdmin 2.10.3 Documentation</h1>
+<h1>phpMyAdmin 2.11.0 Documentation</h1>
 
 <ul><li><a href="http://www.phpmyadmin.net/">
             phpMyAdmin homepage</a></li>
@@ -48,7 +48,7 @@
         </ul>
     </li>
     <li>Documentation version:
-        <i>$Id: Documentation.html 10510 2007-07-20 13:03:09Z lem9 $</i>
+        <i>$Id: Documentation.html 10574 2007-08-19 12:02:39Z lem9 $</i>
     </li>
 </ul>
 
@@ -65,13 +65,16 @@
                 original aspect ratio</li>
             <li>You need PHP 4.3.0 or newer to use the
                 &quot;text/plain: external&quot;  MIME-based transformation</li>
+            <li>When using the &quot;cookie&quot;
+                <a href="#authentication_modes">authentication method</a>, the
+                <a href="http://www.php.net/mcrypt"><tt>mcrypt</tt></a> extension
+                is strongly suggested for most users and is <b>required</b> for
+                64&#8211;bit machines. Not using mcrypt will cause phpMyAdmin to
+                load pages significantly slower.
+            </li>
         </ul>
     </li>
     <li><b>MySQL</b> 3.23.32 or newer (<a href="#faq1_17">details</a>);</li>
-    <li>Not really a requirement but a <b>strong suggestion</b>: if you are using
-        the &quot;cookie&quot; authentication method, having the <tt>mcrypt</tt>
-        PHP extension on your web server accelerates not only the login
-        phase but every other action that you do in phpMyAdmin.</li>
     <li><b>Web browser</b> with cookies enabled.</li>
 </ul>
 
@@ -122,7 +125,7 @@
         <abbr title="Frequently Asked Questions">FAQ</abbr> 3.6)</a></li>
     <li>support mysqli, the improved MySQL extension <a href="#faq1_17">
         (see <abbr title="Frequently Asked Questions">FAQ</abbr> 1.17)</a></li>
-    <li>communicate in <a href="./translators.html">50 different languages</a>
+    <li>communicate in <a href="./translators.html">54 different languages</a>
         </li>
 </ul>
 
@@ -191,8 +194,9 @@
         1.26</a> for suggestions.</li>
     <li>Now you must configure your installation. There are two methods that
         can be used. Traditionally, users have hand-edited a copy of
-        config.inc.php, but now a wizard-style setup script is provided for
-        those who prefer a graphical installation. Creating a config.inc.php is
+	<tt>config.inc.php</tt>, but now a wizard-style setup script is 
+	provided for those who prefer a graphical installation. Creating a 
+	<tt>config.inc.php</tt> file is
         still a quick way to get started and needed for some advanced features.
         <ul><li>To manually create the file, simply use your text editor to
                 create the file <tt>config.inc.php</tt> (you can copy
@@ -328,14 +332,16 @@ chmod o-rw config.inc.php          # remove world read and write permissions
 <h3 id="upgrading">Upgrading from an older version</h3>
 
 <p> Simply copy <i>./config.inc.php</i> from your previous installation into the newly
-    unpacked one. Configuration files from very old versions (2.3.0 or older) may
-    require some tweaking as some options have been changed or removed.</p>
+    unpacked one. Configuration files from very old versions (2.3.0 or before) may
+    require some tweaking as some options have been changed or removed.
+    For compatibility with PHP 6, remove a <tt>set_magic_quotes_runtime(0);</tt>
+    statement that you might find near the end of your configuration file.</p>
 
 <p> You should <strong>not</strong> copy <tt>libraries/config.default.php</tt>
     over <tt>config.inc.php</tt> because the default configuration file
     is version-specific.</p>
 
-<p> If you have upgraded your MySQL server from a version older than 4.1.2 to
+<p> If you have upgraded your MySQL server from a version previous to 4.1.2 to
     version 4.1.2 or newer and if you use the pmadb/linked table infrastructure,
     you should run the SQL script found in
     <tt>scripts/upgrade_tables_mysql_4_1_2+.sql</tt>.</p>
@@ -364,7 +370,7 @@ chmod o-rw config.inc.php          # remove world read and write permissions
         algorithm, in a temporary cookie.</li>
 
     <li>Note: starting with phpMyAdmin 2.6.1, this section is only applicable if
-        your MySQL server is older than 4.1.2, or is running with
+        your MySQL server is previous to 4.1.2, or is running with
         <tt>--skip-show-database</tt>.<br /><br />
 
         For '<abbr title="HyperText Transfer Protocol">HTTP</abbr>' and 'cookie'
@@ -479,6 +485,15 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
         not required.</li>
 </ul>
 
+<h4>'signon' authentication mode</h4>
+
+<ul><li>This mode is a convenient way of using credentials from another
+	application to authenticate to phpMyAdmin.</li>
+    <li>The other application has to store login information into 
+	session data.</li>
+    <li>More details in the <a href="#cfg_Servers_auth_type">auth_type</a>
+	section.</li>
+</ul>
 <h4>'config' authentication mode</h4>
 
 <ul><li>This mode is the less secure one because it requires you to fill the
@@ -643,7 +658,7 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
     <dd>This special account is used for 2 distinct purposes: to make possible
         all relational features (see
         <a href="#pmadb" class="configrule">$cfg['Servers'][$i]['pmadb']</a>)
-        and, for a MySQL server older than 4.1.2 or running with
+        and, for a MySQL server previous to 4.1.2 or running with
         <tt>--skip-show-database</tt>, to enable a multi-user installation
         (<abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie
         authentication mode).<br /><br />
@@ -679,7 +694,7 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
                 ends. This can also allow you to log in in arbitrary server if
                 <tt><a href="#AllowArbitraryServer" class="configrule">$cfg['AllowArbitraryServer']</a></tt> enabled.
             </li>
-            <li>'<abbr title="HyperText Transfer Protocol">HTTP</abbr>' authentication (was called 'advanced' in older versions and can be written also as 'http')
+            <li>'<abbr title="HyperText Transfer Protocol">HTTP</abbr>' authentication (was called 'advanced' in previous versions and can be written also as 'http')
                 (<tt>$auth_type&nbsp;=&nbsp;'<abbr title="HyperText Transfer Protocol">HTTP</abbr>'</tt>) as introduced in 1.3.0
                 allows you to log in as any valid MySQL user via HTTP-Auth.</li>
             <li>'signon' authentication mode 
@@ -766,7 +781,8 @@ GRANT ALL PRIVILEGES ON user_base.* TO 'real_user'@localhost IDENTIFIED BY 'real
     <dd>Only useful when using phpMyAdmin with multiple server entries. If set,
         this string will be displayed instead of the hostname in the pull-down
         menu on the main page. This can be useful if you want to show only
-        certain databases on your system, for example.</dd>
+	certain databases on your system, for example. For HTTP auth, all 
+	non-US-ASCII characters will be stripped.</dd>
 
     <dt id="pmadb">
         <span id="cfg_Servers_pmadb">$cfg['Servers'][$i]['pmadb']</span> string
@@ -1073,6 +1089,21 @@ ALTER TABLE `pma_column_comments`
         If you have only one server configured, <tt>$cfg['ServerDefault']</tt>
         MUST be set to that server.</dd>
 
+    <dt id="cfg_MaxDbList">$cfg['MaxDbList'] integer</dt>
+    <dd>The maximum number of database names to be displayed in the
+        navigation frame and the database list.</dd>
+	
+    <dt id="cfg_MaxTableList">$cfg['MaxTableList'] integer</dt>
+    <dd>The maximum number of table names to be displayed in the
+    main panel's list (except on the Export page). This limit is also enforced in the navigation panel 
+    when in Light mode.</dd>
+
+    <dt id="cfg_MaxCharactersInDisplayedSQL">$cfg['MaxCharactersInDisplayedSQL'] integer</dt>
+    <dd>The maximum number of characters when a SQL query is displayed. The 
+    default limit of 1000 should be correct to avoid the display of tons
+    of hexadecimal codes that represent BLOBs, but some users have real
+    SQL queries that are longer than 1000 characters.</dd>
+
     <dt id="cfg_OBGzip">$cfg['OBGzip'] string/boolean</dt>
     <dd>Defines whether to use GZip output buffering for increased
         speed in <abbr title="HyperText Transfer Protocol">HTTP</abbr> transfers.<br />
@@ -1226,7 +1257,8 @@ ALTER TABLE `pma_column_comments`
 
     <dt id="cfg_LeftLogoLinkWindow">$cfg['LeftLogoLinkWindow'] string</dt>
     <dd>Whether to open the linked page in the main window (<tt>main</tt>)
-	or in a new one (<tt>new</tt>).</dd>
+    or in a new one (<tt>new</tt>). Note: use <tt>new</tt> if you are
+    linking to <tt>phpmyadmin.net</tt>.</dd>
 
     <dt id="cfg_LeftDisplayServers">$cfg['LeftDisplayServers'] boolean</dt>
     <dd>Defines whether or not to display a server choice at the top of the left frame.
@@ -1234,9 +1266,10 @@ ALTER TABLE `pma_column_comments`
     <dt id="cfg_DisplayServersList">$cfg['DisplayServersList'] boolean</dt>
     <dd>Defines whether to display this server choice as links instead of in a drop-down.
         Defaults to FALSE (drop-down).</dd>
-    <dt id="cfg_DisplayDatabasesList">$cfg['DisplayDatabasesList'] boolean</dt>
+    <dt id="cfg_DisplayDatabasesList">$cfg['DisplayDatabasesList'] boolean or text</dt>
     <dd>Defines whether to display database choice in light navigation frame as links 
-        instead of in a drop-down. Defaults to FALSE (drop-down).</dd>
+        instead of in a drop-down. Defaults to 'auto' - on main page list is
+        shown, when database is selected, only drop down is displayed.</dd>
     <dt id="cfg_ShowStats">$cfg['ShowStats'] boolean</dt>
     <dd>Defines whether or not to display space usage and statistics about databases
         and tables.<br />
@@ -1510,6 +1543,10 @@ $cfg['TrustedProxies'] =
     <dd>The style used for the pointer in the navi frame.
         See <tt>themes/themename/layout.inc.php</tt>.</dd>
 
+    <dt id="cfg_NaviDatabaseNameColor">$cfg['NaviDatabaseNameColor'] string [valid css code]<br />
+    <dd>The color used for the database name in the navi frame.
+    See <tt>themes/themename/layout.inc.php</tt>.</dd>
+
     <dt id="cfg_LeftPointerEnable">$cfg['LeftPointerEnable'] boolean</dt>
     <dd>A value of <tt>TRUE</tt> activates the navi pointer (when LeftFrameLight
         is <tt>FALSE</tt>).</dd>
@@ -1650,16 +1687,13 @@ $cfg['TrustedProxies'] =
     <dt id ="cfb_SQLQuery_Refresh">$cfg['SQLQuery']['Refresh'] boolean</dt>
     <dd>Whether to display a link to refresh a query in any SQL Query box.</dd>
 
-     <dt id="cfg_UploadDir">$cfg['UploadDir'] string</dt>
-     <dd>
-         The name of the directory where
     <dt id="cfg_UploadDir">$cfg['UploadDir'] string</dt>
     <dd>
         The name of the directory where
         <abbr title="structured query language">SQL</abbr> files have been
         uploaded by other means than phpMyAdmin (for example, ftp).  Those files
-        are available under a drop-down box when you click the database name,
-        then the <abbr title="structured query language">SQL</abbr> tab.
+	are available under a drop-down box when you click the database or
+	table name, then the Import tab.
         <br /><br />
 
         If you want different directory for each user, %u will be replaced
@@ -1689,8 +1723,8 @@ $cfg['TrustedProxies'] =
         If you want different directory for each user, %u will be replaced
         with username.<br /><br />
 
-        Please note that the directory has to be writable for user running
-        webserver.<br /><br />
+	Please note that the directory must exist and has to be writable 
+	for the user running the webserver.<br /><br />
 
         Please note that if PHP is running in safe mode, this directory must
         be owned by the same user as the owner of the phpMyAdmin scripts.
@@ -2074,8 +2108,8 @@ $cfg['TrustedProxies'] =
     the end of the line. They are called 'MIME-type', 'Browser transformation' and
     'Transformation options'.</p>
 
-<ul><li>The field 'MIME-type' is a dropdown field. You have the options to leave that field
-        empty or to use 'auto' [this feature is not yet available]. Please note that
+    <ul><li>The field 'MIME-type' is a drop-down field. Select the MIME-type
+	that corresponds to the column's contents. Please note that
         transformations are inactive as long as no MIME-type is selected.</li>
 
     <li>The field 'Browser transformation' is a drop-down field. You can choose from a
@@ -2436,7 +2470,7 @@ $cfg['TrustedProxies'] =
     <a href="#faq1_15">1.15 I have problems with <i>mysql.user</i> field names.</a>
 </h4>
 
-<p> In older MySQL versions, the <tt>User</tt> and <tt>Password</tt> fields
+<p> In previous MySQL versions, the <tt>User</tt> and <tt>Password</tt> fields
     were named <tt>user</tt> and <tt>password</tt>. Please modify your field
     names to align with current standards.</p>
 
@@ -2768,7 +2802,10 @@ RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
 <p> Edit your <i>config.inc.php</i> file and ensure there is nothing
     (I.E. no blank lines, no spaces, no characters...) neither before the
     <tt>&lt;?php</tt> tag at the beginning, neither after the <tt>?&gt;</tt>
-    tag at the end.</p>
+    tag at the end. We also got a report from a user under IIS, that used
+    a zipped distribution kit: the file <tt>libraries/Config.class.php</tt>
+    contained an end-of-line character (hex 0A) at the end; removing this character
+    cleared his errors.</p>
 
 <h4 id="faq2_2">
     <a href="#faq2_2">2.2 phpMyAdmin can't connect to MySQL. What's wrong?</a></h4>
@@ -3086,6 +3123,13 @@ RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
     API does not accept this syntax for the USE command. Enclosing the
     db name with backquotes works. For further confusion, no backquotes
     are needed with command-line mysql.
+</p>
+
+<h4 id="faq3_14">
+	<a href="#faq3_14">3.14 I am not able to browse a table when I don't have the right to SELECT one of the columns.</a></h4>
+<p>
+    This has been a known limitation of phpMyAdmin since the beginning and
+    it's not likely to be solved in the future.
 </p>
 
 <h3 id="faqmultiuser"><abbr title="Internet service provider">ISP</abbr>s, multi-user installations</h3>
@@ -3442,7 +3486,7 @@ $cfg['Servers'][$i]['AllowDeny']['rules'] = array(
 <p> Click on a database name in the left frame, the properties will be
     displayed. Select &quot;Import&quot; from the list
     of tabs in the right&#8211;hand frame (or &quot;<abbr title="structured query language">SQL</abbr>&quot; if your phpMyAdmin
-    version is older than 2.7.0). In the &quot;Location of the text file&quot; section, type in
+    version is previous to 2.7.0). In the &quot;Location of the text file&quot; section, type in
     the path to your dump filename, or use the Browse button. Then click Go.
     <br /><br />
     With version 2.7.0, the import engine has been re&#8211;written, if possible it is suggested
@@ -3892,7 +3936,7 @@ chmod o+rwx tmp
 <p> The following method is preferred for new developers:</p>
 
 <ol><li>fetch the current SVN tree over anonymous SVN:<br />
-    <tt>svn co https://svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin</tt><br />
+    <tt>svn co https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin</tt><br />
     </li>
     <li>add your stuff</li>
     <li>generate patch with your changes:

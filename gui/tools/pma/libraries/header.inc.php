@@ -1,22 +1,23 @@
 <?php
-/* $Id: header.inc.php 9601 2006-10-25 10:55:20Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: header.inc.php 10386 2007-05-14 12:13:44Z cybot_tm $
+ */
 
-require_once './libraries/common.lib.php';
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 
 if (empty($GLOBALS['is_header_sent'])) {
 
     /**
      * Gets a core script and starts output buffering work
      */
-    require_once './libraries/common.lib.php';
+    require_once './libraries/common.inc.php';
     require_once './libraries/ob.lib.php';
-    if ($GLOBALS['cfg']['OBGzip']) {
-        $GLOBALS['ob_mode'] = PMA_outBufferModeGet();
-        if ($GLOBALS['ob_mode']) {
-            PMA_outBufferPre($GLOBALS['ob_mode']);
-        }
-    }
+    PMA_outBufferPre();
 
     // garvin: For re-usability, moved http-headers and stylesheets
     // to a seperate file. It can now be included by header.inc.php,
@@ -41,8 +42,8 @@ if (empty($GLOBALS['is_header_sent'])) {
                         isset($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['Server']['host'] : '',
                         isset($GLOBALS['cfg']['Server']['verbose']) ? $GLOBALS['cfg']['Server']['verbose'] : '',
                         !empty($GLOBALS['cfg']['Server']['verbose']) ? $GLOBALS['cfg']['Server']['verbose'] : (isset($GLOBALS['cfg']['Server']['host']) ? $GLOBALS['cfg']['Server']['host'] : ''),
-                        isset($GLOBALS['db']) ? $GLOBALS['db'] : '',
-                        isset($GLOBALS['table']) ? $GLOBALS['table'] : '',
+                        $GLOBALS['db'],
+                        $GLOBALS['table'],
                         'phpMyAdmin ' . PMA_VERSION,
                         ),
                     !empty($GLOBALS['table']) ? $GLOBALS['cfg']['TitleTable'] :
@@ -53,7 +54,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     // here, the function does not exist with this configuration: $cfg['ServerDefault'] = 0;
     $is_superuser    = function_exists('PMA_isSuperuser') && PMA_isSuperuser();
     ?>
-    <script type="text/javascript" language="javascript">
+    <script type="text/javascript">
     // <![CDATA[
     // Updates the title of the frameset if possible (ns4 does not allow this)
     if (typeof(parent.document) != 'undefined' && typeof(parent.document) != 'unknown'
@@ -74,7 +75,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     var confirmMsgDropDB  = '<?php echo(($GLOBALS['cfg']['Confirm']) ? str_replace('\'', '\\\'', $GLOBALS['strDropDatabaseStrongWarning']) : ''); ?>';
     // ]]>
     </script>
-    <script src="./js/functions.js" type="text/javascript" language="javascript"></script>
+    <script src="./js/functions.js" type="text/javascript"></script>
         <?php
     } elseif (isset($js_to_run) && $js_to_run == 'user_password.js') {
         echo "\n";
@@ -86,7 +87,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     var jsPasswordNotSame = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordNotSame']); ?>';
     // ]]>
     </script>
-    <script src="./js/user_password.js" type="text/javascript" language="javascript"></script>
+    <script src="./js/user_password.js" type="text/javascript"></script>
         <?php
     } elseif (isset($js_to_run) && $js_to_run == 'server_privileges.js') {
         echo "\n";
@@ -98,8 +99,8 @@ if (empty($GLOBALS['is_header_sent'])) {
     var jsPasswordNotSame = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strPasswordNotSame']); ?>';
     // ]]>
     </script>
-    <script src="./js/server_privileges.js" type="text/javascript" language="javascript"></script>
-    <script src="./js/functions.js" type="text/javascript" language="javascript"></script>
+    <script src="./js/server_privileges.js" type="text/javascript"></script>
+    <script src="./js/functions.js" type="text/javascript"></script>
         <?php
     } elseif (isset($js_to_run) && $js_to_run == 'indexes.js') {
         echo "\n";
@@ -109,14 +110,14 @@ if (empty($GLOBALS['is_header_sent'])) {
     var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
     // ]]>
     </script>
-    <script src="./js/indexes.js" type="text/javascript" language="javascript"></script>
+    <script src="./js/indexes.js" type="text/javascript"></script>
         <?php
     } elseif (isset($js_to_run) && $js_to_run == 'tbl_change.js') {
         echo "\n";
         ?>
     // ]]>
     </script>
-    <script src="./js/tbl_change.js" type="text/javascript" language="javascript"></script>
+    <script src="./js/tbl_change.js" type="text/javascript"></script>
         <?php
     } else {
         echo "\n";
@@ -130,8 +131,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     // Reloads the navigation frame via JavaScript if required
     PMA_reloadNavigation();
     ?>
-    <script src="./js/tooltip.js" type="text/javascript"
-        language="javascript"></script>
+    <script src="./js/tooltip.js" type="text/javascript"></script>
     <meta name="OBGZip" content="<?php echo ($cfg['OBGzip'] ? 'true' : 'false'); ?>" />
     <?php /* remove vertical scroll bar bug in ie */ ?>
     <!--[if IE 6]>
@@ -179,46 +179,46 @@ if (empty($GLOBALS['is_header_sent'])) {
                                                               )
                        );
         $item = '<a href="%1$s?%2$s" class="item">';
-        if ( $GLOBALS['cfg']['NavigationBarIconic'] ) {
+        if ($GLOBALS['cfg']['NavigationBarIconic']) {
             $separator = '        <span class="separator"><img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'item_ltr.png" width="5" height="9" alt="-" /></span>' . "\n";
             $item .= '        <img class="icon" src="' . $GLOBALS['pmaThemeImage'] . '%5$s" width="16" height="16" alt="" /> ' . "\n";
         } else {
             $separator = '        <span class="separator"> - </span>' . "\n";
         }
 
-        if ( $GLOBALS['cfg']['NavigationBarIconic'] !== true ) {
+        if ($GLOBALS['cfg']['NavigationBarIconic'] !== true) {
             $item .= '%4$s: ';
         }
         $item .= '%3$s</a>' . "\n";
 
         echo '<div id="serverinfo">' . "\n";
-        printf( $item,
+        printf($item,
                 $GLOBALS['cfg']['DefaultTabServer'],
                 PMA_generate_common_url(),
                 htmlspecialchars($server_info),
                 $GLOBALS['strServer'],
-                's_host.png' );
+                's_host.png');
 
-        if (isset($GLOBALS['db']) && strlen($GLOBALS['db'])) {
+        if (strlen($GLOBALS['db'])) {
 
             echo $separator;
-            printf( $item,
+            printf($item,
                     $GLOBALS['cfg']['DefaultTabDatabase'],
                     PMA_generate_common_url($GLOBALS['db']),
                     htmlspecialchars($GLOBALS['db']),
                     $GLOBALS['strDatabase'],
-                    's_db.png' );
+                    's_db.png');
 
-            if (isset($GLOBALS['table']) && strlen($GLOBALS['table'])) {
+            if (strlen($GLOBALS['table'])) {
                 require_once './libraries/tbl_info.inc.php';
 
                 echo $separator;
-                printf( $item,
+                printf($item,
                         $GLOBALS['cfg']['DefaultTabTable'],
                         PMA_generate_common_url($GLOBALS['db'], $GLOBALS['table']),
-                        htmlspecialchars($GLOBALS['table']),
+                        str_replace(' ', '&nbsp;', htmlspecialchars($GLOBALS['table'])),
                         (isset($GLOBALS['tbl_is_view']) && $GLOBALS['tbl_is_view'] ? $GLOBALS['strView'] : $GLOBALS['strTable']),
-                        (isset($GLOBALS['tbl_is_view']) && $GLOBALS['tbl_is_view'] ? 'b_views' : 's_tbl') . '.png' );
+                        (isset($GLOBALS['tbl_is_view']) && $GLOBALS['tbl_is_view'] ? 'b_views' : 's_tbl') . '.png');
 
                 /**
                  * Displays table comment
@@ -244,12 +244,12 @@ if (empty($GLOBALS['is_header_sent'])) {
                 // Get additional information about tables for tooltip is done
                 // in libraries/db_info.inc.php only once
                 if ($cfgRelation['commwork']) {
-                    $comment = PMA_getComments( $GLOBALS['db'] );
+                    $comment = PMA_getComments($GLOBALS['db']);
 
                     /**
                      * Displays table comment
                      */
-                    if ( is_array( $comment ) ) {
+                    if (is_array($comment) && ! empty($comment)) {
                         echo '<span class="table_comment"'
                             .' id="span_table_comment">&quot;'
                             .htmlspecialchars(implode(' ', $comment))

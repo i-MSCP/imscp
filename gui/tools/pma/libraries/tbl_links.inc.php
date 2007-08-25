@@ -1,23 +1,27 @@
 <?php
-/* $Id: tbl_links.inc.php 9624 2006-10-27 08:53:20Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_links.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-// Check parameters
-
-require_once('./libraries/common.lib.php');
+/**
+ * Check parameters
+ */
+require_once './libraries/common.inc.php';
 
 PMA_checkParameters(array('db', 'table'));
 
 /**
  * Prepares links
  */
-require_once('./libraries/bookmark.lib.php');
+require_once './libraries/bookmark.lib.php';
 
 
 /**
  * Set parameters for links
  */
-if (empty($url_query) 
+if (empty($url_query)
 || (isset($_POST['table']) && isset($_POST['new_name']) && $_POST['table'] != $_POST['new_name'])) {
     $url_query = PMA_generate_common_url($db, $table);
 }
@@ -27,14 +31,14 @@ $url_params['table'] = $table;
 /**
  * Defines the urls to return to in case of error in a sql statement
  */
-$err_url_0 = $cfg['DefaultTabDatabase'] . PMA_generate_common_url( array( 'db' => $db, ) );
-$err_url   = $cfg['DefaultTabTable'] . PMA_generate_common_url( $url_params );
+$err_url_0 = $cfg['DefaultTabDatabase'] . PMA_generate_common_url(array('db' => $db,));
+$err_url   = $cfg['DefaultTabTable'] . PMA_generate_common_url($url_params);
 
 /**
  * Displays headers
  */
 $js_to_run = 'functions.js';
-require_once('./libraries/header.inc.php');
+require_once './libraries/header.inc.php';
 
 /**
  * Displays links
@@ -58,7 +62,7 @@ $tabs['search']['icon'] = 'b_search.png';
 $tabs['search']['text'] = $strSearch;
 $tabs['search']['link'] = 'tbl_select.php';
 
-if ( ! (isset($db_is_information_schema) && $db_is_information_schema) ) {
+if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $tabs['insert']['icon'] = 'b_insrow.png';
     $tabs['insert']['link'] = 'tbl_change.php';
     $tabs['insert']['text'] = $strInsert;
@@ -73,7 +77,7 @@ $tabs['export']['text'] = $strExport;
  * Don't display "Import", "Operations" and "Empty"
  * for views and information_schema
  */
-if ( ! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_schema )) {
+if (! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $tabs['import']['icon'] = 'b_tblimport.png';
     $tabs['import']['link'] = 'tbl_import.php';
     $tabs['import']['text'] = $strImport;
@@ -101,7 +105,7 @@ if ( ! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information
 /**
  * no drop in information_schema
  */
-if ( ! (isset($db_is_information_schema) && $db_is_information_schema) ) {
+if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $tabs['drop']['icon'] = 'b_deltbl.png';
     $tabs['drop']['link'] = 'sql.php';
     $tabs['drop']['text'] = $strDrop;
@@ -121,8 +125,8 @@ if ($table_info_num_rows == 0 && !$tbl_is_view) {
     $tabs['search']['warning'] = $strTableIsEmpty;
 }
 
-echo PMA_getTabs( $tabs );
-unset( $tabs );
+echo PMA_getTabs($tabs);
+unset($tabs);
 
 /**
  * Displays a message

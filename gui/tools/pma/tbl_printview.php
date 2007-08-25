@@ -1,7 +1,14 @@
 <?php
-/* $Id: tbl_printview.php 9602 2006-10-25 12:25:01Z nijel $ */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_printview.php 10478 2007-07-09 19:41:38Z lem9 $
+ */
 
-require_once './libraries/common.lib.php';
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 
 require './libraries/tbl_common.php';
 
@@ -31,7 +38,7 @@ $cfgRelation = PMA_getRelationsParam();
 /**
  * Defines the url to return to in case of error in a sql statement
  */
-if (isset($table)) {
+if (strlen($table)) {
     $err_url = 'tbl_sql.php?' . PMA_generate_common_url($db, $table);
 } else {
     $err_url = 'db_sql.php?' . PMA_generate_common_url($db);
@@ -50,7 +57,7 @@ PMA_DBI_select_db($db);
  */
 if (isset($selected_tbl) && is_array($selected_tbl)) {
     $the_tables   = $selected_tbl;
-} elseif (isset($table)) {
+} elseif (strlen($table)) {
     $the_tables[] = $table;
 }
 $multi_tables     = (count($the_tables) > 1);
@@ -249,7 +256,7 @@ foreach ($the_tables as $key => $table) {
     if ($have_rel) {
         echo '    <td>';
         if (isset($res_rel[$field_name])) {
-            echo htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' -> ' . $res_rel[$field_name]['foreign_field'] );
+            echo htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' -> ' . $res_rel[$field_name]['foreign_field']);
         }
         echo '&nbsp;</td>' . "\n";
     }
@@ -281,9 +288,8 @@ foreach ($the_tables as $key => $table) {
 
     <?php
 
-    if ( ! $tbl_is_view
-      && ( $db != 'information_schema'
-        || PMA_MYSQL_INT_VERSION < 50002 ) ) {
+    if (! $tbl_is_view
+     && ($db != 'information_schema' || PMA_MYSQL_INT_VERSION < 50002)) {
 
         /**
          * Displays indexes
@@ -444,7 +450,7 @@ foreach ($the_tables as $key => $table) {
             <tr>
                 <td><?php echo ucfirst($strRows); ?></td>
                 <td align="right">
-                    <?php echo number_format($showtable['Rows'], 0, $number_decimal_separator, $number_thousands_separator) . "\n"; ?>
+                    <?php echo PMA_formatNumber($showtable['Rows'], 0) . "\n"; ?>
                 </td>
             </tr>
                     <?php
@@ -454,7 +460,7 @@ foreach ($the_tables as $key => $table) {
             <tr>
                 <td><?php echo ucfirst($strRowLength); ?>&nbsp;&oslash;</td>
                 <td>
-                    <?php echo number_format($showtable['Avg_row_length'], 0, $number_decimal_separator, $number_thousands_separator) . "\n"; ?>
+                    <?php echo PMA_formatNumber($showtable['Avg_row_length'], 0) . "\n"; ?>
                 </td>
             </tr>
                     <?php
@@ -474,7 +480,7 @@ foreach ($the_tables as $key => $table) {
             <tr>
                 <td><?php echo ucfirst($strNext); ?>&nbsp;Autoindex</td>
                 <td align="right">
-                    <?php echo number_format($showtable['Auto_increment'], 0, $number_decimal_separator, $number_thousands_separator) . "\n"; ?>
+                    <?php echo PMA_formatNumber($showtable['Auto_increment'], 0) . "\n"; ?>
                 </td>
             </tr>
                     <?php
@@ -533,7 +539,7 @@ foreach ($the_tables as $key => $table) {
  */
 ?>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 function printPage()
 {

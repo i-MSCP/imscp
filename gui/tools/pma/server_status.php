@@ -1,14 +1,19 @@
 <?php
-/* $Id: server_status.php 10047 2007-03-02 15:16:15Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * displays status variables with descriptions and some hints an optmizing
  *  + reset status variables
+ *
+ * @version $Id: server_status.php 10423 2007-06-07 00:23:33Z lem9 $
+ */
+
+/**
+ *
  */
 if (! defined('PMA_NO_VARIABLES_IMPORT')) {
     define('PMA_NO_VARIABLES_IMPORT', true);
 }
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 
 /**
  * Does the common work
@@ -262,7 +267,7 @@ $sections = array(
 // variable or section name => (name => url)
 $links = array();
 
-// because of PMA_NO_VARIABLES_IMPORT, the $PHP_SELF globalized by 
+// because of PMA_NO_VARIABLES_IMPORT, the $PHP_SELF globalized by
 // grab_globals is not available here when register_globals = Off
 // and in some situations, $_SERVER['PHP_SELF'] is not defined
 $links['table'][$strFlushTables]
@@ -304,9 +309,9 @@ $links['Slow_queries']['MySQL - ' . $strDocu]
     = $cfg['MySQLManualBase'] . '/slow-query-log.html';
 
 $links['innodb'][$strServerTabVariables]
-    = 'server_engines.php?engine=innodb&amp;' . PMA_generate_common_url();
+    = 'server_engines.php?engine=InnoDB&amp;' . PMA_generate_common_url();
 $links['innodb'][$strInnodbStat]
-    = 'server_engines.php?engine=innodb&amp;page=status&amp;' .
+    = 'server_engines.php?engine=InnoDB&amp;page=Status&amp;' .
       PMA_generate_common_url();
 $links['innodb']['MySQL - ' . $strDocu]
     = $cfg['MySQLManualBase'] . '/innodb.html';

@@ -1,6 +1,8 @@
 <?php
-/* $Id: csv.php 9549 2006-10-13 08:14:31Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * @version $Id: csv.php 10137 2007-03-19 17:55:39Z cybot_tm $
+ */
 
 /**
  * Set of functions used to build CSV dumps of tables
@@ -20,7 +22,7 @@ if (isset($plugin_list)) {
             array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
             array('type' => 'hidden', 'name' => 'data'),
             ),
-        'options_text' => 'strCSVOptions',
+        'options_text' => 'strOptions',
         );
 } else {
 

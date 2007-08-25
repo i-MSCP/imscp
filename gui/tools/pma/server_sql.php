@@ -1,8 +1,14 @@
 <?php
-/* $Id: server_sql.php 7908 2005-11-24 09:12:17Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: server_sql.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
 
-require_once('./libraries/common.lib.php');
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 
 /**
  * Does the common work

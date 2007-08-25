@@ -1,11 +1,14 @@
 <?php
-/* $Id: pmd_display_field.php 9828 2007-01-05 17:30:36Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
+ * @version $Id: pmd_display_field.php 10149 2007-03-20 15:11:15Z cybot_tm $
+ * @package phpMyAdmin-Designer
+ */
 
-/*
-@author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
-*/
-
+/**
+ *
+ */
 include_once 'pmd_common.php';
 require_once './libraries/relation.lib.php';
 
@@ -14,7 +17,7 @@ $table = $T;
 $display_field = $F;
 
 if ($cfgRelation['displaywork']) {
-    
+
     $disp     = PMA_getDisplayField($db, $table);
     if ($disp) {
         if ($display_field != $disp) {
@@ -39,7 +42,7 @@ if ($cfgRelation['displaywork']) {
     if (isset($upd_query)) {
         $upd_rs    = PMA_query_as_cu($upd_query);
     }
-} // end if 
+} // end if
 
 header("Content-Type: text/xml; charset=utf-8");
 header("Cache-Control: no-cache");

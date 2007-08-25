@@ -1,8 +1,14 @@
 <?php
-/* $Id: db_structure.php 9814 2006-12-31 17:15:56Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: db_structure.php 10557 2007-08-11 13:34:20Z lem9 $
+ */
 
-require_once './libraries/common.lib.php';
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 
 /**
@@ -154,6 +160,13 @@ if (true == $cfg['PropertiesIconic']) {
 /**
  * Displays the tables list
  */
+
+$_url_params = array(
+    'pos' => $pos,
+    'db'  => $db);
+
+PMA_listNavigator($total_num_tables, $pos, $_url_params, 'db_structure.php', 'frame_content', $GLOBALS['cfg']['MaxTableList']);
+
 ?>
 <form method="post" action="db_structure.php" name="tablesForm" id="tablesForm">
 <?php
@@ -173,6 +186,7 @@ $row_count      = 0;
 $hidden_fields = array();
 $odd_row       = true;
 $at_least_one_view_exceeds_max_count = false;
+$sum_row_count_pre = '';
 
 foreach ($tables as $keyname => $each_table) {
     if ($each_table['TABLE_ROWS'] === null || $each_table['TABLE_ROWS'] < $GLOBALS['cfg']['MaxExactCount']) {
@@ -186,11 +200,11 @@ foreach ($tables as $keyname => $each_table) {
                        || $each_table['TABLE_TYPE'] === 'SYSTEM VIEW');
 
     $alias = (!empty($tooltip_aliasname) && isset($tooltip_aliasname[$each_table['TABLE_NAME']]))
-               ? htmlspecialchars($tooltip_aliasname[$each_table['TABLE_NAME']])
-               :  htmlspecialchars($each_table['TABLE_NAME']);
+               ? str_replace(' ', '&nbsp;', htmlspecialchars($tooltip_truename[$each_table['TABLE_NAME']]))
+               : str_replace(' ', '&nbsp;', htmlspecialchars($each_table['TABLE_NAME']));
     $truename = (!empty($tooltip_truename) && isset($tooltip_truename[$each_table['TABLE_NAME']]))
-               ? htmlspecialchars($tooltip_truename[$each_table['TABLE_NAME']])
-               : htmlspecialchars($each_table['TABLE_NAME']);
+               ? str_replace(' ', '&nbsp;', htmlspecialchars($tooltip_truename[$each_table['TABLE_NAME']]))
+               : str_replace(' ', '&nbsp;', htmlspecialchars($each_table['TABLE_NAME']));
 
     // Sets parameters for links
     $tbl_url_query = $url_query . '&amp;table=' . $table_encoded;
@@ -233,7 +247,7 @@ foreach ($tables as $keyname => $each_table) {
             . ' ' . PMA_backquote($each_table['TABLE_NAME']);
         $drop_message = sprintf(
             $table_is_view ? $strViewHasBeenDropped : $strTableHasBeenDropped,
-            htmlspecialchars($each_table['TABLE_NAME']));
+            str_replace(' ', '&nbsp;', htmlspecialchars($each_table['TABLE_NAME'])));
     }
 
     // loic1: Patch from Joshua Nye <josh at boxcarmedia.com> to get valid
@@ -347,15 +361,23 @@ foreach ($tables as $keyname => $each_table) {
     //  so ensure that we'll display "in use" below for a table
     //  that needs to be repaired
 
-    if (isset($each_table['TABLE_ROWS']) && ($each_table['ENGINE'] != null || $table_is_view)) { 
+    if (isset($each_table['TABLE_ROWS']) && ($each_table['ENGINE'] != null || $table_is_view)) {
         if ($table_is_view  && $each_table['TABLE_ROWS'] >= $cfg['MaxExactCountViews']) {
             $at_least_one_view_exceeds_max_count = true;
+            $row_count_pre = '~';
+            $sum_row_count_pre = '~';
             $show_superscript = '<sup>1</sup>';
+        } elseif($each_table['ENGINE'] == 'InnoDB') {
+            // InnoDB table: Row count is not accurate
+            $row_count_pre = '~';
+            $sum_row_count_pre = '~';
+            $show_superscript = '';
         } else {
+            $row_count_pre = '';
             $show_superscript = '';
         }
     ?>
-    <td class="value"><?php echo PMA_formatNumber($each_table['TABLE_ROWS'], 0) . $show_superscript; ?></td>
+    <td class="value"><?php echo $row_count_pre . PMA_formatNumber($each_table['TABLE_ROWS'], 0) . $show_superscript; ?></td>
         <?php if (!($cfg['PropertiesNumColumns'] > 1)) { ?>
     <td nowrap="nowrap"><?php echo ($table_is_view ? $strView : $each_table['ENGINE']); ?></td>
             <?php if (isset($collation)) { ?>
@@ -401,7 +423,7 @@ if ($is_show_stats) {
     </th>
     <th colspan="<?php echo ($db_is_information_schema ? 3 : 6) ?>" align="center">
         <?php echo $strSum; ?></th>
-    <th class="value"><?php echo PMA_formatNumber($sum_entries, 0); ?></th>
+    <th class="value"><?php echo $sum_row_count_pre . PMA_formatNumber($sum_entries, 0); ?></th>
 <?php
 if (!($cfg['PropertiesNumColumns'] > 1)) {
     $default_engine = PMA_DBI_get_default_engine();
@@ -473,7 +495,7 @@ echo '    <option value="' . $strAnalyzeTable . '" >'
      . $strAnalyzeTable . '</option>' . "\n";
 ?>
 </select>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 <!--
 // Fake js to allow the use of the <noscript> tag
 //-->
@@ -492,10 +514,15 @@ if ($at_least_one_view_exceeds_max_count && !$db_is_information_schema) {
     echo '<sup>1</sup>' . PMA_sanitize(sprintf($strViewMaxExactCount, PMA_formatNumber($cfg['MaxExactCountViews'], 0), '[a@./Documentation.html#cfg_MaxExactCountViews@_blank]', '[/a]')) . "\n";
     echo '</div>' . "\n";
 }
+// display again the table list navigator
+PMA_listNavigator($total_num_tables, $pos, $_url_params, 'db_structure.php', 'frame_content', $GLOBALS['cfg']['MaxTableList']);
 ?>
 <hr />
 
 <?php
+// Routines
+require './libraries/db_routines.inc.php';
+
 /**
  * Work on the database
  * redesigned 2004-05-08 by mkkeck

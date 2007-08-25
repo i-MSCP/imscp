@@ -12,7 +12,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-// $Id: class.Linux.inc.php,v 1.86 2007/01/25 20:21:35 bigmichi1 Exp $
+// $Id: class.Linux.inc.php,v 1.88 2007/02/25 20:50:52 bigmichi1 Exp $
 
 if (!defined('IN_PHPSYSINFO')) {
     die("No Hacking");
@@ -73,6 +73,10 @@ class sysinfo {
     }
     return $result;
   }
+  // get the IP address of our vhost name
+  function vip_addr () {
+    return gethostbyname($this->vhostname());
+  }
   // get our canonical hostname
   function chostname () {
     $result = rfts( '/proc/sys/kernel/hostname', 1 );
@@ -82,7 +86,7 @@ class sysinfo {
       $result = gethostbyaddr( gethostbyname( trim( $result ) ) );
     }
     return $result;
-  }
+  } 
   // get the IP address of our canonical hostname
   function ip_addr () {
     if (!($result = getenv('SERVER_ADDR'))) {
@@ -240,7 +244,7 @@ class sysinfo {
 			// This adds the ability to display the cache that a CPU has
 			// Originally made by Sven Blumenstein <bazik@gentoo.org> in 2004
 			// Modified by Tom Weustink <freshy98@gmx.net> in 2004
-			$sparclist = array('SUNW,UltraSPARC@0,0', 'SUNW,UltraSPARC-II@0,0', 'SUNW,UltraSPARC@1c,0', 'SUNW,UltraSPARC-IIi@1c,0', 'SUNW,UltraSPARC-II@1c,0');
+			$sparclist = array('SUNW,UltraSPARC@0,0', 'SUNW,UltraSPARC-II@0,0', 'SUNW,UltraSPARC@1c,0', 'SUNW,UltraSPARC-IIi@1c,0', 'SUNW,UltraSPARC-II@1c,0', 'SUNW,UltraSPARC-IIe@0,0');
 			foreach ($sparclist as $name) {
 				$buf = rfts( '/proc/openprom/' . $name . '/ecache-size',1 , 32, false );
 				if( $buf != "ERROR" ) {

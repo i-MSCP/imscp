@@ -1,11 +1,14 @@
 <?php
-/* $Id: latex.php 9805 2006-12-26 16:10:47Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build dumps of tables
+ *
+ * @version $Id: latex.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $hide_structure = false;
     if ($plugin_param['export_type'] == 'table' && !$plugin_param['single_table']) {
@@ -18,7 +21,7 @@ if (isset($plugin_list)) {
         'options' => array(
             array('type' => 'bool', 'name' => 'caption', 'text' => 'strLatexIncludeCaption'),
             ),
-        'options_text' => 'strLaTeXOptions',
+        'options_text' => 'strOptions',
         );
     /* Structure options */
     if (!$hide_structure) {
@@ -239,7 +242,8 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
         $buffer = '';
         // print each row
         for ($i = 0; $i < $columns_cnt; $i++) {
-            if ( isset($record[$columns[$i]]) && (!function_exists('is_null') || !is_null($record[$columns[$i]]))) {
+            if (isset($record[$columns[$i]])
+             && (! function_exists('is_null') || !is_null($record[$columns[$i]]))) {
                 $column_value = PMA_texEscape(stripslashes($record[$columns[$i]]));
             } else {
                 $column_value = $GLOBALS['latex_null'];
@@ -278,7 +282,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
  * @param   boolean  whether to include relation comments
  * @param   boolean  whether to include column comments
  * @param   boolean  whether to include mime comments
- * @param   string   future feature: support view dependencies 
+ * @param   string   future feature: support view dependencies
  *
  * @return  bool     Whether it suceeded
  *

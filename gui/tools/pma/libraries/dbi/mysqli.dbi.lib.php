@@ -1,9 +1,9 @@
 <?php
-/* $Id: mysqli.dbi.lib.php 10356 2007-05-08 20:39:33Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Interface to the improved MySQL extension (MySQLi)
+ *
+ * @version $Id: mysqli.dbi.lib.php 10356 2007-05-08 20:39:33Z cybot_tm $
  */
 
 // MySQL client API
@@ -107,6 +107,12 @@ function PMA_DBI_connect($user, $password, $is_controluser = false)
     }
 
     if ($return_value == false) {
+        if ($is_controluser) {
+            if (! defined('PMA_DBI_CONNECT_FAILED_CONTROLUSER')) {
+                define('PMA_DBI_CONNECT_FAILED_CONTROLUSER', true);
+            }
+            return false;
+        }
         PMA_auth_fails();
     } // end if
 
@@ -360,7 +366,7 @@ function PMA_DBI_get_host_info($link = null)
  * @param   resource        $link   mysql link
  * @return  integer         version of the MySQL protocol used
  */
-function PMA_DBI_get_proto_info( $link = null )
+function PMA_DBI_get_proto_info($link = null)
 {
     if (null === $link) {
         if (isset($GLOBALS['userlink'])) {
@@ -541,7 +547,7 @@ function PMA_DBI_get_fields_meta($result)
     $typeAr = array();
     $typeAr[MYSQLI_TYPE_DECIMAL]     = 'real';
     $typeAr[MYSQLI_TYPE_NEWDECIMAL]  = 'real';
-    $typeAr[MYSQLI_TYPE_BIT]         = 'bool';
+    $typeAr[MYSQLI_TYPE_BIT]         = 'int';
     $typeAr[MYSQLI_TYPE_TINY]        = 'int';
     $typeAr[MYSQLI_TYPE_SHORT]       = 'int';
     $typeAr[MYSQLI_TYPE_LONG]        = 'int';

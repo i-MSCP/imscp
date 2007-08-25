@@ -1,7 +1,13 @@
 <?php
-/* $Id: iconv_wrapper.lib.php 8629 2006-02-22 08:26:32Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: iconv_wrapper.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
+/**
+ *
+ */
 # GNU iconv code set to IBM AIX libiconv code set table
 # Keys of this table should be in lowercase, and searches should be performed using lowercase!
 $gnu_iconv_to_aix_iconv_codepage_map = array (
@@ -39,7 +45,7 @@ $gnu_iconv_to_aix_iconv_codepage_map = array (
  *
  * @access  public
  *
- * @author  bwiberg  Björn Wiberg <Bjorn.Wiberg@its.uu.se> 
+ * @author  bwiberg  Björn Wiberg <Bjorn.Wiberg@its.uu.se>
  */
 function PMA_aix_iconv_wrapper($in_charset, $out_charset, $str) {
 
@@ -50,7 +56,7 @@ function PMA_aix_iconv_wrapper($in_charset, $out_charset, $str) {
     $using_translit = (!($translit_search === FALSE));
 
     // Extract "plain" output character set name (without any transliteration argument)
-    $out_charset_plain = ( $using_translit ? substr($out_charset, 0, $translit_search) : $out_charset );
+    $out_charset_plain = ($using_translit ? substr($out_charset, 0, $translit_search) : $out_charset);
 
     // Transform name of input character set (if found)
     if (array_key_exists(strtolower($in_charset), $gnu_iconv_to_aix_iconv_codepage_map)) {
@@ -64,7 +70,7 @@ function PMA_aix_iconv_wrapper($in_charset, $out_charset, $str) {
 
     // Add transliteration argument again (exactly as specified by user) if used
     // Build the output character set name that we will use
-    $out_charset = ( $using_translit ? $out_charset_plain . substr($out_charset, $translit_search) : $out_charset_plain );
+    $out_charset = ($using_translit ? $out_charset_plain . substr($out_charset, $translit_search) : $out_charset_plain);
 
     // NOTE: Transliteration not supported; we will use the "plain" output character set name
     $out_charset = $out_charset_plain;

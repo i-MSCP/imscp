@@ -1,10 +1,10 @@
 <?php
-/* $Id: signon.auth.lib.php 9486 2006-10-03 13:12:35Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-// +--------------------------------------------------------------------------+
-// | Set of functions used to run single signon authentication.               |
-// +--------------------------------------------------------------------------+
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Set of functions used to run single signon authentication.
+ *
+ * @version $Id: signon.auth.lib.php 10424 2007-06-07 17:14:21Z lem9 $
+ */
 
 
 /**
@@ -20,7 +20,7 @@
  */
 function PMA_auth() {
     if (empty($GLOBALS['cfg']['Server']['SignonURL'])) {
-        PMA_sendHeaderLocation('error.php?error=' . urlencode('You must set SignonURL!'));
+        PMA_fatalError('You must set SignonURL!');
     } elseif (!empty($_REQUEST['old_usr']) && !empty($GLOBALS['cfg']['Server']['LogoutURL'])) {
         /* Perform logout to custom URL */
         PMA_sendHeaderLocation($GLOBALS['cfg']['Server']['LogoutURL']);
@@ -53,9 +53,12 @@ function PMA_auth() {
 function PMA_auth_check()
 {
     global $PHP_AUTH_USER, $PHP_AUTH_PW;
-    
+
     /* Session name */
     $session_name = $GLOBALS['cfg']['Server']['SignonSession'];
+
+    /* Current host */
+    $single_signon_host = $GLOBALS['cfg']['Server']['host'];
 
     /* Are we requested to do logout? */
     $do_logout = !empty($_REQUEST['old_usr']);
@@ -68,7 +71,7 @@ function PMA_auth_check()
         session_write_close();
 
         /* Load single signon session */
-        session_name($session_name); 
+        session_name($session_name);
         session_id($_COOKIE[$session_name]);
         session_start();
 
@@ -87,6 +90,9 @@ function PMA_auth_check()
                 $PHP_AUTH_PW = $_SESSION['PMA_single_signon_password'];
             }
         }
+        if (isset($_SESSION['PMA_single_signon_host'])) {
+	        $single_signon_host = $_SESSION['PMA_single_signon_host'];
+        }
         /* Also get token as it is needed to access subpages */
         if (isset($_SESSION['PMA_single_signon_token'])) {
             /* No need to care about token on logout */
@@ -103,8 +109,11 @@ function PMA_auth_check()
         }
         session_start();
 
+	/* Set the single signon host */
+	$GLOBALS['cfg']['Server']['host']=$single_signon_host;
+
         /* Restore our token */
-        if (!empty($pma_token)) { 
+        if (!empty($pma_token)) {
             $_SESSION[' PMA_token '] = $pma_token;
         }
     }
@@ -154,8 +163,7 @@ function PMA_auth_fails()
 {
     $error = PMA_DBI_getError();
     if ($error && $GLOBALS['errno'] != 1045) {
-        PMA_sendHeaderLocation('error.php?error=' . urlencode($error));
-        exit;
+        PMA_fatalError($error);
     } else {
         PMA_auth();
         return true;

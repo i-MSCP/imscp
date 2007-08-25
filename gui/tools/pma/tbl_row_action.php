@@ -1,15 +1,15 @@
 <?php
-/* $Id: tbl_row_action.php 10144 2007-03-20 11:22:31Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-require_once('./libraries/common.lib.php');
-require_once('./libraries/mysql_charsets.lib.php');
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: tbl_row_action.php 10398 2007-05-15 11:16:10Z cybot_tm $
+ */
 
 /**
- * Avoids undefined variables
+ *
  */
-if (!isset($pos)) {
-    $pos = 0;
-}
+require_once './libraries/common.inc.php';
+require_once './libraries/mysql_charsets.lib.php';
 
 /**
  * No rows were selected => show again the query and tell that user.
@@ -17,8 +17,8 @@ if (!isset($pos)) {
 if ((!isset($rows_to_delete) || !is_array($rows_to_delete)) && !isset($mult_btn)) {
     $disp_message = $strNoRowsSelected;
     $disp_query = '';
-    require('./sql.php');
-    require_once('./libraries/footer.inc.php');
+    require './sql.php';
+    require_once './libraries/footer.inc.php';
 }
 
 /**
@@ -70,7 +70,7 @@ if ($submit_mult == 'row_delete' || $submit_mult == 'row_export') {
     $js_to_run = 'functions.js';
 }
 
-require_once('./libraries/header.inc.php');
+require_once './libraries/header.inc.php';
 
 if (!empty($submit_mult)) {
     switch($submit_mult) {
@@ -81,7 +81,7 @@ if (!empty($submit_mult)) {
             foreach ($rows_to_delete AS $i_primary_key => $del_query) {
                 $primary_key[] = urldecode($i_primary_key);
             }
-            
+
             $active_page = 'tbl_change.php';
             include './tbl_change.php';
             break;
@@ -106,12 +106,11 @@ if (!empty($submit_mult)) {
         default:
             $action = 'tbl_row_action.php';
             $err_url = 'tbl_row_action.php?' . PMA_generate_common_url($db, $table);
-            if (!isset($mult_btn)) {
+            if (! isset($mult_btn)) {
                 $original_sql_query = $sql_query;
                 $original_url_query = $url_query;
-                $original_pos       = $pos;
             }
-            require('./libraries/mult_submits.inc.php');
+            require './libraries/mult_submits.inc.php';
             $url_query = PMA_generate_common_url($db, $table)
                        . '&amp;goto=tbl_sql.php';
 
@@ -120,7 +119,7 @@ if (!empty($submit_mult)) {
              * Show result of multi submit operation
              */
             // sql_query is not set when user does not confirm multi-delete
-            if ((!empty($submit_mult) || isset($mult_btn)) && isset($sql_query)) {
+            if ((!empty($submit_mult) || isset($mult_btn)) && ! empty($sql_query)) {
                 $disp_message = $strSuccess;
                 $disp_query = $sql_query;
             }
@@ -133,22 +132,18 @@ if (!empty($submit_mult)) {
                 $url_query = $original_url_query;
             }
 
-            if (isset($original_pos)) {
-                $pos       = $original_pos;
-            }
-
             // this is because sql.php could call tbl_structure
             // which would think it needs to call mult_submits.inc.php:
             unset($submit_mult);
             unset($mult_btn);
 
             $active_page = 'sql.php';
-            require('./sql.php');
+            require './sql.php';
 
             /**
              * Displays the footer
              */
-            require_once('./libraries/footer.inc.php');
+            require_once './libraries/footer.inc.php';
         break;
     }
 }

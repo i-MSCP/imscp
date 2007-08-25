@@ -1,7 +1,14 @@
 <?php
-/* $Id: pmd_help.php 9853 2007-01-19 18:14:44Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: pmd_help.php 10149 2007-03-20 15:11:15Z cybot_tm $
+ * @package phpMyAdmin-Designer
+ */
 
+/**
+ *
+ */
 require_once 'pmd_common.php';
 ?>
 <html>

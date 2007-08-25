@@ -1,13 +1,15 @@
 <?php
-/* $Id: import.php 9636 2006-10-27 13:04:15Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-/* Core script for import, this is just the glue around all other stuff */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Core script for import, this is just the glue around all other stuff
+ *
+ * @version $Id: import.php 10398 2007-05-15 11:16:10Z cybot_tm $
+ */
 
 /**
  * Get the variables sent or posted to this script and a core script
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 $js_to_run = 'functions.js';
 
 // default values
@@ -25,7 +27,7 @@ if (!empty($sql_query)) {
         $GLOBALS['reload'] = true;
     }
 
-    unset($sql_query);
+    $sql_query = '';
 } elseif (!empty($sql_localfile)) {
     // run SQL file on server
     $local_import_file = $sql_localfile;
@@ -47,10 +49,10 @@ if (!empty($sql_query)) {
 // If we didn't get any parameters, either user called this directly, or
 // upload limit has been reached, let's assume the second possibility.
 if ($_POST == array() && $_GET == array()) {
-    require_once('./libraries/header.inc.php');
+    require_once './libraries/header.inc.php';
     $show_error_header = TRUE;
     PMA_showMessage(sprintf($strUploadLimit, '[a@./Documentation.html#faq1_16@_blank]', '[/a]'));
-    require('./libraries/footer.inc.php');
+    require './libraries/footer.inc.php';
 }
 
 // Check needed parameters
@@ -60,7 +62,7 @@ PMA_checkParameters(array('import_type', 'format'));
 $format = PMA_securePath($format);
 
 // Import functions
-require_once('./libraries/import.lib.php');
+require_once './libraries/import.lib.php';
 
 // Create error and goto url
 if ($import_type == 'table') {
@@ -74,17 +76,17 @@ if ($import_type == 'table') {
     $goto = 'server_import.php';
 } else {
     if (empty($goto) || !preg_match('@^(server|db|tbl)(_[a-z]*)*\.php$@i', $goto)) {
-        if (isset($table) && isset($db)) {
+        if (strlen($table) && strlen($db)) {
             $goto = 'tbl_structure.php';
-        } elseif (isset($db)) {
+        } elseif (strlen($db)) {
             $goto = 'db_structure.php';
         } else {
             $goto = 'server_sql.php';
         }
     }
-    if (isset($table) && isset($db)) {
+    if (strlen($table) && strlen($db)) {
         $common = PMA_generate_common_url($db, $table);
-    } elseif (isset($db)) {
+    } elseif (strlen($db)) {
         $common = PMA_generate_common_url($db);
     } else {
         $common = PMA_generate_common_url();
@@ -95,7 +97,7 @@ if ($import_type == 'table') {
 }
 
 
-if (isset($db)) {
+if (strlen($db)) {
     PMA_DBI_select_db($db);
 }
 
@@ -130,7 +132,7 @@ $bookmark_created = FALSE;
 
 // Bookmark Support: get a query back from bookmark if required
 if (!empty($id_bookmark)) {
-    require_once('./libraries/bookmark.lib.php');
+    require_once './libraries/bookmark.lib.php';
     switch ($action_bookmark) {
         case 0: // bookmarked query that have to be run
             $import_text = PMA_queryBookmarks($db, $cfg['Bookmark'], $id_bookmark, 'id', isset($action_bookmark_all));
@@ -165,7 +167,7 @@ if (isset($GLOBALS['show_as_php'])) {
 
 // Store the query as a bookmark before executing it if bookmarklabel was given
 if (!empty($bkm_label) && !empty($import_text)) {
-    require_once('./libraries/bookmark.lib.php');
+    require_once './libraries/bookmark.lib.php';
     $bfields = array(
                  'dbase' => $db,
                  'user'  => $cfg['Bookmark']['user'],
@@ -274,7 +276,7 @@ if ($import_file != 'none' && !$error) {
                 break;
             case 'application/zip':
                 if ($cfg['GZipDump'] && @function_exists('gzinflate')) {
-                    include_once('./libraries/unzip.lib.php');
+                    include_once './libraries/unzip.lib.php';
                     $import_handle = new SimpleUnzip();
                     $import_handle->ReadFile($import_file);
                     if ($import_handle->Count() == 0) {
@@ -353,7 +355,7 @@ if (!$error) {
     } else {
         // Do the real import
         $plugin_param = $import_type;
-        require('./libraries/import/' . $format . '.php');
+        require './libraries/import/' . $format . '.php';
     }
 }
 
@@ -393,9 +395,9 @@ if ($timeout_passed) {
     }
 }
 
-// Parse and analyze the query, for correct db and table name 
+// Parse and analyze the query, for correct db and table name
 // in case of a query typed in the query window
-require_once('./libraries/parse_analyze.lib.php');
+require_once './libraries/parse_analyze.lib.php';
 
 // There was an error?
 if (isset($my_die)) {
@@ -405,17 +407,10 @@ if (isset($my_die)) {
 }
 
 if ($go_sql) {
-    if (isset($_GET['pos'])) {
-        // comes from the Refresh link
-        $pos = $_GET['pos'];
-    } else {
-        // Set pos to zero to possibly append limit
-        $pos = 0;
-    }
-    require('./sql.php');
+    require './sql.php';
 } else {
     $active_page = $goto;
-    require('./' . $goto);
+    require './' . $goto;
 }
 exit();
 ?>

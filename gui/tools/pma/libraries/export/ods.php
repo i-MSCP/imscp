@@ -1,11 +1,14 @@
 <?php
-/* $Id: ods.php 9000 2006-04-28 10:46:13Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build CSV dumps of tables
+ *
+ * @version $Id: ods.php 10239 2007-04-01 09:51:41Z cybot_tm $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $plugin_list['ods'] = array(
         'text' => 'strOpenDocumentSpreadsheet',
@@ -17,12 +20,12 @@ if (isset($plugin_list)) {
             array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
             array('type' => 'hidden', 'name' => 'data'),
             ),
-        'options_text' => 'strOpenDocumentSpreadsheetOptions',
+        'options_text' => 'strOptions',
         );
 } else {
 
 $GLOBALS['ods_buffer'] = '';
-require_once('./libraries/opendocument.lib.php');
+require_once './libraries/opendocument.lib.php';
 
 /**
  * Outputs comment
@@ -152,16 +155,9 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query) {
                 $GLOBALS['ods_buffer'] .= '<table:table-cell office:value-type="string">'
                     . '<text:p>' . htmlspecialchars($GLOBALS[$what . '_null']) . '</text:p>'
                     . '</table:table-cell>';
-            // ignore binary field
-            // Note: with mysqli, under MySQL 4.1.3, we get the flag
-            // "binary" for those field types (I don't know why)
+            // ignore BLOB
             } elseif (stristr($field_flags[$j], 'BINARY')
-                    && isset($GLOBALS['sql_hex_for_binary'])
-                    && $fields_meta[$j]->type != 'datetime'
-                    && $fields_meta[$j]->type != 'date'
-                    && $fields_meta[$j]->type != 'time'
-                    && $fields_meta[$j]->type != 'timestamp'
-                   ) {
+                    && $fields_meta[$j]->blob) {
                 $GLOBALS['ods_buffer'] .= '<table:table-cell office:value-type="string">'
                     . '<text:p></text:p>'
                     . '</table:table-cell>';

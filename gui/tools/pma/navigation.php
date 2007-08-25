@@ -1,9 +1,9 @@
 <?php
-/* $Id: navigation.php 9802 2006-12-21 01:22:03Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * the navigation frame - displays server, db and table selection tree
  *
+ * @version $Id: navigation.php 10533 2007-07-27 11:58:41Z lem9 $
  * @uses $GLOBALS['PMA_List_Database']
  * @uses $GLOBALS['server']
  * @uses $GLOBALS['db']
@@ -45,14 +45,13 @@
 /**
  * Gets a core script and starts output buffering work
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 
 /**
  * finish and cleanup navigation.php script execution
  *
  * @uses $GLOBALS['controllink'] to close it
  * @uses $GLOBALS['userlink'] to close it
- * @uses PMA_outBufferPost()
  * @uses PMA_DBI_close()
  * @access private only to be used in navigation.php
  */
@@ -70,13 +69,17 @@ function PMA_exitNavigationFrame()
         @PMA_DBI_close($GLOBALS['userlink']);
     }
 
-    /**
-     * Sends bufferized data
-     */
-    PMA_outBufferPost();
-
-    exit();
+    exit;
 }
+
+// keep the offset of the db list in session before closing it
+if (! isset($_SESSION['navi_limit_offset'])) {
+    $_SESSION['navi_limit_offset'] = 0;
+}
+if (isset($_REQUEST['pos'])) {
+    $_SESSION['navi_limit_offset'] = (int) $_REQUEST['pos'];
+}
+$pos = $_SESSION['navi_limit_offset']; 
 
 // free the session file, for the other frames to be loaded
 session_write_close();
@@ -109,6 +112,14 @@ $cfgRelation = PMA_getRelationsParam();
  */
 require_once './libraries/header_http.inc.php';
 
+if (! isset($_SESSION['navi_limit_offset'])) {
+    $_SESSION['navi_limit_offset'] = 0;
+}
+if (isset($_REQUEST['pos'])) {
+    $_SESSION['navi_limit_offset'] = (int) $_REQUEST['pos'];
+}
+$pos = $_SESSION['navi_limit_offset']; 
+
 /*
  * Displays the frame
  */
@@ -130,8 +141,9 @@ require_once './libraries/header_http.inc.php';
         content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
     <base target="frame_content" />
     <link rel="stylesheet" type="text/css"
-        href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=left&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
+        href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=left&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
     <script type="text/javascript" src="js/navigation.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
     <script type="text/javascript">
     // <![CDATA[
     var image_minus = '<?php echo $GLOBALS['pmaThemeImage']; ?>b_minus.png';
@@ -165,7 +177,15 @@ if (! $GLOBALS['server']) {
     echo '<p>' . $GLOBALS['strNoDatabases'] . '</p>';
     PMA_exitNavigationFrame();
 } elseif ($GLOBALS['cfg']['LeftFrameLight'] && $GLOBALS['PMA_List_Database']->count() > 1) {
-    if (!$cfg['DisplayDatabasesList']) {
+    $list = $cfg['DisplayDatabasesList'];
+    if ($list === 'auto') {
+        if (empty($GLOBALS['db'])) {
+            $list = true;
+        } else {
+            $list = false;
+        }
+    }
+    if (!$list) {
         // more than one database available and LeftFrameLight is true
         // display db selectbox
         //
@@ -180,14 +200,21 @@ if (! $GLOBALS['server']) {
     <label for="lightm_db"><?php echo $GLOBALS['strDatabase']; ?></label>
     <?php
         echo PMA_generate_common_hidden_inputs() . "\n";
-        echo $GLOBALS['PMA_List_Database']->getHtmlSelectGrouped(true) . "\n";
+        echo $GLOBALS['PMA_List_Database']->getHtmlSelectGrouped(true, $_SESSION['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']) . "\n";
         echo '<noscript>' . "\n"
             .'<input type="submit" name="Go" value="' . $GLOBALS['strGo'] . '" />' . "\n"
             .'</noscript>' . "\n"
-            .'</form>' . "\n"
-            .'</div>' . "\n";
+            .'</form>' . "\n";
     } else {
-        echo $GLOBALS['PMA_List_Database']->getHtmlListGrouped(true) . "\n";
+        if (! empty($db)) {
+            echo '<div id="databaseList">' . "\n";
+        }
+        echo $GLOBALS['PMA_List_Database']->getHtmlListGrouped(true, $_SESSION['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']) . "\n";
+    }
+    $_url_params = array('pos' => $pos);
+    PMA_listNavigator($GLOBALS['PMA_List_Database']->count(), $pos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxDbList']);
+    if (! empty($db)) {
+        echo '</div>' . "\n";
     }
 }
 ?>
@@ -213,7 +240,7 @@ $href_left = '<a onclick="if (toggle(\'%d\')) return false;"'
 
 $element_counter = 0;
 
-if ($GLOBALS['cfg']['LeftFrameLight'] && isset($GLOBALS['db']) && strlen($GLOBALS['db'])) {
+if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
     // show selected databasename as link to DefaultTabDatabase-page
     // with table count in ()
     $common_url_query = PMA_generate_common_url($GLOBALS['db']);
@@ -243,15 +270,29 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && isset($GLOBALS['db']) && strlen($GLOBAL
     if ($GLOBALS['text_dir'] === 'rtl') {
         echo ' <bdo dir="ltr">(' . PMA_getTableCount($GLOBALS['db']) . ')</bdo> ';
     }
-    echo htmlspecialchars($disp_name);
+    echo '<span class="navi_dbName">' . htmlspecialchars($disp_name) . '</span>';
     if ($GLOBALS['text_dir'] === 'ltr') {
         echo ' <bdo dir="ltr">(' . PMA_getTableCount($GLOBALS['db']) . ')</bdo> ';
     }
     echo '</a></p>';
 
-    $table_list = PMA_getTableList($GLOBALS['db']);
-    if (count($table_list) > 0) {
+    /**
+     * This helps reducing the navi panel size; in the right panel,
+     * user can find a navigator to page thru all tables.
+     *
+     * @todo instead of the 0 parameter, keep track of the
+     *       offset in the list of tables ($_SESSION['navi_table_limit_offset'])
+     *       and use PMA_listNavigator(); do not just check pos in REQUEST
+     *       but add another hidden param to see if it's the pos of databases
+     *       or the pos of tables. 
+     */
+    $table_list = PMA_getTableList($GLOBALS['db'], null, 0, $cfg['MaxTableList']);
+    if (! empty($table_list)) {
         PMA_displayTableList($table_list, true, '', $GLOBALS['db']);
+        // hint user that the table list is larger, until the todo is done
+        if (count($table_list) <= $GLOBALS['cfg']['MaxTableList'] && PMA_getTableCount($GLOBALS['db']) > $GLOBALS['cfg']['MaxTableList']) {
+            echo '&nbsp; ( 1 .. ', $GLOBALS['cfg']['MaxTableList'], ' / ', PMA_getTableCount($GLOBALS['db']), ' )'; 
+        } 
     } else {
         echo $GLOBALS['strNoTablesFound'];
     }
@@ -259,8 +300,13 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && isset($GLOBALS['db']) && strlen($GLOBAL
 } elseif ($GLOBALS['cfg']['LeftFrameLight']) {
     echo '<p>' . $GLOBALS['strSelectADb'] . '</p>' . "\n";
 } else {
+    echo '<div id="databaseList">' . "\n";
+    $_url_params = array('pos' => $pos);
+    PMA_listNavigator($GLOBALS['PMA_List_Database']->count(), $pos, $_url_params, 'navigation.php', 'frame_navigation', $GLOBALS['cfg']['MaxDbList']);
+    echo '</div>' . "\n";
+
     $common_url_query = PMA_generate_common_url();
-    PMA_displayDbList($GLOBALS['PMA_List_Database']->getGroupedDetails());
+    PMA_displayDbList($GLOBALS['PMA_List_Database']->getGroupedDetails($_SESSION['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']), $_SESSION['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']);
 }
 
 /**
@@ -283,14 +329,16 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && isset($GLOBALS['db']) && strlen($GLOBAL
  * @global  $db_start
  * @global  $common_url_query
  * @param   array   $ext_dblist extended db list
+ * @param   integer $offset
+ * @param   integer $count
  */
-function PMA_displayDbList($ext_dblist) {
+function PMA_displayDbList($ext_dblist, $offset, $count) {
     global $element_counter, $img_minus, $img_plus, $href_left,
         $db_start, $common_url_query;
 
     // get table list, for all databases
     // doing this in one step takes advantage of a single query with information_schema!
-    $tables_full = PMA_DBI_get_tables_full($GLOBALS['PMA_List_Database']->items);
+    $tables_full = PMA_DBI_get_tables_full($GLOBALS['PMA_List_Database']->getLimitedItems($offset, $count));
 
     $url_dbgroup = '';
     echo '<ul id="leftdatabaselist">';
@@ -483,13 +531,11 @@ function PMA_displayTableList($tables, $visible = false,
 
             $element_counter++;
             echo '<li>' . "\n";
-            if ($visible &&
-              ((isset($_REQUEST['tbl_group'])
-                && (strpos($_REQUEST['tbl_group'], $group) === 0
+            if ($visible
+             && ((isset($_REQUEST['tbl_group'])
+               && (strpos($_REQUEST['tbl_group'], $group) === 0
                 || strpos($_REQUEST['tbl_group'], $sep . $group) !== false))
-              ||
-              (isset($GLOBALS['table'])
-                && strpos($GLOBALS['table'], $group) === 0))) {
+              || strpos($GLOBALS['table'], $group) === 0)) {
                 printf($href_left, $element_counter,
                     $GLOBALS['common_url_query'] . '&amp;tbl_group=' . $tab_group_full);
                 printf($img_minus, $element_counter);
@@ -527,9 +573,7 @@ function PMA_displayTableList($tables, $visible = false,
               ((isset($_REQUEST['tbl_group'])
                 && (strpos($_REQUEST['tbl_group'], $group) === 0
                 || strpos($_REQUEST['tbl_group'], $sep . $group) !== false))
-              ||
-              (isset($GLOBALS['table'])
-                && strpos($GLOBALS['table'], $group) === 0))) {
+              || strpos($GLOBALS['table'], $group) === 0)) {
                 PMA_displayTableList($table, true,
                     $tab_group_full . $group, $table_db);
             } else {
@@ -560,13 +604,15 @@ function PMA_displayTableList($tables, $visible = false,
                 .'<a href="' . $href . '" title="' . htmlspecialchars($table['Comment']
                 .' (' . PMA_formatNumber($table['Rows'], 0) . ' ' . $GLOBALS['strRows']) . ')"'
                 .' id="' . htmlspecialchars($table_db . '.' . $table['Name']) . '">'
-                . htmlspecialchars($table['disp_name']) . '</a>';
+                // preserve spaces in table name
+                . str_replace(' ', '&nbsp;', htmlspecialchars($table['disp_name'])) . '</a>';
             echo '</li>' . "\n";
         }
     }
     echo '</ul>';
 }
 
-echo '</div>';
+echo '</div>' . "\n";
+
 PMA_exitNavigationFrame();
 ?>

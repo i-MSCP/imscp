@@ -1,11 +1,11 @@
 <?php
-/* $Id: http.auth.lib.php 9352 2006-08-24 12:39:16Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-// +--------------------------------------------------------------------------+
-// | Set of functions used to run http authentication.                        |
-// | NOTE: Requires PHP loaded as a Apache module.                            |
-// +--------------------------------------------------------------------------+
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Set of functions used to run http authentication.
+ * NOTE: Requires PHP loaded as a Apache module.
+ *
+ * @version $Id: http.auth.lib.php 10461 2007-06-25 11:41:58Z lem9 $
+ */
 
 
 /**
@@ -27,7 +27,14 @@ function PMA_auth() {
         exit;
     }
 
-    header('WWW-Authenticate: Basic realm="phpMyAdmin ' . sprintf($GLOBALS['strRunning'], (empty($GLOBALS['cfg']['Server']['verbose']) ? str_replace('\'', '\\\'', $GLOBALS['cfg']['Server']['host']) : str_replace('\'', '\\\'', $GLOBALS['cfg']['Server']['verbose']))) .  '"');
+    if (empty($GLOBALS['cfg']['Server']['verbose'])) {
+        $server_message = $GLOBALS['cfg']['Server']['host'];
+    } else {
+        $server_message = $GLOBALS['cfg']['Server']['verbose'];
+    }
+    // remove non US-ASCII to respect RFC2616
+    $server_message = preg_replace('/[^\x20-\x7e]/i', '', $server_message);
+    header('WWW-Authenticate: Basic realm="phpMyAdmin ' . $server_message .  '"');
     header('HTTP/1.0 401 Unauthorized');
     header('status: 401 Unauthorized');
 
@@ -40,8 +47,8 @@ function PMA_auth() {
 </head>
 <body>
 <?php if (file_exists('./config.header.inc.php')) {
-          require('./config.header.inc.php');
-      } 
+          require './config.header.inc.php';
+      }
  ?>
 
 <br /><br />
@@ -52,7 +59,7 @@ function PMA_auth() {
 <div class="warning"><?php echo $GLOBALS['strWrongUser']; ?></div>
 
 <?php if (file_exists('./config.footer.inc.php')) {
-         require('./config.footer.inc.php');
+         require './config.footer.inc.php';
       }
  ?>
 
@@ -135,6 +142,8 @@ function PMA_auth_check()
     if (!empty($old_usr)
         && (isset($PHP_AUTH_USER) && $old_usr == $PHP_AUTH_USER)) {
         $PHP_AUTH_USER = '';
+        // -> delete user's choices that were stored in session 
+        session_destroy(); 
     }
 
     // Returns whether we get authentication settings or not
@@ -196,8 +205,7 @@ function PMA_auth_fails()
 {
     $error = PMA_DBI_getError();
     if ($error && $GLOBALS['errno'] != 1045) {
-        PMA_sendHeaderLocation('error.php?error=' . urlencode($error));
-        exit;
+        PMA_fatalError($error);
     } else {
         PMA_auth();
         return true;

@@ -1,18 +1,21 @@
 <?php
-/* $Id: db_common.inc.php 9602 2006-10-25 12:25:01Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: db_common.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/bookmark.lib.php');
+require_once './libraries/common.inc.php';
+require_once './libraries/bookmark.lib.php';
 
 PMA_checkParameters(array('db'));
 
 $is_show_stats = $cfg['ShowStats'];
 
-if ( PMA_MYSQL_INT_VERSION >= 50002 && $db == 'information_schema' ) {
+if (PMA_MYSQL_INT_VERSION >= 50002 && $db == 'information_schema') {
     $is_show_stats = false;
     $db_is_information_schema = true;
 } else {
@@ -32,10 +35,10 @@ $err_url   = $cfg['DefaultTabDatabase'] . '?' . PMA_generate_common_url($db);
  */
 if (!isset($is_db) || !$is_db) {
     // Not a valid db name -> back to the welcome page
-    if (isset($db) && strlen($db)) {
+    if (strlen($db)) {
         $is_db = PMA_DBI_select_db($db);
     }
-    if (!isset($db) || !strlen($db) || !$is_db) {
+    if (! strlen($db) || !$is_db) {
         PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . 'main.php?' . PMA_generate_common_url('', '', '&') . (isset($message) ? '&message=' . urlencode($message) : '') . '&reload=1');
         exit;
     }
@@ -53,7 +56,7 @@ if (isset($submitcollation) && !empty($db_collation) && PMA_MYSQL_INT_VERSION >=
 }
 
 $js_to_run = 'functions.js';
-require_once('./libraries/header.inc.php');
+require_once './libraries/header.inc.php';
 
 /**
  * Set parameters for links

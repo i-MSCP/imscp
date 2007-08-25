@@ -1,3 +1,10 @@
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * functions used by and for querywindow
+ *
+ * @version $Id: querywindow.js 10205 2007-03-26 14:50:14Z cybot_tm $
+ */
+
 /**
  * holds the browser query window
  */
@@ -63,6 +70,19 @@ function setTable(new_table) {
     }
 }
 
+/**
+ * reloads mian frame
+ *
+ * @uses 	goTo()
+ * @uses 	opendb_url
+ * @uses 	db
+ * @uses 	server
+ * @uses 	table
+ * @uses 	lang
+ * @uses    collation_connection
+ * @uses    encodeURIComponent()
+ * @param	string	url	name of page to be loaded
+ */
 function refreshMain(url) {
     if (! url) {
         if (db) {
@@ -76,9 +96,20 @@ function refreshMain(url) {
         '&table=' + encodeURIComponent(table) +
         '&lang=' + encodeURIComponent(lang) +
         '&collation_connection=' + encodeURIComponent(collation_connection),
-        'main' );
+        'main');
 }
 
+/**
+ * reloads navigation frame
+ *
+ * @uses 	goTo()
+ * @uses 	db
+ * @uses 	server
+ * @uses 	table
+ * @uses 	lang
+ * @uses    collation_connection
+ * @uses    encodeURIComponent()
+ */
 function refreshNavigation() {
     goTo('navigation.php?server=' + encodeURIComponent(server) +
         '&db=' + encodeURIComponent(db)  +
@@ -188,20 +219,19 @@ function setAll( new_lang, new_collation_connection, new_server, new_db, new_tab
     }
 }
 
-function reload_querywindow( db, table, sql_query ) {
+function reload_querywindow(db, table, sql_query)
+{
     if ( ! querywindow.closed && querywindow.location ) {
         if ( ! querywindow.document.sqlform.LockFromUpdate
           || ! querywindow.document.sqlform.LockFromUpdate.checked ) {
-            querywindow.document.querywindow.db.value = db;
-            querywindow.document.querywindow.query_history_latest_db.value = db;
-            querywindow.document.querywindow.table.value = table;
-            querywindow.document.querywindow.query_history_latest_table.value = table;
+            querywindow.document.getElementById('hiddenqueryform').db.value = db;
+            querywindow.document.getElementById('hiddenqueryform').table.value = table;
 
-            if ( sql_query ) {
-                querywindow.document.querywindow.query_history_latest.value = sql_query;
+            if (sql_query) {
+                querywindow.document.getElementById('hiddenqueryform').sql_query.value = sql_query;
             }
 
-            querywindow.document.querywindow.submit();
+            querywindow.document.getElementById('hiddenqueryform').submit();
         }
     }
 }
@@ -209,7 +239,8 @@ function reload_querywindow( db, table, sql_query ) {
 /**
  * brings query window to front and inserts query to be edited
  */
-function focus_querywindow( sql_query ) {
+function focus_querywindow(sql_query)
+{
     /* if ( querywindow && !querywindow.closed && querywindow.location) { */
     if ( !querywindow || querywindow.closed || !querywindow.location) {
         // we need first to open the window and cannot pass the query with it
@@ -220,10 +251,10 @@ function focus_querywindow( sql_query ) {
         insertQuery(0);
     } else {
         //var querywindow = querywindow;
-        if ( querywindow.document.querywindow.querydisplay_tab != 'sql' ) {
-            querywindow.document.querywindow.querydisplay_tab.value = "sql";
-            querywindow.document.querywindow.query_history_latest.value = sql_query;
-            querywindow.document.querywindow.submit();
+        if ( querywindow.document.getElementById('hiddenqueryform').querydisplay_tab != 'sql' ) {
+            querywindow.document.getElementById('hiddenqueryform').querydisplay_tab.value = "sql";
+            querywindow.document.getElementById('hiddenqueryform').sql_query.value = sql_query;
+            querywindow.document.getElementById('hiddenqueryform').submit();
             querywindow.focus();
         } else {
             querywindow.focus();
@@ -254,7 +285,7 @@ function open_querywindow( url ) {
         goTo( url, 'query' );
         querywindow.focus();
     } else {
-        querywindow=window.open( url, '',
+        querywindow = window.open( url + '&init=1', '',
             'toolbar=0,location=0,directories=0,status=1,menubar=0,' +
             'scrollbars=yes,resizable=yes,' +
             'width=' + querywindow_width + ',' +
@@ -290,7 +321,6 @@ function refreshQuerywindow( url ) {
  * @param    string    target       frame where to load the new url
  */
 function goTo(targeturl, target) {
-    //alert('goto');
     if ( target == 'main' ) {
         target = window.frame_content;
     } else if ( target == 'query' ) {

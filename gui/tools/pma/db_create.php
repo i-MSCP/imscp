@@ -1,14 +1,16 @@
 <?php
-/* $Id: db_create.php 10469 2007-06-29 14:22:48Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: db_create.php 10469 2007-06-29 14:22:48Z lem9 $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 $js_to_run = 'functions.js';
-require_once('./libraries/mysql_charsets.lib.php');
+require_once './libraries/mysql_charsets.lib.php';
 
 PMA_checkParameters(array('db'));
 

@@ -1,11 +1,14 @@
 <?php
-/* $Id: htmlword.php 9805 2006-12-26 16:10:47Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Set of functions used to build CSV dumps of tables
+ *
+ * @version $Id: htmlword.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
+/**
+ *
+ */
 if (isset($plugin_list)) {
     $plugin_list['htmlword'] = array(
         'text' => 'strHTMLWord',
@@ -19,7 +22,7 @@ if (isset($plugin_list)) {
             array('type' => 'bool', 'name' => 'columns', 'text' => 'strPutColNames'),
             array('type' => 'egroup'),
             ),
-        'options_text' => 'strHTMLWordOptions',
+        'options_text' => 'strOptions',
         );
 } else {
 
@@ -61,7 +64,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-type" content="text/html;charset=' . ( isset($charset_of_file) ? $charset_of_file : $charset ) .'" />
+    <meta http-equiv="Content-type" content="text/html;charset=' . (isset($charset_of_file) ? $charset_of_file : $charset) .'" />
 </head>
 <body>');
 }
@@ -321,10 +324,10 @@ function PMA_exportStructure($db, $table, $crlf, $error_url, $do_relation = fals
             $schema_insert .= '<td class="print">' . (isset($res_rel[$field_name]) ? htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' (' . $res_rel[$field_name]['foreign_field'] . ')') : '') . '</td>';
         }
         if ($do_comments && $cfgRelation['commwork']) {
-            $schema_insert .= '<td class="print">' . ( isset($comments[$field_name]) ? htmlspecialchars($comments[$field_name]) : '') . '</td>';
+            $schema_insert .= '<td class="print">' . (isset($comments[$field_name]) ? htmlspecialchars($comments[$field_name]) : '') . '</td>';
         }
         if ($do_mime && $cfgRelation['mimework']) {
-            $schema_insert .= '<td class="print">' . ( isset($mime_map[$field_name]) ? htmlspecialchars(str_replace('_', '/', $mime_map[$field_name]['mimetype'])) : '') . '</td>';
+            $schema_insert .= '<td class="print">' . (isset($mime_map[$field_name]) ? htmlspecialchars(str_replace('_', '/', $mime_map[$field_name]['mimetype'])) : '') . '</td>';
         }
 
         $schema_insert .= '</tr>';

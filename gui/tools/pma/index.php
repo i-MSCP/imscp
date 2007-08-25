@@ -1,11 +1,9 @@
 <?php
-/* $Id: index.php 9832 2007-01-09 09:50:49Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * forms frameset
  *
- * @uses    libraries/common.lib.php        global fnctions
- * @uses    libraries/relation.lib.php      table relations
+ * @version $Id: index.php 10241 2007-04-01 11:13:46Z cybot_tm $
  * @uses    $GLOBALS['strNoFrames']
  * @uses    $GLOBALS['cfg']['QueryHistoryDB']
  * @uses    $GLOBALS['cfg']['Server']['user']
@@ -13,8 +11,8 @@
  * @uses    $GLOBALS['cfg']['DefaultTabDatabase']   as src for the mainframe
  * @uses    $GLOBALS['cfg']['NaviWidth']            for navi frame width
  * @uses    $GLOBALS['collation_connection']    from $_REQUEST (grab_globals.lib.php)
- *                                              or common.lib.php
- * @uses    $GLOBALS['available_languages'] from common.lib.php (select_lang.lib.php)
+ *                                              or common.inc.php
+ * @uses    $GLOBALS['available_languages'] from common.inc.php (select_lang.lib.php)
  * @uses    $GLOBALS['db']
  * @uses    $GLOBALS['charset']
  * @uses    $GLOBALS['lang']
@@ -33,7 +31,7 @@
 /**
  * Gets core libraries and defines some variables
  */
-require_once './libraries/common.lib.php';
+require_once './libraries/common.inc.php';
 
 /**
  * Includes the ThemeManager if it hasn't been included yet
@@ -57,7 +55,7 @@ if (empty($HTTP_HOST)) {
 // purge querywindow history
 $cfgRelation = PMA_getRelationsParam();
 if ($GLOBALS['cfg']['QueryHistoryDB'] && $cfgRelation['historywork']) {
-    PMA_purgeHistory( $GLOBALS['cfg']['Server']['user'] );
+    PMA_purgeHistory($GLOBALS['cfg']['Server']['user']);
 }
 unset($cfgRelation);
 
@@ -75,9 +73,9 @@ foreach ($drops as $each_drop) {
 }
 unset($drops, $each_drop);
 
-if (! isset($GLOBALS['db']) || ! strlen($GLOBALS['db'])) {
+if (! strlen($GLOBALS['db'])) {
     $main_target = $GLOBALS['cfg']['DefaultTabServer'];
-} elseif (! isset($GLOBALS['table']) || ! strlen($GLOBALS['table'])) {
+} elseif (! strlen($GLOBALS['table'])) {
     $_GET['db'] = $GLOBALS['db'];
     $main_target = $GLOBALS['cfg']['DefaultTabDatabase'];
 } else {
@@ -113,7 +111,7 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
     <?php echo htmlspecialchars($HTTP_HOST); ?></title>
 <meta http-equiv="Content-Type"
     content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
-<script type="text/javascript" language="javascript">
+<script type="text/javascript"">
 // <![CDATA[
     // definitions used in querywindow.js
     var common_query = '<?php echo PMA_escapeJsString(PMA_generate_common_url('', '', '&'));?>';
@@ -130,8 +128,7 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
     var pma_absolute_uri = '<?php echo PMA_escapeJsString($GLOBALS['cfg']['PmaAbsoluteUri']); ?>';
 // ]]>
 </script>
-<script src="./js/querywindow.js" type="text/javascript" language="javascript">
-</script>
+<script src="./js/querywindow.js" type="text/javascript"></script>
 </head>
 <frameset cols="<?php
 if ($GLOBALS['text_dir'] === 'rtl') {
@@ -161,7 +158,7 @@ if ($GLOBALS['text_dir'] === 'ltr') {
         </body>
     </noframes>
 </frameset>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 // <![CDATA[
 <?php if ($GLOBALS['text_dir'] === 'ltr') { ?>
     var frame_content = window.frames[1];

@@ -1,4 +1,11 @@
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * function used in or for navigation frame
+ */
+
+/**
+ * init
+ */
 var today = new Date();
 var expires = new Date(today.getTime() + (56 * 86400000));
 var pma_navi_width;
@@ -48,11 +55,13 @@ function PMA_callFunctionDelayed(myfunction, delay)
  */
 function PMA_saveFrameSizeReal()
 {
-    pma_navi_width = document.getElementById('body_leftFrame').offsetWidth
-    //alert('from DOM: ' + typeof(pma_navi_width) + ' : ' + pma_navi_width);
-    if (pma_navi_width > 0) {
+    if (parent.text_dir == 'ltr') {
+        pma_navi_width = parseInt(parent.document.getElementById('mainFrameset').cols)
+    } else {
+        pma_navi_width = parent.document.getElementById('mainFrameset').cols.match(/\d+$/) 
+    }
+    if ((pma_navi_width > 0) && (pma_navi_width != PMA_getCookie('pma_navi_width'))) {
         PMA_setCookie('pma_navi_width', pma_navi_width, expires);
-        //alert('framesize saved');
     }
 }
 
@@ -80,7 +89,7 @@ function PMA_setFrameSize()
     pma_navi_width = PMA_getCookie('pma_navi_width');
     //alert('from cookie: ' + typeof(pma_navi_width) + ' : ' + pma_navi_width);
     if (pma_navi_width != null) {
-	    if (parent.text_dir == 'ltr') {
+        if (parent.text_dir == 'ltr') {
             parent.document.getElementById('mainFrameset').cols = pma_navi_width + ',*';
         } else {
             parent.document.getElementById('mainFrameset').cols = '*,' + pma_navi_width;

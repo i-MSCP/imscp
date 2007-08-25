@@ -1,5 +1,9 @@
-/* $Id: server_privileges.js 7886 2005-11-23 19:10:30Z nijel $ */
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * function used in server privilege pages
+ *
+ * @version $Id: server_privileges.js 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
 /**
  * Validates the password field in a form

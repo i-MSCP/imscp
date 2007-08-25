@@ -1,7 +1,12 @@
 <?php
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * configures general layout
  * for detailed layout configuration please refer to the css files
+ *
+ * @version $Id: layout.inc.php 10515 2007-07-22 16:22:54Z lem9 $
+ * @package phpMyAdmin-theme
+ * @subpackage Darkblue_orange
  */
 
 /**
@@ -22,6 +27,9 @@ $GLOBALS['cfg']['NaviPointerColor']         = '#000000';
 // background of the pointer in navi frame
 $GLOBALS['cfg']['NaviPointerBackground']    = '#9999cc';
 
+// text color of the selected database name (when showing the table list)
+$GLOBALS['cfg']['NaviDatabaseNameColor']    = '#ff9900';
+
 /**
  * main frame
  */
@@ -30,7 +38,7 @@ $GLOBALS['cfg']['MainColor']                = '#000000';
 
 // background for the main frame
 $GLOBALS['cfg']['MainBackground']           = '#ffffff';
-//$GLOBALS['cfg']['MainBackground']       = '#ffffff url(../' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
+//$GLOBALS['cfg']['MainBackground']       = '#ffffff url(' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
 
 // foreground (text) color of the pointer in browse mode
 $GLOBALS['cfg']['BrowsePointerColor']       = '#000000';
@@ -64,7 +72,7 @@ $GLOBALS['cfg']['FontFamilyFixed']      = 'monospace';
 // border
 $GLOBALS['cfg']['Border']               = 0;
 // table header and footer color
-$GLOBALS['cfg']['ThBackground']         = '#ff9900 url(../' . $_SESSION['PMA_Theme']->getImgPath() . 'tbl_th.png) repeat-x top';
+$GLOBALS['cfg']['ThBackground']         = '#ff9900 url(' . $_SESSION['PMA_Theme']->getImgPath() . 'tbl_th.png) repeat-x top';
 // table header and footer background
 $GLOBALS['cfg']['ThColor']              = '#000000';
 // table data row background

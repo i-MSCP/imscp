@@ -1,18 +1,16 @@
 <?php
-/* $Id: header_printview.inc.php 9802 2006-12-21 01:22:03Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: header_printview.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * Gets a core script and starts output buffering work
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/ob.lib.php');
-if ($cfg['OBGzip']) {
-    $ob_mode = PMA_outBufferModeGet();
-    if ($ob_mode) {
-        PMA_outBufferPre($ob_mode);
-    }
-}
+require_once './libraries/common.inc.php';
+require_once './libraries/ob.lib.php';
+PMA_outBufferPre();
 
 // Check parameters
 
@@ -23,7 +21,7 @@ PMA_checkParameters(array('db', 'full_sql_query'));
 // to a seperate file. It can now be included by libraries/header.inc.php,
 // querywindow.php.
 
-require_once('./libraries/header_http.inc.php');
+require_once './libraries/header_http.inc.php';
 
 /**
  * Sends the beginning of the html page then returns to the calling script
@@ -46,7 +44,7 @@ if ($text_dir == 'ltr') {
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 <title><?php echo $strSQLResult; ?> - phpMyAdmin <?php echo PMA_VERSION ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
-<link rel="stylesheet" type="text/css" href="./css/phpmyadmin.css.php?<?php echo PMA_generate_common_url( '', '' ); ?>&amp;js_frame=print&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
+<link rel="stylesheet" type="text/css" href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=print&amp;nocache=<?php echo $_SESSION['PMA_Config']->getMtime(); ?>" />
 </style>
 </head>
 

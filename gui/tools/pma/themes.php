@@ -1,16 +1,24 @@
 <?php
-/* get some globals */
-require_once('./libraries/common.lib.php');
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: themes.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
+
+/**
+ * get some globals
+ */
+require_once './libraries/common.inc.php';
 
 /* Theme Select */
 $path_to_themes = $cfg['ThemePath'] . '/';
 
 /* set language and charset */
-require_once('./libraries/header_http.inc.php');
+require_once './libraries/header_http.inc.php';
 
 /* HTML header */
 $page_title = 'phpMyAdmin - ' . $strTheme;
-require('./libraries/header_meta_style.inc.php');
+require './libraries/header_meta_style.inc.php';
 ?>
 <script type="text/javascript" language="javascript">
 // <![CDATA[

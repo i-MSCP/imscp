@@ -1,11 +1,10 @@
 <?php
-/* $Id: config.auth.lib.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-// +--------------------------------------------------------------------------+
-// | Set of functions used to run config authentication (ie no                |
-// | authentication).                                                         |
-// +--------------------------------------------------------------------------+
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Set of functions used to run config authentication (ie no authentication).
+ *
+ * @version $Id: config.auth.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 
 /**
@@ -82,7 +81,7 @@ function PMA_auth_fails()
     header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
     /* HTML header */
     $page_title = $GLOBALS['strAccessDenied'];
-    require('./libraries/header_meta_style.inc.php');
+    require './libraries/header_meta_style.inc.php';
     ?>
 </head>
 
@@ -127,8 +126,8 @@ function PMA_auth_fails()
         }
         PMA_mysqlDie($conn_error, '', true, '', false);
     }
-    if ( ! empty( $GLOBALS['PMA_errors'] ) && is_array( $GLOBALS['PMA_errors'] ) ) {
-        foreach ( $GLOBALS['PMA_errors'] as $error ) {
+    if (! empty($GLOBALS['PMA_errors']) && is_array($GLOBALS['PMA_errors'])) {
+        foreach ($GLOBALS['PMA_errors'] as $error) {
             echo '<div class="error">' . $error . '</div>' . "\n";
         }
     }
@@ -138,7 +137,7 @@ function PMA_auth_fails()
 <?php
     if (count($GLOBALS['cfg']['Servers']) > 1) {
         // offer a chance to login to other servers if the current one failed
-        require_once('./libraries/select_server.lib.php');
+        require_once './libraries/select_server.lib.php';
         echo '<tr>' . "\n";
         echo ' <td>' . "\n";
         PMA_select_server(TRUE, TRUE);
@@ -146,7 +145,7 @@ function PMA_auth_fails()
         echo '</tr>' . "\n";
     }
     echo '</table>' . "\n";
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
     return TRUE;
 } // end of the 'PMA_auth_fails()' function
 

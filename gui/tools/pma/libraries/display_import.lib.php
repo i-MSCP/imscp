@@ -1,9 +1,15 @@
 <?php
-/* $Id: display_import.lib.php 9193 2006-07-22 21:13:24Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: display_import.lib.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ */
 
-require_once('./libraries/file_listing.php');
-require_once('./libraries/plugin_interface.lib.php');
+/**
+ *
+ */
+require_once './libraries/file_listing.php';
+require_once './libraries/plugin_interface.lib.php';
 
 /* Scan for plugins */
 $import_list = PMA_getPlugins('./libraries/import/', $import_type);
@@ -13,7 +19,7 @@ if (empty($import_list)) {
     $GLOBALS['show_error_header'] = TRUE;
     PMA_showMessage($strCanNotLoadImportPlugins);
     unset($GLOBALS['show_error_header']);
-    require('./libraries/footer.inc.php');
+    require './libraries/footer.inc.php';
 }
 ?>
 
@@ -87,17 +93,17 @@ if ($cfg['AllowAnywhereRecoding'] && $allow_recoding) {
     echo '<label for="charset_of_file">' . $strCharsetOfFile . '</label>' . "\n";
     $temp_charset = reset($cfg['AvailableCharsets']);
     echo '    <select id="charset_of_file" name="charset_of_file" size="1">' . "\n"
-         . '            <option value="' . htmlentities( $temp_charset ) . '"';
+         . '            <option value="' . htmlentities($temp_charset) . '"';
     if ($temp_charset == $charset) {
         echo ' selected="selected"';
     }
-    echo '>' . htmlentities( $temp_charset ) . '</option>' . "\n";
+    echo '>' . htmlentities($temp_charset) . '</option>' . "\n";
     while ($temp_charset = next($cfg['AvailableCharsets'])) {
-        echo '            <option value="' . htmlentities( $temp_charset ) . '"';
+        echo '            <option value="' . htmlentities($temp_charset) . '"';
         if ($temp_charset == $charset) {
             echo ' selected="selected"';
         }
-        echo '>' . htmlentities( $temp_charset ) . '</option>' . "\n";
+        echo '>' . htmlentities($temp_charset) . '</option>' . "\n";
     }
     echo '        </select><br />' . "\n" . '    ';
 } elseif (PMA_MYSQL_INT_VERSION >= 40100) {
@@ -122,7 +128,7 @@ if ($cfg['ZipDump'] && @function_exists('gzinflate')) {
 // We don't have show anything about compression, when no supported
 if ($compressions != $strNone) {
     echo '<div class="formelementrow">' . "\n";
-    printf( $strCompressionWillBeDetected, $compressions);
+    printf($strCompressionWillBeDetected, $compressions);
     echo '</div>' . "\n";
 }
 echo "\n";
@@ -176,7 +182,7 @@ echo "\n";
         <input type="submit" value="<?php echo $strGo; ?>" id="buttonGo" />
     </fieldset>
 </form>
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
     init_options();
 //]]>

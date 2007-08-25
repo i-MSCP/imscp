@@ -1,7 +1,10 @@
 <?php
-/* $Id: file_listing.php 8301 2006-01-17 17:03:02Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-// Functions for listing directories
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Functions for listing directories
+ *
+ * @version $Id: file_listing.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
 /**
  * Returns array of filtered file names
@@ -63,9 +66,9 @@ function PMA_getFileSelectOptions($dir, $extensions = '', $active = '')
 function PMA_supportedDecompressions()
 {
     global $cfg;
-    
+
     $compressions = '';
-    
+
     if ($cfg['GZipDump'] && @function_exists('gzopen')) {
         if (!empty($compressions)) {
             $compressions .= '|';

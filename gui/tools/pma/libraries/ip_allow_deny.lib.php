@@ -1,10 +1,10 @@
 <?php
-/* $Id: ip_allow_deny.lib.php 10089 2007-03-14 12:47:37Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * This library is used with the server IP allow/deny host authentication
  * feature
+ *
+ * @version $Id: ip_allow_deny.lib.php 10142 2007-03-20 10:32:13Z cybot_tm $
  */
 
 

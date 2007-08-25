@@ -1,5 +1,9 @@
-/* $Id: user_password.js 7886 2005-11-23 19:10:30Z nijel $ */
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * function used for password change form
+ *
+ * @version $Id: user_password.js 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
 /**
  * Validates the password field in a form

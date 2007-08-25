@@ -1,10 +1,16 @@
 <?php
-/* $Id: text_plain__substr.inc.php 5523 2004-03-09 15:02:28Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: text_plain__substr.inc.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ */
 
+/**
+ *
+ */
 function PMA_transformation_text_plain__substr($buffer, $options = array(), $meta = '') {
     // possibly use a global transform and feed it with special options:
-    // include('./libraries/transformations/global.inc.php');
+    // include './libraries/transformations/global.inc.php';
 
     // further operations on $buffer using the $options[] array.
     if (!isset($options[0]) ||  $options[0] == '') {

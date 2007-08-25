@@ -1,18 +1,16 @@
 <?php
-/* $Id: tbl_indexes.php 9602 2006-10-25 12:25:01Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: expandtab sw=4 ts=4 sts=4: */
+/**
+ * display information about indexes in a table
+ *
+ * @version $Id: tbl_indexes.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * Gets some core libraries
  */
-require_once('./libraries/common.lib.php');
-require_once('./libraries/tbl_indexes.lib.php');
-
-/**
- * Defines the index types ("FULLTEXT" is available since MySQL 3.23.23)
- */
-$index_types       = PMA_get_indextypes();
-$index_types_cnt   = count($index_types);
+require_once './libraries/common.inc.php';
+require_once './libraries/tbl_indexes.lib.php';
 
 /**
  * Ensures the db & table are valid, then loads headers and gets indexes
@@ -21,12 +19,12 @@ $index_types_cnt   = count($index_types);
  */
 if (!defined('PMA_IDX_INCLUDED')) {
     // Not a valid db name -> back to the welcome page
-    if ( isset($db) && strlen($db) ) {
+    if (strlen($db)) {
         $is_db = PMA_DBI_select_db($db);
     }
-    if ( !isset($db) || !strlen($db) || !$is_db ) {
-        $uri_params = array( 'reload' => '1' );
-        if ( isset($message) ) {
+    if (!strlen($db) || !$is_db) {
+        $uri_params = array('reload' => '1');
+        if (isset($message)) {
             $uri_params['message'] = $message;
         }
         PMA_sendHeaderLocation($cfg['PmaAbsoluteUri'] . 'main.php'
@@ -34,21 +32,21 @@ if (!defined('PMA_IDX_INCLUDED')) {
         exit;
     }
     // Not a valid table name -> back to the default db sub-page
-    if ( isset($table) && strlen($table) ) {
+    if (strlen($table)) {
         $is_table = PMA_DBI_query('SHOW TABLES LIKE \''
             . PMA_sqlAddslashes($table, TRUE) . '\'', null, PMA_DBI_QUERY_STORE);
     }
-    if ( ! isset($table) || ! strlen($table)
-      || !( $is_table && PMA_DBI_num_rows($is_table) ) ) {
-        $uri_params = array( 'reload' => '1', 'db' => $db );
-        if ( isset($message) ) {
+    if (! strlen($table)
+      || !($is_table && PMA_DBI_num_rows($is_table))) {
+        $uri_params = array('reload' => '1', 'db' => $db);
+        if (isset($message)) {
             $uri_params['message'] = $message;
         }
         PMA_sendHeaderLocation($cfg['PmaAbsoluteUri']
             . $cfg['DefaultTabDatabase']
             . PMA_generate_common_url($uri_params, '&'));
         exit;
-    } elseif ( isset($is_table) ) {
+    } elseif (isset($is_table)) {
         PMA_DBI_free_result($is_table);
     }
 
@@ -56,7 +54,7 @@ if (!defined('PMA_IDX_INCLUDED')) {
     $js_to_run = isset($index) && isset($do_save_data)
         ? 'functions.js'
         : 'indexes.js';
-    require_once('./libraries/header.inc.php');
+    require_once './libraries/header.inc.php';
 } // end if
 
 
@@ -184,7 +182,7 @@ if (!defined('PMA_IDX_INCLUDED')
         . $strHasBeenAltered;
 
     $active_page = 'tbl_structure.php';
-    require('./tbl_structure.php');
+    require './tbl_structure.php';
 } // end builds the new index
 
 
@@ -296,22 +294,18 @@ elseif (!defined('PMA_IDX_INCLUDED')
 <label for="select_index_type"><?php echo $strIndexType; ?></label>
 <select name="index_type" id="select_index_type" onchange="return checkIndexName()">
     <?php
-    for ($i = 0; $i < $index_types_cnt; $i++) {
-        if ($index_types[$i] == 'PRIMARY') {
-            if ($index == 'PRIMARY' || !isset($indexes_info['PRIMARY'])) {
-                echo '                '
-                     . '<option value="PRIMARY"'
-                     . (($index_type == 'PRIMARY') ? ' selected="selected"' : '')
-                     . '>PRIMARY</option>' . "\n";
-            }
-        } else {
-            echo '                '
-                 . '<option value="' . $index_types[$i] . '"'
-                 . (($index_type == $index_types[$i]) ? ' selected="selected"' : '')
-                 . '>'. $index_types[$i] . '</option>' . "\n";
-
-        } // end if... else...
-    } // end for
+    foreach (PMA_get_indextypes() as $each_index_type) {
+        if ($each_index_type === 'PRIMARY'
+         && $index !== 'PRIMARY'
+         && isset($indexes_info['PRIMARY'])) {
+            // skip PRIMARY if there is already one in the table
+            continue;
+        }
+        echo '                '
+             . '<option value="' . $each_index_type . '"'
+             . (($index_type == $each_index_type) ? ' selected="selected"' : '')
+             . '>'. $each_index_type . '</option>' . "\n";
+    }
     ?>
 </select>
 <?php echo PMA_showMySQLDocu('SQL-Syntax', 'ALTER_TABLE'); ?>
@@ -353,7 +347,7 @@ elseif (!defined('PMA_IDX_INCLUDED')
                      . '<option value="' . htmlspecialchars($val) . '"'
                      . (($val == $selected) ? ' selected="selected"' : '') . '>'
                      . htmlspecialchars($val) . (($add_type) ? ' ['
-                     . $fields_types[$key] . ']' : '' ) . '</option>' . "\n";
+                     . $fields_types[$key] . ']' : '') . '</option>' . "\n";
             }
         } // end foreach $fields_names
         ?>
@@ -399,7 +393,7 @@ elseif (!defined('PMA_IDX_INCLUDED')
             '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidColumnCount']); ?>',
             1)">
     <?php
-    echo PMA_generate_common_hidden_inputs( $db, $table );
+    echo PMA_generate_common_hidden_inputs($db, $table);
     ?>
     <table id="table_indexes" class="data">
         <caption class="tblHeaders">
@@ -412,15 +406,11 @@ elseif (!defined('PMA_IDX_INCLUDED')
         </caption>
     <?php
 
-    if ( count($ret_keys) > 0) {
+    if (count($ret_keys) > 0) {
         $edit_link_text = '';
         $drop_link_text = '';
 
-        // We need to copy the value or else the == 'both' check will always
-        // return true
-        $propicon = (string) $cfg['PropertiesIconic'];
-
-        if ($cfg['PropertiesIconic'] === true || $propicon == 'both') {
+        if ($cfg['PropertiesIconic'] === true || $cfg['PropertiesIconic'] === 'both') {
             $edit_link_text = '<img class="icon" src="' . $pmaThemeImage
                 . 'b_edit.png" width="16" height="16" title="' . $strEdit
                 . '" alt="' . $strEdit . '" />';
@@ -428,11 +418,11 @@ elseif (!defined('PMA_IDX_INCLUDED')
                 . 'b_drop.png" width="16" height="16" title="' . $strDrop
                 . '" alt="' . $strDrop . '" />';
         }
-        if ($cfg['PropertiesIconic'] === false || $propicon == 'both') {
+        if ($cfg['PropertiesIconic'] === false || $cfg['PropertiesIconic'] === 'both') {
             $edit_link_text .= $strEdit;
             $drop_link_text .= $strDrop;
         }
-        if ($propicon == 'both') {
+        if ($cfg['PropertiesIconic'] === 'both') {
             $edit_link_text = '<nobr>' . $edit_link_text . '</nobr>';
             $drop_link_text = '<nobr>' . $drop_link_text . '</nobr>';
         }
@@ -450,7 +440,7 @@ elseif (!defined('PMA_IDX_INCLUDED')
         <?php
         $idx_collection = PMA_show_indexes($table, $indexes, $indexes_info,
             $indexes_data, true);
-        echo PMA_check_indexes($idx_collection);
+        echo PMA_check_indexes($ret_keys);
     } // end display indexes
     else {
         // none indexes
@@ -482,6 +472,6 @@ elseif (!defined('PMA_IDX_INCLUDED')
 echo "\n";
 
 if (!defined('PMA_IDX_INCLUDED')){
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 }
 ?>

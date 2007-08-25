@@ -1,25 +1,28 @@
 <?php
-/* $Id: server_collations.php 9438 2006-09-21 14:28:46Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: server_collations.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
 /**
  * requirements
  */
-if ( ! defined( 'PMA_NO_VARIABLES_IMPORT' ) ) {
-    define( 'PMA_NO_VARIABLES_IMPORT', true );
+if (! defined('PMA_NO_VARIABLES_IMPORT')) {
+    define('PMA_NO_VARIABLES_IMPORT', true);
 }
-require_once('./libraries/common.lib.php');
+require_once './libraries/common.inc.php';
 
 /**
  * Does the common work
  */
-require('./libraries/server_common.inc.php');
+require './libraries/server_common.inc.php';
 
 
 /**
  * Displays the links
  */
-require('./libraries/server_links.inc.php');
+require './libraries/server_links.inc.php';
 
 
 /**
@@ -38,14 +41,14 @@ echo '<h2>' . "\n"
  * @todo Some nice Message :-)
  */
 if (PMA_MYSQL_INT_VERSION < 40100) {
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 }
 
 
 /**
  * Includes the required charset library
  */
-require_once('./libraries/mysql_charsets.lib.php');
+require_once './libraries/mysql_charsets.lib.php';
 
 
 /**
@@ -82,7 +85,7 @@ foreach ($mysql_charsets as $current_charset) {
     foreach ($mysql_collations[$current_charset] as $current_collation) {
         $i++;
         echo '<tr class="'
-           . ( $odd_row ? 'odd' : 'even' )
+           . ($odd_row ? 'odd' : 'even')
            . ($mysql_default_collations[$current_charset] == $current_collation
                 ? ' marked'
                 : '')
@@ -98,6 +101,6 @@ unset($table_row_count);
 echo '</table>' . "\n"
    . '</div>' . "\n";
 
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 
 ?>

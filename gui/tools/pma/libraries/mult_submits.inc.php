@@ -1,25 +1,26 @@
 <?php
-/* $Id: mult_submits.inc.php 9602 2006-10-25 12:25:01Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: mult_submits.inc.php 10563 2007-08-18 12:46:30Z lem9 $
+ */
 
 /**
  * Prepares the work and runs some other scripts if required
  */
-if (!empty($submit_mult)
-    && ($submit_mult != $strWithChecked)
-    && (  ( isset($selected_db) && !empty($selected_db) )
-       || ( isset($selected_tbl) && !empty($selected_tbl) )
-       || ( isset($selected_fld) && !empty($selected_fld) )
-       || !empty($rows_to_delete)
-         )) {
+if (! empty($submit_mult)
+ && $submit_mult != $strWithChecked
+ && (! empty($selected_db)
+  || ! empty($selected_tbl)
+  || ! empty($selected_fld)
+  || ! empty($rows_to_delete))) {
     define('PMA_SUBMIT_MULT', 1);
     if (isset($selected_db) && !empty($selected_db)) {
         $selected     = $selected_db;
         $what         = 'drop_db';
     } elseif (isset($selected_tbl) && !empty($selected_tbl)) {
         if ($submit_mult == $strPrintView) {
-            require('./tbl_printview.php');
+            require './tbl_printview.php';
         } else {
            $selected = $selected_tbl;
            switch ($submit_mult) {
@@ -98,7 +99,7 @@ if (!empty($submit_mult)
                 $mult_btn   = $strYes;
                 break;
             case $strChange:
-                require('./tbl_alter.php');
+                require './tbl_alter.php';
                 break;
             case $strBrowse:
                 $sql_query = '';
@@ -110,7 +111,7 @@ if (!empty($submit_mult)
                     }
                 }
                 $sql_query .= ' FROM ' . PMA_backquote(htmlspecialchars($table));
-                require('./sql.php');
+                require './sql.php';
                 break;
         }
     } else {
@@ -123,16 +124,16 @@ if (!empty($submit_mult)
 /**
  * Displays the confirmation form if required
  */
-if ( !empty($submit_mult) && !empty($what)) {
+if (!empty($submit_mult) && !empty($what)) {
     $js_to_run = 'functions.js';
     unset($message);
-    if (isset($table) && strlen($table)) {
-        require('./libraries/tbl_common.php');
+    if (strlen($table)) {
+        require './libraries/tbl_common.php';
         $url_query .= '&amp;goto=tbl_sql.php&amp;back=tbl_sql.php';
-        require('./libraries/tbl_info.inc.php');
-    } elseif (isset($db) && strlen($db)) {
-        require('./libraries/db_common.inc.php');
-        require('./libraries/db_info.inc.php');
+        require './libraries/tbl_info.inc.php';
+    } elseif (strlen($db)) {
+        require './libraries/db_common.inc.php';
+        require './libraries/db_info.inc.php';
     }
     // Builds the query
     $full_query     = '';
@@ -193,7 +194,7 @@ if ( !empty($submit_mult) && !empty($what)) {
                     $full_query = preg_replace('@,$@', ');<br />', $full_query);
                 }
                 break;
-                
+
             case 'drop_fld':
                 if ($full_query == '') {
                     $full_query .= 'ALTER TABLE '
@@ -240,7 +241,7 @@ if ( !empty($submit_mult) && !empty($what)) {
 ?>
 <input type="hidden" name="reload" value="<?php echo isset($reload) ? PMA_sanitize($reload) : 0; ?>" />
 <?php
-    foreach ($selected AS $idx => $sval) {
+    foreach ($selected as $idx => $sval) {
         echo '<input type="hidden" name="selected[]" value="' . htmlspecialchars($sval) . '" />' . "\n";
     }
     if ($what == 'drop_tbl' && !empty($views)) {
@@ -250,13 +251,7 @@ if ( !empty($submit_mult) && !empty($what)) {
     }
     if ($what == 'row_delete') {
         echo '<input type="hidden" name="original_sql_query" value="' . htmlspecialchars($original_sql_query) . '" />' . "\n";
-        echo '<input type="hidden" name="original_pos" value="' . $original_pos . '" />' . "\n";
         echo '<input type="hidden" name="original_url_query" value="' . htmlspecialchars($original_url_query) . '" />' . "\n";
-        echo '<input type="hidden" name="disp_direction"   value="' . $disp_direction . '" />' . "\n";
-        echo '<input type="hidden" name="repeat_cells"     value="' . $repeat_cells   . '" />' . "\n";
-        echo '<input type="hidden" name="dontlimitchars"   value="' . $dontlimitchars . '" />' . "\n";
-        echo '<input type="hidden" name="pos"              value="' . ( isset( $pos ) ? $pos : 0 ) . '" />' . "\n";
-        echo '<input type="hidden" name="session_max_rows" value="' . $session_max_rows . '" />' . "\n";
     }
     ?>
 <fieldset class="confirmation">
@@ -268,7 +263,7 @@ if ( !empty($submit_mult) && !empty($what)) {
     <input type="submit" name="mult_btn" value="<?php echo $strNo; ?>" id="buttonNo" />
 </fieldset>
     <?php
-    require_once('./libraries/footer.inc.php');
+    require_once './libraries/footer.inc.php';
 } // end if
 
 
@@ -278,7 +273,7 @@ if ( !empty($submit_mult) && !empty($what)) {
 elseif ($mult_btn == $strYes) {
 
     if ($query_type == 'drop_db' || $query_type == 'drop_tbl' || $query_type == 'drop_fld') {
-        require_once('./libraries/relation_cleanup.lib.php');
+        require_once './libraries/relation_cleanup.lib.php';
     }
 
     $sql_query      = '';
@@ -302,7 +297,9 @@ elseif ($mult_btn == $strYes) {
         } // end while
         PMA_DBI_free_result($result);
     }
-    
+
+    $rebuild_database_list = false;
+
     for ($i = 0; $i < $selected_cnt; $i++) {
         switch ($query_type) {
             case 'row_delete':
@@ -316,6 +313,7 @@ elseif ($mult_btn == $strYes) {
                            . PMA_backquote(urldecode($selected[$i]));
                 $reload    = 1;
                 $run_parts = TRUE;
+                $rebuild_database_list = true;
                 break;
 
             case 'drop_tbl':
@@ -373,7 +371,7 @@ elseif ($mult_btn == $strYes) {
                 break;
 
             case 'primary_fld':
-                $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) . ( empty($primary) ? '' : ' DROP PRIMARY KEY,') . ' ADD PRIMARY KEY( ' : ', ')
+                $sql_query .= (empty($sql_query) ? 'ALTER TABLE ' . PMA_backquote($table) . (empty($primary) ? '' : ' DROP PRIMARY KEY,') . ' ADD PRIMARY KEY( ' : ', ')
                            . PMA_backquote(urldecode($selected[$i]))
                            . (($i == $selected_cnt-1) ? ');' : '');
                 break;
@@ -399,7 +397,7 @@ elseif ($mult_btn == $strYes) {
 
         // All "DROP TABLE", "DROP FIELD", "OPTIMIZE TABLE" and "REPAIR TABLE"
         // statements will be run at once below
-        if ($run_parts) { 
+        if ($run_parts) {
             $sql_query .= $a_query . ';' . "\n";
             if ($query_type != 'drop_db') {
                 PMA_DBI_select_db($db);
@@ -418,7 +416,7 @@ elseif ($mult_btn == $strYes) {
     }
 
     if ($use_sql) {
-        require('./sql.php');
+        require './sql.php';
     } elseif (!$run_parts) {
         PMA_DBI_select_db($db);
         $result = PMA_DBI_query($sql_query);
@@ -427,6 +425,11 @@ elseif ($mult_btn == $strYes) {
             PMA_DBI_query($sql_query_views);
             unset($sql_query_views);
         }
+    }
+    if ($rebuild_database_list) {
+        // avoid a problem with the database list navigator
+        // when dropping a db from server_databases
+        $GLOBALS['PMA_List_Database']->build();
     }
 }
 ?>

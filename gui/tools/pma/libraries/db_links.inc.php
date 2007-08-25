@@ -1,8 +1,14 @@
 <?php
-/* $Id: db_links.inc.php 9825 2007-01-04 18:22:08Z lem9 $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: db_links.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-require_once('./libraries/common.lib.php');
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 
 require_once './libraries/relation.lib.php';
 /**
@@ -43,7 +49,7 @@ if (($is_superuser || $GLOBALS['cfg']['AllowUserDropDatabase']) && ! $db_is_info
 /**
  * export, search and qbe links if there is at least one table
  */
-if ( $num_tables == 0 ) {
+if ($num_tables == 0) {
     $tab_qbe['warning'] = $strDbIsEmpty;
     $tab_search['warning'] = $strDbIsEmpty;
     $tab_export['warning'] = $strDbIsEmpty;
@@ -76,7 +82,7 @@ if ($cfgRelation['designerwork']) {
     $tab_designer['link']   = 'pmd_general.php';
 }
 
-if ( ! $db_is_information_schema ) {
+if (! $db_is_information_schema) {
     $tab_import['link']     = 'db_import.php';
     $tab_import['text']     = $GLOBALS['strImport'];
     $tab_import['icon']     = 'b_import.png';
@@ -86,7 +92,7 @@ if ( ! $db_is_information_schema ) {
     $tab_operation['link']  = 'db_operations.php';
     $tab_operation['text']  = $GLOBALS['strOperations'];
     $tab_operation['icon']  = 'b_tblops.png';
-    if ( $is_superuser ) {
+    if ($is_superuser) {
         $tab_privileges['link'] = 'server_privileges.php';
         $tab_privileges['args']['checkprivs']       = $db;
         // stay on database view
@@ -105,22 +111,22 @@ $tabs[] =& $tab_sql;
 $tabs[] =& $tab_search;
 $tabs[] =& $tab_qbe;
 $tabs[] =& $tab_export;
-if ( ! $db_is_information_schema ) {
+if (! $db_is_information_schema) {
     $tabs[] =& $tab_import;
     if ($cfgRelation['designerwork']) {
         $tabs[] =& $tab_designer;
     }
     $tabs[] =& $tab_operation;
-    if ( $is_superuser ) {
+    if ($is_superuser) {
         $tabs[] =& $tab_privileges;
     }
-    if ( $is_superuser || $GLOBALS['cfg']['AllowUserDropDatabase'] ) {
+    if ($is_superuser || $GLOBALS['cfg']['AllowUserDropDatabase']) {
         $tabs[] =& $tab_drop;
     }
 }
 
-echo PMA_getTabs( $tabs );
-unset( $tabs );
+echo PMA_getTabs($tabs);
+unset($tabs);
 
 /**
  * Displays a message

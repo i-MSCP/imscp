@@ -1,234 +1,150 @@
 <?php
-/* $Id: querywindow.php 10144 2007-03-20 11:22:31Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
-require_once('./libraries/common.lib.php');
-
-$is_superuser = PMA_isSuperuser();
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * this file is register_globals save
+ *
+ * @todo    move JavaScript out of here into .js files
+ * @uses    $cfg['QueryWindowDefTab']
+ * @uses    $cfg['PropertiesIconic']
+ * @uses    $cfg['QueryHistoryDB']
+ * @uses    $cfg['Server']['user']
+ * @uses    $cfg['AllowUserDropDatabase']
+ * @uses    $cfg['Confirm']
+ * @uses    $GLOBALS['db']
+ * @uses    $GLOBALS['table']
+ * @uses    $GLOBALS['strSQL']
+ * @uses    $GLOBALS['strImportFiles']
+ * @uses    $GLOBALS['strQuerySQLHistory']
+ * @uses    $GLOBALS['strAll']
+ * @uses    $GLOBALS['strChange']
+ * @uses    $GLOBALS['strFormEmpty']
+ * @uses    $GLOBALS['strNotNumber']
+ * @uses    $GLOBALS['strNoDropDatabases']
+ * @uses    $GLOBALS['strDoYouReally']
+ * @uses    $GLOBALS['strQuerySQLHistory']
+ * @uses    PMA_isSuperuser()
+ * @uses    PMA_outBufferPre()
+ * @uses    PMA_getRelationsParam()
+ * @uses    PMA_isValid()
+ * @uses    PMA_ifSetOr()
+ * @uses    PMA_setHistory()
+ * @uses    PMA_getHistory()
+ * @uses    PMA_generate_common_url()
+ * @uses    PMA_generate_common_hidden_inputs()
+ * @uses    PMA_escapeJsString()
+ * @uses    PMA_getTabs()
+ * @uses    PMA_sqlQueryForm()
+ * @uses    PMA_jsFormat()
+ * @uses    in_array()
+ * @uses    strlen()
+ * @uses    preg_replace()
+ * @uses    htmlspecialchars()
+ * @version $Id: querywindow.php 10238 2007-04-01 09:26:14Z cybot_tm $
+ */
 
 /**
- * Gets the variables sent to this script, retains the db name that may have
- * been defined as startup option and include a core library
+ *
  */
-if (isset($db) && strlen($db)) {
-    $db_start = $db;
-}
+require_once './libraries/common.inc.php';
 
+$is_superuser = PMA_isSuperuser();
 
 /**
  * Gets a core script and starts output buffering work
  */
 require_once './libraries/sql_query_form.lib.php';
-require_once('./libraries/ob.lib.php');
-if ( $GLOBALS['cfg']['OBGzip'] ) {
-    $ob_mode = PMA_outBufferModeGet();
-    if ( $ob_mode ) {
-        PMA_outBufferPre( $ob_mode );
-    }
-}
 
-require_once('./libraries/relation.lib.php');
+/**
+ * starts output buffering if requested and supported
+ */
+require_once './libraries/ob.lib.php';
+PMA_outBufferPre();
+
+/**
+ * load relations
+ */
+require_once './libraries/relation.lib.php';
 $cfgRelation = PMA_getRelationsParam();
 
+/**
+ * load bookmark support
+ */
+require_once './libraries/bookmark.lib.php';
 
-// initialize some variables
-$_sql_history = array();
-$_input_query_history = array();
+$querydisplay_tabs = array(
+    'sql',
+    'files',
+    'history',
+    'full',
+);
 
-// garvin: For re-usability, moved http-headers and stylesheets
-// to a seperate file. It can now be included by libraries/header.inc.php,
-// querywindow.php.
-
-require_once('./libraries/header_http.inc.php');
-require_once('./libraries/header_meta_style.inc.php');
-?>
-<script type="text/javascript" language="javascript">
-//<![CDATA[
-function query_auto_commit() {
-    document.getElementById( 'sqlqueryform' ).target = window.opener.frame_content.name;
-    document.getElementById( 'sqlqueryform' ).submit();
-    return;
-}
-
-function query_tab_commit(tab) {
-    document.getElementById('hiddenqueryform').querydisplay_tab.value = tab;
-    document.getElementById('hiddenqueryform').submit();
-    return false;
-}
-
-// js form validation stuff
-/**/
-var errorMsg0   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strFormEmpty']); ?>';
-var errorMsg1   = '<?php echo str_replace('\'', '\\\'', $GLOBALS['strNotNumber']); ?>';
-var noDropDbMsg = '<?php echo (!$is_superuser && !$GLOBALS['cfg']['AllowUserDropDatabase'])
-    ? str_replace('\'', '\\\'', $GLOBALS['strNoDropDatabases']) : ''; ?>';
-var confirmMsg  = '<?php echo $GLOBALS['cfg']['Confirm']
-    ? str_replace('\'', '\\\'', $GLOBALS['strDoYouReally']) : ''; ?>';
-/**/
-
-<?php
-if ( empty( $querydisplay_tab ) ) {
-    $onload = 'onload="resize();"';
-?>
-function resize() {
-
-    // for Gecko
-    if ( typeof( self.sizeToContent ) == 'function' ) {
-        self.sizeToContent();
-        //self.scrollbars.visible = false;
-        // give some more space ... to prevent 'fli(pp/ck)ing'
-        self.resizeBy( 10, 50 );
-        return;
-    }
-
-    // for IE, Opera
-    if (document.getElementById && typeof(document.getElementById('querywindowcontainer')) != 'undefined' ) {
-
-        // get content size
-        var newWidth  = document.getElementById('querywindowcontainer').offsetWidth;
-        var newHeight = document.getElementById('querywindowcontainer').offsetHeight;
-
-        // set size to contentsize
-        // plus some offset for scrollbars, borders, statusbar, menus ...
-        self.resizeTo( newWidth + 45, newHeight + 75 );
-    }
-}
-<?php
+if (isset($_REQUEST['querydisplay_tab'])
+ && in_array($_REQUEST['querydisplay_tab'], $querydisplay_tabs)) {
+    $querydisplay_tab = $_REQUEST['querydisplay_tab'];
 } else {
-    $onload = '';
+    $querydisplay_tab = $GLOBALS['cfg']['QueryWindowDefTab'];
 }
-?>
-//]]>
-</script>
-<script src="./js/functions.js" type="text/javascript" language="javascript"></script>
-</head>
 
-<body id="bodyquerywindow" <?php echo $onload; ?> >
-<div id="querywindowcontainer">
-<?php
-if ( !isset($no_js) ) {
-    $querydisplay_tab = (isset($querydisplay_tab) ? $querydisplay_tab : $GLOBALS['cfg']['QueryWindowDefTab']);
+/**
+ * $_REQUEST['no_js'] is set if open new window by JavaScript failed
+ * so this page is loaded in main frame
+ */
+$no_js = PMA_ifSetOr($_REQUEST['no_js'], false);
 
+if ($no_js) {
+    $querydisplay_tab = 'full';
+    $tabs = false;
+} else {
     $tabs = array();
     $tabs['sql']['icon']   = 'b_sql.png';
-    $tabs['sql']['text']   = $strSQL;
-    $tabs['sql']['link']   = '#';
-    $tabs['sql']['attr']   = 'onclick="javascript:query_tab_commit(\'sql\');return false;"';
-    $tabs['sql']['active'] = (bool) ( $querydisplay_tab == 'sql' );
+    $tabs['sql']['text']   = $GLOBALS['strSQL'];
+    $tabs['sql']['fragment']   = '#';
+    $tabs['sql']['attr']   = 'onclick="javascript:PMA_querywindowCommit(\'sql\');return false;"';
+    $tabs['sql']['active'] = (bool) ($querydisplay_tab == 'sql');
     $tabs['import']['icon']   = 'b_import.png';
-    $tabs['import']['text']   = $strImportFiles;
-    $tabs['import']['link']   = '#';
-    $tabs['import']['attr']   = 'onclick="javascript:query_tab_commit(\'files\');return false;"';
-    $tabs['import']['active'] = (bool) ( $querydisplay_tab == 'files' );
+    $tabs['import']['text']   = $GLOBALS['strImportFiles'];
+    $tabs['import']['fragment']   = '#';
+    $tabs['import']['attr']   = 'onclick="javascript:PMA_querywindowCommit(\'files\');return false;"';
+    $tabs['import']['active'] = (bool) ($querydisplay_tab == 'files');
     $tabs['history']['icon']   = 'b_bookmark.png';
-    $tabs['history']['text']   = $strQuerySQLHistory;
-    $tabs['history']['link']   = '#';
-    $tabs['history']['attr']   = 'onclick="javascript:query_tab_commit(\'history\');return false;"';
-    $tabs['history']['active'] = (bool) ( $querydisplay_tab == 'history' );
+    $tabs['history']['text']   = $GLOBALS['strQuerySQLHistory'];
+    $tabs['history']['fragment']   = '#';
+    $tabs['history']['attr']   = 'onclick="javascript:PMA_querywindowCommit(\'history\');return false;"';
+    $tabs['history']['active'] = (bool) ($querydisplay_tab == 'history');
 
-    if ( $GLOBALS['cfg']['QueryWindowDefTab'] == 'full' ) {
-        $tabs['all']['text']   = $strAll;
-        $tabs['all']['link']   = '#';
-        $tabs['all']['attr']   = 'onclick="javascript:query_tab_commit(\'full\');return false;"';
-        $tabs['all']['active'] = (bool) ( $querydisplay_tab == 'full' );
+    if ($GLOBALS['cfg']['QueryWindowDefTab'] == 'full') {
+        $tabs['all']['text']   = $GLOBALS['strAll'];
+        $tabs['all']['fragment']   = '#';
+        $tabs['all']['attr']   = 'onclick="javascript:PMA_querywindowCommit(\'full\');return false;"';
+        $tabs['all']['active'] = (bool) ($querydisplay_tab == 'full');
     }
-
-    echo PMA_getTabs( $tabs );
-    unset( $tabs );
-} else {
-    $querydisplay_tab = 'full';
 }
 
-if ( true == $GLOBALS['cfg']['PropertiesIconic'] ) {
+if ($GLOBALS['cfg']['PropertiesIconic']) {
     $titles['Change'] =
          '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_edit.png" alt="' . $strChange . '" title="' . $strChange
+        . 'b_edit.png" alt="' . $GLOBALS['strChange'] . '" title="' . $GLOBALS['strChange']
         . '" />';
 
-    if ( 'both' === $GLOBALS['cfg']['PropertiesIconic'] ) {
-        $titles['Change'] .= $strChange;
+    if ('both' === $GLOBALS['cfg']['PropertiesIconic']) {
+        $titles['Change'] .= $GLOBALS['strChange'];
     }
 } else {
-    $titles['Change'] = $strChange;
+    $titles['Change'] = $GLOBALS['strChange'];
 }
 
-// Hidden forms and query frame interaction stuff
+$url_query = PMA_generate_common_url($db, $table);
 
-if ( ! empty( $query_history_latest ) && ! empty( $query_history_latest_db ) ) {
-    if ( $GLOBALS['cfg']['QueryHistoryDB'] && $cfgRelation['historywork'] ) {
-        PMA_setHistory((isset($query_history_latest_db) ? $query_history_latest_db : ''),
-            (isset($query_history_latest_table) ? $query_history_latest_table : ''),
-            $GLOBALS['cfg']['Server']['user'],
-            $query_history_latest );
-    }
-
-    $_input_query_history[$query_history_latest] = array(
-        'db'    => $query_history_latest_db,
-        'table' => isset($query_history_latest_table) ? $query_history_latest_table : '',
-    );
-
-    $_sql_history[$query_history_latest] = array(
-        'db'    =>  $query_history_latest_db,
-        'table' => isset($query_history_latest_table) ? $query_history_latest_table : '',
-    );
-
-    $sql_query = $query_history_latest;
-    $db = $query_history_latest_db;
-    $table = $query_history_latest_table;
-} elseif ( ! empty( $query_history_latest ) ) {
-    $sql_query = $query_history_latest;
-}
-
-if (isset($sql_query)) {
+if (! empty($sql_query)) {
     $show_query = 1;
 }
 
-if ( $GLOBALS['cfg']['QueryHistoryDB'] && $cfgRelation['historywork'] ) {
-
-    $temp_history = PMA_getHistory( $GLOBALS['cfg']['Server']['user'] );
-    if (is_array($temp_history) && count($temp_history) > 0) {
-        foreach ($temp_history AS $history_nr => $history_array) {
-            if ( ! isset( $_sql_history[$history_array['sqlquery']] ) ) {
-                $_sql_history[$history_array['sqlquery']] = array(
-                    'db'    => $history_array['db'],
-                    'table' => isset( $history_array['table'] ) ? $history_array['table'] : '',
-                );
-            }
-        }
-    }
-
-} else {
-
-    if (isset($query_history) && is_array($query_history)) {
-        $current_index = count($query_history);
-        foreach ($query_history AS $query_no => $query_sql) {
-            if ( ! isset( $_input_query_history[$query_sql] ) ) {
-                $_input_query_history[$query_sql] = array(
-                    'db'    => $query_history_db[$query_no],
-                    'table' => isset($query_history_table[$query_no]) ? $query_history_table[$query_no] : '',
-                );
-                $_sql_history[$query_sql] = array(
-                    'db'    => $query_history_db[$query_no],
-                    'table' => isset( $query_history_table[$query_no] ) ? $query_history_table[$query_no] : '',
-                );
-            } // end if check if this item exists
-        } // end while print history
-    } // end if history exists
-} // end if DB-based history
-
-$url_query = PMA_generate_common_url(isset($db) ? $db : '', isset($table) ? $table : '');
-if (!isset($goto)) {
-    $goto = '';
-}
-
-require_once './libraries/bookmark.lib.php';
-
-if (isset($no_js) && $no_js) {
+if ($no_js) {
     // ... we redirect to appropriate query sql page
     // works only full if $db and $table is also stored/grabbed from $_COOKIE
-    if ( isset( $table ) && strlen($table) ) {
+    if (strlen($table)) {
         require './tbl_sql.php';
-    } elseif ( isset($db) && strlen($db) ) {
+    } elseif (strlen($db)) {
         require './db_sql.php';
     } else {
         require './server_sql.php';
@@ -239,133 +155,160 @@ if (isset($no_js) && $no_js) {
 /**
  * Defines the query to be displayed in the query textarea
  */
-if ( ! empty( $show_query ) ) {
+if (! empty($show_query)) {
     $query_to_display = $sql_query;
 } else {
     $query_to_display = '';
 }
-unset( $sql_query );
+$sql_query = '';
 
-PMA_sqlQueryForm( $query_to_display, $querydisplay_tab );
-
-// Hidden forms and query frame interaction stuff
-if (isset($auto_commit) && $auto_commit == 'true') {
+/**
+ * start HTML output
+ */
+require_once './libraries/header_http.inc.php';
+require_once './libraries/header_meta_style.inc.php';
 ?>
-        <script type="text/javascript" language="javascript">
-        //<![CDATA[
-        query_auto_commit();
-        //]]>
-        </script>
-<?php
+<script type="text/javascript">
+//<![CDATA[
+var errorMsg0   = '<?php echo PMA_escapeJsString($GLOBALS['strFormEmpty']); ?>';
+var errorMsg1   = '<?php echo PMA_escapeJsString($GLOBALS['strNotNumber']); ?>';
+var noDropDbMsg = '<?php echo (!$is_superuser && !$GLOBALS['cfg']['AllowUserDropDatabase'])
+    ? PMA_escapeJsString($GLOBALS['strNoDropDatabases']) : ''; ?>';
+var confirmMsg  = '<?php echo $GLOBALS['cfg']['Confirm']
+    ? PMA_escapeJsString($GLOBALS['strDoYouReally']) : ''; ?>';
+
+function PMA_queryAutoCommit() {
+    document.getElementById('sqlqueryform').target = window.opener.frame_content.name;
+    document.getElementById('sqlqueryform').submit();
+    return;
 }
 
-if ( count( $_sql_history ) > 0
-  && ( $querydisplay_tab == 'history' || $querydisplay_tab == 'full' ) ) {
-    $tab = isset($querydisplay_tab) && $querydisplay_tab != 'full' ? 'sql' : 'full';
-    echo $strQuerySQLHistory . ':<br />' . "\n"
-        .'<ul>';
-    foreach ( $_sql_history as $sql => $query ) {
-        echo '<li>' . "\n";
-        // edit link
-        echo '<a href="#" onclick="'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'querydisplay_tab.value = \'' . $tab . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'query_history_latest.value = \''
-               . preg_replace('/(\r|\n)+/i', '\\n',
-                    PMA_jsFormat($sql, false) ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'auto_commit.value = \'false\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'db.value = \'' . htmlspecialchars( $query['db'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'query_history_latest_db.value = \''
-               . htmlspecialchars( $query['db'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'table.value = \'' . htmlspecialchars( $query['table'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'query_history_latest_table.value = \''
-               . htmlspecialchars( $query['table'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').submit();'
-               .' return false;">' . $titles['Change'] . '</a>';
-            // execute link
-        echo '<a href="#" onclick="'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'querydisplay_tab.value = \'' . $tab . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'query_history_latest.value = \''
-               . preg_replace('/(\r|\n)+/i', '\\r\\n',
-                    PMA_jsFormat($sql, false) ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'auto_commit.value = \'true\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'db.value = \'' . htmlspecialchars( $query['db'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'query_history_latest_db.value = \''
-               . htmlspecialchars( $query['db'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'table.value = \'' . htmlspecialchars( $query['table'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').'
-               .'query_history_latest_table.value = \''
-               . htmlspecialchars( $query['table'] ) . '\';'
-               .' document.getElementById(\'hiddenqueryform\').submit();'
-               .' return false;">[' . htmlspecialchars( $query['db'] ) . '] '
-               . htmlspecialchars($sql) . '</a>' . "\n";
+function PMA_querywindowCommit(tab) {
+    document.getElementById('hiddenqueryform').querydisplay_tab.value = tab;
+    document.getElementById('hiddenqueryform').submit();
+    return false;
+}
 
+function PMA_querywindowResize() {
+    // for Gecko
+    if (typeof(self.sizeToContent) == 'function') {
+        self.sizeToContent();
+        //self.scrollbars.visible = false;
+        // give some more space ... to prevent 'fli(pp/ck)ing'
+        self.resizeBy(10, 50);
+        return;
+    }
+
+    // for IE, Opera
+    if (document.getElementById && typeof(document.getElementById('querywindowcontainer')) != 'undefined') {
+
+        // get content size
+        var newWidth  = document.getElementById('querywindowcontainer').offsetWidth;
+        var newHeight = document.getElementById('querywindowcontainer').offsetHeight;
+
+        // set size to contentsize
+        // plus some offset for scrollbars, borders, statusbar, menus ...
+        self.resizeTo(newWidth + 45, newHeight + 75);
+    }
+}
+
+function PMA_querywindowInit()
+{
+<?php
+if (PMA_isValid($_REQUEST['auto_commit'], 'identical', 'true')) {
+    echo 'PMA_queryAutoCommit();' . "\n";
+}
+if (PMA_isValid($_REQUEST['init'])) {
+    echo 'PMA_querywindowResize();' . "\n";
+}
+?>
+}
+
+//]]>
+</script>
+<script src="./js/functions.js" type="text/javascript"></script>
+</head>
+
+<body id="bodyquerywindow" onload="PMA_querywindowInit();">
+<div id="querywindowcontainer">
+<?php
+
+if ($tabs) {
+    echo PMA_getTabs($tabs);
+    unset($tabs);
+}
+
+PMA_sqlQueryForm($query_to_display, $querydisplay_tab);
+
+// Hidden forms and query frame interaction stuff
+
+$_sql_history = PMA_getHistory($GLOBALS['cfg']['Server']['user']);
+if (! empty($_sql_history)
+ && ($querydisplay_tab == 'history' || $querydisplay_tab == 'full')) {
+    $tab = $querydisplay_tab != 'full' ? 'sql' : 'full';
+    echo $GLOBALS['strQuerySQLHistory'] . ':<br />' . "\n"
+        .'<ul>';
+    foreach ($_sql_history as $query) {
+        echo '<li>' . "\n";
+
+        // edit link
+        $url_params = array(
+            'querydisplay_tab' => $tab,
+            'sql_query' => $query['sqlquery'],
+            'db' => $query['db'],
+            'table' => $query['table'],
+        );
+        echo '<a href="querywindow.php' . PMA_generate_common_url($url_params)
+            . '">' . $titles['Change'] . '</a>';
+
+        // execute link
+        $url_params['auto_commit'] = 'true';
+        echo '<a href="import.php' . PMA_generate_common_url($url_params) . '"'
+            . ' target="frame_content">';
+
+        if (! empty($query['db'])) {
+            echo '[';
+            echo htmlspecialchars(PMA_backquote($query['db']));
+            if (! empty($query['table'])) {
+                echo '.' . htmlspecialchars(PMA_backquote($query['table']));
+            }
+            echo  '] ';
+        }
+        if (strlen($query['sqlquery']) > 120) {
+            echo '<span title="' . htmlspecialchars($query['sqlquery']) . '">';
+            echo htmlspecialchars(substr($query['sqlquery'], 0, 50)) . ' [...] ';
+            echo htmlspecialchars(substr($query['sqlquery'], -50));
+            echo '</span>';
+        } else {
+            echo htmlspecialchars($query['sqlquery']);
+        }
+        echo '</a>' . "\n";
         echo '</li>' . "\n";
     }
-    unset( $tab, $_sql_history, $sql, $query );
+    unset($tab, $_sql_history, $query);
     echo '</ul>' . "\n";
 }
 ?>
-<form action="querywindow.php" method="post" name="querywindow" id="hiddenqueryform">
-<?php
-echo PMA_generate_common_hidden_inputs('', '') . "\n";
-foreach ( $_input_query_history as $sql => $history ) {
-    echo '<input type="hidden" name="query_history[]" value="'
-        . $sql . '" />' . "\n";
-    echo '<input type="hidden" name="query_history_db[]" value="'
-        . htmlspecialchars( $history['db'] ) . '" />' . "\n";
-    echo '<input type="hidden" name="query_history_table[]" value="'
-        . htmlspecialchars( $history['table'] ) . '" />' . "\n";
-}
-unset( $_input_query_history, $sql, $history );
-?>
-    <input type="hidden" name="db" value="<?php echo (! isset($db) ? '' : htmlspecialchars($db)); ?>" />
-    <input type="hidden" name="table" value="<?php echo (! isset($table) ? '' : htmlspecialchars($table)); ?>" />
-
-    <input type="hidden" name="query_history_latest" value="" />
-    <input type="hidden" name="query_history_latest_db" value="" />
-    <input type="hidden" name="query_history_latest_table" value="" />
-
-    <input type="hidden" name="previous_db" value="<?php echo htmlspecialchars($db); ?>" />
-
-    <input type="hidden" name="auto_commit" value="false" />
+<form action="querywindow.php" method="post" name="hiddenqueryform"
+    id="hiddenqueryform">
+    <?php echo PMA_generate_common_hidden_inputs('', ''); ?>
+    <input type="hidden" name="db" value="<?php echo htmlspecialchars($db); ?>" />
+    <input type="hidden" name="table" value="<?php echo htmlspecialchars($table); ?>" />
+    <input type="hidden" name="sql_query" value="" />
     <input type="hidden" name="querydisplay_tab" value="<?php echo $querydisplay_tab; ?>" />
 </form>
-    <?php
-?>
 </div>
 </body>
 </html>
 
 <?php
-
 /**
  * Close MySql connections
  */
-if (isset($controllink) && $controllink) {
+if (! empty($controllink)) {
     PMA_DBI_close($controllink);
 }
-if (isset($userlink) && $userlink) {
+if (! empty($userlink)) {
     PMA_DBI_close($userlink);
-}
-
-
-/**
- * Sends bufferized data
- */
-if ( $GLOBALS['cfg']['OBGzip'] && isset( $ob_mode ) && $ob_mode ) {
-     PMA_outBufferPost($ob_mode);
 }
 ?>

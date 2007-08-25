@@ -1,7 +1,13 @@
 <?php
-/* $Id: application_octetstream__download.inc.php 9617 2006-10-26 14:58:40Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: application_octetstream__download.inc.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ */
 
+/**
+ *
+ */
 function PMA_transformation_application_octetstream__download(&$buffer, $options = array(), $meta = '') {
     global $row, $fields_meta;
 
@@ -18,7 +24,7 @@ function PMA_transformation_application_octetstream__download(&$buffer, $options
             if (isset($pos)) {
                 $cn = $row[$pos];
             }
-        } 
+        }
         if (empty($cn)) {
             $cn = 'binary_file.dat';
         }

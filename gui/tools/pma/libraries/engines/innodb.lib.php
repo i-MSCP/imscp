@@ -1,7 +1,12 @@
 <?php
-/* $Id: innodb.lib.php 8107 2005-12-07 11:24:38Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * @version $Id: innodb.lib.php 10478 2007-07-09 19:41:38Z lem9 $
+ */
 
+/**
+ *
+ */
 class PMA_StorageEngine_innodb extends PMA_StorageEngine
 {
     /**
@@ -149,8 +154,6 @@ class PMA_StorageEngine_innodb extends PMA_StorageEngine
      * @uses    PMA_DBI_fetch_result()
      * @uses    PMA_formatNumber()
      * @uses    PMA_formatByteDown()
-     * @uses    $GLOBALS['number_decimal_separator']
-     * @uses    $GLOBALS['number_thousands_separator']
      * @uses    $GLOBALS['strBufferPoolUsage']
      * @uses    $GLOBALS['strTotalUC']
      * @uses    $GLOBALS['strInnoDBPages']
@@ -169,7 +172,7 @@ class PMA_StorageEngine_innodb extends PMA_StorageEngine
      * @uses    $GLOBALS['strBufferWriteWaitsInPercent']
      * @uses    join()
      * @uses    htmlspecialchars()
-     * @uses    number_format()
+     * @uses    PMA_formatNumber()
      * @return  string  html table with stats
      */
     function getPageBufferpool()
@@ -184,7 +187,7 @@ class PMA_StorageEngine_innodb extends PMA_StorageEngine
              SHOW STATUS
             WHERE Variable_name LIKE \'Innodb\\_buffer\\_pool\\_%\'
                OR Variable_name = \'Innodb_page_size\';';
-        $status = PMA_DBI_fetch_result( $sql, 0, 1 );
+        $status = PMA_DBI_fetch_result($sql, 0, 1);
 
         $output = '<table class="data" id="table_innodb_bufferpool_usage">' . "\n"
                 . '    <caption class="tblHeaders">' . "\n"
@@ -276,7 +279,7 @@ class PMA_StorageEngine_innodb extends PMA_StorageEngine
                 . '            <td class="value">'
                 . ($status['Innodb_buffer_pool_read_requests'] == 0
                     ? '---'
-                    : htmlspecialchars(number_format($status['Innodb_buffer_pool_reads'] * 100 / $status['Innodb_buffer_pool_read_requests'], 2, $GLOBALS['number_decimal_separator'], $GLOBALS['number_thousands_separator'])) . ' %') . "\n"
+                    : htmlspecialchars(PMA_formatNumber($status['Innodb_buffer_pool_reads'] * 100 / $status['Innodb_buffer_pool_read_requests'], 3, 2)) . ' %') . "\n"
                 . '</td>' . "\n"
                 . '        </tr>' . "\n"
                 . '        <tr class="even">' . "\n"
@@ -284,7 +287,7 @@ class PMA_StorageEngine_innodb extends PMA_StorageEngine
                 . '            <td class="value">'
                 . ($status['Innodb_buffer_pool_write_requests'] == 0
                     ? '---'
-                    : htmlspecialchars(number_format($status['Innodb_buffer_pool_wait_free'] * 100 / $status['Innodb_buffer_pool_write_requests'], 2, $GLOBALS['number_decimal_separator'], $GLOBALS['number_thousands_separator'])) . ' %') . "\n"
+                    : htmlspecialchars(PMA_formatNumber($status['Innodb_buffer_pool_wait_free'] * 100 / $status['Innodb_buffer_pool_write_requests'], 3, 2)) . ' %') . "\n"
                 . '</td>' . "\n"
                 . '        </tr>' . "\n"
                 . '    </tbody>' . "\n"
@@ -316,7 +319,7 @@ class PMA_StorageEngine_innodb extends PMA_StorageEngine
      */
     function getPage($id)
     {
-        if ( ! array_key_exists( $id, $this->getInfoPages() ) ) {
+        if (! array_key_exists($id, $this->getInfoPages())) {
             return false;
         }
 

@@ -1,11 +1,14 @@
-/* $Id: tooltip.js 7886 2005-11-23 19:10:30Z nijel $ */
-
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Displays the Tooltips (hints), if we have some
  * 2005-01-20 added by Michael Keck (mkkeck)
+ *
+ * @version $Id: tooltip.js 10142 2007-03-20 10:32:13Z cybot_tm $
  */
 
+/**
+ *
+ */
 var ttXpos = 0, ttYpos = 0;
 var ttXadd = 10, ttYadd = -10;
 var ttDisplay = 0, ttHoldIt = 0;

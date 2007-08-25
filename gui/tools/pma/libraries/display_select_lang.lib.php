@@ -1,7 +1,9 @@
 <?php
-/*
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
  * Code for displaying language selection
- * $Id: display_select_lang.lib.php 9265 2006-08-09 21:19:33Z lem9 $
+ *
+ * @version $Id: display_select_lang.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
  */
 
 /**
@@ -12,7 +14,7 @@
  * @return  the sorted array
  * @access  private
  */
-function PMA_language_cmp( &$a, &$b ) {
+function PMA_language_cmp(&$a, &$b) {
     return (strcmp($a[1], $b[1]));
 } // end of the 'PMA_language_cmp()' function
 
@@ -35,11 +37,11 @@ function PMA_select_language($use_fieldset = FALSE) {
         echo '            <input type="hidden" name="convcharset" value="'
             . htmlspecialchars($GLOBALS['convcharset']) . '" />' . "\n";
     }
-    if (isset($GLOBALS['db'])) {
+    if (strlen($GLOBALS['db'])) {
         echo '            <input type="hidden" name="db" value="'
             . htmlspecialchars($GLOBALS['db']) . '" />' . "\n";
     }
-    if (isset($GLOBALS['table'])) {
+    if (strlen($GLOBALS['table'])) {
         echo '            <input type="hidden" name="table" value="'
             . htmlspecialchars($GLOBALS['table']) . '" />' . "\n";
     }
@@ -49,9 +51,9 @@ function PMA_select_language($use_fieldset = FALSE) {
     }
 
     $language_title = $GLOBALS['strLanguage'] . ($GLOBALS['strLanguage'] != 'Language' ? ' - Language' : '') . ' <a href="./translators.html" target="documentation">' .
-            ( $cfg['ReplaceHelpImg'] ? 
+            ($cfg['ReplaceHelpImg'] ?
                 '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_info.png" width="11" height="11" alt="Info" />' :
-                '(*)' ) . '</a>';
+                '(*)') . '</a>';
     if ($use_fieldset) {
         echo '<fieldset><legend xml:lang="en" dir="ltr">' . $language_title . '</legend>';
     } else {

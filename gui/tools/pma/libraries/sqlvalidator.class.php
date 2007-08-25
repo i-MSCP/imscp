@@ -1,7 +1,5 @@
 <?php
-/* $Id: sqlvalidator.class.php 9550 2006-10-13 08:21:55Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
 * PHP interface to MimerSQL Validator
 *
@@ -18,7 +16,7 @@
 * If you got this file from somewhere other than phpMyAdmin
 * please be aware that the latest copy will always be in the
 * phpMyAdmin subversion tree as
-* $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/branches/MAINT_2_10_3/phpMyAdmin/libraries/sqlvalidator.class.php $
+* $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/libraries/sqlvalidator.class.php $
 *
 * This code that also used to depend on the PHP overload module, but that has been
 * removed now.
@@ -27,10 +25,10 @@
 *
 * @author   Robin Johnson <robbat2@users.sourceforge.net>
 *
-* @version  $Id: sqlvalidator.class.php 9550 2006-10-13 08:21:55Z nijel $
+* @version  $Id: sqlvalidator.class.php 10240 2007-04-01 11:02:46Z cybot_tm $
 */
 
-@include_once('SOAP/Client.php');
+@include_once 'SOAP/Client.php';
 
 if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
     $GLOBALS['sqlvalidator_error'] = TRUE;
@@ -102,7 +100,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
                                       $connection_technology, $connection_technology_version,
                                       $interactive)
         {
-    $use_array = array( "a_userName" => $username, "a_password" => $password, "a_callingProgram" => $calling_program, "a_callingProgramVersion" => $calling_program_version, "a_targetDbms" => $target_dbms, "a_targetDbmsVersion" => $target_dbms_version, "a_connectionTechnology" => $connection_technology, "a_connectionTechnologyVersion" => $connection_technology_version, "a_interactive" => $interactive);
+    $use_array = array("a_userName" => $username, "a_password" => $password, "a_callingProgram" => $calling_program, "a_callingProgramVersion" => $calling_program_version, "a_targetDbms" => $target_dbms, "a_targetDbmsVersion" => $target_dbms_version, "a_connectionTechnology" => $connection_technology, "a_connectionTechnologyVersion" => $connection_technology_version, "a_interactive" => $interactive);
             $ret = $obj->call("openSession", $use_array);
 
            // This is the old version that needed the overload extension
@@ -178,7 +176,7 @@ if (!function_exists('class_exists') || !class_exists('SOAP_Client')) {
             $this->username                      = 'anonymous';
             $this->password                      = '';
             $this->calling_program               = 'PHP_SQLValidator';
-            $this->calling_program_version       = '$Revision: 9550 $';
+            $this->calling_program_version       = '$Revision: 10240 $';
             $this->target_dbms                   = 'N/A';
             $this->target_dbms_version           = 'N/A';
             $this->connection_technology         = 'PHP';

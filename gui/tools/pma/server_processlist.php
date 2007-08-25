@@ -1,13 +1,19 @@
 <?php
-/* $Id: server_processlist.php 9085 2006-05-30 09:26:52Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ *
+ * @version $Id: server_processlist.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ */
 
-require_once('./libraries/common.lib.php');
+/**
+ *
+ */
+require_once './libraries/common.inc.php';
 
 /**
  * Does the common work
  */
-require_once('./libraries/server_common.inc.php');
+require_once './libraries/server_common.inc.php';
 
 
 /**
@@ -25,14 +31,14 @@ if (!empty($kill)) {
 /**
  * Displays the links
  */
-require('./libraries/server_links.inc.php');
+require './libraries/server_links.inc.php';
 
 
 /**
  * Displays the sub-page heading
  */
 echo '<h2>' . "\n"
-   . ($cfg['MainPageIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 's_process.png" width="16" height="16" alt="" />' : '' )
+   . ($cfg['MainPageIconic'] ? '<img class="icon" src="' . $pmaThemeImage . 's_process.png" width="16" height="16" alt="" />' : '')
    . $strProcesslist . "\n"
    . '</h2>' . "\n";
 
@@ -40,10 +46,10 @@ echo '<h2>' . "\n"
 /**
  * Sends the query
  */
-$sql_query = 'SHOW' . ( empty( $full ) ? '' : ' FULL' ) . ' PROCESSLIST';
+$sql_query = 'SHOW' . (empty($full) ? '' : ' FULL') . ' PROCESSLIST';
 $result = PMA_DBI_query($sql_query);
 
-PMA_showMessage( $GLOBALS['strSuccess'] );
+PMA_showMessage($GLOBALS['strSuccess']);
 
 
 /**
@@ -77,7 +83,7 @@ while($process = PMA_DBI_fetch_assoc($result)) {
     <td class="value"><?php echo $process['Id']; ?></td>
     <td><?php echo $process['User']; ?></td>
     <td><?php echo $process['Host']; ?></td>
-    <td><?php echo (( ! isset( $process['db'] ) || ! strlen($process['db']) ) ? '<i>' . $strNone . '</i>' : $process['db']); ?></td>
+    <td><?php echo ((! isset($process['db']) || ! strlen($process['db'])) ? '<i>' . $strNone . '</i>' : $process['db']); ?></td>
     <td><?php echo $process['Command']; ?></td>
     <td class="value"><?php echo $process['Time']; ?></td>
     <td><?php echo (empty($process['State']) ? '---' : $process['State']); ?></td>
@@ -94,5 +100,5 @@ while($process = PMA_DBI_fetch_assoc($result)) {
 /**
  * Sends the footer
  */
-require_once('./libraries/footer.inc.php');
+require_once './libraries/footer.inc.php';
 ?>

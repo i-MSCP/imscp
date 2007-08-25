@@ -1,5 +1,9 @@
-/* $Id: tbl_change.js 10474 2007-07-08 17:39:06Z lem9 $ */
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * function used in table data manipulation pages
+ *
+ * @version $Id: tbl_change.js 10474 2007-07-08 17:39:06Z lem9 $
+ */
 
 /**
  * Modify from controls when the "NULL" checkbox is selected
@@ -180,7 +184,6 @@ function initCalendar() {
                 second      = parseInt(value.substr(12,2),10);
             }
         }
-
         if (isNaN(year) || isNaN(month) || isNaN(day) || day == 0) {
             dt      = new Date();
             year    = dt.getFullYear();

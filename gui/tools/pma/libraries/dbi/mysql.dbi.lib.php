@@ -1,11 +1,14 @@
 <?php
-/* $Id: mysql.dbi.lib.php 10356 2007-05-08 20:39:33Z cybot_tm $ */
-// vim: expandtab sw=4 ts=4 sts=4:
-
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * Interface to the classic MySQL extension
+ *
+ * @version $Id: mysql.dbi.lib.php 10356 2007-05-08 20:39:33Z cybot_tm $
  */
 
+/**
+ *
+ */
 // MySQL client API
 if (!defined('PMA_MYSQL_CLIENT_API')) {
     if (function_exists('mysql_get_client_info')) {
@@ -78,7 +81,13 @@ function PMA_DBI_connect($user, $password, $is_controluser = FALSE) {
         $link = PMA_DBI_real_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, '', empty($client_flags) ? NULL : $client_flags);
     }
 
-    if (empty($link)) {
+    if (empty($link) && ! $is_controluser) {
+        if ($is_controluser) {
+            if (! defined('PMA_DBI_CONNECT_FAILED_CONTROLUSER')) {
+                define('PMA_DBI_CONNECT_FAILED_CONTROLUSER', true);
+            }
+            return false;
+        }
         PMA_auth_fails();
     } // end if
 
@@ -187,9 +196,9 @@ function PMA_DBI_fetch_row($result) {
  * @param result    $result,...     one or more mysql result resources
  */
 function PMA_DBI_free_result() {
-    foreach ( func_get_args() as $result ) {
-        if ( is_resource($result)
-          && get_resource_type($result) === 'mysql result' ) {
+    foreach (func_get_args() as $result) {
+        if (is_resource($result)
+         && get_resource_type($result) === 'mysql result') {
             mysql_free_result($result);
         }
     }
@@ -291,7 +300,7 @@ function PMA_DBI_getError($link = null)
     // Some errors messages cannot be obtained by mysql_error()
     if ($error_number == 2002) {
         $error = '#' . ((string) $error_number) . ' - ' . $GLOBALS['strServerNotResponding'] . ' ' . $GLOBALS['strSocketProblem'];
-    } elseif ($error_number == 2003 ) {
+    } elseif ($error_number == 2003) {
         $error = '#' . ((string) $error_number) . ' - ' . $GLOBALS['strServerNotResponding'];
     } elseif (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 40100) {
         $error = '#' . ((string) $error_number) . ' - ' . $error_message;
