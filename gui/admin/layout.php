@@ -1,22 +1,22 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
+ * @license
+ * 	 This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -45,8 +45,7 @@ SQL_QUERY;
     }
 }
 
-function update_logo()
-{
+function update_logo() {
 
     $user_id = $_SESSION['user_id'];
 
@@ -55,7 +54,7 @@ function update_logo()
         $logo = get_own_logo($user_id);
 
         if (basename($logo) == 'isp_logo.gif') { //default logo
-            return ;
+            return;
         }
 
         update_user_logo('', $user_id);
@@ -66,9 +65,7 @@ function update_logo()
     } else if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo') {
 
             if (empty($_FILES['logo_file']['name'])) {
-
                     set_page_message(tr('Upload file error!'));
-
                     return;
             }
 
@@ -88,7 +85,7 @@ function update_logo()
                     break;
                 default:
                     set_page_message(tr('You can only upload images!'));
-                    return ;
+                    return;
                     break;
             }
 
@@ -97,8 +94,15 @@ function update_logo()
             // Make sure it is really an image
             if (image_type_to_mime_type(exif_imagetype($fname)) != $file_type) {
                 set_page_message(tr('You can only upload images!'));
-                return ;
+                return;
             }
+
+            // get the size of the image to prevent over large images
+            list($fwidth, $fheight, $ftype, $fattr) = getimagesize($fname);
+			if ($fwidth > 195 || $fheight > 195) {
+				set_page_message(tr('Images have to be smaller than 195 x 195 pixels!'));
+                return;
+			 }
 
             $newFName = get_user_name($user_id) . '.' . $fext;
 

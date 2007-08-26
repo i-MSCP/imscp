@@ -1,42 +1,38 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control Panel
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ * 	 This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
+
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
-$tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/layout.tpl');
-
-$tpl -> define_dynamic('page_message', 'page');
-
-$tpl -> define_dynamic('logged_from', 'page');
-
-$tpl -> define_dynamic('def_layout', 'page');
+$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/layout.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('def_layout', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 
-function save_layout()
-{
-
+function save_layout() {
     global $sql, $theme_color;
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
@@ -63,8 +59,7 @@ SQL_QUERY;
 }
 
 
-function update_logo()
-{
+function update_logo() {
 
     $user_id = $_SESSION['user_id'];
 
@@ -73,7 +68,7 @@ function update_logo()
         $logo = get_own_logo($user_id);
 
         if (basename($logo) == 'isp_logo.gif') { //default logo
-            return ;
+            return;
         }
 
         update_user_gui_props('', $user_id);
@@ -84,9 +79,7 @@ function update_logo()
     } else if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo') {
 
             if (empty($_FILES['logo_file']['tmp_name'])) {
-
                     set_page_message(tr('Upload file error!'));
-
                     return;
             }
 
@@ -118,6 +111,13 @@ function update_logo()
                 return ;
             }
 
+            // get the size of the image to prevent over large images
+            list($fwidth, $fheight, $ftype, $fattr) = getimagesize($fname);
+			if ($fwidth > 195 || $fheight > 195) {
+				set_page_message(tr('Images have to be smaller than 195 x 195 pixels!'));
+                return;
+			}
+
             $newFName = get_user_name($user_id) . '.' . $fext;
 
             $path = substr($_SERVER['SCRIPT_FILENAME'],0, strpos($_SERVER['SCRIPT_FILENAME'], '/reseller/layout.php')+1);
@@ -134,8 +134,7 @@ function update_logo()
 }
 
 
-function update_user_gui_props($file_name, $user_id)
-{
+function update_user_gui_props($file_name, $user_id) {
     global $sql;
 
     $query = <<<SQL_QUERY
@@ -155,7 +154,7 @@ save_layout();
 
 gen_def_layout($tpl, $theme_color);
 
-$tpl -> assign(
+$tpl->assign(
                 array(
                         'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -179,7 +178,7 @@ gen_logged_from($tpl);
 
 update_logo();
 
-$tpl -> assign(
+$tpl->assign(
                 array(
                         'TR_LAYOUT_SETTINGS' => tr('Layout settings'),
 						'TR_INSTALLED_LAYOUTS' => tr('Installed layouts'),
@@ -198,9 +197,8 @@ $tpl -> assign(
 
 gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
-
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 

@@ -1,21 +1,22 @@
 <?php
 /**
- *  ispCP ω (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ * 	 This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 /*
  * encode() - encode string to be valid as mail header
@@ -61,9 +62,9 @@ function encode($in_str, $charset = 'UTF-8') {
 function gen_admin_mainmenu(&$tpl, $menu_file) {
 		global $sql, $cfg;
 
-		$tpl -> define_dynamic('menu', $menu_file);
-		$tpl -> define_dynamic('custom_buttons', 'menu');
-		$tpl -> assign(
+		$tpl->define_dynamic('menu', $menu_file);
+		$tpl->define_dynamic('custom_buttons', 'menu');
+		$tpl->assign(
 					array(
 						'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 						'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
@@ -126,10 +127,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
-	 if ($rs -> RecordCount() == 0) {
-
-		$tpl -> assign('CUSTOM_BUTTONS', '');
-
+	if ($rs->RecordCount() == 0) {
+		$tpl->assign('CUSTOM_BUTTONS', '');
 	}
 	else {
 
@@ -138,57 +137,57 @@ SQL_QUERY;
 
 		while (!$rs -> EOF) {
 
-		$menu_name = $rs -> fields['menu_name'];
-		$menu_link = get_menu_vars($rs -> fields['menu_link']);
-		$menu_target = $rs -> fields['menu_target'];
+			$menu_name = $rs->fields['menu_name'];
+			$menu_link = get_menu_vars($rs -> fields['menu_link']);
+			$menu_target = $rs->fields['menu_target'];
 
-		if ($menu_target === '') {
-			$menu_target = "";
-		}
-		else {
-			$menu_target = "target=\"".$menu_target."\"";
-		}
+			if ($menu_target === '') {
+				$menu_target = "";
+			}
+			else {
+				$menu_target = "target=\"".$menu_target."\"";
+			}
 
-		$tpl -> assign(
-				  array(
-						'BUTTON_LINK' => $menu_link,
-						'BUTTON_NAME' => $menu_name,
-						'BUTTON_TARGET' => $menu_target,
-						'BUTTON_ID' => $i,
-						)
-				  );
+			$tpl -> assign(
+					  array(
+							'BUTTON_LINK' => $menu_link,
+							'BUTTON_NAME' => $menu_name,
+							'BUTTON_TARGET' => $menu_target,
+							'BUTTON_ID' => $i,
+							)
+					  );
 
-	$tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
-	$rs -> MoveNext(); $i++;
+			$tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
+			$rs -> MoveNext(); $i++;
 
 		} // end while
 	} // end else
 
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 
-		$tpl -> assign('SUPPORT_SYSTEM', '');
+		$tpl->assign('SUPPORT_SYSTEM', '');
 
 	}
 
 	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
 
-		$tpl -> assign('HOSTING_PLANS', '');
+		$tpl->assign('HOSTING_PLANS', '');
 
 	}
 
-	$tpl -> parse('MAIN_MENU', 'menu');
+	$tpl->parse('MAIN_MENU', 'menu');
 
 }
 
 function gen_admin_menu(&$tpl, $menu_file) {
 
-global $sql, $cfg;
+	global $sql, $cfg;
 
-$tpl -> define_dynamic('menu', $menu_file);
+	$tpl->define_dynamic('menu', $menu_file);
 
-$tpl -> define_dynamic('custom_buttons', 'menu');
+	$tpl->define_dynamic('custom_buttons', 'menu');
 
-$tpl -> assign(
+	$tpl->assign(
 			array(
 				'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 				'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -231,8 +230,8 @@ $tpl -> assign(
 				'TR_GENERAL_SETTINGS' => tr('General settings'),
 				'TR_SERVERPORTS' => tr('Serverports')
 			)
-	);
-$query = <<<SQL_QUERY
+		);
+	$query = <<<SQL_QUERY
 		select
 			*
 		from
@@ -242,55 +241,50 @@ $query = <<<SQL_QUERY
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
-	 if ($rs -> RecordCount() == 0) {
-
-		$tpl -> assign('CUSTOM_BUTTONS', '');
-
+	if ($rs->RecordCount() == 0) {
+		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 
 		global $i;
 		$i = 100;
 
-		while (!$rs -> EOF) {
+		while (!$rs->EOF) {
 
-		$menu_name = $rs -> fields['menu_name'];
-		$menu_link = get_menu_vars($rs -> fields['menu_link']);
-		$menu_target = $rs -> fields['menu_target'];
+			$menu_name = $rs->fields['menu_name'];
+			$menu_link = get_menu_vars($rs->fields['menu_link']);
+			$menu_target = $rs->fields['menu_target'];
 
-		if ($menu_target === ''){
-			$menu_target = "";
-		} else {
-			$menu_target = "target=\"".$menu_target."\"";
-		}
+			if ($menu_target === ''){
+				$menu_target = "";
+			} else {
+				$menu_target = "target=\"".$menu_target."\"";
+			}
 
-		$tpl -> assign(
-				  array(
-						'BUTTON_LINK' => $menu_link,
-						'BUTTON_NAME' => $menu_name,
-						'BUTTON_TARGET' => $menu_target,
-						'BUTTON_ID' => $i,
-						)
-				  );
+			$tpl->assign(
+					  array(
+							'BUTTON_LINK' => $menu_link,
+							'BUTTON_NAME' => $menu_name,
+							'BUTTON_TARGET' => $menu_target,
+							'BUTTON_ID' => $i,
+							)
+					  );
 
-	$tpl -> parse('CUSTOM_BUTTONS', '.custom_buttons');
-	$rs -> MoveNext(); $i++;
+			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
+			$rs->MoveNext();
+			$i++;
 
 		} // end while
 	} // end else
 
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
-
-		$tpl -> assign('SUPPORT_SYSTEM', '');
-
+		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
 	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
-
-		$tpl -> assign('HOSTING_PLANS', '');
-
+		$tpl->assign('HOSTING_PLANS', '');
 	}
 
-	$tpl -> parse('MENU', 'menu');
+	$tpl->parse('MENU', 'menu');
 
 }
 
@@ -1645,8 +1639,7 @@ function get_own_logo($user_id)
 }
 
 
-function get_admin_logo($user_id)
-{
+function get_admin_logo($user_id) {
 
    global $sql, $cfg;
 
@@ -1662,22 +1655,17 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	$user_logo = $rs -> fields['logo'];
+	$user_logo = $rs->fields['logo'];
 
 	if (empty($user_logo)) { // default logo
-
 	    return '../themes/user_logos/isp_logo.gif';
-
 	} else {
-
-	    return $cfg['IPS_LOGO_PATH'] . '/' . $user_logo;
-
+		return $cfg['IPS_LOGO_PATH'] . '/' . $user_logo;
 	}
 
 }
 
-function calc_bar_value($value, $value_max , $bar_width)
-{
+function calc_bar_value($value, $value_max , $bar_width) {
     if ($value_max == 0) {
         return 0;
     } else {

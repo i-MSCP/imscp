@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-26 Benedikt Heintel
+	- GUI:
+		* Fixed: upload of too big admin/reseller logos
+
 2007-08-24 Benedikt Heintel
 	- TOOLS:
 		* Updated: PHPmyAdmin to 2.11.0
