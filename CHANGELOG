@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-30 Raphael Geissert
+    - GUI:
+        * Fixed #615: client/add_mail_acc.php not respecting config
+        * Fixed #613: Call to undefined function tr() in include/ispcp-lib.php on line 109
+
 2007-08-29 Raphael Geissert
     - GUI:
         * Fixed #610: Table 'ispcp.log015' doesn't exist

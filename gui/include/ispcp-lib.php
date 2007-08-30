@@ -31,6 +31,13 @@ if (!isset($_SESSION))
 // setting for development edition - see all error messages
 error_reporting(E_ALL);
 
+require_once(INCLUDEPATH.'/spGzip.php');
+require_once(INCLUDEPATH.'/class.pTemplate.php');
+require_once(INCLUDEPATH.'/i18n.php');
+require_once(INCLUDEPATH.'/system-message.php');
+require_once(INCLUDEPATH.'/ispcp-db-keys.php');
+require_once(INCLUDEPATH.'/sql.php');
+
 // variable for developmetn edition => shows all php variables under the pages
 // false = disable, true = enable
 $cfg['DUMP_GUI_DEBUG'] = false;
@@ -117,15 +124,9 @@ $cfg['PASSWD_STRONG'] = true;
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = $cfg['APACHE_SITES_DIR'] . '/ispcp.conf';
 
-require_once(INCLUDEPATH.'/spGzip.php');
-
-require_once(INCLUDEPATH.'/class.pTemplate.php');
 require_once(INCLUDEPATH.'/date-functions.php');
-require_once(INCLUDEPATH.'/system-message.php');
-require_once(INCLUDEPATH.'/ispcp-db-keys.php');
 require_once(INCLUDEPATH.'/input-checks.php');
 require_once(INCLUDEPATH.'/debug.php');
-require_once(INCLUDEPATH.'/i18n.php');
 require_once(INCLUDEPATH.'/calc-functions.php');
 require_once(INCLUDEPATH.'/login-functions.php');
 require_once(INCLUDEPATH.'/login.php');
@@ -135,7 +136,6 @@ require_once(INCLUDEPATH.'/reseller-functions.php');
 require_once(INCLUDEPATH.'/ispcp-functions.php');
 require_once(INCLUDEPATH.'/idna.php');
 require_once(INCLUDEPATH.'/lostpassword-functions.php');
-require_once(INCLUDEPATH.'/sql.php');
 require_once(INCLUDEPATH.'/emailtpl-functions.php');
 require_once(INCLUDEPATH.'/layout-functions.php');
 
