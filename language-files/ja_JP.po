@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -518,9 +518,6 @@ msgstr "パーソナルデータ"
 
 msgid "Update data"
 msgstr "データ更新"
-
-msgid "User does not exist!"
-msgstr "ユーザーは存在しません"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -1133,6 +1130,9 @@ msgstr "ファイルのアップロードに失敗"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "ロゴのアップロードに成功しました!"
 
@@ -1183,6 +1183,22 @@ msgstr "ユーザーの氏名"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - 管理者/メイン インデックス"
+
+msgid "Settings saved !"
+msgstr "設定は保存されました"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "オーダー管理"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr ""
+"このモードにすると、アドミニストレーター権限以外のログインが出来なくなります"
 
 msgid "Reseller list is empty!"
 msgstr "リセラーが登録されていません"
@@ -1564,19 +1580,6 @@ msgstr "最大トラフィック [MB]"
 msgid "Warning traffic [MB]"
 msgstr "警告トラフィック [MB]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "設定は保存されました"
-
-msgid "Servicemode"
-msgstr "サービスモード"
-
-msgid "In this mode only administrators can login"
-msgstr ""
-"このモードにすると、アドミニストレーター権限以外のログインが出来なくなります"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1619,7 +1622,8 @@ msgstr "言語"
 msgid "Support system"
 msgstr "サポート"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "ポート情報"
 
 msgid "Domains per page"
@@ -3056,6 +3060,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3067,8 +3076,8 @@ msgstr "お待ちください"
 msgid "You have been blocked for %d minutes"
 msgstr "ブロックされました"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "現在サービスモードとなっております。現在、アドミニストレータ権限以外のログイ"
 "ンは許可されて下りません。"
@@ -3076,11 +3085,15 @@ msgstr ""
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr " このインターフェースにアクセスする権限がありません!"
 
 msgid "Domain alias"
 msgstr "ドメインエイリアス"
@@ -3197,11 +3210,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "エラー"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "エラーページ"
+
 msgid "Wrong domain name syntax!"
 msgstr ""
-
-msgid "You do not have permission to access this interface!"
-msgstr " このインターフェースにアクセスする権限がありません!"
 
 msgid "Add On A Domain"
 msgstr "ドメイン追加"
@@ -3637,6 +3655,12 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "送信済み"
+
+#~ msgid "User does not exist!"
+#~ msgstr "ユーザーは存在しません"
+
+#~ msgid "Servicemode"
+#~ msgstr "サービスモード"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "MySQL管理者として接続できません!"

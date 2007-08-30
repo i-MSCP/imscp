@@ -195,6 +195,7 @@ SQL_QUERY;
 	$domain_ip = $rs -> fields['domain_ip_id'];
 
 	$alias_name = encode_idna($alias_name);
+	$mount_point = array_encode_idna($mount_point, true);
 
 	//$mount_point = "/".$mount_point;
 

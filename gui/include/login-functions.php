@@ -42,25 +42,21 @@ function is_userdomain_ok($username) {
 
 	$udata = get_userdata($username);
 
-	if (is_array($udata)) {
-
-		if ($udata['admin_type'] == "user") {
-
-			$query = "SELECT domain_status FROM domain WHERE domain_admin_id='" . $udata['admin_id'] . "'";
-
-			$res = exec_query($sql, $query, array());
-
-			$row = $res -> FetchRow();
-
-			if ($row['domain_status'] != $cfg['ITEM_OK_STATUS']) {
-				return FALSE;
-			}
-		}
-		return TRUE;
+	if (!is_array($udata)) {
+	    return false;
 	}
-	else {
-		return FALSE;
+
+	if ($udata['admin_type'] != 'user') {
+	    return true;
 	}
+
+	$query = 'SELECT domain_status FROM domain WHERE domain_admin_id=?';
+
+	$res = exec_query($sql, $query, array($udata['admin_id']));
+
+	$row = $res -> FetchRow();
+
+	return ($row['domain_status'] == $cfg['ITEM_OK_STATUS']);
 }
 
 function unblock($timeout = null, $type = 'bruteforce') {
@@ -117,6 +113,45 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 	deny_access();
 }
 
+function shall_user_wait($ipaddr = null, $displayMessage = true) {
+
+	if (!$cfg['BRUTEFORCE'])
+	return false;
+
+	if ($ipaddr === null) {
+	    $ipaddr = getipaddr();
+	}
+
+	$sess_id = session_id();
+
+	$query = 'SELECT session_id, ipaddr, user_name, lastaccess, login_count, captcha_count FROM login WHERE ipaddr=? AND user_name is NULL';
+	$res = exec_query($sql, $query, array($ipaddr));
+
+	if ($res->RecordCount() == 0) {
+	   	return false;
+	}
+
+	$data = $res->FetchRow();
+
+	$lastaccess  = $data['lastaccess'];
+
+	if ($cfg['BRUTEFORCE_BETWEEN']) {
+		$btime = $lastaccess + $cfg['BRUTEFORCE_BETWEEN_TIME'];
+	} else {
+		return false;
+	}
+
+	if ($btime > time()) {
+	    if ($displayMessage) {
+	        system_message(tr('You have to wait %d seconds', $btime - time()));
+	    }
+		return true;
+	} else {
+	    return false;
+	}
+
+}
+
 function check_ipaddr($ipaddr = null, $type = "brutefoce") {
 	global $sql, $cfg;
 
@@ -139,8 +174,8 @@ function check_ipaddr($ipaddr = null, $type = "brutefoce") {
 
 	$data = $res->FetchRow();
 
-	$lastaccess = $data['lastaccess'];
-	$logincount = $data['login_count'];
+	$lastaccess  = $data['lastaccess'];
+	$logincount  = $data['login_count'];
 	$capchacount = $data['captcha_count'];
 
 	if ($type == 'bruteforce' && $logincount > $cfg['BRUTEFORCE_MAX_LOGIN']) {
@@ -161,20 +196,20 @@ function check_ipaddr($ipaddr = null, $type = "brutefoce") {
 
 		if ($type == "bruteforce") {
 
-			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	login_count=login_count+1 WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
+			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	login_count=login_count+1 WHERE ipaddr=? AND user_name is NULL";
 
 		} else if ($type == "captcha") {
 
-			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count=captcha_count+1 WHERE ipaddr='" . $ipaddr . "' AND user_name is NULL";
+			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count=captcha_count+1 WHERE ipaddr=? AND user_name is NULL";
 
 		}
 
-   		exec_query($sql, $query);
+   		exec_query($sql, $query, $ipaddr);
 		return false;
 
 	} else {
-		write_log("Login error, <b><i>".htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8")."</i></b> wait " . $cfg['BRUTEFORCE_BETWEEN_TIME'] . " seconds");
-		system_message(tr('You have to wait %d seconds', $cfg['BRUTEFORCE_BETWEEN_TIME']));
+		write_log("Login error, <b><i>".$ipaddr."</i></b> wait " . ($btime - time()) . " seconds");
+		system_message(tr('You have to wait %d seconds', $btime - time()));
 		return false;
 	}
 }
@@ -192,10 +227,7 @@ function deny_access() {
 }
 
 function getipaddr() {
-	if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		return $_SERVER['HTTP_X_FORWARDED_FOR'];
-	else
-		return $_SERVER['REMOTE_ADDR'];
+	return $_SERVER['REMOTE_ADDR'];
 }
 
 function do_session_timeout() {
@@ -203,8 +235,8 @@ function do_session_timeout() {
 
 	$ttl = time() - $cfg['SESSION_TIMEOUT'] * 60;
 
-	$query = "DELETE FROM login WHERE lastaccess < '" . $ttl . "'";
-	exec_query($sql, $query, array());
+	$query = "DELETE FROM login WHERE lastaccess < ?";
+	exec_query($sql, $query, array($ttl));
 
 	if (!session_exists(session_id())) {
 	    if (isset($_SESSION['user_logged']))
@@ -216,14 +248,11 @@ function do_session_timeout() {
 function session_exists($sess_id) {
 	global $sql;
 
-	$query = "SELECT session_id FROM login WHERE session_id='" . $sess_id . "'";
+	$query = "SELECT session_id FROM login WHERE session_id=?";
 
-	$res = exec_query($sql, $query, array());
+	$res = exec_query($sql, $query, array($sess_id));
 
-	if ($res -> RecordCount() == 0) {
-  		return FALSE;
-  	}
-	return TRUE;
+	return ($res -> RecordCount() == 1);
 }
 
 ?>

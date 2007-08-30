@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -517,9 +517,6 @@ msgstr "Persoonlijke gegevens"
 
 msgid "Update data"
 msgstr "Wijzig gegevens"
-
-msgid "User does not exist!"
-msgstr "Gebruiker bestaat niet!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -1134,6 +1131,9 @@ msgstr "Upload bestand fout!"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Uw logo is succesvol geuploaded!"
 
@@ -1184,6 +1184,21 @@ msgstr "Gebruikers (voor- en achter-) naam"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "Settings saved !"
+msgstr "Instellingen opgeslagen !"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Beheer bestellingen"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "In deze modus kunnen enkel beheerders inloggen"
 
 msgid "Reseller list is empty!"
 msgstr "Er zijn nog geen resellers"
@@ -1565,18 +1580,6 @@ msgstr "Max verkeer [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Waarschuwing verkeer [MB]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "Instellingen opgeslagen !"
-
-msgid "Servicemode"
-msgstr "Dienstmodus"
-
-msgid "In this mode only administrators can login"
-msgstr "In deze modus kunnen enkel beheerders inloggen"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1619,7 +1622,8 @@ msgstr "Standaard taal"
 msgid "Support system"
 msgstr "Ondersteuning systeem"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Serverpoorten"
 
 msgid "Domains per page"
@@ -3065,6 +3069,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3076,8 +3085,8 @@ msgstr "U moet wachten"
 msgid "You have been blocked for %d minutes"
 msgstr "U bent geblokkeerd voor"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Systeem is momenteel in service modus!  Enkel de beheerders kunnen inloggen."
 
@@ -3085,11 +3094,15 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 "Gebruiker is al ingelogd of er is een session sharing probleem. Afgebroken..."
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "U heeft geen rechten deze interface te gebruiken"
 
 msgid "Domain alias"
 msgstr "Domeinalias"
@@ -3207,11 +3220,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Fout"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Error paginas"
+
 msgid "Wrong domain name syntax!"
 msgstr "Verkeerde domeinnaam syntax"
-
-msgid "You do not have permission to access this interface!"
-msgstr "U heeft geen rechten deze interface te gebruiken"
 
 msgid "Add On A Domain"
 msgstr "Voeg toe aan een domein"
@@ -3659,6 +3677,12 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#~ msgid "User does not exist!"
+#~ msgstr "Gebruiker bestaat niet!"
+
+#~ msgid "Servicemode"
+#~ msgstr "Dienstmodus"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Kan niet verbinden als MySQL beheerder!"

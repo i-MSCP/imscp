@@ -81,9 +81,9 @@ SQL_QUERY;
 
 	if ($rs ->RowCount() == 1 ) {
 
-	    $data['subject'] = utf8_encode(html_entity_decode($rs->fields['subject'], ENT_COMPAT));
+	    $data['subject'] = $rs->fields['subject'];
 
-	    $data['message'] = utf8_encode(html_entity_decode($rs->fields['message'], ENT_COMPAT));
+	    $data['message'] = $rs->fields['message'];
 
 	} else {
 

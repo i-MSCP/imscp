@@ -49,6 +49,8 @@ if (check_user_login()) {
     }
 }
 
+shall_user_wait();
+
 if (isset($_SESSION['user_theme'])) {
 	$theme_color = $_SESSION['user_theme'];
 } else {
@@ -57,15 +59,15 @@ if (isset($_SESSION['user_theme'])) {
 
 $tpl = new pTemplate();
 
-if ($cfg['SERVICEMODE'] AND !isset($_GET['admin'])) {
+if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 
-	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/servicemode.tpl');
+	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/maintenancemode.tpl');
 
 	$tpl -> assign(array(
 						'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
-						'TR_MESSAGE' => nl2br($cfg['SERVICEMODE_MESSAGE']),
+						'TR_MESSAGE' => nl2br($cfg['MAINTENANCEMODE_MESSAGE']),
 						'TR_ADMINLOGIN' => tr('Administrator login')
 						)
 					);
@@ -95,6 +97,8 @@ if ($cfg['LOSTPASSWORD'])
 	$tpl->assign('TR_LOSTPW', tr('Lost password'));
 else
 	$tpl->assign('TR_LOSTPW', '');
+
+gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
 $tpl -> prnt();

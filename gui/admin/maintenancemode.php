@@ -23,13 +23,13 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/servicemode.tpl');
+$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/maintenancemode.tpl');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_SERVICEMODE_PAGE_TITLE' => tr('ispCP - Admin/Servicemode'),
+                        'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('ispCP - Admin/Maintenance mode'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -43,19 +43,19 @@ $selected_off = '';
 
 if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 
-	$servicemode = $_POST['servicemode'];
+	$maintenancemode = $_POST['maintenancemode'];
 
-	$servicemode_message = clean_input($_POST['servicemode_message']);
+	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
-	setConfig_Value('SERVICEMODE', $servicemode);
+	setConfig_Value('MAINTENANCEMODE', $maintenancemode);
 
-	setConfig_Value('SERVICEMODE_MESSAGE', $servicemode_message);
+	setConfig_Value('MAINTENANCEMODE_MESSAGE', $maintenancemode_message);
 
 	set_page_message(tr('Settings saved !'));
 
 }
 
-if ($cfg['SERVICEMODE']) {
+if ($cfg['MAINTENANCEMODE']) {
 	$selected_on = 'selected';
 } else {
 	$selected_off = 'selected';
@@ -71,10 +71,10 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(
                 array(
-                       'TR_SERVICEMODE' => tr('Servicemode'),
-                       'TR_MESSAGE_TEMPLATE_INFO' => tr('In this mode only administrators can login'),
+                       'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
+                       'TR_MESSAGE_TEMPLATE_INFO' => tr('Under this mode only administrators can login'),
               		   'TR_MESSAGE' => tr('Message'),
-					   'MESSAGE_VALUE' => $cfg['SERVICEMODE_MESSAGE'],
+					   'MESSAGE_VALUE' => $cfg['MAINTENANCEMODE_MESSAGE'],
 					   'SELECTED_ON' => $selected_on,
 					   'SELECTED_OFF' => $selected_off,
     	               'TR_ENABLED' => tr('Enabled'),

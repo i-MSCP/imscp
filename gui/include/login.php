@@ -42,9 +42,9 @@ function register_user($uname, $upass) {
     $udata = array();
     $udata = get_userdata($uname);
 
-  	if ($cfg['SERVICEMODE'] AND $udata['admin_type'] != 'admin') {
-		write_log("Login error, <b><i>".$uname."</i></b> system currently in servicemode");
-  		system_message(tr('System is currently in servicemode! At time only administrators can login.'));
+  	if ($cfg['MAINTENANCEMODE'] AND $udata['admin_type'] != 'admin') {
+		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
+  		system_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
 	}
 
@@ -59,9 +59,8 @@ function register_user($uname, $upass) {
 
 	    if (!is_userdomain_ok($uname)) {
 	        write_log($uname." Domain status is not OK - user can not login");
-	        system_message(tr('Domain status is not OK - Login aborted.'));
+	        system_message(tr("%s's account status is not ok!", $uname));
 	        return false;
-
 	    }
 
 	    $sess_id = session_id();
@@ -85,10 +84,10 @@ SQL_QUERY;
 	    $_SESSION['user_created_by'] = $udata['created_by'];
 	    $_SESSION['user_login_time'] = time();
 
-	    write_log($uname." user logged in.");
+	    write_log($uname." logged in.");
 	    return true;
 	} else {
-		write_log($uname." bad password login data.");
+		write_log($uname." entered incorrect password.");
   		return false;
 	}
 
@@ -131,17 +130,17 @@ SQL_QUERY;
     $rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
 
     if ($rs -> RecordCount() != 1) {
-        write_log($user_logged . " session manipulation detected !");
+        write_log("Detected session manipulation on $user_logged's session!");
         unset_user_login_data();
         return false;
     }
 
-    if ($cfg['SERVICEMODE'] AND $user_type != 'admin') {
+    if ($cfg['MAINTENANCEMODE'] && $user_type != 'admin') {
 
-        unset_user_login_data();
-        write_log("<b><i>".$user_logged."</i></b> system currently in servicemode. User logged out...");
-        header("Location: ../index.php");
-        return false;
+        unset_user_login_data(true);
+        write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
+        header("Location: /index.php");
+        exit;
 
     }
     /* userlogindata correct - update session and lastaccess */
@@ -164,7 +163,7 @@ function check_login ($fName = null, $checkReferer = true) {
 
     // session-type check:
     if (!check_user_login()) {
-        header("Location: ../index.php");
+        header("Location: /index.php");
         die();
     }
 
@@ -201,111 +200,106 @@ function check_login ($fName = null, $checkReferer = true) {
     }
 }
 
-function change_user_interface($form_id, $to_id) {
+function change_user_interface($from_id, $to_id) {
     global $sql, $cfg;
 
-    $query_from = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
-    $query_to = "select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?";
+    $index = null;
+    while (1) { //used to easily exit
+        $query_from = 'select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?';
+        $query_to   = 'select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?';
 
-    $rs_from = exec_query($sql, $query_from, array($form_id));
-    $rs_to = exec_query($sql, $query_to, array($to_id));
+        $rs_from = exec_query($sql, $query_from, array($from_id));
+        $rs_to   = exec_query($sql, $query_to,   array($to_id));
 
-    if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
-        write_log("Change interface error => unknown from or to username");
-        return false;
-    }
-
-    $from_udata = $rs_from -> FetchRow();
-    $to_udata = $rs_to -> FetchRow();
-
-    if (!is_userdomain_ok($to_udata['admin_name'])) {
-        write_log("Domain ID: ".$to_udata['admin_id']." - domain status PROBLEM -");
-        return false;
-    }
-
-    if ($from_udata['admin_type'] === 'admin' && $to_udata['admin_type'] === 'reseller') {
-        $header = "../reseller/index.php";
-    } else if ($from_udata['admin_type'] === 'admin' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
-        $header = "../client/index.php";
-    } else if ($from_udata['admin_type'] === 'reseller' && ($to_udata['admin_type'] != 'admin' || $to_udata['admin_type'] != 'reseller')) {
-        $header = "../client/index.php";
-        // lets check and go from bottom to top User -> Reseller -> Admin
-        // there is SESSION 'logged from' -> we can go from Buttom to TOP
-    } else if (isset($_SESSION['logged_from'])) {
-        if ($from_udata['admin_type'] === 'reseller' && $to_udata['admin_type'] == 'admin') {
-            $header = "../admin/manage_users.php";
-            // user to admin
-        } else if (($from_udata['admin_type'] != 'admin' || $from_udata['admin_type'] != 'reseller') && $to_udata['admin_type'] === 'admin') {
-            $header = "../admin/manage_users.php";
-            // user reseller
-        } else if (($from_udata['admin_type'] != 'admin' || $from_udata['admin_type'] != 'reseller') && $to_udata['admin_type'] === 'reseller') {
-            $header = "../reseller/users.php";
-        } else {
-            write_log("change interface error from: ".$from_udata['admin_name']." to: ".$to_udata['admin_name']);
-            return false;
+        if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
+            set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+            break;
         }
-    } else {
-        write_log("change interface error from: ".$from_udata['admin_name']." to: ".$to_udata['admin_name']);
-        return false;
+
+        $from_udata = $rs_from->FetchRow();
+        $to_udata   = $rs_to->FetchRow();
+
+        if (!is_userdomain_ok($to_udata['admin_name'])) {
+            set_page_message(tr("%s's account status is not ok!", $to_udata['admin_name']));
+            break;
+        }
+
+        $to_admin_type   = $to_udata['admin_type'];
+        $from_admin_type = $from_udata['admin_type'];
+
+        $allowed_changes = array();
+
+        $allowed_changes['admin']['admin']         = 'manage_users.php';
+        $allowed_changes['admin']['reseller']      = 'index.php';
+        $allowed_changes['admin']['user']          = 'index.php';
+        $allowed_changes['reseller']['reseller']   = 'users.php';
+        $allowed_changes['reseller']['user']       = 'index.php';
+
+        if (!isset($allowed_changes[$from_admin_type][$to_admin_type]) ||
+           ($to_admin_type == $from_admin_type && $from_admin_type != 'admin')) {
+
+            if (isset($_SESSION['logged_from_id'])) {
+                $query = 'SELECT admin_type FROM admin WHERE admin_id = ?';
+                $rs = exec_query($sql, $query, $_SESSION['logged_from_id']);
+
+                if (!isset($allowed_changes[$rs->fields['admin_type']][$to_admin_type])) {
+                    set_page_message(tr('You do not have permission to access this interface!'));
+                    break;
+                } else {
+                    $index = $allowed_changes[$rs->fields['admin_type']][$to_admin_type];
+                }
+
+            } else {
+                set_page_message(tr('You do not have permission to access this interface!'));
+                break;
+            }
+        }
+
+        $index = $index? $index : $allowed_changes[$from_admin_type][$to_admin_type];
+
+        unset_user_login_data();
+
+        if ($to_admin_type != 'admin' || ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
+
+            $_SESSION['logged_from'] = $from_udata['admin_name'];
+
+            $_SESSION['logged_from_id'] = $from_udata['admin_id'];
+
+        }
+
+        // we gonna kill all sessions and globals if user get back to admin level
+        if (isset($_SESSION['admin_name']))
+        unset($_SESSION['admin_name']);
+
+        if (isset($_SESSION['admin_id']))
+        unset($_SESSION['admin_id']);
+
+        if (isset($GLOBALS['admin_name']))
+        unset($GLOBALS['admin_name']);
+
+        if (isset($GLOBALS['admin_id']))
+        unset($GLOBALS['admin_id']);
+        // no more sessions and globals to kill - they were always killed - rest in peace
+
+        $_SESSION['user_logged'] = $to_udata['admin_name'];
+        $_SESSION['user_pass'] = $to_udata['admin_pass'];
+        $_SESSION['user_type'] = $to_udata['admin_type'];
+        $_SESSION['user_id'] = $to_udata['admin_id'];
+        $_SESSION['user_created_by'] = $to_udata['created_by'];
+        $_SESSION['user_login_time'] = time();
+
+        $query = 'UPDATE login SET user_name = ?, lastaccess = ? WHERE session_id = ? ';
+
+        exec_query($sql, $query, array($to_udata['admin_name'], $_SESSION['user_login_time'], session_id()));
+
+        write_log(sprintf("%s changed into %s' interface", $from_udata['admin_name'], $to_udata['admin_name']));
+        break;
     }
 
-    // lets save layout and language from admin/reseler - they don't wannt to read user interface on china or arabic language
-    $user_language = $_SESSION['user_def_lang'];
-    $user_layout = $_SESSION['user_theme'];
-
-    // delete all sessions and globals data and set new one with SESSION logged_from
-    unset_user_login_data();
-    // start new session here
-    // session_start();
-
-    if ($to_udata['admin_type'] != 'admin') {
-
-        $_SESSION['logged_from'] = $from_udata['admin_name'];
-
-        $_SESSION['logged_from_id'] = $from_udata['admin_id'];
-
-    }
-
-    // we gonna kill all sessions and globals if user get back to admin level
-    if (isset($_SESSION['admin_name']))
-    unset($_SESSION['admin_name']);
-
-    if (isset($_SESSION['admin_id']))
-    unset($_SESSION['admin_id']);
-
-    if (isset($GLOBALS['admin_name']))
-    unset($GLOBALS['admin_name']);
-
-    if (isset($GLOBALS['admin_id']))
-    unset($GLOBALS['admin_id']);
-    // no more sessions and globals to kill - they were always killed - rest in peace
-
-    $_SESSION['user_logged'] = $to_udata['admin_name'];
-    $_SESSION['user_pass'] = $to_udata['admin_pass'];
-    $_SESSION['user_type'] = $to_udata['admin_type'];
-    $_SESSION['user_id'] = $to_udata['admin_id'];
-    $_SESSION['user_created_by'] = $to_udata['created_by'];
-    $_SESSION['user_login_time'] = time();
-    $_SESSION['user_def_lang'] = $user_language;
-    $_SESSION['user_theme'] = $user_layout;
-    $user_login_time = time();
-    $sess_id = session_id();
-    $new_user_name = $to_udata['admin_name'];
-
-    $query = <<<SQL_QUERY
-  	insert into login
-    	(session_id, user_name, lastaccess)
-    values
-    	(?, ?, ?)
-SQL_QUERY;
-
-    $rs = exec_query($sql, $query, array($sess_id, $new_user_name, $user_login_time));
-    write_log($from_udata['admin_name']." change into interface from ".$to_udata['admin_name']);
-
-    return $header;
+    redirect_to_level_page($index);
 }
 
-function unset_user_login_data () {
+function unset_user_login_data ($ignorePreserve = false) {
 	global $cfg, $sql;
 
 	if (isset($_SESSION['user_logged'])) {
@@ -327,28 +321,47 @@ SQL_QUERY;
 
 	}
 
-	if (isset($_SESSION['user_def_lang'])) {
-	    $lang = $_SESSION['user_def_lang'];
+	$preserve_list = array('user_def_lang', 'user_theme');
+    $preserve_vals = array();
 
-	    $_SESSION = array();
-	    $_SESSION['user_def_lang'] = $lang;
-	}
+    if (!$ignorePreserve) {
+        foreach ($preserve_list as $p) {
+            if (isset($_SESSION[$p])) {
+                $preserve_vals[$p] = $_SESSION[$p];
+            }
+        }
+    }
+
+    $_SESSION = array();
+
+    foreach ($preserve_list as $p) {
+        if (isset($preserve_vals[$p])) {
+            $_SESSION[$p] = $preserve_vals[$p];
+        }
+    }
 
 }
 
-function redirect_to_level_page() {
+function redirect_to_level_page($file = null, $force = false) {
 
-    if (!isset($_SESSION['user_type']))
+    if (!isset($_SESSION['user_type']) && !$force)
     return false;
 
-    $user_type = $_SESSION['user_type'];
+    if (!$file) {
+        $file = 'index.php';
+    }
+
+    $user_type = isset($_SESSION['user_type'])? $_SESSION['user_type'] : 'nobody';
 
     switch ($user_type) {
         case 'user':
             $user_type = 'client';
         case 'admin':
         case 'reseller':
-            header('Location: /' . $user_type . '/index.php');
+            header('Location: /' . $user_type . '/' . $file);
+            break;
+        case 'nobody':
+            header('Location: /' . $file);
             break;
         default:
             die("FIX ME! " . __FILE__ . ":" . __LINE__);

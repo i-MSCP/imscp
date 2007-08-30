@@ -148,7 +148,7 @@ $tpl -> assign(
                        'TR_ENABLED' => tr('Enabled'),
                        'TR_DISABLED' => tr('Disabled'),
                        'TR_APPLY_CHANGES' => tr('Apply changes'),
-                       'TR_SERVERPORTS' => tr('Serverports'),
+                       'TR_SERVERPORTS' => tr('Server ports'),
                        'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page')
                      )
               );

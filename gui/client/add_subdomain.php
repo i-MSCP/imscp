@@ -182,7 +182,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 
         if (isset($_POST['subdomain_mnt_pt']) && $_POST['subdomain_mnt_pt'] !== '') {
             $sub_mnt_pt = strtolower($_POST['subdomain_mnt_pt']);
-            $sub_mnt_pt = decode_idna($sub_mnt_pt);
+            $sub_mnt_pt = array_encode_idna($sub_mnt_pt, true);
         } else {
             $sub_mnt_pt = "/";
         }
@@ -213,12 +213,11 @@ if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "
   header("Location: index.php");
 }
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('ispCP - Client/Add Subdomain'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 

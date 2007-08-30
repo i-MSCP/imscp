@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-<title>{TR_ADMIN_SERVICEMODE_PAGE_TITLE}</title>
+<title>{TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE}</title>
 <meta name="robots" content="noindex">
 <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
@@ -28,14 +28,14 @@
                     <tr>
                       <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
                           <tr>
-                            <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_servicemode.png" width="25" height="25"></td>
-                            <td colspan="2" class="title">{TR_SERVICEMODE}</td>
+                            <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_maintenancemode.png" width="25" height="25"></td>
+                            <td colspan="2" class="title">{TR_MAINTENANCEMODE}</td>
                           </tr>
                       </table></td>
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form action="servicemode.php" method="post" name="servicemode_frm" id="servicemode_frm">
+                      <td valign="top"><form action="maintenancemode.php" method="post" name="maintenancemode_frm" id="maintenancemode_frm">
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>
@@ -50,13 +50,13 @@
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td width="200" class="content2">{TR_MESSAGE}</td>
-                              <td class="content"><textarea name="servicemode_message" style="width:80%" class="textinput2" rows="30">{MESSAGE_VALUE}</textarea>
+                              <td class="content"><textarea name="maintenancemode_message" style="width:80%" class="textinput2" rows="30">{MESSAGE_VALUE}</textarea>
                               </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_SERVICEMODE}</td>
-                              <td class="content"><select name="servicemode">
+                              <td class="content2">{TR_MAINTENANCEMODE}</td>
+                              <td class="content"><select name="maintenancemode">
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>

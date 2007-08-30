@@ -72,10 +72,10 @@ function tr($msgid, $as_is = false) {
             if (!$as_is) {
                 $encoding = tr('encoding', true);
             }
-            $msg_res = $sql->Execute("SELECT `msgstr` FROM `$lang` WHERE `msgid` = '$msgid';");
+            $rs = exec_query($sql, "SELECT `msgstr` FROM ? WHERE `msgid` = ?;", array($lang, $msgid), false);
 
-            if ($msg_res && $msg_res->RowCount() > 0 && $msg_res->fields['msgstr'] != '') {
-                $msgstr = $msg_res->fields['msgstr'];
+            if ($rs && $rs->RowCount() > 0 && $rs->fields['msgstr'] != '') {
+                $msgstr = $rs->fields['msgstr'];
             }
         }
     }

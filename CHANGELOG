@@ -6,6 +6,14 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-29 Raphael Geissert
+    - GUI:
+        * Fixed #610: Table 'ispcp.log015' doesn't exist
+        * Fixed #603: adding subdomain to a domain with special chars
+        * Page messages are now displayed on login page
+        * Fixed #608: html entities in emails
+        * Servicemode is now Maintenance mode
+
 2007-08-26 Benedikt Heintel
 	- GUI:
 		* Fixed: upload of too big admin/reseller logos

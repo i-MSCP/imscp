@@ -78,11 +78,11 @@ SQL_QUERY;
            ?, ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $count_query, array($start_index, $rows_per_page));
+    $rs = exec_query($sql, $count_query);
 
     $records_count = $rs -> fields['cnt'];
 
-	$rs = execute_query($sql, $query);
+	$rs = exec_query($sql, $query, array($start_index, $rows_per_page));
 
 
     if ($rs->RowCount() == 0) {

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -540,9 +540,6 @@ msgstr "Osobné údaje"
 
 msgid "Update data"
 msgstr "Aktualizovať údaje"
-
-msgid "User does not exist!"
-msgstr "Užívateľ neexistuje!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr "ispCP - Admin - E-mail Marketing"
@@ -1160,6 +1157,9 @@ msgstr "Chyba pri nahrávaní súboru!"
 msgid "You can only upload images!"
 msgstr "Môžete nahrať iba obrázky!"
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Vaše logo bolo úspešne nahraté!"
 
@@ -1212,6 +1212,21 @@ msgstr "Užívateľské meno (krstné aj priezvisko)"
 #, fuzzy
 msgid "Lost password link"
 msgstr "Zabudnuté heslo"
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Admin/Hlavný zoznam"
+
+msgid "Settings saved !"
+msgstr "Uložit nastavenia !"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Spravovať objednávky"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "V tomto móde môže byť prihlásený iba administrátor"
 
 msgid "Reseller list is empty!"
 msgstr "Zoznam predajcov je prázdny!"
@@ -1603,18 +1618,6 @@ msgstr "Maximálny počet prenesených dát [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Upozornenie prenesených dát [MB]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr "ispCP - Admin/Servisný mód"
-
-msgid "Settings saved !"
-msgstr "Uložit nastavenia !"
-
-msgid "Servicemode"
-msgstr "Servisný mód"
-
-msgid "In this mode only administrators can login"
-msgstr "V tomto móde môže byť prihlásený iba administrátor"
-
 msgid "ispCP - Admin/Settings"
 msgstr "ispCP - Admin/Nastavenia"
 
@@ -1662,7 +1665,8 @@ msgstr "Predvolený jazyk"
 msgid "Support system"
 msgstr "Podporný systém"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Porty servra"
 
 msgid "Domains per page"
@@ -3127,6 +3131,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr "\"Zachyť všetko\" konto"
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr "Nemôžem získať konfiguráciu z databázy"
 
@@ -3138,8 +3147,8 @@ msgstr "Musíte čakať"
 msgid "You have been blocked for %d minutes"
 msgstr "Boli ste zablkovaný na"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Systém je momentálne v servisnom móde! Teraz sa môžu prihlásiť iba "
 "administrátori."
@@ -3148,11 +3157,15 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 "Užívateľ uz prihlásený alebo problém pri zdielaní sedenia! Ukončujem..."
 
-msgid "Domain status is not OK - Login aborted."
-msgstr "Status domény nie je OK - Login zrušený."
+#, php-format
+msgid "%s's account status is not ok!"
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Nemáte oprávnenie na prístup k tomuto zariadeniu!"
 
 msgid "Domain alias"
 msgstr "Alias domény"
@@ -3291,11 +3304,16 @@ msgstr ""
 "Prosím prihlíste sa do ispCP pre detialy.\n"
 "\n"
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Chyba"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Chybové stránky"
+
 msgid "Wrong domain name syntax!"
 msgstr "Zlá syntax domény!"
-
-msgid "You do not have permission to access this interface!"
-msgstr "Nemáte oprávnenie na prístup k tomuto zariadeniu!"
 
 msgid "Add On A Domain"
 msgstr "Pridať na doménu"
@@ -3737,6 +3755,18 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "User does not exist!"
+#~ msgstr "Užívateľ neexistuje!"
+
+#~ msgid "ispCP - Admin/Servicemode"
+#~ msgstr "ispCP - Admin/Servisný mód"
+
+#~ msgid "Servicemode"
+#~ msgstr "Servisný mód"
+
+#~ msgid "Domain status is not OK - Login aborted."
+#~ msgstr "Status domény nie je OK - Login zrušený."
 
 #, fuzzy
 #~ msgid "%1$.2f %% [%2$d of unlimited]"

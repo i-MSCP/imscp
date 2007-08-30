@@ -45,11 +45,7 @@ var mpointError = 'Please write mount point !';
     function makeUser(){
 	    var dname  = document.forms[0].elements['ndomain_name'].value;
 		dname = dname.toLowerCase();
-	    dname = dname.replace(/�/gi, "ae");
-	    dname = dname.replace(/�/gi, "ue");
-	    dname = dname.replace(/�/gi, "oe");
-	    dname = dname.replace(/�/gi, "ss");
-        document.forms[0].elements['ndomain_mpoint'].value = "/" + dname.replace('.','_');
+        document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;
     }
 
 //-->

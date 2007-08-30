@@ -22,4 +22,6 @@ fi
 #/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot
 /usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files --copyright-holder=ispCP\ Team --keyword=tr --no-wrap ${GUI}/include/i18n.php ${GUI}*.php ${GUI}*/*.php --default-domain=ispCP --output=ispCP.pot --no-location
 
+sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}../language-files/ispCP.pot
+
 exit 1

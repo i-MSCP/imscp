@@ -67,7 +67,7 @@ function check_input($value = '') {
 
 }
 
-function clean_html($input = '') {
+function clean_html() {
 
     $suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
     '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
@@ -147,14 +147,14 @@ function chk_password($password, $num = 50) {
  * 	@param		int			$num		number of max. chars
  *  @return		boolean					valid username or not
  */
-function chk_username($username, $num = 50) {
+function chk_username($username, $length = null) {
 
 	// Username contains only allowed chars
     if (!preg_match("/^[A-Za-z0-9][A-Za-z0-9\.\-_]*[A-Za-z0-9]$/D", $username))
     	return FALSE;
 
     // Username has not two times .,- or _
-	if(preg_match("/(\.\.)|(\-\-)|(\_\_)/", $username))
+	if(preg_match("/(\.){2,}|(\-){3,}|(\_){2,}/", $username))
 		return FALSE;
 
 	// Username has no not allowed concardination in it
@@ -162,7 +162,7 @@ function chk_username($username, $num = 50) {
 		return FALSE;
 
 	// String is not to long
-	if (strlen($username) > $num)
+	if ($length !== null && strlen($username) > $length)
 		return FALSE;
 
     return TRUE;
@@ -260,13 +260,11 @@ function full_domain_check($data) {
 
 function check_dn_token($data) {
 
-    $match = array();
-
-    if (!preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D", $data, $match))
+    if (!preg_match("/^([A-Za-z0-9])([A-Za-z0-9\-]*)([A-Za-z0-9])$/D", $data))
         return FALSE;
 
     // Username has not two times .,- or _
-	if(preg_match("/(\.\.)|(\-\-)|(\_\_)/", $data))
+	if(preg_match("/(\.){2,}|(\-){3,}|(\_){2,}/", $data))
 		return FALSE;
 
 	// Username has no not allowed concardination in it
@@ -407,10 +405,10 @@ function chk_mountp($data, $num = 50) {
     if (preg_match("/^\/logs$/D", $data))
     	return FALSE;
 
-    $res = explode("/", trim($data));
+    /*$res = explode("/", trim($data));
     $cnt_res = count($res);
     if ($cnt_res > 2)
-    	return FALSE;
+    	return FALSE;*/
 
     $match = array();
     $count = preg_match_all("(\/[^\/]*)", $data, $match, PREG_PATTERN_ORDER);
@@ -607,8 +605,8 @@ function who_owns_this($id, $type = 'dmn')
         case 'als_id':
             $type = 'alias_id';
             break;
-        case 'user':
-            $type = 'client';
+        case 'client':
+            $type = 'user';
             break;
         case 'domain_uid':
             $type = 'uid';
@@ -674,7 +672,7 @@ function who_owns_this($id, $type = 'dmn')
     $resolvers = array();
     /**
      * $resolvers is a multi-dimensional array.
-     * It's elements keys are the value that will be matched by $type.
+     * Its elements keys are the value that will be matched by $type.
      * Each element is an array, containing at least two elements:
      *  'query' and 'is_final'
      * The former is the SQL query that should only SELECT one item; or false in case a query isn't used.

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-13 07:33+0100\n"
 "Last-Translator: greg <greg@proxyconcept.net>\n"
 "Language-Team: French France <fr_FR@li.org>\n"
@@ -522,9 +522,6 @@ msgstr "Informations personnelles"
 
 msgid "Update data"
 msgstr "Mettre à jour les données"
-
-msgid "User does not exist!"
-msgstr "L'utilisateur n'existe pas !"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr "ispCP - Admin - Email commercial"
@@ -1150,6 +1147,9 @@ msgstr "Erreur lors de l'envoi du fichier !"
 msgid "You can only upload images!"
 msgstr "Vous pouvez uniquement télécharger des images !"
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Votre logo a bien été uploadé !"
 
@@ -1200,6 +1200,21 @@ msgstr "Prénom de l'utilisateur"
 
 msgid "Lost password link"
 msgstr "Lien pour les mots de passe perdus"
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Admin/Index Général"
+
+msgid "Settings saved !"
+msgstr "Configuration sauvegardée !"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Gérer les commandes"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "Dans ce mode seuls les administrateurs peuvent s'authentifier"
 
 msgid "Reseller list is empty!"
 msgstr "La liste du revendeur est vide !"
@@ -1592,18 +1607,6 @@ msgstr "Trafic max [Mo]"
 msgid "Warning traffic [MB]"
 msgstr "Alerte trafic [Mo]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr "aispCP - Admin/Mode de maintenance"
-
-msgid "Settings saved !"
-msgstr "Configuration sauvegardée !"
-
-msgid "Servicemode"
-msgstr "Mode de maintenance"
-
-msgid "In this mode only administrators can login"
-msgstr "Dans ce mode seuls les administrateurs peuvent s'authentifier"
-
 msgid "ispCP - Admin/Settings"
 msgstr "ispCP - Admin/Paramètres"
 
@@ -1646,7 +1649,8 @@ msgstr "Langue par défaut"
 msgid "Support system"
 msgstr "Système de support"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Services"
 
 msgid "Domains per page"
@@ -3162,6 +3166,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr "Compte Catchall"
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr "Impossible de récupérer la configuration depuis la base de données"
 
@@ -3173,8 +3182,8 @@ msgstr "Vous n'avez pas défini de menus personalisés."
 msgid "You have been blocked for %d minutes"
 msgstr "Vous avez été bloqué pour"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Le système est actuellement en maintenance ! Seuls les administrateurs "
 "peuvent s'authentifier"
@@ -3182,11 +3191,15 @@ msgstr ""
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Utilisateur déjà connecté ou problème de partage de session ! Arrêt..."
 
-msgid "Domain status is not OK - Login aborted."
-msgstr "L'état du domaine n'est pas OK - Connexion abandonnée."
+#, php-format
+msgid "%s's account status is not ok!"
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Vous n'avez pas la permission d'accèder à cette interface !"
 
 msgid "Domain alias"
 msgstr "Alias de domaine"
@@ -3329,11 +3342,16 @@ msgstr ""
 "Veuillez vous connecter sur votre interface ispCP pour plus de détails.\n"
 "\n"
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Erreur"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Pages d'erreur"
+
 msgid "Wrong domain name syntax!"
 msgstr "Mauvaise syntaxe de nom de domaine !"
-
-msgid "You do not have permission to access this interface!"
-msgstr "Vous n'avez pas la permission d'accèder à cette interface !"
 
 msgid "Add On A Domain"
 msgstr "Ajoutez votre domaine"
@@ -3786,6 +3804,18 @@ msgstr "ispCP - Revendeur : Système de support :  Voir les Tickets"
 
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
+
+#~ msgid "User does not exist!"
+#~ msgstr "L'utilisateur n'existe pas !"
+
+#~ msgid "ispCP - Admin/Servicemode"
+#~ msgstr "aispCP - Admin/Mode de maintenance"
+
+#~ msgid "Servicemode"
+#~ msgstr "Mode de maintenance"
+
+#~ msgid "Domain status is not OK - Login aborted."
+#~ msgstr "L'état du domaine n'est pas OK - Connexion abandonnée."
 
 #, fuzzy
 #~ msgid "%1$.2f %% [%2$d of unlimited]"

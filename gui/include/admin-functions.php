@@ -111,9 +111,9 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 						'TR_MENU_OVERVIEW' => tr('Overview'),
 						'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
 						'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-						'TR_SERVICEMODE' => tr('Servicemode'),
+						'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 						'TR_GENERAL_SETTINGS' => tr('General settings'),
-						'TR_SERVERPORTS' => tr('Serverports')
+						'TR_SERVERPORTS' => tr('Server ports')
 					)
 				);
 
@@ -225,10 +225,10 @@ function gen_admin_menu(&$tpl, $menu_file) {
 				'SUPPORT_SYSTEM_PATH' => $cfg['ISPCP_SUPPORT_SYSTEM_PATH'],
 				'SUPPORT_SYSTEM_TARGET' => $cfg['ISPCP_SUPPORT_SYSTEM_TARGET'],
 				'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-				'TR_SERVICEMODE' => tr('Servicemode'),
+				'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 				'TR_MENU_SETTINGS' => tr('Settings'),
 				'TR_GENERAL_SETTINGS' => tr('General settings'),
-				'TR_SERVERPORTS' => tr('Serverports')
+				'TR_SERVERPORTS' => tr('Server ports')
 			)
 		);
 	$query = <<<SQL_QUERY

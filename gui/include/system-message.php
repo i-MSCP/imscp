@@ -47,11 +47,11 @@ function system_message($msg) {
 	$tpl->define('page', $template);
 	$tpl->assign(
 					array(
-						'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ispCP Error',
+						'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('ispCP Error'),
 						'THEME_COLOR_PATH' => "/themes/$theme_color",
-						'THEME_CHARSET' => "UTF-8",
+						'THEME_CHARSET' => tr('encoding'),
 						'TR_BACK' => tr('Back'),
-						'TR_ERROR_MESSAGE' => "Error Message",
+						'TR_ERROR_MESSAGE' => tr('Error Message'),
 						'MESSAGE' => $msg
 						)
 					);

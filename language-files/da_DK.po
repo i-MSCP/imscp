@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -517,9 +517,6 @@ msgstr "Personlig data!"
 
 msgid "Update data"
 msgstr "Opdater data"
-
-msgid "User does not exist!"
-msgstr "Bruger eksisterer ikke!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -1134,6 +1131,9 @@ msgstr "Fejl under upload af fil!"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Dit logo blev uploadet!"
 
@@ -1184,6 +1184,21 @@ msgstr "Bruger (for og efter) navn"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Admin/Hoved Index"
+
+msgid "Settings saved !"
+msgstr "Indstillinger gemt !"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Håndtér bestillinger"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "Her kan kun administratorer logge ind"
 
 msgid "Reseller list is empty!"
 msgstr "Forhandler liste er tom!"
@@ -1565,18 +1580,6 @@ msgstr "Max trafik [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Advarsel trafik [MB]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "Indstillinger gemt !"
-
-msgid "Servicemode"
-msgstr ""
-
-msgid "In this mode only administrators can login"
-msgstr "Her kan kun administratorer logge ind"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1619,7 +1622,8 @@ msgstr "Standard sprog"
 msgid "Support system"
 msgstr ""
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Serverporte"
 
 msgid "Domains per page"
@@ -3062,6 +3066,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3073,19 +3082,23 @@ msgstr "Du må vente"
 msgid "You have been blocked for %d minutes"
 msgstr "Du er blevet blokkeret for"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr "Systemet er i servicemode! Kun Administratorer kan logge ind."
 
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 "Bruger er allerede logget på eller session delings problemer! Afbryder...."
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Du har ikke adgang til denne brugerflade!"
 
 msgid "Domain alias"
 msgstr "Domænealias"
@@ -3203,11 +3216,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Fejl"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Fejlsider"
+
 msgid "Wrong domain name syntax!"
 msgstr "Forkert domæne navn syntax!"
-
-msgid "You do not have permission to access this interface!"
-msgstr "Du har ikke adgang til denne brugerflade!"
 
 msgid "Add On A Domain"
 msgstr "Tilføj et domæne"
@@ -3648,6 +3666,9 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
+
+#~ msgid "User does not exist!"
+#~ msgstr "Bruger eksisterer ikke!"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Kan ikke forbinde som MySQL administrator!"

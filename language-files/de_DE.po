@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-02 15:46-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -517,9 +517,6 @@ msgstr "Persönliche Daten ändern"
 
 msgid "Update data"
 msgstr "Daten aktualisieren"
-
-msgid "User does not exist!"
-msgstr "Benutzer wurde nicht gefunden!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr "ispCP - Admin - Email Marketing"
@@ -1136,6 +1133,9 @@ msgstr "Fehler beim Hochladen der Datei!"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Logo wurde erfolgreich hochgeladen!"
 
@@ -1186,6 +1186,21 @@ msgstr "Benutzer Vor- und Nachname"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "Settings saved !"
+msgstr "Einstellungen wurden gespeichert!"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Bestellungen verwalten"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "In diesem Modus können sich nur Administratoren anmelden!"
 
 msgid "Reseller list is empty!"
 msgstr "Es sind keine Wiederverkäufer im System vorhanden!"
@@ -1567,18 +1582,6 @@ msgstr "Max. Transfer [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Transfer Warnung bei [MB]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "Einstellungen wurden gespeichert!"
-
-msgid "Servicemode"
-msgstr "Wartungsmodus"
-
-msgid "In this mode only administrators can login"
-msgstr "In diesem Modus können sich nur Administratoren anmelden!"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1621,7 +1624,8 @@ msgstr "Standardsprache"
 msgid "Support system"
 msgstr "Supportsystem"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Server Ports"
 
 msgid "Domains per page"
@@ -3082,6 +3086,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3093,8 +3102,8 @@ msgstr "Wartezeit bis zum nächsten Anmeldeversuch"
 msgid "You have been blocked for %d minutes"
 msgstr "Sie wurden geblockt für"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Das System befindet sich momentan im Wartungsmodus! Zur Zeit können sich nur "
 "Administratoren anmelden."
@@ -3102,11 +3111,17 @@ msgstr ""
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Systemfehler! Benutzer ist bereits angemeldet! Abbruch..."
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr ""
+"Sie besitzen nicht die erforderlichen Rechte, um sich die gewünschte Seite "
+"anzeigen zu lassen!"
 
 msgid "Domain alias"
 msgstr "Domain Aliase"
@@ -3224,13 +3239,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Fehler"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Fehlerseiten"
+
 msgid "Wrong domain name syntax!"
 msgstr "Falsche Eingabe des Domainnamens!"
-
-msgid "You do not have permission to access this interface!"
-msgstr ""
-"Sie besitzen nicht die erforderlichen Rechte, um sich die gewünschte Seite "
-"anzeigen zu lassen!"
 
 msgid "Add On A Domain"
 msgstr "Geben Sie eine Domain ein"
@@ -3676,6 +3694,12 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
+
+#~ msgid "User does not exist!"
+#~ msgstr "Benutzer wurde nicht gefunden!"
+
+#~ msgid "Servicemode"
+#~ msgstr "Wartungsmodus"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Kann nicht als MySQL Administrator verbinden!"

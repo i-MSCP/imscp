@@ -284,7 +284,7 @@ $tpl -> assign(
 					'TR_ENABLED' => tr('Yes'),
 					'TR_DISABLED' => tr('No'),
 					'TR_APPLY_CHANGES' => tr('Apply changes'),
-					'TR_SERVERPORTS' => tr('Serverports'),
+					'TR_SERVERPORTS' => tr('Server ports'),
 					'TR_SERVICES' => tr('Services'),
 					'TR_SERVICE' => tr('Service'),
 					'TR_PORT' => tr('Port'),

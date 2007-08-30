@@ -273,12 +273,30 @@ function escape_user_data ( $data ) {
 
 }
 
-/*
-fuction to decode punny to normal
-$input -> string get in punny or not punny
-$output -> normal string get out
+function array_decode_idna($arr, $asPath = false) {
 
-*/
+    if ($asPath && !is_array($arr)) {
+        return implode('/', array_decode_idna(explode('/', $arr)));
+    }
+
+    foreach ($arr as $k => $v) {
+        $arr[$k] = decode_idna($v);
+    }
+    return $arr;
+}
+
+function array_encode_idna($arr, $asPath = false) {
+
+    if ($asPath && !is_array($arr)) {
+        return implode('/', array_encode_idna(explode('/', $arr)));
+    }
+
+    foreach ($arr as $k => $v) {
+        $arr[$k] = encode_idna($v);
+    }
+    return $arr;
+}
+
 function decode_idna($input)
 {
     if (function_exists('idn_to_unicode')) {

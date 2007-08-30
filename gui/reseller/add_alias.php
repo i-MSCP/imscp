@@ -98,9 +98,6 @@ $tpl -> prnt();
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 
-
-
-
 //
 // Begin function declaration lines
 //
@@ -166,7 +163,8 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($cr_user_id));
 	$domain_ip = $rs -> fields['domain_ip_id'];
 
-	$alias_name = encode_idna($alias_name);
+	$alias_name  = encode_idna($alias_name);
+	$mount_point = array_encode_idna($mount_point, true);
 
 	//$mount_point = "/".$mount_point;
 

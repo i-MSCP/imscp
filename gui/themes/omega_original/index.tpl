@@ -19,6 +19,11 @@
   <tr>
     <td colspan="7" width="453" height="69" background="{THEME_COLOR_PATH}/images/login/login_top.jpg">&nbsp;</td>
   </tr>
+  <!-- BDP: page_message -->
+  <tr>
+    <td colspan="7"><div align="center"><font size="-2" color="#FF0000">{MESSAGE}</font></div></td>
+  </tr>
+  <!-- EDP: page_message -->
   <tr>
     <td colspan="7"><div align="center"><font size="-2">{TR_LOGIN_INFO}</font></div></td>
     </tr>

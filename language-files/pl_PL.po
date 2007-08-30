@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -517,9 +517,6 @@ msgstr "Dane osobowe"
 
 msgid "Update data"
 msgstr "Aktualizuj dane"
-
-msgid "User does not exist!"
-msgstr "Użytkownik nie istnieje!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -1135,6 +1132,9 @@ msgstr "Błąd ładowania pliku!"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Logo zostało załadowane!"
 
@@ -1185,6 +1185,21 @@ msgstr "Imię i nazwisko"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Admin/Indeks główny"
+
+msgid "Settings saved !"
+msgstr "Ustawienia zapisane!"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Zarządzaj zamówieniami"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "W tym trybie tylko administratorzy mogą się zalogować"
 
 msgid "Reseller list is empty!"
 msgstr "Lista resellera jest pusta!"
@@ -1566,18 +1581,6 @@ msgstr "Maksymalny transfer [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Transfer ostrzegawczy [MB]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "Ustawienia zapisane!"
-
-msgid "Servicemode"
-msgstr "Tryb serwisowy"
-
-msgid "In this mode only administrators can login"
-msgstr "W tym trybie tylko administratorzy mogą się zalogować"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1620,7 +1623,8 @@ msgstr "Domyślny język"
 msgid "Support system"
 msgstr "Wsparcie systemu"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Porty serwera"
 
 msgid "Domains per page"
@@ -3066,6 +3070,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3077,8 +3086,8 @@ msgstr "Musisz poczekać"
 msgid "You have been blocked for %d minutes"
 msgstr "Byłeś zablokowany przez"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "System jest w trybie serwisowym! Tylko administratorzy mogą się zalogować."
 
@@ -3086,11 +3095,15 @@ msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 "Użytkownik jest już zalogowany lub błąd współdzielenia sesji! Przerwano..."
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Nie masz zazwolenia na obejrzenie tej strony!"
 
 msgid "Domain alias"
 msgstr "Alias domeny"
@@ -3208,11 +3221,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Błąd"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Strony błędów"
+
 msgid "Wrong domain name syntax!"
 msgstr "Niepoprawna nazwa domeny!"
-
-msgid "You do not have permission to access this interface!"
-msgstr "Nie masz zazwolenia na obejrzenie tej strony!"
 
 msgid "Add On A Domain"
 msgstr "Zaproponuj domenę"
@@ -3656,6 +3674,12 @@ msgstr "ispCP - Reseller : System Wsparcia: Przeglądaj Bilety"
 
 msgid "Message was sent."
 msgstr "Wiadomość została wysłana."
+
+#~ msgid "User does not exist!"
+#~ msgstr "Użytkownik nie istnieje!"
+
+#~ msgid "Servicemode"
+#~ msgstr "Tryb serwisowy"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Nie można połączyc się jako administrator MySQL!"

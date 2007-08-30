@@ -12,12 +12,8 @@ function makeUser(){
     var subname  = document.forms[0].elements['subdomain_name'].value;
 
 	subname = subname.toLowerCase();
-    subname = subname.replace(/�/gi, "ae");
-    subname = subname.replace(/�/gi, "ue");
-    subname = subname.replace(/�/gi, "oe");
-    subname = subname.replace(/�/gi, "ss");
 
-	document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname.replace(/\./g ,'_');
+	document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
 }
 
 function MM_preloadImages() { //v3.0

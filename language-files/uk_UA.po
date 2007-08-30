@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -517,9 +517,6 @@ msgstr "Персональні дані"
 
 msgid "Update data"
 msgstr "Оновити відомості"
-
-msgid "User does not exist!"
-msgstr "Користувач не існує!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -1136,6 +1133,9 @@ msgstr "Помилка завантаження файлу!"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Логотип успішно завантажено!"
 
@@ -1186,6 +1186,21 @@ msgstr "Ім'я й прізвище користувача"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Адміністратор/Головна"
+
+msgid "Settings saved !"
+msgstr "Налаштування збережені!"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Керування замовленнями"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "Лише адміністратори можуть входити в цьому режимі"
 
 msgid "Reseller list is empty!"
 msgstr "Список реселерів порожній!"
@@ -1567,18 +1582,6 @@ msgstr "Макс. трафік [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Ліміт трафіка [МБ]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "Налаштування збережені!"
-
-msgid "Servicemode"
-msgstr "Стан обслуговування"
-
-msgid "In this mode only administrators can login"
-msgstr "Лише адміністратори можуть входити в цьому режимі"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1621,8 +1624,9 @@ msgstr "Довільна мова"
 msgid "Support system"
 msgstr "Система підтримки"
 
-msgid "Serverports"
-msgstr ""
+#, fuzzy
+msgid "Server ports"
+msgstr "Стан сервера"
 
 msgid "Domains per page"
 msgstr "Доменів на сторінку"
@@ -3070,6 +3074,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3081,8 +3090,8 @@ msgstr "Зачекайте"
 msgid "You have been blocked for %d minutes"
 msgstr "Ви заблоковані за"
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
 "Система знаходиться в стані обслуговування! Лише адміністратори можуть "
 "входити до системи."
@@ -3090,11 +3099,15 @@ msgstr ""
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
 
 msgid "Domain alias"
 msgstr "Аліас домену"
@@ -3212,11 +3225,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Помилка"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Сторінки помилок"
+
 msgid "Wrong domain name syntax!"
 msgstr "Невірний запис доменного імені!"
-
-msgid "You do not have permission to access this interface!"
-msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
 
 msgid "Add On A Domain"
 msgstr "Додати домен"
@@ -3661,6 +3679,12 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "User does not exist!"
+#~ msgstr "Користувач не існує!"
+
+#~ msgid "Servicemode"
+#~ msgstr "Стан обслуговування"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Неможливо під'єднатись з правами адміністратора MySQL!"

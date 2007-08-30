@@ -33,39 +33,18 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 
 	$to_id = $_GET['to_id'];
 
-	//lets che if user who we want to crack exist
+    // admin logged as an other admin:
+    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 
-	  $query = <<<SQL_QUERY
-        select
-            admin_id
-        from
-            admin
-        where
-            admin_id = ?
-SQL_QUERY;
+        $from_id = $_SESSION['logged_from_id'];
 
-    $rs = exec_query($sql, $query, array($to_id));
+    } else {
 
-    if ($rs -> RowCount() == 0) {
+        $from_id = $_SESSION['user_id'];
 
-		set_page_message(tr('User does not exist!'));
-		header('Location: manage_users.php');
-		die();
-	}
+    }
 
-
-	$dest = change_user_interface($from_id, $to_id);
-
-	if ($dest == false){
-
-		header('Location: manage_users.php');
-		die();
-
-	} else {
-
-        header("Location: $dest");
-        die();
-	}
+    change_user_interface($from_id, $to_id);
 
 }
 else {

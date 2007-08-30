@@ -102,11 +102,11 @@ $cfg['BRUTEFORCE_BETWEEN'] = true;
 // time between logins in seconds
 $cfg['BRUTEFORCE_BETWEEN_TIME'] = 30;
 
-// enable or disable servicemode
+// enable or disable maintenance mode
 // true = disable, false = enable
-$cfg['SERVICEMODE'] = false;
+$cfg['MAINTENANCEMODE'] = false;
 // servicemode message
-$cfg['SERVICEMODE_MESSAGE'] = 'The system currently in servicemode!';
+$cfg['MAINTENANCEMODE_MESSAGE'] = tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
 
 // password chars
 $cfg['PASSWD_CHARS'] = 6;

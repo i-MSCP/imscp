@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 19:47-0500\n"
+"POT-Creation-Date: 2007-08-29 19:00-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -517,9 +517,6 @@ msgstr "Henkil�kohtaiset tiedot"
 
 msgid "Update data"
 msgstr "P�ivit� tiedot"
-
-msgid "User does not exist!"
-msgstr "K�ytt�j�� ei ole olemassa!"
 
 msgid "ispCP - Admin - Email Marketing"
 msgstr ""
@@ -1134,6 +1131,9 @@ msgstr "Tiedoston l�hetysvirhe"
 msgid "You can only upload images!"
 msgstr ""
 
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
 msgid "Your logo was successful uploaded!"
 msgstr "Logo on l�hetetty onnistuneesti!"
 
@@ -1184,6 +1184,21 @@ msgstr "K�ytt�j�n (etu ja suku) nimi"
 
 msgid "Lost password link"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP - Admin/Maintenance mode"
+msgstr "ispCP - Yll�pito / P��sivu"
+
+msgid "Settings saved !"
+msgstr "Asetukset tallennettu"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Hallitse tilauksia"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "Vain yll�pit�j�t voivat kirjautua t�ss� tilassa"
 
 msgid "Reseller list is empty!"
 msgstr "J�lleenmyyj�lista on tyhj�!"
@@ -1565,18 +1580,6 @@ msgstr "Max liikenne [MT]"
 msgid "Warning traffic [MB]"
 msgstr "Varoitusraja liikenteelle [MT]"
 
-msgid "ispCP - Admin/Servicemode"
-msgstr ""
-
-msgid "Settings saved !"
-msgstr "Asetukset tallennettu"
-
-msgid "Servicemode"
-msgstr "Huoltotila"
-
-msgid "In this mode only administrators can login"
-msgstr "Vain yll�pit�j�t voivat kirjautua t�ss� tilassa"
-
 msgid "ispCP - Admin/Settings"
 msgstr ""
 
@@ -1619,7 +1622,8 @@ msgstr "Oletuskieli"
 msgid "Support system"
 msgstr "Tukij�rjestelm�"
 
-msgid "Serverports"
+#, fuzzy
+msgid "Server ports"
 msgstr "Palvelinportit"
 
 msgid "Domains per page"
@@ -3063,6 +3067,11 @@ msgstr ""
 msgid "Catchall account"
 msgstr ""
 
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
+msgstr ""
+
 msgid "Could not get config from database"
 msgstr ""
 
@@ -3074,19 +3083,23 @@ msgstr "Sinun t�ytyy odottaa"
 msgid "You have been blocked for %d minutes"
 msgstr ""
 
-msgid ""
-"System is currently in servicemode! At time only administrators can login."
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
 msgstr "J�rjestelm� on huoltotilassa! Vain yll�pit�j�t voivat kirjautua."
 
 msgid "User already logged or session sharing problem! Aborting..."
 msgstr ""
 "K�ytt�j� on jo kirjautuneena sis��n tai session jakamisongelma! Keskeytys.."
 
-msgid "Domain status is not OK - Login aborted."
+#, php-format
+msgid "%s's account status is not ok!"
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Sinulla ei ole oikeuksia t�h�n sivuun!"
 
 msgid "Domain alias"
 msgstr "Domain-alias"
@@ -3204,11 +3217,16 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "ispCP Error"
+msgstr "Virhe"
+
+#, fuzzy
+msgid "Error Message"
+msgstr "Virhesivut"
+
 msgid "Wrong domain name syntax!"
 msgstr "Virheellinen domainnimen syntaksi!"
-
-msgid "You do not have permission to access this interface!"
-msgstr "Sinulla ei ole oikeuksia t�h�n sivuun!"
 
 msgid "Add On A Domain"
 msgstr "Lis�� domainille"
@@ -3650,6 +3668,12 @@ msgstr "ispCP - J�lleenmyyj� : Tukij�rjestelm�: Lue kysymyksi�"
 
 msgid "Message was sent."
 msgstr "Viesti on l�hetetty."
+
+#~ msgid "User does not exist!"
+#~ msgstr "K�ytt�j�� ei ole olemassa!"
+
+#~ msgid "Servicemode"
+#~ msgstr "Huoltotila"
 
 #~ msgid "Undefined user accounting error!"
 #~ msgstr "M��ritt�m�t�n k�ytt�j�virhe!"
