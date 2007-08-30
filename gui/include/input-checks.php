@@ -605,8 +605,8 @@ function who_owns_this($id, $type = 'dmn')
         case 'als_id':
             $type = 'alias_id';
             break;
-        case 'client':
-            $type = 'user';
+        case 'user':
+            $type = 'client';
             break;
         case 'domain_uid':
             $type = 'uid';
