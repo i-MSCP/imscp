@@ -1,55 +1,45 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 if (isset($_GET['edit_id'])) {
-
-    $edit_id = $_GET['edit_id'];
-
+	$edit_id = $_GET['edit_id'];
 } else if (isset($_POST['edit_id'])) {
-
-    $edit_id = $_POST['edit_id'];
-
+	$edit_id = $_POST['edit_id'];
 } else {
-
-    user_goto('users.php');
-
+	user_goto('users.php');
 }
 
 $tpl = new pTemplate();
 
-$tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/edit_user.tpl');
-
-$tpl -> define_dynamic('page_message', 'page');
-
-$tpl -> define_dynamic('logged_from', 'page');
-
-$tpl -> define_dynamic('ip_entry', 'page');
+$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/edit_user.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('ip_entry', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-
-$tpl -> assign(
+$tpl->assign(
                 array(
                         'TR_EDIT_USER_PAGE_TITLE' => tr('ispCP - Users/Edit'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -64,7 +54,7 @@ $tpl -> assign(
  * static page messages.
  *
  */
-	$tpl -> assign(
+	$tpl->assign(
 					array(
 							'TR_EDIT_USER' => tr('Edit user'),
 							'TR_CORE_DATA' => tr('Core data'),
@@ -86,11 +76,11 @@ $tpl -> assign(
 							'TR_MAIL' => tr('Email'),
 							'TR_PHONE' => tr('Phone'),
 							'TR_FAX' => tr('Fax'),
-                            'TR_GENDER' => tr('Gender'),
-                            'TR_MALE' => tr('Male'),
-                            'TR_FEMALE' => tr('Female'),
-			        'EDIT_ID'  => $edit_id,
-						'TR_BTN_ADD_USER' => tr('Submit changes')
+							'TR_GENDER' => tr('Gender'),
+							'TR_MALE' => tr('Male'),
+							'TR_FEMALE' => tr('Female'),
+							'EDIT_ID' => $edit_id,
+							'TR_BTN_ADD_USER' => tr('Submit changes')
 						)
 				);
 
@@ -99,7 +89,7 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl')
 
 gen_logged_from($tpl);
 
-$tpl -> assign(
+$tpl->assign(
                 array(
 							'TR_MANAGE_USERS' => tr('Manage users'),
 							'TR_USERS' => tr('Users'),
@@ -115,13 +105,9 @@ $tpl -> assign(
               );
 
 if (isset($_POST['genpass'])) {
-
-	$tpl -> assign('VAL_PASSWORD', passgen());
-
+	$tpl->assign('VAL_PASSWORD', passgen());
 } else {
-
-	$tpl -> assign('VAL_PASSWORD', '');
-
+	$tpl->assign('VAL_PASSWORD', '');
 }
 
 if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])) {
@@ -162,9 +148,9 @@ gen_edituser_page($tpl);
 
 gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
+$tpl->parse('PAGE', 'page');
 
-$tpl -> prnt();
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
@@ -175,8 +161,7 @@ if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 //
 
 // Load data from sql
-function load_user_data_page($user_id)
-{
+function load_user_data_page($user_id) {
 	global $sql;
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
@@ -189,7 +174,7 @@ function load_user_data_page($user_id)
 
 	$query = <<<SQL_QUERY
 		select
-			admin_name, created_by, fname, lname, firm,zip,city,country,email,phone,fax,street1,street2, customer_id, gender
+			admin_name, created_by, fname, lname, firm, zip, city, country, email, phone, fax, street1, street2, customer_id, gender
 		from
 			admin
 		where
@@ -261,8 +246,8 @@ function gen_edituser_page(&$tpl)
 						'VL_STREET1' => $street_one,
 						'VL_STREET2' => $street_two,
 						'VL_MAIL' => $mail,
-                        'VL_MALE' => ($gender == 'M')? 'checked' : '',
-                        'VL_FEMALE' => ($gender == 'F')? 'checked' : '',
+                        'VL_MALE' => ($gender == 'M') ? 'checked' : '',
+                        'VL_FEMALE' => ($gender == 'F') ? 'checked' : '',
 						'VL_PHONE' => $phone,
 						'VL_FAX' => $fax
 					)
@@ -274,8 +259,7 @@ function gen_edituser_page(&$tpl)
 
 
 // Function to update changes into db
-function update_data_in_db($hpid)
-{
+function update_data_in_db($hpid) {
   global $sql;
   global $dmn_user_name;
   global $user_email, $customer_id, $first_name;
@@ -305,23 +289,23 @@ function update_data_in_db($hpid)
             update
                 admin
             set
-                fname=?,
-                lname=?,
-                firm=?,
-                zip=?,
-                city=?,
-                country=?,
-                email=?,
-                phone=?,
-                fax=?,
-                street1=?,
-                street2=?,
-                gender=?,
-                customer_id=?
+                fname = ?,
+                lname = ?,
+                firm = ?,
+                zip = ?,
+                city = ?,
+                country = ?,
+                email = ?,
+                phone = ?,
+                fax = ?,
+                street1 = ?,
+                street2 = ?,
+                gender = ?,
+                customer_id = ?
             where
-                admin_id=?
+                admin_id = ?
             and
-                created_by=?
+                created_by = ?
 SQL_QUERY;
     exec_query($sql, $query, array($first_name,
                                    $last_name,
@@ -362,24 +346,24 @@ SQL_QUERY;
             update
                 admin
             set
-                admin_pass=?,
-                fname=?,
-                lname=?,
-                firm=?,
-                zip=?,
-                city=?,
-                country=?,
-                email=?,
-                phone=?,
-                fax=?,
-                street1=?,
-                street2=?,
-                gender=?,
-                customer_id=?
+                admin_pass = ?,
+                fname = ?,
+                lname = ?,
+                firm = ?,
+                zip = ?,
+                city = ?,
+                country = ?,
+                email = ?,
+                phone = ?,
+                fax = ?,
+                street1 = ?,
+                street2 = ?,
+                gender = ?,
+                customer_id = ?
             where
-                admin_id=?
+                admin_id = ?
             and
-                created_by=?
+                created_by = ?
 SQL_QUERY;
       exec_query($sql, $query, array($inpass,
                                    $first_name,

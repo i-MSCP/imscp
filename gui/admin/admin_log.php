@@ -2,13 +2,14 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright 2006-2007 by ispCP | http://isp-control.net
- * @link http://isp-control.net
- * @author ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
  * @license
- * 	This program is free software; you can redistribute it and/or modify it under
+ *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
  *   Foundation; either version 1.1 of the License, or (at your option) any later
  *   version.
@@ -16,7 +17,6 @@
  *   this program; if not, write to the Open Source Initiative (OSI)
  *   http://opensource.org | osi@opensource.org
  */
-
 
 
 require '../include/ispcp-lib.php';
@@ -162,11 +162,11 @@ SQL_QUERY;
            $log_message = $rs->fields['log_message'];
            $replaces = array(
                '/[^a-zA-Z](delete)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
-               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => ' <strong style="color:#CC6600">\\1</strong> ',
+               '/[^a-zA-Z](add)[^a-zA-Z]/i'    => ' <strong style="color:#33CC66">\\1</strong> ',
                '/[^a-zA-Z](change)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
-               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => ' <strong style="color:#CC6600">\\1</strong> ',
+               '/[^a-zA-Z](edit)[^a-zA-Z]/i'   => ' <strong style="color:#33CC66">\\1</strong> ',
                '/[^a-zA-Z](unknown)[^a-zA-Z]/i'=> ' <strong style="color:#CC00FF">\\1</strong> ',
-               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => ' <strong style="color:#339966">\\1</strong> ',
+               '/[^a-zA-Z](logged)[^a-zA-Z]/i' => ' <strong style="color:#336600">\\1</strong> ',
                '/(bad password login data)/i'  => ' <strong style="color:#FF0000">\\1</strong> '
            );
 

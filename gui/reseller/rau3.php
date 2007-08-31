@@ -1,35 +1,36 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/rau3.tpl');
-$tpl -> define_dynamic('page_message', 'page');
-$tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('ip_entry', 'page');
+$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/rau3.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('ip_entry', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(
+$tpl->assign(
                 array(
                         'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
@@ -50,7 +51,7 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl')
 
 gen_logged_from($tpl);
 
-$tpl -> assign(
+$tpl->assign(
                 array(
                         'TR_ADD_USER' => tr('Add user'),
                         'TR_CORE_DATA' => tr('Core data'),
@@ -63,6 +64,9 @@ $tpl -> assign(
                         'TR_CUSTOMER_ID' => tr('Customer ID'),
                         'TR_FIRSTNAME' => tr('First name'),
                         'TR_LASTNAME' => tr('Last name'),
+                        'TR_GENDER' => tr('Gender'),
+						'TR_MALE' => tr('Male'),
+						'TR_FEMALE' => tr('Female'),
                         'TR_COMPANY' => tr('Company'),
                         'TR_POST_CODE' => tr('Zip/Postal code'),
                         'TR_CITY' => tr('City'),
@@ -90,14 +94,14 @@ if (isset($_POST['uaction']) && ("rau3_nxt" === $_POST['uaction']) && !isset($_S
 } else {
 	unset($_SESSION['step_two_data']);
 	gen_empty_data();
-	$tpl -> assign('MESSAGE', "");
+	$tpl->assign('MESSAGE', "");
 }
 
 
 gen_rau3_page($tpl);
 gen_page_message($tpl);
-$tpl -> parse('PAGE', 'page');
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
@@ -108,8 +112,7 @@ if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 
 // Get data from previus page
-function init_in_values()
-{
+function init_in_values() {
 	global $dmn_name, $dmn_user_name, $hpid;
 
   if (isset($_SESSION['step_one']) ) {
@@ -133,11 +136,10 @@ function init_in_values()
 } // End of init_in_values()
 
 // generate page add user 3
-function gen_rau3_page(&$tpl)
-{
+function gen_rau3_page(&$tpl) {
   global $dmn_name, $hpid , $dmn_user_name;
   global $user_email, $customer_id, $first_name;
-  global $last_name, $firm, $zip;
+  global $last_name, $gender, $firm, $zip;
   global $city, $country, $street_one;
   global $street_two, $mail, $phone;
   global $fax;
@@ -145,7 +147,7 @@ function gen_rau3_page(&$tpl)
   $dmn_user_name = decode_idna($dmn_user_name);
 
   // Fill in the fileds
-  $tpl -> assign(
+  $tpl->assign(
                 array(
                       'VL_USERNAME' => $dmn_user_name,
                       'VL_USR_PASS' => passgen(),
@@ -156,6 +158,8 @@ function gen_rau3_page(&$tpl)
                       'VL_USR_FIRM' => $firm,
                       'VL_USR_POSTCODE' => $zip,
                       'VL_USRCITY' => $city,
+                      'VL_MALE' => ($gender == 'M') ? 'checked' : '',
+                      'VL_FEMALE' => ($gender == 'F') ? 'checked' : '',
                       'VL_COUNTRY' => $country,
                       'VL_STREET1' => $street_one,
                       'VL_STREET2' => $street_two,
@@ -172,10 +176,9 @@ function gen_rau3_page(&$tpl)
 
 
 // Init global value with empty values
-function gen_empty_data()
-{
+function gen_empty_data() {
   global $user_email, $customer_id, $first_name;
-  global $last_name, $firm, $zip;
+  global $last_name, $gender, $firm, $zip;
   global $city, $country, $street_one;
   global $street_two, $mail, $phone, $fax;
 
@@ -183,6 +186,7 @@ function gen_empty_data()
     $customer_id = '';
     $first_name = '';
     $last_name = '';
+    $gender = '';
     $firm = '';
     $zip = '';
     $city = '';
@@ -197,12 +201,11 @@ function gen_empty_data()
 
 
 // Save data for new user in db
-function add_user_data ($reseller_id)
-{
+function add_user_data ($reseller_id) {
   global $sql, $cfg;
   global $dmn_name, $hpid , $dmn_user_name;
   global $user_email, $customer_id, $first_name;
-  global $last_name, $firm, $zip;
+  global $last_name, $gender, $firm, $zip;
   global $city, $country, $street_one;
   global $street_two, $mail, $phone;
   global $fax, $inpass, $domain_ip;
@@ -261,10 +264,13 @@ function add_user_data ($reseller_id)
 
    //check again if a user like that exits
   $query = <<<OMEGA_SQL_QUERY
-	select count(*) as count
-            	from admin
-		where admin_name = ?
-		limit 1
+	select
+		count(*) as count
+    from
+		admin
+	where
+		admin_name = ?
+	limit 1
 OMEGA_SQL_QUERY;
 
   $res = exec_query($sql, $query, $dmn_user_name);
@@ -284,17 +290,17 @@ OMEGA_SQL_QUERY;
                         created_by, fname, lname,
                         firm, zip, city,
                         country, email, phone,
-                        fax, street1, street2, customer_id
+                        fax, street1, street2, customer_id, gender
                       )
                 values
                       (
                         ?, ?, 'user', unix_timestamp(),
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                       )
 ISPCP_SQL_QUERY;
 
     $res = exec_query($sql, $query, array($dmn_user_name, $inpass, $reseller_id, $first_name, $last_name,
-                      $firm, $zip, $city, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id));
+                      $firm, $zip, $city, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id, $gender));
 
     print $sql -> ErrorMsg();
 
@@ -337,7 +343,7 @@ ISPCP_SQL_QUERY;
                                           $disk,
                                           $php,
                                           $cgi));
-    $dmn_id = $sql -> Insert_ID();
+    $dmn_id = $sql->Insert_ID();
 
 	// ispcp 2.5 feature
 	//add_domain_extras($dmn_id, $record_id, $sql);

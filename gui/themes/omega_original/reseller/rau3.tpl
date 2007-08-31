@@ -112,8 +112,12 @@
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td width="200" class="content2">{TR_LASTNAME}</td>
-                          <td class="content"><input type="text" name=userlname value="{VL_LAST_USRNAME}" style="width:210px" class="textinput">
-                          </td>
+                          <td class="content"><input type="text" name=userlname value="{VL_LAST_USRNAME}" style="width:210px" class="textinput"></td>
+                        </tr>
+                        <tr>
+                         <td width="25">&nbsp;</td>
+                         <td width="200" class="content2">{TR_GENDER}</td>
+                         <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
                         </tr>
                         <tr>
                           <td width="25">&nbsp;</td>

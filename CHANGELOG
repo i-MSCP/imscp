@@ -6,6 +6,13 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-31 Benedikt Heintel
+	- GUI:
+		* Fixed #602: changed favicon.ico
+		* Fixed #612: Edit reseller - Max domain count error
+		* Fixed #614: no gender in new user as a reseller
+		* Fixed #618: Messages after add/edit things in green and not red
+
 2007-08-31 Malte Geierhos
     - GUI:
     	* Fixed #617: missing global declaration
