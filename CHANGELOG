@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-08-31 Malte Geierhos
+    - GUI:
+    	* Fixed #617: missing global declaration
+
 2007-08-30 Raphael Geissert
     - GUI:
         * Fixed #615: client/add_mail_acc.php not respecting config

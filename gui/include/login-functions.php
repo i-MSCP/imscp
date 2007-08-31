@@ -122,6 +122,7 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 }
 
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
+	global $cfg, $sql;
 
 	if (!$cfg['BRUTEFORCE'])
 	return false;
