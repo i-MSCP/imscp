@@ -89,9 +89,7 @@ SQL_QUERY;
 			);
 
 		$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
-
 		$tpl->parse('DST_RESELLER_OPTION', '.dst_reseller_option');
-
 		$rs->MoveNext();
 	}
 
@@ -137,19 +135,18 @@ SQL_QUERY;
 			$show_admin_name = decode_idna($rs->fields['admin_name']);
 
 			$tpl->assign(
-				array('NUMBER' => $i + 1,
+				array(
+					'NUMBER' => $i + 1,
 					'USER_NAME' => $show_admin_name,
 					'CKB_NAME' => $admin_id_var_name,
 					)
 				);
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
-
 			$rs->MoveNext();
 
 			$i++;
 		}
-
 		$tpl->parse('RESELLER_LIST', 'reseller_list');
 	}
 }
@@ -286,41 +283,20 @@ SQL_QUERY;
 			$traff_max, $disk_max
 			) = generate_user_props($domain_id);
 
-		calculate_reseller_vals ($dest_dmn_current, $dest_dmn_max, $src_dmn_current, $src_dmn_max, 1, $err, 'Domain', $domain_name);
+		calculate_reseller_dvals($dest_dmn_current, $dest_dmn_max, $src_dmn_current, $src_dmn_max, 1, $err, 'Domain', $domain_name);
 
-		if ($err == '_off_') {
-			calculate_reseller_dvals ($dest_sub_current, $dest_sub_max, $src_sub_current, $src_sub_max, $sub_max, $err, 'Subdomain', $domain_name);
+		if (empty($err)) {
+			calculate_reseller_dvals($dest_sub_current, $dest_sub_max, $src_sub_current, $src_sub_max, $sub_max, $err, 'Subdomain', $domain_name);
+			calculate_reseller_dvals($dest_als_current, $dest_als_max, $src_als_current, $src_als_max, $als_max, $err, 'Alias', $domain_name);
+			calculate_reseller_dvals($dest_mail_current, $dest_mail_max, $src_mail_current, $src_mail_max, $mail_max, $err, 'Mail', $domain_name);
+			calculate_reseller_dvals($dest_ftp_current, $dest_ftp_max, $src_ftp_current, $src_ftp_max, $ftp_max, $err, 'FTP', $domain_name);
+			calculate_reseller_dvals($dest_sql_db_current, $dest_sql_db_max, $src_sql_db_current, $src_sql_db_max, $sql_db_max, $err, 'SQL Database', $domain_name);
+			calculate_reseller_dvals($dest_sql_user_current, $dest_sql_user_max, $src_sql_user_current, $src_sql_user_max, $sql_user_max, $err, 'SQL User', $domain_name);
+			calculate_reseller_dvals($dest_traff_current, $dest_traff_max, $src_traff_current, $src_traff_max, $traff_max, $err, 'Traffic', $domain_name);
+			calculate_reseller_dvals($dest_disk_current, $dest_disk_max, $src_disk_current, $src_disk_max, $disk_max, $err, 'Disk', $domain_name);
 		}
 
-		if ($err == '_off_') {
-			calculate_reseller_dvals ($dest_als_current, $dest_als_max, $src_als_current, $src_als_max, $als_max, $err, 'Alias', $domain_name);
-		}
-
-		if ($err == '_off_') {
-			calculate_reseller_vals ($dest_mail_current, $dest_mail_max, $src_mail_current, $src_mail_max, $mail_max, $err, 'Mail', $domain_name);
-		}
-
-		if ($err == '_off_') {
-			calculate_reseller_vals ($dest_ftp_current, $dest_ftp_max, $src_ftp_current, $src_ftp_max, $ftp_max, $err, 'FTP', $domain_name);
-		}
-
-		if ($err == '_off_') {
-			calculate_reseller_dvals ($dest_sql_db_current, $dest_sql_db_max, $src_sql_db_current, $src_sql_db_max, $sql_db_max, $err, 'SQL Database', $domain_name);
-		}
-
-		if ($err == '_off_') {
-			calculate_reseller_dvals ($dest_sql_user_current, $dest_sql_user_max, $src_sql_user_current, $src_sql_user_max, $sql_user_max, $err, 'SQL User', $domain_name);
-		}
-
-		if ($err == '_off_') {
-			calculate_reseller_vals ($dest_traff_current, $dest_traff_max, $src_traff_current, $src_traff_max, $traff_max, $err, 'Traffic', $domain_name);
-		}
-
-		if ($err == '_off_') {
-			calculate_reseller_vals ($dest_disk_current, $dest_disk_max, $src_disk_current, $src_disk_max, $disk_max, $err, 'Disk', $domain_name);
-		}
-
-		if ($err != '_off_') {
+		if (!empty($err)) {
 			return false;
 		}
 	}
@@ -362,7 +338,7 @@ SQL_QUERY;
 	return true;
 }
 
-function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$err, $obj, $uname) {
+function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$err, $obj, $uname) {
 	if ($dest_max == 0 && $src_max == 0 && $umax == -1) {
 		return;
 	} else if ($dest_max == 0 && $src_max == 0 && $umax == 0) {
@@ -387,14 +363,14 @@ function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$
 	} else if ($dest_max > 0 && $src_max == 0 && $umax == -1) {
 		return;
 	} else if ($dest_max > 0 && $src_max == 0 && $umax == 0) {
-		$err = tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>', $uname, $obj);
+		$err .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>', $uname, $obj);
 
 		$err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
 
 		return;
 	} else if ($dest_max > 0 && $src_max == 0 && $umax > 0) {
 		if ($dest + $umax > $dest_max) {
-			$err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
+			$err .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
 			$err .= tr('Moving aborted!');
 		} else {
@@ -411,61 +387,7 @@ function calculate_reseller_dvals (&$dest, $dest_max, &$src, $src_max, $umax, &$
 		return;
 	} else if ($dest_max > 0 && $src_max > 0 && $umax > 0) {
 		if ($dest + $umax > $dest_max) {
-			$err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
-
-			$err .= tr('Moving aborted!');
-		} else {
-			$src -= $umax;
-
-			$dest += $umax;
-		}
-
-		return;
-	}
-}
-
-function calculate_reseller_vals (&$dest, $dest_max, &$src, $src_max, $umax, &$err, $obj, $uname) {
-	if ($dest_max == 0 && $src_max == 0 && $umax == 0) {
-		return;
-	} else if ($dest_max == 0 && $src_max == 0 && $umax > 0) {
-		$src -= $umax;
-
-		$dest += $umax;
-
-		return;
-	} else if ($dest_max == 0 && $src_max > 0 && $umax == 0) {
-		// Impossible condition;
-		return;
-	} else if ($dest_max == 0 && $src_max > 0 && $umax > 0) {
-		$src -= $umax;
-
-		$dest += $umax;
-
-		return;
-	} else if ($dest_max > 0 && $src_max == 0 && $umax == 0) {
-		$err = tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>', $uname, $obj);
-
-		$err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
-
-		return;
-	} else if ($dest_max > 0 && $src_max == 0 && $umax > 0) {
-		if ($dest + $umax > $dest_max) {
-			$err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
-
-			$err .= tr('Moving aborted!');
-		} else {
-			$src -= $umax;
-
-			$dest += $umax;
-		}
-
-		return;
-	} else if ($dest_max > 0 && $src_max > 0 && $umax == 0) {
-		// Impossible condition;
-		return;
-	} else if ($dest_max > 0 && $src_max > 0 && $umax > 0) {
-		if ($dest + $umax > $dest_max) {
-			$err = tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
+			$err .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
 			$err .= tr('Moving aborted!');
 		} else {
@@ -500,7 +422,7 @@ SQL_QUERY;
 		$domain_name = $rs->fields['domain_name'];
 
 		if (!preg_match("/$domain_ip_id;/", $dest)) {
-			$err = tr('<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!', $domain_name);
+			$err .= tr('<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!', $domain_name);
 
 			return false;
 		}

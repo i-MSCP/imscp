@@ -42,16 +42,16 @@ global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
-	array('TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Edit Reseller'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
-		)
-	);
+		array(
+			'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Edit Reseller'),
+			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => get_logo($_SESSION['user_id']),
+			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
+			)
+		);
 // Get Server IPs;
-function get_servers_IPs(&$tpl, &$sql, $rip_lst)
-{
+function get_servers_ips(&$tpl, &$sql, $rip_lst) {
 	$query = <<<SQL_QUERY
         SELECT
             ip_id, ip_number, ip_domain
@@ -145,7 +145,7 @@ function check_user_data() {
 
 	if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 		if (!chk_password($_POST['pass'])) {
-			set_page_message(tr("Incorrect password length or syntax!"));
+			set_page_message(tr("Incorrect password count or no number!<br />"));
 
 			return false;
 		}
@@ -157,47 +157,52 @@ function check_user_data() {
 	}
 
 	if (!chk_email($_POST['email'])) {
-		set_page_message(tr("Incorrect email length or syntax!"));
+		set_page_message(tr("Incorrect email count or no number!<br />"));
 		return false;
 	}
 
 	if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
-		set_page_message(tr("Incorrect max domain count or syntax!"));
+		set_page_message(tr("Incorrect max domain count or no number!<br />"));
 		return false;
 	}
 
-	if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'])) {
-		set_page_message(tr("Incorrect max subdomain count or syntax!"));
+	if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], -1)) {
+		set_page_message(tr("Incorrect max subdomain count or no number!<br />"));
 		return false;
 	}
 
-	if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'])) {
-		set_page_message(tr('Incorrect max alias count or syntax!'));
+	if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], -1)) {
+		set_page_message(tr('Incorrect max alias count or no number!<br />'));
 		return false;
 	}
 
-	if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'])) {
-		set_page_message(tr('Incorrect max FTP count or syntax!'));
+	if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], -1)) {
+		set_page_message(tr('Incorrect max FTP count or no number!<br />'));
 		return false;
 	}
 
-	if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'])) {
-		set_page_message(tr('Incorrect max mail count or syntax!'));
+	if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], -1)) {
+		set_page_message(tr('Incorrect max mail count or no number!<br />'));
 		return false;
-	} else if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'])) {
-		set_page_message(tr('Incorrect max SQL databases count or syntax!'));
+	}
+	if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
+		set_page_message(tr('Incorrect max SQL databases count or no number!<br />'));
 
 		return false;
-	} else if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'])) {
-		set_page_message(tr('Incorrect max SQL users count or syntax!'));
+	}
+	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
+		set_page_message(tr('Incorrect max SQL users count or no number!<br />'));
 		return false;
-	} else if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
+	}
+	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
 		set_page_message(tr('Incorrect max traffic amount or syntax!'));
 		return false;
-	} else if (!ispcp_limit_check($_POST['nreseller_max_disk'], null)) {
+	}
+	if (!ispcp_limit_check($_POST['nreseller_max_disk'], null)) {
 		set_page_message(tr('Incorrect max disk amount or syntax!'));
 		return false;
-	} else if ($reseller_ips == '') {
+	}
+	if ($reseller_ips == '') {
 		set_page_message(tr('You must assign at least one IP number for a reseller!'));
 		return false;
 	}
@@ -387,8 +392,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err)
 	}
 }
 
-function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name)
-{
+function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 	global $sql;
 
 	$query = <<<SQL_QUERY
@@ -605,8 +609,7 @@ SQL_QUERY;
 	}
 }
 
-function get_reseller_prop(&$sql)
-{
+function get_reseller_prop(&$sql) {
 	global $edit_id;
 
 	$query = <<<SQL_QUERY

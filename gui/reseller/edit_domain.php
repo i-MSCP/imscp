@@ -2,13 +2,14 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright 2006-2007 by ispCP | http://isp-control.net
- * @link http://isp-control.net
- * @author ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
  * @license
- * 	This program is free software; you can redistribute it and/or modify it under
+ *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
  *   Foundation; either version 1.1 of the License, or (at your option) any later
  *   version.
@@ -30,7 +31,7 @@ $tpl->define_dynamic('logged_from', 'page');
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
-	Header("Location: users.php");
+	header("Location: users.php");
 	die();
 }
 
@@ -57,14 +58,14 @@ $tpl->assign(
 				'TR_DOMAIN_IP' => tr('Domain IP'),
 				'TR_PHP_SUPP' => tr('PHP support'),
 				'TR_CGI_SUPP' => tr('CGI support'),
-				'TR_SUBDOMAINS' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_ALIAS' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAIL_ACCOUNT' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_FTP_ACCOUNTS' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_SQL_DB' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-				'TR_DISK' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+				'TR_SUBDOMAINS' => tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_ALIAS' => tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAIL_ACCOUNT' => tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_FTP_ACCOUNTS' => tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_SQL_DB' => tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_SQL_USERS' => tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_TRAFFIC' => tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
+				'TR_DISK' => tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
 				'TR_USER_NAME' => tr('Username'),
 				'TR_UPDATE_DATA' => tr('Submit changes'),
 				'TR_CANCEL' => tr('Cancel'),
@@ -297,25 +298,33 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$domain_php = $_POST['domain_php'];
 	$domain_cgi = $_POST['domain_cgi'];
 
-	$ed_error = '_off_';
+	$ed_error = '';
 
-	if (!ispcp_limit_check($sub)) {
-		$ed_error = tr('Incorrect subdomain length or syntax!');
-	} else if (!ispcp_limit_check($als)) {
-		$ed_error = tr('Incorrect alias length or syntax!');
-	} else if (!ispcp_limit_check($mail)) {
-		$ed_error = tr('Incorrect mail account length or syntax!');
-	} else if (!ispcp_limit_check($ftp)) {
-		$ed_error = tr('Incorrect FTP account length or syntax!');
-	} else if (!ispcp_limit_check($sql_db)) {
-		$ed_error = tr('Incorrect SQL user length or syntax!');
-	} else if (!ispcp_limit_check($sql_user)) {
-		$ed_error = tr('Incorrect SQL database length or syntax!');
-	} else if (!ispcp_limit_check($traff, null)) {
-		$ed_error = tr('Incorrect traffic length or syntax!');
-	} else if (!ispcp_limit_check($disk, null)) {
-		$ed_error = tr('Incorrect disk length or syntax!');
+	if (!ispcp_limit_check($sub, -1)) {
+		$ed_error .= tr('Incorrect subdomain count or no number!<br />');
 	}
+	if (!ispcp_limit_check($als, -1)) {
+		$ed_error .= tr('Incorrect alias count or no number!<br />');
+	}
+	if (!ispcp_limit_check($mail, -1)) {
+		$ed_error .= tr('Incorrect mail account count or no number!<br />');
+	}
+	if (!ispcp_limit_check($ftp, -1)) {
+		$ed_error .= tr('Incorrect FTP account count or no number<br />');
+	}
+	if (!ispcp_limit_check($sql_db, -1)) {
+		$ed_error .= tr('Incorrect SQL user count or no number!<br />');
+	}
+	if (!ispcp_limit_check($sql_user, -1)) {
+		$ed_error .= tr('Incorrect SQL database count or no number!<br />');
+	}
+	if (!ispcp_limit_check($traff, null)) {
+		$ed_error .= tr('Incorrect traffic count or no number!<br />');
+	}
+	if (!ispcp_limit_check($disk, null)) {
+		$ed_error .= tr('Incorrect disk count or no number!<br />');
+	}
+
 	// $user_props = generate_user_props($user_id);
 	// $reseller_props = generate_reseller_props($reseller_id);
 	list ($usub_current, $usub_max,
@@ -340,27 +349,15 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
 	list ($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($user_id);
 
-	if ($ed_error == '_off_') {
+	if (empty($ed_error)) {
 		calculate_user_dvals($sub, $usub_current, $usub_max, $rsub_current, $rsub_max, $ed_error, tr('Subdomain'));
-	}
-
-	if ($ed_error == '_off_') {
 		calculate_user_dvals($als, $uals_current, $uals_max, $rals_current, $rals_max, $ed_error, tr('Alias'));
-	}
-
-	if ($ed_error == '_off_') {
-		calculate_user_vals($mail, $umail_current, $umail_max, $rmail_current, $rmail_max, $ed_error, tr('Mail'));
-	}
-
-	if ($ed_error == '_off_') {
-		calculate_user_vals($ftp, $uftp_current, $uftp_max, $rftp_current, $rftp_max, $ed_error, tr('FTP'));
-	}
-
-	if ($ed_error == '_off_') {
+		calculate_user_dvals($mail, $umail_current, $umail_max, $rmail_current, $rmail_max, $ed_error, tr('Mail'));
+		calculate_user_dvals($ftp, $uftp_current, $uftp_max, $rftp_current, $rftp_max, $ed_error, tr('FTP'));
 		calculate_user_dvals($sql_db, $usql_db_current, $usql_db_max, $rsql_db_current, $rsql_db_max, $ed_error, tr('SQL Database'));
 	}
 
-	if ($ed_error == '_off_') {
+	if (empty($ed_error)) {
 		$query = <<<SQL_QUERY
 			SELECT
 				COUNT(su.sqlu_id) AS cnt
@@ -377,15 +374,12 @@ SQL_QUERY;
 		calculate_user_dvals($sql_user, $rs->fields['cnt'], $usql_user_max, $rsql_user_current, $rsql_user_max, $ed_error, tr('SQL User'));
 	}
 
-	if ($ed_error == '_off_') {
-		calculate_user_vals($traff, $utraff_current / 1024 / 1024 , $utraff_max, $rtraff_current, $rtraff_max, $ed_error, tr('Traffic'));
+	if (empty($ed_error)) {
+		calculate_user_dvals($traff, $utraff_current / 1024 / 1024 , $utraff_max, $rtraff_current, $rtraff_max, $ed_error, tr('Traffic'));
+		calculate_user_dvals($disk, $udisk_current / 1024 / 1024, $udisk_max, $rdisk_current, $rdisk_max, $ed_error, tr('Disk'));
 	}
 
-	if ($ed_error == '_off_') {
-		calculate_user_vals($disk, $udisk_current / 1024 / 1024, $udisk_max, $rdisk_current, $rdisk_max, $ed_error, tr('Disk'));
-	}
-
-	if ($ed_error == '_off_') {
+	if (empty($ed_error)) {
 		// Set domain's status to 'change' to update mod_cband's limit
 		if ($previous_utraff_max != $utraff_max) {
 			$query = "UPDATE domain SET domain_status = 'change' WHERE domain_id = ?";
@@ -452,7 +446,7 @@ SQL_QUERY;
 	}
 } //End of check_user_data()
 
-function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
+function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	if ($rmax == 0 && $umax == -1) {
 		if ($data == -1) {
 			return;
@@ -467,7 +461,7 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax == 0 && $umax == 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err = tr('<b>%s</b> Service can not be disabled !<br>', $obj) . tr('There are <b>%s</b> records on the system!', $obj);
+				$err .= tr('<em>%s</em> Service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on system!', $obj);
 			} else {
 				$umax = $data;
 			}
@@ -477,7 +471,7 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err = tr('<b>%s</b> Service can not be limited !<br>', $obj) . tr('Specified number is smaller than <b>%s</b> records, present on the system!', $obj);
+				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				$umax = $data;
 				$r += $umax;
@@ -487,7 +481,7 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax == 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err = tr('<b>%s</b> Service can not be disabled !<br>', $obj) . tr('There are <b>%s</b> records on the system!', $obj);
+				$err .= tr('<em>%s</em> Service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -499,7 +493,7 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err = tr('<b>%s</b> Service can not be limited !<br>', $obj) . tr('Specified number is smaller than <b>%s</b> records, present on the system!', $obj);
+				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -516,11 +510,11 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {
-			$err = tr('<b>%s</b> Service can not be unlimited !<br>', $obj) . tr('There are reseller limits for the <b>%s</b> service!', $obj);
+			$err .= tr('<em>%s</em> Service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
 			return;
 		} else if ($data > 0) {
 			if ($r + $data > $rmax) {
-				$err = tr('<b>%s</b> Service can not be limited !<br>', $obj) . tr('You are exceeding reseller limits for the <b>%s</b> service!', $obj);
+				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
 			} else {
 				$r += $data;
 
@@ -541,7 +535,7 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax > 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err = tr('<b>%s</b> Service can not be disabled !<br>', $obj) . tr('There are <b>%s</b> records on the system!', $obj);
+				$err .= tr('<em>%s</em> Service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -549,12 +543,12 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 
 			return;
 		} else if ($data == 0) {
-			$err = tr('<b>%s</b> Service can not be unlimited !<br>', $obj) . tr('There are reseller limits for the <b>%s</b> service!', $obj);
+			$err .= tr('<em>%s</em> Service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
 
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err = tr('<b>%s</b> Service can not be limited !<br>', $obj) . tr('Specified number is smaller than <b>%s</b> records, present on the system!', $obj);
+				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -563,7 +557,7 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 					$data_inc = $data - $umax;
 
 					if ($r + $data_inc > $rmax) {
-						$err = tr('<b>%s</b> Service can not be limited !<br>', $obj) . tr('You are exceeding reseller limits for the <b>%s</b> service!', $obj);
+						$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
 						return;
 					}
 
@@ -577,83 +571,6 @@ function calculate_user_dvals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 		}
 	}
 } // End of calculate_user_dvals()
-
-function calculate_user_vals ($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
-	if ($rmax == 0 && $umax == 0) {
-		if ($data == 0) {
-			return;
-		} else if ($data > 0) {
-			if ($u > $data) {
-				$err = tr('<b>%s</b> service can not be limited !<br>', $obj) . tr('Specified number is smaller than <b>%s</b> amount, present on the system!', $obj);
-			} else {
-				$umax = $data;
-				$r += $umax;
-			}
-
-			return;
-		}
-	} else if ($rmax == 0 && $umax > 0) {
-		if ($data == 0) {
-			$r -= $umax;
-			$umax = $data;
-
-			return;
-		} else if ($data > 0) {
-			if ($u > $data) {
-				$err = tr('<b>%s</b> service can not be limited !<br>', $obj) . tr('Specified number is smaller than <b>%s</b> amount, present on the system!', $obj);
-			} else {
-				if ($umax > $data) {
-					$data_dec = $umax - $data;
-					$r -= $data_dec;
-				} else {
-					$data_inc = $data - $umax;
-					$r += $data_inc;
-				}
-				$umax = $data;
-			}
-
-			return;
-		}
-	} else if ($rmax > 0 && $umax == 0) {
-		// We Can't Get Here! This clone is present only for
-		// sample purposes;
-		if ($data == 0) {
-			die("FIXME: ". __FILE__ .":". __LINE__);
-		} else if ($data > 0) {
-			die("FIXME: ". __FILE__ .":". __LINE__);
-		}
-	} else if ($rmax > 0 && $umax > 0) {
-		if ($data == 0) {
-			$err = tr('<b>%s</b> Service can not be unlimited !<br>', $obj) . tr('There are reseller limits for the <b>%s</b> service!', $obj);
-
-			return;
-		} else if ($data > 0) {
-			if ($u > $data) {
-				$err = tr('<b>%s</b> service can not be limited !<br>', $obj) . tr('Specified number is smaller than <b>%s</b> amount, present on the system!', $obj);
-			} else {
-				if ($umax > $data) {
-					$data_dec = $umax - $data;
-
-					$r -= $data_dec;
-				} else {
-					$data_inc = $data - $umax;
-
-					if ($r + $data_inc > $rmax) {
-						$err = tr('<b>%s</b> Service can not be limited !<br>', $obj) . tr('You are exceeding reseller limits for the <b>%s</b> service!', $obj);
-
-						return;
-					}
-
-					$r += $data_inc;
-				}
-
-				$umax = $data;
-			}
-
-			return;
-		}
-	}
-} // End of calculate_user_vals()
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

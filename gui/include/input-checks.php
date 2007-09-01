@@ -278,7 +278,7 @@ function check_dn_token($data) {
  *  @function		ispcp_limit_check
  *  @description	Function for checking ispcp limits.
  *
- * 	@param		string		$data		ispcp 'limit' field data (by default valids are: -1|0|1+)
+ * 	@param		string		$data		ispcp 'limit' field data (by default valids are numbers greater equal 0)
  * 	@param		misc		$extra		single extra permitted value or array of permitted values
  *  @return		boolean					false	incorrect syntax (ranges)
  * 										true	correct syntax (ranges)
@@ -287,21 +287,22 @@ function check_dn_token($data) {
  */
 function ispcp_limit_check($data, $extra = -1) {
 
-    if ($extra !== null && !is_bool($extra)) {
-        if (is_array($extra)) {
-            $nextra = '';
-            $max = count($extra);
-            foreach ($extra as $n => $element) {
-                $nextra = $element . ($n < $max)? '|' : '';
-            }
-        } else {
-            $extra .= '|';
+    if ($extra !== null && is_array($extra)) {
+		$nextra = '';
+        $max = count($extra);
+        foreach ($extra as $n => $element) {
+        	$nextra = $element . ($n < $max) ? '|' : '';
         }
-    } else {
+        $nextra = $extra;
+    }
+    else if (is_numeric($extra)) {
+    	$extra .= '|';
+    }
+	else {
         $extra = '';
     }
 
-    return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
+    return (bool)preg_match("/^(${extra}0|[1-9]+)$/D", $data);
 }
 
 /**
