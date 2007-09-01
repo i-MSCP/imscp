@@ -84,16 +84,22 @@ function sbmt(form, uaction) {
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content3"><b>{TR_ADMIN_USERNAME}</b></td>
+            <td class="content3"><b>{TR_CREATED_ON}</b></td>
             <td class="content3" align="center"><b>{TR_ADMIN_CREATED_BY}</b></td>
-            <td width="150" align="center" class="content3"><b>{TR_ADMIN_OPTIONS}</b></td>
+            <td colspan="2" align="center" class="content3"><b>{TR_ADMIN_OPTIONS}</b></td>
           </tr>
           <!-- BDP: admin_item -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td class="{ADMIN_CLASS}"><a href="{URL_EDIT_ADMIN}" class="link">{ADMIN_USERNAME}</a> </td>
+            <td class="{ADMIN_CLASS}">{ADMIN_USERNAME}</td>
+            <td class="{ADMIN_CLASS}" align="center">{ADMIN_CREATED_ON}</td>
             <td class="{ADMIN_CLASS}" align="center">{ADMIN_CREATED_BY}</td>
-            <td width="150" class="{ADMIN_CLASS}" align="center"><!-- BDP: admin_delete_show -->
-              {TR_DELETE}
+            <td width="100" class="{ADMIN_CLASS}" align="center">
+              <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_ADMIN}" class="link">{TR_EDIT}</a>
+			</td>
+            <td width="100" class="{ADMIN_CLASS}" align="center">
+			  <!-- BDP: admin_delete_show -->
+              -
               <!-- EDP: admin_delete_show -->
               <!-- BDP: admin_delete_link -->
               <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
@@ -138,15 +144,16 @@ function sbmt(form, uaction) {
         <td class="content3"><b>{TR_RSL_USERNAME}</b></td>
         <td width="150" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
         <td width="150" align="center" class="content3"><b>{TR_RSL_CREATED_BY}</b></td>
-        <td colspan="2" align="center" class="content3"><b>{TR_RSL_OPTIONS}</b></td>
+        <td colspan="3" align="center" class="content3"><b>{TR_RSL_OPTIONS}</b></td>
       </tr>
       <!-- BDP: rsl_item -->
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="{RSL_CLASS}"><a href="{URL_EDIT_RSL}" class="link">{RSL_USERNAME} </a> </td>
+        <td class="{RSL_CLASS}">{RSL_USERNAME} </td>
         <td class="{RSL_CLASS}" align="center">{RESELLER_CREATED_ON}</td>
         <td class="{RSL_CLASS}" align="center">{RSL_CREATED_BY}</td>
-        <td width="150" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+        <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_RSL}" class="link">{TR_EDIT}</a></td>
         <td width="100" align="center" class="{RSL_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')" class="link">{TR_DELETE}</a></td>
       </tr>
       <!-- EDP: rsl_item -->
@@ -177,7 +184,7 @@ function sbmt(form, uaction) {
       <table width="100%" cellpadding="5" cellspacing="5">
         <tr>
           <td width="25" nowrap="nowrap">&nbsp;</td>
-          <td colspan="5" nowrap="nowrap" class="title"><table border="0" cellspacing="0" cellpadding="0">
+          <td colspan="7" nowrap="nowrap" class="title"><table border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td nowrap="nowrap"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px" />
                       <select name="search_common" class="textinput">
@@ -196,9 +203,11 @@ function sbmt(form, uaction) {
               <td nowrap="nowrap"><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
               </td>
             </tr>
-          </table></td>
-          <td colspan="2" align="right" nowrap="nowrap"><input type="hidden" name="details" value="" />
-                <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a> </td>
+          </table>
+		  </td>
+          <td align="right" nowrap="nowrap"><input type="hidden" name="details" value="" />
+            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
+		  </td>
         </tr>
         <!-- BDP: usr_message -->
         <tr>
@@ -213,23 +222,25 @@ function sbmt(form, uaction) {
           <td class="content3"><b>{TR_USR_USERNAME}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_USR_CREATED_BY}</b></td>
-          <td colspan="3" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
+          <td colspan="4" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
         </tr>
         <!-- BDP: usr_item -->
         <tr>
           <td width="25" align="center">&nbsp;</td>
           <td class="{USR_CLASS}" align="center"><a href="#" onClick="action_status('{URL_CHNAGE_STATUS}')" class="link"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" /></a></td>
-          <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="18" height="18" border="0"/></a><a href="{URL_EDIT_USR}" class="link">{USR_USERNAME} </a> </td>
+          <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {USR_USERNAME}</a></td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
-          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="18" height="18" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
-          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
-          <td width="80" align="center" nowrap="nowrap" class="{USR_CLASS}"><!-- BDP: usr_delete_show -->
-            {TR_DELETE}
+          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
+          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT}</a></td>
+          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}">
+		    <!-- BDP: usr_delete_show -->
+            -
             <!-- EDP: usr_delete_show -->
-                <!-- BDP: usr_delete_link -->
-                <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
-                <!-- EDP: usr_delete_link -->
+            <!-- BDP: usr_delete_link -->
+              <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="#" onClick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')" class="link">{TR_DELETE}</a>
+            <!-- EDP: usr_delete_link -->
           </td>
         </tr>
         <!-- BDP: user_details -->

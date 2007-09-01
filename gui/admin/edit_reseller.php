@@ -49,10 +49,9 @@ $tpl->assign(
 		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
 		)
 	);
-
 // Get Server IPs;
-
-function get_servers_IPs(&$tpl, &$sql, $rip_lst) {
+function get_servers_IPs(&$tpl, &$sql, $rip_lst)
+{
 	$query = <<<SQL_QUERY
         SELECT
             ip_id, ip_number, ip_domain
@@ -118,7 +117,8 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array('RSL_IP_NUMBER' => $i + 1,
+				array(
+					'RSL_IP_NUMBER' => $i + 1,
 					'RSL_IP_LABEL' => $rs->fields['ip_domain'],
 					'RSL_IP_IP' => $rs->fields['ip_number'],
 					'RSL_IP_CKB_NAME' => $ip_var_name,
@@ -311,9 +311,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 */
 function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
 	if ($unlimited == '_off_') {
-
 		// We have something like that: $u <= ($umax = $r) <= $rmax
-
 		if ($umax != $r && $u > 0) { // ... && $u != unlimited
 			$err = tr('Reseller data inconsistency!'); //really?
 
@@ -362,7 +360,8 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 	}
 }
 
-function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
+function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err)
+{
 	if ($r_ips == $u_ips) {
 		return;
 	} else {
@@ -379,7 +378,6 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 					$ip_msg = "$ip_num ($ip_name)";
 
 					$err = tr('This reseller has domains assigned to the <b>%s</b> address!<br>', $ip_msg);
-
 					$err .= tr('Edit reseller aborted!');
 
 					return;
@@ -449,7 +447,7 @@ function update_reseller(&$sql) {
 		if (check_user_data()) {
 			$fname = clean_input($_POST['fname']);
 			$lname = clean_input($_POST['lname']);
-			$gender = clean_input($_POST['gender']);
+			$gender = $_POST['gender'];
 			$firm = clean_input($_POST['firm']);
 			$zip = clean_input($_POST['zip']);
 			$city = clean_input($_POST['city']);
@@ -607,7 +605,8 @@ SQL_QUERY;
 	}
 }
 
-function get_reseller_prop(&$sql) {
+function get_reseller_prop(&$sql)
+{
 	global $edit_id;
 
 	$query = <<<SQL_QUERY
@@ -617,7 +616,7 @@ function get_reseller_prop(&$sql) {
             zip, city,
             country, email,
             phone, fax,
-            street1, street2, gender,
+            street1, street2,
 
             max_dmn_cnt, current_dmn_cnt,
             max_sub_cnt, current_sub_cnt,
@@ -657,6 +656,7 @@ SQL_QUERY;
 		$rs->fields['fax'],
 		$rs->fields['street1'],
 		$rs->fields['street2'],
+		$rs->fields['gender'],
 
 		$rs->fields['max_dmn_cnt'],
 		$rs->fields['current_dmn_cnt'],
@@ -677,8 +677,7 @@ SQL_QUERY;
 		$rs->fields['max_disk_amnt'],
 		$rs->fields['current_disk_amnt'],
 		$rs->fields['customer_id'],
-		$rs->fields['reseller_ips'],
-		$rs->fields['gender']);
+		$rs->fields['reseller_ips']);
 }
 
 /*
@@ -692,7 +691,7 @@ list($admin_name, $fname,
 	$zip, $city,
 	$country, $email,
 	$phone, $fax,
-	$street1, $street2,
+	$street1, $street2, $gender,
 
 	$max_dmn_cnt, $current_dmn_cnt,
 	$max_sub_cnt, $current_sub_cnt,
@@ -703,8 +702,7 @@ list($admin_name, $fname,
 	$max_sql_user_cnt, $current_sql_user_cnt,
 	$max_traff_amnt, $current_traff_amnt,
 	$max_disk_amnt, $current_disk_amnt,
-	$customer_id, $rip_lst,
-	$gender
+	$customer_id, $rip_lst
 	) = get_reseller_prop(&$sql);
 
 $reseller_ips = get_servers_IPs($tpl, $sql, $rip_lst);
@@ -787,8 +785,8 @@ $tpl->assign(
 		'CUSTOMER_ID' => $customer_id,
 		'FIRST_NAME' => $fname,
 		'LAST_NAME' => $lname,
-		'VL_MALE' => (isset($_POST['gender']) && $_POST['gender'] == 'M')? 'checked' : '',
-		'VL_FEMALE' => (isset($_POST['gender']) && $_POST['gender'] == 'F')? 'checked' : '',
+		'VL_MALE' => (isset($gender) && $gender == 'M') ? 'checked' : '',
+		'VL_FEMALE' => (isset($gender) && $gender == 'F')?  'checked' : '',
 
 		'FIRM' => $firm,
 		'ZIP' => $zip,

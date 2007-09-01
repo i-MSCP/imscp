@@ -80,7 +80,7 @@ function sbmt(form, uaction) {
                       <tr>
                         <!-- EDP: page_message -->
                         <td>&nbsp;</td>
-                        <td colspan="5"><table border="0" cellspacing="0" cellpadding="0">
+                        <td colspan="6"><table border="0" cellspacing="0" cellpadding="0">
                             <tr>
                               <td nowrap><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px">
                                   <select name="search_common" class="textinput">
@@ -108,21 +108,22 @@ function sbmt(form, uaction) {
                         <td class="content3" width="20" align="center"><b>{TR_USER_STATUS}</b></td>
                         <td class="content3"><b>{TR_USERNAME}</b></td>
                         <td class="content3" width="90" align="center"><b>{TR_CREATION_DATE}</b></td>
-                        <td colspan="5" align="center" class="content3"><b>{TR_ACTION}</b></td>
+                        <td colspan="6" align="center" class="content3"><b>{TR_ACTION}</b></td>
                       </tr>
                       <!-- BDP: users_list -->
                       <!-- BDP: user_entry -->
                       <tr>
                         <td align="center">&nbsp;</td>
                         <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onClick="change_status('{URL_CHANGE_STATUS}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0"></a></td>
-                        <td class="{CLASS_TYPE_ROW}"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="18" height="18" border="0"/></a><a href="edit_user.php?edit_id={USER_ID}" class="link">{NAME}</a></td>
+                        <td class="{CLASS_TYPE_ROW}"><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {NAME}</a></td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="18" height="18" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
+                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle"> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
                         <!-- BDP: edit_option -->
-                        <td nowrap width="120" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="18" height="18" border="0" align="absmiddle"> <a href="edit_domain.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT}</a></td>
+                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="edit_domain.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
+                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle"> <a href="edit_user.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
                         <!-- EDP: edit_option -->
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="18" height="18" border="0" align="absmiddle"> <a href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
-                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="18" height="18" border="0" align="absmiddle"> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
+                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="16" height="16" border="0" align="absmiddle"> <a href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
+                        <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle"> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
                         <td nowrap width="80" align="center" class="{CLASS_TYPE_ROW}" ><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('druser.php?id={USER_ID}', '{NAME}')" class="link">{ACTION}</a></td>
                       </tr>
                       <!-- BDP: user_details -->

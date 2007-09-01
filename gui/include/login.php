@@ -97,9 +97,9 @@ function check_user_login() {
     global $cfg, $sql;
 
     $sess_id = session_id();
-    /* kill timedout sessions */
+    /* kill timed out sessions */
     do_session_timeout();
-    $user_logged = isset($_SESSION['user_logged'])? $_SESSION['user_logged'] : false;
+    $user_logged = isset($_SESSION['user_logged']) ? $_SESSION['user_logged'] : false;
 
     if (!$user_logged) {
         return false;
@@ -129,7 +129,7 @@ SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
 
-    if ($rs -> RecordCount() != 1) {
+    if ($rs->RecordCount() != 1) {
         write_log("Detected session manipulation on $user_logged's session!");
         unset_user_login_data();
         return false;
@@ -159,7 +159,7 @@ SQL_QUERY;
     return true;
 }
 
-function check_login ($fName = null, $checkReferer = true) {
+function check_login($fName = null, $checkReferer = true) {
 
     // session-type check:
     if (!check_user_login()) {
@@ -255,14 +255,13 @@ function change_user_interface($from_id, $to_id) {
             }
         }
 
-        $index = $index? $index : $allowed_changes[$from_admin_type][$to_admin_type];
+        $index = $index ? $index : $allowed_changes[$from_admin_type][$to_admin_type];
 
-        unset_user_login_data();
+		// Existing user SESSION data must not be removed!
+        //unset_user_login_data();
 
         if ($to_admin_type != 'admin' || ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
-
             $_SESSION['logged_from'] = $from_udata['admin_name'];
-
             $_SESSION['logged_from_id'] = $from_udata['admin_id'];
 
         }
@@ -345,29 +344,30 @@ SQL_QUERY;
 function redirect_to_level_page($file = null, $force = false) {
 
     if (!isset($_SESSION['user_type']) && !$force)
-    return false;
+    	return false;
 
     if (!$file) {
         $file = 'index.php';
     }
 
-    $user_type = isset($_SESSION['user_type'])? $_SESSION['user_type'] : 'nobody';
+    $user_type = isset($_SESSION['user_type'])? $_SESSION['user_type'] : '';
 
     switch ($user_type) {
         case 'user':
             $user_type = 'client';
-        case 'admin':
-        case 'reseller':
-            header('Location: /' . $user_type . '/' . $file);
+            header('Location: /client/' . $file);
             break;
-        case 'nobody':
-            header('Location: /' . $file);
+        case 'admin':
+        	header('Location: /admin/' . $file);
+            break;
+        case 'reseller':
+            header('Location: /reseller/' . $file);
             break;
         default:
-            die("FIX ME! " . __FILE__ . ":" . __LINE__);
+            header('Location: /index.php');
             break;
     }
-    exit;
+    exit();
 }
 
 ?>

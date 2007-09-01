@@ -6,10 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-01 Benedikt Heintel
+	- GUI:
+		* Fixed #612: Edit reseller - Max domain count error and some others
+		* Fixed #619: Can't "change" into reseller or customer mode
+		* Changed: Behavior on managing resellers (as admin) and users (as admin/reseller)
+		* Changed: "Change" renamed to "Switch"
+
 2007-08-31 Benedikt Heintel
 	- GUI:
 		* Fixed #602: changed favicon.ico
-		* Fixed #612: Edit reseller - Max domain count error
 		* Fixed #614: no gender in new user as a reseller
 		* Fixed #618: Messages after add/edit things in green and not red
 
