@@ -8,6 +8,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-09-01 Benedikt Heintel
 	- GUI:
+		* Fixed #5: admin cannot update some reseller-settings
 		* Fixed #601: change client details
 		* Fixed #612: Edit reseller - Max domain count error and some others
 		* Fixed #619: Can't "change" into reseller or customer mode
@@ -220,6 +221,10 @@ ispCP ω 1.0.0 Changelog
 		* Added status target to ispcp_network
 	- ENGINE:
 		* Fixed lock file location
+
+2007-07-30 Geoffrey McRae
+	- GUI:
+		* Fixed #16: Handling of ftp-accounts assigned to a domain alias
 
 2007-07-30 Raphael Geissert
 	- GUI:
