@@ -15,6 +15,8 @@ ispCP ω 1.0.0 Changelog
         * Fixed #623: open_basedir restriction in effect. File(/var/log/chkrootkit.log) is not within the allowed path(s)
     - GUI:
         * Fixed #624: welcome mail contains html entities
+        * Fixed error in admin/rootkit_log.php
+        * Partially implemented #567
 
 2007-09-01 Raphael Geissert
     - GUI:

@@ -124,6 +124,18 @@
                             </tr>
                             <!-- EDP: mail_list -->
                           </table>
+                        <br>
+                          <table width="100%" cellpadding="5" cellspacing="5">
+                            <tr>
+                              <td width="25">&nbsp;</td>
+                              <td class="content3"><b>{TR_DAEMON_TOOLS}</b></td>
+                            </tr>
+
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td><a href="ispcp_debugger.php?action=run_engine">{TR_EXEC_REQUESTS}</a></td>
+                            </tr>
+                          </table>
                         <!-- EDP: props_list -->
                       </td>
                       <td>&nbsp;</td>

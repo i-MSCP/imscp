@@ -507,6 +507,8 @@ $tpl -> assign(
 				'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
 				'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
 				'TR_MAIL_ERRORS' => tr('Mail account errors'),
+				'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
+				'TR_EXEC_REQUESTS' => tr('Execute requests'),
 
                 )
         );

@@ -29,6 +29,8 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('service_status', 'page');
 
+$tpl -> define_dynamic('props_list', 'page');
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
@@ -53,10 +55,11 @@ foreach ($config_entries as $config_entry) {
     }
 
     $filename = $cfg[$config_entry];
+    $contents = '';
 
     if (!is_readable($filename)) {
 
-        $contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or can't be read.", $filename) . "</font><b>" ;
+        $contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or can't be read.", $filename) . "</font></b>" ;
 
     } else {
 
