@@ -1,77 +1,87 @@
-#!/bin/sh
-# $Id: ispcp.init,v 1.0 2006/01/09 17:54:30 Ugo Viti <ugo.viti@initzero.it> $
+#! /bin/sh
+
+# ispCP ω (OMEGA) a Virtual Hosting Control System
+# Copyright (c) 2007 by ispCP
+# http://www.isp-control.net
 #
-# PID file, ispcp_network added by Carsten Schoene <cs@linux-administrator.com>
 #
-# description:	ISPCP (Virtual Hosting Control System) Daemon
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
 #
-# chkconfig:	- 90 30
-# processname:	ispcp_daemon
-# config:	/etc/ispcp/ispcp.conf
-# pidfile:	/var/run/ispcp_daemon.pid
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ispCP Home Page is at:
+#
+#    http://www.isp-control.net
 
-lockfile=/var/lock/subsys/ispcp
-PID=/var/run/ispcp_daemon.pid
-prog=ispcp_daemon
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
-# Source function library.
-. /etc/rc.d/init.d/functions
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+NAME=ispcp_daemon
+DAEMON=/var/www/ispcp/daemon/$NAME
+PID=/var/run/$NAME.pid
+DESC="ispCP Daemon"
 
-prog=ispcp_daemon
-progpath=/var/www/ispcp/daemon
+START=1
 
-start() {
-        echo -n $"Starting $prog: "
-        daemon $progpath/$prog -p $PID
-        RETVAL=$?
-        [ $RETVAL -eq 0 ] && touch $lockfile >/dev/null 2>&1
-        echo
-}
+test -f $DAEMON || exit 0
 
-stop() {
-        echo -n $"Shutting down $prog: "
-        killproc $prog
-        RETVAL=$?
-        echo
-        [ $RETVAL -eq 0 ] && rm -f $lockfile
-}
+# Read config file if it is present.
+if [ -r /etc/default/$NAME ]; then
+	. /etc/default/$NAME
+fi
 
-status() {
-		if [ -s $pidfile ]; then
-			pid=`cat $pidfile`
-			kill -0 $pid >/dev/null 2>&1
-			if [ "$?" = "0" ]; then
-				echo "$prog (pid $pid) is running"
-				RETVAL=0
-			else
-				echo "$prog is stopped"
-				RETVAL=1
-			fi
-		else
-			echo "$prog is stopped"
-			RETVAL=1
-		fi
-}
+if [ $START -eq 0 ]; then
+	echo "$DESC: not starting, edit /etc/default/$NAME."
+	exit 0
+fi
 
 case "$1" in
   start)
-        start
-        ;;
+    echo "Starting $DESC..."
+	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
+	;;
   stop)
-        stop
-        ;;
-  restart)
-        stop
-        start
-        ;;
+	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
+    rm $PID
+	;;
+  restart|force-reload)
+	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
+	rm $PID
+    echo "Starting $DESC..."
+	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
+	;;
   status)
-        status $prog
-        RETVAL=$?
-        ;;
+    set +e
+    if [ -s $PID ]; then
+        RPID=`cat $PID`
+        kill -0 $RPID 2> /dev/null
+        if [ "$?" = 0 ] ; then
+            echo "$NAME is started"
+            exit 0
+        fi
+    fi
+    echo "$NAME is stopped"
+    exit 1
+	;;
   *)
-        echo "Usage: $prog {start|stop|restart|status}"
-        exit 1
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+	exit 1
+	;;
 esac
 
-exit $RETVAL
-
+exit 0

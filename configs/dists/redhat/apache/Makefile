@@ -13,11 +13,12 @@ install:
 	cp ./fastcgi.conf ./working/fastcgi_ispcp.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
+	cp ./01_awstats.conf $(SYSTEM_CONF)/apache
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
+	cp -R ./working/fastcgi_ispcp.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
 
 uninstall:
 

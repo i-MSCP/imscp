@@ -11,8 +11,37 @@
 		/srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
 	endscript
 	postrotate
-	if [ -f /var/run/httpd.pid ]; then
-		/etc/init.d/httpd reload > /dev/null
-	fi
+	for i in `seq 1 10`; do
+		if [ -f /var/run/httpd.pid ]; then
+			/etc/init.d/httpd stop > /dev/null
+			sleep 5
+			/etc/init.d/httpd start > /dev/null
+		fi
+	done
 	endscript
+}
+
+/var/log/xferlog {
+  daily
+  rotate 7
+  missingok
+  compress
+  delaycompress
+  postrotate
+    /usr/bin/killall -HUP syslogd
+  endscript
+}
+
+/var/log/ftp_traff.log {
+  daily
+  rotate 7
+  missingok
+  compress
+  delaycompress
+  prerotate
+    /var/www/ispcp/engine/traffic/ispcp-vrl-traff &> /var/log/ispcp/ispcp-vrl-traff.log
+  endscript
+  postrotate
+    /usr/bin/killall -HUP syslogd
+  endscript
 }

@@ -1,13 +1,40 @@
 #!/bin/sh
 
-set -e
+# ispCP ω (OMEGA) a Virtual Hosting Control System
+# Copyright (c) 2007 by ispCP
+# http://www.isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ispCP Home Page is at:
+#
+#    http://www.isp-control.net
+
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DESC="ispCP Network Traffic Logger"
 NAME=ispcp_network
-
+LFILE=/var/run/$NAME
 IPTABLES=/sbin/iptables
-LOGDIR=/var/log/ispcp
+LOG_DIR=/var/log/ispcp
 
 START=1
 
@@ -16,72 +43,98 @@ if [ -r /etc/default/$NAME ]; then
 	. /etc/default/$NAME
 fi
 
-if [ START -eq 0 ]; then
+if [ $START -eq 0 ]; then
 	echo "$DESC: not starting, edit /etc/default/$NAME."
 	exit 0
 fi
 
 add_rules()
 {
-	${IPTABLES} -N ISPCP_INPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -N ISPCP_OUTPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	
+	${IPTABLES} -N ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -N ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+
 	# All traffic should jump through ISPCP tables before anything else
-	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	
+	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+
 	# web traffic
-	
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 80 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 80 2>> "${LOGDIR}/ispcp_network.err.log"
-	
+
+	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 80 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 80 2>> "${LOG_DIR}/${NAME}.err.log"
+
 	# pop3 traffic
-	
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 110 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 110 2>> "${LOGDIR}/ispcp_network.err.log"
-	
+
+	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 110 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 110 2>> "${LOG_DIR}/${NAME}.err.log"
+
 	# imap traffic
-	
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 143 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 143 2>> "${LOGDIR}/ispcp_network.err.log"
-	
+
+	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 143 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 143 2>> "${LOG_DIR}/${NAME}.err.log"
+
 	# mail traffic
-	
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 25 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 25 2>> "${LOGDIR}/ispcp_network.err.log"
+
+	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 25 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 25 2>> "${LOG_DIR}/${NAME}.err.log"
 
 	# Explicit return once done
 	${IPTABLES} -A ISPCP_INPUT -j RETURN
 	${IPTABLES} -A ISPCP_OUTPUT -j RETURN
+
+	# Touch lock file
+	touch $LFILE
 }
 
 remove_rules()
 {
-	${IPTABLES} -D INPUT -j ISPCP_INPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -D OUTPUT -j ISPCP_OUTPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -F ISPCP_INPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -F ISPCP_OUTPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -X ISPCP_INPUT 2>> "${LOGDIR}/ispcp_network.err.log"
-	${IPTABLES} -X ISPCP_OUTPUT 2>> "${LOGDIR}/ispcp_network.err.log"
+	${IPTABLES} -D INPUT -j ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -D OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -F ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -F ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -X ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -X ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+
+	# Remove lock file
+	rm $LFILE
 }
 
 case "$1" in
   start)
 	echo -n "Starting $DESC:"
+	if [ -e $LFILE ]; then
+	   echo " ${NAME} is already started" >&2
+	   exit 1
+	fi
 	add_rules
 	echo " $NAME."
 	;;
   stop)
 	echo -n "Stopping $DESC:"
+	if [ ! -e $LFILE ]; then
+	   echo "${NAME} is already stopped" >&2
+	   exit 1
+	fi
 	remove_rules
 	echo " $NAME."
 	;;
   restart|force-reload)
 	echo -n "Restarting $DESC:"
-	remove_rules
-	sleep 2
+	if [ ! -e $LFILE ]; then
+	   echo "${NAME} is already stopped" >&2
+	else
+	   remove_rules
+	   sleep 2
+	fi
 	add_rules
 	echo " $NAME."
+	;;
+  status)
+	if [ ! -e $LFILE ]; then
+	   echo "${NAME} is stopped"
+	else
+	   echo "${NAME} is started"
+	   exit 0
+	fi
 	;;
   *)
 	echo "Usage: /etc/init.d/$NAME {start|stop|restart|force-reload}" >&2
@@ -90,4 +143,3 @@ case "$1" in
 esac
 
 exit 0
-

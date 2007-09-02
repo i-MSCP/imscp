@@ -19,19 +19,20 @@ CREATE TABLE `admin` (
   `admin_pass` varchar(200) default NULL,
   `admin_type` varchar(10) default NULL,
   `domain_created` int(10) unsigned NOT NULL default '0',
-  `customer_id` varchar(200) default NULL,
-  `created_by` int(10) unsigned default NULL,
-  `fname` varchar(200) default NULL,
-  `lname` varchar(200) default NULL,
-  `firm` varchar(200) default NULL,
-  `zip` varchar(10) default NULL,
-  `city` varchar(200) default NULL,
-  `country` varchar(200) default NULL,
+  `customer_id` varchar(200) default 0,
+  `created_by` int(10) unsigned default 0,
+  `fname` varchar(200) default '',
+  `lname` varchar(200) default '',
+  `gender` varchar(1) default '',
+  `firm` varchar(200) default '',
+  `zip` varchar(10) default '',
+  `city` varchar(200) default '',
+  `country` varchar(200) default '',
   `email` varchar(200) default NULL,
-  `phone` varchar(200) default NULL,
-  `fax` varchar(200) default NULL,
-  `street1` varchar(200) default NULL,
-  `street2` varchar(200) default NULL,
+  `phone` varchar(200) default '',
+  `fax` varchar(200) default '',
+  `street1` varchar(200) default '',
+  `street2` varchar(200) default '',
   `uniqkey` varchar(255) default NULL,
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
@@ -89,6 +90,12 @@ VALUES (
 'PORT_IMAP', '143;tcp;IMAP;1;0'
 ),(
 'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'
+),(
+'PORT_POSTGREY', '60000;tcp;POSTGREY;1;1'
+),(
+'PORT_AMAVIS', '10024;tcp;AMaVis;1;1'
+),(
+'PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1'
 );
 
 -- --------------------------------------------------------
@@ -158,38 +165,17 @@ CREATE TABLE `domain_aliasses` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `domain_props`
---
-
-CREATE TABLE `domain_props` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `dmn_id` int(10) unsigned default NULL,
-  `dmn_type` varchar(255) default NULL,
-  `suexec_support` varchar(255) default NULL,
-  `suexec_id` int(10) unsigned default NULL,
-  `ssl_support` varchar(255) default NULL,
-  `ssl_id` int(10) unsigned default NULL,
-  `pri_master_dns` varchar(255) default NULL,
-  `pri_master_dns_ip` varchar(255) default NULL,
-  `sec_master_dns` varchar(255) default NULL,
-  `sec_master_dns_ip` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `domain_traffic`
 --
 
 CREATE TABLE `domain_traffic` (
   `dtraff_id` int(10) unsigned NOT NULL auto_increment,
   `domain_id` int(10) unsigned default NULL,
-  `dtraff_time` int(10) unsigned default NULL,
-  `dtraff_web` int(10) unsigned default NULL,
-  `dtraff_ftp` int(10) unsigned default NULL,
-  `dtraff_mail` int(10) unsigned default NULL,
-  `dtraff_pop` int(10) unsigned default NULL,
+  `dtraff_time` bigint(20) unsigned default NULL,
+  `dtraff_web` bigint(20) unsigned default NULL,
+  `dtraff_ftp` bigint(20) unsigned default NULL,
+  `dtraff_mail` bigint(20) unsigned default NULL,
+  `dtraff_pop` bigint(20) unsigned default NULL,
   `correction` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`dtraff_id`),
   KEY `i_correction` (`correction`),
@@ -358,8 +344,10 @@ CREATE TABLE `login` (
   `session_id` varchar(200) default NULL,
   `ipaddr` varchar(15) default NULL,
   `lastaccess` int(10) unsigned default NULL,
-  `login_count` tinyint(1) default NULL,
-  `user_name` varchar(255) default NULL
+  `login_count` tinyint(1) default '0',
+  `captcha_count` tinyint(1) default '0',
+  `user_name` varchar(255) default NULL,
+  PRIMARY KEY ( `session_id` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -441,7 +429,8 @@ CREATE TABLE `quotalimits` (
   `bytes_xfer_avail` float NOT NULL default '0',
   `files_in_avail` int(10) unsigned NOT NULL default '0',
   `files_out_avail` int(10) unsigned NOT NULL default '0',
-  `files_xfer_avail` int(10) unsigned NOT NULL default '0'
+  `files_xfer_avail` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY ( `name` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -458,7 +447,9 @@ CREATE TABLE `quotatallies` (
   `bytes_xfer_used` float NOT NULL default '0',
   `files_in_used` int(10) unsigned NOT NULL default '0',
   `files_out_used` int(10) unsigned NOT NULL default '0',
-  `files_xfer_used` int(10) unsigned NOT NULL default '0'
+  `files_xfer_used` int(10) unsigned NOT NULL default '0',
+
+  PRIMARY KEY ( `name` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -518,14 +509,14 @@ CREATE TABLE `server_ips` (
 CREATE TABLE `server_traffic` (
   `straff_id` int(10) unsigned NOT NULL auto_increment,
   `traff_time` int(10) unsigned default NULL,
-  `bytes_in` int(10) unsigned default NULL,
-  `bytes_out` int(10) unsigned default NULL,
-  `bytes_mail_in` int(10) unsigned default NULL,
-  `bytes_mail_out` int(10) unsigned default NULL,
-  `bytes_pop_in` int(10) unsigned default NULL,
-  `bytes_pop_out` int(10) unsigned default NULL,
-  `bytes_web_in` int(10) unsigned default NULL,
-  `bytes_web_out` int(10) unsigned default NULL,
+  `bytes_in` bigint(20) unsigned default NULL,
+  `bytes_out` bigint(20) unsigned default NULL,
+  `bytes_mail_in` bigint(20) unsigned default NULL,
+  `bytes_mail_out` bigint(20) unsigned default NULL,
+  `bytes_pop_in` bigint(20) unsigned default NULL,
+  `bytes_pop_out` bigint(20) unsigned default NULL,
+  `bytes_web_in` bigint(20) unsigned default NULL,
+  `bytes_web_out` bigint(20) unsigned default NULL,
   `correction` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`straff_id`),
   KEY `i_correction` (`correction`),
@@ -610,22 +601,6 @@ CREATE TABLE `suexec_props` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `syslog`
---
-
-CREATE TABLE `syslog` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `date` int(10) unsigned NOT NULL default '0',
-  `user_id` int(10) unsigned NOT NULL default '0',
-  `user_name` varchar(255) default NULL,
-  `action` varchar(255) default NULL,
-  `comment` text,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `tickets`
 --
 
@@ -651,9 +626,9 @@ CREATE TABLE `tickets` (
 
 CREATE TABLE `user_gui_props` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `user_id` int(10) unsigned NOT NULL default '0',
-  `lang` varchar(255) default NULL,
-  `layout` varchar(255) default NULL,
+  `user_id` int(10) unsigned NOT NULL default 0,
+  `lang` varchar(255) default '',
+  `layout` varchar(255) default '',
   `logo` varchar(255) NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

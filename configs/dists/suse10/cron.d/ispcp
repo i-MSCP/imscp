@@ -8,7 +8,7 @@
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-srv-traff &>{LOG_DIR}/ispcp-srv-traff.log
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff &>{LOG_DIR}/ispcp-vrl-traff.log
 15,45	*	* 	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff-correction &>{LOG_DIR}/ispcp-vrl-traff-correction.log
-30	   23	* 	* 	*  root {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr &>{LOG_DIR}/ispcp-httpd-logs-mngr.log
+30	23	* 	* 	*  root {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr &>{LOG_DIR}/ispcp-httpd-logs-mngr.log
 
 # Backup
 0	1	*	*	*  root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
@@ -17,16 +17,10 @@
 @daily root find /etc/ispcp/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs /bin/rm
 
 # AWStats
-{AW-ENABLED}15	6	*	*	*	root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl
+{AWSTATS}
 
 # Rootkit Hunter
-{RK-ENABLED}0 	0,12	*	*	*	root rkhunter --scan-knownbad-files --check-deleted --createlogfile --cronjob --createlogfile {RKHUNTER_LOG}>/dev/null 2>&1
-
-# Chkrootkit
-{CR-ENABLED}0 	0,12	*	*	*	root chkrootkit 2>&1 > {CHKROOTKIT_LOG}
-
-# Look for and purge old sessions every 30 minutes
-0,30 *     * * *     root   {TOOLS_ROOT_DIR}/ispcpphptemp.sh >/dev/null 2>&1
+0 	0,12	*	*	*	root rkhunter --createlogfile --cronjob
 
 # [{DMN_NAME}] backup task START.
 # [{DMN_NAME}] backup task END.
