@@ -6,13 +6,17 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
-2007-09-31 Raphael Geissert
+2007-09-02 Benedikt Heintel
+	- GUI:
+		* Fixed #625: Error in SQL syntax on Admin Log -> Page 2
+
+2007-09-01 Raphael Geissert
     - CONFIGS:
         * Fixed #623: open_basedir restriction in effect. File(/var/log/chkrootkit.log) is not within the allowed path(s)
     - GUI:
         * Fixed #624: welcome mail contains html entities
 
-2007-09-31 Raphael Geissert
+2007-09-01 Raphael Geissert
     - GUI:
         * Fixed some drawn backs in previous revisions
         * Added support for multiple anti-rootkit tools (including colouring for chkrootkit-like logs)

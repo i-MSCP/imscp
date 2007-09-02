@@ -56,7 +56,7 @@ function generate_page (&$tpl) {
 	$rows_per_page = 15;
 
 	if (isset($_GET['psi']) && is_numeric($_GET['psi']))
-		$start_index = $_GET['psi'];
+		$start_index = intval($_GET['psi']);
 
 
     $count_query = <<<SQL_QUERY
