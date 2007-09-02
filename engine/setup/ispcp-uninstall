@@ -414,12 +414,6 @@ sub uninstall_crontab {
         return $rs if ($rs != 0);
     }
 
-    if ( -e "/etc/cron.d/ispcp.phptemp") {
-        $rs = del_file("/etc/cron.d/ispcp.phptemp");
-
-        return $rs if ($rs != 0);
-    }
-
     push_el(\@main::el, 'uninstall_crontab()', 'Ending...');
 
     return 0;

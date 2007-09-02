@@ -301,28 +301,28 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$ed_error = '';
 
 	if (!ispcp_limit_check($sub, -1)) {
-		$ed_error .= tr('Incorrect subdomain count or no number!<br />');
+		$ed_error .= tr('Incorrect subdomains limit!');
 	}
 	if (!ispcp_limit_check($als, -1)) {
-		$ed_error .= tr('Incorrect alias count or no number!<br />');
+		$ed_error .= tr('Incorrect aliases limit!');
 	}
 	if (!ispcp_limit_check($mail, -1)) {
-		$ed_error .= tr('Incorrect mail account count or no number!<br />');
+		$ed_error .= tr('Incorrect mail accounts limit!');
 	}
 	if (!ispcp_limit_check($ftp, -1)) {
-		$ed_error .= tr('Incorrect FTP account count or no number<br />');
+		$ed_error .= tr('Incorrect FTP accounts limit!');
 	}
 	if (!ispcp_limit_check($sql_db, -1)) {
-		$ed_error .= tr('Incorrect SQL user count or no number!<br />');
+		$ed_error .= tr('Incorrect SQL users limit!');
 	}
 	if (!ispcp_limit_check($sql_user, -1)) {
-		$ed_error .= tr('Incorrect SQL database count or no number!<br />');
+		$ed_error .= tr('Incorrect SQL databases limit!');
 	}
 	if (!ispcp_limit_check($traff, null)) {
-		$ed_error .= tr('Incorrect traffic count or no number!<br />');
+		$ed_error .= tr('Incorrect traffic limit!');
 	}
 	if (!ispcp_limit_check($disk, null)) {
-		$ed_error .= tr('Incorrect disk count or no number!<br />');
+		$ed_error .= tr('Incorrect disk quota limit!');
 	}
 
 	// $user_props = generate_user_props($user_id);
@@ -461,7 +461,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax == 0 && $umax == 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('<em>%s</em> Service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on system!', $obj);
 			} else {
 				$umax = $data;
 			}
@@ -471,7 +471,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				$umax = $data;
 				$r += $umax;
@@ -481,7 +481,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax == 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('<em>%s</em> Service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -493,7 +493,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -510,11 +510,11 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {
-			$err .= tr('<em>%s</em> Service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
+			$err .= tr('The <em>%s</em> service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
 			return;
 		} else if ($data > 0) {
 			if ($r + $data > $rmax) {
-				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
 			} else {
 				$r += $data;
 
@@ -535,7 +535,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 	} else if ($rmax > 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('<em>%s</em> Service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be disabled! ', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -543,12 +543,12 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 
 			return;
 		} else if ($data == 0) {
-			$err .= tr('<em>%s</em> Service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
+			$err .= tr('The <em>%s</em> service can not be unlimited! ', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
 
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -557,7 +557,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 					$data_inc = $data - $umax;
 
 					if ($r + $data_inc > $rmax) {
-						$err .= tr('<em>%s</em> Service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
+						$err .= tr('The <em>%s</em> service can not be limited! ', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
 						return;
 					}
 

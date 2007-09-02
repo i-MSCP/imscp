@@ -191,11 +191,14 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
             set_page_message(tr('Subdomain already exists!'));
         } else if (!chk_subdname($sub_name.".".$dmn_name)) {
             set_page_message(tr('Wrong subdomain syntax!'));
-        } else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)) {
+        } else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, array_decode_idna($sub_mnt_pt, true))) {
             set_page_message(tr('Subdomain mount point already exists!'));
         } else if (!chk_mountp($sub_mnt_pt)){
             set_page_message(tr('Incorrect mount point syntax'));
         } else {
+            //now lets fix the mountpoint
+            $sub_mnt_pt = array_decode_idna($sub_mnt_pt, true);
+
             subdomain_schedule($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt);
             set_page_message(tr('Subdomain scheduled for addition!'));
             header('Location:manage_domains.php');

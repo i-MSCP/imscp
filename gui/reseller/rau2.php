@@ -252,7 +252,7 @@ function check_user_data(&$tpl) {
 	// Begin checking...
 	/*  if (!chk_username($hp_name, 200)) {
 
-        $ehp_error = tr('Incorrect template name count or no number!<br />');
+        $ehp_error = tr('Incorrect template name number or syntax!');
 
     }
 	if(!check_hosting_plan_name($_SESSION{'user_id'}))
@@ -262,21 +262,21 @@ function check_user_data(&$tpl) {
 	}
 	else*/
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		$ehp_error = tr('Incorrect subdomain count or no number!<br />');
+		$ehp_error = tr('Incorrect subdomains limit!');
 	} else if (!ispcp_limit_check($hp_als, -1)) {
-		$ehp_error = tr('Incorrect alias count or no number!<br />');
+		$ehp_error = tr('Incorrect aliases limit!');
 	} else if (!ispcp_limit_check($hp_mail, -1)) {
-		$ehp_error = tr('Incorrect mail account count or no number!<br />');
+		$ehp_error = tr('Incorrect mail accounts limit!');
 	} else if (!ispcp_limit_check($hp_ftp, -1)) {
-		$ehp_error = tr('Incorrect FTP account count or no number!<br />');
+		$ehp_error = tr('Incorrect FTP accounts limit!');
 	} else if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ehp_error = tr('Incorrect SQL database count or no number!<br />');
+		$ehp_error = tr('Incorrect SQL databases limit!');
 	} else if (!ispcp_limit_check($hp_sql_db, -1)) {
-		$ehp_error = tr('Incorrect SQL user count or no number!<br />');
+		$ehp_error = tr('Incorrect SQL users limit!');
 	} else if (!ispcp_limit_check($hp_traff, null)) {
-		$ehp_error = tr('Incorrect traffic count or no number!<br />');
+		$ehp_error = tr('Incorrect traffic limit!');
 	} else if (!ispcp_limit_check($hp_disk, null)) {
-		$ehp_error = tr('Incorrect disk count or no number!<br />');
+		$ehp_error = tr('Incorrect disk quota limit!');
 	}
 
 	if ($ehp_error == '_off_') {

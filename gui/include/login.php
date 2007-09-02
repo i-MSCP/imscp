@@ -257,8 +257,7 @@ function change_user_interface($from_id, $to_id) {
 
         $index = $index ? $index : $allowed_changes[$from_admin_type][$to_admin_type];
 
-		// Existing user SESSION data must not be removed!
-        //unset_user_login_data();
+		unset_user_login_data();
 
         if ($to_admin_type != 'admin' || ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
             $_SESSION['logged_from'] = $from_udata['admin_name'];
@@ -287,11 +286,11 @@ function change_user_interface($from_id, $to_id) {
         $_SESSION['user_created_by'] = $to_udata['created_by'];
         $_SESSION['user_login_time'] = time();
 
-        $query = 'UPDATE login SET user_name = ?, lastaccess = ? WHERE session_id = ? ';
+        $query = 'INSERT INTO login (session_id, user_name, lastaccess) VALUES (?, ?, ?) ';
 
-        exec_query($sql, $query, array($to_udata['admin_name'], $_SESSION['user_login_time'], session_id()));
+        exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
-        write_log(sprintf("%s changed into %s' interface", $from_udata['admin_name'], $to_udata['admin_name']));
+        write_log(sprintf("%s changed into %s's interface", $from_udata['admin_name'], $to_udata['admin_name']));
         break;
     }
 
@@ -355,16 +354,15 @@ function redirect_to_level_page($file = null, $force = false) {
     switch ($user_type) {
         case 'user':
             $user_type = 'client';
-            header('Location: /client/' . $file);
-            break;
         case 'admin':
-        	header('Location: /admin/' . $file);
-            break;
         case 'reseller':
-            header('Location: /reseller/' . $file);
+            header('Location: /' . $user_type . '/' . $file);
+            break;
+        case '':
+            header('Location: /index.php');
             break;
         default:
-            header('Location: /index.php');
+            die("FIXME! " . __FILE__ . ":" . __LINE__);
             break;
     }
     exit();

@@ -282,25 +282,25 @@ function check_data_iscorrect(&$tpl) {
 		$hp_cgi = $_POST['cgi'];;
 
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		$ahp_error = tr('Incorrect subdomain count or no number!<br />');
+		$ahp_error = tr('Incorrect subdomains limit!');
 	} else if (!ispcp_limit_check($hp_als, -1)) {
-		$ahp_error = tr('Incorrect alias count or no number!<br />');
+		$ahp_error = tr('Incorrect aliases limit!');
 	} else if (!ispcp_limit_check($hp_mail, -1)) {
-		$ahp_error = tr('Incorrect mail account count or no number!<br />');
+		$ahp_error = tr('Incorrect mail accounts limit!');
 	} else if (!ispcp_limit_check($hp_ftp, -1)) {
-		$ahp_error = tr('Incorrect FTP account count or no number!<br />');
+		$ahp_error = tr('Incorrect FTP accounts limit!');
 	} else if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ahp_error = tr('Incorrect SQL database count or no number!<br />');
+		$ahp_error = tr('Incorrect SQL databases limit!');
 	} else if (!ispcp_limit_check($hp_sql_db, -1)) {
-		$ahp_error = tr('Incorrect SQL user count or no number!<br />');
+		$ahp_error = tr('Incorrect SQL users limit!');
 	} else if (!ispcp_limit_check($hp_traff, null)) {
-		$ahp_error = tr('Incorrect traffic count or no number!<br />');
+		$ahp_error = tr('Incorrect traffic limit!');
 	} else if (!ispcp_limit_check($hp_disk, null)) {
-		$ahp_error = tr('Incorrect disk count or no number!<br />');
+		$ahp_error = tr('Incorrect disk quota limit!');
 	} else if (!is_numeric($price)) {
-		$ahp_error = tr('Price is no floating number!');
+		$ahp_error = tr('Price must be a number!');
 	} else if (!is_numeric($setup_fee)) {
-		$ahp_error = tr('Setup fee is no floating number!');
+		$ahp_error = tr('Setup fee must be a number!');
 	}
 
 	if ($ahp_error == '_off_') {

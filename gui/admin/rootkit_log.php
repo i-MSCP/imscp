@@ -29,12 +29,11 @@ $tpl -> define_dynamic('page_message', 'page');
 
 $tpl -> define_dynamic('service_status', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_ROOTKIT_LOG_PAGE_TITLE' => tr('ispCP Admin / System Tools / Rootkit Hunter Log'),
+                        'TR_ADMIN_ROOTKIT_LOG_PAGE_TITLE' => tr('ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -42,59 +41,91 @@ $tpl -> assign(
                      )
               );
 
+$blocksCount = 0;
+
 /* Check Log File */
-$filename = "/var/log/rkhunter.log";
 
-if (!is_readable($filename)) {
+$config_entries = array('RKHUNTER_LOG', 'CHKROOTKIT_LOG', 'OTHER_ROOTKIT_LOG');
 
-	$contents = "<b><font color='#FF0000'>" . tr("The file doesn't exist or can't be read.") . "</font><b>" ;
+foreach ($config_entries as $config_entry) {
+    if (empty($config_entry) || !isset($cfg[$config_entry])) {
+        continue;
+    }
 
-} else {
+    $filename = $cfg[$config_entry];
 
-	$handle = fopen($filename, 'r');
+    if (!is_readable($filename)) {
 
-	$log = fread($handle, filesize($filename));
+        $contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or can't be read.", $filename) . "</font><b>" ;
 
-	fclose($handle);
+    } else {
 
-	$contents = nl2br($log);
+        $handle = fopen($filename, 'r');
 
-	$contents = '<div>' . $contents . '</div>';
+        $log = fread($handle, filesize($filename));
 
-	$search = array();
-	$replace = array();
+        fclose($handle);
 
-	$search [] = '/[^\-]WARNING/i';
-	$replace[] = '<strong><font color="orange">$0</font></strong>';
-    $search [] = '/([^a-z])(OK)([^a-z])/i';
-	$replace[] = '$1<font color="green">$2</font>$3';
-	$search [] = '/[ \t]+clean[ \t]+/i';
-	$replace[] = '<font color="green">$0</font>';
-	$search [] = '/Not found/i';
-	$replace[] = '<font color="blue">$0</font>';
-	$search [] = '/Skipped/i';
-	$replace[] = '<font color="blue">$0</font>';
-	$search [] = '/unknown[^)]/i';
-	$replace[] = '<strong><font color="#bf55bf">$0</font></strong>';
-	$search [] = '/Unsafe/i';
-	$replace[] = '<strong><font color="#dddd00">$0</font></strong>';
-	$search [] = '/[1-9][0-9]*[ \t]+vulnerable/i';
-	$replace[] = '<strong><font color="red">$0</font></strong>';
-	$search [] = '/0[ \t]+vulnerable/i';
-	$replace[] = '<font color="green">$0</font>';
-	$search [] = '#(\[[0-9]{2}:[[0-9]{2}:[[0-9]{2}\][ \t]+-{20,35}[ \t]+)([a-zA-Z0-9 ]+)([ \t]+-{20,35})<br />#e';
-	$replace[] = '"</div><a href=\"#\" onclick=\"showHideBlocks(\'rkhuntb" . $blocksCount . "\');return false;\">$1<b>$2</b>$3</a><br /><div id=\"rkhuntb" . $blocksCount++ . "\">"';
+        $contents = nl2br(htmlentities($log));
 
-	$blocksCount = 0;
+        $contents = '<div>' . $contents . '</div>';
 
-	$contents = preg_replace($search, $replace, $contents);
+        $search = array();
+        $replace = array();
 
+        // rkhunter-like log colouring
+        $search [] = '/[^\-]WARNING/i';
+        $replace[] = '<strong><font color="orange">$0</font></strong>';
+        $search [] = '/([^a-z])(OK)([^a-z])/i';
+        $replace[] = '$1<font color="green">$2</font>$3';
+        $search [] = '/[ \t]+clean[ \t]+/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/Not found/i';
+        $replace[] = '<font color="blue">$0</font>';
+        $search [] = '/Skipped/i';
+        $replace[] = '<font color="blue">$0</font>';
+        $search [] = '/unknown[^)]/i';
+        $replace[] = '<strong><font color="#bf55bf">$0</font></strong>';
+        $search [] = '/Unsafe/i';
+        $replace[] = '<strong><font color="#cfcf00">$0</font></strong>';
+        $search [] = '/[1-9][0-9]*[ \t]+vulnerable/i';
+        $replace[] = '<strong><font color="red">$0</font></strong>';
+        $search [] = '/0[ \t]+vulnerable/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '#(\[[0-9]{2}:[[0-9]{2}:[[0-9]{2}\][ \t]+-{20,35}[ \t]+)([a-zA-Z0-9 ]+)([ \t]+-{20,35})<br />#e';
+        $replace[] = '"</div><a href=\"#\" onclick=\"showHideBlocks(\'rkhuntb" . $blocksCount . "\');return false;\">$1<b>$2</b>$3</a><br /><div id=\"rkhuntb" . $blocksCount++ . "\">"';
+
+        // chkrootkit-like log colouring
+        $search [] = '/([^a-z][ \t]+)(INFECTED)/i';
+        $replace[] = '$1<strong><font color="red">$2</font></strong>';
+        $search [] = '/Nothing found/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/Nothing detected/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/Not infected/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/no packet sniffer/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/(: )(PACKET SNIFFER)/i';
+        $replace[] = '$1<font color="orange">$2</font>';
+        $search [] = '/not promisc/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/no suspect file(s|)/i';
+        $replace[] = '<font color="green">$0</font>';
+        $search [] = '/([0-9]+) process(|es) hidden/i';
+        $replace[] = '<font color="#cfcf00">$0</font>';
+
+        $contents = preg_replace($search, $replace, $contents);
+
+    }
+    $tpl -> assign(
+            array(
+              'LOG' => $contents,
+              'FILENAME' => $filename
+            )
+    );
+    $tpl -> parse('PROPS_LIST', '.props_list');
 }
-$tpl -> assign(
-				array(
-					'LOG' => $contents
-				     )
-			  );
 
 /*
  *
@@ -106,7 +137,7 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_system_tools.tpl');
 
 $tpl -> assign(
                 array(
-					   'TR_ROOTKIT_LOG' => tr('Rootkit Log Checker'),
+					   'TR_ROOTKIT_LOG' => tr('Anti-Rootkits Tools Log Checker'),
                      )
               );
 

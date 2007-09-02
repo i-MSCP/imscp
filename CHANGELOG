@@ -6,6 +6,21 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-31 Raphael Geissert
+    - GUI:
+        * Fixed some drawn backs in previous revisions
+        * Added support for multiple anti-rootkit tools (including colouring for chkrootkit-like logs)
+        * Correctly fixed #619
+        * Fixed #621: database name being escaped with single quote in include/i18n.php
+        * Fixed an error where mount points with special characters where converted to IDN format
+    - CONFIGS:
+        * Removed cron.d/ispcp.phptemp (merged into cron.d/ispcp)
+        * Fixed error when restarting ispCP services when they were not already running
+        * Awstats entry in cron.d/ispcp is not built into ispcp-setup anymore
+        * Partially updated fedora's, redhat's and suse10's config files
+    - LANGUAGES:
+        * Updated cs_CS translation (thanks to Josef Pinc)
+
 2007-09-01 Benedikt Heintel
 	- GUI:
 		* Fixed #5: admin cannot update some reseller-settings

@@ -903,6 +903,11 @@ sub setup_shut_down {
 MSG
 	print STDOUT $shut_down_message;
 
+	if (sys_command("which rkhunter") eq 0 ) {
+	   print STDOUT "You might want to execute the next command as well: \n";
+	   print STDOUT "\trkhunter --update\n\n";
+	}
+
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
 
 	return 0;
@@ -1488,7 +1493,7 @@ sub setup_sql {
 
 sub setup_crontab {
 
-	my ($rs, $rdata, $awstats) = (undef, undef, '');
+	my ($rs, $rdata, $awstats, $rkhunter, $ckrootkit) = (undef, undef, '');
 
 	push_el(\@main::el, 'setup_crontab()', 'Starting...');
 
@@ -1506,10 +1511,21 @@ sub setup_crontab {
 
 		return $rs if ($rs != 0);
 
-		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
-			$awstats = "15	6	*	*	*	root $main::cfg{'ROOT_DIR'}/engine/awstats/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl";
-		} else {
-			$awstats = "# AWStats is disabled";
+		$awstats = "";
+		if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes') {
+			$awstats = "#";
+		}
+
+		$rkhunter = "";
+
+		if (sys_command("which rkhunter") ne 0) {
+			$rkhunter = "#";
+		}
+
+		$ckrootkit = "";
+
+		if (sys_command("which chkrootkit") ne 0) {
+			$ckrootkit = "#";
 		}
 
 		my %tag_hash = (
@@ -1518,7 +1534,12 @@ sub setup_crontab {
 						'{TRAFF_ROOT_DIR}' => $main::cfg{'TRAFF_ROOT_DIR'},
 						'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
 						'{BACKUP_ROOT_DIR}' => $main::cfg{'BACKUP_ROOT_DIR'},
-						'{AWSTATS}' => $awstats
+						'{AWSTATS_ROOT_DIR}' => $main::cfg{'AWSTATS_ROOT_DIR'},
+						'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+						'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+						'{AW-ENABLED}' => $awstats,
+						'{RK-ENABLED}' => $rkhunter,
+						'{CR-ENABLED}' => $ckrootkit
 					   );
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
@@ -1537,39 +1558,7 @@ sub setup_crontab {
 
 	}
 
-	if (! -e "$bk_dir/ispcp.phptemp") {
-
-		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'ispcp.phptemp');
-
-		return $rs if ($rs != 0);
-
-		my %tag_hash = (
-					'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
-				);
-
-		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
-
-		return $rs if ($rs != 0);
-
-		$rs = store_file("$bk_dir/ispcp.phptemp", $cfg, 'root', 'root', 0644);
-
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p -f $bk_dir/ispcp.phptemp $wrk_dir/";
-
-		$rs = sys_command_rs($cmd);
-
-		return $rs if ($rs != 0);
-
-	}
-
 	$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp /etc/cron.d/";
-
-	$rs = sys_command_rs($cmd);
-
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp.phptemp /etc/cron.d/";
 
 	$rs = sys_command_rs($cmd);
 

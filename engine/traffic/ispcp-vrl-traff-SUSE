@@ -34,7 +34,6 @@ use FindBin;
 use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 
-
 %main::ftp_traffic = ();
 
 %main::smtp_traffic = ();
@@ -205,6 +204,10 @@ sub gen_log_file {
 sub collect_http_traffic {
 
     my ($key, $value, $timestamp, $sum) = (undef, undef, time(), 0);
+
+    # timestamp has floor down for the last half'n our to make timestamps in
+	# server_traffic and domain_traffic the same
+    $timestamp = $timestamp - ($timestamp % 1800);
 
     my ($rs, $rdata) = (undef, undef);
 
@@ -719,7 +722,7 @@ sub vrl_traff_start_up {
     #
 
     my $sql = "
-    	SELECT
+        SELECT
 		domain_id,
 		domain_name,
 		domain_gid,

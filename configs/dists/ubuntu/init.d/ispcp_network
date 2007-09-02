@@ -27,8 +27,6 @@
 #
 #    http://www.isp-control.net
 
-set -e
-
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin

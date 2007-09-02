@@ -447,7 +447,7 @@ SQL_QUERY;
 					'ADMIN_USERNAME' => $rs->fields['admin_name'],
 					'ADMIN_CREATED_ON' => $admin_created,
 					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != NULL) ? $rs->fields['created_by'] : "&nbsp;",
-					'URL_EDIT_ADMIN' => "edit_user.php?edit_id=" . $rs->fields['admin_id'],
+					'URL_EDIT_ADMIN' => "edit_admin.php?edit_id=" . $rs->fields['admin_id'],
 					)
 				);
 
@@ -788,7 +788,7 @@ SQL_QUERY;
 					'USER_CREATED_ON' => $domain_created,
 					'USR_CREATED_BY' => $rs2->fields['admin_name'],
 					'USR_OPTIONS' => '',
-					'URL_EDIT_USR' => "edit_user.php?edit_id=" . $rs->fields['domain_admin_id'],
+					'URL_EDIT_USR' => "edit_admin.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?'),
 					'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this account?'),
 					)

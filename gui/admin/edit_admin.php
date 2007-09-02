@@ -39,7 +39,7 @@ if (isset($_GET['edit_id'])) {
 
 $tpl = new pTemplate();
 
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/edit_user.tpl');
+$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/edit_admin.tpl');
 
 $tpl -> define_dynamic('page_message', 'page');
 $tpl -> define_dynamic('hosting_plans', 'page');
@@ -48,7 +48,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(
                 array(
-                        'TR_ADMIN_EDIT_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Edit User'),
+                        'TR_ADMIN_EDIT_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Edit Administrator'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
                         'THEME_CHARSET' => tr('encoding'),
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -133,7 +133,7 @@ SQL_QUERY;
 
                         set_page_message( tr("Entered passwords do not match!"));
 
-                        header( "Location: edit_user.php?edit_id=$edit_id" );
+                        header( "Location: edit_admin.php?edit_id=$edit_id" );
                         die();
                     }
 
@@ -141,7 +141,7 @@ SQL_QUERY;
 
                         set_page_message( tr("Incorrect password length or syntax!"));
 
-                        header( "Location: edit_user.php?edit_id=$edit_id" );
+                        header( "Location: edit_admin.php?edit_id=$edit_id" );
                         die();
                     }
 

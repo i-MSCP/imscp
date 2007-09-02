@@ -51,14 +51,12 @@
                           <table width="100%" cellpadding="5" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td class="content3"><strong>Scanning Log:</strong></td>
+                              <td class="content3"><strong>{FILENAME}:</strong></td>
                             </tr>
-                            <!-- BDP: service_status -->
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content" style="white-space:normal;">{LOG}</td>
                             </tr>
-                            <!-- EDP: service_status -->
                           </table>
                         <!-- EDP: props_list -->
                       </td>

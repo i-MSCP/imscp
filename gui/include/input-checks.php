@@ -287,22 +287,24 @@ function check_dn_token($data) {
  */
 function ispcp_limit_check($data, $extra = -1) {
 
-    if ($extra !== null && is_array($extra)) {
-		$nextra = '';
-        $max = count($extra);
-        foreach ($extra as $n => $element) {
-        	$nextra = $element . ($n < $max) ? '|' : '';
+    if ($extra !== null && !is_bool($extra)) {
+        if (is_array($extra)) {
+            $nextra = '';
+            $max = count($extra);
+
+            foreach ($extra as $n => $element) {
+                $nextra = $element . ($n < $max)? '|' : '';
+            }
+
+            $extra = $nextra;
+        } else {
+            $extra .= '|';
         }
-        $nextra = $extra;
-    }
-    else if (is_numeric($extra)) {
-    	$extra .= '|';
-    }
-	else {
+    } else {
         $extra = '';
     }
 
-    return (bool)preg_match("/^(${extra}0|[1-9]+)$/D", $data);
+    return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
 }
 
 /**

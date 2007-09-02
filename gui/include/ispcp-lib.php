@@ -124,6 +124,7 @@ $cfg['PASSWD_STRONG'] = true;
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = $cfg['APACHE_SITES_DIR'] . '/ispcp.conf';
 
+
 require_once(INCLUDEPATH.'/date-functions.php');
 require_once(INCLUDEPATH.'/input-checks.php');
 require_once(INCLUDEPATH.'/debug.php');

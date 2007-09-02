@@ -108,7 +108,7 @@ $tpl->assign(
 		'TR_USERNAME' => tr('Username'),
 		'TR_ACTION' => tr('Actions'),
 		'TR_CREATION_DATE' => tr('Creation date'),
-		'TR_CHANGE_USER_INTERFACE' => tr('Change user interface'),
+		'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 		'TR_BACK' => tr('Back'),
 		'TR_TITLE_BACK' => tr('Return to previous menu'),
 		'TR_TABLE_NAME' => tr('Users list'),
@@ -224,8 +224,8 @@ function generate_users_list (&$tpl, $admin_id) {
 					'USERS_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
-					'TR_VIEW_DETAILS' => tr('view aliases'),
-					'SHOW_DETAILS' => tr("show")
+					'TR_VIEW_DETAILS' => tr('View aliases'),
+					'SHOW_DETAILS' => tr("Show")
 					)
 				);
 
@@ -242,8 +242,8 @@ function generate_users_list (&$tpl, $admin_id) {
 					'USERS_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
-					'TR_VIEW_DETAILS' => tr('view aliases'),
-					'SHOW_DETAILS' => tr("show")
+					'TR_VIEW_DETAILS' => tr('View aliases'),
+					'SHOW_DETAILS' => tr("Show")
 					)
 				);
 

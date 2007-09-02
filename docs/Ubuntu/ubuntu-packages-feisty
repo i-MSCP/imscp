@@ -15,6 +15,7 @@ gcc
 postgrey
 gzip
 iptables
+libapache2-mod-cband
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
@@ -56,6 +57,7 @@ php5-cgi
 php-pear
 php5-gd
 php5-imap
+php5-idn
 php5-mcrypt
 php5-mhash
 php5-mysql

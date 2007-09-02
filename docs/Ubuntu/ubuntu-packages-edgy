@@ -13,6 +13,7 @@ dnsutils
 gcc
 gzip
 iptables
+libapache2-mod-cband
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
@@ -56,6 +57,7 @@ php4-gd
 php4-mcrypt
 php4-mysql
 php4-pear
+php4-idn
 php5-cgi
 php5-gd
 php5-imap

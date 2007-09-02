@@ -211,21 +211,24 @@ SQL_QUERY;
 			$err_al = tr("Incorrect forward syntax");
 		}
 	} else {
-    $query = "select domain_id from domain_aliasses where alias_name=?";
-		$res = exec_query($sql, $query, array($alias_name));
-    $query = "select domain_id from domain where domain_name=?";
-		$res2 = exec_query($sql, $query, array($alias_name));
-        if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
-            // we already have domain with this name
-            $err_al = tr("Domain with this name already exist");
-        }
+	    //now lets fix the mountpoint
+	    $mount_point = array_decode_idna($mount_point, true);
 
-        $query = "select count(subdomain_id) as cnt from subdomain where domain_id=? and subdomain_mount=?";
-        $subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
-        $subdomdata = $subdomres->FetchRow();
-        if ($subdomdata['cnt'] > 0) {
-            $err_al = tr("There is a subdomain with the same mount point!");
-        }
+	    $query = "select domain_id from domain_aliasses where alias_name=?";
+	    $res = exec_query($sql, $query, array($alias_name));
+	    $query = "select domain_id from domain where domain_name=?";
+	    $res2 = exec_query($sql, $query, array($alias_name));
+	    if ($res->RowCount() > 0 or $res2->RowCount() > 0) {
+	        // we already have domain with this name
+	        $err_al = tr("Domain with this name already exist");
+	    }
+
+	    $query = "select count(subdomain_id) as cnt from subdomain where domain_id=? and subdomain_mount=?";
+	    $subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
+	    $subdomdata = $subdomres->FetchRow();
+	    if ($subdomdata['cnt'] > 0) {
+	        $err_al = tr("There is a subdomain with the same mount point!");
+	    }
 	}
 
 

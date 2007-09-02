@@ -407,12 +407,12 @@ SQL_QUERY;
 		return false;
 	}
 	if (!chk_username(clean_input($_POST['username']))) {
-		set_page_message(tr("Incorrect username count or no number!<br />"));
+		set_page_message(tr("Incorrect username length or syntax!"));
 
 		return false;
 	}
 	if (!chk_password($_POST['pass'])) {
-		set_page_message(tr("Incorrect password count or no number!<br />"));
+		set_page_message(tr("Incorrect password length or syntax!"));
 
 		return false;
 	}
@@ -422,52 +422,52 @@ SQL_QUERY;
 		return false;
 	}
 	if (!chk_email(clean_input($_POST['email']))) {
-		set_page_message(tr("Incorrect email count or no number!<br />"));
+		set_page_message(tr("Incorrect email syntax!"));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
-		set_page_message(tr("Incorrect max domain count or no number!<br />"));
+		set_page_message(tr("Incorrect domains limit!"));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], -1)) {
-		set_page_message(tr("Incorrect max subdomain count or no number!<br />"));
+		set_page_message(tr("Incorrect subdomains limit!"));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], -1)) {
-		set_page_message(tr('Incorrect max alias count or no number!<br />'));
+		set_page_message(tr('Incorrect aliases limit!'));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], -1)) {
-		set_page_message(tr('Incorrect max FTP count or no number!<br />'));
+		set_page_message(tr('Incorrect FTP accounts limit!'));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], -1)) {
-		set_page_message(tr('Incorrect max mail count or no number!<br />'));
+		set_page_message(tr('Incorrect mail accounts limit!'));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
-		set_page_message(tr('Incorrect max SQL databases count or no number!<br />'));
+		set_page_message(tr('Incorrect SQL databases limit!'));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
-		set_page_message(tr('Incorrect max SQL users count or no number!<br />'));
+		set_page_message(tr('Incorrect SQL users limit!'));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
-		set_page_message(tr('Incorrect max traffic amount or syntax!'));
+		set_page_message(tr('Incorrect traffic limit!'));
 
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_disk'], null)) {
-		set_page_message(tr('Incorrect max disk amount or syntax!'));
+		set_page_message(tr('Incorrect disk quota limit!'));
 
 		return false;
 	}

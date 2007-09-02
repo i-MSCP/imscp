@@ -35,7 +35,7 @@
                       <td width="27" align="right">&nbsp;</td>
                     </tr>
                     <tr>
-                      <td valign="top"><form name="admin_edit_user" method="post" action="edit_user.php">
+                      <td valign="top"><form name="admin_edit_user" method="post" action="edit_admin.php">
                           <table width="100%" cellspacing="5">
                             <tr>
                               <td width="25">&nbsp;</td>

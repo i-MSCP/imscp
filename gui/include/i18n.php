@@ -73,7 +73,7 @@ function tr($msgid, $as_is = false) {
             if (!$as_is) {
                 $encoding = tr('encoding', true);
             }
-            $rs = exec_query($sql, "SELECT `msgstr` FROM ? WHERE `msgid` = ?;", array($lang, $msgid), false);
+            $rs = exec_query($sql, "SELECT `msgstr` FROM " . quoteIdentifier($lang) . " WHERE `msgid` = ?;", array($msgid), false);
 
             if ($rs && $rs->RowCount() > 0 && $rs->fields['msgstr'] != '') {
                 $msgstr = $rs->fields['msgstr'];
@@ -134,7 +134,7 @@ function replace_html($string) {
                         '#&lt;[ ]*/[ ]*i[ ]*&gt;#i',
                         '#&lt;[ ]*small[ ]*&gt;#i',
                         '#&lt;[ ]*/[ ]*small[ ]*&gt;#i',
-                        '#&lt;[ ]*br[ ]*(\/|[ ]*)&gt;#i'
+                        '#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i'
                      );
 
     $replacement = array (

@@ -96,7 +96,7 @@ b) manualy
 
 6. Return to the parent direction and build the System by using make:
 	# cd ../
-	# mv Makefile.redhat Makefile
+	# mv Makefile.suse10 Makefile
 	# make install
 
 7. Copy all the directories into the system (you may make backups)

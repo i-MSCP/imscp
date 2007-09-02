@@ -49,23 +49,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
   $data_2['message'] = clean_input($_POST['message2']);
 
-  if ( ($data_1['subject'] == '') OR ($data_2['subject'] == '') ) {
+  set_lostpassword_activation_email($user_id, $data_1);
 
-		set_page_message(tr('Please specify a subject!'));
+  set_lostpassword_password_email($user_id, $data_2);
 
-  } else if ( ($data_1['message'] == '') OR ($data_2['message'] == '') ) {
-
-  	set_page_message(tr('Please specify message!'));
-
-  } else {
-
-		set_lostpassword_activation_email($user_id, $data_1);
-
-		set_lostpassword_password_email($user_id, $data_2);
-
-  	set_page_message (tr('Auto email template data updated!'));
-
-	}
+  set_page_message (tr('Auto email template data updated!'));
 
 }
 
