@@ -7,6 +7,12 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-09-31 Raphael Geissert
+    - CONFIGS:
+        * Fixed #623: open_basedir restriction in effect. File(/var/log/chkrootkit.log) is not within the allowed path(s)
+    - GUI:
+        * Fixed #624: welcome mail contains html entities
+
+2007-09-31 Raphael Geissert
     - GUI:
         * Fixed some drawn backs in previous revisions
         * Added support for multiple anti-rootkit tools (including colouring for chkrootkit-like logs)

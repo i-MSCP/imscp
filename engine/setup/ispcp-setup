@@ -1846,13 +1846,22 @@ sub setup_php {
 	($rs, $cfg_tpl) = get_tpl($tpl_dir, '/php4/php.ini');
 	return $rs if ($rs != 0);
 
+	my $other_rk_log = $main::cfg{'OTHER_ROOTKIT_LOG'};
+
+	if ( $other_rk_log ne '' ) {
+	   $other_rk_log = ':' .  $other_rk_log;
+	}
+
 	%tag_hash = (
 					'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
 					'{DMN_NAME}' => "gui",
 					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
 					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
 					'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
-					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
+					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+					'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+					'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+					'{OTHER_ROOTKIT_LOG}' => $other_rk_log
 					);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
@@ -1872,7 +1881,10 @@ sub setup_php {
 					'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
 					'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
 					'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
-					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'}
+					'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+					'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+					'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+					'{OTHER_ROOTKIT_LOG}' => $other_rk_log
 					);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);

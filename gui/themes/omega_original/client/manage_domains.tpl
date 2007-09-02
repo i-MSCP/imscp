@@ -91,6 +91,11 @@ function MM_swapImage() { //v3.0
   <tr>
     <td align="left">
 <table width="100%" cellpadding="5" cellspacing="5">
+    <!-- BDP: page_message -->
+    <tr>
+      <td class="title" nowrap colspan="5"><font color="#FF0000">{MESSAGE}</font></td>
+    </tr>
+    <!-- EDP: page_message -->
 	<tr>
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_DOMAIN_ALIASES}</td>
@@ -104,11 +109,6 @@ function MM_swapImage() { //v3.0
       <tr>
         <td width="40">&nbsp;</td>
         <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
-          <!-- BDP: page_message -->
-          <tr>
-            <td class="title" nowrap colspan="5"><font color="#FF0000">{MESSAGE}</font></td>
-          </tr>
-          <!-- EDP: page_message -->
           <!-- BDP: als_message -->
           <tr>
             <td class="title" nowrap colspan="5"><font color="#FF0000">{ALS_MSG}</font></td>

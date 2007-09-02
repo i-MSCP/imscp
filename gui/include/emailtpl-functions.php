@@ -149,7 +149,7 @@ function get_welcome_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = tr('Welcome new ispCP user {USERNAME}!');
+		$data['subject'] = tr('Welcome new ispCP user {USERNAME}!', true);
 
 	}
 
@@ -168,7 +168,7 @@ You can login at http://{BASE_SERVER_VHOST}
 Good luck with the ispCP system!
 The ispCP Team.
 
-');
+', true);
 
 	}
 
@@ -188,7 +188,7 @@ function get_lostpassword_activation_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = tr('Please activate your new ispCP login!');
+		$data['subject'] = tr('Please activate your new ispCP login!', true);
 
 	}
 
@@ -204,7 +204,7 @@ Use this link to activate your new ispCP password:
 Good Luck with the ispCP System
 The ispCP Team
 
-');
+', true);
 
 	}
 
@@ -224,7 +224,7 @@ function get_lostpassword_password_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = tr('Your new ispCP login!');
+		$data['subject'] = tr('Your new ispCP login!', true);
 
 	}
 
@@ -242,7 +242,7 @@ You can login at http://{BASE_SERVER_VHOST}
 Good Luck with the ispCP System
 The ispCP Team
 
-');
+', true);
 
 	}
 
@@ -262,7 +262,7 @@ function get_order_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = tr('Confirmation for domain order {DOMAIN}!');
+		$data['subject'] = tr('Confirmation for domain order {DOMAIN}!', true);
 
 	}
 
@@ -278,7 +278,7 @@ This is an automatic confirmation for the order of the domain:
 Thank you for using ispCP services.
 The ispCP Team
 
-');
+', true);
 
 	}
 
