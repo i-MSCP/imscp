@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 19:00-0500\n"
+"POT-Creation-Date: 2007-09-01 22:06-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -194,32 +194,45 @@ msgstr "Номер"
 msgid "Reseller"
 msgstr "Реселер"
 
-msgid "Incorrect max domain count or syntax!"
-msgstr "Невірний синтаксис <i>ліміту доменів</i>!"
-
-msgid "Incorrect max subdomain count or syntax!"
-msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
-
-msgid "Incorrect max alias count or syntax!"
-msgstr "Невірний синтаксис <i>ліміту аліасів</i>!"
-
-msgid "Incorrect max FTP count or syntax!"
-msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
-
-msgid "Incorrect max mail count or syntax!"
+#, fuzzy
+msgid "Incorrect email syntax!"
 msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
 
-msgid "Incorrect max SQL databases count or syntax!"
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Невірний синтаксис <i>доменного імені</i>"
+
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
+
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Невірне введення даних!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
 msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
 
-msgid "Incorrect max SQL users count or syntax!"
+#, fuzzy
+msgid "Incorrect SQL users limit!"
 msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
 
-msgid "Incorrect max traffic amount or syntax!"
+#, fuzzy
+msgid "Incorrect traffic limit!"
 msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
 
-msgid "Incorrect max disk amount or syntax!"
-msgstr "Невірний синтаксис <i>обсягу диску</i>!"
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "Невірне введення даних!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Ви маєте призначити хоча б одну IP-адресу реселеру!"
@@ -447,30 +460,6 @@ msgid "Incorrect price syntax!"
 msgstr ""
 
 msgid "Incorrect setup fee syntax!"
-msgstr ""
-
-msgid "Incorrect subdomain length or syntax!"
-msgstr ""
-
-msgid "Incorrect alias length or syntax!"
-msgstr ""
-
-msgid "Incorrect mail account length or syntax!"
-msgstr ""
-
-msgid "Incorrect FTP account length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL database length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL user length or syntax!"
-msgstr ""
-
-msgid "Incorrect traffic length or syntax!"
-msgstr ""
-
-msgid "Incorrect disk length or syntax!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -755,6 +744,29 @@ msgstr "Весь трафік"
 msgid "Day"
 msgstr "День"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Адміністратор/Керування користувачами/Редагування користувача"
+
+msgid "User session was killed!"
+msgstr "Сесія користувача знищена!"
+
+msgid "Domain account"
+msgstr "Обліковий запис домену"
+
+msgid "Edit admin"
+msgstr "Редагувати адміністратора"
+
+msgid "Update"
+msgstr "Оновити"
+
+msgid "Send new login data"
+msgstr "Надіслати нові дані автентифікації"
+
+#, fuzzy
+msgid "Generate password"
+msgstr "Оновити пароль"
+
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
 
@@ -867,28 +879,6 @@ msgstr "Макс. обсяг трафіку [МБ]"
 
 msgid "Max disk amount [MB]"
 msgstr "Макс. обсяг диску [МБ]"
-
-msgid "Update"
-msgstr "Оновити"
-
-msgid "Send new login data"
-msgstr "Надіслати нові дані автентифікації"
-
-#, fuzzy
-msgid "Generate password"
-msgstr "Оновити пароль"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Адміністратор/Керування користувачами/Редагування користувача"
-
-msgid "User session was killed!"
-msgstr "Сесія користувача знищена!"
-
-msgid "Domain account"
-msgstr "Обліковий запис домену"
-
-msgid "Edit admin"
-msgstr "Редагувати адміністратора"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
@@ -1264,10 +1254,6 @@ msgid "Moving aborted!"
 msgstr "Переміщення перерване!"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr ""
-
-#, php-format
 msgid ""
 "<b>%s</b> has IP address that can not be managed from the destination "
 "reseller !<br>This user can not be moved!"
@@ -1474,13 +1460,15 @@ msgstr "БД<br>SQL"
 msgid "SQL<br>user"
 msgstr "Користувач<br>SQL"
 
-msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+#, fuzzy
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "Адміністратор ispCP / Системні інструменти / Стан сервера"
+
+#, php-format
+msgid "%s doesn't exist or can't be read."
 msgstr ""
 
-msgid "The file doesn't exist or can't be read."
-msgstr ""
-
-msgid "Rootkit Log Checker"
+msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
 msgid "ispCP - Admin/Server day stats"
@@ -2866,14 +2854,21 @@ msgstr "Трафік сервера"
 msgid "Administrators list is empty!"
 msgstr ""
 
+msgid "Creation date"
+msgstr "Дата створення"
+
 msgid "Created by"
 msgstr "Створено"
 
 msgid "Resellers list is empty!"
 msgstr "Список реселерів порожній!"
 
-msgid "Change user interface"
+#, fuzzy
+msgid "Switch to user interface"
 msgstr "Змінити інтерфейс користувача"
+
+msgid "Switch"
+msgstr ""
 
 msgid "Not found user records matching the search criteria!"
 msgstr "Згідно пошукового запиту не знайдено жодного користувача!"
@@ -2901,9 +2896,6 @@ msgstr "Реселери"
 
 msgid "Search"
 msgstr "Пошук"
-
-msgid "Creation date"
-msgstr "Дата створення"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3327,6 +3319,12 @@ msgstr "Ви не маєте записів користувачів."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Реселер/Додавання хостінг-плану"
 
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Реселер/Зміна пароля"
 
@@ -3408,6 +3406,38 @@ msgstr "Редагувати домен"
 msgid "Domain properties"
 msgstr "Властивості домену"
 
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
 msgid "SQL Database"
 msgstr "База даних SQL"
 
@@ -3422,41 +3452,36 @@ msgid "Domain properties updated successfully!"
 msgstr "Властивості домену успішно оновлені!"
 
 #, php-format
-msgid "<b>%s</b> Service can not be disabled !<br>"
+msgid "The <em>%s</em> service can not be disabled! "
 msgstr ""
 
 #, php-format
-msgid "There are <b>%s</b> records on the system!"
+msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> Service can not be limited !<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> Service can not be unlimited !<br>"
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> service can not be limited !<br>"
+msgid "The <em>%s</em> service can not be limited! "
 msgstr ""
 
 #, php-format
 msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
@@ -3473,12 +3498,6 @@ msgstr "ispCP - Реселер/Редагування хостінг-плану"
 
 msgid "View hosting plan"
 msgstr "Перегляд хостінг-плану"
-
-msgid "Incorrect price!"
-msgstr ""
-
-msgid "Incorrect setup fee!"
-msgstr ""
 
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
@@ -3655,8 +3674,13 @@ msgstr "ispCP - Користувачі"
 msgid "Stats"
 msgstr "Статистика"
 
-msgid "Edit properties"
-msgstr "Редагувати властивості"
+#, fuzzy
+msgid "Edit User"
+msgstr "Редагувати користувача"
+
+#, fuzzy
+msgid "View aliases"
+msgstr "переглянути аліаси"
 
 msgid "You have no users."
 msgstr "Ви не маєте користувачів."
@@ -3679,6 +3703,70 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#, fuzzy
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту аліасів</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту доменів</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту аліасів</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
+
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
+
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "Невірний синтаксис <i>обсягу диску</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect alias number or syntax!"
+#~ msgstr "Невірний синтаксис <i>ліміту аліасів</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect disk number or syntax!"
+#~ msgstr "Невірний синтаксис <i>обсягу диску</i>!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account count or no number<br />"
+#~ msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#~ msgid "Change user interface"
+#~ msgstr "Змінити інтерфейс користувача"
+
+#, fuzzy
+#~ msgid "show"
+#~ msgstr "Показати"
+
+#~ msgid "Edit properties"
+#~ msgstr "Редагувати властивості"
 
 #~ msgid "User does not exist!"
 #~ msgstr "Користувач не існує!"

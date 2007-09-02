@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 19:00-0500\n"
+"POT-Creation-Date: 2007-09-01 22:06-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -194,32 +194,45 @@ msgstr "Nummer"
 msgid "Reseller"
 msgstr ""
 
-msgid "Incorrect max domain count or syntax!"
-msgstr "Onjuiste max domein telling of syntax!"
-
-msgid "Incorrect max subdomain count or syntax!"
-msgstr "Onjuiste max subdomein telling of syntax!"
-
-msgid "Incorrect max alias count or syntax!"
-msgstr "Onjuiste max alias telling of syntax!"
-
-msgid "Incorrect max FTP count or syntax!"
-msgstr "Onjuiste max FTP telling of syntax!"
-
-msgid "Incorrect max mail count or syntax!"
+#, fuzzy
+msgid "Incorrect email syntax!"
 msgstr "Onjuiste max mail telling of syntax!"
 
-msgid "Incorrect max SQL databases count or syntax!"
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Onjuiste domeinnaam syntax!"
+
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Onjuiste max subdomein telling of syntax!"
+
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Onjuiste gegevens invoer"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Onjuiste max FTP telling of syntax!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Onjuiste max mail telling of syntax!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
 msgstr "Onjuiste max MySQL databanken telling of syntax!"
 
-msgid "Incorrect max SQL users count or syntax!"
+#, fuzzy
+msgid "Incorrect SQL users limit!"
 msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
 
-msgid "Incorrect max traffic amount or syntax!"
+#, fuzzy
+msgid "Incorrect traffic limit!"
 msgstr "Onjuiste max verkeer hoeveelheid of syntax!"
 
-msgid "Incorrect max disk amount or syntax!"
-msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "Onjuiste gegevens invoer"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "U moet minstens één IP nummer voor een reseller toewijzen !"
@@ -447,30 +460,6 @@ msgid "Incorrect price syntax!"
 msgstr ""
 
 msgid "Incorrect setup fee syntax!"
-msgstr ""
-
-msgid "Incorrect subdomain length or syntax!"
-msgstr ""
-
-msgid "Incorrect alias length or syntax!"
-msgstr ""
-
-msgid "Incorrect mail account length or syntax!"
-msgstr ""
-
-msgid "Incorrect FTP account length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL database length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL user length or syntax!"
-msgstr ""
-
-msgid "Incorrect traffic length or syntax!"
-msgstr ""
-
-msgid "Incorrect disk length or syntax!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -755,6 +744,29 @@ msgstr "Al het verkeer"
 msgid "Day"
 msgstr "Dag"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Virtual Hosting Control System"
+
+msgid "User session was killed!"
+msgstr "Gebruikerssessie is beeindigd"
+
+msgid "Domain account"
+msgstr "Domein account"
+
+msgid "Edit admin"
+msgstr "Wijzig beheerder"
+
+msgid "Update"
+msgstr "Actualiseren"
+
+msgid "Send new login data"
+msgstr "Verstuur nieuwe login informatie"
+
+#, fuzzy
+msgid "Generate password"
+msgstr "Wijzig wachtwoord"
+
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Virtual Hosting Control System"
 
@@ -866,28 +878,6 @@ msgstr "Max aantal verkeer [MB]"
 
 msgid "Max disk amount [MB]"
 msgstr "Max schijfruimte [MB]"
-
-msgid "Update"
-msgstr "Actualiseren"
-
-msgid "Send new login data"
-msgstr "Verstuur nieuwe login informatie"
-
-#, fuzzy
-msgid "Generate password"
-msgstr "Wijzig wachtwoord"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Virtual Hosting Control System"
-
-msgid "User session was killed!"
-msgstr "Gebruikerssessie is beeindigd"
-
-msgid "Domain account"
-msgstr "Domein account"
-
-msgid "Edit admin"
-msgstr "Wijzig beheerder"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Virtual Hosting Control System"
@@ -1262,10 +1252,6 @@ msgid "Moving aborted!"
 msgstr "Verplaatsing geannuleerd"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr ""
-
-#, php-format
 msgid ""
 "<b>%s</b> has IP address that can not be managed from the destination "
 "reseller !<br>This user can not be moved!"
@@ -1472,13 +1458,15 @@ msgstr "MySQL<br>databank"
 msgid "SQL<br>user"
 msgstr "MySQL<br>gebruiker"
 
-msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+#, fuzzy
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "ispCP - Virtual Hosting Control System"
+
+#, php-format
+msgid "%s doesn't exist or can't be read."
 msgstr ""
 
-msgid "The file doesn't exist or can't be read."
-msgstr ""
-
-msgid "Rootkit Log Checker"
+msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
 msgid "ispCP - Admin/Server day stats"
@@ -2861,14 +2849,21 @@ msgstr "Server verkeer"
 msgid "Administrators list is empty!"
 msgstr ""
 
+msgid "Creation date"
+msgstr "Aangemaakt op"
+
 msgid "Created by"
 msgstr "Gemaakt door"
 
 msgid "Resellers list is empty!"
 msgstr "Er zijn nog geen resellers"
 
-msgid "Change user interface"
+#, fuzzy
+msgid "Switch to user interface"
 msgstr "Verander lay-out"
+
+msgid "Switch"
+msgstr ""
 
 msgid "Not found user records matching the search criteria!"
 msgstr "Geen resultaten gevonden die aan uw zoekopdracht voldoen"
@@ -2896,9 +2891,6 @@ msgstr ""
 
 msgid "Search"
 msgstr "Zoeken"
-
-msgid "Creation date"
-msgstr "Aangemaakt op"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3322,6 +3314,12 @@ msgstr "U heeft geen gebruikers"
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Virtual Hosting Control System"
 
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Virtual Hosting Control System"
 
@@ -3404,6 +3402,38 @@ msgstr "Wijzig domein"
 msgid "Domain properties"
 msgstr "Domein eigenschappen"
 
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Traffic limit [Mb]<br><i>(0 unlimited)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Schijf limiet [Mb]<br><i>(0 ongelimiteerd)</i>"
+
 msgid "SQL Database"
 msgstr "MySQL databank"
 
@@ -3418,41 +3448,36 @@ msgid "Domain properties updated successfully!"
 msgstr "Domein eigenschappen succesvol gewijzigd!"
 
 #, php-format
-msgid "<b>%s</b> Service can not be disabled !<br>"
+msgid "The <em>%s</em> service can not be disabled! "
 msgstr ""
 
 #, php-format
-msgid "There are <b>%s</b> records on the system!"
+msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> Service can not be limited !<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> Service can not be unlimited !<br>"
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> service can not be limited !<br>"
+msgid "The <em>%s</em> service can not be limited! "
 msgstr ""
 
 #, php-format
 msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
@@ -3469,12 +3494,6 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "View hosting plan"
 msgstr "Bekijk hostingpakket"
-
-msgid "Incorrect price!"
-msgstr ""
-
-msgid "Incorrect setup fee!"
-msgstr ""
 
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
@@ -3651,8 +3670,13 @@ msgstr "ispCP - Virtual Hosting Control System"
 msgid "Stats"
 msgstr ""
 
-msgid "Edit properties"
-msgstr "Wijzig instellingen"
+#, fuzzy
+msgid "Edit User"
+msgstr "Wijzig gebruiker"
+
+#, fuzzy
+msgid "View aliases"
+msgstr "Bekijk aliassen"
 
 msgid "You have no users."
 msgstr "U heeft geen gebruikers"
@@ -3677,6 +3701,70 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#, fuzzy
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Onjuiste max alias telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "Onjuiste max domein telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "Onjuiste max subdomein telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "Onjuiste max alias telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "Onjuiste max FTP telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "Onjuiste max mail telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "Onjuiste max MySQL databanken telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
+
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "Onjuiste max verkeer hoeveelheid of syntax!"
+
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect alias number or syntax!"
+#~ msgstr "Onjuiste max alias telling of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect disk number or syntax!"
+#~ msgstr "Onjuiste max schijf hoeveelheid of syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account count or no number<br />"
+#~ msgstr "Onjuiste max FTP telling of syntax!"
+
+#~ msgid "Change user interface"
+#~ msgstr "Verander lay-out"
+
+#, fuzzy
+#~ msgid "show"
+#~ msgstr "Toon"
+
+#~ msgid "Edit properties"
+#~ msgstr "Wijzig instellingen"
 
 #~ msgid "User does not exist!"
 #~ msgstr "Gebruiker bestaat niet!"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 19:00-0500\n"
+"POT-Creation-Date: 2007-09-01 22:06-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -194,31 +194,44 @@ msgstr "Adet"
 msgid "Reseller"
 msgstr ""
 
-msgid "Incorrect max domain count or syntax!"
-msgstr "Incorrect <i>max domain</i> count or syntax!"
-
-msgid "Incorrect max subdomain count or syntax!"
-msgstr "Incorrect <i>max subdomain</i> count or syntax!"
-
-msgid "Incorrect max alias count or syntax!"
-msgstr "Incorrect <i>max alias</i> count or syntax!"
-
-msgid "Incorrect max FTP count or syntax!"
-msgstr "Incorrect <i>max FTP</i> count or syntax!"
-
-msgid "Incorrect max mail count or syntax!"
+#, fuzzy
+msgid "Incorrect email syntax!"
 msgstr "Incorrect <i>max e-mail</i> count or syntax!"
 
-msgid "Incorrect max SQL databases count or syntax!"
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Incorrect <i>domain name</i> syntax"
+
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Incorrect <i>max subdomain</i> count or syntax!"
+
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Incorrect <i>max alias</i> count or syntax!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Incorrect <i>max FTP</i> count or syntax!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Incorrect <i>max e-mail</i> count or syntax!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
 msgstr "Incorrect <i>max mySQL databases</i> count or syntax!"
 
-msgid "Incorrect max SQL users count or syntax!"
+#, fuzzy
+msgid "Incorrect SQL users limit!"
 msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
 
-msgid "Incorrect max traffic amount or syntax!"
+#, fuzzy
+msgid "Incorrect traffic limit!"
 msgstr "Incorrect <i>max traffic</i> amount or syntax!"
 
-msgid "Incorrect max disk amount or syntax!"
+#, fuzzy
+msgid "Incorrect disk quota limit!"
 msgstr "Incorrect <i>max disk</i> amount or syntax!"
 
 msgid "You must assign at least one IP number for a reseller!"
@@ -447,30 +460,6 @@ msgid "Incorrect price syntax!"
 msgstr ""
 
 msgid "Incorrect setup fee syntax!"
-msgstr ""
-
-msgid "Incorrect subdomain length or syntax!"
-msgstr ""
-
-msgid "Incorrect alias length or syntax!"
-msgstr ""
-
-msgid "Incorrect mail account length or syntax!"
-msgstr ""
-
-msgid "Incorrect FTP account length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL database length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL user length or syntax!"
-msgstr ""
-
-msgid "Incorrect traffic length or syntax!"
-msgstr ""
-
-msgid "Incorrect disk length or syntax!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -755,6 +744,28 @@ msgstr "Tüm trafik"
 msgid "Day"
 msgstr "Gün"
 
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr ""
+
+msgid "User session was killed!"
+msgstr ""
+
+msgid "Domain account"
+msgstr "Alan adı hesabı"
+
+msgid "Edit admin"
+msgstr "Yöneticiyi düzenle"
+
+msgid "Update"
+msgstr ""
+
+msgid "Send new login data"
+msgstr ""
+
+#, fuzzy
+msgid "Generate password"
+msgstr "Mevcut parola"
+
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
@@ -863,28 +874,6 @@ msgstr ""
 
 msgid "Max disk amount [MB]"
 msgstr ""
-
-msgid "Update"
-msgstr ""
-
-msgid "Send new login data"
-msgstr ""
-
-#, fuzzy
-msgid "Generate password"
-msgstr "Mevcut parola"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr ""
-
-msgid "User session was killed!"
-msgstr ""
-
-msgid "Domain account"
-msgstr "Alan adı hesabı"
-
-msgid "Edit admin"
-msgstr "Yöneticiyi düzenle"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
@@ -1254,10 +1243,6 @@ msgid "Moving aborted!"
 msgstr "Taşıma durduruldu!"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr ""
-
-#, php-format
 msgid ""
 "<b>%s</b> has IP address that can not be managed from the destination "
 "reseller !<br>This user can not be moved!"
@@ -1462,13 +1447,14 @@ msgstr ""
 msgid "SQL<br>user"
 msgstr ""
 
-msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
 
-msgid "The file doesn't exist or can't be read."
+#, php-format
+msgid "%s doesn't exist or can't be read."
 msgstr ""
 
-msgid "Rootkit Log Checker"
+msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
 msgid "ispCP - Admin/Server day stats"
@@ -2839,14 +2825,21 @@ msgstr ""
 msgid "Administrators list is empty!"
 msgstr ""
 
+msgid "Creation date"
+msgstr "Oluşturma tarihi"
+
 msgid "Created by"
 msgstr "tarafında oluşturulmuştur"
 
 msgid "Resellers list is empty!"
 msgstr ""
 
-msgid "Change user interface"
+#, fuzzy
+msgid "Switch to user interface"
 msgstr "Kullanıcı arayüzü değiştir"
+
+msgid "Switch"
+msgstr ""
 
 msgid "Not found user records matching the search criteria!"
 msgstr ""
@@ -2874,9 +2867,6 @@ msgstr ""
 
 msgid "Search"
 msgstr ""
-
-msgid "Creation date"
-msgstr "Oluşturma tarihi"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3295,6 +3285,12 @@ msgstr "Kullanıcı kaydınız yok."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr ""
 
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
@@ -3369,6 +3365,37 @@ msgstr "Alan adı düzenle"
 msgid "Domain properties"
 msgstr ""
 
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disk limiti [MB]<br><i>(0 limitsiz)</i>"
+
 msgid "SQL Database"
 msgstr ""
 
@@ -3382,41 +3409,36 @@ msgid "Domain properties updated successfully!"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> Service can not be disabled !<br>"
+msgid "The <em>%s</em> service can not be disabled! "
 msgstr ""
 
 #, php-format
-msgid "There are <b>%s</b> records on the system!"
+msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> Service can not be limited !<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> Service can not be unlimited !<br>"
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> service can not be limited !<br>"
+msgid "The <em>%s</em> service can not be limited! "
 msgstr ""
 
 #, php-format
 msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
@@ -3433,12 +3455,6 @@ msgstr ""
 
 msgid "View hosting plan"
 msgstr "Barındırma planlarını göster"
-
-msgid "Incorrect price!"
-msgstr ""
-
-msgid "Incorrect setup fee!"
-msgstr ""
 
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
@@ -3614,8 +3630,13 @@ msgstr ""
 msgid "Stats"
 msgstr ""
 
-msgid "Edit properties"
-msgstr "Özellikleri düzenle"
+#, fuzzy
+msgid "Edit User"
+msgstr "Kullanıcı düzenle"
+
+#, fuzzy
+msgid "View aliases"
+msgstr "aliasları göster"
 
 msgid "You have no users."
 msgstr "Kullanıcınız yok."
@@ -3638,6 +3659,58 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Mesaj gönderildi."
+
+#, fuzzy
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Incorrect <i>max alias</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "Incorrect <i>max domain</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "Incorrect <i>max subdomain</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "Incorrect <i>max alias</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "Incorrect <i>max FTP</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "Incorrect <i>max e-mail</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "Incorrect <i>max mySQL databases</i> count or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "Incorrect <i>max mySQL users</i> count or syntax!"
+
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "Incorrect <i>max traffic</i> amount or syntax!"
+
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "Incorrect <i>max disk</i> amount or syntax!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account count or no number<br />"
+#~ msgstr "Incorrect <i>max FTP</i> count or syntax!"
+
+#~ msgid "Change user interface"
+#~ msgstr "Kullanıcı arayüzü değiştir"
+
+#~ msgid "Edit properties"
+#~ msgstr "Özellikleri düzenle"
 
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "MySQL yöneticisi olarak bağlanılamıyor!"

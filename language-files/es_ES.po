@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 19:00-0500\n"
+"POT-Creation-Date: 2007-09-01 22:06-0500\n"
 "PO-Revision-Date: 2007-08-24 13:15+0100\n"
 "Last-Translator: Albert Garcia <albert@twentic.com>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -192,32 +192,45 @@ msgstr "Dirección IP"
 msgid "Reseller"
 msgstr "Revendedor"
 
-msgid "Incorrect max domain count or syntax!"
-msgstr "¡Cantidad max de dominios o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect email syntax!"
+msgstr "Sintaxis del precio incorrecta!"
 
-msgid "Incorrect max subdomain count or syntax!"
-msgstr "¡Cantidad max de subdominios o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "¡Sintaxis del dominio incorrecta!"
 
-msgid "Incorrect max alias count or syntax!"
-msgstr "¡Cantidad max de alias o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Sintaxis o longitud de los subdominios incorrecta!"
 
-msgid "Incorrect max FTP count or syntax!"
-msgstr "¡Cantidad max de FTP o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "¡Los datos introducidos son incorrectos!"
 
-msgid "Incorrect max mail count or syntax!"
-msgstr "¡Cantidad max de correo o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Límite de cuentas de FTP"
 
-msgid "Incorrect max SQL databases count or syntax!"
-msgstr "¡Cantidad max de bases de datos SQL o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Sintaxis o longitud de las cuentas de mail incorrecta!"
 
-msgid "Incorrect max SQL users count or syntax!"
-msgstr "¡Cantidad max de usuarios SQL o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
+msgstr "Límite de bases de datos SQL"
 
-msgid "Incorrect max traffic amount or syntax!"
-msgstr "¡Capacidad max de Tráfico o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect SQL users limit!"
+msgstr "Límite de usuarios de SQL"
 
-msgid "Incorrect max disk amount or syntax!"
-msgstr "¡Capacidad max de espacio o sintaxis incorrectos!"
+#, fuzzy
+msgid "Incorrect traffic limit!"
+msgstr "Sintaxis o longitud del tráfico ncorrecta!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "¡Los datos introducidos son incorrectos!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "¡Debe asignar al menos una dirección IP para un revendedor!"
@@ -452,30 +465,6 @@ msgstr "Sintaxis del precio incorrecta!"
 
 msgid "Incorrect setup fee syntax!"
 msgstr "Sintaxis del precio del setup incorrecta!"
-
-msgid "Incorrect subdomain length or syntax!"
-msgstr "Sintaxis o longitud de los subdominios incorrecta!"
-
-msgid "Incorrect alias length or syntax!"
-msgstr "Sintaxis o longitud de los alias incorrecta!"
-
-msgid "Incorrect mail account length or syntax!"
-msgstr "Sintaxis o longitud de las cuentas de mail incorrecta!"
-
-msgid "Incorrect FTP account length or syntax!"
-msgstr "Sintaxis o longitud de las cuentas de FTP incorrecta!"
-
-msgid "Incorrect SQL database length or syntax!"
-msgstr "Sintaxis o longitud de las bases de datos SQL incorrecta!"
-
-msgid "Incorrect SQL user length or syntax!"
-msgstr "Sintaxis o longitud de los usuarios de las bases de datos incorrecta!"
-
-msgid "Incorrect traffic length or syntax!"
-msgstr "Sintaxis o longitud del tráfico ncorrecta!"
-
-msgid "Incorrect disk length or syntax!"
-msgstr "Sintaxis o longitud del disco incorrecta!"
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "Ya existe el plan de hosting con el nombre que has puesto!"
@@ -761,6 +750,28 @@ msgstr "Todo el tráfico"
 msgid "Day"
 msgstr "Día"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Administrar usuarios/Editar usuario"
+
+msgid "User session was killed!"
+msgstr "¡La sesión de usuario ha sido terminada!"
+
+msgid "Domain account"
+msgstr "Cuenta de dominio"
+
+msgid "Edit admin"
+msgstr "Editar administrador"
+
+msgid "Update"
+msgstr "Actualizar"
+
+msgid "Send new login data"
+msgstr "Envíe nuevos datos para su identificación"
+
+msgid "Generate password"
+msgstr "Generar contraseña"
+
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Admin/Administrar usuarios/Editar revendedor"
 
@@ -876,27 +887,6 @@ msgstr "Capacidad max de tráfico [MB]"
 
 msgid "Max disk amount [MB]"
 msgstr "Capacidad max de espacio [MB]"
-
-msgid "Update"
-msgstr "Actualizar"
-
-msgid "Send new login data"
-msgstr "Envíe nuevos datos para su identificación"
-
-msgid "Generate password"
-msgstr "Generar contraseña"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Admin/Administrar usuarios/Editar usuario"
-
-msgid "User session was killed!"
-msgstr "¡La sesión de usuario ha sido terminada!"
-
-msgid "Domain account"
-msgstr "Cuenta de dominio"
-
-msgid "Edit admin"
-msgstr "Editar administrador"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrador/Modificar plan de hosting"
@@ -1271,11 +1261,6 @@ msgid "Moving aborted!"
 msgstr "¡Traslado cancelado!"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr ""
-"<b>%1$s</b> tiene permisos ilimitados para el servicio de <b>%2$s</b><br>"
-
-#, php-format
 msgid ""
 "<b>%s</b> has IP address that can not be managed from the destination "
 "reseller !<br>This user can not be moved!"
@@ -1483,13 +1468,16 @@ msgstr "Base de datos<br>SQL"
 msgid "SQL<br>user"
 msgstr "Usuario<br>SQL"
 
-msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+#, fuzzy
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Admin / Herramientas de sistema / Rootkit Hunter Log"
 
-msgid "The file doesn't exist or can't be read."
+#, fuzzy, php-format
+msgid "%s doesn't exist or can't be read."
 msgstr "El fichero no existe o no se puede leer."
 
-msgid "Rootkit Log Checker"
+#, fuzzy
+msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Comprobador del Rootkit Log"
 
 msgid "ispCP - Admin/Server day stats"
@@ -2876,14 +2864,21 @@ msgstr "Tráfico del servidor"
 msgid "Administrators list is empty!"
 msgstr "La lista de administradores está vacía!"
 
+msgid "Creation date"
+msgstr "Fecha de creación"
+
 msgid "Created by"
 msgstr "Creado por"
 
 msgid "Resellers list is empty!"
 msgstr "¡La lista de revendedores está vacía!"
 
-msgid "Change user interface"
+#, fuzzy
+msgid "Switch to user interface"
 msgstr "Cambiar interfaz de usuario"
+
+msgid "Switch"
+msgstr ""
 
 msgid "Not found user records matching the search criteria!"
 msgstr ""
@@ -2913,9 +2908,6 @@ msgstr "Revendedores"
 
 msgid "Search"
 msgstr "Buscar"
-
-msgid "Creation date"
-msgstr "Fecha de creación"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3410,6 +3402,12 @@ msgstr "No dispone de registros de usuario."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Revendedor/Añadir plan de hosting"
 
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Revendedor/Cambiar contraseña"
 
@@ -3490,6 +3488,38 @@ msgstr "Editar dominio"
 msgid "Domain properties"
 msgstr "Propiedades del dominio"
 
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de subdominios<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de alias<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de cuentas de mail<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de cuentas FTP<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de bases de datos SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de usuarios SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Límite de Tráfico [MB]<br><i>(0 ilimitado)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Límite de disco [Mb]<br><i>(0 ilimitado)</i>"
+
 msgid "SQL Database"
 msgstr "Base de Datos SQL"
 
@@ -3503,48 +3533,41 @@ msgstr "¡Propiedades del dominio actualizadas satisfactoriamente!"
 msgid "Domain properties updated successfully!"
 msgstr "¡Propiedades del dominio actualizadas satisfactoriamente!"
 
-#, php-format
-msgid "<b>%s</b> Service can not be disabled !<br>"
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be disabled! "
 msgstr "<b>%s</b> El servicio no se puede desactivar!<br>"
 
-#, php-format
-msgid "There are <b>%s</b> records on the system!"
+#, fuzzy, php-format
+msgid "There are <em>%s</em> records on system!"
 msgstr "Hay <b>%s</b> registros en el sistema!"
 
-#, php-format
-msgid "<b>%s</b> Service can not be limited !<br>"
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be limited! "
 msgstr "<b>%s</b> servicio no puede ser limitado!<br>"
 
-#, php-format
+#, fuzzy, php-format
 msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
 "El número especificado es inferior a <b>%s</b> registros existentes en el "
 "sistema!"
 
-#, php-format
-msgid "<b>%s</b> Service can not be unlimited !<br>"
+#, fuzzy, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Hay <b>%s</b> registros en el sistema!"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
 msgstr "El servicio <b>%s</b> no puede ser ilimitado !<br>"
 
-#, php-format
-msgid "There are reseller limits for the <b>%s</b> service!"
+#, fuzzy, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
 msgstr "Hay límites de revendedores para el servicio <b>%s</b>!"
 
-#, php-format
-msgid "You are exceeding reseller limits for the <b>%s</b> service!"
+#, fuzzy, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 "Estás excediendo los límites del revendedor para el servicio <b>%s</b>!"
-
-#, php-format
-msgid "<b>%s</b> service can not be limited !<br>"
-msgstr "El servicio <b>%s</b> no puede limitarse!<br>"
-
-#, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
-msgstr ""
-"El número especificado es inferior a la cantidad de <b>%s</b>  existentes en "
-"el sistema!"
 
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Usuarios/Editar"
@@ -3560,12 +3583,6 @@ msgstr "ispCP - Revendedor/Editar plan de hosting"
 
 msgid "View hosting plan"
 msgstr "Ver plan de hosting"
-
-msgid "Incorrect price!"
-msgstr "Precio incorrecto!"
-
-msgid "Incorrect setup fee!"
-msgstr "Precio de setup incorrecto!"
 
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
@@ -3744,8 +3761,13 @@ msgstr "ispCP - Usuarios"
 msgid "Stats"
 msgstr "Estadísticas"
 
-msgid "Edit properties"
-msgstr "Editar propiedades"
+#, fuzzy
+msgid "Edit User"
+msgstr "Editar usuario"
+
+#, fuzzy
+msgid "View aliases"
+msgstr "Ver alias"
 
 msgid "You have no users."
 msgstr "No tiene usuarios."
@@ -3770,6 +3792,134 @@ msgstr "ispCP - Revendedor : Sistema de Soporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
+
+#, fuzzy
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Sintaxis o longitud del nombre de usuario incorrectas!"
+
+#, fuzzy
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Sintaxis o longitud del nombre de la contraseña incorrectas!"
+
+#, fuzzy
+#~ msgid "Incorrect email number or syntax!"
+#~ msgstr "Sintaxis o longitud del correo electrónico incorrectas!"
+
+#, fuzzy
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "¡Cantidad max de dominios o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "¡Cantidad max de subdominios o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "¡Cantidad max de alias o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "¡Cantidad max de FTP o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "¡Cantidad max de correo o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "¡Cantidad max de bases de datos SQL o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "¡Cantidad max de usuarios SQL o sintaxis incorrectos!"
+
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "¡Capacidad max de Tráfico o sintaxis incorrectos!"
+
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "¡Capacidad max de espacio o sintaxis incorrectos!"
+
+#, fuzzy
+#~ msgid "Incorrect alias number or syntax!"
+#~ msgstr "Sintaxis o longitud de los alias incorrecta!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account number or syntax!"
+#~ msgstr "Sintaxis o longitud de las cuentas de FTP incorrecta!"
+
+#, fuzzy
+#~ msgid "Incorrect SQL database number or syntax!"
+#~ msgstr "Sintaxis o longitud de las bases de datos SQL incorrecta!"
+
+#, fuzzy
+#~ msgid "Incorrect SQL user number or syntax!"
+#~ msgstr ""
+#~ "Sintaxis o longitud de los usuarios de las bases de datos incorrecta!"
+
+#, fuzzy
+#~ msgid "Incorrect disk number or syntax!"
+#~ msgstr "Sintaxis o longitud del disco incorrecta!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account count or no number<br />"
+#~ msgstr "Sintaxis o longitud de las cuentas de FTP incorrecta!"
+
+#, fuzzy
+#~ msgid "<b>%s</b> Service can not be disabled! "
+#~ msgstr "<b>%s</b> El servicio no se puede desactivar!<br>"
+
+#~ msgid "There are <b>%s</b> records on the system!"
+#~ msgstr "Hay <b>%s</b> registros en el sistema!"
+
+#, fuzzy
+#~ msgid "<b>%s</b> Service can not be limited! "
+#~ msgstr "<b>%s</b> servicio no puede ser limitado!<br>"
+
+#~ msgid ""
+#~ "Specified number is smaller than <b>%s</b> records, present on the system!"
+#~ msgstr ""
+#~ "El número especificado es inferior a <b>%s</b> registros existentes en el "
+#~ "sistema!"
+
+#, fuzzy
+#~ msgid "<b>%s</b> Service can not be unlimited! "
+#~ msgstr "El servicio <b>%s</b> no puede ser ilimitado !<br>"
+
+#~ msgid "There are reseller limits for the <b>%s</b> service!"
+#~ msgstr "Hay límites de revendedores para el servicio <b>%s</b>!"
+
+#~ msgid "You are exceeding reseller limits for the <b>%s</b> service!"
+#~ msgstr ""
+#~ "Estás excediendo los límites del revendedor para el servicio <b>%s</b>!"
+
+#~ msgid "Change user interface"
+#~ msgstr "Cambiar interfaz de usuario"
+
+#, fuzzy
+#~ msgid "show"
+#~ msgstr "Mostrar"
+
+#~ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
+#~ msgstr ""
+#~ "<b>%1$s</b> tiene permisos ilimitados para el servicio de <b>%2$s</b><br>"
+
+#~ msgid "<b>%s</b> service can not be limited !<br>"
+#~ msgstr "El servicio <b>%s</b> no puede limitarse!<br>"
+
+#~ msgid ""
+#~ "Specified number is smaller than <b>%s</b> amount, present on the system!"
+#~ msgstr ""
+#~ "El número especificado es inferior a la cantidad de <b>%s</b>  existentes "
+#~ "en el sistema!"
+
+#~ msgid "Incorrect price!"
+#~ msgstr "Precio incorrecto!"
+
+#~ msgid "Incorrect setup fee!"
+#~ msgstr "Precio de setup incorrecto!"
+
+#~ msgid "Edit properties"
+#~ msgstr "Editar propiedades"
 
 #~ msgid "User does not exist!"
 #~ msgstr "¡El usuario no existe!"

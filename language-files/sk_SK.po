@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 19:00-0500\n"
+"POT-Creation-Date: 2007-09-01 22:06-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -203,32 +203,45 @@ msgstr "Číslo"
 msgid "Reseller"
 msgstr "Predajca"
 
-msgid "Incorrect max domain count or syntax!"
-msgstr "Zlá dľžka alebo syntax"
+#, fuzzy
+msgid "Incorrect email syntax!"
+msgstr "Zlá veľkosť alebo syntax ceny!"
 
-msgid "Incorrect max subdomain count or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu sub-domén"
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Nesprávna syntax mena domény"
 
-msgid "Incorrect max alias count or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu aliasov"
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Zlá veľkosť alebo syntax subdomén!"
 
-msgid "Incorrect max FTP count or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho FTP kont"
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Nesprávne data!"
 
-msgid "Incorrect max mail count or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu e-mailov"
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Limit FTP kont"
 
-msgid "Incorrect max SQL databases count or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu SQL databáz"
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Zlá veľkosť alebo syntax e-mailových kont!"
 
-msgid "Incorrect max SQL users count or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu SQL užívateľov"
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
+msgstr "Limit SQL databáz"
 
-msgid "Incorrect max traffic amount or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu prenesených dát"
+#, fuzzy
+msgid "Incorrect SQL users limit!"
+msgstr "Limit SQL užívateľov"
 
-msgid "Incorrect max disk amount or syntax!"
-msgstr "Zlá hodnota alebo syntax maximálneho počtu diskového priestoru"
+#, fuzzy
+msgid "Incorrect traffic limit!"
+msgstr "Zlá veľkosť alebo syntax prenesených dát!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "Nesprávne data!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Musíte priradiť aspoň jednu IP adresu pre predajcu!"
@@ -462,38 +475,6 @@ msgstr "Zlá veľkosť alebo syntax ceny!"
 #, fuzzy
 msgid "Incorrect setup fee syntax!"
 msgstr "Zlá veľkosť alebo syntax zriaďovacieho poplatku!"
-
-#, fuzzy
-msgid "Incorrect subdomain length or syntax!"
-msgstr "Zlá veľkosť alebo syntax subdomén!"
-
-#, fuzzy
-msgid "Incorrect alias length or syntax!"
-msgstr "Zlá veľkosť alebo syntax aliasov!"
-
-#, fuzzy
-msgid "Incorrect mail account length or syntax!"
-msgstr "Zlá veľkosť alebo syntax e-mailových kont!"
-
-#, fuzzy
-msgid "Incorrect FTP account length or syntax!"
-msgstr "Zlá veľkosť alebo syntax FTP kont!"
-
-#, fuzzy
-msgid "Incorrect SQL database length or syntax!"
-msgstr "Zlá veľkosť alebo syntax SQL databáz!"
-
-#, fuzzy
-msgid "Incorrect SQL user length or syntax!"
-msgstr "Zlá veľkosť alebo syntax SQL užívateľov!"
-
-#, fuzzy
-msgid "Incorrect traffic length or syntax!"
-msgstr "Zlá veľkosť alebo syntax prenesených dát!"
-
-#, fuzzy
-msgid "Incorrect disk length or syntax!"
-msgstr "Zlá veľkosť alebo syntax diskového priestoru!"
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "Hostingový plán so zadaným menom už existuje!"
@@ -778,6 +759,29 @@ msgstr "Všetky prenesené dáta"
 msgid "Day"
 msgstr "Deň"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
+
+msgid "User session was killed!"
+msgstr "Užívateľské sedenie bolo zrušené!"
+
+msgid "Domain account"
+msgstr "Doménový účet"
+
+msgid "Edit admin"
+msgstr "Upraviť administrátora"
+
+msgid "Update"
+msgstr "Aktualizovať"
+
+msgid "Send new login data"
+msgstr "Pošli nové prihlasovacie údaje"
+
+#, fuzzy
+msgid "Generate password"
+msgstr "Zopakovať heslo"
+
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť predajcov"
 
@@ -891,28 +895,6 @@ msgstr "Maximálny počet prenesených dát [MB"
 
 msgid "Max disk amount [MB]"
 msgstr "Maximálny diskový priestor [MB"
-
-msgid "Update"
-msgstr "Aktualizovať"
-
-msgid "Send new login data"
-msgstr "Pošli nové prihlasovacie údaje"
-
-#, fuzzy
-msgid "Generate password"
-msgstr "Zopakovať heslo"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť užívateľa"
-
-msgid "User session was killed!"
-msgstr "Užívateľské sedenie bolo zrušené!"
-
-msgid "Domain account"
-msgstr "Doménový účet"
-
-msgid "Edit admin"
-msgstr "Upraviť administrátora"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrátor/Upraviť hostingový plán"
@@ -1294,10 +1276,6 @@ msgid "Moving aborted!"
 msgstr "Presun zrušený!"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr "<b>%1$s</b> má neobmedzené práva pre <b>%2$s</b> službu !<br>"
-
-#, php-format
 msgid ""
 "<b>%s</b> has IP address that can not be managed from the destination "
 "reseller !<br>This user can not be moved!"
@@ -1510,13 +1488,16 @@ msgstr "SQL<br>databáza"
 msgid "SQL<br>user"
 msgstr "SQL<br>užívateľ"
 
-msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+#, fuzzy
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Admin / Systémové nástroje / Log Rootkit Hunter-a"
 
-msgid "The file doesn't exist or can't be read."
+#, fuzzy, php-format
+msgid "%s doesn't exist or can't be read."
 msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
 
-msgid "Rootkit Log Checker"
+#, fuzzy
+msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Log kontroly Rootkit"
 
 msgid "ispCP - Admin/Server day stats"
@@ -2917,14 +2898,21 @@ msgstr "Prenesené dáta servra"
 msgid "Administrators list is empty!"
 msgstr "Zoznam administrátorov je prázdny!"
 
+msgid "Creation date"
+msgstr "Dátum vytvorenia"
+
 msgid "Created by"
 msgstr "Vytvorené"
 
 msgid "Resellers list is empty!"
 msgstr "Zoznam predajcov je prázdny!"
 
-msgid "Change user interface"
+#, fuzzy
+msgid "Switch to user interface"
 msgstr "Zmeniť užívateľské rozhranie"
+
+msgid "Switch"
+msgstr ""
 
 msgid "Not found user records matching the search criteria!"
 msgstr "Nenájdené záznamy užívateľa, ktoré by vyhovovali kritériu!"
@@ -2952,9 +2940,6 @@ msgstr "Predajci"
 
 msgid "Search"
 msgstr "Vyhľadať"
-
-msgid "Creation date"
-msgstr "Dátum vytvorenia"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3405,6 +3390,12 @@ msgstr "Nemáte žiaden záznam o užívateľovi."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Predajca/Pridať hostingový plán"
 
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Predajca/Zmeniť heslo"
 
@@ -3483,6 +3474,39 @@ msgstr "Upraviť doménu"
 msgid "Domain properties"
 msgstr "Vlastnosti domény"
 
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maximálny počet subdomén<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maximálny počet aliasov<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+"Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit FTP kont<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit SQL databáz<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit SQL užívateľov<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limit prenesených dát [MB]<br><i>(0 neobmedzený)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limit diskového priestoru [MB]<br><i>(0 neobmedzený)</i>"
+
 msgid "SQL Database"
 msgstr "SQL databáza"
 
@@ -3496,44 +3520,39 @@ msgstr "Vlastnosti domény úspešne aktualizované!"
 msgid "Domain properties updated successfully!"
 msgstr "Vlastnosti domény úspešne aktualizované!"
 
-#, php-format
-msgid "<b>%s</b> Service can not be disabled !<br>"
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be disabled! "
 msgstr "<b>%s</b> Služba nemôže byť vypnutá !<br>"
 
-#, php-format
-msgid "There are <b>%s</b> records on the system!"
+#, fuzzy, php-format
+msgid "There are <em>%s</em> records on system!"
 msgstr "Tu je <b>%s</b> záznamov v systéme!"
 
-#, php-format
-msgid "<b>%s</b> Service can not be limited !<br>"
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be limited! "
 msgstr "<b>%s</b> Služba nemôže byť limitovaná !<br>"
 
-#, php-format
+#, fuzzy, php-format
 msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
 "Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
 
-#, php-format
-msgid "<b>%s</b> Service can not be unlimited !<br>"
+#, fuzzy, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Tu je <b>%s</b> záznamov v systéme!"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
 msgstr "<b>%s</b> Služba nemôže byť nemodzená !<br>"
 
-#, php-format
-msgid "There are reseller limits for the <b>%s</b> service!"
+#, fuzzy, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
 msgstr "Existujú limiti predajcu pre službu <b>%s</b> !"
 
-#, php-format
-msgid "You are exceeding reseller limits for the <b>%s</b> service!"
+#, fuzzy, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr "Prekračujete limity predajcu pre službu <b>%s</b> !"
-
-#, php-format
-msgid "<b>%s</b> service can not be limited !<br>"
-msgstr "<b>%s</b> služba nemôže byť limitovaná !<br>"
-
-#, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
-msgstr "Zadané číslo je menšie ako <b>%s</b> to , ktoré je v systéme!"
 
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Užívateľ/Upraviť"
@@ -3549,12 +3568,6 @@ msgstr "ispCP - Predajca/Editovať hostingový plán"
 
 msgid "View hosting plan"
 msgstr "Zobraziť hostingový plán"
-
-msgid "Incorrect price!"
-msgstr "Nesprávna cena!"
-
-msgid "Incorrect setup fee!"
-msgstr "Nesprávny zriaďovací poplatok!"
 
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Predajca/Spravovať užívateľa/E-mail setup"
@@ -3731,8 +3744,13 @@ msgstr "ispCP - Užívatelia"
 msgid "Stats"
 msgstr "Štatistiky"
 
-msgid "Edit properties"
-msgstr "Upraviť vlastnosti"
+#, fuzzy
+msgid "Edit User"
+msgstr "Upraviť užívateľa"
+
+#, fuzzy
+msgid "View aliases"
+msgstr "zozbraziť aliasy"
 
 msgid "You have no users."
 msgstr "Nemáte žiadneho užívateľa."
@@ -3755,6 +3773,128 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#, fuzzy
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Zlá dľžka alebo syntax užívateľského mena!"
+
+#, fuzzy
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Zlá dľžka alebo syntax hesla!"
+
+#, fuzzy
+#~ msgid "Incorrect email number or syntax!"
+#~ msgstr "Zlá dľžka alebo syntax emailu!"
+
+#, fuzzy
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "Zlá dľžka alebo syntax"
+
+#, fuzzy
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu sub-domén"
+
+#, fuzzy
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu aliasov"
+
+#, fuzzy
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho FTP kont"
+
+#, fuzzy
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu e-mailov"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu SQL databáz"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu SQL užívateľov"
+
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu prenesených dát"
+
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "Zlá hodnota alebo syntax maximálneho počtu diskového priestoru"
+
+#, fuzzy
+#~ msgid "Incorrect alias number or syntax!"
+#~ msgstr "Zlá veľkosť alebo syntax aliasov!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account number or syntax!"
+#~ msgstr "Zlá veľkosť alebo syntax FTP kont!"
+
+#, fuzzy
+#~ msgid "Incorrect SQL database number or syntax!"
+#~ msgstr "Zlá veľkosť alebo syntax SQL databáz!"
+
+#, fuzzy
+#~ msgid "Incorrect SQL user number or syntax!"
+#~ msgstr "Zlá veľkosť alebo syntax SQL užívateľov!"
+
+#, fuzzy
+#~ msgid "Incorrect disk number or syntax!"
+#~ msgstr "Zlá veľkosť alebo syntax diskového priestoru!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account count or no number<br />"
+#~ msgstr "Zlá veľkosť alebo syntax FTP kont!"
+
+#, fuzzy
+#~ msgid "<b>%s</b> Service can not be disabled! "
+#~ msgstr "<b>%s</b> Služba nemôže byť vypnutá !<br>"
+
+#~ msgid "There are <b>%s</b> records on the system!"
+#~ msgstr "Tu je <b>%s</b> záznamov v systéme!"
+
+#, fuzzy
+#~ msgid "<b>%s</b> Service can not be limited! "
+#~ msgstr "<b>%s</b> Služba nemôže byť limitovaná !<br>"
+
+#~ msgid ""
+#~ "Specified number is smaller than <b>%s</b> records, present on the system!"
+#~ msgstr ""
+#~ "Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
+
+#, fuzzy
+#~ msgid "<b>%s</b> Service can not be unlimited! "
+#~ msgstr "<b>%s</b> Služba nemôže byť nemodzená !<br>"
+
+#~ msgid "There are reseller limits for the <b>%s</b> service!"
+#~ msgstr "Existujú limiti predajcu pre službu <b>%s</b> !"
+
+#~ msgid "You are exceeding reseller limits for the <b>%s</b> service!"
+#~ msgstr "Prekračujete limity predajcu pre službu <b>%s</b> !"
+
+#~ msgid "Change user interface"
+#~ msgstr "Zmeniť užívateľské rozhranie"
+
+#, fuzzy
+#~ msgid "show"
+#~ msgstr "Zobraz"
+
+#~ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
+#~ msgstr "<b>%1$s</b> má neobmedzené práva pre <b>%2$s</b> službu !<br>"
+
+#~ msgid "<b>%s</b> service can not be limited !<br>"
+#~ msgstr "<b>%s</b> služba nemôže byť limitovaná !<br>"
+
+#~ msgid ""
+#~ "Specified number is smaller than <b>%s</b> amount, present on the system!"
+#~ msgstr "Zadané číslo je menšie ako <b>%s</b> to , ktoré je v systéme!"
+
+#~ msgid "Incorrect price!"
+#~ msgstr "Nesprávna cena!"
+
+#~ msgid "Incorrect setup fee!"
+#~ msgstr "Nesprávny zriaďovací poplatok!"
+
+#~ msgid "Edit properties"
+#~ msgstr "Upraviť vlastnosti"
 
 #~ msgid "User does not exist!"
 #~ msgstr "Užívateľ neexistuje!"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 19:00-0500\n"
+"POT-Creation-Date: 2007-09-01 22:06-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -195,32 +195,45 @@ msgstr "Número"
 msgid "Reseller"
 msgstr "Representante"
 
-msgid "Incorrect max domain count or syntax!"
-msgstr "Número máximo de domínios inválido!"
-
-msgid "Incorrect max subdomain count or syntax!"
-msgstr "Número máximo de sub-domínios inválido!"
-
-msgid "Incorrect max alias count or syntax!"
-msgstr "Número máximo de alias inválido!"
-
-msgid "Incorrect max FTP count or syntax!"
-msgstr "Número máximo de contas de FTP inválido!"
-
-msgid "Incorrect max mail count or syntax!"
+#, fuzzy
+msgid "Incorrect email syntax!"
 msgstr "Número máximo de contas de e-mail inválido!"
 
-msgid "Incorrect max SQL databases count or syntax!"
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Nome do domínio incorreto!"
+
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Número máximo de sub-domínios inválido!"
+
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Dados inválidos"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Número máximo de contas de FTP inválido!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Número máximo de contas de e-mail inválido!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
 msgstr "Número máximo de banco de dados inválido!"
 
-msgid "Incorrect max SQL users count or syntax!"
+#, fuzzy
+msgid "Incorrect SQL users limit!"
 msgstr "Número máximo de usuários de SQL inválido!"
 
-msgid "Incorrect max traffic amount or syntax!"
+#, fuzzy
+msgid "Incorrect traffic limit!"
 msgstr "Número máximo do tráfego inválido!"
 
-msgid "Incorrect max disk amount or syntax!"
-msgstr "Número máximo do tamanho do disco inválido!"
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "Dados inválidos"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Você deve designar ao menos um número IP para um representante!"
@@ -448,30 +461,6 @@ msgid "Incorrect price syntax!"
 msgstr ""
 
 msgid "Incorrect setup fee syntax!"
-msgstr ""
-
-msgid "Incorrect subdomain length or syntax!"
-msgstr ""
-
-msgid "Incorrect alias length or syntax!"
-msgstr ""
-
-msgid "Incorrect mail account length or syntax!"
-msgstr ""
-
-msgid "Incorrect FTP account length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL database length or syntax!"
-msgstr ""
-
-msgid "Incorrect SQL user length or syntax!"
-msgstr ""
-
-msgid "Incorrect traffic length or syntax!"
-msgstr ""
-
-msgid "Incorrect disk length or syntax!"
 msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
@@ -756,6 +745,29 @@ msgstr "Todo tráfego"
 msgid "Day"
 msgstr "Dia"
 
+#, fuzzy
+msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgstr "ispCP - Admin/Gerenciar Usuários/Alterar Usuário"
+
+msgid "User session was killed!"
+msgstr "Seção de usuário cancelada"
+
+msgid "Domain account"
+msgstr "Conta de domínio"
+
+msgid "Edit admin"
+msgstr "Editar administrador"
+
+msgid "Update"
+msgstr "Atualizar"
+
+msgid "Send new login data"
+msgstr "Envie novos dados de login"
+
+#, fuzzy
+msgid "Generate password"
+msgstr "Alterar senha"
+
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Admin/Gerenciar Usuários/Alterar Representante"
 
@@ -868,28 +880,6 @@ msgstr "Limite de tráfego [MB]"
 
 msgid "Max disk amount [MB]"
 msgstr "Espaço máximo em disco [MB]"
-
-msgid "Update"
-msgstr "Atualizar"
-
-msgid "Send new login data"
-msgstr "Envie novos dados de login"
-
-#, fuzzy
-msgid "Generate password"
-msgstr "Alterar senha"
-
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Admin/Gerenciar Usuários/Alterar Usuário"
-
-msgid "User session was killed!"
-msgstr "Seção de usuário cancelada"
-
-msgid "Domain account"
-msgstr "Conta de domínio"
-
-msgid "Edit admin"
-msgstr "Editar administrador"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrador/Alterar plano de hospedagem"
@@ -1264,10 +1254,6 @@ msgid "Moving aborted!"
 msgstr "Alteração cancelada!"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> service !<br>"
-msgstr ""
-
-#, php-format
 msgid ""
 "<b>%s</b> has IP address that can not be managed from the destination "
 "reseller !<br>This user can not be moved!"
@@ -1474,13 +1460,15 @@ msgstr "SQL<br>banco de dados"
 msgid "SQL<br>user"
 msgstr "SQL<br>usuários"
 
-msgid "ispCP Admin / System Tools / Rootkit Hunter Log"
+#, fuzzy
+msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "Admin ispCP / Ferramentas de Sistema / Estado do Servidor"
+
+#, php-format
+msgid "%s doesn't exist or can't be read."
 msgstr ""
 
-msgid "The file doesn't exist or can't be read."
-msgstr ""
-
-msgid "Rootkit Log Checker"
+msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
 msgid "ispCP - Admin/Server day stats"
@@ -2864,14 +2852,21 @@ msgstr "Tráfego do servidor"
 msgid "Administrators list is empty!"
 msgstr ""
 
+msgid "Creation date"
+msgstr "Data"
+
 msgid "Created by"
 msgstr "Criado por"
 
 msgid "Resellers list is empty!"
 msgstr "Lista de representantes vazia!"
 
-msgid "Change user interface"
+#, fuzzy
+msgid "Switch to user interface"
 msgstr "Alterar layout"
+
+msgid "Switch"
+msgstr ""
 
 msgid "Not found user records matching the search criteria!"
 msgstr "Não existem registros para a busca realizada!"
@@ -2899,9 +2894,6 @@ msgstr "Representantes"
 
 msgid "Search"
 msgstr "Procura"
-
-msgid "Creation date"
-msgstr "Data"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
@@ -3325,6 +3317,12 @@ msgstr "Você não possui registro de usuários."
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Representante/Adicionar plano de hospedagem"
 
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Representante/Alterar Senha"
 
@@ -3399,6 +3397,38 @@ msgstr "Editar domínio"
 msgid "Domain properties"
 msgstr "Propriedades do domínio"
 
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limite de usuários SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Bancos de dados SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limite de usuários SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limite de usuários SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Bancos de dados SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limite de usuários SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limite de tráfego [MB]<br><i>(0 ilimitado)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "= Limite de espaço [MB]<br><i>(0 ilimitado)</i>"
+
 msgid "SQL Database"
 msgstr "SQL"
 
@@ -3413,41 +3443,36 @@ msgid "Domain properties updated successfully!"
 msgstr "Propriedades do domínio atualizadas com sucesso!"
 
 #, php-format
-msgid "<b>%s</b> Service can not be disabled !<br>"
+msgid "The <em>%s</em> service can not be disabled! "
 msgstr ""
 
 #, php-format
-msgid "There are <b>%s</b> records on the system!"
+msgid "There are <em>%s</em> records on system!"
 msgstr ""
 
 #, php-format
-msgid "<b>%s</b> Service can not be limited !<br>"
-msgstr ""
-
-#, php-format
-msgid ""
-"Specified number is smaller than <b>%s</b> records, present on the system!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> Service can not be unlimited !<br>"
-msgstr ""
-
-#, php-format
-msgid "There are reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "You are exceeding reseller limits for the <b>%s</b> service!"
-msgstr ""
-
-#, php-format
-msgid "<b>%s</b> service can not be limited !<br>"
+msgid "The <em>%s</em> service can not be limited! "
 msgstr ""
 
 #, php-format
 msgid ""
-"Specified number is smaller than <b>%s</b> amount, present on the system!"
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service can not be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
 msgid "ispCP - Users/Edit"
@@ -3464,12 +3489,6 @@ msgstr "ispCP - Representante/Alterar plano de hospedagem"
 
 msgid "View hosting plan"
 msgstr "Ver plano de hospedagem"
-
-msgid "Incorrect price!"
-msgstr ""
-
-msgid "Incorrect setup fee!"
-msgstr ""
 
 msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr ""
@@ -3646,8 +3665,13 @@ msgstr "ispCP - Usuários"
 msgid "Stats"
 msgstr ""
 
-msgid "Edit properties"
-msgstr "Editar propriedades"
+#, fuzzy
+msgid "Edit User"
+msgstr "Editar usuário"
+
+#, fuzzy
+msgid "View aliases"
+msgstr "Ver aliases"
 
 msgid "You have no users."
 msgstr "Você não possui usuários."
@@ -3670,6 +3694,70 @@ msgstr "ispCP - Representante : Sistema de Suporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "Mensagem foi enviada."
+
+#, fuzzy
+#~ msgid "Incorrect username number or syntax!"
+#~ msgstr "Número máximo de usuários de SQL inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect password number or syntax!"
+#~ msgstr "Número máximo de alias inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max domain number or syntax!"
+#~ msgstr "Número máximo de domínios inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max subdomain number or syntax!"
+#~ msgstr "Número máximo de sub-domínios inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max alias number or syntax!"
+#~ msgstr "Número máximo de alias inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max FTP number or syntax!"
+#~ msgstr "Número máximo de contas de FTP inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max mail number or syntax!"
+#~ msgstr "Número máximo de contas de e-mail inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL databases number or syntax!"
+#~ msgstr "Número máximo de banco de dados inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect max SQL users number or syntax!"
+#~ msgstr "Número máximo de usuários de SQL inválido!"
+
+#~ msgid "Incorrect max traffic amount or syntax!"
+#~ msgstr "Número máximo do tráfego inválido!"
+
+#~ msgid "Incorrect max disk amount or syntax!"
+#~ msgstr "Número máximo do tamanho do disco inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect alias number or syntax!"
+#~ msgstr "Número máximo de alias inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect disk number or syntax!"
+#~ msgstr "Número máximo do tamanho do disco inválido!"
+
+#, fuzzy
+#~ msgid "Incorrect FTP account count or no number<br />"
+#~ msgstr "Número máximo de contas de FTP inválido!"
+
+#~ msgid "Change user interface"
+#~ msgstr "Alterar layout"
+
+#, fuzzy
+#~ msgid "show"
+#~ msgstr "Mostrar"
+
+#~ msgid "Edit properties"
+#~ msgstr "Editar propriedades"
 
 #~ msgid "User does not exist!"
 #~ msgstr "Usuário não existe!"
