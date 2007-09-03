@@ -38,15 +38,14 @@ function sbmt(form, uaction) {
 
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
-	<tr>
-		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" border="0"></td>
-		<td style="height: 56px; width: 617px;"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" border="0"></td>
-		<td style="width:100%; background-image: url({THEME_COLOR_PATH}/images/top/top_bg.jpg)">&nbsp;</td>
-		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0"></td>
-	</tr>
+<tr>
+<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="../themes/omega_original/images/top/top_left.jpg" border="0"></td>
+<td style="height: 56px; width:100%; background-image: url(../themes/omega_original/images/top/top_bg.jpg)"><img src="../themes/omega_original/images/top/top_left_bg.jpg" border="0"></td>
+<td style="width: 73px; height: 56px;"><img src="../themes/omega_original/images/top/top_right.jpg" border="0"></td>
+</tr>
 	<tr>
 		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan=3 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
+	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
 				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
 					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" border="0"></td>
@@ -76,8 +75,8 @@ function sbmt(form, uaction) {
         <table width="100%" cellpadding="5" cellspacing="5">
           <!-- BDP: admin_message -->
           <tr>
-            <td width="25" nowrap="nowrap">&nbsp;</td>
-            <td colspan="3" nowrap="nowrap" class="title"><font color="#FF0000">{ADMIN_MESSAGE}</font></td>
+            <td width="25">&nbsp;</td>
+            <td colspan="3" class="title"><font color="#FF0000">{ADMIN_MESSAGE}</font></td>
           </tr>
           <!-- EDP: admin_message -->
           <!-- BDP: admin_list -->
@@ -134,8 +133,8 @@ function sbmt(form, uaction) {
     <td><table width="100%" cellpadding="5" cellspacing="5">
       <!-- BDP: rsl_message -->
       <tr>
-        <td width="25" nowrap="nowrap">&nbsp;</td>
-        <td colspan="5" nowrap="nowrap" class="title"><font color="#FF0000">{RSL_MESSAGE}</font></td>
+        <td width="25">&nbsp;</td>
+        <td colspan="5" class="title"><font color="#FF0000">{RSL_MESSAGE}</font></td>
       </tr>
       <!-- EDP: rsl_message -->
       <!-- BDP: rsl_list -->
@@ -183,10 +182,10 @@ function sbmt(form, uaction) {
     <td><form action="manage_users.php" method="post" name="search_user" id="search_user">
       <table width="100%" cellpadding="5" cellspacing="5">
         <tr>
-          <td width="25" nowrap="nowrap">&nbsp;</td>
-          <td colspan="7" nowrap="nowrap" class="title"><table border="0" cellspacing="0" cellpadding="0">
+          <td width="25">&nbsp;</td>
+          <td colspan="7" class="title"><table border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td nowrap="nowrap"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px" />
+              <td><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px" />
                       <select name="search_common" class="textinput">
                         <option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
                         <option value="customer_id" {M_CUSTOMER_ID_SELECTED}>{M_CUSTOMER_ID}</option>
@@ -200,19 +199,19 @@ function sbmt(form, uaction) {
                         <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
                         <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
                     </select></td>
-              <td nowrap="nowrap"><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
+              <td><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
               </td>
             </tr>
           </table>
 		  </td>
-          <td align="right" nowrap="nowrap"><input type="hidden" name="details" value="" />
+          <td align="right"><input type="hidden" name="details" value="" />
             <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" /> <a href="#" class="link" onClick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
 		  </td>
         </tr>
         <!-- BDP: usr_message -->
         <tr>
-          <td width="25" nowrap="nowrap">&nbsp;</td>
-          <td colspan="7" nowrap="nowrap" class="title"><font color="#FF0000">{USR_MESSAGE}</font></td>
+          <td width="25">&nbsp;</td>
+          <td colspan="7" class="title"><font color="#FF0000">{USR_MESSAGE}</font></td>
         </tr>
         <!-- EDP: usr_message -->
         <!-- BDP: usr_list -->
@@ -231,10 +230,10 @@ function sbmt(form, uaction) {
           <td class="{USR_CLASS}"><a href="http://www.{USR_USERNAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0"/> {USR_USERNAME}</a></td>
           <td class="{USR_CLASS}" align="center">{USER_CREATED_ON}</td>
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
-          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
-          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
-          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT}</a></td>
-          <td width="100" align="center" nowrap="nowrap" class="{USR_CLASS}">
+          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
+          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link">{GO_TO_USER_INTERFACE}</a></td>
+          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT}</a></td>
+          <td width="100" align="center" class="{USR_CLASS}">
 		    <!-- BDP: usr_delete_show -->
             -
             <!-- EDP: usr_delete_show -->
