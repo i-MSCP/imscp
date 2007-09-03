@@ -70,7 +70,7 @@ dfn:hover {
 }
 
 #maincontainer {
-    background-image: url(../themes/omega/img/logo_right.png);
+    background-image: url(/tools/pma/themes/omega/img/logo_right.png);
     background-position: <?php echo $right; ?> bottom;
     background-repeat: no-repeat;
     border-bottom: 1px solid silver;
@@ -81,7 +81,7 @@ th {
     font-weight:        bold;
     color:              #000000;
     background-color:   #ff9900;
-    background-image:   url(../themes/omega/img/tbl_th.png);
+    background-image:   url(/tools/pma/themes/omega/img/tbl_th.png);
     background-repeat:  repeat-x;
     background-position: top;
     height:             18px;
@@ -120,7 +120,7 @@ th.td{
     font-weight: 		 normal;
     color: 				 transparent;
     background-color: 	 transparent;
-    background-image: 	 url(../themes/omega/img/tbl_th.png);
+    background-image: 	 url(/tools/pma/themes/omega/img/tbl_th.png);
 
 }
 
@@ -417,7 +417,7 @@ div.notice {
     margin:             0.5em 0 0.5em 0;
     border:             0.1em solid #FFD700;
     <?php if ( $GLOBALS['cfg']['ErrorIconic'] ) { ?>
-    background-image: url(../themes/omega/img/s_notice.png);
+    background-image: url(/tools/pma/themes/omega/img/s_notice.png);
     background-repeat:  no-repeat;
         <?php if ( $GLOBALS['text_dir'] === 'ltr' ) { ?>
     background-position: 10px 50%;
@@ -449,7 +449,7 @@ div.warning {
     width:              90%;
 
     <?php if ( $GLOBALS['cfg']['ErrorIconic'] ) { ?>
-    background-image: url(../themes/omega/img/s_warn.png);
+    background-image: url(/tools/pma/themes/omega/img/s_warn.png);
     background-repeat:  no-repeat;
         <?php if ( $GLOBALS['text_dir'] === 'ltr' ) { ?>
     background-position: 10px 50%;
@@ -480,7 +480,7 @@ div.error {
     border:             0.1em solid #ff0000;
     width:              90%;
     <?php if ( $GLOBALS['cfg']['ErrorIconic'] ) { ?>
-	background-image:   url(../themes/omega/img/s_error.png);
+	background-image:   url(/tools/pma/themes/omega/img/s_error.png);
     background-repeat:  no-repeat;
         <?php if ( $GLOBALS['text_dir'] === 'ltr' ) { ?>
     background-position: 10px 50%;
@@ -511,7 +511,7 @@ fieldset.confirmation legend {
     border-right:       0.1em solid #FF0000;
     font-weight:        bold;
     <?php if ( $GLOBALS['cfg']['ErrorIconic'] ) { ?>
-    background-image: url(../themes/omega/img/s_error.png);
+    background-image: url(/tools/pma/themes/omega/img/s_error.png);
     background-repeat:  no-repeat;
         <?php if ( $GLOBALS['text_dir'] === 'ltr' ) { ?>
     background-position: 5px 50%;
@@ -536,7 +536,7 @@ fieldset.confirmation legend {
     font-weight:        bold;
     color:              #ffffff;
     background-color:    #cccccc;
-    background-image:    url(../themes/omega/img/tbl_header.png);
+    background-image:    url(/tools/pma/themes/omega/img/tbl_header.png);
     background-repeat:  repeat-x;
     background-position: top;
     height:             18px;
@@ -546,7 +546,7 @@ fieldset.confirmation legend {
     font-weight:        normal;
     color:              #ffffff;
     background-color:    #cccccc;
-    background-image:    url(../themes/omega/img/tbl_header.png);
+    background-image:    url(/tools/pma/themes/omega/img/tbl_header.png);
     background-repeat:  repeat-x;
     background-position: top;
 }
@@ -602,7 +602,7 @@ ul#topmenu {
     margin:             0;
     padding:            0;
     background-color:    #cccccc;
-	background-image:    url(../themes/omega/img/tbl_header.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header.png);
     background-repeat:   repeat-x;
     background-position: top;
 	height: 			 28px;
@@ -637,20 +637,20 @@ span.tab {
 	color:               #FFFFFF;
 	padding: 			 4px 8px 8px 8px;
 	margin: 			-1px 0px 0px -1px;
-	background-image:    url(../themes/omega/img/tbl_header_disabled.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header_disabled.png);
 	background-repeat:   repeat-x;
     background-position: top;
 }
 
 span.tab:hover {
-	background-image:    url(../themes/omega/img/tbl_header_disabled.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header_disabled.png);
 	font-family:         Verdana, Arial, Helvetica, sans-serif;
 	font-size:           11px;
 	font-weight:         bold;
 	color:               #FFFFFF;
 	padding: 			 4px 8px 8px 8px;
 	margin: 			-1px 0px 0px -1px;
-	background-image:    url(../themes/omega/img/tbl_header2.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header2.png);
 	background-repeat:   repeat-x;
     background-position: top;
     text-decoration:		none;
@@ -692,7 +692,7 @@ ul#topmenu li {
     border: 			 0px 1px 0px 0px;
 	border-style:		 solid;
 	border-color: 		 #FFFFFF;
-	background-image:    url(../themes/omega/img/tbl_header2.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header2.png);
     background-repeat:   repeat-x;
     background-position: top;
 	/* overwrite default button look */
@@ -717,7 +717,7 @@ ul#topmenu li a.tab:hover {
 }
 
 ul#topmenu li:hover {
-	background-image:    url(../themes/omega/img/tbl_header2.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header2.png);
 	text-decoration: 	 underline;
 	font-family:         Verdana, Arial, Helvetica, sans-serif;
     font-size:           11px;
@@ -732,7 +732,7 @@ ul#topmenu li a.tabcaution {
     font-weight:         bold;
     color:               #FFFFFF;
     background-color:    #cc0000;
-    background-image:    url(../themes/omega/img/tbl_error.png);
+    background-image:    url(/tools/pma/themes/omega/img/tbl_error.png);
     background-repeat:   repeat-x;
     background-position: top;
     padding: 			 4px 8px 8px 8px;
@@ -743,7 +743,7 @@ ul#topmenu li a.tabcaution {
 	margin-left: 		 0px;
 }
 ul#topmenu li a.tabcaution:hover {
-	background-image:    url(../themes/omega/img/tbl_error2.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_error2.png);
 	padding: 			 4px 8px 8px 8px;
 }
 
@@ -752,7 +752,7 @@ a.tabactive {
     font-family:         Verdana, Arial, Helvetica, sans-serif;
     font-weight:         bold;
     color:               #f4dc6b;
-    background-image:    url(../themes/omega/img/tbl_headerActive.png);
+    background-image:    url(/tools/pma/themes/omega/img/tbl_headerActive.png);
     background-repeat:   repeat-x;
     background-position: top;
     background-color:    #ffffff;
@@ -765,7 +765,7 @@ a.tabactive {
 }
 
 a.tabactive:hover {
-	background-image:    url(../themes/omega/img/tbl_header.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header.png);
 	padding: 		 	 4px 8px 8px 8px; /* top left bottom right - I just can't memorize this ;) */
     margin-left: 		 -3px;
 	color:				 #FFFFFF;
@@ -782,12 +782,12 @@ a.tab:link, a.tab:active,a.tab:hover, a.tab:visited {
 
 a.tab:hover,
 .tabactive {
-	background-image:    url(../themes/omega/img/tbl_header.png);
+	background-image:    url(/tools/pma/themes/omega/img/tbl_header.png);
 }
 
 /* disabled drop/empty tabs */
 span.tab, span.tabcaution {
-        cursor:             url(../themes/darkblue_orange/img/error.ico), default;
+        cursor:             url(/tools/pma/themes/darkblue_orange/img/error.ico), default;
 }
 <?php } ?>
 /* end topmenu */

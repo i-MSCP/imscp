@@ -9,6 +9,7 @@ ispCP ω 1.0.0 Changelog
 2007-09-03 Malte Geierhos
 	- GUI: 
 		* Fixed editing of ftp Accounts with custom dir doesn't work
+		* Fixed PMA css (pictures have wrong path)
 
 2007-09-02 Benedikt Heintel
 	- GUI:
