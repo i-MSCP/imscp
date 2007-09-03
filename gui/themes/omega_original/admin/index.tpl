@@ -154,7 +154,7 @@
             <td width="405" background="{THEME_COLOR_PATH}/images/stats_background.gif"><table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_left.gif" width="7" height="13"></td>
-                <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="../images/trans.gif" width="{BAR_VALUE}" height="1"></td>
+                <td background="{THEME_COLOR_PATH}/images/bars/stats_background.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="{BAR_VALUE}" height="1"></td>
                 <td width="7"><img src="{THEME_COLOR_PATH}/images/bars/stats_right.gif" width="7" height="13"></td>
               </tr>
             </table></td>

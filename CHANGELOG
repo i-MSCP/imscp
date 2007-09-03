@@ -10,6 +10,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI: 
 		* Fixed editing of ftp Accounts with custom dir doesn't work
 		* Fixed PMA css (pictures have wrong path)
+		* Fixed #611 (wrong path / image preloader)
 
 2007-09-02 Benedikt Heintel
 	- GUI:

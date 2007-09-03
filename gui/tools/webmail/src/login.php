@@ -80,7 +80,7 @@ $header = "<script language=\"JavaScript\" type=\"text/javascript\">\n" .
           "  }\n".
           "// -->\n".
           "</script>\n";
-$custom_css = 'none.css';
+$custom_css = '';
 displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE );
 
 echo '<body text="#000000" bgcolor="#FFFFFF" link="#0000CC" vlink="#0000CC" alink="#0000CC" onload="squirrelmail_loginpage_onload();">' .
