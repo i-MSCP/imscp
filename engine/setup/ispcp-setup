@@ -903,9 +903,10 @@ sub setup_shut_down {
 MSG
 	print STDOUT $shut_down_message;
 
-	if (sys_command("which rkhunter") eq 0 ) {
-	   print STDOUT "You might want to execute the next command as well: \n";
-	   print STDOUT "\trkhunter --update\n\n";
+	if (sys_command_rs("which rkhunter > /dev/null") eq 0 ) {
+	   print STDOUT "Setup is now updating rkhunter:\n";
+	   sys_command("rkhunter --update");
+	   print STDOUT "\n\n";
 	}
 
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
@@ -1518,13 +1519,13 @@ sub setup_crontab {
 
 		$rkhunter = "";
 
-		if (sys_command("which rkhunter") ne 0) {
+		if (sys_command_rs("which rkhunter > /dev/null") ne 0) {
 			$rkhunter = "#";
 		}
 
 		$ckrootkit = "";
 
-		if (sys_command("which chkrootkit") ne 0) {
+		if (sys_command_rs("which chkrootkit > /dev/null") ne 0) {
 			$ckrootkit = "#";
 		}
 

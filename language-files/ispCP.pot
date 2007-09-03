@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-03 18:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1033,6 +1033,12 @@ msgid "Subdomain errors"
 msgstr ""
 
 msgid "Mail account errors"
+msgstr ""
+
+msgid "ispCP Daemon tools"
+msgstr ""
+
+msgid "Execute requests"
 msgstr ""
 
 #, php-format

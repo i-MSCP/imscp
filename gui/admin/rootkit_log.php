@@ -50,7 +50,7 @@ $blocksCount = 0;
 $config_entries = array('RKHUNTER_LOG', 'CHKROOTKIT_LOG', 'OTHER_ROOTKIT_LOG');
 
 foreach ($config_entries as $config_entry) {
-    if (empty($config_entry) || !isset($cfg[$config_entry])) {
+    if (empty($config_entry) || !isset($cfg[$config_entry]) || empty($cfg[$config_entry])) {
         continue;
     }
 

@@ -27,29 +27,37 @@
 #
 #    http://www.isp-control.net
 
+ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
+        CFLAGS += -O0
+else
+        CFLAGS += -O3
+endif
+
+ifneq (,$(findstring nostrip,$(DAEMON_OPTIONS)))
+        STRIP = touch -a -c
+else
+        STRIP = strip -s
+endif
+
 
 OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
 helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
-BUILD = gcc -O3 -ansi -Wall -Wstrict-prototypes -pedantic -o
+BUILD = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
 
-COMPILE = gcc -O3 -ansi -Wall -Wstrict-prototypes -pedantic -c -o
-
-STRIP = strip -s
+COMPILE = gcc -ansi -Wall -Wstrict-prototypes -pedantic -c $(CFLAGS)
 
 ispcp_daemon: $(OBJS)
-	$(BUILD) ispcp_daemon $(OBJS)
+	$(BUILD) -o ispcp_daemon $(OBJS)
 	$(STRIP) ispcp_daemon
 
 %.o: %.c %.h
-	$(COMPILE) $@ $*.c
-
-uninstall: clean
+	$(COMPILE) -o $@ $*.c
 
 clean:
 	rm -rf *~
 	rm -rf *.o
 	rm -rf ispcp_daemon
 
-.PHONY: clean uninstall
+.PHONY: clean

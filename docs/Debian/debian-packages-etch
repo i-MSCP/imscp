@@ -10,6 +10,7 @@ courier-base
 courier-imap
 courier-maildrop
 courier-pop
+chkrootkit
 diff
 dnsutils
 gcc
