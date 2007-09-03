@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-03 Malte Geierhos
+	- GUI: 
+		* Fixed editing of ftp Accounts with custom dir doesn't work
+
 2007-09-02 Benedikt Heintel
 	- GUI:
 		* Fixed #625: Error in SQL syntax on Admin Log -> Page 2

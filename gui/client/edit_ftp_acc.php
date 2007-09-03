@@ -75,7 +75,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
     global $other_dir;
 
     // Create a virtual filesystem (it's important to use =&!)
-    $vfs =& new vfs($dmn_name, $sql);
+    // $vfs =& new vfs($dmn_name, $sql);
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
         if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
@@ -90,12 +90,19 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 
             $pass = crypt_user_ftp_pass($_POST['pass']);
             if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-                $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
 
-                if (!$vfs->exists($other_dir) || !is_subdir_of($cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'], $other_dir)) {
+	      $other_dir = clean_input($_POST['other_dir']);
+
+	      $rs = $vfs->exists($other_dir);
+	      if (!$rs) {
                     set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])));
                     return;
                 } //domain_id
+
+	     //append the full path (vfs is always checking per ftp so its logged in in the root of the user (no absolute paths are allowed here!)
+
+	     $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
+
                 $query = <<<SQL_QUERY
                     update
                         ftp_users
@@ -123,17 +130,34 @@ SQL_QUERY;
             set_page_message(tr('FTP account data updated!'));
             user_goto('ftp_accounts.php');
         } else {
-            if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-                $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . clean_input($_POST['other_dir']);
+	    if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
+	            $other_dir = clean_input($_POST['other_dir']);
+	            // Strip possible double-slashes
+	            $other_dir = str_replace('//', '/', $other_dir);
+	            // Check for updirs ".."
+	            $res = preg_match("/\.\./", $other_dir);
+		    if ($res !== 0) {
+			set_page_message(tr('Incorrect mount point length or syntax'));
+		    	return;
+		    }
+	            $ftp_home = $cfg['FTP_HOMEDIR'] . "/$dmn_name/" . $other_dir;
+	            // Strip possible double-slashes
+	            $ftp_home = str_replace('//', '/', $other_dir);
+	            // Check for $other_dir existance
+	            // Create a virtual filesystem (it's important to use =&!)
+	            $vfs =& new vfs($dmn_name, $sql);
+	            // Check for directory existance
+	            $res = $vfs->exists($other_dir);
+  	            if (!$res) {
+	                 set_page_message(tr('%s does not exist', $other_dir));
+	                 return;
+	            }
+		    $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'] . $other_dir;
+	    } else { // End of user-specified mount-point
 
-                if (!$vfs->exists($other_dir) || !is_subdir_of($cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'], $other_dir)) {
-                    set_page_message(tr('%s does not exist', clean_input($_POST['other_dir'])));
-                    return;
-                }
-            } else {
-                $other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'];
-            }
-
+		$other_dir = $cfg['FTP_HOMEDIR'] . "/" . $_SESSION['user_logged'];
+	   
+	    }
             $query = <<<SQL_QUERY
                     update
                         ftp_users
@@ -156,7 +180,7 @@ global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(array(
-				'TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Edit FTP Account'),
+			'TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Edit FTP Account'),
 		        'THEME_COLOR_PATH' => "../themes/$theme_color",
 		        'THEME_CHARSET' => tr('encoding'), 
 		        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
