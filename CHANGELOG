@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-04 Malte Geierhos
+	- GUI
+		* Fixed #650 $vfs not defined inside function
+
 2007-09-03 Raphael Geissert
     - DOCS:
         * Fixed #627: chkrootkit is missing on the package list
@@ -19,6 +23,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed editing of ftp Accounts with custom dir doesn't work
 		* Fixed PMA css (pictures have wrong path)
 		* Fixed #611 (wrong path / image preloader)
+		* Fixed #486 Page Width too wide on some Pages (with ie7)
 
 2007-09-02 Benedikt Heintel
 	- GUI:
