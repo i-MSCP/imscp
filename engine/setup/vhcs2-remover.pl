@@ -31,7 +31,7 @@
 
 
 use FindBin;
-use lib "$FindBin::Bin//var/www/vhcs2/engine";
+use lib "$FindBin::Bin/:/var/www/vhcs2/engine:/srv/www/vhcs2/engine";
 require 'vhcs2_common_code.pl';
 
 use strict;
