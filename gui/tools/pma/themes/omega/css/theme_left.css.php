@@ -1,32 +1,40 @@
 <?php
-    // unplanned execution path
-    if (!defined('PMA_MINIMUM_COMMON')) {
-        exit();
-    }
-?> 
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * navigation css file from theme Original
+ *
+ * @version $Id: theme_left.css.php 10520 2007-07-22 19:05:42Z lem9 $
+ * @package phpMyAdmin-theme
+ * @subpackage Original
+ */
+
+// unplanned execution path
+if (!defined('PMA_MINIMUM_COMMON')) {
+    exit();
+}
+?>
 /******************************************************************************/
 /* general tags */
+
 body {
-    font-family:      Verdana, Arial, Helvetica, sans-serif;
-    font-size:        12px;
-    background-color: #;
-    color:            #ffffff;
-    margin: 0;
-    padding: 2px 2px 2px 2px;
+<?php if (! empty($GLOBALS['cfg']['FontFamily'])) { ?>
+    font-family:        <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
+<?php } ?>
 	background-image: 		url(/tools/pma/themes/omega/img/leftBgnd.jpg);
 	background-position: 	left top;
 	background-repeat: 		repeat-y;
+    color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
+    margin:             0;
+    padding:            0.2em 0.2em 0.2em 0.2em;
 }
 
 a img {
     border: 0;
 }
 
-/* gecko FIX, font size is not correctly assigned to all child elements */
-body * {
-    font-family:      inherit;
-    font-size:        inherit;
-}
+ul {
+	margin:0;
+}	
 
 form {
     margin:             0;
@@ -34,11 +42,9 @@ form {
     display:            inline;
 }
 
-select {
-    background-color:   #ffffff;
-    color:              #000000;
-    width:              150px;
-	font-size:			10px;
+select#select_server,
+select#lightm_db {
+    width:              100%;
 }
 
 /* buttons in some browsers (eg. Konqueror) are block elements,
@@ -58,48 +64,99 @@ button {
     margin-left:        0.3em;
 }
 
-img.lightbulb {
-    cursor:             pointer;
+.navi_dbName {
+    font-weight:    bold;
+    color:          <?php echo $GLOBALS['cfg']['NaviDatabaseNameColor']; ?>;
 }
-
 
 /******************************************************************************/
 /* specific elements */
 
+div#pmalogo {
+    background-color: <?php //better echo $GLOBALS['cfg']['logoBGC']; ?>;
+    padding:.3em;
+}
 div#pmalogo,
 div#leftframelinks,
 div#databaseList {
     text-align:         center;
-    border-bottom:      0.05em solid #ffffff;
+    border-bottom:      0.05em solid <?php echo $GLOBALS['cfg']['NaviBorderColor']; ?>;
     margin-bottom:      0.5em;
     padding-bottom:     0.5em;
 }
 
-div#leftframelinks img {
-    vertical-align: middle;
+ul#databaseList {
+    border-bottom:      0.05em solid <?php echo $GLOBALS['cfg']['NaviBorderColor']; ?>;
+    margin-bottom:      0.5em;
+    padding-bottom:     0.5em;
+    padding-<?php echo $left; ?>:     1.5em;
+    font-size:          90%;
+}
+
+ul#databaseList a {
+    display: block;
+    text-decoration: none;
+}
+
+div#navidbpageselector a,
+ul#databaseList a {
+    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
+}
+
+ul#databaseList a:hover {
+    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
+}
+
+ul#databaseList li.selected a {
+    background: <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
+    color: <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
+}
+
+div#leftframelinks .icon {
     padding:            0;
     margin:             0;
 }
 
-div#leftframelinks a {
-    margin:             0.1em;
+div#leftframelinks a img.icon {
+    margin:             0;
     padding:            0.2em;
-    border:             0;
+    border:             none;
 }
 
 div#leftframelinks a:hover {
-	background-color: #;
-    color: #c0c0c0;	
+    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
+}
+
+/* serverlist */
+#body_leftFrame #list_server {
+    list-style-image: url(<?php echo $GLOBALS['cfg']['ThemePath']; ?>/original/img/s_host.png);
+    list-style-position: inside;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#body_leftFrame #list_server li {
+    margin: 0;
+    padding: 0;
+    font-size:          80%;
 }
 
 /* leftdatabaselist */
+div#left_tableList {
+    border-bottom:      0.05em solid <?php echo $GLOBALS['cfg']['NaviBorderColor']; ?>;
+}
+
 div#left_tableList ul {
     list-style-type:    none;
     list-style-position: outside;
     margin:             0;
     padding:            0;
-    font-size:          10px;
-    background-color:   #;
+    font-size:          80%;
+    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
 }
 
 div#left_tableList ul ul {
@@ -107,13 +164,15 @@ div#left_tableList ul ul {
 }
 
 div#left_tableList a {
-    color:              #ffffff;
+    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     text-decoration:    none;
 }
 
 div#left_tableList a:hover {
-    color:              #f4dc6b;
-    text-decoration: 	none;
+    background:         <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
+    text-decoration:    underline;
 }
 
 div#left_tableList li {
@@ -122,9 +181,20 @@ div#left_tableList li {
     white-space:        nowrap;
 }
 
-<?php if ( $GLOBALS['cfg']['LeftPointerEnable'] ) { ?>
-div#left_tableList li:hover {
-    
+<?php if ($GLOBALS['cfg']['BrowseMarkerColor']) { ?>
+/* marked items */
+div#left_tableList > ul li.marked > a,
+div#left_tableList > ul li.marked {
+    background: <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
+    color: <?php echo $GLOBALS['cfg']['BrowseMarkerColor']; ?>;
+}
+<?php } ?>
+
+<?php if ($GLOBALS['cfg']['LeftPointerEnable']) { ?>
+div#left_tableList > ul li:hover > a,
+div#left_tableList > ul li:hover {
+    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
 }
 <?php } ?>
 
@@ -134,9 +204,18 @@ div#left_tableList img {
 }
 
 div#left_tableList ul ul {
-    margin-left:        0em;
-    padding-left:       0.1em;
-    border-left:        0.1em solid #ffffff;
+    margin-<?php echo $left; ?>:        0;
+    padding-<?php echo $left; ?>:       0.1em;
+    border-<?php echo $left; ?>:        0.1em solid <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     padding-bottom:     0.1em;
-    border-bottom:      0.1em solid #ffffff;
+    border-bottom:      0.1em solid <?php echo $GLOBALS['cfg']['NaviBorderColor']; ?>;
+}
+/* for the servers list in navi panel */
+#serverinfo .item {
+    white-space:        nowrap;
+    color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
+}
+#serverinfo a:hover {
+    background:         <?php echo $GLOBALS['cfg']['NaviPointerBackground']; ?>;
+    color:              <?php echo $GLOBALS['cfg']['NaviPointerColor']; ?>;
 }
