@@ -1578,7 +1578,7 @@ msgstr "ispCP- Admin/Nastavenia prenesených dát servra"
 msgid "Wrong data input!"
 msgstr "Chýbné vstupné data!"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Upozornenie: prenesené dáta sú väčšie ako maximálne prenesené dáta!"
 
 msgid "Server traffic settings updated successfully!"

@@ -673,10 +673,10 @@ function check_ruser_data (&$tpl, $NoPass)
 	if (isset($_POST['userfax']))
 		$fax = $_POST['userfax'];
 
-	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) === null) {
-		$gender = '';
-	} else {
+	if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null) {
 		$gender = $_POST['gender'];
+	} else {
+		$gender = '';
 	}
 	// if(isset($_SESSION['local_data']) )
 	// list($dmn_name, $hpid, $dmn_user_name) = explode(";", $_SESSION['local_data']);

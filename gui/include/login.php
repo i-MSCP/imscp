@@ -21,10 +21,11 @@
 function init_login() {
 	global $cfg;
 
-	if (!$cfg['BRUTEFORCE'])
-		return false;
-
+	// just make sure to expire counters in case BRUTEFORCE is turned off
 	unblock($cfg['BRUTEFORCE_BLOCK_TIME']);
+
+	if (!$cfg['BRUTEFORCE'])
+		return;
 
 	is_ipaddr_blocked(null, 'bruteforce', true);
 }
@@ -42,7 +43,7 @@ function register_user($uname, $upass) {
     $udata = array();
     $udata = get_userdata($uname);
 
-  	if ($cfg['MAINTENANCEMODE'] AND $udata['admin_type'] != 'admin') {
+  	if ($cfg['MAINTENANCEMODE'] && $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
   		system_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
@@ -53,8 +54,8 @@ function register_user($uname, $upass) {
 	    if (isset($_SESSION['user_logged'])) {
 	        write_log($uname." user already logged or session sharing problem! Aborting...");
 	        system_message(tr('User already logged or session sharing problem! Aborting...'));
+	        unset_user_login_data();
 	        return false;
-
 	    }
 
 	    if (!is_userdomain_ok($uname)) {

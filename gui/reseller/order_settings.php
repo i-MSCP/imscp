@@ -121,7 +121,7 @@ $tpl -> assign(array('TR_MANAGE_ORDERS' => tr('Manage Orders'),
 					 'TR_HEADER' => tr('Header'),
 					 'TR_PREVIEW' => tr('Preview'),
 					 'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
-					 'TR_IMPLEMENT_URL' => tr('http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d', $_SESSION['user_id']),
+					 'TR_IMPLEMENT_URL' => 'http://' . $cfg['BASE_SERVER_VHOST'] . '/orderpanel/index.php?user_id=' . $_SESSION['user_id'],
                      'TR_FOOTER' => tr('Footer')));
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');

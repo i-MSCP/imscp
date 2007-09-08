@@ -6,6 +6,18 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-07 Raphael Geissert
+	- GUI:
+        * Fixed #651: Undefined index: gender in gui/include/reseller-functions.php on line 679
+        * Fixed #655: Undefined index: user_theme in gui/client/index.php on line 257
+        * Fixed #655: Undefined index: user_def_lang in gui/client/index.php on line 259
+        * Fixed #633: alias name in IDN format in client/edit_alias.php
+        * Fixed #637: Undefined variable: input in gui/include/input-checks.php on line 100
+        * Fixed #638: reseller/order_settings.php should point to BASE_SERVER_VHOST
+        * Fixed #643: typo in server traffic page
+        * Fixed #652: Session timeout error, doesn't abort
+        * Fixed #640: reseller/domain_details.php displays domain in IDN format
+
 2007-09-04 Malte Geierhos
 	- GUI
 		* Fixed #650 $vfs not defined inside function
@@ -13,10 +25,10 @@ ispCP ω 1.0.0 Changelog
 2007-09-03 Raphael Geissert
     - DOCS:
         * Fixed #627: chkrootkit is missing on the package list
-	- GUI:
-		* Fixed #629: : doesn't exist or can't be read.
-	- SETUP:
-		* Fixed #628: rkhunter during the setup
+    - GUI:
+        * Fixed #629: : doesn't exist or can't be read.
+    - SETUP:
+        * Fixed #628: rkhunter during the setup
 
 2007-09-03 Malte Geierhos
 	- GUI:
@@ -36,8 +48,8 @@ ispCP ω 1.0.0 Changelog
         * Fixed #624: welcome mail contains html entities
         * Fixed error in admin/rootkit_log.php
         * Partially implemented #567
-	- MAKEFILE:
-		* Some more work on #394
+    - MAKEFILE:
+        * Some more work on #394
 
 2007-09-01 Raphael Geissert
     - GUI:

@@ -1547,7 +1547,7 @@ msgstr "ispCP - Yll�pito / Palvelimen liikenneasetukset"
 msgid "Wrong data input!"
 msgstr "Virheellinen tieto!"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Varoitusraja liikenteelle on suurempi kuin maksimi liikennem��r�!"
 
 msgid "Server traffic settings updated successfully!"

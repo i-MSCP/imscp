@@ -67,7 +67,7 @@ function check_input($value = '') {
 
 }
 
-function clean_html() {
+function clean_html($text) {
 
     $suche = array ('@<script[^>]*?>.*?</script>@si',  // JavaScript entfernen
     '@<[\/\!]*?[^<>]*?>@si',          // HTML-Tags entfernen
@@ -97,7 +97,7 @@ function clean_html() {
     chr(169),
     'chr(\1)');
 
-    $text = preg_replace($suche, $ersetze, $input);
+    $text = preg_replace($suche, $ersetze, $text);
     //and second one...
     $text = strip_tags($text);
 

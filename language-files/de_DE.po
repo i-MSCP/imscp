@@ -1549,7 +1549,7 @@ msgstr "ispCP - Virtual Hosting Control System"
 msgid "Wrong data input!"
 msgstr "Ungültige Dateneingaben"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Warnung - Transfer Warnung  ist größer als Transfer Begrenzung!"
 
 msgid "Server traffic settings updated successfully!"

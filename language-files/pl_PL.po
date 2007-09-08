@@ -1548,7 +1548,7 @@ msgstr "ispCP - Admin/Ustawienie transferu serwera"
 msgid "Wrong data input!"
 msgstr "Niepoprawne dane!"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Transfer ostrzegawczy jest większy niż maksymalny!"
 
 msgid "Server traffic settings updated successfully!"

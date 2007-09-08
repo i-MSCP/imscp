@@ -149,7 +149,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	// Fill in the fileds
 	$tpl->assign(
                 array(
-                       	'ALIAS_NAME' => $data['alias_name'],
+                       	'ALIAS_NAME' => decode_idna($data['alias_name']),
 						'DOMAIN_IP' => $ip_data,
 						'FORWARD' => $url_forward,
 						'MOUNT_POINT' => $data['alias_mount'],

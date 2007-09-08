@@ -251,7 +251,7 @@ list($sub_cnt,
     $sqlu_acc_cnt) = get_domain_running_props_cnt($sql, $dmn_id);
 // ko ima jump from other user interface neka esik i optica da ostanat tezi na
 // ska4ashtijat user
-if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
+/*if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
     list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 } else {
     $user_def_layout = $_SESSION['user_theme'];
@@ -261,7 +261,7 @@ if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 
 gen_def_language($tpl, $sql, $user_def_lang);
 
-gen_def_layout($tpl, $sql, $user_def_layout);
+gen_def_layout($tpl, $sql, $user_def_layout);*/
 
 $dtraff_pr = 0 ;
 $dmn_traff_usege = 0;

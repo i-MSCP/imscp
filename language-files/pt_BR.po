@@ -1549,7 +1549,7 @@ msgstr "ispCP - Admin/Configurações de Tráfego do Servidor"
 msgid "Wrong data input!"
 msgstr "Dados inválidos!"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Atenção - O tráfego está superior ao permitido"
 
 msgid "Server traffic settings updated successfully!"

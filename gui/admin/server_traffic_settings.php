@@ -62,7 +62,7 @@ function update_server_settings(&$sql)
 
     if ($traffic_warning > $max_traffic){
 
-        set_page_message(tr('Warning traffic is bigger then max traffic!'));
+        set_page_message(tr('Warning traffic is bigger than max traffic!'));
 
         return;
     }

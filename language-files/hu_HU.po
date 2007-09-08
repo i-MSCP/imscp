@@ -1548,7 +1548,7 @@ msgstr "ispCP - Admin/Server Forgalmi Beállítások"
 msgid "Wrong data input!"
 msgstr "Rossz bemenõ adat!"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Figyelem, a forgalom nagyobb az engedélyezettnél!"
 
 msgid "Server traffic settings updated successfully!"

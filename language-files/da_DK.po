@@ -1547,7 +1547,7 @@ msgstr "ispCP – Admin/Server Trafik Indstillinger"
 msgid "Wrong data input!"
 msgstr "Forkert data input!"
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Advarsel, trafik er større en max. Trafik"
 
 msgid "Server traffic settings updated successfully!"

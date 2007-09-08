@@ -277,7 +277,7 @@ SQL_QUERY;
 	$tpl -> assign(
                 array(
                       'DOMAIN_ID' => $data['domain_id'],
-                      'VL_DOMAIN_NAME' => $data['domain_name'],
+                      'VL_DOMAIN_NAME' => decode_idna($data['domain_name']),
                       'VL_DOMAIN_IP' => $ipdat['ip_number'].' ('.$ipdat['ip_alias'].')',
                       'VL_STATUS' => $dstatus,
                       'VL_PHP_SUPP' => tr($php_stat),

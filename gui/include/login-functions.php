@@ -119,6 +119,7 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 	}
 
 	deny_access();
+	return true;
 }
 
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
@@ -131,9 +132,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	    $ipaddr = getipaddr();
 	}
 
-	$sess_id = session_id();
-
-	$query = 'SELECT session_id, ipaddr, user_name, lastaccess, login_count, captcha_count FROM login WHERE ipaddr=? AND user_name is NULL';
+	$query = 'SELECT lastaccess FROM login WHERE ipaddr=? AND user_name is NULL';
 	$res = exec_query($sql, $query, array($ipaddr));
 
 	if ($res->RecordCount() == 0) {
@@ -185,13 +184,13 @@ function check_ipaddr($ipaddr = null, $type = "brutefoce") {
 
 	$lastaccess  = $data['lastaccess'];
 	$logincount  = $data['login_count'];
-	$capchacount = $data['captcha_count'];
+	$captchacount = $data['captcha_count'];
 
 	if ($type == 'bruteforce' && $logincount > $cfg['BRUTEFORCE_MAX_LOGIN']) {
 	    block_ipaddr($ipaddr, 'Login');
 	}
 
-	if ($type == 'captcha' && $logincount > $cfg['BRUTEFORCE_MAX_CAPTCHA']) {
+	if ($type == 'captcha' && $captchacount > $cfg['BRUTEFORCE_MAX_CAPTCHA']) {
 	    block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 

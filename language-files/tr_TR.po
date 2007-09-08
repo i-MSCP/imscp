@@ -1535,7 +1535,7 @@ msgstr ""
 msgid "Wrong data input!"
 msgstr ""
 
-msgid "Warning traffic is bigger then max traffic!"
+msgid "Warning traffic is bigger than max traffic!"
 msgstr "Trafik uyarı limiti en fazla trafik limitinden daha fazla!"
 
 msgid "Server traffic settings updated successfully!"
