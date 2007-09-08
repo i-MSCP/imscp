@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -1061,6 +1061,13 @@ msgstr ""
 msgid "Mail account errors"
 msgstr "Mail hesabı hataları"
 
+msgid "ispCP Daemon tools"
+msgstr ""
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Sorgu çalıştır"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1450,9 +1457,9 @@ msgstr ""
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
 
-#, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr ""
+#, fuzzy, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "Kullanıcı listesi boş!"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
@@ -3549,10 +3556,6 @@ msgid "Preview"
 msgstr ""
 
 msgid "Implementation URL"
-msgstr ""
-
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
 msgstr ""
 
 msgid "Footer"

@@ -221,7 +221,7 @@ function change_user_interface($from_id, $to_id) {
         $to_udata   = $rs_to->FetchRow();
 
         if (!is_userdomain_ok($to_udata['admin_name'])) {
-            set_page_message(tr("%s's account status is not ok!", $to_udata['admin_name']));
+            set_page_message(tr("%s's account status is not ok!", decode_idna($to_udata['admin_name'])));
             break;
         }
 
@@ -291,7 +291,7 @@ function change_user_interface($from_id, $to_id) {
 
         exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
-        write_log(sprintf("%s changed into %s's interface", $from_udata['admin_name'], $to_udata['admin_name']));
+        write_log(sprintf("%s changed into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
         break;
     }
 

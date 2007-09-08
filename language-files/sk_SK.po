@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1083,6 +1083,14 @@ msgstr "Chyby pre sub-domény"
 msgid "Mail account errors"
 msgstr "Chyby pre e-mailové kontá"
 
+#, fuzzy
+msgid "ispCP Daemon tools"
+msgstr "ispCP - Klient/Web nástroje"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Vykonať príkaz"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1493,8 +1501,8 @@ msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Admin / Systémové nástroje / Log Rootkit Hunter-a"
 
 #, fuzzy, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
+msgid "%s doesn't exist or is empty"
+msgstr "%s neexistuje"
 
 #, fuzzy
 msgid "Anti-Rootkits Tools Log Checker"
@@ -3665,10 +3673,6 @@ msgstr "Náhľad"
 msgid "Implementation URL"
 msgstr "Implementácia URL"
 
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
-msgstr ""
-
 msgid "Footer"
 msgstr "Záhlavie"
 
@@ -3773,6 +3777,10 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#, fuzzy
+#~ msgid "%s doesn't exist or can't be read."
+#~ msgstr "Súbor neexistuje alebo nemôže byť prečítaný."
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -1065,6 +1065,14 @@ msgstr "Alidomainin virheet"
 msgid "Mail account errors"
 msgstr "S�hk�postitunnusvirheet"
 
+#, fuzzy
+msgid "ispCP Daemon tools"
+msgstr "CHCS - Asiakas / Web-ty�kalut"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Suorita kysely"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1462,9 +1470,9 @@ msgstr "SQL<br>k�ytt�j�"
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Yll�pit�j� / J�rjestelm�ty�kalut / Palvelimen tila"
 
-#, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr ""
+#, fuzzy, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "K�ytt�j�lista on tyhj�!"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
@@ -3583,10 +3591,6 @@ msgstr "Esikatselu"
 
 msgid "Implementation URL"
 msgstr "Osoite"
-
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
-msgstr ""
 
 msgid "Footer"
 msgstr "Alatunniste"

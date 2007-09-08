@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-08 Raphael Geissert
+	- GUI:
+        * Fixed some scripts which were displaying domain names in the IDN-encoded form
+
 2007-09-07 Raphael Geissert
 	- GUI:
         * Fixed #651: Undefined index: gender in gui/include/reseller-functions.php on line 679

@@ -1189,7 +1189,7 @@ SQL_QUERY;
 			while (!$alias_rs->EOF) {
 				$alias_name = $alias_rs->fields['alias_name'];
 
-				$tpl->assign('ALIAS_DOMAIN', $alias_name);
+				$tpl->assign('ALIAS_DOMAIN', decode_idna($alias_name));
 				$tpl->parse('USER_DETAILS', '.user_details');
 
 				$alias_rs->MoveNext();

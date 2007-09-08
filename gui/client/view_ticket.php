@@ -170,7 +170,7 @@ SQL_QUERY;
 SQL_QUERY;
 
   $rs = exec_query($sql, $query, array($ticket_from));
-  $from_user_name = $rs -> fields['admin_name'];
+  $from_user_name = decode_idna($rs -> fields['admin_name']);
   $from_first_name = $rs -> fields['fname'];
   $from_last_name = $rs -> fields['lname'];
 

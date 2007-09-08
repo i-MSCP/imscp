@@ -59,7 +59,7 @@ foreach ($config_entries as $config_entry) {
 
     if (!is_readable($filename) || !filesize($filename)) {
 
-        $contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or can't be read.", $filename) . "</font></b>" ;
+        $contents = "<b><font color='#FF0000'>" . tr("%s doesn't exist or is empty", $filename) . "</font></b>" ;
 
     } else {
 

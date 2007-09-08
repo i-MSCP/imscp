@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -1064,6 +1064,14 @@ msgstr "サブドメインエラー"
 msgid "Mail account errors"
 msgstr "メールアカウントエラー"
 
+#, fuzzy
+msgid "ispCP Daemon tools"
+msgstr "ispCP - クライアント/Webツール"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "クエリーの実行"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1461,9 +1469,9 @@ msgstr "SQLユーザー"
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
 
-#, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr ""
+#, fuzzy, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "ユーザーリストは未登録です"
 
 #, fuzzy
 msgid "Anti-Rootkits Tools Log Checker"
@@ -3570,10 +3578,6 @@ msgstr "プレビュー"
 
 msgid "Implementation URL"
 msgstr "埋め込まれるURL"
-
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
-msgstr ""
 
 msgid "Footer"
 msgstr "フッター"

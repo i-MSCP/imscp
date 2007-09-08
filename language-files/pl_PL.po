@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -1066,6 +1066,14 @@ msgstr "Błędy subdomeny"
 msgid "Mail account errors"
 msgstr "Błędy konta pocztowego"
 
+#, fuzzy
+msgid "ispCP Daemon tools"
+msgstr "ispCP - Klient/Narzedzia sieciowe"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Wykonaj zapytanie"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1463,9 +1471,9 @@ msgstr "SQL<br>użytkownik"
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Admin / Narzędzia systemowe / Status Serwera"
 
-#, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr ""
+#, fuzzy, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "Lista użytkowników jest pusta!"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
@@ -3589,10 +3597,6 @@ msgstr "Podgląd"
 
 msgid "Implementation URL"
 msgstr "Adres do zaimplementowania"
-
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
-msgstr ""
 
 msgid "Footer"
 msgstr "Stopka"

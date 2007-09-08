@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-13 07:33+0100\n"
 "Last-Translator: greg <greg@proxyconcept.net>\n"
 "Language-Team: French France <fr_FR@li.org>\n"
@@ -1081,6 +1081,14 @@ msgstr "Erreurs de sous-domaine"
 msgid "Mail account errors"
 msgstr "Erreurs de compte email"
 
+#, fuzzy
+msgid "ispCP Daemon tools"
+msgstr "ispCP - Client/Outils Web"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Exécuter la requête"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1489,8 +1497,8 @@ msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "ispCP Admin / Outils Systèmes / Journal du chasseur de Rootkit"
 
 #, fuzzy, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr "Le fichier n'existe pas ou ne peut pas être lu."
+msgid "%s doesn't exist or is empty"
+msgstr "%s n'existe pas"
 
 #, fuzzy
 msgid "Anti-Rootkits Tools Log Checker"
@@ -3715,10 +3723,6 @@ msgstr "Pré-visualiser"
 msgid "Implementation URL"
 msgstr "URL d'implémentation"
 
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
-msgstr ""
-
 msgid "Footer"
 msgstr "Pied de page"
 
@@ -3826,6 +3830,10 @@ msgstr "ispCP - Revendeur : Système de support :  Voir les Tickets"
 
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
+
+#, fuzzy
+#~ msgid "%s doesn't exist or can't be read."
+#~ msgstr "Le fichier n'existe pas ou ne peut pas être lu."
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

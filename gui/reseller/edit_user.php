@@ -234,7 +234,7 @@ function gen_edituser_page(&$tpl)
 	// Fill in the fileds
 	$tpl -> assign(
                 array(
-                       	'VL_USERNAME' => $dmn_user_name,
+                       	'VL_USERNAME' => decode_idna($dmn_user_name),
 						'VL_MAIL' => $user_email,
 						'VL_USR_ID' => $customer_id,
 						'VL_USR_NAME' => $first_name,

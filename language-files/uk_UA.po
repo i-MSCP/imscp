@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 22:06-0500\n"
+"POT-Creation-Date: 2007-09-08 16:11-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -1067,6 +1067,14 @@ msgstr "Помилки піддомену"
 msgid "Mail account errors"
 msgstr "Помилки поштових скриньок"
 
+#, fuzzy
+msgid "ispCP Daemon tools"
+msgstr "ispCP - Клієнт/Web-інструменти"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Виконати запит"
+
 #, php-format
 msgid "Daemon returned %d as status code"
 msgstr ""
@@ -1464,9 +1472,9 @@ msgstr "Користувач<br>SQL"
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "Адміністратор ispCP / Системні інструменти / Стан сервера"
 
-#, php-format
-msgid "%s doesn't exist or can't be read."
-msgstr ""
+#, fuzzy, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "Список користувачів порожній!"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
@@ -3594,10 +3602,6 @@ msgstr "Перегляд"
 
 msgid "Implementation URL"
 msgstr "Робочий URL"
-
-#, php-format
-msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
-msgstr ""
 
 msgid "Footer"
 msgstr "Нижня частина"
