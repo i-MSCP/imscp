@@ -6,12 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 \_________________________________________________________________/
 
+2007-09-09 Raphael Geissert
+    - ENGINE:
+        * Fixed #653: Error starting apache when mod_cband is enabled
+
 2007-09-08 Raphael Geissert
-	- GUI:
+    - GUI:
         * Fixed some scripts which were displaying domain names in the IDN-encoded form
 
 2007-09-07 Raphael Geissert
-	- GUI:
+    - GUI:
         * Fixed #651: Undefined index: gender in gui/include/reseller-functions.php on line 679
         * Fixed #655: Undefined index: user_theme in gui/client/index.php on line 257
         * Fixed #655: Undefined index: user_def_lang in gui/client/index.php on line 259

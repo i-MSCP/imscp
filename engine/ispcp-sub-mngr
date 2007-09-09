@@ -712,11 +712,12 @@ sub gen_httpd_sub_group_entry {
 
         (
          '{DMN_NAME}' => $dmn_name,
+         '{DMN_GRP}' => $dmn_name,
          '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{SUB_NAME}' => $sub_name,
-	 	 '{SUB_IP}' => $sub_ip,
+         '{SUB_IP}' => $sub_ip,
          '{SUB_NAME_PHP2}' => "$dmn_name$sub_mount",
          '{MOUNT_POINT}' => $sub_mount,
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},

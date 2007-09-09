@@ -933,6 +933,7 @@ sub gen_httpd_als_entry {
 
         (
          '{DMN_NAME}' => $dmn_name,
+         '{DMN_GRP}' => $dmn_name,
          '{ALS_NAME}' => $als_name,
          '{ALS_IP}' => $als_ip,
          '{URI}' => $url_forward,
