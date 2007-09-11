@@ -1,12 +1,11 @@
 <?php
 /* $Id: config.sample.inc.php 9673 2006-11-03 09:05:54Z nijel $ */
-// vim: expandtab sw=4 ts=4 sts=4:
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  */
 
 /**
@@ -45,6 +44,8 @@ $cfg['Servers'][$i]['table_coords'] 	= 'pma_table_coords';
 $cfg['Servers'][$i]['pdf_pages'] 		= 'pma_pdf_pages';
 $cfg['Servers'][$i]['column_info'] 		= 'pma_column_info';
 $cfg['Servers'][$i]['history'] 			= 'pma_history';
+$cfg['Servers'][$i]['designer_coords']	= 'pma_designer_coords';
+$cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
 /* Name of the Server displayed */
 /*$cfg['Servers'][$i]['verbose'] 			= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
 

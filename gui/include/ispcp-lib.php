@@ -56,7 +56,7 @@ $cfg['ITEM_TODISABLED_STATUS'] = 'todisable';
 // SQL variables
 $cfg['MAX_SQL_DATABASE_LENGTH'] = 64;
 $cfg['MAX_SQL_USER_LENGTH'] = 16;
-$cfg['MAX_SQL_PASS_LENGTH'] = 16;
+$cfg['MAX_SQL_PASS_LENGTH'] = 32;
 // Template pathes
 $cfg['ROOT_TEMPLATE_PATH'] = 'themes/';
 $cfg['LOGIN_TEMPLATE_PATH'] = $cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'];
