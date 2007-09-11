@@ -1,22 +1,22 @@
 <?php
 /**
- *  ispCP ω (OMEGA) a Virtual Hosting Control Panel
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- *
- **/
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 function init_login() {
 	global $cfg;
@@ -24,10 +24,9 @@ function init_login() {
 	// just make sure to expire counters in case BRUTEFORCE is turned off
 	unblock($cfg['BRUTEFORCE_BLOCK_TIME']);
 
-	if (!$cfg['BRUTEFORCE'])
-		return;
-
-	is_ipaddr_blocked(null, 'bruteforce', true);
+	if ($cfg['BRUTEFORCE']) {
+		is_ipaddr_blocked(null, 'bruteforce', true);
+	}
 }
 
 function register_user($uname, $upass) {
@@ -89,6 +88,7 @@ SQL_QUERY;
 	    return true;
 	} else {
 		write_log($uname." entered incorrect password.");
+		system_message(tr("You entered an incorrect password."));
   		return false;
 	}
 
@@ -137,12 +137,10 @@ SQL_QUERY;
     }
 
     if ($cfg['MAINTENANCEMODE'] && $user_type != 'admin') {
-
         unset_user_login_data(true);
         write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
         header("Location: /index.php");
-        exit;
-
+        die();
     }
     /* userlogindata correct - update session and lastaccess */
     $_SESSION['user_login_time'] = time();
@@ -350,7 +348,7 @@ function redirect_to_level_page($file = null, $force = false) {
         $file = 'index.php';
     }
 
-    $user_type = isset($_SESSION['user_type'])? $_SESSION['user_type'] : '';
+    $user_type = isset($_SESSION['user_type']) ? $_SESSION['user_type'] : '';
 
     switch ($user_type) {
         case 'user':

@@ -4,11 +4,15 @@ ispCP ω 1.0.0 Changelog
 / @TODO:                                                          \
 |         - AWStats:                                              |
 |               * gui: disable stats-alias in client menu         |
+|         - GUI:                                                  |
+|               * to fix: bruteforce not working at all!          |
 \_________________________________________________________________/
 
 2007-09-11 Benedikt Heintel
 	- DISTS:
 		* Fixed #649: working gentoo config (Thank you Lelik)
+	- GUI:
+		* Fixed: No login with brutefoce disabled
 	- TOOLS:
 		* Fixed #661: phpMyAdmin wrong configured
 

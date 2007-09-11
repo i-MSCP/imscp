@@ -33,7 +33,6 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 	$uname = encode_idna($_POST['uname']);
 
 	check_input($_POST['uname']);
-
 	check_input($_POST['upass']);
 
 	if (register_user($uname, $_POST['upass'])) {
@@ -41,7 +40,7 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 	}
 
 	header('Location: index.php');
-	exit;
+	exit();
 }
 
 if (check_user_login()) {
@@ -62,9 +61,9 @@ $tpl = new pTemplate();
 
 if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 
-	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/maintenancemode.tpl');
+	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/maintenancemode.tpl');
 
-	$tpl -> assign(array(
+	$tpl->assign(array(
 						'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
@@ -75,9 +74,9 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 
 } else {
 
-	$tpl -> define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/index.tpl');
+	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/index.tpl');
 
-	$tpl -> assign(array(
+	$tpl->assign(array(
 						'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
 						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
 						'THEME_CHARSET' => tr('encoding'),
@@ -101,9 +100,10 @@ else
 
 gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 ?>

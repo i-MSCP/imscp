@@ -1,22 +1,22 @@
 <?php
 /**
- *  ispCP ω (OMEGA) a Virtual Hosting Control Panel
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- *
- **/
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 function username_exists($username) {
 	global $sql;
@@ -24,7 +24,7 @@ function username_exists($username) {
 	$query = 'SELECT admin_id FROM admin WHERE admin_name=?';
 	$res = exec_query($sql, $query, array($username));
 
-	return  ($res -> RecordCount() == 1);
+	return  ($res->RecordCount() == 1);
 }
 
 function get_userdata($username) {
@@ -33,7 +33,7 @@ function get_userdata($username) {
 	$query = 'SELECT * FROM admin WHERE admin_name=?';
 	$res = exec_query($sql, $query, array($username));
 
-	return $res -> FetchRow();
+	return $res->FetchRow();
 
 }
 
@@ -54,7 +54,7 @@ function is_userdomain_ok($username) {
 
 	$res = exec_query($sql, $query, array($udata['admin_id']));
 
-	$row = $res -> FetchRow();
+	$row = $res->FetchRow();
 
 	return ($row['domain_status'] == $cfg['ITEM_OK_STATUS']);
 }
@@ -112,7 +112,7 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 	}
 	$res = exec_query($sql, $query, array($ipaddr, $max));
 
-	if ($res -> RecordCount() == 0) {
+	if ($res->RecordCount() == 0) {
 	    return false;
 	} else if (!$autodeny) {
 	    return true;
@@ -126,7 +126,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	global $cfg, $sql;
 
 	if (!$cfg['BRUTEFORCE'])
-	return false;
+		return false;
 
 	if ($ipaddr === null) {
 	    $ipaddr = getipaddr();
@@ -162,9 +162,6 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 function check_ipaddr($ipaddr = null, $type = "brutefoce") {
 	global $sql, $cfg;
-
-	if (!$cfg['BRUTEFORCE'])
-	return false;
 
 	if ($ipaddr === null) {
 	    $ipaddr = getipaddr();
@@ -260,7 +257,7 @@ function session_exists($sess_id) {
 
 	$res = exec_query($sql, $query, array($sess_id));
 
-	return ($res -> RecordCount() == 1);
+	return ($res->RecordCount() == 1);
 }
 
 ?>
