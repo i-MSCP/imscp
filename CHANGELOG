@@ -8,6 +8,15 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: bruteforce not working at all!          |
 \_________________________________________________________________/
 
+2007-09-12 Benedikt Heintel
+	- GUI:
+		* Fixed #647: IPs can't be "uninstalled" only removed
+		* Fixed #654: if bruteforce is deaktivated login failed
+		* Fixed #666: fr_FR.po is half its size
+		* Fixed #667: creating a user with -1 databases but 0/1+ users is possible
+		* Fixed #668: edit link in reseller/domain_alias.php says {CHANGE}
+		* Fixed #669: /reseller/edit_alias.php displays domain in IDN format (and a lot of other IDN stuff)
+
 2007-09-11 Benedikt Heintel
 	- DISTS:
 		* Fixed #649: working gentoo config (Thank you Lelik)

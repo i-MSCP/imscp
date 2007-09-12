@@ -446,7 +446,7 @@ SQL_QUERY;
 				array(
 					'ADMIN_USERNAME' => $rs->fields['admin_name'],
 					'ADMIN_CREATED_ON' => $admin_created,
-					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != NULL) ? $rs->fields['created_by'] : "&nbsp;",
+					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != NULL) ? $rs->fields['created_by'] : tr("System"),
 					'URL_EDIT_ADMIN' => "edit_admin.php?edit_id=" . $rs->fields['admin_id'],
 					)
 				);

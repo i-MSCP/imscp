@@ -315,8 +315,14 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	if (!ispcp_limit_check($sql_db, -1)) {
 		$ed_error .= tr('Incorrect SQL users limit!');
 	}
+	else if ($sql_db == -1 && $sql_user != -1) {
+		$ed_error .= tr('SQL databases limit is <i>disabled</i>!');
+	}
 	if (!ispcp_limit_check($sql_user, -1)) {
 		$ed_error .= tr('Incorrect SQL databases limit!');
+	}
+	else if ($sql_user == -1 && $sql_db != -1) {
+		$ed_error .= tr('SQL users limit is <i>disabled</i>!');
 	}
 	if (!ispcp_limit_check($traff, null)) {
 		$ed_error .= tr('Incorrect traffic limit!');

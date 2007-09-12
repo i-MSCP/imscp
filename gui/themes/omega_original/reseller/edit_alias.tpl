@@ -17,7 +17,11 @@ function MM_goToURL() { //v3.0
 </script>
 </head>
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<!-- ToolTip -->
+<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_FWD_HELP}</div>
+<!-- ToolTip end -->
+<!-- BDP: logged_from -->
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td height="20" nowrap background="{THEME_COLOR_PATH}/images/button.gif">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="18" height="18" border="0" align="absmiddle"></a> <font color="red">{YOU_ARE_LOGGED_AS}</font> </td>
       </tr>
@@ -80,7 +84,9 @@ function MM_goToURL() { //v3.0
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td width="200" class="content2">{TR_FORWARD}</td>
+                        <td width="200" class="content2">
+						 {TR_FORWARD} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('fwd_help', event)" onMouseOut="hideTip('fwd_help')" />
+						</td>
                         <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}"></td>
                       </tr>
                       <tr>

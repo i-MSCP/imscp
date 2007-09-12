@@ -40,7 +40,7 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 
@@ -56,27 +56,27 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array(
-		'TR_ADD_USER' => tr('Add user'),
-		'TR_HOSTING_PLAN_PROPERTIES' => tr('Hosting plan properties'),
-		'TR_TEMPLATE_NAME' => tr('Template name'),
-		'TR_MAX_DOMAIN' => tr('Max domains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SUBDOMAIN' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_DOMAIN_ALIAS' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_MAIL_COUNT' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_FTP' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_DB' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_MAX_DISK_USAGE' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_PHP' => tr('PHP'),
-		'TR_CGI' => tr('CGI / Perl'),
-		'TR_YES' => tr('yes'),
-		'TR_NO' => tr('no'),
-		'TR_NEXT_STEP' => tr('Next step'),
-		'TR_BACKUP_RESTORE' => tr('Backup / Restore'),
-		'TR_APACHE_LOGS' => tr('Apache logs'),
-		'TR_AWSTATS' => tr('Awstats')
+		array(
+			'TR_ADD_USER' => tr('Add user'),
+			'TR_HOSTING_PLAN_PROPERTIES' => tr('Hosting plan properties'),
+			'TR_TEMPLATE_NAME' => tr('Template name'),
+			'TR_MAX_DOMAIN' => tr('Max domains<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_SUBDOMAIN' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_DOMAIN_ALIAS' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_MAIL_COUNT' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_FTP' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_SQL_DB' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
+			'TR_MAX_DISK_USAGE' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+			'TR_PHP' => tr('PHP'),
+			'TR_CGI' => tr('CGI / Perl'),
+			'TR_YES' => tr('yes'),
+			'TR_NO' => tr('no'),
+			'TR_NEXT_STEP' => tr('Next step'),
+			'TR_BACKUP_RESTORE' => tr('Backup / Restore'),
+			'TR_APACHE_LOGS' => tr('Apache logs'),
+			'TR_AWSTATS' => tr('Awstats')
 		)
 	);
 
@@ -89,7 +89,7 @@ if (isset($_POST['uaction']) && ("rau2_nxt" === $_POST['uaction']) && (!isset($_
 	unset($_SESSION['step_one_data']);
 	global $dmn_chp;
 	get_hp_data($dmn_chp, $_SESSION['user_id']);
-	$tpl->assign('MESSAGE', "");
+	$tpl->assign('MESSAGE', '');
 }
 
 get_init_au2_page($tpl);
@@ -99,7 +99,9 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
+
 // unset_messages();
 
 // Function declaration
@@ -128,17 +130,17 @@ function get_init_au2_page(&$tpl){
 	global $hp_traff, $hp_disk;
 
 	$tpl->assign(
-		array(
-			'VL_TEMPLATE_NAME' => $hp_name,
-			'MAX_DMN_CNT' => '',
-			'MAX_SUBDMN_CNT' => $hp_sub,
-			'MAX_DMN_ALIAS_CNT' => $hp_als,
-			'MAX_MAIL_CNT' => $hp_mail,
-			'MAX_FTP_CNT' => $hp_ftp,
-			'MAX_SQL_CNT' => $hp_sql_db,
-			'VL_MAX_SQL_USERS' => $hp_sql_user,
-			'VL_MAX_TRAFFIC' => $hp_traff,
-			'VL_MAX_DISK_USAGE' => $hp_disk
+			array(
+				'VL_TEMPLATE_NAME' => $hp_name,
+				'MAX_DMN_CNT' => '',
+				'MAX_SUBDMN_CNT' => $hp_sub,
+				'MAX_DMN_ALIAS_CNT' => $hp_als,
+				'MAX_MAIL_CNT' => $hp_mail,
+				'MAX_FTP_CNT' => $hp_ftp,
+				'MAX_SQL_CNT' => $hp_sql_db,
+				'VL_MAX_SQL_USERS' => $hp_sql_user,
+				'VL_MAX_TRAFFIC' => $hp_traff,
+				'VL_MAX_DISK_USAGE' => $hp_disk
 			)
 		);
 
@@ -211,8 +213,8 @@ function check_user_data(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk, $hp_dmn;
 
-	$ehp_error = '_off_';
-	// Gete data for fields from previus page
+	$ehp_error = '';
+	// Get data for fields from previus page
 	if (isset($_POST['template']))
 		$hp_name = $_POST['template'];
 
@@ -242,54 +244,55 @@ function check_user_data(&$tpl) {
 
 	if (isset($_POST['nreseller_max_disk']))
 		$hp_disk = clean_input($_POST['nreseller_max_disk']);
-	// if(isset($_POST['']))
-	// $hp_dmn	 = $_POST[''];
+
 	if (isset($_POST['php']))
 		$hp_php = $_POST['php'];
 
 	if (isset($_POST['cgi']))
 		$hp_cgi = $_POST['cgi'];
+
 	// Begin checking...
-	/*  if (!chk_username($hp_name, 200)) {
-
-        $ehp_error = tr('Incorrect template name number or syntax!');
-
-    }
-	if(!check_hosting_plan_name($_SESSION{'user_id'}))
-	{
-		$ehp_error = tr('Hosting plan with entered name already exists!');
-
-	}
-	else*/
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		$ehp_error = tr('Incorrect subdomains limit!');
-	} else if (!ispcp_limit_check($hp_als, -1)) {
-		$ehp_error = tr('Incorrect aliases limit!');
-	} else if (!ispcp_limit_check($hp_mail, -1)) {
-		$ehp_error = tr('Incorrect mail accounts limit!');
-	} else if (!ispcp_limit_check($hp_ftp, -1)) {
-		$ehp_error = tr('Incorrect FTP accounts limit!');
-	} else if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ehp_error = tr('Incorrect SQL databases limit!');
-	} else if (!ispcp_limit_check($hp_sql_db, -1)) {
-		$ehp_error = tr('Incorrect SQL users limit!');
-	} else if (!ispcp_limit_check($hp_traff, null)) {
-		$ehp_error = tr('Incorrect traffic limit!');
-	} else if (!ispcp_limit_check($hp_disk, null)) {
-		$ehp_error = tr('Incorrect disk quota limit!');
+		$ehp_error .= tr('Incorrect subdomains limit!');
+	}
+	if (!ispcp_limit_check($hp_als, -1)) {
+		$ehp_error .= tr('Incorrect aliases limit!');
+	}
+	if (!ispcp_limit_check($hp_mail, -1)) {
+		$ehp_error .= tr('Incorrect mail accounts limit!');
+	}
+	if (!ispcp_limit_check($hp_ftp, -1)) {
+		$ehp_error .= tr('Incorrect FTP accounts limit!');
+	}
+	if (!ispcp_limit_check($hp_sql_user, -1)) {
+		$ehp_error .= tr('Incorrect SQL databases limit!');
+	}
+	else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
+		$ehp_error .= tr('SQL users limit is <i>disabled</i>!');
+	}
+	if (!ispcp_limit_check($hp_sql_db, -1)) {
+		$ehp_error .= tr('Incorrect SQL users limit!');
+	}
+	else if ($hp_sql_db == -1 && $hp_sql_user != -1) {
+		$ehp_error .= tr('SQL databases limit is <i>disabled</i>!');
+	}
+	if (!ispcp_limit_check($hp_traff, null)) {
+		$ehp_error .= tr('Incorrect traffic limit!');
+	}
+	if (!ispcp_limit_check($hp_disk, null)) {
+		$ehp_error .= tr('Incorrect disk quota limit!');
 	}
 
-	if ($ehp_error == '_off_') {
+	if (empty($ehp_error)) {
 		$tpl->assign('MESSAGE', '');
 		// send data throught session
 		return true;
 	} else {
 		$tpl->assign('MESSAGE', $ehp_error);
+		$tpl->parse('PAGE_MESSAGE', 'page_message');
 
 		return false;
 	}
-
-	return true;
 } //End of check_user_data()
 
 // Insert into hosting plans new data
@@ -311,7 +314,7 @@ function update_hp_data($admin_id) {
 	$ch_hpprops = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
 	$_SESSION["ch_hpprops"] = $ch_hpprops;
 
-	Header("Location: rau3.php");
+	header("Location: rau3.php");
 
 	die();
 } // End of update_hp_data()

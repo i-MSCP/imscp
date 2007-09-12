@@ -90,19 +90,19 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_manage_users.tpl')
 gen_logged_from($tpl);
 
 $tpl->assign(
-                array(
-							'TR_MANAGE_USERS' => tr('Manage users'),
-							'TR_USERS' => tr('Users'),
-							'TR_NO' => tr('No.'),
-							'TR_USERNAME' => tr('Username'),
-							'TR_ACTION' => tr('Action'),
-							'TR_BACK' => tr('Back'),
-                            'TR_TITLE_BACK' => tr('Return to previous menu'),
-                            'TR_TABLE_NAME' => tr('Users list'),
-							'TR_SEND_DATA' => tr('Send new login data'),
-							'TR_PASSWORD_GENERATE' => tr('Generate password')
-                     )
-              );
+            array(
+					'TR_MANAGE_USERS' => tr('Manage users'),
+					'TR_USERS' => tr('Users'),
+					'TR_NO' => tr('No.'),
+					'TR_USERNAME' => tr('Username'),
+					'TR_ACTION' => tr('Action'),
+					'TR_BACK' => tr('Back'),
+                    'TR_TITLE_BACK' => tr('Return to previous menu'),
+                    'TR_TABLE_NAME' => tr('Users list'),
+					'TR_SEND_DATA' => tr('Send new login data'),
+					'TR_PASSWORD_GENERATE' => tr('Generate password')
+                 )
+			);
 
 if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', passgen());
@@ -152,7 +152,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 //unset_messages();
 
@@ -218,8 +219,7 @@ SQL_QUERY;
 
 
 // Show user data
-function gen_edituser_page(&$tpl)
-{
+function gen_edituser_page(&$tpl) {
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
     global $last_name, $firm, $zip, $gender;
@@ -419,7 +419,7 @@ SQL_QUERY;
 	unset($_SESSION['user_name']);
 
 	$_SESSION['edit'] = "_yes_";
-	Header("Location: users.php");
+	header("Location: users.php");
 	die();
 }// End of update_data_in_db()
 

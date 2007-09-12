@@ -70,29 +70,33 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
-				'RSL_IP_LIST' => ''
+				array(
+					'RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
+					'RSL_IP_LIST' => ''
 				)
 			);
 
 		$tpl->parse('RSL_IP_MESSAGE', 'rsl_ip_message');
 	} else {
 		$tpl->assign(
-			array('TR_RSL_IP_NUMBER' => tr('No.'),
-				'TR_RSL_IP_ASSIGN' => tr('Assign'),
-				'TR_RSL_IP_LABEL' => tr('Label'),
-				'TR_RSL_IP_IP' => tr('Number'),
+				array(
+					'TR_RSL_IP_NUMBER' => tr('No.'),
+					'TR_RSL_IP_ASSIGN' => tr('Assign'),
+					'TR_RSL_IP_LABEL' => tr('Label'),
+					'TR_RSL_IP_IP' => tr('Number')
 				)
 			);
 		while (!$rs->EOF) {
 			if ($i % 2 == 0) {
 				$tpl->assign(
-					array('RSL_IP_CLASS' => 'content',
+						array(
+							'RSL_IP_CLASS' => 'content',
 						)
 					);
 			} else {
 				$tpl->assign(
-					array('RSL_IP_CLASS' => 'content2',
+						array(
+							'RSL_IP_CLASS' => 'content2',
 						)
 					);
 			}
@@ -117,13 +121,13 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array(
-					'RSL_IP_NUMBER' => $i + 1,
-					'RSL_IP_LABEL' => $rs->fields['ip_domain'],
-					'RSL_IP_IP' => $rs->fields['ip_number'],
-					'RSL_IP_CKB_NAME' => $ip_var_name,
-					'RSL_IP_CKB_VALUE' => 'asgned',
-					'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned,
+					array(
+						'RSL_IP_NUMBER' => $i + 1,
+						'RSL_IP_LABEL' => $rs->fields['ip_domain'],
+						'RSL_IP_IP' => $rs->fields['ip_number'],
+						'RSL_IP_CKB_NAME' => $ip_var_name,
+						'RSL_IP_CKB_VALUE' => 'asgned',
+						'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned
 					)
 				);
 
@@ -190,8 +194,18 @@ function check_user_data() {
 
 		return false;
 	}
+	else if ($_POST['nreseller_max_sql_db_cnt'] == -1 && $_POST['nreseller_max_sql_user_cnt'] != -1) {
+		set_page_message(tr('SQL databases limit is <i>disabled</i>!'));
+
+		return false;
+	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL users limit!'));
+		return false;
+	}
+	else if ($_POST['nreseller_max_sql_db_cnt'] != -1 && $_POST['nreseller_max_sql_user_cnt'] == -1) {
+		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
+
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
