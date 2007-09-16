@@ -37,7 +37,7 @@ msgid "Password"
 msgstr "Heslo"
 
 msgid "Please enter your login information"
-msgstr "Vyplňte prosím Vaše přihlašovací údaje"
+msgstr "Vyplňte prosím vaše přihlašovací údaje"
 
 msgid "Secure Connection"
 msgstr "Zabezpečené připojení"
@@ -119,7 +119,7 @@ msgid "Add admin"
 msgstr "Přidat administrátora"
 
 msgid "Core data"
-msgstr "Základní data"
+msgstr "Základní údaje"
 
 msgid "Repeat password"
 msgstr "Zopakovat heslo"
@@ -193,45 +193,35 @@ msgstr "Číslo"
 msgid "Reseller"
 msgstr "Partner"
 
-#, fuzzy
 msgid "Incorrect email syntax!"
-msgstr "Nesprávná syntaxe ceny!"
+msgstr "Chybná syntaxe emailu!"
 
-#, fuzzy
 msgid "Incorrect domains limit!"
-msgstr "Chybná syntaxe doménového jména"
+msgstr "Chybný limit domén"
 
-#, fuzzy
 msgid "Incorrect subdomains limit!"
-msgstr "Nesprávná délka nebo syntaxe subdomény!"
+msgstr "Chybný limit subdomén!"
 
-#, fuzzy
 msgid "Incorrect aliases limit!"
-msgstr "Nesprávně vložená data!"
+msgstr "Chybný limit aliasů!"
 
-#, fuzzy
 msgid "Incorrect FTP accounts limit!"
-msgstr "Limit FTP účtů"
+msgstr "Chybný limit FTP účtů"
 
-#, fuzzy
 msgid "Incorrect mail accounts limit!"
-msgstr "Nesprávná délka nebo syntaxe mailu!"
+msgstr "Chybný limit poštovních účtů!"
 
-#, fuzzy
 msgid "Incorrect SQL databases limit!"
-msgstr "Limit SQL databází"
+msgstr "Chybný limit SQL databází"
 
-#, fuzzy
 msgid "Incorrect SQL users limit!"
-msgstr "Limit SQL uživatelů"
+msgstr "Chybný limit SQL uživatelů"
 
-#, fuzzy
 msgid "Incorrect traffic limit!"
-msgstr "Nesprávná délka nebo syntaxe přenesených dat!"
+msgstr "Chybný limit přenesených dat!"
 
-#, fuzzy
 msgid "Incorrect disk quota limit!"
-msgstr "Nesprávně vložená data!"
+msgstr "Chybný limit využitého prostoru na disku!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Musíte přiřadit alespoň jednu IP adresu pro partnera."
@@ -300,7 +290,7 @@ msgid "Directory listing"
 msgstr "Výpis adresáře"
 
 msgid "Apache logfiles"
-msgstr "Soubory protokolů Apache"
+msgstr "Záznamy Apache"
 
 msgid "AwStats"
 msgstr "AwStats"
@@ -309,7 +299,7 @@ msgid "Logo upload"
 msgstr "Uložení loga"
 
 msgid "yes"
-msgstr "budiž"
+msgstr "ano"
 
 msgid "no"
 msgstr "ne"
@@ -357,7 +347,7 @@ msgid "Admin Log"
 msgstr "Admin Log"
 
 msgid "Clear log"
-msgstr "Vyčistit log"
+msgstr "Vyčistit protokol"
 
 msgid "Date"
 msgstr "Datum"
@@ -366,7 +356,7 @@ msgid "Message"
 msgstr "Zpráva"
 
 msgid "Delete from log:"
-msgstr "Odstranit z protokolu:"
+msgstr "Odstranit ze záznamu:"
 
 msgid "everything"
 msgstr "všechno"
@@ -435,7 +425,7 @@ msgid "Currency"
 msgstr "Měna"
 
 msgid "Payment period"
-msgstr ""
+msgstr "Platební období"
 
 msgid "Available for purchasing"
 msgstr "Dostupné ke koupi"
@@ -507,7 +497,7 @@ msgid "Update data"
 msgstr "Aktualizovat údaje"
 
 msgid "ispCP - Admin - Email Marketing"
-msgstr "ispCP - Admin - Email Marketing"
+msgstr "ispCP - Admin - Email marketing"
 
 msgid "Please specify a message subject!"
 msgstr "Vyplňte prosím předmět zprávy!"
@@ -525,7 +515,7 @@ msgid "You send email to your users successfully!"
 msgstr "Email byl úspěšně odeslán vašim uživatelům."
 
 msgid "Email marketing"
-msgstr "Email Marketing"
+msgstr "Email marketing"
 
 msgid "Send message to"
 msgstr "Poslat zprávu"
@@ -743,9 +733,8 @@ msgstr "Všechna přenesená data"
 msgid "Day"
 msgstr "Den"
 
-#, fuzzy
 msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Správa uživatelů/Upravit uživatele"
+msgstr "ispCP - Admin/Správa uživatelů/Upravit administrátora"
 
 msgid "User session was killed!"
 msgstr "Sezení uživatele bylo ukončeno!"
@@ -988,7 +977,7 @@ msgstr "Překročil jste váš přenosový limit!"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
+msgstr "%1$d%% [%2$s z neomezeno]"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -998,10 +987,10 @@ msgid "ispCP - Admin/Main Index"
 msgstr " ispCP - Admin/Hlavní strana"
 
 msgid "ispCP - Admin/IP manage"
-msgstr "ispCP - Admin/Údžba IP"
+msgstr "ispCP - Admin/Údžba IP adres"
 
 msgid "New IP was added!"
-msgstr "Byla přidána nová IP!"
+msgstr "Byla přidána nová IP adresa!"
 
 msgid "Wrong IP number!"
 msgstr "Chybně zadaná IP adresa!"
@@ -1034,7 +1023,7 @@ msgid "Uninstall"
 msgstr "Odinstalovat"
 
 msgid "Add new IP"
-msgstr "Přidat novou IP"
+msgstr "Přidat novou IP adresu"
 
 msgid "No domain system errors"
 msgstr "Žádné chyby v doménách"
@@ -1453,17 +1442,15 @@ msgstr "SQL<br>databáze"
 msgid "SQL<br>user"
 msgstr "SQL<br>uživatel"
 
-#, fuzzy
 msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
-msgstr "ispCP Admin / Systémové nástroje / Rootkit Hunter protokol"
+msgstr "ispCP Admin / Systémové nástroje / Anti-Rootkits Tools Log Checker"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s doesn't exist or is empty"
-msgstr "%s neexistuje"
+msgstr "%s neexistuje nebo je prázdný"
 
-#, fuzzy
 msgid "Anti-Rootkits Tools Log Checker"
-msgstr "Rootkit Log kontrolor"
+msgstr "Anti-Rootkits Tools Log Checker"
 
 msgid "ispCP - Admin/Server day stats"
 msgstr "ispCP - Admin/Denní statistiky serveru"
@@ -2075,13 +2062,13 @@ msgid "Disable"
 msgstr "Vypnout"
 
 msgid "Delete CatchAll"
-msgstr "Odtranit všezachytávající"
+msgstr "Odtranit doménový koš"
 
 msgid "None"
 msgstr "Žádný"
 
 msgid "Create catch all"
-msgstr ""
+msgstr "Vytvořit doménový koš"
 
 msgid "ispCP - Client/Manage Users"
 msgstr "ispCP - Klient/Správa uživatelů"
@@ -2111,10 +2098,10 @@ msgid "FTPs total"
 msgstr "Celkem FTP"
 
 msgid "Catch all account"
-msgstr "Všezachytávající účet"
+msgstr "Doménový koš"
 
 msgid "Catch all"
-msgstr "Zachytit vše"
+msgstr "Doménový koš"
 
 msgid "FTP users"
 msgstr "FTP uživatel"
@@ -2133,16 +2120,16 @@ msgid ""
 msgstr "Uživatel neexistuje nebo nemáte práva přístupu k rozhraní!"
 
 msgid "Catch all account scheduled for creation!"
-msgstr "Všezachytávající účet naplánován k vytvoření!"
+msgstr "Bylo naplánováno vytvoření doménového koše!"
 
 msgid "Mail forward list error!"
 msgstr "Seznam přesměrování obsahuje chyby!"
 
 msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Klient/Vytvořit poštovní účet Pasti"
+msgstr "ispCP - Klient/Vytvořit doménový koš"
 
 msgid "Create catch all mail account"
-msgstr "Vytvořit všezachytávající poštovní účet"
+msgstr "Vytvořit doménový koš"
 
 msgid "Mail accounts list"
 msgstr "Seznam poštovních účtů"
@@ -2209,13 +2196,13 @@ msgid "Alias scheduled for deletion!"
 msgstr "Smazání aliasu naplánováno!"
 
 msgid "Catch all account scheduled for deletion!"
-msgstr "Všezachytávající účet naplánován k odstranění!"
+msgstr "Doménový koš byl naplánován k odstranění!"
 
 msgid "FTP account deleted successfully!"
 msgstr "FTP účet byl úšpěšně smazán"
 
 msgid "Please delete first CatchAll account for this email!"
-msgstr ""
+msgstr "Prosím odstraňte nejprve doménový koš pro tento email!"
 
 msgid "SQL database was removed successfully!"
 msgstr "SQL databáze byla úspěšně odstraněna!"
@@ -2793,7 +2780,7 @@ msgid "Reseller statistics"
 msgstr "Statistiky partnera"
 
 msgid "Admin log"
-msgstr "Admin protokol"
+msgstr "Admin záznam"
 
 msgid "Logout"
 msgstr "Odhlásit"
@@ -2811,7 +2798,7 @@ msgid "Lostpw email setup"
 msgstr ""
 
 msgid "Rootkit Log"
-msgstr "Rootkit protokol"
+msgstr "Rootkit záznam"
 
 msgid "Admin users"
 msgstr "Uživatelé administrátora"
@@ -2840,12 +2827,11 @@ msgstr "Vytvořil"
 msgid "Resellers list is empty!"
 msgstr "Seznam partnerů je prázdný!"
 
-#, fuzzy
 msgid "Switch to user interface"
-msgstr "Nastavit uživatelské rozhraní"
+msgstr "Přepnout do uživatelského rozhraní"
 
 msgid "Switch"
-msgstr ""
+msgstr "Přepnout"
 
 msgid "Not found user records matching the search criteria!"
 msgstr "Zadanému dotazu neodpovídají žádné záznamy!"
@@ -2882,7 +2868,7 @@ msgid "Go back"
 msgstr "Jdi zpět"
 
 msgid "OK"
-msgstr "Budiž"
+msgstr "OK"
 
 msgid "Suspended"
 msgstr "Pozastaveno"
@@ -3284,7 +3270,7 @@ msgid "Protected Areas"
 msgstr "Chráněná zóna"
 
 msgid "Custom Apache Logs"
-msgstr "Uživatelské protokoly Apache"
+msgstr "Uživatelské záznamy Apache"
 
 msgid "Web & E-Mail Support"
 msgstr "Podpora pro Web a E-mail"
@@ -3343,7 +3329,6 @@ msgstr ""
 "K odstraňované doméně jsou přiřazeny poštovní účty!<br>Nejdříve tyto účty "
 "smažte!"
 
-#, fuzzy
 msgid ""
 "Domain you are trying to remove has FTP accounts !<br> first remove them !"
 msgstr ""
@@ -3403,37 +3388,29 @@ msgstr "Upravit doménu"
 msgid "Domain properties"
 msgstr "Nastavení domény"
 
-#, fuzzy
 msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maximální počet subdomén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Maximální počet subdomén<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-#, fuzzy
 msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maximální počet aliasů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Maximální počet aliasů<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-#, fuzzy
 msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit mailových účtů<br><i>(-1 zakázáno, 0 bez omezení)"
+msgstr "Limit poštovních účtů<br /><i>(-1 zakázáno, 0 bez omezení)"
 
-#, fuzzy
 msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit FTP účtů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Limit FTP účtů<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-#, fuzzy
 msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit SQL databází<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Limit SQL databází<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-#, fuzzy
 msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit SQL uživatelů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Limit SQL uživatelů<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-#, fuzzy
 msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Limit přenesených dat [MB]<br><i>(0 bez omezení)</i>"
+msgstr "Limit přenesených dat [MB]<br /><i>(0 bez omezení)</i>"
 
-#, fuzzy
 msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
-msgstr "Limit disku [MB]<br><i>(0 bez omezení)</i>"
+msgstr "Limit disku [MB]<br /><i>(0 bez omezení)</i>"
 
 msgid "SQL Database"
 msgstr "SQL Databáze"
@@ -3447,39 +3424,39 @@ msgstr "Nastavení domény nemůže být aktualizováno!"
 msgid "Domain properties updated successfully!"
 msgstr "Nastavení domény úspěšně aktualizováno!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> service can not be disabled! "
-msgstr "<b>%s</b> služba nemůže být vypnuta!<br>"
+msgstr "Služba <em>%s</em> nemůže být vypnuta!<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "There are <em>%s</em> records on system!"
-msgstr "S systému je <b>%s</b> záznamů!"
+msgstr "S systému je <em>%s</em> záznamů!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> service can not be limited! "
-msgstr "<b>%s</b> služba nemůže být neomezená!<br>"
+msgstr "Služba <em>%s</em> nemůže být omezena!<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
-"Zadané číslo je menčí než u <b>%s</b> záznamu nacházejícího se v systému!"
+"Zadané číslo je menčí než u <em>%s</em> záznamu nacházejícího se v systému!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "There are <em>%s</em> records on the system!"
-msgstr "S systému je <b>%s</b> záznamů!"
+msgstr "S systému je <em>%s</em> záznamů!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> service can not be unlimited! "
-msgstr "<b>%s</b> služba nemůže být neomezená!<br>"
+msgstr "Služba <em>%s</em> nemůže být neomezená!<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "Pro službu <b>%s</b> je pro partnery nastaven limit!"
+msgstr "Pro službu <em>%s</em> je pro partnery nastaven limit!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "Překračujete limit partnera pro službu <b>%s</b>!"
+msgstr "Překračujete limit partnera pro službu <em>%s</em>!"
 
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Uživatelé/Upravit"
@@ -3666,13 +3643,11 @@ msgstr "ispCP - Uživatelé"
 msgid "Stats"
 msgstr "Statistiky"
 
-#, fuzzy
 msgid "Edit User"
 msgstr "Upravit uživatele"
 
-#, fuzzy
 msgid "View aliases"
-msgstr "zobrazit aliasy"
+msgstr "Zobrazit aliasy"
 
 msgid "You have no users."
 msgstr "Nemáte uživatele."

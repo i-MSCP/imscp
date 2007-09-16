@@ -8,6 +8,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: bruteforce not working at all!          |
 \_________________________________________________________________/
 
+2007-09-16 Raphael Geissert
+    - LANGUAGES:
+        * Updated Czech translation (thanks to Josef Pinc)
+
 2007-09-12 Benedikt Heintel
 	- GUI:
 		* Fixed #647: IPs can't be "uninstalled" only removed
