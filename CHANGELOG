@@ -9,6 +9,14 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-09-20 Benedikt Heintel
+	- DISTS:
+		* Fixed #677: files of bind placed wrong on ubuntu
+	- GUI:
+		* Fixed #646: trying to delete IP assigned when there's only one IP available (not possible any more)
+		* Fixed #680: "web statistics" link in customer's mode should be hidden when awstats is disabled (thanks to greg@proxyconcept.net)
+		* Fixed #684: multiline translation bugfix (thanks to greg@proxyconcept.net)
+
 2007-09-19 Benedikt Heintel
 	- DOCS:
 		* Fixed #626: Updated Fedora (Core 7)

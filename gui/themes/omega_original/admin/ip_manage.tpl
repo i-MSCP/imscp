@@ -9,8 +9,8 @@
 <script language="JavaScript" type="text/JavaScript">
 <!--
 
-function action_delete(url) {
-	if (!confirm("{TR_MESSAGE_DELETE}"))
+function action_delete(url, ip) {
+	if (!confirm("{TR_MESSAGE_DELETE} " + ip))
 		return false;
 
 	location = url;
@@ -69,7 +69,13 @@ function action_delete(url) {
                             <td align="left" nowrap class="{IP_CLASS}">{IP}</td>
                             <td align="center" nowrap class="{IP_CLASS}">{DOMAIN}</td>
                             <td class="{IP_CLASS}" nowrap align="center">{ALIAS}</td>
-                            <td class="{IP_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('delete_ip.php?delete_id={DELETE_ID}')" class="link">{TR_UNINSTALL}</a></td>
+                            <td class="{IP_CLASS}" nowrap align="center">
+							<!-- BDP: ip_delete_show -->
+            				-
+            				<!-- EDP: ip_delete_show -->
+            				<!-- BDP: ip_delete_link -->
+              				<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('delete_ip.php?delete_id={DELETE_ID}', '{IP}')" class="link">{TR_UNINSTALL}</a></td>
+            				<!-- EDP: ip_delete_link -->
                           </tr>
                           <!-- EDP: ip_row -->
                         </table>

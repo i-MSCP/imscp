@@ -28,6 +28,8 @@ $tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/ip_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('ip_row', 'page');
+$tpl->define_dynamic('ip_delete_show', 'ip_row');
+$tpl->define_dynamic('ip_delete_link', 'ip_row');
 
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
@@ -53,31 +55,46 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array());
 
 	$row = 1;
-	global $del;
+	$single = false;
 
 	if ($rs->RecordCount() < 2) {
-		$del = "#";
-		// $tpl -> assign('IP_ROW', '');
-	} while (!$rs->EOF) {
+		$single = true;
+	}
+
+	while (!$rs->EOF) {
 		if ($row++ % 2 == 0) {
 			$tpl->assign('IP_CLASS', 'content');
 		} else {
 			$tpl->assign('IP_CLASS', 'content2');
 		}
 
-		if ($del === '#') {
-			$delete_ip = $del;
-		} else {
-			$delete_ip = $rs->fields['ip_id'];
-		}
-
 		$tpl->assign(
-			array('IP' => $rs->fields['ip_number'],
-				'DOMAIN' => $rs->fields['ip_domain'],
-				'ALIAS' => $rs->fields['ip_alias'],
-				'DELETE_ID' => $delete_ip,
+				array(
+					'IP' => $rs->fields['ip_number'],
+					'DOMAIN' => $rs->fields['ip_domain'],
+					'ALIAS' => $rs->fields['ip_alias']
 				)
 			);
+
+		if ($single == true) {
+			$tpl->assign(
+						array(
+							'IP_DELETE_LINK' => '',
+							'TR_UNINSTALL' => ''
+							)
+						);
+			$tpl->parse('IP_DELETE_SHOW', 'ip_delete_show');
+		}
+		else {
+			$tpl->assign(
+						array(
+							'IP_DELETE_SHOW' => '',
+							'TR_UNINSTALL' => tr('Remove IP'),
+							'DELETE_ID' => $rs->fields['ip_id']
+							)
+						);
+			$tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
+		}
 
 		$tpl->parse('IP_ROW', '.ip_row');
 
@@ -99,12 +116,12 @@ function add_ip(&$tpl, &$sql) {
 
 			$query = <<<SQL_QUERY
                 insert into server_ips
-                    (ip_number,ip_domain,ip_alias)
+                    (ip_number, ip_domain, ip_alias)
                 values
-                    (?,?,?)
+                    (?, ?, ?)
 SQL_QUERY;
 			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
-					htmlspecialchars($alias, ENT_QUOTES, "UTF-8")));
+			htmlspecialchars($alias, ENT_QUOTES, "UTF-8")));
 
 			set_page_message(tr('New IP was added!'));
 
@@ -219,10 +236,9 @@ $tpl->assign(
 			'TR_DOMAIN' => tr('Domain'),
 			'TR_ALIAS' => tr('Alias'),
 			'TR_ACTION' => tr('Action'),
-			'TR_UNINSTALL' => tr('Remove IP'),
 			'TR_ADD' => tr('Add'),
 			'TR_ADD_NEW_IP' => tr('Add new IP'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this IP: ')
 			)
 	);
 
