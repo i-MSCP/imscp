@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -627,6 +627,9 @@ msgstr "Зберегти"
 msgid "Edit button"
 msgstr "Редагувати кнопку"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -769,6 +772,14 @@ msgstr "Оновити пароль"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
 msgid "Domains"
 msgstr "Домени"
@@ -1004,6 +1015,10 @@ msgstr "ispCP - Адміністратор/Головна"
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Адміністратор/Керування IP"
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "Видалити"
+
 msgid "New IP was added!"
 msgstr "Нова адреса IP додана!"
 
@@ -1034,11 +1049,12 @@ msgstr "Домен"
 msgid "Alias"
 msgstr "Аліас"
 
-msgid "Uninstall"
-msgstr "Видалити"
-
 msgid "Add new IP"
 msgstr "Додати новий IP"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
 
 msgid "No domain system errors"
 msgstr "Немає помилок системи доменів"
@@ -2286,6 +2302,9 @@ msgstr "Точка монтування"
 msgid "Enable Forward"
 msgstr "Пересилання пошти"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Паролі не співпадають!"
 
@@ -2609,8 +2628,9 @@ msgstr ""
 msgid "Update user"
 msgstr "Оновити користувача"
 
-msgid "Wrong username!"
-msgstr "Невірне ім'я користувача!"
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Список поштових скриньок"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2621,6 +2641,9 @@ msgstr "Керування користувачем"
 
 msgid "You have no users!"
 msgstr "Ви не маєте користувачів!"
+
+msgid "Wrong username!"
+msgstr "Невірне ім'я користувача!"
 
 msgid "User already exist !"
 msgstr "Користувач уже існує!"
@@ -2868,6 +2891,10 @@ msgstr "Дата створення"
 msgid "Created by"
 msgstr "Створено"
 
+#, fuzzy
+msgid "System"
+msgstr "Системна інформація"
+
 msgid "Resellers list is empty!"
 msgstr "Список реселерів порожній!"
 
@@ -3101,6 +3128,9 @@ msgstr "Користувач уже ввійшов, або проблема ви
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3707,6 +3737,9 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "Uninstall"
+#~ msgstr "Видалити"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

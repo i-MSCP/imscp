@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-09-10 18:24+0100\n"
 "Last-Translator: ARF\n"
 "Language-Team: French France <fr_FR@li.org>\n"
@@ -52,7 +52,9 @@ msgid "Lost password"
 msgstr "Récupération des mot de passe perdus"
 
 msgid "Lost password function currently disabled"
-msgstr "La fonction de récupération des mots de passe perdus est actuellement désactivée"
+msgstr ""
+"La fonction de récupération des mots de passe perdus est actuellement "
+"désactivée"
 
 msgid "ispCP - Virtual Hosting Control System"
 msgstr "ispCP - Système Virtuel de Controle d'Hébergement"
@@ -81,8 +83,12 @@ msgstr "Erreur: le code de sécurité n'est pas correct !"
 msgid "Security code"
 msgstr "Code de sécurité"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
-msgstr "(Pour éviter les abus, nous vous demandons d'écrire la combinaison de lettres de l'image ci-dessous dans le champs \"Code de sécurité\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Pour éviter les abus, nous vous demandons d'écrire la combinaison de "
+"lettres de l'image ci-dessous dans le champs \"Code de sécurité\")"
 
 msgid "Request password"
 msgstr "Demande de mot de passe"
@@ -615,6 +621,9 @@ msgstr "Sauver"
 msgid "Edit button"
 msgstr "Bouton d'édition"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr "Erreur : il y a un domaine utilisant cette adresse IP !"
 
@@ -755,6 +764,14 @@ msgstr "Générer le mot de passe"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Admin/Gestion utilisateurs/Modifier Revendeur"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Nombre de bases SQL<br><i>(-1 désactivé, 0 illimité)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Nombre d'utilisateurs SQL<br><i>(-1 désactivé, 0 illimité)</i>"
 
 msgid "Domains"
 msgstr "Domaines"
@@ -999,6 +1016,10 @@ msgstr "ispCP - Admin/Index Général"
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/Gestion IP"
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "Retirer"
+
 msgid "New IP was added!"
 msgstr "Nouvelle adresse IP ajoutée !"
 
@@ -1029,11 +1050,12 @@ msgstr "Domaine"
 msgid "Alias"
 msgstr "Alias"
 
-msgid "Uninstall"
-msgstr "Désinstaller"
-
 msgid "Add new IP"
 msgstr "Ajouter une nouvelle IP"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Êtes-vous certain d'effacer cette requête ?"
 
 msgid "No domain system errors"
 msgstr "Aucune erreur du système de domaines"
@@ -2303,6 +2325,9 @@ msgstr "Point de montage"
 msgid "Enable Forward"
 msgstr "Transfert d'email"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Les mots de passe diffèrent !"
 
@@ -2628,8 +2653,9 @@ msgstr "Sélectionner un groupe :"
 msgid "Update user"
 msgstr "Mettre l'utilisateur à jour"
 
-msgid "Wrong username!"
-msgstr "Mauvais nom d'utilisateur !"
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Periode de temps invalide!"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2640,6 +2666,9 @@ msgstr "Gérer les utilisateurs"
 
 msgid "You have no users!"
 msgstr "Vous n'avez pas d'utiisateurs !"
+
+msgid "Wrong username!"
+msgstr "Mauvais nom d'utilisateur !"
 
 msgid "User already exist !"
 msgstr "L'utilisateur existe déjà !"
@@ -2891,6 +2920,10 @@ msgstr "Date de création"
 
 msgid "Created by"
 msgstr "Créé par"
+
+#, fuzzy
+msgid "System"
+msgstr "Info système"
 
 msgid "Resellers list is empty!"
 msgstr "La liste des revendeurs est vide !"
@@ -3174,6 +3207,9 @@ msgstr "Utilisateur déjà connecté ou problème de partage de session ! Arrêt
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3811,6 +3847,9 @@ msgstr "ispCP - Revendeur : Système de support :  Voir les Tickets"
 
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
+
+#~ msgid "Uninstall"
+#~ msgstr "Désinstaller"
 
 #, fuzzy
 #~ msgid "%s doesn't exist or can't be read."

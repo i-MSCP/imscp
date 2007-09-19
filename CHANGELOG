@@ -17,6 +17,10 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #680: "web statistics" link in customer's mode should be hidden when awstats is disabled (thanks to greg@proxyconcept.net)
 		* Fixed #684: multiline translation bugfix (thanks to greg@proxyconcept.net)
 
+2007-09-19 Raphael Geissert
+    - CONFIGS:
+        * Fixed a file name typo
+
 2007-09-19 Benedikt Heintel
 	- DOCS:
 		* Fixed #626: Updated Fedora (Core 7)

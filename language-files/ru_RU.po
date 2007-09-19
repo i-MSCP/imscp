@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -627,6 +627,9 @@ msgstr "Сохранить"
 msgid "Edit button"
 msgstr "Кнопка редактирования"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -768,6 +771,14 @@ msgstr "Изменить пароль"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Винтовой лимит [MB]<br><i>(0 - не ограничено)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Винтовой лимит [MB]<br><i>(0 - не ограничено)</i>"
 
 msgid "Domains"
 msgstr "Домены"
@@ -998,6 +1009,10 @@ msgstr ""
 msgid "ispCP - Admin/IP manage"
 msgstr ""
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "Удалить"
+
 msgid "New IP was added!"
 msgstr " Новый IP адрес был добавлен!"
 
@@ -1028,11 +1043,12 @@ msgstr "Домен"
 msgid "Alias"
 msgstr "Алиас"
 
-msgid "Uninstall"
-msgstr "Удалить"
-
 msgid "Add new IP"
 msgstr "Добавить IP"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Вы уверены что хотите удалить этот заказ?"
 
 msgid "No domain system errors"
 msgstr ""
@@ -2269,6 +2285,9 @@ msgstr ""
 msgid "Enable Forward"
 msgstr "Переадресация почты"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Введенные пароли различаются!"
 
@@ -2591,8 +2610,9 @@ msgstr ""
 msgid "Update user"
 msgstr "Изменить пользователя"
 
-msgid "Wrong username!"
-msgstr "Неправильное имя пользователя!"
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Эккоунт Домена"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2603,6 +2623,9 @@ msgstr "Управление пользователем"
 
 msgid "You have no users!"
 msgstr "Вы не имеете пользователей!"
+
+msgid "Wrong username!"
+msgstr "Неправильное имя пользователя!"
 
 msgid "User already exist !"
 msgstr "Пользователь уже существует!"
@@ -2848,6 +2871,9 @@ msgstr "Дата создания"
 msgid "Created by"
 msgstr "Создано"
 
+msgid "System"
+msgstr ""
+
 msgid "Resellers list is empty!"
 msgstr ""
 
@@ -3078,6 +3104,9 @@ msgstr "Пользователь уже вошел или проблема об�
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3679,6 +3708,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Сообщение отослано."
+
+#~ msgid "Uninstall"
+#~ msgstr "Удалить"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

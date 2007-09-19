@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -616,6 +616,9 @@ msgstr "Uložit"
 msgid "Edit button"
 msgstr "Editovat tlačítko"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr "Chyba: máme doménu, která používá tuto IP adresu!"
 
@@ -756,6 +759,14 @@ msgstr "Vygenerovat heslo"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Admin/Správa uživatelů/Upravit partnera"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Limit SQL databází<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Limit SQL uživatelů<br /><i>(-1 zakázáno, 0 bez omezení)</i>"
 
 msgid "Domains"
 msgstr "Domény"
@@ -989,6 +1000,10 @@ msgstr " ispCP - Admin/Hlavní strana"
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/Údžba IP adres"
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "Smazat"
+
 msgid "New IP was added!"
 msgstr "Byla přidána nová IP adresa!"
 
@@ -1019,11 +1034,12 @@ msgstr "Doména"
 msgid "Alias"
 msgstr "Alias"
 
-msgid "Uninstall"
-msgstr "Odinstalovat"
-
 msgid "Add new IP"
 msgstr "Přidat novou IP adresu"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Opravdu chcete odstranit tuto objednávku?"
 
 msgid "No domain system errors"
 msgstr "Žádné chyby v doménách"
@@ -2252,6 +2268,9 @@ msgstr "Bod připojení"
 msgid "Enable Forward"
 msgstr "Zapnout přesměrování"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Zadaná hesla se neshodují!"
 
@@ -2572,8 +2591,9 @@ msgstr "Vybrat skupinu:"
 msgid "Update user"
 msgstr "Aktualizovat uživatele"
 
-msgid "Wrong username!"
-msgstr "Špatné uživatelské jméno!"
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Nesprávné id účtu!"
 
 msgid "Group already exists!"
 msgstr "Skupina už existuje!"
@@ -2583,6 +2603,9 @@ msgstr "Správa uživatelů"
 
 msgid "You have no users!"
 msgstr "Nemáte zvoleny uživatele!"
+
+msgid "Wrong username!"
+msgstr "Špatné uživatelské jméno!"
 
 msgid "User already exist !"
 msgstr "Uživatel již existuje!"
@@ -2824,6 +2847,10 @@ msgstr "Vytvořeno dne"
 msgid "Created by"
 msgstr "Vytvořil"
 
+#, fuzzy
+msgid "System"
+msgstr "Systémové informace"
+
 msgid "Resellers list is empty!"
 msgstr "Seznam partnerů je prázdný!"
 
@@ -3061,6 +3088,9 @@ msgstr ""
 #, php-format
 msgid "%s's account status is not ok!"
 msgstr "Stav účtu %s není v pořádku!"
+
+msgid "You entered an incorrect password."
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr "Požadavky z jiných hostitelů jsou blokovány!"
@@ -3670,6 +3700,9 @@ msgstr "ispCP - Partner : Systém podpory: Zobrazit oznámení"
 
 msgid "Message was sent."
 msgstr "Zpráva byla poslána."
+
+#~ msgid "Uninstall"
+#~ msgstr "Odinstalovat"
 
 #, fuzzy
 #~ msgid "%s doesn't exist or can't be read."

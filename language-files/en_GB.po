@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English <en_GB@li.org>\n"
@@ -624,6 +624,9 @@ msgstr ""
 msgid "Edit button"
 msgstr ""
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -763,6 +766,12 @@ msgid "Generate password"
 msgstr ""
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr ""
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr ""
+
+msgid "SQL users limit is <i>disabled</i>!"
 msgstr ""
 
 msgid "Domains"
@@ -992,6 +1001,9 @@ msgstr ""
 msgid "ispCP - Admin/IP manage"
 msgstr ""
 
+msgid "Remove IP"
+msgstr ""
+
 msgid "New IP was added!"
 msgstr ""
 
@@ -1022,10 +1034,10 @@ msgstr ""
 msgid "Alias"
 msgstr ""
 
-msgid "Uninstall"
+msgid "Add new IP"
 msgstr ""
 
-msgid "Add new IP"
+msgid "Are you sure you want to delete this IP: "
 msgstr ""
 
 msgid "No domain system errors"
@@ -2247,6 +2259,9 @@ msgstr ""
 msgid "Enable Forward"
 msgstr ""
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr ""
 
@@ -2567,7 +2582,7 @@ msgstr ""
 msgid "Update user"
 msgstr ""
 
-msgid "Wrong username!"
+msgid "Invalid group name!"
 msgstr ""
 
 msgid "Group already exists!"
@@ -2577,6 +2592,9 @@ msgid "Manage user"
 msgstr ""
 
 msgid "You have no users!"
+msgstr ""
+
+msgid "Wrong username!"
 msgstr ""
 
 msgid "User already exist !"
@@ -2819,6 +2837,9 @@ msgstr ""
 msgid "Created by"
 msgstr ""
 
+msgid "System"
+msgstr ""
+
 msgid "Resellers list is empty!"
 msgstr ""
 
@@ -3048,6 +3069,9 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"

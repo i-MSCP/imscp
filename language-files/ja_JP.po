@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -628,6 +628,9 @@ msgstr "保存"
 msgid "Edit button"
 msgstr "ボタンの編集"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -770,6 +773,14 @@ msgstr "パスワードの更新"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - 管理者/ユーザー管理/リセラー情報修正"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "データベースのアカウント数<br><i>(-1:無効, 0:無制限)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
 
 msgid "Domains"
 msgstr "ドメイン数"
@@ -1001,6 +1012,10 @@ msgstr "ispCP - 管理者/メイン インデックス"
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - 管理者/IPアドレス管理"
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "削除"
+
 msgid "New IP was added!"
 msgstr "新規IPアドレスが追加されました"
 
@@ -1031,11 +1046,12 @@ msgstr "ドメイン"
 msgid "Alias"
 msgstr "エイリアス"
 
-msgid "Uninstall"
-msgstr "削除"
-
 msgid "Add new IP"
 msgstr "新しいIP追加"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "このオーダーを削除してよろしいですか?"
 
 msgid "No domain system errors"
 msgstr "ドメインの障害は発生していません"
@@ -2275,6 +2291,9 @@ msgstr "マウント先"
 msgid "Enable Forward"
 msgstr "転送メール"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "入力されたパスワードが異なります!"
 
@@ -2596,8 +2615,9 @@ msgstr ""
 msgid "Update user"
 msgstr "ユーザの更新"
 
-msgid "Wrong username!"
-msgstr ""
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "メールアカウント"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2608,6 +2628,9 @@ msgstr "ユーザ管理"
 
 msgid "You have no users!"
 msgstr "ユーザーが登録されていません!"
+
+msgid "Wrong username!"
+msgstr ""
 
 msgid "User already exist !"
 msgstr "ユーザーは既に存在しています"
@@ -2854,6 +2877,10 @@ msgstr "作成日"
 msgid "Created by"
 msgstr "作成者"
 
+#, fuzzy
+msgid "System"
+msgstr "システム情報"
+
 msgid "Resellers list is empty!"
 msgstr "リセラーは登録されていません"
 
@@ -3087,6 +3114,9 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3683,6 +3713,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "送信済み"
+
+#~ msgid "Uninstall"
+#~ msgstr "削除"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

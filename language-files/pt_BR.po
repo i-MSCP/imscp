@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -628,6 +628,9 @@ msgstr "Salvar"
 msgid "Edit button"
 msgstr "Editar botão"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -770,6 +773,14 @@ msgstr "Alterar senha"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Admin/Gerenciar Usuários/Alterar Representante"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Bancos de dados SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Limite de usuários SQL<br><i>(-1 desabilita, 0 ilimitado)</i>"
 
 msgid "Domains"
 msgstr "Domínios"
@@ -1004,6 +1015,10 @@ msgstr "ispCP - Admin/Índice Principal"
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/Gerenciar IP"
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "Exclui"
+
 msgid "New IP was added!"
 msgstr "Novo IP foi adicionado!"
 
@@ -1034,11 +1049,12 @@ msgstr "Domínio"
 msgid "Alias"
 msgstr ""
 
-msgid "Uninstall"
-msgstr "Desinstalar"
-
 msgid "Add new IP"
 msgstr "Adicionar novo IP"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Tem certeza que deseja eliminar este pedido?"
 
 msgid "No domain system errors"
 msgstr "Nenum domínio com erro"
@@ -2284,6 +2300,9 @@ msgstr "Diretório"
 msgid "Enable Forward"
 msgstr "E-mail de resposta"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Você informou senhas diferentes!"
 
@@ -2605,8 +2624,9 @@ msgstr ""
 msgid "Update user"
 msgstr "Alterar usuário"
 
-msgid "Wrong username!"
-msgstr "Usuário inválido"
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Lista de e-mails"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2617,6 +2637,9 @@ msgstr "Gerenciar usuário"
 
 msgid "You have no users!"
 msgstr "Você não possui usuários!"
+
+msgid "Wrong username!"
+msgstr "Usuário inválido"
 
 msgid "User already exist !"
 msgstr "Usuário já existe!"
@@ -2866,6 +2889,10 @@ msgstr "Data"
 msgid "Created by"
 msgstr "Criado por"
 
+#, fuzzy
+msgid "System"
+msgstr "Informações do sistema"
+
 msgid "Resellers list is empty!"
 msgstr "Lista de representantes vazia!"
 
@@ -3099,6 +3126,9 @@ msgstr "Usuário já logado ou ocorreu algum erro! Cancelando..."
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3698,6 +3728,9 @@ msgstr "ispCP - Representante : Sistema de Suporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "Mensagem foi enviada."
+
+#~ msgid "Uninstall"
+#~ msgstr "Desinstalar"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

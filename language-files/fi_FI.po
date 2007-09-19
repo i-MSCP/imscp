@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -627,6 +627,9 @@ msgstr "Tallenna"
 msgid "Edit button"
 msgstr "Muokkaa nappia"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -769,6 +772,14 @@ msgstr "P�ivit� salasana"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Yll�pito / Hallitse k�ytt�ji� / Muokkaa j�lleenmyyj��"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "SQL-tietokantarajoitus<br><i>(-1 pois k�yt�st�, 0 rajoittamaton)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQL-k�ytt�jien rajoitus<br><i>(-1 pois k�yt�st�, 0 rajoittamaton)</i>"
 
 msgid "Domains"
 msgstr "Domainit"
@@ -1002,6 +1013,10 @@ msgstr "ispCP - Yll�pito / P��sivu"
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Yll�pito / IP-hallinta"
 
+#, fuzzy
+msgid "Remove IP"
+msgstr "Poista"
+
 msgid "New IP was added!"
 msgstr "Uusi IP-osoite lis�tty!"
 
@@ -1032,11 +1047,12 @@ msgstr ""
 msgid "Alias"
 msgstr ""
 
-msgid "Uninstall"
-msgstr "Poista"
-
 msgid "Add new IP"
 msgstr "Lis�� uusi IP-osoite"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Haluatko varmasti poistaa t�m�n tilauksen?"
 
 msgid "No domain system errors"
 msgstr "Ei domain-j�rjestelm�n virheit�"
@@ -2281,6 +2297,9 @@ msgstr "Liitospiste"
 msgid "Enable Forward"
 msgstr "Email-ohjaus"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Annetut salasanat poikkeavat!"
 
@@ -2602,8 +2621,9 @@ msgstr ""
 msgid "Update user"
 msgstr "P�ivit� k�ytt�j�"
 
-msgid "Wrong username!"
-msgstr "Virheellinen k�ytt�j�tunnus!"
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "S�hk�postik�ytt�jien lista"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2614,6 +2634,9 @@ msgstr "Hallitse k�ytt�j��"
 
 msgid "You have no users!"
 msgstr "Sinulla ei ole k�ytt�ji�!"
+
+msgid "Wrong username!"
+msgstr "Virheellinen k�ytt�j�tunnus!"
 
 msgid "User already exist !"
 msgstr "K�ytt�j� on jo olemassa!"
@@ -2861,6 +2884,10 @@ msgstr "Luomisp�iv�m��r�"
 msgid "Created by"
 msgstr "Luonut"
 
+#, fuzzy
+msgid "System"
+msgstr "J�rjestelm�tiedot"
+
 msgid "Resellers list is empty!"
 msgstr "J�lleenmyyj�lista on tyhj�!"
 
@@ -3093,6 +3120,9 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
@@ -3696,6 +3726,9 @@ msgstr "ispCP - J�lleenmyyj� : Tukij�rjestelm�: Lue kysymyksi�"
 
 msgid "Message was sent."
 msgstr "Viesti on l�hetetty."
+
+#~ msgid "Uninstall"
+#~ msgstr "Poista"
 
 #, fuzzy
 #~ msgid "Incorrect username number or syntax!"

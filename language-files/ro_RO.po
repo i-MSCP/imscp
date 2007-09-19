@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-08 16:11-0500\n"
+"POT-Creation-Date: 2007-09-19 18:13-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -625,6 +625,9 @@ msgstr ""
 msgid "Edit button"
 msgstr "Buton Editare"
 
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
 msgid "Error: we have a domain using this IP!"
 msgstr ""
 
@@ -766,6 +769,14 @@ msgstr "Parolele introduse difera!"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Limita Disc [MB}<br><i>(0 nelimitat)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Limita Disc [MB}<br><i>(0 nelimitat)</i>"
 
 msgid "Domains"
 msgstr "Domenii"
@@ -996,6 +1007,9 @@ msgstr ""
 msgid "ispCP - Admin/IP manage"
 msgstr ""
 
+msgid "Remove IP"
+msgstr ""
+
 msgid "New IP was added!"
 msgstr ""
 
@@ -1026,11 +1040,12 @@ msgstr "Domeniu"
 msgid "Alias"
 msgstr ""
 
-msgid "Uninstall"
-msgstr ""
-
 msgid "Add new IP"
 msgstr "Adauga IP nou"
+
+#, fuzzy
+msgid "Are you sure you want to delete this IP: "
+msgstr "Sigur doriti sa stergeti aceasta comanda?"
 
 msgid "No domain system errors"
 msgstr ""
@@ -2261,6 +2276,9 @@ msgstr ""
 msgid "Enable Forward"
 msgstr "Pornit"
 
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
 msgid "Entered passwords differ!"
 msgstr "Parolele introduse difera!"
 
@@ -2582,8 +2600,9 @@ msgstr ""
 msgid "Update user"
 msgstr ""
 
-msgid "Wrong username!"
-msgstr ""
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Cont domeniu"
 
 #, fuzzy
 msgid "Group already exists!"
@@ -2594,6 +2613,9 @@ msgstr ""
 
 msgid "You have no users!"
 msgstr "Nu aveti nici un user!"
+
+msgid "Wrong username!"
+msgstr ""
 
 msgid "User already exist !"
 msgstr ""
@@ -2839,6 +2861,9 @@ msgstr ""
 msgid "Created by"
 msgstr ""
 
+msgid "System"
+msgstr ""
+
 msgid "Resellers list is empty!"
 msgstr ""
 
@@ -3068,6 +3093,9 @@ msgstr ""
 
 #, php-format
 msgid "%s's account status is not ok!"
+msgstr ""
+
+msgid "You entered an incorrect password."
 msgstr ""
 
 msgid "Request from foreign host was blocked!"
