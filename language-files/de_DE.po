@@ -40,16 +40,16 @@ msgid "Please enter your login information"
 msgstr "Bitte Benutzername und Passwort eingeben."
 
 msgid "Secure Connection"
-msgstr ""
+msgstr "Sichere Verbindung"
 
 msgid "Normal Connection"
-msgstr ""
+msgstr "Normale Verbindung"
 
 msgid "Lost password"
 msgstr "Kennwort vergessen"
 
 msgid "Lost password function currently disabled"
-msgstr ""
+msgstr "Kennwort vergessen Funktion derzeit nicht verfügbar"
 
 msgid "ispCP - Virtual Hosting Control System"
 msgstr ""
@@ -82,6 +82,7 @@ msgid ""
 "(To avoid abuse, we ask you to write the combination of letters on the above "
 "picture into the field \"Security code\")"
 msgstr ""
+"(Um Missbrauch vorzubeugen, bitten wir Sie die oben stehende Kombination des Bildes in das Feld \"Sicherheitscode\" einzugeben)"
 
 msgid "Request password"
 msgstr "Kennwort anfordern"
@@ -111,7 +112,7 @@ msgid "Empty data or wrong field!"
 msgstr "Keine oder falsche Eingabe!"
 
 msgid "Passwords don't match!"
-msgstr ""
+msgstr "Passwörter stimmen nicht überein"
 
 msgid "Add admin"
 msgstr "Administrator anlegen"
@@ -174,7 +175,7 @@ msgid "Add"
 msgstr "Anlegen"
 
 msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr ""
+msgstr "ispCP - Admin/Verwalte Benutzer/Wiederverkäufer hinzufügen"
 
 msgid "Reseller IP list is empty!"
 msgstr "Wiederverkäufer IP Adressen Liste ist leer!"
@@ -329,27 +330,27 @@ msgstr "Protokoll ist leer!"
 
 #, php-format
 msgid "%s deleted the full admin log!"
-msgstr ""
+msgstr "%s hat das Admin Protokoll geleert!"
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
-msgstr ""
+msgstr "%s hat das Admin Protokoll, welches älter als zwei Wochen war, geleert!"
 
 #, php-format
 msgid "%s deleted the admin log older than one month!"
-msgstr ""
+msgstr "%s hat das Admin Protokoll, welches älter als einen Monat war, geleert!"
 
 #, php-format
 msgid "%s deleted the admin log older than three months!"
-msgstr ""
+msgstr "%s hat das Admin Log, welches älter als drei Monate war, geleert!"
 
 #, php-format
 msgid "%s deleted the admin log older than six months!"
-msgstr ""
+msgstr "%s hat das Admin Log, welches älter als sechs Monate war, geleert!"
 
 #, php-format
 msgid "%s deleted the admin log older than one year!"
-msgstr ""
+msgstr "%s hat das Admin Log, welches älter als ein Jahr war, geleert!"
 
 msgid "Invalid time period!"
 msgstr "Ungültige Zeitdauer!"
@@ -778,6 +779,7 @@ msgstr ""
 msgid ""
 "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
+"Inkonsistenz zwischen current_als_cnt und Aliase Zählung: %1$d != %2$d"
 
 msgid "Aliases"
 msgstr "Domain Aliase"
@@ -786,6 +788,7 @@ msgstr "Domain Aliase"
 msgid ""
 "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
+"Inkonsistenz zwischen current_mail_cnt und Mail Zählung: %1$d != %2$d"
 
 msgid "Mail"
 msgstr "E-Mail Konten"
@@ -794,19 +797,20 @@ msgstr "E-Mail Konten"
 msgid ""
 "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
+"Inkonsistenz zwischen current_ftp_cnt und FTP Zählung: %1$d != %2$d"
 
 msgid "FTP"
 msgstr "FTP Transfer"
 
 msgid "SQL Databases"
-msgstr ""
+msgstr "SQL Datenbanken"
 
 msgid "SQL Users"
-msgstr ""
+msgstr "SQL Benutzer"
 
 #, fuzzy
 msgid "Web Traffic"
-msgstr "Web Transfer"
+msgstr "Netz Verkehr"
 
 #, fuzzy
 msgid "Disk storage"

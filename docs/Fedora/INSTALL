@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for Fedora Core 6
+ispCP ω (OMEGA) HowTo Install for Fedora Core 7
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -18,9 +18,9 @@ Table of Content
 ---------------
 ispCP ω Version:	1.0.0
 INSTALL Skript:		1.0
-Maintainer:
+Maintainer:			Benedikt Heintel
 Homepage:			http://isp-contol.net
-Linux Distris:		Fedora Core 6
+Linux Distris:		Fedora Core 7
 
 ================================================================================
 2) Requirements
@@ -62,19 +62,17 @@ Make sure you are logged in as root.
 3. Install the required modules from 'fedora-packages'
 	# yum install `cat ./docs/Fedora/fedora-packages`
 
-	For RC6 please add:
-	# rpm -ivh http://rpm.livna.org/livna-release-6.rpm
-	# yum install unrar
-
-	# yum install cpan2rpm
 	# cpan2rpm -i http://search.cpan.org/CPAN/authors/id/P/PH/PHOENIX/Term-ReadPassword-0.07.tar.gz
+	# wget -P /tmp/core http://hany.sk/mirror/fedora/releases/7/Everything/i386/os/Fedora/perl-Net-LibIDN-0.09-3.fc7.i386.rpm
+	# rpm -i /tmp/core/perl-Net-LibIDN-0.09-3.fc7.i386.rpm
 
 4. Now there are two ways of install ispCP ω
 
 a) via install script
 ---------------------
 4a. Start the script and follow the install instructions:
-	# ./install-ispcp.sh
+	# chmod 700 ./docs/fedora/install-ispcp.sh
+	# ./docs/fedora/install-ispcp.sh
 
 After that return to step 13.
 
@@ -99,49 +97,70 @@ b) manualy
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
-6. Return to the parent direction and build the System by using make:
+6. Install Courier
+	# cp -f ./courier*.rpm /usr/local/
+	# cd /usr/local/
+
+	# wget http://www.thatfleminggent.com/packages/fedora/7/i386/courier-authlib-0.59.3-1.fc7.mf.i386.rpm
+	# wget http://www.thatfleminggent.com/packages/fedora/7/i386/courier-authlib-userdb-0.59.3-1.fc7.mf.i386.rpm
+	# wget http://www.thatfleminggent.com/packages/fedora/7/i386/courier-imap-4.1.3-1.fc7.mf.i386.rpm
+
+	# rpm -i courier-authlib-0.59.3-1.fc7.mf.i386.rpm
+	# rpm -i courier-authlib-userdb-0.59.3-1.fc7.mf.i386.rpm
+	# rpm -i courier-imap-4.1.3-1.fc7.mf.i386.rpm
+
+	Create group and user with 3000 UID so ispCP doesn't cause conflicts with user
+	# groupadd courier -g 3000
+	# useradd -u 3000 -c 'Courier Mail Server' -d /dev/null -g courier -s /bin/false courier
+
+7. Return to the parent direction and build the System by using make:
 	# cd ../
-	# mv Makefile.fedora Makefile
-	# make install
+	# make -f Makefile.fedora install
 
-7. Copy all the directories into the system (you may make backups)
-	# cp -R -L /tmp/ispcp-1.0.0/* /
+8. Copy all the directories into the system (you may make backups)
+	# cp -RLf /tmp/ispcp-1.0.0/* /
 
-8. Create the courier user database
-	# chown root:root /etc/authlib/userdb
-	# chmod 600 /etc/authlib/userdb
-	# makeuserdb
+9. Bind setup
+	# mv /var/named/data /var/named/data2
+	# ln -s /var/named/chroot/var/named/data /var/named/data
 
-9. Create additional folder for apache
-	# mkdir /etc/httpd/vhosts
-	# echo 'Include vhosts/*.conf' >> /etc/httpd/conf/httpd.conf
+	# mkdir /var/www/scoreboards
+	# touch /etc/sasldb2
 
-10. Now it's time to set up the frontend. Change into the engine directory:
+10. Additional apache setup
+	# echo 'include vhosts/*.conf' >> /etc/httpd/conf/httpd.conf
+
+	# mkdir -p /var/spool/postfix/etc
+	# cp /etc/sasldb2 /var/spool/postfix/etc/sasldb2
+
+	# chown apache:apache /var/www/ispcp/gui/tools/webmail/data
+
+11. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-10a. Set the MySQL password, if not set:
+11a. Set the MySQL password, if not set:
 	# mysqladmin -u root password YOUR_PASSWORD
 
-11. Start the engine setup:
+12. Start the engine setup:
 	# ./ispcp-setup
 	(Be careful: the file /etc/named.conf must exist before you run the script.
 	Otherwise setup will failed on trying to backup it!
 	You can use the caching-nameserver package or the system-config-bind tool
 	for create it or you can use touch!)
 
-12. Install ispCP ω step-by-step
+13. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-13. There is an error in some courier-versions. Courier won't stop, if you use
+14. There is an error in some courier-versions. Courier won't stop, if you use
 	/etc/init.d/courier-authdaemon stop, so change it:
 	# nano /etc/ini.d/courier-authdaemon
 
 	change: ${libexecdir}/authlib/authdaemon stop
 	into:	killall authdaemond.plain
 
-14. Modify some system values:
+15. Modify some system values:
 
 	* create sasl2 database:
 	# touch /etc/sasldb2
@@ -151,7 +170,7 @@ b) manualy
 	# chkconfig --add ispcp
 	# service ispcp start
 
-15. Clean the temporary folders:
+16. Clean the temporary folders:
 	# rm -R /tmp/ispcp-1.0.0
 
 

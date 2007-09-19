@@ -6,7 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * gui: disable stats-alias in client menu         |
 |         - GUI:                                                  |
 |               * to fix: bruteforce not working at all!          |
+|               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
+
+2007-09-19 Benedikt Heintel
+	- DOCS:
+		* Fixed #626: Updated Fedora (Core 7)
+	- DISTS:
+		* Fixed #626: Updated Fedora files
+	- LANGUAGES:
+		* Updated German translation (thanks to Klaas Tammling)
 
 2007-09-16 Raphael Geissert
     - LANGUAGES:

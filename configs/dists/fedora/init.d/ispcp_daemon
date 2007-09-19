@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control System
 # Copyright (c) 2007 by ispCP
@@ -27,61 +27,64 @@
 #
 #    http://www.isp-control.net
 
-# Note: do not modify any of these vars here, use /etc/default/$NAME instead
+# Source function library.
+. /etc/rc.d/init.d/functions
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-NAME=ispcp_daemon
-DAEMON=/var/www/ispcp/daemon/$NAME
-PID=/var/run/$NAME.pid
-DESC="ispCP Daemon"
+prog=ispcp_daemon
+progpath=/var/www/ispcp/daemon
 
-START=1
+start() {
+        echo -n $"Starting $prog: "
+        daemon $progpath/$prog -p $PID
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && touch $lockfile >/dev/null 2>&1
+        echo
+}
 
-test -f $DAEMON || exit 0
+stop() {
+        echo -n $"Shutting down $prog: "
+        killproc $prog
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f $lockfile
+}
 
-# Read config file if it is present.
-if [ -r /etc/default/$NAME ]; then
-	. /etc/default/$NAME
-fi
-
-if [ $START -eq 0 ]; then
-	echo "$DESC: not starting, edit /etc/default/$NAME."
-	exit 0
-fi
+status() {
+		if [ -s $pidfile ]; then
+			pid=`cat $pidfile`
+			kill -0 $pid >/dev/null 2>&1
+			if [ "$?" = "0" ]; then
+				echo "$prog (pid $pid) is running"
+				RETVAL=0
+			else
+				echo "$prog is stopped"
+				RETVAL=1
+			fi
+		else
+			echo "$prog is stopped"
+			RETVAL=1
+		fi
+}
 
 case "$1" in
   start)
-    echo "Starting $DESC..."
-	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
+        start
+		/etc/init.d/ispcp_network
 	;;
   stop)
-	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
-    rm $PID
+        stop
 	;;
-  restart|force-reload)
-	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
-	rm $PID
-    echo "Starting $DESC..."
-	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
+  restart)
+        stop
+        start
 	;;
   status)
-    set +e
-    if [ -s $PID ]; then
-        RPID=`cat $PID`
-        kill -0 $RPID 2> /dev/null
-        if [ "$?" = 0 ] ; then
-            echo "$NAME is started"
-            exit 0
-        fi
-    fi
-    echo "$NAME is stopped"
-    exit 1
+        status $prog
+        RETVAL=$?
 	;;
   *)
-	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+        echo "Usage: $prog {start|stop|restart|status}"
 	exit 1
-	;;
 esac
 
-exit 0
+exit $RETVAL
