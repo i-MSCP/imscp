@@ -6,7 +6,7 @@
 # service type  private unpriv  chroot  wakeup  maxproc command + args
 #               (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
-smtp      inet  n       -       n       -       -       smtpd
+smtp      inet  n       -       -       -       -       smtpd
 #submission inet n       -       -       -       -       smtpd
 #  -o smtpd_enforce_tls=yes
 #  -o smtpd_sasl_auth_enable=yes
@@ -31,7 +31,7 @@ trace     unix  -       -       -       -       0       bounce
 verify    unix  -       -       -       -       1       verify
 flush     unix  n       -       -       1000?   0       flush
 proxymap  unix  -       -       n       -       -       proxymap
-smtp      unix  -       -       n       -       -       smtp
+smtp      unix  -       -       -       -       -       smtp
 # When relaying mail as backup MX, disable fallback_relay to avoid MX loops
 relay     unix  -       -       -       -       -       smtp
 	-o fallback_relay=
