@@ -46,7 +46,8 @@
   </tr><tr>
     <td class="menu"><div align="center"><a href="{SUPPORT_SYSTEM_PATH}" target="{SUPPORT_SYSTEM_TARGET}" class="menu_active" onMouseOver="MM_swapImage('support','','{THEME_COLOR_PATH}/images/icons/support_a.gif',1)" onMouseOut="MM_swapImgRestore()">{TR_MENU_QUESTIONS_AND_COMMENTS}</a></div></td>
   </tr>
-</table>
+</table></td>
+<!-- EDP: isactive_support -->
 <!-- BDP: custom_buttons -->
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -55,8 +56,7 @@
   </tr><tr>
     <td class="menu"><div align="center"><a href="{BUTTON_LINK}" {BUTTON_TARGET} class="menu_active" onMouseOver="MM_swapImage('custom_link_{BUTTON_ID}','','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif',1)" onMouseOut="MM_swapImgRestore()">{BUTTON_NAME}</a></div></td>
 	  </tr>
-</table>
+</table></td>
 <!-- EDP: custom_buttons -->
-</td>
   </tr>
 </table>

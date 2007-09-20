@@ -4,7 +4,6 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -62,7 +61,8 @@ $tpl->assign(
 			'TR_MOUNT_POINT' => tr('Directory mount point'),
 			'TR_DOMAIN_IP' => tr('Domain IP'),
 			'TR_FORWARD' => tr('Forward to URL'),
-			'TR_ADD' => tr('Add alias')
+			'TR_ADD' => tr('Add alias'),
+			'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own.")
 		)
 	);
 

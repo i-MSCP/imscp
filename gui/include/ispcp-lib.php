@@ -53,6 +53,7 @@ $cfg['ITEM_DISABLED_STATUS'] = 'disabled';
 $cfg['ITEM_RESTORE_STATUS'] = 'restore';
 $cfg['ITEM_TOENABLE_STATUS'] = 'toenable';
 $cfg['ITEM_TODISABLED_STATUS'] = 'todisable';
+$cfg['ITEM_ORDERED_STATUS'] = 'ordered';
 // SQL variables
 $cfg['MAX_SQL_DATABASE_LENGTH'] = 64;
 $cfg['MAX_SQL_USER_LENGTH'] = 16;

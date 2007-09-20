@@ -4,7 +4,6 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -245,15 +244,15 @@ function generate_reseller_entry (&$tpl, $reseller_id, $reseller_name, $row) {
 				'TRAFF_PERCENT' => $traff_percent,
 
 				'TRAFF_MSG' => ($rtraff_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
+				tr('%1$s / %2$s <br/>of<br/> <b>%3$s</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)):
+				tr('%1$s / %2$s <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
 				'DISK_SHOW_PERCENT' => $disk_show_percent,
 				'DISK_PERCENT' => $disk_percent,
 
 				'DISK_MSG' => ($rdisk_max) ?
-				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)):
-				tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
+				tr('%1$s / %2$s <br/>of<br/> <b>%3$s</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)):
+				tr('%1$s / %2$s <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
 				'DMN_MSG' => ($rdmn_max) ?
 				tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):

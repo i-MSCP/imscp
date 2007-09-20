@@ -99,6 +99,8 @@ function gen_user_als_action($als_id, $als_status) {
 
 	if ($als_status === $cfg['ITEM_OK_STATUS']) {
 		return array(tr('Delete'), "delete_als.php?id=$als_id");
+	} else if ($als_status === $cfg['ITEM_ORDERED_STATUS']) {
+		return array(tr('Delete order'), "delete_als_order.php?del_id=$als_id");
 	} else {
 		return array(tr('N/A'), '#');
 	}
@@ -110,12 +112,16 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 	if ($url_forward === 'no') {
 		if ($als_status === 'ok') {
 			return array("-", "edit_alias.php?edit_id=" . $als_id, tr("Edit"));
+		} else if ($als_status === 'ordered') {
+			return array("-", "#", tr("N/A"));
 		} else {
 			return array(tr("N/A"), "#", tr("N/A"));
 		}
 	} else {
 		if ($als_status === 'ok') {
 			return array($url_forward, "edit_alias.php?edit_id=" . $als_id, tr("Edit"));
+		} else if ($als_status === 'ordered') {
+			return array($url_forward, "#", tr("N/A"));
 		} else {
 			return array(tr("N/A"), "#", tr("N/A"));
 		}

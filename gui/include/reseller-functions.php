@@ -4,7 +4,6 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -32,7 +31,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 	global $sql, $cfg;
 
 	$tpl->define_dynamic('menu', $menu_file);
-
+	$tpl->define_dynamic('isactive_support', 'menu');
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(
@@ -106,7 +105,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
-		$tpl->assign('SUPPORT_SYSTEM', '');
+		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
 	$tpl->parse('MAIN_MENU', 'menu');
@@ -190,7 +189,7 @@ SQL_QUERY;
 		} // end while
 	} // end else
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
-		$tpl->assign('SUPPORT_SYSTEM', '');
+		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
 	$tpl->parse('MENU', 'menu');
@@ -725,8 +724,7 @@ function check_ruser_data (&$tpl, $NoPass)
 	return false;
 } //End of check_ruser_data()
 // Translate domain status
-function translate_dmn_status ($status)
-{
+function translate_dmn_status ($status) {
 	global $cfg;
 
 	if ($status == $cfg['ITEM_OK_STATUS']) {
@@ -743,6 +741,8 @@ function translate_dmn_status ($status)
 		return tr('Being enabled');
 	} else if ($status == $cfg['ITEM_TODISABLED_STATUS']) {
 		return tr('Being suspended');
+	} else if ($status == $cfg['ITEM_ORDERED_STATUS']) {
+		return tr('Order in progress');
 	} else {
 		return tr('Unknown error');
 	}

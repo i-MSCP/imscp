@@ -6,6 +6,8 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
+
 <script language="JavaScript" type="text/JavaScript">
 <!--
 function makeUser(){
@@ -72,6 +74,9 @@ function MM_swapImage() { //v3.0
       </tr>
     </table>
 	<!-- EDP: logged_from -->
+<!-- ToolTip -->
+<div id="dmn_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_DMN_HELP}</div>
+<!-- ToolTip end -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%" style="border-collapse: collapse;padding:0;margin:0;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="../themes/omega_original/images/top/top_left.jpg" border="0"></td>
@@ -108,7 +113,9 @@ function MM_swapImage() { //v3.0
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
-                              <td width="250" class="content2">{TR_SUBDOMAIN_NAME}</td>
+                              <td width="250" class="content2">
+							   {TR_SUBDOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('dmn_help', event)" onMouseOut="hideTip('dmn_help')" />
+							  </td>
                               <td class="content"><input type="text" name="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onBlur="makeUser()";>
                                 {DOMAIN_NAME}</td>
                             </tr>

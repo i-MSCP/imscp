@@ -246,7 +246,7 @@ sub mngr_engine {
 
     }
 
-    $sql = "select alias_id, alias_name, alias_status from domain_aliasses where alias_status != 'ok' order by alias_id";
+    $sql = "select alias_id, alias_name, alias_status from domain_aliasses where alias_status != 'ok' and alias_status != 'ordered' order by alias_id";
 
     ($rs, $rdata) = doSQL($sql);
 

@@ -2,13 +2,13 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright 2006-2007 by ispCP | http://isp-control.net
- * @link http://isp-control.net
- * @author ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
  * @license
- * 	This program is free software; you can redistribute it and/or modify it under
+ *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
  *   Foundation; either version 1.1 of the License, or (at your option) any later
  *   version.
@@ -39,7 +39,6 @@ $tpl->assign(
                 )
         	);
 
-
 /*
  *
  * static page messages.
@@ -64,7 +63,7 @@ $tpl->assign(
 						'TR_DOMAIN_IP' => tr('Domain IP'),
 						'TR_FORWARD' => tr('Forward to URL'),
 						'TR_ADD' => tr('Add alias'),
-
+						'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own.")
                      )
               );
 
@@ -202,11 +201,11 @@ SQL_QUERY;
 	// First check if the data is correct
 	if (!chk_dname($alias_name)) {
 		$err_al = tr("Incorrect domain name syntax");
-	}else if (ispcp_domain_exists($alias_name, 0)) {
+	} else if (ispcp_domain_exists($alias_name, 0)) {
         $err_al = tr('Domain with that name already exists on the system!');
-	}else if (!chk_mountp($mount_point) && $mount_point != '/') {
+	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	}else if ($forward != 'no') {
+	} else if ($forward != 'no') {
 		if (!chk_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
@@ -240,7 +239,7 @@ SQL_QUERY;
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
 	global $cfg;
-	$status = $cfg['ITEM_ADD_STATUS'];
+	$status = $cfg['ITEM_ORDERED_STATUS'];
 
   $query = "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
@@ -248,9 +247,9 @@ SQL_QUERY;
 	send_request();
 
 	$admin_login = $_SESSION['user_logged'];
-	write_log("$admin_login: add domain alias: $alias_name.");
+	write_log("$admin_login: add domain alias for activation: $alias_name.");
 
-	set_page_message(tr('Alias scheduled for addition!'));
+	set_page_message(tr('Alias scheduled for activation!'));
 	header( "Location: manage_domains.php" );
 	die();
 }// End of add_domain_alias();

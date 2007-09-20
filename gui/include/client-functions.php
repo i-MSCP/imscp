@@ -4,7 +4,6 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -359,6 +358,10 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_awstats', 'menu');
+    $tpl->define_dynamic('isactive_email', 'menu');
+    $tpl->define_dynamic('isactive_ftp', 'menu');
+    $tpl->define_dynamic('isactive_sql', 'menu');
+    $tpl->define_dynamic('isactive_support', 'menu');
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(
@@ -448,8 +451,18 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
+
+	list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
+         $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
+         $dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
+         $dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+
+    if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
+    if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
+    if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
+
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
-		$tpl->assign('SUPPORT_SYSTEM', '');
+		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
 	if ($cfg['AWSTATS_ACTIVE'] == "no") {
@@ -607,7 +620,7 @@ function user_goto($dest) {
 	exit(0);
 }
 
-function count_sql_user_by_name(&$sql, $sqlu_name) s{
+function count_sql_user_by_name(&$sql, $sqlu_name) {
 	$query = <<<SQL_QUERY
 		SELECT
 			COUNT(sqlu_id) as cnt

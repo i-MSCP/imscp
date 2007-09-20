@@ -4,7 +4,6 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team (2007)
  *
@@ -60,6 +59,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 	global $sql, $cfg;
 
 	$tpl->define_dynamic('menu', $menu_file);
+	$tpl->define_dynamic('isactive_support', 'menu');
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->assign(
 		array(
@@ -155,8 +155,9 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
+
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
-		$tpl->assign('SUPPORT_SYSTEM', '');
+		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
 	if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {

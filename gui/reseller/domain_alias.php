@@ -320,6 +320,11 @@ SQL_QUERY;
 			$edit_link = "edit_alias.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
+		} else if ($als_status === 'ordered'){
+			$delete_link = "domainaliasorder.php?action=delete&del_id=".$als_id;
+			$edit_link = "domainaliasorder.php?action=activate&act_id=".$als_id;
+			$action_text = tr("Delete order");
+			$edit_text = tr("Activate");
 		} else {
 			$delete_link = "#";
 			$edit_link = "#";
@@ -397,6 +402,18 @@ function generate_als_messages(&$tpl, $als_err) {
 			$tpl->assign('MESSAGE', tr('Domain alias not modified!'));
 
 		unset($_SESSION['aledit']);
+	} else if(isset($_SESSION['orderaldel'])){
+		if('_no_' === $_SESSION['orderaldel']) {
+			$tpl -> assign('MESSAGE', tr('Ordered domain alias not deleted!'));
+		}
+        unset($_SESSION['orderaldel']);
+    } else if(isset($_SESSION['orderalact'])){
+		if('_yes_' === $_SESSION['orderalact'])
+        	$tpl -> assign('MESSAGE', tr('Ordered domain alias activated!'));
+		else
+			$tpl -> assign('MESSAGE', tr('Ordered domain alias not activated!'));
+
+        unset($_SESSION['orderalact']);
 	} else {
 		$tpl->assign('MESSAGE', '');
 		$tpl->assign('PAGE_MESSAGE', "");
