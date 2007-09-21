@@ -19,6 +19,7 @@ ispCP ω 1.0.0 Changelog
 2007-09-21 Johannes Schobig
 	- GUI:
 		* Fixed #573: customer possible to catch all mails for severall domains
+		* Fixed #648: email address with catchall assigned to it can be deleted
 		* Fixed #658: hosting plan can be deleted but there is another order with it
 		* Fixed #659: resulted of ticket #658 an order cant be update if the hosting plan is deleted
 		* Fixed #671: Missing unit in statistics [MB]
