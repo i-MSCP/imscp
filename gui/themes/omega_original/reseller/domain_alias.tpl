@@ -103,7 +103,7 @@ function MM_goToURL() { //v3.0
                     <!-- BDP: table_item -->
                     <tr>
                       <td width="25" align="center">&nbsp;</td>
-                      <td class="{CONTENT}" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left"> {NAME}<br>
+                      <td class="{CONTENT}" nowrap><a href="http://www.{NAME}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left" border="0"> {NAME}</a><br>
                         {ALIAS_IP}</td>
                       <td class="{CONTENT}" nowrap>{REAL_DOMAIN}<br />
                         {REAL_DOMAIN_MOUNT}</td>

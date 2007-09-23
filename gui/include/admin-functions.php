@@ -2292,8 +2292,8 @@ RIC;
 		$header = $rs->fields['header'];
 		$footer = $rs->fields['footer'];
 
-		$header = str_replace ('\\', '', "$header");
-		$footer = str_replace ('\\', '', "$footer");
+		$header = htmlentities(str_replace ('\\', '', "$header"), ENT_COMPAT, 'UTF-8');
+		$footer = htmlentities(str_replace ('\\', '', "$footer"), ENT_COMPAT, 'UTF-8');
 	}
 
 	$tpl->assign('PURCHASE_HEADER', $header);

@@ -4,6 +4,7 @@ bind-chroot
 bind-libs
 bind-utils
 bzip2
+caching-nameserver
 chkrootkit
 clamav
 clamav-data

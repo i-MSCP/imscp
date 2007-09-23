@@ -1,0 +1,64 @@
+body {
+	margin: 			0;
+	font-family: 		geneva, arial, helvetica, sans-serif;
+}
+
+#zh {
+	text-align: 		center;
+	position: 			absolute;
+	top: 				50%;
+	left: 				0px;
+	width: 				100%;
+	height: 			1px;
+	overflow: 			visible;
+}
+
+#content {
+	text-align: 		center;
+	border: 			1px solid #CCCCCC;
+	margin-left: 		-227px;
+	top: 				-94px;
+	width: 				453px;
+	height: 			auto;
+	background-image: 	url(/errors/inc/error_top.jpg);
+	background-repeat: 	no-repeat;
+	padding-top: 		69px;
+	padding-bottom: 	12px;
+	left: 				50%;
+	position: 			absolute;
+}
+
+#bottom {
+	position:			absolute;
+	bottom:				0px;
+	right:				10px;
+	text-align:			right;
+	z-index:			0;
+}
+
+h2 {
+	color: 				#FF0000;
+	margin: 			0px;
+	padding: 			0px;
+}
+
+h3 {
+	font-size: 			16px;
+	letter-spacing: 	7px;
+	padding-top: 		30px;
+}
+
+.path {
+	font-weight: 		bold;
+	color: 				#666666;
+}
+
+.login {
+	font-family:		geneva, arial, helvetica, sans-serif;
+	font-size:			8pt;
+	background-color:	#ffffff;
+	color:				#000000;
+	white-space: 		nowrap;
+	text-decoration:	none;
+	text-align:			right;
+}

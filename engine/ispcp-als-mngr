@@ -1793,6 +1793,16 @@ sub als_add_httpd_file_data {
 
     return $rs if ($rs != 0);
 
+    ($rs, $rdata) = store_file(
+                               "$www_dir/$als_name/errors/inc",
+                               "\n",
+                               $sys_user,
+                               $httpd_gid,
+                               0660
+                              );
+
+    return $rs if ($rs != 0);
+
     #
     # Default error pages;
     #
@@ -1810,9 +1820,17 @@ sub als_add_httpd_file_data {
             return $rs if ($rs != 0);
         }
     }
-    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/error_top.jpg $www_dir/$als_name/errors/");
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/als_name/errors/inc/");
     return $rs if ($rs != 0);
-    $rs = setfmode("$www_dir/$als_name/errors/error_top.jpg", $sys_user, $sys_group, 0644);
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/als_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/als_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/als_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/als_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/als_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
     return $rs if ($rs != 0);
 
     #

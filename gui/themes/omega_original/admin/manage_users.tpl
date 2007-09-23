@@ -246,7 +246,7 @@ function sbmt(form, uaction) {
         <tr>
           <td align="center">&nbsp;</td>
           <td class="content4" align="center">&nbsp;</td>
-          <td colspan="7" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="15" height="16" align="absmiddle" />&nbsp;{ALIAS_DOMAIN}</td>
+          <td colspan="7" class="content4">&nbsp;<a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="link"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" align="absmiddle"/> {ALIAS_DOMAIN}</a>&nbsp;</td>
         </tr>
         <!-- EDP: user_details -->
         <!-- EDP: usr_item -->

@@ -39,6 +39,7 @@
     <td class="menu"><div align="center"><a href="reseller_user_statistics.php" class="menu_active" onMouseOver="MM_swapImage('statistics','','{THEME_COLOR_PATH}/images/icons/statistics_a.gif',1)" onMouseOut="MM_swapImgRestore()">{TR_MENU_DOMAIN_STATISTICS}</a></div></td>
   </tr>
 </table></td>
+<!-- BDP: isactive_support -->
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>

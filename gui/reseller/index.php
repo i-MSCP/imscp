@@ -30,7 +30,7 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	} else {
 		$percent = 0;
 		$bars = 0;
-		$traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage), $max_usage);
+		$traffic_usage_data = tr('%1$s%% [%2$s of unlimited]', $percent, sizeit($usage), sizeit($max_usage));
 	}
 
 	$tpl->assign(
@@ -43,8 +43,7 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	if (0 !== $max_usage) {
 		list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
-		$max_usage = sizeit($max_usage);
-		$traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), $max_usage);
+		$traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
 	} else {
 		$percent = 0;
 		$bars = 0;
@@ -168,12 +167,12 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 			'TRAFF_PERCENT' => $traff_percent,
 
 			'TRAFF_MSG' => ($rtraff_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)):
-			tr('%1$d / %2$d of <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
+			tr('%1$s / %2$s of <b>%3$d</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max)) :
+			tr('%1$s / %2$s of <b>unlimited</b>', sizeit($utraff_current), sizeit($rtraff_current)),
 
 			'DISK_MSG' => ($rdisk_max) ?
-			tr('%1$d / %2$d of <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)):
-			tr('%1$d / %2$d of <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
+			tr('%1$s / %2$s of <b>%3$d</b>', sizeit($udisk_current), sizeit($rdisk_current), sizeit($rdisk_max)) :
+			tr('%1$s / %2$s of <b>unlimited</b>', sizeit($udisk_current), sizeit($rdisk_current)),
 
 			'DMN_MSG' => ($rdmn_max) ?
 			tr('%1$d / %2$d of <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max):

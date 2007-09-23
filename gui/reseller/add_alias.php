@@ -120,9 +120,10 @@ function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 	$cr_user_id = $_POST['usraccounts'];
-	$alias_name = strtolower($_POST['ndomain_name']);
-	$mount_point = strtolower($_POST['ndomain_mpoint']);
-	$forward = strtolower(clean_input($_POST['forward']));
+	$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
+	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
+	//Never use clean_input() on IDNA URL's (htmlentities() destroys the url)
+	$forward = encode_idna(strtolower($_POST['forward']));
 
 	$query = <<<SQL_QUERY
         SELECT
@@ -136,8 +137,6 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($cr_user_id));
 	$domain_ip = $rs->fields['domain_ip_id'];
 
-	$alias_name = encode_idna($alias_name);
-	$mount_point = array_encode_idna($mount_point, true);
 	// $mount_point = "/".$mount_point;
 	// First check is the data correct
 	if (!chk_dname($alias_name)) {
@@ -151,8 +150,6 @@ SQL_QUERY;
 			$err_al = tr("Incorrect forward syntax");
 		}
 	} else {
-		// now lets fix the mountpoint
-		$mount_point = array_decode_idna($mount_point, true);
 
 		$res = exec_query($sql, "select domain_id from domain_aliasses where alias_name=?", array($alias_name));
 		$res2 = exec_query($sql, "select domain_id from domain where domain_name = ?", array($alias_name));

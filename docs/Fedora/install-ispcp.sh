@@ -1,17 +1,19 @@
 #!/bin/bash
 
-# Fedora Core 7 ispCP Installer
-# Version 1.1.0
+# Fedora Core 7 ISP Control Installer
+# Version 1.2.0
+# dont blame graywolf
+
+# The path where the Makefile files are
+ISPCP_PATH=CHANGEME
 
 
-ISPCP_TRUNK_FILE=ispcp-omega-trunk-20070912.tar.gz
-ISPCP_DOWNLOAD_LOC=http://www.isp-control.net/downloads/snapshots/
 ISPCP_TMP_PATH=/tmp/ispcp_install
 
 echo \************************************
 echo \* Fedora Core 7 ISP Control Installer
-echo \* ${ISPCP_TRUNK_FILE}
-echo \* Version: 1.1.0
+echo \* Author: graywolf
+echo \* Version: 1.2.0
 echo \************************************
 echo
 
