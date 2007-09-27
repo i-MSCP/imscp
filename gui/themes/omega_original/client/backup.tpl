@@ -40,7 +40,7 @@
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td><form name="backup_frm" method="post" action="backup.php">
+                <td><form name="backup_frm" method="post" action="backup.php" onsubmit="return confirm('{TR_CONFIRM_MESSAGE}');">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <!-- BDP: page_message -->
                       <tr>

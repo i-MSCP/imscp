@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 18:13-0500\n"
+"POT-Creation-Date: 2007-09-26 21:38-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Polish <pl_PL@li.org>\n"
@@ -1413,6 +1413,14 @@ msgid "Not found reseller(s) in your system!"
 msgstr "Nie znaleziono resellera w systemie!"
 
 #, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgstr ""
 
@@ -1442,16 +1450,24 @@ msgid "ispCP - Admin/Reseller User Statistics"
 msgstr "ispCP - Admin/Statystyki resellera"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "wyłączone"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
 
 msgid "Reseller users table"
 msgstr "Tabela użytkowników resellera"
@@ -1849,6 +1865,9 @@ msgstr "Przekieruj do adresu URL"
 msgid "Add alias"
 msgstr "Dodaj alias"
 
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr ""
+
 msgid "Domain alias limit reached!"
 msgstr ""
 
@@ -1871,7 +1890,8 @@ msgstr "Domena o takiej nazwie już istnieje"
 msgid "There is a subdomain with the same mount point!"
 msgstr "Jest już alias z tym samym punktem montowania"
 
-msgid "Alias scheduled for addition!"
+#, fuzzy
+msgid "Alias scheduled for activation!"
 msgstr "Alias przeznaczony do dodania!"
 
 msgid "Empty List"
@@ -2056,7 +2076,8 @@ msgstr "Dane subdomeny"
 msgid "Subdomain name"
 msgstr "Nazwa subdomeny"
 
-msgid "Directory tree<br>mount point"
+#, fuzzy
+msgid "Directory tree mount point"
 msgstr "Drzewo katalogu<br>punkt montowania"
 
 msgid "Backup archive scheduled for restoring!"
@@ -2095,6 +2116,10 @@ msgstr ""
 
 msgid "Restore"
 msgstr "Przywróć"
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "Czy na pewno chcesz usunąc to konto?"
 
 msgid "N/A"
 msgstr ""
@@ -2460,6 +2485,9 @@ msgstr "ispCP - Klient/Zmień Język"
 
 msgid "Subdomain list is empty!"
 msgstr "Lista subdomen jest pusta!"
+
+msgid "Delete order"
+msgstr "Usuń zamówienie"
 
 msgid "Alias list is empty!"
 msgstr "Lista aliasów jest pusta!"
@@ -2944,6 +2972,10 @@ msgstr "Zawieszone"
 msgid "Error"
 msgstr "Błąd"
 
+#, fuzzy
+msgid "ispCP - Order Panel"
+msgstr "ispCP Panel Kontrolny"
+
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
@@ -3166,6 +3198,10 @@ msgstr "włączone"
 #, fuzzy
 msgid "Being suspended"
 msgstr "zawieszone"
+
+#, fuzzy
+msgid "Order in progress"
+msgstr "Dodawanie w toku"
 
 #, fuzzy
 msgid "Unknown error"
@@ -3409,6 +3445,10 @@ msgstr "Prawdziwa domena"
 msgid "You have no alias records."
 msgstr "Nie masz żadnych aliasów."
 
+#, fuzzy
+msgid "Activate"
+msgstr "Aktywny"
+
 msgid "Domain alias added for termination!"
 msgstr "Alias domeny przeznaczony do usunięcia!"
 
@@ -3426,6 +3466,18 @@ msgstr "Alias domeny zmodyfikowany!"
 
 msgid "Domain alias not modified!"
 msgstr "Alias domeny nie został zmodyfikowany!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "Alias domeny nie został dodany!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "Alis domeny dodany!"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "Alias domeny nie został dodany!"
 
 msgid "User terminated!"
 msgstr "Użytkownik usunięty!"
@@ -3538,6 +3590,10 @@ msgstr ""
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Reseller/Indeks Główny"
 
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Plan hostingowy z podaną nazwą już istnieje!"
+
 msgid "View details"
 msgstr "Pokaż szczegóły"
 
@@ -3549,6 +3605,14 @@ msgstr "Konto pocztowe"
 
 msgid "Extras"
 msgstr "Dodatki"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -3606,9 +3670,6 @@ msgstr "Szczegóły zamówienia"
 
 msgid "Customer data"
 msgstr "Dane klienta"
-
-msgid "Delete order"
-msgstr "Usuń zamówienie"
 
 msgid "Are you sure you want to delete this order?"
 msgstr "Czy napewno usunąć to zamówienie?"

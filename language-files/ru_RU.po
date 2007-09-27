@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 18:13-0500\n"
+"POT-Creation-Date: 2007-09-26 21:38-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -1403,6 +1403,14 @@ msgid "Not found reseller(s) in your system!"
 msgstr ""
 
 #, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgstr ""
 
@@ -1432,16 +1440,24 @@ msgid "ispCP - Admin/Reseller User Statistics"
 msgstr ""
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "отклоючено"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
 
 msgid "Reseller users table"
 msgstr ""
@@ -1839,6 +1855,9 @@ msgstr ""
 msgid "Add alias"
 msgstr "Добавить алиас"
 
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr ""
+
 msgid "Domain alias limit reached!"
 msgstr ""
 
@@ -1860,7 +1879,8 @@ msgstr "Домен с этим доменом уже существует"
 msgid "There is a subdomain with the same mount point!"
 msgstr ""
 
-msgid "Alias scheduled for addition!"
+#, fuzzy
+msgid "Alias scheduled for activation!"
 msgstr "Алиас в процессе добавления!"
 
 msgid "Empty List"
@@ -2045,8 +2065,9 @@ msgstr ""
 msgid "Subdomain name"
 msgstr ""
 
-msgid "Directory tree<br>mount point"
-msgstr ""
+#, fuzzy
+msgid "Directory tree mount point"
+msgstr "Точка монтирования папки"
 
 msgid "Backup archive scheduled for restoring!"
 msgstr "Резервная копия включена для восстановления"
@@ -2084,6 +2105,10 @@ msgstr ""
 
 msgid "Restore"
 msgstr "Восстановить"
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "Вы уверены что хотите удалить эту учетную запись?"
 
 msgid "N/A"
 msgstr ""
@@ -2446,6 +2471,9 @@ msgstr ""
 
 msgid "Subdomain list is empty!"
 msgstr ""
+
+msgid "Delete order"
+msgstr "Удалить заказ"
 
 msgid "Alias list is empty!"
 msgstr "Список алиасов пуст!"
@@ -2927,6 +2955,10 @@ msgstr ""
 msgid "Error"
 msgstr "Ошибка"
 
+#, fuzzy
+msgid "ispCP - Order Panel"
+msgstr "контрольная панель ispCP"
+
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
@@ -3146,6 +3178,10 @@ msgstr "включено"
 #, fuzzy
 msgid "Being suspended"
 msgstr "ожидание приостановки"
+
+#, fuzzy
+msgid "Order in progress"
+msgstr "Добавление..."
 
 #, fuzzy
 msgid "Unknown error"
@@ -3387,6 +3423,10 @@ msgstr ""
 msgid "You have no alias records."
 msgstr "Записей об алиасах нет."
 
+#, fuzzy
+msgid "Activate"
+msgstr "Активно"
+
 msgid "Domain alias added for termination!"
 msgstr "Псевдоним домена добавлен для удаления!"
 
@@ -3404,6 +3444,18 @@ msgstr "Псевдоним домена изменён!"
 
 msgid "Domain alias not modified!"
 msgstr "Псевдоним домена НЕ изменён!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "Псевдоним домена НЕ добавлен!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "Псевдоним домена добавлен!"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "Псевдоним домена НЕ добавлен!"
 
 msgid "User terminated!"
 msgstr ""
@@ -3515,6 +3567,9 @@ msgstr ""
 msgid "ispCP - Reseller/Main Index"
 msgstr ""
 
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr ""
+
 msgid "View details"
 msgstr "Смотреть детали"
 
@@ -3525,6 +3580,14 @@ msgid "Mail account"
 msgstr ""
 
 msgid "Extras"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
 msgstr ""
 
 #, php-format
@@ -3582,9 +3645,6 @@ msgstr ""
 
 msgid "Customer data"
 msgstr "Данные Покупателя"
-
-msgid "Delete order"
-msgstr "Удалить заказ"
 
 msgid "Are you sure you want to delete this order?"
 msgstr "Вы уверены что хотите удалить этот заказ?"

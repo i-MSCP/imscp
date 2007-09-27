@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 18:13-0500\n"
+"POT-Creation-Date: 2007-09-26 21:38-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -1412,6 +1412,14 @@ msgid "Not found reseller(s) in your system!"
 msgstr "Ei j�lleenmyyji� j�rjestelm�ss�!"
 
 #, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgstr ""
 
@@ -1441,16 +1449,24 @@ msgid "ispCP - Admin/Reseller User Statistics"
 msgstr "ispCP - Yll�pito / J�lleenmyyj�n k�ytt�j�tilastot"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "ei k�yt�ss�"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
 
 msgid "Reseller users table"
 msgstr "J�lleenmyyj�taulukko"
@@ -1848,6 +1864,9 @@ msgstr "Ohjaa osoitteeseen"
 msgid "Add alias"
 msgstr "Lis�� alias"
 
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr ""
+
 msgid "Domain alias limit reached!"
 msgstr ""
 
@@ -1870,7 +1889,8 @@ msgstr "Domain t�ll� nimell� on jo olemassa"
 msgid "There is a subdomain with the same mount point!"
 msgstr "Alias olemassa samassa liitospisteess�"
 
-msgid "Alias scheduled for addition!"
+#, fuzzy
+msgid "Alias scheduled for activation!"
 msgstr "Alias ajoitettu lis�tt�v�ksi!"
 
 msgid "Empty List"
@@ -2055,7 +2075,8 @@ msgstr "Alidomain-tiedot"
 msgid "Subdomain name"
 msgstr "Alidomainin nimi"
 
-msgid "Directory tree<br>mount point"
+#, fuzzy
+msgid "Directory tree mount point"
 msgstr "Hakemistopuu<br>liitospiste"
 
 msgid "Backup archive scheduled for restoring!"
@@ -2094,6 +2115,10 @@ msgstr ""
 
 msgid "Restore"
 msgstr "Palauta"
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "Oletko varma ett� haluat poistaa t�m�n tunnuksen?"
 
 msgid "N/A"
 msgstr ""
@@ -2457,6 +2482,9 @@ msgstr "ispCP - Asiakas / Muuta kielt�"
 
 msgid "Subdomain list is empty!"
 msgstr "Alidomain-lista on tyhj�!"
+
+msgid "Delete order"
+msgstr "Poista tilaus"
 
 msgid "Alias list is empty!"
 msgstr "Alias-lista on tyhj�!"
@@ -2941,6 +2969,10 @@ msgstr "Pys�ytetty"
 msgid "Error"
 msgstr "Virhe"
 
+#, fuzzy
+msgid "ispCP - Order Panel"
+msgstr " ispCP-Ohjauspaneeli"
+
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
@@ -3162,6 +3194,10 @@ msgstr "k�yt�ss�"
 #, fuzzy
 msgid "Being suspended"
 msgstr "keskeytetty"
+
+#, fuzzy
+msgid "Order in progress"
+msgstr "Lis�ys kesken"
 
 #, fuzzy
 msgid "Unknown error"
@@ -3403,6 +3439,10 @@ msgstr "Oikea domain"
 msgid "You have no alias records."
 msgstr "Sinulla ei ole aliaksia."
 
+#, fuzzy
+msgid "Activate"
+msgstr "Aktiivinen"
+
 msgid "Domain alias added for termination!"
 msgstr "Domain-alias lis�tty poistettavaksi!"
 
@@ -3420,6 +3460,18 @@ msgstr "Domain-alias muokattu!"
 
 msgid "Domain alias not modified!"
 msgstr "Domain-aliasta ei muokattu!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "Domain-aliasta ei lis�tty!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "Domain-alias lis�tty!"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "Domain-aliasta ei lis�tty!"
 
 msgid "User terminated!"
 msgstr "K�ytt�j� poistettu!"
@@ -3532,6 +3584,10 @@ msgstr ""
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - J�lleenmyyj� / P��sivu"
 
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hosting-paketti on olemassa samalla nimell�!"
+
 msgid "View details"
 msgstr "Katsele tietoja"
 
@@ -3543,6 +3599,14 @@ msgstr "S�hk�postitunnus"
 
 msgid "Extras"
 msgstr "Extrat"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -3600,9 +3664,6 @@ msgstr "Tilauksen tiedot"
 
 msgid "Customer data"
 msgstr "Asiakkaan tiedot"
-
-msgid "Delete order"
-msgstr "Poista tilaus"
 
 msgid "Are you sure you want to delete this order?"
 msgstr "Haluatko varmasti poistaa t�m�n tilauksen?"

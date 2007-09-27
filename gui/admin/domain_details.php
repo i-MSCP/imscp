@@ -135,23 +135,6 @@ SQL_QUERY;
 		$dstatus = "<b><font size=3 color=red>" . $data['domain_status'] . "</font></b>";
 	}
 
-	if ($data['domain_php'] == 'yes') {
-		$php_stat = 'Enabled';
-	} else {
-		$php_stat = 'Disabled';
-	}
-
-	if ($data['domain_cgi'] == 'yes') {
-		$cgi_stat = 'Enabled';
-	} else {
-		$cgi_stat = 'Disabled';
-	}
-
-	if ($data['domain_sqld_limit'] >= 0) {
-		$sql_stat = 'Enabled';
-	} else {
-		$sql_stat = 'Disabled';
-	}
 	// Traffic diagram
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
@@ -265,9 +248,14 @@ SQL_QUERY;
 				'VL_DOMAIN_NAME' => decode_idna($data['domain_name']),
 				'VL_DOMAIN_IP' => $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
 				'VL_STATUS' => $dstatus,
-				'VL_PHP_SUPP' => tr($php_stat),
-				'VL_CGI_SUPP' => tr($cgi_stat),
-				'VL_MYSQL_SUPP' => tr($sql_stat),
+
+				'VL_PHP_SUPP' => ($data['domain_php'] == 'yes')?
+				                tr('Enabled') : tr('Disabled'),
+				'VL_CGI_SUPP' => ($data['domain_cgi'] == 'yes')?
+				                tr('Enabled') : tr('Disabled'),
+				'VL_MYSQL_SUPP' => ($data['domain_sqld_limit'] >= 0)?
+				                tr('Enabled') : tr('Disabled'),
+
 				'VL_TRAFFIC_PERCENT' => $traffic_percent,
 				'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
 				'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),

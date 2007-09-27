@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 18:13-0500\n"
+"POT-Creation-Date: 2007-09-26 21:38-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -1397,6 +1397,14 @@ msgid "Not found reseller(s) in your system!"
 msgstr ""
 
 #, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgstr ""
 
@@ -1426,16 +1434,24 @@ msgid "ispCP - Admin/Reseller User Statistics"
 msgstr ""
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "dezactivat"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
 
 msgid "Reseller users table"
 msgstr ""
@@ -1831,6 +1847,9 @@ msgstr ""
 msgid "Add alias"
 msgstr "Adauga alias"
 
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr ""
+
 msgid "Domain alias limit reached!"
 msgstr ""
 
@@ -1852,7 +1871,8 @@ msgstr "Un domeniu cu acest nume deja exista"
 msgid "There is a subdomain with the same mount point!"
 msgstr ""
 
-msgid "Alias scheduled for addition!"
+#, fuzzy
+msgid "Alias scheduled for activation!"
 msgstr "Alias programat pentru adaugare!"
 
 msgid "Empty List"
@@ -2037,7 +2057,8 @@ msgstr ""
 msgid "Subdomain name"
 msgstr ""
 
-msgid "Directory tree<br>mount point"
+#, fuzzy
+msgid "Directory tree mount point"
 msgstr "Arbore Director<br>locul montarii"
 
 msgid "Backup archive scheduled for restoring!"
@@ -2076,6 +2097,10 @@ msgstr ""
 
 msgid "Restore"
 msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "Sigur doriti sa stergeti acest cont?"
 
 msgid "N/A"
 msgstr ""
@@ -2436,6 +2461,9 @@ msgstr ""
 
 msgid "Subdomain list is empty!"
 msgstr ""
+
+msgid "Delete order"
+msgstr "Sterge comanda"
 
 msgid "Alias list is empty!"
 msgstr "Lista de alias-e este goala!"
@@ -2916,6 +2944,9 @@ msgstr ""
 msgid "Error"
 msgstr "Eroare"
 
+msgid "ispCP - Order Panel"
+msgstr ""
+
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
@@ -3135,6 +3166,10 @@ msgstr "pornit"
 #, fuzzy
 msgid "Being suspended"
 msgstr "asteapta sa fie suspendat/e"
+
+#, fuzzy
+msgid "Order in progress"
+msgstr "Adaugare in progres"
 
 #, fuzzy
 msgid "Unknown error"
@@ -3374,6 +3409,10 @@ msgstr ""
 msgid "You have no alias records."
 msgstr ""
 
+#, fuzzy
+msgid "Activate"
+msgstr "Activ"
+
 msgid "Domain alias added for termination!"
 msgstr "Alias domeniu adaugat pentru terminare!"
 
@@ -3391,6 +3430,18 @@ msgstr ""
 
 msgid "Domain alias not modified!"
 msgstr "Alias domeniu nemodificat!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "Alias domeniu neadaugat!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "Alias domeniu adaugat"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "Alias domeniu neadaugat!"
 
 msgid "User terminated!"
 msgstr ""
@@ -3502,6 +3553,9 @@ msgstr ""
 msgid "ispCP - Reseller/Main Index"
 msgstr ""
 
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr ""
+
 msgid "View details"
 msgstr ""
 
@@ -3513,6 +3567,14 @@ msgstr ""
 
 msgid "Extras"
 msgstr "Extra"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -3569,9 +3631,6 @@ msgstr ""
 
 msgid "Customer data"
 msgstr ""
-
-msgid "Delete order"
-msgstr "Sterge comanda"
 
 msgid "Are you sure you want to delete this order?"
 msgstr "Sigur doriti sa stergeti aceasta comanda?"

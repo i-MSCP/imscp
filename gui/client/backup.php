@@ -60,7 +60,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_CLIENT_BACKUP_PAGE_TITLE' => tr('ispCP - Client/Daily Backup'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
@@ -89,7 +89,8 @@ $tpl -> assign(array('TR_BACKUP' => tr('Backup'),
                      'TR_USUALY_NAMED' => tr('(usually named backup_YYYY_MM_DD.tar.bz2)'),
                      'TR_RESTORE_BACKUP' => tr('Restore backup'),
                      'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
-                     'TR_RESTORE' => tr('Restore')));
+                     'TR_RESTORE' => tr('Restore'),
+                     'TR_CONFIRM_MESSAGE' => tr('Are you sure you want to restore the backup?')));
 
 gen_page_message($tpl);
 $tpl -> parse('PAGE', 'page');

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 18:13-0500\n"
+"POT-Creation-Date: 2007-09-26 21:38-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -1413,6 +1413,14 @@ msgid "Not found reseller(s) in your system!"
 msgstr "Nem található viszonteladó a rendszeredben!"
 
 #, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgstr ""
 
@@ -1442,16 +1450,24 @@ msgid "ispCP - Admin/Reseller User Statistics"
 msgstr "ispCP - Admin/Viszonteladó Felhasználó statisztika"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "tiltva"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
 
 msgid "Reseller users table"
 msgstr "Viszonteladó felhasználók tábla"
@@ -1849,6 +1865,9 @@ msgstr "Továbbítás URL-re:"
 msgid "Add alias"
 msgstr "Alias hozzáadása"
 
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr ""
+
 msgid "Domain alias limit reached!"
 msgstr ""
 
@@ -1871,7 +1890,8 @@ msgstr "Ilyen nevû domain már létezik!"
 msgid "There is a subdomain with the same mount point!"
 msgstr "Már létezik alias ezzel a beillesztési ponttal"
 
-msgid "Alias scheduled for addition!"
+#, fuzzy
+msgid "Alias scheduled for activation!"
 msgstr "Alias hozzáadása beütemezve!"
 
 msgid "Empty List"
@@ -2056,7 +2076,8 @@ msgstr "Aldomain adatok"
 msgid "Subdomain name"
 msgstr "Aldomain neve"
 
-msgid "Directory tree<br>mount point"
+#, fuzzy
+msgid "Directory tree mount point"
 msgstr "Könyvtárfa<br>beillesztési pont"
 
 msgid "Backup archive scheduled for restoring!"
@@ -2095,6 +2116,10 @@ msgstr ""
 
 msgid "Restore"
 msgstr "Visszaállítás"
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "Biztos törölni akarod ezt a hozzáférést?"
 
 msgid "N/A"
 msgstr "NA"
@@ -2460,6 +2485,9 @@ msgstr "ispCP - Kliens/Nyelvváltás"
 
 msgid "Subdomain list is empty!"
 msgstr "Aldomain lista üres!"
+
+msgid "Delete order"
+msgstr "Rendelés törlése"
 
 msgid "Alias list is empty!"
 msgstr "Alias lista üres!"
@@ -2944,6 +2972,10 @@ msgstr "Felfüggesztve"
 msgid "Error"
 msgstr "Hiba"
 
+#, fuzzy
+msgid "ispCP - Order Panel"
+msgstr "ispCP Irányító Panel"
+
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
@@ -3165,6 +3197,10 @@ msgstr "engedélyezve"
 #, fuzzy
 msgid "Being suspended"
 msgstr "felfüggeszt"
+
+#, fuzzy
+msgid "Order in progress"
+msgstr "Hozzáadás folyamatban"
 
 #, fuzzy
 msgid "Unknown error"
@@ -3408,6 +3444,10 @@ msgstr "Valódi domain"
 msgid "You have no alias records."
 msgstr "Nincsenek alias rekordok."
 
+#, fuzzy
+msgid "Activate"
+msgstr "Aktív"
+
 msgid "Domain alias added for termination!"
 msgstr "Domain alias törlése beütemezve!"
 
@@ -3425,6 +3465,18 @@ msgstr "Domain alias módosítva!"
 
 msgid "Domain alias not modified!"
 msgstr "Domain alias nincs módosítva!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "Domain alias nincs hozzáadva!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "Domain alias hozzáadva!"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "Domain alias nincs hozzáadva!"
 
 msgid "User terminated!"
 msgstr "Felhasználó törölve!"
@@ -3537,6 +3589,10 @@ msgstr ""
 msgid "ispCP - Reseller/Main Index"
 msgstr "ispCP - Viszonteladó/Kezdõlap"
 
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "A megadott néven már létezik szolgáltatási csomag!"
+
 msgid "View details"
 msgstr "Részletek megtekintése"
 
@@ -3548,6 +3604,14 @@ msgstr "Email hozzáférés"
 
 msgid "Extras"
 msgstr "Extrák"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -3605,9 +3669,6 @@ msgstr "Rendelés részletei"
 
 msgid "Customer data"
 msgstr "Ügyfél adat"
-
-msgid "Delete order"
-msgstr "Rendelés törlése"
 
 msgid "Are you sure you want to delete this order?"
 msgstr "Biztos törölni akarod ezt a rendelést?"

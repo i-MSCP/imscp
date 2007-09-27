@@ -162,6 +162,8 @@ SQL_QUERY;
                 domain_aliasses
             where
                 domain_id = '$dmn_id'
+              and
+                alias_status = 'ok'
 SQL_QUERY;
 
         $rs = execute_query($sql, $query);
@@ -219,6 +221,8 @@ SQL_QUERY;
                 a.domain_id = '$dmn_id'
             and
 	           	a.domain_id = b.domain_id
+	        and
+	            a.subdomain_status = 'ok'
 SQL_QUERY;
 
         $rs = execute_query($sql, $query);

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 18:13-0500\n"
+"POT-Creation-Date: 2007-09-26 21:38-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -1412,6 +1412,14 @@ msgid "Not found reseller(s) in your system!"
 msgstr ""
 
 #, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
 msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgstr ""
 
@@ -1441,16 +1449,24 @@ msgid "ispCP - Admin/Reseller User Statistics"
 msgstr "ispCP - 管理者/リセラーユーザー情報"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr ""
 
 #, fuzzy
 msgid "<b>disabled</b>"
 msgstr "無効"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
 
 msgid "Reseller users table"
 msgstr ""
@@ -1848,6 +1864,9 @@ msgstr "転送先URL"
 msgid "Add alias"
 msgstr "エイリアス追加"
 
+msgid "You do not need 'www.' ispCP will add it on its own."
+msgstr ""
+
 msgid "Domain alias limit reached!"
 msgstr ""
 
@@ -1869,7 +1888,8 @@ msgstr ""
 msgid "There is a subdomain with the same mount point!"
 msgstr ""
 
-msgid "Alias scheduled for addition!"
+#, fuzzy
+msgid "Alias scheduled for activation!"
 msgstr "追加予定のエイリアス"
 
 msgid "Empty List"
@@ -2054,7 +2074,8 @@ msgstr "サブドメイン情報"
 msgid "Subdomain name"
 msgstr "サブドメイン名"
 
-msgid "Directory tree<br>mount point"
+#, fuzzy
+msgid "Directory tree mount point"
 msgstr "ディレクトリーツリー<br>マウントポイント"
 
 msgid "Backup archive scheduled for restoring!"
@@ -2093,6 +2114,10 @@ msgstr ""
 
 msgid "Restore"
 msgstr "リストア"
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "このアカウントを削除してもよろしいですか？"
 
 msgid "N/A"
 msgstr ""
@@ -2451,6 +2476,9 @@ msgstr "ispCP - クライアント/言語変更"
 
 msgid "Subdomain list is empty!"
 msgstr "サブドメインは登録されていません"
+
+msgid "Delete order"
+msgstr "オーダー削除"
 
 msgid "Alias list is empty!"
 msgstr "エイリアスリストが空です!"
@@ -2934,6 +2962,10 @@ msgstr ""
 msgid "Error"
 msgstr "エラー"
 
+#, fuzzy
+msgid "ispCP - Order Panel"
+msgstr "コントロールパネル"
+
 msgid "[Ticket] {SUBJ}"
 msgstr ""
 
@@ -3155,6 +3187,10 @@ msgstr "有効"
 
 msgid "Being suspended"
 msgstr ""
+
+#, fuzzy
+msgid "Order in progress"
+msgstr "追加中"
 
 #, fuzzy
 msgid "Unknown error"
@@ -3390,6 +3426,10 @@ msgstr "本来のドメイン"
 msgid "You have no alias records."
 msgstr "別名が登録されていません"
 
+#, fuzzy
+msgid "Activate"
+msgstr "アクティブ"
+
 msgid "Domain alias added for termination!"
 msgstr "ドメインエイリアスの追加を中止しました"
 
@@ -3407,6 +3447,18 @@ msgstr "ドメインエイリアスが変更されました!"
 
 msgid "Domain alias not modified!"
 msgstr "ドメインエイリアスが変更されませんでした!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "ドメインエイリアスが追加されませんでした!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "ドメインエイリアスが追加されました!"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "ドメインエイリアスが追加されませんでした!"
 
 msgid "User terminated!"
 msgstr ""
@@ -3519,6 +3571,10 @@ msgstr ""
 msgid "ispCP - Reseller/Main Index"
 msgstr ""
 
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "ホスティングプランが削除されました"
+
 msgid "View details"
 msgstr "ビュー 詳細"
 
@@ -3529,6 +3585,14 @@ msgid "Mail account"
 msgstr "メールアカウント"
 
 msgid "Extras"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
 msgstr ""
 
 #, php-format
@@ -3587,9 +3651,6 @@ msgstr ""
 
 msgid "Customer data"
 msgstr "顧客データ"
-
-msgid "Delete order"
-msgstr "オーダー削除"
 
 msgid "Are you sure you want to delete this order?"
 msgstr "このオーダーを削除してよろしいですか?"

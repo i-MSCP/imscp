@@ -2249,7 +2249,7 @@ function substract_from_reseller_props($reseller_id, $domain_id)
 	update_reseller_props($reseller_id, $rprops);
 }
 
-function gen_purchase_haf(&$tpl, &$sql, $user_id) {
+function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	$query = <<<SQL_QUERY
 			SELECT
 				header, footer
@@ -2263,6 +2263,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() == 0) {
+	    $title = tr("ispCP - Order Panel");
 		$header = <<<RIC
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -2270,7 +2271,7 @@ SQL_QUERY;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
-<title>ispCP - Order Panel</title>
+<title>$title</title>
 </style>
 </head>
 <center>
@@ -2292,8 +2293,13 @@ RIC;
 		$header = $rs->fields['header'];
 		$footer = $rs->fields['footer'];
 
-		$header = htmlentities(str_replace ('\\', '', "$header"), ENT_COMPAT, 'UTF-8');
-		$footer = htmlentities(str_replace ('\\', '', "$footer"), ENT_COMPAT, 'UTF-8');
+		$header = str_replace ('\\', '', $header);
+		$footer = str_replace ('\\', '', $footer);
+	}
+
+	if ($encode) {
+	    $header = htmlentities($header, ENT_COMPAT, 'UTF-8');
+	    $footer = htmlentities($footer, ENT_COMPAT, 'UTF-8');
 	}
 
 	$tpl->assign('PURCHASE_HEADER', $header);

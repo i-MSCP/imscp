@@ -7,6 +7,16 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-09-26 Raphael Geissert
+    - GUI:
+        * Fixed #672: using encode/decode_idna on a url makes it illegal
+        * Fixed #711: regression in r814
+        * Fixed #716: possibility to add a catchall on aliases/subdomains where status != ok
+        * Fixed #706: Confirm before restoring backup
+        * Fixed #639: reseller/order_settings.php converts html entities back to their values
+        * Fixed #555: catchall -> forwarding doesn't work
+        * Fixed i18n regression of r811
+
 2007-09-23 Johannes Schobig
 	- GUI:
 		* Fixed #639: reseller/order_settings.php converts html entities back to their values

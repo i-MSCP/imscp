@@ -122,8 +122,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$cr_user_id = $_POST['usraccounts'];
 	$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
-	//Never use clean_input() on IDNA URL's (htmlentities() destroys the url)
-	$forward = encode_idna(strtolower($_POST['forward']));
+	$forward = strtolower($_POST['forward']);
 
 	$query = <<<SQL_QUERY
         SELECT
@@ -150,6 +149,8 @@ SQL_QUERY;
 			$err_al = tr("Incorrect forward syntax");
 		}
 	} else {
+		// now lets fix the mountpoint
+		$mount_point = array_decode_idna($mount_point, true);
 
 		$res = exec_query($sql, "select domain_id from domain_aliasses where alias_name=?", array($alias_name));
 		$res2 = exec_query($sql, "select domain_id from domain where domain_name = ?", array($alias_name));
