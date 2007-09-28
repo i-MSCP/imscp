@@ -7,6 +7,13 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-09-27 Raphael Geissert
+    - GUI:
+        * Fixed #717: User assignment does not work (thanks to Joximu)
+        * Fixed #635: can't protect a directory with non-standrad characters in its path
+        * Fixed #632: can't add an ftp account to a non-standard characters mount point
+        * Fixed an error where switching reseller->client and swtiching back would display as if we were logged from client's
+
 2007-09-26 Raphael Geissert
     - GUI:
         * Fixed #672: using encode/decode_idna on a url makes it illegal

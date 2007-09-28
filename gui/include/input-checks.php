@@ -105,7 +105,7 @@ function clean_html($text) {
 
 }
 
-function clean_input($input) {
+function clean_input($input, $htmlencode = true) {
 
     if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
 
@@ -113,7 +113,13 @@ function clean_input($input) {
 
     }
 
-    return htmlentities(stripslashes($input), ENT_QUOTES, "UTF-8");
+    $input = stripslashes($input);
+
+    if ($htmlencode) {
+        return htmlentities($input, ENT_QUOTES, "UTF-8");
+    } else {
+        return $input;
+    }
 
 }
 

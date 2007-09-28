@@ -382,7 +382,7 @@ function add_ftp_user(&$sql, $dmn_name) {
     }
     // User-specified mount point
     if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
-        $ftp_vhome = clean_input($_POST['other_dir']);
+        $ftp_vhome = clean_input($_POST['other_dir'], false);
         // Strip possible double-slashes
         $ftp_vhome = str_replace('//', '/', $ftp_vhome);
         // Check for updirs ".."
@@ -550,7 +550,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 $tpl->assign(array(
 				'TR_CLIENT_ADD_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Add FTP User'),
 		        'THEME_COLOR_PATH' => "../themes/$theme_color",
-		        'THEME_CHARSET' => tr('encoding'), 
+		        'THEME_CHARSET' => tr('encoding'),
 		        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 		        'ISP_LOGO' => get_logo($_SESSION['user_id'])
 			));

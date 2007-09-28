@@ -45,96 +45,94 @@ $tpl -> assign(
                 array(
                         'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
                         'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'), 
+                        'THEME_CHARSET' => tr('encoding'),
                         'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
 						'ISP_LOGO' => get_logo($_SESSION['user_id'])
                      )
               );
 
 
-function protect_area(&$tpl, &$sql, &$dmn_id)
+function protect_area(&$tpl, &$sql, $dmn_id)
 {
 	global $cfg;
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'protect_it')  {
 
+	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it')  {
+	    return ;
+	}
 
-		if ( !isset($_POST['users']) && !isset($_POST['groups']) ){
-			set_page_message(tr('Please choose user or group'));
-			return;
-		}
+	if ( !isset($_POST['users']) && !isset($_POST['groups']) ){
+	    set_page_message(tr('Please choose user or group'));
+	    return;
+	}
 
-		if ( empty($_POST['paname']) ) {
-			set_page_message(tr('Please enter area name'));
-			return;
-		}
+	if ( empty($_POST['paname']) ) {
+	    set_page_message(tr('Please enter area name'));
+	    return;
+	}
 
-		if ( empty($_POST['other_dir']) ) {
-			set_page_message(tr('Please enter area path'));
-			return;
-		}
+	if ( empty($_POST['other_dir']) ) {
+	    set_page_message(tr('Please enter area path'));
+	    return;
+	}
 
-		// Check for existing directory
-		$path   = clean_input($_POST['other_dir']);
-		$domain = $_SESSION['user_logged'];
-		// We need to use the virtual file system
-		$vfs =& new vfs($domain, $sql);
-		$res = $vfs->exists($path);
-		if (!$res) {
-			  set_page_message(tr("%s doesn't exist", $path));
-			  return;
-		}
+	// Check for existing directory
+	$path   = clean_input($_POST['other_dir'], false);
+	$domain = $_SESSION['user_logged'];
+	// We need to use the virtual file system
+	$vfs =& new vfs($domain, $sql);
+	$res = $vfs->exists($path);
+	if (!$res) {
+	    set_page_message(tr("%s doesn't exist", $path));
+	    return;
+	}
 
-		$ptype = $_POST['ptype'];
+	$ptype = $_POST['ptype'];
 
-		if(isset($_POST['users']))
-			$users = $_POST['users'];
+	if(isset($_POST['users']))
+	$users = $_POST['users'];
 
-		if(isset($_POST['groups']))
-			$groups = $_POST['groups'];
+	if(isset($_POST['groups']))
+	$groups = $_POST['groups'];
 
-		$area_name = $_POST['paname'];
+	$area_name = $_POST['paname'];
 
+	$user_id = '';
+	$group_id = '';
+	if ($ptype == 'user') {
 
+	    for($i = 0;$i< count($users);$i++){
+	        if (count($users) == 1 || count($users) == $i+1){
+	            $user_id .= $users[$i];
+	            if ($user_id == '-1' ||$user_id == '') {
+	                set_page_message(tr('You can not protect area without selected user(s)'));
+	                return;
+	            }
+	        } else {
+	            $user_id .= $users[$i].',';
+	        }
+	    }
+	    $group_id = 0;
 
+	} else {
 
-		$user_id = '';
-		$group_id = '';
-		if ($ptype == 'user') {
+	    for($i = 0;$i< count($groups);$i++){
 
+	        if (count($groups) == 1 || count($groups) == $i+1){
+	            $group_id .= $groups[$i];
+	            if ($group_id == '-1' || $group_id == '')  {
+	                set_page_message(tr('You can not protect area without selected group(s)'));
+	                return;
+	            }
+	        } else {
+	            $group_id .= $groups[$i].',';
+	        }
+	    }
+	    $user_id = 0;
+	}
 
-			for($i = 0;$i< count($users);$i++){
-				if (count($users) == 1 || count($users) == $i+1){
-					$user_id .= $users[$i];
-					if ($user_id == '-1' ||$user_id == '') {
-						set_page_message(tr('You can not protect area without selected user(s)'));
-					return;
-					}
-				} else {
-					$user_id .= $users[$i].',';
-				}
-			}
-			$group_id = 0;
-
-		} else {
-
-			for($i = 0;$i< count($groups);$i++){
-
-				if (count($groups) == 1 || count($groups) == $i+1){
-					$group_id .= $groups[$i];
-					if ($group_id == '-1' || $group_id == '')  {
-						set_page_message(tr('You can not protect area without selected group(s)'));
-					return;
-					}
-				} else {
-					$group_id .= $groups[$i].',';
-				}
-			}
-			$user_id = 0;
-		}
-
-// lets check if we have to update or to make new enrie
+	// lets check if we have to update or to make new enrie
 	$alt_path = $path."/";
-	 $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         select
             id
         from
@@ -147,14 +145,13 @@ function protect_area(&$tpl, &$sql, &$dmn_id)
 			path = ?)
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
-	$basic = 'Basic';
+	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
 	$toadd_status = $cfg['ITEM_ADD_STATUS'];
-	$tochange_statsu = $cfg['ITEM_CHANGE_STATUS'];
+	$tochange_status = $cfg['ITEM_CHANGE_STATUS'];
 
 	if ($rs -> RecordCount() !== 0) {
-	$update_id = $rs -> fields['id'];
-	$query = <<<SQL_QUERY
+	    $update_id = $rs -> fields['id'];
+	    $query = <<<SQL_QUERY
         update htaccess
 		set
 			user_id = ?,
@@ -166,33 +163,28 @@ SQL_QUERY;
 			id = '$update_id'
 SQL_QUERY;
 
-	check_for_lock_file();
-	send_request();
-	$rs = exec_query($sql, $query, array($user_id, $group_id, $area_name, $path, $tochange_statsu));
-	set_page_message( tr('Protected area updated successfully!'));
+	    check_for_lock_file();
+	    send_request();
+	    $rs = exec_query($sql, $query, array($user_id, $group_id, $area_name, $path, $tochange_status));
+	    set_page_message( tr('Protected area updated successfully!'));
 
-	}	else {
+	} else {
 
-	$query = <<<SQL_QUERY
+	    $query = <<<SQL_QUERY
         insert into htaccess
             (dmn_id, user_id, group_id, auth_type, auth_name, path, status)
         values
             (?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-	check_for_lock_file();
-	send_request();
-    $rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, $basic ,$area_name, $path, $toadd_status));
-	set_page_message( tr('Protected area created successfully!'));
+	    check_for_lock_file();
+	    send_request();
+	    $rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, $basic ,$area_name, $path, $toadd_status));
+	    set_page_message( tr('Protected area created successfully!'));
 	}
 
 	header( "Location: protected_areas.php");
 	die();
-
-	}
-	else {
-		return;
-	}
 
 }
 

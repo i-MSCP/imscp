@@ -338,6 +338,8 @@ SQL_QUERY;
 		$i = 1;
 		while (!$rs->EOF) {
 			$searched_id = $rs->fields['domain_id'];
+			$query = '';
+
 			if ($rs->fields['mail_type'] == 'normal_mail' || $rs->fields['mail_type'] == 'normal_forward') {
 				$query = <<<SQL_QUERY
             select
@@ -365,6 +367,9 @@ SQL_QUERY;
             where
                 alias_id  = ?
 SQL_QUERY;
+			} else {
+				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown mail type %s',__FILE__, __LINE__, $rs->fields['mail_type']));
+				die('FIXME: ' . __FILE__ . ':' . __LINE__);
 			}
 
 			$sr = exec_query($sql, $query, array($searched_id));

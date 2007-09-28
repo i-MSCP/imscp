@@ -100,6 +100,7 @@ sub htuser_mngr_start_up {
 			domain_cgi
 		FROM
 			domain
+	    LIMIT 0,1
 	";
 
 	($rs, $rdata) = doSQL($sql);
@@ -450,7 +451,7 @@ sub htuser_del_user_system_data {
 		}
 
 	}
-	
+
 	foreach (split(',', $dmn_id)) {
 
 		my $id = $_;
@@ -488,7 +489,7 @@ sub htuser_del_user_system_data {
 			}
 
 		}
-	
+
 	}
 
 
@@ -794,7 +795,7 @@ sub htuser_del_group_system_data {
 				$sql = "select uname from htaccess_users where id = $id";
 
 				($rs, $rdata) = doSQL($sql);
-    
+
 				return $rs if ($rs != 0);
 
 				$rdata = @$rdata[0];
@@ -804,7 +805,7 @@ sub htuser_del_group_system_data {
 				$rs = htuser_del_group_data($dmn_name, $gname, $uname);
 
 				return $rs if ($rs != 0);
-				
+
 				$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id GROUP BY htaccess.user_id";
 
 				($rs, $rdata) = doSQL($sql);
@@ -824,7 +825,7 @@ sub htuser_del_group_system_data {
 
 			}
 		}
-		
+
 		foreach (split(',', $dmn_id)) {
 
 			my $id = $_;
@@ -862,10 +863,10 @@ sub htuser_del_group_system_data {
 				}
 
 			}
-	
+
 		}
-		
-		
+
+
 
 	}
 
@@ -1064,7 +1065,7 @@ SQL_QUERY
 				($rs, $rdata) = doSQL($sql);
 
 				return $rs if ($rs != 0);
-				
+
 				$rs = htuser_del_user_system_data($entry);
 
 			}

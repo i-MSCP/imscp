@@ -285,7 +285,7 @@ SQL_QUERY;
 
 		calculate_reseller_dvals($dest_dmn_current, $dest_dmn_max, $src_dmn_current, $src_dmn_max, 1, $err, 'Domain', $domain_name);
 
-		if (empty($err)) {
+		if ($err == '_off_') {
 			calculate_reseller_dvals($dest_sub_current, $dest_sub_max, $src_sub_current, $src_sub_max, $sub_max, $err, 'Subdomain', $domain_name);
 			calculate_reseller_dvals($dest_als_current, $dest_als_max, $src_als_current, $src_als_max, $als_max, $err, 'Alias', $domain_name);
 			calculate_reseller_dvals($dest_mail_current, $dest_mail_max, $src_mail_current, $src_mail_max, $mail_max, $err, 'Mail', $domain_name);
@@ -296,7 +296,7 @@ SQL_QUERY;
 			calculate_reseller_dvals($dest_disk_current, $dest_disk_max, $src_disk_current, $src_disk_max, $disk_max, $err, 'Disk', $domain_name);
 		}
 
-		if (!empty($err)) {
+		if ($err != '_off_') {
 			return false;
 		}
 	}

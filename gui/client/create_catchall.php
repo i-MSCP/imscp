@@ -317,6 +317,7 @@ SQL_QUERY;
                 $domain_id = $rs->fields['domain_id'];
             }
             $mail_forward = clean_input($_POST['forward_list']);
+            $mail_acc = array();
             $faray = preg_split ("/[\n]+/",$mail_forward);
 
             foreach ($faray as $value) {
@@ -329,6 +330,7 @@ SQL_QUERY;
                     set_page_message(tr("Mail forward list error!"));
                     return;
                 }
+                $mail_acc[] = $value;
             }
 
             $status = $cfg['ITEM_ADD_STATUS'];
@@ -348,7 +350,7 @@ SQL_QUERY;
                         (?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-            $rs = exec_query($sql, $query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_'));
+            $rs = exec_query($sql, $query, array(implode("\n", $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_'));
 
             send_request();
             write_log($_SESSION['user_logged'].": add new email catch all ");

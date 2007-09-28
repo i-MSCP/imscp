@@ -223,31 +223,23 @@ function change_user_interface($from_id, $to_id) {
             break;
         }
 
-        $to_admin_type   = $to_udata['admin_type'];
-        $from_admin_type = $from_udata['admin_type'];
+        $to_admin_type   = strtolower($to_udata['admin_type']);
+        $from_admin_type = strtolower($from_udata['admin_type']);
 
         $allowed_changes = array();
 
         $allowed_changes['admin']['admin']         = 'manage_users.php';
+        $allowed_changes['admin']['BACK']          = 'manage_users.php';
         $allowed_changes['admin']['reseller']      = 'index.php';
         $allowed_changes['admin']['user']          = 'index.php';
-        $allowed_changes['reseller']['reseller']   = 'users.php';
         $allowed_changes['reseller']['user']       = 'index.php';
+        $allowed_changes['reseller']['BACK']       = 'users.php';
 
         if (!isset($allowed_changes[$from_admin_type][$to_admin_type]) ||
            ($to_admin_type == $from_admin_type && $from_admin_type != 'admin')) {
 
-            if (isset($_SESSION['logged_from_id'])) {
-                $query = 'SELECT admin_type FROM admin WHERE admin_id = ?';
-                $rs = exec_query($sql, $query, $_SESSION['logged_from_id']);
-
-                if (!isset($allowed_changes[$rs->fields['admin_type']][$to_admin_type])) {
-                    set_page_message(tr('You do not have permission to access this interface!'));
-                    break;
-                } else {
-                    $index = $allowed_changes[$rs->fields['admin_type']][$to_admin_type];
-                }
-
+            if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $to_id) {
+                $index = $allowed_changes[$to_admin_type]['BACK'];
             } else {
                 set_page_message(tr('You do not have permission to access this interface!'));
                 break;
@@ -258,7 +250,11 @@ function change_user_interface($from_id, $to_id) {
 
 		unset_user_login_data();
 
-        if ($to_admin_type != 'admin' || ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
+        if ($to_admin_type != 'admin' &&
+            ((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $to_id) ||
+              !isset($_SESSION['logged_from_id']))
+            || ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
+
             $_SESSION['logged_from'] = $from_udata['admin_name'];
             $_SESSION['logged_from_id'] = $from_udata['admin_id'];
 
