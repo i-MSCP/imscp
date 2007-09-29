@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header.inc.php 10386 2007-05-14 12:13:44Z cybot_tm $
+ * @version $Id: header.inc.php 10631 2007-09-12 09:25:24Z lem9 $
  */
 
 /**
@@ -132,7 +132,7 @@ if (empty($GLOBALS['is_header_sent'])) {
     PMA_reloadNavigation();
     ?>
     <script src="./js/tooltip.js" type="text/javascript"></script>
-    <meta name="OBGZip" content="<?php echo ($cfg['OBGzip'] ? 'true' : 'false'); ?>" />
+    <meta name="OBGZip" content="<?php echo ($GLOBALS['cfg']['OBGzip'] ? 'true' : 'false'); ?>" />
     <?php /* remove vertical scroll bar bug in ie */ ?>
     <!--[if IE 6]>
     <style type="text/css">

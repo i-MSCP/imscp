@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 10553 2007-08-11 11:53:01Z lem9 $
+ * @version $Id: common.lib.php 10619 2007-09-09 13:51:15Z lem9 $
  */
 
 /**
@@ -542,62 +542,6 @@ function PMA_mysqlDie($error_message = '', $the_query = '',
     echo '<code>' . "\n"
         . $error_message . "\n"
         . '</code><br />' . "\n";
-
-    // feature request #1036254:
-    // Add a link by MySQL-Error #1062 - Duplicate entry
-    // 2004-10-20 by mkkeck
-    // 2005-01-17 modified by mkkeck bugfix
-    if (substr($error_message, 1, 4) == '1062') {
-        // get the duplicate entry
-
-        // get table name
-        /**
-         * @todo what would be the best delimiter, while avoiding special
-         * characters that can become high-ascii after editing, depending
-         * upon which editor is used by the developer?
-         */
-        $error_table = array();
-        if (preg_match('@ALTER\s*TABLE\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
-            $error_table = $error_table[1];
-        } elseif (preg_match('@INSERT\s*INTO\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
-            $error_table = $error_table[1];
-        } elseif (preg_match('@UPDATE\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
-            $error_table = $error_table[1];
-        } elseif (preg_match('@INSERT\s*\`([^\`]+)\`@iu', $the_query, $error_table)) {
-            $error_table = $error_table[1];
-        }
-
-        // get fields
-        $error_fields = array();
-        if (preg_match('@\(([^\)]+)\)@i', $the_query, $error_fields)) {
-            $error_fields = explode(',', $error_fields[1]);
-        } elseif (preg_match('@(`[^`]+`)\s*=@i', $the_query, $error_fields)) {
-            $error_fields = explode(',', $error_fields[1]);
-        }
-        if (is_array($error_table) || is_array($error_fields)) {
-
-            // duplicate value
-            $duplicate_value = array();
-            preg_match('@\'([^\']+)\'@i', $tmp_mysql_error, $duplicate_value);
-            $duplicate_value = $duplicate_value[1];
-
-            $sql = '
-                 SELECT *
-                   FROM ' . PMA_backquote($error_table) . '
-                  WHERE CONCAT_WS("-", ' . implode(', ', $error_fields) . ')
-                        = "' . PMA_sqlAddslashes($duplicate_value) . '"
-               ORDER BY ' . implode(', ', $error_fields);
-            unset($error_table, $error_fields, $duplicate_value);
-
-            echo '        <form method="post" action="import.php" style="padding: 0; margin: 0">' ."\n"
-                .'            <input type="hidden" name="sql_query" value="' . htmlspecialchars($sql) . '" />' . "\n"
-                .'            ' . PMA_generate_common_hidden_inputs($db, $table) . "\n"
-                .'            <input type="submit" name="submit" value="' . $GLOBALS['strBrowse'] . '" />' . "\n"
-                .'        </form>' . "\n";
-            unset($sql);
-        }
-    } // end of show duplicate entry
-
     echo '</div>';
     echo '<fieldset class="tblFooters">';
 
@@ -1276,7 +1220,7 @@ function PMA_profilingCheckbox($sql_query) {
     // 5.0.37 has profiling but for example, 5.1.20 does not
     // (avoid doing a fetch_value for MySQL before 5.0.37)
     if (PMA_MYSQL_INT_VERSION >= 50037 && PMA_DBI_fetch_value("SHOW VARIABLES LIKE 'profiling'")) {
-        echo '<form action="sql.php" method="post" />' . "\n";
+        echo '<form action="sql.php" method="post">' . "\n";
         echo PMA_generate_common_hidden_inputs($GLOBALS['db'], $GLOBALS['table']);
         echo '<input type="hidden" name="sql_query" value="' . $sql_query . '" />' . "\n";
         echo '<input type="hidden" name="profiling_form" value="1" />' . "\n";

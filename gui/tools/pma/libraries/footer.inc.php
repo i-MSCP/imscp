@@ -42,7 +42,7 @@
  * @uses    PMA_DBI_close()
  * @uses    basename()
  * @uses    file_exists()
- * @version $Id: footer.inc.php 10470 2007-07-01 19:26:41Z lem9 $
+ * @version $Id: footer.inc.php 10630 2007-09-11 21:04:32Z lem9 $
  */
 
 /**
@@ -88,7 +88,7 @@ if (window.parent.reload_querywindow) {
     window.parent.reload_querywindow(
         '<?php echo PMA_escapeJsString(PMA_ifSetOr($GLOBALS['db'], '')) ?>',
         '<?php echo PMA_escapeJsString(PMA_ifSetOr($GLOBALS['table'], '')) ?>',
-        '<?php echo strlen($GLOBALS['sql_query']) > $cfg['MaxCharactersInDisplayedSQL'] ? PMA_escapeJsString($GLOBALS['sql_query']) : ''; ?>');
+        '<?php echo strlen($GLOBALS['sql_query']) > $GLOBALS['cfg']['MaxCharactersInDisplayedSQL'] ? PMA_escapeJsString($GLOBALS['sql_query']) : ''; ?>');
 }
     <?php
 }

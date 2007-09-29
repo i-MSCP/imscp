@@ -1,12 +1,11 @@
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-26 21:38-0500\n"
-"PO-Revision-Date: 2007-07-06 16:03-0500\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2007-09-27 23:07+0100\n"
+"Last-Translator: M.Leenders <spam@azzkikr.nl>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,13 +21,13 @@ msgid "_: Localised language"
 msgstr "Dutch"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr ""
+msgstr "ispCP Omega a Virtual Hosting Control System"
 
 msgid "Administrator login"
-msgstr ""
+msgstr "Beheerder login"
 
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 msgid "Username"
 msgstr "Gebruikersnaam"
@@ -40,25 +39,26 @@ msgid "Please enter your login information"
 msgstr "Geef uw login gegevens in"
 
 msgid "Secure Connection"
-msgstr ""
+msgstr "Beveiligde verbinding"
 
 msgid "Normal Connection"
-msgstr ""
+msgstr "Normale verbinding"
 
 msgid "Lost password"
 msgstr "Wachtwoord verloren"
 
 msgid "Lost password function currently disabled"
-msgstr ""
+msgstr "Kwijt geraakt paswoord Functie tijdelijk buiten gebruik"
 
+#, fuzzy
 msgid "ispCP - Virtual Hosting Control System"
-msgstr ""
+msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Password sent"
-msgstr ""
+msgstr "Paswoord verzonden"
 
 msgid "ERROR: Password was not sent"
-msgstr ""
+msgstr "Fout: Paswoord in niet verzonden"
 
 msgid "The password was requested"
 msgstr "Het wachtwoord is aangevraagd"
@@ -78,10 +78,8 @@ msgstr "ERROR: Veiligheidscode is niet correct"
 msgid "Security code"
 msgstr "Veiligheidscode"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr ""
+msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
+msgstr "(Om misbruik te voorkomen, vragen wij u om de bovenstaande combinatie van letters over te nemen in het veld \"Security code\")"
 
 msgid "Request password"
 msgstr "Vraag wachtwoord aan"
@@ -93,16 +91,16 @@ msgid "Administrator"
 msgstr "Beheerder"
 
 msgid "Incorrect username length or syntax!"
-msgstr ""
+msgstr "Foutieve gebruikersnaam lengte of syntaxis!"
 
 msgid "Incorrect password length or syntax!"
-msgstr ""
+msgstr "Foutieve paswoord lengte of syntaxis!"
 
 msgid "Entered passwords do not match!"
-msgstr ""
+msgstr "Ingevoerde paswoorden komen niet met elkaar overeen!"
 
 msgid "Incorrect email length or syntax!"
-msgstr ""
+msgstr "Foutieve email lengte of syntaxis!"
 
 msgid "This user name already exist!"
 msgstr "Deze gebruikersnaam bestaat al!"
@@ -111,7 +109,7 @@ msgid "Empty data or wrong field!"
 msgstr "Geen gegevens of verkeerd veld!"
 
 msgid "Passwords don't match!"
-msgstr ""
+msgstr "Paswoorden komen niet met elkaar overeen!"
 
 msgid "Add admin"
 msgstr "Beheerder toevoegen"
@@ -120,7 +118,7 @@ msgid "Core data"
 msgstr "Kern gegevens"
 
 msgid "Repeat password"
-msgstr ""
+msgstr "Herhaal paswoord"
 
 msgid "Email"
 msgstr "E-mail"
@@ -134,17 +132,14 @@ msgstr "Voornaam"
 msgid "Last name"
 msgstr "Achternaam"
 
-#, fuzzy
 msgid "Gender"
-msgstr "Bovenkant"
+msgstr "Geslacht"
 
-#, fuzzy
 msgid "Male"
-msgstr "Inschakelen"
+msgstr "Man"
 
-#, fuzzy
 msgid "Female"
-msgstr "Optie"
+msgstr "Vrouw"
 
 msgid "Company"
 msgstr "Bedrijf"
@@ -168,13 +163,13 @@ msgid "Phone"
 msgstr "Telefoon"
 
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
 msgid "Add"
 msgstr "Toevoegen"
 
 msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr ""
+msgstr "ispCP - Beheer/Beheer gebruikers/Reseller toevoegen"
 
 msgid "Reseller IP list is empty!"
 msgstr "Er zijn nog geen IPs"
@@ -186,53 +181,43 @@ msgid "Assign"
 msgstr "Toewijzen"
 
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 msgid "Number"
 msgstr "Nummer"
 
 msgid "Reseller"
-msgstr ""
+msgstr "Reseller"
 
-#, fuzzy
 msgid "Incorrect email syntax!"
-msgstr "Onjuiste max mail telling of syntax!"
+msgstr "Onjuiste email syntaxis"
 
-#, fuzzy
 msgid "Incorrect domains limit!"
-msgstr "Onjuiste domeinnaam syntax!"
+msgstr "Onjuist aantal domeinen limiet!"
 
-#, fuzzy
 msgid "Incorrect subdomains limit!"
-msgstr "Onjuiste max subdomein telling of syntax!"
+msgstr "Onjuist aantal subdomeinen limiet!"
 
-#, fuzzy
 msgid "Incorrect aliases limit!"
-msgstr "Onjuiste gegevens invoer"
+msgstr "Onjuiste aantal aliasen limiet! "
 
-#, fuzzy
 msgid "Incorrect FTP accounts limit!"
-msgstr "Onjuiste max FTP telling of syntax!"
+msgstr "Onjuist aantal FTP accounts limiet!"
 
-#, fuzzy
 msgid "Incorrect mail accounts limit!"
-msgstr "Onjuiste max mail telling of syntax!"
+msgstr "Onjuiste aantal mail accounts limiet!"
 
-#, fuzzy
 msgid "Incorrect SQL databases limit!"
-msgstr "Onjuiste max MySQL databanken telling of syntax!"
+msgstr "Onjuist aantal SQL databases limiet!"
 
-#, fuzzy
 msgid "Incorrect SQL users limit!"
-msgstr "Onjuiste max MySQL gebruikers aantal of syntax!"
+msgstr "Onjuist aantal SQL gebruikers limiet!"
 
-#, fuzzy
 msgid "Incorrect traffic limit!"
-msgstr "Onjuiste max verkeer hoeveelheid of syntax!"
+msgstr "Onjuiste max. verkeer hoeveelheid!"
 
-#, fuzzy
 msgid "Incorrect disk quota limit!"
-msgstr "Onjuiste gegevens invoer"
+msgstr "Onjuiste schuifruimte limiet!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "U moet minstens één IP nummer voor een reseller toewijzen !"
@@ -244,46 +229,46 @@ msgid "unlimited"
 msgstr "ongelimiteerd"
 
 msgid "Domains limit"
-msgstr ""
+msgstr "Domeinen limiet"
 
 msgid "Subdomains limit"
-msgstr ""
+msgstr "Subdomeinen limiet"
 
 msgid "Aliases limit"
-msgstr ""
+msgstr "Aliassen limiet"
 
 msgid "Mail accounts limit"
-msgstr ""
+msgstr "Mail account limiet"
 
 msgid "FTP accounts limit"
-msgstr ""
+msgstr "FTP account limiet"
 
 msgid "SQL databases limit"
-msgstr ""
+msgstr "SQL databases limiet"
 
 msgid "SQL users limit"
-msgstr ""
+msgstr "SQL gebruikers limiet"
 
 msgid "Traffic limit [MB]"
-msgstr ""
+msgstr "Verkeer limiet [MB]"
 
 msgid "Disk limit [MB]"
-msgstr ""
+msgstr "Schijf limiet [MB]"
 
 msgid "PHP"
-msgstr ""
+msgstr "PHP"
 
 msgid "CGI / Perl"
-msgstr ""
+msgstr "CGI / Perl"
 
 msgid "JSP"
-msgstr ""
+msgstr "JSP"
 
 msgid "SSI"
-msgstr ""
+msgstr "SSI"
 
 msgid "Frontpage extensions"
-msgstr ""
+msgstr "Frontpage extensies"
 
 msgid "Backup and restore"
 msgstr "Backup en herstel"
@@ -295,7 +280,7 @@ msgid "Protected areas"
 msgstr "Beschermde gebieden"
 
 msgid "Webmail"
-msgstr ""
+msgstr "Webmail"
 
 msgid "Directory listing"
 msgstr "Mappenlijst"
@@ -307,7 +292,7 @@ msgid "AwStats"
 msgstr "AWStats"
 
 msgid "Logo upload"
-msgstr ""
+msgstr "Logo upload"
 
 msgid "yes"
 msgstr "ja"
@@ -329,30 +314,30 @@ msgstr "Log is leeg"
 
 #, php-format
 msgid "%s deleted the full admin log!"
-msgstr ""
+msgstr "%s heeft de volledige admin log verwijderd!"
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
-msgstr ""
+msgstr "%s heeft de admin log ouder dan twee weken verwijderd!"
 
 #, php-format
 msgid "%s deleted the admin log older than one month!"
-msgstr ""
+msgstr "%s heeft de admin log ouder dan een maand verwijderd!"
 
 #, php-format
 msgid "%s deleted the admin log older than three months!"
-msgstr ""
+msgstr "%s heeft de admin log ouder dan drie maanden verwijderd!"
 
 #, php-format
 msgid "%s deleted the admin log older than six months!"
-msgstr ""
+msgstr "%s heeft de admin log ouder dan een halfjaar verwijderd!"
 
 #, php-format
 msgid "%s deleted the admin log older than one year!"
-msgstr ""
+msgstr "%s heeft de admin log ouder dan een jaar verwijderd!"
 
 msgid "Invalid time period!"
-msgstr ""
+msgstr "Ongeldige periode!"
 
 msgid "Admin Log"
 msgstr "Beheerders Log"
@@ -400,16 +385,16 @@ msgid "Template name"
 msgstr "Template naam"
 
 msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Max subdomeinen<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Max aliassen<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Mail account limiet<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "FTP account limiet<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
@@ -451,16 +436,17 @@ msgid "Add plan"
 msgstr "Pakket toevoegen"
 
 msgid "Incorrect template name length!"
-msgstr ""
+msgstr "Foutieve sjabloon naam lengte!"
 
 msgid "Incorrect template description length!"
-msgstr ""
+msgstr "Foutieve sjabloon omschrijving lengte!"
 
 msgid "Incorrect price syntax!"
-msgstr ""
+msgstr "Foutieve prijs syntaxis!"
 
+#, fuzzy
 msgid "Incorrect setup fee syntax!"
-msgstr ""
+msgstr "Onjuiste setup kosten syntaxis!"
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "hostingpakket met ingevulde naam bestaat al"
@@ -472,7 +458,7 @@ msgid "Please fill up all data fields!"
 msgstr "Vult u A.U.B. alle velden in."
 
 msgid "Passwords do not match!"
-msgstr ""
+msgstr "Ingevoerde paswoorden komen niet met elkaar overeen!"
 
 msgid "The current password is wrong!"
 msgstr "Het huidige wachtwoord is incorrect."
@@ -508,7 +494,7 @@ msgid "Update data"
 msgstr "Wijzig gegevens"
 
 msgid "ispCP - Admin - Email Marketing"
-msgstr ""
+msgstr "ispCP - Beheer - Email Marketing"
 
 msgid "Please specify a message subject!"
 msgstr "Gelieve een bericht inhoud te specificeren"
@@ -628,13 +614,13 @@ msgid "Edit button"
 msgstr "Wijzig knop"
 
 msgid "You cannot delete the last active IP address!"
-msgstr ""
+msgstr "Het is niet mogelijk om het laatst aktieve IP adres te verwijderen!"
 
 msgid "Error: we have a domain using this IP!"
-msgstr ""
+msgstr "Fout: er is reeds een domein dat dit IP gebruikt!"
 
 msgid "Error: we have a reseller using this IP!"
-msgstr ""
+msgstr "Fout: er is al een reseller dat dit IP gebruikt!"
 
 msgid "IP was deleted!"
 msgstr "IP is verwijderd"
@@ -661,7 +647,7 @@ msgid "Domain IP"
 msgstr "Domein IP"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "PHP support"
 msgstr "PHP ondersteuning"
@@ -688,10 +674,10 @@ msgid "Limit"
 msgstr "Limiet"
 
 msgid "Mail accounts"
-msgstr ""
+msgstr "Mail accounts"
 
 msgid "FTP accounts"
-msgstr ""
+msgstr "FTP accounts"
 
 msgid "SQL databases"
 msgstr "MySQL databanken"
@@ -747,9 +733,8 @@ msgstr "Al het verkeer"
 msgid "Day"
 msgstr "Dag"
 
-#, fuzzy
 msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Virtual Hosting Control System"
+msgstr "ispCP - Beheerder/Beheer gebruikers/Verander Beheerder"
 
 msgid "User session was killed!"
 msgstr "Gebruikerssessie is beeindigd"
@@ -766,102 +751,85 @@ msgstr "Actualiseren"
 msgid "Send new login data"
 msgstr "Verstuur nieuwe login informatie"
 
-#, fuzzy
 msgid "Generate password"
-msgstr "Wijzig wachtwoord"
+msgstr "Genereer een wachtwoord"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr "ispCP - Virtual Hosting Control System"
 
-#, fuzzy
 msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+msgstr "SQL databanken limiet is <i>uitgeschakeld</i>!"
 
-#, fuzzy
 msgid "SQL users limit is <i>disabled</i>!"
-msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
+msgstr "SQL gebruikers limiet is <i>uitgeschakeld</i>!"
 
 msgid "Domains"
 msgstr "Domeinen"
 
-#, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
+#, fuzzy, php-format
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr "Onbestendigheid tussen current_als_cnt en daadwerkelijke alias telling: %1$d != %2$d"
 
 msgid "Aliases"
 msgstr "Aliassen"
 
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
+#, fuzzy, php-format
+msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgstr "Onbestendigheid tussen current_mail_cnt en daadwerkelijke mail telling: %1$d != %2$d"
 
 msgid "Mail"
-msgstr ""
+msgstr "Mail"
 
-#, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
+#, fuzzy, php-format
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr "Onbestendigheid tussen current_ftp_cnt en daadwerkelijke ftp telling: %1$d != %2$d"
 
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 msgid "SQL Databases"
-msgstr ""
+msgstr "SQL databanken"
 
 msgid "SQL Users"
-msgstr ""
+msgstr "SQL gebruikers"
 
 #, fuzzy
 msgid "Web Traffic"
 msgstr "Web verkeer"
 
-#, fuzzy
 msgid "Disk storage"
 msgstr "Schijfgebruik"
 
-#, fuzzy
 msgid "Reseller data inconsistency!"
-msgstr "Reseller statistieken tabel"
+msgstr "Reseller data onbestendigheid!"
 
 #, php-format
-msgid ""
-"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
-"than the new limit you entered."
-msgstr ""
+msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Deze reseller heeft inmiddels al meer/hoger dan <b>%s</b> accounts/limieten dan het nieuwe limiet dat u hebt ingevoerd."
 
 msgid "Edit reseller aborted!"
 msgstr "Wijziging reseller afgebroken!"
 
 #, php-format
-msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
-msgstr ""
-
-#, php-format
-msgid ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!<br>"
-msgstr ""
-
-#, fuzzy
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr ""
-"ALs u de reseller wil limiteren, limiteer dan eerst zijn gebruikers<br>"
+msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
+msgstr "Deze reseller's klanten gebruiken inmiddels al meer/hoger dan <b>%s</b> accounts/limieten dan het nieuwe limiet dat u hebt ingevoerd."
 
 #, fuzzy, php-format
+msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
+msgstr "Deze reseller heeft klanten met ongelimiteerde rechten voor de <b>%s</b> service!<br>"
+
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr "ALs u de reseller wil limiteren, limiteer dan eerst zijn gebruikers!<br>"
+
+#, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
-msgstr "Deze reseller heeft domein toegewezen aan <b>"
+msgstr "Deze reseller heeft domein toegewezen aan <b>%s</b> adressen!<br>"
 
 msgid "Edit reseller"
 msgstr "Wijzig reseller"
 
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 msgid "Max domain count"
 msgstr "Max aantal domeinen"

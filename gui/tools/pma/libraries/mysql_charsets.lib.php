@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mysql_charsets.lib.php 10242 2007-04-01 11:17:34Z cybot_tm $
+ * @version $Id: mysql_charsets.lib.php 10588 2007-09-02 19:23:59Z lem9 $
  */
 
 /**
@@ -74,7 +74,7 @@ if (PMA_MYSQL_INT_VERSION >= 40100){
         if ($label) {
             $return_str .= $spacer . '    <option value="">' . ($type == PMA_CSDROPDOWN_COLLATION ? $GLOBALS['strCollation'] : $GLOBALS['strCharset']) . '</option>' . "\n";
         }
-        $return_str .= $spacer . '    <option value=""></option>' . "\n";
+        $return_str .= $spacer . '    <option value="">&nbsp;</option>' . "\n";
         foreach ($mysql_charsets as $current_charset) {
             if (!$mysql_charsets_available[$current_charset]) {
                 continue;

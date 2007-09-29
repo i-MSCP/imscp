@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: relation.lib.php 10206 2007-03-26 16:13:44Z lem9 $
+ * @version $Id: relation.lib.php 10588 2007-09-02 19:23:59Z lem9 $
  */
 
 /**
@@ -972,14 +972,14 @@ function PMA_foreignDropdown($disp_row, $foreign_field, $foreign_display, $data,
     }
 
     // beginning of dropdown
-    $ret = '<option value=""></option>' . "\n";
+    $ret = '<option value="">&nbsp;</option>' . "\n";
 
     $top_count = count($top);
     if ($max == -1 || $top_count < $max) {
         $ret .= implode('', $top);
         if ($top_count > 0) {
-            $ret .= '                <option value=""></option>' . "\n";
-            $ret .= '                <option value=""></option>' . "\n";
+            $ret .= '                <option value="">&nbsp;</option>' . "\n";
+            $ret .= '                <option value="">&nbsp;</option>' . "\n";
         }
     }
     $ret .= implode('', $bot);

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: view_create.php 10549 2007-08-03 15:08:56Z lem9 $
+ * @version $Id: view_create.php 10606 2007-09-05 10:17:18Z lem9 $
  */
 
 /**
@@ -99,7 +99,7 @@ if (isset($_POST['submitoptions'])) {
         <td><select name="algorithm" id="algorithm">
                 <option value="UNDEFINED">UNDEFINED</option>
                 <option value="MERGE">MERGE</option>
-                <option value="MERGE">MERGE</option>
+                <option value="TEMPTABLE">TEMPTABLE</option>
             </select>
         </td>
     </tr>

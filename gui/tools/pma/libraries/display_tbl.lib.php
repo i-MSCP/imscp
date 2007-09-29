@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_tbl.lib.php 10524 2007-07-24 11:39:54Z lem9 $
+ * @version $Id: display_tbl.lib.php 10589 2007-09-02 19:27:05Z lem9 $
  */
 
 /**
@@ -2118,7 +2118,7 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
         echo '    &nbsp;&nbsp;' . "\n";
         echo PMA_linkOrButton(
             'view_create.php' . $url_query,
-            ($GLOBALS['cfg']['PropertiesIconic'] ? '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 's_views.png" height="16" width="16" alt="CREATE VIEW" />' : '') . 'CREATE VIEW',
+            ($GLOBALS['cfg']['PropertiesIconic'] ? '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_views.png" height="16" width="16" alt="CREATE VIEW" />' : '') . 'CREATE VIEW',
             '', true, true, '') . "\n";
     }
 

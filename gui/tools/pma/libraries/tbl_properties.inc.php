@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_properties.inc.php 10477 2007-07-09 18:46:00Z lem9 $
+ * @version $Id: tbl_properties.inc.php 10588 2007-09-02 19:23:59Z lem9 $
  */
 
 /**
@@ -459,12 +459,12 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
 
     if (!isset($row) || empty($row['Extra'])) {
         $content_cells[$i][$ci] .= "\n";
-        $content_cells[$i][$ci] .= '<option value=""></option>' . "\n";
+        $content_cells[$i][$ci] .= '<option value="">&nbsp;</option>' . "\n";
         $content_cells[$i][$ci] .= '<option value="AUTO_INCREMENT">auto_increment</option>' . "\n";
     } else {
         $content_cells[$i][$ci] .= "\n";
         $content_cells[$i][$ci] .= '<option value="AUTO_INCREMENT">auto_increment</option>' . "\n";
-        $content_cells[$i][$ci] .= '<option value=""></option>' . "\n";
+        $content_cells[$i][$ci] .= '<option value="">&nbsp;</option>' . "\n";
     }
 
     $content_cells[$i][$ci] .= "\n" . '</select>';
@@ -527,7 +527,7 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
     // garvin: MIME-types
     if ($cfgRelation['mimework'] && $cfg['BrowseMIME'] && $cfgRelation['commwork']) {
         $content_cells[$i][$ci] = '<select id="field_' . $i . '_' . ($ci - $ci_offset) . '" size="1" name="field_mimetype[]">' . "\n";
-        $content_cells[$i][$ci] .= '    <option value=""></option>' . "\n";
+        $content_cells[$i][$ci] .= '    <option value="">&nbsp;</option>' . "\n";
 
         if (is_array($available_mime['mimetype'])) {
             foreach ($available_mime['mimetype'] AS $mimekey => $mimetype) {

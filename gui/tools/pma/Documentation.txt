@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.11.0 Documentation
+phpMyAdmin 2.11.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,13 +20,13 @@ phpMyAdmin 2.11.0 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 10574 2007-08-19 12:02:39Z
+  * Documentation version: $Id: Documentation.html 10655 2007-09-20 16:33:07Z
     lem9 $
 
 Requirements
 
   * PHP
-      + You need PHP 4.1.0 or newer, with session support (see FAQ 1.31)
+      + You need PHP 4.2.0 or newer, with session support (see FAQ 1.31)
       + You need GD2 support in PHP to display inline thumbnails of JPEGs
         ("image/jpeg: inline") with their original aspect ratio
       + You need PHP 4.3.0 or newer to use the "text/plain: external"

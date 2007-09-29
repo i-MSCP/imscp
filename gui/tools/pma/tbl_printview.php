@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_printview.php 10478 2007-07-09 19:41:38Z lem9 $
+ * @version $Id: tbl_printview.php 10607 2007-09-05 10:49:52Z lem9 $
  */
 
 /**
@@ -170,7 +170,7 @@ foreach ($the_tables as $key => $table) {
     if ($have_rel) {
         echo '<th>' . $strLinksTo . '</th>' . "\n";
     }
-    if ($cfgRelation['commwork']) {
+    if ($cfgRelation['commwork'] || PMA_MYSQL_INT_VERSION >= 40100) {
         echo '    <th>' . $strComments . '</th>' . "\n";
     }
     if ($cfgRelation['mimework']) {

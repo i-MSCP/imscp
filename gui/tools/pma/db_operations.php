@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 10554 2007-08-11 12:35:12Z lem9 $
+ * @version $Id: db_operations.php 10623 2007-09-10 17:08:32Z lem9 $
  */
 
 /**
@@ -255,6 +255,12 @@ if (!$is_information_schema) {
     ?>
     <form method="post" action="db_operations.php"
         onsubmit="return emptyFormElements(this, 'newname')">
+        <?php
+    if (isset($db_collation)) {
+        echo '<input type="hidden" name="db_collation" value="' . $db_collation
+             .'" />' . "\n";
+    }
+         ?>
     <input type="hidden" name="what" value="data" />
     <input type="hidden" name="db_rename" value="true" />
     <?php echo PMA_generate_common_hidden_inputs($db); ?>

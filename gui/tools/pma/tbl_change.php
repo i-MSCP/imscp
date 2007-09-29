@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_change.php 10535 2007-07-27 13:55:41Z lem9 $
+ * @version $Id: tbl_change.php 10588 2007-09-02 19:23:59Z lem9 $
  */
 
 /**
@@ -606,7 +606,7 @@ foreach ($loop_array as $vrowcount => $vrow) {
             <input type="hidden" name="fields_type<?php echo $field_name_appendix; ?>"
                 value="foreign" />
             <input type="hidden" name="fields<?php echo $field_name_appendix; ?>"
-                value="" id="field_<?php echo ($idindex); ?>_1" />
+                value="" id="field_<?php echo ($idindex); ?>_3A" />
             <input type="text" name="field_<?php echo $field_name_appendix_md5; ?>"
                 class="textfield" <?php echo $unnullify_trigger; ?>
                 tabindex="<?php echo ($tabindex + $tabindex_for_value); ?>"
@@ -630,7 +630,7 @@ foreach ($loop_array as $vrowcount => $vrow) {
             <input type="hidden" name="fields_type<?php echo $field_name_appendix; ?>"
                 value="foreign" />
             <input type="hidden" name="fields<?php echo $field_name_appendix; ?>"
-                value="" id="field_<?php echo $idindex; ?>_1" />
+                value="" id="field_<?php echo $idindex; ?>_3A" />
             <select name="field_<?php echo $field_name_appendix_md5; ?>"
                 <?php echo $unnullify_trigger; ?>
                 tabindex="<?php echo ($tabindex + $tabindex_for_value); ?>"
@@ -1037,7 +1037,7 @@ if ($insert_mode) {
             echo '<input type="hidden" name="primary_key[' . $rowcount . ']" value="' . htmlspecialchars(trim($primary_key)) . '" />'. "\n";
         }
     }
-    $tmp = '<select name="insert_rows" id="insert_rows" onchange="this.form.submit();" />' . "\n";
+    $tmp = '<select name="insert_rows" id="insert_rows" onchange="this.form.submit();" >' . "\n";
     $option_values = array(1,2,5,10,15,20,30,40);
     foreach ($option_values as $value) {
         $tmp .= '<option value="' . $value . '"';

@@ -7,6 +7,16 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-09-29 Benedikt Heintel
+	- GUI:
+		* Fixed #729: Creation of htaccess files cause 500
+	- ENGINE:
+		* Fixed #728: Creation of domain-aliases fail
+	- TOOLS:
+		* Updated PMA to 2.11.1
+	- LANGAUGES:
+		* Updated Dutch PO
+
 2007-09-27 Raphael Geissert
     - GUI:
         * Fixed #717: User assignment does not work (thanks to Joximu)

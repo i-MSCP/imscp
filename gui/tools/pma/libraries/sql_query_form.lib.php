@@ -3,7 +3,7 @@
 /**
  * functions for displaying the sql query form
  *
- * @version $Id: sql_query_form.lib.php 10439 2007-06-15 17:13:29Z lem9 $
+ * @version $Id: sql_query_form.lib.php 10588 2007-09-02 19:23:59Z lem9 $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
@@ -424,7 +424,7 @@ function PMA_sqlQueryFormBookmark()
     echo $GLOBALS['strBookmarkQuery'] . '</legend>' . "\n";
     echo '<div class="formelement">';
     echo '<select name="id_bookmark">' . "\n";
-    echo '<option value=""></option>' . "\n";
+    echo '<option value="">&nbsp;</option>' . "\n";
     foreach ($bookmark_list as $key => $value) {
         echo '<option value="' . htmlspecialchars($key) . '">'
             .htmlspecialchars($value) . '</option>' . "\n";

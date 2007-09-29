@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 10574 2007-08-19 12:02:39Z lem9 $
+ * @version $Id: Config.class.php 10655 2007-09-20 16:33:07Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.0');
+        $this->set('PMA_VERSION', '2.11.1');
         /**
          * @deprecated
          */
@@ -538,12 +538,14 @@ class PMA_Config
     }
 
     /**
-     * returns time of last config change.
+     * returns a unique value to force a CSS reload if either the config
+     * or the theme changes
      * @return  int  Unix timestamp
      */
     function getMtime()
     {
-        return max($this->source_mtime, $this->default_source_mtime, $this->set_mtime);
+        return $this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info;
+        //"max()" most probably would only returns "source" last modified timestamp.
     }
 
     /**

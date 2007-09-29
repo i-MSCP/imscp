@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build SQL dumps of tables
  *
- * @version $Id: sql.php 10555 2007-08-11 13:01:36Z lem9 $
+ * @version $Id: sql.php 10585 2007-08-30 16:35:47Z lem9 $
  */
 
 /**
@@ -219,7 +219,7 @@ function PMA_exportHeader()
 
     /* We want exported AUTO_INCREMENT fields to have still same value, do this only for recent MySQL exports */
     if (!isset($GLOBALS['sql_compatibility']) || $GLOBALS['sql_compatibility'] == 'NONE') {
-        $head .=  $crlf . 'SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";' . $crlf;
+        $head .=  $crlf . (PMA_MYSQL_INT_VERSION >= 40101 ? 'SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";' . $crlf : ''); 
     }
 
     if (isset($GLOBALS['sql_use_transaction'])) {

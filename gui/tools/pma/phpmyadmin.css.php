@@ -2,12 +2,15 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: phpmyadmin.css.php 10515 2007-07-22 16:22:54Z lem9 $
+ * @version $Id: phpmyadmin.css.php 10586 2007-09-02 12:39:22Z lem9 $
  */
 
 /**
  *
  */
+// sometimes, we lose $_REQUEST['js_frame']
+define('PMA_FRAME',empty($_REQUEST['js_frame']) ? 'right' : $_REQUEST['js_frame']);
+
 define('PMA_MINIMUM_COMMON', true);
 require_once './libraries/common.inc.php';
 require_once './libraries/sqlparser.lib.php';
@@ -790,5 +793,5 @@ body.loginform div.container {
     <?php
 } // end styles 2.9
 
-$_SESSION['PMA_Theme_Manager']->printCss($_REQUEST['js_frame']);
+$_SESSION['PMA_Theme_Manager']->printCss(PMA_FRAME);
 ?>

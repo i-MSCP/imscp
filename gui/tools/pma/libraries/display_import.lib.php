@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_import.lib.php 10241 2007-04-01 11:13:46Z cybot_tm $
+ * @version $Id: display_import.lib.php 10588 2007-09-02 19:23:59Z lem9 $
  */
 
 /**
@@ -80,7 +80,7 @@ if (!empty($cfg['UploadDir'])) {
         echo "\n";
         echo '    <i>' . $strOr . '</i><br/><label for="select_local_import_file">' . $strWebServerUploadDirectory . '</label>&nbsp;: ' . "\n";
         echo '    <select style="margin: 5px" size="1" name="local_import_file" onchange="match_file(this.value)" id="select_local_import_file">' . "\n";
-        echo '        <option value=""></option>' . "\n";
+        echo '        <option value="">&nbsp;</option>' . "\n";
         echo $files;
         echo '    </select>' . "\n";
     }

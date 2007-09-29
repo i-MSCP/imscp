@@ -3,7 +3,7 @@
 /**
  * Library for extracting information about the available storage engines
  *
- * @version $Id: StorageEngine.class.php 10423 2007-06-07 00:23:33Z lem9 $
+ * @version $Id: StorageEngine.class.php 10654 2007-09-20 16:25:32Z lem9 $
  */
 
 /**
@@ -105,7 +105,7 @@ class PMA_StorageEngine
             $output .= '    <option value="' . htmlspecialchars($key). '"'
                 . (empty($details['Comment'])
                     ? '' : ' title="' . htmlspecialchars($details['Comment']) . '"')
-                . ($key == $selected || (empty($selected) && $details['Support'] == 'DEFAULT')
+                . (strtolower($key) == $selected || (empty($selected) && $details['Support'] == 'DEFAULT')
                     ? ' selected="selected"' : '') . '>' . "\n"
                 . '        ' . htmlspecialchars($details['Engine']) . "\n"
                 . '    </option>' . "\n";
