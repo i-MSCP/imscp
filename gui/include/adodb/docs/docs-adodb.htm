@@ -15,7 +15,7 @@ pre {
 <body bgcolor="#ffffff" text="black">
 
 <h2>ADOdb Library for PHP</h2>
-<p>V4.93 10 Oct 2006 (c) 2000-2006 John Lim (jlim#natsoft.com)</p>
+<p>V4.94 23 Jan 2007 (c) 2000-2007 John Lim (jlim#natsoft.com)</p>
 <p><font size="1">This software is dual licensed using BSD-Style and LGPL. This 
   means you can use it in compiled proprietary and commercial products.</font></p>
   
@@ -59,7 +59,7 @@ pre {
   <a href="#adodb_cache_dir">$ADODB_CACHE_DIR</a> <br>
   &nbsp; &nbsp; &nbsp; &nbsp;  <a href="#force_type">$ADODB_FORCE_TYPE</a> 
   <a href="#adodb_fetch_mode">$ADODB_FETCH_MODE</a> 
-  <a href="#adodb_lang">$ADODB_LANG</a> <br>
+  <a href="#adodb_lang">$ADODB_LANG</a> <a href=#adodb_auto_quote>ADODB_QUOTE_FIELDNAMES</a> <br>
   Constants: </font><font size="2"><a href="#adodb_assoc_case">ADODB_ASSOC_CASE</a> 
   </font><br>
   <a href="#ADOConnection"><b> ADOConnection</b></a><br>
@@ -79,7 +79,7 @@ pre {
   (oci8 only)<br>
   Generates SQL strings: <a href="#getupdatesql">GetUpdateSQL</a> <a href="#getinsertsql">GetInsertSQL</a> 
   <a href="#concat">Concat</a> <a href="#ifnull">IfNull</a> <a href="#length">length</a> <a href="#random">random</a> <a href="#substr">substr</a> 
-  <a href="#qstr">qstr</a> <a href="#param">Param</a>  <a href="#OffsetDate">OffsetDate</a> <a href="#SQLDate">SQLDate</a> 
+  <a href="#qstr">qstr</a> <a href="#param">Param</a>  <a href="#OffsetDate">OffsetDate</a> <a href="#sqldate">SQLDate</a> 
   <a href="#dbdate">DBDate</a>  <a href="#dbtimestamp">DBTimeStamp</a>
   <a href="#binddate">BindDate</a>  <a href="#bindtimestamp">BindTimeStamp</a>
   <br>
@@ -531,6 +531,7 @@ can be controlled using $rsPrefix. Here we set it to 'hack_rs_', which will make
 <p></p><p>Don't forget to call the constructor of the parent class in
 your constructor. If you want to use the default ADOdb drivers return
 false in the above hack_factory() function.
+ Also you can define your own ADORecordSet_empty() class, by defining a class $$this->rsPrefix.'empty' since 4.96/5.02.
 <a name="php5"></a>
 </p><h2>PHP5 Features</h2>
  ADOdb 4.02 or later will transparently determine which version of PHP you are using.
@@ -1516,9 +1517,8 @@ in adodb/lang/adodb-$lang.inc.php, where $lang is the supported langauge.
   The recordset saves this value on creation (eg. in Execute( ) or SelectLimit( 
   )), and any subsequent changes to $ADODB_FETCH_MODE have no affect on existing 
   recordsets, only on recordsets created in the future.</font></p>
-<p><font>The following constants are defined:</font></p>
- 
-<p><font>define('ADODB_FETCH_DEFAULT',0);<br>
+ <p><font>The following constants are defined:</font></p>
+ <p><font>define('ADODB_FETCH_DEFAULT',0);<br>
   define('ADODB_FETCH_NUM',1);<br>
   define('ADODB_FETCH_ASSOC',2);<br>
   define('ADODB_FETCH_BOTH',3); </font></p>
@@ -1559,7 +1559,11 @@ connection, then use <a href="#setfetchmode">SetFetchMode</a>.
 	include('adodb.inc.php'); </font></p>
 <h3><font><a name="force_type"></a>$ADODB_FORCE_TYPE</font></h3>
 <p><font>See the <a href="#ADODB_FORCE_TYPE">GetUpdateSQL tutorial</a>.
-</font></p><hr />
+</font></p>
+<h3><font><a name="adodb_auto_quote"></a>$ADODB_QUOTE_FIELDNAMES</font></h3>
+<p><font>Auto-quotes field names when using AutoExecute() when set to true. </font>
+<p>&nbsp;</p>
+<hr />
 <h2><font>ADOConnection<a name="adoconnection"></a></font></h2>
 <p><font>Object that performs the connection to the database, executes SQL statements 
 	and has a set of utility functions for standardising the format of SQL statements 
@@ -1865,7 +1869,7 @@ $conn->IgnoreErrors($saveErrHandlers);
 	If you do not pass in an oid, then UpdateBlob() assumes that you are storing 
 	in bytea fields.
 	<p>If you do not have any blob fields, you can improve you can improve general SQL query performance by disabling blob handling with $connection->disableBlobs = true.
-</font></p><p><font><b>UpdateClob<a name="updateclob"></a>($table,$column,$val,$where)</b></font></p>
+</p></font><p><font><b>UpdateClob<a name="updateclob"></a>($table,$column,$val,$where)</b></font></p>
 <font>Allows you to store a clob (in $val) into $table into $column in a row at $where. 
 Similar to UpdateBlob (see above), but for Character Large OBjects. 
 </font><p><font> Usage:
@@ -1949,6 +1953,7 @@ contains keys that are invalid field names for $table, they are ignored. There i
 query the database to get the field names, but given that you are not directly coding the SQL yourself, you probably aren't interested in
 speed at all, but convenience.
 <p>Since 4.62, the table name to be used can be overridden by setting $rs->tableName before AutoExecute(), GetInsertSQL() or GetUpdateSQL() is called.
+<p>Since 4.94, setting the global variable $ADODB_QUOTE_FIELDNAMES to true will force field names to be auto-quoted in AutoExecute(), GetInsertSQL() and GetUpdateSQL(). </p>
 <p><font><b>GetUpdateSQL<a name="getupdatesql"></a>(&amp;$rs, $arrFields, $forceUpdate=false,$magicq=false, $force=null)</b></font></p>
 <p><font>Generate SQL to update a table given a recordset $rs, and the modified fields 
 	of the array $arrFields (which must be an associative array holding the column 
@@ -1960,7 +1965,7 @@ speed at all, but convenience.
 <font>	</font><p><font>Since 4.52, we allow you to pass the $force type parameter, and this overrides the <a href="#ADODB_FORCE_TYPE">$ADODB_FORCE_TYPE</a>
 	global variable.
 <p>Since 4.62, the table name to be used can be overridden by setting $rs->tableName before AutoExecute(), GetInsertSQL() or GetUpdateSQL() is called.
-</font></p><p><font><b>GetInsertSQL<a name="getinsertsql"></a>(&amp;$rs, $arrFields,$magicq=false,$force_type=false)</b></font></p>
+</p></font><p><font><b>GetInsertSQL<a name="getinsertsql"></a>(&amp;$rs, $arrFields,$magicq=false,$force_type=false)</b></font></p>
 <p><font>Generate SQL to insert into a table given a recordset $rs. Requires the query 
 	to be associative. $magicq is used to indicate whether magic quotes are enabled 
 	(for qstr()). The field names in the array are case-insensitive.</font></p>
@@ -1970,7 +1975,7 @@ GetInsertSQL (in $rs), and it will generate an insert statement for that table.
 </font></p><p><font>Since 4.52, we allow you to pass the $force_type parameter, and this overrides the <a href="#ADODB_FORCE_TYPE">$ADODB_FORCE_TYPE</a>
 	global variable.
 <p>Since 4.62, the table name to be used can be overridden by setting $rs->tableName before AutoExecute(), GetInsertSQL() or GetUpdateSQL() is called.
-</font></p><p><font><b>PageExecute<a name="pageexecute"></a>($sql, $nrows, $page, $inputarr=false)</b> 
+</p></font><p><font><b>PageExecute<a name="pageexecute"></a>($sql, $nrows, $page, $inputarr=false)</b> 
 </font></p><p><font>Used for pagination of recordset. $page is 1-based. See <a href="#ex8">Example 
   8</a>.</font></p>
  
@@ -2109,7 +2114,8 @@ row3: Rose, Flower </font></p>
 </font></p><p><font><b>GetOne<a name="getone"></a>($sql,$inputarr=false)</b></font></p>
 <p><font>Executes the SQL and returns the first field of the first row. The recordset 
   and remaining rows are discarded for you automatically. If an error occur, false 
-  is returned.</font></p>
+  is returned; use ErrorNo() or ErrorMsg() to get the error details.
+  Since 4.96, we return null if no records were found.</font></p>
 <p><font><b>GetRow<a name="getrow"></a>($sql,$inputarr=false)</b></font></p>
 <p><font>Executes the SQL and returns the first row as an array. The recordset and remaining 
   rows are discarded for you automatically. If an error occurs, false is returned.</font></p>
@@ -2400,8 +2406,8 @@ function CountCachedExecs($db, $secs2cache, $sql, $inputarray)
   this function if a concatenation operator is not used, eg. MySQL.</font></p>
 <p><font>Returns the concatenated string.</font></p>
 <p><font><b>DBDate<a name="dbdate"></a>($date)</b></font></p>
-<p><font>Format the $<b>date</b> in the format the database accepts. This is used in 
-  INSERT/UPDATE statements; for SELECT statements, use <a href="#sqldate">SQLDate</a>. 
+<p><font>Format the $<b>date</b> in the format the database accepts - the return string is also quoted. This is used
+when you are sending dates to the database (eg INSERT, UPDATE or where clause of SELECT statement). 
   The $<b>date</b> parameter can be a Unix integer timestamp or an ISO format 
   Y-m-d. Uses the fmtDate field, which holds the format to use. If null or false 
   or '' is passed in, it will be converted to an SQL null.</font></p>
@@ -2410,6 +2416,7 @@ function CountCachedExecs($db, $secs2cache, $sql, $inputarray)
 	$sql = "select * from atable where created > ".$db->DBDate("$year-$month-$day");
 	$db->Execute($sql);
 </pre>
+<p>Note to retrieve a date column in a specific format,  use <a href="#sqldate">SQLDate</a>. </p>
 <p><font><b>BindDate<a name="binddate"></a>($date)</b></font></p>
 <p><font>Format the $<b>date</b> in the bind format the database accepts. Normally
  this means that the date string is not quoted, unlike DBDate, which quotes the string.
@@ -2613,7 +2620,7 @@ by a global array, which might need localisation).</font></p>
 <font> 
 </font><p><font>This function is available in both ADORecordSet
     and ADOConnection since 1.91. </font></p>
-<p><font><b>OffsetDate<a name="offsetdate"></a>($dayFraction,
+<p><font><b>OffsetDate<a name="OffsetDate"></a>($dayFraction,
   $basedate=false)</b></font></p>
 <p><font>Returns a string with the native SQL functions to calculate
     future and past dates based on $basedate in a portable fashion. If $basedate
@@ -2629,8 +2636,9 @@ by a global array, which might need localisation).</font></p>
 <font> </font>
 <p><font><b>SQLDate<a name="sqldate"></a>($dateFormat, $basedate=false)</b></font></p>
 <font>Returns a string which contains the native SQL functions
-to format a date or date column $basedate. This is used in SELECT statements.
-For INSERT/UPDATE statements, use <a href="#dbdate">DBDate</a>. It uses a case-sensitive
+to format a date or date column $basedate. This is used when retrieving date columns in SELECT statements.
+For sending dates to the database (eg. in UPDATE, INSERT or the where clause of SELECT statements) 
+use <a href="#dbdate">DBDate</a>. It uses a case-sensitive
 $dateFormat, which supports: </font>
 <pre><font> 
   Y: 4-digit Year
@@ -2920,6 +2928,86 @@ of MySQL.</font></p>
   PHP</a>. </font></p>
 
 <h2><font>Change Log<a name="Changes"></a><a name="changes"></a><a name="changelog"></a></font></h2>
+
+<p><a name="4.96"></a><b>4.96/5.02 ? ? 2007</b>
+<p>Fix adodb count optimisation. Preg_match did not work properly.
+<p>SelectLimit for oci8 not optimal for large recordsets when offset=0. Changed $nrows check.
+<p>Rewrote the ORDER BY stripping code in _adodb_getcount(), adodb-lib.inc.php.
+<p>Now GetOne returns null if EOF (no records found), and false if error occurs. Use ErrorMsg()/ErrorNo() to get the error.
+<p>Added BIT data type support to adodb-ado.inc.php and adodb-ado5.inc.php.
+<p>Ldap driver did not return actual ldap error messages. Fixed.
+<p>Implemented GetRandRow($sql, $inputarr). Optimized for Oci8.
+<p>Changed adodb5 active record to use static SetDatabaseAdapter() and removed php4 constructor. Bas van Beek bas.vanbeek#gmail.com.
+<p>Also in adodb5, changed adodb-session2 to use static function declarations in class. Thx Daniel Berlin.
+<p>Added "Clear SQL Log" to bottom of Performance screen.
+<p>Sessions2 code echo'ed directly to the screen in debug mode. Now uses ADOConnection::outp().
+<p>In mysql/mysqli, qstr(null) will return the string "null" instead of empty quoted string "''".
+<p>postgresql optimizeTable in perf-postgres.inc.php added by Daniel Berlin (mail#daniel-berlin.de)
+<p>Added 5.2.1 compat code for oci8.
+<p>Changed @@identity to SCOPE_IDENTITY() for multiple mssql drivers. Thx  Stefano Nari.
+<p>Code sanitization introduced in 4.95 caused problems in European locales (as float 3.2 was typecast to 3,2). Now we only sanitize if is_numeric fails.
+<p>Added support for customizing ADORecordset_empty using $this->rsPrefix.'empty'. By Josh Truwin.
+<p>Added proper support for ALterColumnSQL for Postgresql in datadict code. Thx. Josh Truwin. 
+<p>Added better support for MetaType() in mysqli when using an array recordset.
+<p><a name="4.95"></a><b>4.95/5.01 17 May 2007</b>
+<p>CacheFlush debug outp() passed in invalid parameters. Fixed.
+<p>Added Thai language file for adodb. Thx Trirat Petchsingh rosskouk#gmail.com and Marcos Pont</p>
+<p>Added zerofill checking support to MetaColumns for mysql and mysqli.
+<p>CacheFlush no longer deletes all files/directories. Only *.cache files deleted.</p>
+<p>DB2 timestamp format changed to var $fmtTimeStamp = "'Y-m-d-H:i:s'";</p>
+<p>Added some code sanitization to AutoExecute in adodb-lib.inc.php.</p>
+<p>Due to typo, all connections in adodb-oracle.inc.php would become persistent, even non-persistent ones. Fixed.</p>
+<P>Oci8 DBTimeStamp uses 24 hour time for input now, so you can perform string comparisons between 2 DBTimeStamp values.</P>
+<p>Some PHP4.4 compat issues fixed in adodb-session2.inc.php</p>
+<p>For ADOdb 5.01, fixed some adodb-datadict.inc.php MetaType compat issues with PHP5.
+<p>The $argHostname was wiped out in adodb-ado5.inc.php. Fixed.
+<p>Adodb5 version, added iterator support for adodb_recordset_empty.
+<p>Adodb5 version,more error checking code now will use exceptions if available.
+<p><a name="4.94"></a><b>4.94 23 Jan 2007</b>
+<p>Active Record: $ADODB_ASSOC_CASE=2 did not work properly. Fixed. Thx gmane#auxbuss.com.
+<p>mysqli had bugs in BeginTrans() and EndTrans(). Fixed.</p>
+<p>Improved error handling when no database is connected for oci8. Thx Andy Hassall.</p>
+<p>Names longer than 30 chars in oci8 datadict will be changed to random name. Thx Eugenio. http://phplens.com/lens/lensforum/msgs.php?id=16182
+<p>Added var $upperCase = 'ucase' to access and ado_access drivers. Thx Renato De Giovanni renato#cria.org.br</p>
+<p>Postgres64 driver, if preparing plan failed in _query, did not handle error properly. Fixed. See http://phplens.com/lens/lensforum/msgs.php?id=16131.
+<p>Fixed  GetActiveRecordsClass() reference bug. See http://phplens.com/lens/lensforum/msgs.php?id=16120
+<p>
+
+Added handling of nulls in adodb-ado_mssql.inc.php for qstr(). Thx to Felix Rabinovich.
+<p>
+
+Adodb-dict contributions by Gaetano:
+<br>
++ Support for INDEX in data-dict. Example:
+idx_ev1. The ability to define indexes using the INDEX keyword was added in ADOdb 4.94. The following example features mutiple indexes, including a compound index idx_ev1. 
+<pre>
+  event_id I(11) NOTNULL AUTOINCREMENT PRIMARY,
+  event_type I(4) NOTNULL  <b>INDEX idx_evt</b>,
+  event_start_date T DEFAULT NULL <b>INDEX id_esd</b>,
+  event_end_date T DEFAULT '0000-00-00 00:00:00' <b>INDEX id_eted</b>,
+  event_parent I(11) UNSIGNED NOTNULL DEFAULT 0 <b>INDEX id_evp</b>,
+  event_owner I(11) DEFAULT 0 <b>INDEX idx_ev1</b>,
+  event_project I(11) DEFAULT 0 <b>INDEX idx_ev1</b>,
+  event_times_recuring I(11) UNSIGNED NOTNULL DEFAULT 0,
+  event_icon C(20) DEFAULT 'obj/event',
+  event_description X
+</pre>
+<br>
++ Prevents the generated SQL from including double drop-sequence statements for REPLACE case of tables with autoincrement columns (on those dbs that emulate it via sequences)
+<br>
++ makes any date defined as DEFAULT value for D and T columns work cross-database, not just the "sysdate" value (as long as it is specified using adodb standard format). See above example.
+<p>Fixed pdo's GetInsertID() support. Thx Ricky Su.
+<p>oci8 Prepare() now sets error messages if an error occurs.
+<p>Added 'PT_BR' to SetDateLocale() -- brazilian portugese.
+<p>charset in oci8 was not set correctly on *Connect()
+<p>ADOConnection::Transpose() now appends as first column the field names.
+<p>Added $ADODB_QUOTE_FIELDNAMES. If set to true, will autoquote field names in AutoExecute(),GetInsertSQL(), GetUpdateSQL().
+<p>Transpose now adds the field names as the first column after transposition.
+<p>Added === check in ADODB_SetDatabaseAdapter for $db, adodb-active-record.inc.php. Thx Christian Affolter.
+<p>Added ErrorNo() to adodb-active-record.inc.php. Thx ante#novisplet.com.
+
+
+
 <p><a name="4.93"></a><b>4.93 10 Oct 2006</b>
 <p>Added support for multiple database connections in performance monitoring code (adodb-perf.inc.php). Now all sql in multiple database connections can be saved into one database ($ADODB_LOG_CONN).
 <p>Added MetaIndexes() to odbc_mssql.
@@ -2930,11 +3018,13 @@ of MySQL.</font></p>
 <p>Patched postgres64 _connect to handle serverinfo(). see http://phplens.com/lens/lensforum/msgs.php?id=15887.
 <p>Added pdo fix for null columns. See http://phplens.com/lens/lensforum/msgs.php?id=15889
 <p>For stored procedures, missing connection id now passed into mssql_query(). Thx Ecsy (ecsy#freemail.hu).
+
 <p><a name="4.92a"></a><b>4.92a 30 Aug 2006</b>
 <p>Syntax error in postgres7 driver. Thx Eloy Lafuente Plaza. 
 <p>Minor bug fixes - adodb informix 10 types added to adodb.inc.php. Thx Fernando Ortiz.
 
 <p><a name="4.92"></a><b>4.92 29 Aug 2006</b>
+
 <p>Better odbtp date support.
 <P>Added IgnoreErrors() to bypass default error handling.
 <p>The _adodb_getcount() function in adodb-lib.inc.php, some ORDER BY bug fixes.

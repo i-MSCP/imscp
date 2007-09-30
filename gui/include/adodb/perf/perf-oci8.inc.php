@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.93 10 Oct 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -109,8 +109,8 @@ AND    b.name = 'sorts (memory)'",
 			where name = 'free memory' and pool = 'shared pool'",
 		'Percentage of data cache actually in use - should be over 85%'),
 		
-		'shared pool utilization ratio' => array('RATIOU',
-		'select round((sga.bytes/p.value)*100,2)
+				'shared pool utilization ratio' => array('RATIOU', 
+		'select round((sga.bytes/case when p.value=0 then sga.bytes else to_number(p.value) end)*100,2)
 		from v$sgastat sga, v$parameter p
 		where sga.name = \'free memory\' and sga.pool = \'shared pool\'
 		and p.name = \'shared_pool_size\'',
@@ -156,7 +156,25 @@ having count(*) > 100)",'These are sql statements that should be using bind vari
 		'random page cost' => array('COST',
 			"select value from v\$parameter where name = 'optimizer_index_cost_adj'",
 			'=WarnPageCost'),
-		
+	
+	'Backup',
+		'Achivelog Mode' => array('BACKUP', 'select log_mode from v$database', 'To turn on archivelog:<br>
+	<pre>
+        SQLPLUS> connect sys as sysdba;
+        SQLPLUS> shutdown immediate;
+
+        SQLPLUS> startup mount exclusive;
+        SQLPLUS> alter database archivelog;
+        SQLPLUS> archive log start;
+        SQLPLUS> alter database open;
+</pre>'),
+	
+		'DBID' => array('BACKUP','select dbid from v$database','Primary key of database, used for recovery with an RMAN Recovery Catalog'),
+		'Archive Log Dest' => array('BACKUP', "SELECT NVL(v1.value,v2.value) 
+FROM v\$parameter v1, v\$parameter v2 WHERE v1.name='log_archive_dest' AND v2.name='log_archive_dest_10'", ''),
+	
+	'Flashback Area' => array('BACKUP', "select nvl(value,'Flashback Area not used') from v\$parameter where name=lower('DB_RECOVERY_FILE_DEST')", 'Flashback area is a folder where all backup data and logs can be stored and managed by Oracle. If Error: message displayed, then it is not in use.'),
+		'Control File Keep Time' => array('BACKUP', "select value from v\$parameter where name='control_file_record_keep_time'",'No of days to keep RMAN info in control file. I recommend it be set to x2 or x3 times the frequency of your full backup.'),
 		false
 		
 	);
@@ -184,7 +202,7 @@ having count(*) > 100)",'These are sql statements that should be using bind vari
 		else $s = '';
 		
 		return $s.'Percentage of indexed data blocks expected in the cache.
-			Recommended is 20 (fast disk array) to 50 (slower hard disks). Default is 0.
+			Recommended is 20 (fast disk array) to 30 (slower hard disks). Default is 0.
 			 See <a href=http://www.dba-oracle.com/oracle_tips_cbo_part1.htm>optimizer_index_caching</a>.';
 		}
 	
