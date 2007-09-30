@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders_create.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: folders_create.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the folders_create page */
+define('PAGE_NAME', 'folders_create');
 
 /**
  * Path for SquirrelMail required files.
@@ -79,4 +82,3 @@ sqimap_logout($imapConnection);
 $location = get_location();
 header ("Location: $location/folders.php?success=create");
 
-?>

@@ -10,7 +10,7 @@
  * @copyright Copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
  * @copyright Copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: message_details_bottom.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id: message_details_bottom.php 12687 2007-09-15 01:18:09Z pdontthink $
  * @package plugins
  * @subpackage message_details
  */
@@ -26,6 +26,8 @@ require_once(SM_PATH . 'functions/mime.php');
 global $color, $uid_support;
 
 sqgetGlobalVar('passed_id', $passed_id, SQ_GET);
+if (!sqGetGlobalVar('passed_ent_id', $passed_ent_id, SQ_FORM))
+    $passed_ent_id = 0;
 sqgetGlobalVar('mailbox', $mailbox, SQ_GET);
 
 sqgetGlobalVar('username', $username, SQ_SESSION);
@@ -71,7 +73,10 @@ function CalcEntity($entString, $direction) {
 
 $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 $read = sqimap_mailbox_select($imapConnection, $mailbox);
-$body = sqimap_run_command($imapConnection, "FETCH $passed_id RFC822",true, $response, $readmessage, $uid_support);
+if (!empty($passed_ent_id))
+    $body = sqimap_run_command($imapConnection, "FETCH $passed_id BODY[$passed_ent_id]",true, $response, $readmessage, $uid_support);
+else
+    $body = sqimap_run_command($imapConnection, "FETCH $passed_id RFC822",true, $response, $readmessage, $uid_support);
 $message_body = '';
 $header = false;
 $mimepart = false;

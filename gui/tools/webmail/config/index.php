@@ -9,10 +9,9 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: index.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: index.php 12522 2007-07-10 14:52:53Z kink $
  * @package squirrelmail
  */
 
 header('Location: ../index.php');
 
-?>

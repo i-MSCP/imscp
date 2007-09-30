@@ -11,7 +11,7 @@
  * this plugin displays a menu which gives the user a choice of mailinglist
  * commands such as (un)subscribe, help and list archives.
  *
- * $Id: setup.php 10975 2006-03-12 13:53:14Z kink $
+ * $Id: setup.php 12546 2007-07-16 22:27:13Z kink $
  * @package plugins
  * @subpackage listcommands
  */
@@ -42,11 +42,7 @@ function plugin_listcommands_menu() {
     foreach ($message->rfc822_header->mlist as $cmd => $actions) {
 
         /* I don't know this action... skip it */
-        if ( ( function_exists('array_key_exists') &&       /* PHP >= 4.1 */
-               !array_key_exists($cmd, $fieldsdescr) ) ||
-             ( function_exists('key_exists') && 
-               !key_exists($cmd, $fieldsdescr) )            /* PHP == 4.0.6 */
-        ) {
+        if ( !array_key_exists($cmd, $fieldsdescr) ) {
             continue;
         }
 
@@ -91,4 +87,3 @@ function plugin_listcommands_menu() {
     }
 }
 
-?>

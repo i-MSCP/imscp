@@ -80,3 +80,4 @@ echo '<br /><br />'
 . '<input type="hidden" name="mailbox" value="' . htmlspecialchars($mailbox) . '">'
 . '<input type="submit" name="send" value="' . _("Send Mail") . '"><br /><br />'
 . '</form></td></tr></table></body></html>';
+

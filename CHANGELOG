@@ -7,9 +7,26 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-09-30 Johannes Schobig
+	- GUI:
+		* Fixed #154: phpMyAdmin should be in restricted are
+		* Fixed #358: direct link to logged-in webftp and pma sessions
+
+2007-09-30 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #733: Typo in php4 & php5 template
+	- ENGINE:
+		* Fixed #734: Owner for domain-aliases is wrong
+	- GUI:
+		* Fixed #723: Optical Improvement in design
+		* Fixed #730: Error on update personal data
+		* Fixed #735: Small error in admin log
+	- TOOLS:
+    	* Fixed #731: Updated Squirrelmail to 1.4.11
+
 2007-09-29 Raphael Geissert
     - ENGINE:
-        * Fixed #555: catchall -> forwarding doesn't work (thanks to Joximu)
+        * Fixed #555: catchall -> forwarding doesn't work (thanks to Marcel Wiechmann)
     - GUI:
         * Updated ADOdb to version 4.96
 
@@ -25,7 +42,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-09-27 Raphael Geissert
     - GUI:
-        * Fixed #717: User assignment does not work (thanks to Joximu)
+        * Fixed #717: User assignment does not work (thanks to Marcel Wiechmann)
         * Fixed #635: can't protect a directory with non-standrad characters in its path
         * Fixed #632: can't add an ftp account to a non-standard characters mount point
         * Fixed an error where switching reseller->client and swtiching back would display as if we were logged from client's
@@ -988,7 +1005,7 @@ ispCP ω 1.0.0 Changelog
 	-	ENGINE
 		* fixed #232: restoring db-backups does not work
 
-2007-05-13 Malte Geierhos / Joximu
+2007-05-13 Malte Geierhos / Marcel Wiechmann
 	- GUI
 		* fixed password encryption with suhosin patch #265
 	- ENGINE

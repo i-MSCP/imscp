@@ -11,7 +11,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php 12368 2007-05-06 10:49:06Z jervfors $
+ * @version $Id: i18n.php 12497 2007-06-29 23:39:15Z pdontthink $
  * @package squirrelmail
  * @subpackage i18n
  */
@@ -40,30 +40,34 @@ require_once(SM_PATH . 'functions/global.php');
  *                            (OPTIONAL; default is SquirrelMail
  *                            locale directory).
  *
- * @return void
+ * @return string The name of the text domain that was set
+ *                *BEFORE* it is changed herein - NOTE that
+ *                this differs from PHP's textdomain()
  *
  * @since 1.5.2 and 1.4.10
  */
 function sq_change_text_domain($domain_name, $directory='') {
 
-    if (empty($directory)) $directory = SM_PATH . 'locale/'; 
-
     global $use_gettext;
     static $domains_already_seen = array();
+    $return_value = textdomain(NULL);
 
     // only need to call bindtextdomain() once unless
     // $use_gettext is turned on
     //
     if (!$use_gettext && in_array($domain_name, $domains_already_seen)) {
         textdomain($domain_name);
-        return;
+        return $return_value;
     }
 
     $domains_already_seen[] = $domain_name;
 
+    if (empty($directory)) $directory = SM_PATH . 'locale/'; 
+
     sq_bindtextdomain($domain_name, $directory);
     textdomain($domain_name);
 
+    return $return_value;
 }
 
 /**
@@ -75,13 +79,17 @@ function sq_change_text_domain($domain_name, $directory='') {
  * @since 1.4.10
  *
  * @param string $domain gettext domain name
- * @param string $dir directory that contains all translations
+ * @param string $dir directory that contains all translations (OPTIONAL;
+ *                    if not specified, defaults to SquirrelMail locale
+ *                    directory)
  *
  * @return string path to translation directory
  */
-function sq_bindtextdomain($domain,$dir) {
+function sq_bindtextdomain($domain,$dir='') {
 
     global $languages, $sm_notAlias;
+
+    if (empty($dir)) $dir = SM_PATH . 'locale/';
 
     $dir = bindtextdomain($domain, $dir);
 

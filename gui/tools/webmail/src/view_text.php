@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: view_text.php 12370 2007-05-09 13:46:30Z kink $
+ * @version $Id: view_text.php 12581 2007-08-12 19:08:47Z kink $
  * @package squirrelmail
  */
 
@@ -31,7 +31,7 @@ sqgetGlobalVar('username',   $username,     SQ_SESSION);
 sqgetGlobalVar('onetimepad', $onetimepad,   SQ_SESSION);
 sqgetGlobalVar('delimiter',  $delimiter,    SQ_SESSION);
 sqgetGlobalVar('QUERY_STRING', $QUERY_STRING, SQ_SERVER);
-sqgetGlobalVar('messages', $messages);
+sqgetGlobalVar('messages', $messages,       SQ_SESSION);
 sqgetGlobalVar('passed_id', $passed_id, SQ_GET);
 
 if ( sqgetGlobalVar('mailbox', $temp, SQ_GET) ) {

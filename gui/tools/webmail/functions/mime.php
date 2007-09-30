@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 12370 2007-05-09 13:46:30Z kink $
+ * @version $Id: mime.php 12396 2007-05-17 15:20:55Z kink $
  * @package squirrelmail
  */
 
@@ -1553,6 +1553,7 @@ function sq_deent(&$attvalue, $regex, $hex=false){
  * @param  $add_attr_to_tag See description for sq_sanitize
  * @param  $message         message object
  * @param  $id              message id
+ * @param  $mailbox         mailbox
  * @return                  Array with modified attributes.
  */
 function sq_fixatts($tagname,

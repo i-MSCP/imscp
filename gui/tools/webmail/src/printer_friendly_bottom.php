@@ -10,9 +10,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: printer_friendly_bottom.php 12285 2007-02-27 19:07:02Z kink $
+ * @version $Id: printer_friendly_bottom.php 12581 2007-08-12 19:08:47Z kink $
  * @package squirrelmail
  */
+
+/** This is the printer_friendly_bottom page */
+define('PAGE_NAME', 'printer_friendly_bottom');
 
 /**
  * Path for SquirrelMail required files.
@@ -28,7 +31,7 @@ require_once(SM_PATH . 'functions/imap.php');
 sqgetGlobalVar('username', $username, SQ_SESSION);
 sqgetGlobalVar('key', $key, SQ_COOKIE);
 sqgetGlobalVar('onetimepad', $onetimepad, SQ_SESSION);
-
+sqgetGlobalVar('messages', $messages, SQ_SESSION);
 sqgetGlobalVar('passed_id', $passed_id, SQ_GET);
 sqgetGlobalVar('mailbox', $mailbox, SQ_GET);
 
@@ -289,4 +292,3 @@ function pf_show_attachments($message, $exclude_id, $mailbox, $id) {
 
 
 /* --end pf-specific functions */
-?>

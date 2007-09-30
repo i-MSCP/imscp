@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 12322 2007-03-06 16:26:18Z kink $
+ * @version $Id: imap_messages.php 12690 2007-09-15 01:35:02Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -489,7 +489,7 @@ function parseArray($read,&$i) {
  * class/mime/Rfc822Header.php.
  */
 function parsePriority($sValue) {
-    $aValue=split('/\w/',trim($sValue));
+    $aValue=preg_split('/\s/',trim($sValue));
     $value = strtolower(array_shift($aValue));
     if ( is_numeric($value) ) {
         return $value;
@@ -665,13 +665,18 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
                                 }
                                 break;
                             case 'content-type':
-                                $type = $value;
+                                $type = strtolower($value);
                                 if ($pos = strpos($type, ";")) {
                                     $type = substr($type, 0, $pos);
                                 }
                                 $type = explode("/", $type);
-                                if(!is_array($type)) {
+                                if ( empty($type[0]) ) {
                                     $type[0] = 'text';
+// I had this added, but not committed to CVS.... did it help fix something?
+//                                    $type[1] = 'plain';
+                                }
+                                if ( empty($type[1]) ) {
+                                    $type[1] = 'plain';
                                 }
                                 break;
                             default: break;
@@ -829,49 +834,42 @@ function sqimap_get_message($imap_stream, $id, $mailbox) {
     $rfc822_header = new Rfc822Header();
     $rfc822_header->parseHeader($read);
     $msg->rfc822_header = $rfc822_header;
+
+    parse_message_entities($msg, $id, $imap_stream);
     return $msg;
 }
 
 
 /**
- * Wrapper function that reformats the header information.
- * Obsolete?
+ * Recursively parse embedded messages (if any) in the given
+ * message, building correct rfc822 headers for each one
+ *
+ * @param object $msg The message object to scan for attached messages
+ *                    NOTE: this is passed by reference!  Changes made
+ *                    within will affect the caller's copy of $msg!
+ * @param int $id The top-level message UID on the IMAP server, even
+ *                if the $msg being passed in is only an attached entity
+ *                thereof.
+ * @param resource $imap_stream A live connection to the IMAP server.
+ *
+ * @return void
+ *
+ * @since 1.4.11
+ *
  */
-function sqimap_get_message_header($imap_stream, $id, $mailbox) {
+function parse_message_entities(&$msg, $id, $imap_stream) {
     global $uid_support;
-    $read = sqimap_run_command ($imap_stream, "FETCH $id BODY[HEADER]", true, $response, $message, $uid_support);
-    $header = sqimap_get_header($imap_stream, $read);
-    $header->id = $id;
-    $header->mailbox = $mailbox;
-    return $header;
-}
-
-
-/**
- * Wrapper function that reformats the entity header information.
- * Obsolete?
- */
-function sqimap_get_ent_header($imap_stream, $id, $mailbox, $ent) {
-    global $uid_support;
-    $read = sqimap_run_command ($imap_stream, "FETCH $id BODY[$ent.HEADER]", true, $response, $message, $uid_support);
-    $header = sqimap_get_header($imap_stream, $read);
-    $header->id = $id;
-    $header->mailbox = $mailbox;
-    return $header;
-}
-
-
-/**
- * Function to get the mime headers
- * Obsolete?
- */
-function sqimap_get_mime_ent_header($imap_stream, $id, $mailbox, $ent) {
-    global $uid_support;
-    $read = sqimap_run_command ($imap_stream, "FETCH $id:$id BODY[$ent.MIME]", true, $response, $message, $uid_support);
-    $header = sqimap_get_header($imap_stream, $read);
-    $header->id = $id;
-    $header->mailbox = $mailbox;
-    return $header;
+    if (!empty($msg->entities)) foreach ($msg->entities as $i => $entity) {
+        if (is_object($entity) && get_class($entity) == 'Message') {
+            if (!empty($entity->rfc822_header)) {
+                $read = sqimap_run_command($imap_stream, "FETCH $id BODY[". $entity->entity_id .".HEADER]", true, $response, $message, $uid_support);
+                $rfc822_header = new Rfc822Header();
+                $rfc822_header->parseHeader($read);
+                $msg->entities[$i]->rfc822_header = $rfc822_header;
+            }
+            parse_message_entities($msg->entities[$i], $id, $imap_stream);
+        }
+    }
 }
 
 

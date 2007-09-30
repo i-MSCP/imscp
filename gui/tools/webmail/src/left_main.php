@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: left_main.php 12319 2007-03-06 16:03:45Z kink $
+ * @version $Id: left_main.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the left_main page */
+define('PAGE_NAME', 'left_main');
 
 /**
  * Path for SquirrelMail required files.
@@ -176,9 +179,9 @@ function create_collapse_link($boxnum) {
     $link = '<a target="left" style="text-decoration:none" ' .
             'href="left_main.php?';
     if ($boxes[$boxnum]['collapse'] == SM_BOX_COLLAPSED) {
-        $link .= "unfold=$mailbox\"><img src=\"../images/plus.png\" border=\"0\">";
+        $link .= "unfold=$mailbox\">+";
     } else {
-        $link .= "fold=$mailbox\"><img src=\"../images/minus.png\" border=\"0\">";
+        $link .= "fold=$mailbox\">-";
     }
     $link .= '</a>';
 
@@ -307,9 +310,9 @@ $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 1
  */
 if (isset($left_refresh) && ($left_refresh != '') &&
     !stristr($left_refresh, 'none')){
-    $xtra =  "\n<meta http-equiv=\"Expires\" content=\"Thu, 01 Dec 1994 16:00:00 GMT\" />\n" .
-             "<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n".
-             "<meta http-equiv=\"REFRESH\" content=\"$left_refresh;URL=left_main.php\" />\n";
+    $xtra =  "\n<meta http-equiv=\"Expires\" content=\"Thu, 01 Dec 1994 16:00:00 GMT\">\n" .
+             "<meta http-equiv=\"Pragma\" content=\"no-cache\">\n".
+             "<meta http-equiv=\"REFRESH\" content=\"$left_refresh;URL=left_main.php\">\n";
 } else {
     $xtra = '';
 }
@@ -340,41 +343,17 @@ if ($auto_create_special && !$auto_create_done) {
     $boxes = sqimap_mailbox_list($imapConnection,true);
 }
 
-//echo "\n<body bgcolor=\"$color[3]\" text=\"$color[6]\" link=\"$color[6]\" vlink=\"$color[6]\" alink=\"$color[6]\" leftmargin=\"0\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"0\">\n";
-echo "<body class=\"left\" link=\"$color[6]\" vlink=\"$color[6]\" alink=\"$color[6]\">\n";
+echo "\n<body bgcolor=\"$color[3]\" text=\"$color[6]\" link=\"$color[6]\" vlink=\"$color[6]\" alink=\"$color[6]\">\n";
+
 do_hook('left_main_before');
 
-/*	echo "\n\n" . html_tag( 'table', '', 'left', '', 'border="0" cellspacing="0" cellpadding="0" width="99%"' ) .
+echo "\n\n" . html_tag( 'table', '', 'left', '', 'border="0" cellspacing="0" cellpadding="0" width="99%"' ) .
     html_tag( 'tr' ) .
     html_tag( 'td', '', 'left' ) .
     html_tag( 'table', '', '', '', 'border="0" cellspacing="0" cellpadding="0"' ) .
     html_tag( 'tr' ) .
     html_tag( 'td', '', 'center' ) .
-    '<font size="4"><b>'. _("Folders") . "</b><br /></font>\n\n"; */
-
-
-//===============Code for left top header=======
-
-echo "<table border=0 width=\"100%\" cellspacing=0 cellpadding=0 >";
-echo "<tr><td align='center'>";
-echo "<div id=\"left_logo\"><img src='".$org_logo."' ></div>". "\n\n"; 
-echo "</td></tr></table>";
-echo "<div id=\"spacer\"></div>\n";
-
-// ========Quota Plugin enable here by removing the // on the next 3 =========
-//echo "<div id=\"quota\">\n";
-//     do_hook('quota_plugin_left');
-//echo "</div>";
-// ==========End Quota Plugin=========
-
-echo "<div id=\"folders_top\"><p>"._("Folders") ." <a href=\"../src/left_main.php\" target=\"left\" id=\"refresh\"><img src=\"../images/".$GLOBALS['refresh_button']."\" align=\"absmiddle\" border=\"0\"></a>
-<a href=\"#\" onclick=\"reveal('folders');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a></p></div>\n";
-echo "<div id=\"folders\">\n";
-echo "<table width=\"99%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" ><tr ><td align=\"center\" valign=\"top\" ><div align=\"left\">\n";
-
-
-//=====end Header code=========
-
+    '<font size="4"><b>'. _("Folders") . "</b><br /></font>\n\n";
 
 if ($date_format != 6) {
     /* First, display the clock. */
@@ -410,13 +389,14 @@ if ($date_format != 6) {
     }
     $clk = str_replace(' ','&nbsp;',$clk);
 
-   // echo '<nobr><small>' . str_replace(' ','&nbsp;',_("Last Refresh")) .
-   //      ": $clk</small></nobr><br />";
+    echo '<small><span style="white-space: nowrap;">'
+       . str_replace(' ', '&nbsp;', _("Last Refresh"))
+       . ":</span><br /><span style=\"white-space: nowrap;\">$clk</span></small><br />";
 }
 
 /* Next, display the refresh button. */
-//echo '<small style="white-space: nowrap;">(<a href="../src/left_main.php" target="left">'.
-//     _("Check mail") . '</a>)</small></td></tr></table><br />';
+echo '<small style="white-space: nowrap;">(<a href="../src/left_main.php" target="left">'.
+     _("Check mail") . '</a>)</small></td></tr></table><br />';
 
 /* Lastly, display the folder list. */
 if ( $collapse_folders ) {
@@ -454,43 +434,10 @@ for ($i = 0; $i < count($boxes); $i++) {
         if (isset($collapse_folders) && $collapse_folders && $boxes[$i]['parent']) {
             $prefix = str_replace(' ','&nbsp;',substr($prefix,0,strlen($prefix)-2)).
                       create_collapse_link($i) . '&nbsp;';
-		$line = "<br><span style=\"white-space: nowrap;\"><tt>&nbsp;&nbsp;&nbsp;$prefix<img src=\"../images/inbox.png\" align=\"absmiddle\"  vspace=\"2\">&nbsp;</tt>"; 
         } else {
-            $prefix = str_replace(' ','&nbsp;&nbsp;',$prefix);
-		$line = "<br><span style=\"white-space: nowrap;\"><tt>&nbsp;&nbsp;$prefix<img src=\"../images/folder.png\" align=\"absmiddle\"  vspace=\"2\">&nbsp;</tt>"; 
+            $prefix = str_replace(' ','&nbsp;',$prefix);
         }
-		
-		
-//=====Mailbox and Folders=======
-
-                if ((strtolower($boxes[$i]['unformatted']) == 'inbox'))
-                {
-                $line = "<img src=\"../images/inbox.png\" align=\"absmiddle\" vspace=\"2\" class=\"mbox_img\">";
-                }
-                elseif ($boxes[$i]['unformatted'] == $draft_folder)
-                {
-                $line = "<br><img src=\"../images/draft.png\" align=\"absmiddle\" vspace=\"2\" class=\"mbox_img\">";
-                }
-                elseif ($boxes[$i]['unformatted'] == $sent_folder)
-                {
-                $line = "<br><img src=\"../images/senti.png\" align=\"absmiddle\" vspace=\"2\" class=\"mbox_img\">";
-                }
-                elseif ($boxes[$i]['unformatted'] == $trash_folder)
-                {
-                $line = "<br><img src=\"../images/delitem.png\" align=\"absmiddle\" vspace=\"2\" class=\"mbox_img\">";
-                }
-			/*	else
-                {
-				if (isset($collapse_folders) && $collapse_folders && $boxes[$i]['parent']) {
-			    $line = "<br><span style=\"white-space: nowrap;\"><tt>&nbsp;&nbsp;$prefix<img src=\"../images/inbox.png\" align=\"absmiddle\"  vspace=\"2\">&nbsp;</tt>"; 
-				}
-				else {
-				$line = "<br><img src=\"../images/folder.png\" align=\"absmiddle\" vspace=\"2\" class=\"mbox_img\">";
-                }
-				} */
-
-//======Mailbox and Folders Icons=====
-
+        $line = "<span style=\"white-space: nowrap;\"><tt>$prefix</tt>";
 
         /* Add the folder name and link. */
         if (! isset($color[15])) {
@@ -501,7 +448,7 @@ for ($i = 0; $i < count($boxes); $i++) {
             if( isSpecialMailbox( $boxes[$i]['unformatted']) ) {
                 $line .= "<font color=\"$color[11]\">";
             } else {
-                $line .= "<font color=\"$color[11]\">";
+                $line .= "<font color=\"$color[15]\">";
             }
             if (ereg("^( *)([^ ]*)", $mailbox, $regs)) {
                 $mailbox = str_replace('&nbsp;','',$mailbox);
@@ -523,34 +470,6 @@ for ($i = 0; $i < count($boxes); $i++) {
 do_hook('left_main_after');
 sqimap_logout($imapConnection);
 
-echo "</div></td></tr></table>";
-echo "</div>\n";
-echo "<div id=\"folders_bottom\"></div>\n";
-
-//=======Extras=========
-
-do_hook('smallcal_plugin');
-
-do_hook('left_main_todo');
-
-echo "<div id=\"extra_top\"><p>"._("Options") ."<a href=\"#\" onclick=\"reveal('extra');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a></p></div>\n";
-echo "<div id=\"extra\">\n";
-echo "<table width=\"99%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" >";
-echo "    <tr >";
-echo "      <td align=\"center\" valign=\"top\" ><div id=\"options\" align=\"left\"><p>";
-echo "&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=personal\" target=\"right\">"._("Change Settings")."</a><br>";
-echo "&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=folder\" target=\"right\">"._("Folder Preferences")."</a><br>";
-echo "&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/filters/options.php\" target=\"right\">"._("Message Filtering")."</a><br>";
-echo "&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/mail_fetch/options.php\" target=\"right\">"._("Remote POP")."</a><br><br>";
-echo "        </p></div></td>";
-echo "    </tr>";
-echo "  </table>";
-echo "</div>\n";
-echo "<div id=\"extra_bottom\"></div>\n";
-
-//======End Extras=========
-
 ?>
 </td></tr></table>
-</div>
 </body></html>

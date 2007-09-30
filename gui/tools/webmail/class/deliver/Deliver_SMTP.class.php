@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver_SMTP.class.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: Deliver_SMTP.class.php 12561 2007-07-20 16:53:53Z kink $
  * @package squirrelmail
  */
 
@@ -26,8 +26,6 @@ class Deliver_SMTP extends Deliver {
             $s = str_replace("\n.","\n..",$s);
         }
     }
-
-    // TODO merge 1.5.1 changes regarding system wide SMTP username
 
     function initStream($message, $domain, $length=0, $host='', $port='', $user='', $pass='', $authpop=false) {
         global $use_smtp_tls,$smtp_auth_mech,$username,$key,$onetimepad;
@@ -329,7 +327,7 @@ class Deliver_SMTP extends Deliver {
         if (!$pop_server) {
             $pop_server = 'localhost';
         }
-        $popConnection = fsockopen($pop_server, $pop_port, $err_no, $err_str);
+        $popConnection = @fsockopen($pop_server, $pop_port, $err_no, $err_str);
         if (!$popConnection) {
             error_log("Error connecting to POP Server ($pop_server:$pop_port)"
                 . " $err_no : $err_str");

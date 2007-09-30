@@ -9,7 +9,7 @@
  * @author Marc Groot Koerkamp
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 12144 2007-01-18 16:15:10Z kink $
+ * @version $Id: Deliver.class.php 12565 2007-07-20 17:13:46Z kink $
  * @package squirrelmail
  */
 
@@ -151,8 +151,10 @@ class Deliver {
                 }
                 $last = $body_part;
             } elseif ($message->att_local_name) {
+                global $username, $attachment_dir;
+                $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
                 $filename = $message->att_local_name;
-                $file = fopen ($filename, 'rb');
+                $file = fopen ($hashed_attachment_dir . '/' . $filename, 'rb');
                 while ($body_part = fgets($file, 4096)) {
                     $length += $this->clean_crlf($body_part);
                     if ($stream) {
@@ -172,9 +174,11 @@ class Deliver {
                     $this->writeToStream($stream, $body_part);
                 }
             } elseif ($message->att_local_name) {
+                global $username, $attachment_dir;
+                $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
                 $filename = $message->att_local_name;
-                $file = fopen ($filename, 'rb');
-                $encoded = '';
+                $file = fopen ($hashed_attachment_dir . '/' . $filename, 'rb');
+                
                 while ($tmp = fread($file, 570)) {
                     $body_part = chunk_split(base64_encode($tmp));
                     // Up to 4.3.10 chunk_split always appends a newline,

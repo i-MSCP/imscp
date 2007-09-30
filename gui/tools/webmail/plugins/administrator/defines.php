@@ -6,7 +6,7 @@
  * @author Philippe Mingo
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: defines.php 12324 2007-03-07 22:00:04Z jervfors $
+ * @version $Id: defines.php 12508 2007-07-07 05:43:28Z jangliss $
  * @package plugins
  * @subpackage administrator
  */
@@ -151,6 +151,12 @@ $defcfg = array( '$config_version' => array( 'name' => _("Config File Version"),
                                                                 'cram-md5' => 'CRAM-MD5',
                                                                 'digest-md5' => 'DIGEST-MD5'),
                                              'default' => 'none'),
+                 '$smtp_sitewide_user' => array( 'name' => _("Custom SMTP AUTH username"),
+                                                 'type' => SMOPT_TYPE_STRING,
+                                                 'size' => 40),
+                 '$smtp_sitewide_pass' => array( 'name' => _("Custom SMTP AUTH password"),
+                                                 'type' => SMOPT_TYPE_STRING,
+                                                 'size' => 40),
                  '$pop_before_smtp' => array( 'name' => _("POP3 Before SMTP?"),
                                               'type' => SMOPT_TYPE_BOOLEAN,
                                               'default' => false ),

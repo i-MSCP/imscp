@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: download.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: download.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the download page */
+define('PAGE_NAME', 'download');
 
 /**
  * Path for SquirrelMail required files.
@@ -153,4 +156,3 @@ if (isset($absolute_dl) && $absolute_dl) {
 /* be aware that any warning caused by download.php will corrupt the
  * attachment in case of ERROR reporting = E_ALL and the output is the screen */
 mime_print_body_lines ($imapConnection, $passed_id, $ent_id, $encoding);
-?>

@@ -7,11 +7,14 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options_identities.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: options_identities.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  * @subpackage prefs
  * @since 1.1.3
  */
+
+/** This is the options_identities page */
+define('PAGE_NAME', 'options_identities');
 
 /**
  * Path for SquirrelMail required files.
@@ -181,4 +184,3 @@ function sti_textarea( $title, $name, $data, $bgcolor ) {
 
 }
 
-?>

@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: auth.php 12629 2007-08-29 23:59:12Z pdontthink $
  * @package squirrelmail
  */
 
@@ -41,37 +41,43 @@ function is_logged_in() {
     if ( sqsession_is_registered('user_is_logged_in') ) {
         return;
     } else {
-        global $PHP_SELF, $HTTP_POST_VARS, $_POST, $session_expired_post,
+        global $session_expired_post,
                $session_expired_location, $squirrelmail_language;
+
+        // use $message to indicate what logout text the user
+        // will see... if 0, typical "You must be logged in"
+        // if 1, information that the user session was saved
+        // and will be resumed after (re)login
+        //
+        $message = 0;
 
         //  First we store some information in the new session to prevent
         //  information-loss.
-        //
-        if ( !check_php_version(4,1) ) {
-            $session_expired_post = $HTTP_POST_VARS;
-        } else {
-            $session_expired_post = $_POST;
-        }
-        $session_expired_location = $PHP_SELF;
+        $session_expired_post = $_POST;
+        $session_expired_location = PAGE_NAME;
         if (!sqsession_is_registered('session_expired_post')) {
             sqsession_register($session_expired_post,'session_expired_post');
         }
         if (!sqsession_is_registered('session_expired_location')) {
             sqsession_register($session_expired_location,'session_expired_location');
+            if ($session_expired_location == 'compose')
+                $message = 1;
         }
 
         session_write_close();
 
         // signout page will deal with users who aren't logged 
         // in on its own; don't show error here
-        //
-        if (strpos($PHP_SELF, 'signout.php') !== FALSE) {
+        if (defined('PAGE_NAME') && PAGE_NAME == 'signout') {
            return;
         }
 
         include_once( SM_PATH . 'functions/display_messages.php' );
         set_up_language($squirrelmail_language, true);
-        logout_error( _("You must be logged in to access this page.") );
+        if (!$message)
+            logout_error( _("You must be logged in to access this page.") );
+        else
+            logout_error( _("Your session has expired, but will be resumed after logging in again.") );
         exit;
     }
 }
@@ -231,4 +237,52 @@ function hmac_md5($data, $key='') {
     return $hmac;
 }
 
-?>
+/**
+ * Reads and decodes stored user password information
+ *
+ * Direct access to password information is deprecated.
+ * @return string password in plain text
+ * @since 1.4.11
+ */
+function sqauth_read_password() {
+    sqgetGlobalVar('key',         $key,       SQ_COOKIE);
+    sqgetGlobalVar('onetimepad',  $onetimepad,SQ_SESSION);
+
+    return OneTimePadDecrypt($key, $onetimepad);
+}
+
+/**
+ * Fillin user and password based on SMTP auth settings.
+ *
+ * @param string $user Reference to SMTP username
+ * @param string $pass Reference to SMTP password (unencrypted)
+ * @since 1.4.11
+ */
+function get_smtp_user(&$user, &$pass) {
+    global $username, $smtp_auth_mech,
+           $smtp_sitewide_user, $smtp_sitewide_pass;
+
+    if ($smtp_auth_mech == 'none') {
+        $user = '';
+        $pass = '';
+    } elseif ( isset($smtp_sitewide_user) && isset($smtp_sitewide_pass) &&
+               !empty($smtp_sitewide_user)) {
+        $user = $smtp_sitewide_user;
+        $pass = $smtp_sitewide_pass;
+    } else {
+        $user = $username;
+        $pass = sqauth_read_password();
+    }
+
+    // plugin authors note: override $user or $pass by
+    // returning an array where the new username is the
+    // first array value and the new password is the 
+    // second array value e.g., return array($myuser, $mypass);
+    //
+    $ret = do_hook_function('smtp_auth', array($user, $pass));
+    if (!empty($ret[0]))
+        $user = $ret[0];
+    if (!empty($ret[1]))
+        $pass = $ret[1];
+}
+

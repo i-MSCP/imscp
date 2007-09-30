@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 12383 2007-05-10 08:28:31Z kink $
+ * @version $Id: strings.php 12706 2007-09-29 07:54:57Z kink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.10a';
+$version = '1.4.11';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,10);
+$SQM_INTERNAL_VERSION = array(1,4,11);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -299,11 +299,15 @@ function get_location () {
     /*
      * If you have 'SSLOptions +StdEnvVars' in your apache config
      *     OR if you have HTTPS=on in your HTTP_SERVER_VARS
+     *     OR if you have HTTP_X_FORWARDED_PROTO=https in your HTTP_SERVER_VARS
      *     OR if you are on port 443
      */
     $getEnvVar = getenv('HTTPS');
+    if (!sqgetGlobalVar('HTTP_X_FORWARDED_PROTO', $forwarded_proto, SQ_SERVER))
+        $forwarded_proto = '';
     if ((isset($getEnvVar) && strcasecmp($getEnvVar, 'on') === 0) ||
         (sqgetGlobalVar('HTTPS', $https_on, SQ_SERVER) && strcasecmp($https_on, 'on') === 0) ||
+        (strcasecmp($forwarded_proto, 'https') === 0) ||
         (sqgetGlobalVar('SERVER_PORT', $server_port, SQ_SERVER) &&  $server_port == 443)) {
         $proto = 'https://';
     }
@@ -318,10 +322,11 @@ function get_location () {
     }
 
     $port = '';
-    if (! strstr($host, ':')) {
+    if (strpos($host, ':') === FALSE) {
         if (sqgetGlobalVar('SERVER_PORT', $server_port, SQ_SERVER)) {
             if (($server_port != 80 && $proto == 'http://') ||
-                ($server_port != 443 && $proto == 'https://')) {
+                ($server_port != 443 && $proto == 'https://' &&
+                 strcasecmp($forwarded_proto, 'https') !== 0)) {
                 $port = sprintf(':%d', $server_port);
             }
         }

@@ -7,10 +7,13 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addrbook_popup.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: addrbook_popup.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  * @subpackage addressbook
  */
+
+/** This is the addrbook_popup page */
+define('PAGE_NAME', 'addrbook_popup');
 
 /**
  * Path for SquirrelMail required files.

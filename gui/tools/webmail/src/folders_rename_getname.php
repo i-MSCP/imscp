@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders_rename_getname.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: folders_rename_getname.php 12551 2007-07-17 22:46:01Z pdontthink $
  * @package squirrelmail
  */
+
+/** This is the folders_rename_getname page */
+define('PAGE_NAME', 'folders_rename_getname');
 
 /**
  * Path for SquirrelMail required files.
@@ -51,12 +54,23 @@ if (substr($old, strlen($old) - strlen($delimiter)) == $delimiter) {
 
 $old = imap_utf7_decode_local($old);
 
-if (strpos($old, $delimiter)) {
-    $old_name = substr($old, strrpos($old, $delimiter)+1, strlen($old));
-    $old_parent = substr($old, 0, strrpos($old, $delimiter));
+// displayable mailbox format is without folder prefix on front
+global $folder_prefix;
+if (substr($old, 0, strlen($folder_prefix)) == $folder_prefix) {
+    $displayable_old = substr($old, strlen($folder_prefix));
 } else {
-    $old_name = $old;
-    $old_parent = '';
+    $displayable_old = $old;
+}
+
+if (strpos($displayable_old, $delimiter)) {
+    $old_name = substr($displayable_old, strrpos($displayable_old, $delimiter)+1);
+    $parent = htmlspecialchars(substr($displayable_old, 
+                                      0, 
+                                      strrpos($displayable_old, $delimiter))
+            . ' ' . $delimiter);
+} else {
+    $old_name = $displayable_old;
+    $parent = '';
 }
 
 
@@ -70,7 +84,7 @@ echo '<br />' .
             html_tag( 'td', '', 'center', $color[4] ) .
             addForm('folders_rename_do.php').
      _("New name:").
-     '<br /><b>' . htmlspecialchars($old_parent) . ' ' . htmlspecialchars($delimiter) . '</b>' .
+     '<br /><b>'. $parent . '</b>'.
      addInput('new_name', $old_name, 25) . '<br />' . "\n";
 if ( $isfolder ) {
     echo addHidden('isfolder', 'true');
@@ -80,4 +94,3 @@ echo addHidden('orig', $old).
      '<input type="submit" value="'._("Submit")."\" />\n".
      '</form><br /></td></tr></table>';
 
-?>

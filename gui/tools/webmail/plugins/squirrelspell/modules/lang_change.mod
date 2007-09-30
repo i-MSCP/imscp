@@ -11,7 +11,7 @@
  * for the user. Called after LANG_SETUP module.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: lang_change.mod 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id: lang_change.mod 12578 2007-08-09 06:53:57Z pdontthink $
  * @package plugins
  * @subpackage squirrelspell
  */
@@ -69,7 +69,7 @@ if (sizeof($use_langs)){
   $lang_array = explode( ',', $lang_string );
   $dsp_string = '';
   foreach( $lang_array as $a) {
-    $dsp_string .= _(htmlspecialchars(trim($a))) . ', ';
+    $dsp_string .= _(htmlspecialchars(trim($a))) . _(", ");
   }
   $dsp_string = substr( $dsp_string, 0, -2 );
   $msg = '<p>'

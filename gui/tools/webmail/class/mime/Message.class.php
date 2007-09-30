@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php 12287 2007-02-27 19:43:58Z kink $
+ * @version $Id: Message.class.php 12542 2007-07-16 21:04:37Z kink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -1105,8 +1105,12 @@ class Message {
      * @since 1.4.6
      */
     function purgeAttachments() {
-        if ($this->att_local_name && file_exists($this->att_local_name)) {
-            unlink($this->att_local_name);
+        if ($this->att_local_name) {
+            global $username, $attachment_dir;
+            $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
+            if ( file_exists($hashed_attachment_dir . '/' . $this->att_local_name) ) {
+                unlink($hashed_attachment_dir . '/' . $this->att_local_name);
+            }
         }
         // recursively delete attachments from entities contained in this object
         for ($i=0, $entCount=count($this->entities);$i< $entCount; ++$i) {

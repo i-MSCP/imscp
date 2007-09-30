@@ -59,7 +59,7 @@ This release contains fixes for the following:
 Thanks to Mikhail Markin, Tomas Kuliavas and Michael Jordon for reporting
 (parts of) these issues and working with us to get them resolved.
 
-These are known as CVE-2007-1262.
+These are known as CVE-2007-1262 and CVE-2007-2589.
 
 
 Major updates in 1.4

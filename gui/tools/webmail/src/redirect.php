@@ -7,9 +7,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: redirect.php 12352 2007-03-28 05:09:33Z jangliss $
+ * @version $Id: redirect.php 12625 2007-08-29 07:25:36Z pdontthink $
  * @package squirrelmail
  */
+
+/** This is the redirect page */
+define('PAGE_NAME', 'redirect');
 
 /**
  * Path for SquirrelMail required files.
@@ -141,15 +144,18 @@ $redirect_url = 'webmail.php';
 
 if ( sqgetGlobalVar('session_expired_location', $session_expired_location, SQ_SESSION) ) {
     sqsession_unregister('session_expired_location');
-    if ( strpos($session_expired_location, 'compose.php') !== FALSE ) {
+    if ( $session_expired_location == 'compose' ) {
         $compose_new_win = getPref($data_dir, $username, 'compose_new_win', 0);
         if ($compose_new_win) {
-            $redirect_url = $session_expired_location;
-        } elseif ( strpos($session_expired_location, 'webmail.php') === FALSE ) {
-            $redirect_url = 'webmail.php?right_frame=compose.php';
+            // do not prefix $location here because $session_expired_location is set to the PAGE_NAME
+            // of the last page
+            $redirect_url = $session_expired_location . '.php';
+        } else {
+            $redirect_url = 'webmail.php?right_frame=' . urlencode($session_expired_location . '.php');
         }
-    } else {
-        $redirect_url = 'webmail.php?right_frame=' . urldecode($session_expired_location);
+    } else if ($session_expired_location != 'webmail'
+            && $session_expired_location != 'left_main') {
+        $redirect_url = 'webmail.php?right_frame=' . urlencode($session_expired_location . '.php');
     }
     unset($session_expired_location);
 }
@@ -193,4 +199,3 @@ function attachment_common_parse($str, $debug) {
     sqsession_register($attachment_common_types, 'attachment_common_types');
 }
 
-?>

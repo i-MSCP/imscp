@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: printer_friendly_top.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: printer_friendly_top.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the printer_friendly_top page */
+define('PAGE_NAME', 'printer_friendly_top');
 
 /**
  * Path for SquirrelMail required files.
@@ -32,7 +35,7 @@ displayHtmlHeader( _("Printer Friendly"),
              "</script>\n", FALSE );
 
 
-echo '<body id="no_bg" text="'.$color[8].'" bgcolor="'.$color[3].'" link="'.$color[7].'" vlink="'.$color[7].'" alink="'.$color[7]."\">\n" .
+echo '<body text="'.$color[8].'" bgcolor="'.$color[3].'" link="'.$color[7].'" vlink="'.$color[7].'" alink="'.$color[7]."\">\n" .
      html_tag( 'div',
          '<b>'.
          '<form>'.

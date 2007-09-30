@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders_delete.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: folders_delete.php 12540 2007-07-16 07:18:02Z pdontthink $
  * @package squirrelmail
  */
+
+/** This is the folders_delete page */
+define('PAGE_NAME', 'folders_delete');
 
 /**
  * Path for SquirrelMail required files.
@@ -57,6 +60,14 @@ if ( sqgetGlobalVar('backingout', $tmp, SQ_POST) ) {
 if( !sqgetGlobalVar('confirmed', $tmp, SQ_POST) ) {
     displayPageHeader($color, 'None');
 
+    // get displayable mailbox format
+    global $folder_prefix;
+    if (substr($mailbox,0,strlen($folder_prefix))==$folder_prefix) {
+        $mailbox_unformatted_disp = substr($mailbox, strlen($folder_prefix));
+    } else {
+        $mailbox_unformatted_disp = $mailbox;
+    }
+
     echo '<br />' .
         html_tag( 'table', '', 'center', '', 'width="95%" border="0"' ) .
         html_tag( 'tr',
@@ -64,7 +75,7 @@ if( !sqgetGlobalVar('confirmed', $tmp, SQ_POST) ) {
         ) .
         html_tag( 'tr' ) .
         html_tag( 'td', '', 'center', $color[4] ) .
-        sprintf(_("Are you sure you want to delete %s?"), str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),imap_utf7_decode_local($mailbox))).
+        sprintf(_("Are you sure you want to delete %s?"), str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),imap_utf7_decode_local($mailbox_unformatted_disp))).
         addForm('folders_delete.php', 'post')."<p>\n".
         addHidden('mailbox', $mailbox).
         addSubmit(_("Yes"), 'confirmed').
@@ -134,4 +145,3 @@ sqimap_logout($imap_stream);
 $location = get_location();
 header ("Location: $location/folders.php?success=delete");
 
-?>

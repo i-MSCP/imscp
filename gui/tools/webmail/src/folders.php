@@ -9,9 +9,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders.php 12245 2007-02-08 22:06:59Z pdontthink $
+ * @version $Id: folders.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the folders page */
+define('PAGE_NAME', 'folders');
 
 /**
  * Path for SquirrelMail required files.

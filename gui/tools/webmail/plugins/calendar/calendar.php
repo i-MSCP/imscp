@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 2002-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: calendar.php 11118 2006-05-06 07:52:19Z tokul $
+ * @version $Id: calendar.php 12435 2007-06-01 14:03:03Z jangliss $
  * @package plugins
  * @subpackage calendar
  */
@@ -50,7 +50,7 @@ function startcalendar() {
 
     echo html_tag( 'tr', "\n".
                html_tag( 'td', "\n".
-                   html_tag( 'table', '', '', $color[4], 'width="100%" border="0" cellpadding="2" cellspacing="1"' ) .
+                   html_tag( 'table', '', '', $color[0], 'width="100%" border="0" cellpadding="2" cellspacing="1"' ) .
                        html_tag( 'tr', "\n".
                             html_tag( 'th',
                                 "<a href=\"$self?year=".($year-1)."&amp;month=$month\">&lt;&lt;&nbsp;".($year-1)."</a>"
@@ -59,7 +59,7 @@ function startcalendar() {
                                 "<a href=\"$self?year=$prev_year&amp;month=$prev_month\">&lt;&nbsp;" .
                                 date_intl( 'M', $prev_date). "</a>"
                             ) . "\n".
-                            html_tag( 'th', date_intl( 'F Y', $act_date ), '', $color[4], 'colspan="3" class="calmonth"') .
+                            html_tag( 'th', date_intl( 'F Y', $act_date ), '', $color[0], 'colspan="3"') .
                             html_tag( 'th',
                                 "<a href=\"$self?year=$next_year&amp;month=$next_month\">" .
                                 date_intl( 'M', $next_date) . "&nbsp;&gt;</a>"
@@ -69,13 +69,13 @@ function startcalendar() {
                             )
                        ) . "\n".
                        html_tag( 'tr',
-                           html_tag( 'th', _("Sunday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n" .
-                           html_tag( 'th', _("Monday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n" .
-                           html_tag( 'th', _("Tuesday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n" .
-                           html_tag( 'th', _("Wednesday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n" .
-                           html_tag( 'th', _("Thursday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n" .
-                           html_tag( 'th', _("Friday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n" .
-                           html_tag( 'th', _("Saturday"), '', $color[5], 'width="14%" width="90" class="calday"' ) ."\n"
+                           html_tag( 'th', _("Sunday"), '', $color[5], 'width="14%"' ) ."\n" .
+                           html_tag( 'th', _("Monday"), '', $color[5], 'width="14%"' ) ."\n" .
+                           html_tag( 'th', _("Tuesday"), '', $color[5], 'width="14%"' ) ."\n" .
+                           html_tag( 'th', _("Wednesday"), '', $color[5], 'width="14%"' ) ."\n" .
+                           html_tag( 'th', _("Thursday"), '', $color[5], 'width="14%"' ) ."\n" .
+                           html_tag( 'th', _("Friday"), '', $color[5], 'width="14%"' ) ."\n" .
+                           html_tag( 'th', _("Saturday"), '', $color[5], 'width="14%"' ) ."\n"
                        )
                ) ,
            '', $color[0] ) ."\n";
@@ -98,12 +98,12 @@ function drawmonthview() {
             ($aday<10)?$cdate=$cdate."0$aday":$cdate=$cdate."$aday";
             $cdate=$cdate."$year";
             if ( $aday <= $days_in_month && $aday > 0){
-                echo html_tag( 'td', '', 'left', $color[0], 'height="50" valign="top"' ) ."\n".
+                echo html_tag( 'td', '', 'left', $color[4], 'height="50" valign="top"' ) ."\n".
                      html_tag( 'div', '', 'right' );
                 echo(($cdate==$todayis) ? '<font size="-1" color="'.$color[1].'">[ ' . _("TODAY") . " ] " : '<font size="-1">');
-                echo "<a href=day.php?year=$year&amp;month=$month&amp;day=";
+                echo "<a href=\"day.php?year=$year&amp;month=$month&amp;day=";
                 echo(($aday<10) ? "0" : "");
-                echo "$aday>$aday</a></font></div>";
+                echo "$aday\">$aday</a></font></div>";
             } else {
                 echo html_tag( 'td', '', 'left', $color[0]) ."\n".
                      "&nbsp;";

@@ -19,7 +19,39 @@
 /* Servers configuration */
 $i = 0;
 
-/* Server 1 (cookie) [1] */
+/* Server 1 (session) [1] */
+$i++;
+
+/* Authentication type */
+$cfg['Servers'][$i]['auth_type']		= 'signon';
+/*Server parameters */
+$cfg['Servers'][$i]['verbose']			= '{HOSTNAME}';
+$cfg['Servers'][$i]['port']				= '3306';
+$cfg['Servers'][$i]['connect_type']		= 'tcp';
+$cfg['Servers'][$i]['socket'] 			= '/var/run/mysqld/mysqld.sock';
+$cfg['Servers'][$i]['compress'] 		= true;
+/* Select mysqli if your server has it */
+$cfg['Servers'][$i]['extension'] 		= 'mysql';
+/* User for advanced features */
+$cfg['Servers'][$i]['controluser'] 		= '{PMA_USER}';
+$cfg['Servers'][$i]['controlpass'] 		= '{PMA_PASS}';
+/* Advanced phpMyAdmin features */
+//$cfg['Servers'][$i]['pmadb'] 			= 'phpmyadmin';
+$cfg['Servers'][$i]['bookmarktable'] 	= 'pma_bookmark';
+$cfg['Servers'][$i]['relation'] 		= 'pma_relation';
+$cfg['Servers'][$i]['table_info'] 		= 'pma_table_info';
+$cfg['Servers'][$i]['table_coords'] 	= 'pma_table_coords';
+$cfg['Servers'][$i]['pdf_pages'] 		= 'pma_pdf_pages';
+$cfg['Servers'][$i]['column_info'] 		= 'pma_column_info';
+$cfg['Servers'][$i]['history'] 			= 'pma_history';
+$cfg['Servers'][$i]['designer_coords']	= 'pma_designer_coords';
+$cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
+/* Name of the Server displayed */
+/*$cfg['Servers'][$i]['verbose']		= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
+$cfg['Servers'][$i]['SignonSession']	= 'ispCP';
+$cfg['Servers'][$i]['SignonURL']		= './index.php?server=2'; //Access for all.
+
+/* Server 2 (cookie) [2] */
 $i++;
 
 /* Authentication type */
@@ -47,7 +79,7 @@ $cfg['Servers'][$i]['history'] 			= 'pma_history';
 $cfg['Servers'][$i]['designer_coords']	= 'pma_designer_coords';
 $cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
 /* Name of the Server displayed */
-/*$cfg['Servers'][$i]['verbose'] 			= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
+/*$cfg['Servers'][$i]['verbose'] 		= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
 
 /*
  * End of servers configuration

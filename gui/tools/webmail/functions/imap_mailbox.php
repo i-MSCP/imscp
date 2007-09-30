@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_mailbox.php 12314 2007-03-06 14:55:41Z kink $
+ * @version $Id: imap_mailbox.php 12669 2007-09-03 11:37:39Z kink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -210,7 +210,7 @@ function sqimap_mailbox_exists ($imap_stream, $mailbox) {
 function sqimap_mailbox_select ($imap_stream, $mailbox) {
     global $auto_expunge;
 
-    if ($mailbox == 'None') {
+    if (empty($mailbox)) {
         return;
     }
 
@@ -496,7 +496,7 @@ function sqimap_mailbox_option_list($imap_stream, $show_selected = 0, $folder_sk
     if ( $use_long_format ) {
         $shorten_box_names = 0;
     } else {
-        $shorten_box_names = getPref($data_dir, $username, 'mailbox_select_style', SMPREF_OFF);
+        $shorten_box_names = getPref($data_dir, $username, 'mailbox_select_style', 1);
     }
 
     if ($boxes == 0) {

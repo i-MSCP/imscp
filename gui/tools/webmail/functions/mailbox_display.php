@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailbox_display.php 12364 2007-05-03 15:02:47Z kink $
+ * @version $Id: mailbox_display.php 12680 2007-09-06 07:42:09Z pdontthink $
  * @package squirrelmail
  */
 
@@ -41,7 +41,7 @@ function elapsed($start)
 
 function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
                           $start_msg, $where, $what) {
-    global $checkall,
+    global $checkall, $preselected,
            $color, $msgs, $msort, $td_str, $msg,
            $default_use_priority,
            $message_highlight_list,
@@ -194,7 +194,10 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
     if (!isset($hlt_color)) {
         $hlt_color = $color_string;
     }
-    $checked = ($checkall == 1) ? ' CHECKED' : '';
+    if ($checkall == 1 || in_array($msg['ID'], $preselected))
+        $checked = ' checked="checked"';
+    else
+        $checked = '';
     $col = 0;
     $msg['SUBJECT'] = decodeHeader($msg['SUBJECT']);
 //    $subject = processSubject($msg['SUBJECT'], $indent_array[$msg['ID']]);
@@ -738,6 +741,7 @@ function mail_message_listing_beginning ($imapConnection,
             getMbxList($imapConnection);
             echo getButton('SUBMIT', 'moveButton',_("Move")) . "\n";
             echo getButton('SUBMIT', 'attache',_("Forward")) . "\n";
+            do_hook('mailbox_display_buttons');
 
     echo "      </small></td>\n"
          . html_tag( 'td', '', 'right', '', 'nowrap' );

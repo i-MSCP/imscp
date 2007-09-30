@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 12287 2007-02-27 19:43:58Z kink $
+ * @version $Id: Rfc822Header.class.php 12656 2007-08-31 23:20:21Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -627,7 +627,7 @@ class Rfc822Header {
      */
     function parsePriority($sValue) {
         // don't use function call inside array_shift.
-        $aValue = split('/\w/',trim($sValue));
+        $aValue = preg_split('/\s/',trim($sValue));
         $value = strtolower(array_shift($aValue));
 
         if ( is_numeric($value) ) {
@@ -905,6 +905,7 @@ class Rfc822Header {
     }
 
     /**
+//FIXME: This needs some documentation (inside the function too)!  Don't code w/out comments!
      * @param mixed $address array or string
      * @param boolean $recurs
      * @return mixed array, boolean
@@ -931,10 +932,10 @@ class Rfc822Header {
             $srch_addr = $this->parseAddress($address);
             $results = array();
             foreach ($this->to as $to) {
-                if ($to->host == $srch_addr->host) {
-                    if ($to->mailbox == $srch_addr->mailbox) {
+                if (strtolower($to->host) == strtolower($srch_addr->host)) {
+                    if (strtolower($to->mailbox) == strtolower($srch_addr->mailbox)) {
                         $results[] = $srch_addr;
-                        if ($to->personal == $srch_addr->personal) {
+                        if (strtolower($to->personal) == strtolower($srch_addr->personal)) {
                             if ($recurs) {
                                 return array($results, true);
                             } else {
@@ -945,10 +946,10 @@ class Rfc822Header {
                 }
             }
             foreach ($this->cc as $cc) {
-                if ($cc->host == $srch_addr->host) {
-                    if ($cc->mailbox == $srch_addr->mailbox) {
+                if (strtolower($cc->host) == strtolower($srch_addr->host)) {
+                    if (strtolower($cc->mailbox) == strtolower($srch_addr->mailbox)) {
                         $results[] = $srch_addr;
-                        if ($cc->personal == $srch_addr->personal) {
+                        if (strtolower($cc->personal) == strtolower($srch_addr->personal)) {
                             if ($recurs) {
                                 return array($results, true);
                             } else {

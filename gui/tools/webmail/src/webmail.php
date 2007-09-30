@@ -9,9 +9,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: webmail.php 12352 2007-03-28 05:09:33Z jangliss $
+ * @version $Id: webmail.php 12597 2007-08-25 18:13:46Z pdontthink $
  * @package squirrelmail
  */
+
+/** This is the webmail page */
+define('PAGE_NAME', 'webmail');
 
 /**
  * Path for SquirrelMail required files.
@@ -51,6 +54,10 @@ if(sqgetGlobalVar('mailtodata', $mailtodata)) {
 
 is_logged_in();
 
+// this value may be changed by a plugin, but initialize
+// it first to avoid register_globals headaches
+//
+$right_frame_url = '';
 do_hook('webmail_top');
 
 /**
@@ -118,6 +125,11 @@ else {
  *
  * The test for // should catch any attempt to include off-site webpages into
  * our frameset.
+ *
+ * Note that plugins are allowed to completely and freely override the URI
+ * used for the "right" (content) frame, and they do so by modifying the 
+ * global variable $right_frame_url.
+ *
  */
 
 if (empty($right_frame) || (strpos(urldecode($right_frame), '//') !== false)) {
@@ -130,36 +142,38 @@ if ( strpos($right_frame,'?') ) {
     $right_frame_file = $right_frame;
 }
 
-switch($right_frame_file) {
-    case 'right_main.php':
-        $right_frame_url = "right_main.php?mailbox=".urlencode($mailbox)
-                       . (!empty($sort)?"&amp;sort=$sort":'')
-                       . (!empty($startMessage)?"&amp;startMessage=$startMessage":'');
-        break;
-    case 'options.php':
-        $right_frame_url = 'options.php';
-        break;
-    case 'folders.php':
-        $right_frame_url = 'folders.php';
-        break;
-    case 'compose.php':
-        $right_frame_url = 'compose.php?' . $mailtourl;
-        break;
-    case '':
-        $right_frame_url = 'right_main.php';
-        break;
-    default:
-        $right_frame_url =  urlencode($right_frame);
-        break;
+if (empty($right_frame_url)) {
+    switch($right_frame_file) {
+        case 'right_main.php':
+            $right_frame_url = "right_main.php?mailbox=".urlencode($mailbox)
+                           . (!empty($sort)?"&amp;sort=$sort":'')
+                           . (!empty($startMessage)?"&amp;startMessage=$startMessage":'');
+            break;
+        case 'options.php':
+            $right_frame_url = 'options.php';
+            break;
+        case 'folders.php':
+            $right_frame_url = 'folders.php';
+            break;
+        case 'compose.php':
+            $right_frame_url = 'compose.php?' . $mailtourl;
+            break;
+        case '':
+            $right_frame_url = 'right_main.php';
+            break;
+        default:
+            $right_frame_url =  urlencode($right_frame);
+            break;
+    } 
 } 
 
 if ($location_of_bar == 'right') {
-    $output .= "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\" />\n" .
-               "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\" />\n";
+    $output .= "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\">\n" .
+               "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\">\n";
 }
 else {
-    $output .= "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\" />\n".
-               "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\" />\n";
+    $output .= "<frame src=\"left_main.php\" name=\"left\" frameborder=\"1\">\n".
+               "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\">\n";
 }
 $ret = concat_hook_function('webmail_bottom', $output);
 if($ret != '') {

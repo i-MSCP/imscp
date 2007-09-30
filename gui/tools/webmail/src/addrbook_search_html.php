@@ -9,10 +9,15 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addrbook_search_html.php 12310 2007-03-06 01:12:44Z kink $
+ * @version $Id: addrbook_search_html.php 12705 2007-09-29 05:24:14Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
+
+/** This is the addrbook_search_html page */
+if (! defined('PAGE_NAME') ) {
+    define('PAGE_NAME', 'addrbook_search_html');
+}
 
 /** 
  * Path for SquirrelMail required files.

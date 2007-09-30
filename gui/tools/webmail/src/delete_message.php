@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: delete_message.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: delete_message.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
 
@@ -84,4 +84,3 @@ if (isset($where) && isset($what)) {
 }
 
 
-?>

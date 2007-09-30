@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: folders_subscribe.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: folders_subscribe.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the folders_subscribe page */
+define('PAGE_NAME', 'folders_subscribe');
 
 /**
  * Path for SquirrelMail required files.
@@ -69,4 +72,3 @@ if ($method == 'sub') {
 sqimap_logout($imapConnection);
 header("Location: $location/folders.php?success=$success");
 
-?>

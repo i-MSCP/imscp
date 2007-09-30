@@ -5,9 +5,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: printer_friendly_main.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: printer_friendly_main.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the printer_friendly_main page */
+define('PAGE_NAME', 'printer_friendly_main');
 
 /**
  * Path for SquirrelMail required files.

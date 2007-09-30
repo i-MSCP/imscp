@@ -2008,7 +2008,7 @@ sub dmn_add_httpd_file_data {
 
 		return $rs if ($rs != 0);
 
-                my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+        my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
 		$index_tpl =~ s/{DOMAIN_NAME}/$decoded_dmn_name/gi;
 		$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 

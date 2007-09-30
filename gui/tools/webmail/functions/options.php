@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: options.php 12621 2007-08-29 02:34:24Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  */
@@ -342,14 +342,16 @@ class SquirrelOption {
         }
 
         /* Build the yes choice. */
-        $yes_option = '<input type="radio" name="new_' . $this->name
-                    . '" value="' . SMPREF_YES . "\"$yes_chk $this->script />&nbsp;"
-                    . _("Yes");
+        $yes_option = '<input type="radio" name="new_' . $this->name 
+                    . '" id="new_' . $this->name . '_yes"'
+                    . ' value="' . SMPREF_YES . "\"$yes_chk $this->script />&nbsp;"
+                    . '<label for="new_' . $this->name . '_yes">' . _("Yes") . '</label>';
 
         /* Build the no choice. */
         $no_option = '<input type="radio" name="new_' . $this->name
-                   . '" value="' . SMPREF_NO . "\"$no_chk $this->script />&nbsp;"
-                   . _("No");
+                   . '" id="new_' . $this->name . '_no"'
+                   . ' value="' . SMPREF_NO . "\"$no_chk $this->script />&nbsp;"
+                   . '<label for="new_' . $this->name . '_no">' . _("No") . '</label>';
 
         /* Build and return the combined "boolean widget". */
         $result = "$yes_option&nbsp;&nbsp;&nbsp;&nbsp;$no_option";

@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: right_main.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: right_main.php 12679 2007-09-06 07:40:43Z pdontthink $
  * @package squirrelmail
  */
+
+/** This is the right_main page */
+define('PAGE_NAME', 'right_main');
 
 /**
  * Path for SquirrelMail required files.
@@ -70,6 +73,11 @@ if ( sqgetGlobalVar('PG_SHOWALL', $temp, SQ_GET) ) {
 }
 if ( sqgetGlobalVar('newsort', $temp, SQ_GET) ) {
   $newsort = (int) $temp;
+}
+if ( !sqgetGlobalVar('preselected', $preselected, SQ_GET) || !is_array($preselected)) {
+  $preselected = array();
+} else {
+  $preselected = array_keys($preselected);
 }
 if ( sqgetGlobalVar('checkall', $temp, SQ_GET) ) {
   $checkall = (int) $temp;
@@ -233,4 +241,3 @@ sqimap_logout ($imapConnection);
 
 echo '</body></html>';
 
-?>

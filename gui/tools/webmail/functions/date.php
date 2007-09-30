@@ -10,7 +10,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: date.php 12285 2007-02-27 19:07:02Z kink $
+ * @version $Id: date.php 12421 2007-05-29 15:22:28Z kink $
  * @package squirrelmail
  * @subpackage date
  */
@@ -405,19 +405,24 @@ function getTimeStamp($dateParts) {
     **        In that case, dateParts[0] would be the <day of month>
     **        and everything would be bumped up one.
     **/
+    if (count($dateParts) <2) {
+       return -1;
+    }
 
     /*
      * Simply check to see if the first element in the dateParts
      * array is an integer or not.
      * Since the day of week is optional, this check is needed.
      */
-     if (count($dateParts) <2) {
-        return -1;
-     }
-
-    /* remove day of week */
     if (!is_numeric(trim($dateParts[0]))) {
-        $dataParts = array_shift($dateParts);
+        /* cope with broken mailers that send "Tue,23" without space */
+        if ( preg_match ('/^\w+,(\d{1,2})$/', $dateParts[0], $match) ) {
+            /* replace Tue,23 with 23 */
+            $dateParts[0] = $match[1];
+        } else {
+            /* just drop the day of the week */
+            array_shift($dateParts);
+        }
     }
     /* calculate timestamp separated from the zone and obs-zone */
     $stamp = strtotime(implode (' ', array_splice ($dateParts,0,4)));
@@ -448,4 +453,3 @@ function getTimeStamp($dateParts) {
       return ($mtime);
    }
 */
-?>

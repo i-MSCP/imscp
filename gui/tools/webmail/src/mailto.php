@@ -13,9 +13,12 @@
  * see ../contrib/squirrelmail.mailto.reg for a Windows Registry file
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailto.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: mailto.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the mailto page */
+define('PAGE_NAME', 'mailto');
 
 /**
  * Path for SquirrelMail required files.
@@ -80,4 +83,3 @@ if($force_login == false && sqsession_is_registered('user_is_logged_in')) {
 
 session_write_close();
 header('Location: ' . get_location() . '/' . $redirect);
-?>

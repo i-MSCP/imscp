@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: empty_trash.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: empty_trash.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the empty_trash page */
+define('PAGE_NAME', 'empty_trash');
 
 /**
  * Path for SquirrelMail required files.
@@ -78,4 +81,3 @@ $location = get_location();
 // force_refresh = 1 in case trash contains deleted mailboxes
 header ("Location: $location/left_main.php?force_refresh=1");
 
-?>

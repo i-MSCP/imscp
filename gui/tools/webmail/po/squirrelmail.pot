@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail VERSION\n"
 "Report-Msgid-Bugs-To: squirrelmail-i18n@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-03-07 22:53+0100\n"
+"POT-Creation-Date: 2007-08-31 13:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <squirrelmail-i18n@lists.sourceforge.net>\n"
@@ -954,6 +954,9 @@ msgid "View"
 msgstr ""
 
 msgid "View Business Card"
+msgstr ""
+
+msgid "Your session has expired, but will be resumed after logging in again."
 msgstr ""
 
 msgid "Sunday"
@@ -1934,6 +1937,12 @@ msgstr ""
 msgid "Login (plain text)"
 msgstr ""
 
+msgid "Custom SMTP AUTH username"
+msgstr ""
+
+msgid "Custom SMTP AUTH password"
+msgstr ""
+
 msgid "POP3 Before SMTP?"
 msgstr ""
 
@@ -2685,16 +2694,10 @@ msgstr ""
 msgid "Mailing List"
 msgstr ""
 
-msgid "POP3 connect:"
-msgstr ""
-
 msgid "No server specified"
 msgstr ""
 
 msgid "Error "
-msgstr ""
-
-msgid "POP3 user:"
 msgstr ""
 
 msgid "no login ID submitted"
@@ -2703,13 +2706,7 @@ msgstr ""
 msgid "connection not established"
 msgstr ""
 
-msgid "POP3 pass:"
-msgstr ""
-
 msgid "No password submitted"
-msgstr ""
-
-msgid "POP3 apop:"
 msgstr ""
 
 msgid "No connection to server"
@@ -2727,43 +2724,13 @@ msgstr ""
 msgid "apop authentication failed"
 msgstr ""
 
-msgid "POP3 login:"
-msgstr ""
-
-msgid "POP3 top:"
-msgstr ""
-
-msgid "POP3 pop_list:"
-msgstr ""
-
 msgid "Premature end of list"
-msgstr ""
-
-msgid "POP3 get:"
-msgstr ""
-
-msgid "POP3 last:"
-msgstr ""
-
-msgid "POP3 reset:"
-msgstr ""
-
-msgid "POP3 send_cmd:"
 msgstr ""
 
 msgid "Empty command string"
 msgstr ""
 
-msgid "POP3 quit:"
-msgstr ""
-
 msgid "connection does not exist"
-msgstr ""
-
-msgid "POP3 uidl:"
-msgstr ""
-
-msgid "POP3 delete:"
 msgstr ""
 
 msgid "No msg number submitted"
@@ -3322,9 +3289,6 @@ msgstr ""
 msgid "Error Decrypting Dictionary"
 msgstr ""
 
-msgid "Cute."
-msgstr ""
-
 #, php-format
 msgid "Could not run the spellchecker command (%s)."
 msgstr ""
@@ -3574,6 +3538,9 @@ msgid ""
 msgstr ""
 
 msgid "SquirrelSpell Initiating"
+msgstr ""
+
+msgid ", "
 msgstr ""
 
 #, php-format

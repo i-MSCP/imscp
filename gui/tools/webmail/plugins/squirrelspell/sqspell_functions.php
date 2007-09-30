@@ -8,7 +8,7 @@
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Konstantin Riabitsev <icon@duke.edu>
- * @version $Id: sqspell_functions.php,v 1.14.2.10 2006/02/03 22:27:52 jervfors Exp $
+ * @version $Id: sqspell_functions.php 12546 2007-07-16 22:27:13Z kink $
  * @package plugins
  * @subpackage squirrelspell
  */
@@ -181,14 +181,8 @@ function sqspell_crypto($mode, $ckey, $input){
   /**
    * Finish up the mcrypt routines and return the processed content.
    */
-  if (function_exists('mcrypt_generic_deinit')) {
-      // php 4.1.1+ syntax
-      mcrypt_generic_deinit ($td);
-      mcrypt_module_close ($td);
-  } else {
-      // older deprecated function
-      mcrypt_generic_end ($td);
-  }
+  mcrypt_generic_deinit ($td);
+  mcrypt_module_close ($td);
   return $crypto;
 }
 
@@ -519,7 +513,7 @@ function sqspell_ckMOD($rMOD){
       || strstr($rMOD, '/')
       || strstr($rMOD, '%')
       || strstr($rMOD, "\\")){
-    echo _("Cute.");
+    echo _("Invalid URL");
     exit;
   }
 }
@@ -530,4 +524,3 @@ function sqspell_ckMOD($rMOD){
  * stuff. :)
  */
 $SQSPELL_VERSION="v0.3.8";
-?>

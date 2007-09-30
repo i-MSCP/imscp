@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: ContentType.class.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: ContentType.class.php 12443 2007-06-08 18:26:09Z kink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -46,6 +46,7 @@ class ContentType {
      * @param string $type content type string without auxiliary information
      */
     function ContentType($type) {
+        $type = strtolower($type);
         $pos = strpos($type, '/');
         if ($pos > 0) {
             $this->type0 = substr($type, 0, $pos);
@@ -57,4 +58,3 @@ class ContentType {
     }
 }
 
-?>

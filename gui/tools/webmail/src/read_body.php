@@ -8,9 +8,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: read_body.php 12285 2007-02-27 19:07:02Z kink $
+ * @version $Id: read_body.php 12565 2007-07-20 17:13:46Z kink $
  * @package squirrelmail
  */
+
+/** This is the read_body page */
+define('PAGE_NAME', 'read_body');
 
 /**
  * Path for SquirrelMail required files.
@@ -176,7 +179,7 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     }
     $rfc822_header->content_type = $content_type;
     $rfc822_header->to[] = $header->dnt;
-    $rfc822_header->subject = _("Read:") . ' ' . encodeHeader($header->subject);
+    $rfc822_header->subject = _("Read:") . ' ' . decodeHeader($header->subject, true, false);
 
     // FIX ME, use identity.php from SM 1.5. Change this also in compose.php
 
@@ -307,16 +310,11 @@ function SendMDN ( $mailbox, $passed_id, $sender, $message, $imapConnection) {
     } else {
         require_once(SM_PATH . 'class/deliver/Deliver_SMTP.class.php');
         $deliver = new Deliver_SMTP();
-        global $smtpServerAddress, $smtpPort, $smtp_auth_mech, $pop_before_smtp;
-        if ($smtp_auth_mech == 'none') {
-            $user = '';
-            $pass = '';
-        } else {
-            global $key, $onetimepad;
-            $user = $username;
-            $pass = OneTimePadDecrypt($key, $onetimepad);
-        }
+        global $smtpServerAddress, $smtpPort, $pop_before_smtp;
+        $user = '';
+        $pass = '';
         $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
+        get_smtp_user($user, $pass);
         $stream = $deliver->initStream($composeMessage,$domain,0,
                                        $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
     }
@@ -408,7 +406,7 @@ function formatRecipientString($recipients, $item ) {
 
 function formatEnvheader($mailbox, $passed_id, $passed_ent_id, $message,
                          $color, $FirstTimeSee) {
-    global $msn_user_support, $default_use_mdn, $default_use_priority,
+    global $default_use_mdn, $default_use_priority,
            $show_xmailer_default, $mdn_user_support, $PHP_SELF, $javascript_on,
            $squirrelmail_language;
 
@@ -478,15 +476,15 @@ function formatEnvheader($mailbox, $passed_id, $passed_ent_id, $message,
             $s .= '</tr>';
         }
     }
-    echo '<table bgcolor="'.$color[9].'" width="100%" cellpadding="1"'. //Main message header table
+    echo '<table bgcolor="'.$color[9].'" width="100%" cellpadding="1"'.
          ' cellspacing="0" border="0" align="center">'."\n";
     echo '<tr><td height="5" colspan="2" bgcolor="'.
-          $color[4].'"></td></tr><tr><td align="center">'."\n"; //between top icon bar  and message header
+          $color[4].'"></td></tr><tr><td align="center">'."\n";
     echo $s;
     do_hook('read_body_header');
     formatToolbar($mailbox, $passed_id, $passed_ent_id, $message, $color);
     echo '</table>';
-    echo '</td></tr><tr><td height="5" colspan="2" bgcolor="'.$color[4].'"></td></tr>'."\n"; //between message header and message
+    echo '</td></tr><tr><td height="5" colspan="2" bgcolor="'.$color[4].'"></td></tr>'."\n";
     echo '</table>';
 }
 
@@ -495,10 +493,10 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
            $startMessage, $PHP_SELF, $save_as_draft,
            $enable_forward_as_attachment;
 
-    $topbar_delimiter = '&nbsp;<img src="../images/divider.gif" align="absmiddle" border="0">&nbsp;';
+    $topbar_delimiter = '&nbsp;|&nbsp;';
     $urlMailbox = urlencode($mailbox);
     $s = '<table width="100%" cellpadding="3" cellspacing="0" align="center"'.
-         ' border="0" bgcolor="'.$color[9].'" class="read_icon_bar"><tr>' . //top bar forward reply reply all
+         ' border="0" bgcolor="'.$color[9].'"><tr>' .
          html_tag( 'td', '', 'left', '', 'width="33%"' ) . '<small>';
 
     $msgs_url = $base_uri . 'src/';
@@ -509,7 +507,7 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
     } else {
         $msgs_url .= 'right_main.php?sort=' . $sort . '&amp;startMessage=' .
                      $startMessage . '&amp;mailbox=' . $urlMailbox;
-        $msgs_str  = '<img src="../images/inbox_small.png" border="0" align="absmiddle" alt="'._("Message List").'">&nbsp;'._("Message List");
+        $msgs_str  = _("Message List");
     }
     $s .= '<a href="' . $msgs_url . '">' . $msgs_str . '</a>';
 
@@ -522,7 +520,7 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
             $delete_url .= 'sort=' . $sort . '&amp;startMessage=' . $startMessage;
         }
         $s .= $topbar_delimiter;
-        $s .= '<a href="' . $delete_url . '">' . '<img src="../images/delete.png" border="0" align="absmiddle" alt="'._("Delete").'">&nbsp;' . _("Delete") . '</a>';
+        $s .= '<a href="' . $delete_url . '">' . _("Delete") . '</a>';
     }
 
     $comp_uri = 'src/compose.php' .
@@ -552,18 +550,18 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
             $uri = $base_uri . 'src/read_body.php?passed_id='.$prev.
                    '&amp;mailbox='.$urlMailbox.'&amp;sort='.$sort.
                    '&amp;startMessage='.$startMessage.'&amp;show_more=0';
-            $s .= '<a href="'.$uri.'">'. '<img src="../images/back.png" border="0" align="absmiddle" alt="'._("Previous").'">'.'</a>';       
+            $s .= '<a href="'.$uri.'">'._("Previous").'</a>';
         } else {
-            $s .= '<img src="../images/back_grey.png" border="0" align="absmiddle" alt="'._("Previous").'">';
+            $s .= _("Previous");
         }
         $s .= $topbar_delimiter;
         if ($next != -1) {
             $uri = $base_uri . 'src/read_body.php?passed_id='.$next.
                    '&amp;mailbox='.$urlMailbox.'&amp;sort='.$sort.
                    '&amp;startMessage='.$startMessage.'&amp;show_more=0';
-            $s .= '<a href="'.$uri.'">'.'<img src="../images/forward.png" border="0" align="absmiddle" alt="'._("Next").'">'.'</a>';
+            $s .= '<a href="'.$uri.'">'._("Next").'</a>';
         } else {
-            $s .= '<img src="../images/forward_grey.png" border="0" align="absmiddle" alt="'._("Next").'">';
+            $s .= _("Next");
         }
     } else if (isset($passed_ent_id) && $passed_ent_id) {
         /* code for navigating through attached message/rfc822 messages */
@@ -610,7 +608,7 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
     $s .= '</small></td>' . "\n" .
           html_tag( 'td', '', 'right', '', 'width="33%" nowrap' ) . '<small>';
     $comp_action_uri = $comp_uri . '&amp;smaction=forward';
-    $s .= makeComposeLink($comp_action_uri, '<img src="../images/forward_msg.png" border="0" align="absmiddle" alt="'._("Forward").'">&nbsp;'._("Forward"));
+    $s .= makeComposeLink($comp_action_uri, _("Forward"));
 
     if ($enable_forward_as_attachment) {
         $comp_action_uri = $comp_uri . '&amp;smaction=forward_as_attachment';
@@ -620,11 +618,11 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
 
     $comp_action_uri = $comp_uri . '&amp;smaction=reply';
     $s .= $topbar_delimiter;
-    $s .= makeComposeLink($comp_action_uri, '<img src="../images/reply.png" border="0" align="absmiddle" alt="'._("Reply").'">&nbsp;'._("Reply"));
+    $s .= makeComposeLink($comp_action_uri, _("Reply"));
 
     $comp_action_uri = $comp_uri . '&amp;smaction=reply_all';
     $s .= $topbar_delimiter;
-    $s .= makeComposeLink($comp_action_uri, '<img src="../images/reply_all.png" border="0" align="absmiddle" alt="'._("Reply All").'">&nbsp;'._("Reply All"));
+    $s .= makeComposeLink($comp_action_uri, _("Reply All"));
     $s .= '</small></td></tr></table>';
     $ret = concat_hook_function('read_body_menu_top', $s);
     if($ret != '') {
@@ -818,13 +816,7 @@ for ($i = 0; $i < $cnt; $i++) {
    }
 }
 
-//displayPageHeader($color, $mailbox);
-if (getPref($data_dir, $username, 'use_previewPane', 0) == 0) {
-    displayPageHeader($color, $mailbox);
-} else {
-    include_once(SM_PATH . 'plugins/preview_pane/functions.php');
-    pp_displayPageHeader($color, $mailbox);
-} 
+displayPageHeader($color, $mailbox);
 formatMenuBar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_response);
 formatEnvheader($mailbox, $passed_id, $passed_ent_id, $message, $color, $FirstTimeSee);
 echo '<table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">';
@@ -832,10 +824,10 @@ echo '  <tr><td>';
 echo '    <table width="100%" cellpadding="1" cellspacing="0" align="center" border="0" bgcolor="'.$color[9].'">';
 echo '      <tr><td>';
 echo '        <table width="100%" cellpadding="3" cellspacing="0" align="center" border="0">';
-echo '          <tr class="mailmessage_table" bgcolor="'.$color[4].'"><td>';
+echo '          <tr bgcolor="'.$color[4].'"><td>';
 // echo '            <table cellpadding="1" cellspacing="5" align="left" border="0">';
 echo html_tag( 'table' ,'' , 'left', '', 'cellpadding="1" cellspacing="5" border="0"' );
-echo '              <tr>' . html_tag( 'td', '<br /><div class="message_body_read_text">'. $messagebody."</div>\n", 'left')
+echo '              <tr>' . html_tag( 'td', '<br />'. $messagebody."\n", 'left')
                         . '</tr>';
 echo '            </table>';
 echo '          </td></tr>';
@@ -853,11 +845,10 @@ if ($attachmentsdisplay) {
    echo '     <tr><td>';
    echo '       <table width="100%" cellpadding="0" cellspacing="0" align="center" border="0" bgcolor="'.$color[4].'">';
    echo '        <tr>' . html_tag( 'td', '', 'left', $color[9] );
-   //echo '        <tr><td align="left" class="attach_box_top">';
    echo '           <b>' . _("Attachments") . ':</b>';
    echo '        </td></tr>';
    echo '        <tr><td>';
-   echo '          <table width="100%" cellpadding="2" cellspacing="2" align="center"'.' border="0" ><tr><td>';
+   echo '          <table width="100%" cellpadding="2" cellspacing="2" align="center"'.' border="0" bgcolor="'.$color[0].'"><tr><td>';
    echo              $attachmentsdisplay;
    echo '          </td></tr></table>';
    echo '       </td></tr></table>';

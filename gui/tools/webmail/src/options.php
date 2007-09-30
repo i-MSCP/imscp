@@ -8,10 +8,13 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: options.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  * @subpackage prefs
  */
+
+/** This is the options page */
+define('PAGE_NAME', 'options');
 
 /**
  * Path for SquirrelMail required files.

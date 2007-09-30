@@ -10,7 +10,7 @@
  * Copyright (c) 1999-2006 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * $Id: setup.php 11182 2006-06-08 14:59:19Z kink $
+ * $Id: setup.php 12538 2007-07-14 19:04:00Z kink $
  * @package plugins
  * @subpackage delete_move_next
  */
@@ -121,8 +121,6 @@ function delete_move_expunge_from_all($id) {
 }
 
 function delete_move_next_action() {
-
-    global $PHP_SELF;
 
     if ( sqgetGlobalVar('delete_id', $delete_id, SQ_GET) ) {
         delete_move_next_delete();
@@ -383,4 +381,3 @@ function delete_move_next_loading_prefs() {
 
 }
 
-?>

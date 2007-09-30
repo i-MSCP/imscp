@@ -74,7 +74,7 @@ function action_delete(url) {
                           <!-- EDP: db_message -->
                           <!-- BDP: user_list -->
                           <tr>
-                            <td class="content">{DB_USER}</td>
+                            <td class="content">{DB_USER} - <a href="login_pma.php?id={USER_ID}" target="login_pma.php" class="link">{TR_LOGIN_PMA}</a></td>
                             <td width="150" align="center" class="content"><img src="{THEME_COLOR_PATH}/images/icons/db_comit.png" width="16" height="16" align="absmiddle"> <a href="sql_execute_query.php?id={USER_ID}" class="link" >{TR_EXECUTE_QUERY}</a></td>
                             <td width="150" align="center" class="content"><img src="{THEME_COLOR_PATH}/images/icons/change_password.png" width="16" height="15" align="absmiddle"> <a href="sql_change_password.php?id={USER_ID}" class="link" >{TR_CHANGE_PASSWORD}</a></td>
                             <td class="content" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onClick="action_delete('sql_delete_user.php?id={USER_ID}')">{TR_DELETE}</a></td>

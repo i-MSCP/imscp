@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: prefs.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: prefs.php 12577 2007-08-09 06:52:17Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  */
@@ -24,12 +24,9 @@ sqgetGlobalVar('prefs_are_cached', $prefs_are_cached, SQ_SESSION );
 
 $rg = ini_get('register_globals');
 
-/* if php version >= 4.1 OR (4.0 AND $rg = off) */
 if ( !sqsession_is_registered('prefs_are_cached') ||
-     !isset( $prefs_cache) ||
-     !is_array( $prefs_cache) ||
-     check_php_version(4,1) ||
-     empty($rg)
+     !isset($prefs_cache) ||
+     !is_array($prefs_cache)
    ) {
     $prefs_are_cached = false;
     $prefs_cache = array();
@@ -98,8 +95,11 @@ function getHashedFile($username, $dir, $datafile, $hash_search = true) {
 }
 
 /**
- * Helper function for getHashedFile, given a username returns the hashed
- * dir for that username.
+ * Helper function for getHashedFile(), given a username returns 
+ * the hashed dir for that username.  
+ *
+ * NOTE that the hashed dir will be created if it doesn't 
+ * already exist.
  *
  * @param string username the username of the current user
  * @param string dir the squirrelmail datadir
@@ -155,4 +155,3 @@ function computeHashDirs($username) {
     return ($hash_dirs);
 }
 
-?>

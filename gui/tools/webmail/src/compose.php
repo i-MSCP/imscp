@@ -13,9 +13,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: compose.php 12382 2007-05-10 08:22:49Z kink $
+ * @version $Id: compose.php 12656 2007-08-31 23:20:21Z pdontthink $
  * @package squirrelmail
  */
+
+/** This is the compose page */
+define('PAGE_NAME', 'compose');
 
 /**
  * Path for SquirrelMail required files.
@@ -48,6 +51,11 @@ sqgetGlobalVar('delimiter', $delimiter,     SQ_SESSION);
 
 sqgetGlobalVar('composesession',    $composesession,    SQ_SESSION);
 sqgetGlobalVar('compose_messages',  $compose_messages,  SQ_SESSION);
+
+// compose_messages only useful in SESSION when a forward-as-attachment 
+// has been preconstructed for us and passed in via that mechanism; once 
+// we have it, we can clear it from the SESSION
+sqsession_unregister('compose_messages');
 
 /** SESSION/POST/GET VARS */
 sqgetGlobalVar('send', $send, SQ_POST);
@@ -100,13 +108,15 @@ sqgetGlobalVar('addr_search_done',      $html_addr_search_done, SQ_POST);
 sqgetGlobalVar('send_to_search',        $send_to_search,        SQ_POST);
 sqgetGlobalVar('do_delete',             $do_delete,             SQ_POST);
 sqgetGlobalVar('delete',                $delete,                SQ_POST);
-sqgetGlobalVar('restoremessages',       $restoremessages,       SQ_POST);
+sqgetGlobalVar('attachments',           $attachments,           SQ_POST);
+// Not used any more, but left for posterity
+//sqgetGlobalVar('restoremessages',       $restoremessages,       SQ_POST);
 if ( sqgetGlobalVar('return', $temp, SQ_POST) ) {
     $html_addr_search_done = 'Use Addresses';
 }
 
 /** GET VARS */
-sqgetGlobalVar('attachedmessages', $attachedmessages, SQ_GET);
+// (none)
 
 /**
  * Here we decode the data passed in from mailto.php.
@@ -280,6 +290,7 @@ function getforwardHeader($orig_header) {
  * If the session is expired during a post this restores the compose session
  * vars.
  */
+$session_expired = false;
 if (sqsession_is_registered('session_expired_post')) {
     sqgetGlobalVar('session_expired_post', $session_expired_post, SQ_SESSION);
     /*
@@ -292,11 +303,12 @@ if (sqsession_is_registered('session_expired_post')) {
         session_write_close();
     } else {
         // these are the vars that we can set from the expired composed session
-        $compo_var_list = array ( 'send_to', 'send_to_cc','body','startMessage',
-            'passed_body','use_signature','signature','attachments','subject','newmail',
-            'send_to_bcc', 'passed_id', 'mailbox', 'from_htmladdr_search', 'identity',
-            'draft_id', 'delete_draft', 'mailprio', 'edit_as_new', 'compose_messsages',
-            'composesession', 'request_mdn', 'request_dr');
+        $compo_var_list = array ('send_to', 'send_to_cc', 'body', 'mailbox',
+            'startMessage', 'passed_body', 'use_signature', 'signature',
+            'attachments', 'subject', 'newmail', 'send_to_bcc', 'passed_id', 
+            'from_htmladdr_search', 'identity', 'draft_id', 'delete_draft', 
+            'mailprio', 'edit_as_new', 'request_mdn', 'request_dr', 
+            'composesession', /* Not used any more: 'compose_messsages', */);
 
         foreach ($compo_var_list as $var) {
             if ( isset($session_expired_post[$var]) && !isset($$var) ) {
@@ -304,9 +316,14 @@ if (sqsession_is_registered('session_expired_post')) {
             }
         }
 
-        $compose_messages = unserialize(urldecode($restoremessages));
-        sqsession_register($compose_messages,'compose_messages');
+        if (!empty($attachments)) 
+            $attachments = unserialize($attachments);
+
+        // Not used any more, but left for posterity
+        //$compose_messages = unserialize($restoremessages);
+        //sqsession_register($compose_messages,'compose_messages');
         sqsession_register($composesession,'composesession');
+
         if (isset($send)) {
             unset($send);
         }
@@ -326,6 +343,7 @@ if (sqsession_is_registered('session_expired_post')) {
     showInputForm($session, false);
     exit();
 }
+
 if (!isset($composesession)) {
     $composesession = 0;
     sqsession_register(0,'composesession');
@@ -342,17 +360,26 @@ if (!isset($session) || (isset($newmessage) && $newmessage)) {
 if (!isset($compose_messages)) {
     $compose_messages = array();
 }
-if (!isset($compose_messages[$session]) || ($compose_messages[$session] == NULL)) {
-    /* if (!array_key_exists($session, $compose_messages)) {  /* We can only do this in PHP >= 4.1 */
+if (empty($compose_messages[$session])) {
     $composeMessage = new Message();
     $rfc822_header = new Rfc822Header();
     $composeMessage->rfc822_header = $rfc822_header;
     $composeMessage->reply_rfc822_header = '';
     $compose_messages[$session] = $composeMessage;
 
-    sqsession_register($compose_messages,'compose_messages');
+    // Not used any more, but left for posterity
+    //sqsession_register($compose_messages,'compose_messages');
 } else {
     $composeMessage=$compose_messages[$session];
+}
+
+// re-add attachments that were already in this message
+// FIXME: note that technically this is very bad form - 
+// should never directly manipulate an object like this
+if (!empty($attachments)) {
+    $attachments = unserialize($attachments);
+    if (!empty($attachments) && is_array($attachments))
+        $composeMessage->entities = $attachments;
 }
 
 if (!isset($mailbox) || $mailbox == '' || ($mailbox == 'None')) {
@@ -365,12 +392,14 @@ if ($draft) {
      * of language interface.
      */
     set_my_charset();
-    $composeMessage=$compose_messages[$session];
+    $composeMessage = $compose_messages[$session];
     if (! deliverMessage($composeMessage, true)) {
         showInputForm($session);
         exit();
     } else {
-        unset($compose_messages[$session]);
+        // Not used any more, but left for posterity
+        //unset($compose_messages[$session]);
+        //sqsession_register($compose_messages,'compose_messages');
         $draft_message = _("Draft Email Saved");
         /* If this is a resumed draft, then delete the original */
         if(isset($delete_draft)) {
@@ -423,7 +452,7 @@ if ($send) {
             /* We entered compose via the search results page */
             $mailbox = 'INBOX'; /* Send 'em to INBOX, that's safe enough */
         }
-        $urlMailbox = urlencode (trim($mailbox));
+        $urlMailbox = urlencode($mailbox);
         if (! isset($passed_id)) {
             $passed_id = 0;
         }
@@ -469,7 +498,9 @@ if ($send) {
             showInputForm($session);
             exit();
         }
-        unset($compose_messages[$session]);
+        // Not used any more, but left for posterity
+        //unset($compose_messages[$session]);
+        //sqsession_register($compose_messages,'compose_messages');
 
         /* if it is resumed draft, delete draft message */
         if ( isset($delete_draft)) {
@@ -586,7 +617,8 @@ elseif (isset($sigappend)) {
         }
         $composeMessage->entities = $new_entities;
         $compose_messages[$session] = $composeMessage;
-        sqsession_register($compose_messages, 'compose_messages');
+        // Not used any more, but left for posterity
+        //sqsession_register($compose_messages, 'compose_messages');
     }
     showInputForm($session);
 } else {
@@ -677,7 +709,7 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
                 (array(), $alt_order = array('text/plain'));
             if (!count($entities)) {
                 $entities = $message->entities[0]->findDisplayEntity
-                    (array(), $alt_order = array('text/plain','html/plain'));
+                    (array(), $alt_order = array('text/plain','text/html'));
             }
             $orig_header = $message->rfc822_header; /* here is the envelope located */
             /* redefine the message for picking up the attachments */
@@ -686,7 +718,7 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
         } else {
             $entities = $message->findDisplayEntity (array(), $alt_order = array('text/plain'));
             if (!count($entities)) {
-                $entities = $message->findDisplayEntity (array(), $alt_order = array('text/plain','html/plain'));
+                $entities = $message->findDisplayEntity (array(), $alt_order = array('text/plain','text/html'));
             }
             $orig_header = $message->rfc822_header;
         }
@@ -752,7 +784,7 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
         if (count($idents) > 1) {
             foreach($idents as $nr=>$data) {
                 $enc_from_name = '"'.$data['full_name'].'" <'. $data['email_address'].'>';
-                if($enc_from_name == $orig_from) {
+                if(strtolower($enc_from_name) == strtolower($orig_from)) {
                     $identity = $nr;
                     break;
                 }
@@ -865,7 +897,8 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
                 break;
         }
         $compose_messages[$session] = $composeMessage;
-        sqsession_register($compose_messages, 'compose_messages');
+        // Not used any more, but left for posterity
+        //sqsession_register($compose_messages, 'compose_messages');
         session_write_close();
         sqimap_logout($imapConnection);
     }
@@ -919,10 +952,10 @@ function getAttachments($message, &$composeMessage, $passed_id, $entities, $imap
             }
             $fp = fopen ("$hashed_attachment_dir/$localfilename", 'wb');
 
-            $message->att_local_name = $full_localfilename;
+            $message->att_local_name = $localfilename;
 
             $composeMessage->initAttachment($message->type0.'/'.$message->type1,$filename,
-                    $full_localfilename);
+                    $localfilename);
 
             /* Write Attachment to file 
                The function mime_print_body_lines writes directly to the 
@@ -942,7 +975,7 @@ function getAttachments($message, &$composeMessage, $passed_id, $entities, $imap
 
 function getMessage_RFC822_Attachment($message, $composeMessage, $passed_id,
         $passed_ent_id='', $imapConnection) {
-    global $attachments, $attachment_dir, $username, $data_dir, $uid_support;
+    global $attachment_dir, $username, $data_dir, $uid_support;
     $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
     if (!$passed_ent_id) {
         $body_a = sqimap_run_command($imapConnection,
@@ -968,15 +1001,16 @@ function getMessage_RFC822_Attachment($message, $composeMessage, $passed_id,
         fwrite ($fp, $body);
         fclose($fp);
         $composeMessage->initAttachment('message/rfc822',$subject.'.msg',
-                $full_localfilename);
+                $localfilename);
     }
     return $composeMessage;
 }
 
 function showInputForm ($session, $values=false) {
-    global $send_to, $send_to_cc, $body, $startMessage,
+    global $send_to, $send_to_cc, $body, $startMessage, $attachments,
+        $session_expired,
         $passed_body, $color, $use_signature, $signature, $prefix_sig,
-        $editor_size, $editor_height, $attachments, $subject, $newmail,
+        $editor_size, $editor_height, $subject, $newmail,
         $use_javascript_addr_book, $send_to_bcc, $passed_id, $mailbox,
         $from_htmladdr_search, $location_of_buttons, $attachment_dir,
         $username, $data_dir, $identity, $idents, $draft_id, $delete_draft,
@@ -989,7 +1023,7 @@ function showInputForm ($session, $values=false) {
         $onfocus = ' onfocus="alreadyFocused=true;"';
     else
         $onfocus = '';
-
+    
     $composeMessage = $compose_messages[$session];
     if ($values) {
         $send_to = $values['send_to'];
@@ -1165,6 +1199,12 @@ function showInputForm ($session, $values=false) {
             '   </tr>' . "\n";
     }
 
+    // composeMessage can be empty when coming from a restored session
+    if (is_object($composeMessage) && $composeMessage->entities) 
+        $attach_array = $composeMessage->entities;
+    if ($session_expired && !empty($attachments) && is_array($attachments))
+        $attach_array = $attachments;
+
     /* This code is for attachments */
     if ((bool) ini_get('file_uploads')) {
 
@@ -1209,8 +1249,10 @@ function showInputForm ($session, $values=false) {
             '                    </tr>' . "\n";
 
         $s_a = array();
-        if ($composeMessage->entities) {
-            foreach ($composeMessage->entities as $key => $attachment) {
+        global $username, $attachment_dir;
+        $hashed_attachment_dir = getHashedDir($username, $attachment_dir);
+        if (!empty($attach_array)) {
+            foreach ($attach_array as $key => $attachment) {
                 $attached_file = $attachment->att_local_name;
                 if ($attachment->att_local_name || $attachment->body_part) {
                     $attached_filename = decodeHeader($attachment->mime_header->getParameter('name'));
@@ -1222,7 +1264,8 @@ function showInputForm ($session, $values=false) {
                         addCheckBox('delete[]', FALSE, $key).
                         "</td><td>\n" . $attached_filename .
                         '</td><td>-</td><td> ' . $type . '</td><td>('.
-                        show_readable_size( filesize( $attached_file ) ) . ')</td></tr></table>'."\n";
+                        show_readable_size( filesize( $hashed_attachment_dir . '/' . $attached_file ) ) .
+                        ')</td></tr></table>'."\n";
                 }
             }
         }
@@ -1246,14 +1289,17 @@ function showInputForm ($session, $values=false) {
         addHidden('username', $username).
         addHidden('smaction', $action).
         addHidden('mailbox', $mailbox);
+    sqgetGlobalVar('QUERY_STRING', $queryString, SQ_SERVER);
     /*
        store the complete ComposeMessages array in a hidden input value
        so we can restore them in case of a session timeout.
      */
-    sqgetGlobalVar('QUERY_STRING', $queryString, SQ_SERVER);
-    echo addHidden('restoremessages', serialize($compose_messages)).
-        addHidden('composesession', $composesession).
+    // Not used any more, but left for posterity
+    //echo addHidden('restoremessages', serialize($compose_messages)).
+    echo addHidden('composesession', $composesession).
         addHidden('querystring', $queryString).
+        (!empty($attach_array) ?
+        addHidden('attachments', serialize($attach_array)) : '').
         "</form>\n";
     if (!(bool) ini_get('file_uploads')) {
         /* File uploads are off, so we didn't show that part of the form.
@@ -1333,9 +1379,12 @@ function checkInput ($show) {
      * using $show=false, and then when i'm ready to display the error
      * message, show=true
      */
-    global $body, $send_to, $send_to_bcc, $subject, $color;
+    global $body, $send_to, $send_to_cc, $send_to_bcc, $subject, $color;
 
-    if ($send_to == '' && $send_to_bcc == '') {
+    $send_to = trim($send_to);
+    $send_to_cc = trim($send_to_cc);
+    $send_to_bcc = trim($send_to_bcc);
+    if (empty($send_to) && empty($send_to_cc) && empty($send_to_bcc)) {
         if ($show) {
             plain_error_message(_("You have not filled in the \"To:\" field."), $color);
         }
@@ -1347,7 +1396,7 @@ function checkInput ($show) {
 
 /* True if FAILURE */
 function saveAttachedFiles($session) {
-    global $_FILES, $attachment_dir, $attachments, $username,
+    global $_FILES, $attachment_dir, $username,
         $data_dir, $compose_messages;
 
     /* get out of here if no file was attached at all */
@@ -1373,9 +1422,10 @@ function saveAttachedFiles($session) {
     $message = $compose_messages[$session];
     $type = strtolower($_FILES['attachfile']['type']);
     $name = $_FILES['attachfile']['name'];
-    $message->initAttachment($type, $name, $full_localfilename);
+    $message->initAttachment($type, $name, $localfilename);
     $compose_messages[$session] = $message;
-    sqsession_register($compose_messages , 'compose_messages');
+    // Not used any more, but left for posterity
+    //sqsession_register($compose_messages , 'compose_messages');
 }
 
 /* parse values like 8M and 2k into bytes */
@@ -1529,15 +1579,11 @@ function deliverMessage($composeMessage, $draft=false) {
         global $smtpServerAddress, $smtpPort, $pop_before_smtp, $smtp_auth_mech;
 
         $authPop = (isset($pop_before_smtp) && $pop_before_smtp) ? true : false;
-
-        if ($smtp_auth_mech == 'none' && !$authPop) {
-                $user = '';
-                $pass = '';
-        } else {
-                global $key, $onetimepad;
-                $user = $username;
-                $pass = OneTimePadDecrypt($key, $onetimepad);
-        }
+        
+        $user = '';
+        $pass = '';
+        
+        get_smtp_user($user, $pass);
 
         $stream = $deliver->initStream($composeMessage,$domain,0,
                 $smtpServerAddress, $smtpPort, $user, $pass, $authPop);
@@ -1632,4 +1678,3 @@ function deliverMessage($composeMessage, $draft=false) {
     return $succes;
 }
 
-?>

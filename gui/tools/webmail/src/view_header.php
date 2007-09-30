@@ -7,9 +7,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: view_header.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: view_header.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the view_header page */
+define('PAGE_NAME', 'view_header');
 
 /**
  * Path for SquirrelMail required files.
@@ -136,4 +139,3 @@ $mbx_response = sqimap_mailbox_select($imapConnection, $mailbox, false, false, t
 $header = parse_viewheader($imapConnection,$passed_id, $passed_ent_id); 
 view_header($header, $mailbox, $color);
 sqimap_logout($imapConnection);
-?>

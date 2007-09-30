@@ -3,13 +3,9 @@
 /**
  * global.php
  *
- * This includes code to update < 4.1.0 globals to the newer format
- * It also has some session register functions that work across various
- * php versions.
- *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 12352 2007-03-28 05:09:33Z jangliss $
+ * @version $Id: global.php 12546 2007-07-16 22:27:13Z kink $
  * @package squirrelmail
  */
 
@@ -75,11 +71,7 @@ if ((bool) ini_get('register_globals') &&
  * Must be executed before strings.php is loaded (php_self() call in strings.php).
  */
 if (isset($_SERVER['PHP_SELF'])) {
-    // php 4.1+
     $_SERVER['PHP_SELF'] = strip_tags($_SERVER['PHP_SELF']);
-} elseif (isset($HTTP_SERVER_VARS['PHP_SELF'])) {
-    // php 4.0.6
-    $HTTP_SERVER_VARS['PHP_SELF'] = strip_tags($HTTP_SERVER_VARS['PHP_SELF']);
 }
 
 /**
@@ -118,27 +110,7 @@ if (!(bool)ini_get('session.use_cookies') ||
     ini_set('session.use_cookies','1');
 }
 
-/* convert old-style superglobals to current method
- * this is executed if you are running PHP 4.0.x.
- * it is run via a require_once directive in validate.php
- * and redirect.php. Patch submitted by Ray Black.
- */
 sqsession_is_active();
-if ( !check_php_version(4,1) ) {
-  global $_COOKIE, $_ENV, $_FILES, $_GET, $_POST, $_SERVER, $_SESSION;
-  global $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_GET_VARS,
-         $HTTP_POST_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS, $PHP_SELF;
-  $_COOKIE  =& $HTTP_COOKIE_VARS;
-  $_ENV     =& $HTTP_ENV_VARS;
-  $_FILES   =& $HTTP_POST_FILES;
-  $_GET     =& $HTTP_GET_VARS;
-  $_POST    =& $HTTP_POST_VARS;
-  $_SERVER  =& $HTTP_SERVER_VARS;
-  $_SESSION =& $HTTP_SESSION_VARS;
-  if (!isset($PHP_SELF) || empty($PHP_SELF)) {
-     $PHP_SELF =  $HTTP_SERVER_VARS['PHP_SELF'];
-  }
-}
 
 /* if running with magic_quotes_gpc then strip the slashes
    from POST and GET global arrays */
@@ -222,12 +194,7 @@ function sqsession_register ($var, $name) {
 
     sqsession_is_active();
 
-    if ( !check_php_version(4,1) ) {
-        global $HTTP_SESSION_VARS;
-        $HTTP_SESSION_VARS[$name] = $var;
-    } else {
-        $_SESSION[$name] = $var;
-    }
+    $_SESSION[$name] = $var;
 }
 
 /**
@@ -239,13 +206,8 @@ function sqsession_unregister ($name) {
 
     sqsession_is_active();
 
-    if ( !check_php_version(4,1) ) {
-        global $HTTP_SESSION_VARS;
-        unset($HTTP_SESSION_VARS[$name]);
-    } else {
-        unset($_SESSION[$name]);
-    }
-    session_unregister("$name");
+    unset($_SESSION[$name]);
+    session_unregister($name);
 }
 
 /**
@@ -256,19 +218,7 @@ function sqsession_unregister ($name) {
  */
 function sqsession_is_registered ($name) {
     $test_name = &$name;
-    $result = false;
-    if ( !check_php_version(4,1) ) {
-        global $HTTP_SESSION_VARS;
-        if (isset($HTTP_SESSION_VARS[$test_name])) {
-            $result = true;
-        }
-    } else {
-        if (isset($_SESSION[$test_name])) {
-            $result = true;
-        }
-    }
-
-    return $result;
+    return isset($_SESSION[$test_name]);
 }
 
 /**
@@ -293,17 +243,6 @@ function sqsession_is_registered ($name) {
  * @return bool whether variable is found.
  */
 function sqgetGlobalVar($name, &$value, $search = SQ_INORDER) {
-
-    if ( !check_php_version(4,1) ) {
-        global $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS,
-               $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
-
-        $_COOKIE  =& $HTTP_COOKIE_VARS;
-        $_GET     =& $HTTP_GET_VARS;
-        $_POST    =& $HTTP_POST_VARS;
-        $_SERVER  =& $HTTP_SERVER_VARS;
-        $_SESSION =& $HTTP_SESSION_VARS;
-    }
 
     /* NOTE: DO NOT enclose the constants in the switch
        statement with quotes. They are constant values,
@@ -379,12 +318,7 @@ function sqsession_destroy() {
 
     $sessid = session_id();
     if (!empty( $sessid )) {
-        if ( !check_php_version(4,1) ) {
-            global $HTTP_SESSION_VARS;
-            $HTTP_SESSION_VARS = array();
-        } else {
-            $_SESSION = array();
-        }
+        $_SESSION = array();
         @session_destroy();
     }
 
@@ -401,5 +335,3 @@ function sqsession_is_active() {
     @session_start();
 }
 
-// vim: et ts=4
-?>

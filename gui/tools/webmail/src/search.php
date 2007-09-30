@@ -7,10 +7,13 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: search.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: search.php 12704 2007-09-28 18:01:36Z pdontthink $
  * @package squirrelmail
  * @subpackage search
  */
+
+/** This is the search page */
+define('PAGE_NAME', 'search');
 
 /**
  * Path for SquirrelMail required files.
@@ -51,7 +54,11 @@ if (! sqgetGlobalVar('where',$where,SQ_GET) ||
     // make sure that 'where' is one if standard IMAP SEARCH keywords
     $where = 'FROM';
 }
-// FIXME: what is this?
+if ( !sqgetGlobalVar('preselected', $preselected, SQ_GET) || !is_array($preselected)) {
+  $preselected = array();
+} else {
+  $preselected = array_keys($preselected);
+}
 if (!sqgetGlobalVar('checkall',$checkall,SQ_GET)) {
     unset($checkall);
 }
@@ -256,7 +263,7 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
 
         echo '</td></tr></table></td></tr></table>';
         mail_message_listing_end($cnt, '', $msg_cnt_str, $color); 
-        echo '</td></tr></table>' . "\n</form>\n\n";
+        echo "\n</form>\n\n";
     }
 }
 
@@ -284,7 +291,7 @@ if ($mailbox == 'All Folders') {
 
 if (isset($composenew) && $composenew) {
     $comp_uri = "../src/compose.php?mailbox=". urlencode($mailbox).
-        "&amp;session=$composesession&amp;attachedmessages=true&amp";
+        "&amp;session=$composesession&amp";
     displayPageHeader($color, $mailbox, "comp_in_new('$comp_uri');", false);
 } else {
     displayPageHeader($color, $mailbox);
@@ -505,14 +512,14 @@ if ($search_all == 'all') {
     for ($x=0;$x<$boxcount;$x++) {
         if (!in_array('noselect', $boxes[$x]['flags'])) {
             $mailbox = $boxes[$x]['unformatted'];
-        }
-        if (($submit == _("Search") || $submit == 'Search_no_update') && !empty($what)) {
-            sqimap_mailbox_select($imapConnection, $mailbox);
-            $msgs = sqimap_search($imapConnection, $where, $what, $mailbox, $color, 0, $search_all, $count_all);
-            $count_all = count($msgs);
-            printSearchMessages($msgs, $mailbox, $count_all, $imapConnection, 
-                                $where, $what, false, false);
-            array_push($perbox_count, $count_all);
+            if (($submit == _("Search") || $submit == 'Search_no_update') && !empty($what)) {
+                sqimap_mailbox_select($imapConnection, $mailbox);
+                $msgs = sqimap_search($imapConnection, $where, $what, $mailbox, $color, 0, $search_all, $count_all);
+                $count_all = count($msgs);
+                printSearchMessages($msgs, $mailbox, $count_all, $imapConnection, 
+                                    $where, $what, false, false);
+                array_push($perbox_count, $count_all);
+            }
         }
     }
     for ($i=0;$i<count($perbox_count);$i++) {
@@ -554,4 +561,3 @@ $allow_thread_sort = $old_value;
 do_hook('search_bottom');
 sqimap_logout($imapConnection);
 echo '</body></html>';
-?>

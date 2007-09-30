@@ -1605,7 +1605,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-	write_log("$admin_login: Auto Add User To: |$to|, From: |$from|, Status: |$mail_status|!");
+	write_log("$admin_login: Auto Add User To: |$name <$uemail>|, From: |$from_name <$from_email>|, Status: |$mail_status|!");
 }
 
 function update_reseller_props ($reseller_id, $props) {

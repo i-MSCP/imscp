@@ -8,7 +8,7 @@
  * @copyright Copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
  * @copyright Copyright &copy; 2004-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id: setup.php 12687 2007-09-15 01:18:09Z pdontthink $
  * @package plugins
  * @subpackage message_details
  **/
@@ -24,14 +24,14 @@ function squirrelmail_plugin_init_message_details()
 }
 
 function show_message_details() {
-    global $passed_id, $mailbox, $ent_num, $color,
+    global $passed_id, $mailbox, $passed_ent_id, $color,
            $javascript_on;
 
     if (strlen(trim($mailbox)) < 1) {
         $mailbox = 'INBOX';
     }
 
-    $params = '?passed_ent_id=' . $ent_num .
+    $params = '?passed_ent_id=' . $passed_ent_id .
               '&mailbox=' . urlencode($mailbox) .
               '&passed_id=' . $passed_id;
 

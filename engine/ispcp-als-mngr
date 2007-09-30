@@ -1685,7 +1685,7 @@ sub als_add_httpd_file_data {
 
     my $sys_user = "$suexec_user_pref$sys_uid";
 
-    my $sys_group = $main::cfg{'APACHE_GROUP'};
+    my $sys_group = "$suexec_user_pref$sys_gid";
 
     #
     # Skip data creation if the mount point already exists

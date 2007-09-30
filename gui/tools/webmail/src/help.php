@@ -7,9 +7,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: help.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: help.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
  */
+
+/** This is the help page */
+define('PAGE_NAME', 'help');
 
 /**
  * Path for SquirrelMail required files.

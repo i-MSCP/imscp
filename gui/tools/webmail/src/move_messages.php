@@ -7,9 +7,12 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: move_messages.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: move_messages.php 12542 2007-07-16 21:04:37Z kink $
  * @package squirrelmail
  */
+
+/** This is the move_messages page */
+define('PAGE_NAME', 'move_messages');
 
 /* Path for SquirrelMail required files. */
 define('SM_PATH','../');
@@ -96,7 +99,7 @@ function attachSelectedMessages($msg, $imapConnection) {
                 fwrite ($fp, $body);
                 fclose($fp);
                 $composeMessage->initAttachment('message/rfc822',$filename,
-                     $full_localfilename);
+                     $localfilename);
             }
             $j++;
         }
@@ -257,4 +260,4 @@ if ($exception) {
     exit;
 }
 ?>
-</BODY></HTML>
+</body></html>

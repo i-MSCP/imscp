@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display_messages.php 12317 2007-03-06 15:40:12Z kink $
+ * @version $Id: display_messages.php 12576 2007-08-09 06:49:27Z pdontthink $
  * @package squirrelmail
  */
 
@@ -18,11 +18,18 @@
 require_once(SM_PATH . 'functions/plugin.php');
 
 function error_message($message, $mailbox, $sort, $startMessage, $color) {
+
+    global $default_folder_prefix;
+
     $urlMailbox = urlencode($mailbox);
     $string = '<tr><td align="center">' . $message . '</td></tr>'.
               '<tr><td align="center">'.
-              '<a href="'.sqm_baseuri()."src/right_main.php?sort=$sort&amp;startMessage=$startMessage&amp;mailbox=$urlMailbox\">".
-              sprintf (_("Click here to return to %s"),
+              '<a href="'.sqm_baseuri()."src/right_main.php?sort=$sort&amp;startMessage=$startMessage&amp;mailbox=$urlMailbox\">";
+
+    if (strpos($mailbox, $default_folder_prefix) === 0)
+        $mailbox = substr($mailbox, strlen($default_folder_prefix));
+
+    $string .= sprintf (_("Click here to return to %s"),
                   htmlspecialchars(imap_utf7_decode_local($mailbox))).
               '</a></td></tr>';
     error_box($string, $color);
@@ -86,10 +93,10 @@ function logout_error( $errString, $errTitle = '' ) {
     echo '<body text="'.$color[8].'" bgcolor="'.$color[4].'" link="'.$color[7].'" vlink="'.$color[7].'" alink="'.$color[7]."\">\n\n".
          '<center>';
 
-  //  if (isset($org_logo) && ($org_logo != '')) {
-  //      echo '<img src="'.$org_logo.'" alt="'.sprintf(_("%s Logo"), $org_name).
-  //           "\"$width_and_height /><br />\n";
- //  }
+    if (isset($org_logo) && ($org_logo != '')) {
+        echo '<img src="'.$org_logo.'" alt="'.sprintf(_("%s Logo"), $org_name).
+             "\"$width_and_height /><br />\n";
+    }
     echo ( $hide_sm_attributions ? '' :
             '<small>' . sprintf (_("SquirrelMail version %s"), $version) . '<br />'.
             _("By the SquirrelMail Project Team") . "<br /></small>\n" ).

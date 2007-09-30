@@ -4,7 +4,7 @@
  *
  * Plugin allows remote administration.
  *
- * @version $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
+ * @version $Id: setup.php 12565 2007-07-20 17:13:46Z kink $
  * @author Philippe Mingo
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -25,7 +25,7 @@ require_once(SM_PATH . 'plugins/administrator/auth.php');
  * @access private
  */
 function squirrelmail_plugin_init_administrator() {
-    global $squirrelmail_plugin_hooks, $username;
+    global $squirrelmail_plugin_hooks;
 
     if ( adm_check_user() ) {        
         $squirrelmail_plugin_hooks['optpage_register_block']['administrator'] =
@@ -39,7 +39,6 @@ function squirrelmail_plugin_init_administrator() {
  */
 function squirrelmail_administrator_optpage_register_block() {
     global $optpage_blocks;
-    global $AllowSpamFilters;
 
     $optpage_blocks[] = array(
         'name' => _("Administration"),
@@ -48,4 +47,3 @@ function squirrelmail_administrator_optpage_register_block() {
         'js'   => false
     );
 }
-?>

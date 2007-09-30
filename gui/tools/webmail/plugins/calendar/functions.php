@@ -17,7 +17,7 @@
 function calendar_header() {
     global $color,$year,$day,$month;
 
-    echo html_tag( 'table', '', '', $color[4], 'border="0" width="100%" cellspacing="0" cellpadding="2" class="calhead"' ) .
+    echo html_tag( 'table', '', '', $color[0], 'border="0" width="100%" cellspacing="0" cellpadding="2"' ) .
          html_tag( 'tr' ) .
          html_tag( 'td', '', 'left', '', 'width="100%"' );
 

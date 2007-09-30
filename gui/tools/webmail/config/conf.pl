@@ -6,7 +6,7 @@
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 12316 2007-03-06 15:34:57Z kink $
+# $Id: conf.pl 12692 2007-09-18 20:57:29Z pdontthink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -344,6 +344,10 @@ if ( !$sendmail_args && $sendmail_path =~ /qmail-inject/ ) {
     $sendmail_args = '-i -t';
 }
 
+# Added in 1.4.11
+$smtp_sitewide_user = ''				if ( !$smtp_sitewide_user );
+$smtp_sitewide_pass = ''				if ( !$smtp_sitewide_pass );
+
 # Added in 1.4.9
 $abook_global_file_listing = 'true'     if ( !$abook_global_file_listing );
 $abook_file_line_length = 2048          if ( !$abook_file_line_length );
@@ -463,7 +467,7 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
             print "4.   SMTP Server           : $WHT$smtpServerAddress$NRM\n";
             print "5.   SMTP Port             : $WHT$smtpPort$NRM\n";
             print "6.   POP before SMTP       : $WHT$pop_before_smtp$NRM\n";
-            print "7.   SMTP Authentication   : $WHT$smtp_auth_mech$NRM\n";
+            print "7.   SMTP Authentication   : $WHT$smtp_auth_mech" . display_smtp_sitewide_userpass() . "$NRM\n";
             print "8.   Secure SMTP (TLS)     : $WHT$use_smtp_tls$NRM\n";
             print "9.   Header encryption key : $WHT$encode_header_key$NRM\n";
             print "\n";
@@ -579,7 +583,7 @@ while ( ( $command ne "q" ) && ( $command ne "Q" ) ) {
         }
         print "\n  Available Plugins:\n";
         opendir( DIR, "../plugins" );
-        @files          = readdir(DIR);
+        @files          = sort(readdir(DIR));
         $pos            = 0;
         @unused_plugins = ();
         for ( $i = 0 ; $i <= $#files ; $i++ ) {
@@ -1270,6 +1274,7 @@ sub command112b {
                 print " ERROR TESTING\n";
                 close $sock;
             } else {
+                $got = <$sock>;  # Discard greeting
                 print $sock "HELO $domain\r\n";
                 $got = <$sock>;  # Discard
                 print $sock "MAIL FROM:<tester\@squirrelmail.org>\r\n";
@@ -1337,16 +1342,94 @@ sub command112b {
     chomp($inval);
     if ($inval =~ /^none\b/i) {
       # SMTP doesn't necessarily require logins
+      $smtp_sitewide_user = '';
+      $smtp_sitewide_pass = '';
       return "none";
     }
     if ( ($inval =~ /^cram-md5\b/i) || ($inval =~ /^digest-md5\b/i) || 
     ($inval =~ /^login\b/i)) {
+      command_smtp_sitewide_userpass($inval);
       return lc($inval);
+    } elsif (trim($inval) eq '') {
+      command_smtp_sitewide_userpass($smtp_auth_mech);
+      return $smtp_auth_mech;
     } else {
-      # user entered garbage, or default value so nothing needs to be set
+      # user entered garbage
       return $smtp_auth_mech;
     }
 }
+
+sub command_smtp_sitewide_userpass($) {
+    # get first function argument
+    my $auth_mech = shift(@_);
+    my $default, $tmp;
+    $auth_mech = lc(trim($auth_mech));
+    if ($auth_mech eq 'none') {
+        return;
+    }
+    print "SMTP authentication uses IMAP username and password by default.\n";
+    print "\n";
+    print "Would you like to use other login and password for all SquirrelMail \n";
+    print "SMTP connections?";
+    if ($smtp_sitewide_user ne '') {
+        $default = 'y';
+        print " [Y/n]:";
+    } else {
+        $default = 'n';
+        print " [y/N]:";
+    }
+    $tmp=<STDIN>;
+    $tmp = trim($tmp);
+    
+    if ($tmp eq '') {
+        $tmp = $default;
+    } else {
+        $tmp = lc($tmp);
+    }
+
+    if ($tmp eq 'n') {
+        $smtp_sitewide_user = '';
+        $smtp_sitewide_pass = '';
+    } elsif ($tmp eq 'y') {
+        print "Enter username [$smtp_sitewide_user]:";
+        my $new_user = <STDIN>;
+        $new_user = trim($new_user);
+        if ($new_user ne '') {
+            $smtp_sitewide_user = $new_user;
+        }
+        if ($smtp_sitewide_user ne '') {
+            print "If you don't enter any password, current sitewide password will be used.\n";
+            print "If you enter space, password will be set to empty string.\n";
+            print "Enter password:";
+            my $new_pass = <STDIN>;
+            if ($new_pass ne "\n") {
+                $smtp_sitewide_pass = trim($new_pass);
+            }
+        } else {
+            print "Invalid input. You must set username used for SMTP authentication.\n";
+            print "Click any key to continue\n";
+            $tmp = <STDIN>;
+        }
+    } else {
+        print "Invalid input\n";
+        print "Click any key to continue\n";
+        $tmp = <STDIN>;
+    }
+}
+
+# Sub adds information about SMTP authentication type to menu
+sub display_smtp_sitewide_userpass() {
+    my $ret = '';
+    if ($smtp_auth_mech ne 'none') {
+        if ($smtp_sitewide_user ne '') {
+            $ret = ' (with custom username and password)';
+        } else {
+            $ret = ' (with IMAP username and password)';
+        }
+    }
+    return $ret;
+}
+
 
 # TLS
 # This sub is reused for IMAP and SMTP
@@ -2179,9 +2262,8 @@ sub command39b {
 }
 
 sub command310 {
-    print "This option allows you to choose if users can use thread sorting\n";
-    print "Your IMAP server must support the THREAD command for this to work\n";
-    print "PHP versions later than 4.0.3 recommended\n";
+    print "This option allows you to choose if users can use thread sorting.\n";
+    print "Your IMAP server must support the THREAD command for this to work.\n";
     print "\n";
 
     if ( lc($allow_thread_sort) eq "true" ) {
@@ -2371,7 +2453,7 @@ sub command41 {
             print "\nStarting detection...\n\n";
 
             opendir( DIR, "../themes" );
-            @files = grep { /\.php$/i } readdir(DIR);
+            @files = grep { /\.php$/i } sort(readdir(DIR));
             $cnt = 0;
             while ( $cnt <= $#files ) {
                 $filename = "../themes/" . $files[$cnt];
@@ -2384,9 +2466,17 @@ sub command41 {
                     }
                     if ( $found != 1 ) {
                         print "** Found theme: $filename\n";
-                        print "   What is its name? ";
+                        $def = $files[$cnt];
+                        $def =~ s/_/ /g;
+                        $def =~ s/\.php//g;
+                        $def = lc($def);
+                        #$def =~ s/(^\w+)/ucfirst $1/eg;
+                        #$def =~ s/(\s+)(\w+)/$1 . ucfirst $2/eg;
+                        $def =~ s/(^\w+)|(\s+)(\w+)/ucfirst $1 . $2 . ucfirst $3/eg;
+                        print "   What is its name? [$def]: ";
                         $nm = <STDIN>;
-                        $nm =~ s/[\n|\r]//g;
+                        $nm =~ s/^\s+|\s+$|[\n|\r]//g;
+                        if ( $nm eq '' ) { $nm = $def; }
                         $theme_name[ $#theme_name + 1 ] = $nm;
                         $theme_path[ $#theme_path + 1 ] = $filename;
                     }
@@ -3318,6 +3408,8 @@ sub save_data {
     # string
         print CF "\$smtp_auth_mech = '$smtp_auth_mech';\n";
         print CF "\$imap_auth_mech = '$imap_auth_mech';\n";
+        print CF "\$smtp_sitewide_user = '" . quote_single($smtp_sitewide_user) . "';\n";
+        print CF "\$smtp_sitewide_pass = '" . quote_single($smtp_sitewide_pass) . "';\n";
     # boolean
         print CF "\$use_imap_tls = $use_imap_tls;\n";
         print CF "\$use_smtp_tls = $use_smtp_tls;\n";
@@ -3330,15 +3422,7 @@ sub save_data {
         print CF "\n";
         print CF "\@include SM_PATH . 'config/config_local.php';\n";
     
-        print CF "\n/**\n";
-        print CF " * Make sure there are no characters after the PHP closing\n";
-        print CF " * tag below (including newline characters and whitespace).\n";
-        print CF " * Otherwise, that character will cause the headers to be\n";
-        print CF " * sent and regular output to begin, which will majorly screw\n";
-        print CF " * things up when we try to send more headers later.\n";
-        print CF " */\n";
-        print CF "?>";
-        
+        print CF "\n";
         close CF;
 
         print "Data saved in config.php\n";
@@ -3674,15 +3758,12 @@ sub detect_auth_support {
 
     # So at this point, we have a response, and it is (hopefully) valid.
     if ($service eq 'SMTP') {
-        if (($response =~ /^535/) or ($response =~/^502/)) {
+        if (!($response =~ /^334/)) {
             # Not supported
             print $sock $logout;
             close $sock;
             return 'NO';
-        } elsif ($response =~ /^503/) {
-            #Something went wrong
-            return undef;
-        }
+	}
     } elsif ($service eq 'IMAP') {
         if ($response =~ /^A01/) {
             # Not supported
@@ -3708,6 +3789,13 @@ sub clear_screen() {
     } else {
         system "clear";
     }
+}
+
+# Quotes safely strings containing single quote
+sub quote_single($) {
+	my $string = shift(@_);
+	$string =~ s/\'/\\'/g;
+	return $string;
 }
 
 # trims whitespace

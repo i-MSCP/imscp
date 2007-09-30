@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: display.php 12681 2007-09-06 22:48:42Z pdontthink $
  * @package squirrelmail
  */
 
@@ -248,13 +248,6 @@ function load_optpage_data_display() {
     $optvals[SMOPT_GRP_MESSAGE][] = array(
         'name'    => 'enable_forward_as_attachment',
         'caption' => _("Enable Forward as Attachment"),
-        'type'    => SMOPT_TYPE_BOOLEAN,
-        'refresh' => SMOPT_REFRESH_NONE
-    );
-
-    $optvals[SMOPT_GRP_MESSAGE][] = array(
-        'name'    => 'forward_cc',
-        'caption' => _("Include CCs when Forwarding Messages"),
         'type'    => SMOPT_TYPE_BOOLEAN,
         'refresh' => SMOPT_REFRESH_NONE
     );

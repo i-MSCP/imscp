@@ -8,7 +8,7 @@
  *
  * This is a standard Squirrelmail-1.2 API for plugins.
  *
- * $Id: setup.php 10633 2006-02-03 22:27:56Z jervfors $
+ * $Id: setup.php 12440 2007-06-07 05:13:51Z jangliss $
  * @package plugins
  * @subpackage sent_subfolders
  */
@@ -223,7 +223,7 @@ function sent_subfolders_update_sentfolder() {
             $sent_subfolder = $sent_subfolders_base . $cnd_delimiter 
                             . $year
                             . $delimiter . $quarter;
-            $year_folder = $sent_subfolders_base
+            $year_folder = $sent_subfolders_base . $cnd_delimiter
                             . $year;
             break;
         case SMPREF_SENT_SUBFOLDERS_MONTHLY:
@@ -231,7 +231,7 @@ function sent_subfolders_update_sentfolder() {
             $sent_subfolder = $sent_subfolders_base . $cnd_delimiter
                             . $year
                             . $delimiter . $month;
-            $year_folder = $sent_subfolders_base . $year;
+            $year_folder = $sent_subfolders_base . $cnd_delimiter . $year;
             break;
         case SMPREF_SENT_SUBFOLDERS_DISABLED:
         default:
@@ -319,14 +319,14 @@ function sent_subfolder_getQuarter($month) {
  * @return boolean 1 - is part of sent_subfolders, 0 - is not part of sent_subfolders
  */
 function sent_subfolders_special_mailbox($mb) {
-    global $data_dir, $username;
+    global $data_dir, $username, $delimiter;
 
     $use_sent_subfolders = getPref
         ($data_dir, $username, 'use_sent_subfolders', SMPREF_OFF);
     $sent_subfolders_base = getPref($data_dir, $username, 'sent_subfolders_base', 'na');
 
     if ($use_sent_subfolders == SMPREF_ON && 
-    ($mb == $sent_subfolders_base || stristr($mb,$sent_subfolders_base) ) ) {
+    ($mb == $sent_subfolders_base || stristr($mb,$sent_subfolders_base. $cnd_delimiter) ) ) {
 	return 1;
     }
     return 0;
