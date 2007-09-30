@@ -131,7 +131,6 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
 	$toadd_status = $cfg['ITEM_ADD_STATUS'];
 	$tochange_status = $cfg['ITEM_CHANGE_STATUS'];
-	$basic = 'Basic';
 
 	if ($rs->RecordCount() !== 0) {
 		$update_id = $rs->fields['id'];
@@ -161,7 +160,7 @@ SQL_QUERY;
 
 		check_for_lock_file();
 		send_request();
-		$rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, $basic , $area_name, $path, $toadd_status));
+		$rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
 		set_page_message(tr('Protected area created successfully!'));
 	}
 

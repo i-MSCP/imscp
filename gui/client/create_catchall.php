@@ -318,7 +318,7 @@ SQL_QUERY;
             }
             $mail_forward = clean_input($_POST['forward_list']);
             $mail_acc = array();
-            $faray = preg_split ("/[\n]+/",$mail_forward);
+            $faray = preg_split ("/[\n,]+/",$mail_forward);
 
             foreach ($faray as $value) {
                 $value = trim($value);
@@ -350,7 +350,7 @@ SQL_QUERY;
                         (?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-            $rs = exec_query($sql, $query, array(implode("\n", $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_'));
+            $rs = exec_query($sql, $query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_'));
 
             send_request();
             write_log($_SESSION['user_logged'].": add new email catch all ");

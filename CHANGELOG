@@ -7,6 +7,12 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-09-29 Raphael Geissert
+    - ENGINE:
+        * Fixed #555: catchall -> forwarding doesn't work (thanks to Joximu)
+    - GUI:
+        * Updated ADOdb to version 4.96
+
 2007-09-29 Benedikt Heintel
 	- GUI:
 		* Fixed #729: Creation of htaccess files cause 500

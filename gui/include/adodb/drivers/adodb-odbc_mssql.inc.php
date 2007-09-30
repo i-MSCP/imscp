@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.93 10 Oct 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -35,7 +35,7 @@ class  ADODB_odbc_mssql extends ADODB_odbc {
 	var $substr = 'substring';
 	var $length = 'len';
 	var $ansiOuter = true; // for mssql7 or later
-	var $identitySQL = 'select @@IDENTITY'; // 'select SCOPE_IDENTITY'; # for mssql 2000
+	var $identitySQL = 'select SCOPE_IDENTITY()'; // 'select SCOPE_IDENTITY'; # for mssql 2000
 	var $hasInsertID = true;
 	var $connectStmt = 'SET CONCAT_NULL_YIELDS_NULL OFF'; # When SET CONCAT_NULL_YIELDS_NULL is ON, 
 														  # concatenating a null value with a string yields a NULL result

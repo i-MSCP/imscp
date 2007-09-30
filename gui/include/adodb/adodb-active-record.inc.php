@@ -1,7 +1,7 @@
 <?php
 /*
 
-@version V4.93 10 Oct 2006  (c) 2000-2006 John Lim (jlim#natsoft.com.my). All rights reserved.
+@version V4.94 23 Jan 2007  (c) 2000-2007 John Lim (jlim#natsoft.com.my). All rights reserved.
   Latest version is available at http://adodb.sourceforge.net
  
   Released under both BSD license and Lesser GPL library license. 
@@ -10,7 +10,7 @@
   
   Active Record implementation. Superset of Zend Framework's.
   
-  Version 0.04
+  Version 0.08
   
   See http://www-128.ibm.com/developerworks/java/library/j-cb03076/?ca=dgr-lnxw01ActiveRecord 
   	for info on Ruby on Rails Active Record implementation
@@ -18,10 +18,11 @@
 
 global $_ADODB_ACTIVE_DBS;
 global $ADODB_ACTIVE_CACHESECS; // set to true to enable caching of metadata such as field info
+global $ACTIVE_RECORD_SAFETY; // set to false to disable safety checks
 
 // array of ADODB_Active_DB's, indexed by ADODB_Active_Record->_dbat
 $_ADODB_ACTIVE_DBS = array();
-
+$ACTIVE_RECORD_SAFETY = true;
 
 class ADODB_Active_DB {
 	var $db; // ADOConnection
@@ -42,9 +43,9 @@ function ADODB_SetDatabaseAdapter(&$db)
 	
 		foreach($_ADODB_ACTIVE_DBS as $k => $d) {
 			if (PHP_VERSION >= 5) {
-				if ($d->db == $db) return $k;
+				if ($d->db === $db) return $k;
 			} else {
-				if ($d->db->_connectionID == $db->_connectionID && $db->database == $d->db->database) 
+				if ($d->db->_connectionID === $db->_connectionID && $db->database == $d->db->database) 
 					return $k;
 			}
 		}
@@ -223,7 +224,7 @@ class ADODB_Active_Record {
 			break;
 		default:
 			foreach($cols as $name => $fldobj) {
-				$name = ($fldobj->$name);
+				$name = ($fldobj->name);
 				$this->$name = null;
 				$attr[$name] = $fldobj;
 			}
@@ -285,6 +286,15 @@ class ADODB_Active_Record {
 		return $this->_lasterr;
 	}
 	
+	function ErrorNo() 
+	{
+		if ($this->_dbat < 0) return -9999; // no database connection...
+		$db = $this->DB();
+		
+		return (int) $db->ErrorNo();
+	}
+
+
 	// retrieve ADOConnection from _ADODB_Active_DBs
 	function &DB()
 	{
@@ -313,6 +323,8 @@ class ADODB_Active_Record {
 	// set a numeric array (using natural table field ordering) as object properties
 	function Set(&$row)
 	{
+	global $ACTIVE_RECORD_SAFETY;
+	
 		$db =& $this->DB();
 		
 		if (!$row) {
@@ -323,14 +335,15 @@ class ADODB_Active_Record {
 		$this->_saved = true;
 		
 		$table =& $this->TableInfo();
-		if (sizeof($table->flds) != sizeof($row)) {
+		if ($ACTIVE_RECORD_SAFETY && sizeof($table->flds) != sizeof($row)) {
 			$this->Error("Table structure of $this->_table has changed","Load");
 			return false;
 		}
 		
+		$keys = array_keys($row);
 		$cnt = 0;
 		foreach($table->flds as $name=>$fld) {
-			$this->$name = $row[$cnt];
+			$this->$name = $row[$keys[$cnt]];
 			$cnt += 1;
 		}
 		$this->_original = $row;

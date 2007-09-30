@@ -1630,32 +1630,6 @@ sub mbox_add_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-        my ($sub_key, $sub_value) = (undef, undef);
-
-        foreach $sub_key (keys %main::sub_id_parentid) {
-
-            $sub_value = $main::sub_id_parentid{$sub_key};
-
-            if ($sub_value == $mail_dmn_id) {
-
-
-                # We've got one ;)
-
-
-                my $sub_pref = $main::sub_id_name{$sub_key};
-
-                my $sub_name = "$sub_pref.$dmn_name";
-
-                $hash_key = "\@$sub_name";
-
-                $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
-
-                return $rs if ($rs != 0);
-
-            }
-
-        }
-
         $rdata = "$mail_acc\n";
 
         $rdata =~ /^([^\@]+)\@([^\n]+)\n$/i;
@@ -1669,32 +1643,6 @@ sub mbox_add_mta_cfg_data {
         $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
 
         return $rs if ($rs != 0);
-
-        ($sub_key, $sub_value) = (undef, undef);
-
-        foreach $sub_key (keys %main::sub_id_parentid) {
-
-            $sub_value = $main::sub_id_parentid{$sub_key};
-
-            if ($sub_value == $mail_dmn_id) {
-
-                # We've got one ;)
-
-                my $sub_pref = $main::sub_id_name{$sub_key};
-
-                my $sub_name = "$sub_pref.$dmn_name";
-
-                $hash_key = "\@$sub_name";
-
-                $hash_value = "$mail_acc";
-
-                $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
-
-                return $rs if ($rs != 0);
-
-            }
-
-        }
 
         ($rs, $working) = get_file($aliases_working_cfg);
 
@@ -1745,6 +1693,48 @@ sub mbox_add_mta_cfg_data {
         return $rs if ($rs != 0);
 
     } if ($mail_type eq 'alias_catchall');
+
+    do { # add subdom_catchall
+
+        my $sub_pref = $main::sub_id_name{$mail_sub_id};
+
+        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+        my $sub_name = "$sub_pref.$dmn_name";
+
+        my $hash_key = "\@$sub_name";
+
+        my $hash_value = undef;
+
+        # Remove old catchall accounts (if any);
+        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+
+        return $rs if ($rs != 0);
+
+	# Add new catchall account(s)
+        $rdata = "$mail_acc\n";
+
+        $rdata =~ /^([^\@]+)\@([^\n]+)\n$/i;
+
+        my ($catch_all_usr, $catch_all_dmn) = ($1, $2);
+
+        $hash_key = "\@$sub_name";
+
+        $hash_value = "$mail_acc";
+
+        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
+
+        return $rs if ($rs != 0);
+
+        ($rs, $working) = get_file($aliases_working_cfg);
+
+        return $rs if ($rs != 0);
+
+        $rs = store_file($aliases_cfg, $working, 'root', 'root', 0644);
+
+        return $rs if ($rs != 0);
+
+    } if ($mail_type eq 'subdom_catchall');
 
     $rs = sys_command("$cmd_postmap $mailboxes_cfg");
 
@@ -2115,32 +2105,6 @@ sub mbox_del_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-        my ($sub_key, $sub_value) = (undef, undef);
-
-        foreach $sub_key (keys %main::sub_id_parentid) {
-
-            $sub_value = $main::sub_id_parentid{$sub_key};
-
-            if ($sub_value == $mail_dmn_id) {
-
-
-                # We've got one ;)
-
-
-                my $sub_pref = $main::sub_id_name{$sub_key};
-
-                my $sub_name = "$sub_pref.$dmn_name";
-
-                $hash_key = "\@$sub_name";
-
-                $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
-
-                return $rs if ($rs != 0);
-
-            }
-
-        }
-
         ($rs, $working) = get_file($aliases_working_cfg);
 
         return $rs if ($rs != 0);
@@ -2174,6 +2138,34 @@ sub mbox_del_mta_cfg_data {
         return $rs if ($rs != 0);
 
     } if ($mail_type eq 'alias_catchall');
+
+    do { # delete subdom catchall
+
+        my $sub_pref = $main::sub_id_name{$mail_sub_id};
+
+        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+        my $sub_name = "$sub_pref.$dmn_name";
+
+        my $hash_key = "\@$sub_name";
+
+        my $hash_value = undef;
+
+        # Let's first remove old catchall accounts (if any);
+
+        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+
+        return $rs if ($rs != 0);
+
+        ($rs, $working) = get_file($aliases_working_cfg);
+
+        return $rs if ($rs != 0);
+
+        $rs = store_file($aliases_cfg, $working, 'root', 'root', 0644);
+
+        return $rs if ($rs != 0);
+
+    } if ($mail_type eq 'subdom_catchall');
 
     $rs = sys_command("$cmd_postmap $mailboxes_cfg");
 
