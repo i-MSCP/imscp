@@ -10,6 +10,7 @@ ispCP ω 1.0.0 Changelog
 2007-10-01 Benedikt Heintel / Johannes Schobig
 	- GUI:
 		* Fixed #721: Problem with non-standard characters in mail-templates
+		* Tried to Fix #741: First part of fixing Webmail layout
 
 2007-09-30 Johannes Schobig
 	- GUI:

@@ -1549,7 +1549,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$subject = encode($subject);
 
 	$headers = "From: $from\n";
-	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain;\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
+	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 

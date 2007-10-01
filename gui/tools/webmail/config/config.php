@@ -32,7 +32,7 @@ $config_version = '1.4.0';
  * Organization's name
  * @global string $org_name
  */
-$org_name = "";
+$org_name = "ispCP Omega";
 
 /**
  * Organization's logo picture (blank if none)
@@ -88,7 +88,7 @@ $frame_top = '_top';
  *
  * Here you can set name of the link displayed on the right side of main page.
  *
- * Link will be displayed only if you have $hide_sm_attributions 
+ * Link will be displayed only if you have $hide_sm_attributions
  * option set to true.
  * @global string $provider_name
  */
@@ -99,7 +99,7 @@ $provider_name = 'isp-control.net';
  *
  * Here you can set URL of the link displayed on the right side of main page.
  *
- * Link will be displayed only if you have $hide_sm_attributions 
+ * Link will be displayed only if you have $hide_sm_attributions
  * option set to true.
  * @global string $provider_uri
  */
@@ -133,7 +133,7 @@ $invert_time = false;
  *
  * What should be used when sending email.
  * If it is set to false, SquirrelMail will use SMTP server settings.
- * If it is set to true, SquirrelMail will use program defined in 
+ * If it is set to true, SquirrelMail will use program defined in
  * $sendmail_path
  * @global bool $useSendmail
  */
@@ -173,7 +173,7 @@ $encode_header_key = '';
  * Path to Sendmail
  *
  * Program that should be used when sending email. SquirrelMail expects that
- * this program will follow options used by original sendmail 
+ * this program will follow options used by original sendmail
  * (http://www.sendmail.org).
  * @global string $sendmail_path
  */
@@ -192,7 +192,7 @@ $sendmail_path = '/usr/sbin/sendmail';
  * @since 1.5.1 and 1.4.8
  */
 $sendmail_args = '-i -t';
-    
+
 /**
  * IMAP server address
  *
@@ -387,7 +387,7 @@ $auto_create_special = true;
  * List Special Folders First Control
  *
  * Whether or not to list the special folders first (true/false).
- * @global bool $list_special_folders_first 
+ * @global bool $list_special_folders_first
  */
 $list_special_folders_first = true;
 
@@ -409,7 +409,7 @@ $default_sub_of_inbox = true;
  * option during folder creation. The option toggles which type of
  * folder it should be.
  *
- * If this option confuses you, just set it to 'true'. You can not hurt 
+ * If this option confuses you, just set it to 'true'. You can not hurt
  * anything if it's true, but some servers will respond weird if it's
  * false. (Cyrus works fine whether it's true OR false).
  * @global bool $show_contain_subfolders_option
@@ -420,7 +420,7 @@ $show_contain_subfolders_option = true;
  * These next two options set the defaults for the way that the
  * users see their folder list.
  *   $default_unseen_notify
- *       Specifies whether or not the users will see the number of 
+ *       Specifies whether or not the users will see the number of
  *       unseen in each folder by default and also which folders to
  *       do this to. Valid values are: 1=none, 2=inbox, 3=all.
  *   $default_unseen_type
@@ -477,7 +477,7 @@ $data_dir = SM_PATH . 'data/';
  *      list files in this directory. Confidential data might be laying
  *      around there.
  *    + Since the webserver is not able to list the files in the content
- *      is also impossible for the webserver to delete files lying around 
+ *      is also impossible for the webserver to delete files lying around
  *      there for too long.
  *    + It should probably be another directory than data_dir.
  * @global string $attachment_dir
@@ -486,12 +486,12 @@ $attachment_dir = $data_dir;
 
 /**
  * Hash level used for data directory.
- * 
+ *
  * This option allows spliting file based squirrelmail user
  * data storage directory into several subfolders. Number from
  * 0 to 4 allows allows having up to four subfolder levels.
  *
- * Hashing should speed up directory access if you have big number 
+ * Hashing should speed up directory access if you have big number
  * of users (500 and more).
  * @global integer $dir_hash_level
  */
@@ -528,7 +528,7 @@ $default_use_priority = true;
 /**
  * SquirrelMail Attributions Control
  *
- * This option disables display of "created by squirrelmail developers" 
+ * This option disables display of "created by squirrelmail developers"
  * strings and provider link
  * @global bool $hide_sm_attributions
  */
@@ -558,8 +558,8 @@ $edit_name = true;
 
 /**
  * SquirrelMail adds username information to every sent email.
- * It is done in order to prevent possible sender forging when 
- * end users are allowed to change their email and name 
+ * It is done in order to prevent possible sender forging when
+ * end users are allowed to change their email and name
  * information.
  *
  * You can disable this header, if you think that it violates
@@ -576,7 +576,7 @@ $hide_auth_header = false;
  * Server Side Threading Control
  *
  * If you want to enable server side thread sorting options
- * Your IMAP server must support the THREAD extension for 
+ * Your IMAP server must support the THREAD extension for
  * this to work.
  * @global bool $allow_thread_sort
  */
@@ -596,7 +596,7 @@ $allow_server_sort = true;
  * IMAP Charset Use Control
  *
  * This option allows you to choose if SM uses charset search
- * Your imap server should support SEARCH CHARSET command for 
+ * Your imap server should support SEARCH CHARSET command for
  * this to work.
  * @global bool $allow_charset_search
  */
@@ -621,7 +621,7 @@ $session_name = 'SQMSESSID';
 
 /**
  * Location base
- * 
+ *
  * This is used to build the URL to the SquirrelMail location.
  * It should contain only the protocol and hostname/port parts
  * of the URL; the full path will be appended automatically.
@@ -653,9 +653,9 @@ $config_location_base = '';
  *
  * To add a new theme to the options that users can choose from, just
  * add a new number to the array at the bottom, and follow the pattern.
- * 
+ *
  * $theme_default sets theme that will be used by default
- * $theme_css sets stylesheet (from theme/css directory) that will be 
+ * $theme_css sets stylesheet (from theme/css directory) that will be
  * used by default.
  * @global integer $theme_default
  * @global string $theme_css
@@ -682,7 +682,7 @@ $theme[0]['NAME'] = 'ispCP Omega';
  *       'host' => 'memberdir.netscape.com',
  *       'name' => 'Netcenter Member Directory',
  *       'base' => 'ou=member_directory,o=netcenter.com'
- *   ); 
+ *   );
  *
  *   NOTE: please see security note at the top of this file when
  *   entering a password.
@@ -724,9 +724,9 @@ $abook_global_file_listing = true;
 
 /**
  * Controls file based address book entry size
- * 
+ *
  * This setting controls space allocated to file based address book records.
- * End users will be unable to save address book entry, if total entry size 
+ * End users will be unable to save address book entry, if total entry size
  * (quoted address book fields + 4 delimiters + linefeed) exceeds allowed
  * address book length size.
  *
@@ -743,7 +743,7 @@ $abook_file_line_length = 2048;
 /**
  * MOTD
  *
- * This is a message that is displayed immediately after a user logs in. 
+ * This is a message that is displayed immediately after a user logs in.
  * @global string $motd
  */
 $motd = "";
@@ -783,13 +783,13 @@ $plugins[20] = 'view_as_html';
 $plugins[21] = 'notes';
 //$plugins[22] = 'calendar_sql_backend'; //enable and configure if needed
 $plugins[23] = 'login_auto';
-$plugins[24] = 'todo'; 
+$plugins[24] = 'todo';
 // $plugins[25] = 'check_quota'; //only works on some servers
 
 
 /*** Database ***/
 /**
- * Read the administrator's manual in order to get more information 
+ * Read the administrator's manual in order to get more information
  * about these settings.
  */
 /**
@@ -848,7 +848,7 @@ $addrbook_global_listing = false;
  *
  * This is the default language. It is used as a last resort
  * if SquirrelMail can't figure out which language to display.
- * Language names usually consist of language code, undercore 
+ * Language names usually consist of language code, undercore
  * symbol and country code
  * @global string $squirrelmail_default_language
  */
@@ -887,7 +887,7 @@ $lossy_encoding = false;
  * generate the folder subscribe listbox (this can take a long time
  * when you have a lot of folders).  Instead, a textbox will be
  * displayed allowing users to enter a specific folder name to subscribe to
- * 
+ *
  * This option can't be changed by conf.pl
  * @global bool $no_list_for_subscribe
  */
@@ -897,7 +897,7 @@ $no_list_for_subscribe = false;
  * Color in config control
  *
  * This option is used only by conf.pl script to generate configuration
- * menu with some colors and is provided here only as reference. 
+ * menu with some colors and is provided here only as reference.
  * @global integer $config_use_color
  */
 $config_use_color = 2;
