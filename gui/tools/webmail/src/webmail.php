@@ -105,10 +105,10 @@ if ($left_size == "") {
 }
 
 if ($location_of_bar == 'right') {
-    $output .= "<frameset cols=\"*, $left_size\" id=\"fs1\">\n";
+    $output .= "<frameset cols=\"*, $left_size\" id=\"fs1\" frameborder=\"0\" framespacing=\"0\" border=\"0\">\n";
 }
 else {
-    $output .= "<frameset cols=\"$left_size, *\" id=\"fs1\">\n";
+    $output .= "<frameset cols=\"$left_size, *\" id=\"fs1\" frameborder=\"0\" framespacing=\"0\" border=\"0\">\n";
 }
 
 /*
@@ -127,7 +127,7 @@ else {
  * our frameset.
  *
  * Note that plugins are allowed to completely and freely override the URI
- * used for the "right" (content) frame, and they do so by modifying the 
+ * used for the "right" (content) frame, and they do so by modifying the
  * global variable $right_frame_url.
  *
  */
@@ -164,8 +164,8 @@ if (empty($right_frame_url)) {
         default:
             $right_frame_url =  urlencode($right_frame);
             break;
-    } 
-} 
+    }
+}
 
 if ($location_of_bar == 'right') {
     $output .= "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\">\n" .

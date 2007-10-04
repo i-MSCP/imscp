@@ -504,7 +504,7 @@ $dir_hash_level = 0;
  * is 150, but you can set it to whatever you wish.
  * @global string $default_left_size
  */
-$default_left_size = '180';
+$default_left_size = '181';
 
 /**
  * Username Case Control

@@ -66,34 +66,165 @@ set_up_language($squirrelmail_language, true, true);
 <?php
     if ($theme_css != '') {
 ?>
-   <link rel="stylesheet" type="text/css" href="<?php echo $theme_css; ?>">
+<style type="text/css">
+<!--
+body {
+
+    background-image: url(../skins/omega/header_right_bg.png);
+
+	background-repeat: no-repeat;
+
+	text-align: center;
+
+	margin: 0;
+
+	padding: 0;
+
+	background-color: #c0c0c0;
+
+	font-family: Verdana, Lucida, Helvetica;
+
+}
+
+#container {
+
+	background-image:    url(../images/bg.jpg);
+
+	background-repeat: no-repeat;
+
+	background-attachment: scroll;
+
+	background-position: center left;
+
+	margin: 8em auto;
+
+	width: 474px;
+
+	height: 273px;
+
+	position: relative;
+
+}
+
+#logo {
+
+	width: 140px;
+
+	height: 78px;
+
+	background-image: url(../images/<? echo "$org_logo" ?>);
+
+	position: absolute;
+
+	top: 120px;
+
+	left: 40px;
+
+}
+
+h1 {
+
+	text-align: right;
+
+	font-size: 1em;
+
+	color: #FFFFFF;
+
+	width: 375px;
+
+	margin: 65px 20px 0px 0px;
+
+	position: absolute;
+
+	top: 0px;
+
+	left: 20px;
+
+}
+
+h2 {
+
+	color: #FFFFFF;
+
+	text-align: right;
+
+	font-size: .8em;
+
+	margin: 10px 10px 0px 0px;
+
+	position: absolute;
+
+	top: 110px;
+
+	left: 210px;
+
+	width: 200px;
+
+	height: 28px;
+}
+
+h3, p {
+
+	font-size: .7em;
+
+	font-weight: bold;
+
+	text-transform: uppercase;
+
+	color: #999999;
+
+	margin: 30px 30px;
+
+	position: absolute;
+
+	top: 150px;
+
+	left: 220px;
+
+}
+
+p {
+
+	margin: 1em 0 0 50%;
+
+}
+
+a {
+
+	text-transform: lowercase;
+
+	text-decoration: none;
+
+	color: #f4dc6b;
+
+}
+
+a:hover {
+
+	color: #FFFFFF;
+
+	padding-bottom: 2px;
+
+	border-bottom: 1px dashed #B5B9BD;
+
+}
+
+-->
+</style>
 <?php
     }
+$plugin_message = concat_hook_function('logout_above_text');
 ?>
    <title><?php echo $org_title . ' - ' . _("Signout"); ?></title>
 </head>
-<body text="<?php echo $color[8]; ?>" bgcolor="<?php echo $color[4]; ?>"
-link="<?php echo $color[7]; ?>" vlink="<?php echo $color[7]; ?>"
-alink="<?php echo $color[7]; ?>">
-<br /><br />
-<?php
-$plugin_message = concat_hook_function('logout_above_text');
-echo
-html_tag( 'table',
-    html_tag( 'tr',
-         html_tag( 'th', _("Sign Out"), 'center' ) ,
-    '', $color[0], 'width="100%"' ) .
-    $plugin_message .
-    html_tag( 'tr',
-         html_tag( 'td', _("You have been successfully signed out.") .
-             '<br /><a href="login.php" target="' . $frame_top . '">' .
-             _("Click here to log back in.") . '</a><br />' ,
-         'center' ) ,
-    '', $color[4], 'width="100%"' ) .
-    html_tag( 'tr',
-         html_tag( 'td', '<br />', 'center' ) ,
-    '', $color[0], 'width="100%"' ) ,
-'center', $color[4], 'width="50%" cols="1" cellpadding="2" cellspacing="0" border="0"' )
-?>
+<body>
+
+<div id="container">
+  <h1>WebMail Logout</h1>
+
+  <h2><?php echo _("You have been successfully signed out."); ?></h2>
+  <h3><a href="../src/login.php" target="<?php echo $frame_top; ?>"><?php echo _("Click here to log back in."); ?></a></h3>
+</div>
+
 </body>
 </html>

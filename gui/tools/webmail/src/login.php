@@ -94,58 +94,14 @@ $header = "<script language=\"JavaScript\" type=\"text/javascript\">\n" .
           "  }\n".
           "// -->\n".
           "</script>\n";
-$custom_css = 'none';
 
-// Load default theme if possible
-if (@file_exists($theme[$theme_default]['PATH']))
-   @include ($theme[$theme_default]['PATH']);
-
-if (! isset($color) || ! is_array($color)) {
-    // Add default color theme, if theme loading fails
-    $color = array();
-    $color[0]  = '#dcdcdc';  /* light gray    TitleBar               */
-    $color[1]  = '#800000';  /* red                                  */
-    $color[2]  = '#cc0000';  /* light red     Warning/Error Messages */
-    $color[4]  = '#ffffff';  /* white         Normal Background      */
-    $color[7]  = '#0000cc';  /* blue          Links                  */
-    $color[8]  = '#000000';  /* black         Normal text            */
-}
-
-displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE );
-
-//echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
-echo '<body text="#000000" bgcolor="#FFFFFF" link="#0000CC" vlink="#0000CC" alink="#0000CC" onload="squirrelmail_loginpage_onload();">' .
-     "\n" . addForm('redirect.php', 'post');
-
-$username_form_name = 'login_username';
-$password_form_name = 'secretkey';
-do_hook('login_top');
-
-
-if(sqgetGlobalVar('mailtodata', $mailtodata)) {
-    $mailtofield = addHidden('mailtodata', $mailtodata);
-} else {
-    $mailtofield = '';
-}
-
-/* If they don't have a logo, don't bother.. */
-if (isset($org_logo) && $org_logo) {
-    /* Display width and height like good little people */
-    $width_and_height = '';
-    if (isset($org_logo_width) && is_numeric($org_logo_width) &&
-     $org_logo_width>0) {
-        $width_and_height = " width=\"$org_logo_width\"";
-    }
-    if (isset($org_logo_height) && is_numeric($org_logo_height) &&
-     $org_logo_height>0) {
-        $width_and_height .= " height=\"$org_logo_height\"";
-    }
-}
-
+$header .= <<<CSS
 <style type="text/css">
 <!--
 body {
 	text-align: center;
+    background-image: url(../skins/omega/header_right_bg.png);
+	background-repeat: no-repeat;
 	margin: 0;
 	padding: 0;
 	background-color: #c0c0c0;
@@ -166,7 +122,7 @@ body {
 #logo {
 	width: 140px;
 	height: 78px;
-	background-image: url(<? echo "$org_logo" ?>);
+	background-image: url(<?php echo "$org_logo" ?>);
 	position: absolute;
 	top: 120px;
 	left: 40px;
@@ -264,7 +220,57 @@ p.logout {
 }
 -->
 </style>
+CSS;
 
+// Load default theme if possible
+if (@file_exists($theme[$theme_default]['PATH']))
+   @include ($theme[$theme_default]['PATH']);
+
+$custom_css = '';
+
+if (! isset($color) || ! is_array($color)) {
+    // Add default color theme, if theme loading fails
+    $color = array();
+    $color[0]  = '#dcdcdc';  /* light gray    TitleBar               */
+    $color[1]  = '#800000';  /* red                                  */
+    $color[2]  = '#cc0000';  /* light red     Warning/Error Messages */
+    $color[4]  = '#ffffff';  /* white         Normal Background      */
+    $color[7]  = '#0000cc';  /* blue          Links                  */
+    $color[8]  = '#000000';  /* black         Normal text            */
+}
+
+displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE);
+
+//echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
+echo '<body text="#000000" bgcolor="#FFFFFF" link="#0000CC" vlink="#0000CC" alink="#0000CC" onload="squirrelmail_loginpage_onload();">' .
+     "\n" . addForm('redirect.php', 'post');
+
+$username_form_name = 'login_username';
+$password_form_name = 'secretkey';
+do_hook('login_top');
+
+
+if(sqgetGlobalVar('mailtodata', $mailtodata)) {
+    $mailtofield = addHidden('mailtodata', $mailtodata);
+} else {
+    $mailtofield = '';
+}
+
+/* If they don't have a logo, don't bother.. */
+if (isset($org_logo) && $org_logo) {
+    /* Display width and height like good little people */
+    $width_and_height = '';
+    if (isset($org_logo_width) && is_numeric($org_logo_width) &&
+     $org_logo_width>0) {
+        $width_and_height = " width=\"$org_logo_width\"";
+    }
+    if (isset($org_logo_height) && is_numeric($org_logo_height) &&
+     $org_logo_height>0) {
+        $width_and_height .= " height=\"$org_logo_height\"";
+    }
+}
+
+?>
 <div id="container">
   <h1>WebMail Login</h1>
 

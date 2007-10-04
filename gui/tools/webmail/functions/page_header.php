@@ -18,7 +18,7 @@ require_once(SM_PATH . 'functions/imap_mailbox.php');
 require_once(SM_PATH . 'functions/global.php');
 
 /* Always set up the language before calling these functions */
-function displayHtmlHeader( $title = 'SquirrelMail', $xtra = '', $do_hook = TRUE ) {
+function displayHtmlHeader( $title = 'SquirrelMail', $xtra = '', $do_hook = TRUE) {
     global $squirrelmail_language;
 
     if ( !sqgetGlobalVar('base_uri', $base_uri, SQ_SESSION) ) {
@@ -288,15 +288,15 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	displayInternalLink ('src/options.php', "<div id='options_button'><p class='button_text'>"._("Options")."</p></div>");
 	echo "</td>\n";
 //	echo "</table>"; //To make the icon table fixed but screws up with firefox
-	echo "<td><div align='right'><b><p class='company_text'>".$org_title."</p></b></div></td>";	
+	echo "<td><div align='right'><b><p class='company_text'>".$org_title."</p></b></div></td>";
 	echo "</div>";
 	echo "   </tr>\n".
         "</table>\n\n";
 //====End Menu Icons========
 
 
-		
-//===== Top Header =======		
+
+//===== Top Header =======
 	echo "<table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td class='inbox_left_bar_handle' width='5'><div align='right'><img src='".$base_uri."images/blank_transparent.gif'></div></td>";
  //   echo "<td class='top_bar_header' align='left' valign='middle'><img src='".$base_uri."images/forward.gif'>&nbsp;";
     //echo "<td class='top_bar_header' width='50%' >";
@@ -305,7 +305,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 
 	//echo "<td class='inbox_bar_header' align='middle'><img src='".$base_uri."images/divider.gif'></td>\n";
 
-	
+
 	if ( $shortBoxName <> '' && strtolower( $shortBoxName ) <> 'none' ) {
       echo '<td align="left" class="inbox_bar_header">' . _("Current Folder") . ": <b>$shortBoxName&nbsp;</b>\n";
     } else {
@@ -322,18 +322,18 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
     do_hook('bookmark_plugin');
 	do_hook('notes_plugin');
 	do_hook('todo_plugin');
-	
+
 
     echo "</td>";
 	echo "<td class='inbox_bar_header' align='right'>";
 	echo " ";
     echo "</td>";
-	
+
 	echo "</tr></table><br>";
-		
+
 //======== End Top Header ========
 
-//====Weclome Message Bar=====	
+//====Weclome Message Bar=====
 	echo "<table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td class='top_left_bar_handle' width='5'><div align='right'><img src='".$base_uri."images/blank_transparent.gif'></div></td>";
 	echo "<td class='top_bar_header' align='left'  >";
 	do_hook('welcome');
@@ -343,7 +343,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	do_hook('menuline');
     echo "&nbsp;</td>";
 	echo "</tr></table><br>\n";
-	
+
 	//echo "<table width='100%' border='0' cellspacing='0' cellpadding='0'><tr>";
    // echo "<td align='right'>";
 	//do_hook('menuline');
