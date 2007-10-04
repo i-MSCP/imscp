@@ -160,7 +160,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 }
 
-function check_ipaddr($ipaddr = null, $type = "brutefoce") {
+function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	global $sql, $cfg;
 
 	if ($ipaddr === null) {

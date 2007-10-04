@@ -73,7 +73,10 @@ function get_update_infos(&$tpl) {
 	// Fake the browser type
 	ini_set('user_agent', 'Mozilla/5.0');
 
+	$timeout = 2;
+	$old_timeout = ini_set('default_socket_timeout', $timeout);
 	$dh2 = @fopen($last_update, 'r');
+	ini_set('default_socket_timeout', $old_timeout);
 
 	if (!is_resource($dh2)) {
 		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates!")));

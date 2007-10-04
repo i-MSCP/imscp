@@ -1,21 +1,21 @@
 <?php
 /**
- *  ispCP (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
@@ -31,7 +31,10 @@ function get_update_infos(&$tpl) {
     // Fake the browser type
     ini_set('user_agent','Mozilla/5.0');
 
+	$timeout = 2;
+	$old_timeout = ini_set('default_socket_timeout', $timeout);
 	$dh2 = @fopen($last_update,'r');
+	ini_set('default_socket_timeout', $old_timeout);
 
 	if (!is_resource($dh2)) {
 		$tpl -> assign(array('UPDATE_INFOS' =>  '',

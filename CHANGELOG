@@ -3,9 +3,13 @@ ispCP ω 1.0.0 Changelog
  _________________________________________________________________
 / @TODO:                                                          \
 |         - GUI:                                                  |
-|               * to fix: bruteforce not working at all!          |
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
+
+2007-10-04 Johannes Schobig
+	- GUI:
+		* Fixed #670: Bruteforce isn't working as expected
+		* Fixed to login as admin even if isp-control.net is not reachable
 
 2007-10-01 Benedikt Heintel / Johannes Schobig
 	- GUI:
