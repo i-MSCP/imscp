@@ -347,15 +347,19 @@ SQL_QUERY;
 			$rals_max += $als_max;
 		}
 
-		if ($mail_max == 0) $rmail_uf = '_on_';
+		if ($mail_max != -1) {
+			if ($mail_max == 0) $rmail_uf = '_on_';
 
-		$rmail_current += $mail_current;
-		$rmail_max += $mail_max;
+			$rmail_current += $mail_current;
+			$rmail_max += $mail_max;
+		}
 
-		if ($ftp_max == 0) $rftp_uf = '_on_';
+		if ($ftp_max != -1) {
+			if ($ftp_max == 0) $rftp_uf = '_on_';
 
-		$rftp_current += $ftp_current;
-		$rftp_max += $ftp_max;
+			$rftp_current += $ftp_current;
+			$rftp_max += $ftp_max;
+		}
 
 		if ($sql_db_max != -1) {
 			if ($sql_db_max == 0) $rsql_db_uf = '_on_';
@@ -1465,9 +1469,17 @@ SQL_QUERY;
 		$als = $als_current;
 	}
 
-	$mail += $mail_current;
+	if ($mail != -1) {
+		$mail += $mail_current;
+	} else {
+		$mail = $mail_current;
+	}
 
-	$ftp += $ftp_current;
+	if ($ftp != -1) {
+		$ftp += $ftp_current;
+	} else {
+		$ftp = $ftp_current;
+	}
 
 	if ($sql_db != -1) {
 		$sql_db += $sql_db_current;

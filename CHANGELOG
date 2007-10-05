@@ -6,6 +6,13 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-05 Johannes Schobig
+	- GUI:
+		* Fixed wrong count of mail and ftp users
+		* Fixed error on assign a IP to a reseller
+	- TOOLS:
+		* Fixed #741: Webmail - design Errors (and added deleted file)
+
 2007-10-05 Benedikt Heintel
 	- GUI:
 		* Fixed #746: more relative path in the pma stylesheet
