@@ -25,7 +25,7 @@ $i++;
 /* Authentication type */
 $cfg['Servers'][$i]['auth_type']		= 'signon';
 /*Server parameters */
-$cfg['Servers'][$i]['verbose']			= '{HOSTNAME}';
+$cfg['Servers'][$i]['verbose']			= ' ';
 $cfg['Servers'][$i]['port']				= '3306';
 $cfg['Servers'][$i]['connect_type']		= 'tcp';
 $cfg['Servers'][$i]['socket'] 			= '/var/run/mysqld/mysqld.sock';

@@ -10,8 +10,10 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed wrong count of mail and ftp users
 		* Fixed error on assign a IP to a reseller
+		* Fixed #748 Blank Page on Lostpw email setup
 	- TOOLS:
 		* Fixed #741: Webmail - design Errors (and added deleted file)
+		* Fixed PMA login page
 
 2007-10-05 Benedikt Heintel
 	- GUI:
