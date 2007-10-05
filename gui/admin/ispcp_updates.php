@@ -37,10 +37,9 @@ function get_update_infos(&$tpl) {
 	ini_set('default_socket_timeout', $old_timeout);
 
 	if (!is_resource($dh2)) {
-		$tpl -> assign(array('UPDATE_INFOS' =>  '',
-		                     'TR_MESSAGE'   => tr("Couldn't check for updates!")));
-		$tpl -> parse('UPDATE_MESSAGE', 'update_message');
-		return ;
+		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates! Website not reachable.")));
+		$tpl->parse('UPDATE_MESSAGE', 'update_message');
+		return false;
 	}
 
 	$last_update_result = (int)fread($dh2, 8);

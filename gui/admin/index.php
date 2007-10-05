@@ -41,7 +41,7 @@ function gen_system_message(&$tpl, &$sql) {
         from
             tickets
         where
-            ticket_to=?
+            ticket_to = ?
           and
             (ticket_status = '2' or ticket_status = '5')
           and
@@ -79,9 +79,9 @@ function get_update_infos(&$tpl) {
 	ini_set('default_socket_timeout', $old_timeout);
 
 	if (!is_resource($dh2)) {
-		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates!")));
+		$tpl->assign(array('UPDATE' => tr("Couldn't check for updates! Website not reachable.")));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
-		return ;
+		return false;
 	}
 
 	$last_update_result = (int)fread($dh2, 8);

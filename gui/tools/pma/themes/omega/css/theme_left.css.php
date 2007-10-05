@@ -20,7 +20,7 @@ body {
 <?php if (! empty($GLOBALS['cfg']['FontFamily'])) { ?>
     font-family:        <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
 <?php } ?>
-	background-image: 		url(/tools/pma/themes/omega/img/leftBgnd.jpg);
+	background-image: 		url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>leftBgnd.jpg);
 	background-position: 	left top;
 	background-repeat: 		repeat-y;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
@@ -34,7 +34,7 @@ a img {
 
 ul {
 	margin:0;
-}	
+}
 
 form {
     margin:             0;

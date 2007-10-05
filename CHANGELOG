@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-05 Benedikt Heintel
+	- GUI:
+		* Fixed #746: more relative path in the pma stylesheet
+
 2007-10-04 Johannes Schobig
 	- GUI:
 		* Fixed #670: Bruteforce isn't working as expected
@@ -14,7 +18,6 @@ ispCP ω 1.0.0 Changelog
 2007-10-01 Benedikt Heintel / Johannes Schobig
 	- GUI:
 		* Fixed #721: Problem with non-standard characters in mail-templates
-		* Tried to Fix #741: First part of fixing Webmail layout
 
 2007-09-30 Johannes Schobig
 	- GUI:
