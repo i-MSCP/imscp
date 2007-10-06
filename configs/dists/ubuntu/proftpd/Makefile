@@ -8,7 +8,7 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
 
 	# Ubuntu 7.04?
-	if [[ $(RELEASE) == 'testing/unstable' ]] ; then \
+	if [[ $(RELEASE) = 'testing/unstable' ]] ; then \
 		if [[ -e /etc/proftpd.conf ]] ; then \
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
 		fi ; \

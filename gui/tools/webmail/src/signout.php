@@ -69,147 +69,125 @@ set_up_language($squirrelmail_language, true, true);
 <style type="text/css">
 <!--
 body {
-
-    background-image: url(../skins/omega/header_right_bg.png);
-
-	background-repeat: no-repeat;
-
 	text-align: center;
-
+	background-repeat: no-repeat;
 	margin: 0;
-
 	padding: 0;
-
-	background-color: #c0c0c0;
-
-	font-family: Verdana, Lucida, Helvetica;
-
+	background-color: #ffffff;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
 }
 
 #container {
-
-	background-image:    url(../images/bg.jpg);
-
+	background-image: url(../images/bg.jpg);
 	background-repeat: no-repeat;
-
 	background-attachment: scroll;
-
 	background-position: center left;
-
 	margin: 8em auto;
-
 	width: 474px;
-
 	height: 273px;
-
 	position: relative;
-
 }
 
 #logo {
-
 	width: 140px;
-
 	height: 78px;
-
-	background-image: url(../images/<? echo "$org_logo" ?>);
-
+	background-image: url(<?php echo "$org_logo" ?>);
 	position: absolute;
-
 	top: 120px;
-
 	left: 40px;
+}
 
+#copyright {
+	color: #97E4F7;
+	width: 290px;
+	height: 77px;
+	position: absolute;
+	top: 155px;
+	left: -200px;
 }
 
 h1 {
-
 	text-align: right;
-
 	font-size: 1em;
-
 	color: #FFFFFF;
-
 	width: 375px;
-
 	margin: 65px 20px 0px 0px;
-
 	position: absolute;
-
-	top: 0px;
-
-	left: 20px;
-
+	top: -10px;
+	left: 25px;
 }
 
 h2 {
-
-	color: #FFFFFF;
-
+	color: #666666;
 	text-align: right;
-
-	font-size: .8em;
-
-	margin: 10px 10px 0px 0px;
-
+	font-size: .6em;
+	margin: 15px 30px;
 	position: absolute;
+	top: 90px;
+	left: 170px;
+}
 
-	top: 110px;
-
-	left: 210px;
-
+fieldset {
 	width: 200px;
-
-	height: 28px;
-}
-
-h3, p {
-
-	font-size: .7em;
-
-	font-weight: bold;
-
-	text-transform: uppercase;
-
-	color: #999999;
-
-	margin: 30px 30px;
-
+	margin: 0 auto auto 190px;
+	text-align: right;
+	border: none;
 	position: absolute;
-
-	top: 150px;
-
-	left: 220px;
-
+	top: 100px;
+	left: 20px;
 }
 
-p {
-
-	margin: 1em 0 0 50%;
-
+p.1, p.2, p.3 {
+	font-size: .7em;
+	color: #6D6D6D;
+	vertical-align: super;
 }
 
-a {
+p.1 {
+	color: #666666;
+	margin: 0px 0 0 0;
+}
 
-	text-transform: lowercase;
+p.2, p.3 {
+	margin: 3px 0 0 0;
+	color: #6D6D6D;
+}
 
+p.4 {
+	margin: 3px 0px 0px 0px;
 	text-decoration: none;
+}
 
+.input {
+	margin: 3px 12px 0px 7px;
+	background-color: #FFFFFF;
+	height: 16px;
+	width: 10em;
+	border: 1px solid #c0c0c0;
+	font-size: 11px;
+	vertical-align: middle;
+}
+
+.button {
+	width: 93px;
+	height: 20px;
+	background-color: #202020;
 	color: #f4dc6b;
-
+	border: none;
+	font-weight: bold;
+	font-size: 9px;
+	margin: -10px 12px 0 0 !important;
+	margin: 5px 12px 0 0;
 }
 
-a:hover {
-
-	color: #FFFFFF;
-
-	padding-bottom: 2px;
-
-	border-bottom: 1px dashed #B5B9BD;
-
+p.logout {
+	font-size: .7em;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #0066CC;
+	margin: 3em 2em 0 15em;
 }
-
--->
+//-->
 </style>
 <?php
     }

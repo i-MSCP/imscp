@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-06 Benedikt Heintel
+	- SETUP:
+		* Fixed #738: ispcp.conf does not exist and other issues on /bin/sh use!
+
 2007-10-05 Johannes Schobig
 	- GUI:
 		* Fixed wrong count of mail and ftp users
@@ -18,6 +22,9 @@ ispCP ω 1.0.0 Changelog
 2007-10-05 Benedikt Heintel
 	- GUI:
 		* Fixed #746: more relative path in the pma stylesheet
+	- LANUGAGES:
+		* Updated Czech translation (thanks to Josef Pinc)
+		* Updated French translation (thanks to Grégory Marigot)
 
 2007-10-04 Johannes Schobig
 	- GUI:

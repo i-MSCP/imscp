@@ -63,33 +63,35 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 
 	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/maintenancemode.tpl');
 
-	$tpl->assign(array(
-						'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
-						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
-						'THEME_CHARSET' => tr('encoding'),
-						'TR_MESSAGE' => nl2br($cfg['MAINTENANCEMODE_MESSAGE']),
-						'TR_ADMINLOGIN' => tr('Administrator login')
-						)
-					);
+	$tpl->assign(
+			array(
+				'TR_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
+				'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
+				'THEME_CHARSET' => tr('encoding'),
+				'TR_MESSAGE' => nl2br($cfg['MAINTENANCEMODE_MESSAGE']),
+				'TR_ADMINLOGIN' => tr('Administrator login')
+				)
+			);
 
 } else {
 
 	$tpl->define('page', $cfg['LOGIN_TEMPLATE_PATH'].'/index.tpl');
 
-	$tpl->assign(array(
-						'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
-						'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
-						'THEME_CHARSET' => tr('encoding'),
-						'TR_LOGIN' => tr('Login'),
-						'TR_USERNAME' => tr('Username'),
-						'TR_PASSWORD' => tr('Password'),
-						'TR_LOGIN_INFO' => tr('Please enter your login information'),
-						// Please make this configurable by ispcp-lib
-						'TR_SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://'.$_SERVER['HTTP_HOST'] : 'https://'.$_SERVER['HTTP_HOST'],
-						'TR_SSL_IMAGE' => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
-						'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
-						)
-					);
+	$tpl->assign(
+			array(
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP Omega a Virtual Hosting Control System'),
+				'THEME_COLOR_PATH' => $cfg['LOGIN_TEMPLATE_PATH'],
+				'THEME_CHARSET' => tr('encoding'),
+				'TR_LOGIN' => tr('Login'),
+				'TR_USERNAME' => tr('Username'),
+				'TR_PASSWORD' => tr('Password'),
+				'TR_LOGIN_INFO' => tr('Please enter your login information'),
+				// Please make this configurable by ispcp-lib
+				'TR_SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://'.$_SERVER['HTTP_HOST'] : 'https://'.$_SERVER['HTTP_HOST'],
+				'TR_SSL_IMAGE' => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
+				'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
+				)
+			);
 
 }
 

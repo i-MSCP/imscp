@@ -3,7 +3,7 @@ export
 
 install:
 
-	if [[ $(HOST_OS) == redhat  ]] ; then \
+	if test $(HOST_OS) = redhat ; then \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
@@ -20,13 +20,14 @@ install:
 
 uninstall:
 
-	if [[ $(HOST_OS) == redhat ]] ; then \
+	if test $(HOST_OS) = redhat ; then \
 		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \
 		cd ./cron.d && $(MAKE) uninstall ; cd .. ; \
 		cd ./database && $(MAKE) uninstall ; cd .. ;  \
+		cd ./fcgi && $(MAKE) uninstall ; cd .. ; \
 		cd ./init.d && $(MAKE) uninstall ; cd .. ; \
 		cd ./postfix && $(MAKE) uninstall ; cd .. ; \
 		cd ./courier && $(MAKE) uninstall ; cd .. ; \

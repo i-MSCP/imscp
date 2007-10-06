@@ -3,7 +3,7 @@ export
 
 install:
 
-	if [[ $(HOST_OS) == fedora ]] ; then \
+	if test $(HOST_OS) = fedora ; then \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
@@ -20,7 +20,7 @@ install:
 
 uninstall:
 
-	if [[ $(HOST_OS) == fedora ]] ; then \
+	if test $(HOST_OS) = fedora ; then \
 		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \

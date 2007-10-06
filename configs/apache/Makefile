@@ -15,7 +15,7 @@ install:
 	cp ./httpd.conf ./parts/ispcp_base.tpl
 
 	# Debian 4.0 "Etch"?
-	if [ $(RELEASE) == '4.0' ] || [ $(RELEASE) == 'lenny/sid' ]; then \
+	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
 		cp ./fastcgi2.conf ./working/fastcgi_ispcp.conf ; \
 	else \
 		cp ./fastcgi.conf ./working/fastcgi_ispcp.conf ; \

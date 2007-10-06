@@ -15,7 +15,7 @@ install:
 	cp ./httpd.conf ./parts/ispcp_base.tpl
 
 	# Ubuntu 7.04?
-	if [[ $(RELEASE) == 'testing/unstable' ]] ; then \
+	if [[ $(RELEASE) = 'testing/unstable' ]] ; then \
 		cp ./fastcgi2.conf ./working/fastcgi_ispcp.conf ; \
 	else \
 		cp ./fastcgi.conf ./working/fastcgi_ispcp.conf ; \

@@ -100,16 +100,15 @@ $header .= <<<CSS
 <!--
 body {
 	text-align: center;
-    background-image: url(../skins/omega/header_right_bg.png);
 	background-repeat: no-repeat;
 	margin: 0;
 	padding: 0;
-	background-color: #c0c0c0;
-	font-family:Geneva, Arial, Helvetica, sans-serif;
+	background-color: #fffff;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
 }
 
 #container {
-	background-image:    url(../images/bg.jpg);
+	background-image: url(../images/bg.jpg);
 	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: center left;
@@ -218,7 +217,7 @@ p.logout {
 	color: #0066CC;
 	margin: 3em 2em 0 15em;
 }
--->
+//-->
 </style>
 CSS;
 
