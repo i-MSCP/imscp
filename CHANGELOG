@@ -11,6 +11,7 @@ ispCP ω 1.0.0 Changelog
 		* Updated files on all dists
 	- ENGINE:
 		* Fixed #7: Integrate AWStats support (dynamic / static) (incl. ispcp-dmn-mngr)
+		* Fixed #750: incorrect package list for gentoo (thanks to pasichnyk)
 
 2007-10-10 Johannes Schobig
 	- DISTS:
