@@ -8,14 +8,13 @@ ispCP ω 1.0.0 Changelog
 
 2007-10-07 Benedikt Heintel
 	- DISTS:
-		* Fixed partly #441: outdated ispcp.conf files for some distros (here: gentoo)
+		* Partially fixed #441: outdated ispcp.conf files for some distros (here: gentoo)
 		* Fixed #713: BACKUP_FILE_DIR missing from gentoo ispcp.conf
 	- ENGINE:
 		* Fixed #752: auto-num incrementing on domain change
 
 2007-10-06 Benedikt Heintel
 	- GUI:
-		* Fixed #732: Language selection don't work correctly
 		* Deleted: unused function
 	- SETUP:
 		* Fixed #738: ispcp.conf does not exist and other issues on /bin/sh use!
