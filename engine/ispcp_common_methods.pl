@@ -139,7 +139,7 @@ $main::master_name = 'ispcp-rqst-mngr';
 
 %main::cfg_reg = ();
 
-$main::cfg_re = '^([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
+$main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 # License request function must not SIGPIPE;
 
@@ -2042,16 +2042,6 @@ sub add_dmn_suexec_user {
 
     my ($suexec_min_uid, $suexec_min_gid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
 
-    my $num = get_auto_num();
-
-    my ($sys_uid, $sys_gid) = ($suexec_min_uid + $num, $suexec_min_gid + $num);
-
-    my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-
-    my $sys_user = "$suexec_user_pref$sys_uid";
-
-    my $sys_group = "$suexec_user_pref$sys_gid";
-
     my ($dmn_uid, $dmn_gid) = (@$dmn_data[3], @$dmn_data[2]);
 
     my $dmn_id = @$dmn_data[0];
@@ -2059,6 +2049,15 @@ sub add_dmn_suexec_user {
     my ($rs, $rdata, $sql) = (undef, undef, undef);
 
     if ($dmn_uid == 0 && $dmn_gid == 0) {
+	    my $num = get_auto_num();
+
+	    my ($sys_uid, $sys_gid) = ($suexec_min_uid + $num, $suexec_min_gid + $num);
+
+	    my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+
+	    my $sys_user = "$suexec_user_pref$sys_uid";
+
+	    my $sys_group = "$suexec_user_pref$sys_gid";
 
         # group data.
 
@@ -2073,7 +2072,6 @@ sub add_dmn_suexec_user {
 		# SSH/SCP Useraccount preperation
 		my $homedir = "$main::cfg{'APACHE_WWW_DIR'}/@$dmn_data[1]";
 
-#        $cmd = "$main::cfg{'CMD_USERADD'} -c virtual-user -g $sys_group -s /bin/false -u $sys_uid $sys_user";
 		$cmd = "$main::cfg{'CMD_USERADD'} -c virtual-user -d $homedir -g $sys_group -s /bin/false -u $sys_uid $sys_user";
 
         $rs = sys_command($cmd);

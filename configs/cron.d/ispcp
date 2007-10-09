@@ -17,7 +17,7 @@
 @daily root find /etc/ispcp/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs /bin/rm
 
 # AWStats
-{AW-ENABLED}15	6	*	*	*	root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl
+{AW-ENABLED}15	4	*	*	*	root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl
 
 # Rootkit Hunter
 {RK-ENABLED}0 	0,12	*	*	*	root rkhunter --scan-knownbad-files --check-deleted --createlogfile --cronjob --createlogfile {RKHUNTER_LOG}>/dev/null 2>&1
@@ -33,5 +33,8 @@
 
 # [{DMN_NAME}]:{CRONJOB_ID} custom task START.
 # [{DMN_NAME}]:{CRONJOB_ID} custom task END.
+
+# AWStats static tasks START.
+# AWStats static tasks END.
 
 # delayed tasks END.

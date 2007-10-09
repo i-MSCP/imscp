@@ -1816,13 +1816,13 @@ sub dmn_add_httpd_file_data {
 	# Starter directory for usual user
 	#
 
-	if(!(-e "$starter_dir/$dmn_name")) {
+	if(!(-d "$starter_dir/$dmn_name")) {
             $rs = make_dir(
-                                            "$starter_dir/$dmn_name",
-                                            $sys_user,
-                                            $sys_group,
-                                            0755
-                                            );
+                            "$starter_dir/$dmn_name",
+                            $sys_user,
+                            $sys_group,
+                            0755
+                            );
 
             return $rs if ($rs != 0);
         }
@@ -1831,29 +1831,44 @@ sub dmn_add_httpd_file_data {
         # PHP4 and PHP5 Directory for usual user
         #
 
-        if (! -e "$starter_dir/$dmn_name/php4") {
+        if (! -d "$starter_dir/$dmn_name/php4") {
 
             $rs = make_dir(
-                                            "$starter_dir/$dmn_name/php4",
-                                            $sys_user,
-                                            $sys_group,
-                                            0750
-                                            );
+                            "$starter_dir/$dmn_name/php4",
+                            $sys_user,
+                            $sys_group,
+                            0750
+                            );
 
             return $rs if ($rs != 0);
         }
 
-        if (! -e "$starter_dir/$dmn_name/php5") {
+        if (! -d "$starter_dir/$dmn_name/php5") {
 
             $rs = make_dir(
-                                            "$starter_dir/$dmn_name/php5",
-                                            $sys_user,
-                                            $sys_group,
-                                            0750
-                                            );
+                            "$starter_dir/$dmn_name/php5",
+                            $sys_user,
+                            $sys_group,
+                            0750
+                            );
 
             return $rs if ($rs != 0);
 	}
+
+    #
+    # AwStats Directory (if static AWStats is enabled)
+    #
+
+	if ($main::cfg{'AWSTATS_MODE'} eq 1 && (! -d $www_dir/$dmn_name/statistics)) {
+	    $rs = make_dir(
+	                    "$www_dir/$dmn_name/statistics",
+	                    $sys_user,
+	                    $sys_group,
+	                    0755
+	                    );
+
+    	return $rs if ($rs != 0);
+    }
 
 	#
 	# Domain WWW directories;
@@ -2226,11 +2241,26 @@ sub dmn_change_httpd_file_data {
             return $rs if ($rs != 0);
 	}
 
+    #
+    # AwStats Directory (if static AWStats is enabled)
+    #
+
+	if ($main::cfg{'AWSTATS_MODE'} eq 1 && (! -d $www_dir/$dmn_name/statistics)) {
+	    $rs = make_dir(
+	                    "$www_dir/$dmn_name/statistics",
+	                    $sys_user,
+	                    $sys_group,
+	                    0755
+	                    );
+
+    	return $rs if ($rs != 0);
+    }
+
 	#
 	# Domain WWW directories;
 	#
 
-	if( ! -d "$www_dir/$dmn_name/phptmp") {
+	if(! -d "$www_dir/$dmn_name/phptmp") {
 
 		$rs = make_dir(
 						"$www_dir/$dmn_name/phptmp",
@@ -2912,6 +2942,11 @@ sub dmn_del_mta_data {
 
 ################################### CRONTAB ####################################
 
+################################################################################
+##
+## Add Crontab Data
+##
+
 sub dmn_add_crontab_data {
 
     my ($dmn_data) = @_;
@@ -3097,6 +3132,11 @@ sub dmn_add_crontab_data {
 
 }
 
+################################################################################
+##
+## Delete Crontab Data
+##
+
 sub dmn_del_crontab_data {
 
     my ($dmn_data) = @_;
@@ -3250,6 +3290,11 @@ sub dmn_del_crontab_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Add Backup Crontab Data
+##
 
 sub dmn_add_bkp_crontab_data {
 
@@ -3427,6 +3472,11 @@ sub dmn_add_bkp_crontab_data {
     return 0;
 
 }
+
+################################################################################
+##
+## Delete Backup Crontab Data
+##
 
 sub dmn_del_bkp_crontab_data {
 
@@ -3613,7 +3663,15 @@ sub dmn_add_awstats_data {
 
     }
 
+	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+
     $rs = dmn_add_awstats_cfg_data($dmn_data);
+
+    if ($aws_type eq 1) {
+		$rs = dmn_add_awstats_cron($dmn_data);
+
+		return $rs if ($rs != 0);
+    }
 
     return $rs if ($rs != 0);
 
@@ -3725,9 +3783,17 @@ sub dmn_change_awstats_data {
 
     }
 
+    my $aws_type = $main::cfg{'AWSTATS_MODE'};
+
     $rs = dmn_add_awstats_cfg_data($dmn_data);
 
     return $rs if ($rs != 0);
+
+    if ($aws_type eq 1) {
+		$rs = dmn_add_awstats_cron($dmn_data);
+
+		return $rs if ($rs != 0);
+    }
 
     push_el(\@main::el, 'dmn_change_awstats_data()', 'Ending...');
 
@@ -3755,9 +3821,17 @@ sub dmn_del_awstats_data {
 
     }
 
+    my $aws_type = $main::cfg{'AWSTATS_MODE'};
+
     $rs = dmn_del_awstats_cfg_data($dmn_data);
 
     return $rs if ($rs != 0);
+
+    if ($aws_type eq 1) {
+		$rs = dmn_del_awstats_cron($dmn_data);
+
+		return $rs if ($rs != 0);
+    }
 
     push_el(\@main::el, 'dmn_del_awstats_data()', 'Ending...');
 
@@ -3805,9 +3879,213 @@ sub dmn_del_awstats_cfg_data {
 
     return $rs if ($rs != 0);
 
-
     push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Ending...');
 
+    return 0;
+}
+
+################################################################################
+##
+## Add AWStats Cron Data
+##
+
+sub dmn_add_awstats_cron {
+    my ($dmn_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+        push_el(\@main::el, 'dmn_add_awstats_cron()', 'ERROR: Undefined Input Data...');
+        return -1;
+    }
+
+	my $dmn_name = @$dmn_data[1];
+
+    my $cronjob_minute = @$dmn_data[0];
+    # to prevent running all crons at same time
+    $cronjob_minute = $cronjob_minute % 60;
+
+    my $cronjob_hour = '3';
+
+    my $conf_dir	= $main::cfg{'CONF_DIR'};
+
+    my $tpl_dir 	= "$conf_dir/cron.d/parts";
+    my $working_dir = "$conf_dir/cron.d/working";
+    my $backup_dir 	= "$conf_dir/cron.d/backup";
+    my $working_cfg = "$working_dir/ispcp";
+    my $timestamp 	= time;
+    my $backup_cfg 	= "$backup_dir/ispcp.$timestamp";
+
+    #
+    # Getting needed templates;
+    #
+
+    my $dmn_awstats_entry = '';
+
+    (
+     $rs,
+     $dmn_awstats_entry
+    ) = get_tpl (
+                 $tpl_dir,
+                 'dmn_awstats_entry.tpl'
+                );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Preparing templates;
+    #
+
+    my %tag_hash = (
+                    '{DMN_NAME}' => $dmn_name,
+                    '{MINUTE}' => $cronjob_minute,
+                    '{HOUR}' => $cronjob_hour
+                   );
+
+    my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
+
+    (
+     $rs,
+     $dmn_awstats_entry
+    ) = prep_tpl (
+                  \%tag_hash,
+                  $dmn_awstats_entry
+                 );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Creating working config data;
+    #
+
+    my ($sys, $working) = (undef, undef);
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs if ($rs != 0);
+
+    ($rs, $rdata) = get_tag(
+                            $dmn_awstats_b,
+                            $dmn_awstats_e,
+                            $working
+                           );
+
+    return $rs if ($rs != 0);
+
+    my $dmn_awstats_task = "dmn_awstats_b$dmn_awstats_entry$dmn_awstats_e";
+
+    ($rs, $working) = repl_tag(
+                               $dmn_awstats_b,
+                               $dmn_awstats_e,
+                               $working,
+                               $dmn_awstats_task
+                              );
+
+    return $rs if ($rs != 0);
+
+    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Now we'll proceed system config;
+    #
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_add_awstats_cron()', 'Ending...');
+
+    return 0;
+}
+
+################################################################################
+##
+## Delete AWStats Cron Data
+##
+
+sub dmn_del_awstats_cron {
+    my ($dmn_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'dmn_del_awstats_cron()', 'Starting...');
+
+    if (!defined($dmn_data) || $dmn_data eq '') {
+        push_el(\@main::el, 'dmn_del_awstats_cron()', 'ERROR: Undefined Input Data...');
+        return -1;
+    }
+
+	my $dmn_name = @$dmn_data[1];
+
+    my $cronjob_minute = @$dmn_data[0];
+    # to prevent running all crons at same time
+    $cronjob_minute = $cronjob_minute % 60;
+
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+
+    my $tpl_dir = "$conf_dir/cron.d/parts";
+    my $working_dir = "$conf_dir/cron.d/working";
+    my $backup_dir = "$conf_dir/cron.d/backup";
+    my $working_cfg = "$working_dir/ispcp";
+    my $timestamp = time;
+    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+
+    #
+    # Getting needed templates;
+    #
+
+    my ($dmn_awstats_entry) = '';
+
+    (
+     $rs,
+     $dmn_custom_entry
+    ) = get_tpl (
+                 $tpl_dir,
+                 'dmn_awstats_entry.tpl'
+                );
+
+    return $rs if ($rs != 0);
+
+    #
+    # Creating working config data;
+    #
+
+    my ($sys, $working) = (undef, undef);
+
+
+    ($rs, $working) = get_file($working_cfg);
+
+    return $rs if ($rs != 0);
+
+	$working = "$cronjob_minute 3  * * *   perl /var/www/ispcp/engine/awstats/awstats_buildstaticpages.pl -config=$dmn_name -update -lang=en -awstatsprog=/usr/lib/cgi-bin/awstats.pl -dir=/var/www/virtual/$dmn_name/statistics/\n";
+
+	$rdata =~ s/$working/""/gi;
+
+    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Now we'll proceed system config;
+    #
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+
+    return $rs if ($rs != 0);
+
+    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'dmn_del_awstats_cron()', 'Ending...');
     return 0;
 }
 
@@ -3824,8 +4102,6 @@ sub dmn_add_data {
 
     my $rs = undef;
 
-    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
-
     push_el(\@main::el, 'dmn_add_data()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
@@ -3836,10 +4112,14 @@ sub dmn_add_data {
 
     }
 
+    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+
     # check whether AWStats is enabled
     if ($awstats ne 'no') {
         $rs = dmn_add_awstats_data($dmn_data);
-        return $rs if ($rs != 0);
+
+		return $rs if ($rs != 0);
+
     }
 
 
@@ -3883,6 +4163,13 @@ sub dmn_change_data {
 
     my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
 
+    # check whether AWStats is enabled
+    if ($awstats ne 'no') {
+       	$rs = dmn_change_awstats_data($dmn_data);
+
+		return $rs if ($rs != 0);
+    }
+
     $rs = dmn_change_named_data($dmn_data);
 
     return $rs if ($rs != 0);
@@ -3894,12 +4181,6 @@ sub dmn_change_data {
     $rs = dmn_change_mta_data($dmn_data);
 
     return $rs if ($rs != 0);
-
-	# check whether AWStats is enabled
-	if ($awstats ne 'no') {
-    	$rs = dmn_change_awstats_data($dmn_data);
-   		return $rs if ($rs != 0);
-   	}
 
     push_el(\@main::el, 'dmn_change_data()', 'Ending...');
 
@@ -3918,8 +4199,6 @@ sub dmn_del_data {
 
     my $rs = undef;
 
-    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
-
     push_el(\@main::el, 'dmn_del_data()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
@@ -3930,11 +4209,15 @@ sub dmn_del_data {
 
     }
 
+    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+    my $aws_type = $main::cfg{'AWSTATS_MODE'};
+
     # check whether AWStats is enabled
     if ($awstats ne 'no') {
         $rs = dmn_del_awstats_data($dmn_data);
 
-        return $rs if ($rs != 0);
+		return $rs if ($rs != 0);
+
     }
 
     $rs = dmn_del_named_data($dmn_data);

@@ -71,7 +71,7 @@ $org_title = "ispCP Omega";
  * Set to the empty string to continue to use the default signout page.
  * @global string $signout_page
  */
-$signout_page = '';
+$signout_page = 'index.php';
 
 /**
  * Top frame
