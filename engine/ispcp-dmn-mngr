@@ -864,11 +864,8 @@ sub gen_httpd_dmn_group_entry {
     push_el(\@main::el, 'gen_httpd_dmn_group_entry()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
-
         push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "ERORR: Undefined input data...");
-
         return (-1, '');
-
     }
 
     my ($rs, $rdata) = (undef, undef);
@@ -910,8 +907,11 @@ sub gen_httpd_dmn_group_entry {
         $dmn_php_e,
         $dmn_php2_b,
         $dmn_php2_entry,
-        $dmn_php2_e
-       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+        $dmn_php2_e,
+	    $awstats_b,
+	    $awstats_entry,
+	    $awstats_e
+       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
     (
      $rs,
@@ -929,7 +929,10 @@ sub gen_httpd_dmn_group_entry {
      $dmn_php_e,
      $dmn_php2_b,
      $dmn_php2_entry,
-     $dmn_php2_e
+     $dmn_php2_e,
+	 $dmn_awstats_b,
+	 $dmn_awstats_entry,
+	 $dmn_awstats_e
     ) = get_tpl (
                  $tpl_dir,
                  'dg_b.tpl',
@@ -946,11 +949,13 @@ sub gen_httpd_dmn_group_entry {
                  'dmn_php_e.tpl',
                  'dmn_php2_b.tpl',
                  'dmn_php2_entry.tpl',
-                 'dmn_php2_e.tpl'
+                 'dmn_php2_e.tpl',
+                 'dmn_awstats_b.tpl',
+	             'dmn_awstats_entry.tpl',
+	             'dmn_awstats_e.tpl'
                 );
 
     return ($rs, '') if ($rs != 0);
-
 
     my ($suexec_uid, $suexec_gid) = get_dmn_suexec_user($dmn_id);
 
@@ -993,7 +998,8 @@ sub gen_httpd_dmn_group_entry {
      $dmn_php_b,
      $dmn_php_entry,
      $dmn_php_e,
-     $dmn_php2_entry
+     $dmn_php2_entry,
+	 $dmn_awstats_entry
     ) = prep_tpl(
                  \%tag_hash,
                  $dg_b,
@@ -1008,8 +1014,31 @@ sub gen_httpd_dmn_group_entry {
                  $dmn_php_b,
                  $dmn_php_entry,
                  $dmn_php_e,
-                 $dmn_php2_entry
+                 $dmn_php2_entry,
+                 $dmn_awstats_entry
                 );
+
+    return ($rs, '') if ($rs != 0);
+
+	#
+	# Add AWStats data
+	#
+
+	my $awstats_entry = undef;
+
+	if ($main::$cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::$cfg{'AWSTATS_MODE'} eq 0) {
+		$awstats_entry = $dmn_awstats_b$dmn_awstats_entry$dmn_awstats_e;
+	}
+	else {
+		$awstats_entry = $dmn_awstats_b$dmn_awstats_e;
+	}
+
+    ($rs, $dmn_entry) = repl_tag(
+                                 $dmn_awstats_b,
+                                 $dmn_awstats_e,
+                                 $dmn_entry,
+                                 $awstats_entry
+                                );
 
     return ($rs, '') if ($rs != 0);
 
@@ -1204,6 +1233,7 @@ sub dmn_add_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
+
     #
     # Create apache suexec user for this domain.
     #
@@ -1229,7 +1259,6 @@ sub dmn_add_httpd_cfg_data {
     ($rs, $vh_entry_val) = prep_tpl (\%tag_hash, $vh_entry);
 
     return $rs if ($rs != 0);
-
 
     %tag_hash = (
                   '{IP}' => $dmn_ip,
