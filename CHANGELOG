@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-10 Johannes Schobig
+	- DISTS:
+		* Updated files on all dists
+	- ENGINE:
+		* Fixed #7 awStats (dynamic) (ispcp-dmn-mngr missing)
+
 2007-10-07 Benedikt Heintel
 	- DISTS:
 		* Partially fixed #441: outdated ispcp.conf files for some distros (here: gentoo)

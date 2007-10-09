@@ -2250,6 +2250,18 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
+	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/01_awstats.conf $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf";
+
+	$rs = sys_command($cmd);
+
+	return $rs if ($rs != 0);
+
+	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", 'root', 'root', 0644);
+
+	$rs = sys_command($cmd);
+
+	return $rs if ($rs != 0);
+
     $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
 
     return $rs if ($rs != 0);
@@ -2285,8 +2297,28 @@ sub setup_httpd {
 		sys_command_rs("/usr/sbin/a2ensite ispcp.conf &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2ensite 00_master.conf &> /tmp/ispcp-setup-services.log");
 
-		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
+
 			sys_command_rs("/usr/sbin/a2ensite 01_awstats.conf &> /tmp/ispcp-setup-services.log");
+
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_MODS_DIR'}/proxy.conf $bk_dir/proxy.conf";
+
+			$rs = sys_command($cmd);
+
+			#
+			# Replace the allowed hosts in mod_proxy
+			#
+
+			($rs, $rdata) = get_file("$main::cfg{'APACHE_MODS_DIR'}/proxy.conf");
+
+			return $rs if ($rs != 0);
+
+			$rdata =~ s/#Allow from .example.com/Allow from 127.0.0.1/gi
+
+			$rs = store_file("$main::cfg{'APACHE_MODS_DIR'}/proxy.conf", $rdata, 'root', 'root', 0644);
+
+			return $rs if ($rs != 0);
+
 		}
 	}
 
@@ -2312,7 +2344,7 @@ sub setup_httpd {
 		sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/a2enmod suexec &> /tmp/ispcp-setup-services.log");
 
-		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
 			sys_command_rs("/usr/sbin/a2enmod proxy &> /tmp/ispcp-setup-services.log");
 		}
 

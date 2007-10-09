@@ -2,7 +2,7 @@
 
     SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
 
-    ServerAdmin     root@{DMN_NAME}
+    ServerAdmin     webmaster@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
 
     ServerName      {DMN_NAME}
@@ -16,29 +16,20 @@
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
-    ErrorDocument 401 /errors/401/index.php
-    ErrorDocument 403 /errors/403/index.php
-    ErrorDocument 404 /errors/404/index.php
-    ErrorDocument 500 /errors/500/index.php
+    ErrorDocument 401 /errors/401.html
+    ErrorDocument 403 /errors/403.html
+    ErrorDocument 404 /errors/404.html
+    ErrorDocument 500 /errors/500.html
+    ErrorDocument 503 /errors/503.html
 
-    Redirect /stats http://{DMN_NAME}/awstats/awstats.pl
     Redirect /ispcp http://{BASE_SERVER_VHOST}
+
+    <IfModule mod_cband.c>
+        CBandUser {DMN_GRP}
+    </IfModule>
 
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
-
-    <IfModule mod_php4.c>
-        <Directory {GUI_ROOT_DIR}>
-            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-            php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
-        </Directory>
-    </IfModule>
-    <IfModule mod_php5.c>
-        <Directory {GUI_ROOT_DIR}>
-            php_admin_value open_basedir "{GUI_ROOT_DIR}/:/etc/ispcp/:/proc/:{WWW_DIR}/:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-            php_admin_value session.save_path "{GUI_ROOT_DIR}/phptmp/"
-        </Directory>
-    </IfModule>
 
     # httpd dmn entry PHP2 support BEGIN.
     # httpd dmn entry PHP2 support END.
