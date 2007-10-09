@@ -28,6 +28,9 @@
         CBandUser {DMN_GRP}
     </IfModule>
 
+    # httpd awstats support BEGIN.
+    # httpd awstats support END.
+
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 

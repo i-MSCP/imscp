@@ -7,6 +7,8 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-10-10 Benedikt Heintel
+	- DISTS:
+		* Updated files on all dists
 	- ENGINE:
 		* Fixed #7: Integrate AWStats support (dynamic / static) (incl. ispcp-dmn-mngr)
 
