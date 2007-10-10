@@ -3955,7 +3955,7 @@ sub dmn_add_awstats_cron {
     # Getting needed templates;
     #
 
-    my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_b) = ('', '', '');
+    my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
 
     (
      $rs,
