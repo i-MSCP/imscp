@@ -908,9 +908,9 @@ sub gen_httpd_dmn_group_entry {
         $dmn_php2_b,
         $dmn_php2_entry,
         $dmn_php2_e,
-	    $awstats_b,
-	    $awstats_entry,
-	    $awstats_e
+	    $dmn_awstats_b,
+	    $dmn_awstats_entry,
+	    $dmn_awstats_e
        ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
     (
@@ -1026,11 +1026,11 @@ sub gen_httpd_dmn_group_entry {
 
 	my $awstats_entry = undef;
 
-	if ($main::$cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::$cfg{'AWSTATS_MODE'} eq 0) {
-		$awstats_entry = $dmn_awstats_b$dmn_awstats_entry$dmn_awstats_e;
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
+		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_entry\n$dmn_awstats_e";
 	}
 	else {
-		$awstats_entry = $dmn_awstats_b$dmn_awstats_e;
+		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_e";
 	}
 
     ($rs, $dmn_entry) = repl_tag(
@@ -1885,18 +1885,20 @@ sub dmn_add_httpd_file_data {
 	}
 
     #
-    # AwStats Directory (if static AWStats is enabled)
+    # AWStats Directory (if static AWStats is enabled)
     #
 
-	if ($main::cfg{'AWSTATS_MODE'} eq 1 && (! -d $www_dir/$dmn_name/statistics)) {
-	    $rs = make_dir(
-	                    "$www_dir/$dmn_name/statistics",
-	                    $sys_user,
-	                    $sys_group,
-	                    0755
-	                    );
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		if (! -d "$www_dir/$dmn_name/statistics") {
+		    $rs = make_dir(
+		                    "$www_dir/$dmn_name/statistics",
+		                    $sys_user,
+		                    $sys_group,
+		                    0755
+		                    );
 
-    	return $rs if ($rs != 0);
+	    	return $rs if ($rs != 0);
+    	}
     }
 
 	#
@@ -2271,18 +2273,20 @@ sub dmn_change_httpd_file_data {
 	}
 
     #
-    # AwStats Directory (if static AWStats is enabled)
+    # AWStats Directory (if static AWStats is enabled)
     #
 
-	if ($main::cfg{'AWSTATS_MODE'} eq 1 && (! -d $www_dir/$dmn_name/statistics)) {
-	    $rs = make_dir(
-	                    "$www_dir/$dmn_name/statistics",
-	                    $sys_user,
-	                    $sys_group,
-	                    0755
-	                    );
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		if (! -d "$www_dir/$dmn_name/statistics") {
+		    $rs = make_dir(
+		                    "$www_dir/$dmn_name/statistics",
+		                    $sys_user,
+		                    $sys_group,
+		                    0755
+		                    );
 
-    	return $rs if ($rs != 0);
+	    	return $rs if ($rs != 0);
+    	}
     }
 
 	#
@@ -3951,7 +3955,7 @@ sub dmn_add_awstats_cron {
     # Getting needed templates;
     #
 
-    my $dmn_awstats_entry = '';
+    my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_b) = ('', '', '');
 
     (
      $rs,
@@ -3989,7 +3993,7 @@ sub dmn_add_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working) = (undef, undef);
+    my ($sys, $working, $rdata) = (undef, undef, undef);
 
     ($rs, $working) = get_file($working_cfg);
 
@@ -4071,7 +4075,7 @@ sub dmn_del_awstats_cron {
     # Getting needed templates;
     #
 
-    my ($dmn_awstats_entry) = '';
+    my ($dmn_awstats_entry, $dmn_custom_entry) = ('', undef);
 
     (
      $rs,
@@ -4087,8 +4091,7 @@ sub dmn_del_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working) = (undef, undef);
-
+    my ($sys, $working, $rdata) = (undef, undef, undef);
 
     ($rs, $working) = get_file($working_cfg);
 

@@ -2346,6 +2346,7 @@ sub setup_httpd {
 
 		if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
 			sys_command_rs("/usr/sbin/a2enmod proxy &> /tmp/ispcp-setup-services.log");
+			sys_command_rs("/usr/sbin/a2enmod proxy_http &> /tmp/ispcp-setup-services.log");
 		}
 
 	}
