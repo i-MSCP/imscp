@@ -1513,18 +1513,16 @@ sub setup_crontab {
 		return $rs if ($rs != 0);
 
 		$awstats = "";
-		if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes') {
+		if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes' || $main::cfg{'AWSTATS_MODE'} eq 1) {
 			$awstats = "#";
 		}
 
 		$rkhunter = "";
-
 		if (sys_command_rs("which rkhunter > /dev/null") ne 0) {
 			$rkhunter = "#";
 		}
 
 		$ckrootkit = "";
-
 		if (sys_command_rs("which chkrootkit > /dev/null") ne 0) {
 			$ckrootkit = "#";
 		}
@@ -1538,6 +1536,7 @@ sub setup_crontab {
 						'{AWSTATS_ROOT_DIR}' => $main::cfg{'AWSTATS_ROOT_DIR'},
 						'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
 						'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+						'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
 						'{AW-ENABLED}' => $awstats,
 						'{RK-ENABLED}' => $rkhunter,
 						'{CR-ENABLED}' => $ckrootkit
