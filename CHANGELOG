@@ -7,13 +7,21 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-10-12 Johannes Schobig
-	- SETUP:
-		* Fixed some setup issues (Benedikt Heintel)
+	- DISTS:
+		* Fixed #756: Updates break gentoo installation
 	- ENGINE:
 		* Fixed some problems with awstats #7
 		* Fixed #757: Creating alias domains is broken
-	- DISTS:
-		* Fixed #756: Updates break gentoo installation
+
+2007-10-12 Benedikt Heintel
+	- DOCS:
+		* Updated Debian: Install
+		* Updated Debian packages: added awstats
+	- ENGINE:
+		* Fixed some problems with awstats #7
+	- SETUP:
+		* Fixed some setup issues
+		* Added configuration for Secondary DNS and MySQL Prefix
 
 2007-10-10 Benedikt Heintel
 	- DISTS:

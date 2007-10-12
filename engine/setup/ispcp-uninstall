@@ -47,7 +47,7 @@ sub welcome_note {
 
     Welcome in ISPCP OMEGA '$main::cfg{'VersionH'}' Uninstall Program.
 
-    This program will uninstall ISPCP OMEGA system from your server.
+    This program will uninstall ispCP OMEGA system from your server.
 
     /!\\ WARNING: All domain users and their accounts will be removed.  /!\\
 

@@ -32,6 +32,8 @@
 
 prog=ispcp_daemon
 progpath=/var/www/ispcp/daemon
+lockfile=/var/lock/subsys/ispcp
+PID=/var/run/ispcp_daemon.pid
 
 start() {
         echo -n $"Starting $prog: "

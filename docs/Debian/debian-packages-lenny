@@ -2,6 +2,7 @@ apache2
 apache2-mpm-worker
 apache2.2-common
 apache2-utils
+awstats
 bash
 bind9
 bzip2
