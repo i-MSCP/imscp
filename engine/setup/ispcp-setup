@@ -178,16 +178,23 @@ sub ask_eth {
 
 	}
 
+	if (check_eth($main::ua{'eth_ip'}) != 0) {
+		return 0;
+	}
+
 	push_el(\@main::el, 'ask_eth()', 'Ending...');
 
-	return 0;
+	return 1;
 
 }
 
 sub check_eth {
 
-	return 0 unless $main::ua{'eth_ip'} =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
+	my ($ip) = @_;
 
+	return 0 if (!($ip  =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/));
+
+	$ip  =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;
 	my ($d1, $d2, $d3, $d4) = ($1, $2, $3, $4);
 
 	return 0 if (($d1 <= 0) || ($d1 >= 255));
@@ -702,6 +709,74 @@ sub ask_php_version {
 	return 0;
 }
 
+sub ask_second_dns {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_php_version()', 'Starting...');
+
+	my $qmsg = "\n    IP of Secondary DNS? []: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'secondary_dns'} = '';
+	}
+	else {
+		if (check_eth($rdata) != 0) {
+			$main::ua{'secondary_dns'} = $rdata;
+		}
+		else {
+			print STDOUT "\n    No valid IP, please retry!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+
+	return 0;
+}
+
+sub ask_mysql_prefix {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_php_version()', 'Starting...');
+
+	my $qmsg = "\n    Use MySQL Prefix.\n    Possible values: [i]nfront, [b]ehind, [n]one. (default none): ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '' || $rdata eq 'none' || $rdata eq 'n') {
+		$main::ua{'mysql_prefix'} = 'no';
+		$main::ua{'mysql_prefix_type'} = '';
+	}
+	else {
+		if ($rdata eq 'infront' || $rdata eq 'i') {
+			$main::ua{'mysql_prefix'} = 'yes';
+			$main::ua{'mysql_prefix_type'} = 'infront';
+		}
+		elsif ($rdata eq 'behind' || $rdata eq 'b') {
+			$main::ua{'mysql_prefix'} = 'yes';
+			$main::ua{'mysql_prefix_type'} = 'behind';
+		}
+		else {
+			print STDOUT "\n    Not allowed Value, please retry!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+
+	return 0;
+}
+
 sub user_dialog {
 
 	my $rs = undef;
@@ -722,9 +797,7 @@ sub user_dialog {
 
 		$rs = ask_eth();
 
-		return $rs if ($rs != 0);
-
-	} while (check_eth() == 0);
+	} while ($rs == 1);
 
 	do {
 		$rs = ask_vhost();
@@ -802,6 +875,14 @@ sub user_dialog {
 		$rs = ask_php_version();
 	} while ($rs == 1);
 
+	do {
+		$rs = ask_second_dns();
+	} while ($rs == 1);
+
+	do {
+		$rs = ask_mysql_prefix();
+	} while ($rs == 1);
+
 	#
 	# AWStats questions
 	#
@@ -823,33 +904,21 @@ sub user_dialog {
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
-
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
-
 	push_el(\@main::el, 'user_dialog()', "eth: $main::ua{'eth_ip'}");
-
 	push_el(\@main::el, 'user_dialog()', "panel_vhost: $main::ua{'admin_vhost'}");
-
 	push_el(\@main::el, 'user_dialog()', "db_host: $main::ua{'db_host'}");
-
 	push_el(\@main::el, 'user_dialog()', "db_name: $main::ua{'db_name'}");
-
 	push_el(\@main::el, 'user_dialog()', "db_user: $main::ua{'db_user'}");
-
 	push_el(\@main::el, 'user_dialog()', "db_password: $main::ua{'db_password'}");
-
 	push_el(\@main::el, 'user_dialog()', "admin: $main::ua{'admin'}");
-
 	push_el(\@main::el, 'user_dialog()', "admin_password");
-
 	push_el(\@main::el, 'user_dialog()', "admin_email: $main::ua{'admin_email'}");
-
 	push_el(\@main::el, 'user_dialog()', "awstats_on: $main::ua{'awstats_on'}");
-
 	push_el(\@main::el, 'user_dialog()', "awstats_dyn: $main::ua{'awstats_dyn'}");
-
+	push_el(\@main::el, 'user_dialog()', "mysql_prefix: $main::ua{'mysql_prefix'}");
+	push_el(\@main::el, 'user_dialog()', "mysql_prefix_type: $main::ua{'mysql_prefix_type'}");
 	push_el(\@main::el, 'user_dialog()', "php_version: $main::ua{'php_version'}");
-
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
 	return 0;
@@ -1068,7 +1137,7 @@ sub setup_system_users {
 	@gdata = getgrnam($prefix.$mgid);
 	@udata = getpwnam($prefix.$muid);
 
-	if (scalar(@gdata) == 0) { # we have not this one group data;
+	if (scalar(@gdata) == 0) { # we do not have this group
 		my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";
 		$rs = sys_command($cmd);
 
@@ -1076,7 +1145,7 @@ sub setup_system_users {
 
 	}
 
-	if (scalar(@udata) == 0) { # we have not this one user data;
+	if (scalar(@udata) == 0) { # we do not have this user
 		my $cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
 		$rs = sys_command($cmd);
 
@@ -1134,8 +1203,9 @@ sub setup_system_dirs {
 
 	return $rs if ($rs != 0);
 
-	# AWStats dir
-	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+	# AWStats dir, use of $main::ua{'awstats_on'}, instead of $main::cfg{'AWSTATS_ACTIVE'},
+	# because variable not yet set.
+	if ($main::ua{'awstats_on'} eq 'yes') {
 		$rs = make_dir($main::cfg{'AWSTATS_CACHE_DIR'}, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0755);
 
 		return $rs if ($rs != 0);
@@ -1222,6 +1292,20 @@ sub setup_config {
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
+
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('SECONDARY_DNS', $main::ua{'secondary_dns'});
+
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('MYSQL_PREFIX', $main::ua{'mysql_prefix'});
+
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('MYSQL_PREFIX_TYPE', $main::ua{'mysql_prefix_type'});
+
+	return $rs if ($rs != 0);
 
 	$rs = store_conf();
 
