@@ -86,57 +86,49 @@
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_SUBDOMAIN_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_SUBDOMAIN_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_subdomain_cnt value="{MAX_SUBDOMAIN_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_ALIASES_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_ALIASES_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_alias_cnt value="{MAX_ALIASES_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_MAIL_USERS_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_MAIL_USERS_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_mail_cnt value="{MAX_MAIL_USERS_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_FTP_USERS_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_FTP_USERS_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_ftp_cnt value="{MAX_FTP_USERS_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_SQLDB_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_SQLDB_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_sql_db_cnt value="{MAX_SQLDB_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_SQL_USERS_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_SQL_USERS_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_sql_user_cnt value="{MAX_SQL_USERS_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_TRAFFIC_AMOUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_TRAFFIC_AMOUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_traffic value="{MAX_TRAFFIC_AMOUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_DISK_AMOUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_DISK_AMOUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_disk value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput">
         </td>
       </tr>

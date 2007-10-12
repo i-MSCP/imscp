@@ -89,8 +89,6 @@ BEGIN {
 
 # Global variables;
 
-#$main::engine_debug = '_on_';
-
 $main::cc_stdout = '/tmp/ispcp-cc.stdout';
 
 $main::cc_stderr = '/tmp/ispcp-cc.stderr';

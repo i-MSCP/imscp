@@ -15,6 +15,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed some user and privilege errors in als and dmn_mngr
 
 2007-10-12 Benedikt Heintel
+	- CONFIGS:
+		* Added debug accessable via ispcp.conf
 	- DOCS:
 		* Updated Debian: Install
 		* Updated Debian packages: added awstats
@@ -22,6 +24,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed some problems with awstats #7
 	- SETUP:
 		* Fixed some setup issues
+		* Added remove cron for daemon logs
 		* Added configuration for Secondary DNS and MySQL Prefix
 
 2007-10-10 Benedikt Heintel

@@ -38,7 +38,10 @@ for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ 
     export $a
 done
 
-echo -n "    Setting GUI Permissions: ";
+# for spacing
+echo "";
+echo "";
+echo -n "   Setting GUI Permissions: ";
 
 if [ $DEBUG -eq 1 ]; then
     echo	"";

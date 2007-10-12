@@ -1026,7 +1026,7 @@ sub gen_httpd_dmn_group_entry {
 
 	my $awstats_entry = undef;
 
-	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
 		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_entry\n$dmn_awstats_e";
 	}
 	else {
@@ -4248,7 +4248,6 @@ sub dmn_del_data {
     }
 
     my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
-    my $aws_type = $main::cfg{'AWSTATS_MODE'};
 
     # check whether AWStats is enabled
     if ($awstats ne 'no') {

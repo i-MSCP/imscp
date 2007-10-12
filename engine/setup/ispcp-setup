@@ -104,7 +104,7 @@ sub ask_hostname {
 
 	return $rs if ($rs != 0);
 
-	my $qmsg = "    Please enter fully qualified hostname (Enter for defaults) [$hostname]: ";
+	my $qmsg = "    Please enter fully qualified hostname. [$hostname]: ";
 
 	print STDOUT $qmsg;
 
@@ -162,7 +162,7 @@ sub ask_eth {
 
 	my $eth = $rdata;
 
-	my $qmsg = "\n    Please enter system network address (Enter for defaults) [$eth]: ";
+	my $qmsg = "\n    Please enter system network address. [$eth]: ";
 
 	print STDOUT $qmsg;
 
@@ -217,7 +217,7 @@ sub ask_db_host {
 
 	my $db_host = 'localhost';
 
-	my $qmsg = "\n    Please enter SQL server host (Enter for defaults) [$db_host]: ";
+	my $qmsg = "\n    Please enter SQL server host. [$db_host]: ";
 
 	print STDOUT $qmsg;
 
@@ -247,7 +247,7 @@ sub ask_db_name {
 
 	my $db_name = 'ispcp';
 
-	my $qmsg = "\n    Please enter system SQL database (Enter for defaults) [$db_name]: ";
+	my $qmsg = "\n    Please enter system SQL database. [$db_name]: ";
 
 	print STDOUT $qmsg;
 
@@ -278,7 +278,7 @@ sub ask_db_user {
 
 	my $db_user = 'root';
 
-	my $qmsg = "\n    Please enter system SQL user (Enter for defaults) [$db_user]: ";
+	my $qmsg = "\n    Please enter system SQL user. [$db_user]: ";
 
 	print STDOUT $qmsg;
 
@@ -308,7 +308,7 @@ sub ask_db_password {
 
 	my $db_password = 'none';
 
-	my $qmsg = "\n    Please enter system SQL password (Enter for defaults) [$db_password]: ";
+	my $qmsg = "\n    Please enter system SQL password. [$db_password]: ";
 
 	$pass1 = read_password($qmsg);
 
@@ -348,7 +348,7 @@ sub ask_db_ftp_user {
 
 	my $db_user = 'vftp';
 
-	my $qmsg = "\n    Please enter ispCP ftp SQL user (Enter for defaults) [$db_user]: ";
+	my $qmsg = "\n    Please enter ispCP ftp SQL user. [$db_user]: ";
 
 	print STDOUT $qmsg;
 
@@ -378,7 +378,7 @@ sub ask_db_ftp_password {
 
 	my $db_password = 'none';
 
-	my $qmsg = "\n    Please enter ispCP ftp SQL user password (Enter for defaults) [$db_password]: ";
+	my $qmsg = "\n    Please enter ispCP ftp SQL user password. [$db_password]: ";
 
 	$pass1 = read_password($qmsg);
 
@@ -416,7 +416,7 @@ sub ask_db_pma_user {
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
 	my $db_user = 'pma';
 
-	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user (Enter for defaults) [$db_user]: ";
+	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user. [$db_user]: ";
 	print STDOUT $qmsg;
 	$rdata = readline(\*STDIN); chop($rdata);
 
@@ -436,7 +436,7 @@ sub ask_db_pma_password {
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
 	my $db_password = 'none';
 
-	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user password (Enter for defaults) [$db_password]: ";
+	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user password. [$db_password]: ";
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
@@ -466,7 +466,7 @@ sub ask_admin {
 
 	my $admin = 'admin';
 
-	my $qmsg = "\n    Please enter administrator login name (Enter for defaults) [$admin]: ";
+	my $qmsg = "\n    Please enter administrator login name. [$admin]: ";
 
 	print STDOUT $qmsg;
 
@@ -613,7 +613,7 @@ sub ask_awstats_on {
 
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
-	my $qmsg = "\n    Activate AWStats [no]: ";
+	my $qmsg = "\n    Activate AWStats. [no]: ";
 
 	print STDOUT $qmsg;
 
@@ -647,7 +647,7 @@ sub ask_awstats_dyn {
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
 
-	my $qmsg = "\n    AWStats Mode ('(d)ynamic' or '(s)tatic') [dynamic]: ";
+	my $qmsg = "\n    AWStats Mode:\n    Possible values [d]ynamic and [s]tatic. [dynamic]: ";
 
 	print STDOUT $qmsg;
 
@@ -665,7 +665,7 @@ sub ask_awstats_dyn {
 			$main::ua{'awstats_dyn'} = '1';
 		}
 		else {
-			print STDOUT "\n    Only '(d)ynamic' or '(s)tatic' are allowed!";
+			print STDOUT "\n    Only '[d]ynamic' or '[s]tatic' are allowed!";
 			return 1;
 		}
 	}
@@ -681,7 +681,7 @@ sub ask_php_version {
 
 	push_el(\@main::el, 'ask_php_version()', 'Starting...');
 
-	my $qmsg = "\n    Use which PHP Version? (4 or 5) [4]: ";
+	my $qmsg = "\n    Use which PHP Version? (4 or 5). [5]: ";
 
 	print STDOUT $qmsg;
 
@@ -689,7 +689,7 @@ sub ask_php_version {
 	chop($rdata);
 
 	if (!defined($rdata) || $rdata eq '') {
-		$main::ua{'php_version'} = '4';
+		$main::ua{'php_version'} = '5';
 	}
 	else {
 		if ($rdata eq 'php4' || $rdata eq '4') {
@@ -715,7 +715,7 @@ sub ask_second_dns {
 
 	push_el(\@main::el, 'ask_php_version()', 'Starting...');
 
-	my $qmsg = "\n    IP of Secondary DNS? []: ";
+	my $qmsg = "\n    IP of Secondary DNS. (optional) []: ";
 
 	print STDOUT $qmsg;
 
@@ -746,7 +746,7 @@ sub ask_mysql_prefix {
 
 	push_el(\@main::el, 'ask_php_version()', 'Starting...');
 
-	my $qmsg = "\n    Use MySQL Prefix.\n    Possible values: [i]nfront, [b]ehind, [n]one. (default none): ";
+	my $qmsg = "\n    Use MySQL Prefix.\n    Possible values: [i]nfront, [b]ehind, [n]one. [none]: ";
 
 	print STDOUT $qmsg;
 
@@ -1613,6 +1613,7 @@ sub setup_crontab {
 
 		my %tag_hash = (
 						'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
+						'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
 						'{QUOTA_ROOT_DIR}' => $main::cfg{'QUOTA_ROOT_DIR'},
 						'{TRAFF_ROOT_DIR}' => $main::cfg{'TRAFF_ROOT_DIR'},
 						'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},

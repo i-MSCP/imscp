@@ -500,7 +500,6 @@ $tpl->assign(
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_EMAIL' => tr('Email'),
-		'TR_UNLIMITED' => tr('unlimited'),
 		'TR_MAX_DOMAIN_COUNT' => tr('Domains limit'),
 		'TR_MAX_SUBDOMAIN_COUNT' => tr('Subdomains limit'),
 		'TR_MAX_ALIASES_COUNT' => tr('Aliases limit'),

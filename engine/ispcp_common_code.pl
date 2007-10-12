@@ -42,6 +42,10 @@ my $rs = get_conf();
 
 return $rs if ($rs != 0);
 
+if ($main::cfg{'DEBUG'} != 0) {
+	$main::engine_debug = '_on_';
+}
+
 $main::lock_file = $main::cfg{'MR_LOCK_FILE'};
 
 $main::log_dir = $main::cfg{'LOG_DIR'};
