@@ -58,6 +58,9 @@ install:
 	$(CMD_INSTALL) ./ispcp-serv-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./ispcp-db-passwd $(SYSTEM_ENGINE_ROOT)
 
+	$(CMD_INSTALL) ./awstats/awstats_buildstaticpages.pl $(SYSTEM_ENGINE_ROOT)/awstats
+	$(CMD_INSTALL) ./awstats/awstats_updateall.pl $(SYSTEM_ENGINE_ROOT)/awstats
+
 	$(CMD_INSTALL) ./backup/ispcp-bk-task $(SYSTEM_ENGINE_ROOT)/backup
 	$(CMD_INSTALL) ./backup/ispcp-backup-all $(SYSTEM_ENGINE_ROOT)/backup
 

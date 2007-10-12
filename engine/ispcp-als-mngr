@@ -1709,7 +1709,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name",
                    $sys_user,
-                   $httpd_gid,
+                   $sys_group,
                    0770
                   );
 
