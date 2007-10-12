@@ -12,6 +12,7 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed some problems with awstats #7
 		* Fixed #757: Creating alias domains is broken
+		* Fixed some user and privilege errors in als and dmn_mngr
 
 2007-10-12 Benedikt Heintel
 	- DOCS:

@@ -2079,6 +2079,12 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/valid_css.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
 
 	}
 

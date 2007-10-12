@@ -1671,6 +1671,8 @@ sub als_add_httpd_file_data {
 
     my $dmn_name = @$als_data[8];
 
+    my $als_dmn = @$als_data[2];
+
     my $als_name = "$dmn_name$als_mount";
 
     my $root_dir = $main::cfg{'ROOT_DIR'};
@@ -1709,7 +1711,7 @@ sub als_add_httpd_file_data {
     $rs = make_dir(
                    "$www_dir/$als_name",
                    $sys_user,
-                   $sys_group,
+                   $httpd_gid,
                    0770
                   );
 
@@ -1719,7 +1721,7 @@ sub als_add_httpd_file_data {
                    "$www_dir/$als_name/htdocs",
                    $sys_user,
                    $sys_group,
-                   0770
+                   0775
                   );
 
     return $rs if ($rs != 0);
@@ -1787,7 +1789,7 @@ sub als_add_httpd_file_data {
                                "\n",
                                $sys_user,
                                $httpd_gid,
-                               0660
+                               0640
                               );
 
     return $rs if ($rs != 0);
@@ -1797,7 +1799,7 @@ sub als_add_httpd_file_data {
                                "\n",
                                $sys_user,
                                $httpd_gid,
-                               0660
+                               0640
                               );
 
     return $rs if ($rs != 0);
@@ -1853,7 +1855,7 @@ sub als_add_httpd_file_data {
 
     return $rs if ($rs != 0);
 
-    $index_tpl =~ s/{DOMAIN_NAME}/$als_name/gi;
+    $index_tpl =~ s/{DOMAIN_NAME}/$als_dmn/gi;
     $index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 
     ($rs, $rdata) = store_file(
@@ -1861,7 +1863,7 @@ sub als_add_httpd_file_data {
                                $index_tpl,
                                $sys_user,
                                $sys_group,
-                               0660
+                               0664
                               );
 
     return $rs if ($rs != 0);
@@ -1876,6 +1878,12 @@ sub als_add_httpd_file_data {
 	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
 	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+	$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_css.jpg", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+	$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
 
     push_el(\@main::el, 'als_add_httpd_file_data()', 'Ending...');
