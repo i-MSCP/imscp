@@ -1801,7 +1801,7 @@ sub dmn_add_httpd_file_data {
 
 	my ($dmn_data) = @_;
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $cfg) = (undef, undef, undef);
 
 	push_el(\@main::el, 'dmn_add_httpd_file_data()', 'Starting...');
 
@@ -2049,18 +2049,23 @@ sub dmn_add_httpd_file_data {
 
 		my $index_tpl = '';
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+		my $err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
 
-		($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
-
+		($rs, $index_tpl) = get_tpl($ini_cfg_dir, 'index.html');
 		return $rs if ($rs != 0);
 
-        my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
-		$index_tpl =~ s/{DOMAIN_NAME}/$decoded_dmn_name/gi;
-		$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
+	    my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+		my %tag_hash = (
+						'{DOMAIN_NAME}' => $decoded_dmn_name,
+						'{BASE_SERVER_VHOST}' => $vhost
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $index_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$www_dir/$dmn_name/htdocs/index.html",
-									$index_tpl,
+									$cfg,
 									$sys_user,
 									$sys_group,
 									0644
@@ -2095,14 +2100,19 @@ sub dmn_add_httpd_file_data {
 	if (!(-e "$starter_dir/$dmn_name/php4/php.ini")) {
 
 		my $ini_tpl = '';
+		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4/php.ini");
-
+		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 		return $rs if ($rs != 0);
 
-		$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-		$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+		my %tag_hash = (
+						'{PEAR_DIR}' => $pear_dir,
+						'{WWW_DIR}' => $www_dir,
+						'{DMN_NAME}' => $dmn_name
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php4/php.ini",
@@ -2119,18 +2129,23 @@ sub dmn_add_httpd_file_data {
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
 		my $ini_tpl = '';
+		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
-
+		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 		return $rs if ($rs != 0);
 
-		$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-		$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+		my %tag_hash = (
+						'{PEAR_DIR}' => $pear_dir,
+						'{WWW_DIR}' => $www_dir,
+						'{DMN_NAME}' => $dmn_name
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php5/php.ini",
-									$ini_tpl,
+									$cfg,
 									$sys_user,
 									$sys_group,
 									0640
@@ -2146,18 +2161,24 @@ sub dmn_add_httpd_file_data {
 
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 
-		my $starter_tpl = '';
+		$starter_tpl = '';
+		$cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
-		($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php5-fcgi-starter.tpl");
-
+		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php5-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-		$starter_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+		my %tag_hash = (
+						'{PHP_STARTER_DIR}' => $starter_dir,
+						'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+						'{DMN_NAME}' => $dmn_name
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php5-fcgi-starter",
-									$starter_tpl,
+									$cfg,
 									$sys_user,
 									$sys_group,
 									0750
@@ -2167,12 +2188,17 @@ sub dmn_add_httpd_file_data {
 
 		$starter_tpl = '';
 
-		($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php4-fcgi-starter.tpl");
-
+		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php4-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-		$starter_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+		my %tag_hash = (
+						'{PHP_STARTER_DIR}' => $starter_dir,
+						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
+						'{DMN_NAME}' => $dmn_name
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php4-fcgi-starter",
@@ -2201,7 +2227,7 @@ sub dmn_change_httpd_file_data {
 
     my ($dmn_data) = @_;
 
-    my ($rs, $rdata) = (undef, undef);
+    my ($rs, $rdata, $cfg) = (undef, undef, undef);
 
     push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Starting...');
 
@@ -2315,49 +2341,56 @@ sub dmn_change_httpd_file_data {
 	# php.ini for the domain
 	#
 
-	# feature #94: change of php.ini files on update!
-	#if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
+	my $ini_tpl = '';
+	my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
 
-		my $ini_tpl = '';
+	($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
+	return $rs if ($rs != 0);
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
+	my %tag_hash = (
+					'{PEAR_DIR}' => $pear_dir,
+					'{WWW_DIR}' => $www_dir,
+					'{DMN_NAME}' => $dmn_name
+				   );
 
-		return $rs if ($rs != 0);
+	($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+	return $rs if ($rs != 0);
 
-		$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-		$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+	($rs, $rdata) = store_file(
+								"$starter_dir/$dmn_name/php4/php.ini",
+								$ini_tpl,
+								$sys_user,
+								$sys_group,
+								0640
+								);
 
-		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php5/php.ini",
-									$ini_tpl,
-									$sys_user,
-									$sys_group,
-									0640
-									);
+	return $rs if ($rs != 0);
 
-		return $rs if ($rs != 0);
 
-		$ini_tpl = '';
+	$ini_tpl = '';
+	$ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
 
-		($rs, $ini_tpl) = get_file("$conf_dir/fcgi/parts/php4/php.ini");
+	($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
+	return $rs if ($rs != 0);
 
-		return $rs if ($rs != 0);
+	my %tag_hash = (
+					'{PEAR_DIR}' => $pear_dir,
+					'{WWW_DIR}' => $www_dir,
+					'{DMN_NAME}' => $dmn_name
+				   );
 
-		$ini_tpl =~ s/{WWW_DIR}/$www_dir/gi;
-		$ini_tpl =~ s/{PEAR_DIR}/$pear_dir/gi;
-		$ini_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+	($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+	return $rs if ($rs != 0);
 
-		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php4/php.ini",
-									$ini_tpl,
-									$sys_user,
-									$sys_group,
-									0640
-									);
+	($rs, $rdata) = store_file(
+								"$starter_dir/$dmn_name/php5/php.ini",
+								$cfg,
+								$sys_user,
+								$sys_group,
+								0640
+								);
 
-		return $rs if ($rs != 0);
-	#}
+	return $rs if ($rs != 0);
 
 	#
 	# php4/5-fcgi-starter for the domain
@@ -2365,18 +2398,24 @@ sub dmn_change_httpd_file_data {
 
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 
-		my $starter_tpl = '';
+		$starter_tpl = '';
+		$cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
-		($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php5-fcgi-starter.tpl");
-
+		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php5-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-		$starter_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+		my %tag_hash = (
+						'{PHP_STARTER_DIR}' => $starter_dir,
+						'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+						'{DMN_NAME}' => $dmn_name
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php5-fcgi-starter",
-									$starter_tpl,
+									$cfg,
 									$sys_user,
 									$sys_group,
 									0750
@@ -2386,12 +2425,17 @@ sub dmn_change_httpd_file_data {
 
 		$starter_tpl = '';
 
-		($rs, $starter_tpl) = get_file("$conf_dir/fcgi/parts/php4-fcgi-starter.tpl");
-
+		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php4-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		$starter_tpl =~ s/{PHP_STARTER_DIR}/$starter_dir/gi;
-		$starter_tpl =~ s/{DMN_NAME}/$dmn_name/gi;
+		my %tag_hash = (
+						'{PHP_STARTER_DIR}' => $starter_dir,
+						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
+						'{DMN_NAME}' => $dmn_name
+					   );
+
+		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php4-fcgi-starter",

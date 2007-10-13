@@ -1,0 +1,166 @@
+ispCP ω (OMEGA) HowTo Install for CentOS
+================================================================================
+For other Linux distributions please check the other INSTALL files.
+================================================================================
+
+Table of Content
+================
+1) Version Info
+2) Requirements
+3) Introduction
+4) Installation
+5) Update
+6) FAQ
+7) Credits
+
+================================================================================
+1) Version Info
+---------------
+ispCP ω Version:	1.0.0
+INSTALL Skript:		0.9
+Maintainer:
+Homepage:			http://isp-contol.net
+Linux Distris:		CentOS
+
+================================================================================
+2) Requirements
+---------------
+There is no must have for a system using ispCP ω. This is only a recommendation:
+
+Penitum III or K6-4 with 500 MHz
+512 MB RAM
+100 MB disk space (only for install of ispCP ω)
+Debian (or even any other *NIX-Distribution)
+
+All, CentOS required packages are listed in
+./docs/CentOS/redhat-packages
+
+================================================================================
+3) Introduction
+---------------
+ispCP ω delivers a complete hosting automation appliance by offering significant
+security, total-cost-of-ownership, and performance advantages over competing
+commercial solutions.
+
+With ispCP ω you can configure your server and applications, create user with
+domains with a few point-and-click operations that take less than a minute.
+There is no limit to the number of resellers, users and domains that can be
+created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
+provides graphic user interfaces for the administrators, resellers and users.
+
+================================================================================
+4) Installation
+---------------
+Make sure you are logged in as root.
+
+1.	Untar or unzip the distribution files to a secure directory:
+	# cd /root
+	# tar -xjvf ispcp1.0.0-omega.tar.bz2
+
+2.	Change to the newly created directory:
+	# cd ./ispcp1.0.0
+
+3.	Install the required modules:
+	# yum upgrade
+	# wget http://dag.wieers.com/rpm/packages/rpmforge-release/rpmforge-release-0.3.6-1.el4.rf.i386.rpm
+	# yum remove sendmail
+	# yum install `cat ./docs/CentOS/centos-packages`
+	# perl -MCPAN -e 'install `cat ./docs/CentOS/centos-perl`'
+	# wget http://mirrors.penguinfriends.org/ISPCP/CentOS-5.0/courier-authlib-0.60.1-1.i386.rpm
+	# wget http://mirrors.penguinfriends.org/ISPCP/CentOS-5.0/courier-authlib-userdb-0.60.1-1.i386.rpm
+	# wget http://mirrors.penguinfriends.org/ISPCP/CentOS-5.0/courier-authlib-devel-0.60.1-1.i386.rpm
+	# wget http://mirrors.penguinfriends.org/ISPCP/CentOS-5.0/courier-0.57.0-1.i386.rpm
+	# wget http://mirrors.penguinfriends.org/ISPCP/CentOS-5.0/courier-imapd-0.57.0-1.i386.rpm
+	# wget http://mirrors.penguinfriends.org/ISPCP/CentOS-5.0/ourier-pop3d-0.57.0-1.i386.rpm
+	# rpm -Uvh courier-authlib-*.rpm courier-authlib-userdb-*.rpm courier-authlib-devel-*.rpm courier-0*.rpm courier-imapd-0*.rpm courier-pop3d-0*.rpm
+	# chkconfig --add courier
+	# service courier start
+	# chkconfig --add courier-authlib
+	# service courier-authlib start
+	# chkconfig postfix on
+	# service postfix start
+
+4.	Now there are two ways of install ispCP ω
+
+a) via install script
+---------------------
+4a.	Start the script and follow the install instructions:
+	# ./install-ispcp.sh
+
+After that go to step 11.
+
+b) manualy
+----------
+4b.	You have to set up some configuration variables for your linux distribution.
+	ispCP ω is preconfigurated for Debian 4.0 Etch.
+	If you're using another distribution please check, if config files exist in
+	./configs/dists and use/change them.
+
+	Check the ispcp.conf and adapt it to your requirements.
+	An overview over the variables you can find in the FAQ on
+	http://isp-control.net
+
+5.	Return to the parent direction and build the System by using make:
+	# cd ../
+	# mv Makefile.redhat Makefile
+	# make install
+
+6.	Copy all the directories into the system (you may make backups)
+	# cp -Rv /tmp/ispcp-1.0.0/* /
+
+7.	Now it's time to set up the frontend. Change into the engine directory:
+	# cd /var/www/ispcp/engine/setup
+
+7a.	Set the MySQL password, if not set:
+	# mysqladmin -u root password YOUR_PASSWORD
+
+8.	Start the engine setup:
+	# ./ispcp-setup
+
+9.	Install ispCP ω step-by-step
+
+	If you get no error, all went good; if you get one, look at
+	http://isp-control.net to solve the problem.
+
+10.	There is an error in some courier-versions. Courier won't stop, if you use
+	/etc/init.d/courier-authdaemon stop, so change it:
+	# nano /etc/ini.d/courier-authdaemon
+
+	change: ${libexecdir}/authlib/authdaemon stop
+	into:	killall authdaemond.plain
+
+11.	Clean the temporary folders:
+	# rm -R /tmp/ispcp-1.0.0
+
+
+================================================================================
+5) Update
+---------
+
+There are two ways of update ispCP ω
+
+a) via install script
+---------------------
+1.	Start the script and follow the update instructions:
+	# ./install-ispcp.sh
+
+b) manualy
+----------
+1.	Please check the update From-To-Files in the ./docs directory
+
+================================================================================
+6) FAQ
+------
+
+Please check http://isp-control.net for any questions not answered in this file.
+
+================================================================================
+7) Credits
+----------
+
+ispCP ω is a project of ispCP | isp Control Panel.
+Please visit our site under http://isp-control.net for further information on
+ispCP ω, ispCP and other themes.
+
+We hope you enjoy using ispCP ω. If you like it, help us, to make it better. We
+would be glad on any help provided!

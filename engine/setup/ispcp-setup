@@ -1895,6 +1895,7 @@ sub setup_php {
 
 	%tag_hash = (
 					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+					'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
 					'{DMN_NAME}' => "master"
 					);
 
@@ -1914,6 +1915,7 @@ sub setup_php {
 
 	%tag_hash = (
 					'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+					'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
 					'{DMN_NAME}' => "master"
 					);
 

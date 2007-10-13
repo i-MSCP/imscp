@@ -6,6 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-13 Benedikt Heintel
+	- CONFIGS:
+		* Updated php-fcgi-starter for Gentoo und Debian
+	- DOCS:
+		* Updated Redhat
+		* Added CentOS
+	- ENGINE:
+		* Fixed #759: php starter scripts don't point to valid binary paths for gentoo
+		* Changed: dynamic parsing of php binary direcory
+
 2007-10-12 Johannes Schobig
 	- DISTS:
 		* Fixed #756: Updates break gentoo installation

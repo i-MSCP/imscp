@@ -1,4 +1,4 @@
-ISPCP ω (OMEGA) HowTo Install for RedHat (Enterprise), CentOS
+ISPCP ω (OMEGA) HowTo Install for RedHat (Enterprise)
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,11 +16,11 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ISPCP ω Version:		1.0.0
+ISPCP ω Version:	1.0.0
 INSTALL Skript:		0.9
 Maintainer:
 Homepage:			http://isp-contol.net
-Linux Distris:		RedHat (Enterprise), CentOS
+Linux Distris:		RedHat (Enterprise)
 
 ================================================================================
 2) Requirements
@@ -73,59 +73,49 @@ a) via install script
 4a. Start the script and follow the install instructions:
 	# ./install-ispcp.sh
 
-After that return to step 12.
+After that go to step 11.
 
 b) manualy
 ----------
-4b. Change into the configuration directory:
-	# cd ./configs
-
-5. Open the ispcp.conf and make some changes.
-   You have to set up some configuration variables for your linux distribution.
-   ISPCP ω is preconfigurated for Debian 4.0 Etch.
+4b. You have to set up some configuration variables for your linux distribution.
+   ispCP ω is preconfigurated for Debian 4.0 Etch.
    If you're using another distribution please check, if config files exist in
    ./configs/dists and use/change them.
-
-   These are the Variables you have to look at:
-
-	SECONDARY_DNS =
-	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
-								# infront or behind for MYSQL_PREFIX = no
 
    Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
-6. Return to the parent direction and build the System by using make:
+5. Return to the parent direction and build the System by using make:
 	# cd ../
 	# mv Makefile.redhat Makefile
 	# make install
 
-7. Copy all the directories into the system (you may make backups)
+6. Copy all the directories into the system (you may make backups)
 	# cp -Rv /tmp/ispcp-1.0.0/* /
 
-8. Now it's time to set up the frontend. Change into the engine directory:
+7. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-8a. Set the MySQL password, if not set:
+7a. Set the MySQL password, if not set:
 	# mysqladmin -u root password YOUR_PASSWORD
 
-9. Start the engine setup:
+8. Start the engine setup:
 	# ./ispcp-setup
 
-10. Install ISPCP ω step-by-step
+9. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-11. There is an error in some courier-versions. Courier won't stop, if you use
+10. There is an error in some courier-versions. Courier won't stop, if you use
 	/etc/init.d/courier-authdaemon stop, so change it:
 	# nano /etc/ini.d/courier-authdaemon
 
 	change: ${libexecdir}/authlib/authdaemon stop
 	into:	killall authdaemond.plain
 
-12. Clean the temporary folders:
+11. Clean the temporary folders:
 	# rm -R /tmp/ispcp-1.0.0
 
 
