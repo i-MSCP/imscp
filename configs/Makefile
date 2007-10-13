@@ -16,6 +16,8 @@ install:
 		(cd ./courier && $(MAKE) install &); \
 		(cd ./proftpd && $(MAKE) install &); \
 		(cd ./logrotate && $(MAKE) install); \
+	elif test $(HOST_OS) = centos ; then \
+		cd ./dists/centos && $(MAKE) install ; \
 	elif test $(HOST_OS) = fedora ; then \
 		cd ./dists/fedora && $(MAKE) install ; \
 	elif test $(HOST_OS) = gentoo ; then \
@@ -46,6 +48,8 @@ uninstall:
 		(cd ./courier && $(MAKE) uninstall &); \
 		(cd ./proftpd && $(MAKE) uninstall &); \
 		(cd ./logrotate && $(MAKE) uninstall &); \
+	elif test $(HOST_OS) = centos ; then \
+		cd ./dists/centos && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = fedora ; then \
 		cd ./dists/fedora && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = gentoo ; then \
@@ -61,4 +65,3 @@ uninstall:
 	elif test $(HOST_OS) = ubuntu ; then \
 		cd ./dists/ubuntu && $(MAKE) uninstall ; \
 	fi
-

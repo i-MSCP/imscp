@@ -33,7 +33,7 @@ Penitum III or K6-4 with 500 MHz
 Debian (or even any other *NIX-Distribution)
 
 All, CentOS required packages are listed in
-./docs/CentOS/redhat-packages
+./docs/CentOS/centos-packages
 
 ================================================================================
 3) Introduction
@@ -102,7 +102,7 @@ b) manualy
 
 5.	Return to the parent direction and build the System by using make:
 	# cd ../
-	# mv Makefile.redhat Makefile
+	# mv Makefile.centos Makefile
 	# make install
 
 6.	Copy all the directories into the system (you may make backups)

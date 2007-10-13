@@ -139,7 +139,7 @@ b) manually
 	with:	killall authdaemond.plain
 
 11. Clean the temporary folders:
-	# rm -R /tmp/ispcp-1.0.0
+	# rm -fR /tmp/ispcp-1.0.0
 
 
 ================================================================================
