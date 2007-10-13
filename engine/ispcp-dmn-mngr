@@ -30,7 +30,6 @@
 #    http://isp-control.net
 #
 
-
 use FindBin;
 use lib "$FindBin::Bin/";
 require 'ispcp_common_code.pl';
@@ -964,7 +963,6 @@ sub gen_httpd_dmn_group_entry {
     my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");
 
     my %tag_hash =
-
         (
          '{DMN_GRP}' => $dmn_grp,
          '{DMN_NAME}' => $dmn_name,
@@ -1027,7 +1025,7 @@ sub gen_httpd_dmn_group_entry {
 	my $awstats_entry = undef;
 
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
-		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_entry\n$dmn_awstats_e";
+		$awstats_entry = "$dmn_awstats_entry\n$dmn_awstats_b\n$dmn_awstats_e";
 	}
 	else {
 		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_e";
@@ -2047,11 +2045,11 @@ sub dmn_add_httpd_file_data {
 
 	if (!(-e "$www_dir/$dmn_name/htdocs/index.html")) {
 
-		my $index_tpl = '';
+		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 		my $err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
 
-		($rs, $index_tpl) = get_tpl($ini_cfg_dir, 'index.html');
+		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
 		return $rs if ($rs != 0);
 
 	    my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
@@ -2093,13 +2091,14 @@ sub dmn_add_httpd_file_data {
 
 	}
 
+
 	#
 	# php.ini for the new domain
 	#
 
 	if (!(-e "$starter_dir/$dmn_name/php4/php.ini")) {
 
-		my $ini_tpl = '';
+		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
 
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
@@ -2111,12 +2110,15 @@ sub dmn_add_httpd_file_data {
 						'{DMN_NAME}' => $dmn_name
 					   );
 
-		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
+
+		push_el(\@main::el, 'DEBUG', $cfg);
+
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php4/php.ini",
-									$ini_tpl,
+									$cfg,
 									$sys_user,
 									$sys_group,
 									0640
@@ -2128,7 +2130,7 @@ sub dmn_add_httpd_file_data {
 
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 
-		my $ini_tpl = '';
+		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
 
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
@@ -2140,7 +2142,7 @@ sub dmn_add_httpd_file_data {
 						'{DMN_NAME}' => $dmn_name
 					   );
 
-		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
@@ -2161,8 +2163,8 @@ sub dmn_add_httpd_file_data {
 
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 
-		$starter_tpl = '';
-		$cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
+		my $starter_tpl = undef;
+		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php5-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
@@ -2191,7 +2193,7 @@ sub dmn_add_httpd_file_data {
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php4-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		my %tag_hash = (
+		%tag_hash = (
 						'{PHP_STARTER_DIR}' => $starter_dir,
 						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
 						'{DMN_NAME}' => $dmn_name
@@ -2341,7 +2343,7 @@ sub dmn_change_httpd_file_data {
 	# php.ini for the domain
 	#
 
-	my $ini_tpl = '';
+	my ($ini_tpl, $starter_tpl) = (undef, undef);
 	my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
 
 	($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
@@ -2373,7 +2375,7 @@ sub dmn_change_httpd_file_data {
 	($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 	return $rs if ($rs != 0);
 
-	my %tag_hash = (
+	%tag_hash = (
 					'{PEAR_DIR}' => $pear_dir,
 					'{WWW_DIR}' => $www_dir,
 					'{DMN_NAME}' => $dmn_name
@@ -2398,8 +2400,8 @@ sub dmn_change_httpd_file_data {
 
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
 
-		$starter_tpl = '';
-		$cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
+		my $starter_tpl = undef;
+		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php5-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
@@ -2428,7 +2430,7 @@ sub dmn_change_httpd_file_data {
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php4-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		my %tag_hash = (
+		%tag_hash = (
 						'{PHP_STARTER_DIR}' => $starter_dir,
 						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
 						'{DMN_NAME}' => $dmn_name
@@ -3156,7 +3158,7 @@ sub dmn_add_crontab_data {
 
 
     ($rs, $rdata) = get_tag(
-                            $dmn_custom_b_val,
+                        	$dmn_custom_b_val,
                             $dmn_custom_e_val,
                             $working
                            );
@@ -3975,7 +3977,7 @@ sub dmn_del_awstats_cfg_data {
 sub dmn_add_awstats_cron {
     my ($dmn_data) = @_;
 
-    my $rs = undef;
+    my ($rs, $awstats_entry) = (undef, undef);
 
     push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
 
@@ -4008,12 +4010,16 @@ sub dmn_add_awstats_cron {
     my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
 
     (
-     $rs,
-     $dmn_awstats_entry
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dmn_awstats_entry.tpl'
-                );
+	 $rs,
+	 $dmn_awstats_b,
+	 $dmn_awstats_e,
+	 $dmn_awstats_entry
+	) = get_tpl(
+				$tpl_dir,
+				'dmn_awstats_b.tpl',
+				'dmn_awstats_e.tpl',
+				'dmn_awstats_entry.tpl'
+				);
 
     return $rs if ($rs != 0);
 
@@ -4027,15 +4033,7 @@ sub dmn_add_awstats_cron {
                     '{HOUR}' => $cronjob_hour
                    );
 
-    my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
-
-    (
-     $rs,
-     $dmn_awstats_entry
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_awstats_entry
-                 );
+    ($rs, $awstats_entry) = prep_tpl(\%tag_hash, $dmn_awstats_entry);
 
     return $rs if ($rs != 0);
 
@@ -4057,7 +4055,9 @@ sub dmn_add_awstats_cron {
 
     return $rs if ($rs != 0);
 
-    my $dmn_awstats_task = "dmn_awstats_b$dmn_awstats_entry$dmn_awstats_e";
+    my $dmn_awstats_task = "$dmn_awstats_b\n$awstats_entry\n$dmn_awstats_e";
+
+    push_el(\@main::el, 'dmn_add_awstats_cron()', $dmn_awstats_task);
 
     ($rs, $working) = repl_tag(
                                $dmn_awstats_b,
@@ -4141,17 +4141,17 @@ sub dmn_del_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working, $rdata) = (undef, undef, undef);
+    my ($sys, $working_file, $rdata) = (undef, undef, undef);
 
-    ($rs, $working) = get_file($working_cfg);
+    ($rs, $working_file) = get_file($working_cfg);
 
     return $rs if ($rs != 0);
 
 	$working = "$cronjob_minute 3  * * *   perl /var/www/ispcp/engine/awstats/awstats_buildstaticpages.pl -config=$dmn_name -update -lang=en -awstatsprog=/usr/lib/cgi-bin/awstats.pl -dir=/var/www/virtual/$dmn_name/statistics/\n";
 
-	$rdata =~ s/$working/""/gi;
+	$working_file =~ s/$working/""/gi;
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg $working_file, 'root', 'root', 0644);
 
     return $rs if ($rs != 0);
 

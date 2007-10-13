@@ -32,20 +32,32 @@ case "$1" in
 	;;
   stop)
 	echo -n "Stopping $DESC: "
-	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON
+	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
         rm $PID
 	echo "$NAME."
 	;;
   restart|force-reload)
 	echo "Restarting $DESC: "                                      
-	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON
+	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
 	rm $PID
 	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID
-	echo "$NAME."
+	;;
+  status)
+    set +e
+    if [ -s $PID ]; then
+        RPID=`cat $PID`
+        kill -0 $RPID 2> /dev/null
+        if [ "$?" = 0 ] ; then
+            echo "$NAME is started"
+            exit 0
+        fi
+    fi
+    echo "$NAME is stopped"
+    exit 1
 	;;
   *)
 	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
 	exit 1
 	;;
 esac

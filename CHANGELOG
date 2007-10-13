@@ -9,6 +9,7 @@ ispCP ω 1.0.0 Changelog
 2007-10-13 Benedikt Heintel
 	- CONFIGS:
 		* Updated php-fcgi-starter for Gentoo und Debian
+		* Fixed #763: Patch for all applicable differences between debian and gentoo config files
 		* Added CentOS
 	- DOCS:
 		* Updated Redhat
@@ -16,8 +17,12 @@ ispCP ω 1.0.0 Changelog
 		* Added CentOS
 		* Fixed #761: Ubuntu 7.10 Gutsy package list
 	- ENGINE:
+		* Fixed some problems with awstats #7
 		* Fixed #759: php starter scripts don't point to valid binary paths for gentoo
+		* Fixed #762: Error on Domain Status
 		* Changed: dynamic parsing of php binary direcory
+	- SETUP:
+		* Fixed #250: Installing on Debian sid/lenny MUST choose php5 instead of php4
 
 2007-10-12 Johannes Schobig
 	- DISTS:

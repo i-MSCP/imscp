@@ -1,0 +1,1 @@
+# AWStats static tasks END.
