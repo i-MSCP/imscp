@@ -54,8 +54,8 @@ if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
 	return $rs if ($rs != 0);
 
+	do 'ispcp-db-keys.pl';
 	get_conf();
-	require 'ispcp-db-keys.pl';
 }
 
 $main::lock_file = $main::cfg{'MR_LOCK_FILE'};

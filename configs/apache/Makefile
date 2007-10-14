@@ -23,12 +23,12 @@ install:
 
 	# Debian 4.0 "Etch"?
 	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
-		cp ./fastcgi2.conf $(SYSTEM_CONF)/working/fastcgi_ispcp.conf ; \
+		cp ./fastcgi2.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
 	else \
-		cp ./fastcgi.conf $(SYSTEM_CONF)/working/fastcgi_ispcp.conf ; \
+		cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf ; \
 	fi
 
-	cp -R $(SYSTEM_CONF)/working/fastcgi_ispcp.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
+	cp -R $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf $(ROOT_APACHE_CONF)/mods-available/fastcgi_ispcp.conf
 
 uninstall:
 

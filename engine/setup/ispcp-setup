@@ -306,7 +306,7 @@ sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Starting...');
 
-	my $db_password = '';
+	my $db_password = 'none';
 
 	my $qmsg = "\n    Please enter system SQL password. [$db_password]: ";
 
@@ -314,7 +314,7 @@ sub ask_db_password {
 
 	if (!defined($pass1) || $pass1 eq '') {
 
-		$main::ua{'db_password'} = $db_password;
+		$main::ua{'db_password'} = '';
 
 	} else {
 

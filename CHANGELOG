@@ -11,8 +11,12 @@ ispCP ω 1.0.0 Changelog
         * Fixed #767: Backup folder under domain-aliases
         * Fixed #768: scripts delayed because of empty entropy pool
         * Removed suggesting main sql user password
+        * Improved fix for #768
+        * Correctly load the new db keys when generated (also reported in #768)
     - GUI:
         * Fixed curlang()
+    - MAKEFILE:
+        * Fixed error where fastcgi_ispcp.conf was installed in an incorrect directory
 
 2007-10-14 Malte Geierhos
 	- GUI:
