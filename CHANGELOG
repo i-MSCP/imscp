@@ -6,6 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-14 Raphael Geissert
+    - GUI:
+        * Security Fix: XSS injection in gui/index.php
+    - CONFIGS:
+        * Enable suexec on all CGI's whether fastcgi is loaded or not
+    - SETUP:
+        * Remove local nameserver from /etc/resolv.conf
+    - LANGUAGES:
+        * Updated Czech translation (thanks to Josef Pinc)
+
 2007-10-13 Raphael Geissert
     - ENGINE:
         * Generate database keys at setup time (fix for Debian packaging)

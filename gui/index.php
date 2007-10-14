@@ -87,7 +87,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 				'TR_PASSWORD' => tr('Password'),
 				'TR_LOGIN_INFO' => tr('Please enter your login information'),
 				// Please make this configurable by ispcp-lib
-				'TR_SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://'.$_SERVER['HTTP_HOST'] : 'https://'.$_SERVER['HTTP_HOST'],
+				'TR_SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST']) : 'https://'.htmlentities($_SERVER['HTTP_HOST']),
 				'TR_SSL_IMAGE' => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
 				'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
 				)

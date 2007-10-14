@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-26 21:38-0500\n"
+"POT-Creation-Date: 2007-10-14 02:28-0500\n"
 "PO-Revision-Date: 2007-09-27 23:07+0100\n"
 "Last-Translator: M.Leenders <spam@azzkikr.nl>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -47,7 +47,8 @@ msgstr "Normale verbinding"
 msgid "Lost password"
 msgstr "Wachtwoord verloren"
 
-msgid "Lost password function currently disabled"
+#, fuzzy
+msgid "Retrieving lost passwords is currently not possible"
 msgstr "Kwijt geraakt paswoord Functie tijdelijk buiten gebruik"
 
 #, fuzzy
@@ -78,8 +79,12 @@ msgstr "ERROR: Veiligheidscode is niet correct"
 msgid "Security code"
 msgstr "Veiligheidscode"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
-msgstr "(Om misbruik te voorkomen, vragen wij u om de bovenstaande combinatie van letters over te nemen in het veld \"Security code\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Om misbruik te voorkomen, vragen wij u om de bovenstaande combinatie van "
+"letters over te nemen in het veld \"Security code\")"
 
 msgid "Request password"
 msgstr "Vraag wachtwoord aan"
@@ -224,9 +229,6 @@ msgstr "U moet minstens één IP nummer voor een reseller toewijzen !"
 
 msgid "Add reseller"
 msgstr "Reseller toevoegen"
-
-msgid "unlimited"
-msgstr "ongelimiteerd"
 
 msgid "Domains limit"
 msgstr "Domeinen limiet"
@@ -767,22 +769,31 @@ msgid "Domains"
 msgstr "Domeinen"
 
 #, fuzzy, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr "Onbestendigheid tussen current_als_cnt en daadwerkelijke alias telling: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgstr ""
+"Onbestendigheid tussen current_als_cnt en daadwerkelijke alias telling: %1"
+"$d != %2$d"
 
 msgid "Aliases"
 msgstr "Aliassen"
 
 #, fuzzy, php-format
-msgid "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr "Onbestendigheid tussen current_mail_cnt en daadwerkelijke mail telling: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+msgstr ""
+"Onbestendigheid tussen current_mail_cnt en daadwerkelijke mail telling: %1"
+"$d != %2$d"
 
 msgid "Mail"
 msgstr "Mail"
 
 #, fuzzy, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr "Onbestendigheid tussen current_ftp_cnt en daadwerkelijke ftp telling: %1$d != %2$d"
+msgid ""
+"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgstr ""
+"Onbestendigheid tussen current_ftp_cnt en daadwerkelijke ftp telling: %1$d !"
+"= %2$d"
 
 msgid "FTP"
 msgstr "FTP"
@@ -804,22 +815,36 @@ msgid "Reseller data inconsistency!"
 msgstr "Reseller data onbestendigheid!"
 
 #, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
-msgstr "Deze reseller heeft inmiddels al meer/hoger dan <b>%s</b> accounts/limieten dan het nieuwe limiet dat u hebt ingevoerd."
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+"Deze reseller heeft inmiddels al meer/hoger dan <b>%s</b> accounts/limieten "
+"dan het nieuwe limiet dat u hebt ingevoerd."
 
 msgid "Edit reseller aborted!"
 msgstr "Wijziging reseller afgebroken!"
 
 #, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
-msgstr "Deze reseller's klanten gebruiken inmiddels al meer/hoger dan <b>%s</b> accounts/limieten dan het nieuwe limiet dat u hebt ingevoerd."
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+"Deze reseller's klanten gebruiken inmiddels al meer/hoger dan <b>%s</b> "
+"accounts/limieten dan het nieuwe limiet dat u hebt ingevoerd."
 
 #, fuzzy, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
-msgstr "Deze reseller heeft klanten met ongelimiteerde rechten voor de <b>%s</b> service!<br>"
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!<br>"
+msgstr ""
+"Deze reseller heeft klanten met ongelimiteerde rechten voor de <b>%s</b> "
+"service!<br>"
 
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr "ALs u de reseller wil limiteren, limiteer dan eerst zijn gebruikers!<br>"
+msgid ""
+"If you want to limit the reseller, you must first limit its customers!<br>"
+msgstr ""
+"ALs u de reseller wil limiteren, limiteer dan eerst zijn gebruikers!<br>"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
@@ -830,6 +855,9 @@ msgstr "Wijzig reseller"
 
 msgid "E-mail"
 msgstr "E-mail"
+
+msgid "unlimited"
+msgstr "ongelimiteerd"
 
 msgid "Max domain count"
 msgstr "Max aantal domeinen"
@@ -958,7 +986,7 @@ msgstr ""
 msgid "View"
 msgstr "Bekijk"
 
-msgid "Couldn't check for updates!"
+msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
 msgid "New ispCP update is now available"
@@ -2496,6 +2524,9 @@ msgstr "MySQL gebruiker toevoegen"
 msgid "Execute query"
 msgstr "Query uitvoeren"
 
+msgid "Login phpMyAdmin"
+msgstr ""
+
 msgid "Please specify message subject!"
 msgstr "Gelieve een bericht onderwerp te specificeren"
 
@@ -3024,7 +3055,7 @@ msgstr "Subdomein doorsturing"
 msgid "Unknown type"
 msgstr "Onbekend type"
 
-msgid "Welcome new ispCP user {USERNAME}!"
+msgid "Welcome {USERNAME} to ispCP!"
 msgstr ""
 
 msgid ""
@@ -3032,19 +3063,25 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"Your ispCP user type is: {USERTYPE}\n"
-"Your ispCP login is: {USERNAME}\n"
-"Your ispCP password is: {PASSWORD}\n"
+"A new ispCP account has been created for you.\n"
+"Your account information:\n"
 "\n"
-"You can login at http://{BASE_SERVER_VHOST}\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
 "\n"
-"Good luck with the ispCP system!\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at http://{BASE_SERVER_VHOST}\n"
+"\n"
+"Best wishes with ispCP!\n"
 "The ispCP Team.\n"
 "\n"
 msgstr ""
 
-msgid "Please activate your new ispCP login!"
-msgstr ""
+#, fuzzy
+msgid "Please activate your new ispCP password!"
+msgstr "Gelieve een gebruiker wachtwoord in te vullen"
 
 msgid ""
 "\n"
@@ -3067,12 +3104,12 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"Your ispCP login is: {USERNAME}\n"
-"Your ispCP password is: {PASSWORD}\n"
+"Your user name is: {USERNAME}\n"
+"Your password is: {PASSWORD}\n"
 "\n"
 "You can login at http://{BASE_SERVER_VHOST}\n"
 "\n"
-"Good Luck with the ispCP System\n"
+"Best wishes with ispCP!\n"
 "The ispCP Team\n"
 "\n"
 msgstr ""
