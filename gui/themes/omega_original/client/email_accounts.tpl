@@ -81,14 +81,14 @@ function action_delete(url) {
                     <!-- BDP: mail_item -->
                     <tr>
                       <td nowrap class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/mail_icon.png" width="16" height="14" align="absmiddle"> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_ACC}</a>
-                          <!-- BDP: auto_respond -->
+                          <!-- BDP: auto_respond --><div style="display: {AUTO_RESPOND_VIS};">
 						  <br><span class="style1">
 						  {TR_AUTORESPOND}: [&nbsp;&nbsp;
                           <a href="{AUTO_RESPOND_DISABLE_SCRIPT}" class="link">{AUTO_RESPOND_DISABLE}</a>&nbsp;&nbsp;
 						  <a href="{AUTO_RESPOND_EDIT_SCRIPT}" class="link">{AUTO_RESPOND_EDIT}</a>
 						  ]
+						  </span></div>
 						  <!-- EDP: auto_respond -->
-						  </span>
                       </td>
                       <td nowrap class="{ITEM_CLASS}" width="150">{MAIL_TYPE}</td>
                       <td nowrap class="{ITEM_CLASS}" align="center" width="180">{MAIL_STATUS}</td>

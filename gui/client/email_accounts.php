@@ -78,7 +78,8 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
                                         'AUTO_RESPOND_DISABLE' => tr('Enable'),
                                         'AUTO_RESPOND_DISABLE_SCRIPT' => "enable_mail_arsp.php?id=$mail_id",
                                     	'AUTO_RESPOND_EDIT' => '',
-								    	'AUTO_RESPOND_EDIT_SCRIPT' => ''
+				    	'AUTO_RESPOND_EDIT_SCRIPT' => '',
+					'AUTO_RESPOND_VIS' => 'inline'
                                      ));
             } else {
                 $tpl -> assign(
@@ -86,27 +87,29 @@ function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $
                                         'AUTO_RESPOND_DISABLE' => tr('Disable'),
                                         'AUTO_RESPOND_DISABLE_SCRIPT' => "disable_mail_arsp.php?id=$mail_id",
                                     	'AUTO_RESPOND_EDIT' => tr('Edit'),
-								    	'AUTO_RESPOND_EDIT_SCRIPT' => "edit_mail_arsp.php?id=$mail_id"
-									 ));
+				   	'AUTO_RESPOND_EDIT_SCRIPT' => "edit_mail_arsp.php?id=$mail_id",
+					'AUTO_RESPOND_VIS' => 'inline'
+				 ));
             }
         } else {
             $tpl -> assign(
-							array(
-									'AUTO_RESPOND_DISABLE' => tr('Please wait for update'),
-									'AUTO_RESPOND_DISABLE_SCRIPT' => '',
-									'AUTO_RESPOND_EDIT' => '',
-									'AUTO_RESPOND_EDIT_SCRIPT' => ''
-								 ));
+				array(
+					'AUTO_RESPOND_DISABLE' => tr('Please wait for update'),
+					'AUTO_RESPOND_DISABLE_SCRIPT' => '',
+					'AUTO_RESPOND_EDIT' => '',
+					'AUTO_RESPOND_EDIT_SCRIPT' => '',
+					'AUTO_RESPOND_VIS' => 'inline'
+				 ));
         }
     } else {
         $tpl -> assign(
-						array(
-								'AUTO_RESPOND_DISABLE' => tr('Please wait for update'),
-								'AUTO_RESPOND_DISABLE_SCRIPT' => '',
-								'AUTO_RESPOND_EDIT' => '',
-								'AUTO_RESPOND_EDIT_SCRIPT' => '',
-								'AUTO_RESPOND' => ''
-							 ));
+				array(
+					'AUTO_RESPOND_DISABLE' => tr('Please wait for update'),
+					'AUTO_RESPOND_DISABLE_SCRIPT' => '',
+					'AUTO_RESPOND_EDIT' => '',
+					'AUTO_RESPOND_EDIT_SCRIPT' => '',
+					'AUTO_RESPOND_VIS' => 'none'
+				 ));
     }
 
 }
