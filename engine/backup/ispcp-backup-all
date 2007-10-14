@@ -44,6 +44,13 @@ sub lock_backup_all_system {
 
     push_el(\@main::el, 'lock_backup_all_system()', 'Starting...');
 
+    if ($main::cfg{'BACKUP_DOMAINS'} ne 'yes') {
+
+        push_el(\@main::el, 'lock_backup_all_system()', 'NOTICE: domain backups are disabled');
+
+        return 2;
+    }
+
     if (-e $lock_file) {
 
         push_el(\@main::el, 'lock_backup_all_system()', 'ERROR: backup request engine already locked !');
@@ -401,7 +408,9 @@ my $backup_lock_file = "/tmp/ispcp-backup-all.lock";
 
 $rs = backup_all_start_up($backup_lock_file);
 
-err_exit() if ($rs != 0);
+err_exit() if ($rs != 0 && $rs != 2);
+
+exit 0 if ($rs == 2); # $rs == 2 when backups are disabled
 
 $rs = backup_all_engine();
 

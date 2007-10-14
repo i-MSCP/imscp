@@ -8,15 +8,19 @@
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-srv-traff &>{LOG_DIR}/ispcp-srv-traff.log
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff &>{LOG_DIR}/ispcp-vrl-traff.log
 15,45	*	* 	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff-correction &>{LOG_DIR}/ispcp-vrl-traff-correction.log
+
+# customer logs
 30	   23	* 	* 	*  root {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr &>{LOG_DIR}/ispcp-httpd-logs-mngr.log
 
 # Backup
-0	1	*	*	*  root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
+@daily root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
+@daily root {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport &>{LOG_DIR}/ispcp-backup-all-mngr.log
 
 # Remove config backups older than seven days
 @daily root find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs /bin/rm
-# Remove Daemon Logs older than 14 days
-@daily root find {LOG_DIR}/* -maxdepth 1 -type f -mtime +14 -print | egrep '.*\.[0-9]+$' | xargs /bin/rm
+
+# Remove Daemon Logs older than 14 days (except .gz files)
+@daily root find {LOG_DIR}/* -maxdepth 1 -type f -mtime +14 -print | egrep '.*\.gz$' | xargs /bin/rm
 
 # AWStats
 {AW-ENABLED}15	*/6	*	*	*	root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog={AWSTATS_ENGINE_DIR}/awstats.pl

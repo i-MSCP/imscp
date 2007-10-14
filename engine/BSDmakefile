@@ -44,6 +44,7 @@ install:
 	$(CMD_INSTALL) ./ispcp-db-passwd $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./backup/ispcp-bk-task $(SYSTEM_ENGINE_ROOT)/backup
 	$(CMD_INSTALL) ./backup/ispcp-backup-all $(SYSTEM_ENGINE_ROOT)/backup
+	$(CMD_INSTALL) ./backup/ispcp-backup-ispcp $(SYSTEM_ENGINE_ROOT)/backup
 	$(CMD_INSTALL) ./quota/ispcp-dsk-quota $(SYSTEM_ENGINE_ROOT)/quota
 	$(CMD_INSTALL) ./traffic/ispcp-srv-traff $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic

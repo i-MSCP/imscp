@@ -11,16 +11,6 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
 
-	cp ./httpd.conf ./working/ispcp.conf
-	cp ./httpd.conf ./parts/ispcp_base.tpl
-
-	# Debian 4.0 "Etch"?
-	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
-		cp ./fastcgi2.conf ./working/fastcgi_ispcp.conf ; \
-	else \
-		cp ./fastcgi.conf ./working/fastcgi_ispcp.conf ; \
-	fi
-
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
 	cp ./01_awstats.conf $(SYSTEM_CONF)/apache
@@ -28,7 +18,17 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp -R ./working/fastcgi_ispcp.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
+	cp ./httpd.conf $(SYSTEM_CONF)/working/ispcp.conf
+	cp ./httpd.conf $(SYSTEM_CONF)/parts/ispcp_base.tpl
+
+	# Debian 4.0 "Etch"?
+	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
+		cp ./fastcgi2.conf $(SYSTEM_CONF)/working/fastcgi_ispcp.conf ; \
+	else \
+		cp ./fastcgi.conf $(SYSTEM_CONF)/working/fastcgi_ispcp.conf ; \
+	fi
+
+	cp -R $(SYSTEM_CONF)/working/fastcgi_ispcp.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
 
 uninstall:
 

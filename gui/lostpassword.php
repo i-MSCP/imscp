@@ -21,7 +21,7 @@ require 'include/ispcp-lib.php';
 
 
 if (!$cfg['LOSTPASSWORD']) {
-	system_message(tr('Lost password function currently disabled'));
+	system_message(tr('Retrieving lost passwords is currently not possible'));
 	die();
 }
 

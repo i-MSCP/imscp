@@ -26,67 +26,130 @@
 # The ispCP Home Page is at:
 #
 #    http://www.isp-control.net
+#
+### BEGIN INIT INFO
+# Provides:             ispcp_daemon
+# Required-Start:       $network $local_fs $remote_fs
+# Required-Stop:
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    ispCP GUI-Backend communication Daemon
+### END INIT INFO
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
-# Source function library.
-. /etc/rc.d/init.d/functions
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+NAME=ispcp_daemon
+DAEMON=/var/www/ispcp/daemon/$NAME
+PID=/var/run/$NAME.pid
+DESC="ispCP GUI-Backend communication Daemon"
+LOGDIR=/var/log/ispcp
+LOGFILE=${LOGDIR}/${NAME}.log
+DIETIME=3
 
-prog=ispcp_daemon
-progpath=/var/www/ispcp/daemon
-lockfile=/var/lock/subsys/ispcp
-PID=/var/run/ispcp_daemon.pid
+START=1
 
-start() {
-        echo -n $"Starting $prog: "
-        daemon $progpath/$prog -p $PID
-        RETVAL=$?
-        [ $RETVAL -eq 0 ] && touch $lockfile >/dev/null 2>&1
-        echo
+# Debian LSB extensions (will be used if init-functions doesn't override them):
+log_daemon_msg() {
+	if [ ! -z "${2:-}" ]; then
+		log_success_msg "${1:-}: ${2:-}"
+	else
+		log_success_msg "${1:-}"
+	fi
+}
+log_end_msg() {
+	local status="$1"
 }
 
-stop() {
-        echo -n $"Shutting down $prog: "
-        killproc $prog
-        RETVAL=$?
-        echo
-        [ $RETVAL -eq 0 ] && rm -f $lockfile
-}
+# if not present (e.g. *BSD) make sure to provide compatible methods via /etc/default/$NAME
+if [ -f /lib/lsb/init-functions ]; then
+	. /lib/lsb/init-functions
+fi
 
-status() {
-		if [ -s $pidfile ]; then
-			pid=`cat $pidfile`
-			kill -0 $pid >/dev/null 2>&1
-			if [ "$?" = "0" ]; then
-				echo "$prog (pid $pid) is running"
-				RETVAL=0
-			else
-				echo "$prog is stopped"
-				RETVAL=1
-			fi
-		else
-			echo "$prog is stopped"
-			RETVAL=1
-		fi
-}
+test -x $DAEMON || {
+	if [ "$1" = "stop" ]; then
+		log_warning_msg "$DAEMON not installed, but stopping anyway."
+	else
+		exit 5
+	fi }
+
+# Read config file if present.
+if [ -r /etc/default/$NAME ]; then
+	. /etc/default/$NAME
+fi
+
+if [ $START -eq 0 ]; then
+	log_warning_msg "Not starting $DESC: edit /etc/default/$NAME."
+	exit 1
+fi
 
 case "$1" in
   start)
-        start
-		/etc/init.d/ispcp_network
+	log_daemon_msg "Starting $DESC" "$NAME"
+
+	start_daemon -p $PID $DAEMON -p $PID
+
+	log_end_msg $?
 	;;
   stop)
-        stop
+	log_daemon_msg "Stopping $DESC" "$NAME"
+
+	killproc -p $PID $DAEMON
+
+	log_end_msg $?
+
+	[ ! -f "$PID" ] || rm -f $PID
 	;;
-  restart)
-        stop
-        start
+  restart|force-reload)
+	log_daemon_msg "Stopping $DESC" "$NAME"
+
+	killproc -p $PID $DAEMON
+
+	log_end_msg $?
+
+	[ ! -f "$PID" ] || rm -f $PID
+
+	[ -n "$DIETIME" ] && sleep "$DIETIME"
+
+	log_daemon_msg "Starting $DESC" "$NAME"
+
+	start_daemon -p $PID $DAEMON -- -p $PID
+
+	log_end_msg $?
 	;;
   status)
-        status $prog
-        RETVAL=$?
+	log_daemon_msg "Checking status of $DESC"
+
+	pidofproc $DAEMON
+
+	status="$?"
+	log_end_msg "$status"
+
+	case "$status" in
+		0)
+			log_success_msg "$NAME running"
+		;;
+		1)
+			log_warning_msg "$NAME not running (but pid file found)"
+		;;
+		2)
+			log_warning_msg "$NAME not running (but lock file found)"
+		;;
+		3)
+			log_warning_msg "$NAME not running"
+		;;
+		4|*)
+			log_failure_msg "Service status is unknown"
+			exit 1
+		;;
+        esac
 	;;
+	
   *)
-        echo "Usage: $prog {start|stop|restart|status}"
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
 	exit 1
+	;;
 esac
 
-exit $RETVAL
+exit 0

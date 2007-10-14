@@ -816,6 +816,13 @@ sub uninstall_ispcpd {
 
     sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop &> /tmp/ispcp-uninstall-services.log");
 
+    if ( -x "/usr/lib/lsb/install_initd" ) { #LSB 3.1 Core section 20.4 compatibility
+
+        sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-uninstall-services.log");
+        sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-uninstall-services.log");
+
+    }
+
     $rs = del_file("$main::cfg{'CMD_ISPCPD'}");
 
     return $rs if ($rs != 0);
@@ -824,12 +831,12 @@ sub uninstall_ispcpd {
 
     return $rs if ($rs != 0);
 
-    if ( -e "/usr/sbin/update-rc.d" ) {
+    if ( ! -x "/usr/lib/lsb/install_initd" && -x "/usr/sbin/update-rc.d" ) {
 
-		sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon remove &> /tmp/ispcp-uninstall-services.log");
-		sys_command_rs("/usr/sbin/update-rc.d ispcp_network remove &> /tmp/ispcp-uninstall-services.log");
+        sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon remove &> /tmp/ispcp-uninstall-services.log");
+        sys_command_rs("/usr/sbin/update-rc.d ispcp_network remove &> /tmp/ispcp-uninstall-services.log");
 
-	}
+    }
 
     push_el(\@main::el, 'uninstall_ispcpd()', 'Ending...');
 

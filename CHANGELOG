@@ -6,6 +6,23 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-13 Raphael Geissert
+    - ENGINE:
+        * Generate database keys at setup time (fix for Debian packaging)
+        * Added ispCP config (/etc/ispcp) and database backup system
+    - SETUP:
+        * LSB compatiblity for installing/removing init scripts
+    - CONFIGS:
+        * Added BACKUP_DOMAINS yes/no switch to enable/disable customer backups
+        * Made ispcp_network and ispcp_daemon more or less LSB compatible
+        * Fixed #688: updated ispcp_network in all distros (including fedora)
+    - GUI:
+        * Fixed #645: improve welcome emails messages
+        * Fixed #758: phpMyAdmin Security vulnerability
+        * Added different message levels to be used with write_log to reduce verbosity of emails sent
+    - MAKEFILE:
+        * Fixed some Makefiles which were replacing files in the local copy rather than in the installation
+
 2007-10-13 Benedikt Heintel
 	- CONFIGS:
 		* Updated php-fcgi-starter for Gentoo und Debian

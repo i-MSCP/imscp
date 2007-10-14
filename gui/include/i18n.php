@@ -18,23 +18,29 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-function curlang($newlang = null) {
+/*false: don't set (not even auto), null: set if missing, true: force update from session/default, anything else: set it as a language*/
+function curlang($newlang = null, $force = false) {
     global $cfg;
     static $language = null;
 
+    // we store old value so if $language is changed old value is returned
     $_language = $language;
 
-    if ($language === null && ($newlang === null || $newlang == false)) {
-        // autodetect
-        $newlang = true;
+    // forcibly set $language to $newlang (use with CARE!)
+    if ($force) {
+        $language = $newlang;
+        return $_language;
     }
 
-    if ($newlang !== null && $newlang != false) {
-        if ($newlang === true) {
-            $newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
+    if ($language === null || ($newlang !== null && $newlang !== false)) {
+
+        if ($newlang === true || ($newlang === null && $language === null)) {
+        	$newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
         }
 
-        $language = $newlang;
+        if ($newlang !== false) {
+            $language = $newlang;
+        }
     }
 
     return ($_language !== null)? $_language : $language;
@@ -61,7 +67,7 @@ function tr($msgid, $as_is = false) {
         $as_is = false;
     }
 
-    $lang = curlang();
+    $lang = curlang(false);
     $encoding = 'UTF-8';
 
     if (isset($cache[$lang][$msgid])) {

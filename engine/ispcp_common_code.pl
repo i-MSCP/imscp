@@ -36,14 +36,26 @@ use warnings;
 require 'ispcp_common_methods.pl';
 require 'ispcp-db-keys.pl';
 
+my $rs;
+
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
 
-my $rs = get_conf();
+$rs = get_conf();
 
 return $rs if ($rs != 0);
 
 if ($main::cfg{'DEBUG'} != 0) {
 	$main::engine_debug = '_on_';
+}
+
+if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
+
+	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messager/ispcp-db-keys.pl");
+
+	return $rs if ($rs != 0);
+
+	get_conf();
+	require 'ispcp-db-keys.pl';
 }
 
 $main::lock_file = $main::cfg{'MR_LOCK_FILE'};

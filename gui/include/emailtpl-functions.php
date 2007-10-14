@@ -149,7 +149,7 @@ function get_welcome_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = tr('Welcome new ispCP user {USERNAME}!', true);
+		$data['subject'] = tr('Welcome {USERNAME} to ispCP!', true);
 
 	}
 
@@ -159,13 +159,18 @@ function get_welcome_email($admin_id) {
 
 Hello {NAME}!
 
-Your ispCP user type is: {USERTYPE}
-Your ispCP login is: {USERNAME}
-Your ispCP password is: {PASSWORD}
+A new ispCP account has been created for you.
+Your account information:
 
-You can login at http://{BASE_SERVER_VHOST}
+User type: {USERTYPE}
+User name: {USERNAME}
+Password: {PASSWORD}
 
-Good luck with the ispCP system!
+Remember to change your password often and the first time you login.
+
+You can login right now at http://{BASE_SERVER_VHOST}
+
+Best wishes with ispCP!
 The ispCP Team.
 
 ', true);
@@ -188,7 +193,7 @@ function get_lostpassword_activation_email($admin_id) {
 
 	if (!$data['subject']) {
 
-		$data['subject'] = tr('Please activate your new ispCP login!', true);
+		$data['subject'] = tr('Please activate your new ispCP password!', true);
 
 	}
 
@@ -234,12 +239,12 @@ function get_lostpassword_password_email($admin_id) {
 
 Hello {NAME}!
 
-Your ispCP login is: {USERNAME}
-Your ispCP password is: {PASSWORD}
+Your user name is: {USERNAME}
+Your password is: {PASSWORD}
 
 You can login at http://{BASE_SERVER_VHOST}
 
-Good Luck with the ispCP System
+Best wishes with ispCP!
 The ispCP Team
 
 ', true);

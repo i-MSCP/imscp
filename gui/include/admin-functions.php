@@ -1474,7 +1474,7 @@ function calc_bar_value($value, $value_max , $bar_width) {
 	}
 }
 
-function write_log($msg) {
+function write_log($msg, $level = E_USER_WARNING) {
 	/* log function */
 	global $sql, $send_log_to, $cfg;
 
@@ -1494,7 +1494,7 @@ function write_log($msg) {
 	$send_log_to = $cfg['DEFAULT_ADMIN_ADDRESS'];
 
 	/* now send email if DEFAULT_ADMIN_ADDRESS != '' */
-	if ($send_log_to != '') {
+	if ($send_log_to != '' && $level <= $cfg['LOG_LEVEL']) {
 		global $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
 
 		$admin_email = $cfg['DEFAULT_ADMIN_ADDRESS'];

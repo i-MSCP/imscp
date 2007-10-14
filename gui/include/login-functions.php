@@ -213,7 +213,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 		return false;
 
 	} else {
-		write_log("Login error, <b><i>".$ipaddr."</i></b> wait " . ($btime - time()) . " seconds");
+		write_log("Login error, <b><i>".$ipaddr."</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 		system_message(tr('You have to wait %d seconds', $btime - time()));
 		return false;
 	}

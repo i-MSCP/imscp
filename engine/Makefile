@@ -63,6 +63,7 @@ install:
 
 	$(CMD_INSTALL) ./backup/ispcp-bk-task $(SYSTEM_ENGINE_ROOT)/backup
 	$(CMD_INSTALL) ./backup/ispcp-backup-all $(SYSTEM_ENGINE_ROOT)/backup
+	$(CMD_INSTALL) ./backup/ispcp-backup-ispcp $(SYSTEM_ENGINE_ROOT)/backup
 
 	$(CMD_INSTALL) ./quota/ispcp-dsk-quota $(SYSTEM_ENGINE_ROOT)/quota
 

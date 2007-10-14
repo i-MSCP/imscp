@@ -308,7 +308,7 @@ SQL_QUERY;
 
 	    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-	    write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !");
+	    write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
 		return true;
 
@@ -346,7 +346,7 @@ SQL_QUERY;
 
  	setUniqKey($admin_name, $uniqkey);
 
- 	write_log("Lostpassword: ".$admin_name.": uniqkey created");
+ 	write_log("Lostpassword: ".$admin_name.": uniqkey created", E_USER_NOTICE);
 
  	if ($created_by == 0) $created_by = 1;
 
@@ -397,7 +397,7 @@ SQL_QUERY;
 
  	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
- 	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !");
+ 	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
  	return true;
 

@@ -115,6 +115,7 @@ $cfg['BRUTEFORCE_BETWEEN_TIME'] = 30;
 $cfg['MAINTENANCEMODE'] = false;
 // servicemode message
 $cfg['MAINTENANCEMODE_MESSAGE'] = tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
+curlang(null, true); //restore language auto detection
 
 // password chars
 $cfg['PASSWD_CHARS'] = 6;
@@ -124,6 +125,13 @@ $cfg['PASSWD_STRONG'] = true;
 
 // The virtual host file from Apache which contains our virtual host entries
 $cfg['SERVER_VHOST_FILE'] = $cfg['APACHE_SITES_DIR'] . '/ispcp.conf';
+
+// The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
+// PHP's E_USER_* values are used for simplicity:
+// E_USER_NOTICE: logins, and all info that isn't very relevant
+// E_USER_WARNING: switching to an other account, etc
+// E_USER_ERROR: "admin MUST know" messages
+$cfg['LOG_LEVEL'] = E_USER_NOTICE;
 
 
 require_once(INCLUDEPATH.'/date-functions.php');

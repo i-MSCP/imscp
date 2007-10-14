@@ -41,7 +41,7 @@ use warnings;
 use Socket;
 
 ##############################################################################
-##								SUBROUTINES									##
+##                                SUBROUTINES                               ##
 ##############################################################################
 
 %main::ua = ();
@@ -306,7 +306,8 @@ sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Starting...');
 
-	my $db_password = 'none';
+	my $db_password = gen_sys_rand_num(18);
+	$db_password =~ s/'//g;
 
 	my $qmsg = "\n    Please enter system SQL password. [$db_password]: ";
 
@@ -314,7 +315,7 @@ sub ask_db_password {
 
 	if (!defined($pass1) || $pass1 eq '') {
 
-		$main::ua{'db_password'} = '';
+		$main::ua{'db_password'} = $db_password;
 
 	} else {
 
@@ -376,7 +377,8 @@ sub ask_db_ftp_password {
 
 	push_el(\@main::el, 'ask_db_ftp_password()', 'Starting...');
 
-	my $db_password = 'none';
+	my $db_password = gen_sys_rand_num(18);
+	$db_password =~ s/'//g;;
 
 	my $qmsg = "\n    Please enter ispCP ftp SQL user password. [$db_password]: ";
 
@@ -384,7 +386,7 @@ sub ask_db_ftp_password {
 
 	if (!defined($pass1) || $pass1 eq '') {
 
-		$main::ua{'db_ftp_password'} = '';
+		$main::ua{'db_ftp_password'} = $db_password;
 
 	} else {
 
@@ -434,13 +436,14 @@ sub ask_db_pma_password {
 
 	my ($rs, $pass1, $pass2) = (undef, undef, undef);
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
-	my $db_password = 'none';
+
+	my $db_password = gen_sys_rand_num(18);
 
 	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user password. [$db_password]: ";
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
-		$main::ua{'db_pma_password'} = '';
+		$main::ua{'db_pma_password'} = $db_password;
 	} else {
 		$qmsg = "    Please repeat ispCP phpMyAdmin Control user password: ";
 		$pass2 = read_password($qmsg);
@@ -2976,12 +2979,17 @@ sub setup_ispcpd {
 	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
 	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 
-	if ( -e "/usr/sbin/update-rc.d" ) {
+	if ( -x "/usr/sbin/update-rc.d" ) {
 
 		sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon defaults 99 &> /tmp/ispcp-setup-services.log");
 		sys_command_rs("/usr/sbin/update-rc.d ispcp_network defaults 99 &> /tmp/ispcp-setup-services.log");
 
-	}
+	} elsif ( -x "/usr/lib/lsb/install_initd" ) { #LSB 3.1 Core section 20.4 compatibility
+
+		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
+
+        }
 
         if ( ! -e "/etc/init.d/vhcs2_daemon" ) {
 
