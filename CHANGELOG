@@ -6,11 +6,15 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-14 Raphael Geissert
+    - ENGINE:
+        * Fixed #767: Backup folder under domain-aliases
+        * Fixed #768: scripts delayed because of empty entropy pool
+
 2007-10-14 Malte Geierhos
-	- GUI: 
+	- GUI:
 		* fixed #740 autoresponder for subdomains cannot be activated
-	
-		
+
 2007-10-14 Raphael Geissert
     - GUI:
         * Security Fix: XSS injection in gui/index.php

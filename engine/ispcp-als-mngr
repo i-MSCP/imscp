@@ -1754,15 +1754,6 @@ sub als_add_httpd_file_data {
     return $rs if ($rs != 0);
 
     $rs = make_dir(
-                   "$www_dir/$als_name/backups",
-                   $sys_user,
-                   $httpd_gid,
-                   0770
-                  );
-
-    return $rs if ($rs != 0);
-
-    $rs = make_dir(
                    "$www_dir/$als_name/errors",
                    $sys_user,
                    $sys_group,
