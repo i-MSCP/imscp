@@ -10,6 +10,9 @@ ispCP ω 1.0.0 Changelog
     - ENGINE:
         * Fixed #767: Backup folder under domain-aliases
         * Fixed #768: scripts delayed because of empty entropy pool
+        * Removed suggesting main sql user password
+    - GUI:
+        * Fixed curlang()
 
 2007-10-14 Malte Geierhos
 	- GUI:

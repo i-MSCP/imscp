@@ -306,8 +306,7 @@ sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Starting...');
 
-	my $db_password = gen_sys_rand_num(18);
-	$db_password =~ s/'//g;
+	my $db_password = '';
 
 	my $qmsg = "\n    Please enter system SQL password. [$db_password]: ";
 

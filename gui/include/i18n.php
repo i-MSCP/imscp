@@ -34,7 +34,7 @@ function curlang($newlang = null, $force = false) {
 
     if ($language === null || ($newlang !== null && $newlang !== false)) {
 
-        if ($newlang === true || ($newlang === null && $language === null)) {
+        if ($newlang === true || (($newlang === null || $newlang === false) && $language === null)) {
         	$newlang = (isset($_SESSION['user_def_lang'])) ? $_SESSION['user_def_lang'] : $cfg['USER_INITIAL_LANG'];
         }
 
@@ -67,7 +67,7 @@ function tr($msgid, $as_is = false) {
         $as_is = false;
     }
 
-    $lang = curlang(false);
+    $lang = curlang();
     $encoding = 'UTF-8';
 
     if (isset($cache[$lang][$msgid])) {

@@ -999,7 +999,7 @@ sub gen_sys_rand_num {
     if ( -e '/proc/sys/kernel/random/entropy_avail') {
         my $pool_size = undef;
 
-        $pool_size = get_file('/proc/sys/kernel/random/entropy_avail');
+        $pool_size = int(get_file('/proc/sys/kernel/random/entropy_avail'));
 
         if ( $pool_size <= ($len + 10)) {
             push_el(\@main::el, 'gen_sys_rand_num()', "WARNING: entropy pool is $pool_size, but we require at least $len");
