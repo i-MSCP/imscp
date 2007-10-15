@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-15 Malte Geierhos
+	- SETUP:
+		* fixed #771 according to joximu
+
 2007-10-15 Johannes Schobig
 	- SETUP:
 		* Ask before generating passwords

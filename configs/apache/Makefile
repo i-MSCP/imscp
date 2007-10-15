@@ -18,8 +18,8 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp ./httpd.conf $(SYSTEM_CONF)/working/ispcp.conf
-	cp ./httpd.conf $(SYSTEM_CONF)/parts/ispcp_base.tpl
+	cp ./httpd.conf $(SYSTEM_CONF)/apache/working/ispcp.conf
+	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
 
 	# Debian 4.0 "Etch"?
 	if [[ $(RELEASE) = '4.0' ]] || [[ $(RELEASE) = 'lenny/sid' ]]; then \
