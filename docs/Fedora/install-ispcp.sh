@@ -7,15 +7,17 @@
 # The path where the Makefile files are
 ISPCP_PATH=CHANGEME
 
-
 ISPCP_TMP_PATH=/tmp/ispcp_install
+
 
 echo \************************************
 echo \* Fedora Core 7 ISP Control Installer
 echo \* Author: graywolf
-echo \* Version: 1.2.0
+echo \* Version: 1.2.1
 echo \************************************
 echo
+
+if [ "$ISPCP_PATH" != "CHANGEME" ]; then
 
 ######################################
 echo Creating Folders and copying files
@@ -30,18 +32,12 @@ cd ${ISPCP_TMP_PATH}
 echo Extracting and configuring ISPCP
 
 cd ${ISPCP_TMP_PATH}
-wget -O ispcp-omega-1.0.0-trunk.tar.gz  ${ISPCP_DOWNLOAD_LOC}${ISPCP_TRUNK_FILE}
-tar -xf ispcp-omega-1.0.0-trunk.tar.gz
-mv ${ISPCP_TMP_PATH}/web/svn/nightly ${ISPCP_TMP_PATH}/ispcp-omega-1.0.0-trunk
-rm -Rf web
+mv  ${ISPCP_PATH} ${ISPCP_TMP_PATH}/ispcp-omega-1.0.0-trunk
 
 cd ispcp-omega-1.0.0-trunk
 
 #install Required updates
 yum -y install `cat ./docs/Fedora/fedora-packages`
-
-#install missing packages
-yum -y install chkrootkit proftpd-mysql cpan2rpm system-config-bind caching-nameserver
 
 cpan2rpm -i --no-sign http://search.cpan.org/CPAN/authors/id/P/PH/PHOENIX/Term-ReadPassword-0.07.tar.gz
 
@@ -52,18 +48,15 @@ clear
 ######################################
 echo Installing Courier
 
-yum -y install expect libtool-ltdl
-
-
-wget -P ${ISPCP_TMP_PATH}/updates http://www.thatfleminggent.com/packages/fedora/7/i386/courier-authlib-0.59.3-1.fc7.mf.i386.rpm
-wget -P ${ISPCP_TMP_PATH}/updates http://www.thatfleminggent.com/packages/fedora/7/i386/courier-authlib-userdb-0.59.3-1.fc7.mf.i386.rpm
+wget -P ${ISPCP_TMP_PATH}/updates http://www.thatfleminggent.com/packages/fedora/7/i386/courier-authlib-0.60.1-1.fc7.mf.i386.rpm
+wget -P ${ISPCP_TMP_PATH}/updates http://www.thatfleminggent.com/packages/fedora/7/i386/courier-authlib-userdb-0.60.1-1.fc7.mf.i386.rpm
 wget -P ${ISPCP_TMP_PATH}/updates http://www.thatfleminggent.com/packages/fedora/7/i386/courier-imap-4.1.3-1.fc7.mf.i386.rpm
 
-rpm -i ${ISPCP_TMP_PATH}/updates/courier-authlib-0.59.3-1.fc7.mf.i386.rpm
-rpm -i ${ISPCP_TMP_PATH}/updates/courier-authlib-userdb-0.59.3-1.fc7.mf.i386.rpm
+rpm -i ${ISPCP_TMP_PATH}/updates/courier-authlib-0.60.1-1.fc7.mf.i386.rpm
+rpm -i ${ISPCP_TMP_PATH}/updates/courier-authlib-userdb-0.60.1-1.fc7.mf.i386.rpm
 rpm -i ${ISPCP_TMP_PATH}/updates/courier-imap-4.1.3-1.fc7.mf.i386.rpm
 
-# Create  group and user with 3000 UID so VHCS2 doesnt cause conflicts User
+# Create  group and user with 3000 UID so ISPCP doesnt cause conflicts User
 groupadd courier -g 3000
 useradd -u 3000 -c 'Courier Mail Server' -d /dev/null -g courier -s /bin/false courier
 
@@ -98,15 +91,8 @@ mkdir -p /var/spool/postfix/etc
 cp /etc/sasldb2 /var/spool/postfix/etc/sasldb2
 cp -f /etc/init.d/courier-authlib /etc/init.d/courier-authdaemon
 
-
 # note permissions are changed in cleanup
 
-######################################
-echo DO Trunk fixes ........
-
-cp -RLf ${ISPCP_TMP_PATH}/trunk_fixes/* /
-
-cp -f /etc/init.d/courier-authlib /etc/init.d/courier-authdaemon
 cp -f /etc/ispcp/bind/named.conf /var/named/chroot/etc/named-ispcp.conf
 echo 'include "/etc/named-ispcp.conf";' >> /var/named/chroot/etc/named.conf
 
@@ -179,16 +165,18 @@ echo
 read -n 1 -p 'Press any key to continue ......'
 
 vi /etc/postfix/main.cf
-clear
-######################################
-echo \*************************
-echo
-echo Change: chroot to n
-echo smtp inet n - n - - smtpd
-echo smtp unix - - n - - smtp
-echo
-read -n 1 -p 'Press any key to continue ......'
 
-vi /etc/postfix/master.cf
 
 service postfix reload
+
+else
+
+echo
+echo \*************************
+echo
+echo PLEASE EDIT THE FILE
+echo And change ISPCP_PATH
+echo
+echo \*************************
+
+fi

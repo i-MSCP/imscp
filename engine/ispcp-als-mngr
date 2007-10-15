@@ -1838,44 +1838,45 @@ sub als_add_httpd_file_data {
     #
     # Default domain page template;
     #
+	if (!(-e "$www_dir/$als_name/htdocs/")) {
+	    my $index_tpl = '';
+		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 
-    my $index_tpl = '';
-	my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+	    ($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
 
-    ($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
+	    return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	    $index_tpl =~ s/{DOMAIN_NAME}/$als_dmn/gi;
+	    $index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 
-    $index_tpl =~ s/{DOMAIN_NAME}/$als_dmn/gi;
-    $index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
+	    ($rs, $rdata) = store_file(
+	                               "$www_dir/$als_name/htdocs/index.html",
+	                               $index_tpl,
+	                               $sys_user,
+	                               $sys_group,
+	                               0664
+	                              );
 
-    ($rs, $rdata) = store_file(
-                               "$www_dir/$als_name/htdocs/index.html",
-                               $index_tpl,
-                               $sys_user,
-                               $sys_group,
-                               0664
-                              );
+	    return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+		$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$als_name/htdocs/");
+		return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$als_name/htdocs/");
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/", $sys_user, $sys_group, 0755);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_css.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/", $sys_user, $sys_group, 0755);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_css.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$www_dir/$als_name/htdocs/images/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+	}
 
     push_el(\@main::el, 'als_add_httpd_file_data()', 'Ending...');
 

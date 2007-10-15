@@ -1439,39 +1439,39 @@ sub sub_add_httpd_file_data {
     #
     # Default domain page template;
     #
+	if (!(-e "$sub_dir/htdocs/")) {
+	    my $index_tpl = '';
+	    my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 
-    my $index_tpl = '';
-    my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+	    ($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
 
-    ($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
+	    return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	    $index_tpl =~ s/{DOMAIN_NAME}/$sub_name/gi;
+	   	$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 
-    $index_tpl =~ s/{DOMAIN_NAME}/$sub_name/gi;
-   	$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
+	    ($rs, $rdata) = store_file(
+	                               "$sub_dir/htdocs/index.html",
+	                               $index_tpl,
+	                               $sys_user,
+	                               $sys_group,
+	                               0644
+	                              );
 
-    ($rs, $rdata) = store_file(
-                               "$sub_dir/htdocs/index.html",
-                               $index_tpl,
-                               $sys_user,
-                               $sys_group,
-                               0644
-                              );
+	    return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+		$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $sub_dir/htdocs/");
+		return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $sub_dir/htdocs/");
-	return $rs if ($rs != 0);
-
-	$rs = setfmode("$sub_dir/htdocs/images/", $sys_user, $sys_group, 0755);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$sub_dir/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$sub_dir/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-	$rs = setfmode("$sub_dir/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
-	return $rs if ($rs != 0);
-
+		$rs = setfmode("$sub_dir/htdocs/images/", $sys_user, $sys_group, 0755);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$sub_dir/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$sub_dir/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+		$rs = setfmode("$sub_dir/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
+		return $rs if ($rs != 0);
+	}
 
     push_el(\@main::el, 'sub_add_httpd_file_data()', 'Ending...');
 

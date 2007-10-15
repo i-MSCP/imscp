@@ -2043,7 +2043,7 @@ sub dmn_add_httpd_file_data {
 	# Default domain page template;
 	#
 
-	if (!(-e "$www_dir/$dmn_name/htdocs/index.html")) {
+	if (!(-e "$www_dir/$dmn_name/htdocs/")) {
 
 		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
@@ -2343,7 +2343,7 @@ sub dmn_change_httpd_file_data {
 	# php.ini for the domain
 	#
 
-	my ($ini_tpl, $starter_tpl) = (undef, undef);
+	my $ini_tpl = undef;
 	my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
 
 	($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
@@ -2355,12 +2355,12 @@ sub dmn_change_httpd_file_data {
 					'{DMN_NAME}' => $dmn_name
 				   );
 
-	($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+	($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 	return $rs if ($rs != 0);
 
 	($rs, $rdata) = store_file(
 								"$starter_dir/$dmn_name/php4/php.ini",
-								$ini_tpl,
+								$cfg,
 								$sys_user,
 								$sys_group,
 								0640
@@ -2381,7 +2381,7 @@ sub dmn_change_httpd_file_data {
 					'{DMN_NAME}' => $dmn_name
 				   );
 
-	($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
+	($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 	return $rs if ($rs != 0);
 
 	($rs, $rdata) = store_file(

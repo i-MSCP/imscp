@@ -6,13 +6,22 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-15 Benedikt Heintel
+	- DOCS:
+		* Updated: Fedora install script
+	- ENGINE:
+		* Fixed: Prevented Sub-/Alias-/Domainmanager from creating index.html, if directory exists
+		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
+	- DATABASE
+		* changed English language: Added drop
+
 2007-10-15 Malte Geierhos
 	- SETUP:
 		* fixed #771 according to joximu
 	- ENGINE:
 		* fixed #773 perl errors in dmn-mngr
 
-2007-10-15 Johannes Schobig
+hannes Schobig
 	- SETUP:
 		* Ask before generating passwords
 
