@@ -12,6 +12,7 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed: Prevented Sub-/Alias-/Domainmanager from creating index.html, if directory exists
 		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
+		* Fixed #774: AWStats not working
 	- DATABASE
 		* changed English language: Added drop
 
@@ -21,7 +22,7 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* fixed #773 perl errors in dmn-mngr
 
-hannes Schobig
+2007-10-15 Johannes Schobig
 	- SETUP:
 		* Ask before generating passwords
 
