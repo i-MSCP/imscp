@@ -9,6 +9,8 @@ ispCP ω 1.0.0 Changelog
 2007-10-15 Malte Geierhos
 	- SETUP:
 		* fixed #771 according to joximu
+	- ENGINE:
+		* fixed #773 perl errors in dmn-mngr
 
 2007-10-15 Johannes Schobig
 	- SETUP:

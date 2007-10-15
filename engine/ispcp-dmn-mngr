@@ -2047,12 +2047,12 @@ sub dmn_add_httpd_file_data {
 
 		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
-		my $err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
+		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
 
 		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
 		return $rs if ($rs != 0);
 
-	    my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+	        my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
 		my %tag_hash = (
 						'{DOMAIN_NAME}' => $decoded_dmn_name,
 						'{BASE_SERVER_VHOST}' => $vhost
@@ -4141,7 +4141,7 @@ sub dmn_del_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working_file, $rdata) = (undef, undef, undef);
+    my ($sys, $working_file, $rdata, $working) = (undef, undef, undef, undef);
 
     ($rs, $working_file) = get_file($working_cfg);
 
@@ -4151,7 +4151,7 @@ sub dmn_del_awstats_cron {
 
 	$working_file =~ s/$working/""/gi;
 
-    $rs = store_file($working_cfg $working_file, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working_file, 'root', 'root', 0644);
 
     return $rs if ($rs != 0);
 
@@ -4570,6 +4570,9 @@ sub dmn_mngr_engine {
 
     my $timestamp = undef;
 
+    my $sub_name = undef;
+
+    my $msg = undef;
 
     if ($dmn_status eq 'toadd') {
 
@@ -4583,7 +4586,7 @@ sub dmn_mngr_engine {
 
         } else {
 
-            my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 
@@ -4618,7 +4621,7 @@ sub dmn_mngr_engine {
 
         } else {
 
-            my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+           ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 
@@ -4650,7 +4653,7 @@ sub dmn_mngr_engine {
 
         } else {
 
-            my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+           ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 
@@ -4676,7 +4679,7 @@ sub dmn_mngr_engine {
 
         } else {
 
-            my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 
@@ -4700,7 +4703,7 @@ sub dmn_mngr_engine {
 
         } else {
 
-            my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 
@@ -4726,7 +4729,7 @@ sub dmn_mngr_engine {
 
         } else {
 
-            my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 
