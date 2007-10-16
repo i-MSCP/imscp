@@ -7,6 +7,8 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-10-16 Benedikt Heintel
+	- DISTS:
+		* Updated ubuntu
 	- ENGINE:
 		* Fixed #7: Improvement of static AWStats
 		* Fixed #7: Removed static dirs from conf filess

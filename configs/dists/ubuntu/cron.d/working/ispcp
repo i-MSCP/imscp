@@ -1,25 +1,4 @@
 
-# delayed tasks START.
-
-# Quota
-0		23		* * *  {QUOTA_ROOT_DIR}/ispcp-dsk-quota &>{LOG_DIR}/ispcp-qsk-quota.log
-
-# Traffic
-0,30	*		* * *  {TRAFF_ROOT_DIR}/ispcp-srv-traff &>{LOG_DIR}/ispcp-srv-traff.log
-0,30	*		* * *  {TRAFF_ROOT_DIR}/ispcp-vrl-traff &>{LOG_DIR}/ispcp-vrl-traff.log
-15,45	*		* * *  {TRAFF_ROOT_DIR}/ispcp-vrl-traff-correction &>{LOG_DIR}/ispcp-vrl-traff-correction.log
-30		23		* * *  {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr &>{LOG_DIR}/ispcp-httpd-logs-mngr.log
-
-# Backup
-0		1		* * *  {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
-
-# AWStats
-{AWSTATS}
-
-# Rootkit Hunter
-0 		0,12 	* * * 	rkhunter --createlogfile --cronjob
-
-# [{DMN_NAME}] backup task START.
-# [{DMN_NAME}] backup task END.
-
-# delayed tasks END.
+#
+# This file will be replaced by ../ispcp when make is executed
+#

@@ -20,6 +20,7 @@ install:
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
 	fi \
 
+
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/proftpd
