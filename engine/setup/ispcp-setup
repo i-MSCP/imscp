@@ -2342,9 +2342,20 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/01_awstats.conf $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf";
+	($rs, $cfg_tpl) = get_file("$cfg_dir/01_awstats.conf");
 
-	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	%tag_hash = (
+					'{AWSTATS_ENGINE_DIR}' 		=> $main::cfg{'AWSTATS_ENGINE_DIR'},
+					'{AWSTATS_WEB_DIR}' 		=> $main::cfg{'AWSTATS_WEB_DIR'}
+					);
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $cfg, 'root', 'root', 0644);
 
 	return $rs if ($rs != 0);
 

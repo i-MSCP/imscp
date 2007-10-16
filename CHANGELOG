@@ -9,6 +9,8 @@ ispCP ω 1.0.0 Changelog
 2007-10-16 Benedikt Heintel
 	- ENGINE:
 		* Fixed #7: Improvement of static AWStats
+		* Fixed #7: Removed static dirs from conf filess
+		* Fixed #55: Part I: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
 		* Fixed #781: htdocs folder is empty (on new installed domain)
 		* Fixed #779: Makefile Error
 		* Deleted: Old SASL vaiables and use of them
@@ -28,7 +30,6 @@ ispCP ω 1.0.0 Changelog
 		* Updated: Fedora install script
 	- ENGINE:
 		* Fixed: Prevented Sub-/Alias-/Domainmanager from creating index.html, if directory exists
-		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
 		* Fixed #774: AWStats not working
 	- DATABASE
 		* changed English language: Added drop
