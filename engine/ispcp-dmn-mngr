@@ -4029,7 +4029,7 @@ sub dmn_add_awstats_cron {
 	) = get_tpl(
 				$tpl_dir,
 				'dmn_awstats_b.tpl',
-				'dmn_awstats_dynamic_entry.tpl',
+				'dmn_awstats_entry.tpl',
 				'dmn_awstats_e.tpl'
 				);
 
@@ -4045,7 +4045,7 @@ sub dmn_add_awstats_cron {
                     '{HOUR}' => $cronjob_hour
                    );
 
-    (
+   (
      $rs,
      $awstats_b,
      $awstats_entry,
@@ -4142,7 +4142,7 @@ sub dmn_add_awstats_cron {
 sub dmn_del_awstats_cron {
     my ($dmn_data) = @_;
 
-    my $rs = undef;
+    my ($rs, $rdata, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef);
 
     push_el(\@main::el, 'dmn_del_awstats_cron()', 'Starting...');
 
@@ -4181,7 +4181,7 @@ sub dmn_del_awstats_cron {
 	) = get_tpl(
 				$tpl_dir,
 				'dmn_awstats_b.tpl',
-				'dmn_awstats_dynamic_entry.tpl',
+				'dmn_awstats_entry.tpl',
 				'dmn_awstats_e.tpl'
 				);
 

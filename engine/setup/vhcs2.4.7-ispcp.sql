@@ -55,7 +55,7 @@ ALTER TABLE `domain` CHANGE `domain_traffic_limit` `domain_traffic_limit` bigint
 ALTER TABLE `domain` CHANGE `domain_disk_limit` `domain_disk_limit` bigint(20) unsigned default NULL;
 ALTER TABLE `domain` CHANGE `domain_disk_usage` `domain_disk_usage` bigint(20) unsigned default NULL;
 ALTER TABLE `domain` ADD UNIQUE KEY `domain_name` (`domain_name`);
-ALTER TABLE `domain` ADD KEY `i_domain_admin_id` (`domain_admin_id`);
+ALTER TABLE `domain` ADD INDEX `i_domain_admin_id` (`domain_admin_id`);
 
 -- Drop useless table
 DROP TABLE IF EXISTS `domain_props`;
@@ -139,10 +139,8 @@ CHANGE `bytes_pop_out` `bytes_pop_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_web_in` `bytes_web_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_web_out` `bytes_web_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL;
 ALTER TABLE `server_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
-ALTER TABLE `server_traffic` ADD KEY `i_correction` (`correction`);
-ALTER TABLE `server_traffic` ADD KEY `i_traff_time` (`traff_time`);
-
-ALTER TABLE `suexec_props` ADD UNIQUE KEY `id` (`id`);
+ALTER TABLE `server_traffic` ADD INDEX `i_correction` (`correction`);
+ALTER TABLE `server_traffic` ADD INDEX `i_traff_time` (`traff_time`);
 
 -- Drop useless table
 DROP TABLE IF EXISTS `syslog`;

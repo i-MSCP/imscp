@@ -74,7 +74,8 @@ install:
 	$(CMD_INSTALL) ./setup/reset-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/vhcs2ispcp.pl $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/vhcs2.4.7-ispcp.pl $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/vhcs2.4.8-ispcp.pl $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2-remover.pl $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/copy-errordocs.sh $(SYSTEM_ENGINE_ROOT)/setup
