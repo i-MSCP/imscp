@@ -1364,8 +1364,6 @@ sub setup_sql {
 
 
 		# Let's reset data;
-
-
 		$main::db = undef;
 
 		$main::db_name = $store_db_name;
@@ -2613,22 +2611,6 @@ sub setup_mta {
 		sys_command_rs("$main::cfg{'CMD_MTA'} start &> /tmp/ispcp-setup-services.log");
 
 	}
-
-	#
-	# SASL password database;
-	#
-	#
-	#if (-e $main::cfg{'MTA_SASLDB_FILE'}) {
-	#
-	#	$rs = del_file($main::cfg{'MTA_SASLDB_FILE'});
-	#	return $rs if ($rs != 0);
-	#
-	#}
-	#
-	#$cmd = "$main::cfg{'CMD_LN'} -s $main::cfg{'MTA_SASLDB_FILE'} /etc/sasldb2";
-	#$rs = sys_command($cmd);
-	#return $rs if ($rs != 0);
-	#
 
 	push_el(\@main::el, 'setup_mta()', 'Ending...');
 

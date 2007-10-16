@@ -3,7 +3,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT=0;
 
 START TRANSACTION;
-USE ispcp;
+USE {DATABASE};
 
 -- BEGIN: Upgrade database structure:
 ALTER TABLE `admin` CHANGE `customer_id` `customer_id` varchar(200) NULL DEFAULT '0';

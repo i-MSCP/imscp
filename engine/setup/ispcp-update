@@ -1,0 +1,437 @@
+#!/usr/bin/perl
+
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2007 by ispCP | http://isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the GPL General Public License
+#    as published by the Free Software Foundation; either version 2.0
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GPL General Public License for more details.
+#
+#    You may have received a copy of the GPL General Public License
+#    along with this program.
+#
+#    An on-line copy of the GPL General Public License can be found
+#    http://www.fsf.org/licensing/licenses/gpl.txt
+#
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+
+require 'ispcp_common_code.pl';
+use strict;
+use warnings;
+
+%main::ua = ();
+$main::vhcs2 = undef;
+$main::ispcp = undef;
+
+################################################################################
+##                                SUBROUTINES                                 ##
+################################################################################
+
+sub start_up {
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'setup_start_up()', 'Starting...');
+
+	# Get path to vhcs2.conf
+	print STDOUT "\tPlease enter path to vhcs2.conf [/etc/vhcs2/vhcs2.conf]: "
+
+	print STDOUT $welcome_message;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $dec eq '') {
+		$rdata = '/etc/vhcs2/vhcs2.conf';
+	}
+
+	# set vhcs2 config
+	$main::vhcs2 = $rdata;
+
+	# Get ispCP config
+	$rs = get_conf();
+	return $rs if ($rs != 0);
+	$main::ispcp = "$main::cfg{'CONF_DIR'}/ispcp.conf";
+
+	$rs = setup_main_vars();
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'setup_start_up()', 'Ending...');
+
+	return 0;
+
+}
+
+
+sub welcome_note {
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'welcome_note()', 'Starting...');
+
+	my $welcome_message = <<MSG;
+
+\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.
+\tThis program will update your VHCS / ispCP OMEGA system on your server.
+\tPlease make sure you have a backup of your server data.
+
+\tNOTE: During the migration process some or all services might require to be
+\tshut down or restarted.
+
+\tPlease select from which version you want to update:
+\t(1) VHCS 2.4.7 or VHCS 2.4.7.1
+\t(2) VHCS 2.4.8 RC1
+\t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)
+\t(0) abort
+MSG
+
+	print STDOUT $welcome_message;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	while (!(isnum $rdata)|| $rdata < 0 || $rdata > 3) {
+		print STDOUT "\nPlease select an item mentioned above: ";
+		$rdata = readline(\*STDIN);
+		chop($rdata);
+	}
+
+	$main::ua{'update'} = $rdata;
+
+	push_el(\@main::el, 'welcome_note()', 'Ending...');
+
+	return 0;
+}
+
+sub stop_services {
+	push_el(\@main::el, 'stop_services()', 'Starting...');
+    my ($lock_file) = @_;
+
+    if (-e $lock_file) {
+        exit_werror("\tVHCS2's backups engine is currently running. Aborting...");
+    }
+
+    print STDOUT "\t";
+
+    if ( -e "/etc/init.d/vhcs2_daemon" ) {
+        sys_command("/etc/init.d/vhcs2_daemon stop");
+        print STDOUT "\t";
+    }
+
+    if ( -e "/etc/init.d/ispcp_daemon" ) {
+        sys_command("$main::cfg{'CMD_ISPCPD'} stop");
+        print STDOUT "\t";
+    }
+
+    if ( -e "/etc/init.d/ispcp_network" ) {
+        sys_command("$main::cfg{'CMD_ISPCPN'} stop");
+        print STDOUT "\t";
+    }
+
+	push_el(\@main::el, 'stop_services()', 'Ending...');
+    return 0;
+}
+
+sub start_services {
+
+    sys_command("$main::cfg{'CMD_ISPCPD'} start");
+    sys_command("$main::cfg{'CMD_ISPCPN'} start");
+    sleep(2);
+
+    #Restart servers to make them use the newly generated config
+    sys_command("$main::cfg{'CMD_HTTPD'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_MTA'} restart");
+    sleep(2);
+    if (-e "$main::cfg{'CMD_NAMED'}") {
+        sys_command("$main::cfg{'CMD_NAMED'} restart");
+        sleep(2);
+    }
+    sys_command("$main::cfg{'CMD_POP'} restart");
+    sleep(2);
+    if (-e "$main::cfg{'CMD_POP_SSL'}") {
+        sys_command("$main::cfg{'CMD_POP_SSL'} restart");
+        sleep(2);
+    }
+    sys_command("$main::cfg{'CMD_IMAP'} restart");
+    sleep(2);
+    if (-e "$main::cfg{'CMD_IMAP_SSL'}") {
+        sys_command("$main::cfg{'CMD_IMAP_SSL'} restart");
+        sleep(2);
+    }
+    sys_command("$main::cfg{'CMD_FTPD'} restart");
+    sleep(2);
+    sys_command("$main::cfg{'CMD_AUTHD'} restart");
+
+    return 0;
+}
+
+sub migrate_vhcs2 {
+	push_el(\@main::el, 'migrate_vhcs2()', 'Starting...');
+
+	my ($rdata, $rs, $sql) = (undef, undef, undef);
+
+    print STDOUT "\tDropping ispcp table...";
+
+    ($rs, $rdata) = doSQL("DROP DATABASE IF EXISTS `ispcp`;");
+
+    if ($rs != 0) {
+        print STDOUT "failed!\n";
+        exit_werror($rdata, $rs);
+    }
+
+    print STDOUT "done\n";
+
+    print STDOUT "\tCreating new database...";
+
+    if (sys_command("mysqladmin -u\'$main::db_user\' -p\'$main::db_pwd\' create ispcp ") != 0) {
+        print STDOUT "failed!\n";
+        exit_werror();
+    }
+
+    print STDOUT "done\n";
+
+    print STDOUT "\tCopying database...";
+
+    if (sys_command("mysqldump --opt -u\'$main::db_user\' -p\'$main::db_pwd\' $main::db_name | mysql -u\'$main::db_user\' -p\'$main::db_pwd\' ispcp") != 0) {
+        print STDOUT "failed!\n";
+        exit_werror();
+    }
+
+    print STDOUT "done\n";
+
+    print STDOUT "\tUpgrading database structure...";
+
+	# Update from VHCS 2.4.7
+	if ($main::ua{'update'} eq 1) {
+		($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/vhcs2.4.7-ispcp.sql");
+		return $rs if ($rs != 0);
+	}
+	# Update from VHCS 2.4.8
+	elsif ($main::ua{'update'} eq 2) {
+		($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/vhcs2.4.8-ispcp.sql");
+		return $rs if ($rs != 0);
+	}
+
+	$rdata =~ s/\{DATABASE_NAME\}/$main::db_name/gi;
+	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
+	return $rs if ($rs != 0);
+
+	if (sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql") != 0) {
+    	print STDOUT "failed!\n";
+   	 	exit_werror("SQL Update failed.");
+	}
+
+    print STDOUT "done\n";
+
+	push_el(\@main::el, 'migrate_vhcs2()', 'Ending...');
+	return 0;
+}
+
+sub remove_vhcs2 {
+	push_el(\@main::el, 'remove_vhcs2()', 'Starting...');
+
+	print STDOUT = "\tNow you can remove VHCS2. Do you want to remove VHCS2 auomaticly? (yes|no) [yes]: ";
+	my $dec = readline(\*STDIN);
+	chop($dec);
+
+	if (!defined($dec) || $dec eq '') {
+		$dec = 'yes';
+	}
+
+	# Remove VHCS2 files
+	if ($dec eq 'yes') {
+		# Get vhcs2.conf
+		$rs = get_conf($main::vhcs2);
+		return $rs if ($rs != 0);
+
+		# Remove VHCS2 Web/Engine folder
+		print STDOUT "\tRemoving $main::vhcs2{'ROOT_DIR'}";
+		del_dir($main::cfg{'ROOT_DIR'});
+
+		# Remove VHCS2 Config foler
+		print STDOUT "\tRemoving $main::cfg{'CONF_DIR'}";
+		del_dir($main::cfg{'CONF_DIR'});
+
+		# Remove VHCS2 Log folder
+		print STDOUT "\tRemoving $main::cfg{'LOG_DIR'}";
+		del_dir($main::cfg{'LOG_DIR'});
+
+		# Remove VHCS2 Postfix folders
+		print STDOUT "\tRemoving $main::cfg{'MTA_VIRTUAL_CONF_DIR'}";
+		del_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'});
+
+		# Remove VHCS2 logrotation
+		print STDOUT "\tRemoving logrotation";
+		del_file("/etc/logrotate.d/vhcs2");
+
+		# Remove VHCS2 crontab
+		print STDOUT "\tRemoving crontab";
+		sys_command("crontab -r vhcs2");
+
+		# Remove VHCS2 apache files
+		print STDOUT "\tRemoving apache vhost file";
+		if ( -e "/usr/sbin/a2dissite" ) {
+			$rs = sys_command("/usr/sbin/a2dissite vhcs2.conf");
+
+			if ($rs == 0) {
+				$rs = sys_command("unlink /etc/apache2/sites-enabled/vhcs2.conf");
+		    	if ($rs != 0) {
+		        	print STDOUT "failed!\n";
+		        	exit_werror();
+		        }
+		    }
+		}
+		else {
+		    print STDOUT "\tDisabling vhcs2's apache2 sites ...";
+
+		    $rs = sys_command("unlink /etc/apache2/sites-enabled/vhcs2.conf");
+		    if ($rs != 0) {
+		        print STDOUT "failed!\n";
+		        exit_werror();
+		    }
+		}
+		# Restart apache
+		$cmd = $main::cfg{'CMD_HTTPD'};
+		sys_command_rs("$cmd stop");
+		sleep(5);
+	    sys_command_rs("$cmd start");
+	    sleep(5);
+	    ##
+
+		# Remove VHCS2 Daemons
+		if (-e "/usr/sbin/vhcs2-mkdirs.pl") {
+			print STDOUT "\tRemoving vhcs2-mkdirs.pl";
+			del_file("/usr/sbin/vhcs2-mkdirs.pl");
+		}
+
+		# Remove VHCS2 Daemons
+		print STDOUT "\tRemoving Daemons";
+		del_file($main::cfg{'CMD_VHCS2D'});
+		del_file($main::cfg{'CMD_VHCS2N'});
+
+		# Get ispcp.conf
+		$rs = get_conf($main::ispcp);
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'remove_vhcs2()', 'Ending...');
+	return 0;
+}
+
+sub patch_ispcp_rc2 {
+	push_el(\@main::el, 'patch_ispcp_rc2()', 'Starting...');
+
+	push_el(\@main::el, 'patch_ispcp_rc2()', 'Ending...');
+	return 0;
+}
+
+sub prepare_update {
+	my $rs = undef;
+
+	push_el(\@main::el, 'user_dialog()', 'Starting...');
+
+	$rs = welcome_note();
+
+	return $rs if ($rs != 0);
+
+	# Abort
+	if ($main::ua{'update'} eq 0) {
+		exit_werror("Script was aborted by user");
+	}
+	# VHCS update
+	elif ($main::ua{'update'} eq 1 || $main::ua{'update'} eq 2) {
+		stop_services("/tmp/vhcs2-backup-all.lock");
+		$rs = migrate_vhcs2();
+		return $rs if ($rs != 0);
+		$rs = remove_vhcs2();
+		return $rs if ($rs != 0);
+		start_services();
+	}
+	# ispCP 1.0.0 RC2 Update
+	elif ($main::ua{'update'} eq 3) {
+		stop_services("/tmp/vhcs2-backup-all.lock");
+		#$rs = patch_ispcp_rc2();
+		return $rs if ($rs != 0);
+		print STDOUT "Not yet possible!\n";
+		start_services();
+	}
+
+	exit 0;
+
+	push_el(\@main::el, 'user_dialog()', 'Ending...');
+}
+
+sub exit_werror {
+    my ($msg, $code) = @_;
+
+    if (!defined($code) || $code <= 0 ) {
+        $code = 1;
+    }
+
+    if (defined($msg) && $msg ne '' ) {
+        print STDERR "\n$msg\n";
+    }
+
+    exit $code;
+}
+
+################################################################################
+##                                    MAIN                                    ##
+################################################################################
+
+my $rs = undef;
+
+$rs = update_start_up();
+
+if ($rs != 0) {
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+
+	print STDERR "$msg\n";
+
+	exit 1;
+}
+
+$rs = prepare_update();
+
+if ($rs != 0) {
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+
+	print STDERR "$msg\n";
+
+	exit 1;
+}
+
+$rs = update_ispcp();
+
+if ($rs != 0) {
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+
+	print STDERR "$msg\n";
+
+	exit 1;
+}
+
+$rs = update_shut_down();
+
+if ($rs != 0) {
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+
+	print STDERR "$msg\n";
+
+	exit 1;
+}
+
+exit 0;
