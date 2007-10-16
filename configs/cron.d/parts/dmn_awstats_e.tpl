@@ -1,1 +1,1 @@
-# AWStats static tasks END.
+# [{DMN_NAME}] AWStats static tasks END.

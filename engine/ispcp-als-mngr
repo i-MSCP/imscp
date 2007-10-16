@@ -1718,15 +1718,6 @@ sub als_add_httpd_file_data {
     return $rs if ($rs != 0);
 
     $rs = make_dir(
-                   "$www_dir/$als_name/htdocs",
-                   $sys_user,
-                   $sys_group,
-                   0775
-                  );
-
-    return $rs if ($rs != 0);
-
-    $rs = make_dir(
                    "$www_dir/$als_name/cgi-bin",
                    $sys_user,
                    $sys_group,
@@ -1839,6 +1830,17 @@ sub als_add_httpd_file_data {
     # Default domain page template;
     #
 	if (!(-e "$www_dir/$als_name/htdocs/")) {
+
+		$rs = make_dir(
+                   		"$www_dir/$als_name/htdocs",
+                 	  	$sys_user,
+                 	  	$sys_group,
+                	   	0775
+                 	 );
+
+  		return $rs if ($rs != 0);
+
+
 	    my $index_tpl = '';
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 

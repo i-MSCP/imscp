@@ -40,7 +40,7 @@
 # [{DMN_NAME}]:{CRONJOB_ID} custom task START.
 # [{DMN_NAME}]:{CRONJOB_ID} custom task END.
 
-# AWStats static tasks START.
-# AWStats static tasks END.
+# [{DMN_NAME}] AWStats static tasks START.
+# [{DMN_NAME}] AWStats static tasks END.
 
 # delayed tasks END.

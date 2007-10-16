@@ -908,9 +908,10 @@ sub gen_httpd_dmn_group_entry {
         $dmn_php2_entry,
         $dmn_php2_e,
 	    $dmn_awstats_b,
-	    $dmn_awstats_entry,
+	    $dmn_awstats_dynamic_entry,
+	    $dmn_awstats_static_entry,
 	    $dmn_awstats_e
-       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
     (
      $rs,
@@ -930,7 +931,8 @@ sub gen_httpd_dmn_group_entry {
      $dmn_php2_entry,
      $dmn_php2_e,
 	 $dmn_awstats_b,
-	 $dmn_awstats_entry,
+	 $dmn_awstats_dynamic_entry,
+	 $dmn_awstats_static_entry,
 	 $dmn_awstats_e
     ) = get_tpl (
                  $tpl_dir,
@@ -950,7 +952,8 @@ sub gen_httpd_dmn_group_entry {
                  'dmn_php2_entry.tpl',
                  'dmn_php2_e.tpl',
                  'dmn_awstats_b.tpl',
-	             'dmn_awstats_entry.tpl',
+	             'dmn_awstats_dynamic_entry.tpl',
+	             'dmn_awstats_static_entry.tpl',
 	             'dmn_awstats_e.tpl'
                 );
 
@@ -997,7 +1000,8 @@ sub gen_httpd_dmn_group_entry {
      $dmn_php_entry,
      $dmn_php_e,
      $dmn_php2_entry,
-	 $dmn_awstats_entry
+	 $dmn_awstats_dynamic_entry,
+	 $dmn_awstats_static_entry
     ) = prep_tpl(
                  \%tag_hash,
                  $dg_b,
@@ -1013,7 +1017,8 @@ sub gen_httpd_dmn_group_entry {
                  $dmn_php_entry,
                  $dmn_php_e,
                  $dmn_php2_entry,
-                 $dmn_awstats_entry
+                 $dmn_awstats_dynamic_entry,
+                 $dmn_awstats_static_entry
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1024,9 +1029,15 @@ sub gen_httpd_dmn_group_entry {
 
 	my $awstats_entry = undef;
 
+	# AWStats Dynamic
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
-		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_entry\n$dmn_awstats_e";
+		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_dynamic_entry\n$dmn_awstats_e";
 	}
+	# AWStats Static
+	elsif ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_static_entry\n$dmn_awstats_e";
+	}
+	# No AWStats
 	else {
 		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_e";
 	}
@@ -1913,15 +1924,6 @@ sub dmn_add_httpd_file_data {
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/htdocs",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
-	return $rs if ($rs != 0);
-
-	$rs = make_dir(
 					"$www_dir/$dmn_name/cgi-bin",
 					$sys_user,
 					$sys_group,
@@ -2043,7 +2045,17 @@ sub dmn_add_httpd_file_data {
 	# Default domain page template;
 	#
 
+	# check if htdocs folder not exists
 	if (!(-e "$www_dir/$dmn_name/htdocs/")) {
+
+		$rs = make_dir(
+						"$www_dir/$dmn_name/htdocs",
+						$sys_user,
+						$sys_group,
+						0775
+					);
+
+		return $rs if ($rs != 0);
 
 		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
@@ -3977,7 +3989,7 @@ sub dmn_del_awstats_cfg_data {
 sub dmn_add_awstats_cron {
     my ($dmn_data) = @_;
 
-    my ($rs, $awstats_entry) = (undef, undef);
+    my ($rs, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
 
     push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
 
@@ -4012,13 +4024,13 @@ sub dmn_add_awstats_cron {
     (
 	 $rs,
 	 $dmn_awstats_b,
-	 $dmn_awstats_e,
-	 $dmn_awstats_entry
+	 $dmn_awstats_entry,
+	 $dmn_awstats_e
 	) = get_tpl(
 				$tpl_dir,
 				'dmn_awstats_b.tpl',
-				'dmn_awstats_e.tpl',
-				'dmn_awstats_entry.tpl'
+				'dmn_awstats_dynamic_entry.tpl',
+				'dmn_awstats_e.tpl'
 				);
 
     return $rs if ($rs != 0);
@@ -4033,7 +4045,18 @@ sub dmn_add_awstats_cron {
                     '{HOUR}' => $cronjob_hour
                    );
 
-    ($rs, $awstats_entry) = prep_tpl(\%tag_hash, $dmn_awstats_entry);
+    (
+     $rs,
+     $awstats_b,
+     $awstats_entry,
+     $awstats_e
+    ) = prep_tpl (
+                  \%tag_hash,
+                  $dmn_awstats_b,
+                  $dmn_awstats_entry,
+                  $dmn_awstats_e
+                 );
+
 
     return $rs if ($rs != 0);
 
@@ -4047,15 +4070,36 @@ sub dmn_add_awstats_cron {
 
     return $rs if ($rs != 0);
 
+   ($rs, $rdata) = get_tag(
+                            $awstats_b,
+                            $awstats_e,
+                            $working
+                           );
+    push_el(\@main::el, 'dmn_add_awstats_cron() search', $awstats_b);
+
+    if ($rs == 0) {
+        # We have one! We have to delete it because of possible future changes in this Domain Group entry;
+        ($rs, $working) = del_tag(
+                                  $awstats_b,
+                                  "$awstats_e\n",
+                                  $working
+                                 );
+
+        push_el(\@main::el, 'dmn_add_awstats_cron() del', $awstats_b);
+        return $rs if ($rs != 0);
+
+    }
+
     ($rs, $rdata) = get_tag(
                             $dmn_awstats_b,
                             $dmn_awstats_e,
                             $working
                            );
 
+    push_el(\@main::el, 'dmn_add_awstats_cron() search', $dmn_awstats_b);
     return $rs if ($rs != 0);
 
-    my $dmn_awstats_task = "$awstats_entry\n$dmn_awstats_b\n$dmn_awstats_e";
+    my $dmn_awstats_task = "$awstats_b$awstats_entry\n$awstats_e\n$dmn_awstats_b$dmn_awstats_e";
 
     push_el(\@main::el, 'dmn_add_awstats_cron()', $dmn_awstats_task);
 
@@ -4066,6 +4110,7 @@ sub dmn_add_awstats_cron {
                                $dmn_awstats_task
                               );
 
+	push_el(\@main::el, 'dmn_add_awstats_cron() repl', $dmn_awstats_b);
     return $rs if ($rs != 0);
 
     $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
@@ -4111,6 +4156,7 @@ sub dmn_del_awstats_cron {
     my $cronjob_minute = @$dmn_data[0];
     # to prevent running all crons at same time
     $cronjob_minute = $cronjob_minute % 60;
+    my $cronjob_hour = '3';
 
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 
@@ -4125,15 +4171,44 @@ sub dmn_del_awstats_cron {
     # Getting needed templates;
     #
 
-    my ($dmn_awstats_entry, $dmn_custom_entry) = ('', undef);
+    my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
+
+    (
+	 $rs,
+	 $dmn_awstats_b,
+	 $dmn_awstats_entry,
+	 $dmn_awstats_e
+	) = get_tpl(
+				$tpl_dir,
+				'dmn_awstats_b.tpl',
+				'dmn_awstats_dynamic_entry.tpl',
+				'dmn_awstats_e.tpl'
+				);
+
+    return $rs if ($rs != 0);
+
+    #
+    # Preparing templates;
+    #
+
+    my %tag_hash = (
+                    '{DMN_NAME}' => $dmn_name,
+                    '{MINUTE}' => $cronjob_minute,
+                    '{HOUR}' => $cronjob_hour
+                   );
 
     (
      $rs,
-     $dmn_custom_entry
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dmn_awstats_entry.tpl'
-                );
+     $awstats_b,
+     $awstats_entry,
+     $awstats_e
+    ) = prep_tpl (
+                  \%tag_hash,
+                  $dmn_awstats_b,
+                  $dmn_awstats_entry,
+                  $dmn_awstats_e
+                 );
+
 
     return $rs if ($rs != 0);
 
@@ -4141,17 +4216,41 @@ sub dmn_del_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working_file, $rdata, $working) = (undef, undef, undef, undef);
+    my ($sys, $working) = (undef, undef);
 
-    ($rs, $working_file) = get_file($working_cfg);
+    ($rs, $working) = get_file($working_cfg);
 
     return $rs if ($rs != 0);
 
-	$working = "$cronjob_minute 3  * * *   perl /var/www/ispcp/engine/awstats/awstats_buildstaticpages.pl -config=$dmn_name -update -lang=en -awstatsprog=/usr/lib/cgi-bin/awstats.pl -dir=/var/www/virtual/$dmn_name/statistics/\n";
+    ($rs, $rdata) = get_tag(
+                            $awstats_b,
+                            $awstats_e,
+                            $working
+                           );
+    push_el(\@main::el, 'dmn_del_awstats_cron() search', $awstats_b);
 
-	$working_file =~ s/$working/""/gi;
+    if ($rs == 0) {
+        # We have one! We have to delete it
+        ($rs, $working) = del_tag(
+                                  $awstats_b,
+                                  "$awstats_e\n",
+                                  $working
+                                 );
 
-    $rs = store_file($working_cfg, $working_file, 'root', 'root', 0644);
+		push_el(\@main::el, 'dmn_del_awstats_cron() del', $awstats_b);
+        return $rs if ($rs != 0);
+    }
+
+    ($rs, $rdata) = get_tag(
+                            $dmn_awstats_b,
+                            $dmn_awstats_e,
+                            $working
+                           );
+
+	push_el(\@main::el, 'dmn_del_awstats_cron() search', $dmn_awstats_b);
+    return $rs if ($rs != 0);
+
+    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
 
     return $rs if ($rs != 0);
 

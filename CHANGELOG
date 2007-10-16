@@ -6,9 +6,14 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-16 Benedikt Heintel
+	- ENGINE:
+		* Fixed #7: Improvement of static AWStats
+		* Fixed #781: htdocs folder is empty (on new installed domain)
+
 2007-10-16 Malte Geierhos
-	- DATABASE: 
-		* fixed #780 sql error during setup 
+	- DATABASE:
+		* Fixed #780: sql error during setup
 
 2007-10-15 Raphael Geissert
     - LANGUAGES:

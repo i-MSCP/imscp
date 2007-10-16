@@ -1410,15 +1410,6 @@ sub sub_add_httpd_file_data {
     return $rs if ($rs != 0);
 
     ($rs, $rdata) = make_dir(
-                             "$sub_dir/htdocs",
-                             $sys_user,
-                             $sys_group,
-                             0755
-                            );
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = make_dir(
                              "$sub_dir/cgi-bin",
                              $sys_user,
                              $sys_group,
@@ -1439,7 +1430,19 @@ sub sub_add_httpd_file_data {
     #
     # Default domain page template;
     #
+
+    # check if htdocs folder not exists
 	if (!(-e "$sub_dir/htdocs/")) {
+
+    	($rs, $rdata) = make_dir(
+	                             "$sub_dir/htdocs",
+	                             $sys_user,
+	                             $sys_group,
+	                             0755
+	                            );
+
+    	return $rs if ($rs != 0);
+
 	    my $index_tpl = '';
 	    my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 

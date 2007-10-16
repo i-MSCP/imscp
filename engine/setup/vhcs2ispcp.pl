@@ -187,7 +187,7 @@ sub upgrade_database {
 
     print STDOUT "\tUpgrading database structure...";
 
-    if (sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < vhcs2ispcp.sql") != 0) {
+    if (sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < vhcs2.4.7-ispcp.sql") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
