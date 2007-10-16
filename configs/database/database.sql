@@ -19,7 +19,7 @@ CREATE TABLE `admin` (
   `admin_pass` varchar(200) default NULL,
   `admin_type` varchar(10) default NULL,
   `domain_created` int(10) unsigned NOT NULL default '0',
-  `customer_id` varchar(200) unsigned default 0,
+  `customer_id` varchar(200) default 0,
   `created_by` int(10) unsigned default 0,
   `fname` varchar(200) default NULL,
   `lname` varchar(200) default NULL,
