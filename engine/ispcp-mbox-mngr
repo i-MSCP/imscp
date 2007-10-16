@@ -2783,8 +2783,6 @@ sub mbox_add_sasl_data {
 
     my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-    my $mta_sasldb_local_domain = $main::cfg{'MTA_SASLDB_LOCAL_DOMAIN'};
-
     my $mta_sasldb_file = $main::cfg{'MTA_SASLDB_FILE'};
 
 	my $etc_sasldb_file = $main::cfg{'ETC_SASLDB_FILE'};
@@ -2809,16 +2807,6 @@ sub mbox_add_sasl_data {
 
     do {
 
-
-        # Old SASL mamangment;
-
-        #$check_user = "$mail_acc:$dmn_name";
-
-        #$cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
-
-        #$cmd_add_user = "$cmd_echo \"$mail_pass\" | $cmd_sasldb_passwd2 -p -c -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
-
-
         $check_user = "$mail_acc\@$dmn_name";
 
         $cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $dmn_name $mail_acc";
@@ -2838,15 +2826,6 @@ sub mbox_add_sasl_data {
     } if ($mail_type eq 'normal_mail');
 
     do {
-
-
-        # Old SASL mamangment;
-
-        #$check_user = "$mail_acc:$dmn_name";
-
-        #$cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
-
-        #$cmd_add_user = "$cmd_echo \"$mail_pass\" | $cmd_sasldb_passwd2 -p -c -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
 
         $dmn_name = $main::als_id_name{$mail_sub_id};
 
@@ -2875,16 +2854,6 @@ sub mbox_add_sasl_data {
         my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
         my $sub_name = "$sub_pref.$dmn_name";
-
-
-        # Old SASL managment;
-
-        #$check_user = "$mail_acc:$sub_name";
-
-        #$cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$sub_name";
-
-        #$cmd_add_user = "$cmd_echo \"$mail_pass\" | $cmd_sasldb_passwd2 -p -c -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$sub_name";
-
 
         $check_user = "$mail_acc\@$sub_name";
 
@@ -2987,8 +2956,6 @@ sub mbox_del_sasl_data {
 
     my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-    my $mta_sasldb_local_domain = $main::cfg{'MTA_SASLDB_LOCAL_DOMAIN'};
-
     my $mta_sasldb_file = $main::cfg{'MTA_SASLDB_FILE'};
 
 	my $etc_sasldb_file = $main::cfg{'ETC_SASLDB_FILE'};
@@ -3013,16 +2980,6 @@ sub mbox_del_sasl_data {
 
     do {
 
-
-        # Old SASL managment;
-
-        #$check_user = "$mail_acc:$dmn_name";
-
-        #$cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
-
-        #$cmd_add_user = "$cmd_echo \"$mail_pass\" | $cmd_sasldb_passwd2 -p -c -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
-
-
         $check_user = "$mail_acc\@$dmn_name";
 
         $cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $dmn_name $mail_acc";
@@ -3041,15 +2998,6 @@ sub mbox_del_sasl_data {
     } if ($mail_type eq 'normal_mail');
 
     do {
-
-
-        # Old SASL managment;
-
-        #$check_user = "$mail_acc:$dmn_name";
-
-        #$cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
-
-        #$cmd_add_user = "$cmd_echo \"$mail_pass\" | $cmd_sasldb_passwd2 -p -c -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$dmn_name";
 
         $dmn_name = $main::als_id_name{$mail_sub_id};
 
@@ -3078,15 +3026,6 @@ sub mbox_del_sasl_data {
         my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
         my $sub_name = "$sub_pref.$dmn_name";
-
-        # Old SASL mangment;
-
-        #$check_user = "$mail_acc:$sub_name";
-
-        #$cmd_del_user = "$cmd_sasldb_passwd2 -d -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$sub_name";
-
-        #$cmd_add_user = "$cmd_echo \"$mail_pass\" | $cmd_sasldb_passwd2 -p -c -f $etc_sasldb_file -u $mta_sasldb_local_domain $mail_acc:$sub_name";
-
 
         $check_user = "$mail_acc\@$sub_name";
 

@@ -11,6 +11,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #7: Improvement of static AWStats
 		* Fixed #781: htdocs folder is empty (on new installed domain)
 		* Fixed #779: Makefile Error
+		* Deleted: Old SASL vaiables and use of them
 
 2007-10-16 Malte Geierhos
 	- DATABASE:

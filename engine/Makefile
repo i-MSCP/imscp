@@ -78,7 +78,6 @@ install:
 	$(CMD_INSTALL) ./setup/vhcs2.4.8-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2ispcp.pl $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2-remover.pl $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/copy-errordocs.sh $(SYSTEM_ENGINE_ROOT)/setup
 
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr
 	$(CMD_INSTALL) ./tools/ispcpphptemp.sh $(SYSTEM_ENGINE_ROOT)/tools/ispcpphptemp.sh
