@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-14 02:28-0500\n"
-"PO-Revision-Date: 2007-10-11 14:59+0200\n"
+"PO-Revision-Date: 2007-10-15 12:10+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,9 +45,8 @@ msgstr "Normální připojení"
 msgid "Lost password"
 msgstr "Zapomenuté heslo"
 
-#, fuzzy
 msgid "Retrieving lost passwords is currently not possible"
-msgstr "Funkce pro obnovu zapomenutého hesla je vypnuta"
+msgstr "Funkce pro obnovu zapomenutého hesla není dostupná"
 
 msgid "ispCP - Virtual Hosting Control System"
 msgstr "ispCP - Ovládací centrum virtuálního hostingu"
@@ -831,7 +830,7 @@ msgstr ""
 
 msgid ""
 "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr ""
+msgstr "Pokud chcete omezit partnera, musíte nejprve omezit jeho zákazníky!<br>"
 "Pokud chcete omezit partnera, musíte nejprve omezit jeho zákazníky!<br>"
 
 #, php-format
@@ -974,9 +973,8 @@ msgstr "Máte <b>%d</b> nových otázek na podporu"
 msgid "View"
 msgstr "Náhled"
 
-#, fuzzy
 msgid "Couldn't check for updates! Website not reachable."
-msgstr "Nemohu zkontrolovat aktualizace!"
+msgstr "Nemohu zkontrolovat aktualizace! Cílová stránka neodpovídá."
 
 msgid "New ispCP update is now available"
 msgstr "Nová aktualizace ispCP je dostupná"
@@ -2487,7 +2485,6 @@ msgstr "Přidat uživatele SQL"
 msgid "Execute query"
 msgstr "Spusť dotaz"
 
-#, fuzzy
 msgid "Login phpMyAdmin"
 msgstr "PhpMyAdmin"
 
@@ -3015,9 +3012,8 @@ msgstr "Přesměrování subdomény"
 msgid "Unknown type"
 msgstr "Neznámý typ"
 
-#, fuzzy
 msgid "Welcome {USERNAME} to ispCP!"
-msgstr "Vítáme nového ispCP uživatele {USERNAME}!"
+msgstr "Vítáme {USERNAME} do systému ispCP!"
 
 msgid ""
 "\n"
@@ -3039,10 +3035,20 @@ msgid ""
 "The ispCP Team.\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Dobrý den {NAME}!\n"
+"\n"
+"Váš ispCP uživatelský typ je: {USERTYPE}\n"
+"Váš ispCP login je: {USERNAME}\n"
+"Vaše ispCP heslo je: {PASSWORD}\n"
+"\n"
+"Přejeme mnoho zdaru se systémem ispCP!\n"
+"Tým ispCP.\n"
+"\n"
 
-#, fuzzy
 msgid "Please activate your new ispCP password!"
-msgstr "Prosím aktivujte si vaše nové přihlašovací údaje!"
+msgstr "Prosím aktivujte si vaše nové heslo!"
 
 msgid ""
 "\n"
@@ -3070,7 +3076,6 @@ msgstr ""
 msgid "Your new ispCP login!"
 msgstr "Vaše nové přihlašovací údaje!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3089,7 +3094,7 @@ msgstr ""
 "\n"
 "Dobrý den {NAME}!\n"
 "\n"
-"Váš ispCP login je: {USERNAME}\n"
+"Vaše ispCP uživatelské jméno je: {USERNAME}\n"
 "Vaše ispCP heslo je: {PASSWORD}\n"
 "\n"
 "Můžete se přihlásit do systému na http://{BASE_SERVER_VHOST}\n"
