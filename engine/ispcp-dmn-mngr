@@ -4142,7 +4142,7 @@ sub dmn_add_awstats_cron {
 sub dmn_del_awstats_cron {
     my ($dmn_data) = @_;
 
-    my ($rs, $rdata, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef);
+    my ($rs, $rdata, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef, undef);
 
     push_el(\@main::el, 'dmn_del_awstats_cron()', 'Starting...');
 
