@@ -1008,9 +1008,12 @@ sub gen_sys_rand_num {
                 push_el(\@main::el, 'gen_sys_rand_num()', "WARNING: seeding the entropy pool");
 
                 my $seed = $len;
-                while ($seed >= 0 || int(get_file('/proc/sys/kernel/random/entropy_avail')) <= $len) {
-                    save_file('/dev/urandom', rand());
-                    save_file('/dev/urandom', time ^ ($$ + ($$ << 15)));
+                while ($seed >= 0 || int(get_file('/proc/sys/kernel/random/entropy_avail')) <= ($len + 10)) {
+                    save_file('/dev/urandom', rand() * rand());
+                    my $n = 100, $c = undef, $l = 0;
+                    do{$l=int(rand() * 100)); next if($l < 0 || $l > 255);$c .= chr($i}while($n--);
+                    save_file('/dev/urandom', $c);
+                    save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
                     $seed--;
                 }
             }
