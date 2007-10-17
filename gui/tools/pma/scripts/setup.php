@@ -10,7 +10,7 @@
  * @author     Michal Čihař <michal@cihar.com>
  * @copyright  2006 Michal Čihař <michal@cihar.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $
+ * @version    $Id: setup.php 10748 2007-10-10 07:30:59Z cybot_tm $
  */
 
 // Grab phpMyAdmin version and PMA_dl function
@@ -26,7 +26,7 @@ $PMA_Config_Setup = new PMA_Config();
 
 // Script information
 $script_info = 'phpMyAdmin ' . $PMA_Config_Setup->get('PMA_VERSION') . ' setup script by Michal Čihař <michal@cihar.com>';
-$script_version = '$Id: setup.php 10420 2007-06-03 23:30:40Z lem9 $';
+$script_version = '$Id: setup.php 10748 2007-10-10 07:30:59Z cybot_tm $';
 
 // Grab action
 if (isset($_POST['action'])) {
@@ -1951,7 +1951,10 @@ switch ($action) {
             if (empty($_SERVER['REQUEST_URI']) || empty($_SERVER['HTTP_HOST'])) {
                 $redir = '';
             } else {
-                $redir = ' If your server is also configured to accept HTTPS request follow <a href="https://' . htmlspecialchars($_SERVER['HTTP_HOST']) . $_SERVER['REQUEST_URI'] . '">this link</a> to use secure connection.';
+                $redir = ' If your server is also configured to accept HTTPS request'
+                    . ' follow <a href="https://'
+                    . htmlspecialchars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])
+                    . '">this link</a> to use secure connection.';
             }
             message('warning', 'You are not using secure connection, all data (including sensitive, like passwords) are transfered unencrypted!' . $redir, 'Not secure connection');
         }

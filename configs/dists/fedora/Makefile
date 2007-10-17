@@ -5,32 +5,32 @@ install:
 
 	if test $(HOST_OS) = fedora ; then \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
-		cd ./apache && $(MAKE) install ; cd .. ; \
-		cd ./awstats && $(MAKE) install ; cd .. ; \
-		cd ./bind && $(MAKE) install ; cd .. ; \
-		cd ./cron.d && $(MAKE) install ; cd .. ; \
-		cd ./database && $(MAKE) install ; cd .. ;  \
-		cd ./fcgi && $(MAKE) install ; cd .. ; \
-		cd ./init.d && $(MAKE) install ; cd .. ; \
-		cd ./postfix && $(MAKE) install ; cd .. ; \
-		cd ./courier && $(MAKE) install ; cd .. ; \
-		cd ./proftpd && $(MAKE) install ; cd .. ; \
-		cd ./logrotate && $(MAKE) install ; cd .. ; \
+		(cd ./apache && $(MAKE) install &); \
+		(cd ./awstats && $(MAKE) install &); \
+		(cd ./bind && $(MAKE) install &); \
+		(cd ./cron.d && $(MAKE) install &); \
+		(cd ./database && $(MAKE) install &);  \
+		(cd ./fcgi && $(MAKE) install &); \
+		(cd ./init.d && $(MAKE) install &); \
+		(cd ./postfix && $(MAKE) install &); \
+		(cd ./courier && $(MAKE) install &); \
+		(cd ./proftpd && $(MAKE) install &); \
+		(cd ./logrotate && $(MAKE) install); 
 	fi
 
 uninstall:
 
 	if test $(HOST_OS) = fedora ; then \
 		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
-		cd ./apache && $(MAKE) uninstall ; cd .. ; \
-		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
-		cd ./bind && $(MAKE) uninstall ; cd .. ; \
-		cd ./cron.d && $(MAKE) uninstall ; cd .. ; \
-		cd ./database && $(MAKE) uninstall ; cd .. ;  \
-		cd ./init.d && $(MAKE) uninstall ; cd .. ; \
-		cd ./postfix && $(MAKE) uninstall ; cd .. ; \
-		cd ./courier && $(MAKE) uninstall ; cd .. ; \
-		cd ./proftpd && $(MAKE) uninstall ; cd .. ; \
-		cd ./logrotate && $(MAKE) uninstall ; cd .. ; \
-	fi
+		(cd ./apache && $(MAKE) uninstall &); \
+		(cd ./awstats && $(MAKE) uninstall &); \
+		(cd ./bind && $(MAKE) uninstall &); \
+		(cd ./cron.d && $(MAKE) uninstall &); \
+		(cd ./database && $(MAKE) uninstall &); \
+		(cd ./init.d && $(MAKE) uninstall &); \
+		(cd ./postfix && $(MAKE) uninstall &); \
+		(cd ./courier && $(MAKE) uninstall &); \
+		(cd ./proftpd && $(MAKE) uninstall &); \
+		(cd ./logrotate && $(MAKE) uninstall &); \
 
+	fi

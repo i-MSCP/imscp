@@ -31,7 +31,7 @@
  * - load of the libraries/defines_mysql.lib.php library to get the MySQL
  *   release number
  *
- * @version $Id: common.inc.php 10519 2007-07-22 18:36:05Z lem9 $
+ * @version $Id: common.inc.php 10798 2007-10-16 07:24:29Z cybot_tm $
  */
 
 /**
@@ -140,6 +140,21 @@ foreach ($GLOBALS as $key => $dummy) {
 }
 
 /**
+ * PATH_INFO could be compromised if set, so remove it from PHP_SELF
+ * and provide a clean PHP_SELF here
+ */
+$PMA_PHP_SELF = PMA_getenv('PHP_SELF');
+$_PATH_INFO = PMA_getenv('PATH_INFO');
+if (! empty($_PATH_INFO) && ! empty($PMA_PHP_SELF)) {
+    $path_info_pos = strrpos($PMA_PHP_SELF, $_PATH_INFO);
+    if ($path_info_pos + strlen($_PATH_INFO) === strlen($PMA_PHP_SELF)) {
+        $PMA_PHP_SELF = substr($PMA_PHP_SELF, 0, $path_info_pos);
+    }
+}
+$PMA_PHP_SELF = htmlspecialchars($PMA_PHP_SELF);
+
+
+/**
  * just to be sure there was no import (registering) before here
  * we empty the global space
  */
@@ -153,6 +168,7 @@ $variables_whitelist = array (
     '_ENV',
     '_COOKIE',
     '_SESSION',
+    'PMA_PHP_SELF',
 );
 
 foreach (get_defined_vars() as $key => $value) {
@@ -199,7 +215,7 @@ if (isset($_POST['usesubform'])) {
      * track this
      */
     if (isset($_POST['redirect'])
-      && $_POST['redirect'] != basename(PMA_getenv('PHP_SELF'))) {
+      && $_POST['redirect'] != basename($PMA_PHP_SELF)) {
         $__redirect = $_POST['redirect'];
         unset($_POST['redirect']);
     }

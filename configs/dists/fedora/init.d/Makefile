@@ -28,4 +28,3 @@ uninstall:
 	rm -f $(ROOT_CONF)/init.d/ispcp_network
 	rm -f $(ROOT_CONF)/default/ispcp_daemon
 	rm -f $(ROOT_CONF)/default/ispcp_network
-

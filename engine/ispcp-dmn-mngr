@@ -2199,13 +2199,16 @@ sub dmn_add_httpd_file_data {
 									);
 
 		return $rs if ($rs != 0);
+	}
 
-		$starter_tpl = '';
+	if (!(-e "$starter_dir/$dmn_name/php4-fcgi-starter")) {
+		my $starter_tpl = undef;
+		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php4-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		%tag_hash = (
+		my %tag_hash = (
 						'{PHP_STARTER_DIR}' => $starter_dir,
 						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
 						'{DMN_NAME}' => $dmn_name
@@ -2436,13 +2439,15 @@ sub dmn_change_httpd_file_data {
 									);
 
 		return $rs if ($rs != 0);
-
-		$starter_tpl = '';
+	}
+	if (!(-e "$starter_dir/$dmn_name/php4-fcgi-starter")) {
+		my $starter_tpl = undef;
+		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
 		($rs, $starter_tpl) = get_tpl($cfg_dir, 'php4-fcgi-starter.tpl');
 		return $rs if ($rs != 0);
 
-		%tag_hash = (
+		my  %tag_hash = (
 						'{PHP_STARTER_DIR}' => $starter_dir,
 						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
 						'{DMN_NAME}' => $dmn_name
@@ -2453,7 +2458,7 @@ sub dmn_change_httpd_file_data {
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php4-fcgi-starter",
-									$starter_tpl,
+									$$cfg,
 									$sys_user,
 									$sys_group,
 									0750
@@ -3989,7 +3994,7 @@ sub dmn_del_awstats_cfg_data {
 sub dmn_add_awstats_cron {
     my ($dmn_data) = @_;
 
-    my ($rs, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
+    my ($rs, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef);
 
     push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
 
@@ -4142,7 +4147,7 @@ sub dmn_add_awstats_cron {
 sub dmn_del_awstats_cron {
     my ($dmn_data) = @_;
 
-    my ($rs, $rdata, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef, undef);
+    my ($rs, $awstats_b, $awstats_e) = (undef, '', '', '');
 
     push_el(\@main::el, 'dmn_del_awstats_cron()', 'Starting...');
 
@@ -4176,12 +4181,10 @@ sub dmn_del_awstats_cron {
     (
 	 $rs,
 	 $dmn_awstats_b,
-	 $dmn_awstats_entry,
 	 $dmn_awstats_e
 	) = get_tpl(
 				$tpl_dir,
 				'dmn_awstats_b.tpl',
-				'dmn_awstats_entry.tpl',
 				'dmn_awstats_e.tpl'
 				);
 
@@ -4191,11 +4194,7 @@ sub dmn_del_awstats_cron {
     # Preparing templates;
     #
 
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{MINUTE}' => $cronjob_minute,
-                    '{HOUR}' => $cronjob_hour
-                   );
+	my %tag_hash = ( '{DMN_NAME}' => $dmn_name );
 
     (
      $rs,
@@ -4216,7 +4215,7 @@ sub dmn_del_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working) = (undef, undef);
+    my ($sys, $working, $rdata) = (undef, undef, undef);
 
     ($rs, $working) = get_file($working_cfg);
 

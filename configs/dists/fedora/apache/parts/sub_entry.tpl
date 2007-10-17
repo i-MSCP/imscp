@@ -5,7 +5,9 @@
     #Group {SUEXEC_GROUP}
     #
 
-    SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    <IfModule suexec_module>
+           SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    </IfModule>
 
     ServerAdmin     webmaster@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs

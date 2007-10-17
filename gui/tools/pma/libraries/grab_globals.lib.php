@@ -8,7 +8,7 @@
  *
  * loic1 - 2001/25/11: use the new globals arrays defined with php 4.1+
  *
- * @version $Id: grab_globals.lib.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: grab_globals.lib.php 10796 2007-10-16 07:09:50Z cybot_tm $
  */
 
 /**
@@ -103,7 +103,7 @@ if (! empty($_FILES)) {
 /**
  * globalize some environment variables
  */
-$server_vars = array('PHP_SELF', 'HTTP_ACCEPT_LANGUAGE', 'HTTP_AUTHORIZATION');
+$server_vars = array('HTTP_ACCEPT_LANGUAGE', 'HTTP_AUTHORIZATION');
 foreach ($server_vars as $current) {
     // its not important HOW we detect html tags
     // its more important to prevent XSS
