@@ -6,11 +6,17 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-17 Benedikt Heintel
+	- SETUP:
+		* Fixed #783: added Makefile.gentoo
+		* Fixed #784: ispcp-setup fails with compilation errors
+		* Fixed #785: bad test into configs/init.d/Makefile
+
 2007-10-16 Raphael Geissert
-    - MAKEFILES:
-        * Fixed #782: cannot stat `./setup/vhcs2ispcp.pl': No such file or directory
     - ENGINE:
         * Improved entropy pool seeding code
+    - SETUP:
+        * Fixed #782: cannot stat `./setup/vhcs2ispcp.pl': No such file or directory
 
 2007-10-16 Benedikt Heintel
 	- DISTS:
@@ -19,8 +25,9 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #7: Improvement of static AWStats
 		* Fixed #7: Removed static dirs from conf filess
 		* Fixed #55: Part I: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
-		* Fixed #781: htdocs folder is empty (on new installed domain)
+		* Fixed #768: perl ispcp-setup - does not work
 		* Fixed #779: Makefile Error
+		* Fixed #781: htdocs folder is empty (on new installed domain)
 		* Deleted: Old SASL vaiables and use of them
 
 2007-10-16 Malte Geierhos

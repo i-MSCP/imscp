@@ -1010,8 +1010,12 @@ sub gen_sys_rand_num {
                 my $seed = $len;
                 while ($seed >= 0 || int(get_file('/proc/sys/kernel/random/entropy_avail')) <= ($len + 10)) {
                     save_file('/dev/urandom', rand() * rand());
-                    my $n = 100, $c = undef, $l = 0;
-                    do{$l=int(rand() * 100)); next if($l < 0 || $l > 255);$c .= chr($i}while($n--);
+                    my ($n, $c, $l) = (100, undef, 0);
+                    do {
+						$l = int(rand() * 100);
+						next if ($l < 0 || $l > 255);
+						$c .= chr($i);
+					} while($n--);
                     save_file('/dev/urandom', $c);
                     save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
                     $seed--;
@@ -2203,8 +2207,9 @@ sub sort_domains {
 
     my @domains = @_;
     my $len = scalar(@domains);
+    my ($i, $dmn) = (undef, undef);
 
-    for (my ($i, $dmn) = (0, ''); $i < $len; $i++) {
+    for (($i, $dmn) = (0, ''); $i < $len; $i++) {
     	$dmn = $domains[$i];
     	$dmn=join(".",reverse(split(/\./,$dmn)));
     	$domains[$i] = $dmn;
@@ -2212,7 +2217,7 @@ sub sort_domains {
 
     @domains = sort(@domains);
 
-    for (my ($i, $dmn) = (0, ''); $i < $len; $i++) {
+    for (($i, $dmn) = (0, ''); $i < $len; $i++) {
             $dmn = $domains[$i];
             $dmn=join(".",reverse(split(/\./,$dmn)));
             $domains[$i] = $dmn;
