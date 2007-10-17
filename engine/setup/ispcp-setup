@@ -2361,8 +2361,6 @@ sub setup_httpd {
 
 	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", 'root', 'root', 0644);
 
-	$rs = sys_command($cmd);
-
 	return $rs if ($rs != 0);
 
     $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});

@@ -17,9 +17,13 @@ install:
 
     if [[ -f ispcp_daemon.default ]]; then \
 		cp -p ispcp_daemon.default $(ROOT_CONF)/default/ispcp_daemon ; \
+		chown root:root $(ROOT_CONF)/default/ispcp_daemon; 
+		chmod 0755 $(ROOT_CONF)/default/ispcp_daemon;
 	fi
 	if [[ -f ispcp_network.default ]]; then \
 		cp -p ispcp_network.default $(ROOT_CONF)/default/ispcp_network ; \
+		chown root:root $(ROOT_CONF)/default/ispcp_network; 
+	 	chmod 0755 $(ROOT_CONF)/default/ispcp_network;
 	fi
 
 uninstall:

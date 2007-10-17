@@ -1010,11 +1010,11 @@ sub gen_sys_rand_num {
                 my $seed = $len;
                 while ($seed >= 0 || int(get_file('/proc/sys/kernel/random/entropy_avail')) <= ($len + 10)) {
                     save_file('/dev/urandom', rand() * rand());
-                    my ($n, $c, $l, $i) = (100, undef, 0, undef);
+                    my ($n, $c, $l) = (100, undef, 0);
                     do {
 						$l = int(rand() * 100);
 						next if ($l < 0 || $l > 255);
-						$c .= chr($i);
+						$c .= chr($l);
 					} while($n--);
                     save_file('/dev/urandom', $c);
                     save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));

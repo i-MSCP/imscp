@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-17 Malte Geierhos
+	- SETUP: 
+		* Fixed #786 (thanks to greg@proxyconcept.net)
+		* Fixed #785 (thanks to greg@proxyconcept.net)
+
 2007-10-17 Benedikt Heintel
 	- SETUP:
 		* Fixed #783: added Makefile.gentoo
