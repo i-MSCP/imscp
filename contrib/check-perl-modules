@@ -79,3 +79,19 @@ system...\n";
     $| = 1;
 
 }
+
+return 0;
+
+# hack for dh_perl
+
+require IO::Socket;
+require DBI;
+require DBD::mysql;
+require Mail::Address;
+require MIME::Entity;
+require MIME::Parser;
+require Crypt::CBC;
+require Crypt::Blowfish;
+require MIME::Base64;
+require Term::ReadPassword;
+require Net::LibIDN;

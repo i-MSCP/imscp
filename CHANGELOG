@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-16 Raphael Geissert
+    - MAKEFILES:
+        * Fixed #782: cannot stat `./setup/vhcs2ispcp.pl': No such file or directory
+
 2007-10-16 Benedikt Heintel
 	- DISTS:
 		* Updated ubuntu
