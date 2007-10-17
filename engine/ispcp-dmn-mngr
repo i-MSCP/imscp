@@ -2216,7 +2216,7 @@ sub dmn_add_httpd_file_data {
 
 		($rs, $rdata) = store_file(
 									"$starter_dir/$dmn_name/php4-fcgi-starter",
-									$starter_tpl,
+									$cfg,
 									$sys_user,
 									$sys_group,
 									0750

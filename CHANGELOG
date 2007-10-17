@@ -7,7 +7,7 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-10-17 Malte Geierhos
-	- SETUP: 
+	- SETUP:
 		* Fixed #786 (thanks to greg@proxyconcept.net)
 		* Fixed #785 (thanks to greg@proxyconcept.net)
 
@@ -16,6 +16,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #783: added Makefile.gentoo
 		* Fixed #784: ispcp-setup fails with compilation errors
 		* Fixed #785: bad test into configs/init.d/Makefile
+		* Fixed #878: mistakes with the php4-fcgi-starter.tpl
 
 2007-10-16 Raphael Geissert
     - ENGINE:
