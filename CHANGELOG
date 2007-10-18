@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-18 Benedikt Heintel
+	- ENGINE:
+		* Fixed #795: Domains Status not OK.
+
 2007-10-17 Malte Geierhos
 	- SETUP:
 		* Fixed #786 (thanks to greg@proxyconcept.net)

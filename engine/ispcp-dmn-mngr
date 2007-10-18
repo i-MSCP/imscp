@@ -4199,12 +4199,10 @@ sub dmn_del_awstats_cron {
     (
      $rs,
      $awstats_b,
-     $awstats_entry,
      $awstats_e
     ) = prep_tpl (
                   \%tag_hash,
                   $dmn_awstats_b,
-                  $dmn_awstats_entry,
                   $dmn_awstats_e
                  );
 
