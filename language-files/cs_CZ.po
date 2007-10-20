@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-10-15 12:10+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -830,8 +830,9 @@ msgstr ""
 
 msgid ""
 "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr "Pokud chcete omezit partnera, musíte nejprve omezit jeho zákazníky!<br>"
-"Pokud chcete omezit partnera, musíte nejprve omezit jeho zákazníky!<br>"
+msgstr ""
+"Pokud chcete omezit partnera, musíte nejprve omezit jeho zákazníky!<br>Pokud "
+"chcete omezit partnera, musíte nejprve omezit jeho zákazníky!<br>"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
@@ -1855,6 +1856,10 @@ msgid "There is a subdomain with the same mount point!"
 msgstr "Je zde subdoména se stejným přípojným bodem!"
 
 msgid "Alias scheduled for activation!"
+msgstr "Aktivace aliasu byla naplánována!"
+
+#, fuzzy
+msgid "Alias scheduled for addition!"
 msgstr "Aktivace aliasu byla naplánována!"
 
 msgid "Empty List"
@@ -3129,6 +3134,25 @@ msgstr ""
 "Tým ispCP.\n"
 "\n"
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr ""
 
@@ -3201,8 +3225,8 @@ msgstr "Zapnuto"
 msgid "Being suspended"
 msgstr "Pozastaveno"
 
-msgid "Order in progress"
-msgstr "Objednávka odeslána ke zpracování"
+msgid "Awaiting for approval"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "Neznámá chyba"
@@ -3796,6 +3820,9 @@ msgstr "ispCP - Partner : Systém podpory: Zobrazit oznámení"
 
 msgid "Message was sent."
 msgstr "Zpráva byla poslána."
+
+#~ msgid "Order in progress"
+#~ msgstr "Objednávka odeslána ke zpracování"
 
 #~ msgid ""
 #~ "\n"

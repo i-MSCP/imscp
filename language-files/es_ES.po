@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-08-24 13:15+0100\n"
 "Last-Translator: Albert Garcia <albert@twentic.com>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -1905,6 +1905,10 @@ msgstr "¡Hay un subdominio con el mismo punto de montaje!"
 msgid "Alias scheduled for activation!"
 msgstr "Alias programado para ser agregado!"
 
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Alias programado para ser agregado!"
+
 msgid "Empty List"
 msgstr "Lista vacía"
 
@@ -3192,6 +3196,25 @@ msgstr ""
 "El equipo de ispCP.\n"
 "\n"
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 # Yo no traduciría "catchall"
 msgid "Catchall account"
 msgstr "cuenta catchall"
@@ -3265,9 +3288,8 @@ msgstr "Activándose"
 msgid "Being suspended"
 msgstr "Suspendiendo"
 
-#, fuzzy
-msgid "Order in progress"
-msgstr "Agregando..."
+msgid "Awaiting for approval"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "Error desconocido"
@@ -3887,6 +3909,10 @@ msgstr "ispCP - Revendedor : Sistema de Soporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
+
+#, fuzzy
+#~ msgid "Order in progress"
+#~ msgstr "Agregando..."
 
 #~ msgid ""
 #~ "\n"

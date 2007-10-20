@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -1895,6 +1895,10 @@ msgstr "Існують аліаси з ідентичною точкою мон�
 msgid "Alias scheduled for activation!"
 msgstr "Триває додавання аліасу!"
 
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Триває додавання аліасу!"
+
 msgid "Empty List"
 msgstr "Порожній список"
 
@@ -3139,6 +3143,25 @@ msgid ""
 "\n"
 msgstr ""
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr ""
 
@@ -3212,9 +3235,8 @@ msgstr "увімкнено"
 msgid "Being suspended"
 msgstr "блоковано"
 
-#, fuzzy
-msgid "Order in progress"
-msgstr "Додавання..."
+msgid "Awaiting for approval"
+msgstr ""
 
 #, fuzzy
 msgid "Unknown error"
@@ -3807,6 +3829,10 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#, fuzzy
+#~ msgid "Order in progress"
+#~ msgstr "Додавання..."
 
 #~ msgid "Uninstall"
 #~ msgstr "Видалити"

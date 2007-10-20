@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-09-27 23:07+0100\n"
 "Last-Translator: M.Leenders <spam@azzkikr.nl>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -1889,6 +1889,10 @@ msgstr "Er zijn aliassen met hetzelfde mount point"
 msgid "Alias scheduled for activation!"
 msgstr "Alias gepland voor toevoeging"
 
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Alias gepland voor toevoeging"
+
 msgid "Empty List"
 msgstr "Geen gegevens"
 
@@ -3130,6 +3134,25 @@ msgid ""
 "\n"
 msgstr ""
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr ""
 
@@ -3203,9 +3226,8 @@ msgstr "ingeschakeld"
 msgid "Being suspended"
 msgstr "Opgeschort"
 
-#, fuzzy
-msgid "Order in progress"
-msgstr "Bezig met toevoeging"
+msgid "Awaiting for approval"
+msgstr ""
 
 #, fuzzy
 msgid "Unknown error"
@@ -3801,6 +3823,10 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#, fuzzy
+#~ msgid "Order in progress"
+#~ msgstr "Bezig met toevoeging"
 
 #~ msgid "Uninstall"
 #~ msgstr "Verwijderen"

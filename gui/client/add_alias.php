@@ -299,12 +299,21 @@ SQL_QUERY;
                 '_no_'));
 	}
 
-	send_request();
-
 	$admin_login = $_SESSION['user_logged'];
-	write_log("$admin_login: add domain alias for activation: $alias_name.");
 
-	set_page_message(tr('Alias scheduled for activation!'));
+	if ($status == $cfg['ITEM_ORDERED_STATUS']) {
+	    // notify the reseller:
+	    send_alias_order_email($alias_name);
+
+	    write_log("$admin_login: add domain alias for activation: $alias_name.");
+	    set_page_message(tr('Alias scheduled for activation!'));
+	} else {
+        send_request();
+        write_log("$admin_login: domain alias scheduled for addition: $alias_name.");
+	    set_page_message(tr('Alias scheduled for addition!'));
+	}
+
+
 	header( "Location: manage_domains.php" );
 	die();
 }// End of add_domain_alias();

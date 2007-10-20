@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -1895,6 +1895,10 @@ msgstr "Este alias tem um mesmo diretório"
 msgid "Alias scheduled for activation!"
 msgstr "Alias programado para inclusão"
 
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Alias programado para inclusão"
+
 msgid "Empty List"
 msgstr "Lista Vazia"
 
@@ -3137,6 +3141,25 @@ msgid ""
 "\n"
 msgstr ""
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr ""
 
@@ -3210,9 +3233,8 @@ msgstr "habilitado"
 msgid "Being suspended"
 msgstr "congelado"
 
-#, fuzzy
-msgid "Order in progress"
-msgstr "Inclusão em andamento"
+msgid "Awaiting for approval"
+msgstr ""
 
 #, fuzzy
 msgid "Unknown error"
@@ -3798,6 +3820,10 @@ msgstr "ispCP - Representante : Sistema de Suporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "Mensagem foi enviada."
+
+#, fuzzy
+#~ msgid "Order in progress"
+#~ msgstr "Inclusão em andamento"
 
 #~ msgid "Uninstall"
 #~ msgstr "Desinstalar"

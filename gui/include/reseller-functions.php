@@ -1516,6 +1516,7 @@ SQL_QUERY;
 
 	$res = exec_query($sql, $query, array($dmn, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $reseller_id));
 } // End of au_update_reseller_props()
+
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id)
 {
 	global $cfg;
@@ -1584,6 +1585,73 @@ Please login into your ispCP control panel for more details.
 	$message = str_replace($search, $replace, $message);
 
 	$mail_result = mail(encode($from), $subject, $message, $headers);
+}
+
+function send_alias_order_email($alias_name)
+{
+	global $cfg, $sql;
+
+	$user_id = $_SESSION['user_id'];
+
+	$reseller_id = who_owns_this($user_id, 'user');
+
+	$query = 'SELECT fname,lname FROM admin WHERE admin_id = ?';
+	$rs = exec_query($sql, $query, $user_id);
+	$ufname = $rs->fields['fname'];
+	$ulname = $rs->fields['lname'];
+	$uemail = $_SESSION['user_email'];
+
+	$data = get_alias_order_email($reseller_id);
+
+	$from_name = $data['sender_name'];
+	$from_email = $data['sender_email'];
+	$subject = $data['subject'];
+	$message = $data['message'];
+
+	if ($from_name) {
+		$from = encode($from_name) . "<" . $from_email . ">";
+	} else {
+		$from = $from_email;
+	}
+
+	if ($ufname && $ulname) {
+		$name = "$ufname $ulname";
+		$to = encode($name) . " <$uemail>";
+	} else {
+		if ($ufname) {
+			$name = $ufname;
+		} else if ($ulname) {
+			$name = $ulname;
+		} else {
+			$name = $uname;
+		}
+		$to = $uemail;
+	}
+
+	$search = array();
+	$replace = array();
+
+	$search [] = '{RESELLER}';
+	$replace[] = $from_name;
+	$search [] = '{CUSTOMER}';
+	$replace[] = $name;
+	$search [] = '{ALIAS}';
+	$replace[] = $alias_name;
+	$search [] = '{BASE_SERVER_VHOST}';
+	$replace[] = $cfg['BASE_SERVER_VHOST'];
+
+	$subject = str_replace($search, $replace, $subject);
+	$message = str_replace($search, $replace, $message);
+
+	$subject = encode($subject);
+
+	$headers = "From: $from\n";
+	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
+
+	$mail_result = mail($to, $subject, $message, $headers);
+
+	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+
 }
 
 ?>

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -1883,6 +1883,10 @@ msgstr ""
 msgid "Alias scheduled for activation!"
 msgstr "Алиас в процессе добавления!"
 
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Алиас в процессе добавления!"
+
 msgid "Empty List"
 msgstr "Пустой Список"
 
@@ -3118,6 +3122,25 @@ msgid ""
 "\n"
 msgstr ""
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr ""
 
@@ -3188,9 +3211,8 @@ msgstr "включено"
 msgid "Being suspended"
 msgstr "ожидание приостановки"
 
-#, fuzzy
-msgid "Order in progress"
-msgstr "Добавление..."
+msgid "Awaiting for approval"
+msgstr ""
 
 #, fuzzy
 msgid "Unknown error"
@@ -3777,6 +3799,10 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Сообщение отослано."
+
+#, fuzzy
+#~ msgid "Order in progress"
+#~ msgstr "Добавление..."
 
 #~ msgid "Uninstall"
 #~ msgstr "Удалить"

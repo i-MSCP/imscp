@@ -297,4 +297,43 @@ function set_order_email($admin_id, $data) {
 
 }
 
+function get_alias_order_email($admin_id) {
+
+	$data = get_email_tpl_data($admin_id, 'alias-order-msg');
+
+	if (!$data['subject']) {
+
+		$data['subject'] = tr('New alias order for {CUSTOMER}!', true);
+
+	}
+
+	if (!$data['message']) {
+
+	    $data['message'] = tr('
+
+Dear {RESELLER},
+Your customer {CUSTOMER} is awaiting for the approval of his new alias:
+
+{ALIAS}
+
+Once logged in, you can activate his new alias at
+http://{BASE_SERVER_VHOST}/reseller/domain_alias.php
+
+Thank you for using ispCP services.
+The ispCP Team
+
+', true);
+
+	}
+
+	return $data;
+
+}
+
+function set_alias_order_email($admin_id, $data) {
+
+	set_email_tpl_data($admin_id, 'alias-order-msg', $data);
+
+}
+
 ?>

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 02:28-0500\n"
+"POT-Creation-Date: 2007-10-19 22:19-0500\n"
 "PO-Revision-Date: 2007-10-03 03:13+0100\n"
 "Last-Translator: Grégory Marigot <greg@proxyconcept.net>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
@@ -1887,6 +1887,10 @@ msgstr "Il y a un sous-domaine avec le même point de montage !"
 msgid "Alias scheduled for activation!"
 msgstr "Activation de l'alias planifiée !"
 
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Activation de l'alias planifiée !"
+
 msgid "Empty List"
 msgstr "Liste Vide"
 
@@ -3173,6 +3177,25 @@ msgstr ""
 "L'équipe ispCP\n"
 "\n"
 
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at\n"
+"http://{BASE_SERVER_VHOST}/reseller/domain_alias.php\n"
+"\n"
+"Thank you for using ispCP services.\n"
+"The ispCP Team\n"
+"\n"
+msgstr ""
+
 msgid "Catchall account"
 msgstr "Compte Catchall"
 
@@ -3246,8 +3269,8 @@ msgstr "activé"
 msgid "Being suspended"
 msgstr "suspendu"
 
-msgid "Order in progress"
-msgstr "Demande en cours"
+msgid "Awaiting for approval"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "Erreur inconnue"
@@ -3852,6 +3875,9 @@ msgstr "ispCP - Revendeur : Système de support : Voir les Tickets"
 
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
+
+#~ msgid "Order in progress"
+#~ msgstr "Demande en cours"
 
 #~ msgid ""
 #~ "\n"

@@ -15,6 +15,7 @@ ispCP ω 1.0.0 Changelog
         * Fixed some issues with email forwarders (see #555)
         * Reduced number of entries in admin's log
         * Fixed #152: Add webmaster@domain.tld and postmaster@domain.tld
+        * Added email notification to reseller when an alias requires activation
 
 2007-10-18 Benedikt Heintel
 	- ENGINE:
