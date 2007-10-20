@@ -309,7 +309,7 @@ sub mngr_engine {
 
     }
 
-    $sql = "select mail_id, mail_acc, status from mail_users where status != 'ok' order by mail_id";
+    $sql = "select mail_id, mail_acc, status from mail_users where status != 'ok' and status != 'ordered' order by mail_id";
 
     ($rs, $rdata) = doSQL($sql);
 

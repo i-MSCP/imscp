@@ -81,6 +81,7 @@ SQL_QUERY;
 	    $_SESSION['user_pass'] = $udata['admin_pass'];
 	    $_SESSION['user_type'] = $udata['admin_type'];
 	    $_SESSION['user_id'] = $udata['admin_id'];
+	    $_SESSION['user_email'] = $udata['email'];
 	    $_SESSION['user_created_by'] = $udata['created_by'];
 	    $_SESSION['user_login_time'] = time();
 
@@ -205,7 +206,7 @@ function change_user_interface($from_id, $to_id) {
     $index = null;
     while (1) { //used to easily exit
         $query_from = 'select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?';
-        $query_to   = 'select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?';
+        $query_to   = 'select admin_id, admin_name, admin_pass, admin_type, email, created_by from admin where binary admin_id = ?';
 
         $rs_from = exec_query($sql, $query_from, array($from_id));
         $rs_to   = exec_query($sql, $query_to,   array($to_id));
@@ -278,6 +279,7 @@ function change_user_interface($from_id, $to_id) {
         $_SESSION['user_pass'] = $to_udata['admin_pass'];
         $_SESSION['user_type'] = $to_udata['admin_type'];
         $_SESSION['user_id'] = $to_udata['admin_id'];
+        $_SESSION['user_email'] = $to_udata['email'];
         $_SESSION['user_created_by'] = $to_udata['created_by'];
         $_SESSION['user_login_time'] = time();
 

@@ -133,6 +133,9 @@ $cfg['SERVER_VHOST_FILE'] = $cfg['APACHE_SITES_DIR'] . '/ispcp.conf';
 // E_USER_ERROR: "admin MUST know" messages
 $cfg['LOG_LEVEL'] = E_USER_NOTICE;
 
+// Set to false to disable creation of webmaster, postmaster and abuse forwarders when domain/alias/subdomain is created
+$cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] = true;
+
 
 require_once(INCLUDEPATH.'/date-functions.php');
 require_once(INCLUDEPATH.'/input-checks.php');

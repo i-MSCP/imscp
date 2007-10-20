@@ -216,8 +216,6 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
     } else {
         $mail_acc = $mail_acc_tmp;
     }
-
-    $status = $cfg['ITEM_ADD_STATUS'];
     $mail_auto_respond = '_no_';
 
     if ($_POST['mail_type'] === 'normal') {
@@ -277,7 +275,8 @@ SQL_QUERY;
 
         $mail_pass = '_no_';
         $mail_forward = $_POST['forward_list'];
-        $faray = preg_split ("/[\n]+/", $mail_forward);
+        $faray = preg_split ("/[\n,]+/", $mail_forward);
+        $mail_accs = array();
 
         foreach ($faray as $value) {
             $value = trim($value);
@@ -290,6 +289,7 @@ SQL_QUERY;
                 set_page_message(tr("Mail forward list empty!"));
                 return;
             }
+            $mail_accs[] = $value;
         }
 
         $check_acc_query = <<<SQL_QUERY
@@ -306,6 +306,8 @@ SQL_QUERY;
 SQL_QUERY;
 
         $rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id));
+
+        $mail_forward = implode(',', $mail_accs);
     }
 
     if ($rs->fields['cnt'] > 0) {
@@ -335,7 +337,7 @@ SQL_QUERY;
             $domain_id,
             $mail_type,
             $sub_id,
-            $status,
+            $cfg['ITEM_ADD_STATUS'],
             $mail_auto_respond));
 
     if ($_POST['dmn_type'] === 'als') {

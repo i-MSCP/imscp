@@ -291,6 +291,7 @@ function get_error_mails(&$sql, &$tpl) {
 	$change_status = $cfg['ITEM_CHANGE_STATUS'];
 	$toenable_status = $cfg['ITEM_TOENABLE_STATUS'];
 	$todisable_status = $cfg['ITEM_TODISABLED_STATUS'];
+	$ordered_status = $cfg['ITEM_ORDERED_STATUS'];
 
 	$dmn_query = <<<SQL_QUERY
         select
@@ -299,6 +300,8 @@ function get_error_mails(&$sql, &$tpl) {
             mail_users
         where
             (status != ?
+              and
+            status != ?
               and
             status != ?
               and
@@ -323,7 +326,8 @@ SQL_QUERY;
 											$restore_status,
 											$change_status,
 											$toenable_status,
-											$todisable_status));
+											$todisable_status,
+											$ordered_status));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
@@ -470,6 +474,7 @@ if (isset($_GET['action'])) {
 			case $cfg['ITEM_RESTORE_STATUS']:
 			case $cfg['ITEM_TODISABLED_STATUS']:
 			case $cfg['ITEM_DELETE_STATUS']:
+			case $cfg['ITEM_ORDERED_STATUS']:
 				break;
 			default:
 				set_page_message(tr('Unknown domain status!'));

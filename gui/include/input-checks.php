@@ -595,9 +595,10 @@ function chk_subdname($subdname) {
  *
  * @param misc $id FTP/mail/domain/alias/subdomain/etc id to check
  * @param string $type What kind of id $id is
+ * @param bool $forcefinal Ignore the resolver's is_final value (force as yes)
  * @return numeric The id of the admin who owns the id $id of $type type
  */
-function who_owns_this($id, $type = 'dmn')
+function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 {
     global $sql;
 
@@ -815,7 +816,7 @@ function who_owns_this($id, $type = 'dmn')
             $select = $matches[1];
             $rs = exec_query($sql, $r['query'], $id);
             if ($rs->RecordCount() != 0) {
-                if ($r['is_final']) {
+                if ($r['is_final'] || $forcefinal) {
                     $who = $rs->fields[$select];
                 } else {
                     $who = who_owns_this($rs->fields[$select], $r['next']);
@@ -823,7 +824,7 @@ function who_owns_this($id, $type = 'dmn')
             }
         } else {
             $ex = explode($r['separator'], $id);
-            if (!$r['is_final']) {
+            if (!$r['is_final'] && !$forcefinal) {
                 $who = who_owns_this($r['pos'], $r['next']);
             } else {
                 $who = $ex[$r['pos']];

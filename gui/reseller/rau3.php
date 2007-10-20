@@ -281,8 +281,6 @@ OMEGA_SQL_QUERY;
 	return;
   }
 
-
-
   $query = <<<ISPCP_SQL_QUERY
             insert into admin
                       (
@@ -345,6 +343,52 @@ ISPCP_SQL_QUERY;
                                           $cgi));
     $dmn_id = $sql->Insert_ID();
 
+    if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+        $query = <<<SQL_QUERY
+            INSERT INTO mail_users
+                (mail_acc,
+                 mail_pass,
+                 mail_forward,
+                 domain_id,
+                 mail_type,
+                 sub_id,
+                 status,
+                 mail_auto_respond)
+            VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?)
+SQL_QUERY;
+
+        // create default forwarder for webmaster@domain.tld to the account's owner
+        $rs = exec_query($sql, $query, array('webmaster',
+                '_no_',
+                $user_email,
+                $dmn_id,
+                'normal_forward',
+                0,
+                $cfg['ITEM_ADD_STATUS'],
+                '_no_'));
+
+        // create default forwarder for postmaster@domain.tld to the account's reseller
+        $rs = exec_query($sql, $query, array('postmaster',
+                '_no_',
+                $_SESSION['user_email'],
+                $dmn_id,
+                'normal_forward',
+                0,
+                $cfg['ITEM_ADD_STATUS'],
+                '_no_'));
+
+        // create default forwarder for abuse@domain.tld to the account's reseller
+        $rs = exec_query($sql, $query, array('abuse',
+                '_no_',
+                $_SESSION['user_email'],
+                $dmn_id,
+                'normal_forward',
+                0,
+                $cfg['ITEM_ADD_STATUS'],
+                '_no_'));
+    }
+
 	// ispcp 2.5 feature
 	//add_domain_extras($dmn_id, $record_id, $sql);
 
@@ -359,10 +403,6 @@ ISPCP_SQL_QUERY;
                                 $last_name,
                                  tr('Domain account')
                                );
-
-    // send query to the ispcp daemon
-
-
   // add user into user_gui_props => domain looser needs language and skin too :-)
 
   $user_def_lang = $_SESSION['user_def_lang'];
@@ -380,6 +420,7 @@ SQL_QUERY;
                                         $user_def_lang,
                                         $user_theme_color));
 
+  //send request to daemon
   send_request();
 
   $admin_login = $_SESSION['user_logged'];

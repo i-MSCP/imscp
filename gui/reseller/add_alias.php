@@ -180,6 +180,60 @@ SQL_QUERY;
 	exec_query($sql,
 		"insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
 		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+
+		$als_id = $sql->Insert_ID();
+
+
+		$query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
+		$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));
+		$user_email = $rs->fields['email'];
+
+    if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+        $query = <<<SQL_QUERY
+            INSERT INTO mail_users
+                (mail_acc,
+                 mail_pass,
+                 mail_forward,
+                 domain_id,
+                 mail_type,
+                 sub_id,
+                 status,
+                 mail_auto_respond)
+            VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?)
+SQL_QUERY;
+
+        // create default forwarder for webmaster@alias.tld to the account's owner
+        $rs = exec_query($sql, $query, array('webmaster',
+                '_no_',
+                $user_email,
+                $cr_user_id,
+                'alias_forward',
+                $als_id,
+                $cfg['ITEM_ADD_STATUS'],
+                '_no_'));
+
+        // create default forwarder for postmaster@alias.tld to the account's reseller
+        $rs = exec_query($sql, $query, array('postmaster',
+                '_no_',
+                $_SESSION['user_email'],
+                $cr_user_id,
+                'alias_forward',
+                $als_id,
+                $cfg['ITEM_ADD_STATUS'],
+                '_no_'));
+
+        // create default forwarder for abuse@alias.tld to the account's reseller
+        $rs = exec_query($sql, $query, array('abuse',
+                '_no_',
+                $_SESSION['user_email'],
+                $cr_user_id,
+                'alias_forward',
+                $als_id,
+                $cfg['ITEM_ADD_STATUS'],
+                '_no_'));
+    }
+
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");

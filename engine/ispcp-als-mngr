@@ -1695,7 +1695,17 @@ sub als_add_httpd_file_data {
 
     return 0 if ($als_mount eq '/' || $als_mount eq '');
 
+    # check for aliases with same mount point
     my $sql = "select count(alias_id) from domain_aliasses where domain_id=$dmn_id and alias_mount='$als_mount'";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    return 0 if (@{@$rdata[0]}[0] > 1);
+
+    # check for subdomains with same mount point
+    $sql = "select count(subdomain_id) from subdomain where domain_id=$dmn_id and subdomain_mount='$als_mount'";
 
     ($rs, $rdata) = doSQL($sql);
 

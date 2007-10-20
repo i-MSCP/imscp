@@ -746,7 +746,7 @@ function translate_dmn_status ($status) {
 	} else if ($status == $cfg['ITEM_TODISABLED_STATUS']) {
 		return tr('Being suspended');
 	} else if ($status == $cfg['ITEM_ORDERED_STATUS']) {
-		return tr('Order in progress');
+		return tr('Awaiting for approval');
 	} else {
 		return tr('Unknown error');
 	}

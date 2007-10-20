@@ -230,7 +230,6 @@ SQL_QUERY;
 	    }
 	}
 
-
 	if('_off_' !== $err_al) {
 		return;
 	}
@@ -239,10 +238,66 @@ SQL_QUERY;
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
 	global $cfg;
+
 	$status = $cfg['ITEM_ORDERED_STATUS'];
 
   $query = "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+
+	$als_id = $sql->Insert_ID();
+
+	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+
+	    $reseller_id = who_owns_this(who_owns_this($cr_user_id, 'als_id'), 'user');
+
+	    $query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
+		$rs = exec_query($sql, $query, $reseller_id);
+		$reseller_email = $rs->fields['email'];
+
+        $query = <<<SQL_QUERY
+            INSERT INTO mail_users
+                (mail_acc,
+                 mail_pass,
+                 mail_forward,
+                 domain_id,
+                 mail_type,
+                 sub_id,
+                 status,
+                 mail_auto_respond)
+            VALUES
+            (?, ?, ?, ?, ?, ?, ?, ?)
+SQL_QUERY;
+
+        // create default forwarder for webmaster@alias.tld to the account's owner
+        $rs = exec_query($sql, $query, array('webmaster',
+                '_no_',
+                $_SESSION['user_email'],
+                $cr_user_id,
+                'alias_forward',
+                $als_id,
+                $status,
+                '_no_'));
+
+        // create default forwarder for postmaster@alias.tld to the account's reseller
+        $rs = exec_query($sql, $query, array('postmaster',
+                '_no_',
+                $reseller_email,
+                $cr_user_id,
+                'alias_forward',
+                $als_id,
+                $status,
+                '_no_'));
+
+        // create default forwarder for abuse@alias.tld to the account's reseller
+        $rs = exec_query($sql, $query, array('abuse',
+                '_no_',
+                $reseller_email,
+                $cr_user_id,
+                'alias_forward',
+                $als_id,
+                $status,
+                '_no_'));
+	}
 
 	send_request();
 

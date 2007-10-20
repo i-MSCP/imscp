@@ -315,12 +315,12 @@ SQL_QUERY;
 			$page_cont = 'content2';
 		}
 
-		if ($als_status === 'ok') {
+		if ($als_status === $cfg['ITEM_OK_STATUS']) {
 			$delete_link = "delete_domainalias.php?del_id=" . $als_id;
 			$edit_link = "edit_alias.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
-		} else if ($als_status === 'ordered'){
+		} else if ($als_status === $cfg['ITEM_ORDERED_STATUS']){
 			$delete_link = "domainaliasorder.php?action=delete&del_id=".$als_id;
 			$edit_link = "domainaliasorder.php?action=activate&act_id=".$als_id;
 			$action_text = tr("Delete order");

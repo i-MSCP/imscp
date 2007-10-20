@@ -34,8 +34,14 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 		die();
 	}
 
-	$query = "DELETE FROM domain_aliasses WHERE alias_id='".$del_id."'";
-	$rs = exec_query($sql, $query);
+	$query = "DELETE FROM domain_aliasses WHERE alias_id=?";
+	$rs = exec_query($sql, $query, $del_id);
+
+	// delete "ordered"/pending email accounts
+	$domain_id = who_owns_this($del_id, 'als_id', true);
+	$query = "DELETE FROM mail_users WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
+	$rs = exec_query($sql, $query, array($del_id, $domain_id, $cfg['ITEM_ORDERED_STATUS']));
+
 	header("Location: domain_alias.php");
 	die();
 
@@ -48,16 +54,21 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 		header("Location: domain_alias.php");
 		die();
 	}
-	$query = "SELECT alias_name FROM domain_aliasses WHERE alias_id='".$act_id."'";
-	$rs = exec_query($sql, $query);
+	$query = "SELECT alias_name FROM domain_aliasses WHERE alias_id=?";
+	$rs = exec_query($sql, $query, $act_id);
 		if ($rs -> RecordCount() == 0) {
 			header('Location: domain_alias.php');
 			die();
 		}
 	$alias_name = $rs -> fields['alias_name'];
 
-	$query = "UPDATE domain_aliasses SET alias_status='toadd' WHERE alias_id='".$act_id."'";
-	$rs = exec_query($sql, $query);
+	$query = "UPDATE domain_aliasses SET alias_status='toadd' WHERE alias_id=?";
+	$rs = exec_query($sql, $query, $act_id);
+
+	// enable "ordered"/pending email accounts
+	$domain_id = who_owns_this($act_id, 'als_id', true);
+	$query = "UPDATE mail_users SET status=? WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
+	$rs = exec_query($sql, $query, array($cfg['ITEM_ADD_STATUS'], $act_id, $domain_id, $cfg['ITEM_ORDERED_STATUS']));
 
 	send_request();
 
@@ -75,4 +86,5 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 	header("Location: domain_alias.php");
 	die();
 }
+
 ?>

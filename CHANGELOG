@@ -6,6 +6,16 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-19 Raphael Geissert
+    - CONFIGS:
+        * Fixed #7: no user set to run awstats cronjobs
+    - ENGINE:
+        * Fixed #796: let aliases share the same mount point with a subdomain
+    - GUI:
+        * Fixed some issues with email forwarders (see #555)
+        * Reduced number of entries in admin's log
+        * Fixed #152: Add webmaster@domain.tld and postmaster@domain.tld
+
 2007-10-18 Benedikt Heintel
 	- ENGINE:
 		* Fixed #795: Domains Status not OK.

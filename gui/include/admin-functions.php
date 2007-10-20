@@ -1531,11 +1531,14 @@ AUTO_LOG_MSG;
 
 		$mail_result = mail($to, $subject, $message, $headers);
 
-		$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+		// reduce admin log entries by only logging email notification if not successful
+		if (!$mail_status) {
+		    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-		$log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
+		    $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
 
-		exec_query($sql, "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)", $log_message, false);
+		    exec_query($sql, "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)", $log_message, false);
+		}
 	}
 }
 

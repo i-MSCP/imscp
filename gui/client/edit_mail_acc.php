@@ -185,37 +185,39 @@ SQL_QUERY;
 
 function update_email_forward(&$tpl, &$sql)
 {
-  if (!isset($_POST['uaction'])) {
-    return;
-  }
-  if($_POST['uaction'] != 'update_forward') {
-    return;
-  }
-
-  $mail_account = $_POST['mail_account'];
-  $mail_id = $_GET['id'];
-  $forward_list = clean_input($_POST['forward_list']);
-
-  $faray = preg_split ("/[\n]+/",$forward_list);
-
-  foreach ($faray as $value) {
-    $value = trim($value);
-    if (!chk_email($value) && $value !== '') {
-      /* ERR .. strange :) not email in this line - warrning */
-      set_page_message(tr("Mail forward list error!"));
-      return;
-    } else if ($value === '') {
-          set_page_message(tr("Mail forward list error!"));
-          return;
+    if (!isset($_POST['uaction'])) {
+        return;
     }
-  }
+    if($_POST['uaction'] != 'update_forward') {
+        return;
+    }
 
-  global $cfg;
-  $status = $cfg['ITEM_CHANGE_STATUS'];
+    $mail_account = $_POST['mail_account'];
+    $mail_id = $_GET['id'];
+    $forward_list = clean_input($_POST['forward_list']);
+    $mail_accs = array();
 
-  check_for_lock_file();
+    $faray = preg_split ("/[\n,]+/",$forward_list);
 
-  $query = <<<SQL_QUERY
+    foreach ($faray as $value) {
+        $value = trim($value);
+        if (!chk_email($value) && $value !== '') {
+            /* ERR .. strange :) not email in this line - warrning */
+            set_page_message(tr("Mail forward list error!"));
+            return;
+        } else if ($value === '') {
+            set_page_message(tr("Mail forward list error!"));
+            return;
+        }
+        $mail_accs[] = $value;
+    }
+
+    global $cfg;
+    $status = $cfg['ITEM_CHANGE_STATUS'];
+
+    check_for_lock_file();
+
+    $query = <<<SQL_QUERY
           update
               mail_users
           set
@@ -225,12 +227,12 @@ function update_email_forward(&$tpl, &$sql)
               mail_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($forward_list, $status, $mail_id));
+    $rs = exec_query($sql, $query, array(implode(',', $mail_accs), $status, $mail_id));
 
-  send_request();
-  write_log($_SESSION['user_logged'].": change mail forward: $mail_account");
-  header( "Location: email_accounts.php" );
-  die();
+    send_request();
+    write_log($_SESSION['user_logged'].": change mail forward: $mail_account");
+    header( "Location: email_accounts.php" );
+    die();
 }
 
 
@@ -243,7 +245,7 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl -> assign(array('TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
                      'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'), 
+                     'THEME_CHARSET' => tr('encoding'),
                      'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
                      'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
