@@ -13,7 +13,7 @@ install:
 		cp ./proftpd.conf $(ROOT_CONF) ; \
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
 	else \
-		if [[ -e /etc/proftpd.conf ]] ; then \
+		if test -e /etc/proftpd.conf; then \
 			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
 		fi ; \
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \

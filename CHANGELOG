@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-20 Johannes Schobig
+	- MAKEFILE:
+		* Fixed #791: r877 - error when compile
+
 2007-10-19 Raphael Geissert
     - CONFIGS:
         * Fixed #7: no user set to run awstats cronjobs
