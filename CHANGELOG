@@ -9,6 +9,7 @@ ispCP ω 1.0.0 Changelog
 2007-10-20 Johannes Schobig
 	- MAKEFILE:
 		* Fixed #791: r877 - error when compile
+		* Fixed #801: Fedora makefile is bad (thanks to graywolf)
 
 2007-10-19 Raphael Geissert
     - CONFIGS:
