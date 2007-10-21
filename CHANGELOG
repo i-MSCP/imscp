@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-21 Raphael Geissert
+    - GUI:
+        * Fixed #803: Undefined variable: mail_status
+        * Data compression information isn't displayed anymore when exporting language files
+
 2007-10-20 Johannes Schobig
 	- MAKEFILE:
 		* Fixed #791: r877 - error when compile

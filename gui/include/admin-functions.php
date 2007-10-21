@@ -1532,7 +1532,7 @@ AUTO_LOG_MSG;
 		$mail_result = mail($to, $subject, $message, $headers);
 
 		// reduce admin log entries by only logging email notification if not successful
-		if (!$mail_status) {
+		if (!$mail_result) {
 		    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
 		    $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";

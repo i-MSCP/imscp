@@ -44,8 +44,8 @@ SQL_QUERY;
 		set_page_message( tr("Incorrect data input!"));
 		header( "Location: multilanguage.php" );
 		die();
-	}
-	else {
+	} else {
+	    $GLOBALS['class']['output']->showSize=false;
 		header( "Content-type: text/plain; charset=".$encoding );
 		while (!$rs -> EOF) {
 			$msgid = $rs->fields['msgid'];
