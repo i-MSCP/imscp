@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for Debian Sarge, Etch
+ispCP ω (OMEGA) HowTo Install for Debian Sarge, Etch, Lenny
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,11 +16,11 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ISPCP ω Version:	1.0.0
+ispCP ω Version:	1.0.0
 INSTALL Script:		2.0
 Maintainer:			Benedikt Heintel
 Homepage:			http://www.isp-contol.net
-Linux Distris:		Debian Sarge, Etch
+Linux Distros:		Debian Sarge, Etch, Lenny
 
 ================================================================================
 2) Requirements

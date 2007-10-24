@@ -1,0 +1,122 @@
+ispCP ω (OMEGA) HowTo Install for OpenSuse 10.3
+================================================================================
+For other Linux distributions please check the other INSTALL files.
+================================================================================
+
+Table of Content
+================
+1) Version Info
+2) Requirements
+3) Introduction
+4) Installation
+5) FAQ
+6) Credits
+
+================================================================================
+1) Version Info
+---------------
+ispCP ω Version:	1.0.0 RC3
+INSTALL Skript:		1.0
+Maintainer:
+Homepage:			http://isp-contol.net
+Linux Distri:		OpenSuse 10.3
+
+================================================================================
+2) Requirements
+---------------
+There is no must have for a system using ispCP ω. This is only a recommendation:
+
+Penitum III or K6-4 with 500 MHz
+512 MB RAM
+100 MB disk space (only for install of ispCP ω)
+Debian (or even any other *NIX-Distribution)
+
+Add the following repositories via Yast:
+
+http://download.opensuse.org/repositories/Apache:/Modules/openSUSE_10.3/
+
+http://download.opensuse.org/repositories/home:/netmax/openSUSE_10.3
+
+http://download.opensuse.org/repositories/server:/ftp/openSUSE_10.3
+
+All OpenSuse 10.3 required packages are listed in:
+
+./docs/OpenSuse/opensuse103-packages
+
+PHP4 related packages are removed because they are not available! Therefore PHP4
+is not available in ispCP!!! If you want to use PHP4 compile it by yourself!!!
+
+================================================================================
+3) Introduction
+---------------
+ispCP ω delivers a complete hosting automation appliance by offering significant
+security, total-cost-of-ownership, and performance advantages over competing
+commercial solutions.
+
+With ispCP ω you can configure your server and applications, create user with
+domains with a few point-and-click operations that take less than a minute.
+There is no limit to the number of resellers, users and domains that can be
+created. The core of ISPCP ω are 3 easy-to-use, web-based control panels. ispCP
+provides graphic user interfaces for the administrators, resellers and users.
+
+================================================================================
+4) Installation
+---------------
+Make sure you are logged in as root.
+
+1. Untar or unzip the distribution files to a secure directory:
+
+	# cd /usr/src
+
+	# svn checkout http://www.isp-control.net/ispcp_svn/trunk/
+
+	# mv trunk ispcp-1.0.0
+
+2. Change to the newly created directory:
+
+	# cd ./ispcp1.0.0
+
+3. Install the required modules:
+
+	# yast -i `cat /docs/opensuse103/opensuse103-packages`
+
+	Or if you use smart package manager:
+
+	# smart install `cat /docs/opensuse103/opensuse103-packages`
+
+4. Make an copy to temp directory:
+
+	# make -f Makefile.opensuse10 install
+
+	# cp -Rv /tmp/ispcp-1.0.0/* /
+
+
+5. Start the script and follow the install instructions:
+
+	# cd /srv/www/ispcp/engine/setup
+
+	# perl ispcp-setup
+
+
+6. Clean the temporary folders:
+
+	# rm -R /tmp/ispcp-1.0.0
+
+
+
+================================================================================
+5) FAQ
+------
+
+Please check http://isp-control.net for any questions not answered in this file.
+
+================================================================================
+6) Credits
+----------
+
+ISPCP ω is a project of ispCP | isp Control Panel.
+Please visit our site under http://isp-control.net for further information on
+ISPCP ω, ispCP and other themes.
+
+We hope you enjoy using ISPCP ω. If you like it, help us, to make it better. We
+would be glad on any help provided!
