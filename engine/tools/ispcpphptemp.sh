@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 for a in `cat /etc/ispcp/ispcp.conf | grep -E '(^APACHE_WWW_DIR|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
 	export $a

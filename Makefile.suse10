@@ -4,7 +4,7 @@ ifndef INST_PREF
         INST_PREF=/tmp/ispcp-1.0.0
 endif
 
-HOST_OS=suse100
+HOST_OS=suse10
 
 ROOT_CONF=$(INST_PREF)/etc
 

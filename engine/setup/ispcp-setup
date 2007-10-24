@@ -954,13 +954,13 @@ sub setup_shut_down {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	my $cmd = "/bin/sh $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
+	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
 
 	$rs = sys_command($cmd);
 
 	return $rs if ($rs != 0);
 
-	$cmd = "/bin/sh $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
+	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
 
 	$rs = sys_command($cmd);
 
@@ -2972,8 +2972,8 @@ sub setup_ispcpd {
 	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
 	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 
-	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
-	sys_command_rs("/bin/chmod 0755 $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 
 	if ( -x "/usr/sbin/update-rc.d" ) {
 

@@ -27,9 +27,9 @@ install:
 	elif test $(HOST_OS) = sles9 ; then \
 		cd ./dists/sles9 && $(MAKE) install ; \
 	elif test $(HOST_OS) = suse100 ; then \
-		cd ./dists/suse100 && $(MAKE) install ; \
-	elif test $(HOST_OS) = suse93 ; then \
-		cd ./dists/suse93 && $(MAKE) install ; \
+		cd ./dists/suse10 && $(MAKE) install ; \
+	elif test $(HOST_OS) = opensuse10 ; then \
+		cd ./dists/opensuse10 && $(MAKE) install ; \
 	elif test $(HOST_OS) = ubuntu ; then \
 		cd ./dists/ubuntu && $(MAKE) install ; \
 	fi
@@ -58,10 +58,10 @@ uninstall:
 		cd ./dists/redhat && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = sles9 ; then \
 		cd ./dists/sles9 && $(MAKE) uninstall ; \
-	elif test $(HOST_OS) = suse93 ; then \
-		cd ./dists/suse93 && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = suse100 ; then \
-		cd ./dists/suse100 && $(MAKE) uninstall ; \
+		cd ./dists/suse10 && $(MAKE) uninstall ; \
+	elif test $(HOST_OS) = opensuse10 ; then \
+		cd ./dists/opensuse10 && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = ubuntu ; then \
 		cd ./dists/ubuntu && $(MAKE) uninstall ; \
 	fi

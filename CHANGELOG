@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-24 Benedikt Heintel
+	- DISTS:
+		* Fixed #792: ubuntu: errors in make
+		* Fixed #802: added Opensuse 10.3
+
 2007-10-21 Raphael Geissert
     - GUI:
         * Fixed #803: Undefined variable: mail_status
