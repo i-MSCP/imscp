@@ -62,8 +62,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('isactive_support', 'menu');
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->assign(
-		array(
-			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		array('TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 			'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
@@ -142,8 +141,7 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array(
-					'BUTTON_LINK' => $menu_link,
+				array('BUTTON_LINK' => $menu_link,
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
@@ -155,7 +153,6 @@ SQL_QUERY;
 			$i++;
 		} // end while
 	} // end else
-
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
@@ -175,8 +172,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(
-		array(
-			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		array('TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
 			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
@@ -246,8 +242,7 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array(
-					'BUTTON_LINK' => $menu_link,
+				array('BUTTON_LINK' => $menu_link,
 					'BUTTON_NAME' => $menu_name,
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
@@ -320,15 +315,14 @@ function get_sql_user_count($sql) {
 			sql_user
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, FALSE);
+	$rs = exec_query($sql, $query, false);
 
 	return $rs->RecordCount();
 }
 
 function get_admin_general_info(&$tpl, &$sql) {
 	$tpl->assign(
-		array(
-			'TR_GENERAL_INFORMATION' => tr('General information'),
+		array('TR_GENERAL_INFORMATION' => tr('General information'),
 			'TR_ACCOUNT_NAME' => tr('Account name'),
 			'TR_ADMIN_USERS' => tr('Admin users'),
 			'TR_RESELLER_USERS' => tr('Reseller users'),
@@ -393,8 +387,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array(
-				'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
+			array('ADMIN_MESSAGE' => tr('Administrators list is empty!'),
 				'ADMIN_LIST' => ''
 				)
 			);
@@ -402,8 +395,7 @@ SQL_QUERY;
 		$tpl->parse('ADMIN_MESSAGE', 'admin_message');
 	} else {
 		$tpl->assign(
-			array(
-				'TR_ADMIN_USERNAME' => tr('Username'),
+			array('TR_ADMIN_USERNAME' => tr('Username'),
 				'TR_ADMIN_CREATED_ON' => tr('Creation date'),
 				'TR_ADMIN_CREATED_BY' => tr('Created by'),
 				'TR_ADMIN_OPTIONS' => tr('Options'),
@@ -412,29 +404,25 @@ SQL_QUERY;
 		while (!$rs->EOF) {
 			if ($i % 2 == 0) {
 				$tpl->assign(
-					array(
-						'ADMIN_CLASS' => 'content',
+					array('ADMIN_CLASS' => 'content',
 						)
 					);
 			} else {
 				$tpl->assign(
-					array(
-						'ADMIN_CLASS' => 'content2',
+					array('ADMIN_CLASS' => 'content2',
 						)
 					);
 			}
 
 			if ($rs->fields['created_by'] == '' || $rs->fields['admin_id'] == $_SESSION['user_id']) {
 				$tpl->assign(
-							array(
-								'ADMIN_DELETE_LINK' => ''
-								)
-							);
+					array('ADMIN_DELETE_LINK' => ''
+						)
+					);
 				$tpl->parse('ADMIN_DELETE_SHOW', 'admin_delete_show');
 			} else {
 				$tpl->assign(
-					array(
-						'ADMIN_DELETE_SHOW' => '',
+					array('ADMIN_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_ADMIN' => "delete_user.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
 						'ADMIN_USERNAME' => $rs->fields['admin_name'],
@@ -444,10 +432,9 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array(
-					'ADMIN_USERNAME' => $rs->fields['admin_name'],
+				array('ADMIN_USERNAME' => $rs->fields['admin_name'],
 					'ADMIN_CREATED_ON' => $admin_created,
-					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != NULL) ? $rs->fields['created_by'] : tr("System"),
+					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != null) ? $rs->fields['created_by'] : tr("System"),
 					'URL_EDIT_ADMIN' => "edit_admin.php?edit_id=" . $rs->fields['admin_id'],
 					)
 				);
@@ -484,8 +471,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array(
-				'RSL_MESSAGE' => tr('Resellers list is empty!'),
+			array('RSL_MESSAGE' => tr('Resellers list is empty!'),
 				'RSL_LIST' => ''
 				)
 			);
@@ -493,8 +479,7 @@ SQL_QUERY;
 		$tpl->parse('RSL_MESSAGE', 'rsl_message');
 	} else {
 		$tpl->assign(
-			array(
-				'TR_RSL_USERNAME' => tr('Username'),
+			array('TR_RSL_USERNAME' => tr('Username'),
 				'TR_RSL_CREATED_BY' => tr('Created by'),
 				'TR_RSL_OPTIONS' => tr('Options'),
 				)
@@ -502,30 +487,26 @@ SQL_QUERY;
 		while (!$rs->EOF) {
 			if ($i % 2 == 0) {
 				$tpl->assign(
-					array(
-						'RSL_CLASS' => 'content',
+					array('RSL_CLASS' => 'content',
 						)
 					);
 			} else {
 				$tpl->assign(
-					array(
-						'RSL_CLASS' => 'content2',
+					array('RSL_CLASS' => 'content2',
 						)
 					);
 			}
 
 			if ($rs->fields['created_by'] == '') {
 				$tpl->assign(
-					array(
-						'TR_DELETE' => tr('Delete'),
+					array('TR_DELETE' => tr('Delete'),
 						'RSL_DELETE_LINK' => '',
 						)
 					);
 				$tpl->parse('RSL_DELETE_SHOW', 'rsl_delete_show');
 			} else {
 				$tpl->assign(
-					array(
-						'RSL_DELETE_SHOW' => '',
+					array('RSL_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_RSL' => "delete_user.php?delete_id=" . $rs->fields['admin_id'] . "&delete_username=" . $rs->fields['admin_name'],
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
@@ -547,8 +528,7 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array(
-					'RSL_USERNAME' => $rs->fields['admin_name'],
+				array('RSL_USERNAME' => $rs->fields['admin_name'],
 					'RESELLER_CREATED_ON' => $reseller_created,
 					'RSL_CREATED_BY' => $rs->fields['created_by'],
 					'URL_EDIT_RSL' => "edit_reseller.php?edit_id=" . $rs->fields['admin_id'],
@@ -574,9 +554,7 @@ function gen_user_list(&$tpl, &$sql) {
 	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
 
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
-
 	// Search requet generated ?!
-
 	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 
@@ -587,9 +565,7 @@ function gen_user_list(&$tpl, &$sql) {
 		$start_index = 0;
 	} else {
 		if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-
 			// He have not got scroll through patient records.
-
 			unset($_SESSION['search_for']);
 
 			unset($_SESSION['search_common']);
@@ -631,8 +607,7 @@ function gen_user_list(&$tpl, &$sql) {
 	if ($rs->RecordCount() == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(
-				array(
-					'USR_MESSAGE' => tr('Not found user records matching the search criteria!'),
+				array('USR_MESSAGE' => tr('Not found user records matching the search criteria!'),
 					'USR_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
@@ -648,8 +623,7 @@ function gen_user_list(&$tpl, &$sql) {
 			unset($_SESSION['search_status']);
 		} else {
 			$tpl->assign(
-				array(
-					'USR_MESSAGE' => tr('Users list is empty!'),
+				array('USR_MESSAGE' => tr('Users list is empty!'),
 					'USR_LIST' => '',
 					'SCROLL_PREV' => '',
 					'SCROLL_NEXT' => '',
@@ -679,16 +653,14 @@ function gen_user_list(&$tpl, &$sql) {
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-				array(
-					'SCROLL_NEXT_GRAY' => '',
+				array('SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
 					)
 				);
 		}
 
 		$tpl->assign(
-			array(
-				'TR_USR_USERNAME' => tr('Username'),
+			array('TR_USR_USERNAME' => tr('Username'),
 				'TR_USR_CREATED_BY' => tr('Created by'),
 				'TR_USR_OPTIONS' => tr('Options'),
 				'TR_USER_STATUS' => tr('Status'),
@@ -728,16 +700,14 @@ SQL_QUERY;
 
 			if ($rs2->fields['admin_name'] == '') {
 				$tpl->assign(
-					array(
-						'TR_DELETE' => tr('Delete'),
+					array('TR_DELETE' => tr('Delete'),
 						'USR_DELETE_LINK' => '',
 						)
 					);
 				$tpl->parse('USR_DELETE_SHOW', 'usr_delete_show');
 			} else {
 				$tpl->assign(
-					array(
-						'USR_DELETE_SHOW' => '',
+					array('USR_DELETE_SHOW' => '',
 						'DOMAIN_ID' => $rs->fields['domain_id'],
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_USR' => "delete_user.php?delete_id=" . $rs->fields['domain_admin_id'] . "&delete_username=" . $rs->fields['domain_name'],
@@ -784,8 +754,7 @@ SQL_QUERY;
 			}
 
 			$tpl->assign(
-				array(
-					'USR_USERNAME' => $admin_name,
+				array('USR_USERNAME' => $admin_name,
 					'USER_CREATED_ON' => $domain_created,
 					'USR_CREATED_BY' => $rs2->fields['admin_name'],
 					'USR_OPTIONS' => '',
@@ -811,8 +780,7 @@ SQL_QUERY;
 
 function get_admin_manage_users(&$tpl, &$sql) {
 	$tpl->assign(
-		array(
-			'TR_MANAGE_USERS' => tr('Manage users'),
+		array('TR_MANAGE_USERS' => tr('Manage users'),
 			'TR_ADMINISTRATORS' => tr('Administrators'),
 			'TR_RESELLERS' => tr('Resellers'),
 			'TR_USERS' => tr('Users'),
@@ -1523,21 +1491,20 @@ Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-		$headers = "From: ispCP  Logging Daemon <$admin_email>\n";
+		$headers = "From: \"ispCP  Logging Daemon\" <" . $admin_email . ">\n";
 
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
 		$headers .= "X-Mailer: ispCP $Version Logging Mailer";
 
 		$mail_result = mail($to, $subject, $message, $headers);
-
 		// reduce admin log entries by only logging email notification if not successful
 		if (!$mail_result) {
-		    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+			$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-		    $log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
+			$log_message = "$admin_login: Logging Daemon Mail To: |$to|, From: |$admin_email|, Status: |$mail_status|!";
 
-		    exec_query($sql, "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)", $log_message, false);
+			exec_query($sql, "INSERT INTO log (log_time,log_message) VALUES(NOW(), ?)", $log_message, false);
 		}
 	}
 }
@@ -1558,18 +1525,16 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$base_vhost = $cfg['BASE_SERVER_VHOST'];
 
 	if ($from_name) {
-		$from = encode($from_name) . " <" . $from_email . ">";
+		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
 	} else {
 		$from = $from_email;
 	}
 
 	if ($ufname && $ulname) {
-		$to = encode($ufname . ' ' . $ulname) . " <$uemail>";
-
+		$to = "\"" . encode($ufname . ' ' . $ulname) . "\" <" . $uemail . ">";
 		$name = "$ufname $ulname";
 	} else {
 		$name = $uname;
-
 		$to = $uemail;
 	}
 
@@ -1598,7 +1563,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$subject = encode($subject);
 
-	$headers = "From: $from\n";
+	$headers = "From: " . $from . "\n";
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
@@ -1783,12 +1748,10 @@ SQL_QUERY;
 	die();
 }
 
-function gen_admin_domain_query (&$search_query, &$count_query,	$start_index,
+function gen_admin_domain_query (&$search_query, &$count_query, $start_index,
 	$rows_per_page, $search_for, $search_common, $search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
-
 		// We have pure list query;
-
 		$count_query = <<<SQL_QUERY
 				SELECT
 					COUNT(domain_id) AS cnt
@@ -2190,8 +2153,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($id_user));
 }
 
-function substract_from_reseller_props($reseller_id, $domain_id)
-{
+function substract_from_reseller_props($reseller_id, $domain_id) {
 	// function update reseller props bevore deleting account
 	list ($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
@@ -2266,7 +2228,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() == 0) {
-	    $title = tr("ispCP - Order Panel");
+		$title = tr("ispCP - Order Panel");
 		$header = <<<RIC
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -2301,8 +2263,8 @@ RIC;
 	}
 
 	if ($encode) {
-	    $header = htmlentities($header, ENT_COMPAT, 'UTF-8');
-	    $footer = htmlentities($footer, ENT_COMPAT, 'UTF-8');
+		$header = htmlentities($header, ENT_COMPAT, 'UTF-8');
+		$footer = htmlentities($footer, ENT_COMPAT, 'UTF-8');
 	}
 
 	$tpl->assign('PURCHASE_HEADER', $header);
@@ -2347,20 +2309,23 @@ SQL_QUERY;
 	$subject = tr('[Ticket] {SUBJ}');
 	$message = tr("Hello {TO_NAME} !\n\nYou have a new ticket to read");
 	// Format adresses
+
 	if ($from_fname && $from_lname) {
-		$from = "$from_fname $from_lname <$from_email>";
+		$from = "\"" . encode($from_fname . ' ' . $from_lname) . "\" <" . $from_email . ">";
 		$fromname = "$from_fname $from_lname";
 	} else {
 		$from = $from_email;
 		$fromname = $from_uname;
 	}
+
 	if ($to_fname && $to_lname) {
-		$to = "$to_fname $to_lname <$to_email>";
-		$name = "$to_fname $to_lname";
+		$to = "\"" . encode($to_fname . ' ' . $to_lname) . "\" <" . $to_email . ">";
+		$toname = "$to_fname $to_lname";
 	} else {
 		$name = $to_uname;
 		$to = $to_email;
 	}
+
 	// Prepare and send mail
 	$search = array();
 	$replace = array();
@@ -2405,7 +2370,7 @@ function setConfig_Value($name, $value) {
 
 	$cfg[$name] = $value;
 
-	return TRUE;
+	return true;
 }
 
 ?>

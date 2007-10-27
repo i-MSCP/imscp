@@ -6,6 +6,14 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-27 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #817: Wrong regex in awstats config
+	- ENGINE:
+		* Fixed: Error in AWStats Static
+	- GUI:
+		* Fixed #812: welcome mail for domain customers: "from" not rfc2822 conform
+
 2007-10-24 Benedikt Heintel
 	- DISTS:
 		* Fixed #792: ubuntu: errors in make

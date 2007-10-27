@@ -1,22 +1,21 @@
 <?php
 /**
- *  ispCP ω (OMEGA) a Virtual Hosting Control Panel
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team (2007)
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 function check_gd() {
 	return function_exists('imagecreatetruecolor');
@@ -28,7 +27,6 @@ function captcha_fontfile_exists() {
 }
 
 function createImage($strSessionVar) {
-
 	global $cfg;
 
 	$rgBgColor = $cfg['LOSTPASSWORD_CAPTCHA_BGCOLOR'];
@@ -41,85 +39,71 @@ function createImage($strSessionVar) {
 
 	$font = $cfg['LOSTPASSWORD_CAPTCHA_FONT'];
 
-  	$iRandVal = strrand(8, $strSessionVar);
+	$iRandVal = strrand(8, $strSessionVar);
 
-	$im = imagecreate($x,$y) or die("Cannot Initialize new GD image stream");
+	$im = imagecreate($x, $y) or die("Cannot Initialize new GD image stream");
 
- 	$background_color = imagecolorallocate($im, $rgBgColor[0],
-                                              $rgBgColor[1],
-                                              $rgBgColor[2]);
+	$background_color = imagecolorallocate($im, $rgBgColor[0],
+		$rgBgColor[1],
+		$rgBgColor[2]);
 
-  	$text_color = imagecolorallocate($im,  $rgTextColor[0],
-                                         $rgTextColor[1],
-                                         $rgTextColor[2]);
+	$text_color = imagecolorallocate($im, $rgTextColor[0],
+		$rgTextColor[1],
+		$rgTextColor[2]);
 
 	$white = imagecolorallocate($im, 0xFF, 0xFF, 0xFF);
 
-  	imagettftext($im, 34, 0, 5, 50,
-               $text_color,
-               $font,
-               $iRandVal);
+	imagettftext($im, 34, 0, 5, 50,
+		$text_color,
+		$font,
+		$iRandVal);
+	// some obfuscation
+	for ($i = 0; $i < 3; $i++) {
+		$x1 = mt_rand(0, $x - 1);
 
-	//some obfuscation
-  	for ($i=0; $i<3; $i++) {
+		$y1 = mt_rand(0, round($y / 10, 0));
 
-	  	$x1 = mt_rand(0, $x - 1);
+		$x2 = mt_rand(0, round($x / 10, 0));
 
-	    $y1 = mt_rand(0, round($y / 10, 0));
+		$y2 = mt_rand(0, $y - 1);
 
-	    $x2 = mt_rand(0, round($x / 10, 0));
+		imageline($im, $x1, $y1, $x2, $y2, $white);
 
-	    $y2 = mt_rand(0, $y - 1);
+		$x1 = mt_rand(0, $x - 1);
 
-	    imageline($im, $x1, $y1, $x2, $y2, $white);
+		$y1 = $y - mt_rand(1, round($y / 10, 0));
 
-	    $x1 = mt_rand(0, $x - 1);
+		$x2 = $x - mt_rand(1, round($x / 10, 0));
 
-	    $y1 = $y - mt_rand(1, round($y / 10, 0));
+		$y2 = mt_rand(0, $y - 1);
 
-	    $x2 = $x - mt_rand(1, round($x / 10, 0));
-
-	    $y2 = mt_rand(0, $y - 1);
-
-	    imageline($im, $x1, $y1, $x2, $y2, $white);
-
+		imageline($im, $x1, $y1, $x2, $y2, $white);
 	}
-
 	// Header schicken
 	header("Content-type: image/png");
-
 	// PNG Bild erzeugen und senden
 	imagepng($im);
-
 	// Bild auf dem Server loeschen
 	imagedestroy($im);
-
 }
 
 function strrand($length, $strSessionVar) {
-
 	$str = "";
 
-	while(strlen($str) < $length){
+	while (strlen($str) < $length) {
+		$random = mt_rand(48, 122);
 
-	  	$random = mt_rand(48, 122);
-
-  		if (preg_match('/[2-47-9A-HKMNPRTWUYa-hkmnp-rtwuy]/', chr($random))) {
-
-  			$str .= chr($random);
-
-   		}
-
+		if (preg_match('/[2-47-9A-HKMNPRTWUYa-hkmnp-rtwuy]/', chr($random))) {
+			$str .= chr($random);
+		}
 	}
 
 	$_SESSION[$strSessionVar] = $str;
 
-  return $_SESSION[$strSessionVar];
-
+	return $_SESSION[$strSessionVar];
 }
 
 function removeOldKeys($ttl) {
-
 	global $sql;
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
@@ -135,11 +119,9 @@ function removeOldKeys($ttl) {
 SQL_QUERY;
 
 	exec_query($sql, $query, array($boundary));
-
 }
 
 function setUniqKey($admin_name, $uniqkey) {
-
 	global $sql;
 
 	$timestamp = date('Y-m-d H:i:s', time());
@@ -155,11 +137,9 @@ function setUniqKey($admin_name, $uniqkey) {
 SQL_QUERY;
 
 	exec_query($sql, $query, array($uniqkey, $timestamp, $admin_name));
-
 }
 
 function setPassword($uniqkey, $upass) {
-
 	global $sql;
 
 	if ($uniqkey == '') exit;
@@ -174,14 +154,12 @@ function setPassword($uniqkey, $upass) {
 SQL_QUERY;
 
 	exec_query($sql, $query, array(crypt_user_pass($upass), $uniqkey));
-
 }
 
 function uniqkeyexists($uniqkey) {
-
 	global $sql;
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         		SELECT
             	uniqkey
         		FROM
@@ -190,36 +168,31 @@ function uniqkeyexists($uniqkey) {
             	uniqkey = ?
 SQL_QUERY;
 
-  $res = exec_query($sql, $query, array($uniqkey));
+	$res = exec_query($sql, $query, array($uniqkey));
 
-  if ( $res -> RecordCount() != 0 )
+	if ($res->RecordCount() != 0)
 
-  	return true;
+		return true;
 
-  else
+	else
 
-  	return false;
-
+		return false;
 }
 
 function uniqkeygen() {
-
 	$uniqkey = '';
 
-	while ( (uniqkeyexists($uniqkey)) || (!$uniqkey)) {
-
+	while ((uniqkeyexists($uniqkey)) || (!$uniqkey)) {
 		$uniqkey = md5(uniqid(mt_rand()));
-
 	}
 
 	return $uniqkey;
 }
 
 function sendpassword($uniqkey) {
-
 	global $sql, $cfg;
 
-  	$query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         		SELECT
             	admin_name, created_by, fname, lname, email
         		FROM
@@ -228,27 +201,26 @@ function sendpassword($uniqkey) {
             	uniqkey = ?
 SQL_QUERY;
 
-  	$res = exec_query($sql, $query, array($uniqkey));
+	$res = exec_query($sql, $query, array($uniqkey));
 
-	if ($res -> RecordCount() ==1 ) {
+	if ($res->RecordCount() == 1) {
+		$admin_name = $res->fields['admin_name'];
 
-		$admin_name = $res -> fields['admin_name'];
+		$created_by = $res->fields['created_by'];
 
-		$created_by = $res -> fields['created_by'];
+		$admin_fname = $res->fields['fname'];
 
-		$admin_fname = $res -> fields['fname'];
+		$admin_lname = $res->fields['lname'];
 
-		$admin_lname = $res -> fields['lname'];
-
-		$to = $res -> fields['email'];
+		$to = $res->fields['email'];
 
 		$upass = passgen();
 
 		setPassword($uniqkey, $upass);
 
-    	write_log("Lostpassword: " . $admin_name . ": password updated");
+		write_log("Lostpassword: " . $admin_name . ": password updated");
 
-    	$query = <<<SQL_QUERY
+		$query = <<<SQL_QUERY
             	UPDATE
               	admin
             	SET
@@ -258,7 +230,7 @@ SQL_QUERY;
               	uniqkey = ?
 SQL_QUERY;
 
-    	$rs = exec_query($sql, $query, array('', '', $uniqkey));
+		$rs = exec_query($sql, $query, array('', '', $uniqkey));
 
 		if ($created_by == 0) $created_by = 1;
 
@@ -268,22 +240,19 @@ SQL_QUERY;
 
 		$from_email = $data['sender_email'];
 
-    	$subject = $data['subject'];
+		$subject = $data['subject'];
 
-   	 	$message = $data['message'];
+		$message = $data['message'];
 
 		$base_vhost = $cfg['BASE_SERVER_VHOST'];
 
-    	if ($from_name) {
-
-       		$from = $from_name . "<" . $from_email . ">";
-
-   		}
-		else {
-        	$from = $from_email;
+		if ($from_name) {
+			$from = "\"" . $from_name . "\" <" . $from_email . ">";
+		} else {
+			$from = $from_email;
 		}
 
-		$search  = array();
+		$search = array();
 		$replace = array();
 
 		$search [] = '{USERNAME}';
@@ -298,31 +267,28 @@ SQL_QUERY;
 		$subject = str_replace($search, $replace, $subject);
 		$message = str_replace($search, $replace, $message);
 
-	    $headers = "From: $from\n";
+		$headers = "From: " . $from . "\n";
 
-	    $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
+		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-	    $headers .= "X-Mailer: ispCP lostpassword mailer";
+		$headers .= "X-Mailer: ispCP lostpassword mailer";
 
-	    $mail_result = mail($to, $subject, $message, $headers);
+		$mail_result = mail($to, $subject, $message, $headers);
 
-	    $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+		$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
-	    write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
+		write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
 		return true;
-
 	}
 
 	return false;
-
 }
 
 function requestpassword($admin_name) {
-
 	global $sql, $cfg;
 
- 	$query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         		SELECT
             	created_by, fname, lname, email
         		FROM
@@ -331,76 +297,72 @@ function requestpassword($admin_name) {
             	admin_name = ?
 SQL_QUERY;
 
- 	$res = exec_query($sql, $query, array($admin_name));
+	$res = exec_query($sql, $query, array($admin_name));
 
- 	if ($res -> RecordCount() == 0) {
- 	    return false;
- 	}
+	if ($res->RecordCount() == 0) {
+		return false;
+	}
 
- 	$created_by = $res -> fields['created_by'];
- 	$admin_fname = $res -> fields['fname'];
- 	$admin_lname = $res -> fields['lname'];
- 	$to = $res -> fields['email'];
+	$created_by = $res->fields['created_by'];
+	$admin_fname = $res->fields['fname'];
+	$admin_lname = $res->fields['lname'];
+	$to = $res->fields['email'];
 
- 	$uniqkey = uniqkeygen();
+	$uniqkey = uniqkeygen();
 
- 	setUniqKey($admin_name, $uniqkey);
+	setUniqKey($admin_name, $uniqkey);
 
- 	write_log("Lostpassword: ".$admin_name.": uniqkey created", E_USER_NOTICE);
+	write_log("Lostpassword: " . $admin_name . ": uniqkey created", E_USER_NOTICE);
 
- 	if ($created_by == 0) $created_by = 1;
+	if ($created_by == 0) $created_by = 1;
 
- 	$data = get_lostpassword_activation_email($created_by);
+	$data = get_lostpassword_activation_email($created_by);
 
- 	$from_name = $data['sender_name'];
- 	$from_email = $data['sender_email'];
- 	$subject = $data['subject'];
- 	$message = $data['message'];
+	$from_name = $data['sender_name'];
+	$from_email = $data['sender_email'];
+	$subject = $data['subject'];
+	$message = $data['message'];
 
- 	$base_vhost = $cfg['BASE_SERVER_VHOST'];
+	$base_vhost = $cfg['BASE_SERVER_VHOST'];
 
- 	if ($from_name) {
+	if ($from_name) {
+		$from = "\"" . $from_name . "\" <" . $from_email . ">";
+	} else {
+		$from = $from_email;
+	}
 
- 	    $from = $from_name . "<" . $from_email . ">";
+	$prot = isset($_SERVER['https'])? 'https' : 'http';
 
- 	} else {
+	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
 
- 	    $from = $from_email;
- 	}
+	$search = array();
+	$replace = array();
 
- 	$prot = isset($_SERVER['https'])? 'https' : 'http';
+	$search [] = '{USERNAME}';
+	$replace[] = $admin_name;
+	$search [] = '{NAME}';
+	$replace[] = $admin_fname . " " . $admin_lname;
+	$search [] = '{LINK}';
+	$replace[] = $link;
+	$search [] = '{BASE_SERVER_VHOST}';
+	$replace[] = $base_vhost;
 
- 	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . "?key=" . $uniqkey;
+	$subject = str_replace($search, $replace, $subject);
+	$message = str_replace($search, $replace, $message);
 
- 	$search  = array();
- 	$replace = array();
+	$headers = "From: " . $from . "\n";
 
- 	$search [] = '{USERNAME}';
- 	$replace[] = $admin_name;
- 	$search [] = '{NAME}';
- 	$replace[] = $admin_fname . " " . $admin_lname;
- 	$search [] = '{LINK}';
- 	$replace[] = $link;
- 	$search [] = '{BASE_SERVER_VHOST}';
- 	$replace[] = $base_vhost;
+	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
- 	$subject = str_replace($search, $replace, $subject);
- 	$message = str_replace($search, $replace, $message);
+	$headers .= "X-Mailer: ispCP lostpassword mailer";
 
- 	$headers = "From: " .$from. "\n";
+	$mail_result = mail($to, encode($subject), $message, $headers);
 
- 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
- 	$headers .= "X-Mailer: ispCP lostpassword mailer";
+	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
- 	$mail_result = mail($to, encode($subject), $message, $headers);
-
- 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
- 	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
-
- 	return true;
-
+	return true;
 }
 
 ?>

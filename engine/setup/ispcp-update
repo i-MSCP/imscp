@@ -45,12 +45,10 @@ sub start_up {
 	# Get path to vhcs2.conf
 	print STDOUT "\tPlease enter path to vhcs2.conf [/etc/vhcs2/vhcs2.conf]: "
 
-	print STDOUT $welcome_message;
-
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	if (!defined($rdata) || $dec eq '') {
+	if (!defined($rdata) || $rdata eq '') {
 		$rdata = '/etc/vhcs2/vhcs2.conf';
 	}
 
@@ -237,6 +235,8 @@ sub migrate_vhcs2 {
 }
 
 sub remove_vhcs2 {
+	my ($rs, $cmd) = (undef, undef);
+
 	push_el(\@main::el, 'remove_vhcs2()', 'Starting...');
 
 	print STDOUT = "\tNow you can remove VHCS2. Do you want to remove VHCS2 auomaticly? (yes|no) [yes]: ";
@@ -348,7 +348,7 @@ sub prepare_update {
 		exit_werror("Script was aborted by user");
 	}
 	# VHCS update
-	elif ($main::ua{'update'} eq 1 || $main::ua{'update'} eq 2) {
+	elif (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 		$rs = migrate_vhcs2();
 		return $rs if ($rs != 0);

@@ -1517,8 +1517,7 @@ SQL_QUERY;
 	$res = exec_query($sql, $query, array($dmn, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $reseller_id));
 } // End of au_update_reseller_props()
 
-function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id)
-{
+function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id) {
 	global $cfg;
 
 	$data = get_order_email($admin_id);
@@ -1529,14 +1528,14 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 	$message = $data['message'];
 
 	if ($from_name) {
-		$from = encode($from_name) . "<" . $from_email . ">";
+		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
 	} else {
 		$from = $from_email;
 	}
 
 	if ($ufname && $ulname) {
 		$name = "$ufname $ulname";
-		$to = encode($name) . " <$uemail>";
+		$to = "\"" . encode($name) . "\" <" . $uemail . ">";
 	} else {
 		if ($ufname) {
 			$name = $ufname;
@@ -1561,7 +1560,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$subject = encode($subject);
 
-	$headers = "From: $from\n";
+	$headers = "From: ". $from . "\n";
 	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
@@ -1609,14 +1608,14 @@ function send_alias_order_email($alias_name)
 	$message = $data['message'];
 
 	if ($from_name) {
-		$from = encode($from_name) . "<" . $from_email . ">";
+		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
 	} else {
 		$from = $from_email;
 	}
 
 	if ($ufname && $ulname) {
 		$name = "$ufname $ulname";
-		$to = encode($name) . " <$uemail>";
+		$to = "\"" . encode($name) . "\" <" . $uemail . ">";
 	} else {
 		if ($ufname) {
 			$name = $ufname;
@@ -1645,7 +1644,7 @@ function send_alias_order_email($alias_name)
 
 	$subject = encode($subject);
 
-	$headers = "From: $from\n";
+	$headers = "From: ". $from ."\n";
 	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg['Version'] . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);

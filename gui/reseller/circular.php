@@ -121,9 +121,9 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($admin_id));
 
 	while (!$rs->EOF) {
-		$to = encode($rs->fields['fname'] . " " . $rs->fields['lname']) . " <" . $rs->fields['email'] . ">";
+		$to = "\"" . encode($rs->fields['fname'] . " " . $rs->fields['lname']) . "\" <" . $rs->fields['email'] . ">";
 
-		send_circular_email($to, encode($sender_name) . " <$sender_email>", stripslashes($msg_subject), stripslashes($msg_text));
+		send_circular_email($to, "\"" . encode($sender_name) . "\" <" . $sender_email . ">", stripslashes($msg_subject), stripslashes($msg_text));
 
 		$rs->MoveNext();
 	}
@@ -137,7 +137,7 @@ function send_circular_email ($to, $from, $subject, $message) {
 	$from = encode($from);
 	$subject = encode($subject);
 
-	$headers = "From: $from\r\n";
+	$headers = "From: " . $from . "\n";
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 	$headers .= "X-Mailer: ispCP marketing mailer";
 
