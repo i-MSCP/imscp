@@ -213,8 +213,6 @@ function add_user_data ($reseller_id) {
 
 
   // Let's get Desired Hosting Plan Data;
-  //
-
   $err_msg = '_off_';
 
   reseller_limits_check($sql, $err_msg, $reseller_id, $hpid);
@@ -389,7 +387,6 @@ SQL_QUERY;
                 '_no_'));
     }
 
-	// ispcp 2.5 feature
 	//add_domain_extras($dmn_id, $record_id, $sql);
 
 

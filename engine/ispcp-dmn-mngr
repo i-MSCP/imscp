@@ -4080,7 +4080,6 @@ sub dmn_add_awstats_cron {
                             $awstats_e,
                             $working
                            );
-    push_el(\@main::el, 'dmn_add_awstats_cron() search', $awstats_b);
 
     if ($rs == 0) {
         # We have one! We have to delete it because of possible future changes in this Domain Group entry;
@@ -4090,7 +4089,6 @@ sub dmn_add_awstats_cron {
                                   $working
                                  );
 
-        push_el(\@main::el, 'dmn_add_awstats_cron() del', $awstats_b);
         return $rs if ($rs != 0);
 
     }
@@ -4101,12 +4099,9 @@ sub dmn_add_awstats_cron {
                             $working
                            );
 
-    push_el(\@main::el, 'dmn_add_awstats_cron() search', $dmn_awstats_b);
     return $rs if ($rs != 0);
 
-    my $dmn_awstats_task = "$awstats_b$awstats_entry\n$awstats_e\n$dmn_awstats_b$dmn_awstats_e";
-
-    push_el(\@main::el, 'dmn_add_awstats_cron()', $dmn_awstats_task);
+    my $dmn_awstats_task = "$awstats_b\n$awstats_entry\n$awstats_e\n$dmn_awstats_b\n$dmn_awstats_e";
 
     ($rs, $working) = repl_tag(
                                $dmn_awstats_b,
@@ -4115,7 +4110,6 @@ sub dmn_add_awstats_cron {
                                $dmn_awstats_task
                               );
 
-	push_el(\@main::el, 'dmn_add_awstats_cron() repl', $dmn_awstats_b);
     return $rs if ($rs != 0);
 
     $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
