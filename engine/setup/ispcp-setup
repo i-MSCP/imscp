@@ -2453,12 +2453,14 @@ sub setup_httpd {
 	}
 
 	#
-	# Disable default fastcgi, otherwise FastCgiIpcDir is already defined
+	# Disable default fastcgi and mod_php4/5, otherwise FastCgiIpcDir is already defined
 	#
 
 	if (-e "/usr/sbin/a2dismod") {
 
 		sys_command_rs("/usr/sbin/a2dismod fastcgi &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/sbin/a2dismod php4 &> /tmp/ispcp-setup-services.log");
+		sys_command_rs("/usr/sbin/a2dismod php5 &> /tmp/ispcp-setup-services.log");
 
 	}
 

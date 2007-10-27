@@ -37,13 +37,13 @@ $main::ispcp = undef;
 ##                                SUBROUTINES                                 ##
 ################################################################################
 
-sub start_up {
+sub ask_vhcs2conf {
 	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, 'setup_start_up()', 'Starting...');
+	push_el(\@main::el, 'ask_vhcs2conf()', 'Starting...');
 
 	# Get path to vhcs2.conf
-	print STDOUT "\tPlease enter path to vhcs2.conf [/etc/vhcs2/vhcs2.conf]: "
+	print STDOUT "\tPlease enter path to vhcs2.conf [/etc/vhcs2/vhcs2.conf]: ";
 
 	$rdata = readline(\*STDIN);
 	chop($rdata);
@@ -63,7 +63,7 @@ sub start_up {
 	$rs = setup_main_vars();
 	return $rs if ($rs != 0);
 
-	push_el(\@main::el, 'setup_start_up()', 'Ending...');
+	push_el(\@main::el, 'ask_vhcs2conf()', 'Ending...');
 
 	return 0;
 
@@ -92,12 +92,13 @@ sub welcome_note {
 MSG
 
 	print STDOUT $welcome_message;
+	print STDOUT "\tYour selection: ";
 
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	while (!(isnum $rdata)|| $rdata < 0 || $rdata > 3) {
-		print STDOUT "\nPlease select an item mentioned above: ";
+	while ($rdata < 0 || $rdata > 3) {
+		print STDOUT "\tPlease select an item mentioned above: ";
 		$rdata = readline(\*STDIN);
 		chop($rdata);
 	}
@@ -219,7 +220,7 @@ sub migrate_vhcs2 {
 		return $rs if ($rs != 0);
 	}
 
-	$rdata =~ s/\{DATABASE_NAME\}/$main::db_name/gi;
+	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
 	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
@@ -235,20 +236,20 @@ sub migrate_vhcs2 {
 }
 
 sub remove_vhcs2 {
-	my ($rs, $cmd) = (undef, undef);
+	my ($rs, $cmd, $rdata) = (undef, undef, undef);
 
 	push_el(\@main::el, 'remove_vhcs2()', 'Starting...');
 
-	print STDOUT = "\tNow you can remove VHCS2. Do you want to remove VHCS2 auomaticly? (yes|no) [yes]: ";
-	my $dec = readline(\*STDIN);
-	chop($dec);
+	print STDOUT "\tNow you can remove VHCS2. Do you want to remove VHCS2 auomaticly? (yes|no) [yes]: ";
+	$rdata = readline(\*STDIN);
+	chop($rdata);
 
-	if (!defined($dec) || $dec eq '') {
-		$dec = 'yes';
+	if (!defined($rdata) || $rdata eq '') {
+		$rdata = 'yes';
 	}
 
 	# Remove VHCS2 files
-	if ($dec eq 'yes') {
+	if ($rdata eq 'yes') {
 		# Get vhcs2.conf
 		$rs = get_conf($main::vhcs2);
 		return $rs if ($rs != 0);
@@ -345,10 +346,22 @@ sub prepare_update {
 
 	# Abort
 	if ($main::ua{'update'} eq 0) {
-		exit_werror("Script was aborted by user");
+		exit_werror("\tScript was aborted by user");
 	}
 	# VHCS update
-	elif (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
+	elsif (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
+
+		# look up vhcs2.conf
+		$rs = ask_vhcs2conf();
+
+		if ($rs != 0) {
+			my $el_data = pop_el(\@main::el);
+			my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+
+			print STDERR "$msg\n";
+
+			exit 1;
+		}
 		stop_services("/tmp/vhcs2-backup-all.lock");
 		$rs = migrate_vhcs2();
 		return $rs if ($rs != 0);
@@ -357,10 +370,10 @@ sub prepare_update {
 		start_services();
 	}
 	# ispCP 1.0.0 RC2 Update
-	elif ($main::ua{'update'} eq 3) {
+	elsif ($main::ua{'update'} eq 3) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 		#$rs = patch_ispcp_rc2();
-		return $rs if ($rs != 0);
+		#return $rs if ($rs != 0);
 		print STDOUT "Not yet possible!\n";
 		start_services();
 	}
@@ -389,17 +402,6 @@ sub exit_werror {
 ################################################################################
 
 my $rs = undef;
-
-$rs = update_start_up();
-
-if ($rs != 0) {
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
 
 $rs = prepare_update();
 
