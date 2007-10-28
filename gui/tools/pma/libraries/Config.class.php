@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 10840 2007-10-17 16:14:41Z lem9 $
+ * @version $Id: Config.class.php 10884 2007-10-27 13:02:12Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.1.2');
+        $this->set('PMA_VERSION', '2.11.2');
         /**
          * @deprecated
          */
@@ -544,8 +544,7 @@ class PMA_Config
      */
     function getMtime()
     {
-        return $this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info;
-        //"max()" most probably would only returns "source" last modified timestamp.
+        return intval($_SESSION['PMA_Config']->get('fontsize')) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info);
     }
 
     /**

@@ -3,7 +3,7 @@
 /**
  * main css file from theme Original
  *
- * @version $Id: theme_right.css.php 10526 2007-07-24 13:34:40Z lem9 $
+ * @version $Id: theme_right.css.php 10666 2007-09-26 13:49:55Z lem9 $
  * @package phpMyAdmin-theme
  * @subpackage Original
  */
@@ -107,7 +107,7 @@ fieldset fieldset {
 fieldset legend {
     background-color:   transparent;
     font-weight:        bold;
-    color:              <?php echo $GLOBALS['cfg']['NaviDatabaseNameColor']; ?>;
+    color:              #444444;
 }
 
 /* buttons in some browsers (eg. Konqueror) are block elements,

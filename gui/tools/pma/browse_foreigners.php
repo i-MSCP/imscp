@@ -3,7 +3,7 @@
 /**
  * display selection for relational field values
  *
- * @version $Id: browse_foreigners.php 10560 2007-08-15 16:46:47Z lem9 $
+ * @version $Id: browse_foreigners.php 10712 2007-10-03 16:34:12Z lem9 $
  */
 
 /**
@@ -247,7 +247,7 @@ if (isset($disp_row) && is_array($disp_row)) {
             .'<a href="#" title="' . $strUseThisValue
             . ($key_ordered_current_val_title != '' ? ': ' . $key_ordered_current_val_title : '') . '"'
             .' onclick="formupdate(\'' . md5($field) . '\', \''
-            . htmlspecialchars($key_ordered_current_key) . '\'); return false;">'
+            . PMA_jsFormat($key_ordered_current_key, false) . '\'); return false;">'
             .htmlspecialchars($key_ordered_current_key) . '</a>' . ($key_ordered_current_equals_data ? '</b>' : '');
         ?></td>
         <td>
@@ -255,7 +255,7 @@ if (isset($disp_row) && is_array($disp_row)) {
         echo ($key_ordered_current_equals_data ? '<b>' : '')
             . '<a href="#" title="' . $strUseThisValue . ($key_ordered_current_val_title != '' ? ': '
             . $key_ordered_current_val_title : '') . '" onclick="formupdate(\''
-            . md5($field) . '\', \'' . htmlspecialchars($key_ordered_current_key) . '\'); return false;">'
+            . md5($field) . '\', \'' . PMA_jsFormat($key_ordered_current_key, false) . '\'); return false;">'
             . $key_ordered_current_val . '</a>' . ($key_ordered_current_equals_data ? '</b>' : '');
         ?></td>
         <td width="20%">
@@ -267,7 +267,7 @@ if (isset($disp_row) && is_array($disp_row)) {
         echo ($val_ordered_current_equals_data ? '<b>' : '')
             . '<a href="#" title="' . $strUseThisValue .  ($val_ordered_current_val_title != '' ? ': '
             . $val_ordered_current_val_title : '') . '" onclick="formupdate(\'' . md5($field)
-            . '\', \'' . htmlspecialchars($val_ordered_current_key) . '\'); return false;">'
+            . '\', \'' . PMA_jsFormat($val_ordered_current_key, false) . '\'); return false;">'
             . $val_ordered_current_val . '</a>' . ($val_ordered_current_equals_data ? '</b>' : '');
         ?></td>
         <td nowrap="nowrap">
@@ -275,7 +275,7 @@ if (isset($disp_row) && is_array($disp_row)) {
         echo ($val_ordered_current_equals_data ? '<b>' : '') . '<a href="#" title="'
         . $strUseThisValue .  ($val_ordered_current_val_title != '' ? ': ' . $val_ordered_current_val_title : '')
         . '" onclick="formupdate(\'' . md5($field) . '\', \''
-        . htmlspecialchars($val_ordered_current_key) . '\'); return false;">' . htmlspecialchars($val_ordered_current_key)
+        . PMA_jsFormat($val_ordered_current_key, false) . '\'); return false;">' . htmlspecialchars($val_ordered_current_key)
         . '</a>' . ($val_ordered_current_equals_data ? '</b>' : '');
         ?></td>
     </tr>

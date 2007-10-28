@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 10501 2007-07-18 15:32:08Z lem9 $
+ * @version $Id: server_privileges.php 10788 2007-10-15 09:20:30Z cybot_tm $
  */
 
 /**
@@ -183,8 +183,8 @@ function PMA_display_column_privs($spaces, $columns, $row, $name_for_select, $pr
         echo $spaces . '    <div class="item" id="div_item_' . $name . '">' . "\n"
            . $spaces . '        <label for="select_' . $name . '_priv">' . "\n"
            . $spaces . '            <tt><dfn title="' . $name_for_dfn . '">' . $priv_for_header . '</dfn></tt>' . "\n"
-           . $spaces . '        </label>' . "\n"
-           . $spaces . '        <select id="select_' . $name . '_priv" name="' . $name_for_select . '[]" multiple="multiple">' . "\n";
+           . $spaces . '        </label><br />' . "\n"
+           . $spaces . '        <select id="select_' . $name . '_priv" name="' . $name_for_select . '[]" multiple="multiple" size="8">' . "\n";
 
         foreach ($columns as $current_column => $current_column_privileges) {
             echo $spaces . '            <option value="' . htmlspecialchars($current_column) . '"';
@@ -749,10 +749,10 @@ if (!empty($adduser_submit) || !empty($change_copy)) {
     }
     $res = PMA_DBI_query(
         'SELECT \'foo\' FROM `mysql`.`user`'
-        .' WHERE ' . PMA_convert_using('User')
-        .' = ' . PMA_convert_using(PMA_sqlAddslashes($username), 'quoted')
-        .' AND ' . PMA_convert_using('Host')
-        .' = ' . PMA_convert_using($hostname, 'quoted') . ';',
+        .' WHERE CONVERT(`User` USING utf8) COLLATE utf8_bin '
+        .' = CONVERT(\'' . PMA_sqlAddslashes($username) . '\' USING utf8) COLLATE utf8_bin '
+        .' AND CONVERT(`Host` USING utf8) COLLATE utf8_bin '
+        .' = CONVERT(\'' . PMA_sqlAddslashes($hostname) . '\' USING utf8) COLLATE utf8_bin ;',
         null, PMA_DBI_QUERY_STORE);
     if (PMA_DBI_num_rows($res) == 1) {
         PMA_DBI_free_result($res);
@@ -1479,7 +1479,7 @@ if (empty($adduser) && (! isset($checkprivs) || ! strlen($checkprivs))) {
                     foreach ($user as $host) {
                         $index_checkbox++;
                         echo '        <tr class="' . ($odd_row ? 'odd' : 'even') . '">' . "\n"
-                           . '            <td><input type="checkbox" name="selected_usr[]" id="checkbox_sel_users_' . $index_checkbox . '" value="' . str_replace(chr(27), '&#27;', htmlentities($host['User'] . $user_host_separator . $host['Host'])) . '"' . (empty($GLOBALS['checkall']) ?  '' : ' checked="checked"') . ' /></td>' . "\n"
+                           . '            <td><input type="checkbox" name="selected_usr[]" id="checkbox_sel_users_' . $index_checkbox . '" value="' . str_replace(chr(27), '&#27;', htmlspecialchars($host['User'] . $user_host_separator . $host['Host'])) . '"' . (empty($GLOBALS['checkall']) ?  '' : ' checked="checked"') . ' /></td>' . "\n"
                            . '            <td><label for="checkbox_sel_users_' . $index_checkbox . '">' . (empty($host['User']) ? '<span style="color: #FF0000">' . $GLOBALS['strAny'] . '</span>' : htmlspecialchars($host['User'])) . '</label></td>' . "\n"
                            . '            <td>' . htmlspecialchars($host['Host']) . '</td>' . "\n";
                         echo '            <td>';

@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 10623 2007-09-10 17:08:32Z lem9 $
+ * @version $Id: db_operations.php 10813 2007-10-17 07:36:14Z cybot_tm $
  */
 
 /**
@@ -51,6 +51,13 @@ if (strlen($db) &&
             //    PMA_DBI_query($local_query);
             //} else {
             // please indent ->
+            
+            // lower_case_table_names=1 `DB` becomes `db`
+            $lower_case_table_names = PMA_DBI_fetch_value('SHOW VARIABLES LIKE "lower_case_table_names"', 0, 1);
+            if ($lower_case_table_names === '1') {
+                $newname = strtolower($newname);
+            }
+            
             $local_query = 'CREATE DATABASE ' . PMA_backquote($newname);
             if (isset($db_collation)) {
                 $local_query .= ' DEFAULT' . PMA_generateCharsetQueryPart($db_collation);

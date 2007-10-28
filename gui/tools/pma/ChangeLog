@@ -2,12 +2,42 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 10840 2007-10-17 16:14:41Z lem9 $
+$Id: ChangeLog 10884 2007-10-27 13:02:12Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+2.11.2.0 (2007-10-27)
+- patch #1791576 HTTP auth: support REDIRECT_REMOTE_USER, thanks to Allard
++ [lang] Serbian update, thanks to Mihailo Stefanovic 
+- bug #1798841 [relations] Copying db does not copy internal relations 
+- bug #1798646 [display] Character '+' in query wrongly interpreted 
+- bug #1801919 [themes] Do not use NaviDatabaseNameColor for fieldset legend 
+- bug #1764735 [core] Designer: PDF error when deleting a table
+- bug #1764195 [views] DROP button does not work on defective views 
+- bug #1805773 [relations] browse foreign values: return values not escaped,
+  thanks to Alex Rambau
+- bug #1807923 [login] Login with html entities in password fails
+- [core] Undefined variable when creating a table that exists
+- patch #1808578 Changes in font size were no longer detected after patch
+  #1787915
++ [lang] Croatian update, thanks to Renato Pavicic
+- patch #1807615 [GUI] Display patch for column rights in Opera
+- bug #1811519 Can't delete user with a german umlaut.
+- bug #1811519 [privileges] fixed used collation for accessing mysql.user in server privileges
+- it should not be possible to move or copy a table to information_schema
+- bug #1814733 win: copy db to mixed name db fails
+- bug #1777249 [display] Remove horizontal lines in navigation panel 
+- bug #1805102 [display] TextareaAutoSelect issues: set this parameter
+  default value to false to help cut&paste from a terminal window; also
+  set focus to the textarea
+- bug #1814463 [display] Wrong database size
+- bug #1811527 [display] Problem with links to the MySQL manual
+- patch #1817529 [auth] Incorrect login via URL when AllowArbitraryServer
+  is true, thanks to Juergen Wind
 
 2.11.1.2 (2007-10-17)
 - fixed XSS in server_status.php, thanks to Omer Singer, The DigiTrust Group
 - fixed some possible XSS with PHP_SELF, PATH_INFO, REQUEST_URI
+  (reference: CVE-2007-5589)
 
 2.11.1.1 (2007-10-15)
 - bug #1810629 [setup] XSS in setup.php, thanks to Omer Singer, The DigiTrust Group

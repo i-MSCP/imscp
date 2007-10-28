@@ -3,7 +3,7 @@
 /**
  * Set of functions used for cleaning up phpMyAdmin tables
  *
- * @version $Id: relation_cleanup.lib.php 10239 2007-04-01 09:51:41Z cybot_tm $
+ * @version $Id: relation_cleanup.lib.php 10667 2007-09-26 16:51:27Z lem9 $
  */
 
 /**
@@ -76,6 +76,14 @@ function PMA_relationsCleanupTable($db, $table) {
         unset($remove_query);
     }
 
+    if ($cfgRelation['designerwork']) {
+        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['designer_coords'])
+                    . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\''
+                    . ' AND table_name = \'' . PMA_sqlAddslashes($table) . '\'';
+        $rmv_rs    = PMA_query_as_cu($remove_query);
+        unset($remove_query);
+    }
+
     if ($cfgRelation['relwork']) {
         $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                     . ' WHERE master_db  = \'' . PMA_sqlAddslashes($db) . '\''
@@ -122,6 +130,13 @@ function PMA_relationsCleanupDatabase($db) {
         unset($remove_query);
 
         $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['table_coords'])
+                    . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
+        $rmv_rs    = PMA_query_as_cu($remove_query);
+        unset($remove_query);
+    }
+
+    if ($cfgRelation['designerwork']) {
+        $remove_query = 'DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['designer_coords'])
                     . ' WHERE db_name  = \'' . PMA_sqlAddslashes($db) . '\'';
         $rmv_rs    = PMA_query_as_cu($remove_query);
         unset($remove_query);

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 10401 2007-05-17 21:57:15Z lem9 $
+ * @version $Id: Table.class.php 10679 2007-09-27 16:56:09Z lem9 $
  */
 
 /**
@@ -252,7 +252,9 @@ class PMA_Table {
         // MySQL from 5.0.0 to 5.0.12 returns 'view',
         // from 5.0.13 returns 'VIEW'.
         $comment = strtoupper(PMA_DBI_fetch_value('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . $table . '\'', 0, 'Comment'));
-        return ($comment == 'VIEW');
+        // use substr() because the comment might contain something like:
+        // (VIEW 'BASE2.VTEST' REFERENCES INVALID TABLE(S) OR COLUMN(S) OR FUNCTION)
+        return (substr($comment, 0, 4) == 'VIEW');
     }
 
     /**
@@ -798,8 +800,19 @@ class PMA_Table {
                 */
             }
 
+            if ($GLOBALS['cfgRelation']['designerwork']) {
+                $table_query = 'UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['designer_coords'])
+                                . ' SET     table_name = \'' . PMA_sqlAddslashes($target_table) . '\','
+                                . '         db_name = \'' . PMA_sqlAddslashes($target_db) . '\''
+                                . ' WHERE db_name  = \'' . PMA_sqlAddslashes($source_db) . '\''
+                                . ' AND table_name = \'' . PMA_sqlAddslashes($source_table) . '\'';
+                PMA_query_as_cu($table_query);
+                unset($table_query);
+            }
             $GLOBALS['sql_query']      .= "\n\n" . $sql_drop_query . ';';
+        // end if ($move)
         } else {
+            // we are copying
             // garvin: Create new entries as duplicates from old PMA DBs
             if ($what != 'dataonly' && !isset($maintain_relations)) {
                 if ($GLOBALS['cfgRelation']['commwork']) {
@@ -838,16 +851,27 @@ class PMA_Table {
                 $where_fields = array('db_name' => $source_db, 'table_name' => $source_table);
                 $new_fields = array('db_name' => $target_db, 'table_name' => $target_table);
                 PMA_Table::duplicateInfo('displaywork', 'table_info', $get_fields, $where_fields, $new_fields);
+                
 
-                $get_fields = array('master_field', 'foreign_db', 'foreign_table', 'foreign_field');
+                /**
+                 * @todo revise this code when we support cross-db relations
+                 */
+                $get_fields = array('master_field', 'foreign_table', 'foreign_field');
                 $where_fields = array('master_db' => $source_db, 'master_table' => $source_table);
-                $new_fields = array('master_db' => $target_db, 'master_table' => $target_table);
+                $new_fields = array('master_db' => $target_db, 'foreign_db' => $target_db, 'master_table' => $target_table);
                 PMA_Table::duplicateInfo('relwork', 'relation', $get_fields, $where_fields, $new_fields);
+                
 
-                $get_fields = array('foreign_field', 'master_db', 'master_table', 'master_field');
+                $get_fields = array('foreign_field', 'master_table', 'master_field');
                 $where_fields = array('foreign_db' => $source_db, 'foreign_table' => $source_table);
-                $new_fields = array('foreign_db' => $target_db, 'foreign_table' => $target_table);
+                $new_fields = array('master_db' => $target_db, 'foreign_db' => $target_db, 'foreign_table' => $target_table);
                 PMA_Table::duplicateInfo('relwork', 'relation', $get_fields, $where_fields, $new_fields);
+                
+
+                $get_fields = array('x', 'y', 'v', 'h');
+                $where_fields = array('db_name' => $source_db, 'table_name' => $source_table);
+                $new_fields = array('db_name' => $target_db, 'table_name' => $target_table);
+                PMA_Table::duplicateInfo('designerwork', 'designer_coords', $get_fields, $where_fields, $new_fields);
 
                 /**
                  * @todo garvin: Can't get duplicating PDFs the right way. The
@@ -1000,6 +1024,18 @@ class PMA_Table {
             $table_query = '
                 UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.'
                     . PMA_backquote($GLOBALS['cfgRelation']['table_coords']) . '
+                   SET `db_name`    = \'' . PMA_sqlAddslashes($new_db) . '\',
+                       `table_name` = \'' . PMA_sqlAddslashes($new_name) . '\'
+                 WHERE `db_name`    = \'' . PMA_sqlAddslashes($old_db) . '\'
+                   AND `table_name` = \'' . PMA_sqlAddslashes($old_name) . '\'';
+            PMA_query_as_cu($table_query);
+            unset($table_query);
+        }
+
+        if ($GLOBALS['cfgRelation']['designerwork']) {
+            $table_query = '
+                UPDATE ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.'
+                    . PMA_backquote($GLOBALS['cfgRelation']['designer_coords']) . '
                    SET `db_name`    = \'' . PMA_sqlAddslashes($new_db) . '\',
                        `table_name` = \'' . PMA_sqlAddslashes($new_name) . '\'
                  WHERE `db_name`    = \'' . PMA_sqlAddslashes($old_db) . '\'

@@ -1836,7 +1836,7 @@ sub get_conf {
 
         if ($frows[$i] =~ /$main::cfg_re/) {
 
-            $main::cfg{$1} = $2;
+			$main::cfg{$1} = $2;
 
         }
 

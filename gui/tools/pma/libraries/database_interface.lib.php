@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 10462 2007-06-25 14:00:35Z lem9 $
+ * @version $Id: database_interface.lib.php 10732 2007-10-06 20:03:52Z lem9 $
  */
 
 /**
@@ -728,7 +728,7 @@ function PMA_DBI_get_columns($database, $table, $full = false, $link = null)
     $fields = PMA_DBI_fetch_result(
         'SHOW ' . ($full ? 'FULL' : '') . ' COLUMNS
         FROM ' . PMA_backquote($database) . '.' . PMA_backquote($table),
-        'Fields', ($full ? null : 'Fields'), $link);
+        'Field', ($full ? null : 'Field'), $link);
     if (! is_array($fields) || count($fields) < 1) {
         return false;
     }

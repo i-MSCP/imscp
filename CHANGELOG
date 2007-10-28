@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-10-28 Benedikt Heintel
+	- TOOLS:
+		* Updated PMA to 2.11.2
+	- LANGUAGES:
+		* Updated German (Thanks to translation Team)
+
 2007-10-28 Raphael Geissert
     - ENGINE:
         * Fixed #824: IMAP SSL Traffic not counted (also added pop-ssl, https and mail delivery)

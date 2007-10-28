@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 10556 2007-08-11 13:11:31Z lem9 $
+ * @version $Id: config.default.php 10869 2007-10-20 17:54:15Z lem9 $
  */
 
 /**
@@ -1713,7 +1713,7 @@ $cfg['LongtextDoubleTextarea'] = true;
  *
  * @global boolean $cfg['TextareaAutoSelect']
  */
-$cfg['TextareaAutoSelect'] = true;
+$cfg['TextareaAutoSelect'] = false;
 
 /**
  * textarea size (columns) for CHAR/VARCHAR

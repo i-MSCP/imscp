@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_info.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: tbl_info.inc.php 10679 2007-09-27 16:56:09Z lem9 $
  */
 
 /**
@@ -56,10 +56,7 @@ if ($table_info_result && PMA_DBI_num_rows($table_info_result) > 0) {
     if (!isset($showtable['Type']) && isset($showtable['Engine'])) {
         $showtable['Type'] =& $showtable['Engine'];
     }
-    // MySQL < 5.0.13 returns "view", >= 5.0.13 returns "VIEW"
-    if (PMA_MYSQL_INT_VERSION >= 50000 && !isset($showtable['Type'])
-     && isset($showtable['Comment'])
-     && strtoupper($showtable['Comment']) == 'VIEW') {
+    if (PMA_Table::isView($GLOBALS['db'], $GLOBALS['table'])) {
         $tbl_is_view     = true;
         $tbl_type        = $GLOBALS['strView'];
         $show_comment    = null;

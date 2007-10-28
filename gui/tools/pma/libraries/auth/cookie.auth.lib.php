@@ -5,7 +5,7 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 10471 2007-07-03 00:28:32Z lem9 $
+ * @version $Id: cookie.auth.lib.php 10872 2007-10-22 16:47:52Z lem9 $
  */
 
 /**
@@ -377,7 +377,7 @@ function PMA_auth_check()
         // The user just logged in
         $GLOBALS['PHP_AUTH_USER'] = $_REQUEST['pma_username'];
         $GLOBALS['PHP_AUTH_PW']   = empty($_REQUEST['pma_password']) ? '' : $_REQUEST['pma_password'];
-        if ($GLOBALS['cfg']['AllowArbitraryServer']) {
+        if ($GLOBALS['cfg']['AllowArbitraryServer'] && isset($_REQUEST['pma_servername'])) {
             $GLOBALS['pma_auth_server'] = $_REQUEST['pma_servername'];
         }
         return true;

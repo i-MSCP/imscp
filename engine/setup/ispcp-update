@@ -30,12 +30,44 @@ use strict;
 use warnings;
 
 %main::ua = ();
-$main::vhcs2 = undef;
-$main::ispcp = undef;
+$main::vhcs2conf = undef;
+$main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 ################################################################################
 ##                                SUBROUTINES                                 ##
 ################################################################################
+
+sub get_vhcs2conf {
+
+    push_el(\@main::el, 'get_conf()', 'Starting...');
+
+    my ($rs, $fline) = get_file($main::vhcs2conf);
+
+    return -1 if ($rs != 0);
+
+    my @frows = split(/\n/, $fline);
+
+    my $i = '';
+
+    for ($i = 0; $i < scalar(@frows); $i++) {
+
+        $frows[$i] = "$frows[$i]\n";
+
+        if ($frows[$i] =~ /$main::cfg_re/) {
+
+			$main::vhcs2{$1} = $2;
+
+        }
+
+    }
+
+    return -1 if (setup_main_vars() != 0);
+
+    push_el(\@main::el, 'get_conf()', 'Ending...');
+
+    return 0;
+
+}
 
 sub ask_vhcs2conf {
 	my ($rs, $rdata) = (undef, undef);
@@ -53,12 +85,11 @@ sub ask_vhcs2conf {
 	}
 
 	# set vhcs2 config
-	$main::vhcs2 = $rdata;
+	$main::vhcs2conf = $rdata;
 
 	# Get ispCP config
-	$rs = get_conf();
+	$rs = get_vhcs2conf();
 	return $rs if ($rs != 0);
-	$main::ispcp = "$main::cfg{'CONF_DIR'}/ispcp.conf";
 
 	$rs = setup_main_vars();
 	return $rs if ($rs != 0);
@@ -118,21 +149,19 @@ sub stop_services {
         exit_werror("\tVHCS2's backups engine is currently running. Aborting...");
     }
 
-    print STDOUT "\t";
-
     if ( -e "/etc/init.d/vhcs2_daemon" ) {
-        sys_command("/etc/init.d/vhcs2_daemon stop");
         print STDOUT "\t";
+        sys_command("/etc/init.d/vhcs2_daemon stop");
     }
 
     if ( -e "/etc/init.d/ispcp_daemon" ) {
-        sys_command("$main::cfg{'CMD_ISPCPD'} stop");
         print STDOUT "\t";
+        sys_command("$main::cfg{'CMD_ISPCPD'} stop");
     }
 
     if ( -e "/etc/init.d/ispcp_network" ) {
-        sys_command("$main::cfg{'CMD_ISPCPN'} stop");
         print STDOUT "\t";
+        sys_command("$main::cfg{'CMD_ISPCPN'} stop");
     }
 
 	push_el(\@main::el, 'stop_services()', 'Ending...');
@@ -200,7 +229,7 @@ sub migrate_vhcs2 {
 
     print STDOUT "\tCopying database...";
 
-    if (sys_command("mysqldump --opt -u\'$main::db_user\' -p\'$main::db_pwd\' $main::db_name | mysql -u\'$main::db_user\' -p\'$main::db_pwd\' ispcp") != 0) {
+    if (sys_command("mysqldump --opt -u\'$main::db_user\' -p\'$main::db_pwd\' $main::vhcs2{'DATABASE_NAME'} | mysql -u\'$main::db_user\' -p\'$main::db_pwd\' $main::db_name") != 0) {
         print STDOUT "failed!\n";
         exit_werror();
     }
@@ -251,40 +280,46 @@ sub remove_vhcs2 {
 	# Remove VHCS2 files
 	if ($rdata eq 'yes') {
 		# Get vhcs2.conf
-		$rs = get_conf($main::vhcs2);
+		$rs = get_conf($main::vhcs2conf);
 		return $rs if ($rs != 0);
 
 		# Remove VHCS2 Web/Engine folder
-		print STDOUT "\tRemoving $main::vhcs2{'ROOT_DIR'}";
-		del_dir($main::cfg{'ROOT_DIR'});
+		print STDOUT "\tRemoving $main::vhcs2{'ROOT_DIR'}...";
+		del_dir($main::vhcs2{'ROOT_DIR'});
+		print STDOUT "done\n";
 
 		# Remove VHCS2 Config foler
-		print STDOUT "\tRemoving $main::cfg{'CONF_DIR'}";
-		del_dir($main::cfg{'CONF_DIR'});
+		print STDOUT "\tRemoving $main::vhcs2{'CONF_DIR'}...";
+		del_dir($main::vhcs2{'CONF_DIR'});
+		print STDOUT "done\n";
 
 		# Remove VHCS2 Log folder
-		print STDOUT "\tRemoving $main::cfg{'LOG_DIR'}";
-		del_dir($main::cfg{'LOG_DIR'});
+		print STDOUT "\tRemoving $main::vhcs2{'LOG_DIR'}...";
+		del_dir($main::vhcs2{'LOG_DIR'});
+		print STDOUT "done\n";
 
 		# Remove VHCS2 Postfix folders
-		print STDOUT "\tRemoving $main::cfg{'MTA_VIRTUAL_CONF_DIR'}";
-		del_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'});
+		print STDOUT "\tRemoving $main::vhcs2{'MTA_VIRTUAL_CONF_DIR'}...";
+		del_dir($main::vhcs2{'MTA_VIRTUAL_CONF_DIR'});
+		print STDOUT "done\n";
 
 		# Remove VHCS2 logrotation
-		print STDOUT "\tRemoving logrotation";
+		print STDOUT "\tRemoving logrotation...";
 		del_file("/etc/logrotate.d/vhcs2");
+		print STDOUT "done\n";
 
 		# Remove VHCS2 crontab
-		print STDOUT "\tRemoving crontab";
+		print STDOUT "\tRemoving crontab...";
 		sys_command("crontab -r vhcs2");
+		print STDOUT "done\n";
 
 		# Remove VHCS2 apache files
-		print STDOUT "\tRemoving apache vhost file";
+		print STDOUT "\tRemoving apache vhost file...";
 		if ( -e "/usr/sbin/a2dissite" ) {
 			$rs = sys_command("/usr/sbin/a2dissite vhcs2.conf");
 
 			if ($rs == 0) {
-				$rs = sys_command("unlink /etc/apache2/sites-enabled/vhcs2.conf");
+				$rs = sys_command("unlink $main::vhcs2{'APACHE_CONF_FILE'}");
 		    	if ($rs != 0) {
 		        	print STDOUT "failed!\n";
 		        	exit_werror();
@@ -292,14 +327,14 @@ sub remove_vhcs2 {
 		    }
 		}
 		else {
-		    print STDOUT "\tDisabling vhcs2's apache2 sites ...";
-
 		    $rs = sys_command("unlink /etc/apache2/sites-enabled/vhcs2.conf");
 		    if ($rs != 0) {
 		        print STDOUT "failed!\n";
 		        exit_werror();
 		    }
 		}
+		print STDOUT "done\n";
+
 		# Restart apache
 		$cmd = $main::cfg{'CMD_HTTPD'};
 		sys_command_rs("$cmd stop");
@@ -316,12 +351,9 @@ sub remove_vhcs2 {
 
 		# Remove VHCS2 Daemons
 		print STDOUT "\tRemoving Daemons";
-		del_file($main::cfg{'CMD_VHCS2D'});
-		del_file($main::cfg{'CMD_VHCS2N'});
+		del_file($main::vhcs2{'CMD_VHCS2D'});
+		del_file($main::vhcs2{'CMD_VHCS2N'});
 
-		# Get ispcp.conf
-		$rs = get_conf($main::ispcp);
-		return $rs if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'remove_vhcs2()', 'Ending...');

@@ -3,7 +3,7 @@
 /**
  * main css file from theme Darkblue Orange
  *
- * @version $Id: theme_right.css.php 10526 2007-07-24 13:34:40Z lem9 $
+ * @version $Id: theme_right.css.php 10666 2007-09-26 13:49:55Z lem9 $
  * @package phpMyAdmin-theme
  * @subpackage Darkblue_orange
  */
@@ -121,7 +121,7 @@ fieldset fieldset {
 }
 
 fieldset legend {
-    color:              #666699;
+    color:              #444444;
     font-weight:        bold;
     background:         <?php echo $GLOBALS['cfg']['MainBackground']; ?>;
     padding:            2px 2px 2px 2px;

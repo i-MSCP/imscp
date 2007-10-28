@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 10796 2007-10-16 07:09:50Z cybot_tm $
+ * @version $Id: common.lib.php 10870 2007-10-20 18:58:04Z lem9 $
  */
 
 /**
@@ -1286,8 +1286,12 @@ function PMA_formatByteDown($value, $limes = 6, $comma = 0)
     } // end for
 
     if ($unit != $GLOBALS['byteUnits'][0]) {
-        $return_value = PMA_formatNumber($value, 5, $comma);
+        // if the unit is not bytes (as represented in current language)
+        // reformat with max length of 5
+        // 4th parameter=true means do not reformat if value < 1
+        $return_value = PMA_formatNumber($value, 5, $comma, true);
     } else {
+        // do not reformat, just handle the locale
         $return_value = PMA_formatNumber($value, 0);
     }
 
@@ -1357,7 +1361,7 @@ function PMA_formatNumber($value, $length = 3, $comma = 0, $only_down = false)
         $length = 3 - $comma;
     }
 
-    // check for negativ value to retain sign
+    // check for negative value to retain sign
     if ($value < 0) {
         $sign = '-';
         $value = abs($value);

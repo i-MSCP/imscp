@@ -39,7 +39,7 @@
  * @uses    strlen()
  * @uses    preg_replace()
  * @uses    htmlspecialchars()
- * @version $Id: querywindow.php 10238 2007-04-01 09:26:14Z cybot_tm $
+ * @version $Id: querywindow.php 10869 2007-10-20 17:54:15Z lem9 $
  */
 
 /**
@@ -222,6 +222,7 @@ if (PMA_isValid($_REQUEST['init'])) {
     echo 'PMA_querywindowResize();' . "\n";
 }
 ?>
+document.getElementById('sqlquery').focus();
 }
 
 //]]>

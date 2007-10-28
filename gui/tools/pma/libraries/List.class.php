@@ -3,7 +3,7 @@
 /**
  * hold the PMA_List base class
  *
- * @version $Id: List.class.php 10395 2007-05-15 06:18:21Z cybot_tm $
+ * @version $Id: List.class.php 10786 2007-10-14 12:23:22Z lem9 $
  */
 
 /**
@@ -113,12 +113,13 @@
      * returns HTML <option>-tags to be used inside <select></select>
      *
      * @uses    PMA_List::$items to build up the option items
-     * @uses    PMA_List::getDefault() to mark this as sleected if requested
+     * @uses    PMA_List::getDefault() to mark this as selected if requested
      * @uses    htmlspecialchars() to escape items
      * @param   mixed   $selected   the selected db or true for selecting current db
+     * @param   boolean $include_information_schema
      * @return  string  HTML option tags
      */
-    function getHtmlOptions($selected = '')
+    function getHtmlOptions($selected = '', $include_information_schema = true)
     {
         if (true === $selected) {
             $selected = $this->getDefault();
@@ -126,6 +127,9 @@
 
         $options = '';
         foreach ($this->items as $each_db) {
+            if (false === $include_information_schema && 'information_schema' === $each_db) {
+                continue;
+            }
             $options .= '<option value="' . htmlspecialchars($each_db) . '"';
             if ($selected === $each_db) {
                 $options .= ' selected="selected"';

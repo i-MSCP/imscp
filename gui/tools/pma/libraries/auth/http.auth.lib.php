@@ -4,7 +4,7 @@
  * Set of functions used to run http authentication.
  * NOTE: Requires PHP loaded as a Apache module.
  *
- * @version $Id: http.auth.lib.php 10461 2007-06-25 11:41:58Z lem9 $
+ * @version $Id: http.auth.lib.php 10650 2007-09-17 16:39:25Z lem9 $
  */
 
 
@@ -101,16 +101,19 @@ function PMA_auth_check()
         if (PMA_getenv('PHP_AUTH_USER')) {
             $PHP_AUTH_USER = PMA_getenv('PHP_AUTH_USER');
         } elseif (PMA_getenv('REMOTE_USER')) {
-            // CGI, might be encoded, see bellow
+            // CGI, might be encoded, see below
             $PHP_AUTH_USER = PMA_getenv('REMOTE_USER');
+        } elseif (PMA_getenv('REDIRECT_REMOTE_USER')) {
+            // CGI, might be encoded, see below
+            $PHP_AUTH_USER = PMA_getenv('REDIRECT_REMOTE_USER');
         } elseif (PMA_getenv('AUTH_USER')) {
             // WebSite Professional
             $PHP_AUTH_USER = PMA_getenv('AUTH_USER');
         } elseif (PMA_getenv('HTTP_AUTHORIZATION')) {
-            // IIS, might be encoded, see bellow
+            // IIS, might be encoded, see below
             $PHP_AUTH_USER = PMA_getenv('HTTP_AUTHORIZATION');
         } elseif (PMA_getenv('Authorization')) {
-            // FastCGI, might be encoded, see bellow
+            // FastCGI, might be encoded, see below
             $PHP_AUTH_USER = PMA_getenv('Authorization');
         }
     }

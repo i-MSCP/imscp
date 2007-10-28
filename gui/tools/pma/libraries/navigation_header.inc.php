@@ -3,7 +3,7 @@
 /**
  * displays the pma logo, links and db and server selection in left frame
  *
- * @version $Id: navigation_header.inc.php 10520 2007-07-22 19:05:42Z lem9 $
+ * @version $Id: navigation_header.inc.php 10868 2007-10-20 17:19:39Z lem9 $
  */
 
 /**
@@ -98,6 +98,6 @@ if ($GLOBALS['cfg']['LeftDisplayServers'] && (count($GLOBALS['cfg']['Servers']) 
     echo '<div id="serverinfo">';
     include './libraries/select_server.lib.php';
     PMA_select_server(true, true);
-    echo '</div><hr />';
+    echo '</div><br />';
 } // end if LeftDisplayServers
 ?>

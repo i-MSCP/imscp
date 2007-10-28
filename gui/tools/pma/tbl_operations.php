@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_operations.php 10357 2007-05-09 07:19:37Z cybot_tm $
+ * @version $Id: tbl_operations.php 10786 2007-10-14 12:23:22Z lem9 $
  */
 
 /**
@@ -189,7 +189,7 @@ unset($columns);
 <fieldset id="fieldset_table_rename">
     <legend><?php echo $strMoveTable; ?></legend>
     <select name="target_db">
-        <?php echo $GLOBALS['PMA_List_Database']->getHtmlOptions(); ?>
+        <?php echo $GLOBALS['PMA_List_Database']->getHtmlOptions(true, false); ?>
     </select>
     &nbsp;<b>.</b>&nbsp;
     <input type="text" size="20" name="new_name" onfocus="this.select()"
@@ -343,7 +343,7 @@ if (isset($auto_increment) && strlen($auto_increment) > 0
 <fieldset>
     <legend><?php echo $strCopyTable; ?></legend>
     <select name="target_db">
-        <?php echo $GLOBALS['PMA_List_Database']->getHtmlOptions(true); ?>
+        <?php echo $GLOBALS['PMA_List_Database']->getHtmlOptions(true, false); ?>
     </select>
     &nbsp;<b>.</b>&nbsp;
     <input type="text" size="20" name="new_name" onfocus="this.select()" /><br />
