@@ -87,7 +87,7 @@ sub srv_traff_start_up {
 		domain_php,
 		domain_cgi
 	FROM
-		domain	
+		domain
     ";
 
     ($rs, $rdata) = doSQL($sql);
@@ -152,11 +152,19 @@ sub srv_traff_engine {
 
             $smtp_in = $bytes if ($port == 25);
 
+            $smtp_in = $bytes if ($port == 587);
+
             $pop3_in = $bytes if ($port == 110);
+
+            $pop3_in = $bytes if ($port == 995);
 
             $imap_in = $bytes if ($port == 143);
 
+            $imap_in = $bytes if ($port == 993);
+
             $http_in = $bytes if ($port == 80);
+
+            $http_in = $bytes if ($port == 443);
 
         } else {
 
