@@ -219,7 +219,7 @@ sub backup_ispcp_engine {
 
 	my $backup_filename = "config-backup-$date.tar.bz2";
 
-	my $backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --bzip2 --file=$backup_dir/$backup_filename 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
+	my $backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --bzip2 --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
 
 
 	if(! -d $backup_dir) {
