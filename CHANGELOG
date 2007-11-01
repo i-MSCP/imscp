@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-11-01 Christian Hernmarck
+	- DISTS:
+		* Changed the init scripts for Redhat, Fedora, CentOS. Thanks to Sw1fty.
+
 2007-10-30 Benedikt Heintel
 	- DISTS:
 		* Fixed #829: CentOS: Just on little fix for CentOS 5 in the Installmanual

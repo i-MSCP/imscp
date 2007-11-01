@@ -1,155 +1,117 @@
 #!/bin/sh
+#
+# chkconfig: - 91 35
+# description: Starts and stops the ISPCP daemon
+#
+# pidfile: /var/run/ispcp.pid
+# config:  /etc/ispcp/ispcp.conf
 
-# ispCP ω (OMEGA) a Virtual Hosting Control System
-# Copyright (c) 2007 by ispCP
-# http://www.isp-control.net
-#
-#
-# License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
-#
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
-#
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
-#
-#
-# The ispCP Home Page is at:
-#
-#    http://www.isp-control.net
-#
-### BEGIN INIT INFO
-# Provides:             ispcp_daemon
-# Required-Start:       $network $local_fs $remote_fs
-# Required-Stop:
-# Should-Stop:          $local_fs
-# Default-Start:        2 3 4 5
-# Default-Stop:         0 1 6
-# Short-Description:    ispCP GUI-Backend communication Daemon
-### END INIT INFO
-# Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-NAME=ispcp_daemon
-DAEMON=/var/www/ispcp/daemon/$NAME
-PID=/var/run/$NAME.pid
-DESC="ispCP GUI-Backend communication Daemon"
-LOGDIR=/var/log/ispcp
-LOGFILE=${LOGDIR}/${NAME}.log
-DIETIME=3
+# Source function library.
+if [ -f /etc/init.d/functions ] ; then
+  . /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ] ; then
+  . /etc/rc.d/init.d/functions
+else
+  exit 0
+fi
 
-START=1
+# Avoid using root's TMPDIR
+unset TMPDIR
 
-# Debian LSB extensions (will be used if init-functions doesn't override them):
-log_daemon_msg() {
-	if [ ! -z "${2:-}" ]; then
-		log_success_msg "${1:-}: ${2:-}"
-	else
-		log_success_msg "${1:-}"
+# Source networking configuration.
+. /etc/sysconfig/network
+
+if [ -f /var/www/ispcp/daemon ]; then
+   . /var/www/ispcp/daemon
+fi
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+# Check that ispcp.conf exists.
+[ -f /etc/ispcp/ispcp.conf ] || exit 0
+
+RETVAL=0
+
+
+start() {
+        KIND="ISPCP"
+	echo -n $"Starting $KIND services: "
+	daemon /var/www/ispcp/daemon/ispcp_daemon
+	RETVAL=$?
+	echo
+      	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ispcp || RETVAL=1
+	echo ""
+	return $RETVAL
+}	
+
+stop() {
+        KIND="ISPCP"
+	echo -n $"Shutting down $KIND services: "
+	killproc ispcp_daemon
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/ispcp
+	echo ""
+	return $RETVAL
+}	
+
+restart() {
+	stop
+	start
+}	
+
+reload() {
+        echo -n $"Reloading ispcp.conf: "
+	killproc ispcp_daemon -HUP
+	RETVAL=$?
+	echo
+	return $RETVAL
+}	
+
+rhstatus() {
+	status ispcp_daemon
+	RETVAL=$?
+	if [ $? -ne 0 -o $RETVAL -ne 0 ] ; then
+		return 1
 	fi
-}
-log_end_msg() {
-	local status="$1"
-}
+}	
 
-# if not present (e.g. *BSD) make sure to provide compatible methods via /etc/default/$NAME
-if [ -f /lib/lsb/init-functions ]; then
-	. /lib/lsb/init-functions
+
+# Allow status as non-root.
+if [ "$1" = status ]; then
+       rhstatus
+       exit $?
 fi
 
-test -x $DAEMON || {
-	if [ "$1" = "stop" ]; then
-		log_warning_msg "$DAEMON not installed, but stopping anyway."
-	else
-		exit 5
-	fi }
+# Check that we can write to it... so non-root users stop here
+[ -w /etc/ispcp/ispcp.conf ] || exit 0
 
-# Read config file if present.
-if [ -r /etc/default/$NAME ]; then
-	. /etc/default/$NAME
-fi
 
-if [ $START -eq 0 ]; then
-	log_warning_msg "Not starting $DESC: edit /etc/default/$NAME."
-	exit 1
-fi
 
 case "$1" in
   start)
-	log_daemon_msg "Starting $DESC" "$NAME"
-
-	start_daemon -p $PID $DAEMON -p $PID
-
-	log_end_msg $?
+  	start
 	;;
   stop)
-	log_daemon_msg "Stopping $DESC" "$NAME"
-
-	killproc -p $PID $DAEMON
-
-	log_end_msg $?
-
-	[ ! -f "$PID" ] || rm -f $PID
+  	stop
 	;;
-  restart|force-reload)
-	log_daemon_msg "Stopping $DESC" "$NAME"
-
-	killproc -p $PID $DAEMON
-
-	log_end_msg $?
-
-	[ ! -f "$PID" ] || rm -f $PID
-
-	[ -n "$DIETIME" ] && sleep "$DIETIME"
-
-	log_daemon_msg "Starting $DESC" "$NAME"
-
-	start_daemon -p $PID $DAEMON -- -p $PID
-
-	log_end_msg $?
+  restart)
+  	restart
+	;;
+  reload)
+  	reload
 	;;
   status)
-	log_daemon_msg "Checking status of $DESC"
-
-	pidofproc $DAEMON
-
-	status="$?"
-	log_end_msg "$status"
-
-	case "$status" in
-		0)
-			log_success_msg "$NAME running"
-		;;
-		1)
-			log_warning_msg "$NAME not running (but pid file found)"
-		;;
-		2)
-			log_warning_msg "$NAME not running (but lock file found)"
-		;;
-		3)
-			log_warning_msg "$NAME not running"
-		;;
-		4|*)
-			log_failure_msg "Service status is unknown"
-			exit 1
-		;;
-        esac
+  	rhstatus
 	;;
-	
+  condrestart)
+  	[ -f /var/lock/subsys/ispcp ] && restart || :
+	;;
   *)
-	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+	echo $"Usage: $0 {start|stop|restart|reload|status|condrestart}"
 	exit 1
-	;;
 esac
 
-exit 0
+exit $?
