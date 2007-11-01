@@ -56,13 +56,14 @@ function curlang($newlang = null, $force = false) {
  *  @author			ispCP Team, Benedikt Heintel (2007), 2007 Raphael Geissert
  *
  * 	@param		$msgid		string to translate
- * 	@param		$js			whether the input string is in javascript or not
+ * 	@param		$as_is		prevent the returned string from being replaced with html entities
  * 	@return					translated or original string
  **/
 function tr($msgid, $as_is = false) {
     global $sql, $cfg;
     static $cache = array();
 
+    // detect whether $as_is is really $as_is or just a value to be replaced in $msgstr
     if (!is_bool($as_is)) {
         $as_is = false;
     }
@@ -77,6 +78,7 @@ function tr($msgid, $as_is = false) {
 
         if ($sql) {
             if (!$as_is) {
+                // $as_is is true in this call because we need it that way and to prevent an infinite loop
                 $encoding = tr('encoding', true);
             }
             $rs = exec_query($sql, "SELECT `msgstr` FROM " . quoteIdentifier($lang) . " WHERE `msgid` = ?;", array($msgid), false);

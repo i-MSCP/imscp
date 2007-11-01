@@ -235,7 +235,7 @@ sub backup_ispcp_engine {
 
 	if ($dbuser && $dbpass) {
 		my $db_backup_file = "$backup_dir/$db_name.sql";
-                
+
 		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
 		my $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
 		$rs = sys_command($db_backupcmd);
@@ -271,7 +271,7 @@ sub backup_ispcp_engine {
 
 	}
 
-	sys_command("find $backup_dir/* -maxdepth 0 -type f -mtime +14 -print | xargs /bin/rm");
+	sys_command("find $backup_dir/* -maxdepth 0 -type f -mtime +14 -print | xargs -r /bin/rm");
 
 	$rs = setfmode("$backup_dir/$backup_filename", 0, 0, 0640);
 

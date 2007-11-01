@@ -6,6 +6,15 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-11-1 Raphael Geissert
+    - GUI:
+        * Fixed #840: Wrong comment of tr() function in i18n.php
+        * Fixed #852: Undefined variable: name in /var/www/ispcp/gui/include/admin-functions.php on line 2336
+    - ENGINE:
+        * Fixed #839: Error "/bin/rm: missing operand" caused by cronjobs
+        * Fixed #838: chrootkit log is empty
+        * Improved entropy pool seeding code
+
 2007-11-01 Christian Hernmarck
 	- DISTS:
 		* Changed the init scripts for Redhat, Fedora, CentOS. Thanks to Sw1fty.

@@ -2322,7 +2322,7 @@ SQL_QUERY;
 		$to = "\"" . encode($to_fname . ' ' . $to_lname) . "\" <" . $to_email . ">";
 		$toname = "$to_fname $to_lname";
 	} else {
-		$name = $to_uname;
+		$toname = $to_uname;
 		$to = $to_email;
 	}
 
@@ -2333,7 +2333,7 @@ SQL_QUERY;
 	$search [] = '{SUBJ}';
 	$replace[] = $ticket_subject;
 	$search [] = '{TO_NAME}';
-	$replace[] = $name;
+	$replace[] = $toname;
 	$search [] = '{FROM_NAME}';
 	$replace[] = $fromname;
 

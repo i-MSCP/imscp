@@ -996,41 +996,60 @@ sub gen_sys_rand_num {
 
     }
 
+    my $pool_size = 0;
+    my $read_avail = 0;
+
     if ( -e '/proc/sys/kernel/random/entropy_avail') {
-        my $pool_size = undef;
+
+        $read_avail = 1;
 
         $pool_size = int(get_file('/proc/sys/kernel/random/entropy_avail'));
 
         if ( $pool_size <= ($len + 10)) {
-            push_el(\@main::el, 'gen_sys_rand_num()', "WARNING: entropy pool is $pool_size, but we require at least $len");
-
-            if ( -e '/dev/urandom') {
-                push_el(\@main::el, 'gen_sys_rand_num()', "WARNING: seeding the entropy pool");
-
-                my $seed = $len;
-                while ($seed >= 0 || int(get_file('/proc/sys/kernel/random/entropy_avail')) <= ($len + 10)) {
-                    save_file('/dev/urandom', rand() * rand());
-                    my ($n, $c, $l) = (100, undef, 0);
-                    do {
-						$l = int(rand() * 100);
-						next if ($l < 0 || $l > 255);
-						$c .= chr($l);
-					} while($n--);
-                    save_file('/dev/urandom', $c);
-                    save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
-                    $seed--;
-                }
-            }
+            push_el(\@main::el, 'gen_sys_rand_num()', "WARNING: entropy pool is $pool_size, but we require more or less $len");
         }
+    }
+
+    if ( -e '/dev/urandom') {
+        push_el(\@main::el, 'gen_sys_rand_num()', "NOTICE: seeding the entropy pool (possible current size: $pool_size)");
+
+        my $seed = $len;
+        while ($seed >= 0 ||
+              ($read_avail && int(get_file('/proc/sys/kernel/random/entropy_avail')) <= ($len + 10))) {
+
+            my ($n, $c, $l) = (100, undef, 0);
+
+            do {
+                $l = int(rand() * 100);
+                next if ($l < 0 || $l > 255);
+                $c .= chr($l);
+            } while($n--);
+
+            save_file('/dev/urandom', $c . (rand() * rand() * rand() * rand()));
+            save_file('/dev/urandom', time ^ ($$ + ($$ << 15)) << (1 ^ rand -$$ ));
+            $seed--;
+        }
+    }
+
+    if ($read_avail) {
+
+        $pool_size = int(get_file('/proc/sys/kernel/random/entropy_avail'));
+
+        push_el(\@main::el, 'gen_sys_rand_num()', "NOTICE: new entropy pool size is $pool_size");
     }
 
     my $rs = open(F, '<', '/dev/random');
 
     if (!defined($rs)) {
 
-        push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Couldn't open the pseudo-random characters generator");
+        $rs = open(F, '<', '/dev/urandom');
 
-        return (-1, '');
+        if (!defined($rs)) {
+
+            push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Couldn't open the pseudo-random characters generator");
+
+            return (-1, '');
+        }
 
     }
 

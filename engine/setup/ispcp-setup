@@ -1606,15 +1606,8 @@ sub setup_crontab {
 			$awstats = "#";
 		}
 
-		$rkhunter = "";
-		if (sys_command_rs("which rkhunter > /dev/null") ne 0) {
-			$rkhunter = "#";
-		}
-
-		$ckrootkit = "";
-		if (sys_command_rs("which chkrootkit > /dev/null") ne 0) {
-			$ckrootkit = "#";
-		}
+		$rkhunter = `which rkhunter`;
+		$ckrootkit = `which chkrootkit`;
 
 		my %tag_hash = (
 						'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
@@ -1628,8 +1621,10 @@ sub setup_crontab {
 						'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
 						'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
 						'{AW-ENABLED}' => $awstats,
-						'{RK-ENABLED}' => $rkhunter,
-						'{CR-ENABLED}' => $ckrootkit
+						'{RK-ENABLED}' => !length($rkhunter)? "#" : "",
+						'{RKHUNTER}'   => $rkhunter,
+						'{CR-ENABLED}' => !length($ckrootkit)? "#" : "",
+						'{CKROOTKIT}'  => $ckrootkit
 					   );
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
