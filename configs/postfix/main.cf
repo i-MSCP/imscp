@@ -93,15 +93,21 @@ smtpd_sender_restrictions    = permit_mynetworks,
                                reject_unauth_destination
 smtpd_recipient_restrictions = permit_mynetworks,
                                permit_sasl_authenticated,
-                               reject_unauth_destination
-                               check_policy_service inet:127.0.0.1:60000
+                               reject_unauth_destination,
+                               reject_unauth_pipelining,
+                               reject_non_fqdn_recipient,
+                               reject_unknown_sender_domain,
+                               reject_unknown_recipient_domain,
+                               check_policy_service inet:127.0.0.1:60000,
+                               check_policy_service inet:127.0.0.1:12525
+smtpd_helo_required = yes
 
 
 #
 # TLS parameters; activate, if avaible/used
 #
 
-#smtpd_tld_loglevel        = 2
+#smtpd_tls_loglevel        = 2
 #smtpd_tls_cert_file       = /etc/postfix/cert.pem
 #smtpd_tls_key_file        = /etc/postfix/privkey.pem
 #smtpd_use_tls             = yes

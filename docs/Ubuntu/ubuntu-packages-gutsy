@@ -61,6 +61,7 @@ php5-idn
 php5-mcrypt
 php5-mhash
 php5-mysql
+policyd-weight
 postfix
 postgrey
 procmail

@@ -72,6 +72,7 @@ php5-imap
 php5-mcrypt
 php5-mhash
 php5-mysql
+policyd-weight
 postfix
 postfix-tls
 postgrey

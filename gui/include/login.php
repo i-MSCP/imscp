@@ -205,11 +205,10 @@ function change_user_interface($from_id, $to_id) {
 
     $index = null;
     while (1) { //used to easily exit
-        $query_from = 'select admin_id, admin_name, admin_pass, admin_type, created_by from admin where binary admin_id = ?';
-        $query_to   = 'select admin_id, admin_name, admin_pass, admin_type, email, created_by from admin where binary admin_id = ?';
+        $query   = 'select admin_id, admin_name, admin_pass, admin_type, email, created_by from admin where binary admin_id = ?';
 
-        $rs_from = exec_query($sql, $query_from, array($from_id));
-        $rs_to   = exec_query($sql, $query_to,   array($to_id));
+        $rs_from = exec_query($sql, $query, array($from_id));
+        $rs_to   = exec_query($sql, $query, array($to_id));
 
         if (($rs_from -> RecordCount()) != 1 || ($rs_to -> RecordCount()) != 1)  {
             set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
@@ -251,9 +250,9 @@ function change_user_interface($from_id, $to_id) {
 
 		unset_user_login_data();
 
-        if ($to_admin_type != 'admin' &&
+        if (($to_admin_type != 'admin' &&
             ((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $to_id) ||
-              !isset($_SESSION['logged_from_id']))
+              !isset($_SESSION['logged_from_id'])))
             || ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
 
             $_SESSION['logged_from'] = $from_udata['admin_name'];
