@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-11-2 Raphael Geissert
+    - GUI:
+        * Fixed #853: requests manager not being run when changing domain's bandwidth limit
+    - CONFIGS:
+        * Fixed #854: typos in postfix's config files
+
 2007-11-1 Raphael Geissert
     - GUI:
         * Fixed #840: Wrong comment of tr() function in i18n.php

@@ -390,6 +390,8 @@ SQL_QUERY;
 		if ($previous_utraff_max != $utraff_max) {
 			$query = "UPDATE domain SET domain_status = 'change' WHERE domain_id = ?";
 			exec_query($sql, $query, array($user_id));
+			check_for_lock_file();
+			send_request();
 		}
 
 		$user_props = "$usub_current;$usub_max;";
