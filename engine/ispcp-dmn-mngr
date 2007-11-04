@@ -910,8 +910,9 @@ sub gen_httpd_dmn_group_entry {
 	    $dmn_awstats_b,
 	    $dmn_awstats_dynamic_entry,
 	    $dmn_awstats_static_entry,
-	    $dmn_awstats_e
-       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+	    $dmn_awstats_e,
+	    $dmn_custom
+       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
     (
      $rs,
@@ -933,7 +934,8 @@ sub gen_httpd_dmn_group_entry {
 	 $dmn_awstats_b,
 	 $dmn_awstats_dynamic_entry,
 	 $dmn_awstats_static_entry,
-	 $dmn_awstats_e
+	 $dmn_awstats_e,
+	 $dmn_custom
     ) = get_tpl (
                  $tpl_dir,
                  'dg_b.tpl',
@@ -955,6 +957,7 @@ sub gen_httpd_dmn_group_entry {
 	             'dmn_awstats_dynamic_entry.tpl',
 	             'dmn_awstats_static_entry.tpl',
 	             'dmn_awstats_e.tpl'
+	             'custom.conf.tpl'
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -969,6 +972,7 @@ sub gen_httpd_dmn_group_entry {
         (
          '{DMN_GRP}' => $dmn_grp,
          '{DMN_NAME}' => $dmn_name,
+         '{SELF}' => $dmn_name,
          '{DMN_IP}' => $dmn_ip,
          '{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
@@ -978,6 +982,7 @@ sub gen_httpd_dmn_group_entry {
          '{SCOREBOARDS_DIR}' => $main::cfg{'SCOREBOARDS_DIR'},
          '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
          '{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
+         '{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
          '{SUEXEC_USER}' => $suexec_user,
          '{SUEXEC_GROUP}' => $suexec_group,
          '{BWLIMIT}' => $dmn_traffic_limit,
@@ -1001,7 +1006,8 @@ sub gen_httpd_dmn_group_entry {
      $dmn_php_e,
      $dmn_php2_entry,
 	 $dmn_awstats_dynamic_entry,
-	 $dmn_awstats_static_entry
+	 $dmn_awstats_static_entry,
+	 $dmn_custom
     ) = prep_tpl(
                  \%tag_hash,
                  $dg_b,
@@ -1018,7 +1024,8 @@ sub gen_httpd_dmn_group_entry {
                  $dmn_php_e,
                  $dmn_php2_entry,
                  $dmn_awstats_dynamic_entry,
-                 $dmn_awstats_static_entry
+                 $dmn_awstats_static_entry,
+                 $dmn_custom
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1129,6 +1136,17 @@ sub gen_httpd_dmn_group_entry {
     $rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'APACHE_USER'}:$main::cfg{'APACHE_GROUP'} $scoreboard_file");
 
     return $rs if ($rs != 0);
+
+    #
+    # Custom domain config file
+    #
+
+    if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
+
+        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf", $dmn_custom, 'root', 'root', 0644);
+
+        return $rs if ($rs != 0);
+    }
 
     push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "\n$dg_entry");
 

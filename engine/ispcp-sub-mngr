@@ -663,8 +663,9 @@ sub gen_httpd_sub_group_entry {
         $sub_php_e,
         $sub_php2_b,
         $sub_php2_entry,
-        $sub_php2_e
-       ) = ('', '', '', '', '', '', '', '', '', '', '', '');
+        $sub_php2_e,
+        $sub_custom
+       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '');
 
     (
      $rs,
@@ -679,7 +680,8 @@ sub gen_httpd_sub_group_entry {
      $sub_php_e,
      $sub_php2_b,
      $sub_php2_entry,
-     $sub_php2_e
+     $sub_php2_e,
+     $sub_custom
     ) = get_tpl (
                  $tpl_dir,
                  'sub_b.tpl',
@@ -693,7 +695,8 @@ sub gen_httpd_sub_group_entry {
                  'sub_php_e.tpl',
                  'sub_php2_b.tpl',
                  'sub_php2_entry.tpl',
-                 'sub_php2_e.tpl'
+                 'sub_php2_e.tpl',
+                 'custom.conf.tpl'
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -717,12 +720,14 @@ sub gen_httpd_sub_group_entry {
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{SUB_NAME}' => $sub_name,
+         '{SELF}' => $sub_name,
          '{SUB_IP}' => $sub_ip,
          '{SUB_NAME_PHP2}' => "$dmn_name$sub_mount",
          '{MOUNT_POINT}' => $sub_mount,
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
          '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
          '{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
+         '{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
          '{SUEXEC_USER}' => $suexec_user,
          '{SUEXEC_GROUP}' => $suexec_group
         );
@@ -733,14 +738,16 @@ sub gen_httpd_sub_group_entry {
      $sub_entry,
      $sub_e,
      $sub_cgi_entry,
-     $sub_php2_entry
+     $sub_php2_entry,
+     $sub_custom
     ) = prep_tpl(
                  \%tag_hash,
                  $sub_b,
                  $sub_entry,
                  $sub_e,
                  $sub_cgi_entry,
-                 $sub_php2_entry
+                 $sub_php2_entry,
+                 $sub_custom
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -807,6 +814,17 @@ sub gen_httpd_sub_group_entry {
     return ($rs, '') if ($rs != 0);
 
     my $sub_entry_val = "$sub_b$sub_entry$sub_e";
+
+    #
+    # Custom domain config file
+    #
+
+    if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf" ){
+
+        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf", $sub_custom , 'root', 'root', 0644);
+
+        return $rs if ($rs != 0);
+    }
 
     push_el(\@main::el, 'gen_httpd_sub_group_entry()', 'Ending...');
 

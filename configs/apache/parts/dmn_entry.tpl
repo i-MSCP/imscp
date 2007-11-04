@@ -48,4 +48,6 @@
         Allow from all
     </Directory>
 
+    Include {CUSTOM_SITES_CONFIG_DIR}/{DMN_NAME}.conf
+
 </VirtualHost>

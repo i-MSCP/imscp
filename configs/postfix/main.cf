@@ -24,7 +24,7 @@ myhostname = {MTA_HOSTNAME}
 mydomain   = {MTA_LOCAL_DOMAIN}
 myorigin   = $mydomain
 
-smtpd_banner = $myhostname ISPCP {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
+smtpd_banner = $myhostname ispCP {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
 setgid_group = postdrop
 
 #
@@ -85,22 +85,26 @@ virtual_gid_maps        = static:{MTA_MAILBOX_GID}
 
 smtpd_sasl_auth_enable       = yes
 smtpd_sasl2_auth_enable      = yes
-smtpd_sasl_security_options  = noanonymous
+smtpd_sasl_security_options  = noanonymous, noplaintext
 smtpd_sasl_local_domain      =
 broken_sasl_auth_clients     = yes
 smtpd_sender_restrictions    = permit_mynetworks,
-                               permit_sasl_authenticated,
-                               reject_unauth_destination
-smtpd_recipient_restrictions = permit_mynetworks,
-                               permit_sasl_authenticated,
+                               reject_non_fqdn_sender,
                                reject_unauth_destination,
-                               reject_unauth_pipelining,
+                               permit_sasl_authenticated
+
+smtpd_recipient_restrictions = permit_mynetworks,
                                reject_non_fqdn_recipient,
                                reject_unknown_sender_domain,
                                reject_unknown_recipient_domain,
-                               check_policy_service inet:127.0.0.1:60000,
-                               check_policy_service inet:127.0.0.1:12525
+                               reject_unauth_destination,
+                               permit_sasl_authenticated,
+                               check_policy_service inet:127.0.0.1:12525,
+                               check_policy_service inet:127.0.0.1:60000
 smtpd_helo_required = yes
+smtpd_data_restrictions = reject_unauth_pipelining
+smtpd_helo_restrictions = reject_invalid_helo_hostname,
+                          reject_non_fqdn_helo_hostname
 
 
 #

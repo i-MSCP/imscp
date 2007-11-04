@@ -50,6 +50,8 @@ if ($main::cfg{'DEBUG'} != 0) {
 
 if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
+	print STDERR "Generating database keys, it may take some time, please wait...\n";
+
 	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messager/ispcp-db-keys.pl");
 
 	return $rs if ($rs != 0);

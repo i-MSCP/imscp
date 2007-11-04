@@ -29,7 +29,7 @@
 {RK-ENABLED}0 	0,12	*	*	*	root {RKHUNTER} --scan-knownbad-files --check-deleted --createlogfile --cronjob --createlogfile {RKHUNTER_LOG}>/dev/null 2>&1
 
 # Chkrootkit
-{CR-ENABLED}0 	0,12	*	*	*	root {CHKROOTKIT} 2>&1 > {CHKROOTKIT_LOG}
+{CR-ENABLED}0 	0,12	*	*	*	root {CHKROOTKIT} &> {CHKROOTKIT_LOG}
 
 # Look for and purge old sessions every 30 minutes
 0,30 *     * * *     root   {TOOLS_ROOT_DIR}/ispcpphptemp.sh >/dev/null 2>&1

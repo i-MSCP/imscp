@@ -7,6 +7,12 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-11-2 Raphael Geissert
+    - DOCS:
+        * Removed duplicate entry for postgrey in debian-packages-*
+    - CONFIGS:
+        * Added per-domain/alias/subdomain custom apache config
+
+2007-11-2 Raphael Geissert
     - GUI:
         * Fixed #853: requests manager not being run when changing domain's bandwidth limit
     - CONFIGS:

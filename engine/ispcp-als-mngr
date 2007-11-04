@@ -880,8 +880,9 @@ sub gen_httpd_als_entry {
         $als_php_e,
         $als_php2_b,
         $als_php2_entry,
-        $als_php2_e
-       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+        $als_php2_e,
+        $als_custom
+       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
     (
      $rs,
@@ -899,7 +900,8 @@ sub gen_httpd_als_entry {
      $als_php_e,
      $als_php2_b,
      $als_php2_entry,
-     $als_php2_e
+     $als_php2_e,
+     $als_custom
     ) = get_tpl (
                  $tpl_dir,
                  'als_b.tpl',
@@ -916,7 +918,8 @@ sub gen_httpd_als_entry {
                  'als_php_e.tpl',
                  'als_php2_b.tpl',
                  'als_php2_entry.tpl',
-                 'als_php2_e.tpl'
+                 'als_php2_e.tpl',
+                 'custom.conf.tpl'
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -935,6 +938,7 @@ sub gen_httpd_als_entry {
          '{DMN_NAME}' => $dmn_name,
          '{DMN_GRP}' => $dmn_name,
          '{ALS_NAME}' => $als_name,
+         '{SELF}' => $als_name,
          '{ALS_IP}' => $als_ip,
          '{URI}' => $url_forward,
          '{MOUNT_POINT}' => $mount_point,
@@ -944,6 +948,7 @@ sub gen_httpd_als_entry {
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
          '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
          '{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
+         '{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
          '{SUEXEC_USER}' => $suexec_user,
          '{SUEXEC_GROUP}' => $suexec_group
         );
@@ -956,7 +961,8 @@ sub gen_httpd_als_entry {
      $als_rdr_entry,
      $als_cgi_entry,
      $als_php_entry,
-     $als_php2_entry
+     $als_php2_entry,
+     $als_custom
     ) = prep_tpl(
                  \%tag_hash,
                  $als_b,
@@ -965,7 +971,8 @@ sub gen_httpd_als_entry {
                  $als_rdr_entry,
                  $als_cgi_entry,
                  $als_php_entry,
-                 $als_php2_entry
+                 $als_php2_entry,
+                 $als_custom
                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1053,6 +1060,17 @@ sub gen_httpd_als_entry {
 
 
     my $als_result_entry = "$als_b$als_entry$als_e";
+
+    #
+    # Custom domain config file
+    #
+
+    if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf" ){
+
+        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf", $als_custom, 'root', 'root', 0644);
+
+        return $rs if ($rs != 0);
+    }
 
     push_el(\@main::el, 'gen_httpd_als_entry()', "\n$als_result_entry");
 

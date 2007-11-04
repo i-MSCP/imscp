@@ -51,4 +51,6 @@
         Allow from all
     </Directory>
 
+    Include {CUSTOM_SITES_CONFIG_DIR}/{ALS_NAME}.conf
+
 </VirtualHost>
