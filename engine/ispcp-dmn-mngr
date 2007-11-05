@@ -956,7 +956,7 @@ sub gen_httpd_dmn_group_entry {
                  'dmn_awstats_b.tpl',
 	             'dmn_awstats_dynamic_entry.tpl',
 	             'dmn_awstats_static_entry.tpl',
-	             'dmn_awstats_e.tpl'
+	             'dmn_awstats_e.tpl',
 	             'custom.conf.tpl'
                 );
 

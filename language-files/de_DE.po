@@ -1046,7 +1046,7 @@ msgid "Mail account errors"
 msgstr "E-Mail-Konten-Fehler"
 
 msgid "ispCP Daemon tools"
-msgstr "ispCP Deamon Tools"
+msgstr "ispCP Daemon Tools"
 
 msgid "Execute requests"
 msgstr "Anfragen ausführen"

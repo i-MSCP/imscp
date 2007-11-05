@@ -6,19 +6,23 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
-2007-11-2 Raphael Geissert
-    - DOCS:
-        * Removed duplicate entry for postgrey in debian-packages-*
+2007-11-05 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #857: Send output from awstats-scripts somewhere else
+	- ENGINE:
+		* Fixed #858: Error in ispcp-dmn-mngr
+
+2007-11-02 Raphael Geissert
     - CONFIGS:
         * Added per-domain/alias/subdomain custom apache config
-
-2007-11-2 Raphael Geissert
+        * Fixed #854: typos in postfix's config files
     - GUI:
         * Fixed #853: requests manager not being run when changing domain's bandwidth limit
-    - CONFIGS:
-        * Fixed #854: typos in postfix's config files
+    - DOCS:
+        * Removed duplicate entry for postgrey in debian-packages-*
 
-2007-11-1 Raphael Geissert
+
+2007-11-01 Raphael Geissert
     - GUI:
         * Fixed #840: Wrong comment of tr() function in i18n.php
         * Fixed #852: Undefined variable: name in /var/www/ispcp/gui/include/admin-functions.php on line 2336
