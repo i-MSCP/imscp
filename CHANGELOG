@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-11-11 Johannes Schobig
+	- SETUP:
+		* Fixed #866: Installation don't starts
+
 2007-11-10 Raphael Geissert
     - CONFIGS:
         * Fixed a typo in postfix/main.cf and re-arranged the config file
