@@ -1805,14 +1805,6 @@ sub dmn_del_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
-    #
-    # Remove mod_cband scoreboard
-    #
-
-    $rs = del_file("$main::cfg{'SCOREBOARDS_DIR'}/$dmn_grp");
-
-    return $rs if ($rs != 0);
-
     push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'Ending...');
 
     return 0;
@@ -2545,6 +2537,29 @@ sub dmn_del_httpd_file_data {
     }
 
     return $rs if ($rs != 0);
+
+    #
+    # Remove mod_cband scoreboard
+    #
+
+    if ( -e "$main::cfg{'SCOREBOARDS_DIR'}/$dmn_name" ) {
+
+        $rs = del_file("$main::cfg{'SCOREBOARDS_DIR'}/$dmn_name");
+
+        return $rs if ($rs != 0);
+
+    }
+
+    #
+    # Custom http config
+    #
+
+    if ( -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
+
+        $rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf");
+
+        return $rs if ($rs != 0);
+    }
 
     if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log") {
 

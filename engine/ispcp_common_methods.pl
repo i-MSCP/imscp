@@ -197,7 +197,7 @@ sub dump_el {
 
     my $res;
 
-    if ($fname ne 'stdout') {
+    if ($fname ne 'stdout' && $fname ne 'stderr') {
 
         $res = open(FP, ">", $fname);
 
@@ -218,6 +218,10 @@ sub dump_el {
         if ($fname eq 'stdout') {
 
             printf STDOUT "%-30s | %s\n",  $sub_name, $msg;
+
+        } elsif ($fname eq 'stderr') {
+
+            printf STDERR "%-30s | %s\n",  $sub_name, $msg;
 
         } else {
 

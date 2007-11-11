@@ -1995,11 +1995,24 @@ sub als_del_httpd_file_data {
 
     my $dmn_id = @$als_data[7];
 
-    my $als_name = "$dmn_name$als_mount";
+    my $als_dir = "$dmn_name$als_mount";
+
+    my $als_name = @$als_data[2];
 
     my $root_dir = $main::cfg{'ROOT_DIR'};
 
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+
+    #
+    # Custom http config
+    #
+
+    if ( -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf" ){
+
+        $rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf");
+
+        return $rs if ($rs != 0);
+    }
 
     #
     # Skip data deletion if the mount point is shared
@@ -2015,11 +2028,20 @@ sub als_del_httpd_file_data {
 
     return 0 if (@{@$rdata[0]}[0] > 1);
 
+    # check for subdomains with same mount point
+    $sql = "select count(subdomain_id) from subdomain where domain_id=$dmn_id and subdomain_mount='$als_mount'";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    return 0 if (@{@$rdata[0]}[0] > 1);
+
     #
     # Domain WWW directories;
     #
 
-    ($rs, $rdata) = del_dir("$www_dir/$als_name");
+    ($rs, $rdata) = del_dir("$www_dir/$als_dir");
 
     return $rs if ($rs != 0);
 

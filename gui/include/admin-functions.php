@@ -1677,27 +1677,30 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 		  mail_users
 	  WHERE
 		  domain_id = ?
-		AND
-		  mail_pass != '_no_'
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
 	while (!$rs->EOF) {
-		if ($action == 'disable') {
-			$mail_id = $rs->fields['mail_id'];
-			$timestamp = time();
-			$pass_prefix = substr(md5($timestamp), 0, 4);
-			$mail_pass = $pass_prefix . $rs->fields['mail_pass'];
-		} else if ($action == 'enable') {
-			$mail_id = $rs->fields['mail_id'];
-			$mail_pass = substr($rs->fields['mail_pass'], 4, 50);
-		} else {
-			return;
-		}
 
-		$mail_status = $cfg['ITEM_CHANGE_STATUS'];
-		// and lets update the pass
+	    $mail_id = $rs->fields['mail_id'];
+	    $mail_pass = $rs->fields['mail_pass'];
+
+	    if ($cfg['HARD_MAIL_SUSPENSION']) {
+	        $mail_status = $new_status;
+	    } else {
+    		if ($action == 'disable') {
+    			$timestamp = time();
+    			$pass_prefix = substr(md5($timestamp), 0, 4);
+    			$mail_pass = $pass_prefix . $rs->fields['mail_pass'];
+    		} else if ($action == 'enable') {
+    			$mail_pass = substr($rs->fields['mail_pass'], 4, 50);
+    		} else {
+    			return;
+    		}
+		    $mail_status = $cfg['ITEM_CHANGE_STATUS'];
+	    }
+
 		$query = <<<SQL_QUERY
 			UPDATE
 				 mail_users
@@ -1711,7 +1714,7 @@ SQL_QUERY;
 		$rs2 = exec_query($sql, $query, array($mail_pass, $mail_status, $mail_id));
 
 		$rs->MoveNext();
-	} // end of while => all mails account are with changed passwords :-)
+	}
 	$query = <<<SQL_QUERY
 		  UPDATE
 			  domain

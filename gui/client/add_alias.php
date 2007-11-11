@@ -248,7 +248,7 @@ SQL_QUERY;
 
 	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 
-	    $reseller_id = who_owns_this(who_owns_this($cr_user_id, 'als_id'), 'user');
+	    $reseller_id = who_owns_this(who_owns_this($cr_user_id, 'dmn_id'), 'user');
 
 	    $query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
 		$rs = exec_query($sql, $query, $reseller_id);

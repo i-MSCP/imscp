@@ -88,24 +88,26 @@ smtpd_sasl2_auth_enable      = yes
 smtpd_sasl_security_options  = noanonymous, noplaintext
 smtpd_sasl_local_domain      =
 broken_sasl_auth_clients     = yes
-smtpd_sender_restrictions    = permit_mynetworks,
-                               reject_non_fqdn_sender,
-                               reject_unauth_destination,
+
+smtpd_helo_required = yes
+
+smtpd_helo_restrictions      = reject_invalid_helo_hostname,
+                               reject_non_fqdn_helo_hostname
+
+smtpd_sender_restrictions    = reject_non_fqdn_sender,
+                               permit_mynetworks,
+                               reject_unknown_sender_domain,
                                permit_sasl_authenticated
 
-smtpd_recipient_restrictions = permit_mynetworks,
-                               reject_non_fqdn_recipient,
-                               reject_unknown_sender_domain,
+smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                reject_unknown_recipient_domain,
-                               reject_unauth_destination,
+                               permit_mynetworks,
                                permit_sasl_authenticated,
+                               reject_unauth_destination,
                                check_policy_service inet:127.0.0.1:12525,
                                check_policy_service inet:127.0.0.1:60000
-smtpd_helo_required = yes
-smtpd_data_restrictions = reject_unauth_pipelining
-smtpd_helo_restrictions = reject_invalid_helo_hostname,
-                          reject_non_fqdn_helo_hostname
 
+smtpd_data_restrictions      = reject_unauth_pipelining
 
 #
 # TLS parameters; activate, if avaible/used
@@ -120,13 +122,13 @@ smtpd_helo_restrictions = reject_invalid_helo_hostname,
 
 
 #
-# AMaViS parameters; activate, if avaible/used
+# AMaViS parameters; activate, if available/used
 #
 
 #content_filter = amavis:[127.0.0.1]:10024
 
 #
-# Quota support; activate, if avaible/used
+# Quota support; activate, if available/used
 #
 
 #virtual_create_maildirsize     = yes

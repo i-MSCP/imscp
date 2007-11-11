@@ -3194,6 +3194,47 @@ sub mbox_del_data {
 
 
 
+sub mbox_disable_data {
+
+    my ($mbox_data) = @_;
+
+    my $rs = undef;
+
+    push_el(\@main::el, 'mbox_disable_data()', 'Starting...');
+
+    if (!defined($mbox_data) || $mbox_data eq '') {
+
+        push_el(\@main::el, 'mbox_disable_data()', 'ERROR: Undefined Input Data...');
+
+        return -1;
+
+    }
+
+    #
+    # Remove all entries from the several config files
+    #  but do not delete any file
+    #
+
+    $rs = mbox_del_mta_cfg_data($mbox_data);
+
+    return $rs if ($rs != 0);
+
+    $rs = mbox_del_po_data($mbox_data);
+
+    return $rs if ($rs != 0);
+
+    $rs = mbox_del_sasl_data($mbox_data);
+
+    return $rs if ($rs != 0);
+
+    push_el(\@main::el, 'mbox_disable_data()', 'Ending...');
+
+    return 0;
+
+}
+
+
+
 sub mbox_mngr_engine {
 
     my ($rs, $rows, $rdata) = (undef, undef, undef);
@@ -3241,7 +3282,7 @@ sub mbox_mngr_engine {
 
         return $rs if ($rs != 0);
 
-    } elsif ($mbox_status eq 'change') {
+    } elsif ($mbox_status eq 'change' || $mbox_status eq 'toenable') {
 
         $rs = mbox_change_data($entry);
 
@@ -3278,6 +3319,30 @@ sub mbox_mngr_engine {
         } else {
 
             my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+
+            $msg =~ s/\'/\\\'/g;
+
+            $sql = "update mail_users set status='$sub_name | $msg' where mail_id = $mbox_id;";
+
+        }
+
+        ($rs, $rdata) = doSQL($sql);
+
+        return $rs if ($rs != 0);
+
+    } elsif ($mbox_status eq 'todisable') {
+
+        $rs = mbox_disable_data($entry);
+
+        $timestamp = time();
+
+        if ($rs == 0) {
+
+            $sql = "update mail_users set status='disabled' where mail_id = $mbox_id;";
+
+        } else {
+
+            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 
             $msg =~ s/\'/\\\'/g;
 

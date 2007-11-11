@@ -1585,6 +1585,8 @@ sub sub_del_httpd_file_data {
 
     my $dmn_name = @$sub_data[6];
 
+    my $dmn_id = @$sub_data[1];
+
     my $sub_name = "$sub_pref.$dmn_name";
 
     my $root_dir = $main::cfg{'ROOT_DIR'};
@@ -1592,6 +1594,38 @@ sub sub_del_httpd_file_data {
     my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
     my $sub_dir = "$www_dir/$dmn_name$sub_mount";
+
+    #
+    # Custom http config
+    #
+
+    if ( -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf" ){
+
+        $rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf");
+
+        return $rs if ($rs != 0);
+    }
+
+    #
+    # Skip data deletion if the mount point is shared
+    #
+
+    my $sql = "select count(alias_id) from domain_aliasses where domain_id=$dmn_id and alias_mount='$sub_mount'";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    return 0 if (@{@$rdata[0]}[0] > 1);
+
+    # check for subdomains with same mount point
+    $sql = "select count(subdomain_id) from subdomain where domain_id=$dmn_id and subdomain_mount='$sub_mount'";
+
+    ($rs, $rdata) = doSQL($sql);
+
+    return $rs if ($rs != 0);
+
+    return 0 if (@{@$rdata[0]}[0] > 1);
 
     #
     # Removing subdomain entry support directories;

@@ -137,7 +137,7 @@ sub gen_log_file {
 
     my $dest_file = "$dest_dir/".basename($fname);
 
-    my $dest_file_prev = "$dest_dir/".basename($fname).".perv";
+    my $dest_file_prev = "$dest_dir/".basename($fname).".prev";
 	#-----------------------
 
     my $log_file = $dest_file;
@@ -152,9 +152,11 @@ sub gen_log_file {
 
 		if ($prev_size > $main::cfg{'PREV_TRAFF_LOG_MAX_SIZE'}) {
 
-			$rs = del_file($dest_file_prev);
+		    return (555, "ERROR: File $prev_size is bigger than $main::cfg{'PREV_TRAFF_LOG_MAX_SIZE'} bytes!");
 
-			return ($rs, "del_file($dest_file_prev)") if ($rs != 0);
+			#$rs = del_file($dest_file_prev);
+
+			#return ($rs, "del_file($dest_file_prev)") if ($rs != 0);
 
 		}
 
@@ -174,7 +176,7 @@ sub gen_log_file {
 
         $log_file = $dest_file.".diff";
 
-        diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | grep '<' 1> $log_file");
+        diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | egrep '^<' 1> $log_file");
 
         my $diff_data = get_file($log_file);
 
@@ -388,8 +390,8 @@ sub collect_mail_traffic {
 		if(exists  $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
 			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
 	        $cmd = "$main::cfg{'CMD_CAT'} $smtp_delivery_log | $main::cfg{'CMD_AWK'} '{if (\$5 != \"localhost\" && \$6 != \"virtual\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
-		}
-		else {
+
+		} else {
 			# Logs not including AMAVIS/SPAMASSASSIN/CLAMAV entries
     	    $cmd = "$main::cfg{'CMD_CAT'} $smtp_delivery_log | $main::cfg{'CMD_AWK'} '{if (\$5 != \"localhost\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		}
@@ -834,9 +836,7 @@ $rs = vrl_traff_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
-
-    vrl_traff_shut_down();
+    dump_el(\@main::el, 'stderr');
 
     exit 1;
 

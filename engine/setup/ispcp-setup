@@ -1609,6 +1609,9 @@ sub setup_crontab {
 		$rkhunter = `which rkhunter`;
 		$ckrootkit = `which chkrootkit`;
 
+    	$rkhunter =~ s/[ \t\n]$//g;
+    	$ckrootkit =~ s/[ \t\n]$//g;
+
 		my %tag_hash = (
 						'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
 						'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
@@ -1624,7 +1627,7 @@ sub setup_crontab {
 						'{RK-ENABLED}' => !length($rkhunter)? "#" : "",
 						'{RKHUNTER}'   => $rkhunter,
 						'{CR-ENABLED}' => !length($ckrootkit)? "#" : "",
-						'{CKROOTKIT}'  => $ckrootkit
+						'{CHKROOTKIT}'  => $ckrootkit
 					   );
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);

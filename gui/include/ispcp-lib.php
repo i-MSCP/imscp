@@ -136,6 +136,11 @@ $cfg['LOG_LEVEL'] = E_USER_NOTICE;
 // Set to false to disable creation of webmaster, postmaster and abuse forwarders when domain/alias/subdomain is created
 $cfg['CREATE_DEFAULT_EMAIL_ADDRESSES'] = true;
 
+// Use hard mail suspension when suspending a domain:
+// true: email accounts are hard suspended (completely unreachable)
+// false: email accounts are soft suspended (passwords are modified so user can't access the accounts)
+$cfg['HARD_MAIL_SUSPENSION'] = true;
+
 
 require_once(INCLUDEPATH.'/date-functions.php');
 require_once(INCLUDEPATH.'/input-checks.php');

@@ -6,6 +6,24 @@ ispCP ω 1.0.0 Changelog
 |               * to fix: no errors on adding user (custom HP)    |
 \_________________________________________________________________/
 
+2007-11-10 Raphael Geissert
+    - CONFIGS:
+        * Fixed a typo in postfix/main.cf and re-arranged the config file
+        * Made last changes for #825: Improvements for Postfix against SPAM
+        * Fixed #860: permit_sasl_authenticated must match before reject_unauth_destination in smtpd_recipient_restrictions
+        * Made some cronjobs run at @daily
+        * Fixed logrotate/ispcp so it runs ispcp-vrl-traff before rotating apache user logs instead of ispcp-srv-traff
+    - ENGINE:
+        * Added missing removal of custom http config files when sub/domain/alias is deleted
+        * A subdomain and an alias can now share the same mountpoint (alias must be created first)
+        * Added todisable/toenable email accounts status
+        * Fixed an error where log data containing a < symbol would be parsed when not desired when counting quota amounts
+    - SETUP:
+        * Fixed #865: malformed generated cron.d/ispcp because of new line
+    - GUI:
+        * Added soft(old method)/hard(ne method, default) mail accounts suspension
+        * Fixed #833: Error displayed when adding domain alias
+
 2007-11-05 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #857: Send output from awstats-scripts somewhere else
@@ -20,7 +38,6 @@ ispCP ω 1.0.0 Changelog
         * Fixed #853: requests manager not being run when changing domain's bandwidth limit
     - DOCS:
         * Removed duplicate entry for postgrey in debian-packages-*
-
 
 2007-11-01 Raphael Geissert
     - GUI:
