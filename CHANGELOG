@@ -9,6 +9,10 @@ ispCP ω 1.0.0 Changelog
 2007-11-11 Johannes Schobig
 	- SETUP:
 		* Fixed #866: Installation don't starts
+	- CONFIGS:
+		* Fixed #825: Added permit_* rules in Postfix's main.cf
+	- ENGINE:
+		* Fixed undeclared variables in ispcp-mbox-mngr
 
 2007-11-10 Raphael Geissert
     - CONFIGS:

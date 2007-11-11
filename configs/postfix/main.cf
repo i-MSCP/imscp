@@ -91,7 +91,9 @@ broken_sasl_auth_clients     = yes
 
 smtpd_helo_required = yes
 
-smtpd_helo_restrictions      = reject_invalid_helo_hostname,
+smtpd_helo_restrictions      = permit_mynetworks,
+                               permit_sasl_authenticated,
+                               reject_invalid_helo_hostname,
                                reject_non_fqdn_helo_hostname
 
 smtpd_sender_restrictions    = reject_non_fqdn_sender,

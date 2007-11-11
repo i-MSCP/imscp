@@ -3255,7 +3255,7 @@ sub mbox_mngr_engine {
     my ($mbox_status, $mbox_id) = (@$entry[7], @$entry[0]);
 
 
-    my $timestamp = undef;
+    my ($timestamp, $sub_name, $msg) = (undef, undef, undef);
 
 
     if ($mbox_status eq 'toadd') {
