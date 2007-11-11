@@ -22,7 +22,7 @@ mynetworks_style = host
 
 myhostname = {MTA_HOSTNAME}
 mydomain   = {MTA_LOCAL_DOMAIN}
-myorigin   = $mydomain
+myorigin   = $myhostname
 
 smtpd_banner = $myhostname ispCP {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
 setgid_group = postdrop
