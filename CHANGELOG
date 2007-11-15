@@ -1,10 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  _________________________________________________________________
-/ @TODO:                                                          \
-|         - GUI:                                                  |
-|               * to fix: no errors on adding user (custom HP)    |
+/ @TODO:														  \
+|		 - GUI:													  |
+|				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
+
+2007-11-15 Benedikt Heintel
+	- SETUP:
+		* Fixed folder owner of fcgi master folder
 
 2007-11-12 Johannes Schobig
 	- CONFIGS:
@@ -41,26 +45,28 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #857: Send output from awstats-scripts somewhere else
 	- ENGINE:
 		* Fixed #858: Error in ispcp-dmn-mngr
+	- LANGUAGES:
+		* German: Fixed Typo
 
 2007-11-02 Raphael Geissert
-    - CONFIGS:
-        * Added per-domain/alias/subdomain custom apache config
-        * Fixed #854: typos in postfix's config files
-    - GUI:
-        * Fixed #853: requests manager not being run when changing domain's bandwidth limit
-    - DOCS:
-        * Removed duplicate entry for postgrey in debian-packages-*
+	- CONFIGS:
+		* Added per-domain/alias/subdomain custom apache config
+		* Fixed #854: typos in postfix's config files
+	- GUI:
+		* Fixed #853: requests manager not being run when changing domain's bandwidth limit
+	- DOCS:
+		* Removed duplicate entry for postgrey in debian-packages-*
 
 2007-11-01 Raphael Geissert
-    - GUI:
-        * Fixed #840: Wrong comment of tr() function in i18n.php
-        * Fixed #852: Undefined variable: name in /var/www/ispcp/gui/include/admin-functions.php on line 2336
-    - CONFIGS:
-        * Partially implemented #825: postfix improvements
-    - ENGINE:
-        * Fixed #839: Error "/bin/rm: missing operand" caused by cronjobs
-        * Fixed #838: chrootkit log is empty
-        * Improved entropy pool seeding code
+	- GUI:
+		* Fixed #840: Wrong comment of tr() function in i18n.php
+		* Fixed #852: Undefined variable: name in /var/www/ispcp/gui/include/admin-functions.php on line 2336
+	- CONFIGS:
+		* Partially implemented #825: postfix improvements
+	- ENGINE:
+		* Fixed #839: Error "/bin/rm: missing operand" caused by cronjobs
+		* Fixed #838: chrootkit log is empty
+		* Improved entropy pool seeding code
 
 2007-11-01 Christian Hernmarck
 	- DISTS:
@@ -81,8 +87,8 @@ ispCP ω 1.0.0 Changelog
 		* Updated German (Thanks to translation Team)
 
 2007-10-28 Raphael Geissert
-    - ENGINE:
-        * Fixed #824: IMAP SSL Traffic not counted (also added pop-ssl, https and mail delivery)
+	- ENGINE:
+		* Fixed #824: IMAP SSL Traffic not counted (also added pop-ssl, https and mail delivery)
 
 2007-10-27 Benedikt Heintel
 	- CONFIGS:
@@ -98,9 +104,9 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #802: added Opensuse 10.3
 
 2007-10-21 Raphael Geissert
-    - GUI:
-        * Fixed #803: Undefined variable: mail_status
-        * Data compression information isn't displayed anymore when exporting language files
+	- GUI:
+		* Fixed #803: Undefined variable: mail_status
+		* Data compression information isn't displayed anymore when exporting language files
 
 2007-10-20 Johannes Schobig
 	- MAKEFILE:
@@ -108,15 +114,15 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #801: Fedora makefile is bad (thanks to graywolf)
 
 2007-10-19 Raphael Geissert
-    - CONFIGS:
-        * Fixed #7: no user set to run awstats cronjobs
-    - ENGINE:
-        * Fixed #796: let aliases share the same mount point with a subdomain
-    - GUI:
-        * Fixed some issues with email forwarders (see #555)
-        * Reduced number of entries in admin's log
-        * Fixed #152: Add webmaster@domain.tld and postmaster@domain.tld
-        * Added email notification to reseller when an alias requires activation
+	- CONFIGS:
+		* Fixed #7: no user set to run awstats cronjobs
+	- ENGINE:
+		* Fixed #796: let aliases share the same mount point with a subdomain
+	- GUI:
+		* Fixed some issues with email forwarders (see #555)
+		* Reduced number of entries in admin's log
+		* Fixed #152: Add webmaster@domain.tld and postmaster@domain.tld
+		* Added email notification to reseller when an alias requires activation
 
 2007-10-18 Benedikt Heintel
 	- ENGINE:
@@ -139,10 +145,10 @@ ispCP ω 1.0.0 Changelog
 		* Updated PMA to 2.11.1.2 (#789)
 
 2007-10-16 Raphael Geissert
-    - ENGINE:
-        * Improved entropy pool seeding code
-    - SETUP:
-        * Fixed #782: cannot stat `./setup/vhcs2ispcp.pl': No such file or directory
+	- ENGINE:
+		* Improved entropy pool seeding code
+	- SETUP:
+		* Fixed #782: cannot stat `./setup/vhcs2ispcp.pl': No such file or directory
 
 2007-10-16 Benedikt Heintel
 	- DISTS:
@@ -161,10 +167,10 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #780: sql error during setup
 
 2007-10-15 Raphael Geissert
-    - LANGUAGES:
-        * Updated Czech translation (thanks to Josef Pinc)
-        * Updated German translation (thanks to the German translation team)
-        * Updated the A=B files
+	- LANGUAGES:
+		* Updated Czech translation (thanks to Josef Pinc)
+		* Updated German translation (thanks to the German translation team)
+		* Updated the A=B files
 
 2007-10-15 Benedikt Heintel
 	- DOCS:
@@ -186,47 +192,47 @@ ispCP ω 1.0.0 Changelog
 		* Ask before generating passwords
 
 2007-10-14 Raphael Geissert
-    - ENGINE:
-        * Fixed #767: Backup folder under domain-aliases
-        * Fixed #768: scripts delayed because of empty entropy pool
-        * Removed suggesting main sql user password
-        * Improved fix for #768
-        * Correctly load the new db keys when generated (also reported in #768)
-    - GUI:
-        * Fixed curlang()
-    - MAKEFILE:
-        * Fixed error where fastcgi_ispcp.conf was installed in an incorrect directory
+	- ENGINE:
+		* Fixed #767: Backup folder under domain-aliases
+		* Fixed #768: scripts delayed because of empty entropy pool
+		* Removed suggesting main sql user password
+		* Improved fix for #768
+		* Correctly load the new db keys when generated (also reported in #768)
+	- GUI:
+		* Fixed curlang()
+	- MAKEFILE:
+		* Fixed error where fastcgi_ispcp.conf was installed in an incorrect directory
 
 2007-10-14 Malte Geierhos
 	- GUI:
 		* fixed #740 autoresponder for subdomains cannot be activated
 
 2007-10-14 Raphael Geissert
-    - GUI:
-        * Security Fix: XSS injection in gui/index.php
-    - CONFIGS:
-        * Enable suexec on all CGI's whether fastcgi is loaded or not
-    - SETUP:
-        * Remove local nameserver from /etc/resolv.conf
-    - LANGUAGES:
-        * Updated Czech translation (thanks to Josef Pinc)
+	- GUI:
+		* Security Fix: XSS injection in gui/index.php
+	- CONFIGS:
+		* Enable suexec on all CGI's whether fastcgi is loaded or not
+	- SETUP:
+		* Remove local nameserver from /etc/resolv.conf
+	- LANGUAGES:
+		* Updated Czech translation (thanks to Josef Pinc)
 
 2007-10-13 Raphael Geissert
-    - ENGINE:
-        * Generate database keys at setup time (fix for Debian packaging)
-        * Added ispCP config (/etc/ispcp) and database backup system
-    - SETUP:
-        * LSB compatiblity for installing/removing init scripts
-    - CONFIGS:
-        * Added BACKUP_DOMAINS yes/no switch to enable/disable customer backups
-        * Made ispcp_network and ispcp_daemon more or less LSB compatible
-        * Fixed #688: updated ispcp_network in all distros (including fedora)
-    - GUI:
-        * Fixed #645: improve welcome emails messages
-        * Fixed #758: phpMyAdmin Security vulnerability
-        * Added different message levels to be used with write_log to reduce verbosity of emails sent
-    - MAKEFILE:
-        * Fixed some Makefiles which were replacing files in the local copy rather than in the installation
+	- ENGINE:
+		* Generate database keys at setup time (fix for Debian packaging)
+		* Added ispCP config (/etc/ispcp) and database backup system
+	- SETUP:
+		* LSB compatiblity for installing/removing init scripts
+	- CONFIGS:
+		* Added BACKUP_DOMAINS yes/no switch to enable/disable customer backups
+		* Made ispcp_network and ispcp_daemon more or less LSB compatible
+		* Fixed #688: updated ispcp_network in all distros (including fedora)
+	- GUI:
+		* Fixed #645: improve welcome emails messages
+		* Fixed #758: phpMyAdmin Security vulnerability
+		* Added different message levels to be used with write_log to reduce verbosity of emails sent
+	- MAKEFILE:
+		* Fixed some Makefiles which were replacing files in the local copy rather than in the installation
 
 2007-10-13 Benedikt Heintel
 	- CONFIGS:
@@ -333,13 +339,13 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #730: Error on update personal data
 		* Fixed #735: Small error in admin log
 	- TOOLS:
-    	* Fixed #731: Updated Squirrelmail to 1.4.11
+		* Fixed #731: Updated Squirrelmail to 1.4.11
 
 2007-09-29 Raphael Geissert
-    - ENGINE:
-        * Fixed #555: catchall -> forwarding doesn't work (thanks to Marcel Wiechmann)
-    - GUI:
-        * Updated ADOdb to version 4.96
+	- ENGINE:
+		* Fixed #555: catchall -> forwarding doesn't work (thanks to Marcel Wiechmann)
+	- GUI:
+		* Updated ADOdb to version 4.96
 
 2007-09-29 Benedikt Heintel
 	- GUI:
@@ -352,21 +358,21 @@ ispCP ω 1.0.0 Changelog
 		* Updated Dutch PO
 
 2007-09-27 Raphael Geissert
-    - GUI:
-        * Fixed #717: User assignment does not work (thanks to Marcel Wiechmann)
-        * Fixed #635: can't protect a directory with non-standrad characters in its path
-        * Fixed #632: can't add an ftp account to a non-standard characters mount point
-        * Fixed an error where switching reseller->client and swtiching back would display as if we were logged from client's
+	- GUI:
+		* Fixed #717: User assignment does not work (thanks to Marcel Wiechmann)
+		* Fixed #635: can't protect a directory with non-standrad characters in its path
+		* Fixed #632: can't add an ftp account to a non-standard characters mount point
+		* Fixed an error where switching reseller->client and swtiching back would display as if we were logged from client's
 
 2007-09-26 Raphael Geissert
-    - GUI:
-        * Fixed #672: using encode/decode_idna on a url makes it illegal
-        * Fixed #711: regression in r814
-        * Fixed #716: possibility to add a catchall on aliases/subdomains where status != ok
-        * Fixed #706: Confirm before restoring backup
-        * Fixed #639: reseller/order_settings.php converts html entities back to their values
-        * Fixed #555: catchall -> forwarding doesn't work
-        * Fixed i18n regression of r811
+	- GUI:
+		* Fixed #672: using encode/decode_idna on a url makes it illegal
+		* Fixed #711: regression in r814
+		* Fixed #716: possibility to add a catchall on aliases/subdomains where status != ok
+		* Fixed #706: Confirm before restoring backup
+		* Fixed #639: reseller/order_settings.php converts html entities back to their values
+		* Fixed #555: catchall -> forwarding doesn't work
+		* Fixed i18n regression of r811
 
 2007-09-23 Johannes Schobig
 	- GUI:
@@ -406,8 +412,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #684: multiline translation bugfix (thanks to Grégory Marigot)
 
 2007-09-19 Raphael Geissert
-    - CONFIGS:
-        * Fixed a file name typo
+	- CONFIGS:
+		* Fixed a file name typo
 
 2007-09-19 Benedikt Heintel
 	- DOCS:
@@ -418,8 +424,8 @@ ispCP ω 1.0.0 Changelog
 		* Updated German translation (thanks to Klaas Tammling)
 
 2007-09-16 Raphael Geissert
-    - LANGUAGES:
-        * Updated Czech translation (thanks to Josef Pinc)
+	- LANGUAGES:
+		* Updated Czech translation (thanks to Josef Pinc)
 
 2007-09-12 Benedikt Heintel
 	- GUI:
@@ -439,36 +445,36 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #661: phpMyAdmin wrong configured
 
 2007-09-09 Raphael Geissert
-    - ENGINE:
-        * Fixed #653: Error starting apache when mod_cband is enabled
+	- ENGINE:
+		* Fixed #653: Error starting apache when mod_cband is enabled
 
 2007-09-08 Raphael Geissert
-    - GUI:
-        * Fixed some scripts which were displaying domain names in the IDN-encoded form
+	- GUI:
+		* Fixed some scripts which were displaying domain names in the IDN-encoded form
 
 2007-09-07 Raphael Geissert
-    - GUI:
-        * Fixed #651: Undefined index: gender in gui/include/reseller-functions.php on line 679
-        * Fixed #655: Undefined index: user_theme in gui/client/index.php on line 257
-        * Fixed #655: Undefined index: user_def_lang in gui/client/index.php on line 259
-        * Fixed #633: alias name in IDN format in client/edit_alias.php
-        * Fixed #637: Undefined variable: input in gui/include/input-checks.php on line 100
-        * Fixed #638: reseller/order_settings.php should point to BASE_SERVER_VHOST
-        * Fixed #643: typo in server traffic page
-        * Fixed #652: Session timeout error, doesn't abort
-        * Fixed #640: reseller/domain_details.php displays domain in IDN format
+	- GUI:
+		* Fixed #651: Undefined index: gender in gui/include/reseller-functions.php on line 679
+		* Fixed #655: Undefined index: user_theme in gui/client/index.php on line 257
+		* Fixed #655: Undefined index: user_def_lang in gui/client/index.php on line 259
+		* Fixed #633: alias name in IDN format in client/edit_alias.php
+		* Fixed #637: Undefined variable: input in gui/include/input-checks.php on line 100
+		* Fixed #638: reseller/order_settings.php should point to BASE_SERVER_VHOST
+		* Fixed #643: typo in server traffic page
+		* Fixed #652: Session timeout error, doesn't abort
+		* Fixed #640: reseller/domain_details.php displays domain in IDN format
 
 2007-09-04 Malte Geierhos
 	- GUI
 		* Fixed #650 $vfs not defined inside function
 
 2007-09-03 Raphael Geissert
-    - DOCS:
-        * Fixed #627: chkrootkit is missing on the package list
-    - GUI:
-        * Fixed #629: : doesn't exist or can't be read.
-    - SETUP:
-        * Fixed #628: rkhunter during the setup
+	- DOCS:
+		* Fixed #627: chkrootkit is missing on the package list
+	- GUI:
+		* Fixed #629: : doesn't exist or can't be read.
+	- SETUP:
+		* Fixed #628: rkhunter during the setup
 
 2007-09-03 Malte Geierhos
 	- GUI:
@@ -482,29 +488,29 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #625: Error in SQL syntax on Admin Log -> Page 2
 
 2007-09-02 Raphael Geissert
-    - CONFIGS:
-        * Fixed #623: open_basedir restriction in effect. File(/var/log/chkrootkit.log) is not within the allowed path(s)
-    - GUI:
-        * Fixed #624: welcome mail contains html entities
-        * Fixed error in admin/rootkit_log.php
-        * Partially implemented #567
-    - MAKEFILE:
-        * Some more work on #394
+	- CONFIGS:
+		* Fixed #623: open_basedir restriction in effect. File(/var/log/chkrootkit.log) is not within the allowed path(s)
+	- GUI:
+		* Fixed #624: welcome mail contains html entities
+		* Fixed error in admin/rootkit_log.php
+		* Partially implemented #567
+	- MAKEFILE:
+		* Some more work on #394
 
 2007-09-01 Raphael Geissert
-    - GUI:
-        * Fixed some drawn backs in previous revisions
-        * Added support for multiple anti-rootkit tools (including colouring for chkrootkit-like logs)
-        * Correctly fixed #619
-        * Fixed #621: database name being escaped with single quote in include/i18n.php
-        * Fixed an error where mount points with special characters where converted to IDN format
-    - CONFIGS:
-        * Removed cron.d/ispcp.phptemp (merged into cron.d/ispcp)
-        * Fixed error when restarting ispCP services when they were not already running
-        * Awstats entry in cron.d/ispcp is not built into ispcp-setup anymore
-        * Partially updated fedora's, redhat's and suse10's config files
-    - LANGUAGES:
-        * Updated cs_CS translation (thanks to Josef Pinc)
+	- GUI:
+		* Fixed some drawn backs in previous revisions
+		* Added support for multiple anti-rootkit tools (including colouring for chkrootkit-like logs)
+		* Correctly fixed #619
+		* Fixed #621: database name being escaped with single quote in include/i18n.php
+		* Fixed an error where mount points with special characters where converted to IDN format
+	- CONFIGS:
+		* Removed cron.d/ispcp.phptemp (merged into cron.d/ispcp)
+		* Fixed error when restarting ispCP services when they were not already running
+		* Awstats entry in cron.d/ispcp is not built into ispcp-setup anymore
+		* Partially updated fedora's, redhat's and suse10's config files
+	- LANGUAGES:
+		* Updated cs_CS translation (thanks to Josef Pinc)
 
 2007-09-01 Benedikt Heintel
 	- GUI:
@@ -524,21 +530,21 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #618: Messages after add/edit things in green and not red
 
 2007-08-31 Malte Geierhos
-    - GUI:
-    	* Fixed #617: missing global declaration
+	- GUI:
+		* Fixed #617: missing global declaration
 
 2007-08-30 Raphael Geissert
-    - GUI:
-        * Fixed #615: client/add_mail_acc.php not respecting config
-        * Fixed #613: Call to undefined function tr() in include/ispcp-lib.php on line 109
+	- GUI:
+		* Fixed #615: client/add_mail_acc.php not respecting config
+		* Fixed #613: Call to undefined function tr() in include/ispcp-lib.php on line 109
 
 2007-08-29 Raphael Geissert
-    - GUI:
-        * Fixed #610: Table 'ispcp.log015' doesn't exist
-        * Fixed #603: adding subdomain to a domain with special chars
-        * Page messages are now displayed on login page
-        * Fixed #608: html entities in emails
-        * Servicemode is now Maintenance mode
+	- GUI:
+		* Fixed #610: Table 'ispcp.log015' doesn't exist
+		* Fixed #603: adding subdomain to a domain with special chars
+		* Page messages are now displayed on login page
+		* Fixed #608: html entities in emails
+		* Servicemode is now Maintenance mode
 
 2007-08-26 Benedikt Heintel
 	- GUI:
@@ -550,10 +556,10 @@ ispCP ω 1.0.0 Changelog
 		* Updated: PHPSysInfo to 2.5.4
 
 2007-08-24 Raphael Geissert
-    - GUI:
-        * Dropped the include/security code
-    - CONFIGS:
-        * Updated Ubuntu config files
+	- GUI:
+		* Dropped the include/security code
+	- CONFIGS:
+		* Updated Ubuntu config files
 
 2007-08-24 Benedikt Heintel
 	- DOCU:
@@ -571,128 +577,128 @@ ispCP ω 1.0.0 Changelog
 		* Moved translation converter tools into tools folder
 
 2007-08-23 Raphael Geissert
-    - GUI:
-        * Fixed #592: Upload file error! message when installing a new language
-        * Fixed #593: errors in transfer display
-        * Fixed #577: Undefined index: gender in admin/add_reseller.php
-        * Fixed #597: Error in the Menu under Admin->Language
-        * Make use of php[4|5]-idn if available (faster than using pure PHP code)
-        * Fixed #596: Undefined offset: 1 in gui/admin/multilanguage.php
-        * Added missing gender field in reseller/edit_user.php
-    - SETUP:
-        * Missing alter table in vhcs2ispcp.sql for gender
-    - ENGINE:
-        * Fixed #587: error in restore-function
-    - LANGUAGES:
-        * Updated A=B files (and fixed online converter)
+	- GUI:
+		* Fixed #592: Upload file error! message when installing a new language
+		* Fixed #593: errors in transfer display
+		* Fixed #577: Undefined index: gender in admin/add_reseller.php
+		* Fixed #597: Error in the Menu under Admin->Language
+		* Make use of php[4|5]-idn if available (faster than using pure PHP code)
+		* Fixed #596: Undefined offset: 1 in gui/admin/multilanguage.php
+		* Added missing gender field in reseller/edit_user.php
+	- SETUP:
+		* Missing alter table in vhcs2ispcp.sql for gender
+	- ENGINE:
+		* Fixed #587: error in restore-function
+	- LANGUAGES:
+		* Updated A=B files (and fixed online converter)
 
 2007-08-22 Raphael Geissert
-    - GUI:
-        * Fixed #586: deleting domain-alias does not work when domain has ftp accounts
-        * Fixed #589: wrong image names
-        * Added comments support to the tr() function
-        * Replaced all ISPCP with ispCP
-        * Fixed #417: Add gender field
-        * Fixed a missing double percent sign
-        * Fixed #594: Blank page on Add Admin
-    - SETUP:
-        * Fixed #588: $rs not always defined
-        * Added missing user_gui_props entry for primary administrator
-    - CONFIGS:
-        * Added postgrey, AMaViS and spamassassin to the server_ports list
-    - LANGUAGES:
-        * Updated es_ES.po (thanks to Albert Garcia)
+	- GUI:
+		* Fixed #586: deleting domain-alias does not work when domain has ftp accounts
+		* Fixed #589: wrong image names
+		* Added comments support to the tr() function
+		* Replaced all ISPCP with ispCP
+		* Fixed #417: Add gender field
+		* Fixed a missing double percent sign
+		* Fixed #594: Blank page on Add Admin
+	- SETUP:
+		* Fixed #588: $rs not always defined
+		* Added missing user_gui_props entry for primary administrator
+	- CONFIGS:
+		* Added postgrey, AMaViS and spamassassin to the server_ports list
+	- LANGUAGES:
+		* Updated es_ES.po (thanks to Albert Garcia)
 
 2007-08-21 Raphael Geissert
-    - GUI:
-        * Fixed #582: FIXME: /var/www/ispcp/gui/include/calc-functions.php:61
-        * Fixed an error where system information was not displayed correctly in admin/server_statistic.php
-        * Improved passwords generator
-    - SETUP:
-        * Fixed #584: $main::db{'CONF_DIR'} is not read by vhcs2ispcp.pl Line 200
-        * Fixed #583: missing semicolon in vhcs2ispcp.sql
+	- GUI:
+		* Fixed #582: FIXME: /var/www/ispcp/gui/include/calc-functions.php:61
+		* Fixed an error where system information was not displayed correctly in admin/server_statistic.php
+		* Improved passwords generator
+	- SETUP:
+		* Fixed #584: $main::db{'CONF_DIR'} is not read by vhcs2ispcp.pl Line 200
+		* Fixed #583: missing semicolon in vhcs2ispcp.sql
 
 2007-08-20 Raphael Geissert
-    - GUI:
-        * Fixed a SQL injection vulnerability in admin/multilanguage.php
-        * Fixed #577: Undefined index: gender in admin/edit_reseller.php
-        * Renamed admin/add_user.php to admin/add_admin.php
-        * Dropped useless/duplicated functions
-        * Some i18n improvements
+	- GUI:
+		* Fixed a SQL injection vulnerability in admin/multilanguage.php
+		* Fixed #577: Undefined index: gender in admin/edit_reseller.php
+		* Renamed admin/add_user.php to admin/add_admin.php
+		* Dropped useless/duplicated functions
+		* Some i18n improvements
 
 2007-08-20 Geoffrey McRae (from ssl-addon branch)
-    - ENGINE
-        * Fixed the rest of the "SELECT *" statments
-        * Cleaned up some of the long SQL statements to be easier to read.
+	- ENGINE
+		* Fixed the rest of the "SELECT *" statments
+		* Cleaned up some of the long SQL statements to be easier to read.
 
 2007-08-18 Raphael Geissert
-    - GUI:
-        * Fixed #571: mod_cband's limit is not updated when limit is change in the GUI
-        * Fixed some i18n issues
-    - SETUP:
-        * Fixed #573: Local name server in /etc/resolv.conf allows hijacking
-        * Fixed #562: Disable Named/Bind
-    - CONFIGS:
-        * Fixed #578: ERROR 1170 (42000) at line 18: BLOB/TEXT column 'msgid' used in key specification without a key length
-    - ENGINE:
-        * Fixed #562: Disable Named/Bind
-    - LANGUAGES:
-        * Fixed #575: Update german translation with old submission at mailinglist
-        * Merged French translation with Greg's
+	- GUI:
+		* Fixed #571: mod_cband's limit is not updated when limit is change in the GUI
+		* Fixed some i18n issues
+	- SETUP:
+		* Fixed #573: Local name server in /etc/resolv.conf allows hijacking
+		* Fixed #562: Disable Named/Bind
+	- CONFIGS:
+		* Fixed #578: ERROR 1170 (42000) at line 18: BLOB/TEXT column 'msgid' used in key specification without a key length
+	- ENGINE:
+		* Fixed #562: Disable Named/Bind
+	- LANGUAGES:
+		* Fixed #575: Update german translation with old submission at mailinglist
+		* Merged French translation with Greg's
 
 2007-08-17 Raphael Geissert
-    - GUI:
-        * Improved language files installer
-    - CONFIGS:
-        * Improved languages table structure
+	- GUI:
+		* Improved language files installer
+	- CONFIGS:
+		* Improved languages table structure
 	- LANGUAGES
 		* Updated fr_FR.po (thanks to Vianney)
-    - ENGINE:
-        * Added workaround for #289
-        * Fixed #574: Invalid Command "CBandUser" at Apache start up
+	- ENGINE:
+		* Added workaround for #289
+		* Fixed #574: Invalid Command "CBandUser" at Apache start up
 
 2007-08-16 Raphael Geissert
-    - GUI:
-        * Updated error icons
-    - ENGINE:
-        * Fixed #569: error pages are not owned to the right user and group
-        * Added 503 error page
-        * Fixed #570: mod_cband scoreboards are not deleted when user account is deleted
-    - SETUP:
-        * Added check for Net::LibIDN
-        * Fixed #568: Incorrect SQL Query in Setup
-    - CONFIGS:
-        * Added 503 error page
-    - DOCS:
-        * Added Debian Lenny/Sid information
+	- GUI:
+		* Updated error icons
+	- ENGINE:
+		* Fixed #569: error pages are not owned to the right user and group
+		* Added 503 error page
+		* Fixed #570: mod_cband scoreboards are not deleted when user account is deleted
+	- SETUP:
+		* Added check for Net::LibIDN
+		* Fixed #568: Incorrect SQL Query in Setup
+	- CONFIGS:
+		* Added 503 error page
+	- DOCS:
+		* Added Debian Lenny/Sid information
 
 2007-08-15 Raphael Geissert
-    - GUI:
-        * Fixed #566: Undefined template variable: THEME_CHARSET in orderpanel
-        * Removed virtual limits
-    - ENGINE:
-        * Partially fixed #476: /etc/ispcp/ispcp.conf is world readable
-        * Applied patch from #387
-        * Added mod_cband support
-    - CONFIGS:
-        * Fixed #563: old config backups should be removed
-        * Added mod_cband support
+	- GUI:
+		* Fixed #566: Undefined template variable: THEME_CHARSET in orderpanel
+		* Removed virtual limits
+	- ENGINE:
+		* Partially fixed #476: /etc/ispcp/ispcp.conf is world readable
+		* Applied patch from #387
+		* Added mod_cband support
+	- CONFIGS:
+		* Fixed #563: old config backups should be removed
+		* Added mod_cband support
 
 2007-08-13 Raphael Geissert
-    - GUI:
-        * Fixed #561: Undefined variable: cfg in gui/include/i18n.php on line 33
-        * Fixed #546: Blank page when trying to edit a domain alias (client)
-        * Fixed #547: encoded email from reseller doesnt work
-    - CONFIGS:
-        * Fixed #451: missing do in logrotate/ispcp
+	- GUI:
+		* Fixed #561: Undefined variable: cfg in gui/include/i18n.php on line 33
+		* Fixed #546: Blank page when trying to edit a domain alias (client)
+		* Fixed #547: encoded email from reseller doesnt work
+	- CONFIGS:
+		* Fixed #451: missing do in logrotate/ispcp
 
 2007-08-12 Raphael Geissert
-    - GUI:
-        * Fixed #558: bruteforce protection is bogus
-        * Fixed #552: wrong data in domain counters in reseller page
-        * Fixed several errors in domain syntax checks
-    - ENGINE:
-        * Fixed #559: error in /etc/courier/userdb home path for subdomains
+	- GUI:
+		* Fixed #558: bruteforce protection is bogus
+		* Fixed #552: wrong data in domain counters in reseller page
+		* Fixed several errors in domain syntax checks
+	- ENGINE:
+		* Fixed #559: error in /etc/courier/userdb home path for subdomains
 
 2007-08-06 Benedikt Heintel
 	- ENGINE:
@@ -1204,7 +1210,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI
 		* Fixed #214: Wrong size for ispCP logo
 		* Fixed #292: Color Contrast in pma not ok
-	    * Fixed #239: Order-Panel in old look
+		* Fixed #239: Order-Panel in old look
 		* Fixed colors in the order - panel
 		* Fixed width of table in support
 
@@ -1331,8 +1337,8 @@ ispCP ω 1.0.0 Changelog
 2007-05-11 Jan Porath
 	-	ENGINE
 		* fixed #228: .htaccess still stayed after deleting proteced area
-		              wrong user and group deleting
-		              no deleting of user content in .htaccess file (if exists)
+					  wrong user and group deleting
+					  no deleting of user content in .htaccess file (if exists)
 
 2007-05-11 Malte Geierhos
 	- GUI

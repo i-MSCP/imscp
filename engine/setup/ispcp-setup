@@ -1206,7 +1206,7 @@ sub setup_system_dirs {
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir($main::cfg{'PHP_STARTER_DIR'}, 'root', 'root', 0755);
+	$rs = make_dir($main::cfg{'PHP_STARTER_DIR'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_GID'}, 0755);
 
 	return $rs if ($rs != 0);
 
