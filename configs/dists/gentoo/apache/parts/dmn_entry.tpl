@@ -1,6 +1,8 @@
 <VirtualHost {DMN_IP}:80>
 
-    SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    <IfModule suexec_module>
+           SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    </IfModule>
 
     ServerAdmin     webmaster@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
@@ -45,5 +47,7 @@
         Order allow,deny
         Allow from all
     </Directory>
+
+    Include {CUSTOM_SITES_CONFIG_DIR}/{DMN_NAME}.conf
 
 </VirtualHost>

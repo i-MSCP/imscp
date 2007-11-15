@@ -18,7 +18,7 @@ Table of Content
 ---------------
 ISPCP ω Version:		1.0.0
 INSTALL Skript:		0.9
-Maintainer:
+Maintainer: 		ispcp@pasichnyk.net
 Homepage:			http://isp-contol.net
 Linux Distris:		Gentoo
 
@@ -97,7 +97,7 @@ b) manualy
 	# make -f Makefile.gentoo install
 
 7. Copy all the directories into the system (you may make backups)
-	# cp -Rv /tmp/ispcp-1.0.0/* /
+	# cp -RvL /tmp/ispcp-1.0.0/* /
 
 8. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
@@ -123,6 +123,7 @@ b) manualy
 12. Clean the temporary folders:
 	# rm -R /tmp/ispcp-1.0.0
 
+13. Open /etc/conf.d/postgrey and update POSTGREY_PORT="60000"
 
 ================================================================================
 5) Update

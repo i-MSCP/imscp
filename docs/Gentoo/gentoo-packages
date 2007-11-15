@@ -51,3 +51,4 @@ sys-devel/gettext
 www-apache/mod_cband
 www-apache/mod_fcgid
 www-servers/apache
+mail-filter/policyd-weight

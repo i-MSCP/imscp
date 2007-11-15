@@ -1,7 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 2.10.1
+-- version 2.11.1
 -- http://www.phpmyadmin.net
--- 31. Mai 2007 um 22:11
+--
+-- Host: localhost:3306
+-- Erstellungszeit: 15. Oktober 2007 um 00:34
+-- Server Version: 5.0.32
+-- PHP-Version: 5.2.0-8+etch5~pu1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -15,6 +19,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- table structure for table `lang_English`
 --
 
+DROP TABLE IF EXISTS `lang_English`;
 CREATE TABLE `lang_English` (
   `msgid` text collate utf8_unicode_ci,
   `msgstr` text collate utf8_unicode_ci,
