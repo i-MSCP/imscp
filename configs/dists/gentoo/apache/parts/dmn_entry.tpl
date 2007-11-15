@@ -42,7 +42,7 @@
     <Directory {WWW_DIR}/{DMN_NAME}/htdocs>
         # httpd dmn entry PHP support BEGIN.
         # httpd dmn entry PHP support END.
-        Options -Indexes Includes FollowSymLinks MultiViews
+        Options -Indexes +Includes +FollowSymLinks +MultiViews
         AllowOverride All
         Order allow,deny
         Allow from all
