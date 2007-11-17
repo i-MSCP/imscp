@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "Kies minim
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "De FTP server <b>%1\$s</b> staat niet in de lijst met toegestane FTP servers.";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "De FTP server <b>%1\$s</b> staat in de lijst met verboden FTP servers.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Uw IP adres (%1\$s) staat in de lijst met verboden IP adressen.";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "De FTP server poort %1\$s mag niet worden gebruikt.";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Uw IP adres (%1\$s) staat in de lijst met verboden IP adressen.";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "Table net2ftp_users contains duplicate rows.";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "Tabel net2ftp_log_consumption_ipaddress bevat gelijke gegevens.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "Tabel net2ftp_log_consumption_ftpserver kan niet worden vernieuwd.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "Tabel net2ftp_log_consumption_ftpserver bevat gelijke gegevens.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "Nieuw bestand";
 $net2ftp_messages["HTML templates"] = "HTML templates";
 $net2ftp_messages["Upload"] = "Upload";
 $net2ftp_messages["Java Upload"] = "Java Upload";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "Geavanceerd";
 $net2ftp_messages["Copy"] = "Kopiëren";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "Maak een nieuw best
 $net2ftp_messages["Create a website easily using ready-made templates"] = "Create a website easily using ready-made templates";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "Upload een nieuw bestand in de map %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "Upload mappen en bestanden met een Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "Ga naar de geavanceerde functies";
 $net2ftp_messages["Copy the selected entries"] = "Kopieer de geselecteerde reeksen";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "Klik om op %1
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "Klik om op %1\$s te sorteren in alfabetische volgorde";
 $net2ftp_messages["Ascending order"] = "Alfabetische volgorde";
 $net2ftp_messages["Descending order"] = "Omgekeerde volgorde";
+$net2ftp_messages["Upload files"] = "Upload files";
 $net2ftp_messages["Up"] = "Omhoog";
 $net2ftp_messages["Click to check or uncheck all rows"] = "Klik hier om alle rijen te selecteren of deselecteren";
 $net2ftp_messages["All"] = "Alles";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "Niet herkende FTP uitvoer";
 $net2ftp_messages["Number"] = "Aantal";
 $net2ftp_messages["Size"] = "Grootte";
 $net2ftp_messages["Skipped"] = "Overgeslagen";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "Taal:";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "Mappen volgorde";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "Voer %1\$s uit in een nieuw venster";
 $net2ftp_messages["This file is not accessible from the web"] = "This file is not accessible from the web";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "Dubbel klik om naar een onderliggende map te gaan:";

@@ -1,5 +1,5 @@
 // FR lang variables
-// Modified by Motte, last updated 2006-03-23
+// Modified by keyko-web.net, last updated 2007-03-08, based on the work of Motte
 
 tinyMCE.addToLang('emotions',{
 title : 'Choisir une &eacute;motic&ocirc;ne',
@@ -12,7 +12,7 @@ frown : 'M&eacute;content',
 innocent : 'Innocent',
 kiss : 'Bisou',
 laughing : 'Mort de rire',
-money_mouth : 'Sencur&eacute;',
+money_mouth : 'Sensur&eacute;',
 sealed : 'Motus',
 smile : 'Sourire',
 surprised : 'Surprise',

@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "íÑÌì ÊÍÏíÏ
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "ÓÑİÑ FTP <b>%1\$s</b> ÛíÑ ãæÌæÏ İí ŞÇÆãÉ ÓÑİÑÇÊ FTP ÇáãÓãæÍ ÈåÇ .";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "ÇáÓÑİÑ FTP <b>%1\$s</b> ãæÌæÏ İí ŞÇÆãÉ ÓÑİÑÇÊ FTP ÇáãÍÙæÑÉ .";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "ÚäæÇä IP (%1\$s) ãæÌæÏ İí ŞÇÆãÉ ÚäÇæíä IP ÇáãÍÙæÑÉ .";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "ãäİĞ ÓÑİÑ FTP %1\$s áÇ íãßä ÇÓÊÎÏÇãå .";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "ÚäæÇä IP (%1\$s) ãæÌæÏ İí ŞÇÆãÉ ÚäÇæíä IP ÇáãÍÙæÑÉ .";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "ÇáÌÏæá net2ftp_users íÍÊæí Úáì Õİæİ ãßÑÑÉ .";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "ÇáÌÏæá net2ftp_log_consumption_ipaddress íÍÊæí Úáì ÚäÇÕÑ ãßÑÑÉ .";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "áÇ íãßä ÊÍÏíË ÇáÌÏæá net2ftp_log_consumption_ftpserver .";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "ÇáÌÏæá net2ftp_log_consumption_ftpserver íÍÊæí Úáì ÚäÇÕÑ ãßÑÑÉ .";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "ãáİ ÌÏíÏ";
 $net2ftp_messages["HTML templates"] = "ŞæÇáÈ HTML";
 $net2ftp_messages["Upload"] = "ÇáÑİÚ";
 $net2ftp_messages["Java Upload"] = "ÇáÑİÚ ÈÜ Java";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "ãÊŞÏã";
 $net2ftp_messages["Copy"] = "äÓÎ";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "ÅäÔÇÁ ãáİ ÌÏíÏ İí Ç
 $net2ftp_messages["Create a website easily using ready-made templates"] = "ÅäÔÇÁ ÇáãæÇŞÚ Óåá ÈÇÓÊÎÏÇã ÇáŞæÇáÈ ÇáÌÇåÒÉ";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "ÑİÚ ãáİÇÊ ÌÏíÏ Åáì ÇáÏáíá %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "ÑİÚ ÇáãÌáÏÇÊ æ ÇáãáİÇÊ ÈæÇÓØÉ Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "ÇáĞåÇÈ Åáì ÇáæÙÇÆİ ÇáãÊŞÏãÉ";
 $net2ftp_messages["Copy the selected entries"] = "äÓÎ ÇáÚäÇÕÑ ÇáãÍÏÏÉ";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "ÇÖÛØ áİÑÒ %1\
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "ÇÖÛØ áİÑÒ %1\$s ÈÊÑÊíÈ ÊÕÇÚÏí";
 $net2ftp_messages["Ascending order"] = "ÊÑÊíÈ ÊÕÇÚÏí";
 $net2ftp_messages["Descending order"] = "ÊÑÊíÈ ÊäÇÒáí";
+$net2ftp_messages["Upload files"] = "ÑİÚ ÇáãáİÇÊ";
 $net2ftp_messages["Up"] = "ÎØæÉ Åáì ÇáÃÚáì";
 $net2ftp_messages["Click to check or uncheck all rows"] = "ÇÖÛØ áÊÍÏíÏ Ãæ ÅáÛÇÁ ÊÍÏíÏ ÌãíÚ ÇáÕİæİ";
 $net2ftp_messages["All"] = "Çáßá";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "ÎÑÌ FTP ÛíÑ ãÚÑæİ";
 $net2ftp_messages["Number"] = "ÇáÚÏÏ";
 $net2ftp_messages["Size"] = "ÇáÍÌã";
 $net2ftp_messages["Skipped"] = "Êã ÊÎØíå";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "ÇááÛÉ »";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "ÔÌÑÉ ÇáÏáíá";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "ÊäİíĞ %1\$s İí äÇİĞÉ ÌÏíÏÉ";
 $net2ftp_messages["This file is not accessible from the web"] = "áÇ íãßä ÇáæÕæá Åáì åĞÇ Çáãáİ ãä ÇáæíÈ";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "ÖÛØ ãÒĞæÌ ááĞåÇÈ Åáì ÇáÏáíá ÇáİÑÚí";

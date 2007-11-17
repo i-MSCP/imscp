@@ -11,6 +11,8 @@ $languagesArray[] = "ar";
 $languagesArray[] = "ar-utf";
 $languagesArray[] = "cs";
 $languagesArray[] = "de";
+$languagesArray[] = "en";
+$languagesArray[] = "en-utf";
 $languagesArray[] = "es";
 $languagesArray[] = "fr";
 $languagesArray[] = "it";
@@ -21,11 +23,12 @@ $languagesArray[] = "pt";
 $languagesArray[] = "ru";
 $languagesArray[] = "sv";
 $languagesArray[] = "tc";
+$languagesArray[] = "tr";
 $languagesArray[] = "vi";
 $languagesArray[] = "zh"; 
 
-$directory_old = "C:\\net2ftp\\languages";
-$directory_new = "C:\\net2ftp\\languages_new";
+$directory_old = "";
+$directory_new = "../languages-new";
 
 $extension = ".inc.php";
 
@@ -43,13 +46,13 @@ for ($i=0; $i<sizeof($languagesArray); $i++) {
 // ------------------------------------
 // Read the English file and get the lines
 // ------------------------------------
-	$en_string = local_readfile($directory_old . "/en" . $extension);
+	$en_string = local_readfile($directory_old . "en" . $extension);
 	$en_lines  = explode_lines($en_string);
 
 // ------------------------------------
 // Read the old translated file
 // ------------------------------------
-	$translated_old_string = local_readfile($directory_old . "/" . $languagesArray[$i] . $extension);
+	$translated_old_string = local_readfile($directory_old . $languagesArray[$i] . $extension);
 	$translated_old_lines  = explode_lines($translated_old_string);
 
 // $en_lines contains:

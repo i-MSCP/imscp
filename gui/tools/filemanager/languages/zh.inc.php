@@ -72,7 +72,7 @@ $net2ftp_messages["left"] = "left";
 $net2ftp_messages["right"] = "right";
 
 // Encoding
-$net2ftp_messages["iso-8859-1"] = "utf-8";
+$net2ftp_messages["iso-8859-1"] = "UTF-8";
 
 
 // -------------------------------------------------------------------------
@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "请选择�
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "FTP服务器 <b>%1\$s</b> 不在被允许的FTP 服务器列表中.";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "FTP服务器 <b>%1\$s</b> 在被禁的FTP服务器中.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "你的IP 地址 (%1\$s) 在被禁的IP地址列表里.";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "FTP 服务端口 %1\$s 可能无法被使用.";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "你的IP 地址 (%1\$s) 在被禁的IP地址列表里.";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "Table net2ftp_users contains duplicate rows.";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "表格 net2ftp_log_consumption_ipaddress 含有重复内容.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "表格 net2ftp_log_consumption_ftpserver 无法被更新.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "表格 net2ftp_log_consumption_ftpserver 含有重复内容.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "新文件";
 $net2ftp_messages["HTML templates"] = "HTML templates";
 $net2ftp_messages["Upload"] = "上�";
 $net2ftp_messages["Java Upload"] = "Java 上�";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "高级";
 $net2ftp_messages["Copy"] = "复制";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "在目录 %1\$s 里
 $net2ftp_messages["Create a website easily using ready-made templates"] = "Create a website easily using ready-made templates";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "上传新文件到目录 %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "Upload directories and files using a Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "前往高级功能";
 $net2ftp_messages["Copy the selected entries"] = "复制所选";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "点击按 %1\
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "点击按 %1\$s 分类并升序排列";
 $net2ftp_messages["Ascending order"] = "升序排列";
 $net2ftp_messages["Descending order"] = "降序排列";
+$net2ftp_messages["Upload files"] = "Upload files";
 $net2ftp_messages["Up"] = "向上";
 $net2ftp_messages["Click to check or uncheck all rows"] = "点击对所有列复选或者取消复选";
 $net2ftp_messages["All"] = "全部";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "无法识别FTP输出";
 $net2ftp_messages["Number"] = "Number";
 $net2ftp_messages["Size"] = "大小";
 $net2ftp_messages["Skipped"] = "Skipped";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "语言:";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "目录树";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "执行 %1\$s 于新打开的窗口";
 $net2ftp_messages["This file is not accessible from the web"] = "This file is not accessible from the web";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "双击打开下级目录:";

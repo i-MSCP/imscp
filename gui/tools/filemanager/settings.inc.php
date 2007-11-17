@@ -38,6 +38,9 @@ $net2ftp_settings["help_link"] = "";
 $net2ftp_settings["error_reporting"] = "standard";
 //$net2ftp_settings["error_reporting"] = "ALL";
 
+// Fix PNG images
+$net2ftp_settings["fix_png"] = "yes";
+
 
 // ----------------------------------------------------------------------------------
 // Admin Panel username and password
@@ -83,7 +86,7 @@ $net2ftp_settings["log_length_days"] = 7; // number of days
 // upload, download, copy, move, search, view, edit
 // ----------------------------------------------------------------------------------
 
-$net2ftp_settings["max_filesize"]  = "5000000";  // in Bytes, default 5 MB
+$net2ftp_settings["max_filesize"]  = "50000000";  // in Bytes, default 50 MB
 
 // Note: IF YOU WANT TO ALLOW LARGE FILE UPLOADS, YOU MAY HAVE TO ADJUST
 //       THE FOLLOWING PARAMETERS:
@@ -115,8 +118,8 @@ $net2ftp_settings["check_homedirectory"] = "yes";
 // DO NOT CHANGE ANYTHING BELOW THIS LINE
 // ----------------------------------------------------------------------------------
 
-$net2ftp_settings["application_version"] = "0.95";
-$net2ftp_settings["application_build_nr"] = "42";
+$net2ftp_settings["application_version"] = "0.96";
+$net2ftp_settings["application_build_nr"] = "43";
 
 // Is this net2ftp.com, or a net2ftp installation elsewhere
 $net2ftp_settings["net2ftpdotcom"] = "no";
@@ -124,4 +127,5 @@ $net2ftp_settings["net2ftpdotcom"] = "no";
 // Google Adsense advertisements 
 // Not shown when using HTTPS to avoid warnings on each pageload
 $net2ftp_settings["show_google_ads"] = "no";
+
 ?>

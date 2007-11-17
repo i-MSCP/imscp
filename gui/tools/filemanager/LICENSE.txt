@@ -115,8 +115,6 @@ By: Carles Carbonell Bernado
 
 
 
-
-
 JUPLOAD UPLOAD APPLET
 ====================
 
@@ -129,6 +127,15 @@ use of it on an unlimited number of servers.
 
 You DO NOT HAVE TO PURCHASE an additional license of JUpload, unless you want
 to use it in another product than net2ftp.
+
+
+
+SWF UPLOAD APPLET
+====================
+
+Website: http://swfupload.mammon.se/
+By: Mammon, Lars Huring, Olov Nilzén
+License: MIT License (http://www.opensource.org/licenses/mit-license.php)
 
 
 

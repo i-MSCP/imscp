@@ -1,4 +1,4 @@
-// RU lang variables UTF-8
+// RU lang variables
 
 tinyMCE.addToLang('style',{
 title : 'Редактировать CSS Стиль',
@@ -25,7 +25,7 @@ text_overline : 'Надчеркивание',
 text_underline : 'Подчеркивание',
 text_striketrough : 'Зачеркивание',
 text_blink : 'Мерцание',
-text_none : 'Нет',
+text_none : 'нет',
 background_color : 'Цвет фона',
 background_image : 'Фоновое изображение',
 background_repeat : 'Повторить',

@@ -1,5 +1,5 @@
-// UK lang variables
+// Japanese euc variables
 
 tinyMCE.addToLang('',{
-print_desc : 'Print'
+print_desc : '°õºþ'
 });

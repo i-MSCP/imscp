@@ -27,7 +27,7 @@ function net2ftp_module_sendHttpHeaders() {
 // --------------
 
 //	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result;
-	
+
 } // end net2ftp_sendHttpHeaders
 
 // **                                                                                  **
@@ -107,7 +107,7 @@ function net2ftp_module_printCss() {
 
 // Include
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/skins/" . $net2ftp_globals["skin"] . "/css/main.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["image_url"]) . "\" />\n";
-	
+
 } // end net2ftp_printCssInclude
 
 // **                                                                                  **
@@ -163,13 +163,14 @@ function net2ftp_module_printBody() {
 	$file_counter = 0;
 	$archive_counter = 0;
 
+// Normal upload
 	if (isset($_FILES["file"]) == true && is_array($_FILES["file"]) == true) {
 		foreach ($_FILES["file"]["name"] as $key => $val) {
 			if ($val != "") {
 				$file_counter = $file_counter + 1;
-				$uploadedFilesArray["$file_counter"]["name"] = validateEntry($val);
+				$uploadedFilesArray["$file_counter"]["name"]     = validateEntry($val);
 				$uploadedFilesArray["$file_counter"]["tmp_name"] = $_FILES["file"]["tmp_name"][$key];
-				$uploadedFilesArray["$file_counter"]["size"] = $_FILES["file"]["size"][$key];
+				$uploadedFilesArray["$file_counter"]["size"]     = $_FILES["file"]["size"][$key];
 			} // end if
 		} // end foreach
 	}
@@ -183,6 +184,14 @@ function net2ftp_module_printBody() {
 				$uploadedArchivesArray["$archive_counter"]["size"]     = $_FILES["archive"]["size"][$key];
 			} // end if
 		} // end foreach
+	}
+
+// Upload via SWFUpload Flash applet
+	if (isset($_FILES["Filedata"]) == true && is_array($_FILES["Filedata"]) == true) {
+		$file_counter = $file_counter + 1;
+		$uploadedFilesArray["$file_counter"]["name"]     = $_FILES["Filedata"]["name"];
+		$uploadedFilesArray["$file_counter"]["tmp_name"] = $_FILES["Filedata"]["tmp_name"];
+		$uploadedFilesArray["$file_counter"]["size"]     = $_FILES["Filedata"]["size"];
 	}
 
 // -------------------------------------------------------------------------

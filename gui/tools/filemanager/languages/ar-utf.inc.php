@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "يرجى �
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "سرفر FTP <b>%1\$s</b> غير موجود في قائمة سرفرات FTP المسموح بها .";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "السرفر FTP <b>%1\$s</b> موجود في قائمة سرفرات FTP المحظورة .";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "عنوان IP (%1\$s) موجود في قائمة عناوين IP المحظورة .";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "منفذ سرفر FTP %1\$s لا يمكن استخدامه .";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "عنوان IP (%1\$s) موجود في قائمة عناوين IP المحظورة .";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "الجدول net2ftp_users يحتوي على صفوف مكررة .";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "الجدول net2ftp_log_consumption_ipaddress يحتوي على عناصر مكررة .";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "لا يمكن تحديث الجدول net2ftp_log_consumption_ftpserver .";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "الجدول net2ftp_log_consumption_ftpserver يحتوي على عناصر مكررة .";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "ملف جديد";
 $net2ftp_messages["HTML templates"] = "قوالب HTML";
 $net2ftp_messages["Upload"] = "الرفع";
 $net2ftp_messages["Java Upload"] = "الرفع بـ Java";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "متقدم";
 $net2ftp_messages["Copy"] = "نسخ";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "إنشاء ملف �
 $net2ftp_messages["Create a website easily using ready-made templates"] = "إنشاء المواقع سهل باستخدام القوالب الجاهزة";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "رفع ملفات جديد إلى الدليل %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "رفع المجلدات و الملفات بواسطة Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "الذهاب إلى الوظائف المتقدمة";
 $net2ftp_messages["Copy the selected entries"] = "نسخ العناصر المحددة";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "اضغط لف
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "اضغط لفرز %1\$s بترتيب تصاعدي";
 $net2ftp_messages["Ascending order"] = "ترتيب تصاعدي";
 $net2ftp_messages["Descending order"] = "ترتيب تنازلي";
+$net2ftp_messages["Upload files"] = "رفع الملفات";
 $net2ftp_messages["Up"] = "خطوة إلى الأعلى";
 $net2ftp_messages["Click to check or uncheck all rows"] = "اضغط لتحديد أو إلغاء تحديد جميع الصفوف";
 $net2ftp_messages["All"] = "الكل";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "خرج FTP غير معروف";
 $net2ftp_messages["Number"] = "العدد";
 $net2ftp_messages["Size"] = "الحجم";
 $net2ftp_messages["Skipped"] = "تم تخطيه";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "اللغة »";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "شجرة الدليل";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "تنفيذ %1\$s في نافذة جديدة";
 $net2ftp_messages["This file is not accessible from the web"] = "لا يمكن الوصول إلى هذا الملف من الويب";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "ضغط مزذوج للذهاب إلى الدليل الفرعي";

@@ -79,7 +79,6 @@ function net2ftp($action) {
 // -------------------------------------------------------------------------
 	if ($net2ftp_result["success"] == false) { return false; }
 
-
 // -------------------------------------------------------------------------
 // Input checks
 // -------------------------------------------------------------------------
@@ -141,7 +140,7 @@ function net2ftp($action) {
 	}
 
 // Set the PHP temporary directory
-	putenv("TMPDIR=" . $net2ftp_globals["application_tempdir"]);
+//	putenv("TMPDIR=" . $net2ftp_globals["application_tempdir"]);
 
 // -------------------------------------------------------------------------
 // Function libraries:
@@ -207,7 +206,6 @@ function net2ftp($action) {
 		register_shutdown_function("net2ftp_shutdown");
 	}
 
-
 // -------------------------------------------------------------------------
 // Check authorizations
 // --> Do this only once, when $action == "sendHttpHeaders"
@@ -223,7 +221,6 @@ function net2ftp($action) {
 
 	}
 
-
 // -------------------------------------------------------------------------
 // Log access
 // --> Do this only once, when $action == "sendHttpHeaders"
@@ -235,7 +232,6 @@ function net2ftp($action) {
 			return false; 
 		}
 	}
-
 
 // -------------------------------------------------------------------------
 // Get the consumption counter values from the database

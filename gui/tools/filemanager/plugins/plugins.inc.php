@@ -57,6 +57,9 @@ function getActivePlugins() {
 	elseif ($net2ftp_globals["state"] == "view") { 
 		if ($pluginProperties["geshi"]["use"] == "yes")		 { $activePlugins[$plugincounter] = "geshi"; $plugincounter++; } 
 	}
+	elseif ($net2ftp_globals["state"] == "browse" && $net2ftp_globals["state2"] == "main") { 
+		if ($pluginProperties["swfupload"]["use"] == "yes")	 { $activePlugins[$plugincounter] = "swfupload"; $plugincounter++; } 
+	}
 
 // -------------------------------------------------------------------------
 // Plugins to activate depending on other variables
@@ -118,7 +121,7 @@ function getPluginProperties() {
 // -------------------------------------------------------------------------
 // Global variables
 // -------------------------------------------------------------------------
-	global $net2ftp_globals;
+	global $net2ftp_globals, $net2ftp_settings;
 
 
 // -------------------------------------------------------------------------
@@ -172,11 +175,12 @@ function getPluginProperties() {
 	elseif ($net2ftp_globals["language"] == "nl") { $tinymce_language = "nl"; }
 	elseif ($net2ftp_globals["language"] == "pl") { $tinymce_language = "pl"; }
 	elseif ($net2ftp_globals["language"] == "pt") { $tinymce_language = "pt_br"; }
-	elseif ($net2ftp_globals["language"] == "ru") { $tinymce_language = "ru_UTF-8"; }
+	elseif ($net2ftp_globals["language"] == "ru") { $tinymce_language = "ru"; }
 	elseif ($net2ftp_globals["language"] == "sv") { $tinymce_language = "sv"; }
 	elseif ($net2ftp_globals["language"] == "tc") { $tinymce_language = "zh_tw"; }
+	elseif ($net2ftp_globals["language"] == "tr") { $tinymce_language = "tr"; }
 	elseif ($net2ftp_globals["language"] == "vi") { $tinymce_language = "vi"; }
-	elseif ($net2ftp_globals["language"] == "zh") { $tinymce_language = "zh_cn_utf8"; }
+	elseif ($net2ftp_globals["language"] == "zh") { $tinymce_language = "zh_cn"; }
 	else                                          { $tinymce_language = "en"; }
 
 	$pluginProperties["tinymce"]["use"]                      = "yes";
@@ -195,14 +199,15 @@ function getPluginProperties() {
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		mode : \"exact\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		elements : \"text_splitted[middle]\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme : \"advanced\",\n";
-	$pluginProperties["tinymce"]["printJavascript"]         .= "		plugins : \"table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,zoom,flash,searchreplace,print\",\n";
+	$pluginProperties["tinymce"]["printJavascript"]         .= "		plugins : \"spellchecker,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,zoom,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,filemanager,imagemanager\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		language : \"$tinymce_language\",\n";
-	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons1_add_before : \"save,separator\",\n";
+	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons1_add_before : \"save,newdocument,separator\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons1_add : \"fontselect,fontsizeselect\",\n";
-	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons2_add : \"separator,insertdate,inserttime,preview,zoom,separator,forecolor,backcolor\",\n";
-	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons2_add_before: \"cut,copy,paste,separator,search,replace,separator\",\n";
+	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons2_add : \"separator,insertdate,inserttime,preview,separator,forecolor,backcolor\",\n";
+	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons2_add_before: \"cut,copy,paste,pastetext,pasteword,separator,search,replace,separator\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons3_add_before : \"tablecontrols,separator\",\n";
-	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons3_add : \"emotions,iespell,flash,advhr,separator,print\",\n";
+	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons3_add : \"emotions,iespell,media,advhr,separator,print,separator,ltr,rtl,separator,fullscreen\",\n";
+	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_buttons4 : \"insertlayer,moveforward,movebackward,absolute,|,styleprops,|,spellchecker,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,|,insertfile,insertimage\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_toolbar_location : \"top\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_toolbar_align : \"left\",\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "		theme_advanced_path_location : \"bottom\",\n";
@@ -225,7 +230,7 @@ function getPluginProperties() {
 
 
 // -------------------------------------------------------------------------
-// CodePress http://codepress.fermads.net/
+// CodePress http://www.codepress.org/
 // A syntax highlighting text editor in javascript
 // -------------------------------------------------------------------------
 
@@ -237,18 +242,26 @@ function getPluginProperties() {
 	$pluginProperties["codepress"]["browsers"][2]            = "Opera";
 	$pluginProperties["codepress"]["browsers"][3]            = "Mozilla";
 	$pluginProperties["codepress"]["browsers"][4]            = "Other";
-	$pluginProperties["codepress"]["filename_extensions"][1] = "php";
-	$pluginProperties["codepress"]["filename_extensions"][2] = "phps";
-	$pluginProperties["codepress"]["filename_extensions"][3] = "phtml";
-	$pluginProperties["codepress"]["filename_extensions"][4] = "js";
-	$pluginProperties["codepress"]["filename_extensions"][5] = "java";
-	$pluginProperties["codepress"]["filename_extensions"][6] = "htm";
-	$pluginProperties["codepress"]["filename_extensions"][7] = "html";
-	$pluginProperties["codepress"]["filename_extensions"][8] = "css";
+	$pluginProperties["codepress"]["filename_extensions"][1] = "asp";
+	$pluginProperties["codepress"]["filename_extensions"][2] = "css";
+	$pluginProperties["codepress"]["filename_extensions"][3] = "cgi";
+	$pluginProperties["codepress"]["filename_extensions"][4] = "htm";
+	$pluginProperties["codepress"]["filename_extensions"][5] = "html";
+	$pluginProperties["codepress"]["filename_extensions"][6] = "java";
+	$pluginProperties["codepress"]["filename_extensions"][7] = "javascript";
+	$pluginProperties["codepress"]["filename_extensions"][8] = "js";
+	$pluginProperties["codepress"]["filename_extensions"][9] = "pl";
+	$pluginProperties["codepress"]["filename_extensions"][10] = "perl";
+	$pluginProperties["codepress"]["filename_extensions"][11] = "php";
+	$pluginProperties["codepress"]["filename_extensions"][12] = "phps";
+	$pluginProperties["codepress"]["filename_extensions"][13] = "phtml";
+	$pluginProperties["codepress"]["filename_extensions"][14] = "ruby";
+	$pluginProperties["codepress"]["filename_extensions"][15] = "sql";
+	$pluginProperties["codepress"]["filename_extensions"][16] = "txt";
 	$pluginProperties["codepress"]["includePhpFiles"][1]     = "";
-	$pluginProperties["codepress"]["printJavascript"]        = "";
+	$pluginProperties["codepress"]["printJavascript"]        = "<script type=\"text/javascript\" src=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/codepress/codepress.js\"></script>\n";
 	$pluginProperties["codepress"]["printCss"]               = "";
-	$pluginProperties["codepress"]["printBodyOnload"]        = "setCode();";
+	$pluginProperties["codepress"]["printBodyOnload"]        = "";
 
 
 
@@ -328,6 +341,60 @@ function getPluginProperties() {
 	$pluginProperties["jupload"]["printJavascript"]          = "";
 	$pluginProperties["jupload"]["printBodyOnload"]          = "";
 
+// -------------------------------------------------------------------------
+// SWFUpload http://swfupload.mammon.se/index.php
+// A Flash applet to upload files
+// -------------------------------------------------------------------------
+
+	$pluginProperties["swfupload"]["use"]                    = "yes";
+	$pluginProperties["swfupload"]["label"]                  = "SWFUpload";
+	$pluginProperties["swfupload"]["directory"]              = "swfupload";
+	$pluginProperties["swfupload"]["type"]                   = "applet";
+	$pluginProperties["swfupload"]["browsers"][1]            = "IE";
+	$pluginProperties["swfupload"]["browsers"][2]            = "Opera";
+	$pluginProperties["swfupload"]["browsers"][3]            = "Mozilla";
+	$pluginProperties["swfupload"]["browsers"][4]            = "Other";
+	$pluginProperties["swfupload"]["filename_extensions"][1] = "";
+	$pluginProperties["swfupload"]["includePhpFiles"][1]     = "";
+	$pluginProperties["swfupload"]["printJavascript"]        = "<script type=\"text/javascript\" src=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload/SWFUpload.js\"></script>\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "<script type=\"text/javascript\" src=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload/example_callback.js.php?plugin_image_url=" . urlEncode2($net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload") . "&amp;directory=" . urlEncode2($net2ftp_globals["directory"]) . "\"></script>\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "<script type=\"text/javascript\">\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "	var swfu;\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "	function initializeSwfu() {\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "		swfu = new SWFUpload({\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_script : '" . printPHP_SELF("swfupload") . "',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			target : 'SWFUploadTarget',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			flash_path : 'plugins/swfupload/SWFUpload.swf',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			allowed_filesize : " . $net2ftp_settings["max_filesize"] . ",\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			allowed_filetypes : '*.*',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			allowed_filetypes_description : 'All files...',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			browse_link_innerhtml : 'Browse',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_link_innerhtml : 'Upload queue',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			browse_link_class : 'swfuploadbtn browsebtn',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_link_class : 'swfuploadbtn uploadbtn',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			flash_loaded_callback : 'swfu.flashLoaded',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_file_queued_callback : 'fileQueued',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_file_start_callback : 'uploadFileStart',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_progress_callback : 'uploadProgress',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_file_complete_callback : 'uploadFileComplete',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_file_cancel_callback : 'uploadFileCancelled',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_queue_complete_callback : 'uploadQueueComplete',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_error_callback : 'uploadError',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			upload_cancel_callback : 'uploadCancel',\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			debug : false,\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "			auto_upload : false\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "		});\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "		// NET2FTP: added this line to fix a bug as discussed on the forum\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "		// http://swfupload.mammon.se/forum/viewtopic.php?id=14\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "		var movie = document.getElementById(swfu.movieName);\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "		if (movie != null && !document.getElementById(swfu.movieName+'BrowseBtn')) {\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "			if(movie.PercentLoaded() == 100) swfu.loadUI();\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "		}\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "	};\n";
+//	$pluginProperties["swfupload"]["printJavascript"]       .= "	function uploadError(error) { alert(error); }\n";
+	$pluginProperties["swfupload"]["printJavascript"]       .= "</script>\n";
+	$pluginProperties["swfupload"]["printCss"]               = "";
+	$pluginProperties["swfupload"]["printBodyOnload"]        = "initializeSwfu();";
 
 // -------------------------------------------------------------------------
 // GeSHi

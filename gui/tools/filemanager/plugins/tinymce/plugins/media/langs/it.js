@@ -2,8 +2,8 @@
  * IT lang variables
  * 
  * Author : Luciano Vernaschi <luciano@virgilio.it>
- * Last Updated : Oct. 17th, 2006
- * TinyMCE Version : 2.0.7
+ * Last Updated : Mar. 1st, 2007
+ * TinyMCE Version : 2.1.0
  */
 
 tinyMCE.addToLang('media',{
@@ -88,4 +88,13 @@ sound : 'Suono',
 progress : 'Progresso',
 qtsrc : 'QT Src',
 qt_stream_warn : 'Le risorse &quot;Streamed RTSP&quot; devono essere aggiunte al campo &quot;QT Src&quot; nelle funzioni avanzate.\n&Egrave; meglio aggiungere anche una versione non in streaming nel campo Src.'
+align_top : 'In Alto',
+align_right : 'A destra',
+align_bottom : 'In basso',
+align_left : 'A sinistra',
+align_center : 'Al centro',
+align_top_left : 'In alto a sinistra',
+align_top_right : 'In alto a destra',
+align_bottom_left : 'In basso a sinistra',
+align_bottom_right : 'In basso a destra'
 });

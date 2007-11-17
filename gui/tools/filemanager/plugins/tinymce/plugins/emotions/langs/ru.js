@@ -1,4 +1,4 @@
-// RU lang variables UTF-8
+// RU lang variables
 
 tinyMCE.addToLang('emotions',{
 title : 'Вставить смайлик',
@@ -7,7 +7,7 @@ cool : 'Круто',
 cry : 'Плач',
 embarassed : 'Смущенный',
 foot_in_mouth : 'Косноязычный',
-frown : 'Нахмуреный',
+frown : 'Нахмуренный',
 innocent : 'Святой',
 kiss : 'Поцелуй',
 laughing : 'Смех',

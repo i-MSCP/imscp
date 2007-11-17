@@ -139,18 +139,18 @@ function net2ftp_module_printBody() {
 	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result, $net2ftp_output;
 
 // The 2 go_to_state variables come from the bookmark, or from registerglobals.inc.php
-	if (isset($_GET["go_to_state"]) == true)  { $go_to_state  = $_GET["go_to_state"]; }
+	if (isset($_GET["go_to_state"]) == true)  { $go_to_state  = validateGenericInput($_GET["go_to_state"]); }
 	else                                      { $go_to_state  = $net2ftp_globals["go_to_state"]; }
-	if (isset($_GET["go_to_state2"]) == true) { $go_to_state2 = $_GET["go_to_state2"]; }
+	if (isset($_GET["go_to_state2"]) == true) { $go_to_state2 = validateGenericInput($_GET["go_to_state2"]); }
 	else                                      { $go_to_state2 = $net2ftp_globals["go_to_state2"]; }
-	if (isset($_GET["errormessage"]) == true) { $errormessage = $_GET["errormessage"]; }
+	if (isset($_GET["errormessage"]) == true) { $errormessage = validateGenericInput($_GET["errormessage"]); }
 
 // Most actions
 	if (isset($_POST["list"]) == true) { $list = getSelectedEntries($_POST["list"]); }
 	else                               { $list = ""; }
 
 // Bookmark
-	if (isset($_POST["url"]) == true)  { $url = $_POST["url"]; 	}
+	if (isset($_POST["url"]) == true)  { $url = validateGenericInput($_POST["url"]); }
 	else                               { $url = ""; }
 	if (isset($_POST["text"]) == true) { $text = validateGenericInput($_POST["text"]); }
 	else                               { $text = ""; }

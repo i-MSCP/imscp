@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 10788 2007-10-15 09:20:30Z cybot_tm $
+ * @version $Id: server_privileges.php 10908 2007-11-09 07:41:47Z cybot_tm $
  */
 
 /**
@@ -2032,7 +2032,7 @@ if (empty($adduser) && (! isset($checkprivs) || ! strlen($checkprivs))) {
             .   PMA_convert_using('`Db`') . ' AS `Db`, '
             .   $list_of_privileges
             .' FROM `mysql`.`db`'
-            .' WHERE ' . PMA_convert_using($checkprivs, 'quoted')
+            .' WHERE ' . PMA_convert_using(PMA_sqlAddslashes($checkprivs), 'quoted')
             .' LIKE ' . PMA_convert_using('`Db`')
             .' AND NOT (' . $list_of_compared_privileges. ')) '
             .'UNION '

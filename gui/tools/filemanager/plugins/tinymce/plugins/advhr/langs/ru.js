@@ -1,4 +1,4 @@
-// RU lang variables UTF-8
+// RU lang variables
 
 tinyMCE.addToLang('',{
 insert_advhr_desc : 'Вставить / редактировать горизонтальный разделитель',

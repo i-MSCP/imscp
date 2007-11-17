@@ -258,11 +258,30 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 		$currentdirectory = glueDirectories($directory, $list["directories"][$i]["dirfilename"]);
 
 // ------------------------------------
-// Chmod the directory
+// Determine if the directory must first be chmodded (if chmodded to 5 or 7), 
+// or first be traversed (if chmodded to other values)
+// A problem is that we don't know if the FTP user is the owner/group/other of the file...
+// ------------------------------------
+		if ($list["directories"][$i]["chmodoctal"] == 555 || 
+		$list["directories"][$i]["chmodoctal"] == 557 ||
+		$list["directories"][$i]["chmodoctal"] == 575 ||
+		$list["directories"][$i]["chmodoctal"] == 577 ||
+		$list["directories"][$i]["chmodoctal"] == 755 ||
+		$list["directories"][$i]["chmodoctal"] == 757 ||
+		$list["directories"][$i]["chmodoctal"] == 775 ||
+		$list["directories"][$i]["chmodoctal"] == 777) {
+			$first_chmod_then_traverse = true;
+		}
+		else {
+			$first_chmod_then_traverse = false;
+		}
+
+// ------------------------------------
+// Chmod the directory - FIRST CHMOD THEN TRAVERSE
 // If the $divelevel == 0 then chmod it in any case as it is the top directory
 // If the $divelevel > 0  then chmod it only if chmod_subdirectories == "yes"
 // ------------------------------------
-		if ($list["directories"][$i]["chmod_subdirectories"] == "yes" || $divelevel == 0) {
+		if ($first_chmod_then_traverse == true && ($list["directories"][$i]["chmod_subdirectories"] == "yes" || $divelevel == 0)) {
 			$sitecommand = "chmod 0" . $list["directories"][$i]["chmodoctal"] . " $currentdirectory";
 			$success1 = ftp_site($conn_id, $sitecommand);
 			if ($success1 == false) { 
@@ -306,6 +325,24 @@ function ftp_chmod2($conn_id, $directory, $list, $divelevel) {
 			$net2ftp_output["ftp_chmod2"][] = "</ul>";
 			
 		} // end if subdirectories and files
+
+// ------------------------------------
+// Chmod the directory - FIRST TRAVERSE THEN CHMOD
+// If the $divelevel == 0 then chmod it in any case as it is the top directory
+// If the $divelevel > 0  then chmod it only if chmod_subdirectories == "yes"
+// ------------------------------------
+		if ($first_chmod_then_traverse == false && ($list["directories"][$i]["chmod_subdirectories"] == "yes" || $divelevel == 0)) {
+			$sitecommand = "chmod 0" . $list["directories"][$i]["chmodoctal"] . " $currentdirectory";
+			$success1 = ftp_site($conn_id, $sitecommand);
+			if ($success1 == false) { 
+				$errormessage =  __("Unable to execute site command <b>%1\$s</b>. Note that the CHMOD command is only available on Unix FTP servers, not on Windows FTP servers.", $sitecommand); 
+				setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
+				return false; 
+			}
+			elseif ($success1 == true)  { 
+				$net2ftp_output["ftp_chmod2"][] = __("Directory <b>%1\$s</b> successfully chmodded to <b>%2\$s</b>", $currentdirectory, $list["directories"][$i]["chmodoctal"]); 
+			}
+		}
 
 	} // end for list_directories
 
@@ -624,6 +661,9 @@ function ftp_writefile($conn_id, $directory, $file, $string) {
 			return false;
 		}
 		$leave_conn_open = "no";
+	}
+	else {
+		$leave_conn_open = "yes";
 	}
 
 // Add the filesize to the global consumption variables
@@ -2678,16 +2718,44 @@ function checkFilename($filename) {
 function htmlEncode2($string) {
 
 // --------------
-// This function HTML-encodes a string
+// This function HTML-encodes a string with *htmlspecialchars* to print it on a page.
+// Only some special characters are encoded, otherwise special characters (e.g. é) appear encoded (&eacute).
 // --------------
 
 	$isocode = __("iso-8859-1");
 	if ($isocode == "MESSAGE NOT FOUND") { $isocode = "iso-8859-1"; }
-	$string = @htmlentities($string, ENT_QUOTES, $isocode);
+	$string = @htmlspecialchars($string, ENT_QUOTES, $isocode);
 
 	return $string;
 
 } // end htmlEncode2
+
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
+
+
+
+
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+
+function htmlEncode3($string) {
+
+// --------------
+// This function HTML-encodes a string with *htmlentities* to generate the filename for downloading.
+// All special characters are encoded.
+// --------------
+
+	$string = @htmlentities($string, ENT_QUOTES, "UTF-8");
+
+	return $string;
+
+} // end htmlEncode3
 
 // **                                                                                  **
 // **                                                                                  **
@@ -2738,27 +2806,25 @@ function javascriptEncode2($string) {
 
 // --------------
 // Encode string characters which cause problems in Javascript
-// <input type="button" onClick="alert('single quote \' single quote');" value="Test single"> OK      <br /><br />
-// <input type="button" onClick="alert('double quote &quot; double quote');"  value="Test double"> OK <br /><br />
-// <input type="button" onClick="alert('bs single \\\' bs single');" value="Test bs single"> OK       <br /><br />
-// <input type="button" onClick="alert('bs double \\\&quot; bs double');" value="Test bs double"> OK  <br /><br />
+// <input type="button" onclick="alert('single quote \' single quote');" value="Test single"> OK      <br /><br />
+// <input type="button" onclick="alert('double quote &quot; double quote');"  value="Test double"> OK <br /><br />
+// <input type="button" onclick="alert('bs single \\\' bs single');" value="Test bs single"> OK       <br /><br />
+// <input type="button" onclick="alert('bs double \\\&quot; bs double');" value="Test bs double"> OK  <br /><br />
 // --------------
 
-	$singlequote = "'";           // '
-	$doublequote = "\"";          // "
-	$backslash   = "\\";          // \
-	$doublequote_html = "&quot;"; // &quot;
-
-	$string = htmlEncode2($string);
+	$singlequote = "'";			// '
+	$doublequote = "\"";			// "
+	$backslash   = "\\";			// \
+	$doublequote_html = "&quot;"; 	// &quot;
 
 // Executing the 3 steps below in this order will convert:
 //     '     -->    \'        in step 2
 //     "     -->    &quot;    in step 3
 //     \'    -->    \\\'      in step 1 and 2
 //     \"    -->    \\\&quot; in step 1 and 3
-	$string = str_replace($backslash, "$backslash$backslash", $string);
+	$string = str_replace($backslash,   "$backslash$backslash",   $string);
 	$string = str_replace($singlequote, "$backslash$singlequote", $string);
-	$string = str_replace($doublequote, $doublequote_html, $string);
+	$string = str_replace($doublequote, $doublequote_html,        $string);
 
 	return $string;
 
@@ -3078,7 +3144,7 @@ function printDirFileProperties($number, $entry, $checkbox_hidden, $onClick) {
 
 // --------------
 // Prints a checkbox and some hidden fields
-// $onClick should be like "onClick=\"do_something_javascript();\""
+// $onClick should be like "onclick=\"do_something_javascript();\""
 // --------------
 
 // Replace ' by &#039; to avoid errors when using this variable in an HTML value tag
@@ -3228,8 +3294,11 @@ function formatFilesize($filesize) {
 
 // If it's less than a kb we just return the size, otherwise we keep going until
 //   the size is in the appropriate measurement range.
-	if($filesize< $kb) {
-		return $filesize." B";
+	if($filesize == "") {
+		return "0 B";
+	}
+	elseif($filesize < $kb) {
+		return $filesize . " B";
 	}
 	elseif($filesize< $mb) {
 		return round($filesize/$kb,2) . " kB";
@@ -3607,7 +3676,7 @@ function sendDownloadHeaders($filename, $filesize) {
 // Clean the input, and encode the filename with htmlentities
 // -------------------------------------------------------------------------
 	$filename = trim($filename);
-	$filename_html = htmlEncode2($filename);
+	$filename_html = htmlEncode3($filename);
 
 // -------------------------------------------------------------------------
 // Check which is the content type and disposition
@@ -3622,14 +3691,15 @@ function sendDownloadHeaders($filename, $filesize) {
 // From PhpMyAdmin 2.8.0.2 file export.php
 // -------------------------------------------------------------------------
 	header("Content-Type: " . $content_type);
-        header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
-	header("Content-Disposition: $content_disposition; filename=\"" . $filename_html . "\"");
-
+	header("Expires: " . gmdate("D, d M Y H:i:s") . " GMT");
 	if ($net2ftp_globals["browser_agent"] == "IE") {
+		header("Content-Disposition: $content_disposition; filename=\"" . $filename_html . "\"");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Pragma: public");
 	} 
 	else {
+		// Firefox needs an asterisk to enable filenames with special characters
+		header("Content-Disposition: $content_disposition; filename*=\"" . $filename_html . "\"");
 		header("Pragma: no-cache");
 	}
 

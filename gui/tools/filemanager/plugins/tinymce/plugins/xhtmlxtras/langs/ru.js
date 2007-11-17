@@ -1,4 +1,4 @@
-// RU lang variables UTF-8
+// RU lang variables
 
 tinyMCE.addToLang('xhtmlxtras',{
 cite_desc : 'Цитирование',
@@ -7,7 +7,7 @@ acronym_desc : 'Акроним',
 del_desc : 'Стирание',
 ins_desc : 'Вставка',
 attribute_label_title : 'Заголовок',
-attribute_label_id : 'ИД',
+attribute_label_id : 'ID',
 attribute_label_class : 'Класс',
 attribute_label_style : 'Стиль',
 attribute_label_cite : 'Цитировать',
@@ -16,6 +16,11 @@ attribute_label_langdir : 'Направление Текста',
 attribute_option_ltr : 'Слева направо',
 attribute_option_rtl : 'Справа налево',
 attribute_label_langcode : 'Язык',
+attribute_label_tabindex : 'Порядковый Номер',
+attribute_label_accesskey : 'Горячая Клавиша',
+attribute_label_cite : 'Цитировать',
+attribute_events_tab : 'События',
+attribute_attrib_tab : 'Атрибуты',
 general_tab : 'Основной',
 attrib_tab : 'Атрибуты',
 events_tab : 'События',
@@ -29,5 +34,9 @@ title_abbr_element : 'Элемент Аббревиатура',
 title_cite_element : 'Элемент Цитирование',
 remove : 'Убрать',
 not_set : '--не установлен--',
-insert_date : 'Вставить текущие дату/время'
+insert_date : 'Вставить текущие дату/время',
+option_ltr : 'Слева направо',
+option_rtl : 'Справа налево',
+attribs_desc : 'Вставить/Изменить Атрибуты',
+attribs_title : 'Вставить/Изменить Атрибуты'
 });

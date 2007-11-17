@@ -143,7 +143,8 @@ function net2ftp_module_printCss() {
 
 // Include
 	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/skins/" . $net2ftp_globals["skin"] . "/css/main.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["image_url"]) . "\" />\n";
-	
+	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"". $net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload/swfupload.css.php?ltr=" . __("ltr") . "&amp;image_url=" . urlEncode2($net2ftp_globals["application_rootdir_url"] . "/plugins/swfupload") . "\" />\n";
+
 } // end function net2ftp_printCssInclude
 
 // **                                                                                  **
@@ -272,8 +273,8 @@ function net2ftp_module_printBody() {
 // ------------------------------------
 // Consumption message
 // ------------------------------------
+	$warning_consumption = "";
 	if (checkConsumption() == false) { 
-		$warning_consumption = "";
 		$warning_consumption .= "<b>" . __("Daily limit reached: you will not be able to transfer data") . "</b><br /><br />\n";
 		$warning_consumption .= __("In order to guarantee the fair use of the web server for everyone, the data transfer volume and script execution time are limited per user, and per day. Once this limit is reached, you can still browse the FTP server but not transfer data to/from it.") . "<br /><br />\n";
 		$warning_consumption .= __("If you need unlimited usage, please install net2ftp on your own web server.") . "<br />\n";
@@ -307,12 +308,12 @@ function net2ftp_module_printBody() {
 // ------------------------------------
 // Language
 // ------------------------------------
-	$language_onchange = "document.BrowseForm.language.value=document.GotoForm.language2.options[document.GotoForm.language2.selectedIndex].value; submitBrowseForm('$directory_js', '', 'browse', 'main');";
+	$language_onchange = "document.BrowseForm.language.value=document.forms['BrowseForm'].language2.options[document.forms['BrowseForm'].language2.selectedIndex].value; submitBrowseForm('$directory_js', '', 'browse', 'main');";
 
 // ------------------------------------
 // Skin
 // ------------------------------------
-	$skin_onchange = "document.BrowseForm.skin.value=document.GotoForm.skin2.options[document.GotoForm.skin2.selectedIndex].value; submitBrowseForm('$directory_js', '', 'browse', 'main');";
+	$skin_onchange = "document.BrowseForm.skin.value=document.forms['BrowseForm'].skin2.options[document.forms['BrowseForm'].skin2.selectedIndex].value; submitBrowseForm('$directory_js', '', 'browse', 'main');";
 
 // ------------------------------------
 // $rowcounter counts the total nr of rows
@@ -403,6 +404,19 @@ function net2ftp_module_printBody() {
 // Used for Up, Subdirectories, Files (download + actions)
 // ------------------------------------
 	$action_url = printPHP_SELF("actions");
+
+// ------------------------------------
+// Data transfer statistics
+// Print this only if the consumption statistics are available (logging must be on, using a MySQL database)
+// ------------------------------------
+	if (isset($net2ftp_globals["consumption_ipaddress_datatransfer"]) == true || isset($net2ftp_globals["consumption_ftpserver_datatransfer"]) == true) {
+		$print_consumption = true;
+		$consumption_ipaddress_datatransfer = formatFilesize($net2ftp_globals["consumption_ipaddress_datatransfer"]);
+		$consumption_ftpserver_datatransfer = formatFilesize($net2ftp_globals["consumption_ftpserver_datatransfer"]);
+	}
+	else {
+		$print_consumption = false;
+	}
 
 // -------------------------------------------------------------------------
 // Print the output - part 2
@@ -509,6 +523,7 @@ function sort_list($list) {
 			}
 		} // end for
 	}
+
 // ------------------------------------
 // When sorting according to the file type, get the mime type for each entry
 // ------------------------------------

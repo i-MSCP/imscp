@@ -1,4 +1,4 @@
-// RU lang variables UTF-8
+// RU lang variables
 
 tinyMCE.addToLang('media',{
 title : 'Вставить / редактировать медиа',
@@ -8,10 +8,10 @@ advanced : 'Дополнительный',
 file : 'Файл',
 list : 'Список',
 size : 'Размеры',
-preview : 'Пред просмотр',
+preview : 'Предпросмотр',
 constrain_proportions : 'Поддерживать пропорции',
 type : 'Тип',
-id : 'Ид',
+id : 'Id',
 name : 'Имя',
 class_name : 'Класс',
 vspace : 'V-Отступ',
@@ -52,7 +52,7 @@ stretchtofit : 'Растянуть до вхождения',
 windowlessvideo : 'Безоконное видео',
 balance : 'Баланс',
 baseurl : 'Базовая ссылка',
-captioningid : 'Ид ввода субтитров',
+captioningid : 'Id ввода субтитров',
 currentmarker : 'Текущая отметка',
 currentposition : 'Текущая позиция',
 defaultframe : 'Кадр по умолчанию',
@@ -81,5 +81,14 @@ swstretchvalign : 'V-Выравнивание растяжения',
 sound : 'Звук',
 progress : 'Прогресс',
 qtsrc : 'QT Исх',
-qt_stream_warn : 'Потоковые rtsp ресурсы должны быть добавлены в поле QT Исх в дополнительную графу.\nВы также должны добавить не потоковую версию в поле Исх..'
+qt_stream_warn : 'Потоковые rtsp ресурсы должны быть добавлены в поле QT Исх в дополнительную графу.\nВы также должны добавить не потоковую версию в поле Исх..',
+align_top : 'Вверх',
+align_right : 'Вправо',
+align_bottom : 'Вниз',
+align_left : 'Влево',
+align_center : 'В центр',
+align_top_left : 'Влево - вверх',
+align_top_right : 'Вправо - вверх',
+align_bottom_left : 'Влево - вниз',
+align_bottom_right : 'Вправо - вниз'
 });

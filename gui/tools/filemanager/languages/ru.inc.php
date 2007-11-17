@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "Выберите х
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "FTP-сервер <b>%1\$s</b> не найден в списке разрешенных FTP-серверов.";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "FTP-сервер <b>%1\$s</b> находится в списке запрещенных FTP-серверов.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Ваш IP-адрес (%1\$s) находится в списке запрещенных IP-адресов.";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "Порт FTP-сервера %1\$s не может использоваться.";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Ваш IP-адрес (%1\$s) находится в списке запрещенных IP-адресов.";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "Table net2ftp_users contains duplicate rows.";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "Table net2ftp_log_consumption_ipaddress contains duplicate entries.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "Table net2ftp_log_consumption_ftpserver could not be updated.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "Table net2ftp_log_consumption_ftpserver contains duplicate entries.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "Новый файл";
 $net2ftp_messages["HTML templates"] = "HTML templates";
 $net2ftp_messages["Upload"] = "Закачать";
 $net2ftp_messages["Java Upload"] = "Закачать Java";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "Опции";
 $net2ftp_messages["Copy"] = "Копир.";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "Создать файл в папк
 $net2ftp_messages["Create a website easily using ready-made templates"] = "Create a website easily using ready-made templates";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "Закачать новые файлы в папку %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "Upload directories and files using a Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "Перейти в доп. функции";
 $net2ftp_messages["Copy the selected entries"] = "Копировать выбранные папки";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "Нажмите для с
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "Нажмите для сортировки %1\$s в порядке убывания";
 $net2ftp_messages["Ascending order"] = "Убывание";
 $net2ftp_messages["Descending order"] = "Возрастание";
+$net2ftp_messages["Upload files"] = "Upload files";
 $net2ftp_messages["Up"] = "Вверх";
 $net2ftp_messages["Click to check or uncheck all rows"] = "Нажмите для выбора или отмены выбора всех";
 $net2ftp_messages["All"] = "Все";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "Неизвестный выход FTP";
 $net2ftp_messages["Number"] = "Number";
 $net2ftp_messages["Size"] = "Размер";
 $net2ftp_messages["Skipped"] = "Skipped";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "Язык:";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "Дерево папок";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "Выполнить %1\$s в новом окне";
 $net2ftp_messages["This file is not accessible from the web"] = "This file is not accessible from the web";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "Нажмите дважды для перехода в подпапку:";

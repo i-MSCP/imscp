@@ -94,6 +94,10 @@ function getBrowser($what) {
 // -------------------------------------------------------------------------
 	if (isset($_SERVER["HTTP_USER_AGENT"]) == false) { return ""; }
 
+// -------------------------------------------------------------------------
+// Remove XSS code
+// -------------------------------------------------------------------------
+	$http_user_agent = validateGenericInput($_SERVER["HTTP_USER_AGENT"]);
 
 // -------------------------------------------------------------------------
 // Determine browser and version
@@ -103,15 +107,15 @@ function getBrowser($what) {
 // !!! If a new browser is added, add is also in the plugin properties
 // Else, functionality will be broken when loading the plugin in printTextareaSelect().
 
-		if (ereg('MSIE ([0-9].[0-9]{1,2})', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+		if (ereg('MSIE ([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'IE';
 		}
-		elseif (ereg('Opera ([0-9].[0-9]{1,2})', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+		elseif (ereg('Opera ([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Opera';
 		}
-		elseif (ereg('Mozilla/([0-9].[0-9]{1,2})', $_SERVER["HTTP_USER_AGENT"], $regs)) {
+		elseif (ereg('Mozilla/([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Mozilla';
 		}
@@ -131,25 +135,25 @@ function getBrowser($what) {
 
 	elseif ($what == "platform") {
 
-		if (	strstr($_SERVER["HTTP_USER_AGENT"], 'BlackBerry') || 
-			strstr($_SERVER["HTTP_USER_AGENT"], 'DoCoMo') || 
-			strstr($_SERVER["HTTP_USER_AGENT"], 'Nokia') || 
-			strstr($_SERVER["HTTP_USER_AGENT"], 'Palm') || 
-			strstr($_SERVER["HTTP_USER_AGENT"], 'SonyEricsson') || 
-			strstr($_SERVER["HTTP_USER_AGENT"], 'SymbianOS') || 
-			strstr($_SERVER["HTTP_USER_AGENT"], 'Windows CE')) {
+		if (	strstr($http_user_agent, 'BlackBerry') || 
+			strstr($http_user_agent, 'DoCoMo') || 
+			strstr($http_user_agent, 'Nokia') || 
+			strstr($http_user_agent, 'Palm') || 
+			strstr($http_user_agent, 'SonyEricsson') || 
+			strstr($http_user_agent, 'SymbianOS') || 
+			strstr($http_user_agent, 'Windows CE')) {
 			$BROWSER_PLATFORM = 'Mobile';
 		}
-		elseif (strstr($_SERVER["HTTP_USER_AGENT"], 'Win')) {
+		elseif (strstr($http_user_agent, 'Win')) {
 			$BROWSER_PLATFORM = 'Win';
 		}
-		else if (strstr($_SERVER["HTTP_USER_AGENT"], 'Mac')) {
+		else if (strstr($http_user_agent, 'Mac')) {
 			$BROWSER_PLATFORM = 'Mac';
 		}
-		else if (strstr($_SERVER["HTTP_USER_AGENT"], 'Linux')) {
+		else if (strstr($http_user_agent, 'Linux')) {
 			$BROWSER_PLATFORM = 'Linux';
 		}
-		else if (strstr($_SERVER["HTTP_USER_AGENT"], 'Unix')) {
+		else if (strstr($http_user_agent, 'Unix')) {
 			$BROWSER_PLATFORM = 'Unix';
 		}
 		else {

@@ -93,14 +93,14 @@ $_SESSION["net2ftp_remote_addr_new"] = $_SERVER["REMOTE_ADDR"];
 // -------------------------------------------------------------------------
 // 3 SERVER variabes
 // -------------------------------------------------------------------------
-if     (isset($_SERVER["SCRIPT_NAME"]) == true) { $net2ftp_globals["PHP_SELF"] = $_SERVER["SCRIPT_NAME"]; }
-elseif (isset($_SERVER["PHP_SELF"]) == true)    { $net2ftp_globals["PHP_SELF"] = $_SERVER["PHP_SELF"]; }
-else                                            { $net2ftp_globals["PHP_SELF"] = "index.php"; }
-if (isset($_SERVER["HTTP_REFERER"]) == true)    { $net2ftp_globals["HTTP_REFERER"]    = $_SERVER["HTTP_REFERER"]; }
+if     (isset($_SERVER["SCRIPT_NAME"]) == true) { $net2ftp_globals["PHP_SELF"]        = validateGenericInput($_SERVER["SCRIPT_NAME"]); }
+elseif (isset($_SERVER["PHP_SELF"]) == true)    { $net2ftp_globals["PHP_SELF"]        = validateGenericInput($_SERVER["PHP_SELF"]); }
+else                                            { $net2ftp_globals["PHP_SELF"]        = "index.php"; }
+if (isset($_SERVER["HTTP_REFERER"]) == true)    { $net2ftp_globals["HTTP_REFERER"]    = validateGenericInput($_SERVER["HTTP_REFERER"]); }
 else                                            { $net2ftp_globals["HTTP_REFERER"]    = ""; }
-if (isset($_SERVER["HTTP_USER_AGENT"]) == true) { $net2ftp_globals["HTTP_USER_AGENT"] = $_SERVER["HTTP_USER_AGENT"]; }
-if (isset($_SERVER["REMOTE_ADDR"]) == true)     { $net2ftp_globals["REMOTE_ADDR"]     = $_SERVER["REMOTE_ADDR"]; }
-if (isset($_SERVER["REMOTE_PORT"]) == true)     { $net2ftp_globals["REMOTE_PORT"]     = $_SERVER["REMOTE_PORT"]; }
+if (isset($_SERVER["HTTP_USER_AGENT"]) == true) { $net2ftp_globals["HTTP_USER_AGENT"] = validateGenericInput($_SERVER["HTTP_USER_AGENT"]); }
+if (isset($_SERVER["REMOTE_ADDR"]) == true)     { $net2ftp_globals["REMOTE_ADDR"]     = validateGenericInput($_SERVER["REMOTE_ADDR"]); }
+if (isset($_SERVER["REMOTE_PORT"]) == true)     { $net2ftp_globals["REMOTE_PORT"]     = validateGenericInput($_SERVER["REMOTE_PORT"]); }
 
 // Action URL
 // Note that later on in this file parameters may be appended to the action_url (for Mambo and Drupal)
@@ -144,9 +144,15 @@ $net2ftp_globals["username_js"]   = javascriptEncode2($net2ftp_globals["username
 // ----------------------------------------------
 // Password
 // ----------------------------------------------
+// From login form
 if (isset($_POST["password"]) == true) {
 	$net2ftp_globals["password_encrypted"]  = encryptPassword(trim($_POST["password"]));
 	$_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]] = encryptPassword(trim($_POST["password"]));
+}
+// From the upload page (SWFUpload Flash applet)
+elseif (isset($_GET["password_encrypted"]) == true) {
+	$net2ftp_globals["password_encrypted"]  = trim($_GET["password_encrypted"]);
+	$_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]] = trim($_GET["password_encrypted"]);
 }
 
 // ----------------------------------------------
@@ -276,18 +282,9 @@ else {
 if     (isset($_POST["entry"]) == true) { $net2ftp_globals["entry"] = validateEntry($_POST["entry"]); }
 elseif (isset($_GET["entry"]) == true)  { $net2ftp_globals["entry"] = validateEntry($_GET["entry"]); }
 else                                    { $net2ftp_globals["entry"] = ""; }
-
-// Do not validate $entry when following symlinks, as this removes the -> symbol
-// Validation of $entry is done in /modules/followsymlink/followsymlink.inc.php
-if ($net2ftp_globals["state"] == "followsymlink") {
-	if     (isset($_POST["entry"]) == true) { $net2ftp_globals["entry"] = $_POST["entry"]; }
-	elseif (isset($_GET["entry"]) == true)  { $net2ftp_globals["entry"] = $_GET["entry"]; }
-}
-
 $net2ftp_globals["entry_html"] = htmlEncode2($net2ftp_globals["entry"]);
 $net2ftp_globals["entry_url"]  = urlEncode2($net2ftp_globals["entry"]);
 $net2ftp_globals["entry_js"]   = javascriptEncode2($net2ftp_globals["entry"]);
-
 
 // ----------------------------------------------
 // Screen
@@ -303,8 +300,8 @@ $net2ftp_globals["screen_js"]   = javascriptEncode2($net2ftp_globals["screen"]);
 // MAMBO variables
 // ----------------------------------------------
 if (defined("_VALID_MOS") == true) {
-	$option = $_GET["option"];
-	$Itemid = $_GET["Itemid"];
+	$option = validateGenericInput($_GET["option"]);
+	$Itemid = validateGenericInput($_GET["Itemid"]);
 	$net2ftp_globals["action_url"] .= "?option=$option&amp;Itemid=$Itemid";
 }
 
@@ -312,7 +309,7 @@ if (defined("_VALID_MOS") == true) {
 // DRUPAL variables
 // ----------------------------------------------
 if (defined("CACHE_PERMANENT") == true) {
-	$q = $_GET["q"];
+	$q = validateGenericInput($_GET["q"]);
 	$net2ftp_globals["action_url"] .= "?q=$q";
 }
 
@@ -325,7 +322,10 @@ if ($net2ftp_globals["state"] == "logout") {
 }
 
 // -------------------------------------------------------------------------
-// 5.2 Redirect to login_small if session has expired
+// 5.2 Redirect to login_small 
+//         if session has expired
+//         if the IP address has changed (disabled as this may cause problems for some people)
+//         if the password is blank
 // -------------------------------------------------------------------------
 if ($net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_small" &&
 	$_SESSION["net2ftp_session_id_old"] != $_SESSION["net2ftp_session_id_new"]) {
@@ -334,20 +334,19 @@ if ($net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_
 	$net2ftp_globals["state"]        = "login_small";
 	$net2ftp_globals["state2"]       = "session_expired";
 }
-elseif ($net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_small" && 
-	$_SESSION["net2ftp_remote_addr_old"] != $_SESSION["net2ftp_remote_addr_new"]) { 
-	$net2ftp_globals["go_to_state"]  = $net2ftp_globals["state"];
-	$net2ftp_globals["go_to_state2"] = $net2ftp_globals["state2"];
-	$net2ftp_globals["state"]        = "login_small";
-	$net2ftp_globals["state2"]       = "session_ipchanged";
-}
+//elseif ($net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_small" && 
+//	$_SESSION["net2ftp_remote_addr_old"] != $_SESSION["net2ftp_remote_addr_new"]) { 
+//	$net2ftp_globals["go_to_state"]  = $net2ftp_globals["state"];
+//	$net2ftp_globals["go_to_state2"] = $net2ftp_globals["state2"];
+//	$net2ftp_globals["state"]        = "login_small";
+//	$net2ftp_globals["state2"]       = "session_ipchanged";
+//}
 elseif (substr($net2ftp_globals["state"], 0, 5) != "admin" && $net2ftp_globals["state"] != "clearcookies" && 
 	$net2ftp_globals["state"] != "login" && $net2ftp_globals["state"] != "login_small" && 
 	$net2ftp_globals["state"] != "logout" && $_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]] == "") { 
 	$net2ftp_globals["state"]        = "login";
 	$net2ftp_globals["state2"]       = "";
 }
-
 
 // -------------------------------------------------------------------------
 // 6 COOKIE variabes
@@ -528,8 +527,8 @@ function validateUsername($username) {
 // Remove invisible characters in the beginning and at the end
 	$username = trim($username);
 
-// Username may only contain specific characters
-//	$username = preg_replace("/[^A-Za-z0-9@+._\\/-]/", "", $username);
+// Remove XSS code
+//	$username = RemoveXSS($username);
 
 	return $username;
 
@@ -587,6 +586,9 @@ function validatePassword($password) {
 
 // Remove invisible characters in the beginning and at the end
 	$password = trim($password);
+
+// Remove XSS code
+//	$password = RemoveXSS($password);
 
 	return $password;
 
@@ -663,8 +665,7 @@ function validateSkin($skin) {
 		elseif (defined("XOOPS_ROOT_PATH") == true) { return "xoops"; }
 		elseif (getBrowser("platform") == "Mobile") { return "mobile"; }
 		elseif (isset($skinArray[$net2ftp_settings["default_skin"]]) == true){ return $net2ftp_settings["default_skin"]; }
-		else                                        { return "omega"; 
-		}
+		else                                        { return "india"; }
 	}
 
 } // end validateSkin
@@ -959,6 +960,9 @@ function validateEntry($entry) {
 // Remove the following characters \/:*?"<>|
 // --------------
 
+// Remove XSS code
+//	$entry = RemoveXSS($entry);
+
 // Remove \ / : * ? < > |
 	$entry = preg_replace("/[\\\\\\/\\:\\*\\?\\<\\>\\|]/", "", $entry);
 
@@ -1022,6 +1026,11 @@ function validateDirectory($directory) {
 	elseif ($directory == "/") { return "/"; }
 
 // -------------------------------------------------------------------------
+// Remove XSS code
+// -------------------------------------------------------------------------
+//	$directory = RemoveXSS($directory);
+
+// -------------------------------------------------------------------------
 // Check if the directory contains ".."
 // -------------------------------------------------------------------------
 	if (strpos($directory, "..") === false) { 
@@ -1076,41 +1085,18 @@ function validateDirectory($directory) {
 // **                                                                                  **
 // **                                                                                  **
 
-function validateFileGetContents($file) {
-
-// --------------
-// This function validates a filename; it may not contain ../ or ..\ or %00
-// This is used to secure tiny_mce_gzip.php
-// --------------
-
-	$file = str_replace("../", "", $file);
-	$file = str_replace("..\\", "", $file);
-	$file = str_replace("%00", "", $file);
-	return $file;
-
-} // end validateFileGetContents
-
-// **                                                                                  **
-// **                                                                                  **
-// **************************************************************************************
-// **************************************************************************************
-
-
-
-
-
-// **************************************************************************************
-// **************************************************************************************
-// **                                                                                  **
-// **                                                                                  **
-
 function validateGenericInput($input) {
 
 // --------------
 // Remove the following characters <>
 // --------------
 
+// Remove XSS code
+//	$input = RemoveXSS($input);
+
+// Remove < >
 	$input = preg_replace("/\\<\\>]/", "", $input);
+
 	return $input;
 
 } // end validateGenericInput
@@ -1144,6 +1130,82 @@ function validateTextareaType($textareaType) {
 	return $textareaType;
 
 } // end validateTextareaType
+
+// **                                                                                  **
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+
+
+
+
+
+// **************************************************************************************
+// **************************************************************************************
+// **                                                                                  **
+// **                                                                                  **
+
+function RemoveXSS($val) {
+
+// --------------
+// This function removes malicious cross-site scripting (XSS) code from user input
+// From http://quickwired.com/smallprojects/php_xss_filter_function.php
+// --------------
+
+	// remove all non-printable characters. CR(0a) and LF(0b) and TAB(9) are allowed
+	// this prevents some character re-spacing such as <java\0script>
+	// note that you have to handle splits with \n, \r, and \t later since they *are* allowed in some inputs
+	$val = preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $val);
+   
+	// straight replacements, the user should never need these since they're normal characters
+	// this prevents like <IMG SRC=&#X40&#X61&#X76&#X61&#X73&#X63&#X72&#X69&#X70&#X74&#X3A&#X61&#X6C&#X65&#X72&#X74&#X28&#X27&#X58&#X53&#X53&#X27&#X29>
+	$search = 'abcdefghijklmnopqrstuvwxyz';
+	$search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$search .= '1234567890!@#$%^&*()';
+	$search .= '~`";:?+/={}[]-_|\'\\';
+
+	for ($i = 0; $i < strlen($search); $i++) {
+		// ;? matches the ;, which is optional
+		// 0{0,7} matches any padded zeros, which are optional and go up to 8 chars
+   
+		// &#x0040 @ search for the hex values
+		$val = preg_replace('/(&#[x|X]0{0,8}'.dechex(ord($search[$i])).';?)/i', $search[$i], $val); // with a ;
+      	// &#00064 @ 0{0,7} matches '0' zero to seven times
+		$val = preg_replace('/(&#0{0,8}'.ord($search[$i]).';?)/', $search[$i], $val); // with a ;
+	}
+   
+	// now the only remaining whitespace attacks are \t, \n, and \r
+	$ra1 = Array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+	$ra2 = Array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+	$ra = array_merge($ra1, $ra2);
+
+	$found = true; // keep replacing as long as the previous round replaced something
+	while ($found == true) {
+		$val_before = $val;
+		for ($i = 0; $i < sizeof($ra); $i++) {
+			$pattern = '/';
+			for ($j = 0; $j < strlen($ra[$i]); $j++) {
+				if ($j > 0) {
+					$pattern .= '(';
+					$pattern .= '(&#[x|X]0{0,8}([9][a][b]);?)?';
+					$pattern .= '|(&#0{0,8}([9][10][13]);?)?';
+					$pattern .= ')?';
+				}
+				$pattern .= $ra[$i][$j];
+			} // end for
+			$pattern .= '/i';
+			$replacement = substr($ra[$i], 0, 2).'<x>'.substr($ra[$i], 2); // add in <> to nerf the tag
+			$val = preg_replace($pattern, $replacement, $val); // filter out the hex tags
+			if ($val_before == $val) {
+				// no replacements were made, so exit the loop
+				$found = false;
+			} // end if
+		} // end for
+	} // end while
+
+	return $val;
+
+} // end RemoveXSS
 
 // **                                                                                  **
 // **                                                                                  **

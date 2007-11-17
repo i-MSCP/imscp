@@ -182,7 +182,6 @@ function printPHP_SELF($case) {
 	$ftpserver          = urlEncode2($net2ftp_globals["ftpserver"]);
 	$ftpserverport      = urlEncode2($net2ftp_globals["ftpserverport"]);
 	$username           = urlEncode2($net2ftp_globals["username"]);
-//	$password_encrypted = urlEncode2($net2ftp_globals["password_encrypted"]);
 	$language           = urlEncode2($net2ftp_globals["language"]);
 	$skin               = urlEncode2($net2ftp_globals["skin"]);
 	$ftpmode            = urlEncode2($net2ftp_globals["ftpmode"]);
@@ -195,6 +194,16 @@ function printPHP_SELF($case) {
 	$state2_html        = urlEncode2($net2ftp_globals["state2"]);
 	$directory_html     = urlEncode2($net2ftp_globals["directory"]);
 	$entry_html         = urlEncode2($net2ftp_globals["entry"]);
+
+	if (isset($_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]]) == true) { 
+		$password_encrypted = urlEncode2($_SESSION["net2ftp_password_encrypted_" . $net2ftp_globals["ftpserver"] . $net2ftp_globals["username"]]);
+	}
+	elseif (isset($net2ftp_globals["password_encrypted"]) == true) { 
+		$password_encrypted = urlEncode2($net2ftp_globals["password_encrypted"]); 
+	}
+	else {
+		$password_encrypted = "";
+	}
 
 // From /includes/registerglobals.inc.php
 	$URL = $net2ftp_globals["action_url"];
@@ -211,8 +220,15 @@ function printPHP_SELF($case) {
 	elseif ($case == "bookmark") {
 		$URL .= "ftpserver=$ftpserver&amp;amp;ftpserverport=$ftpserverport&amp;amp;username=$username&amp;amp;language=$language&amp;amp;skin=$skin&amp;amp;ftpmode=$ftpmode&amp;amp;passivemode=$passivemode&amp;amp;sslconnect=$sslconnect&amp;amp;viewmode=$viewmode&amp;amp;sort=$sort&amp;amp;sortorder=$sortorder&amp;amp;state=login_small&amp;amp;state2=bookmark&amp;amp;go_to_state=$state_html&amp;amp;go_to_state2=$state2_html&amp;amp;directory=$directory_html&amp;amp;entry=$entry_html";
 	}
+// Jupload java applet: the cookie information is added to the page using javascript (/skins/blue/jupload1.template.php)
 	elseif ($case == "jupload") {
 		$URL .= "ftpserver=$ftpserver&amp;ftpserverport=$ftpserverport&amp;username=$username&amp;language=$language&amp;skin=$skin&amp;ftpmode=$ftpmode&amp;passivemode=$passivemode&amp;sslconnect=$sslconnect&amp;directory=$directory_html&amp;state=jupload&amp;screen=2";
+	}
+// SWFUpload Flash applet: cookie information can't be used, so the password must be added to the URL
+// See also http://swfupload.mammon.se/forum/viewtopic.php?pid=172
+// The URL must also use & instead of &amp;
+	elseif ($case == "swfupload") {
+		$URL .= "ftpserver=$ftpserver&ftpserverport=$ftpserverport&username=$username&password_encrypted=$password_encrypted&language=$language&skin=$skin&ftpmode=$ftpmode&passivemode=$passivemode&sslconnect=$sslconnect&directory=$directory_html&state=upload&screen=2";
 	}
 	elseif ($case == "view") {
 		$URL .= "ftpserver=$ftpserver&amp;ftpserverport=$ftpserverport&amp;username=$username&amp;language=$language&amp;skin=$skin&amp;ftpmode=$ftpmode&amp;passivemode=$passivemode&amp;sslconnect=$sslconnect&amp;viewmode=$viewmode&amp;sort=$sort&amp;sortorder=$sortorder&amp;state=$state_html&amp;state2=image&amp;directory=$directory_html&amp;entry=$entry_html";
@@ -260,7 +276,7 @@ function checkAuthorization($ftpserver, $ftpserverport, $directory, $username) {
 // -------------------------------------------------------------------------
 // Check if the FTP server is in the list of those that may be accessed
 // -------------------------------------------------------------------------
-	if ($net2ftp_settings["allowed_ftpservers"][1] != "ALL") {       // net2ftp_allowed_servers contains either "ALL", either a list of allowed servers
+	if ($net2ftp_settings["allowed_ftpservers"][1] != "ALL") {
 		$result1 = array_search($ftpserver, $net2ftp_settings["allowed_ftpservers"]);
 		if ($result1 == false) {
 			$errormessage = __("The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers.", $ftpserver);
@@ -284,19 +300,6 @@ function checkAuthorization($ftpserver, $ftpserverport, $directory, $username) {
 
 
 // -------------------------------------------------------------------------
-// Check if the IP address is in the list of banned IP addresses
-// -------------------------------------------------------------------------
-	if (isset($net2ftp_settings["banned_addresses"][1]) == true && $net2ftp_settings["banned_addresses"][1] != "NONE") {
-		$result3 = array_search($net2ftp_globals["REMOTE_ADDR"], $net2ftp_settings["banned_addresses"]);
-		if ($result3 != false) {
-			$errormessage = __("Your IP address (%1\$s) is in the list of banned IP addresses.", $net2ftp_globals["REMOTE_ADDR"]);
-			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
-			return false;
-		}
-	}
-
-
-// -------------------------------------------------------------------------
 // Check if the FTP server port is OK
 // -------------------------------------------------------------------------
 // Do not perform this check if ALL ports are allowed
@@ -308,6 +311,35 @@ function checkAuthorization($ftpserver, $ftpserverport, $directory, $username) {
 			return false;
 		}
 	}
+
+
+// -------------------------------------------------------------------------
+// Check if the IP address is in the list of those that may be used
+// -------------------------------------------------------------------------
+	if ($net2ftp_settings["allowed_addresses"][1] != "ALL") {
+		$result3 = array_search($net2ftp_globals["REMOTE_ADDR"], $net2ftp_settings["allowed_addresses"]);
+		if ($result3 == false) {
+			$errormessage = __("Your IP address (%1\$s) is not in the list of allowed IP addresses.", $net2ftp_globals["REMOTE_ADDR"]);
+			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
+			return false;
+		}
+	}
+
+
+// -------------------------------------------------------------------------
+// Check if the IP address is in the list of those that may NOT be used
+// -------------------------------------------------------------------------
+	if (isset($net2ftp_settings["banned_addresses"][1]) == true && $net2ftp_settings["banned_addresses"][1] != "NONE") {
+		$result4 = array_search($net2ftp_globals["REMOTE_ADDR"], $net2ftp_settings["banned_addresses"]);
+		if ($result4 != false) {
+			$errormessage = __("Your IP address (%1\$s) is in the list of banned IP addresses.", $net2ftp_globals["REMOTE_ADDR"]);
+			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
+			return false;
+		}
+	}
+
+
+
 
 
 // -------------------------------------------------------------------------
@@ -578,7 +610,6 @@ function logAccess() {
 
 // --------------
 // This function logs user accesses to the site
-// Used in the function HtmlBegin(), see file html.inc.php
 // --------------
 
 // -------------------------------------------------------------------------
@@ -606,13 +637,13 @@ function logAccess() {
 			$consumption_datatransfer_safe  = addslashes($net2ftp_globals["consumption_datatransfer"]);
 		}
 		else {
-			$consumption_datatransfer_safe  = "";
+			$consumption_datatransfer_safe  = "0";
 		}
 		if (isset($net2ftp_globals["consumption_executiontime"]) == true) {
 			$consumption_executiontime_safe = addslashes($net2ftp_globals["consumption_executiontime"]);
 		}
 		else {
-			$consumption_executiontime_safe = "";
+			$consumption_executiontime_safe = "0";
 		}
 		$net2ftp_ftpserver_safe         = addslashes($net2ftp_globals["ftpserver"]);
 		$net2ftp_username_safe          = addslashes($net2ftp_globals["username"]); 
@@ -634,15 +665,15 @@ function logAccess() {
 // -------------------------------------------------------------------------
 		$date = date("Y-m-d");
 		$time = date("H:i:s");
-		$sqlquerystring = "INSERT INTO net2ftp_log_access VALUES('', '$date', '$time', '$REMOTE_ADDR_safe', '$REMOTE_PORT_safe', '$HTTP_USER_AGENT_safe', '$PHP_SELF_safe', '$consumption_datatransfer_safe', '$consumption_executiontime_safe', '$net2ftp_ftpserver_safe', '$net2ftp_username_safe', '$state_safe', '$state2_safe', '$screen_safe', '$directory_safe', '$entry_safe', '$HTTP_REFERER_safe')";
-		$result1 = @mysql_query($sqlquerystring);
+		$sqlquery1 = "INSERT INTO net2ftp_log_access VALUES(null, '$date', '$time', '$REMOTE_ADDR_safe', '$REMOTE_PORT_safe', '$HTTP_USER_AGENT_safe', '$PHP_SELF_safe', '$consumption_datatransfer_safe', '$consumption_executiontime_safe', '$net2ftp_ftpserver_safe', '$net2ftp_username_safe', '$state_safe', '$state2_safe', '$screen_safe', '$directory_safe', '$entry_safe', '$HTTP_REFERER_safe')";
+		$result1 = @mysql_query($sqlquery1);
 		if ($result1 == false) { 
 			$errormessage = __("Unable to execute the SQL query.");
 			setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 			return false;
 		}
 
-//		$affectedofrows = @mysql_affected_rows($mydb);
+		$nrofrows1 = @mysql_affected_rows($mydb);
 
 		$net2ftp_globals["log_access_id"] = mysql_insert_id();
 
@@ -714,9 +745,12 @@ function logError() {
 
 		$debug_backtrace = "";
 		$i = sizeof($net2ftp_result["debug_backtrace"])-1;
-		$debug_backtrace .= addslashes("function " . $net2ftp_result["debug_backtrace"][$i]["function"] . " (" . $net2ftp_result["debug_backtrace"][$i]["file"] . " on line " . $net2ftp_result["debug_backtrace"][$i]["line"] . ")\n");
-		for ($j=0; $j<sizeof($net2ftp_result["debug_backtrace"][$i]["args"]); $j++) {
-			$debug_backtrace .= addslashes("argument $j: " . $net2ftp_result["debug_backtrace"][$i]["args"][$j] . "\n");
+
+		if ($i > 0) {
+			$debug_backtrace .= addslashes("function " . $net2ftp_result["debug_backtrace"][$i]["function"] . " (" . $net2ftp_result["debug_backtrace"][$i]["file"] . " on line " . $net2ftp_result["debug_backtrace"][$i]["line"] . ")\n");
+			for ($j=0; $j<sizeof($net2ftp_result["debug_backtrace"][$i]["args"]); $j++) {
+				$debug_backtrace .= addslashes("argument $j: " . $net2ftp_result["debug_backtrace"][$i]["args"][$j] . "\n");
+			}
 		}
 
 // -------------------------------------------------------------------------

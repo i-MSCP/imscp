@@ -2,13 +2,14 @@
  * pt_br lang variables
  * Brazilian Portuguese
  *
- * Authors :
+ * Author
+ * Revision and modifications:
  *           Marcio Barbosa (mpg) <mpg@mpg.com.br>
- * Last Updated : November 26, 2005
- * TinyMCE Version : 2.0RC4
+ * First Release : November 26, 2005 - TinyMCE Version : 2.0RC4
+ * Last Updated : November 20, 2006 - TinyMCE Version : 2.0.8
  */
 tinyMCE.addToLang('emotions',{
-title : 'Inserir Emoticons',
+title : 'Inserir emoticons',
 desc : 'Emoticons',
 cool : 'Legal',
 cry : 'Chorando',
@@ -22,7 +23,7 @@ money_mouth : 'Interesseiro',
 sealed : 'Lábios fechados',
 smile : 'Sorriso',
 surprised : 'Surpreso',
-tongue_out : 'Mostrar a língüa',
+tongue_out : 'Mostrar a língua',
 undecided : 'Indeciso',
 wink : 'Piscar',
 yell : 'Grito'

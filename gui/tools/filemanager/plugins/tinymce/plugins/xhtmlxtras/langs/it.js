@@ -2,8 +2,8 @@
  * IT lang variables
  * 
  * Author : Luciano Vernaschi <luciano@virgilio.it>
- * Last Updated : Oct. 17th, 2006
- * TinyMCE Version : 2.0.7
+ * Last Updated : Mar. 1st, 2007
+ * TinyMCE Version : 2.1.0
  */
 
 tinyMCE.addToLang('xhtmlxtras',{
@@ -34,5 +34,10 @@ title_acronym_element : 'Elemento acronimo',
 title_abbr_element : 'Elemento abbreviazione',
 title_cite_element : 'Elemento citazione',
 remove : 'Rimuovi ',
-not_set : '--non impostato--'
+not_set : '--non impostato--',
+insert_date : 'Inserisci data e ora correnti',
+option_ltr : 'Da sinistra a destra',
+option_rtl : 'Da destra a sinistra',
+attribs_desc : 'Inserisci o modifica attributi',
+attribs_title : 'Inserisci o modifica attributi'
 });

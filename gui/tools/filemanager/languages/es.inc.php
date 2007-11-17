@@ -83,34 +83,34 @@ $net2ftp_messages["iso-8859-1"] = "iso-8859-1";
 // It should fit in the status textbox
 
 $net2ftp_messages["Connecting to the FTP server"] = "Conectando con el servidor FTP";
-$net2ftp_messages["Logging into the FTP server"] = "Logging into the FTP server";
-$net2ftp_messages["Setting the passive mode"] = "Setting the passive mode";
-$net2ftp_messages["Getting the FTP system type"] = "Getting the FTP system type";
-$net2ftp_messages["Changing the directory"] = "Changing the directory";
-$net2ftp_messages["Getting the current directory"] = "Getting the current directory";
+$net2ftp_messages["Logging into the FTP server"] = "iniciando sesion";
+$net2ftp_messages["Setting the passive mode"] = "Modo pasivo";
+$net2ftp_messages["Getting the FTP system type"] = "Obteniendo tipo de sistema FTP";
+$net2ftp_messages["Changing the directory"] = "Cambiando de carpeta";
+$net2ftp_messages["Getting the current directory"] = "Obteniendo directorio";
 $net2ftp_messages["Getting the list of directories and files"] = "Obteniendo la lista de directorios y archivos";
-$net2ftp_messages["Parsing the list of directories and files"] = "Parsing the list of directories and files";
-$net2ftp_messages["Logging out of the FTP server"] = "Logging out of the FTP server";
+$net2ftp_messages["Parsing the list of directories and files"] = "Parseando lista de directorios y archivos";
+$net2ftp_messages["Logging out of the FTP server"] = "Cerrando sesion";
 $net2ftp_messages["Getting the list of directories and files"] = "Obteniendo la lista de directorios y archivos";
 $net2ftp_messages["Printing the list of directories and files"] = "Organizando la lista de archivos y directorios";
 $net2ftp_messages["Processing the entries"] = "Procesando las peticiones";
-$net2ftp_messages["Processing entry %1\$s"] = "Processing entry %1\$s";
+$net2ftp_messages["Processing entry %1\$s"] = "Procesando entrada %1\$s";
 $net2ftp_messages["Checking files"] = "Comprobando la estructura de los archivos";
 $net2ftp_messages["Transferring files to the FTP server"] = "Transfiriendo archivos al servidor FTP";
 $net2ftp_messages["Decompressing archives and transferring files"] = "Descomprimiendo y transfiriendo archivos";
 $net2ftp_messages["Searching the files..."] = "Buscando en los archivos...";
 $net2ftp_messages["Uploading new file"] = "Transfiriendo el archivo nuevo";
-$net2ftp_messages["Reading the file"] = "Reading the file";
-$net2ftp_messages["Parsing the file"] = "Parsing the file";
+$net2ftp_messages["Reading the file"] = "leyendo archivo";
+$net2ftp_messages["Parsing the file"] = "Parseando archivo";
 $net2ftp_messages["Reading the new file"] = "Leyendo el archivo nuevo";
 $net2ftp_messages["Reading the old file"] = "Leyendo el archivo viejo";
 $net2ftp_messages["Comparing the 2 files"] = "Comparando los dos archivos";
 $net2ftp_messages["Printing the comparison"] = "Imprimiendo la comparación de archivos";
-$net2ftp_messages["Sending FTP command %1\$s of %2\$s"] = "Sending FTP command %1\$s of %2\$s";
-$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "Getting archive %1\$s of %2\$s from the FTP server";
-$net2ftp_messages["Creating a temporary directory on the FTP server"] = "Creating a temporary directory on the FTP server";
-$net2ftp_messages["Setting the permissions of the temporary directory"] = "Setting the permissions of the temporary directory";
-$net2ftp_messages["Copying the net2ftp installer script to the FTP server"] = "Copying the net2ftp installer script to the FTP server";
+$net2ftp_messages["Sending FTP command %1\$s of %2\$s"] = "Mandando comandos FTP %1\$s de %2\$s";
+$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "Obteniendo archivos %1\$s de %2\$s desde sitio FTP";
+$net2ftp_messages["Creating a temporary directory on the FTP server"] = "creando un directorio temporal en el sitio FTP";
+$net2ftp_messages["Setting the permissions of the temporary directory"] = "Configurando los permisos del directorio temporal en el sitio FTP";
+$net2ftp_messages["Copying the net2ftp installer script to the FTP server"] = "copiando el instalador net2ftp script al servidor FTP";
 $net2ftp_messages["Script finished in %1\$s seconds"] = "El programa termino en %1\$s segundos";
 $net2ftp_messages["Script halted"] = "El programa se ha detenido";
 
@@ -121,17 +121,17 @@ $net2ftp_messages["Please wait..."] = "Por favor espera...";
 // -------------------------------------------------------------------------
 // index.php
 // -------------------------------------------------------------------------
-$net2ftp_messages["Unexpected state string: %1\$s. Exiting."] = "Unexpected state string: %1\$s. Exiting.";
+$net2ftp_messages["Unexpected state string: %1\$s. Exiting."] = "Estado inesperado string: %1\$s. Exiting.";
 $net2ftp_messages["This beta function is not activated on this server."] = "Esta función beta no esta activada en el servidor.";
-$net2ftp_messages["This function has been disabled by the Administrator of this website."] = "This function has been disabled by the Administrator of this website.";
+$net2ftp_messages["This function has been disabled by the Administrator of this website."] = "Esta funcion a sido deshabilitada por el administrador del sitio web.";
 
 
 // -------------------------------------------------------------------------
 // /includes/browse.inc.php
 // -------------------------------------------------------------------------
 $net2ftp_messages["The directory <b>%1\$s</b> does not exist or could not be selected, so the directory <b>%2\$s</b> is shown instead."] = "The directory <b>%1\$s</b> does not exist or could not be selected, so the directory <b>%2\$s</b> is shown instead.";
-$net2ftp_messages["Your root directory <b>%1\$s</b> does not exist or could not be selected."] = "Your root directory <b>%1\$s</b> does not exist or could not be selected.";
-$net2ftp_messages["The directory <b>%1\$s</b> could not be selected - you may not have sufficient rights to view this directory, or it may not exist."] = "The directory <b>%1\$s</b> could not be selected - you may not have sufficient rights to view this directory, or it may not exist.";
+$net2ftp_messages["Your root directory <b>%1\$s</b> does not exist or could not be selected."] = "Tu directorio root <b>%1\$s</b> no existe o no a sido seleccionado.";
+$net2ftp_messages["The directory <b>%1\$s</b> could not be selected - you may not have sufficient rights to view this directory, or it may not exist."] = "El directorio <b>%1\$s</b> No ha sido seleccionado - you may not have sufficient rights to view this directory, or it may not exist.";
 $net2ftp_messages["Entries which contain banned keywords can't be managed using net2ftp. This is to avoid Paypal or Ebay scams from being uploaded through net2ftp."] = "Entries which contain banned keywords can't be managed using net2ftp. This is to avoid Paypal or Ebay scams from being uploaded through net2ftp.";
 $net2ftp_messages["Files which are too big can't be downloaded, uploaded, copied, moved, searched, zipped, unzipped, viewed or edited; they can only be renamed, chmodded or deleted."] = "Files which are too big can't be downloaded, uploaded, copied, moved, searched, zipped, unzipped, viewed or edited; they can only be renamed, chmodded or deleted.";
 $net2ftp_messages["Execute %1\$s in a new window"] = "Ejecutar %1\$s en una ventana nueva";
@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "¡Por favor
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "El servidor FTP <b>%1\$s</b> no esta en la lista de servidores permitidos.";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "El servidor FTP <b>%1\$s</b> esta en la lista de servidores no permitidos.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Tu dirección IP (%1\$s) esta en la lista de IPS no permitidas.";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "El puerto %1\$s del servidor FTP no puede ser utilizado.";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Tu dirección IP (%1\$s) esta en la lista de IPS no permitidas.";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "Table net2ftp_users contains duplicate rows.";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "Table net2ftp_log_consumption_ipaddress contains duplicate entries.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "Table net2ftp_log_consumption_ftpserver could not be updated.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "Table net2ftp_log_consumption_ftpserver contains duplicate entries.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "Nuevo archivo";
 $net2ftp_messages["HTML templates"] = "HTML templates";
 $net2ftp_messages["Upload"] = "Subir archivo";
 $net2ftp_messages["Java Upload"] = "Java Upload";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "Avanzado";
 $net2ftp_messages["Copy"] = "Copiar";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "Crear nuevo archivo
 $net2ftp_messages["Create a website easily using ready-made templates"] = "Create a website easily using ready-made templates";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "Transferir un archivo al directorio %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "Upload directories and files using a Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "Ir a las funciones avanzadas";
 $net2ftp_messages["Copy the selected entries"] = "Copiar los elementos seleccionados";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "Haz click par
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "Haz click para organizar los %1\$s en orden ascendente";
 $net2ftp_messages["Ascending order"] = "Orden ascendente";
 $net2ftp_messages["Descending order"] = "Orden descendente";
+$net2ftp_messages["Upload files"] = "Subir tus archivos";
 $net2ftp_messages["Up"] = "Arriba";
 $net2ftp_messages["Click to check or uncheck all rows"] = "Click to check or uncheck all rows";
 $net2ftp_messages["All"] = "All";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "Respuesta FTP no reconocida";
 $net2ftp_messages["Number"] = "Number";
 $net2ftp_messages["Size"] = "Tamaño";
 $net2ftp_messages["Skipped"] = "Skipped";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "Idioma:";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "Arbol de directorios";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "Ejecutar %1\$s en una ventana nueva";
 $net2ftp_messages["This file is not accessible from the web"] = "This file is not accessible from the web";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "Haz doble click para ir al subdirectorio:";
@@ -1040,37 +1047,37 @@ $net2ftp_messages["Note: to use this applet, Sun's Java plugin must be installed
 if ($net2ftp_globals["state"] == "login") {
 // -------------------------------------------------------------------------
 $net2ftp_messages["Login!"] = "Login!";
-$net2ftp_messages["Once you are logged in, you will be able to:"] = "Once you are logged in, you will be able to:";
-$net2ftp_messages["Navigate the FTP server"] = "Navigate the FTP server";
-$net2ftp_messages["Once you have logged in, you can browse from directory to directory and see all the subdirectories and files."] = "Once you have logged in, you can browse from directory to directory and see all the subdirectories and files.";
-$net2ftp_messages["Upload files"] = "Upload files";
-$net2ftp_messages["There are 3 different ways to upload files: the standard upload form, the upload-and-unzip functionality, and the Java Applet."] = "There are 3 different ways to upload files: the standard upload form, the upload-and-unzip functionality, and the Java Applet.";
-$net2ftp_messages["Download files"] = "Download files";
-$net2ftp_messages["Click on a filename to quickly download one file.<br />Select multiple files and click on Download; the selected files will be downloaded in a zip archive."] = "Click on a filename to quickly download one file.<br />Select multiple files and click on Download; the selected files will be downloaded in a zip archive.";
-$net2ftp_messages["Zip files"] = "Zip files";
-$net2ftp_messages["... and save the zip archive on the FTP server, or email it to someone."] = "... and save the zip archive on the FTP server, or email it to someone.";
-$net2ftp_messages["Unzip files"] = "Unzip files";
-$net2ftp_messages["Different formats are supported: .zip, .tar, .tgz and .gz."] = "Different formats are supported: .zip, .tar, .tgz and .gz.";
-$net2ftp_messages["Install software"] = "Install software";
-$net2ftp_messages["Choose from a list of popular applications (PHP required)."] = "Choose from a list of popular applications (PHP required).";
-$net2ftp_messages["Copy, move and delete"] = "Copy, move and delete";
-$net2ftp_messages["Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted."] = "Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted.";
-$net2ftp_messages["Copy or move to a 2nd FTP server"] = "Copy or move to a 2nd FTP server";
-$net2ftp_messages["Handy to import files to your FTP server, or to export files from your FTP server to another FTP server."] = "Handy to import files to your FTP server, or to export files from your FTP server to another FTP server.";
-$net2ftp_messages["Rename and chmod"] = "Rename and chmod";
-$net2ftp_messages["Chmod handles directories recursively."] = "Chmod handles directories recursively.";
-$net2ftp_messages["View code with syntax highlighting"] = "View code with syntax highlighting";
-$net2ftp_messages["PHP functions are linked to the documentation on php.net."] = "PHP functions are linked to the documentation on php.net.";
-$net2ftp_messages["Plain text editor"] = "Plain text editor";
-$net2ftp_messages["Edit text right from your browser; every time you save the changes the new file is transferred to the FTP server."] = "Edit text right from your browser; every time you save the changes the new file is transferred to the FTP server.";
-$net2ftp_messages["HTML editors"] = "HTML editors";
-$net2ftp_messages["Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 2 different editors to choose from."] = "Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 2 different editors to choose from.";
-$net2ftp_messages["Code editor"] = "Code editor";
-$net2ftp_messages["Edit HTML and PHP in an editor with syntax highlighting."] = "Edit HTML and PHP in an editor with syntax highlighting.";
-$net2ftp_messages["Search for words or phrases"] = "Search for words or phrases";
-$net2ftp_messages["Filter out files based on the filename, last modification time and filesize."] = "Filter out files based on the filename, last modification time and filesize.";
-$net2ftp_messages["Calculate size"] = "Calculate size";
-$net2ftp_messages["Calculate the size of directories and files."] = "Calculate the size of directories and files.";
+$net2ftp_messages["Once you are logged in, you will be able to:"] = "Una vez iniciada la sesion, podras ...";
+$net2ftp_messages["Navigate the FTP server"] = "Navegar en el FTP server";
+$net2ftp_messages["Once you have logged in, you can browse from directory to directory and see all the subdirectories and files."] = "Si has iniciado una sesion podras ver tus directorios y archivos.";
+$net2ftp_messages["Upload files"] = "Subir tus archivos";
+$net2ftp_messages["There are 3 different ways to upload files: the standard upload form, the upload-and-unzip functionality, and the Java Applet."] = "Hay tres formas diferentes de subir archivos: la estandar, subir y compimir, and mediante un java applet.";
+$net2ftp_messages["Download files"] = "Descargar archivos";
+$net2ftp_messages["Click on a filename to quickly download one file.<br />Select multiple files and click on Download; the selected files will be downloaded in a zip archive."] = "Hacer click en el nombre de archivo para su descarga instantanea.<br />Seleccionar varios archivos a la vez y pulsar en el boton de descarga; Los archivos seleccionados seran descargados en un archivo .zip.";
+$net2ftp_messages["Zip files"] = "Archivos zip";
+$net2ftp_messages["... and save the zip archive on the FTP server, or email it to someone."] = "... y guardar el archivo zip en el servidor FTP, o mandarlo de la misma manera por correo.";
+$net2ftp_messages["Unzip files"] = "Descomprimir archivos";
+$net2ftp_messages["Different formats are supported: .zip, .tar, .tgz and .gz."] = "Diferentes formatos soportados: .zip, .tar, .tgz and .gz.";
+$net2ftp_messages["Install software"] = "";
+$net2ftp_messages["Choose from a list of popular applications (PHP required)."] = "Elegir en una lista de aplicaciones (requerido PHP).";
+$net2ftp_messages["Copy, move and delete"] = "Copiar, mover y borrar";
+$net2ftp_messages["Directories are handled recursively, meaning that their content (subdirectories and files) will also be copied, moved or deleted."] = "El contenido de los subdirectories y los archivos también será copiado, movido o suprimido.";
+$net2ftp_messages["Copy or move to a 2nd FTP server"] = "Copiar o mover directorios a un segundo FTP server";
+$net2ftp_messages["Handy to import files to your FTP server, or to export files from your FTP server to another FTP server."] = "Puedes exportar tus archivos de un servidor FTP a otro.";
+$net2ftp_messages["Rename and chmod"] = "renombrar y cambiar permisos";
+$net2ftp_messages["Chmod handles directories recursively."] = "Manejar permisos (chmod) en subdirectorios y archivos de carpetas las cuales manejas.";
+$net2ftp_messages["View code with syntax highlighting"] = "Ver el codigo destacando las sintaxis.";
+$net2ftp_messages["PHP functions are linked to the documentation on php.net."] = "las funciones PHP estan vincualadas a la documentacion en php.net.";
+$net2ftp_messages["Plain text editor"] = "Editor de texto plano";
+$net2ftp_messages["Edit text right from your browser; every time you save the changes the new file is transferred to the FTP server."] = "Editar el texto desde tu explorador; siempre que guardes los cambios se transferiran al servidor FTP.";
+$net2ftp_messages["HTML editors"] = "Editores de HTML";
+$net2ftp_messages["Edit HTML a What-You-See-Is-What-You-Get (WYSIWYG) form; there are 2 different editors to choose from."] = "Puedes elegir entre dos editores de HTML.";
+$net2ftp_messages["Code editor"] = "Editor de codigor";
+$net2ftp_messages["Edit HTML and PHP in an editor with syntax highlighting."] = "Editar HTML y PHP usando un editor editor destacando la sintaxis.";
+$net2ftp_messages["Search for words or phrases"] = "Búsqueda para las palabras o las frases";
+$net2ftp_messages["Filter out files based on the filename, last modification time and filesize."] = "Filtrar los listados archivos basandose en el nombre de fichero, la vez pasada de la modificación y filesize.";
+$net2ftp_messages["Calculate size"] = "Calcular tamaño";
+$net2ftp_messages["Calculate the size of directories and files."] = "Calcular el tamaño de directorios y archivos.";
 
 $net2ftp_messages["FTP server"] = "Servidor FTP";
 $net2ftp_messages["Example"] = "Ejemplo";
@@ -1084,12 +1091,12 @@ $net2ftp_messages["Language"] = "Idioma";
 $net2ftp_messages["Skin"] = "Plantilla";
 $net2ftp_messages["FTP mode"] = "FTP mode";
 $net2ftp_messages["Automatic"] = "Automatic";
-$net2ftp_messages["Login"] = "Login";
+$net2ftp_messages["Login"] = "Iniciar";
 $net2ftp_messages["Clear cookies"] = "Borrar cookies";
 $net2ftp_messages["Admin"] = "Admin";
-$net2ftp_messages["Please enter an FTP server."] = "Please enter an FTP server.";
-$net2ftp_messages["Please enter a username."] = "Please enter a username.";
-$net2ftp_messages["Please enter a password."] = "Please enter a password.";
+$net2ftp_messages["Please enter an FTP server."] = "Porfavor introduzca un servidor FTP.";
+$net2ftp_messages["Please enter a username."] = "Porfavor, introduczca un nombre de usuario.";
+$net2ftp_messages["Please enter a password."] = "Porfavor, introduczca una contraseña.";
 
 } // end login
 
@@ -1099,13 +1106,13 @@ $net2ftp_messages["Please enter a password."] = "Please enter a password.";
 if ($net2ftp_globals["state"] == "login_small") {
 // -------------------------------------------------------------------------
 
-$net2ftp_messages["Please enter your Administrator username and password."] = "Please enter your Administrator username and password.";
-$net2ftp_messages["Please enter your username and password for FTP server <b>%1\$s</b>."] = "Please enter your username and password for FTP server <b>%1\$s</b>.";
+$net2ftp_messages["Please enter your Administrator username and password."] = "Porfavor introduzca su nombre de usuario y contraseña de administrador.";
+$net2ftp_messages["Please enter your username and password for FTP server <b>%1\$s</b>."] = "Porfqavor introduce tu usuario y contraseña para <b>%1\$s</b>.";
 $net2ftp_messages["Username"] = "Nombre de Usuario";
-$net2ftp_messages["Your session has expired; please enter your password for FTP server <b>%1\$s</b> to continue."] = "Your session has expired; please enter your password for FTP server <b>%1\$s</b> to continue.";
-$net2ftp_messages["Your IP address has changed; please enter your password for FTP server <b>%1\$s</b> to continue."] = "Your IP address has changed; please enter your password for FTP server <b>%1\$s</b> to continue.";
+$net2ftp_messages["Your session has expired; please enter your password for FTP server <b>%1\$s</b> to continue."] = "Tu sesion a sido cancelada; porfavor introduce tu contraseña para el servidor FTP <b>%1\$s</b> y continua.";
+$net2ftp_messages["Your IP address has changed; please enter your password for FTP server <b>%1\$s</b> to continue."] = "Tu direccion IP a cambiado; Porfavor introduzca su contraseña para el servidor FTP <b>%1\$s</b> para continuar.";
 $net2ftp_messages["Password"] = "Contraseña";
-$net2ftp_messages["Login"] = "Login";
+$net2ftp_messages["Login"] = "Iniciar";
 $net2ftp_messages["Continue"] = "Continue";
 
 } // end login_small
@@ -1117,14 +1124,14 @@ if ($net2ftp_globals["state"] == "logout") {
 // -------------------------------------------------------------------------
 
 // logout.inc.php
-$net2ftp_messages["Login page"] = "Login page";
+$net2ftp_messages["Login page"] = "Pagina de login";
 
 // logout.template.php
-$net2ftp_messages["You have logged out from the FTP server. To log back in, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">follow this link</a>."] = "You have logged out from the FTP server. To log back in, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">follow this link</a>.";
-$net2ftp_messages["Note: other users of this computer could click on the browser's Back button and access the FTP server."] = "Note: other users of this computer could click on the browser's Back button and access the FTP server.";
-$net2ftp_messages["To prevent this, you must close all browser windows."] = "To prevent this, you must close all browser windows.";
-$net2ftp_messages["Close"] = "Close";
-$net2ftp_messages["Click here to close this window"] = "Click here to close this window";
+$net2ftp_messages["You have logged out from the FTP server. To log back in, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">follow this link</a>."] = "Has cerrado tu sesion en el servidor FTP. Para entrar de nuevo a la pagina de inicio de sesion, <a href=\"%1\$s\" title=\"Login page (accesskey l)\" accesskey=\"l\">Click aqui</a>.";
+$net2ftp_messages["Note: other users of this computer could click on the browser's Back button and access the FTP server."] = "";
+$net2ftp_messages["To prevent this, you must close all browser windows."] = "Para cerrar el explorador pulsa Cerrar.";
+$net2ftp_messages["Close"] = "Cerrar";
+$net2ftp_messages["Click here to close this window"] = "Click aqui para cerrar la ventana";
 
 } // end logout
 
@@ -1137,7 +1144,7 @@ $net2ftp_messages["Create new directories"] = "Crear nuevo directorio";
 $net2ftp_messages["The new directories will be created in <b>%1\$s</b>."] = "El nuevo directorio será creado dentro de <b>%1\$s</b>.";
 $net2ftp_messages["New directory name:"] = "Nombre del directorio nuevo:";
 $net2ftp_messages["Directory <b>%1\$s</b> was successfully created."] = "El directorio <b>%1\$s</b> fue creado.";
-$net2ftp_messages["Directory <b>%1\$s</b> could not be created."] = "Directory <b>%1\$s</b> could not be created.";
+$net2ftp_messages["Directory <b>%1\$s</b> could not be created."] = "El directorio <b>%1\$s</b> no puedo ser creado.";
 
 } // end newdir
 
@@ -1148,12 +1155,12 @@ if ($net2ftp_globals["state"] == "raw") {
 // -------------------------------------------------------------------------
 
 // /modules/raw/raw.inc.php
-$net2ftp_messages["Send arbitrary FTP commands"] = "Send arbitrary FTP commands";
+$net2ftp_messages["Send arbitrary FTP commands"] = "Enviar los comandos arbitrarios del ftp";
 
 
 // /skins/[skin]/raw1.template.php
-$net2ftp_messages["List of commands:"] = "List of commands:";
-$net2ftp_messages["FTP server response:"] = "FTP server response:";
+$net2ftp_messages["List of commands:"] = "Lista de comandos:";
+$net2ftp_messages["FTP server response:"] = "Respuesta del ftp server:";
 
 } // end raw
 
@@ -1166,9 +1173,9 @@ $net2ftp_messages["Rename directories and files"] = "Renombrar directorios y arc
 $net2ftp_messages["Old name: "] = "Nombre antiguo: ";
 $net2ftp_messages["New name: "] = "Nombre nuevo: ";
 $net2ftp_messages["The new name may not contain any dots. This entry was not renamed to <b>%1\$s</b>"] = "El nombre nuevo no puede contener puntos. El elemento no fue renombrado a <b>%1\$s</b>";
-$net2ftp_messages["The new name may not contain any banned keywords. This entry was not renamed to <b>%1\$s</b>"] = "The new name may not contain any banned keywords. This entry was not renamed to <b>%1\$s</b>";
+$net2ftp_messages["The new name may not contain any banned keywords. This entry was not renamed to <b>%1\$s</b>"] = "El nuevo nombre no puede contener ninguna de las palabras clave prohibidas.<b>%1\$s</b> no fue renombrado";
 $net2ftp_messages["<b>%1\$s</b> was successfully renamed to <b>%2\$s</b>"] = "<b>%1\$s</b> fue renombrado a <b>%2\$s</b>";
-$net2ftp_messages["<b>%1\$s</b> could not be renamed to <b>%2\$s</b>"] = "<b>%1\$s</b> could not be renamed to <b>%2\$s</b>";
+$net2ftp_messages["<b>%1\$s</b> could not be renamed to <b>%2\$s</b>"] = "<b>%1\$s</b> no pudo ser renombrado a <b>%2\$s</b>";
 
 } // end rename
 
@@ -1180,14 +1187,14 @@ if ($net2ftp_globals["state"] == "unzip") {
 
 // /modules/unzip/unzip.inc.php
 $net2ftp_messages["Unzip archives"] = "Unzip archives";
-$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "Getting archive %1\$s of %2\$s from the FTP server";
-$net2ftp_messages["Unable to get the archive <b>%1\$s</b> from the FTP server"] = "Unable to get the archive <b>%1\$s</b> from the FTP server";
+$net2ftp_messages["Getting archive %1\$s of %2\$s from the FTP server"] = "Obteniendo archivos %1\$s de %2\$s desde sitio FTP";
+$net2ftp_messages["Unable to get the archive <b>%1\$s</b> from the FTP server"] = "Incapaz de conseguir el archivo <b>%1\$s</b> del servidor FTP";
 
 // /skins/[skin]/unzip1.template.php
 $net2ftp_messages["Set all targetdirectories"] = "Especificar el directorio destino";
 $net2ftp_messages["To set a common target directory, enter that target directory in the textbox above and click on the button \"Set all targetdirectories\"."] = "Para especificar un directorio destino común, escribe el nombre del directorio en el campo que esta arriba y haz clic en \"Especificar directorio destino comun\".";
 $net2ftp_messages["Note: the target directory must already exist before anything can be copied into it."] = "Nota: El directorio destino debe existir antes de poder copiar archivos dentro de el.";
-$net2ftp_messages["Unzip archive <b>%1\$s</b> to:"] = "Unzip archive <b>%1\$s</b> to:";
+$net2ftp_messages["Unzip archive <b>%1\$s</b> to:"] = "Descomprimiendo archivo <b>%1\$s</b> a:";
 $net2ftp_messages["Target directory:"] = "Directorio destino:";
 $net2ftp_messages["Use folder names (creates subdirectories automatically)"] = "Conservar estructura del directorio (los subdirectorios serán creados automáticamente)";
 
@@ -1267,14 +1274,14 @@ if ($net2ftp_globals["state"] == "view") {
 // -------------------------------------------------------------------------
 
 // /modules/view/view.inc.php
-$net2ftp_messages["View file %1\$s"] = "View file %1\$s";
+$net2ftp_messages["View file %1\$s"] = "Ver archivo %1\$s";
 $net2ftp_messages["View image %1\$s"] = "Ver imagen %1\$s";
-$net2ftp_messages["View Macromedia ShockWave Flash movie %1\$s"] = "View Macromedia ShockWave Flash movie %1\$s";
+$net2ftp_messages["View Macromedia ShockWave Flash movie %1\$s"] = "Ver pelicula flash de tipo Macromedia ShockWave %1\$s";
 $net2ftp_messages["Image"] = "Image";
 
 // /skins/[skin]/view1.template.php
 $net2ftp_messages["Syntax highlighting powered by <a href=\"http://geshi.org\">GeSHi</a>"] = "Syntax highlighting powered by <a href=\"http://geshi.org\">GeSHi</a>";
-$net2ftp_messages["To save the image, right-click on it and choose 'Save picture as...'"] = "To save the image, right-click on it and choose 'Save picture as...'";
+$net2ftp_messages["To save the image, right-click on it and choose 'Save picture as...'"] = "Para guardar la imagen, click-derecho y escoge 'guardar como...'";
 
 } // end view
 

@@ -186,6 +186,14 @@ function ftp_getlist($conn_id, $directory) {
 			if ($listline["selectable"] == "ok" && $listline["size"] > $net2ftp_settings["max_filesize"]) { $listline["selectable"] = "too_big"; $nr_entries_too_big++; }
 		}
 
+// Form the new directory filename and encode it too
+		if ($listline["dirorfile"] == "d") {
+			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
+			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
+			$listline["newdir_url"]  = urlEncode2($listline["newdir"]);
+			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
+		}
+
 // ----------------------------------------------
 // Depending on if the line contained a directory/file/symlink/unrecognized 
 // row, store the result in different variables
@@ -316,7 +324,7 @@ function ftp_scanline($directory, $rawlistline) {
 // -------------------------------------------------------------------------
 // Global variables
 // -------------------------------------------------------------------------
-	global $net2ftp_settings;
+	global $net2ftp_settings, $net2ftp_messages;
 
 
 // -------------------------------------------------------------------------
@@ -335,22 +343,11 @@ function ftp_scanline($directory, $rawlistline) {
 		$listline["scanrule"]         = "rule-1";
 		$listline["dirorfile"]        = "$regs[1]";		// Directory ==> d, File ==> -
 		$listline["dirfilename"]      = "$regs[9]";		// Filename
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 		$listline["size"]             = "$regs[6]";		// Size
 		$listline["owner"]            = "$regs[4]";		// Owner
 		$listline["group"]            = "$regs[5]";		// Group
 		$listline["permissions"]      = "$regs[2]";		// Permissions
 		$listline["mtime"]            = "$regs[7] $regs[8]";	// Mtime -- format depends on what FTP server returns (year, month, day, hour, minutes... see above)
-
-		if ($listline["dirorfile"] == "d") {
-			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
-			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
-			$listline["newdir_url"]  = urlEncode2($listline["newdir"]);
-			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
-		}
-
 	}
 
 // ----------------------------------------------
@@ -362,20 +359,9 @@ function ftp_scanline($directory, $rawlistline) {
 		$listline["scanrule"]         = "rule-2";
 		$listline["dirorfile"]        = "$regs[1]";		// Directory ==> d, File ==> -
 		$listline["dirfilename"]      = "$regs[6]";		// Filename
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 		$listline["size"]             = "$regs[3]";		// Number/Owner/Group/Size
 		$listline["permissions"]      = "$regs[2]";		// Permissions
 		$listline["mtime"]            = "$regs[4] $regs[5]";	// Mtime -- format depends on what FTP server returns (year, month, day, hour, minutes... see above)
-
-		if ($listline["dirorfile"] == "d") {
-			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
-			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
-			$listline["newdir_url"]  = urlEncode2($listline["newdir"]);
-			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
-		}
-
 	}
 
 // ----------------------------------------------
@@ -392,9 +378,6 @@ function ftp_scanline($directory, $rawlistline) {
 		if ($regs[3] == "<DIR>") { $listline["size"] = ""; }
 		else                     { $listline["size"] = "$regs[3]"; } // Size
 		$listline["dirfilename"] = "$regs[4]";		// Filename
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 		$listline["owner"]            = "";			// Owner
 		$listline["group"]            = "";			// Group
 		$listline["permissions"]      = "";			// Permissions
@@ -402,13 +385,6 @@ function ftp_scanline($directory, $rawlistline) {
 
 		if ($listline["size"] != "") { $listline["dirorfile"] = "-"; }
 		else                         { $listline["dirorfile"] = "d"; }
-
-		if ($listline["dirorfile"] == "d") {
-			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
-			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
-			$listline["newdir_url"]  = urlEncode2($listline["newdir"]);
-			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
-		}
 
 	}
 
@@ -421,21 +397,11 @@ function ftp_scanline($directory, $rawlistline) {
 		$listline["scanrule"]         = "rule-3.2";
 		$listline["dirorfile"]        = "$regs[1]";		// Directory ==> d, File ==> -
 		$listline["dirfilename"]      = "$regs[7]";		// Filename
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 		$listline["size"]             = "$regs[4]";		// Size
 		$listline["owner"]            = "$regs[3]";		// Owner
 		$listline["group"]            = "";			// Group
 		$listline["permissions"]      = "$regs[2]";		// Permissions
 		$listline["mtime"]            = "$regs[5] $regs6";	// Mtime -- format depends on what FTP server returns (year, month, day, hour, minutes... see above)
-
-		if ($listline["dirorfile"] == "d") {
-			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
-			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
-			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
-		}
-
 	}
 
 // ---------------
@@ -450,22 +416,11 @@ function ftp_scanline($directory, $rawlistline) {
 		$listline["scanrule"]         = "rule-3.3";
 		$listline["dirorfile"]        = "$directory_or_file";// Directory ==> d, File ==> -
 		$listline["dirfilename"]      = "$regs[6]";		// Filename
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 		$listline["size"]             = "$regs[2]";		// Size
 		$listline["owner"]            = "$regs[1]";		// Owner
 		$listline["group"]            = "";			// Group
 		$listline["permissions"]      = "";			// Permissions
 		$listline["mtime"]            = "$regs[3] $regs[4]";	// Mtime -- format depends on what FTP server returns (year, month, day, hour, minutes... see above)
-
-		if ($listline["dirorfile"] == "d") {
-			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
-			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
-			$listline["newdir_url"]  = urlEncode2($listline["newdir"]);
-			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
-		}
-
 	}
 
 // ---------------
@@ -478,22 +433,11 @@ function ftp_scanline($directory, $rawlistline) {
 		$listline["scanrule"]         = "rule-3.4";
 		$listline["dirorfile"]        = "$regs[1]";        // Directory ==> d, File ==> -
 		$listline["dirfilename"]      = "$regs[9]";        // Filename
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 		$listline["size"]             = "$regs[6]";        // Size
 		$listline["owner"]            = "$regs[4]";        // Owner
 		$listline["group"]            = "$regs[5]";        // Group
 		$listline["permissions"]      = "$regs[2]";        // Permissions
 		$listline["mtime"]            = "$regs[7] $regs[8]";    // Mtime -- format depends on what FTP server returns (year, month, day, hour, minutes... see above)
-
-		if ($listline["dirorfile"] == "d") {
-			$listline["newdir"]      = glueDirectories($directory, $listline["dirfilename"]); 
-			$listline["newdir_html"] = htmlEncode2($listline["newdir"]);
-			$listline["newdir_url"]  = urlEncode2($listline["newdir"]);
-			$listline["newdir_js"]   = javascriptEncode2($listline["newdir"]);
-		}
-
 	}
 
 // ----------------------------------------------
@@ -503,9 +447,6 @@ function ftp_scanline($directory, $rawlistline) {
 		$listline["scanrule"]         = "rule-4";
 		$listline["dirorfile"]        = "u";
 		$listline["dirfilename"]      = $rawlistline;
-		$listline["dirfilename_html"] = htmlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_url"]  = urlEncode2($listline["dirfilename"]);
-		$listline["dirfilename_js"]   = javascriptEncode2($listline["dirfilename"]);
 	}
 
 // -------------------------------------------------------------------------
@@ -715,7 +656,7 @@ function ftp2http($directory, $list_files, $htmltags) {
 		if (strlen($directory) < 8) {
 			for ($i=1; $i<=sizeof($list_files); $i++) {
 				if ($htmltags == "no") { $list_links[$i] = "javascript:alert('" . __("This file is not accessible from the web") . "');"; }
-				else                   { $list_links[$i] = "<a title=\"" . __("This file is not accessible from the web") . "\" onClick=\"alert('" . __("This file is not accessible from the web") . "');\">" . $list_files[$i][$encoding] . "</a>"; }
+				else                   { $list_links[$i] = "<a title=\"" . __("This file is not accessible from the web") . "\" onclick=\"alert('" . __("This file is not accessible from the web") . "');\">" . $list_files[$i][$encoding] . "</a>"; }
 			} // end for
 		}
 		else {
@@ -848,7 +789,7 @@ function ftp2http($directory, $list_files, $htmltags) {
 		if (strlen($directory) < 4) {
 			for ($i=1; $i<=sizeof($list_files); $i++) {
 				if ($htmltags == "no") { $list_links[$i] = "javascript:alert('" . __("This file is not accessible from the web") . "');"; }
-				else                   { $list_links[$i] = "<a title=\"" . __("This file is not accessible from the web") . "\" onClick=\"alert('" . __("This file is not accessible from the web") . "');\">" . $list_files[$i][$encoding] . "</a>"; }
+				else                   { $list_links[$i] = "<a title=\"" . __("This file is not accessible from the web") . "\" onclick=\"alert('" . __("This file is not accessible from the web") . "');\">" . $list_files[$i][$encoding] . "</a>"; }
 			} // end for
 		}
 		else {

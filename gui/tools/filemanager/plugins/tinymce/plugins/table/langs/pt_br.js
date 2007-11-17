@@ -2,16 +2,17 @@
  * pt_br lang variables
  * Brazilian Portuguese
  *
- * Authors :
+ * Author
+ * Revision and modifications:
  *           Marcio Barbosa (mpg) <mpg@mpg.com.br>
- * Last Updated : November 26, 2005
- * TinyMCE Version : 2.0RC4
+ * First Release : November 26, 2005 - TinyMCE Version : 2.0RC4
+ * Last Updated : November 20, 2006 - TinyMCE Version : 2.0.8
  */
 tinyMCE.addToLang('table',{
 general_tab : 'Geral',
 advanced_tab : 'Avançado',
-general_props : 'Propriedades Gerais',
-advanced_props : 'Propriedades Avançadas',
+general_props : 'Propriedades gerais',
+advanced_props : 'Propriedades avançadas',
 desc : 'Inserir uma nova tabela',
 row_before_desc : 'Inserir uma linha antes',
 row_after_desc : 'Inserir uma linha depois',
@@ -20,7 +21,7 @@ col_before_desc : 'Inserir uma coluna antes',
 col_after_desc : 'Inserir uma coluna depois',
 delete_col_desc : 'Remover coluna',
 rowtype : 'Linhas na tabela parcial',
-title : 'Inserir/Modificar Tabela',
+title : 'Inserir/modificar tabela',
 width : 'Largura',
 height : 'Altura',
 cols : 'Colunas',
@@ -42,13 +43,12 @@ valign : 'Alinhamento vertical',
 align_top : 'Superior',
 align_bottom : 'Inferior',
 props_desc : 'Propriedades da tabela',
-bordercolor : 'Côr da borda',
-bgcolor : 'Côr do fundo',
+bordercolor : 'Cor da borda',
+bgcolor : 'Cor do fundo',
 merge_cells_title : 'Juntar células',
+split_cells_desc : 'Separar células da tabela',
 merge_cells_desc : 'Juntar células da tabela',
-split_cells_title : 'Separar células',
-split_cells_desc : 'Separar células',
-cut_row_desc : 'Apagar linha',
+cut_row_desc : 'Recortar linha',
 copy_row_desc : 'Copiar linha',
 paste_row_before_desc : 'Colar linha antes',
 paste_row_after_desc : 'Colar linha depois',
@@ -61,11 +61,11 @@ ltr : 'Esquerda para direita',
 rtl : 'Direita para esquerda',
 bgimage : 'Imagem de fundo',
 summary : 'Sumário',
-td : "Dados",
-th : "Cabeçalho",
+td : 'Dados',
+th : 'Cabeçalho',
 cell_cell : 'Atulizar célula atual',
-cell_row : 'Atualizar todas as cédulas na linha',
-cell_all : 'Atualizar todas as cédulas da tabela',
+cell_row : 'Atualizar todas as células na linha',
+cell_all : 'Atualizar todas as células da tabela',
 row_row : 'Atualizar linha atual',
 row_odd : 'Atualizar linhas ímpares na tabela',
 row_even : 'Atualizar linhas pares na tabela',
@@ -74,12 +74,15 @@ thead : 'Cabeçalho da tabela',
 tbody : 'Corpo da tabela',
 tfoot : 'Rodapé da tabela',
 del : 'Apagar tabela',
-dir : 'Direção',
 scope : 'Escopo',
 row : 'Linha',
 col : 'Coluna',
 rowgroup : 'Grupo de linhas',
 colgroup : 'Grupo de colunas',
-missing_scope: 'Tem certeza que deseja continuar sem especificar um escopo para este célula de cabeçalho. Sem isso talvez seja difícil para alguns usuários especiais entender ou conteúdo ou visualizar a tabela.',
+col_limit : 'Você excedeu o número máximo de colunas ({$cols}).',
+row_limit : 'Você excedeu o número máximo de linhas ({$rows}).',
+cell_limit : 'Você excedeu o número máximo de células ({$cells}).',
+missing_scope: 'Tem certeza que deseja continuar sem especificar um escopo para esta célula de cabeçalho? Sem isso talvez seja difícil para alguns usuários com necessidades especiais entenderem o conteúdo ou visualizarem a tabela.',
+caption : 'Título da tabela',
 cellprops_delta_width : 55
 });

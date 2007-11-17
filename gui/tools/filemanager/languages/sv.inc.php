@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "Välj minst
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "FTP servern <b>%1\$s</b> finns inte i listan  med tillåtna FTP servers.";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "FTP servern <b>%1\$s</b> finns i listan med bannlysta FTP servers.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Din IP address (%1\$s) finns i listan med bannlysta IP addresser.";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "FTP server porten %1\$s får inte användas.";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "Din IP address (%1\$s) finns i listan med bannlysta IP addresser.";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "Tabellen net2ftp_users innehåller dubblettrader.";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "Tabell net2ftp_log_consumption_ipaddress inehåller dubblettinmatningar.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "Tabell net2ftp_log_consumption_ftpserver kunde inte uppdateras.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "Tabell net2ftp_log_consumption_ftpserver inehåller dubblettinmatningar.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "Ny fil";
 $net2ftp_messages["HTML templates"] = "HTML mallar";
 $net2ftp_messages["Upload"] = "Upload";
 $net2ftp_messages["Java Upload"] = "Java Upload";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "Avancerat";
 $net2ftp_messages["Copy"] = "Kopiera";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "Skapa ny fil i bibl
 $net2ftp_messages["Create a website easily using ready-made templates"] = "Skapa webbsida lätt med färdiga mallar";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "Ladda upp nya filer i bibliotek %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "Ladda upp bibliotek och filer med en Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Installera mjukvarupaket (kräver PHP på webbservern)";
 $net2ftp_messages["Go to the advanced functions"] = "Gå till avancerade funktioner";
 $net2ftp_messages["Copy the selected entries"] = "Kopiera valda inmatningar";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "Klicka för at
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "Klicka för att sortera efter %1\$s i stigande ordning";
 $net2ftp_messages["Ascending order"] = "Stigande ordning";
 $net2ftp_messages["Descending order"] = "Fallande ordning";
+$net2ftp_messages["Upload files"] = "Upload files";
 $net2ftp_messages["Up"] = "Upp";
 $net2ftp_messages["Click to check or uncheck all rows"] = "Klicka för att markera eller avmarkera alla rader";
 $net2ftp_messages["All"] = "Alla";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "Okänd FTP utdata";
 $net2ftp_messages["Number"] = "Nummer";
 $net2ftp_messages["Size"] = "Storlek";
 $net2ftp_messages["Skipped"] = "Hoppa över";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "Språk:";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "Bibliotek";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "Utför %1\$s i ett nytt fönster";
 $net2ftp_messages["This file is not accessible from the web"] = "Ingen åtkomst av denna fil från webben";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "Dubbel-klicka för attgå till underbibliotek:";

@@ -1,4 +1,5 @@
-// UK lang variables
+// FR lang variables
+// Modified by shadow walker, last updated 2007-03-16
 
 tinyMCE.addToLang('layer',{
 insertlayer_desc : 'Ins&eacute;rer un nouveau calque',

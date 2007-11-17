@@ -72,7 +72,7 @@ $net2ftp_messages["left"] = "left";
 $net2ftp_messages["right"] = "right";
 
 // Encoding
-$net2ftp_messages["iso-8859-1"] = "utf-8";
+$net2ftp_messages["iso-8859-1"] = "UTF-8";
 
 
 // -------------------------------------------------------------------------
@@ -150,8 +150,9 @@ $net2ftp_messages["Please select at least one directory or file!"] = "Xin vui l&
 // checkAuthorization()
 $net2ftp_messages["The FTP server <b>%1\$s</b> is not in the list of allowed FTP servers."] = "M&#225;y ch&#7911; FTP <b>%1\$s</b> kh&#244;ng c&#243; &#7903; trong danh s&#225;ch &#273;&#432;&#7907;c ch&#7845;p nh&#7853;n c&#7911;a.";
 $net2ftp_messages["The FTP server <b>%1\$s</b> is in the list of banned FTP servers."] = "M&#225;y ch&#7911; FTP <b>%1\$s</b> n&#7857;m trong danh s&#225;ch c&#225;c m&#225;y ch&#7911; b&#7883; c&#7845;m c&#7911;a.";
-$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "&#272;&#7883;a ch&#7881; IP c&#7911;a b&#7841;n (%1\$s) &#273;&#227; n&#7857;m trong danh s&#225;ch b&#7883; c&#7845;m c&#7911;a.";
 $net2ftp_messages["The FTP server port %1\$s may not be used."] = "C&#7893;ng m&#225;y ch&#7911; FTP %1\$s c&#243; th&#7875; kh&#244;ng s&#7917; d&#7909;ng &#273;&#432;&#7907;c.";
+$net2ftp_messages["Your IP address (%1\$s) is not in the list of allowed IP addresses."] = "Your IP address (%1\$s) is not in the list of allowed IP addresses.";
+$net2ftp_messages["Your IP address (%1\$s) is in the list of banned IP addresses."] = "&#272;&#7883;a ch&#7881; IP c&#7911;a b&#7841;n (%1\$s) &#273;&#227; n&#7857;m trong danh s&#225;ch b&#7883; c&#7845;m c&#7911;a.";
 
 // isAuthorizedDirectory()
 $net2ftp_messages["Table net2ftp_users contains duplicate rows."] = "B&#7843;ng net2ftp_users ch&#7913;a &#273;&#7909;ng c&#225;c h&#224;ng gi&#7889;ng nhau.";
@@ -175,6 +176,8 @@ $net2ftp_messages["Table net2ftp_log_consumption_ipaddress could not be updated.
 $net2ftp_messages["Table net2ftp_log_consumption_ipaddress contains duplicate entries."] = "B&#7843;ng net2ftp_log_consumption_ipaddress ch&#7913;a &#273;&#7909;ng c&#225;c m&#7909;c gi&#7889;ng nhau.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver could not be updated."] = "B&#7843;ng net2ftp_log_consumption_ftpserver c&#243; th&#7875; kh&#244;ng &#273;&#432;&#7907;c c&#7853;p nh&#7853;t.";
 $net2ftp_messages["Table net2ftp_log_consumption_ftpserver contains duplicate entries."] = "B&#7843;ng net2ftp_log_consumption_ftpserver ch&#7913;a &#273;&#7909;ng c&#225;c m&#7909;c gi&#7889;ng nhau.";
+$net2ftp_messages["Table net2ftp_log_access could not be updated."] = "Table net2ftp_log_access could not be updated.";
+$net2ftp_messages["Table net2ftp_log_access contains duplicate entries."] = "Table net2ftp_log_access contains duplicate entries.";
 
 
 // -------------------------------------------------------------------------
@@ -697,6 +700,7 @@ $net2ftp_messages["New file"] = "T&#7879;p m&#7899;i";
 $net2ftp_messages["HTML templates"] = "Giao di&#7879;n HTML";
 $net2ftp_messages["Upload"] = "&#272;&#432;a l&#234;n";
 $net2ftp_messages["Java Upload"] = "&#272;&#432;a l&#234;n b&#7857;ng Java";
+$net2ftp_messages["Flash Upload"] = "Flash Upload";
 $net2ftp_messages["Install"] = "Install";
 $net2ftp_messages["Advanced"] = "N&#226;ng cao";
 $net2ftp_messages["Copy"] = "Sao ch&#233;p";
@@ -718,6 +722,7 @@ $net2ftp_messages["Create a new file in directory %1\$s"] = "T&#7841;o m&#7897;t
 $net2ftp_messages["Create a website easily using ready-made templates"] = "T&#7841;o m&#7897;t trang web m&#7899;i d&#7877; d&#224;ng v&#7899;i c&#225;c giao di&#7879;n HTML &#273;&#227; c&#243; s&#7861;n";
 $net2ftp_messages["Upload new files in directory %1\$s"] = "&#272;&#432;a l&#234;n nh&#7919;ng t&#7879;p m&#7899;i v&#224;o th&#432; m&#7909;c %1\$s";
 $net2ftp_messages["Upload directories and files using a Java applet"] = "&#272;&#432;a l&#234;n c&#225;c th&#432; m&#7909;c v&#224; c&#225;c t&#7879;p s&#7917; d&#7909;ng Java applet";
+$net2ftp_messages["Upload files using a Flash applet"] = "Upload files using a Flash applet";
 $net2ftp_messages["Install software packages (requires PHP on web server)"] = "Install software packages (requires PHP on web server)";
 $net2ftp_messages["Go to the advanced functions"] = "&#272;i t&#7899;i nh&#7919;ng ch&#7913;c n&#259;ng n&#226;ng cao";
 $net2ftp_messages["Copy the selected entries"] = "Sao ch&#233;p k&#7871;t qu&#7843; &#273;&#227; l&#7921;a ch&#7885;n";
@@ -734,6 +739,7 @@ $net2ftp_messages["Click to sort by %1\$s in descending order"] = "H&#227;y nh&#
 $net2ftp_messages["Click to sort by %1\$s in ascending order"] = "H&#227;y nh&#7845;p chu&#7897;t &#273;&#7875; s&#7855;p x&#7871;p %1\$s theo s&#7921; t&#259;ng d&#7847;n c&#7911;a th&#7913; t&#7921;";
 $net2ftp_messages["Ascending order"] = "T&#259;ng l&#234;n theo th&#7913; t&#7921;";
 $net2ftp_messages["Descending order"] = "Gi&#7843;m d&#7847;n theo th&#7913; t&#7921;";
+$net2ftp_messages["Upload files"] = "&#272;&#432;a t&#7879;p l&#234;n m&#225;y ch&#7911;";
 $net2ftp_messages["Up"] = "L&#234;n tr&#234;n";
 $net2ftp_messages["Click to check or uncheck all rows"] = "H&#227;y nh&#7845;p chu&#7897;t &#273;&#7875; &#273;&#225;nh d&#7845;u ho&#7863;c kh&#244;ng &#273;&#225;nh d&#7845;u c&#225;c h&#224;ng ngang";
 $net2ftp_messages["All"] = "T&#7845;t c&#7843;";
@@ -771,6 +777,8 @@ $net2ftp_messages["Unrecognized FTP output"] = "Kh&#244;ng th&#7875; th&#7845;y 
 $net2ftp_messages["Number"] = "S&#7889;";
 $net2ftp_messages["Size"] = "K&#237;ch th&#432;&#7899;c";
 $net2ftp_messages["Skipped"] = "&#272;&#227; b&#7887; qua";
+$net2ftp_messages["Data transferred from this IP address today"] = "Data transferred from this IP address today";
+$net2ftp_messages["Data transferred to this FTP server today"] = "Data transferred to this FTP server today";
 
 // printLocationActions()
 $net2ftp_messages["Language:"] = "Ng&#244;n ng&#7919:";
@@ -781,7 +789,6 @@ $net2ftp_messages["Directory Tree"] = "C&#226;y th&#432; m&#7909;c";
 // ftp2http()
 $net2ftp_messages["Execute %1\$s in a new window"] = "Th&#7921;c hi&#7879;n %1\$s trong m&#7897;t c&#7911;a s&#7893; m&#7899;i";
 $net2ftp_messages["This file is not accessible from the web"] = "T&#7879;p n&#224;y kh&#244;ng c&#243; s&#7861;n t&#7915; web";
-
 
 // printDirectorySelect()
 $net2ftp_messages["Double-click to go to a subdirectory:"] = "Nh&#225;y chu&#7897;t &#273;&#7875; t&#7899;i m&#7897;t th&#432; m&#7909;c con:";

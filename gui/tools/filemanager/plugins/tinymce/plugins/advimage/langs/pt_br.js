@@ -2,11 +2,11 @@
  * pt_br lang variables
  * Brazilian Portuguese
  *
- * Authors : ????
+ * Author
  * Revision and modifications:
  *           Marcio Barbosa (mpg) <mpg@mpg.com.br>
- * Last Updated : November 26, 2005
- * TinyMCE Version : 2.0RC4
+ * First Release : November 26, 2005 - TinyMCE Version : 2.0RC4
+ * Last Updated : November 20, 2006 - TinyMCE Version : 2.0.8
  */
 tinyMCE.addToLang('advimage',{
 tab_general : 'Geral',
@@ -30,6 +30,7 @@ alt_image : 'Imagem alternativa',
 mouseover : 'para o mouse sobre o link',
 mouseout : 'para o mouse fora do link',
 misc : 'Miscelânia',
-example_img : 'Aparência&nbsp;Visualizar&nbsp;Imagem',
-missing_alt : 'Tem certeza que deseja continuar sem incluir uma descrição para imagem? Sem isso a imagem pode não estar acessível para alguns usuários especiáis, ou para aqueles que utilizam um navegador em modo texto, ou para navegadores com imagens desativadas.'
+example_img : 'Exemplo&nbsp;da&nbsp;aparência',
+missing_alt : 'Não foi definida uma descrição para a imagem. Deseja continuar?\r\nSem a descrição, a imagem pode não estar acessível para alguns usuários com necessidades especiais, ou para aqueles que utilizam um navegador em modo texto ou com imagens desativadas.',
+delta_width : 40
 });

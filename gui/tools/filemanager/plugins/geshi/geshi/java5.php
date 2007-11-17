@@ -2,12 +2,10 @@
 /*************************************************************************************
  * java.php
  * --------
- * Author: Nigel McNie (oracle.shinoda@gmail.com)
+ * Author: Nigel McNie (nigel@geshi.org)
  * Copyright: (c) 2004 Nigel McNie (http://qbnz.com/highlighter/)
- * Release Version: 1.0.7.15
- * CVS Revision Version: $Revision: 1.8.2.4 $
+ * Release Version: 1.0.7.19
  * Date Started: 2004/07/10
- * Last Modified: $Date: 2006/09/23 02:05:47 $
  *
  * Java language file for GeSHi.
  *

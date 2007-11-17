@@ -40,6 +40,8 @@ function getLanguageArray() {
 	$languageArray["nl"]["file"] = "nl.inc.php";
 	$languageArray["en"]["name"] = "English";
 	$languageArray["en"]["file"] = "en.inc.php";
+	$languageArray["en-utf"]["name"] = "English UTF-8";
+	$languageArray["en-utf"]["file"] = "en-utf.inc.php";
 	$languageArray["fr"]["name"] = "French";
 	$languageArray["fr"]["file"] = "fr.inc.php";
 	$languageArray["de"]["name"] = "German";
@@ -58,6 +60,8 @@ function getLanguageArray() {
 	$languageArray["es"]["file"] = "es.inc.php";
 	$languageArray["sv"]["name"] = "Swedish";
 	$languageArray["sv"]["file"] = "sv.inc.php";
+	$languageArray["tr"]["name"] = "Turkish";
+	$languageArray["tr"]["file"] = "tr.inc.php";
 	$languageArray["vi"]["name"] = "Vietnamese";
 	$languageArray["vi"]["file"] = "vi.inc.php";
 
@@ -93,7 +97,7 @@ function printLanguageSelect($fieldname, $onchange, $style, $class) {
 	else                                    { $currentlanguage = "en"; }
 
 	if ($onchange == "") { $onchange_full = ""; }
-	else                 { $onchange_full = "onChange=\"$onchange\""; }
+	else                 { $onchange_full = "onchange=\"$onchange\""; }
 
 	if ($style == "")    { $style_full = ""; }
 	else                 { $style_full = "style=\"$style\""; }
@@ -106,7 +110,7 @@ function printLanguageSelect($fieldname, $onchange, $style, $class) {
 	while (list($key,$value) = each($languageArray)) {
 	// $key loops over "en", "fr", "nl", ...
 	// $value will be an array like $value["name"] = "English" and $value["file"] = "en.inc.php"
-		if ($key == $currentlanguage) { $selected = "selected"; }
+		if ($key == $currentlanguage) { $selected = "selected=\"selected\""; }
 		else                          { $selected = ""; }
 		echo "<option value=\"" . $key . "\" $selected>" . $value["name"] . "</option>\n";
 	} // end while

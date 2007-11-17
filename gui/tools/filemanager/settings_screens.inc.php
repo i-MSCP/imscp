@@ -33,6 +33,9 @@ $net2ftp_settings["functionuse_upload"] = "yes";
 // Java upload
 $net2ftp_settings["functionuse_jupload"] = "yes";
 
+// Flash upload
+$net2ftp_settings["functionuse_swfupload"] = "yes";
+
 // Create a website from pre-made HTML templates
 $net2ftp_settings["functionuse_easyWebsite"] = "no";
 
@@ -40,7 +43,7 @@ $net2ftp_settings["functionuse_easyWebsite"] = "no";
 $net2ftp_settings["functionuse_bookmark"] = "yes";
 
 // Install functions
-$net2ftp_settings["functionuse_install"] = "no";
+$net2ftp_settings["functionuse_install"] = "yes";
 
 // Advanced functions
 $net2ftp_settings["functionuse_advanced"] = "yes";
@@ -96,6 +99,6 @@ $net2ftp_settings["functionuse_edit"] = "yes";
 $net2ftp_settings["functionuse_update"] = "no";
 
 // Open file 
-$net2ftp_settings["functionuse_open"] = "no";
+$net2ftp_settings["functionuse_open"] = "yes";
 
 ?>

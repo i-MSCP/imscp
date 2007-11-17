@@ -1,4 +1,4 @@
-// RU lang variables UTF-8
+// RU lang variables
 
 tinyMCE.addToLang('advimage',{
 tab_general : 'Основные',
@@ -6,7 +6,7 @@ tab_appearance : 'Визуализация',
 tab_advanced : 'Расширенные',
 general : 'Главные',
 title : 'Заголовок',
-preview : 'Предварительный просмотр',
+preview : 'Предпросмотр',
 constrain_proportions : 'Сохранить пропорции',
 langdir : 'Описание языка',
 langcode : 'Код языка',
@@ -15,7 +15,7 @@ style : 'Стили',
 classes : 'Классы',
 ltr : 'Слева направо',
 rtl : 'Справа налево',
-id : 'Ид',
+id : 'Id',
 image_map : 'Карта изображения',
 swap_image : 'Подмена картинки',
 alt_image : 'Альтернативное изображение',
