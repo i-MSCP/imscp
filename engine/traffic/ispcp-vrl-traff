@@ -176,15 +176,7 @@ sub gen_log_file {
 
         $log_file = $dest_file.".diff";
 
-        diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | egrep '^<' 1> $log_file");
-
-        my $diff_data = get_file($log_file);
-
-        $diff_data =~ s/^\< //gim;
-
-        $rs = store_file($log_file, $diff_data, 'root', 'root', 0644);
-
-        return ($rs, '') if ($rs != 0);
+        diff_command("$main::cfg{'CMD_DIFF'} -a $dest_file $dest_file_prev | egrep '^<' | sed 's/^< //' 1> $log_file");
 
         $rs = sys_command("$main::cfg{'CMD_MV'} $dest_file $dest_file_prev");
 
@@ -229,19 +221,18 @@ sub collect_http_traffic {
 
             my $rlog = $rdata;
 
-            ($rs, $rdata) = get_file($rlog);
+            my $res = open(F, '<', $rlog);
 
-            return ($rs, '') if ($rs != 0);
-
-            my @rows = split(/\n/, $rdata);
-
-            foreach (@rows) {
-
-                my $line = "$_\n";
-
-                $sum += $1 if ($line =~ /(\d+)\n$/);
-
+            if (!defined($res)) {
+                push_el(\@main::el, 'collect_http_traffic()', "ERROR: Can't open '$rlog' for reading !");
+                return (-1, '');
             }
+
+            while (<F>) {
+                $sum += $1 if ($_ =~ /(\d+)\n$/);
+            }
+
+            close(F);
 
             $rs = del_file($rlog);
 
@@ -282,15 +273,16 @@ sub collect_ftp_traffic {
 
     if ($rlog ne '_no_') {
 
-        ($rs, $rdata) = get_file($rlog);
+        my $res = open(F, '<', $rlog);
 
-        return $rs if ($rs != 0);
+        if (!defined($res)) {
+            push_el(\@main::el, 'collect_ftp_traffic()', "ERROR: Can't open '$rlog' for reading !");
+            return (-1, '');
+        }
 
-        my @rows = split(/\n/, $rdata);
+        while (<F>) {
 
-        foreach (@rows) {
-
-            my $line = "$_\n";
+            my $line = $_;
 
             if ($line =~ /^(\d+) [^\@]+\@([^\n]+)\n$/) {
 
@@ -310,6 +302,8 @@ sub collect_ftp_traffic {
             }
 
         }
+
+        close(F);
 
         while (($key, $value) = each %main::ftp_traffic) {
 
@@ -404,16 +398,16 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        ($rs, $rdata) = get_file($smtp_log);
+        my $res = open(F, '<', $smtp_log);
 
-        return $rs if ($rs != 0);
+        if (!defined($res)) {
+            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$smtp_log' for reading !");
+            return (-1, '');
+        }
 
+        while (<F>) {
 
-        my @rows = split(/\n/, $rdata);
-
-        foreach (@rows) {
-
-            my $line = "$_\n";
+            my $line = $_;
 
 	        # Changed by Erik Lehmann 07.06.2005
             if ($line =~ /^([^\,]+)\ ([^\,]+)\ (\d+)\n$/) {
@@ -443,6 +437,8 @@ sub collect_mail_traffic {
 
             }
 
+            close(F);
+
         }
 
         while (($key, $value) = each %main::smtp_traffic) {
@@ -470,16 +466,16 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        ($rs, $rdata) = get_file($imap_log);
+        my $res = open(F, '<', $imap_log);
 
-        return $rs if ($rs != 0);
+        if (!defined($res)) {
+            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
+            return (-1, '');
+        }
 
+        while (F) {
 
-        @rows = split(/\n/, $rdata);
-
-        foreach (@rows) {
-
-            my $line = "$_\n";
+            my $line = $_;
 
             if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
 
@@ -502,6 +498,8 @@ sub collect_mail_traffic {
             }
 
         }
+
+        close(F);
 
 
         $rs = del_file($imap_log);
@@ -514,17 +512,16 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
+        my $res = open(F, '<', $imap_log);
 
-        ($rs, $rdata) = get_file($imap_log);
+        if (!defined($res)) {
+            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
+            return (-1, '');
+        }
 
-        return $rs if ($rs != 0);
+        while (F) {
 
-
-        @rows = split(/\n/, $rdata);
-
-        foreach (@rows) {
-
-            my $line = "$_\n";
+            my $line = $_;
 
             if ($line =~ /^user=([^\,]+)\, headers=(\d+), body=(\d+)\n$/) {
 
@@ -548,6 +545,8 @@ sub collect_mail_traffic {
 
         }
 
+        close(F);
+
 
         $rs = del_file($imap_log);
 
@@ -559,16 +558,16 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        ($rs, $rdata) = get_file($pop3_log);
+        my $res = open(F, '<', $pop3_log);
 
-        return $rs if ($rs != 0);
+        if (!defined($res)) {
+            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
+            return (-1, '');
+        }
 
+        while (F) {
 
-        @rows = split(/\n/, $rdata);
-
-        foreach (@rows) {
-
-            my $line = "$_\n";
+            my $line = $_;
 
             if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
 
@@ -591,6 +590,8 @@ sub collect_mail_traffic {
             }
 
         }
+
+        close(F);
 
         $rs = del_file($pop3_log);
 
@@ -602,16 +603,16 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        ($rs, $rdata) = get_file($pop3_log);
+        my $res = open(F, '<', $pop3_log);
 
-        return $rs if ($rs != 0);
+        if (!defined($res)) {
+            push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
+            return (-1, '');
+        }
 
+        while (F) {
 
-        @rows = split(/\n/, $rdata);
-
-        foreach (@rows) {
-
-            my $line = "$_\n";
+            my $line = $_;
 
             if ($line =~ /^user=([^\,]+)\, top=(\d+), retr=(\d+)\n$/) {
 
@@ -634,6 +635,8 @@ sub collect_mail_traffic {
             }
 
         }
+
+        close(F);
 
         while (($key, $value) = each %main::po_traffic) {
 
