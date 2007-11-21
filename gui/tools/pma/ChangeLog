@@ -2,8 +2,13 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 10916 2007-11-11 10:09:42Z lem9 $
+$Id: ChangeLog 10931 2007-11-20 12:55:14Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+2.11.2.2 (2007-11-20)
+- bug #1835123 [security] fixed XSS vulnerability on login page, 
+  thanks to Tim Brown (Nth Dimension) for the advisory 
+  and to Sebastian for the fix
 
 2.11.2.1 (2007-11-11)
 - fixed possible SQL injection using database name

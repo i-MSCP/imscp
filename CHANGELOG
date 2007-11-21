@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-11-21 Benedikt Heintel
+	- TOOLS
+		* Update PHPmyAdmin to version 2.11.2.2
+
 2007-11-18 Raphael Geissert
     - ENGINE:
         * Fixed #875: don't put the whole traffic logs in memory while counting traffic
@@ -13,7 +17,7 @@ ispCP ω 1.0.0 Changelog
 2007-11-17 Benedikt Heintel
 	- TOOLS:
 		* Update ADOdb to version 4.96a
-		* Upcate Net2FTP to version 0.96
+		* Update Net2FTP to version 0.96
 		* Update PHPmyAdmin to version 2.11.2.1
 
 2007-11-15 Benedikt Heintel
