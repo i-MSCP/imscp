@@ -34,7 +34,7 @@ use strict;
 use warnings;
 
 # will be disabled later if DEBUG = 0 is in ispcp.conf
-$main::engine_debug = undef;
+$main::engine_debug = '_on_';
 
 require 'ispcp_common_methods.pl';
 require 'ispcp-db-keys.pl';
@@ -47,8 +47,8 @@ $rs = get_conf();
 
 return $rs if ($rs != 0);
 
-if ($main::cfg{'DEBUG'} != 0) {
-	$main::engine_debug = '_on_';
+if ($main::cfg{'DEBUG'} == 0) {
+	$main::engine_debug = undef;
 }
 
 if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
