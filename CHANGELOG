@@ -7,7 +7,9 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-11-21 Benedikt Heintel
-	- TOOLS
+	- ENGINE:
+		* Fixed #890: ispcp_setup: Debug mode not able to turn off (trunk)
+	- TOOLS:
 		* Update PHPmyAdmin to version 2.11.2.2
 
 2007-11-18 Raphael Geissert

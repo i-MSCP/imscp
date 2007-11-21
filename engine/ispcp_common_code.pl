@@ -34,7 +34,7 @@ use strict;
 use warnings;
 
 # will be disabled later if DEBUG = 0 is in ispcp.conf
-$main::engine_debug = '_on_';
+$main::engine_debug = undef;
 
 require 'ispcp_common_methods.pl';
 require 'ispcp-db-keys.pl';
