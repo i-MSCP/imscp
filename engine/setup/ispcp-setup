@@ -2329,7 +2329,8 @@ sub setup_httpd {
 					'{APACHE_WWW_DIR}'      	=> $main::cfg{'APACHE_WWW_DIR'},
 					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
 					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
-					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'}
+					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
+					'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'}
 					);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);

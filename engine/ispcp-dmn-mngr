@@ -977,6 +977,7 @@ sub gen_httpd_dmn_group_entry {
          '{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
          '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
          '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+         '{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
          '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
          '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
          '{SCOREBOARDS_DIR}' => $main::cfg{'SCOREBOARDS_DIR'},
