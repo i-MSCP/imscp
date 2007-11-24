@@ -1,24 +1,49 @@
 #! /bin/sh
+
+# ispCP ω (OMEGA) a Virtual Hosting Control System
+# Copyright (c) 2007 by ispCP
+# http://www.isp-control.net
 #
-# skeleton	example file to build /etc/init.d/ scripts.
-#		This file should be used to construct scripts for /etc/init.d.
 #
-#		Written by Miquel van Smoorenburg <miquels@cistron.nl>.
-#		Modified for Debian GNU/Linux
-#		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
-#		Modified for Debian 
-#		by Erik Lehmann <erik.lehmann@ispcp.net>
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
 #
-# Version:	@(#)skeleton  1.8  03-Mar-1998  miquels@cistron.nl
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
 #
-# This file was automatically customized by dh-make on Mon, 22 Apr 2002 16:15:28 +0300
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ispCP Home Page is at:
+#
+#    http://www.isp-control.net
+#
+### BEGIN INIT INFO
+# Provides:             ispcp_daemon
+# Required-Start:       $network $local_fs $remote_fs
+# Required-Stop:
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    ispCP GUI-Backend communication Daemon
+### END INIT INFO
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
+NAME=ispcp_daemon
 DAEMON=/var/www/ispcp/daemon/ispcp_daemon
 PID=/var/run/ispcp-daemon.pid
-NAME=ispcp_daemon
-DESC=ispcp_daemon
- 
+DESC="ispCP GUI-Backend communication Daemon"
+
 
 test -f $DAEMON || exit 0
 
@@ -37,7 +62,7 @@ case "$1" in
 	echo "$NAME."
 	;;
   restart|force-reload)
-	echo "Restarting $DESC: "                                      
+	echo "Restarting $DESC: "
 	start-stop-daemon --stop --verbose --pidfile $PID --exec $DAEMON --retry 5
 	rm $PID
 	start-stop-daemon --start --verbose --exec $DAEMON -- -p $PID

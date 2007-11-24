@@ -7,8 +7,12 @@ ispCP ω 1.0.0 Changelog
 \_________________________________________________________________/
 
 2007-11-21 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #891: missing CMD_BZIP in freebsd & openbsd
+		* Fixed #834: Stats directory should be skipped by awstats
 	- ENGINE:
 		* Fixed #890: ispcp_setup: Debug mode not able to turn off (trunk)
+		* Fixed #892: change hardcoded touch command in backup-all
 	- TOOLS:
 		* Update PHPmyAdmin to version 2.11.2.2
 

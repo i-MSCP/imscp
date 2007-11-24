@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ispCP ? (OMEGA) a Virtual Hosting Control System
+# ispCP ω (OMEGA) a Virtual Hosting Control System
 # Copyright (c) 2007 by ispCP
 # http://www.isp-control.net
 #
@@ -26,6 +26,15 @@
 # The ispCP Home Page is at:
 #
 #    http://www.isp-control.net
+### BEGIN INIT INFO
+# Provides:             ispcp_network
+# Required-Start:       $network $local_fs $remote_fs
+# Required-Stop:
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    ispCP Network Traffic Logger
+### END INIT INFO
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 set -e
@@ -35,7 +44,6 @@ DESC="ispCP Network Traffic Logger"
 NAME=ispcp_network
 LFILE=/var/run/$NAME
 IPTABLES=/sbin/iptables
-LOG_DIR=/var/log/ispcp
 
 START=1
 
@@ -51,32 +59,32 @@ fi
 
 add_rules()
 {
-	${IPTABLES} -N ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -N ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -N ISPCP_INPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -N ISPCP_OUTPUT 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# All traffic should jump through ISPCP tables before anything else
-	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# web traffic
 
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 80 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 80 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 80 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 80 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# pop3 traffic
 
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 110 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 110 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 110 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 110 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# imap traffic
 
-	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 143 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 143 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_INPUT -p tcp --dport 143 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 143 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# mail traffic
 
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 25 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 25 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport 25 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport 25 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# Explicit return once done
 	${IPTABLES} -A ISPCP_INPUT -j RETURN
@@ -87,12 +95,12 @@ add_rules()
 
 remove_rules()
 {
-	${IPTABLES} -D INPUT -j ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -D OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -F ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -F ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -X ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
-	${IPTABLES} -X ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
+	${IPTABLES} -D INPUT -j ISPCP_INPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -D OUTPUT -j ISPCP_OUTPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -F ISPCP_INPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -F ISPCP_OUTPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -X ISPCP_INPUT 2>> "${LOGDIR}/${NAME}.err.log"
+	${IPTABLES} -X ISPCP_OUTPUT 2>> "${LOGDIR}/${NAME}.err.log"
 
 	# Remove lock file
 	rm $LFILE

@@ -107,7 +107,7 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                permit_sasl_authenticated,
                                reject_unauth_destination,
                                check_policy_service inet:127.0.0.1:12525,
-                               check_policy_service inet:127.0.0.1:60000
+                               check_policy_service inet:127.0.0.1:10030
 
 smtpd_data_restrictions      = reject_unauth_pipelining
 
