@@ -211,7 +211,7 @@ sub collect_http_traffic {
 
         my $domain_log = "$key-traf.log";
 
-        ($rs, $rdata) = gen_log_file($domain_log, $main::cfg{'APACHE_LOG_DIR'}, $main::cfg{'APACHE_BACKUP_LOG_DIR'});
+        ($rs, $rdata) = gen_log_file($domain_log, $main::cfg{'APACHE_LOG_DIR'}, $main::cfg{'LOG_DIR'});
 
         return ($rs, '') if ($rs != 0);
 
@@ -267,7 +267,7 @@ sub collect_ftp_traffic {
 	my $traffic_size = undef;
 	my $traffic_domain = undef;
 
-    ($rs, $rlog) = gen_log_file($main::cfg{'FTP_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'APACHE_BACKUP_LOG_DIR'});
+    ($rs, $rlog) = gen_log_file($main::cfg{'FTP_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
 
     return $rs if ($rs != 0);
 
@@ -350,30 +350,30 @@ sub collect_mail_traffic {
 
     my ($rs, $rdata, $rlog) = (undef, undef);
 
+    my ($cat, $grep, $awk) = ($main::cfg{'CMD_CAT'}, $main::cfg{'CMD_GREP'}, $main::cfg{'CMD_AWK'});
+
 	# Added by Erik Lehmann 22.08.2005
 	my $traffic_size = undef;
     my $traffic_domain = undef;
 	my $smtp_from_domain = undef;
 	my $smtp_to_domain = undef;
 
-    ($rs, $rlog) = gen_log_file($main::cfg{'MAIL_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'APACHE_BACKUP_LOG_DIR'});
+    ($rs, $rlog) = gen_log_file($main::cfg{'MAIL_TRAFF_LOG'}, $main::cfg{'TRAFF_LOG_DIR'}, $main::cfg{'LOG_DIR'});
 
     return $rs if ($rs != 0);
 
 
     if ($rlog ne '_no_') {
 
-        my $smtp_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/smtp.log";
+        my $smtp_log = "$main::cfg{'LOG_DIR'}/smtp.log";
 
-        my $smtp_delivery_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/smtp_delivery.log";
+        my $smtp_delivery_log = "$main::cfg{'LOG_DIR'}/smtp_delivery.log";
 
-        my $imap_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/imap.log";
+        my $imap_log = "$main::cfg{'LOG_DIR'}/imap.log";
 
-        my $pop3_log = "$main::cfg{'APACHE_BACKUP_LOG_DIR'}/pop3.log";
+        my $pop3_log = "$main::cfg{'LOG_DIR'}/pop3.log";
 
-
-        # Changed by Erik Lehmann 07.06.2005
-        my $cmd = "$main::cfg{'CMD_CAT'} $rlog | $main::cfg{'CMD_GREP'} 'postfix' | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
+        my $cmd = "$grep 'postfix' $rlog | $main::cfg{'CMD_PFLOGSUM'} standard 1>$smtp_delivery_log";
 
         $rs = sys_command($cmd);
 
@@ -383,11 +383,11 @@ sub collect_mail_traffic {
         # bugfix by Erik Lehmann 23.10.2005
 		if(exists  $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
 			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
-	        $cmd = "$main::cfg{'CMD_CAT'} $smtp_delivery_log | $main::cfg{'CMD_AWK'} '{if (\$5 != \"localhost\" && \$6 != \"virtual\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
+	        $cmd = "$cat $smtp_delivery_log | $awk '{if (\$5 != \"localhost\" && \$6 != \"virtual\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 
 		} else {
 			# Logs not including AMAVIS/SPAMASSASSIN/CLAMAV entries
-    	    $cmd = "$main::cfg{'CMD_CAT'} $smtp_delivery_log | $main::cfg{'CMD_AWK'} '{if (\$5 != \"localhost\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
+    	    $cmd = "$cat $smtp_delivery_log | $awk '{if (\$5 != \"localhost\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		}
 
         $rs = sys_command($cmd);
@@ -462,7 +462,7 @@ sub collect_mail_traffic {
 
 
 		# IMAP
-		$rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'imaplogin'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'body='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		$rs = sys_command("$cat $rlog|$grep 'imaplogin'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
         return $rs if ($rs != 0);
 
@@ -508,7 +508,7 @@ sub collect_mail_traffic {
 
 
 		# IMAP-SSL
-		$rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'imapd-ssl'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'body='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		$rs = sys_command("$cat $rlog|$grep 'imapd-ssl'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
         return $rs if ($rs != 0);
 
@@ -554,7 +554,7 @@ sub collect_mail_traffic {
 
 
 		# POP3
-        $rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'courierpop3login'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'top='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
+        $rs = sys_command("$cat $rlog|$grep 'courierpop3login'|$grep 'user='|$grep 'top='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
 
         return $rs if ($rs != 0);
 
@@ -599,7 +599,7 @@ sub collect_mail_traffic {
 
 
         # POP3-SSL
-        $rs = sys_command("$main::cfg{'CMD_CAT'} $rlog|$main::cfg{'CMD_GREP'} 'pop3d-ssl'|$main::cfg{'CMD_GREP'} 'user='|$main::cfg{'CMD_GREP'} 'retr='|$main::cfg{'CMD_GREP'} -v 'ip=\\[::ffff:127.0.0.1\\]'|$main::cfg{'CMD_AWK'} '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
+        $rs = sys_command("$cat $rlog|$grep 'pop3d-ssl'|$grep 'user='|$grep 'retr='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
 
         return $rs if ($rs != 0);
 
