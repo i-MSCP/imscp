@@ -248,7 +248,7 @@ function change_user_interface($from_id, $to_id) {
 
         $index = $index ? $index : $allowed_changes[$from_admin_type][$to_admin_type];
 
-		unset_user_login_data();
+	unset_user_login_data();
 
         if (($to_admin_type != 'admin' &&
             ((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $to_id) ||
@@ -259,6 +259,10 @@ function change_user_interface($from_id, $to_id) {
             $_SESSION['logged_from_id'] = $from_udata['admin_id'];
 
         }
+	if ($from_admin_type == 'user') { // Ticket 830 - remove the 'logged_from' if back from user
+	    unset($_SESSION['logged_from']);  // maybe integrated in the construction above...
+	    unset($_SESSION['logged_from_id']);
+	}
 
         // we gonna kill all sessions and globals if user get back to admin level
         if (isset($_SESSION['admin_name']))

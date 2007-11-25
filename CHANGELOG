@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-11-25 Christian Hernmarck
+    - GUI:
+        * Fixed #830: Switch in user as reseller does not work correct
+
 2007-11-25 Raphael Geissert
     - ENGINE:
         * Fixed #856: traffic data files in apache's log subdirectory
