@@ -466,7 +466,7 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        my $res = open(F, '<', $imap_log);
+        $res = open(F, '<', $imap_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
@@ -512,7 +512,7 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        my $res = open(F, '<', $imap_log);
+        $res = open(F, '<', $imap_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
@@ -558,7 +558,7 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        my $res = open(F, '<', $pop3_log);
+        $res = open(F, '<', $pop3_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
@@ -603,7 +603,7 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        my $res = open(F, '<', $pop3_log);
+        $res = open(F, '<', $pop3_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
