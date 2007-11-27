@@ -431,14 +431,14 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        $res = IO::File->new($imap_log, "<");
+        $res = open("FILE", "<", $imap_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
             return (-1, '');
         }
 
-        while ($res) {
+        while ("FILE") {
 
             my $line = $_;
 
@@ -461,7 +461,7 @@ sub collect_mail_traffic {
 
         }
 
-        $res->close();
+        close("FILE");
 
         $rs = del_file($imap_log);
 
@@ -473,14 +473,14 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        $res = IO::File->new($imap_log, "<");
+        $res = open("FILE", "<", $imap_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$imap_log' for reading !");
             return (-1, '');
         }
 
-        while ($res) {
+        while ("FILE") {
 
             my $line = $_;
 
@@ -503,7 +503,7 @@ sub collect_mail_traffic {
 
         }
 
-        $res->close();
+        close("FILE");
 
 
         $rs = del_file($imap_log);
@@ -516,14 +516,14 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        $res = IO::File->new($pop3_log, "<");
+        $res = Iopen("FILE", "<", $pop3_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
             return (-1, '');
         }
 
-        while ($res) {
+        while ("FILE") {
 
             my $line = $_;
 
@@ -545,7 +545,7 @@ sub collect_mail_traffic {
 
         }
 
-        $res->close();
+        close("FILE");
 
         $rs = del_file($pop3_log);
 
@@ -557,14 +557,14 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        $res = IO::File->new($pop3_log, "<");
+        $res = open("FILE", "<", $pop3_log);
 
         if (!defined($res)) {
             push_el(\@main::el, 'collect_mail_traffic()', "ERROR: Can't open '$pop3_log' for reading !");
             return (-1, '');
         }
 
-        while ($res) {
+        while ("FILE") {
 
             my $line = $_;
 
@@ -587,7 +587,7 @@ sub collect_mail_traffic {
 
         }
 
-        $res->close();
+        close("FILE");
 
         while (($key, $value) = each %main::po_traffic) {
 
