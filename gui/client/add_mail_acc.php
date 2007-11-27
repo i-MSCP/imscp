@@ -225,13 +225,13 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
             $mail_type = 'normal_mail';
             $sub_id = '0';
         }
-		else if ($_POST['dmn_type'] === 'sub') {
+        else if ($_POST['dmn_type'] === 'sub') {
             $mail_pass = $_POST['pass'];
             $mail_forward = '_no_';
             $mail_type = 'subdom_mail';
             $sub_id = $_POST['sub_id'];
         }
-		else if ($_POST['dmn_type'] === 'als') {
+        else if ($_POST['dmn_type'] === 'als') {
             $mail_pass = $_POST['pass'];
             $mail_forward = '_no_';
             $mail_type = 'alias_mail';
@@ -301,11 +301,13 @@ SQL_QUERY;
                       mail_acc = ?
                     AND
                       domain_id = ?
+		    AND
+		      mail_type = ?
                     AND
                       sub_id = ?
 SQL_QUERY;
 
-        $rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id));
+        $rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
 
         $mail_forward = implode(',', $mail_accs);
     }
