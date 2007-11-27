@@ -9,6 +9,8 @@ ispCP ω 1.0.0 Changelog
 2007-11-27 Benedikt Heintel
 	- ENGINE:
 		* Fixed #898: Error on ispcp-vrl-traff
+	- TOOLS:
+		* Fixed #879: Can't login via net2ftp
 
 2007-11-27 Christian Hernmarck
     - GUI:
