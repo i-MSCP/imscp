@@ -27,7 +27,7 @@ $net2ftp_settings["email_feedback"] = "webmaster@net2ftp.com";
 // Default language and skin (look in /languages and /skins to see which are available)
 $net2ftp_settings["default_language"] = "en";
 $net2ftp_settings["default_skin"]     = "omega";
-$net2ftp_globals["default_skin"] = "omega";
+$net2ftp_globals["default_skin"]	  = "omega";
 // Enter the address of your help pages, support forum or ticket system
 // This will add a link in the footer; leave empty if you don't have this
 $net2ftp_settings["help_text"] = "";
@@ -56,12 +56,6 @@ $net2ftp_settings["admin_password"] = "";
 // ----------------------------------------------------------------------------------
 
 $net2ftp_settings["message_browse"] = "";
-
-// ----------------------------------------------------------------------------------
-// FTP-Server (hardcoded)
-// ----------------------------------------------------------------------------------
-
-$net2ftp_globals["ftpserver"] = "127.0.0.1";
 
 // ----------------------------------------------------------------------------------
 // A MySQL database is optional. It can be used for: logging the users,
