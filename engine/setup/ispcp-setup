@@ -2390,7 +2390,9 @@ sub setup_httpd {
 
 	return $rs if ($rs != 0);
 
+	#
 	# Enable sites
+	#
 
 	if ( -e "/usr/sbin/a2ensite" ) {
 
@@ -2464,7 +2466,21 @@ sub setup_httpd {
 	}
 
 	#
-	# Here we'll manage some permission;
+	# update apache logrotate
+	#
+
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
+		if (-f "/etc/logrotate.d/apache") {
+			# TODO: Fix, if awstats.pl allready added
+			sys_command_rs("sed -i 's#postrotate#postrotate\n\t\$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl#g' /etc/logrotate.d/apache");
+		}
+		elsif (-f "/etc/loglogrotate.d/apache2") {
+			# TODO: Fix, if awstats.pl allready added
+			sys_command_rs("sed -i 's#postrotate#postrotate\n\t\{AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl#g' /etc/logrotate.d/apache2");
+		}
+
+	#
+	# manage some permission;
 	#
 
 	my $gui_root_dir = "$main::cfg{'ROOT_DIR'}/gui";

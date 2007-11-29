@@ -64,18 +64,6 @@ sub zero_traffic_entries {
 
     }
 
-#    while (($key, $value) = each %main::sub_name_id) {
-
-#        $main::ftp_traffic{$key} = 0;
-
-#        $main::smtp_traffic{$key} = 0;
-
-#        $main::po_traffic{$key} = 0;
-
-#    }
-
-	# Added by Erik Lehmann 22.08.2005
-	#---------------
     while (($key, $value) = each %main::als_name_id) {
 
         $main::ftp_traffic{$key} = 0;
@@ -85,7 +73,6 @@ sub zero_traffic_entries {
         $main::po_traffic{$key} = 0;
 
     }
-	#---------------
 
     push_el(\@main::el, 'zero_traffic_entries()', 'Ending...');
 
@@ -129,8 +116,6 @@ sub gen_log_file {
 
     my $rs = undef;
 
-    # Changed by Erik Lehmann 02.06.2005
-	#-----------------------
     $fname =~ s/\/*//i;
 
     my $src_file = "$src_dir/$fname";
@@ -138,7 +123,6 @@ sub gen_log_file {
     my $dest_file = "$dest_dir/".basename($fname);
 
     my $dest_file_prev = "$dest_dir/".basename($fname).".prev";
-	#-----------------------
 
     my $log_file = $dest_file;
 
@@ -153,10 +137,6 @@ sub gen_log_file {
 		if ($prev_size > $main::cfg{'PREV_TRAFF_LOG_MAX_SIZE'}) {
 
 		    return (555, "ERROR: File $prev_size is bigger than $main::cfg{'PREV_TRAFF_LOG_MAX_SIZE'} bytes!");
-
-			#$rs = del_file($dest_file_prev);
-
-			#return ($rs, "del_file($dest_file_prev)") if ($rs != 0);
 
 		}
 
@@ -263,7 +243,6 @@ sub collect_ftp_traffic {
 
     my ($rs, $rdata, $rlog) = (undef, undef, undef);
 
-	# Added by Erik Lehmann 22.08.2005
 	my $traffic_size = undef;
 	my $traffic_domain = undef;
 
@@ -286,8 +265,6 @@ sub collect_ftp_traffic {
 
             if ($line =~ /^(\d+) [^\@]+\@([^\n]+)\n$/) {
 
-				# Added by Erik Lehmann 22.08.2005
-				#---------------
 				$traffic_size = $1;
 				$traffic_domain = $2;
 
@@ -297,7 +274,6 @@ sub collect_ftp_traffic {
 				else {
 					$main::ftp_traffic{$traffic_domain} += $traffic_size;
 				}
-				#---------------
 
             }
 
@@ -307,8 +283,6 @@ sub collect_ftp_traffic {
 
         while (($key, $value) = each %main::ftp_traffic) {
 
-			# Added by Erik Lehmann 22.08.2005
-			#---------------
             if ($id = $main::als_name_id{$key}) {
                 $main::ftp_traffic{
                     $main::domain_id_name {
@@ -316,7 +290,6 @@ sub collect_ftp_traffic {
                     }
                 } += $value;
             }
-			#---------------
 
         }
 
@@ -348,11 +321,10 @@ sub collect_mail_traffic {
 
     my ($key, $value, $id) = (undef, undef, undef);
 
-    my ($rs, $rdata, $rlog) = (undef, undef);
+    my ($rs, $rdata, $rlog) = (undef, undef, undef);
 
     my ($cat, $grep, $awk) = ($main::cfg{'CMD_CAT'}, $main::cfg{'CMD_GREP'}, $main::cfg{'CMD_AWK'});
 
-	# Added by Erik Lehmann 22.08.2005
 	my $traffic_size = undef;
     my $traffic_domain = undef;
 	my $smtp_from_domain = undef;
@@ -379,8 +351,6 @@ sub collect_mail_traffic {
 
         return $rs if ($rs != 0);
 
-        # Changed by Erik Lehmann 22.08.2005
-        # bugfix by Erik Lehmann 23.10.2005
 		if(exists  $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
 			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
 	        $cmd = "$cat $smtp_delivery_log | $awk '{if (\$5 != \"localhost\" && \$6 != \"virtual\" && \$6 != \"localhost\" && \$10 != \"?\") print substr(\$3, index(\$3, \"@\")+1, length(\$3)),substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
@@ -409,11 +379,8 @@ sub collect_mail_traffic {
 
             my $line = $_;
 
-	        # Changed by Erik Lehmann 07.06.2005
             if ($line =~ /^([^\,]+)\ ([^\,]+)\ (\d+)\n$/) {
 
-				# Added by Erik Lehmann 22.08.2005
-				#---------------
 				$smtp_from_domain = $1;
 				$smtp_to_domain = $2;
 				$traffic_size = $3;
@@ -424,10 +391,7 @@ sub collect_mail_traffic {
 				if($smtp_to_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::smtp_traffic{$smtp_to_domain}) {
 					$smtp_to_domain = $3.$4;
 				}
-				#---------------
 
-		        # Changed by Erik Lehmann 22.08.2005
-				#---------------
                 if(exists $main::smtp_traffic{$smtp_from_domain}) {
                 	$main::smtp_traffic{$smtp_from_domain} += $traffic_size;
 				}
@@ -443,8 +407,6 @@ sub collect_mail_traffic {
 
         while (($key, $value) = each %main::smtp_traffic) {
 
-			# Added by Erik Lehmann 22.08.2005
-			#---------------
             if ($id = $main::als_name_id{$key}) {
                 $main::smtp_traffic{
                     $main::domain_id_name {
@@ -452,7 +414,6 @@ sub collect_mail_traffic {
                     }
                 } += $value;
             }
-			#---------------
 
         }
 
@@ -483,8 +444,6 @@ sub collect_mail_traffic {
 
                 $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
-				# Added by Erik Lehmann 22.08.2005
-				#---------------
 				$traffic_domain = $2;
 
 				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
@@ -493,7 +452,6 @@ sub collect_mail_traffic {
 				else {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
-				#---------------
 
             }
 
@@ -529,8 +487,6 @@ sub collect_mail_traffic {
 
                 $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
-				# Added by Erik Lehmann 22.08.2005
-				#---------------
 				$traffic_domain = $2;
 
 				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
@@ -539,7 +495,6 @@ sub collect_mail_traffic {
 				else {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
-				#---------------
 
             }
 
@@ -575,8 +530,6 @@ sub collect_mail_traffic {
 
                 $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
-				# Added by Erik Lehmann 22.08.2005
-				#---------------
 				$traffic_domain = $2;
 
 				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
@@ -585,7 +538,6 @@ sub collect_mail_traffic {
 				else {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
-				#---------------
 
             }
 
@@ -620,8 +572,6 @@ sub collect_mail_traffic {
 
                 $ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 
-				# Added by Erik Lehmann 22.08.2005
-				#---------------
 				$traffic_domain = $2;
 
 				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && !exists $main::po_traffic{$traffic_domain}) {
@@ -630,7 +580,6 @@ sub collect_mail_traffic {
 				else {
 					$main::po_traffic{$traffic_domain} += $sum;
 				}
-				#---------------
 
             }
 
@@ -640,8 +589,6 @@ sub collect_mail_traffic {
 
         while (($key, $value) = each %main::po_traffic) {
 
-			# Added by Erik Lehmann 22.08.2005
-			#---------------
             if ($id = $main::als_name_id{$key}) {
                 $main::po_traffic {
                     $main::domain_id_name {
@@ -650,7 +597,6 @@ sub collect_mail_traffic {
                 } += $value;
 
             }
-			#---------------
 
         }
 
@@ -760,17 +706,9 @@ sub vrl_traff_start_up {
 
     return $rs if ($rs != 0);
 
-#    $rs = get_subdom_ids();
-
-#    return $rs if ($rs != 0);
-
-	# Added by Erik Lehmann 22.08.2005
-	#---------------
     $rs = get_alias_ids();
 
     return $rs if ($rs != 0);
-	#---------------
-
     $rs = zero_traffic_entries();
 
     return $rs if ($rs != 0);

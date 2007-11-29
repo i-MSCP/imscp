@@ -6,10 +6,16 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-11-29 Benedikt Heintel
+	- GUI:
+		* Fixed #902: Default index and error pages css validation link
+	- SETUP:
+		* Fixed #835: Add awstats_updateall.pl to logrotate config
+
 2007-11-28 Christian Hernmarck
 	- ENGINE:
 		* Fixed #898: Error on ispcp-vrl-traff - another try...
-		
+
 2007-11-27 Benedikt Heintel
 	- ENGINE:
 		* Fixed #898: Error on ispcp-vrl-traff
