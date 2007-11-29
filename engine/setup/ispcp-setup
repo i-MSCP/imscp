@@ -2471,7 +2471,7 @@ sub setup_httpd {
 
 	@apache_file = ("apache", "apache2");
 	foreach $apache_file (@apache_file) {
-		if (-f "/etc/logrotate.d/apache".$apache_file) {
+		if (-f "/etc/logrotate.d/".$apache_file) {
 			$file = "/etc/logrotate.d/".$apache_file;
 			# search for awstats_updateall.pl
 			$word = "awstats_updateall.pl";
