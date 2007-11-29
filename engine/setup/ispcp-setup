@@ -2472,11 +2472,11 @@ sub setup_httpd {
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
 		if (-f "/etc/logrotate.d/apache") {
 			# TODO: Fix, if awstats.pl allready added
-			sys_command_rs("sed -i 's#postrotate#postrotate\n\t\$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl#g' /etc/logrotate.d/apache");
+			sys_command_rs("sed -i 's#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl\n\tendscript#g' /etc/logrotate.d/apache");
 		}
 		elsif (-f "/etc/loglogrotate.d/apache2") {
 			# TODO: Fix, if awstats.pl allready added
-			sys_command_rs("sed -i 's#postrotate#postrotate\n\t\{AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl#g' /etc/logrotate.d/apache2");
+			sys_command_rs("sed -i 's#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl\n\tendscript#g' /etc/logrotate.d/apache2");
 		}
 
 	#
