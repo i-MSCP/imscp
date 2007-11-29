@@ -2466,18 +2466,28 @@ sub setup_httpd {
 	}
 
 	#
-	# update apache logrotate
+	# update apache logrotate (check for apache, apache2)
 	#
 
-	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
-		if (-f "/etc/logrotate.d/apache") {
-			# TODO: Fix, if awstats.pl allready added
-			sys_command_rs("sed -i 's#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl\n\tendscript#g' /etc/logrotate.d/apache");
+	@apache_file = ("apache", "apache2");
+	foreach $apache_file (@apache_file) {
+		if (-f "/etc/logrotate.d/apache".$apache_file) {
+			$file = "/etc/logrotate.d/".$apache_file;
+			# search for awstats_updateall.pl
+			$word = "awstats_updateall.pl";
+
+			open(F, '<' ,$file);
+			@lines = <F>;
+			close(F);
+
+			$nummatches = grep(/$word/, @lines);
+
+			# add code if not exists
+			if ($nummatches == 0) {
+				sys_command_rs("sed -i 's#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n\tendscript#g' /etc/logrotate.d/$apache_file");
+			}
 		}
-		elsif (-f "/etc/loglogrotate.d/apache2") {
-			# TODO: Fix, if awstats.pl allready added
-			sys_command_rs("sed -i 's#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl\n\tendscript#g' /etc/logrotate.d/apache2");
-		}
+	}
 
 	#
 	# manage some permission;
