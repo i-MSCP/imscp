@@ -911,7 +911,7 @@ sub user_dialog {
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
-	my $qmsg = "\n    starting Installation!\n";
+	my $qmsg = "\n    Starting Installation!\n";
 
 	print STDOUT $qmsg;
 
@@ -2474,28 +2474,28 @@ sub setup_httpd {
 	# (check for apache, apache2)
 	#
 
-	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes') {
-		my @apache_file = ("apache", "apache2");
-		my ($apache_file, $file, $rs, $rdata) = (undef, undef, undef, undef);
+	my @apache_file = ("apache", "apache2");
+	my ($apache_file, $file, $rs, $rdata) = (undef, undef, undef, undef);
 
-		foreach $apache_file (@apache_file) {
-			# check if file exists
-			if (-f "/etc/logrotate.d/".$apache_file) {
-				$file = "/etc/logrotate.d/".$apache_file;
+	foreach $apache_file (@apache_file) {
+		# check if file exists
+		if (-f "/etc/logrotate.d/".$apache_file) {
+			$file = "/etc/logrotate.d/".$apache_file;
+			print STDOUT "$file \n";
 
-				# get file
-				($rs, $rdata) = get_file($file);
+			# get file
+			($rs, $rdata) = get_file($file);
+			return $rs if ($rs != 0);
+
+			# add code if not exists
+			if ($rdata !~ m/awstats_updateall\.pl/i) {
+				$rdata =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateal$
+				$rs = store_file($file, $rdata, 'root', 'root', 0644);
 				return $rs if ($rs != 0);
-
-				# add code if not exists
-				if ($rdata !~ "m#awstats_updateall\.pl#i") {
-					$rdata =~ "s#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n\tendscript#i";
-					$rs = store_file($file, $rdata, 'root', 'root', 0644);
-					return $rs if ($rs != 0);
-				}
 			}
 		}
 	}
+
 
 	#
 	# manage some permission;
