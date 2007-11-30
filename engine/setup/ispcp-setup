@@ -386,7 +386,7 @@ sub ask_db_ftp_password {
 		$db_password = gen_sys_rand_num(18);
 		$db_password =~ s/'//g;;
 		$main::ua{'db_ftp_password'} = $db_password;
-		print STDOUT "\n     ispCP ftp SQL user password set to: $db_password";
+		print STDOUT "    ispCP ftp SQL user password set to: $db_password\n";
 
 	} else {
 
@@ -446,7 +446,7 @@ sub ask_db_pma_password {
 
 		$db_password = gen_sys_rand_num(18);
 		$main::ua{'db_pma_password'} = $db_password;
-		print STDOUT "\n     phpMyAdmin Control user password set to: $db_password";
+		print STDOUT "    phpMyAdmin Control user password set to: $db_password\n";
 
 	} else {
 		$qmsg = "    Please repeat ispCP phpMyAdmin Control user password: ";
@@ -910,6 +910,10 @@ sub user_dialog {
 		# Just a dummy to prevent warnings
 		$main::ua{'awstats_dyn'} = 0;
 	}
+
+	my $qmsg = "\n    starting Installation!\n";
+
+	print STDOUT $qmsg;
 
 	push_el(\@main::el, 'user_dialog()', "hostname: $main::ua{'hostname'}");
 	push_el(\@main::el, 'user_dialog()', "eth: $main::ua{'eth_ip'}");
@@ -2484,8 +2488,8 @@ sub setup_httpd {
 				return $rs if ($rs != 0);
 
 				# add code if not exists
-				if ($rdata !=~ s#awstats_updateall\.pl#i) {
-					$rdata =~ s#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n\tendscript#gi;
+				if ($rdata !~ "m#awstats_updateall\.pl#i") {
+					$rdata =~ "s#sharedscripts#sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}/awstats.pl &> /dev/null\n\tendscript#i";
 					$rs = store_file($file, $rdata, 'root', 'root', 0644);
 					return $rs if ($rs != 0);
 				}
