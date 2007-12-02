@@ -2475,7 +2475,7 @@ sub setup_httpd {
 	#
 
 	my @apache_file = ("apache", "apache2");
-	my ($apache_file, $file, $rs, $rdata) = (undef, undef, undef, undef);
+	my ($apache_file, $file) = (undef, undef);
 
 	foreach $apache_file (@apache_file) {
 		# check if file exists

@@ -136,6 +136,36 @@ MSG
 
 	$main::ua{'update'} = $rdata;
 
+	if (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
+
+		my vhcs_update_msg = <<MSG;
+
+\tMake sure you have installed ispCP OMEGA first as described in the INSTALL
+\tdocument.
+
+\tContinue?
+\t(1) Yes
+\t(0) No
+MSG
+
+		print STDOUT $welcome_message;
+		print STDOUT "\tYour selection: ";
+
+		$rdata = readline(\*STDIN);
+		chop($rdata);
+
+		while ($rdata < 0 || $rdata > 1) {
+			print STDOUT "\tPlease select an item mentioned above: ";
+			$rdata = readline(\*STDIN);
+			chop($rdata);
+		}
+
+		# Set to 0 if not ready
+		if (rdata == 0) {
+			$main::ua{'update'} = $rdata;
+		}
+	}
+
 	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
 	return 0;
@@ -363,6 +393,8 @@ sub remove_vhcs2 {
 sub patch_ispcp_rc2 {
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Starting...');
 
+	print STDOUT "Not yet possible!\n";
+
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Ending...');
 	return 0;
 }
@@ -404,9 +436,8 @@ sub prepare_update {
 	# ispCP 1.0.0 RC2 Update
 	elsif ($main::ua{'update'} eq 3) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
-		#$rs = patch_ispcp_rc2();
-		#return $rs if ($rs != 0);
-		print STDOUT "Not yet possible!\n";
+		$rs = patch_ispcp_rc2();
+		return $rs if ($rs != 0);
 		start_services();
 	}
 

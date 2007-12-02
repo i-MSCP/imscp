@@ -56,7 +56,7 @@ Make sure you are logged in as root.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar -xjvf ispcp1.0.0-omega.tar.bz2
+	# tar xjvf ispcp1.0.0-omega.tar.bz2
 
 2. Change to the newly created directory:
 	# cd ./ispcp1.0.0
@@ -95,13 +95,13 @@ Make sure you are logged in as root.
 
 a) via install script
 ---------------------
-4a. Start the script and follow the install instructions (not currently available):
+4a. Start the script and follow the install instructions (currently not available):
 	# ./ispcp-setup.sh
 
 After that go to step 11.
 
 b) manually
-----------
+-----------
 4b. (optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
@@ -109,7 +109,7 @@ b) manually
 5. Build the System by using make:
 	# make install
 
-6. Copy all the directories into the system (you may make backups)
+6. Copy all the directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp-1.0.0/* /
 
 7. Now it's time to set up the frontend. Change into the engine directory:
@@ -145,7 +145,7 @@ There are two ways of update ispCP ω
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar -xjvf ispcp1.0.0-omega.tar.bz2
+	# tar xjvf ispcp1.0.0-omega.tar.bz2
 
 2. Change to the newly created directory:
 	# cd ./ispcp1.0.0
@@ -182,13 +182,13 @@ There are two ways of update ispCP ω
 
 a) via install script
 ---------------------
-4a. Start the script and follow the install instructions (not currently available):
+4a. Start the script and follow the install instructions (currently not available):
 	# ./ispcp-setup.sh
 
-After that go to step 11.
+After that go to step 12.
 
 b) manually
-----------
+-----------
 4b. You have to set up some configuration variables for your linux distribution.
    ispCP ω is preconfigurated for Debian 4.0 Etch.
    If you're using another distribution please check, if config files exist in
@@ -200,6 +200,32 @@ b) manually
 
 5. Build the System by using make:
 	# make install
+
+6. Save key files
+	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/
+	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager
+	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/include/
+
+7. Copy /usr and /var directories into your system (you may make backups)
+	# cp -Rv /tmp/ispcp-1.0.0/usr/* /usr/
+	# cp -Rv /tmp/ispcp-1.0.0/var/* /var/
+
+8. Now it's time to update your installation. Change into the engine directory:
+	# cd /var/www/ispcp/engine/setup
+
+9. Start the engine update:
+	# perl ispcp-update
+
+10. Update ispCP ω step-by-step
+
+	If you get no error, all went good; if you get one, look at
+	http://isp-control.net to solve the problem.
+
+11. Copy the new created configs into your system (you may make backups):
+	# cp -Rv /tmp/ispcp-1.0.0/etc/* /etc/
+
+12. Clean the temporary folders:
+	# rm -fR /tmp/ispcp-1.0.0
 
 ================================================================================
 6) FAQ
