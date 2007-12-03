@@ -2489,7 +2489,7 @@ sub setup_httpd {
 
 			# add code if not exists
 			if ($rdata !~ m/awstats_updateall\.pl/i) {
-				$rdata =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateal$
+				$rdata =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateal/gi;
 				$rs = store_file($file, $rdata, 'root', 'root', 0644);
 				return $rs if ($rs != 0);
 			}
