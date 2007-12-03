@@ -23,7 +23,7 @@
 #
 ########################################################################
 #
-# This Script only resetts the ispCP Setup, it WON'T uninstall ispCP!!
+# This Script only resets the ispCP Setup, it WON'T uninstall ispCP!!
 # Afterwards a new install is possible. Use it, if you had an installation
 # error during setup.
 #
