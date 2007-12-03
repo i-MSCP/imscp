@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -240,32 +240,35 @@ msgstr "Ви маєте призначити хоча б одну IP-адрес�
 msgid "Add reseller"
 msgstr "Додати реселера"
 
-msgid "Domains limit"
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Subdomains limit"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Aliases limit"
-msgstr ""
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
-msgid "Mail accounts limit"
-msgstr ""
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
-msgid "FTP accounts limit"
-msgstr ""
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
 
-msgid "SQL databases limit"
-msgstr ""
-
-msgid "SQL users limit"
-msgstr ""
-
-msgid "Traffic limit [MB]"
-msgstr ""
-
-msgid "Disk limit [MB]"
-msgstr ""
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
 
 msgid "PHP"
 msgstr ""
@@ -401,24 +404,6 @@ msgstr ""
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
 
 msgid "Billing Settings"
 msgstr "Налаштування рахунків"
@@ -863,33 +848,6 @@ msgstr "Електронна пошта"
 
 msgid "unlimited"
 msgstr "необмежено"
-
-msgid "Max domain count"
-msgstr "Макс. кількість доменів"
-
-msgid "Max subdomain count"
-msgstr "Макс. кількість піддоменів"
-
-msgid "Max aliases count"
-msgstr "Макс. кількість аліасів"
-
-msgid "Max mail users count"
-msgstr "Макс. кількість поштових скриньок"
-
-msgid "Max FTP users count"
-msgstr "Макс. кількість користувачів FTP"
-
-msgid "Max SQL databases count"
-msgstr "Макс. кількість баз MySQL"
-
-msgid "Max SQL users count"
-msgstr "Макс. кількість користувачів MySQL"
-
-msgid "Max traffic amount [MB]"
-msgstr "Макс. обсяг трафіку [МБ]"
-
-msgid "Max disk amount [MB]"
-msgstr "Макс. обсяг диску [МБ]"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
@@ -3829,6 +3787,33 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "Max domain count"
+#~ msgstr "Макс. кількість доменів"
+
+#~ msgid "Max subdomain count"
+#~ msgstr "Макс. кількість піддоменів"
+
+#~ msgid "Max aliases count"
+#~ msgstr "Макс. кількість аліасів"
+
+#~ msgid "Max mail users count"
+#~ msgstr "Макс. кількість поштових скриньок"
+
+#~ msgid "Max FTP users count"
+#~ msgstr "Макс. кількість користувачів FTP"
+
+#~ msgid "Max SQL databases count"
+#~ msgstr "Макс. кількість баз MySQL"
+
+#~ msgid "Max SQL users count"
+#~ msgstr "Макс. кількість користувачів MySQL"
+
+#~ msgid "Max traffic amount [MB]"
+#~ msgstr "Макс. обсяг трафіку [МБ]"
+
+#~ msgid "Max disk amount [MB]"
+#~ msgstr "Макс. обсяг диску [МБ]"
 
 #, fuzzy
 #~ msgid "Order in progress"

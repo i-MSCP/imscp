@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -241,32 +241,35 @@ msgstr ""
 msgid "Add reseller"
 msgstr "リセラー追加"
 
-msgid "Domains limit"
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "容量制限[MB]<br><i>(0:無制限)</i>"
+
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
+
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Subdomains limit"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Aliases limit"
-msgstr ""
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "データベースのアカウント数<br><i>(-1:無効, 0:無制限)</i>"
 
-msgid "Mail accounts limit"
-msgstr ""
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
 
-msgid "FTP accounts limit"
-msgstr ""
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "トラフィック制限 [Mb]<br><i>(0:無制限)</i>"
 
-msgid "SQL databases limit"
-msgstr ""
-
-msgid "SQL users limit"
-msgstr ""
-
-msgid "Traffic limit [MB]"
-msgstr ""
-
-msgid "Disk limit [MB]"
-msgstr ""
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "容量制限[MB]<br><i>(0:無制限)</i>"
 
 msgid "PHP"
 msgstr ""
@@ -402,24 +405,6 @@ msgstr ""
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "データベースのアカウント数<br><i>(-1:無効, 0:無制限)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "トラフィック制限 [Mb]<br><i>(0:無制限)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "容量制限[MB]<br><i>(0:無制限)</i>"
 
 msgid "Billing Settings"
 msgstr "課金設定"
@@ -861,33 +846,6 @@ msgstr ""
 
 msgid "unlimited"
 msgstr "無制限"
-
-msgid "Max domain count"
-msgstr "最大ドメイン数"
-
-msgid "Max subdomain count"
-msgstr "最大サブドメイン数"
-
-msgid "Max aliases count"
-msgstr "最大エイリアス数"
-
-msgid "Max mail users count"
-msgstr "最大メールアカウント数"
-
-msgid "Max FTP users count"
-msgstr "最大FTPユーザ数"
-
-msgid "Max SQL databases count"
-msgstr "最大データベース数"
-
-msgid "Max SQL users count"
-msgstr "ユーザー最大数"
-
-msgid "Max traffic amount [MB]"
-msgstr "最大トラフィック量 [MB]"
-
-msgid "Max disk amount [MB]"
-msgstr "最大ディスク容量 [MB]"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - アドミニストレータ/ホスティングプラン修正"
@@ -3804,6 +3762,33 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "送信済み"
+
+#~ msgid "Max domain count"
+#~ msgstr "最大ドメイン数"
+
+#~ msgid "Max subdomain count"
+#~ msgstr "最大サブドメイン数"
+
+#~ msgid "Max aliases count"
+#~ msgstr "最大エイリアス数"
+
+#~ msgid "Max mail users count"
+#~ msgstr "最大メールアカウント数"
+
+#~ msgid "Max FTP users count"
+#~ msgstr "最大FTPユーザ数"
+
+#~ msgid "Max SQL databases count"
+#~ msgstr "最大データベース数"
+
+#~ msgid "Max SQL users count"
+#~ msgstr "ユーザー最大数"
+
+#~ msgid "Max traffic amount [MB]"
+#~ msgstr "最大トラフィック量 [MB]"
+
+#~ msgid "Max disk amount [MB]"
+#~ msgstr "最大ディスク容量 [MB]"
 
 #, fuzzy
 #~ msgid "Order in progress"

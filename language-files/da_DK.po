@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -240,32 +240,35 @@ msgstr "Du skal tildele mindst et IP nummer til din forhandler!"
 msgid "Add reseller"
 msgstr "Tilføj forhandlere"
 
-msgid "Domains limit"
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Disk grænse [MB]<br><i>(0 ubegrænset)</i>"
+
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL bruger grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
+
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL bruger grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Subdomains limit"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Aliases limit"
-msgstr ""
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL database grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
 
-msgid "Mail accounts limit"
-msgstr ""
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL bruger grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
 
-msgid "FTP accounts limit"
-msgstr ""
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Trafik grænse [MB]<br><i>(0"
 
-msgid "SQL databases limit"
-msgstr ""
-
-msgid "SQL users limit"
-msgstr ""
-
-msgid "Traffic limit [MB]"
-msgstr ""
-
-msgid "Disk limit [MB]"
-msgstr ""
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Disk grænse [MB]<br><i>(0 ubegrænset)</i>"
 
 msgid "PHP"
 msgstr ""
@@ -401,24 +404,6 @@ msgstr ""
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL database grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "SQL bruger grænse<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Trafik grænse [MB]<br><i>(0"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Disk grænse [MB]<br><i>(0 ubegrænset)</i>"
 
 msgid "Billing Settings"
 msgstr "Faktura Indstillinger"
@@ -862,33 +847,6 @@ msgstr "E-Mail"
 
 msgid "unlimited"
 msgstr "ubegrænset"
-
-msgid "Max domain count"
-msgstr "Max domæneantal"
-
-msgid "Max subdomain count"
-msgstr "Max underdomæneantal"
-
-msgid "Max aliases count"
-msgstr "Max aliases antal"
-
-msgid "Max mail users count"
-msgstr "Max mail brugerantal"
-
-msgid "Max FTP users count"
-msgstr "Max FTP brugerantal"
-
-msgid "Max SQL databases count"
-msgstr "Max SQL databaseantal"
-
-msgid "Max SQL users count"
-msgstr "Max SQL brugerantal"
-
-msgid "Max traffic amount [MB]"
-msgstr "Max trafik [MB]"
-
-msgid "Max disk amount [MB]"
-msgstr "Max diskstørrelse [MB]"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Rediger hosting plan"
@@ -3817,6 +3775,33 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
+
+#~ msgid "Max domain count"
+#~ msgstr "Max domæneantal"
+
+#~ msgid "Max subdomain count"
+#~ msgstr "Max underdomæneantal"
+
+#~ msgid "Max aliases count"
+#~ msgstr "Max aliases antal"
+
+#~ msgid "Max mail users count"
+#~ msgstr "Max mail brugerantal"
+
+#~ msgid "Max FTP users count"
+#~ msgstr "Max FTP brugerantal"
+
+#~ msgid "Max SQL databases count"
+#~ msgstr "Max SQL databaseantal"
+
+#~ msgid "Max SQL users count"
+#~ msgstr "Max SQL brugerantal"
+
+#~ msgid "Max traffic amount [MB]"
+#~ msgstr "Max trafik [MB]"
+
+#~ msgid "Max disk amount [MB]"
+#~ msgstr "Max diskstørrelse [MB]"
 
 #, fuzzy
 #~ msgid "Order in progress"

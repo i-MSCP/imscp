@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-08-24 13:15+0100\n"
 "Last-Translator: Albert Garcia <albert@twentic.com>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
@@ -239,32 +239,35 @@ msgstr "¡Debe asignar al menos una dirección IP para un revendedor!"
 msgid "Add reseller"
 msgstr "Añadir revendedor"
 
-msgid "Domains limit"
-msgstr "Límite de dominios"
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Límite de disco [Mb]<br><i>(0 ilimitado)</i>"
 
-msgid "Subdomains limit"
-msgstr "Límite de subdominios"
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de subdominios<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
 
-msgid "Aliases limit"
-msgstr "Límite de alias"
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de usuarios SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
 
-msgid "Mail accounts limit"
-msgstr "Límite de cuentas de correo"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de cuentas de mail<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
 
-msgid "FTP accounts limit"
-msgstr "Límite de cuentas de FTP"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de cuentas FTP<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
 
-msgid "SQL databases limit"
-msgstr "Límite de bases de datos SQL"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de bases de datos SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
 
-msgid "SQL users limit"
-msgstr "Límite de usuarios de SQL"
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Límite de usuarios SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
 
-msgid "Traffic limit [MB]"
-msgstr "Límite de tráfico [MB]"
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Límite de Tráfico [MB]<br><i>(0 ilimitado)</i>"
 
-msgid "Disk limit [MB]"
-msgstr "Límite de disco [MB]"
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Límite de disco [Mb]<br><i>(0 ilimitado)</i>"
 
 msgid "PHP"
 msgstr "PHP"
@@ -406,24 +409,6 @@ msgstr "Límite de subdominios<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de alias<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límite de cuentas de mail<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límite de cuentas FTP<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límite de bases de datos SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Límite de usuarios SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Límite de Tráfico [MB]<br><i>(0 ilimitado)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Límite de disco [Mb]<br><i>(0 ilimitado)</i>"
 
 msgid "Billing Settings"
 msgstr "Opciones de facturación"
@@ -872,33 +857,6 @@ msgstr "Correo Electrónico"
 
 msgid "unlimited"
 msgstr "ilimitado"
-
-msgid "Max domain count"
-msgstr "Cantidad max de dominios"
-
-msgid "Max subdomain count"
-msgstr "Cantidad max de subdominios"
-
-msgid "Max aliases count"
-msgstr "Cantidad max de alias"
-
-msgid "Max mail users count"
-msgstr "Cantidad max de usuarios de correo"
-
-msgid "Max FTP users count"
-msgstr "Cantidad max de usuarios FTP"
-
-msgid "Max SQL databases count"
-msgstr "Cantidad max de bases de datos SQL"
-
-msgid "Max SQL users count"
-msgstr "Cantidad max de usuarios SQL"
-
-msgid "Max traffic amount [MB]"
-msgstr "Capacidad max de tráfico [MB]"
-
-msgid "Max disk amount [MB]"
-msgstr "Capacidad max de espacio [MB]"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrador/Modificar plan de hosting"
@@ -3909,6 +3867,60 @@ msgstr "ispCP - Revendedor : Sistema de Soporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
+
+#~ msgid "Domains limit"
+#~ msgstr "Límite de dominios"
+
+#~ msgid "Subdomains limit"
+#~ msgstr "Límite de subdominios"
+
+#~ msgid "Aliases limit"
+#~ msgstr "Límite de alias"
+
+#~ msgid "Mail accounts limit"
+#~ msgstr "Límite de cuentas de correo"
+
+#~ msgid "FTP accounts limit"
+#~ msgstr "Límite de cuentas de FTP"
+
+#~ msgid "SQL databases limit"
+#~ msgstr "Límite de bases de datos SQL"
+
+#~ msgid "SQL users limit"
+#~ msgstr "Límite de usuarios de SQL"
+
+#~ msgid "Traffic limit [MB]"
+#~ msgstr "Límite de tráfico [MB]"
+
+#~ msgid "Disk limit [MB]"
+#~ msgstr "Límite de disco [MB]"
+
+#~ msgid "Max domain count"
+#~ msgstr "Cantidad max de dominios"
+
+#~ msgid "Max subdomain count"
+#~ msgstr "Cantidad max de subdominios"
+
+#~ msgid "Max aliases count"
+#~ msgstr "Cantidad max de alias"
+
+#~ msgid "Max mail users count"
+#~ msgstr "Cantidad max de usuarios de correo"
+
+#~ msgid "Max FTP users count"
+#~ msgstr "Cantidad max de usuarios FTP"
+
+#~ msgid "Max SQL databases count"
+#~ msgstr "Cantidad max de bases de datos SQL"
+
+#~ msgid "Max SQL users count"
+#~ msgstr "Cantidad max de usuarios SQL"
+
+#~ msgid "Max traffic amount [MB]"
+#~ msgstr "Capacidad max de tráfico [MB]"
+
+#~ msgid "Max disk amount [MB]"
+#~ msgstr "Capacidad max de espacio [MB]"
 
 #, fuzzy
 #~ msgid "Order in progress"

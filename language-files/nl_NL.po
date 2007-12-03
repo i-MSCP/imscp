@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-09-27 23:07+0100\n"
 "Last-Translator: M.Leenders <spam@azzkikr.nl>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -230,32 +230,35 @@ msgstr "U moet minstens één IP nummer voor een reseller toewijzen !"
 msgid "Add reseller"
 msgstr "Reseller toevoegen"
 
-msgid "Domains limit"
-msgstr "Domeinen limiet"
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Schijf limiet [Mb]<br><i>(0 ongelimiteerd)</i>"
 
-msgid "Subdomains limit"
-msgstr "Subdomeinen limiet"
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Max subdomeinen<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
-msgid "Aliases limit"
-msgstr "Aliassen limiet"
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
 
-msgid "Mail accounts limit"
-msgstr "Mail account limiet"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Mail account limiet<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
-msgid "FTP accounts limit"
-msgstr "FTP account limiet"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "FTP account limiet<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
-msgid "SQL databases limit"
-msgstr "SQL databases limiet"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
 
-msgid "SQL users limit"
-msgstr "SQL gebruikers limiet"
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
 
-msgid "Traffic limit [MB]"
-msgstr "Verkeer limiet [MB]"
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Traffic limit [Mb]<br><i>(0 unlimited)</i>"
 
-msgid "Disk limit [MB]"
-msgstr "Schijf limiet [MB]"
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Schijf limiet [Mb]<br><i>(0 ongelimiteerd)</i>"
 
 msgid "PHP"
 msgstr "PHP"
@@ -391,24 +394,6 @@ msgstr "Max subdomeinen<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max aliassen<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Mail account limiet<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "FTP account limiet<br><i>(-1 uitgeschakeld, 0 onbeperkt)</i>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "MySQL databanken limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "MySQL gebruikers limiet<br><i>(-1 uitgeschakeld, 0 ongelimiteerd)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Traffic limit [Mb]<br><i>(0 unlimited)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Schijf limiet [Mb]<br><i>(0 ongelimiteerd)</i>"
 
 msgid "Billing Settings"
 msgstr "Facturatie instellingen"
@@ -858,33 +843,6 @@ msgstr "E-mail"
 
 msgid "unlimited"
 msgstr "ongelimiteerd"
-
-msgid "Max domain count"
-msgstr "Max aantal domeinen"
-
-msgid "Max subdomain count"
-msgstr "Max aantal subdomeinen"
-
-msgid "Max aliases count"
-msgstr "Max aantal aliassen"
-
-msgid "Max mail users count"
-msgstr "Max aantal mailgebruikers"
-
-msgid "Max FTP users count"
-msgstr "Max aantal FTP gebruikers"
-
-msgid "Max SQL databases count"
-msgstr "Max aantal MySQL databanken"
-
-msgid "Max SQL users count"
-msgstr "Max aantal MySQL gebruikers"
-
-msgid "Max traffic amount [MB]"
-msgstr "Max aantal verkeer [MB]"
-
-msgid "Max disk amount [MB]"
-msgstr "Max schijfruimte [MB]"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Virtual Hosting Control System"
@@ -3823,6 +3781,60 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#~ msgid "Domains limit"
+#~ msgstr "Domeinen limiet"
+
+#~ msgid "Subdomains limit"
+#~ msgstr "Subdomeinen limiet"
+
+#~ msgid "Aliases limit"
+#~ msgstr "Aliassen limiet"
+
+#~ msgid "Mail accounts limit"
+#~ msgstr "Mail account limiet"
+
+#~ msgid "FTP accounts limit"
+#~ msgstr "FTP account limiet"
+
+#~ msgid "SQL databases limit"
+#~ msgstr "SQL databases limiet"
+
+#~ msgid "SQL users limit"
+#~ msgstr "SQL gebruikers limiet"
+
+#~ msgid "Traffic limit [MB]"
+#~ msgstr "Verkeer limiet [MB]"
+
+#~ msgid "Disk limit [MB]"
+#~ msgstr "Schijf limiet [MB]"
+
+#~ msgid "Max domain count"
+#~ msgstr "Max aantal domeinen"
+
+#~ msgid "Max subdomain count"
+#~ msgstr "Max aantal subdomeinen"
+
+#~ msgid "Max aliases count"
+#~ msgstr "Max aantal aliassen"
+
+#~ msgid "Max mail users count"
+#~ msgstr "Max aantal mailgebruikers"
+
+#~ msgid "Max FTP users count"
+#~ msgstr "Max aantal FTP gebruikers"
+
+#~ msgid "Max SQL databases count"
+#~ msgstr "Max aantal MySQL databanken"
+
+#~ msgid "Max SQL users count"
+#~ msgstr "Max aantal MySQL gebruikers"
+
+#~ msgid "Max traffic amount [MB]"
+#~ msgstr "Max aantal verkeer [MB]"
+
+#~ msgid "Max disk amount [MB]"
+#~ msgstr "Max schijfruimte [MB]"
 
 #, fuzzy
 #~ msgid "Order in progress"

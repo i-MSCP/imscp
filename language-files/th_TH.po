@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -238,31 +238,31 @@ msgstr "คุณต้องกำหนดอย่างน้อย 1 IP ส
 msgid "Add reseller"
 msgstr "เพิ่มตัวแทนจำหน่าย"
 
-msgid "Domains limit"
+msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Subdomains limit"
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Aliases limit"
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Mail accounts limit"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "FTP accounts limit"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "SQL databases limit"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "SQL users limit"
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Traffic limit [MB]"
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
-msgid "Disk limit [MB]"
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
 msgid "PHP"
@@ -398,24 +398,6 @@ msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr ""
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
 msgid "Billing Settings"
@@ -851,33 +833,6 @@ msgid "E-mail"
 msgstr ""
 
 msgid "unlimited"
-msgstr ""
-
-msgid "Max domain count"
-msgstr ""
-
-msgid "Max subdomain count"
-msgstr ""
-
-msgid "Max aliases count"
-msgstr ""
-
-msgid "Max mail users count"
-msgstr ""
-
-msgid "Max FTP users count"
-msgstr ""
-
-msgid "Max SQL databases count"
-msgstr ""
-
-msgid "Max SQL users count"
-msgstr ""
-
-msgid "Max traffic amount [MB]"
-msgstr ""
-
-msgid "Max disk amount [MB]"
 msgstr ""
 
 msgid "ispCP - Administrator/Edit hosting plan"

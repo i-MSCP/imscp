@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 22:19-0500\n"
+"POT-Creation-Date: 2007-12-02 21:04-0600\n"
 "PO-Revision-Date: 2007-10-15 12:10+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -226,32 +226,35 @@ msgstr "Musíte přiřadit alespoň jednu IP adresu pro partnera."
 msgid "Add reseller"
 msgstr "Přidat partnera"
 
-msgid "Domains limit"
-msgstr "Limit domén"
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Limit disku [MB]<br><i>(0 bez omezení)</i>"
 
-msgid "Subdomains limit"
-msgstr "Limit subdomén"
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Maximální počet subdomén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-msgid "Aliases limit"
-msgstr "Limit aliasů"
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit SQL uživatelů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-msgid "Mail accounts limit"
-msgstr "Limit poštovních účtů"
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit mailových účtů<br><i>(-1 zakázáno, 0 bez omezení)"
 
-msgid "FTP accounts limit"
-msgstr "Limit FTP účtů"
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit FTP účtů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-msgid "SQL databases limit"
-msgstr "Limit SQL databází"
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit SQL databází<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-msgid "SQL users limit"
-msgstr "Limit SQL uživatelů"
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit SQL uživatelů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-msgid "Traffic limit [MB]"
-msgstr "Limit přenesených dat [MB]"
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Limit přenesených dat [MB]<br><i>(0 bez omezení)</i>"
 
-msgid "Disk limit [MB]"
-msgstr "Limit diskového prostoru [MB]"
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Limit disku [MB]<br><i>(0 bez omezení)</i>"
 
 msgid "PHP"
 msgstr "PHP"
@@ -387,24 +390,6 @@ msgstr "Maximální počet subdomén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximální počet aliasů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
-
-msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit mailových účtů<br><i>(-1 zakázáno, 0 bez omezení)"
-
-msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit FTP účtů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
-
-msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit SQL databází<br><i>(-1 zakázáno, 0 bez omezení)</i>"
-
-msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit SQL uživatelů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
-
-msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Limit přenesených dat [MB]<br><i>(0 bez omezení)</i>"
-
-msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "Limit disku [MB]<br><i>(0 bez omezení)</i>"
 
 msgid "Billing Settings"
 msgstr "Nastavení fakturace"
@@ -846,33 +831,6 @@ msgstr "E-mail"
 
 msgid "unlimited"
 msgstr "bez omezení"
-
-msgid "Max domain count"
-msgstr "Maximální počet domén"
-
-msgid "Max subdomain count"
-msgstr "Maximální počet subdomén"
-
-msgid "Max aliases count"
-msgstr "Maximální počet aliasů"
-
-msgid "Max mail users count"
-msgstr "Maximální počet poštovních účtů"
-
-msgid "Max FTP users count"
-msgstr "Maximální počet FTP účtů"
-
-msgid "Max SQL databases count"
-msgstr "Maximální počet SQL databází"
-
-msgid "Max SQL users count"
-msgstr "Maximální počet SQL uživatelů"
-
-msgid "Max traffic amount [MB]"
-msgstr "Maximální počet přenesených dat [MB]"
-
-msgid "Max disk amount [MB]"
-msgstr "Maximální diskový prostor [MB]"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrátor/Úprava plánu hostingu"
@@ -3820,6 +3778,60 @@ msgstr "ispCP - Partner : Systém podpory: Zobrazit oznámení"
 
 msgid "Message was sent."
 msgstr "Zpráva byla poslána."
+
+#~ msgid "Domains limit"
+#~ msgstr "Limit domén"
+
+#~ msgid "Subdomains limit"
+#~ msgstr "Limit subdomén"
+
+#~ msgid "Aliases limit"
+#~ msgstr "Limit aliasů"
+
+#~ msgid "Mail accounts limit"
+#~ msgstr "Limit poštovních účtů"
+
+#~ msgid "FTP accounts limit"
+#~ msgstr "Limit FTP účtů"
+
+#~ msgid "SQL databases limit"
+#~ msgstr "Limit SQL databází"
+
+#~ msgid "SQL users limit"
+#~ msgstr "Limit SQL uživatelů"
+
+#~ msgid "Traffic limit [MB]"
+#~ msgstr "Limit přenesených dat [MB]"
+
+#~ msgid "Disk limit [MB]"
+#~ msgstr "Limit diskového prostoru [MB]"
+
+#~ msgid "Max domain count"
+#~ msgstr "Maximální počet domén"
+
+#~ msgid "Max subdomain count"
+#~ msgstr "Maximální počet subdomén"
+
+#~ msgid "Max aliases count"
+#~ msgstr "Maximální počet aliasů"
+
+#~ msgid "Max mail users count"
+#~ msgstr "Maximální počet poštovních účtů"
+
+#~ msgid "Max FTP users count"
+#~ msgstr "Maximální počet FTP účtů"
+
+#~ msgid "Max SQL databases count"
+#~ msgstr "Maximální počet SQL databází"
+
+#~ msgid "Max SQL users count"
+#~ msgstr "Maximální počet SQL uživatelů"
+
+#~ msgid "Max traffic amount [MB]"
+#~ msgstr "Maximální počet přenesených dat [MB]"
+
+#~ msgid "Max disk amount [MB]"
+#~ msgstr "Maximální diskový prostor [MB]"
 
 #~ msgid "Order in progress"
 #~ msgstr "Objednávka odeslána ke zpracování"
