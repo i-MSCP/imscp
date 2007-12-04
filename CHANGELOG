@@ -6,8 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-04 Benedikt Heintel
+	- SETUP:
+		* Fixed #909: Unrecognized escape \P passed through at ./ispcp-setup line 509
+
 2007-12-03 Christian Hernmarck
-	- ENGINE:
+	- SETUP:
 		* Fixed #907: Error in ispcp-setup (caused by Bug #835)
 
 2007-12-02 Benedikt Heintel

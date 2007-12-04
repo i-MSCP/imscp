@@ -506,7 +506,7 @@ sub ask_admin_password {
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
-		print STDOUT "\n\Password too short!";
+		print STDOUT "\n\tPassword too short!";
 		return 1;
 	} else {
 		if (length($pass1) < 5) {
