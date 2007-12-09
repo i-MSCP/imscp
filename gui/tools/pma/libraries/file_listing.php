@@ -3,14 +3,14 @@
 /**
  * Functions for listing directories
  *
- * @version $Id: file_listing.php 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: file_listing.php 10937 2007-11-21 13:58:40Z lem9 $
  */
 
 /**
  * Returns array of filtered file names
  *
  * @param   string  directory to list
- * @param   string  regullar expression to match files
+ * @param   string  regular expression to match files
  * @returns array   sorted file list on success, FALSE on failure
  */
 function PMA_getDirContent($dir, $expression = '')
@@ -21,7 +21,9 @@ function PMA_getDirContent($dir, $expression = '')
             $dir .= '/';
         }
         while ($file = @readdir($handle)) {
-            if (is_file($dir . $file) && ($expression == '' || preg_match($expression, $file))) {
+        // for PHP < 5.2.4, is_file() gives a warning when using open_basedir
+        // and verifying '..' or '.'
+            if ('.' != $file && '..' != $file && is_file($dir . $file) && ($expression == '' || preg_match($expression, $file))) {
                 $result[] = $file;
             }
         }

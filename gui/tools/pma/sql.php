@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          what returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 10664 2007-09-23 16:13:42Z lem9 $
+ * @version $Id: sql.php 10920 2007-11-12 17:55:31Z lem9 $
  */
 
 /**
@@ -245,7 +245,7 @@ if ($is_select) { // see line 141
     }
 } elseif (preg_match('@^UPDATE[[:space:]]+@i', $sql_query)) {
     $is_affected = true;
-} elseif (preg_match('@^SHOW[[:space:]]+@i', $sql_query)) {
+} elseif (preg_match('@^[[:space:]]*SHOW[[:space:]]+@i', $sql_query)) {
     $is_show     = true;
 } elseif (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]+TABLE[[:space:]]+@i', $sql_query)) {
     $is_maint    = true;
@@ -309,7 +309,7 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
     unset($result);
     $num_rows = 0;
 } else {
-    if (isset($_SESSION['profiling'])) {
+    if (isset($_SESSION['profiling']) && PMA_profilingSupported()) {
         PMA_DBI_query('SET PROFILING=1;');
     }
         
@@ -344,7 +344,7 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
     }
 
     // Grabs the profiling results
-    if (isset($_SESSION['profiling'])) {
+    if (isset($_SESSION['profiling']) && PMA_profilingSupported() ) {
         $profiling_results = PMA_DBI_fetch_result('SHOW PROFILE;');
     }
         

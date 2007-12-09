@@ -205,6 +205,7 @@ b) manually
 	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/
 	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager
 	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/include/
+	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/tools/pma/config.inc.php
 
 7. Copy /usr and /var directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp-1.0.0/usr/* /usr/

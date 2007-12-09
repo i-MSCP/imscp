@@ -31,7 +31,7 @@
  * - load of the libraries/defines_mysql.lib.php library to get the MySQL
  *   release number
  *
- * @version $Id: common.inc.php 10798 2007-10-16 07:24:29Z cybot_tm $
+ * @version $Id: common.inc.php 10896 2007-11-02 17:34:58Z lem9 $
  */
 
 /**
@@ -886,11 +886,11 @@ if (! defined('PMA_MINIMUM_COMMON')) {
      * (note: when $cfg['ServerDefault'] = 0, constant is not defined)
      */
 
-    if (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 50037 && isset($_REQUEST['profiling'])) {
-       $_SESSION['profiling'] = true;
+    if (PMA_profilingSupported() && isset($_REQUEST['profiling'])) {
+        $_SESSION['profiling'] = true;
     } elseif (isset($_REQUEST['profiling_form'])) {
-       // the checkbox was unchecked
-            unset($_SESSION['profiling']);
+        // the checkbox was unchecked
+        unset($_SESSION['profiling']);
     }
 
 } // end if !defined('PMA_MINIMUM_COMMON')

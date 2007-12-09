@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: phpmyadmin.css.php 10586 2007-09-02 12:39:22Z lem9 $
+ * @version $Id: phpmyadmin.css.php 10950 2007-12-01 16:06:01Z lem9 $
  */
 
 /**
@@ -44,6 +44,10 @@ html {
 
 input, select, textarea {
     font-size: 1em;
+}
+
+div.item label {
+    white-space: nowrap;
 }
 
 /* @deprecated */

@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 10870 2007-10-20 18:58:04Z lem9 $
+ * @version $Id: common.lib.php 10941 2007-11-25 12:58:41Z lem9 $
  */
 
 /**
@@ -572,7 +572,7 @@ function PMA_mysqlDie($error_message = '', $the_query = '',
  *
  * @access  private
  */
-function PMA_convert_using($string, $mode='unquoted')
+function PMA_convert_using($string, $mode='unquoted', $force_utf8 = false)
 {
     if ($mode == 'quoted') {
         $possible_quote = "'";
@@ -581,8 +581,14 @@ function PMA_convert_using($string, $mode='unquoted')
     }
 
     if (PMA_MYSQL_INT_VERSION >= 40100) {
-        list($conn_charset) = explode('_', $GLOBALS['collation_connection']);
-        $converted_string = "CONVERT(" . $possible_quote . $string . $possible_quote . " USING " . $conn_charset . ")";
+        if ($force_utf8) {
+            $charset = 'utf8';
+            $collate = ' COLLATE utf8_bin';
+        } else {
+            list($charset) = explode('_', $GLOBALS['collation_connection']);
+            $collate = '';
+        }
+        $converted_string = "CONVERT(" . $possible_quote . $string . $possible_quote . " USING " . $charset . ")" . $collate;
     } else {
         $converted_string = $possible_quote . $string . $possible_quote;
     }
@@ -1209,6 +1215,25 @@ function PMA_showMessage($message, $sql_query = null)
 
 
 /**
+ * Verifies if current MySQL server supports profiling 
+ *
+ * @access  public
+ * @return  boolean whether profiling is supported 
+ *
+ * @author   Marc Delisle 
+ */
+function PMA_profilingSupported() {
+    // 5.0.37 has profiling but for example, 5.1.20 does not
+    // (avoid a trip to the server for MySQL before 5.0.37)
+    // and do not set a constant as we might be switching servers
+    if (defined('PMA_MYSQL_INT_VERSION') && PMA_MYSQL_INT_VERSION >= 50037 && PMA_DBI_fetch_value("SHOW VARIABLES LIKE 'profiling'")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
  * Displays a form with the Profiling checkbox 
  *
  * @param   string  $sql_query
@@ -1217,9 +1242,7 @@ function PMA_showMessage($message, $sql_query = null)
  * @author   Marc Delisle 
  */
 function PMA_profilingCheckbox($sql_query) {
-    // 5.0.37 has profiling but for example, 5.1.20 does not
-    // (avoid doing a fetch_value for MySQL before 5.0.37)
-    if (PMA_MYSQL_INT_VERSION >= 50037 && PMA_DBI_fetch_value("SHOW VARIABLES LIKE 'profiling'")) {
+    if (PMA_profilingSupported()) {
         echo '<form action="sql.php" method="post">' . "\n";
         echo PMA_generate_common_hidden_inputs($GLOBALS['db'], $GLOBALS['table']);
         echo '<input type="hidden" name="sql_query" value="' . $sql_query . '" />' . "\n";

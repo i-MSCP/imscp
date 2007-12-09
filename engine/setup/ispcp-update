@@ -138,7 +138,7 @@ MSG
 
 	if (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
 
-		my vhcs_update_msg = <<MSG;
+		my $vhcs_update_msg = <<MSG;
 
 \tMake sure you have installed ispCP OMEGA first as described in the INSTALL
 \tdocument.
@@ -480,8 +480,8 @@ if ($rs != 0) {
 $rs = update_ispcp();
 
 if ($rs != 0) {
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+	$el_data = pop_el(\@main::el);
+	($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
 
@@ -491,8 +491,8 @@ if ($rs != 0) {
 $rs = update_shut_down();
 
 if ($rs != 0) {
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+	$el_data = pop_el(\@main::el);
+	($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
 

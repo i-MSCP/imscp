@@ -6,6 +6,15 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-09 Benedikt Heintel
+	- SETUP:
+		* Fixed #835: Add awstats_updateall.pl to logrotate config
+		* Fixed #876: Correct DNS Minimum interval
+		* Fixed #913: wrong dns zone file
+		* Fixed #914: update script fails
+	- TOOLS:
+		* Update PHPmyAdmin to version 2.11.3 (#916)
+
 2007-12-04 Benedikt Heintel
 	- SETUP:
 		* Fixed #909: Unrecognized escape \P passed through at ./ispcp-setup line 509

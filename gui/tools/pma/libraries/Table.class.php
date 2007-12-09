@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 10679 2007-09-27 16:56:09Z lem9 $
+ * @version $Id: Table.class.php 10923 2007-11-14 18:42:47Z lem9 $
  */
 
 /**
@@ -343,16 +343,22 @@ class PMA_Table {
 
         if (!empty($extra)) {
             $query .= ' ' . $extra;
-            // An auto_increment field must be use as a primary key
-            if ($extra == 'AUTO_INCREMENT' && isset($field_primary)) {
+            // Force an auto_increment field to be part of the primary key
+            // even if user did not tick the PK box; 
+            // but the PK could contain other columns so do not append
+            // a PRIMARY KEY clause, just add a member to $field_primary
+            if ($extra == 'AUTO_INCREMENT') {
                 $primary_cnt = count($field_primary);
-                for ($j = 0; $j < $primary_cnt && $field_primary[$j] != $index; $j++) {
-                    // void
+                $found_in_pk = false;
+                for ($j = 0; $j < $primary_cnt; $j++) {
+                    if ($field_primary[$j] == $index) {
+                        $found_in_pk = true;
+                        break;
+                    }
                 } // end for
-                if (isset($field_primary[$j]) && $field_primary[$j] == $index) {
-                    $query .= ' PRIMARY KEY';
-                    unset($field_primary[$j]);
-                } // end if
+                if (! $found_in_pk) {
+                    $field_primary[] = $index;
+                }
             } // end if (auto_increment)
         }
         if (PMA_MYSQL_INT_VERSION >= 40100 && !empty($comment)) {

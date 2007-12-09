@@ -3,7 +3,7 @@
 /**
  * SQL import plugin for phpMyAdmin
  *
- * @version $Id: sql.php 10739 2007-10-08 20:52:25Z lem9 $
+ * @version $Id: sql.php 10909 2007-11-09 11:30:28Z lem9 $
  */
 
 /**
@@ -66,6 +66,11 @@ while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
     }
     // Current length of our buffer
     $len = strlen($buffer);
+    // prepare an uppercase copy of buffer for PHP < 5
+    // outside of the loop
+    if (PMA_PHP_INT_VERSION < 50000) {
+        $buffer_upper = strtoupper($buffer);
+    }
     // Grab some SQL queries out of it
      while ($i < $len) {
         $found_delimiter = false;
@@ -108,7 +113,12 @@ while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
         if ($p7 === FALSE) {
             $p7 = $big_value;
         }
-        $p8 = strpos($buffer, 'DELIMITER', $i);
+        // catch also "delimiter"
+        if (PMA_PHP_INT_VERSION >= 50000) {
+            $p8 = stripos($buffer, 'DELIMITER', $i);
+        } else {
+            $p8 = strpos($buffer_upper, 'DELIMITER', $i);
+        }
         if ($p8 === FALSE || $p8 >= ($len - 11) || $buffer[$p8 + 9] > ' ') {
             $p8 = $big_value;
         }
@@ -222,7 +232,7 @@ while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
             }
         }
        // Change delimiter, if redefined, and skip it (don't send to server!)
-       if ((substr($buffer, $i, 9) == "DELIMITER") && ($buffer[$i + 9] <= ' ') && ($i<$len-11) && (!(strpos($buffer,"\n",$i+11)===FALSE))) {
+       if ((strtoupper(substr($buffer, $i, 9)) == "DELIMITER") && ($buffer[$i + 9] <= ' ') && ($i<$len-11) && (!(strpos($buffer,"\n",$i+11)===FALSE))) {
            $new_line_pos = strpos($buffer, "\n", $i + 10);
            $sql_delimiter = substr($buffer, $i+10, $new_line_pos - $i -10);
            $i= $new_line_pos + 1;

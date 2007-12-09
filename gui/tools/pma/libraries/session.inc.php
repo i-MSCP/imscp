@@ -3,7 +3,7 @@
 /**
  * session handling
  *
- * @version $Id: session.inc.php 10422 2007-06-05 16:32:49Z lem9 $
+ * @version $Id: session.inc.php 10942 2007-11-25 13:33:54Z lem9 $
  * @todo    add failover or warn if sessions are not configured properly
  * @todo    add an option to use mm-module for session handler
  * @see     http://www.php.net/session
@@ -19,12 +19,9 @@
 if (!@function_exists('session_name')) {
     PMA_fatalError('strCantLoad', 'session');
 } elseif (ini_get('session.auto_start') == true && session_name() != 'phpMyAdmin') {
-    $_SESSION = array();
-    if (isset($_COOKIE[session_name()])) {
-        PMA_removeCookie(session_name());
-    }
-    session_unset();
-    @session_destroy();
+    // Do not delete the existing session, it might be used by other 
+    // applications; instead just close it.
+    session_write_close();
 }
 
 // disable starting of sessions before all settings are done

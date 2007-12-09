@@ -2,8 +2,38 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 10931 2007-11-20 12:55:14Z lem9 $
+$Id: ChangeLog 10967 2007-12-08 12:46:36Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+2.11.3.0 (2007-12-08)
+- patch #1818389 to remove a notice (failed to flush buffer), thanks to
+  Bertrand
+- patch #1821154, HTTP authentication: fix auth working with php/mod_fastcgi,
+  thanks to yarodin
+- wrong default charset in case of broken session
+- bug #1824506 [profiling] Profile command repeated on older MySQL servers
+- bug #1825172 [export] Exporting and functions
+- bug #1817224 [import] Incorrect detection of file_uploads in some cases,
+  thanks to Juergen Wind
+- bug #1777249 [display] Do not underline links in left panel (in default
+- bug #1826022 [privileges] unable to add user (MySQL 3.23) since PMA 2.11.2
+- bug #1823045 [import] Error importing file with lowercase "delimiter"
+- bug #1828913 [structure] Can't set FULLTEXT index on CHAR column
+- bug #1804081 [export] export on server doesn't obey AllowAnyWhereRecoding 
+- bug #1789988 [display] space before SHOW COLUMNS 
+- bug #1831646 [table creation] Error in CREATE TABLE with multiple primary
+  keys and AUTO_INCREMENT
+- [display] Division by zero when showing all records (page selector)
+- bug #1828265 [privileges] No weird characters in generated password 
+- bug #1759194 [import] open_basedir warning
+- bug #1793948 [parser] ROW_FORMAT incorrectly parsed
+- undefined PMA_MYSQL_INT_VERSION when no default server is set 
+- bug #1763343 [session] Behavior with session.auto_start enabled 
++ [lang] Hungarian update, thanks to Mihály Mészáros 
++ [lang] German update, thanks to Jürgen Wind - windkiel
+- patch #1837691 [query window] js errors, thanks to Victor Volkov 
+- patch #1839052 [lang] catalan not in UTF-8, thanks to jaz001 
+- patch #1838626 [GUI] Login interface broken on Konqueror, thanks to fhimpe
 
 2.11.2.2 (2007-11-20)
 - bug #1835123 [security] fixed XSS vulnerability on login page, 

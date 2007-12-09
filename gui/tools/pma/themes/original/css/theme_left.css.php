@@ -3,7 +3,7 @@
 /**
  * navigation css file from theme Original
  *
- * @version $Id: theme_left.css.php 10868 2007-10-20 17:19:39Z lem9 $
+ * @version $Id: theme_left.css.php 10902 2007-11-05 17:51:57Z lem9 $
  * @package phpMyAdmin-theme
  * @subpackage Original
  */
@@ -28,6 +28,13 @@ body {
 
 a img {
     border: 0;
+}
+
+a:link,
+a:visited,
+a:active {
+    text-decoration:    none;
+    color:              #0000FF;
 }
 
 ul {

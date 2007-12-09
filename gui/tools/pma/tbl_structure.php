@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_structure.php 10379 2007-05-11 17:11:39Z lem9 $
+ * @version $Id: tbl_structure.php 10910 2007-11-09 17:26:07Z lem9 $
  */
 
 /**
@@ -450,7 +450,8 @@ while ($row = PMA_DBI_fetch_assoc($fields_rs)) {
     </td>
     <?php
         if ((!empty($tbl_type) && $tbl_type == 'MYISAM')
-            && (strpos(' ' . $type, 'text') || strpos(' ' . $type, 'varchar'))) {
+            // FULLTEXT is possible on TEXT, CHAR and VARCHAR
+            && (strpos(' ' . $type, 'text') || strpos(' ' . $type, 'char'))) {
             echo "\n";
             ?>
     <td align="center" nowrap="nowrap">

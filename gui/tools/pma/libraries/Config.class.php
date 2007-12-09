@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 10932 2007-11-20 13:17:00Z lem9 $
+ * @version $Id: Config.class.php 10967 2007-12-08 12:46:36Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.2.2');
+        $this->set('PMA_VERSION', '2.11.3');
         /**
          * @deprecated
          */
@@ -751,11 +751,16 @@ class PMA_Config
      */
     function checkUpload()
     {
-        $this->set('enable_upload', true);
-        if (strtolower(@ini_get('file_uploads')) == 'off'
-          || @ini_get('file_uploads') == 0) {
+        if (ini_get('file_uploads')) {
+            $this->set('enable_upload', true);
+            // if set "php_admin_value file_uploads Off" in httpd.conf
+            // ini_get() also returns the string "Off" in this case:
+            if ('off' == strtolower(ini_get('file_uploads'))) {
+                $this->set('enable_upload', false);
+            }
+         } else {
             $this->set('enable_upload', false);
-        }
+         }
     }
 
     /**

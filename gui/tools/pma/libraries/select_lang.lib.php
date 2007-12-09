@@ -3,7 +3,7 @@
 /**
  * phpMyAdmin Language Loading File
  *
- * @version $Id: select_lang.lib.php 10430 2007-06-10 19:28:56Z lem9 $
+ * @version $Id: select_lang.lib.php 10895 2007-11-02 16:45:49Z lem9 $
  */
 
 /**
@@ -414,8 +414,9 @@ if (empty($GLOBALS['convcharset'])) {
     if (isset($_COOKIE['pma_charset'])) {
         $GLOBALS['convcharset'] = $_COOKIE['pma_charset'];
     } else {
-        // session.save_path might point to a bad folder
-        $convcharset = isset($GLOBALS['cfg']['DefaultCharset']) ? $GLOBALS['cfg']['DefaultCharset'] : 'en-utf-8';
+        // session.save_path might point to a bad folder, in which case
+        // $GLOBALS['cfg'] would not exist
+        $convcharset = isset($GLOBALS['cfg']['DefaultCharset']) ? $GLOBALS['cfg']['DefaultCharset'] : 'utf-8';
     }
 }
 

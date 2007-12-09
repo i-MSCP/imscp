@@ -2,7 +2,7 @@
 /**
  * function used in server privilege pages
  *
- * @version $Id: server_privileges.js 10142 2007-03-20 10:32:13Z cybot_tm $
+ * @version $Id: server_privileges.js 10929 2007-11-15 17:51:46Z lem9 $
  */
 
 /**
@@ -71,7 +71,10 @@ function checkAddUser(the_form)
  * @return  boolean  always true
  */
 function suggestPassword() {
-    var pwchars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ.,:";
+    // restrict the password to just letters and numbers to avoid problems:
+    // "editors and viewers regard the password as multiple words and
+    // things like double click no longer work"
+    var pwchars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
     var passwordlength = 16;    // do we want that to be dynamic?  no, keep it simple :)
     var passwd = document.getElementById('generated_pw');
     passwd.value = '';

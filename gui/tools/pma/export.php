@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 10408 2007-05-21 17:13:49Z lem9 $
+ * @version $Id: export.php 10914 2007-11-10 15:20:59Z lem9 $
  */
 
 /**
@@ -170,6 +170,9 @@ function PMA_exportOutputHandler($line)
         }
     } else {
         if ($GLOBALS['asfile']) {
+            if ($GLOBALS['output_charset_conversion']) {
+                $line = PMA_convert_string($GLOBALS['charset'], $GLOBALS['charset_of_file'], $line);
+            }
             if ($GLOBALS['save_on_server'] && strlen($line) > 0) {
                 $write_result = @fwrite($GLOBALS['file_handle'], $line);
                 if (!$write_result || ($write_result != strlen($line))) {
@@ -184,9 +187,6 @@ function PMA_exportOutputHandler($line)
                 } // end if
             } else {
                 // We export as file - output normally
-                if ($GLOBALS['output_charset_conversion']) {
-                    $line = PMA_convert_string($GLOBALS['charset'], $GLOBALS['charset_of_file'], $line);
-                }
                 echo $line;
             }
         } else {

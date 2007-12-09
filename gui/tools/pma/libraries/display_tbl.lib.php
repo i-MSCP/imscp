@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_tbl.lib.php 10589 2007-09-02 19:27:05Z lem9 $
+ * @version $Id: display_tbl.lib.php 10928 2007-11-15 13:33:35Z lem9 $
  */
 
 /**
@@ -355,10 +355,12 @@ onsubmit="return (checkFormElementInRange(this, 'session_max_rows', '<?php echo 
 
 
     //page redirection
-    $pageNow = @floor($_SESSION['userconf']['pos'] / $_SESSION['userconf']['max_rows']) + 1;
-    $nbTotalPage = @ceil($unlim_num_rows / $_SESSION['userconf']['max_rows']);
+    // (unless we are showing all records)
+    if ('all' != $_SESSION['userconf']['max_rows']) { //if1
+        $pageNow = @floor($_SESSION['userconf']['pos'] / $_SESSION['userconf']['max_rows']) + 1;
+        $nbTotalPage = @ceil($unlim_num_rows / $_SESSION['userconf']['max_rows']);
 
-    if ($nbTotalPage > 1){ //if1
+        if ($nbTotalPage > 1){ //if2
        ?>
    <td>
        &nbsp;&nbsp;&nbsp;
@@ -385,10 +387,11 @@ onsubmit="return (checkFormElementInRange(this, 'session_max_rows', '<?php echo 
         </form>
     </td>
         <?php
+        } //_if2
     } //_if1
 
 
-    // Show all the records if allowed
+    // Display the "Show all" button if allowed
     if ($GLOBALS['cfg']['ShowAll'] && ($num_rows < $unlim_num_rows)) {
         echo "\n";
         ?>
