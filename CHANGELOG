@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-10 Christian Hernmarck
+	- SETUP:
+		* Fixed #921: 2 backup cron jobs in one logfile
+
 2007-12-09 Benedikt Heintel
 	- SETUP:
 		* Fixed #835: Add awstats_updateall.pl to logrotate config

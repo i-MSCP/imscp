@@ -14,7 +14,7 @@
 
 # Backup
 @daily root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
-@daily root {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport &>{LOG_DIR}/ispcp-backup-all-mngr.log
+@daily root {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport &>{LOG_DIR}/ispcp-backup-ispcp-mngr.log
 
 # Remove config backups older than seven days
 @daily root find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs -r /bin/rm
