@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-12 Malte Geierhos
+	- GUI:
+		* Fixed empty page when changing reseller-lostpassword mails
+
 2007-12-10 Christian Hernmarck
 	- SETUP:
 		* Fixed #921: 2 backup cron jobs in one logfile
