@@ -34,8 +34,8 @@ $net2ftp_settings["help_text"] = "";
 $net2ftp_settings["help_link"] = "";
 
 // PHP error reporting
-//$net2ftp_settings["error_reporting"] = "NONE";
-$net2ftp_settings["error_reporting"] = "standard";
+$net2ftp_settings["error_reporting"] = "NONE";
+//$net2ftp_settings["error_reporting"] = "standard";
 //$net2ftp_settings["error_reporting"] = "ALL";
 
 // Fix PNG images

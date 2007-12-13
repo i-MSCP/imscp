@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-13 Benedikt Heintel
+	- TOOLS:
+		* Fixed #922: Filemanger doesn't handle errors on login...
+		* Fixed #929: Filemanager prints undefined offset when viewing directory details
+
 2007-12-12 Malte Geierhos
 	- GUI:
 		* Fixed empty page when changing reseller-lostpassword mails

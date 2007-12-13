@@ -1,7 +1,7 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
 <!-- Template /skins/omega/browse_main_details.template.php begin -->
 
-<script type="text/javascript"><!--\n";	
+<script type="text/javascript"><!--\n";
 function setColor_js(i, checkbox_hidden) {
 	// i contains the row number
 	// checkbox_hidden determines if the row has a checkbox, or hidden properties
@@ -15,17 +15,17 @@ function setColor_js(i, checkbox_hidden) {
 	row_id = 'row' + i;
 	checkbox_id = 'list_' + i + '_dirfilename';
 	if (document.getElementById) {
-		if (checkbox_hidden == 'checkbox' && document.getElementById(checkbox_id).checked == true) { 
-			document.getElementById(row_id).style.background = bgcolor_true;  document.getElementById(row_id).style.color = fontcolor_true; 
-		} else { 
-			document.getElementById(row_id).style.background = bgcolor_false; document.getElementById(row_id).style.color = fontcolor_false; 
+		if (checkbox_hidden == 'checkbox' && document.getElementById(checkbox_id).checked == true) {
+			document.getElementById(row_id).style.background = bgcolor_true;  document.getElementById(row_id).style.color = fontcolor_true;
+		} else {
+			document.getElementById(row_id).style.background = bgcolor_false; document.getElementById(row_id).style.color = fontcolor_false;
 		}
 	}
 	else if (document.all) {
-		if (checkbox_hidden == 'checkbox' && document.all[checkbox_id].checked == true) { 
-			document.all[row_id].style.background = bgcolor_true;  document.all[row_id].style.color = fontcolor_true; 
-		} else { 
-			document.all[row_id].style.background = bgcolor_false; document.all[row_id].style.color = fontcolor_false; 
+		if (checkbox_hidden == 'checkbox' && document.all[checkbox_id].checked == true) {
+			document.all[row_id].style.background = bgcolor_true;  document.all[row_id].style.color = fontcolor_true;
+		} else {
+			document.all[row_id].style.background = bgcolor_false; document.all[row_id].style.color = fontcolor_false;
 		}
 	}
 }
@@ -42,7 +42,7 @@ function setColor_js(i, checkbox_hidden) {
 	<tr valign="bottom">
 		<td rowspan="2" width="40">&nbsp;  </td>
 		<td style="text-align: <?php echo __("left"); ?>;">
-			<input type="text" name="directory" value="<?php echo $directory_html; ?>" style="width: 400px;" title="(accesskey g)" accesskey="g" /> 
+			<input type="text" name="directory" value="<?php echo $directory_html; ?>" style="width: 400px;" title="(accesskey g)" accesskey="g" />
 			<?php printActionIcon("listdirectories", "createDirectoryTreeWindow('$directory_js','BrowseForm.directory');"); ?>
 		</td>
 		<td valign="middle" style="text-align: <?php echo __("right"); ?>;">
@@ -123,7 +123,7 @@ function setColor_js(i, checkbox_hidden) {
 		<tr class="browse_rows_even" onMouseOver="this.style.color='#000000'; this.style.backgroundColor='#FFCC00';" onMouseOut="this.style.color='#000000'; this.style.backgroundColor='#F2F2F5';">
 			<td></td>
 			<td title="<?php echo __("Go to the parent directory"); ?>" style="cursor: pointer; cursor: hand;" onClick="javascript:submitBrowseForm('<?php echo $updirectory_js; ?>', '', 'browse', 'main');">
-<?php				printMime("icon", $list_directories[$i]); ?>
+<?php			printMime("icon", array("dirorfile" => "d")); ?>
 			</td>
 			<td colspan="10" title="<?php echo __("Go to the parent directory"); ?>" style="cursor: pointer; cursor: hand;" onClick="javascript:submitBrowseForm('<?php echo $updirectory_js; ?>', '', 'browse', 'main');">
 				<a href="javascript:submitBrowseForm('<?php echo $updirectory_url; ?>','','browse','main');"><?php echo __("Up"); ?> ..</a>
@@ -134,22 +134,22 @@ function setColor_js(i, checkbox_hidden) {
 <?php	if ($list["stats"]["directories"]["total_number"] > 0) { ?>
 
 <?php		for ($i=1; $i<=sizeof($list_directories); $i++) { ?>
-<?php 
+<?php
 // ----- Some PHP stuff -----
 			$rowcounter++;
 			if ($rowcounter % 2 == 1) { $odd_even = "odd"; }
 			else                      { $odd_even = "even"; }
-			if ($list_directories[$i]["selectable"] == "ok") { 
-				$onClick = "submitBrowseForm('" . $list_directories[$i]["newdir_js"] . "','','browse','main');"; 
-				$title = __("Go to the subdirectory %1\$s", $list_directories[$i]["dirfilename_html"]); 
-				$style = "cursor: pointer; cursor: hand; width: 32px;"; 
+			if ($list_directories[$i]["selectable"] == "ok") {
+				$onClick = "submitBrowseForm('" . $list_directories[$i]["newdir_js"] . "','','browse','main');";
+				$title = __("Go to the subdirectory %1\$s", $list_directories[$i]["dirfilename_html"]);
+				$style = "cursor: pointer; cursor: hand; width: 32px;";
 				$href = "<a style=\"white-space: nowrap;\" href=\"javascript:" . $onClick . "\">" . $list_directories[$i]["dirfilename_html"] . "</a>\n";
 			}
-			else { 
+			else {
 				$onClick = "";
 				$title = "";
 				$style = "";
-				$href = "<span style=\"white-space: nowrap;\">" . $list_directories[$i]["dirfilename_html"] . "</span>"; 
+				$href = "<span style=\"white-space: nowrap;\">" . $list_directories[$i]["dirfilename_html"] . "</span>";
 			}
 // -------------------------- ?>
 			<tr class="browse_rows_<?php echo $odd_even; ?>" id="row<?php echo $rowcounter; ?>" onMouseOver="this.style.color='#000000'; this.style.backgroundColor='#FFCC00';" onMouseOut="this.style.color='#000000'; setColor_js(<?php echo $rowcounter; ?>, 'checkbox');">
@@ -179,22 +179,22 @@ function setColor_js(i, checkbox_hidden) {
 <?php	if ($list["stats"]["files"]["total_number"]> 0) { ?>
 
 <?php		for ($i=1; $i<=sizeof($list_files); $i++) { ?>
-<?php 
+<?php
 // ----- Some PHP stuff -----
 			$rowcounter++;
 			if ($rowcounter % 2 == 1) { $odd_even = "odd"; }
 			else                      { $odd_even = "even"; }
-			if ($list_files[$i]["selectable"] == "ok") { 
-				$onClick = "submitBrowseForm('" . $directory_js . "','" . $list_files[$i]["dirfilename_js"] . "','downloadfile','');"; 
-				$title = __("Download the file %1\$s", $list_files[$i]["dirfilename_html"]); 
-				$style = "cursor: pointer; cursor: hand; width: 32px;"; 
+			if ($list_files[$i]["selectable"] == "ok") {
+				$onClick = "submitBrowseForm('" . $directory_js . "','" . $list_files[$i]["dirfilename_js"] . "','downloadfile','');";
+				$title = __("Download the file %1\$s", $list_files[$i]["dirfilename_html"]);
+				$style = "cursor: pointer; cursor: hand; width: 32px;";
 				$href = "<a style=\"white-space: nowrap;\" href=\"javascript:" . $onClick . "\">" . $list_files[$i]["dirfilename_html"] . "</a>\n";
 			}
-			else { 
+			else {
 				$onClick = "";
 				$title = "";
 				$style = "";
-				$href = "<span style=\"white-space: nowrap;\">" . $list_files[$i]["dirfilename_html"] . "</span>"; 
+				$href = "<span style=\"white-space: nowrap;\">" . $list_files[$i]["dirfilename_html"] . "</span>";
 			}
 // -------------------------- ?>
 			<tr class="browse_rows_<?php echo $odd_even; ?>" id="row<?php echo $rowcounter; ?>" onMouseOver="this.style.color='#000000'; this.style.backgroundColor='#FFCC00';" onMouseOut="this.style.color='#000000'; setColor_js(<?php echo $rowcounter; ?>, 'checkbox');">
@@ -233,22 +233,22 @@ function setColor_js(i, checkbox_hidden) {
 <?php	if ($list["stats"]["symlinks"]["total_number"] > 0) { ?>
 
 <?php		for ($i=1; $i<=sizeof($list_symlinks); $i++) { ?>
-<?php 
+<?php
 // ----- Some PHP stuff -----
 			$rowcounter++;
 			if ($rowcounter % 2 == 1) { $odd_even = "odd"; }
 			else                      { $odd_even = "even"; }
-			if ($list_symlinks[$i]["selectable"] == "ok") { 
-				$onClick = "submitBrowseForm('" . $directory_js . "','" . $list_symlinks[$i]["dirfilename_js"] . "','followsymlink','main');"; 
-				$title = __("Follow symlink %1\$s", $list_symlinks[$i]["dirfilename_html"]); 
-				$style = "cursor: pointer; cursor: hand; width: 32px;"; 
+			if ($list_symlinks[$i]["selectable"] == "ok") {
+				$onClick = "submitBrowseForm('" . $directory_js . "','" . $list_symlinks[$i]["dirfilename_js"] . "','followsymlink','main');";
+				$title = __("Follow symlink %1\$s", $list_symlinks[$i]["dirfilename_html"]);
+				$style = "cursor: pointer; cursor: hand; width: 32px;";
 				$href = "<a style=\"white-space: nowrap;\" href=\"javascript:" . $onClick . "\">" . $list_symlinks[$i]["dirfilename_html"] . "</a>\n";
 			}
-			else { 
+			else {
 				$onClick = "";
 				$title = "";
 				$style = "";
-				$href = "<span style=\"white-space: nowrap;\">" . $list_symlinks[$i]["dirfilename_html"] . "</span>"; 
+				$href = "<span style=\"white-space: nowrap;\">" . $list_symlinks[$i]["dirfilename_html"] . "</span>";
 			}
 // -------------------------- ?>
 			<tr class="browse_rows_<?php echo $odd_even; ?>" id="row<?php echo $rowcounter; ?>" onMouseOver="this.style.color='#000000'; this.style.backgroundColor='#FFCC00';" onMouseOut="this.style.color='#000000'; setColor_js(<?php echo $rowcounter; ?>, 'hidden');">

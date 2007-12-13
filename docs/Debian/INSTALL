@@ -190,13 +190,13 @@ After that go to step 12.
 b) manually
 -----------
 4b. You have to set up some configuration variables for your linux distribution.
-   ispCP ω is preconfigurated for Debian 4.0 Etch.
-   If you're using another distribution please check, if config files exist in
-   ./configs/dists and use/change them.
+	ispCP ω is preconfigurated for Debian 4.0 Etch.
+	If you're using another distribution please check, if config files exist in
+	./configs/dists and use/change them.
 
-   Check the ispcp.conf and adapt it to your requirements.
-   An overview over the variables you can find in the FAQ on
-   http://isp-control.net
+	Check the ispcp.conf and adapt it to your requirements.
+	An overview over the variables you can find in the FAQ on
+	http://isp-control.net
 
 5. Build the System by using make:
 	# make install

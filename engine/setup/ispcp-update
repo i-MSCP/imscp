@@ -148,7 +148,7 @@ MSG
 \t(0) No
 MSG
 
-		print STDOUT $welcome_message;
+		print STDOUT $vhcs_update_msg;
 		print STDOUT "\tYour selection: ";
 
 		$rdata = readline(\*STDIN);
@@ -161,7 +161,7 @@ MSG
 		}
 
 		# Set to 0 if not ready
-		if (rdata == 0) {
+		if ($rdata == 0) {
 			$main::ua{'update'} = $rdata;
 		}
 	}
