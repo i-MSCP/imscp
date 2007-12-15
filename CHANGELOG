@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-23-15 Benedikt Heintel
+	- TOOLS:
+		* Update Squirrelmail to version 1.4.13 (#932)
+
+
 2007-12-13 Benedikt Heintel
 	- TOOLS:
 		* Fixed #922: Filemanger doesn't handle errors on login...

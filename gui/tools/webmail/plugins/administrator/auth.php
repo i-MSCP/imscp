@@ -5,7 +5,7 @@
  * This function tell other modules what users have access
  * to the plugin.
  *
- * @version $Id: auth.php 12538 2007-07-14 19:04:00Z kink $
+ * @version $Id: auth.php 12805 2007-12-06 19:09:41Z pdontthink $
  * @author Philippe Mingo
  * @copyright (c) 1999-2006 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -31,7 +31,9 @@ function adm_check_user() {
     }
 
     /* This needs to be first, for all non_options pages */
-    if (defined('PAGE_NAME') && PAGE_NAME=='administrator_options') {
+    //if (!defined('PAGE_NAME') || strpos(PAGE_NAME, 'options') === FALSE) {
+    if (!defined('PAGE_NAME') 
+     || (PAGE_NAME != 'administrator_options' && PAGE_NAME != 'options')) {
         $auth = FALSE;
     } else if (file_exists(SM_PATH . 'plugins/administrator/admins')) {
         $auths = file(SM_PATH . 'plugins/administrator/admins');

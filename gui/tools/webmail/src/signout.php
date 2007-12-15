@@ -66,143 +66,34 @@ set_up_language($squirrelmail_language, true, true);
 <?php
     if ($theme_css != '') {
 ?>
-<style type="text/css">
-<!--
-body {
-	text-align: center;
-	background-repeat: no-repeat;
-	margin: 0;
-	padding: 0;
-	background-color: #ffffff;
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-}
-
-#container {
-	background-image: url(../images/bg.jpg);
-	background-repeat: no-repeat;
-	background-attachment: scroll;
-	background-position: center left;
-	margin: 8em auto;
-	width: 474px;
-	height: 273px;
-	position: relative;
-}
-
-#logo {
-	width: 140px;
-	height: 78px;
-	background-image: url(<?php echo "$org_logo" ?>);
-	position: absolute;
-	top: 120px;
-	left: 40px;
-}
-
-#copyright {
-	color: #97E4F7;
-	width: 290px;
-	height: 77px;
-	position: absolute;
-	top: 155px;
-	left: -200px;
-}
-
-h1 {
-	text-align: right;
-	font-size: 1em;
-	color: #FFFFFF;
-	width: 375px;
-	margin: 65px 20px 0px 0px;
-	position: absolute;
-	top: -10px;
-	left: 25px;
-}
-
-h2 {
-	color: #666666;
-	text-align: right;
-	font-size: .6em;
-	margin: 15px 30px;
-	position: absolute;
-	top: 90px;
-	left: 170px;
-}
-
-fieldset {
-	width: 200px;
-	margin: 0 auto auto 190px;
-	text-align: right;
-	border: none;
-	position: absolute;
-	top: 100px;
-	left: 20px;
-}
-
-p.1, p.2, p.3 {
-	font-size: .7em;
-	color: #6D6D6D;
-	vertical-align: super;
-}
-
-p.1 {
-	color: #666666;
-	margin: 0px 0 0 0;
-}
-
-p.2, p.3 {
-	margin: 3px 0 0 0;
-	color: #6D6D6D;
-}
-
-p.4 {
-	margin: 3px 0px 0px 0px;
-	text-decoration: none;
-}
-
-.input {
-	margin: 3px 12px 0px 7px;
-	background-color: #FFFFFF;
-	height: 16px;
-	width: 10em;
-	border: 1px solid #c0c0c0;
-	font-size: 11px;
-	vertical-align: middle;
-}
-
-.button {
-	width: 93px;
-	height: 20px;
-	background-color: #202020;
-	color: #f4dc6b;
-	border: none;
-	font-weight: bold;
-	font-size: 9px;
-	margin: -10px 12px 0 0 !important;
-	margin: 5px 12px 0 0;
-}
-
-p.logout {
-	font-size: .7em;
-	font-weight: bold;
-	text-transform: uppercase;
-	color: #0066CC;
-	margin: 3em 2em 0 15em;
-}
-//-->
-</style>
+   <link rel="stylesheet" type="text/css" href="<?php echo $theme_css; ?>">
 <?php
     }
-$plugin_message = concat_hook_function('logout_above_text');
 ?>
    <title><?php echo $org_title . ' - ' . _("Signout"); ?></title>
 </head>
-<body>
-
-<div id="container">
-  <h1>WebMail Logout</h1>
-
-  <h2><?php echo _("You have been successfully signed out."); ?></h2>
-  <h3><a href="../src/login.php" target="<?php echo $frame_top; ?>"><?php echo _("Click here to log back in."); ?></a></h3>
-</div>
-
+<body text="<?php echo $color[8]; ?>" bgcolor="<?php echo $color[4]; ?>"
+link="<?php echo $color[7]; ?>" vlink="<?php echo $color[7]; ?>"
+alink="<?php echo $color[7]; ?>">
+<br /><br />
+<?php
+$plugin_message = concat_hook_function('logout_above_text');
+echo
+html_tag( 'table',
+    html_tag( 'tr',
+         html_tag( 'th', _("Sign Out"), 'center' ) ,
+    '', $color[0], 'width="100%"' ) .
+    $plugin_message .
+    html_tag( 'tr',
+         html_tag( 'td', _("You have been successfully signed out.") .
+             '<br /><a href="login.php" target="' . $frame_top . '">' .
+             _("Click here to log back in.") . '</a><br />' ,
+         'center' ) ,
+    '', $color[4], 'width="100%"' ) .
+    html_tag( 'tr',
+         html_tag( 'td', '<br />', 'center' ) ,
+    '', $color[0], 'width="100%"' ) ,
+'center', $color[4], 'width="50%" cols="1" cellpadding="2" cellspacing="0" border="0"' )
+?>
 </body>
 </html>

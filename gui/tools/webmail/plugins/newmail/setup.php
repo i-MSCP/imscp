@@ -22,7 +22,7 @@
  * This was tested with IE5.0 - but I hear Netscape works well,
  * too (with a plugin).
  *
- * @version $Id: setup.php 12538 2007-07-14 19:04:00Z kink $
+ * @version $Id: setup.php 12727 2007-10-07 05:06:52Z jangliss $
  * @package plugins
  * @subpackage new_mail
  */
@@ -107,16 +107,20 @@ function newmail_sav() {
         $media_changetitle = '';
         $media_sel = '';
 
-        sqgetGlobalVar('media_enable',      $media_enable,      SQ_POST);
-        sqgetGlobalVar('media_popup',       $media_popup,       SQ_POST);
-        sqgetGlobalVar('media_allbox',      $media_allbox,      SQ_POST);
-        sqgetGlobalVar('media_recent',      $media_recent,      SQ_POST);
-        sqgetGlobalVar('media_changetitle', $media_changetitle, SQ_POST);
+        sqgetGlobalVar('media_enable',         $media_enable,         SQ_POST);
+        sqgetGlobalVar('media_popup',          $media_popup,          SQ_POST);
+        sqgetGlobalVar('media_allbox',         $media_allbox,         SQ_POST);
+        sqgetGlobalVar('media_recent',         $media_recent,         SQ_POST);
+        sqgetGlobalVar('media_changetitle',    $media_changetitle,    SQ_POST);
+        sqgetGlobalVar('popup_height',         $newmail_popup_height, SQ_POST);
+        sqgetGlobalVar('popup_width',          $newmail_popup_width,  SQ_POST);        
 
         setPref($data_dir,$username,'newmail_enable',$media_enable);
         setPref($data_dir,$username,'newmail_popup', $media_popup);
         setPref($data_dir,$username,'newmail_allbox',$media_allbox);
         setPref($data_dir,$username,'newmail_recent',$media_recent);
+        setPref($data_dir,$username,'newmail_popup_height',$newmail_popup_height);
+        setPref($data_dir,$username,'newmail_popup_width',$newmail_popup_width);
         setPref($data_dir,$username,'newmail_changetitle',$media_changetitle);
             
         if( sqgetGlobalVar('media_sel', $media_sel, SQ_POST) &&
@@ -129,15 +133,18 @@ function newmail_sav() {
 }
 
 function newmail_pref() {
-    global $username,$data_dir;
-    global $newmail_media,$newmail_enable,$newmail_popup,$newmail_allbox;
-    global $newmail_recent, $newmail_changetitle;
+    global $username, $data_dir, $newmail_media, $newmail_enable, $newmail_popup,
+           $newmail_allbox, $newmail_recent, $newmail_changetitle, $newmail_popup_height,
+           $newmail_popup_width;
+    
 
     $newmail_recent = getPref($data_dir,$username,'newmail_recent');
     $newmail_enable = getPref($data_dir,$username,'newmail_enable');
     $newmail_media = getPref($data_dir, $username, 'newmail_media', '(none)');
     $newmail_popup = getPref($data_dir, $username, 'newmail_popup');
     $newmail_allbox = getPref($data_dir, $username, 'newmail_allbox');
+    $newmail_popup_height = getPref($data_dir, $username, 'newmail_popup_height',130);
+    $newmail_popup_width = getPref($data_dir, $username, 'newmail_popup_width',200);
     $newmail_changetitle = getPref($data_dir, $username, 'newmail_changetitle');
 
 }
@@ -157,7 +164,8 @@ function newmail_set_loadinfo() {
 function newmail_plugin() {
     global $username, $key, $imapServerAddress, $imapPort,
         $newmail_media, $newmail_enable, $newmail_popup,
-        $newmail_recent, $newmail_changetitle, $imapConnection;
+        $newmail_popup_height, $newmail_popup_width, $newmail_recent, 
+        $newmail_changetitle, $imapConnection;
 
     include_once(SM_PATH . 'functions/display_messages.php');
 
@@ -242,7 +250,7 @@ function newmail_plugin() {
                 "function PopupScriptLoad() {\n".
                 'window.open("'.sqm_baseuri().'plugins/newmail/newmail.php?numnew='.$totalNew.
                 '", "SMPopup",'.
-                "\"width=200,height=130,scrollbars=no\");\n".
+                "\"width=" . (int)$newmail_popup_width . ",height=" . (int)$newmail_popup_height . ",scrollbars=no\");\n".
                 "if (BeforePopupScript != null)\n".
                 "BeforePopupScript();\n".
                 "}\n".

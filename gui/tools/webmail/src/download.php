@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: download.php 12537 2007-07-14 18:34:04Z kink $
+ * @version $Id: download.php 12746 2007-10-30 16:28:43Z jangliss $
  * @package squirrelmail
  */
 
@@ -51,10 +51,16 @@ global $uid_support;
 $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 $mbx_response =  sqimap_mailbox_select($imapConnection, $mailbox);
 
-$message = $messages[$mbx_response['UIDVALIDITY']]["$passed_id"];
+$message = '';
+
+if (isset($messages[$mbx_response['UIDVALIDITY']]["$passed_id"])) {
+    $message = $messages[$mbx_response['UIDVALIDITY']]["$passed_id"];
+}
+
 if (!is_object($message)) {
     $message = sqimap_get_message($imapConnection,$passed_id, $mailbox);
 }
+
 $subject = $message->rfc822_header->subject;
 if ($ent_id) {
     $message = $message->getEntity($ent_id);

@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 12690 2007-09-15 01:35:02Z pdontthink $
+ * @version $Id: imap_messages.php 12769 2007-11-19 04:21:49Z jangliss $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -143,7 +143,9 @@ function sqimap_get_sort_order($imap_stream, $sort, $mbxresponse) {
                       2=> 'FROM',
                       3=> 'FROM',
                       4=> 'SUBJECT',
-                      5=> 'SUBJECT');
+                      5=> 'SUBJECT',
+                      8=> 'SIZE',
+                      9=> 'SIZE');
     if ($internal_date_sort == true) {
         $sort_on[0] = 'ARRIVAL';
         $sort_on[1] = 'ARRIVAL';
@@ -166,7 +168,7 @@ function sqimap_get_sort_order($imap_stream, $sort, $mbxresponse) {
       }
     }
 
-    if ($sort == 0 || $sort == 2 || $sort == 4) {
+    if ($sort == 0 || $sort == 2 || $sort == 4 || $sort == 8) {
        $server_sort_array = array_reverse($server_sort_array);
     }
     if (!preg_match("/OK/", $response)) {

@@ -8,7 +8,7 @@
  *
  * Displays all options relating to new mail sounds
  *
- * $Id: newmail_opt.php 10633 2006-02-03 22:27:56Z jervfors $
+ * $Id: newmail_opt.php 12727 2007-10-07 05:06:52Z jangliss $
  * @package plugins
  * @subpackage newmail
  */
@@ -30,6 +30,8 @@ $media_popup = getPref($data_dir, $username,'newmail_popup');
 $media_allbox = getPref($data_dir,$username,'newmail_allbox');
 $media_recent = getPref($data_dir,$username,'newmail_recent');
 $media_changetitle = getPref($data_dir,$username,'newmail_changetitle');
+$newmail_popup_height = getPref($data_dir, $username, 'newmail_popup_height',130);
+$newmail_popup_width = getPref($data_dir, $username, 'newmail_popup_width',200);
 $media = getPref($data_dir,$username,'newmail_media', '(none)');
 
 // Set $allowsound to false if you don't want sound files available
@@ -110,6 +112,21 @@ if($media_popup == 'on') {
     echo 'checked="checked" ';
 }
 echo 'name="media_popup" />&nbsp;('._("requires JavaScript to work").')</td></tr>' . "\n";
+
+echo html_tag( 'tr' )
+     . html_tag('td',_("Width of popup window:"),'right','', 'style="white-space: nowrap;"')
+     . html_tag('td','<input type="text" name="popup_width" value="'
+                . (int)$newmail_popup_width . '" size="3" maxlength="3" />'
+                . '&nbsp;<small>(' . _("If set to 0, reverts to default value") . ')</small>','left')
+     . "</tr>\n";
+
+echo html_tag( 'tr' )
+     . html_tag('td',_("Height of popup window:"),'right','', 'style="white-space: nowrap;"')
+     . html_tag('td','<input type="text" name="popup_height" value="'
+                . (int)$newmail_popup_height . '" size="3" maxlength="3" />'
+                . '&nbsp;<small>(' . _("If set to 0, reverts to default value") . ')</small>','left')
+     . "</tr>\n";
+
 
 if ($allowsound == "true") {
 // Option: media_enable

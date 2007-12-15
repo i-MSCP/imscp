@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 12706 2007-09-29 07:54:57Z kink $
+ * @version $Id: strings.php 12811 2007-12-14 17:04:21Z jangliss $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.11';
+$version = '1.4.13';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,11);
+$SQM_INTERNAL_VERSION = array(1,4,13);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -31,6 +31,10 @@ $SQM_INTERNAL_VERSION = array(1,4,11);
  * For that reason, bring in global.php AFTER we define the version strings.
  */
 require_once(SM_PATH . 'functions/global.php');
+
+if (file_exists(SM_PATH . 'plugins/compatibility/functions.php')) {
+    include_once(SM_PATH . 'plugins/compatibility/functions.php');
+}
 
 /**
  * Wraps text at $wrap characters

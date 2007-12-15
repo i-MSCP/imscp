@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 12396 2007-05-17 15:20:55Z kink $
+ * @version $Id: mime.php 12803 2007-12-05 20:21:46Z jangliss $
  * @package squirrelmail
  */
 
@@ -127,6 +127,8 @@ function mime_fetch_body($imap_stream, $id, $ent_id=1, $fetch_size=0) {
 //        }
     } else if (ereg('"([^"]*)"', $topline, $regs)) {
         $ret = $regs[1];
+    } else if ((stristr($topline, 'nil') !== false) && (empty($wholemessage))) {
+        $ret = $wholemessage;
     } else {
         global $where, $what, $mailbox, $passed_id, $startMessage;
         $par = 'mailbox=' . urlencode($mailbox) . '&amp;passed_id=' . $passed_id;
@@ -1704,6 +1706,7 @@ function sq_fix_url($attname, &$attvalue, $message, $id, $mailbox,$sQuote = '"')
             $aUrl = parse_url($attvalue);
             if (isset($aUrl['scheme'])) {
                 switch(strtolower($aUrl['scheme'])) {
+                    case 'mailto':
                     case 'http':
                     case 'https':
                     case 'ftp':
@@ -2180,9 +2183,15 @@ function sq_sanitize($body,
  *
  * @param  $body  the body of the message
  * @param  $id    the id of the message
+ * @param  boolean $take_mailto_links When TRUE, converts mailto: links
+ *                                    into internal SM compose links
+ *                                    (optional; default = TRUE)
  * @return        a string with html safe to display in the browser.
  */
-function magicHTML($body, $id, $message, $mailbox = 'INBOX') {
+function magicHTML($body, $id, $message, $mailbox = 'INBOX', $take_mailto_links =true) {
+
+    // require_once(SM_PATH . 'functions/url_parser.php');  // for $MailTo_PReg_Match
+
     global $attachment_common_show_images, $view_unsafe_images,
            $has_unsafe_images;
     /**
@@ -2334,6 +2343,59 @@ function magicHTML($body, $id, $message, $mailbox = 'INBOX') {
     if (strpos($trusted,$secremoveimg)){
         $has_unsafe_images = true;
     }
+
+    // we want to parse mailto's in HTML output, change to SM compose links
+    // this is a modified version of code from url_parser.php... but Marc is
+    // right: we need a better filtering implementation; adding this randomly
+    // here is not a great solution
+    //
+    if ($take_mailto_links) {
+        // parseUrl($trusted);   // this even parses URLs inside of tags... too aggressive
+        global $MailTo_PReg_Match;
+        $MailTo_PReg_Match = '/mailto:' . substr($MailTo_PReg_Match, 1) ;
+        if ((preg_match_all($MailTo_PReg_Match, $trusted, $regs)) && ($regs[0][0] != '')) {
+            foreach ($regs[0] as $i => $mailto_before) {
+                $mailto_params = $regs[10][$i];
+                // get rid of any tailing quote since we have to add send_to to the end
+                //
+                if (substr($mailto_before, strlen($mailto_before) - 1) == '"')
+                    $mailto_before = substr($mailto_before, 0, strlen($mailto_before) - 1);
+                if (substr($mailto_params, strlen($mailto_params) - 1) == '"')
+                    $mailto_params = substr($mailto_params, 0, strlen($mailto_params) - 1);
+
+                if ($regs[1][$i]) {    //if there is an email addr before '?', we need to merge it with the params
+                    $to = 'to=' . $regs[1][$i];
+                    if (strpos($mailto_params, 'to=') > -1)    //already a 'to='
+                        $mailto_params = str_replace('to=', $to . '%2C%20', $mailto_params);
+                    else {
+                        if ($mailto_params)    //already some params, append to them
+                            $mailto_params .= '&amp;' . $to;
+                        else
+                            $mailto_params .= '?' . $to;
+                    }
+                }
+
+                $url_str = preg_replace(array('/to=/i', '/(?<!b)cc=/i', '/bcc=/i'), array('send_to=', 'send_to_cc=', 'send_to_bcc='), $mailto_params);
+
+                // we'll already have target=_blank, no need to allow comp_in_new
+                // here (which would be a lot more work anyway)
+                //
+                global $compose_new_win;
+                $temp_comp_in_new = $compose_new_win;
+                $compose_new_win = 0;
+                $comp_uri = makeComposeLink('src/compose.php' . $url_str, $mailto_before);
+                $compose_new_win = $temp_comp_in_new;
+
+                // remove <a href=" and anything after the next quote (we only
+                // need the uri, not the link HTML) in compose uri
+                //
+                $comp_uri = substr($comp_uri, 9);
+                $comp_uri = substr($comp_uri, 0, strpos($comp_uri, '"', 1));
+                $trusted = str_replace($mailto_before, $comp_uri, $trusted);
+            }
+        }
+    }
+
     return $trusted;
 }
 

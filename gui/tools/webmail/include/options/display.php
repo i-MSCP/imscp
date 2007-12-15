@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display.php 12681 2007-09-06 22:48:42Z pdontthink $
+ * @version $Id: display.php 12718 2007-10-01 19:37:52Z pdontthink $
  * @package squirrelmail
  */
 
@@ -231,11 +231,21 @@ function load_optpage_data_display() {
 
     $optvals[SMOPT_GRP_MESSAGE][] = array(
         'name'    => 'use_javascript_addr_book',
-        'caption' => _("Addressbook Display Format"),
+        'caption' => _("Address Book Display Format"),
         'type'    => SMOPT_TYPE_STRLIST,
         'refresh' => SMOPT_REFRESH_NONE,
         'posvals' => array('1' => _("Javascript"),
                            '0' => _("HTML"))
+    );
+
+    $optvals[SMOPT_GRP_MESSAGE][] = array(
+        'name'    => 'addrsrch_fullname',
+        'caption' => _("Format of Addresses Added From Address Book"),
+        'type'    => SMOPT_TYPE_STRLIST,
+        'refresh' => SMOPT_REFRESH_NONE,
+        'posvals' => array('noprefix' => _("No prefix/Address only"),
+                           'nickname' => _("Nickname and address"),
+                           'fullname' => _("Full name and address"))
     );
 
     $optvals[SMOPT_GRP_MESSAGE][] = array(

@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 12629 2007-08-29 23:59:12Z pdontthink $
+ * @version $Id: auth.php 12746 2007-10-30 16:28:43Z jangliss $
  * @package squirrelmail
  */
 
@@ -54,7 +54,10 @@ function is_logged_in() {
         //  First we store some information in the new session to prevent
         //  information-loss.
         $session_expired_post = $_POST;
-        $session_expired_location = PAGE_NAME;
+        if (defined('PAGE_NAME')) {
+            $session_expired_location = PAGE_NAME;
+        }
+        
         if (!sqsession_is_registered('session_expired_post')) {
             sqsession_register($session_expired_post,'session_expired_post');
         }

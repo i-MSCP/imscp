@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 12546 2007-07-16 22:27:13Z kink $
+ * @version $Id: global.php 12793 2007-11-27 21:26:57Z jangliss $
  * @package squirrelmail
  */
 
@@ -185,6 +185,40 @@ function sqstripslashes(&$array) {
 }
 
 /**
+ * Squelch error output to screen (only) for the given function.
+ *
+ * This provides an alternative to the @ error-suppression
+ * operator where errors will not be shown in the interface
+ * but will show up in the server log file (assuming the
+ * administrator has configured PHP logging).
+ * 
+ * @since 1.4.12 and 1.5.2
+ * 
+ * @param string $function The function to be executed
+ * @param array  $args     The arguments to be passed to the function
+ *                         (OPTIONAL; default no arguments)
+ *                         NOTE: The caller must take extra action if
+ *                               the function being called is supposed
+ *                               to use any of the parameters by 
+ *                               reference.  In the following example,
+ *                               $x is passed by reference and $y is
+ *                               passed by value to the "my_func"
+ *                               function.
+ * sq_call_function_suppress_errors('my_func', array(&$x, $y));
+ * 
+ * @return mixed The return value, if any, of the function being
+ *               executed will be returned.
+ * 
+ */ 
+function sq_call_function_suppress_errors($function, $args=NULL) {
+   $display_errors = ini_get('display_errors');
+   ini_set('display_errors', '0');
+   $ret = call_user_func_array($function, $args);
+   ini_set('display_errors', $display_errors);
+   return $ret;
+}
+
+/**
  * Add a variable to the session.
  * @param mixed $var the variable to register
  * @param string $name the name to refer to this variable
@@ -312,9 +346,8 @@ function sqsession_destroy() {
 
     global $base_uri;
 
-    if (isset($_COOKIE[session_name()])) setcookie(session_name(), '', 0, $base_uri);
-    if (isset($_COOKIE['username'])) setcookie('username', '', 0, $base_uri);
-    if (isset($_COOKIE['key'])) setcookie('key', '', 0, $base_uri);
+    if (isset($_COOKIE[session_name()])) setcookie(session_name(), $_COOKIE[session_name()], 1, $base_uri);
+    if (isset($_COOKIE['key'])) setcookie('key', 'SQMTRASH', 1, $base_uri);
 
     $sessid = session_id();
     if (!empty( $sessid )) {

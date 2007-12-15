@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 12656 2007-08-31 23:20:21Z pdontthink $
+ * @version $Id: Rfc822Header.class.php 12764 2007-11-15 05:52:52Z jangliss $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -537,7 +537,7 @@ class Rfc822Header {
                 if ($sGroup) {
                     $aAddress[] = $this->createAddressObject($aStack,$aComment,$sEmail,$sGroup);
                     $oAddr = end($aAddress);
-                    if(!$oAddr || ((isset($oAddr)) && !$oAddr->mailbox && !$oAddr->personal)) {
+                    if(!$oAddr || ((isset($oAddr)) && !strlen($oAddr->mailbox) && !$oAddr->personal)) {
                         $sEmail = $sGroup . ':;';
                     }
                     $aAddress[] = $this->createAddressObject($aStack,$aComment,$sEmail,$sGroup);
@@ -588,18 +588,18 @@ class Rfc822Header {
                      }
                  }
             }
-            if (!$grouplookup && !$oAddr->mailbox) {
+            if (!$grouplookup && !strlen($oAddr->mailbox)) {
                 $oAddr->mailbox = trim($sEmail);
-                if ($sHost && $oAddr->mailbox) {
+                if ($sHost && strlen($oAddr->mailbox)) {
                     $oAddr->host = $sHost;
                 }
             } else if (!$grouplookup && !$oAddr->host) {
-                if ($sHost && $oAddr->mailbox) {
+                if ($sHost && strlen($oAddr->mailbox)) {
                     $oAddr->host = $sHost;
                 }
             }
           }
-          if (!$aAddrBookAddress && $oAddr->mailbox) {
+          if (!$aAddrBookAddress && strlen($oAddr->mailbox)) {
               $aProcessedAddress[] = $oAddr;
           } else {
               $aProcessedAddress = array_merge($aProcessedAddress,$aAddrBookAddress);
@@ -929,6 +929,7 @@ class Rfc822Header {
             }
         } else {
             if (!is_array($this->cc)) $this->cc = array();
+            if (!is_array($this->to)) $this->to = array();
             $srch_addr = $this->parseAddress($address);
             $results = array();
             foreach ($this->to as $to) {

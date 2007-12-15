@@ -9,7 +9,7 @@
  * @author Marc Groot Koerkamp
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 12565 2007-07-20 17:13:46Z kink $
+ * @version $Id: Deliver.class.php 12749 2007-10-31 03:38:19Z jangliss $
  * @package squirrelmail
  */
 
@@ -31,12 +31,21 @@ class Deliver {
     /**
      * function mail - send the message parts to the SMTP stream
      *
-     * @param Message  $message  Message class to send
-     * @param resource $stream   file handle to the SMTP stream
+     * @param Message  $message      Message object to send
+     * @param resource $stream       Handle to the SMTP stream
+     * @param string   $reply_id     Identifies message being replied to
+     *                               (OPTIONAL; caller should ONLY specify
+     *                               a value for this when the message
+     *                               being sent is a reply)
+     * @param string   $reply_ent_id Identifies message being replied to
+     *                               in the case it was an embedded/attached
+     *                               message inside another (OPTIONAL; caller
+     *                               should ONLY specify a value for this 
+     *                               when the message being sent is a reply)
      *
      * @return integer $raw_length
      */
-    function mail($message, $stream=false) {
+    function mail($message, $stream=false, $reply_id=0, $reply_ent_id=0) {
         $rfc822_header = $message->rfc822_header;
         if (count($message->entities)) {
             $boundary = $this->mimeBoundary();
@@ -45,6 +54,37 @@ class Deliver {
             $boundary='';
         }
         $raw_length = 0;
+
+
+        // calculate reply header if needed
+        //
+        if ($reply_id) {
+            global $imapConnection, $username, $key, $imapServerAddress, 
+                   $imapPort, $mailbox;
+            if (!$imapConnection)
+                $imapConnection = sqimap_login($username, $key, 
+                                               $imapServerAddress, $imapPort, 0);
+
+            sqimap_mailbox_select($imapConnection, $mailbox);
+            $reply_message = sqimap_get_message($imapConnection, $reply_id, $mailbox);
+
+            if ($reply_ent_id) {
+                /* redefine the messsage in case of message/rfc822 */
+                $reply_message = $message->getEntity($reply_ent_id);
+                /* message is an entity which contains the envelope and type0=message
+                 * and type1=rfc822. The actual entities are childs from
+                 * $reply_message->entities[0]. That's where the encoding and is located
+                 */
+
+                $orig_header = $reply_message->rfc822_header; /* here is the envelope located */
+
+            } else {
+                $orig_header = $reply_message->rfc822_header;
+            }
+            $message->reply_rfc822_header = $orig_header;            
+        }
+
+
         $reply_rfc822_header = (isset($message->reply_rfc822_header)
                              ? $message->reply_rfc822_header : '');
         $header = $this->prepareRFC822_Header($rfc822_header, $reply_rfc822_header, $raw_length);

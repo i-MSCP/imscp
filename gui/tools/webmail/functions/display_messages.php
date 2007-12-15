@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: display_messages.php 12576 2007-08-09 06:49:27Z pdontthink $
+ * @version $Id: display_messages.php 12797 2007-12-01 02:29:12Z pdontthink $
  * @package squirrelmail
  */
 
@@ -26,9 +26,11 @@ function error_message($message, $mailbox, $sort, $startMessage, $color) {
               '<tr><td align="center">'.
               '<a href="'.sqm_baseuri()."src/right_main.php?sort=$sort&amp;startMessage=$startMessage&amp;mailbox=$urlMailbox\">";
 
-    if (strpos($mailbox, $default_folder_prefix) === 0)
-        $mailbox = substr($mailbox, strlen($default_folder_prefix));
-
+    if (!empty($default_folder_prefix)) {
+        if (strpos($mailbox, $default_folder_prefix) === 0)
+            $mailbox = substr($mailbox, strlen($default_folder_prefix));
+    }
+    
     $string .= sprintf (_("Click here to return to %s"),
                   htmlspecialchars(imap_utf7_decode_local($mailbox))).
               '</a></td></tr>';
@@ -44,13 +46,15 @@ function logout_error( $errString, $errTitle = '' ) {
            $hide_sm_attributions, $version, $squirrelmail_language, 
            $color, $theme, $theme_default;
 
+    include_once( SM_PATH . 'functions/page_header.php' );
+
     $base_uri = sqm_baseuri();
 
-    include_once( SM_PATH . 'functions/page_header.php' );
-    if ( !isset( $org_logo ) ) {
-        // Don't know yet why, but in some accesses $org_logo is not set.
-        include( SM_PATH . 'config/config.php' );
-    }
+    $logout_link = $base_uri . 'src/login.php';
+
+    list($junk, $errString, $errTitle, $logout_link) 
+        = do_hook('logout_error', $errString, $errTitle, $logout_link);
+
     /* Display width and height like good little people */
     $width_and_height = '';
     if (isset($org_logo_width) && is_numeric($org_logo_width) && $org_logo_width>0) {
@@ -77,11 +81,6 @@ function logout_error( $errString, $errTitle = '' ) {
         $color[7]  = '#0000cc';  /* blue          Links                  */
         $color[8]  = '#000000';  /* black         Normal text            */
     }
-
-    $logout_link = $base_uri . 'src/login.php';
-
-    list($junk, $errString, $errTitle, $logout_link) 
-        = do_hook('logout_error', $errString, $errTitle, $logout_link);
 
     if ( $errTitle == '' ) {
         $errTitle = $errString;

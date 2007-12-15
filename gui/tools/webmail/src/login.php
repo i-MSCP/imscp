@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: login.php 12614 2007-08-28 20:30:29Z pdontthink $
+ * @version $Id: login.php 12768 2007-11-19 04:20:34Z jangliss $
  * @package squirrelmail
  */
 
@@ -23,8 +23,6 @@ define('SM_PATH','../');
 
 /* SquirrelMail required files. */
 require_once(SM_PATH . 'functions/global.php');
-require_once(SM_PATH . 'functions/strings.php');
-require_once(SM_PATH . 'config/config.php');
 require_once(SM_PATH . 'functions/i18n.php');
 require_once(SM_PATH . 'functions/plugin.php');
 require_once(SM_PATH . 'functions/constants.php');
@@ -61,11 +59,56 @@ if (!empty($_SESSION)) {
     $_SESSION = array();
 }
 
+/**
+ * Allow administrators to define custom session handlers
+ * for SquirrelMail without needing to change anything in
+ * php.ini (application-level).
+ *
+ * In config_local.php, admin needs to put:
+ *
+ *     $custom_session_handlers = array(
+ *         'my_open_handler',
+ *         'my_close_handler',
+ *         'my_read_handler',
+ *         'my_write_handler',
+ *         'my_destroy_handler',
+ *         'my_gc_handler',
+ *     );
+ *     session_module_name('user');
+ *     session_set_save_handler(
+ *         $custom_session_handlers[0],
+ *         $custom_session_handlers[1],
+ *         $custom_session_handlers[2],
+ *         $custom_session_handlers[3],
+ *         $custom_session_handlers[4],
+ *         $custom_session_handlers[5]
+ *     );
+ * 
+ * We need to replicate that code once here because PHP has
+ * long had a bug that resets the session handler mechanism
+ * when the session data is also destroyed.  Because of this
+ * bug, even administrators who define custom session handlers
+ * via a PHP pre-load defined in php.ini (auto_prepend_file)
+ * will still need to define the $custom_session_handlers array 
+ * in config_local.php.
+ */
+global $custom_session_handlers;
+if (!empty($custom_session_handlers)) {
+    $open    = $custom_session_handlers[0];
+    $close   = $custom_session_handlers[1];
+    $read    = $custom_session_handlers[2];
+    $write   = $custom_session_handlers[3];
+    $destroy = $custom_session_handlers[4];
+    $gc      = $custom_session_handlers[5];
+    session_module_name('user');
+    session_set_save_handler($open, $close, $read, $write, $destroy, $gc);
+}
+
 /* put session_expired_* variables back in session */
 sqsession_is_active();
 if (!empty($sel)) {
     sqsession_register($sel, 'session_expired_location');
-    if (!empty($sep))
+    if (!empty($sep)) 
         sqsession_register($sep, 'session_expired_post');
 }
 
@@ -94,138 +137,11 @@ $header = "<script language=\"JavaScript\" type=\"text/javascript\">\n" .
           "  }\n".
           "// -->\n".
           "</script>\n";
-
-$header .= <<<CSS
-<style type="text/css">
-<!--
-body {
-	text-align: center;
-	background-repeat: no-repeat;
-	margin: 0;
-	padding: 0;
-	background-color: #fffff;
-	font-family: Geneva, Arial, Helvetica, sans-serif;
-}
-
-#container {
-	background-image: url(../images/bg.jpg);
-	background-repeat: no-repeat;
-	background-attachment: scroll;
-	background-position: center left;
-	margin: 8em auto;
-	width: 474px;
-	height: 273px;
-	position: relative;
-}
-
-#logo {
-	width: 140px;
-	height: 78px;
-	background-image: url(<?php echo "$org_logo" ?>);
-	position: absolute;
-	top: 120px;
-	left: 40px;
-}
-
-#copyright {
-	color: #97E4F7;
-	width: 290px;
-	height: 77px;
-	position: absolute;
-	top: 155px;
-	left: -200px;
-}
-
-h1 {
-	text-align: right;
-	font-size: 1em;
-	color: #FFFFFF;
-	width: 375px;
-	margin: 65px 20px 0px 0px;
-	position: absolute;
-	top: -10px;
-	left: 25px;
-}
-
-h2 {
-	color: #666666;
-	text-align: right;
-	font-size: .6em;
-	margin: 15px 30px;
-	position: absolute;
-	top: 90px;
-	left: 170px;
-}
-
-fieldset {
-	width: 200px;
-	margin: 0 auto auto 190px;
-	text-align: right;
-	border: none;
-	position: absolute;
-	top: 100px;
-	left: 20px;
-}
-
-p.1, p.2, p.3 {
-	font-size: .7em;
-	color: #6D6D6D;
-	vertical-align: super;
-}
-
-p.1 {
-	color: #666666;
-	margin: 0px 0 0 0;
-}
-
-p.2, p.3 {
-	margin: 3px 0 0 0;
-	color: #6D6D6D;
-}
-
-p.4 {
-	margin: 3px 0px 0px 0px;
-	text-decoration: none;
-}
-
-.input {
-	margin: 3px 12px 0px 7px;
-	background-color: #FFFFFF;
-	height: 16px;
-	width: 10em;
-	border: 1px solid #c0c0c0;
-	font-size: 11px;
-	vertical-align: middle;
-}
-
-.button {
-	width: 93px;
-	height: 20px;
-	background-color: #202020;
-	color: #f4dc6b;
-	border: none;
-	font-weight: bold;
-	font-size: 9px;
-	margin: -10px 12px 0 0 !important;
-	margin: 5px 12px 0 0;
-}
-
-p.logout {
-	font-size: .7em;
-	font-weight: bold;
-	text-transform: uppercase;
-	color: #0066CC;
-	margin: 3em 2em 0 15em;
-}
-//-->
-</style>
-CSS;
+$custom_css = 'none';
 
 // Load default theme if possible
 if (@file_exists($theme[$theme_default]['PATH']))
    @include ($theme[$theme_default]['PATH']);
-
-$custom_css = '';
 
 if (! isset($color) || ! is_array($color)) {
     // Add default color theme, if theme loading fails
@@ -238,10 +154,9 @@ if (! isset($color) || ! is_array($color)) {
     $color[8]  = '#000000';  /* black         Normal text            */
 }
 
-displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE);
+displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE );
 
-//echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
-echo '<body text="#000000" bgcolor="#FFFFFF" link="#0000CC" vlink="#0000CC" alink="#0000CC" onload="squirrelmail_loginpage_onload();">' .
+echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
      "\n" . addForm('redirect.php', 'post');
 
 $username_form_name = 'login_username';
@@ -269,26 +184,61 @@ if (isset($org_logo) && $org_logo) {
     }
 }
 
-?>
-<div id="container">
-  <h1>WebMail Login</h1>
+echo html_tag( 'table',
+    html_tag( 'tr',
+        html_tag( 'td',
+            '<center>'.
+            ( isset($org_logo) && $org_logo
+              ? '<img src="' . $org_logo . '" alt="' .
+                sprintf(_("%s Logo"), $org_name) .'"' . $width_and_height .
+                ' /><br />' . "\n"
+              : '' ).
+            ( (isset($hide_sm_attributions) && $hide_sm_attributions) ? '' :
+            '<small>' . sprintf (_("SquirrelMail version %s"), $version) . '<br />' ."\n".
+            '  ' . _("By the SquirrelMail Project Team") . '<br /></small>' . "\n" ) .
+            html_tag( 'table',
+                html_tag( 'tr',
+                    html_tag( 'td',
+                        '<b>' . sprintf (_("%s Login"), $org_name) . "</b>\n",
+                    'center', $color[0] )
+                ) .
+                html_tag( 'tr',
+                    html_tag( 'td',  "\n" .
+                        html_tag( 'table',
+                            html_tag( 'tr',
+                                html_tag( 'td',
+                                    _("Name:") ,
+                                'right', '', 'width="30%"' ) .
+                                html_tag( 'td',
+				    addInput($username_form_name, $loginname_value),
+                                'left', '', 'width="70%"' )
+                                ) . "\n" .
+                            html_tag( 'tr',
+                                html_tag( 'td',
+                                    _("Password:") ,
+                                'right', '', 'width="30%"' ) .
+                                html_tag( 'td',
+				    addPwField($password_form_name).
+				    addHidden('js_autodetect_results', SMPREF_JS_OFF).
+                    $mailtofield . 
+				    addHidden('just_logged_in', '1'),
+                                'left', '', 'width="70%"' )
+                            ) ,
+                        'center', $color[4], 'border="0" width="100%"' ) ,
+                    'left',$color[4] )
+                ) . 
+                html_tag( 'tr',
+                    html_tag( 'td',
+                        '<center>'. addSubmit(_("Login")) .'</center>',
+                    'left' )
+                ),
+            '', $color[4], 'border="0" width="350"' ) . '</center>',
+        'center' )
+    ) ,
+'', $color[4], 'border="0" cellspacing="0" cellpadding="0" width="100%"' );
+do_hook('login_form');
+echo '</form>' . "\n";
 
-  <fieldset>
-  <font size="2" color="#FFFFFF">Username:</font><?php echo "<input type=\"text\" name=\"$username_form_name\" value=\"\" tabindex=\"1\" class=\"input\">"; ?>
-  <font size="2" color="#FFFFFF">Password:</font><input name="<?php echo $password_form_name; ?>" type="password" class="input" tabindex=\"2\">
-  <input type=hidden name="js_autodetect_results" value="SMPREF_JS_OFF">
-  <input type=hidden name="just_logged_in" value=1>
-  <p class="3">
-    <input name="button" type="submit" value="login" class="button">
-  </p>
-  <p class="3">
-  <?php do_hook('login_form'); ?>
-  </p>
-  </fieldset>
-</div>
-</form>
-
-<?php
- do_hook('login_bottom');
+do_hook('login_bottom');
 ?>
 </body></html>

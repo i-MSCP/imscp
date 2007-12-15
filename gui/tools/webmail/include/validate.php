@@ -5,7 +5,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: validate.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: validate.php 12766 2007-11-15 06:11:01Z jangliss $
  * @package squirrelmail
  */
 
@@ -40,18 +40,6 @@ $theme=array();
 /* SquirrelMail required files. */
 require_once(SM_PATH . 'class/mime.class.php');
 require_once(SM_PATH . 'functions/global.php');
-require_once(SM_PATH . 'functions/strings.php');
-require_once(SM_PATH . 'config/config.php');
-
-/* set the name of the session cookie */
-if(isset($session_name) && $session_name) {
-    ini_set('session.name' , $session_name);
-} else {
-    ini_set('session.name' , 'SQMSESSID');
-}
-
-sqsession_is_active();
-
 require_once(SM_PATH . 'functions/i18n.php');
 require_once(SM_PATH . 'functions/auth.php');
 

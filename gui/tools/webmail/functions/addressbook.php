@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addressbook.php 12127 2007-01-13 20:07:24Z kink $
+ * @version $Id: addressbook.php 12718 2007-10-01 19:37:52Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -350,15 +350,14 @@ class AddressBook {
      */
 
     function full_address($row) {
-        global $addrsrch_fullname, $data_dir, $username;
-        $prefix = getPref($data_dir, $username, 'addrsrch_fullname');
-        if (($prefix != "" || (isset($addrsrch_fullname) &&
-            $prefix == $addrsrch_fullname)) && $prefix != 'noprefix') {
-            $name = ($prefix == 'nickname' ? $row['nickname'] : $row['name']);
-            return $name . ' <' . trim($row['email']) . '>';
-        } else {
+        global $data_dir, $username;
+        $addrsrch_fullname = getPref($data_dir, $username, 'addrsrch_fullname');
+        if ($addrsrch_fullname == 'fullname')
+            return $row['name'] . ' <' . trim($row['email']) . '>';
+        else if ($addrsrch_fullname == 'nickname')
+            return $row['nickname'] . ' <' . trim($row['email']) . '>';
+        else // "noprefix"
             return trim($row['email']);
-        }
     }
 
     /*

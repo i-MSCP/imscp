@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: read_body.php 12565 2007-07-20 17:13:46Z kink $
+ * @version $Id: read_body.php 12768 2007-11-19 04:20:34Z jangliss $
  * @package squirrelmail
  */
 
@@ -23,13 +23,11 @@ define('SM_PATH','../');
 
 /* SquirrelMail required files. */
 require_once(SM_PATH . 'include/validate.php');
-require_once(SM_PATH . 'functions/global.php');
 require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/mime.php');
 require_once(SM_PATH . 'functions/date.php');
 require_once(SM_PATH . 'functions/url_parser.php');
 require_once(SM_PATH . 'functions/html.php');
-require_once(SM_PATH . 'functions/global.php');
 
 /**
  * Given an IMAP message id number, this will look it up in the cached

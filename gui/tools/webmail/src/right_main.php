@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: right_main.php 12679 2007-09-06 07:40:43Z pdontthink $
+ * @version $Id: right_main.php 12768 2007-11-19 04:20:34Z jangliss $
  * @package squirrelmail
  */
 
@@ -23,14 +23,12 @@ define('SM_PATH','../');
 
 /* SquirrelMail required files. */
 require_once(SM_PATH . 'include/validate.php');
-require_once(SM_PATH . 'functions/global.php');
 require_once(SM_PATH . 'functions/imap.php');
 require_once(SM_PATH . 'functions/date.php');
 require_once(SM_PATH . 'functions/mime.php');
 require_once(SM_PATH . 'functions/mailbox_display.php');
 require_once(SM_PATH . 'functions/display_messages.php');
 require_once(SM_PATH . 'functions/html.php');
-require_once(SM_PATH . 'functions/plugin.php');
 
 /***********************************************************
  * incoming variables from URL:                            *

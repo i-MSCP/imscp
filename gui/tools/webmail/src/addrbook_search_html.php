@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: addrbook_search_html.php 12705 2007-09-29 05:24:14Z pdontthink $
+ * @version $Id: addrbook_search_html.php 12726 2007-10-07 03:01:49Z jangliss $
  * @package squirrelmail
  * @subpackage addressbook
  */
@@ -48,13 +48,16 @@ sqgetGlobalVar('backend',   $backend,   SQ_POST);
  */
 function addr_insert_hidden() {
     global $body, $subject, $send_to, $send_to_cc, $send_to_bcc, $mailbox,
-           $mailprio, $request_mdn, $request_dr, $identity, $session;
+           $mailprio, $request_mdn, $request_dr, $identity, $session, $composeMessage;
 
    if (substr($body, 0, 1) == "\r") {
        echo addHidden('body', "\n".$body);
    } else {
        echo addHidden('body', $body);
    }
+
+   if (is_object($composeMessage) && $composeMessage->entities)
+       echo addHidden('attachments', serialize($composeMessage->entities));
 
    echo addHidden('session', $session).
         addHidden('subject', $subject).
@@ -198,11 +201,11 @@ html_tag( 'table',
 
 
 /* Search form */
-echo '<center>' .
+echo addForm($PHP_SELF.'?html_addr_search=true', 'post', 'f').
+    '<center>' .
     html_tag( 'table', '', 'center', '', 'border="0"' ) .
     html_tag( 'tr' ) .
     html_tag( 'td', '', 'left', '', 'nowrap valign="middle"' ) . "\n" .
-    addForm($PHP_SELF.'?html_addr_search=true', 'post', 'f').
     "\n<center>\n" .
     '  <nobr><strong>' . _("Search for") . "</strong>\n";
 addr_insert_hidden();
@@ -232,9 +235,8 @@ if (isset($session)) {
 echo '<input type="submit" value="' . _("Search") . '" />' .
      '&nbsp;|&nbsp;<input type="submit" value="' . _("List all") .
      '" name="listall" />' . "\n" .
-     '</form></center></td></tr></table>' . "\n";
-addr_insert_hidden();
-echo '</center>';
+     '</center></td></tr></table>' . "\n";
+echo '</center></form>';
 do_hook('addrbook_html_search_below');
 /* End search form */
 
@@ -270,6 +272,7 @@ if ($addrquery == '' && empty($listall)) {
         usort($res,'alistcmp');
         addr_display_result($res, true);
     }
+    echo '</body></html>';
     exit;
 }
 else {

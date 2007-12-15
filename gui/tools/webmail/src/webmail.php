@@ -9,7 +9,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: webmail.php 12597 2007-08-25 18:13:46Z pdontthink $
+ * @version $Id: webmail.php 12767 2007-11-15 06:31:24Z jangliss $
  * @package squirrelmail
  */
 
@@ -27,8 +27,6 @@ require_once(SM_PATH . 'include/validate.php');
 require_once(SM_PATH . 'functions/imap.php');
 
 $base_uri = sqm_baseuri();
-
-sqsession_is_active();
 
 sqgetGlobalVar('username', $username, SQ_SESSION);
 sqgetGlobalVar('delimiter', $delimiter, SQ_SESSION);
@@ -72,7 +70,7 @@ if ($my_language != $squirrelmail_language) {
     setcookie('squirrelmail_language', $my_language, time()+2592000, $base_uri);
 }
 
-set_up_language(getPref($data_dir, $username, 'language'));
+set_up_language($my_language);
 
 $output = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\">\n".
           "<html><head>\n" .
@@ -105,10 +103,10 @@ if ($left_size == "") {
 }
 
 if ($location_of_bar == 'right') {
-    $output .= "<frameset cols=\"*, $left_size\" id=\"fs1\" frameborder=\"0\" framespacing=\"0\" border=\"0\">\n";
+    $output .= "<frameset cols=\"*, $left_size\" id=\"fs1\">\n";
 }
 else {
-    $output .= "<frameset cols=\"$left_size, *\" id=\"fs1\" frameborder=\"0\" framespacing=\"0\" border=\"0\">\n";
+    $output .= "<frameset cols=\"$left_size, *\" id=\"fs1\">\n";
 }
 
 /*
@@ -127,7 +125,7 @@ else {
  * our frameset.
  *
  * Note that plugins are allowed to completely and freely override the URI
- * used for the "right" (content) frame, and they do so by modifying the
+ * used for the "right" (content) frame, and they do so by modifying the 
  * global variable $right_frame_url.
  *
  */
@@ -164,8 +162,8 @@ if (empty($right_frame_url)) {
         default:
             $right_frame_url =  urlencode($right_frame);
             break;
-    }
-}
+    } 
+} 
 
 if ($location_of_bar == 'right') {
     $output .= "<frame src=\"$right_frame_url\" name=\"right\" frameborder=\"1\">\n" .

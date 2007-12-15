@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: search.php 12704 2007-09-28 18:01:36Z pdontthink $
+ * @version $Id: search.php 12750 2007-10-31 21:10:47Z pdontthink $
  * @package squirrelmail
  * @subpackage search
  */
@@ -263,7 +263,7 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
 
         echo '</td></tr></table></td></tr></table>';
         mail_message_listing_end($cnt, '', $msg_cnt_str, $color); 
-        echo "\n</form>\n\n";
+        echo "\n</table></form>\n\n";
     }
 }
 

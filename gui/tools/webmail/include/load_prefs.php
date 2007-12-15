@@ -8,7 +8,7 @@
  *
  * @copyright &copy; 1999-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: load_prefs.php 12681 2007-09-06 22:48:42Z pdontthink $
+ * @version $Id: load_prefs.php 12718 2007-10-01 19:37:52Z pdontthink $
  * @package squirrelmail
  */
 
@@ -219,6 +219,9 @@ $collapse_folders =
 
 $show_html_default =
    getPref($data_dir, $username, 'show_html_default', SMPREF_OFF);
+
+$addrsrch_fullname =
+   getPref($data_dir, $username, 'addrsrch_fullname', SMPREF_OFF);
 
 $enable_forward_as_attachment =
    getPref($data_dir, $username, 'enable_forward_as_attachment', SMPREF_ON);

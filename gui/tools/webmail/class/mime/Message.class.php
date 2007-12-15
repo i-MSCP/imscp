@@ -7,7 +7,7 @@
  *
  * @copyright &copy; 2003-2007 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php 12542 2007-07-16 21:04:37Z kink $
+ * @version $Id: Message.class.php 12757 2007-11-04 10:08:07Z kink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -30,6 +30,11 @@ class Message {
      * @var object
      */
     var $rfc822_header = '';
+    /**
+     * Headers from original email in reply
+     * @var string 
+     */
+    var $reply_rfc822_header = '';
     /**
      * MessageHeader object
      * @var object
@@ -820,7 +825,7 @@ class Message {
      * @return integer
      */
     function parseParenthesis($read, $i) {
-        for (; $read{$i} != ')'; ++$i) {
+        for ($i++; $read{$i} != ')'; ++$i) {
             switch ($read{$i}) {
                 case '"': $this->parseQuote($read, $i); break;
                 case '{': $this->parseLiteral($read, $i); break;
