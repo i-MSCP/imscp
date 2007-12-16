@@ -67,6 +67,7 @@ $tpl->assign(
                         'TR_GENDER' => tr('Gender'),
 						'TR_MALE' => tr('Male'),
 						'TR_FEMALE' => tr('Female'),
+						'TR_UNKNOWN' => tr('Unknown'),
                         'TR_COMPANY' => tr('Company'),
                         'TR_POST_CODE' => tr('Zip/Postal code'),
                         'TR_CITY' => tr('City'),
@@ -158,8 +159,9 @@ function gen_rau3_page(&$tpl) {
                       'VL_USR_FIRM' => $firm,
                       'VL_USR_POSTCODE' => $zip,
                       'VL_USRCITY' => $city,
-                      'VL_MALE' => ($gender == 'M') ? 'checked' : '',
-                      'VL_FEMALE' => ($gender == 'F') ? 'checked' : '',
+                      'VL_MALE' => (($gender == 'M') ? 'selected' : ''),
+                      'VL_FEMALE' => (($gender == 'F') ? 'selected' : ''),
+                      'VL_UNKNOWN' => ((($gender == 'U') || (empty($gender))) ? 'selected' : ''),
                       'VL_COUNTRY' => $country,
                       'VL_STREET1' => $street_one,
                       'VL_STREET2' => $street_two,
@@ -186,7 +188,7 @@ function gen_empty_data() {
     $customer_id = '';
     $first_name = '';
     $last_name = '';
-    $gender = '';
+    $gender = 'U';
     $firm = '';
     $zip = '';
     $city = '';

@@ -155,10 +155,6 @@ function add_reseller(&$tpl, &$sql) {
 			$street1 = clean_input($_POST['street1']);
 			$street2 = clean_input($_POST['street2']);
 
-			if (get_gender_by_code($gender, true) === null) {
-				$gender = '';
-			}
-
 			$query = <<<SQL_QUERY
                 insert into admin
                   (
@@ -336,8 +332,9 @@ SQL_QUERY;
 					'STREET_2' => clean_input($_POST['street2']),
 					'PHONE' => clean_input($_POST['phone']),
 					'FAX' => clean_input($_POST['fax']),
-					'VL_MALE' => (isset($_POST['gender']) && $_POST['gender'] == 'M')? 'checked' : '',
-					'VL_FEMALE' => (isset($_POST['gender']) && $_POST['gender'] == 'F')? 'checked' : '',
+					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected' : ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected' : ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected' : ''),
 
 					'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt']),
 					'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt']),
@@ -370,6 +367,7 @@ SQL_QUERY;
 				'FAX' => '',
 				'VL_MALE' => '',
 				'VL_FEMALE' => '',
+				'VL_UNKNOWN' => 'selected',
 
 				'MAX_DOMAIN_COUNT' => '',
 				'MAX_SUBDOMAIN_COUNT' => '',
@@ -535,6 +533,7 @@ $tpl->assign(
 		'TR_GENDER' => tr('Gender'),
 		'TR_MALE' => tr('Male'),
 		'TR_FEMALE' => tr('Female'),
+		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_COMPANY' => tr('Company'),
 		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
 		'TR_CITY' => tr('City'),

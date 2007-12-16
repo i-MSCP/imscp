@@ -17,6 +17,34 @@
  *   http://opensource.org | osi@opensource.org
  */
 
+require '../include/ispcp-lib.php';
+
+check_login(__FILE__);
+
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/change_personal.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+
+$theme_color = $cfg['USER_INITIAL_THEME'];
+
+$tpl->assign(
+		array(
+			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
+			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+			'ISP_LOGO' => get_logo($_SESSION['user_id']),
+			)
+		);
+
+if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
+	update_reseller_personal_data($sql, $_SESSION['user_id']);
+}
+
+gen_reseller_personal_data($tpl, $sql, $_SESSION['user_id']);
+
+
 function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 	$query = <<<SQL_QUERY
         select
@@ -53,8 +81,9 @@ SQL_QUERY;
 				'FAX' => $rs->fields['fax'],
 				'STREET1' => $rs->fields['street1'],
 				'STREET2' => $rs->fields['street2'],
-				'VL_MALE' => ($rs->fields['gender'] == 'M')? 'checked' : '',
-				'VL_FEMALE' => ($rs->fields['gender'] == 'F')? 'checked' : ''
+				'VL_MALE' => (($rs->fields['gender'] == 'M') ? 'selected' : ''),
+				'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected' : ''),
+				'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
 				)
 			);
 }
@@ -62,7 +91,7 @@ SQL_QUERY;
 function update_reseller_personal_data(&$sql, $user_id) {
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
-	$gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+	$gender = $_POST['gender'];
 	$firm = clean_input($_POST['firm']);
 	$zip = clean_input($_POST['zip']);
 	$city = clean_input($_POST['city']);
@@ -72,10 +101,6 @@ function update_reseller_personal_data(&$sql, $user_id) {
 	$email = clean_input($_POST['email']);
 	$phone = clean_input($_POST['phone']);
 	$fax = clean_input($_POST['fax']);
-
-	if (get_gender_by_code($gender, true) === null) {
-		$gender = '';
-	}
 
 	$query = <<<SQL_QUERY
         update
@@ -101,35 +126,6 @@ SQL_QUERY;
 
 	set_page_message(tr('Personal data updated successfully!'));
 }
-
-// Begin process page lines
-
-require '../include/ispcp-lib.php';
-
-check_login(__FILE__);
-
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/change_personal.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-
-$theme_color = $cfg['USER_INITIAL_THEME'];
-
-$tpl->assign(
-		array(
-			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			)
-		);
-
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
-	update_reseller_personal_data($sql, $_SESSION['user_id']);
-}
-
-gen_reseller_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 /*
  *
@@ -160,6 +156,7 @@ $tpl->assign(
 			'TR_GENDER' => tr('Gender'),
 			'TR_MALE' => tr('Male'),
 			'TR_FEMALE' => tr('Female'),
+			'TR_UNKNOWN' => tr('Unknown'),
 			'TR_UPDATE_DATA' => tr('Update data'),
 			)
 		);

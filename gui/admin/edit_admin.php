@@ -66,10 +66,6 @@ function update_data(&$sql) {
 			$street1 = clean_input($_POST['street1']);
 			$street2 = clean_input($_POST['street2']);
 
-			if (get_gender_by_code($gender, true) === null) {
-				$gender = '';
-			}
-
 			if (empty($_POST['pass'])) {
 				$query = <<<SQL_QUERY
                         update
@@ -299,6 +295,7 @@ $tpl->assign(
 			'TR_GENDER' => tr('Gender'),
 			'TR_MALE' => tr('Male'),
 			'TR_FEMALE' => tr('Female'),
+			'TR_UNKNOWN' => tr('Unknown'),
 			'TR_UPDATE' => tr('Update'),
 			'TR_SEND_DATA' => tr('Send new login data'),
 			'TR_PASSWORD_GENERATE' => tr('Generate password'),
@@ -315,8 +312,9 @@ $tpl->assign(
 			'FAX' => $rs->fields['fax'],
 			'USERNAME' => $admin_name,
 			'EMAIL' => $rs->fields['email'],
-			'VL_MALE' => ($rs->fields['gender'] == 'M')? 'checked' : '',
-			'VL_FEMALE' => ($rs->fields['gender'] == 'F')? 'checked' : '',
+			'VL_MALE' => (($rs->fields['gender'] === 'M') ? 'selected' : ''),
+			'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected' : ''),
+			'VL_UNKNOWN' => ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected' : ''),
 			'EDIT_ID' => $edit_id
 			)
 	);

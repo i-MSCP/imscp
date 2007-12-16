@@ -50,20 +50,17 @@
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_USERNAME}</td>
-                                <td class="content"><input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="username" value="{USERNAME}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_PASSWORD}</td>
-                                <td class="content"><input type="password" name="pass" value="{GENPAS}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="password" name="pass" value="{GENPAS}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_PASSWORD_REPEAT}</td>
-                                <td class="content"><input type="password" name="pass_rep" value="{GENPAS}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="password" name="pass_rep" value="{GENPAS}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
@@ -78,20 +75,24 @@
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_FIRST_NAME}</td>
-                                <td class="content"><input type="text" name="fname" value="{FIRST_NAME}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="fname" value="{FIRST_NAME}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_LAST_NAME}</td>
-                                <td class="content"><input type="text" name="lname" value="{LAST_NAME}" style="width:210px" class="textinput">
-                                </td>
+                                <td class="content"><input type="text" name="lname" value="{LAST_NAME}" style="width:210px" class="textinput"></td>
                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_GENDER}</td>
-                                <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
-                              </tr>
+                                <td class="content">
+                                    <select name="gender" size="1">
+                                      <option value="M" {VL_MALE}>{TR_MALE}</option>
+                                      <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
+                                      <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+                                    </select>
+                                </td>
+                               </tr>
                               <tr>
                                 <td width="25">&nbsp;</td>
                                 <td width="200" class="content2">{TR_COMPANY}</td>

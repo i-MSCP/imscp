@@ -476,10 +476,6 @@ function update_reseller(&$sql) {
 			$street1 = clean_input($_POST['street1']);
 			$street2 = clean_input($_POST['street2']);
 
-			if (get_gender_by_code($gender, true) === null) {
-				$gender = '';
-			}
-
 			if (empty($_POST['pass'])) {
 				$query = <<<SQL_QUERY
                     update
@@ -774,6 +770,7 @@ $tpl->assign(
 		'TR_MALE' => tr('Male'),
 		'TR_FEMALE' => tr('Female'),
 		'TR_COMPANY' => tr('Company'),
+		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
 		'TR_CITY' => tr('City'),
 		'TR_COUNTRY' => tr('Country'),
@@ -802,8 +799,9 @@ $tpl->assign(
 		'CUSTOMER_ID' => $customer_id,
 		'FIRST_NAME' => $fname,
 		'LAST_NAME' => $lname,
-		'VL_MALE' => (isset($gender) && $gender == 'M') ? 'checked' : '',
-		'VL_FEMALE' => (isset($gender) && $gender == 'F')?  'checked' : '',
+		'VL_MALE' => (($gender == 'M') ? 'selected' : ''),
+		'VL_FEMALE' => (($gender == 'F') ? 'selected' : ''),
+		'VL_UNKNOWN' => ((($gender == 'U') || (empty($gender))) ? 'selected' : ''),
 
 		'FIRM' => $firm,
 		'ZIP' => $zip,

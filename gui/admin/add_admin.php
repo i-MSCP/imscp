@@ -191,8 +191,9 @@ SQL_QUERY;
                             'STREET_2' => clean_input($_POST['street2']),
                             'PHONE' => clean_input($_POST['phone']),
                             'FAX' => clean_input($_POST['fax']),
-                            'VL_MALE' => ((isset($_POST['gender']) && $_POST['gender'] == 'M')? 'checked' : ''),
-                            'VL_FEMALE' => ((isset($_POST['gender']) && $_POST['gender'] == 'F')? 'checked' : '')
+                            'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected' : ''),
+                            'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected' : ''),
+                            'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected' : '')
                         )
                 );
          }
@@ -215,6 +216,7 @@ SQL_QUERY;
                             'FAX'  =>'',
                             'VL_MALE'  =>'',
                             'VL_FEMALE'  =>'',
+                            'VL_UNKNOWN' => 'selected'
                         )
                 );
 
@@ -301,6 +303,7 @@ $tpl -> assign(
                         'TR_GENDER' => tr('Gender'),
                         'TR_MALE' => tr('Male'),
                         'TR_FEMALE' => tr('Female'),
+                        'TR_UNKNOWN' => tr('Unknown'),
                         'TR_COMPANY' => tr('Company'),
                         'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
                         'TR_CITY' => tr('City'),

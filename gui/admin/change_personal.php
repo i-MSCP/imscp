@@ -42,19 +42,21 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 
 	$tpl->assign(
-		array('FIRST_NAME' => $rs->fields['fname'],
-			'LAST_NAME' => $rs->fields['lname'],
-			'FIRM' => $rs->fields['firm'],
-			'ZIP' => $rs->fields['zip'],
-			'CITY' => $rs->fields['city'],
-			'COUNTRY' => $rs->fields['country'],
-			'STREET_1' => $rs->fields['street1'],
-			'STREET_2' => $rs->fields['street2'],
-			'EMAIL' => $rs->fields['email'],
-			'PHONE' => $rs->fields['phone'],
-			'FAX' => $rs->fields['fax'],
-			'VL_MALE' => ($rs->fields['gender'] == 'M') ? 'checked' : '',
-			'VL_FEMALE' => ($rs->fields['gender'] == 'F') ? 'checked' : ''
+			array(
+				'FIRST_NAME' => $rs->fields['fname'],
+				'LAST_NAME' => $rs->fields['lname'],
+				'FIRM' => $rs->fields['firm'],
+				'ZIP' => $rs->fields['zip'],
+				'CITY' => $rs->fields['city'],
+				'COUNTRY' => $rs->fields['country'],
+				'STREET_1' => $rs->fields['street1'],
+				'STREET_2' => $rs->fields['street2'],
+				'EMAIL' => $rs->fields['email'],
+				'PHONE' => $rs->fields['phone'],
+				'FAX' => $rs->fields['fax'],
+				'VL_MALE' => (($rs->fields['gender'] == 'M') ? 'selected' : ''),
+				'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected' : ''),
+				'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : ''),
 			)
 		);
 }
@@ -72,10 +74,6 @@ function update_admin_personal_data(&$sql, $user_id) {
 	$email = clean_input($_POST['email']);
 	$phone = clean_input($_POST['phone']);
 	$fax = clean_input($_POST['fax']);
-
-	if (get_gender_by_code($gender, true) === null) {
-		$gender = '';
-	}
 
 	$query = <<<SQL_QUERY
         update
@@ -168,6 +166,7 @@ $tpl->assign(
 		'TR_GENDER' => tr('Gender'),
 		'TR_MALE' => tr('Male'),
 		'TR_FEMALE' => tr('Female'),
+		'TR_UNKNOWN' => tr('Unknown'),
 		'TR_UPDATE_DATA' => tr('Update data'),
 		)
 	);
@@ -175,10 +174,10 @@ $tpl->assign(
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 
