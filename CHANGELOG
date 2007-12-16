@@ -8,13 +8,14 @@ ispCP ω 1.0.0 Changelog
 
 2007-12-16 Benedikt Heintel
 	- GUI:
-		* Added: Gender patch (Thanks to Jochen)
+		* Added: Gender patch (Thanks to Jochen Manz)
 	- TOOLS:
 		* Fixed: Templates of Squirrelmail (new template version)
+		* Added: Squittelmail Translations
 
 2007-12-15 Benedikt Heintel
 	- TOOLS:
-		* Fixed #714: undefined index in pma-style sheet (thanks to Jochen)
+		* Fixed #714: undefined index in pma-style sheet (thanks to joximu)
 		* Update Squirrelmail to version 1.4.13 (#932)
 
 2007-12-13 Benedikt Heintel
