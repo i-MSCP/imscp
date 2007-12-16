@@ -8,6 +8,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-23-15 Benedikt Heintel
 	- TOOLS:
+		* Fixed #714: undefined index in pma-style sheet (thanks to joximu)
 		* Update Squirrelmail to version 1.4.13 (#932)
 
 
