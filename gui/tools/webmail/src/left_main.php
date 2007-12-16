@@ -10,6 +10,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id: left_main.php 12537 2007-07-14 18:34:04Z kink $
  * @package squirrelmail
+ *
+ * @modified by ispCP Omega Team http://isp-control.net
  */
 
 /** This is the left_main page */
@@ -179,9 +181,13 @@ function create_collapse_link($boxnum) {
     $link = '<a target="left" style="text-decoration:none" ' .
             'href="left_main.php?';
     if ($boxes[$boxnum]['collapse'] == SM_BOX_COLLAPSED) {
-        $link .= "unfold=$mailbox\">+";
+		// Modified by ispCP Omega - http://isp-control.net
+    	$link .= "unfold=$mailbox\"><img src=\"../images/plus.png\" border=\"0\">";
+        // End Modification
     } else {
-        $link .= "fold=$mailbox\">-";
+    	// Modified by ispCP Omega - http://isp-control.net
+    	$link .= "fold=$mailbox\"><img src=\"../images/minus.png\" border=\"0\">";
+	    // End Modification
     }
     $link .= '</a>';
 
@@ -342,11 +348,16 @@ if ($auto_create_special && !$auto_create_done) {
      */
     $boxes = sqimap_mailbox_list($imapConnection,true);
 }
-
-echo "\n<body bgcolor=\"$color[3]\" text=\"$color[6]\" link=\"$color[6]\" vlink=\"$color[6]\" alink=\"$color[6]\">\n";
+// Modified by ispCP Omega - http://isp-control.net
+echo "\n<body class=\"left\" bgcolor=\"$color[3]\" text=\"$color[6]\" link=\"$color[6]\" vlink=\"$color[6]\" alink=\"$color[6]\">\n";
+// End Modification
 
 do_hook('left_main_before');
 
+//
+// Modified by ispCP Omega - http://isp-control.net
+//
+/**** commented out
 echo "\n\n" . html_tag( 'table', '', 'left', '', 'border="0" cellspacing="0" cellpadding="0" width="99%"' ) .
     html_tag( 'tr' ) .
     html_tag( 'td', '', 'left' ) .
@@ -354,6 +365,60 @@ echo "\n\n" . html_tag( 'table', '', 'left', '', 'border="0" cellspacing="0" cel
     html_tag( 'tr' ) .
     html_tag( 'td', '', 'center' ) .
     '<font size="4"><b>'. _("Folders") . "</b><br /></font>\n\n";
+*/
+//===============Code for left top header=======
+
+echo "\n\n" . html_tag( 'table',
+		html_tag( 'tr',
+			html_tag( 'td',
+				html_tag( 'div',
+					'<img src="'.$org_logo.'" />' . "\n\n"
+					, NULL, NULL, 'id="left_logo"'
+				),
+				'center', NULL, NULL
+			 )
+		),
+		NULL, NULL, 'border="0" cellspacing="0" cellpadding="0" width="100%"'
+		);
+
+// ========Quota Plugin enable here =========
+/*
+echo html_tag( 'div',
+     	do_hook('quota_plugin_left'),
+     	'', '', 'id="quota"'
+	 );
+*/
+// ==========End Quota Plugin=========
+
+echo html_tag ( 'div',
+		html_tag ('p',
+			_("Folders") . sprintf( ' <a href="../src/left_main.php" target="left" id="refresh"><img src="../images/%s" align="absmiddle" border="0"></a>', $GLOBALS['refresh_button'] ).
+			sprintf( ' <a href="#" onclick="reveal(\'folders\');" class="minimize"><img src="../images/%s" align="absmiddle" border="0"></a>', $GLOBALS['minimize_button'] )
+		),
+		NULL, NULL, 'id="folders_top"'
+	) .
+	html_tag ( 'div',
+		html_tag ( 'table',
+			html_tag ( 'tr',
+				html_tag ( 'td',
+					html_tag ( 'div',
+						'',
+					 	'left', NULL, NULL
+					),
+				'center', NULL, 'valign="top"'
+				)
+			),
+			NULL, NULL, 'width="99%" border="0" cellpadding="0" cellspacing="0"'
+		),
+		NULL, NULL, 'id="folders"'
+	);
+
+//=====end Header code=========
+
+// @todo finish Implementation
+//
+// End Modification
+//
 
 if ($date_format != 6) {
     /* First, display the clock. */

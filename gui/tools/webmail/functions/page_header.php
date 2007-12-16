@@ -9,6 +9,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id: page_header.php 12538 2007-07-14 19:04:00Z kink $
  * @package squirrelmail
+ *
+ * @modified by ispCP Omega Team http://isp-control.net
  */
 
 /** Include required files from SM */

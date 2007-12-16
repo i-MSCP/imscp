@@ -10,6 +10,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id: login.php 12768 2007-11-19 04:20:34Z jangliss $
  * @package squirrelmail
+ *
+ * @modified by ispCP Omega Team http://isp-control.net
  */
 
 /** This is the login page */
@@ -83,13 +85,13 @@ if (!empty($_SESSION)) {
  *         $custom_session_handlers[4],
  *         $custom_session_handlers[5]
  *     );
- * 
+ *
  * We need to replicate that code once here because PHP has
  * long had a bug that resets the session handler mechanism
  * when the session data is also destroyed.  Because of this
  * bug, even administrators who define custom session handlers
  * via a PHP pre-load defined in php.ini (auto_prepend_file)
- * will still need to define the $custom_session_handlers array 
+ * will still need to define the $custom_session_handlers array
  * in config_local.php.
  */
 global $custom_session_handlers;
@@ -108,7 +110,7 @@ if (!empty($custom_session_handlers)) {
 sqsession_is_active();
 if (!empty($sel)) {
     sqsession_register($sel, 'session_expired_location');
-    if (!empty($sep)) 
+    if (!empty($sep))
         sqsession_register($sep, 'session_expired_post');
 }
 
@@ -184,6 +186,33 @@ if (isset($org_logo) && $org_logo) {
     }
 }
 
+//
+// Modified by ispCP Omega - http://isp-control.net
+//
+
+echo html_tag ( 'div',
+		html_tag ( 'h1', sprintf (_("%s Webmail Login"), $org_name) ) .
+		html_tag ( 'fieldset',
+			html_tag ( 'p',
+				_("Username:") . addInput($username_form_name, $loginname_value) . '<br />' ."\n" .
+				_("Password:") . addPwField($password_form_name) . '<br />' ."\n" .
+				addHidden('js_autodetect_results', SMPREF_JS_OFF) . $mailtofield . addHidden('just_logged_in', '1'),
+				NULL, NULL, 'class="login"'
+			) .
+			html_tag ( 'p',
+				addSubmit(_("Login")),
+				NULL, NULL, 'class="login"'
+			) .
+			html_tag ( 'p',
+				( (isset($hide_sm_attributions) && $hide_sm_attributions) ? '' :
+            	sprintf(_("SquirrelMail version %s"), $version) . '<br />' . "\n"),
+				NULL, NULL, 'class="login small"'
+			),
+			NULL, NULL, 'class="login"'
+        ),
+		NULL, NULL, 'id="container"' );
+
+/**** Commented out
 echo html_tag( 'table',
     html_tag( 'tr',
         html_tag( 'td',
@@ -220,13 +249,13 @@ echo html_tag( 'table',
                                 html_tag( 'td',
 				    addPwField($password_form_name).
 				    addHidden('js_autodetect_results', SMPREF_JS_OFF).
-                    $mailtofield . 
+                    $mailtofield .
 				    addHidden('just_logged_in', '1'),
                                 'left', '', 'width="70%"' )
                             ) ,
                         'center', $color[4], 'border="0" width="100%"' ) ,
                     'left',$color[4] )
-                ) . 
+                ) .
                 html_tag( 'tr',
                     html_tag( 'td',
                         '<center>'. addSubmit(_("Login")) .'</center>',
@@ -236,6 +265,10 @@ echo html_tag( 'table',
         'center' )
     ) ,
 '', $color[4], 'border="0" cellspacing="0" cellpadding="0" width="100%"' );
+* ***/
+//
+// End modification
+//
 do_hook('login_form');
 echo '</form>' . "\n";
 

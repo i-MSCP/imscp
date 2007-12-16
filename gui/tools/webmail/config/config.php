@@ -38,7 +38,7 @@ $org_name = "ispCP Omega";
  * Organization's logo picture (blank if none)
  * @global string $org_logo
  */
-$org_logo = SM_PATH . 'images/logo.jpg';
+$org_logo = SM_PATH . 'skins/omega/logo.gif';
 
 /**
  * The width of the logo (0 for default)
@@ -532,7 +532,7 @@ $default_use_priority = true;
  * strings and provider link
  * @global bool $hide_sm_attributions
  */
-$hide_sm_attributions = true;
+$hide_sm_attributions = false;
 
 /**
  * Delivery Receipts Control
