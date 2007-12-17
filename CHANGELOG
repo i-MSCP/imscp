@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-17 Christian Hernmarck
+        - GUI:
+                * Fixed #924: Alias order notification sent to customer
+
 2007-12-16 Benedikt Heintel
 	- GUI:
 		* Added: Gender patch (Thanks to Jochen Manz)

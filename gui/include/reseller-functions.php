@@ -1601,39 +1601,39 @@ function send_alias_order_email($alias_name)
 	$uemail = $_SESSION['user_email'];
 
 	$data = get_alias_order_email($reseller_id);
-
-	$from_name = $data['sender_name'];
-	$from_email = $data['sender_email'];
+	$to_name = $data['sender_name'];
+	$to_email = $data['sender_email'];
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	if ($from_name) {
-		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+	// to
+	if ($to_name) {
+		$to = "\"" . encode($to_name) . "\" <" . $to_email . ">";
 	} else {
-		$from = $from_email;
+		$to = $to_email;
 	}
 
+	// from
 	if ($ufname && $ulname) {
-		$name = "$ufname $ulname";
-		$to = "\"" . encode($name) . "\" <" . $uemail . ">";
+		$from_name = "$ufname $ulname";
+		$from = "\"" . encode($from_name) . "\" <" . $uemail . ">";
 	} else {
 		if ($ufname) {
-			$name = $ufname;
+			$from_name = $ufname;
 		} else if ($ulname) {
-			$name = $ulname;
+			$from_name = $ulname;
 		} else {
-			$name = $uname;
+			$from_name = $uname;
 		}
-		$to = $uemail;
+		$from = $uemail;
 	}
-
 	$search = array();
 	$replace = array();
 
 	$search [] = '{RESELLER}';
-	$replace[] = $from_name;
+	$replace[] = $to_name;
 	$search [] = '{CUSTOMER}';
-	$replace[] = $name;
+	$replace[] = $from_name;
 	$search [] = '{ALIAS}';
 	$replace[] = $alias_name;
 	$search [] = '{BASE_SERVER_VHOST}';
