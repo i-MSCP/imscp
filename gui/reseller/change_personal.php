@@ -81,9 +81,9 @@ SQL_QUERY;
 				'FAX' => $rs->fields['fax'],
 				'STREET1' => $rs->fields['street1'],
 				'STREET2' => $rs->fields['street2'],
-				'VL_MALE' => (($rs->fields['gender'] == 'M') ? 'selected' : ''),
-				'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? 'selected' : ''),
-				'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
+				'VL_MALE' => (($rs->fields['gender'] === 'M') ? 'selected' : ''),
+				'VL_FEMALE' => (($rs->fields['gender'] === 'F') ? 'selected' : ''),
+				'VL_UNKNOWN' => ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
 				)
 			);
 }

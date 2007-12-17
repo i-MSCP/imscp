@@ -44,7 +44,13 @@ function sbmt(form, uaction) {
                 </tr>
                 <tr>
                   <td class="content2">{TR_GENDER}</td>
-                  <td class="content"><input type="radio" name="gender" value="M" {VL_MALE} id="mgender"/><label for="mgender">{TR_MALE}</label>&nbsp;&nbsp;<input type="radio" name="gender" value="F" {VL_FEMALE} id="fgender"/><label for="fgender">{TR_FEMALE}</label></td>
+                  <td class="content">
+                    <select name="gender" size="1">
+                      <option value="M" {VL_MALE}>{TR_MALE}</option>
+                      <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
+                      <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+                    </select>
+                  </td>
                 </tr>
                 <tr>
                   <td width="200" class="content2">{TR_COMPANY}</td>

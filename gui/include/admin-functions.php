@@ -375,16 +375,6 @@ SQL_QUERY;
 
 	$i = 0;
 
-	$admin_created = $rs->fields['domain_created'];
-
-	if ($admin_created == 0) {
-		$admin_created = tr('N/A');
-	} else {
-		global $cfg;
-		$date_formt = $cfg['DATE_FORMAT'];
-		$admin_created = date($date_formt, $admin_created);
-	}
-
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
 			array('ADMIN_MESSAGE' => tr('Administrators list is empty!'),
@@ -395,7 +385,8 @@ SQL_QUERY;
 		$tpl->parse('ADMIN_MESSAGE', 'admin_message');
 	} else {
 		$tpl->assign(
-			array('TR_ADMIN_USERNAME' => tr('Username'),
+			array(
+				'TR_ADMIN_USERNAME' => tr('Username'),
 				'TR_ADMIN_CREATED_ON' => tr('Creation date'),
 				'TR_ADMIN_CREATED_BY' => tr('Created by'),
 				'TR_ADMIN_OPTIONS' => tr('Options'),
@@ -412,6 +403,16 @@ SQL_QUERY;
 					array('ADMIN_CLASS' => 'content2',
 						)
 					);
+			}
+
+			$admin_created = $rs->fields['domain_created'];
+
+			if ($admin_created == 0) {
+				$admin_created = tr('N/A');
+			} else {
+				global $cfg;
+				$date_formt = $cfg['DATE_FORMAT'];
+				$admin_created = date($date_formt, $admin_created);
 			}
 
 			if ($rs->fields['created_by'] == '' || $rs->fields['admin_id'] == $_SESSION['user_id']) {

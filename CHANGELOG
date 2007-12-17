@@ -6,20 +6,25 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2007-12-17 Jochen Manz
+	- GUI:
+		* Fixed #935: Admin created date is everytime N/A
+		* Fixed #936: The Gender field in Orderpanel is not as it should
+
 2007-12-17 Christian Hernmarck
-        - GUI:
-                * Fixed #924: Alias order notification sent to customer
+	- GUI:
+		*Fixed #924: Alias order notification sent to customer
 
 2007-12-16 Benedikt Heintel
 	- GUI:
-		* Added: Gender patch (Thanks to Jochen Manz)
+		* Added: Gender patch (thanks to Jochen Manz)
 	- TOOLS:
 		* Fixed: Templates of Squirrelmail (new template version)
-		* Added: Squittelmail Translations
+		* Added: Squirrelmail Translations
 
 2007-12-15 Benedikt Heintel
 	- TOOLS:
-		* Fixed #714: undefined index in pma-style sheet (thanks to joximu)
+		* Fixed #714: undefined index in pma-style sheet (thanks to Christian Hernmarck)
 		* Update Squirrelmail to version 1.4.13 (#932)
 
 2007-12-13 Benedikt Heintel
@@ -289,7 +294,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-10-15 Malte Geierhos
 	- SETUP:
-		* fixed #771 according to joximu
+		* fixed #771 according to Christian Hernmarck
 	- ENGINE:
 		* fixed #773 perl errors in dmn-mngr
 
