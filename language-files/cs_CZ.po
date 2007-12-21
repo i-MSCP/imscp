@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-02 21:04-0600\n"
-"PO-Revision-Date: 2007-10-15 12:10+0200\n"
+"PO-Revision-Date: 2007-12-20 09:40+0100\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -226,17 +226,14 @@ msgstr "Musíte přiřadit alespoň jednu IP adresu pro partnera."
 msgid "Add reseller"
 msgstr "Přidat partnera"
 
-#, fuzzy
 msgid "Domains limit<br><i>(0 unlimited)</i>"
-msgstr "Limit disku [MB]<br><i>(0 bez omezení)</i>"
+msgstr "Limit domén<br><i>(0 bez omezení)</i>"
 
-#, fuzzy
 msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maximální počet subdomén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Limit subdomén<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
-#, fuzzy
 msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Limit SQL uživatelů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
+msgstr "Limit aliasů<br><i>(-1 zakázáno, 0 bez omezení)</i>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Limit mailových účtů<br><i>(-1 zakázáno, 0 bez omezení)"
@@ -1816,9 +1813,8 @@ msgstr "Je zde subdoména se stejným přípojným bodem!"
 msgid "Alias scheduled for activation!"
 msgstr "Aktivace aliasu byla naplánována!"
 
-#, fuzzy
 msgid "Alias scheduled for addition!"
-msgstr "Aktivace aliasu byla naplánována!"
+msgstr "Přidání aliasu bylo naplánováno!"
 
 msgid "Empty List"
 msgstr "Prázdný Seznam"

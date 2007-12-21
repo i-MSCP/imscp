@@ -190,7 +190,7 @@ function check_login($fName = null, $checkReferer = true) {
 
             $info = parse_url($_SERVER['HTTP_REFERER']);
             if (isset($info['host']) && !empty($info['host'])) {
-                if ($info['host'] != $_SERVER['HTTP_HOST']) {
+                if ($info['host'] != $_SERVER['HTTP_HOST'] || $info['host'] != $_SERVER['SERVER_NAME']) {
                     set_page_message(tr('Request from foreign host was blocked!'));
                     redirect_to_level_page();
                 }
