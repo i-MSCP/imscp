@@ -38,7 +38,7 @@ $org_name = "ispCP Omega";
  * Organization's logo picture (blank if none)
  * @global string $org_logo
  */
-$org_logo = SM_PATH . 'skins/omega/logo.gif';
+$org_logo = "";
 
 /**
  * The width of the logo (0 for default)
@@ -906,12 +906,3 @@ $config_use_color = 2;
  * This option includes special configuration options
  */
 @include SM_PATH . 'config/config_local.php';
-
-/**
- * Make sure there are no characters after the PHP closing
- * tag below (including newline characters and whitespace).
- * Otherwise, that character will cause the headers to be
- * sent and regular output to begin, which will majorly screw
- * things up when we try to send more headers later.
- */
-?>

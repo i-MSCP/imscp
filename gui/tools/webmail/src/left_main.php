@@ -372,7 +372,7 @@ echo "\n\n" . html_tag( 'table',
 		html_tag( 'tr',
 			html_tag( 'td',
 				html_tag( 'div',
-					'<img src="'.$org_logo.'" />' . "\n\n"
+					"\n\n"
 					, NULL, NULL, 'id="left_logo"'
 				),
 				'center', NULL, NULL
@@ -454,14 +454,33 @@ if ($date_format != 6) {
     }
     $clk = str_replace(' ','&nbsp;',$clk);
 
+	//
+	// Modified by ispCP Omega - http://isp-control.net
+	//
+	/**** commented out
     echo '<small><span style="white-space: nowrap;">'
        . str_replace(' ', '&nbsp;', _("Last Refresh"))
        . ":</span><br /><span style=\"white-space: nowrap;\">$clk</span></small><br />";
+    */
+    echo '<small><span style="white-space: nowrap;">'
+       . str_replace(' ', '&nbsp;', _("Last Refresh"))
+       . ": $clk</span></small><br /><br />";
+    //
+	// End Modification
+	//
+
 }
 
-/* Next, display the refresh button. */
+//
+// Modified by ispCP Omega - http://isp-control.net
+//
+//**** commented out
+/* Next, display the refresh button. *//*
 echo '<small style="white-space: nowrap;">(<a href="../src/left_main.php" target="left">'.
      _("Check mail") . '</a>)</small></td></tr></table><br />';
+//
+// End Modification
+//
 
 /* Lastly, display the folder list. */
 if ( $collapse_folders ) {
@@ -503,6 +522,27 @@ for ($i = 0; $i < count($boxes); $i++) {
             $prefix = str_replace(' ','&nbsp;',$prefix);
         }
         $line = "<span style=\"white-space: nowrap;\"><tt>$prefix</tt>";
+        //
+		// Modified by ispCP Omega - http://isp-control.net
+		//
+		if ((strtolower($boxes[$i]['unformatted']) == 'inbox')) {
+			$line .= "<img src=\"../images/inbox.png\" align=\"absmiddle\" class=\"mbox_img\">";
+		}
+		elseif ($boxes[$i]['unformatted'] == $draft_folder) {
+			$line .= "<img src=\"../images/draft.png\" align=\"absmiddle\" class=\"mbox_img\">";
+		}
+		elseif ($boxes[$i]['unformatted'] == $sent_folder) {
+			$line .= "<img src=\"../images/senti.png\" align=\"absmiddle\" class=\"mbox_img\">";
+		}
+		elseif ($boxes[$i]['unformatted'] == $trash_folder) {
+			$line .= "<img src=\"../images/delitem.png\" align=\"absmiddle\" class=\"mbox_img\">";
+		}
+		else {
+        	$line .= "<img src=\"../images/folder.png\" align=\"absmiddle\"  class=\"mbox_img\">&nbsp;";
+        }
+        //
+		// End Modification
+		//
 
         /* Add the folder name and link. */
         if (! isset($color[15])) {
@@ -535,6 +575,57 @@ for ($i = 0; $i < count($boxes); $i++) {
 do_hook('left_main_after');
 sqimap_logout($imapConnection);
 
+/*
+
 ?>
 </td></tr></table>
+</body></html>
+*/
+
+?>
+</td></tr></table>
+<?php
+//
+// Modified by ispCP Omega - http://isp-control.net
+//
+echo "<div id=\"folders_bottom\"></div>\n";
+
+//=======Extras=========
+
+do_hook('smallcal_plugin');
+do_hook('left_main_todo');
+
+echo html_tag ( 'div',
+		   html_tag ( 'p',
+				_("Options") ."<a href=\"#\" onclick=\"reveal('extra');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a>"
+		   ),
+		   NULL, NULL, "id=\"extra_top\""
+	 ) .
+	 html_tag ( 'div',
+	 	html_tag ( 'table',
+	 		html_tag ( 'tr',
+	 			html_tag ( 'td',
+				 	html_tag ( 'div',
+					 	html_tag ( 'p',
+							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=personal\" target=\"right\">"._("Change Settings")."</a><br />" .
+							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=folder\" target=\"right\">"._("Folder Preferences")."</a><br />" .
+							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/filters/options.php\" target=\"right\">"._("Message Filtering")."</a><br />" .
+							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/mail_fetch/options.php\" target=\"right\">"._("Remote POP")."</a><br><br />"
+						),
+						"left", NULL, "id=\"options\""
+					 ),
+					"center", NULL, "valign=\"top\""
+				)
+			),
+	 		NULL, NULL, 'width="99%" border="0" cellpadding="0" cellspacing="0"'
+		),
+	 	NULL, NULL, "id=\"extra\""
+	 );
+
+//======End Extras=========
+
+//
+// End Modification
+//
+?>
 </body></html>

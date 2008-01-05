@@ -36,6 +36,11 @@ body.left {
 	overflow: auto;
 }
 
+body.left.span {
+	margin-left: 5px;
+	margin-right: 0px;
+}
+
 textarea {
 	background-color: #FDFCFA;
 	color: #000000;
@@ -522,16 +527,9 @@ p.button_text {
 	font-weight: bold;
 }
 
-.mbox_img_a {
-	margin: 10px 10px 0 20px;
-}
-
-.mbox_img {
-	margin: 0 10px 0 20px;
-}
-
-.mbox_trash {
-	margin: 0px 16px 0px 20px;
+.mbox_img, .mbox_img_a {
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
 #quota {
@@ -641,14 +639,6 @@ p.button_text {
 	width: 100%;
 	background-image: url(../../skins/omega/folders_bg.gif);
 	background-repeat: repeat-y;
-	background-position: top right;
-
-}
-
-#extra_bottom {
-	width: 100%;
-	background-image: url(../../skins/omega/folders_bottom.gif);
-	background-repeat: no-repeat;
 	background-position: top right;
 
 }
