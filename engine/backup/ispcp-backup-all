@@ -275,6 +275,8 @@ sub backup_all_engine {
 
 	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
+	my ($backup_filename, $backup_cmd) = (undef, undef);
+
 	foreach (@$rdata) {
 
 		my ($dmn_id, $dmn_name, $dmn_status, $domain_uid, $domain_gid, $admin_name, $admin_email) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4], @$_[5], @$_[6]);
@@ -284,8 +286,6 @@ sub backup_all_engine {
 		my $dmn_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name";
 
 		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
-
-		my ($backup_filename, $backup_cmd) = (undef, undef);
 
 		if ($zip == "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
