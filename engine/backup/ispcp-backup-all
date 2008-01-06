@@ -285,7 +285,7 @@ sub backup_all_engine {
 
 		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
 
-		my ($backup_filename, backup_cmd) = (undef, undef);
+		my ($backup_filename, $backup_cmd) = (undef, undef);
 
 		if ($zip == "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
