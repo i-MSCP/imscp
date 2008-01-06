@@ -287,15 +287,15 @@ sub backup_all_engine {
 
 		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
 
-		if ($zip == "bzip2") {
+		if ($zip eq "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
 
 			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 		}
-		elsif ($zip == "gzip") {
+		elsif ($zip eq "gzip") {
 			$backup_filename = "$dmn_name-backup-$date.tar.gz";
 
-			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
 		}
 		else {
 			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
@@ -341,11 +341,11 @@ sub backup_all_engine {
 
 					my ($db_filename, $db_compresscmd) = (undef, undef);
 
-					if ($zip == "bzip2") {
+					if ($zip eq "bzip2") {
 						$db_filename = "$db_backup_file.bz2";
 						$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
 					}
-					elsif ($zip == "gzip") {
+					elsif ($zip eq "gzip") {
 						$db_filename = "$db_backup_file.gz";
 						$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
 					}

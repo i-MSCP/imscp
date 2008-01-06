@@ -221,13 +221,13 @@ sub backup_ispcp_engine {
 
 	my $backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
 
-	if ($zip == "bzip2") {
-		$backup_filename = "$config-backup-$date.tar.bz2";
+	if ($zip eq "bzip2") {
+		$backup_filename = "config-backup-$date.tar.bz2";
 
 		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --bzip2 --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
 	}
-	elsif ($zip == "gzip") {
-		$backup_filename = "$config-backup-$date.tar.gz";
+	elsif ($zip eq "gzip") {
+		$backup_filename = "config-backup-$date.tar.gz";
 
 		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --gzip --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
 	}
@@ -256,11 +256,11 @@ sub backup_ispcp_engine {
 
 		my ($db_filename, $db_compresscmd) = (undef, undef);
 
-		if ($zip == "bzip2") {
+		if ($zip eq "bzip2") {
 			$db_filename = "$db_backup_file.bz2";
 			$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
 		}
-		elsif ($zip == "gzip") {
+		elsif ($zip eq "gzip") {
 			$db_filename = "$db_backup_file.gz";
 			$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
 		}
