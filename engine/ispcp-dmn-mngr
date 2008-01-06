@@ -4474,6 +4474,10 @@ sub dmn_restore_data {
 
     my $cmd_tar = $main::cfg{'CMD_TAR'};
 
+    my $cmd_bzcat = $main::cfg{'CMD_BZCAT'};
+
+    my $cmd_gzcat = $main::cfg{'CMD_GZCAT'};
+
     my $cmd_mysql = $main::cfg{'CMD_MYSQL'};
 
     $rs = opendir(DIR, $dmn_bk_dir);
@@ -4490,7 +4494,6 @@ sub dmn_restore_data {
 
     return 0 if (scalar(@bk_files) == 0);
 
-    #my ($cmd, $fname) = ('', $bk_files[0]);
     my ($cmd,$rdata2,$rdata3,$sql) = ('','','','');
 
     foreach(@bk_files) {
@@ -4510,7 +4513,7 @@ sub dmn_restore_data {
 	    # Restore gz files
 	    if ($fname =~ m/.tar.gz/i) {
 
-	        $cmd = "$cmd_tar --extract --preserve-permissions --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+	        $cmd = "$cmd_tar --extract --preserve-permissions --gunzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 
 	        $rs = sys_command($cmd);
 
@@ -4550,7 +4553,7 @@ sub dmn_restore_data {
 	                # if username and pass for db exists - restore database from file
 	                if ($dbuser && $dbpass) {
 
-	                    $cmd = "bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
+	                    $cmd = "$cmd_bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
 
 	                    $rs = sys_command($cmd);
 
@@ -4597,7 +4600,7 @@ sub dmn_restore_data {
 	                # if username and pass for db exists - restore database from file
 	                if ($dbuser && $dbpass) {
 
-	                    $cmd = "gzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
+	                    $cmd = "$cmd_gzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
 
 	                    $rs = sys_command($cmd);
 

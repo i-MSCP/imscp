@@ -2006,6 +2006,9 @@ msgstr ""
 msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 msgstr ""
 
+msgid "(usually named backup_YYYY_MM_DD.tar.gz)"
+msgstr ""
+
 msgid "Restore backup"
 msgstr ""
 
