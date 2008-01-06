@@ -237,6 +237,8 @@ sub backup_all_engine {
 
 	my ($rs, $rdata, $sql) = (undef, undef, undef);
 
+	my $zip = $main::cfg{ZIP};
+
 	push_el(\@main::el, 'backup_all_engine()', 'Starting...');
 
 
@@ -283,15 +285,29 @@ sub backup_all_engine {
 
 		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
 
-		my $backup_filename = "$dmn_name-backup-$date.tar.bz2";
+		my ($backup_filename, backup_cmd) = (undef, undef);
 
-		my $backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+		if ($zip == "bzip2") {
+			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
+
+			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --bzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+		}
+		elsif ($zip == "gzip") {
+			$backup_filename = "$dmn_name-backup-$date.tar.gz";
+
+			$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --gzip2 --file=$dmn_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups --exclude=$backup_filename . 2> $dmn_dir/$backup_filename.log";
+		}
+		else {
+			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
+
+			return 1;
+		}
 
 		#
 		# User Database Backup
 		#
 
-		if(! -d $dmn_backup_dir) {
+		if (! -d $dmn_backup_dir) {
 			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
 
 			return $rs if ($rs != 0);
@@ -303,7 +319,7 @@ sub backup_all_engine {
 		# MYSQLDUMP mit den Datenbanken durchfÃ¼hren und die Ausgabe in das Backup-Verzeichnis umleiten
 		#
 
-                $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+        $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 		($rs,my $rdata3) = doSQL($sql);
 
 		foreach(@$rdata3) {
@@ -322,7 +338,23 @@ sub backup_all_engine {
 				if ($dbuser && $dbpass) {
 					my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
 					my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
-					my $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
+
+					my ($db_filename, $db_compresscmd) = (undef, undef);
+
+					if ($zip == "bzip2") {
+						$db_filename = "$db_backup_file.bz2";
+						$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
+					}
+					elsif ($zip == "gzip") {
+						$db_filename = "$db_backup_file.gz";
+						$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
+					}
+					else {
+						push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
+
+						return 1;
+					}
+
 					$rs = sys_command($db_backupcmd);
 
 					if ($rs == 0) {

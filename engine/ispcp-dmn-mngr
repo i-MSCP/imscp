@@ -4455,11 +4455,9 @@ sub dmn_restore_data {
     push_el(\@main::el, 'dmn_restore_data()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
-
         push_el(\@main::el, 'dmn_restore_data()', 'ERROR: Undefined Input Data...');
 
         return -1;
-
     }
 
     my ($rs, $rdata) = ('', '');
@@ -4481,11 +4479,9 @@ sub dmn_restore_data {
     $rs = opendir(DIR, $dmn_bk_dir);
 
     if (!$rs) {
-
         push_el(\@main::el, 'dmn_restore_data()', "ERROR: Can't open '$dmn_bk_dir' directory.");
 
         return -1;
-
     }
 
     my @bk_files = readdir(DIR);
@@ -4499,81 +4495,126 @@ sub dmn_restore_data {
 
     foreach(@bk_files) {
 
-	my ($fname) = ($_);
+		my ($fname) = ($_);
 
-	# Restore bzip2 files
-	if ($fname =~ m/.tar.bz2/i) {
+		# Restore bzip2 files
+		if ($fname =~ m/.tar.bz2/i) {
 
-            $cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+	        $cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 
-            $rs = sys_command($cmd);
+	        $rs = sys_command($cmd);
 
-            return $rs if ($rs != 0)
-        }
+	        return $rs if ($rs != 0)
+	    }
 
-        # Restore gz files
-        if ($fname =~ m/.tar.gz/i) {
+	    # Restore gz files
+	    if ($fname =~ m/.tar.gz/i) {
 
-            $cmd = "$cmd_tar --extract --preserve-permissions --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+	        $cmd = "$cmd_tar --extract --preserve-permissions --gzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 
-            $rs = sys_command($cmd);
+	        $rs = sys_command($cmd);
 
-            return $rs if ($rs != 0)
-        }
+	        return $rs if ($rs != 0)
+	    }
 
-        # Restore SQL files
-        if ($fname =~ m/.sql.bz2/i) {
+	    # Restore bz2 SQL files
+	    if ($fname =~ m/.sql.bz2/i) {
 
-            # Extract databasename
-            $fname =~ /(.*).sql.bz2/;
-            my $dbf_name = $1;
+	        # Extract databasename
+	        $fname =~ /(.*).sql.bz2/;
+	        my $dbf_name = $1;
 
-            $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
-            ($rs,$rdata3) = doSQL($sql);
+	        $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+	        ($rs,$rdata3) = doSQL($sql);
 
-            return $rs if ($rs != 0);
+	        return $rs if ($rs != 0);
 
-            foreach(@$rdata3) {
+	        foreach(@$rdata3) {
 
-                my $db_id=@$_[0];
-                my $db_name=@$_[1];
+	            my $db_id=@$_[0];
+	            my $db_name=@$_[1];
 
-                # if databasename eq filedatabasename get SQL user and pass
-                if ($db_name eq $dbf_name) {
+	            # if databasename eq filedatabasename get SQL user and pass
+	            if ($db_name eq $dbf_name) {
 
-                    $sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
-                    ($rs,$rdata2) = doSQL($sql);
+	                $sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
+	                ($rs,$rdata2) = doSQL($sql);
 
-                    return $rs if ($rs != 0);
+	                return $rs if ($rs != 0);
 
-                    $rdata2=@$rdata2[0];
+	                $rdata2=@$rdata2[0];
 
-                    my $dbuser = @$rdata2[0];
-                    my $dbpass = @$rdata2[1];
+	                my $dbuser = @$rdata2[0];
+	                my $dbpass = @$rdata2[1];
 
-                    # if username and pass for db exists - restore database from file
-                    if ($dbuser && $dbpass) {
+	                # if username and pass for db exists - restore database from file
+	                if ($dbuser && $dbpass) {
 
-                        $cmd = "bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
+	                    $cmd = "bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
 
-                        $rs = sys_command($cmd);
+	                    $rs = sys_command($cmd);
 
-                        return $rs if ($rs != 0);
+	                    return $rs if ($rs != 0);
 
-                    }
+	                }
 
-                }
+	            }
 
-            }
+	        }
 
-        }
+		}
 
-    }
+		# Restore gz SQL files
+	    if ($fname =~ m/.sql.gz/i) {
+
+	        # Extract databasename
+	        $fname =~ /(.*).sql.gz/;
+	        my $dbf_name = $1;
+
+	        $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+	        ($rs,$rdata3) = doSQL($sql);
+
+	        return $rs if ($rs != 0);
+
+	        foreach(@$rdata3) {
+
+	            my $db_id=@$_[0];
+	            my $db_name=@$_[1];
+
+	            # if databasename eq filedatabasename get SQL user and pass
+	            if ($db_name eq $dbf_name) {
+
+	                $sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
+	                ($rs,$rdata2) = doSQL($sql);
+
+	                return $rs if ($rs != 0);
+
+	                $rdata2=@$rdata2[0];
+
+	                my $dbuser = @$rdata2[0];
+	                my $dbpass = @$rdata2[1];
+
+	                # if username and pass for db exists - restore database from file
+	                if ($dbuser && $dbpass) {
+
+	                    $cmd = "gzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
+
+	                    $rs = sys_command($cmd);
+
+	                    return $rs if ($rs != 0);
+
+	                }
+
+	            }
+
+	        }
+
+		}
+	}
 
     push_el(\@main::el, 'dmn_restore_data()', 'Ending...');
 
     return 0;
-
 }
 
 ################################################################################

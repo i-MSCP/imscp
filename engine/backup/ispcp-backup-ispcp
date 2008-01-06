@@ -205,6 +205,8 @@ sub backup_ispcp_engine {
 
 	my ($rs, $rdata, $sql) = (undef, undef, undef);
 
+	my ($backup_filename, $backup_cmd) = (undef, undef);
+
 	push_el(\@main::el, 'backup_ispcp_engine()', 'Starting...');
 
 	my $cmd_tar = $main::cfg{'CMD_TAR'};
@@ -213,13 +215,27 @@ sub backup_ispcp_engine {
 
 	my $cmd_mv = $main::cfg{'CMD_MV'};
 
+	my $zip = $main::cfg{ZIP};
+
 	my $date = get_human_date();
 
 	my $backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
 
-	my $backup_filename = "config-backup-$date.tar.bz2";
+	if ($zip == "bzip2") {
+		$backup_filename = "$config-backup-$date.tar.bz2";
 
-	my $backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --bzip2 --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
+		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --bzip2 --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
+	}
+	elsif ($zip == "gzip") {
+		$backup_filename = "$config-backup-$date.tar.gz";
+
+		$backup_cmd = "$cmd_tar --create --directory=/etc/ispcp --gzip --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
+	}
+	else {
+		push_el(\@main::el, 'backup_ispcp_engine()', "Backup algorithm not supported: $zip");
+
+		return 1;
+	}
 
 
 	if(! -d $backup_dir) {
@@ -237,7 +253,23 @@ sub backup_ispcp_engine {
 		my $db_backup_file = "$backup_dir/$db_name.sql";
 
 		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
-		my $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
+
+		my ($db_filename, $db_compresscmd) = (undef, undef);
+
+		if ($zip == "bzip2") {
+			$db_filename = "$db_backup_file.bz2";
+			$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
+		}
+		elsif ($zip == "gzip") {
+			$db_filename = "$db_backup_file.gz";
+			$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
+		}
+		else {
+			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
+
+			return 1;
+		}
+
 		$rs = sys_command($db_backupcmd);
 
 		if ($rs == 0) {

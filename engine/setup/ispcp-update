@@ -480,8 +480,8 @@ if ($rs != 0) {
 $rs = update_ispcp();
 
 if ($rs != 0) {
-	$el_data = pop_el(\@main::el);
-	($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
 
@@ -491,8 +491,8 @@ if ($rs != 0) {
 $rs = update_shut_down();
 
 if ($rs != 0) {
-	$el_data = pop_el(\@main::el);
-	($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
 
