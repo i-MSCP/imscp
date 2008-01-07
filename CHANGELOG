@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-07 Christian Hernmarck
+	- TOOLS:
+		* Fixed #937 (but reopened #714): some php errors in pma theme
+		* Added some goodies: - a check while reading the config-variables if all are present
+		*	- a small shell script which could be run before ispcp-setup
+
 2008-01-07 Benedikt Heintel
 	- TOOLS:
 		* Fixed #933: Webmail layout

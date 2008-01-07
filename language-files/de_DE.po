@@ -2060,6 +2060,9 @@ msgstr ""
 msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.bz2)"
 
+msgid "(usually named backup_YYYY_MM_DD.tar.gz)"
+msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.gz)"
+
 msgid "Restore backup"
 msgstr "Backup einspielen"
 

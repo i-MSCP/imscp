@@ -69,6 +69,13 @@ dfn:hover {
     cursor:             help;
 }
 
+#maincontainer {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>logo_right.png);
+    background-position: <?php echo $right; ?> bottom;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid silver;
+}
+
 th {
     font-size:          11px;
     font-weight:        bold;
@@ -584,30 +591,6 @@ td.disabled {
     background-color:   #cccccc;
 }
 
-/**
- * login form
- */
-body.loginform h1,
-body.loginform a.logo {
-	display: block;
-	text-align: center;
-}
-
-body.loginform {
-	text-align: center;
-}
-
-body.loginform div.container {
-	text-align: <?php echo $left; ?>;
-	width: 30em;
-	margin: 0 auto;
-}
-
-form.login label {
-	float: <?php echo $left; ?>;
-	width: 10em;
-	font-weight: bolder;
-}
 
 /******************************************************************************/
 /* specific elements */
@@ -701,7 +684,6 @@ ul#topmenu li a.tabactive {
 
 ul#topmenu li {
     border-bottom: 0;
-    margin-top: 4px;
 }
 
 /* default tab styles */
@@ -1116,38 +1098,3 @@ div#queryboxcontainer div#bookmarkoptions {
 }
 /* end querybox */
 
-/* main page */
-
-#maincontainer {
-	background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>logo_right.png);
-	background-position: <?php echo $right; ?> bottom;
-	background-repeat: no-repeat;
-	border-bottom: 1px solid silver;
-}
-
-#mysqlmaininformation,
-#pmamaininformation {
-	float: <?php echo $left; ?>;
-	width: 49%;
-}
-
-#maincontainer ul {
-	list-style-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>item_<?php echo $GLOBALS['text_dir']; ?>.png);
-	vertical-align:	middle;
-}
-
-#maincontainer li {
-	 margin-bottom:	0.3em;
-}
-
-/* END main page */
-
-#selflink {
-	clear: both;
-	display: block;
-	margin-top: 1em;
-	margin-bottom: 1em;
-	width: 100%;
-	border-top: 0.1em solid silver;
-	text-align: <?php echo $right; ?>;
-}
