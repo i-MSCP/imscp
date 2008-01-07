@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-07 Benedikt Heintel
+	- TOOLS:
+		* Fixed #933: Webmail layout
+
 2008-01-06 Benedikt Heintel
 	- ENGINE:
 		* Fixed #944: Error in Backupengine

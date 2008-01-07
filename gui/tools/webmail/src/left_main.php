@@ -478,6 +478,7 @@ if ($date_format != 6) {
 /* Next, display the refresh button. *//*
 echo '<small style="white-space: nowrap;">(<a href="../src/left_main.php" target="left">'.
      _("Check mail") . '</a>)</small></td></tr></table><br />';
+*/
 //
 // End Modification
 //
