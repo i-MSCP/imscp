@@ -59,7 +59,6 @@ perl-modules
 php4
 php4-cgi
 php4-gd
-php4-idn
 php4-mcrypt
 php4-mysql
 php4-pear

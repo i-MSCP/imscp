@@ -42,23 +42,17 @@ sub get_vhcs2conf {
     push_el(\@main::el, 'get_conf()', 'Starting...');
 
     my ($rs, $fline) = get_file($main::vhcs2conf);
-
     return -1 if ($rs != 0);
 
     my @frows = split(/\n/, $fline);
-
     my $i = '';
 
     for ($i = 0; $i < scalar(@frows); $i++) {
-
         $frows[$i] = "$frows[$i]\n";
 
         if ($frows[$i] =~ /$main::cfg_re/) {
-
 			$main::vhcs2{$1} = $2;
-
         }
-
     }
 
     return -1 if (setup_main_vars() != 0);
@@ -66,7 +60,6 @@ sub get_vhcs2conf {
     push_el(\@main::el, 'get_conf()', 'Ending...');
 
     return 0;
-
 }
 
 sub ask_vhcs2conf {
@@ -84,10 +77,10 @@ sub ask_vhcs2conf {
 		$rdata = '/etc/vhcs2/vhcs2.conf';
 	}
 
-	# set vhcs2 config
+	# set VHCS2 config
 	$main::vhcs2conf = $rdata;
 
-	# Get ispCP config
+	# Get VHCS2 config
 	$rs = get_vhcs2conf();
 	return $rs if ($rs != 0);
 
@@ -100,6 +93,107 @@ sub ask_vhcs2conf {
 
 }
 
+sub ask_awstats_on {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
+
+	my $qmsg = "\n\tActivate AWStats. [no]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'awstats_on'} = 'no';
+	}
+	else {
+		if ($rdata eq 'yes' || $rdata eq 'y') {
+			$main::ua{'awstats_on'} = 'yes';
+		}
+		elsif ($rdata eq 'no' || $rdata eq 'n') {
+			$main::ua{'awstats_on'} = 'no';
+		}
+		else {
+			print STDOUT "\n\tOnly '(y)es' and '(n)o' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_awstats_on()', 'Ending...');
+
+	return 0;
+}
+
+sub ask_awstats_dyn {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
+
+	my $qmsg = "\n\tAWStats Mode:\n\tPossible values [d]ynamic and [s]tatic. [dynamic]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'awstats_dyn'} = '0';
+	}
+	else {
+		if ($rdata eq 'dynamic' || $rdata eq 'd') {
+			$main::ua{'awstats_dyn'} = '0';
+		}
+		elsif ($rdata eq 'static' || $rdata eq 's') {
+			$main::ua{'awstats_dyn'} = '1';
+		}
+		else {
+			print STDOUT "\n\tOnly '[d]ynamic' or '[s]tatic' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_awstats_dyn()', 'Ending...');
+
+	return 0;
+}
+
+sub ask_php_version {
+
+	my $rdata = undef;
+
+	push_el(\@main::el, 'ask_php_version()', 'Starting...');
+
+	my $qmsg = "\n\tUse which PHP Version? (4 or 5). [5]: ";
+
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'php_version'} = '5';
+	}
+	else {
+		if ($rdata eq 'php4' || $rdata eq '4') {
+			$main::ua{'php_version'} = '4';
+		}
+		elsif ($rdata eq 'php5' || $rdata eq '5') {
+			$main::ua{'php_version'} = '5';
+		}
+		else {
+			print STDOUT "\n\tOnly 'php(4)' and 'php(5)' are allowed!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+
+	return 0;
+}
 
 sub welcome_note {
 	my ($rs, $rdata) = (undef, undef);
@@ -237,7 +331,7 @@ sub migrate_vhcs2 {
 
 	my ($rdata, $rs, $sql) = (undef, undef, undef);
 
-    print STDOUT "\tDropping ispcp table...";
+    print STDOUT "\tDropping empty ispcp table...";
 
     ($rs, $rdata) = doSQL("DROP DATABASE IF EXISTS `ispcp`;");
 
@@ -283,7 +377,8 @@ sub migrate_vhcs2 {
 	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
-	if (sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql") != 0) {
+	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql")
+	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
 	}
@@ -371,7 +466,6 @@ sub remove_vhcs2 {
 		sleep(5);
 	    sys_command_rs("$cmd start");
 	    sleep(5);
-	    ##
 
 		# Remove VHCS2 Daemons
 		if (-e "/usr/sbin/vhcs2-mkdirs.pl") {
@@ -393,7 +487,104 @@ sub remove_vhcs2 {
 sub patch_ispcp_rc2 {
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Starting...');
 
-	print STDOUT "Not yet possible!\n";
+	my ($rs, $rdata) = (undef, undef);
+
+	print STDOUT "\tUpgrading system values ...";
+
+	# PHP Version
+	do {
+		$rs = ask_php_version();
+	} while ($rs == 1);
+
+	# AWStats questions
+	do {
+		$rs = ask_awstats_on();
+	} while ($rs == 1);
+
+	if ($main::ua{'awstats_on'} eq 'yes') {
+		do {
+			$rs = ask_awstats_dyn();
+		} while ($rs == 1);
+	} else {
+		# Just a dummy to prevent warnings
+		$main::ua{'awstats_dyn'} = 0;
+	}
+
+	# @TODO: find the new ispcp.conf and open it for writing.
+
+	# update ispcp.conf
+	# copy changed variables to new ispcp.conf
+	$rs = set_conf_val('DEFAULT_ADMIN_ADDRESS', $main::cfg{'DEFAULT_ADMIN_ADDRESS'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('SERVER_HOSTNAME', $main::cfg{'SERVER_HOSTNAME'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('BASE_SERVER_IP', $main::cfg{'BASE_SERVER_IP'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('BASE_SERVER_VHOST', $main::cfg{'BASE_SERVER_VHOST'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('DATABASE_HOST', $main::cfg{'DATABASE_HOST'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('DATABASE_NAME', $main::cfg{'DATABASE_NAME'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('DATABASE_USER', $main::cfg{'DATABASE_USER'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('MYSQL_PREFIX', $main::cfg{'MYSQL_PREFIX'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('MYSQL_PREFIX_TYPE', $main::cfg{'MYSQL_PREFIX_TYPE'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('FTPD_CONF_FILE', $main::cfg{'FTPD_CONF_FILE'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('SECONDARY_DNS', $main::cfg{'SECONDARY_DNS'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('MTA_MAILBOX_MIN_UID', $main::cfg{'MTA_MAILBOX_MIN_UID'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('MTA_MAILBOX_UID', $main::cfg{'MTA_MAILBOX_UID'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('MTA_MAILBOX_GID', $main::cfg{'MTA_MAILBOX_GID'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('APACHE_SUEXEC_MIN_UID', $main::cfg{'APACHE_SUEXEC_MIN_UID'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('APACHE_SUEXEC_MIN_GID', $main::cfg{'APACHE_SUEXEC_MIN_GID'});
+	return $rs if ($rs != 0);
+
+	$rs = set_conf_val('AWSTATS_ACTIVE', $main::ua{'awstats_on'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
+	return $rs if ($rs != 0);
+	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
+	return $rs if ($rs != 0);
+
+	# TODO: check, if we store it in the right file!
+	$rs = store_conf();
+	if ($rs != 0) {
+		print STDOUT "failed!\n";
+		exit_werror("Storing new ispcp.conf failed!");
+	}
+	print STDOUT "done\n";
+
+	# database upgrade
+    print STDOUT "\tUpgrading database structure...";
+
+	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc2-ispcp.sql");
+	return $rs if ($rs != 0);
+
+	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
+	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
+	return $rs if ($rs != 0);
+
+	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql")
+	if ($rs != 0) {
+    	print STDOUT "failed!\n";
+   	 	exit_werror("SQL Update failed.");
+	}
+
+    print STDOUT "done\n";
+
+    # @TODO: Rebuild system configs:
+    #			-> /etc/apache2/mods-available/fastcgi_ispcp.conf
+    #			-> /etc/proftpd/proftpd.conf
+    #			-> /etc/ispcp/apache/01_awstats.conf
+    #			... (which ones missed?)
 
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Ending...');
 	return 0;
@@ -440,6 +631,17 @@ sub prepare_update {
 		return $rs if ($rs != 0);
 		start_services();
 	}
+
+	# re-create config files
+	print STDOUT "\tRebuilding customers ...";
+
+	$rs = sys_command("$main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+	if ($rs != 0) {
+    	print STDOUT "failed!\n";
+   	 	exit_werror("Rebuild failed.");
+	}
+
+	print STDOUT "done\n";
 
 	exit 0;
 

@@ -6,6 +6,16 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-12 Benedikt Heintel
+	- DOCS:
+		* Changed debian-packages-etch
+	- SETUP:
+		* Updated: added RC2 -> RC3 update to Update Script (not yet completed)
+
+2008-01-10 Benedikt Heintel
+	- CONFIGS:
+		* Deleted: Alias domain.tld/ispcp
+
 2008-01-07 Christian Hernmarck
 	- TOOLS:
 		* Fixed #937 (but reopened #714): some php errors in pma theme

@@ -25,6 +25,7 @@ body {
 	font-size: 9px;
 	background-repeat: no-repeat;
 	/* background-attachment: fixed; */
+	text-align: center;
 	}
 
 body.left {
@@ -56,20 +57,19 @@ td {
 }
 
 .top_bar_header {
-	FONT-FAMILY: verdana;
-	FONT-SIZE: 13px;
-	COLOR: #000000;
-
+	font-family: verdana;
+   	font-size: 13px;
+	color: #000000;
 }
 
 .top_left_bar_handle {
 }
 
 .inbox_bar_header {
-	FONT-FAMILY: verdana;
-   	FONT-SIZE: 10px;
+	font-family: verdana;
+   	font-size: 10px;
 	padding: 10 1;
-	COLOR: #000000;
+	color: #000000;
 	margin: auto;
 }
 
@@ -439,7 +439,6 @@ p.button_text {
 }
 
 .main_header_bar {
-
 	background-repeat: repeat-x;
 }
 
