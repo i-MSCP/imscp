@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-13 Christian Hernmarck
+	- ENGINE:
+		* Fixed #947: file change during tar/backup stopps all other following backups
+
 2008-01-12 Benedikt Heintel
 	- DOCS:
 		* Changed debian-packages-etch
