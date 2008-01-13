@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_sql.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: db_sql.php 10965 2007-12-05 17:53:52Z lem9 $
  */
 
 /**
@@ -15,6 +15,11 @@ require_once './libraries/common.inc.php';
  */
 require './libraries/db_common.inc.php';
 require_once './libraries/sql_query_form.lib.php';
+
+// The Back link after a syntax error will return to this script
+// with the typed query in the textarea.
+$goto = 'db_sql.php';
+$back = 'db_sql.php';
 
 /**
  * Gets informations about the database and, if it is empty, move to the

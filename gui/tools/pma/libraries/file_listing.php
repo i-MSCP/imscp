@@ -3,7 +3,7 @@
 /**
  * Functions for listing directories
  *
- * @version $Id: file_listing.php 10937 2007-11-21 13:58:40Z lem9 $
+ * @version $Id: file_listing.php 11001 2007-12-15 14:30:37Z lem9 $
  */
 
 /**
@@ -15,7 +15,7 @@
  */
 function PMA_getDirContent($dir, $expression = '')
 {
-    if ($handle = @opendir($dir)) {
+    if (file_exists($dir) && $handle = @opendir($dir)) {
         $result = array();
         if (substr($dir, -1) != '/') {
             $dir .= '/';

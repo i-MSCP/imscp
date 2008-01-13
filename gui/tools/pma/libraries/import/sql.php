@@ -3,7 +3,7 @@
 /**
  * SQL import plugin for phpMyAdmin
  *
- * @version $Id: sql.php 10909 2007-11-09 11:30:28Z lem9 $
+ * @version $Id: sql.php 11006 2007-12-18 09:27:12Z cybot_tm $
  */
 
 /**
@@ -156,6 +156,7 @@ while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
                         $endq = TRUE;
                         $i = $len - 1;
                     }
+                    $found_delimiter = false;
                     break;
                 }
                 // Was not the quote escaped?
@@ -165,6 +166,10 @@ while (!($finished && $i >= $len) && !$error && !$timeout_passed) {
                 $endq = (((($pos - 1) - $j) % 2) == 0);
                 // Skip the string
                 $i = $pos;
+
+                if ($first_sql_delimiter < $pos) {
+                    $found_delimiter = false;
+                }
             }
             if (!$endq) {
                 break;

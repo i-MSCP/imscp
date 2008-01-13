@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          what returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 10920 2007-11-12 17:55:31Z lem9 $
+ * @version $Id: sql.php 11024 2007-12-29 20:38:27Z lem9 $
  */
 
 /**
@@ -204,14 +204,14 @@ if ($do_confirm) {
 
 
 // Defines some variables
-// A table has to be created or renamed -> left frame should be reloaded
+// A table has to be created, renamed, dropped -> navi frame should be reloaded
 /**
  * @todo use the parser/analyzer
  */
 
 if (empty($reload)
     && preg_match('/^(CREATE|ALTER|DROP)\s+(VIEW|TABLE|DATABASE|SCHEMA)\s+/i', $sql_query)) {
-    $reload           = 1;
+    $reload = 1;
 }
 
 // SK -- Patch: $is_group added for use in calculation of total number of
@@ -252,11 +252,11 @@ if ($is_select) { // see line 141
 }
 
 // Do append a "LIMIT" clause?
-if ((!$cfg['ShowAll'] || $_SESSION['userconf']['max_rows'] != 'all')
- && !($is_count || $is_export || $is_func || $is_analyse)
+if ((! $cfg['ShowAll'] || $_SESSION['userconf']['max_rows'] != 'all')
+ && ! ($is_count || $is_export || $is_func || $is_analyse)
  && isset($analyzed_sql[0]['queryflags']['select_from'])
- && !isset($analyzed_sql[0]['queryflags']['offset'])
- && !preg_match('@[[:space:]]LIMIT[[:space:]0-9,-]+(;)?$@i', $sql_query)
+ && ! isset($analyzed_sql[0]['queryflags']['offset'])
+ && empty($analyzed_sql[0]['limit_clause'])
  ) {
     $sql_limit_to_append = ' LIMIT ' . $_SESSION['userconf']['pos'] . ', ' . $_SESSION['userconf']['max_rows'] . " ";
 

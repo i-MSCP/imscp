@@ -5,7 +5,7 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 10931 2007-11-20 12:55:14Z lem9 $
+ * @version $Id: cookie.auth.lib.php 11009 2007-12-18 18:13:24Z lem9 $
  */
 
 /**
@@ -588,6 +588,10 @@ function PMA_auth_fails()
         // Remember where we got timeout to return on same place
         if (PMA_getenv('SCRIPT_NAME')) {
             $GLOBALS['target'] = basename(PMA_getenv('SCRIPT_NAME'));
+            // avoid "missing parameter: field" on re-entry
+            if ('tbl_alter.php' == $GLOBALS['target']) {
+                $GLOBALS['target'] = 'tbl_structure.php';
+            }
         }
     } elseif (PMA_DBI_getError()) {
         $conn_error = PMA_sanitize(PMA_DBI_getError());

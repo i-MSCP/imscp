@@ -8,13 +8,6 @@
  *
  * Order of sections for common.inc.php:
  *
- * the include of libraries/defines_mysql.lib.php must be after the connection
- * to db to get the MySql version
- *
- * the authentication libraries must be before the connection to db
- *
- * ... so the required order is:
- *
  * LABEL_variables_init
  *  - initialize some variables always needed
  * LABEL_parsing_config_file
@@ -28,10 +21,8 @@
  * - loading of an authentication library
  * - db connection
  * - authentication work
- * - load of the libraries/defines_mysql.lib.php library to get the MySQL
- *   release number
  *
- * @version $Id: common.inc.php 10896 2007-11-02 17:34:58Z lem9 $
+ * @version $Id: common.inc.php 11033 2008-01-01 15:03:50Z lem9 $
  */
 
 /**
@@ -855,6 +846,14 @@ if (! defined('PMA_MINIMUM_COMMON')) {
          */
         require_once './libraries/List_Database.class.php';
         $PMA_List_Database = new PMA_List_Database($userlink, $controllink);
+
+        /**
+         * some resetting has to be done when switching servers
+         */
+        if (isset($_SESSION['userconf']['previous_server']) && $_SESSION['userconf']['previous_server'] != $GLOBALS['server']) {
+            unset($_SESSION['userconf']['navi_limit_offset']);
+        }
+        $_SESSION['userconf']['previous_server'] = $GLOBALS['server'];
 
     } // end server connecting
 

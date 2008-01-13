@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 10941 2007-11-25 12:58:41Z lem9 $
+ * @version $Id: common.lib.php 11024 2007-12-29 20:38:27Z lem9 $
  */
 
 /**
@@ -874,6 +874,11 @@ function PMA_reloadNavigation()
 
     // Reloads the navigation frame via JavaScript if required
     if (isset($GLOBALS['reload']) && $GLOBALS['reload']) {
+        // one of the reasons for a reload is when a table is dropped
+        // in this case, get rid of the table limit offset, otherwise
+        // we have a problem when dropping a table on the last page
+        // and the offset becomes greater than the total number of tables
+        unset($_SESSION['table_limit_offset']);
         echo "\n";
         $reload_url = './navigation.php?' . PMA_generate_common_url($GLOBALS['db'], '', '&');
         ?>
@@ -1245,7 +1250,7 @@ function PMA_profilingCheckbox($sql_query) {
     if (PMA_profilingSupported()) {
         echo '<form action="sql.php" method="post">' . "\n";
         echo PMA_generate_common_hidden_inputs($GLOBALS['db'], $GLOBALS['table']);
-        echo '<input type="hidden" name="sql_query" value="' . $sql_query . '" />' . "\n";
+        echo '<input type="hidden" name="sql_query" value="' . htmlspecialchars($sql_query) . '" />' . "\n";
         echo '<input type="hidden" name="profiling_form" value="1" />' . "\n";
         echo '<input type="checkbox" name="profiling" id="profiling"' . (isset($_SESSION['profiling']) ? ' checked="checked"' : '') . ' onclick="this.form.submit();" /><label for="profiling">' . $GLOBALS['strProfiling'] . '</label>' . "\n";
         echo '<noscript><input type="submit" value="' . $GLOBALS['strGo'] . '" /></noscript>' . "\n";

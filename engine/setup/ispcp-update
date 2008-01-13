@@ -377,7 +377,7 @@ sub migrate_vhcs2 {
 	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql")
+	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
@@ -572,7 +572,7 @@ sub patch_ispcp_rc2 {
 	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql")
+	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
@@ -635,7 +635,7 @@ sub prepare_update {
 	# re-create config files
 	print STDOUT "\tRebuilding customers ...";
 
-	$rs = sys_command("$main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+	$rs = sys_command("$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("Rebuild failed.");
@@ -700,5 +700,3 @@ if ($rs != 0) {
 
 	exit 1;
 }
-
-exit 0;

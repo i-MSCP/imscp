@@ -1,5 +1,5 @@
 <?php
-/* $Id: english-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
+/* $Id: english-utf-8.inc.php 11023 2007-12-29 15:01:14Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -51,7 +51,7 @@ $strAfterInsertNext = 'Edit next row';
 $strAfterInsertSame = 'Go back to this page';
 $strAll = 'All';
 $strAllowInterrupt = 'Allow interrupt of import in case script detects it is close to time limit. This might be good way to import large files, however it can break transactions.';
-$strAllTableSameWidth = 'display all tables with same width?';
+$strAllTableSameWidth = 'Display all tables with the same width';
 $strAlterOrderBy = 'Alter table order by';
 $strAnalyzeTable = 'Analyze table';
 $strAnd = 'And';

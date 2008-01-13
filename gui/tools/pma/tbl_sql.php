@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_sql.php 10343 2007-05-02 17:38:32Z lem9 $
+ * @version $Id: tbl_sql.php 10965 2007-12-05 17:53:52Z lem9 $
  */
 
 /**
@@ -19,6 +19,8 @@ $url_query .= '&amp;goto=tbl_sql.php&amp;back=tbl_sql.php';
 require_once './libraries/sql_query_form.lib.php';
 
 $err_url   = 'tbl_sql.php' . $err_url;
+// The Back link after a syntax error will return to this script
+// with the typed query in the textarea.
 $goto = 'tbl_sql.php';
 $back = 'tbl_sql.php';
 

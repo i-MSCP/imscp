@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_move_copy.php 10146 2007-03-20 14:16:18Z cybot_tm $
+ * @version $Id: tbl_move_copy.php 11027 2007-12-30 20:59:57Z lem9 $
  */
 
 /**
@@ -25,6 +25,14 @@ $err_url = 'tbl_sql.php?' . PMA_generate_common_url($db, $table);
  * Selects the database to work with
  */
 PMA_DBI_select_db($db);
+
+/** 
+ * $target_db could be empty in case we came from an input field 
+ * (when there are many databases, no drop-down)
+ */
+if (empty($target_db)) {
+    $target_db = $db;
+}
 
 /**
  * A target table name has been sent to this script -> do the work

@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 10432 2007-06-11 17:00:56Z lem9 $
+ * @version $Id: sqlparser.lib.php 11017 2007-12-21 18:18:44Z lem9 $
  */
 
 
@@ -53,18 +53,21 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     }
 
     if (!defined('DEBUG_TIMING')) {
-        function PMA_SQP_arrayAdd(&$arr, $type, $data, &$arrsize)
+        // currently we don't need the $pos (token position in query)
+        // for other purposes than LIMIT clause verification,
+        // so many calls to this function do not include the 4th parameter
+        function PMA_SQP_arrayAdd(&$arr, $type, $data, &$arrsize, $pos = 0)
         {
-            $arr[] = array('type' => $type, 'data' => $data);
+            $arr[] = array('type' => $type, 'data' => $data, 'pos' => $pos);
             $arrsize++;
         } // end of the "PMA_SQP_arrayAdd()" function
     } else {
-        function PMA_SQP_arrayAdd(&$arr, $type, $data, &$arrsize)
+        function PMA_SQP_arrayAdd(&$arr, $type, $data, &$arrsize, $pos = 0)
         {
             global $timer;
 
             $t     = $timer;
-            $arr[] = array('type' => $type, 'data' => $data, 'time' => $t);
+            $arr[] = array('type' => $type, 'data' => $data, 'pos' => $pos, 'time' => $t);
             $timer = microtime();
             $arrsize++;
         } // end of the "PMA_SQP_arrayAdd()" function
@@ -147,7 +150,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 10432 2007-06-11 17:00:56Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11017 2007-12-21 18:18:44Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -532,7 +535,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 } else {
                     $type = 'alpha';
                 } // end if... else....
-                PMA_SQP_arrayAdd($sql_array, $type, $str, $arraysize);
+                PMA_SQP_arrayAdd($sql_array, $type, $str, $arraysize, $count2);
 
                 continue;
             }
@@ -809,6 +812,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             'group_by_clause'=> '',
             'order_by_clause'=> '',
             'having_clause'  => '',
+            'limit_clause'   => '',
             'where_clause'   => '',
             'where_clause_identifiers'   => array(),
             'unsorted_query' => '',
@@ -826,6 +830,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
         $number_of_brackets = 0;
         $in_subquery = false;
+        $seen_subquery = false;
 
         // for SELECT EXTRACT(YEAR_MONTH FROM CURDATE())
         // we must not use CURDATE as a table_ref
@@ -886,6 +891,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
  * ['order_by_clause']
  * ['having_clause']
  * ['where_clause']
+ * ['limit_clause']
  *
  * The identifiers of the WHERE clause are put into the array
  * ['where_clause_identifier']
@@ -1096,6 +1102,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 if ($upper_data == 'SELECT') {
                     if ($number_of_brackets > 0) {
                         $in_subquery = true;
+                        $seen_subquery = true;
                         // this is a subquery so do not analyze inside it
                         continue;
                     }
@@ -1144,7 +1151,9 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                         break;
                 } // end switch
 
-                if ($subresult['querytype'] == 'SELECT' && !$in_group_concat) {
+                if ($subresult['querytype'] == 'SELECT' 
+                 && ! $in_group_concat
+                 && ! ($seen_subquery && $arr[$i - 1]['type'] == 'punct_bracket_close_round')) {
                     if (!$seen_from) {
                         if ($previous_was_identifier && isset($chain)) {
                             // found alias for this select_expr, save it
@@ -1421,9 +1430,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             $subresult['queryflags']['select_from'] = 1;
         }
 
-        $collect_section_before_limit = TRUE;
         $section_before_limit = '';
-        $section_after_limit = '';
+        $section_after_limit = ''; // truly the section after the limit clause
         $seen_reserved_word = FALSE;
         $seen_group = FALSE;
         $seen_order = FALSE;
@@ -1432,7 +1440,9 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $in_having = FALSE; // true when we are inside the HAVING clause
         $in_select_expr = FALSE; // true when we are inside the select expr clause
         $in_where = FALSE; // true when we are inside the WHERE clause
-        $in_from = FALSE;
+        $in_limit = FALSE; // true when we are inside the LIMIT clause
+        $after_limit = FALSE; // true when we are after the LIMIT clause
+        $in_from = FALSE; // true when we are in the FROM clause
         $in_group_concat = FALSE;
         $unsorted_query = '';
         $first_reserved_word = '';
@@ -1452,14 +1462,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
             //   DELETE FROM...
             //
             // this code is not used for confirmations coming from functions.js
-
-            /**
-             * @todo check for punct_queryend
-             * @todo verify C-style comments?
-             */
-            if ($arr[$i]['type'] == 'comment_ansi') {
-                $collect_section_before_limit = FALSE;
-            }
 
             if ($arr[$i]['type'] == 'alpha_reservedWord') {
                 $upper_data = strtoupper($arr[$i]['data']);
@@ -1481,13 +1483,21 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                     }
 
                 } else {
-                    if ($upper_data=='DROP' && $first_reserved_word=='ALTER') {
+                    if ($upper_data == 'DROP' && $first_reserved_word == 'ALTER') {
                         $subresult['queryflags']['need_confirm'] = 1;
                     }
                 }
 
+                if ($upper_data == 'LIMIT') {
+                    $section_before_limit = substr($arr['raw'], 0, $arr[$i]['pos'] - 5);
+                    $in_limit = TRUE;
+                    $limit_clause = '';
+                    $in_order_by = FALSE; // @todo maybe others to set FALSE
+                }
+
                 if ($upper_data == 'PROCEDURE') {
-                    $collect_section_before_limit = FALSE;
+                    $in_limit = FALSE;
+                    $after_limit = TRUE;
                 }
                 /**
                  * @todo set also to FALSE if we find FOR UPDATE or LOCK IN SHARE MODE
@@ -1664,7 +1674,8 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
             if (isset($subresult['queryflags']['select_from'])
              && $subresult['queryflags']['select_from'] == 1
-             && !$seen_order) {
+             && ! $in_order_by
+	     && $upper_data != 'ORDER') {
                 $unsorted_query .= $arr[$i]['data'];
 
                 if ($arr[$i]['type'] != 'punct_bracket_open_round'
@@ -1674,18 +1685,26 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 }
             }
 
-            // clear $upper_data for next iteration
-            $upper_data='';
-
-            if ($collect_section_before_limit  && $arr[$i]['type'] != 'punct_queryend') {
-                $section_before_limit .= $arr[$i]['data'] . $sep;
-            } else {
+	    if ($in_limit) {
+                if ($upper_data == 'OFFSET') {
+                    $limit_clause .= $sep;
+                }
+		$limit_clause .= $arr[$i]['data'];
+                if ($upper_data == 'LIMIT' || $upper_data == 'OFFSET') {
+                    $limit_clause .= $sep;
+                }
+            }
+            if ($after_limit) { 
                 $section_after_limit .= $arr[$i]['data'] . $sep;
             }
 
+            // clear $upper_data for next iteration
+            $upper_data='';
 
         } // end for $i (loop #2)
-
+        if (empty($section_before_limit)) {
+            $section_before_limit = $arr['raw'];
+        }
 
         // -----------------------------------------------------
         // loop #3: foreign keys and MySQL 4.1.2+ TIMESTAMP options
@@ -1942,6 +1961,9 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         }
         if (isset($having_clause)) {
             $subresult['having_clause'] = $having_clause;
+        }
+        if (isset($limit_clause)) {
+            $subresult['limit_clause'] = $limit_clause;
         }
         if (isset($where_clause)) {
             $subresult['where_clause'] = $where_clause;

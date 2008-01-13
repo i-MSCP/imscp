@@ -2,8 +2,34 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 10967 2007-12-08 12:46:36Z lem9 $
+$Id: ChangeLog 11046 2008-01-12 12:18:49Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+2.11.4.0 (2008-01-12)
+- bug #1843428 [GUI] Space issue with DROP/DELETE/ALTER TABLE 
+- bug #1807816 [search] regular expression search doesn't work with
+  backslashes
+- bug #1843463 [GUI] DROP PROCEDURE does not show alert 
+- bug #1835904 [GUI] Back link after a SQL error forgets the query 
+- bug #1835654 [core] wrong escaping when using double quotes 
+- bug #1817612 [cookies] Wrong cookie path on IIS with PHP-CGI, 
+  thanks to Carsten Wiedmann
+- bug #1848889 [export] export trigger should use DROP TRIGGER IF EXISTS
+- bug #1851833 [display] Sorting forgets an explicit LIMIT
+ (fix for sorting on column headers)
+- bug #1764182 [cookies] Suhosin cookie encryption breaks phpMyAdmin
+- bug #1798786 [import] Wrong error when a string contains semicolon
+- bug #1813508 [login] Missing parameter: field after re-login 
+- bug #1710144 [parser] Space after COUNT breaks Export but not Query 
+- bug #1783620 [parser] Subquery results without "as" are ignored 
+- bug #1821264 [display] MaxTableList and INFORMATION_SCHEMA 
+- bug #1859460 [display] Operations and many databases 
+- bug #1814679 [display] Database selection pagination when switching servers 
+- patch #1861717 [export] CSV Escape character not exported right,
+  thanks to nicolasdigraf
+- bug #1864468 [display] Theme does not switch to darkblue_orange 
+- bug #1847409 [security] Path disclosure on darkblue_orange/layout.inc.php,
+  thanks to Jürgen Wind - windkiel
 
 2.11.3.0 (2007-12-08)
 - patch #1818389 to remove a notice (failed to flush buffer), thanks to

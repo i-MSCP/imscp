@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-13 Benedikt Heintel
+	- SETUP:
+		* Fixed #953: update script fails to start
+	- TOOLS:
+		* Updated phpMyAdmin to version 2.11.4 RC1 (#949)
+
 2008-01-13 Christian Hernmarck
 	- ENGINE:
 		* Fixed #947: file change during tar/backup stopps all other following backups
@@ -15,6 +21,7 @@ ispCP ω 1.0.0 Changelog
 		* Changed debian-packages-etch
 	- SETUP:
 		* Updated: added RC2 -> RC3 update to Update Script (not yet completed)
+		* Updated: Makefile for apache folder
 
 2008-01-10 Benedikt Heintel
 	- CONFIGS:

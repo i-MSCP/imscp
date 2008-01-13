@@ -10,7 +10,6 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
@@ -34,5 +33,7 @@ install:
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/apache
-	rm -rf $(ROOT_APACHE_CONF)/ispcp.conf
-	rm -rf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
+	rm -rf $(APACHE_SITES_DIR)/ispcp.conf
+	rm -rf $(APACHE_SITES_DIR)/00_master.conf
+	rm -rf $(APACHE_SITES_DIR)/01_awstats.conf
+	rm -rf ${APACHE_MODS_DIR}/fastcgi_ispcp.conf

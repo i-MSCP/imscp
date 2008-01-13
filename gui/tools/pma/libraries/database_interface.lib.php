@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 10732 2007-10-06 20:03:52Z lem9 $
+ * @version $Id: database_interface.lib.php 11021 2007-12-27 23:50:45Z lem9 $
  */
 
 /**
@@ -186,7 +186,7 @@ function PMA_DBI_get_tables($database, $link = null)
 
 /**
  * returns array of all tables in given db or dbs
- * this function expects unqoted names:
+ * this function expects unquoted names:
  * RIGHT: my_database
  * WRONG: `my_database`
  * WRONG: my\_database
@@ -212,12 +212,13 @@ function PMA_DBI_get_tables($database, $link = null)
  * @param   string          $table          table
  * @param   boolean|string  $tbl_is_group   $table is a table group
  * @param   resource        $link           mysql link
+ * @param   integer         $limit_offset   zero-based offset for the count 
+ * @param   boolean|integer $limit_count    number of tables to return 
  * @return  array           list of tables in given db(s)
  */
 function PMA_DBI_get_tables_full($database, $table = false,
     $tbl_is_group = false, $link = null, $limit_offset = 0, $limit_count = false)
 {
-    // currently supported for MySQL >= 50002
     if (true === $limit_count) {
         $limit_count = $GLOBALS['cfg']['MaxTableList'];
     }
@@ -302,6 +303,10 @@ function PMA_DBI_get_tables_full($database, $table = false,
                     . PMA_backquote($each_database) . ';';
             }
             $each_tables = PMA_DBI_fetch_result($sql, 'Name', null, $link);
+            if ($limit_count) {
+                $each_tables = array_slice($each_tables, $limit_offset, $limit_count);
+            }
+
             foreach ($each_tables as $table_name => $each_table) {
                 if ('comment' === $tbl_is_group
                   && 0 === strpos($each_table['Comment'], $table))
@@ -1276,7 +1281,7 @@ function PMA_DBI_get_triggers($db, $table) {
                 $one_result['event_manipulation'] = $trigger['EVENT_MANIPULATION'];
 
                 $one_result['full_trigger_name'] = PMA_backquote($trigger['TRIGGER_SCHEMA']) . '.' . PMA_backquote($trigger['TRIGGER_NAME']);
-                $one_result['drop'] = 'DROP TRIGGER ' . $one_result['full_trigger_name'];
+                $one_result['drop'] = 'DROP TRIGGER IF EXISTS ' . $one_result['full_trigger_name'];
                 $one_result['create'] = 'CREATE TRIGGER ' . $one_result['full_trigger_name'] . ' ' . $trigger['ACTION_TIMING']. ' ' . $trigger['EVENT_MANIPULATION'] . ' ON ' . PMA_backquote($trigger['EVENT_OBJECT_SCHEMA']) . '.' . PMA_backquote($trigger['EVENT_OBJECT_TABLE']) . "\n" . ' FOR EACH ROW ' . $trigger['ACTION_STATEMENT'] . "\n" . $delimiter . "\n";
 
                 $result[] = $one_result;

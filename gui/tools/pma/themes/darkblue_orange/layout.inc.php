@@ -4,10 +4,15 @@
  * configures general layout
  * for detailed layout configuration please refer to the css files
  *
- * @version $Id: layout.inc.php 10515 2007-07-22 16:22:54Z lem9 $
+ * @version $Id: layout.inc.php 11036 2008-01-05 14:30:41Z lem9 $
  * @package phpMyAdmin-theme
  * @subpackage Darkblue_orange
  */
+
+// protect against path disclosure
+if (empty($_SESSION['PMA_Theme'])) {
+    exit;
+}
 
 /**
  * navi frame

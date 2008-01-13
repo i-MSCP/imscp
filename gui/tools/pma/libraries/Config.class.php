@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 10967 2007-12-08 12:46:36Z lem9 $
+ * @version $Id: Config.class.php 11046 2008-01-12 12:18:49Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.3');
+        $this->set('PMA_VERSION', '2.11.4');
         /**
          * @deprecated
          */
@@ -542,9 +542,9 @@ class PMA_Config
      * or the theme changes
      * @return  int  Unix timestamp
      */
-    function getMtime()
+    function getThemeUniqueValue()
     {
-        return intval($_SESSION['PMA_Config']->get('fontsize')) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info);
+        return intval($_SESSION['PMA_Config']->get('fontsize')) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info);
     }
 
     /**
@@ -861,17 +861,18 @@ class PMA_Config
         if (empty($url)) {
             if (PMA_getenv('PATH_INFO')) {
                 $url = PMA_getenv('PATH_INFO');
+            // on IIS with PHP-CGI:
+            } elseif (PMA_getenv('SCRIPT_NAME')) {
+                $url = PMA_getenv('SCRIPT_NAME');
             } elseif (PMA_getenv('PHP_SELF')) {
                 // PHP_SELF in CGI often points to cgi executable, so use it
                 // as last choice
-                $url = PMA_getenv('PHP_SELF');
-            } elseif (PMA_getenv('SCRIPT_NAME')) {
                 $url = PMA_getenv('PHP_SELF');
             }
         }
 
         $parsed_url = @parse_url($_SERVER['REQUEST_URI']); // produces E_WARNING if it cannot get parsed, e.g. '/foobar:/'
-        if ($parsed_url === false) {
+        if ($parsed_url === false || empty($parsed_url['path'])) {
             $parsed_url = array('path' => $url);
         }
 
