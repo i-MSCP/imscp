@@ -326,6 +326,44 @@ sub start_services {
     return 0;
 }
 
+sub rebuild_configs {
+	push_el(\@main::el, 'rebuild_configs()', 'Starting...');
+	do 'ispcp-setup';
+
+	my $rs = undef;
+
+	# The folowing functions are specified in 'ispcp-setup'
+	$rs = setup_crontab();
+	return 1 if ($rs != 0);
+
+	$rs = setup_named();
+	return 2 if ($rs != 0);
+
+	$rs = setup_php_master_user_dirs();
+	return 3 if ($rs != 0);
+
+	$rs = setup_php();
+	return 4 if ($rs != 0);
+
+	$rs = setup_httpd();
+	return 5 if ($rs != 0);
+
+	$rs = setup_mta();
+	return 6 if ($rs != 0);
+
+	$rs = setup_po();
+	return 7 if ($rs != 0);
+
+	$rs = setup_ftpd();
+	return 8 if ($rs != 0);
+
+	$rs = setup_ispcpd();
+	return 9 if ($rs != 0);
+
+	push_el(\@main::el, 'rebuild_configs()', 'Ending...');
+	return 0;
+}
+
 sub migrate_vhcs2 {
 	push_el(\@main::el, 'migrate_vhcs2()', 'Starting...');
 
@@ -510,9 +548,12 @@ sub patch_ispcp_rc2 {
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
-	# @TODO: find the new ispcp.conf and open it for writing.
-
 	# update ispcp.conf
+	$main::cfg_file = '/etc/ispcp/ispcp.conf';
+	$rs = get_conf();
+	if ($rs != 0) {
+		exit_werror("failed to get /etc/ispcp/ispcp.conf!");
+	}
 	# copy changed variables to new ispcp.conf
 	$rs = set_conf_val('DEFAULT_ADMIN_ADDRESS', $main::cfg{'DEFAULT_ADMIN_ADDRESS'});
 	return $rs if ($rs != 0);
@@ -554,7 +595,7 @@ sub patch_ispcp_rc2 {
 	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
 	return $rs if ($rs != 0);
 
-	# TODO: check, if we store it in the right file!
+	# store into /etc/ispcp/ispcp.conf
 	$rs = store_conf();
 	if ($rs != 0) {
 		print STDOUT "failed!\n";
@@ -580,18 +621,24 @@ sub patch_ispcp_rc2 {
 
     print STDOUT "done\n";
 
-    # @TODO: Rebuild system configs:
-    #			-> /etc/apache2/mods-available/fastcgi_ispcp.conf
-    #			-> /etc/proftpd/proftpd.conf
-    #			-> /etc/ispcp/apache/01_awstats.conf
-    #			... (which ones missed?)
+    # Rebuild system configs:
+    print STDOUT "Rebuilding system configurations...";
+
+	$rs = rebuild_configs();
+
+	if ($rs != 0) {
+    	print STDOUT "failed!\n";
+   	 	exit_werror("Config Rebuild failed.");
+	}
+
+	print STDOUT "done\n";
 
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Ending...');
 	return 0;
 }
 
 sub prepare_update {
-	my $rs = undef;
+	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'user_dialog()', 'Starting...');
 
@@ -627,6 +674,22 @@ sub prepare_update {
 	# ispCP 1.0.0 RC2 Update
 	elsif ($main::ua{'update'} eq 3) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
+
+		# get ispcp.old.conf
+		$main::cfg_file = '/etc/ispcp/ispcp.old.conf';
+		$rs = get_conf();
+		if ($rs != 0) {
+			do {
+				print STDOUT "\tPlease enter path to ispcp.old.conf [/etc/ispcp/ispcp.old.conf]: ";
+
+				$rdata = readline(\*STDIN);
+				chop($rdata);
+
+				$main::cfg_file = $rdata;
+				$rs = get_conf();
+			} while ($rs == 0);
+		}
+
 		$rs = patch_ispcp_rc2();
 		return $rs if ($rs != 0);
 		start_services();

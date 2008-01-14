@@ -211,19 +211,20 @@ b) manually
 	# cp -Rv /tmp/ispcp-1.0.0/usr/* /usr/
 	# cp -Rv /tmp/ispcp-1.0.0/var/* /var/
 
-8. Now it's time to update your installation. Change into the engine directory:
+8. Backup ispcp.conf and copy the /etc dircetory into your system (you may make backups):
+	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
+	# cp -Rv /tmp/ispcp-1.0.0/etc/* /etc/
+
+9. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-9. Start the engine update:
+10. Start the engine update:
 	# perl ispcp-update
 
-10. Update ispCP ω step-by-step
+11. Update ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
-
-11. Copy the new created configs into your system (you may make backups):
-	# cp -Rv /tmp/ispcp-1.0.0/etc/* /etc/
 
 12. Clean the temporary folders:
 	# rm -fR /tmp/ispcp-1.0.0

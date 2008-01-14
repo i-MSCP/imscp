@@ -1200,8 +1200,6 @@ sub setup_system_dirs {
 
 	return $rs if ($rs != 0);
 
-
-
 	$rs = make_dir($main::cfg{'LOG_DIR'}, 'root', 'root', 0755);
 
 	return $rs if ($rs != 0);
@@ -1694,7 +1692,7 @@ sub setup_resolver {
 
     	$data .= $resolv_data;
 
-	# security fix:
+		# security fix:
     	$resolv_data =~ s/^nameserver[[:space:]]+127\.0\.0\.1$//g;
 
     	$rs = store_file($resolv_file, $data, 'root', 'root', 0644);

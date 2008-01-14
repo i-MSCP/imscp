@@ -7,6 +7,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache2
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/modules.d
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cp ./httpd.conf ./working/ispcp.conf
 	cp ./httpd.conf ./parts/ispcp_base.tpl

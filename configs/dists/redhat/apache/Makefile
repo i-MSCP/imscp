@@ -8,6 +8,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cp ./httpd.conf ./working/ispcp.conf
 	cp ./fastcgi.conf ./working/fastcgi_ispcp.conf

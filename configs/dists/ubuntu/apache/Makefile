@@ -10,6 +10,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache

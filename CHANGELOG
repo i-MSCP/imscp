@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-14 Benedikt Heintel
+	- SETUP:
+		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0 RC3
+						and from ispCP ω 1.0.0 RC2 to ispCP ω 1.0.0 RC3
+		* Fixed #955: "ispcp" Folder in /etc/apache2 is missing
+
 2008-01-13 Benedikt Heintel
 	- SETUP:
 		* Fixed #953: update script fails to start
