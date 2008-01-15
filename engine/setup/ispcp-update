@@ -472,9 +472,18 @@ sub remove_vhcs2 {
 		print STDOUT "done\n";
 
 		# Remove VHCS2 crontab
-		print STDOUT "\tRemoving crontab...";
-		sys_command("crontab -r vhcs2");
-		print STDOUT "done\n";
+		print STDOUT "\tDo you really want to remove crontab? All custom entries will be deleted. (yes|no) [no]: ";
+		$rdata = readline(\*STDIN);
+		chop($rdata);
+
+		if (!defined($rdata) || $rdata eq '') {
+			$rdata = 'no';
+		}
+		if ($rdata eq 'yes') {
+			print STDOUT "\tRemoving crontab...";
+			sys_command("crontab -r");
+			print STDOUT "done\n";
+		}
 
 		# Remove VHCS2 apache files
 		print STDOUT "\tRemoving apache vhost file...";
@@ -696,9 +705,9 @@ sub prepare_update {
 	}
 
 	# re-create config files
-	print STDOUT "\tRebuilding customers ...";
+	print STDOUT "\tRebuilding customers ...\n";
 
-	$rs = sys_command("$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("Rebuild failed.");

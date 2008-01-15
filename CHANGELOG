@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-15 Benedikt Heintel
+	- GUI:
+		* Added: AWStats link in client's webtools
+	- SETUP:
+		* Fixed #958: Some Errors in Updatescript
+
 2008-01-14 Benedikt Heintel
 	- SETUP:
 		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0 RC3

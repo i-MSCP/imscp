@@ -53,13 +53,15 @@
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
-    <tr>
-    <td>&nbsp;</td>
+  <!-- BDP: active_awstats -->
+  <tr>
+    <td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="submenu">{TR_AWSTATS}</a></td>
   </tr>
-    <tr>
-      <td>&nbsp;</td>
+   <tr>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
     </tr>
-    <tr>
+  <!-- EDP: active_awstats -->
+   <tr>
       <td>&nbsp;</td>
     </tr>
     <tr>

@@ -30,7 +30,6 @@
 #    http://isp-control.net
 #
 
-
 use FindBin;
 use lib "$FindBin::Bin/";
 require 'ispcp_common_code.pl';
