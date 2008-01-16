@@ -852,7 +852,6 @@ sub sys_command_rs {
 
     } else {
 
-
         return $exit_value;
 
     }

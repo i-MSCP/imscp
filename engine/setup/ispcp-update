@@ -707,7 +707,7 @@ sub prepare_update {
 	# re-create config files
 	print STDOUT "\tRebuilding customers ...\n";
 
-	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
+	$rs = sys_command_rs("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr");
 	if ($rs != 0) {
     	print STDOUT "failed!\n";
    	 	exit_werror("Rebuild failed.");
