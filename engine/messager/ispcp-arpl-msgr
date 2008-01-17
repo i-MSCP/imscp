@@ -789,13 +789,18 @@ sub arpl_msgr_engine {
 	        	return $rs if ($rs != 0);
 
 
-		        $ref = @$ref[0]; my $auto_message = @$ref[0];
+		        $ref = @$ref[0];
+				my $auto_message = @$ref[0];
 
-				if($auto_message ne '_no_') {
+				if ($auto_message ne '_no_' && length($auto_message) > 0) {
 
-					if($name) { $mail_to = "\"".$name."\" "."<".$to_ma->address.">"; }
+					if ($name) {
+						$mail_to = "\"".$name."\" "."<".$to_ma->address.">";
+					}
 
-					else{ $mail_to = $to_ma->address; }
+					else {
+						$mail_to = $to_ma->address;
+					}
 
 
 			        my $out = new MIME::Entity;

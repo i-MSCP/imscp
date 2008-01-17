@@ -64,6 +64,18 @@ Make sure you are logged in as root.
 	# yast upgrade
 	# yast -i `cat ./docs/SuSE/suse-packages`
 
+	Install, the following packages, too
+	perl-Term-ReadPassword & perl-Crypt-PasswdMD5 from: http://repos.opensuse.org/home:/netmax/
+	e.g. SuSE 10.2, x86_64: http://repos.opensuse.org/home:/netmax/openSUSE_10.2/x86_64/
+
+	perl-Term-ReadPassword-0.07-1.suse100.i586.rpm
+	perl-Crypt-PasswdMD5-1.3-1.suse100.i586.rpm
+
+	proftpd (and the mysql-module for it) from: http://repos.opensuse.org/server:/ftp/
+	e.g. - add this URL to the Sources in Yast in SuSE 10.2: http://repos.opensuse.org/server:/ftp/openSUSE_10.2/
+
+	proftpd-1.2.93_1.3.0rc3-0.suse100.i586.rpm
+
 4. Now there are two ways of install ISPCP ω
 
 a) via install script

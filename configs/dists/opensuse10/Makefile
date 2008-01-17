@@ -3,7 +3,7 @@ export
 
 install:
 
-	if test $(HOST_OS) = opensuse103 ; then \
+	if test $(HOST_OS) = opensuse10 ; then \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./bind && $(MAKE) install ; cd .. ; \
@@ -18,7 +18,7 @@ install:
 
 uninstall:
 
-	if test $(HOST_OS) = opensuse103 ; then \
+	if test $(HOST_OS) = opensuse10 ; then \
 		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \
