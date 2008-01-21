@@ -1,6 +1,6 @@
 $TTL 12H
 $ORIGIN {DMN_NAME}.
-@               IN              SOA             ns1.{DMN_NAME}. hostmaster.{DMN_NAME}. (
+@               IN              SOA             ns1.{DMN_NAME}. postmaster.{DMN_NAME}. (
 ; dmn [{DMN_NAME}] timestamp entry BEGIN.
                 {TIMESTAMP}     ; Serial
 ; dmn [{DMN_NAME}] timestamp entry END.
