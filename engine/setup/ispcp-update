@@ -328,7 +328,9 @@ sub start_services {
 
 sub rebuild_configs {
 	push_el(\@main::el, 'rebuild_configs()', 'Starting...');
-	do 'ispcp-setup';
+	if ($main::ua{'update'} eq 1 || $main::ua{'update'} eq 2) {
+		do 'ispcp-setup';
+	}
 
 	my $rs = undef;
 
@@ -613,7 +615,7 @@ sub patch_ispcp_rc2 {
 	print STDOUT "done\n";
 
 	# database upgrade
-    print STDOUT "\tUpgrading database structure...";
+    	print STDOUT "\tUpgrading database structure...";
 
 	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc2-ispcp.sql");
 	return $rs if ($rs != 0);
@@ -631,7 +633,7 @@ sub patch_ispcp_rc2 {
     print STDOUT "done\n";
 
     # Rebuild system configs:
-    print STDOUT "Rebuilding system configurations...";
+    print STDOUT "\tRebuilding system configurations...";
 
 	$rs = rebuild_configs();
 
@@ -678,7 +680,6 @@ sub prepare_update {
 		return $rs if ($rs != 0);
 		$rs = remove_vhcs2();
 		return $rs if ($rs != 0);
-		start_services();
 	}
 	# ispCP 1.0.0 RC2 Update
 	elsif ($main::ua{'update'} eq 3) {
@@ -701,7 +702,15 @@ sub prepare_update {
 
 		$rs = patch_ispcp_rc2();
 		return $rs if ($rs != 0);
-		start_services();
+
+		# set permissions
+		my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
+
+		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0)
 	}
 
 	# re-create config files
@@ -715,6 +724,9 @@ sub prepare_update {
 
 	print STDOUT "done\n";
 
+	# start services	
+	start_services();
+	
 	exit 0;
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');

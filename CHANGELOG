@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-24 Benedikt Heintel
+	- ENGINE:
+		* Fixed #965: Error in ispcp-dmn-mngr
+	- SETUP:
+		* Fixed #958: Some Errors in Updatescript
+
 2008-01-21 Benedikt Heintel
 	- CONFIG:
 		* Fixed #960: Bind error hostmaster -> postmaster
