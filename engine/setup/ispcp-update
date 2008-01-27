@@ -328,7 +328,7 @@ sub start_services {
 
 sub rebuild_configs {
 	push_el(\@main::el, 'rebuild_configs()', 'Starting...');
-	if ($main::ua{'update'} eq 1 || $main::ua{'update'} eq 2) {
+	if ($main::ua{'update'} ge 1) {
 		do 'ispcp-setup';
 	}
 
@@ -423,7 +423,7 @@ sub migrate_vhcs2 {
    	 	exit_werror("SQL Update failed.");
 	}
 
-    print STDOUT "done\n";
+    print STDOUT "\tdone\n";
 
 	push_el(\@main::el, 'migrate_vhcs2()', 'Ending...');
 	return 0;
@@ -453,7 +453,7 @@ sub remove_vhcs2 {
 		del_dir($main::vhcs2{'ROOT_DIR'});
 		print STDOUT "done\n";
 
-		# Remove VHCS2 Config foler
+		# Remove VHCS2 Config folder
 		print STDOUT "\tRemoving $main::vhcs2{'CONF_DIR'}...";
 		del_dir($main::vhcs2{'CONF_DIR'});
 		print STDOUT "done\n";
@@ -471,6 +471,13 @@ sub remove_vhcs2 {
 		# Remove VHCS2 logrotation
 		print STDOUT "\tRemoving logrotation...";
 		del_file("/etc/logrotate.d/vhcs2");
+		print STDOUT "done\n";
+
+		# Remove Bind files
+		print STDOUT "\tRemoving old bind files...";
+		del_file("/etc/bind/vhcs.conf");
+		# will be recreated
+		del_file("/etc/bind/named.conf");
 		print STDOUT "done\n";
 
 		# Remove VHCS2 crontab
@@ -612,10 +619,10 @@ sub patch_ispcp_rc2 {
 		print STDOUT "failed!\n";
 		exit_werror("Storing new ispcp.conf failed!");
 	}
-	print STDOUT "done\n";
+	print STDOUT "\tdone\n";
 
 	# database upgrade
-    	print STDOUT "\tUpgrading database structure...";
+    print STDOUT "\tUpgrading database structure...";
 
 	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc2-ispcp.sql");
 	return $rs if ($rs != 0);
@@ -724,9 +731,9 @@ sub prepare_update {
 
 	print STDOUT "done\n";
 
-	# start services	
+	# start services
 	start_services();
-	
+
 	exit 0;
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');

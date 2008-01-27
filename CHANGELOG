@@ -6,6 +6,11 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-01-27 Benedikt Heintel
+	- SETUP:
+		* Fixed #926: vhcs 2.4.71 update no apache config
+		* Fixed #966: Updatescripts fails Update RC2x -> RC3
+
 2008-01-27 Christian Hernmarck
 	- GUI:
 		* Fixed a small error in client/webtools.php which always showed debug variables...
