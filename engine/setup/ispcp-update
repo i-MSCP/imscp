@@ -476,8 +476,20 @@ sub remove_vhcs2 {
 		# Remove Bind files
 		print STDOUT "\tRemoving old bind files...";
 		del_file("/etc/bind/vhcs.conf");
-		# will be recreated
-		del_file("/etc/bind/named.conf");
+
+		# Remove old Include if exists
+		($rs, $rdata) = get_file("/etc/bind/named.conf");
+		if ($rs != 0) {
+        	print STDOUT "failed!\n";
+        	exit_werror("Could not open /etc/bind/named.conf");
+        }
+
+		$rdata =~ tr/include \"\/etc\/bind\/vhcs.conf\";//gi;
+		$rs = store_file("/etc/bind/named.conf", $rdata, 'root', 'root', 0644);
+		if ($rs != 0) {
+        	print STDOUT "failed!\n";
+        	exit_werror("Could not store /etc/bind/named.conf");
+        }
 		print STDOUT "done\n";
 
 		# Remove VHCS2 crontab

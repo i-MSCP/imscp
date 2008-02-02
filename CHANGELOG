@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-02-02 Benedikt Heintel
+	- SETUP:
+		* Fixed #981: bind fails
+
 2008-01-27 Benedikt Heintel
 	- SETUP:
 		* Fixed #926: vhcs 2.4.71 update no apache config
