@@ -2237,25 +2237,24 @@ SQL_QUERY;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-<link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
-<title>$title</title>
-</style>
-</head>
-<center>
-<table width="100%" height="95%">
-  <tr align="center">
-  <td align="center">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
+  <link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
+  <title>$title</title>
+ </head>
+ <body>
+  <center>
+   <table width="100%" height="95%">
+    <tr align="center">
+     <td align="center">
 RIC;
 
 		$footer = <<<RIC
-</td>
-  </tr>
-</table>
-</center>
-<body>
-</body>
+     </td>
+    </tr>
+   </table>
+  </center>
+ </body>
 </html>
 RIC;
 	} else {

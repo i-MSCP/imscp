@@ -6,6 +6,12 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-02-03 Christian Hernmarck
+	- SETUP:
+		* Fixed #983: New FasCGT Changes break the start of Apache
+	- GUI:
+		* Small fix in default header/footer for orders made them html compliant...
+
 2008-02-02 Benedikt Heintel
 	- SETUP:
 		* Fixed #981: bind fails
