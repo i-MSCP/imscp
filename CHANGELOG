@@ -6,6 +6,10 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-02-03 Benedikt Heintel
+	- GUI:
+		* Added: New look and feel of SQL handling (created by macbishop)
+
 2008-02-03 Christian Hernmarck
 	- SETUP:
 		* Fixed #983: New FasCGT Changes break the start of Apache
