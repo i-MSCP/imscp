@@ -307,7 +307,7 @@ sub ask_db_password {
 
 	my $db_password = 'none';
 
-	my $qmsg = "\n    Please enter system SQL password. [$db_password]: ";
+	my $qmsg = "\n\tPlease enter system SQL password. [$db_password]: ";
 
 	$pass1 = read_password($qmsg);
 
@@ -317,7 +317,7 @@ sub ask_db_password {
 
 	} else {
 
-		$qmsg = "    Please repeat system SQL password: ";
+		$qmsg = "\tPlease repeat system SQL password: ";
 
 		$pass2 = read_password($qmsg);
 
@@ -377,7 +377,7 @@ sub ask_db_ftp_password {
 
 	my $db_password = undef;
 
-	my $qmsg = "\n    Please enter ispCP ftp SQL user password. [auto generate]: ";
+	my $qmsg = "\n\tPlease enter ispCP ftp SQL user password. [auto generate]: ";
 
 	$pass1 = read_password($qmsg);
 
@@ -390,7 +390,7 @@ sub ask_db_ftp_password {
 
 	} else {
 
-		$qmsg = "    Please repeat ispCP ftp SQL user password: ";
+		$qmsg = "\tPlease repeat ispCP ftp SQL user password: ";
 
 		$pass2 = read_password($qmsg);
 
@@ -439,7 +439,7 @@ sub ask_db_pma_password {
 
 	my $db_password = undef;
 
-	my $qmsg = "\n    Please enter ispCP phpMyAdmin Control user password. [auto generate]: ";
+	my $qmsg = "\n\tPlease enter ispCP phpMyAdmin Control user password. [auto generate]: ";
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
@@ -449,7 +449,7 @@ sub ask_db_pma_password {
 		print STDOUT "\tphpMyAdmin Control user password set to: $db_password\n";
 
 	} else {
-		$qmsg = "    Please repeat ispCP phpMyAdmin Control user password: ";
+		$qmsg = "\tPlease repeat ispCP phpMyAdmin Control user password: ";
 		$pass2 = read_password($qmsg);
 
 		if ($pass1 eq $pass2) {
@@ -501,7 +501,7 @@ sub ask_admin_password {
 
 	push_el(\@main::el, 'ask_admin_password()', 'Starting...');
 
-	my $qmsg = "\n    Please enter administrator password: ";
+	my $qmsg = "\n\tPlease enter administrator password: ";
 
 	$pass1 = read_password($qmsg);
 

@@ -484,7 +484,7 @@ sub remove_vhcs2 {
         	exit_werror("Could not open /etc/bind/named.conf");
         }
 
-		$rdata =~ tr/include \"\/etc\/bind\/vhcs.conf\";//gi;
+		$rdata =~ s/include "\/etc\/bind\/vhcs.conf";//gi;
 		$rs = store_file("/etc/bind/named.conf", $rdata, 'root', 'root', 0644);
 		if ($rs != 0) {
         	print STDOUT "failed!\n";
