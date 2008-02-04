@@ -67,6 +67,7 @@ DROP TABLE IF EXISTS `lang_Spanish`;
 ALTER TABLE `log` CHANGE `log_time` `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP;
 
 -- Add Primary key and possibly an index to login table!
+TRUNCATE TABLE `login`;
 ALTER TABLE `login` ADD `captcha_count` TINYINT( 1 ) default '0';
 ALTER TABLE `login` ADD PRIMARY KEY ( `session_id` );
 

@@ -162,7 +162,6 @@ sub ask_awstats_dyn {
 	}
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Ending...');
-
 	return 0;
 }
 
@@ -196,7 +195,58 @@ sub ask_php_version {
 	}
 
 	push_el(\@main::el, 'ask_php_version()', 'Ending...');
+	return 0;
+}
 
+sub ask_db_pma_user {
+
+	my ($rs, $rdata) = (undef, undef);
+	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
+	my $db_user = 'pma';
+
+	my $qmsg = "\n\tPlease enter ispCP phpMyAdmin Control user. [$db_user]: ";
+	print STDOUT $qmsg;
+	$rdata = readline(\*STDIN); chop($rdata);
+
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'db_pma_user'} = $db_user;
+	} else {
+		$main::ua{'db_pma_user'} = $rdata;
+	}
+
+	push_el(\@main::el, 'ask_db_pma_user()', 'Ending...');
+	return 0;
+}
+
+sub ask_db_pma_password {
+
+	my ($rs, $pass1, $pass2) = (undef, undef, undef);
+	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
+
+	my $db_password = undef;
+
+	my $qmsg = "\n\tPlease enter ispCP phpMyAdmin Control user password. [auto generate]: ";
+	$pass1 = read_password($qmsg);
+
+	if (!defined($pass1) || $pass1 eq '') {
+
+		$db_password = gen_sys_rand_num(18);
+		$main::ua{'db_pma_password'} = $db_password;
+		print STDOUT "\tphpMyAdmin Control user password set to: $db_password\n";
+
+	} else {
+		$qmsg = "\tPlease repeat ispCP phpMyAdmin Control user password: ";
+		$pass2 = read_password($qmsg);
+
+		if ($pass1 eq $pass2) {
+			$main::ua{'db_pma_password'} = $pass1;
+		} else {
+			print STDOUT "\n\tPasswords do not match!";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_db_pma_password()', 'Ending...');
 	return 0;
 }
 
@@ -557,6 +607,101 @@ sub remove_vhcs2 {
 	return 0;
 }
 
+sub update_pma {
+	push_el(\@main::el, 'update_pma()', 'Starting...');
+
+	my ($rs, $cfg, $cfg_tpl, $sql, $rdata) = (undef, undef, undef, undef, undef);
+	my $hostname = $main::cfg{'DATABASE_HOST'};
+
+	#
+	# PMA user for SQL
+	#
+
+	$rs = ask_db_pma_user();
+	return $rs if ($rs != 0);
+
+	do {
+		$rs = ask_db_pma_password();
+	} while ($rs == 1);
+
+	my $pma_sql_user = $main::ua{'db_pma_user'};
+	my $pma_sql_password = $main::ua{'db_pma_password'};
+
+	$sql = "delete from tables_priv where Host = '$main::cfg{'SERVER_HOSTNAME'}' and Db = '$main::cfg{'DATABASE_NAME'}' and User = '$pma_sql_user'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = " delete from user where Host = '$hostname' and User = '$pma_sql_user'";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "flush privileges";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT USAGE ON mysql.* TO \'$pma_sql_user\'\@\'$hostname\' IDENTIFIED BY \'$pma_sql_password\';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT (Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv, Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv, File_priv, Grant_priv, References_priv, Index_priv, Alter_priv, Show_db_priv, Super_priv, Create_tmp_table_priv, Lock_tables_priv, Execute_priv, Repl_slave_priv, Repl_client_priv) ON mysql.user TO \'$pma_sql_user\'\@\'$hostname\';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT ON mysql.db TO \'$pma_sql_user\'\@\'$hostname\';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT ON mysql.host TO \'$pma_sql_user\'\@\'$hostname\';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	$sql = "GRANT SELECT (Host, Db, User, Table_name, Table_priv, Column_priv) ON mysql.tables_priv TO \'$pma_sql_user\'\@\'$hostname\';";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	#
+	# Insert pma user and password to config file
+	# together with some other information
+	#
+
+	my $cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
+	my $tmp_dir = "$main::cfg{'GUI_ROOT_DIR'}/phptmp";
+
+	my $blowfish = gen_sys_rand_num(31);
+	$blowfish =~ s/'/\\'/gi;
+
+	($rs, $cfg_tpl) = get_tpl($cfg_dir, 'config.inc.php');
+
+	return $rs if ($rs != 0);
+
+	my %tag_hash = (
+					'{PMA_USER}' => $pma_sql_user,
+					'{PMA_PASS}' => $pma_sql_password,
+					'{HOSTNAME}' => $main::cfg{'DATABASE_HOST'},
+					'{TMP_DIR}'  => $tmp_dir,
+					'{BLOWFISH}' => $blowfish
+				   );
+
+	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
+
+	return $rs if ($rs != 0);
+
+	$rs = store_file("$cfg_dir/config.inc.php", $cfg, "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}", "$main::cfg{'APACHE_GROUP'}", 0440);
+
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'update_pma()', 'Ending...');
+	return 0;
+}
+
 sub patch_ispcp_rc2 {
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Starting...');
 
@@ -667,6 +812,20 @@ sub patch_ispcp_rc2 {
 	}
 
 	print STDOUT "done\n";
+
+	# Update PMA's config.inc.php
+	print STDOUT "\tUpdating PMA's config.inc.php...";
+
+	$rs = update_pma();
+
+	if ($rs != 0) {
+    	print STDOUT "failed!\n";
+   	 	exit_werror("Updating PMA's config.inc.php failed.");
+	}
+
+	print STDOUT "done\n";
+
+
 
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Ending...');
 	return 0;
