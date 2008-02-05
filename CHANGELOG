@@ -6,6 +6,17 @@ ispCP ω 1.0.0 Changelog
 |				* to fix: no errors on adding user (custom HP)	  |
 \_________________________________________________________________/
 
+2008-02-05 Benedikt Heintel
+	- GUI:
+		* Fixed: Graphical issue on reseller/order.php
+	- LANGUAGES:
+		* Updated: Turkish
+
+2008-02-04 Benedikt Heintel
+	- SETUP:
+		* Fixed #976: handeled duplicate entries on unique key on update from VHCS
+		* Updated: Improved SQL handling for updated versions
+
 2008-02-03 Benedikt Heintel
 	- GUI:
 		* Added: New look and feel of SQL handling (created by macbishop)
@@ -22,7 +33,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-01-27 Benedikt Heintel
 	- SETUP:
-		* Fixed #926: vhcs 2.4.71 update no apache config
+		* Fixed #926: VHCS 2.4.71 update no apache config
 		* Fixed #966: Updatescripts fails Update RC2x -> RC3
 
 2008-01-27 Christian Hernmarck
