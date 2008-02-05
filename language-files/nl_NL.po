@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-09-27 23:07+0100\n"
 "Last-Translator: M.Leenders <spam@azzkikr.nl>\n"
 "Language-Team: Dutch <nl_NL@li.org>\n"
@@ -145,6 +145,9 @@ msgstr "Man"
 
 msgid "Female"
 msgstr "Vrouw"
+
+msgid "Unknown"
+msgstr "Onbekend"
 
 msgid "Company"
 msgstr "Bedrijf"
@@ -1325,9 +1328,6 @@ msgstr "Nieuwe taal geinstalleerd"
 msgid "Language was updated!"
 msgstr "Aangepaste error pagina is gewijzigd!"
 
-msgid "Unknown"
-msgstr "Onbekend"
-
 msgid "uninstall"
 msgstr "Verwijderen"
 
@@ -2061,8 +2061,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr "Download het enige bestand in deze directory"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(meestal backup_YYY_MM_DD.tar genaamd)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Herstel backup"
@@ -2477,6 +2477,13 @@ msgstr "ispCP - Virtual Hosting Control System"
 msgid "Manage SQL"
 msgstr "Beheer MySQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Database gebruikers"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Database gebruikers"
 
@@ -2803,11 +2810,16 @@ msgstr "Uw aanvraag voor een hostingpakket is succesvol verwijderd"
 msgid "Message was send!"
 msgstr "Bericht is verzonden"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Virtual Hosting Control System"
+
 msgid "Webtools"
 msgstr ""
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Aangepaste error pagina is gewijzigd!"
 
 msgid "Backup and restore settings"
 msgstr "Backup en herstel instellingen"
@@ -2817,6 +2829,9 @@ msgstr "Toegang tot mail via web interface"
 
 msgid "Access your files through the web interface"
 msgstr "Toegang tot bestanden via web interface"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Beheer beschermde gebieden, gebruikers en groepen"
@@ -2974,9 +2989,6 @@ msgstr "E-mail en FTP accounts"
 
 msgid "Add mail user"
 msgstr "Mail gebruiker toevoegen"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr ""
@@ -3781,6 +3793,9 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Bericht is verzonden"
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(meestal backup_YYY_MM_DD.tar genaamd)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Domeinen limiet"

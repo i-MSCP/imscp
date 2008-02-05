@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-12-20 09:40+0100\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
@@ -141,6 +141,9 @@ msgstr "muž"
 
 msgid "Female"
 msgstr "žena"
+
+msgid "Unknown"
+msgstr "Neznámý"
 
 msgid "Company"
 msgstr "Společnost"
@@ -1296,9 +1299,6 @@ msgstr "Byl nainstalován nový jazyk!"
 msgid "Language was updated!"
 msgstr "Jazyk byl aktualizován!"
 
-msgid "Unknown"
-msgstr "Neznámý"
-
 msgid "uninstall"
 msgstr "odinstalovat"
 
@@ -2025,8 +2025,8 @@ msgstr "Přejít do adresáře backups/"
 msgid "Download the files stored in this directory"
 msgstr "Stáhnout soubory uložené v tomto adresáři"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(obvykle pojmenované backup_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Obnovit ze zálohy"
@@ -2435,6 +2435,13 @@ msgstr "ispCP - Klient/Správa SQL"
 msgid "Manage SQL"
 msgstr "Správa SQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Uživatelé databáze"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
 msgid "Database users"
 msgstr "Uživatelé databáze"
 
@@ -2757,10 +2764,15 @@ msgstr "Váš požadavek na update hostingového balíčku byl uspěšně odebr�
 msgid "Message was send!"
 msgstr "Zpráva byla poslána!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Klient/Webnástroje"
+
 msgid "Webtools"
 msgstr "Webové nástroje"
 
-msgid "Customise error pages for your domain"
+#, fuzzy
+msgid "Customize error pages for your domain"
 msgstr "Upravit chybové stránky pro doménu"
 
 msgid "Backup and restore settings"
@@ -2771,6 +2783,9 @@ msgstr "Přístup k vaší poště přes web rozhraní"
 
 msgid "Access your files through the web interface"
 msgstr "Přístup k vaším souborům přes web rozhraní"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Správa chráněných zón, uživatelů a skupin"
@@ -2928,9 +2943,6 @@ msgstr "E-mailové a FTP účty"
 
 msgid "Add mail user"
 msgstr "Přidat uživatele pošty"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Souborový manažer"
@@ -3774,6 +3786,9 @@ msgstr "ispCP - Partner : Systém podpory: Zobrazit oznámení"
 
 msgid "Message was sent."
 msgstr "Zpráva byla poslána."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(obvykle pojmenované backup_YYYY_MM_DD.tar.bz2)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Limit domén"

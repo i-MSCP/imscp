@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -142,6 +142,9 @@ msgid "Male"
 msgstr "e-mail"
 
 msgid "Female"
+msgstr ""
+
+msgid "Unknown"
 msgstr ""
 
 msgid "Company"
@@ -1314,9 +1317,6 @@ msgstr ""
 msgid "Language was updated!"
 msgstr ""
 
-msgid "Unknown"
-msgstr ""
-
 msgid "uninstall"
 msgstr ""
 
@@ -2047,8 +2047,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr "Descarcati fisierel din acest director"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(de obicei denumit backup_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr ""
@@ -2458,6 +2458,13 @@ msgstr ""
 msgid "Manage SQL"
 msgstr ""
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Utilizatori de baza de date"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Utilizatori de baza de date"
 
@@ -2782,10 +2789,13 @@ msgstr ""
 msgid "Message was send!"
 msgstr ""
 
+msgid "ISPCP - Client/Webtools"
+msgstr ""
+
 msgid "Webtools"
 msgstr ""
 
-msgid "Customise error pages for your domain"
+msgid "Customize error pages for your domain"
 msgstr ""
 
 msgid "Backup and restore settings"
@@ -2796,6 +2806,9 @@ msgstr "Accesati mesajele electronice prin interfata web"
 
 msgid "Access your files through the web interface"
 msgstr "Accesati fisierele prin interfata web"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr ""
@@ -2950,9 +2963,6 @@ msgstr "Conturi Email si FTP"
 
 msgid "Add mail user"
 msgstr "Adauga user de mail"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Manager fisiere"
@@ -3742,6 +3752,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr ""
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(de obicei denumit backup_YYYY_MM_DD.tar.bz2)"
 
 #, fuzzy
 #~ msgid "Order in progress"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -146,6 +146,9 @@ msgstr "Email"
 #, fuzzy
 msgid "Female"
 msgstr "Webes levelezés"
+
+msgid "Unknown"
+msgstr "Ismeretlen"
 
 msgid "Company"
 msgstr "Cég"
@@ -1330,9 +1333,6 @@ msgstr "Új nyelv telepítve!"
 msgid "Language was updated!"
 msgstr "Egyedi hibalap frissítve!"
 
-msgid "Unknown"
-msgstr "Ismeretlen"
-
 msgid "uninstall"
 msgstr "eltávolít"
 
@@ -2066,8 +2066,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr "Töltsd le a könyvtárban található egyetlen fájlt!"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(rendszerint elnevezve: domain-backup-ÉÉÉÉ.HH.NN-ÓÓPPMM.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Mentés visszaállítása"
@@ -2482,6 +2482,13 @@ msgstr "ispCP - Kliens/SQL Kezelés"
 msgid "Manage SQL"
 msgstr "SQL kezelés"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Adatbázis felhasználók"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Adatbázis felhasználók"
 
@@ -2808,11 +2815,16 @@ msgstr "Az általad kért szolgáltatási csomag sikeresen eltávolítva!"
 msgid "Message was send!"
 msgstr "Üzenet elküldve!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Kliens/Webes Eszközök"
+
 msgid "Webtools"
 msgstr "Webes eszközök"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Egyedi hibalap frissítve!"
 
 msgid "Backup and restore settings"
 msgstr "Fájlok mentése és visszaállítása"
@@ -2822,6 +2834,9 @@ msgstr "Email elérése webes felületen keresztül"
 
 msgid "Access your files through the web interface"
 msgstr "Fájlok elérése webes felületen keresztül"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Védett területek, felhasználók és csoportok kezelése"
@@ -2979,9 +2994,6 @@ msgstr "Email és FTP hozzáférések"
 
 msgid "Add mail user"
 msgstr "Email felhasználó hozzáadása"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Fájlkezelõ"
@@ -3782,6 +3794,9 @@ msgstr "ispCP - Viszonteladó : Ügyfélszolgálati Rendszer: Bejelentések"
 
 msgid "Message was sent."
 msgstr "Üzenet elküldve."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(rendszerint elnevezve: domain-backup-ÉÉÉÉ.HH.NN-ÓÓPPMM.tar.bz2)"
 
 #~ msgid "Max domain count"
 #~ msgstr "Max domain szám"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-10-03 03:13+0100\n"
 "Last-Translator: Grégory Marigot <greg@proxyconcept.net>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
@@ -151,6 +151,9 @@ msgstr "Masculin"
 
 msgid "Female"
 msgstr "Féminin"
+
+msgid "Unknown"
+msgstr "Inconnu"
 
 msgid "Company"
 msgstr "Société"
@@ -1325,9 +1328,6 @@ msgstr "Nouvelle langue installée !"
 msgid "Language was updated!"
 msgstr "La langue a été mise à jour !"
 
-msgid "Unknown"
-msgstr "Inconnu"
-
 msgid "uninstall"
 msgstr "désinstaller"
 
@@ -2065,8 +2065,8 @@ msgstr "Basculer entre sauvegardes / répertoires"
 msgid "Download the files stored in this directory"
 msgstr "Téléchargez les fichiers stockés dans ce répertoire"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(habituellement nommé backup_AAAA_MM_JJ.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Restaurer la sauvegarde"
@@ -2482,6 +2482,13 @@ msgstr "ispCP - Client/Gestion SQL"
 msgid "Manage SQL"
 msgstr "Gestion des bases SQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Utilisateurs de la base de données"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
 msgid "Database users"
 msgstr "Utilisateurs de la base de données"
 
@@ -2811,10 +2818,15 @@ msgstr ""
 msgid "Message was send!"
 msgstr "Le message a été envoyé !"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Client/Outils Web"
+
 msgid "Webtools"
 msgstr "Outils Internet"
 
-msgid "Customise error pages for your domain"
+#, fuzzy
+msgid "Customize error pages for your domain"
 msgstr "Personnalisez les pages d'erreur pour votre domaine"
 
 msgid "Backup and restore settings"
@@ -2825,6 +2837,9 @@ msgstr "Accédez à vos emails à travers l'interface web"
 
 msgid "Access your files through the web interface"
 msgstr "Accédez à vos fichiers à travers l'interface web"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Gérez les zones réservées, utilisateurs et groupes"
@@ -2982,9 +2997,6 @@ msgstr "Comptes email et FTP"
 
 msgid "Add mail user"
 msgstr "Ajouter un utilisateur email"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Gestionnaire de fichiers"
@@ -3833,6 +3845,9 @@ msgstr "ispCP - Revendeur : Système de support : Voir les Tickets"
 
 msgid "Message was sent."
 msgstr "Le message a été envoyé."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(habituellement nommé backup_AAAA_MM_JJ.tar.bz2)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Nombre limite de domaines"

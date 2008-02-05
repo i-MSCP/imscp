@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -145,6 +145,9 @@ msgstr "S�hk�posti"
 #, fuzzy
 msgid "Female"
 msgstr "Ominaisuus"
+
+msgid "Unknown"
+msgstr "Tuntematon"
 
 msgid "Company"
 msgstr "Yritys"
@@ -1329,9 +1332,6 @@ msgstr "Uusi kieli asennettu!"
 msgid "Language was updated!"
 msgstr "Vaihtoehtoinen virhesivu p�ivitetty!"
 
-msgid "Unknown"
-msgstr "Tuntematon"
-
 msgid "uninstall"
 msgstr "poista"
 
@@ -2065,8 +2065,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr "Lataa t�m�n hakemiston ainoa tiedosto"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(nimetty yleens� backup_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Palauta varmuuskopio"
@@ -2479,6 +2479,13 @@ msgstr "ispCP - Asiakas / Hallitse tietokantaa"
 msgid "Manage SQL"
 msgstr "Hallitse tietokantoja"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Tietokantak�ytt�j�t"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Tietokantak�ytt�j�t"
 
@@ -2805,11 +2812,16 @@ msgstr "Pyynt�si p�ivitt�� hosting-paketti on poistettu onnistuneesti"
 msgid "Message was send!"
 msgstr "Viesti l�etetty!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "CHCS - Asiakas / Web-ty�kalut"
+
 msgid "Webtools"
 msgstr "Web-ty�kalut"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Vaihtoehtoinen virhesivu p�ivitetty!"
 
 msgid "Backup and restore settings"
 msgstr "Varmuuskopio- / palautusasetukset"
@@ -2819,6 +2831,9 @@ msgstr "Hallitse s�hk�postisi web-k�ytt�liittym�n l�pi"
 
 msgid "Access your files through the web interface"
 msgstr "Hallitse tiedostojasi web-k�ytt�liittym�n l�pi"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Hallitse suojattuja alueita, k�ytt�ji� ja ryhmi�"
@@ -2976,9 +2991,6 @@ msgstr "Email ja FTP-tunnukset"
 
 msgid "Add mail user"
 msgstr "Lis�� s�hk�postik�ytt�j�"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Tiedostonhallinta"
@@ -3776,6 +3788,9 @@ msgstr "ispCP - J�lleenmyyj� : Tukij�rjestelm�: Lue kysymyksi�"
 
 msgid "Message was sent."
 msgstr "Viesti on l�hetetty."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(nimetty yleens� backup_YYYY_MM_DD.tar.bz2)"
 
 #~ msgid "Max domain count"
 #~ msgstr "Max domainien m��r�"

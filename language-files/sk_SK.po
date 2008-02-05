@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -155,6 +155,9 @@ msgstr "E-mail"
 #, fuzzy
 msgid "Female"
 msgstr "Webmail"
+
+msgid "Unknown"
+msgstr "Neznámy"
 
 msgid "Company"
 msgstr "Spoločnosť"
@@ -1360,9 +1363,6 @@ msgstr "Nový jazyk nainštalovaný!"
 msgid "Language was updated!"
 msgstr "Vlastné chybové stránky boli aktulizované!"
 
-msgid "Unknown"
-msgstr "Neznámy"
-
 msgid "uninstall"
 msgstr "odinštalovať"
 
@@ -2107,8 +2107,8 @@ msgstr "Zmeniť do adresára so zálohami"
 msgid "Download the files stored in this directory"
 msgstr "Stiahnuť súbory uložené v adresári"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(zvyčajne pomenované ako backuo_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Obnoviť zálohu"
@@ -2524,6 +2524,13 @@ msgstr "ispCP - Klient/Spravovať SQL"
 msgid "Manage SQL"
 msgstr "Spravovať SQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Užívateľia databázy"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
 msgid "Database users"
 msgstr "Užívateľia databázy"
 
@@ -2859,10 +2866,15 @@ msgstr "Váša požiadavka na update hostingového plánu bola odstránená úsp
 msgid "Message was send!"
 msgstr "Správa bola odoslaná!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Klient/Web nástroje"
+
 msgid "Webtools"
 msgstr "Web nástroje"
 
-msgid "Customise error pages for your domain"
+#, fuzzy
+msgid "Customize error pages for your domain"
 msgstr "Zmeňte chybové stránky pre Vašu doménu"
 
 msgid "Backup and restore settings"
@@ -2873,6 +2885,9 @@ msgstr "Pristupujte na Váš e-mail cez webové rozhranie"
 
 msgid "Access your files through the web interface"
 msgstr "Pristupujte na Váš súbory cez webové rozhranie"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Spravovať chránené oblasti, užívateľov a skupiny"
@@ -3033,9 +3048,6 @@ msgstr "E-mail a FTP kontá"
 
 msgid "Add mail user"
 msgstr "Pridať e-mailové konto"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Filemanager"
@@ -3859,6 +3871,9 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(zvyčajne pomenované ako backuo_YYYY_MM_DD.tar.bz2)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Limit domén"

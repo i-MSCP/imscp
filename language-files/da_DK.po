@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:02-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -145,6 +145,9 @@ msgstr "Aktiver"
 #, fuzzy
 msgid "Female"
 msgstr "Mulighed"
+
+msgid "Unknown"
+msgstr "Ukendt"
 
 msgid "Company"
 msgstr "Firma"
@@ -1329,9 +1332,6 @@ msgstr "Nyt sprog installeret!"
 msgid "Language was updated!"
 msgstr "Fejl sider blev opdateret!"
 
-msgid "Unknown"
-msgstr "Ukendt"
-
 msgid "uninstall"
 msgstr "fjern"
 
@@ -2065,8 +2065,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr "Download den eneste fil i denne mappe"
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(normalt kaldet: domæne.tld-backup-ÅÅÅÅ.MM.DD-TTMMSS.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Gendan backup"
@@ -2477,6 +2477,13 @@ msgstr "ispCP - Virtual Hosting Control System"
 msgid "Manage SQL"
 msgstr "Håndtér SQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Databasebrugere"
+
+msgid "PhpMyAdmin"
+msgstr "PHPMyAdmin"
+
 msgid "Database users"
 msgstr "Databasebrugere"
 
@@ -2805,11 +2812,16 @@ msgstr ""
 msgid "Message was send!"
 msgstr "Meddelsen blev sendt!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Virtual Hosting Control System"
+
 msgid "Webtools"
 msgstr "Webværktøjer"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Fejl sider blev opdateret!"
 
 msgid "Backup and restore settings"
 msgstr "Backup og reetablerings indstillinger"
@@ -2819,6 +2831,9 @@ msgstr "Adgang til email via browser"
 
 msgid "Access your files through the web interface"
 msgstr "Adgang til dine filer via browser"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Håndtér beskyttede områder, brugere og grupper"
@@ -2976,9 +2991,6 @@ msgstr "Email og FTP konti"
 
 msgid "Add mail user"
 msgstr "Tilføj email adresse"
-
-msgid "PhpMyAdmin"
-msgstr "PHPMyAdmin"
 
 msgid "Filemanager"
 msgstr "Filmanager"
@@ -3775,6 +3787,9 @@ msgstr "ispCP - Virtual Hosting Control System"
 
 msgid "Message was sent."
 msgstr "Meddelsen blev sendt!"
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(normalt kaldet: domæne.tld-backup-ÅÅÅÅ.MM.DD-TTMMSS.tar.bz2)"
 
 #~ msgid "Max domain count"
 #~ msgstr "Max domæneantal"

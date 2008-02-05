@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -142,6 +142,9 @@ msgid "Male"
 msgstr "e-mail"
 
 msgid "Female"
+msgstr ""
+
+msgid "Unknown"
 msgstr ""
 
 msgid "Company"
@@ -1303,9 +1306,6 @@ msgstr ""
 msgid "Language was updated!"
 msgstr ""
 
-msgid "Unknown"
-msgstr ""
-
 msgid "uninstall"
 msgstr ""
 
@@ -2033,7 +2033,7 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
 msgstr ""
 
 msgid "Restore backup"
@@ -2438,6 +2438,12 @@ msgstr ""
 msgid "Manage SQL"
 msgstr ""
 
+msgid "Database Name and Users"
+msgstr ""
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr ""
 
@@ -2756,10 +2762,13 @@ msgstr ""
 msgid "Message was send!"
 msgstr ""
 
+msgid "ISPCP - Client/Webtools"
+msgstr ""
+
 msgid "Webtools"
 msgstr ""
 
-msgid "Customise error pages for your domain"
+msgid "Customize error pages for your domain"
 msgstr ""
 
 msgid "Backup and restore settings"
@@ -2769,6 +2778,9 @@ msgid "Access your mail through the web interface"
 msgstr ""
 
 msgid "Access your files through the web interface"
+msgstr ""
+
+msgid "Access your Awstats statistics"
 msgstr ""
 
 msgid "Manage protected areas, users and groups"
@@ -2924,9 +2936,6 @@ msgstr ""
 
 msgid "Add mail user"
 msgstr "เพิ่มผู้ใช้อีเมล์"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr ""

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: VOLKAN KIRIK <volkirik@yahoo.com.tr>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -147,6 +147,9 @@ msgstr "Erkek"
 
 msgid "Female"
 msgstr "Bayan"
+
+msgid "Unknown"
+msgstr ""
 
 msgid "Company"
 msgstr "Şirket"
@@ -1299,9 +1302,6 @@ msgstr ""
 msgid "Language was updated!"
 msgstr "Hosting planı güncellendi!"
 
-msgid "Unknown"
-msgstr ""
-
 msgid "uninstall"
 msgstr ""
 
@@ -2032,8 +2032,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(örn. yedek_YIL_AY_GUN.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr ""
@@ -2440,6 +2440,12 @@ msgstr ""
 msgid "Manage SQL"
 msgstr ""
 
+msgid "Database Name and Users"
+msgstr ""
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr ""
 
@@ -2764,10 +2770,13 @@ msgstr "Hosting paketi güncellemesi isteğiniz silindi"
 msgid "Message was send!"
 msgstr "Mesaj gönderildi!"
 
+msgid "ISPCP - Client/Webtools"
+msgstr ""
+
 msgid "Webtools"
 msgstr "Web araçları"
 
-msgid "Customise error pages for your domain"
+msgid "Customize error pages for your domain"
 msgstr ""
 
 msgid "Backup and restore settings"
@@ -2778,6 +2787,9 @@ msgstr "Web arayüzünden mail hesabınıza erişin"
 
 msgid "Access your files through the web interface"
 msgstr "Web arayüzünden dosyalarınıza erişin"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr ""
@@ -2933,9 +2945,6 @@ msgstr "Email ve FTP hesapları"
 
 msgid "Add mail user"
 msgstr "Mail kullanıcısı ekle"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Dosya yöneticisi"
@@ -3720,6 +3729,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Mesaj gönderildi."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(örn. yedek_YIL_AY_GUN.tar.bz2)"
 
 #, fuzzy
 #~ msgid "Order in progress"

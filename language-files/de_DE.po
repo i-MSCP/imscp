@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-11-20 09:36+0100\n"
 "Last-Translator: Harald Bäs-Fischlmair <hbaes@chiemgaudata.de>\n"
 "Language-Team: German (Germany) <de@li.org>\n"
@@ -144,6 +144,9 @@ msgstr "männlich"
 
 msgid "Female"
 msgstr "weiblich"
+
+msgid "Unknown"
+msgstr "Unbekannt"
 
 msgid "Company"
 msgstr "Firma"
@@ -1317,9 +1320,6 @@ msgstr "Neue Sprache wurde installiert!"
 msgid "Language was updated!"
 msgstr "Sprache wurde aktualisiert!"
 
-msgid "Unknown"
-msgstr "Unbekannt"
-
 msgid "uninstall"
 msgstr "Deinstallieren"
 
@@ -2057,11 +2057,8 @@ msgid "Download the files stored in this directory"
 msgstr ""
 "Laden Sie die Dateien herunter, die sich in diesem Verzeichnis befinden."
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.bz2)"
-
-msgid "(usually named backup_YYYY_MM_DD.tar.gz)"
-msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.gz)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Backup einspielen"
@@ -2474,6 +2471,13 @@ msgstr "ispCP - Kunde/Datenbankverwaltung"
 msgid "Manage SQL"
 msgstr "Datenbankverwaltung"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Datenbankbenutzer"
+
+msgid "PhpMyAdmin"
+msgstr "phpMyAdmin"
+
 msgid "Database users"
 msgstr "Datenbankbenutzer"
 
@@ -2806,10 +2810,15 @@ msgstr "Ihr Tarifwechselwunsch wurde erfolgreich aus dem System gelöscht."
 msgid "Message was send!"
 msgstr "Nachricht wurde versendet!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Kunde/Webtools"
+
 msgid "Webtools"
 msgstr "Webtools"
 
-msgid "Customise error pages for your domain"
+#, fuzzy
+msgid "Customize error pages for your domain"
 msgstr "Passen Sie die Fehlerseiten für Ihre Domain an"
 
 msgid "Backup and restore settings"
@@ -2820,6 +2829,9 @@ msgstr "E-Mails online abrufen, versenden und verwalten"
 
 msgid "Access your files through the web interface"
 msgstr "Verwalten Sie Ihre Dateien mit dem webbasierten Dateimanager"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Geschützte Verzeichnisse, Benutzer und Gruppen verwalten"
@@ -2978,9 +2990,6 @@ msgstr "E-Mail-Konten und FTP-Zugänge"
 
 msgid "Add mail user"
 msgstr "E-Mail-Konto anlegen"
-
-msgid "PhpMyAdmin"
-msgstr "phpMyAdmin"
 
 msgid "Filemanager"
 msgstr "Dateimanager"
@@ -3862,6 +3871,12 @@ msgstr "ispCP - Reseller: Supportsystem: Tickets anzeigen"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.bz2)"
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.gz)"
+#~ msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.gz)"
 
 #~ msgid "Domains limit"
 #~ msgstr "Anzahl Domains"

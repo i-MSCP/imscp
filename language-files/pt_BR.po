@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -146,6 +146,9 @@ msgstr "E-mail"
 #, fuzzy
 msgid "Female"
 msgstr "WebMail"
+
+msgid "Unknown"
+msgstr "Desconhecido"
 
 msgid "Company"
 msgstr "Empresa"
@@ -1331,9 +1334,6 @@ msgstr "Novo idioma incluído!"
 msgid "Language was updated!"
 msgstr "Configuração das páginas de erro atualizadas"
 
-msgid "Unknown"
-msgstr "Desconhecido"
-
 msgid "uninstall"
 msgstr "desinstalar"
 
@@ -2072,8 +2072,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(nome do backup?  backup_AAA_MM_DD.tar)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "Restaurar backup"
@@ -2482,6 +2482,13 @@ msgstr "ispCP - Cliente/Gerenciar SQL"
 msgid "Manage SQL"
 msgstr "Gerenciar SQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Usuários SQL"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Usuários SQL"
 
@@ -2810,11 +2817,16 @@ msgstr ""
 msgid "Message was send!"
 msgstr "Mensagem enviada!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Cliente/Ferramentas Web"
+
 msgid "Webtools"
 msgstr "Ferramentas"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Configuração das páginas de erro atualizadas"
 
 msgid "Backup and restore settings"
 msgstr "Opções de backup"
@@ -2824,6 +2836,9 @@ msgstr "Acesse seus e-mails diretamente do browser"
 
 msgid "Access your files through the web interface"
 msgstr "Acesse seus arquivos diretamente do browser"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Gerenciar áreas protegidas, usuários e grupos"
@@ -2981,9 +2996,6 @@ msgstr "Contas de e-mail e FTP"
 
 msgid "Add mail user"
 msgstr "Adicionar usuário de e-mail"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Gerenciador de arquivos"
@@ -3778,6 +3790,9 @@ msgstr "ispCP - Representante : Sistema de Suporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "Mensagem foi enviada."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(nome do backup?  backup_AAA_MM_DD.tar)"
 
 #~ msgid "Max domain count"
 #~ msgstr "Número máximo de domínios"

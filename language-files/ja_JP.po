@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -145,6 +145,9 @@ msgstr "電子メール"
 #, fuzzy
 msgid "Female"
 msgstr "Webメール"
+
+msgid "Unknown"
+msgstr "不明"
 
 msgid "Company"
 msgstr "会社"
@@ -1329,9 +1332,6 @@ msgstr "新しい言語ファイルが追加されました"
 msgid "Language was updated!"
 msgstr "カスタムエラーページが更新されました!"
 
-msgid "Unknown"
-msgstr "不明"
-
 msgid "uninstall"
 msgstr "削除"
 
@@ -2064,8 +2064,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(backup_YYYY_MM_DD.tar.bz2の形で保存されます)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr "バックアップからリストア"
@@ -2473,6 +2473,13 @@ msgstr "ispCP - クライアント/データベース管理"
 msgid "Manage SQL"
 msgstr "SQL管理"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "データベースユーザー"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "データベースユーザー"
 
@@ -2798,11 +2805,16 @@ msgstr "ホスティングパック更新のリクエストは削除されまし
 msgid "Message was send!"
 msgstr "メッセージは送信されました"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - クライアント/Webツール"
+
 msgid "Webtools"
 msgstr "Webツール"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "カスタムエラーページが更新されました!"
 
 msgid "Backup and restore settings"
 msgstr "バックアップと復元の設定"
@@ -2812,6 +2824,9 @@ msgstr "Webメールにアクセスします"
 
 msgid "Access your files through the web interface"
 msgstr "Webインターフェースで、ファイルへアクセスします"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "アクセス制限を行う領域、ユーザー、グループの設定を行います"
@@ -2969,9 +2984,6 @@ msgstr "メールとFTPのアカウント"
 
 msgid "Add mail user"
 msgstr "メールユーザー追加"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "ファイルマネージャー"
@@ -3762,6 +3774,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "送信済み"
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(backup_YYYY_MM_DD.tar.bz2の形で保存されます)"
 
 #~ msgid "Max domain count"
 #~ msgstr "最大ドメイン数"

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -145,6 +145,9 @@ msgstr "Пошта"
 #, fuzzy
 msgid "Female"
 msgstr "Функція"
+
+msgid "Unknown"
+msgstr "Невідомо"
 
 msgid "Company"
 msgstr "Компанія"
@@ -1331,9 +1334,6 @@ msgstr "Нова мова встановлена!"
 msgid "Language was updated!"
 msgstr "Сторінка помилки оновлена!"
 
-msgid "Unknown"
-msgstr "Невідомо"
-
 msgid "uninstall"
 msgstr "видалити"
 
@@ -2068,7 +2068,7 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
 msgstr ""
 
 msgid "Restore backup"
@@ -2486,6 +2486,13 @@ msgstr "ispCP - Клієнт/Керування SQL"
 msgid "Manage SQL"
 msgstr "Керування SQL"
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Користувачі баз даних"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Користувачі баз даних"
 
@@ -2812,11 +2819,16 @@ msgstr "Ваш запит на зміну хостінг-плану успішн
 msgid "Message was send!"
 msgstr "Повідомлення відправлене!"
 
+#, fuzzy
+msgid "ISPCP - Client/Webtools"
+msgstr "ispCP - Клієнт/Web-інструменти"
+
 msgid "Webtools"
 msgstr "Web-інструменти"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Сторінка помилки оновлена!"
 
 msgid "Backup and restore settings"
 msgstr "Налаштування резервного копіювання та відновлення"
@@ -2826,6 +2838,9 @@ msgstr "Доступ до Вашої пошти через веб-інтерфе
 
 msgid "Access your files through the web interface"
 msgstr "Доступ до Ваших файлів через веб-інтерфейс"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr "Керування захищеними зонами, користувачами й групами"
@@ -2983,9 +2998,6 @@ msgstr "Користувачі E-mail і FTP"
 
 msgid "Add mail user"
 msgstr "Додати поштову скриньку"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Менеджер файлів"

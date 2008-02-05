@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-02 21:04-0600\n"
+"POT-Creation-Date: 2008-02-05 23:01+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -145,6 +145,9 @@ msgstr "e-mail"
 #, fuzzy
 msgid "Female"
 msgstr "Вебмыло"
+
+msgid "Unknown"
+msgstr "Неизвестный"
 
 msgid "Company"
 msgstr "Компания"
@@ -1320,9 +1323,6 @@ msgstr ""
 msgid "Language was updated!"
 msgstr "Страницы ошибок обновлены!"
 
-msgid "Unknown"
-msgstr "Неизвестный"
-
 msgid "uninstall"
 msgstr "удалить"
 
@@ -2055,8 +2055,8 @@ msgstr ""
 msgid "Download the files stored in this directory"
 msgstr ""
 
-msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-msgstr "(Обычное имя архива: backup_YYYY_MM_DD.tar.bz2)"
+msgid "(usually named "
+msgstr ""
 
 msgid "Restore backup"
 msgstr ""
@@ -2468,6 +2468,13 @@ msgstr ""
 msgid "Manage SQL"
 msgstr ""
 
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Пользователи базы данных"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
 msgid "Database users"
 msgstr "Пользователи базы данных"
 
@@ -2792,11 +2799,15 @@ msgstr "Ваш запрос на пакет хостинг-услуг успеш
 msgid "Message was send!"
 msgstr "Сообщение отослано!"
 
+msgid "ISPCP - Client/Webtools"
+msgstr ""
+
 msgid "Webtools"
 msgstr "Веб-инструменты"
 
-msgid "Customise error pages for your domain"
-msgstr ""
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Страницы ошибок обновлены!"
 
 msgid "Backup and restore settings"
 msgstr "Настройки восстановления"
@@ -2806,6 +2817,9 @@ msgstr "Доступ к вашей почте через веб-интерфей
 
 msgid "Access your files through the web interface"
 msgstr "Доступ к вашим файлам через веб-интерфейс"
+
+msgid "Access your Awstats statistics"
+msgstr ""
 
 msgid "Manage protected areas, users and groups"
 msgstr ""
@@ -2962,9 +2976,6 @@ msgstr "Почтовые и FTP эккоунты"
 
 msgid "Add mail user"
 msgstr "Добавить почтовый ящик"
-
-msgid "PhpMyAdmin"
-msgstr ""
 
 msgid "Filemanager"
 msgstr "Менеджер файлов"
@@ -3757,6 +3768,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "Сообщение отослано."
+
+#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
+#~ msgstr "(Обычное имя архива: backup_YYYY_MM_DD.tar.bz2)"
 
 #, fuzzy
 #~ msgid "Order in progress"
