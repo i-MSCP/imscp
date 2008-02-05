@@ -2072,7 +2072,7 @@ msgid "Download the files stored in this directory"
 msgstr "Download dell'unico file in questa directory"
 
 msgid "(usually named "
-msgstr ""
+msgstr "(di solito chiamato "
 
 msgid "Restore backup"
 msgstr "Ripristina il backup"

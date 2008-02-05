@@ -2058,7 +2058,7 @@ msgstr ""
 "Laden Sie die Dateien herunter, die sich in diesem Verzeichnis befinden."
 
 msgid "(usually named "
-msgstr ""
+msgstr "(Dateiname: "
 
 msgid "Restore backup"
 msgstr "Backup einspielen"
@@ -2831,7 +2831,7 @@ msgid "Access your files through the web interface"
 msgstr "Verwalten Sie Ihre Dateien mit dem webbasierten Dateimanager"
 
 msgid "Access your Awstats statistics"
-msgstr ""
+msgstr "AWStats Statistik öffnen"
 
 msgid "Manage protected areas, users and groups"
 msgstr "Geschützte Verzeichnisse, Benutzer und Gruppen verwalten"

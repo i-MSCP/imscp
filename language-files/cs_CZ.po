@@ -2026,7 +2026,7 @@ msgid "Download the files stored in this directory"
 msgstr "Stáhnout soubory uložené v tomto adresáři"
 
 msgid "(usually named "
-msgstr ""
+msgstr "(obvykle pojmenované "
 
 msgid "Restore backup"
 msgstr "Obnovit ze zálohy"

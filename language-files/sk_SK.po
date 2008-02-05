@@ -1,7 +1,7 @@
 # translation of sk_SK.po to Slovak language
 # Copyright (C) YEAR ispCP Team
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Tomas Srnka <tomas.srnka@linuxsro.sk>, 2007.
 msgid ""
 msgstr ""
@@ -2108,7 +2108,7 @@ msgid "Download the files stored in this directory"
 msgstr "Stiahnuť súbory uložené v adresári"
 
 msgid "(usually named "
-msgstr ""
+msgstr "(zvyčajne pomenované ako "
 
 msgid "Restore backup"
 msgstr "Obnoviť zálohu"

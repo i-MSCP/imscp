@@ -2033,7 +2033,7 @@ msgid "Download the files stored in this directory"
 msgstr ""
 
 msgid "(usually named "
-msgstr ""
+msgstr "(örn. yedek "
 
 msgid "Restore backup"
 msgstr ""

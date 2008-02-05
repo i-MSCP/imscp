@@ -2048,7 +2048,7 @@ msgid "Download the files stored in this directory"
 msgstr "Descarcati fisierel din acest director"
 
 msgid "(usually named "
-msgstr ""
+msgstr "(de obicei denumit "
 
 msgid "Restore backup"
 msgstr ""

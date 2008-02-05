@@ -2067,7 +2067,7 @@ msgid "Download the files stored in this directory"
 msgstr "Töltsd le a könyvtárban található egyetlen fájlt!"
 
 msgid "(usually named "
-msgstr ""
+msgstr "(rendszerint elnevezve: "
 
 msgid "Restore backup"
 msgstr "Mentés visszaállítása"
