@@ -4,7 +4,7 @@ ifndef INST_PREF
         INST_PREF=/tmp/ispcp-1.0.0
 endif
 
-HOST_OS=redhat
+HOST_OS=centos
 
 ROOT_CONF=$(INST_PREF)/etc
 
