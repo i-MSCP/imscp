@@ -1,6 +1,8 @@
 <VirtualHost {DMN_IP}:80>
 
-    SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    <IfModule suexec_module>
+           SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
+    </IfModule>
 
     ServerAdmin     webmaster@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
@@ -21,8 +23,6 @@
     ErrorDocument 404 /errors/404.html
     ErrorDocument 500 /errors/500.html
     ErrorDocument 503 /errors/503.html
-
-    Redirect /ispcp http://{BASE_SERVER_VHOST}
 
     <IfModule mod_cband.c>
         CBandUser {DMN_GRP}
@@ -45,5 +45,7 @@
         Order allow,deny
         Allow from all
     </Directory>
+
+    Include {CUSTOM_SITES_CONFIG_DIR}/{DMN_NAME}.conf
 
 </VirtualHost>

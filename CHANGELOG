@@ -1,14 +1,21 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-07 Benedikt Heintel
+	- DISTS:
+		CentOS / Slackware:
+		* Fixed #760: ispcp_daemon not working under Slackware 12.0 or CentOS 5
+		* Fixed #900: /tmp/ispcp-1.0.0/etc/ispcp empty after make install on CentOS 5
+		* Added: Slackware documentation
+	- DOCU:
+		* Updated Debian, CentOS, Slackware
+
 2008-02-07 Christian Hernmarck
 	- GUI:
 		* Added: use utf8 with the database, including config var to switch off
-
-2008-02-05 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.0 RC3
 
-2008-02-05 Benedikt Heintel
+2008-02-06 Benedikt Heintel
 	- GUI:
 		* Fixed: Graphical issue on reseller/order.php
 	- LANGUAGES:

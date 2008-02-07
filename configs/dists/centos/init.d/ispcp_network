@@ -1,9 +1,5 @@
 #!/bin/sh
-# chkconfig: - 85 15
-# description: Starts and stops the ISPCP  networking
-#
-# pidfile: /var/run/ispcp.pid
-# config:  /etc/ispcp/ispcp.conf
+
 # ispCP ω (OMEGA) a Virtual Hosting Control System
 # Copyright (c) 2007 by ispCP
 # http://www.isp-control.net

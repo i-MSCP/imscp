@@ -16,7 +16,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version:	1.0.0
+ispCP ω Version:	1.0.0 RC4
 INSTALL Script:		2.0
 Maintainer:			Benedikt Heintel
 Homepage:			http://www.isp-contol.net
@@ -56,10 +56,10 @@ Make sure you are logged in as root.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar xjvf ispcp1.0.0-omega.tar.bz2
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp1.0.0
+	# cd ./ispcp-1.0.0
 
 3. Install the required modules
    first update your system:
@@ -91,18 +91,7 @@ Make sure you are logged in as root.
 	(when you get to the proftpd screen, select 'standalone')
 	(when you get to the rootkithunter screen, select two time 'yes')
 
-4. Now there are two ways of install ispCP ω
-
-a) via install script
----------------------
-4a. Start the script and follow the install instructions (currently not available):
-	# ./ispcp-setup.sh
-
-After that go to step 11.
-
-b) manually
------------
-4b. (optional) Check the ispcp.conf and adapt it to your requirements.
+4. (optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
@@ -140,15 +129,14 @@ b) manually
 ================================================================================
 5) Update
 ---------
-
-There are two ways of update ispCP ω
+Make sure you are logged in as root.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar xjvf ispcp1.0.0-omega.tar.bz2
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp1.0.0
+	# cd ./ispcp-1.0.0
 
 3. Install the required modules
    first update your system:
@@ -180,16 +168,7 @@ There are two ways of update ispCP ω
 	(when you get to the proftpd screen, select 'standalone')
 	(when you get to the rootkithunter screen, select two time 'yes')
 
-a) via install script
----------------------
-4a. Start the script and follow the install instructions (currently not available):
-	# ./ispcp-setup.sh
-
-After that go to step 12.
-
-b) manually
------------
-4b. You have to set up some configuration variables for your linux distribution.
+4.  You have to set up some configuration variables for your linux distribution.
 	ispCP ω is preconfigurated for Debian 4.0 Etch.
 	If you're using another distribution please check, if config files exist in
 	./configs/dists and use/change them.
