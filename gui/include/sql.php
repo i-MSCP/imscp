@@ -37,6 +37,11 @@ $sql = &ADONewConnection($cfg['DB_TYPE']);
 @$sql -> Connect($cfg['DB_HOST'], $cfg['DB_USER'], $cfg['DB_PASS'], $cfg['DB_NAME']) OR
 	system_message('ERROR: Unable to connect to SQL server !<br>SQL returned: '.$sql -> ErrorMsg() );
 
+/* switch optionally to utf8 based communication with the database */
+if (isset($cfg['DATABASE_UTF8']) && $cfg['DATABASE_UTF8'] == 'yes') {
+ @$sql->Execute("SET NAMES 'utf8'");
+}
+
 /* No longer needed */
 unset($cfg['DB_USER']);
 

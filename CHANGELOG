@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-07 Christian Hernmarck
+	- GUI:
+		* Added: use utf8 with the database, including config var to switch off
+
 2008-02-05 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.0 RC3
 
