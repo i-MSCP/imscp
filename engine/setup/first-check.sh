@@ -12,4 +12,3 @@ if [ "$cnf_check" != "" ]; then
  exit;
 fi
 echo "Everything fine until here"
-

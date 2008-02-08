@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-08 Benedikt Heintel
+	- SETUP:
+		* Fixed: serveral errors on Upgrade process
+
 2008-02-07 Benedikt Heintel
 	- DISTS:
 		CentOS / Slackware:

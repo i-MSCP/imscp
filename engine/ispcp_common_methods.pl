@@ -1841,10 +1841,18 @@ sub setup_main_vars {
 }
 
 sub get_conf {
-
     push_el(\@main::el, 'get_conf()', 'Starting...');
 
-    my ($rs, $fline) = get_file($main::cfg_file);
+	my $file_name;
+
+	if ( defined($_[0]) ) {
+		$file_name = $_[0];
+	}
+	else {
+		$file_name = $main::cfg_file;
+	}
+
+    my ($rs, $fline) = get_file($file_name);
 
     return -1 if ($rs != 0);
 

@@ -2075,7 +2075,7 @@ sub dmn_add_httpd_file_data {
 		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
 		return $rs if ($rs != 0);
 
-	        my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+	    my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
 		my %tag_hash = (
 						'{DOMAIN_NAME}' => $decoded_dmn_name,
 						'{BASE_SERVER_VHOST}' => $vhost
@@ -2304,32 +2304,32 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 	}
 
-        #
-        # PHP4 and PHP5 Directory for usual user
-        #
+    #
+    # PHP4 and PHP5 Directory for usual user
+    #
 
-        if (! -d "$starter_dir/$dmn_name/php4") {
+    if (! -d "$starter_dir/$dmn_name/php4") {
 
-            $rs = make_dir(
-                                            "$starter_dir/$dmn_name/php4",
-                                            $sys_user,
-                                            $sys_group,
-                                            0750
-                                            );
+        $rs = make_dir(
+                                        "$starter_dir/$dmn_name/php4",
+                                        $sys_user,
+                                        $sys_group,
+                                        0750
+                                        );
 
-            return $rs if ($rs != 0);
-        }
+        return $rs if ($rs != 0);
+    }
 
-        if (! -d "$starter_dir/$dmn_name/php5") {
+    if (! -d "$starter_dir/$dmn_name/php5") {
 
-            $rs = make_dir(
-                                            "$starter_dir/$dmn_name/php5",
-                                            $sys_user,
-                                            $sys_group,
-                                            0750
-                                            );
+        $rs = make_dir(
+                                        "$starter_dir/$dmn_name/php5",
+                                        $sys_user,
+                                        $sys_group,
+                                        0750
+                                        );
 
-            return $rs if ($rs != 0);
+        return $rs if ($rs != 0);
 	}
 
     #
