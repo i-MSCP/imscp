@@ -105,7 +105,15 @@ function clean_html($text) {
 
 }
 
-function clean_input($input, $htmlencode = true) {
+/**
+ *  @function		clean_input
+ *  @description
+ *
+ * 	@param		String		$input		input data (eg. post-var) to be cleaned
+ * 	@param		boolean		$htmlencode	should return value be html encoded (& -> &amp;)
+ *  @return		String				{|} trimmed, stripslashed, ev htmlencoded input string
+ */
+function clean_input($input, $htmlencode = false) {
 
     if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
 

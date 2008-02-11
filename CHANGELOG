@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-11 Christian Hernmarck
+	- ENGINE:
+		* Added: use utf8 with the database depending on the config variable,
+		* Added: charset & collation utf8 for ispcp database creation in database.sql
+	- GUI:
+		* Fixed: small error in client/add_mail_acc.tpl: tooltip on help symbol
+		* Fixed: function "clean_input" now don't htmlencode by default
+
 2008-02-08 Benedikt Heintel
 	- SETUP:
 		* Fixed: serveral errors on Upgrade process

@@ -1,4 +1,4 @@
-create database {DATABASE_NAME};
+create database {DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 use {DATABASE_NAME};
 

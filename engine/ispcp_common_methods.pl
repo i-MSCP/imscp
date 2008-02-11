@@ -265,6 +265,8 @@ sub doSQL {
 
             return (-1, '');
 
+        } elsif ($main::cfg{'DATABASE_UTF8'} eq 'yes' ) { # DB: use always UTF8
+            $qr = $main::db -> do("SET NAMES 'utf8';");
         }
     }
 
@@ -328,6 +330,8 @@ sub doHashSQL {
 
             return (-1, '');
 
+        } elsif ($main::cfg{'DATABASE_UTF8'} eq 'yes' ) { # DB: use always UTF8
+            $qr = $main::db -> do("SET NAMES 'utf8';");
         }
     }
 
