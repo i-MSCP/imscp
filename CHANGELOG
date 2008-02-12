@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-12 Christian Hernmarck
+	- DISTS:
+		openSuSE10 (10.3):
+		* improved package list (smaller), repositories - with howto
+		* corrected the config & Makefile to for openSuSE 10.3 - should also fit to 10.2
+
 2008-02-11 Christian Hernmarck
 	- ENGINE:
 		* Added: use utf8 with the database depending on the config variable,

@@ -40,7 +40,7 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 NAME=ispcp_daemon
-DAEMON=/var/www/ispcp/daemon/$NAME
+DAEMON=/srv/www/ispcp/daemon/$NAME
 PID=/var/run/$NAME.pid
 DESC="ispCP GUI-Backend communication Daemon"
 LOGDIR=/var/log/ispcp

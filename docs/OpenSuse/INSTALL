@@ -32,12 +32,18 @@ Penitum III or K6-4 with 500 MHz
 Debian (or even any other *NIX-Distribution)
 
 Add the following repositories via Yast:
-
 http://download.opensuse.org/repositories/Apache:/Modules/openSUSE_10.3/
+http://download.opensuse.org/repositories/home:/netmax/openSUSE_10.3/
+http://download.opensuse.org/repositories/server:/ftp/openSUSE_10.3/
+http://download.opensuse.org/repositories/network:/utilities/openSUSE_10.3/
 
-http://download.opensuse.org/repositories/home:/netmax/openSUSE_10.3
+or like this in the shell:
+zypper ar http://download.opensuse.org/repositories/home:/netmax/openSUSE_10.3/ repo-netmax
+zypper ar http://download.opensuse.org/repositories/server:/ftp/openSUSE_10.3/ repo-ftp
+zypper ar http://download.opensuse.org/repositories/network:/utilities/openSUSE_10.3/ repo-awstats
+zypper ar http://download.opensuse.org/repositories/Apache:/Modules/openSUSE_10.3/ repo-apache
 
-http://download.opensuse.org/repositories/server:/ftp/openSUSE_10.3
+While importing the packages from theese repositories the first time you have to trust theese sites.
 
 All OpenSuse 10.3 required packages are listed in:
 
