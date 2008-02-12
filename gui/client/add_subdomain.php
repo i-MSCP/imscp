@@ -3,9 +3,9 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -108,6 +108,14 @@ SQL_QUERY;
 	$domain_name = $sub_name . "." . $dmn_name;
 
 	$rs_domain = exec_query($sql, $query_domain, array($domain_name));
+
+	# Prohibit www. mail. nsX. imap. pop. pop3. relay. smtp. ftp. pma. webmail.
+	if ($sub_name == "www" || $sub_name == "mail" || preg_match('/^ns[0-9]{1,3}$/i', $sub_name) ||
+		$sub_name == "imap" || $sub_name == "pop" || $sub_name == "pop3" ||
+		$sub_name == "relay" || $sub_name == "smtp" || $sub_name == "ftp" ||
+		$sub_name == "pma" || $sub_name == "webmail") {
+		return true;
+	}
 
 	if ($rs_subdomain->fields['cnt'] == 0 && $rs_domain->fields['cnt'] == 0)
 		return false;
@@ -247,7 +255,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		}
 
 		if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
-			set_page_message(tr('Subdomain already exists!'));
+			set_page_message(tr('Subdomain already exists or is not allowed!'));
 		} else if (!chk_subdname($sub_name . "." . $dmn_name)) {
 			set_page_message(tr('Wrong subdomain syntax!'));
 		} else if (subdmn_mnt_pt_exists($sql, $user_id, $domain_id, $sub_name, array_decode_idna($sub_mnt_pt, true))) {

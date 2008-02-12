@@ -117,6 +117,7 @@ sub welcome_note {
 \t(1) VHCS 2.4.7 or VHCS 2.4.7.1
 \t(2) VHCS 2.4.8 RC1
 \t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)
+\t(4) ispCP OMEAG 1.0.0 RC3
 \t(0) abort
 MSG
 
@@ -126,7 +127,7 @@ MSG
 	$rdata = readline(\*STDIN);
 	chop($rdata);
 
-	while ($rdata < 0 || $rdata > 3) {
+	while ($rdata < 0 || $rdata > 4) {
 		print STDOUT "\tPlease select an item mentioned above: ";
 		$rdata = readline(\*STDIN);
 		chop($rdata);
@@ -323,6 +324,13 @@ sub migrate_vhcs2 {
     	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
 	}
+
+	# Delete vhcs2 Database
+	($rs, $rdata) = doSQL("DROP DATABASE IF EXISTS `vhcs2`;");
+    if ($rs != 0) {
+        print STDOUT "failed!\n";
+        exit_werror($rdata, $rs);
+    }
 
     print STDOUT "\tdone\n";
 
@@ -721,6 +729,15 @@ sub patch_ispcp_rc2 {
 	return 0;
 }
 
+sub patch_ispcp_rc3() {
+	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
+
+	print STDOUT "\tNothing to do yet!\n";
+
+	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
+	return 0;
+}
+
 sub prepare_update {
 	my ($rs, $rdata) = (undef, undef);
 
@@ -732,7 +749,7 @@ sub prepare_update {
 
 	# Abort
 	if ($main::ua{'update'} eq 0) {
-		exit_werror("\tScript was aborted by user");
+		exit_werror("\tScript was aborted by user.");
 	}
 	# VHCS update
 	elsif (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
@@ -754,8 +771,8 @@ sub prepare_update {
 		$rs = remove_vhcs2();
 		return $rs if ($rs != 0);
 	}
-	# ispCP 1.0.0 RC2 Update
-	elsif ($main::ua{'update'} eq 3) {
+	# ispCP 1.0.0 RC2/3 Update
+	elsif ($main::ua{'update'} gt 3) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 
 		# get ispcp.old.conf
@@ -773,7 +790,19 @@ sub prepare_update {
 			} while ($rs == 0);
 		}
 
-		$rs = patch_ispcp_rc2();
+		# ispCP 1.0.0 RC2
+		if ($main::ua{'update'} eq 3) {
+			$rs = patch_ispcp_rc2();
+		}
+		# ispCP 1.0.0 RC3
+		elsif ($main::ua{'update'} eq 4) {
+			$rs = patch_ispcp_rc3();
+		}
+
+		if ($rs != 0) {
+    		print STDOUT "\t Update failed!\n";
+   	 		exit_werror("ispCP Update failed.");
+		}
 		return $rs if ($rs != 0);
 
 		# set permissions

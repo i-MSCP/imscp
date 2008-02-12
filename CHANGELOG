@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-13 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #808: webmail.mydomain.tld, pma.mydomain.tld
+	- ENGINE:
+		* Fixed #864: improve the detection of the disk usage of backups so users can't abuse
+	- GUI:
+		* Fixed #934: Prohibit creation of default subdomains
+
 2008-02-12 Christian Hernmarck
 	- DISTS:
 		openSuSE10 (10.3):

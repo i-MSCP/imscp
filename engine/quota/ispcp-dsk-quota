@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -105,7 +105,7 @@ sub dsk_quota_engine {
 
         my $size = 0;
 
-        my $s = `$cmd_du --exclude="backups/*.bz2" --exclude="backups/*.gz" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
+        my $s = `$cmd_du --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
 
         $s =~ /^(\d+)/; $size += $1;
 

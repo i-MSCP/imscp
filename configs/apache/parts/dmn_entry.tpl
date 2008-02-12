@@ -18,6 +18,10 @@
 
     Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
 
+    Redirect permanent /ftp		http://{BASE_SERVER_VHOST}/ftp/
+    Redirect permanent /pma		http://{BASE_SERVER_VHOST}/pma/
+    Redirect permanent /webmail	http://{BASE_SERVER_VHOST}/webmail/
+
     ErrorDocument 401 /errors/401.html
     ErrorDocument 403 /errors/403.html
     ErrorDocument 404 /errors/404.html
