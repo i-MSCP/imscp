@@ -28,6 +28,7 @@ gzip
 iptables
 lha
 mailx
+make
 mhash
 mysql
 mysql-Max

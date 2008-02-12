@@ -84,18 +84,27 @@ Make sure you are logged in as root.
 
 3. Install the required modules:
 
-	# yast -i `cat /docs/opensuse103/opensuse103-packages`
+	# yast -i `cat /docs/OpenSuse/opensuse103-packages`
 
 	Or if you use smart package manager:
 
-	# smart install `cat /docs/opensuse103/opensuse103-packages`
+	# smart install `cat /docs/OpenSuse/opensuse103-packages`
 
 4. Make an copy to temp directory:
 
 	# make -f Makefile.opensuse10 install
 
-	# cp -Rv /tmp/ispcp-1.0.0/* /
+	# cp -RvL /tmp/ispcp-1.0.0/* /
+	  (the L is needed to copy /var/mail/virtual via the symlink /var/mail)
 
+4a. Set the MySQL password, if not set:
+	# maybe first start mysql: rcmysql start
+        # mysqladmin -u root password YOUR_PASSWORD
+
+4b. Disable the suse-fast-cgi:
+	# mv /etc/apache2/conf.d/mod_fastcgi.conf /etc/apache2/conf.d/mod_fastcgi.conf.disabled
+	# load fastcgi: edit /etc/sysconfig/apache2, lokk for line APACHE_MODULES=... and replace the "php5" at the end with "fastcgi"
+	# restart apache
 
 5. Start the script and follow the install instructions:
 
