@@ -1,4 +1,4 @@
-##VERSION: $Id: pop3d.dist.in,v 1.9 2004/04/18 15:54:39 mrsam Exp $
+##VERSION: $Id: pop3d,v 1.4 2003/08/08 14:12:58 lisp Exp $
 #
 # pop3d created from pop3d.dist by sysconftool
 #
@@ -61,11 +61,8 @@ AUTHMODULES_ORIG="authdaemon"
 # DEBUG_LOGIN=0   - turn off login debugging
 # DEBUG_LOGIN=1   - turn on login debugging
 # DEBUG_LOGIN=2   - turn on login debugging + log passwords too
-#
-# Note that most information is sent to syslog at level 'debug', so
-# you may need to modify your /etc/syslog.conf to be able to see it.
 
-DEBUG_LOGIN=0
+DEBUG_LOGIN=1
 
 ##NAME: POP3AUTH:1
 #

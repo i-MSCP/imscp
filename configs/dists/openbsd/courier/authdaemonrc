@@ -1,4 +1,4 @@
-##VERSION: $Id: authdaemonrc.in,v 1.8 2001/10/07 02:16:22 mrsam Exp $
+##VERSION: $Id: authdaemonrc,v 1.3 2003/08/08 14:12:58 lisp Exp $
 #
 # Copyright 2000-2001 Double Precision, Inc.  See COPYING for
 # distribution information.
@@ -22,7 +22,7 @@
 # The authentication modules that are linked into authdaemond.  The
 # default list is installed.  You may selectively disable modules simply
 # by removing them from the following list.  The available modules you
-# can use are: authcustom authcram authuserdb authldap authpgsql authmysql authpwd
+# can use are: authcustom authcram authuserdb authldap authpgsql authmysql authpam
 
 authmodulelist="authuserdb"
 

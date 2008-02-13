@@ -1,1 +1,0 @@
-Running "make install" from the root directory on a stock 4.1 system SHOULD yield a fully-configured ISPCP system at the next boot.

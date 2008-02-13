@@ -1,11 +1,11 @@
-##VERSION: $Id: imapd.dist.in,v 1.29 2004/04/18 15:54:39 mrsam Exp $
+##VERSION: $Id: imapd,v 1.3 2003/08/08 14:12:58 lisp Exp $
 #
 # imapd created from imapd.dist by sysconftool
 #
 # Do not alter lines that begin with ##, they are used when upgrading
 # this configuration.
 #
-#  Copyright 1998 - 2004 Double Precision, Inc.  See COPYING for
+#  Copyright 1998 - 2002 Double Precision, Inc.  See COPYING for
 #  distribution information.
 #
 #  This configuration file sets various options for the Courier-IMAP server
@@ -81,8 +81,6 @@ TCPDOPTS="-nodnslookup -noidentlookup"
 #
 # The default is set during the initial configuration.
 #
-# If this is currently set to AUTHMODULES="authdaemon", DO NOT CHANGE IT.
-# Instead, change the parameter authmodulelist in authdaemonrc.
 
 AUTHMODULES="authdaemon"
 
@@ -99,13 +97,10 @@ AUTHMODULES_ORIG="authdaemon"
 # DEBUG_LOGIN=0   - turn off login debugging
 # DEBUG_LOGIN=1   - turn on login debugging
 # DEBUG_LOGIN=2   - turn on login debugging + log passwords too
-#
-# Note that most information is sent to syslog at level 'debug', so
-# you may need to modify your /etc/syslog.conf to be able to see it.
 
-DEBUG_LOGIN=0
+DEBUG_LOGIN=1
 
-##NAME: IMAP_CAPABILITY:1
+##NAME: IMAP_CAPABILITY:0
 #
 # IMAP_CAPABILITY specifies what most of the response should be to the
 # CAPABILITY command.
@@ -113,10 +108,10 @@ DEBUG_LOGIN=0
 # If you have properly configured Courier to use CRAM-MD5 or CRAM-SHA1
 # authentication (see INSTALL), set IMAP_CAPABILITY as follows:
 #
-# IMAP_CAPABILITY="IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA AUTH=CRAM-MD5 AUTH=CRAM-SHA1 IDLE"
+# IMAP_CAPABILITY="IMAP4rev1 CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA AUTH=CRAM-MD5 AUTH=CRAM-SHA1 IDLE"
 #
 
-IMAP_CAPABILITY="IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA IDLE"
+IMAP_CAPABILITY="IMAP4rev1 CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA IDLE AUTH=LOGIN"
 
 ##NAME: KEYWORDS_CAPABILITY:0
 #

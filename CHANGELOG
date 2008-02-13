@@ -8,6 +8,14 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #864: improve the detection of the disk usage of backups so users can't abuse
 	- GUI:
 		* Fixed #934: Prohibit creation of default subdomains
+	- DISTS:
+		FreeBSD:
+		* Fixed #901: fix some config path in freebsd distro
+		* Updated all config files ro RC4
+		OpenBSD:
+		* Fixed #118: configs/dists/openbsd/apache/BSDmakefile references fastcgi.conf which is unavailable
+	- DOCU:
+		* Updated FreeBSD, OpenBSD
 
 2008-02-12 Christian Hernmarck
 	- DISTS:
