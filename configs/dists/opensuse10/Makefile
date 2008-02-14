@@ -6,6 +6,7 @@ install:
 	if test $(HOST_OS) = opensuse10 ; then \
 	        cp ./ispcp.conf $(SYSTEM_CONF) ; \
 	        cd ./apache && $(MAKE) install ; cd .. ; \
+	        cd ./awstats && $(MAKE) install ; cd .. ; \
 	        cd ./bind && $(MAKE) install ; cd .. ; \
 	        cd ./courier && $(MAKE) install ; cd .. ; \
 	        cd ./cron.d && $(MAKE) install ; cd .. ; \
@@ -22,6 +23,7 @@ uninstall:
 	if test $(HOST_OS) = opensuse10 ; then \
 	        rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 	        cd ./apache && $(MAKE) uninstall ; cd .. ; \
+	        cd ./awstats && $(MAKE) uninstall ; cd .. ; \
 	        cd ./bind && $(MAKE) uninstall ; cd .. ; \
 	        cd ./courier && $(MAKE) uninstall ; cd .. ; \
 		cd ./cron.d && $(MAKE) uninstall ; cd .. ; \

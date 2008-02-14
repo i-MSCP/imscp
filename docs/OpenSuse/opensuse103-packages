@@ -82,6 +82,7 @@ php5-fastcgi
 php5-mbstring
 php5-mcrypt
 php5-mysql
+php5-sockets
 php5-suhosin
 postfix
 proftpd

@@ -10,4 +10,4 @@ export PHP_FCGI_CHILDREN
 PHP_FCGI_MAX_REQUESTS=500
 export PHP_FCGI_MAX_REQUESTS
 
-exec /usr/bin/php-cgi5
+exec {PHP5_FASTCGI_BIN}
