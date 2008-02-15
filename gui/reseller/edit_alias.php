@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -188,10 +188,12 @@ function check_fwd_data(&$tpl, $alias_id) {
 	$admin_login = '';
 
 	if ($forward_url != 'no') {
-		//  @todo check chk_url
-		if (!chk_url($forward_url)) {
+		if (!chk_forward_url($forward_url)) {
 			$ed_error = tr("Incorrect forward syntax");
 		}
+		if (!preg_match("/\/$/", $forward_url)) {
+	    	$forward_url .= "/";
+	    }
 	}
 
 	if ($ed_error === '_off_') {

@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -110,6 +111,8 @@ function check_user_data() {
 		$even_txt = tr('Wrong domain name syntax!');
 	} else if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		$even_txt = tr('Domain with that name already exists on the system!');
+	} else if ($dmn_name == $cfg['BASE_SERVER_VHOST']) {
+		$even_txt = tr('Master domain cannot be used!');
 	}
 	// we have plans only for admins
 	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
@@ -119,7 +122,8 @@ function check_user_data() {
 	if ($even_txt != '_off_') { // There are wrong input data
 		set_page_message($even_txt);
 		return false;
-	} else if ($dmn_pt == '_yes_' || !isset($_POST['dmn_tpl'])) {
+	}
+	else if ($dmn_pt == '_yes_' || !isset($_POST['dmn_tpl'])) {
 		// send through the session the data
 		$_SESSION['dmn_name'] = $dmn_name;
 		$_SESSION['dmn_tpl'] = $dmn_chp;

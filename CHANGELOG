@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-15 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1018: Missing "&" in the cron ?
+	- GUI:
+		* Fixed #850: If user IP doesn't match the reseller IP the message in manage_reseller_users.php is wrong
+		* Fixed #894: Domain Alias as Forward - including directory information
+		* Fixed #1023: master domain can be added as user
+
 2008-02-13 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #808: webmail.mydomain.tld, pma.mydomain.tld

@@ -476,11 +476,11 @@ sub htuser_del_user_system_data {
 
 				return $rs if ($rs != 0);
 
-				my $cmd_du = $main::cfg{'CMD_DU'};
+				my $cmd_wc = $main::cfg{'CMD_WC'};
 
-				my $size = `$cmd_du -sb $htaccess_file`;
+				my $size = `$cmd_wc -c < $htaccess_file`;
 
-				if ($size<2) {
+				if ($size < 2) {
 
 					del_file($htaccess_file);
 
@@ -792,6 +792,8 @@ sub htuser_del_group_system_data {
 
 				my $id = $_;
 
+				my ($uname, $ucounter) = (undef, undef);
+
 				$sql = "select uname from htaccess_users where id = $id";
 
 				($rs, $rdata) = doSQL($sql);
@@ -800,7 +802,7 @@ sub htuser_del_group_system_data {
 
 				$rdata = @$rdata[0];
 
-				my ($uname) = (@$rdata[0]);
+				$uname = @$rdata[0];
 
 				$rs = htuser_del_group_data($dmn_name, $gname, $uname);
 
@@ -814,7 +816,7 @@ sub htuser_del_group_system_data {
 
 				$rdata = @$rdata[0];
 
-				my ($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
+				($uname,$ucounter) = (@$rdata[0],@$rdata[1]);
 
 			  	if($ucounter == 0) {
 
@@ -850,12 +852,11 @@ sub htuser_del_group_system_data {
 
 					return $rs if ($rs != 0);
 
-					my $cmd_du = $main::cfg{'CMD_DU'};
+					my $cmd_wc = $main::cfg{'CMD_WC'};
 
-					my $size = `$cmd_du -sb $htaccess_file`;
+					my $size = `$cmd_wc -c < $htaccess_file`;
 
-					if ($size<2) {
-
+					if ($size < 2) {
 						del_file($htaccess_file);
 
 					}

@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -22,7 +23,6 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
 $tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/add_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -117,7 +117,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $cfg;
 
 	$cr_user_id = $_POST['usraccounts'];
 	$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
@@ -144,10 +144,15 @@ SQL_QUERY;
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!chk_mountp($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
+	} else if ($alias_name == $cfg['BASE_SERVER_VHOST']) {
+		$err_al = tr('Master domain cannot be used!');
 	} else if ($forward != 'no') {
-		if (!chk_url($forward)) {
+		if (!chk_forward_url($forward)) {
 			$err_al = tr("Incorrect forward syntax");
 		}
+		if (!preg_match("/\/$/", $forward)) {
+	    	$forward .= "/";
+	    }
 	} else {
 		// now lets fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);

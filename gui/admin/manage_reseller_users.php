@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -363,6 +363,9 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 	} else if ($dest_max > 0 && $src_max == 0 && $umax == -1) {
 		return;
 	} else if ($dest_max > 0 && $src_max == 0 && $umax == 0) {
+		if ($err == '_off_') {
+			$err = '';
+		}
 		$err .= tr('<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>', $uname, $obj);
 
 		$err .= tr('You can not move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!', $uname, $obj);
@@ -370,6 +373,9 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 		return;
 	} else if ($dest_max > 0 && $src_max == 0 && $umax > 0) {
 		if ($dest + $umax > $dest_max) {
+			if ($err == '_off_') {
+				$err = '';
+			}
 			$err .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
 			$err .= tr('Moving aborted!');
@@ -387,6 +393,9 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 		return;
 	} else if ($dest_max > 0 && $src_max > 0 && $umax > 0) {
 		if ($dest + $umax > $dest_max) {
+			if ($err == '_off_') {
+				$err = '';
+			}
 			$err .= tr('<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>', $uname, $obj);
 
 			$err .= tr('Moving aborted!');
@@ -422,6 +431,9 @@ SQL_QUERY;
 		$domain_name = $rs->fields['domain_name'];
 
 		if (!preg_match("/$domain_ip_id;/", $dest)) {
+			if ($err == '_off_') {
+				$err = '';
+			}
 			$err .= tr('<b>%s</b> has IP address that can not be managed from the destination reseller !<br>This user can not be moved!', $domain_name);
 
 			return false;

@@ -130,7 +130,7 @@ function MM_swapImage() { //v3.0
                 <td width="27" align="right">&nbsp;</td>
               </tr>
               <tr>
-                <td valign="top"><form name="add_alias_frm" method="post" action="add_alias.php?edit_id={ID}">
+                <td valign="top"><form name="add_alias_frm" method="post" action="add_alias.php">
                     <table width="100%" cellpadding="5" cellspacing="5">
                       <tr>
                         <td width="25">&nbsp;</td>

@@ -373,21 +373,21 @@ function chk_dname($dname) {
 }
 
 /**
- *  @function		chk_url
+ *  @function		chk_forward_url
  *  @description	Function for checking URL syntax
  *
  * 	@param		String		$url		URL data
  *  @return		boolean					false	incorrect syntax
  * 										true	correct syntax
  */
-function chk_url($url) {
+function chk_forward_url($url) {
 
     $dom_mainpart  = '[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\.';
     $dom_subpart   = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\.)*';
     $dom_tldpart   = '[a-zA-Z]{2,5}';
     $domain   	   = $dom_subpart.$dom_mainpart.$dom_tldpart;
 
-    if (!preg_match("/^(http|https|ftp)\:\/\/".$domain."$/", $url))
+    if (!preg_match("/^(http|https|ftp)\:\/\/".$domain."/", $url))
 		return FALSE;
 
     return TRUE;
