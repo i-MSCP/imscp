@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -83,8 +83,15 @@ $tpl->assign(
 get_pageone_param();
 
 if (isset($_POST['uaction']) && ("rau2_nxt" === $_POST['uaction']) && (!isset($_SESSION['step_one_data']))) {
-	if (check_user_data($tpl))
-		update_hp_data($_SESSION['user_id']);
+	if (check_user_data($tpl)) {
+		$_SESSION["step_two_data"] = "$dmn_name;0;";
+		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
+
+		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
+			header("Location: rau3.php");
+			die();
+		}
+	}
 } else {
 	unset($_SESSION['step_one_data']);
 	global $dmn_chp;
@@ -94,9 +101,7 @@ if (isset($_POST['uaction']) && ("rau2_nxt" === $_POST['uaction']) && (!isset($_
 
 get_init_au2_page($tpl);
 gen_page_message($tpl);
-
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG'])
@@ -144,7 +149,7 @@ function get_init_au2_page(&$tpl){
 			)
 		);
 
-	if ("_yes_" === $hp_php)
+	if ("yes" === $hp_php)
 		$tpl->assign(
 			array('VL_PHPY' => 'checked',
 				'VL_PHPN' => ''
@@ -157,7 +162,7 @@ function get_init_au2_page(&$tpl){
 				)
 			);
 
-	if ("_yes_" === $hp_cgi)
+	if ("yes" === $hp_cgi)
 		$tpl->assign(
 			array('VL_CGIY' => 'checked',
 				'VL_CGIN' => ''
@@ -212,6 +217,7 @@ function check_user_data(&$tpl) {
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk, $hp_dmn;
+	global $sql, $dmn_chp;
 
 	$ehp_error = '';
 	// Get data for fields from previus page
@@ -253,71 +259,45 @@ function check_user_data(&$tpl) {
 
 	// Begin checking...
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		$ehp_error .= tr('Incorrect subdomains limit!');
+		set_page_message(tr('Incorrect subdomains limit!'));
 	}
 	if (!ispcp_limit_check($hp_als, -1)) {
-		$ehp_error .= tr('Incorrect aliases limit!');
+		set_page_message(tr('Incorrect aliases limit!'));
 	}
 	if (!ispcp_limit_check($hp_mail, -1)) {
-		$ehp_error .= tr('Incorrect mail accounts limit!');
+		set_page_message(('Incorrect mail accounts limit!'));
 	}
 	if (!ispcp_limit_check($hp_ftp, -1)) {
-		$ehp_error .= tr('Incorrect FTP accounts limit!');
+		set_page_message(tr('Incorrect FTP accounts limit!'));
 	}
 	if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ehp_error .= tr('Incorrect SQL databases limit!');
+		set_page_message(tr('Incorrect SQL databases limit!'));
 	}
 	else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
-		$ehp_error .= tr('SQL users limit is <i>disabled</i>!');
+		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
 	}
 	if (!ispcp_limit_check($hp_sql_db, -1)) {
-		$ehp_error .= tr('Incorrect SQL users limit!');
+		set_page_message(tr('Incorrect SQL users limit!'));
 	}
 	else if ($hp_sql_db == -1 && $hp_sql_user != -1) {
-		$ehp_error .= tr('SQL databases limit is <i>disabled</i>!');
+		set_page_message(tr('SQL databases limit is <i>disabled</i>!'));
 	}
 	if (!ispcp_limit_check($hp_traff, null)) {
-		$ehp_error .= tr('Incorrect traffic limit!');
+		set_page_message(tr('Incorrect traffic limit!'));
 	}
 	if (!ispcp_limit_check($hp_disk, null)) {
-		$ehp_error .= tr('Incorrect disk quota limit!');
+		set_page_message(tr('Incorrect disk quota limit!'));
 	}
 
-	if (empty($ehp_error)) {
+	if (empty($ehp_error) && empty($_SESSION['user_page_message'])) {
 		$tpl->assign('MESSAGE', '');
 		// send data throught session
 		return true;
 	} else {
 		$tpl->assign('MESSAGE', $ehp_error);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
-
 		return false;
 	}
 } //End of check_user_data()
-
-// Insert into hosting plans new data
-function update_hp_data($admin_id) {
-	global $hp_name, $hp_php, $hp_cgi;
-	global $hp_sub, $hp_als, $hp_mail;
-	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk;
-	global $sql, $hpid, $dmn_name;
-	global $step_two_back_data;
-	// $hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
-	// $query = "insert into hosting_plans (reseller_id, name, props) values ('$admin_id', '$hp_name', '$hp_props');";
-	// $res = $sql -> Execute($query);
-	// $tmp_hpid = $sql -> Insert_ID();
-	// Serialize the data from this page
-	$step_two_data = "$dmn_name;0;";
-	$_SESSION["step_two_data"] = $step_two_data;
-
-	$ch_hpprops = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
-	$_SESSION["ch_hpprops"] = $ch_hpprops;
-
-	header("Location: rau3.php");
-
-	die();
-} // End of update_hp_data()
 
 // Check is hosting plan with this name already exists!
 function check_hosting_plan_name($admin_id) {

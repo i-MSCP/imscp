@@ -66,12 +66,12 @@ function delete_account(url) {
                           <td width="25" >&nbsp;</td>
                           <td colspan="2" class="content3"><b>{TR_HOSTING_PLAN_PROPERTIES}</b></td>
                         </tr>
-       					<!-- BDP: page_message -->
+                        <!-- BDP: page_message -->
                         <tr>
-                         <td width="25">&nbsp;</td>
-                         <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
-						</tr>
-						<!-- EDP: page_message -->
+                          <td width="25">&nbsp;</td>
+                          <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
+                        </tr>
+                        <!-- EDP: page_message -->
 						<tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_TEMPLATE_NAME}</td>

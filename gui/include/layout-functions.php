@@ -83,7 +83,7 @@ function check_language_exist($lang_table) {
 
 function set_page_message($message) {
 	if (isset($_SESSION['user_page_message']))
-		$_SESSION['user_page_message'] .= "<br><br>$message<br><br>";
+		$_SESSION['user_page_message'] .= "<br />$message\n";
 	else
 		$_SESSION['user_page_message'] = $message;
 }

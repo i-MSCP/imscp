@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-16 Benedikt Heintel
+	- GUI:
+		* Fixed: A lot of inconsistency adding a user while reseller values are eceeded
+
+2008-02-16 Jochen Manz
+	- DISTS:
+		* Fixed #772: Gentoo init.d scripts broken with changes to make them "LSB compliant"
+
 2008-02-16 Christian Hernmarck
 	- ENGINE:
 		* Fixed bug in ispcp-als-mngr: since r762 cgi-bin setting were not set correctly for alias domain
@@ -12,6 +20,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #850: If user IP doesn't match the reseller IP the message in manage_reseller_users.php is wrong
 		* Fixed #894: Domain Alias as Forward - including directory information
 		* Fixed #1023: master domain can be added as user
+		* Fixed #1045: Alias via mod_alias (Redirect) -> FIX
 
 2008-02-13 Benedikt Heintel
 	- CONFIGS:

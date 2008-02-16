@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -323,6 +323,7 @@ function save_data_to_db() {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 
+	$err_msg = "";
 	$description = clean_input($_POST['hp_description']);
 	$price = clean_input($_POST['hp_price']);
 	$setup_fee = clean_input($_POST['hp_setupfee']);
@@ -332,17 +333,16 @@ function save_data_to_db() {
 
 	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
 
-	$err_msg = '_off_';
-
 	$admin_id = $_SESSION['user_id'];
 
-	reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props);
+	if (reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props)) {
 
-	if ($err_msg != '_off_') {
-		set_page_message($err_msg);
-		restore_form($tpl, $sql);
-	} else {
-		$query = <<<SQL_QUERY
+		if (!empty($err_msg)) {
+			set_page_message($err_msg);
+			restore_form($tpl, $sql);
+			return false;
+		} else {
+			$query = <<<SQL_QUERY
         update
             hosting_plans
         set
@@ -357,12 +357,17 @@ function save_data_to_db() {
         where
             id = ?
 SQL_QUERY;
-		$res = exec_query($sql, $query, array($hp_name, $description, $hp_props, $price,
+			$res = exec_query($sql, $query, array($hp_name, $description, $hp_props, $price,
 				$setup_fee, $currency, $payment, $status, $hpid));
 
-		$_SESSION['hp_updated'] = '_yes_';
-		Header("Location: hp.php");
-		die();
+			$_SESSION['hp_updated'] = '_yes_';
+			header("Location: hp.php");
+			die();
+		}
+	}
+	else {
+		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
+		return false;
 	}
 } //End of save_data_to_db()
 die();

@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -534,8 +535,8 @@ SQL_QUERY;
 		$traff_max, $disk_max
 		);
 } // End of get_user_props();
-function rsl_full_domain_check ($data)
-{
+
+function rsl_full_domain_check ($data) {
 	$data .= '.';
 	$match = array();
 	$last_match = array();
@@ -566,9 +567,9 @@ function rsl_full_domain_check ($data)
 
 	return 1;
 } // End of  full_domain_check()
+
 // Generate ip list
-function generate_ip_list(&$tpl, &$reseller_id)
-{
+function generate_ip_list(&$tpl, &$reseller_id) {
 	global $sql;
 	global $domain_ip;
 
@@ -615,9 +616,9 @@ SQL_QUERY;
 		}
 	} // End loop
 } // End of generate_ip_list()
+
 // Check validity of input data
-function check_ruser_data (&$tpl, $NoPass)
-{
+function check_ruser_data (&$tpl, $NoPass) {
 	global $dmn_name, $hpid , $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
@@ -727,6 +728,7 @@ function check_ruser_data (&$tpl, $NoPass)
 
 	return false;
 } //End of check_ruser_data()
+
 // Translate domain status
 function translate_dmn_status ($status) {
 	global $cfg;
@@ -751,9 +753,9 @@ function translate_dmn_status ($status) {
 		return tr('Unknown error');
 	}
 } // End of translate_dmn_status()
+
 // Check if the domain already exist
-function ispcp_domain_exists ($domain_name, $reseller_id)
-{
+function ispcp_domain_exists ($domain_name, $reseller_id) {
 	global $sql;
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = <<<SQL_QUERY
@@ -863,14 +865,14 @@ SQL_QUERY;
 		return true;
 	}
 } // End of ispcp_domain_exists()
+
 function gen_manage_domain_query (&$search_query, &$count_query,
 	$reseller_id,
 	$start_index,
 	$rows_per_page,
 	$search_for,
 	$search_common,
-	$search_status)
-{
+	$search_status) {
 	// IMHO, this code is an unmaintainable mess and should be replaced - Cliff
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 
@@ -990,8 +992,7 @@ SQL_QUERY;
 function gen_manage_domain_search_options (&$tpl,
 	$search_for,
 	$search_common,
-	$search_status)
-{
+	$search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
 		$domain_selected = "selected";
@@ -1101,8 +1102,7 @@ function gen_manage_domain_search_options (&$tpl,
 		);
 }
 
-function gen_def_language(&$tpl, &$sql, &$user_def_language)
-{
+function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 	$matches = array();
 	$languages = array();
 	$query = <<<SQL_QUERY
@@ -1156,8 +1156,7 @@ SQL_QUERY;
 	}
 }
 
-function gen_domain_details(&$tpl, &$sql, &$domain_id)
-{
+function gen_domain_details(&$tpl, &$sql, &$domain_id) {
 	$tpl->assign('USER_DETAILS', '');
 
 	if (isset($_SESSION['details']) and $_SESSION['details'] == 'hide') {
@@ -1210,8 +1209,7 @@ SQL_QUERY;
 	}
 }
 
-function add_domain_extras(&$dmn_id, &$admin_id, &$sql)
-{
+function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
 	$query = <<<SQL_QUERY
         insert into domain_extras
             (dmn_id,
@@ -1240,8 +1238,9 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($dmn_id, $admin_id));
 }
 
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops = "")
-{
+function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops = "") {
+	$error = false;
+
 	if (empty($newprops)) {
 		// this hosting plan exists
 		if (isset($_SESSION["ch_hpprops"])) {
@@ -1310,19 +1309,19 @@ SQL_QUERY;
 
 	if ($dmn_max != 0) {
 		if ($dmn_current + 1 > $dmn_max) {
-			$err_msg = tr('You have reached your domains limit.<br>You can not add more domains!');
-			return;
+			set_page_message(tr('You have reached your domains limit.<br>You can not add more domains!'));
+			$error = true;
 		}
 	}
 
 	if ($sub_max != 0) {
 		if ($sub_new != -1) {
 			if ($sub_new == 0) {
-				$err_msg = tr('You have a subdomains limit!<br>You can not add an user with unlimited subdomains!');
-				return;
+				set_page_message(tr('You have a subdomains limit!<br>You can not add an user with unlimited subdomains!'));
+				$error = true;
 			} else if ($sub_current + $sub_new > $sub_max) {
-				$err_msg = tr('You are exceeding your subdomains limit!');
-				return;
+				set_page_message(tr('You are exceeding your subdomains limit!'));
+				$error = true;
 			}
 		}
 	}
@@ -1330,43 +1329,42 @@ SQL_QUERY;
 	if ($als_max != 0) {
 		if ($als_new != -1) {
 			if ($als_new == 0) {
-				$err_msg = tr('You have an aliases limit!<br>You can not add an user with unlimited aliases!');
-				return;
+				set_page_message(tr('You have an aliases limit!<br>You can not add an user with unlimited aliases!'));
+				$error = true;
 			} else if ($als_current + $als_new > $als_max) {
-				$err_msg = tr('You Are Exceeding Your Alias Limit!');
-				return;
+				set_page_message(tr('You Are Exceeding Your Alias Limit!'));
+				$error = true;
 			}
 		}
 	}
 
 	if ($mail_max != 0) {
 		if ($mail_new == 0) {
-			$err_msg = tr('You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!');
-			return;
+			set_page_message(tr('You have a mail accounts limit!<br>You can not add an user with unlimited mail accounts!'));
+			$error = true;
 		} else if ($mail_current + $mail_new > $mail_max) {
-			$err_msg = tr('You are exceeding your mail accounts limit!');
-			return;
+			set_page_message(tr('You are exceeding your mail accounts limit!'));
 		}
 	}
 
 	if ($ftp_max != 0) {
 		if ($ftp_new == 0) {
-			$err_msg = tr('You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!');
-			return;
+			set_page_message(tr('You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts!'));
+			$error = true;
 		} else if ($ftp_current + $ftp_new > $ftp_max) {
-			$err_msg = tr('You are exceeding your FTP accounts limit!');
-			return;
+			set_page_message(tr('You are exceeding your FTP accounts limit!'));
+			$error = true;
 		}
 	}
 
 	if ($sql_db_max != 0) {
 		if ($sql_db_new != -1) {
 			if ($sql_db_new == 0) {
-				$err_msg = tr('You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!');
-				return;
+				set_page_message(tr('You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!'));
+				$error = true;
 			} else if ($sql_db_current + $sql_db_new > $sql_db_max) {
-				$err_msg = tr('You are exceeding your SQL databases limit!');
-				return;
+				set_page_message(tr('You are exceeding your SQL databases limit!'));
+				$error = true;
 			}
 		}
 	}
@@ -1374,41 +1372,47 @@ SQL_QUERY;
 	if ($sql_user_max != 0) {
 		if ($sql_user_new != -1) {
 			if ($sql_user_new == 0) {
-				$err_msg = tr('You have an SQL users limit!<br>You can not add an user with unlimited SQL users!');
-				return;
+				set_page_message(tr('You have an SQL users limit!<br>You can not add an user with unlimited SQL users!'));
+				$error = true;
 			} else if ($sql_db_new == -1) {
-				$err_msg = tr('You have disabled SQL databases for this user!<br>You can not have SQL users here!');
-				return;
+				set_page_message(tr('You have disabled SQL databases for this user!<br>You can not have SQL users here!'));
+				$error = true;
 			} else if ($sql_user_current + $sql_user_new > $sql_user_max) {
-				$err_msg = tr('You are exceeding your SQL database limit!');
-				return;
+				set_page_message(tr('You are exceeding your SQL database limit!'));
+				$error = true;
 			}
 		}
 	}
 
 	if ($traff_max != 0) {
 		if ($traff_new == 0) {
-			$err_msg = tr('You have a traffic limit!<br>You can not add an user with unlimited traffic!');
-			return;
+			set_page_message(tr('You have a traffic limit!<br>You can not add an user with unlimited traffic!'));
+			$error = true;
 		} else if ($traff_current + $traff_new > $traff_max) {
-			$err_msg = tr('You are exceeding your traffic limit!');
-			return;
+			set_page_message(tr('You are exceeding your traffic limit!'));
+			$error = true;
 		}
 	}
 
 	if ($disk_max != 0) {
 		if ($disk_new == 0) {
-			$err_msg = tr('You have a disk limit!<br>You can not add an user with unlimited disk!');
-			return;
+			set_page_message(tr('You have a disk limit!<br>You can not add an user with unlimited disk!'));
+			$error = true;
 		} else if ($disk_current + $disk_new > $disk_max) {
-			$err_msg = tr('You are exceeding your disk limit!');
-			return;
+			set_page_message(tr('You are exceeding your disk limit!'));
+			$error = true;
 		}
 	}
+
+	if ($error == true) {
+		return false;
+	}
+
+	return true;
 }
+
 // Update reseller props
-function au_update_reseller_props($reseller_id, $props)
-{
+function au_update_reseller_props($reseller_id, $props) {
 	global $sql;
 
 	list($php, $cgi, $sub,

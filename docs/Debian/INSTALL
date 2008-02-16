@@ -91,13 +91,6 @@ Make sure you are logged in as root.
 	(when you get to the proftpd screen, select 'standalone')
 	(when you get to the rootkithunter screen, select two time 'yes')
 
-	Now install needed Perl modules:
-
-	# cpan
-	cpan> install FindBin
-	cpan> install Net::LibIDN
-	cpan> quit
-
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net

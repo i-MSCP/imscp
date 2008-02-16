@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -271,6 +271,7 @@ function save_data_to_db(&$tpl, $admin_id){
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
 
+	$err_msg = "";
 	$query = "select id from hosting_plans where name = ? and reseller_id = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 
@@ -279,18 +280,15 @@ function save_data_to_db(&$tpl, $admin_id){
 		// $tpl -> parse('AHP_MESSAGE', 'ahp_message');
 	} else {
 		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;";
-
-		$err_msg = '_off_';
 		// this id is just for fake and is not used in reseller_limits_check.
-		$hpid = 99999999999999999999999999;
+		$hpid = 0;
 
-		reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props);
-
-		if ($err_msg != '_off_') {
-			set_page_message($err_msg);
-			return;
-		} else {
-			$query = <<<SQL_QUERY
+		if (reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props)) {
+			if (!empty($err_msg)) {
+				set_page_message($err_msg);
+				return false;
+			} else {
+				$query = <<<SQL_QUERY
         insert into
             hosting_plans(reseller_id,
 							name,
@@ -303,11 +301,16 @@ function save_data_to_db(&$tpl, $admin_id){
 							status)
         values (?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
-			$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
+				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
-			$_SESSION['hp_added'] = '_yes_';
-			Header("Location: ehp.php");
-			die();
+				$_SESSION['hp_added'] = '_yes_';
+				header("Location: ehp.php");
+				die();
+			}
+		}
+		else {
+			set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
+			return false;
 		}
 	}
 } //End of save_data_to_db()

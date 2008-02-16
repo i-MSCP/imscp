@@ -18,7 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -73,8 +72,9 @@ get_hp_data_list($tpl, $_SESSION['user_id']);
 if (isset($_POST['uaction'])) {
 	if (!check_user_data())
 		get_data_au1_page($tpl);
-} else
+} else {
 	get_empty_au1_page($tpl);
+}
 
 gen_page_message($tpl);
 
@@ -93,9 +93,9 @@ function check_user_data() {
 	global $dmn_name; // Domain name
 	global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt;
-	global $cfg;
+	global $cfg, $sql;
 	// personal template
-	$even_txt = "_off_";
+	$even_txt = "";
 
 	if (isset($_POST['dmn_name'])) {
 		$dmn_name = strtolower($_POST['dmn_name']);
@@ -119,7 +119,7 @@ function check_user_data() {
 		$dmn_pt = '_no_';
 	}
 
-	if ($even_txt != '_off_') { // There are wrong input data
+	if (!empty($even_txt)) { // There are wrong input data
 		set_page_message($even_txt);
 		return false;
 	}
@@ -132,17 +132,22 @@ function check_user_data() {
 
 		header("Location: rau2.php");
 		die();
-
 	} else {
-		// send through the session the data
-		$_SESSION['dmn_name'] = $dmn_name;
-		$_SESSION['dmn_tpl'] = $dmn_chp;
-		$_SESSION['chtpl'] = $dmn_pt;
-		$_SESSION['step_one'] = "_yes_";
+		// check if reseller timits are not touched
+		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], $dmn_chp)) {
+			// send through the session the data
+			$_SESSION['dmn_name'] = $dmn_name;
+			$_SESSION['dmn_tpl'] = $dmn_chp;
+			$_SESSION['chtpl'] = $dmn_pt;
+			$_SESSION['step_one'] = "_yes_";
 
-		Header("Location: rau3.php");
-
-		die();
+			header("Location: rau3.php");
+			die();
+		}
+		else {
+			set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
+			return false;
+		}
 	}
 } // End of check_user_data()
 

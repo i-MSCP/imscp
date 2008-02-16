@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -171,13 +171,9 @@ function generate_users_list (&$tpl, $admin_id) {
 		$start_index = 0;
 	} else {
 		if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-
 			// He have not got scroll through patient records.
-
 			unset($_SESSION['search_for']);
-
 			unset($_SESSION['search_common']);
-
 			unset($_SESSION['search_status']);
 		}
 	}

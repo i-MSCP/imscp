@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -86,7 +86,12 @@ $props = $data['props'];
 
 $_SESSION["ch_hpprops"] = $props;
 
-reseller_limits_check($sql, $err_msg, $reseller_id, $hpid);
+if (!reseller_limits_check($sql, $err_msg, $reseller_id, $hpid)) {
+	set_page_message(tr("Order Canceled: resellers maximum exceeded!"));
+	header('Location: orders.php');
+	die();
+}
+
 if (!empty($err_msg)) {
 	set_page_message($err_msg);
 	unset($_SESSION['domain_ip']);
@@ -316,11 +321,8 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		}
 	} else if ($rmax > 0 && $umax == 0) {
-
 		// We Can't Get Here! This clone is present only for
-
 		// sample purposes;
-
 		if ($data == -1) {
 		} else if ($data == 0) {
 		} else if ($data > 0) {
