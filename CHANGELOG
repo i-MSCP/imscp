@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-16 Christian Hernmarck
+	- ENGINE:
+		* Fixed bug in ispcp-als-mngr: since r762 cgi-bin setting were not set correctly for alias domain
+
 2008-02-15 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1018: Missing "&" in the cron ?
