@@ -2,13 +2,14 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright 2006-2007 by ispCP | http://isp-control.net
- * @link http://isp-control.net
- * @author ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version		$ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
  * @license
- * 	This program is free software; you can redistribute it and/or modify it under
+ *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
  *   Foundation; either version 1.1 of the License, or (at your option) any later
  *   version.
@@ -348,6 +349,21 @@ SQL_QUERY;
 	}
 }
 
+function gen_page_awstats($tpl) {
+	global $cfg;
+	$awstats_act = $cfg['AWSTATS_ACTIVE'];
+	if ($awstats_act != 'yes') {
+		$tpl->assign('ACTIVE_AWSTATS', '');
+	} else {
+		$tpl->assign(
+			array(
+				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
+				'AWSTATS_TARGET' => '_blank'
+				)
+			);
+	}
+}
+
 /*
  *
  * static page messages.
@@ -358,6 +374,8 @@ gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_webtools.tp
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
+
+gen_page_awstats($tpl);
 
 check_permissions($tpl);
 

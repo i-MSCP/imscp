@@ -24,7 +24,7 @@ myhostname = {MTA_HOSTNAME}
 mydomain   = {MTA_LOCAL_DOMAIN}
 myorigin   = $myhostname
 
-smtpd_banner = $myhostname ispCP {MTA_VERSION} Managed ESMTP {MTA_HOST_TYPE}
+smtpd_banner = $myhostname ESMTP ispCP {MTA_VERSION} Managed {MTA_HOST_TYPE}
 setgid_group = postdrop
 
 #
@@ -37,6 +37,7 @@ append_at_myorigin  = yes
 local_transport     = local
 virtual_transport   = virtual
 transport_maps      = hash:{MTA_TRANSPORT_HASH}
+alias_maps 			= hash:/etc/aliases
 
 #
 # Delivering local messages parameters;
@@ -97,8 +98,8 @@ smtpd_helo_restrictions      = permit_mynetworks,
                                reject_non_fqdn_helo_hostname
 
 smtpd_sender_restrictions    = reject_non_fqdn_sender,
-                               permit_mynetworks,
                                reject_unknown_sender_domain,
+                               permit_mynetworks,
                                permit_sasl_authenticated
 
 smtpd_recipient_restrictions = reject_non_fqdn_recipient,
@@ -106,10 +107,14 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                permit_mynetworks,
                                permit_sasl_authenticated,
                                reject_unauth_destination,
+                               reject_unlisted_recipient,
                                check_policy_service inet:127.0.0.1:12525,
-                               check_policy_service inet:127.0.0.1:10030
+                               check_policy_service inet:127.0.0.1:60000,
+                               permit
 
-smtpd_data_restrictions      = reject_unauth_pipelining
+smtpd_data_restrictions      = reject_multi_recipient_bounce,
+                               reject_unauth_pipelining
+
 
 #
 # TLS parameters; activate, if avaible/used

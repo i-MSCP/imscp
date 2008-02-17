@@ -36,5 +36,7 @@ install:
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/apache
-	rm -rf $(ROOT_APACHE_CONF)/ispcp.conf
-	rm -rf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
+	rm -rf $(APACHE_SITES_DIR)/ispcp.conf
+	rm -rf $(APACHE_SITES_DIR)/00_master.conf
+	rm -rf $(APACHE_SITES_DIR)/01_awstats.conf
+	rm -rf $(APACHE_MODS_DIR)/fastcgi_ispcp.conf

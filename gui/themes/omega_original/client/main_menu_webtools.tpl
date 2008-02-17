@@ -7,6 +7,7 @@
     <td class="menu"><div align="center"><a href="index.php" class="menu_active" onMouseOver="MM_swapImage('general','','{THEME_COLOR_PATH}/images/icons/general_a.gif',1)" onMouseOut="MM_swapImgRestore()">{TR_MENU_GENERAL_INFORMATION}</a></div></td>
   </tr>
 </table></td>
+	<!-- BDP: isactive_domain -->
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -15,6 +16,7 @@
     <td class="menu"><div align="center"><a href="manage_domains.php" class="menu_active" onMouseOver="MM_swapImage('domains','','{THEME_COLOR_PATH}/images/icons/domains_a.gif',1)" onMouseOut="MM_swapImgRestore()">{TR_MENU_MANAGE_DOMAINS}</a></div></td>
   </tr>
 </table></td>
+<!-- EDP: isactive_domain -->
 <!-- BDP: isactive_email -->
     <td width="30">&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">

@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version		$ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -358,6 +359,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_awstats', 'menu');
+	$tpl->define_dynamic('isactive_domain', 'menu');
     $tpl->define_dynamic('isactive_email', 'menu');
     $tpl->define_dynamic('isactive_ftp', 'menu');
     $tpl->define_dynamic('isactive_sql', 'menu');
@@ -458,6 +460,7 @@ SQL_QUERY;
          $dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
 
     if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
+	if (($dmn_als_limit == -1) && ($dmn_subd_limit == -1)) $tpl->assign('ISACTIVE_DOMAIN', '');
     if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
     if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
 

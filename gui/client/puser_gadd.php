@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version		$ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -34,11 +34,12 @@ $tpl->define_dynamic('pgroups', 'page');
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
-	array('TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		array(
+			'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
+			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 
@@ -114,6 +115,21 @@ SQL_QUERY;
 	}
 }
 
+function gen_page_awstats($tpl) {
+	global $cfg;
+	$awstats_act = $cfg['AWSTATS_ACTIVE'];
+	if ($awstats_act != 'yes') {
+		$tpl->assign('ACTIVE_AWSTATS', '');
+	} else {
+		$tpl->assign(
+			array(
+				'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
+				'AWSTATS_TARGET' => '_blank'
+				)
+			);
+	}
+}
+
 /*
  *
  * static page messages.
@@ -125,28 +141,30 @@ gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
+gen_page_awstats($tpl);
+
 check_permissions($tpl);
 
 padd_group($tpl, $sql, get_user_domain_id($sql, $_SESSION['user_id']));
 
 $tpl->assign(
-	array('TR_HTACCESS' => tr('Protected areas'),
-		'TR_ACTION' => tr('Action'),
-		'TR_USER_MANAGE' => tr('Manage user'),
-		'TR_USERS' => tr('User'),
-		'TR_USERNAME' => tr('Username'),
-		'TR_ADD_USER' => tr('Add user'),
-		'TR_GROUPNAME' => tr('Group name'),
-		'TR_GROUP_MEMBERS' => tr('Group members'),
-		'TR_ADD_GROUP' => tr('Add group'),
-		'TR_EDIT' => tr('Edit'),
-		'TR_GROUP' => tr('Group'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_GROUPS' => tr('Groups'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_CANCEL' => tr('Cancel'),
-
+		array(
+			'TR_HTACCESS' => tr('Protected areas'),
+			'TR_ACTION' => tr('Action'),
+			'TR_USER_MANAGE' => tr('Manage user'),
+			'TR_USERS' => tr('User'),
+			'TR_USERNAME' => tr('Username'),
+			'TR_ADD_USER' => tr('Add user'),
+			'TR_GROUPNAME' => tr('Group name'),
+			'TR_GROUP_MEMBERS' => tr('Group members'),
+			'TR_ADD_GROUP' => tr('Add group'),
+			'TR_EDIT' => tr('Edit'),
+			'TR_GROUP' => tr('Group'),
+			'TR_DELETE' => tr('Delete'),
+			'TR_GROUPS' => tr('Groups'),
+			'TR_PASSWORD' => tr('Password'),
+			'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+			'TR_CANCEL' => tr('Cancel'),
 		)
 	);
 
@@ -155,7 +173,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 

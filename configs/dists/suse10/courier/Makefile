@@ -29,6 +29,8 @@ install:
 	cp ./imapd $(ROOT_COURIER_CONF)
 	cp ./pop3d $(ROOT_COURIER_CONF)
 	cp ./userdb $(ROOT_AUTHLIB_CONF)
+#       Set userdb to "user only access", otherwise makeuserdb will complain
+	chmod 600 $(ROOT_AUTHLIB_CONF)/userdb
 
 uninstall:
 

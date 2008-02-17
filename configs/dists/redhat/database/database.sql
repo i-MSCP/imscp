@@ -1,4 +1,4 @@
-create database {DATABASE_NAME};
+create database {DATABASE_NAME} CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 use {DATABASE_NAME};
 
@@ -21,18 +21,18 @@ CREATE TABLE `admin` (
   `domain_created` int(10) unsigned NOT NULL default '0',
   `customer_id` varchar(200) default 0,
   `created_by` int(10) unsigned default 0,
-  `fname` varchar(200) default '',
-  `lname` varchar(200) default '',
-  `gender` varchar(1) default '',
-  `firm` varchar(200) default '',
-  `zip` varchar(10) default '',
-  `city` varchar(200) default '',
-  `country` varchar(200) default '',
+  `fname` varchar(200) default NULL,
+  `lname` varchar(200) default NULL,
+  `gender` varchar(1) default NULL,
+  `firm` varchar(200) default NULL,
+  `zip` varchar(10) default NULL,
+  `city` varchar(200) default NULL,
+  `country` varchar(200) default NULL,
   `email` varchar(200) default NULL,
-  `phone` varchar(200) default '',
-  `fax` varchar(200) default '',
-  `street1` varchar(200) default '',
-  `street2` varchar(200) default '',
+  `phone` varchar(200) default NULL,
+  `fax` varchar(200) default NULL,
+  `street1` varchar(200) default NULL,
+  `street2` varchar(200) default NULL,
   `uniqkey` varchar(255) default NULL,
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
@@ -60,7 +60,7 @@ CREATE TABLE `auto_num` (
 CREATE TABLE `config` (
   `name` varchar(255) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`name`)
+  PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -96,6 +96,10 @@ VALUES (
 'PORT_AMAVIS', '10024;tcp;AMaVis;1;1'
 ),(
 'PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1'
+),(
+'PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'
+),(
+'DATABASE_REVISION', '3'
 );
 
 -- --------------------------------------------------------
@@ -386,6 +390,7 @@ CREATE TABLE `orders` (
   `customer_id` varchar(200) default NULL,
   `fname` varchar(200) default NULL,
   `lname` varchar(200) default NULL,
+  `gender` varchar(1) default NULL,
   `firm` varchar(200) default NULL,
   `zip` varchar(10) default NULL,
   `city` varchar(200) default NULL,

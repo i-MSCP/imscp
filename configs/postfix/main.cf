@@ -37,6 +37,7 @@ append_at_myorigin  = yes
 local_transport     = local
 virtual_transport   = virtual
 transport_maps      = hash:{MTA_TRANSPORT_HASH}
+alias_maps 			= hash:/etc/aliases
 
 #
 # Delivering local messages parameters;

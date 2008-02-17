@@ -28,7 +28,5 @@ relay           IN              CNAME           mail
 smtp            IN              CNAME           mail
 ; CNAME for web transfer
 ftp             IN              CNAME           www
-pma             IN              CNAME           www
-webmail         IN              CNAME           www
 ; sub [{SUB_NAME}] entry BEGIN.
 ; sub [{SUB_NAME}] entry END.

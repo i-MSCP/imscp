@@ -6,7 +6,7 @@
 
 # Traffic
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-srv-traff &>{LOG_DIR}/ispcp-srv-traff.log
-0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff >{LOG_DIR}/ispcp-vrl-traff.log 
+0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff &>{LOG_DIR}/ispcp-vrl-traff.log
 15,45	*	* 	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff-correction &>{LOG_DIR}/ispcp-vrl-traff-correction.log
 
 # customer logs
@@ -14,7 +14,7 @@
 
 # Backup
 @daily root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
-@daily root {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport &>{LOG_DIR}/ispcp-backup-all-mngr.log
+@daily root {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport &>{LOG_DIR}/ispcp-backup-ispcp-mngr.log
 
 # Remove config backups older than seven days
 @daily root find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs -r /bin/rm
@@ -26,7 +26,7 @@
 {AW-ENABLED}15	*/6	*	*	*	root {AWSTATS_ROOT_DIR}/awstats_updateall.pl now -awstatsprog={AWSTATS_ENGINE_DIR}/awstats.pl >/dev/null 2>&1
 
 # Rootkit Hunter
-{RK-ENABLED}0 	*/12	*	*	*	root {RKHUNTER} --scan-knownbad-files --check-deleted --createlogfile --cronjob --createlogfile {RKHUNTER_LOG}>/dev/null 2>&1
+{RK-ENABLED}0 	*/12	*	*	*	root {RKHUNTER} --scan-knownbad-files --check-deleted --createlogfile --cronjob --createlogfile {RKHUNTER_LOG} >/dev/null 2>&1
 
 # Chkrootkit
 {CR-ENABLED}0 	*/12	*	*	*	root {CHKROOTKIT} &> {CHKROOTKIT_LOG}
