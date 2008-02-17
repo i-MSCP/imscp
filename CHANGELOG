@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-17 Christian Hernmarck
+	- CONFIGS:
+		* Fixed #1048: Different AllowOverride settings in apache config
+
 2008-02-16 Benedikt Heintel
 	- GUI:
 		* Fixed: A lot of inconsistency adding a user while reseller values are eceeded
