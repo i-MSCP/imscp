@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version		$ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -111,9 +111,9 @@ SQL_QUERY;
 
 	$tpl->parse('MAIN_MENU', 'menu');
 } // End of gen_reseller_menu()
+
 // Function to generate the manu data for reseller
-function gen_reseller_menu(&$tpl, $menu_file)
-{
+function gen_reseller_menu(&$tpl, $menu_file) {
 	global $sql, $cfg;
 
 	$tpl->define_dynamic('menu', $menu_file);
@@ -146,6 +146,9 @@ function gen_reseller_menu(&$tpl, $menu_file)
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
 			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+			'VERSION' => $cfg['Version'],
+			'BUILDDATE' => $cfg['BuildDate'],
+			'CODENAME' => $cfg['CodeName']
 			)
 		);
 

@@ -308,38 +308,40 @@ sub uninstall_system_dirs {
 
     push_el(\@main::el, 'uninstall_system_dirs()', 'Starting...');
 
-    $rs = del_dir($main::cfg{'APACHE_WWW_DIR'});
+	// ask to delete directory
+	$rdata = 'yes';
+	my $qmsg = "\tDelete ".$main::cfg{'APACHE_WWW_DIR'}."? [yes]: ";
+	print STDOUT $qmsg;
 
-    return $rs if ($rs != 0);
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if ($rdata eq 'yes' || $rdata eq 'y') {
+	    $rs = del_dir($main::cfg{'APACHE_WWW_DIR'});
+	    return $rs if ($rs != 0);
+	}
 
     $rs = del_dir($main::cfg{'APACHE_USERS_LOG_DIR'});
-
     return $rs if ($rs != 0);
 
     $rs = del_dir($main::cfg{'APACHE_BACKUP_LOG_DIR'});
-
     return $rs if ($rs != 0);
 
     $rs = del_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'});
-
     return $rs if ($rs != 0);
 
     $rs = del_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'});
-
     return $rs if ($rs != 0);
 
     $rs = del_dir($main::cfg{'LOG_DIR'});
-
     return $rs if ($rs != 0);
 
     $rs = del_dir($main::cfg{'PHP_STARTER_DIR'});
-
     return $rs if ($rs != 0);
 
     push_el(\@main::el, 'uninstall_system_dirs()', 'Ending...');
 
     return 0;
-
 }
 
 sub uninstall_sql {

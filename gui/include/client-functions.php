@@ -523,6 +523,9 @@ function gen_client_menu(&$tpl, $menu_file) {
 				'PMA_TARGET' => $cfg['PMA_TARGET'],
 				'FILEMANAGER_PATH' => $cfg['FILEMANAGER_PATH'],
 				'FILEMANAGER_TARGET' => $cfg['FILEMANAGER_TARGET'],
+				'VERSION' => $cfg['Version'],
+				'BUILDDATE' => $cfg['BuildDate'],
+				'CODENAME' => $cfg['CodeName']
 				)
 		);
 

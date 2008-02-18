@@ -249,7 +249,7 @@ sub ask_db_ftp_password {
 
 	if (!defined($pass1) || $pass1 eq '') {
 		$db_password = gen_sys_rand_num(18);
-		$db_password =~ s/'//g;;
+		$db_password =~ s/('|")//g;
 		$main::ua{'db_ftp_password'} = $db_password;
 		print STDOUT "\tispCP ftp SQL user password set to: $db_password\n";
 	}
@@ -489,6 +489,7 @@ sub ask_db_pma_password {
 	if (!defined($pass1) || $pass1 eq '') {
 
 		$db_password = gen_sys_rand_num(18);
+		$db_password =~ s/('|")//g;
 		$main::ua{'db_pma_password'} = $db_password;
 		print STDOUT "\tphpMyAdmin Control user password set to: $db_password\n";
 

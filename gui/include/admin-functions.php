@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -15,7 +16,6 @@
  *   You should have received a copy of the MPL Mozilla Public License along with
  *   this program; if not, write to the Open Source Initiative (OSI)
  *   http://opensource.org | osi@opensource.org
- */
 
 /*
  * encode() - encode string to be valid as mail header
@@ -62,7 +62,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('isactive_support', 'menu');
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->assign(
-		array('TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 			'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
@@ -168,11 +169,11 @@ function gen_admin_menu(&$tpl, $menu_file) {
 	global $sql, $cfg;
 
 	$tpl->define_dynamic('menu', $menu_file);
-
 	$tpl->define_dynamic('custom_buttons', 'menu');
 
 	$tpl->assign(
-		array('TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
 			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
 			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
@@ -211,7 +212,10 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
-			'TR_SERVERPORTS' => tr('Server ports')
+			'TR_SERVERPORTS' => tr('Server ports'),
+			'VERSION' => $cfg['Version'],
+			'BUILDDATE' => $cfg['BuildDate'],
+			'CODENAME' => $cfg['CodeName']
 			)
 		);
 	$query = <<<SQL_QUERY

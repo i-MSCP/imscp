@@ -4,7 +4,7 @@
  *
  *  @copyright 	2001-2006 by moleSoftware GmbH
  *  @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ *  @version 	SVN: $ID$
  *  @link 		http://isp-control.net
  *  @author		ispCP Team
  *
@@ -47,7 +47,7 @@ class Config {
     var $cfg_values = array( /* array with all options from config file - predefined with null */
 		'BuildDate' => null,
 		'Version' => null,
-		'VersionH' => null,
+		'CodeName' => null,
 		'DEFAULT_ADMIN_ADDRESS' => null,
 		'SERVER_HOSTNAME' => null,
 		'BASE_SERVER_IP' => null,
@@ -180,7 +180,6 @@ class Config {
 		'QUOTA_ROOT_DIR' => null,
 		'MAIL_LOG_INC_AMAVIS' => null,
 		'USER_INITIAL_THEME' => null,
-		'ISPCP_LICENSE' => null,
 		'FTP_USERNAME_SEPARATOR' => null,
 		'FTP_HOMEDIR' => null,
 		'FTP_SHELL' => null,
