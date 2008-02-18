@@ -1,7 +1,7 @@
-# ISPCP(tm) - Virtual Hosting Control System
-# Copyright (c) 2001-2004 by moleSoftware GmbH
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2007 by ispCP
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -23,14 +23,15 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ISPCP Home Page is at:
+# The ISPCP ω Home Page is at:
 #
-#    http://www.isp-control.net
+#    http://isp-control.net
+#
 
 ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
-        CFLAGS += -O0
+	CFLAGS += -O0
 else
-        CFLAGS += -O3
+	CFLAGS += -O3
 endif
 
 OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\

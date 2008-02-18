@@ -1,10 +1,10 @@
-.include <../../../../Makefile.inc>
+.include <../../../../Makefile.fbsd>
 
-APACHE_EXT_CONF=$(INST_PREF)/var/www/conf
+APACHE_EXT_CONF=$(INST_PREF)/usr/local/etc/apache22/Includes
 APACHE_MOD_CONF=$(INST_PREF)/usr/local/etc/apache22/extra/
 install:
 
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache22
 	$(SYSTEM_MAKE_DIRS) $(APACHE_EXT_CONF)
 	$(SYSTEM_MAKE_DIRS) $(APACHE_MOD_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
@@ -12,15 +12,16 @@ install:
 	cp ./httpd.conf ./working/ispcp.conf
 	cp ./fastcgi.conf ./working/fastcgi_ispcp.conf
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
-	cp ./httpd.conf $(SYSTEM_CONF)/apache
-	cp -R ./backup $(SYSTEM_CONF)/apache
-	cp -R ./parts $(SYSTEM_CONF)/apache
-	cp -R ./working $(SYSTEM_CONF)/apache
+	cp ./00_master.conf $(SYSTEM_CONF)/apache22
+	cp ./httpd.conf $(SYSTEM_CONF)/apache22
+	cp -R ./backup $(SYSTEM_CONF)/apache22
+	cp -R ./parts $(SYSTEM_CONF)/apache22
+	cp -R ./working $(SYSTEM_CONF)/apache22
 	cp -R ./httpd.conf $(APACHE_EXT_CONF)/ispcp.conf
 	cp -R ./fastcgi.conf $(APACHE_MOD_CONF)/fastcgi_ispcp.conf
 
 uninstall:
 
-	rm -rf $(SYSTEM_CONF)/apache
+	rm -rf $(SYSTEM_CONF)/apache22
 	rm -rf $(ROOT_APACHE_CONF)/ispcp.conf
 	rm -rf $(APACHE_MOD_CONF)/fastcgi_ispcp.conf

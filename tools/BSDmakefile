@@ -1,5 +1,8 @@
-
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
 .include <../Makefile.inc>
+.endif
 
 DAEMON_DIR=$(SYSTEM_ROOT)/daemon
 

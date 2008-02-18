@@ -1,6 +1,10 @@
 #!/usr/bin/make -f
 
+.ifdef $(OSTYPE)==FreeBSD
+.include <Makefile.fbsd>
+.else
 .include <Makefile.inc>
+.endif
 
 install:
 	cd ./tools && $(MAKE) install

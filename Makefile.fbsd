@@ -1,0 +1,18 @@
+.ifndef INST_PREF
+	INST_PREF=/tmp/ispcp-1.0.0
+.endif
+
+HOST_OS=freebsd
+
+ROOT_CONF=$(INST_PREF)/usr/local/etc
+SYSTEM_ROOT=$(INST_PREF)/usr/local/www/apache22/ispcp
+SYSTEM_CONF=$(INST_PREF)/usr/local/etc/ispcp
+SYSTEM_LOG=$(INST_PREF)/var/log/ispcp
+SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/usr/local/www/apache22/logs/backup
+SYSTEM_VIRTUAL=$(INST_PREF)/usr/local/www/apache22/data
+SYSTEM_AWSTATS=$(INST_PREF)/usr/local/www/awstats
+SYSTEM_FCGI=$(INST_PREF)/usr/local/www/apache22/fcgi
+SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
+SYSTEM_MAKE_DIRS=/bin/mkdir -p
+
+.PHONY: install uninstall

@@ -4,13 +4,13 @@
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
      <td><img src="{THEME_COLOR_PATH}/images/icons/general_big.gif" width="32" height="33"></td>
-     <td><span class="titlemenu">{TR_MENU_GENERAL_INFORMATION}</span></td>
+     <td><span class="titlemenu">{TR_MENU_MANAGE_USERS}</span></td>
     </tr>
    </table>
   </td>
  </tr>
  <tr height="*">
-				  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
+  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><a href="manage_users.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>

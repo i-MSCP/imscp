@@ -1,8 +1,11 @@
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
 .include <../Makefile.inc>
+.endif
 
 install:
-	cd dists/openbsd && $(MAKE) install
+	cd dists/$(HOST_OS) && $(MAKE) install
 
 uninstall:
-	cd dists/openbsd && $(MAKE) uninstall
-
+	cd dists/$(HOST_OS) && $(MAKE) uninstall

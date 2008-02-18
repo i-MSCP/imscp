@@ -1,26 +1,39 @@
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# http://www.molesoftware.com
+# Copyright (c) 2006-2008 by isp Control Panel
+# http://isp-control.net
 #
-#  ispCP . (OMEGA) - Virtual Hosting Control System | Omega Version
 #
-#  @copyright  2001-2006 by moleSoftware GmbH
-#  @copyright  2006-2007 by ispCP | http://isp-control.net
-#  @link   http://isp-control.net
-#  @author  ispCP Team
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
 #
-#  @license
-#  This program is free software; you can redistribute it and/or modify it under
-#  the terms of the MPL General Public License as published by the Free Software
-#  Foundation; either version 1.1 of the License, or (at your option) any later
-#  version.
-#  You should have received a copy of the MPL Mozilla Public License along with
-#  this program; if not, write to the Open Source Initiative (OSI)
-#  http://opensource.org | osi@opensource.org
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ISPCP ω Home Page is at:
+#
+#    http://isp-control.net
 #
 
-ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
-        CFLAGS += -O0
-else
-        CFLAGS += -O3
+#ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
+#	CFLAGS += -O0
+#else
+	CFLAGS += -O3
 endif
+#endif
 
 
 OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
@@ -33,9 +46,9 @@ COMPILE = gcc -ansi -Wall -Wstrict-prototypes -pedantic -c $(CFLAGS)
 
 ispcp_daemon: $(OBJS)
 	$(BUILD) -o ispcp_daemon $(OBJS)
-ifeq (,$(findstring nostrip,$(DAEMON_OPTIONS)))
+#ifeq (,$(findstring nostrip,$(DAEMON_OPTIONS)))
 	strip -s ispcp_daemon
-endif
+#endif
 
 %.o: %.c %.h
 	$(COMPILE) -o $@ $*.c

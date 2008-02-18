@@ -1,4 +1,8 @@
-.include <../Makefile.inc>
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
+ .include <../Makefile.inc>
+.endif
 
 SYSTEM_ENGINE_ROOT=$(SYSTEM_ROOT)/engine
 

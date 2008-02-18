@@ -1,16 +1,16 @@
-.include <../../../../Makefile.inc>
+.include <../../../../Makefile.fbsd>
 
 install:
 
-	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/init.d
+	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/rc.d
 
-	cp ispcp_daemon $(ROOT_CONF)/ispcp_daemon.rc
-	cp ispcp_network $(ROOT_CONF)/ispcp_network.rc
+	cp ispcp_daemon $(ROOT_CONF)/rc.d/ispcp_daemon.sh
+	cp ispcp_network $(ROOT_CONF)/rc.d/ispcp_network.sh
 
-	chown root:wheel $(ROOT_CONF)/ispcp_network.rc $(ROOT_CONF)/ispcp_daemon.rc
-	chmod 0755 $(ROOT_CONF)/ispcp_network.rc $(ROOT_CONF)/ispcp_daemon.rc
+	chown root:wheel $(ROOT_CONF)/ispcp_network.sh $(ROOT_CONF)/rc.d/ispcp_daemon.sh
+	chmod 0755 $(ROOT_CONF)/ispcp_network.sh $(ROOT_CONF)/rc.d/ispcp_daemon.sh
 
 uninstall:
 
-	rm -f $(ROOT_CONF)/ispcp_daemon.rc
-	rm -f $(ROOT_CONF)/ispcp_network.rc
+	rm -f $(ROOT_CONF)/rc.d/ispcp_daemon.sh
+	rm -f $(ROOT_CONF)/rc.d/ispcp_network.sh

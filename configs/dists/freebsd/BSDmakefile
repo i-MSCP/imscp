@@ -1,4 +1,4 @@
-.include <../../../Makefile.inc>
+.include <../../../Makefile.fbsd>
 
 install:
 	cp ./ispcp.conf $(SYSTEM_CONF) ; cd ..

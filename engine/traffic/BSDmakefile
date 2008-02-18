@@ -1,5 +1,8 @@
-
-.include <../../Makefile.inc>
+.ifdef $(OSTYPE)==FreeBSD
+.include <../../Makefile.fbsd>
+.else
+ .include <../../Makefile.inc>
+.endif
 
 SYSTEM_ENGINE_ROOT=$(SYSTEM_ROOT)/engine
 
@@ -9,9 +12,9 @@ CMD_CHOWN=/bin/chown
 
 install:
 
-	$(SYSTEM_MAKE_DIRS) $(INST_PREF)/usr/sbin
-	$(CMD_INSTALL) ./maillogconvert/maillogconvert.pl $(INST_PREF)/usr/sbin
+	$(SYSTEM_MAKE_DIRS) $(INST_PREF)/usr/local/sbin
+	$(CMD_INSTALL) ./maillogconvert/maillogconvert.pl $(INST_PREF)/usr/local/sbin
 
 uninstall:
 
-	rm -rf $(INST_PREF)/usr/sbin/maillogconvert.pl
+	rm -rf $(INST_PREF)/usr/local/sbin/maillogconvert.pl

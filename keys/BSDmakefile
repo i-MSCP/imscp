@@ -1,5 +1,8 @@
-
-export
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
+.include <../Makefile.inc>
+.endif
 
 KEYS_DIR=$(SYSTEM_ROOT)/keys
 
