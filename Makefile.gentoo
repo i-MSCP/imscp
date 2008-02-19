@@ -72,4 +72,8 @@ uninstall:
 	rm -rf $(POSTFIX_SASLDB2_DIR)
 	rm -rf ./*~
 
-.PHONY: install uninstall
+clean:
+
+	cd ./tools/daemon && $(MAKE) clean
+
+.PHONY: install uninstall clean

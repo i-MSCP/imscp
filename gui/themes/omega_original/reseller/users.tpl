@@ -22,6 +22,7 @@ function delete_account(url, dmn_name) {
 
 	location = url;
 }
+
 function sbmt(form, uaction) {
 
     form.details.value = uaction;

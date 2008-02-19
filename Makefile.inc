@@ -25,4 +25,4 @@ SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
 
-.PHONY: install uninstall
+.PHONY: install uninstall clean

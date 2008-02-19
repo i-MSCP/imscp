@@ -16,6 +16,7 @@
  *   You should have received a copy of the MPL Mozilla Public License along with
  *   this program; if not, write to the Open Source Initiative (OSI)
  *   http://opensource.org | osi@opensource.org
+ */
 
 /*
  * encode() - encode string to be valid as mail header
@@ -1468,12 +1469,11 @@ function write_log($msg, $level = E_USER_WARNING) {
 
 	/* now send email if DEFAULT_ADMIN_ADDRESS != '' */
 	if ($send_log_to != '' && $level <= $cfg['LOG_LEVEL']) {
-		global $default_hostname, $default_base_server_ip, $Version, $VersionH, $BuildDate, $admin_login;
+		global $default_hostname, $default_base_server_ip, $Version, $BuildDate, $admin_login;
 
 		$admin_email = $cfg['DEFAULT_ADMIN_ADDRESS'];
 		$default_hostname = $cfg['SERVER_HOSTNAME'];
 		$default_base_server_ip = $cfg['BASE_SERVER_IP'];
-		$VersionH = $cfg['VersionH'];
 		$Version = $cfg['Version'];
 		$BuildDate = $cfg['BuildDate'];
 
@@ -1486,7 +1486,7 @@ function write_log($msg, $level = E_USER_WARNING) {
 ispCP Log
 
 Server: $default_hostname ($default_base_server_ip)
-Version: $VersionH ($Version - $BuildDate)
+Version: ispCP $Version ($BuildDate)
 
 Message: ----------------[BEGIN]--------------------------
 

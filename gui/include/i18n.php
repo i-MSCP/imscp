@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -18,7 +18,11 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-/*false: don't set (not even auto), null: set if missing, true: force update from session/default, anything else: set it as a language*/
+/**
+ * false: don't set (not even auto),
+ * null: set if missing,
+ * true: force update from session/default, anything else: set it as a language
+ */
 function curlang($newlang = null, $force = false) {
     global $cfg;
     static $language = null;
@@ -53,19 +57,19 @@ function curlang($newlang = null, $force = false) {
  *
  * 	@access			public
  * 	@version		2.2
- *  @author			ispCP Team, Benedikt Heintel (2007), 2007 Raphael Geissert
+ *  @author			ispCP Team, Benedikt Heintel (2007), Raphael Geissert (2007)
  *
- * 	@param		$msgid		string to translate
- * 	@param		$as_is		prevent the returned string from being replaced with html entities
- * 	@return					translated or original string
+ * 	@param		String	$msgid			string to translate
+ *  @param		Mixed	$substitution	prevent the returned string from being replaced with html entities
+ * 	@return		String					translated or original string
  **/
-function tr($msgid, $as_is = false) {
+function tr($msgid, $substitution = false) {
     global $sql, $cfg;
     static $cache = array();
 
-    // detect whether $as_is is really $as_is or just a value to be replaced in $msgstr
-    if (!is_bool($as_is)) {
-        $as_is = false;
+    // detect whether $substitution is really $substitution or just a value to be replaced in $msgstr
+    if (!is_bool($substitution)) {
+        $substitution = false;
     }
 
     $lang = curlang();
@@ -77,8 +81,8 @@ function tr($msgid, $as_is = false) {
         $msgstr = $msgid;
 
         if ($sql) {
-            if (!$as_is) {
-                // $as_is is true in this call because we need it that way and to prevent an infinite loop
+            if (!$substitution) {
+                // $substitution is true in this call because we need it that way and to prevent an infinite loop
                 $encoding = tr('encoding', true);
             }
             $rs = exec_query($sql, "SELECT `msgstr` FROM " . quoteIdentifier($lang) . " WHERE `msgid` = ?;", array($msgid), false);
@@ -109,12 +113,12 @@ function tr($msgid, $as_is = false) {
         unset($argv[0]); //msgid
 
         if (is_bool($argv[1])) {
-            unset($argv[1]); //as_is
+            unset($argv[1]);
         }
         $msgstr = vsprintf($msgstr, $argv);
     }
 
-    if (!$as_is) {
+    if (!$substitution) {
         $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, $encoding));
     }
 

@@ -44,7 +44,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_AWSTATS)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_MAIL_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_APACHE_BACK_LOG)
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp 
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cd ./configs && $(MAKE) install &
 	cd ./engine && $(MAKE) install
@@ -69,4 +69,8 @@ uninstall:
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	#rm -rf ./*~
 
-.PHONY: install uninstall
+clean:
+
+	cd ./tools/daemon && $(MAKE) clean
+
+.PHONY: install uninstall clean

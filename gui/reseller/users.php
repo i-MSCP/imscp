@@ -39,12 +39,12 @@ global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
-	array(
-		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Users'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		array(
+			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Users'),
+			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+			'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		)
 	);
 
@@ -99,26 +99,26 @@ $crnt_month = date("m");
 $crnt_year = date("Y");
 
 $tpl->assign(
-	array(
-		'TR_MANAGE_USERS' => tr('Manage users'),
-		'TR_USERS' => tr('Users'),
-		'TR_USER_STATUS' => tr('Status'),
-		'TR_DETAILS' => tr('Details'),
-		'TR_SEARCH' => tr('Search'),
-		'TR_USERNAME' => tr('Username'),
-		'TR_ACTION' => tr('Actions'),
-		'TR_CREATION_DATE' => tr('Creation date'),
-		'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-		'TR_BACK' => tr('Back'),
-		'TR_TITLE_BACK' => tr('Return to previous menu'),
-		'TR_TABLE_NAME' => tr('Users list'),
-		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?', true),
-		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this account?', true),
-		'TR_STAT' => tr('Stats'),
-		'VL_MONTH' => $crnt_month,
-		'VL_YEAR' => $crnt_year,
-		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-		'TR_EDIT_USER' => tr('Edit User')
+		array(
+			'TR_MANAGE_USERS' => tr('Manage users'),
+			'TR_USERS' => tr('Users'),
+			'TR_USER_STATUS' => tr('Status'),
+			'TR_DETAILS' => tr('Details'),
+			'TR_SEARCH' => tr('Search'),
+			'TR_USERNAME' => tr('Username'),
+			'TR_ACTION' => tr('Actions'),
+			'TR_CREATION_DATE' => tr('Creation date'),
+			'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
+			'TR_BACK' => tr('Back'),
+			'TR_TITLE_BACK' => tr('Return to previous menu'),
+			'TR_TABLE_NAME' => tr('Users list'),
+			'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?', true),
+			'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this account?', true),
+			'TR_STAT' => tr('Stats'),
+			'VL_MONTH' => $crnt_month,
+			'VL_YEAR' => $crnt_year,
+			'TR_EDIT_DOMAIN' => tr('Edit Domain'),
+			'TR_EDIT_USER' => tr('Edit User')
 		)
 	);
 
@@ -133,10 +133,10 @@ check_externel_events($tpl);
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 

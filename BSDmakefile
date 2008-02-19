@@ -23,7 +23,6 @@ install:
 	cd ${INST_PREF} && cp -R * /
 	rm -rf ${INST_PREF}
 
-
 uninstall:
 	cd ./tools && $(MAKE) uninstall
 	cd ./configs && $(MAKE) uninstall
@@ -38,3 +37,7 @@ uninstall:
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	rm -rf ./*~
+
+clean:
+
+	cd ./tools/daemon && $(MAKE) clean

@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-19 Benedikt Heintel
+	- DISTS:
+		* Fixed #816: [fedora anymaybe others] fastcgi_ispcp.conf not copied causes ispcp-setup to stop
+		* Updated Makefiles
+
 2008-02-19 Christian Hernmarck
 	- ENGINE:
 		* Fixed #1057: more than one backup of db table ispcp

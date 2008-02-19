@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -27,7 +28,7 @@ if (isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 	$hpid = $_GET['hpid'];
 else {
 	$_SESSION['hp_deleted'] = '_no_';
-	Header("Location: hp.php");
+	header("Location: hp.php");
 	die();
 }
 
@@ -40,16 +41,13 @@ if ($data['0'] > 0) {
 	die();
 }
 
-
 // Try to delete hosting plan from db
-
 $query = "delete from hosting_plans where id=? and reseller_id=?";
 $res = exec_query($sql, $query, array($hpid, $_SESSION['user_id']));
 
 $_SESSION['hp_deleted'] = '_yes_';
 
 header("Location: hp.php");
-
 die();
 
 ?>

@@ -23,7 +23,9 @@ function check_for_lock_file($wait_lock_timeout = 500000) {
     global $cfg;
 
 	set_time_limit(0);
-    while(file_exists($cfg['MR_LOCK_FILE'])) {
+	// @ prevents the Warning:
+	// File(/var/log/chkrootkit.log) is not within the allowed path(s)
+    while(@file_exists($cfg['MR_LOCK_FILE'])) {
 
 		usleep($wait_lock_timeout);
         clearstatcache();

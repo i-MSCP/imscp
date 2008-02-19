@@ -22,7 +22,7 @@ install:
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/working/ispcp.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
 
-		cp ./httpd.conf ./parts/ispcp_base.tpl
+	cp ./httpd.conf ./parts/ispcp_base.tpl
 
 	# Ubuntu 7.04?
 	if test $(RELEASE) = 'testing/unstable' ; then \

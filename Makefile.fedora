@@ -64,4 +64,8 @@ uninstall:
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	rm -rf ./*~
 
-.PHONY: install uninstall
+clean:
+
+	cd ./tools/daemon && $(MAKE) clean
+
+.PHONY: install uninstall clean
