@@ -219,6 +219,7 @@ sub backup_ispcp_engine {
 
 	my $date = get_human_date();
 
+	# Backup of configuration files (/etc/ispcp), preparation
 	my $backup_dir = $main::cfg{'BACKUP_FILE_DIR'};
 
 	if ($zip eq "bzip2") {
@@ -237,72 +238,80 @@ sub backup_ispcp_engine {
 		return 1;
 	}
 
-
 	if(! -d $backup_dir) {
 		$rs = make_dir($backup_dir, 0, 0, 0750);
 
 		return $rs if ($rs != 0);
 	}
 
-
-	my $dbuser = $main::db_user;
-	my $dbpass = $main::db_pwd;
+        # DB backup
+        my $dbuser = $main::db_user;
+        my $dbpass = $main::db_pwd;
         my $db_name = $main::cfg{'DATABASE_NAME'};
 
-	if ($dbuser && $dbpass) {
-		my $db_backup_file = "$backup_dir/$db_name.sql";
+        if ($dbuser && $dbpass) {
 
-		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
+                my $db_backup_file = "$backup_dir/$db_name-$date.sql";
 
-		my ($db_filename, $db_compresscmd) = (undef, undef);
+                my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -u\'$dbuser\' -p\'$dbpass\' \'$db_name\' >\'$db_backup_file\'";
 
-		if ($zip eq "bzip2") {
-			$db_filename = "$db_backup_file.bz2";
-			$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
-		}
-		elsif ($zip eq "gzip") {
-			$db_filename = "$db_backup_file.gz";
-			$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
-		}
-		else {
-			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
+                my ($db_filename, $db_compresscmd) = (undef, undef);
 
-			return 1;
-		}
+                if ($zip eq "bzip2") {
 
-		$rs = sys_command($db_backupcmd);
+                        $db_filename = "$db_backup_file.bz2";
+                        $db_compresscmd = "$main::cfg{'CMD_BZIP'} --force \'$db_backup_file\'";
 
-		if ($rs == 0) {
-			$rs = setfmode("$db_backup_file", 0, 0, 0640);
+                } elsif ($zip eq "gzip") {
 
-			if ($rs != 0) {
-				unlink($db_backup_file);
-			} else {
-				$rs = sys_command($db_compresscmd);
-				return $rs if ($rs != 0);
-			}
-			return $rs if ($rs != 0);
-		} else {
-			push_el(\@main::el, 'backup_ispcp_engine()', "ERROR: Failed to backup database $db_name");
-			unlink($db_backup_file);
-		}
-	}
+                        $db_filename = "$db_backup_file.gz";
+                        $db_compresscmd = "$main::cfg{'CMD_GZIP'} --force \'$db_backup_file\'";
 
-	$rs = sys_command($backup_cmd);
+                } else {
 
-	# do not return if backup throws an error, otherwise other domains will not be backuped
-	if ($rs == 0) {
+                        push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
+                        return 1;
 
-		$rs = sys_command("$cmd_rm -rf $main::cfg{'LOG_DIR'}/$backup_filename.log");
+                }
 
-		return $rs if ($rs != 0);
-	} elsif ( -e "$backup_dir/$backup_filename" ) {
+                $rs = sys_command($db_backupcmd);
 
-		$rs = del_file("$backup_dir/$backup_filename");
-		return $rs if ($rs != 0);
+                if ($rs == 0) {
 
-	}
+                        $rs = setfmode("$db_backup_file", 0, 0, 0640);
+                        if ($rs != 0) {
+                                unlink($db_backup_file);
+                        } else {
+                                $rs = sys_command($db_compresscmd);
+                                return $rs if ($rs != 0);
+                        }
+                        return $rs if ($rs != 0);
 
+                } else {
+
+                        push_el(\@main::el, 'backup_ispcp_engine()', "ERROR: Failed to backup database $db_name");
+                        unlink($db_backup_file);
+
+                }
+        }
+
+	# do the config backup
+        $rs = sys_command($backup_cmd);
+
+        # do not return if backup throws an error, otherwise other domains will not be backuped
+        if ($rs == 0) {
+
+                $rs = sys_command("$cmd_rm -rf $main::cfg{'LOG_DIR'}/$backup_filename.log");
+                return $rs if ($rs != 0);
+
+        } elsif ( -e "$backup_dir/$backup_filename" ) {
+
+                $rs = del_file("$backup_dir/$backup_filename");
+                return $rs if ($rs != 0);
+
+        }
+
+	# remove old backups: >14 days old
 	sys_command("find $backup_dir/* -maxdepth 0 -type f -mtime +14 -print | xargs -r /bin/rm");
 
 	$rs = setfmode("$backup_dir/$backup_filename", 0, 0, 0640);

@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-19 Christian Hernmarck
+	- ENGINE:
+		* Fixed #1057: more than one backup of db table ispcp
+		* Fixed #1058: Validation of "mail setup" make blank page
+
 2008-02-18 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #259: Using Proftpd 1.3.1-r2 option DisplayFirstChdir give "deprecated and will be removed in a future release"
