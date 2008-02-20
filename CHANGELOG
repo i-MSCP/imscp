@@ -2,6 +2,8 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-02-20 Benedikt Heintel
+	- GUI:
+		* Fixed Warning: Undefined index: ISPCP_LICENSE
 	- SETUP:
 		* Fixed #1059: ERROR: Undefined rwith! in setup
 

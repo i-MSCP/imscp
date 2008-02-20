@@ -35,7 +35,7 @@ $tpl->assign(
 		array(
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+	
 			'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		)
 	);

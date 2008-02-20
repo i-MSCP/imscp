@@ -235,7 +235,7 @@ $tpl -> assign(
 						'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller : Support System: View Tickets'),
 						'THEME_COLOR_PATH' => "../themes/$theme_color",
 						'THEME_CHARSET' => tr('encoding'),
-						'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+				
 						'ISP_LOGO' => get_logo($_SESSION['user_id']),
 
 					 )

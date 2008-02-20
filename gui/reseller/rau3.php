@@ -34,7 +34,7 @@ $tpl->assign(
 	array('TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		)
 	);

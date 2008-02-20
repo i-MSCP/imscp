@@ -66,7 +66,7 @@ $tpl->assign(
 				'TR_ADMIN_MANAGE_EMAIL_SETUP_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Email setup'),
 				'THEME_COLOR_PATH' => "../themes/$theme_color",
 				'THEME_CHARSET' => tr('encoding'),
-				'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+		
 				'ISP_LOGO' => get_logo($_SESSION['user_id'])
 			)
 		);

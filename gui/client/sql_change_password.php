@@ -126,7 +126,7 @@ $tpl->assign(
 			'TR_CLIENT_SQL_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Client/Change SQL User Password'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
+	
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 			)
 		);

@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -45,7 +45,7 @@ sub welcome_note {
 
     my $welcome_message = <<MSG;
 
-    Welcome in ISPCP OMEGA '$main::cfg{'VersionH'}' Uninstall Program.
+    Welcome in ISPCP OMEGA '$main::cfg{'Version'}' Uninstall Program.
 
     This program will uninstall ispCP OMEGA system from your server.
 
@@ -111,7 +111,7 @@ sub uninstall_shut_down {
 
     Congratulations !
 
-    ISPCP OMEGA '$main::cfg{'VersionH'}' uninstall completed successfully !
+    ISPCP OMEGA '$main::cfg{'Version'}' uninstall completed successfully !
 
     Thank you for using ISPCP OMEGA product !
 
