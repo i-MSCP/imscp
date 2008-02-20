@@ -1238,13 +1238,17 @@ sub get_tag {
 
 sub repl_tag {
 
-    my ($bt, $et, $src, $rwith) = @_;
+    my ($bt, $et, $src, $rwith, $function) = @_;
+
+    if (!defined($function)) {
+    	$function = "not defined function"
+    }
 
     push_el(\@main::el, 'repl_tag()', "Starting...");
 
-    if (!defined ($rwith)) {
+    if (!defined($rwith)) {
 
-        push_el(\@main::el, 'repl_tag()', "ERROR: Undefined rwith!");
+        push_el(\@main::el, 'repl_tag()', "ERROR: Undefined template replacement data in ".$function."!");
 
         return (-1, '');
 
@@ -1302,7 +1306,7 @@ sub add_tag {
 
     }
 
-    ($rs, $rdata) = repl_tag($bt, $et, $src, $rwith);
+    ($rs, $rdata) = repl_tag($bt, $et, $src, $rwith, "add_tag: ($adata)");
 
     return (-1, '') if ($rs != 0);
 
@@ -1321,7 +1325,7 @@ sub del_tag {
 
     return ($rs, '') if ($rs != 0);
 
-    ($rs, $rdata) = repl_tag($bt, $et, $src, '');
+    ($rs, $rdata) = repl_tag($bt, $et, $src, '', "del_tag");
 
     return (-1, '') if ($rs != 0);
 
@@ -1359,7 +1363,7 @@ sub repl_var {
 
         $result = $rdata;
 
-        ($rs, $rdata) = repl_tag($var, $var, $rdata, $rwith);
+        ($rs, $rdata) = repl_tag($var, $var, $rdata, $rwith, "repl_var: $var");
 
         return -1 if ($rs != 0 && $rs != -4);
 

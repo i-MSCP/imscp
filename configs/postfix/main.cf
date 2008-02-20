@@ -24,7 +24,7 @@ myhostname = {MTA_HOSTNAME}
 mydomain   = {MTA_LOCAL_DOMAIN}
 myorigin   = $myhostname
 
-smtpd_banner = $myhostname ESMTP ispCP {MTA_VERSION} Managed {MTA_HOST_TYPE}
+smtpd_banner = $myhostname ESMTP ispCP {MTA_VERSION} Managed
 setgid_group = postdrop
 
 #

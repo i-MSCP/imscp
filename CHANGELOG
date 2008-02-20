@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-20 Benedikt Heintel
+	- SETUP:
+		* Fixed #1059: ERROR: Undefined rwith! in setup
+
 2008-02-19 Benedikt Heintel
 	- DISTS:
 		* Fixed #816: [fedora anymaybe others] fastcgi_ispcp.conf not copied causes ispcp-setup to stop

@@ -261,7 +261,7 @@ sub dmn_add_named_cfg_data {
 
     my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
-    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
+    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -291,7 +291,7 @@ sub dmn_add_named_cfg_data {
 
     if ($rs == 0) { # YES ! Data is here ! /in production config file/;
 
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working);
+        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_add_named_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -487,7 +487,7 @@ sub dmn_del_named_cfg_data {
 
     if ($rs == 0) { # YES ! Data is here ! /in production config file/;
 
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working);
+        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_del_named_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -1054,7 +1054,8 @@ sub gen_httpd_dmn_group_entry {
                                  $dmn_awstats_b,
                                  $dmn_awstats_e,
                                  $dmn_entry,
-                                 $awstats_entry
+                                 $awstats_entry,
+                                 "gen_httpd_dmn_group_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1075,7 +1076,8 @@ sub gen_httpd_dmn_group_entry {
                                  $dmn_cgi_b,
                                  $dmn_cgi_e,
                                  $dmn_entry,
-                                 $cgi_entry
+                                 $cgi_entry,
+                                 "gen_httpd_dmn_group_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1097,7 +1099,8 @@ sub gen_httpd_dmn_group_entry {
                                      $dmn_php2_b,
                                      $dmn_php2_e,
                                      $dmn_entry,
-                                     $php2_entry
+                                     $php2_entry,
+                                     "gen_httpd_dmn_group_entry"
                                     );
 
         return ($rs, '') if ($rs != 0);
@@ -1108,7 +1111,8 @@ sub gen_httpd_dmn_group_entry {
                                  $dmn_php_b,
                                  $dmn_php_e,
                                  $dmn_entry,
-                                 $php_entry
+                                 $php_entry,
+                                 "gen_httpd_dmn_group_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1121,7 +1125,8 @@ sub gen_httpd_dmn_group_entry {
                                  $dmn_b,
                                  $dmn_e,
                                  $dg_entry,
-                                 $dmn_group_entry
+                                 $dmn_group_entry,
+                                 "gen_httpd_dmn_group_entry"
                                );
 
     #
@@ -1351,7 +1356,8 @@ sub dmn_add_httpd_cfg_data {
                                    $vh_b,
                                    $vh_e,
                                    $working,
-                                   $repl
+                                   $repl,
+                                   "dmn_add_httpd_cfg_data"
                                   );
 
         return $rs if ($rs != 0);
@@ -1427,7 +1433,7 @@ sub dmn_add_httpd_cfg_data {
     # Constructing NEW Virtual Host Entry;
     #
 
-    ($rs, $vh_entry_contents) = repl_tag($dg_b, $dg_e, $vh_entry_contents, $dg_entry_val);
+    ($rs, $vh_entry_contents) = repl_tag($dg_b, $dg_e, $vh_entry_contents, $dg_entry_val, "dmn_add_httpd_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -1439,7 +1445,8 @@ sub dmn_add_httpd_cfg_data {
                                $vh_b_val,
                                $vh_e_val,
                                $working,
-                               $vh_entry_contents
+                               $vh_entry_contents,
+                               "dmn_add_httpd_cfg_data"
                               );
 
     return $rs if ($rs != 0);
@@ -1452,7 +1459,7 @@ sub dmn_add_httpd_cfg_data {
 
     if ($rs == 0) { # Yes, We have some ! We'll replace it;
 
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working);
+        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "dmn_add_httpd_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -1696,7 +1703,8 @@ sub dmn_del_httpd_cfg_data {
                                    $vh_b,
                                    $vh_e,
                                    $working,
-                                   $repl
+                                   $repl,
+                                   "dmn_del_httpd_cfg_data"
                                   );
 
         return $rs if ($rs != 0);
@@ -1759,7 +1767,8 @@ sub dmn_del_httpd_cfg_data {
                                $vh_b_val,
                                $vh_e_val,
                                $working,
-                               $vh_entry_contents
+                               $vh_entry_contents,
+                               "dmn_del_httpd_cfg_data"
                               );
 
     return $rs if ($rs != 0);
@@ -1772,7 +1781,7 @@ sub dmn_del_httpd_cfg_data {
 
     if ($rs == 0) { # Yes, We have some ! We'll replace it;
 
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working);
+        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "dmn_del_httpd_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -3241,7 +3250,8 @@ sub dmn_add_crontab_data {
                                $dmn_custom_b,
                                $dmn_custom_e,
                                $working,
-                               $dmn_custom_task
+                               $dmn_custom_task,
+                               "dmn_add_crontab_data"
                               );
 
     return $rs if ($rs != 0);
@@ -3582,7 +3592,8 @@ sub dmn_add_bkp_crontab_data {
                                $dmn_bk_b,
                                $dmn_bk_e,
                                $working,
-                               $dmn_bk_task
+                               $dmn_bk_task,
+                               "dmn_add_bkp_crontab_data"
                               );
 
     return $rs if ($rs != 0);
@@ -4141,7 +4152,8 @@ sub dmn_add_awstats_cron {
                                $dmn_awstats_b,
                                $dmn_awstats_e,
                                $working,
-                               $dmn_awstats_task
+                               $dmn_awstats_task,
+                               "dmn_add_awstats_cron"
                               );
 
     return $rs if ($rs != 0);

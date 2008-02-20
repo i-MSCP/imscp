@@ -287,7 +287,7 @@ sub als_add_named_cfg_data {
 
     my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
-    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
+    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "als_add_named_cfg_data");
 
     return $rs if ($rs != 0);
 
@@ -317,7 +317,7 @@ sub als_add_named_cfg_data {
 
     if ($rs == 0) { # YES ! Data is here ! /in production config file/;
 
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working);
+        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "als_add_named_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -508,7 +508,7 @@ sub als_del_named_cfg_data {
 
     if ($rs == 0) { # YES ! Data is here ! /in production config file/;
 
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working);
+        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "als_del_named_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -998,7 +998,8 @@ sub gen_httpd_als_entry {
                                  $als_cgi_b,
                                  $als_cgi_e,
                                  $als_entry,
-                                 $cgi_entry
+                                 $cgi_entry,
+                                 "gen_httpd_als_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1024,7 +1025,8 @@ sub gen_httpd_als_entry {
                                      $als_php2_b,
                                      $als_php2_e,
                                      $als_entry,
-                                     $php2_entry
+                                     $php2_entry,
+                                     "gen_httpd_als_entry"
                                     );
 
         return ($rs, '') if ($rs != 0);
@@ -1035,7 +1037,8 @@ sub gen_httpd_als_entry {
                                  $als_php_b,
                                  $als_php_e,
                                  $als_entry,
-                                 $php_entry
+                                 $php_entry,
+                                 "gen_httpd_als_entry"
                                 );
 
     return ($rs, '') if ($rs != 0);
@@ -1052,7 +1055,8 @@ sub gen_httpd_als_entry {
                                      $als_rdr_b,
                                      $als_rdr_e,
                                      $als_entry,
-                                     $rdr_entry
+                                     $rdr_entry,
+                                     "gen_httpd_als_entry"
                                     );
 
         return ($rs, '') if ($rs != 0);
@@ -1255,7 +1259,8 @@ sub als_add_httpd_cfg_data {
                                         $als_b,
                                         $als_e,
                                         $vh_entry_val,
-                                        $repl
+                                        $repl,
+                                        "als_add_httpd_cfg_data"
                                        );
         return $rs if ($rs != 0);
 
@@ -1267,7 +1272,8 @@ sub als_add_httpd_cfg_data {
                                    $vh_b,
                                    $vh_e,
                                    $working,
-                                   $repl
+                                   $repl,
+                                   "als_add_httpd_cfg_data "
                                   );
 
         return $rs if ($rs != 0);
@@ -1322,7 +1328,8 @@ sub als_add_httpd_cfg_data {
                                              $als_b,
                                              $als_e,
                                              $vh_entry_contents,
-                                             $repl
+                                             $repl,
+                                             "als_add_httpd_cfg_data"
                                             );
 
         return $rs if ($rs != 0);
@@ -1333,7 +1340,8 @@ sub als_add_httpd_cfg_data {
                                    $vh_b_val,
                                    $vh_e_val,
                                    $working,
-                                   $vh_entry_contents
+                                   $vh_entry_contents,
+                                   "als_add_httpd_cfg_data"
                                   );
 
         return $rs if ($rs != 0);
@@ -1352,7 +1360,7 @@ sub als_add_httpd_cfg_data {
 
     if ($rs == 0) { # Yes, We have some ! We'll replace it;
 
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working);
+        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "als_add_httpd_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -1613,7 +1621,8 @@ sub als_del_httpd_cfg_data {
                                    $vh_b_val,
                                    $vh_e_val,
                                    $working,
-                                   $vh_entry_contents
+                                   $vh_entry_contents,
+                                   "als_del_httpd_cfg_data"
                                   );
 
         return $rs if ($rs != 0);
@@ -1628,7 +1637,7 @@ sub als_del_httpd_cfg_data {
 
     if ($rs == 0) { # Yes, We have some ! We'll replace it;
 
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working);
+        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "als_del_httpd_cfg_data");
 
         return $rs if ($rs != 0);
 
@@ -2604,13 +2613,13 @@ sub als_mngr_engine {
         t2.domain_gid,
         t2.domain_uid,
         t2.domain_admin_id,
-	t2.domain_created_id, 
-	t2.domain_created, 
+	t2.domain_created_id,
+	t2.domain_created,
         t2.domain_last_modified,
         t2.domain_mailacc_limit,
         t2.domain_ftpacc_limit,
-	t2.domain_traffic_limit, 
-	t2.domain_sqld_limit, 
+	t2.domain_traffic_limit,
+	t2.domain_sqld_limit,
         t2.domain_sqlu_limit,
         t2.domain_status,
         t2.domain_alias_limit,

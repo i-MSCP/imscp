@@ -837,7 +837,7 @@ sub add_named_cfg_data {
 
     my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
-    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
+    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "add_named_cfg_data");
     return $rs if ($rs != 0);
 
     #
@@ -863,7 +863,7 @@ sub add_named_cfg_data {
     ($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
 
     if ($rs == 0) { # YES ! Data is here ! /in production config file/;
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working);
+        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "add_named_cfg_data");
         return $rs if ($rs != 0);
     }
 	elsif ($rs == -5) {
@@ -1309,7 +1309,7 @@ sub setup_httpd {
 		# check if file exists
 		if (-f "/etc/logrotate.d/".$apache_file) {
 			$file = "/etc/logrotate.d/".$apache_file;
-			print STDOUT "$file \n";
+			#print STDOUT "$file \n";
 
 			# get file
 			($rs, $rdata) = get_file($file);
@@ -1378,8 +1378,7 @@ sub setup_mta {
             my %tag_hash = (
                             '{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
                             '{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
-                            '{MTA_VERSION}' => $main::cfg{'VersionH'},
-                            '{MTA_HOST_TYPE}' => $main::cfg{'Version'},
+                            '{MTA_VERSION}' => $main::cfg{'Version'},
                             '{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
                             '{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
                             '{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
