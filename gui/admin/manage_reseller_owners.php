@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -141,8 +141,7 @@ SQL_QUERY;
 	$tpl->assign('PAGE_MESSAGE', '');
 }
 
-function update_reseller_owner($sql)
-{
+function update_reseller_owner($sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
 		$query = <<<SQL_QUERY
             SELECT
@@ -189,12 +188,10 @@ SQL_QUERY;
  */
 
 $tpl->assign(
-	array(
-		'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
+	array('TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 
@@ -206,8 +203,7 @@ update_reseller_owner($sql);
 gen_reseller_table($tpl, $sql);
 
 $tpl->assign(
-	array(
-		'TR_RESELLER_ASSIGNMENT' => tr('Reseller assignment'),
+	array('TR_RESELLER_ASSIGNMENT' => tr('Reseller assignment'),
 		'TR_RESELLER_USERS' => tr('Reseller users'),
 		'TR_NUMBER' => tr('No.'),
 		'TR_MARK' => tr('Mark'),
@@ -221,7 +217,8 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 

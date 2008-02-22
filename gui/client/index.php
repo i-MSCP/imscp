@@ -2,13 +2,14 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 2001-2006 by moleSoftware GmbH
- * @copyright 2006-2007 by ispCP | http://isp-control.net
- * @link http://isp-control.net
- * @author ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
  * @license
- * 	This program is free software; you can redistribute it and/or modify it under
+ *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
  *   Foundation; either version 1.1 of the License, or (at your option) any later
  *   version.
@@ -297,7 +298,6 @@ $tpl->assign(
     array('TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Client/Main Index'),
         'THEME_COLOR_PATH' => "../themes/$theme_color",
         'THEME_CHARSET' => tr('encoding'),
-        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
         'ISP_LOGO' => get_logo($_SESSION['user_id'])
         )
     );
@@ -346,9 +346,9 @@ $tpl->assign(
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 ?>

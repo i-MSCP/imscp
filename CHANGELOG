@@ -1,9 +1,24 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-22 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1064: DisplayChdir in proftpd.conf doesn't work
+	- GUI:
+		* Fixed #1050: Error when adding User whith Hostingplan
+		* Undefined index: ISPCP_LICENSE
+	- TOOLS:
+		* Updated ADOdb to version 4.98
+
+
+2008-02-21 Benedikt Heintel
+	- GUI:
+		* Trim whitespaces on login and lost password
+
 2008-02-20 Benedikt Heintel
 	- GUI:
 		* Fixed Warning: Undefined index: ISPCP_LICENSE
+		* Fixed design error: Update news not in red
 	- SETUP:
 		* Fixed #1059: ERROR: Undefined rwith! in setup
 

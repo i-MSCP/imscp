@@ -46,7 +46,6 @@ $tpl->assign(
 			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Edit hosting plan'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-	
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 			)
 		);

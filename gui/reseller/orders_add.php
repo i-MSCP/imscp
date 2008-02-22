@@ -28,7 +28,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID!'));
-	Header("Location: orders.php");
+	header("Location: orders.php");
 	die();
 }
 

@@ -4,6 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -135,7 +136,6 @@ $tpl->assign(
 			'TR_CLIENT_MANAGE_SQL_PAGE_TITLE' => tr('ispCP - Client/Manage SQL'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-	
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 			)
 		);

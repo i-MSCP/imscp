@@ -3,13 +3,13 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
- * 	 This program is free software; you can redistribute it and/or modify it under
+ *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
  *   Foundation; either version 1.1 of the License, or (at your option) any later
  *   version.
@@ -17,7 +17,6 @@
  *   this program; if not, write to the Open Source Initiative (OSI)
  *   http://opensource.org | osi@opensource.org
  */
-
 
 require '../include/ispcp-lib.php';
 
@@ -155,15 +154,14 @@ save_layout();
 gen_def_layout($tpl, $theme_color);
 
 $tpl->assign(
-                array(
-                        'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
-                        'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'OWN_LOGO' => get_own_logo($_SESSION['user_id']),
-                        'THEME_CHARSET' => tr('encoding'),
-                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                     )
-              );
+	        array(
+                'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE' => tr('ispCP - Reseller/Change Personal Data'),
+                'THEME_COLOR_PATH' => "../themes/$theme_color",
+                'OWN_LOGO' => get_own_logo($_SESSION['user_id']),
+                'THEME_CHARSET' => tr('encoding'),
+				'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	             )
+	      );
 
 /*
  *
@@ -200,7 +198,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 ?>

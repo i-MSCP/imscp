@@ -61,10 +61,10 @@ function check_input($value = '') {
 }
 
 function clean_html($text) {
-	$suche = array ('@<script[^>]*?>.*?</script>@si', // JavaScript entfernen
-		'@<[\/\!]*?[^<>]*?>@si', // HTML-Tags entfernen
-		'@([\r\n])[\s]+@', // Leerr?ume entfernen
-		'@&(quot|#34);@i', // HTML-Entit?ten ersetzen
+	$suche = array ('@<script[^>]*?>.*?</script>@si', // remove JavaScript
+		'@<[\/\!]*?[^<>]*?>@si', // remove HTML tags
+		'@([\r\n])[\s]+@', // remove spaces,
+		'@&(quot|#34);@i', // change HTML entities
 		'@&(amp|#38);@i',
 		'@&(lt|#60);@i',
 		'@&(gt|#62);@i',
@@ -73,7 +73,7 @@ function clean_html($text) {
 		'@&(cent|#162);@i',
 		'@&(pound|#163);@i',
 		'@&(copy|#169);@i',
-		'@&#(\d+);@e'); // als PHP auswerten
+		'@&#(\d+);@e'); // handle als php
 
 	$ersetze = array ('',
 		'',

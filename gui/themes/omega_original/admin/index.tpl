@@ -108,7 +108,7 @@
           <!-- BDP: update_message -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="2" style="color:ff0000"><b>{UPDATE}</b></td>
+            <td colspan="2" style="color:#ff0000"><b>{UPDATE}</b></td>
           </tr>
           <!-- EDP: update_message -->
         </table>

@@ -35,8 +35,7 @@ $tpl->assign(
 			'TR_ADMIN_ROOTKIT_LOG_PAGE_TITLE' => tr('ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 

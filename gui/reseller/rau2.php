@@ -39,7 +39,6 @@ $tpl->assign(
 		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - User/Add user(step2)'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);

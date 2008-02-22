@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -31,8 +32,8 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 
 	$uname = encode_idna($_POST['uname']);
 
-	check_input($_POST['uname']);
-	check_input($_POST['upass']);
+	check_input(trim($_POST['uname']));
+	check_input(trim($_POST['upass']));
 
 	if (register_user($uname, $_POST['upass'])) {
 	    redirect_to_level_page();
@@ -85,7 +86,7 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 				'TR_USERNAME' => tr('Username'),
 				'TR_PASSWORD' => tr('Password'),
 				'TR_LOGIN_INFO' => tr('Please enter your login information'),
-				// Please make this configurable by ispcp-lib
+				// @todo: make this configurable by ispcp-lib
 				'TR_SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST']) : 'https://'.htmlentities($_SERVER['HTTP_HOST']),
 				'TR_SSL_IMAGE' => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
 				'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
@@ -94,10 +95,11 @@ if ($cfg['MAINTENANCEMODE'] && !isset($_GET['admin'])) {
 
 }
 
-if ($cfg['LOSTPASSWORD'])
+if ($cfg['LOSTPASSWORD']) {
 	$tpl->assign('TR_LOSTPW', tr('Lost password'));
-else
+} else {
 	$tpl->assign('TR_LOSTPW', '');
+}
 
 gen_page_message($tpl);
 

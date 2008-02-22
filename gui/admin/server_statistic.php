@@ -38,8 +38,7 @@ $tpl->assign(
 			'TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('ispCP - Admin/Server statistics'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 

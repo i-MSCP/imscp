@@ -34,7 +34,6 @@ $tpl->assign(
 	array('TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		)
 	);
@@ -112,6 +111,7 @@ function init_in_values() {
 
 	if (isset($_SESSION['step_one'])) {
 		$step_two = $_SESSION['dmn_name'] . ";" . $_SESSION['dmn_tpl'];
+		$hpid = $_SESSION['dmn_tpl'];
 		unset($_SESSION['dmn_name']);
 		unset($_SESSION['dmn_tpl']);
 		unset($_SESSION['chtpl']);
@@ -194,7 +194,7 @@ function gen_empty_data() {
 
 // Save data for new user in db
 function add_user_data($reseller_id) {
-	global $sql, $cfg;
+	global $sql, $cfg, $hpid;
 	global $dmn_name, $dmn_user_name, $admin_login;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
@@ -259,10 +259,11 @@ OMEGA_SQL_QUERY;
 	$res = exec_query($sql, $query, $dmn_user_name);
 	$data = $res->FetchRow();
 
+	/*
 	if ($data['count'] > 0) {
 		set_page_message(tr("There's a conflicting admin / reseller fix that first!"));
 		return;
-	}
+	}*/
 
 	$query = <<<ISPCP_SQL_QUERY
         	insert into admin

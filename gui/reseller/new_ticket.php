@@ -1,71 +1,56 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
-
-
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
+$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/new_ticket.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
 
-$tpl -> define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'].'/new_ticket.tpl');
-
-$tpl -> define_dynamic('page_message', 'page');
-
-$tpl -> define_dynamic('logged_from', 'page');
-
-//
 // page functions.
-//
 
+function send_user_message(&$sql, $user_id, $user_created_by) {
+	if (!isset($_POST['uaction'])) return;
 
+	if (empty($_POST['subj'])) {
+		set_page_message(tr('Please specify message subject!'));
 
-function send_user_message(&$sql, $user_id, $user_created_by)
-{
+		return;
+	}
 
-    if (!isset($_POST['uaction'])) return;
+	if (empty($_POST['user_message'])) {
+		set_page_message(tr('Please type your message!'));
 
-    if (empty($_POST['subj'])) {
+		return;
+	}
 
-        set_page_message(tr('Please specify message subject!'));
+	$ticket_date = time();
 
-        return;
+	$urgency = $_POST['urgency'];
 
-    }
+	$subj = clean_input($_POST['subj']);
 
-    if (empty($_POST['user_message'])) {
-
-        set_page_message(tr('Please type your message!'));
-
-        return;
-
-    }
-
-    $ticket_date = time();
-
-    $urgency = $_POST['urgency'];
-
-    $subj = clean_input($_POST['subj']);
-
-    $user_message = clean_input($_POST["user_message"]);
+	$user_message = clean_input($_POST["user_message"]);
 
 	$ticket_status = 2;
 
@@ -73,7 +58,7 @@ function send_user_message(&$sql, $user_id, $user_created_by)
 
 	$ticket_level = 2;
 
-    $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         insert into tickets
             (ticket_level,
              ticket_from,
@@ -88,82 +73,72 @@ function send_user_message(&$sql, $user_id, $user_created_by)
             (?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($ticket_level,
-                                         $user_id,
-                                         $user_created_by,
-                                         $ticket_status,
-                                         $ticket_reply,
-                                         $urgency,
-                                         $ticket_date,
-                                         $subj,
-                                         $user_message));
+	$rs = exec_query($sql, $query, array($ticket_level,
+			$user_id,
+			$user_created_by,
+			$ticket_status,
+			$ticket_reply,
+			$urgency,
+			$ticket_date,
+			$subj,
+			$user_message));
 
-	send_tickets_msg($user_created_by,$user_id,$subj);
-    header("Location: support_system.php");
+	send_tickets_msg($user_created_by, $user_id, $subj);
+	header("Location: support_system.php");
 }
 
-
-//
 // common page data.
-//
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(
-                array(
-                        'TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
-                        'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'),
-                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                     )
-              );
+$tpl->assign(
+	array('TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		)
+	);
 
-//
 // dynamic page data.
-//
 
 if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
-	header( "Location: index.php" );
+	header("Location: index.php");
 	die();
 }
 
-
 send_user_message($sql, $_SESSION['user_id'], $_SESSION['user_created_by']);
 
-//
 // static page messages.
-//
 
-gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/main_menu_support_system.tpl');
-gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'].'/menu_support_system.tpl');
+gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_support_system.tpl');
+gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_support_system.tpl');
 
 gen_logged_from($tpl);
 
-$tpl -> assign(
-                array(
-                        'TR_NEW_TICKET' => tr('New ticket'),
-                        'TR_LOW' => tr('Low'),
-                        'TR_MEDIUM' => tr('Medium'),
-                        'TR_HIGH' => tr('High'),
-                        'TR_VERI_HIGH' => tr('Very high'),
-						'TR_URGENCY' => tr('Priority'),
-                        'TR_EMAIL' => tr('Email'),
-                        'TR_SUBJECT' => tr('Subject'),
-                        'TR_YOUR_MESSAGE' => tr('Your message'),
-                        'TR_SEND_MESSAGE' => tr('Send message'),
-						'TR_OPEN_TICKETS' => tr('Open tickets'),
-						'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-                     )
-              );
+$tpl->assign(
+	array('TR_NEW_TICKET' => tr('New ticket'),
+		'TR_LOW' => tr('Low'),
+		'TR_MEDIUM' => tr('Medium'),
+		'TR_HIGH' => tr('High'),
+		'TR_VERI_HIGH' => tr('Very high'),
+		'TR_URGENCY' => tr('Priority'),
+		'TR_EMAIL' => tr('Email'),
+		'TR_SUBJECT' => tr('Subject'),
+		'TR_YOUR_MESSAGE' => tr('Your message'),
+		'TR_SEND_MESSAGE' => tr('Send message'),
+		'TR_OPEN_TICKETS' => tr('Open tickets'),
+		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		)
+	);
 
 gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
+$tpl->parse('PAGE', 'page');
 
-$tpl -> prnt();
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
+
 ?>

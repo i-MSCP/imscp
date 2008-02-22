@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -42,11 +43,9 @@ $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if (isset($_POST['rid']) && isset($_POST['name'])) {
 	$rid = $_POST['rid'];
-
 	$name = $_POST['name'];
 } else if (isset($_GET['rid']) && isset($_GET['name'])) {
 	$rid = $_GET['rid'];
-
 	$name = $_GET['name'];
 }
 
@@ -55,17 +54,14 @@ $month = 0;
 
 if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = $_POST['year'];
-
 	$month = $_POST['month'];
 } else if (isset($_GET['month']) && isset($_GET['year'])) {
 	$month = $_GET['month'];
-
 	$year = $_GET['year'];
 }
 
 if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 	header("Location: reseller_statistics.php");
-
 	die();
 }
 
@@ -74,9 +70,8 @@ $tpl->assign(
 			'TR_ADMIN_USER_STATISTICS_PAGE_TITLE' => tr('ispCP - Admin/Reseller User Statistics'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
-			)
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
 	);
 
 function generate_page (&$tpl, $reseller_id, $reseller_name) {

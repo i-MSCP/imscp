@@ -1,50 +1,48 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl -> define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'].'/edit_mail_acc.tpl');
-$tpl -> define_dynamic('page_message', 'page');
-$tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('normal_mail', 'page');
-$tpl -> define_dynamic('forward_mail', 'page');
+$tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/edit_mail_acc.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('normal_mail', 'page');
+$tpl->define_dynamic('forward_mail', 'page');
 
-//
 // page functions.
-//
-function edit_mail_account(&$tpl, &$sql)
-{
-  if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-    set_page_message(tr('Email account not found!'));
-    header('Location: email_accounts.php');
-    die();
-  } else {
-    $mail_id = $_GET['id'];
-  }
 
-  $dmn_name = $_SESSION['user_logged'];
+function edit_mail_account(&$tpl, &$sql) {
+	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
+		set_page_message(tr('Email account not found!'));
+		header('Location: email_accounts.php');
+		die();
+	} else {
+		$mail_id = $_GET['id'];
+	}
 
-  $query = <<<SQL_QUERY
+	$dmn_name = $_SESSION['user_logged'];
+
+	$query = <<<SQL_QUERY
           select
               t1.*, t2.domain_id, t2.domain_name
           from
@@ -58,111 +56,109 @@ function edit_mail_account(&$tpl, &$sql)
               t2.domain_name = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
-  if ($rs -> RecordCount() == 0) {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-    header('Location: email_accounts.php');
-    die();
-  } else {
-    $mail_acc = $rs -> fields['mail_acc'];
-    $domain_id = $rs -> fields['domain_id'];
-    $mail_type = $rs -> fields['mail_type'];
-    $mail_forward = $rs -> fields['mail_forward'];
-    $sub_id = $rs -> fields['sub_id'];
-    if ($mail_type == MT_NORMAL_MAIL) {
-      $mtype = 1;
-      $res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-      $tmp1 = $res1->FetchRow(0);
-      $maildomain = $tmp1['domain_name'];
-    } elseif ($mail_type == MT_NORMAL_FORWARD) {
-      $mtype = 4;
-      $res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-      $tmp1 = $res1->FetchRow(0);
-      $maildomain = $tmp1['domain_name'];
-    } elseif ($mail_type == MT_ALIAS_MAIL) {
-      $mtype = 2;
-      $res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
-      $tmp1 = $res1->FetchRow(0);
-      $maildomain = $tmp1['alias_name'];
-    } elseif ($mail_type == MT_ALIAS_FORWARD) {
-      $mtype = 5;
-      $res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
-      $tmp1 = $res1->FetchRow();
-      $maildomain = $tmp1['alias_name'];
-    } elseif ($mail_type == MT_SUBDOM_MAIL) {
-      $mtype = 3;
-      $res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
-      $tmp1 = $res1->FetchRow();
-      $maildomain = $tmp1['subdomain_name'];
-      $res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-      $tmp1 = $res1->FetchRow(0);
-      $maildomain = $maildomain.".".$tmp1['domain_name'];
-    } elseif ($mail_type == MT_SUBDOM_FORWARD) {
-      $mtype = 6;
-      $res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
-      $tmp1 = $res1->FetchRow();
-      $maildomain = $tmp1['subdomain_name'];
-      $res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-      $tmp1 = $res1->FetchRow(0);
-      $maildomain = $maildomain.".".$tmp1['domain_name'];
-    }
+	if ($rs->RecordCount() == 0) {
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		header('Location: email_accounts.php');
+		die();
+	} else {
+		$mail_acc = $rs->fields['mail_acc'];
+		$domain_id = $rs->fields['domain_id'];
+		$mail_type = $rs->fields['mail_type'];
+		$mail_forward = $rs->fields['mail_forward'];
+		$sub_id = $rs->fields['sub_id'];
+		if ($mail_type == MT_NORMAL_MAIL) {
+			$mtype = 1;
+			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+			$tmp1 = $res1->FetchRow(0);
+			$maildomain = $tmp1['domain_name'];
+		} elseif ($mail_type == MT_NORMAL_FORWARD) {
+			$mtype = 4;
+			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+			$tmp1 = $res1->FetchRow(0);
+			$maildomain = $tmp1['domain_name'];
+		} elseif ($mail_type == MT_ALIAS_MAIL) {
+			$mtype = 2;
+			$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
+			$tmp1 = $res1->FetchRow(0);
+			$maildomain = $tmp1['alias_name'];
+		} elseif ($mail_type == MT_ALIAS_FORWARD) {
+			$mtype = 5;
+			$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
+			$tmp1 = $res1->FetchRow();
+			$maildomain = $tmp1['alias_name'];
+		} elseif ($mail_type == MT_SUBDOM_MAIL) {
+			$mtype = 3;
+			$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
+			$tmp1 = $res1->FetchRow();
+			$maildomain = $tmp1['subdomain_name'];
+			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+			$tmp1 = $res1->FetchRow(0);
+			$maildomain = $maildomain . "." . $tmp1['domain_name'];
+		} elseif ($mail_type == MT_SUBDOM_FORWARD) {
+			$mtype = 6;
+			$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
+			$tmp1 = $res1->FetchRow();
+			$maildomain = $tmp1['subdomain_name'];
+			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+			$tmp1 = $res1->FetchRow(0);
+			$maildomain = $maildomain . "." . $tmp1['domain_name'];
+		}
 
-    $mail_forward = $rs -> fields['mail_forward'];
+		$mail_forward = $rs->fields['mail_forward'];
 
-    if (isset($_POST['forward_list'])) {
-      $mail_forward = clean_input($_POST['forward_list']);
-    }
-    $mail_acc = decode_idna($mail_acc);
-    $maildomain = decode_idna($maildomain);
-    $tpl -> assign(array('EMAIL_ACCOUNT' => $mail_acc."@".$maildomain,
-                         'FORWARD_LIST' => $mail_forward,
-                         'MTYPE' => $mtype,
-                         'MAIL_ID' => $mail_id));
-    if ($mail_forward === '_no_') {
-      $tpl -> assign(array('ACTION' => "update_pass"));
-      $tpl -> assign('FORWARD_MAIL', '');
-      $tpl -> parse('NORMAL_MAIL', '.normal_mail');
-    } else {
-      $tpl -> assign(array('ACTION' => "update_forward"));
-      $tpl -> assign('NORMAL_MAIL', '');
-      $tpl -> parse('FORWARD_MAIL', '.forward_mail');
-    }
-  }
+		if (isset($_POST['forward_list'])) {
+			$mail_forward = clean_input($_POST['forward_list']);
+		}
+		$mail_acc = decode_idna($mail_acc);
+		$maildomain = decode_idna($maildomain);
+		$tpl->assign(array('EMAIL_ACCOUNT' => $mail_acc . "@" . $maildomain,
+				'FORWARD_LIST' => $mail_forward,
+				'MTYPE' => $mtype,
+				'MAIL_ID' => $mail_id));
+		if ($mail_forward === '_no_') {
+			$tpl->assign(array('ACTION' => "update_pass"));
+			$tpl->assign('FORWARD_MAIL', '');
+			$tpl->parse('NORMAL_MAIL', '.normal_mail');
+		} else {
+			$tpl->assign(array('ACTION' => "update_forward"));
+			$tpl->assign('NORMAL_MAIL', '');
+			$tpl->parse('FORWARD_MAIL', '.forward_mail');
+		}
+	}
 }
 
-function update_email_pass($sql)
-{
-  if (!isset($_POST['uaction'])) {
-    return;
-  }
-  if ($_POST['uaction'] != 'update_pass') {
-    return;
-  }
+function update_email_pass($sql) {
+	if (!isset($_POST['uaction'])) {
+		return;
+	}
+	if ($_POST['uaction'] != 'update_pass') {
+		return;
+	}
 
-  $pass = escapeshellcmd($_POST['pass']);
-  $pass_rep = escapeshellcmd($_POST['pass_rep']);
-  $mail_id = $_GET['id'];
-  $mail_account = clean_input($_POST['mail_account']);
+	$pass = escapeshellcmd($_POST['pass']);
+	$pass_rep = escapeshellcmd($_POST['pass_rep']);
+	$mail_id = $_GET['id'];
+	$mail_account = clean_input($_POST['mail_account']);
 
-  if ($pass === '' || $pass_rep === '' || $mail_id === '' || !is_numeric($mail_id)) {
-    set_page_message(tr('Missing or wrong data!'));
-    return;
-  } else if ($pass !== $pass_rep) {
-    set_page_message(tr('Entered passwords differ!'));
-    return;
-  	// Not permitted chars
-  } else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) {
-    set_page_message(tr('Password data includes not valid signs!'));
-    return;
-  }
-  else {
-    global $cfg;
-    $status = $cfg['ITEM_CHANGE_STATUS'];
+	if ($pass === '' || $pass_rep === '' || $mail_id === '' || !is_numeric($mail_id)) {
+		set_page_message(tr('Missing or wrong data!'));
+		return;
+	} else if ($pass !== $pass_rep) {
+		set_page_message(tr('Entered passwords differ!'));
+		return;
+		// Not permitted chars
+	} else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) {
+		set_page_message(tr('Password data includes not valid signs!'));
+		return;
+	} else {
+		global $cfg;
+		$status = $cfg['ITEM_CHANGE_STATUS'];
 
-    check_for_lock_file();
+		check_for_lock_file();
 
-    $query = <<<SQL_QUERY
+		$query = <<<SQL_QUERY
           update
               mail_users
           set
@@ -172,52 +168,51 @@ function update_email_pass($sql)
               mail_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array($pass, $status, $mail_id));
+		$rs = exec_query($sql, $query, array($pass, $status, $mail_id));
 
-    send_request();
-    set_page_message(tr("Mail were updated successfully!"));
-    write_log($_SESSION['user_logged'].": change mail account password: $mail_account");
+		send_request();
+		set_page_message(tr("Mail were updated successfully!"));
+		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account");
 
-    header( "Location: email_accounts.php" );
-    die();
-  }
+		header("Location: email_accounts.php");
+		die();
+	}
 }
 
-function update_email_forward(&$tpl, &$sql)
-{
-    if (!isset($_POST['uaction'])) {
-        return;
-    }
-    if($_POST['uaction'] != 'update_forward') {
-        return;
-    }
+function update_email_forward(&$tpl, &$sql) {
+	if (!isset($_POST['uaction'])) {
+		return;
+	}
+	if ($_POST['uaction'] != 'update_forward') {
+		return;
+	}
 
-    $mail_account = $_POST['mail_account'];
-    $mail_id = $_GET['id'];
-    $forward_list = clean_input($_POST['forward_list']);
-    $mail_accs = array();
+	$mail_account = $_POST['mail_account'];
+	$mail_id = $_GET['id'];
+	$forward_list = clean_input($_POST['forward_list']);
+	$mail_accs = array();
 
-    $faray = preg_split ("/[\n,]+/",$forward_list);
+	$faray = preg_split ("/[\n,]+/", $forward_list);
 
-    foreach ($faray as $value) {
-        $value = trim($value);
-        if (!chk_email($value) && $value !== '') {
-            /* ERR .. strange :) not email in this line - warrning */
-            set_page_message(tr("Mail forward list error!"));
-            return;
-        } else if ($value === '') {
-            set_page_message(tr("Mail forward list error!"));
-            return;
-        }
-        $mail_accs[] = $value;
-    }
+	foreach ($faray as $value) {
+		$value = trim($value);
+		if (!chk_email($value) && $value !== '') {
+			/* ERR .. strange :) not email in this line - warrning */
+			set_page_message(tr("Mail forward list error!"));
+			return;
+		} else if ($value === '') {
+			set_page_message(tr("Mail forward list error!"));
+			return;
+		}
+		$mail_accs[] = $value;
+	}
 
-    global $cfg;
-    $status = $cfg['ITEM_CHANGE_STATUS'];
+	global $cfg;
+	$status = $cfg['ITEM_CHANGE_STATUS'];
 
-    check_for_lock_file();
+	check_for_lock_file();
 
-    $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
           update
               mail_users
           set
@@ -227,55 +222,48 @@ function update_email_forward(&$tpl, &$sql)
               mail_id = ?
 SQL_QUERY;
 
-    $rs = exec_query($sql, $query, array(implode(',', $mail_accs), $status, $mail_id));
+	$rs = exec_query($sql, $query, array(implode(',', $mail_accs), $status, $mail_id));
 
-    send_request();
-    write_log($_SESSION['user_logged'].": change mail forward: $mail_account");
-    header( "Location: email_accounts.php" );
-    die();
+	send_request();
+	write_log($_SESSION['user_logged'] . ": change mail forward: $mail_account");
+	header("Location: email_accounts.php");
+	die();
 }
 
-
-
-//
 // end page functions.
-//
+
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(array('TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
-                     'THEME_COLOR_PATH' => "../themes/$theme_color",
-                     'THEME_CHARSET' => tr('encoding'),
-                     'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE'],
-                     'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+$tpl->assign(array('TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
-//
 // dynamic page data.
-//
+
 edit_mail_account($tpl, $sql);
 update_email_pass($sql);
 update_email_forward($tpl, $sql);
 
-//
 // static page messages.
-//
 
-gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'].'/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl -> assign(array('TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
-                     'TR_SAVE' => tr('Save'),
-                     'TR_PASSWORD' => tr('Password'),
-                     'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-                     'TR_EDIT' => tr('Edit')));
+$tpl->assign(array('TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
+		'TR_SAVE' => tr('Save'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_EDIT' => tr('Edit')));
 
 gen_page_message($tpl);
-$tpl -> parse('PAGE', 'page');
-$tpl -> prnt();
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 

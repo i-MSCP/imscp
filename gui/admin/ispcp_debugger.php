@@ -3,10 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -96,7 +96,7 @@ SQL_QUERY;
 
 			$tpl->parse('DOMAIN_LIST', '.domain_list');
 
-			$i ++;
+			$i++;
 			$rs->MoveNext();
 		}
 	}
@@ -430,8 +430,7 @@ $tpl->assign(
 			'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
 			'THEME_COLOR_PATH' => "../themes/$theme_color",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id']),
-			'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 			)
 	);
 
@@ -454,6 +453,7 @@ $tpl->assign(
 			'TR_EXEC_REQUESTS' => tr('Execute requests')
 			)
 	);
+
 // Handy way to change domain/subdomain/alias/mail status
 // TODO: write implementation in the GUI
 if (isset($_GET['action'])) {
@@ -462,9 +462,8 @@ if (isset($_GET['action'])) {
 		$c = send_request();
 		set_page_message(tr('Daemon returned %d as status code', $c));
 	} else if ($_GET['action'] == 'change_status' && (
-			isset($_GET['account_id']) &&
-				isset($_GET['new_status']) &&
-				isset($_GET['type']))) {
+			isset($_GET['account_id']) && isset($_GET['new_status']) &&	isset($_GET['type']))) {
+
 		switch ($_GET['new_status']) {
 			case $cfg['ITEM_OK_STATUS']:
 			case $cfg['ITEM_DISABLED_STATUS']:

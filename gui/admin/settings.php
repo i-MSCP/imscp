@@ -1,64 +1,57 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
-$tpl -> define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'].'/settings.tpl');
-
-$tpl -> define_dynamic('def_language', 'page');
+$tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/settings.tpl');
+$tpl->define_dynamic('def_language', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl -> assign(
-                array(
-                        'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
-                        'THEME_COLOR_PATH' => "../themes/$theme_color",
-                        'THEME_CHARSET' => tr('encoding'),
-						'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                        'ISPCP_LICENSE' => $cfg['ISPCP_LICENSE']
-                     )
-              );
-
+$tpl->assign(
+	array('TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
+	$lostpassword = clean_input($_POST['lostpassword']);
+	$lostpassword_timeout = clean_input($_POST['lostpassword_timeout']);
+	$bruteforce = clean_input($_POST['bruteforce']);
+	$bruteforce_between = clean_input($_POST['bruteforce_between']);
+	$bruteforce_max_login = clean_input($_POST['bruteforce_max_login']);
+	$bruteforce_block_time = clean_input($_POST['bruteforce_block_time']);
+	$bruteforce_between_time = clean_input($_POST['bruteforce_between_time']);
+	$user_initial_lang = clean_input($_POST['def_language']);
+	$support_system = clean_input($_POST['support_system']);
+	$domain_rows_per_page = clean_input($_POST['domain_rows_per_page']);
 
-	$lostpassword 				= clean_input($_POST['lostpassword']);
-	$lostpassword_timeout 		= clean_input($_POST['lostpassword_timeout']);
-	$bruteforce 				= clean_input($_POST['bruteforce']);
-	$bruteforce_between 		= clean_input($_POST['bruteforce_between']);
-	$bruteforce_max_login 		= clean_input($_POST['bruteforce_max_login']);
-	$bruteforce_block_time 		= clean_input($_POST['bruteforce_block_time']);
-	$bruteforce_between_time 	= clean_input($_POST['bruteforce_between_time']);
-  	$user_initial_lang 			= clean_input($_POST['def_language']);
-	$support_system 			= clean_input($_POST['support_system']);
-	$domain_rows_per_page 		= clean_input($_POST['domain_rows_per_page']);
-
-	if ( (!is_number($lostpassword_timeout)) OR (!is_number($bruteforce_max_login))
-		OR (!is_number($bruteforce_block_time))	OR (!is_number($bruteforce_between_time))
-		OR (!is_number($domain_rows_per_page)) ) {
-
-			set_page_message(tr('ERROR: Only positive numbers are allowed !'));
-
+	if ((!is_number($lostpassword_timeout)) OR (!is_number($bruteforce_max_login))
+			OR (!is_number($bruteforce_block_time)) OR (!is_number($bruteforce_between_time))
+			OR (!is_number($domain_rows_per_page))) {
+		set_page_message(tr('ERROR: Only positive numbers are allowed !'));
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
 	} else {
@@ -76,49 +69,48 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	}
 }
 
-$tpl -> assign(
-                array(
-					'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg['LOSTPASSWORD_TIMEOUT'],
-					'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg['BRUTEFORCE_MAX_LOGIN'],
-					'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg['BRUTEFORCE_BLOCK_TIME'],
-					'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg['BRUTEFORCE_BETWEEN_TIME'],
-					'BRUTEFORCE_MAX_CAPTCHA' => $cfg['BRUTEFORCE_MAX_CAPTCHA'],
-					'DOMAIN_ROWS_PER_PAGE' => $cfg['DOMAIN_ROWS_PER_PAGE']
-					)
-			);
+$tpl->assign(
+	array('LOSTPASSWORD_TIMEOUT_VALUE' => $cfg['LOSTPASSWORD_TIMEOUT'],
+		'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg['BRUTEFORCE_MAX_LOGIN'],
+		'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg['BRUTEFORCE_BLOCK_TIME'],
+		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg['BRUTEFORCE_BETWEEN_TIME'],
+		'BRUTEFORCE_MAX_CAPTCHA' => $cfg['BRUTEFORCE_MAX_CAPTCHA'],
+		'DOMAIN_ROWS_PER_PAGE' => $cfg['DOMAIN_ROWS_PER_PAGE']
+		)
+	);
 
 gen_def_language($tpl, $sql, $cfg['USER_INITIAL_LANG']);
 
 if ($cfg['LOSTPASSWORD']) {
-	$tpl -> assign('LOSTPASSWORD_SELECTED_ON', 'selected');
-	$tpl -> assign('LOSTPASSWORD_SELECTED_OFF', '');
+	$tpl->assign('LOSTPASSWORD_SELECTED_ON', 'selected');
+	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', '');
 } else {
-	$tpl -> assign('LOSTPASSWORD_SELECTED_ON', '');
-	$tpl -> assign('LOSTPASSWORD_SELECTED_OFF', 'selected');
+	$tpl->assign('LOSTPASSWORD_SELECTED_ON', '');
+	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', 'selected');
 }
 
 if ($cfg['BRUTEFORCE']) {
-	$tpl -> assign('BRUTEFORCE_SELECTED_ON', 'selected');
-	$tpl -> assign('BRUTEFORCE_SELECTED_OFF', '');
+	$tpl->assign('BRUTEFORCE_SELECTED_ON', 'selected');
+	$tpl->assign('BRUTEFORCE_SELECTED_OFF', '');
 } else {
-	$tpl -> assign('BRUTEFORCE_SELECTED_ON', '');
-	$tpl -> assign('BRUTEFORCE_SELECTED_OFF', 'selected');
+	$tpl->assign('BRUTEFORCE_SELECTED_ON', '');
+	$tpl->assign('BRUTEFORCE_SELECTED_OFF', 'selected');
 }
 
 if ($cfg['BRUTEFORCE_BETWEEN']) {
-	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_ON', 'selected');
-	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
+	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', 'selected');
+	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
 } else {
-	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_ON', '');
-	$tpl -> assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected');
+	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', '');
+	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected');
 }
 
 if ($cfg['ISPCP_SUPPORT_SYSTEM']) {
-	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected');
-	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
+	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected');
+	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
-	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_ON', '');
-	$tpl -> assign('SUPPORT_SYSTEM_SELECTED_OFF', 'selected');
+	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', '');
+	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', 'selected');
 }
 
 /*
@@ -126,41 +118,40 @@ if ($cfg['ISPCP_SUPPORT_SYSTEM']) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'].'/menu_settings.tpl');
+gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_settings.tpl');
 
-$tpl -> assign(
-                array(
-                       'TR_GENERAL_SETTINGS' => tr('General settings'),
-                       'TR_SETTINGS' => tr('Settings'),
-              		   'TR_MESSAGE' => tr('Message'),
-                       'TR_LOSTPASSWORD' => tr('Lost password'),
-                       'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time (minutes)'),
-                       'TR_BRUTEFORCE' => tr('Bruteforce detection'),
-                       'TR_BRUTEFORCE_BETWEEN' => tr('Block time between logins'),
-                       'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
-                       'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime (minutes)'),
-                       'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Block time between logins (seconds)'),
-                       'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Max number of CAPTCHA validation attempts'),
-                       'TR_OTHER_SETTINGS' => tr('Other settings'),
-                       'TR_USER_INITIAL_LANG' => tr('Default language'),
-                       'TR_SUPPORT_SYSTEM' => tr('Support system'),
-                       'TR_ENABLED' => tr('Enabled'),
-                       'TR_DISABLED' => tr('Disabled'),
-                       'TR_APPLY_CHANGES' => tr('Apply changes'),
-                       'TR_SERVERPORTS' => tr('Server ports'),
-                       'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page')
-                     )
-              );
-
+$tpl->assign(
+	array('TR_GENERAL_SETTINGS' => tr('General settings'),
+		'TR_SETTINGS' => tr('Settings'),
+		'TR_MESSAGE' => tr('Message'),
+		'TR_LOSTPASSWORD' => tr('Lost password'),
+		'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time (minutes)'),
+		'TR_BRUTEFORCE' => tr('Bruteforce detection'),
+		'TR_BRUTEFORCE_BETWEEN' => tr('Block time between logins'),
+		'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),
+		'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime (minutes)'),
+		'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Block time between logins (seconds)'),
+		'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Max number of CAPTCHA validation attempts'),
+		'TR_OTHER_SETTINGS' => tr('Other settings'),
+		'TR_USER_INITIAL_LANG' => tr('Default language'),
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
+		'TR_ENABLED' => tr('Enabled'),
+		'TR_DISABLED' => tr('Disabled'),
+		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_SERVERPORTS' => tr('Server ports'),
+		'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page')
+		)
+	);
 
 gen_page_message($tpl);
 
-$tpl -> parse('PAGE', 'page');
+$tpl->parse('PAGE', 'page');
 
-$tpl -> prnt();
+$tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
+
 ?>

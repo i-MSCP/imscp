@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -525,7 +526,6 @@ $tpl->assign(
 				'TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE' => tr('ispCP - Client/Add Mail User'),
         		'THEME_COLOR_PATH' => "../themes/$theme_color",
         		'THEME_CHARSET' => tr('encoding'),
-        
         		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 				)
 			);
