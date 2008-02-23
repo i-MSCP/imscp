@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-23 Benedikt Heintel
+	- GUI:
+	 	* Fixed #991: Inconsistency error in edit reseller
+	- DISTS:
+		* Added #1067: fix some configuration and makefile in freebsd distro
+
 2008-02-22 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1064: DisplayChdir in proftpd.conf doesn't work

@@ -273,9 +273,13 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 	}
 
 	if ($err == '_off_') {
-		if ($umail_max != $rmail_current && $umail_current > 0)
+		// Hot fix:
+		// Commented out; we cannot calculate how many domains are added: 3 Domains are created by default
+		// but user can delete them and there would be a new inconsitency if so.
+		// TODO: Fix it!
+		/* if ($umail_max != $rmail_current && $umail_current > 0)
 			$err = tr('Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d', $umail_max, $rmail_current);
-		else
+		else */
 			calculate_new_reseller_vals($reseller_max_mail_cnt, $rmail_current, $rmail_max, $umail_current, $umail_max, $umail_uf, $err, tr('Mail'));
 	}
 
@@ -300,7 +304,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 
 	if ($err == '_off_') {
 		calculate_new_reseller_vals($reseller_max_disk, $rdisk_current, $rdisk_max, $udisk_current / 1024 / 1024, $udisk_max, $udisk_uf, $err, tr('Disk storage'));
-		// ($data,               $r,           &$rmax,         $u,                         $umax,       $uf,    &$err, $obj)
+								// ($data,               $r,           &$rmax,         $u,                         $umax,       $uf,    &$err, $obj)
 	}
 
 	if ($err == '_off_') {
@@ -316,17 +320,18 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 }
 
 /**
-* Function that seems to check if it is safe to set the new reseller limits (per 'service', e.g. mail, domains, etc)
-*
-* @param int $new_limit New limit
-* @param int $r Service usage information of reseller (assigned, possibly being used or not)
-* @param int $rmax Current reseller's limit
-* @param int $u Service usage information of reseller's users (assigned, possibly being used or not)
-* @param int $umax Current reseller users' limit
-* @param int $unlimited Unlimited: _on_, limited: _off_
-* @param string $ &$err Error message returned in case something is not good
-* @param string $service The 'service' name, like domains, subdomains, mail accounts, sql users, etc
-*/
+ * Function that seems to check if it is safe to set the new reseller limits
+ * (per 'service', e.g. mail, domains, etc)
+ *
+ * @param int $new_limit New limit
+ * @param int $r Service usage information of reseller (assigned, possibly being used or not)
+ * @param int $rmax Current reseller's limit
+ * @param int $u Service usage information of reseller's users (assigned, possibly being used or not)
+ * @param int $umax Current reseller users' limit
+ * @param int $unlimited Unlimited: _on_, limited: _off_
+ * @param string $ &$err Error message returned in case something is not good
+ * @param string $service The 'service' name, like domains, subdomains, mail accounts, sql users, etc
+ */
 function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service) {
 	if ($unlimited == '_off_') {
 		// We have something like that: $u <= ($umax = $r) <= $rmax
@@ -734,7 +739,7 @@ $tpl->assign(
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_EMAIL' => tr('E-mail'),
 		'TR_UNLIMITED' => tr('unlimited'),
-		'TR_MAX_DOMAIN_COUNT' => tr('Domains limit<br><i>(0 unlimited)</i>'),
+		'TR_MAX_DOMAIN_COUNT' => tr('Domains limit<br><i>((-1 disabled, 0 unlimited)</i>'),
 		'TR_MAX_SUBDOMAIN_COUNT' => tr('Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAX_ALIASES_COUNT' => tr('Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAX_MAIL_USERS_COUNT' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),

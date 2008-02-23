@@ -29,9 +29,9 @@
 #
 
 #ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
-#	CFLAGS += -O0
+#CFLAGS += -O0
 #else
-	CFLAGS += -O3
+CFLAGS += -O3
 endif
 #endif
 

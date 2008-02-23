@@ -281,8 +281,13 @@ OMEGA_SQL_QUERY;
                       )
 ISPCP_SQL_QUERY;
 
-	$res = exec_query($sql, $query, array($dmn_user_name, $inpass, $reseller_id, $first_name, $last_name,
-			$firm, $zip, $city, $country, $user_email, $phone, $fax, $street_one, $street_two, $customer_id, $gender));
+	$res = exec_query($sql, $query, array(
+											$dmn_user_name, $inpass, $reseller_id,
+											$first_name, $last_name, $firm,
+											$zip, $city, $country,
+											$user_email, $phone, $fax,
+											$street_one, $street_two, $customer_id,
+											$gender));
 
 	print $sql->ErrorMsg();
 
@@ -311,20 +316,14 @@ ISPCP_SQL_QUERY;
                        )
 ISPCP_SQL_QUERY;
 
-	$res = exec_query($sql, $query, array($dmn_name,
-			$record_id,
-			$reseller_id,
-			$mail,
-			$ftp,
-			$traff,
-			$sql_db,
-			$sql_user,
-			$sub,
-			$als,
-			$domain_ip,
-			$disk,
-			$php,
-			$cgi));
+	$res = exec_query($sql, $query, array(
+											$dmn_name, $record_id,
+											$reseller_id, $mail,
+											$ftp, $traff,
+											$sql_db, $sql_user,
+											$sub, $als,
+											$domain_ip,	$disk,
+											$php, $cgi));
 	$dmn_id = $sql->Insert_ID();
 
 	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {

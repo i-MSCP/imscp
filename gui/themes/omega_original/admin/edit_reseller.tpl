@@ -79,8 +79,7 @@
       </tr>
       <tr>
         <td width="25">&nbsp;</td>
-        <td class="content2" width="200">{TR_MAX_DOMAIN_COUNT}<br>
-            <b><i>(0 {TR_UNLIMITED})</i></b></td>
+        <td class="content2" width="200">{TR_MAX_DOMAIN_COUNT}</td>
         <td class="content"><input type="text" name=nreseller_max_domain_cnt value="{MAX_DOMAIN_COUNT}" style="width:140px" class="textinput">
         </td>
       </tr>
