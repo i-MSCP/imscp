@@ -60,7 +60,7 @@ chown root:vu2000 /etc/ispcp/ispcp.conf
 
 for i in `find $ROOT_DIR/engine/`; do
 
-	if [[ -f $i ]]; then
+	if [ -f $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
 			echo -e "\t0700 root:root $i";
@@ -69,7 +69,7 @@ for i in `find $ROOT_DIR/engine/`; do
 		chmod 0700 $i;
 		chown root:root $i;
 
-	elif [[ -d $i ]]; then
+	elif [ -d $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
 			echo "0700 root:root [$i]";

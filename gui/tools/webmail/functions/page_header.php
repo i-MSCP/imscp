@@ -324,7 +324,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	// Modified by ispCP Omega - http://isp-control.net
 	//
     // Top Header
-	echo "      <td class=\"inbox_bar_header\" align=\"right\" width=\"50%\">";
+	echo "      <td class=\"inbox_bar_header\" align=\"right\" width=\"30%\">";
 	echo displayInternalLink ('src/signout.php', "<div id='exit_button' title='"._("Sign Out")."'>&nbsp;&nbsp;&nbsp;</div>", $frame_top) . "\n";
 	echo displayInternalLink ("src/search.php?mailbox=$urlMailbox", "<div id='search_button' title='"._("Search")."'>&nbsp;&nbsp;&nbsp;</div>") . "\n";
 	echo displayInternalLink ('src/help.php', "<div id='help_button' title='"._("Help")."'>&nbsp;&nbsp;&nbsp;</div>") . "\n";
@@ -334,7 +334,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	do_hook('notes_plugin');
 	do_hook('todo_plugin');
 	echo "      </td>";
-    echo "   </tr>\n".
+	echo "   </tr>\n".
         "</table>\n";
 
     // Welcome Bar

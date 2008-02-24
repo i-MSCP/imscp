@@ -1,4 +1,4 @@
-RELEASE=`cat /etc/debian_version | awk '{print $1}'`
+RELEASE=`cat /etc/lsb-release | awk '{print $1}'`
 
 export
 
@@ -7,9 +7,9 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/proftpd
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
 
-	# if: Ubuntu 6.06 or 6.10 (testing/unstable)
-	# else: Ubuntu 7.04 or 7.10 (4.0, lenny/sid)
-	if test $(RELEASE) = 'testing/unstable' ; then \
+	# if: Ubuntu 6.06 (dapper)
+	# else: Ubuntu >= 6.10
+	if test $(RELEASE) = 'dapper' ; then \
 		cp ./proftpd.conf $(ROOT_CONF) ; \
 		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
 	else \

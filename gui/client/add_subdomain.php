@@ -23,7 +23,6 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
 $tpl->define_dynamic('page', $cfg['CLIENT_TEMPLATE_PATH'] . '/add_subdomain.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -179,58 +178,8 @@ SQL_QUERY;
 
 	$sub_id = $sql->Insert_ID();
 
-	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
-
-	    $reseller_id = who_owns_this(who_owns_this($domain_id, 'dmn_id'), 'user');
-
-	    $query = 'SELECT email FROM admin WHERE admin_id = ? LIMIT 1';
-		$rs = exec_query($sql, $query, $reseller_id);
-		$reseller_email = $rs->fields['email'];
-
-        $query = <<<SQL_QUERY
-            INSERT INTO mail_users
-                (mail_acc,
-                 mail_pass,
-                 mail_forward,
-                 domain_id,
-                 mail_type,
-                 sub_id,
-                 status,
-                 mail_auto_respond)
-            VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
-
-        // create default forwarder for webmaster@sub.domain.tld to the account's owner
-        $rs = exec_query($sql, $query, array('webmaster',
-                '_no_',
-                $_SESSION['user_email'],
-                $domain_id,
-                'subdom_forward',
-                $sub_id,
-                $cfg['ITEM_ADD_STATUS'],
-                '_no_'));
-
-        // create default forwarder for postmaster@sub.domain.tld to the account's reseller
-        $rs = exec_query($sql, $query, array('postmaster',
-                '_no_',
-                $reseller_email,
-                $domain_id,
-                'subdom_forward',
-                $sub_id,
-                $cfg['ITEM_ADD_STATUS'],
-                '_no_'));
-
-        // create default forwarder for abuse@sub.domain.tld to the account's reseller
-        $rs = exec_query($sql, $query, array('abuse',
-                '_no_',
-                $reseller_email,
-                $domain_id,
-                'subdom_forward',
-                $sub_id,
-                $cfg['ITEM_ADD_STATUS'],
-                '_no_'));
-	}
+	// We do not need to create the default mail adresses, subdomains are
+	// related to their domains.
 
 	write_log($_SESSION['user_logged'] . ": add new subdomain: " . $sub_name);
 	send_request();

@@ -111,6 +111,12 @@
             <td colspan="2" style="color:#ff0000"><b>{UPDATE}</b></td>
           </tr>
           <!-- EDP: update_message -->
+	  <!-- BDP: database_update_message -->
+          <tr>
+            <td width="25">&nbsp;</td>
+            <td colspan="2" style="color:#ff0000"><b>{DATABASE_UPDATE}</b></td>
+          </tr>
+          <!-- EDP: database_update_message -->
         </table>
       <!-- EDP: props_list -->
     </td>

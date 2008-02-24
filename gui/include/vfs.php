@@ -3,6 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -160,7 +161,7 @@ class vfs {
 	            (?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 		$rs = exec_query($this->_db, $query, array($user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
-				$cfg['FTP_SHELL'], $cfg['FTP_HOMEDIR'] . '/' . $this->_domain
+				$cfg['CMD_SHELL'], $cfg['FTP_HOMEDIR'] . '/' . $this->_domain
 				));
 		if (!$rs) {
 			return false;

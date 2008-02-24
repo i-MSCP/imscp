@@ -464,7 +464,7 @@ if ($date_format != 6) {
     */
     echo '<small><span style="white-space: nowrap;">'
        . str_replace(' ', '&nbsp;', _("Last Refresh"))
-       . ": $clk</span></small><br /><br />";
+       . ":<br />$clk</span></small><br /><br />";
     //
 	// End Modification
 	//
@@ -479,6 +479,8 @@ if ($date_format != 6) {
 echo '<small style="white-space: nowrap;">(<a href="../src/left_main.php" target="left">'.
      _("Check mail") . '</a>)</small></td></tr></table><br />';
 */
+
+echo '<div id="folders">';
 //
 // End Modification
 //
@@ -515,7 +517,7 @@ for ($i = 0; $i < count($boxes); $i++) {
         $mblevel = substr_count(substr($boxes[$i]['unformatted'], strlen($folder_prefix)), $delimiter) + 1;
 
         /* Create the prefix for the folder name and link. */
-        $prefix = str_repeat('  ',$mblevel);
+        $prefix = str_repeat('   ',$mblevel);
         if (isset($collapse_folders) && $collapse_folders && $boxes[$i]['parent']) {
             $prefix = str_replace(' ','&nbsp;',substr($prefix,0,strlen($prefix)-2)).
                       create_collapse_link($i) . '&nbsp;';
@@ -584,7 +586,8 @@ sqimap_logout($imapConnection);
 */
 
 ?>
-</td></tr></table>
+</div>
+<!--</td></tr></table>-->
 <?php
 //
 // Modified by ispCP Omega - http://isp-control.net

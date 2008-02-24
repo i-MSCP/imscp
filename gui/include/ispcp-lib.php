@@ -156,6 +156,7 @@ require_once(INCLUDEPATH.'/idna.php');
 require_once(INCLUDEPATH.'/lostpassword-functions.php');
 require_once(INCLUDEPATH.'/emailtpl-functions.php');
 require_once(INCLUDEPATH.'/layout-functions.php');
+require_once(INCLUDEPATH.'/database-update-functions.php');
 
 if ($_SERVER['SCRIPT_NAME'] != '/client/sql_execute_query.php') {
 	check_query();

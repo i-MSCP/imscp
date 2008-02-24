@@ -168,14 +168,9 @@ Make sure you are logged in as root.
 	(when you get to the proftpd screen, select 'standalone')
 	(when you get to the rootkithunter screen, select two time 'yes')
 
-4.  You have to set up some configuration variables for your linux distribution.
-	ispCP ω is preconfigurated for Debian 4.0 Etch.
-	If you're using another distribution please check, if config files exist in
-	./configs/dists and use/change them.
-
-	Check the ispcp.conf and adapt it to your requirements.
-	An overview over the variables you can find in the FAQ on
-	http://isp-control.net
+4. (optional) Check the ispcp.conf and adapt it to your requirements.
+   An overview over the variables you can find in the FAQ on
+   http://isp-control.net
 
 5. Build the System by using make:
 	# make install

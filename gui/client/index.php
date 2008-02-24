@@ -53,6 +53,40 @@ function gen_num_limit_msg($num, $limit) {
     return "$num&nbsp;/&nbsp;$limit";
 }
 
+function gen_system_message(&$tpl, &$sql) {
+	$user_id = $_SESSION['user_id'];
+
+	$query = <<<SQL_QUERY
+        select
+            count(ticket_id) as cnum
+        from
+            tickets
+        where
+            (ticket_to = ? or ticket_from = ?)
+          and
+            (ticket_status = '2')
+          and
+            ticket_reply = 0
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($user_id, $user_id));
+
+	$num_question = $rs->fields('cnum');
+
+	if ($num_question == 0) {
+		$tpl->assign(array('MSG_ENTRY' => ''));
+	} else {
+		$tpl->assign(
+				array(
+					'TR_NEW_MSGS' => tr('You have <b>%d</b> new answer to your support questions', $num_question),
+					'TR_VIEW' => tr('View')
+					)
+			);
+
+		$tpl->parse('MSG_ENTRY', 'msg_entry');
+	}
+}
+
 function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
     list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
     if ($max_usage != 0) {
@@ -282,23 +316,25 @@ check_user_permissions($tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php, $dmn_cg
 $account_name = decode_idna($_SESSION['user_logged']);
 
 $tpl->assign(
-    array('ACCOUNT_NAME' => $account_name,
-        'MAIN_DOMAIN' => $dmn_name,
-        'MYSQL_SUPPORT' => ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1) ? tr('yes') : tr('no'),
-        'SUBDOMAINS' => gen_num_limit_msg($sub_cnt, $dmn_subd_limit),
-        'DOMAIN_ALIASES' => gen_num_limit_msg($als_cnt, $dmn_als_limit),
-        'MAIL_ACCOUNTS' => gen_num_limit_msg($mail_acc_cnt, $dmn_mailacc_limit),
-        'FTP_ACCOUNTS' => gen_num_limit_msg($ftp_acc_cnt, $dmn_ftpacc_limit),
-        'SQL_DATABASES' => gen_num_limit_msg($sqld_acc_cnt, $dmn_sqld_limit),
-        'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)
+	    array(
+			'ACCOUNT_NAME' => $account_name,
+	        'MAIN_DOMAIN' => $dmn_name,
+	        'MYSQL_SUPPORT' => ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1) ? tr('yes') : tr('no'),
+	        'SUBDOMAINS' => gen_num_limit_msg($sub_cnt, $dmn_subd_limit),
+	        'DOMAIN_ALIASES' => gen_num_limit_msg($als_cnt, $dmn_als_limit),
+	        'MAIL_ACCOUNTS' => gen_num_limit_msg($mail_acc_cnt, $dmn_mailacc_limit),
+	        'FTP_ACCOUNTS' => gen_num_limit_msg($ftp_acc_cnt, $dmn_ftpacc_limit),
+	        'SQL_DATABASES' => gen_num_limit_msg($sqld_acc_cnt, $dmn_sqld_limit),
+	        'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)
         )
     );
 
 $tpl->assign(
-    array('TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Client/Main Index'),
-        'THEME_COLOR_PATH' => "../themes/$theme_color",
-        'THEME_CHARSET' => tr('encoding'),
-        'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	    array(
+			'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Client/Main Index'),
+	        'THEME_COLOR_PATH' => "../themes/$theme_color",
+	        'THEME_CHARSET' => tr('encoding'),
+	        'ISP_LOGO' => get_logo($_SESSION['user_id'])
         )
     );
 
@@ -312,6 +348,8 @@ gen_client_mainmenu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/main_menu_general_inf
 gen_client_menu($tpl, $cfg['CLIENT_TEMPLATE_PATH'] . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
+
+gen_system_message($tpl, $sql);
 
 check_permissions($tpl);
 

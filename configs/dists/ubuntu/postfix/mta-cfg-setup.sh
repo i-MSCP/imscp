@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 MTA_CONF_DIR=/etc/postfix
 
@@ -27,4 +27,3 @@ ${CMD_CP} ./working/{aliases,domains,mailboxes,transport} ${MTA_SYSTEM_CONF_DIR}
 ${CMD_POSTMAP} ${MTA_SYSTEM_CONF_DIR}/{aliases,domains,mailboxes,transport}
 
 ${CMD_NEWALIASES}
-

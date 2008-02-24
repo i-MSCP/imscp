@@ -1,6 +1,22 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-24 Benedikt Heintel
+	- ENGINE:
+		* Fixed #987: error pages not created
+	- GUI:
+		* Fixed #294: Some small tasks/features, low priority
+			-> 2. When logged in as user and there is an active support ticket, then write it with red, so the user "knows"
+		* Fixed #956: Standard mail addresses created for subdomains
+	- DISTS:
+		* Fixed #365: (ubuntu) make all shell scripts and makefiles posix compliant
+		* Fixed #818: (ubuntu) proftpd doesn't work after fresh install on ubuntu feisty
+		* Fixed #992: (gentoo) logrotate throws errors when using syslog-ng
+
+2008-02-24 Jochen Manz
+	- TOOLS:
+		* Fixed #871: Small CSS error in Webmail
+
 2008-02-23 Benedikt Heintel
 	- GUI:
 	 	* Fixed #991: Inconsistency error in edit reseller

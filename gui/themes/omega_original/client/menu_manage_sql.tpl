@@ -3,7 +3,7 @@
   <td style="width:100%; background-image:url({THEME_COLOR_PATH}/images/top/menu_top.jpg);padding-left:5px;vertical-align:middle;">
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
-     <td><img src="{THEME_COLOR_PATH}/images/icons/general_big.gif" width="32" height="33"></td>
+     <td><img src="{THEME_COLOR_PATH}/images/icons/database_big.gif" width="32" height="33"></td>
      <td><span class="titlemenu">{TR_MENU_MANAGE_SQL}</span></td>
     </tr>
    </table>

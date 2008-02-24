@@ -62,83 +62,90 @@ Make sure you are logged in as root.
 3. Install the required modules:
 	# emerge -ua `cat ./docs/Gentoo/gentoo-packages`
 
-4. Now there are two ways of install ISPCP ω
-
-a) via install script
----------------------
-4a. Start the script and follow the install instructions:
-	# ./install-ispcp.sh
-
-After that return to step 12.
-
-b) manualy
-----------
-4b. Change into the configuration directory:
-	# cd ./configs
-
-5. Open the ispcp.conf and make some changes.
-   You have to set up some configuration variables for your linux distribution.
-   ISPCP ω is preconfigurated for Debian 4.0 Etch.
-   If you're using another distribution please check, if config files exist in
-   ./configs/dists and use/change them.
-
-   These are the Variables you have to look at:
-
-	SECONDARY_DNS =
-	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
-								# infront or behind for MYSQL_PREFIX = no
-
-   Check the ispcp.conf and adapt it to your requirements.
+4.	(optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
-6. Return to the parent direction and build the System by using make:
-	# cd ../
+5. Return to the parent direction and build the System by using make:
 	# make -f Makefile.gentoo install
 
-7. Copy all the directories into the system (you may make backups)
+6. Copy all the directories into the system (you may make backups)
 	# cp -RvL /tmp/ispcp-1.0.0/* /
 
-8. Now it's time to set up the frontend. Change into the engine directory:
+7. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
 
-8a. Set the MySQL password, if not set:
+7a. Set the MySQL password, if not set:
 	# mysqladmin -u root password YOUR_PASSWORD
 
-9. Start the engine setup:
+8. Start the engine setup:
 	# ./ispcp-setup
 
-10. Install ISPCP ω step-by-step
+9. Install ISPCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-11. There is an error in some courier-versions. Courier won't stop, if you use
+10. There is an error in some courier-versions. Courier won't stop, if you use
 	/etc/init.d/courier-authdaemon stop, so change it:
 	# nano /etc/ini.d/courier-authdaemon
 
 	change: ${libexecdir}/authlib/authdaemon stop
 	into:	killall authdaemond.plain
 
-12. Clean the temporary folders:
+11. Clean the temporary folders:
 	# rm -R /tmp/ispcp-1.0.0
 
-13. Open /etc/conf.d/postgrey and update POSTGREY_PORT="60000"
+12. Open /etc/conf.d/postgrey and update POSTGREY_PORT="60000"
 
 ================================================================================
 5) Update
 ---------
+Make sure you are logged in as root.
 
-There are two ways of update ISPCP ω
+1. Untar or unzip the distribution files to a secure directory:
+	# cd /root
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
-a) via install script
----------------------
-1. Start the script and follow the update instructions:
-	# ./install-ispcp.sh
+2. Change to the newly created directory:
+	# cd ./ispcp-omega-1.0.0
 
-b) manualy
-----------
-1.	Please check the update From-To-Files in the ./docs directory
+3. Install the required modules:
+	# emerge -ua `cat ./docs/Gentoo/gentoo-packages`
+
+4. (optional) Check the ispcp.conf and adapt it to your requirements.
+   An overview over the variables you can find in the FAQ on
+   http://isp-control.net
+
+5. Build the System by using make:
+	# make -f Makefile.gentoo install
+
+6. Save key files
+	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/
+	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager/
+	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/include/
+
+7. Copy /usr and /var directories into your system (you may make backups)
+	# cp -Rv /tmp/ispcp-1.0.0/usr/* /usr/
+	# cp -Rv /tmp/ispcp-1.0.0/var/* /var/
+
+8. Backup ispcp.conf and copy the /etc dircetory into your system (you may make backups):
+	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
+	# cp -Rv /tmp/ispcp-1.0.0/etc/* /etc/
+
+9. Now it's time to update your installation. Change into the engine directory:
+	# cd /var/www/ispcp/engine/setup
+
+10. Start the engine update:
+	# perl ispcp-update
+
+11. Update ispCP ω step-by-step
+
+	If you get no error, all went good; if you get one, look at
+	http://isp-control.net to solve the problem.
+
+12. Clean the temporary folders:
+	# rm -fR /tmp/ispcp-1.0.0
 
 ================================================================================
 6) FAQ

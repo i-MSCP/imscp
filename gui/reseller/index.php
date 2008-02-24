@@ -22,7 +22,54 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$theme_color = $cfg['USER_INITIAL_THEME'];
+
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/index.tpl');
+$tpl->define_dynamic('def_language', 'page');
+$tpl->define_dynamic('def_layout', 'page');
+$tpl->define_dynamic('no_messages', 'page');
+$tpl->define_dynamic('msg_entry', 'page');
+$tpl->define_dynamic('traff_warn', 'page');
+$tpl->define_dynamic('layout', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('traff_warn', 'page');
+
 // page functions.
+function gen_system_message(&$tpl, &$sql) {
+	$user_id = $_SESSION['user_id'];
+
+	$query = <<<SQL_QUERY
+        select
+            count(ticket_id) as cnum
+        from
+            tickets
+        where
+            (ticket_to = ? or ticket_from = ?)
+          and
+            (ticket_status = '1' or ticket_status = '4')
+          and
+            ticket_reply = 0
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($user_id, $user_id));
+
+	$num_question = $rs->fields('cnum');
+
+	if ($num_question == 0) {
+		$tpl->assign(array('MSG_ENTRY' => ''));
+	} else {
+		$tpl->assign(
+				array(
+					'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
+					'TR_VIEW' => tr('View')
+					)
+			);
+
+		$tpl->parse('MSG_ENTRY', 'msg_entry');
+	}
+}
+
 
 function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	if (0 !== $max_usage) {
@@ -244,21 +291,7 @@ SQL_QUERY;
 		$tpl->parse('MSG_ENTRY', '.msg_entry');
 	}
 }
-
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/index.tpl');
-$tpl->define_dynamic('def_language', 'page');
-$tpl->define_dynamic('def_layout', 'page');
-$tpl->define_dynamic('no_messages', 'page');
-$tpl->define_dynamic('msg_entry', 'page');
-$tpl->define_dynamic('traff_warn', 'page');
-$tpl->define_dynamic('layout', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('traff_warn', 'page');
-
 // common page data.
-
-$theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
 		array(
@@ -299,6 +332,8 @@ gen_def_layout($tpl, $user_def_layout);
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_general_information.tpl');
+
+gen_system_message($tpl, $sql);
 
 // static page messages.
 

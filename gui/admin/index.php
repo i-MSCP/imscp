@@ -31,6 +31,7 @@ $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
 $tpl->define_dynamic('msg_entry', 'page');
 $tpl->define_dynamic('update_message', 'page');
+$tpl->define_dynamic('database_update_message', 'page');
 $tpl->define_dynamic('traff_warn', 'page');
 
 function gen_system_message(&$tpl, &$sql) {
@@ -46,7 +47,7 @@ function gen_system_message(&$tpl, &$sql) {
           and
             (ticket_status = '2' or ticket_status = '5')
           and
-            ticket_reply = '0'
+            ticket_reply = 0
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -94,6 +95,13 @@ function get_update_infos(&$tpl) {
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
 		$tpl->assign(array('UPDATE_MESSAGE' => ''));
+	}
+
+	if(checkDatabaseUpdateExists()) {
+		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class=\"link\">' . tr('A database update is available') . '</a>'));
+		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
+	} else {
+		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
 	}
 }
 

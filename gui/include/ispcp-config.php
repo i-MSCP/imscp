@@ -182,7 +182,6 @@ class Config {
 		'USER_INITIAL_THEME' => null,
 		'FTP_USERNAME_SEPARATOR' => null,
 		'FTP_HOMEDIR' => null,
-		'FTP_SHELL' => null,
 		'IPS_LOGO_PATH' => null,
 		'ISPCP_SUPPORT_SYSTEM_PATH' => null,
 		'ISPCP_SUPPORT_SYSTEM_TARGET' => null,

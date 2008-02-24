@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -2373,6 +2373,46 @@ sub dmn_change_httpd_file_data {
 
 		return $rs if ($rs != 0);
 	}
+
+	#
+	# Default error pages;
+	#
+
+    my @errordocs = (401, 403, 404, 500, 503);
+
+    my ($i, $key) = ('', '');
+
+    for($i = 0; $i < scalar(@errordocs); $i++) {
+        $key = $errordocs[$i];
+
+        if (-e "$root_dir/gui/errordocs/$key.html") {
+
+            $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
+            return $rs if ($rs != 0);
+            $rs = setfmode("$www_dir/$dmn_name/errors/$key.html", $sys_user, $sys_group, 0644);
+            return $rs if ($rs != 0);
+        }
+    }
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$dmn_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_css.jpg $www_dir/$dmn_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_xhtml.jpg $www_dir/$dmn_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$dmn_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
+    $rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
+    return $rs if ($rs != 0);
 
 	#
 	# php.ini for the domain

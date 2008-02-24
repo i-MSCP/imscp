@@ -1,5 +1,6 @@
 app-admin/apache-tools
 app-admin/apachetop
+app-admin/syslog-ng
 app-crypt/mcrypt
 app-crypt/mhash
 app-forensics/chkrootkit

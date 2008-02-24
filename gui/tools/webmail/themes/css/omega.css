@@ -1,6 +1,6 @@
 * {
-  font-family: Verdana, Helvetica, sans-serif;
-  text-decoration: none;
+	font-family: Verdana, Helvetica, sans-serif;
+	text-decoration: none;
 }
 
 html {
@@ -11,17 +11,17 @@ html {
 
 small {
 	color: #ffffff;
-	font-size: .8em;
+	font-size: 9px;
 }
 
 pre {
-  font-family: verdana;
-  font-size: 9px;
+	font-family: verdana;
+	font-size: 9px;
 }
 
 body {
 	font-family: verdana;
-    background-image: url(../../skins/omega/header_right_bg.png);
+	background-image: url(../../skins/omega/header_right_bg.png);
 	font-size: 9px;
 	background-repeat: no-repeat;
 	/* background-attachment: fixed; */
@@ -29,12 +29,13 @@ body {
 	}
 
 body.left {
-    background-image: url(../../skins/omega/folders_bottom.gif);
+	background-image: url(../../skins/omega/folders_bottom.gif);
 	background-repeat: repeat-y;
 	background-color: #FFFFFF;
 	margin: 0;
 	padding: 0;
 	overflow: auto;
+	width: 181px;
 }
 
 body.left span {
@@ -58,7 +59,7 @@ td {
 
 .top_bar_header {
 	font-family: verdana;
-   	font-size: 13px;
+	font-size: 13px;
 	color: #000000;
 }
 
@@ -67,7 +68,7 @@ td {
 
 .inbox_bar_header {
 	font-family: verdana;
-   	font-size: 10px;
+	font-size: 10px;
 	padding: 10 1;
 	color: #000000;
 	margin: auto;
@@ -78,10 +79,10 @@ td {
 }
 
 .company_text {
-	FONT-FAMILY: verdana;
-   FONT-SIZE: 20px;
+	font-family: verdana;
+	font-size: 20px;
 	font-style: italic;
-   COLOR: #C9D3E4;
+	color: #c9d3e4;
 }
 
 .targetMailbox {
@@ -270,13 +271,14 @@ p.button_text {
 	color: #FFFFFF;
 }
 
+
 #inbox_button {
 	background: url(../../skins/omega/inbox.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 	padding: 0px 35px 5px 0px;
 	float: left;
-	margin: 3px 0px 0px 85px;
+	margin: 3px 0px 0px 65px;
 	cursor: hand;
 	color: #FFFFFF;
 }
@@ -325,13 +327,14 @@ p.button_text {
 	color: #FFFFFF;
 }
 
-#calendar_button {
-	background-image: url(../../skins/omega/todo.png);
+
+#todo_button {
+	background-image: url(../../skins/omega/todo.gif);
 	background-repeat: no-repeat;
-	background-position: top left;
-	padding: 0px 15px 5px 0px;
-	float: left;
-	margin: -5px 0px 0px 3px;
+	background-position: top right;
+	padding: 0px 16px 5px 0px;
+	float: right;
+	margin: 40px 0px 0px 0px;
 	cursor: hand;
 	color: #FFFFFF;
 }
@@ -339,34 +342,42 @@ p.button_text {
 #notes_button {
 	background-image: url(../../skins/omega/notes.png);
 	background-repeat: no-repeat;
-	background-position: top left;
-	padding: 0px 15px 5px 0px;
+	background-position: top right;
+	padding: 0px 16px 5px 0px;
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
 	color: #FFFFFF;
 }
 
-#todo_button {
-	background-image: url(../../skins/omega/todo.gif);
+#bookmark_button {
+	background-image: url(../../skins/omega/bookmarks.gif);
 	background-repeat: no-repeat;
-	background-position: top left;
-	padding: 0px 15px 5px 0px;
+	background-position: top right;
+	padding: 0px 16px 5px 0px;
 	float: right;
 	margin: 40px 0px 0px 0px;
 	cursor: hand;
-	color: #FFFFFF;
 }
 
-#file_manager {
-	background-image: url(../../skins/omega/file_manager.png);
+#calendar_button {
+	background-image: url(../../skins/omega/calendar.gif);
 	background-repeat: no-repeat;
-	background-position: top left;
-	padding: 0px 15px 5px 0px;
-	float: left;
-	margin: 5px 0px 0px 0px;
+	background-position: top right;
+	padding: 0px 16px 5px 0px;
+	float: right;
+	margin: 40px 0px 0px 0px;
 	cursor: hand;
-	Color: #FFFFFF;
+}
+
+#fetchmail_button {
+	background-image: url(../../skins/omega/fetchmail.gif);
+	background-repeat: no-repeat;
+	background-position: top right;
+	padding: 0px 16px 5px 0px;
+	float: right;
+	margin: 40px 0px 0px 0px;
+	cursor: hand;
 }
 
 #help_button {
@@ -399,43 +410,25 @@ p.button_text {
 	cursor: hand;
 }
 
-#fetchmail_button {
-	background-image: url(../../skins/omega/fetchmail.gif);
+#file_manager {
+	background-image: url(../../skins/omega/file_manager.png);
 	background-repeat: no-repeat;
-	background-position: top right;
-	padding: 0px 16px 5px 0px;
-	float: right;
+	background-position: top left;
+	padding: 0px 15px 5px 0px;
+	float: left;
 	margin: 5px 0px 0px 0px;
 	cursor: hand;
+	Color: #FFFFFF;
 }
 
-#calendar_button {
-	background-image: url(../../skins/omega/calendar.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
-	padding: 0px 16px 5px 0px;
-	float: right;
-	margin: 5px 0px 0px 0px;
-	cursor: hand;
-}
-
-#bookmark_button {
-	background-image: url(../../skins/omega/bookmarks.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
-	padding: 0px 16px 5px 0px;
-	float: right;
-	margin: 40px 0px 0px 0px;
-	cursor: hand;
-}
 
 .inbox_dropdown {
 	background-color: transparent;
 }
 
 .top_msg_bar {
-	border: 1px solid #DFFFDF;
-	background-color: #DAE3ED;
+	border: 1px solid #dfffdf;
+	background-color: #dae3ed;
 }
 
 .main_header_bar {
@@ -447,7 +440,7 @@ p.button_text {
 }
 
 .left_main {
-	border: thin dashed #DCDCDC;
+	border: thin dashed #dcdcdc;
 }
 
 #left_inbox_button {
@@ -542,29 +535,20 @@ p.button_text {
 #folders_top {
 	width: 100%;
 	height: 16px;
-	background-image: url(../../skins/omega/folders_top.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
 	position: relative;
 	margin-top: 0px;
 	padding: 0 0 12 0;
 }
 
 #folders {
+	text-align: left;
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bg.gif);
-	background-repeat: repeat-y;
-	background-position: top right;
-
 }
 
 #folders_bottom {
+ margin-left: 10px;
 	height: 14px;
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bottom.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
-
 }
 
 #folders_top p {
@@ -583,9 +567,6 @@ p.button_text {
 #todo_top {
 	width: 100%;
 	height: 30px;
-	background-image: url(../../skins/omega/folders_top.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
 	position: relative;
 	margin-top: 10px;
 }
@@ -603,25 +584,14 @@ p.button_text {
 
 #todo {
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bg.gif);
-	background-repeat: repeat-y;
-	background-position: top right;
-
 }
 
 #todo_bottom {
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bottom.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
-
 }
 
 #extra_top {
 	width: 100%;
-	background-image: url(../../skins/omega/folders_top.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
 	position: relative;
 }
 
@@ -638,40 +608,25 @@ p.button_text {
 
 #extra {
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bg.gif);
-	background-repeat: repeat-y;
-	background-position: top right;
-
 }
 
 #options p {
 	font-weight: bold;
-	margin-left: 15px;
+	margin-left: 5px;
 }
 
 #cal_top {
 	width: 100%;
 	height: 30px;
-	background-image: url(../../skins/omega/folders_top.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
 	position: relative;
 }
 
 #cal {
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bg.gif);
-	background-repeat: repeat-y;
-	background-position: top right;
-
 }
 
 #cal_bottom {
 	width: 100%;
-	background-image: url(../../skins/omega/folders_bottom.gif);
-	background-repeat: no-repeat;
-	background-position: top right;
-
 }
 
 #cal_top p {
