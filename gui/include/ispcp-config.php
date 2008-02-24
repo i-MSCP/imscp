@@ -90,6 +90,7 @@ class Config {
 		'DATABASE_USER' => null,
 		'DATABASE_DIR' => null,
 		'CMD_MYSQLDUMP' => null,
+		'DATABASE_UTF8' => null,
 		'CONF_DIR' => null,
 		'LOG_DIR' => null,
 		'PHP_STARTER_DIR' => null,

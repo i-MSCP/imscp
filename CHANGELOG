@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-19 Christian Hernmarck
+	- GUI:
+		* Some small fixes: domain_statistics & some "remove this" messages
+
 2008-02-24 Benedikt Heintel
 	- ENGINE:
 		* Fixed #987: error pages not created

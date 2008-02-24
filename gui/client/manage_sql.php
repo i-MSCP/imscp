@@ -166,7 +166,7 @@ $tpl->assign(
 			'TR_EXECUTE_QUERY' => tr('Execute query'),
 			'TR_CHANGE_PASSWORD' => tr('Change password'),
 			'TR_LOGIN_PMA' => tr('Login phpMyAdmin'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')
+			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete', true)
 			)
 		);
 
