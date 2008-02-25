@@ -326,6 +326,10 @@ ISPCP_SQL_QUERY;
 											$php, $cgi));
 	$dmn_id = $sql->Insert_ID();
 
+	// Create the 3 default addresses if wanted
+	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
+
+/*
 	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 		$query = <<<SQL_QUERY
             INSERT INTO mail_users
@@ -371,7 +375,7 @@ SQL_QUERY;
 				$cfg['ITEM_ADD_STATUS'],
 				'_no_'));
 	}
-
+*/
 	// add_domain_extras($dmn_id, $record_id, $sql);
 	// lets send mail to user
 	send_add_user_auto_msg ($reseller_id,

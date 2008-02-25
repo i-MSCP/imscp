@@ -226,12 +226,12 @@ SQL_QUERY;
 
 	$status = $cfg['ITEM_ORDERED_STATUS'];
 
-  $query = "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
+	$query = "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
 
-	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+/*	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
 
 	    $reseller_id = who_owns_this(who_owns_this($cr_user_id, 'dmn_id'), 'user');
 
@@ -283,7 +283,7 @@ SQL_QUERY;
                 $status,
                 '_no_'));
 	}
-
+*/
 	$admin_login = $_SESSION['user_logged'];
 
 	if ($status == $cfg['ITEM_ORDERED_STATUS']) {

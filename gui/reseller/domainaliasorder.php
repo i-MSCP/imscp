@@ -56,17 +56,28 @@ if(isset($_GET['action']) && $_GET['action'] === "delete") {
 	}
 	$query = "SELECT alias_name FROM domain_aliasses WHERE alias_id=?";
 	$rs = exec_query($sql, $query, $act_id);
-		if ($rs -> RecordCount() == 0) {
-			header('Location: domain_alias.php');
-			die();
-		}
+	if ($rs -> RecordCount() == 0) {
+		header('Location: domain_alias.php');
+		die();
+	}
 	$alias_name = $rs -> fields['alias_name'];
 
 	$query = "UPDATE domain_aliasses SET alias_status='toadd' WHERE alias_id=?";
 	$rs = exec_query($sql, $query, $act_id);
 
-	// enable "ordered"/pending email accounts
 	$domain_id = who_owns_this($act_id, 'als_id', true);
+	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id`= ?';
+	$rs = exec_query($sql, $query, $domain_id);
+	if ($rs -> RecordCount() == 0) {
+		header('Location: domain_alias.php');
+		die();
+	}
+	$user_email = $rs -> fields['email'];
+	// Create the 3 default addresses if wanted
+	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($domain_id, $user_email, $alias_name, 'alias', $act_id);
+
+	// enable "ordered"/pending email accounts
+// ??? are there pending mail_adresses ???, joximu
 	$query = "UPDATE mail_users SET status=? WHERE sub_id=? AND domain_id = ? AND status=? AND mail_type LIKE 'alias%'";
 	$rs = exec_query($sql, $query, array($cfg['ITEM_ADD_STATUS'], $act_id, $domain_id, $cfg['ITEM_ORDERED_STATUS']));
 

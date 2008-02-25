@@ -411,7 +411,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 
     if ($ftp_uid == -1) return;
 
-    $ftp_shell = $cfg['FTP_SHELL'];
+    $ftp_shell = $cfg['CMD_SHELL'];
     $ftp_passwd = crypt_user_ftp_pass($_POST['pass']);
 
     $query = <<<SQL_QUERY

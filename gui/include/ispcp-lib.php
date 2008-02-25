@@ -38,7 +38,7 @@ require_once(INCLUDEPATH.'/system-message.php');
 require_once(INCLUDEPATH.'/ispcp-db-keys.php');
 require_once(INCLUDEPATH.'/sql.php');
 
-// variable for developmetn edition => shows all php variables under the pages
+// variable for development edition => shows all php variables under the pages
 // false = disable, true = enable
 $cfg['DUMP_GUI_DEBUG'] = false;
 

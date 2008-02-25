@@ -104,6 +104,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 			'TR_MENU_SERVER_STATUS' => tr('Server status'),
 			'TR_MENU_ISPCP_UPDATE' => tr('ispCP updates'),
+			'TR_MENU_ISPCP_DATABASE_UPDATE' => tr('ispCP database updates'),
 			'TR_MENU_ISPCP_DEBUGGER' => tr('ispCP debugger'),
 			'TR_CUSTOM_MENUS' => tr('Custom menus'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),

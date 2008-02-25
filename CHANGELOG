@@ -1,13 +1,20 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-02-19 Christian Hernmarck
+2008-02-25 Christian Hernmarck
 	- GUI:
-		* Some small fixes: domain_statistics & some "remove this" messages
+		* Fixed #1068: Patch to fix icon position in WebFTP
+		* Fixed #1047: alias emails not deleted
+		* Fixed  #747: use of unused field mail_addr in table mail_users
+		* Some smaller fixes (FTP_SHELL->CMD_SHELL, TR_MENU... missing string)
 
 2008-02-25 Jochen Manz
 	- GUI:
                 * Corrected some small issues and increased the speed of the db update
+
+2008-02-24 Christian Hernmarck
+	- GUI:
+		* Some small fixes: domain_statistics & some "remove this" messages
 
 2008-02-24 Benedikt Heintel
 	- ENGINE:

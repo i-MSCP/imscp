@@ -2,11 +2,11 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2008 by ispCP | http://isp-control.net
+ * @version	SVN: $ID$
+ * @link	http://isp-control.net
+ * @author	ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -207,6 +207,8 @@ SQL_QUERY;
 function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
     global $cfg;
 
+    // 20080218: added support for the mail_addr field: complete mail address in the db
+
     // standard whithout encoding
     // $mail_acc = $_POST['username'];
     // lets encode the mail ??? only crazy ones encode the local_part
@@ -218,6 +220,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
         $mail_acc = $mail_acc_tmp;
     }
     $mail_auto_respond = '_no_';
+    $mail_addr = '';
 
     if ($_POST['mail_type'] === 'normal') {
         if ($_POST['dmn_type'] === 'dmn') {
@@ -225,18 +228,41 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
             $mail_forward = '_no_';
             $mail_type = 'normal_mail';
             $sub_id = '0';
+	    $mail_addr = $mail_acc.'@'.$dmn_name; // the complete address
         }
         else if ($_POST['dmn_type'] === 'sub') {
             $mail_pass = $_POST['pass'];
             $mail_forward = '_no_';
             $mail_type = 'subdom_mail';
             $sub_id = $_POST['sub_id'];
+	    // search the complete address
+	    $query = <<<SQL_QUERY
+		SELECT
+		    `subdomain_name`
+		FROM
+		    `subdomain`
+		WHERE
+		    `subdomain_id` = ?
+SQL_QUERY;
+	    $rs = exec_query($sql, $query, array($sub_id));
+	    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['subdomain_name']).'.'.$dmn_name; // the complete address
         }
         else if ($_POST['dmn_type'] === 'als') {
             $mail_pass = $_POST['pass'];
             $mail_forward = '_no_';
             $mail_type = 'alias_mail';
             $sub_id = $_POST['als_id'];
+	    // search the complete address
+	    $query = <<<SQL_QUERY
+		SELECT
+		    `alias_name`
+		FROM
+		    `domain_aliasses`
+		WHERE
+		    `alias_id` = ?
+SQL_QUERY;
+	    $rs = exec_query($sql, $query, array($sub_id));
+	    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['alias_name']); // the complete address
         } else {
             set_page_message(tr('Unknown domain type'));
             return ;
@@ -329,9 +355,10 @@ SQL_QUERY;
              mail_type,
              sub_id,
              status,
-             mail_auto_respond)
+             mail_auto_respond,
+             mail_addr)
         VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($mail_acc,
@@ -341,40 +368,10 @@ SQL_QUERY;
             $mail_type,
             $sub_id,
             $cfg['ITEM_ADD_STATUS'],
-            $mail_auto_respond));
+            $mail_auto_respond,
+	    $mail_addr));
 
-    if ($_POST['dmn_type'] === 'als') {
-        $query = <<<SQL_QUERY
-  				SELECT
-				  	`alias_name`
-				FROM
-					`domain_aliasses`
-				WHERE
-					`alias_id` = ?
-				LIMIT
-					1
-SQL_QUERY;
-
-        $rs = exec_query($sql, $query, array($sub_id));
-        $dmn_name = $rs->fields['alias_name'];
-    }
-	else if ($_POST['dmn_type'] === 'sub') {
-        $query = <<<SQL_QUERY
-  				SELECT
-				  	`subdomain_name`
-				FROM
-					`subdomain`
-				WHERE
-					`subdomain_id` = ?
-				LIMIT
-					1
-SQL_QUERY;
-
-        $rs = exec_query($sql, $query, array($sub_id));
-        $dmn_name = $rs->fields['subdomain_name'].$dmn_name;
-    }
-
-    write_log($_SESSION['user_logged'] . ": add new mail account: " . $mail_acc . "@" . $dmn_name);
+    write_log($_SESSION['user_logged'] . ": add new mail account: " . $mail_addr);
     set_page_message(tr('Mail account scheduled for addition!'));
     send_request();
     header("Location: email_accounts.php");

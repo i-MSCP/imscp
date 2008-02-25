@@ -362,8 +362,8 @@ http://pear.laurent-laville.org/HTML_Progress/examples/horizontal/string.php
 }
 
 #buttonsright {
-	margin-top: 88px;
-	
+	position: relative; 
+	top: 68px; 
 }
 .login {
 	font-family: 		geneva, arial, helvetica, sans-serif;

@@ -192,6 +192,9 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));
 		$user_email = $rs->fields['email'];
 
+	// Create the 3 default addresses if wanted
+	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
+/*
     if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
         $query = <<<SQL_QUERY
             INSERT INTO mail_users
@@ -237,7 +240,7 @@ SQL_QUERY;
                 $cfg['ITEM_ADD_STATUS'],
                 '_no_'));
     }
-
+*/
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");

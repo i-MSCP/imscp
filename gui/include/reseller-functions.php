@@ -1660,4 +1660,80 @@ function send_alias_order_email($alias_name)
 
 }
 
+// add the 3 mail accounts/forwardings to a new domain...
+function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0)
+{
+	global $cfg, $sql;
+
+	if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) {
+
+		$forward_type = ($dmn_type == 'alias') ? 'alias_forward': 'normal_forward';
+
+		// prepare SQL
+		$query = <<<SQL_QUERY
+	INSERT INTO mail_users
+		(mail_acc,
+		 mail_pass,
+		 mail_forward,
+		 domain_id,
+		 mail_type,
+		 sub_id,
+		 status,
+		 mail_auto_respond,
+		 quota,
+		 mail_addr)
+	VALUES
+		(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+SQL_QUERY;
+
+		// create default forwarder for webmaster@domain.tld to the account's owner
+		$rs = exec_query($sql, $query, 
+			array('webmaster',
+				'_no_',
+				$user_email,
+				$dmn_id,
+				$forward_type,
+				$sub_id,
+				$cfg['ITEM_ADD_STATUS'],
+				'_no_',
+				10485760,
+				'webmaster@'.$dmn_part
+			)
+		);
+
+		// create default forwarder for postmaster@domain.tld to the account's reseller
+		$rs = exec_query($sql, $query, 
+			array('postmaster',
+				'_no_',
+				$_SESSION['user_email'],
+				$dmn_id,
+				$forward_type,
+				$sub_id,
+				$cfg['ITEM_ADD_STATUS'],
+				'_no_',
+				10485760,
+				'postmaster@'.$dmn_part
+			)
+		);
+
+		// create default forwarder for abuse@domain.tld to the account's reseller
+		$rs = exec_query($sql, $query, 
+			array('abuse',
+				'_no_',
+				$_SESSION['user_email'],
+				$dmn_id,
+				$forward_type,
+				$sub_id,
+				$cfg['ITEM_ADD_STATUS'],
+				'_no_',
+				10485760,
+				'abuse@'.$dmn_part
+			)
+		);
+
+	}
+
+} // end client_mail_add_default_accounts
+
+
 ?>
