@@ -232,6 +232,7 @@ function create_catchall_mail_account(&$sql, $id) {
 			if (preg_match("/(\d+);([^;]+);/", $post_mail_id, $match) == 1) {
 				$mail_id = $match[1];
 				$mail_acc = $match[2];
+
 				if ($item_type === 'dmn') {
 					$mail_type = 'normal_catchall';
 				} elseif ($item_type === 'als') {
@@ -241,11 +242,11 @@ function create_catchall_mail_account(&$sql, $id) {
 				}
 
 				$query = <<<SQL_QUERY
-                    select
+                    SELECT
                         domain_id, sub_id
-                    from
+                    FROM
                         mail_users
-                    where
+                    WHERE
                         mail_id = ?
 SQL_QUERY;
 
@@ -253,10 +254,15 @@ SQL_QUERY;
 				$domain_id = $rs->fields['domain_id'];
 				$sub_id = $rs->fields['sub_id'];
 				$status = $cfg['ITEM_ADD_STATUS'];
+
+				// find the mail_addr (catchall -> "@(sub/alias)domain.tld", should be domain part of mail_acc
+				$match = explode('@', $mail_acc);
+				$mail_addr = '@' . $match[1];
+
 				check_for_lock_file();
 
 				$query = <<<SQL_QUERY
-                    insert into mail_users
+                    INSERT INTO `mail_users`
                         (mail_acc,
                          mail_pass,
                          mail_forward,
@@ -264,12 +270,14 @@ SQL_QUERY;
                          mail_type,
                          sub_id,
                          status,
-                         mail_auto_respond)
-                    values
-                        (?, ?, ?, ?, ?, ?, ?, ?)
+                         mail_auto_respond,
+			 quota,
+			 mail_addr)
+                    VALUES
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-				$rs = exec_query($sql, $query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_'));
+				$rs = exec_query($sql, $query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 				send_request();
 				write_log($_SESSION['user_logged'] . ": add new email catch all");
@@ -288,18 +296,27 @@ SQL_QUERY;
 				$mail_type = 'normal_catchall';
 				$sub_id = '0';
 				$domain_id = $item_id;
+				$query = "SELECT `domain_name` FROM `domain` 
+					WHERE `domain_id` = ?";
+				$rs = exec_query($sql, $query, $domain_id);
+				$mail_addr = '@' . $rs->fields['domain_name'];
 			} elseif ($item_type === 'als') {
 				$mail_type = 'alias_catchall';
 				$sub_id = $item_id;
-				$query = 'SELECT domain_id FROM domain_aliasses WHERE alias_id = ?';
+				$query = "SELECT `domain_aliasses`.`domain_id`, `alias_name` FROM `domain_aliasses`
+					WHERE `alias_id` = ?";
 				$rs = exec_query($sql, $query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
+				$mail_addr = '@' . $rs->fields['alias_name'];
+
 			} elseif ($item_type === 'sub') {
 				$mail_type = 'subdom_catchall';
 				$sub_id = $item_id;
-				$query = 'SELECT domain_id FROM subdomain WHERE subdomain_id = ?';
+				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain` 
+					WHERE `subdomain_id` = ? AND `domain`.`domain_id` = `subdomain`.`domain_id`";
 				$rs = exec_query($sql, $query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
+				$mail_addr = '@' . $rs->fields['subdomain_name'] . '.' . $rs->fields['domain_name'];
 			}
 			$mail_forward = clean_input($_POST['forward_list']);
 			$mail_acc = array();
@@ -322,7 +339,7 @@ SQL_QUERY;
 			check_for_lock_file();
 
 			$query = <<<SQL_QUERY
-                    insert into mail_users
+                    INSERT INTO `mail_users`
                         (mail_acc,
                          mail_pass,
                          mail_forward,
@@ -330,12 +347,14 @@ SQL_QUERY;
                          mail_type,
                          sub_id,
                          status,
-                         mail_auto_respond)
-                    values
-                        (?, ?, ?, ?, ?, ?, ?, ?)
+                         mail_auto_respond,
+			 quota,
+			 mail_addr)
+                    VALUES
+                        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
-			$rs = exec_query($sql, $query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_'));
+			$rs = exec_query($sql, $query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
 			write_log($_SESSION['user_logged'] . ": add new email catch all ");

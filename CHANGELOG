@@ -1,5 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2008-02-25 Christian Hernmarck
+	- GUI:
+		* Fixed #747: "mail_addr" -> now also fill for catchall
+
 2008-02-25 Christian Hernmarck
 	- GUI:
 		* Fixed #1052: postmaster email not created
