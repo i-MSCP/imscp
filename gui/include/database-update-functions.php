@@ -74,10 +74,8 @@ function checkNewRevisionExists() {
 function setDatabaseRevision($newRevision) {
 	global $sql;
 
-	if($newRevision > getCurrentRevision()) {
-		$query = "UPDATE config SET value = ? WHERE name = ?";
-		$rs = exec_query($sql, $query, array($newRevision, "DATABASE_REVISION"));
-	}
+	$query = "UPDATE config SET value = ? WHERE name = ?";
+	$rs = exec_query($sql, $query, array($newRevision, "DATABASE_REVISION"));
 }
 
 /*
@@ -97,6 +95,7 @@ function executeDatabaseUpdates() {
 
 		if(function_exists($functionName)) {
 			$rs = $functionName();
+			setDatabaseRevision($newRevision);
 		}
 	}
 }
@@ -115,9 +114,4 @@ function _databaseUpdate_1() {
 	$query = "INSERT INTO config (name, value) VALUES (? , ?)";
 	$rs = exec_query($sql, $query, array('DATABASE_REVISION', '1'));
 }
-
-function _databaseUpdate_2() {
-setDatabaseRevision(2);
-}
-
 ?>
