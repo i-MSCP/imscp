@@ -210,6 +210,10 @@ $res = exec_query($sql, $query, array($dmn_user_name,
 		$php,
 		$cgi));
 $dmn_id = $sql->Insert_ID();
+
+// Create the 3 default addresses if wanted
+if ($cfg['CREATE_DEFAULT_EMAIL_ADDRESSES']) client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
+
 // ispcp 2.5 feature
 // add_domain_extras($dmn_id, $record_id, $sql);
 // lets send mail to user
@@ -221,7 +225,7 @@ send_add_user_auto_msg ($reseller_id,
 	$last_name,
 	tr('Domain account')
 	);
-// send query to the ispcp daemon
+
 // add user into user_gui_props => domain looser needs language and skin too :-)
 $user_def_lang = $_SESSION['user_def_lang'];
 $user_theme_color = $_SESSION['user_theme'];
@@ -238,6 +242,7 @@ $res = exec_query($sql, $query, array($record_id,
 		$user_def_lang,
 		$user_theme_color));
 
+// send query to the ispcp daemon
 send_request();
 
 $admin_login = $_SESSION['user_logged'];
