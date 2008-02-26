@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-26 Christian Hernmarck
+	- GUI:
+		* Added DB update function for mail_addr field (_databaseUpdate_2)
+		* Fixed #871: Small CSS error in Webmail (again...)
+
 2008-02-25 Christian Hernmarck
 	- GUI:
 		* Fixed #747: "mail_addr" -> now also fill for catchall

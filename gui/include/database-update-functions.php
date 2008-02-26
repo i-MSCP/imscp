@@ -114,4 +114,61 @@ function _databaseUpdate_1() {
 	$query = "INSERT INTO config (name, value) VALUES (? , ?)";
 	$rs = exec_query($sql, $query, array('DATABASE_REVISION', '1'));
 }
+
+
+/*
+ * Updates the database fields ispcp.mail_users.mail_addr to the right mail address
+ * written by Christian Hernmarck, Feb 2008
+ * Since it does not delete or add any field, it may be run several times...
+ */
+function _databaseUpdate_2() {
+	global $sql; // we need the gloabl database connection
+
+	$sqlUpd = array(); // we need several SQL Statements...
+
+	// domain mail + forward
+	$sqlUpd[] = "UPDATE `mail_users`, `domain`
+		SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)
+		WHERE `mail_users`.`domain_id` = `domain`.`domain_id`
+			AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward')";
+
+	// domain-alias mail + forward
+	$sqlUpd[] = "UPDATE `mail_users`, `domain_aliasses`
+		SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)
+		WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`
+			AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward')";
+
+	// subdomain mail + forward
+	$sqlUpd[] = "UPDATE `mail_users`, `subdomain`, `domain`
+		SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)
+		WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id` 
+			AND `mail_users`.`domain_id` = `domain`.`domain_id`
+			AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward')";
+
+	// domain catchall
+	$sqlUpd[] = "UPDATE `mail_users`, `domain`
+		SET `mail_addr` = CONCAT('@',`domain_name`)
+		WHERE `mail_users`.`domain_id` = `domain`.`domain_id`
+			AND `mail_type` = 'normal_catchall'";
+
+	// domain-alias catchall
+	$sqlUpd[] = "UPDATE `mail_users`, `domain_aliasses`
+		SET `mail_addr` = CONCAT('@',`alias_name`)
+		WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`
+			AND `mail_type` = 'alias_catchall'";
+
+	// subdomain catchall
+	$sqlUpd[] = "UPDATE `mail_users`, `subdomain`, `domain`
+		SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)
+		WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id` 
+			AND `mail_users`.`domain_id` = `domain`.`domain_id`
+			AND `mail_type` = 'subdom_catchall'";
+
+	foreach($sqlUpd as $s) // go for it: run them all
+	{
+		$sql->Execute($s);
+	}
+
+} // end of _databaseUpdate_2
+
 ?>

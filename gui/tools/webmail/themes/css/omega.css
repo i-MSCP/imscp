@@ -10,8 +10,16 @@ html {
 }
 
 small {
-	color: #ffffff;
+	color: #000000;
 	font-size: 9px;
+}
+
+small font {
+	color: #000000;
+}
+
+body.left small {
+	color: #ffffff;
 }
 
 pre {
