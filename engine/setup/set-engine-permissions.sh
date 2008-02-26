@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -34,7 +34,7 @@
 DEBUG=0
 
 # read needed entries from ispcp.conf
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
     export $a
 done
 
@@ -42,7 +42,7 @@ done
 # fixing engine permissions;
 #
 
-echo -n "    Setting Engine Permissions: ";
+echo -n "\tSetting Engine Permissions: ";
 
 if [ $DEBUG -eq 1 ]; then
     echo	"";
@@ -50,13 +50,13 @@ fi
 
 # Fix ispcp.conf perms
 if [ $DEBUG -eq 1 ]; then
-    echo -e "\tug+r,u+w,o-r root:vu2000 /etc/ispcp/ispcp.conf";
+    echo -e "\tug+r,u+w,o-r root:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
 else
     echo -n ".";
 fi
 
 #chmod ug+r,u+w,o-r /etc/ispcp/ispcp.conf
-chown root:vu2000 /etc/ispcp/ispcp.conf
+chown root:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
 
 for i in `find $ROOT_DIR/engine/`; do
 

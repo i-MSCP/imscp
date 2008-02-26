@@ -1647,7 +1647,7 @@ sub setup_ftpd {
 	# To fill ftp_traff.log file with somethign. ;)
 	#
 
-	$rs = store_file("$main::cfg{'TRAFF_LOG_DIR'}/$main::cfg{'FTP_TRAFF_LOG'}", "\n", 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}", "\n", 'root', 'root', 0644);
 	return $rs if ($rs != 0);
 
 	#

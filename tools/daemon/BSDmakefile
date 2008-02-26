@@ -32,7 +32,6 @@
 #CFLAGS += -O0
 #else
 CFLAGS += -O3
-endif
 #endif
 
 

@@ -1,10 +1,16 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-02-26 Benedikt Heintel
+	- SETUP:
+		* Fixed #939: Installation Error on Ubuntu Dapper 6.06.1 LTS
+		* Fixed #1069: Permission script engine/setup/set-engine-permissions.sh dont work if vu2000 has changed
+	- TOOLS:
+		* Fixed #480: creating a folder as subfolder "[none]" doesn't work
 
 2008-02-26 Jochen Manz
-        - Setup:
-                * Corrected the DATABASE_REVISION entry which is inserted when installing ispcp
+	- SETUP:
+		* Corrected the DATABASE_REVISION entry which is inserted when installing ispcp
 
 2008-02-26 Christian Hernmarck
 	- GUI:
@@ -19,20 +25,28 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #1052: postmaster email not created
 
+2008-02-25 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #994: open_basedir settings: mod-php != php-fastcgi
+	- SETUP:
+		* Fixed #792: (ubuntu) errors in make
+
 2008-02-25 Christian Hernmarck
 	- GUI:
-		* Fixed #1068: Patch to fix icon position in WebFTP
+		* Fixed #747: use of unused field mail_addr in table mail_users
 		* Fixed #1047: alias emails not deleted
-		* Fixed  #747: use of unused field mail_addr in table mail_users
+		* Fixed #1068: Patch to fix icon position in WebFTP
 		* Some smaller fixes (FTP_SHELL->CMD_SHELL, TR_MENU... missing string)
 
 2008-02-25 Jochen Manz
 	- GUI:
-                * Corrected some small issues and increased the speed of the db update
+		* Corrected some small issues and increased the speed of the db update
 
 2008-02-24 Christian Hernmarck
 	- GUI:
 		* Some small fixes: domain_statistics & some "remove this" messages
+	- TOOLS:
+		* Fixed #871: Small CSS error in Webmail
 
 2008-02-24 Benedikt Heintel
 	- ENGINE:
@@ -47,8 +61,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #992: (gentoo) logrotate throws errors when using syslog-ng
 
 2008-02-24 Jochen Manz
-	- TOOLS:
-		* Fixed #871: Small CSS error in Webmail
+	- GUI:
+		* Added: Database update function
 
 2008-02-23 Benedikt Heintel
 	- GUI:
@@ -64,7 +78,6 @@ ispCP ω 1.0.0 Changelog
 		* Undefined index: ISPCP_LICENSE
 	- TOOLS:
 		* Updated ADOdb to version 4.98
-
 
 2008-02-21 Benedikt Heintel
 	- GUI:
@@ -2756,5 +2769,5 @@ VHCS ω 2.4.8 Changelog
 		  ( we need to complete the copy process of php5-starter-script and php.ini here!)
 		  ( and including template tags)
 
-2006-10-20 Malte
+2006-10-20 Malte Geierhos
 	- Recycled old VHCS-Code to be a base for our new hosting panel!
