@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+2008-02-26 Jochen Manz
+        - Setup:
+                * Corrected the DATABASE_REVISION entry which is inserted when installing ispcp
+
 2008-02-26 Christian Hernmarck
 	- GUI:
 		* Added DB update function for mail_addr field (_databaseUpdate_2)
