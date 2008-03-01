@@ -1,5 +1,5 @@
 <?php
-/* $Id: norwegian-utf-8.inc.php 10537 2007-07-28 14:12:11Z lem9 $ */
+/* $Id: norwegian-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 /**
  * Translated by Sven-Erik Andersen <sven DOT erik DOT andersen AT gmail DOT com>
@@ -1025,4 +1025,5 @@ $strYes = 'Ja';
 $strZeroRemovesTheLimit = 'Merk: Ved å sette disse til 0 (null) fjernes begrensningen.';
 $strZip = 'Komprimert (zip)';
 
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

@@ -316,7 +316,7 @@ sub migrate_vhcs2 {
 	}
 
 	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
+	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
@@ -394,7 +394,7 @@ sub remove_vhcs2 {
         }
 
 		$rdata =~ s/include "\/etc\/bind\/vhcs.conf";//gi;
-		$rs = store_file("/etc/bind/named.conf", $rdata, 'root', 'root', 0644);
+		$rs = store_file("/etc/bind/named.conf", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 		if ($rs != 0) {
         	print STDOUT "failed!\n";
         	exit_werror("Could not store /etc/bind/named.conf");
@@ -690,7 +690,7 @@ sub patch_ispcp_rc2 {
 	return $rs if ($rs != 0);
 
 	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
-	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
+	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish Argentina <es_AR@li.org>\n"
@@ -612,6 +612,32 @@ msgstr "Guardar"
 msgid "Edit button"
 msgstr "Editar botón"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Usuarios de base de datos"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Actualizaciones ispCP disponibles"
+
+msgid "Update"
+msgstr "Actualizar"
+
+msgid "Update details"
+msgstr "Detalles de actualización"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "No hay nuevas actualizaciones de ispCP disponibles!"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Una nueva actualización de ispCP está disponible"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Esta seguro que quiere eliminar esta orden?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -747,9 +773,6 @@ msgstr "Cuenta de dominio"
 msgid "Edit admin"
 msgstr "Editar administrador"
 
-msgid "Update"
-msgstr "Actualizar"
-
 msgid "Send new login data"
 msgstr "Envíe nuevos datos para su identificación"
 
@@ -777,11 +800,6 @@ msgid ""
 msgstr ""
 
 msgid "Aliases"
-msgstr ""
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
@@ -851,6 +869,10 @@ msgstr "Correo Electrónico"
 
 msgid "unlimited"
 msgstr "ilimitado"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Limite de usuarios SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Modificar plan de hosting"
@@ -957,20 +979,6 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "Una nueva actualización de ispCP está disponible"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Está excediendo su limite de trafico!"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Admin/Indice principal"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/Administrar IP"
@@ -1084,9 +1092,6 @@ msgstr "Actualizaciones ispCP disponibles"
 
 msgid "No new ispCP updates available"
 msgstr "No hay nuevas actualizaciones de ispCP disponibles!"
-
-msgid "Update details"
-msgstr "Detalles de actualización"
 
 msgid "User language updated successfully!"
 msgstr "Lenguaje actualizado satisfactoriamente!"
@@ -1838,6 +1843,10 @@ msgstr "Ya existe un dominio con ese nombre en el sistema!"
 msgid "Incorrect mount point syntax"
 msgstr "La sintaxis del punto de montaje es incorrecta!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Alias de dominio <b>no agregado</b>!"
+
 msgid "Incorrect forward syntax"
 msgstr "Sintaxis de reenvio incorrecta!"
 
@@ -2015,7 +2024,8 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "Por favor especifique el nombre de dominio!"
 
-msgid "Subdomain already exists!"
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
 msgstr "Ya existe el subdominio!"
 
 msgid "Wrong subdomain syntax!"
@@ -2410,6 +2420,21 @@ msgstr "Seleccionar"
 
 msgid "disabled"
 msgstr "desactivado"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "No dispone de ningúna pregunta en el sistema de soporte!"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Está excediendo su limite de trafico!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2862,6 +2887,10 @@ msgstr "Log de administración"
 
 msgid "Logout"
 msgstr "Cerrar sesión"
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "Actualizaciones ispCP"
 
 msgid "Custom menus"
 msgstr "Menús personalizados"
@@ -3405,6 +3434,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Reseller/Cambiar contraseña"
 
@@ -3653,6 +3685,9 @@ msgstr "Administrar pedidos"
 msgid "Wrong order ID!"
 msgstr "Orden ID no permitida"
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr "Usuario agregado!"
 
@@ -3758,9 +3793,6 @@ msgstr "ispCP - Usuario/Añadir usuario"
 msgid "Add other domains to this account"
 msgstr "Añadir otros dominios a esta cuenta"
 
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
-
 msgid "System error with Domain ID "
 msgstr ""
 
@@ -3804,6 +3836,9 @@ msgstr "ispCP - Reseller : Sistema de Soporte: Ver Tickets"
 
 msgid "Message was sent."
 msgstr "El mensaje ha sido enviado."
+
+#~ msgid "ispCP - Admin/Main Index"
+#~ msgstr "ispCP - Admin/Indice principal"
 
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "<i>(generalmente llamado backup_AAAA_MM_DD.tar.bz2)</i>"

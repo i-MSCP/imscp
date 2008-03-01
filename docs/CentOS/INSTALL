@@ -20,7 +20,7 @@ ispCP ω Version:	1.0.0 RC4
 INSTALL Script:		1.0
 Maintainer:
 Homepage:			http://www.isp-contol.net
-Linux Distris:		CentOS 5
+Linux Distros:		CentOS 5
 
 ================================================================================
 2) Requirements
@@ -55,10 +55,10 @@ Make sure you are logged in as root.
 
 1.	Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar -xjvf ispcp-omega-1.0.0-rc4.tar.bz2
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
-2.	Change to the newly created directory:
-	# cd ./ispcp-1.0.0
+2. Change to the newly created directory:
+	# cd ./ispcp-omega-1.0.0
 
 3.	Install the required modules:
 	# wget http://apt.sw.be/redhat/el5/en/i386/RPMS.dag/rpmforge-release-0.3.6-1.el5.rf.i386.rpm
@@ -76,14 +76,14 @@ Make sure you are logged in as root.
 	# chkconfig postfix on
 	# service postfix start
 
-4.	(optional) Check the ispcp.conf and adapt it to your requirements.
+4. (optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
-5.	Build the System by using make:
+5. Build the System by using make:
 	# make install -f Makefile.centos
 
-6.	Copy all the directories into the system (you may make backups)
+6. Copy all the directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp-1.0.0/* /
 
 7. Make the scoreboards dir and the aliases and some other fixes
@@ -151,12 +151,12 @@ Make sure you are logged in as root.
 ---------
 Make sure you are logged in as root.
 
-1.	Untar or unzip the distribution files to a secure directory:
+1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar -xjvf ispcp-omega-1.0.0-rc4.tar.bz2
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
-2.	Change to the newly created directory:
-	# cd ./ispcp-1.0.0
+2. Change to the newly created directory:
+	# cd ./ispcp-omega-1.0.0
 
 3.	Install the required modules:
 	# wget http://apt.sw.be/redhat/el5/en/i386/RPMS.dag/rpmforge-release-0.3.6-1.el5.rf.i386.rpm
@@ -183,7 +183,7 @@ Make sure you are logged in as root.
 
 6. Save key files
 	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/
-	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager
+	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager/
 	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/include/
 
 7. Copy /usr and /var directories into your system (you may make backups)

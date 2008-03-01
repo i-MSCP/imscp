@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php 10539 2007-07-28 14:33:42Z lem9 $ */
+/* $Id: spanish-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -1023,4 +1023,5 @@ $strYes = 'Sí';
 $strZeroRemovesTheLimit = 'Nota: si cambia los parámetros de estas opciones a 0 (cero), remueve el límite.';
 $strZip = '"comprimido con zip"';
 
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

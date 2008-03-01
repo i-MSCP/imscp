@@ -3,7 +3,7 @@
 /**
  * Interface to the classic MySQL extension
  *
- * @version $Id: mysql.dbi.lib.php 10356 2007-05-08 20:39:33Z cybot_tm $
+ * @version $Id: mysql.dbi.lib.php 11083 2008-01-27 13:22:36Z lem9 $
  */
 
 /**
@@ -81,7 +81,7 @@ function PMA_DBI_connect($user, $password, $is_controluser = FALSE) {
         $link = PMA_DBI_real_connect($cfg['Server']['host'] . $server_port . $server_socket, $user, '', empty($client_flags) ? NULL : $client_flags);
     }
 
-    if (empty($link) && ! $is_controluser) {
+    if (empty($link)) {
         if ($is_controluser) {
             if (! defined('PMA_DBI_CONNECT_FAILED_CONTROLUSER')) {
                 define('PMA_DBI_CONNECT_FAILED_CONTROLUSER', true);

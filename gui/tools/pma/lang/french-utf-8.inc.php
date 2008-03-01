@@ -1,5 +1,5 @@
 <?php
-/* $Id: french-utf-8.inc.php 10944 2007-11-25 19:21:29Z lem9 $ */
+/* $Id: french-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -1024,4 +1024,5 @@ $strYes = 'Oui';
 $strZeroRemovesTheLimit = 'Note: Une valeur de 0 (zero) enlève la limite.';
 $strZip = '"zippé"';
 
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

@@ -3,7 +3,7 @@
 /**
  * main css file from theme Original
  *
- * @version $Id: theme_right.css.php 10666 2007-09-26 13:49:55Z lem9 $
+ * @version $Id: theme_right.css.php 11126 2008-02-15 21:17:17Z lem9 $
  * @package phpMyAdmin-theme
  * @subpackage Original
  */
@@ -105,9 +105,9 @@ fieldset fieldset {
 }
 
 fieldset legend {
-    background-color:   transparent;
     font-weight:        bold;
     color:              #444444;
+    background-color:   <?php echo 'OPERA' != PMA_USR_BROWSER_AGENT ? 'transparent' : $GLOBALS['cfg']['BgOne']; ?>;
 }
 
 /* buttons in some browsers (eg. Konqueror) are block elements,

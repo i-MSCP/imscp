@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: main.php 10635 2007-09-13 20:48:07Z lem9 $
+ * @version $Id: main.php 11113 2008-02-09 16:09:54Z lem9 $
  */
 
 /**
@@ -399,13 +399,22 @@ if ($server > 0 && substr(PMA_MYSQL_CLIENT_API, 0, 3) != substr(PMA_MYSQL_INT_VE
 /**
  * Warning about wrong controluser settings
  */
-$strControluserFailed = 'Connection for controluser as defined in your config.inc.php failed.';
 if (defined('PMA_DBI_CONNECT_FAILED_CONTROLUSER')) {
     echo '<div class="warning">' . $strControluserFailed . '</div>' . "\n";
 }
 
+/**
+ * Warning about missing mcrypt extension 
+ */
 if (defined('PMA_WARN_FOR_MCRYPT')) {
     echo '<div class="warning">' . PMA_sanitize(sprintf($strCantLoad, 'mcrypt')) . '</div>' . "\n";
+}
+
+/**
+ * Warning about Suhosin 
+ */
+if ($cfg['SuhosinDisableWarning'] == false && @ini_get('suhosin.request.max_value_length')) {
+    echo '<div class="warning">' . PMA_sanitize(sprintf($strSuhosin, '[a@./Documentation.html#faq1_38@_blank]', '[/a]')) . '</div>' . "\n";
 }
 
 /**

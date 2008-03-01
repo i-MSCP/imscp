@@ -6,11 +6,11 @@ START TRANSACTION;
 USE {DATABASE};
 
 -- BEGIN: Upgrade database structure:
-ALTER TABLE `admin` CHANGE `customer_id` `customer_id` varchar(200) NULL DEFAULT '0';
-ALTER TABLE `admin` CHANGE `created_by` `created_by` INT(10) UNSIGNED NULL DEFAULT '0';
-ALTER TABLE `admin` ADD `gender` varchar(1) DEFAULT NULL;
-ALTER TABLE `admin` ADD `uniqkey_time` TIMESTAMP NULL DEFAULT NULL;
-ALTER TABLE `admin` ADD UNIQUE KEY `admin_name` (`admin_name`);
+ALTER IGNORE TABLE `admin` CHANGE `customer_id` `customer_id` varchar(200) NULL DEFAULT '0';
+ALTER IGNORE TABLE `admin` CHANGE `created_by` `created_by` INT(10) UNSIGNED NULL DEFAULT '0';
+ALTER IGNORE TABLE `admin` ADD `gender` varchar(1) DEFAULT NULL;
+ALTER IGNORE TABLE `admin` ADD `uniqkey_time` TIMESTAMP NULL DEFAULT NULL;
+ALTER IGNORE TABLE `admin` ADD UNIQUE KEY `admin_name` (`admin_name`);
 
 CREATE TABLE `config` (
   `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',
@@ -51,33 +51,33 @@ VALUES (
 ),(
 'PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'
 ),(
-'DATABASE_REVISION', '3'
+'DATABASE_REVISION', '1'
 );
 
-ALTER TABLE `domain` CHANGE `domain_traffic_limit` `domain_traffic_limit` bigint(20) default NULL;
-ALTER TABLE `domain` CHANGE `domain_disk_limit` `domain_disk_limit` bigint(20) unsigned default NULL;
-ALTER TABLE `domain` CHANGE `domain_disk_usage` `domain_disk_usage` bigint(20) unsigned default NULL;
-ALTER TABLE `domain` ADD UNIQUE KEY `domain_name` (`domain_name`);
-ALTER TABLE `domain` ADD INDEX `i_domain_admin_id` (`domain_admin_id`);
+ALTER IGNORE TABLE `domain` CHANGE `domain_traffic_limit` `domain_traffic_limit` bigint(20) default NULL;
+ALTER IGNORE TABLE `domain` CHANGE `domain_disk_limit` `domain_disk_limit` bigint(20) unsigned default NULL;
+ALTER IGNORE TABLE `domain` CHANGE `domain_disk_usage` `domain_disk_usage` bigint(20) unsigned default NULL;
+ALTER IGNORE TABLE `domain` ADD UNIQUE KEY `domain_name` (`domain_name`);
+ALTER IGNORE TABLE `domain` ADD INDEX `i_domain_admin_id` (`domain_admin_id`);
 
 -- Drop useless table
 DROP TABLE IF EXISTS `domain_props`;
 
-ALTER TABLE `domain_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
-ALTER TABLE `domain_traffic` ADD INDEX `i_correction` ( `correction` );
-ALTER TABLE `domain_traffic` ADD INDEX `i_domain_id` (`domain_id`);
-ALTER TABLE `domain_traffic` ADD INDEX `i_dtraff_time` (`dtraff_time`);
-ALTER TABLE `domain_traffic` CHANGE `dtraff_time` `dtraff_time` BIGINT UNSIGNED NULL DEFAULT NULL ,
+ALTER IGNORE TABLE `domain_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
+ALTER IGNORE TABLE `domain_traffic` ADD INDEX `i_correction` ( `correction` );
+ALTER IGNORE TABLE `domain_traffic` ADD INDEX `i_domain_id` (`domain_id`);
+ALTER IGNORE TABLE `domain_traffic` ADD INDEX `i_dtraff_time` (`dtraff_time`);
+ALTER IGNORE TABLE `domain_traffic` CHANGE `dtraff_time` `dtraff_time` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_web` `dtraff_web` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_mail` `dtraff_mail` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_pop` `dtraff_pop` BIGINT UNSIGNED NULL DEFAULT NULL;
 
-ALTER TABLE `ftp_group` ADD UNIQUE KEY `groupname` (`groupname`);
+ALTER IGNORE TABLE `ftp_group` ADD UNIQUE KEY `groupname` (`groupname`);
 
-ALTER TABLE `htaccess_groups` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER IGNORE TABLE `htaccess_groups` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 
-ALTER TABLE `htaccess_users` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER IGNORE TABLE `htaccess_users` ADD `status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 
 -- Drop existing languages (they are outdated anyways)
 DROP TABLE IF EXISTS `lang_Chinese`;
@@ -96,22 +96,22 @@ DROP TABLE IF EXISTS `lang_Portugues_Brasil`;
 DROP TABLE IF EXISTS `lang_Russian`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 
-ALTER TABLE `log` CHANGE `log_time` `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP;
+ALTER IGNORE TABLE `log` CHANGE `log_time` `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP;
 
 -- Add Primary key and possibly an index to login table!
 TRUNCATE TABLE `login`;
-ALTER TABLE `login` ADD `ipaddr` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
-ALTER TABLE `login` ADD `login_count` TINYINT( 1 ) default '0';
-ALTER TABLE `login` ADD `captcha_count` TINYINT( 1 ) default '0';
-ALTER TABLE `login` ADD `user_name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
-ALTER TABLE `login` ADD PRIMARY KEY ( `session_id` );
+ALTER IGNORE TABLE `login` ADD `ipaddr` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER IGNORE TABLE `login` ADD `login_count` TINYINT( 1 ) default '0';
+ALTER IGNORE TABLE `login` ADD `captcha_count` TINYINT( 1 ) default '0';
+ALTER IGNORE TABLE `login` ADD `user_name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER IGNORE TABLE `login` ADD PRIMARY KEY ( `session_id` );
 
-ALTER TABLE `mail_users` ADD `quota` INT( 10 ) NULL DEFAULT '10485760';
-ALTER TABLE `mail_users` ADD `mail_addr` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
+ALTER IGNORE TABLE `mail_users` ADD `quota` INT( 10 ) NULL DEFAULT '10485760';
+ALTER IGNORE TABLE `mail_users` ADD `mail_addr` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL ;
 
-ALTER TABLE `orders` ADD `gender` varchar(1) default NULL;
+ALTER IGNORE TABLE `orders` ADD `gender` varchar(1) default NULL;
 
-ALTER TABLE `quotalimits` CHANGE `name` `name` varchar(30) default NULL,
+ALTER IGNORE TABLE `quotalimits` CHANGE `name` `name` varchar(30) default NULL,
 CHANGE `quota_type` `quota_type` ENUM('user','group','class','all') NOT NULL default 'user',
 CHANGE `per_session` `per_session` enum('false','true') NOT NULL default 'false',
 CHANGE `limit_type` `limit_type` enum('soft','hard') NOT NULL default 'soft',
@@ -121,9 +121,9 @@ CHANGE `bytes_xfer_avail` `bytes_xfer_avail` float NOT NULL default '0',
 CHANGE `files_in_avail` `files_in_avail` int(10) unsigned NOT NULL default '0',
 CHANGE `files_out_avail` `files_out_avail` int(10) unsigned NOT NULL default '0',
 CHANGE `files_xfer_avail` `files_xfer_avail` int(10) unsigned NOT NULL default '0';
-ALTER TABLE `quotalimits` ADD PRIMARY KEY ( `name` );
+ALTER IGNORE TABLE `quotalimits` ADD PRIMARY KEY ( `name` );
 
-ALTER TABLE `quotatallies` CHANGE `name` `name` varchar(30) NOT NULL default '',
+ALTER IGNORE TABLE `quotatallies` CHANGE `name` `name` varchar(30) NOT NULL default '',
 CHANGE `quota_type` `quota_type` enum('user','group','class','all') NOT NULL default 'user',
 CHANGE `bytes_in_used` `bytes_in_used` float NOT NULL default '0',
 CHANGE `bytes_out_used` `bytes_out_used` float NOT NULL default '0',
@@ -131,9 +131,9 @@ CHANGE `bytes_xfer_used` `bytes_xfer_used` float NOT NULL default '0',
 CHANGE `files_in_used` `files_in_used` int(10) unsigned NOT NULL default '0',
 CHANGE `files_out_used` `files_out_used` int(10) unsigned NOT NULL default '0',
 CHANGE `files_xfer_used` `files_xfer_used` int(10) unsigned NOT NULL default '0';
-ALTER TABLE `quotatallies` ADD PRIMARY KEY ( `name` );
+ALTER IGNORE TABLE `quotatallies` ADD PRIMARY KEY ( `name` );
 
-ALTER TABLE `server_traffic` CHANGE `traff_time` `traff_time` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
+ALTER IGNORE TABLE `server_traffic` CHANGE `traff_time` `traff_time` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_in` `bytes_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_out` `bytes_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_mail_in` `bytes_mail_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
@@ -142,14 +142,14 @@ CHANGE `bytes_pop_in` `bytes_pop_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_pop_out` `bytes_pop_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_web_in` `bytes_web_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_web_out` `bytes_web_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL;
-ALTER TABLE `server_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
-ALTER TABLE `server_traffic` ADD INDEX `i_correction` (`correction`);
-ALTER TABLE `server_traffic` ADD INDEX `i_traff_time` (`traff_time`);
+ALTER IGNORE TABLE `server_traffic` ADD `correction` TINYINT( 1 ) NOT NULL DEFAULT '0';
+ALTER IGNORE TABLE `server_traffic` ADD INDEX `i_correction` (`correction`);
+ALTER IGNORE TABLE `server_traffic` ADD INDEX `i_traff_time` (`traff_time`);
 
 -- Drop useless table
 DROP TABLE IF EXISTS `syslog`;
 
-ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` int(10) unsigned NOT NULL default 0,
+ALTER IGNORE TABLE `user_gui_props` CHANGE `user_id` `user_id` int(10) unsigned NOT NULL default 0,
 CHANGE `lang` `lang` varchar(255) default '',
 CHANGE `layout` `layout` varchar(255) default '';
 

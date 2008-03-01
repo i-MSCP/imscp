@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_tbl.lib.php 10928 2007-11-15 13:33:35Z lem9 $
+ * @version $Id: display_tbl.lib.php 11145 2008-02-25 17:59:13Z lem9 $
  */
 
 /**
@@ -31,7 +31,7 @@ require_once './libraries/Table.class.php';
  *     the "display printable view" option.
  *     Of course '0'/'1' means the feature won't/will be enabled.
  *
- * @param   string   the synthetic value for display_mode (see �1 a few
+ * @param   string   the synthetic value for display_mode (see a few
  *                   lines above for explanations)
  * @param   integer  the total number of rows returned by the SQL query
  *                   without any programmatically appended "LIMIT" clause
@@ -465,7 +465,7 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
             $unsorted_sql_query = $analyzed_sql[0]['unsorted_query'];
         }
 
-        // we need $sort_expression and $sort_expression_nodir
+        // we need $sort_expression and $sort_expression_nodirection
         // even if there are many table references
 
         $sort_expression = trim(str_replace('  ', ' ', $analyzed_sql[0]['order_by_clause']));
@@ -475,7 +475,7 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
          * @todo analyzer
          */
         preg_match('@(.*)([[:space:]]*(ASC|DESC))@si', $sort_expression, $matches);
-        $sort_expression_nodir = isset($matches[1]) ? trim($matches[1]) : $sort_expression;
+        $sort_expression_nodirection = isset($matches[1]) ? trim($matches[1]) : $sort_expression;
 
         // sorting by indexes, only if it makes sense (only one table ref)
         if (isset($analyzed_sql) && isset($analyzed_sql[0]) &&
@@ -699,11 +699,7 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
     }
 
     if ($is_display['sort_lnk'] == '1') {
-        //$is_join = preg_match('@(.*)[[:space:]]+FROM[[:space:]]+.*[[:space:]]+JOIN@im', $sql_query, $select_stt);
-        $is_join = (isset($analyzed_sql[0]['queryflags']['join']) ? true : false);
         $select_expr = $analyzed_sql[0]['select_expr_clause'];
-    } else {
-        $is_join = false;
     }
 
     // garvin: See if we have to highlight any header fields of a WHERE query.
@@ -746,17 +742,7 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
             //       isn't aliased, or in queries like
             //       SELECT `1`.`master_field` , `2`.`master_field`
             //       FROM `PMA_relation` AS `1` , `PMA_relation` AS `2`
-            /**
-             * we prefer always using table if existing
-             * and second this code does not correctly check $fields_meta[$i]->table
-            if (($is_join
-                && !preg_match('~([^[:space:],]|`[^`]`)[[:space:]]+(as[[:space:]]+)?' . strtr($fields_meta[$i]->name, array('[' => '\\[', '~' => '\\~', '\\' => '\\\\')) . '~i', $select_expr, $parts))
-               || (isset($analyzed_sql[0]['select_expr'][$i]['expr'])
-                   && isset($analyzed_sql[0]['select_expr'][$i]['column'])
-                   && $analyzed_sql[0]['select_expr'][$i]['expr'] !=
-                   $analyzed_sql[0]['select_expr'][$i]['column']
-                  && isset($fields_meta[$i]->table) && strlen($fields_meta[$i]->table))) {
-            */
+
             if (isset($fields_meta[$i]->table) && strlen($fields_meta[$i]->table)) {
                 $sort_tbl = PMA_backquote($fields_meta[$i]->table) . '.';
             } else {
@@ -765,6 +751,17 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
 
             // 2.1.2 Checks if the current column is used to sort the
             //       results
+            // the orgname member does not exist for all MySQL versions
+            // but if found, it's the one on which to sort
+            $name_to_use_in_sort = $fields_meta[$i]->name;
+            if (isset($fields_meta[$i]->orgname)) {
+                $name_to_use_in_sort = $fields_meta[$i]->orgname;
+            }
+            // $name_to_use_in_sort might contain a space due to 
+            // formatting of function expressions like "COUNT(name )"
+            // so we remove the space in this situation
+            $name_to_use_in_sort = str_replace(' )', ')', $name_to_use_in_sort);
+
             if (empty($sort_expression)) {
                 $is_in_sort = false;
             } else {
@@ -774,16 +771,18 @@ function PMA_displayTableHeaders(&$is_display, &$fields_meta, $fields_cnt = 0, $
                 // for the sort expression (avoids problems with queries
                 // like "SELECT id, count(id)..." and clicking to sort
                 // on id or on count(id))
-                $is_in_sort = ($sort_tbl . PMA_backquote($fields_meta[$i]->name) == $sort_expression_nodir ? true : false);
+                $is_in_sort = (str_replace('`', '', $sort_tbl) . $name_to_use_in_sort == str_replace('`', '', $sort_expression_nodirection) ? true : false);
             }
-            // 2.1.3 Check the field name for backquotes.
-            //       If it contains some, it's probably a function column
+            // 2.1.3 Check the field name for a bracket.
+            //       If it contains one, it's probably a function column
             //       like 'COUNT(`field`)'
-            if (strpos($fields_meta[$i]->name, '`') !== false) {
-                $sort_order = ' ORDER BY ' . PMA_backquote($fields_meta[$i]->name) . ' ';
+            //
+            if (strpos($name_to_use_in_sort, '(') !== false) {
+                $sort_order = ' ORDER BY ' . $name_to_use_in_sort . ' ';
             } else {
-                $sort_order = ' ORDER BY ' . $sort_tbl . PMA_backquote($fields_meta[$i]->name) . ' ';
+                $sort_order = ' ORDER BY ' . $sort_tbl . PMA_backquote($name_to_use_in_sort) . ' ';
             }
+            unset($name_to_use_in_sort);
 
             // 2.1.4 Do define the sorting URL
             if (! $is_in_sort) {
@@ -2087,7 +2086,11 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
     // (the url_query has extra parameters that won't be used to export)
     // (the single_table parameter is used in display_export.lib.php
     //  to hide the SQL and the structure export dialogs)
-    if (isset($analyzed_sql[0]) && $analyzed_sql[0]['querytype'] == 'SELECT' && !isset($printview)) {
+    // If the parser found a PROCEDURE clause 
+    // (most probably PROCEDURE ANALYSE()) it makes no sense to
+    // display the Export link).
+
+    if (isset($analyzed_sql[0]) && $analyzed_sql[0]['querytype'] == 'SELECT' && !isset($printview) && ! isset($analyzed_sql[0]['queryflags']['procedure'])) {
         if (isset($analyzed_sql[0]['table_ref'][0]['table_true_name']) && !isset($analyzed_sql[0]['table_ref'][1]['table_true_name'])) {
             $single_table   = '&amp;single_table=true';
         } else {
@@ -2111,8 +2114,9 @@ function PMA_displayResultsOperations($the_disp_mode, $analyzed_sql) {
      * @todo detect privileges to create a view
      *       (but see 2006-01-19 note in display_create_table.lib.php,
      *        I think we cannot detect db-specific privileges reliably)
+     * Note: we don't display a Create view link if we found a PROCEDURE clause
      */
-    if (PMA_MYSQL_INT_VERSION >= 50000) {
+    if (PMA_MYSQL_INT_VERSION >= 50000 && ! isset($analyzed_sql[0]['queryflags']['procedure'])) {
         if (!$header_shown) {
             echo $header;
             $header_shown = TRUE;

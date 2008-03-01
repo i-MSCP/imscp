@@ -8,7 +8,7 @@
  * Bei Verbesserungsvorschlägen diese Datei betreffend wenden Sie sich bitte an
  *     https://sourceforge.net/tracker/?group_id=23067&atid=387645
  *
- * $Id: german-utf-8.inc.php 10960 2007-12-05 11:26:51Z cybot_tm $
+ * $Id: german-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $
  */
 
 $charset = 'utf-8';
@@ -1032,4 +1032,5 @@ $strYes = 'Ja';
 
 $strZeroRemovesTheLimit = 'Der Wert 0 (null) entfernt die Beschränkung.';
 $strZip = 'Zip-komprimiert';
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

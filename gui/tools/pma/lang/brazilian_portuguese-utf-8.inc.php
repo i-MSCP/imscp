@@ -1,5 +1,5 @@
 <?php
-/* $Id: brazilian_portuguese-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
+/* $Id: brazilian_portuguese-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 /* translated by: Airon Luis Pereira <airon(dot)pereira(at)gmail(dot)com> */ 
 
 $charset = 'utf-8'; 
@@ -1025,4 +1025,5 @@ $strZeroRemovesTheLimit = 'Nota: Ajustar essa opção para 0 (zero) remove os li
 $strZip = '"compactado com zip"'; 
 
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

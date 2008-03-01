@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: VOLKAN KIRIK <volkirik@yahoo.com.tr>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -601,6 +601,32 @@ msgstr ""
 msgid "Edit button"
 msgstr "Düğme düzenle"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Hazır ispCP güncellemeleri"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Hazır ispCP güncellemeleri"
+
+msgid "Update"
+msgstr ""
+
+msgid "Update details"
+msgstr ""
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Yeni ispCP güncellemesi yok"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Yeni ispCP güncellemesi var"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Bu siparişi silmek istediğinize emin misiniz"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -733,9 +759,6 @@ msgstr "Alan adı hesabı"
 msgid "Edit admin"
 msgstr "Yöneticiyi düzenle"
 
-msgid "Update"
-msgstr ""
-
 msgid "Send new login data"
 msgstr ""
 
@@ -760,11 +783,6 @@ msgid ""
 msgstr ""
 
 msgid "Aliases"
-msgstr ""
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
@@ -830,6 +848,10 @@ msgstr "E-posta"
 
 msgid "unlimited"
 msgstr ""
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Altalanadı limiti<br><i>(-1 pasif, 0 limitsiz)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
@@ -936,20 +958,6 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "Yeni ispCP güncellemesi var"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Trafik limitini aştınız!"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
-msgstr ""
 
 msgid "ispCP - Admin/IP manage"
 msgstr ""
@@ -1059,9 +1067,6 @@ msgstr "Hazır ispCP güncellemeleri"
 
 msgid "No new ispCP updates available"
 msgstr "Yeni ispCP güncellemesi yok"
-
-msgid "Update details"
-msgstr ""
 
 msgid "User language updated successfully!"
 msgstr ""
@@ -1805,6 +1810,10 @@ msgstr ""
 msgid "Incorrect mount point syntax"
 msgstr "Incorrect <i>mount point</i> syntax!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Alan adına takma isim ekle"
+
 msgid "Incorrect forward syntax"
 msgstr "Incorrect <i>forward</i> syntax!"
 
@@ -1980,7 +1989,7 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr ""
 
-msgid "Subdomain already exists!"
+msgid "Subdomain already exists or is not allowed!"
 msgstr ""
 
 msgid "Wrong subdomain syntax!"
@@ -2364,6 +2373,21 @@ msgstr "Seç"
 
 msgid "disabled"
 msgstr "kapalı"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Yeni bir yardım isteği sorusu yok!"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Trafik limitini aştınız!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2807,6 +2831,9 @@ msgid "Admin log"
 msgstr "Yönetici kaydı"
 
 msgid "Logout"
+msgstr ""
+
+msgid "ispCP database updates"
 msgstr ""
 
 msgid "Custom menus"
@@ -3341,6 +3368,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
@@ -3580,6 +3610,9 @@ msgstr ""
 msgid "Wrong order ID!"
 msgstr "Yanlış sipariş ID!"
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr ""
 
@@ -3684,9 +3717,6 @@ msgstr ""
 
 msgid "Add other domains to this account"
 msgstr "Bu hesaba başka alan adı ekle"
-
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
 
 msgid "System error with Domain ID "
 msgstr ""

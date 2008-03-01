@@ -661,7 +661,7 @@ sub setup_crontab {
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$bk_dir/ispcp", $cfg, 'root', 'root', 0644);
+		$rs = store_file("$bk_dir/ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 		return $rs if ($rs != 0);
 
 		$cmd = "$main::cfg{'CMD_CP'} -p -f $bk_dir/ispcp $wrk_dir/";
@@ -704,7 +704,7 @@ sub setup_named {
 		$cfg = get_file($main::cfg{'BIND_CONF_FILE'});
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg$cfg_tpl", 'root', 'root', 0644);
+		$rs = store_file("$bk_dir/named.conf.ispcp", "$cfg$cfg_tpl", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 		return $rs if ($rs != 0);
 	}
 
@@ -712,7 +712,7 @@ sub setup_named {
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$wrk_dir/named.conf", "$cfg_tpl", 'root', 'root', 0644);
+	$rs = store_file("$wrk_dir/named.conf", "$cfg_tpl", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	sys_command_rs("$main::cfg{'CMD_NAMED'} start &> /tmp/ispcp-setup-services.log");
@@ -851,7 +851,7 @@ sub add_named_cfg_data {
     # Let's save working copy;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
     return $rs if ($rs != 0);
 
     #
@@ -873,7 +873,7 @@ sub add_named_cfg_data {
         return $rs;
     }
 
-    $rs = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
     return $rs if ($rs != 0);
 
     push_el(\@main::el, 'add_named_cfg_data()', 'Ending...');
@@ -966,10 +966,10 @@ sub add_named_db_data {
     # Let's store generated data;
     #
 
-    $rs = store_file($working_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
     return $rs if ($rs != 0);
 
     push_el(\@main::el, 'add_named_db_data()', 'Ending...');
@@ -987,11 +987,11 @@ sub setup_php_master_user_dirs {
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
 	# Create php4 directory for Master User
-	$rs = make_dir("$starter_dir/master/php4", 'root', 'root', 0755);
+	$rs = make_dir("$starter_dir/master/php4", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 	return $rs if ($rs != 0);
 
 	# Create php5 directory for Master User
-	$rs = make_dir("$starter_dir/master/php5", 'root', 'root', 0755);
+	$rs = make_dir("$starter_dir/master/php5", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_php_master_user_dirs()', 'Ending...');
@@ -1026,7 +1026,7 @@ sub setup_php {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$bk_dir/fastcgi_ispcp.conf.ispcp", $cfg, 'root', 'root', 0644);
+	$rs = store_file("$bk_dir/fastcgi_ispcp.conf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/fastcgi_ispcp.conf.ispcp $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf";
@@ -1191,7 +1191,7 @@ sub setup_httpd {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	($rs, $cfg_tpl) = get_file("$cfg_dir/01_awstats.conf");
@@ -1205,10 +1205,10 @@ sub setup_httpd {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $cfg, 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", 'root', 'root', 0644);
+	$rs = setfmode("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
     $rs = add_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
@@ -1231,7 +1231,7 @@ sub setup_httpd {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 	return $rs if ($rs != 0);
 
-	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf", $cfg, 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	#
@@ -1257,7 +1257,7 @@ sub setup_httpd {
 			return $rs if ($rs != 0);
 
 			$rdata =~ s/#Allow from .example.com/Allow from 127.0.0.1/gi;
-			$rs = store_file("$main::cfg{'APACHE_MODS_DIR'}/proxy.conf", $rdata, 'root', 'root', 0644);
+			$rs = store_file("$main::cfg{'APACHE_MODS_DIR'}/proxy.conf", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -1318,7 +1318,7 @@ sub setup_httpd {
 			# add code if not exists
 			if ($rdata !~ m/awstats_updateall\.pl/i) {
 				$rdata =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/gi;
-				$rs = store_file($file, $rdata, 'root', 'root', 0644);
+				$rs = store_file($file, $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 				return $rs if ($rs != 0);
 			}
 		}
@@ -1394,7 +1394,7 @@ sub setup_mta {
                 ($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
                 return $rs if ($rs != 0);
 
-                $rs = store_file("$bk_dir/main.cf.ispcp", $cfg, 'root', 'root', 0644);
+                $rs = store_file("$bk_dir/main.cf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
                 return $rs if ($rs != 0);
 
                 $cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/master.cf $bk_dir/master.cf.ispcp";
@@ -1541,10 +1541,10 @@ sub setup_po {
 	return $rs if ($rs != 0);
 
 	if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-		$rs = setfmode("$main::cfg{'AUTHLIB_CONF_DIR'}/userdb", 'root', 'root', 0600);
+		$rs = setfmode("$main::cfg{'AUTHLIB_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
 	}
 	else {
-		$rs = setfmode("$main::cfg{'COURIER_CONF_DIR'}/userdb", 'root', 'root', 0600);
+		$rs = setfmode("$main::cfg{'COURIER_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
 	}
 	return $rs if ($rs != 0);
 
@@ -1635,7 +1635,7 @@ sub setup_ftpd {
 		($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);
 		return $rs if ($rs != 0);
 
-		$rs = store_file("$bk_dir/proftpd.conf.ispcp", $cfg, 'root', 'root', 0600);
+		$rs = store_file("$bk_dir/proftpd.conf.ispcp", $cfg, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
 		return $rs if ($rs != 0);
 	}
 
@@ -1647,7 +1647,7 @@ sub setup_ftpd {
 	# To fill ftp_traff.log file with somethign. ;)
 	#
 
-	$rs = store_file("$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}", "\n", 'root', 'root', 0644);
+	$rs = store_file("$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}", "\n", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 
 	#
@@ -1668,8 +1668,8 @@ sub setup_ispcpd {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
-	sys_command_rs("$main::cfg{'CMD_CHOWN'} root:root $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
+	sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 	sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $main::cfg{'CMD_ISPCPD'} $main::cfg{'CMD_ISPCPD'} &> /tmp/ispcp-setup-services.log");
 	sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $main::cfg{'CMD_ISPCPN'} $main::cfg{'CMD_ISPCPN'} &> /tmp/ispcp-setup-services.log");
 

@@ -1934,7 +1934,7 @@ sub store_conf {
 
     }
 
-    $rs = store_file($main::cfg_file, $fline, 'root', 'root', 0644);
+    $rs = store_file($main::cfg_file, $fline, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP}, 0644);
 
     return 1 if ($rs != 0);
 

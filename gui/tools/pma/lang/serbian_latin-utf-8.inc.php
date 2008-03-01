@@ -1,5 +1,5 @@
 <?php
-/* $Id: serbian_latin-utf-8.inc.php 10659 2007-09-21 16:37:18Z lem9 $ */
+/* $Id: serbian_latin-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 /**
  * Translated by:
@@ -1027,4 +1027,5 @@ $strYes = 'Da';
 $strZeroRemovesTheLimit = 'Napomena: Postavljanje ovih opcija na 0 (nulu) uklanja ograničenja.';
 $strZip = '"zipovano"';
 
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

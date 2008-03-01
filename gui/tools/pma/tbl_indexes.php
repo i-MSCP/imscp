@@ -1,9 +1,9 @@
 <?php
-/* vim: expandtab sw=4 ts=4 sts=4: */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * display information about indexes in a table
  *
- * @version $Id: tbl_indexes.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: tbl_indexes.php 11058 2008-01-17 17:50:31Z lem9 $
  */
 
 /**

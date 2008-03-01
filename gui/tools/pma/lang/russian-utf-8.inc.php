@@ -1,5 +1,5 @@
 <?php
-/* $Id: russian-utf-8.inc.php 10500 2007-07-17 15:25:57Z lem9 $ */
+/* $Id: russian-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 /**
  * Translated by Gosha Sakovich <gt2 at users.sourceforge.net>
@@ -1028,4 +1028,5 @@ $strYes = 'Да';
 
 $strZeroRemovesTheLimit = 'Замечание: Установка значения параметров в 0 (ноль), снимает ограничения.';
 $strZip = 'zip';
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

@@ -1,6 +1,29 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-01 Benedikt Heintel
+	- DOCS:
+		* Updated all Docs. Some are still with ToDo
+	- ENGINE:
+		* Fixed #1070: FreeBSD, ispcp-setup uses group which does not exist
+	- LANGUAGES:
+		* Updated all languages
+	- SETUP:
+		* Inproved: Update SQL with IGNORE statement
+	- TOOLS:
+		* Update PHPmyAdmin to version 2.11.5
+	- DISTS:
+		* Updated all distributions
+		* Dropped support of Suse Enterprise Linux Server (SELS) - Please use OpenSuse files
+
+2008-02-28 Benedikt Heintel
+	- CONFIGS:
+		* Fixed: www.domain.com/pma/ redirects with double "/"
+
+2008-02-27 Benedikt Heintel
+	- LANGUAGES:
+		* Updated: Polish
+
 2008-02-26 Benedikt Heintel
 	- SETUP:
 		* Fixed #939: Installation Error on Ubuntu Dapper 6.06.1 LTS

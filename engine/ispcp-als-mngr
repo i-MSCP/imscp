@@ -303,7 +303,7 @@ sub als_add_named_cfg_data {
     # Let's save working copy;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -331,7 +331,7 @@ sub als_add_named_cfg_data {
 
     }
 
-    $rs = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -494,7 +494,7 @@ sub als_del_named_cfg_data {
     # Let's save working copy;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -522,7 +522,7 @@ sub als_del_named_cfg_data {
 
     }
 
-    $rs = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -658,11 +658,11 @@ sub als_add_named_db_data {
     # Let's store generated data;
     #
 
-    $rs = store_file($working_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1072,7 +1072,7 @@ sub gen_httpd_als_entry {
 
     if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf" ){
 
-        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf", $als_custom, 'root', 'root', 0644);
+        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf", $als_custom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
         return $rs if ($rs != 0);
     }
@@ -1386,11 +1386,11 @@ sub als_add_httpd_cfg_data {
     # Let's store all the stuff;
     #
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1663,11 +1663,11 @@ sub als_del_httpd_cfg_data {
     # Let's store all the stuff;
     #
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2214,7 +2214,7 @@ sub als_add_mta_cfg_data {
     # Let's do some backup first;
     #
 
-    $rs = store_file($backup_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2222,11 +2222,11 @@ sub als_add_mta_cfg_data {
     # Let's write configs;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2303,7 +2303,7 @@ sub als_del_mta_cfg_data {
     # Let's do some backup first;
     #
 
-    $rs = store_file($backup_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2311,11 +2311,11 @@ sub als_del_mta_cfg_data {
     # Let's write configs;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 

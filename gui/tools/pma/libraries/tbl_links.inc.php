@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_links.inc.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: tbl_links.inc.php 11079 2008-01-23 17:36:28Z lem9 $
  */
 
 /**
@@ -90,6 +90,7 @@ if (! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_
              ? 'TRUNCATE TABLE '
              : 'DELETE FROM ';
     $tabs['empty']['link']  = 'sql.php';
+    $tabs['empty']['args']['reload']    = 1;
     $tabs['empty']['args']['sql_query'] = $ln8_stt . PMA_backquote($table);
     $tabs['empty']['args']['zero_rows'] = sprintf($strTableHasBeenEmptied, htmlspecialchars($table));
     $tabs['empty']['attr']  = 'onclick="return confirmLink(this, \'' . $ln8_stt . PMA_jsFormat($table) . '\')"';

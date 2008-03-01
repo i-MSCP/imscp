@@ -3,7 +3,7 @@
 /**
  * the navigation frame - displays server, db and table selection tree
  *
- * @version $Id: navigation.php 11035 2008-01-05 13:33:05Z lem9 $
+ * @version $Id: navigation.php 11043 2008-01-05 15:12:30Z lem9 $
  * @uses $GLOBALS['PMA_List_Database']
  * @uses $GLOBALS['server']
  * @uses $GLOBALS['db']
@@ -281,7 +281,7 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
      * user can find a navigator to page thru all tables.
      *
      * @todo instead of the 0 parameter, keep track of the
-     *       offset in the list of tables ($_SESSION['navi_table_limit_offset'])
+     *       offset in the list of tables ($_SESSION['userconf']['table_limit_offset'])
      *       and use PMA_listNavigator(); do not just check pos in REQUEST
      *       but add another hidden param to see if it's the pos of databases
      *       or the pos of tables. 

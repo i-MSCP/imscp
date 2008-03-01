@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 11024 2007-12-29 20:38:27Z lem9 $
+ * @version $Id: common.lib.php 11082 2008-01-25 17:42:23Z lem9 $
  */
 
 /**
@@ -878,7 +878,7 @@ function PMA_reloadNavigation()
         // in this case, get rid of the table limit offset, otherwise
         // we have a problem when dropping a table on the last page
         // and the offset becomes greater than the total number of tables
-        unset($_SESSION['table_limit_offset']);
+        unset($_SESSION['userconf']['table_limit_offset']);
         echo "\n";
         $reload_url = './navigation.php?' . PMA_generate_common_url($GLOBALS['db'], '', '&');
         ?>
@@ -2074,8 +2074,8 @@ function PMA_pageselector($url, $rows, $pageNow = 1, $nbTotalPage = 1,
     $showAll = 200, $sliceStart = 5, $sliceEnd = 5, $percent = 20,
     $range = 10, $prompt = '')
 {
-    $gotopage = $prompt 
-              . ' <select name="goToPage" onchange="goToUrl(this, \''
+    $gotopage = $prompt
+              . ' <select name="pos" onchange="goToUrl(this, \''
               . $url . '\');">' . "\n";
     if ($nbTotalPage < $showAll) {
         $pages = range(1, $nbTotalPage);
@@ -2139,24 +2139,25 @@ function PMA_pageselector($url, $rows, $pageNow = 1, $nbTotalPage = 1,
         $gotopage .= '                <option ' . $selected . ' value="' . (($i - 1) * $rows) . '">' . $i . '</option>' . "\n";
     }
 
-    $gotopage .= ' </select>';
+    $gotopage .= ' </select><noscript><input type="submit" value="' . $GLOBALS['strGo'] . '" /></noscript>';
+
 
     return $gotopage;
 } // end function
 
 
 /**
- * Generate navigation for a list 
+ * Generate navigation for a list
  *
- * @todo    use $pos from $_url_params 
+ * @todo    use $pos from $_url_params
  * @uses    $GLOBALS['strPageNumber']
  * @uses    range()
- * @param   integer     number of elements in the list 
- * @param   integer     current position in the list 
- * @param   array       url parameters 
- * @param   string      script name for form target 
- * @param   string      target frame 
- * @param   integer     maximum number of elements to display from the list 
+ * @param   integer     number of elements in the list
+ * @param   integer     current position in the list
+ * @param   array       url parameters
+ * @param   string      script name for form target
+ * @param   string      target frame
+ * @param   integer     maximum number of elements to display from the list
  *
  * @access  public
  */
@@ -2191,7 +2192,7 @@ function PMA_listNavigator($count, $pos, $_url_params, $script, $frame, $max_cou
                 . $caption2 . '</a>';
         }
 
-        echo '<form action="./' . $script . '" method="post">' . "\n";
+        echo "\n", '<form action="./', basename($script), '" method="post" target="', $frame, '">', "\n";
         echo PMA_generate_common_hidden_inputs($_url_params);
         echo PMA_pageselector(
             $script . PMA_generate_common_url($_url_params) . '&',
@@ -2213,7 +2214,7 @@ function PMA_listNavigator($count, $pos, $_url_params, $script, $frame, $max_cou
                 $title4   = '';
             } // end if... else...
             $_url_params['pos'] = $pos + $max_count;
-            echo '<a' . $title3 . ' href="' . $script 
+            echo '<a' . $title3 . ' href="' . $script
                 . PMA_generate_common_url($_url_params) . '" target="' . $frame . '">'
                 . $caption3 . '</a>';
             $_url_params['pos'] = floor($count / $max_count) * $max_count;

@@ -1,5 +1,5 @@
 <?php
-/* $Id: croatian-utf-8.inc.php 10758 2007-10-10 21:15:26Z lem9 $ */
+/* $Id: croatian-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 /**
  *   Croatian language file by
@@ -1027,4 +1027,5 @@ $strYes = 'Da';
 $strZeroRemovesTheLimit = 'Napomena: Postavljanje ovih opcija na vrijednost 0 (nula) uklanja ograničenje.';
 $strZip = '"zipano"';
 
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

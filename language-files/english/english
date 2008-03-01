@@ -1,8 +1,8 @@
 ispcp_table = English
 ispcp_language = English
 ispcp_languageSetlocaleValue = en_GB
-Incorrect domain name syntax = Incorrect <i>domain name</i> syntax
-Incorrect forward syntax = Incorrect <i>forward</i> syntax!
-Incorrect mount point syntax = Incorrect <i>mount point</i> syntax!
-Mail = e-mail
 encoding = UTF-8
+Mail = e-mail
+Incorrect domain name syntax = Incorrect <i>domain name</i> syntax
+Incorrect mount point syntax = Incorrect <i>mount point</i> syntax!
+Incorrect forward syntax = Incorrect <i>forward</i> syntax!

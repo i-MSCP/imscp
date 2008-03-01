@@ -1,4 +1,4 @@
-ISPCP ω (OMEGA) HowTo Install for SuSE, SLES
+ispCP ω (OMEGA) HowTo Install for SLES
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,20 +16,20 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ISPCP ω Version:	1.0.0
+ispCP ω Version:	1.0.0
 INSTALL Skript:		1.0
 Maintainer:
 Homepage:			http://isp-contol.net
-Linux Distris:		SuSE, SLES
+Linux Distris:		SLES
 
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using ISPCP ω. This is only a recommendation:
+There is no must have for a system using ispCP ω. This is only a recommendation:
 
 Penitum III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of ISPCP ω)
+100 MB disk space (only for install of ispCP ω)
 Debian (or even any other *NIX-Distribution)
 
 All SuSE, SLES required packages are listed in
@@ -38,121 +38,29 @@ All SuSE, SLES required packages are listed in
 ================================================================================
 3) Introduction
 ---------------
-ISPCP ω delivers a complete hosting automation appliance by offering significant
+ispCP ω delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With ISPCP ω you can configure your server and applications, create user with
+With ispCP ω you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of ISPCP ω are 3 easy-to-use, web-based control panels. ISPCP
+created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
 4) Installation
 ---------------
-Make sure you are logged in as root.
 
-1. Untar or unzip the distribution files to a secure directory:
-	# cd /root
-	# tar -xjvf ispcp1.0.0-omega.tar.bz2
-
-2. Change to the newly created directory:
-	# cd ./ispcp1.0.0
-
-3. Install the required modules:
-	# yast upgrade
-	# yast -i `cat ./docs/SuSE/suse-packages`
-
-	Install, the following packages, too
-	perl-Term-ReadPassword & perl-Crypt-PasswdMD5 from: http://repos.opensuse.org/home:/netmax/
-	e.g. SuSE 10.2, x86_64: http://repos.opensuse.org/home:/netmax/openSUSE_10.2/x86_64/
-
-	perl-Term-ReadPassword-0.07-1.suse100.i586.rpm
-	perl-Crypt-PasswdMD5-1.3-1.suse100.i586.rpm
-
-	proftpd (and the mysql-module for it) from: http://repos.opensuse.org/server:/ftp/
-	e.g. - add this URL to the Sources in Yast in SuSE 10.2: http://repos.opensuse.org/server:/ftp/openSUSE_10.2/
-
-	proftpd-1.2.93_1.3.0rc3-0.suse100.i586.rpm
-
-4. Now there are two ways of install ISPCP ω
-
-a) via install script
----------------------
-4a. Start the script and follow the install instructions:
-	# ./install-ispcp.sh
-
-After that return to step 12.
-
-b) manualy
-----------
-4b. Change into the configuration directory:
-	# cd ./configs
-
-5. Open the ispcp.conf and make some changes.
-   You have to set up some configuration variables for your linux distribution.
-   ISPCP ω is preconfigurated for Debian 4.0 Etch.
-   If you're using another distribution please check, if config files exist in
-   ./configs/dists and use/change them.
-
-   These are the Variables you have to look at:
-
-	SECONDARY_DNS =
-	MYSQL_PREFIX_TYPE =			# '' for MYSQL_PREFIX = yes,
-								# infront or behind for MYSQL_PREFIX = no
-
-   Check the ispcp.conf and adapt it to your requirements.
-   An overview over the variables you can find in the FAQ on
-   http://isp-control.net
-
-6. Return to the parent direction and build the System by using make:
-	# cd ../
-	# mv Makefile.suse10 Makefile
-	# make install
-
-7. Copy all the directories into the system (you may make backups)
-	# cp -Rv /tmp/ispcp-1.0.0/* /
-
-8. Now it's time to set up the frontend. Change into the engine directory:
-	# cd /var/www/ispcp/engine/setup
-
-8a. Set the MySQL password, if not set:
-	# mysqladmin -u root password YOUR_PASSWORD
-
-9. Start the engine setup:
-	# ./ispcp-setup
-
-10. Install ISPCP ω step-by-step
-
-	If you get no error, all went good; if you get one, look at
-	http://isp-control.net to solve the problem.
-
-11. There is an error in some courier-versions. Courier won't stop, if you use
-	/etc/init.d/courier-authdaemon stop, so change it:
-	# nano /etc/ini.d/courier-authdaemon
-
-	change: ${libexecdir}/authlib/authdaemon stop
-	into:	killall authdaemond.plain
-
-12. Clean the temporary folders:
-	# rm -R /tmp/ispcp-1.0.0
-
+See: OpenSuse. Suse ELS is not longer supported as individual distribution due
+to the fact it is similar to OpenSuse and not well used.
 
 ================================================================================
 5) Update
 ---------
 
-There are two ways of update ISPCP ω
-
-a) via install script
----------------------
-1. Start the script and follow the update instructions:
-	# ./install-ispcp.sh
-
-b) manualy
-----------
-1.	Please check the update From-To-Files in the ./docs directory
+See: OpenSuse. Suse ELS is not longer supported as individual distribution due
+to the fact it is similar to OpenSuse and not well used.
 
 ================================================================================
 6) FAQ
@@ -164,9 +72,9 @@ Please check http://isp-control.net for any questions not answered in this file.
 7) Credits
 ----------
 
-ISPCP ω is a project of ispCP | isp Control Panel.
+ispCP ω is a project of ispCP | isp Control Panel.
 Please visit our site under http://isp-control.net for further information on
-ISPCP ω, ispCP and other themes.
+ispCP ω, ispCP and other themes.
 
-We hope you enjoy using ISPCP ω. If you like it, help us, to make it better. We
+We hope you enjoy using ispCP ω. If you like it, help us, to make it better. We
 would be glad on any help provided!

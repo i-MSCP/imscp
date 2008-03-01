@@ -180,7 +180,7 @@ sub gen_log_file {
 
         $diff_data =~ s/^\< //gim;
 
-        $rs = store_file($log_file, $diff_data, 'root', 'root', 0644);
+        $rs = store_file($log_file, $diff_data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
         return ($rs, '') if ($rs != 0);
 

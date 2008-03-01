@@ -22,7 +22,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11033 2008-01-01 15:03:50Z lem9 $
+ * @version $Id: common.inc.php 11135 2008-02-23 21:16:42Z lem9 $
  */
 
 /**
@@ -178,15 +178,15 @@ unset($key, $value, $variables_whitelist);
  * <code>
  * <form ...>
  * ... main form elments ...
- * <intput type="hidden" name="subform[action1][id]" value="1" />
+ * <input type="hidden" name="subform[action1][id]" value="1" />
  * ... other subform data ...
- * <intput type="submit" name="usesubform[action1]" value="do action1" />
+ * <input type="submit" name="usesubform[action1]" value="do action1" />
  * ... other subforms ...
- * <intput type="hidden" name="subform[actionX][id]" value="X" />
+ * <input type="hidden" name="subform[actionX][id]" value="X" />
  * ... other subform data ...
- * <intput type="submit" name="usesubform[actionX]" value="do actionX" />
+ * <input type="submit" name="usesubform[actionX]" value="do actionX" />
  * ... main form elments ...
- * <intput type="submit" name="main_action" value="submit form" />
+ * <input type="submit" name="main_action" value="submit form" />
  * </form>
  * </code
  *
@@ -211,6 +211,13 @@ if (isset($_POST['usesubform'])) {
         unset($_POST['redirect']);
     }
     unset($subform_id, $subform);
+} else {
+    // Note: here we overwrite $_REQUEST so that it does not contain cookies,
+    // because another application for the same domain could have set
+    // a cookie (with a compatible path) that overrides a variable 
+    // we expect from GET or POST.
+    // We'll refer to cookies explicitly with the $_COOKIE syntax.
+    $_REQUEST = array_merge($_GET, $_POST);
 }
 // end check if a subform is submitted
 

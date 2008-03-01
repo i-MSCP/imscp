@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -607,6 +607,28 @@ msgstr ""
 msgid "Edit button"
 msgstr ""
 
+msgid "Database updates"
+msgstr ""
+
+msgid "Available database updates"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update details"
+msgstr ""
+
+msgid "No database updates available"
+msgstr ""
+
+msgid "New Database update is now available"
+msgstr ""
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "คุณแน่ใจที่จะต้องการลบการสั่งซื้อนี้?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -739,9 +761,6 @@ msgstr ""
 msgid "Edit admin"
 msgstr ""
 
-msgid "Update"
-msgstr ""
-
 msgid "Send new login data"
 msgstr ""
 
@@ -767,11 +786,6 @@ msgid ""
 msgstr ""
 
 msgid "Aliases"
-msgstr ""
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
 msgstr ""
 
 msgid "Mail"
@@ -836,6 +850,9 @@ msgid "E-mail"
 msgstr ""
 
 msgid "unlimited"
+msgstr ""
+
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
 msgid "ispCP - Administrator/Edit hosting plan"
@@ -944,20 +961,6 @@ msgstr ""
 msgid "New ispCP update is now available"
 msgstr ""
 
-msgid "You are exceeding your traffic limit!"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
-msgstr ""
-
 msgid "ispCP - Admin/IP manage"
 msgstr ""
 
@@ -1063,9 +1066,6 @@ msgid "Available ispCP updates"
 msgstr ""
 
 msgid "No new ispCP updates available"
-msgstr ""
-
-msgid "Update details"
 msgstr ""
 
 msgid "User language updated successfully!"
@@ -1808,6 +1808,10 @@ msgstr ""
 msgid "Incorrect mount point syntax"
 msgstr "Incorrect <i>mount point</i> syntax!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "เพิ่ม domain alias"
+
 msgid "Incorrect forward syntax"
 msgstr "Incorrect <i>forward</i> syntax!"
 
@@ -1981,7 +1985,7 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr ""
 
-msgid "Subdomain already exists!"
+msgid "Subdomain already exists or is not allowed!"
 msgstr ""
 
 msgid "Wrong subdomain syntax!"
@@ -2362,6 +2366,21 @@ msgid "Choose"
 msgstr "เลือก"
 
 msgid "disabled"
+msgstr ""
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
 msgstr ""
 
 #, php-format
@@ -2799,6 +2818,9 @@ msgid "Admin log"
 msgstr "บันทึกผู้ดูแลระบบ"
 
 msgid "Logout"
+msgstr ""
+
+msgid "ispCP database updates"
 msgstr ""
 
 msgid "Custom menus"
@@ -3326,6 +3348,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
@@ -3556,6 +3581,9 @@ msgstr ""
 msgid "Wrong order ID!"
 msgstr ""
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr ""
 
@@ -3660,9 +3688,6 @@ msgstr ""
 
 msgid "Add other domains to this account"
 msgstr "เพิ่มโดเมนอื่นให้บัญชีนี้"
-
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
 
 msgid "System error with Domain ID "
 msgstr ""

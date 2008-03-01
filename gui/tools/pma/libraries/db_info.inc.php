@@ -32,7 +32,7 @@
  * @uses    strnatcasecmp()
  * @uses    count()
  * @uses    addslashes()
- * @version $Id: db_info.inc.php 10542 2007-08-01 19:16:05Z lem9 $
+ * @version $Id: db_info.inc.php 11043 2008-01-05 15:12:30Z lem9 $
  */
 
 /**
@@ -43,13 +43,13 @@ require_once './libraries/common.inc.php';
 /**
  * limits for table list
  */
-if (! isset($_SESSION['table_limit_offset'])) {
-    $_SESSION['table_limit_offset'] = 0;
+if (! isset($_SESSION['userconf']['table_limit_offset'])) {
+    $_SESSION['userconf']['table_limit_offset'] = 0;
 }
 if (isset($_REQUEST['pos'])) {
-    $_SESSION['table_limit_offset'] = (int) $_REQUEST['pos'];
+    $_SESSION['userconf']['table_limit_offset'] = (int) $_REQUEST['pos'];
 }
-$pos = $_SESSION['table_limit_offset'];
+$pos = $_SESSION['userconf']['table_limit_offset'];
 
 /**
  * fills given tooltip arrays

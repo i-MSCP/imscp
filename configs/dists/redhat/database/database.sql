@@ -99,7 +99,7 @@ VALUES (
 ),(
 'PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'
 ),(
-'DATABASE_REVISION', '3'
+'DATABASE_REVISION', '2'
 );
 
 -- --------------------------------------------------------

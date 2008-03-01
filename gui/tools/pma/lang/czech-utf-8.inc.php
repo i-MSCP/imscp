@@ -1,5 +1,5 @@
 <?php
-/* $Id: czech-utf-8.inc.php 10509 2007-07-19 19:45:46Z nijel $ */
+/* $Id: czech-utf-8.inc.php 11119 2008-02-12 01:15:49Z nijel $ */
 
 /**
  * Czech language file by
@@ -895,6 +895,7 @@ $strStructureForView = 'Struktura pro pohled';
 $strStructure = 'Struktura';
 $strSubmit = 'Provést';
 $strSuccess = 'Váš SQL-dotaz byl úspěšně vykonán';
+$strSuhosin = 'Server používá Suhosin. Prosím podívejte se do %sdokumentace%s pro popis problémů, které tím mohou být způsobeny.';
 $strSum = 'Celkem';
 $strSwedish = 'Švédština';
 $strSwitchToDatabase = 'Přepnout na zkopírovanou databázi';

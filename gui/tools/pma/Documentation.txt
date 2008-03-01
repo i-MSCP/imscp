@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.11.4 Documentation
+phpMyAdmin 2.11.5 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.11.4 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 11046 2008-01-12 12:18:49Z
+  * Documentation version: $Id: Documentation.html 11151 2008-03-01 11:59:07Z
     lem9 $
 
 Requirements
@@ -412,6 +412,9 @@ $cfg['PmaNoRelation_DisableWarning'] boolean
     will find a link that will analyze why those features have been disabled.
     If you do not want to use those features set this variable to TRUE to stop
     this message from appearing.
+$cfg['SuhosinDisableWarning'] boolean
+    A warning is displayed on the main page if Suhosin is detected. You can set
+    this parameter to TRUE to stop this message from appearing.
 $cfg['blowfish_secret'] string
     The "cookie" auth_type uses blowfish algorithm to encrypt the password.
     If you are using the "cookie" auth_type, enter here a random passphrase of
@@ -2055,6 +2058,14 @@ If your cluster consist of different architectures, PHP code used for
 encryption/decryption won't work correct. This is caused by use of pack/unpack
 functions in code. Only solution is to use mcrypt extension which works fine in
 this case.
+
+1.38 Can I use phpMyAdmin on a server on which Suhosin is enabled?
+
+Yes but the default configuration values of Suhosin are known to cause problems
+with some operations, for example editing a table with many columns and no
+primary key. Tuning information is available at http://www.hardened-php.net/
+hphp/troubleshooting.html, although the parameter names have changed (suhosin
+instead of hphp). See also the SuhosinDisableWarning directive.
 
 Configuration
 

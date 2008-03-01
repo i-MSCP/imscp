@@ -34,7 +34,7 @@
 DEBUG=0
 
 # read needed entries from ispcp.conf
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
     export $a
 done
 
@@ -50,35 +50,35 @@ fi
 
 # Fix ispcp.conf perms
 if [ $DEBUG -eq 1 ]; then
-    echo -e "\tug+r,u+w,o-r root:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
+    echo -e "\tug+r,u+w,o-r $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
 else
     echo -n ".";
 fi
 
 #chmod ug+r,u+w,o-r /etc/ispcp/ispcp.conf
-chown root:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
+chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
 
 for i in `find $ROOT_DIR/engine/`; do
 
 	if [ -f $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
-			echo -e "\t0700 root:root $i";
+			echo -e "\t0700 $ROOT_USER:$ROOT_GROUP $i";
 		fi
 
 		chmod 0700 $i;
-		chown root:root $i;
+		chown $ROOT_USER:$ROOT_GROUP $i;
 
 	elif [ -d $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
-			echo "0700 root:root [$i]";
+			echo "0700 $ROOT_USER:$ROOT_GROUP [$i]";
 		else
 			echo -n ".";
 		fi
 
 		chmod 0700 $i;
-		chown root:root $i;
+		chown $ROOT_USER:$ROOT_GROUP $i;
 	fi
 
 done
@@ -88,7 +88,7 @@ done
 #
 
 		chmod 0755 $ROOT_DIR/engine;
-		chown root:root $ROOT_DIR/engine;
+		chown $ROOT_USER:$ROOT_GROUP $ROOT_DIR/engine;
 
 #
 # fixing messager permissions;
@@ -113,14 +113,14 @@ fi
 i="$ROOT_DIR/engine/messager"
 
 if [ $DEBUG -eq 1 ]; then
-	echo "0755 root:root folder [$i]";
+	echo "0755 $ROOT_USER:$ROOT_GROUP folder [$i]";
 else
 	echo -n ".";
 fi
 
 
 		chmod 0755 $i;
-		chown root:root $i;
+		chown $ROOT_USER:$ROOT_GROUP $i;
 
 
 #

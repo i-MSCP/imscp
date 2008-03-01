@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-04 12:55+0200\n"
 "Last-Translator: Tomas Srnka <tomas.srnka@linuxsro.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -628,6 +628,32 @@ msgstr "Uložit"
 msgid "Edit button"
 msgstr "Upraviť tlačidlo"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Užívateľia databázy"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Dostupné aktualizácie ispCP"
+
+msgid "Update"
+msgstr "Aktualizovať"
+
+msgid "Update details"
+msgstr "Detialy aktualizácie"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Žiadné nové aktualizácie ispCP"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Nová aktualizácia ispCP je dostupná"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Ste si istý, že chcete zmazať objenávku?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -761,9 +787,6 @@ msgstr "Doménový účet"
 msgid "Edit admin"
 msgstr "Upraviť administrátora"
 
-msgid "Update"
-msgstr "Aktualizovať"
-
 msgid "Send new login data"
 msgstr "Pošli nové prihlasovacie údaje"
 
@@ -792,11 +815,6 @@ msgstr ""
 
 msgid "Aliases"
 msgstr "Aliasy"
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
 
 msgid "Mail"
 msgstr "E-mail"
@@ -868,6 +886,10 @@ msgstr "E-mail"
 
 msgid "unlimited"
 msgstr "Bez obmedzení"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Maximálny počet subdomén<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrátor/Upraviť hostingový plán"
@@ -976,20 +998,6 @@ msgstr "Nemôže skontrolovať aktualizácie!"
 
 msgid "New ispCP update is now available"
 msgstr "Nová aktualizácia ispCP je dostupná"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Prekročili ste Váš limit!"
-
-#, fuzzy, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s of nebmedzených]"
-
-#, fuzzy, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$s%% [%2$s z %3$s]"
-
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Admin/Hlavný zoznam"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/Spravovať IP adresy"
@@ -1103,9 +1111,6 @@ msgstr "Dostupné aktualizácie ispCP"
 
 msgid "No new ispCP updates available"
 msgstr "Žiadné nové aktualizácie ispCP"
-
-msgid "Update details"
-msgstr "Detialy aktualizácie"
 
 msgid "User language updated successfully!"
 msgstr "Jazyk užívateľa úspešne zmenený!"
@@ -1875,6 +1880,10 @@ msgstr "Doména s rovnakým menom už existuje v systéme!"
 msgid "Incorrect mount point syntax"
 msgstr "Nesprávna syntax prípojného bodu"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Doménový alias nepridaný!"
+
 msgid "Incorrect forward syntax"
 msgstr "Nesprávna syntax presmerovania"
 
@@ -2053,7 +2062,8 @@ msgstr "Limit sub-domén dosiahnutý!"
 msgid "Please specify subdomain name!"
 msgstr "Posím zadajte meno sub-domén!"
 
-msgid "Subdomain already exists!"
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
 msgstr "Sub-doména už existuje!"
 
 msgid "Wrong subdomain syntax!"
@@ -2448,6 +2458,21 @@ msgstr "Vyberať"
 
 msgid "disabled"
 msgstr "zakázané"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Máte <b>%d</b> nových porporných otázok"
+
+#, fuzzy, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s z %3$s]"
+
+#, fuzzy, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s of nebmedzených]"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Prekročili ste Váš limit!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2906,6 +2931,10 @@ msgstr "Admin log"
 
 msgid "Logout"
 msgstr "Odhlásiť sa"
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "ispCP aktualizácie"
 
 msgid "Custom menus"
 msgstr "Vlastné menu"
@@ -3473,6 +3502,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Predajca/Zmeniť heslo"
 
@@ -3722,6 +3754,9 @@ msgstr "Spravovať objednávky"
 msgid "Wrong order ID!"
 msgstr "Zlé ID objednávky!"
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr "Užívateľ pridaný!"
 
@@ -3827,9 +3862,6 @@ msgstr "ispCP - Užívateľ/Pridať užívateľa"
 msgid "Add other domains to this account"
 msgstr "Pridaž ostatné domény k tomuto kontu"
 
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr "Je tu konfliktný administrátor / predajca najprv to oprav !"
-
 msgid "System error with Domain ID "
 msgstr "Systémová chyba s doménovým ID"
 
@@ -3871,6 +3903,12 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "Message was sent."
 msgstr "Správa bola poslaná"
+
+#~ msgid "ispCP - Admin/Main Index"
+#~ msgstr "ispCP - Admin/Hlavný zoznam"
+
+#~ msgid "There's a conflicting admin / reseller fix that first!"
+#~ msgstr "Je tu konfliktný administrátor / predajca najprv to oprav !"
 
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(zvyčajne pomenované ako backuo_YYYY_MM_DD.tar.bz2)"

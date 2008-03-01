@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -613,6 +613,32 @@ msgstr "保存"
 msgid "Edit button"
 msgstr "ボタンの編集"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "データベースユーザー"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "利用可能なispCPアップデート"
+
+msgid "Update"
+msgstr "更新"
+
+msgid "Update details"
+msgstr "更新情報詳細"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "ispCPのアップデートは有りません"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "ispCPのアップデートが見つかりました"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "このオーダーを削除してよろしいですか?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -746,9 +772,6 @@ msgstr "ドメインアカウント"
 msgid "Edit admin"
 msgstr "アドミンの編集"
 
-msgid "Update"
-msgstr "更新"
-
 msgid "Send new login data"
 msgstr ""
 
@@ -777,11 +800,6 @@ msgstr ""
 
 msgid "Aliases"
 msgstr "エイリアス"
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
 
 msgid "Mail"
 msgstr "電子メール"
@@ -849,6 +867,10 @@ msgstr ""
 
 msgid "unlimited"
 msgstr "無制限"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - アドミニストレータ/ホスティングプラン修正"
@@ -955,20 +977,6 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "ispCPのアップデートが見つかりました"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "サブドメインの制限に達しました"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - 管理者/メイン インデックス"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - 管理者/IPアドレス管理"
@@ -1082,9 +1090,6 @@ msgstr "利用可能なispCPアップデート"
 
 msgid "No new ispCP updates available"
 msgstr "ispCPのアップデートは有りません"
-
-msgid "Update details"
-msgstr "更新情報詳細"
 
 msgid "User language updated successfully!"
 msgstr "ユーザーの言語が更新されてました"
@@ -1837,6 +1842,10 @@ msgstr ""
 msgid "Incorrect mount point syntax"
 msgstr "Incorrect <i>mount point</i> syntax!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "ドメインエイリアスが追加されませんでした!"
+
 msgid "Incorrect forward syntax"
 msgstr "Incorrect <i>forward</i> syntax!"
 
@@ -2012,7 +2021,8 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr ""
 
-msgid "Subdomain already exists!"
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
 msgstr "サブドメインは既に存在しています"
 
 msgid "Wrong subdomain syntax!"
@@ -2397,6 +2407,21 @@ msgstr "選択"
 
 msgid "disabled"
 msgstr "無効"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "新しい質問はありません!"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "サブドメインの制限に達しました"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2845,6 +2870,10 @@ msgstr "管理者ログ"
 
 msgid "Logout"
 msgstr "ログアウト"
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "ispCPアップデート"
 
 msgid "Custom menus"
 msgstr "カスタムメニュー"
@@ -3382,6 +3411,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
@@ -3625,6 +3657,9 @@ msgstr "オーダー管理"
 msgid "Wrong order ID!"
 msgstr ""
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr "ユーザーが追加されました"
 
@@ -3730,9 +3765,6 @@ msgstr ""
 msgid "Add other domains to this account"
 msgstr "他のドメインをこのアカウントに追加"
 
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
-
 msgid "System error with Domain ID "
 msgstr ""
 
@@ -3774,6 +3806,9 @@ msgstr ""
 
 msgid "Message was sent."
 msgstr "送信済み"
+
+#~ msgid "ispCP - Admin/Main Index"
+#~ msgstr "ispCP - 管理者/メイン インデックス"
 
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(backup_YYYY_MM_DD.tar.bz2の形で保存されます)"

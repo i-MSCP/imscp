@@ -8,7 +8,7 @@
 	create 640 root adm
 	sharedscripts
 	prerotate
-		/var/www/ispcp/engine/traffic/ispcp-vrl-traff >/var/log/ispcp/ispcp-vrl-traff.log
+		/var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
 	endscript
 	postrotate
 	for i in `seq 1 10`; do

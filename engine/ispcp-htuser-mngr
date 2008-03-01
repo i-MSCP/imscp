@@ -174,7 +174,7 @@ sub htuser_add_user_data {
 
 	}
 
-	$rs = store_file($htaccess_users_file, $htaccess_users_content, 'root', 'root', 0644);
+	$rs = store_file($htaccess_users_file, $htaccess_users_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
 	return $rs if ($rs != 0);
 
@@ -218,8 +218,8 @@ sub htuser_del_user_data {
 		$rs = store_file(
 						 $htaccess_users_file,
 						 $htaccess_users_content,
-						 'root',
-						 'root',
+						 $main::cfg{'ROOT_USER'}
+						 $main::cfg{'ROOT_GROUP'}
 						 0644
 						);
 
@@ -309,7 +309,7 @@ sub htuser_add_group_data {
 
 	}
 
-	$rs = store_file($htaccess_groups_file, $htaccess_groups_content, 'root', 'root', 0644);
+	$rs = store_file($htaccess_groups_file, $htaccess_groups_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
 	return $rs if ($rs != 0);
 
@@ -380,7 +380,7 @@ sub htuser_del_group_data {
 
 		close(F);
 
-		$rs = store_file($htaccess_groups_file, $htaccess_groups_content, 'root', 'root', 0644);
+		$rs = store_file($htaccess_groups_file, $htaccess_groups_content, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
 		return $rs if ($rs != 0);
 

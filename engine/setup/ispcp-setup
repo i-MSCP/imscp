@@ -496,23 +496,23 @@ sub setup_system_dirs {
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir($main::cfg{'APACHE_BACKUP_LOG_DIR'}, 'root', 'root', 0755);
+	$rs = make_dir($main::cfg{'APACHE_BACKUP_LOG_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'}, 'root', 'root', 0755);
+	$rs = make_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'}, 'root', 'root', 0755);
+	$rs = make_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir($main::cfg{'LOG_DIR'}, 'root', 'root', 0755);
+	$rs = make_dir($main::cfg{'LOG_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 
 	return $rs if ($rs != 0);
 
-	$rs = make_dir($main::cfg{'BACKUP_FILE_DIR'}, 'root', 'root', 0755);
+	$rs = make_dir($main::cfg{'BACKUP_FILE_DIR'}, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 
 	return $rs if ($rs != 0);
 
@@ -695,7 +695,7 @@ sub setup_sql {
 
 	$rdata =~ s/\{DATABASE_NAME\}/$main::db_name/gi;
 
-	$rs = store_file("/tmp/db.sql", $rdata, 'root', 'root', 0644);
+	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
 	return $rs if ($rs != 0);
 
@@ -925,7 +925,7 @@ sub setup_resolver {
 		# security fix:
     	$resolv_data =~ s/^nameserver[[:space:]]+127\.0\.0\.1$//g;
 
-    	$rs = store_file($resolv_file, $data, 'root', 'root', 0644);
+    	$rs = store_file($resolv_file, $data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
     	return $rs if ($rs != 0);
 
 	}
@@ -968,7 +968,7 @@ sub setup_hosts {
 	$data .= "ff02::2\tip6-allrouters\n";
 	$data .= "ff02::3\tip6-allhosts\n";
 
-	$rs = store_file($hosts_file, $data, 'root', 'root', 0644);
+	$rs = store_file($hosts_file, $data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
 	return $rs if ($rs != 0);
 

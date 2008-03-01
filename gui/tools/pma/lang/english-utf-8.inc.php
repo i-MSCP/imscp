@@ -1,5 +1,5 @@
 <?php
-/* $Id: english-utf-8.inc.php 11023 2007-12-29 15:01:14Z lem9 $ */
+/* $Id: english-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -895,6 +895,7 @@ $strStructureForView = 'Structure for view';
 $strStructure = 'Structure';
 $strSubmit = 'Submit';
 $strSuccess = 'Your SQL query has been executed successfully';
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';
 $strSum = 'Sum';
 $strSwedish = 'Swedish';
 $strSwitchToDatabase = 'Switch to copied database';

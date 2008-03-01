@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -612,6 +612,32 @@ msgstr "Зберегти"
 msgid "Edit button"
 msgstr "Редагувати кнопку"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Користувачі баз даних"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Доступні оновлення ispCP"
+
+msgid "Update"
+msgstr "Оновити"
+
+msgid "Update details"
+msgstr "Деталі оновлення"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Немає нових оновлень ispCP"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Доступне оновлення ispCP"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -745,9 +771,6 @@ msgstr "Обліковий запис домену"
 msgid "Edit admin"
 msgstr "Редагувати адміністратора"
 
-msgid "Update"
-msgstr "Оновити"
-
 msgid "Send new login data"
 msgstr "Надіслати нові дані автентифікації"
 
@@ -776,11 +799,6 @@ msgstr ""
 
 msgid "Aliases"
 msgstr "Аліаси"
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
 
 msgid "Mail"
 msgstr "Пошта"
@@ -851,6 +869,10 @@ msgstr "Електронна пошта"
 
 msgid "unlimited"
 msgstr "необмежено"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
@@ -958,20 +980,6 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "Доступне оновлення ispCP"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Ви вичерпали ліміт трафіку!"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Адміністратор/Головна"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Адміністратор/Керування IP"
@@ -1085,9 +1093,6 @@ msgstr "Доступні оновлення ispCP"
 
 msgid "No new ispCP updates available"
 msgstr "Немає нових оновлень ispCP"
-
-msgid "Update details"
-msgstr "Деталі оновлення"
 
 msgid "User language updated successfully!"
 msgstr "Мова користувача успішно оновлена!"
@@ -1839,6 +1844,10 @@ msgstr "Такий домен уже існує в системі!"
 msgid "Incorrect mount point syntax"
 msgstr "Невірний синтаксис <i>точки монтування</i>!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Аліас домену не додано!"
+
 msgid "Incorrect forward syntax"
 msgstr "Невірний синтаксис <i>пересилання</i>!"
 
@@ -2016,7 +2025,8 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "Будь ласка, укажіть назву піддомена!"
 
-msgid "Subdomain already exists!"
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
 msgstr "Піддомен уже існує!"
 
 msgid "Wrong subdomain syntax!"
@@ -2410,6 +2420,21 @@ msgstr "Вибрати"
 
 msgid "disabled"
 msgstr "вимкнено"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Немає нових питань підтримки!"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Ви вичерпали ліміт трафіку!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2859,6 +2884,10 @@ msgstr "Журнал адміністратора"
 
 msgid "Logout"
 msgstr "Вийти"
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "Оновлення ispCP"
 
 msgid "Custom menus"
 msgstr "Персональні меню"
@@ -3400,6 +3429,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Реселер/Зміна пароля"
 
@@ -3650,6 +3682,9 @@ msgstr "Керування замовленнями"
 msgid "Wrong order ID!"
 msgstr "Невірний ID замовлення!"
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr "Користувача додано!"
 
@@ -3755,9 +3790,6 @@ msgstr "ispCP - Користувач/Додавання користувача"
 msgid "Add other domains to this account"
 msgstr "Додати інші домени до цього облікового запису"
 
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
-
 msgid "System error with Domain ID "
 msgstr ""
 
@@ -3799,6 +3831,9 @@ msgstr "ispCP - Реселер : Система підтримки: Перегл
 
 msgid "Message was sent."
 msgstr "Повідомлення відправлене."
+
+#~ msgid "ispCP - Admin/Main Index"
+#~ msgstr "ispCP - Адміністратор/Головна"
 
 #~ msgid "Max domain count"
 #~ msgstr "Макс. кількість доменів"

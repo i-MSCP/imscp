@@ -316,11 +316,11 @@ sub sub_add_named_cfg_data {
     # Let's store prepared data;
     #
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -511,11 +511,11 @@ sub sub_del_named_cfg_data {
     # Let's store prepared data;
     #
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -825,7 +825,7 @@ sub gen_httpd_sub_group_entry {
 
     if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf" ){
 
-        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf", $sub_custom , 'root', 'root', 0644);
+        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$sub_name.conf", $sub_custom , $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
         return $rs if ($rs != 0);
     }
@@ -1087,11 +1087,11 @@ sub sub_add_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1365,11 +1365,11 @@ sub sub_del_httpd_cfg_data {
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1809,7 +1809,7 @@ sub sub_add_mta_cfg_data {
     # Let's do some backup first;
     #
 
-    $rs = store_file($backup_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1817,11 +1817,11 @@ sub sub_add_mta_cfg_data {
     # Let's write configs;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1903,7 +1903,7 @@ sub sub_del_mta_cfg_data {
     # Let's do some backup first;
     #
 
-    $rs = store_file($backup_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1911,11 +1911,11 @@ sub sub_del_mta_cfg_data {
     # Let's write configs;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 

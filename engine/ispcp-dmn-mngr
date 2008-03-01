@@ -277,7 +277,7 @@ sub dmn_add_named_cfg_data {
     # Let's save working copy;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -305,7 +305,7 @@ sub dmn_add_named_cfg_data {
 
     }
 
-    $rs = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -473,7 +473,7 @@ sub dmn_del_named_cfg_data {
     # Let's save working copy;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -501,7 +501,7 @@ sub dmn_del_named_cfg_data {
 
     }
 
-    $rs = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -639,11 +639,11 @@ sub dmn_add_named_db_data {
     # Let's store generated data;
     #
 
-    $rs = store_file($working_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1149,7 +1149,7 @@ sub gen_httpd_dmn_group_entry {
 
     if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
 
-        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf", $dmn_custom, 'root', 'root', 0644);
+        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf", $dmn_custom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
         return $rs if ($rs != 0);
     }
@@ -1485,11 +1485,11 @@ sub dmn_add_httpd_cfg_data {
     # Let's store all the stuff;
     #
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -1807,11 +1807,11 @@ sub dmn_del_httpd_cfg_data {
     # Let's store all the stuff;
     #
 
-    ($rs, $rdata) = store_file($working_cfg, $working, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    ($rs, $rdata) = store_file($sys_cfg, $sys, 'root', 'root', 0644);
+    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2822,7 +2822,7 @@ sub dmn_add_mta_cfg_data {
     # Let's do some backup first;
     #
 
-    $rs = store_file($backup_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2830,11 +2830,11 @@ sub dmn_add_mta_cfg_data {
     # Let's write configs;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2916,7 +2916,7 @@ sub dmn_del_mta_cfg_data {
     # Let's do some backup first;
     #
 
-    $rs = store_file($backup_cfg, $sys, 'root', 'root', 0644);
+    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -2924,11 +2924,11 @@ sub dmn_del_mta_cfg_data {
     # Let's write configs;
     #
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($sys_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -3296,7 +3296,7 @@ sub dmn_add_crontab_data {
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -3455,7 +3455,7 @@ sub dmn_del_crontab_data {
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -3638,7 +3638,7 @@ sub dmn_add_bkp_crontab_data {
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -3805,7 +3805,7 @@ sub dmn_del_bkp_crontab_data {
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -3940,7 +3940,7 @@ sub dmn_add_awstats_cfg_data {
     # Let's store generated data;
     #
 
-    $rs = store_file($sys_cfg, $entry, 'root', 'root', 0644);
+    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -4198,7 +4198,7 @@ sub dmn_add_awstats_cron {
 
     return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 
@@ -4327,7 +4327,7 @@ sub dmn_del_awstats_cron {
 	push_el(\@main::el, 'dmn_del_awstats_cron() search', $dmn_awstats_b);
     return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, 'root', 'root', 0644);
+    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
     return $rs if ($rs != 0);
 

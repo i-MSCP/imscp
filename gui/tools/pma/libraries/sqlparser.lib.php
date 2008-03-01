@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 11017 2007-12-21 18:18:44Z lem9 $
+ * @version $Id: sqlparser.lib.php 11123 2008-02-13 13:01:35Z lem9 $
  */
 
 
@@ -150,7 +150,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11017 2007-12-21 18:18:44Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id: sqlparser.lib.php 11123 2008-02-13 13:01:35Z lem9 $' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";
@@ -880,6 +880,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
  * ['queryflags']['union'] = 1;        for a UNION
  * ['queryflags']['join'] = 1;         for a JOIN
  * ['queryflags']['offset'] = 1;       for the presence of OFFSET
+ * ['queryflags']['procedure'] = 1;    for the presence of PROCEDURE
  *
  * query clauses
  * -------------
@@ -1435,18 +1436,20 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         $seen_reserved_word = FALSE;
         $seen_group = FALSE;
         $seen_order = FALSE;
+        $seen_order_by = FALSE;
         $in_group_by = FALSE; // true when we are inside the GROUP BY clause
         $in_order_by = FALSE; // true when we are inside the ORDER BY clause
         $in_having = FALSE; // true when we are inside the HAVING clause
         $in_select_expr = FALSE; // true when we are inside the select expr clause
         $in_where = FALSE; // true when we are inside the WHERE clause
+        $seen_limit = FALSE; // true if we have seen a LIMIT clause
         $in_limit = FALSE; // true when we are inside the LIMIT clause
         $after_limit = FALSE; // true when we are after the LIMIT clause
         $in_from = FALSE; // true when we are in the FROM clause
         $in_group_concat = FALSE;
-        $unsorted_query = '';
         $first_reserved_word = '';
         $current_identifier = '';
+        $unsorted_query = $arr['raw']; // in case there is no ORDER BY
 
         for ($i = 0; $i < $size; $i++) {
 //DEBUG echo "Loop2 <b>"  . $arr[$i]['data'] . "</b> (" . $arr[$i]['type'] . ")<br />";
@@ -1491,11 +1494,13 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 if ($upper_data == 'LIMIT') {
                     $section_before_limit = substr($arr['raw'], 0, $arr[$i]['pos'] - 5);
                     $in_limit = TRUE;
+                    $seen_limit = TRUE;
                     $limit_clause = '';
                     $in_order_by = FALSE; // @todo maybe others to set FALSE
                 }
 
                 if ($upper_data == 'PROCEDURE') {
+                    $subresult['queryflags']['procedure'] = 1;
                     $in_limit = FALSE;
                     $after_limit = TRUE;
                 }
@@ -1585,6 +1590,10 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                         $group_by_clause = '';
                     }
                     if ($seen_order) {
+                        $seen_order_by = TRUE;
+                        // here we assume that the ORDER BY keywords took
+                        // exactly 8 characters
+                        $unsorted_query = substr($arr['raw'], 0, $arr[$i]['pos'] - 8);
                         $in_order_by = TRUE;
                         $order_by_clause = '';
                     }
@@ -1672,29 +1681,30 @@ if (! defined('PMA_MINIMUM_COMMON')) {
                 }
             }
 
+            // to grab the rest of the query after the ORDER BY clause
             if (isset($subresult['queryflags']['select_from'])
              && $subresult['queryflags']['select_from'] == 1
              && ! $in_order_by
-	     && $upper_data != 'ORDER') {
+             && $seen_order_by
+             && $upper_data != 'BY') {
                 $unsorted_query .= $arr[$i]['data'];
-
                 if ($arr[$i]['type'] != 'punct_bracket_open_round'
                  && $arr[$i]['type'] != 'punct_bracket_close_round'
                  && $arr[$i]['type'] != 'punct') {
                     $unsorted_query .= $sep;
                 }
             }
-
-	    if ($in_limit) {
+            
+            if ($in_limit) {
                 if ($upper_data == 'OFFSET') {
                     $limit_clause .= $sep;
                 }
-		$limit_clause .= $arr[$i]['data'];
+		        $limit_clause .= $arr[$i]['data'];
                 if ($upper_data == 'LIMIT' || $upper_data == 'OFFSET') {
                     $limit_clause .= $sep;
                 }
             }
-            if ($after_limit) { 
+            if ($after_limit && $seen_limit) { 
                 $section_after_limit .= $arr[$i]['data'] . $sep;
             }
 

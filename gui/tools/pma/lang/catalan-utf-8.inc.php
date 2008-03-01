@@ -1,5 +1,5 @@
 <?php
-/* $Id: catalan-utf-8.inc.php 10949 2007-11-29 17:40:30Z lem9 $ */
+/* $Id: catalan-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -1021,4 +1021,5 @@ $strYes = 'Si';
 $strZeroRemovesTheLimit = 'Nota: Es treu el limit establint aquestes opcions a 0 (zero).';
 $strZip = '"comprimit amb zip"';
 
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

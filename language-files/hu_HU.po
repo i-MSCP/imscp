@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -613,6 +613,32 @@ msgstr "Mentés"
 msgid "Edit button"
 msgstr "Gomb szerkesztése"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Adatbázis felhasználók"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Rendelkezésre álló ispCP frissítések"
+
+msgid "Update"
+msgstr "Frissítés"
+
+msgid "Update details"
+msgstr "Részletek módosítása"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Nincs új ispCP verzió"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Új ispCP verzió most elérhetõ"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Biztos törölni akarod ezt a rendelést?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -746,9 +772,6 @@ msgstr "Domain hozzáférés"
 msgid "Edit admin"
 msgstr "Admin szerkesztése"
 
-msgid "Update"
-msgstr "Frissítés"
-
 msgid "Send new login data"
 msgstr ""
 
@@ -777,11 +800,6 @@ msgstr ""
 
 msgid "Aliases"
 msgstr "Aliasok"
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
 
 msgid "Mail"
 msgstr "Email"
@@ -852,6 +870,10 @@ msgstr ""
 
 msgid "unlimited"
 msgstr "korlátlan"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "SQL felhasználó limit<br><i>(-1 tiltva, 0 korlátlan)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Szolgáltatási csomag módosítás"
@@ -958,20 +980,6 @@ msgstr ""
 
 msgid "New ispCP update is now available"
 msgstr "Új ispCP verzió most elérhetõ"
-
-msgid "You are exceeding your traffic limit!"
-msgstr "Túllépted a forgalm maximális korlátját!"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Admin/Kezdõlap"
 
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/IP kezelése"
@@ -1085,9 +1093,6 @@ msgstr "Rendelkezésre álló ispCP frissítések"
 
 msgid "No new ispCP updates available"
 msgstr "Nincs új ispCP verzió"
-
-msgid "Update details"
-msgstr "Részletek módosítása"
 
 msgid "User language updated successfully!"
 msgstr "Felhasználói nyelv sikeresen módosítva!"
@@ -1838,6 +1843,10 @@ msgstr "ilyen nevû domain már létezik!"
 msgid "Incorrect mount point syntax"
 msgstr "Hibás beillesztési pont formátum!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Domain alias nincs hozzáadva!"
+
 msgid "Incorrect forward syntax"
 msgstr "Hibás forward cím formátum!"
 
@@ -2014,7 +2023,8 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr "Add meg az aldomain nevét!"
 
-msgid "Subdomain already exists!"
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
 msgstr "Az aldomain már létezik!"
 
 msgid "Wrong subdomain syntax!"
@@ -2406,6 +2416,21 @@ msgstr "Válassz"
 
 msgid "disabled"
 msgstr "tiltva"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Nincs új ügyfélszolgálati kérdés!"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Túllépted a forgalm maximális korlátját!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2855,6 +2880,10 @@ msgstr "Admin napló"
 
 msgid "Logout"
 msgstr "Kilépés"
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "ispCP frissítések"
 
 msgid "Custom menus"
 msgstr "Egyedi menük"
@@ -3395,6 +3424,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Viszonteladó/Jelszóváltás"
 
@@ -3644,6 +3676,9 @@ msgstr "Rendelések kezelése"
 msgid "Wrong order ID!"
 msgstr "Rossz rendelés azonosító!"
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr "Felhasználó hozzáadva!"
 
@@ -3749,9 +3784,6 @@ msgstr "ispCP - Felhasználó/Új felhasználó"
 msgid "Add other domains to this account"
 msgstr "Domainek hozzáadása ehez a hozzáféréshez"
 
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
-
 msgid "System error with Domain ID "
 msgstr ""
 
@@ -3794,6 +3826,9 @@ msgstr "ispCP - Viszonteladó : Ügyfélszolgálati Rendszer: Bejelentések"
 
 msgid "Message was sent."
 msgstr "Üzenet elküldve."
+
+#~ msgid "ispCP - Admin/Main Index"
+#~ msgstr "ispCP - Admin/Kezdõlap"
 
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(rendszerint elnevezve: domain-backup-ÉÉÉÉ.HH.NN-ÓÓPPMM.tar.bz2)"

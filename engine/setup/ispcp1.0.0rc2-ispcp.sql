@@ -6,9 +6,9 @@ START TRANSACTION;
 USE {DATABASE};
 
 -- BEGIN: Upgrade database structure:
-ALTER TABLE `admin` CHANGE `customer_id` `customer_id` varchar(200) NULL DEFAULT '0';
-ALTER TABLE `admin` CHANGE `created_by` `created_by` INT(10) UNSIGNED NULL DEFAULT '0';
-ALTER TABLE `admin` ADD `gender` varchar(1) DEFAULT NULL;
+ALTER IGNORE TABLE `admin` CHANGE `customer_id` `customer_id` varchar(200) NULL DEFAULT '0';
+ALTER IGNORE TABLE `admin` CHANGE `created_by` `created_by` INT(10) UNSIGNED NULL DEFAULT '0';
+ALTER IGNORE TABLE `admin` ADD `gender` varchar(1) DEFAULT NULL;
 
 INSERT INTO `config` ( `name` , `value` )
 VALUES (
@@ -26,7 +26,7 @@ VALUES (
 -- Drop useless table
 DROP TABLE IF EXISTS `domain_props`;
 
-ALTER TABLE `domain_traffic` CHANGE `dtraff_time` `dtraff_time` BIGINT UNSIGNED NULL DEFAULT NULL ,
+ALTER IGNORE TABLE `domain_traffic` CHANGE `dtraff_time` `dtraff_time` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_web` `dtraff_web` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_ftp` `dtraff_ftp` BIGINT UNSIGNED NULL DEFAULT NULL ,
 CHANGE `dtraff_mail` `dtraff_mail` BIGINT UNSIGNED NULL DEFAULT NULL ,
@@ -50,17 +50,17 @@ DROP TABLE IF EXISTS `lang_Russian`;
 DROP TABLE IF EXISTS `lang_Spanish`;
 
 -- Add Primary key and possibly an index to login table!
-ALTER TABLE `login` ADD `captcha_count` TINYINT( 1 ) default '0';
-ALTER TABLE `login` ADD PRIMARY KEY ( `session_id` );
-ALTER TABLE `login` CHANGE `login_count` `login_count` tinyint(1) default '0';
+ALTER IGNORE TABLE `login` ADD `captcha_count` TINYINT( 1 ) default '0';
+ALTER IGNORE TABLE `login` ADD PRIMARY KEY ( `session_id` );
+ALTER IGNORE TABLE `login` CHANGE `login_count` `login_count` tinyint(1) default '0';
 
-ALTER TABLE `orders` ADD `gender` varchar(1) default NULL;
+ALTER IGNORE TABLE `orders` ADD `gender` varchar(1) default NULL;
 
-ALTER TABLE `quotalimits` ADD PRIMARY KEY ( `name` );
+ALTER IGNORE TABLE `quotalimits` ADD PRIMARY KEY ( `name` );
 
-ALTER TABLE `quotatallies` ADD PRIMARY KEY ( `name` );
+ALTER IGNORE TABLE `quotatallies` ADD PRIMARY KEY ( `name` );
 
-ALTER TABLE `server_traffic` CHANGE `traff_time` `traff_time` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
+ALTER IGNORE TABLE `server_traffic` CHANGE `traff_time` `traff_time` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_in` `bytes_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_out` `bytes_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `bytes_mail_in` `bytes_mail_in` BIGINT(20) UNSIGNED NULL DEFAULT NULL ,
@@ -73,7 +73,7 @@ CHANGE `bytes_web_out` `bytes_web_out` BIGINT(20) UNSIGNED NULL DEFAULT NULL;
 -- Drop useless table
 DROP TABLE IF EXISTS `syslog`;
 
-ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` int(10) unsigned NOT NULL default 0,
+ALTER IGNORE TABLE `user_gui_props` CHANGE `user_id` `user_id` int(10) unsigned NOT NULL default 0,
 CHANGE `lang` `lang` varchar(255) default '',
 CHANGE `layout` `layout` varchar(255) default '';
 

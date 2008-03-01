@@ -1,5 +1,5 @@
 <?php
-/* $Id: danish-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */ /* danish - Dansk v 2.20 (based on english rev. 10226) 2007/04/03 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
+/* $Id: danish-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */ /* danish - Dansk v 2.20 (based on english rev. 10226) 2007/04/03 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -1027,4 +1027,5 @@ $strRestartInsertion = 'Restart insertion with %s rows';  //to translate
 $strTriggers = 'Triggers';  //to translate
 $strEvent = 'Event';  //to translate
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

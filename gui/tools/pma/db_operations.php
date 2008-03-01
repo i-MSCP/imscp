@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 10813 2007-10-17 07:36:14Z cybot_tm $
+ * @version $Id: db_operations.php 11044 2008-01-07 18:07:08Z lem9 $
  */
 
 /**
@@ -293,7 +293,7 @@ if (!$is_information_schema) {
         echo 'INSERT INTO ... SELECT';
     //}
     echo ')'; ?>
-        <input type="submit" value="<?php echo $strGo; ?>" />
+        <input type="submit" value="<?php echo $strGo; ?>" onclick="return confirmLink(this, 'CREATE DATABASE ... <?php echo $strAndThen; ?> DROP DATABASE <?php echo PMA_jsFormat($db); ?>')" />
     </fieldset>
     </form>
 

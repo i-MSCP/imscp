@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-07-06 16:03-0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -610,6 +610,30 @@ msgstr ""
 msgid "Edit button"
 msgstr "Buton Editare"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Utilizatori de baza de date"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Actualizari ispCP disponibile"
+
+msgid "Update"
+msgstr ""
+
+msgid "Update details"
+msgstr ""
+
+msgid "No database updates available"
+msgstr ""
+
+msgid "New Database update is now available"
+msgstr ""
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Sigur doriti sa stergeti aceasta comanda?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr ""
 
@@ -742,9 +766,6 @@ msgstr "Cont domeniu"
 msgid "Edit admin"
 msgstr "Editare admin"
 
-msgid "Update"
-msgstr ""
-
 msgid "Send new login data"
 msgstr ""
 
@@ -773,11 +794,6 @@ msgstr ""
 
 msgid "Aliases"
 msgstr "Alias-e"
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
 
 msgid "Mail"
 msgstr "e-mail"
@@ -844,6 +860,10 @@ msgstr ""
 
 msgid "unlimited"
 msgstr ""
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Limita Disc [MB}<br><i>(0 nelimitat)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
@@ -949,20 +969,6 @@ msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 
 msgid "New ispCP update is now available"
-msgstr ""
-
-msgid "You are exceeding your traffic limit!"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr ""
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr ""
-
-msgid "ispCP - Admin/Main Index"
 msgstr ""
 
 msgid "ispCP - Admin/IP manage"
@@ -1072,9 +1078,6 @@ msgid "Available ispCP updates"
 msgstr "Actualizari ispCP disponibile"
 
 msgid "No new ispCP updates available"
-msgstr ""
-
-msgid "Update details"
 msgstr ""
 
 msgid "User language updated successfully!"
@@ -1820,6 +1823,10 @@ msgstr "Exista un domeniu cu acelasi nume in sistem!"
 msgid "Incorrect mount point syntax"
 msgstr "Incorrect <i>mount point</i> syntax!"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Alias domeniu neadaugat!"
+
 msgid "Incorrect forward syntax"
 msgstr "Incorrect <i>forward</i> syntax!"
 
@@ -1995,7 +2002,7 @@ msgstr ""
 msgid "Please specify subdomain name!"
 msgstr ""
 
-msgid "Subdomain already exists!"
+msgid "Subdomain already exists or is not allowed!"
 msgstr ""
 
 msgid "Wrong subdomain syntax!"
@@ -2382,6 +2389,21 @@ msgstr ""
 
 msgid "disabled"
 msgstr "dezactivat"
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2827,6 +2849,10 @@ msgstr ""
 
 msgid "Logout"
 msgstr ""
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "Utilizatori de baza de date"
 
 msgid "Custom menus"
 msgstr ""
@@ -3359,6 +3385,9 @@ msgstr ""
 msgid "Setup fee must be a number!"
 msgstr ""
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr ""
 
@@ -3603,6 +3632,9 @@ msgstr ""
 msgid "Wrong order ID!"
 msgstr ""
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr ""
 
@@ -3707,9 +3739,6 @@ msgstr ""
 
 msgid "Add other domains to this account"
 msgstr "Adauga alte domenii acestui cont"
-
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
 
 msgid "System error with Domain ID "
 msgstr ""

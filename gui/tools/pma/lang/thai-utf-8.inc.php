@@ -1,5 +1,5 @@
 <?php
-/* $Id: thai-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
+/* $Id: thai-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 // first created 2002/04/29 Arthit Suriyawongkul & Warit Wanasathian
 // last modified 2004/08/22 Arthit Suriyawongkul
@@ -1049,4 +1049,5 @@ $strRestartInsertion = 'Restart insertion with %s rows';  //to translate
 $strTriggers = 'Triggers';  //to translate
 $strEvent = 'Event';  //to translate
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

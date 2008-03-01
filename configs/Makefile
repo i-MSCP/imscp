@@ -24,10 +24,10 @@ install:
 		cd ./dists/gentoo && $(MAKE) install ; \
 	elif test $(HOST_OS) = redhat ; then \
 		cd ./dists/redhat && $(MAKE) install ; \
-	elif test $(HOST_OS) = suse10 ; then \
-		cd ./dists/suse10 && $(MAKE) install ; \
-	elif test $(HOST_OS) = opensuse10 ; then \
-		cd ./dists/opensuse10 && $(MAKE) install ; \
+	elif test $(HOST_OS) = suse ; then \
+		cd ./dists/opensuse && $(MAKE) install ; \
+	elif test $(HOST_OS) = opensuse ; then \
+		cd ./dists/opensuse && $(MAKE) install ; \
 	elif test $(HOST_OS) = ubuntu ; then \
 		cd ./dists/ubuntu && $(MAKE) install ; \
 	fi
@@ -54,10 +54,10 @@ uninstall:
 		cd ./dists/gentoo && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = redhat ; then \
 		cd ./dists/redhat && $(MAKE) uninstall ; \
-	elif test $(HOST_OS) = suse10 ; then \
-		cd ./dists/suse10 && $(MAKE) uninstall ; \
-	elif test $(HOST_OS) = opensuse10 ; then \
-		cd ./dists/opensuse10 && $(MAKE) uninstall ; \
+	elif test $(HOST_OS) = suse ; then \
+		cd ./dists/opensuse && $(MAKE) uninstall ; \
+	elif test $(HOST_OS) = opensuse ; then \
+		cd ./dists/opensuse && $(MAKE) uninstall ; \
 	elif test $(HOST_OS) = ubuntu ; then \
 		cd ./dists/ubuntu && $(MAKE) uninstall ; \
 	fi

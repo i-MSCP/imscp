@@ -1,5 +1,5 @@
 <?php
-/* $Id: azerbaijani-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
+/* $Id: azerbaijani-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 // tercümedeki eksiklerimi ve ya sehv olduğunu düşündüyünüz yerleri shehriyari@trcomm.net adresine göndere bilersiniz...
 // Şehriyar İmanov 30 Avqust 2003... Shehi
@@ -1048,4 +1048,5 @@ $strRestartInsertion = 'Restart insertion with %s rows';  //to translate
 $strTriggers = 'Triggers';  //to translate
 $strEvent = 'Event';  //to translate
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

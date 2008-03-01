@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-05 23:01+0100\n"
+"POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2007-11-20 09:36+0100\n"
 "Last-Translator: Harald Bäs-Fischlmair <hbaes@chiemgaudata.de>\n"
 "Language-Team: German (Germany) <de@li.org>\n"
@@ -601,6 +601,32 @@ msgstr "Speichern"
 msgid "Edit button"
 msgstr "Menüpunkt bearbeiten"
 
+#, fuzzy
+msgid "Database updates"
+msgstr "Datenbankbenutzer"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Verfügbare ispCP Updates"
+
+msgid "Update"
+msgstr "Aktualisieren"
+
+msgid "Update details"
+msgstr "Details aktualisieren"
+
+#, fuzzy
+msgid "No database updates available"
+msgstr "Keine neuen ispCP-Updates verfügbar"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Neue ispCP-Updates sind verfügbar"
+
+#, fuzzy
+msgid "Do you want to execute the Updates now?"
+msgstr "Sind Sie sicher, dass Sie diese Bestellung löschen wollen?"
+
 msgid "You cannot delete the last active IP address!"
 msgstr "Sie können nicht die letzte aktive IP-Adresse löschen!"
 
@@ -733,9 +759,6 @@ msgstr "Domainkonto"
 msgid "Edit admin"
 msgstr "Administrator bearbeiten"
 
-msgid "Update"
-msgstr "Aktualisieren"
-
 msgid "Send new login data"
 msgstr "Neue Zugangsdaten senden"
 
@@ -763,13 +786,6 @@ msgstr ""
 
 msgid "Aliases"
 msgstr "Aliase"
-
-#, php-format
-msgid ""
-"Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-msgstr ""
-"Inkonsistenz zwischen current_mail_cnt und tatsächlicher Anzahl an E-Mail-"
-"Adressen: %1$d != %2$d"
 
 msgid "Mail"
 msgstr "E-Mail"
@@ -845,6 +861,10 @@ msgstr "E-Mail-Adresse"
 
 msgid "unlimited"
 msgstr "unbegrenzt"
+
+#, fuzzy
+msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
+msgstr "Anzahl Subdomains<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Tarif bearbeiten"
@@ -952,20 +972,6 @@ msgstr "Konnte nicht auf Updates überprüfen!"
 msgid "New ispCP update is now available"
 msgstr "Neue ispCP-Updates sind verfügbar"
 
-msgid "You are exceeding your traffic limit!"
-msgstr "Sie haben Ihr Traffic-Limit erreicht!"
-
-#, php-format
-msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s von unbegrenzt]"
-
-#, php-format
-msgid "%1$d%% [%2$s of %3$s]"
-msgstr "%1$d%% [%2$s von %3$s]"
-
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Admin/Hauptmenü"
-
 msgid "ispCP - Admin/IP manage"
 msgstr "ispCP - Admin/IP-Verwaltung"
 
@@ -1071,9 +1077,6 @@ msgstr "Verfügbare ispCP Updates"
 
 msgid "No new ispCP updates available"
 msgstr "Keine neuen ispCP-Updates verfügbar"
-
-msgid "Update details"
-msgstr "Details aktualisieren"
 
 msgid "User language updated successfully!"
 msgstr "Sprache wurde erfolgreich aktualisiert!"
@@ -1826,6 +1829,10 @@ msgstr "Eine gleichnamige Domain existiert bereits im System!"
 msgid "Incorrect mount point syntax"
 msgstr "Ungültige Schreibweise des Mountpunkts"
 
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Bestellter Domain-Alias wurde nicht gelöscht!"
+
 msgid "Incorrect forward syntax"
 msgstr "Ungültige Schreibweise der Weiterleitung"
 
@@ -2005,7 +2012,8 @@ msgstr "Max. Anzahl an Subdomains erreicht!"
 msgid "Please specify subdomain name!"
 msgstr "Bitte geben Sie einen Namen für die Subdomain an!"
 
-msgid "Subdomain already exists!"
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
 msgstr "Subdomain existiert bereits!"
 
 msgid "Wrong subdomain syntax!"
@@ -2396,6 +2404,21 @@ msgstr "Auswählen"
 
 msgid "disabled"
 msgstr "deaktiviert"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Sie haben <b>%d</b> neue Supportanfragen!"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s von %3$s]"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s von unbegrenzt]"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Sie haben Ihr Traffic-Limit erreicht!"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -2850,6 +2873,10 @@ msgstr "Adminprotokoll"
 
 msgid "Logout"
 msgstr "Abmelden"
+
+#, fuzzy
+msgid "ispCP database updates"
+msgstr "ispCP Updates"
 
 msgid "Custom menus"
 msgstr "Eigene Menüpunkte"
@@ -3481,6 +3508,9 @@ msgstr "Der Preis muss eine Zahl sein!"
 msgid "Setup fee must be a number!"
 msgstr "Die Einrichtungsgebühr muss eine Zahl sein!"
 
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Reseller/Passwort ändern"
 
@@ -3720,6 +3750,9 @@ msgstr "Bestellungen verwalten"
 msgid "Wrong order ID!"
 msgstr "Falsche Bestellnummer!"
 
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
 msgid "User added!"
 msgstr "Benutzer angelegt!"
 
@@ -3827,11 +3860,6 @@ msgstr "ispCP - Benutzer/Benutzer anlegen"
 msgid "Add other domains to this account"
 msgstr "Weitere Domains diesem Konto hinzufügen"
 
-msgid "There's a conflicting admin / reseller fix that first!"
-msgstr ""
-"Es gibt einen Konflikt zwischen Administrator und Reseller. Lösen Sie diesen "
-"zuerst!"
-
 msgid "System error with Domain ID "
 msgstr "Systemfehler mit Domain-ID"
 
@@ -3871,6 +3899,20 @@ msgstr "ispCP - Reseller: Supportsystem: Tickets anzeigen"
 
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
+
+#~ msgid ""
+#~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+#~ msgstr ""
+#~ "Inkonsistenz zwischen current_mail_cnt und tatsächlicher Anzahl an E-Mail-"
+#~ "Adressen: %1$d != %2$d"
+
+#~ msgid "ispCP - Admin/Main Index"
+#~ msgstr "ispCP - Admin/Hauptmenü"
+
+#~ msgid "There's a conflicting admin / reseller fix that first!"
+#~ msgstr ""
+#~ "Es gibt einen Konflikt zwischen Administrator und Reseller. Lösen Sie "
+#~ "diesen zuerst!"
 
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.bz2)"

@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 10869 2007-10-20 17:54:15Z lem9 $
+ * @version $Id: config.default.php 11113 2008-02-09 16:09:54Z lem9 $
  */
 
 /**
@@ -45,6 +45,13 @@ $cfg['PmaAbsoluteUri'] = '';
  * @global boolean $cfg['PmaNoRelation_DisableWarning']
  */
 $cfg['PmaNoRelation_DisableWarning'] = false;
+
+/**
+ * Disable the default warning that is displayed if Suhosin is detected 
+ *
+ * @global boolean $cfg['SuhosinDisableWarning']
+ */
+$cfg['SuhosinDisableWarning'] = false;
 
 /**
  * The 'cookie' auth_type uses blowfish algorithm to encrypt the password. If

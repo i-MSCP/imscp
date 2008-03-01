@@ -1,5 +1,5 @@
 <?php
-/* $Id: latvian-utf-8.inc.php 10478 2007-07-09 19:41:38Z lem9 $ */
+/* $Id: latvian-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 /**
  * Latvian language file by Sandis Jērics <sandisj at parks.lv>
@@ -1050,4 +1050,5 @@ $strRestartInsertion = 'Restart insertion with %s rows';  //to translate
 $strTriggers = 'Triggers';  //to translate
 $strEvent = 'Event';  //to translate
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

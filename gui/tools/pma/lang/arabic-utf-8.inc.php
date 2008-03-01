@@ -1,5 +1,5 @@
 <?php
-/* $Id: arabic-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
+/* $Id: arabic-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 /**
  * Original translation to Arabic by Fisal <fisal77 at hotmail.com>
@@ -1053,4 +1053,5 @@ $strRestartInsertion = 'Restart insertion with %s rows';  //to translate
 $strTriggers = 'Triggers';  //to translate
 $strEvent = 'Event';  //to translate
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

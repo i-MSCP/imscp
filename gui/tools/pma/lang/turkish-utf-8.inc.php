@@ -1,5 +1,5 @@
 <?php
-/* $Id: turkish-utf-8.inc.php 10468 2007-06-27 21:01:13Z lem9 $ */
+/* $Id: turkish-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
 
 // phpMyAdmin Türkçe 01.09.2006 itibariyle önceki çeviriye göre çok daha 
 // iyi bir çeviriyle yeniden yapılmıştır. 
@@ -1033,4 +1033,5 @@ $strZeroRemovesTheLimit = 'Not: Bu seçeneklerin 0 (sıfır)\'a ayarlanması sı
 $strZip = '"zip olarak"';
 
 $strProfiling = 'Profiling';  //to translate
+$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pmd_relation_new.php 10240 2007-04-01 11:02:46Z cybot_tm $
+ * @version $Id: pmd_relation_new.php 11132 2008-02-21 17:42:07Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -13,7 +13,7 @@ include_once 'pmd_common.php';
 $die_save_pos = 0;
 include_once 'pmd_save_pos.php';
 require_once './libraries/relation.lib.php';
-extract($_POST);
+extract($_POST, EXTR_SKIP);
 
 $tables = PMA_DBI_get_tables_full($db, $T1);
 $type_T1 = strtoupper($tables[$T1]['ENGINE']);

@@ -95,6 +95,8 @@ class Config {
 		'LOG_DIR' => null,
 		'PHP_STARTER_DIR' => null,
 		'ROOT_DIR' => null,
+		'ROOT_USER' => null,
+		'ROOT_GROUP' => null,
 		'GUI_ROOT_DIR' => null,
 		'APACHE_WWW_DIR' => null,
 		'SCOREBOARDS_DIR' => null,

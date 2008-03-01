@@ -17,17 +17,19 @@ Table of Content
 1) Version Info
 ---------------
 ISPCP ω Version:	1.0.0
-INSTALL Skript:		0.9
+INSTALL Script:		0.9
 Maintainer:
 Homepage:			http://isp-contol.net
-Linux Distris:		RedHat (Enterprise)
+Linux Distros:		RedHat (Enterprise)
+
+@TODO:				Update for RedHat
 
 ================================================================================
 2) Requirements
 ---------------
 There is no must have for a system using ISPCP ω. This is only a recommendation:
 
-Penitum III or K6-4 with 500 MHz
+Pentium III or K6-4 with 500 MHz
 512 MB RAM
 100 MB disk space (only for install of ISPCP ω)
 Debian (or even any other *NIX-Distribution)
@@ -55,43 +57,49 @@ Make sure you are logged in as root.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /root
-	# tar -xjvf ispcp1.0.0-omega.tar.bz2
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp1.0.0
+	# cd ./ispcp-omega-1.0.0
 
-3. Install the required modules:
-	# yum upgrade
-	# wget http://dag.wieers.com/rpm/packages/rpmforge-release/rpmforge-release-0.3.6-1.el4.rf.i386.rpm
-	# yum remove sendmail
-	# yum install `cat ./docs/RedHat/redhat-packages`
+3. Install the required modules
+   First update your system:
+	# apt-get update && apt-get upgrade
 
-4. Now there are two ways of install ISPCP ω
+   for Debian Sarge please use:
+	# apt-get install `cat ./docs/Debian/debian-packages-sarge`
+   for Debian Etch please use:
+   	# apt-get install `cat ./docs/Debian/debian-packages-etch`
+   for Debian Lenny/Sid please use:
+   	# apt-get install `cat ./docs/Debian/debian-packages-lenny`
 
-a) via install script
----------------------
-4a. Start the script and follow the install instructions:
-	# ./install-ispcp.sh
+   Make sure you have added the non-free into your /etc/apt/sources.list:
 
-After that go to step 11.
+   deb     http://ftp.debian.org/debian/            etch         main contrib non-free
+   deb     http://security.debian.org/              etch/updates main contrib non-free
 
-b) manualy
-----------
-4b. You have to set up some configuration variables for your linux distribution.
-   ispCP ω is preconfigurated for Debian 4.0 Etch.
-   If you're using another distribution please check, if config files exist in
-   ./configs/dists and use/change them.
+   If using Sarge, make sure you have added the following backport into your
+   /etc/apt/sources.list:
 
-   Check the ispcp.conf and adapt it to your requirements.
+    # backports
+    deb     http://dotdeb.pimpmylinux.org/          sarge          all
+
+
+	(when you get to the courier screen select 'no' to web directories)
+	(when you get to the postfix screen select 'internet site' and then type 'root'
+	for mail. If you've set debian up correctly on install your domain should be
+	already on screen. Select 'no' to force sync updates.)
+	(when you get to the proftpd screen, select 'standalone')
+	(when you get to the rootkithunter screen, select two time 'yes')
+
+4. (optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
    http://isp-control.net
 
-5. Return to the parent direction and build the System by using make:
-	# cd ../
-	# mv Makefile.redhat Makefile
+5. Build the System by using make:
 	# make install
 
-6. Copy all the directories into the system (you may make backups)
+6. Copy all the directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp-1.0.0/* /
 
 7. Now it's time to set up the frontend. Change into the engine directory:
@@ -101,7 +109,7 @@ b) manualy
 	# mysqladmin -u root password YOUR_PASSWORD
 
 8. Start the engine setup:
-	# ./ispcp-setup
+	# perl ispcp-setup
 
 9. Install ispCP ω step-by-step
 
@@ -113,26 +121,87 @@ b) manualy
 	# nano /etc/ini.d/courier-authdaemon
 
 	change: ${libexecdir}/authlib/authdaemon stop
-	into:	killall authdaemond.plain
+	with:	killall authdaemond.plain
 
 11. Clean the temporary folders:
-	# rm -R /tmp/ispcp-1.0.0
+	# rm -fR /tmp/ispcp-1.0.0
 
 
 ================================================================================
 5) Update
 ---------
+Make sure you are logged in as root.
 
-There are two ways of update ISPCP ω
+1. Untar or unzip the distribution files to a secure directory:
+	# cd /root
+	# tar xjvf ispcp-omega-1.0.0-rc4.tar.bz2
 
-a) via install script
----------------------
-1. Start the script and follow the update instructions:
-	# ./install-ispcp.sh
+2. Change to the newly created directory:
+	# cd ./ispcp-omega-1.0.0
 
-b) manualy
-----------
-1.	Please check the update From-To-Files in the ./docs directory
+3. Install the required modules
+   first update your system:
+	# apt-get update && apt-get upgrade
+
+   for Debian Sarge please use:
+	# apt-get install `cat ./docs/Debian/debian-packages-sarge`
+   for Debian Etch please use:
+   	# apt-get install `cat ./docs/Debian/debian-packages-etch`
+   for Debian Lenny/Sid please use:
+   	# apt-get install `cat ./docs/Debian/debian-packages-lenny`
+
+   Make sure you have added the non-free into your /etc/apt/sources.list:
+
+   deb     http://ftp.debian.org/debian/            etch         main contrib non-free
+   deb     http://security.debian.org/              etch/updates main contrib non-free
+
+   If using Sarge, make sure you have added the following backport into your
+   /etc/apt/sources.list:
+
+    # backports
+    deb     http://dotdeb.pimpmylinux.org/          sarge          all
+
+
+	(when you get to the courier screen select 'no' to web directories)
+	(when you get to the postfix screen select 'internet site' and then type 'root'
+	for mail. If you've set debian up correctly on install your domain should be
+	already on screen. Select 'no' to force sync updates.)
+	(when you get to the proftpd screen, select 'standalone')
+	(when you get to the rootkithunter screen, select two time 'yes')
+
+4. (optional) Check the ispcp.conf and adapt it to your requirements.
+   An overview over the variables you can find in the FAQ on
+   http://isp-control.net
+
+5. Build the System by using make:
+	# make install
+
+6. Save key files
+	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/
+	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager/
+	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/include/
+
+7. Copy /usr and /var directories into your system (you may make backups)
+	# cp -Rv /tmp/ispcp-1.0.0/usr/* /usr/
+	# cp -Rv /tmp/ispcp-1.0.0/var/* /var/
+
+8. Backup ispcp.conf and copy the /etc dircetory into your system (you may make backups):
+	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
+	# cp -Rv /tmp/ispcp-1.0.0/etc/* /etc/
+
+9. Now it's time to update your installation. Change into the engine directory:
+	# cd /var/www/ispcp/engine/setup
+
+10. Start the engine update:
+	# perl ispcp-update
+
+11. Update ispCP ω step-by-step
+
+	If you get no error, all went good; if you get one, look at
+	http://isp-control.net to solve the problem.
+
+12. Clean the temporary folders:
+	# rm -fR /tmp/ispcp-1.0.0
 
 ================================================================================
 6) FAQ

@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-utf-8.inc.php 10518 2007-07-22 17:20:09Z lem9 $ */
+/* $Id: japanese-utf-8.inc.php 11122 2008-02-13 12:33:49Z lem9 $ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>
@@ -1031,4 +1031,5 @@ $strYes = 'はい';
 $strZeroRemovesTheLimit = '注意: オプションを 0 (ゼロ)に設定すると制限を解除します';
 $strZip = '"zip 形式"';
 
+$strSuhosin = 'Suhosin が組み込まれているため問題が発生する可能性があります。詳しくは %sdocumentation%s をご覧ください。';  
 ?>
