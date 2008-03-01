@@ -10,6 +10,7 @@ ispCP ω 1.0.0 Changelog
 		* Updated all languages
 	- SETUP:
 		* Inproved: Update SQL with IGNORE statement
+		* Maybe fixed #946; ispcp-setup mysql password error
 	- TOOLS:
 		* Update PHPmyAdmin to version 2.11.5
 	- DISTS:
