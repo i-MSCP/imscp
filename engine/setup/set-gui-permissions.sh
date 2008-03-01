@@ -41,7 +41,7 @@ done
 # for spacing
 echo "";
 echo "";
-echo -n "\tSetting GUI Permissions: ";
+echo -n "	Setting GUI Permissions: ";
 
 if [ $DEBUG -eq 1 ]; then
     echo	"";
@@ -56,7 +56,7 @@ for i in `find $ROOT_DIR/gui/`; do
 	if [[ -f $i ]]; then
 
 		if [ $DEBUG -eq 1 ]; then
-			echo -e "\t0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
+			echo -e "	0444 $APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID:$APACHE_GROUP $i";
 		fi
 
 		chmod 0444 $i;

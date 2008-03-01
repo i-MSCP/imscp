@@ -42,7 +42,7 @@ done
 # fixing engine permissions;
 #
 
-echo -n "\tSetting Engine Permissions: ";
+echo -n "	Setting Engine Permissions: ";
 
 if [ $DEBUG -eq 1 ]; then
     echo	"";
@@ -50,7 +50,7 @@ fi
 
 # Fix ispcp.conf perms
 if [ $DEBUG -eq 1 ]; then
-    echo -e "\tug+r,u+w,o-r $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
+    echo -e "	ug+r,u+w,o-r $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf";
 else
     echo -n ".";
 fi
@@ -63,7 +63,7 @@ for i in `find $ROOT_DIR/engine/`; do
 	if [ -f $i ]; then
 
 		if [ $DEBUG -eq 1 ]; then
-			echo -e "\t0700 $ROOT_USER:$ROOT_GROUP $i";
+			echo -e "	0700 $ROOT_USER:$ROOT_GROUP $i";
 		fi
 
 		chmod 0700 $i;

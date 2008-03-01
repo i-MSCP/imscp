@@ -308,7 +308,7 @@ sub uninstall_system_dirs {
 
     push_el(\@main::el, 'uninstall_system_dirs()', 'Starting...');
 
-	// ask to delete directory
+	# ask to delete directory
 	$rdata = 'yes';
 	my $qmsg = "\tDelete ".$main::cfg{'APACHE_WWW_DIR'}."? [yes]: ";
 	print STDOUT $qmsg;
