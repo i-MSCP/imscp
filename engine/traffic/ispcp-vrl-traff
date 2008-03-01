@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -318,7 +318,6 @@ sub collect_mail_traffic {
 
     my ($timestamp) = @_;
 
-
     my ($key, $value, $id) = (undef, undef, undef);
 
     my ($rs, $rdata, $rlog) = (undef, undef, undef);
@@ -423,7 +422,8 @@ sub collect_mail_traffic {
 
 
 		# IMAP
-		$rs = sys_command("$cat $rlog|$grep 'imaplogin'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		#$rs = sys_command("$cat $rlog|$grep 'imaplogin'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		$rs = sys_command("$cat $rlog|$grep 'imapd'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
         return $rs if ($rs != 0);
 
@@ -466,7 +466,8 @@ sub collect_mail_traffic {
 
 
 		# IMAP-SSL
-		$rs = sys_command("$cat $rlog|$grep 'imapd-ssl'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		#$rs = sys_command("$cat $rlog|$grep 'imapd-ssl'|$grep 'user='|$grep 'body='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
+		$rs = sys_command("$cat $rlog|$grep 'imapd-ssl'|$grep 'user='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 
         return $rs if ($rs != 0);
 

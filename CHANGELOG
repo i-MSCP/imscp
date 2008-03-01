@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-02 Benedikt Heintel
+	- SETUP:
+		* Fixed #317: missing "named.caching-nameserver.conf" during the installation
+	- ENGINE:
+		* Fixed #824: IMAP SSL Traffic not counted
+
 2008-03-01 Benedikt Heintel
 	- DOCS:
 		* Updated all Docs. Some are still with ToDo

@@ -696,7 +696,7 @@ sub setup_named {
 	($rs, $cfg_tpl) = get_file("$cfg_dir/named.conf");
 	return $rs if ($rs != 0);
 
-	if (! -e "$bk_dir/named.conf.ispcp") {
+	if ((! -e "$bk_dir/named.conf.ispcp") && (-e $main::cfg{'BIND_CONF_FILE'})) {
 		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bk_dir/named.conf.system";
 		$rs = sys_command($cmd);
 		return $rs if ($rs != 0);
