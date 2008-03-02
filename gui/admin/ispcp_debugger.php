@@ -22,6 +22,15 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+function count_requests(&$sql, $id_name, $table){
+    global $cfg;
+
+    $query = "select $id_name FROM $table WHERE $id_name = ?";
+	$rs = exec_query($sql, $query, $cfg['ITEM_CHANGE_STATUS']);
+    $count = $rs->RecordCount();
+    return $count;
+}
+
 function get_error_domains(&$sql, &$tpl) {
 	global $cfg;
 
@@ -36,7 +45,7 @@ function get_error_domains(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
         select
-            domain_name, domain_status
+            domain_name, domain_status, domain_id
         from
             domain
         where
@@ -91,6 +100,8 @@ SQL_QUERY;
 						'DOMAIN_MESSAGE' => '',
 						'TR_DOMAIN_NAME' => $rs->fields['domain_name'],
 						'TR_DOMAIN_ERROR' => $rs->fields['domain_status'],
+						'CHANGE_ID' => $rs->fields['domain_id'],
+						'CHANGE_TYPE' => 'domain',
 						)
 				);
 
@@ -117,7 +128,7 @@ function get_error_aliases(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
         select
-            alias_name, alias_status
+            alias_name, alias_status, alias_id
         from
             domain_aliasses
         where
@@ -182,6 +193,8 @@ SQL_QUERY;
 						'ALIAS_MESSAGE' => '',
 						'TR_ALIAS_NAME' => $rs->fields['alias_name'],
 						'TR_ALIAS_ERROR' => $rs->fields['alias_status'],
+						'CHANGE_ID' => $rs->fields['alias_id'],
+						'CHANGE_TYPE' => 'alias',
 						)
 				);
 
@@ -207,7 +220,7 @@ function get_error_subdomains(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
       select
-          subdomain_name, subdomain_status
+          subdomain_name, subdomain_status, subdomain_id
       from
           subdomain
       where
@@ -269,6 +282,8 @@ SQL_QUERY;
 						'SUBDOMAIN_MESSAGE' => '',
 						'TR_SUBDOMAIN_NAME' => $rs->fields['subdomain_name'],
 						'TR_SUBDOMAIN_ERROR' => $rs->fields['subdomain_status'],
+						'CHANGE_ID' => $rs->fields['subdomain_id'],
+						'CHANGE_TYPE' => 'subdomain',
 						)
 				);
 
@@ -295,7 +310,7 @@ function get_error_mails(&$sql, &$tpl) {
 
 	$dmn_query = <<<SQL_QUERY
         select
-            mail_acc, domain_id, mail_type, status
+            mail_acc, domain_id, mail_type, status, mail_id
         from
             mail_users
         where
@@ -398,6 +413,8 @@ SQL_QUERY;
 						'MAIL_MESSAGE' => '',
 						'TR_MAIL_NAME' => $rs->fields['mail_acc'] . "@" . $domain_name,
 						'TR_MAIL_ERROR' => $rs->fields['status'],
+						'CHANGE_ID' => $rs->fields['mail_id'],
+						'CHANGE_TYPE' => 'mail',
 						)
 				);
 
@@ -408,6 +425,11 @@ SQL_QUERY;
 		}
 	}
 }
+
+$exec_count = count_requests($sql, 'domain_status', 'domain');
+$exec_count = $exec_count + count_requests($sql, 'alias_status', 'domain_aliasses');
+$exec_count = $exec_count + count_requests($sql, 'subdomain_status', 'subdomain');
+$exec_count = $exec_count + count_requests($sql, 'status', 'mail_users');
 
 $tpl = new pTemplate();
 
@@ -450,62 +472,39 @@ $tpl->assign(
 			'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
 			'TR_MAIL_ERRORS' => tr('Mail account errors'),
 			'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
-			'TR_EXEC_REQUESTS' => tr('Execute requests')
+			'TR_EXEC_REQUESTS' => tr('Execute requests'),
+			'TR_CHANGE_STATUS' => tr('Set status to "change"'),
+			'EXEC_COUNT' => $exec_count,
 			)
 	);
 
-// Handy way to change domain/subdomain/alias/mail status
-// TODO: write implementation in the GUI
 if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine') {
 		check_for_lock_file();
 		$c = send_request();
 		set_page_message(tr('Daemon returned %d as status code', $c));
 	} else if ($_GET['action'] == 'change_status' && (
-			isset($_GET['account_id']) && isset($_GET['new_status']) &&	isset($_GET['type']))) {
-
-		switch ($_GET['new_status']) {
-			case $cfg['ITEM_OK_STATUS']:
-			case $cfg['ITEM_DISABLED_STATUS']:
-			case $cfg['ITEM_ADD_STATUS']:
-			case $cfg['ITEM_CHANGE_STATUS']:
-			case $cfg['ITEM_TOENABLE_STATUS']:
-			case $cfg['ITEM_RESTORE_STATUS']:
-			case $cfg['ITEM_TODISABLED_STATUS']:
-			case $cfg['ITEM_DELETE_STATUS']:
-			case $cfg['ITEM_ORDERED_STATUS']:
-				break;
-			default:
-				set_page_message(tr('Unknown domain status!'));
-				user_goto('ispcp_debugger.php');
-				break;
-		}
-
+			isset($_GET['id']) && isset($_GET['type']))) {
 		switch ($_GET['type']) {
 			case 'domain':
-				$query = 'UPDATE domain SET domain_status = ? WHERE domain_id = ?';
+				$query = 'UPDATE domain SET domain_status = "change" WHERE domain_id = ?';
 				break;
 			case 'alias':
-				$query = 'UPDATE domain_aliasses SET alias_status = ? WHERE alias_id = ?';
+				$query = 'UPDATE domain_aliasses SET alias_status = "change" WHERE alias_id = ?';
 				break;
 			case 'subdomain':
-				$query = 'UPDATE subdomain SET subdomain_status = ? WHERE subdomain_id = ?';
+				$query = 'UPDATE subdomain SET subdomain_status = "change" WHERE subdomain_id = ?';
 				break;
 			case 'mail':
-				$query = 'UPDATE mail_users SET status = ? WHERE mail_id = ?';
+				$query = 'UPDATE mail_users SET status = "change" WHERE mail_id = ?';
 				break;
 			default:
-				set_page_message(tr('Unknown account type!'));
+				set_page_message(tr('Unknown type!'));
 				user_goto('ispcp_debugger.php');
 				break;
 		}
 
-		if (!is_int($_GET['account_id'])) {
-			set_page_message(tr('Invalid account id!'));
-			user_goto('ispcp_debugger.php');
-		}
-
-		$rs = exec_query($sql, $query, array($_GET['new_status'], $_GET['account_id']));
+		$rs = exec_query($sql, $query, $_GET['id']);
 
 		if ($rs !== false) {
 			set_page_message(tr('Done'));

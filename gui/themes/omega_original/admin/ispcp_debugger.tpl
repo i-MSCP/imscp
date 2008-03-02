@@ -61,7 +61,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_DOMAIN_NAME}<br />
+			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <font color="red">{TR_DOMAIN_ERROR}</font>
 			 </td>
             </tr>
@@ -83,7 +83,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_ALIAS_NAME}<br />
+			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <font color="red">{TR_ALIAS_ERROR}</font>
 			 </td>
             </tr>
@@ -105,7 +105,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_SUBDOMAIN_NAME}<br />
+			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <font color="red">{TR_SUBDOMAIN_ERROR}</font>
 			 </td>
             </tr>
@@ -127,7 +127,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_MAIL_NAME}<br />
+			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&id={CHANGE_ID}&type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <font color="red">{TR_MAIL_ERROR}</font>
 			 </td>
             </tr>
@@ -141,7 +141,7 @@
             </tr>
             <tr>
              <td>&nbsp;</td>
-             <td><a href="ispcp_debugger.php?action=run_engine" class="link">{TR_EXEC_REQUESTS}</a></td>
+             <td><a href="ispcp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
             </tr>
            </table>
            <!-- EDP: props_list -->
