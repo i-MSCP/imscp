@@ -4,7 +4,7 @@
 int getopt(int argc, char * const argv[], const char *optstring);
 extern char *optarg;
 extern int optind, opterr, optopt;
-  
+
 
 int main(int argc, char **argv)
 {
@@ -23,15 +23,14 @@ int main(int argc, char **argv)
 
 	given_pid = 0;
 	pidfile_path = (char)'\0';
-	
-	while (( c = getopt( argc, argv, "p:" )) != EOF ) {
-	switch( c ) {
-	case 'p':
-	    pidfile_path = optarg;
-	    given_pid = 1;
-	    break;
 
-	}
+	while (( c = getopt( argc, argv, "p:" )) != EOF ) {
+		switch( c ) {
+			case 'p':
+			    pidfile_path = optarg;
+			    given_pid = 1;
+			    break;
+		}
     }
 
 	daemon_init(message(MSG_DAEMON_NAME), SYSLOG_FACILITY);
@@ -80,7 +79,7 @@ int main(int argc, char **argv)
 		fprintf(file,"%ld",(long)getpid());
 		fclose(file);
 	}
-	
+
 	for ( ; ; ) {
 
 		memset((void *) &cliaddr, '\0', sizeof(cliaddr));

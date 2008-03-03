@@ -410,7 +410,7 @@ sub check_host_system {
 
 sub setup_system_users {
 
-	my ($rs, $rdata) = (undef, undef);
+	my ($rs, $rdata, $cmd) = (undef, undef, undef);
 
 	push_el(\@main::el, 'setup_system_users()', 'Starting...');
 
@@ -424,7 +424,11 @@ sub setup_system_users {
 	@gdata = getgrnam($fgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-		my $cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$cmd = "$main::cfg{'CMD_GROUPADD'} -g $fgid";
+		} else {
+			$cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
+		}
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
@@ -437,7 +441,11 @@ sub setup_system_users {
 	@udata = getpwnam($fuid);
 
 	if (scalar(@udata) == 0) { # we have not this one user data;
-		my $cmd = "$main::cfg{'CMD_USERADD'} -c vmail-user -g $gid -s /bin/false $fuid";
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$cmd = "$main::cfg{'CMD_USERADD'} vmail-user -s /bin/false $fuid";
+		} else {
+			$cmd = "$main::cfg{'CMD_USERADD'} -c vmail-user -g $gid -s /bin/false $fuid";
+		}
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
@@ -457,7 +465,11 @@ sub setup_system_users {
 	@udata = getpwnam($prefix.$muid);
 
 	if (scalar(@gdata) == 0) { # we do not have this group
-		my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$cmd = "$main::cfg{'CMD_GROUPADD'} v-group -g $mgid $prefix$mgid";
+		} else {
+			$cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";
+		}
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
@@ -465,7 +477,11 @@ sub setup_system_users {
 	}
 
 	if (scalar(@udata) == 0) { # we do not have this user
-		my $cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$cmd = "$main::cfg{'CMD_USERADD'} vu-master -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -s /bin/false -u $muid $prefix$muid";
+		} else {
+			$cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
+		}
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);

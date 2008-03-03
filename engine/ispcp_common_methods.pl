@@ -364,126 +364,96 @@ sub doHashSQL {
 
 }
 
+##
+# setfmode
+# sets user, group and rights of a file.
+# If $fgroup set to 'null' this function will get the GID from /etc/passwd
+#
+# @author		VHCS/ispCP Team
+# @author		Benedikt Heintel
+# @copyright 	2006-2008 by ispCP | http://isp-control.net
+# @version		1.1
+#
+# @access	public
+# @param	String 	$fname	File Name
+# @param	Mixed 	$fuser	Linux User or UserID
+# @param	Mixed	$fgroup	Linux Group, GroupID or null
+# @param	int		$fperms	Linux Permissions
+# @return	int				success (0) or error (-1)
 sub setfmode {
 
-    my ($fname, $fuid, $fgid, $fperms) = @_;
+    my ($fname, $fuser, $fgroup, $fperms) = @_;
 
     push_el(\@main::el, 'setfmode()', 'Starting...');
 
-    if (
-        !defined($fname) || !defined($fuid) ||
-        !defined($fgid) || !defined($fperms) ||
-        $fname eq '' || $fuid eq '' ||
-        $fgid eq '' || $fperms eq ''
-       )
-    {
+    if (!defined($fname) || !defined($fuser) || !defined($fperms) ||
+		$fname eq '' || $fname eq '' || $fgroup eq '' || $fperms eq '') {
 
-        push_el(
-                \@main::el,
-                'setfmode()',
-                "ERROR: Undefined input data, fname: |$fname|, fuid: |$fuid|, fgid: |$fgid|, fperms: |$fperms| !"
-               );
-
+        push_el(\@main::el, 'setfmode()',
+                "ERROR: Undefined input data, fname: |$fname|, fuid: |$fuser|, fgid: |$fgroup|, fperms: |$fperms| !");
         return -1;
-
     }
 
     if (! -e $fname) {
-
-        push_el(
-                \@main::el,
-                'setfmode()',
-                "ERROR: File '$fname' does not exist !"
-               );
-
+        push_el(\@main::el, 'setfmode()', "ERROR: File '$fname' does not exist !");
         return -1;
     }
 
     my @udata = ();
-
     my @gdata = ();
 
-    my ($uid, $gid) = ($fuid, $fgid);
+    my ($uid, $gid) = (undef, undef);
 
-	if ($fuid =~ /^\d+$/) {
+	# get UID of user
+	if ($fuser =~ /^\d+$/) {
+		$uid = $fuser;
+	}
+	elsif ($fuser ne '-1') {
+	    @udata = getpwnam($fuser);
 
-		$uid = $fuid;
+	    if (scalar(@udata) == 0) {
+	       push_el(\@main::el, 'setfmode()', "ERROR: Unknown user '$fuser' !");
+	       return -1;
+	    }
+	    $uid = $udata[2];
+	}
 
-    } elsif ($fuid ne '-1') {
+	# get GID of user
+	if ($fgroup =~ /^\d+$/) {
+		$gid = $fgroup;
+	}
+	elsif ($fgroup eq null) {
+	   	$gid = $udata[3];
+	}
+	elsif ($fgroup ne '-1') {
+	   	@gdata = getgrnam($fgroup);
 
-        @udata = getpwnam($fuid);
-
-        if (scalar(@udata) == 0) {
-
-            push_el(
-                    \@main::el,
-                    'setfmode()',
-                    "ERROR: Unknown user '$fuid' !"
-                   );
-
-            return -1;
-
-        }
-
-        $uid = $udata[2];
-    }
-
-	if ($fgid =~ /^\d+$/) {
-
-		$gid = $fgid;
-
-	} elsif ($fgid ne '-1') {
-
-        @gdata = getgrnam($fgid);
-
-        if (scalar(@gdata) == 0) {
-
-            push_el(
-                    \@main::el,
-                    'setfmode()',
-                    "ERROR: Unknown group '$fgid' !"
-                   );
-
-            return -1;
-
-        }
-
-        $gid = $gdata[2];
-    }
+	    if (scalar(@udata) == 0) {
+	       push_el(\@main::el, 'setfmode()', "ERROR: Unknown user '$fgroup' !");
+	       return -1;
+	    }
+	    $gid = $gdata[2];
+	}
 
     my $res = chmod ($fperms, $fname);
 
     if ($res != 1) {
-
-        push_el(
-                \@main::el,
-                'setfmode()',
-                "ERROR: Can not change permissions of file '$fname' !"
-               );
-
+        push_el(\@main::el, 'setfmode()', "ERROR: Can not change permissions of file '$fname' !");
         return -1;
-
     }
 
     $res = chown ($uid, $gid, $fname);
 
     if ($res != 1) {
-
-        push_el(
-                \@main::el,
-                'setfmode()',
-                "ERROR: Can not change user/group of file '$fname' !"
-               );
-
+        push_el(\@main::el, 'setfmode()', "ERROR: Can not change user/group of file '$fname' !");
         return -1;
 
     }
 
     push_el(\@main::el, 'setfmode()', 'Ending...');
-
     return 0;
-
 }
+
 
 sub get_file {
 
@@ -1933,7 +1903,7 @@ sub store_conf {
 
     }
 
-    $rs = store_file($main::cfg_file, $fline, 'root', 'root', 0644);
+    $rs = store_file($main::cfg_file, $fline, 'root', null, 0644);
 
     return 1 if ($rs != 0);
 
@@ -2117,15 +2087,16 @@ sub add_dmn_suexec_user {
 	    my ($sys_uid, $sys_gid) = ($suexec_min_uid + $num, $suexec_min_gid + $num);
 
 	    my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-
 	    my $sys_user = "$suexec_user_pref$sys_uid";
-
 	    my $sys_group = "$suexec_user_pref$sys_gid";
+		my $cmd = undef;
 
-        # group data.
-
-        my $cmd = "$main::cfg{'CMD_GROUPADD'} -g $sys_gid $sys_group";
-
+        # group data - BSD has another format:
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$cmd = "$main::cfg{'CMD_GROUPADD'} $sys_group -g $sys_gid";
+		} else {
+			$cmd = "$main::cfg{'CMD_GROUPADD'} -g $sys_gid $sys_group";
+		}
         $rs = sys_command($cmd);
 
         return $rs if ($rs != 0);
@@ -2135,7 +2106,12 @@ sub add_dmn_suexec_user {
 		# SSH/SCP Useraccount preperation
 		my $homedir = "$main::cfg{'APACHE_WWW_DIR'}/@$dmn_data[1]";
 
-		$cmd = "$main::cfg{'CMD_USERADD'} -c virtual-user -d $homedir -g $sys_group -s /bin/false -u $sys_uid $sys_user";
+		# BSD has another format:
+		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$cmd = "$main::cfg{'CMD_USERADD'} $sys_user -c virtual-user -d $homedir -g $sys_group -s /bin/false -u $sys_uid";
+		} else {
+			$cmd = "$main::cfg{'CMD_USERADD'} -c virtual-user -d $homedir -g $sys_group -s /bin/false -u $sys_uid $sys_user";
+		}
 
         $rs = sys_command($cmd);
 

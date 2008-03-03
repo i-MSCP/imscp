@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-03 Benedikt Heintel
+	- ENGINE:
+		* Added: Engine support for BSB plattforms (different root group)
+
 2008-03-02 Benedikt Heintel
 	- SETUP:
 		* Fixed #317: missing "named.caching-nameserver.conf" during the installation
