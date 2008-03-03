@@ -424,11 +424,7 @@ sub setup_system_users {
 	@gdata = getgrnam($fgid);
 
 	if (scalar(@gdata) == 0) { # we have not this one group data;
-		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			$cmd = "$main::cfg{'CMD_GROUPADD'} -g $fgid";
-		} else {
-			$cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
-		}
+		$cmd = "$main::cfg{'CMD_GROUPADD'} $fgid";
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
