@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-04 Benedikt Heintel
+	- SETUP:
+		* Fixed #824: IMAP SSL Traffic not counted
+		* Fixed #1075: ispcp-update fails when upgrading from RC2
+		* Updated: Update to RC3
+	- DISTS:
+		* Fixed #1074: config Dists opensuse - wrong makefile
+
 2008-03-03 Benedikt Heintel
 	- ENGINE:
 		* Added: Engine support for BSB plattforms (different root group)

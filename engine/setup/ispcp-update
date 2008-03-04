@@ -40,6 +40,18 @@ $main::vhcs2conf = undef;
 $main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 ################################################################################
+##                                 CONSTANTS                                  ##
+################################################################################
+
+use constant {
+		ABORT	=> 0,
+        VHCS247	=> 1,
+        VHCS248	=> 2,
+        RC3		=> 3,
+        RC4		=> 4,
+	};
+
+################################################################################
 ##                                SUBROUTINES                                 ##
 ################################################################################
 
@@ -135,7 +147,7 @@ MSG
 
 	$main::ua{'update'} = $rdata;
 
-	if (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
+	if (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
 
 		my $vhcs_update_msg = <<MSG;
 
@@ -203,7 +215,7 @@ sub start_services {
     sys_command("$main::cfg{'CMD_ISPCPN'} start");
     sleep(2);
 
-    #Restart servers to make them use the newly generated config
+    # Restart servers to make them use the newly generated config
     sys_command("$main::cfg{'CMD_HTTPD'} restart");
     sleep(2);
     sys_command("$main::cfg{'CMD_MTA'} restart");
@@ -305,12 +317,12 @@ sub migrate_vhcs2 {
     print STDOUT "\tUpgrading database structure...";
 
 	# Update from VHCS 2.4.7
-	if ($main::ua{'update'} eq 1) {
+	if ($main::ua{'update'} eq VHCS247) {
 		($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/vhcs2.4.7-ispcp.sql");
 		return $rs if ($rs != 0);
 	}
 	# Update from VHCS 2.4.8
-	elsif ($main::ua{'update'} eq 2) {
+	elsif ($main::ua{'update'} eq VHCS248) {
 		($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/vhcs2.4.8-ispcp.sql");
 		return $rs if ($rs != 0);
 	}
@@ -732,7 +744,23 @@ sub patch_ispcp_rc2 {
 sub patch_ispcp_rc3() {
 	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
 
-	print STDOUT "\tNothing to do yet!\n";
+	# database upgrade
+    print STDOUT "\tUpgrading database structure...";
+
+	($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/ispcp1.0.0rc3-ispcp.sql");
+	return $rs if ($rs != 0);
+
+	$rdata =~ s/\{DATABASE\}/$main::db_name/gi;
+	$rs = store_file("/tmp/db.sql", $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
+	if ($rs != 0) {
+ 	print STDOUT "failed!\n";
+   	 	exit_werror("SQL Update failed.");
+	}
+
+    print STDOUT "done\n";
 
 	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
 	return 0;
@@ -748,11 +776,11 @@ sub prepare_update {
 	return $rs if ($rs != 0);
 
 	# Abort
-	if ($main::ua{'update'} eq 0) {
+	if ($main::ua{'update'} eq ABORT) {
 		exit_werror("\tScript was aborted by user.");
 	}
 	# VHCS update
-	elsif (($main::ua{'update'} eq 1) || ($main::ua{'update'} eq 2)) {
+	elsif (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
 
 		# look up vhcs2.conf
 		$rs = ask_vhcs2conf();
@@ -767,12 +795,20 @@ sub prepare_update {
 		}
 		stop_services("/tmp/vhcs2-backup-all.lock");
 		$rs = migrate_vhcs2();
-		return $rs if ($rs != 0);
-		$rs = remove_vhcs2();
-		return $rs if ($rs != 0);
+		if ($rs == 0) {
+			$rs = remove_vhcs2();
+		}
+		if ($rs == 0) {
+			$rs = patch_ispcp_rc3();
+		}
+
+		if ($rs != 0) {
+    		print STDOUT "\t Update failed!\n";
+   	 		exit_werror("ispCP Update failed.");
+		}
 	}
 	# ispCP 1.0.0 RC2/3 Update
-	elsif ($main::ua{'update'} gt 3) {
+	elsif ($main::ua{'update'} ge RC2) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 
 		# get ispcp.old.conf
@@ -791,11 +827,14 @@ sub prepare_update {
 		}
 
 		# ispCP 1.0.0 RC2
-		if ($main::ua{'update'} eq 3) {
+		if ($main::ua{'update'} eq RC2) {
 			$rs = patch_ispcp_rc2();
+			if ($rs == 0) {
+				$rs = patch_ispcp_rc3();
+			}
 		}
 		# ispCP 1.0.0 RC3
-		elsif ($main::ua{'update'} eq 4) {
+		elsif ($main::ua{'update'} eq RC3) {
 			$rs = patch_ispcp_rc3();
 		}
 

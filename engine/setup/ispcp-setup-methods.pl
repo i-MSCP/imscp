@@ -1407,7 +1407,6 @@ sub setup_mta {
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-
 	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/master.cf.ispcp $main::cfg{'POSTFIX_MASTER_CONF_FILE'}";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
@@ -1473,14 +1472,25 @@ sub setup_po {
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 		}
-		if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
+		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/imapd-ssl" ) {
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/imapd $bk_dir/imapd-ssl.system";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
+		}
+		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/pop3d-ssl" ) {
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/pop3d $bk_dir/pop3d-ssl.system";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
+		}
+		if ( -e $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
 			if ( -e "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc" ) {
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
-				$rs = sys_command($cmd);
+				#### Update authdaemonrc
+				my $rdata = "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
+				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
+				$rs = save_file($main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc, $rdata);
 				return $rs if ($rs != 0);
-			}
-			if ( -e "$main::cfg{'AUTHLIB_CONF_DIR'}/authmodulelist" ) {
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/authmodulelist $bk_dir/authmodulelist.system";
+
+				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
 			}
@@ -1497,7 +1507,6 @@ sub setup_po {
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
 			}
-
 		}
 
 		if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
@@ -1514,18 +1523,6 @@ sub setup_po {
 				return $rs if ($rs != 0);
 			}
 		}
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/imapd $bk_dir/imapd.ispcp";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/pop3d $bk_dir/pop3d.ispcp";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/authdaemonrc $bk_dir/authdaemonrc.ispcp";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
 
 		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/authmodulelist $bk_dir/authmodulelist.ispcp";
 		$rs = sys_command($cmd);

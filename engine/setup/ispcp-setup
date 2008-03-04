@@ -438,7 +438,7 @@ sub setup_system_users {
 
 	if (scalar(@udata) == 0) { # we have not this one user data;
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			$cmd = "$main::cfg{'CMD_USERADD'} vmail-user -s /bin/false $fuid";
+			$cmd = "$main::cfg{'CMD_USERADD'} $fuid -c vmail-user -s /bin/false";
 		} else {
 			$cmd = "$main::cfg{'CMD_USERADD'} -c vmail-user -g $gid -s /bin/false $fuid";
 		}
@@ -462,7 +462,7 @@ sub setup_system_users {
 
 	if (scalar(@gdata) == 0) { # we do not have this group
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			$cmd = "$main::cfg{'CMD_GROUPADD'} v-group -g $mgid $prefix$mgid";
+			$cmd = "$main::cfg{'CMD_GROUPADD'} $prefix$mgid -g $mgid";
 		} else {
 			$cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";
 		}
@@ -474,7 +474,7 @@ sub setup_system_users {
 
 	if (scalar(@udata) == 0) { # we do not have this user
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			$cmd = "$main::cfg{'CMD_USERADD'} vu-master -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -s /bin/false -u $muid $prefix$muid";
+			$cmd = "$main::cfg{'CMD_USERADD'} $prefix$muid $prefix$muid -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
 		} else {
 			$cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
 		}

@@ -367,7 +367,7 @@ sub doHashSQL {
 ##
 # setfmode
 # sets user, group and rights of a file.
-# If $fgroup set to 'null' this function will get the GID from /etc/passwd
+# If $fgroup set to 'null' this function will get the GID from /etc/passwd.
 #
 # @author		VHCS/ispCP Team
 # @author		Benedikt Heintel
@@ -511,94 +511,87 @@ sub get_file {
 
 }
 
+##
+# store_file
+# Changes the content of a file and sets user, group and rights of that file.
+# If $fgid set to 'null' this function will get the GID from /etc/passwd.
+#
+# @author		VHCS/ispCP Team
+# @copyright 	2006-2008 by ispCP | http://isp-control.net
+# @version		1.0
+#
+# @access	public
+# @param	String 	$fname	File Name
+# @param	String	$fdata	Data to write to file
+# @param	Mixed 	$fuser	Linux User or UserID
+# @param	Mixed	$fgroup	Linux Group, GroupID or null
+# @param	int		$fperms	Linux Permissions
+# @return	int				success (0) or error (-1)
 sub store_file {
 
     my ($fname, $fdata, $fuid, $fgid, $fperms) = @_;
 
     push_el(\@main::el, 'store_file()', 'Starting...');
 
-    if (
-        !defined($fname) || !defined($fuid) ||
-        !defined($fgid) || !defined($fperms) ||
-        $fname eq '' || $fuid eq '' ||
-        $fgid eq '' || $fperms eq ''
-       )
-    {
-        push_el(
-                \@main::el,
-                'store_file()',
-                "ERROR: Undefined input data, fname: |$fname|, fdata, fuid: '$fuid', fgid: '$fgid', fperms: '$fperms'"
-               );
-
+    if (!defined($fname) || $fname eq '' || $fuid eq '' || $fgid eq '' || $fperms eq '') {
+        push_el(\@main::el, 'store_file()',
+                "ERROR: Undefined input data, fname: |$fname|, fdata, fuid: '$fuid', fgid: '$fgid', fperms: '$fperms'");
         return -1;
     }
 
     my $res = open(F, '>', $fname);
 
     if (!defined($res)) {
-
-        push_el(
-                \@main::el,
-                'store_file()',
-                "ERROR: Can't open file |$fname| for writing !"
-               );
-
+        push_el(\@main::el, 'store_file()', "ERROR: Can't open file |$fname| for writing !");
         return -1;
-
     }
 
     print F $fdata;
-
     close(F);
 
-    my ($rs, $rdata) = setfmode($fname, $fuid, $fgid, $fperms);
-
+   	my ($rs, $rdata) = setfmode($fname, $fuid, $fgid, $fperms);
     return -1 if ($rs != 0);
 
     push_el(\@main::el, 'store_file()', 'Ending...');
-
     return 0;
-
 }
 
+##
+# save_file
+# Changes the content of a file.
+#
+# @author		VHCS/ispCP Team
+# @copyright 	2006-2008 by ispCP | http://isp-control.net
+# @version		1.0
+#
+# @access	public
+# @param	String 	$fname	File Name
+# @param	String	$fdata	Data to write to file
+# @return	int				success (0) or error (-1)
 sub save_file {
 
     my ($fname, $fdata) = @_;
 
     push_el(\@main::el, 'save_file()', 'Starting...');
 
-    if ( !defined($fname) || $fname eq '' ) {
-        push_el(
-                \@main::el,
-                'save_file()',
-                "ERROR: Undefined input data, fname: |$fname|, fdata"
-               );
-
+    if (!defined($fname) || $fname eq '' ) {
+        push_el(\@main::el, 'save_file()', "ERROR: Undefined input data, fname: |$fname|");
         return -1;
     }
 
     my $res = open(F, '>', $fname);
 
     if (!defined($res)) {
-
-        push_el(
-                \@main::el,
-                'save_file()',
-                "ERROR: Can't open file |$fname| for writing !"
-               );
-
+        push_el(\@main::el, 'save_file()', "ERROR: Can't open file |$fname| for writing !");
         return -1;
 
     }
 
     print F $fdata;
-
     close(F);
 
     push_el(\@main::el, 'save_file()', 'Ending...');
-
     return 0;
-
 }
 
 sub del_file {
