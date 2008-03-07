@@ -9,9 +9,6 @@ USE {DATABASE};
 UPDATE `config` SET `value` = '2' WHERE `name` = 'DATABASE_REVISION' LIMIT 1;
 -- END: Upgrade database structure
 
--- Change charset:
-ALTER DATABASE `ispcp` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 -- BEGIN: Regenerate config files:
 UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_status` = 'ok';
 UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `subdomain_status` = 'ok';
@@ -20,3 +17,6 @@ UPDATE `mail_users` SET `status` = 'change' WHERE `status` = 'ok';
 -- END: Regenerate config files
 
 COMMIT;
+
+-- Change charset:
+ALTER DATABASE `{DATABASE}` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;

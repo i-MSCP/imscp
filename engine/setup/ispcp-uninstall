@@ -906,6 +906,9 @@ sub uninstall_host_system {
 ##                                    MAIN                                    ##
 ################################################################################
 
+# Clear screen
+system('clear');
+
 my $rs = undef;
 
 $rs = uninstall_start_up();

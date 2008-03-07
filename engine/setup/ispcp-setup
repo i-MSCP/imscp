@@ -1048,6 +1048,9 @@ sub setup_host_system {
 ##                                  MAIN                                      ##
 ################################################################################
 
+# Clear screen
+system('clear');
+
 my $rs = undef;
 
 $rs = setup_start_up();

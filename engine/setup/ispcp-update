@@ -659,8 +659,9 @@ sub patch_ispcp_rc2 {
 	}
 
 	# update ispcp.conf
-	my $cfg_file = '/etc/ispcp/ispcp.conf';
-	$rs = update_conf($cfg_file);
+	my $cfg_file = $main::cfg_file;
+	my $old_cfg_file = $main::ua{'old_cfg_file'};
+	$rs = update_conf($old_cfg_file, $cfg_file);
 	if ($rs != 0) {
 		exit_werror("failed to get $cfg_file");
 	}
@@ -673,7 +674,6 @@ sub patch_ispcp_rc2 {
 	# save into /etc/ispcp/ispcp.conf
 	$rs = store_conf();
 	if ($rs != 0) {
-		print STDOUT "failed!\n";
 		exit_werror("Storing new ispcp.conf failed!");
 	}
 	print STDOUT "\tdone\n";
@@ -690,7 +690,6 @@ sub patch_ispcp_rc2 {
 
 	$rs = sys_command("mysql -u\'$main::db_user\' -p\'$main::db_pwd\' < /tmp/db.sql");
 	if ($rs != 0) {
- 	print STDOUT "failed!\n";
    	 	exit_werror("SQL Update failed.");
 	}
 
@@ -702,7 +701,6 @@ sub patch_ispcp_rc2 {
 	$rs = rebuild_configs();
 
 	if ($rs != 0) {
-    	print STDOUT "failed!\n";
    	 	exit_werror("Config Rebuild failed.");
 	}
 
@@ -714,7 +712,6 @@ sub patch_ispcp_rc2 {
 	$rs = update_pma();
 
 	if ($rs != 0) {
-    	print STDOUT "failed!\n";
    	 	exit_werror("Updating PMA's config.inc.php failed.");
 	}
 
@@ -733,7 +730,8 @@ sub patch_ispcp_rc3() {
 
 	# update ispcp.conf
 	my $cfg_file = $main::cfg_file;
-	$rs = update_conf($cfg_file);
+	my $old_cfg_file = $main::ua{'old_cfg_file'};
+	$rs = update_conf($old_cfg_file, $cfg_file);
 	if ($rs != 0) {
 		exit_werror("failed to get $cfg_file");
 	}
@@ -741,7 +739,6 @@ sub patch_ispcp_rc3() {
 	# save into /etc/ispcp/ispcp.conf
 	$rs = store_conf();
 	if ($rs != 0) {
-		print STDOUT "failed!\n";
 		exit_werror("Storing new ispcp.conf failed!");
 	}
 	print STDOUT "\tdone\n";
@@ -770,7 +767,6 @@ sub patch_ispcp_rc3() {
 	$rs = rebuild_configs();
 
 	if ($rs != 0) {
-    	print STDOUT "failed!\n";
    	 	exit_werror("Config Rebuild failed.");
 	}
 
@@ -839,6 +835,7 @@ sub prepare_update {
 				$rs = get_conf($cfg_file);
 			} while ($rs == 0);
 		}
+		$main::ua{'old_cfg_file'} = $cfg_file;
 
 		# ispCP 1.0.0 RC2
 		if ($main::ua{'update'} eq RC2) {
@@ -904,6 +901,9 @@ sub exit_werror {
 ################################################################################
 ##                                    MAIN                                    ##
 ################################################################################
+
+# Clear screen
+system('clear');
 
 my $rs = undef;
 
