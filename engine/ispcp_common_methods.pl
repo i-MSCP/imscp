@@ -1853,6 +1853,12 @@ sub set_conf_val {
 
 sub store_conf {
 
+    push_el(\@main::el, 'store_conf()', 'Starting...');
+
+    my ($key, $value, $fline, $rs) = (undef, undef, undef, undef);
+    my $rwith = undef;
+	my $file_name = undef;
+
 	if ( defined($_[0]) ) {
 		$file_name = $_[0];
 	}
@@ -1860,10 +1866,7 @@ sub store_conf {
 		$file_name = $main::cfg_file;
 	}
 
-    my ($key, $value, $fline, $rs) = (undef, undef, undef, undef);
-    my $rwith = undef;
 
-    push_el(\@main::el, 'store_conf()', 'Starting...');
 
     ($rs, $fline) = get_file($file_name);
     return 1 if ($rs != 0);

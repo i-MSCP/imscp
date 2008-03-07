@@ -47,8 +47,8 @@ use constant {
 		ABORT	=> 0,
         VHCS247	=> 1,
         VHCS248	=> 2,
-        RC3		=> 3,
-        RC4		=> 4,
+        RC2		=> 3,
+        RC3		=> 4,
 	};
 
 ################################################################################
@@ -662,7 +662,7 @@ sub patch_ispcp_rc2 {
 	my $cfg_file = '/etc/ispcp/ispcp.conf';
 	$rs = update_conf($cfg_file);
 	if ($rs != 0) {
-		exit_werror("failed to get /etc/ispcp/ispcp.conf!");
+		exit_werror("failed to get $cfg_file");
 	}
 
 	# add new variables to new ispcp.conf
@@ -727,13 +727,15 @@ sub patch_ispcp_rc2 {
 sub patch_ispcp_rc3() {
 	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
 
+	my ($rs, $rdata) = (undef, undef);
+
 	print STDOUT "\tUpgrading system values ...";
 
 	# update ispcp.conf
-	my $cfg_file = '/etc/ispcp/ispcp.conf';
+	my $cfg_file = $main::cfg_file;
 	$rs = update_conf($cfg_file);
 	if ($rs != 0) {
-		exit_werror("failed to get /etc/ispcp/ispcp.conf!");
+		exit_werror("failed to get $cfg_file");
 	}
 
 	# save into /etc/ispcp/ispcp.conf
@@ -820,7 +822,7 @@ sub prepare_update {
 		}
 	}
 	# ispCP 1.0.0 RC2/3 Update
-	elsif ($main::ua{'update'} ge RC2) {
+	elsif ($main::ua{'update'} >= RC2) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 
 		# get ispcp.old.conf
