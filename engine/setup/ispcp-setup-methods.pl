@@ -1523,10 +1523,6 @@ sub setup_po {
 				return $rs if ($rs != 0);
 			}
 		}
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/authmodulelist $bk_dir/authmodulelist.ispcp";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
 	}
 
 	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/userdb $wrk_dir";
