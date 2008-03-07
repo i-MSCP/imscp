@@ -582,6 +582,46 @@ sub update_pma {
 	return 0;
 }
 
+sub update_conf {
+	push_el(\@main::el, 'update_conf()', 'Starting...');
+
+	my ($oldconf, $newconf) = ($_[0], $_[1]);
+
+	if (!defined($oldconf) || !defined($newconf)) {
+		push_el(\@main::el, 'update_conf()', 'ERROR: Undefined input data...');
+		return 1;
+	}
+
+    my ($rs, $fline) = get_file($oldconf);
+    return 1 if ($rs != 0);
+    $rs = get_conf($newconf);
+    return 1 if ($rs != 0);
+
+    my @frows = split(/\n/, $fline);
+
+    my $i = undef;
+
+    for ($i = 0; $i < scalar(@frows); $i++) {
+            $frows[$i] = "$frows[$i]\n";
+            if (($frows[$i] =~ /$main::cfg_re/)) {
+                    # Lines should not match variables that have to be changed
+                    if ($1 ne 'BuildDate' && $1 ne 'Version' && $1 ne 'CodeName') {
+                            # now overwrite new conf values with old if exists
+                            if (defined($main::cfg{$1})) {
+                                    $rs = set_conf_val($1, $2);
+                                    return $rs if ($rs != 0);
+                            }
+                    }
+            }
+    }
+
+	$rs = store_conf($newconf);
+    return 1 if ($rs != 0);
+
+	push_el(\@main::el, 'update_conf()', 'Ending...');
+	return 0;
+}
+
 sub patch_ispcp_rc2 {
 	push_el(\@main::el, 'patch_ispcp_rc2()', 'Starting...');
 
@@ -618,76 +658,19 @@ sub patch_ispcp_rc2 {
 		$main::ua{'mysql_prefix_type'} = $main::cfg{'MYSQL_PREFIX_TYPE'};
 	}
 
-	# copy variables
-	my $default_admin_address 	= $main::cfg{'DEFAULT_ADMIN_ADDRESS'};
-	my $server_hostname			= $main::cfg{'SERVER_HOSTNAME'};
-	my $base_server_ip			= $main::cfg{'BASE_SERVER_IP'};
-	my $base_vhost_name			= $main::cfg{'BASE_SERVER_VHOST'};
-	my $database_host 			= $main::cfg{'DATABASE_HOST'};
-	my $database_name 			= $main::cfg{'DATABASE_NAME'};
-	my $database_user 			= $main::cfg{'DATABASE_USER'};
-	my $database_password		= $main::cfg{'DATABASE_PASSWORD'};
-	my $mysql_prefix 			= $main::ua{'mysql_prefix'};
-	my $mysql_prefix_type 		= $main::ua{'mysql_prefix_type'};
-	my $ftpd_conf_file 			= $main::cfg{'FTPD_CONF_FILE'};
-	my $secondary_dns 			= $main::cfg{'SECONDARY_DNS'};
-	my $mta_mailbox_min_uid		= $main::cfg{'MTA_MAILBOX_MIN_UID'};
-	my $mta_mailbox_uid			= $main::cfg{'MTA_MAILBOX_UID'};
-	my $mta_mailbox_gid			= $main::cfg{'MTA_MAILBOX_GID'};
-	my $apache_suexec_min_uid	= $main::cfg{'APACHE_SUEXEC_MIN_UID'};
-	my $apache_suexec_min_gid	= $main::cfg{'APACHE_SUEXEC_MIN_GID'};
-
 	# update ispcp.conf
 	my $cfg_file = '/etc/ispcp/ispcp.conf';
-	$rs = get_conf($cfg_file);
+	$rs = update_conf($cfg_file);
 	if ($rs != 0) {
 		exit_werror("failed to get /etc/ispcp/ispcp.conf!");
 	}
 
-	# copy changed variables to new ispcp.conf
-	$rs = set_conf_val('DEFAULT_ADMIN_ADDRESS', $default_admin_address);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('SERVER_HOSTNAME', $server_hostname);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('BASE_SERVER_IP', $base_server_ip);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('BASE_SERVER_VHOST', $base_vhost_name);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('DATABASE_HOST', $database_host);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('DATABASE_NAME', $database_name);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('DATABASE_USER', $database_user);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('DATABASE_PASSWORD', $database_password);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('MYSQL_PREFIX', $mysql_prefix);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('MYSQL_PREFIX_TYPE', $mysql_prefix_type);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('FTPD_CONF_FILE', $ftpd_conf_file);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('SECONDARY_DNS', $secondary_dns);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('MTA_MAILBOX_MIN_UID', $mta_mailbox_min_uid);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('MTA_MAILBOX_UID', $mta_mailbox_uid);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('MTA_MAILBOX_GID', $mta_mailbox_gid);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('APACHE_SUEXEC_MIN_UID', $apache_suexec_min_uid);
-	return $rs if ($rs != 0);
-	$rs = set_conf_val('APACHE_SUEXEC_MIN_GID', $apache_suexec_min_gid);
-	return $rs if ($rs != 0);
-
+	# add new variables to new ispcp.conf
 	$rs = set_conf_val('AWSTATS_ACTIVE', $main::ua{'awstats_on'});
-	return $rs if ($rs != 0);
 	$rs = set_conf_val('AWSTATS_MODE', $main::ua{'awstats_dyn'});
-	return $rs if ($rs != 0);
 	$rs = set_conf_val('PHP_VERSION', $main::ua{'php_version'});
-	return $rs if ($rs != 0);
 
-	# store into /etc/ispcp/ispcp.conf
+	# save into /etc/ispcp/ispcp.conf
 	$rs = store_conf();
 	if ($rs != 0) {
 		print STDOUT "failed!\n";
@@ -713,7 +696,7 @@ sub patch_ispcp_rc2 {
 
     print STDOUT "done\n";
 
-    # Rebuild system configs:
+    # Rebuild system configs
     print STDOUT "\tRebuilding system configurations...";
 
 	$rs = rebuild_configs();
@@ -744,6 +727,23 @@ sub patch_ispcp_rc2 {
 sub patch_ispcp_rc3() {
 	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
 
+	print STDOUT "\tUpgrading system values ...";
+
+	# update ispcp.conf
+	my $cfg_file = '/etc/ispcp/ispcp.conf';
+	$rs = update_conf($cfg_file);
+	if ($rs != 0) {
+		exit_werror("failed to get /etc/ispcp/ispcp.conf!");
+	}
+
+	# save into /etc/ispcp/ispcp.conf
+	$rs = store_conf();
+	if ($rs != 0) {
+		print STDOUT "failed!\n";
+		exit_werror("Storing new ispcp.conf failed!");
+	}
+	print STDOUT "\tdone\n";
+
 	# database upgrade
     print STDOUT "\tUpgrading database structure...";
 
@@ -761,6 +761,18 @@ sub patch_ispcp_rc3() {
 	}
 
     print STDOUT "done\n";
+
+    # Rebuild system configs:
+    print STDOUT "\tRebuilding system configurations...";
+
+	$rs = rebuild_configs();
+
+	if ($rs != 0) {
+    	print STDOUT "failed!\n";
+   	 	exit_werror("Config Rebuild failed.");
+	}
+
+	print STDOUT "done\n";
 
 	push_el(\@main::el, 'patch_ispcp_rc3()', 'Ending...');
 	return 0;

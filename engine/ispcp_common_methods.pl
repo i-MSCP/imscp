@@ -377,7 +377,7 @@ sub doHashSQL {
 # @access	public
 # @param	String 	$fname	File Name
 # @param	Mixed 	$fuser	Linux User or UserID
-# @param	Mixed	$fgroup	Linux Group, GroupID or null
+# @param	Mixed	$fgroup	Linux Group, GroupID or 'null'
 # @param	int		$fperms	Linux Permissions
 # @return	int				success (0) or error (-1)
 sub setfmode {
@@ -422,7 +422,7 @@ sub setfmode {
 	if ($fgroup =~ /^\d+$/) {
 		$gid = $fgroup;
 	}
-	elsif ($fgroup eq null) {
+	elsif ($fgroup eq 'null') {
 	   	$gid = $udata[3];
 	}
 	elsif ($fgroup ne '-1') {
@@ -462,41 +462,20 @@ sub get_file {
     push_el(\@main::el, 'get_file()', 'Starting...');
 
     if (!defined($fname) || ($fname eq '')) {
-
-        push_el(
-                \@main::el,
-                'get_file()',
-                "ERROR: Undefined input data, fname: |$fname| !"
-               );
-
-        return (-1, '');
-
+        push_el(\@main::el, 'get_file()', "ERROR: Undefined input data, fname: |$fname| !" );
+        return 1;
     }
 
     if (! -e $fname) {
-
-        push_el(
-                \@main::el,
-                'get_file()',
-                "ERROR: File '$fname' does not exist !"
-               );
-
-        return (-1, '');
-
+        push_el(\@main::el, 'get_file()', "ERROR: File '$fname' does not exist !");
+        return 1;
     }
 
     my $res = open(F, '<', $fname);
 
     if (!defined($res)) {
-
-        push_el(
-                \@main::el,
-                'get_file()',
-                "ERROR: Can't open '$fname' for reading !"
-               );
-
-        return (-1, '');
-
+        push_el(\@main::el, 'get_file()', "ERROR: Can't open '$fname' for reading: $!");
+        return 1;
     }
 
     my @fdata = <F>;
@@ -542,7 +521,7 @@ sub store_file {
     my $res = open(F, '>', $fname);
 
     if (!defined($res)) {
-        push_el(\@main::el, 'store_file()', "ERROR: Can't open file |$fname| for writing !");
+        push_el(\@main::el, 'store_file()', "ERROR: Can't open file |$fname| for writing: $!");
         return -1;
     }
 
@@ -582,7 +561,7 @@ sub save_file {
     my $res = open(F, '>', $fname);
 
     if (!defined($res)) {
-        push_el(\@main::el, 'save_file()', "ERROR: Can't open file |$fname| for writing !");
+        push_el(\@main::el, 'save_file()', "ERROR: Can't open file |$fname| for writing: $!");
         return -1;
 
     }
@@ -1015,7 +994,7 @@ sub gen_sys_rand_num {
 
         if (!defined($rs)) {
 
-            push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Couldn't open the pseudo-random characters generator");
+            push_el(\@main::el, 'gen_sys_rand_num()', "ERROR: Couldn't open the pseudo-random characters generator: $!");
 
             return (-1, '');
         }
@@ -1874,40 +1853,36 @@ sub set_conf_val {
 
 sub store_conf {
 
-    my ($key, $value, $fline, $rs) = (undef, undef, undef, undef);
+	if ( defined($_[0]) ) {
+		$file_name = $_[0];
+	}
+	else {
+		$file_name = $main::cfg_file;
+	}
 
+    my ($key, $value, $fline, $rs) = (undef, undef, undef, undef);
     my $rwith = undef;
 
     push_el(\@main::el, 'store_conf()', 'Starting...');
 
-    ($rs, $fline) = get_file($main::cfg_file);
-
+    ($rs, $fline) = get_file($file_name);
     return 1 if ($rs != 0);
 
     if (scalar(keys(%main::cfg_reg)) > 0) {
-
         while (($key, $value) = each %main::cfg_reg) {
-
             $rwith = "$key = $value\n";
-
             $fline =~ s/^$key *= *([^\n\r]*)[\n\r]/$rwith/gim;
-
         }
-
     }
 
-    $rs = store_file($main::cfg_file, $fline, 'root', null, 0644);
-
+    $rs = store_file($file_name, $fline, 'root', 'null', 0644);
     return 1 if ($rs != 0);
 
-    $rs = get_conf($main::cfg_file);
-
+    $rs = get_conf($file_name);
     return 1 if ($rs != 0);
 
     push_el(\@main::el, 'store_conf()', 'Ending...');
-
     return 0;
-
 }
 
 sub get_domain_ids {

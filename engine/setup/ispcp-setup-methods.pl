@@ -1487,7 +1487,7 @@ sub setup_po {
 				#### Update authdaemonrc
 				my $rdata = "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
 				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
-				$rs = save_file($main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc, $rdata);
+				$rs = save_file("$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc", $rdata);
 				return $rs if ($rs != 0);
 
 				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";

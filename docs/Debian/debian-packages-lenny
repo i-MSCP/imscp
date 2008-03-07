@@ -11,13 +11,11 @@ courier-base
 courier-imap
 courier-maildrop
 courier-pop
-chkrootkit
 diff
 dnsutils
 gcc
 gzip
 iptables
-libapache2-mod-cband
 libapache2-mod-fastcgi
 libberkeleydb-perl
 libc6-dev
@@ -39,7 +37,7 @@ libnet-libidn-perl
 libnet-netmask-perl
 libnet-smtp-server-perl
 libperl5.8
-libsasl2
+libsasl2-2
 libsasl2-modules
 libsnmp-session-perl
 libterm-readkey-perl
@@ -71,7 +69,7 @@ postfix
 postfix-tls
 postgrey
 procmail
-proftpd-mysql
+proftpd
 rkhunter
 sasl2-bin
 ssh
