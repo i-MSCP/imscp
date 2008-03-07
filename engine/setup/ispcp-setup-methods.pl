@@ -1459,7 +1459,7 @@ sub setup_po {
 		sys_command_rs("$main::cfg{'CMD_POP'} stop &> /tmp/ispcp-setup-services.log");
 	}
 
-	if (! -e "$bk_dir/imapd.ispcp") {
+	if (! -e "$bk_dir/authdaemonrc.system") {
 
 		# Let's backup system configs;
 		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/imapd" ) {
@@ -1497,13 +1497,13 @@ sub setup_po {
 		}
 		else {
 			if ( -e "$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc" ) {
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
-				$rs = sys_command($cmd);
+				#### Update authdaemonrc
+				my $rdata = "$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc";
+				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
+				$rs = save_file("$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc", $rdata);
 				return $rs if ($rs != 0);
-			}
 
-			if ( -e "$main::cfg{'COURIER_CONF_DIR'}/authmodulelist" ) {
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/authmodulelist $bk_dir/authmodulelist.system";
+				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
 			}
@@ -1540,34 +1540,6 @@ sub setup_po {
 		$rs = setfmode("$main::cfg{'COURIER_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
 	}
 	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/imapd.ispcp $main::cfg{'COURIER_CONF_DIR'}/imapd";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/pop3d.ispcp $main::cfg{'COURIER_CONF_DIR'}/pop3d";
-	$rs = sys_command($cmd);
-	return $rs if ($rs != 0);
-
-	if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authdaemonrc.ispcp $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authmodulelist.ispcp $main::cfg{'AUTHLIB_CONF_DIR'}/authmodulelist";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-	}
-	else {
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authdaemonrc.ispcp $main::cfg{'COURIER_CONF_DIR'}/authdaemonrc";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authmodulelist.ispcp $main::cfg{'COURIER_CONF_DIR'}/authmodulelist";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-
-	}
 
 	$rs = sys_command($main::cfg{'CMD_MAKEUSERDB'});
 	return $rs if ($rs != 0);

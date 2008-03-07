@@ -68,7 +68,7 @@ echo Installing ISPCP
 cd ${ISPCP_TMP_PATH}/ispcp-omega-1.0.0-trunk
 make -f Makefile.fedora install
 
-cp -RLf /tmp/ispcp-1.0.0/* /
+cp -RLf /tmp/ispcp/* /
 
 
 clear
@@ -152,7 +152,7 @@ service postfix restart
 
 ######################################
 echo removing tmp files
-rm -R /tmp/ispcp-1.0.0
+rm -R /tmp/ispcp
 
 clear
 ######################################

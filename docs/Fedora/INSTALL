@@ -90,7 +90,7 @@ Make sure you are logged in as root.
 	# make -f Makefile.fedora install
 
 6. Copy all the directories into your system (you may make backups)
-	# cp -RLf /tmp/ispcp-1.0.0/* /
+	# cp -RLf /tmp/ispcp/* /
 
 7. Bind setup
 	# mv /var/named/data /var/named/data2
@@ -143,7 +143,7 @@ Make sure you are logged in as root.
 	# service ispcp start
 
 14. Clean the temporary folders:
-	# rm -R /tmp/ispcp-1.0.0
+	# rm -R /tmp/ispcp
 
 ================================================================================
 5) Update
@@ -172,17 +172,17 @@ Make sure you are logged in as root.
 	# make -f Makefile.fedora install
 
 6. Save key files
-	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/
-	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp-1.0.0/var/www/ispcp/engine/messager/
-	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp-1.0.0/var/www/ispcp/gui/include/
+	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
+	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messager/
+	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
 
 7. Copy /usr and /var directories into your system (you may make backups)
-	# cp -Rv /tmp/ispcp-1.0.0/usr/* /usr/
-	# cp -Rv /tmp/ispcp-1.0.0/var/* /var/
+	# cp -Rv /tmp/ispcp/usr/* /usr/
+	# cp -Rv /tmp/ispcp/var/* /var/
 
 8. Backup ispcp.conf and copy the /etc dircetory into your system (you may make backups):
 	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
-	# cp -Rv /tmp/ispcp-1.0.0/etc/* /etc/
+	# cp -Rv /tmp/ispcp/etc/* /etc/
 
 9. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/ispcp/engine/setup
@@ -196,7 +196,7 @@ Make sure you are logged in as root.
 	http://isp-control.net to solve the problem.
 
 12. Clean the temporary folders:
-	# rm -fR /tmp/ispcp-1.0.0
+	# rm -fR /tmp/ispcp
 
 ================================================================================
 6) FAQ

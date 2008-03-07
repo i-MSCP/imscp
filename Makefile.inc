@@ -1,6 +1,6 @@
 
 ifndef INST_PREF
-        INST_PREF=/tmp/ispcp-1.0.0
+        INST_PREF=/tmp/ispcp
 endif
 
 HOST_OS=openbsd

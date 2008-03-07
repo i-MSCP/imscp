@@ -13,6 +13,8 @@ ispCP ω 1.0.0 Changelog
 		* Updated: Update script; Update to RC3
 		* Updated: Update script; Update to RC4
 		* Fixed #1087: ispcp_rc4 setup vs courier
+		* Fixed #1088: ispcp_rc4 setup vs courier again
+		* Changed: make directory to /tmp/ispcp
 
 2008-03-04 Benedikt Heintel
 	- SETUP:
