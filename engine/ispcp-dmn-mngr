@@ -2334,11 +2334,14 @@ sub dmn_change_httpd_file_data {
 	#
 	# Default error pages
 	#
-	$rs = make_dir("$www_dir/$dmn_name/errors", $sys_user, $sys_group, 0775);
-	return $rs if ($rs != 0);
-
-	$rs = make_dir("$www_dir/$dmn_name/errors/inc", $sys_user, $sys_group, 0775);
-	return $rs if ($rs != 0);
+	if(! -d "$www_dir/$dmn_name/errors") {
+		$rs = make_dir("$www_dir/$dmn_name/errors", $sys_user, $sys_group, 0775);
+		return $rs if ($rs != 0);
+	}
+	if(! -d "$www_dir/$dmn_name/errors/inc") {
+		$rs = make_dir("$www_dir/$dmn_name/errors/inc", $sys_user, $sys_group, 0775);
+		return $rs if ($rs != 0);
+	}
 
 	my @errordocs = (401, 403, 404, 500, 503);
 
