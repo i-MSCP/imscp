@@ -14,8 +14,8 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/courier
 	cp -R ./working $(SYSTEM_CONF)/courier
 	cp ./userdb $(ROOT_COURIER_CONF)
-	chmod 600 $(ROOT_CONF)/userdb
-	cp ./sasldb2 $(ROOT_CONF)
+	chmod 600 $(ROOT_COURIER_CONF)/userdb
+	cp ./sasldb2 $(ROOT_COURIER_CONF)
 
 uninstall:
 

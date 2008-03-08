@@ -2269,113 +2269,71 @@ sub dmn_change_httpd_file_data {
     push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
-
         push_el(\@main::el, 'dmn_change_httpd_file_data()', 'ERROR: Undefined Input Data...');
-
         return -1;
-
     }
 
 	my $dmn_id = @$dmn_data[0];
-
 	my $dmn_name = @$dmn_data[1];
 
 	my $root_dir = $main::cfg{'ROOT_DIR'};
-
 	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
 	my $pear_dir = $main::cfg{'PEAR_DIR'};
-
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
-
 	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
-
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-
 	my $sys_user = "$suexec_user_pref$sys_uid";
-
 	my $sys_group = "$suexec_user_pref$sys_gid";
 
 	#
 	# Starter-Scripts for FastCGI
 	#
-
 	if( ! -d "$starter_dir/$dmn_name") {
-		$rs = make_dir(
-						"$starter_dir/$dmn_name",
-						$sys_user,
-						$sys_group,
-						0755
-						);
-
+		$rs = make_dir("$starter_dir/$dmn_name", $sys_user, $sys_group, 0755);
 		return $rs if ($rs != 0);
 	}
 
     #
     # PHP4 and PHP5 Directory for usual user
     #
-
     if (! -d "$starter_dir/$dmn_name/php4") {
-
-        $rs = make_dir(
-                                        "$starter_dir/$dmn_name/php4",
-                                        $sys_user,
-                                        $sys_group,
-                                        0750
-                                        );
-
+        $rs = make_dir("$starter_dir/$dmn_name/php4", $sys_user, $sys_group, 0750);
         return $rs if ($rs != 0);
     }
 
     if (! -d "$starter_dir/$dmn_name/php5") {
-
-        $rs = make_dir(
-                                        "$starter_dir/$dmn_name/php5",
-                                        $sys_user,
-                                        $sys_group,
-                                        0750
-                                        );
-
+        $rs = make_dir("$starter_dir/$dmn_name/php5", $sys_user, $sys_group, 0750);
         return $rs if ($rs != 0);
 	}
 
     #
     # AWStats Directory (if static AWStats is enabled)
     #
-
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
 		if (! -d "$www_dir/$dmn_name/statistics") {
-		    $rs = make_dir(
-		                    "$www_dir/$dmn_name/statistics",
-		                    $sys_user,
-		                    $sys_group,
-		                    0755
-		                    );
-
+		    $rs = make_dir("$www_dir/$dmn_name/statistics", $sys_user, $sys_group, 0755);
 	    	return $rs if ($rs != 0);
     	}
     }
 
 	#
-	# Domain WWW directories;
+	# Domain WWW directories
 	#
-
 	if(! -d "$www_dir/$dmn_name/phptmp") {
-
 		$rs = make_dir("$www_dir/$dmn_name/phptmp", $sys_user, $sys_group, 0770);
-
+		return $rs if ($rs != 0);
+	}
+	if(! -d "$www_dir/$dmn_name/backups") {
+		$rs = make_dir("$www_dir/$dmn_name/backups", $sys_user, $httpd_gid, 0770);
 		return $rs if ($rs != 0);
 	}
 
 	#
-	# Default error pages;
+	# Default error pages
 	#
-
-	$rs = make_dir("$www_dir/$dmn_name/backups", $sys_user, $httpd_gid, 0770);
-	return $rs if ($rs != 0);
-
 	$rs = make_dir("$www_dir/$dmn_name/errors", $sys_user, $sys_group, 0775);
 	return $rs if ($rs != 0);
 
@@ -2407,6 +2365,7 @@ sub dmn_change_httpd_file_data {
 	return $rs if ($rs != 0);
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
 	return $rs if ($rs != 0);
+
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
@@ -2421,7 +2380,6 @@ sub dmn_change_httpd_file_data {
 	#
 	# php.ini for the domain
 	#
-
 	my $ini_tpl = undef;
 	my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
 
@@ -2437,14 +2395,7 @@ sub dmn_change_httpd_file_data {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 	return $rs if ($rs != 0);
 
-	($rs, $rdata) = store_file(
-								"$starter_dir/$dmn_name/php4/php.ini",
-								$cfg,
-								$sys_user,
-								$sys_group,
-								0640
-								);
-
+	($rs, $rdata) = store_file("$starter_dir/$dmn_name/php4/php.ini", $cfg,	$sys_user, $sys_group, 0640);
 	return $rs if ($rs != 0);
 
 
@@ -2463,14 +2414,7 @@ sub dmn_change_httpd_file_data {
 	($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 	return $rs if ($rs != 0);
 
-	($rs, $rdata) = store_file(
-								"$starter_dir/$dmn_name/php5/php.ini",
-								$cfg,
-								$sys_user,
-								$sys_group,
-								0640
-								);
-
+	($rs, $rdata) = store_file("$starter_dir/$dmn_name/php5/php.ini", $cfg,	$sys_user, $sys_group, 0640);
 	return $rs if ($rs != 0);
 
 	#
@@ -2494,14 +2438,7 @@ sub dmn_change_httpd_file_data {
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
 
-		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php5-fcgi-starter",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0750
-									);
-
+		($rs, $rdata) = store_file("$starter_dir/$dmn_name/php5-fcgi-starter", $cfg, $sys_user, $sys_group, 0750);
 		return $rs if ($rs != 0);
 	}
 	if (!(-e "$starter_dir/$dmn_name/php4-fcgi-starter")) {
@@ -2520,13 +2457,7 @@ sub dmn_change_httpd_file_data {
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
 
-		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php4-fcgi-starter",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0750
-									);
+		($rs, $rdata) = store_file("$starter_dir/$dmn_name/php4-fcgi-starter", $cfg, $sys_user,	$sys_group,	0750);
 
 		return $rs if ($rs != 0);
 
@@ -2534,9 +2465,7 @@ sub dmn_change_httpd_file_data {
 
 
     push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Ending...');
-
     return 0;
-
 }
 
 ################################################################################
