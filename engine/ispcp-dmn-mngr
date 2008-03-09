@@ -3995,12 +3995,12 @@ sub dmn_del_awstats_cfg_data {
     my $sys_cfg = "$awstats_dir/$awstats_fname";
 
     #
-    # Let's delete file;
+    # Let's delete file, if exists
     #
-
-    $rs = del_file($sys_cfg);
-
-    return $rs if ($rs != 0);
+	if ( -e $sys_cfg) {
+	    $rs = del_file($sys_cfg);
+	    return $rs if ($rs != 0);
+    }
 
     push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Ending...');
 

@@ -67,29 +67,24 @@ MSG
 }
 
 sub get_sys_hostname {
-
-	my ($rs, $rdata) = (undef, undef);
-
 	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
 
+	my ($rs, $rdata) = (undef, undef);
 	my $cmd = "$main::cfg{'CMD_HOSTNAME'} 1>/tmp/ispcp-setup.hostname";
 
 	$rs = sys_command($cmd);
-
 	return ($rs, '') if ($rs != 0);
 
 	($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
-
 	return ($rs, '') if ($rs != 0);
 
-	chop($rdata);
+	chomp($rdata);
 
 	$rs = del_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
 
 	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
-
 	return (0, $rdata);
-
 }
 
 sub user_dialog {
@@ -472,16 +467,20 @@ sub setup_system_users {
 
 	}
 
+	# create user and folder
 	if (scalar(@udata) == 0) { # we do not have this user
 		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			$cmd = "$main::cfg{'CMD_USERADD'} $prefix$muid $prefix$muid -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
+			$cmd = "$main::cfg{'CMD_USERADD'} $prefix$muid $prefix$muid -d $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
 		} else {
 			$cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
 		}
 		$rs = sys_command($cmd);
 
 		return $rs if ($rs != 0);
-
+	} else {
+		# change folder permissions and owner
+		$rs = setfmode("$main::cfg{'PHP_STARTER_DIR'}/master", $prefix$muid, $prefix$mgid, 0755);
+		return $rs if ($rs != 0);
 	}
 
 	$main::ua{'vu_uid'} = $muid;
@@ -776,37 +775,37 @@ sub setup_sql {
 	my $vftp_sql_password = $main::ua{'db_ftp_password'};
 	my $hostname = $main::ua{'db_host'};
 
-	$sql = "delete from tables_priv where Host = '$main::cfg{'SERVER_HOSTNAME'}' and Db = '$main::db_name' and User = '$vftp_sql_user'";
+	$sql = "DELETE FROM tables_priv WHERE Host = '$main::cfg{'SERVER_HOSTNAME'}' AND Db = '$main::db_name' AND User = '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = " delete from user where Host = '$hostname' and User = '$vftp_sql_user'";
+	$sql = "DELETE FROM user WHERE Host = '$hostname' AND User = '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "flush privileges";
+	$sql = "FLUSH PRIVILEGES";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.ftp_group to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.ftp_users to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.quotalimits to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "grant select,insert,update,delete on $main::db_name.quotatallies to '$vftp_sql_user'\@'$hostname' identified by '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -825,17 +824,17 @@ sub setup_sql {
 	my $pma_sql_user = $main::ua{'db_pma_user'};
 	my $pma_sql_password = $main::ua{'db_pma_password'};
 
-	$sql = "delete from tables_priv where Host = '$main::cfg{'SERVER_HOSTNAME'}' and Db = '$main::db_name' and User = '$pma_sql_user'";
+	$sql = "DELETE FROM tables_priv WHERE Host = '$main::cfg{'SERVER_HOSTNAME'}' AND Db = '$main::db_name' AND User = '$pma_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = " delete from user where Host = '$hostname' and User = '$pma_sql_user'";
+	$sql = "DELETE FROM user WHERE Host = '$hostname' AND User = '$pma_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "flush privileges";
+	$sql = "FLUSH PRIVILEGES";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
