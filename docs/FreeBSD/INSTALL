@@ -35,7 +35,7 @@ Debian (or even any other *NIX-Distribution)
 All FreeBSD required packages are listed in
 ./docs/FreeBSD/freebsd-packages
 
-The configuration is costumize for using with apache 2.2.x version using suexec
+The configuration is costumize for use with apache 2.2.x version using suexec
 module enable.
 ================================================================================
 3) Introduction
@@ -150,7 +150,7 @@ Make sure you are logged in as root.
 ------
 
 Q.- How can I prevent websites using more than their bandwidth limit to stop working?
-A.- Please install and configure apache2 mod_cband package/port
+A.- Please install and configure apache 2.2.x mod_cband package/port
 
 Please check http://www.isp-control.net for any questions not answered in this file.
 

@@ -1,7 +1,9 @@
 .include <../../../../Makefile.fbsd>
 
 APACHE_EXT_CONF=$(INST_PREF)/usr/local/etc/apache22/Includes
-APACHE_MOD_CONF=$(INST_PREF)/usr/local/etc/apache22/extra/
+APACHE_MOD_CONF=$(INST_PREF)/usr/local/etc/apache22/extra
+ROOT_APACHE_CONF=$(ROOT_CONF)/apache22
+
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache22
