@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-10 Benedikt Heintel
+	- DOCS:
+		* Updated all INSTALL files
+
 2008-03-10 Christian Hernmarck
 	- SETUP:
 		* Fixed #1099: 1042 - ispcp-setup compilation errors
