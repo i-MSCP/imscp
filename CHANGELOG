@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-10 Christian Hernmarck
+	- SETUP:
+		* Fixed #1099: 1042 - ispcp-setup compilation errors
+		* Fixed #1100: authdaemonrc - wrong content
+
 2008-03-08 Benedikt Heintel
 	- ENGINE:
 		* Fixed: Error in adding Domain (missing $httpd_gid)

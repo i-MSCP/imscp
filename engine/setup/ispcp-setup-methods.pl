@@ -1473,38 +1473,43 @@ sub setup_po {
 			return $rs if ($rs != 0);
 		}
 		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/imapd-ssl" ) {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/imapd $bk_dir/imapd-ssl.system";
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/imapd-ssl $bk_dir/imapd-ssl.system";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 		}
 		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/pop3d-ssl" ) {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/pop3d $bk_dir/pop3d-ssl.system";
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/pop3d-ssl $bk_dir/pop3d-ssl.system";
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 		}
 		if ( -e $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
 			if ( -e "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc" ) {
-				#### Update authdaemonrc
-				my $rdata = "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
-				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
-				$rs = save_file("$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc", $rdata);
-				return $rs if ($rs != 0);
-
+				### first make backup, before updating
 				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
 				$rs = sys_command($cmd);
+				return $rs if ($rs != 0);
+
+				#### Update authdaemonrc
+				($rs, $rdata) = get_file("$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc");
+				return $rs if ($rs != 0);
+				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
+				$rs = save_file("$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc", $rdata);
 				return $rs if ($rs != 0);
 			}
 		}
 		else {
 			if ( -e "$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc" ) {
-				#### Update authdaemonrc
-				my $rdata = "$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc";
-				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
-				$rs = save_file("$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc", $rdata);
-				return $rs if ($rs != 0);
-
+				### first make backup, before updating
 				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
 				$rs = sys_command($cmd);
+				return $rs if ($rs != 0);
+
+				#### Update authdaemonrc
+				($rs, $rdata) = get_file("$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc");
+				return $rs if ($rs != 0);
+
+				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
+				$rs = save_file("$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc", $rdata);
 				return $rs if ($rs != 0);
 			}
 		}

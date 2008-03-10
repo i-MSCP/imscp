@@ -2092,7 +2092,7 @@ msgid "Disable"
 msgstr "Deaktivieren"
 
 msgid "Delete CatchAll"
-msgstr "Catch-All Konto wird gelöscht"
+msgstr "Catch-All löschen"
 
 msgid "None"
 msgstr "keine"

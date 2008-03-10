@@ -479,7 +479,7 @@ sub setup_system_users {
 		return $rs if ($rs != 0);
 	} else {
 		# change folder permissions and owner
-		$rs = setfmode("$main::cfg{'PHP_STARTER_DIR'}/master", $prefix$muid, $prefix$mgid, 0755);
+		$rs = setfmode("$main::cfg{'PHP_STARTER_DIR'}/master", "$prefix$muid", "$prefix$mgid", 0755);
 		return $rs if ($rs != 0);
 	}
 
