@@ -7,9 +7,6 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
 	cp ./proftpd.conf $(ROOT_CONF)
-	cp ./proftpd.rc $(ROOT_CONF)
-	chmod 700 $(ROOT_CONF)/proftpd.rc
-	chown root:wheel $(ROOT_CONF)/proftpd.rc
 
 uninstall:
 

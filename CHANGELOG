@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-12 Jochen Manz
+	- SETUP:
+		* Fixed #1105: Disable proftpd rc in fbsd distro
+
 2008-03-10 Benedikt Heintel
 	- DOCS:
 		* Updated all INSTALL files
