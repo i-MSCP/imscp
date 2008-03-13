@@ -1,12 +1,39 @@
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (c) 2001-2006 by moleSoftware GmbH
+# http://www.molesoftware.com
+# Copyright (c) 2006-2008 by isp Control Panel
+# http://isp-control.net
+#
+#
+# License:
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of the MPL Mozilla Public License
+#    as published by the Free Software Foundation; either version 1.1
+#    of the License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    MPL Mozilla Public License for more details.
+#
+#    You may have received a copy of the MPL Mozilla Public License
+#    along with this program.
+#
+#    An on-line copy of the MPL Mozilla Public License can be found
+#    http://www.mozilla.org/MPL/MPL-1.1.html
+#
+#
+# The ispCP ω Home Page is at:
+#
+#    http://isp-control.net
+#
 
 SYSTEM_ENGINE_ROOT=$(SYSTEM_ROOT)/engine
 
 CMD_CHOWN=/bin/chown
 CMD_RM=/bin/rm -rf
-
 CMD_INSTALL=/usr/bin/install -m 0700 -o root -g root
 CMD_MAIL_INSTALL=/usr/bin/install -m 0700 -o vmail -g mail
-
 CMD_DIR_INSTALL=/usr/bin/install -d -o root -g root
 
 export
@@ -40,10 +67,9 @@ install:
 	cd ./traffic && $(MAKE) install
 
 	$(CMD_INSTALL) ./ispcp_common_code.pl $(SYSTEM_ENGINE_ROOT)
-
 	$(CMD_INSTALL) ./ispcp_common_methods.pl $(SYSTEM_ENGINE_ROOT)
 
-	# keys needed for ISPCP engine;
+	# keys needed for ispCP engine;
 	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)
 
 	# one more copy for auto replay system;
@@ -74,22 +100,28 @@ install:
 	$(CMD_INSTALL) ./setup/reset-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-setup $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-setup-methods.pl $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/ispcp-update $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2.4.7-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/vhcs2.4.8-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp1.0.0rc2-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/ispcp-update $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/ispcp1.0.0rc3-ispcp.sql $(SYSTEM_ENGINE_ROOT)/setup
 
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr
 	$(CMD_INSTALL) ./tools/ispcpphptemp.sh $(SYSTEM_ENGINE_ROOT)/tools/ispcpphptemp.sh
 
 	$(CMD_INSTALL) ./traffic/ispcp-srv-traff $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff $(SYSTEM_ENGINE_ROOT)/traffic
-	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic
 	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-correction $(SYSTEM_ENGINE_ROOT)/traffic
+
+	if test $(HOST_OS) = suse ; then \
+		$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
+	elif test $(HOST_OS) = opensuse ; then \
+		$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
+	fi
+
 
 uninstall:
 
 	rm -rf $(SYSTEM_ENGINE_ROOT)
 	rm -rf ./*~
-

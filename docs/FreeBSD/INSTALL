@@ -35,7 +35,7 @@ Debian (or even any other *NIX-Distribution)
 All FreeBSD required packages are listed in
 ./docs/FreeBSD/freebsd-packages
 
-The configuration is costumised for using with apache 2.2.x version using suexec
+The configuration is costumised for use with apache 2.2.x version using suexec
 module enable.
 ================================================================================
 3) Introduction

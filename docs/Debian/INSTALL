@@ -117,14 +117,13 @@ Make sure you are logged in as root.
 
 10. There is an error in some courier-versions. Courier won't stop, if you use
 	/etc/init.d/courier-authdaemon stop, so change it:
-	# nano /etc/ini.d/courier-authdaemon
+	# nano /etc/init.d/courier-authdaemon
 
 	change: ${libexecdir}/authlib/authdaemon stop
 	with:	killall authdaemond.plain
 
 11. Clean the temporary folders:
 	# rm -fR /tmp/ispcp
-
 
 ================================================================================
 5) Update

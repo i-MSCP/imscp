@@ -1,9 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-03-10 Christian Hernmarck
+2008-03-13 Benedikt Heintel
+	- SETUP:
+		* Fixed #1106: BSDmakefile Setup not copy some of its file
+		* Updated: a lot of Makefiles
+
+2008-03-12 Christian Hernmarck
 	- DISTS:
-		openSuSE (10.3): corrected the INSTALL doc again (!!), and the Makefile for courier...
+		* openSuSE (10.3): corrected the INSTALL doc again (!!), and the Makefile for courier...
 
 2008-03-12 Benedikt Heintel
 	- CONFIGS:
