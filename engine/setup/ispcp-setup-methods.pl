@@ -1189,7 +1189,15 @@ sub setup_httpd {
 					'{APACHE_USERS_LOG_DIR}' 	=> $main::cfg{'APACHE_USERS_LOG_DIR'},
 					'{APACHE_LOG_DIR}' 			=> $main::cfg{'APACHE_LOG_DIR'},
 					'{PHP_STARTER_DIR}' 		=> $main::cfg{'PHP_STARTER_DIR'},
-					'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'}
+					'{PHP_VERSION}'				=> $main::cfg{'PHP_VERSION'},
+					'{WWW_DIR}'					=> $main::cfg{'ROOT_DIR'},
+					'{DMN_NAME}'				=> 'gui',
+					'{CONF_DIR}'				=> $main::cfg{'CONF_DIR'},
+					'{MR_LOCK_FILE}'			=> $main::cfg{'MR_LOCK_FILE'},
+					'{RKHUNTER_LOG}'			=> $main::cfg{'RKHUNTER_LOG'},
+					'{CHKROOTKIT_LOG}'			=> $main::cfg{'CHKROOTKIT_LOG'},
+					'{PEAR_DIR}'				=> $main::cfg{'PEAR_DIR'},
+					'{OTHER_ROOTKIT_LOG}'		=> $main::cfg{'OTHER_ROOTKIT_LOG'}
 					);
 
 	($rs, $cfg) = prep_tpl(\%tag_hash, $cfg_tpl);

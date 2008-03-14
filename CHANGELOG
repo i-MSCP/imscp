@@ -6,6 +6,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #942: ERROR: Undefined intput data, bt: |{PHP_VERSION}|, et: |{PHP_VERSION}|, src !
 		* Fixed #1097: (quick fix) ispcp-vrl-traff-correction generates high load on mysql db -> DB locked
 		* Fixed #1106: BSDmakefile Setup not copy some of its file
+		* Fixed #1111: Variables not parsed in /etc/apache2/sites-enabled/00_master.conf
 		* Updated: a lot of Makefiles
 	- DISTS:
 		* Fixed #1107: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch
