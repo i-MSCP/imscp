@@ -52,7 +52,8 @@ if ($main::cfg{'DEBUG'} != 0) {
 
 if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
-	print STDERR "\tGenerating database keys, it may take some time, please wait...\n";
+	print STDOUT "\tGenerating database keys, it may take some time, please wait...\n";
+	print STDOUT "\tIf it takes to long, please check http://www.isp-control.net/documentation/frequently_asked_questions/what_does_generating_database_keys_it_may_take_some_time_please_wait..._on_setup_mean\n";
 
 	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messager/ispcp-db-keys.pl");
 

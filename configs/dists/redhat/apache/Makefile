@@ -16,9 +16,12 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/apache
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
+
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/working/ispcp.conf
 	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
-	cp -R ./working/fastcgi_ispcp.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
+	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/working/fastcgi_ispcp.conf
+
+	cp -R fastcgi.conf ${ROOT_APACHE_CONF}/mods-available/fastcgi_ispcp.conf
 
 uninstall:
 

@@ -84,7 +84,10 @@ sub vrl_traff_correction_engine {
 
     push_el(\@main::el, 'vrl_traff_correction_engine()', 'Starting...');
 
-    my $sql = "SELECT traff_time, IFNULL( sum( t2.dtraff_mail ) , 0 ) AS dom_mail_sum, IFNULL( sum( t2.dtraff_pop ) , 0 )  AS dom_pop_sum, IFNULL( sum( t2.dtraff_web ) , 0 ) AS dom_web_sum, ifnull( (t1.bytes_mail_in + t1.bytes_mail_out), 0 ) - IFNULL( sum( t2.dtraff_mail ) , 0 ) AS diff_mail, ifnull( (t1.bytes_pop_in + t1.bytes_pop_out), 0 ) - IFNULL( sum( t2.dtraff_pop ) , 0 ) AS diff_pop, ifnull( (t1.bytes_web_in +  t1.bytes_web_out), 0 ) - IFNULL( sum( t2.dtraff_web ) , 0 ) AS diff_web FROM server_traffic AS t1 INNER JOIN domain_traffic AS t2 ON t2.dtraff_time = t1.traff_time WHERE t1.correction = 0 and t2.correction = 0 GROUP BY t2.dtraff_time;";
+	# Select traffic for only two hour.
+    my $time = time() - (60 * 120);
+
+    my $sql = "SELECT traff_time, IFNULL( sum( t2.dtraff_mail ) , 0 ) AS dom_mail_sum, IFNULL( sum( t2.dtraff_pop ) , 0 ) AS dom_pop_sum, IFNULL( sum( t2.dtraff_web ) , 0 ) AS dom_web_sum, ifnull( (t1.bytes_mail_in + t1.bytes_mail_out), 0 ) - IFNULL( sum( t2.dtraff_mail ) , 0 ) AS diff_mail, ifnull( (t1.bytes_pop_in + t1.bytes_pop_out), 0 ) - IFNULL( sum( t2.dtraff_pop ) , 0 ) AS diff_pop, ifnull( (t1.bytes_web_in + t1.bytes_web_out), 0 ) - IFNULL( sum( t2.dtraff_web ) , 0 ) AS diff_web FROM server_traffic AS t1 INNER JOIN domain_traffic AS t2 ON t2.dtraff_time = t1.traff_time WHERE t1.traff_time > $time and t2.dtraff_time > $time and t1.correction = 0 and t2.correction = 0 GROUP BY t2.dtraff_time;";
 
     ($rs, $rdata1) = doSQL($sql);
 
