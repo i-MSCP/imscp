@@ -14,6 +14,7 @@ install:
 	cp ./httpd.conf ./working/ispcp.conf
 	cp ./fastcgi.conf ./working/fastcgi_ispcp.conf
 	cp ./00_master.conf $(SYSTEM_CONF)/apache22
+	cp ./01_awstats.conf $(SYSTEM_CONF)/apache22
 	cp ./httpd.conf $(SYSTEM_CONF)/apache22
 	cp -R ./backup $(SYSTEM_CONF)/apache22
 	cp -R ./parts $(SYSTEM_CONF)/apache22

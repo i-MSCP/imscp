@@ -5,6 +5,9 @@ ispCP ω 1.0.0 Changelog
 	- SETUP:
 		* Fixed #1106: BSDmakefile Setup not copy some of its file
 		* Updated: a lot of Makefiles
+	- DISTS:
+		* Fixed #1107: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch
+		* Fixed #1108: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch #2
 
 2008-03-12 Christian Hernmarck
 	- DISTS:

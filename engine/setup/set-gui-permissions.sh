@@ -34,9 +34,16 @@
 DEBUG=0
 
 # read needed entries from ispcp.conf
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_DIR)' | sed -e 's/ //g'`; do
-    export $a
-done
+if [ -f /usr/local/etc/ispcp/ispcp.conf ]
+then
+	for a in `cat /usr/local/etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; $
+		export $a
+	done
+else
+	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+		export $a
+	done
+fi
 
 # for spacing
 echo "";

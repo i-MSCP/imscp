@@ -42,7 +42,7 @@ my $rs;
 
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
 
-$rs = get_conf();
+$rs = get_conf($main::cfg_file);
 
 return $rs if ($rs != 0);
 

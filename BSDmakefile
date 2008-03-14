@@ -37,6 +37,7 @@
 .endif
 
 install:
+
 	cd ./tools && $(MAKE) install
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ROOT)
@@ -50,10 +51,17 @@ install:
 	cd ./engine && $(MAKE) install
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
+
+	# Patch some variable
+	/usr/bin/sed s/"\/etc\/ispcp\/ispcp.conf"/"\/usr\/local\/etc\/ispcp\/ispcp.conf"/g ./engine/ispcp_common_code.pl > $(SYSTEM_ROOT)/engine/ispcp_common_code.pl
+	/usr/bin/sed s/"\/apache\"\;"/"\/apache22\"\;"/g ./engine/setup/ispcp-setup-methods.pl > $(SYSTEM_ROOT)/engine/setup/ispcp-setup-methods.pl
+
 	cd ${INST_PREF} && cp -R * /
 	rm -rf ${INST_PREF}
 
+
 uninstall:
+
 	cd ./tools && $(MAKE) uninstall
 	cd ./configs && $(MAKE) uninstall
 	cd ./engine && $(MAKE) uninstall
@@ -67,6 +75,7 @@ uninstall:
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	rm -rf ./*~
+
 
 clean:
 

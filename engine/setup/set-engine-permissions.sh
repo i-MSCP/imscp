@@ -34,9 +34,16 @@
 DEBUG=0
 
 # read needed entries from ispcp.conf
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
-    export $a
-done
+if [ -f /usr/local/etc/ispcp/ispcp.conf ]
+then
+	for a in `cat /usr/local/etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+		export $a
+	done
+else
+	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR)' | sed -e 's/ //g'`; do
+		export $a
+	done
+fi
 
 #
 # fixing engine permissions;
@@ -56,7 +63,12 @@ else
 fi
 
 #chmod ug+r,u+w,o-r /etc/ispcp/ispcp.conf
-chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
+if [ -f /usr/local/etc/ispcp/ispcp.conf ]
+then
+	chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /usr/local/etc/ispcp/ispcp.conf
+else
+	chown $ROOT_USER:$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_UID /etc/ispcp/ispcp.conf
+fi
 
 for i in `find $ROOT_DIR/engine/`; do
 

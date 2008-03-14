@@ -670,7 +670,11 @@ sub setup_crontab {
 		return $rs if ($rs != 0);
 	}
 
-	$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp /etc/cron.d/";
+	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp /usr/local/etc/ispcp/cron.d/";
+	} else {
+		$cmd = "$main::cfg{'CMD_CP'} -f $wrk_dir/ispcp /etc/cron.d/";
+	}
 
 	$rs = sys_command_rs($cmd);
 	return $rs if ($rs != 0);
