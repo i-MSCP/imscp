@@ -28,6 +28,8 @@
 #    http://isp-control.net
 #
 
+export
+
 install:
 
 	if test $(HOST_OS) = debian  ; then \

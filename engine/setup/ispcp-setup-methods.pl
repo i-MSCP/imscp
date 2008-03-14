@@ -1621,6 +1621,10 @@ sub setup_ftpd {
 	# To fill ftp_traff.log file with somethign. ;)
 	#
 
+	if (! -e "$main::cfg{'TRAFF_LOG_DIR'}/proftpd") {
+		$rs = make_dir("$main::cfg{'TRAFF_LOG_DIR'}/proftpd", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
+		return $rs if ($rs != 0);
+	}
 	$rs = store_file("$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}", "\n", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 	return $rs if ($rs != 0);
 

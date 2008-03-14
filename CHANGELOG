@@ -10,6 +10,8 @@ ispCP ω 1.0.0 Changelog
 	- DISTS:
 		* Fixed #1107: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch
 		* Fixed #1108: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch #2
+		* Updated all Distros
+	- RELEASE ispCP ω Omega 1.0.0 RC4
 
 2008-03-12 Christian Hernmarck
 	- DISTS:

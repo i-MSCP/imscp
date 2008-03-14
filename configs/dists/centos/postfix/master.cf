@@ -17,11 +17,11 @@ smtp      inet  n       -       -       -       -       smtpd
 #  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 # For AOL-Accounts
 587       inet  n       -       -       -       -       smtpd
-   -o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination
+	-o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination
 #628      inet  n       -       -       -       -       qmqpd
 pickup    fifo  n       -       -       60      1       pickup
 cleanup   unix  n       -       -       -       0       cleanup
-qmgr      fifo  n       -       -       300     1       qmgr
+qmgr      fifo  n       -       n       300     1       qmgr
 #qmgr     fifo  n       -       -       300     1       oqmgr
 tlsmgr    unix  -       -       -       1000?   1       tlsmgr
 rewrite   unix  -       -       -       -       -       trivial-rewrite
@@ -35,7 +35,7 @@ smtp      unix  -       -       -       -       -       smtp
 # When relaying mail as backup MX, disable fallback_relay to avoid MX loops
 relay     unix  -       -       -       -       -       smtp
 	-o fallback_relay=
-#   -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+#       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
 showq     unix  n       -       -       -       -       showq
 error     unix  -       -       -       -       -       error
 discard   unix  -       -       -       -       -       discard
@@ -43,9 +43,15 @@ local     unix  -       n       n       -       -       local
 virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
-scache    unix  -       -       -       -       1       scache
+scache	  unix	-	-	-	-	1	scache
 # ====================================================================
-# ISPCP ω OMEGA configuration
+# ispCP ω (OMEGA) a Virtual Hosting Control System
+#
+# @copyright	2001-2006 by moleSoftware GmbH
+# @copyright	2006-2008 by ispCP | http://isp-control.net
+# @version		SVN: $ID$
+# @link			http://isp-control.net
+# @author		ispCP Team
 # ====================================================================
 # AMaViS => Antivir / Antispam
 amavis    unix  -       -       n       -       2       smtp
@@ -66,7 +72,7 @@ localhost:10025 inet  n -       n       -      -        smtpd
    -o mynetworks=127.0.0.0/8
    -o strict_rfc821_envelopes=yes
 
-# ISPCP autoresponder
+# ispCP autoresponder
 ispcp-arpl unix  -      n       n       -       -       pipe
   flags=O user=vmail argv=/var/www/ispcp/engine/messager/ispcp-arpl-msgr
 
@@ -89,16 +95,7 @@ smtps     inet  n       -       -       -       -       smtpd
 # Also specify in main.cf: maildrop_destination_recipient_limit=1
 #
 maildrop  unix  -       n       n       -       -       pipe
-  flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d ${recipient}
-#
-# The Cyrus deliver program has changed incompatibly, multiple times.
-#
-old-cyrus unix  -       n       n       -       -       pipe
-  flags=R user=cyrus argv=/cyrus/bin/deliver -e -m ${extension} ${user}
-# Cyrus 2.1.5 (Amos Gouaux)
-# Also specify in main.cf: cyrus_destination_recipient_limit=1
-cyrus     unix  -       n       n       -       -       pipe
-  user=cyrus argv=/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
+  flags=DRhu user=vmail argv=/usr/bin/maildrop -d ${recipient}
 #
 # See the Postfix UUCP_README file for configuration details.
 #
@@ -110,4 +107,9 @@ uucp      unix  -       n       n       -       -       pipe
 ifmail    unix  -       n       n       -       -       pipe
   flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
 bsmtp     unix  -       n       n       -       -       pipe
-  flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f $sender $nexthop $recipient
+  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t$nexthop -f$sender $recipient
+scalemail-backend unix	-	n	n	-	2	pipe
+  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
+mailman   unix  -       n       n       -       -       pipe
+  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
+  ${nexthop} ${user}

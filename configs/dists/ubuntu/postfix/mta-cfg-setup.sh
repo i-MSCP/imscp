@@ -35,7 +35,6 @@ MTA_CONF_DIR=/etc/postfix
 MTA_SYSTEM_CONF_DIR=/etc/postfix/ispcp
 
 
-
 CMD_CP=/bin/cp
 
 CMD_POSTMAP=/usr/sbin/postmap
@@ -43,7 +42,6 @@ CMD_POSTMAP=/usr/sbin/postmap
 CMD_NEWALIASES=/usr/bin/newaliases
 
 CMD_MKDIR=/bin/mkdir
-
 
 
 ${CMD_CP} ./main.cf ${MTA_CONF_DIR}

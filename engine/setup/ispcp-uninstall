@@ -692,18 +692,15 @@ sub uninstall_po {
 
         return $rs if ($rs != 0);
 
-        $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authmodulelist.system $main::cfg{'COURIER_CONF_DIR'}/authmodulelist";
-
-        $rs = sys_command($cmd);
-
-        return $rs if ($rs != 0);
+		if (-e "$bk_dir/authmodulelist.system") {
+	        $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authmodulelist.system $main::cfg{'COURIER_CONF_DIR'}/authmodulelist";
+	        $rs = sys_command($cmd);
+	        return $rs if ($rs != 0);
+        }
 
         if (-e "$bk_dir/userdb.system") {
-
             $cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/userdb.system $main::cfg{'COURIER_CONF_DIR'}/userdb";
-
             $rs = sys_command($cmd);
-
         }
 
 	}

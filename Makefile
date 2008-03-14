@@ -48,6 +48,7 @@ SYSTEM_FCGI=$(INST_PREF)/var/www/fcgi
 SYSTEM_SCOREBOARDS=$(INST_PREF)/var/www/scoreboards
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
+SYSTEM_MAKE_FILE=/bin/touch
 
 export
 
