@@ -787,7 +787,7 @@ sub prepare_update {
 
 	# Abort
 	if ($main::ua{'update'} eq ABORT) {
-		exit_werror("\tScript was aborted by user.");
+		exit_werror("Script was aborted by user.");
 	}
 	# VHCS update
 	elsif (($main::ua{'update'} eq VHCS247) || ($main::ua{'update'} eq VHCS248)) {
