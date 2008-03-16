@@ -1,6 +1,9 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-16 Benedikt Heintel
+	- RELEASE ispCP ω Omega 1.0.0 RC4
+
 2008-03-13 Benedikt Heintel
 	- SETUP:
 		* Fixed #942: ERROR: Undefined intput data, bt: |{PHP_VERSION}|, et: |{PHP_VERSION}|, src !
@@ -12,7 +15,6 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1107: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch
 		* Fixed #1108: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch #2
 		* Updated all Distros
-	- RELEASE ispCP ω Omega 1.0.0 RC4
 
 2008-03-12 Christian Hernmarck
 	- DISTS:
