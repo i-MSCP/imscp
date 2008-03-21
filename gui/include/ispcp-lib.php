@@ -37,6 +37,7 @@ require_once(INCLUDEPATH.'/i18n.php');
 require_once(INCLUDEPATH.'/system-message.php');
 require_once(INCLUDEPATH.'/ispcp-db-keys.php');
 require_once(INCLUDEPATH.'/sql.php');
+define("E_USER_OFF", 0);
 
 // variable for development edition => shows all php variables under the pages
 // false = disable, true = enable

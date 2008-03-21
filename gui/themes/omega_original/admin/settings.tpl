@@ -64,6 +64,28 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
+                              <td colspan="2" class="content3"><strong>{TR_PASSWORD_SETTINGS}</strong></td>
+                            </tr>
+                            <tr>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_PASSWD_CHARS}</td>
+                              <td class="content">
+                                <input name="passwd_chars" type="text" class="textinput" id="passwd_chars" style="width:50px" value="{PASSWD_CHARS}" maxlength="2" />
+							</td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_PASSWD_STRONG}</td>
+                              <td class="content"><select name="passwd_strong" id="passwd_strong">
+                                <option value="0" {PASSWD_STRONG_OFF}>{TR_DISABLED}</option>
+                                <option value="1" {PASSWD_STRONG_ON}>{TR_ENABLED}</option>
+                              </select>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_BRUTEFORCE}</strong></td>
                             </tr>
                             <tr>
@@ -110,9 +132,33 @@
                               <td>&nbsp;</td>
                               <td class="content2">{TR_BRUTEFORCE_MAX_CAPTCHA}</td>
                               <td class="content">
-                                <input name="bruteforce_between_time" type="text" class="textinput" id="bruteforce_between_time" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" />
+                                <input name="bruteforce_max_capcha" type="text" class="textinput" id="bruteforce_max_capcha" style="width:50px" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" />
+                              </td>
+							  </tr>
+							                              <tr>
+                              <td>&nbsp;</td>
+                              <td colspan="2" class="content3"><strong>{TR_MAIL_SETTINGS}</strong></td>
+                            </tr>
+							<td>&nbsp;</td>
+                              <td class="content2">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</td>
+                              <td class="content">
+                                <select name="create_default_email_addresses" id="create_default_email_addresses">
+                                  <option value="0" {CREATE_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {CREATE_DEFAULT_EMAIL_ADDRESSES_ON}>{TR_ENABLED}</option>
+                                </select>
                               </td>
                             </tr>
+                            <tr>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_HARD_MAIL_SUSPENSION}</td>
+                              <td class="content">
+                                <select name="hard_mail_suspension" id="hard_mail_suspension">
+                                  <option value="0" {HARD_MAIL_SUSPENSION_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {HARD_MAIL_SUSPENSION_ON}>{TR_ENABLED}</option>
+                                </select>
+                              </td>
                             <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><strong>{TR_OTHER_SETTINGS}</strong></td>
@@ -143,6 +189,18 @@
                               <td class="content2">{TR_DOMAIN_ROWS_PER_PAGE}</td>
                               <td class="content">
                                 <input name="domain_rows_per_page" type="text" class="textinput" id="domain_rows_per_page" style="width:50px" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>&nbsp;</td>
+                              <td class="content2">{TR_LOG_LEVEL}</td>
+                              <td class="content">
+                                <select name="log_level" id="log_level">
+                                  <option value="E_USER_OFF" {LOG_LEVEL_SELECTED_OFF}>{TR_E_USER_OFF}</option>
+								  <option value="E_USER_ERROR" {LOG_LEVEL_SELECTED_ERROR}>{TR_E_USER_ERROR}</option>
+                                  <option value="E_USER_WARNING" {LOG_LEVEL_SELECTED_WARNING}>{TR_E_USER_WARNING}</option>
+								  <option value="E_USER_NOTICE" {LOG_LEVEL_SELECTED_NOTICE}>{TR_E_USER_NOTICE}</option>
+                                </select>
                               </td>
                             </tr>
                             <tr>

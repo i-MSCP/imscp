@@ -14,6 +14,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1072: open directory (ftp class)
 		* Fixed #1115: ispcp/gui/include/ispcp-config.php under FreeBSD
 		* Fixed #1116: error in client template in ftp choose dir
+		* Fixed #1122: Email Logging Daemon
 		* Fixed #1127: Order of menu entries in webtools
 	- SETUP:
 		* Fixed #1114: FreeBSD ispcp-setup-methods should be changed
