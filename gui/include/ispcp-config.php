@@ -18,7 +18,7 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-if (file_exists("/usr/local/etc/ispcp/ispcp.conf")) {
+if (@file_exists("/usr/local/etc/ispcp/ispcp.conf")) {
 	$cfg = "/usr/local/etc/ispcp/ispcp.conf";
 }
 else {

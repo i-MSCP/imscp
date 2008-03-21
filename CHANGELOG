@@ -1,7 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2008-03-20 Benedikt Heintel
+2008-03-22 Christian Hernmarck
+	- DISTS:
+		* Fixed: openSuSE small things (DirectoryIndex not only master vhost, *creating* scoreboard dir, /etc/*authlib*/userdb
+	- GUI:
+		* Fixed #1129: Errors after upgrading to r1069
+
+2008-03-21 Benedikt Heintel
 	- DATABASE:
 		* Fixed #1085: disable protocols in server status which are not available by default
 	- ENGINE:
