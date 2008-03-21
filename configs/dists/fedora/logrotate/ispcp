@@ -21,6 +21,16 @@
 	endscript
 }
 
+/var/log/httpd/backup/*.log.perv {
+	size 5M
+	missingok
+	rotate 5
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
+}
+
 /var/log/xferlog {
   daily
   rotate 7

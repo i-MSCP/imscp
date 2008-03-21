@@ -148,20 +148,6 @@ sub gen_log_file {
 
 	if (-e $dest_file_prev) {
 
-		my $prev_size = -s $dest_file_prev;
-
-		if ($prev_size > $main::cfg{'PREV_TRAFF_LOG_MAX_SIZE'}) {
-
-			$rs = del_file($dest_file_prev);
-
-			return ($rs, "del_file($dest_file_prev)") if ($rs != 0);
-
-		}
-
-	}
-
-    if (-e $dest_file_prev) {
-
         if (diff_command("$main::cfg{'CMD_DIFF'} -a -q $dest_file $dest_file_prev") == 0) {
 
             $rs = del_file($dest_file);

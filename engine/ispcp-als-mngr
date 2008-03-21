@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -2208,7 +2208,10 @@ sub als_add_mta_cfg_data {
 
     $working =~ s/^$als_name\t\t\t[^\n]+\n//gim;
 
-    $working .= "$als_name\t\t\tvals_entry\n";
+	# Add domain entry only if mail accounts are activated
+	if (@$als_data[15] >= 0) {
+    	$working .= "$als_name\t\t\tvals_entry\n";
+	}
 
     #
     # Let's do some backup first;

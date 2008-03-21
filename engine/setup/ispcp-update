@@ -129,7 +129,7 @@ sub welcome_note {
 \t(1) VHCS 2.4.7 or VHCS 2.4.7.1
 \t(2) VHCS 2.4.8 RC1
 \t(3) ispCP OMEGA 1.0.0 RC2 (incl. b and c)
-\t(4) ispCP OMEAG 1.0.0 RC3
+\t(4) ispCP OMEGA 1.0.0 RC3
 \t(0) abort
 MSG
 

@@ -218,8 +218,8 @@ sub htuser_del_user_data {
 		$rs = store_file(
 						 $htaccess_users_file,
 						 $htaccess_users_content,
-						 $main::cfg{'ROOT_USER'}
-						 $main::cfg{'ROOT_GROUP'}
+						 $main::cfg{'ROOT_USER'},
+						 $main::cfg{'ROOT_GROUP'},
 						 0644
 						);
 

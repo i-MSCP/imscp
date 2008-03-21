@@ -81,7 +81,7 @@ VALUES (
 ),(
 'PORT_HTTP', '80;tcp;HTTP;1;0'
 ),(
-'PORT_HTTPS', '443;tcp;HTTPS;1;0'
+'PORT_HTTPS', '443;tcp;HTTPS;0;0'
 ),(
 'PORT_POP3', '110;tcp;POP3;1;0'
 ),(
@@ -89,7 +89,7 @@ VALUES (
 ),(
 'PORT_IMAP', '143;tcp;IMAP;1;0'
 ),(
-'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;1;0'
+'PORT_IMAP-SSL', '993;tcp;IMAP-SSL;0;0'
 ),(
 'PORT_POSTGREY', '60000;tcp;POSTGREY;1;1'
 ),(

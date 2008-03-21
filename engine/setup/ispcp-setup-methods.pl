@@ -1426,15 +1426,19 @@ sub setup_mta {
 	$rs = setfmode("$main::cfg{'ROOT_DIR'}/engine/messager/ispcp-arpl-msgr", $main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'}, 0755);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_CP'} -p $vrl_dir/{aliases,domains,mailboxes,transport,sender-access} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}";
+	$cmd = "$main::cfg{'CMD_CP'} -p $vrl_dir/aliases $vrl_dir/domains $vrl_dir/mailboxes
+									$vrl_dir/transport $vrl_dir/sender-access $main::cfg{'MTA_VIRTUAL_CONF_DIR'}";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_CP'} -p $vrl_dir/{aliases,domains,mailboxes,transport,sender-access} $wrk_dir";
+	$cmd = "$main::cfg{'CMD_CP'} -p $vrl_dir/aliases $vrl_dir/domains $vrl_dir/mailboxes
+									$vrl_dir/transport $vrl_dir/sender-access $wrk_dir";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/{aliases,domains,mailboxes,transport,sender-access} &> /tmp/ispcp-setup-services.log";
+	$cmd = "$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/aliases $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/domains
+									  $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/mailboxes $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/transport
+									  $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/sender-access &> /tmp/ispcp-setup-services.log";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
@@ -1474,26 +1478,6 @@ sub setup_po {
 	if (! -e "$bk_dir/authdaemonrc.system") {
 
 		# Let's backup system configs;
-		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/imapd" ) {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/imapd $bk_dir/imapd.system";
-			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
-		}
-		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/pop3d" ) {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/pop3d $bk_dir/pop3d.system";
-			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
-		}
-		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/imapd-ssl" ) {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/imapd-ssl $bk_dir/imapd-ssl.system";
-			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
-		}
-		if ( -e "$main::cfg{'COURIER_CONF_DIR'}/pop3d-ssl" ) {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/pop3d-ssl $bk_dir/pop3d-ssl.system";
-			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
-		}
 		if ( -e $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
 			if ( -e "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc" ) {
 				### first make backup, before updating
@@ -1510,35 +1494,26 @@ sub setup_po {
 			}
 		}
 		else {
-			if ( -e "$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc" ) {
+			if ( -e "$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc" ) {
 				### first make backup, before updating
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
+				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc $bk_dir/authdaemonrc.system";
 				$rs = sys_command($cmd);
 				return $rs if ($rs != 0);
 
 				#### Update authdaemonrc
-				($rs, $rdata) = get_file("$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc");
+				($rs, $rdata) = get_file("$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc");
 				return $rs if ($rs != 0);
 
 				$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
-				$rs = save_file("$main::cfg{'COURIER_CONF_DIR'}/authdaemonrc", $rdata);
+				$rs = save_file("$main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc", $rdata);
 				return $rs if ($rs != 0);
 			}
 		}
 
-		if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-			if (-e "$main::cfg{'AUTHLIB_CONF_DIR'}/userdb") {
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/userdb $bk_dir/userdb.system";
-				$rs = sys_command($cmd);
-				return $rs if ($rs != 0);
-			}
-		}
-		else {
-			if (-e "$main::cfg{'COURIER_CONF_DIR'}/userdb") {
-				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'COURIER_CONF_DIR'}/userdb $bk_dir/userdb.system";
-				$rs = sys_command($cmd);
-				return $rs if ($rs != 0);
-			}
+		if (-e "$main::cfg{'AUTHLIB_CONF_DIR'}/userdb") {
+			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/userdb $bk_dir/userdb.system";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
 		}
 	}
 
@@ -1546,7 +1521,7 @@ sub setup_po {
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/userdb $main::cfg{'COURIER_CONF_DIR'}";
+	$cmd = "$main::cfg{'CMD_CP'} -p $cfg_dir/userdb $main::cfg{'AUTHLIB_CONF_DIR'}";
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
@@ -1554,7 +1529,7 @@ sub setup_po {
 		$rs = setfmode("$main::cfg{'AUTHLIB_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
 	}
 	else {
-		$rs = setfmode("$main::cfg{'COURIER_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
+		$rs = setfmode("$main::cfg{'AUTHLIB_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0600);
 	}
 	return $rs if ($rs != 0);
 
@@ -1626,7 +1601,7 @@ sub setup_ftpd {
 	return $rs if ($rs != 0);
 
 	#
-	# To fill ftp_traff.log file with somethign. ;)
+	# To fill ftp_traff.log file with something. ;)
 	#
 
 	if (! -e "$main::cfg{'TRAFF_LOG_DIR'}/proftpd") {

@@ -1,10 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <script>
-function CopyText(inputname)
-{
+function CopyText(inputname) {
 	var buf1='';
 	var buf2=document.forms[0].elements[inputname].value;
 	var buf3=buf1+buf2;
@@ -17,7 +15,7 @@ function CopyText(inputname)
 <title>{TR_CLIENT_WEBTOOLS_PAGE_TITLE}</title>
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 <style type="text/css">
 <!--
 body {

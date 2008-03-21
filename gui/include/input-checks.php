@@ -119,19 +119,39 @@ function clean_input($input, $htmlencode = false) {
 }
 
 /**
+ * Passwort check
  *
- * @function chk_password
- * @description
- * @param String $data username to be checked
- * @param int $num number of max. chars
- * @return boolean valid username or not
+ * Check if an password is valid
+ *
+ * @author		ispCP Team
+ * @author		Benedikt Heintel
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version		1.01
+ *
+ * @access	public
+ * @global	array	$cfg		array of config values
+ * @param 	String 	$data		username to be checked
+ * @param 	int		$num		number of max. chars
+ * @param	String	$permitted	RegExp of permitted chars
+ * @return 	boolean				valid username or not
  */
-function chk_password($password, $num = 50) {
+function chk_password($password, $num = 50, $permitted = "") {
 	global $cfg;
 
+	if ($num > 255) {
+		$num = 255;
+	} else if ($num < 6) {
+		$num = 6;
+	}
+
 	$len = strlen($password);
-	if ($len < $cfg['PASSWD_CHARS'] || $len > $num)
+	if ($len < $cfg['PASSWD_CHARS'] || $len > $num) {
 		return false;
+	}
+
+	if (preg_match($pemitted, $password)) {
+		return false;
+	}
 
 	if ($cfg['PASSWD_STRONG']) {
 		return (bool)(preg_match("/[0-9]/", $password) && preg_match("/[a-zA-Z]/", $password));

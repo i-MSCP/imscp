@@ -1,6 +1,32 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-20 Benedikt Heintel
+	- DATABASE:
+		* Fixed #1085: disable protocols in server status which are not available by default
+	- ENGINE:
+		* Fixed: two errors in htuser-mngr
+		* Fixed #945: logrotate fails because of ispcp script
+		* Fixed #1113: removed add COURIER_CONF_DIR and stored userdb to AUTHLIB_CONF_DIR path
+		* Fixed #1126: do not add all domains into the MTA domains list
+	- GUI:
+		* Fixed #919: IP Management UI
+		* Fixed #1072: open directory (ftp class)
+		* Fixed #1115: ispcp/gui/include/ispcp-config.php under FreeBSD
+		* Fixed #1116: error in client template in ftp choose dir
+		* Fixed #1127: Order of menu entries in webtools
+	- SETUP:
+		* Fixed #1114: FreeBSD ispcp-setup-methods should be changed
+		* Fixed #1123: database revision should be 1 for updaters
+	- DISTS:
+		* Fixed #1117: (Gentoo) /etc/init.d/ispcp_network: line 155: log_warning_msg: command not found
+	- LANGUAGES:
+		* Updated Czech, Danish, French
+
+2008-03-18 Benedikt Heintel
+	- SETUP
+		* Fixed #1119: Update Spelling Mistake
+
 2008-03-16 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.0 RC4
 

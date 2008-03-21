@@ -127,29 +127,33 @@ SQL_QUERY;
 			$user_logged = $_SESSION['user_logged'];
 
 			write_log("$user_logged: add new IP4 address: $ip_number!");
-		}
 
+			$sucess = true;
+		}
+	}
+
+	if (!isset($sucess)) {
 		$tpl->assign(
-				array(
-					'VALUE_IP1' => $_POST['ip_number_1'],
-					'VALUE_IP2' => $_POST['ip_number_2'],
-					'VALUE_IP3' => $_POST['ip_number_3'],
-					'VALUE_IP4' => $_POST['ip_number_4'],
-					'VALUE_DOMAIN' => clean_input($_POST['domain']),
-					'VALUE_ALIAS' => clean_input($_POST['alias']),
-				)
-			);
+			array(
+				'VALUE_IP1' => $_POST['ip_number_1'],
+				'VALUE_IP2' => $_POST['ip_number_2'],
+				'VALUE_IP3' => $_POST['ip_number_3'],
+				'VALUE_IP4' => $_POST['ip_number_4'],
+				'VALUE_DOMAIN' => clean_input($_POST['domain']),
+				'VALUE_ALIAS' => clean_input($_POST['alias']),
+			)
+		);
 	} else {
 		$tpl->assign(
-				array(
-					'VALUE_IP1' => '',
-					'VALUE_IP2' => '',
-					'VALUE_IP3' => '',
-					'VALUE_IP4' => '',
-					'VALUE_DOMAIN' => '',
-					'VALUE_ALIAS' => '',
-				)
-			);
+			array(
+				'VALUE_IP1' => '',
+				'VALUE_IP2' => '',
+				'VALUE_IP3' => '',
+				'VALUE_IP4' => '',
+				'VALUE_DOMAIN' => '',
+				'VALUE_ALIAS' => '',
+			)
+		);
 	}
 }
 
@@ -244,7 +248,6 @@ $tpl->assign(
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if ($cfg['DUMP_GUI_DEBUG'])

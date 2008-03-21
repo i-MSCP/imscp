@@ -2752,7 +2752,10 @@ sub dmn_add_mta_cfg_data {
 
     $working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
 
-    $working .= "$dmn_name\t\t\tvdmn_entry\n";
+	# Add domain entry only if mail accounts are activated
+	if (@$dmn_data[8] >= 0) {
+    	$working .= "$dmn_name\t\t\tvdmn_entry\n";
+    }
 
     #
     # Let's do some backup first;

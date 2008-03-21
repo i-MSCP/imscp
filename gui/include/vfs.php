@@ -207,10 +207,13 @@ SQL_QUERY;
 		}
 		// 'localhost' for testing purposes. I have to study if a better
 		// $this->_domain would work on all situations
-		$this->_handle = @ftp_connect('localhost');
+		$this->_handle = @ftp_ssl_connect('localhost');
 		if (!is_resource($this->_handle)) {
-			$this->close();
-			return false;
+			$this->_handle = @ftp_connect('localhost');
+			if (!is_resource($this->_handle)) {
+				$this->close();
+				return false;
+			}
 		}
 		// Perform actual login
 		$response = @ftp_login($this->_handle, $this->_user, $this->_passwd);

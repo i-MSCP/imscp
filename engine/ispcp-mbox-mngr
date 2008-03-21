@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -29,7 +29,6 @@
 #
 #    http://isp-control.net
 #
-
 
 use FindBin;
 use lib "$FindBin::Bin/";
@@ -2441,14 +2440,7 @@ sub mbox_add_po_data {
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
-	my $authlib_dir = undef;
-
-    if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-
-	    $authlib_dir = $main::cfg{'AUTHLIB_CONF_DIR'};
-    }
-
-    my $courier_dir = $main::cfg{'COURIER_CONF_DIR'};
+    my $courier_dir = $main::cfg{'AUTHLIB_CONF_DIR'};
 
     my $cmd_makeuserdb = $main::cfg{'CMD_MAKEUSERDB'};
 
@@ -2459,17 +2451,9 @@ sub mbox_add_po_data {
 
     my $timestamp = time;
 
-    my ($sys, $working, $userdb_cfg) = (undef, undef, undef);
+    my ($sys, $working) = (undef, undef);
 
-    if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-
-	    $userdb_cfg = "$authlib_dir/userdb";
-
-    } else {
-
-    	$userdb_cfg = "$courier_dir/userdb";
-
-    }
+	my $userdb_cfg = "$courier_dir/userdb";
 
     my $userdb_working_cfg = "$working_dir/userdb";
 
@@ -2607,14 +2591,7 @@ sub mbox_del_po_data {
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
-	my $authlib_dir = undef;
-
-    if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-
-	    $authlib_dir = $main::cfg{'AUTHLIB_CONF_DIR'};
-    }
-
-    my $courier_dir = $main::cfg{'COURIER_CONF_DIR'};
+    my $courier_dir = $main::cfg{'AUTHLIB_CONF_DIR'};
 
     my $cmd_makeuserdb = $main::cfg{'CMD_MAKEUSERDB'};
 
@@ -2627,15 +2604,7 @@ sub mbox_del_po_data {
 
     my ($sys, $working, $userdb_cfg) = (undef, undef, undef);
 
-    if (exists $main::cfg{'AUTHLIB_CONF_DIR'} && $main::cfg{'AUTHLIB_CONF_DIR'}) {
-
-	    $userdb_cfg = "$authlib_dir/userdb";
-
-    } else {
-
-    	$userdb_cfg = "$courier_dir/userdb";
-
-    }
+	$userdb_cfg = "$courier_dir/userdb";
 
     my $userdb_working_cfg = "$working_dir/userdb";
 

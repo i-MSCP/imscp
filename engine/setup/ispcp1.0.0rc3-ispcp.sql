@@ -6,7 +6,7 @@ START TRANSACTION;
 USE {DATABASE};
 
 -- BEGIN: Upgrade database structure:
-UPDATE `config` SET `value` = '2' WHERE `name` = 'DATABASE_REVISION' LIMIT 1;
+UPDATE `config` SET `value` = '1' WHERE `name` = 'DATABASE_REVISION' LIMIT 1;
 -- END: Upgrade database structure
 
 -- BEGIN: Regenerate config files:
