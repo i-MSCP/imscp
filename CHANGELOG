@@ -20,6 +20,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1123: database revision should be 1 for updaters
 	- DISTS:
 		* Fixed #1117: (Gentoo) /etc/init.d/ispcp_network: line 155: log_warning_msg: command not found
+		* Fixed: (OpenSuse) Serveral install issues
 	- LANGUAGES:
 		* Updated Czech, Danish, French
 

@@ -32,7 +32,7 @@ mydomain                     = {MTA_LOCAL_DOMAIN}
 myorigin                     = $myhostname
 
 smtpd_banner                 = $myhostname ESMTP ispCP {MTA_VERSION} Managed
-setgid_group                 = postdrop
+setgid_group                 = maildrop
 
 # Receiving messages parameters
 mydestination                = $myhostname, $mydomain
