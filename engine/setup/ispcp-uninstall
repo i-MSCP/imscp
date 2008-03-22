@@ -330,8 +330,19 @@ sub uninstall_system_dirs {
     $rs = del_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'});
     return $rs if ($rs != 0);
 
-    $rs = del_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'});
-    return $rs if ($rs != 0);
+
+	# ask to delete directory
+	$rdata = 'yes';
+	$qmsg = "\tDelete ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."? [yes]: ";
+	print STDOUT $qmsg;
+
+	$rdata = readline(\*STDIN);
+	chop($rdata);
+
+	if ($rdata eq 'yes' || $rdata eq 'y') {
+    	$rs = del_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'});
+    	return $rs if ($rs != 0);
+    }
 
     $rs = del_dir($main::cfg{'LOG_DIR'});
     return $rs if ($rs != 0);

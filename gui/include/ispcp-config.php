@@ -19,13 +19,13 @@
  */
 
 if (@file_exists("/usr/local/etc/ispcp/ispcp.conf")) {
-	$cfg = "/usr/local/etc/ispcp/ispcp.conf";
+	$cfgfile = "/usr/local/etc/ispcp/ispcp.conf";
 }
 else {
-	$cfg = "/etc/ispcp/ispcp.conf";
+	$cfgfile = "/etc/ispcp/ispcp.conf";
 }
 
-$cfg_obj = new Config($cfg);
+$cfg_obj = new Config($cfgfile);
 
 /* Status not ok -> Try to get the error and display a message */
 if ($cfg_obj->status != 'ok') {
