@@ -4,6 +4,8 @@ ispCP ω 1.0.0 Changelog
 2008-03-23 Benedikt Heintel
 	- GUI:
 		* Fixed: Warnings and Notices if no Database found or no conection to it
+	- ENGINE:
+		* Fixed #836: Static awstats in user's language
 
 2008-03-22 Benedikt Heintel
 	- GUI:

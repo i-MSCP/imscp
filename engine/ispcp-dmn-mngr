@@ -4016,11 +4016,11 @@ sub dmn_del_awstats_cfg_data {
 ##
 
 sub dmn_add_awstats_cron {
+    push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
+
     my ($dmn_data) = @_;
 
     my ($rs, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef);
-
-    push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
 
     if (!defined($dmn_data) || $dmn_data eq '') {
         push_el(\@main::el, 'dmn_add_awstats_cron()', 'ERROR: Undefined Input Data...');
@@ -4043,6 +4043,66 @@ sub dmn_add_awstats_cron {
     my $working_cfg = "$working_dir/ispcp";
     my $timestamp 	= time;
     my $backup_cfg 	= "$backup_dir/ispcp.$timestamp";
+    my $user_lang	= en;
+
+    # Selecting user language
+    my $user_id = @$dmn_data[4];
+    my $sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
+    ($rs, $rdata) = doSQL($sql);
+    return $rs if ($rs != 0);
+
+    my %languages = (
+		"lang_Albanian" => "al",
+		"lang_Bosnian" => "ba",
+		"lang_Bulgarian" => "bg",
+		"lang_Catalan" => "ca",
+		"lang_ChineseTaiwan" => "tw",
+		"lang_Chinese" => "cn",
+		"lang_Czech" => "cz",
+		"lang_Danish" => "dk",
+		"lang_Dutch" => "nl",
+		"lang_English" => "en",
+		"lang_Estonian" => "et",
+		"lang_Euskara" => "eu",
+		"lang_Finish" => "fi",
+		"lang_FrenchFrance" => "fr",
+		"lang_Galician" => "gl",
+		"lang_GermanAustria" => "de",
+		"lang_GermanGermany" => "de",
+		"lang_GermanSwiss" => "de",
+		"lang_Greek" => "gr",
+		"lang_Hebrew" => "he",
+		"lang_Hungarian" => "hu",
+		"lang_Icelandic" => "is",
+		"lang_Indonesian" => "id",
+		"lang_Italian" => "it",
+		"lang_Japanese" => "jp",
+		"lang_Korean" => "kr",
+		"lang_Latvian" => "lv",
+		"lang_NorwegianNyorsk" => "nn",
+		"lang_NorwegianBokmal" => "nb",
+		"lang_Polish" => "pl",
+		"lang_Portuguese" => "pt",
+		"lang_PortuguesBrazil" => "br",
+		"lang_Romanian" => "ro",
+		"lang_Russian" => "ru",
+		"lang_Serbian" => "sr",
+		"lang_Slovak" => "sk",
+		"lang_Slovenian" => "si",
+		"lang_SpanishArgentina" => "es",
+		"lang_SpanishSpain" => "es",
+		"lang_Swedisch" => "se",
+		"lang_Turkish" => "tr",
+		"lang_Ukrainian" => "ua",
+		"lang_Welsh" => "cy
+	)
+
+	foreach $key (keys %$languages) {
+    	if ($key == $rdata[0]) {
+			$user_lang = $languages->{$key};
+			break;
+    	}
+    }
 
     #
     # Getting needed templates;
@@ -4071,7 +4131,8 @@ sub dmn_add_awstats_cron {
     my %tag_hash = (
                     '{DMN_NAME}' => $dmn_name,
                     '{MINUTE}' => $cronjob_minute,
-                    '{HOUR}' => $cronjob_hour
+                    '{HOUR}' => $cronjob_hour,
+                    '{USER_LANG}' => $user_lang
                    );
 
    (

@@ -1,4 +1,4 @@
-ispcp_table = PortuguesBrazil
+ispcp_table = PortugueseBrazilian
 ispcp_language = Portugues (Brazil)
 ispcp_languageSetlocaleValue = pt_BR
 encoding = UTF-8
@@ -464,7 +464,7 @@ Backup archive scheduled for restoring! = Arquivo agendado para restauração!
 ispCP - Client/Daily Backup = ispCP - Cliente/Backup Diário
 Daily backup = Backup diário
 Login with your FTP account = Login com sua conta de FTP
-(usually named  = (nome do backup? 
+(usually named  = (nome do backup?
 Restore backup = Restaurar backup
 Restore = Restaurar
 Enable = Habilita
