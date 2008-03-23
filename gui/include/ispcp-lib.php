@@ -29,11 +29,25 @@ if (!isset($_SESSION))
 // Error handling and debug
 //error_reporting(0);
 // setting for development edition - see all error messages
-error_reporting(E_ALL|E_STRICT);
+error_reporting(E_ALL);
 
 require_once(INCLUDEPATH.'/spGzip.php');
 require_once(INCLUDEPATH.'/class.pTemplate.php');
 require_once(INCLUDEPATH.'/i18n.php');
+
+// Template pathes
+$cfg['ROOT_TEMPLATE_PATH'] = 'themes/';
+$cfg['USER_INITIAL_THEME'] = 'omega_original';
+$cfg['LOGIN_TEMPLATE_PATH'] = $cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'];
+$cfg['ADMIN_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/admin';
+$cfg['RESELLER_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/reseller';
+$cfg['CLIENT_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/client';
+$cfg['IPS_LOGO_PATH'] = '../themes/user_logos';
+$cfg['PURCHASE_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/orderpanel';
+
+// Standard Language (if not set)
+$cfg['USER_INITIAL_LANG'] = 'lang_English';
+
 require_once(INCLUDEPATH.'/system-message.php');
 require_once(INCLUDEPATH.'/ispcp-db-keys.php');
 require_once(INCLUDEPATH.'/sql.php');
@@ -59,21 +73,12 @@ $cfg['ITEM_ORDERED_STATUS'] = 'ordered';
 $cfg['MAX_SQL_DATABASE_LENGTH'] = 64;
 $cfg['MAX_SQL_USER_LENGTH'] = 16;
 $cfg['MAX_SQL_PASS_LENGTH'] = 32;
-// Template pathes
-$cfg['ROOT_TEMPLATE_PATH'] = 'themes/';
-$cfg['LOGIN_TEMPLATE_PATH'] = $cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'];
-$cfg['ADMIN_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/admin';
-$cfg['RESELLER_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/reseller';
-$cfg['CLIENT_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/client';
-$cfg['IPS_LOGO_PATH'] = '../themes/user_logos';
-$cfg['PURCHASE_TEMPLATE_PATH'] = '../'.$cfg['ROOT_TEMPLATE_PATH'].$cfg['USER_INITIAL_THEME'].'/orderpanel';
 
 // the following variables are overriden via admin cp
 $cfg['DOMAIN_ROWS_PER_PAGE'] = 10;
 // 'admin' => hosting plans are available only in admin level, reseller can not make custom changes
 // 'reseller' => hosting plans are available only in reseller level
 $cfg['HOSTING_PLANS_LEVEL'] = 'reseller';
-$cfg['USER_INITIAL_LANG'] = 'lang_English';
 
 // enable or disable supportsystem
 // false = disable, true = enable

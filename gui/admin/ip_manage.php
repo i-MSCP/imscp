@@ -132,7 +132,7 @@ SQL_QUERY;
 		}
 	}
 
-	if (!isset($sucess)) {
+	if (!isset($sucess) && isset($_POST['ip_number_1'])) {
 		$tpl->assign(
 			array(
 				'VALUE_IP1' => $_POST['ip_number_1'],

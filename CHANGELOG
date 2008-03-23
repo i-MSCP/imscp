@@ -1,6 +1,16 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-23 Benedikt Heintel
+	- GUI:
+		* Fixed: Warnings and Notices if no Database found or no conection to it
+
+2008-03-22 Benedikt Heintel
+	- GUI:
+		* Fixed: Error in input check and IP management
+	- DISTS:
+		* Fixed #1130: (FreeBSD) Fix program path in freebsd distro
+
 2008-03-22 Christian Hernmarck
 	- DISTS:
 		* Fixed: openSuSE small things (DirectoryIndex not only master vhost, *creating* scoreboard dir, /etc/*authlib*/userdb

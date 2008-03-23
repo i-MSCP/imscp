@@ -19,9 +19,9 @@
 ################################################################################
 
 # Postfix directory settings; These are critical for normal Postfix MTA functionallity
-command_directory            = /usr/sbin
-daemon_directory             = /usr/lib/postfix
-program_directory            = /usr/lib/postfix
+command_directory            = /usr/local/sbin
+daemon_directory             = /usr/local/libexec/postfix
+program_directory            = /usr/local/libexec/postfix
 
 # Some common configuration parameters
 inet_interfaces              = all
@@ -32,7 +32,7 @@ mydomain                     = {MTA_LOCAL_DOMAIN}
 myorigin                     = $myhostname
 
 smtpd_banner                 = $myhostname ESMTP ispCP {MTA_VERSION} Managed
-setgid_group                 = postdrop
+setgid_group                 = maildrop
 
 # Receiving messages parameters
 mydestination                = $myhostname, $mydomain
