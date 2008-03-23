@@ -66,12 +66,22 @@ SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($user_id));
 
+		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
+			$sender_name = $rs->fields['fname'] . " " . $rs->fields['lname'];
+		} elseif(isset($rs->fields['fname']) && !isset($rs->fields['lname'])) {
+			$sender_name = $rs->fields['fname'];
+		} elseif(!isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
+			$sender_name = $rs->fields['lname'];
+		} else {
+			$sender_name = "";
+		}
+
 		$tpl->assign(
 				array(
 					'MESSAGE_SUBJECT' => '',
 					'MESSAGE_TEXT' => '',
 					'SENDER_EMAIL' => $rs->fields['email'],
-					'SENDER_NAME' => $rs->fields['fname'] . " " . $rs->fields['lname']
+					'SENDER_NAME' => $sender_name
 					)
 				);
 	}
@@ -191,8 +201,8 @@ SQL_QUERY;
 function send_circular_email ($to, $from, $subject, $message) {
 	$subject = encode($subject);
 
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+	$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+	$headers .= "From: " . $from . "\n";
 	$headers .= "X-Mailer: ispCP marketing mailer";
 
 	mail($to, $subject, $message, $headers);

@@ -25,7 +25,8 @@ check_login(__FILE__);
 function gen_page_data(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
-			array('MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], false),
+			array(
+				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], false),
 				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], false),
 				'SENDER_EMAIL' => clean_input($_POST['sender_email'], false),
 				'SENDER_NAME' => clean_input($_POST['sender_name'], false)
@@ -47,11 +48,22 @@ SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($user_id));
 
+		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
+			$sender_name = $rs->fields['fname'] . " " . $rs->fields['lname'];
+		} elseif(isset($rs->fields['fname']) && !isset($rs->fields['lname'])) {
+			$sender_name = $rs->fields['fname'];
+		} elseif(!isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
+			$sender_name = $rs->fields['lname'];
+		} else {
+			$sender_name = "";
+		}
+
 		$tpl->assign(
-			array('MESSAGE_SUBJECT' => '',
+			array(
+				'MESSAGE_SUBJECT' => '',
 				'MESSAGE_TEXT' => '',
 				'SENDER_EMAIL' => $rs->fields['email'],
-				'SENDER_NAME' => $rs->fields['fname'] . " " . $rs->fields['lname']
+				'SENDER_NAME' => $sender_name
 				)
 			);
 	}
@@ -138,8 +150,8 @@ function send_circular_email ($to, $from, $subject, $message) {
 	$from = encode($from);
 	$subject = encode($subject);
 
-	$headers = "From: " . $from . "\n";
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+	$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
+	$headers .= "From: " . $from . "\n";
 	$headers .= "X-Mailer: ispCP marketing mailer";
 
 	mail($to, $subject, $message, $headers);
