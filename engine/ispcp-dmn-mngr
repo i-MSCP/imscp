@@ -4094,7 +4094,7 @@ sub dmn_add_awstats_cron {
 		"lang_Swedisch" => "se",
 		"lang_Turkish" => "tr",
 		"lang_Ukrainian" => "ua",
-		"lang_Welsh" => "cy
+		"lang_Welsh" => "cy"
 	)
 
 	foreach $key (keys %$languages) {
