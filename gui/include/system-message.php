@@ -18,8 +18,6 @@
  *   http://opensource.org | osi@opensource.org
  */
 
-check_login(__FILE__);
-
 function system_message($msg) {
 	global $cfg;
 
