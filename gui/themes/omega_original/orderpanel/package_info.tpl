@@ -1,10 +1,6 @@
 <!-- BDP: purchase_header -->
 <!-- EDP: purchase_header -->
 
-
-
-
-
 <table width="400">
   <tr align="right">
     <td colspan="2"><a href="index.php?user_id={USER_ID}" class="link">{TR_BACK}</a></td>

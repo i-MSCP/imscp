@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-24 Benedikt Heintel
+	- GUI:
+		* Fixed: safe mode restriction in vfs.php
+		* Fixed #1132: Hardcoded theme image paths
+
 2008-03-23 Benedikt Heintel
 	- GUI:
 		* Fixed: Warnings and Notices if no Database found or no conection to it

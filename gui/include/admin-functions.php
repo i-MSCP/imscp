@@ -2234,6 +2234,12 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 
 SQL_QUERY;
 
+	if (isset($_SESSION['user_theme'])) {
+		$theme = $_SESSION['user_theme'];
+	} else {
+		$theme = $cfg['USER_INITIAL_THEME'];
+	}
+
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() == 0) {
@@ -2244,7 +2250,7 @@ SQL_QUERY;
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-  <link href="../themes/omega_original/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
+  <link href="../{$theme}/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
   <title>$title</title>
  </head>
  <body>

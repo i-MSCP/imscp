@@ -1,10 +1,6 @@
 <!-- BDP: purchase_header -->
 <!-- EDP: purchase_header -->
 
-
-
-
-
 <form name="address" method="post" action="checkout.php">
 <table width="400">
   <tr>
