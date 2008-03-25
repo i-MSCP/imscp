@@ -4098,7 +4098,7 @@ sub dmn_add_awstats_cron {
 	);
 
 	while ( my ($key, $value) = each(%languages) ) {
-    	if ($key == @$rdata[0]) {
+    	if ($key eq @$rdata[0]) {
 			$user_lang = $value;
 			last;
     	}
