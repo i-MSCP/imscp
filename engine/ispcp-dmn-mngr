@@ -4020,7 +4020,7 @@ sub dmn_add_awstats_cron {
 
     my ($dmn_data) = @_;
 
-    my ($rs, $awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef, undef);
+    my ($awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
 
     if (!defined($dmn_data) || $dmn_data eq '') {
         push_el(\@main::el, 'dmn_add_awstats_cron()', 'ERROR: Undefined Input Data...');
@@ -4043,12 +4043,12 @@ sub dmn_add_awstats_cron {
     my $working_cfg = "$working_dir/ispcp";
     my $timestamp 	= time;
     my $backup_cfg 	= "$backup_dir/ispcp.$timestamp";
-    my $user_lang	= en;
+    my $user_lang	= "en";
 
     # Selecting user language
     my $user_id = @$dmn_data[4];
     my $sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
-    ($rs, $rdata) = doSQL($sql);
+    my ($rs, $rdata) = doSQL($sql);
     return $rs if ($rs != 0);
 
     my %languages = (
@@ -4095,12 +4095,12 @@ sub dmn_add_awstats_cron {
 		"lang_Turkish" => "tr",
 		"lang_Ukrainian" => "ua",
 		"lang_Welsh" => "cy"
-	)
+	);
 
-	foreach $key (keys %$languages) {
-    	if ($key == $rdata[0]) {
-			$user_lang = $languages->{$key};
-			break;
+	while ( my ($key, $value) = each(%languages) ) {
+    	if ($key == @$rdata[0]) {
+			$user_lang = $value;
+			last;
     	}
     }
 
@@ -4154,7 +4154,8 @@ sub dmn_add_awstats_cron {
     # Creating working config data;
     #
 
-    my ($sys, $working, $rdata) = (undef, undef, undef);
+    my ($sys, $working) = (undef, undef);
+    $rdata = undef;
 
     ($rs, $working) = get_file($working_cfg);
 
