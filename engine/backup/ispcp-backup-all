@@ -3,7 +3,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -287,6 +287,16 @@ sub backup_all_engine {
 
 		my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
 
+		#
+		# User Database Backup
+		#
+
+		if (! -d $dmn_backup_dir) {
+			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
+
+			return $rs if ($rs != 0);
+		}
+
 		if ($zip eq "bzip2") {
 			$backup_filename = "$dmn_name-backup-$date.tar.bz2";
 
@@ -301,16 +311,6 @@ sub backup_all_engine {
 			push_el(\@main::el, 'backup_all_engine()', "Backup algorithm not supported: $zip");
 
 			return 1;
-		}
-
-		#
-		# User Database Backup
-		#
-
-		if (! -d $dmn_backup_dir) {
-			$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
-
-			return $rs if ($rs != 0);
 		}
 
 		#

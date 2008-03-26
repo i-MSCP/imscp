@@ -2,6 +2,10 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-03-26 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1128: fastcgi idle timeout
+	- DOCU:
+		* Fixed #869: SUGGESTION: check if mysqld is running before starting installer
 	- GUI:
 		* Fixed #1135: php and cgi options in the hosting plans
 
