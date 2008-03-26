@@ -4049,6 +4049,7 @@ sub dmn_add_awstats_cron {
     my $user_id = @$dmn_data[4];
     my $sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
     my ($rs, $rdata) = doSQL($sql);
+    $rdata = @$rdata[0];
     return $rs if ($rs != 0);
 
     my %languages = (

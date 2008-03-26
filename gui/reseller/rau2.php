@@ -28,7 +28,7 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
-// check if we have only hosting plans for admins - ressseler shoul not can edit them
+// check if we have only hosting plans for admins - reseller should not edit them
 if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
 	header("Location: users.php");
 	die();
@@ -44,9 +44,7 @@ $tpl->assign(
 	);
 
 /*
- *
  * static page messages.
- *
  */
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
@@ -148,31 +146,36 @@ function get_init_au2_page(&$tpl){
 			)
 		);
 
-	if ("yes" === $hp_php)
+	if ("_yes_" === $hp_php) {
 		$tpl->assign(
-			array('VL_PHPY' => 'checked',
+			array(
+				'VL_PHPY' => 'checked',
 				'VL_PHPN' => ''
 				)
 			);
-	else
+	} else {
 		$tpl->assign(
-			array('VL_PHPN' => 'checked',
+			array(
+				'VL_PHPN' => 'checked',
 				'VL_PHPY' => '',
 				)
 			);
-
-	if ("yes" === $hp_cgi)
+	}
+	if ("_yes_" === $hp_cgi) {
 		$tpl->assign(
-			array('VL_CGIY' => 'checked',
+			array(
+				'VL_CGIY' => 'checked',
 				'VL_CGIN' => ''
 				)
 			);
-	else
+	} else {
 		$tpl->assign(
-			array('VL_CGIN' => 'checked',
+			array(
+				'VL_CGIN' => 'checked',
 				'VL_CGIY' => '',
 				)
 			);
+	}
 } // End of get_init_au2_page()
 
 // Get data for hosting plan

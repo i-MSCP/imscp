@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-26 Benedikt Heintel
+	- GUI:
+		* Fixed #1135: php and cgi options in the hosting plans
+
 2008-03-25 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1133: Error adding Domains r1078
