@@ -6,6 +6,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1139: order settings only for one reseller, again
 	- CONFIGS:
 		* Updated all postfix main.cnf corresponding to the debian postfix main.cnf
+		* Cleaned up every database.sql
 
 2008-03-27 Benedikt Heintel
 	- DATABASE:
@@ -91,7 +92,7 @@ ispCP ω 1.0.0 Changelog
 	- DISTS:
 		* Fixed #1107: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch
 		* Fixed #1108: (FreeBSD) fix minor configuration in dist FreeBSD and setup patch #2
-		* Updated all Distros
+		* Updated: all Distros
 
 2008-03-12 Christian Hernmarck
 	- DISTS:
@@ -107,7 +108,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-03-10 Benedikt Heintel
 	- DOCS:
-		* Updated all INSTALL files
+		* Updated: all INSTALL files
 
 2008-03-10 Christian Hernmarck
 	- SETUP:
@@ -164,7 +165,7 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #1070: FreeBSD, ispcp-setup uses group which does not exist
 	- LANGUAGES:
-		* Updated all languages
+		* Updated: all languages
 	- SETUP:
 		* Inproved: Update SQL with IGNORE statement
 		* Maybe fixed #946; ispcp-setup mysql password error
