@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-27 Benedikt Heintel
+	- DATABASE:
+		* Fixed #1139: order settings only for one reseller
+
 2008-03-26 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1128: fastcgi idle timeout

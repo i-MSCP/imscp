@@ -281,7 +281,8 @@ sub setup_shut_down {
 
 \tispCP '$main::cfg{'Version'}' Setup completed successfully!
 
-\tPlease type http://$main::ua{'admin_vhost'} in your browser!
+\tPlease type http://$main::ua{'admin_vhost'} in your browser,
+\tlog in with your Administrator Account and perform Database Updates if exists.
 
 MSG
 	print STDOUT $shut_down_message;

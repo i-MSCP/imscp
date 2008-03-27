@@ -907,6 +907,35 @@ sub prepare_update {
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 }
 
+sub update_shut_down {
+	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	my $shut_down_message = <<MSG;
+
+\tCongratulations!
+
+\tispCP '$main::cfg{'Version'}' Update completed successfully!
+
+\tPlease type http://$main::ua{'admin_vhost'} in your browser,
+\tlog in with your Administrator Account and perform Database Updates if exists.
+
+MSG
+	print STDOUT $shut_down_message;
+
+	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
+	return 0;
+}
+
 sub exit_werror {
     my ($msg, $code) = @_;
 
