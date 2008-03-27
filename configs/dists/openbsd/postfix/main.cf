@@ -90,7 +90,7 @@ virtual_gid_maps        = static:{MTA_MAILBOX_GID}
 
 smtpd_sasl_auth_enable       = yes
 smtpd_sasl2_auth_enable      = yes
-smtpd_sasl_security_options  = noanonymous, noplaintext
+smtpd_sasl_security_options  = noanonymous
 smtpd_sasl_local_domain      =
 broken_sasl_auth_clients     = yes
 
