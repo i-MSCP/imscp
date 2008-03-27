@@ -99,7 +99,7 @@ VALUES (
 ),(
 'PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'
 ),(
-'DATABASE_REVISION', '2'
+'DATABASE_REVISION', '3'
 );
 
 -- --------------------------------------------------------
@@ -411,7 +411,7 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE `orders_settings` (
-  `id` int(10) unsigned NOT NULL default '0',
+  `id` int(10) unsigned NOT NULL auto_increment,
   `user_id` int(10) unsigned NOT NULL default '0',
   `header` text,
   `footer` text,

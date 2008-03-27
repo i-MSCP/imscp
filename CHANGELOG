@@ -2,6 +2,8 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-03-27 Jochen Manz
+	- DATABASE:
+		* Fixed #1139: order settings only for one reseller, again
 	- CONFIGS:
 		* Updated all postfix main.cnf corresponding to the debian postfix main.cnf
 
