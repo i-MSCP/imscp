@@ -80,6 +80,18 @@ sub get_sys_hostname {
 
 	chomp($rdata);
 
+        if ($rdata !~ m/\./) { # hostname contains no dot -> use "hostname -f"
+                my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
+
+                $rs = sys_command($cmd);
+                return ($rs, '') if ($rs != 0);
+
+                ($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+                return ($rs, '') if ($rs != 0);
+
+                chomp($rdata);
+        }
+
 	$rs = del_file("/tmp/ispcp-setup.hostname");
 	return ($rs, '') if ($rs != 0);
 

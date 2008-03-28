@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-28 Christian Hernmarck
+	- SETUP:
+		* Fixed: if hostname is not qualified, get it again with 'hostname -f'
+
 2008-03-27 Jochen Manz
 	- DATABASE:
 		* Fixed #1139: order settings only for one reseller, again
