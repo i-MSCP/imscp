@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-29 Jochen Manz
+	- DATABASE:
+		* Fixed #1147: database.sql rev 1087 contaminated with ^M
+
 2008-03-28 Christian Hernmarck
 	- SETUP:
 		* Fixed: if hostname is not qualified, get it again with 'hostname -f'
