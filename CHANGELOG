@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-31 Jochen Manz
+	- GUI:
+		* FIXED #1143: Do not use javascript history_back() on login-error
+
 2008-03-31 Benedikt Heintel
 	- CONFIGS:
 		* Fixed Partly #1080: active web folders should not be deletable by customer (for main domain)

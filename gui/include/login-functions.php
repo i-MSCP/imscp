@@ -148,10 +148,11 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	} else {
 		return false;
 	}
-
+	
 	if ($btime > time()) {
 	    if ($displayMessage) {
-	        system_message(tr('You have to wait %d seconds', $btime - time()));
+			$backButtonDestination = $cfg['BASE_SERVER_VHOST'];
+	        system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
 	    }
 		return true;
 	} else {
@@ -198,23 +199,20 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	}
 
 	if ($btime < time()) {
-
 		if ($type == "bruteforce") {
-
 			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	login_count=login_count+1 WHERE ipaddr=? AND user_name is NULL";
-
 		} else if ($type == "captcha") {
-
 			$query = "UPDATE login SET lastaccess=UNIX_TIMESTAMP(),	captcha_count=captcha_count+1 WHERE ipaddr=? AND user_name is NULL";
-
 		}
 
    		exec_query($sql, $query, $ipaddr);
 		return false;
-
 	} else {
-		write_log("Login error, <b><i>".$ipaddr."</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
-		system_message(tr('You have to wait %d seconds', $btime - time()));
+		$backButtonDestination = "http://" . $cfg['BASE_SERVER_VHOST'];
+		
+		write_log("Login error, <b><i>".$ipaddr."</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);		
+	    system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
+		
 		return false;
 	}
 }
@@ -228,7 +226,9 @@ function block_ipaddr($ipaddr, $type = 'General') {
 
 function deny_access() {
 	global $cfg;
-	system_message(tr('You have been blocked for %d minutes', $cfg['BRUTEFORCE_BLOCK_TIME']));
+	
+	$backButtonDestination = "http://" . $cfg['BASE_SERVER_VHOST'];
+	system_message(tr('You have been blocked for %d minutes', $cfg['BRUTEFORCE_BLOCK_TIME']), $backButtonDestination);
 }
 
 function getipaddr() {

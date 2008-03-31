@@ -88,8 +88,10 @@ SQL_QUERY;
 	    write_log($uname." logged in.");
 	    return true;
 	} else {
+		$backButtonDestination = "http://" . $cfg['BASE_SERVER_VHOST'];
+	
 		write_log($uname." entered incorrect password.");
-		system_message(tr("You entered an incorrect password."));
+		system_message(tr("You entered an incorrect password."), $backButtonDestination);
   		return false;
 	}
 
