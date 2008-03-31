@@ -35,7 +35,7 @@
 .endif
 
 install:
-	cd dists/$(HOST_OS) && $(MAKE) install
+	cd $(HOST_OS) && $(MAKE) install
 
 uninstall:
-	cd dists/$(HOST_OS) && $(MAKE) uninstall
+	cd $(HOST_OS) && $(MAKE) uninstall

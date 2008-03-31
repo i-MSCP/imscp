@@ -31,7 +31,6 @@
 export
 
 install:
-
 	if test $(HOST_OS) = fedora ; then \
 		cp ./ispcp.conf $(SYSTEM_CONF) ; \
 		(cd ./apache && $(MAKE) install &); \
@@ -48,7 +47,6 @@ install:
 	fi
 
 uninstall:
-
 	if test $(HOST_OS) = fedora ; then \
 		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
 		(cd ./apache && $(MAKE) uninstall &); \
@@ -61,5 +59,4 @@ uninstall:
 		(cd ./courier && $(MAKE) uninstall &); \
 		(cd ./proftpd && $(MAKE) uninstall &); \
 		(cd ./logrotate && $(MAKE) uninstall &); \
-
 	fi

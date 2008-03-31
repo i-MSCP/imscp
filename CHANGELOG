@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-03-31 Benedikt Heintel
+	- CONFIGS:
+		* Fixed Partly #1080: active web folders should not be deletable by customer (for main domain)
+		* Changed: Config File Structure
+	- ENGINE:
+		* Fixed #1136: Overwriting fcgi config during update RC3->RC4
+		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains
+
 2008-03-29 Jochen Manz
 	- DATABASE:
 		* Fixed #1147: database.sql rev 1087 contaminated with ^M

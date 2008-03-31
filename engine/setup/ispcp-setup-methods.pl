@@ -938,12 +938,14 @@ sub add_named_db_data {
 
     return $rs if ($rs != 0);
 
+    my $seq = 0;
+
 	#
 	# RFC 1912
 	#
 
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday;
+	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday,$seq;
 
     #
     # Let's prepare them;

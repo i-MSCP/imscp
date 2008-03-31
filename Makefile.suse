@@ -34,7 +34,7 @@ ifndef INST_PREF
         INST_PREF=/tmp/ispcp
 endif
 
-HOST_OS=suse
+HOST_OS=opensuse
 
 ROOT_CONF=$(INST_PREF)/etc
 
