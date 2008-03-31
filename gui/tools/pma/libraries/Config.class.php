@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11151 2008-03-01 11:59:07Z lem9 $
+ * @version $Id: Config.class.php 11177 2008-03-29 13:26:51Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.5');
+        $this->set('PMA_VERSION', '2.11.5.1');
         /**
          * @deprecated
          */
@@ -886,8 +886,9 @@ class PMA_Config
      */
     function enableBc()
     {
-        $GLOBALS['cfg']             =& $this->settings;
-        $GLOBALS['default_server']  =& $this->default_server;
+        $GLOBALS['cfg']             = $this->settings;
+        $GLOBALS['default_server']  = $this->default_server;
+        unset($this->default_server);
         $GLOBALS['collation_connection'] = $this->get('collation_connection');
         $GLOBALS['is_upload']       = $this->get('enable_upload');
         $GLOBALS['max_upload_size'] = $this->get('max_upload_size');

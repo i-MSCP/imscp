@@ -10,6 +10,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains
 	- LANGUAGES:
 		* Added: Bulgarian
+	- TOOLS:
+		* Update PHPmyAdmin to version 2.11.5.1
 
 2008-03-29 Jochen Manz
 	- DATABASE:

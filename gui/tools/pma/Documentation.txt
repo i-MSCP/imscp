@@ -11,7 +11,7 @@
   * Translators
   * Glossary
 
-phpMyAdmin 2.11.5 Documentation
+phpMyAdmin 2.11.5.1 Documentation
 
   * phpMyAdmin homepage
   * SourceForge phpMyAdmin project page
@@ -20,7 +20,7 @@ phpMyAdmin 2.11.5 Documentation
       + Version history: ChangeLog
       + General notes: README
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 11151 2008-03-01 11:59:07Z
+  * Documentation version: $Id: Documentation.html 11177 2008-03-29 13:26:51Z
     lem9 $
 
 Requirements
