@@ -8,6 +8,8 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Fixed #1136: Overwriting fcgi config during update RC3->RC4
 		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains
+	- LANGUAGES:
+		* Added: Bulgarian
 
 2008-03-29 Jochen Manz
 	- DATABASE:
