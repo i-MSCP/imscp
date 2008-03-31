@@ -151,7 +151,7 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	
 	if ($btime > time()) {
 	    if ($displayMessage) {
-			$backButtonDestination = $cfg['BASE_SERVER_VHOST'];
+			$backButtonDestination = "http://" . $cfg['BASE_SERVER_VHOST'];
 	        system_message(tr('You have to wait %d seconds', $btime - time()), $backButtonDestination);
 	    }
 		return true;
