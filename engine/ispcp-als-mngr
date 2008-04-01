@@ -2179,7 +2179,7 @@ sub als_add_mta_cfg_data {
     my $backup_dir = "$conf_dir/postfix/backup";
 
 
-    my $sys_cfg = "/etc/postfix/ispcp/domains";
+    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
 
     my $working_cfg = "$working_dir/domains";
 
@@ -2273,7 +2273,7 @@ sub als_del_mta_cfg_data {
     my $backup_dir = "$conf_dir/postfix/backup";
 
 
-    my $sys_cfg = "/etc/postfix/ispcp/domains";
+    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
 
     my $working_cfg = "$working_dir/domains";
 

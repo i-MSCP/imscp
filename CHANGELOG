@@ -1,9 +1,19 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-02 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1152: Hardcoded postfix configuration path in ispcp-mbox-mngr
+		* Fixed #1153: Hardcoded postfix configuration path in ispcp-dmn-mgr
+		* Fixed #1154: Hardcoded postfix configuration path in ispcp-sub-mgr & ispcp-als-mgr
+	- SETUP:
+		* Fixed #1149: A warning if a domain is given instead of a fq host name (setup)
+	- DISTS:
+		* Fixed #1155: Fix major freebsd dist setup
+
 2008-03-31 Jochen Manz
 	- GUI:
-		* FIXED #1143: Do not use javascript history_back() on login-error
+		* Fixed #1143: Do not use javascript history_back() on login-error
 
 2008-03-31 Benedikt Heintel
 	- CONFIGS:
@@ -161,8 +171,8 @@ ispCP ω 1.0.0 Changelog
 	- SETUP:
 		* Updated: Update script; Update to RC3
 		* Updated: Update script; Update to RC4
-		* Fixed #1087: ispcp_rc4 setup vs courier
-		* Fixed #1088: ispcp_rc4 setup vs courier again
+		* Fixed #1087: ispcp_RC4 setup vs courier
+		* Fixed #1088: ispcp_RC4 setup vs courier again
 		* Changed: make directory to /tmp/ispcp
 
 2008-03-04 Benedikt Heintel

@@ -43,7 +43,9 @@ sub ask_hostname {
 	($rs, $hostname) = get_sys_hostname();
 	return $rs if ($rs != 0);
 
-	my $qmsg = "\tPlease enter fully qualified hostname. [$hostname]: ";
+	my $qmsg = "\tNext your are asked to anter a "fully qualified hostname" (FQHN).\n" .
+               "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n" .
+               "\tPlease enter fully qualified hostname. [$hostname]: ";
 	print STDOUT $qmsg;
 
 	$rdata = readline(\*STDIN); chop($rdata);
@@ -52,7 +54,11 @@ sub ask_hostname {
 		$rdata = $hostname;
 	}
 
-	if ($rdata =~ /^((([\w][\w-]{0,253}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+	if ($rdata =~ /^(((([\w][\w-]{0,253}){0,1}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+			my $wmsg = "\tWARNING: $rdata is no "fully qualified hostname". Be aware you cannot use this domain for websites.";
+			print STDOUT $wmsg;
+		}
 		$main::ua{'hostname'} = $rdata;
 		$main::ua{'hostname_local'} = ( ($1) ? $1 : $4);
 		$main::ua{'hostname_local'} =~ s/^([^.]+).+$/$1/;

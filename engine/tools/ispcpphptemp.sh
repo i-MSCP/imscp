@@ -1,8 +1,17 @@
 #!/bin/bash
 
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(^APACHE_WWW_DIR|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
-	export $a
-done
+# read needed entries from ispcp.conf
+if [ -f /usr/local/etc/ispcp/ispcp.conf ]
+then
+	for a in `cat /usr/local/etc/ispcp/ispcp.conf  | grep -E '(^APACHE_WWW_DIR|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
+		export $a
+	done
+else
+	for a in `cat /etc/ispcp/ispcp.conf | grep -E '(^APACHE_WWW_DIR|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
+		export $a
+	done
+fi
+
 
 WEBDIRS=`ls -d ${APACHE_WWW_DIR}/* `
 

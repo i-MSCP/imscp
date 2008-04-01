@@ -287,13 +287,13 @@ sub mbox_add_mta_cfg_autorespond_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $aliases_cfg = "/etc/postfix/ispcp/aliases";
+    my $aliases_cfg = $main::cgf{'MTA_VIRTUAL_ALIAS_HASH'};
 
     my $aliases_working_cfg = "$working_dir/aliases";
 
     my $aliases_backup_cfg = "$backup_dir/aliases.$timestamp";
 
-    my $transport_cfg = "/etc/postfix/ispcp/transport";
+    my $transport_cfg = $main::cfg{'MTA_TRANSPORT_HASH'};
 
     my $transport_working_cfg = "$working_dir/transport";
 
@@ -795,13 +795,13 @@ sub mbox_del_mta_cfg_autorespond_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $aliases_cfg = "/etc/postfix/ispcp/aliases";
+    my $aliases_cfg = $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'};
 
     my $aliases_working_cfg = "$working_dir/aliases";
 
     my $aliases_backup_cfg = "$backup_dir/aliases.$timestamp";
 
-    my $transport_cfg = "/etc/postfix/ispcp/transport";
+    my $transport_cfg = $main::cfg{'MTA_TRANSPORT_HASH'};
 
     my $transport_working_cfg = "$working_dir/transport";
 
@@ -1198,13 +1198,13 @@ sub mbox_add_mta_cfg_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $mailboxes_cfg = "/etc/postfix/ispcp/mailboxes";
+    my $mailboxes_cfg = $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'};
 
     my $mailboxes_working_cfg = "$working_dir/mailboxes";
 
     my $mailboxes_backup_cfg = "$backup_dir/mailboxes.$timestamp";
 
-    my $aliases_cfg = "/etc/postfix/ispcp/aliases";
+    my $aliases_cfg = $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'};
 
     my $aliases_working_cfg = "$working_dir/aliases";
 
@@ -1796,13 +1796,13 @@ sub mbox_del_mta_cfg_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $mailboxes_cfg = "/etc/postfix/ispcp/mailboxes";
+    my $mailboxes_cfg = $main::cgf{'MTA_VIRTUAL_MAILBOX_HASH'};
 
     my $mailboxes_working_cfg = "$working_dir/mailboxes";
 
     my $mailboxes_backup_cfg = "$backup_dir/mailboxes.$timestamp";
 
-    my $aliases_cfg = "/etc/postfix/ispcp/aliases";
+    my $aliases_cfg = $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'};
 
     my $aliases_working_cfg = "$working_dir/aliases";
 

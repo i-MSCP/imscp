@@ -379,7 +379,9 @@ sub del_file {
 
 %main::cfg = ();
 
-$main::cfg_file = '/etc/ispcp/ispcp.conf';
+if(!defined($main::cfg_file)) {
+	$main::cfg_file = '/etc/ispcp/ispcp.conf';
+}
 
 $main::cfg_re = '^([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
@@ -532,10 +534,10 @@ sub get_conf {
 my $rs = get_conf();
 
 if ($rs != 0) {
-	if( -d "/var/log/ispcp/ispcp-arpl-msgr/") {
-		$main::ispcp_arpl_msgr_el = "/var/log/ispcp/ispcp-arpl-msgr/ispcp-arpl-msgr.el";
-		$main::ispcp_arpl_msgr_stdout = "/var/log/ispcp/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
-		$main::ispcp_arpl_msgr_stderr = "/var/log/ispcp/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
+	if( -d "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/") {
+		$main::ispcp_arpl_msgr_el = "$main::cfg{'LOG_DIR'}ispcp-arpl-msgr/ispcp-arpl-msgr.el";
+		$main::ispcp_arpl_msgr_stdout = "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
+		$main::ispcp_arpl_msgr_stderr = "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
 		open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) || die "Can't redirect stdout";
 		open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) || die "Can't redirect stderr";
 	}
