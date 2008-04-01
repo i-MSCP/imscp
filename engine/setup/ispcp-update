@@ -728,25 +728,6 @@ sub patch_ispcp_rc3() {
 
 	my ($rs, $rdata) = (undef, undef);
 
-	# update ispcp.conf
-	my $cfg_file = $main::cfg_file;
-	my $old_cfg_file = undef;
-	if (defined($main::ua{'old_cfg_file'})) {
-		print STDOUT "\tUpgrading system values...";
-
-		$rs = update_conf($old_cfg_file, $cfg_file);
-		if ($rs != 0) {
-			exit_werror("failed to get $cfg_file or $old_cfg_file");
-		}
-
-		# save into /etc/ispcp/ispcp.conf
-		$rs = store_conf();
-		if ($rs != 0) {
-			exit_werror("Storing new ispcp.conf failed!");
-		}
-		print STDOUT "done\n";
-	}
-
 	# database upgrade
     print STDOUT "\tUpgrading database structure...";
 
@@ -783,24 +764,7 @@ sub patch_ispcp_rc3() {
 sub patch_ispcp_rc4() {
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Starting...');
 
-	# update ispcp.conf
-	my $cfg_file = $main::cfg_file;
-	my $old_cfg_file = undef;
-	if (defined($main::ua{'old_cfg_file'})) {
-		print STDOUT "\tUpgrading system values...";
-
-		$rs = update_conf($old_cfg_file, $cfg_file);
-		if ($rs != 0) {
-			exit_werror("failed to get $cfg_file or $old_cfg_file");
-		}
-
-		# save into /etc/ispcp/ispcp.conf
-		$rs = store_conf();
-		if ($rs != 0) {
-			exit_werror("Storing new ispcp.conf failed!");
-		}
-		print STDOUT "done\n";
-	}
+	print STDOUT "\tNothing else to do!\n";
 
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Ending...');
 	return 0;
@@ -841,6 +805,9 @@ sub prepare_update {
 		if ($rs == 0) {
 			$rs = patch_ispcp_rc3();
 		}
+		if ($rs == 0) {
+			$rs = patch_ispcp_rc4();
+		}
 
 		if ($rs != 0) {
     		print STDOUT "\t Update failed!\n";
@@ -848,7 +815,7 @@ sub prepare_update {
 		}
 	}
 	# ispCP 1.0.0 RC2/3/4 Update
-	elsif ($main::ua{'update'} >= RC3) {
+	elsif ($main::ua{'update'} >= RC2) {
 		stop_services("/tmp/vhcs2-backup-all.lock");
 
 		# get ispcp.old.conf
@@ -866,6 +833,26 @@ sub prepare_update {
 			} while ($rs == 0);
 		}
 		$main::ua{'old_cfg_file'} = $cfg_file;
+
+		if ($main::ua{'update'} >= RC3) {
+			# update ispcp.conf
+			my $cfg_file = $main::cfg_file;
+			if (defined($main::ua{'old_cfg_file'})) {
+				print STDOUT "\tUpgrading system values...";
+
+				$rs = update_conf($main::ua{'old_cfg_file'}, $cfg_file);
+				if ($rs != 0) {
+					exit_werror("failed to get $cfg_file or $main::ua{'old_cfg_file'}");
+				}
+
+				# save into /etc/ispcp/ispcp.conf
+				$rs = store_conf();
+				if ($rs != 0) {
+					exit_werror("Storing new ispcp.conf failed!");
+				}
+				print STDOUT "done\n";
+			}
+		}
 
 		# ispCP 1.0.0 RC2
 		if ($main::ua{'update'} eq RC2) {
