@@ -1,4 +1,4 @@
-.include <../../../../Makefile.fbsd>
+.include <../../../Makefile.fbsd>
 
 ROOT_COURIER_CONF=$(ROOT_CONF)/courier-imap
 

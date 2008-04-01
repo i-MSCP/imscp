@@ -38,9 +38,9 @@ SYSTEM_ROOT=$(INST_PREF)/usr/local/www/ispcp
 SYSTEM_CONF=$(INST_PREF)/usr/local/etc/ispcp
 SYSTEM_LOG=$(INST_PREF)/var/log/ispcp
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/usr/local/www/logs/backup
-SYSTEM_VIRTUAL=$(INST_PREF)/usr/local/www/data
+SYSTEM_VIRTUAL=$(INST_PREF)/usr/local/www/data/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/usr/local/www/awstats
-SYSTEM_FCGI=$(INST_PREF)/usr/local/www/fcgi
+SYSTEM_FCGI=$(INST_PREF)/usr/local/www/data/fcgi
 SYSTEM_MAIL_VIRTUAL=$(INST_PREF)/var/mail/virtual
 SYSTEM_MAKE_DIRS=/bin/mkdir -p
 

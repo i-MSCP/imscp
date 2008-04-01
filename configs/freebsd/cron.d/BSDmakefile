@@ -27,7 +27,7 @@
 #
 #    http://isp-control.net
 #
-.include <../../../../Makefile.fbsd>
+.include <../../../Makefile.fbsd>
 
 install:
 

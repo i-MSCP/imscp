@@ -1,80 +1,72 @@
-apr
-apr-util
-bash
-bzip2
-c-client
-courier-imap
-courier-pop3
-courier-utils
-curl
-cyrus-sasl-2.1.21p3
-db-4.2.52p11
-expat
-freetype
-gdbm
-gettext
-gmp
-jpeg-6bp3
-libghttp
-libiconv
-libltdl
-libmcrypt
-libxml
-mhash
-mtr-0.72-no_x11
-mysql-client
-mysql-server
-neon
-p5-Compress-Zlib
-p5-Crypt-Blowfish
-p5-Crypt-CBC
-p5-Crypt-DES
-p5-Crypt-PasswdMD5
-p5-Crypt-SSLeay
-p5-DBD-mysql
-p5-DBI
-p5-Digest-HMAC
-p5-Digest-SHA1
-p5-HTML-Parser
-p5-HTML-Tagset
-p5-HTTP-GHTTP
-p5-IO-stringy
-p5-MIME-tools
-p5-Mail-SpamAssassin-3.1.8
-p5-Mail-Tools
-p5-Net-DNS
-p5-Net-Daemon
-p5-Net-IP
-p5-PlRPC
-p5-URI
-p5-libwww
-p5-Term-ReadPassword
-pcre
-pdflib
-php4-bz2
-php4-core
-php4-curl
-php4-dbx
-php4-domxml
-php4-extensions
-php4-filepro
-php4-gd-4.4.1p5-no_x11
-php4-gmp
-php4-imap
-php4-mcrypt
-php4-mhash
-php4-mysql
-php4-pdf
-php4-pear
-php4-shmop
-php4-xmlrpc
-php4-xslt
-png
-postfix-2.3.7-sasl2
-recode
-sablotron
-subversion
-t1lib
-tiff
-unzip
-wget
+=-=-=-= BASIC REQUIRED PACKAGE/PORTS =-=-=-= last update 20080331
+
+Apache 2.2.x		Web System
+	x suexec	( Recomended )
+	+ mod_cband	for bandwitdh management
+	o mod_php	WARNING: security risk for hosting
+	+ mod_fastcgi	( Recomended )
+Proftpd			FTP System
+	x IPV6		IP v6 support ( but disable by ispcp )
+	x mysql		Database module
+	x quota		quota module
+	x ratio		ratio module
+	x ctrls		control module
+	- delay		Not Available in ports
+	- ctrls_admin	Not Available in ports
+Postfix			Email System
+Bash			Shell compatibility with Main Version
+courier-imap		IMAP system
+	x userdb	For use with userdb ( ispcp default )
+	x mysql		For use with mysql
+courier-pop3		IMAP POP3 system
+mysql-client		Database system
+mysql-server		Database system
+Perl			=-=-=-= PERL MODULE =-=-=-=
+	+ Compress-Zlib
+	+ Crypt-Blowfish
+	+ Crypt-CBC
+	+ Crypt-DES
+	+ Crypt-PasswdMD5
+	+ Crypt-SSLeay
+	+ DBD-mysql
+	+ DBI
+	+ Digest-HMAC
+	+ Digest-SHA1
+	+ HTML-Parser
+	+ HTML-Tagset
+	+ HTTP-GHTTP	
+	+ IO-stringy
+	+ MIME-tools
+	+ Mail-Tools
+	+ Net-DNS
+	+ Net-Daemon
+	+ Net-IP
+	+ PlRPC
+	+ URI
+	+ libwww
+	+ Term-ReadPassword
+PHP			=-=-=-= PHP PACKAGE =-=-=-=
+	x apache	Build Apache module
+	x CLI
+	x CGI
+	x suhosin
+	x fastcgi
+PHP-Extensions
+	x pcre
+	x bz2
+	x core
+	x curl
+	x dbx
+	x domxml
+	x filepro
+	x gd
+	x imap
+	x mcrypt
+	x mhash
+	x mysql
+	x pear
+	x shmop
+	x xmlrpc
+	x xslt
+	x session
+awstats

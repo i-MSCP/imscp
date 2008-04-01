@@ -39,7 +39,7 @@
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/var/www/ispcp/daemon/ispcp_daemon
+DAEMON=/usr/local/www/ispcp/daemon/ispcp_daemon
 PID=/var/run/ispcp-daemon.pid
 NAME=ispcp_daemon
 DESC=ispcp_daemon

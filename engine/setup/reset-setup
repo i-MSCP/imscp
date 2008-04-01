@@ -38,7 +38,7 @@ use strict;
 use warnings;
 
 ## Variables
-my ($rs, $sql, $rdata)	= (undef, undef, undef);
+my ($rs, $sql, $rdata, $delete_cmd ) = (undef, undef, undef,undef );
 my $user_prefix = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 my $master_user = $main::cfg{'APACHE_SUEXEC_MIN_UID'};
 my $user_delete	= $main::cfg{'CMD_USERDEL'};
@@ -47,18 +47,23 @@ my $database	= $main::cfg{'DATABASE_NAME'};
 ## MAIN
 print STDOUT "Re-setting ISPCP Setup!\n";
 print STDOUT "========================\n";
-my $delete_cmd = "$user_delete -r $user_prefix$master_user";
-$rs = sys_command($delete_cmd);
 
-my $delete_fcgi = "$main::cfg{'CMD_RM'} -r $main::cfg{'PHP_STARTER_DIR'}/master";
-$rs = sys_command($delete_fcgi);
+if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+	$delete_cmd = "rmuser -y $user_prefix$master_user";
+	$rs = sys_command($delete_cmd);
+} else {
+	$delete_cmd = "$user_delete -r $user_prefix$master_user";
+	$rs = sys_command($delete_cmd);
+	my $delete_fcgi = "$main::cfg{'CMD_RM'} -r $main::cfg{'PHP_STARTER_DIR'}/master";
+	$rs = sys_command($delete_fcgi);
+}
 
 $sql = "DROP DATABASE IF EXISTS $database";
 ($rs, $rdata) = doSQL($sql);
+
 if ($rs != 0) {
 	print STDOUT "An error occured!\n";
 	print STDOUT "$rdata\n";
-}
-else {
+} else {
 	print STDOUT "done!\n";
 }

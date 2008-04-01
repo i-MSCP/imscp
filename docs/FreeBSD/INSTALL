@@ -16,11 +16,11 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version:	1.0.0 RC4
-INSTALL Script:		2.0
-Maintainer:
-Homepage:			http://www.isp-contol.net
-Linux Distros:		FreeBSD
+ispCP ω Versio	:	1.0.0 RC4
+INSTALL Script	: 2.0
+Maintainer	: 
+Homepage	: http://www.isp-contol.net
+Distros		: FreeBSD
 
 ================================================================================
 2) Requirements
@@ -32,10 +32,9 @@ Pentium III or K6-4 with 500 MHz
 100 MB disk space (only for install of ispCP ω)
 Debian (or even any other *NIX-Distribution)
 
-All FreeBSD required packages are listed in
-./docs/FreeBSD/freebsd-packages
+All FreeBSD required packages are listed in docs/FreeBSD/freebsd-packages
 
-The configuration is costumised for use with apache 2.2.x version using suexec
+The configuration is customised for use with apache 2.2.x version using suexec
 module enable.
 ================================================================================
 3) Introduction
@@ -63,7 +62,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cd ./ispcp-omega-1.0.0
 
 3. Install the required modules
-   see: ./docs/FreeBSD/freebsd-packages
+   see: docs/FreeBSD/freebsd-packages
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
    An overview over the variables you can find in the FAQ on
