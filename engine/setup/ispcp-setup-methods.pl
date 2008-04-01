@@ -43,7 +43,7 @@ sub ask_hostname {
 	($rs, $hostname) = get_sys_hostname();
 	return $rs if ($rs != 0);
 
-	my $qmsg = "\tNext your are asked to anter a "fully qualified hostname" (FQHN).\n" .
+	my $qmsg = "\tNext your are asked to anter a \"fully qualified hostname\" (FQHN).\n" .
                "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n" .
                "\tPlease enter fully qualified hostname. [$hostname]: ";
 	print STDOUT $qmsg;

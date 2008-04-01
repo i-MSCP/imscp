@@ -783,7 +783,24 @@ sub patch_ispcp_rc3() {
 sub patch_ispcp_rc4() {
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Starting...');
 
-    print STDOUT "\tNothing to do.";
+	# update ispcp.conf
+	my $cfg_file = $main::cfg_file;
+	my $old_cfg_file = undef;
+	if (defined($main::ua{'old_cfg_file'})) {
+		print STDOUT "\tUpgrading system values...";
+
+		$rs = update_conf($old_cfg_file, $cfg_file);
+		if ($rs != 0) {
+			exit_werror("failed to get $cfg_file or $old_cfg_file");
+		}
+
+		# save into /etc/ispcp/ispcp.conf
+		$rs = store_conf();
+		if ($rs != 0) {
+			exit_werror("Storing new ispcp.conf failed!");
+		}
+		print STDOUT "done\n";
+	}
 
 	push_el(\@main::el, 'patch_ispcp_rc4()', 'Ending...');
 	return 0;
