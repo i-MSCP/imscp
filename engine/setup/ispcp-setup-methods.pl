@@ -51,7 +51,7 @@ sub ask_hostname {
 
 	if ($rdata =~ /^(((([\w][\w-]{0,253}){0,1}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
-			my $wmsg = "\tWARNING: $rdata is no \"fully qualified hostname\". Be aware you cannot use this domain for websites.";
+			my $wmsg = "\tWARNING: $rdata is not a \"fully qualified hostname\". Be aware you cannot use this domain for websites.";
 			print STDOUT $wmsg;
 		}
 		$main::ua{'hostname'} = $rdata;

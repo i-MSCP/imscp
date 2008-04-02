@@ -109,9 +109,8 @@ sub user_dialog {
 
 	return $rs if ($rs != 0);
 
-	my $qmsg = "\n\tNext your are asked to anter a \"fully qualified hostname\" (FQHN).\n" .
+	my $qmsg = "\n\tNext you are asked to enter a \"fully qualified hostname\" (FQHN).\n" .
                "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n" .
-               "\tPlease enter fully qualified hostname. [$hostname]: ";
 	print STDOUT $qmsg;
 
 	do {
@@ -231,7 +230,7 @@ sub user_dialog {
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
-	my $qmsg = "\n\tStarting Installation...\n";
+	$qmsg = "\n\tStarting Installation...\n";
 
 	print STDOUT $qmsg;
 

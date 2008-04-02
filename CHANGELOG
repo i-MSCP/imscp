@@ -8,6 +8,8 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1154: Hardcoded postfix configuration path in ispcp-sub-mgr & ispcp-als-mgr
 	- SETUP:
 		* Fixed #1149: A warning if a domain is given instead of a fq host name (setup)
+		* Fixed #1156: Typo
+		* Fixed #1158: ispcp-setup fail in r1097
 	- DISTS:
 		* Fixed #1155: Fix major freebsd dist setup
 
