@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-03 Jochen Manz
+	- ENGINE:
+		* Fixed #1160: perl ispcp-setup fails in trunk 1098
+	
 2008-04-02 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1152: Hardcoded postfix configuration path in ispcp-mbox-mngr

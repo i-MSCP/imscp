@@ -110,7 +110,7 @@ sub user_dialog {
 	return $rs if ($rs != 0);
 
 	my $qmsg = "\n\tNext you are asked to enter a \"fully qualified hostname\" (FQHN).\n" .
-               "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n" .
+               "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n";
 	print STDOUT $qmsg;
 
 	do {
