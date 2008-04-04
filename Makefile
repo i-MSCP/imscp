@@ -67,7 +67,6 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_AWSTATS)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_MAIL_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_APACHE_BACK_LOG)
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
 
 	cd ./configs && $(MAKE) install &
 	cd ./engine && $(MAKE) install

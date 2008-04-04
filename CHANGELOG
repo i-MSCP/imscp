@@ -1,10 +1,17 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-04 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1159: ROOT_APACHE_CONF is not defined in toplevel Makefile
+		* Fixed #1162: /etc/ispcp/courier/userdb not present in ispcp-setup (revision 1098, Gentoo)
+	- GUI:
+		* Fixed #547: encoded email from reseller doesnt work
+
 2008-04-03 Jochen Manz
 	- ENGINE:
 		* Fixed #1160: perl ispcp-setup fails in trunk 1098
-	
+
 2008-04-02 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1152: Hardcoded postfix configuration path in ispcp-mbox-mngr
