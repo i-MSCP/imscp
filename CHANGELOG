@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-05 Benedikt Heintel
+	- DISTS:
+		* Fixed #1168: (fedora) Proftpd-Config for Fedora
+		* Fixed #1167: (fedora) postfix-config for fedora
+
 2008-04-04 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1159: ROOT_APACHE_CONF is not defined in toplevel Makefile
