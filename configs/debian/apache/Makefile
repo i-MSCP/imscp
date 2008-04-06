@@ -29,8 +29,8 @@
 #
 #    http://isp-control.net
 #
-ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 
+ROOT_APACHE_CONF=$(ROOT_CONF)/apache2
 RELEASE=`cat /etc/debian_version | awk '{print $1}'`
 
 export

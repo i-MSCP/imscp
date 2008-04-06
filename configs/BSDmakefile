@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+#
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com

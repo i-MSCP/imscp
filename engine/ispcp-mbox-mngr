@@ -287,7 +287,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $aliases_cfg = $main::cgf{'MTA_VIRTUAL_ALIAS_HASH'};
+    my $aliases_cfg = $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'};
 
     my $aliases_working_cfg = "$working_dir/aliases";
 
