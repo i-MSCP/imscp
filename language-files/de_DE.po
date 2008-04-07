@@ -1,13 +1,13 @@
-# translation of de_DE.po to German
+# translation of de_DE.po to Deutsch
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: de_DE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-01 18:49+0100\n"
-"PO-Revision-Date: 2007-11-20 09:36+0100\n"
-"Last-Translator: Harald Bäs-Fischlmair <hbaes@chiemgaudata.de>\n"
-"Language-Team: German (Germany) <de@li.org>\n"
+"PO-Revision-Date: 2008-04-07 14:22+0200\n"
+"Last-Translator: Felix Günther\n"
+"Language-Team: Deutsch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -232,17 +232,14 @@ msgstr "Sie müssen einem Reseller mindestens eine IP-Adresse zuweisen!"
 msgid "Add reseller"
 msgstr "Reseller anlegen"
 
-#, fuzzy
 msgid "Domains limit<br><i>(0 unlimited)</i>"
-msgstr "Speicherplatz [MB]<br><i>(0 unbegrenzt)</i>"
+msgstr "Anzahl Domains<br><i>(0 unbegrenzt)</i>"
 
-#, fuzzy
 msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Anzahl Subdomains<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
-#, fuzzy
 msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Anzahl SQL-Benutzer<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
+msgstr "Anzahl Domain-Aliase<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Anzahl E-Mail-Konten<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
@@ -601,13 +598,11 @@ msgstr "Speichern"
 msgid "Edit button"
 msgstr "Menüpunkt bearbeiten"
 
-#, fuzzy
 msgid "Database updates"
-msgstr "Datenbankbenutzer"
+msgstr "Datenbankupdates"
 
-#, fuzzy
 msgid "Available database updates"
-msgstr "Verfügbare ispCP Updates"
+msgstr "Verfügbare Datenbankupdates"
 
 msgid "Update"
 msgstr "Aktualisieren"
@@ -615,17 +610,14 @@ msgstr "Aktualisieren"
 msgid "Update details"
 msgstr "Details aktualisieren"
 
-#, fuzzy
 msgid "No database updates available"
-msgstr "Keine neuen ispCP-Updates verfügbar"
+msgstr "Keine Datenbankupdates verfügbar"
 
-#, fuzzy
 msgid "New Database update is now available"
-msgstr "Neue ispCP-Updates sind verfügbar"
+msgstr "Neue Datenbankupdates sind verfügbar"
 
-#, fuzzy
 msgid "Do you want to execute the Updates now?"
-msgstr "Sind Sie sicher, dass Sie diese Bestellung löschen wollen?"
+msgstr "Wollen Sie die Updates jetzt einspielen?"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Sie können nicht die letzte aktive IP-Adresse löschen!"
@@ -778,8 +770,7 @@ msgid "Domains"
 msgstr "Domains"
 
 #, php-format
-msgid ""
-"Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
 msgstr ""
 "Inkonsistenz zwischen current_als_cnt und tatsächlicher Anzahl an Aliasen: %1"
 "$d != %2$d"
@@ -791,8 +782,7 @@ msgid "Mail"
 msgstr "E-Mail"
 
 #, php-format
-msgid ""
-"Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 msgstr ""
 "Inkonsistenz zwischen current_ftp_cnt und tatsächlicher Anzahl an FTP-"
 "Zugängen: %1$d != %2$d"
@@ -842,16 +832,14 @@ msgstr ""
 "Dieser Reseller hat Kunden mit unbeschränkten Rechten für den Dienst <b>%s</"
 "b>!<br>"
 
-msgid ""
-"If you want to limit the reseller, you must first limit its customers!<br>"
+msgid "If you want to limit the reseller, you must first limit its customers!<br>"
 msgstr ""
 "Wenn Sie Beschränkungen für diesen Reseller setzen wollen, müssen Sie zuerst "
 "seine Kunden begrenzen!<br>"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
-msgstr ""
-"Dieser Reseller hat Domains, die der Adresse <b>%s</b> zugewiesen sind."
+msgstr "Dieser Reseller hat Domains, die der Adresse <b>%s</b> zugewiesen sind."
 
 msgid "Edit reseller"
 msgstr "Reseller bearbeiten"
@@ -862,9 +850,8 @@ msgstr "E-Mail-Adresse"
 msgid "unlimited"
 msgstr "unbegrenzt"
 
-#, fuzzy
 msgid "Domains limit<br><i>((-1 disabled, 0 unlimited)</i>"
-msgstr "Anzahl Subdomains<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
+msgstr "Anzahl Domains<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 
 msgid "ispCP - Administrator/Edit hosting plan"
 msgstr "ispCP - Administrator/Tarif bearbeiten"
@@ -1290,8 +1277,7 @@ msgid "Email Updated"
 msgstr "E-Mail-Adresse aktualisiert"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr ""
-"Diesem Benutzer sind noch Domains zugewiesen!<br />Löschen Sie diese zuerst!"
+msgstr "Diesem Benutzer sind noch Domains zugewiesen!<br />Löschen Sie diese zuerst!"
 
 msgid "User was disabled"
 msgstr "Benutzer wurde deaktiviert"
@@ -1829,9 +1815,8 @@ msgstr "Eine gleichnamige Domain existiert bereits im System!"
 msgid "Incorrect mount point syntax"
 msgstr "Ungültige Schreibweise des Mountpunkts"
 
-#, fuzzy
 msgid "Master domain cannot be used!"
-msgstr "Bestellter Domain-Alias wurde nicht gelöscht!"
+msgstr "Die Hauptdomain kann nicht verwendet werden!"
 
 msgid "Incorrect forward syntax"
 msgstr "Ungültige Schreibweise der Weiterleitung"
@@ -1880,15 +1865,13 @@ msgid "Entered passwords differ from the another!"
 msgstr "Die eingegebenen Passwörter stimmen nicht überein!"
 
 msgid "Subdomain list is empty! You can not add FTP accounts there!"
-msgstr ""
-"Es sind keine Subdomains vohanden! Sie können keinen FTP-Zugang erstellen!"
+msgstr "Es sind keine Subdomains vohanden! Sie können keinen FTP-Zugang erstellen!"
 
 msgid "Alias list is empty! You can not add FTP accounts there!"
 msgstr "Keine Aliase vorhanden! Sie können keinen FTP-Zugang erstellen!"
 
 msgid "Please specify other FTP account dir!"
-msgstr ""
-"Bitte geben Sie für diesen FTP-Zugang ein anderes Heimatverzeichnis an! "
+msgstr "Bitte geben Sie für diesen FTP-Zugang ein anderes Heimatverzeichnis an! "
 
 msgid "FTP accounts limit reached!"
 msgstr "Max. Anzahl an FTP-Zugängen erreicht!"
@@ -2012,9 +1995,8 @@ msgstr "Max. Anzahl an Subdomains erreicht!"
 msgid "Please specify subdomain name!"
 msgstr "Bitte geben Sie einen Namen für die Subdomain an!"
 
-#, fuzzy
 msgid "Subdomain already exists or is not allowed!"
-msgstr "Subdomain existiert bereits!"
+msgstr "Subdomain existiert bereits oder ist nicht erlaubt!"
 
 msgid "Wrong subdomain syntax!"
 msgstr "Falsche Schreibweise für die Subdomain!"
@@ -2062,8 +2044,7 @@ msgid "Switch to backups/ directory"
 msgstr "Wechseln Sie in das Verzeichnis \"backups/\"."
 
 msgid "Download the files stored in this directory"
-msgstr ""
-"Laden Sie die Dateien herunter, die sich in diesem Verzeichnis befinden."
+msgstr "Laden Sie die Dateien herunter, die sich in diesem Verzeichnis befinden."
 
 msgid "(usually named "
 msgstr "(Dateiname: "
@@ -2071,10 +2052,8 @@ msgstr "(Dateiname: "
 msgid "Restore backup"
 msgstr "Backup einspielen"
 
-msgid ""
-"Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Klicken Sie auf wiederherstellen und das System spielt das letzte Backup ein."
+msgid "Click the Restore button and the system will restore the last daily backup"
+msgstr "Klicken Sie auf wiederherstellen und das System spielt das letzte Backup ein."
 
 msgid "Restore"
 msgstr "Wiederherstellen"
@@ -2145,8 +2124,7 @@ msgstr "ispCP - Kunde/Passwort ändern"
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Kunde/Eigene Daten ändern"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
+msgid "User does not exist or you do not have permission to access this interface!"
 msgstr ""
 "Benutzer existiert nicht oder Sie haben keine Berechtigung die gewünschte "
 "Seite anzuzeigen!"
@@ -2218,8 +2196,7 @@ msgstr ""
 "Es existieren noch E-Mail-Konten für diesen Domain-Alias!<br>Löschen Sie "
 "diese zuerst!"
 
-msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
 msgstr ""
 "Es existieren noch FTP-Zugänge für diesen Domain-Alias<br>Löschen Sie diese "
 "zuerst!"
@@ -2239,8 +2216,7 @@ msgstr "Bitte löschen Sie zuerst alle Catch-All für diese E-Mail-Adresse!"
 msgid "SQL database was removed successfully!"
 msgstr "SQL-Datenbank wurde erfolgreich gelöscht!"
 
-msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
 "Es sind dieser Subdomain noch E-Mail Konten zugeordnet.<br>Löschen Sie diese "
 "zuerst!"
@@ -2381,8 +2357,7 @@ msgid "FTP list is empty!"
 msgstr "Es sind keine FTP-Zugänge vorhanden!"
 
 msgid "Can not open directory !<br>Please contact your administrator !"
-msgstr ""
-"Kann Verzeichnis nicht öffnen!<br>Bitte kontaktieren Sie Ihren Administrator!"
+msgstr "Kann Verzeichnis nicht öffnen!<br>Bitte kontaktieren Sie Ihren Administrator!"
 
 msgid "Parent Directory"
 msgstr "Hauptverzeichnis"
@@ -2405,9 +2380,9 @@ msgstr "Auswählen"
 msgid "disabled"
 msgstr "deaktiviert"
 
-#, fuzzy, php-format
+#, php-format
 msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "Sie haben <b>%d</b> neue Supportanfragen!"
+msgstr "Sie haben <b>%d</b> neue Antworten auf Ihre Supportanfragen!"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -2494,9 +2469,8 @@ msgstr "ispCP - Kunde/Datenbankverwaltung"
 msgid "Manage SQL"
 msgstr "Datenbankverwaltung"
 
-#, fuzzy
 msgid "Database Name and Users"
-msgstr "Datenbankbenutzer"
+msgstr "Datenbanknamen und -benutzer"
 
 msgid "PhpMyAdmin"
 msgstr "phpMyAdmin"
@@ -2833,16 +2807,14 @@ msgstr "Ihr Tarifwechselwunsch wurde erfolgreich aus dem System gelöscht."
 msgid "Message was send!"
 msgstr "Nachricht wurde versendet!"
 
-#, fuzzy
 msgid "ISPCP - Client/Webtools"
 msgstr "ispCP - Kunde/Webtools"
 
 msgid "Webtools"
 msgstr "Webtools"
 
-#, fuzzy
 msgid "Customize error pages for your domain"
-msgstr "Passen Sie die Fehlerseiten für Ihre Domain an"
+msgstr "Verwalten Sie die Fehlerseiten Ihrer Domain"
 
 msgid "Backup and restore settings"
 msgstr "Datensicherung und Wiederherstellung"
@@ -2874,9 +2846,8 @@ msgstr "Adminprotokoll"
 msgid "Logout"
 msgstr "Abmelden"
 
-#, fuzzy
 msgid "ispCP database updates"
-msgstr "ispCP Updates"
+msgstr "ispCP Datenbank-Updates"
 
 msgid "Custom menus"
 msgstr "Eigene Menüpunkte"
@@ -2930,8 +2901,7 @@ msgid "Switch"
 msgstr "Wechseln"
 
 msgid "Not found user records matching the search criteria!"
-msgstr ""
-"Es wurden keine mit Ihrer Suchanfrage übereinstimmenden Benutzer gefunden!"
+msgstr "Es wurden keine mit Ihrer Suchanfrage übereinstimmenden Benutzer gefunden!"
 
 msgid "view aliases"
 msgstr "Aliase anzeigen"
@@ -3312,8 +3282,7 @@ msgstr ""
 msgid "You are exceeding your subdomains limit!"
 msgstr "Sie haben die max. Anzahl an Subdomains erreicht!"
 
-msgid ""
-"You have an aliases limit!<br>You can not add an user with unlimited aliases!"
+msgid "You have an aliases limit!<br>You can not add an user with unlimited aliases!"
 msgstr ""
 "Sie haben ein Alias-Limit!<br>Sie können keinen Benutzer mit unbegrenzen "
 "Aliasen anlegen!"
@@ -3371,8 +3340,7 @@ msgstr ""
 msgid "You are exceeding your SQL database limit!"
 msgstr "Sie haben die max. Anzahl an SQL-Benutzern erreicht!"
 
-msgid ""
-"You have a traffic limit!<br>You can not add an user with unlimited traffic!"
+msgid "You have a traffic limit!<br>You can not add an user with unlimited traffic!"
 msgstr ""
 "Sie haben ein Traffic-Limit.<br>Sie können keinen Benutzer mit unbegrenztem "
 "Traffic anlegen!"
@@ -3509,7 +3477,7 @@ msgid "Setup fee must be a number!"
 msgstr "Die Einrichtungsgebühr muss eine Zahl sein!"
 
 msgid "Hosting plan values exceed reseller maximum values!"
-msgstr ""
+msgstr "Die Werte dieses Tarifs überschreiten die maximal zulässigen Werte für diesen Reseller!"
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Reseller/Passwort ändern"
@@ -3526,20 +3494,17 @@ msgstr "Rundmail"
 msgid "Wrong domain ID!"
 msgstr "Falsche Domain-ID!"
 
-msgid ""
-"Domain you are trying to remove has email accounts !<br> first remove them !"
+msgid "Domain you are trying to remove has email accounts !<br> first remove them !"
 msgstr ""
 "Für die Domain, die Sie löschen möchten, existieren noch E-Mail-Konten."
 "<br>Bitte löschen Sie diese zuerst!"
 
-msgid ""
-"Domain you are trying to remove has FTP accounts !<br> first remove them !"
+msgid "Domain you are trying to remove has FTP accounts !<br> first remove them !"
 msgstr ""
 "Für die Domain, die Sie löschen möchten, existieren noch FTP-Zugänge."
 "<br>Bitte löschen Sie diese zuerst!"
 
-msgid ""
-"Domain you are trying to remove has domain alias!<br> first remove them !"
+msgid "Domain you are trying to remove has domain alias!<br> first remove them !"
 msgstr ""
 "Für die Domain, die Sie löschen möchten, existieren noch Domain-Aliase!"
 "<br>Bitte löschen Sie diese zuerst!"
@@ -3654,8 +3619,7 @@ msgid "The <em>%s</em> service can not be limited! "
 msgstr "Der Dienst <em>%s</em> kann nicht beschränkt werden!"
 
 #, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
 "Die eingegebene Nummer ist kleiner als <em>%s</em> Datensätze, die momentan "
 "im System existieren!"
@@ -3674,8 +3638,7 @@ msgstr "Es gibt Reseller-Beschränkungen für den Service <b>%s</b>!"
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr ""
-"Sie überschreiten die Reseller-Beschränkung für den Dienst <em>%s</em>!"
+msgstr "Sie überschreiten die Reseller-Beschränkung für den Dienst <em>%s</em>!"
 
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Benutzer/Bearbeiten"
@@ -3751,7 +3714,7 @@ msgid "Wrong order ID!"
 msgstr "Falsche Bestellnummer!"
 
 msgid "Order Canceled: resellers maximum exceeded!"
-msgstr ""
+msgstr "Die Bestellung wurde abgebrochen, da das Maximum des Resellers überschritten wurden."
 
 msgid "User added!"
 msgstr "Benutzer angelegt!"
@@ -3887,8 +3850,7 @@ msgstr "Benutzerdaten wurden erfolgreich aktualisiert!"
 msgid "User data not updated!"
 msgstr "Benutzerdaten wurden nicht aktualisiert!"
 
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
+msgid "This user has domain record !<br>First remove the domain from the system!"
 msgstr "Dieser Benutzer besitzt Domains!<br />Löschen Sie diese zuerst!"
 
 msgid "User not terminated!"
@@ -3900,76 +3862,3 @@ msgstr "ispCP - Reseller: Supportsystem: Tickets anzeigen"
 msgid "Message was sent."
 msgstr "Nachricht wurde gesendet."
 
-#~ msgid ""
-#~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
-#~ msgstr ""
-#~ "Inkonsistenz zwischen current_mail_cnt und tatsächlicher Anzahl an E-Mail-"
-#~ "Adressen: %1$d != %2$d"
-
-#~ msgid "ispCP - Admin/Main Index"
-#~ msgstr "ispCP - Admin/Hauptmenü"
-
-#~ msgid "There's a conflicting admin / reseller fix that first!"
-#~ msgstr ""
-#~ "Es gibt einen Konflikt zwischen Administrator und Reseller. Lösen Sie "
-#~ "diesen zuerst!"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
-#~ msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.bz2)"
-
-#~ msgid "(usually named backup_YYYY_MM_DD.tar.gz)"
-#~ msgstr "(Dateiname: backup_JJJJ_MM_TT.tar.gz)"
-
-#~ msgid "Domains limit"
-#~ msgstr "Anzahl Domains"
-
-#~ msgid "Subdomains limit"
-#~ msgstr "Anzahl Subdomains"
-
-#~ msgid "Aliases limit"
-#~ msgstr "Anzahl Domain-Aliase"
-
-#~ msgid "Mail accounts limit"
-#~ msgstr "Anzahl E-Mail-Konten"
-
-#~ msgid "FTP accounts limit"
-#~ msgstr "Anzahl FTP-Zugänge"
-
-#~ msgid "SQL databases limit"
-#~ msgstr "Anzahl SQL-Datenbanken"
-
-#~ msgid "SQL users limit"
-#~ msgstr "Anzahl SQL-Benutzer"
-
-#~ msgid "Traffic limit [MB]"
-#~ msgstr "Transfervolumen (Traffic) [MB]"
-
-#~ msgid "Disk limit [MB]"
-#~ msgstr "Speicherplatz [MB]"
-
-#~ msgid "Max domain count"
-#~ msgstr "Max. Anzahl Domains"
-
-#~ msgid "Max subdomain count"
-#~ msgstr "Max. Anzahl Subdomains"
-
-#~ msgid "Max aliases count"
-#~ msgstr "Max. Anzahl Domain-Aliase"
-
-#~ msgid "Max mail users count"
-#~ msgstr "Max. Anzahl E-Mail-Konten"
-
-#~ msgid "Max FTP users count"
-#~ msgstr "Max. Anzahl FTP-Zugänge"
-
-#~ msgid "Max SQL databases count"
-#~ msgstr "Max. Anzahl SQL-Datenbanken"
-
-#~ msgid "Max SQL users count"
-#~ msgstr "Max. Anzahl SQL-Benutzer"
-
-#~ msgid "Max traffic amount [MB]"
-#~ msgstr "Max. Transfervolumen (Traffic) [MB]"
-
-#~ msgid "Max disk amount [MB]"
-#~ msgstr "Max. Speicherplatz [MB]"

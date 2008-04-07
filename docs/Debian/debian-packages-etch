@@ -46,6 +46,7 @@ libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
 libmysqlclient15off
+locales
 lsb-base
 make
 mysql-client

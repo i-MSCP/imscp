@@ -223,13 +223,13 @@ frame {
 }
 
 #container fieldset {
-	width: 200px;
+	width: 250px;
 	margin: 0 auto auto 190px;
 	text-align: right;
 	border: none;
 	position: absolute;
 	top: 100px;
-	left: 20px;
+	right: 30px;
 }
 
 #container p.login {

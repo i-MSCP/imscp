@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2005-04-07 Benedikt Heintel
+	- LANGUAGES:
+		* Updated German language file
+
 2008-04-07 Jochen Manz
 	- GUI:
 		* Fixed #1174: Traffic at midnight not displayed
@@ -13,6 +17,10 @@ ispCP ω 1.0.0 Changelog
 		* Dropped the mta-cfg-setup.sh
 
 2008-04-05 Benedikt Heintel
+	- SETUP:
+		* Added: locales
+	- TOOLS:
+		* Fixed Webmail: Layout of loginscreen broken, if lang string "username" or "password" longer than the english one
 	- DISTS:
 		* Fixed #1168: (fedora) Proftpd-Config for Fedora
 		* Fixed #1167: (fedora) postfix-config for fedora

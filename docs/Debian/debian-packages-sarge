@@ -43,6 +43,7 @@ libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
 libmysqlclient14
+locales
 make
 mysql-client-4.1
 mysql-common
