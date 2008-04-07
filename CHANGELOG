@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-07 Jochen Manz
+	- GUI:
+		* Fixed #1174: Traffic at midnight not displayed
+
 2008-04-06 Jochen Manz
 	- ENGINE:
 		* Fixed #1173: autoresponders don't work

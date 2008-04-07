@@ -89,7 +89,7 @@ SQL_QUERY;
         from
             domain_traffic
         where
-            domain_id = ? and dtraff_time > ? and dtraff_time < ?
+            domain_id = ? and dtraff_time >= ? and dtraff_time <= ?
 SQL_QUERY;
   $rs =  exec_query($sql, $query, array($domain_id, $from, $to));
 
@@ -142,7 +142,7 @@ function generate_page (&$tpl, $domain_id)
             from
                 domain_traffic
             where
-                domain_id = ? and dtraff_time > ? and dtraff_time < ?
+                domain_id = ? and dtraff_time >= ? and dtraff_time <= ?
 SQL_QUERY;
     $rs =  exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 
@@ -218,7 +218,8 @@ $tpl->assign(array('TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
                    'TR_POP3_TRAFFIC' => tr('POP3/IMAP traffic'),
                    'TR_ALL_TRAFFIC' => tr('All traffic'),
                    'TR_ALL' => tr('All'),
-                   'TR_DAY' => tr('Day')));
+                   'TR_DAY' => tr('Day'))
+);
 
 gen_select_lists($tpl, $month, $year);
 generate_page($tpl, $domain_id);
@@ -229,5 +230,4 @@ $tpl -> prnt();
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
-
 ?>

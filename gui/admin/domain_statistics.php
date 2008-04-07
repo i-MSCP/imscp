@@ -78,7 +78,7 @@ function get_domain_trafic($from, $to, $domain_id) {
         from
             domain_traffic
         where
-            domain_id=? and dtraff_time>? and dtraff_time<?
+            domain_id=? and dtraff_time>=? and dtraff_time<=?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
@@ -133,7 +133,7 @@ function generate_page (&$tpl, $domain_id) {
             from
                 domain_traffic
             where
-                domain_id=? and dtraff_time>? and dtraff_time<?
+                domain_id=? and dtraff_time>=? and dtraff_time<=?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
@@ -239,5 +239,4 @@ $tpl->prnt();
 if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
-
 ?>

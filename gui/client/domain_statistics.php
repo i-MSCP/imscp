@@ -71,9 +71,9 @@ function get_domain_trafic($from, $to, $domain_id) {
         where
             domain_id = ?
           and
-            dtraff_time > ?
+            dtraff_time >= ?
           and
-            dtraff_time < ?
+            dtraff_time <= ?
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
@@ -136,9 +136,9 @@ SQL_QUERY;
         where
             domain_id = ?
           and
-            dtraff_time > ?
+            dtraff_time >= ?
           and
-            dtraff_time < ?
+            dtraff_time <= ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
@@ -315,5 +315,4 @@ if ($cfg['DUMP_GUI_DEBUG'])
 	dump_gui_debug();
 
 unset_messages();
-
 ?>
