@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-08 Jochen Manz
+	- CONFIGS
+		* Fixed #1177: revise FreeBSD Doc
+		* Fixed #1178: Fix some configuration in FreeBSD dist
+
 2005-04-07 Benedikt Heintel
 	- LANGUAGES:
 		* Updated German language file

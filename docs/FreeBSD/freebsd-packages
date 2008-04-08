@@ -1,10 +1,13 @@
-=-=-=-= BASIC REQUIRED PACKAGE/PORTS =-=-=-= last update 20080331
+=-=-=-= BASIC REQUIRED PACKAGE/PORTS =-=-=-= last update 20080403
 
 Apache 2.2.x		Web System
+	x threads	option
+	x mysql		option
 	x suexec	( Recomended )
 	+ mod_cband	for bandwitdh management
 	o mod_php	WARNING: security risk for hosting
 	+ mod_fastcgi	( Recomended )
+	+ mod_proxy	Req for awstat
 Proftpd			FTP System
 	x IPV6		IP v6 support ( but disable by ispcp )
 	x mysql		Database module
@@ -19,6 +22,9 @@ courier-imap		IMAP system
 	x userdb	For use with userdb ( ispcp default )
 	x mysql		For use with mysql
 courier-pop3		IMAP POP3 system
+courier-authlib		Auth system
+	x userdb
+	x mysql
 mysql-client		Database system
 mysql-server		Database system
 Perl			=-=-=-= PERL MODULE =-=-=-=
@@ -41,6 +47,7 @@ Perl			=-=-=-= PERL MODULE =-=-=-=
 	+ Net-DNS
 	+ Net-Daemon
 	+ Net-IP
+	+ Net-LibIDN
 	+ PlRPC
 	+ URI
 	+ libwww

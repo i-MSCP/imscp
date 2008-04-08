@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-echo "currently not ported to BSD"
+echo "Starting ispcp_network: currently not ported to BSD"
 exit 0
 
 # ispCP ω (OMEGA) a Virtual Hosting Control System
@@ -83,4 +83,5 @@ ${IPTABLES} -I OUTPUT -p tcp --sport 143
 
 ${IPTABLES} -I INPUT  -p tcp --dport 25
 ${IPTABLES} -I OUTPUT -p tcp --sport 25
+
 

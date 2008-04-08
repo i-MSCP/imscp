@@ -16,11 +16,11 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Versio	:	1.0.0 RC5
-INSTALL Script	: 2.0
-Maintainer	: 
-Homepage	: http://www.isp-contol.net
-Distros		: FreeBSD
+ispCP ω Version	 : 1.0.0 RC5
+INSTALL Script		: 3.0
+Maintainer		: 
+Homepage		: http://www.isp-contol.net
+Distros			: FreeBSD
 
 ================================================================================
 2) Requirements
@@ -115,12 +115,12 @@ Make sure you are logged in as root and MySQL is running.
 	# make -f Makefile.fbsd install
 
 6. Save key files
-	# cp -v /usr/local/www/apache22/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/apache22/ispcp/engine/
-	# cp -v /usr/local/www/apache22/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/apache22/ispcp/engine/messager/
-	# cp -v /usr/local/www/apache22/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/usr/local/www/apache22/ispcp/gui/include/
+	# cp -v /usr/local/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/ispcp/engine/
+	# cp -v /usr/local/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/ispcp/engine/messager/
+	# cp -v /usr/local/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/usr/local/www/ispcp/gui/include/
 
    If updating from RC3 or higher:
-	# cp -v /usr/local/www/apache22/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/usr/local/www/apache22/ispcp/gui/tools/pma/
+	# cp -v /usr/local/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/usr/local/www/ispcp/gui/tools/pma/
 
 7. Copy /usr and /var directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp/usr/* /usr/
@@ -131,7 +131,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cp -Rv /tmp/ispcp/usr/local/etc/ispcp/* /usr/local/etc/ispcp
 
 9. Now it's time to update your installation. Change into the engine directory:
-	# cd /usr/local/www/apache22/ispcp/engine/setup
+	# cd /usr/local/www/ispcp/engine/setup
 
 10. Start the engine update:
 	# perl ispcp-update
@@ -150,6 +150,9 @@ Make sure you are logged in as root and MySQL is running.
 
 Q.- How can I prevent websites using more than their bandwidth limit to stop working?
 A.- Please install and configure apache 2.2.x mod_cband package/port
+
+Q.- Can I run ispcp under FreeBSD Jail?
+A.- Yes you can, but you have to modified the daemon to accept connection on jail IP
 
 Please check http://www.isp-control.net for any questions not answered in this file.
 
