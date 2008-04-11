@@ -27,7 +27,7 @@ function get_update_infos(&$tpl) {
 	global $cfg;
 
 	$info_url = "http://www.isp-control.net/download.html";
-	$last_update = "http://isp-control.net/latest.txt";
+	$last_update = "http://www.isp-control.net/latest.txt";
 	// Fake the browser type
 	ini_set('user_agent', 'Mozilla/5.0');
 
