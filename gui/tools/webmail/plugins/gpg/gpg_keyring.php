@@ -5,7 +5,7 @@
  * GPG plugin keyring class file.
  * This file contains the keyring class, to extract a keyring from gpg for manipulation.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
@@ -13,7 +13,7 @@
  * @author Brian Peterson
  * @author Aaron van Meerten
  *
- * $Id: gpg_keyring.php,v 1.26 2003/12/18 19:48:14 ke Exp $
+ * $Id: gpg_keyring.php,v 1.34 2005/07/27 14:07:49 brian Exp $
  *
  */
 
@@ -98,16 +98,23 @@ function gpg_extract_pub($parts) {
             $ret['email_addr'] = htmlspecialchars(trim($matches[1]));
             break;
         default:
+		//Patch to parse user info lines properly provided by Lars Kruse <devel@sumpfralle.de>
+	    ereg ("^(.*)<([^>]*)>([^>]*)$", $parts[9], $infos);
+	    $ret['email_name'] = $infos[1];
+	    $ret['email_addr'] = $infos[2];
+	    $ret['email_extra'] = $infos[3];
             //Assume name, address, extra.
-            $ret['email_name'] = htmlspecialchars(trim($matches[0]));
-            $ret['email_addr'] = htmlspecialchars(trim($matches[1]));
-            $ret['email_extra'] = htmlspecialchars(trim(join(array_slice($matches, 2, (count($matches) - 2)), "")));
+            // $ret['email_name'] = htmlspecialchars(trim(join(array_slice($matches, 0, (count($matches) -1)), "")));
+            // $ret['email_addr'] = htmlspecialchars(trim($matches[count($matches)-1]));
+            // $ret['email_extra'] = htmlspecialchars(trim(join(array_slice($matches, 2, (count($matches) - 2)), "")));
             break;
     }
 
     //We have to have a name!
     if (! $ret['email_name']) $ret['email_name'] = "UNKNOWN";
     if (! strchr($ret['email_addr'], "@")) unset($ret['email_addr']);
+
+    $ret['email_name'] = str_replace("\\x3a", ":", $ret['email_name']);
 
     //Algorithm
     switch ($parts[3]) {
@@ -217,6 +224,7 @@ class gpg_keyring {
     global $data_dir;
         global $safe_data_dir;
     global $username;
+    global $debug;
     $safe_data_dir = getHashedDir($username, $data_dir) . DIRECTORY_SEPARATOR;
         if (!$path_to_gpg) {
                 load_prefs_from_file('gpg_system_defaults.txt',$debug);
@@ -229,27 +237,27 @@ class gpg_keyring {
         $this->keys = array();
     $return['errors'] = array();
     $return['warnings'] = array();
-        $command = "$path_to_gpg --homedir $gpg_key_dir ";
+	$params = "--homedir $gpg_key_dir ";
 
         /**
          * We will use the $keyring_type parameter to determine
-         * what to add the the $command string.
+         * what to add the the $params string.
          * Legal Values are 'public', 'private', 'secret', and 'all'
          */
         switch ($keyring_type) {
         case 'sigs':
-            $command .= '--list-sigs';
+	    $params  .= '--list-sigs';
             break;
         case 'all':
     case 'new':
         case '':
-            $command .= '--list-keys ';
+	    $params  .= '--list-keys ';
             break;
         case 'public':
-            $command .= '--list-public-keys ';
+	    $params  .= '--list-public-keys ';
             break;
         case 'secret':
-            $command .= '--list-secret-keys ';
+	    $params  .= '--list-secret-keys ';
             break;
         case 'system':
             {
@@ -258,40 +266,38 @@ class gpg_keyring {
                 $system_keyring_file = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyringfile'];
                 if (is_file($system_keyring_file)) {
                 $system_keyring_file = escapeshellarg($system_keyring_file);
-                $command .= " --keyring $system_keyring_file ";
+		$params  .= " --keyring $system_keyring_file ";
                 }
             }
 
-            $command .= ' --list-keys ';
+	    $params  .= ' --list-keys ';
             break;
             }
         };
 
         //We always want colons and fingerprints.
         //Yes, add --with-fingerprint twice, so it will fingerprint subkeys.
-        $command .= '--with-colons --with-fingerprint --with-fingerprint ';
+	$params  .= '--batch --with-colons --with-fingerprint --with-fingerprint ';
 
         if ($search_string) {
             $search_string = escapeshellarg($search_string);
-            $command .= "$search_string";
+	    $params  .= "$search_string";
         }
-
-        //tell the shell to redirect stderr to stdout
-        $command .= " 2>&1";
 
         //Do it!  True $returnVal means error, in classic system call style.
-        exec($command, $list_text, $returnval);
+	$return=gpg_execute($debug,$params,NULL,NULL,false,false);
+	$returnval=$return['returnval'];
+	$list_text=$return['rawoutput'];
         if ($returnval) {
-        $return = gpg_parse_output($list_text);
-        if ($return['errors']) return $return;
-        $list_text = explode("\n",$return['output']);
+	        if ($return['errors']) return $return;
         }
+	if (!is_array($list_text)) { $list_text = explode("\n",$return['rawoutput']); }
         $data = NULL;
         $currKeyType = NULL;
+	if (!$list_text) { $list_text = array(); }
         foreach ($list_text as $line) {
             //Break it up.
             $parts = explode (":", $line);
-
             //Is it a fingerprint?
             if ($parts[0] == "fpr") {
             //Fingerprint for the public key that just went by.  Extract it.
@@ -427,7 +433,8 @@ class gpg_keyring {
         global $data_dir;
     global $safe_data_dir;
         global $username;
-    $safe_data_dir=getHashedDir($username,$data_dir). DIR_SEPARATOR;
+	global $debug;
+    $safe_data_dir=getHashedDir($username,$data_dir). DIRECTORY_SEPARATOR;
         if (!$path_to_gpg) {
                 load_prefs_from_file('gpg_system_defaults.txt',$debug);
                 load_prefs_from_file('gpg_local_prefs.txt',$debug);
@@ -447,19 +454,15 @@ class gpg_keyring {
         }
 
         //Make and execute the delete command
-        $command = "$path_to_gpg --batch --no-tty --yes --homedir $gpg_key_dir $flag $fpr 2>&1";
-        exec($command, $output, $returnval);
-
+	$params = "--yes --homedir $gpg_key_dir $flag $fpr";
+	$return=gpg_execute($debug,$params);
+	$returnval=$return['returnval'];
+	$output = $return['output'];
         //Success?  (system command returns 0 on success)
         if (! $returnval) return NULL;
-    $newoutput = array();
-    foreach ($output as $line) {
-        $i = substr_count ($line, "gpg: Oops: keyid_from_fingerprint: no pubkey");
-        if ($i) { continue; }
-        $newoutput[] = $line;
-    }
-    $output = $newoutput;
-        //Error.  Return error lines.
+
+	//otherwise error, return error lines
+
     if (is_array($output)) {
         $output = implode("\n",$output);
     }
@@ -483,16 +486,14 @@ class gpg_keyring {
         global $data_dir;
         global $username;
     global $safe_data_dir;
-    $safe_data_dir=getHashedDir($username,$data_dir). DIR_SEPARATOR;
+    $debug=$GLOBALS['GPG_SYSTEM_OPTIONS']['debug'];
+    $safe_data_dir=getHashedDir($username,$data_dir). DIRECTORY_SEPARATOR;
         if (!$path_to_gpg) {
                 load_prefs_from_file('gpg_system_defaults.txt',$debug);
                 load_prefs_from_file('gpg_local_prefs.txt',$debug);
                 $path_to_gpg=$GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
                 $gpg_key_dir ="$safe_data_dir$username.gnupg";
         }
-
-        // make sure there aren't any funny characters in keystring.
-        $keystring = escapeshellarg($keystring);
 
     $return['errors'] = array();
     $return['warnings'] = array();
@@ -501,18 +502,15 @@ class gpg_keyring {
     $oldkeys = $this->keys;
 
         //Try to import.
-        $command =
-            "echo $keystring | $path_to_gpg " .
-            "--allow-secret-key-import --import --batch --no-tty --homedir $gpg_key_dir 2>&1";
-        exec($command, $output, $returnval);
+	$params = "--allow-secret-key-import --import --homedir $gpg_key_dir";
+	$return=gpg_execute($debug,$params,NULL,$keystring);
     $this->fetchKeys();
     $newkeys = array_key_diff($this->keys, $oldkeys);
     $this->keys = $newkeys;
     $this->newkeys = true;
     $return['newkeys'] = $newkeys;
-    $return = array_merge($return, gpg_parse_output($output));
-        //return all values collected, trapped or not
-        return $return;
+    //return all values collected, trapped or not
+    return $return;
     }
 
     /***********************************************/
@@ -550,17 +548,14 @@ class gpg_keyring {
         echo "OldKeys<pre>\n"; print_r($oldkeys); echo "\n</pre>";
     }
         //Try to import
-        $command =
-            "$path_to_gpg --batch --no-tty --homedir " .
-            "$gpg_key_dir --allow-secret-key-import --import $fname 2>&1";
-        exec($command, $output, $returnval);
+	$params = " --homedir $gpg_key_dir --allow-secret-key-import --import $fname";
+	$return=gpg_execute($debug,$params);
     $this->fetchKeys();
     if ($debug) { echo "NewKeys<pre>\n"; print_r($this->keys); echo "\n</pre>"; }
     $newkeys = array_key_diff($this->keys, $oldkeys);
     $return['newkeys'] = $newkeys;
     $this->keys = $newkeys;
     $this->newkeys = true;
-    $return = array_merge($return,gpg_parse_output($output));
         //return all values collected, trapped or not
     return $return;
 
@@ -676,8 +671,9 @@ class gpg_keyring {
     function getExportText($fpr, $ringName) {
         global $gpg_key_dir;
         global $path_to_gpg;
-        global $data_dir;
+        global $data_dir, $username;
     global $safe_data_dir;
+    global $debug;
         $exportstring = "";
     $safe_data_dir = getHashedDir($username, $data_dir) . DIRECTORY_SEPARATOR;
         //get it from the appropriate keyring.
@@ -699,9 +695,10 @@ class gpg_keyring {
         $fpr = escapeshellarg($fpr);
 
         //Make the command and execute.
-        $command = "$path_to_gpg --batch --no-tty --homedir $gpg_key_dir --armor $exportstring $fpr 2>&1";
-        exec($command, $output, $returnval);
-
+	$params  = "--homedir $gpg_key_dir --armor $exportstring $fpr";
+	$return=gpg_execute($debug,$params);
+	$returnval=$return['returnval'];
+	$output = $return['output'];
         //Errir?
         if ($returnval) return NULL;
 
@@ -722,6 +719,32 @@ class gpg_keyring {
 /***************************************************/
 /*
  * $Log: gpg_keyring.php,v $
+ * Revision 1.34  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.33  2005/03/19 18:03:41  ke
+ * -applied patch to fix uid's with <>'s in them (thanks to Lars Kruse <devel@sumpfralle.de>)
+ * Bug 245
+ *
+ * Revision 1.32  2004/04/30 17:58:58  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.31  2004/02/17 22:41:56  ke
+ * -changed gpg calls to work properly with new proc_open additions
+ * bug 29
+ *
+ * Revision 1.30  2004/01/19 20:59:28  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.29  2004/01/19 00:52:21  brian
+ * - converted three DIR_SEPARATOR to DIRECTORY_SEPARATOR
+ *
+ * Revision 1.28  2004/01/17 00:26:33  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.27  2004/01/14 23:35:43  ke
+ * -changed to use gpg_execute centralized functionality
+ *
  * Revision 1.26  2003/12/18 19:48:14  ke
  * -removed data_dir from system keyring path, since it's a full path now
  *
@@ -742,7 +765,7 @@ class gpg_keyring {
  * -caught more missing DIRECTORY_SEPARATOR's
  *
  * Revision 1.21  2003/11/25 01:26:50  ke
- * -added DIR_SEPARATOR to end of safe_data_dir so that paths come out correctly
+ * -added DIRECTORY_SEPARATOR to end of safe_data_dir so that paths come out correctly
  *
  * Revision 1.20  2003/11/24 20:01:00  ke
  * -changed the system keyring to be found in $data_dir instead of $safe_data_dir, so it can be placed without worry for username hashes

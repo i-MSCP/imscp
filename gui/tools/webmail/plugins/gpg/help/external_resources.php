@@ -11,6 +11,9 @@ echo "<li>\n"
     . '<a href="http://www.gnupg.org/">The GnuPG Home Page</a>';
 
 echo "<li>\n"
+    . _("<a href=\"http://www.gnupg.org/gph/en/manual.html\">The GNU Privacy Handbook</a>");
+
+echo "<li>\n"
     . '<a href="http://www.openpgp.org/">The OpenPGP Alliance</a>';
 
 echo "<li>\n"
@@ -41,9 +44,12 @@ echo "\n</ul>";
 
 
 /**
- * $Id: external_resources.php,v 1.3 2003/12/03 17:30:31 brian Exp $
+ * $Id: external_resources.php,v 1.4 2004/01/20 12:16:32 alexl Exp $
  *
  * $Log: external_resources.php,v $
+ * Revision 1.4  2004/01/20 12:16:32  alexl
+ * Add localized gpg handbook url
+ *
  * Revision 1.3  2003/12/03 17:30:31  brian
  * changed RFC 822 to RFC 2822
  *

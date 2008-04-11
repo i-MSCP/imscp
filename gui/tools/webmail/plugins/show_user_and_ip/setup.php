@@ -2,7 +2,7 @@
 
 function squirrelmail_plugin_init_show_user_and_ip() {
    global $squirrelmail_plugin_hooks;
-   $squirrelmail_plugin_hooks['welcome']['show_user_and_ip'] = 'sui_show_user_and_ip';
+   $squirrelmail_plugin_hooks['left_main_after']['show_user_and_ip'] = 'sui_show_user_and_ip';
    $squirrelmail_plugin_hooks['right_main_after_header']['show_user_and_ip'] = 'sui_show_last_date_and_ip';
    $squirrelmail_plugin_hooks['loading_prefs']['show_user_and_ip'] = 'sui_last_date_and_ip_load';
    $squirrelmail_plugin_hooks['right_main_bottom']['show_user_and_ip'] = 'sui_last_date_and_ip_save';

@@ -4,15 +4,15 @@
  *-----------
  * GPG plugin popup functions file,
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 1999-2005 The SquirrelMail development team
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  * @author Tyler Allison
  * @author Brian Peterson
  *
- * $Id: gpg_pop_functions.php,v 1.15 2003/11/01 22:01:26 brian Exp $
+ * $Id: gpg_pop_functions.php,v 1.17 2005/07/27 14:07:49 brian Exp $
  */
 
 /*********************************************************************/
@@ -99,6 +99,12 @@ function gpg_makePopWindow($title, $scriptsrc, $body){
 /*********************************************************************/
 /**
  * $Log: gpg_pop_functions.php,v $
+ * Revision 1.17  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.16  2004/04/30 18:02:07  ke
+ * -removed newline from end of file
+ *
  * Revision 1.15  2003/11/01 22:01:26  brian
  * infrastructure changes to support removal of MakePage functions
  *

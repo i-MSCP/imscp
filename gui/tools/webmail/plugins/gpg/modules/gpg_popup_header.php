@@ -4,16 +4,16 @@
  *
  * @author Brian Peterson
  *
- * $Id: gpg_popup_header.php,v 1.1 2003/11/20 16:56:47 walter Exp $
+ * $Id: gpg_popup_header.php,v 1.3 2004/01/18 15:18:12 brian Exp $
  */
- 
-if (!defined (SM_PATH)){
+
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_module_header.php, exiting abnormally";
 }
 require_once(SM_PATH.'plugins/gpg/gpg_options_header.php');
@@ -39,7 +39,7 @@ function gpg_bail($err)
 
 // call the main Squirrelmail page header function
 //displayPageHeader($color, 'None');
-    echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" $onload>\n\n";
+    echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\">\n\n";
 
 
 /**
@@ -56,6 +56,12 @@ if (! isset($err)) $err = array();
 echo '<br>';
 /**
  * $Log: gpg_popup_header.php,v $
+ * Revision 1.3  2004/01/18 15:18:12  brian
+ * - removed unused $onload declaration to fix E_ALL notice
+ *
+ * Revision 1.2  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.1  2003/11/20 16:56:47  walter
  * - solution to SM header in menu popup window
  *

@@ -2,18 +2,29 @@
 #
 # Make changes to this file to change the plugin defaults.
 #
-# $Id: gpg_local_prefs.txt,v 1.12 2003/10/17 12:50:20 brian Exp $
+# $Id: gpg_local_prefs.txt,v 1.16 2006/01/08 02:47:20 ke Exp $
 #
 path_to_gpg=/usr/bin/gpg 
 allowprivatekeys=true 
 allowkeygeneration=true
 systemkeyring=false
+requirepassphraseonkeydelete=true
 systemkeyringfile=gpgsystemkeys/pubring.gpg
 systemtrustedkey=
 systemadk=
+systemrevoker=
 maxfilesize=100000
+
+# Passphrase caching has known issue when used while decrypting
+# Only re-enable if you know what you are doing, and only use one key per user
 allowpassphrasecaching=false
+
 insecure_mem_warning=1
 default_keystrength=1024
 default_keyexpires=1y
+use_proc_open=true
+expose_compose_buttons=true
+expose_options_link=true
 debug=0
+systemparse_openpgp_header=true
+systemgenerate_openpgp_header=true

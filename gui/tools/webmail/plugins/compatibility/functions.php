@@ -2,8 +2,14 @@
 
 /**
   * SquirrelMail Compatibility Plugin
-  * Copyright (C) 2004-2005 Paul Lesneiwski <paul@openguild.net>
-  * This program is licensed under GPL. See COPYING for details
+  * Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
+  * Licensed under the GNU GPL. For full terms see the file COPYING.
+  *
+  * SquirrelMail developers, see below under "SQUIRRELMAIL DEVELOPER 
+  * NOTES" for information about how the include files are maintained
+  *
+  * @package plugins
+  * @subpackage compatibility
   *
   */
 
@@ -83,6 +89,12 @@
 
 
 
+   // now include everything that current SM version is missing
+   //
+   load_legacy_support();
+
+
+
 
    /**
      * Checks SquirrelMail version, returns TRUE if SquirrelMail
@@ -101,8 +113,13 @@
       if (function_exists('check_sm_version'))
          return check_sm_version($a, $b, $c);
 
-      global $version;
+      if (defined('SM_VERSION'))
+         $version = SM_VERSION;
+      else
+         global $version;
+
       list($aa, $bb, $cc) = preg_split('/\./', $version, 3);
+      $cc = intval($cc);
 
       if(!is_numeric($cc))
          list($cc, $info) = explode(' ', $cc, 2);
@@ -114,64 +131,414 @@
 
 
 
-   // include the right file for current version of SM
+   /**
+     * Includes needed files with updated API for legacy
+     * SquirrelMail installations
+     *
+     */
+   function load_legacy_support()
+   {
+
+      global $compatibility_sm_path;
+
+      // SQUIRRELMAIL DEVELOPER NOTES
+      //
+      // The array below should be updated with every release of 
+      // SquirrelMail, along with adding needed directories in the 
+      // includes for this plugin.
+      //
+      // Code that was added as of a certain version should be put 
+      // in the include file in the directory corresponding to that 
+      // same version number in order to make it available to older
+      // versions.  When including files here, that file will be
+      // included for all versions prior.
+      //
+      // If some code was added to the newest codebase for two different
+      // release series, for example, a function called "sq_new_function()"
+      // that was added in both 1.4.10 as well as 1.5.2, please add 
+      // the function to only the higher version (1.5.2 in this case),
+      // and add additional logic to the way it is included:
+      //
+      //    if ((!compatibility_check_sm_version(1, 4, 10)
+      //      || (compatibility_check_sm_version(1, 5, 0) 
+      //     && !compatibility_check_sm_version(1, 5, 2)))
+      //     && !function_exists('sq_new_function'))
+      //    {
+      //    function sq_new_function()
+      //    {
+      //       echo "HELLO WORLD";
+      //    }
+      //    }
+      //
+      // NOTE: In-between version includes should simply be put in the
+      //       lowest version include file for the new release series
+      //       (e.g., anything in the 1.5.0 include file will be loaded
+      //       for all 1.4.x versions, and of course, not for 1.5.0).
+      //       The following in-between include file system is thus not 
+      //       needed, but leaving code and documentation about how it 
+      //       works just for edification:
+      //
+      // In-between include directories should be named as such:
+      // "1.4.x-to-1.5.0" where the latter version string must 
+      // correspond to a real SquirrelMail version and the versions 
+      // must be separated by the string "-to-"
+      //
+      // Order in this array is significant, please keep newest releases
+      // at top of this list, ordered downward from there...
+      //
+      // These have to be hard-coded since there is no way to know if this
+      // plugin is being used in series 1.2.x, 1.3.x, 1.4.x, 1.5.x, etc.
+      //
+      $compatibility_versions = array(
+         '1.5.2', '1.5.1', '1.5.0',
+         // in-between includes not needed:
+         //'1.4.x-to-1.5.0',
+         '1.4.14',
+         '1.4.13', '1.4.12', '1.4.11', '1.4.10', '1.4.9', '1.4.8', '1.4.7', 
+         '1.4.6', '1.4.5', '1.4.4', '1.4.3', '1.4.2', '1.4.1', '1.4.0',
+         // skipping 1.3.x, not supported for now
+         // in-between includes not needed:
+         //'1.2.x-to-1.4.0',
+         '1.2.11', '1.2.10', '1.2.9', '1.2.8', '1.2.7',
+         // if you are running anything older than this, I feel really, really sorry for you
+                                     );
+
+
+      // loop through all versions in our list, including files
+      // for all versions newer than the one being run here and now
+      //
+      $last_csv_version_string = '';
+      $last_version_string = '';
+      for ($count = 0; !empty($compatibility_versions[$count]); $count++)
+      {
+
+         $version_string = $compatibility_versions[$count];
+
+
+/* ----- see above; in-between includes not needed...
+         // in-between version files: set version string to the higher
+         // version so that all versions in the release series below
+         // it will see it
+         //
+         if (($pos = strpos($version_string, '-to-')) !== FALSE)
+            $csv_version_string = str_replace('.', ', ', substr($version_string, $pos + 4));
+
+
+         // normal conversion to CSV values
+         //
+         else
+----- */
+            // note that we could split $version_string by '.' instead and not use eval below
+            $csv_version_string = str_replace('.', ', ', $version_string);
+
+
+         if ($count == 0)
+         {
+            if (eval('if (compatibility_check_sm_version(' . $csv_version_string . ')) return TRUE; else return FALSE;'))
+               return;
+            $last_csv_version_string = $csv_version_string;
+            $last_version_string = $version_string;
+            continue;
+         }
+
+
+         if (eval('if (file_exists($compatibility_sm_path . \'plugins/compatibility/includes/'
+              . $last_version_string . '/global.php\')) include_once($compatibility_sm_path . \'plugins/compatibility/includes/'
+              . $last_version_string . '/global.php\'); if (compatibility_check_sm_version('
+              . $csv_version_string . ')) return TRUE;'))
+            return;
+
+         $last_csv_version_string = $csv_version_string;
+         $last_version_string = $version_string;
+
+      }
+
+   }
+
+
+
+/**
+  * Allows a plugin to push itself (or another plugin) to the top 
+  * or bottom of the plugin order for a certain hook.  It also
+  * allows for positioning immediately before or after another 
+  * plugin.
+  *
+  * NOTE that this function will only be useful when called from
+  * certain points in the code context, such as from a very early
+  * hook like 'config_override', and may not work reliably for 
+  * reordering hooks that are already in execution.
+  *
+  * @param string  $plugin_name     The name of the plugin to reposition.
+  * @param string  $hook_name       The name of the hook wherein the 
+  *                                 repositioning happens.
+  * @param boolean $before          If the repositioning should be at the
+  *                                 top of the plugin list (or before the
+  *                                 $relative_plugin plugin).  When FALSE, 
+  *                                 repositioning goes to the bottom of 
+  *                                 the plugin list or after $relative_plugin
+  *                                 (OPTIONAL; default is TRUE).
+  * @param string  $relative_plugin The name of a plugin that the repositioning
+  *                                 should be relative to.  If not given,
+  *                                 the target plugin is just moved to the
+  *                                 extreme front or back of the whole plugin
+  *                                 list (OPTIONAL; default not used).
+  *
+  * @return boolean TRUE when repositioning succeeds, FALSE otherwise
+  *                 (for instance, it might fail if the target plugin 
+  *                 is not already registered on the target hook, or
+  *                 $relative_plugin is not also found on the target hook).
+  *
+  */
+function reposition_plugin_on_hook($plugin_name, $hook_name, $before=TRUE,
+                                   $relative_plugin='')
+{
+
+   global $squirrelmail_plugin_hooks, $plugins;
+
+
+   // make sure plugin is already registered on the target hook
    //
-   if (compatibility_check_sm_version(1, 5, 1))
+   if (is_array($squirrelmail_plugin_hooks[$hook_name]) 
+    && !empty($squirrelmail_plugin_hooks[$hook_name][$plugin_name]))
    {
-      // do nothing for now
+
+      // move relative to another plugin?
+      //
+      $relative_plugin_function = FALSE;
+      if (!empty($relative_plugin))
+      {
+         if (empty($squirrelmail_plugin_hooks[$hook_name][$relative_plugin]))
+            return FALSE;
+
+         $relative_plugin_function = $squirrelmail_plugin_hooks[$hook_name][$relative_plugin];
+      }
+
+
+      // grab target plugin's function callback for this hook
+      //
+      $plugin_function = $squirrelmail_plugin_hooks[$hook_name][$plugin_name];
+
+
+      // reordering an associative array can only be done
+      // by rebuilding by hand as far as I know
+      //
+      $new_hook_array = array();
+      if ($before && !$relative_plugin_function) 
+         $new_hook_array[$plugin_name] = $plugin_function;
+      foreach ($squirrelmail_plugin_hooks[$hook_name] as $plugin => $function)
+      {
+
+         if ($plugin == $plugin_name)
+            continue;
+
+         // move relative to another plugin?
+         //
+         if ($plugin == $relative_plugin && !empty($relative_plugin))
+         {
+            if ($before)
+            {
+               $new_hook_array[$plugin_name] = $plugin_function;
+               $new_hook_array[$relative_plugin] = $relative_plugin_function;
+            }
+            else
+            {
+               $new_hook_array[$relative_plugin] = $relative_plugin_function;
+               $new_hook_array[$plugin_name] = $plugin_function;
+            }
+            continue;
+         }
+
+         $new_hook_array[$plugin] = $function;
+
+      }
+      if (!$before && !$relative_plugin_function) 
+         $new_hook_array[$plugin_name] = $plugin_function;
+
+
+
+      // now replace the plugins for the target hook
+      //
+      $squirrelmail_plugin_hooks[$hook_name] = $new_hook_array;
+
+      return TRUE;
+
    }
-   else if (compatibility_check_sm_version(1, 5, 0))
+
+
+   // plugin not found on target hook
+   //
+   return FALSE;
+
+}
+
+
+
+/**
+  * Dynamically enables a plugin to the SquirrelMail environment.
+  *
+  * @param string  $plugin_name  The name of the plugin to add.
+  * @param mixed   $args         The current plugin function argument,
+  *                              which must be exactly as received by
+  *                              the plugin function that is calling
+  *                              this code (OPTIONAL; default empty).
+  * @param boolean $dont_execute When adding plugins that are registered
+  *                              on the same hook that is currently being
+  *                              executed, the registered function for
+  *                              the new plugins will be manually run,
+  *                              however, setting this flag to TRUE will
+  *                              prevent that from happening (plugins
+  *                              will be registered, but never executed)
+  *                              (OPTIONAL; default is FALSE).
+  *
+  */
+function add_plugin($plugin_name, $args='', $dont_execute=FALSE)
+{
+
+   global $squirrelmail_plugin_hooks, $plugins;
+
+   // changing the hook function array whilst in the
+   // middle of iterating thru it for the same hook
+   // doesn't always work, so we'll see if the hook
+   // currently being executed has had its function
+   // list changed; if so, we will execute the added
+   // hook functions ourselves
+   //
+   $hook_name = get_current_hook_name($args);
+
+
+   // used below for determining if any plugins
+   // were added to currently running hook
+   //
+   if (!empty($hook_name) 
+    && !empty($squirrelmail_plugin_hooks[$hook_name])
+    && is_array($squirrelmail_plugin_hooks[$hook_name]))
+      $original_hook_functions = $squirrelmail_plugin_hooks[$hook_name];
+   else
+      $original_hook_functions = array();
+
+
+   // add plugin to global plugin array
+   //
+   $plugins[] = $plugin_name;
+
+
+   // enable plugin -- emulate code from use_plugin() function
+   // in SquirrelMail core, because in 1.5.2, it no longer
+   // called "squirrelmail_plugin_init_<plugin_name>", which 
+   // NEEDS to be called here.
+   //
+   if (file_exists(SM_PATH . "plugins/$plugin_name/setup.php")) 
    {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.5.0/global.php');
+
+      include_once(SM_PATH . "plugins/$plugin_name/setup.php");
+
+      $function = "squirrelmail_plugin_init_$plugin_name";
+      if (function_exists($function))
+         $function();
+
    }
-   else if (compatibility_check_sm_version(1, 4, 6))
+
+
+   // now get any new plugins for the current hook
+   // and run their hooks
+   //
+   if (!$dont_execute && !empty($hook_name))
    {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.6/global.php');
+
+      if (!empty($squirrelmail_plugin_hooks[$hook_name])
+       && is_array($squirrelmail_plugin_hooks[$hook_name]))
+         $new_hook_functions = array_diff($squirrelmail_plugin_hooks[$hook_name],
+                                          $original_hook_functions);
+      else
+         $new_hook_functions = array();
+
+      foreach ($new_hook_functions as $function)
+         if (function_exists($function))
+//FIXME: is $args always how plugins are called, even in 1.4.x?
+            $function($args);
+
    }
-   else if (compatibility_check_sm_version(1, 4, 5))
+
+}
+
+
+
+/**
+  * Dynamically disables a plugin from the SquirrelMail environment.
+  *
+  * @param string $plugin_name The name of the plugin to remove.
+  *
+  */
+function remove_plugin($plugin_name)
+{
+
+   global $squirrelmail_plugin_hooks, $plugins;
+
+   $plugin_key = array_search($plugin_name, $plugins);
+   if (!is_null($plugin_key) && $plugin_key !== FALSE)
    {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.5/global.php');
+      unset($plugins[$plugin_key]);
+      if (is_array($squirrelmail_plugin_hooks))
+         foreach (array_keys($squirrelmail_plugin_hooks) as $hookName)
+         {
+            unset($squirrelmail_plugin_hooks[$hookName][$plugin_name]);
+         }
    }
-   else if (compatibility_check_sm_version(1, 4, 4))
+
+}
+
+
+
+/**
+  * Determines what plugin hook is currently executing,
+  * if any, in a SquirrelMail version-independent fashion.
+  *
+  * @param mixed $args The current plugin function argument,
+  *                    which must be exactly as received by
+  *                    the plugin function that is calling
+  *                    this code.
+  *
+  * @return string The name of the currently executing plugin
+  *                hook, or an empty string if either no hook
+  *                is running or the hook name could not be
+  *                determined.
+  *
+  */
+function get_current_hook_name($args='')
+{
+
+   if (check_sm_version(1, 5, 1))
    {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.4/global.php');
+      global $currentHookName;
+      if (!empty($currentHookName))
+         return $currentHookName;
    }
-   else if (compatibility_check_sm_version(1, 4, 3))
+
+
+//TODO: should we ALWAYS backtrace instead of assuming that $args[0] is the hook name?
+   if (!empty($args[0]) && is_string($args[0]))
+      return $args[0];
+   else
    {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.3/global.php');
+
+      // plugin args not given or didn't have a hook
+      // name in them, so try backtracing instead
+      //
+      $backtrace = debug_backtrace();
+      foreach ($backtrace as $trace)
+         if ($trace['function'] == 'do_hook'
+          || $trace['function'] == 'do_hook_function'
+          || $trace['function'] == 'concat_hook_function'
+          || $trace['function'] == 'boolean_hook_function')
+            return $trace['args'][0];
+
+      // nothing found at all
+      //
+      return '';
+
    }
-   else if (compatibility_check_sm_version(1, 4, 2))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.2/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 4, 1))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.1/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 4, 0))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.4.0/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 2, 11))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.2.11/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 2, 10))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.2.10/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 2, 9))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.2.9/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 2, 8))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.2.8/global.php');
-   }
-   else if (compatibility_check_sm_version(1, 2, 7))
-   {
-      include_once($compatibility_sm_path . 'plugins/compatibility/includes/1.2.7/global.php');
-   }
+
+}
 
 
 
@@ -188,21 +555,38 @@
   * Non-functional on login_before hook.
   *
   * @param string $plugin_name The name of the plugin as
-  * it is known to SquirrelMail, that is, it is the name
-  * of the plugin directory
-  *
+  *                            it is known to SquirrelMail, 
+  *                            that is, it is the name
+  *                            of the plugin directory
   * @param array $config_files An array of files that will
-  * be included IN THE ORDER that they are given in the
-  * array.  Files should be specified relative to the calling
-  * plugin's directory, such as:
-  * array('config.php') or array('data/config.php', 'data/admins.php')
-  * It is also possible to give a full/direct path to a 
-  * configuration file by placing a forward slash at the 
-  * beginning of the file:
-  * array('/var/lib/squirrelmail/config/myplugin.conf')
+  *                            be included IN THE ORDER that 
+  *                            they are given in the
+  *                            array.  Files should be specified 
+  *                            relative to the calling
+  *                            plugin's directory, such as:
+  *                              array('config.php') 
+  *                            or:
+  *                              array('data/config.php', 'data/admins.php')
+  *                            It is also possible to give a 
+  *                            full/direct path to a 
+  *                            configuration file by placing 
+  *                            a forward slash at the 
+  *                            beginning of the file:
+  *                              array('/var/lib/squirrelmail/config/myplugin.conf')
+  * @param boolean $return_errors When true, any errors encountered
+  *                               will cause this function to return
+  *                               FALSE; otherwise, errors are
+  *                               handled herein by showing an error 
+  *                               to the user and exiting (OPTIONAL; 
+  *                               default is FALSE).
+  *
+  * @return mixed If no errors are found, TRUE is returned; if an error
+  *               was found and $return_errors is TRUE, FALSE is returned.  
+  *               If $return_errors is FALSE and an error is found, this 
+  *               function will never return.
   *
   */
-function load_config($plugin_name, $config_files)
+function load_config($plugin_name, $config_files, $return_errors=FALSE)
 {
 
    global $compatibility_sm_path;
@@ -249,19 +633,24 @@ function load_config($plugin_name, $config_files)
    //
    if (!$success)
    {
-      global $color;
-      bindtextdomain ('compatibility', SM_PATH . 'locale');
-      textdomain ('compatibility');
+
+      if ($return_errors) return FALSE;
+
+// TODO: when used in configtest hook (and others??), this function (sq_change_text_domain()) is not known yet... but usually $return_errors should be turned on for that hook
+      sq_change_text_domain('compatibility');
       $error_msg = _("Administrative error:") . '<br />' 
                  . sprintf(_("The plugin %s has not been set up correctly."),
-                           '&quot;<b>' . $plugin_name . '</b>&quot;') 
+                           '&quot;<strong>' . $plugin_name . '</strong>&quot;') 
                  . '<br />' 
                  . _("Please read the README or INSTALL files that came with the plugin.");
-      bindtextdomain ('squirrelmail', SM_PATH . 'locale');
-      textdomain ('squirrelmail');
+      sq_change_text_domain('squirrelmail');
+      include_once($compatibility_sm_path . 'functions/display_messages.php');
+      global $color;
       plain_error_message($error_msg, $color);
       exit;
    }
+
+   return TRUE;
 
 }
 
@@ -275,21 +664,40 @@ function load_config($plugin_name, $config_files)
   * files (all relative from the plugin's directory)
   *
   * @param string $pluginName The name of the plugin as
-  * it is known to SquirrelMail, that is, it is the name
-  * of the plugin directory.
-  *
+  *                           it is known to SquirrelMail, 
+  *                           that is, it is the name
+  *                           of the plugin directory.
   * @param array $configFiles An array of any files that the
-  * user should have set up for this plugin, for example:
-  * array('config.php') or array('data/config.php', 'data/admins.php')
-  * where all files will be referenced from the plugin's
-  * main directory.
-  * It is also possible to give a full/direct path to a 
-  * configuration file by placing a forward slash at the 
-  * beginning of the file:
-  * array('/var/lib/squirrelmail/config/myplugin.conf')
+  *                           user should have set up for 
+  *                           this plugin, for example:
+  *                             array('config.php') 
+  *                           or: 
+  *                             array('data/config.php', 'data/admins.php')
+  *                           where all files will be 
+  *                           referenced from the plugin's
+  *                           main directory.
+  *                           It is also possible to give a 
+  *                           full/direct path to a 
+  *                           configuration file by placing 
+  *                           a forward slash at the 
+  *                           beginning of the file:
+  *                             array('/var/lib/squirrelmail/config/myplugin.conf')
+  * @param boolean $return_errors When true, any errors encountered
+  *                               will cause this function to return
+  *                               either FALSE or a string describing
+  *                               the error; otherwise, errors are
+  *                               handled herein by showing an error 
+  *                               to the user and exiting (OPTIONAL; 
+  *                               default is FALSE).
+  *
+  * @return mixed If no errors are found, TRUE is returned; if an error
+  *               was found and $return_errors is TRUE, either FALSE or 
+  *               a string describing the error is returned.  If $return_errors
+  *               is FALSE and an error is found, this function will never
+  *               return.
   *
   */
-function check_plugin_setup($pluginName, $configFiles)
+function check_plugin_setup($pluginName, $configFiles, $return_errors=FALSE)
 {
 
    global $compatibility_disable_config_check;
@@ -312,19 +720,30 @@ function check_plugin_setup($pluginName, $configFiles)
       if (!file_exists($plugin_path))
       {
 
-         global $color;
-         bindtextdomain ('compatibility', SM_PATH . 'locale');
-         textdomain ('compatibility');
+         //if ($return_errors) return FALSE;
+
+         sq_change_text_domain('compatibility');
+
+         if ($return_errors) 
+         {
+            $error_msg = sprintf(_("The file %s is missing from plugin %s."), 
+                                 '&quot;<strong>' . $configFile . '</strong>&quot;',
+                                 '&quot;<strong>' . $pluginName . '</strong>&quot;');
+            sq_change_text_domain('squirrelmail');
+            return $error_msg;
+         }
+
          $error_msg = _("Administrative error:") . '<br />' 
                     . sprintf(_("The plugin %s has not been set up correctly."),
-                              '&quot;<b>' . $pluginName . '</b>&quot;') 
+                              '&quot;<strong>' . $pluginName . '</strong>&quot;') 
                     . '<br />' 
                     . sprintf(_("The file %s is missing."),
-                              '&quot;<b>' . $configFile . '</b>&quot;') 
+                              '&quot;<strong>' . $configFile . '</strong>&quot;') 
                     . '<br />'
                     . _("Please read the README or INSTALL files that came with the plugin.");
-         bindtextdomain ('squirrelmail', SM_PATH . 'locale');
-         textdomain ('squirrelmail');
+         sq_change_text_domain('squirrelmail');
+         include_once($compatibility_sm_path . 'functions/display_messages.php');
+         global $color;
          plain_error_message($error_msg, $color);
          exit;
 
@@ -332,8 +751,9 @@ function check_plugin_setup($pluginName, $configFiles)
 
    }
 
+   return TRUE;
+
 }
 
 
 
-?>

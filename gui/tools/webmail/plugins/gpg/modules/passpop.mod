@@ -4,24 +4,26 @@
  *-----------
  * GPG plugin passphrase submission module file,
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Aaron van Meerten
  *
- * $Id: passpop.mod,v 1.16 2003/11/18 14:45:48 ke Exp $
+ * $Id: passpop.mod,v 1.23 2005/11/10 16:36:22 ke Exp $
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_pop_init.php, exiting abnormally";
 }
 global $color, $onload;
 global $username;
+global $pserr, $hiddenvars;
+global $debug;
 $use_signing_key_id = getPref ($data_dir, $username, 'use_signing_key_id');
 
 $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
@@ -29,7 +31,18 @@ $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
 sqgetGlobalVar('username',  $username,      SQ_SESSION);
 sqgetGlobalVar('psaction', $psaction);
 sqgetGlobalVar('addbasepath',$addbasepath);
+?>
+<script language="javascript">
+    niceClose = false;
 
+    function doClose() {
+        if (!niceClose) {
+            window.opener.sendClicked = false;
+        }
+    }
+</script>
+
+<?php
 echo '<script language=JavaScript src=';
 if (file_exists('../plugins/gpg/js/gpgsubmitpass.js')){
    echo "../plugins/gpg/js/gpgsubmitpass.js";
@@ -39,6 +52,13 @@ if (file_exists('../plugins/gpg/js/gpgsubmitpass.js')){
    echo "../js/gpgsubmitpass.js";
 } else echo '></script>' . _("script file not found, exiting abnormally.");
 echo '></script>';
+
+//Virtual Keyboard plugin support
+$vkeyboard=false;
+if (file_exists(SM_PATH . 'plugins/vkeyboard/vkeyboard.js')) {
+	$vkeyboard=true;
+	echo '<script language=JavaScript src=' . SM_PATH . 'plugins/vkeyboard/vkeyboard.js></script>';
+}
 
 switch($psaction) {
     case 'sign':
@@ -91,12 +111,10 @@ switch($psaction) {
 if ($debug) {
     echo "use_signing_key_id = $use_signing_key_id<br>";
     echo "no_signing_passwd = $no_signing_passwd<br>";
-    echo "allowpassphrasecaching = $allowpassphrasecaching<br>";
-    echo "cache_passphrase = $cache_passphrase<br>";
 }
 
 echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" "
-    . "vlink=\"$color[7]\" alink=\"$color[7]\" $onload>\n";
+    . "vlink=\"$color[7]\" alink=\"$color[7]\" $onload onunload=\"doClose();\">\n";
 
 echo "<table width='100%' border=0 cellpadding=2>\n"
     . '<tr>'
@@ -110,10 +128,10 @@ echo "<table width='100%' border=0 cellpadding=2>\n"
 
 
 echo"<form name=main method='post'";
-if ($onclick != '') { echo " onsubmit=\"$onclick; return false;\""; }
+if ($onclick != '') { echo " onsubmit=\"niceClose = true; $onclick; return false;\""; }
 echo ">";
 
-if (gpg_is_passphrase_cacheable() and $psaction!='decrypt' and $psaction!='delete' and $pasaction!='deletepair') {
+if (gpg_is_passphrase_cacheable() && $psaction!='decrypt' && $psaction!='delete' && $psaction!='deletepair') {
     echo '<input type="hidden" name="MOD" value="cachepass">';
 }
 
@@ -136,8 +154,11 @@ if ($no_signing_passwd != 'true') {
 (event.keyCode == 13) handled=true" onblur="handled=false">'
           . "<p align='center'>"
           . "<input type=$inputtype value='"._("Submit")."'";
-	  if ($onclick != '') { echo " onclick='$onclick'"; }
-          echo "></p>";
+      if ($onclick != '') { echo " onclick='$onclick'"; }
+      echo "></p>";
+      if ($vkeyboard) {
+	      echo '<a href="#" onclick="openwindow(\'passphrase\')">' . _("Virtual Keyboard") . '</a><p>';
+      }
     } else {
        echo
             '<p>'
@@ -146,7 +167,7 @@ if ($no_signing_passwd != 'true') {
           . _("Signing functions not allowed from an insecure connection.")
           . "<p align='center'><input type='button' value='"
           . _("Close Window")
-          . "' onclick='window.close'></p>";
+          . "' onclick='window.close()'></p>";
     }
 }
 
@@ -156,6 +177,31 @@ echo "\n//-->\n</script>\n";
 
 /*
  * $Log: passpop.mod,v $
+ * Revision 1.23  2005/11/10 16:36:22  ke
+ * - patch to cleanly close out of passphrase prompt page provided by Jonathan Angliss
+ *
+ * Revision 1.22  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.21  2004/08/23 00:16:31  ke
+ * -applied fix for javascript close missing parenthesis (Thanks to Kevin Semande)
+ * bug 217
+ *
+ * Revision 1.20  2004/04/21 17:57:04  ke
+ * -added check for virtual keyboard plugin (vkeyboard)
+ * -added link to pop up the virtual keyboard
+ * -still must click "Close" instead of "Login", and then submit on our dialog
+ * bug 168
+ *
+ * Revision 1.19  2004/02/17 22:53:57  ke
+ * -fixed typo bug
+ *
+ * Revision 1.18  2004/01/17 00:28:06  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.17  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.16  2003/11/18 14:45:48  ke
  * -removed hardcoded debug
  *

@@ -1,0 +1,181 @@
+1|Attachment Handlers - Added to 1.2 SM core
+2|SquirrelMail Clock - Added to 1.2 SM core
+3|Vadmin
+4|Vacation Plugin
+5|Translate
+7|RedHat PHP CGI Fix
+8|Quick Save
+9|Printer Friendly - Added to 1.2 SM core
+10|X-Mailer - Added to 1.2 SM core
+11|Retrieve User Data
+12|Password Forget
+14|New Mail
+15|MOTD
+16|Mail Forward
+17|Mail Fetch
+18|LDIF Address Book Import
+19|Gzip Compressed Output
+20|Delete Move Next
+21|Change Password
+23|Focus Change - Added to 1.2 SM core
+25|Change MySQL Password
+26|Change LDAP Password
+27|Bug Report
+28|Auto CC
+29|Addressbook Import-Export
+30|Add Graphics
+31|Address Take (Added to SM 1.4 Core)
+32|Autocomplete
+33|Login: Auto
+34|Login: HTTP Authentication
+35|Username Display
+36|SpamCop Spam Reporting
+37|Login:  Aliases
+38|Timeout User
+39|Email Footer
+42|LDAP Query plugin
+43|E-mail Priority - Added to 1.2 SM core
+44|X-Header
+46|Filters - Added to 1.2 SM core
+47|Virtual Host Login
+49|Paginator - Added to 1.2 SM core
+50|Mail Fetchmail
+51|Vacation (using local program)
+52|Squirrel Logger
+54|S/MIME verification
+55|View As HTML
+56|Weather
+57|Picons
+58|Get UUencode
+59|Quota Usage
+60|List Commands
+61|Secure Login
+62|TNEF Attachment Decoder
+63|Disk Quota Usage
+64|Folder Synch
+65|Calendar
+66|Highlighting Legend
+67|SQL Squirrel Logger
+68|Plugin Updates
+69|Administrator
+70|Compose in New Window
+71|Move All Messages
+72|Windows
+73|SIEVE Mail Filters
+74|Message source - Addedto SM 1.4 core
+76|Block Sender
+77|Vacation plugin for QMAIL with LDAP authentication
+78|TMDA (Tagged Message Delivery Agent)
+79|Notes
+80|Dictionary
+81|Quote-Of-The-Day at Login
+82|Meteosat Image
+83|Exchange Server Meeting Requests
+85|Weather_uk
+86|Undelete
+87|Folder Sizes
+88|Random Login Image
+89|Taglines
+90|Small Calendar
+91|Message Flags & Icons
+92|Empty Trash
+93|Bookmarks
+94|Canadian Weather
+96|Spamassassin Spam Filter
+97|LDAP Prefs Backend
+98|Unsafe Image Rules
+100|Variable Sent Folder
+101|Address Add
+102|Jump to Folder
+103|VPOPMail Account Administration
+104|MySQL Global AddressBook Backend
+105|Shared Calendars
+106|IP address and username restrictions
+107|Change SASL Password
+108|Show SSL Link
+109|Address Group Plugin
+110|Procmail Filter Configuration
+111|SpamAssassin Configuration
+112|NNTP webinterface
+113|Mail Utilities Menu
+114|Metea
+115|BayesSpam - Intelligent Spam Filter
+116|E-News
+117|Change_passwd
+119|Mini SquirrelMail
+120|File Manager
+121|Archive Mail
+123|Show Username and IP
+124|Notify New Mail Popup
+125|Disk Quota Plugin
+126|Wetter Online
+127|Server Side Filters
+128|Online Users
+135|Auto-prune Sent
+141|TWC Weather
+142|Ask User Info
+143|JavaScript Clock
+145|Freecell146|spamassassin SpamFilter (Frontend) version 2
+147|Left CSS
+148|Multilogin
+149|Virtual Host Domain Name Management
+150|virtusertable
+151|Username over Logo
+152|Compatibility
+153|G/PGP Encryption Plugin
+154|Shared Todo Lists
+155|HTTP Auth
+157|Select Range
+158|Got Hotmail
+159|Virtual Keyboard
+162|Block Attachments
+166|Change Merak Password
+167|SpamAssassin+SQL
+168|Emoticons
+169|Address ContactClean (MailLocate)
+172|Autorespond (vacation reply, forward, and filter editor)
+173|Hancock
+174|To-Do Reminder
+176|Send To Semicolon - Moved to SM 1.4.1 core
+180|Dereference ldap aliases
+181|New User Wizard
+183|User Special Mailboxes
+184|Compose special characters
+185|Empty Folders
+186|Show Headers
+187|Courier Vacation
+189|Change Qmail-LDAP Forward
+190|Spamrule (simple, flexible mail filter config)
+192|Sent Confirmation
+193|Folder Settings
+194|Compose window fixes
+195|Custom From
+196|Ottawa Gas Prices
+197|Startup Folder
+198|Templates
+199|smrestrict
+200|Lockout
+201|smrestradmin
+202|Virus Scan
+204|CPanel Password Changer
+205|Download All
+206|Extract
+207|Admin Add
+208|wx200d personal weather station client
+209|HTML Mail
+210|Server Side Filter
+212|Junk Folder
+213|Restrict Senders
+214|Attachment Cleanup
+215|Shared Folders (ACLs)
+216|yelp!
+217|Login Notes
+218|Mark Read
+219|Random Signature Taglines
+220|Forced Preferences
+221|Japanese Input
+222|Preview Pane
+223|True-A-Day Daily Story
+224|Amavis-New + SQL + SpamAssassin + Quarantine
+225|Image Buttons
+226|Bounce

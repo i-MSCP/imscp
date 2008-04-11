@@ -7,7 +7,7 @@
  * This is the Getting Started Page, which should hold a user's hand
  * through setting up the plugin.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Brian Peterson
@@ -15,7 +15,7 @@
  * @todo modify getstart.php to use SM_PATH
  * @todo modify getstart.php to use new module interface
  *
- * $Id: getstart.php,v 1.11 2003/11/04 21:41:01 brian Exp $
+ * $Id: getstart.php,v 1.14 2005/07/27 14:07:49 brian Exp $
  */
 /*********************************************************************/
 
@@ -23,13 +23,13 @@
 //Have to chdir so included includes will work.
 //chdir("../");
 
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_config.php, exiting abnormally";
 }
 require_once(SM_PATH.'plugins/gpg/modules/gpg_module_header.php');
@@ -120,6 +120,8 @@ echo
     . '&nbsp;'
     . _("You can only have one signing key at any given time.")
     . '<br>'
+    . _("You must select a signing key to use the GPG Plugin to securely sign messages.")
+    . '<br>'
     . _("To set your signing key, find the desired key in the 'secret' ring of the")
     . ' <a href="keyring_main.php">'
     . _("keyring")
@@ -161,6 +163,16 @@ require_once(SM_PATH.'plugins/gpg/modules/gpg_module_footer.php');
 /*******************************************************/
 /*
  * $Log: getstart.php,v $
+ * Revision 1.14  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.13  2004/01/14 22:23:11  brian
+ * - added more explicit instructions about signing key req.
+ * Bug 145
+ *
+ * Revision 1.12  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.11  2003/11/04 21:41:01  brian
  * change to use SM_PATH
  *

@@ -201,7 +201,7 @@ frame {
 
 /** Login **/
 #container {
-	background-image: url(../../images/bg.jpg);
+	background-image: url(../../skins/omega/images/bg.jpg);
 	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: center left;
@@ -452,9 +452,6 @@ p.button_text {
 }
 
 #left_inbox_button {
-	background-image: url(../../skins/omega/);
-	background-repeat: no-repeat;
-	background-position: top left;
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
@@ -463,9 +460,6 @@ p.button_text {
 }
 
 #left_drafts_button {
-	background-image: url(../../skins/omega/);
-	background-repeat: no-repeat;
-	background-position: top left;
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
@@ -474,9 +468,6 @@ p.button_text {
 }
 
 #left_sent_button {
-	background-image: url(../../skins/omega/);
-	background-repeat: no-repeat;
-	background-position: top left;
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
@@ -485,9 +476,6 @@ p.button_text {
 }
 
 #left_trash_button {
-	background-image: url(../../skins/omega/);
-	background-repeat: no-repeat;
-	background-position: top left;
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;
@@ -496,9 +484,6 @@ p.button_text {
 }
 
 #left_folder_button {
-	background-image: url(../../skins/omega/);
-	background-repeat: no-repeat;
-	background-position: top left;
 	position: absolute;
 	padding: 4px 15px 5px 30px;
 	float: none;

@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-11 Benedikt Heintel
+	- TOOLS:
+		* Cleanup and Update of SquirrelMail
+
 2008-04-08 Jochen Manz
 	- CONFIGS
 		* Fixed #1177: revise FreeBSD Doc

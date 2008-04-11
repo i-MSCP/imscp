@@ -1,10 +1,11 @@
 <?php
 
-echo     '<h2>'
-    . _("Public web servers are not always secure!")
-    .   '</h2>';
+echo  '<h2>'
+    . _("Should I store my private keys on the server?")
+    . '</h2>';
 
-echo _("Web-based email programs are very convenient, and using your web email to send encrypted emails adds to that convenience.")
+echo  _("Public web servers are not always secure!")
+    . _("Web-based email programs are very convenient, and using your web email to send encrypted emails adds to that convenience.")
     . '&nbsp;'
     . _("It would be dangerous to simply assume that any web server (like this one) is secure.")
     . '&nbsp;'
@@ -16,9 +17,12 @@ echo _("Web-based email programs are very convenient, and using your web email t
 
 
 /**
- * $Id: disc_keystore.php,v 1.7 2003/12/29 23:52:39 brian Exp $
+ * $Id: disc_keystore.php,v 1.8 2004/01/18 15:25:17 brian Exp $
  *
  * $Log: disc_keystore.php,v $
+ * Revision 1.8  2004/01/18 15:25:17  brian
+ * - standardized strings to minimize translation
+ *
  * Revision 1.7  2003/12/29 23:52:39  brian
  * localized strings discoverd by Alex Lemaresquier during French translation
  *

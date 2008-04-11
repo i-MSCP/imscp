@@ -59,14 +59,14 @@
       if (isset($smallcal_separator) && !empty($smallcal_separator)) {
           setPref($data_dir, $username, 'smallcal_separator', $smallcal_separator);
       } else {
-          setPref($data_dir, $username, 'smallcal_separator', '2');
+          setPref($data_dir, $username, 'smallcal_separator', '0');
       }
 
       if (isset($ShowSmallcal) && !empty($ShowSmallcal)) {
           setPref($data_dir, $username, 'smallcal_show', '1');
       } else {
           setPref($data_dir, $username, 'smallcal_show', '');
-      }	  
+      }
 
       if (isset($smallcal_cdefault) && !empty($smallcal_cdefault)) {
           setPref($data_dir, $username, 'smallcal_default', '1');
@@ -145,7 +145,7 @@
       if (!isset($smallcal_header) || !$smallcal_header){
          $smallcal_header = $color[11];
       }
-      if ($smallcal_default){ 
+      if ($smallcal_default){
 	 $smallcal_header = $color[11];
 	 $smallcal_day = $color[8];
 	 $smallcal_today = $color[8];
@@ -153,10 +153,9 @@
 	 $smallcal_event_i = "italic";
 	 $smallcal_size = "";
 	 $smallcal_calendar = "Personal";
+         $smallcal_separator = 0;
          $smallcal_bottom = 0;
-	 $smallcal_separator = 2;
       }
-	  // $smallcal_separator = 2; //pulled out of if statement to show box at all times
 
    }
 
@@ -189,11 +188,10 @@
            echo ' CHECKED';
       }
       echo '> ' . _("Show small calendar in left bar") . "</td></tr>\n";
-     // echo '<tr><td align=right nowrap>' . _("Use Default Theme:") . '</td><td><input name="smallcal_cdefault" type=CHECKBOX';
+      echo '<tr><td align=right nowrap>' . _("Use Default Theme:") . '</td><td><input name="smallcal_cdefault" type=CHECKBOX';
       if ($smallcal_default) {
            echo ' CHECKED';
       }
-/*
       echo '> ' . _("This will override values below") . '</td></tr>';	
       echo '<tr><td align=right nowrap>' . _("Header Color:") . ' </td><td><input type=text name="smallcal_cheader" size=10';
       if ($smallcal_header) {
@@ -216,9 +214,6 @@
       }
       echo '></td></tr>';
       echo '<tr><td align=right nowrap>' . _("Calendar separator:") . ' </td><td><select name="smallcal_separator">';
-     
-
-
       if ($smallcal_separator == "" || $smallcal_separator == 0)
       {
           echo '<option value="0" selected>None</option>';
@@ -244,8 +239,6 @@
           echo '<option value="2">Box</option>';
       }
       echo '</select></td></tr>';
-
- */
 
 /*
       echo '<tr><td align=right nowrap>' . _("Place on Bottom:") 
@@ -297,8 +290,8 @@
       else
       {
           echo '<option value="16px">16 px</option>';
-      } 
-      echo '</select></td></tr>'; 
+      }
+      echo '</select></td></tr>';
 
       if (file_exists("../plugins/calendar/calendar_check.php")) 
       {
@@ -367,7 +360,7 @@
       //echo '<tr><td colspan="2">&nbsp;</td></tr>';
       echo '<tr><td></td><td>';
 
-     // include_once("../plugins/smallcal/color.php");
+      include_once("../plugins/smallcal/color.php");
 
       echo '</td></tr>';
       echo '<tr><td colspan="2">&nbsp;</td></tr>';
@@ -478,7 +471,7 @@
         compatibility_sqextractGlobalVar('year');
 
 
-       if (! $smallcal_show) //turned off to show all the time
+        if (! $smallcal_show)
         {
             return;
         }

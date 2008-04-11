@@ -27,9 +27,9 @@ function todo_show_has_reminders_do() {
 		  include_once('../plugins/todo/functions.php');
 		  include_once('../plugins/todo/config.php');
 		}
-		echo "<table align=center width=\"100%\" cellpadding=0 cellspacing=0 border=0 bgcolor=\"$color[9]\">";
+		echo "<br><table align=center width=\"70%\" cellpadding=0 cellspacing=3 border=0 bgcolor=\"$color[9]\">";
 		echo '<tr><td>';
-		echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0 bgcolor=\"$color[4]\">";
+		echo "<table width=\"100%\" cellpadding=5 cellspacing=1 border=0 bgcolor=\"$color[4]\">";
 		echo "<tr><td align=center>"; 
 		echo _("Welcome") . " <strong>$username</strong>, ";
 		echo _("you have unfinished tasks. ");
@@ -37,8 +37,8 @@ function todo_show_has_reminders_do() {
 			echo '<br />' . _("These tasks are overdue:") . '<br />';
 			todo_init($todos);
 			$ntodos = todo_count($todos);
-			echo '<table border="0" width="100%" ><tr style="{font-weight: bold;}"><td>' . _("Task")
-			  . '</td><td align="right" >' . _("Deadline") . "</td></tr>\n";
+			echo '<table border="0" width="100%"><tr style="{font-weight: bold;}"><td>' . _("Task")
+			  . '</td><td align="right">' . _("Deadline") . "</td></tr>\n";
 			for($i=0;$i<$ntodos;$i++) {
 				$deadline = todo_get_todo_dl($todos, $i); 
 				$title = todo_get_todo_title($todos, $i);
@@ -59,7 +59,7 @@ function todo_show_has_reminders_do() {
 			}
 			echo '</table>';
 		}	
-		echo '</td></tr></table></td></tr></table><br>';
+		echo '</td></tr></table></td></tr></table>';
 	}
 	$todo_first_login = 0;
 	setPref($data_dir, $username, 'todo_first_login', '0');
@@ -70,8 +70,7 @@ function todo_show_reminders_do() {
 	  $todo_od_lt_m_bg, $todo_od_lt_m_fg, $todo_od_lt_y_bg, $todo_od_lt_y_fg, $todo_od_gt_y_bg, $todo_od_gt_y_fg,
 	  $todo_use_todo_priority;;
 	
-	echo "\n<!-- todo-plugin -->\n";
-	
+	echo "\n<!-- todo-plugin -->\n";	
 	$todo_show_left_todos = getPref($data_dir, $username, 'todo_show_left_todos');	
 	$todo_use_todo_priority = getPref($data_dir, $username, 'todo_use_todo_priority');
 	if (($todo_things == true) && ($todo_show_left_todos == 1)) {
@@ -83,27 +82,14 @@ function todo_show_reminders_do() {
 		  include_once('../plugins/todo/functions.php');
 		  include_once('../plugins/todo/config.php');
 		}
-//echo "<TABLE BORDER=0 WIDTH=\"100%\" CELLSPACING=0 CELLPADDING=0 >";
-//echo "<TR >";
-//echo "<TD width=\"100%\" height=20 ALIGN=left class=\"left_mailbox_top\">&nbsp;"._("To Do")."</TD>";
-//echo "<TD width=\"5\" height=20 ALIGN=left class=\"left_mailbox_end\">&nbsp;</TD>";
-//echo "</TR></TABLE>";
-
-
-
-	echo "<div id=\"todo_top\"><p>"._("To Do") ."<a href=\"#\" onclick=\"reveal('todo');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a></p></div>\n";
-	echo "<div id=\"todo\">\n";
-
-		echo "<table width=\"99%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\">\n";
-		echo "<tr><td valign=\"middle\"  class=\"todo\">\n";
-		echo "<table align=center width=\"90%\" cellpadding=0 cellspacing=0 border=0 >";
+		echo "<br><table align=center width=\"90%\" cellpadding=0 cellspacing=1 border=0 bgcolor=\"$color[9]\">";
 		echo '<tr><td>';
-		echo "\n<table width=\"100%\" cellpadding=0 cellspacing=0 border=0 >";
-		echo "<tr><td align=\"left\" >\n";
+		echo "\n<table width=\"100%\" cellpadding=1 cellspacing=1 border=0 bgcolor=\"$color[4]\">";
+		echo "<tr><td align=\"left\" style=\"{font-size: small;}\">\n";
 		todo_init($todos);
 		$ntodos = todo_count($todos);
-		echo '<table cellpadding=1 cellspacing=1 border=0 width="100%" ><tr style="{font-weight: bold;}" bgcolor="'.$color[12].'"><td width="50%">' . _("Task")
-		  . '</td><td align="right" width="50%">' . _("Deadline") . "</td></tr>\n";
+		echo '<table border="0" width="100%"><tr style="{font-weight: bold; font-size: small}"><td style="{font-size: small;}">' . _("Task")
+		  . '</td><td align="right" style="{font-size: small;}">' . _("Deadline") . "</td></tr>\n";
 		for($i=0;$i<$ntodos;$i++) {
 			$deadline = todo_get_todo_dl($todos, $i); 
 			$title = todo_get_todo_title($todos, $i);
@@ -125,24 +111,15 @@ function todo_show_reminders_do() {
 			}
 				
 			
-			echo "<tr><td style=\"{$od_hl}\">\n";
-			echo "<a href=\"../plugins/todo/todo.php?todo_action=view&todo_index=$i\" target=\"right\" style=\"{$od_hl}\">\n";
-			echo "$title</a></td><td align=\"right\" style=\"{$od_hl}\">$deadline</td></tr>\n";
+			echo "<tr><td style=\"{font-size: small;$od_hl}\">\n";
+			echo "<a href=\"../plugins/todo/todo.php?todo_action=view&todo_index=$i\" target=\"right\" style=\"{font-size: small; $od_hl}\">\n";
+			echo "$title</a></td><td align=\"right\" style=\"{font-size: small;$od_hl}\">$deadline</td></tr>\n";
 		}
 		echo '</table>';
 		
-		echo '</td></tr></table></td></tr></table></table>';
-		echo "</div>\n";
-		echo "<div id=\"todo_bottom\"></div>\n";
-
+		echo '</td></tr></table></td></tr></table>';
 		echo "\n<!-- todo-plugin -->\n";
-
-
-
 	}
-
-
-
 }
 
 function todo_option_display_do()

@@ -3,14 +3,14 @@
  * general.mod
  * ----------------
  * GPG General Options module
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * General options screen.
  *
  * @author Brian Peterson
  *
- * $Id: general.mod,v 1.28 2003/12/11 19:52:50 ke Exp $
+ * $Id: general.mod,v 1.39 2006/01/08 02:47:20 ke Exp $
  */
 
 /* From the TODO file
@@ -37,17 +37,24 @@ $GPG_DIR="gpg";
 require_once(SM_PATH.'plugins/gpg/gpg_key_functions.php');
 
 // get the variables we need from the _POST without extract ($_POST);
-$form = $_POST ['form'];
+$form = 0;
+if (array_key_exists('form', $_POST)) { $form = $_POST ['form'];}
+
 if ($form == 1) {
-   $encrypt_to_self          = $_POST['encrypt_to_self'];
-   $self_encr_email          = $_POST['self_encr_email'];
-   $allow_partial_encryption = $_POST['allow_partial_encryption'];
-   $trust_system_keyring     = $_POST['trust_system_keyring'];
-   $use_system_adk           = $_POST['use_system_adk'];
-   $autoencrypt              = $_POST['autoencrypt'];
-   $autosign                 = $_POST['autosign'];
-   $cache_passphrase         = $_POST['cache_passphrase'];
+   $encrypt_to_self          = (array_key_exists('encrypt_to_self',$_POST) ? $_POST['encrypt_to_self'] : '');
+   $self_encr_email          = (array_key_exists('self_encr_email',$_POST) ? $_POST['self_encr_email'] : '');
+   $allow_partial_encryption = (array_key_exists('allow_partial_encryption',$_POST) ? $_POST['allow_partial_encryption'] : '');
+   $trust_system_keyring     = (array_key_exists('trust_system_keyring',$_POST) ? $_POST['trust_system_keyring'] : '');
+   $use_system_adk           = (array_key_exists('use_system_adk',$_POST) ? $_POST['use_system_adk'] : '');
+   $autoencrypt              = (array_key_exists('autoencrypt',$_POST) ? $_POST['autoencrypt'] : '');
+   $autosign                 = (array_key_exists('autosign',$_POST) ? $_POST['autosign'] : '');
+   $cache_passphrase         = (array_key_exists('cache_passphrase',$_POST) ? $_POST['cache_passphrase'] : '');
+   $showkeyringlink      = (array_key_exists('showkeyringlink',$_POST) ? $_POST['showkeyringlink'] : 'true');
+   $automatic_key_lookup = '';
    //automatic_key_lookup needs to be added here once implemented
+   $parse_openpgp_header     = $_POST['parse_openpgp_header'];
+   $generate_openpgp_header  = $_POST['generate_openpgp_header'];
+   $openpgp_header_url	     = $_POST['openpgp_header_url'];
 }
 
 /**
@@ -62,13 +69,17 @@ if ($form == 1) {
  * (this also gives some variation on the screen ;-)
  */
 
-global $GPG_SYSTEM_OPTIONS;
-
-$systemkeyring=$GPG_SYSTEM_OPTIONS['systemkeyring'];
-$systemadk = $GPG_SYSTEM_OPTIONS['systemadk'];
-$systemsign_on_send = $GPG_SYSTEM_OPTIONS['systemsign_on_send'];
-$systemencrypt_on_send = $GPG_SYSTEM_OPTIONS['systemencrypt_on_send'];
-$allowpassphrasecaching = $GPG_SYSTEM_OPTIONS['allowpassphrasecaching'];
+//global $GPG_SYSTEM_OPTIONS;
+$GPG_SYSTEM_OPTIONS=$GLOBALS['GPG_SYSTEM_OPTIONS'];
+$systemkeyring=$GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyring'];
+$systemadk =   $GLOBALS['GPG_SYSTEM_OPTIONS']['systemadk'];
+$systemsign_on_send = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemsign_on_send'];
+$force_sign_on_send = $GLOBALS['GPG_SYSTEM_OPTIONS']['force_sign_on_send'];
+$systemencrypt_on_send = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemencrypt_on_send'];
+$force_encrypt_on_send = $GLOBALS['GPG_SYSTEM_OPTIONS']['force_encrypt_on_send'];
+$allowpassphrasecaching = $GLOBALS['GPG_SYSTEM_OPTIONS']['allowpassphrasecaching'];
+$systemparse_openpgp_header = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemparse_openpgp_header'];
+$systemgenerate_openpgp_header = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemgenerate_openpgp_header'];
 
 if (!$form) {
 
@@ -78,6 +89,8 @@ if (!$form) {
     $allow_partial_encryption='true';
     $trust_system_keyring='false';
     $automatic_key_lookup='false';
+    $parse_openpgp_header = 'true';
+    $generate_openpgp_header = 'true';
 
     //now load preferences if they exist.
     $encrypt_to_self=getPref($data_dir,$username,'encrypt_to_self');
@@ -92,17 +105,21 @@ if (!$form) {
     $automatic_key_lookup=getPref($data_dir,$username,'automatic_key_lookup');
     $auto_encrypt       = getPref ($data_dir, $username, 'auto_encrypt');
     $cache_passphrase   = getPref ($data_dir, $username, 'cache_passphrase');
-    if (($auto_encrypt == '') and ($systemencrypt_on_send == 'true')) {
+    $showkeyringlink = getPref($data_dir, $username, 'showkeyringlink');
+    $parse_openpgp_header = getPref($data_dir, $username, 'parse_openpgp_header', $parse_openpgp_header);
+    $generate_openpgp_header = getPref($data_dir, $username, 'generate_openpgp_header', $generate_openpgp_header);
+    $openpgp_header_url = getPref($data_dir, $username, 'openpgp_header_url');
+    if (($auto_encrypt == '') and (($systemencrypt_on_send == 'true') or ($force_encrypt_on_send == 'true'))) {
         //set system default only if user has not selected an option
         $auto_encrypt = 'true';
     }
     $auto_sign  = getPref ($data_dir, $username, 'auto_sign');
-    if (($auto_sign == '') and ($systemsign_on_send == 'true')) {
+    if (($auto_sign == '') and (($systemsign_on_send == 'true') or ($force_sign_on_send == 'true'))) {
         //set system default only if user has not selected an option
         $auto_sign = 'true';
     }
-    if ($auto_encrypt == 'true') {$aechecked='checked';};
-    if ($auto_sign == 'true') {$aschecked='checked';};
+    if ($auto_encrypt == 'true') {$aechecked='checked';} else { $aechecked=''; }
+    if ($auto_sign == 'true') {$aschecked='checked';} else { $aschecked=''; }
 
     gpg_page_title( _("GPG Plugin - General Options"));
 
@@ -117,6 +134,20 @@ if (!$form) {
       . '<input type="hidden" name="MOD" value="general" >'
       . "\n";
 
+    //Keyring Link in Main Bar
+    echo '<p>'
+    . '<b>'
+    . _("Keyring Link in Main Menu Bar")
+    . '</b><br>'
+    . _("Should the GPG Plugin place a link to the Keyring in the main menu bar?")
+    . '<br>';
+    if ($showkeyringlink != 'false') {
+        echo '<input type="radio" name="showkeyringlink" value="true" checked>' . _("Yes")
+        . '<input type="radio" name="showkeyringlink" value="false">' . _("No");
+    } else {
+        echo '<input type="radio" name="showkeyringlink" value="true">' . _("Yes")
+        . '<input type="radio" name="showkeyringlink" value="false" checked>' . _("No");
+    }
     // Partial encryption
     echo
       '<p>'
@@ -150,7 +181,9 @@ if (!$form) {
       . _("When you encrypt an email message, the plugin can be set to automatically include your email address in the recipient list.")
       . '&nbsp;'
       . _("If your keyring has a public key for this email address on it, then all messages you encrypt will be readable by you later.")
-      . '&nbsp;'
+      . '<p>'
+      . _("If you wish to encrypt all messages to multiple keys, you may separate a list of email addresses or public keyids with commas.")
+      . '<p>'
       . _("If you set this option to 'No', you will not be able to decrypt messages encrypted with the plugin unless you add your email address in the To, CC, or BCC line of the email before encrypting it.")
       . '<p>'
       . _("Do you want the plugin to encrypt mail to your address, in addition to the recipients?")
@@ -189,7 +222,6 @@ if (!$form) {
      * Probably not for Release 1 (targeted for 2.0)
      */
 
-    if (substr($version, 2,4) >= 4.0) {
     //Default encrypt on send
     echo "\n<p>"
          . '<b>'
@@ -218,12 +250,20 @@ if (!$form) {
          . _("The plugin will return you to the Compose page with your original message (plaintext) preserved if there is an error that requires your attention after you press 'Send'.")
          . "</p>\n";
 
-    echo "\n<p>"
-         . "<br><input type=checkbox name=autoencrypt $aechecked  value='auto_encrypt'> " . _("Encrypt on Send by Default") . "\n"
-         . "<br><input type=checkbox name=autosign $aschecked value='auto_sign'> " . _("Sign on Send by Default") . "\n"
-         . "</p>\n";
+    echo "\n<p>";
+    if ($force_encrypt_on_send == 'true') {
+        echo "<br><input type=checkbox name=autoencrypt $aechecked onchange='this.checked=true' value='auto_encrypt'> " . _("Encrypt on Send by Default") . " <br>&nbsp;&nbsp;<b>-" . _("Your system administrator has made this option mandatory.") . "</b>\n";
+    } else {
+        echo "<br><input type=checkbox name=autoencrypt $aechecked  value='auto_encrypt'> " . _("Encrypt on Send by Default") . "\n";
+    }
+    if ($force_sign_on_send == 'true') {
+        echo "<br><input type=checkbox name=autosign $aschecked onchange='this.checked=true' value='auto_sign'> " . _("Sign on Send by Default") . " <br><b>&nbsp;&nbsp;-" . _("Your system administrator has made this option mandatory.") . "</b>\n";
+    } else {
+        echo "<br><input type=checkbox name=autosign $aschecked value='auto_sign'> " . _("Sign on Send by Default") . "\n";
+    }
+
+    echo "</p>\n";
     //end encrypt on send default
-    }; //end SM version check
 
     // system keyring options
     if ($systemkeyring=='true') {
@@ -328,6 +368,64 @@ if (!$form) {
     };
     //end passphrase caching options
 
+    //openpgp header options
+    if($systemparse_openpgp_header == 'true' || $systemgenerate_openpgp_header == 'true') {
+	echo
+	    '<p>'
+	    . '<b>'
+	    . _("OpenPGP Header Option")
+	    . '</b>'
+	    . '<br>'
+	    . _("The OpenPGP header allows users the oppportunity to advertise their key id and optionally a url where their key may be fetched.")
+	    . '<p>'
+	    . _("This is very convenient, as you can simply click a button and add the key of any user that emails you.")
+	    . '&nbsp;'
+	    . _("However, through a sophisticated type of attack, known as a \"man in the middle\" attack, a user could pretend to be someone else and send you his public key instead.")
+	    . '&nbsp;'
+	    . _("This type of attack would require this user to redirect every single email you send and receive, from now until eternity, otherwise something would go wrong and those parties who were communicating would discover the attack.")
+	    . '&nbsp;'
+	    . '<p>'
+	    . _("Those with high security needs should disable this option -- but those people will also probably not want to use email on a web server.");
+	if($systemparse_openpgp_header == 'true') {
+	    echo '<p>'
+		. _("Do you want the system to parse the OpenPGP header?")
+		. '<br>';
+	    
+	    if ($parse_openpgp_header=='true') {
+		echo
+		    '<input TYPE="radio" NAME="parse_openpgp_header" VALUE="true" checked>' . _("Yes")
+		    . '<input TYPE="radio" NAME="parse_openpgp_header" VALUE="false" >' . _("No");
+	    } else {
+		echo
+		    '<input TYPE="radio" NAME="parse_openpgp_header" VALUE="true" >' . _("Yes")
+		    . '<input TYPE="radio" NAME="parse_openpgp_header" VALUE="false" checked>' . _("No");
+	    };
+	}
+	if($systemgenerate_openpgp_header == 'true') {
+	    echo
+		'<p>'
+		. _("Do you want the system to generate an OpenPGP header?")
+		. '&nbsp;'
+		. _("You will have to select a public key to advertise to make this work.")
+		. '<br>';
+	    
+	    if ($generate_openpgp_header=='true') {
+		echo
+		    '<input TYPE="radio" NAME="generate_openpgp_header" VALUE="true" checked>' . _("Yes")
+		    . '<input TYPE="radio" NAME="generate_openpgp_header" VALUE="false" >' . _("No");
+	    } else {
+		echo
+		    '<input TYPE="radio" NAME="generate_openpgp_header" VALUE="true" >' . _("Yes")
+		    . '<input TYPE="radio" NAME="generate_openpgp_header" VALUE="false" checked>' . _("No");
+	    };
+	    echo
+		'<br>'
+		. _("Optional: if you want to give a url where your key may be fetched, do so here.")
+		. '<br>'
+		. "<input TYPE='text' NAME='openpgp_header_url' SIZE='40' MAXLENGTH='60' VALUE='$openpgp_header_url'><br>";
+	}
+    } //end openpgp header options
+
     //wrap up and submit
     echo
     '<p><br><input type=submit value="' . _("Save") . '">'
@@ -337,7 +435,7 @@ if (!$form) {
     //return
 } else {
     //Did they cancel?
-    if ($_POST['can']) {
+    if (array_key_exists('can',$_POST)) {
         //Send them back to getting started
         require_once(SM_PATH.'plugins/gpg/modules/options_main.mod');
         exit;
@@ -382,6 +480,14 @@ if (!$form) {
        echo '<br>automatic_key_lookup = ' . getPref($data_dir, $username, 'automatic_key_lookup');
     };
 
+    if ($showkeyringlink=='true')
+    {
+    setPref ($data_dir, $username, 'showkeyringlink', 'true');
+    echo '<p>'. _("Your Preference to show the keyring link in the main menu bar has been saved.")."\n";
+    } else {
+    setPref ($data_dir, $username, 'showkeyringlink', 'false');
+    echo '<p>'. _("Your Preference to not show the keyring link in the main menu bar has been saved.")."\n";
+    }
 
     if ($autoencrypt=='auto_encrypt') {
         setPref ($data_dir, $username, 'auto_encrypt', 'true');
@@ -442,6 +548,36 @@ if (!$form) {
         echo '<br>cache_passphrase = '
         . getPref($data_dir, $username, 'cache_passphrase');
     };
+
+    if($systemparse_openpgp_header == 'true') {
+	if ($parse_openpgp_header=='true'){
+	    setPref ($data_dir, $username, 'parse_openpgp_header', 'true');
+	    echo '<p>'. _("Your preference to parse the OpenPGP header has been saved.")."\n";
+	} else {
+	    setPref ($data_dir, $username, 'parse_openpgp_header', 'false');
+	    echo '<p>'. _("Your preference not to parse the OpenPGP header has been saved.")."\n";
+	}
+	if ($debug) {
+	    echo '<br>parse_openpgp_header = '
+		. getPref($data_dir, $username, 'parse_openpgp_header');
+	};
+    }
+    if($systemgenerate_openpgp_header == 'true') {
+	if ($generate_openpgp_header=='true'){
+	    setPref ($data_dir, $username, 'generate_openpgp_header', 'true');
+	    setPref ($data_dir, $username, 'openpgp_header_url', $openpgp_header_url);
+	    echo '<p>'. _("Your preference to generate an OpenPGP header has been saved.")."\n";
+	} else {
+	    setPref ($data_dir, $username, 'generate_openpgp_header', 'false');
+	    echo '<p>'. _("Your preference not to generate an OpenPGP header has been saved.")."\n";
+	}
+	if ($debug) {
+	    echo '<br>generate_openpgp_header = '
+		. getPref($data_dir, $username, 'generate_openpgp_header');
+	    echo '<br>openpgp_header_url = '
+		. getPref($data_dir, $username, 'openpgp_header_url');
+	};
+    }
 };
 
 /**
@@ -454,6 +590,48 @@ if (!$form) {
 
 /**
  * $Log: general.mod,v $
+ * Revision 1.39  2006/01/08 02:47:20  ke
+ * - committed patch from Evan <umul@riseup.net> for OpenPGP header support in squirrelmail
+ * - adds system preferences and user options to control parsing and adding of OpenPGP Headers on emails
+ * - slightly tweaked to use the key associated with the identity, when identities with signing keys are enabled
+ *
+ * Revision 1.38  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.37  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.36  2004/08/23 06:52:20  ke
+ * added a line break and dashes to mandatory on send warning messages
+ * bug 83
+ *
+ * Revision 1.35  2004/08/16 13:44:29  joelm
+ * -added two config options to allow a sys admin to force users to always sign
+ * or encrypt email
+ * Bug 83
+ *
+ * Revision 1.34  2004/03/18 20:09:37  brian
+ * - added missing ')'
+ *   - patch provided by Tassium (Chris Hilts)
+ *
+ * Revision 1.33  2004/03/15 23:44:05  brian
+ * - added text describing multiple key list
+ * Bug 173
+ *
+ * Revision 1.32  2004/03/03 19:45:02  ke
+ * -added option to show or hide the keyring link on the main menu bar
+ *
+ * Revision 1.31  2004/02/17 22:47:21  ke
+ * -changed options to use GLOBALS when grabbing gpg prefs
+ *
+ * Revision 1.30  2004/01/19 19:21:34  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.29  2004/01/16 23:06:49  brian
+ * E_ALL fixes
+ * bug 146
+ *
  * Revision 1.28  2003/12/11 19:52:50  ke
  * -changed break to exit so that options will not error when cancel is clicked.
  *

@@ -16,7 +16,7 @@ function notes_version() {
 
 function squirrelmail_plugin_init_notes() {
    global $squirrelmail_plugin_hooks;
-   $squirrelmail_plugin_hooks['notes_plugin']['notes'] = 'notes';
+   $squirrelmail_plugin_hooks['menuline']['notes'] = 'notes';
 }
 
 function notes() {

@@ -4,26 +4,27 @@
  * -----------
  * GPG popup window base file
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
+ * Copyright (c) 1999-2005 The SquirrelMail development team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
  * @package gpg
  *
- * $Id: gpg_pop_init.php,v 1.9 2003/11/17 22:28:17 ke Exp $
+ * $Id: gpg_pop_init.php,v 1.15 2007/07/07 14:19:04 brian Exp $
  *
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_pop_init.php, exiting abnormally";
 }
 
+require_once(SM_PATH.'include/validate.php');
 require_once(SM_PATH.'plugins/gpg/gpg_functions.php');
 require_once(SM_PATH.'plugins/gpg/gpg_pop_functions.php');
 // require any other files needed in the pop-up module(s)
@@ -43,7 +44,7 @@ if(isset($_POST['MOD'])) {
  * $MOD is the name of the module to invoke.
  * If $MOD is unspecified, check for security breach attempts.
  */
-if (!isset($MOD) || !$MOD){
+if (isset($MOD)) {
     gpg_ckMOD($MOD);
 }
 
@@ -57,6 +58,7 @@ bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
 textdomain('gpg');
 
 global $color, $theme_css, $onload;
+global $title, $scriptsrc;
 echo "<html>\n"
     . "<head>\n"
     . "<title>$title</title>\n";
@@ -119,6 +121,25 @@ textdomain('squirrelmail');
 /************************************************************/
 /*
  * $Log: gpg_pop_init.php,v $
+ * Revision 1.15  2007/07/07 14:19:04  brian
+ * - include vulnerability patch provided by Stefan Esser <sesser@php-security.org>
+ *
+ * Revision 1.14  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.13  2004/03/29 00:55:02  brian
+ * - fixed include path
+ *
+ * Revision 1.12  2004/03/29 00:42:46  brian
+ * - add include for validate.php
+ *   patch credit to ebullient at squirrelmail dot org
+ *
+ * Revision 1.11  2004/01/17 00:26:59  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.10  2004/01/09 18:26:50  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.9  2003/11/17 22:28:17  ke
  * -uploading working gpg_pop_init.php
  *

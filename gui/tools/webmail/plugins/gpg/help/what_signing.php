@@ -7,19 +7,31 @@ echo     '<h2>'
 echo "<p />\n"
     . _("Your signing key is the key you use to 'sign' a message you are sending, to prove that it is from you.")
     . '&nbsp;'
-    . _("You can only have one signing key at any given time.")
+    . _("You can only have one primary signing key at any given time.")
     . '&nbsp;'
+    . '<br>'
+    . _("You must select a signing key to use the GPG Plugin to securely sign messages.")
     . "<p />\n"
     . _("Select this option to set the key as your signing key.")
     . '<br>'
-    . _("Setting a new signing key will replace any previously chosen key.")
+    . _("Setting a new primary signing key will replace any previously chosen key.")
+    . '&nbsp;'
+    . '<br>'
+    . _("Once a primary signing key is selected, a signing key can be selected for each squirrelmail identity.")
     . '&nbsp;'
     . '<br>';
 
 /**
- * $Id: what_signing.php,v 1.8 2003/11/21 19:25:46 brian Exp $
+ * $Id: what_signing.php,v 1.10 2005/11/11 18:02:14 ke Exp $
  *
  * $Log: what_signing.php,v $
+ * Revision 1.10  2005/11/11 18:02:14  ke
+ * - added notes about using signing key with identities`
+ *
+ * Revision 1.9  2004/01/14 22:23:26  brian
+ * - added more explicit instructions about signing key req.
+ * Bug 145
+ *
  * Revision 1.8  2003/11/21 19:25:46  brian
  * -fixed typos in signing key help
  * Bug 70

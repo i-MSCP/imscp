@@ -3,23 +3,23 @@
  * genkey.php
  * ----------------
  * GPG Key Generation page
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Joshua Vermette
  * @author Aaron Van Meerten
  * @author Brian Peterson
  *
- * $Id: genkey.php,v 1.26 2003/12/27 18:01:25 brian Exp $
+ * $Id: genkey.php,v 1.33 2005/07/27 14:07:49 brian Exp $
  */
 
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in genkey.php, exiting abnormally";
 }
 
@@ -116,14 +116,14 @@ echo '<br>';
 echo '<hr>';
 
 echo  '<table cellpadding="0" cellspacing="0" border="0" width="60%">'
-    . '<tr><td bgcolor="#000000">'
+    . '<tr><td bgcolor="' . $color[0] . '>'
     . '<table cellpadding="3" cellspacing="1" border="0" width="100%">'
     . '<tr><td bgcolor="' . $color[5] . '">';
 
 echo _("Generate New Keypair");
 
 echo '</td></tr>'
-     . '<tr><td bgcolor=#ffffff>'
+     . '<tr><td bgcolor=' . $color[4] . '>'
      . '<table cellspacing="0" cellpadding="0" border="0">'
      . '<tr><td>';
 
@@ -197,7 +197,7 @@ echo '</td><td></td><td>'
   echo '<option value="' . $i . '"';
     if ($GLOBALS['GPG_SYSTEM_OPTIONS']['default_keyexpires'] == $i)
     {
-        echo '&nbsp;'._("selected");
+        echo ' selected';
     }
 
   echo  '>'
@@ -207,7 +207,7 @@ echo '</td><td></td><td>'
   echo '<option value="' . $i . '"';
     if ($GLOBALS['GPG_SYSTEM_OPTIONS']['default_keyexpires'] == $i)
     {
-        echo _(" selected");
+        echo ' selected';
     }
 
   echo  '>'
@@ -247,7 +247,39 @@ echo '</td><td></td><td>'
         . _("1 Year");
 
 echo '</select>'
-     . '<tr><td></td></tr><tr><td>';
+     . '<tr><td></td></tr>';
+
+if ($GLOBALS['GPG_SYSTEM_OPTIONS']['systemrevoker']) {
+echo '<tr><td>';
+echo '<b>';
+echo _("Add Revocation") . ':</b>';
+echo '</td><td></td><td>' . "\n";
+echo '<select name=usesystemrevoker>';
+echo '<option value="true">' . _("Yes, allow the system revocation key to revoke this key") . '</option>';
+echo '<option value="false" selected>' . _("No, do not allow the system revocation key to revoke this key") . '</option>';
+echo '</select>';
+echo '</td></tr>';
+}
+$comment=$GLOBALS['GPG_SYSTEM_OPTIONS']['default_comment'];
+echo '<tr><td>';
+echo '<b>';
+echo _("Comment");
+echo ':</b>';
+echo   '</td>'
+     . '<td></td><td>'
+     . '<input type="text" name="comment" id="comment" size="60" value="'
+     . $comment
+     . '" required="false" title="Comment" >'
+     . '<font size=-1>['
+     . gpg_add_help_link ( 'what_keycomment.php' );
+echo _("What's this?");
+echo   '</a>'
+     . ']'
+     . '</font>';
+
+echo '</td></tr>';
+
+echo '<tr><td>';
 
 echo '<b>';
 echo _("Enter Passphrase");
@@ -255,15 +287,15 @@ echo ':</b>';
 
 echo '</td><td></td><td>' . "\n"
      . '<input type="password"' . "\n"
-	 . '       name="passphrase"' . "\n"
-	 . '       id="passphrase"' . "\n"
-	 . '       size="80"' . "\n"
-	 . '       limit="100"' . "\n"
-	 . '       progress="true"' . "\n"
-	 . '       nolimit="true"' . "\n"
-	 . '       required="true"' . "\n"
-	 . '       compare="passphrase2"' . "\n"
-	 . '       title="First Passphrase">' . "\n";
+     . '       name="passphrase"' . "\n"
+     . '       id="passphrase"' . "\n"
+     . '       size="80"' . "\n"
+     . '       limit="100"' . "\n"
+     . '       progress="true"' . "\n"
+     . '       nolimit="true"' . "\n"
+     . '       required="true"' . "\n"
+     . '       compare="passphrase2"' . "\n"
+     . '       title="First Passphrase">' . "\n";
 
 echo '</td></tr><tr><td>';
 
@@ -273,14 +305,14 @@ echo ':</b>';
 
 echo '</td><td></td><td>' . "\n"
      . '<input type="password"' . "\n"
-	 . '       name="passphrase2"' . "\n"
-	 . '       id="passphrase2"' . "\n"
-	 . '       size="80"' . "\n"
-	 . '       limit="100"' . "\n"
-	 . '       progress="true"' . "\n"
-	 . '       nolimit="true"' . "\n"
-	 . '       required="true"' . "\n"
-	 . '       title="Second Passphrase">' . "\n";
+     . '       name="passphrase2"' . "\n"
+     . '       id="passphrase2"' . "\n"
+     . '       size="80"' . "\n"
+     . '       limit="100"' . "\n"
+     . '       progress="true"' . "\n"
+     . '       nolimit="true"' . "\n"
+     . '       required="true"' . "\n"
+     . '       title="Second Passphrase">' . "\n";
 
 echo '</td></tr><tr><td></table>'
      . '<br>';
@@ -383,6 +415,28 @@ TILLEND;
 /**
  *
  * $Log: genkey.php,v $
+ * Revision 1.33  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.32  2004/06/25 17:18:36  ke
+ * -fixed strings which were incorrectly internationalized (thanks gforte@udel.edu)
+ * Bug 201
+ *
+ * Revision 1.31  2004/03/09 18:09:26  ke
+ * -added Comment field with default value populated automatically
+ *
+ * Revision 1.30  2004/03/03 19:46:53  ke
+ * -changed terminology to system revocation key
+ *
+ * Revision 1.29  2004/02/27 01:40:49  ke
+ * -added option for default system key revocation in key gen interface
+ *
+ * Revision 1.28  2004/01/13 01:48:32  brian
+ * fixed colors to use SM color array, per patch from Chris Wood
+ *
+ * Revision 1.27  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.26  2003/12/27 18:01:25  brian
  * added Walter's improved formatting of html tags
  *

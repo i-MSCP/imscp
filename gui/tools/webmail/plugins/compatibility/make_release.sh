@@ -3,7 +3,7 @@
 
 # Generic shell script for building SquirrelMail plugin release
 #
-# Copyright (c) 2004-2005 Paul Lesneiwski
+# Copyright (c) 2004-2008 Paul Lesniewski <paul@squirrelmail.org>
 # Licensed under the GNU GPL. For full terms see the file COPYING.
 #
 
@@ -26,11 +26,15 @@
 #
 # CONFIG_FILES=( config.php data/special_config.php )
 #
-# Note that you can also use this setting to move
-# entire subdirectories away while creating the release
-# package.
+# Note that you can also use this setting to exclude
+# entire subdirectories while creating the release
+# package.  Here is an example that skips any files 
+# inside a subdirectory called "cache_files" and 
+# completely removes a subdirectory called "tmp", as
+# well as the standard config.php file:
 #
-# CONFIG_FILES=( config.php )
+# CONFIG_FILES=( config.php tmp cache_files/* )
+#
 #
 CONFIG_FILES=( )
 
@@ -86,7 +90,8 @@ echo
 
 # grab old version number straight from the php code
 #
-OLD_VERSION=`echo "<?php include_once('setup.php'); echo "$PACKAGE"_version(); ?>" | php -q`
+OLD_VERSION=`echo "<?php define('SQ_INCOMPATIBLE', 'INCOMPATIBLE'); include_once('setup.php'); echo "$PACKAGE"_version(); ?>" | php -q`
+REQ_SM_VERSION=`echo "<?php define('SQ_INCOMPATIBLE', 'INCOMPATIBLE'); include_once('setup.php'); \\$info = "$PACKAGE"_info(); echo \\$info['required_sm_version']; ?>" | php -q`
 
 
 
@@ -107,6 +112,12 @@ fi
 if [ ! -e getpot ]; then
    echo 
    echo "No getpot file found.  Please create before making release"
+   echo
+   exit 5
+fi
+if [ ! -e $PACKAGE.pot ]; then
+   echo
+   echo "No $PACKAGE.pot file found.  Please create before making release"
    echo
    exit 5
 fi
@@ -151,10 +162,23 @@ fi
 
 # get new version number if needed
 #
+if [ ! -z "$REQ_SM_VERSION" ] ; then
+   OLD_FULL_VERSION=$OLD_VERSION-$REQ_SM_VERSION
+else
+   OLD_FULL_VERSION=$OLD_VERSION
+fi
 echo
 read -p "Enter Version Number [$OLD_VERSION]: " VERSION
 if [ -z "$VERSION" ] ; then
    VERSION=$OLD_VERSION;
+#   VERSION=$OLD_FULL_VERSION;
+fi
+PURE_VERSION=`echo "$VERSION" | sed 's/-.*//'`
+
+if [ ! -z "$REQ_SM_VERSION" ] ; then
+   FINAL_VERSION="$PURE_VERSION-$REQ_SM_VERSION"
+else
+   FINAL_VERSION="$PURE_VERSION"
 fi
 
 
@@ -162,20 +186,20 @@ fi
 # remove tarball we are building if present
 #
 echo
-echo "Removing $PACKAGE-$VERSION.tar.gz"
-rm -f $PACKAGE-$VERSION.tar.gz
+echo "Removing $PACKAGE-$FINAL_VERSION.tar.gz"
+rm -f $PACKAGE-$FINAL_VERSION.tar.gz
 
 
 
-# replace version number in setup.php
+# replace version number in info function in setup.php
 # NOTE that this requires specific syntax in setup.php
-# for the <package>_version() function which should be
+# for the <package>_info() function which should be
 # a line that looks like:
-#    return '<version>';
+#                  'version' => '<version>',
 #
 if test -e setup.php; then
-   echo "Replacing version in setup.php"
-   sed -e "s/return '$OLD_VERSION'/return '$VERSION'/" setup.php > setup.php.tmp
+   echo "Replacing version in setup.php (info function)"
+   sed -e "s/'version' => '$OLD_VERSION',/'version' => '$PURE_VERSION',/" setup.php > setup.php.tmp
    mv setup.php.tmp setup.php
 fi
 
@@ -185,78 +209,33 @@ fi
 #
 echo "Replacing version in version file"
 echo "$PRETTY_NAME" > version
-echo $VERSION >> version
+echo $PURE_VERSION >> version
 
 
 
-# create temp working directory one level up
+# Build tar command; exclude config and other irrelevant files 
 #
-WORKING_DIR="../.delete_me.$PACKAGE.temp.$$"
-echo "Creating temporary working directory: $WORKING_DIR"
-if [ -e "$WORKING_DIR" ] ; then
-  rm -rf "$WORKING_DIR"
-fi
-mkdir "$WORKING_DIR"
-
-
-
-# move config files out of directory
-#
+TAR_COMMAND="tar -c -z -v --exclude CVS"
 J=0
 while [ "$J" -lt ${#CONFIG_FILES[@]} ]; do
 
    echo "Excluding ${CONFIG_FILES[$J]}"
-   CONFIG_FILE_NAME=`echo "${CONFIG_FILES[$J]}" | sed s/.*\\\///`
-   if test `echo "${CONFIG_FILES[$J]}" | grep -ce "/"` -gt 0; then
-      CONFIG_FILE_PATH=`echo "${CONFIG_FILES[$J]}" | sed s/\\\/[^/]\\\+$//`
-      mkdir -p "$WORKING_DIR/$CONFIG_FILE_PATH"
-   else
-      CONFIG_FILE_PATH=""
-   fi
-   
-   echo "Moving ${CONFIG_FILES[$J]} to $WORKING_DIR/$CONFIG_FILE_PATH/$CONFIG_FILE_NAME"
-   mv "${CONFIG_FILES[$J]}" "$WORKING_DIR/$CONFIG_FILE_PATH/$CONFIG_FILE_NAME"
+   TAR_COMMAND="$TAR_COMMAND --exclude ${CONFIG_FILES[$J]}"
 
    J=`expr $J + 1`
 done
+TAR_COMMAND="$TAR_COMMAND -f $PACKAGE-$FINAL_VERSION.tar.gz $PACKAGE"
 
 
 
 # make tarball
 #
-echo "Creating $PACKAGE-$VERSION.tar.gz"
+echo "Creating $PACKAGE-$FINAL_VERSION.tar.gz"
 cd ../
-tar czvf $PACKAGE-$VERSION.tar.gz $PACKAGE
-mv $PACKAGE-$VERSION.tar.gz $PACKAGE
+$TAR_COMMAND
+mv $PACKAGE-$FINAL_VERSION.tar.gz $PACKAGE
 cd $PACKAGE
 
-
-
-# moving config files back in place
-#
-J=0
-while [ "$J" -lt ${#CONFIG_FILES[@]} ]; do
-
-   echo "Moving ${CONFIG_FILES[$J]} back into place"
-   CONFIG_FILE_NAME=`echo "${CONFIG_FILES[$J]}" | sed s/.*\\\///`
-   if test `echo "${CONFIG_FILES[$J]}" | grep -ce "/"` -gt 0; then
-      CONFIG_FILE_PATH=`echo "${CONFIG_FILES[$J]}" | sed s/\\\/[^/]\\\+$//`
-      mkdir -p "$WORKING_DIR/$CONFIG_FILE_PATH"
-   else
-      CONFIG_FILE_PATH=""
-   fi
-
-   mv "$WORKING_DIR/$CONFIG_FILE_PATH/$CONFIG_FILE_NAME" "${CONFIG_FILES[$J]}"
-
-   J=`expr $J + 1`
-done
-
-
-
-# delete temp working directory 
-#
-echo "Removing temporary working directory: $WORKING_DIR"
-rm -rf "$WORKING_DIR"
 
 
 echo 

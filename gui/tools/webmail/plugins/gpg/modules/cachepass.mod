@@ -4,19 +4,19 @@
  *-----------
  * GPG plugin passphrase collecting & caching module file,
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
+ * Copyright (c) 1999-2005 The SquirrelMail development team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
- * $Id: cachepass.mod,v 1.11 2003/11/12 17:37:59 ke Exp $
+ * $Id: cachepass.mod,v 1.14 2005/07/27 14:07:49 brian Exp $
  */
 
 
 require_once(SM_PATH.'plugins/gpg/gpg_functions.php');
-
+global $pserr;
 $psaction = $_POST['psaction'];
-$addbasepath = $_POST['addbasepath'];
+$addbasepath = (array_key_exists('addbasepath',$_POST) ? $_POST['addbasepath'] : "");
 switch ($psaction) {
     case 'sign':
         $onload = 'gpg_sign_submit();';

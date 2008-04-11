@@ -5,11 +5,12 @@
 # Changes for your local configuration should be made in 
 # the gpg_local_prefs.txt file
 #
-# $Id: gpg_system_defaults.txt,v 1.9 2003/12/30 05:20:57 brian Exp $
+# $Id: gpg_system_defaults.txt,v 1.13 2006/01/08 02:47:20 ke Exp $
 #
 path_to_gpg=/usr/bin/gpg 
 allowprivatekeys=true 
 allowkeygeneration=true 
+requirepassphraseonkeydelete=true
 systemkeyring=false 
 keyservers=3
 keyserver0=pgp.mit.edu:11371
@@ -28,3 +29,10 @@ allowpassphrasecaching=false
 insecure_mem_warning=1
 systemsign_on_send=false
 systemencrypt_on_send=false
+expose_options_link=true
+expose_compose_buttons=true
+force_sign_on_send=false
+force_encrypt_on_send=false
+use_proc_open=true
+systemparse_openpgp_header=true
+systemgenerate_openpgp_header=true

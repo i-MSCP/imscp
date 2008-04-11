@@ -5,30 +5,39 @@
  * GPG plugin setup file, as defined by the SquirrelMail-1.2 API.
  * Updated to account for SM 1.4 pathing issues
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
+ * Copyright (c) 1999-2005 The SquirrelMail development team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
- * $Id: setup.php,v 1.67 2003/12/30 19:06:01 ke Exp $
+ * $Id: setup.php,v 1.82 2005/11/20 18:06:53 ke Exp $
  *
+ * The gpg_version function required by the SM Plugin quidelines is
+ * defined in gpg_pref_functions.php.
+ *
+ * @todo analyze whether we can do a 'late load' of
+ *       gpg_pref_functions.php in setup.php to speed things up for
+ *       the rest of SM, and not have to load our preferences until they
+ *       are needed.
  */
-if (!defined (SM_PATH)){
+
+//define SM_PATH
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')) {
-        define (SM_PATH, '../');
+        define ('SM_PATH', '../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../../../../');
+        define ('SM_PATH' , '../../../../');
+    } elseif (file_exists('../../../plugins/gpg/gpg_functions.php')){
+        define ('SM_PATH' , '../../../');
     } else echo "unable to define SM_PATH in GPG Plugin setup.php, exiting abnormally";
-}
+} //end define
 
+// see todo above
 include_once(SM_PATH.'plugins/gpg/gpg_pref_functions.php');
-//include_once(SM_PATH.'plugins/gpg/gpg_hook_functions.php');
-
-$GLOBALS['GPG_SYSTEM_OPTIONS'][$matches[1]]= "";
 
 /*********************************************************************/
 /**
@@ -46,6 +55,10 @@ $GLOBALS['GPG_SYSTEM_OPTIONS'][$matches[1]]= "";
  * All function_to_call should be within the setup.php file
  * this file is called frequently by SM, so make it as tight
  * as possible.
+ *
+ * All hook functions that do more than just echo text now include
+ * gpg_hook_functions.php, and the actual function definitions are there.
+ * This is in line with the current SM Plugin writing guidelines.
  *
  * @return void
  */
@@ -88,29 +101,149 @@ function squirrelmail_plugin_init_gpg() {
   $squirrelmail_plugin_hooks['attachment application/pgp']['gpg'] =
       'gpg_handle_octet_stream';
 
+  $squirrelmail_plugin_hooks['menuline']['gpg'] = 'gpg_show_menuline';
+
+  $squirrelmail_plugin_hooks['options_identities_table']['gpg'] = 'gpg_identity_table';
+  $squirrelmail_plugin_hooks['options_identities_process']['gpg'] = 'gpg_identity_process';
+  $squirrelmail_plugin_hooks['options_identities_renumber']['gpg'] = 'gpg_identity_renumber';
 }
 
+
+function gpg_identity_process($args) {
+    global $username, $data_dir;
+    include_once(SM_PATH . 'plugins/gpg/gpg_hook_functions.php');
+    gpg_identity_process_hook($args);
+}
+
+function gpg_identity_renumber($args) {
+    global $username, $data_dir;
+    include_once(SM_PATH . 'plugins/gpg/gpg_hook_functions.php');
+    gpg_identity_renumber_hook($args);
+}
+
+/*********************************************************************/
+/**
+ * function gpg_identity_table
+ *
+ * This function is called by the identity page.
+ *
+ * This function provides the user the ability to select a different signing
+ * key per identity if they so wished.
+ *
+ * @return string
+ */
+function gpg_identity_table($args) {
+    global $username, $data_dir;
+
+    include_once(SM_PATH.'plugins/gpg/gpg_hook_functions.php');
+    return gpg_identity_table_hook($args);
+
+}
+
+/*********************************************************************/
+/**
+ * function gpg_show_menuline
+ *
+ * This function is called by the main SM plugin_init (above)
+ *
+ * This function adds the Keyring link to the main SM top menu on every screen.
+ *
+ * @return void
+ */
+function gpg_show_menuline() {
+    global $username, $data_dir;
+    $showkeyringlink=getPref($data_dir, $username, 'showkeyringlink');
+    if ($showkeyringlink!='false') {
+	bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
+	/* Switch to your plugin domain so your messages get translated */
+	textdomain('gpg');
+        displayInternalLink('plugins/gpg/modules/keyring_main.php',_("Keyring"));
+        echo "&nbsp;&nbsp;\n";
+        /* Switch back to the SquirrelMail domain */
+        bindtextdomain('squirrelmail', SM_PATH . 'locale');
+        textdomain('squirrelmail');
+    }
+}
+
+/*********************************************************************/
+/**
+ * function gpg_help_chapter
+ *
+ * This function is called by the main SM plugin_init (above)
+ *
+ * This function displays the GPG Help link on the main SM help screen
+ *
+ * Newer versions of SM will make the GPG Help link a numbered chapter
+ * link at the bottom of the list, while older versions will add a
+ * bullet at the top of the page.
+ *
+ * @return void
+ */
 function gpg_help_chapter() {
     global $helpdir, $help_info;
+    bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
+    /* Switch to your plugin domain so your messages get translated */
+    textdomain('gpg');
     echo "<li><a href='" . SM_PATH . "plugins/gpg/gpg_help_base.php'>"._("GPG Plugin Help")."</a>\n";
     echo '<ul>'
         . _("The GPG Encryption Plugin will allow you to encrypt, sign, and decrypt messages in accordance with the OpenPGP standard for email security and authentication.")
         . "</ul>\n";
+    /* Switch back to the SquirrelMail domain */
+    bindtextdomain('squirrelmail', SM_PATH . 'locale');
+    textdomain('squirrelmail');
 }
 
+/*********************************************************************/
+/**
+ * function gpg_handle_octet_stream
+ *
+ * This function is called by the main SM plugin_init (above)
+ *
+ * This is the MIME handler for decrypting attachments.
+ * Becasue this is on the octet/stream attachment type, we check the
+ * attachment name before invoking the hook function.
+ *
+ * @param  array &$attachinfo Array of attachment information defined by the SM API
+ * @return void
+ */
 function gpg_handle_octet_stream(&$attachinfo) {
     $filename = $attachinfo[7];
-    if (strrpos($filename,".asc") == (strlen($filename)-4)) {
+    if ((strpos($filename,".asc") == (strlen($filename)-4)) or (strpos($filename,".pgp") == (strlen($filename)-4))) {
         include_once(SM_PATH.'plugins/gpg/gpg_hook_functions.php');
         gpg_decrypt_attachment_do($attachinfo);
     }
 }
 
+/*********************************************************************/
+/**
+ * function gpg_handle_signature
+ *
+ * This function is called by the main SM plugin_init (above)
+ *
+ * This is the MIME handler for verifying detached signatures.
+ *
+ * @param  array &$attachinfo Array of attachment information defined by the SM API
+ * @return void
+ */
 function gpg_handle_signature(&$attachinfo) {
     include_once(SM_PATH.'plugins/gpg/gpg_hook_functions.php');
     gpg_handle_signature_do($attachinfo);
 }
 
+/*********************************************************************/
+/**
+ * function gpg_decrypt_attachment
+ *
+ * This function is called by the main SM plugin_init (above)
+ *
+ * This is the MIME handler for decrypting attachments.
+ *
+ * @todo check the attachment size before calling the decrypt function,
+ *       this would avoid unecessary includes adn function calls.
+ *
+ * @param  array &$attachinfo Array of attachment information defined by the SM API
+ * @return void
+ */
 function gpg_decrypt_attachment(&$attachinfo) {
         include_once(SM_PATH.'plugins/gpg/gpg_hook_functions.php');
         gpg_decrypt_attachment_do($attachinfo);
@@ -127,8 +260,6 @@ function gpg_decrypt_attachment(&$attachinfo) {
  *
  * @return void
  */
-
-
 function gpg_compose_bottom() {
     echo "<script language=javascript>\n<!--\n\n";
         echo "function gpg_sendbottomClick() {\n";
@@ -147,7 +278,14 @@ function gpg_compose_bottom() {
  * @return void
  */
 function gpg_compose_form () {
-    echo 'onsubmit="return gpg_composeSubmit(this);"';
+    global  $compose_onsubmit;
+    $gpg_compose_onsubmit="return gpg_composeSubmit(this);";
+    //check if we're using new global array of compose submits, or echoing onsubmit into the form
+    if (is_array($compose_onsubmit)) {
+        $compose_onsubmit[]=$gpg_compose_onsubmit;
+    } else {
+        echo "onsubmit=\"$gpg_compose_onsubmit\"";
+    }
 }
 
 
@@ -216,6 +354,60 @@ function gpg_compose_send(&$composeMessage) {
 /**
  *
  * $Log: setup.php,v $
+ * Revision 1.82  2005/11/20 18:06:53  ke
+ * - changed compose form hook to check for onsubmit array to append javascript handler to, instead of echoing
+ * directly into the form tag
+ *
+ * Revision 1.81  2005/11/09 03:53:47  jangliss
+ * strrpos will match only one character in the needle which in this case was
+ * a . so all files were being matched.  Expected results can be achieved using
+ * strpos instead.  This resolves gpg scanning any application/octet-stream
+ * attachments, and fixes high memory usage.
+ *
+ * Revision 1.80  2005/10/24 17:15:44  ke
+ * - changed to give proper pros
+ *
+ * Revision 1.79  2005/10/09 07:11:37  ke
+ * - added hook calls for squirrelmail identity/gpg key link
+ * - thanks to Valcor (Jonathan Angliss) for this patch
+ *
+ * Revision 1.78  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.77  2004/08/09 17:38:13  ke
+ * -no longer specify which target the Keyring link should load, fixes new window issue when clicking Keyring
+ *
+ * Revision 1.76  2004/03/03 19:45:44  ke
+ * -added option to show or hide the keyring link on the main menubar
+ *
+ * Revision 1.75  2004/01/25 09:31:59  brian
+ *  - added phpdoc docblocks to all functions that were missing them
+ *  - updated @todo's in setup.php
+ *
+ * Revision 1.74  2004/01/24 18:05:18  brian
+ * - added another permutation for SM_PATH definition
+ *   patch provided by Brad (bucovina at SF)
+ * Bug 153
+ *
+ * Revision 1.73  2004/01/20 16:34:55  alexl
+ * Menuline hook switches to gpg domain
+ *
+ * Revision 1.72  2004/01/20 16:03:47  alexl
+ * Help hook switches to gpg domain
+ *
+ * Revision 1.71  2004/01/16 23:58:39  brian
+ * E_ALL updates
+ * Bug 146
+ *
+ * Revision 1.70  2004/01/15 18:42:37  ke
+ * -added link to Keyring in the main menuline
+ *
+ * Revision 1.69  2004/01/09 19:02:16  brian
+ * commented out bad declaration of array for E_ALL
+ *
+ * Revision 1.68  2004/01/09 18:29:40  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.67  2003/12/30 19:06:01  ke
  * changed single to double quote for translations
  *
@@ -330,7 +522,7 @@ function gpg_compose_send(&$composeMessage) {
  * Revision 1.37  2003/05/14 01:34:24  vinay
  * *** empty log message ***
  *
-* Revision 1.36  2003/05/13 22:52:23  brian
+ * Revision 1.36  2003/05/13 22:52:23  brian
  * added compose_send hook functionality for encrypt on send
  * Bug 26
  *
@@ -382,7 +574,7 @@ function gpg_compose_send(&$composeMessage) {
  *
  * Revision 1.21  2003/03/31 15:03:41  brian
  * - modified to remnove double declaration of gpg_check_sign
-* - file now correctly declares gpg_decrypt_link
+ * - file now correctly declares gpg_decrypt_link
  *
  * Revision 1.20  2003/03/31 14:57:38  brian
  * - modified signing link to use new gpg_pop_init.php file
@@ -459,8 +651,5 @@ function gpg_compose_send(&$composeMessage) {
  *
  * Revision 1.2  2002/12/05 19:25:46  brian
  * Added ID and Log tags
- *
- *
  */
-
 ?>

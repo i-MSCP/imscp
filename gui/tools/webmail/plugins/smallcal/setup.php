@@ -19,7 +19,7 @@
       $squirrelmail_plugin_hooks['options_display_inside']['smallcal'] = 'smallcal_options';
       $squirrelmail_plugin_hooks['options_display_save']['smallcal'] = 'smallcal_save';
       $squirrelmail_plugin_hooks['loading_prefs']['smallcal'] = 'smallcal_pref';
-      $squirrelmail_plugin_hooks["smallcal_plugin"]["smallcal"] = "addsmallcal_left";
+      $squirrelmail_plugin_hooks["left_main_after"]["smallcal"] = "addsmallcal_left";
 
    }
 

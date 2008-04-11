@@ -16,7 +16,7 @@ function sui_last_load()
 	$show_host_on_left_pane = getPref($data_dir, $username, 'show_host_on_left_pane');
 
 	if ( strlen($show_user_on_left_pane) == 0 )
-		$show_user_on_left_pane = 1; //Default is on show welcome username
+		$show_user_on_left_pane = 0;
 	if ( strlen($show_ip_on_left_pane) == 0 )
 		$show_ip_on_left_pane = 0;
 	if ( strlen($show_host_on_left_pane) == 0 )
@@ -34,18 +34,18 @@ function sui_show_ui()
 		bindtextdomain('show_user_and_ip', SM_PATH . 'plugins/show_user_and_ip/locale');
 		textdomain('show_user_and_ip');
 
-		echo '<td class="top_bar_header"><div >' . "\n";
-		 //  . '  ' . "\n";
+		echo '<p><div align="' . $sui_align . '"><font size="' . $sui_font_size . '">' . "\n"
+		   . '  <hr>' . "\n";
 		if ( $show_user_on_left_pane )
 		{
-			echo '  <strong>' . _("Welcome:") . '</strong>' . "\n"
+			echo '  <strong>' . _("Your username:") . '</strong><br>' . "\n"
 	                   . "$username" . "\n";
 		}
 		if ( $show_user_on_left_pane && $show_ip_on_left_pane )
-			echo '  &nbsp;' . "\n";
+			echo '  <br><br>' . "\n";
 		if ( $show_ip_on_left_pane )
 		{
-			echo '  <strong>' . _("Your IP address:") . '</strong>' . "\n"
+			echo '  <strong>' . _("Your IP address:") . '</strong><br>' . "\n"
 	  		   . $_SERVER['REMOTE_ADDR'] . "\n";
 		}
 		if ( $show_host_on_left_pane )
@@ -54,13 +54,13 @@ function sui_show_ui()
 			if ( $sui_host_left != $_SERVER['REMOTE_ADDR'] )
 			{
 				if ( $show_user_on_left_pane || $show_ip_on_left_pane )
-					echo '  &nbsp;' . "\n";
-				echo '  <strong>' . _("Your Hostname:") . '</strong>' . "\n"
+					echo '  <br><br>' . "\n";
+				echo '  <strong>' . _("Your Hostname:") . '</strong><br>' . "\n"
 		  		   . $sui_host_left . "\n";
 			}
 		}
-		//echo '' . "\n"
-		   echo '</div></td>' . "\n";
+		echo '<hr>' . "\n"
+		   . '</font></div></p>' . "\n";
 
 		bindtextdomain('squirrelmail', SM_PATH . 'locale');
 		textdomain('squirrelmail');

@@ -3,23 +3,23 @@
  * import_key_file.php
  * ----------------
  * GPG Key Import page
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Brian Peterson
  * @author Joshua Vermette
  *
- * $Id: import_key_file.php,v 1.12 2003/11/04 21:41:01 brian Exp $
+ * $Id: import_key_file.php,v 1.15 2005/07/27 14:07:49 brian Exp $
  */
 
 //include the gpg system header, so's everything will be in place.
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in genkey.php, exiting abnormally";
 }
 
@@ -28,7 +28,7 @@ require_once(SM_PATH.'plugins/gpg/modules/gpg_module_header.php');
 require_once(SM_PATH.'plugins/gpg/gpg_keyring.php');
 
 //Deleting a key?
-if ($_POST["del"] && $_POST["fpr"]) {
+if (array_key_exists('del',$_POST) && $_POST["fpr"]) {
     $ring = new gpg_keyring();
     $ring->deleteKey($_POST["fpr"]);
     unset($_POST["fpr"]);
@@ -51,11 +51,11 @@ echo _("You can add keys to your keyring with blocks of ASCII-armored key text (
 
 echo '</td></tr><tr><td>&nbsp;</td></tr>'
      . '<FORM METHOD="POST" enctype="multipart/form-data" action="keyring_main.php">'
-     . '<input type="hidden" name="pos" value="' . htmlspecialchars($_GET["pos"]) . '">'
-     . '<input type="hidden" name="sort" value="' . htmlspecialchars($_GET["sort"]) .'">'
-     . '<input type="hidden" name="desc" value="' . htmlspecialchars($_GET["desc"]) . '">'
-     . '<input type="hidden" name="srch" value="' . htmlspecialchars($_GET["srch"]) . '">'
-     . '<input type="hidden" name="ring" value="' . htmlspecialchars($_GET["ring"]) . '">'
+     . '<input type="hidden" name="pos" value="' . (array_key_exists('pos',$_GET) ? htmlspecialchars($_GET["pos"]) : '') . '">'
+     . '<input type="hidden" name="sort" value="' . (array_key_exists('sort',$_GET) ? htmlspecialchars($_GET["sort"]) : '') .'">'
+     . '<input type="hidden" name="desc" value="' . (array_key_exists('desc',$_GET) ? htmlspecialchars($_GET["desc"]) : '') . '">'
+     . '<input type="hidden" name="srch" value="' . (array_key_exists('srch',$_GET) ? htmlspecialchars($_GET["srch"]) : '') . '">'
+     . '<input type="hidden" name="ring" value="' . (array_key_exists('ring',$_GET) ? htmlspecialchars($_GET["ring"]) : '') . '">'
      . '<input type="hidden" name="MAX_FILE_SIZE" value="$maxfilesize">';
 
 echo '<tr><td>';
@@ -95,6 +95,15 @@ echo '</td></tr></table>';
 
 /**
  * $Log: import_key_file.php,v $
+ * Revision 1.15  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.14  2004/01/17 00:28:23  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.13  2004/01/09 18:29:28  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.12  2003/11/04 21:41:01  brian
  * change to use SM_PATH
  *

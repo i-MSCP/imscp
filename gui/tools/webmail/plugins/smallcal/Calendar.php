@@ -241,19 +241,13 @@ class Calendar
         else if ($smallcal_separator == 2)
         {
 
-
            if ($smallcal_bottom)
               $s .= '<table height="100%" valign="bottom"><tr><td>';
- 
 
            global $color;
-     
-           $s .= "<div id=\"cal_top\"><p>"._("Calendar") ."<a href=\"#\" onclick=\"reveal('cal');\" class=\"minimize\"><img src=\"../images/".$GLOBALS['minimize_button']."\" align=\"absmiddle\" border=\"0\"></a></p></div>\n"; //new NutsMail Code
-           $s .= "<div id=\"cal\">\n"; //new NutsMail Code
-
-           $s .= "<table align=center width=\"99%\" cellpadding=0 cellspacing=0 border=0>";
-           $s .= '<tr><td >';
-           $s .= "<table class=\"left_mailbox\" width=\"96%\" cellpadding=1 cellspacing=1 border=0>\n";
+           $s .= "<table align=center width=\"90%\" cellpadding=0 cellspacing=1 border=0 bgcolor=\"$color[9]\">";
+           $s .= '<tr><td>';
+           $s .= "<table class=\"calendar\" width=\"100%\" cellpadding=1 cellspacing=1 border=0 bgcolor=\"$color[4]\">\n";
 
         }
         else
@@ -261,30 +255,27 @@ class Calendar
            if ($smallcal_bottom)
               $s .= '<table height="100%" valign="bottom"><tr><td>';
 
-    	   $s .= "<table class=\"calendar\" align=\"center\" >\n";
+    	   $s .= "<table class=\"calendar\" align=\"center\">\n";
         }
 
-    	//$s .= "<tr>\n";
-	//$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\" colspan=\"7\">" . (($thisMonth == "") ? "&nbsp;" : "<a style=\"text-decoration:none\" href=\"$thisMonth\" onClick=\"parent.right.location='$thisDay'\">" . _("Today") . "</a>")  . "</td>\n";
+    	$s .= "<tr>\n";
+	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\" colspan=\"7\">" . (($thisMonth == "") ? "&nbsp;" : "<a style=\"text-decoration:none\" href=\"$thisMonth\" onClick=\"parent.right.location='$thisDay'\">" . _("Today") . "</a>")  . "</td>\n";
 	//$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\" colspan=\"7\">" . (($thisMonth == "") ? "&nbsp;" : "<a style=\"text-decoration:none\" href=\"$thisMonth\">" . _("Today") . "</a>")  . "</td>\n";
-    	//$s .= "</tr>\n";
-
- 
-
-    	$s .= "<tr class=\"cal_nav\">\n";
+    	$s .= "</tr>\n";
+    	$s .= "<tr>\n";
     	$s .= "<td align=\"center\" valign=\"top\">" . (($prevMonth == "") ? "&nbsp;" : "<a href=\"$prevMonth\">&lt;&lt;</a>")  . "</td>\n";
     	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\" colspan=\"5\"><a style=\"text-decoration:none\" target=\"right\" class=\"calendarHeader\" href=\"$thisMonth_m\">$header</a></td>\n"; 
     	$s .= "<td align=\"center\" valign=\"top\">" . (($nextMonth == "") ? "&nbsp;" : "<a href=\"$nextMonth\">&gt;&gt;</a>")  . "</td>\n";
     	$s .= "</tr>\n";
     	
     	$s .= "<tr>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay)%7] . "</td>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay+1)%7] . "</td>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay+2)%7] . "</td>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay+3)%7] . "</td>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay+4)%7] . "</td>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay+5)%7] . "</td>\n";
-    	$s .= "<td align=\"center\" valign=\"top\" class=\"day\">" . $this->dayNames[($this->startDay+6)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay+1)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay+2)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay+3)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay+4)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay+5)%7] . "</td>\n";
+    	$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\">" . $this->dayNames[($this->startDay+6)%7] . "</td>\n";
     	$s .= "</tr>\n";
     	
     	// We need to work out what date to start at so that the first appears in the correct column
@@ -343,10 +334,7 @@ class Calendar
     	
         if ($smallcal_separator == 2)
         {
-
     	   $s .= "</table></td></tr>\n</table>\n";
-    	   $s .= "</div>\n"; //NutsMail Code
-    	   $s .= "<div id=\"cal_bottom\"></div>\n";//NutsMail Code
            if ($smallcal_bottom)
               $s .= '</td></tr></table>';
         }
@@ -373,8 +361,7 @@ class Calendar
         $s = "";
     	$prev = $this->getCalendarLink(0, $year - 1);
     	$next = $this->getCalendarLink(0, $year + 1);
-         
-
+        
         $s .= "<table class=\"calendar\" border=\"0\">\n";
         $s .= "<tr>";
     	$s .= "<td align=\"center\" valign=\"top\" align=\"left\">" . (($prev == "") ? "&nbsp;" : "<a href=\"$prev\">&lt;&lt;</a>")  . "</td>\n";

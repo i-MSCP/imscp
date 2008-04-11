@@ -20,13 +20,13 @@
 
 /**
  * jsValidate.js
- * Copyright (c) 2002-2003 Walter Torres
+ * Copyright (c) 2002-2005 Walter Torres
  *
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  * OSI Certified Open Source Software
  *
  * Initial Author: Walter Torres
- * $Id: formValidation.js,v 1.9 2003/12/28 20:13:46 brian Exp $
+ * $Id: formValidation.js,v 1.11 2005/10/09 13:58:52 brian Exp $
  *
  */
 
@@ -740,7 +740,7 @@ Validate.prototype.is_email = function ( strValue )
 	// See if we have anything.
 	// NOTE: This is *not* a check for content, that is to be done elsewhere
 	if ( strValue.length == 0)
-		return true;
+		return false;
 
 
 	// Default return value
@@ -1057,6 +1057,12 @@ Validate.prototype.setErrDisplay = function ( arrErrList )
 
 /**
   * $Log: formValidation.js,v $
+  * Revision 1.11  2005/10/09 13:58:52  brian
+  * - update copyright
+  *
+  * Revision 1.10  2004/08/15 20:38:50  ke
+  * -changed to not return true when the string is blank (changed dictated by walter over IM)
+  *
   * Revision 1.9  2003/12/28 20:13:46  brian
   * added mising . to includefile for TLD info
   *

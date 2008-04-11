@@ -3,23 +3,21 @@
  * GPG Plugin help file framework. Creates the HTML structure,
  * sets the theme, and includes the help article file.
  *
- * Copyright (c) 2003 Braverock Ventures
+ * Copyright (c) 2003-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  * @author Walter Torres
  *
- * $Id: gpg_help.php,v 1.12 2003/12/30 19:03:47 ke Exp $
- *
- * @todo check help file include for security breach in gpg_help.php
+ * $Id: gpg_help.php,v 1.16 2006/08/18 20:57:25 ke Exp $
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_help.php, exiting abnormally";
 }
 require_once(SM_PATH.'plugins/gpg/modules/gpg_popup_header.php');
@@ -41,13 +39,10 @@ if (!isset($_GET['help']))
 
 // this stuff should get loaded with the load_prefs.php file, but it isn't,
 // so we hack it here so our colors are correct.
-// only hack for newer SM versions. older ones work fine
-if (substr($version, 2,4) >= 3.1) {
-   $chosen_theme = getPref($data_dir, $username, 'chosen_theme');
-   $chosen_theme = preg_replace("/(\.\.\/){1,}/", SM_PATH, $chosen_theme);
-   if (isset($chosen_theme) && (file_exists($chosen_theme))) {
-      @include_once($chosen_theme);
-   }
+$chosen_theme = getPref($data_dir, $username, 'chosen_theme');
+$chosen_theme = preg_replace("/(\.\.\/){1,}/", SM_PATH, $chosen_theme);
+if (isset($chosen_theme) && (file_exists($chosen_theme))) {
+    @include_once($chosen_theme);
 }
 // end color hack
 
@@ -66,7 +61,19 @@ echo '<table width="95%" align="center" border="0" cellpadding="2" cellspacing="
      . '<tr><td>';
 
 // Help body text is inserted here via GET parameter
-require_once (SM_PATH.'plugins/gpg/help/' . $_GET['help'] );
+// Help body text is inserted here via GET parameter
+$entries=array();
+$d = dir(SM_PATH.'plugins/gpg/help/');
+while (false !== ($entry = $d->read())) {
+   $entries[]=$entry;
+}
+$d->close();
+if (array_search($_GET['help'],$entries)!==false) {
+    require_once (SM_PATH.'plugins/gpg/help/' . $_GET['help'] );
+} else {
+    echo _("Help file not found.").'<br>';
+    echo _("You searched for:").' '.htmlspecialchars($_GET['help']).'<br>'."\n";
+}
 
 echo '</td></tr></table>';
 
@@ -86,6 +93,20 @@ echo  '</body></html>';
 
 /**
  * $Log: gpg_help.php,v $
+ * Revision 1.16  2006/08/18 20:57:25  ke
+ * - fixed check for help files to use array_search instead of array_key_exists, to search contents of array
+ * - added similar check to gpg_help.php
+ *
+ * Revision 1.15  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.14  2004/04/30 18:00:46  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.13  2004/01/09 18:26:50  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.12  2003/12/30 19:03:47  ke
  * -changed single to double quotes for translation purposes.
  *

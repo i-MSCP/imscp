@@ -6,12 +6,12 @@
  * in keyring_main.php
  * 
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
+ * Copyright (c) 1999-2005 The SquirrelMail development team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
- * $Id: keyring_main_chunk.php,v 1.5 2003/10/30 20:19:57 ke Exp $
+ * $Id: keyring_main_chunk.php,v 1.6 2005/07/27 14:07:49 brian Exp $
  *
  */
 

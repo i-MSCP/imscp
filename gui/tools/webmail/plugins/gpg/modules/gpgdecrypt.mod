@@ -7,27 +7,28 @@
  * the read_body.php page as possible, so the user doesn't really
  * notice that this is a seperate page.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * Portions of this code copyright (c) 1999-2003 the Squirrelmail Development Team
+ * Portions of this code copyright (c) 1999-2005 the Squirrelmail Development Team
  *
- * $Id: gpgdecrypt.mod,v 1.51 2003/12/10 22:22:18 ke Exp $
+ * $Id: gpgdecrypt.mod,v 1.65 2005/07/27 14:07:49 brian Exp $
  *
  * @todo change the file includes to set SM_PATH
  */
 /*********************************************************************/
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_encrypt_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_encrypt_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_encrypt_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATh in gpgdecrypt.mod, exiting abnormally";
 }
 
 require_once(SM_PATH.'plugins/gpg/gpg_encrypt_functions.php');
+require_once(SM_PATH.'plugins/gpg/gpg_execute.php');
 require_once(SM_PATH.'plugins/gpg/gpg_hook_functions.php');
 require_once(SM_PATH.'functions/imap.php');
 require_once(SM_PATH.'functions/mime.php');
@@ -39,6 +40,8 @@ global $charset;
 global $draft_folder;
 global $startMessage;
 global $sort;
+global $username;
+global $excl_ar;
 
 $passphrase     = $_POST['passphrase'];
 $passed_id      = (int) $_POST['passed_id'];
@@ -76,14 +79,19 @@ if ($debug) {
  * @param  integer $next
  * @param  integer $prev
  * @param  string  $message
+ * @param  handle  $imapConnection
  * @return string  $menubar
  *
  */
-function decryptmenuBar ($debug, $mailbox, $passed_id, $passed_ent_id, $next, $prev, $message){
+function decryptmenuBar ($debug, $mailbox, $passed_id, $passed_ent_id, $next, $prev, $message, $imapConnection){
 
     global $base_uri, $color, $draft_folder;
     global $startMessage;
+    global $imapConnection;
     global $sort;
+    global $excl_ar;
+    global $where, $what;
+    global $data_dir, $username;
     if ($debug) {
         echo '<br>Passed ID: '.$passed_id ."\n";
         echo '<br>Passed Entity ID: '.$passed_ent_id."\n";
@@ -94,7 +102,7 @@ function decryptmenuBar ($debug, $mailbox, $passed_id, $passed_ent_id, $next, $p
     $menubar = '';
     $s ="\n\n";
 
-    $subject = decodeHeader($message->rfc822_header->subject);
+    $subject = decodeHeader($message->rfc822_header->subject, false, false);
 
     $topbar_delimiter = '&nbsp;|&nbsp;';
     $urlMailbox = urlencode($mailbox);
@@ -119,7 +127,7 @@ function decryptmenuBar ($debug, $mailbox, $passed_id, $passed_ent_id, $next, $p
         $link_close = '">';
     }
 
-    $from_name = decodeHeader($from_name,false,true);
+    $from_name = decodeHeader($from_name,false,false);
     $url_replyto = urlencode($from_name);
 
 
@@ -329,7 +337,7 @@ function decryptmenuBar ($debug, $mailbox, $passed_id, $passed_ent_id, $next, $p
         $s .= $topbar_delimiter;
         $s .= $link_open . $reply_all_uri . $link_close . _("Reply All") . '</a>';
     } //end reply and forward block
-	$s .= "<tr><td colspan=4 align=center>";
+    $s .= "<tr><td colspan=4 align=center>";
            $s .= "<form action=\"" . SM_PATH . "src/read_body.php?mailbox=$mailbox&sort=$sort&startMessage=$startMessage&passed_id=$next\" method=\"post\"><small>".
             "<input type=\"hidden\" name=\"show_more\" value=\"0\">".
             "<input type=\"hidden\" name=\"move_id\" value=\"$passed_id\">".
@@ -382,20 +390,20 @@ function formatRecipientString($recipients, $item ) {
 
         $cnt = count($recipients);
         foreach($recipients as $r) {
-            $add = decodeHeader($r->getAddress(true));
+            $add = decodeHeader($r->getAddress(true), false, false);
             if ($string) {
                 $string .= '<BR>' . $add;
             } else {
                 $string = $add;
                 if ($cnt > 1)
-				{
+                {
                     $string .= '&nbsp;';
 //                    $string .= '[<a href="">Show More</a>]';
                     $string .= '[<a href="./modules/gpg_recipientlist.php" target="_blank" onclick="pop_window ( this.href ); return false;">Show More</a>]';
-					sqsession_register($recipients , 'recipients');
-					break;
+                    sqsession_register($recipients , 'recipients');
+                    break;
 
-				}
+                }
 /*
                     $string .= '&nbsp;(<A HREF="'.$url;
                     if ($show) {
@@ -430,22 +438,6 @@ if ($passphrase != '') {
     }
 }
 
-echo<<<TILLEND
-<script language="JavaScript"
-        type="text/javascript">
-function pop_window ( strPath )
-{
-window.open ( strPath, "others", "width=450,height=350,50,50,menubar=no,toolbar=no,location=no,status=no,scrollbars=no,resizable=no");
-}
-</script>
-TILLEND;
-
-//display the page title
-// ===============================================================
-$section_title = _("GPG Decryption Results");
-echo gpg_section_header ( $section_title, $color[9] );
-// ===============================================================
-
 /*********************************************************************/
 /**
  * pull all the stuff we need from the imap variables
@@ -453,6 +445,7 @@ echo gpg_section_header ( $section_title, $color[9] );
 
 //get the body text
 global $uid_support;
+global $imapConnection;
 $imapConnection = sqimap_login($username, $key, $imapServerAddress,
                                $imapPort, 0);
 if ($imapConnection==false){
@@ -477,11 +470,11 @@ if (!$from_name) {
         $from_name = _("Unknown sender");
     }
 }
-$from_name = decodeHeader($from_name,false,true);
+$from_name = decodeHeader($from_name,false,false);
 
-$subject   = decodeHeader($message->rfc822_header->subject);
+$subject   = decodeHeader($message->rfc822_header->subject,false,false);
 
-$date      = decodeHeader($message->rfc822_header->subject);
+$date      = decodeHeader($message->rfc822_header->subject,false,false);
 
 //end pulling from IMAP
 /*********************************************************************/
@@ -496,6 +489,29 @@ if ($debug) {
 
 //now call decrypt
 $return = gpg_decrypt($debug, $body_text, $passphrase);
+  if (count($return['errors']) > 0) {
+    $_SESSION['gpgerror']=$return['errors'];
+    ob_end_clean();
+    Header("Location: " . SM_PATH . "src/read_body.php?mailbox=$mailbox&passed_id=$passed_id&passed_ent_id=$passed_ent_id&next=$next&prev=$prev");
+  }
+ob_end_flush();
+echo<<<TILLEND
+<script language="JavaScript"
+        type="text/javascript">
+function pop_window ( strPath )
+{
+window.open ( strPath, "others", "width=450,height=350,50,50,menubar=no,toolbar=no,location=no,status=no,scrollbars=no,resizable=no");
+}
+</script>
+TILLEND;
+
+//display the page title
+// ===============================================================
+$section_title = _("GPG Decryption Results");
+echo gpg_section_header ( $section_title, $color[9] );
+// ===============================================================
+
+
 
 //use htmlspecialchars on the plaintext, to allow the user to see things like <>
 $rawplaintext=$return['plaintext'];
@@ -556,14 +572,14 @@ $plaintext = htmlspecialchars($return['plaintext']);
 
 //put in our links
 
-    echo "\n\n". decryptmenuBar($debug, $mailbox, $passed_id, $passed_ent_id, $next, $prev, $message);
+    echo "\n\n". decryptmenuBar($debug, $mailbox, $passed_id, $passed_ent_id, $next, $prev, $message, $imapConnection);
 
     echo '<TABLE BGCOLOR="'.$color[9].'" WIDTH="100%" CELLPADDING="1"'.
-         ' CELLSPACING="0" BORDER="0" ALIIGN="center">'."\n";
+         ' CELLSPACING="0" BORDER="0" ALIGN="center">'."\n";
     echo '<TR><TD ALIGN=CENTER>';
     echo '<TABLE BGCOLOR="'.$color[9].'" WIDTH="100%" CELLPADDING="1"'.
-         ' CELLSPACING="0" BORDER="0" ALIIGN="center">'."\n";
-    gpg_decrypt_link ($rawplaintext); 
+         ' CELLSPACING="0" BORDER="0" ALIGN="center">'."\n";
+    gpg_decrypt_link ($rawplaintext);
     echo '<TR><TD align=center>'."\n";
     gpg_import_link ($rawplaintext);
     echo '</TD></TR></TABLE>';
@@ -578,9 +594,12 @@ $plaintext = htmlspecialchars($return['plaintext']);
     $env[_("To")] = formatRecipientString($message->rfc822_header->to, "to");
     $env[_("Cc")] = formatRecipientString($message->rfc822_header->cc, "cc");
     $env[_("Bcc")] = formatRecipientString($message->rfc822_header->bcc, "bcc");
-    $env[_("Priority")] = htmlspecialchars(getPriorityStr($header->priority));
+    $env[_("Priority")] = htmlspecialchars(getPriorityStr($message->rfc822_header->priority));
+    $env[_("Signature")] = '';
 if ($return['signature']) {
-    $env[_("Signature")] = implode($return['signature'],"\n<br>");
+    foreach($return['signature'] as $line) {
+        $env[_("Signature")] .= htmlspecialchars($line) . "\n<br>";
+    }
 } else {
     $env[_("Signature")] = _("Unsigned");
 }
@@ -651,29 +670,29 @@ $notclean=0;
 $serious=0;
     //echo the errors and warning to this page before continuing.
         if (count($return['warnings']) > 0) {
-	echo '<b>'._("Warning: "). '</b><ul>';
+    echo '<b>'._("Warning: "). '</b><ul>';
         foreach ($return['warnings'] as $warning) {
             $notclean=1;
             echo htmlspecialchars($warning) . '<br>';
         };
-	echo '</ul>';
-	}
-	if (count($return['errors']) > 0) {
-	echo '<b>'._("Error: ") . '</b><ul>';
+    echo '</ul>';
+    }
+    if (count($return['errors']) > 0) {
+    echo '<b>'._("Error: ") . '</b><ul>';
         foreach ($return['errors'] as $error) {
             $notclean=1;
             $serious=1;
             echo htmlspecialchars($error) . '<br>';
         };
-	echo '</ul>';
-	}
-	if (count($return['info']) > 0) {
-	echo '<b>'._("Info: "). '</b><ul>';
+    echo '</ul>';
+    }
+    if (count($return['info']) > 0) {
+    echo '<b>'._("Info: "). '</b><ul>';
         foreach ($return['info'] as $info){
             echo htmlspecialchars($info) . '<br>';
         };
-	echo '</ul>';
-	}
+    echo '</ul>';
+    }
 
 if ($mailbox != $draft_folder) {
     //create the reply text
@@ -711,6 +730,51 @@ $_SESSION['gpg_dbody']=$reply_body;
 
 /**
  * $Log: gpgdecrypt.mod,v $
+ * Revision 1.65  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.64  2004/08/10 03:27:07  joelm
+ * fixed a minor "unterminated string literal" javascript error
+ *
+ * Revision 1.63  2004/05/04 20:38:59  ke
+ * -changed decodeHeader calls to set saveHTML to false, so that the proper characters appear in the compose window
+ *
+ * Revision 1.62  2004/03/10 22:08:16  ke
+ * -added ending of output buffering when outputting in decrypt
+ *
+ * Revision 1.61  2004/03/10 21:48:16  ke
+ * -changed order of output and redirect for errors
+ *
+ * Revision 1.60  2004/03/10 21:24:53  brian
+ * - removed troublesome blank line at end of file
+ *
+ * Revision 1.59  2004/03/09 21:43:21  ke
+ * -added redirect on errors back to read body pagae
+ * bug 166
+ *
+ * Revision 1.58  2004/02/26 18:14:36  ke
+ * -added global $imapConnection patch from Chuck Foster
+ * bug 161
+ *
+ * Revision 1.57  2004/02/17 22:51:10  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.56  2004/01/23 02:38:10  brian
+ * - applied $imapConnection patch provided by alex at kerkhove dot net
+ * Bug 146
+ *
+ * Revision 1.55  2004/01/16 22:50:12  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.54  2004/01/14 22:21:29  ke
+ * -added htmlspecialchars call so that signatures will display email addresses on encrypted signed messages
+ *
+ * Revision 1.53  2004/01/13 20:31:58  ke
+ * -added include of gpg_execute centralized functions
+ *
+ * Revision 1.52  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.51  2003/12/10 22:22:18  ke
  * -added move functionality from delete_move_next plugin to decrypted view
  *

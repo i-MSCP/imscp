@@ -2,7 +2,7 @@
  * gpgsubmitpass.js
  * GPG plugin passphrase submitting javascript 
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
@@ -10,7 +10,7 @@
  * Author: Aaron van Meerten
  * Initial Author: Brian Peterson
  * 
- * $Id: gpgsubmitpass.js,v 1.6 2003/12/01 20:04:57 ke Exp $
+ * $Id: gpgsubmitpass.js,v 1.8 2005/10/09 13:58:52 brian Exp $
  *
  */
 
@@ -22,14 +22,12 @@ function gpg_decrypt_submit () {
 
 function gpg_delete_submit() {
   opener.document.keyview.passphrase.value = document.main.passphrase.value;
-  opener.document.keyview.deletekey.value="true";
   opener.document.keyview.submit();
   window.close();
 }
 
 function gpg_delete_pair_submit() {
   opener.document.keyview.passphrase.value = document.main.passphrase.value;
-  opener.document.keyview.deletepair.value="true";
   opener.document.keyview.submit();
   window.close();
 }

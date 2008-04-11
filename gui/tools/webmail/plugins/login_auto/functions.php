@@ -1,7 +1,4 @@
 <?php
-/**
- *  @modified by ispCP Omega Team http://isp-control.net
- */
 
 // include compatibility plugin
 //
@@ -50,7 +47,7 @@ else if (file_exists('./plugins/compatibility/functions.php'))
       if (isset($_COOKIE['user'])) {
          $user = $_COOKIE['user'];
       }
-
+      
       if (isset($_COOKIE['pass'])) {
          $pass = $_COOKIE['pass'];
       }
@@ -73,7 +70,7 @@ else if (file_exists('./plugins/compatibility/functions.php'))
 
       global $auto_pass, $auto_user, $user, $login_doc, $login_link;
 
-      // note that we get $user as well as all config
+      // note that we get $user as well as all config 
       // variables from the hook before this
 
       // get global variable for versions of PHP < 4.1
@@ -92,10 +89,7 @@ else if (file_exists('./plugins/compatibility/functions.php'))
          echo "<tr><td valign=center>\n";
          echo "<input type=checkbox name=cb_auto_pass value=true>\n";
          echo "</td><td valign=center nowrap>\n";
-		 // Modified by ispCP Omega - http://isp-control.net
-		 echo "<small><font size=-2 color='#000000'>" . _("Remember Username & Password") . "</font><small>\n";
-		 // End modification
-         //echo "<small><font size=-2 color='#c0c0c0'>" . _("Remember Username & Password") . "</font><small>\n";
+         echo "<small>" . _("Remember my Name & Password") . "<small>\n";
          echo "</td></tr>\n";
       }
       else {
@@ -109,8 +103,8 @@ else if (file_exists('./plugins/compatibility/functions.php'))
       }
 
       if (($auto_user || $auto_pass) && $login_doc!='') {
-         if (!isset($login_link) || $login_link=='')
-         //   $login_link=_("What's this?");
+         if (!isset($login_link) || $login_link=='') 
+            $login_link=_("What's this?");
          echo "<tr><td colspan='2' valign=center align=center><a href=$login_doc>$login_link</a></td></tr>\n";
       }
 
@@ -122,7 +116,7 @@ else if (file_exists('./plugins/compatibility/functions.php'))
    // called in redirect.php
    function login_auto_get_pass_do() {
 
-      global $auto_pass, $auto_key, $secretkey, $just_logged_in,
+      global $auto_pass, $auto_key, $secretkey, $just_logged_in, 
              $user, $pass, $login_username;
 
       if (compatibility_check_sm_version(1, 3))
@@ -164,14 +158,14 @@ else if (file_exists('./plugins/compatibility/functions.php'))
    // called in redirect.php
    function login_auto_set_cookies_do() {
 
-      global $auto_user, $auto_pass, $auto_key, $user, $login_username,
-             $pass, $auto_expire_days, $auto_expire_hours, $auto_expire_minutes,
+      global $auto_user, $auto_pass, $auto_key, $user, $login_username, 
+             $pass, $auto_expire_days, $auto_expire_hours, $auto_expire_minutes,  
              $base_uri, $secretkey;
-
+ 
       // note that we get $user and $pass as well as all config
       // variables from the hook before this
 
-      $auto_expire = $auto_expire_days*86400 + $auto_expire_hours*3600
+      $auto_expire = $auto_expire_days*86400 + $auto_expire_hours*3600 
                    + $auto_expire_minutes*60;
 
       // get global variable for versions of PHP < 4.1
@@ -216,32 +210,32 @@ else if (file_exists('./plugins/compatibility/functions.php'))
     *
     */
 
-   function MD5Keycrypt($txt,$key)
-   {
+   function MD5Keycrypt($txt,$key) 
+   { 
     for ($i=0,$j=0,$val='',$key=md5($key),$keylen=strlen($key),$txtlen=strlen($txt);$i<$txtlen;$i++) {
         $val.=substr($txt,$i,1)^substr($key,($j==$keylen)?$j*=0:$j++,1);
-    }
-    return $val;
-   }
+    } 
+    return $val; 
+   } 
 
-   function MD5Encrypt($txt,$key)
-   {
+   function MD5Encrypt($txt,$key) 
+   { 
     if (is_array($key)) {
         for ($i=0,$alen=sizeof($key);$i<$alen;$i++) {
             $txt=($i%2)?MD5Encrypt($txt,$key[$i]):MD5Keycrypt($txt,$key[$i]);
         }
         return $txt;
     }
-    srand((double)microtime()*1000000);
+    srand((double)microtime()*1000000); 
     $cryptkey=md5(rand(0,32000));
     for ($i=0,$j=0,$val='',$keylen=strlen($cryptkey),$txtlen=strlen($txt);$i<$txtlen;$i++) {
         $val.=substr($cryptkey,$j,1).(substr($txt,$i,1)^substr($cryptkey,($j==$keylen)?$j*=0:$j++,1));
-    }
-    return MD5Keycrypt($val,$key);
-   }
+    } 
+    return MD5Keycrypt($val,$key); 
+   } 
 
-   function MD5Decrypt($txt,$key)
-   {
+   function MD5Decrypt($txt,$key) 
+   { 
     if (is_array($key)) {
         for ($i=sizeof($key)-1;$i>=0;$i--) {
             $txt=($i%2)?MD5Decrypt($txt,$key[$i]):MD5Keycrypt($txt,$key[$i]);
@@ -250,8 +244,8 @@ else if (file_exists('./plugins/compatibility/functions.php'))
     }
     for ($i=0,$val='',$txt=MD5Keycrypt($txt,$key),$txtlen=strlen($txt);$i<$txtlen;$i++) {
         $val.=(substr($txt,$i+1,1)^substr($txt,$i++,1));
-    }
-    return $val;
-   }
+    } 
+    return $val; 
+   } 
 
 ?>

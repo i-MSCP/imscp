@@ -20,6 +20,11 @@ echo '<ul>';
         . "</a></li>\n";
 
     echo '<li>'
+        . gpg_add_help_link ( 'disc_keystore.php' )
+        . _("Should I store my private keys on the server?")
+        . "</a></li>\n";
+
+    echo '<li>'
         . gpg_add_help_link ( 'what_signing.php' )
         . _("What is a 'Signing Key'?")
         . "</a></li>\n";
@@ -27,11 +32,6 @@ echo '<ul>';
     echo '<li>'
         . gpg_add_help_link ( 'what_trusted.php' )
         . _("What is a 'Trusted Key'?")
-        . "</a></li>\n";
-
-    echo '<li>'
-        . gpg_add_help_link ( 'disc_keystore.php' )
-        . _("Should I store my private keys on the server?")
         . "</a></li>\n";
 
     echo '<p><li>'
@@ -62,9 +62,12 @@ echo '<ul>';
 echo '</ul>';
 
 /**
- * $Id: base.php,v 1.6 2003/11/22 15:50:36 brian Exp $
+ * $Id: base.php,v 1.7 2004/01/18 15:25:35 brian Exp $
  *
  * $Log: base.php,v $
+ * Revision 1.7  2004/01/18 15:25:35  brian
+ * rearranged for better usability
+ *
  * Revision 1.6  2003/11/22 15:50:36  brian
  * rearranged options so they make a little more sense
  *

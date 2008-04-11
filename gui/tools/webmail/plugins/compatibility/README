@@ -1,8 +1,8 @@
 Compatibility plugin for SquirrelMail
 =====================================
-Ver 2.0.4, 2005/11/11
+Ver 2.0.11, 2008/02/29
 
-Original author: Paul Lesneiwski <paul@openguild.net>
+Original author: Paul Lesniewski <paul@squirrelmail.org>
 Original idea: Bruce Richardson <itsbruce@uklinux.net>
 
 
@@ -20,31 +20,105 @@ have been installed and set up correctly.
 
 
 
+License
+=======
+
+This plugin is released under the GNU General Public 
+License (see the file COPYING for details).
+
+
+
+Donations
+=========
+
+If you or your company make regular use of this software, please
+consider supporting Open Source development by donating to the authors
+or inquire about hiring them to consult on other projects.  Donation
+links for the author(s) are as follows:
+
+Paul Lesniewski: https://sourceforge.net/donate/index.php?user_id=508228
+
+
+
+Requirements
+============
+
+  * None
+
+
+
+Help Requests
+=============
+
+Before looking for help elsewhere, please try to help yourself:
+
+  * Read the Troubleshooting section herein.
+
+  * Look to see if others have already asked about the same issue.
+    There are tips and links for the best places to do this in
+    the SquirrelMail mailing list posting guidelines:
+    http://squirrelmail.org/wiki/MailingListPostingGuidelines
+    You should also try Google or some other search engine.
+
+  * If you cannot find any information about your issue, please
+    first mail your help request to the squirrelmail-plugins
+    mailing list.  Information about it can be found here:
+    http://lists.sourceforge.net/mailman/listinfo/squirrelmail-plugins
+    You MUST read the mailing list posting guidelines (see above)
+    and include as much information about your issue (and your
+    system) as possible.  Including configtest output, any debug
+    output, the plugin configuration settings you've made and
+    anything else you can think of to make it easier to diagnose
+    your problem will get you the most useful responses.  Inquiries
+    that do not comply with the posting guidelines are liable to
+    be ignored.
+
+  * If you don't get any replies on the mailing list, you are
+    welcome to send a help request to the authors' personal
+    address(es), but please be patient with the mailing list.
+
+
+
 Usage (Plugin Authors' Guide)
 =============================
 
 As of version 2.0 of this plugin, no special action is required
 on the part of plugin developers to make their plugin backward
-compatible via the Compatibility Plugin.  However, any custom option
-pages provided by a plugin should always start with the following
-code:
+compatible via the Compatibility Plugin.  However, any custom pages
+(such as option pages) provided by a plugin should always start 
+with the following code:
 
 
-   define('SM_PATH', '../../');
-
-
-   if (file_exists(SM_PATH . 'include/validate.php'))
+   // set up SquirrelMail environment
+   //
+   if (file_exists('../../include/init.php'))
+      include_once('../../include/init.php');
+   else if (file_exists('../../include/validate.php'))
+   {
+      define('SM_PATH', '../../');
       include_once(SM_PATH . 'include/validate.php');
+   }
    else
+   {
+      chdir('..');
+      define('SM_PATH', '../');
       include_once(SM_PATH . 'src/validate.php');
+   }
+
+
+   // make sure plugin is activated!
+   //
+   global $plugins;
+   if (!in_array('plugin_name', $plugins))
+      exit;
 
 
 Otherwise, developers should just use the most up-to-date SquirrelMail 
 API and expect that their plugins will in most cases work with most
 versions of SquirrelMail as long as users of older versions have 
-downloaded this plugin and added its patch.  If a function is found 
-that a certain plugin uses that is not included in the Compatibility 
-Plugin, please ask to have it added.  
+downloaded this plugin and applied its patch if necessary.  If a 
+function is found that a certain plugin uses that is not included 
+in the Compatibility Plugin, please ask to have it added.  
 
 Authors who want to avoid getting support requests for simple setup
 problems (such as when the person installing the plugin neglects to 
@@ -61,7 +135,9 @@ find or understand PHP errors) if none of them are found.
 
 The second function checks for the existence of any configuration 
 files you specify (it does not load (include) them, however - this
-function is only intended as a configuration test.
+function is only intended as a configuration test.  It can be handy
+in combination with the "configtest" hook which is available in 
+SquirrelMail 1.4.10 and above and 1.5.2 and above.
 
 The first parameter for both of these functions is the name of the 
 plugin as it is known to SquirrelMail (the plugin's directory name).  
@@ -82,15 +158,27 @@ a sub-set thereof, etc.  Keep in mind that files are loaded/included
 in the order given.
 
 Note that check_plugin_setup() is best placed somewhere where it will 
-not run frequently, since it is only really needed once.  You may 
-turn off that function by changing the $disable_config_check at the 
-top of the functions.php file in the Compatibility Plugin.  This 
-functionality is subject to (possibly radical) change in the future.
+not run frequently, since it is only really needed once (thus, in 
+SquirrelMail versions 1.4.10 and 1.5.2 and above, use it with the 
+"configtest" hook).  You may turn off that function by changing the 
+$disable_config_check at the top of the functions.php file in the 
+Compatibility Plugin.
+
+There are also some advanced utility functions for use by plugins needing
+to add, remove or re-order other plugins (or themselves) called add_plugin(),
+remove_plugin(), get_current_hook_name() and reposition_plugin_on_hook().
+Plugin authors needing to use these should read the function documentation
+in the functions.php file in the Compatibility plugin directory.
 
 
 
 TODO
 ====
+
+  * sqsetcookie probably will break some plugins, since I'm not sure
+    where the flush is happening in 1.5.1 and if it's being backported
+    correctly.  should fix this or make sure it's not a problem
+    (hrmph, seems to work fine for multilogin, sooo....)
 
   * Add broader functionality to help plugins diagnose 
     other setup/install issues?  such as what?  checking
@@ -143,6 +231,68 @@ TODO
 Change Log
 ==========
 
+  v2.0.11  2008/02/29  Paul Lesniewski <paul@squirrelmail.org>
+    * Moved sq_send_mail(), since it was added to SM core
+    * Added debug constants from 1.5.2
+
+  v2.0.10  2008/01/12  Paul Lesniewski <paul@squirrelmail.org>
+    * Note that SquirrelMail 1.4.13+ (as well as 1.5.1+)
+      no longer requires a source patch.
+    * Added sq_call_function_suppress_errors()
+    * Added get_secured_config_value()
+    * Added get_smtp_user()
+    * Added sq_send_mail()
+
+  v2.0.9  2007/07/12  Paul Lesniewski <paul@squirrelmail.org>
+    * Synchronize with addition of sqauth_read_password() to
+      SM 1.4.11
+    * Improve get_current_hook_name() function in SM 1.5.1+
+      (no need to upgrade except for use with SM 1.5.1+)
+    * Removed sq_popen() and family
+
+  v2.0.8 2007/04/17
+    * Fix mistyped function call, which should not have
+      shown up unless using old or broken setups.  Thanks
+      to Yoshinori Mamoto.
+    * Fixed sqm_baseuri() location change that creates bug
+      for versions 1.4.5 and below
+    * Added sq_popen() and family
+    * Added list_files()
+
+  v2.0.7 2007/04/05
+    * Added sqauth_save_password() and sqauth_read_password()
+      from 1.5.1 to compatibility library
+    * Added documentation note that plugin authors should not
+      use checkForJavascript() under 1.4.x
+    * Added get_plugin_version(), updated check_plugin_version()
+    * Added sq_htmlspecialchars()
+    * Added sq_change_text_domain()
+    * Added get_plugin_requirement()
+    * Added get_plugin_dependencies(), check_plugin_dependencies()
+    * Changed internal legacy inclusion mechanism for better
+      organization and easier maintenance
+    * Adjusted for new SM_VERSION constant in SM 1.5.2
+
+  v2.0.6 2007/01/17
+    * Fixed issues from the last release: eval code return bug 
+      that showed only under 1.5.1 and PHP notice issue when 
+      used with the Multilogin plugin under 1.4.x.
+
+  v2.0.5 2007/01/14
+    * Revamped legacy mechanism; cleaned up include files and
+      included functions (as mentioned in the README, if plugin
+      authors find functions they need for better compatibility,
+      please get in touch)
+    * Added missing include in the case of errors in load_config
+    * Added get_current_hook_name(), add_plugin(), remove_plugin()
+      and reposition_plugin_on_hook() functions
+    * Remove use of SM_PATH in functions file in case it is not
+      available
+    * load_config() and check_plugin_setup() can now also return 
+      after an error to allow the caller to handle the error
+    * Added patches through SquirrelMail version 1.4.9 and 1.5.0
+      (Compatibility plugin is natively loaded in 1.5.1 and up)
+
   v2.0.4 2005/11/11
     * Sorry, folks.  Changed the location of the compatibility patch
       again.  When upgrading to this version, you *MUST* remove the
@@ -174,16 +324,16 @@ Change Log
       to specifically use "compatibility_" functions.
     * Changed compatibility_check_plugin_setup() to check_plugin_setup()
  
-  1.3 - Paul Lesneiwski <paul@openguild.net>
+  1.3 - Paul Lesniewski <paul@squirrelmail.org>
    * Added compatibility_check_plugin_setup() that helps verify that
      a plugin has been installed and set up correctly
    * Added new $compatibility_sm_path variable for easier plugin coding...
    * Updated for compatibility (!) with new version reporting API
 
-  1.2 - Paul Lesneiwski <paul@openguild.net>
+  1.2 - Paul Lesniewski <paul@squirrelmail.org>
    * Fix for theme problem with plugins under SM 1.4
 
-  1.1 - Paul Lesneiwski <paul@openguild.net>
+  1.1 - Paul Lesniewski <paul@squirrelmail.org>
    * Some applications of this plugin were experiencing
      unusual include order, so added includes of the
      global.php and strings.php files to be safe.
@@ -193,5 +343,5 @@ Change Log
      version of those functions now takes precedence over
      older SquirrelMail core code.
 
-  1.0 - Paul Lesneiwski <paul@openguild.net>
+  1.0 - Paul Lesniewski <paul@squirrelmail.org>
    * Initial release

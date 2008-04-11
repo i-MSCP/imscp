@@ -19,12 +19,12 @@
 
 /**
   * statusBar.js
-  * Copyright (c) 2002-2003 Walter Torres
+  * Copyright (c) 2002-2005 Walter Torres
   *
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * Initial Author: Walter Torres
-  * $Id: statusBar.js,v 1.1 2003/11/08 21:40:26 walter Exp $
+  * $Id: statusBar.js,v 1.2 2005/10/09 13:58:52 brian Exp $
   *
   * Now that the form has loaded, collect all the FORM Objects
   * and attach our event methods to them

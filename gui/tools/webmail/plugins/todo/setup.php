@@ -2,8 +2,8 @@
 
 function squirrelmail_plugin_init_todo() {
 	global $squirrelmail_plugin_hooks;
-	$squirrelmail_plugin_hooks['todo_plugin']['todo'] = 'todo_menuline';
-	$squirrelmail_plugin_hooks['left_main_todo']['todo'] = 'todo_show_reminders';
+	$squirrelmail_plugin_hooks['menuline']['todo'] = 'todo_menuline';
+	$squirrelmail_plugin_hooks['left_main_after']['todo'] = 'todo_show_reminders';
 	$squirrelmail_plugin_hooks['right_main_after_header']['todo'] = 'todo_show_has_reminders';
 	$squirrelmail_plugin_hooks['loading_prefs']['todo'] = 'todo_load_prefs';
 	$squirrelmail_plugin_hooks['options_display_inside']['todo'] = 'todo_option_display';
@@ -17,9 +17,8 @@ function todo_version() {
 
 function todo_menuline() {
    //Add 'To Do' link to upper menu
-	//displayInternalLink('plugins/todo/todo.php',_("To Do"),'right');
-    displayInternalLink('plugins/todo/todo.php','<div id="todo_button" title="'._("To Do").'">&nbsp;&nbsp;&nbsp;</div>','');
-	//echo "&nbsp;&nbsp\n";
+	displayInternalLink('plugins/todo/todo.php',_("To Do"),'right');
+	echo "&nbsp;&nbsp\n";
 }
 
 function todo_show_reminders() {

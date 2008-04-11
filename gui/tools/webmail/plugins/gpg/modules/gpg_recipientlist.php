@@ -3,23 +3,23 @@
  * GPG Plugin help file framework. Creates the HTML structure,
  * sets the theme, and includes the help article file.
  *
- * Copyright (c) 2003 Braverock Ventures
+ * Copyright (c) 2003-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  * @author Walter Torres
  *
- * $Id: gpg_recipientlist.php,v 1.2 2003/12/30 19:04:29 ke Exp $
+ * $Id: gpg_recipientlist.php,v 1.5 2005/07/27 14:07:49 brian Exp $
  *
  * @todo check help file include for security breach in gpg_help.php
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_decrypt_attach.php, exiting abnormally";
 }
 
@@ -43,14 +43,11 @@ echo   '<html>'
 
 // this stuff should get loaded with the load_prefs.php file, but it isn't,
 // so we hack it here so our colors are correct.
-// only hack for newer SM versions. older ones work fine
-if (substr($version, 2,4) >= 3.1) {
    $chosen_theme = getPref($data_dir, $username, 'chosen_theme');
    $chosen_theme = preg_replace("/(\.\.\/){1,}/", SM_PATH, $chosen_theme);
    if (isset($chosen_theme) && (file_exists($chosen_theme))) {
       @include_once($chosen_theme);
    }
-}
 // end color hack
 
 echo   '<html>'
@@ -69,8 +66,8 @@ $recipients = $_SESSION ['recipients'];
 
 foreach($recipients as $r)
 {
-	echo decodeHeader($r->getAddress(true));
-	echo '<br />';
+    echo decodeHeader($r->getAddress(true));
+    echo '<br />';
 }
 
 echo '</td></tr></table>';
@@ -91,6 +88,16 @@ echo  '</body></html>';
 
 /**
  * $Log: gpg_recipientlist.php,v $
+ * Revision 1.5  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.4  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.3  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.2  2003/12/30 19:04:29  ke
  * -changed single to double quotes for translation purposes
  *

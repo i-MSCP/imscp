@@ -341,7 +341,7 @@ function displayPageHeader($color, $mailbox, $xtra='', $session=false) {
 	echo "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
 		    <tr>\n
 			  <td class=\"top_left_bar_handle\" width=\"5px\">\n
-	            <div align=\"right\"><img src=\"".$base_uri."images/blank_transparent.gif\"></div>\n
+	            <div align=\"right\"><img src=\"".$base_uri."images/blank.png\"></div>\n
 			</td>\n";
 	if ( $shortBoxName <> '' && strtolower( $shortBoxName ) <> 'none' ) {
         echo "      <td align=\"left\" class=\"inbox_bar_header\">" . _("Current Folder") . ": <b>$shortBoxName&nbsp;</b></td>\n";

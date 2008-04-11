@@ -31,9 +31,9 @@ $GLOBALS['todo_maxsize'] = 1500;
 // Max size of all todo items (to disable, just set to 0)
 $GLOBALS['todo_maxtotsize'] = 10000;
 
-$GLOBALS['todo_prio_1_color'] = '#CC3300';
+$GLOBALS['todo_prio_1_color'] = '#00ff00';
 $GLOBALS['todo_prio_2_color'] = '#00cc00';
-$GLOBALS['todo_prio_3_color'] = '#0066CC';
+$GLOBALS['todo_prio_3_color'] = '#00aa00';
 $GLOBALS['todo_prio_4_color'] = '#009900';
 $GLOBALS['todo_prio_5_color'] = '#007700';
 $GLOBALS['todo_prio_6_color'] = '#006600';

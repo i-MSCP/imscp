@@ -5,7 +5,7 @@
  * GPG plugin hook functions file, included by setup.php.
  * Updated to account for SM 1.4 pathing issues
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
@@ -13,18 +13,18 @@
  * @author Aaron van Meerten
  *
  *
- * $Id: gpg_hook_functions.php,v 1.62 2003/12/19 21:18:05 ke Exp $
+ * $Id: gpg_hook_functions.php,v 1.88 2007/07/07 20:02:53 brian Exp $
  *
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')) {
-        define (SM_PATH, '../');
+        define ('SM_PATH', '../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../../../../');
+        define ('SM_PATH' , '../../../../');
     } else echo "unable to define SM_PATH in GPG Plugin setup.php, exiting abnormally";
 }
 
@@ -35,6 +35,147 @@ require_once(SM_PATH.'functions/prefs.php');
 
 if ( !check_php_version(4,1) ) {
     global $_SESSION;
+}
+
+/********************************************************************/
+/**
+ * function gpg_identity_process_hook
+ *
+ * Function to handle general identity save triggered by options_identity_process hook
+ *
+ * @param array $args  Arguments passed by options_identities_process
+ * @return void
+ */
+function gpg_identity_process_hook($args) {
+    global $username, $data_dir;
+
+    $gpg_ident_map = getPref($username, $data_dir, 'gpg_identity_map');
+    $gpg_ident_map = unserialize($gpg_ident_map);
+
+    if (!$gpg_ident_map) {
+        $gpg_ident_map = array();
+    }
+
+    $sm_id = $args[2];
+    $action = $args[1];
+
+    if ($action == 'delete') {
+        unset($gpg_ident_map[$id]);
+
+        if (!empty($gpg_ident_map)) {
+            $tmp_map = array();
+
+            foreach($gpg_ident_map as $id=>$fpr) {
+                if ($sm_id < $id) {
+                    $tmp_map[$id-1] = $fpr;
+                } else {
+                    $tmp_map[$id] = $fpr;
+                }
+            }
+
+            $gpg_ident_map = $tmp_map;
+
+        }
+    } else {
+
+        $newid = $_POST['newidentities'];
+        $gpg_ident_map[$sm_id] = $newid[$sm_id]['gpg'];
+    }
+
+    setPref($data_dir, $username, 'gpg_identity_map', serialize($gpg_ident_map));
+
+}
+
+/*********************************************************************/
+/**
+ * function gpg_identity_renumber_hook
+ *
+ * Function used to re-assign GPG->SM identity maps
+ *
+ * @param array $args  Arguments passed from option_identities_renumber hook
+ * @return void
+ */
+function gpg_identity_renumber_hook($args) {
+    global $username, $data_dir;
+
+    $i = 0;
+
+    $old_id = $args[1];
+    $new_id = $args[2];
+
+    if ($new_id == 'default') {
+        $new_id = 0;
+    }
+
+    $gpg_ident_map = getPref($username, $data_dir, 'gpg_identity_map');
+    $gpg_ident_map = unserialize($gpg_ident_map);
+
+    if (!$gpg_ident_map) {
+        return false;
+    }
+
+    $tmp_fpr = '';
+    $tmp_map = array();
+    foreach($gpg_ident_map as $sm_id=>$fpr) {
+        if ($sm_id < $old_id) {
+            $tmp_map[$sm_id + 1] = $fpr;
+        } elseif ($sm_id > $old_id) {
+            $tmp_map[$sm_id] = $fpr;
+        } else {
+            $tmp_map[$new_id] = $fpr;
+        }
+    }
+
+    setPref($data_dir, $username, 'gpg_identity_map', serialize($tmp_map));
+
+}
+
+/*********************************************************************/
+/**
+ * function gpg_identity_table_hook
+ *
+ * Function to display possible gpg secret keys for user to select
+ *
+ * @param  array  $args  Array passed from identities_option_table
+ * @return string        String used to output option list
+ */
+function gpg_identity_table_hook($args) {
+    global $username, $data_dir;
+
+    include_once(SM_PATH . 'functions/forms.php');
+
+    $cur_keys = getPref($username, $data_dir, 'gpg_identity_map');
+    $cur_keys = unserialize($cur_keys);
+
+    if (!empty($cur_keys) && is_array($cur_keys)) {
+        if (!empty($cur_keys[$args[2]])) {
+            $match = $cur_keys[$args[2]];
+        } else {
+            $match = null;
+        }
+    } else {
+        $match = null;
+    }
+
+
+    $res = '';
+
+    $keys = list_secret_keys();
+
+    if (!empty($keys) && is_array($keys)) {
+
+        $res = '<tr' . $args[0] . '>' . "\n" .
+               '  <td style="white-space: nowrap;text-align:right;">' . "\n" .
+               '    ' . _("GPG Key") . "\n".
+               '  </td>' . "\n" .
+               '  <td>' . "\n" .
+               addSelect('newidentities[' . $args[2] . '][gpg]', $keys, $match, true) .
+               '  </td>' . "\n".
+               '</tr>';
+    }
+
+    return $res;
+
 }
 
 /*********************************************************************/
@@ -113,8 +254,10 @@ function gpg_decrypt_attachment_do(&$attachinfo) {
 
     $return = download_entity($imapConnection, $mailbox, $msgid, $entid,'',true);
     if (!(strpos($return['body'],"-----BEGIN PGP MESSAGE-----") === false)) {
-            $actionlinks['gpg']['href']=SM_PATH . "plugins/gpg/gpg_decrypt_attach.php?passed_id=$msgid&passed_ent_id=$entid&mailbox=$urlMailbox&dlfilename=$dlfilename";
-            $actionlinks['gpg']['text']=_("Decrypt Attachment");
+            $actionlinks['gpg_decrypt']['href']=SM_PATH . "plugins/gpg/gpg_decrypt_attach.php?passed_id=$msgid&passed_ent_id=$entid&mailbox=$urlMailbox&dlfilename=$dlfilename&verifysig=0";
+            $actionlinks['gpg_decrypt']['text']=_("Decrypt Attachment");
+            $actionlinks['gpg_verify']['href']=SM_PATH . "plugins/gpg/gpg_decrypt_attach.php?passed_id=$msgid&passed_ent_id=$entid&mailbox=$urlMailbox&dlfilename=$dlfilename&verifysig=1";
+            $actionlinks['gpg_verify']['text']=_("Verify Signature");
     }
     bindtextdomain('squirrelmail', SM_PATH . 'locale');
     textdomain('squirrelmail');
@@ -133,10 +276,11 @@ function gpg_decrypt_attachment_do(&$attachinfo) {
  */
 function gpg_handle_signature_do(&$attachinfo) {
         global $imapConnection;
+    global $debug;
+    $debug=$GLOBALS['GPG_SYSTEM_OPTIONS']['debug'];
     bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
     /* Switch to your plugin domain so your messages get translated */
     textdomain('gpg');
-
         sqgetGlobalVar('gpgverifyinfo',$info,SQ_SESSION);
         $actionlinks =& $attachinfo[1];
         $startMessage = $attachinfo[2];
@@ -155,7 +299,6 @@ function gpg_handle_signature_do(&$attachinfo) {
                 $sig = base64_decode(mime_fetch_body($imapConnection, $msgid, $entid));
                 include_once(SM_PATH . 'plugins/gpg/gpg_sign_functions.php');
                 if ($debug) { echo "Verifiying file $dlfile: <br><pre>\n"; print_r($return['body']); echo "\n Signature: \n"; print_r($sig); echo "\n</pre>"; }
-
                 $ret = gpg_verify_signature($dlfile, $sig, $debug);
 
                 if ($ret['verified'] == 'true') {
@@ -217,7 +360,7 @@ function gpg_read_body_header_do () {
     //check to see if we need to verify a gpg signature
     if( $message->header->type0 == "multipart" && $message->header->type1 == "signed"
         && $message->header->getParameter("protocol")=="application/pgp-signature" )
-        gpg_check_sign_pgp_mime (&$message,$body);
+        gpg_check_sign_pgp_mime ($message,$body);
     else
         gpg_check_sign ($body);
 
@@ -225,8 +368,57 @@ function gpg_read_body_header_do () {
     gpg_decrypt_link ($body);
     //and check to see if we should show the import link
     gpg_import_link ($body);
+    //and check to see if there are any openpgp headers
+    gpg_openpgp_header($body);
     bindtextdomain('squirrelmail', SM_PATH . 'locale');
     textdomain('squirrelmail');
+}
+
+/*********************************************************************/
+/**
+ * function gpg_openpgp_header
+ *
+ * This function is called to parse whatever "openpgp:"
+ * headers are found in the message and to display add
+ * and respond links to those headers.
+ *
+ * @param string $body
+ * @return void
+ */
+function gpg_openpgp_header($body) {
+    global $username;
+    global $data_dir;
+    if($GLOBALS['GPG_SYSTEM_OPTIONS']['systemparse_openpgp_header'] != 'true' or
+       getPref ($data_dir, $username, 'parse_openpgp_header', 'true') != 'true') {
+	return;
+    }
+    include_once(SM_PATH.'plugins/gpg/openpgp_header.php');
+    $openpgp_header = new openpgp_header();
+    $openpgp_header->parseHeader($body);
+
+    if(!$openpgp_header->strval) {
+	return;
+    }
+    if($openpgp_header->id or $openpgp_header->url or $openpgp_header->fingerprint) {
+	$url = '../plugins/gpg/modules/import_key_proxy.php?';
+	$first = true;
+	foreach(array("id" => $openpgp_header->id, "url" => $openpgp_header->url, "fingerprint" => $openpgp_header->fingerprint) as $key => $val) {
+	    if(strlen($val) <= 0) {
+		continue;
+	    }
+	    $url .= $first ? "" : "&amp;";
+	    $first = false;
+	    $url .= $key . "=" . urlencode($val);
+	}
+    }
+
+    echo '<tr>';
+    echo html_tag('td', '<b>' . _("OpenPGP") . ':&nbsp;&nbsp;</b>',
+		  'right', '', 'valign="middle" width="20%"') . "\n";
+    echo html_tag('td', htmlspecialchars($openpgp_header->strval) . '<small>' .
+		  ($url ? ' <a href=' . $url . '>' . _("Add key") . '</a>' : ''),
+		  'left', $color[0], 'valign="middle" width="80%"') . "\n";
+    echo '</tr>';
 }
 
 /*********************************************************************/
@@ -316,6 +508,7 @@ function gpg_get_mime_header ( $message, $imapConnection, $passed_id )
  * @return void
  */
 function gpg_decrypt_link($body) {
+    global $debug;
     global $passed_ent_id, $passed_id, $mailbox,$mbx_response;
     global $data_dir;
     global $safe_data_dir;
@@ -381,7 +574,16 @@ function gpg_decrypt_link($body) {
             return;
         };
         //display the Decrypt Now link
-        echo "<tr>\n<form name='decrypt' action='" . SM_PATH . "plugins/gpg/gpg_options.php' method='post'>";
+        echo "<tr>\n";
+    if (isset($_SESSION['gpgerror'])) {
+        $errors=$_SESSION['gpgerror'];
+        unset($_SESSION['gpgerror']);
+        echo _("There was a problem with your request") . ':<br>';
+        foreach ($errors as $err) {
+            echo "<li>$err\n";
+        }
+    }
+    echo "<form name='decrypt' action='" . SM_PATH . "plugins/gpg/gpg_options.php' method='post'>";
         echo<<<TILLEND
              <input type=hidden name=MOD value='gpgdecrypt'>
              <input type=hidden name=passphrase value ='$passphrase_cached'>
@@ -430,6 +632,7 @@ function gpg_import_link($body) {
     global $data_dir;
     global $safe_data_dir;
     global $username;
+    $import_body = '';
     $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
     $gpg_key_dir ="$safe_data_dir$username.gnupg";
     $sep = '-----BEGIN PGP PUBLIC KEY BLOCK-----';
@@ -467,74 +670,63 @@ TILLEND;
  */
 function gpg_check_sign($body,$encrypted=false) {
   $return=0;
+  $hasGPGSig = 1;
   // attempt to check the signature if it looks like it has one
   global $data_dir;
   global $username;
   global $safe_data_dir;
+  global $debug;
   $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
   $gpg_key_dir ="$safe_data_dir$username.gnupg";
   $sep = '-----BEGIN PGP SIGNED MESSAGE-----';
   $esep = '-----END PGP SIGNATURE-----';
 
-  echo "<tr><td align=\"right\" VALIGN=\"TOP\" WIDTH=\"20%\"><b>" . _("Signature") . ":&nbsp;&nbsp;</b></td>\n";
-  echo "<td align=\"left\" VALIGN=\"TOP\" WIDTH=\"80%\">\n";
+  $gpgHeaderLine = "<tr><td align=\"right\" VALIGN=\"TOP\" WIDTH=\"20%\"><b>" .
+                   _("Signature") . ":&nbsp;&nbsp;</b></td>\n";
+  $gpgHeaderLine .= "<td align=\"left\" VALIGN=\"TOP\" WIDTH=\"80%\">\n";
 
   $pos = strpos($body,$sep);
   if ($pos !== false) {
     $return = 1;
-    $epos = strpos($body,$esep,$strpos);
+    $epos = strpos($body,$esep,$pos);
     if ($epos !== false) {
     $signedbody = substr($body,$pos,$epos+strlen($esep));
-        $body = escapeshellarg($signedbody);
+        $body = $signedbody;
         // set this to 1 if you want to double check the prefs loading
         $debug=0;
         load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
         load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
+    require_once(SM_PATH.'plugins/gpg/gpg_execute.php');
+    $gpg=initGnuPG();
+    $return=$gpg->verify($body);
 
-        $path_to_gpg = $GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
+        if ($return['untrusted'] == 'true') {
+            $gpg->update_trustdb();
+            $return=$gpg->verify($body);
+        }
 
-
-        // 'Corporate' shared system keyring setup
-        $extra_cmd = '';
-        $trust_system_keyring = getPref($data_dir, $username, 'trust_system_keyring');
-        $systemkeyring = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyring'];
-        if ($systemkeyring=='true' and $trust_system_keyring == 'true') {
-            $system_keyring_file = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyringfile'];
-            $systemtrustedkey    = escapeshellarg($GLOBALS['GPG_SYSTEM_OPTIONS']['systemtrustedkey']);
-            //now add the parameters to $extra_cmd
-            if (is_file($system_keyring_file)) {
-                $system_keyring_file = escapeshellarg($system_keyring_file);
-                $extra_cmd .= " --keyring $system_keyring_file ";
-                if ($systemtrustedkey != '') {
-                    $extra_cmd .= " --trusted-key $systemtrustedkey ";
-                };
-            } elseif ($debug) echo "\n".'<br>system_keyring_file '.$system_keyring_file.' failed is_file test';
-        }; //end shared system keyring
-
-        $command = "echo $body | $path_to_gpg --batch --no-tty --homedir $gpg_key_dir $extra_cmd --verify 2>&1";
-        exec($command, $results, $returnval);
-        $return=gpg_parse_output($results);
-	if ($return['untrusted'] == 'true') {
-		gpg_update_trustdb($debug);
-		$results='';
-		exec($command, $results, $returnval);
-		$return=gpg_parse_output($results);
-	}
-
-        //print "<TR><TD colspan=30></SMALL>";
         if (is_array($return['signature'])) {
             foreach ($return['signature'] as $line) {
-            echo htmlspecialchars($line);
-                    print "<br>";
+                    $gpgHeaderLine .= htmlspecialchars($line);
+                    $gpgHeaderLine .= "<br>";
             }
         }
-        print "</SMALL></TD></TR>";
-    } else { echo _("Unsigned"); }
+        $gpgHeaderLine .= "</SMALL></TD></TR>";
+    } else {
+       $gpgHeaderLine .= _("Unsigned");
+       $hasGPGSig = 0;
+    }
   } else {
     $encrypted = strpos($body,'-----BEGIN PGP MESSAGE-----');
-    if (!$encrypted) { echo _("Unsigned"); } else { echo _("Encrypted");}
+    if (!$encrypted) {
+        $gpgHeaderLine .= _("Unsigned");
+        $hasGPGSig = 0;
+    } else {
+        $gpgHeaderLine .= _("Encrypted");
+    }
   }
-  print "</SMALL></TD></TR>";
+  $gpgHeaderLine .= "</SMALL></TD></TR>";
+  if ($hasGPGSig) { echo $gpgHeaderLine; }
   return ($return);
 }
 
@@ -555,6 +747,7 @@ function gpg_strip_sign($signedtext) {
     $exploded = explode("\n",$signedtext);
     $startbody=true;
     $skipnextline=false;
+    $return='';
     foreach ($exploded as $line) {
         if ($line == $sep) {
             $startbody=true;
@@ -589,7 +782,7 @@ function gpg_strip_sign($signedtext) {
  * @param string $fullbodytext Body text string as retrieved directly from IMAP
  * @return integer $return
  */
-function gpg_check_sign_pgp_mime($message,$fullbodytext) {
+function gpg_check_sign_pgp_mime(&$message,$fullbodytext) {
     $return=1;
     // attempt to check the signature if it looks like it has one
     global $data_dir;
@@ -657,13 +850,15 @@ commented until errors can be worked out
         load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
         load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
         $path_to_gpg = $GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
-
-        $command = "echo -n \"$messageSignedText\" | $path_to_gpg --batch --no-tty --homedir $gpg_key_dir --verify ".$detachedSignatureFilename." - 2>&1";
-        if ($debug)
+    require_once(SM_PATH.'plugins/gpg/gpg_execute.php');
+    $params = "--homedir $gpg_key_dir --verify ".$detachedSignatureFilename." -";
+        if ($debug) {
+        echo "Signed Message: $messageSignedText<p>";
+        echo "Signature: $messageSignature->decoded_body<p>";
             echo "gpg command: ".$command."<br>\n";
-        exec($command, $results, $returnval);
-    $return=gpg_parse_output($results);
-    $results = $return['signature'];
+    }
+        $return=gpg_execute($debug,$params,NULL,"-n \"$messageSignedText\"");
+        $results = $return['signature'];
         echo "<tr><td align=\"right\" VALIGN=\"TOP\" WIDTH=\"20%\"><b>" . _("Signature") . ":&nbsp;&nbsp;</b></td>\n";
         echo "<td align=\"left\" VALIGN=\"TOP\" WIDTH=\"80%\">\n";
 
@@ -702,28 +897,40 @@ function gpg_compose_send_do (&$composeMessage) {
     global $compose_messages;
     global $data_dir;
     global $username;
-
+    $debug=$GLOBALS['GPG_SYSTEM_OPTIONS']['debug'];
     //set debug=1 if you need to see what is going on in here
-    $debug=0;
+    //$debug=1;
 
     if (!sqgetGlobalVar('base_uri',$base_uri)) {
     $base_uri = get_location() . SM_PATH;
     }
-
-    //only include the encrypt on send stuff in SM version >=1.4.0
-    if (substr($version, 2,4) >= 4.0) {
+    if ($debug) { echo "base_uri: $base_uri<p>"; }
 
     require_once(SM_PATH . 'plugins/gpg/gpg_functions.php');
     load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
     load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
 
+    //openpgp_header
+    add_openpgp_header($composeMessage);
+
     $cache_passphrase   = getPref ($data_dir, $username, 'cache_passphrase');
     $allowpassphrasecaching   = $GLOBALS['GPG_SYSTEM_OPTIONS']['allowpassphrasecaching'];
-    $encrypt_on_send = $_POST['encrypt_on_send'];
-    $sign_on_send = $_POST['sign_on_send'];
 
+    if (array_key_exists ('encrypt_on_send', $_POST)) {
+        $encrypt_on_send = $_POST['encrypt_on_send'];
+    } else {
+        $encrypt_on_send = '';
+    };
 
-    $passphrase = $_POST['passphrase'];
+    if (array_key_exists ('sign_on_send', $_POST)) {
+        $sign_on_send = $_POST['sign_on_send'];
+    } else {
+        $sign_on_send = '';
+    };
+
+    if (array_key_exists ('passphrase', $_POST)) {
+        $passphrase = $_POST['passphrase'];
+    };
 
     //we need to pull these in as globals from SM for scoping reasons.
 
@@ -731,17 +938,18 @@ function gpg_compose_send_do (&$composeMessage) {
     sqgetGlobalVar('data_dir',$data_dir);
 
     if (($encrypt_on_send=='encrypt') or ($sign_on_send=='sign')){
+    if ($debug) { echo "<p>GPG Action needed: $encrypt_on_send $sign_on_send.<br>"; }
         if ($encrypt_on_send=='encrypt'){
             $_POST['encrypt'] = 'true';
-        }
+        } else { $_POST['encrypt'] = ''; }
         if ($sign_on_send=='sign') {
             $_POST['gpgsign'] = 'true';
-        }
+        } else { $_POST['gpgsign'] = ''; }
 
-        if (!$debug) {
+    if (!$debug) {
             ob_start();
         }
-        if ($_POST['gpgsign'] == 'true' and $_POST['encrypt']!='true') {
+        if (array_key_exists('gpgsign',$_POST) and $_POST['gpgsign'] == 'true' and array_key_exists('encrypt',$_POST) and $_POST['encrypt']!='true') {
             if ($debug) {
                 echo "Signing only!<br>";
             }
@@ -761,10 +969,11 @@ function gpg_compose_send_do (&$composeMessage) {
 
             if (!$checkattachment) {
                 $return = gpg_sign_message($composeMessage[1]->entities[0]->body_part,$passphrase,$debug);
-                if (!$return['errors'][0]) {
+                if ((!$return['errors'][0]) && $return['cyphertext']) {
                     $cyphertext = $return['cyphertext'];
                     $composeMessage[1]->entities[0]->body_part = $cyphertext;
                 } else {
+            if ($debug) { echo "Error in signing, storing variables for reuse<br>"; }
                     sqgetGlobalVar('subject',$subject);
                     sqgetGlobalVar('send_to',$send_to);
                     sqgetGlobalVar('send_to_cc',$send_to_cc);
@@ -778,6 +987,7 @@ function gpg_compose_send_do (&$composeMessage) {
                     $sign_error['errors'] = $return['errors'];
                     $sign_error['warnings'] = $return['warnings'];
                     sqsession_register($sign_error,'encrypt_error');
+            if ($debug) { echo "Error array:<br><pre>"; print_r($_SESSION['encrypt_error']); echo "</pre>"; }
                 }
                 foreach($messageAttachments as $key=>$attachment) {
                   if ($key > 0) {
@@ -797,7 +1007,7 @@ function gpg_compose_send_do (&$composeMessage) {
                     $signmessage->entities[1]->mime_header->type0='application';
                     $signmessage->entities[1]->mime_header->type1='pgp-signature';
             $filename = $attachment->att_local_name;
-            $ret = gpg_sign_attachment($filename, $passphrase);
+            $ret = gpg_sign_attachment($filename, $passphrase, $debug);
             $filename = $attachment->mime_header->disposition->properties['filename'];
             $signmessage->entities[1]->att_local_name=$ret['filename'];
             $signmessage->entities[1]->mime_header->parameters['name'] = $filename . ".sig.asc";
@@ -809,7 +1019,7 @@ function gpg_compose_send_do (&$composeMessage) {
             } //end check attachment if
             else {
                 $return = gpg_sign_message($composeMessage[1]->body_part,$passphrase,$debug);
-            if (!$return['errors'][0]) {
+            if ((!$return['errors'][0]) && $return['cyphertext']) {
                 $cyphertext = $return['cyphertext'];
                 $composeMessage[1]->body_part = $cyphertext;
             } else {
@@ -819,6 +1029,7 @@ function gpg_compose_send_do (&$composeMessage) {
                  * so now we grab our variables and stuff 'em into an
                  * array in the session for gpg_encrypt.php to grab
                  */
+        if ($debug) { echo "Error in signing, storing variables for reuse<br>"; }
                 sqgetGlobalVar('subject',$subject);
                 sqgetGlobalVar('send_to',$send_to);
                 sqgetGlobalVar('send_to_cc',$send_to_cc);
@@ -832,6 +1043,7 @@ function gpg_compose_send_do (&$composeMessage) {
                 $sign_error['errors'] = $return['errors'];
                 $sign_error['warnings'] = $return['warnings'];
                 sqsession_register($sign_error,'encrypt_error');
+        if ($debug) { echo "Error array:<br><pre>"; print_r($_SESSION['encrypt_error']); echo "</pre>"; }
                 //print errors here sometime
             }
       } //end check attachment else
@@ -839,8 +1051,9 @@ function gpg_compose_send_do (&$composeMessage) {
         //set $cyphertext to be the return from gpg_encrypt.php
             $cyphertext = include ('../plugins/gpg/gpg_encrypt.php');
         }
-            if (!ctype_print($cyphertext)) {
-        echo _("Problems with the cyphertext output:") . '<pre>\n';
+        if (is_array($cyphertext)) { $cyphertext=implode($cyphertext,"\n"); }
+            if (!$cyphertext) {
+        echo _("Problems with the cyphertext output:") . '<pre>';
                 echo $cyphertext;
                 echo "</pre>End.\n";
             }
@@ -865,15 +1078,38 @@ function gpg_compose_send_do (&$composeMessage) {
                 $body = $cyphertext;
             } else {
                 //send us to gpg_encrypt.php again with the error array set so we can display errors.
-                header ('Location: ' . $base_uri . '/plugins/gpg/gpg_encrypt.php?encrypt_on_send_error=1&session=' . $session);
+                header ('Location: ' . $base_uri . 'plugins/gpg/gpg_encrypt.php?encrypt_on_send_error=1&session=' . $session);
                 die(_("evil_muppets killed your encryption"));
             };
         }; //end check for execute of 'on send' functionality
 
-    }; //end SM version check
-
     return $composeMessage;
 }; //end compose_send function
+
+/*********************************************************************/
+/**
+ * function add_openpgp_header ()
+ *
+ * This function adds the openpgp header to the outgoing message.
+ *
+ * @return void
+ */
+
+function add_openpgp_header(&$composeMessage) {
+    global $data_dir;
+    global $username;
+    if($GLOBALS['GPG_SYSTEM_OPTIONS']['systemgenerate_openpgp_header'] != 'true' or
+        getPref ($data_dir, $username, 'generate_openpgp_header', 'true') != 'true') {
+	return;
+    }
+    $my_id = gpg_get_signing_key_id();
+// getPref ($data_dir, $username, 'signing_key_id');
+    $my_url = getPref ($data_dir, $username, 'openpgp_header_url');
+    if($my_id) {
+    	$my_id=substr($my_id, -16, 16);
+	$composeMessage[1]->rfc822_header->more_headers['OpenPGP'] = "id=" . $my_id . ($my_url ? "; url=$my_url" : "");
+    }
+}
 
 /*********************************************************************/
 /**
@@ -885,27 +1121,28 @@ function gpg_compose_send_do (&$composeMessage) {
  * @return void
  */
 function gpg_optpage_register_block_do() {
-  global $optpage_blocks;
-  /**
-   * soupNazi checks if this browser is capable of using the plugin.
-   */
-  if (!soupNazi()) {
-    /**
-     * The browser checks out.
-     * Register Gpg with the $optionpages array.
-     */
-    bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
-    textdomain('gpg');
-    $optpage_blocks[] =
-       array(
-         'name' => _("GPG Plugin Options"),
-         'url'  => '../plugins/gpg/gpg_options.php',
-         'desc' => _("The GPG Encryption Plugin will allow you to encrypt, sign, and decrypt messages in accordance with the OpenPGP standard for email security and authentication."),
-         'js'   => TRUE);
-    bindtextdomain('squirrelmail', SM_PATH . 'locale');
-    textdomain('squirrelmail');
-
-  }
+    global $debug;
+    load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
+    load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
+    $expose_options_link=$GLOBALS['GPG_SYSTEM_OPTIONS']['expose_options_link'];
+    if ($expose_options_link=='true') {
+        global $optpage_blocks;
+        $gpg_js_warning = '';
+        if (soupNazi()) {
+            $gpg_js_warning = '<br>'._("Some functions of the GPG Plugin require Javascript to be enabled in your browser.  Some functions may not work correctly without Javascript.");
+        }
+        //removed SoupNazi check from stopping display becasue it wasn't relevant to the option block
+        bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
+        textdomain('gpg');
+        $optpage_blocks[] =
+           array(
+              'name' => _("GPG Plugin Options"),
+              'url'  => '../plugins/gpg/gpg_options.php',
+              'desc' => _("The GPG Encryption Plugin will allow you to encrypt, sign, and decrypt messages in accordance with the OpenPGP standard for email security and authentication.").$gpg_js_warning,
+              'js'   => TRUE);
+        bindtextdomain('squirrelmail', SM_PATH . 'locale');
+        textdomain('squirrelmail');
+    }
 }
 
 /*********************************************************************/
@@ -919,10 +1156,14 @@ function gpg_optpage_register_block_do() {
  */
 function gpg_compose_row_do() {
   /**
-   * Check if this browser is capable of displaying Gpg
-   * correctly.
+   * soupNazi checks if this browser is capable of using Javascript with the GPG Plugin
    */
   if (!soupNazi()) {
+    /**
+     * The browser checks out.
+     * Diasplay GPG Plugin Compose page Button Row.
+     */
+
     bindtextdomain('gpg', SM_PATH . 'plugins/gpg/locale');
     /* Switch to your plugin domain so your messages get translated */
     textdomain('gpg');
@@ -960,16 +1201,13 @@ function gpg_compose_row_do() {
      $no_signing_passwd  = getPref ($data_dir, $username, 'no_signing_passwd');
      $cache_passphrase   = getPref ($data_dir, $username, 'cache_passphrase');
      $allowpassphrasecaching   = $GLOBALS['GPG_SYSTEM_OPTIONS']['allowpassphrasecaching'];
-
+     sqgetGlobalVar('gpgreply',$encrypt_reply);
      $passphrase_cached = 'false';
 //     if ($allowpassphrasecaching == 'true' and $cache_passphrase=='true') {
     if (gpg_get_cached_passphrase() != 'false') {
         $passphrase_cached = 'true';
     };
 //     }; //end passphrase caching check
-
-     if ($auto_encrypt == 'true') { $aechecked='checked=true'; }
-     if ($auto_sign == 'true') { $aschecked='checked=true'; }
 
 // set this to 1 if you want to double check the prefs loading
 //$debug=0;
@@ -978,8 +1216,23 @@ function gpg_compose_row_do() {
 load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
 load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
 
-$debug=$GLOBALS['GPG_SYSTEM_OPTIONS']['debug'];
+$force_sign_on_send=$GLOBALS['GPG_SYSTEM_OPTIONS']['force_sign_on_send'];
+$force_encrypt_on_send=$GLOBALS['GPG_SYSTEM_OPTIONS']['force_encrypt_on_send'];
 
+     if (($auto_encrypt == 'true') or( $encrypt_reply==1)) { $aechecked='checked=true'; } else {$aechecked = '';};
+     if ($auto_sign == 'true') { $aschecked='checked=true'; } else {$aschecked ='';};
+     if (array_key_exists('encrypt_on_send',$_POST) && ($_POST['encrypt_on_send'] == 'encrypt') ||
+       $force_encrypt_on_send == 'true') { $aechecked='checked=true'; }
+     if (array_key_exists('sign_on_send',$_POST) || $force_sign_on_send == 'true') { $aschecked='checked=true'; }
+
+$debug=$GLOBALS['GPG_SYSTEM_OPTIONS']['debug'];
+$expose_compose_buttons=$GLOBALS['GPG_SYSTEM_OPTIONS']['expose_compose_buttons'];
+$expose_encrypt_now_button=$expose_compose_buttons;
+$expose_encrypt_sign_now_button=$expose_compose_buttons;
+//If we are forcing the user to sign then remove the option to just encrypt
+if ($force_sign_on_send == 'true') {
+    $expose_encrypt_now_button = 'false';
+}
 if ($debug) { echo "<p>no_encrypt_on_setup: $no_encrypt_on_setup<br>gpg_export: $gpg_export<br>pubring: $pubring<br>secring: $secring<br>"; }
 
 
@@ -996,7 +1249,7 @@ if ($debug) { echo "<p>no_encrypt_on_setup: $no_encrypt_on_setup<br>gpg_export: 
  * buttons don't display after we have already encrypted the message.
  * there is no point in displaying them after successful encryption.
  */
-if ($chdir_first) {
+if (isset($chdir_first)) if ($chdir_first) {
     chdir ('../');
 };
 if ($gpg_export) {
@@ -1009,16 +1262,19 @@ if ($urlbasepath) { $urlbasepath = urlencode($addbasepath . '../src/'); }
 //add the "Encrypt Now" button
      if ((file_exists($pubring)) and (filesize($pubring)>0)){
          if (!$no_encrypt_on_setup) {
+          echo "<br>"; //put the GPG controls on a new line
+      if (($expose_encrypt_now_button=='true') && ($force_encrypt_send!='true')) {
             echo <<<TILLEND
 <script type='text/javascript'>
 <!--
 
 TILLEND;
-echo 'document.write("<br><input type=\'submit\' name=\'encrypt\' value=\'' . _("Encrypt Now") . '\' onclick=\"this.form.action=\'' . $addbasepath . '../plugins/gpg/gpg_encrypt.php\'\"> ");';
+echo 'document.write("<input type=\'submit\' name=\'encrypt\' value=\'' . addslashes(_("Encrypt Now")) . '\' onclick=\"this.form.action=\'' . $addbasepath . '../plugins/gpg/gpg_encrypt.php\'\"> ");';
 echo <<<TILLEND
 //-->
 </script>
 TILLEND;
+          }
          }; //end no_encrypt_on_setup else clause
 //if gpg_export is set, we also need to change the target
         if ($gpg_export) {
@@ -1034,8 +1290,10 @@ TILLEND;
     }; //end Encrypt button setup
 
 // add the "GPG Sign" Buttons
-
-    if ((file_exists($secring)) and (filesize($secring)>0) and ($GLOBALS['GPG_SYSTEM_OPTIONS']['allowprivatekeys']=='true') and ($use_signing_key_id=='true')){
+    if ((file_exists($secring)) and
+        (filesize($secring)>0) and
+        ($GLOBALS['GPG_SYSTEM_OPTIONS']['allowprivatekeys']=='true') and
+        ($use_signing_key_id=='true')){
         if (!$no_encrypt_on_setup) {
             echo <<<TILLEND
 <script type='text/javascript'>
@@ -1073,10 +1331,17 @@ function gpg_composeSubmit(objform) {
 }
 document.compose.send.onclick=gpg_sendClick;
 document.compose.draft.onclick=gpg_draftClick;
-document.write("<input type='button' name='gpgs' value='
 TILLEND;
-echo _("Encrypt&Sign Now") . '\' onclick=\'gpg_encrsign(this)\'> ");';
-echo "document.write(\"<input type=checkbox $aschecked name=sign_on_send value='sign'>" . _("Sign on Send") . '&nbsp;");';
+
+if (($expose_encrypt_sign_now_button=='true') && ($force_sign_on_send!='true')) {
+    echo "\ndocument.write(\"<input type='button' name='gpgs' value='";
+    echo addslashes(_("Encrypt&Sign Now")) . '\' onclick=\'gpg_encrsign(this)\'> ");';
+} else { echo "\ndocument.write(\"<br>\");\n"; }
+if ($force_sign_on_send == 'true') {
+    echo "\ndocument.write(\"<input type=checkbox $aschecked onchange='this.checked=true' name=sign_on_send value='sign'>" . addslashes(_("Always Sign on Send")) . '&nbsp;");';
+} else {
+    echo "\ndocument.write(\"<input type=checkbox $aschecked name=sign_on_send value='sign'>" . addslashes(_("Sign on Send")) . '&nbsp;");';
+}
 echo <<<TILLEND
 
 //-->
@@ -1088,25 +1353,134 @@ TILLEND;
         }; //end no_encrypt_on_setup
      }; //end GPG Sign and Encrypt&Sign setup
     if ((file_exists($pubring)) and (filesize($pubring)>0)){
+
     if (!$no_encrypt_on_setup) {
-            if (substr($version, 2,4) >= 4.0) {
-                echo "<script type='text/javascript'>\n<!--\n" . "document.write(\"<input type=checkbox $aechecked name=encrypt_on_send value='encrypt'>";
-    $strEncryptOnSend = _("Encrypt on Send");
+        if ($force_encrypt_on_send == 'true') {
+            echo "<script type='text/javascript'>\n<!--\n" . "document.write(\"<input type=checkbox $aechecked name=encrypt_on_send onchange='this.checked=true' value='encrypt'>";
+            $strEncryptOnSend = addslashes(_("Always Encrypt on Send"));
+        } else {
+            echo "<script type='text/javascript'>\n<!--\n" . "document.write(\"<input type=checkbox $aechecked name=encrypt_on_send value='encrypt'>";
+            $strEncryptOnSend = addslashes(_("Encrypt on Send"));
+        }
         echo $strEncryptOnSend . "&nbsp;\");\n//-->\n</script>";
-            } //end SM version check
     } //end no_encrypt_on_setup check
     } // end pubring existence check
     bindtextdomain('squirrelmail', SM_PATH . 'locale');
     textdomain('squirrelmail');
   }; //end soupNazi check
-
-}; //end compose_row function
+}; //end compose_row_do function
 
 
 /*********************************************************************/
 /**
  *
  * $Log: gpg_hook_functions.php,v $
+ * Revision 1.88  2007/07/07 20:02:53  brian
+ * - remove call time pass by reference
+ *
+ * Revision 1.87  2006/01/08 02:47:20  ke
+ * - committed patch from Evan <umul@riseup.net> for OpenPGP header support in squirrelmail
+ * - adds system preferences and user options to control parsing and adding of OpenPGP Headers on emails
+ * - slightly tweaked to use the key associated with the identity, when identities with signing keys are enabled
+ *
+ * Revision 1.86  2005/10/09 17:05:19  jangliss
+ * Fixed bad call to setPref.  Order doesn't match getPref.
+ *
+ * Revision 1.85  2005/10/09 07:10:44  ke
+ * - added new hook functions to handle squirrelmail identity/GPG key link
+ * - thanks to Valcor (Jonathon Angliss) for this patch
+ *
+ * Revision 1.84  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.83  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.82  2004/08/23 07:35:37  ke
+ * -applying patch to hide Signature: line for messages which contain no PGP data (thanks to Brad
+ * Donison)
+ * Bug 182
+ *
+ * Revision 1.81  2004/08/23 06:53:38  ke
+ * -changed language for forced options from Mandatory to Always
+ * -make sure not to show buttons for encrypt/sign when mandatory flags are on
+ * bug 83
+ *
+ * Revision 1.80  2004/08/16 13:44:29  joelm
+ * -added two config options to allow a sys admin to force users to always sign
+ * or encrypt email
+ * Bug 83
+ *
+ * Revision 1.79  2004/07/07 18:59:26  ke
+ * -changed signature verification code to use GnuPG object
+ * -added automatic checking of the Encrypt on Send checkbox when replying from the decrypion screen
+ *
+ * Revision 1.78  2004/06/22 21:58:34  ke
+ * -added option check to show encrypt and encrypt&sign buttons
+ * -added option check to show gpg options link
+ *
+ * Revision 1.77  2004/04/30 17:55:22  ke
+ * -removed newline at end of file
+ *
+ * Revision 1.76  2004/03/21 21:10:00  joelm
+ * Bug 138
+ * - added a "Verify Signature" option to check the signature of encrypted attachments
+ *
+ * Revision 1.75  2004/03/10 21:40:57  brian
+ * - removed trailing whitespace
+ *
+ * Revision 1.74  2004/03/09 21:42:55  ke
+ * -added error output on decryption failure
+ * bug 166
+ *
+ * Revision 1.73  2004/02/24 09:33:21  brian
+ * - refined SoupNazi Javascript check in option block display
+ *   - added warning if SoupNazi thinks that JS is off or incompatible
+ * - refined soupNazi check for compose row display
+ * - credit to pdontthink and andrew bolander and dirk for assistance
+ * Bug 110
+ *
+ * Revision 1.72  2004/02/17 22:40:13  ke
+ * -added state to on send checkboxes, so adding attachments won't clear them
+ * -proc_open additions
+ * bug 29
+ *
+ * Revision 1.71  2004/02/10 19:34:21  ke
+ * -added addslashes to text within document.write in order to avoid any breakage of javascript
+ *
+ * Revision 1.70  2004/01/17 23:18:05  brian
+ * initialize import_body to eliminate an E_ALL error.
+ *
+ * Revision 1.69  2004/01/17 00:25:38  ke
+ * -E_ALL fixes
+ * bug 146
+ *
+ * Revision 1.68  2004/01/15 17:38:21  ke
+ * -added -n to echo statement for pgp signed message signature verification
+ * -fixes pgp-mime signature confirmation
+ *
+ * Revision 1.67  2004/01/15 00:22:43  ke
+ * -changed to use centralized gpg_execute function
+ * -removed gpg_parse_output calls, as that is also centralized
+ * -added debug output to pgp_mime check signature code (still somewhat broken)
+ *
+ * Revision 1.66  2004/01/09 22:09:40  ke
+ * -removed leading / in relocation path on compose_send error
+ * -this solves problem of redirection to plugin.com when squirrelmail is in the base directory
+ * bug 114
+ *
+ * Revision 1.65  2004/01/09 20:38:47  ke
+ * -added debug output for sign on send
+ * -added check for existence of cyphertext after signing, error if nonexistant
+ *
+ * Revision 1.64  2004/01/09 18:26:50  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
+ * Revision 1.63  2004/01/09 17:21:44  brian
+ * - moved call by reference to gpg_check_sign_pgp_mime function def
+ * - fixes allow_call_time_pass_reference warning
+ *
  * Revision 1.62  2003/12/19 21:18:05  ke
  * -added debug output to update_trustdb command
  *

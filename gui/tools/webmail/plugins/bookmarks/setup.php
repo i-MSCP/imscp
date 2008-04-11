@@ -2,12 +2,12 @@
 
 function squirrelmail_plugin_init_bookmarks() {
     global $squirrelmail_plugin_hooks;
-    $squirrelmail_plugin_hooks['bookmark_plugin']['bookmarks'] = 'bookmarks';
+    $squirrelmail_plugin_hooks['menuline']['bookmarks'] = 'bookmarks';
 }
 
 function bookmarks() {
-    displayInternalLink('plugins/bookmarks/bookmarks.php','<div id="bookmark_button" title="'._("Bookmarks").'">&nbsp;&nbsp;&nbsp;</div>','');
-  //  echo "&nbsp;&nbsp\n";
+    displayInternalLink('plugins/bookmarks/bookmarks.php',_("Bookmarks"),'right');
+    echo "&nbsp;&nbsp\n";
 }
 
 ?>

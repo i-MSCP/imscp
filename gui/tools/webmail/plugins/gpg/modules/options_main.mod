@@ -3,12 +3,12 @@
  * options_main.mod
  * ----------------
  * GPG module
- * Copyright (c) 2002-2003 Baverock Ventures
+ * Copyright (c) 2002-2005 Baverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * Default page called when accessing GPG plugin options.
  *
- * $Id: options_main.mod,v 1.26 2003/11/22 15:56:55 brian Exp $
+ * $Id: options_main.mod,v 1.27 2005/07/27 14:07:49 brian Exp $
  */
 
 /**
@@ -54,6 +54,9 @@ echo "</ul>\n";
 /**
  *
  * $Log: options_main.mod,v $
+ * Revision 1.27  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
  * Revision 1.26  2003/11/22 15:56:55  brian
  * changed README link to link to GPG Plugin help
  * Bug 70

@@ -1,20 +1,40 @@
+Apr 03, 2007 - version 3.3 re-release (03)
+- Added Dutch (nl_NL) translation (Thanks to
+  Sander Eerkes <sander@eerkes.eu>)
+- Added Japanese (ja_JP) translation (Thanks to
+  Neil J. MacNeil <nmo1574@apu.ac.jp>)
+- Added Russian (ru_RU) translation (Thanks to
+  Serguei Dukachev <admin@mfitness.ru>)
+- Added Spanish (es_ES) translation (Thanks to
+  Mariano Nieves <m.nieves@cgac.es>)
+
+Nov 12, 2006 - version 3.3 re-release (02)
+- Added Brazilian (pt_BR) translation (Thanks to
+  Fernando M. Morgenstern <fernando@tifacil.com.br>)
+
+Nov 02, 2006 - version 3.3 re-release (01)
+- Added Czech (cs_CZ) translation (Thanks to Pavel Janousek
+  <PaJaSoft@PaJaSoftovi.Cz>)
+- Added Finnish (fi_FI) translation (Thanks to Kari Mattsson
+  <kari@trivore.com>)
+
 Apr 18, 2005 - version 3.3
 - Because of a bug in strpos function of PHP, date was not
   being translated correctly on some languages. This is
   fixed (Thanks to Dario Jakopec <dario@henry.it>)
 - Added an option to align the information which is
   displayed on the left pane, left, center or right.
-- Added Swedish (sv_SE) translations (Thanks to Fredrik Jervfors
+- Added Swedish (sv_SE) translation (Thanks to Fredrik Jervfors
   <sqm_admin@fimbul.net> and Khedron Wilk <khedron@wilk.se>
   They both sent the translations at the same time! But of course
   I could put only one of them into the plugin)
-- Added Italian (it_IT) translations (Thanks again Dario...)
+- Added Italian (it_IT) translation (Thanks again Dario...)
 
 Mar 02, 2005 - version 3.2
 - Changed the code to display nothing under the MOTD if it is
   the first login of the user (Thanks to Rudy Rucker
   <rudy@monkeybrains.net>)
-- Added Polish (pl_PL) translations (Thanks to Lukasz 'e2rd'
+- Added Polish (pl_PL) translation (Thanks to Lukasz 'e2rd'
   Sanocki <e2rd@toop.pl>)
 
 Jan 31, 2005 - version 3.1
@@ -25,20 +45,20 @@ Jan 31, 2005 - version 3.1
 - Added an option to show or hide the hostname under the
   folders list.
 - Changed the MOTD message string to one which uses sprintf
-  to be able to have better translations (Thanks to Fredrik
+  to be able to have better translation (Thanks to Fredrik
   Jervfors <sqm_admin@fimbul.net>)
 - Changed the file inclusion behavior to avoid incompatibilities
   with certain plugins (Thanks to Pascal Guinet
   <pascal.guinet@inpes.sante.fr> for feedback)
-- Added German (de_DE) translations (Thanks to Kai Katzur
+- Added German (de_DE) translation (Thanks to Kai Katzur
   <kai@katzur.org>)
-- Added Greek (el_GR) translations (Thanks to Apostolos
+- Added Greek (el_GR) translation (Thanks to Apostolos
   Katsinikas <apostolos@costeas-geitonas.gr>). Politicians
   and media: This is called Greek-Turkish friendship!
-- Added Hungarian (hu_HU) translations (Thanks to Szel Miklos
+- Added Hungarian (hu_HU) translation (Thanks to Szel Miklos
   <mukka@pozor.hu>)
-- Added French (fr_FR) translations (Thanks again Pascal...)
-- Updated Turkish (tr_TR) translations.
+- Added French (fr_FR) translation (Thanks again Pascal...)
+- Updated Turkish (tr_TR) translation.
 
 Jan 26, 2005 - version 3.0
 - Modified the plugin to be compatible with SquirrelMail 1.4.4
@@ -49,9 +69,9 @@ Jan 26, 2005 - version 3.0
   into two seperate options so that user can choose to show
   his/her username or IP address or both under the folders in the
   left pane.
-- Localisations for version 2.x of the plugin will not be compatible
-  with this version, so I have removed the localisations.
-- Added Turkish (tr_TR) localisations for the 3.x branch.
+- Translations for version 2.x of the plugin will not be compatible
+  with this version, so I have removed the translations.
+- Added Turkish (tr_TR) translation for the 3.x branch.
 
 Nov 17, 2003 - version 2.2.3
 - Fixed the problem with relative paths. Thanks to Tomas Kuliavas for pointing

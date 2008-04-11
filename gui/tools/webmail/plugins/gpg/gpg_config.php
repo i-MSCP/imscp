@@ -2,15 +2,15 @@
 /**
  * gpg_config.php -- GPG Configuration file.
  *
- * Copyright (c) 1999-2003 The SquirrelMail Project Team
+ * Copyright (c) 1999-2005 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
  * @package gpg
  * @author Brian Peterson
  *
- * $Id: gpg_config.php,v 1.26 2004/01/05 10:29:10 brian Exp $
+ * $Id: gpg_config.php,v 1.31 2005/07/27 14:07:48 brian Exp $
  */
 
 // Report all errors except E_NOTICE
@@ -28,42 +28,35 @@ error_reporting(E_ALL ^ E_NOTICE);
  *
  */
 /* include what we need */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_config.php, exiting abnormally";
 }
 
+/**
+ * set $debug to zero so we don't get junk on every page
+ * edit this manually if you think you aren't loading
+ * the system preferences files
+ */
+$debug=0;
+
 require_once(SM_PATH.'plugins/gpg/gpg_pref_functions.php');
 require_once(SM_PATH.'functions/strings.php');
-
-global $version; //needed for encrypt on send
-/* check for SM versions greater than 1.3 */
-if (substr($version, 2,4) >= 3.1) {
-    require_once(SM_PATH.'include/validate.php');
-    require_once(SM_PATH.'include/load_prefs.php');
-    require_once(SM_PATH.'functions/prefs.php');
-    require_once(SM_PATH.'functions/page_header.php');
-    require_once(SM_PATH.'functions/addressbook.php');
-    require_once(SM_PATH.'functions/mime.php');
-    require_once(SM_PATH.'class/mime/Rfc822Header.class.php');
-} else {
-    chdir ('../');
-    require_once('../src/validate.php');
-    require_once('../src/load_prefs.php');
-    require_once('../functions/prefs.php');
-    require_once('../functions/page_header.php');
-    require_once('../functions/smtp.php');
-};
-
-
-$GLOBALS['GPG_SYSTEM_OPTIONS'][$matches[1]]= "";
+require_once(SM_PATH.'include/validate.php');
+require_once(SM_PATH.'include/load_prefs.php');
+require_once(SM_PATH.'functions/prefs.php');
+require_once(SM_PATH.'functions/page_header.php');
+require_once(SM_PATH.'functions/addressbook.php');
+require_once(SM_PATH.'functions/mime.php');
+require_once(SM_PATH.'class/mime/Rfc822Header.class.php');
 
 /* Just for poor wretched souls with E_ALL. :) */
+global $version;
 global $data_dir;
 global $username;
 global $safe_data_dir;
@@ -80,40 +73,15 @@ $username = $_SESSION['username'];
 
 // this stuff should get loaded with the load_prefs.php file, but it isn't,
 // so we hack it here so our colors are correct.
-// only hack for newer SM versions. older ones work fine
-if (substr($version, 2,4) >= 3.1) {
-   $chosen_theme = getPref($data_dir, $username, 'chosen_theme');
-   $chosen_theme = preg_replace("/(\.\.\/){1,}/", SM_PATH, $chosen_theme);
-   if (isset($chosen_theme) && (file_exists($chosen_theme))) {
-      @include_once($chosen_theme);
-   }
+$chosen_theme = getPref($data_dir, $username, 'chosen_theme');
+$chosen_theme = preg_replace("/(\.\.\/){1,}/", SM_PATH, $chosen_theme);
+if (isset($chosen_theme) && (file_exists($chosen_theme))) {
+    @include_once($chosen_theme);
 }
 // end color hack
 
-/**
- * set $debug to zero so we don't get junk on every page
- * edit this manually if you think you aren't loading
- * the system preferences files
- */
-$debug=0;
-
 load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
 load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
-
-/*
-if (file_exists('gpg/gpg_system_defaults.txt')){
-    if ($debug) { echo '<br>assuming we are in plugins, loading from gpg/<br>';};
-    load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_system_defaults.txt',$debug);
-    load_prefs_from_file(SM_PATH.'plugins/gpg/gpg_local_prefs.txt',$debug);
-} elseif (file_exists('gpg_system_defaults.txt')){
-    if ($debug) { echo '<br>assuming we are in plugins/gpg, loading from ./<br>';};
-    load_prefs_from_file(SM_PATH.'plugins/gpg_system_defaults.txt',$debug);
-    load_prefs_from_file(SM_PATH.'plugins/gpg_local_prefs.txt',$debug);
-} else {
-    echo '<br> GPG Preference Path unknown, halting irregularly.<br>';
-    exit;
-};
-*/
 
 //set the debug level from the globals we just loaded
 $debug=$GLOBALS['GPG_SYSTEM_OPTIONS']['debug'];
@@ -136,6 +104,23 @@ $GPG_SOUP_NAZI = 'Mozilla/3, Mozilla/2, Opera 4, Opera/4, '
 /**
  *
  * $Log: gpg_config.php,v $
+ * Revision 1.31  2005/07/27 14:07:48  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.30  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.29  2004/04/30 17:58:21  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.28  2004/01/16 22:28:49  brian
+ * E_ALL updates
+ * Bug 146
+ *
+ * Revision 1.27  2004/01/09 18:26:50  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.26  2004/01/05 10:29:10  brian
  * added error_reporting directive to eliminate E_NOTICE
  *

@@ -3,10 +3,10 @@ XGETTEXT_OPTIONS="--keyword=_ -keyword=N_ --default-domain=compatibility --no-lo
 
 # Allows controlling language option
 # (gettext v.0.10.40 = -C, gettext 0.11+ = -L php).
-if [ $SM_LANG_PHP ] ; then
- XGETTEXT_OPTIONS="${XGETTEXT_OPTIONS} -L php";
-else
+if [ $SM_OLD_GETTEXT ] ; then
  XGETTEXT_OPTIONS="${XGETTEXT_OPTIONS} -C";
+else
+ XGETTEXT_OPTIONS="${XGETTEXT_OPTIONS} -L php";
 fi
 
 xgettext ${XGETTEXT_OPTIONS} *.php --output=compatibility.pot

@@ -12,7 +12,6 @@
   * Build user options for display on "Display Preferences" page
   *
   */
-  
 function preview_pane_show_options_do() 
 {
 
@@ -431,7 +430,7 @@ function pp_displayPageHeader($color, $mailbox, $xtra='', $session=false) {
            $compose_new_win, $compose_width, $compose_height,
            $attachemessages, $provider_name, $provider_uri,
            $javascript_on, $default_use_mdn, $mdn_user_support,
-           $startMessage, $theme_css;
+           $startMessage;
 
     sqgetGlobalVar('base_uri', $base_uri, SQ_SESSION );
     sqgetGlobalVar('delimiter', $delimiter, SQ_SESSION );
@@ -497,7 +496,6 @@ function pp_displayPageHeader($color, $mailbox, $xtra='', $session=false) {
     }
 
     echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" $onload>\n\n";
-	//echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"../plugins/preview_pane/".$theme_css."\" />"; //Insert stylesheet here
     echo "<a name=\"pagetop\"></a>\n";
     echo "\n\n";
 }

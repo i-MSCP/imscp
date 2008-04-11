@@ -2,7 +2,7 @@
 
 
 echo     '<h2>'
-    . _("What is Key Strength?")
+    . _("What is a good key strength?")
     .   '</h2>';
 
 echo  "<p \>\n"
@@ -14,9 +14,12 @@ echo  "<p \>\n"
 
 
 /**
- * $Id: what_keystrength.php,v 1.6 2003/11/21 19:27:47 brian Exp $
+ * $Id: what_keystrength.php,v 1.7 2004/01/18 15:25:05 brian Exp $
  *
  * $Log: what_keystrength.php,v $
+ * Revision 1.7  2004/01/18 15:25:05  brian
+ * - standardized strings to minimize translation
+ *
  * Revision 1.6  2003/11/21 19:27:47  brian
  * -fixed typos in keystrength help
  * Bug 70

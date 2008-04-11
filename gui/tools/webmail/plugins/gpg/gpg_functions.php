@@ -5,7 +5,7 @@
  * GPG plugin functions file, as defined by the SquirrelMail-1.2 API.
  * Updated for the SM 1.3/1,4 API
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
+ * Copyright (c) 1999-2005 The SquirrelMail development team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * portions of this file Copyright (c) 1999-2002 the Squirrelmail Development Team
@@ -13,9 +13,9 @@
  * @package gpg
  * @author Brian Peterson
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  *
- * $Id: gpg_functions.php,v 1.106 2004/01/03 22:28:29 ke Exp $
+ * $Id: gpg_functions.php,v 1.124 2006/01/10 06:00:53 ke Exp $
  *
  */
 /*********************************************************************/
@@ -69,21 +69,76 @@ $path_to_gpg=($GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg']);
 /**
  * function gpg_https_connection
  *
- * This function is caled to check whether the user has an SSL connection
+ * This function is called to check whether the user has an SSL connection
  * Returns 0 for false and 1 for true (SSL)
  *
  * Use whenever you are expecting input from the user (passphrase, etc.)
  *
  * @param void
- * @return int 0|1
+ * @return boolean 0|1 1=true
  */
 function gpg_https_connection () {
-  // does this definitely work on Windows etc?
-  if ($_SERVER['HTTPS'])
-      return (1);
-  else return (0);
+    if ($_SERVER['HTTPS']) {
+         //standard server HTTPS var set
+         return (1);
+    } elseif ($_SERVER['HTTP_X_HTTPS']) {
+         //HTTPS var used by proxies (e.g. squid) set
+         return (1);
+    } else {
+         //server is not reporting HTTPS at all, presume to be insecure
+         return (0);
+    }
 }
 
+
+/*********************************************************************/
+
+/**
+ * function initGnuPG
+ *
+ * This function is used to inialize and return a configured GnuPG object
+ *
+ * @param void
+ * @return GnuPG $ring object to run gpg commands
+ */
+
+function initGnuPG() {
+        global $debug;
+        global $username, $data_dir;
+    require_once(SM_PATH .'plugins/gpg/gpg.php');
+        $ring = new GnuPG;
+       $safe_data_dir = getHashedDir($username, $data_dir) . DIRECTORY_SEPARATOR;
+    $trust_system_keyring = getPref($data_dir, $username, 'trust_system_keyring');
+        if (($GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyring']=='true') and ($trust_system_keyring=='true')) {
+                if ($debug) { echo "Setting system keyring file."; }
+                $ring->systemKeyring=$GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyringfile'];
+        $ring->trustedKeys[]=$GLOBALS['GPG_SYSTEM_OPTIONS']['systemtrustedkey'];
+        }
+    $use_proc_open = $GLOBALS['GPG_SYSTEM_OPTIONS']['use_proc_open'];
+    $use_signing_key_id = getPref ($data_dir, $username, 'use_signing_key_id');
+    $use_trusted_key_id = getPref($data_dir,$username,'use_trusted_key_id');
+    if ($use_signing_key_id=='true') {
+        $ring->defaultKeyFingerprint=getPref ($data_dir, $username, 'signing_key_id');
+    }
+    if ($use_trusted_key_id=='true') {
+        $ring->trustedKeys[]=getPref($data_dir,$username,'trusted_key_id');
+    }
+        if ($debug) {
+                $ring->debug=true;
+        }
+    if ($use_proc_open=='true') {
+        $ring->force_exec=false;
+    } else $ring->force_exec=true;
+        $gpgHomeDir= "$safe_data_dir$username.gnupg";
+        $real_gpgHomeDir=realpath($gpgHomeDir);
+        if (!$real_gpgHomeDir) {
+            //probably an error, home directory doesn't resolve properly
+            $real_gpgHomeDir=$gpgHomeDir;
+        }
+        $ring->gpgHomeDir =$real_gpgHomeDir;
+        $ring->gpg_exe = $GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
+        return $ring;
+}
 
 /*********************************************************************/
 /**
@@ -132,6 +187,31 @@ function gpg_setglobal ($name, $value ) {
 
 }
 
+function gpg_get_signing_key_id() {
+  global $data_dir, $username;
+  $key_id = 0;
+  //$auto_sign = getPref ($data_dir, $username, 'no_signing_passwd');
+  $use_signing_key_id = getPref ($data_dir, $username, 'use_signing_key_id');
+
+  $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
+
+  if ($use_signing_key_id=='true') {
+      // grab the keyID to autosign with
+     $identity=$_POST['identity'];
+     if ($identity!==false) {
+    $identity_key_map=getPref($data_dir, $username, 'gpg_identity_map');
+    if ($identity_key_map) {
+        $identity_key_map=unserialize($identity_key_map);
+        $signingkey=$identity_key_map[$identity];
+    }
+     }
+     if (!$signingkey) { $key_id = getPref ($data_dir, $username, 'signing_key_id'); }
+     else { $key_id = $signingkey; }
+  }
+  return $key_id;
+
+}
+
 /*********************************************************************/
 /**
  * function gpg_ckMOD($rMOD)
@@ -168,6 +248,7 @@ function gpg_ckMOD($rMOD){
  */
 function getTempDir()
 {
+    global $tmp_dir;
     $tmp_locations = array('/dev/shm', '/dev/mfs', '/tmp', '/var/tmp', 'c:\temp', 'c:\windows\temp', 'c:\winnt\temp');
 
     /* If one has been specifically set, then use that */
@@ -175,7 +256,6 @@ function getTempDir()
         $tmp_check = $GLOBALS['GPG_SYSTEM_OPTIONS']['tmp_dir'];
         if (is_dir($tmp_check) and is_writable($tmp_check)) {
             $tmp = $tmp_check;
-            break;
         } else {
             if ($debug) {
                 echo '<br> GPG Plugin option directory tmp_dir: '.$tmp." is not writable.\n";
@@ -203,7 +283,6 @@ function getTempDir()
         $tmp_check = ini_get('upload_tmp_dir');
         if (is_dir ($tmp_check) and is_writable ($tmp_check)) {
             $tmp = $tmp_check;
-            break;
         } else {
             if ($debug) {
                 echo '<br> GPG Plugin option PHP upload directory upload_tmp_dir: '.$tmp." is not writable.\n";
@@ -311,6 +390,7 @@ function getTempFile($prefix = 'GPGPlugin', $delete = true, $dir = '')
  */
 function createTempDir($delete = true)
 {
+    global $tmp_dir;
     $temp_dir = getTempDir();
     if (empty($temp_dir)) return false;
 
@@ -505,7 +585,8 @@ function gpg_set_cached_passphrase ($passphrase) {
         gpg_clear_cached_passphrase ();
     } else {
         $gpg_onetimepad = rand_string (1024); //create a 1024 byte pseudo-random string
-        sqsession_register ($gpg_onetimepad, 'gpg_onetimepad');
+        global $base_uri;
+        setcookie('cached_passphrase', $gpg_onetimepad, 0, $base_uri);
     };
 
     //now encrypt the passphrase to the session one time pad
@@ -579,6 +660,9 @@ function gpg_clear_cached_passphrase () {
         //register the (now junk) passphrase with the session
         sqsession_register($cached_passphrase, 'cached_passphrase');
         sqsession_register($gpg_onetimepad, 'gpg_onetimepad');
+        if (isset($_COOKIE['gpg_onetimepad'])) {
+           setcookie('gpg_onetimepad','',time() - 5,$base_uri);
+        }
 
         //un-register the passphrase with the session
         sqsession_unregister('cached_passphrase');
@@ -609,6 +693,7 @@ function gpg_clear_cached_passphrase () {
  */
 function gpg_is_passphrase_cacheable($debug=0) {
     global $username;
+    global $data_dir;
     global $safe_data_dir;
     $cache_passphrase   = getPref ($data_dir, $username, 'cache_passphrase');
     load_prefs_from_file(SM_PATH .'plugins/gpg/gpg_system_defaults.txt',$debug);
@@ -668,21 +753,26 @@ function gpg_is_passphrase_cached($debug=0) {
 function gpg_verify_passphrase($passphrase, $key_id='') {
     global $username;
     global $safe_data_dir;
-    $debug=0;
+    global $debug;
     //include signing functions
     require_once(SM_PATH . 'plugins/gpg/gpg_sign_functions.php');
     $return = gpg_sign_message('Authenticate',$passphrase,$debug,$key_id);
     $return['verified'] = 'false';
-    if (!$return['errors'][0]) {
+    if ($debug) { echo "Verification return:<p><pre>" . print_r($return,1) . "</pre>"; }
+//    if (array_key_exists(0,$return['errors'])) {
       $sep = '-----BEGIN PGP SIGNED MESSAGE-----';
-      list ($front, $cyphertext_tail) = explode ($sep, $return['cyphertext']);
+      if ($return['cyphertext']) {
+        list ($front, $cyphertext_tail) = explode ($sep, $return['cyphertext']);
+      } else { $front=""; $cyphertext_tail=""; if ($debug) echo "No cyphertext<br>"; }
       if ($cyphertext_tail) {
         $return['verified'] = 'true';
+    if ($debug) echo "Verified passphrase!";
       } else {
+    if ($debug) echo "Unverified!<p>";
         $return['errors'][] = $return['cyphertext'];
         unset ($return['cyphertext']);
       }
-        }
+//    }
     return $return;
 }
 
@@ -752,7 +842,7 @@ function gpg_add_help_link ( $_help_file = 'base' , $fullscreen= 'false')
  * @param  string $inline line of output from gpg
  *
  * @return string $line of output with gpg: stripped off
- */
+ *
 
 function gpg_stripstr($inline,$stripstr='gpg:') {
     $pos = strpos($inline,$stripstr);
@@ -762,6 +852,8 @@ function gpg_stripstr($inline,$stripstr='gpg:') {
         }
     return $inline;
 }
+*/
+
 
 /*********************************************************************/
 /**
@@ -771,8 +863,8 @@ function gpg_stripstr($inline,$stripstr='gpg:') {
  * This function will update the gpg trustdb for the current user
  * including a scan of the system keyring if enabled
  *
- * @param integer $debug 
- * 
+ * @param integer $debug
+ *
  * @return none
  */
 function gpg_update_trustdb($debug) {
@@ -804,10 +896,10 @@ function gpg_update_trustdb($debug) {
             } elseif ($debug) echo "\n".'<br>system_keyring_file '.$system_keyring_file.' failed is_file test';
         }; //end shared system keyring
 
-   
-   $trustdbcmd = "$path_to_gpg --no-tty --homedir $gpg_key_dir $extra_cmd --check-trustdb 2>&1 ";
-   exec($trustdbcmd, $result, $returnval);
-   if ($debug) { echo "<br>TrustDB Update Results from command $trustdbcmd:<pre>"; print_r($result); echo "</pre> Returnval: $returnval<br>"; }
+
+   $params = "--homedir $gpg_key_dir $extra_cmd --check-trustdb";
+   $return=gpg_execute($debug,$params);
+
 }
 
 /*********************************************************************/
@@ -821,24 +913,29 @@ function gpg_update_trustdb($debug) {
  *
  * @return array $return ['errors'],['warnings'],['info'] contain gpg messages ['output'] contains the rest of the output
  */
-function gpg_parse_output( $gpg_output )
+function gpg_parse_output( $gpg_output, $debug=0 )
 {
-global $insecure_mem_warning;
-$insecure_mem_warning = $GLOBALS['GPG_SYSTEM_OPTIONS']['insecure_mem_warning'];
-$return['errors'] = array();
-$return['warnings'] = array();
-$return['info'] = array();
-$return['signature'] = array();
-$return['verified'] = array();
-$return['skipped_keys'] = array();
-$trimmed = array();
-$return['output'] = '';
+    global $insecure_mem_warning;
+    $insecure_mem_warning = $GLOBALS['GPG_SYSTEM_OPTIONS']['insecure_mem_warning'];
+    $return['errors'] = array();
+    $return['warnings'] = array();
+    $return['info'] = array();
+    $return['signature'] = array();
+    $return['verified'] = array();
+    $return['skipped_keys'] = array();
+    $return['output'] = '';
+    $return['untrusted'] = '';
+    $return['verified'] = '';
+    $return['rawoutput'] = $gpg_output;
 
-if (!is_array($gpg_output)) {
-    $gpg_output = explode("\n",$gpg_output);
-}
-foreach ($gpg_output as $line) {
-    $j = 0;
+    $trimmed = array();
+
+    if (!is_array($gpg_output)) {
+        $gpg_output = explode("\n",$gpg_output);
+    }
+
+    foreach ($gpg_output as $line) {
+        $j = 0;
         $j = substr_count ($line, 'Signature Status');
         if ($j) {
             $return['info'][] = gpg_stripstr($line);
@@ -862,7 +959,7 @@ foreach ($gpg_output as $line) {
         };
         $j = substr_count ($line, 'gpg: Good signature');
         if ($j) {
-	    $return['verified'] = 'true';
+            $return['verified'] = 'true';
             $return['signature'][] = gpg_stripstr($line);
             $return['info'][] = gpg_stripstr($line);
             continue;
@@ -886,9 +983,9 @@ foreach ($gpg_output as $line) {
         $j = substr_count($line, 'gpg: WARNING: This key is not certified with a trusted signature!');
         if ($j) {
             $line = gpg_stripstr($line);
-	    $return['signature'][] = $line;
+            $return['signature'][] = $line;
             $return['warnings'][] = gpg_stripstr($line, 'WARNING:');
-	    $return['untrusted'] = 'true';
+            $return['untrusted'] = 'true';
             continue;
         };
         $j = substr_count ($line, 'gpg: Bad signature');
@@ -932,11 +1029,16 @@ foreach ($gpg_output as $line) {
             $return['warnings'][] = gpg_stripstr($line);
             continue;
         };
-	$j = substr_count($line, "gpg: Can't check signature: public key not found");
-	if ($j) {
-		$return['errors'][] = gpg_stripstr($line);
-		continue;
-	};
+        $j = substr_count ($line, "gpg: Can't check signature: public key not found");
+        if ($j) {
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
+    $j = substr_count ($line, 'gpg: some signal caught ... exiting');
+    if ($j) {
+        $return['errors'][] = gpg_stripstr($line);
+        continue;
+    }
         $j = substr_count ($line, 'gpg: Error:');
         if ($j) {
             $return['errors'][] = gpg_stripstr($line);
@@ -980,219 +1082,295 @@ foreach ($gpg_output as $line) {
         $j = substr_count ($line, 'gpg: Oops:');
         if ($j) {
             $return['warnings'][] = gpg_stripstr($line);
+        continue;
         };
+    $j = substr_count ($line, 'gpg: WARNING: Using untrusted key!');
+    if ($j) {
+        $line = gpg_stripstr($line);
+        $return['signature'][] = _("WARNING: This key is not certified with a trusted signature!");
+        $return['signature'][] = _("There is no indication that this key really belongs to the owner");
+        $return['warnings'][] = gpg_stripstr($line,'WARNING:');
+        $return['untrusted'] = 'true';
+        continue;
+    }
         $j = substr_count ($line, 'gpg: WARNING: using');
         if ($j) {
-	    if ($insecure_mem_warning) {
+            if ($insecure_mem_warning) {
                 $return['warnings'][] = gpg_stripstr($line);
-	    } 
+            }
             continue;
         };
         $j = substr_count ($line, 'gpg: please see http://');
-        if ($j) { 
-	    if ($insecure_mem_warning) {
+        if ($j) {
+            if ($insecure_mem_warning) {
                 $return['warnings'][] = gpg_stripstr($line);
-	    } 
+            };
             continue;
         };
         $j = substr_count ($line, 'encryption failed');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
-        }
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, 'gpg: keyblock resource');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
-        }
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, 'No such file or directory');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
-        }
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, 'gpg: Warning:');
         if ($j) {
-          $return['warnings'][] = gpg_stripstr($line);
-      continue;
+            $return['warnings'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: WARNING:');
         if ($j) {
-          $return['warnings'][] = gpg_stripstr($line);
-      continue;
+            $return['warnings'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'usage: gpg');
         if ($j) {
-          $return['errors'][] = _("Problem with command syntax. Check Debug Output");
-      continue;
+            $return['errors'][] = _("Problem with command syntax. Check Debug Output");
+            continue;
         };
         $j = substr_count ($line, 'gpg: Error:');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: Oops:');
         if ($j) {
-          $return['warnings'][] = gpg_stripstr($line);
-      continue;
+            $return['warnings'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: ERROR:');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
-	$j = substr_count ($line, 'skipped: unusable public key');
+        $j = substr_count ($line, 'skipped: unusable public key');
         if ($j) {
-	  $return['errors'][] = gpg_stripstr($line);
-	}
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, 'skipped: public key not found');
         if ($j) {
-          $return['skipped_keys'][] = gpg_stripstr($line);
-      continue;
+            $return['skipped_keys'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: Missing argument for option');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: NOTE: secret key');
-	if ($j) {
-	  $return['warnings'][]=gpg_stripstr($line);
-        }
+        if ($j) {
+            $return['warnings'][]=gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, 'gpg: no default secret key: bad passphrase');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: no default secret key');
         if ($j) {
-           $return['errors'][] = gpg_stripstr($line);
-           continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: [stdin]: sign+encrypt failed: bad passphrase');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: [stdin]: clearsign failed: bad passphrase');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-          continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: protection algorithm 1 (IDEA) is not supported');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-          continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: protection algorithm');
         if ($j) {
-           $return['errors'][] = gpg_stripstr($line);
-           continue;
-        };
-        $j = substr_count ($line, 'invalid packet');
-        if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, 'gpg: Invalid option');
         if ($j) {
-          $return['errors'][] = gpg_stripstr($line);
-      continue;
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
         };
         $j = substr_count ($line, ': There is no indication that this key really belongs to the owner');
         if ($j) {
-	  $return['signature'][] = gpg_stripstr($line);
-          $return['warnings'][] = _("There is no indication that this key really belongs to the owner");
-          $return['warnings'][] = _("This error usually occurs because you have not set a trusted key, or because you have not signed the key you are trying to encrypt to.");
-      continue;
+            $return['signature'][] = gpg_stripstr($line);
+            $return['warnings'][] = _("There is no indication that this key really belongs to the owner");
+            $return['warnings'][] = _("This error usually occurs because you have not set a trusted key, or because you have not signed the key you are trying to encrypt to.");
+            continue;
         };
-    $j = substr_count($line, 'gpg:          There is no indication that the signature belongs to the owner');
+        $j = substr_count($line, 'gpg:          There is no indication that the signature belongs to the owner');
         if ($j) {
-	  $return['signature'][] = gpg_stripstr($line);
-          $return['warnings'][] = _("There is no indication that this key really belongs to the owner");
-          $return['warnings'][] = _("This error usually occurs because you have not set a trusted key, or because you have not signed the key you are trying to encrypt to.");
-          continue;
+            $return['signature'][] = gpg_stripstr($line);
+            $return['warnings'][] = _("There is no indication that this key really belongs to the owner");
+            $return['warnings'][] = _("This error usually occurs because you have not set a trusted key, or because you have not signed the key you are trying to encrypt to.");
+            continue;
         };
         $j = substr_count ($line, "gpg: checking the trustdb");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count($line, "gpg: error reading key: public key not found");
         if ($j) {
-      $return['errors'] = gpg_stripstr($line);
-      continue;
-    }
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
+        $j = substr_count($line, "gpg: protection algorithm");
+        if ($j) {
+            $return['errors'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg: next trustdb check due at");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg: checking at depth");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg: public key of ultimately trusted key 00000000 not found");
         if ($j) {
-      $return['warnings'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['warnings'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg: Oops: keyid_from_fingerprint: no pubkey");
         if ($j) {
-      $return['warnings'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['warnings'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg: Oops: keyid_from_fingerprint: no pubkey");
         if ($j) {
-      $return['warnings'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['warnings'][] = gpg_stripstr($line);
+            continue;
+        };
         //some kind of key message, trap 'em all for now
         $j = substr_count ($line, "gpg: key");
         if ($j) {
-      $return['info'] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg: Total number processed:");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         //@todo add some info about how many imported to $return
         $j = substr_count ($line, "gpg:               imported:");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg:              unchanged:");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg:           new user IDs:");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
-    }
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
         $j = substr_count ($line, "gpg:         new signatures:");
         if ($j) {
-      $return['info'][] = gpg_stripstr($line);
-      continue;
+            $return['info'][] = gpg_stripstr($line);
+            continue;
+        };
+
+        $trimmed[] = $line;
+        if ($debug) { echo "Line passed on: $line<br>"; }
     }
 
-    $trimmed[] = $line;
-}
+    $return['output'] = implode($trimmed,"\n");
 
-$return['output'] = implode($trimmed,"\n");
+    return $return;
 
-return $return;
-
-}
+} // end gpg_parse_output fn
 
 /*********************************************************************/
 /**
  *
  * $Log: gpg_functions.php,v $
+ * Revision 1.124  2006/01/10 06:00:53  ke
+ * - changed path for homedir to fully resolved path before passing to the GPG object
+ *
+ * Revision 1.123  2005/11/09 13:56:37  brian
+ * - remove unecessary break()
+ *   credit Ondrej Brablc for the patch
+ *   Bug 241
+ *
+ * Revision 1.122  2005/10/09 07:09:23  ke
+ * - added function to determine signing key from identity selected, if available
+ *
+ * Revision 1.121  2005/07/27 14:07:48  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.120  2005/01/14 15:20:57  ke
+ * - Removed unneeded break call
+ * - added global $tmp_dir to allow global variable to be available to all temp functions
+ *
+ * Revision 1.119  2004/08/10 12:53:02  brian
+ * - save $gpg_onetimepad in the COOKIE, not the session.
+ * - resolves long-standing insecurity in passphrase caching
+ *
+ * Revision 1.118  2004/08/08 04:01:16  ke
+ * -re-added code to force old exec interaction method unless system option sets use_proc_open=true
+ *
+ * Revision 1.117  2004/07/14 18:01:29  brian
+ * - improved notation for expanded HTTPS check to make the logic more clear
+ *
+ * Revision 1.116  2004/07/14 17:56:10  brian
+ * - added check for $_SERVER['HTTP_X_HTTPS'] to account for proxy vars
+ *   - check suggested by Roland Schulz
+ *
+ * Revision 1.115  2004/03/30 01:54:00  ke
+ * -added check to see if user trusts system keyring before setting it in InitGnuPG function
+ * -added system and user's trusted keys to trustedKeys array in GnuPG object during InitGnuPG
+ *
+ * Revision 1.114  2004/03/10 21:42:17  brian
+ * - removed trailing whitespace
+ *
+ * Revision 1.113  2004/03/09 18:12:58  ke
+ * -added function to initialize GnuPG object with correct parameters
+ *
+ * Revision 1.112  2004/02/17 22:38:49  ke
+ * -E_ALL changes, proc_open addititons
+ * bug 29
+ *
+ * Revision 1.111  2004/01/29 21:48:10  ke
+ * -added rawoutput to gpg_parse_output
+ *
+ * Revision 1.110  2004/01/17 03:09:49  brian
+ * - E_ALL fixes
+ * - added additional errors to gpg_parse_output
+ * - fixed code formatting for readability
+ *
+ * Revision 1.109  2004/01/16 22:41:17  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.108  2004/01/15 17:41:55  ke
+ * -changed trustdb update function to use centralized gpg_execute code
+ *
+ * Revision 1.107  2004/01/14 23:47:53  ke
+ * -added debug output to gpg_parse_output
+ *
  * Revision 1.106  2004/01/03 22:28:29  ke
  * -added note about secret key expiration as well as trapped public key unusable errors in gpg_parse_output
  *
@@ -1555,5 +1733,4 @@ return $return;
  * Initial revision
  *
  */
-
 ?>

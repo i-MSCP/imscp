@@ -226,7 +226,7 @@ else {
 function todo_overdue_days(&$todos, $i)
 {
 	$deadline = todo_get_todo_dl($todos, $i); 
-	$today = date('y-m-d');
+	$today = date('Y-m-d');
 	$td_a = explode('-', $today);
 	$dl_a = explode('-', $deadline);
 	$overdue = ($td_a[0] - 2000) * 365 + ($td_a[1] - 1) * 30 + ($td_a[2] - 1);

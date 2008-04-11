@@ -5,7 +5,7 @@
  * GPG plugin functions as defined by the SquirrelMail-1.2 API.
  * Updated for the SM 1.3/1,4 API
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
@@ -13,10 +13,12 @@
  * @author Brian Peterson
  * @author Aaron van Meerten
  *
- * $Id: gpg_sign_functions.php,v 1.34 2003/12/19 20:53:00 ke Exp $
+ * $Id: gpg_sign_functions.php,v 1.43 2005/10/09 07:12:11 ke Exp $
  *
  */
 /*********************************************************************/
+
+require_once(SM_PATH.'plugins/gpg/gpg_execute.php');
 
 /**
  * function gpg_sign_attachment
@@ -33,7 +35,6 @@
 
 function gpg_sign_attachment($filename,$passphrase,$debug=0,$signingkey=''){
   global $trusted_key_id;
-  global $gpg_key_file;
   global $gpg_key_dir;
   global $path_to_gpg;
   global $username;
@@ -48,30 +49,19 @@ function gpg_sign_attachment($filename,$passphrase,$debug=0,$signingkey=''){
     load_prefs_from_file('../plugins/gpg/gpg_local_prefs.txt',$debug);
         $path_to_gpg = $GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
     $gpg_key_dir ="$safe_data_dir$username.gnupg";
-    $gpg_key_file = $GLOBALS['GPG_SYSTEM_OPTIONS']['gpg_key_file'];
   }
   $username = $_SESSION['username'];
 
-  $key_id = 0;
-  $auto_sign = getPref ($data_dir, $username, 'no_signing_passwd');
-  $use_signing_key_id = getPref ($data_dir, $username, 'use_signing_key_id');
-
-  $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
-
-  if ($use_signing_key_id=='true') {
-      // grab the keyID to autosign with
-     if (!$signingkey) { $key_id = getPref ($data_dir, $username, 'signing_key_id'); }
-     else { $key_id = $signingkey; }
-  }
+  $key_id = gpg_get_signing_key_id();
 
   if (file_exists($filename . ".asc")) {
     unlink($filename . ".asc");
   }
 
 
-   $pre_pass =" $path_to_gpg --passphrase-fd 0 --armor --batch --no-tty --detach-sign --default-key $key_id --homedir $gpg_key_dir  $filename 2>&1";
-  $cmd = "echo $passphrase|$pre_pass";
-  exec($cmd,$output,$returnval);
+   $params = " --armor --detach-sign --default-key $key_id --homedir $gpg_key_dir  $filename";
+  $return=gpg_execute($debug,$params,$passphrase,'');
+  $output=$return['rawoutput'];
   if ($output) {
     foreach($output as $line) {
         $return['errors'][] = $line;
@@ -107,7 +97,6 @@ function gpg_verify_signature($filename,$signature,$debug=0){
     $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
     $extra_cmd = '';
 
-
     $return['errors'] = array();
     $return['warnings'] = array();
     $return['verified'] = 'false';
@@ -116,10 +105,17 @@ function gpg_verify_signature($filename,$signature,$debug=0){
         load_prefs_from_file('../plugins/gpg/gpg_system_defaults.txt',$debug);
         load_prefs_from_file('../plugins/gpg/gpg_local_prefs.txt',$debug);
         $path_to_gpg = $GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
-        $gpg_key_dir ="$safe_data_dir$username.gnupg";
-        $gpg_key_file = $GLOBALS['GPG_SYSTEM_OPTIONS']['gpg_key_file'];
     }
-
+    if ($gpg_key_dir=='') {
+		$gpg_key_dir ="$safe_data_dir$username.gnupg";
+    }
+    if (is_array($signature)) {
+    $newsig='';
+    foreach ($signature as $line) {
+    	$newsig .= trim($line) . "\n";
+    }
+    $signature=$newsig;
+    }
     // 'Corporate' shared system keyring setup
     $trust_system_keyring = getPref($data_dir, $username, 'trust_system_keyring');
     $systemkeyring = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyring'];
@@ -136,17 +132,13 @@ function gpg_verify_signature($filename,$signature,$debug=0){
         } elseif ($debug) echo "\n".'<br>system_keyring_file '.$system_keyring_file.' failed is_file test';
     }; //end shared system keyring
 
-    $pre_pass ="$path_to_gpg --homedir $gpg_key_dir $extra_cmd --verify - $filename 2>&1";
-    $cmd = "echo \"$signature\"|$pre_pass";
+    $params = "--homedir $gpg_key_dir $extra_cmd --verify - $filename";
 
-    exec($cmd,$output,$returnval);
+    $return=gpg_execute($debug,$params,NULL,$signature);
 
-    $return = gpg_parse_output($output);
     if ($return['untrusted'] == 'true') {
         gpg_update_trustdb($debug);
-	$output='';
-        exec($cmd, $output, $returnval);
-        $return=gpg_parse_output($output);
+	$return=gpg_execute($debug,$params,NULL,$signature);
     }
 
     return $return;
@@ -167,7 +159,6 @@ function gpg_verify_signature($filename,$signature,$debug=0){
  */
 function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
   global $trusted_key_id;
-  global $gpg_key_file;
   global $gpg_key_dir;
   global $path_to_gpg;
   global $username;
@@ -182,7 +173,6 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
     load_prefs_from_file('../plugins/gpg/gpg_local_prefs.txt',$debug);
         $path_to_gpg = $GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg'];
     $gpg_key_dir ="$safe_data_dir$username.gnupg";
-    $gpg_key_file = $GLOBALS['GPG_SYSTEM_OPTIONS']['gpg_key_file'];
   }
   $username = $_SESSION['username'];
 
@@ -192,17 +182,13 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
   };
 
   // check to see if user wants to autosign
-  $key_id = 0;
+  $key_id = gpg_get_signing_key_id();
+
   $auto_sign = getPref ($data_dir, $username, 'no_signing_passwd');
   $use_signing_key_id = getPref ($data_dir, $username, 'use_signing_key_id');
 
   $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
 
-  if ($use_signing_key_id=='true') {
-      // grab the keyID to autosign with
-     if (!$signingkey) { $key_id = getPref ($data_dir, $username, 'signing_key_id'); }
-     else { $key_id = $signingkey; }
-  }
   if ($debug) {
       echo "<br>Use Signing Feature: $use_signing_key_id";
       echo "<br>Using autosign: $auto_sign";
@@ -223,7 +209,8 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
   // clean the body string that is passed in
   // make sure that funny characters get
   // bracketed by single quotes and backslashes
-  $body = escapeshellarg ($body);
+  // done in gpgexecute now
+//  $body = escapeshellarg ($body);
 
   /********* gpg_sign_message Command String *********/
   /**
@@ -238,7 +225,7 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
           echo "<br>Caught auto_sign AND key_id";
       };
       // user has asked to autosign and we have a keyID to use
-      $command = "echo $body | $path_to_gpg --batch --no-tty --clearsign --default-key $key_id --homedir $gpg_key_dir 2>&1";
+	$params = "--clearsign --default-key $key_id --homedir $gpg_key_dir";
    } else {
       // autosign is not on so we should be expecting a passphrase
       if ($passphrase) {
@@ -246,14 +233,12 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
             echo "<br>Got passphrase\n";
          };
          //Make sure we escape naughty characters before passing to the shell
-         $passphrase = escapeshellarg($passphrase . "\n");
           // we have a passphrase so attempt to sign with phrase
           // and we dont need a default key then
 
           //build a command without the passphrase incase debug is set so
           // we dont go displaying the passphrase in a debug window
-          $pre_pass ="$body | $path_to_gpg --passphrase-fd 0 --batch --no-tty --clearsign --default-key $key_id --homedir $gpg_key_dir 2>&1";
-          $command = "echo $passphrase$pre_pass";
+	  $params = " --clearsign --default-key $key_id --homedir $gpg_key_dir";
       } else {
          // we should reopen the window or check for passphrase with javascript
          // instead of just throwing an error here
@@ -266,35 +251,41 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
 
   if ($debug) {
      if ($auto_sign=='true') {
-        echo "<hr>Command String: $command<hr>";
+        echo "<hr>Command String: $params<hr>";
      } else {
-        echo "<hr>Command String: echo [passphrase stripped for security] $pre_pass<hr>";
+        echo "<hr>Command String: echo [passphrase stripped for security] $params<hr>";
      }
   };
+  $return=gpg_execute($debug,$params,$passphrase,$body);
+  $returnval=$return['returnval'];
+  $cyphertext=$return['output'];
+  
+  if ($returnval) { 
+      $return ['errors'][] = _("GPG Plugin: gpg returned a non-clean return value of: ").$returnval;
+  }
 
-  exec($command, $cyphertext, $returnval);
-  $return=gpg_parse_output($cyphertext);
-  $cyphertext = $return['output'];
   // make the result a string
   if (is_array($cyphertext)) {
-      $cyphertext_str = implode($cyphertext,"\n");
-  } else { $cyphertext_str = $cyphertext; }
+      $cyphertext = implode($cyphertext,"\n");
+  }
 
   if ($debug) {
-    echo "<br>New body text<br><textarea cols=80 rows=5 name=cyphertext>$cyphertext_str</textarea>";
+    echo "<br>New body text<br><textarea cols=80 rows=5 name=cyphertext>$cyphertext</textarea>";
     echo "<br> returnvalue= $returnval";
   };
 
   $sep = '-----BEGIN PGP SIGNED MESSAGE-----';
-  list ($front, $cyphertext_tail) = explode ($sep, $cyphertext_str);
-
+  if ($cyphertext) {
+  list ($front, $cyphertext_tail) = explode ($sep, $cyphertext);
+  } else { $front=""; $cyphertext_tail=""; }
 
   if (!$cyphertext_tail) {
-    $return = gpg_parse_output($cyphertext);
-     // $debug = 1;
+    if ($returnval) {
+	$return ['errors'][] = _("GPG Plugin: gpg returned a non-clean return value of: ").$returnval;
+    }
   }
 
-  $return['cyphertext'] = $cyphertext_str;
+  $return['cyphertext'] = $cyphertext;
   if ($debug) {
         echo "<hr>";
         foreach ($return['errors'] as $error) echo "<br>Error $error";
@@ -307,6 +298,35 @@ function gpg_sign_message($body,$passphrase,$debug,$signingkey=''){
 /*********************************************************************/
 /**
  * $Log: gpg_sign_functions.php,v $
+ * Revision 1.43  2005/10/09 07:12:11  ke
+ * - changed to use centralized function for determining which signing key to use
+ *
+ * Revision 1.42  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.41  2004/04/30 18:02:34  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.40  2004/03/03 19:44:14  ke
+ * -added definition of key dir if it's missing
+ *
+ * Revision 1.39  2004/02/17 22:42:58  ke
+ * -changed function calls to operate properly with proc_open code
+ * bug 29
+ *
+ * Revision 1.38  2004/01/17 00:27:27  ke
+ * -E_ALL fixes, removing deprecated option gpg_key_file
+ *
+ * Revision 1.37  2004/01/14 23:50:26  ke
+ * -removed extraneous command strings
+ * -removed gpg_parse_output calls, since it's centralized in gpg_execute now
+ *
+ * Revision 1.36  2004/01/13 20:26:48  ke
+ * -changed to use centralized gpg_execute function
+ *
+ * Revision 1.35  2004/01/09 20:36:48  ke
+ * -added check of the return value of gpg as a possible error
+ *
  * Revision 1.34  2003/12/19 20:53:00  ke
  * -changed to use centralized update trustdb function
  * -only update trustdb when untrusted keys are found

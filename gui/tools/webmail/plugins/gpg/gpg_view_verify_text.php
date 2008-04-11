@@ -2,14 +2,14 @@
 /**
  * gpg_view_verify_text.php -- Displays the signature verification
  *
- * Copyright (c) 1999-2003 The SquirrelMail development team
+ * Copyright (c) 1999-2005 The SquirrelMail development team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * Who knows what this file does. However PUT IT HERE DID NOT PUT
  * A SINGLE FREAKING COMMENT IN! Whoever is responsible for this,
  * be very ashamed.
  *
- * $Id: gpg_view_verify_text.php,v 1.2 2004/01/05 14:32:53 alexl Exp $
+ * $Id: gpg_view_verify_text.php,v 1.3 2005/07/27 14:07:49 brian Exp $
  */
 
 /* Path for SquirrelMail required files. */
@@ -91,6 +91,9 @@ else
 
 /**
  * $Log: gpg_view_verify_text.php,v $
+ * Revision 1.3  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
  * Revision 1.2  2004/01/05 14:32:53  alexl
  * Add textdomain switching and closing page tags.
  *

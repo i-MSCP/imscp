@@ -3,23 +3,23 @@
  * genkey_keygen.php
  * ----------------
  * GPG Key Generation page
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Joshua Vermette
  * @author Aaron Van Meerten
  * @author Brian Peterson
  *
- * $Id: genkey_keygen.php,v 1.13 2003/11/18 18:45:42 ke Exp $
+ * $Id: genkey_keygen.php,v 1.24 2005/07/27 14:07:49 brian Exp $
  */
 
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in genkey_keygen.php, exiting abnormally";
 }
 
@@ -35,7 +35,7 @@ $passphrase = $_POST['passphrase'];
 $passphrase2 = $_POST['passphrase2'];
 if ($passphrase != $passphrase2) {
   $err[] = _("Your passphrases do not match.")
-         . '&nbsp;'
+         . ' '
          . _("Please try again.");
   require_once(SM_PATH.'plugins/gpg/modules/genkey.php');
   return;
@@ -45,23 +45,23 @@ if ($passphrase != $passphrase2) {
 //Have to chdir so included includes will work.
 //chdir("../");
 require_once(SM_PATH.'plugins/gpg/modules/gpg_module_header.php');
-require_once(SM_PATH.'plugins/gpg/gpg_keyring.php');
+require_once(SM_PATH.'plugins/gpg/gpg.php');
 
 //Are they on a secure connection?
 if (! gpg_https_connection()) {
     $notSecure = true;
-    $err[] = _("You are not using a secure connection.") . '&nbsp; ' . _("SSL connection required to generate keypair.");
+    $err[] = _("You are not using a secure connection.") . ' ' . _("SSL connection required to generate keypair.");
     require_once(SM_PATH.'plugins/gpg/modules/keyring_main.php');
     exit;
 }
 
 //Make the passthrough string for keyring_main.
-$thru = ("pos=" . urlencode($_GET["pos"]) .
-     "&sort=" . urlencode($_GET["sort"]) .
-     "&desc=" . urlencode($_GET["desc"]) .
-     "&srch=" . urlencode($_GET["srch"]));
+$thru = "pos=" . (array_key_exists('pos',$_GET) ? urlencode($_GET["pos"]) : '') .
+     "&sort=" . (array_key_exists('sort',$_GET) ? urlencode($_GET["sort"]) : '') .
+     "&desc=" . (array_key_exists('desc',$_GET) ? urlencode($_GET["desc"]) : '') .
+     "&srch=" . (array_key_exists('srch',$_GET) ? urlencode($_GET["srch"]) : '');
 
-$ringThru = "ring=" . urlencode($_GET["ring"]);
+$ringThru = "ring=" . (array_key_exists('ring',$_GET) ? urlencode($_GET["ring"]) : '');
 
 include(SM_PATH.'plugins/gpg/gpg_key_functions.php');
 
@@ -69,15 +69,20 @@ $email_address = $_POST ['email_address'];
 $full_name = $_POST ['full_name'];
 $key_strength = $_POST ['key_strength'];
 $key_expires = $_POST ['key_expires'];
-
+$usesystemrevoker=$_POST['usesystemrevoker'];
+if ($usesystemrevoker=='true') {
+	$systemrevoker=$GLOBALS['GPG_SYSTEM_OPTIONS']['systemrevoker'];
+} else {
+	$systemrevoker=false;
+}
+if (array_key_exists('comment',$_POST)) { $comment=$_POST['comment']; }
+else { $comment=$GLOBALS['GPG_SYSTEM_OPTIONS']['default_comment']; }
 ob_end_flush();
 ob_start();
 // ===============================================================
 $section_title = _("GPG Options - Create a Personal Keypair");
 echo gpg_section_header ( $section_title, $color[9] );
 // ===============================================================
-
-
 echo '<table width="95%" align="center" border="1" cellpadding="2" cellspacing="0">'
      . '<tr><td>';
 
@@ -106,7 +111,6 @@ if ($email_address) {
     echo _("Unassigned");
     echo '</font>';
 }
-
 echo '<li>';
 
 echo '<b>';
@@ -122,15 +126,16 @@ if ($full_name) {
     echo _("Unassigned");
     echo '</font>';
 }
-
+if ($usesystemrevoker == 'true') {
+echo '<li><b>' . _("Adding system key as revoker for this key.") . '</b>';
+}
 echo '<li>';
-
 echo '<b>';
 echo _("Passphrase");
 echo ':</b> ';
 
 if ($passphrase && $passphrase2){
-    echo 'Assigned';
+    echo _("Assigned");
 } else {
     echo '<font color="red">';
     echo _("Unassigned");
@@ -157,9 +162,14 @@ if ($key_expires == 0) {
 } elseif ($key_expires == '1y') {
     echo _("One Year");
 } else {
-    echo '$key_expires';
+    echo "$key_expires ";
     echo _("Days");
 }
+echo '<li>';
+echo '<b>';
+echo _("Comment");
+echo ':</b> ';
+echo $comment;
 
 echo '</ul>';
 
@@ -172,9 +182,10 @@ echo _("Your key is being generated... please be patient!");
 echo '</h3>';
 echo '<p />';
 
-$comment=$GLOBALS['GPG_SYSTEM_OPTIONS']['default_comment'];
+echo '</td></tr></table>';
 //Generate the keypair.
 ob_end_flush();
+flush();
 ob_start();
 $ret = gpg_generate_keypair($debug, $full_name, $email_address, $passphrase, $comment, $key_strength, $key_expires);
 
@@ -188,13 +199,14 @@ gennote.style.display = "none";
 TILLEND;
 */
 
-echo '</td></tr>';
-
+//echo '</td></tr>';
+echo '<table width="95%" align="center" border="1" cellpadding="2" cellspacing="0">';
 echo '<tr><td>';
 
 //Errors?
 if (count($ret['errors']))
 {
+    $err='';
     //Set the flag.
     $keyErr = true;
 
@@ -206,14 +218,14 @@ if (count($ret['errors']))
         //Print the errror(s).
         foreach ($ret['errors'] as $error)
         {
-            $err[] = _("Error: ") . htmlspecialchars($error);
+            $err.= _("Error: ") . $error;
         }
     }
-        else
+    else
     {
-        $err[] =   _("Required data missing.")
+        $err =   _("Required data missing.")
                  . _("Please")
-                 . '&nbsp;'
+                 . ' '
                  . '<a href="genkey.php">'
                  . _("try again")
                  . '</a>.';
@@ -224,29 +236,30 @@ if (count($ret['errors']))
 }
 else
 {
-
-    //Messages?
-    foreach ($ret['messages'] as $thing)
-    {
-        //echo ("<br>" . htmlspecialchars($thing));
-        if (ereg("sec[[:space:]]+([[:digit:]]+[R|D|G])/([[:alnum:]]+)[[:space:]]+(.*)", $thing, $tmp))
-            $key_id = $tmp[2];
+    if ($ret['newkeys']) {
+    	$fpr = $ret['newkeys'][0];
+	$ring=initGnuPG();
+	$err=$ring->refreshKeys($fpr);
+	$fpr = $ring->getKeyIndexFromFingerprint($fpr);
+	$key=$ring->keys[$fpr];
+    } else {
+	    //Messages?
+	    foreach ($ret['messages'] as $thing)
+	    {
+	        //echo ("<br>" . htmlspecialchars($thing));
+	        if (ereg("sec[[:space:]]+([[:digit:]]+[R|D|G])/([[:alnum:]]+)[[:space:]]+(.*)", $thing, $tmp))
+	            $key_id = $tmp[2];
+	    }
+	    //Get the key.
+	    //XXX - This seems hacky... isn't there a way to get the fpr back from a creation?
+	    $ring = initGnuPG();
+	    $err = $ring->refreshKeys($key_id);
+	    $fpr = $ring->getKeyIndexFromFingerprint($key_id);
+	    $key = $ring->keys[$fpr];
     }
-
-    //Get the key.
-    //XXX - This seems hacky... isn't there a way to get the fpr back from a creation?
-    $ring = new gpg_keyring();
-    $err = $ring->fetchKeys($key_id, "");
-    if (! $err['errors'][0])
-    {
-        $fList = array_keys($ring->keys);
-        $fpr = $fList[0];
-        $key = $ring->keys[$fpr];
-    }
-
     echo '<font size="+1">';
     echo '<b>';
-    echo _("Success!")
+    echo _("Success!") . ' ' 
        . _("A new personal Keypair has been generated.");
     echo '</b>';
     echo '</font>';
@@ -258,6 +271,10 @@ else
         echo _("View Key");
         echo '</a>';
         echo ']';
+	if ($usesystemrevoker=='true') {
+		$ring->addRevoker($fpr,$GLOBALS['GPG_SYSTEM_OPTIONS']['systemrevoker'],$passphrase);
+		echo '<br>' . _("Added system revocation key to keys allowed to revoke this key.");
+	}
     }
 
 }
@@ -278,6 +295,45 @@ require_once(SM_PATH.'plugins/gpg/modules/gpg_module_footer.php');
 
 /**
  * $Log: genkey_keygen.php,v $
+ * Revision 1.24  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.23  2004/08/23 07:46:07  ke
+ * -if return from generate_keys was done from GnuPG object, use fpr found directly from newkeys
+ * -define system revoker earlier
+ * bug 29
+ *
+ * Revision 1.22  2004/08/22 23:29:50  ke
+ * -removed nbsp; from error message output
+ * Bug 202
+ *
+ * Revision 1.21  2004/04/08 19:36:23  ke
+ * -fixed error with variable named being displayed instead of contents in keygen status
+ *
+ * Revision 1.20  2004/03/09 18:09:49  ke
+ * -added lines to store Comment field or use default if none is provided
+ *
+ * Revision 1.19  2004/03/03 19:47:22  ke
+ * -changed terminology to system revocation key
+ *
+ * Revision 1.18  2004/02/27 01:41:54  ke
+ * -set list of keys to use new GnuPG object after keygen
+ * -added operations to set default revocation key on keygen
+ *
+ * Revision 1.17  2004/02/10 22:49:59  ke
+ * -added flush command to keygen process
+ * -added seperate table for display of results.
+ *
+ * Revision 1.16  2004/01/29 14:11:47  brian
+ * - added localization for 'Assigned'
+ * - reported by Gregory Mokhin for Russian translation
+ *
+ * Revision 1.15  2004/01/19 18:47:01  ke
+ * -E_ALL fixes
+ *
+ * Revision 1.14  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.13  2003/11/18 18:45:42  ke
  * -fixed link to View Key (double quotes instead of single quotes)
  * -fixed equality of != rather than !==

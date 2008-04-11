@@ -100,7 +100,7 @@ switch($todo_action) {
 	sqgetGlobalVar('todo_index',$todo_index);
 	sqgetGlobalVar('todo_maxcount',$todo_maxcount);
 	if (!isset($todo_dl_y)) {
-		$todo_dl_y = date('y');
+		$todo_dl_y = date('Y');
 		$todo_dl_m = date('m');
 		$todo_dl_d = date('d');
 	}

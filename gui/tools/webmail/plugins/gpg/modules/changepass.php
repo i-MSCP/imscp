@@ -7,9 +7,11 @@ require_once("gpg_module_header.php");
 require_once('gpg_keyring.php');
 
 $fpr = $_GET['fpr'];
-$err = $_GET['err'];
+if (array_key_exists('err',$_GET)) {
+	$err = $_GET['err'];
+} else { $err = false; }
 
-
+echo '<link rel="STYLESHEET" type="text/css" href="../js/bar-styles.css">';
 // ===============================================================
 $section_title = _("Change Passphrase");
 echo gpg_section_header ( $section_title, $color[9] );
@@ -20,6 +22,15 @@ echo '<table width="95%" align="center" border="0" cellpadding="2" cellspacing="
      . '<tr><td>';
 
 echo _("You can change your passphrase from this screen.  More help will be available in the future.");
+
+if (! gpg_https_connection()) {
+    $notSecure = true;
+    $err[] = _("You are not using a secure connection.")
+        . '&nbsp;'
+        . _("SSL connection required to generate keypair.");
+    require_once(SM_PATH.'plugins/gpg/modules/keyring_main.php');
+    exit;
+}
 
 if ($err)
 {
@@ -57,7 +68,7 @@ echo '</td><td>&nbsp;</td>';
 
 echo '<td>';
 
-echo '<input type="password" name="oldpassphrase" id="oldpw" size="50" limit="100" progress="false" nolimit="true">';
+echo '<input type="password" name="oldpassphrase" title="Old Passphrase" required="true" id="oldpw" size="50">'; // id="oldpw" size="50" limit="100" progress="false" nolimit="true">';
 
 echo '</td></tr>';
 
@@ -72,7 +83,7 @@ echo '</td>';
 echo '<td>&nbsp;</td>';
 echo '<td>';
 
-echo '<input type="password" name="passphrase" id="pw" size="50" limit="100" progress="true" nolimit="true">';
+echo '<input type="password" title="New Passphrase" name="passphrase" id="passphrase" size="50" limit="100" compare="passphrase2" required="true" progress="true" nolimit="true">';
 
 echo '</td></tr>';
 
@@ -90,19 +101,73 @@ echo '<td>&nbsp;</td>';
 
 echo '<td>';
 
-echo '<input type="password" name="passphrase2" id="pw2" size="50" limit="100" progress="true" nolimit="true">';
+echo '<input type="password" title="Second New Passphrase" name="passphrase2" id="passphrase2" size="50" limit="100" required="true" progress="true" nolimit="true">';
 
 echo '</td></tr>';
 echo '<tr><td colspan="2">';
 
 
 
-echo '<input type=submit name="changepass" value="' . _("Change Passphrase") . '">'
+echo '<input type=submit name="changepass" value="' . _("Change Passphrase") . '" Xonclick="return checkpassphrase(this.form);">'
    . '<input type=submit name="can" value="' . _("Cancel") . '">';
 
 echo '</td></tr></table>';
 
 require_once('gpg_module_footer.php');
+
+echo<<<TILLEND
+
+<script src='../js/events.js'
+        language='JavaScript'
+        type='text/javascript'>
+<!--     //
+        //   Custom methods for Event handling
+       //
+      //
+     //   Hide JavaScript Code from Browser.
+    //    Do not remove these lines of code.
+   //     The code will be 'INCLUDED' at run time.
+  //      Create another <SCRIPT> block if you want
+ //       to use additional code.
+//  -->
+</script>
+
+<script src='../js/statusBar.js'
+        language='JavaScript'
+        type='text/javascript'>
+      <!-- //
+          //   Custom methods for control and display
+         //    of status bar for TEXTAREA
+        //
+       //     walter@torres.ws      web.torres.ws
+      //
+     //   Hide JavaScript Code from Browser.
+    //    Do not remove these lines of code.
+   //     The code will be 'INCLUDED' at run time.
+  //      Create another <SCRIPT> block if you want
+ //       to use additional code.
+//  -->
+</script>
+
+<script src='../js/formValidation.js'
+        language='JavaScript'
+        type='text/javascript'>
+<!--     //
+        //   Self-contained form validation methods
+       //    walter@torres.ws     web.torres.ws/dev
+      //
+     //   Hide JavaScript Code from Browser.
+    //    Do not remove these lines of code.
+   //     The code will be 'INCLUDED' at run time.
+  //      Create another <SCRIPT> block if you want
+ //       to use additional code.
+//  -->
+</script>
+TILLEND;
+
+
+
+
 
 /**
  * For Emacs weenies:
@@ -115,6 +180,14 @@ require_once('gpg_module_footer.php');
 /**
  *
  * $Log: changepass.php,v $
+ * Revision 1.6  2005/06/09 14:58:05  ke
+ * - added needed stylesheet for status bar on new passphrase
+ * - changed IDs on passphrases to look like genkey's passphrases
+ *
+ * Revision 1.5  2004/02/17 22:46:36  ke
+ * -added javascript headers for progress bars on change passphrase
+ * bug 64
+ *
  * Revision 1.4  2003/11/03 19:57:09  brian
  * minor wording changes in advance of translation.
  * Bug 35

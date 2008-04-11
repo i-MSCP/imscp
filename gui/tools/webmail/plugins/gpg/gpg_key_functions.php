@@ -5,14 +5,14 @@
  * GPG plugin functions file, as defined by the SquirrelMail-1.2 API.
  * Updated for the SM 1.3/1,4 API
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  * @author Brian Peterson
  * @author Aaron van Meerten
  *
- * $Id: gpg_key_functions.php,v 1.55 2003/12/29 23:54:04 brian Exp $
+ * $Id: gpg_key_functions.php,v 1.63 2005/07/27 14:07:49 brian Exp $
  *
  */
 /*********************************************************************/
@@ -62,7 +62,7 @@ function gpg_list_keys($debug, $search_string, $with_colons='false', $keyring_ty
   global $username;
   global $safe_data_dir;
   $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
-  $command = "$path_to_gpg --homedir $gpg_key_dir ";
+  $params = "--homedir $gpg_key_dir ";
 
   /**
    * We will us the $keyring_type parameter to determine
@@ -83,19 +83,19 @@ function gpg_list_keys($debug, $search_string, $with_colons='false', $keyring_ty
    */
   switch ($keyring_type) {
     case 'sigs':
-        $command .= '--list-sigs';
+        $params .= '--list-sigs';
         break;
     case 'all':
-        $command .= '--list-keys ';
+        $params .= '--list-keys ';
         break;
     case 'public':
-        $command .= '--list-public-keys ';
+        $params .= '--list-public-keys ';
         break;
     case 'private':
-        $command .= '--list-secret-keys ';
+        $params .= '--list-secret-keys ';
         break;
     case 'secret':
-        $command .= '--list-secret-keys ';
+        $params .= '--list-secret-keys ';
         break;
     case 'system':
         {
@@ -107,10 +107,10 @@ function gpg_list_keys($debug, $search_string, $with_colons='false', $keyring_ty
             };
             if (is_file($system_keyring_file)) {
                 $system_keyring_file = escapeshellarg($system_keyring_file);
-                $command .= " --keyring $system_keyring_file ";
+                $params .= " --keyring $system_keyring_file ";
             };
         };
-        $command .= ' --list-keys ';
+        $params .= ' --list-keys ';
         break;
         }
     case '':
@@ -119,34 +119,31 @@ function gpg_list_keys($debug, $search_string, $with_colons='false', $keyring_ty
            . '&nbsp;'
            . _("Did not receive valid keyring_type in gpg_list_keys function.")
            . _("Received")."&nbsp;'$keyring_type'&nbsp;"._("Please Notify GPG Plugin Developers")."</font>\n";
-        $command .= '--list-public-keys ';
+        $params .= '--list-public-keys ';
         break;
   };
 
   if ($with_colons == 'true') {
-      $command .= '--with-colons ';
+      $params .= '--with-colons ';
   };
 
   if ($with_fingerprint == 'true') {
-      $command .= '--with-fingerprint ';
+      $params .= '--with-fingerprint ';
   };
 
   if ($search_string != '') {
       $search_string = escapeshellarg($search_string);
-      $command .= "$search_string";
+      $params .= "$search_string";
   }
 
-  // wrap it up by redirecting the output
-  // to stderr using 2>&1
-  $command .= " 2>&1";
-
-  if ($debug) {
-      echo $command;
-  };
-
-  exec($command, $list_text, $returnval);
-
-
+  $return=gpg_execute($debug,$params);
+  if ($debug) { print_r($return); }
+  $list_text=$return['output'];
+  if (!is_array($list_text)) {
+	$list_text=explode("\n",$list_text);
+	if ($debug) { print_r($list_text); }
+  }
+  
   //clean this up later, but for now just return the array
   return $list_text;
 
@@ -249,6 +246,7 @@ function gpg_format_key_list ($debug, $search_string, $activity='public', $radio
       $key_alg = $bits[3];
       $key_id = $bits[4];
       $key_date = $bits[5];
+      $matches=array();
       eregi(".*(<.*>).*", $bits[9], $matches);
       $email_str = htmlspecialchars($bits[9]);
       $email_addr = htmlspecialchars($matches[1]);
@@ -439,11 +437,14 @@ function trustedkeysearchtext () {
  * but this will work for now.
  *
  * @param string  $search_keyid
- * @param string  $keyserver
  * @param integer $debug
  * @return array $returnkeys
  */
 function gpg_keyserver_findkey($search_keyid,$debug) {
+
+    //pull in globals to avoid E_ALL errors
+    global $data_dir;
+    global $username;
 
     $keyserver = "";
     // get the user's prefered keyserver
@@ -538,7 +539,7 @@ function gpg_export_key($debug, $keystring, $export_type='public'){
   global $path_to_gpg;
   global $data_dir;
   global $safe_data_dir;
-  $safe_data_dir=getHashedDir($username,$data_dir). DIR_SEPARATOR;
+  $safe_data_dir=getHashedDir($username,$data_dir). DIRECTORY_SEPARATOR;
   switch ($export_type) {
       case 'all':
           $exportstring = '--export-all ';
@@ -586,18 +587,16 @@ function gpg_export_key($debug, $keystring, $export_type='public'){
   // make sure there aren't any funny characters in here
   $keystring = escapeshellarg ($keystring);
 
-  $command = "$path_to_gpg --batch --pgp7 --no-tty --homedir $gpg_key_dir --armor $exportstring $keystring 2>&1";
+  $params  = "--pgp7 --homedir $gpg_key_dir --armor $exportstring $keystring";
 
-  if ($debug) {
-      echo "<hr>$command<hr>";
-  };
-
-  exec($command, $output, $returnval);
+  $return=gpg_execute($debug,$params);
+  $output=$return['output'];
+  $returnval = $return['returnval'];
 
   // make the result a string
   if (is_array($output)) {
       $key_export_output_str = implode($output,"\n");
-  };
+  } else { $key_export_output_str = $output; }
 
   if ($debug) {
       echo "<pre> $key_export_output_str </pre>\n";
@@ -642,18 +641,17 @@ function gpg_import_key($keystring,$debug){
   // the following line redirects the output to stderr: 2>&1
   // use --import
   //$command = "echo $keystring | $path_to_gpg --import --batch --no-tty --homedir $gpg_key_dir --no-default-keyring --keyring $safe_data_dir/$gpg_key_file 2>&1";
-  $command = "echo $keystring | $path_to_gpg --allow-secret-key-import --import --batch --no-tty --homedir $gpg_key_dir 2>&1";
 
-  if ($debug) {
-      echo "<hr>$command<hr>";
-  };
+  $params  = "--allow-secret-key-import --import --homedir $gpg_key_dir";
 
-  exec($command, $output, $returnval);
+  $return=gpg_execute($debug,$params,NULL,$keystring);
+  $output=$return['output'];
+  $returnval=$return['returnval'];
 
   // make the result a string
   if (is_array($output)) {
       $key_import_output_str = implode($output,"\n");
-  };
+  } else { $key_import_output_str = $output; }
 
   if ($debug) {
       echo "$key_import_output_str";
@@ -700,18 +698,16 @@ function gpg_recv_key($searchkeyid,$debug,$keyserver){
   // import
   // the following line redirects the output to stderr: 2>&1
   // use --import
-  $command = "$path_to_gpg --batch --no-tty --homedir $gpg_key_dir --keyserver hkp://$keyserver --recv-key $searchkeyid 2>&1";
 
-  if ($debug) {
-      echo "<hr>$command<hr>";
-  };
+  $params  = "--homedir $gpg_key_dir --keyserver hkp://$keyserver --recv-key $searchkeyid";
 
-  exec($command, $output, $returnval);
-
+  $return=gpg_execute($debug,$params);
+  $output=$return['output'];
+  $returnval=$return['returnval'];
   // make the result a string
   if (is_array($output)) {
       $recv_key_output_str = implode($output,"\n");
-  };
+  } else { $recv_key_output_str=$output; }
 
   if ($debug) {
       echo "$recv_key_output_str";
@@ -720,7 +716,7 @@ function gpg_recv_key($searchkeyid,$debug,$keyserver){
   };
 
   //return the output string to our calling function
-  return ($recv_key_output_str);
+  return $return;
 };
 
 /*********************************************************************/
@@ -848,15 +844,13 @@ function gpg_recv_key($searchkeyid,$debug,$keyserver){
  * @param optional string $comment Comment to be appended to the default comment
  * @param optional integer $keylength Length of key to generate
  * @param optional date $expiredate when should this key expire?
+ * @param optional string $revoker fingerprint of key to set as revoker
  * @return array $return with output we were able to retrieve from the gpg command
  *
  */
 function gpg_generate_keypair($debug, $real_name, $email, $passphrase, $comment = '',
                          $keylength = 1024, $expiredate=0)
 {
-    // set up our return error and warning arrays.
-    $return['messages'] = array();
-    $return['errors'] = array();
 
     /* Check for secure connection.
      *
@@ -865,10 +859,23 @@ function gpg_generate_keypair($debug, $real_name, $email, $passphrase, $comment 
      */
     if (!gpg_https_connection ()) {
         $line = _("You are not using a secure connection.").'&nbsp;'._("SSL connection required to generate keypair.");
+	$return['errors']=array();
         $return['errors'][] = $line;
         return ($return);
         exit;
     };
+    if (($GLOBALS['GPG_SYSTEM_OPTIONS']['use_proc_open']=='true') and check_php_version(4,3)) {
+    	$gpg = initGnuPG();
+	$return=$gpg->generateKey($real_name, $email, $passphrase, $comment, $keylength, $expiredate);
+        $newfpr=$return['newkeys'][0];
+	if ($newfpr) {
+		$return['messages'][] = _("Key generated");
+	} else {
+		$return['errors'][] = _("Keys did not generate.  Please contact your system administrator for assistance debugging this.");
+		return $return;
+	}
+	return $return;
+    } else {
 
     global $gpg_key_file;
     global $gpg_key_dir;
@@ -906,37 +913,56 @@ function gpg_generate_keypair($debug, $real_name, $email, $passphrase, $comment 
     fputs($fp, "%commit\n");
     pclose($fp);
 
-    /*
-     * Check the $output to see if it contains what we want.
-     *
-     * Here is where we need some parsing code...
-     *
-     */
-    if ($output) {
-        $return ['messages'][] = "\n<br>GPG Returned:<br>\n";
-        $return ['messages'][] = "<pre>$output</pre>\n";
-        if ($debug) {echo "<pre>$output</pre>\n";};
-    };
-
     $current_keys = implode('', gpg_list_keys($debug, '', 'false', 'private', 'false'));
 
     if ($debug) echo "<hr>Previous Keyring State<br>$previous_keys<br><br>Current Keyring State $current_keys<hr>";
 
     if ($current_keys == $previous_keys) {
-        $return['errors'][] = 'Keys did not generate.  Please contact your system administrator for assistance debugging this.';
+        $return['errors'][] = _("Keys did not generate.  Please contact your system administrator for assistance debugging this.");
     } else {
-        $return['messages'][] = 'Key generated';
+        $return['messages'][] = _("Key generated");
         $newstring = str_replace($previous_keys, "", $current_keys);
         $return ['messages'][] = $newstring;
     };
 
     //return an array that will display what information we have to the user.
     return ($return);
+    }
 };
 
 /***************************************************/
 /*
  * $Log: gpg_key_functions.php,v $
+ * Revision 1.63  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.62  2004/08/23 07:40:57  ke
+ * -added use of GnuPG object for key generation in the case of the user having PHP 4.3 and proc_open
+ * enabled.
+ * -defined $matches before use, to avoid error warnings
+ * -internationalized some error strings
+ * Bug 29
+ *
+ * Revision 1.61  2004/04/30 17:59:34  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.60  2004/02/17 22:41:01  ke
+ * -proc_open additions
+ * bug 29
+ *
+ * Revision 1.59  2004/01/19 18:28:30  brian
+ * E_ALL fixes
+ *
+ * Revision 1.58  2004/01/19 00:53:41  brian
+ * - replaced DIR_SEPARATOR with DIRECTORY_SEPARATOR
+ *
+ * Revision 1.57  2004/01/15 18:27:07  ke
+ * -changed all functions to use gpg_execute for execution
+ * -changed recv_key function to return entire $return
+ *
+ * Revision 1.56  2004/01/12 06:13:15  brian
+ * - removed $output check from keygen, as that code is never called
+ *
  * Revision 1.55  2003/12/29 23:54:04  brian
  * localized strings discovered by Alex Lemaresquier during French translation
  *

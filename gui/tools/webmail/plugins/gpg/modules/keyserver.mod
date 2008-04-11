@@ -2,7 +2,7 @@
 /**
  * keyserver.mod
  * ----------------
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * Key Server lookup screen
@@ -10,10 +10,10 @@
  * Unfortunately, we use HTTP screen scraping to look up keys.
  * Ideally, we would use HKS or LDAP to look up keys.
  *
- * $Id: keyserver.mod,v 1.21 2003/12/30 19:05:16 ke Exp $
+ * $Id: keyserver.mod,v 1.28 2006/01/08 02:47:20 ke Exp $
  *
  * $Author: ke $
- * $Date: 2003/12/30 19:05:16 $
+ * $Date: 2006/01/08 02:47:20 $
  *
  * @todo - Fix includes to use SM_PATH
  * @todo - Add support for HKS or LDAP keyservers.
@@ -23,20 +23,26 @@
 //make the global $debug setting available here
 global $debug;
 
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in genkey.php, exiting abnormally";
 }
 require_once(SM_PATH.'plugins/gpg/gpg_key_functions.php');
+require_once(SM_PATH.'plugins/gpg/gpg_execute.php');
 
 //extract necessary variables from the $_POST
-$search    = $_POST['search'];
-$keyID     = $_POST['keyID'];
+if (array_key_exists("search", $_POST)) {
+    $search    = $_POST['search'];
+} else { $search = 0; }
+
+if (array_key_exists("keyID", $_POST)) {
+    $keyID     = $_POST['keyID'];
+} else { $keyID = 0; }
 
 if (!$search and !$keyID) {
     $id=0;
@@ -74,9 +80,15 @@ if (!$search and !$keyID) {
 
 if ($search) {
     //extract necessary variables from the $_POST
-    $default      = $_POST['default'];
-    $keyserver    = $_POST['keyserver'];
-    $search_keyid = $_POST['search_keyid'];
+    if (array_key_exists("default", $_POST)) {
+        $default      = $_POST['default'];
+    } else { $default = 0; }
+    if (array_key_exists("keyserver", $_POST)) {
+        $keyserver    = $_POST['keyserver'];
+    } else { $keyserver = ''; }
+    if (array_key_exists("search_keyid", $_POST)) {
+        $search_keyid = $_POST['search_keyid'];
+    } else { $search_keyid = ''; }
 
     gpg_page_title ( _("Choose a Key to Import"));
 
@@ -84,6 +96,10 @@ if ($search) {
         setPref($data_dir,$username,'keyserver',$keyserver);
         echo _("Default Keyserver set to:")." $keyserver";
     };
+
+    if(!$keyserver) {
+	$keyserver = getPref($data_dir,$username,'keyserver', $GLOBALS['GPG_SYSTEM_OPTIONS']['keyserver0']);
+    }
 
     $default_keyserver = getPref($data_dir,$username,'keyserver',$keyserver);
     if ($debug) {
@@ -104,7 +120,9 @@ if ($search) {
         $foundkeys = gpg_keyserver_findkey($search_keyid,$debug);
         //ob_start();
         echo
-              '<FORM METHOD="POST">'
+              '<FORM METHOD="POST" action="modules/keyring_main.php">'
+	    . '<input type="hidden" name="keyaction" value="recvKey">'
+	    . '<input type="hidden" name="selectKey" value="true">'
             . "<input type='hidden' name='keyserver' value='$keyserver'>"
             . '<table border=0> ';
 
@@ -155,14 +173,42 @@ if ($keyID) {
      echo _("Using Keyserver: ").$keyserver;
   };
   echo '<br>'._("Importing key with KeyID: ") . $keyID;
-
-  $return = gpg_recv_key($keyID,$debug,$keyserver);
-  echo "<BR> $return";
+  $gpg=initGnuPG();
+  $return = $gpg->importKey_server($keyID,$keyserver);
+  foreach($return['info'] as $line) {
+    echo "<BR>" . htmlspecialchars($line);
+  }
 }; //end import key
 
 /**
  *
  * $Log: keyserver.mod,v $
+ * Revision 1.28  2006/01/08 02:47:20  ke
+ * - committed patch from Evan <umul@riseup.net> for OpenPGP header support in squirrelmail
+ * - adds system preferences and user options to control parsing and adding of OpenPGP Headers on emails
+ * - slightly tweaked to use the key associated with the identity, when identities with signing keys are enabled
+ *
+ * Revision 1.27  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.26  2004/08/23 09:24:52  ke
+ * -changed target of final submission of keyserver request back to keyring_main.php
+ * -also added ability to use GnuPG object directly from keyserver.mod, but never gets there because of
+ * above redirect
+ *
+ * Revision 1.25  2004/01/19 18:36:05  brian
+ * E_ALL fixes
+ *
+ * Revision 1.24  2004/01/19 18:27:55  brian
+ * E_ALL fixes
+ *
+ * Revision 1.23  2004/01/15 18:27:37  ke
+ * -added include for gpg_execute
+ * -added output of $return['info'] for key import
+ *
+ * Revision 1.22  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.21  2003/12/30 19:05:16  ke
  * -changed single to double quotes for translation purposes
  *

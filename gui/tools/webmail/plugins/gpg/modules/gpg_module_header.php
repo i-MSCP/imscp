@@ -4,15 +4,15 @@
  *
  * @author Brian Peterson
  *
- * $Id: gpg_module_header.php,v 1.9 2003/11/04 21:41:01 brian Exp $
+ * $Id: gpg_module_header.php,v 1.10 2004/01/09 18:27:15 brian Exp $
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH' , '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_module_header.php, exiting abnormally";
 }
 require_once(SM_PATH.'plugins/gpg/gpg_options_header.php');
@@ -54,6 +54,9 @@ if (! isset($err)) $err = array();
 echo '<br>';
 /**
  * $Log: gpg_module_header.php,v $
+ * Revision 1.10  2004/01/09 18:27:15  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.9  2003/11/04 21:41:01  brian
  * change to use SM_PATH
  *

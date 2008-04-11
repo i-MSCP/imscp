@@ -5,23 +5,23 @@
  * Main wrapper for the options interface.
  *
  * Copyright (c) 1999-2002 The SquirrelMail development team
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  *
- * $Id: gpg_options.php,v 1.10 2003/11/04 21:38:41 brian Exp $
+ * $Id: gpg_options.php,v 1.15 2005/07/27 14:07:49 brian Exp $
  *
  * @todo modify options_main and gpg_module_footer to accept a backlink defined by the module file that is included
  *
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_functions.php')){
-        define (SM_PATH , '../../');
+        define ('SM_PATH' , '../../');
     } elseif (file_exists('../gpg_functions.php')){
-        define (SM_PATH , '../../../');
+        define ('SM_PATH', '../../../');
     } elseif (file_exists('../plugins/gpg/gpg_functions.php')){
-        define (SM_PATH , '../');
+        define ('SM_PATH' , '../');
     } else echo "unable to define SM_PATH in gpg_options.php, exiting abnormally";
 }
 require_once(SM_PATH.'plugins/gpg/gpg_options_header.php');
@@ -44,6 +44,10 @@ if(!isset($MOD) || !$MOD) {
   gpg_ckMOD($MOD);
 }
 
+if ($MOD=='gpgdecrypt') {
+	ob_start();
+}
+
 /**
  * gpg_page_title - echo the page title
  *
@@ -54,6 +58,9 @@ if(!isset($MOD) || !$MOD) {
  * @param string $title Localized page title
  */
 function gpg_page_title ($title) {
+    
+    global $color;
+
         echo '<table width="100%" align="center" border="0" cellpadding="2" '
             . 'cellspacing="0">'
             . '<tr>'
@@ -84,6 +91,22 @@ require_once(SM_PATH.'plugins/gpg/modules/gpg_module_footer.php');
 /**
  *
  * $Log: gpg_options.php,v $
+ * Revision 1.15  2005/07/27 14:07:49  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.14  2004/04/30 18:00:06  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.13  2004/03/10 22:06:27  ke
+ * -added an ob_start for output buffering in the case of decryption
+ *
+ * Revision 1.12  2004/01/16 22:58:18  brian
+ * E_ALL fixes
+ * bug 146
+ *
+ * Revision 1.11  2004/01/09 18:26:50  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.10  2003/11/04 21:38:41  brian
  * change to use SM_PATH
  *

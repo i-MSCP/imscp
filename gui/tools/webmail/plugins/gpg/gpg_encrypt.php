@@ -4,13 +4,13 @@
  * --------------------
  * Called from compose to encrypt a message.
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  * @author Brian Peterson
  *
- * $Id: gpg_encrypt.php,v 1.69 2003/11/26 22:07:26 ke Exp $
+ * $Id: gpg_encrypt.php,v 1.80 2005/07/27 14:07:48 brian Exp $
  *
  */
 ob_start();
@@ -19,7 +19,7 @@ $chdir_first = 0;
 /**
  * load the functions files or set SM_PATH
  */
-if (!defined (SM_PATH)){
+if (!defined ('SM_PATH')){
     if (file_exists('./gpg_encrypt_functions.php')) {
         define('SM_PATH', '../../');
 
@@ -30,8 +30,9 @@ if (!defined (SM_PATH)){
         exit;
     }
 }
-require_once(SM_PATH.'plugins/gpg/gpg_encrypt_functions.php');
 require_once(SM_PATH.'plugins/gpg/gpg_functions.php');
+require_once(SM_PATH.'plugins/gpg/gpg_encrypt_functions.php');
+require_once(SM_PATH.'plugins/gpg/gpg_execute.php');
 
 /*********************************************************************/
 /**
@@ -52,16 +53,17 @@ global $gpg_key_dir;
 global $draft;
 global $attachment_dir;
 
-$body        = $_POST['body'];
-$encrypt     = $_POST['encrypt'];
-$sign        = $_POST['gpgsign'];
-$send_to     = $_POST['send_to'];
-$send_to_cc  = $_POST['send_to_cc'];
-$send_to_bcc = $_POST['send_to_bcc'];
-$subject     = $_POST['subject'];
-$passphrase  = $_POST['passphrase'];
+
+$body        = (array_key_exists('body',$_POST) ? $_POST['body'] : "");
+$encrypt     = (array_key_exists('encrypt',$_POST) ? $_POST['encrypt'] : "");
+$sign        = (array_key_exists('gpgsign',$_POST) ? $_POST['gpgsign'] : "");
+$send_to     = (array_key_exists('send_to',$_POST) ? $_POST['send_to'] : "");
+$send_to_cc  = (array_key_exists('send_to_cc',$_POST) ? $_POST['send_to_cc'] : "");
+$send_to_bcc = (array_key_exists('send_to_bcc',$_POST) ? $_POST['send_to_bcc'] : "");
+$subject     = (array_key_exists('subject',$_POST) ? $_POST['subject'] : "");
+$passphrase  = (array_key_exists('passphrase',$_POST) ? $_POST['passphrase'] : "");
 //clear encrypt_on_send if set
-$_POST['encrypt_on_send'] = '';
+//$_POST['encrypt_on_send'] = '';
 
 $return['errors'] = array();
 $return['warnings'] = array();
@@ -87,48 +89,50 @@ if ($debug) {
     echo "<br> Sign:  $sign\n";
 }
 
-if (substr($version, 2,4) >= 4.0) {
-    global $compose_messages;
-    global $session;
-    if ($debug) {
-        echo "<br>Session: $session\n";
-        echo "<br>Compose Messages:$compose_messages\n";
-    }
-    if (!isset($compose_messages[$session])){
-        if ($debug) {
-            echo "<br> Pulling $compose_messages from sqgetGlobalVar.\n";
-        }
-        sqgetGlobalVar('compose_messages',  $compose_messages,  SQ_SESSION);
-        sqgetGlobalVar('session',$session);
-    } elseif ($debug) {
-        echo "<br>Got $compose_messages as an object (prexisting global var).\n";
-    }
-    if ($_GET['encrypt_on_send_error']) {
-        echo '<br>'._("Your Request to Encrypt on Send encountered a problem, details below:")."<br>\n";
-        if (!isset($session)){$session=$_GET['session'];};
-        sqgetGlobalVar('encrypt_error', $encrypt_error, SQ_SESSION);
-        $subject                 = $encrypt_error['subject'];
-        $send_to                 = $encrypt_error['send_to'];
-        $send_to_cc              = $encrypt_error['send_to_cc'];
-        $send_to_bcc             = $encrypt_error['send_to_bcc'];
-        $body                    = $encrypt_error['body'];
-        $return['errors']        = $encrypt_error['errors'];
-        $return['warnings']      = $encrypt_error['warnings'];
-        $trimmed['skipped_keys'] = $encrypt_error['skipped_keys'];
-        //now clear our data out of the session variables..
-        $encrypt_error = '';
-        $_GET['encrypt_on_send_error']=0;
-        sqsession_register($encrypt_error , 'encrypt_error');
-        global $debug;
-        $done=1;
-        $notclean=1;
-    };
-
+global $compose_messages;
+global $session;
+if ($debug) {
+    echo "<br>Session: $session\n";
+    echo "<br>Compose Messages:$compose_messages\n";
 }
+if (!isset($compose_messages[$session])){
+    if ($debug) {
+        echo "<br> Pulling $compose_messages from sqgetGlobalVar.\n";
+    }
+    sqgetGlobalVar('compose_messages',  $compose_messages,  SQ_SESSION);
+    sqgetGlobalVar('session',$session);
+} elseif ($debug) {
+    echo "<br>Got $compose_messages as an object (prexisting global var).\n";
+}
+if (array_key_exists('encrypt_on_send_error',$_GET)) {
+    echo '<br>'._("Your Request to Encrypt on Send encountered a problem, details below:")."<br>\n";
+    if (!isset($session)){$session=$_GET['session'];};
+    sqgetGlobalVar('encrypt_error', $encrypt_error, SQ_SESSION);
+if ($debug) {
+    echo 'Encrypt_error:<br><pre>'; print_r($encrypt_error); echo '</pre>';
+}
+    $subject                 = $encrypt_error['subject'];
+    $send_to                 = $encrypt_error['send_to'];
+    $send_to_cc              = $encrypt_error['send_to_cc'];
+    $send_to_bcc             = $encrypt_error['send_to_bcc'];
+    $body                    = $encrypt_error['body'];
+    $return['errors']        = $encrypt_error['errors'];
+    $return['warnings']      = $encrypt_error['warnings'];
+    $trimmed['skipped_keys'] = $encrypt_error['skipped_keys'];
+    //now clear our data out of the session variables..
+    $encrypt_error = '';
+    $_GET['encrypt_on_send_error']=0;
+    sqsession_register($encrypt_error , 'encrypt_error');
+    global $debug;
+    $done=1;
+    $notclean=1;
+};
 
+$cyphertext=false;
 //call the address parsing function to return an array of addresses
 $valid_addresses = gpg_parse_address ($send_to, $send_to_cc, $send_to_bcc, $debug);
 $working_addresses = $valid_addresses;
+//loop until we don't have anything else to do: no more skipped keys, no other errors, etc.
 while (!$done) {
     // create the recipientlist string from the $working_addresses array
     $recipientlist = join (" -r ", $working_addresses);
@@ -139,7 +143,7 @@ while (!$done) {
     };
     // now check to see how this page was called, and
     // call gpg_encrypt with the appropriate flags
-    if ($encrypt) {
+    if (($encrypt) && !($sign=='true')) {
         if ($debug) echo "<br>Entering Encrypt Function\n";
         //call gpg_encrypt with the recipient list
         $return = gpg_encrypt($debug, $body, $recipientlist, false, '');
@@ -153,14 +157,20 @@ while (!$done) {
     };
     $done = 1;
     foreach ($return['skipped_keys'] as $skipped_key) {
+        //add the missing key to the error list to be output to the browser
         $trimmed['skipped_keys'][] = $skipped_key;
+        //find the key int he recipient list and remove it from the array
         foreach ($working_addresses as $key => $email) {
-              if ($debug) echo "<br>Checking for: '$email' in '$skipped_key'\n";
-              if (substr_count($skipped_key, $email)) {
-                  unset($working_addresses[$key]);
-                  if ($debug) echo "<br>Deleting this Recipient: $email\n";
-                  $done = 0;
-              };
+            //unquote the email address
+            $email = str_replace ( "'", '', $email);
+            if ($debug) echo "<br>Checking for: '$email' in '$skipped_key'\n";
+            //remove them from the working_addresses array
+            if (substr_count($skipped_key, $email)) {
+                unset($working_addresses[$key]);
+                if ($debug) echo "<br>Deleting this Recipient: $email\n";
+                //set $done=0 so we try again
+                $done = 0;
+            };
         };
         //Allow Partial Encryption Test
         if ($allow_partial_encryption != 'true') {
@@ -169,46 +179,57 @@ while (!$done) {
         };
     };
 };
+
 //display the cyphertext in debug mode
 if ($debug) {
     echo '<hr><br>Cyphertext after return from gpg_encrypt function';
     echo '<pre>'.$cyphertext.'</pre>';
 };
-//parse and display our errors
-//echo the errors and warning to this page before continuing.
-    if (is_array($return['warnings'])) {
+
+/************************************************************/
+// parse and display our errors
+// echo the errors and warning to this page before continuing.
+
+//check the warnings array
+if (is_array($return['warnings'])) {
    if (count($return['warnings']) > 0) {
-	echo "<br><b>" . _("Warnings:") . "</b><ul>\n";
+    echo "<br><b>" . _("Warnings:") . "</b><ul>\n";
     foreach ($return['warnings'] as $warning) {
         $notclean=1;
         echo htmlspecialchars($warning) . '<br>';
     };
         echo '</ul>';
     }
-    }
-    if (is_array($return['errors'])) {
-    if (count($return['errors']) > 0) { 
-	echo "<br><b>" . _("Errors:") . "</b><ul>\n";
+}
+
+//check the errors array
+if (is_array($return['errors'])) {
+    if (count($return['errors']) > 0) {
+    echo "<br><b>" . _("Errors:") . "</b><ul>\n";
     foreach ($return['errors'] as $errors) {
         $notclean=1;
         $serious=1;
         echo htmlspecialchars($errors) . '<br>';
     };
-	echo '</ul>';
+    echo '</ul>';
     }
-    }
-    if (is_array($trimmed['skipped_keys'])) {
+}
+
+//check the complete skipped_keys array
+if (is_array($trimmed['skipped_keys'])) {
     if (count($trimmed['skipped_keys']) > 0) {
-	echo '<br>'._("You do not have a public key for the following email addresses and so your message will NOT be readable by these recipients.");
-	echo '<br>'._("Here are the keys which GPG reported as missing:") . '<ul>';
+    echo '<br>'._("You do not have a public key for the following email addresses and so your message will NOT be readable by these recipients.");
+    echo '<br>'._("Here are the keys which GPG reported as missing:") . "<ul>\n";
     foreach ($trimmed['skipped_keys'] as $skipped_key) {
         $notclean=1;
-        echo "$skipped_key<br>";
+        echo htmlspecialchars($skipped_key)."<br>\n";
     };
     echo '</ul>';
     }
-    }
-    if (is_array($return['info'])) {
+}
+
+//check the info array
+if (array_key_exists('info',$return)) {
     if (count($return['info']) > 0) {
         echo "<br><b>" ._("Info:") . "</b><ul>\n";
     foreach ($return['info'] as $info) {
@@ -216,9 +237,9 @@ if ($debug) {
     };
         echo '</ul>';
     }
-    }
+}
 
-
+//make sure we have cyphertext
 if (!$cyphertext) {
     $serious = 1;
     if ($debug){
@@ -226,16 +247,17 @@ if (!$cyphertext) {
     };
 };
 
-if (substr($version, 2,4) >= 4.0) {
-    /**
-     * Begin Attachment Handling
-     *
-     * Marc indicates that this won't work under 1.2.x, so we
-     * test for it and only execute under 1.4.x
-     */
+/**
+ * Begin Attachment Handling
+ *
+ * Marc indicates that this won't work under SM 1.2.x
+ */
     if ($debug) {
         echo '<hr><b>Begin Attachment Processing</b>';
     };
+    if (!isset($composeMessage)) {
+    global $composeMessage;
+    }
     $newMessage = $composeMessage[1];
     //set $compose message to be a reference to the correct $message in $compose_messages
     if (!is_object ($newMessage)){
@@ -275,12 +297,10 @@ if (substr($version, 2,4) >= 4.0) {
      */
     $id=0;
     $path = '../';
-    if ($encrypt_on_send) {
+    if (isset($encrypt_on_send)) {
         $path = '';
-        if (substr($version, 2,4) >= 4.1) {
-            //compose_send hook moved to after the message body has been inserted at $id 0
-            $id=1;
-        }
+        //compose_send hook moved to after the message body has been inserted at $id 0
+        $id=1;
     };
 
     /**
@@ -295,81 +315,81 @@ if (substr($version, 2,4) >= 4.0) {
         };
         foreach ($messageAttachments as $key => $attachment) {
             if (!(($id==1) && ($key==0))) {
-            if ($debug) {
-                echo '<BR>Attachment Name: '
-                      . $attachment->mime_header->disposition->properties['filename'] ."\n";
-                echo '<BR>Local File Name: '. $attachment->att_local_name ."\n";
-                echo '<BR>Original Mime Type:'. $attachment->mime_header->type0 .'/'
-                                              . $attachment->mime_header->type1 ."\n";
-            };
-            //rename the file to it's correct public file name
-                $safe_attachment_dir = getHashedDir($username, $attachment_dir);
-                $tempfile = $path.$attachment->att_local_name;
-                $filename = $safe_attachment_dir.'/'.$attachment->mime_header->disposition->properties['filename'];
-                if (copy( $tempfile, $filename) ) {
-                    deleteTempFile($tempfile);
-                } else {
-                    echo _("Unable to rename temporary file");
-                }
-            //call gpg_encrypt fn to encrypt the attachment
-                $attreturn = gpg_encrypt($debug, '', $recipientlist, $sign , $passphrase, $filename);
-            //delete the plaintext attachment, and set all the correct mime types
-            if (!count($attreturn['errors'])) {
-                //delete the tempfile
-                deleteTempFile($filename);
-                //rename the asc file to the temp name
-                if (copy( $filename.'.asc', $tempfile.'.asc')) {
-                    deleteTempFile($filename.'.asc');
-                } else {
-                    echo _("Unable to rename encrypted file");
-                }
-                $entity_id = (int)$key;
-                $entity =& $newMessage->entities[$entity_id];
-                if (trim($entity->att_local_name) == trim($attachment->att_local_name)) {
-                    //set the mime type
-                    $entity->mime_header->type0 = 'application';
-                    $entity->mime_header->type1 = 'pgp-encrypted';
-                    $newfilename = $attachment->mime_header->disposition->properties['filename'].'.asc';
-                    $entity->mime_header->disposition->properties['name'] = $newfilename;
-                    $entity->mime_header->disposition->properties['filename'] = $newfilename;
-                    $entity->mime_header->parameters['name'] = $newfilename;
-                    $entity->mime_header->parameters['filename'] = $newfilename;
-                    //set the name of the attachment to be the .asc file
-                    $entity->att_local_name = $attachment->att_local_name . '.asc';
-                    if ($debug) {
-                        echo '<BR>New Attachment Name: '
-                            . $entity->mime_header->disposition->properties['filename'] ."\n";
-                        echo '<BR>New Local File Name: '. $entity->att_local_name ."\n";
-                        echo '<BR>New Mime Type: '
-                            . $entity->mime_header->type0 .'/'
-                            . $entity->mime_header->type1 ."\n";
-                    };
-                } elseif ($debug) {
-                    echo "<br>GPG Plugin: File name in entity did not match\n";
+                if ($debug) {
+                    echo '<BR>Attachment Name: '
+                        . $attachment->mime_header->disposition->properties['filename'] ."\n";
                     echo '<BR>Local File Name: '. $attachment->att_local_name ."\n";
-                    echo '<BR>Entity File Name: '. $entity->att_local_name ."\n";
-                }
-
-
-            } else {
-                echo '<br>'._("GPG Plugin: Plain-text Attachment file not deleted due to error in Encrypt.")."\n";
-                if (copy( $filename, $tempfile )) {
+                    echo '<BR>Original Mime Type:'. $attachment->mime_header->type0 .'/'
+                                                . $attachment->mime_header->type1 ."\n";
+                };
+                //rename the file to it's correct public file name
+                    $safe_attachment_dir = getHashedDir($username, $attachment_dir);
+                    $tempfile = $path.$attachment->att_local_name;
+                    $filename = $safe_attachment_dir.'/'.$attachment->mime_header->disposition->properties['filename'];
+                    if (copy( $tempfile, $filename) ) {
+                        deleteTempFile($tempfile);
+                    } else {
+                        echo _("Unable to rename temporary file");
+                    }
+                //call gpg_encrypt fn to encrypt the attachment
+                    $attreturn = gpg_encrypt($debug, '', $recipientlist, $sign , $passphrase, $filename);
+                //delete the plaintext attachment, and set all the correct mime types
+                if (!count($attreturn['errors'])) {
+                    //delete the tempfile
                     deleteTempFile($filename);
-                } else {
-                    echo _("Unable to rename temporary file after failed encrypt");
-                }
-                $notclean=1;
-                $serious=1;
-            }
+                    //rename the asc file to the temp name
+                    if (copy( $filename.'.asc', $tempfile.'.asc')) {
+                        deleteTempFile($filename.'.asc');
+                    } else {
+                        echo _("Unable to rename encrypted file");
+                    }
+                    $entity_id = (int)$key;
+                    $entity =& $newMessage->entities[$entity_id];
+                    if (trim($entity->att_local_name) == trim($attachment->att_local_name)) {
+                        //set the mime type
+                        $entity->mime_header->type0 = 'application';
+                        $entity->mime_header->type1 = 'pgp-encrypted';
+                        $newfilename = $attachment->mime_header->disposition->properties['filename'].'.asc';
+                        $entity->mime_header->disposition->properties['name'] = $newfilename;
+                        $entity->mime_header->disposition->properties['filename'] = $newfilename;
+                        $entity->mime_header->parameters['name'] = $newfilename;
+                        $entity->mime_header->parameters['filename'] = $newfilename;
+                        //set the name of the attachment to be the .asc file
+                        $entity->att_local_name = $attachment->att_local_name . '.asc';
+                        if ($debug) {
+                            echo '<BR>New Attachment Name: '
+                                . $entity->mime_header->disposition->properties['filename'] ."\n";
+                            echo '<BR>New Local File Name: '. $entity->att_local_name ."\n";
+                            echo '<BR>New Mime Type: '
+                                . $entity->mime_header->type0 .'/'
+                                . $entity->mime_header->type1 ."\n";
+                        };
+                    } elseif ($debug) {
+                        echo "<br>GPG Plugin: File name in entity did not match\n";
+                        echo '<BR>Local File Name: '. $attachment->att_local_name ."\n";
+                        echo '<BR>Entity File Name: '. $entity->att_local_name ."\n";
+                    }
 
-     } //end if key==1 id==1
-     else {
-       // stuff cyphertext into first attachment (body_part)
-       if (!$serious) {
-          $entity =& $newMessage->entities[0];
-          $entity->body_part = $cyphertext;
-           }
-    } // end if key==1 id==1
+
+                } else {
+                    echo '<br>'._("GPG Plugin: Plain-text Attachment file not deleted due to error in Encrypt.")."\n";
+                    if (copy( $filename, $tempfile )) {
+                        deleteTempFile($filename);
+                    } else {
+                        echo _("Unable to rename temporary file after failed encrypt");
+                    }
+                    $notclean=1;
+                    $serious=1;
+                }
+
+            } //end if key==1 id==1
+            else {
+                // stuff cyphertext into first attachment (body_part)
+                if (!$serious) {
+                    $entity =& $newMessage->entities[0];
+                    $entity->body_part = $cyphertext;
+                }
+            } // end if key==1 id==1
         } //end foreach
     sqsession_register($compose_messages , 'compose_messages');
     $restoremessages = urlencode(serialize($compose_messages));
@@ -382,15 +402,18 @@ if (substr($version, 2,4) >= 4.0) {
         print_r($composeMessage[1]);
         echo '</pre>';
     }
-  //end if
+   //end if
    } else {
-    // not attachments, stuff back into main body
-    if ($debug) { echo "<br> No attachments found. \n";};
-    if (!$serious) {
-            $composeMessage[1]->body_part = $cyphertext;
-    }
+        // not attachments, stuff back into main body
+        if ($debug) { echo "<br> No attachments found. \n";};
+        if (!$serious) {
+                if ($debug) { echo "<br>Setting composeMessage[1]->body_part equal to cyphertext"; }
+                //$composeMessage[1]->body_part = $cyphertext;
+            $newMessage->body_part = $cyphertext;
+            if ($debug) { echo "NewMessage:<pre>"; print_r($newMessage->body_part); echo "</pre>"; }
+            $composeMessage[1] = $newMessage;
+        }
    }
-} //end if
 /*end attachment handling*/
 
 
@@ -418,7 +441,7 @@ gpg_setglobal ('reply_id' ,'');
 //set the body to be the cyphertext
 gpg_setglobal ('body' ,$cyphertext);
 
-if ($encrypt_on_send) {
+if (isset($encrypt_on_send)) {
     if (!$serious) {
         return ($cyphertext);
         /**
@@ -468,7 +491,9 @@ if ($notclean){
         //$no_encrypt_on_setup = 1;
         $chdir_first = 0;
     $gpg_export=1;
-    ob_end_flush();
+    if (ob_get_level()>0) {
+        ob_end_flush();
+    }
         echo "<br>Cyphertext not generated due to errors. Your plaintext has been preserved.<br>";
         //preserve the plaintext
         gpg_setglobal ('body' ,$body);
@@ -479,7 +504,7 @@ if ($notclean){
             include('../../src/compose.php'); exit;
         };
     } else {
-	$gpg_export=1;
+    $gpg_export=1;
         //turn off the encrypt and sign buttons.
         $no_encrypt_on_setup = 1;
         //then include compose.php
@@ -512,6 +537,45 @@ exit;
 /**
  *
  * $Log: gpg_encrypt.php,v $
+ * Revision 1.80  2005/07/27 14:07:48  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.79  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.78  2004/08/08 03:59:31  ke
+ * -skip encrypt only step if we are signing and encrypting
+ *
+ * Revision 1.77  2004/06/22 21:59:24  ke
+ * -moved include of squirrelmail functions before gpg object
+ *
+ * Revision 1.76  2004/04/30 17:56:38  ke
+ * -removed newline from end of file
+ *
+ * Revision 1.75  2004/03/15 22:28:45  brian
+ * - Allow multiple recipients in Encrypt to Self list.
+ * - Test System ADK for missing key error
+ * - Test Encrypt to Self recipient(s) for missing key error
+ * - cleaned up indents and comments
+ * Bug 173
+ *
+ * Revision 1.74  2004/02/17 22:32:15  ke
+ * -new update since proc_open code added
+ * -E_ALL fixes
+ *
+ * Revision 1.73  2004/01/20 04:36:41  ke
+ * -removed global so that composeMessage isn't reset
+ *
+ * Revision 1.72  2004/01/19 18:32:26  ke
+ * -E_ALL changes
+ *
+ * Revision 1.71  2004/01/13 20:20:01  ke
+ * -added include of gpg execution file
+ *
+ * Revision 1.70  2004/01/09 18:26:50  brian
+ * changed SM_PATH defines to use quoted string for E_ALL
+ *
  * Revision 1.69  2003/11/26 22:07:26  ke
  * -added gpg_export=1 to the case of warnings but no critical errors, so send works properly
  *

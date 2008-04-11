@@ -1,4 +1,12 @@
 <?php
+/**
+ * Troubleshooting page.
+ *
+ * @todo Convert most of this file to HTML, and only use
+ *       parts of in inside PHP tags
+ *
+ * $Id: troubleshooting.php,v 1.7 2004/03/17 15:24:49 brian Exp $
+ */
 
 echo '<h2>'. _("Troubleshooting") . '</h2>';
 echo '<P>'
@@ -80,7 +88,12 @@ echo '</UL>';
 echo '<p>Replying to a decrypted messages shows a blank or incorrect body</p>';
 echo '<UL>';
 echo <<<TILLEND
-                When a user has the Compose in New Window preference set, and decrypts a                                        message using the plugin, it is possible that the body during a reply can                                       appear blank.  This can happen if a user decrypts a message, then clicks                                        Compose and then chooses to reply to the decrypted message.  This particular                                    behavior will be altered in a later release.  For the time being, if you wish                                   to reply to decrypted messages, click reply before composing any new messages.
+                When a user has the Compose in New Window preference set, and decrypts a
+                message using the plugin, it is possible that the body during a reply can
+                appear blank.  This can happen if a user decrypts a message, then clicks
+                Compose and then chooses to reply to the decrypted message.  This particular
+                behavior will be altered in a later release.  For the time being, if you wish
+                to reply to decrypted messages, click reply before composing any new messages.
 TILLEND;
 echo '</UL>';
         echo '<p>gpg: Warning: using insecure memory! </p>';
@@ -136,14 +149,41 @@ echo <<<TILLEND
                         You could patch it into your version of Squirrelmail.
                         Put the following in your src/load_prefs.php file
 <p><pre>
-/* returns true if current php version is at minimum a.b.c */
-function check_php_version ($a = '0', $b = '0', $c = '0')
-       {
-          $SQ_PHP_VERSION=phpversion(); /* set your PHP version here */
+TILLEND;
 
-          return $SQ_PHP_VERSION &gt;= ($a.$b.$c);
-       }
+// call this out to keep it from generating a php parse error
+echo "/* returns true if current php version is at minimum a.b.c */\n"
+.'function check_php_version ($a = "0", $b = "0", $c = "0")'."\n"
+."     {\n"
+.'          $SQ_PHP_VERSION=phpversion(); /* set your PHP version here */'."\n"
+."\n"
+.'          return $SQ_PHP_VERSION &gt;= ($a.$b.$c);'."\n"
+."       }\n";
+
+echo <<<TILLEND
 </pre><p></UL></UL>
+    About Decryption
+<ul>
+    <p>
+        Once you have uploaded a secret key or keyring, the decryption part of the
+        plugin will be activated.  The plugin will try to automatically determine
+        when a message contains OpenPGP/GPG encrypted content.  When the plugin
+        detects a message that appears to have encrypted content, the
+        'Decrypt Message Now' button will be displayed.  Because of the complexity
+        of this feature, it is possible that the plugin may not always correctly
+        identify a message that contains encrypted content.  Please report any
+        unusual behavior, so that we can work with you to resolve your issue and
+        patch the plugin.
+</ul>
+    About Signing
+<ul>
+    <p>
+        Once you have uploaded a secret key or keyring, you need to select a signing
+        key. Once you have selected a signing key, the signing portion of the plugin
+        will become activated.  The 'Encrypt & Sign Now' and 'Sign on Send' buttons
+        will display in the Compose window of Squirrelmail.  You should now be able
+        to sign mail with your signing key.
+</ul>
         gpg: secret key not imported (use --allow-secret-key-import to allow for it)
 <UL>
                 If you are using gpg v 1.0.5 or 1.0.6 you may see this message
@@ -274,4 +314,12 @@ function check_php_version ($a = '0', $b = '0', $c = '0')
                 ("normal" as in it does the same thing on ANY other site that uses popups.)
 </ul>
 TILLEND;
+
+/**
+ * $Log: troubleshooting.php,v $
+ * Revision 1.7  2004/03/17 15:24:49  brian
+ * - updated several sections
+ * - added 'About' sections for Signing/Decryption
+ *
+ */
 ?>

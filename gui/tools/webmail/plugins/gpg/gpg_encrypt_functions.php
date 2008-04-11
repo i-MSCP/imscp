@@ -5,13 +5,13 @@
  * GPG plugin functions file, as defined by the SquirrelMail-1.2 API.
  * Updated for the SM 1.3/1,4 API
  *
- * Copyright (c) 2002-2003 Braverock Ventures
+ * Copyright (c) 2002-2005 Braverock Ventures
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @package gpg
  * @author Brian Peterson
  *
- * $Id: gpg_encrypt_functions.php,v 1.77 2003/12/29 23:52:55 brian Exp $
+ * $Id: gpg_encrypt_functions.php,v 1.94 2005/10/09 07:08:23 ke Exp $
  *
  */
 
@@ -32,7 +32,6 @@
  * @return array with results
  */
 function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $filename ='') {
-
     // set up globals
     global $trusted_key_id;
     global $gpg_key_dir;
@@ -41,13 +40,11 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
     global $data_dir;
     global $safe_data_dir;
     $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
-
     $username = $_SESSION['username'];
     if (!isset($gpg_key_dir)) {
         load_prefs_from_file(SM_PATH . 'plugins/gpg/gpg_system_defaults.txt',$debug);
         load_prefs_from_file(SM_PATH . 'plugins/gpg/gpg_local_prefs.txt',$debug);
         $path_to_gpg=($GLOBALS['GPG_SYSTEM_OPTIONS']['path_to_gpg']);
-        $gpg_key_dir=($GLOBALS['GPG_SYSTEM_OPTIONS']['gpg_key_dir']);
         $gpg_key_dir ="$safe_data_dir$username.gnupg";
     }
 
@@ -68,6 +65,13 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
     };
     }; // end filename check
 
+    //check for a Recipient List
+    if (!$send_to_list) {
+        $return['errors'][] = _("GPG Plugin: Your recipient list is empty. After parsing, there are no valid recipients.");
+        return ($return);
+        exit;
+    };
+
     //Signing Test
     if ($sign=='true') {
         /* Check for secure connection.
@@ -78,7 +82,7 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
         $https_check=0;
         $https_check=gpg_https_connection ();
         if (!$https_check) {
-           $return['errors'][] = _("You are not using a secure connection.").'&nbsp;'._("SSL connection required to use passphrase functions.");
+           $return['errors'][] = _("You are not using a secure connection.").' '._("SSL connection required to use passphrase functions.");
            return ($return);
            exit;
         };
@@ -87,7 +91,7 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
         $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
         if ($debug) echo "\n<br>no_signing_passwd: $no_signing_passwd<br>\n";
         //grab the signing_key_id
-        $signing_key_id = getPref ($data_dir, $username, 'signing_key_id');
+        $signing_key_id = gpg_get_signing_key_id();
         if ($debug) echo "<br>Sign = true \n<br>Signing Key ID: $signing_key_id<br>\n";
     };
 
@@ -112,31 +116,6 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
         if ($debug) {
             echo '<BR>use_trusted_key_id = false';
         };
-    };
-
-    //Encrypt to Self Test
-    $encrypt_to_self=getPref($data_dir, $username, 'encrypt_to_self');
-    if ($encrypt_to_self=='true') {
-        $self_encr_email = escapeshellarg(getPref($data_dir, $username, 'self_encr_email'));
-        // add the selected email address to the recipient list
-        if ($send_to_list) {
-            $send_to_list .= " -r $self_encr_email";
-        } else {
-            $send_to_list = " $self_encr_email";
-        };
-        if ($debug) {
-             echo '<BR>encrypt_to_self = true';
-             echo "<BR>Self Encrypt Email: $self_encr_email";
-        };
-    } else {
-        if ($debug) {
-            echo '<BR>encrypt_to_self = false';
-        };
-    };
-    if (!$send_to_list) {
-        $return['errors'][] = _("GPG Plugin: Your recipient list is empty. After parsing, there are no valid recipients.");
-        return ($return);
-        exit;
     };
 
     // 'Corporate' shared system keyring Test
@@ -173,42 +152,31 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
     */
 
     //set up the base command
-    $command = "$path_to_gpg --batch --no-tty --homedir $gpg_key_dir ";
+    $params = " --homedir $gpg_key_dir ";
 
     // clean the body string that is passed in
     // make sure that funny characters get
     // bracketed by single quotes and backslashes
-    $body = escapeshellarg ($body);
-
-    if ($body and $filename=='') {
-        $command = "$body |". $command;
-    } elseif ($sign=='true' and $use_signing_key_id=='true' and $no_signing_passwd!='true') {
-        $command = ' | '.$command;
-    };
+    // $body = escapeshellarg ($body);
 
     //add the signing parameters
     if ($sign=='true' and $use_signing_key_id=='true' and $no_signing_passwd=='true' and $filename!='') {
-        $command .= " --sign --default-key $signing_key_id ";
+    $params  .= " --sign --default-key $signing_key_id ";
     } elseif ($sign=='true' and $use_signing_key_id=='true' and $no_signing_passwd=='true') {
-    $command .= " --output - --sign --default-key $signing_key_id ";
+        $params  .= " --output - --sign --default-key $signing_key_id ";
     } elseif ($sign=='true' and $use_signing_key_id=='true' and $filename!='') {
-        $passphrase = escapeshellarg($passphrase . "\n");
-        $command .= " --passphrase-fd 0 --sign --default-key $signing_key_id ";
-        $command  = $passphrase . $command;
+    $params  .= "  --sign --default-key $signing_key_id ";
     } elseif ($sign=='true' and $use_signing_key_id=='true') {
-    $passphrase = escapeshellarg($passphrase . "\n");
-    $command .= " --passphrase-fd 0 --output - --sign --default-key $signing_key_id ";
-    $command  = $passphrase . $command;
+        $params  .= "  --output - --sign --default-key $signing_key_id ";
     } elseif ($sign=='true') {
         $return['errors'][] = _("GPG Plugin: You must specify a signing key in the Options screen to sign messages.");
     };
-
     //add the trusted key parameters if needed
     //if ($sign!='true'){
     if ($use_trusted_key_id == 'true' && $trusted_key_id != '') {
-        $command .= " --trusted-key $trusted_key_id ";
+    $params  .= " --trusted-key $trusted_key_id ";
     } else {
-        $command .= ' --always-trust ';
+    $params  .= ' --always-trust ';
     };
     //};
 
@@ -216,75 +184,60 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
     if ($systemkeyring=='true' and $trust_system_keyring=='true') {
         if (is_file($system_keyring_file)) {
             $system_keyring_file = escapeshellarg($system_keyring_file);
-            $command .= " --keyring $system_keyring_file ";
+        $params  .= " --keyring $system_keyring_file ";
             if ($systemtrustedkey != '') {
-                $command .= " --trusted-key $systemtrustedkey ";
+        $params  .= " --trusted-key $systemtrustedkey ";
             };
-            //add system ADK to recipient list if required
-            $use_system_adk=getPref($data_dir, $username, 'use_system_adk');
-            if ($use_system_adk=='true') {
-                $systemadk= $GLOBALS['GPG_SYSTEM_OPTIONS']['systemadk'];
-                if ($systemadk !='') {
-                    $systemadk = escapeshellarg($systemadk);
-                    if ($send_to_list) {
-                        $send_to_list .= " -r $systemadk";
-                    } else {
-                        $send_to_list = " $systemadk";
-                    };
-                }
-            }; //end system adk
         } elseif ($debug) echo "\n".'<br>system_keyring_file '.$system_keyring_file.' failed is_file test';
     }; //end shared system keyring
 
     // wrap it up by setting the recipients to the sender list using -r
     // and redirect the output to stderr using 2>&1
-    $command .= " -r $send_to_list --force-mdc --armor --encrypt ".escapeshellarg($filename).' 2>&1';
-
-    if ($body or ($sign=='true' and $use_signing_key_id=='true')) {
-        $command  = 'echo '.$command;
-    }
+    $params  .= " --force-mdc --armor --encrypt -r $send_to_list ".escapeshellarg($filename);
 
     if ($debug) {
         /**
          * @todo we should modify this to not show the body and passphrase
          */
-        echo "<hr>Command String: $command<hr>";
+        echo "<hr>Command String: $params<hr>";
     };
-
-    exec($command, $cyphertext, $returnval);
+    $return=gpg_execute($debug, $params, $passphrase, $body);
+    $cyphertext=$return['output'];
 
     // make the result a string
     if (is_array($cyphertext)) {
-        $cyphertext_str = implode($cyphertext,"\n");
+        $cyphertext = implode($cyphertext,"\n");
     };
 
     if ($debug) {
         echo "<hr><br>gpg command execution returned:<br>\n";
-        echo "<textarea cols=80 rows=25 name=cyphertext>$cyphertext_str</textarea>\n";
-        echo "<br>returnvalue= $returnval \n";
+        echo "<textarea cols=80 rows=25 name=cyphertext>$cyphertext</textarea>\n";
+        echo "<br>returnvalue= " . $return['returnval'] . " \n";
     };
 
     //now parse the return value and return an array with some useful contents.
     $sep = '-----BEGIN PGP MESSAGE-----';
-
-    list ($front, $cyphertext_tail) = explode ($sep, $cyphertext_str);
+    if ($cyphertext) {
+        list ($front, $cyphertext_tail) = explode ($sep, $cyphertext);
+    } else { $front = ""; $cyphertext_tail = ""; }
 
     if ($debug) {
         echo "<hr>Returned String before the cyphertext: <br><pre>$front</pre>";
     };
 
     if ($cyphertext_tail) {
-        $returntext = "$sep $cyphertext_tail";
+        $returntext = "$sep$cyphertext_tail";
     } elseif ($body!='') {
+        $returntext = "";
         $return['errors'][] = _("GPG Plugin: No cyphertext was generated.")."\n";
     };
 
     $return['cyphertext'] = $returntext;
 
-    if ($returnvalue) {
-        $return [$errors][] = _("GPG Plugin: gpg returned a non-clean return value of: ").$returnvalue;
+    if (isset($returnvalue)) {
+        $return ['warnings'][] = _("GPG Plugin: gpg returned a non-clean return value of: ").$returnvalue;
     }
-    $return = array_merge($return, gpg_parse_output($cyphertext));
+
     /**
      * Should these be info tagged?
      * gpg: key <...> marked as ultimately trusted
@@ -302,7 +255,7 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
         foreach ($return['skipped_keys'] as $error) echo "<br>Skipped Keys $error";
     };
     return ($return);
-    //should add code to filter out the errors/warnings we expect.
+    //code to filter out the errors and warnings we expect is in gpg_parse fn
 
 }; //end gpg_encrypt fn
 
@@ -318,7 +271,7 @@ function gpg_encrypt($debug, $body,$send_to_list, $sign='false', $passphrase, $f
  * @param optional string $filename    Filename to decrypt binary file
  * @return array with results
  */
-function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
+function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile='', $safe_data_dir=false){
 
     // set up globals
     global $gpg_key_dir;
@@ -326,7 +279,9 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
     global $data_dir;
     global $username;
     global $safe_data_dir;
-    $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
+    if (!$safe_data_dir) {
+        $safe_data_dir=getHashedDir($username,$data_dir) . DIRECTORY_SEPARATOR;
+    }
     $no_signing_passwd = getPref ($data_dir, $username, 'no_signing_passwd');
 
     $username = $_SESSION['username'];
@@ -340,9 +295,9 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
     // make sure that funny characters get
     // bracketed by single quotes and backslashes
     $body = gpg_clean_body($body,$debug);
-    $body = escapeshellarg($body);
+//    $body = escapeshellarg($body);
     /**
-     *  patch submitted by Magyar Dénes breaks decrypt from encrypt on send
+     *  patch submitted by Magyar Dï¿½es breaks decrypt from encrypt on send
      * dirty fix for the newline bug
      *
      * $body = ereg_replace('\([a-zA-Z0-9][a-zA-Z0-9]*\)','',$body);
@@ -367,7 +322,7 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
     $https_check=0;
     $https_check=gpg_https_connection ();
     if (!$https_check) {
-       $line = _("You are not using a secure connection.").'&nbsp;'._("SSL connection required to use passphrase functions.");
+       $line = _("You are not using a secure connection.").' '._("SSL connection required to use passphrase functions.");
        $return['errors'][] = $line;
        return ($return);
        exit;
@@ -396,10 +351,10 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
         //now add the parameters to $extra_cmd
         if (is_file($system_keyring_file)) {
             $system_keyring_file = escapeshellarg($system_keyring_file);
+        if ($systemtrustedkey != '') {
+            $extra_cmd .= " --trusted-key $systemtrustedkey ";
+        }
             $extra_cmd .= " --keyring $system_keyring_file ";
-            if ($systemtrustedkey != '') {
-                $extra_cmd .= " --trusted-key $systemtrustedkey ";
-            };
         } elseif ($debug) echo "\n".'<br>system_keyring_file '.$system_keyring_file.' failed is_file test';
     }; //end shared system keyring
 
@@ -413,41 +368,21 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
 
 
     if ($filename == '') {
-    $pre_pass =" | $path_to_gpg --passphrase-fd 0 --batch --no-tty --homedir $gpg_key_dir $extra_cmd --decrypt 2>&1";
-        $without_pass =" | $path_to_gpg --batch --no-tty --decrypt --homedir $gpg_key_dir $extra_cmd 2>&1";
+    $params = " $extra_cmd --decrypt";
     } else {
-    if ($outfile== '') {
-        $pre_pass =" | $path_to_gpg --passphrase-fd 0 --batch --no-tty --use-embedded-filename --homedir $gpg_key_dir $extra_cmd --decrypt-files $filename 2>&1";
-    } else {
-        $pre_pass =" | $path_to_gpg --passphrase-fd 0 --batch --no-tty --homedir $gpg_key_dir $extra_cmd --output \"$outfile\" --decrypt \"$filename\" 2>&1";
-    }
-        $without_pass ="$path_to_gpg --batch --no-tty --homedir $gpg_key_dir $extra_cmd --use-embedded-filename --decrypt-files $filename 2>&1";
-    }
-
-    //first check to see if they don't need a passphrase and set command accordingly
-    if ($no_signing_passwd == 'true') {
-         //this will die an ugly death if the message is encrypted to a key
-         //that requires a passphrase
-         if ($debug) {
-            echo "<br>No passphrase provided.\n";
-            echo "<br>Command string: echo [Body]$without_pass<br>\n";
-         };
-         if ($filename = '') {
-            $command = "echo $body$without_pass";
-         } else {
-            $command = "$without_pass";
-         }
-    }
+       if ($outfile== '') {
+           $pre_pass =" | $path_to_gpg --batch --no-tty --use-embedded-filename --homedir $gpg_key_dir $extra_cmd --decrypt-files $filename 2>&1";
+       $params = " --use-embedded-filename --homedir $gpg_key_dir $extra_cmd --decrypt-files $filename";
+       } else {
+       $params = " --homedir $gpg_key_dir $extra_cmd --output \"$outfile\" --decrypt \"$filename\"";
+       }
+     }
 
     //then check and see if they provided a passphrase anyway, and set if they did
     if ($passphrase) {
         if ($debug) {
             echo "<br>Got passphrase.\n";
-            echo "<br>Command string: echo [PassPhrase][Body]$pre_pass<br>\n";
         };
-        //Make sure we escape naughty characters before passing to the shell
-        $passphrase = escapeshellarg($passphrase . "\n");
-        $command = "echo $passphrase$body$pre_pass";
     } elseif ($no_signing_passwd == 'false') {
         // we should reopen the window or check for passphrase with javascript
         // instead of just throwing an error here
@@ -457,16 +392,18 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
         exit;
     }
 
-    exec($command, $plaintext, $returnval);
+    $return=gpg_execute($debug, $params, $passphrase, $body, $safe_data_dir);
+    $plaintext = $return['output'];
+    $returnvalue = $return['returnval'];
 
     // make the result a string
     if (is_array($plaintext)) {
-        $plaintext_str = implode($plaintext,"\n");
+        $plaintext = implode($plaintext,"\n");
     };
 
     if ($debug) {
-        echo " <textarea cols=80 rows=25 name=plaintext>$plaintext_str</textarea>";
-        echo " returnvalue= $returnval";
+        echo " <textarea cols=80 rows=25 name=plaintext>$plaintext</textarea>";
+        echo " returnvalue= $returnvalue";
     };
 
     /**
@@ -475,15 +412,20 @@ function gpg_decrypt($debug, $body, $passphrase, $filename='', $outfile=''){
      * we will only have the plaintext.
      */
 
-    $return = gpg_parse_output($plaintext);
-    if ($return['untrusted'] == 'true') {
-          gpg_update_trustdb($debug);
-      $plaintext='';
-          exec($command, $plaintext, $returnval);
-          $return=gpg_parse_output($plaintext);
+//    $return = gpg_parse_output($plaintext);
+
+    if ($returnvalue) {
+        $return ['warnings'][] = _("GPG Plugin: gpg returned a non-clean return value of: ").$returnvalue;
     }
 
-    $return ['plaintext'] = $return['output'];
+    if ($return['untrusted'] == 'true') {
+          gpg_update_trustdb($debug);
+          $return=gpg_execute($debug, $params, $passphrase, $body."\n");
+      $plaintext = $return['output'];
+      if (is_array($plaintext)) { $plaintext = implode($plaintext,"\n"); }
+    }
+
+    $return ['plaintext'] = $plaintext;
     //send it back
     return ($return);
 
@@ -515,7 +457,7 @@ function gpg_clean_body($body,$debug) {
                 if ($debug) { echo "After: $line<br>"; }
             }
         }
-        $newbody .= $line . "\n";
+        $newbody .= trim($line) . "\n";
     }
     if ($debug) { echo "Body After: <pre>\n$newbody\n</pre>"; }
     return $newbody;
@@ -542,94 +484,187 @@ function gpg_clean_body($body,$debug) {
  * @param integer $debug 0|1
  * @return array with results
  */
-
 function gpg_parse_address ($send_to, $send_to_cc, $send_to_bcc, $debug){
+
+    global $username;
+    global $data_dir;
 
     if ($debug) {
         echo '<br> Entering Address Parsing:<br>';
     }
-    global $version;
 
-    if (substr($version, 2,4) >= 3.1) {
-        //parse using SM 1.3.1+ functions from rfc822header
-
-        $valid_addresses = array();
-
+    $valid_addresses = array();
+    $domain=$GLOBALS['domain'];
         $abook = addressbook_init(false, true);
         $rfc822_header = new Rfc822Header;
+    if (array_key_exists('send_to',$_POST)) {
         $rfc822_header->to = $rfc822_header->parseAddress($_POST['send_to'],
                true,array(), ';', $domain, array(&$abook,'lookup'));
+    }
+    if (array_key_exists('send_to_cc',$_POST)) {
         $rfc822_header->cc = $rfc822_header->parseAddress($_POST['send_to_cc'],
                true,array(), ';',$domain,array(&$abook,'lookup'));
+    }
+    if (array_key_exists('send_to_bcc',$_POST)) {
         $rfc822_header->bcc = $rfc822_header->parseAddress($_POST['send_to_bcc'],
                true,array(), ';',$domain, array(&$abook,'lookup'));
-
+    }
         $to = array();
         $cc = array();
         $bcc = array();
 
         foreach (($rfc822_header->to ) as $value) {
-          if ($value->host) $to[] = escapeshellarg($value->mailbox . "@" . $value->host);
-          else $to[] = escapeshellarg($value->mailbox . "@" . $GLOBALS['domain']);
-          }
+            if ($value->host) $to[] = escapeshellarg($value->mailbox . "@" . $value->host);
+            else $to[] = escapeshellarg($value->mailbox . "@" . $GLOBALS['domain']);
+        }
         foreach (($rfc822_header->cc ) as $value) {
-          if ($value->host) escapeshellarg($cc[] = $value->mailbox . "@" . $value->host);
-          else $cc[] = escapeshellarg($value->mailbox . "@" . $GLOBALS['domain']);
-          }
+            if ($value->host) escapeshellarg($cc[] = $value->mailbox . "@" . $value->host);
+            else $cc[] = escapeshellarg($value->mailbox . "@" . $GLOBALS['domain']);
+        }
         foreach (($rfc822_header->bcc ) as $value) {
-          if ($value->host) $bcc[] = escapeshellarg($value->mailbox . "@" . $value->host);
-          else $bcc[] = escapeshellarg($value->mailbox . "@" . $GLOBALS['domain']);
-          }
+            if ($value->host) $bcc[] = escapeshellarg($value->mailbox . "@" . $value->host);
+            else $bcc[] = escapeshellarg($value->mailbox . "@" . $GLOBALS['domain']);
+        }
 
         $parsed_addr = array_merge($to, $cc, $bcc);
 
         $valid_addresses = $parsed_addr;
 
         //fix display under SM 1.4.0
-        $send_to_str = htmlspecialchars ($_POST['send_to']);
-        $send_to_cc_str = htmlspecialchars ($_POST['send_to_cc']);
-        $send_to_bcc_str = htmlspecialchars ($_POST['send_to_bcc']);
+        if (array_key_exists('send_to',$_POST)) {
+            $send_to_str = htmlspecialchars ($_POST['send_to']);
+        } else { $send_to_str = ""; }
+        if (array_key_exists('send_to_cc',$_POST)) {
+            $send_to_cc_str = htmlspecialchars ($_POST['send_to_cc']);
+        } else { $send_to_cc_str = ""; }
+        if (array_key_exists('send_to_bcc',$_POST)) {
+            $send_to_bcc_str = htmlspecialchars ($_POST['send_to_bcc']);
+        } else { $send_to_bcc_str = ""; }
+
         gpg_setglobal ( 'send_to' , $send_to_str );
         gpg_setglobal ( 'send_to_cc' , $send_to_cc_str );
         gpg_setglobal ( 'send_to_bcc' , $send_to_bcc_str );
 
-        //end SM v >=1.3.1 processing
+    //Encrypt to Self Test
+    $encrypt_to_self=getPref($data_dir, $username, 'encrypt_to_self');
+    if ($encrypt_to_self=='true') {
+        $self_encr_email = getPref($data_dir, $username, 'self_encr_email');
+        // add the selected email address to the recipient list
+        if ($self_encr_email) {
+            $self_enc_array=explode(",",$self_encr_email);
+            foreach($self_enc_array as $self_encr_email) {
+                $valid_addresses[] = escapeshellarg($self_encr_email);
+            }
+        } else { if ($debug) { echo '<br>Self Encrypt Email blank, skipping encrypt to self'; $self_encr_array=array(); } }
+        if ($debug) {
+             echo '<BR>encrypt_to_self = true';
+             echo "<BR>Self Encrypt Email: "; print_r($self_enc_array);
+        };
     } else {
-        //parse using SM 1.2.x functions
-
-         //call expand and parse for real
-        $to_addr = expandRcptAddrs(parseAddrs($send_to));
-        $cc_addr = expandRcptAddrs(parseAddrs($send_to_cc));
-        $bcc_addr = expandRcptAddrs(parseAddrs($send_to_bcc));
-        $parsed_addr = array_merge($to_addr, $cc_addr, $bcc_addr);
-
-        //create the $valid_addresses array.
-        foreach ($parsed_addr as $key => $value) {
-            if (eregi("<(.+)@(.+)>", $value, $matches)) {
-                $valid_addresses[] =
-                escapeshellarg($matches[1] . "@" . $matches[2]);
-            }; //end eregi processing
-        }; //end foreach
-        //end SM v 1.2.x processing
+        if ($debug) {
+            echo '<BR>encrypt_to_self = false';
+        };
     };
+
+    //System Alternate Decryption Key Test
+    $trust_system_keyring = getPref($data_dir, $username, 'trust_system_keyring');
+    $systemkeyring = $GLOBALS['GPG_SYSTEM_OPTIONS']['systemkeyring'];
+    if ($systemkeyring=='true' and $trust_system_keyring=='true') {
+        //add system ADK to recipient list if required
+        $use_system_adk=getPref($data_dir, $username, 'use_system_adk');
+        if ($use_system_adk=='true') {
+            $systemadk= $GLOBALS['GPG_SYSTEM_OPTIONS']['systemadk'];
+            if ($systemadk !='') {
+                $valid_addresses[] = escapeshellarg($systemadk);
+            }
+        }; //end system adk
+    }; //end System ADK test
 
     // show the results of the address expansion if debug is on
     if ($debug) {
-        echo "\n<p>Parsed Address List:\n";
+        echo "\n<p>Input Address List:\n";
+        foreach ($parsed_addr as $addr) {
+            echo "<br>Address: ".htmlspecialchars($addr)."\n";
+        }
+        echo "\n</p><p>Parsed Address List:\n";
         foreach ($valid_addresses as $addr) {
-            echo "<br>Address: $addr\n";
+            echo "<br>Address: ".htmlspecialchars($addr)."\n";
         }
         echo "<br>End Address Parsing Debug</p>\n";
     };
 
-
     return $valid_addresses;
 
-};
+};  //end gpg_parse_addr function
 
 /*********************************************************************/
 /*
  * $Log: gpg_encrypt_functions.php,v $
+ * Revision 1.94  2005/10/09 07:08:23  ke
+ * - changed to take signing key from signing key function instead of straight from preference
+ *
+ * Revision 1.93  2005/10/09 01:52:26  brian
+ * - remove last bit of pre SM 1.4.x code.  hanging } caused an error under certain circumstances
+ *   - credit Valcor of SM core team with the patch
+ *
+ * Revision 1.92  2005/07/27 14:07:48  brian
+ * - update copyright to 2005
+ *
+ * Revision 1.91  2005/07/27 13:51:32  brian
+ * - remove all code to handle SM versions older than SM 1.4.0
+ * Bug 262
+ *
+ * Revision 1.90  2004/08/23 07:27:56  ke
+ * -define matches before using to hide warning message
+ * bug 177
+ *
+ * Revision 1.89  2004/08/22 23:29:16  ke
+ * -removed html output from error messages
+ * bug 202
+ *
+ * Revision 1.88  2004/03/24 17:45:55  ke
+ * -changed gpg returncode message to a warning instead of an error
+ *
+ * Revision 1.87  2004/03/15 22:28:45  brian
+ * - Allow multiple recipients in Encrypt to Self list.
+ * - Test System ADK for missing key error
+ * - Test Encrypt to Self recipient(s) for missing key error
+ * - cleaned up indents and comments
+ * Bug 173
+ *
+ * Revision 1.86  2004/03/11 22:50:27  ke
+ * -added check for email address in encr_to_self prefs.  Ignore if not there.
+ *
+ * Revision 1.85  2004/03/11 22:17:54  ke
+ * -removed homedir from main decrypt line
+ * -changed order to trusted key and keyring in command line
+ *
+ * Revision 1.84  2004/03/10 21:23:36  brian
+ * - removed troublesome blank line at end of file
+ *
+ * Revision 1.83  2004/02/20 21:03:29  ke
+ * - patch for Apple Mail with the GPGMail
+ * - provided by Heath Kehoe
+ * Bug 159
+ *
+ * Revision 1.82  2004/02/17 22:34:45  ke
+ * -changed functions to operate properly with new proc_open methods
+ * bug 29
+ *
+ * Revision 1.81  2004/01/19 18:34:00  ke
+ * -E_ALL changes
+ *
+ * Revision 1.80  2004/01/14 23:46:42  ke
+ * -removed duplicate command strings
+ * -changed to use gpg_parse_output within gpg_execute, no longer needed externally
+ *
+ * Revision 1.79  2004/01/13 20:25:45  ke
+ * -changed to use centralized gpg_execute function
+ *
+ * Revision 1.78  2004/01/09 20:30:33  brian
+ * - fixed the $returnvalue parsing in gpg_encrypt
+ *   and gpg_decrypt functions to use error array
+ *
  * Revision 1.77  2003/12/29 23:52:55  brian
  * localized strings discoverd by Alex Lemaresquier during French translation
  *
@@ -740,7 +775,7 @@ function gpg_parse_address ($send_to, $send_to_cc, $send_to_bcc, $debug){
  *   as it produces dups
  *
  * Revision 1.49  2003/10/03 22:35:14  brian
- * re-integrated  patch provided by Magyar Dénes to
+ * re-integrated  patch provided by Magyar Dï¿½es to
  *   strip errors from body in gpg_decrypt
  * Bug 67
  *
@@ -754,11 +789,11 @@ function gpg_parse_address ($send_to, $send_to_cc, $send_to_bcc, $debug){
  * bug 26
  *
  * Revision 1.46  2003/09/17 18:12:38  brian
- * patch submitted by Magyar Dénes breaks decrypt from encrypt on send
+ * patch submitted by Magyar Dï¿½es breaks decrypt from encrypt on send
  * - backing out the ereg_replace commands for now
  *
  * Revision 1.45  2003/09/15 21:07:47  brian
- * added patch submitted by Magyar Dénes to work around:
+ * added patch submitted by Magyar Dï¿½es to work around:
  * - insecure memory warning now controlled by pref file
  * - add \n linefeeds for system OS's that don't process
  *   textarea submits properly in gpg_encrypt

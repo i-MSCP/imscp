@@ -1,6 +1,6 @@
 <meta http-equiv="Content-Type" content="text/plain; charset=ansi">
 <!--
-  * $Id: INSTALL.txt,v 1.6 2004/01/06 19:26:44 brian Exp $
+  * $Id: INSTALL.txt,v 1.9 2006/01/08 02:47:20 ke Exp $
 -->
 
 Pre-Installation Requirements
@@ -159,8 +159,8 @@ Configuration Options
 	This flag sets the system-wide preference to enable passphrase
 	caching.  We set passphrase caching to false by default.  
 	Passphrase caching is very convenient, but requires that an encrypted
-	copy of the passphrase be stoed in the PHP session.  This may be less 
-	secure than forcing the user to retype tier passphrase every time it
+	copy of the passphrase be stored in the PHP session.  This may be less 
+	secure than forcing the user to retype their passphrase every time it
 	is needed.
 	To enable passphrase caching, set this option to true in 
 	gpg_local_prefs.txt.
@@ -174,7 +174,7 @@ Configuration Options
 	This setting controls the system-wide preference to show the compose
 	window with sign on send checked upon loading.  This is set to false
 	by default, but can be overridden by setting to true in gpg_local_prefs.txt. 
-	Each user also has the ability to indicate this in thier personal 
+	Each user also has the ability to indicate this in their personal 
 	preferences.
 
 	systemencrypt_on_send=false
@@ -182,6 +182,36 @@ Configuration Options
 	window with Encrypt on Send checked by default.  This is set to false
 	by default, but can be overridden by setting to true in
 	gpg_local_prefs.txt or by user preferences.
+
+	expose_compose_buttons=true
+	This setting controls whether or not the "Encrypt Now" and the
+	"Encrypt&Sign Now" buttons are displayed when a user is composing an 
+	email. The "Encrypt on Send" and "Sign on Send" checkboxes are not
+	affected by this option.
+
+	force_sign_on_send=false
+	force_encrypt_on_send=false
+	These settings force all users to encrypt or sign all messages.
+	This option should only be used if you are completely certain
+	that you need this feature. If you set force_encrypt_on_send to true,
+	users will not be able to send email to addresses for which they do
+	not have a public key. If you set force_sign_on_send to true, the
+	"Encrypt Now" button will be hidden since that button does not sign
+	the message. If you really want to make sure that a user never sends
+	unencrypted or unsigned content then you should set expose_compose_buttons to
+	false. The reason for this is that once a user encrypts a message using
+	the "Encrypt Now" or "Encrypt&Sign Now" buttons, the message will not
+	be encrypted again. However, a user could add text or attachments to a
+	message after using the "Encrypt Now" or "Encrypt&Sign Now" buttons.
+
+	systemparse_openpgp_header=true
+	systemgenerate_openpgp_header=true
+	The OpenPGP header allows users the oppportunity to advertise their key
+	id and optionally a url where their key may be fetched.  If you want to
+	prevent users from generating a header set
+	systemgenerate_openpgp_header=false.  If you want to prevent the system
+	from parsing headers set systemparse_openpgp_header=false.  There is a
+	per-user option for disabling this too.
 
 	debug=0
 	This sets the debug level for the entire plugin.  
@@ -205,6 +235,19 @@ Configuration Options
 <!--
  /**
   * $Log: INSTALL.txt,v $
+  * Revision 1.9  2006/01/08 02:47:20  ke
+  * - committed patch from Evan <umul@riseup.net> for OpenPGP header support in squirrelmail
+  * - adds system preferences and user options to control parsing and adding of OpenPGP Headers on emails
+  * - slightly tweaked to use the key associated with the identity, when identities with signing keys are enabled
+  *
+  * Revision 1.8  2004/08/16 13:44:29  joelm
+  * -added two config options to allow a sys admin to force users to always sign
+  * or encrypt email
+  * Bug 83
+  *
+  * Revision 1.7  2004/07/17 21:13:44  joelm
+  * Fix three typos
+  *
   * Revision 1.6  2004/01/06 19:26:44  brian
   * - spell check
   * - update to reflect current

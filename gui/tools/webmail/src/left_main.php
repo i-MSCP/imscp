@@ -611,10 +611,10 @@ echo html_tag ( 'div',
 	 			html_tag ( 'td',
 				 	html_tag ( 'div',
 					 	html_tag ( 'p',
-							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=personal\" target=\"right\">"._("Change Settings")."</a><br />" .
-							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=folder\" target=\"right\">"._("Folder Preferences")."</a><br />" .
-							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/filters/options.php\" target=\"right\">"._("Message Filtering")."</a><br />" .
-							"&nbsp;&nbsp;<img src=\"../images/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/mail_fetch/options.php\" target=\"right\">"._("Remote POP")."</a><br><br />"
+							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=personal\" target=\"right\">"._("Change Settings")."</a><br />" .
+							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../src/options.php?optpage=folder\" target=\"right\">"._("Folder Preferences")."</a><br />" .
+							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/filters/options.php\" target=\"right\">"._("Message Filtering")."</a><br />" .
+							"&nbsp;&nbsp;<img src=\"../skins/omega/arrow.png\" align=\"absmiddle\" vspace=\"1\">&nbsp;&nbsp;<a href=\"../plugins/mail_fetch/options.php\" target=\"right\">"._("Remote POP")."</a><br><br />"
 						),
 						"left", NULL, "id=\"options\""
 					 ),
