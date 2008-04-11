@@ -759,33 +759,38 @@ $motd = "";
  */
 // Add list of enabled plugins here
 
-//$plugins[0] = 'sqclock'; //not used
-$plugins[1] = 'show_user_and_ip';
-$plugins[2] = 'filters';
-$plugins[3] = 'mail_fetch';
+$plugins[0] = 'abook_take';
+$plugins[1] = 'administrator';
+$plugins[2] = 'bookmarks';
+$plugins[3] = 'bug_report';
 $plugins[4] = 'calendar';
-$plugins[5] = 'abook_take';
-$plugins[6] = 'administrator';
-$plugins[7] = 'squirrelspell';
-$plugins[8] = 'translate';
-$plugins[9] = 'msg_flags';
-$plugins[10] = 'bookmarks';
-$plugins[11] = 'compatibility';
-$plugins[12] = 'smallcal';
-$plugins[13] = 'delete_move_next';
-$plugins[14] = 'preview_pane';
-$plugins[15] = 'html_mail';
-$plugins[16] = 'newmail';
-$plugins[17] = 'spamcop';
+//$plugins[5] = 'calendar_sql_backend'; //enable and configure if needed
+$plugins[6] = 'compatibility';
+$plugins[7] = 'delete_move_next';
+//$plugins[9] = 'disk_quota';
+$plugins[10] = 'filters';
+$plugins[11] = 'fortune';
+//$plugins[12] = 'gpg'; //check gpg config details before enabling
+$plugins[13] = 'html_mail';
+$plugins[14] = 'info';
+$plugins[15] = 'listcommands';
+$plugins[16] = 'login_auto';
+$plugins[17] = 'mail_fetch';
 $plugins[18] = 'message_details';
-//$plugins[19] = 'gpg'; //check gpg config details before enabling
-$plugins[20] = 'view_as_html';
+$plugins[19] = 'msg_flags';
+$plugins[20] = 'newmail';
 $plugins[21] = 'notes';
-//$plugins[22] = 'calendar_sql_backend'; //enable and configure if needed
-$plugins[23] = 'login_auto';
-$plugins[24] = 'todo';
-// $plugins[25] = 'check_quota'; //only works on some servers
-
+$plugins[22] = 'preview_pane';
+$plugins[23] = 'pupdate';
+$plugins[24] = 'sent_subfolders';
+$plugins[25] = 'show_user_and_ip';
+$plugins[26] = 'smallcal';
+$plugins[27] = 'spamcop';
+$plugins[28] = 'squirrelspell';
+//$plugins[29] = 'test';
+$plugins[30] = 'todo';
+$plugins[31] = 'translate';
+$plugins[32] = 'view_as_html';
 
 /*** Database ***/
 /**

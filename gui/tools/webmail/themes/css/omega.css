@@ -190,7 +190,7 @@ frame {
 
 .message_toggle_bar {
 
-	background: url(../../skins/omega/left_inbox_bar.gif);
+	background-image: url(../../skins/omega/left_inbox_bar.gif);
 	background-repeat: repeat-x;
 }
 
@@ -201,7 +201,7 @@ frame {
 
 /** Login **/
 #container {
-	background-image: url(../../skins/omega/images/bg.jpg);
+	background-image: url(../../skins/omega/bg.jpg);
 	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: center left;
