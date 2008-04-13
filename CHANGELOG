@@ -1,6 +1,14 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-13 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1185: 2 postfix parameters no longer/not existing
+	- GUI:
+		* Fixed: orderpanel layout
+	- SETUP:
+		* Fixed #1172: Regenerate proftpd config fails in update
+
 2008-04-11 Benedikt Heintel
 	- TOOLS:
 		* Cleanup and Update of SquirrelMail

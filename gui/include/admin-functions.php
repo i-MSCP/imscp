@@ -2250,8 +2250,8 @@ SQL_QUERY;
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-  <link href="../{$theme}/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
-  <title>$title</title>
+  <link href="../themes/{$theme}/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css">
+  <title>{$title}</title>
  </head>
  <body>
   <center>

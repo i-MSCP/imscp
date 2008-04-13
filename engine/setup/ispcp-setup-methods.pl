@@ -1580,6 +1580,20 @@ sub setup_ftpd {
 		($rs, $cfg_tpl) = get_tpl($cfg_dir, 'proftpd.conf');
 		return $rs if ($rs != 0);
 
+		#
+		# If we're doing an update, we haven't yet asked the user for the db_ftp user and password,
+		# so we do this here, to get these values.
+		#
+
+		if (!defined($main::ua{'db_ftp_user'}) || !defined($main::ua{'db_ftp_password'})) {
+			$rs = ask_db_ftp_user();
+			return $rs if ($rs != 0);
+
+			do {
+				$rs = ask_db_ftp_password();
+			} while ($rs == 1);
+		}
+
 		my %tag_hash = (
 						'{HOST_NAME}' => $main::cfg{'SERVER_HOSTNAME'},
 						'{DATABASE_NAME}' => $main::db_name,

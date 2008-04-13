@@ -21,7 +21,6 @@
 # Postfix directory settings; These are critical for normal Postfix MTA functionallity
 command_directory            = /usr/local/sbin
 daemon_directory             = /usr/local/libexec/postfix
-program_directory            = /usr/local/libexec/postfix
 
 # Some common configuration parameters
 inet_interfaces              = all
@@ -77,7 +76,6 @@ virtual_gid_maps             = static:{MTA_MAILBOX_GID}
 
 # SASL paramters
 smtpd_sasl_auth_enable       = yes
-smtpd_sasl2_auth_enable      = yes
 smtpd_sasl_security_options  = noanonymous
 smtpd_sasl_local_domain      =
 broken_sasl_auth_clients     = yes
