@@ -10,6 +10,7 @@ dev-libs/apr-util
 dev-libs/cyrus-sasl
 dev-libs/geoip
 dev-libs/libIDL
+dev-libs/openssl
 dev-perl/BerkeleyDB
 dev-perl/Crypt-Blowfish
 dev-perl/Crypt-PasswdMD5
@@ -30,12 +31,15 @@ mail-filter/spamassassin
 mail-mta/postfix
 media-libs/gd
 media-libs/jpeg
+net-dns/libidn 
+net-firewall/iptables 
 net-dns/bind
 net-dns/bind-tools
 net-ftp/proftpd
 net-libs/courier-authlib
 net-mail/courier-imap
 net-misc/curl
+sys-boot/grub 
 sys-devel/gettext
 www-apache/mod_fcgid
 www-servers/apache
