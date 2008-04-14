@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-14 Jochen Manz
+	- CONFIGS
+		* Cleaned up Gentoos needed packages
+
 2008-04-13 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1185: 2 postfix parameters no longer/not existing
