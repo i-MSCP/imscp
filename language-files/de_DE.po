@@ -13,6 +13,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
+"X-Poedit-Language: GermanGermany\n"
+"X-Poedit-Country: GERMANY\n"
 
 #. Please ignore this entry
 msgid "encoding"
