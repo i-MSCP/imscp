@@ -39,7 +39,6 @@ net-ftp/proftpd
 net-libs/courier-authlib
 net-mail/courier-imap
 net-misc/curl
-sys-boot/grub 
 sys-devel/gettext
 www-apache/mod_fcgid
 www-servers/apache
