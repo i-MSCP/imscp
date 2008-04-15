@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ispCP ? Home Page is at:
+# The ispCP ω Home Page is at:
 #
 #    http://isp-control.net
 #

@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# ispCP ? (OMEGA) a Virtual Hosting Control Panel
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
 # Copyright (c) 2006-2008 by isp Control Panel
@@ -25,7 +25,7 @@
 #    http://www.mozilla.org/MPL/MPL-1.1.html
 #
 #
-# The ispCP ? Home Page is at:
+# The ispCP ω Home Page is at:
 #
 #    http://isp-control.net
 #
@@ -52,7 +52,7 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/postfix
 	cp -R ./working $(SYSTEM_CONF)/postfix
 	cp -R ./ispcp $(SYSTEM_CONF)/postfix
-	
+
 	cp -R ./ispcp $(ROOT_POSTFIX_CONF)
 
 uninstall:
