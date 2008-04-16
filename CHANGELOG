@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-16 Benedikt Heintel
+	- SETUP:
+		* Fixed #1189: Bug in ispcp-setup
+
 2008-04-14 Jochen Manz
 	- CONFIGS
 		* Cleaned up Gentoos needed packages

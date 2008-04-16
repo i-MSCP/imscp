@@ -43,6 +43,8 @@ sub ask_hostname {
 	($rs, $hostname) = get_sys_hostname();
 	return $rs if ($rs != 0);
 
+	my $qmsg = "\n\tPlease enter a fully qualified hostname. [$hostname]: ";
+	print STDOUT $qmsg;
 	$rdata = readline(\*STDIN); chop($rdata);
 
 	if (!defined($rdata) || $rdata eq '') {
