@@ -1,34 +1,34 @@
 /var/log/httpd/users/*.log {
-	weekly
-	missingok
-	rotate 52
-	compress
-	delaycompress
-	notifempty
-	create 640 root adm
-	sharedscripts
-	prerotate
-		/srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
-	endscript
-	postrotate
-	for i in `seq 1 10`; do
-		if [ -f /var/run/httpd.pid ]; then
-			/etc/init.d/httpd stop > /dev/null
-			sleep 5
-			/etc/init.d/httpd start > /dev/null
-		fi
-	done
-	endscript
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  prerotate
+    /srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
+  endscript
+  postrotate
+  for i in `seq 1 10`; do
+    if [ -f /var/run/httpd.pid ]; then
+      /etc/init.d/httpd stop > /dev/null
+      sleep 5
+      /etc/init.d/httpd start > /dev/null
+    fi
+  done
+  endscript
 }
 
 /var/log/httpd/backup/*.log.perv {
-	size 5M
-	missingok
-	rotate 5
-	compress
-	delaycompress
-	notifempty
-	create 640 root adm
+  size 5M
+  missingok
+  rotate 5
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
 }
 
 /var/log/xferlog {

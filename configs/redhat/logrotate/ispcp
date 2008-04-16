@@ -1,33 +1,33 @@
 /var/log/apache2/users/*.log {
-	weekly
-	missingok
-	rotate 52
-	compress
-	delaycompress
-	notifempty
-	create 640 root adm
-	sharedscripts
-	prerotate
-		/var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
-	endscript
-	postrotate
-	for i in `seq 1 10`; do
-		if [ -f /var/run/apache2.pid ]; then
-			/etc/init.d/apache2 stop > /dev/null
-			sleep 5
-			/etc/init.d/apache2 start > /dev/null
-		fi
-	done
-	endscript
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  prerotate
+    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+  endscript
+  postrotate
+  for i in `seq 1 10`; do
+    if [ -f /var/run/apache2.pid ]; then
+      /etc/init.d/apache2 stop > /dev/null
+      sleep 5
+      /etc/init.d/apache2 start > /dev/null
+    fi
+  done
+  endscript
 }
 
 /var/log/apache2/backup/*.log.perv {
-	size 5M
-	missingok
-	rotate 5
-	compress
-	delaycompress
-	notifempty
+  size 5M
+  missingok
+  rotate 5
+  compress
+  delaycompress
+  notifempty
 	create 640 root adm
 }
 
