@@ -1,5 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-04-17 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1193: Typo in engine/ispcp-mbox-mngr
+	- GUI:
+		* Fixed #1192: Typo in gui/admin/settings.php
+	- SETUP:
+		* Fixed #1191: MySQL password auto-generation for daemons shouldn't contain '#'
 
 2008-04-16 Benedikt Heintel
 	- CONFIGS:

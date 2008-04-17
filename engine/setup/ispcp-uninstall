@@ -552,11 +552,11 @@ sub uninstall_httpd {
     $rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf");
 
     return $rs if ($rs != 0);
+	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load") {
+	    $rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
 
-    $rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
-
-    return $rs if ($rs != 0);
-
+	    return $rs if ($rs != 0);
+	}
     sleep(5);
 
     sys_command_rs("$main::cfg{'CMD_HTTPD'} start &> /tmp/ispcp-uninstall-services.log");

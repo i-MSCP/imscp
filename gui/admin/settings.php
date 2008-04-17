@@ -208,7 +208,7 @@ $tpl->assign(
 		'TR_LOSTPASSWORD_TIMEOUT' => tr('Activation link expire time (minutes)'),
 		'TR_PASSWORD_SETTINGS'=> tr('Password settings') ,
 		'TR_PASSWD_STRONG'=> tr('Use strong Passwords') ,
-		'TR_PASSWD_CHARS' => tr('Password lenght'),
+		'TR_PASSWD_CHARS' => tr('Password length'),
 		'TR_BRUTEFORCE' => tr('Bruteforce detection'),
 		'TR_BRUTEFORCE_BETWEEN' => tr('Block time between logins'),
 		'TR_BRUTEFORCE_MAX_LOGIN' => tr('Max number of login attempts'),

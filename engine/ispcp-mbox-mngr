@@ -1796,7 +1796,7 @@ sub mbox_del_mta_cfg_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $mailboxes_cfg = $main::cgf{'MTA_VIRTUAL_MAILBOX_HASH'};
+    my $mailboxes_cfg = $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'};
 
     my $mailboxes_working_cfg = "$working_dir/mailboxes";
 
