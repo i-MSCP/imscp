@@ -1,5 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2008-04-14 Jochen Manz
+	- CONFIGS:
+		* Corrected gentoo postfix main.cnf	
+	- SETUP:
+		* Fixed #1204: wrong configs-Path in Makefile.ubuntu (Install doesn't work)
+
 2008-04-17 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1193: Typo in engine/ispcp-mbox-mngr
@@ -15,7 +22,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1189: Bug in ispcp-setup
 
 2008-04-14 Jochen Manz
-	- CONFIGS
+	- CONFIGS:
 		* Cleaned up Gentoos needed packages
 
 2008-04-13 Benedikt Heintel
