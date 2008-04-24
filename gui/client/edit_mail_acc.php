@@ -65,45 +65,48 @@ SQL_QUERY;
 	} else {
 		$mail_acc = $rs->fields['mail_acc'];
 		$domain_id = $rs->fields['domain_id'];
-		$mail_type = $rs->fields['mail_type'];
+		$mail_type_list = $rs->fields['mail_type'];
 		$mail_forward = $rs->fields['mail_forward'];
 		$sub_id = $rs->fields['sub_id'];
-		if ($mail_type == MT_NORMAL_MAIL) {
-			$mtype = 1;
-			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-			$tmp1 = $res1->FetchRow(0);
-			$maildomain = $tmp1['domain_name'];
-		} elseif ($mail_type == MT_NORMAL_FORWARD) {
-			$mtype = 4;
-			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-			$tmp1 = $res1->FetchRow(0);
-			$maildomain = $tmp1['domain_name'];
-		} elseif ($mail_type == MT_ALIAS_MAIL) {
-			$mtype = 2;
-			$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
-			$tmp1 = $res1->FetchRow(0);
-			$maildomain = $tmp1['alias_name'];
-		} elseif ($mail_type == MT_ALIAS_FORWARD) {
-			$mtype = 5;
-			$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
-			$tmp1 = $res1->FetchRow();
-			$maildomain = $tmp1['alias_name'];
-		} elseif ($mail_type == MT_SUBDOM_MAIL) {
-			$mtype = 3;
-			$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
-			$tmp1 = $res1->FetchRow();
-			$maildomain = $tmp1['subdomain_name'];
-			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-			$tmp1 = $res1->FetchRow(0);
-			$maildomain = $maildomain . "." . $tmp1['domain_name'];
-		} elseif ($mail_type == MT_SUBDOM_FORWARD) {
-			$mtype = 6;
-			$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
-			$tmp1 = $res1->FetchRow();
-			$maildomain = $tmp1['subdomain_name'];
-			$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
-			$tmp1 = $res1->FetchRow(0);
-			$maildomain = $maildomain . "." . $tmp1['domain_name'];
+
+		foreach (explode(',', $mail_type_list) as $mail_type) {
+			if ($mail_type == MT_NORMAL_MAIL) {
+				$mtype[] = 1;
+				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$tmp1 = $res1->FetchRow(0);
+ 				$maildomain = $tmp1['domain_name'];
+			} else if ($mail_type == MT_NORMAL_FORWARD) {
+				$mtype[] = 4;
+				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$tmp1 = $res1->FetchRow(0);
+				$maildomain = $tmp1['domain_name'];
+			} else if ($mail_type == MT_ALIAS_MAIL) {
+				$mtype[] = 2;
+				$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
+				$tmp1 = $res1->FetchRow(0);
+				$maildomain = $tmp1['alias_name'];
+			} elseif ($mail_type == MT_ALIAS_FORWARD) {
+				$mtype[] = 5;
+				$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
+				$tmp1 = $res1->FetchRow();
+				$maildomain = $tmp1['alias_name'];
+			} elseif ($mail_type == MT_SUBDOM_MAIL) {
+				$mtype[] = 3;
+				$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
+ 				$tmp1 = $res1->FetchRow();
+				$maildomain = $tmp1['subdomain_name'];
+				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$tmp1 = $res1->FetchRow(0);
+				$maildomain = $maildomain . "." . $tmp1['domain_name'];
+			} elseif ($mail_type == MT_SUBDOM_FORWARD) {
+ 				$mtype[] = 6;
+				$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
+				$tmp1 = $res1->FetchRow();
+				$maildomain = $tmp1['subdomain_name'];
+				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$tmp1 = $res1->FetchRow(0);
+				$maildomain = $maildomain . "." . $tmp1['domain_name'];
+			}
 		}
 
 		$mail_forward = $rs->fields['mail_forward'];
@@ -113,17 +116,31 @@ SQL_QUERY;
 		}
 		$mail_acc = decode_idna($mail_acc);
 		$maildomain = decode_idna($maildomain);
-		$tpl->assign(array('EMAIL_ACCOUNT' => $mail_acc . "@" . $maildomain,
-				'FORWARD_LIST' => $mail_forward,
-				'MTYPE' => $mtype,
-				'MAIL_ID' => $mail_id));
-		if ($mail_forward === '_no_') {
-			$tpl->assign(array('ACTION' => "update_pass"));
-			$tpl->assign('FORWARD_MAIL', '');
+		$tpl->assign(
+				array(
+					'EMAIL_ACCOUNT' => $mail_acc . "@" . $maildomain,
+					'FORWARD_LIST' => str_replace(',', "\n", $mail_forward),
+					'MTYPE' => implode(',', $mtype),
+					'MAIL_TYPE' => $mail_type_list,
+					'MAIL_ID' => $mail_id
+					)
+				);
+		if (count($mtype) > 1) {
+			$tpl->assign(
+					array(
+						'ACTION' => 'update_pass,update_forward',
+						'FORWARD_MAIL' => '',
+						'FORWARD_MAIL_CHECKED' => 'checked="checked"'
+						)
+					);
 			$tpl->parse('NORMAL_MAIL', '.normal_mail');
 		} else {
-			$tpl->assign(array('ACTION' => "update_forward"));
-			$tpl->assign('NORMAL_MAIL', '');
+			$tpl->assign(
+					array(
+						'ACTION' => 'update_forward',
+						'NORMAL_MAIL' => ''
+						)
+					);
 			$tpl->parse('FORWARD_MAIL', '.forward_mail');
 		}
 	}
@@ -134,8 +151,15 @@ function update_email_pass($sql) {
 		return;
 	}
 	if ($_POST['uaction'] != 'update_pass') {
-		return;
-	}
+		if (preg_match('/update_pass/', $_POST['uaction']) == 0) {
+			return;
+		}
+		if (preg_match('/update_forward/', $_POST['uaction']) == 1 || isset($_POST['mail_forward'])) {
+			// The user only wants to update the forward list, not the password
+			if ($_POST['pass'] === '' || $_POST['pass_rep'] === '') {
+				return;
+			}
+		}
 
 	$pass = escapeshellcmd($_POST['pass']);
 	$pass_rep = escapeshellcmd($_POST['pass_rep']);
@@ -170,12 +194,14 @@ SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($pass, $status, $mail_id));
 
-		send_request();
-		set_page_message(tr("Mail were updated successfully!"));
 		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account");
 
-		header("Location: email_accounts.php");
-		die();
+		if (preg_match('/update_forward/', $_POST['uaction']) == 0 && !isset($_POST['mail_forward'])) {
+			send_request();
+			set_page_message(tr("Mail were updated successfully!"));
+			header("Location: email_accounts.php");
+			die();
+		}
 	}
 }
 
@@ -183,7 +209,7 @@ function update_email_forward(&$tpl, &$sql) {
 	if (!isset($_POST['uaction'])) {
 		return;
 	}
-	if ($_POST['uaction'] != 'update_forward') {
+	if (preg_match('/update_forward/', $_POST['uaction']) == 0 && !isset($_POST['mail_forward'])) {
 		return;
 	}
 
@@ -192,19 +218,44 @@ function update_email_forward(&$tpl, &$sql) {
 	$forward_list = clean_input($_POST['forward_list']);
 	$mail_accs = array();
 
-	$faray = preg_split ("/[\n,]+/", $forward_list);
+	if (isset($_POST['mail_forward'])) {
+		$faray = preg_split ("/[\n,]+/", $forward_list);
 
-	foreach ($faray as $value) {
-		$value = trim($value);
-		if (!chk_email($value) && $value !== '') {
-			/* ERR .. strange :) not email in this line - warrning */
-			set_page_message(tr("Mail forward list error!"));
-			return;
-		} else if ($value === '') {
-			set_page_message(tr("Mail forward list error!"));
-			return;
+		foreach ($faray as $value) {
+			$value = trim($value);
+			if (!chk_email($value) && $value !== '') {
+				/* ERR .. strange :) not email in this line - warrning */
+				set_page_message(tr("Mail forward list error!"));
+				return;
+			} else if ($value === '') {
+				set_page_message(tr("Mail forward list error!"));
+				return;
+			}
+			$mail_accs[] = $value;
 		}
-		$mail_accs[] = $value;
+
+		$forward_list = implode(',', $mail_accs);
+
+		// Check if the mail type doesn't contain xxx_forward and append it
+		if (preg_match('/_forward/', $_POST['mail_type']) == 0) {
+			// Get mail account type and append the corresponding xxx_forward
+			if ($_POST['mail_type'] == MT_NORMAL_MAIL) {
+				$mail_type = $_POST['mail_type'] . ',' . MT_NORMAL_FORWARD;
+			} else if ($_POST['mail_type'] == MT_ALIAS_MAIL) {
+				$mail_type = $_POST['mail_type'] . ',' . MT_ALIAS_FORWARD;
+			} else if ($_POST['mail_type'] == MT_SUBDOM_MAIL) {
+				$mail_type = $_POST['mail_type'] . ',' . MT_SUBDOM_FORWARD;
+			}
+		} else {
+			// The mail type already contains xxx_forward, so we can use $_POST['mail_type']
+			$mail_type = $_POST['mail_type'];
+		}
+	} else {
+		$forward_list = '_no_';
+		// Check if mail type was a forward type and remove it
+		if (preg_match('/_forward/', $_POST['mail_type']) == 1) {
+			$mail_type = preg_replace('/,[a-z]+_forward$/', '', $_POST['mail_type']);
+		}
 	}
 
 	global $cfg;
@@ -213,19 +264,21 @@ function update_email_forward(&$tpl, &$sql) {
 	check_for_lock_file();
 
 	$query = <<<SQL_QUERY
-          update
-              mail_users
-          set
-              mail_forward = ?,
-              status = ?
-          where
-              mail_id = ?
+          UPDATE
+              `mail_users`
+          SET
+              `mail_forward` = ?,
+              `mail_type` = ?,
+              `status` = ?
+          WHERE
+              `mail_id` = ?
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array(implode(',', $mail_accs), $status, $mail_id));
+	$rs = exec_query($sql, $query, array($forward_list, $mail_type, $status, $mail_id));
 
 	send_request();
 	write_log($_SESSION['user_logged'] . ": change mail forward: $mail_account");
+	set_page_message(tr("Mail were updated successfully!"));
 	header("Location: email_accounts.php");
 	die();
 }
@@ -259,6 +312,9 @@ $tpl->assign(array('TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
 		'TR_SAVE' => tr('Save'),
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_FORWARD_MAIL' => tr('Forward mail'),
+		'TR_FORWARD_TO' => tr('Forward to'),
+		'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
 		'TR_EDIT' => tr('Edit')));
 
 gen_page_message($tpl);

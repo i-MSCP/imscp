@@ -769,18 +769,18 @@ sub arpl_msgr_engine {
 
         		if ($pt == 1) {
 
-	            	$sql = "select mail_auto_respond from mail_users LEFT JOIN domain ON mail_users.domain_id=domain.domain_id where mail_acc = '$user' and domain_name = '$edmn' and sub_id=0;";
+	            	$sql = "select mail_auto_respond_text from mail_users LEFT JOIN domain ON mail_users.domain_id=domain.domain_id where mail_acc = '$user' and mail_auto_respond=1 and domain_name = '$edmn' and sub_id=0;";
 
 	    	    }
 			elsif ($pt == 2) {
 
-				$sql = "select mail_auto_respond from mail_users LEFT JOIN domain_aliasses ON mail_users.sub_id=domain_aliasses.alias_id where mail_acc = '$user' and alias_name = '$edmn';";
+				$sql = "select mail_auto_respond_text from mail_users LEFT JOIN domain_aliasses ON mail_users.sub_id=domain_aliasses.alias_id where mail_acc = '$user' and mail_auto_respond=1 and alias_name = '$edmn';";
 
 	       	}
 
 		       elsif ($pt == 3) {
 
-					$sql = "select mail_auto_respond from mail_users LEFT JOIN subdomain ON mail_users.sub_id=subdomain.subdomain_id LEFT JOIN domain ON subdomain.domain_id=domain.domain_id where mail_acc = '$user' and (CONCAT(subdomain_name,'.',domain_name) = '$edmn');";
+					$sql = "select mail_auto_respond_text from mail_users LEFT JOIN subdomain ON mail_users.sub_id=subdomain.subdomain_id LEFT JOIN domain ON subdomain.domain_id=domain.domain_id where mail_acc = '$user' and mail_auto_respond=1 and (CONCAT(subdomain_name,'.',domain_name) = '$edmn');";
 
 		       }
 
@@ -794,7 +794,7 @@ sub arpl_msgr_engine {
 		        $ref = @$ref[0];
 				my $auto_message = @$ref[0];
 
-				if ($auto_message ne '_no_' && length($auto_message) > 0) {
+				if (length($auto_message) > 0) {
 
 					if ($name) {
 						$mail_to = "\"".$name."\" "."<".$to_ma->address.">";

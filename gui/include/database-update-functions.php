@@ -172,14 +172,24 @@ function _databaseUpdate_2() {
 } // end of _databaseUpdate_2
 
 /*
- * Fix for Ticket #1139 http://www.isp-control.net/ispcp/ticket/1139
- * written by Benedikt Heintel, 2008-03-27
+ * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139 (Benedikt Heintel, 2008-03-27)
+ * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196 (Benedikt Heintel, 2008-04-23)
  */
 function _databaseUpdate_3() {
 	global $sql; // we need the gloabl database connection
 
-	$query = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment";
-	$sql->Execute($query);
+	// Ticket #1139
+	$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
+
+	// Ticket #1196
+	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
+	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` ADD `mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`;";
+	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_type` `mail_type` varchar(30);";
+
+	// go for it: run them all
+	foreach($sqlUpd as $s) {
+		$sql->Execute($s);
+	}
 
 } // end of _databaseUpdate_3
 ?>

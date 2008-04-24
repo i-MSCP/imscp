@@ -3,9 +3,10 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2007 by ispCP | http://isp-control.net
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
  * @link 		http://isp-control.net
- * @author 		ispCP Team (2007)
+ * @author 		ispCP Team
  *
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
@@ -65,16 +66,16 @@ $query = "select mail_acc,domain_id,sub_id,mail_type from mail_users where mail_
 $res = exec_query($sql, $query, array($delete_id));
 $data = $res->FetchRow();
 
-if ($data['mail_type'] == MT_NORMAL_MAIL || $data['mail_type'] == MT_NORMAL_FORWARD) {
+if (preg_match(MT_NORMAL_MAIL, $data['mail_type']) || preg_match(MT_NORMAL_FORWARD, $data['mail_type'])) {
 	/* mail to normal domain */
 	// global $domain_name;
 	$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
-} else if ($data['mail_type'] == MT_ALIAS_MAIL || $data['mail_type'] == MT_ALIAS_FORWARD) {
+} else if (preg_match(MT_ALIAS_MAIL, $data['mail_type']) || preg_match(MT_ALIAS_FORWARD, $data['mail_type'])) {
 	/* mail to domain alias*/
 	$res_tmp = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
-} else if ($data['mail_type'] == MT_SUBDOM_MAIL || $data['mail_type'] == MT_SUBDOM_FORWARD) {
+} else if (preg_match(MT_SUBDOM_MAIL, $data['mail_type']) || preg_match(MT_SUBDOM_FORWARD, $data['mail_type'])) {
 	/* mail to subdomain*/
 	$res_tmp = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();

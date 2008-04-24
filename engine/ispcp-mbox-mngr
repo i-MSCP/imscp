@@ -274,6 +274,16 @@ sub mbox_add_mta_cfg_autorespond_data {
 
     my $mail_autorespond = @$mbox_data[8];
 
+	my $mail_forward_list = undef;
+
+	# create a mail forward list
+
+    if ($mail_forward ne '_no_') {
+
+    	$mail_forward_list = ',' . $mail_forward;
+
+    }
+
 
     my $conf_dir = $main::cfg{'CONF_DIR'};
 
@@ -299,7 +309,6 @@ sub mbox_add_mta_cfg_autorespond_data {
 
     my $transport_backup_cfg = "$backup_dir/transport.$timestamp";
 
-
     ($rs, $sys) = get_file($aliases_cfg);
 
     return $rs if ($rs != 0);
@@ -316,14 +325,40 @@ sub mbox_add_mta_cfg_autorespond_data {
 
     return $rs if ($rs != 0);
 
-
     do {
 
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+        my ($hash_key, $hash_value, $dmn_name) = (undef, undef, undef);
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+        if ($mail_type =~ /^normal_mail.*/) {
 
-        my $hash_value = "$mail_acc\@$dmn_name,$mail_acc\@ispcp-arpl.$dmn_name";
+        	$dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+    	    $hash_key = "$mail_acc\@$dmn_name";
+
+	        $hash_value = "$mail_acc\@$dmn_name$mail_forward_list,$mail_acc\@ispcp-arpl.$dmn_name";
+
+        } elsif ($mail_type =~ /^alias_mail.*/) {
+
+        	$dmn_name = $main::als_id_name{$mail_sub_id};
+
+        	$hash_key = "$mail_acc\@$dmn_name";
+
+        	$hash_value = "$mail_acc\@$dmn_name$mail_forward_list,$mail_acc\@ispcp-arpl.$dmn_name";
+
+        } elsif ($mail_type  =~ /^subdom_mail.*/) {
+
+        	my $sub_pref = $main::sub_id_name{$mail_sub_id};
+
+        	$dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+        	my $sub_name = "$sub_pref.$dmn_name";
+
+        	$hash_key = "$mail_acc\@$sub_name";
+
+        	$hash_value = "$mail_acc\@$sub_name$mail_forward_list,$mail_acc\@ispcp-arpl.$sub_name";
+
+        	$dmn_name = $sub_name;
+        }
 
 		$rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
 
@@ -358,105 +393,29 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_mail');
+    } if ($mail_type =~ /^normal_mail.*/ || $mail_type =~ /^alias_mail.*/ || $mail_type  =~ /^subdom_mail.*/);
 
     do {
 
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
+        my ($hash_key, $hash_value, $dmn_name) = (undef, undef, undef);
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+        if ($mail_type =~ /.*normal_forward.*/) {
 
-        my $hash_value = "$mail_acc\@$dmn_name,$mail_acc\@ispcp-arpl.$dmn_name";
+        	$dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-		$rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+        	$hash_key = "$mail_acc\@$dmn_name";
 
-		return $rs if ($rs != 0);
+        	$hash_value = undef;
 
-        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
+        } elsif ($mail_type =~ /.*alias_forward.*/) {
 
-        return $rs if ($rs != 0);
+        	$dmn_name = $main::als_id_name{$mail_sub_id};
 
-        ($rs, $working) = get_file($aliases_working_cfg);
+        	$hash_key = "$mail_acc\@$dmn_name";
 
-        return $rs if ($rs != 0);
+        	$hash_value = undef;
 
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $hash_key = "ispcp-arpl.$dmn_name";
-
-        $hash_value = "ispcp-arpl:";
-
-        $rs = set_mta_hash_value($transport_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'alias_mail');
-
-    do {
-
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $sub_name = "$sub_pref.$dmn_name";
-
-        my $hash_key = "$mail_acc\@$sub_name";
-
-        my $hash_value = "$mail_acc\@$sub_name,$mail_acc\@ispcp-arpl.$sub_name";
-
-		$rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
-
-		return $rs if ($rs != 0);
-
-        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $hash_key = "ispcp-arpl.$sub_name";
-
-        $hash_value = "ispcp-arpl:";
-
-        $rs = set_mta_hash_value($transport_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'subdom_mail');
-
-    do {
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-        my $hash_value = undef;
+        }
 
         ($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
 
@@ -502,61 +461,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_forward');
-
-    do {
-
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-        my $hash_value = undef;
-
-        ($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-        if ($rdata eq '') {
-
-            $hash_value = "$mail_acc\@$dmn_name,$mail_acc\@ispcp-arpl.$dmn_name";
-
-        } else {
-
-            $hash_value = $rdata.",$mail_acc\@ispcp-arpl.$dmn_name";
-
-        }
-
-        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $hash_key = "ispcp-arpl.$dmn_name";
-
-        $hash_value = "ispcp-arpl:";
-
-        $rs = set_mta_hash_value($transport_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'alias_forward');
+    } if ($mail_type eq 'normal_forward' || $mail_type eq 'alias_forward');
 
     do {
         my $sub_pref = $main::sub_id_name{$mail_sub_id};
@@ -768,6 +673,9 @@ sub mbox_del_mta_cfg_autorespond_data {
 
     my ($rs, $rdata) = (undef, undef);
 
+    my ($hash_key, $hash_value, $dmn_name) = (undef, undef, undef);
+
+
     my $mail_id = @$mbox_data[0];
 
     my $mail_acc = @$mbox_data[1];
@@ -827,54 +735,31 @@ sub mbox_del_mta_cfg_autorespond_data {
 
     do {
 
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+		if ($mail_type =~ /^normal_mail.*/) {
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+        	$dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+        	$hash_key = "$mail_acc\@$dmn_name";
 
-        return $rs if ($rs != 0);
+		} elsif ($mail_type =~ /^alias_mail.*/) {
 
+        	$dmn_name = $main::als_id_name{$mail_sub_id};
 
-        ($rs, $working) = get_file($aliases_working_cfg);
+        	$hash_key = "$mail_acc\@$dmn_name";
 
-        return $rs if ($rs != 0);
+		} elsif ($mail_type =~ /^subdom_mail.*/) {
 
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+    	    my $sub_pref = $main::sub_id_name{$mail_sub_id};
 
-        return $rs if ($rs != 0);
+	        $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
+        	my $sub_name = "$sub_pref.$dmn_name";
 
-        $rs = mbox_check_last_transport_entry($mbox_data);
+        	$hash_key = "$mail_acc\@$sub_name";
 
-        if ($rs == 0) {
+        	$dmn_name = $sub_name;
 
-            $rs = mbox_del_last_transport_entry($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } elsif ($rs == -1) {
-
-            return $rs;
-
-        }
-
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'normal_mail');
-
-    do {
-
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
+		}
 
         $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
 
@@ -913,63 +798,35 @@ sub mbox_del_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'alias_mail');
+    } if ($mail_type =~ /^normal_mail.*/ || $mail_type =~ /^alias_mail.*/ || $mail_type =~ /^subdom_mail.*/);
 
     do {
 
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
+        if ($mail_type =~ /^normal_forward.*/) {
 
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+	        $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        my $sub_name = "$sub_pref.$dmn_name";
+	        $hash_key = "$mail_acc\@$dmn_name";
 
-        my $hash_key = "$mail_acc\@$sub_name";
+        } elsif ($mail_type =~ /^alias_forward.*/) {
 
+	        $dmn_name = $main::als_id_name{$mail_sub_id};
 
-        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+	        $hash_key = "$mail_acc\@$dmn_name";
 
-        return $rs if ($rs != 0);
+	    } elsif ($mail_type =~ /^subdom_forward.*/) {
 
-        ($rs, $working) = get_file($aliases_working_cfg);
+	        my $sub_pref = $main::sub_id_name{$mail_sub_id};
 
-        return $rs if ($rs != 0);
+	        $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	        my $sub_name = "$sub_pref.$dmn_name";
 
-        return $rs if ($rs != 0);
+	        $hash_key = "$mail_acc\@$sub_name";
 
+	        $dmn_name = $sub_name;
 
-        $rs = mbox_check_last_transport_entry($mbox_data);
-
-        if ($rs == 0) {
-
-            $rs = mbox_del_last_transport_entry($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } elsif ($rs == -1) {
-
-            return $rs;
-
-        }
-
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'subdom_mail');
-
-    do {
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
+	    }
 
         ($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
 
@@ -1019,126 +876,7 @@ sub mbox_del_mta_cfg_autorespond_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_forward');
-
-    do {
-
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-
-        ($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-
-        if ($rdata ne '') {
-
-            $rdata =~ s/\,$mail_acc\@ispcp-arpl\.$dmn_name//gi;
-
-            $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $rdata);
-
-            return $rs if ($rs != 0);
-
-        }
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $rs = mbox_check_last_transport_entry($mbox_data);
-
-        if ($rs == 0) {
-
-            $rs = mbox_del_last_transport_entry($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } elsif ($rs == -1) {
-
-            return $rs;
-
-        }
-
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'alias_forward');
-
-    do {
-
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $sub_name = "$sub_pref.$dmn_name";
-
-        my $hash_key = "$mail_acc\@$sub_name";
-
-
-        ($rs, $rdata) = get_mta_hash_value($aliases_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-
-        if ($rdata ne '') {
-
-            $rdata =~ s/\,$mail_acc\@ispcp-arpl\.$sub_name//gi;
-
-            $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $rdata);
-
-            return $rs if ($rs != 0);
-
-        }
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $rs = mbox_check_last_transport_entry($mbox_data);
-
-        if ($rs == 0) {
-
-            $rs = mbox_del_last_transport_entry($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } elsif ($rs == -1) {
-
-            return $rs;
-
-        }
-
-
-        ($rs, $working) = get_file($transport_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($transport_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-    } if ($mail_type eq 'subdom_forward');
-
+    } if ($mail_type =~ /^normal_forward.*/ || $mail_type =~ /^alias_forward.*/ || $mail_type =~ /^subdom_forward.*/);
 
     $rs = sys_command("$cmd_postmap $transport_cfg");
 
@@ -1166,6 +904,8 @@ sub mbox_add_mta_cfg_data {
     }
 
     my ($rs, $rdata) = (undef, undef);
+
+	my ($hash_key, $hash_value) = (undef, undef);
 
 
     my $mail_id = @$mbox_data[0];
@@ -1230,59 +970,37 @@ sub mbox_add_mta_cfg_data {
 
     do {
 
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+        if ($mail_type =~ /^normal_mail.*/) {
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+        	my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        my $hash_value = "$dmn_name/$mail_acc/";
+        	$hash_key = "$mail_acc\@$dmn_name";
 
-        $rs = set_mta_hash_value($mailboxes_working_cfg, $hash_key, $hash_value);
+        	$hash_value = "$dmn_name/$mail_acc/";
 
-        return $rs if ($rs != 0);
+        } elsif ($mail_type =~ /^alias_mail.*/) {
 
-        ($rs, $working) = get_file($mailboxes_working_cfg);
+	        my $dmn_name = $main::als_id_name{$mail_sub_id};
 
-        return $rs if ($rs != 0);
+	        $hash_key = "$mail_acc\@$dmn_name";
 
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	        $hash_value = "$dmn_name/$mail_acc/";
 
-        return $rs if ($rs != 0);
+		} elsif ($mail_type =~ /^subdom_mail.*/) {
 
-        if ($mail_autorespond ne '_no_') {
+	        my $sub_pref = $main::sub_id_name{$mail_sub_id};
 
-            $rs = mbox_add_mta_cfg_autorespond_data($mbox_data);
+	        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-            return $rs if ($rs != 0);
+	        my $sub_name = "$sub_pref.$dmn_name";
 
-        } else {
+	        push_el(\@main::el, 'mbox_add_mta_cfg_data()', "dbg: sub_pref: $sub_pref, dmn_name: $dmn_name, sub_name: $sub_name");
 
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
+	        $hash_key = "$mail_acc\@$sub_name";
 
-            return $rs if ($rs != 0);
+	        $hash_value = "$sub_name/$mail_acc/";
 
-	        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_key);
-
-    	    return $rs if ($rs != 0);
-
-        	($rs, $working) = get_file($aliases_working_cfg);
-
-	        return $rs if ($rs != 0);
-
-    	    $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        	return $rs if ($rs != 0);
-
-        }
-
-    } if ($mail_type eq 'normal_mail');
-
-    do {
-
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-        my $hash_value = "$dmn_name/$mail_acc/";
+		}
 
         $rs = set_mta_hash_value($mailboxes_working_cfg, $hash_key, $hash_value);
 
@@ -1296,7 +1014,7 @@ sub mbox_add_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-        if ($mail_autorespond ne '_no_') {
+        if ($mail_autorespond != 0) {
 
             $rs = mbox_add_mta_cfg_autorespond_data($mbox_data);
 
@@ -1308,83 +1026,69 @@ sub mbox_add_mta_cfg_data {
 
             return $rs if ($rs != 0);
 
-	        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_key);
+	        if ($mail_type =~ /.*forward.*/) {
 
-    	    return $rs if ($rs != 0);
+				# append the mail_forward list to the hash_key
 
-        	($rs, $working) = get_file($aliases_working_cfg);
+				$hash_value = $hash_key . ',' . $mail_forward;
 
-	        return $rs if ($rs != 0);
+	        } else {
 
-    	    $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	        	# No autoresponder, so the hash_value is equal to the hash_key
 
-        	return $rs if ($rs != 0);
+				$hash_value = $hash_key;
 
-        }
+	        }
 
-    } if ($mail_type eq 'alias_mail');
-
-    do {
-
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $sub_name = "$sub_pref.$dmn_name";
-
-        push_el(\@main::el, 'mbox_add_mta_cfg_data()', "dbg: sub_pref: $sub_pref, dmn_name: $dmn_name, sub_name: $sub_name");
-
-        my $hash_key = "$mail_acc\@$sub_name";
-
-        my $hash_value = "$sub_name/$mail_acc/";
-
-        $rs = set_mta_hash_value($mailboxes_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($mailboxes_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_add_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } else {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-	        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_key);
-
-    	    return $rs if ($rs != 0);
-
-        	($rs, $working) = get_file($aliases_working_cfg);
+	        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
 
 	        return $rs if ($rs != 0);
 
-    	    $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
-        	return $rs if ($rs != 0);
+	        ($rs, $working) = get_file($aliases_working_cfg);
 
-        }
+	        return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'subdom_mail');
+
+	        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	        return $rs if ($rs != 0);
+
+ 		}
+
+    } if ($mail_type =~ /^normal_mail.*/ || $mail_type =~ /^alias_mail.*/ || $mail_type =~ /^subdom_mail.*/);
 
     do {
 
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+		if ($mail_type =~ /.*normal_forward.*/) {
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+			my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        my $hash_value = "$dmn_name/$mail_acc/";
+        	$hash_key = "$mail_acc\@$dmn_name";
+
+        	$hash_value = "$dmn_name/$mail_acc/";
+
+		} elsif ($mail_type =~ /.*alias_forward.*/) {
+
+	        my $dmn_name = $main::als_id_name{$mail_sub_id};
+
+    	    $hash_key = "$mail_acc\@$dmn_name";
+
+        	$hash_value = "$dmn_name/$mail_acc/";
+
+        } elsif ($mail_type =~ /.*subdom_forward.*/) {
+
+        	my $sub_pref = $main::sub_id_name{$mail_sub_id};
+
+	        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+	        my $sub_name = "$sub_pref.$dmn_name";
+
+	        $hash_key = "$mail_acc\@$sub_name";
+
+	        $hash_value = "$sub_name/$mail_acc/";
+
+        }
 
         $rs = set_mta_hash_value($mailboxes_working_cfg, $hash_key, $hash_value);
 
@@ -1423,8 +1127,6 @@ sub mbox_add_mta_cfg_data {
 
         }
 
-        #$hash_value = "$mail_acc\@$dmn_name,".$hash_value;
-
         $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
 
         return $rs if ($rs != 0);
@@ -1439,7 +1141,7 @@ sub mbox_add_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-        if ($mail_autorespond ne '_no_') {
+        if ($mail_autorespond ne '0') {
 
             $rs = mbox_add_mta_cfg_autorespond_data($mbox_data);
 
@@ -1453,165 +1155,7 @@ sub mbox_add_mta_cfg_data {
 
         }
 
-    } if ($mail_type eq 'normal_forward');
-
-    do {
-
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-        my $hash_value = "$dmn_name/$mail_acc/";
-
-        $rs = set_mta_hash_value($mailboxes_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($mailboxes_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        $hash_value = '';
-
-        $mail_forward = "$mail_forward\n";
-
-        while ($mail_forward =~ /([^\n]+)\n/g) {
-
-            my $address_entry = $1;
-
-            $address_entry =~ s/\r//g; $address_entry =~ s/\n//g;
-
-            if ($address_entry ne '') {
-
-                if ($hash_value eq '') {
-
-                    $hash_value = "$address_entry";
-
-                } else {
-
-                    $hash_value .= ",$address_entry";
-
-                }
-            }
-
-        }
-
-        #$hash_value = "$mail_acc\@$dmn_name,".$hash_value;
-
-        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_add_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } else {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        }
-
-    } if ($mail_type eq 'alias_forward');
-
-    do {
-
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $sub_name = "$sub_pref.$dmn_name";
-
-        my $hash_key = "$mail_acc\@$sub_name";
-
-        my $hash_value = "$sub_name/$mail_acc/";
-
-        $rs = set_mta_hash_value($mailboxes_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($mailboxes_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        $hash_value = '';
-
-        $mail_forward = "$mail_forward\n";
-
-        while ($mail_forward =~ /([^\n]+)\n/g) {
-
-            my $address_entry = $1;
-
-            $address_entry =~ s/\r//g; $address_entry =~ s/\n//g;
-
-            if ($address_entry ne '') {
-
-                if ($hash_value eq '') {
-
-                    $hash_value = "$address_entry";
-
-                } else {
-
-                    $hash_value .= ",$address_entry";
-
-                }
-            }
-
-        }
-
-        #$hash_value = "$mail_acc\@$sub_name,".$hash_value;
-
-        $rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $hash_value);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_add_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        } else {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        }
-
-    } if ($mail_type eq 'subdom_forward');
+    } if ($mail_type eq 'normal_forward' || $mail_type eq 'alias_forward' || $mail_type eq 'subdom_forward');
 
     do {
 
@@ -1623,8 +1167,6 @@ sub mbox_add_mta_cfg_data {
 
 
         # Let's first remove old catchall accounts (if any);
-
-
         $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
 
         return $rs if ($rs != 0);
@@ -1651,7 +1193,7 @@ sub mbox_add_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_catchall');
+    } if ($mail_type =~ /.*normal_catchall.*/);
 
     do {
 
@@ -1663,8 +1205,6 @@ sub mbox_add_mta_cfg_data {
 
 
         # Let's first remove old catchall accounts (if any);
-
-
         $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
 
         return $rs if ($rs != 0);
@@ -1691,7 +1231,7 @@ sub mbox_add_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'alias_catchall');
+    } if ($mail_type =~ /.*alias_catchall.*/);
 
     do { # add subdom_catchall
 
@@ -1733,7 +1273,7 @@ sub mbox_add_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'subdom_catchall');
+    } if ($mail_type =~ /.*subdom_catchall.*/);
 
     $rs = sys_command("$cmd_postmap $mailboxes_cfg");
 
@@ -1765,6 +1305,7 @@ sub mbox_del_mta_cfg_data {
 
     my ($rs, $rdata) = (undef, undef);
 
+    my ($hash_key, $hash_value) = (undef, undef);
 
     my $mail_id = @$mbox_data[0];
 
@@ -1796,7 +1337,7 @@ sub mbox_del_mta_cfg_data {
 
     my ($sys, $working) = (undef, undef);
 
-    my $mailboxes_cfg = $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'};
+    my $mailboxes_cfg = $main::cgf{'MTA_VIRTUAL_MAILBOX_HASH'};
 
     my $mailboxes_working_cfg = "$working_dir/mailboxes";
 
@@ -1828,9 +1369,29 @@ sub mbox_del_mta_cfg_data {
 
     do {
 
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+        if ($mail_type =~ /^normal_mail.*/) {
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+        	my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+        	$hash_key = "$mail_acc\@$dmn_name";
+
+        } elsif ($mail_type =~ /^alias_mail.*/) {
+
+	        my $dmn_name = $main::als_id_name{$mail_sub_id};
+
+	        $hash_key = "$mail_acc\@$dmn_name";
+
+		} elsif ($mail_type =~ /^subdom_mail.*/) {
+
+	        my $sub_pref = $main::sub_id_name{$mail_sub_id};
+
+	        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
+
+	        my $sub_name = "$sub_pref.$dmn_name";
+
+	        $hash_key = "$mail_acc\@$sub_name";
+
+		}
 
         $rs = del_mta_hash_value($mailboxes_working_cfg, $hash_key);
 
@@ -1850,11 +1411,13 @@ sub mbox_del_mta_cfg_data {
 
         ($rs, $working) = get_file($aliases_working_cfg);
 
+        return $rs if ($rs != 0);
+
         $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
         return $rs if ($rs != 0);
 
-        if ($mail_autorespond ne '_no_') {
+        if ($mail_autorespond != 0) {
 
             $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
 
@@ -1862,100 +1425,34 @@ sub mbox_del_mta_cfg_data {
 
         }
 
-    } if ($mail_type eq 'normal_mail');
+    } if ($mail_type =~ /^normal_mail.*/ || $mail_type =~ /^alias_mail.*/ || $mail_type =~ /^subdom_mail.*/);
 
     do {
 
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
+       	if ($mail_type =~ /.*normal_forward.*/) {
 
-        my $hash_key = "$mail_acc\@$dmn_name";
+			my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        $rs = del_mta_hash_value($mailboxes_working_cfg, $hash_key);
+        	$hash_key = "$mail_acc\@$dmn_name";
 
-        return $rs if ($rs != 0);
+		} elsif ($mail_type =~ /.*alias_forward.*/) {
 
-        ($rs, $working) = get_file($mailboxes_working_cfg);
+	        my $dmn_name = $main::als_id_name{$mail_sub_id};
 
-        return $rs if ($rs != 0);
+    	    $hash_key = "$mail_acc\@$dmn_name";
 
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+        } elsif ($mail_type =~ /.*subdom_forward.*/) {
 
-        return $rs if ($rs != 0);
+        	my $sub_pref = $main::sub_id_name{$mail_sub_id};
 
-        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
+	        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
 
-        return $rs if ($rs != 0);
+	        my $sub_name = "$sub_pref.$dmn_name";
 
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
+	        $hash_key = "$mail_acc\@$sub_name";
 
         }
 
-    } if ($mail_type eq 'alias_mail');
-
-    do {
-
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $sub_name = "$sub_pref.$dmn_name";
-
-        my $hash_key = "$mail_acc\@$sub_name";
-
-
-        $rs = del_mta_hash_value($mailboxes_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($mailboxes_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        }
-
-    } if ($mail_type eq 'subdom_mail');
-
-    do {
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-
         $rs = del_mta_hash_value($mailboxes_working_cfg, $hash_key);
 
         return $rs if ($rs != 0);
@@ -1964,6 +1461,7 @@ sub mbox_del_mta_cfg_data {
         ($rs, $working) = get_file($mailboxes_working_cfg);
 
         return $rs if ($rs != 0);
+
 
         $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
@@ -1979,12 +1477,13 @@ sub mbox_del_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
+
         $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
 
         return $rs if ($rs != 0);
 
 
-        if ($mail_autorespond ne '_no_') {
+        if ($mail_autorespond ne '1') {
 
             $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
 
@@ -1992,101 +1491,7 @@ sub mbox_del_mta_cfg_data {
 
         }
 
-    } if ($mail_type eq 'normal_forward');
-
-    do {
-
-        my $dmn_name = $main::als_id_name{$mail_sub_id};
-
-        my $hash_key = "$mail_acc\@$dmn_name";
-
-
-        $rs = del_mta_hash_value($mailboxes_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($mailboxes_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        }
-
-    } if ($mail_type eq 'alias_forward');
-
-    do {
-
-        my $sub_pref = $main::sub_id_name{$mail_sub_id};
-
-        my $dmn_name = $main::domain_id_name{$mail_dmn_id};
-
-        my $sub_name = "$sub_pref.$dmn_name";
-
-        my $hash_key = "$mail_acc\@$sub_name";
-
-
-        $rs = del_mta_hash_value($mailboxes_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($mailboxes_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($mailboxes_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
-
-        return $rs if ($rs != 0);
-
-
-        ($rs, $working) = get_file($aliases_working_cfg);
-
-        return $rs if ($rs != 0);
-
-        $rs = store_file($aliases_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-
-
-        if ($mail_autorespond ne '_no_') {
-
-            $rs = mbox_del_mta_cfg_autorespond_data($mbox_data);
-
-            return $rs if ($rs != 0);
-
-        }
-
-    } if ($mail_type eq 'subdom_forward');
+    } if ($mail_type eq 'normal_forward' || $mail_type eq 'alias_forward' || $mail_type eq 'subdom_forward');
 
     do {
 
@@ -2099,7 +1504,6 @@ sub mbox_del_mta_cfg_data {
 
         # Let's first remove old catchall accounts (if any);
 
-
         $rs = del_mta_hash_value($aliases_working_cfg, $hash_key);
 
         return $rs if ($rs != 0);
@@ -2112,7 +1516,7 @@ sub mbox_del_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_catchall');
+    } if ($mail_type =~ /.*normal_catchall.*/);
 
     do {
 
@@ -2136,7 +1540,7 @@ sub mbox_del_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'alias_catchall');
+    } if ($mail_type =~ /.*alias_catchall.*/);
 
     do { # delete subdom catchall
 
@@ -2164,7 +1568,7 @@ sub mbox_del_mta_cfg_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'subdom_catchall');
+    } if ($mail_type =~ /.*subdom_catchall.*/);
 
     $rs = sys_command("$cmd_postmap $mailboxes_cfg");
 
@@ -2244,7 +1648,7 @@ sub mbox_add_mta_file_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_mail' || $mail_type eq 'normal_forward');
+    } if ($mail_type =~ /.*normal_mail.*/ || $mail_type =~ /.*normal_forward.*/);
 
     do {
 
@@ -2274,7 +1678,7 @@ sub mbox_add_mta_file_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'alias_mail' || $mail_type eq 'alias_forward');
+	} if ($mail_type =~ /.*alias_mail.*/ || $mail_type =~ /.*alias_forward.*/);
 
     do {
 
@@ -2308,7 +1712,7 @@ sub mbox_add_mta_file_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'subdom_mail' || $mail_type eq 'subdom_forward');
+    } if ($mail_type =~ /.*subdom_mail.*/ || $mail_type =~ /.*subdom_forward.*/);
 
     push_el(\@main::el, 'mbox_add_mta_file_data()', 'Ending...');
 
@@ -2362,7 +1766,7 @@ sub mbox_del_mta_file_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'normal_mail' || $mail_type eq 'normal_forward');
+    } if ($mail_type =~ /.*normal_mail.*/ || $mail_type =~ /.*normal_forward.*/);
 
     do {
 
@@ -2374,7 +1778,7 @@ sub mbox_del_mta_file_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'alias_mail' || $mail_type eq 'alias_forward');
+    } if ($mail_type =~ /.*alias_mail.*/ || $mail_type =~ /.*alias_forward.*/);
 
     do {
 
@@ -2390,7 +1794,7 @@ sub mbox_del_mta_file_data {
 
         return $rs if ($rs != 0);
 
-    } if ($mail_type eq 'subdom_mail' || $mail_type eq 'subdom_forward');
+    } if ($mail_type =~ /.*subdom_mail.*/ || $mail_type =~ /.*subdom_forward.*/);
 
     push_el(\@main::el, 'mbox_del_mta_file_data()', 'Ending...');
 

@@ -138,16 +138,14 @@
 
     function changeType(what){
         if (what == "normal") {
-            document.forms[0].pass.disabled = false;
-            document.forms[0].pass_rep.disabled = false;
             document.forms[0].forward_list.disabled = true;
-            mailtype = "normal";
         }
         else {
-            document.forms[0].pass.disabled = true;
-            document.forms[0].pass_rep.disabled = true;
-            document.forms[0].forward_list.disabled = false;
-            mailtype = "forward";
+            if (document.forms[0].forward_list.disabled == false) {
+            	document.forms[0].forward_list.disabled = true;
+            } else {
+           		document.forms[0].forward_list.disabled = false;
+           	}
         }
     }
 //-->
@@ -248,7 +246,7 @@
 			  <!-- EDP: to_subdomain -->
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="radio" name="mail_type" value="normal" onClick="changeType('normal');" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onClick="changeType('normal');" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
@@ -264,7 +262,7 @@
               </tr>
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="radio" name="mail_type" value="forward" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">

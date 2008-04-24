@@ -47,9 +47,9 @@ function gen_user_mail_action($mail_id, $mail_status) {
 function gen_user_mail_auto_respond(&$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
 	global $cfg;
 
-	if (preg_match('/_mail$/', $mail_type) == 1) {
+	if (preg_match('/_mail/', $mail_type) == 1) {
 		if ($mail_status === $cfg['ITEM_OK_STATUS']) {
-			if ($mail_auto_respond === '_no_') {
+			if ($mail_auto_respond == false) {
 				$tpl->assign(
 					array('AUTO_RESPOND_DISABLE' => tr('Enable'),
 						'AUTO_RESPOND_DISABLE_SCRIPT' => "enable_mail_arsp.php?id=$mail_id",
@@ -97,10 +97,10 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
           AND
             sub_id = 0
           AND
-            (mail_type  = 'normal_mail' OR mail_type  = 'normal_forward')
+            (mail_type LIKE '%normal_mail%' OR mail_type LIKE '%normal_forward%')
         ORDER BY
-            mail_type DESC,
-            mail_acc ASC
+            mail_acc ASC,
+            mail_type DESC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $dmn_query, array($dmn_id));
@@ -118,16 +118,23 @@ SQL_QUERY;
 			list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
-
 			$show_dmn_name = decode_idna($dmn_name);
 
+			$mail_types = explode(',', $rs->fields['mail_type']);
+			$mail_type = '';
+
+			foreach ($mail_types as $type) {
+				$mail_type .= user_trans_mail_type($type) . "<br \>";
+			}
+
 			$tpl->assign(
-				array('MAIL_ACC' => $mail_acc . "@" . $show_dmn_name,
-					'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
-					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
-					'MAIL_ACTION' => $mail_action,
-					'MAIL_ACTION_SCRIPT' => $mail_action_script,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script
+					array(
+						'MAIL_ACC' => $mail_acc . "@" . $show_dmn_name,
+						'MAIL_TYPE' => $mail_type,
+						'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
+						'MAIL_ACTION' => $mail_action,
+						'MAIL_ACTION_SCRIPT' => $mail_action_script,
+						'MAIL_EDIT_SCRIPT' => $mail_edit_script
 					)
 				);
 
@@ -165,12 +172,12 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
           AND
             t2.domain_id = ?
           AND
-            (t2.mail_type = 'subdom_mail' OR t2.mail_type = 'subdom_forward')
+            (t2.mail_type LIKE '%subdom_mail%' OR t2.mail_type LIKE '%subdom_forward%')
           AND
             t1.subdomain_id = t2.sub_id
         ORDER BY
-            t2.mail_type DESC,
-			t2.mail_acc ASC
+            t2.mail_acc ASC,
+			t2.mail_type DESC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $sub_query, array($dmn_id, $dmn_id));
@@ -191,13 +198,20 @@ SQL_QUERY;
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
 
 			$show_sub_name = decode_idna($rs->fields['sub_name']);
-
 			$show_dmn_name = decode_idna($dmn_name);
+
+			$mail_types = explode(',', $rs->fields['mail_type']);
+			$mail_type = '';
+
+			foreach ($mail_types as $type) {
+				$mail_type .= user_trans_mail_type($type) . '<br \>';
+			}
+
 
 			$tpl->assign(
 				array('MAIL_ACC' => $mail_acc . "@" . $show_sub_name . "." . $show_dmn_name,
 					'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
-					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
+					'MAIL_STATUS' => $mail_type,
 					'MAIL_ACTION' => $mail_action,
 					'MAIL_ACTION_SCRIPT' => $mail_action_script,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script
@@ -240,10 +254,10 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
           AND
             t1.alias_id = t2.sub_id
           AND
-            (t2.mail_type = 'alias_mail' OR t2.mail_type = 'alias_forward')
+            (t2.mail_type LIKE '%alias_mail%' OR t2.mail_type LIKE '%alias_forward%')
         ORDER BY
-            t2.mail_type DESC,
-			t2.mail_acc ASC
+        	t2.mail_acc ASC,
+            t2.mail_type DESC
 SQL_QUERY;
 
 	$rs = exec_query($sql, $als_query, array($dmn_id, $dmn_id));
@@ -261,14 +275,20 @@ SQL_QUERY;
 			list($mail_action, $mail_action_script, $mail_edit_script) = gen_user_mail_action($rs->fields['mail_id'], $rs->fields['status']);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
-
 			$show_dmn_name = decode_idna($dmn_name);
 
 			$show_als_name = decode_idna($rs->fields['als_name']);
 
+ 			$mail_types = explode(',', $rs->fields['mail_type']);
+			$mail_type = '';
+
+ 			foreach ($mail_types as $type) {
+				$mail_type .= user_trans_mail_type($type) . "<br \>";
+			}
+
 			$tpl->assign(
 				array('MAIL_ACC' => $mail_acc . "@" . $show_als_name,
-					'MAIL_TYPE' => user_trans_mail_type($rs->fields['mail_type']),
+					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_ACTION' => $mail_action,
 					'MAIL_ACTION_SCRIPT' => $mail_action_script,

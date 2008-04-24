@@ -77,7 +77,8 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
                 mail_users
             set
                 status = ?,
-                mail_auto_respond = ?
+                mail_auto_respond = 1
+                mail_auto_respond_text = ?
             where
                 mail_id = ?
 SQL_QUERY;
@@ -106,7 +107,21 @@ SQL_QUERY;
 		header("Location: email_accounts.php");
 		exit(0);
 	} else {
-		$tpl->assign('ARSP_MESSAGE', '');
+		// Get Message
+		$query = <<<SQL_QUERY
+			SELECT
+				mail_auto_respond_text, mail_acc
+ 			FROM
+				mail_users
+			WHERE
+				mail_id = ?
+SQL_QUERY;
+
+		$rs = exec_query($sql, $query, array($mail_id));
+		$mail_name = $rs->fields['mail_acc'];
+
+		$tpl->assign('ARSP_MESSAGE', $rs->fields['mail_auto_respond_text']);
+		return;
 	}
 }
 

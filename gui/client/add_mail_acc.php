@@ -65,8 +65,8 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
                     'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? "checked=\"checked\"" : "",
                     'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? "checked=\"checked\"" : "",
                     'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? "checked=\"checked\"" : "",
-                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type'] === 'normal') ? "checked=\"checked\"" : "",
-                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type'] === 'forward') ? "checked=\"checked\"" : "",
+                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type_normal']) ? "checked=\"checked\"" : "",
+                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type_forward']) ? "checked=\"checked\"" : "",
                     'FORWARD_LIST' => $f_list));
     }
 }
@@ -219,124 +219,112 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
     } else {
         $mail_acc = $mail_acc_tmp;
     }
-    $mail_auto_respond = '_no_';
+    $mail_auto_respond = false;
+    $mail_auto_respond_text = '';
     $mail_addr = '';
 
-    if ($_POST['mail_type'] === 'normal') {
-        if ($_POST['dmn_type'] === 'dmn') {
-            $mail_pass = $_POST['pass'];
-            $mail_forward = '_no_';
-            $mail_type = 'normal_mail';
-            $sub_id = '0';
-	    $mail_addr = $mail_acc.'@'.$dmn_name; // the complete address
-        }
-        else if ($_POST['dmn_type'] === 'sub') {
-            $mail_pass = $_POST['pass'];
-            $mail_forward = '_no_';
-            $mail_type = 'subdom_mail';
-            $sub_id = $_POST['sub_id'];
-	    // search the complete address
-	    $query = <<<SQL_QUERY
-		SELECT
-		    `subdomain_name`
-		FROM
-		    `subdomain`
-		WHERE
-		    `subdomain_id` = ?
+    if ($_POST['mail_type_normal'] || $_POST['mail_type_forward']) {
+		if ($_POST['mail_type_normal']) {
+			if ($_POST['dmn_type'] === 'dmn') {
+				$mail_pass = $_POST['pass'];
+				$mail_forward = '_no_';
+				$mail_type[] = 'normal_mail';
+				$sub_id = '0';
+				$mail_addr = $mail_acc.'@'.$dmn_name; // the complete address
+			} else if ($_POST['dmn_type'] === 'sub') {
+				$mail_pass = $_POST['pass'];
+				$mail_forward = '_no_';
+				$mail_type[] = 'subdom_mail';
+				$sub_id = $_POST['sub_id'];
+				// search the complete address
+				$query = <<<SQL_QUERY
+					SELECT
+						`subdomain_name`
+					FROM
+						`subdomain`
+					WHERE
+						`subdomain_id` = ?
 SQL_QUERY;
-	    $rs = exec_query($sql, $query, array($sub_id));
-	    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['subdomain_name']).'.'.$dmn_name; // the complete address
-        }
-        else if ($_POST['dmn_type'] === 'als') {
-            $mail_pass = $_POST['pass'];
-            $mail_forward = '_no_';
-            $mail_type = 'alias_mail';
-            $sub_id = $_POST['als_id'];
-	    // search the complete address
-	    $query = <<<SQL_QUERY
-		SELECT
-		    `alias_name`
-		FROM
-		    `domain_aliasses`
-		WHERE
-		    `alias_id` = ?
+		    $rs = exec_query($sql, $query, array($sub_id));
+		    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['subdomain_name']).'.'.$dmn_name; // the complete address
+	        } else if ($_POST['dmn_type'] === 'als') {
+				$mail_pass = $_POST['pass'];
+				$mail_forward = '_no_';
+				$mail_type[] = 'alias_mail';
+				$sub_id = $_POST['als_id'];
+				// search the complete address
+				$query = <<<SQL_QUERY
+					SELECT
+						`alias_name`
+					FROM
+						`domain_aliasses`
+					WHERE
+						`alias_id` = ?
 SQL_QUERY;
-	    $rs = exec_query($sql, $query, array($sub_id));
-	    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['alias_name']); // the complete address
-        } else {
-            set_page_message(tr('Unknown domain type'));
-            return ;
-        }
+				$rs = exec_query($sql, $query, array($sub_id));
+				$mail_addr = $mail_acc.'@'.decode_idna($rs->fields['alias_name']); // the complete address
+			} else {
+				set_page_message(tr('Unknown domain type'));
+				return ;
+			}
+		}
 
-        $check_acc_query = <<<SQL_QUERY
-            SELECT
-                COUNT(mail_id) AS cnt
-            FROM
-                mail_users
-            WHERE
-                mail_acc = ?
-              AND
-                domain_id = ?
-              AND
-                mail_type = ?
-              AND
-                sub_id = ?
-SQL_QUERY;
+		if ($_POST['mail_type_forward']) {
+			if ($_POST['dmn_type'] === 'dmn') {
+				$mail_type[] = 'normal_forward';
+				$sub_id = '0';
+			} else if ($_POST['dmn_type'] === 'sub') {
+				$mail_type[] = 'subdom_forward';
+				$sub_id = $_POST['sub_id'];
+			} else if ($_POST['dmn_type'] === 'als') {
+				$mail_type[] = 'alias_forward';
+				$sub_id = $_POST['als_id'];
+			} else {
+				set_page_message(tr('Unknown domain type'));
+				return;
+			}
 
-        $rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
+			if (!isset($_POST['mail_type_normal'])) {
+				$mail_pass = '_no_';
+			}
 
-    } else if ($_POST['mail_type'] === 'forward') {
-        if ($_POST['dmn_type'] === 'dmn') {
-            $mail_type = 'normal_forward';
-            $sub_id = '0';
-        } else if ($_POST['dmn_type'] === 'sub') {
-            $mail_type = 'subdom_forward';
-            $sub_id = $_POST['sub_id'];
-        } else if ($_POST['dmn_type'] === 'als') {
-            $mail_type = 'alias_forward';
-            $sub_id = $_POST['als_id'];
-        } else {
-            set_page_message(tr('Unknown domain type'));
-            return ;
-        }
+			$mail_forward = $_POST['forward_list'];
+			$faray = preg_split ("/[\n,]+/", $mail_forward);
+			$mail_accs = array();
 
-        $mail_pass = '_no_';
-        $mail_forward = $_POST['forward_list'];
-        $faray = preg_split ("/[\n,]+/", $mail_forward);
-        $mail_accs = array();
+			foreach ($faray as $value) {
+				$value = trim($value);
+				if (!chk_email($value) && $value !== '') {
+					/* ERR .. strange :) not email in this line - warning */
+					set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
+					return;
+				} else if ($value === '') {
+					set_page_message(tr("Mail forward list empty!"));
+					return;
+				}
+				$mail_accs[] = $value;
+			}
+		 	$mail_forward = implode(',', $mail_accs);
+		}
 
-        foreach ($faray as $value) {
-            $value = trim($value);
-            if (!chk_email($value) && $value !== '') {
-                /* ERR .. strange :) not email in this line - warning */
-                set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
-                return;
-            }
-            else if ($value === '') {
-                set_page_message(tr("Mail forward list empty!"));
-                return;
-            }
-            $mail_accs[] = $value;
-        }
+		$mail_type = implode(',', $mail_type);
 
-        $check_acc_query = <<<SQL_QUERY
-                  SELECT
-                      COUNT(mail_id) AS cnt
-                  FROM
-                      mail_users
-                  WHERE
-                      mail_acc = ?
-                    AND
-                      domain_id = ?
-		    AND
-		      mail_type = ?
-                    AND
-                      sub_id = ?
+		$check_acc_query = <<<SQL_QUERY
+			SELECT
+				COUNT(mail_id) AS cnt
+			FROM
+				`mail_users`
+			WHERE
+				`mail_acc` = ?
+				AND
+				`domain_id` = ?
+				AND
+				`mail_type` = ?
+				AND
+				`sub_id` = ?
 SQL_QUERY;
 
-        $rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
-
-        $mail_forward = implode(',', $mail_accs);
+    	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $mail_type, $sub_id));
     }
 
     if ($rs->fields['cnt'] > 0) {
@@ -356,9 +344,10 @@ SQL_QUERY;
              sub_id,
              status,
              mail_auto_respond,
+             mail_auto_respond_text,
              mail_addr)
         VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($mail_acc,
@@ -369,7 +358,8 @@ SQL_QUERY;
             $sub_id,
             $cfg['ITEM_ADD_STATUS'],
             $mail_auto_respond,
-	    $mail_addr));
+            $mail_auto_respond_text,
+            $mail_addr));
 
     write_log($_SESSION['user_logged'] . ": add new mail account: " . $mail_addr);
     set_page_message(tr('Mail account scheduled for addition!'));

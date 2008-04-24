@@ -64,7 +64,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id, $read_from_db) {
 	if ($read_from_db) {
 		$query = <<<SQL_QUERY
 			SELECT
-				mail_auto_respond, mail_acc
+				mail_auto_respond_text, mail_acc
 			FROM
 				mail_users
 			WHERE
@@ -73,7 +73,7 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($mail_id));
 		$mail_name = $rs->fields['mail_acc'];
 
-		$tpl->assign('ARSP_MESSAGE', $rs->fields['mail_auto_respond']);
+		$tpl->assign('ARSP_MESSAGE', $rs->fields['mail_auto_respond_text']);
 		return;
 	} else {
 		$arsp_message = clean_input($_POST['arsp_message']);
@@ -90,13 +90,13 @@ SQL_QUERY;
 		}
 
 		$query = <<<SQL_QUERY
-            update
-                mail_users
-            set
-                status = ?,
-                mail_auto_respond = ?
-            where
-                mail_id = ?
+            UPDATE
+                `mail_users`
+            SET
+                `status` = ?,
+                `mail_auto_respond_text` = ?
+            WHERE
+                `mail_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
