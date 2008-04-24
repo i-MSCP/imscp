@@ -303,7 +303,7 @@ SQL_QUERY;
 	$query = 'grant all on ' . quoteIdentifier($new_db_name) . '.* to ?@\'%\' identified by ?';
 	$rs = exec_query($sql, $query, array($db_user, $user_pass));
 
-	write_log($_SESSION['user_logged'] . ": add SQL user: " . $db_name);
+	write_log($_SESSION['user_logged'] . ": add SQL user: " . $db_user);
 	set_page_message(tr('SQL user successfully added!'));
 	user_goto('manage_sql.php');
 }

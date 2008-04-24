@@ -3128,7 +3128,7 @@ msgstr ""
 "\n"
 
 msgid "Confirmation for domain order {DOMAIN}!"
-msgstr "Bestell-Bestätigung für Ihre Domain {Domain}"
+msgstr "Bestell-Bestätigung für Ihre Domain {DOMAIN}"
 
 msgid ""
 "\n"

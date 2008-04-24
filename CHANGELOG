@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-24 Jochen Manz
+	- GUI:
+		* Fixed #1205: webtools - small layout issue...
+		* Fixed #1206: german languag error -> variable not replaced
+		* Enhanced DB update functionality
+
 2008-04-24 Benedikt Heintel
 	- GUI:
 		* Fixed #1196: New mail account/forward and auto responder handling

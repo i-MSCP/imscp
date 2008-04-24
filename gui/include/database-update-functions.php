@@ -33,7 +33,7 @@ function getCurrentRevision() {
 	global $sql;
 
 	$query = "SELECT * FROM `config` WHERE `name` = 'DATABASE_REVISION'";
- 	$rs = execute_query($sql, $query);
+ 	$rs = $sql->Execute($query);
 	$current_revision = (int)$rs->fields['value'];
 
 	return $current_revision;
@@ -69,33 +69,43 @@ function checkNewRevisionExists() {
 }
 
 /*
- * Change the database revision to $newRevision
- */
-function setDatabaseRevision($newRevision) {
-	global $sql;
-
-	$query = "UPDATE config SET value = ? WHERE name = ?";
-	$rs = exec_query($sql, $query, array($newRevision, "DATABASE_REVISION"));
-}
-
-/*
  * Combine the needed function name, and return it
  */
 function returnFunctionName($revision) {
-	return $functionName = "_databaseUpdate_" . $revision;
+	$functionName = "_databaseUpdate_" . $revision;
+	
+	return $functionName;
 }
 
 /*
- * Execute all available update functions
+ * Execute all available update functions.
  */
 function executeDatabaseUpdates() {
+	global $sql;
+	
 	while(checkNewRevisionExists()) {
-		$newRevision = getNextRevision();
-		$functionName = returnFunctionName($newRevision, true);
+		$newRevision 	= getNextRevision();
+		$functionName 	= returnFunctionName($newRevision);
 
 		if(function_exists($functionName)) {
-			$rs = $functionName();
-			setDatabaseRevision($newRevision);
+			$queryArray 	= $functionName();
+			
+			// Query to set the new Database Revision
+			$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
+			
+			$sql->StartTrans();
+			
+			foreach($queryArray as $query) {
+				$sql->Execute($query);				
+			}
+			
+			// Prompt a error when a update fails
+			if ($sql->HasFailedTrans()) {
+				set_page_message(tr("Db update %s failed", $newRevision));
+			}
+			
+			$sql->CompleteTrans();
+			unset($queryArray);
 		}
 	}
 }
@@ -106,13 +116,12 @@ function executeDatabaseUpdates() {
  */
 
 /*
- * Initital Update. Insert the Revision.
+ * Initital Update. Insert the first Revision.
  */
 function _databaseUpdate_1() {
-	global $sql;
-
-	$query = "INSERT INTO config (name, value) VALUES (? , ?)";
-	exec_query($sql, $query, array('DATABASE_REVISION', '1'));
+	$sqlUpd = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
+	
+	return $sqlUpd;
 }
 
 
@@ -122,74 +131,68 @@ function _databaseUpdate_1() {
  * Since it does not delete or add any field, it may be run several times...
  */
 function _databaseUpdate_2() {
-	global $sql; // we need the gloabl database connection
-
 	$sqlUpd = array(); // we need several SQL Statements...
 
 	// domain mail + forward
-	$sqlUpd[] = "UPDATE `mail_users`, `domain`
-		SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)
-		WHERE `mail_users`.`domain_id` = `domain`.`domain_id`
-			AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward')";
+	$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
+				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)"
+				. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
+				. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward')";
 
 	// domain-alias mail + forward
-	$sqlUpd[] = "UPDATE `mail_users`, `domain_aliasses`
-		SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)
-		WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`
-			AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward')";
+	$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
+				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)"
+				. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
+				. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward')";
 
 	// subdomain mail + forward
-	$sqlUpd[] = "UPDATE `mail_users`, `subdomain`, `domain`
-		SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)
-		WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`
-			AND `mail_users`.`domain_id` = `domain`.`domain_id`
-			AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward')";
+	$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
+				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)"
+				. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
+				. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
+				. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward')";
 
 	// domain catchall
-	$sqlUpd[] = "UPDATE `mail_users`, `domain`
-		SET `mail_addr` = CONCAT('@',`domain_name`)
-		WHERE `mail_users`.`domain_id` = `domain`.`domain_id`
-			AND `mail_type` = 'normal_catchall'";
+	$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
+				. "SET `mail_addr` = CONCAT('@',`domain_name`)"
+				. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
+				. "AND `mail_type` = 'normal_catchall'";
 
 	// domain-alias catchall
-	$sqlUpd[] = "UPDATE `mail_users`, `domain_aliasses`
-		SET `mail_addr` = CONCAT('@',`alias_name`)
-		WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`
-			AND `mail_type` = 'alias_catchall'";
+	$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
+				. "SET `mail_addr` = CONCAT('@',`alias_name`)"
+				. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
+				. "AND `mail_type` = 'alias_catchall'";
 
 	// subdomain catchall
-	$sqlUpd[] = "UPDATE `mail_users`, `subdomain`, `domain`
-		SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)
-		WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`
-			AND `mail_users`.`domain_id` = `domain`.`domain_id`
-			AND `mail_type` = 'subdom_catchall'";
+	$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
+				. "SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)"
+				. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
+				. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
+				. "AND `mail_type` = 'subdom_catchall'";
 
-	// go for it: run them all
-	foreach($sqlUpd as $s) {
-		$sql->Execute($s);
-	}
-
-} // end of _databaseUpdate_2
+	return $sqlUpd;
+}
 
 /*
  * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139 (Benedikt Heintel, 2008-03-27)
- * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196 (Benedikt Heintel, 2008-04-23)
  */
 function _databaseUpdate_3() {
-	global $sql; // we need the gloabl database connection
-
-	// Ticket #1139
 	$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
+	
+	return $sqlUpd;
+}
 
-	// Ticket #1196
+/*
+ * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196 (Benedikt Heintel, 2008-04-23)
+  */
+function _databaseUpdate_4() {
+	$sqlUpd = array();
+	
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` ADD `mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_type` `mail_type` varchar(30);";
-
-	// go for it: run them all
-	foreach($sqlUpd as $s) {
-		$sql->Execute($s);
-	}
-
-} // end of _databaseUpdate_3
+	
+	return $sqlUpd;
+}	
 ?>

@@ -67,7 +67,7 @@
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
                 <td width="65"><a href="error_pages.php"><img src="{THEME_COLOR_PATH}/images/icons/errordocsicon.gif" width="46" height="46" border="0"></a></td>
-                <td width="1065"><a href="error_pages.php" class="link"> &nbsp;{TR_ERROR_PAGES}</a><br />
+                <td><a href="error_pages.php" class="link"> &nbsp;{TR_ERROR_PAGES}</a><br />
                  &nbsp;{TR_ERROR_PAGES_TEXT}</td>
                </tr>
               </table>
