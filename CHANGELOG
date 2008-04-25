@@ -1,5 +1,8 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2008-04-25 Malte Geierhos
+	- CONFIGS:
+		* Fixed Awstats path for OpenSuSe
 
 2008-04-24 Jochen Manz
 	- GUI:
