@@ -1,5 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2008-04-27 Jochen Manz
+	- GUI:
+		* Fixed #1217: mail auto responder doesn't work
+	- CONFIGS:
+		* Fixed #1216: Password protection for cgi-bin
+
 2008-04-25 Malte Geierhos
 	- CONFIGS:
 		* Fixed Awstats path for OpenSuSe
@@ -8,7 +15,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #1205: webtools - small layout issue...
 		* Fixed #1206: german languag error -> variable not replaced
-		* Enhanced DB update functionality
+		* Enhanced the DB update functionality
 
 2008-04-24 Benedikt Heintel
 	- GUI:
@@ -17,7 +24,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains
 		* Fixed #1196: New mail account/forward and auto responder handling
 
-2008-04-14 Jochen Manz
+2008-04-21 Jochen Manz
 	- CONFIGS:
 		* Corrected gentoo postfix main.cnf
 	- SETUP:
