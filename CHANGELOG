@@ -11,10 +11,16 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed Awstats path for OpenSuSe
 
+2008-04-25 Benedikt Heintel
+	- DATABASE:
+		* Updated database files
+	- GUI:
+		* Fixed #1212: Syntax Error in edit_mail_acc.php
+
 2008-04-24 Jochen Manz
 	- GUI:
 		* Fixed #1205: webtools - small layout issue...
-		* Fixed #1206: german languag error -> variable not replaced
+		* Fixed #1206: german language error -> variable not replaced
 		* Enhanced the DB update functionality
 
 2008-04-24 Benedikt Heintel
@@ -22,6 +28,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1196: New mail account/forward and auto responder handling
 	- ENGINE:
 		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains
+		* Fixed #1169: Awstats on Opensuse
 		* Fixed #1196: New mail account/forward and auto responder handling
 
 2008-04-21 Jochen Manz

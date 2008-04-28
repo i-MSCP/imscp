@@ -73,7 +73,7 @@ function checkNewRevisionExists() {
  */
 function returnFunctionName($revision) {
 	$functionName = "_databaseUpdate_" . $revision;
-	
+
 	return $functionName;
 }
 
@@ -82,28 +82,28 @@ function returnFunctionName($revision) {
  */
 function executeDatabaseUpdates() {
 	global $sql;
-	
+
 	while(checkNewRevisionExists()) {
 		$newRevision 	= getNextRevision();
 		$functionName 	= returnFunctionName($newRevision);
 
 		if(function_exists($functionName)) {
 			$queryArray 	= $functionName();
-			
+
 			// Query to set the new Database Revision
 			$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
-			
+
 			$sql->StartTrans();
-			
+
 			foreach($queryArray as $query) {
-				$sql->Execute($query);				
+				$sql->Execute($query);
 			}
-			
+
 			// Prompt a error when a update fails
 			if ($sql->HasFailedTrans()) {
 				set_page_message(tr("Db update %s failed", $newRevision));
 			}
-			
+
 			$sql->CompleteTrans();
 			unset($queryArray);
 		}
@@ -120,7 +120,7 @@ function executeDatabaseUpdates() {
  */
 function _databaseUpdate_1() {
 	$sqlUpd = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
-	
+
 	return $sqlUpd;
 }
 
@@ -179,20 +179,20 @@ function _databaseUpdate_2() {
  */
 function _databaseUpdate_3() {
 	$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
-	
+
 	return $sqlUpd;
 }
 
 /*
  * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196 (Benedikt Heintel, 2008-04-23)
-  */
+ */
 function _databaseUpdate_4() {
 	$sqlUpd = array();
-	
+
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` ADD `mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`;";
 	$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_type` `mail_type` varchar(30);";
-	
+
 	return $sqlUpd;
-}	
+}
 ?>

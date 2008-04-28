@@ -340,10 +340,11 @@ CREATE TABLE `mail_users` (
   `mail_pass` varchar(150) DEFAULT NULL,
   `mail_forward` text,
   `domain_id` int(10) unsigned DEFAULT NULL,
-  `mail_type` varchar(20) DEFAULT NULL,
+  `mail_type` varchar(30) DEFAULT NULL,
   `sub_id` int(10) unsigned DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `mail_auto_respond` text,
+  `mail_auto_respond` BOOL NOT NULL default '0',
+  `mail_auto_respond_text` text,
   `quota` int(10) DEFAULT '10485760',
   `mail_addr` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`mail_id`)

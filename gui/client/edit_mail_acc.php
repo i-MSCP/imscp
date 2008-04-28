@@ -29,7 +29,7 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('normal_mail', 'page');
 $tpl->define_dynamic('forward_mail', 'page');
 
-// page functions.
+// page functions
 
 function edit_mail_account(&$tpl, &$sql) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
@@ -72,38 +72,38 @@ SQL_QUERY;
 		foreach (explode(',', $mail_type_list) as $mail_type) {
 			if ($mail_type == MT_NORMAL_MAIL) {
 				$mtype[] = 1;
-				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
  				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_NORMAL_FORWARD) {
 				$mtype[] = 4;
-				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALIAS_MAIL) {
 				$mtype[] = 2;
-				$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($sub_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['alias_name'];
 			} elseif ($mail_type == MT_ALIAS_FORWARD) {
 				$mtype[] = 5;
-				$res1 = exec_query($sql, "select alias_name from domain_aliasses where alias_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['alias_name'];
 			} elseif ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
-				$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($sub_id));
  				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} elseif ($mail_type == MT_SUBDOM_FORWARD) {
  				$mtype[] = 6;
-				$res1 = exec_query($sql, "select subdomain_name from subdomain where subdomain_id=?", array($sub_id));
+				$res1 = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "select domain_name from domain where domain_id=?", array($domain_id));
+				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			}
@@ -150,16 +150,15 @@ function update_email_pass($sql) {
 	if (!isset($_POST['uaction'])) {
 		return;
 	}
-	if ($_POST['uaction'] != 'update_pass') {
-		if (preg_match('/update_pass/', $_POST['uaction']) == 0) {
+	if (preg_match('/update_pass/', $_POST['uaction']) == 0) {
+		return;
+	}
+	if (preg_match('/update_forward/', $_POST['uaction']) == 1 || isset($_POST['mail_forward'])) {
+		// The user only wants to update the forward list, not the password
+		if ($_POST['pass'] === '' || $_POST['pass_rep'] === '') {
 			return;
 		}
-		if (preg_match('/update_forward/', $_POST['uaction']) == 1 || isset($_POST['mail_forward'])) {
-			// The user only wants to update the forward list, not the password
-			if ($_POST['pass'] === '' || $_POST['pass_rep'] === '') {
-				return;
-			}
-		}
+	}
 
 	$pass = escapeshellcmd($_POST['pass']);
 	$pass_rep = escapeshellcmd($_POST['pass_rep']);
@@ -183,13 +182,13 @@ function update_email_pass($sql) {
 		check_for_lock_file();
 
 		$query = <<<SQL_QUERY
-          update
-              mail_users
-          set
-              mail_pass = ?,
-              status = ?
-          where
-              mail_id = ?
+          UPDATE
+              `mail_users`
+          SET
+              `mail_pass` = ?,
+              `status` = ?
+          WHERE
+              `mail_id` = ?
 SQL_QUERY;
 
 		$rs = exec_query($sql, $query, array($pass, $status, $mail_id));
@@ -288,10 +287,14 @@ SQL_QUERY;
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl->assign(array('TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+$tpl->assign(
+		array(
+			'TR_CLIENT_EDIT_EMAIL_PAGE_TITLE' => tr('ispCP - Manage Mail and FTP / Edit mail account'),
+			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+			)
+		);
 
 // dynamic page data.
 
@@ -308,20 +311,25 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(array('TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
-		'TR_SAVE' => tr('Save'),
-		'TR_PASSWORD' => tr('Password'),
-		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_FORWARD_MAIL' => tr('Forward mail'),
-		'TR_FORWARD_TO' => tr('Forward to'),
-		'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
-		'TR_EDIT' => tr('Edit')));
+$tpl->assign(
+		array(
+			'TR_EDIT_EMAIL_ACCOUNT' => tr('Edit email account'),
+			'TR_SAVE' => tr('Save'),
+			'TR_PASSWORD' => tr('Password'),
+			'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+			'TR_FORWARD_MAIL' => tr('Forward mail'),
+			'TR_FORWARD_TO' => tr('Forward to'),
+			'TR_FWD_HELP' => tr("Separate multiple email addresses with a line-break."),
+			'TR_EDIT' => tr('Edit')
+			)
+		);
 
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 

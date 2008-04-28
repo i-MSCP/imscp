@@ -4050,6 +4050,10 @@ sub dmn_add_awstats_cron {
     my $backup_cfg 	= "$backup_dir/ispcp.$timestamp";
     my $user_lang	= "en";
 
+    my $awstats_root_dir   = $main::cfg{'AWSTATS_ROOT_DIR'};
+    my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
+    my $awstats_www_dir    = $main::cfg{'AWSTATS_WWW_DIR'};
+
     # Selecting user language
     my $user_id = @$dmn_data[4];
     my $sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
@@ -4138,6 +4142,9 @@ sub dmn_add_awstats_cron {
                     '{DMN_NAME}' => $dmn_name,
                     '{MINUTE}' => $cronjob_minute,
                     '{HOUR}' => $cronjob_hour,
+                    '{AWSTATS_ROOT_DIR}' => $awstats_root_dir,
+                    '{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
+                    '{APACHE_WWW_DIR}' => $awstats_www_dir,
                     '{USER_LANG}' => $user_lang
                    );
 
