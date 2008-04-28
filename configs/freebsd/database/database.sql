@@ -83,7 +83,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1'),
-('DATABASE_REVISION', '3');
+('DATABASE_REVISION', '4');
 
 -- --------------------------------------------------------
 

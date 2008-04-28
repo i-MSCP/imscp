@@ -78,6 +78,7 @@ perl-URI
 perl-Unix-Syslog
 perl-libwww-perl
 php5
+php5-exif
 php5-fastcgi
 php5-ftp
 php5-mbstring

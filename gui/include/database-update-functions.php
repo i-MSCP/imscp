@@ -119,7 +119,9 @@ function executeDatabaseUpdates() {
  * Initital Update. Insert the first Revision.
  */
 function _databaseUpdate_1() {
-	$sqlUpd = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
+	$sqlUpd = array();
+	
+	$sqlUpd[] = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
 
 	return $sqlUpd;
 }
@@ -137,39 +139,39 @@ function _databaseUpdate_2() {
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
 				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward')";
+				. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward');";
 
 	// domain-alias mail + forward
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
 				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
-				. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward')";
+				. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward');";
 
 	// subdomain mail + forward
 	$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
 				. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 				. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward')";
+				. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward');";
 
 	// domain catchall
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain`"
 				. "SET `mail_addr` = CONCAT('@',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND `mail_type` = 'normal_catchall'";
+				. "AND `mail_type` = 'normal_catchall';";
 
 	// domain-alias catchall
 	$sqlUpd[] 	= "UPDATE `mail_users`, `domain_aliasses`"
 				. "SET `mail_addr` = CONCAT('@',`alias_name`)"
 				. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
-				. "AND `mail_type` = 'alias_catchall'";
+				. "AND `mail_type` = 'alias_catchall';";
 
 	// subdomain catchall
 	$sqlUpd[] 	= "UPDATE `mail_users`, `subdomain`, `domain`"
 				. "SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)"
 				. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
 				. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
-				. "AND `mail_type` = 'subdom_catchall'";
+				. "AND `mail_type` = 'subdom_catchall';";
 
 	return $sqlUpd;
 }
@@ -178,6 +180,8 @@ function _databaseUpdate_2() {
  * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139 (Benedikt Heintel, 2008-03-27)
  */
 function _databaseUpdate_3() {
+	$sqlUpd = array();
+	
 	$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
 
 	return $sqlUpd;

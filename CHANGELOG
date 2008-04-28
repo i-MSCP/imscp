@@ -1,6 +1,20 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-28 Jochen Manz
+	- CONFIGS:
+		* Fixed #1202: no upload_tmp_dir defined in master.conf for mod-php
+	- DATABASE:
+		* Updated database files
+	- DOCS:
+		* Fixed #1219: OpenSuse: php5-exif is missing in opensuse103-packages
+
+2008-04-28 Benedikt Heintel
+	- DATABASE:
+		* Updated database files
+	- GUI:
+		* Fixed #1212: Syntax Error in edit_mail_acc.php
+
 2008-04-27 Jochen Manz
 	- GUI:
 		* Fixed #1217: mail auto responder doesn't work
@@ -10,12 +24,6 @@ ispCP ω 1.0.0 Changelog
 2008-04-25 Malte Geierhos
 	- CONFIGS:
 		* Fixed Awstats path for OpenSuSe
-
-2008-04-25 Benedikt Heintel
-	- DATABASE:
-		* Updated database files
-	- GUI:
-		* Fixed #1212: Syntax Error in edit_mail_acc.php
 
 2008-04-24 Jochen Manz
 	- GUI:
