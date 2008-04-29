@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_properties.inc.php 10588 2007-09-02 19:23:59Z lem9 $
+ * @version $Id: tbl_properties.inc.php 11191 2008-04-07 16:22:07Z lem9 $
  */
 
 /**
@@ -234,6 +234,13 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
         $row = $fields_meta[$i];
     }
 
+    if (isset($row) && isset($row['Type'])) {
+        $type_and_length = PMA_extract_type_length($row['Type']);
+        if ($type_and_length['type'] == 'bit') {
+            $row['Default'] = PMA_printable_bit_value($row['Default'], $type_and_length['length']);
+        }
+    }
+
     // Cell index: If certain fields get left out, the counter shouldn't chage.
     $ci = 0;
     // Everytime a cell shall be left out the STRG-jumping feature, $ci_offset
@@ -272,12 +279,10 @@ for ($i = 0 ; $i <= $num_fields; $i++) {
         $type   = preg_replace('@ZEROFILL@i', '', $type);
         $type   = preg_replace('@UNSIGNED@i', '', $type);
 
-        if (strpos($type, '(')) {
-            $length = chop(substr($type, (strpos($type, '(') + 1), (strpos($type, ')') - strpos($type, '(') - 1)));
-            $type = chop(substr($type, 0, strpos($type, '(')));
-        } else {
-            $length = '';
-        }
+        $type_and_length = PMA_extract_type_length($type);
+        $type = $type_and_length['type'];
+        $length = $type_and_length['length'];
+        unset($type_and_length);
     } // end if else
 
     // some types, for example longtext, are reported as

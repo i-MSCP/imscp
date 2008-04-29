@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 11082 2008-01-25 17:42:23Z lem9 $
+ * @version $Id: common.lib.php 11183 2008-04-02 17:19:59Z lem9 $
  */
 
 /**
@@ -410,7 +410,8 @@ function PMA_showHint($hint_message)
  * @uses    $GLOBALS['pmaThemeImage']
  * @uses    $GLOBALS['strEdit']
  * @uses    $GLOBALS['strMySQLSaid']
- * @uses    $cfg['PropertiesIconic']
+ * @uses    $GLOBALS['cfg']['PropertiesIconic'] 
+ * @uses    $GLOBALS['cfg']['MaxCharactersInDisplayedSQL'] 
  * @uses    PMA_backquote()
  * @uses    PMA_DBI_getError()
  * @uses    PMA_formatSql()
@@ -471,7 +472,11 @@ function PMA_mysqlDie($error_message = '', $the_query = '',
     } elseif (empty($the_query) || trim($the_query) == '') {
         $formatted_sql = '';
     } else {
-        $formatted_sql = PMA_formatSql(PMA_SQP_parse($the_query), $the_query);
+        if (strlen($the_query) > $GLOBALS['cfg']['MaxCharactersInDisplayedSQL']) {
+            $formatted_sql = substr($the_query, 0, $GLOBALS['cfg']['MaxCharactersInDisplayedSQL']) . '[...]';
+        } else {
+            $formatted_sql = PMA_formatSql(PMA_SQP_parse($the_query), $the_query);
+        }
     }
     // ---
     echo "\n" . '<!-- PMA-SQL-ERROR -->' . "\n";
@@ -2304,5 +2309,52 @@ function PMA_externalBug($functionality, $component, $minimum_version, $bugref)
     if ($component == 'mysql' && PMA_MYSQL_INT_VERSION < $minimum_version) {
         echo PMA_showHint(sprintf($GLOBALS['strKnownExternalBug'], $functionality, 'http://bugs.mysql.com/' . $bugref));
     }
+}
+
+/**
+ * Converts a bit value to printable format;
+ * in MySQL a BIT field can be from 1 to 64 bits so we need this
+ * function because in PHP, decbin() supports only 32 bits
+ *
+ * @uses    ceil()
+ * @uses    decbin()
+ * @uses    ord()
+ * @uses    substr()
+ * @uses    sprintf()
+ * @param   numeric $value coming from a BIT field
+ * @param   integer $length 
+ * @return  string  the printable value 
+ */
+function PMA_printable_bit_value($value, $length) {
+    $printable = '';
+    for ($i = 0; $i < ceil($length / 8); $i++) {
+        $printable .= sprintf('%08d', decbin(ord(substr($value, $i, 1))));
+    }
+    $printable = substr($printable, -$length);
+    return $printable;
+}
+
+/**
+ * Extracts the true field type and length from a field type spec
+ *
+ * @uses    strpos()
+ * @uses    chop()
+ * @uses    substr()
+ * @param   string $fieldspec 
+ * @return  array associative array containing the type and length 
+ */
+function PMA_extract_type_length($fieldspec) {
+    $first_bracket_pos = strpos($fieldspec, '(');
+    if ($first_bracket_pos) {
+        $length = chop(substr($fieldspec, $first_bracket_pos + 1, (strpos($fieldspec, ')') - $first_bracket_pos - 1)));
+        $type = chop(substr($fieldspec, 0, $first_bracket_pos));
+    } else {
+        $type = $fieldspec;
+        $length = '';
+    }
+    return array(
+        'type' => $type,
+        'length' => $length
+    );
 }
 ?>

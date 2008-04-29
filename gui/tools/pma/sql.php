@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          what returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 11024 2007-12-29 20:38:27Z lem9 $
+ * @version $Id: sql.php 11163 2008-03-16 11:28:18Z lem9 $
  */
 
 /**
@@ -48,7 +48,7 @@ if (isset($fields['dbase'])) {
     $db = $fields['dbase'];
 }
 
-// Default to browse if no query set an we have table
+// Default to browse if no query set and we have table
 // (needed for browsing from DefaultTabTable)
 if (empty($sql_query) && strlen($table) && strlen($db)) {
     require_once './libraries/bookmark.lib.php';

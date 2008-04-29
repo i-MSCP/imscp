@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_change.php 10588 2007-09-02 19:23:59Z lem9 $
+ * @version $Id: tbl_change.php 11183 2008-04-02 17:19:59Z lem9 $
  */
 
 /**
@@ -413,11 +413,7 @@ foreach ($loop_array as $vrowcount => $vrow) {
                 $special_chars = '';
                 $data          = $vrow[$field];
             } elseif ($row_table_def['True_Type'] == 'bit') {
-                $special_chars = '';
-                for ($j = 0; $j < ceil($len / 8); $j++) {
-                    $special_chars .= sprintf('%08d', decbin(ord(substr($vrow[$field], $j, 1))));
-                }
-                $special_chars = substr($special_chars, -$len);
+                $special_chars = PMA_printable_bit_value($vrow[$field], $len);
             } else {
                 // loic1: special binary "characters"
                 if ($is_binary || $is_blob) {
@@ -446,7 +442,11 @@ foreach ($loop_array as $vrowcount => $vrow) {
             } else {
                 $data                     = $row_table_def['Default'];
             }
-            $special_chars = htmlspecialchars($row_table_def['Default']);
+            if ($row_table_def['True_Type'] == 'bit') {
+                $special_chars = PMA_printable_bit_value($row_table_def['Default'], $len); 
+            } else {
+                $special_chars = htmlspecialchars($row_table_def['Default']);
+            }
             $backup_field  = '';
         }
 

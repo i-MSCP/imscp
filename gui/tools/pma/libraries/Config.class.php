@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 11206 2008-04-22 19:12:35Z lem9 $
+ * @version $Id: Config.class.php 11218 2008-04-29 11:44:42Z lem9 $
  */
 
 /**
@@ -85,7 +85,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '2.11.5.2');
+        $this->set('PMA_VERSION', '2.11.6');
         /**
          * @deprecated
          */
@@ -372,6 +372,8 @@ class PMA_Config
          * Parses the configuration file
          */
         $old_error_reporting = error_reporting(0);
+        // avoid "headers already sent" error when file contains a BOM
+        ob_start();
         if (function_exists('file_get_contents')) {
             $eval_result =
                 eval('?>' . trim(file_get_contents($this->getSource())));
@@ -379,6 +381,7 @@ class PMA_Config
             $eval_result =
                 eval('?>' . trim(implode("\n", file($this->getSource()))));
         }
+        ob_end_clean();
         error_reporting($old_error_reporting);
 
         if ($eval_result === false) {

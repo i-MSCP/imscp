@@ -3,7 +3,7 @@
 /**
  * Interface to the improved MySQL extension (MySQLi)
  *
- * @version $Id: mysqli.dbi.lib.php 10356 2007-05-08 20:39:33Z cybot_tm $
+ * @version $Id: mysqli.dbi.lib.php 11189 2008-04-06 12:52:53Z lem9 $
  */
 
 // MySQL client API
@@ -326,15 +326,13 @@ function PMA_DBI_fetch_row($result)
  * @uses    mysqli_result
  * @uses    func_get_args()
  * @uses    is_object()
- * @uses    is_a()
  * @uses    mysqli_free_result()
  * @param   result  $result,...     one or more mysql result resources
  */
 function PMA_DBI_free_result()
 {
     foreach (func_get_args() as $result) {
-        if (is_object($result)
-          && is_a($result, 'mysqli_result')) {
+        if ($result instanceof mysqli_result) {
             mysqli_free_result($result);
         }
     }
@@ -576,6 +574,7 @@ function PMA_DBI_get_fields_meta($result)
     // https://sf.net/tracker/?func=detail&aid=1532111&group_id=23067&atid=377408
     //$typeAr[MYSQLI_TYPE_CHAR]        = 'string';
     $typeAr[MYSQLI_TYPE_GEOMETRY]    = 'unknown';
+    $typeAr[MYSQLI_TYPE_BIT]         = 'bit';
 
     $fields = mysqli_fetch_fields($result);
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: spanish-utf-8.inc.php 11113 2008-02-09 16:09:54Z lem9 $ */
+/* $Id: spanish-utf-8.inc.php 11212 2008-04-23 16:28:20Z lem9 $ */
 
 $charset = 'utf-8';
 $allow_recoding = TRUE;
@@ -891,6 +891,7 @@ $strStructure = 'Estructura';
 $strStructureForView = 'Estructura para la vista';
 $strSubmit = 'Enviar';
 $strSuccess = 'Su consulta se ejecutó con éxito';
+$strSuhosin = 'El servidor está utilizando Suhosin. Por favor, refiérase a %sdocumentation%s para posibles ajustes.';
 $strSum = 'Número de filas';
 $strSwedish = 'Sueco';
 $strSwitchToDatabase = 'Seleccionar la base de datos copiada';
@@ -1023,5 +1024,4 @@ $strYes = 'Sí';
 $strZeroRemovesTheLimit = 'Nota: si cambia los parámetros de estas opciones a 0 (cero), remueve el límite.';
 $strZip = '"comprimido con zip"';
 
-$strSuhosin = 'Server running with Suhosin. Please refer to %sdocumentation%s for possible issues.';  //to translate
 ?>

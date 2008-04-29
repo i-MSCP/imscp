@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-utf-8.inc.php 11122 2008-02-13 12:33:49Z lem9 $ */
+/* $Id: japanese-utf-8.inc.php 11187 2008-04-06 00:00:42Z lem9 $ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>
@@ -528,7 +528,7 @@ $strNoValidateSQL = 'SQL の検証をスキップ';
 $strNull = 'ヌル(NULL)';
 $strNumberOfFields = 'フィールド数';
 $strNumberOfTables = 'テーブル数';
-$strNumSearchResultsInTable = '%s 件（テーブル <i>$s</i>)';
+$strNumSearchResultsInTable = '%s 件（テーブル <i>%s</i>)';
 $strNumSearchResultsTotal = '<b>合計:</b> <i>%s</i> 件';
 $strNumTables = 'テーブル';
 

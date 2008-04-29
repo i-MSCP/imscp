@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 11044 2008-01-07 18:07:08Z lem9 $
+ * @version $Id: db_operations.php 11195 2008-04-14 14:32:06Z lem9 $
  */
 
 /**
@@ -38,20 +38,6 @@ if (strlen($db) &&
         $sql_query = ''; // in case target db exists
         if ($move ||
            (isset($create_database_before_copying) && $create_database_before_copying)) {
-            /**
-             * @todo activate this with the correct version of MySQL
-             *       when they fix the problem when the db contains a VIEW 
-             *       (problem exists in 5.1.20)
-             *       also, in 6.0.0 when the db contains a Falcon table,
-             *       renaming it results in a unusable db!
-             */
-            //if (PMA_MYSQL_INT_VERSION >= 50107) {
-            //    $local_query = 'RENAME DATABASE ' . PMA_backquote($db) . ' TO ' . PMA_backquote($newname) . ';';
-            //    $sql_query = $local_query;
-            //    PMA_DBI_query($local_query);
-            //} else {
-            // please indent ->
-            
             // lower_case_table_names=1 `DB` becomes `db`
             $lower_case_table_names = PMA_DBI_fetch_value('SHOW VARIABLES LIKE "lower_case_table_names"', 0, 1);
             if ($lower_case_table_names === '1') {
@@ -82,6 +68,7 @@ if (strlen($db) &&
             // will handle them after the tables
             /**
              * @todo support a view of a view
+             * @todo support triggers 
              */
             if (PMA_Table::isView($db, $each_table)) {
                 $views[] = $each_table;
@@ -141,8 +128,40 @@ if (strlen($db) &&
             $GLOBALS['sql_query'] .= "\n" . $GLOBALS['sql_constraints_query_full_db'];
             unset($GLOBALS['sql_constraints_query_full_db']);
         }
-// see the previous todo
-//        } // end else MySQL < 50107
+
+        if (PMA_MYSQL_INT_VERSION >= 50000) {
+            // here I don't use DELIMITER because it's not part of the
+            // language; I have to send each statement one by one
+
+            // to avoid selecting alternatively the current and new db
+            // we would need to modify the CREATE definitions to qualify
+            // the db name
+            $procedure_names = PMA_DBI_get_procedures_or_functions($db, 'PROCEDURE');
+            if ($procedure_names) {
+                foreach($procedure_names as $procedure_name) {
+                    PMA_DBI_select_db($db);
+                    $tmp_query = PMA_DBI_get_procedure_or_function_def($db, 'PROCEDURE', $procedure_name);
+                    // collect for later display
+                    $GLOBALS['sql_query'] .= "\n" . $tmp_query;
+                    PMA_DBI_select_db($newname);
+                    PMA_DBI_query($tmp_query);
+                }
+            }
+
+            $function_names = PMA_DBI_get_procedures_or_functions($db, 'FUNCTION');
+            if ($function_names) {
+                foreach($function_names as $function_name) {
+                    PMA_DBI_select_db($db);
+                    $tmp_query = PMA_DBI_get_procedure_or_function_def($db, 'FUNCTION', $function_name);
+                    // collect for later display
+                    $GLOBALS['sql_query'] .= "\n" . $tmp_query;
+                    PMA_DBI_select_db($newname);
+                    PMA_DBI_query($tmp_query);
+                }
+            }
+        }
+        // go back to current db, just in case
+        PMA_DBI_select_db($db);
 
         // Duplicate the bookmarks for this db (done once for each db)
         if ($db != $newname) {
@@ -158,11 +177,11 @@ if (strlen($db) &&
             require_once './libraries/relation_cleanup.lib.php';
             PMA_relationsCleanupDatabase($db);
 
-            if (PMA_MYSQL_INT_VERSION <  50107) {
-                $local_query = 'DROP DATABASE ' . PMA_backquote($db) . ';';
-                $sql_query .= "\n" . $local_query;
-                PMA_DBI_query($local_query);
-            }
+            // if someday the RENAME DATABASE reappears, do not DROP
+            $local_query = 'DROP DATABASE ' . PMA_backquote($db) . ';';
+            $sql_query .= "\n" . $local_query;
+            PMA_DBI_query($local_query);
+
             $message    = sprintf($strRenameDatabaseOK, htmlspecialchars($db),
                 htmlspecialchars($newname));
         } else {
@@ -287,7 +306,7 @@ if (!$is_information_schema) {
     /**
      * @todo (see explanations above in a previous todo) 
      */
-    //if (PMA_MYSQL_INT_VERSION >= 50107) {
+    //if (PMA_MYSQL_INT_VERSION >= XYYZZ) {
     //    echo 'RENAME DATABASE';
     //} else {
         echo 'INSERT INTO ... SELECT';

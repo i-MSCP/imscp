@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build SQL dumps of tables
  *
- * @version $Id: sql.php 10899 2007-11-03 14:52:05Z lem9 $
+ * @version $Id: sql.php 11190 2008-04-06 23:22:19Z lem9 $
  */
 
 /**
@@ -60,7 +60,7 @@ if (isset($plugin_list)) {
                     $drop_clause = 'DROP TABLE';
                 }
             } elseif (PMA_MYSQL_INT_VERSION >= 50000) {
-                $drop_clause = 'DROP TABLE / DROP VIEW';
+                $drop_clause = 'DROP TABLE / VIEW / PROCEDURE / FUNCTION';
             } else {
                 $drop_clause = 'DROP TABLE';
             }
@@ -229,13 +229,23 @@ function PMA_exportHeader()
 
     $head .= $crlf;
 
-    $charset_of_file = isset($GLOBALS['charset_of_file']) ? $GLOBALS['charset_of_file'] : '';
-    if (!empty($GLOBALS['asfile']) && isset($mysql_charset_map[$charset_of_file])) {
+    if (! empty($GLOBALS['asfile'])) {
+        // we are saving as file, therefore we provide charset information
+        // so that a utility like the mysql client can interpret
+        // the file correctly 
+        if (isset($GLOBALS['charset_of_file']) && isset($mysql_charset_map[$GLOBALS['charset_of_file']])) {
+            // $cfg['AllowAnywhereRecoding'] was true so we got a charset from 
+            // the export dialog
+            $set_names = $mysql_charset_map[$GLOBALS['charset_of_file']];
+        } else {
+            // by default we use the connection charset
+            $set_names = $mysql_charset_map[$GLOBALS['charset']]; 
+        } 
         $head .=  $crlf
                . '/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;' . $crlf
                . '/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;' . $crlf
                . '/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;' . $crlf
-               . '/*!40101 SET NAMES ' . $mysql_charset_map[$charset_of_file] . ' */;' . $crlf . $crlf;
+               . '/*!40101 SET NAMES ' . $set_names . ' */;' . $crlf . $crlf;
     }
 
     return PMA_exportOutputHandler($head);
@@ -332,6 +342,9 @@ function PMA_exportDBFooter($db)
               . PMA_exportComment();
 
             foreach($procedure_names as $procedure_name) {
+                if (! empty($GLOBALS['sql_drop_table'])) {
+		    $procs_funcs .= 'DROP PROCEDURE ' . PMA_backquote($procedure_name) . $delimiter . $crlf;
+                }	
                 $procs_funcs .= PMA_DBI_get_procedure_or_function_def($db, 'PROCEDURE', $procedure_name) . $delimiter . $crlf . $crlf;
             }
         }
@@ -343,6 +356,9 @@ function PMA_exportDBFooter($db)
               . PMA_exportComment();
 
             foreach($function_names as $function_name) {
+                if (! empty($GLOBALS['sql_drop_table'])) {
+		    $procs_funcs .= 'DROP FUNCTION ' . PMA_backquote($function_name) . $delimiter . $crlf;
+                }	
                 $procs_funcs .= PMA_DBI_get_procedure_or_function_def($db, 'FUNCTION', $function_name) . $delimiter . $crlf . $crlf;
             }
         }
@@ -371,7 +387,13 @@ function PMA_exportDBFooter($db)
  * @access  public
  */
 function PMA_getTableDefStandIn($db, $view, $crlf) {
-    $create_query = 'CREATE TABLE ';
+
+    $create_query = '';
+    if (! empty($GLOBALS['sql_drop_table'])) {
+        $create_query .= 'DROP VIEW IF EXISTS ' . PMA_backquote($view) . ';' . $crlf;
+    }
+
+    $create_query .= 'CREATE TABLE ';
     if (isset($GLOBALS['sql_if_not_exists']) && $GLOBALS['sql_if_not_exists']) {
         $create_query .= 'IF NOT EXISTS ';
     }
@@ -446,14 +468,9 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
 
     $schema_create .= $new_crlf;
 
-    if (!empty($sql_drop_table)) {
-        if (PMA_Table::_isView($db,$table)) {
-            $drop_clause = 'DROP VIEW';
-        } else {
-            $drop_clause = 'DROP TABLE';
-        }
-        $schema_create .= $drop_clause . ' IF EXISTS ' . PMA_backquote($table, $sql_backquotes) . ';' . $crlf;
-        unset($drop_clause);
+    // no need to generate a DROP VIEW here, it was done earlier
+    if (! empty($sql_drop_table) && ! PMA_Table::isView($db,$table)) {
+        $schema_create .= 'DROP TABLE IF EXISTS ' . PMA_backquote($table, $sql_backquotes) . ';' . $crlf;
     }
 
     // Steve Alberty's patch for complete table dump,
@@ -469,6 +486,10 @@ function PMA_getTableDef($db, $table, $crlf, $error_url, $show_dates = false)
     // results below. Nonetheless, we got 2 user reports about this
     // (see bug 1562533) so I remove the unbuffered mode.
     //$result = PMA_DBI_query('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table), null, PMA_DBI_QUERY_UNBUFFERED);
+    //
+    // Note: SHOW CREATE TABLE, at least in MySQL 5.1.23, does not
+    // produce a displayable result for the default value of a BIT
+    // field, nor does the mysqldump command. See MySQL bug 35796 
     $result = PMA_DBI_query('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table));
     if ($result != FALSE && ($row = PMA_DBI_fetch_row($result))) {
         $create_query = $row[1];
@@ -896,6 +917,9 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
                     } else {
                         $values[] = '0x' . bin2hex($row[$j]);
                     }
+                // detection of 'bit' works only on mysqli extension
+                } elseif ($fields_meta[$j]->type == 'bit') {
+                    $values[] = "b'" . PMA_sqlAddslashes(PMA_printable_bit_value($row[$j], $fields_meta[$j]->length)) . "'";
                 // something else -> treat as a string
                 } else {
                     $values[] = '\'' . str_replace($search, $replace, PMA_sqlAddslashes($row[$j])) . '\'';

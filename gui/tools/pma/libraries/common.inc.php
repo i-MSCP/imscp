@@ -22,7 +22,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 11175 2008-03-29 06:06:35Z lem9 $
+ * @version $Id: common.inc.php 11176 2008-03-29 11:16:04Z lem9 $
  */
 
 /**
@@ -129,6 +129,7 @@ foreach ($GLOBALS as $key => $dummy) {
         die('numeric key detected');
     }
 }
+unset($dummy);
 
 /**
  * PATH_INFO could be compromised if set, so remove it from PHP_SELF
@@ -147,7 +148,8 @@ $PMA_PHP_SELF = htmlspecialchars($PMA_PHP_SELF);
 
 /**
  * just to be sure there was no import (registering) before here
- * we empty the global space
+ * we empty the global space (but avoid unsetting $variables_list
+ * and $key in the foreach(), we still need them!)
  */
 $variables_whitelist = array (
     'GLOBALS',
@@ -160,6 +162,8 @@ $variables_whitelist = array (
     '_COOKIE',
     '_SESSION',
     'PMA_PHP_SELF',
+    'variables_whitelist',
+    'key'
 );
 
 foreach (get_defined_vars() as $key => $value) {
@@ -222,7 +226,9 @@ if (isset($_POST['usesubform'])) {
 // end check if a subform is submitted
 
 // remove quotes added by php
-if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+// (get_magic_quotes_gpc() is deprecated in PHP 5.3, but compare with 5.2.99
+// to be able to test with 5.3.0-dev)
+if (function_exists('get_magic_quotes_gpc') && -1 == version_compare(PHP_VERSION, '5.2.99') && get_magic_quotes_gpc()) {
     PMA_arrayWalkRecursive($_GET, 'stripslashes', true);
     PMA_arrayWalkRecursive($_POST, 'stripslashes', true);
     PMA_arrayWalkRecursive($_COOKIE, 'stripslashes', true);

@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 11021 2007-12-27 23:50:45Z lem9 $
+ * @version $Id: database_interface.lib.php 11196 2008-04-16 18:54:42Z lem9 $
  */
 
 /**
@@ -848,7 +848,8 @@ function PMA_DBI_postConnect($link, $is_controluser = false)
         }
 
         // and we remove the non-UTF-8 choices to avoid confusion
-        if (!defined('PMA_REMOVED_NON_UTF_8')) {
+        // (unless there is a forced language)
+        if (!defined('PMA_REMOVED_NON_UTF_8') && ! isset($GLOBALS['cfg']['Lang'])) {
             foreach ($GLOBALS['available_languages'] as $each_lang => $dummy) {
                 if (substr($each_lang, -5) != 'utf-8') {
                     unset($GLOBALS['available_languages'][$each_lang]);

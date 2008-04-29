@@ -5,7 +5,7 @@
  * Thanks to Piotr Roszatycki <d3xter at users.sourceforge.net> and
  * Dan Wilson who built this patch for the Debian package.
  *
- * @version $Id: cookie.auth.lib.php 11009 2007-12-18 18:13:24Z lem9 $
+ * @version $Id: cookie.auth.lib.php 11188 2008-04-06 11:11:56Z lem9 $
  */
 
 /**
@@ -257,6 +257,12 @@ if (top != self) {
         foreach ($GLOBALS['PMA_errors'] as $error) {
             echo '<div class="error">' . $error . '</div>' . "\n";
         }
+    }
+    // the warning is also displayed on main page but show it also here,
+    // because on some PHP versions running on 64-bit, the blowfish library
+    // does not work and this would prevent login
+    if (defined('PMA_WARN_FOR_MCRYPT')) {
+        echo '<div class="warning">' . PMA_sanitize(sprintf($GLOBALS['strCantLoad'], 'mcrypt')) . '</div>' . "\n";
     }
     ?>
 </div>
