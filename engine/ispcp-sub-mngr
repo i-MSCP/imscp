@@ -507,7 +507,7 @@ sub sub_del_named_cfg_data {
 	#
 
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-    my $time2 = sprintf "%4d%02d%02d01",$year+1900,$mon+1,$mday,$seq;
+	my $time2 = sprintf "%4d%02d%02d%02d",$year+1900,$mon+1,$mday,$seq;
 
     my $db_time_val = "$db_time_b\t\t\t $time2\t\n$db_time_e";
 

@@ -1,6 +1,17 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-29 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains
+	- GUI:
+		* Fixed #1200: orderpanel {THEME_CHARSET}
+		* Fixed #1212: Syntax Error in edit_mail_acc.php
+		* Fixed #1221: Fatal error on database error
+	- LANGUAGES:
+		* Updated Polish
+		* Updated Czech
+
 2008-04-29 Jochen Manz
 	- TOOLS:
 		* Updated phpMyAdmin to 2.11.5.2

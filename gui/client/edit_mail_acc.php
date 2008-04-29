@@ -125,7 +125,7 @@ SQL_QUERY;
 					'MAIL_ID' => $mail_id
 					)
 				);
-		if (count($mtype) > 1) {
+		if (($mail_forward === '_no_') ||(count($mtype) > 1)) {
 			$tpl->assign(
 					array(
 						'ACTION' => 'update_pass,update_forward',

@@ -88,7 +88,7 @@ function executeDatabaseUpdates() {
 		$functionName 	= returnFunctionName($newRevision);
 
 		if(function_exists($functionName)) {
-			$queryArray 	= $functionName();
+			$queryArray[] 	= $functionName();
 
 			// Query to set the new Database Revision
 			$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
@@ -120,7 +120,7 @@ function executeDatabaseUpdates() {
  */
 function _databaseUpdate_1() {
 	$sqlUpd = array();
-	
+
 	$sqlUpd[] = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
 
 	return $sqlUpd;
@@ -181,7 +181,7 @@ function _databaseUpdate_2() {
  */
 function _databaseUpdate_3() {
 	$sqlUpd = array();
-	
+
 	$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
 
 	return $sqlUpd;

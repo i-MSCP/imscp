@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1 Taczkowski\n"
+"Project-Id-Version: 1.2 Taczkowski\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-01 18:49+0100\n"
 "PO-Revision-Date: 2008-02-25 22:30+0100\n"
@@ -1387,7 +1387,7 @@ msgstr "ispCP - Admin/Statystyki resellera"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>of<br/> <b>%2$s</b>"
+msgstr "%1$s <br/>z<br/> <b>%2$s</b>"
 
 #, php-format
 msgid "%s <br/>of<br/> <b>unlimited</b>"
@@ -1501,11 +1501,9 @@ msgstr "Statystyki serwera"
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Admin / Narzędzia systemowe / Stan Serwera"
 
-#, fuzzy
 msgid "UP"
 msgstr "WŁ"
 
-#, fuzzy
 msgid "DOWN"
 msgstr "WYŁ"
 
@@ -2390,7 +2388,7 @@ msgstr "%1$d%% [%2$s z %3$s]"
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
-msgstr "%1$d%% [%2$s nielimitowanego]"
+msgstr "%1$d%% [%2$s z nielimitowanego]"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Przekraczasz limit transferu!"
@@ -2401,7 +2399,7 @@ msgstr "%1$s%% [%2$s z %3$s]"
 
 #, php-format
 msgid "%1$s%% [%2$s of unlimited]"
-msgstr "%1$s%% [%2$s nielimitowanych]"
+msgstr "%1$s%% [%2$s z nielimitowanych]"
 
 msgid "You are exceeding your disk limit!"
 msgstr "Przekraczasz limit dostępnej powierzchni dysku!"
@@ -3662,7 +3660,7 @@ msgstr "Dodatki"
 
 #, php-format
 msgid "%1$s / %2$s of <b>%3$d</b>"
-msgstr "%1$s / %2$s z<b>%3$d</b>"
+msgstr "%1$s / %2$s z <b>%3$d</b>"
 
 #, php-format
 msgid "%1$s / %2$s of <b>unlimited</b>"
@@ -3670,7 +3668,7 @@ msgstr "%1$s / %2$s z <b>nielimitowanych</b>"
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
-msgstr "%1$d / %2$d z<b>%3$d</b>"
+msgstr "%1$d / %2$d z <b>%3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of <b>unlimited</b>"
@@ -3858,3 +3856,4 @@ msgstr "Wiadomość została wysłana."
 
 #~ msgid "There's a conflicting admin / reseller fix that first!"
 #~ msgstr "Jest konflikt admin / reseller, musisz to zmienić!"
+
