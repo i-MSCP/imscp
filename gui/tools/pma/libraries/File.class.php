@@ -3,7 +3,7 @@
 /**
  * file upload functions
  *
- * @version $Id: File.class.php 10395 2007-05-15 06:18:21Z cybot_tm $
+ * @version $Id: File.class.php 11205 2008-04-22 11:26:24Z nijel $
  */
 
 /**
@@ -466,6 +466,8 @@ class PMA_File
      */
     function setLocalSelectedFile($name)
     {
+        if (empty($GLOBALS['cfg']['UploadDir'])) return false;
+
         $this->setName(PMA_userDir($GLOBALS['cfg']['UploadDir']) . PMA_securePath($name));
         if (! $this->isReadable()) {
             $this->_error_message = $GLOBALS['strFileCouldNotBeRead'];

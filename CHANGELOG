@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-04-29 Jochen Manz
+	- TOOLS:
+		* Updated phpMyAdmin to 2.11.5.2
+
 2008-04-28 Jochen Manz
 	- CONFIGS:
 		* Fixed #1202: no upload_tmp_dir defined in master.conf for mod-php
