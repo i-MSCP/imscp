@@ -15,6 +15,8 @@
 
 #if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 int readlink(char *pathname, char *buf, int bufsize);
+#else
+int readlink(const char *pathname, char *buf, int bufsize);
 #endif
 
 int lr_syntax(int fd, char *buff)
@@ -23,6 +25,14 @@ int lr_syntax(int fd, char *buff)
 	char *ptr;
 
 	time_t tim;
+
+        /*
+         OpenBSD or FreeBSD OLD Routine
+         */
+	#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
+	#else
+	char qcommand [MAX_MSG_SIZE];
+	#endif
 
 	ptr = strstr(buff, message(MSG_EQ_CMD));
 
@@ -104,6 +114,22 @@ int lr_syntax(int fd, char *buff)
 
 				execl( daemon_path, "ispcp-rqst-mngr" ,(char*)NULL );
 			}
+			#else 
+			/*
+			OpenBSD or FreeBSD OLD Routine
+			Temporary HARDCODED
+			 */
+                        	memset((void *) &qcommand, '\0', (size_t) sizeof(MAX_MSG_SIZE));
+                        	sprintf(qcommand,
+                                                        "%s 1>%s/%s.%ld 2>%s/%s.%ld",
+                                                        "/usr/local/www/ispcp/engine/ispcp-rqst-mngr",
+                                                        LOG_DIR,
+                                                        STDOUT_LOG,
+                                                        (long int) tim,
+                                                        LOG_DIR,
+                                                        STDERR_LOG,
+                                                        (long int) tim);
+                         	system(qcommand);
 			#endif
 			exit(0);
 		}

@@ -20,3 +20,12 @@
             Allow from all
         </Directory>
     </IfModule>
+	<IfModule mod_fcgid.c>
+        ScriptAlias /php4/ {STARTER_DIR}/{DMN_NAME}/
+        ScriptAlias /php5/ {STARTER_DIR}/{DMN_NAME}/
+		<Directory "/var/www/virtual/{DMN_NAME}/htdocs">
+			FCGIWrapper {STARTER_DIR}/{DMN_NAME}/php{PHP_VERSION}-fcgi-starter .php
+			AddHandler fcgid-script .php
+			Options +ExecCGI
+		</Directory>
+	</IfModule>

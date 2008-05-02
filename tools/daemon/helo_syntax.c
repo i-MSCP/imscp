@@ -7,6 +7,7 @@ int helo_syntax(int fd, char *buff)
 
 	ptr = strstr(buff, message(MSG_HELO_CMD));
 
+/*
 	if (ptr != buff || strlen(buff) == 7) {
 
 		if (send_line(fd, message(MSG_BAD_SYNTAX), strlen(message(MSG_BAD_SYNTAX))) < 0) {
@@ -16,7 +17,9 @@ int helo_syntax(int fd, char *buff)
 		return (1);
 
 	} else {
-        	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
+*/
+  
+      	char *helo_ans = calloc(MAX_MSG_SIZE, sizeof(char));
 
 		ptr = strstr(buff, " ");
 
@@ -32,7 +35,9 @@ int helo_syntax(int fd, char *buff)
 		}
 
 		free(helo_ans);
-	}
 
+/*
+	}
+*/
 	return (NO_ERROR);
 }

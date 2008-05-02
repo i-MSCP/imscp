@@ -7,7 +7,7 @@ Apache 2.2.x		Web System
 	+ mod_cband	for bandwitdh management
 	o mod_php	WARNING: security risk for hosting
 	+ mod_fastcgi	( Recomended )
-	+ mod_proxy	Req for awstat
+	+ mod_proxy	Req for awstats
 Proftpd			FTP System
 	x IPV6		IP v6 support ( but disable by ispcp )
 	x mysql		Database module
@@ -17,8 +17,9 @@ Proftpd			FTP System
 	- delay		Not Available in ports
 	- ctrls_admin	Not Available in ports
 Postfix			Email System
+Procmail		Mail filter System
 Bash			Shell compatibility with Main Version
-courier-imap		IMAP system
+courier-imap		IMAP system, please use version 4.3.x and above
 	x userdb	For use with userdb ( ispcp default )
 	x mysql		For use with mysql
 courier-pop3		IMAP POP3 system
@@ -57,11 +58,11 @@ PHP			=-=-=-= PHP PACKAGE =-=-=-=
 	x CLI
 	x CGI
 	x suhosin
-	x fastcgi
+	+ fastcgi
 PHP-Extensions
 	x pcre
 	x bz2
-	x core
+	x ctype
 	x curl
 	x dbx
 	x domxml

@@ -28,11 +28,11 @@
 #    http://isp-control.net
 #
 
-#ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
+#.if eq (,$(findstring noopt,$(DAEMON_OPTIONS)))
+#CFLAGS += -O3
+#.else
 #CFLAGS += -O0
-#else
-CFLAGS += -O3
-#endif
+#.endif
 
 
 OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\

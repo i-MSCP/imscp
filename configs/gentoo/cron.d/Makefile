@@ -39,8 +39,6 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/cron.d
 	cp -R ./parts $(SYSTEM_CONF)/cron.d
 	cp -R ./working $(SYSTEM_CONF)/cron.d
-	$(SYSTEM_MAKE_FILE) $(SYSTEM_CONF)/cron.d/backup/ispcp
-	$(SYSTEM_MAKE_FILE) $(SYSTEM_CONF)/cron.d/working/ispcp
 	cp $(SYSTEM_CONF)/cron.d/ispcp $(SYSTEM_CONF)/cron.d/working
 
 

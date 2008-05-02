@@ -28,10 +28,8 @@
 #    http://www.isp-control.net
 #
 
-NAME="ispCP Deamon"
 DAEMON=/var/www/ispcp/daemon/ispcp_daemon
-PID=/var/run/ispcp-daemon.pid
-DESC="ispCP GUI-Backend communication Daemon"
+PID=/var/run/${SVCNAME}.pid
 
 opts=""
 
@@ -42,7 +40,7 @@ depend() {
 }
 
 start() {
-    ebegin "Starting $NAME:"
+    ebegin "Starting $SVCNAME"
     start-stop-daemon --start --exec $DAEMON \
                 --pidfile $PID
     eend $?
@@ -50,7 +48,7 @@ start() {
 
 
 stop() {
-    ebegin "Stopping $NAME:"
+    ebegin "Stopping $SVCNAME"
     start-stop-daemon --stop --exec $DAEMON \
                 --pidfile $PID
     eend $?

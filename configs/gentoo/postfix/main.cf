@@ -99,7 +99,7 @@ smtpd_recipient_restrictions = reject_non_fqdn_recipient,
                                reject_unauth_destination,
                                reject_unlisted_recipient,
                                check_policy_service inet:127.0.0.1:12525,
-                               check_policy_service inet:127.0.0.1:10030,
+                               check_policy_service inet:127.0.0.1:60000,
                                permit
 
 smtpd_data_restrictions      = reject_multi_recipient_bounce,

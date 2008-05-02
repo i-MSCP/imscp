@@ -34,10 +34,12 @@ export
 
 install:
 
+	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/proftpd
 	cp -R ./backup $(SYSTEM_CONF)/proftpd
 	cp ./proftpd.conf $(ROOT_CONF)/proftpd
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
+	$(SYSTEM_MAKE_FILE) $(SYSTEM_PROFTPD_LOG)/ftp_traff.log
 
 uninstall:
 

@@ -20,3 +20,18 @@
             Allow from all
         </Directory>
     </IfModule>
+	<IfModule mod_fcgid.c>
+		<Directory "{STARTER_DIR}/{DMN_NAME}">
+			AllowOverride None
+			Options +ExecCGI -MultiViews -Indexes
+			Order allow,deny
+			Allow from all
+		</Directory>
+		<Location />
+			FCGIWrapper {STARTER_DIR}/{DMN_NAME}/php{PHP_VERSION}-fcgi-starter .php
+			AddHandler fcgid-script .php
+			Options +ExecCGI
+			Order allow,deny
+			Allow from all
+		</Location>
+	</IfModule>

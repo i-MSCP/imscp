@@ -43,3 +43,4 @@ sys-devel/gettext
 www-apache/mod_fcgid
 www-servers/apache
 mail-filter/policyd-weight
+mail-filter/postgrey

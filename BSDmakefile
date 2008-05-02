@@ -30,6 +30,7 @@
 #    http://isp-control.net
 #
 
+
 .ifdef $(OSTYPE)==FreeBSD
 .include <Makefile.fbsd>
 .else
@@ -37,7 +38,9 @@
 .endif
 
 install:
-
+	#
+	# Preparing ISPCP System Directory and files	
+	#
 	cd ./tools && $(MAKE) install
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ROOT)
@@ -52,13 +55,29 @@ install:
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
 
+	#
 	# Patch some variable
+	#
 	/usr/bin/sed s/"\/etc\/ispcp\/ispcp.conf"/"\/usr\/local\/etc\/ispcp\/ispcp.conf"/g ./engine/ispcp_common_code.pl > $(SYSTEM_ROOT)/engine/ispcp_common_code.pl
-	/usr/bin/sed s/"\/apache\"\;"/"\/apache22\"\;"/g ./engine/setup/ispcp-setup-methods.pl > $(SYSTEM_ROOT)/engine/setup/ispcp-setup-methods.pl
+
+.if exists ($(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl)
+	#
+	# Previous database key detected, assuming being perform Upgrade Procedure
+	#	
+	cp $(SYSTEM_WEB)/ispcp/engine/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/
+	cp $(SYSTEM_WEB)/ispcp/engine/messager/ispcp-db-keys.pl $(SYSTEM_ROOT)/engine/messager/
+	cp $(SYSTEM_WEB)/ispcp/gui/include/ispcp-db-keys.php $(SYSTEM_ROOT)/gui/include/
+	cp $(SYSTEM_WEB)/ispcp/gui/tools/pma/config.inc.php $(SYSTEM_ROOT)/gui/tools/pma/
+.endif
 
 	cd ${INST_PREF} && cp -R * /
 	rm -rf ${INST_PREF}
 
+	#
+	#
+	# If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
+	# Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade" 
+	# to complete upgrade process
 
 uninstall:
 
@@ -80,3 +99,5 @@ uninstall:
 clean:
 
 	cd ./tools/daemon && $(MAKE) clean
+
+

@@ -41,7 +41,6 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/courier
 	$(SYSTEM_MAKE_DIRS) $(ROOT_AUTHLIB_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_COURIER_IMAP_CONF)
-	$(SYSTEM_MAKE_DIRS) $(INST_PREF)/var/run/courier
 	$(SYSTEM_MAKE_FILE) $(INST_PREF)/var/log/mail.log
 
 #	MTA Configuration Files;

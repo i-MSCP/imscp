@@ -8,3 +8,7 @@
                 RemoveHandler .php
                 RemoveType .php
             </IfModule>
+            <IfModule mod_fcgid.c>
+                RemoveHandler .php
+                RemoveType .php
+            </IfModule>

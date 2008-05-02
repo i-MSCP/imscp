@@ -108,8 +108,8 @@ smtpd_data_restrictions      = reject_multi_recipient_bounce,
 # TLS parameters; activate, if avaible/used
 #smtpd_use_tls               = yes
 #smtpd_tls_loglevel          = 2
-#smtpd_tls_cert_file         = /etc/postfix/cert.pem
-#smtpd_tls_key_file          = /etc/postfix/privkey.pem
+#smtpd_tls_cert_file         = /usr/local/etc/postfix/cert.pem
+#smtpd_tls_key_file          = /usr/local/etc/postfix/privkey.pem
 #smtpd_tls_auth_only         = no
 #smtpd_tls_received_header   = yes
 
