@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-03 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1210: global redirects affecting pages
+	- GUI:
+		* Fixed #1228: Change in edit_mail_acc.php in change set 1132
+
 2008-04-29 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1148: DNS serial is not updated more than once a day when changing sub domains

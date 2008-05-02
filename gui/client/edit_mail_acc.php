@@ -125,12 +125,23 @@ SQL_QUERY;
 					'MAIL_ID' => $mail_id
 					)
 				);
-		if (($mail_forward === '_no_') ||(count($mtype) > 1)) {
+		if (($mail_forward !== '_no_') && (count($mtype) > 1)) {
 			$tpl->assign(
 					array(
 						'ACTION' => 'update_pass,update_forward',
 						'FORWARD_MAIL' => '',
 						'FORWARD_MAIL_CHECKED' => 'checked="checked"'
+						)
+					);
+			$tpl->parse('NORMAL_MAIL', '.normal_mail');
+		} else if ($mail_forward === '_no_') {
+			$tpl->assign(
+					array(
+						'ACTION' => 'update_pass',
+						'FORWARD_MAIL' => '',
+						'FORWARD_MAIL_CHECKED' => '',
+						'FORWARD_LIST' => '',
+						'FORWARD_LIST_ENABLED' => 'disabled="disabled"'
 						)
 					);
 			$tpl->parse('NORMAL_MAIL', '.normal_mail');
@@ -171,8 +182,7 @@ function update_email_pass($sql) {
 	} else if ($pass !== $pass_rep) {
 		set_page_message(tr('Entered passwords differ!'));
 		return;
-		// Not permitted chars
-	} else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) {
+	} else if (preg_match("/[`\xB4'\"\\|<>^\x00-\x1f]/i", $pass)) { // Not permitted chars
 		set_page_message(tr('Password data includes not valid signs!'));
 		return;
 	} else {
