@@ -4052,7 +4052,7 @@ sub dmn_add_awstats_cron {
 
     my $awstats_root_dir   = $main::cfg{'AWSTATS_ROOT_DIR'};
     my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
-    my $awstats_www_dir    = $main::cfg{'AWSTATS_WWW_DIR'};
+    my $awstats_web_dir    = $main::cfg{'AWSTATS_WEB_DIR'};
 
     # Selecting user language
     my $user_id = @$dmn_data[4];
@@ -4144,7 +4144,7 @@ sub dmn_add_awstats_cron {
                     '{HOUR}' => $cronjob_hour,
                     '{AWSTATS_ROOT_DIR}' => $awstats_root_dir,
                     '{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
-                    '{APACHE_WWW_DIR}' => $awstats_www_dir,
+                    '{AWSTATS_WEB_DIR}' => $awstats_web_dir,
                     '{USER_LANG}' => $user_lang
                    );
 

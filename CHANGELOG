@@ -4,8 +4,13 @@ ispCP ω 1.0.0 Changelog
 2008-05-03 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1210: global redirects affecting pages
+	- ENGINE:
+		* Fixed: AWStats static brakes adding Domains
 	- GUI:
 		* Fixed #1228: Change in edit_mail_acc.php in change set 1132
+	- DISTS:
+		* Fixed #1195: Gentoo: Somewhat large Gentoo update
+		* Fixed #1222: FreeBSD: Fix some path and config and insert old daemon routine
 
 2008-04-29 Benedikt Heintel
 	- ENGINE:
