@@ -88,6 +88,7 @@ function executeDatabaseUpdates() {
 		$functionName 	= returnFunctionName($newRevision);
 
 		if(function_exists($functionName)) {
+			$queryArray 	= array();
 			$queryArray[] 	= $functionName();
 
 			// Query to set the new Database Revision

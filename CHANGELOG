@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-03 Jochen Manz
+	- GUI:
+		* small db update improvements
+
 2008-05-03 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1210: global redirects affecting pages
