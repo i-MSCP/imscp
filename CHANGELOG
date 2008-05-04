@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-04 Benedikt Heintel
+	- SETUP:
+		* Fixed #1230: r1135 bug on clean installation (debian)
+	- LANGUAGES:
+		* Fixed #1224: Czech Translation patch
+
 2008-05-03 Jochen Manz
 	- GUI:
 		* small db update improvements

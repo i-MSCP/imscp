@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ispCP OMEGA\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-01 18:49+0100\n"
-"PO-Revision-Date: 2008-04-25 12:56+0200\n"
+"PO-Revision-Date: 2008-04-30 14:14+0200\n"
 "Last-Translator: Josef Pinc <czjopi@gmail.com>\n"
 "Language-Team: Czech <cs_CZ@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3225,7 +3225,7 @@ msgid "You are exceeding your FTP accounts limit!"
 msgstr "Překračujete limit FTP účtů!"
 
 msgid "You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases!"
-msgstr "Máte limit SQL databází!<br>Nemůžete přidat uživatele s neomezeným počtem SQL databází!
+msgstr "Máte limit SQL databází!<br>Nemůžete přidat uživatele s neomezeným počtem SQL databází!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Překračujete limit SQL databází!"
@@ -3744,70 +3744,48 @@ msgstr "Zpráva byla odeslána."
 #~ msgstr ""
 #~ "Nesoulad mezi <i>current_mail_cnt</i> a <i>actual mail count</i>: %1$d != "
 #~ "%2$d"
-
 #~ msgid "ispCP - Admin/Main Index"
 #~ msgstr " ispCP - Admin/Hlavní strana"
-
 #~ msgid "(usually named backup_YYYY_MM_DD.tar.bz2)"
 #~ msgstr "(obvykle pojmenované backup_YYYY_MM_DD.tar.bz2)"
-
 #~ msgid "Domains limit"
 #~ msgstr "Limit domén"
-
 #~ msgid "Subdomains limit"
 #~ msgstr "Limit subdomén"
-
 #~ msgid "Aliases limit"
 #~ msgstr "Limit aliasů"
-
 #~ msgid "Mail accounts limit"
 #~ msgstr "Limit poštovních účtů"
-
 #~ msgid "FTP accounts limit"
 #~ msgstr "Limit FTP účtů"
-
 #~ msgid "SQL databases limit"
 #~ msgstr "Limit SQL databází"
-
 #~ msgid "SQL users limit"
 #~ msgstr "Limit SQL uživatelů"
-
 #~ msgid "Traffic limit [MB]"
 #~ msgstr "Limit přenesených dat [MB]"
-
 #~ msgid "Disk limit [MB]"
 #~ msgstr "Limit diskového prostoru [MB]"
-
 #~ msgid "Max domain count"
 #~ msgstr "Maximální počet domén"
-
 #~ msgid "Max subdomain count"
 #~ msgstr "Maximální počet subdomén"
-
 #~ msgid "Max aliases count"
 #~ msgstr "Maximální počet aliasů"
-
 #~ msgid "Max mail users count"
 #~ msgstr "Maximální počet poštovních účtů"
-
 #~ msgid "Max FTP users count"
 #~ msgstr "Maximální počet FTP účtů"
-
 #~ msgid "Max SQL databases count"
 #~ msgstr "Maximální počet SQL databází"
-
 #~ msgid "Max SQL users count"
 #~ msgstr "Maximální počet SQL uživatelů"
-
 #~ msgid "Max traffic amount [MB]"
 #~ msgstr "Maximální počet přenesených dat [MB]"
-
 #~ msgid "Max disk amount [MB]"
 #~ msgstr "Maximální diskový prostor [MB]"
-
 #~ msgid "Order in progress"
 #~ msgstr "Objednávka odeslána ke zpracování"
-
 #~ msgid ""
 #~ "\n"
 #~ "\n"
@@ -3834,113 +3812,79 @@ msgstr "Zpráva byla odeslána."
 #~ "Přejeme mnoho zdaru se systémem ispCP!\n"
 #~ "Tým ispCP.\n"
 #~ "\n"
-
 #~ msgid "Uninstall"
 #~ msgstr "Odinstalovat"
-
 #~ msgid "%s doesn't exist or can't be read."
 #~ msgstr "%s neexistuje nebo nelze přečíst."
-
 #~ msgid "http://admin.Your-ispCP-Domain.tld/orderpanel/index.php?user_id=%d"
 #~ msgstr "http://admin.vase-ispCP-domena.tld/orderpanel/index.php?user_id=%d"
-
 #~ msgid "Incorrect max domain count or syntax!"
 #~ msgstr "Nesprávná hodnota nebo syntaxe maximálního počtu domén!"
-
 #~ msgid "Incorrect max subdomain count or syntax!"
 #~ msgstr "Nesprávná hodnota nebo syntaxe <i>maximálního počtu subdomén</i>!"
-
 #~ msgid "Incorrect max alias count or syntax!"
 #~ msgstr "Nesprávná hodnota nebo syntaxe <i>maximálního počtu subdomén</i>!"
-
 #~ msgid "Incorrect max FTP count or syntax!"
 #~ msgstr "Nesprávná hodnota nebo syntaxe <i>maximálního počtu FTP</i>!"
-
 #~ msgid "Incorrect max mail count or syntax!"
 #~ msgstr "Nesprávná hodnota nebo syntaxe <i>maximálního počtu emailů</i>!"
-
 #~ msgid "Incorrect max SQL databases count or syntax!"
 #~ msgstr ""
 #~ "Nesprávná hodnota nebo syntaxe <i>maximálního počtu SQL databází</i>!"
-
 #~ msgid "Incorrect max SQL users count or syntax!"
 #~ msgstr ""
 #~ "Nesprávná hodnota nebo syntaxe <i>maximálního počtu SQL uživatelů</i>!"
-
 #~ msgid "Incorrect max traffic amount or syntax!"
 #~ msgstr ""
 #~ "Nesprávná hodnota nebo syntaxe <i>maximálního počtu přenesených dat</i>!"
-
 #~ msgid "Incorrect max disk amount or syntax!"
 #~ msgstr ""
 #~ "Nesprávná hodnota nebo syntaxe <i>maximálního počtu diskového prostoru</"
 #~ "i>!"
-
 #~ msgid "Incorrect alias length or syntax!"
 #~ msgstr "Nesprávná délka nebo syntaxe aliasu!"
-
 #~ msgid "Incorrect FTP account length or syntax!"
 #~ msgstr "Nesprávná délka nebo syntaxe FTP účtu!"
-
 #~ msgid "Incorrect SQL database length or syntax!"
 #~ msgstr "Nesprávný délka nebo syntaxe SQL databáze!"
-
 #~ msgid "Incorrect SQL user length or syntax!"
 #~ msgstr "Nesprávná délka nebo syntaxe SQL uživatele!"
-
 #~ msgid "Incorrect disk length or syntax!"
 #~ msgstr "Nesprávná délka nebo syntaxe diskového prostoru!"
-
 #~ msgid "<b>%s</b> Service can not be limited !<br>"
 #~ msgstr "<b>%s</b> služba nemůže být omezena!<br>"
-
 #~ msgid "Incorrect price!"
 #~ msgstr "Nesprávná cena!"
-
 #~ msgid "Incorrect setup fee!"
 #~ msgstr "Nesprávný zřizovací poplatek!"
-
 #~ msgid "Edit properties"
 #~ msgstr "Upravit vlastnosti"
-
 #~ msgid "User does not exist!"
 #~ msgstr "Uživatel neexistuje!"
-
 #~ msgid "Cannot connect as MySQL administrator!"
 #~ msgstr "Nemohu se pripojit jako MySQL administrátor"
-
 #~ msgid "of"
 #~ msgstr "z"
-
 #~ msgid "Password generate"
 #~ msgstr "Generátor hesla"
-
 #~ msgid "Multilingual"
 #~ msgstr "Jazyky"
-
 #~ msgid "Update language installed!"
 #~ msgstr "Aktualizace jazyka nainstalována!"
-
 #~ msgid "</b> Address !<br>Edit reseller aborted!"
 #~ msgstr "</b> Chybná adresa!<br>Úprava partnera byla zrušena."
-
 #~ msgid "Can not open file! Please contact your administrator !"
 #~ msgstr "Nelze otevřít soubor! Kontaktujte administrátora!"
-
 #~ msgid "You have"
 #~ msgstr "Máte"
-
 #~ msgid "New"
 #~ msgstr "Nový"
-
 #~ msgid "Catch all mail account can not be created!"
 #~ msgstr "Nelze vytvořit všezachytávající účet!"
-
 #~ msgid "new"
 #~ msgstr "nový"
-
 #~ msgid "Alias scheduled for modification!"
 #~ msgstr "Změna aliasu byla naplánována!"
-
 #~ msgid "delete"
 #~ msgstr "odstranit"
+

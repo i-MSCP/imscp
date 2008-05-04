@@ -961,7 +961,7 @@ You have a mail accounts limit!<br>You can not add an user with unlimited mail a
 You are exceeding your mail accounts limit! = Překračujete limit poštovních účtů!
 You have a FTP accounts limit!<br>You can not add an user with unlimited FTP accounts! = Máte limit FTP účtů!<br>Nemůžete přidat uživatele s neomezeným počtem FTP účtů!
 You are exceeding your FTP accounts limit! = Překračujete limit FTP účtů!
-You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases! = Máte limit SQL databází!<br>Nemůžete přidat uživatele s neomezeným počtem SQL databází
+You have a SQL databases limit!<br>You can not add an user with unlimited SQL databases! = Máte limit SQL databází!<br>Nemůžete přidat uživatele s neomezeným počtem SQL databází!
 You are exceeding your SQL databases limit! = Překračujete limit SQL databází!
 You have an SQL users limit!<br>You can not add an user with unlimited SQL users! = Máte limit SQL účtů!<br>Nemůžete přidat uživatele s neomezeným počtem SQL účtů!
 You have disabled SQL databases for this user!<br>You can not have SQL users here! = Nemáte povolenou SQL databázi pro tohoto uživatele!<br>Nemůžete zde vložit nového SQL uživatele!
