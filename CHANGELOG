@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-07 Jochen Manz
+	- ENGINE:
+		* Fixed #1233: Typo in ispcp-mbox-mngr line 1340
+
 2008-05-04 Benedikt Heintel
 	- SETUP:
 		* Fixed #1230: r1135 bug on clean installation (debian)
