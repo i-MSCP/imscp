@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-09 Benedikt Heintel
+	- LANGUAGES:
+		* Added Norwegian Norway (Bokmål)
+		* Added Portugues Portugal
+
 2008-05-07 Jochen Manz
 	- ENGINE:
 		* Fixed #1233: Typo in ispcp-mbox-mngr line 1340

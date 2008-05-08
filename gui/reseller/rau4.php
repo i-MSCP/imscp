@@ -252,9 +252,8 @@ function add_domain_alias(&$sql, &$err_al) {
 	global $cfg;
 	$status = $cfg['ITEM_ADD_STATUS'];
 
-	exec_query($sql,
-		"insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
-		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+	exec_query($sql, "insert into domain_aliasses(domain_id, alias_name, alias_mount, alias_status, alias_ip_id, url_forward) values (?, ?, ?, ?, ?, ?)",
+	array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login: add domain alias: $alias_name");
