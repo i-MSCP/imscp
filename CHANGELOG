@@ -3,7 +3,8 @@ ispCP ω 1.0.0 Changelog
 
 2008-05-09 Benedikt Heintel
 	- GUI:
-		* Fixed #1120: Several problem with new mail configuration
+		* Fixed #1220: Several problem with new mail configuration
+		* Fixed #1238: Mail management: fordward textarea twice, not working Javascript
 	- LANGUAGES:
 		* Added Norwegian Norway (Bokmål)
 		* Added Portugues Portugal

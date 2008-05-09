@@ -9,24 +9,28 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 <!--
-function sbmt(form, uaction) {
+	function sbmt(form, uaction) {
+	    form.uaction.value = uaction;
+	    form.submit();
 
-    form.uaction.value = uaction;
-    form.submit();
+	    return false;
+	}
 
-    return false;
-
-}
-
-function changeType(what) {
-	if (what == "forward") {
-		if (document.forms[0].elements['forward_list'].disabled == true) {
-		 	document.forms[0].elements['forward_list'].disabled = false;
-		} else {
+	function begin_js() {
+		if (document.forms[0].elements['mail_forward']) {
 			document.forms[0].elements['forward_list'].disabled = true;
 		}
 	}
-}
+
+	function changeType(what) {
+		if (what == "forward") {
+			if (document.forms[0].elements['forward_list'].disabled == true) {
+			 	document.forms[0].elements['forward_list'].disabled = false;
+			} else {
+				document.forms[0].elements['forward_list'].disabled = true;
+			}
+		}
+	}
 //-->
 </script>
  </head>
@@ -109,18 +113,6 @@ function changeType(what) {
                 </td>
                </tr>
                <tr>
-                <td nowrap class="content2" colspan="2">
-                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}
-                </td>
-               </tr>
-               <tr>
-                <td class="content2" style="width:200px;vertical-align:top;">
-                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('fwd_help', event)" onMouseOut="hideTip('fwd_help')" />
-                </td>
-                <td nowrap class="content">
-                 <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
-                </td>
-               </tr>
                 <td nowrap class="content2" colspan="2">
                  &nbsp;&nbsp;<input type="checkbox" name="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}
                 </td>

@@ -11,66 +11,56 @@
 <script language="JavaScript" type="text/JavaScript">
 <!--
 	function sbmt(form, uaction) {
-
 	    form.uaction.value = uaction;
 	    form.submit();
 
 	    return false;
-
 	}
 
-	function checkForm(){
-            var aname  = document.forms[0].elements['username'].value;
-            var apass  = document.forms[0].elements['pass'].value;
-            var apass2 = document.forms[0].elements['pass_rep'].value;
-            var forw   = document.forms[0].elements['forward_list'].value;
-            if (aname == "") {
-                alert(emptyData);
-            }
+	function checkForm() {
+        var aname  = document.forms[0].elements['username'].value;
+        var apass  = document.forms[0].elements['pass'].value;
+        var apass2 = document.forms[0].elements['pass_rep'].value;
+        var forw   = document.forms[0].elements['forward_list'].value;
+        if (aname == "") {
+            alert(emptyData);
+        }
 
-            if (mailtype == "normal") {
-                if (apass == "" || apass2 == "") {
-                    alert(emptyData)
-                }
-                else if (apass != apass2) {
-                    alert(passerr);
-                }
-                else {
-                    document.forms[0].submit();
-                }
+        if (mailtype == "normal") {
+            if (apass == "" || apass2 == "") {
+                alert(emptyData)
+            } else if (apass != apass2) {
+                alert(passerr);
+            } else {
+                document.forms[0].submit();
             }
-            else {
-                if (forw == "") {
-                    alert(emptyData)
-                }
-                else {
-                    document.forms[0].submit();
-                }
+        } else {
+            if (forw == "") {
+                alert(emptyData)
+            } else {
+                document.forms[0].submit();
             }
+        }
     }
 
 	<!-- BDP: js_to_all_domain -->
-    function begin_js(){
-            document.forms[0].als_id.disabled = true;
-            document.forms[0].sub_id.disabled = true;
-            document.forms[0].pass.disabled = false;
-            document.forms[0].pass_rep.disabled = false;
-            document.forms[0].forward_list.disabled = true;
-            document.forms[0].username.focus();
+    function begin_js() {
+        document.forms[0].als_id.disabled = true;
+        document.forms[0].sub_id.disabled = true;
+        document.forms[0].pass.disabled = false;
+        document.forms[0].pass_rep.disabled = false;
+        document.forms[0].forward_list.disabled = true;
+        document.forms[0].username.focus();
     }
-
-
 
     function changeDom(what) {
         if (what == "alias") {
             document.forms[0].als_id.disabled = false;
             document.forms[0].sub_id.disabled = true;
-        }
-        else if (what == "real"){
+        } else if (what == "real"){
             document.forms[0].als_id.disabled = true;
             document.forms[0].sub_id.disabled = true;
-        }
-        else {
+        } else {
             document.forms[0].als_id.disabled = true;
             document.forms[0].sub_id.disabled = false;
         }
@@ -78,50 +68,42 @@
 	<!-- EDP: js_to_all_domain -->
 
 	<!-- BDP: js_not_domain -->
-    function begin_js(){
-            document.forms[0].pass.disabled = false;
-            document.forms[0].pass_rep.disabled = false;
-            document.forms[0].forward_list.disabled = true;
-			document.forms[0].username.focus();
+    function begin_js() {
+        document.forms[0].pass.disabled = false;
+        document.forms[0].pass_rep.disabled = false;
+        document.forms[0].forward_list.disabled = true;
+		document.forms[0].username.focus();
     }
 	<!-- EDP: js_not_domain -->
 
-
 	<!-- BDP: js_to_subdomain -->
-    function begin_js(){
-            document.forms[0].sub_id.disabled = true;
-            document.forms[0].pass.disabled = false;
-            document.forms[0].pass_rep.disabled = false;
-            document.forms[0].forward_list.disabled = true;
-            document.forms[0].username.focus();
+    function begin_js() {
+        document.forms[0].sub_id.disabled = true;
+        document.forms[0].pass.disabled = false;
+        document.forms[0].pass_rep.disabled = false;
+        document.forms[0].forward_list.disabled = true;
+        document.forms[0].username.focus();
     }
-
-
 
     function changeDom(what) {
         if (what == "alias") {
             document.forms[0].sub_id.disabled = true;
-        }
-        else if (what == "real"){
+        } else if (what == "real"){
             document.forms[0].sub_id.disabled = true;
-        }
-        else {
+        } else {
             document.forms[0].sub_id.disabled = false;
         }
     }
 	<!-- EDP: js_to_subdomain -->
 
-
 	<!-- BDP: js_to_alias_domain -->
-    function begin_js(){
-            document.forms[0].als_id.disabled = true;
-            document.forms[0].pass.disabled = false;
-            document.forms[0].pass_rep.disabled = false;
-            document.forms[0].forward_list.disabled = true;
-            document.forms[0].username.focus();
+    function begin_js() {
+        document.forms[0].als_id.disabled = true;
+        document.forms[0].pass.disabled = false;
+        document.forms[0].pass_rep.disabled = false;
+        document.forms[0].forward_list.disabled = true;
+        document.forms[0].username.focus();
     }
-
-
 
     function changeDom(what) {
         if (what == "alias") {
@@ -134,20 +116,20 @@
     }
 	<!-- EDP: js_to_alias_domain -->
 
-
-
-    function changeType(what){
-        if (what == "normal") {
-            document.forms[0].forward_list.disabled = true;
-        }
-        else {
-            if (document.forms[0].forward_list.disabled == false) {
-            	document.forms[0].forward_list.disabled = true;
-            } else {
-           		document.forms[0].forward_list.disabled = false;
-           	}
-        }
-    }
+	function changeType() {
+		if (document.forms[0].elements['mail_type_normal'].checked == true) {
+			document.forms[0].pass.disabled = false;
+			document.forms[0].pass_rep.disabled = false;
+		} else {
+			document.forms[0].pass.disabled = true;
+			document.forms[0].pass_rep.disabled = true;
+		}
+		if (document.forms[0].elements['mail_type_forward'].checked == true) {
+			document.forms[0].forward_list.disabled = false;
+		} else {
+			document.forms[0].forward_list.disabled = true;
+		}
+	}
 //-->
 </script>
 <style type="text/css">
@@ -246,7 +228,7 @@
 			  <!-- EDP: to_subdomain -->
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onClick="changeType('normal');" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onClick="changeType();" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
@@ -262,7 +244,7 @@
               </tr>
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType();">{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
