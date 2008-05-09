@@ -1,11 +1,12 @@
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-<title>{TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE}</title>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
+  <title>{TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE}</title>
   <meta name="robots" content="noindex">
   <meta name="robots" content="nofollow">
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+  <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
 <script>
 <!--
 function over(number) {
@@ -29,7 +30,7 @@ function out(number) {
   }
 }
 
-function MM_jumpMenu(targ,selObj,restore){ //v3.0
+function MM_jumpMenu(targ,selObj,restore) { //v3.0
   eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
   if (restore) selObj.selectedIndex=0;
 }
@@ -42,8 +43,8 @@ function sbmt(form, uaction) {
     return false;
 
 }
-function OpenTree()
-{
+
+function OpenTree() {
   libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
 
 }

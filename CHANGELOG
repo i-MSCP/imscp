@@ -2,6 +2,8 @@ ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2008-05-09 Benedikt Heintel
+	- GUI:
+		* Fixed #1120: Several problem with new mail configuration
 	- LANGUAGES:
 		* Added Norwegian Norway (Bokmål)
 		* Added Portugues Portugal

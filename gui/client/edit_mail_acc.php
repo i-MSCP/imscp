@@ -85,12 +85,12 @@ SQL_QUERY;
 				$res1 = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($sub_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $tmp1['alias_name'];
-			} elseif ($mail_type == MT_ALIAS_FORWARD) {
+			} else if ($mail_type == MT_ALIAS_FORWARD) {
 				$mtype[] = 5;
 				$res1 = exec_query($sql, "SELECT alias_name FROM domain_aliasses WHERE alias_id=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
 				$maildomain = $tmp1['alias_name'];
-			} elseif ($mail_type == MT_SUBDOM_MAIL) {
+			} else if ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
 				$res1 = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($sub_id));
  				$tmp1 = $res1->FetchRow();
@@ -98,7 +98,7 @@ SQL_QUERY;
 				$res1 = exec_query($sql, "SELECT domain_name FROM domain WHERE domain_id=?", array($domain_id));
 				$tmp1 = $res1->FetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
-			} elseif ($mail_type == MT_SUBDOM_FORWARD) {
+			} else if ($mail_type == MT_SUBDOM_FORWARD) {
  				$mtype[] = 6;
 				$res1 = exec_query($sql, "SELECT subdomain_name FROM subdomain WHERE subdomain_id=?", array($sub_id));
 				$tmp1 = $res1->FetchRow();
@@ -108,8 +108,6 @@ SQL_QUERY;
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			}
 		}
-
-		$mail_forward = $rs->fields['mail_forward'];
 
 		if (isset($_POST['forward_list'])) {
 			$mail_forward = clean_input($_POST['forward_list']);
@@ -125,12 +123,14 @@ SQL_QUERY;
 					'MAIL_ID' => $mail_id
 					)
 				);
+
 		if (($mail_forward !== '_no_') && (count($mtype) > 1)) {
 			$tpl->assign(
 					array(
 						'ACTION' => 'update_pass,update_forward',
 						'FORWARD_MAIL' => '',
-						'FORWARD_MAIL_CHECKED' => 'checked="checked"'
+						'FORWARD_MAIL_CHECKED' => 'checked="checked"',
+						'FORWARD_LIST_DISABLED' => 'false'
 						)
 					);
 			$tpl->parse('NORMAL_MAIL', '.normal_mail');
@@ -141,7 +141,7 @@ SQL_QUERY;
 						'FORWARD_MAIL' => '',
 						'FORWARD_MAIL_CHECKED' => '',
 						'FORWARD_LIST' => '',
-						'FORWARD_LIST_ENABLED' => 'disabled="disabled"'
+						'FORWARD_LIST_DISABLED' => 'true'
 						)
 					);
 			$tpl->parse('NORMAL_MAIL', '.normal_mail');
@@ -149,7 +149,8 @@ SQL_QUERY;
 			$tpl->assign(
 					array(
 						'ACTION' => 'update_forward',
-						'NORMAL_MAIL' => ''
+						'NORMAL_MAIL' => '',
+						'FORWARD_LIST_DISABLED' => 'false'
 						)
 					);
 			$tpl->parse('FORWARD_MAIL', '.forward_mail');
@@ -176,7 +177,7 @@ function update_email_pass($sql) {
 	$mail_id = $_GET['id'];
 	$mail_account = clean_input($_POST['mail_account']);
 
-	if ($pass === '' || $pass_rep === '' || $mail_id === '' || !is_numeric($mail_id)) {
+	if (trim($pass) === '' || trim($pass_rep) === '' || $mail_id === '' || !is_numeric($mail_id)) {
 		set_page_message(tr('Missing or wrong data!'));
 		return;
 	} else if ($pass !== $pass_rep) {
