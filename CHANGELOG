@@ -1,6 +1,20 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-10 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1240: dmn_entry.tpl - missing "("
+	- DISTS:
+		* Fixed #1215: (Fedora) POP/IMAP traffic is not added in domain statistics with courier and fedora core 8
+		* Fixed #1218: (Fedora) Fedora config
+	- GUI:
+		* Added Patch by Thomas Wacker
+		* Fixed #1239: Two small graphical glitches in GUI
+	- LANGUAGES:
+		* Reogranised
+		* Added Catalan
+		* Changed Chinese
+
 2008-05-09 Benedikt Heintel
 	- GUI:
 		* Fixed #1220: Several problem with new mail configuration

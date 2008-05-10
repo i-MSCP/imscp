@@ -20,7 +20,7 @@
 
     RedirectMatch permanent ^/ftp([\/]?)		http://{BASE_SERVER_VHOST}/ftp/
     RedirectMatch permanent ^/pma([\/]?)		http://{BASE_SERVER_VHOST}/pma/
-    RedirectMatch permanent ^/webmail[\/]?)		http://{BASE_SERVER_VHOST}/webmail/
+    RedirectMatch permanent ^/webmail([\/]?)	http://{BASE_SERVER_VHOST}/webmail/
 
     ErrorDocument 401 /errors/401.html
     ErrorDocument 403 /errors/403.html

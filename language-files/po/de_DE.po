@@ -2469,7 +2469,7 @@ msgid "ispCP - Client/Manage SQL"
 msgstr "ispCP - Kunde/Datenbankverwaltung"
 
 msgid "Manage SQL"
-msgstr "Datenbankverwaltung"
+msgstr "Datenbanken"
 
 msgid "Database Name and Users"
 msgstr "Datenbanknamen und -benutzer"
