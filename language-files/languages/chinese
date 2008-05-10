@@ -1,4 +1,4 @@
-ispcp_table = chinese
+ispcp_table = Chinese
 ispcp_language = Chinese
 ispcp_languageSetlocaleValue = zh_CN
 encoding = UTF-8
