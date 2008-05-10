@@ -728,8 +728,6 @@ function check_ruser_data (&$tpl, $NoPass) {
 
 		return false;
 	}
-
-	return false;
 } //End of check_ruser_data()
 
 // Translate domain status
@@ -1549,7 +1547,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 		} else if ($ulname) {
 			$name = $ulname;
 		} else {
-			$name = $uname;
+			$name = $uemail;
 		}
 		$to = $uemail;
 	}
@@ -1630,7 +1628,7 @@ function send_alias_order_email($alias_name)
 		} else if ($ulname) {
 			$from_name = $ulname;
 		} else {
-			$from_name = $uname;
+			$from_name = $uemail;
 		}
 		$from = $uemail;
 	}

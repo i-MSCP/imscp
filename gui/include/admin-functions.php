@@ -2224,6 +2224,8 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 }
 
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
+	global $cfg;
+	
 	$query = <<<SQL_QUERY
 			SELECT
 				header, footer

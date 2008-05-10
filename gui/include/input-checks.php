@@ -149,7 +149,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 		return false;
 	}
 
-	if (!empty($permitted) && preg_match($pemitted, $password)) {
+	if (!empty($permitted) && preg_match($permitted, $password)) {
 		return false;
 	}
 

@@ -309,8 +309,6 @@ function check_data_iscorrect(&$tpl) {
 		set_page_message($ahp_error);
 		return false;
 	}
-
-	return TRUE;
 } // End of check_data_iscorrect()
 
 // Add new host plan to DB

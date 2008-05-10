@@ -170,7 +170,7 @@ class pTemplate {
 
 			$this->dtpl_data[$t_name] = $t_value;
 
-			$this->dtpl_data[strtoupper($t_name)] = @$value;
+			$this->dtpl_data[strtoupper($t_name)] = @$t_value;
 
 			$this->dtpl_options[$t_name] = '';
 		}

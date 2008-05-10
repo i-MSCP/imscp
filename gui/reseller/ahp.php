@@ -257,8 +257,6 @@ function check_data_correction(&$tpl) {
 		// $tpl -> assign('MESSAGE', $ahp_error);
 		return false;
 	}
-
-	return TRUE;
 } // End of check_data_correction()
 
 // Add new host plan to DB
