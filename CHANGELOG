@@ -1,12 +1,19 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-11 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1242: Method "Fedora" in ispcp-vrl-traff
+
 2008-05-10 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1240: dmn_entry.tpl - missing "("
+	- CONTRIB:
+		* Removed mysql fix for VHCS 2.4.7.1
 	- DISTS:
 		* Fixed #1215: (Fedora) POP/IMAP traffic is not added in domain statistics with courier and fedora core 8
 		* Fixed #1218: (Fedora) Fedora config
+		* Fixed #1241: (OpenSuse) opensuse103-packages - one missing package
 	- GUI:
 		* Added Patch by Thomas Wacker
 		* Fixed #1239: Two small graphical glitches in GUI

@@ -81,6 +81,7 @@ php5
 php5-exif
 php5-fastcgi
 php5-ftp
+php5-gd
 php5-mbstring
 php5-mcrypt
 php5-mysql

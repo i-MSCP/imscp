@@ -500,7 +500,7 @@ sub collect_mail_traffic {
 		# POP3
         $rs = sys_command("$cat $rlog|$grep 'courierpop3login'|$grep 'user='|$grep 'top='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
         return $rs if ($rs != 0);
-        // for Fedora
+        # for Fedora
         $rs = sys_command("$cat $rlog|$grep 'pop3d'|$grep 'user='|$grep 'top='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$10,substr(\$11,1,length(\$11)-1);}' 1>$pop3_log");
         return $rs if ($rs != 0);
 

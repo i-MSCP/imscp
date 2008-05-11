@@ -98,7 +98,7 @@ Make sure you are logged in as root and MySQL is running.
 
 7. Bind setup
 	# mv /var/named/data /var/named/data2
-	# ln -s /var/named/chroot/var/named/data /var/named/dat
+	# ln -s /var/named/chroot/var/named/data /var/named/data
 
 	# mkdir /var/www/scoreboards
 

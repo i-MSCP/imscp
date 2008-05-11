@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -37,47 +37,30 @@ Term::ReadPassword, Net::LibIDN);
 my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
 for $mod (@needed) {
-
     print STDERR "Checking for '$mod'...\t";
 
     if (eval "require $mod") {
-
         $mod -> import();
-
         printf " Ok.\n";
-
     } else {
-
         print STDERR "CRITICAL ERROR: Module '$mod' WAS NOT FOUND !\n" ;
 
         $mod_err = '_on_';
 
         if ($mod_missing eq '') {
-
             $mod_missing .= $mod;
-
         } else {
-
             $mod_missing .= ", $mod";
-
         }
     }
-
 }
 
 if ($mod_err eq '_on_') {
-
-    print STDERR "\nModules [$mod_missing] WERE NOT FOUND in your
-system...\n";
-
+    print STDERR "\nModules [$mod_missing] WERE NOT FOUND in your system...\n";
     print STDERR "\nPlease INSTALL them before using isCP Omega !\n";
-
     exit 1;
-
 } else {
-
     $| = 1;
-
 }
 
 return 0;

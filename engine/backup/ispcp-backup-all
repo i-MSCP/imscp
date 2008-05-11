@@ -35,7 +35,6 @@ use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 
 use strict;
-
 use warnings;
 
 sub lock_backup_all_system {
