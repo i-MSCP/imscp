@@ -3,7 +3,7 @@
  *  ispCP (OMEGA) a Virtual Hosting Control Panel
  *
  *  @copyright 	2005 by Oliver Sperke | http://sperke.net
- *  @copyright 	2006-2007 by ispCP | http://isp-control.net
+ *  @copyright 	2006-2008 by ispCP | http://isp-control.net
  *  @link 		http://isp-control.net
  *  @author		ispCP Team (2007)
  *

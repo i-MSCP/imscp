@@ -1,6 +1,20 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-12 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1244: Use of uninitialized value in concatenation - in file engine/ispcp-htuser-mngr
+	- LANGUAGES:
+		* Updated German
+
+2008-05-12 Thomas Wacker
+	- GUI:
+		* Fixed #1207: new order mail to reseller
+		* Fixed #1208: mailer from reseller not working
+		* Fixed #1209: Undefined index: mail_type_forward
+		* Fixed #1236: Setup Email headers not correct
+		* Fixed #1243: adding mail aborts
+
 2008-05-11 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1242: Method "Fedora" in ispcp-vrl-traff

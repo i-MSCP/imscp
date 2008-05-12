@@ -3,7 +3,7 @@
 # ISPCP ω (OMEGA) - Virtual Hosting Control System | Omega Version
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
-# Copyright (c) 2006-2007 by isp Control Panel
+# Copyright (c) 2006-2008 by isp Control Panel
 # http://isp-control.net
 #
 #
@@ -663,21 +663,13 @@ sub htuser_add_group_system_data {
 		my $group_id = $_;
 
 		$sql = <<SQL_QUERY;
-
 			select
-
 				ugroup, members
-
 			from
-
 				htaccess_groups
-
 			where
-
 				id = $group_id
-
 			and
-
 				dmn_id = $dmn_id
 SQL_QUERY
 
@@ -702,17 +694,11 @@ SQL_QUERY
 	}
 
 	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-
 	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
-
 	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
 	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-
 	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
-
 	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
-
 
 	my $htaccess_content =
         set_zone( (get_file($htaccess_file))[1], "
@@ -762,22 +748,16 @@ sub htuser_del_group_system_data {
 		 @$htuser_data[8]);
 
 	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-
 	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
-
 	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
 	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-
 	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
-
 	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
 
 	foreach (split(',', $group_ids)) {
 
 		my $group_id = $_;
 
-#		$sql = "select ugroup, members from htaccess_groups where id = $group_id and dmn_id = $dmn_id";
 		$sql = "select ugroup, members, count(htaccess.id) as c from htaccess_groups left join htaccess on htaccess.group_id=htaccess_groups.id where htaccess_groups.id = $group_id and htaccess_groups.dmn_id = $dmn_id group by htaccess.group_id";
 
 		($rs, $rdata) = doSQL($sql);
@@ -860,15 +840,9 @@ sub htuser_del_group_system_data {
 						del_file($htaccess_file);
 
 					}
-
 				}
-
 			}
-
 		}
-
-
-
 	}
 
 	return $rs if ($rs != 0);
@@ -887,16 +861,14 @@ sub htuser_mngr_engine {
 
 	push_el(\@main::el, 'htuser_mngr_engine()', 'Starting...');
 
-	my $sql;
+	my $sql = undef;
 
 	#
 	# user management;
 	#
 
 	$sql = <<SQL_QUERY;
-
 		select
-
 			t1.dmn_id,
 			t2.domain_name,
 			t1.user_id,
@@ -906,24 +878,15 @@ sub htuser_mngr_engine {
 			t1.status,
 			t2.domain_uid,
 			t2.domain_gid
-
 		from
-
 			htaccess as t1,
 			domain as t2
-
 		where
-
 			t1.id = $main::htuser_task_id
-
 		and
-
 			t1.user_id != 0
-
 		and
-
 			t1.dmn_id = t2.domain_id
-
 SQL_QUERY
 
 	($rs, $rows) = doSQL($sql);
@@ -939,7 +902,6 @@ SQL_QUERY
 		$sql = <<SQL_QUERY;
 
 		select
-
 			t1.dmn_id,
 			t2.domain_name,
 			t1.group_id,
@@ -949,22 +911,14 @@ SQL_QUERY
 			t1.status,
 			t2.domain_uid,
 			t2.domain_gid
-
 		from
-
 			htaccess as t1,
 			domain as t2
-
 		where
-
 			t1.id = $main::htuser_task_id
-
 		and
-
 			t1.group_id != 0
-
 		and
-
 			t1.dmn_id = t2.domain_id
 
 SQL_QUERY
@@ -1172,9 +1126,8 @@ SQL_QUERY
 
 	}
 
-# see if user or group data has changed (password - change ?)
-# first the users
-#
+	# see if user or group data has changed (password - change ?) first the users
+
 			my $sql_id = "select t1.dmn_id,t2.domain_name  from htaccess as t1,domain as t2 where t1.id = $main::htuser_task_id and t1.dmn_id = t2.domain_id";
 
 			 ($rs, $rdata) = doSQL($sql_id);
@@ -1252,7 +1205,7 @@ SQL_QUERY
 						push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
 					}
 
-# now the groups follow
+	# now the groups follow
 			my $sql_gid = "select t1.dmn_id,t2.domain_name  from htaccess as t1,domain as t2 where t1.id = $main::htuser_task_id and t1.dmn_id = t2.domain_id";
 
 			 ($rs, $rdata) = doSQL($sql_gid);
@@ -1351,11 +1304,6 @@ SQL_QUERY
 					}
 					push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
 				}
-#
-#
-#
-
-
 
 	sleep(1);
 
@@ -1402,4 +1350,3 @@ if ($rs != 0) {
 }
 
 exit 0;
-
