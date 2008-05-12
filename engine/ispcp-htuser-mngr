@@ -47,12 +47,6 @@ sub htuser_mngr_start_up {
 
 	push_el(\@main::el, 'htuser_mngr_start_up()', 'Starting...');
 
-	# checking for master process;
-
-# 	$rs = check_master();
-#
-# 	return $rs if ($rs != 0);
-
 	# Let's clear Execution Logs, if any.
 
 	if (-e $main::ispcp_htuser_mngr_el) {
@@ -76,31 +70,31 @@ sub htuser_mngr_start_up {
 	#
 
 	my $sql = "
-		SELECT
-			domain_id,
-			domain_name,
-			domain_gid,
-			domain_uid,
-			domain_admin_id,
-			domain_created_id,
-			domain_created,
-			domain_last_modified,
-			domain_mailacc_limit,
-			domain_ftpacc_limit,
-			domain_traffic_limit,
-			domain_sqld_limit,
-			domain_sqlu_limit,
-			domain_status,
-			domain_alias_limit,
-			domain_subd_limit,
-			domain_ip_id,
-			domain_disk_limit,
-			domain_disk_usage,
-			domain_php,
-			domain_cgi
-		FROM
-			domain
-	    LIMIT 0,1";
+	SELECT
+		domain_id,
+		domain_name,
+		domain_gid,
+		domain_uid,
+		domain_admin_id,
+		domain_created_id,
+		domain_created,
+		domain_last_modified,
+		domain_mailacc_limit,
+		domain_ftpacc_limit,
+		domain_traffic_limit,
+		domain_sqld_limit,
+		domain_sqlu_limit,
+		domain_status,
+		domain_alias_limit,
+		domain_subd_limit,
+		domain_ip_id,
+		domain_disk_limit,
+		domain_disk_usage,
+		domain_php,
+		domain_cgi
+	FROM
+		domain
+	LIMIT 0,1";
 
 	($rs, $rdata) = doSQL($sql);
 
@@ -159,8 +153,6 @@ sub htuser_add_user_data {
 			my $line = readline(F);
 
 			$htaccess_users_content .= $line if ($line !~ /^$uname:/);
-
-
 		}
 
 		close(F);
@@ -208,7 +200,6 @@ sub htuser_del_user_data {
 			my $line = readline(F);
 
 			$htaccess_users_content .= $line if ($line !~ /^$uname:/);
-
 
 		}
 
@@ -408,16 +399,8 @@ sub htuser_del_user_system_data {
 	}
 
 	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-
-		(@$htuser_data[0],
-		 @$htuser_data[1],
-		 @$htuser_data[2],
-		 @$htuser_data[3],
-		 @$htuser_data[4],
-		 @$htuser_data[5],
-		 @$htuser_data[6],
-		 @$htuser_data[7],
-		 @$htuser_data[8]);
+		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
+		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
 
 	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
@@ -528,16 +511,8 @@ sub htuser_add_user_system_data {
 	}
 
 	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-
-		(@$htuser_data[0],
-		 @$htuser_data[1],
-		 @$htuser_data[2],
-		 @$htuser_data[3],
-		 @$htuser_data[4],
-		 @$htuser_data[5],
-		 @$htuser_data[6],
-		 @$htuser_data[7],
-		 @$htuser_data[8]);
+		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
+		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
 
 	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
@@ -644,23 +619,9 @@ sub htuser_add_group_system_data {
 
 	}
 
-	my ($dmn_id,
-		$dmn_name,
- 		$group_ids,
-		$auth_type,
-		$auth_name,
-		$path,
-		$status,
-		$domain_uid,
-		$domain_gid) = (@$htuser_data[0],
-						@$htuser_data[1],
-						@$htuser_data[2],
-						@$htuser_data[3],
-						@$htuser_data[4],
-						@$htuser_data[5],
-						@$htuser_data[6],
-						@$htuser_data[7],
-						@$htuser_data[8]);
+	my ($dmn_id, $dmn_name,	$group_ids, $auth_type, $auth_name, $path, $status,	$domain_uid, $domain_gid) =
+		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
+		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
 
 	my $ugroups = '';
 
@@ -745,16 +706,8 @@ sub htuser_del_group_system_data {
 	}
 
 	my ($dmn_id, $dmn_name, $group_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-
-		(@$htuser_data[0],
-		 @$htuser_data[1],
-		 @$htuser_data[2],
-		 @$htuser_data[3],
-		 @$htuser_data[4],
-		 @$htuser_data[5],
-		 @$htuser_data[6],
-		 @$htuser_data[7],
-		 @$htuser_data[8]);
+		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
+		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
 
 	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
 	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
@@ -898,7 +851,7 @@ sub htuser_mngr_engine {
 
 	my $id = $main::htuser_task_id;
 	my $sql = "
-		SELECT
+	SELECT
 			t1.dmn_id,
 			t2.domain_name,
 			t1.user_id,
@@ -1143,13 +1096,21 @@ sub htuser_mngr_engine {
 
 	# see if user or group data has changed (password - change ?) first the users
 
-			my $sql_id = "select t1.dmn_id,t2.domain_name  from htaccess as t1,domain as t2 where t1.id = $main::htuser_task_id and t1.dmn_id = t2.domain_id";
+	my $sql_id = "
+		SELECT
+			t1.dmn_id,t2.domain_name
+		FROM
+			htaccess AS t1,domain AS t2
+		WHERE
+			t1.id = $main::htuser_task_id
+		AND
+			t1.dmn_id = t2.domain_id;";
 
-			 ($rs, $rdata) = doSQL($sql_id);
+	($rs, $rdata) = doSQL($sql_id);
 
-			my $htaccess_data = @$rdata[0];
+	my $htaccess_data = @$rdata[0];
 
-			$sql = "
+	$sql = "
 			SELECT
 				uname, upass, dmn_id, status, id
 			FROM
@@ -1159,174 +1120,158 @@ sub htuser_mngr_engine {
 			AND
 				status != 'ok';";
 
-				($rs, $rows) = doSQL($sql);
+			($rs, $rows) = doSQL($sql);
 
-					if (scalar(@$rows) != 0) {
+	if (scalar(@$rows) != 0) {
 
-					foreach (@$rows) {
+		foreach (@$rows) {
 
-						push_el(\@main::el, 'htuser-usermanagement()', 'Starting...');
+			push_el(\@main::el, 'htuser-usermanagement()', 'Starting...');
 
-						my $query_user = $_;
+			my $query_user = $_;
 
-						my ($htpasswd_name,
-							$htpasswd_pass,
-							$htpasswd_dnm,
-							$htpasswd_status) = (@$query_user[0],
-						   						 @$query_user[1],
-						   						 @$htaccess_data[1],
-						   						 @$query_user[3]);
+			my ($htpasswd_name,	$htpasswd_pass,	$htpasswd_dnm, $htpasswd_status) =
+				(@$query_user[0], @$query_user[1], @$htaccess_data[1], @$query_user[3]);
 
-						push_el(\@main::el, 'htuser-usermanagement()', 'TASK : '.$htpasswd_status.' user : '.$htpasswd_name);
+			push_el(\@main::el, 'htuser-usermanagement()', 'TASK : '.$htpasswd_status.' user : '.$htpasswd_name);
 
-						if ($htpasswd_status eq 'change') {
+			if ($htpasswd_status eq 'change') {
 
-								push_el(\@main::el, 'htuser-usermanagement()', 'Change User ID : '.@$query_user[0].'...');
+				push_el(\@main::el, 'htuser-usermanagement()', 'Change User ID : '.@$query_user[0].'...');
 
-								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
-								return $rs if ($rs != 0);
+				$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
+				return $rs if ($rs != 0);
 
-								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
-								return $rs if ($rs != 0);
+				$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
+				return $rs if ($rs != 0);
 
-								$sql = "UPDATE htaccess_users SET status = 'ok' WHERE id = '".@$query_user[4]."';";
+				$sql = "UPDATE htaccess_users SET status = 'ok' WHERE id = '".@$query_user[4]."';";
 
-						} elsif ($htpasswd_status eq 'delete') {
+			} elsif ($htpasswd_status eq 'delete') {
 
-								push_el(\@main::el, 'htuser-usermanagement()', 'Delete User ID : '.@$query_user[0].'...');
+				push_el(\@main::el, 'htuser-usermanagement()', 'Delete User ID : '.@$query_user[0].'...');
 
-								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
-								return $rs if ($rs != 0);
+				$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
+				return $rs if ($rs != 0);
 
-								$sql = "DELETE FROM htaccess_users WHERE id = '".@$query_user[4]."';";
+				$sql = "DELETE FROM htaccess_users WHERE id = '".@$query_user[4]."';";
 
-						} elsif ($htpasswd_status eq 'toadd') {
+			} elsif ($htpasswd_status eq 'toadd') {
 
-								push_el(\@main::el, 'htuser-usermanagement()', 'Add User ID : '.@$query_user[0].'...');
+				push_el(\@main::el, 'htuser-usermanagement()', 'Add User ID : '.@$query_user[0].'...');
 
-								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
-								return $rs if ($rs != 0);
+				$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
+				return $rs if ($rs != 0);
 
-								$sql = "UPDATE htaccess_users SET status = 'ok' WHERE id = '".@$query_user[4]."';";
+				$sql = "UPDATE htaccess_users SET status = 'ok' WHERE id = '".@$query_user[4]."';";
 
-						} elsif ($htpasswd_status eq 'ok') {
-								## TODO: ?
+			} elsif ($htpasswd_status eq 'ok') {
+				## TODO: ?
 
-						} else {
+			} else {
 
-								push_el(\@main::el, 'htuser-usermanagement()', 'Failure modifying user in Domain '.$htpasswd_dnm.' : '.$htpasswd_name);
+				push_el(\@main::el, 'htuser-usermanagement()', 'Failure modifying user in Domain '.$htpasswd_dnm.' : '.$htpasswd_name);
 
-								$sql = "UPDATE htaccess_users SET status='failure' WHERE id = '".@$query_user[4]."';";
+				$sql = "UPDATE htaccess_users SET status='failure' WHERE id = '".@$query_user[4]."';";
 
-						}
+			}
 
-						($rs, $rdata) = doSQL($sql);
+			($rs, $rdata) = doSQL($sql);
 
-						return $rs if ($rs != 0);
-						}
+			return $rs if ($rs != 0);
+		}
 
-						push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
-					}
+		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
+	}
 
 	# now the groups follow
-			my $sql_gid = "select t1.dmn_id,t2.domain_name  from htaccess as t1,domain as t2 where t1.id = $main::htuser_task_id and t1.dmn_id = t2.domain_id";
+	my $sql_gid = "select t1.dmn_id,t2.domain_name  from htaccess as t1,domain as t2 where t1.id = $main::htuser_task_id and t1.dmn_id = t2.domain_id";
 
-			 ($rs, $rdata) = doSQL($sql_gid);
+	($rs, $rdata) = doSQL($sql_gid);
 
-			my $htgroup_data = @$rdata[0];
+	my $htgroup_data = @$rdata[0];
 
-			#are there any changes we have to follow ?
-			$sql = "select ugroup, members, status, id from htaccess_groups where dmn_id = '".@$htgroup_data[0]."' and status != 'ok' ";
+	#are there any changes we have to follow ?
+	$sql = "select ugroup, members, status, id from htaccess_groups where dmn_id = '".@$htgroup_data[0]."' and status != 'ok' ";
 
-				($rs, $rows) = doSQL($sql);
+	($rs, $rows) = doSQL($sql);
 
-			if (scalar(@$rows) != 0) {
+	if (scalar(@$rows) != 0) {
 
-			#there are changes so we like to renew our entire group-information
-			#and reset our groupsfile
+		#there are changes so we like to renew our entire group-information and reset our groupsfile
+		my $sql2 = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]'";
 
-			my $sql2 = "select ugroup, members, status, id from htaccess_groups where dmn_id = '@$htgroup_data[0]'";
+		($rs, $rows) = doSQL($sql2);
 
-				($rs, $rows) = doSQL($sql2);
+		push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
 
-				push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
+		my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
 
+		my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-					my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+		my $htaccess_groups_file = "$apache_www_dir/@$htgroup_data[1]/$htaccess_groups_file_name";
 
-					my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+		$rs = del_file($htaccess_groups_file);
 
-					my $htaccess_groups_file = "$apache_www_dir/@$htgroup_data[1]/$htaccess_groups_file_name";
+		foreach (@$rows) {
 
-					$rs = del_file($htaccess_groups_file);
+			my $query_group = $_;
+			my ($htgroup_name, $htgroup_members, $htgroup_dnm, $htgroup_status) =
+				(@$query_group[0], @$query_group[1], @$htgroup_data[1], @$query_group[2]);
 
+			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);
 
-					foreach (@$rows) {
+			if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'ok') {
 
-						my $query_group = $_;
-						my ($htgroup_name,
-							$htgroup_members,
-							$htgroup_dnm,
-							$htgroup_status) = (@$query_group[0],
-						   						 @$query_group[1],
-						   						 @$htgroup_data[1],
-						   						 @$query_group[2]);
+				# only choice atm -> build the group again. Reset the old groupfile
+				foreach (split(',', $htgroup_members)) {
 
-					push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);
+					my $id = $_;
 
-						if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'ok') {
+					$sql = "select uname from htaccess_users where id = $id";
 
-								# only choice atm -> build the group again.
-								# reset the old groupfile
+					($rs, $rdata) = doSQL($sql);
 
+					return $rs if ($rs != 0);
 
+					$rdata = @$rdata[0];
 
-										foreach (split(',', $htgroup_members)) {
+					my ($uname) = (@$rdata[0]);
 
-												my $id = $_;
+					$rs = htuser_add_group_data($htgroup_dnm, $htgroup_name, $uname);
 
-												$sql = "select uname from htaccess_users where id = $id";
+					return $rs if ($rs != 0);
 
-												($rs, $rdata) = doSQL($sql);
-
-												return $rs if ($rs != 0);
-
-												$rdata = @$rdata[0];
-
-												my ($uname) = (@$rdata[0]);
-
-												$rs = htuser_add_group_data($htgroup_dnm, $htgroup_name, $uname);
-
-												return $rs if ($rs != 0);
-
-										}
-
-								push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.@$query_group[0].'...');
-
-								$sql = "update htaccess_groups set status='ok' where id = @$query_group[3]";
-
-						} elsif ($htgroup_status eq 'delete') {
-								#since we build our file again and delete status is handled apart groups with status 'delete' will get
-								#get deleted...
-
-								$sql = "delete from htaccess_groups where id = @$query_group[3]";
-
-								push_el(\@main::el, 'htuser-usermanagement()', 'Delete Group ID : '.@$query_group[0].'...');
-
-						} else {
-
-								push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htpasswd_dnm : $htpasswd_name');
-								$sql = "update htaccess_group set status='failure' where id = @$query_group[3]";
-
-						}
-
-						($rs, $rdata) = doSQL($sql);
-
-						return $rs if ($rs != 0);
-
-					}
-					push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
 				}
+
+				push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.@$query_group[0].'...');
+
+				$sql = "update htaccess_groups set status='ok' where id = @$query_group[3]";
+
+			} elsif ($htgroup_status eq 'delete') {
+				# since we build our file again and delete status is handled apart groups with status
+				# 'delete' will get deleted...
+
+				$sql = "delete from htaccess_groups where id = @$query_group[3]";
+
+				push_el(\@main::el, 'htuser-usermanagement()', 'Delete Group ID : '.@$query_group[0].'...');
+
+			} else {
+
+				push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htpasswd_dnm : $htpasswd_name');
+
+				$sql = "update htaccess_group set status='failure' where id = @$query_group[3]";
+
+			}
+
+			($rs, $rdata) = doSQL($sql);
+
+			return $rs if ($rs != 0);
+
+		}
+
+		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
+	}
 
 	sleep(1);
 

@@ -4,6 +4,9 @@ ispCP ω 1.0.0 Changelog
 2008-05-12 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1244: Use of uninitialized value in concatenation - in file engine/ispcp-htuser-mngr
+	- GUI:
+		* Fixed #1209: Undefined index: mail_type_forward
+		* Fixed #1243: adding mail aborts
 	- LANGUAGES:
 		* Updated German
 

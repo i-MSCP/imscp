@@ -269,7 +269,7 @@ SQL_QUERY;
 			}
 		}
 
-		if ($_POST['mail_type_forward']) {
+		if (isset($_POST['mail_type_forward'])) {
 			if ($_POST['dmn_type'] === 'dmn') {
 				$mail_type[] = 'normal_forward';
 				$sub_id = '0';
@@ -371,7 +371,12 @@ SQL_QUERY;
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 	  $mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
 	  $mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
-	   
+
+	if (($mail_type_normal == false) && ($mail_type_forward == false)) {
+		set_page_message(tr('Please select at least one mail type!'));
+		return;
+	}
+
     if ($mail_type_normal) {
         $pass = escapeshellcmd($_POST['pass']);
         $pass_rep = escapeshellcmd($_POST['pass_rep']);
