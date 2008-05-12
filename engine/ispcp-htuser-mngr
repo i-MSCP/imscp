@@ -100,8 +100,7 @@ sub htuser_mngr_start_up {
 			domain_cgi
 		FROM
 			domain
-	    LIMIT 0,1
-	";
+	    LIMIT 0,1";
 
 	($rs, $rdata) = doSQL($sql);
 
@@ -432,8 +431,19 @@ sub htuser_del_user_system_data {
 
 		my $id = $_;
 
-		#$sql = "select uname from htaccess_users where id = $id";
-		$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id GROUP BY htaccess.user_id";
+		$sql = "
+			SELECT
+				uname, count(htaccess.user_id) as c
+			FROM
+				htaccess_users
+			LEFT JOIN
+				htaccess
+				ON
+				htaccess_users.id=htaccess.user_id
+			WHERE
+				htaccess_users.id = '$id'
+			GROUP BY
+				htaccess.user_id";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -456,7 +466,7 @@ sub htuser_del_user_system_data {
 
 		my $id = $_;
 
-		$sql = "select count(dmn_id) from htaccess where dmn_id = $id and path='$path'";
+		$sql = "SELECT count(dmn_id) FROM htaccess WHERE dmn_id = '$id' AND path = '$path'";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -543,7 +553,7 @@ sub htuser_add_user_system_data {
 
 		my $id = $_;
 
-		$sql = "select uname, upass from htaccess_users where id = $id";
+		$sql = "SELECT uname, upass FROM htaccess_users WHERE id = '$id'";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -587,7 +597,7 @@ sub htuser_add_user_to_group {
 
 	push_el(\@main::el, 'htuser_add_user_to_group_data()', 'Starting...');
 
-	my $sql = "select uname,upass from htaccess_users where id = $uid and dmn_id = $dmn_id";
+	my $sql = "SELECT uname,upass FROM htaccess_users WHERE id = '$uid' AND dmn_id = '$dmn_id'";
 
 	($rs, $rdata) = doSQL($sql);
 
@@ -662,16 +672,15 @@ sub htuser_add_group_system_data {
 
 		my $group_id = $_;
 
-		$sql = <<SQL_QUERY;
-			select
+		$sql = "
+			SELECT
 				ugroup, members
-			from
+			FROM
 				htaccess_groups
-			where
-				id = $group_id
-			and
-				dmn_id = $dmn_id
-SQL_QUERY
+			WHERE
+				id = '$group_id'
+			AND
+				dmn_id = '$dmn_id'";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -758,7 +767,19 @@ sub htuser_del_group_system_data {
 
 		my $group_id = $_;
 
-		$sql = "select ugroup, members, count(htaccess.id) as c from htaccess_groups left join htaccess on htaccess.group_id=htaccess_groups.id where htaccess_groups.id = $group_id and htaccess_groups.dmn_id = $dmn_id group by htaccess.group_id";
+		$sql = "
+		SELECT
+			ugroup, members, COUNT(htaccess.id) AS c
+		FROM
+			htaccess_groups
+		LEFT JOIN
+			htaccess ON htaccess.group_id = htaccess_groups.id
+		WHERE
+			htaccess_groups.id = '$group_id'
+		AND
+			htaccess_groups.dmn_id = '$dmn_id'
+		GROUP BY
+			htaccess.group_id";
 
 		($rs, $rdata) = doSQL($sql);
 
@@ -774,7 +795,7 @@ sub htuser_del_group_system_data {
 
 				my ($uname, $ucounter) = (undef, undef);
 
-				$sql = "select uname from htaccess_users where id = $id";
+				$sql = "SELECT uname FROM htaccess_users WHERE id = '$id'";
 
 				($rs, $rdata) = doSQL($sql);
 
@@ -788,7 +809,17 @@ sub htuser_del_group_system_data {
 
 				return $rs if ($rs != 0);
 
-				$sql = "SELECT uname, count(htaccess.user_id) as c FROM htaccess_users LEFT JOIN htaccess ON htaccess_users.id=htaccess.user_id WHERE htaccess_users.id=$id GROUP BY htaccess.user_id";
+				$sql = "
+				SELECT
+					uname, COUNT(htaccess.user_id) AS c
+				FROM
+					htaccess_users
+				LEFT JOIN
+					htaccess ON htaccess_users.id = htaccess.user_id
+				WHERE
+					htaccess_users.id = '$id'
+				GROUP BY
+					htaccess.user_id";
 
 				($rs, $rdata) = doSQL($sql);
 
@@ -812,7 +843,7 @@ sub htuser_del_group_system_data {
 
 			my $id = $_;
 
-			$sql = "select count(dmn_id) from htaccess where dmn_id = $id and path='$path'";
+			$sql = "SELECT COUNT(dmn_id) FROM htaccess WHERE dmn_id = '$id' AND path = '$path'";
 
 			($rs, $rdata) = doSQL($sql);
 
@@ -861,14 +892,13 @@ sub htuser_mngr_engine {
 
 	push_el(\@main::el, 'htuser_mngr_engine()', 'Starting...');
 
-	my $sql = undef;
-
 	#
 	# user management;
 	#
 
-	$sql = <<SQL_QUERY;
-		select
+	my $id = $main::htuser_task_id;
+	my $sql = "
+		SELECT
 			t1.dmn_id,
 			t2.domain_name,
 			t1.user_id,
@@ -878,16 +908,15 @@ sub htuser_mngr_engine {
 			t1.status,
 			t2.domain_uid,
 			t2.domain_gid
-		from
+		FROM
 			htaccess as t1,
 			domain as t2
-		where
-			t1.id = $main::htuser_task_id
-		and
+		WHERE
+			t1.id = '$id'
+		AND
 			t1.user_id != 0
-		and
-			t1.dmn_id = t2.domain_id
-SQL_QUERY
+		AND
+			t1.dmn_id = t2.domain_id";
 
 	($rs, $rows) = doSQL($sql);
 
@@ -899,9 +928,9 @@ SQL_QUERY
 		# protect with group;
 		#
 
-		$sql = <<SQL_QUERY;
-
-		select
+		$id = $main::htuser_task_id;
+		$sql = "
+		SELECT
 			t1.dmn_id,
 			t2.domain_name,
 			t1.group_id,
@@ -911,17 +940,15 @@ SQL_QUERY
 			t1.status,
 			t2.domain_uid,
 			t2.domain_gid
-		from
+		FROM
 			htaccess as t1,
 			domain as t2
-		where
-			t1.id = $main::htuser_task_id
-		and
+		WHERE
+			t1.id = '$id'
+		AND
 			t1.group_id != 0
-		and
-			t1.dmn_id = t2.domain_id
-
-SQL_QUERY
+		AND
+			t1.dmn_id = t2.domain_id";
 
 		($rs, $rows) = doSQL($sql);
 
@@ -951,29 +978,17 @@ SQL_QUERY
 
 				sys_command_rs("touch $htaccess_group_cf");
 
-				my $htaccess_users_file_name =
+				my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
 
-				$main::cfg{'HTACCESS_USERS_FILE_NAME'};
+				my $htaccess_groups_file_name =	$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
 
-				my $htaccess_groups_file_name =
+				my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-				$main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+				my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
 
-				my $apache_www_dir =
+				my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
 
-				$main::cfg{'APACHE_WWW_DIR'};
-
-				my $htaccess_users_file =
-
-				"$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-
-				my $htaccess_groups_file =
-
-				"$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
-
-				my $htaccess_file =
-
-				"$apache_www_dir/$dmn_name/$path/.htaccess";
+				my $htaccess_file =	"$apache_www_dir/$dmn_name/$path/.htaccess";
 
 			}
 
@@ -983,7 +998,7 @@ SQL_QUERY
 
 				if ($rs == 0) {
 
-					$sql = "update htaccess set status='ok' where id = $htuser_id";
+					$sql = "UPDATE htaccess SET status = 'ok' WHERE id = $htuser_id";
 
 				} else {
 
@@ -991,7 +1006,7 @@ SQL_QUERY
 
 					$msg =~ s/\'/\\\'/g;
 
-					$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+					$sql = "UPDATE htaccess SET status= '$sub_name | $msg' WHERE id = '$htuser_id';";
 
 				}
 
@@ -1005,7 +1020,7 @@ SQL_QUERY
 
 				if ($rs == 0) {
 
-					$sql = "delete from htaccess where id = $htuser_id";
+					$sql = "DELETE FROM htaccess WHERE id = '$htuser_id'";
 
 				} else {
 
@@ -1013,7 +1028,7 @@ SQL_QUERY
 
 					$msg =~ s/\'/\\\'/g;
 
-					$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+					$sql = "UPDATE htaccess SET status = '$sub_name | $msg' WHERE id = $htuser_id;";
 
 				}
 
@@ -1084,7 +1099,7 @@ SQL_QUERY
 
 			if ($rs == 0) {
 
-				$sql = "update htaccess set status='ok' where id = $htuser_id";
+				$sql = "UPDATE htaccess SET status = 'ok' WHERE id = '$htuser_id';";
 
 			} else {
 
@@ -1092,7 +1107,7 @@ SQL_QUERY
 
 				$msg =~ s/\'/\\\'/g;
 
-				$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+				$sql = "UPDATE htaccess SET status = '$sub_name | $msg' WHERE id = '$htuser_id';";
 
 			}
 
@@ -1106,7 +1121,7 @@ SQL_QUERY
 
 			if ($rs == 0) {
 
-				$sql = "delete from htaccess where id = $htuser_id";
+				$sql = "DELETE FROM htaccess WHERE id = '$htuser_id';";
 
 			} else {
 
@@ -1114,7 +1129,7 @@ SQL_QUERY
 
 				$msg =~ s/\'/\\\'/g;
 
-				$sql = "update htaccess set status='$sub_name | $msg' where id = $htuser_id;";
+				$sql = "UPDATE htaccess SET status = '$sub_name | $msg' WHERE id = '$htuser_id';";
 
 			}
 
@@ -1134,7 +1149,15 @@ SQL_QUERY
 
 			my $htaccess_data = @$rdata[0];
 
-			$sql = "select uname, upass, dmn_id, status, id from htaccess_users where dmn_id = '".@$htaccess_data[0]."' and status != 'ok' ";
+			$sql = "
+			SELECT
+				uname, upass, dmn_id, status, id
+			FROM
+				htaccess_users
+			WHERE
+				dmn_id = '".@$htaccess_data[0]."'
+			AND
+				status != 'ok';";
 
 				($rs, $rows) = doSQL($sql);
 
@@ -1166,7 +1189,7 @@ SQL_QUERY
 								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
 								return $rs if ($rs != 0);
 
-								$sql = "update htaccess_users set status='ok' where id = @$query_user[4]";
+								$sql = "UPDATE htaccess_users SET status = 'ok' WHERE id = '".@$query_user[4]."';";
 
 						} elsif ($htpasswd_status eq 'delete') {
 
@@ -1175,7 +1198,7 @@ SQL_QUERY
 								$rs = htuser_del_user_data($htpasswd_dnm, $htpasswd_name);
 								return $rs if ($rs != 0);
 
-								$sql = "delete from htaccess_users where id = @$query_user[4]";
+								$sql = "DELETE FROM htaccess_users WHERE id = '".@$query_user[4]."';";
 
 						} elsif ($htpasswd_status eq 'toadd') {
 
@@ -1184,16 +1207,16 @@ SQL_QUERY
 								$rs = htuser_add_user_data($htpasswd_dnm, $htpasswd_name, $htpasswd_pass);
 								return $rs if ($rs != 0);
 
-								$sql = "update htaccess_users set status='ok' where id = @$query_user[4]";
+								$sql = "UPDATE htaccess_users SET status = 'ok' WHERE id = '".@$query_user[4]."';";
 
 						} elsif ($htpasswd_status eq 'ok') {
-
+								## TODO: ?
 
 						} else {
 
 								push_el(\@main::el, 'htuser-usermanagement()', 'Failure modifying user in Domain '.$htpasswd_dnm.' : '.$htpasswd_name);
 
-								$sql = "update htaccess_users set status='failure' where id =  @$query_user[4]";
+								$sql = "UPDATE htaccess_users SET status='failure' WHERE id = '".@$query_user[4]."';";
 
 						}
 
