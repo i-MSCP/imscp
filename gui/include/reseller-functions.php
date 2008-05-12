@@ -1557,6 +1557,8 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 
 	$search [] = '{DOMAIN}';
 	$replace[] = $domain_name;
+	$search [] = '{MAIL}';
+	$replace[] = $uemail;
 	$search [] = '{NAME}';
 	$replace[] = $name;
 
@@ -1581,14 +1583,13 @@ you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
 
 Please login into your ispCP control panel for more details.
 
-');
+', true);
+
 	$search [] = '{RESELLER}';
 	$replace[] = $from_name;
-	$search [] = '{MAIL}';
-	$replace[] = $to;
 	$message = str_replace($search, $replace, $message);
 
-	$mail_result = mail(encode($from), $subject, $message, $headers);
+	$mail_result = mail($from, $subject, $message, $headers);
 }
 
 function send_alias_order_email($alias_name)

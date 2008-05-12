@@ -65,8 +65,8 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
                     'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? "checked=\"checked\"" : "",
                     'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? "checked=\"checked\"" : "",
                     'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? "checked=\"checked\"" : "",
-                    'NORMAL_MAIL_CHECKED' => ($_POST['mail_type_normal']) ? "checked=\"checked\"" : "",
-                    'FORWARD_MAIL_CHECKED' => ($_POST['mail_type_forward']) ? "checked=\"checked\"" : "",
+                    'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type_normal'])) ? "checked=\"checked\"" : "",
+                    'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type_forward'])) ? "checked=\"checked\"" : "",
                     'FORWARD_LIST' => $f_list));
     }
 }
@@ -223,8 +223,8 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
     $mail_auto_respond_text = '';
     $mail_addr = '';
 
-    if ($_POST['mail_type_normal'] || $_POST['mail_type_forward']) {
-		if ($_POST['mail_type_normal']) {
+    if (isset($_POST['mail_type_normal']) || isset($_POST['mail_type_forward'])) {
+		if (isset($_POST['mail_type_normal'])) {
 			if ($_POST['dmn_type'] === 'dmn') {
 				$mail_pass = $_POST['pass'];
 				$mail_forward = '_no_';
@@ -369,7 +369,10 @@ SQL_QUERY;
 }
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
-    if ($_POST['mail_type'] != 'forward') {
+	  $mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
+	  $mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
+	   
+    if ($mail_type_normal) {
         $pass = escapeshellcmd($_POST['pass']);
         $pass_rep = escapeshellcmd($_POST['pass_rep']);
     }
@@ -379,8 +382,8 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
         return;
     }
 
-    if ($_POST['mail_type'] === 'normal') {
-        if (!isset($pass) || $pass == null || !isset($pass_rep) || $pass_rep == null) {
+    if ($mail_type_normal) {
+        if (!isset($pass) || $pass == null || !isset($pass_rep) || $pass_rep == null || $pass_rep == '' || $pass == '') {
             set_page_message(tr('Password data is missing!'));
             return;
         }
@@ -406,7 +409,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
         return;
     }
 
-    if ($_POST['mail_type'] === 'forward' && empty($_POST['forward_list'])) {
+    if ($mail_type_forward && empty($_POST['forward_list'])) {
         set_page_message(tr('Forward list is empty!'));
         return;
     }
