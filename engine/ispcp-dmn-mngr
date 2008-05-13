@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
@@ -33,13 +32,9 @@
 use FindBin;
 use lib "$FindBin::Bin/";
 require 'ispcp_common_code.pl';
-
 use strict;
-
 use warnings;
-
 use Net::LibIDN ':all';
-
 $main::dmn_task_id = undef;
 
 ################################################################################
@@ -48,1824 +43,1317 @@ $main::dmn_task_id = undef;
 ##
 ## Start Up!
 ##
-
 sub dmn_mngr_start_up {
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($rs, $rdata) = (undef, undef);
+	push_el(\@main::el, 'dmn_mngr_start_up()', 'Starting...');
 
-    push_el(\@main::el, 'dmn_mngr_start_up()', 'Starting...');
+	# checking for master process;
+	$rs = check_master();
+	return $rs if ($rs != 0);
 
-    # checking for master process;
+	# Let's clear Execution Logs, if any.
+	if (-e $main::ispcp_dmn_mngr_el) {
+		$rs = del_file($main::ispcp_dmn_mngr_el);
+		return $rs if ($rs != 0);
+	}
 
-    $rs = check_master();
+	# config check;
+	$rs = get_conf();
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	# sql check;
+	#
+	# getting initial data also must be done here;
+	#
+	my $sql = "select admin_id from admin where admin_id = 1;";
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
 
-    # Let's clear Execution Logs, if any.
+	#
+	# getting task id and domain record id;
+	#
+	$main::dmn_task_id = $ARGV[0];
 
-    if (-e $main::ispcp_dmn_mngr_el) {
-
-        $rs = del_file($main::ispcp_dmn_mngr_el);
-
-        return $rs if ($rs != 0);
-
-    }
-
-    # config check;
-
-    $rs = get_conf();
-
-    return $rs if ($rs != 0);
-
-    # sql check;
-
-    #
-    # getting initial data also must be done here;
-    #
-
-    my $sql = "select admin_id from admin where admin_id = 1;";
-
-    ($rs, $rdata) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    #
-    # getting task id and domain record id;
-    #
-
-    $main::dmn_task_id = $ARGV[0];
-
-    push_el(\@main::el, 'dmn_mngr_start_up()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_mngr_start_up()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Shut Down!
 ##
-
 sub dmn_mngr_shut_down {
-
-    my $rs = undef;
-
-    push_el(\@main::el, 'dmn_mngr_shut_down()', 'Starting...');
-
-    push_el(\@main::el, 'dmn_mngr_shut_down()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_mngr_shut_down()', 'Done...');
+	return 0;
 }
 
 ###################################### DNS #####################################
-
 ################################################################################
 ##
 ## Add DNS CFG Data
 ##
-
 sub dmn_add_named_cfg_data {
-
-    my ($dmn_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_named_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    #
-    # Initial data we need;
-    #
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
-
-    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/bind/parts";
-
-    my $backup_dir = "$conf_dir/bind/backup";
-
-    my $working_dir = "$conf_dir/bind/working";
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/named.conf.$timestamp";
-
-    my $working_cfg = "$working_dir/named.conf";
-
-    #
-    #  BEGIN/END tags, and templates needed for this config;
-    #
-
-    my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
-
-    (
-     $rs,
-     $dta_b,
-     $dta_e,
-     $entry_b,
-     $entry_e,
-     $entry
-    ) = get_tpl(
-                $tpl_dir,
-                'cfg_dta_b.tpl',
-                'cfg_dta_e.tpl',
-                'cfg_entry_b.tpl',
-                'cfg_entry_e.tpl',
-                'cfg_entry.tpl'
-               );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's construct nedded tags and entries;
-    #
-
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{DB_DIR}' => $named_db_dir
-                   );
-
-    my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
-
-    (
-     $rs,
-     $entry_b_val,
-     $entry_e_val,
-     $entry_val
-    ) = prep_tpl(
-                 \%tag_hash,
-                 $entry_b,
-                 $entry_e,
-                 $entry
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's get Sytem and Workind config files;
-    #
-
-    my ($sys, $working) = ('', '');
-
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs  if ($rs != 0);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs  if ($rs != 0);
-
-    ($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Is the new domain entry exists ?
-    #
-
-    ($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
-
-    if ($rs == 0) {
-
-        # Yes it exists ! Then we must delete it !
-
-        ($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's contruct the replacement and do it;
-    #
-
-    my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
-
-    ($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Here we'll backup production config file;
-    #
-
-    $rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's save working copy;
-    #
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Here we'll replace data in production config file with data in working
-    # confing file. A little workaround will be done. If working copy data does not exist
-    # in production config then we will add it;
-    #
-
-    ($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
-
-    if ($rs == 0) { # YES ! Data is here ! /in production config file/;
-
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_add_named_cfg_data");
-
-        return $rs if ($rs != 0);
-
-    } elsif ($rs == -5) {
-
-        $sys .= $working;
-
-    } else {
-
-        return $rs;
-
-    }
-
-    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-
-    push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Ending...');
-
-    return 0;
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_named_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
+	my $working_dir = "$conf_dir/bind/working";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/named.conf.$timestamp";
+	my $working_cfg = "$working_dir/named.conf";
+
+	#
+	#  BEGIN/END tags, and templates needed for this config;
+	#
+	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
+	(
+		$rs,
+		$dta_b,
+		$dta_e,
+		$entry_b,
+		$entry_e,
+		$entry
+	) = get_tpl(
+		$tpl_dir,
+		'cfg_dta_b.tpl',
+		'cfg_dta_e.tpl',
+		'cfg_entry_b.tpl',
+		'cfg_entry_e.tpl',
+		'cfg_entry.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's construct nedded tags and entries;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{DB_DIR}' => $named_db_dir
+	);
+	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
+	(
+		$rs,
+		$entry_b_val,
+		$entry_e_val,
+		$entry_val
+	) = prep_tpl(
+		\%tag_hash,
+		$entry_b,
+		$entry_e,
+		$entry
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's get Sytem and Workind config files;
+	#
+	my ($sys, $working) = ('', '');
+
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs  if ($rs != 0);
+
+	($rs, $working) = get_file($working_cfg);
+	return $rs  if ($rs != 0);
+
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
+	return $rs if ($rs != 0);
+
+	#
+	# Is the new domain entry exists ?
+	#
+	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
+	if ($rs == 0) {
+		# Yes it exists ! Then we must delete it !
+		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's contruct the replacement and do it;
+	#
+	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
+	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "dmn_add_named_cfg_data");
+	return $rs if ($rs != 0);
+
+	#
+	# Here we'll backup production config file;
+	#
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
+	return $rs if ($rs != 0);
+
+	#
+	# Let's save working copy;
+	#
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	#
+	# Here we'll replace data in production config file with data in working
+	# confing file. A little workaround will be done. If working copy data does not exist
+	# in production config then we will add it;
+	#
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
+	if ($rs == 0) { # YES ! Data is here ! /in production config file/;
+		($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_add_named_cfg_data");
+		return $rs if ($rs != 0);
+		} elsif ($rs == -5) {
+		$sys .= $working;
+		} else {
+		return $rs;
+	}
+	$rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'dmn_add_named_cfg_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delete DNS CFG Data
 ##
-
 sub dmn_del_named_cfg_data {
-
-    my ($dmn_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'dmn_del_named_cfg_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_named_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    #
-    # Initial data we need;
-    #
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
-
-    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/bind/parts";
-
-    my $backup_dir = "$conf_dir/bind/backup";
-
-    my $working_dir = "$conf_dir/bind/working";
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/named.conf.$timestamp";
-
-    my $working_cfg = "$working_dir/named.conf";
-
-    #
-    #  BEGIN/END tags, and templates needed for this config;
-    #
-
-    my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
-
-    (
-     $rs,
-     $dta_b,
-     $dta_e,
-     $entry_b,
-     $entry_e,
-     $entry
-    ) = get_tpl(
-                $tpl_dir,
-                'cfg_dta_b.tpl',
-                'cfg_dta_e.tpl',
-                'cfg_entry_b.tpl',
-                'cfg_entry_e.tpl',
-                'cfg_entry.tpl'
-               );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's construct nedded tags and entries;
-    #
-
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{DB_DIR}' => $named_db_dir
-                   );
-
-    my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
-
-    (
-     $rs,
-     $entry_b_val,
-     $entry_e_val,
-     $entry_val
-    ) = prep_tpl(
-                 \%tag_hash,
-                 $entry_b,
-                 $entry_e,
-                 $entry
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's get Sytem and Workind config files;
-    #
-
-    my ($sys, $working) = ('', '');
-
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs  if ($rs != 0);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs  if ($rs != 0);
-
-    ($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Is the new domain entry exists ?
-    #
-
-    ($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
-
-    if ($rs == 0) {
-
-        # Yes it exists ! Then we must delete it !
-
-        ($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's contruct the replacement and do it;
-    #
-    #
-    #my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
-    #
-    #($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
-    #
-    #return $rs if ($rs != 0);
-    #
-
-    #
-    # Here we'll backup production config file;
-    #
-
-    $rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's save working copy;
-    #
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Here we'll replace data in production config file with data in working
-    # confing file. A little workaround will be done. If working copy data does not exist
-    # in production config then we will add it;
-    #
-
-    ($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
-
-    if ($rs == 0) { # YES ! Data is here ! /in production config file/;
-
-        ($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_del_named_cfg_data");
-
-        return $rs if ($rs != 0);
-
-    } elsif ($rs == -5) {
-
-        $sys .= $working;
-
-    } else {
-
-        return $rs;
-
-    }
-
-    $rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-
-    push_el(\@main::el, 'dmn_del_named_cfg_data()', 'Ending...');
-
-    return 0;
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'dmn_del_named_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_named_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	#
+	# Initial data we need;
+	#
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $sys_cfg = $main::cfg{'BIND_CONF_FILE'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
+	my $working_dir = "$conf_dir/bind/working";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/named.conf.$timestamp";
+	my $working_cfg = "$working_dir/named.conf";
+
+	#
+	#  BEGIN/END tags, and templates needed for this config;
+	#
+	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
+	(
+		$rs,
+		$dta_b,
+		$dta_e,
+		$entry_b,
+		$entry_e,
+		$entry
+	) = get_tpl(
+		$tpl_dir,
+		'cfg_dta_b.tpl',
+		'cfg_dta_e.tpl',
+		'cfg_entry_b.tpl',
+		'cfg_entry_e.tpl',
+		'cfg_entry.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's construct nedded tags and entries;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{DB_DIR}' => $named_db_dir
+	);
+	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
+	(
+		$rs,
+		$entry_b_val,
+		$entry_e_val,
+		$entry_val
+	) = prep_tpl(
+		\%tag_hash,
+		$entry_b,
+		$entry_e,
+		$entry
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's get Sytem and Workind config files;
+	#
+	my ($sys, $working) = ('', '');
+
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs  if ($rs != 0);
+
+	($rs, $working) = get_file($working_cfg);
+	return $rs  if ($rs != 0);
+
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
+	return $rs if ($rs != 0);
+
+	#
+	# Is the new domain entry exists ?
+	#
+	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
+	if ($rs == 0) {
+		# Yes it exists ! Then we must delete it !
+		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's contruct the replacement and do it;
+	#
+	#
+	#my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
+	#
+	#($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
+	#
+	#return $rs if ($rs != 0);
+	#
+	#
+	# Here we'll backup production config file;
+	#
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
+	return $rs if ($rs != 0);
+
+	#
+	# Let's save working copy;
+	#
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	#
+	# Here we'll replace data in production config file with data in working
+	# confing file. A little workaround will be done. If working copy data does not exist
+	# in production config then we will add it;
+	#
+	($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
+	if ($rs == 0) { # YES ! Data is here ! /in production config file/;
+		($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "dmn_del_named_cfg_data");
+		return $rs if ($rs != 0);
+		} elsif ($rs == -5) {
+		$sys .= $working;
+		} else {
+		return $rs;
+	}
+	$rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'dmn_del_named_cfg_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Add DNS DB Data
 ##
-
 sub dmn_add_named_db_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_named_db_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_named_db_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	#
+	# Initial data we need;
+	#
+	my $dmn_name = @$dmn_data[1];
+	my $dmn_ip = @$dmn_data[21];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $base_svr_ip = $main::cfg{'BASE_SERVER_IP'};
+	my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
 
-    push_el(\@main::el, 'dmn_add_named_db_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_named_db_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    #
-    # Initial data we need;
-    #
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $dmn_ip = @$dmn_data[21];
-
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-
-    my $base_svr_ip = $main::cfg{'BASE_SERVER_IP'};
-
-    my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
-
-    #
-    # Any secondary DNS defined;
-    #
-
+	#
+	# Any secondary DNS defined;
+	#
 	if (!$sec_dns_ip) {
 		$sec_dns_ip = $base_svr_ip;
 	}
 
-    my $tpl_dir = "$conf_dir/bind/parts";
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
+	my $working_dir = "$conf_dir/bind/working";
+	my $db_fname = "$dmn_name.db";
+	my $sys_cfg = "$named_db_dir/$db_fname";
+	my $working_cfg = "$working_dir/$db_fname";
 
-    my $backup_dir = "$conf_dir/bind/backup";
-
-    my $working_dir = "$conf_dir/bind/working";
-
-
-    my $db_fname = "$dmn_name.db";
-
-
-    my $sys_cfg = "$named_db_dir/$db_fname";
-
-    my $working_cfg = "$working_dir/$db_fname";
-
-    #
-    # Let's get needed tags and templates;
-    #
-
-    my ($entry, $dns2_b, $dns2_e) = ('', '', '');
-
-    ($rs, $entry, $dns2_b, $dns2_e) = get_tpl(
-                                              $tpl_dir,
-                                              'db_e.tpl',
-                                              'db_dns2_b.tpl',
-                                              'db_dns2_e.tpl'
-                                             );
-
-    return $rs if ($rs != 0);
+	#
+	# Let's get needed tags and templates;
+	#
+	my ($entry, $dns2_b, $dns2_e) = ('', '', '');
+	($rs, $entry, $dns2_b, $dns2_e) = get_tpl(
+		$tpl_dir,
+		'db_e.tpl',
+		'db_dns2_b.tpl',
+		'db_dns2_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
 	my $seq = 0;
 
 	#
 	# RFC 1912
 	#
-
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-
 	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday,$seq;
 
-    #
-    # Let's prepare them;
-    #
+	#
+	# Let's prepare them;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{DMN_IP}' => $dmn_ip,
+		'{BASE_SERVER_IP}' => $base_svr_ip,
+		'{SECONDARY_DNS_IP}' => $sec_dns_ip,
+		'{TIMESTAMP}' => $time2
+	);
+	($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
+		\%tag_hash,
+		$entry,
+		$dns2_b,
+		$dns2_e
+	);
+	return $rs if ($rs != 0);
 
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{DMN_IP}' => $dmn_ip,
-                    '{BASE_SERVER_IP}' => $base_svr_ip,
-                    '{SECONDARY_DNS_IP}' => $sec_dns_ip,
-                    '{TIMESTAMP}' => $time2
-                   );
+	#if ($main::cfg{'SECONDARY_DNS'}) {
+	#    my $dns2 = undef;
+	#    $dns2 = "\t\t \t NS \t $main::cfg{'SECONDARY_DNS'}.\n";
+	#    $dns2 = "$dns2_b$dns2$dns2_e";
+	#    ($rs, $entry) = repl_tag($dns2_b, $dns2_e, $entry, $dns2);
+	#    return $rs if ($rs != 0);
+	#} else {
+	#   ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
+	#    return $rs if ($rs != 0);
+	#}
+	#
+	# Let's store generated data;
+	#
+	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    ($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
-                                               \%tag_hash,
-                                               $entry,
-                                               $dns2_b,
-                                               $dns2_e
-                                              );
+	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
-
-    #if ($main::cfg{'SECONDARY_DNS'}) {
-
-    #    my $dns2 = undef;
-
-    #    $dns2 = "\t\t \t NS \t $main::cfg{'SECONDARY_DNS'}.\n";
-
-    #    $dns2 = "$dns2_b$dns2$dns2_e";
-
-    #    ($rs, $entry) = repl_tag($dns2_b, $dns2_e, $entry, $dns2);
-
-    #    return $rs if ($rs != 0);
-
-    #} else {
-
-    #   ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
-
-    #    return $rs if ($rs != 0);
-
-    #}
-
-    #
-    # Let's store generated data;
-    #
-
-    $rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_named_db_data()', 'Ending...');
-
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_named_db_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delte DNS DB Data
 ##
-
 sub dmn_del_named_db_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_named_db_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_named_db_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	#
+	# Initial data we need;
+	#
+	my $dmn_name = @$dmn_data[1];
+	my $dmn_ip = @$dmn_data[21];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
+	my $working_dir = "$conf_dir/bind/working";
+	my $db_fname = "$dmn_name.db";
+	my $sys_cfg = "$named_db_dir/$db_fname";
+	my $working_cfg = "$working_dir/$db_fname";
 
-    push_el(\@main::el, 'dmn_del_named_db_data()', 'Starting...');
+	#
+	# Let's remove .db files for this domain;
+	#
+	$rs = del_file($working_cfg);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	$rs = del_file($sys_cfg);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_del_named_db_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    #
-    # Initial data we need;
-    #
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $dmn_ip = @$dmn_data[21];
-
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/bind/parts";
-
-    my $backup_dir = "$conf_dir/bind/backup";
-
-    my $working_dir = "$conf_dir/bind/working";
-
-
-    my $db_fname = "$dmn_name.db";
-
-
-    my $sys_cfg = "$named_db_dir/$db_fname";
-
-    my $working_cfg = "$working_dir/$db_fname";
-
-    #
-    # Let's remove .db files for this domain;
-    #
-
-    $rs = del_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    $rs = del_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_named_db_data()', 'Ending...');
-
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_named_db_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Add DNS Data
 ##
-
 sub dmn_add_named_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_named_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_named_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
-    my $rs = undef;
+	$rs = dmn_add_named_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_add_named_data()', 'Starting...');
+	$rs = dmn_add_named_db_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_named_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
-
-    $rs = dmn_add_named_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_add_named_db_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_named_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_named_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Change DNS Data
 ##
-
 sub dmn_change_named_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_change_named_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_named_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	$rs = dmn_add_named_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_change_named_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_change_named_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_add_named_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_change_named_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_change_named_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delete DNS Data
 ##
-
 sub dmn_del_named_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_named_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_named_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
-    push_el(\@main::el, 'dmn_del_named_data()', 'Starting...');
+	$rs = dmn_del_named_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	$rs = dmn_del_named_db_data($dmn_data);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_del_named_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
-
-    $rs = dmn_del_named_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_del_named_db_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_named_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_named_data()', 'Ending...');
+	return 0;
 }
 
 ##################################### HTTPd ####################################
-
 ################################################################################
 ##
 ## Generate Auto Number
 ##
-
 sub get_auto_num {
+	my ($rs, $num, $rdata) = (undef, undef, undef);
 
-    my ($rs, $num, $rdata) = (undef, undef, undef);
+	push_el(\@main::el, 'get_auto_num()', 'Starting...');
 
-    push_el(\@main::el, 'get_auto_num()', 'Starting...');
+	my $sql = "insert into auto_num (msg) values ('auto-num')";
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
 
-    my $sql = "insert into auto_num (msg) values ('auto-num')";
+	$num = $main::db -> {'mysql_insertid'};
+	push_el(\@main::el, 'get_auto_num()', 'Ending...');
 
-    ($rs, $rdata) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    $num = $main::db -> {'mysql_insertid'};
-
-    push_el(\@main::el, 'get_auto_num()', 'Ending...');
-
-    return $num;
-
-    close('db');
-
+	return $num;		# FIXME (ispcomm): close will be never reached!
+	close('db');
 }
 
 ################################################################################
 ##
 ## Generate HTTPd Domain Group Entry
 ##
-
 sub gen_httpd_dmn_group_entry {
+	my ($dmn_data) = @_;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'gen_httpd_dmn_group_entry()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "ERORR: Undefined input data...");
+		return (-1, '');
+	}
 
-    push_el(\@main::el, 'gen_httpd_dmn_group_entry()', 'Starting...');
+	my ($rs, $rdata) = (undef, undef);
+	my $dmn_id = @$dmn_data[0];
+	my $dmn_name = @$dmn_data[1];
+	my $dmn_grp = $dmn_name;
+	my $dmn_ip = @$dmn_data[21];
+	my $dmn_traffic_limit = @$dmn_data[10];
+	my ($dmn_php, $dmn_cgi) = (@$dmn_data[19], @$dmn_data[20]);
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/apache/parts";
+	my $bw_disabled = '';
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-        push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "ERORR: Undefined input data...");
-        return (-1, '');
-    }
+	if ($dmn_traffic_limit eq 0) {
+		$bw_disabled = '#';
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my (
+		$dg_b,
+		$dg_entry,
+		$dg_e,
+		$dmn_b,
+		$dmn_entry,
+		$dmn_e,
+		$dmn_cgi_b,
+		$dmn_cgi_entry,
+		$dmn_cgi_e,
+		$dmn_php_b,
+		$dmn_php_entry,
+		$dmn_php_e,
+		$dmn_php2_b,
+		$dmn_php2_entry,
+		$dmn_php2_e,
+		$dmn_awstats_b,
+		$dmn_awstats_dynamic_entry,
+		$dmn_awstats_static_entry,
+		$dmn_awstats_e,
+		$dmn_custom
+	) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+	(
+		$rs,
+		$dg_b,
+		$dg_entry,
+		$dg_e,
+		$dmn_b,
+		$dmn_entry,
+		$dmn_e,
+		$dmn_cgi_b,
+		$dmn_cgi_entry,
+		$dmn_cgi_e,
+		$dmn_php_b,
+		$dmn_php_entry,
+		$dmn_php_e,
+		$dmn_php2_b,
+		$dmn_php2_entry,
+		$dmn_php2_e,
+		$dmn_awstats_b,
+		$dmn_awstats_dynamic_entry,
+		$dmn_awstats_static_entry,
+		$dmn_awstats_e,
+		$dmn_custom
+	) = get_tpl (
+		$tpl_dir,
+		'dg_b.tpl',
+		'dg_entry.tpl',
+		'dg_e.tpl',
+		'dmn_b.tpl',
+		'dmn_entry.tpl',
+		'dmn_e.tpl',
+		'dmn_cgi_b.tpl',
+		'dmn_cgi_entry.tpl',
+		'dmn_cgi_e.tpl',
+		'dmn_php_b.tpl',
+		'dmn_php_entry.tpl',
+		'dmn_php_e.tpl',
+		'dmn_php2_b.tpl',
+		'dmn_php2_entry.tpl',
+		'dmn_php2_e.tpl',
+		'dmn_awstats_b.tpl',
+		'dmn_awstats_dynamic_entry.tpl',
+		'dmn_awstats_static_entry.tpl',
+		'dmn_awstats_e.tpl',
+		'custom.conf.tpl'
+	);
+	return ($rs, '') if ($rs != 0);
 
-    my $dmn_id = @$dmn_data[0];
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $dmn_grp = $dmn_name;
-
-    my $dmn_ip = @$dmn_data[21];
-
-    my $dmn_traffic_limit = @$dmn_data[10];
-
-    my ($dmn_php, $dmn_cgi) = (@$dmn_data[19], @$dmn_data[20]);
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $tpl_dir = "$conf_dir/apache/parts";
-
-    my $bw_disabled = '';
-
-    if ($dmn_traffic_limit eq 0) {
-        $bw_disabled = '#';
-    }
-
-    my (
-        $dg_b,
-        $dg_entry,
-        $dg_e,
-        $dmn_b,
-        $dmn_entry,
-        $dmn_e,
-        $dmn_cgi_b,
-        $dmn_cgi_entry,
-        $dmn_cgi_e,
-        $dmn_php_b,
-        $dmn_php_entry,
-        $dmn_php_e,
-        $dmn_php2_b,
-        $dmn_php2_entry,
-        $dmn_php2_e,
-	    $dmn_awstats_b,
-	    $dmn_awstats_dynamic_entry,
-	    $dmn_awstats_static_entry,
-	    $dmn_awstats_e,
-	    $dmn_custom
-       ) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-
-    (
-     $rs,
-     $dg_b,
-     $dg_entry,
-     $dg_e,
-     $dmn_b,
-     $dmn_entry,
-     $dmn_e,
-     $dmn_cgi_b,
-     $dmn_cgi_entry,
-     $dmn_cgi_e,
-     $dmn_php_b,
-     $dmn_php_entry,
-     $dmn_php_e,
-     $dmn_php2_b,
-     $dmn_php2_entry,
-     $dmn_php2_e,
-	 $dmn_awstats_b,
-	 $dmn_awstats_dynamic_entry,
-	 $dmn_awstats_static_entry,
-	 $dmn_awstats_e,
-	 $dmn_custom
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dg_b.tpl',
-                 'dg_entry.tpl',
-                 'dg_e.tpl',
-                 'dmn_b.tpl',
-                 'dmn_entry.tpl',
-                 'dmn_e.tpl',
-                 'dmn_cgi_b.tpl',
-                 'dmn_cgi_entry.tpl',
-                 'dmn_cgi_e.tpl',
-                 'dmn_php_b.tpl',
-                 'dmn_php_entry.tpl',
-                 'dmn_php_e.tpl',
-                 'dmn_php2_b.tpl',
-                 'dmn_php2_entry.tpl',
-                 'dmn_php2_e.tpl',
-                 'dmn_awstats_b.tpl',
-	             'dmn_awstats_dynamic_entry.tpl',
-	             'dmn_awstats_static_entry.tpl',
-	             'dmn_awstats_e.tpl',
-	             'custom.conf.tpl'
-                );
-
-    return ($rs, '') if ($rs != 0);
-
-    my ($suexec_uid, $suexec_gid) = get_dmn_suexec_user($dmn_id);
-
-    my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-
-    my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");
-
-    my %tag_hash =
-        (
-         '{DMN_GRP}' => $dmn_grp,
-         '{DMN_NAME}' => $dmn_name,
-         '{SELF}' => $dmn_name,
-         '{DMN_IP}' => $dmn_ip,
-         '{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
-         '{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
-         '{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-         '{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
-         '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
-         '{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
-         '{SCOREBOARDS_DIR}' => $main::cfg{'SCOREBOARDS_DIR'},
-         '{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-         '{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
-         '{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-         '{SUEXEC_USER}' => $suexec_user,
-         '{SUEXEC_GROUP}' => $suexec_group,
-         '{BWLIMIT}' => $dmn_traffic_limit,
-         '{BWLIMIT_DISABLED}' => $bw_disabled,
-         '##TEMPLATE' => '' #Used to prevent apache from parsing commands which are part of the template
-        );
-
-    (
-     $rs,
-     $dg_b,
-     $dg_entry,
-     $dg_e,
-     $dmn_b,
-     $dmn_entry,
-     $dmn_e,
-     $dmn_cgi_b,
-     $dmn_cgi_entry,
-     $dmn_cgi_e,
-     $dmn_php_b,
-     $dmn_php_entry,
-     $dmn_php_e,
-     $dmn_php2_entry,
-	 $dmn_awstats_dynamic_entry,
-	 $dmn_awstats_static_entry,
-	 $dmn_custom
-    ) = prep_tpl(
-                 \%tag_hash,
-                 $dg_b,
-                 $dg_entry,
-                 $dg_e,
-                 $dmn_b,
-                 $dmn_entry,
-                 $dmn_e,
-                 $dmn_cgi_b,
-                 $dmn_cgi_entry,
-                 $dmn_cgi_e,
-                 $dmn_php_b,
-                 $dmn_php_entry,
-                 $dmn_php_e,
-                 $dmn_php2_entry,
-                 $dmn_awstats_dynamic_entry,
-                 $dmn_awstats_static_entry,
-                 $dmn_custom
-                );
-
-    return ($rs, '') if ($rs != 0);
+	my ($suexec_uid, $suexec_gid) = get_dmn_suexec_user($dmn_id);
+	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+	my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");
+	my %tag_hash =
+	(
+		'{DMN_GRP}' => $dmn_grp,
+		'{DMN_NAME}' => $dmn_name,
+		'{SELF}' => $dmn_name,
+		'{DMN_IP}' => $dmn_ip,
+		'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
+		'{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
+		'{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
+		'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
+		'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
+		'{SCOREBOARDS_DIR}' => $main::cfg{'SCOREBOARDS_DIR'},
+		'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+		'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
+		'{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+		'{SUEXEC_USER}' => $suexec_user,
+		'{SUEXEC_GROUP}' => $suexec_group,
+		'{BWLIMIT}' => $dmn_traffic_limit,
+		'{BWLIMIT_DISABLED}' => $bw_disabled,
+		'##TEMPLATE' => '' #Used to prevent apache from parsing commands which are part of the template
+	);
+	(
+		$rs,
+		$dg_b,
+		$dg_entry,
+		$dg_e,
+		$dmn_b,
+		$dmn_entry,
+		$dmn_e,
+		$dmn_cgi_b,
+		$dmn_cgi_entry,
+		$dmn_cgi_e,
+		$dmn_php_b,
+		$dmn_php_entry,
+		$dmn_php_e,
+		$dmn_php2_entry,
+		$dmn_awstats_dynamic_entry,
+		$dmn_awstats_static_entry,
+		$dmn_custom
+	) = prep_tpl(
+		\%tag_hash,
+		$dg_b,
+		$dg_entry,
+		$dg_e,
+		$dmn_b,
+		$dmn_entry,
+		$dmn_e,
+		$dmn_cgi_b,
+		$dmn_cgi_entry,
+		$dmn_cgi_e,
+		$dmn_php_b,
+		$dmn_php_entry,
+		$dmn_php_e,
+		$dmn_php2_entry,
+		$dmn_awstats_dynamic_entry,
+		$dmn_awstats_static_entry,
+		$dmn_custom
+	);
+	return ($rs, '') if ($rs != 0);
 
 	#
 	# Add AWStats data
 	#
-
 	my $awstats_entry = undef;
 
 	# AWStats Dynamic
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
-		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_dynamic_entry\n$dmn_awstats_e";
-	}
-	# AWStats Static
-	elsif ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+			$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_dynamic_entry\n$dmn_awstats_e";
+	} elsif ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+		# AWStats Static
 		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_static_entry\n$dmn_awstats_e";
-	}
-	# No AWStats
-	else {
+	} else {
+		# No AWStats
 		$awstats_entry = "$dmn_awstats_b\n$dmn_awstats_e";
 	}
+	($rs, $dmn_entry) = repl_tag(
+		$dmn_awstats_b,
+		$dmn_awstats_e,
+		$dmn_entry,
+		$awstats_entry,
+		"gen_httpd_dmn_group_entry"
+	);
+	return ($rs, '') if ($rs != 0);
 
-    ($rs, $dmn_entry) = repl_tag(
-                                 $dmn_awstats_b,
-                                 $dmn_awstats_e,
-                                 $dmn_entry,
-                                 $awstats_entry,
-                                 "gen_httpd_dmn_group_entry"
-                                );
+	my $cgi_entry = undef;
+	if ($dmn_cgi eq 'yes') {
+		$cgi_entry = "$dmn_cgi_b$dmn_cgi_entry$dmn_cgi_e";
+	} else {
+		$cgi_entry = "$dmn_cgi_b$dmn_cgi_e";
+	}
+	($rs, $dmn_entry) = repl_tag(
+		$dmn_cgi_b,
+		$dmn_cgi_e,
+		$dmn_entry,
+		$cgi_entry,
+		"gen_httpd_dmn_group_entry"
+	);
+	return ($rs, '') if ($rs != 0);
 
-    return ($rs, '') if ($rs != 0);
+	my $php_entry = undef;
+	if ($dmn_php eq 'no') {
+		$php_entry = "$dmn_php_b$dmn_php_entry$dmn_php_e";
+		} else {
+		$php_entry = "$dmn_php_b$dmn_php_e";
+		my $php2_entry = "$dmn_php2_b$dmn_php2_entry$dmn_php2_e";
+		($rs, $dmn_entry) = repl_tag(
+		$dmn_php2_b,
+		$dmn_php2_e,
+		$dmn_entry,
+		$php2_entry,
+		"gen_httpd_dmn_group_entry"
+		);
+		return ($rs, '') if ($rs != 0);
+	}
+	($rs, $dmn_entry) = repl_tag(
+		$dmn_php_b,
+		$dmn_php_e,
+		$dmn_entry,
+		$php_entry,
+		"gen_httpd_dmn_group_entry"
+	);
+	return ($rs, '') if ($rs != 0);
 
-    my $cgi_entry = undef;
+	push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "dmn_entry:\n$dmn_entry");
 
-    if ($dmn_cgi eq 'yes') {
+	my $dmn_group_entry = "$dmn_b$dmn_entry$dmn_e";
+	($rs, $dg_entry) = repl_tag(
+		$dmn_b,
+		$dmn_e,
+		$dg_entry,
+		$dmn_group_entry,
+		"gen_httpd_dmn_group_entry"
+	);
 
-        $cgi_entry = "$dmn_cgi_b$dmn_cgi_entry$dmn_cgi_e";
+	#
+	# Create mod_cband scoreboard for domain group
+	#
+	my $scoreboard_file = "$main::cfg{'SCOREBOARDS_DIR'}/$dmn_grp";
+	$rs = sys_command_rs("$main::cfg{'CMD_TOUCH'} $scoreboard_file");
+	return $rs if ($rs != 0);
 
-    } else {
+	$rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'APACHE_USER'}:$main::cfg{'APACHE_GROUP'} $scoreboard_file");
+	return $rs if ($rs != 0);
 
-        $cgi_entry = "$dmn_cgi_b$dmn_cgi_e";
+	#
+	# Custom domain config file
+	#
+	if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
+			$rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf", $dmn_custom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+			return $rs if ($rs != 0);
+	}
 
-    }
-
-    ($rs, $dmn_entry) = repl_tag(
-                                 $dmn_cgi_b,
-                                 $dmn_cgi_e,
-                                 $dmn_entry,
-                                 $cgi_entry,
-                                 "gen_httpd_dmn_group_entry"
-                                );
-
-    return ($rs, '') if ($rs != 0);
-
-    my $php_entry = undef;
-
-    if ($dmn_php eq 'no') {
-
-        $php_entry = "$dmn_php_b$dmn_php_entry$dmn_php_e";
-
-
-    } else {
-
-        $php_entry = "$dmn_php_b$dmn_php_e";
-
-        my $php2_entry = "$dmn_php2_b$dmn_php2_entry$dmn_php2_e";
-
-        ($rs, $dmn_entry) = repl_tag(
-                                     $dmn_php2_b,
-                                     $dmn_php2_e,
-                                     $dmn_entry,
-                                     $php2_entry,
-                                     "gen_httpd_dmn_group_entry"
-                                    );
-
-        return ($rs, '') if ($rs != 0);
-
-    }
-
-    ($rs, $dmn_entry) = repl_tag(
-                                 $dmn_php_b,
-                                 $dmn_php_e,
-                                 $dmn_entry,
-                                 $php_entry,
-                                 "gen_httpd_dmn_group_entry"
-                                );
-
-    return ($rs, '') if ($rs != 0);
-
-    push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "dmn_entry:\n$dmn_entry");
-
-    my $dmn_group_entry = "$dmn_b$dmn_entry$dmn_e";
-
-    ($rs, $dg_entry) = repl_tag(
-                                 $dmn_b,
-                                 $dmn_e,
-                                 $dg_entry,
-                                 $dmn_group_entry,
-                                 "gen_httpd_dmn_group_entry"
-                               );
-
-    #
-    # Create mod_cband scoreboard for domain group
-    #
-
-    my $scoreboard_file = "$main::cfg{'SCOREBOARDS_DIR'}/$dmn_grp";
-
-    $rs = sys_command_rs("$main::cfg{'CMD_TOUCH'} $scoreboard_file");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'APACHE_USER'}:$main::cfg{'APACHE_GROUP'} $scoreboard_file");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Custom domain config file
-    #
-
-    if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
-
-        $rs = store_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf", $dmn_custom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-        return $rs if ($rs != 0);
-    }
-
-    push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "\n$dg_entry");
-
-    return (0,  $dg_entry);
-
+	push_el(\@main::el, 'gen_httpd_dmn_group_entry()', "\n$dg_entry");
+	return (0,  $dg_entry);
 }
 
 ################################################################################
 ##
 ## Add HTTPd CFG Data
 ##
-
 sub dmn_add_httpd_cfg_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_httpd_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'dmn_add_httpd_cfg_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $dmn_grp = $dmn_name;
-
-    my $dmn_id = @$dmn_data[0];
-
-    my $dmn_ip = @$dmn_data[21];
-
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/apache/parts";
-
-    my $working_dir = "$conf_dir/apache/working";
-
-    my $backup_dir = "$conf_dir/apache/backup";
-
-
-    my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
-
-    my $working_cfg = "$working_dir/ispcp.conf";
-
+	my $dmn_name = @$dmn_data[1];
+	my $dmn_grp = $dmn_name;
+	my $dmn_id = @$dmn_data[0];
+	my $dmn_ip = @$dmn_data[21];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/apache/parts";
+	my $working_dir = "$conf_dir/apache/working";
+	my $backup_dir = "$conf_dir/apache/backup";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
+	my $working_cfg = "$working_dir/ispcp.conf";
 
 	if (!(-e $working_cfg)) {
-
 		my $ispcp_base_tpl;
 
 		($rs, $ispcp_base_tpl) = get_file($tpl_dir."/ispcp_base.tpl");
-
-        return $rs if ($rs != 0);
-
-		($rs, $rdata) = store_file(
-									$working_cfg,
-									$ispcp_base_tpl,
-									"root",
-									"root",
-									0600
-								  );
-
 		return $rs if ($rs != 0);
 
-    }
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my (
-        $cfg_b,
-        $cfg_e,
-        $vh_b,
-        $vh_entry,
-        $vh_e,
-        $dg_b,
-        $dg_e
-       ) = ('', '', '', '', '', '', '');
-
-    (
-     $rs,
-     $cfg_b,
-     $cfg_e,
-     $vh_b,
-     $vh_entry,
-     $vh_e,
-     $dg_b,
-     $dg_e
-    ) = get_tpl (
-                 $tpl_dir,
-                 'cfg_b.tpl',
-                 'cfg_e.tpl',
-                 'vh_b.tpl',
-                 'vh_entry.tpl',
-                 'vh_e.tpl',
-                 'dg_b.tpl',
-                 'dg_e.tpl'
-                );
-
-    return $rs if ($rs != 0);
-
-
-    #
-    # Create apache suexec user for this domain.
-    #
-
-    $rs = add_dmn_suexec_user($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
-    my (
-        $vh_b_val,
-        $vh_entry_val,
-        $vh_e_val,
-        $dg_b_val,
-        $dg_e_val
-       ) = ('', '', '', '', '');
-
-    my %tag_hash = ('{IP}' => $dmn_ip);
-
-    ($rs, $vh_entry_val) = prep_tpl (\%tag_hash, $vh_entry);
-
-    return $rs if ($rs != 0);
-
-    %tag_hash = (
-                  '{IP}' => $dmn_ip,
-                  '{DMN_GRP}' => $dmn_grp
-                );
-
-    (
-     $rs,
-     $vh_b_val,
-     $vh_e_val,
-     $dg_b_val,
-     $dg_e_val
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $vh_b,
-                  $vh_e,
-                  $dg_b,
-                  $dg_e
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's get some configs;
-    #
-
-    my ($sys, $working) = ('', '');
-
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Check for $cfg_b, $cfg_e in working config;
-    #
-
-    ($rs, $rdata) = get_tag($cfg_b, $cfg_e, $working);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Check for $vh_b_val, $vh_e_val in working config; Have we such Virtual Host Entry in working config;
-    #
-
-    ($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
-
-    if ($rs == -5) { # No, we have not! We must add it here !
-
-        my $repl = undef;
-
-        $repl = "$vh_b_val$vh_entry_val$vh_e_val\n";
-
-        $repl .= "$vh_b$vh_e";
-
-        ($rs, $working) = repl_tag(
-                                   $vh_b,
-                                   $vh_e,
-                                   $working,
-                                   $repl,
-                                   "dmn_add_httpd_cfg_data"
-                                  );
-
-        return $rs if ($rs != 0);
-
-        ($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
-
-        return $rs if ($rs != 0);
-
-        push_el(\@main::el, 'dmn_add_httpd_cfg_data()', "working:\n$working");
-
-    } elsif ($rs != 0) {
-
-        return $rs;
-
-    }
-
-    #
-    # Let's edit Virtual Host Entry;
-    #
-
-    my $vh_entry_contents = $rdata;
-
-    #
-    # Check for valued Domain Group Entry in this Virtual Host Entry;
-    #
-
-    ($rs, $rdata) = get_tag(
-                            $dg_b_val,
-                            $dg_e_val,
-                            $vh_entry_contents
-                           );
-
-    if ($rs == 0) {
-
-
-        # We have one ! We must delete it because of possible future changes in this Domain Group Entry;
-
-
-        ($rs, $vh_entry_contents) = del_tag(
-                                            $dg_b_val,
-                                            "$dg_e_val\n",
-                                            $vh_entry_contents
-                                           );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    #
-    # Check for extension ($dg_b, $dg_e) Domain Group Entry in this Virtual Host Entry;
-    #
-
-    ($rs, $rdata) = get_tag($dg_b, $dg_e, $vh_entry_contents);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's construct Domain Group Entry and Domain Group valued (with extension tags) Entry;
-    #
-
-    my ($dg_entry, $dg_entry_val) = ('', '');
-
-
-    ($rs, $dg_entry) = gen_httpd_dmn_group_entry($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $dg_entry_val = "$dg_b$dg_e";
-
-    $dg_entry_val .= "$dg_b_val$dg_entry$dg_e_val\n";
-
-    #
-    # Constructing NEW Virtual Host Entry;
-    #
-
-    ($rs, $vh_entry_contents) = repl_tag($dg_b, $dg_e, $vh_entry_contents, $dg_entry_val, "dmn_add_httpd_cfg_data");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Putting NEW Virtual Host Entry in working config;
-    #
-
-    ($rs, $working) = repl_tag(
-                               $vh_b_val,
-                               $vh_e_val,
-                               $working,
-                               $vh_entry_contents,
-                               "dmn_add_httpd_cfg_data"
-                              );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Check for $cfg_b, $cfg_e data in system config;
-    #
-
-    ($rs, $rdata) = get_tag($cfg_b, $cfg_e, $sys);
-
-    if ($rs == 0) { # Yes, We have some ! We'll replace it;
-
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "dmn_add_httpd_cfg_data");
-
-        return $rs if ($rs != 0);
-
-    } elsif ($rs == -5) { # No, We haven't ! We'll add it;
-
-        $sys .= $working;
-
-    } else { # Some error that should not be happend ! Exiting...
-
-        return $rs;
-
-    }
-
-    #
-    # Backuping system config;
-    #
-
-    ($rs, $rdata) = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's store all the stuff;
-    #
-
-    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_httpd_cfg_data()', 'Ending...');
-
-    return 0;
-
+		($rs, $rdata) = store_file(
+			$working_cfg,
+			$ispcp_base_tpl,
+			"root",
+			"root",
+			0600
+		);
+		return $rs if ($rs != 0);
+	}
+
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
+
+	#
+	# Getting needed templates;
+	#
+	my (
+		$cfg_b,
+		$cfg_e,
+		$vh_b,
+		$vh_entry,
+		$vh_e,
+		$dg_b,
+		$dg_e
+	) = ('', '', '', '', '', '', '');
+	(
+		$rs,
+		$cfg_b,
+		$cfg_e,
+		$vh_b,
+		$vh_entry,
+		$vh_e,
+		$dg_b,
+		$dg_e
+	) = get_tpl (
+		$tpl_dir,
+		'cfg_b.tpl',
+		'cfg_e.tpl',
+		'vh_b.tpl',
+		'vh_entry.tpl',
+		'vh_e.tpl',
+		'dg_b.tpl',
+		'dg_e.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Create apache suexec user for this domain.
+	#
+	$rs = add_dmn_suexec_user($dmn_data);
+	return $rs if ($rs != 0);
+
+	#
+	# Preparing templates;
+	#
+	my (
+		$vh_b_val,
+		$vh_entry_val,
+		$vh_e_val,
+		$dg_b_val,
+		$dg_e_val
+	) = ('', '', '', '', '');
+	my %tag_hash = ('{IP}' => $dmn_ip);
+	($rs, $vh_entry_val) = prep_tpl (\%tag_hash, $vh_entry);
+	return $rs if ($rs != 0);
+
+	%tag_hash = (
+		'{IP}' => $dmn_ip,
+		'{DMN_GRP}' => $dmn_grp
+	);
+	(
+		$rs,
+		$vh_b_val,
+		$vh_e_val,
+		$dg_b_val,
+		$dg_e_val
+	) = prep_tpl (
+		\%tag_hash,
+		$vh_b,
+		$vh_e,
+		$dg_b,
+		$dg_e
+	);
+	return $rs if ($rs != 0);
+	#
+	# Let's get some configs;
+	#
+	my ($sys, $working) = ('', '');
+
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs if ($rs != 0);
+
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
+
+	#
+	# Check for $cfg_b, $cfg_e in working config;
+	#
+	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $working);
+	return $rs if ($rs != 0);
+
+	#
+	# Check for $vh_b_val, $vh_e_val in working config; Have we such Virtual Host Entry in working config;
+	#
+	($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
+	if ($rs == -5) { # No, we have not! We must add it here !
+		my $repl = undef;
+		$repl = "$vh_b_val$vh_entry_val$vh_e_val\n";
+		$repl .= "$vh_b$vh_e";
+		($rs, $working) = repl_tag(
+			$vh_b,
+			$vh_e,
+			$working,
+			$repl,
+			"dmn_add_httpd_cfg_data"
+		);
+		return $rs if ($rs != 0);
+
+		($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
+		return $rs if ($rs != 0);
+
+		push_el(\@main::el, 'dmn_add_httpd_cfg_data()', "working:\n$working");
+	} elsif ($rs != 0) {
+		return $rs;
+	}
+
+	#
+	# Let's edit Virtual Host Entry;
+	#
+	my $vh_entry_contents = $rdata;
+
+	#
+	# Check for valued Domain Group Entry in this Virtual Host Entry;
+	#
+	($rs, $rdata) = get_tag(
+		$dg_b_val,
+		$dg_e_val,
+		$vh_entry_contents
+	);
+	if ($rs == 0) {
+		# We have one ! We must delete it because of possible future changes in this Domain Group Entry;
+		($rs, $vh_entry_contents) = del_tag(
+			$dg_b_val,
+			"$dg_e_val\n",
+			$vh_entry_contents
+		);
+		return $rs if ($rs != 0);
+	}
+
+	#
+	# Check for extension ($dg_b, $dg_e) Domain Group Entry in this Virtual Host Entry;
+	#
+	($rs, $rdata) = get_tag($dg_b, $dg_e, $vh_entry_contents);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's construct Domain Group Entry and Domain Group valued (with extension tags) Entry;
+	#
+	my ($dg_entry, $dg_entry_val) = ('', '');
+	($rs, $dg_entry) = gen_httpd_dmn_group_entry($dmn_data);
+	return $rs if ($rs != 0);
+	$dg_entry_val = "$dg_b$dg_e";
+	$dg_entry_val .= "$dg_b_val$dg_entry$dg_e_val\n";
+
+	#
+	# Constructing NEW Virtual Host Entry;
+	#
+	($rs, $vh_entry_contents) = repl_tag($dg_b, $dg_e, $vh_entry_contents, $dg_entry_val, "dmn_add_httpd_cfg_data");
+	return $rs if ($rs != 0);
+
+	#
+	# Putting NEW Virtual Host Entry in working config;
+	#
+	($rs, $working) = repl_tag(
+		$vh_b_val,
+		$vh_e_val,
+		$working,
+		$vh_entry_contents,
+		"dmn_add_httpd_cfg_data"
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Check for $cfg_b, $cfg_e data in system config;
+	#
+	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $sys);
+	if ($rs == 0) { # Yes, We have some ! We'll replace it;
+		($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "dmn_add_httpd_cfg_data");
+		return $rs if ($rs != 0);
+	} elsif ($rs == -5) { # No, We haven't ! We'll add it;
+		$sys .= $working;
+	} else { # Some error that should not be happend ! Exiting...
+		return $rs;
+	}
+
+	#
+	# Backuping system config;
+	#
+	($rs, $rdata) = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
+	return $rs if ($rs != 0);
+
+	#
+	# Let's store all the stuff;
+	#
+	($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'dmn_add_httpd_cfg_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Change HTTPd CFG Data
 ##
-
 sub dmn_change_httpd_cfg_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_change_httpd_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	$rs = dmn_add_httpd_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_change_httpd_cfg_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_change_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_add_httpd_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_change_httpd_cfg_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_change_httpd_cfg_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete HTTPd CFG Data
 ##
-
 sub dmn_del_httpd_cfg_data {
-
-    my ($dmn_data) = @_;
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $dmn_grp = $dmn_name;
-
-    my $dmn_ip = @$dmn_data[21];
-
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/apache/parts";
-
-    my $working_dir = "$conf_dir/apache/working";
-
-    my $backup_dir = "$conf_dir/apache/backup";
-
-
-    my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
-
-    my $working_cfg = "$working_dir/ispcp.conf";
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my (
-        $cfg_b,
-        $cfg_e,
-        $vh_b,
-        $vh_entry,
-        $vh_e,
-        $dg_b,
-        $dg_e
-       ) = ('', '', '', '', '', '', '');
-
-    (
-     $rs,
-     $cfg_b,
-     $cfg_e,
-     $vh_b,
-     $vh_entry,
-     $vh_e,
-     $dg_b,
-     $dg_e
-    ) = get_tpl (
-                 $tpl_dir,
-                 'cfg_b.tpl',
-                 'cfg_e.tpl',
-                 'vh_b.tpl',
-                 'vh_entry.tpl',
-                 'vh_e.tpl',
-                 'dg_b.tpl',
-                 'dg_e.tpl'
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Delete apache suexec user for this domain.
-    #
-
-    $rs = del_dmn_suexec_user($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
-    my (
-        $vh_b_val,
-        $vh_entry_val,
-        $vh_e_val,
-        $dg_b_val,
-        $dg_e_val
-       ) = ('', '', '', '', '');
-
-    my %tag_hash = ('{IP}' => $dmn_ip);
-
-    ($rs, $vh_entry_val) = prep_tpl (\%tag_hash, $vh_entry);
-
-    return $rs if ($rs != 0);
-
-
-    %tag_hash = (
-                  '{IP}' => $dmn_ip,
-                  '{DMN_GRP}' => $dmn_grp
-                );
-
-    (
-     $rs,
-     $vh_b_val,
-     $vh_e_val,
-     $dg_b_val,
-     $dg_e_val
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $vh_b,
-                  $vh_e,
-                  $dg_b,
-                  $dg_e
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's get some configs;
-    #
-
-    my ($sys, $working) = ('', '');
-
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Check for $cfg_b, $cfg_e in working config;
-    #
-
-    ($rs, $rdata) = get_tag($cfg_b, $cfg_e, $working);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Check for $vh_b_val, $vh_e_val in working config; Have we such Virtual Host Entry in working config;
-    #
-
-    ($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
-
-    if ($rs == -5) { # No, we have not! We must add it here !
-
-        my $repl = undef;
-
-        $repl = "$vh_b_val$vh_entry_val$vh_e_val\n";
-
-        $repl .= "$vh_b$vh_e";
-
-        ($rs, $working) = repl_tag(
-                                   $vh_b,
-                                   $vh_e,
-                                   $working,
-                                   $repl,
-                                   "dmn_del_httpd_cfg_data"
-                                  );
-
-        return $rs if ($rs != 0);
-
-        ($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
-
-        return $rs if ($rs != 0);
-
-    } elsif ($rs != 0) {
-
-        return $rs;
-
-    }
-
-    #
-    # Let's edit Virtual Host Entry;
-    #
-
-    my $vh_entry_contents = $rdata;
-
-    #
-    # Check for valued Domain Group Entry in this Virtual Host Entry;
-    #
-
-    ($rs, $rdata) = get_tag(
-                            $dg_b_val,
-                            $dg_e_val,
-                            $vh_entry_contents
-                           );
-
-    if ($rs == 0) {
-
-
-        # We have one ! We must delete it because of possible future changes in this Domain Group Entry;
-
-
-        ($rs, $vh_entry_contents) = del_tag(
-                                            $dg_b_val,
-                                            "$dg_e_val\n",
-                                            $vh_entry_contents
-                                           );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    #
-    # Check for extension ($dg_b, $dg_e) Domain Group Entry in this Virtual Host Entry;
-    #
-
-    ($rs, $rdata) = get_tag($dg_b, $dg_b, $vh_entry_contents);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Putting NEW Virtual Host Entry in working config;
-    #
-
-    ($rs, $working) = repl_tag(
-                               $vh_b_val,
-                               $vh_e_val,
-                               $working,
-                               $vh_entry_contents,
-                               "dmn_del_httpd_cfg_data"
-                              );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Check for $cfg_b, $cfg_e data in system config;
-    #
-
-    ($rs, $rdata) = get_tag($cfg_b, $cfg_e, $sys);
-
-    if ($rs == 0) { # Yes, We have some ! We'll replace it;
-
-        ($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "dmn_del_httpd_cfg_data");
-
-        return $rs if ($rs != 0);
-
-    } elsif ($rs == -5) { # No, We haven't ! We'll add it;
-
-        $sys .= $working;
-
-    } else { # Some error that should not be happend ! Exiting...
-
-        return $rs;
-
-    }
-
-    #
-    # Backuping system config;
-    #
-
-    ($rs, $rdata) = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's store all the stuff;
-    #
-
-    ($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'Ending...');
-
-    return 0;
-
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+	push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+
+	my $dmn_name = @$dmn_data[1];
+	my $dmn_grp = $dmn_name;
+	my $dmn_ip = @$dmn_data[21];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/apache/parts";
+	my $working_dir = "$conf_dir/apache/working";
+	my $backup_dir = "$conf_dir/apache/backup";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
+	my $working_cfg = "$working_dir/ispcp.conf";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
+
+	#
+	# Getting needed templates;
+	#
+	my (
+		$cfg_b,
+		$cfg_e,
+		$vh_b,
+		$vh_entry,
+		$vh_e,
+		$dg_b,
+		$dg_e
+	) = ('', '', '', '', '', '', '');
+	(
+		$rs,
+		$cfg_b,
+		$cfg_e,
+		$vh_b,
+		$vh_entry,
+		$vh_e,
+		$dg_b,
+		$dg_e
+	) = get_tpl (
+		$tpl_dir,
+		'cfg_b.tpl',
+		'cfg_e.tpl',
+		'vh_b.tpl',
+		'vh_entry.tpl',
+		'vh_e.tpl',
+		'dg_b.tpl',
+		'dg_e.tpl'
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Delete apache suexec user for this domain.
+	#
+	$rs = del_dmn_suexec_user($dmn_data);
+	return $rs if ($rs != 0);
+
+	#
+	# Preparing templates;
+	#
+	my (
+		$vh_b_val,
+		$vh_entry_val,
+		$vh_e_val,
+		$dg_b_val,
+		$dg_e_val
+	) = ('', '', '', '', '');
+	my %tag_hash = ('{IP}' => $dmn_ip);
+	($rs, $vh_entry_val) = prep_tpl (\%tag_hash, $vh_entry);
+	return $rs if ($rs != 0);
+
+	%tag_hash = (
+		'{IP}' => $dmn_ip,
+		'{DMN_GRP}' => $dmn_grp
+	);
+	(
+		$rs,
+		$vh_b_val,
+		$vh_e_val,
+		$dg_b_val,
+		$dg_e_val
+	) = prep_tpl (
+		\%tag_hash,
+		$vh_b,
+		$vh_e,
+		$dg_b,
+		$dg_e
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Let's get some configs;
+	#
+	my ($sys, $working) = ('', '');
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs if ($rs != 0);
+
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
+
+	#
+	# Check for $cfg_b, $cfg_e in working config;
+	#
+	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $working);
+	return $rs if ($rs != 0);
+
+	#
+	# Check for $vh_b_val, $vh_e_val in working config; Have we such Virtual Host Entry in working config;
+	#
+	($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
+	if ($rs == -5) { # No, we have not! We must add it here !
+		my $repl = undef;
+		$repl = "$vh_b_val$vh_entry_val$vh_e_val\n";
+		$repl .= "$vh_b$vh_e";
+		($rs, $working) = repl_tag(
+			$vh_b,
+			$vh_e,
+			$working,
+			$repl,
+			"dmn_del_httpd_cfg_data"
+		);
+		return $rs if ($rs != 0);
+
+		($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
+		return $rs if ($rs != 0);
+
+	} elsif ($rs != 0) {
+		return $rs;
+	}
+
+	#
+	# Let's edit Virtual Host Entry;
+	#
+
+	my $vh_entry_contents = $rdata;
+
+	#
+	# Check for valued Domain Group Entry in this Virtual Host Entry;
+	#
+	($rs, $rdata) = get_tag(
+		$dg_b_val,
+		$dg_e_val,
+		$vh_entry_contents
+	);
+	if ($rs == 0) {
+		# We have one ! We must delete it because of possible future changes in this Domain Group Entry;
+		($rs, $vh_entry_contents) = del_tag(
+		$dg_b_val,
+		"$dg_e_val\n",
+		$vh_entry_contents
+		);
+		return $rs if ($rs != 0);
+	}
+
+	#
+	# Check for extension ($dg_b, $dg_e) Domain Group Entry in this Virtual Host Entry;
+	#
+	($rs, $rdata) = get_tag($dg_b, $dg_b, $vh_entry_contents);
+	return $rs if ($rs != 0);
+
+	#
+	# Putting NEW Virtual Host Entry in working config;
+	#
+	($rs, $working) = repl_tag(
+		$vh_b_val,
+		$vh_e_val,
+		$working,
+		$vh_entry_contents,
+		"dmn_del_httpd_cfg_data"
+	);
+	return $rs if ($rs != 0);
+
+	#
+	# Check for $cfg_b, $cfg_e data in system config;
+	#
+	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $sys);
+	if ($rs == 0) { # Yes, We have some ! We'll replace it;
+		($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "dmn_del_httpd_cfg_data");
+		return $rs if ($rs != 0);
+	} elsif ($rs == -5) { # No, We haven't ! We'll add it;
+		$sys .= $working;
+	} else { # Some error that should not be happend ! Exiting...
+		return $rs;
+	}
+
+	#
+	# Backuping system config;
+	#
+	($rs, $rdata) = sys_command("$main::cfg{'CMD_CP'} -p $sys_cfg $backup_cfg");
+	return $rs if ($rs != 0);
+
+	#
+	# Let's store all the stuff;
+	#
+	($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'dmn_del_httpd_cfg_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Add HTTPd File Data
 ##
-
 sub dmn_add_httpd_file_data {
-
 	my ($dmn_data) = @_;
-
 	my ($rs, $rdata, $cfg) = (undef, undef, undef);
 
 	push_el(\@main::el, 'dmn_add_httpd_file_data()', 'Starting...');
-
 	if (!defined($dmn_data) || $dmn_data eq '') {
-
 		push_el(\@main::el, 'dmn_add_httpd_file_data()', 'ERROR: Undefined Input Data...');
-
 		return -1;
-
 	}
 
 	my $dmn_id = @$dmn_data[0];
-
 	my $dmn_name = @$dmn_data[1];
-
 	my $root_dir = $main::cfg{'ROOT_DIR'};
-
 	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
 	my $pear_dir = $main::cfg{'PEAR_DIR'};
-
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
-
 	my $conf_dir = $main::cfg{'CONF_DIR'};
-
 	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
-
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-
 	my $sys_user = "$suexec_user_pref$sys_uid";
-
 	my $sys_group = "$suexec_user_pref$sys_gid";
 
 	#
@@ -1875,234 +1363,209 @@ sub dmn_add_httpd_file_data {
 	#
 	# Starter directory for usual user
 	#
-
 	if(!(-d "$starter_dir/$dmn_name")) {
-            $rs = make_dir(
-                            "$starter_dir/$dmn_name",
-                            $sys_user,
-                            $sys_group,
-                            0755
-                            );
-
-            return $rs if ($rs != 0);
-        }
-
-        #
-        # PHP4 and PHP5 Directory for usual user
-        #
-
-        if (! -d "$starter_dir/$dmn_name/php4") {
-
-            $rs = make_dir(
-                            "$starter_dir/$dmn_name/php4",
-                            $sys_user,
-                            $sys_group,
-                            0750
-                            );
-
-            return $rs if ($rs != 0);
-        }
-
-        if (! -d "$starter_dir/$dmn_name/php5") {
-
-            $rs = make_dir(
-                            "$starter_dir/$dmn_name/php5",
-                            $sys_user,
-                            $sys_group,
-                            0750
-                            );
-
-            return $rs if ($rs != 0);
+		$rs = make_dir(
+			"$starter_dir/$dmn_name",
+			$sys_user,
+			$sys_group,
+			0755
+		);
+		return $rs if ($rs != 0);
 	}
 
-    #
-    # AWStats Directory (if static AWStats is enabled)
-    #
+	#
+	# PHP4 and PHP5 Directory for usual user
+	#
+	if (! -d "$starter_dir/$dmn_name/php4") {
+		$rs = make_dir(
+			"$starter_dir/$dmn_name/php4",
+			$sys_user,
+			$sys_group,
+			0750
+		);
+		return $rs if ($rs != 0);
+	}
+	if (! -d "$starter_dir/$dmn_name/php5") {
+		$rs = make_dir(
+			"$starter_dir/$dmn_name/php5",
+			$sys_user,
+			$sys_group,
+			0750
+		);
+		return $rs if ($rs != 0);
+	}
 
+	#
+	# AWStats Directory (if static AWStats is enabled)
+	#
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
 		if (! -d "$www_dir/$dmn_name/statistics") {
-		    $rs = make_dir(
-		                    "$www_dir/$dmn_name/statistics",
-		                    $sys_user,
-		                    $sys_group,
-		                    0755
-		                    );
-
-	    	return $rs if ($rs != 0);
-    	}
-    }
-
+			$rs = make_dir(
+				"$www_dir/$dmn_name/statistics",
+				$sys_user,
+				$sys_group,
+				0755
+			);
+			return $rs if ($rs != 0);
+		}
+	}
 	#
 	# Domain WWW directories;
 	#
-
 	$rs = make_dir(
-					"$www_dir/$dmn_name",
-					$sys_user,
-					$httpd_gid,
-					0770
-					);
-
+		"$www_dir/$dmn_name",
+		$sys_user,
+		$httpd_gid,
+		0770
+	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/cgi-bin",
-					$sys_user,
-					$sys_group,
-					0755
-					);
-
+		"$www_dir/$dmn_name/cgi-bin",
+		$sys_user,
+		$sys_group,
+		0755
+	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/logs",
-					$sys_user,
-					$httpd_gid,
-					0770
-					);
-
+		"$www_dir/$dmn_name/logs",
+		$sys_user,
+		$httpd_gid,
+		0770
+	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/phptmp",
-					$sys_user,
-					$httpd_gid,
-					0770
-					);
-
+		"$www_dir/$dmn_name/phptmp",
+		$sys_user,
+		$httpd_gid,
+		0770
+	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/backups",
-					$sys_user,
-					$httpd_gid,
-					0770
-					);
-
+		"$www_dir/$dmn_name/backups",
+		$sys_user,
+		$httpd_gid,
+		0770
+	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/errors",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
+		"$www_dir/$dmn_name/errors",
+		$sys_user,
+		$sys_group,
+		0775
+	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-					"$www_dir/$dmn_name/errors/inc",
-					$sys_user,
-					$sys_group,
-					0775
-					);
-
+		"$www_dir/$dmn_name/errors/inc",
+		$sys_user,
+		$sys_group,
+		0775
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Domain WWW files;
 	#
-
 	($rs, $rdata) = store_file(
-								"$www_dir/$dmn_name/.htpasswd",
-								"\n",
-								$sys_user,
-								$httpd_gid,
-								0640
-								);
-
+		"$www_dir/$dmn_name/.htpasswd",
+		"\n",
+		$sys_user,
+		$httpd_gid,
+		0640
+	);
 	return $rs if ($rs != 0);
-
-	($rs, $rdata) = store_file(
-								"$www_dir/$dmn_name/.htgroup",
-								"\n",
-								$sys_user,
-								$httpd_gid,
-								0640
-								);
-
+		($rs, $rdata) = store_file(
+		"$www_dir/$dmn_name/.htgroup",
+		"\n",
+		$sys_user,
+		$httpd_gid,
+		0640
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Default error pages;
 	#
+	my @errordocs = (401, 403, 404, 500, 503);
+	my ($i, $key) = ('', '');
+	for($i = 0; $i < scalar(@errordocs); $i++) {
+		$key = $errordocs[$i];
+		if (-e "$root_dir/gui/errordocs/$key.html") {
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
+			return $rs if ($rs != 0);
+			$rs = setfmode("$www_dir/$dmn_name/errors/$key.html", $sys_user, $sys_group, 0644);
+			return $rs if ($rs != 0);
+		}
+	}
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$dmn_name/errors/inc/");
+	return $rs if ($rs != 0);
 
-        my @errordocs = (401, 403, 404, 500, 503);
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_css.jpg $www_dir/$dmn_name/errors/inc/");
+	return $rs if ($rs != 0);
 
-        my ($i, $key) = ('', '');
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_xhtml.jpg $www_dir/$dmn_name/errors/inc/");
+	return $rs if ($rs != 0);
 
-        for($i = 0; $i < scalar(@errordocs); $i++) {
-            $key = $errordocs[$i];
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$dmn_name/errors/inc/");
+	return $rs if ($rs != 0);
 
-            if (-e "$root_dir/gui/errordocs/$key.html") {
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
+	return $rs if ($rs != 0);
 
-                $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
-                return $rs if ($rs != 0);
-                $rs = setfmode("$www_dir/$dmn_name/errors/$key.html", $sys_user, $sys_group, 0644);
-                return $rs if ($rs != 0);
-            }
-        }
-        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$dmn_name/errors/inc/");
-        return $rs if ($rs != 0);
-        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_css.jpg $www_dir/$dmn_name/errors/inc/");
-        return $rs if ($rs != 0);
-        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_xhtml.jpg $www_dir/$dmn_name/errors/inc/");
-        return $rs if ($rs != 0);
-        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$dmn_name/errors/inc/");
-        return $rs if ($rs != 0);
-        $rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
-        return $rs if ($rs != 0);
-        $rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
-        return $rs if ($rs != 0);
-        $rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
-        return $rs if ($rs != 0);
-        $rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
-        return $rs if ($rs != 0);
-        $rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
-        return $rs if ($rs != 0);
-        $rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
-        return $rs if ($rs != 0);
+	$rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
+
+	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
+	return $rs if ($rs != 0);
 
 	#
 	# Default domain page template;
 	#
-
 	# check if htdocs folder not exists
 	if (!(-e "$www_dir/$dmn_name/htdocs/")) {
-
 		$rs = make_dir(
-						"$www_dir/$dmn_name/htdocs",
-						$sys_user,
-						$sys_group,
-						0775
-					);
-
+			"$www_dir/$dmn_name/htdocs",
+			$sys_user,
+			$sys_group,
+			0775
+		);
 		return $rs if ($rs != 0);
 
 		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
-
 		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
 		return $rs if ($rs != 0);
 
-	    my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
+		my $decoded_dmn_name = idn_to_unicode($dmn_name, 'utf-8');
 		my %tag_hash = (
-						'{DOMAIN_NAME}' => $decoded_dmn_name,
-						'{BASE_SERVER_VHOST}' => $vhost
-					   );
-
+			'{DOMAIN_NAME}' => $decoded_dmn_name,
+			'{BASE_SERVER_VHOST}' => $vhost
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $index_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
-									"$www_dir/$dmn_name/htdocs/index.html",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0644
-									);
-
+			"$www_dir/$dmn_name/htdocs/index.html",
+			$cfg,
+			$sys_user,
+			$sys_group,
+			0644
+		);
 		return $rs if ($rs != 0);
 
 		$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$dmn_name/htdocs/");
@@ -2110,60 +1573,55 @@ sub dmn_add_httpd_file_data {
 
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/", $sys_user, $sys_group, 0755);
 		return $rs if ($rs != 0);
+
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/top_left_bg.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
+
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/top_left.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
+
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/top_right.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
+
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/top_bg.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
+
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/valid_css.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
+
 		$rs = setfmode("$www_dir/$dmn_name/htdocs/images/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
 		return $rs if ($rs != 0);
-
 	}
-
 
 	#
 	# php.ini for the new domain
 	#
-
 	if (!(-e "$starter_dir/$dmn_name/php4/php.ini")) {
-
 		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
-
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PEAR_DIR}' => $pear_dir,
-						'{WWW_DIR}' => $www_dir,
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PEAR_DIR}' => $pear_dir,
+			'{WWW_DIR}' => $www_dir,
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 
 		push_el(\@main::el, 'DEBUG', $cfg);
-
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php4/php.ini",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0640
-									);
-
+			"$starter_dir/$dmn_name/php4/php.ini",
+			$cfg,
+			$sys_user,
+			$sys_group,
+			0640
+		);
 		return $rs if ($rs != 0);
-
 	}
-
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
-
 		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
 
@@ -2171,32 +1629,26 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PEAR_DIR}' => $pear_dir,
-						'{WWW_DIR}' => $www_dir,
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PEAR_DIR}' => $pear_dir,
+			'{WWW_DIR}' => $www_dir,
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php5/php.ini",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0640
-									);
-
+			"$starter_dir/$dmn_name/php5/php.ini",
+			$cfg,
+			$sys_user,
+			$sys_group,
+			0640
+		);
 		return $rs if ($rs != 0);
-
 	}
-
 	#
 	# php-fcgi-starters for every domain
 	#
-
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
-
 		my $starter_tpl = undef;
 		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
@@ -2204,25 +1656,22 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PHP_STARTER_DIR}' => $starter_dir,
-						'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PHP_STARTER_DIR}' => $starter_dir,
+			'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php5-fcgi-starter",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0750
-									);
-
+			"$starter_dir/$dmn_name/php5-fcgi-starter",
+			$cfg,
+			$sys_user,
+			$sys_group,
+			0750
+		);
 		return $rs if ($rs != 0);
 	}
-
 	if (!(-e "$starter_dir/$dmn_name/php4-fcgi-starter")) {
 		my $starter_tpl = undef;
 		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
@@ -2231,60 +1680,48 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PHP_STARTER_DIR}' => $starter_dir,
-						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PHP_STARTER_DIR}' => $starter_dir,
+			'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
-									"$starter_dir/$dmn_name/php4-fcgi-starter",
-									$cfg,
-									$sys_user,
-									$sys_group,
-									0750
-									);
-
+			"$starter_dir/$dmn_name/php4-fcgi-starter",
+			$cfg,
+			$sys_user,
+			$sys_group,
+			0750
+		);
 		return $rs if ($rs != 0);
-
 	}
 
 	push_el(\@main::el, 'dmn_add_httpd_file_data()', 'Ending...');
-
 	return 0;
-
 }
-
 ################################################################################
 ##
 ## Change HTTPd File Data
 ##
-
 sub dmn_change_httpd_file_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata, $cfg) = (undef, undef, undef);
 
-    my ($dmn_data) = @_;
-
-    my ($rs, $rdata, $cfg) = (undef, undef, undef);
-
-    push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-        push_el(\@main::el, 'dmn_change_httpd_file_data()', 'ERROR: Undefined Input Data...');
-        return -1;
-    }
+	push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_httpd_file_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
 	my $dmn_id = @$dmn_data[0];
 	my $dmn_name = @$dmn_data[1];
-
 	my $root_dir = $main::cfg{'ROOT_DIR'};
 	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 	my $pear_dir = $main::cfg{'PEAR_DIR'};
 	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 	my $conf_dir = $main::cfg{'CONF_DIR'};
 	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
-
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 	my $sys_user = "$suexec_user_pref$sys_uid";
@@ -2298,28 +1735,27 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 	}
 
-    #
-    # PHP4 and PHP5 Directory for usual user
-    #
-    if (! -d "$starter_dir/$dmn_name/php4") {
-        $rs = make_dir("$starter_dir/$dmn_name/php4", $sys_user, $sys_group, 0750);
-        return $rs if ($rs != 0);
-    }
-
-    if (! -d "$starter_dir/$dmn_name/php5") {
-        $rs = make_dir("$starter_dir/$dmn_name/php5", $sys_user, $sys_group, 0750);
-        return $rs if ($rs != 0);
+	#
+	# PHP4 and PHP5 Directory for usual user
+	#
+	if (! -d "$starter_dir/$dmn_name/php4") {
+		$rs = make_dir("$starter_dir/$dmn_name/php4", $sys_user, $sys_group, 0750);
+		return $rs if ($rs != 0);
+	}
+	if (! -d "$starter_dir/$dmn_name/php5") {
+		$rs = make_dir("$starter_dir/$dmn_name/php5", $sys_user, $sys_group, 0750);
+		return $rs if ($rs != 0);
 	}
 
-    #
-    # AWStats Directory (if static AWStats is enabled)
-    #
+	#
+	# AWStats Directory (if static AWStats is enabled)
+	#
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
 		if (! -d "$www_dir/$dmn_name/statistics") {
-		    $rs = make_dir("$www_dir/$dmn_name/statistics", $sys_user, $sys_group, 0755);
-	    	return $rs if ($rs != 0);
-    	}
-    }
+			$rs = make_dir("$www_dir/$dmn_name/statistics", $sys_user, $sys_group, 0755);
+			return $rs if ($rs != 0);
+		}
+	}
 
 	#
 	# Domain WWW directories
@@ -2344,14 +1780,10 @@ sub dmn_change_httpd_file_data {
 		$rs = make_dir("$www_dir/$dmn_name/errors/inc", $sys_user, $sys_group, 0775);
 		return $rs if ($rs != 0);
 	}
-
 	my @errordocs = (401, 403, 404, 500, 503);
-
 	my ($i, $key) = ('', '');
-
 	for($i = 0; $i < scalar(@errordocs); $i++) {
 		$key = $errordocs[$i];
-
 		if (-e "$root_dir/gui/errordocs/$key.html") {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/");
 			return $rs if ($rs != 0);
@@ -2359,26 +1791,33 @@ sub dmn_change_httpd_file_data {
 			return $rs if ($rs != 0);
 		}
 	}
-
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$dmn_name/errors/inc/");
 	return $rs if ($rs != 0);
+
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_css.jpg $www_dir/$dmn_name/errors/inc/");
 	return $rs if ($rs != 0);
+
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/valid_xhtml.jpg $www_dir/$dmn_name/errors/inc/");
 	return $rs if ($rs != 0);
+
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$dmn_name/errors/inc/");
 	return $rs if ($rs != 0);
+
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$dmn_name/errors/inc/");
 	return $rs if ($rs != 0);
 
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
+
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_css.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
+
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/valid_xhtml.jpg", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
+
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
+
 	$rs = setfmode("$www_dir/$dmn_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
 	return $rs if ($rs != 0);
 
@@ -2388,23 +1827,20 @@ sub dmn_change_httpd_file_data {
 	if (! (-e "$starter_dir/$dmn_name/php4/php.ini")) {
 		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php4";
-
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PEAR_DIR}' => $pear_dir,
-						'{WWW_DIR}' => $www_dir,
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PEAR_DIR}' => $pear_dir,
+			'{WWW_DIR}' => $www_dir,
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file("$starter_dir/$dmn_name/php4/php.ini", $cfg,	$sys_user, $sys_group, 0640);
 		return $rs if ($rs != 0);
 	}
-
 	if (! (-e "$starter_dir/$dmn_name/php5/php.ini")) {
 		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
@@ -2413,24 +1849,20 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PEAR_DIR}' => $pear_dir,
-						'{WWW_DIR}' => $www_dir,
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PEAR_DIR}' => $pear_dir,
+			'{WWW_DIR}' => $www_dir,
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file("$starter_dir/$dmn_name/php5/php.ini", $cfg,	$sys_user, $sys_group, 0640);
 		return $rs if ($rs != 0);
 	}
-
 	#
 	# php4/5-fcgi-starter for the domain
 	#
-
 	if (!(-e "$starter_dir/$dmn_name/php5-fcgi-starter")) {
-
 		my $starter_tpl = undef;
 		my $cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts";
 
@@ -2438,11 +1870,10 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my %tag_hash = (
-						'{PHP_STARTER_DIR}' => $starter_dir,
-						'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PHP_STARTER_DIR}' => $starter_dir,
+			'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
 
@@ -2457,1611 +1888,1138 @@ sub dmn_change_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		my  %tag_hash = (
-						'{PHP_STARTER_DIR}' => $starter_dir,
-						'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
-						'{DMN_NAME}' => $dmn_name
-					   );
-
+			'{PHP_STARTER_DIR}' => $starter_dir,
+			'{PHP4_FASTCGI_BIN}' => $main::cfg{'PHP4_FASTCGI_BIN'},
+			'{DMN_NAME}' => $dmn_name
+		);
 		($rs, $cfg) = prep_tpl(\%tag_hash, $starter_tpl);
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file("$starter_dir/$dmn_name/php4-fcgi-starter", $cfg, $sys_user,	$sys_group,	0750);
-
 		return $rs if ($rs != 0);
-
 	}
 
-
-    push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Ending...');
-    return 0;
+	push_el(\@main::el, 'dmn_change_httpd_file_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete HTTPd File Data
 ##
-
 sub dmn_del_httpd_file_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_httpd_file_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_httpd_file_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $root_dir = $main::cfg{'ROOT_DIR'};
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
 
-    push_el(\@main::el, 'dmn_del_httpd_file_data()', 'Starting...');
+	#
+	# Starter directory
+	#
+	if ( -e "$starter_dir/$dmn_name" ) {
+		($rs, $rdata) = del_dir("$starter_dir/$dmn_name");
+	}
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	#
+	# Domain WWW directories;
+	#
+	if ( -e "$www_dir/$dmn_name" ) {
+		($rs, $rdata) = del_dir("$www_dir/$dmn_name");
+		} elsif ( -e "$www_dir/$dmn_name.disabled" ) {
+		($rs, $rdata) = del_dir("$www_dir/$dmn_name.disabled");
+	}
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_del_httpd_file_data()', 'ERROR: Undefined Input Data...');
+	#
+	# Remove mod_cband scoreboard
+	#
+	if ( -e "$main::cfg{'SCOREBOARDS_DIR'}/$dmn_name" ) {
+		$rs = del_file("$main::cfg{'SCOREBOARDS_DIR'}/$dmn_name");
+		return $rs if ($rs != 0);
+	}
 
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $root_dir = $main::cfg{'ROOT_DIR'};
-
-    my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-    my $starter_dir = $main::cfg{'PHP_STARTER_DIR'};
-
-    #
-    # Starter directory
-    #
-    if ( -e "$starter_dir/$dmn_name" ) {
-
-    	($rs, $rdata) = del_dir("$starter_dir/$dmn_name");
-
-    }
-
-    #
-    # Domain WWW directories;
-    #
-    if ( -e "$www_dir/$dmn_name" ) {
-
-    	($rs, $rdata) = del_dir("$www_dir/$dmn_name");
-
-    } elsif ( -e "$www_dir/$dmn_name.disabled" ) {
-
-    	($rs, $rdata) = del_dir("$www_dir/$dmn_name.disabled");
-
-    }
-
-    return $rs if ($rs != 0);
-
-    #
-    # Remove mod_cband scoreboard
-    #
-
-    if ( -e "$main::cfg{'SCOREBOARDS_DIR'}/$dmn_name" ) {
-
-        $rs = del_file("$main::cfg{'SCOREBOARDS_DIR'}/$dmn_name");
-
-        return $rs if ($rs != 0);
-
-    }
-
-    #
-    # Custom http config
-    #
-
-    if ( -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
-
-        $rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf");
-
-        return $rs if ($rs != 0);
-    }
-
-    if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log") {
-
-    	($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log");
-
-    	return $rs if ($rs != 0);
-
-    }
-
-    if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-access.log") {
-
-    	($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-access.log");
-
-    	return $rs if ($rs != 0);
-
-    }
-
-    if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-combined.log") {
-
+	#
+	# Custom http config
+	#
+	if ( -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf" ){
+		$rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$dmn_name.conf");
+		return $rs if ($rs != 0);
+	}
+	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log") {
+		($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-error.log");
+		return $rs if ($rs != 0);
+	}
+	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-access.log") {
+		($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$dmn_name-access.log");
+		return $rs if ($rs != 0);
+	}
+	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-combined.log") {
 		($rs, $rdata) = del_file("$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-combined.log");
-
 		return $rs if ($rs != 0);
-
 	}
-
 	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-traf.log") {
-
 		($rs, $rdata) = del_file("$main::cfg{'APACHE_LOG_DIR'}/$dmn_name-traf.log");
-
 		return $rs if ($rs != 0);
-
 	}
 
-    push_el(\@main::el, 'dmn_del_httpd_file_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_del_httpd_file_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Add HTTPd Data
 ##
-
 sub dmn_add_httpd_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_httpd_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_httpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	$rs = dmn_add_httpd_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    my $rs = undef;
+	$rs = dmn_add_httpd_file_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_add_httpd_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_httpd_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_add_httpd_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_add_httpd_file_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_httpd_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_httpd_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Change HTTPd Data
 ##
-
 sub dmn_change_httpd_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_change_httpd_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_httpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	$rs = dmn_change_httpd_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    my $rs = undef;
+	$rs = dmn_change_httpd_file_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_change_httpd_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_change_httpd_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_change_httpd_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_change_httpd_file_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_change_httpd_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_change_httpd_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delete HTTPd Data
 ##
-
 sub dmn_del_httpd_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_httpd_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_httpd_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
+	$rs = dmn_del_httpd_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    my $rs = undef;
+	$rs = dmn_del_httpd_file_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_del_httpd_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_httpd_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_del_httpd_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_del_httpd_file_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_httpd_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_httpd_data()', 'Ending...');
+	return 0;
 }
-
 ##################################### MTA ######################################
-
 ################################################################################
 ##
 ## Add MTA CFG Data
 ##
-
 sub dmn_add_mta_cfg_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
+	my $tpl_dir = "$conf_dir/postfix/parts";
+	my $working_dir = "$conf_dir/postfix/working";
+	my $backup_dir = "$conf_dir/postfix/backup";
+	my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $working_cfg = "$working_dir/domains";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/domains.$timestamp";
+	my ($sys, $working) = (undef, undef);
 
-    push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'Starting...');
+	#
+	# Getting needed configs;
+	#
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
-
-
-    my $tpl_dir = "$conf_dir/postfix/parts";
-
-    my $working_dir = "$conf_dir/postfix/working";
-
-    my $backup_dir = "$conf_dir/postfix/backup";
-
-
-    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-
-    my $working_cfg = "$working_dir/domains";
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/domains.$timestamp";
-
-    my ($sys, $working) = (undef, undef);
-
-    #
-    # Getting needed configs;
-    #
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Checking for domain entry existance;
-    #
-
-    $working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
+	#
+	# Checking for domain entry existance;
+	#
+	$working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
 
 	# Add domain entry only if mail accounts are activated
 	if (@$dmn_data[8] >= 0) {
-    	$working .= "$dmn_name\t\t\tvdmn_entry\n";
-    }
+		$working .= "$dmn_name\t\t\tvdmn_entry\n";
+	}
 
-    #
-    # Let's do some backup first;
-    #
+	#
+	# Let's do some backup first;
+	#
+	$rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	#
+	# Let's write configs;
+	#
 
-    return $rs if ($rs != 0);
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    #
-    # Let's write configs;
-    #
+	$rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = sys_command("$cmd_postmap $sys_cfg");
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
-
-    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command("$cmd_postmap $sys_cfg");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete MTA CFG Data
 ##
-
 sub dmn_del_mta_cfg_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
+	my $tpl_dir = "$conf_dir/postfix/parts";
+	my $working_dir = "$conf_dir/postfix/working";
+	my $backup_dir = "$conf_dir/postfix/backup";
+	my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $working_cfg = "$working_dir/domains";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/domains.$timestamp";
+	my ($sys, $working) = (undef, undef);
 
-    push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'Starting...');
+	#
+	# Getting needed configs;
+	#
+	($rs, $sys) = get_file($sys_cfg);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+	#
+	# Checking for domain entry existance;
+	#
+	$working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
 
-        return -1;
+	#
+	# Let's do some backup first;
+	#
+	$rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    }
+	#
+	# Let's write configs;
+	#
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    my $dmn_name = @$dmn_data[1];
+	$rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
+	$rs = sys_command("$cmd_postmap $sys_cfg");
+	return $rs if ($rs != 0);
 
-    my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
-
-
-    my $tpl_dir = "$conf_dir/postfix/parts";
-
-    my $working_dir = "$conf_dir/postfix/working";
-
-    my $backup_dir = "$conf_dir/postfix/backup";
-
-
-    my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-
-    my $working_cfg = "$working_dir/domains";
-
-
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/domains.$timestamp";
-
-    my ($sys, $working) = (undef, undef);
-
-    #
-    # Getting needed configs;
-    #
-
-    ($rs, $sys) = get_file($sys_cfg);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Checking for domain entry existance;
-    #
-
-    $working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
-
-    #
-    # Let's do some backup first;
-    #
-
-    $rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's write configs;
-    #
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command("$cmd_postmap $sys_cfg");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Add MTA File Data
 ##
-
 sub dmn_add_mta_file_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_mta_file_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_mta_file_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
+	my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
+	my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
 
-    push_el(\@main::el, 'dmn_add_mta_file_data()', 'Starting...');
+	$rs = make_dir(
+		"$virtual_mail_dir/$dmn_name",
+		$mailbox_uid_name,
+		$mailbox_gid_name,
+		0700
+	);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_mta_file_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-
-    my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
-
-    my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
-
-    my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
-
-
-    $rs = make_dir(
-                   "$virtual_mail_dir/$dmn_name",
-                   $mailbox_uid_name,
-                   $mailbox_gid_name,
-                   0700
-                  );
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_mta_file_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_mta_file_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Add MTA File Data
 ##
-
 sub dmn_del_mta_file_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_mta_file_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_mta_file_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
+	my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
+	my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
 
-    push_el(\@main::el, 'dmn_del_mta_file_data()', 'Starting...');
+	$rs = del_dir("$virtual_mail_dir/$dmn_name");
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_mta_file_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-
-    my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
-
-    my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
-
-    my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
-
-
-    $rs = del_dir("$virtual_mail_dir/$dmn_name");
-
-    return $rs if ($rs != 0);
-
-
-    push_el(\@main::el, 'dmn_del_mta_file_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_mta_file_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Add MTA Data
 ##
-
 sub dmn_add_mta_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_mta_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_mta_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	$rs = dmn_add_mta_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_add_mta_data()', 'Starting...');
+	$rs = dmn_add_mta_file_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_mta_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_add_mta_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_add_mta_file_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_mta_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_mta_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Change MTA CFG Data
 ##
-
 sub dmn_change_mta_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_change_mta_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_mta_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	$rs = dmn_add_mta_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_change_mta_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_change_mta_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_add_mta_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_change_mta_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_change_mta_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete MTA CFG Data
 ##
-
 sub dmn_del_mta_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_mta_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_mta_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	$rs = dmn_del_mta_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_del_mta_data()', 'Starting...');
+	$rs = dmn_del_mta_file_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_mta_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    $rs = dmn_del_mta_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_del_mta_file_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_mta_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_mta_data()', 'Ending...');
+	return 0;
 }
-
 ################################### CRONTAB ####################################
-
 ################################################################################
 ##
 ## Add Crontab Data
 ##
-
 sub dmn_add_crontab_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_crontab_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_crontab_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_userid = @$dmn_data[0];
+	my $dmn_name = @$dmn_data[1];
+	my $cronjob_minute = @$dmn_data[2];
+	my $cronjob_hour = @$dmn_data[3];
+	my $cronjob_day = @$dmn_data[4];
+	my $cronjob_month = @$dmn_data[5];
+	my $cronjob_dweek = @$dmn_data[6];
+	my $cronjob_command = @$dmn_data[7];
+	my $cronjob_id = @$dmn_data[8];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $log_dir = $main::cfg{'LOG_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir = "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
-    push_el(\@main::el, 'dmn_add_crontab_data()', 'Starting...');
+	#
+	# Getting needed templates;
+	#
+	my (
+		$dt_b,
+		$dt_e,
+		$dmn_custom_b,
+		$dmn_custom_entry,
+		$dmn_custom_e
+	) = ('', '', '', '', '');
+	(
+		$rs,
+		$dt_b,
+		$dt_e,
+		$dmn_custom_b,
+		$dmn_custom_entry,
+		$dmn_custom_e
+	) = get_tpl (
+		$tpl_dir,
+		'dt_b.tpl',
+		'dt_e.tpl',
+		'dmn_custom_b.tpl',
+		'dmn_custom_entry.tpl',
+		'dmn_custom_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	#
+	# Preparing templates;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{USER}' => $dmn_userid,
+		'{MINUTE}' => $cronjob_minute,
+		'{HOUR}' => $cronjob_hour,
+		'{DAY}' => $cronjob_day,
+		'{MONTH}' => $cronjob_month,
+		'{DWEEK}' => $cronjob_dweek,
+		'{CRONJOB_ID}' => $cronjob_id,
+		'{LOG_DIR}' => $log_dir
+	);
+	my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
+	(
+		$rs,
+		$dmn_custom_b_val,
+		$dmn_custom_entry,
+		$dmn_custom_e_val
+	) = prep_tpl (
+		\%tag_hash,
+		$dmn_custom_b,
+		$dmn_custom_entry,
+		$dmn_custom_e
+	);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_add_crontab_data()', 'ERROR: Undefined Input Data...');
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working) = (undef, undef);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-        return -1;
+	($rs, $rdata) = get_tag(
+		$dmn_custom_b_val,
+		$dmn_custom_e_val,
+		$working
+	);
+	# it is safe to delete because cronjobs are handled by id
+	if ($rs == 0) {
+		($rs, $working) = del_tag(
+			$dmn_custom_b_val,
+			"$dmn_custom_e_val\n",
+			$working
+		);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$dmn_custom_b,
+		$dmn_custom_e,
+		$working
+	);
+	return $rs if ($rs != 0);
 
-    }
+	my $dmn_custom_task = "$dmn_custom_b_val$dmn_custom_entry$dmn_custom_e_val\n$dmn_custom_b$dmn_custom_e";
+	($rs, $working) = repl_tag(
+		$dmn_custom_b,
+		$dmn_custom_e,
+		$working,
+		$dmn_custom_task,
+		"dmn_add_crontab_data"
+	);
+	return $rs if ($rs != 0);
 
-    my $dmn_userid = @$dmn_data[0];
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    my $dmn_name = @$dmn_data[1];
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
 
-    my $cronjob_minute = @$dmn_data[2];
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
 
-    my $cronjob_hour = @$dmn_data[3];
-
-    my $cronjob_day = @$dmn_data[4];
-
-    my $cronjob_month = @$dmn_data[5];
-
-    my $cronjob_dweek = @$dmn_data[6];
-
-    my $cronjob_command = @$dmn_data[7];
-
-    my $cronjob_id = @$dmn_data[8];
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $log_dir = $main::cfg{'LOG_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/cron.d/parts";
-
-    my $working_dir = "$conf_dir/cron.d/working";
-
-    my $backup_dir = "$conf_dir/cron.d/backup";
-
-    my $working_cfg = "$working_dir/ispcp";
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my (
-        $dt_b,
-        $dt_e,
-        $dmn_custom_b,
-        $dmn_custom_entry,
-        $dmn_custom_e
-       ) = ('', '', '', '', '');
-
-    (
-     $rs,
-     $dt_b,
-     $dt_e,
-     $dmn_custom_b,
-     $dmn_custom_entry,
-     $dmn_custom_e
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dt_b.tpl',
-                 'dt_e.tpl',
-                 'dmn_custom_b.tpl',
-                 'dmn_custom_entry.tpl',
-                 'dmn_custom_e.tpl'
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{USER}' => $dmn_userid,
-                    '{MINUTE}' => $cronjob_minute,
-                    '{HOUR}' => $cronjob_hour,
-                    '{DAY}' => $cronjob_day,
-                    '{MONTH}' => $cronjob_month,
-                    '{DWEEK}' => $cronjob_dweek,
-                    '{CRONJOB_ID}' => $cronjob_id,
-                    '{LOG_DIR}' => $log_dir
-                   );
-
-    my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
-
-    (
-     $rs,
-     $dmn_custom_b_val,
-     $dmn_custom_entry,
-     $dmn_custom_e_val
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_custom_b,
-                  $dmn_custom_entry,
-                  $dmn_custom_e
-                 );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Creating working config data;
-    #
-
-    my ($sys, $working) = (undef, undef);
-
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-
-    ($rs, $rdata) = get_tag(
-                        	$dmn_custom_b_val,
-                            $dmn_custom_e_val,
-                            $working
-                           );
-
-    # it is safe to delete because cronjobs are handled by id
-    if ($rs == 0) {
-
-        ($rs, $working) = del_tag(
-                                  $dmn_custom_b_val,
-                                  "$dmn_custom_e_val\n",
-                                  $working
-                                 );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_custom_b,
-                            $dmn_custom_e,
-                            $working
-                           );
-
-    return $rs if ($rs != 0);
-
-    my $dmn_custom_task = "$dmn_custom_b_val$dmn_custom_entry$dmn_custom_e_val\n$dmn_custom_b$dmn_custom_e";
-
-    ($rs, $working) = repl_tag(
-                               $dmn_custom_b,
-                               $dmn_custom_e,
-                               $working,
-                               $dmn_custom_task,
-                               "dmn_add_crontab_data"
-                              );
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Now we'll proceed system config;
-    #
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_crontab_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_add_crontab_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delete Crontab Data
 ##
-
 sub dmn_del_crontab_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_crontab_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_crontab_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $cronjob_id = @$dmn_data[2];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $log_dir = $main::cfg{'LOG_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir = "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
-    push_el(\@main::el, 'dmn_del_crontab_data()', 'Starting...');
+	#
+	# Getting needed templates;
+	#
+	my (
+		$dt_b,
+		$dt_e,
+		$dmn_custom_b,
+		$dmn_custom_entry,
+		$dmn_custom_e
+	) = ('', '', '', '', '');
+	(
+		$rs,
+		$dt_b,
+		$dt_e,
+		$dmn_custom_b,
+		$dmn_custom_entry,
+		$dmn_custom_e
+	) = get_tpl (
+		$tpl_dir,
+		'dt_b.tpl',
+		'dt_e.tpl',
+		'dmn_custom_b.tpl',
+		'dmn_custom_entry.tpl',
+		'dmn_custom_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	#
+	# Preparing templates;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{CRONJOB_ID}' => $dmn_name,
+		'{LOG_DIR}' => $log_dir
+	);
+	my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
+	(
+		$rs,
+		$dmn_custom_b_val,
+		$dmn_custom_entry,
+		$dmn_custom_e_val
+	) = prep_tpl (
+		\%tag_hash,
+		$dmn_custom_b,
+		$dmn_custom_entry,
+		$dmn_custom_e
+	);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_del_crontab_data()', 'ERROR: Undefined Input Data...');
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working) = (undef, undef);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-        return -1;
+	($rs, $rdata) = get_tag(
+		$dmn_custom_b_val,
+		$dmn_custom_e_val,
+		$working
+	);
+	if ($rs == 0) {
+		($rs, $working) = del_tag(
+			$dmn_custom_b_val,
+			"$dmn_custom_e_val\n",
+			$working
+		);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$dmn_custom_b,
+		$dmn_custom_e,
+		$working
+	);
+	return $rs if ($rs != 0);
 
-    }
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    my $dmn_name = @$dmn_data[1];
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
 
-    my $cronjob_id = @$dmn_data[2];
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $log_dir = $main::cfg{'LOG_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/cron.d/parts";
-
-    my $working_dir = "$conf_dir/cron.d/working";
-
-    my $backup_dir = "$conf_dir/cron.d/backup";
-
-
-    my $working_cfg = "$working_dir/ispcp";
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my (
-        $dt_b,
-        $dt_e,
-        $dmn_custom_b,
-        $dmn_custom_entry,
-        $dmn_custom_e
-       ) = ('', '', '', '', '');
-
-    (
-     $rs,
-     $dt_b,
-     $dt_e,
-     $dmn_custom_b,
-     $dmn_custom_entry,
-     $dmn_custom_e
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dt_b.tpl',
-                 'dt_e.tpl',
-                 'dmn_custom_b.tpl',
-                 'dmn_custom_entry.tpl',
-                 'dmn_custom_e.tpl'
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{CRONJOB_ID}' => $dmn_name,
-                    '{LOG_DIR}' => $log_dir
-                   );
-
-    my ($dmn_custom_b_val, $dmn_custom_e_val) = (undef, undef);
-
-    (
-     $rs,
-     $dmn_custom_b_val,
-     $dmn_custom_entry,
-     $dmn_custom_e_val
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_custom_b,
-                  $dmn_custom_entry,
-                  $dmn_custom_e
-                 );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Creating working config data;
-    #
-
-    my ($sys, $working) = (undef, undef);
-
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_custom_b_val,
-                            $dmn_custom_e_val,
-                            $working
-                           );
-
-    if ($rs == 0) {
-
-        ($rs, $working) = del_tag(
-                                  $dmn_custom_b_val,
-                                  "$dmn_custom_e_val\n",
-                                  $working
-                                 );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_custom_b,
-                            $dmn_custom_e,
-                            $working
-                           );
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Now we'll proceed system config;
-    #
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_crontab_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_del_crontab_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Add Backup Crontab Data
 ##
-
 sub dmn_add_bkp_crontab_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_id = @$dmn_data[0];
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $backup_hour = $main::cfg{'BACKUP_HOUR'};
+	my $backup_minute = $main::cfg{'BACKUP_MINUTE'};
+	my $backup_root_dir = $main::cfg{'BACKUP_ROOT_DIR'};
+	my $log_dir = $main::cfg{'LOG_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir = "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
-    push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Starting...');
+	#
+	# Getting needed templates;
+	#
+	my (
+		$dt_b,
+		$dt_e,
+		$dmn_bk_b,
+		$dmn_bk_entry,
+		$dmn_bk_e
+	) = ('', '', '', '', '');
+	(
+		$rs,
+		$dt_b,
+		$dt_e,
+		$dmn_bk_b,
+		$dmn_bk_entry,
+		$dmn_bk_e
+	) = get_tpl (
+		$tpl_dir,
+		'dt_b.tpl',
+		'dt_e.tpl',
+		'dmn_bk_b.tpl',
+		'dmn_bk_entry.tpl',
+		'dmn_bk_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	#
+	# Preparing templates;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{DMN_ID}' => $dmn_id,
+		'{MINUTE}' => $backup_minute,
+		'{HOUR}' => $backup_hour,
+		'{BACKUP_ROOT_DIR}' => $backup_root_dir,
+		'{LOG_DIR}' => $log_dir
+	);
+	my ($dmn_bk_b_val, $dmn_bk_e_val) = (undef, undef);
+	(
+		$rs,
+		$dmn_bk_b_val,
+		$dmn_bk_entry,
+		$dmn_bk_e_val
+	) = prep_tpl (
+		\%tag_hash,
+		$dmn_bk_b,
+		$dmn_bk_entry,
+		$dmn_bk_e
+	);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'ERROR: Undefined Input Data...');
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working) = (undef, undef);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-        return -1;
+	($rs, $rdata) = get_tag(
+		$dmn_bk_b_val,
+		$dmn_bk_e_val,
+		$working
+	);
+	if ($rs == 0) {
+		# We have one ! We must delete it because of possible future changes in this Domain Group Entry;
+		($rs, $working) = del_tag(
+			$dmn_bk_b_val,
+			"$dmn_bk_e_val\n",
+			$working
+		);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$dmn_bk_b,
+		$dmn_bk_e,
+		$working
+	);
+	return $rs if ($rs != 0);
 
-    }
+	my $dmn_bk_task = "$dmn_bk_b_val$dmn_bk_entry$dmn_bk_e_val\n$dmn_bk_b$dmn_bk_e";
+	($rs, $working) = repl_tag(
+		$dmn_bk_b,
+		$dmn_bk_e,
+		$working,
+		$dmn_bk_task,
+		"dmn_add_bkp_crontab_data"
+	);
+	return $rs if ($rs != 0);
 
-    my $dmn_id = @$dmn_data[0];
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    my $dmn_name = @$dmn_data[1];
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
 
-    my $backup_hour = $main::cfg{'BACKUP_HOUR'};
-
-    my $backup_minute = $main::cfg{'BACKUP_MINUTE'};
-
-    my $backup_root_dir = $main::cfg{'BACKUP_ROOT_DIR'};
-
-    my $log_dir = $main::cfg{'LOG_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/cron.d/parts";
-
-    my $working_dir = "$conf_dir/cron.d/working";
-
-    my $backup_dir = "$conf_dir/cron.d/backup";
-
-    my $working_cfg = "$working_dir/ispcp";
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my (
-        $dt_b,
-        $dt_e,
-        $dmn_bk_b,
-        $dmn_bk_entry,
-        $dmn_bk_e
-       ) = ('', '', '', '', '');
-
-    (
-     $rs,
-     $dt_b,
-     $dt_e,
-     $dmn_bk_b,
-     $dmn_bk_entry,
-     $dmn_bk_e
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dt_b.tpl',
-                 'dt_e.tpl',
-                 'dmn_bk_b.tpl',
-                 'dmn_bk_entry.tpl',
-                 'dmn_bk_e.tpl'
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{DMN_ID}' => $dmn_id,
-                    '{MINUTE}' => $backup_minute,
-                    '{HOUR}' => $backup_hour,
-                    '{BACKUP_ROOT_DIR}' => $backup_root_dir,
-                    '{LOG_DIR}' => $log_dir
-                   );
-
-    my ($dmn_bk_b_val, $dmn_bk_e_val) = (undef, undef);
-
-    (
-     $rs,
-     $dmn_bk_b_val,
-     $dmn_bk_entry,
-     $dmn_bk_e_val
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_bk_b,
-                  $dmn_bk_entry,
-                  $dmn_bk_e
-                 );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Creating working config data;
-    #
-
-    my ($sys, $working) = (undef, undef);
-
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_bk_b_val,
-                            $dmn_bk_e_val,
-                            $working
-                           );
-
-    if ($rs == 0) {
-
-
-        # We have one ! We must delete it because of possible future changes in this Domain Group Entry;
-
-
-        ($rs, $working) = del_tag(
-                                  $dmn_bk_b_val,
-                                  "$dmn_bk_e_val\n",
-                                  $working
-                                 );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_bk_b,
-                            $dmn_bk_e,
-                            $working
-                           );
-
-    return $rs if ($rs != 0);
-
-    my $dmn_bk_task = "$dmn_bk_b_val$dmn_bk_entry$dmn_bk_e_val\n$dmn_bk_b$dmn_bk_e";
-
-    ($rs, $working) = repl_tag(
-                               $dmn_bk_b,
-                               $dmn_bk_e,
-                               $working,
-                               $dmn_bk_task,
-                               "dmn_add_bkp_crontab_data"
-                              );
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Now we'll proceed system config;
-    #
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_add_bkp_crontab_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete Backup Crontab Data
 ##
-
 sub dmn_del_bkp_crontab_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $backup_hour = $main::cfg{'BACKUP_HOUR'};
+	my $backup_minute = $main::cfg{'BACKUP_MINUTE'};
+	my $backup_root_dir = $main::cfg{'BACKUP_ROOT_DIR'};
+	my $log_dir = $main::cfg{'LOG_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir = "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+	#
+	# Getting needed templates;
+	#
+	my (
+		$dt_b,
+		$dt_e,
+		$dmn_bk_b,
+		$dmn_bk_entry,
+		$dmn_bk_e
+	) = ('', '', '', '', '');
+	(
+		$rs,
+		$dt_b,
+		$dt_e,
+		$dmn_bk_b,
+		$dmn_bk_entry,
+		$dmn_bk_e
+	) = get_tpl (
+		$tpl_dir,
+		'dt_b.tpl',
+		'dt_e.tpl',
+		'dmn_bk_b.tpl',
+		'dmn_bk_entry.tpl',
+		'dmn_bk_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Starting...');
+	#
+	# Preparing templates;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{MINUTE}' => $backup_minute,
+		'{HOUR}' => $backup_hour,
+		'{BACKUP_ROOT_DIR}' => $backup_root_dir,
+		'{LOG_DIR}' => $log_dir
+	);
+	my ($dmn_bk_b_val, $dmn_bk_e_val) = (undef, undef);
+	(
+		$rs,
+		$dmn_bk_b_val,
+		$dmn_bk_entry,
+		$dmn_bk_e_val
+	) = prep_tpl (
+		\%tag_hash,
+		$dmn_bk_b,
+		$dmn_bk_entry,
+		$dmn_bk_e
+	);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working) = (undef, undef);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'ERROR: Undefined Input Data...');
+	($rs, $rdata) = get_tag(
+		$dmn_bk_b_val,
+		$dmn_bk_e_val,
+		$working
+	);
+	if ($rs == 0) {
+		# We have one ! We must delete it because of possible future changes in this Domain Group Entry;
+		($rs, $working) = del_tag(
+		$dmn_bk_b_val,
+		"$dmn_bk_e_val\n",
+		$working
+		);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$dmn_bk_b,
+		$dmn_bk_e,
+		$working
+	);
+	return $rs if ($rs != 0);
 
-        return -1;
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    }
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
 
-    my $dmn_name = @$dmn_data[1];
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
 
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $backup_hour = $main::cfg{'BACKUP_HOUR'};
-
-    my $backup_minute = $main::cfg{'BACKUP_MINUTE'};
-
-    my $backup_root_dir = $main::cfg{'BACKUP_ROOT_DIR'};
-
-    my $log_dir = $main::cfg{'LOG_DIR'};
-
-
-    my $tpl_dir = "$conf_dir/cron.d/parts";
-
-    my $working_dir = "$conf_dir/cron.d/working";
-
-    my $backup_dir = "$conf_dir/cron.d/backup";
-
-
-    my $working_cfg = "$working_dir/ispcp";
-
-    my $timestamp = time;
-
-    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my (
-        $dt_b,
-        $dt_e,
-        $dmn_bk_b,
-        $dmn_bk_entry,
-        $dmn_bk_e
-       ) = ('', '', '', '', '');
-
-    (
-     $rs,
-     $dt_b,
-     $dt_e,
-     $dmn_bk_b,
-     $dmn_bk_entry,
-     $dmn_bk_e
-    ) = get_tpl (
-                 $tpl_dir,
-                 'dt_b.tpl',
-                 'dt_e.tpl',
-                 'dmn_bk_b.tpl',
-                 'dmn_bk_entry.tpl',
-                 'dmn_bk_e.tpl'
-                );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{MINUTE}' => $backup_minute,
-                    '{HOUR}' => $backup_hour,
-                    '{BACKUP_ROOT_DIR}' => $backup_root_dir,
-                    '{LOG_DIR}' => $log_dir
-                   );
-
-    my ($dmn_bk_b_val, $dmn_bk_e_val) = (undef, undef);
-
-    (
-     $rs,
-     $dmn_bk_b_val,
-     $dmn_bk_entry,
-     $dmn_bk_e_val
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_bk_b,
-                  $dmn_bk_entry,
-                  $dmn_bk_e
-                 );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Creating working config data;
-    #
-
-    my ($sys, $working) = (undef, undef);
-
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_bk_b_val,
-                            $dmn_bk_e_val,
-                            $working
-                           );
-
-    if ($rs == 0) {
-
-        # We have one ! We must delete it because of possible future changes in this Domain Group Entry;
-
-        ($rs, $working) = del_tag(
-                                  $dmn_bk_b_val,
-                                  "$dmn_bk_e_val\n",
-                                  $working
-                                 );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_bk_b,
-                            $dmn_bk_e,
-                            $working
-                           );
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Now we'll proceed system config;
-    #
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_del_bkp_crontab_data()', 'Ending...');
+	return 0;
 }
-
 ################################### AWStats ####################################
-
 ################################################################################
 ##
 ## Add AWStats Data
 ##
-
 sub dmn_add_awstats_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
-
-    my $rs = undef;
-
-    push_el(\@main::el, 'dmn_add_awstats_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_awstats_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
+	push_el(\@main::el, 'dmn_add_awstats_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_awstats_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
 	my $aws_type = $main::cfg{'AWSTATS_MODE'};
-
-    $rs = dmn_add_awstats_cfg_data($dmn_data);
-
-    if ($aws_type eq 1) {
+	$rs = dmn_add_awstats_cfg_data($dmn_data);
+	if ($aws_type eq 1) {
 		$rs = dmn_add_awstats_cron($dmn_data);
-
 		return $rs if ($rs != 0);
-    }
+	}
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_awstats_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_awstats_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Add AWStats CFG Data
 ##
-
 sub dmn_add_awstats_cfg_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	#
+	# Initial data we need;
+	#
+	my $dmn_name = @$dmn_data[1];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
+	my $tpl_dir = "$conf_dir/awstats";
+	my $awstats_fname = "awstats.$dmn_name.conf";
+	my $sys_cfg = "$awstats_dir/$awstats_fname";
 
-    push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'Starting...');
+	#
+	# Let's get needed tags and templates;
+	#
+	my $entry = '';
+	($rs, $entry) = get_tpl(
+		$tpl_dir,
+		'awstats.ispcp_tpl.conf'
+	);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
+	#
+	# Let's prepare them;
+	#
+	my %tag_hash = (
+		'{DOMAIN_NAME}' => $dmn_name,
+		'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
+		'{AWSTATS_CACHE_DIR}' => $main::cfg{'AWSTATS_CACHE_DIR'},
+		'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
+		'{AWSTATS_WEB_DIR}' => $main::cfg{'AWSTATS_WEB_DIR'}
+	);
+	($rs, $entry) = prep_tpl(
+		\%tag_hash,
+		$entry
+	);
+	return $rs if ($rs != 0);
 
-        push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+	#
+	# Let's store generated data;
+	#
+	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-        return -1;
-
-    }
-
-    #
-    # Initial data we need;
-    #
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $conf_dir = $main::cfg{'CONF_DIR'};
-
-    my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
-
-    my $tpl_dir = "$conf_dir/awstats";
-
-    my $awstats_fname = "awstats.$dmn_name.conf";
-
-    my $sys_cfg = "$awstats_dir/$awstats_fname";
-
-    #
-    # Let's get needed tags and templates;
-    #
-
-    my $entry = '';
-
-    ($rs, $entry) = get_tpl(
-                            $tpl_dir,
-                            'awstats.ispcp_tpl.conf'
-                           );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's prepare them;
-    #
-
-    my %tag_hash = (
-                    '{DOMAIN_NAME}' => $dmn_name,
-                    '{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
-                    '{AWSTATS_CACHE_DIR}' => $main::cfg{'AWSTATS_CACHE_DIR'},
-                    '{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
-                    '{AWSTATS_WEB_DIR}' => $main::cfg{'AWSTATS_WEB_DIR'}
-                   );
-
-    ($rs, $entry) = prep_tpl(
-                             \%tag_hash,
-                             $entry
-                            );
-
-    return $rs if ($rs != 0);
-
-    #
-    # Let's store generated data;
-    #
-
-    $rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_awstats_cfg_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Change AWStats Data
 ##
-
 sub dmn_change_awstats_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_change_awstats_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_awstats_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+	$rs = dmn_add_awstats_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_change_awstats_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_change_awstats_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $aws_type = $main::cfg{'AWSTATS_MODE'};
-
-    $rs = dmn_add_awstats_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    if ($aws_type eq 1) {
+	if ($aws_type eq 1) {
 		$rs = dmn_add_awstats_cron($dmn_data);
-
 		return $rs if ($rs != 0);
-    }
+	}
 
-    push_el(\@main::el, 'dmn_change_awstats_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_change_awstats_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delete AWStats Data
 ##
-
 sub dmn_del_awstats_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_awstats_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_awstats_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+	$rs = dmn_del_awstats_cfg_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    push_el(\@main::el, 'dmn_del_awstats_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_awstats_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $aws_type = $main::cfg{'AWSTATS_MODE'};
-
-    $rs = dmn_del_awstats_cfg_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    if ($aws_type eq 1) {
+	if ($aws_type eq 1) {
 		$rs = dmn_del_awstats_cron($dmn_data);
-
 		return $rs if ($rs != 0);
-    }
+	}
 
-    push_el(\@main::el, 'dmn_del_awstats_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_awstats_data()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##
 ## Delete AWStats CFG Data
 ##
-
 sub dmn_del_awstats_cfg_data {
+	my ($dmn_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my ($rs, $rdata) = (undef, undef);
+	#
+	# Initial data we need;
+	#
+	my $dmn_name = @$dmn_data[1];
+	my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
+	my $awstats_fname = "awstats.$dmn_name.conf";
+	my $sys_cfg = "$awstats_dir/$awstats_fname";
 
-    push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    #
-    # Initial data we need;
-    #
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
-
-    my $awstats_fname = "awstats.$dmn_name.conf";
-
-    my $sys_cfg = "$awstats_dir/$awstats_fname";
-
-    #
-    # Let's delete file, if exists
-    #
+	#
+	# Let's delete file, if exists
+	#
 	if ( -e $sys_cfg) {
-	    $rs = del_file($sys_cfg);
-	    return $rs if ($rs != 0);
-    }
+		$rs = del_file($sys_cfg);
+		return $rs if ($rs != 0);
+	}
 
-    push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_del_awstats_cfg_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Add AWStats Cron Data
 ##
-
 sub dmn_add_awstats_cron {
-    push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
+	push_el(\@main::el, 'dmn_add_awstats_cron()', 'Starting...');
 
-    my ($dmn_data) = @_;
+	my ($dmn_data) = @_;
+	my ($awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
 
-    my ($awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-        push_el(\@main::el, 'dmn_add_awstats_cron()', 'ERROR: Undefined Input Data...');
-        return -1;
-    }
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_awstats_cron()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
 	my $dmn_name = @$dmn_data[1];
+	my $cronjob_minute = @$dmn_data[0];
 
-    my $cronjob_minute = @$dmn_data[0];
-    # to prevent running all crons at same time
-    $cronjob_minute = $cronjob_minute % 60;
+	# to prevent running all crons at same time
+	$cronjob_minute = $cronjob_minute % 60;
 
-    my $cronjob_hour = '3';
+	my $cronjob_hour = '3';
+	my $conf_dir	= $main::cfg{'CONF_DIR'};
+	my $tpl_dir 	= "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir 	= "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp 	= time;
+	my $backup_cfg 	= "$backup_dir/ispcp.$timestamp";
+	my $user_lang	= "en";
+	my $awstats_root_dir   = $main::cfg{'AWSTATS_ROOT_DIR'};
+	my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
+	my $awstats_web_dir    = $main::cfg{'AWSTATS_WEB_DIR'};
 
-    my $conf_dir	= $main::cfg{'CONF_DIR'};
+	# Selecting user language
+	my $user_id = @$dmn_data[4];
+	my $sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
+	my ($rs, $rdata) = doSQL($sql);
 
-    my $tpl_dir 	= "$conf_dir/cron.d/parts";
-    my $working_dir = "$conf_dir/cron.d/working";
-    my $backup_dir 	= "$conf_dir/cron.d/backup";
-    my $working_cfg = "$working_dir/ispcp";
-    my $timestamp 	= time;
-    my $backup_cfg 	= "$backup_dir/ispcp.$timestamp";
-    my $user_lang	= "en";
+	$rdata = @$rdata[0];
+	return $rs if ($rs != 0);
 
-    my $awstats_root_dir   = $main::cfg{'AWSTATS_ROOT_DIR'};
-    my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
-    my $awstats_web_dir    = $main::cfg{'AWSTATS_WEB_DIR'};
-
-    # Selecting user language
-    my $user_id = @$dmn_data[4];
-    my $sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
-    my ($rs, $rdata) = doSQL($sql);
-    $rdata = @$rdata[0];
-    return $rs if ($rs != 0);
-
-    my %languages = (
+	my %languages = (
 		"lang_Albanian" => "al",
 		"lang_Bosnian" => "ba",
 		"lang_Bulgarian" => "bg",
@@ -4108,921 +3066,607 @@ sub dmn_add_awstats_cron {
 	);
 
 	while ( my ($key, $value) = each(%languages) ) {
-    	if ($key eq @$rdata[0]) {
+		if ($key eq @$rdata[0]) {
 			$user_lang = $value;
 			last;
-    	}
-    }
+		}
+	}
 
-    #
-    # Getting needed templates;
-    #
-
-    my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
-
-    (
-	 $rs,
-	 $dmn_awstats_b,
-	 $dmn_awstats_entry,
-	 $dmn_awstats_e
+	#
+	# Getting needed templates;
+	#
+	my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
+	(
+		$rs,
+		$dmn_awstats_b,
+		$dmn_awstats_entry,
+		$dmn_awstats_e
 	) = get_tpl(
-				$tpl_dir,
-				'dmn_awstats_b.tpl',
-				'dmn_awstats_entry.tpl',
-				'dmn_awstats_e.tpl'
-				);
+		$tpl_dir,
+		'dmn_awstats_b.tpl',
+		'dmn_awstats_entry.tpl',
+		'dmn_awstats_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	#
+	# Preparing templates;
+	#
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{MINUTE}' => $cronjob_minute,
+		'{HOUR}' => $cronjob_hour,
+		'{AWSTATS_ROOT_DIR}' => $awstats_root_dir,
+		'{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
+		'{AWSTATS_WEB_DIR}' => $awstats_web_dir,
+		'{USER_LANG}' => $user_lang
+	);
+	(
+		$rs,
+		$awstats_b,
+		$awstats_entry,
+		$awstats_e
+	) = prep_tpl (
+		\%tag_hash,
+		$dmn_awstats_b,
+		$dmn_awstats_entry,
+		$dmn_awstats_e
+	);
+	return $rs if ($rs != 0);
 
-    #
-    # Preparing templates;
-    #
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working) = (undef, undef);
+	$rdata = undef;
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
-    my %tag_hash = (
-                    '{DMN_NAME}' => $dmn_name,
-                    '{MINUTE}' => $cronjob_minute,
-                    '{HOUR}' => $cronjob_hour,
-                    '{AWSTATS_ROOT_DIR}' => $awstats_root_dir,
-                    '{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
-                    '{AWSTATS_WEB_DIR}' => $awstats_web_dir,
-                    '{USER_LANG}' => $user_lang
-                   );
+	($rs, $rdata) = get_tag(
+		$awstats_b,
+		$awstats_e,
+		$working
+	);
+	if ($rs == 0) {
+		# We have one! We have to delete it because of possible future changes in this Domain Group entry;
+		($rs, $working) = del_tag(
+			$awstats_b,
+			"$awstats_e\n",
+			$working
+		);
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$dmn_awstats_b,
+		$dmn_awstats_e,
+		$working
+	);
+	return $rs if ($rs != 0);
 
-   (
-     $rs,
-     $awstats_b,
-     $awstats_entry,
-     $awstats_e
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_awstats_b,
-                  $dmn_awstats_entry,
-                  $dmn_awstats_e
-                 );
+	my $dmn_awstats_task = "$awstats_b\n$awstats_entry\n$awstats_e\n$dmn_awstats_b\n$dmn_awstats_e";
+	($rs, $working) = repl_tag(
+		$dmn_awstats_b,
+		$dmn_awstats_e,
+		$working,
+		$dmn_awstats_task,
+		"dmn_add_awstats_cron"
+	);
+	return $rs if ($rs != 0);
 
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
 
-    #
-    # Creating working config data;
-    #
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
 
-    my ($sys, $working) = (undef, undef);
-    $rdata = undef;
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-   ($rs, $rdata) = get_tag(
-                            $awstats_b,
-                            $awstats_e,
-                            $working
-                           );
-
-    if ($rs == 0) {
-        # We have one! We have to delete it because of possible future changes in this Domain Group entry;
-        ($rs, $working) = del_tag(
-                                  $awstats_b,
-                                  "$awstats_e\n",
-                                  $working
-                                 );
-
-        return $rs if ($rs != 0);
-
-    }
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_awstats_b,
-                            $dmn_awstats_e,
-                            $working
-                           );
-
-    return $rs if ($rs != 0);
-
-    my $dmn_awstats_task = "$awstats_b\n$awstats_entry\n$awstats_e\n$dmn_awstats_b\n$dmn_awstats_e";
-
-    ($rs, $working) = repl_tag(
-                               $dmn_awstats_b,
-                               $dmn_awstats_e,
-                               $working,
-                               $dmn_awstats_task,
-                               "dmn_add_awstats_cron"
-                              );
-
-    return $rs if ($rs != 0);
-
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-
-    return $rs if ($rs != 0);
-
-    #
-    # Now we'll proceed system config;
-    #
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_awstats_cron()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_awstats_cron()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete AWStats Cron Data
 ##
-
 sub dmn_del_awstats_cron {
-    my ($dmn_data) = @_;
+	my ($dmn_data) = @_;
+	my ($rs, $awstats_b, $awstats_e) = (undef, '', '', '');
 
-    my ($rs, $awstats_b, $awstats_e) = (undef, '', '', '');
-
-    push_el(\@main::el, 'dmn_del_awstats_cron()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-        push_el(\@main::el, 'dmn_del_awstats_cron()', 'ERROR: Undefined Input Data...');
-        return -1;
-    }
+	push_el(\@main::el, 'dmn_del_awstats_cron()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_awstats_cron()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
 	my $dmn_name = @$dmn_data[1];
-
-    my $cronjob_minute = @$dmn_data[0];
-    # to prevent running all crons at same time
-    $cronjob_minute = $cronjob_minute % 60;
-    my $cronjob_hour = '3';
-
+	my $cronjob_minute = @$dmn_data[0];
+	# to prevent running all crons at same time
+	$cronjob_minute = $cronjob_minute % 60;
+	my $cronjob_hour = '3';
 	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir = "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
-    my $tpl_dir = "$conf_dir/cron.d/parts";
-    my $working_dir = "$conf_dir/cron.d/working";
-    my $backup_dir = "$conf_dir/cron.d/backup";
-    my $working_cfg = "$working_dir/ispcp";
-    my $timestamp = time;
-    my $backup_cfg = "$backup_dir/ispcp.$timestamp";
-
-    #
-    # Getting needed templates;
-    #
-
-    my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
-
-    (
-	 $rs,
-	 $dmn_awstats_b,
-	 $dmn_awstats_e
+	#
+	# Getting needed templates;
+	#
+	my ($dmn_awstats_b, $dmn_awstats_entry, $dmn_awstats_e) = ('', '', '');
+	(
+		$rs,
+		$dmn_awstats_b,
+		$dmn_awstats_e
 	) = get_tpl(
-				$tpl_dir,
-				'dmn_awstats_b.tpl',
-				'dmn_awstats_e.tpl'
-				);
+		$tpl_dir,
+		'dmn_awstats_b.tpl',
+		'dmn_awstats_e.tpl'
+	);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
-
-    #
-    # Preparing templates;
-    #
-
+	#
+	# Preparing templates;
+	#
 	my %tag_hash = ( '{DMN_NAME}' => $dmn_name );
+	(
+		$rs,
+		$awstats_b,
+		$awstats_e
+	) = prep_tpl (
+		\%tag_hash,
+		$dmn_awstats_b,
+		$dmn_awstats_e
+	);
+	return $rs if ($rs != 0);
 
-    (
-     $rs,
-     $awstats_b,
-     $awstats_e
-    ) = prep_tpl (
-                  \%tag_hash,
-                  $dmn_awstats_b,
-                  $dmn_awstats_e
-                 );
+	#
+	# Creating working config data;
+	#
+	my ($sys, $working, $rdata) = (undef, undef, undef);
+	($rs, $working) = get_file($working_cfg);
+	return $rs if ($rs != 0);
 
+	($rs, $rdata) = get_tag(
+		$awstats_b,
+		$awstats_e,
+		$working
+	);
 
-    return $rs if ($rs != 0);
-
-    #
-    # Creating working config data;
-    #
-
-    my ($sys, $working, $rdata) = (undef, undef, undef);
-
-    ($rs, $working) = get_file($working_cfg);
-
-    return $rs if ($rs != 0);
-
-    ($rs, $rdata) = get_tag(
-                            $awstats_b,
-                            $awstats_e,
-                            $working
-                           );
-    push_el(\@main::el, 'dmn_del_awstats_cron() search', $awstats_b);
-
-    if ($rs == 0) {
-        # We have one! We have to delete it
-        ($rs, $working) = del_tag(
-                                  $awstats_b,
-                                  "$awstats_e\n",
-                                  $working
-                                 );
-
+	push_el(\@main::el, 'dmn_del_awstats_cron() search', $awstats_b);
+	if ($rs == 0) {
+		# We have one! We have to delete it
+		($rs, $working) = del_tag(
+			$awstats_b,
+			"$awstats_e\n",
+			$working
+		);
 		push_el(\@main::el, 'dmn_del_awstats_cron() del', $awstats_b);
-        return $rs if ($rs != 0);
-    }
-
-    ($rs, $rdata) = get_tag(
-                            $dmn_awstats_b,
-                            $dmn_awstats_e,
-                            $working
-                           );
+		return $rs if ($rs != 0);
+	}
+	($rs, $rdata) = get_tag(
+		$dmn_awstats_b,
+		$dmn_awstats_e,
+		$working
+	);
 
 	push_el(\@main::el, 'dmn_del_awstats_cron() search', $dmn_awstats_b);
-    return $rs if ($rs != 0);
+	return $rs if ($rs != 0);
 
-    $rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	#
+	# Now we'll proceed system config;
+	#
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	return $rs if ($rs != 0);
 
-    #
-    # Now we'll proceed system config;
-    #
+	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	return $rs if ($rs != 0);
 
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-
-    return $rs if ($rs != 0);
-
-    $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_awstats_cron()', 'Ending...');
-    return 0;
+	push_el(\@main::el, 'dmn_del_awstats_cron()', 'Ending...');
+	return 0;
 }
-
 ################################# DOMAIN DATA ##################################
-
 ################################################################################
 ##
 ## Add Domain Data
 ##
-
 sub dmn_add_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_add_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_add_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
-
-    push_el(\@main::el, 'dmn_add_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_add_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
-
-    # check whether AWStats is enabled
-    if ($awstats ne 'no') {
-        $rs = dmn_add_awstats_data($dmn_data);
-
+	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
+		$rs = dmn_add_awstats_data($dmn_data);
 		return $rs if ($rs != 0);
+	}
+	$rs = dmn_add_named_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    }
+	$rs = dmn_add_httpd_data($dmn_data);
+	return $rs if ($rs != 0);
 
+	$rs = dmn_add_mta_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    $rs = dmn_add_named_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_add_httpd_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_add_mta_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_add_data()', 'Ending...');
-
-    return 0;
+	push_el(\@main::el, 'dmn_add_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Change Domain Data
 ##
-
 sub dmn_change_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_change_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_change_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
 
-    push_el(\@main::el, 'dmn_change_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_change_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
-
-    # check whether AWStats is enabled
-    if ($awstats ne 'no') {
-       	$rs = dmn_change_awstats_data($dmn_data);
-
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
+		$rs = dmn_change_awstats_data($dmn_data);
 		return $rs if ($rs != 0);
-    }
+	}
+	$rs = dmn_change_named_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    $rs = dmn_change_named_data($dmn_data);
+	$rs = dmn_change_httpd_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
+	$rs = dmn_change_mta_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    $rs = dmn_change_httpd_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_change_mta_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_change_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_change_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Delete Domain Data
 ##
-
 sub dmn_del_data {
+	my ($dmn_data) = @_;
+	my $rs = undef;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_del_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_del_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    my $rs = undef;
+	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
 
-    push_el(\@main::el, 'dmn_del_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_del_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
-
-    # check whether AWStats is enabled
-    if ($awstats ne 'no') {
-        $rs = dmn_del_awstats_data($dmn_data);
-
+	# check whether AWStats is enabled
+	if ($awstats ne 'no') {
+		$rs = dmn_del_awstats_data($dmn_data);
 		return $rs if ($rs != 0);
+	}
+	$rs = dmn_del_named_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    }
+	$rs = dmn_del_httpd_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    $rs = dmn_del_named_data($dmn_data);
+	$rs = dmn_del_mta_data($dmn_data);
+	return $rs if ($rs != 0);
 
-    return $rs if ($rs != 0);
-
-    $rs = dmn_del_httpd_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    $rs = dmn_del_mta_data($dmn_data);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_del_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_del_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Restore Backups Data
 ##
-
 sub dmn_restore_data {
-
-    my ($dmn_data) = @_;
-
-    push_el(\@main::el, 'dmn_restore_data()', 'Starting...');
-
-    if (!defined($dmn_data) || $dmn_data eq '') {
-        push_el(\@main::el, 'dmn_restore_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-    }
-
-    my ($rs, $rdata) = ('', '');
-
-    my $dmn_id = @$dmn_data[0];
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-    my $dmn_dir = "$www_dir/$dmn_name";
-
-    my $dmn_bk_dir = "$www_dir/$dmn_name/backups";
-
-    my $cmd_tar = $main::cfg{'CMD_TAR'};
-
-    my $cmd_bzcat = $main::cfg{'CMD_BZCAT'};
-
-    my $cmd_gzcat = $main::cfg{'CMD_GZCAT'};
-
-    my $cmd_mysql = $main::cfg{'CMD_MYSQL'};
-
-    $rs = opendir(DIR, $dmn_bk_dir);
-
-    if (!$rs) {
-        push_el(\@main::el, 'dmn_restore_data()', "ERROR: Can't open '$dmn_bk_dir' directory.");
-
-        return -1;
-    }
-
-    my @bk_files = readdir(DIR);
-
-    closedir(DIR);
-
-    return 0 if (scalar(@bk_files) == 0);
-
-    my ($cmd,$rdata2,$rdata3,$sql) = ('','','','');
-
-    foreach(@bk_files) {
-
-		my ($fname) = ($_);
-
-		# Restore bzip2 files
-		if ($fname =~ m/.tar.bz2/i) {
-
-	        $cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-
-	        $rs = sys_command($cmd);
-
-	        return $rs if ($rs != 0)
-	    }
-
-	    # Restore gz files
-	    if ($fname =~ m/.tar.gz/i) {
-
-	        $cmd = "$cmd_tar --extract --preserve-permissions --gunzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-
-	        $rs = sys_command($cmd);
-
-	        return $rs if ($rs != 0)
-	    }
-
-	    # Restore bz2 SQL files
-	    if ($fname =~ m/.sql.bz2/i) {
-
-	        # Extract databasename
-	        $fname =~ /(.*).sql.bz2/;
-	        my $dbf_name = $1;
-
-	        $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
-	        ($rs,$rdata3) = doSQL($sql);
-
-	        return $rs if ($rs != 0);
-
-	        foreach(@$rdata3) {
-
-	            my $db_id=@$_[0];
-	            my $db_name=@$_[1];
-
-	            # if databasename eq filedatabasename get SQL user and pass
-	            if ($db_name eq $dbf_name) {
-
-	                $sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
-	                ($rs,$rdata2) = doSQL($sql);
-
-	                return $rs if ($rs != 0);
-
-	                $rdata2=@$rdata2[0];
-
-	                my $dbuser = @$rdata2[0];
-	                my $dbpass = @$rdata2[1];
-
-	                # if username and pass for db exists - restore database from file
-	                if ($dbuser && $dbpass) {
-
-	                    $cmd = "$cmd_bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
-
-	                    $rs = sys_command($cmd);
-
-	                    return $rs if ($rs != 0);
-
-	                }
-
-	            }
-
-	        }
-
-		}
-
-		# Restore gz SQL files
-	    if ($fname =~ m/.sql.gz/i) {
-
-	        # Extract databasename
-	        $fname =~ /(.*).sql.gz/;
-	        my $dbf_name = $1;
-
-	        $sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
-	        ($rs,$rdata3) = doSQL($sql);
-
-	        return $rs if ($rs != 0);
-
-	        foreach(@$rdata3) {
-
-	            my $db_id=@$_[0];
-	            my $db_name=@$_[1];
-
-	            # if databasename eq filedatabasename get SQL user and pass
-	            if ($db_name eq $dbf_name) {
-
-	                $sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
-	                ($rs,$rdata2) = doSQL($sql);
-
-	                return $rs if ($rs != 0);
-
-	                $rdata2=@$rdata2[0];
-
-	                my $dbuser = @$rdata2[0];
-	                my $dbpass = @$rdata2[1];
-
-	                # if username and pass for db exists - restore database from file
-	                if ($dbuser && $dbpass) {
-
-	                    $cmd = "$cmd_gzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
-
-	                    $rs = sys_command($cmd);
-
-	                    return $rs if ($rs != 0);
-
-	                }
-
-	            }
-
-	        }
-
-		}
+	my ($dmn_data) = @_;
+
+	push_el(\@main::el, 'dmn_restore_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_restore_data()', 'ERROR: Undefined Input Data...');
+		return -1;
 	}
 
-    push_el(\@main::el, 'dmn_restore_data()', 'Ending...');
+	my ($rs, $rdata) = ('', '');
+	my $dmn_id = @$dmn_data[0];
+	my $dmn_name = @$dmn_data[1];
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir = "$www_dir/$dmn_name";
+	my $dmn_bk_dir = "$www_dir/$dmn_name/backups";
+	my $cmd_tar = $main::cfg{'CMD_TAR'};
+	my $cmd_bzcat = $main::cfg{'CMD_BZCAT'};
+	my $cmd_gzcat = $main::cfg{'CMD_GZCAT'};
+	my $cmd_mysql = $main::cfg{'CMD_MYSQL'};
 
-    return 0;
+	$rs = opendir(DIR, $dmn_bk_dir);
+	if (!$rs) {
+		push_el(\@main::el, 'dmn_restore_data()', "ERROR: Can't open '$dmn_bk_dir' directory.");
+		return -1;
+	}
+	my @bk_files = readdir(DIR);
+	closedir(DIR);
+	return 0 if (scalar(@bk_files) == 0);
+
+	my ($cmd,$rdata2,$rdata3,$sql) = ('','','','');
+	foreach(@bk_files) {
+		my ($fname) = ($_);
+		# Restore bzip2 files
+		if ($fname =~ m/.tar.bz2/i) {
+			$cmd = "$cmd_tar --extract --preserve-permissions --bzip2 --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0)
+		}
+		# Restore gz files
+		if ($fname =~ m/.tar.gz/i) {
+			$cmd = "$cmd_tar --extract --preserve-permissions --gunzip --directory=$dmn_dir --file=$dmn_bk_dir/$fname";
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0)
+		}
+		# Restore bz2 SQL files
+		if ($fname =~ m/.sql.bz2/i) {
+			# Extract databasename
+			$fname =~ /(.*).sql.bz2/;
+			my $dbf_name = $1;
+			$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+			($rs,$rdata3) = doSQL($sql);
+			return $rs if ($rs != 0);
+			foreach(@$rdata3) {
+				my $db_id=@$_[0];
+				my $db_name=@$_[1];
+				# if databasename eq filedatabasename get SQL user and pass
+				if ($db_name eq $dbf_name) {
+					$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
+					($rs,$rdata2) = doSQL($sql);
+					return $rs if ($rs != 0);
+					$rdata2=@$rdata2[0];
+					my $dbuser = @$rdata2[0];
+					my $dbpass = @$rdata2[1];
+					# if username and pass for db exists - restore database from file
+					if ($dbuser && $dbpass) {
+						$cmd = "$cmd_bzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
+						$rs = sys_command($cmd);
+						return $rs if ($rs != 0);
+					}
+				}
+			}
+		}
+		# Restore gz SQL files
+		if ($fname =~ m/.sql.gz/i) {
+			# Extract databasename
+			$fname =~ /(.*).sql.gz/;
+			my $dbf_name = $1;
+			$sql="SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+			($rs,$rdata3) = doSQL($sql);
+			return $rs if ($rs != 0);
+			foreach(@$rdata3) {
+				my $db_id=@$_[0];
+				my $db_name=@$_[1];
+				# if databasename eq filedatabasename get SQL user and pass
+				if ($db_name eq $dbf_name) {
+					$sql = "SELECT sqlu_name, sqlu_pass FROM sql_user WHERE sqld_id=$db_id LIMIT 1";
+					($rs,$rdata2) = doSQL($sql);
+					return $rs if ($rs != 0);
+					$rdata2=@$rdata2[0];
+					my $dbuser = @$rdata2[0];
+					my $dbpass = @$rdata2[1];
+					# if username and pass for db exists - restore database from file
+					if ($dbuser && $dbpass) {
+						$cmd = "$cmd_gzcat -d $dmn_bk_dir/$fname | $cmd_mysql --user=$dbuser --password=$dbpass --database=$db_name";
+						$rs = sys_command($cmd);
+						return $rs if ($rs != 0);
+					}
+				}
+			}
+		}
+	}
+	push_el(\@main::el, 'dmn_restore_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Enable Domain
 ##
-
 sub dmn_enable_data {
+	my ($dmn_data) = @_;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_enable_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_enable_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    push_el(\@main::el, 'dmn_enable_data()', 'Starting...');
+	my $dmn_name = @$dmn_data[1];
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir = "$www_dir/$dmn_name";
+	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
+	my $cmd_mv = $main::cfg{'CMD_MV'};
+	my $cmd = "$cmd_mv $dmn_disabled_dir $dmn_dir";
+	my $rs = sys_command($cmd);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_enable_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-    my $dmn_dir = "$www_dir/$dmn_name";
-
-    my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
-
-    my $cmd_mv = $main::cfg{'CMD_MV'};
-
-    my $cmd = "$cmd_mv $dmn_disabled_dir $dmn_dir";
-
-    my $rs = sys_command($cmd);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_enable_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_enable_data()', 'Ending...');
+	return 0;
 }
-
 ################################################################################
 ##
 ## Disable Domain
 ##
-
 sub dmn_disable_data {
+	my ($dmn_data) = @_;
 
-    my ($dmn_data) = @_;
+	push_el(\@main::el, 'dmn_disable_data()', 'Starting...');
+	if (!defined($dmn_data) || $dmn_data eq '') {
+		push_el(\@main::el, 'dmn_disable_data()', 'ERROR: Undefined Input Data...');
+		return -1;
+	}
 
-    push_el(\@main::el, 'dmn_disable_data()', 'Starting...');
+	my ($rs, $rdata) = ('', '');
+	my $dmn_name = @$dmn_data[1];
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_dir = "$www_dir/$dmn_name";
+	my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
+	my $cmd_mv = $main::cfg{'CMD_MV'};
+	my $cmd = "$cmd_mv $dmn_dir $dmn_disabled_dir";
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
 
-    if (!defined($dmn_data) || $dmn_data eq '') {
-
-        push_el(\@main::el, 'dmn_disable_data()', 'ERROR: Undefined Input Data...');
-
-        return -1;
-
-    }
-
-    my ($rs, $rdata) = ('', '');
-
-    my $dmn_name = @$dmn_data[1];
-
-    my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
-
-    my $dmn_dir = "$www_dir/$dmn_name";
-
-    my $dmn_disabled_dir = "$www_dir/$dmn_name.disabled";
-
-    my $cmd_mv = $main::cfg{'CMD_MV'};
-
-    my $cmd = "$cmd_mv $dmn_dir $dmn_disabled_dir";
-
-    $rs = sys_command($cmd);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'dmn_disable_data()', 'Ending...');
-
-    return 0;
-
+	push_el(\@main::el, 'dmn_disable_data()', 'Ending...');
+	return 0;
 }
-
 #################################### ENGINE ####################################
-
 ################################################################################
 ##
 ## Domain Manager Engine
 ##
-
 sub dmn_mngr_engine {
-
-    my ($rs, $rows, $rdata) = (undef, undef, undef);
-
-    push_el(\@main::el, 'dmn_mngr_engine()', 'Starting...');
-
-    my $sql = "SELECT t1.domain_id, t1.domain_name, t1.domain_gid, t1.domain_uid, t1.domain_admin_id,
-    t1.domain_created_id, t1.domain_created, t1.domain_last_modified, t1.domain_mailacc_limit, t1.domain_ftpacc_limit,
-    t1.domain_traffic_limit, t1.domain_sqld_limit, t1.domain_sqlu_limit, t1.domain_status, t1.domain_alias_limit,
-    t1.domain_subd_limit, t1.domain_ip_id, t1.domain_disk_limit, t1.domain_disk_usage, t1.domain_php,
-    t1.domain_cgi, t2.ip_number FROM domain AS t1, server_ips AS t2 WHERE t1.domain_ip_id = t2.ip_id
-    AND t1.domain_id = $main::dmn_task_id";
-
-    ($rs, $rows) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-
-    push_el(\@main::el, 'dmn_mngr_engine()', "proceeding -> $sql");
-
-    my $entry = @$rows[0];
-
-
-    my ($dmn_status, $dmn_id, $dmn_admin_id) = (@$entry[13], @$entry[0], @$entry[4]);
-
-    my $timestamp = undef;
-
-    my $sub_name = undef;
-
-    my $msg = undef;
-
-    if ($dmn_status eq 'toadd') {
-
-        $rs = dmn_add_data($entry);
-
-        $timestamp = time();
-
-        if ($rs == 0) {
-
-            $sql = "update domain set domain_status='ok' where domain_id = $dmn_id";
-
-        } else {
-
-            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-            $msg =~ s/\'/\\\'/g;
-
-            $sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
-
-        }
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return $rs if ($rs != 0);
-
-    } elsif ($dmn_status eq 'change') {
-
-        # Changing domains;
-
-        $rs = dmn_change_data($entry);
-
-        $timestamp = time();
-
-        if ($rs == 0) {
-
-            $sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
-
-            # PHP, CGI support for subdomains also must be changed;
-
-            # $sql = "update subdomain set subdomain_status='change' where domain_id = $dmn_id;";
-
-            # ($rs, $rdata) = doSQL($sql);
-
-            # return $rs if ($rs != 0);
-
-
-        } else {
-
-           ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-            $msg =~ s/\'/\\\'/g;
-
-            $sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
-
-        }
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return $rs if ($rs != 0);
-
-    } elsif ($dmn_status eq 'delete') {
-
-        # Removing domains;
-
-        $rs = dmn_del_data($entry);
-
-        $timestamp = time();
-
-        if ($rs == 0) {
-
-            $sql = "delete from domain where domain_id = $dmn_id;";
-
-            ($rs, $rdata) = doSQL($sql);
-
-            return $rs if ($rs != 0);
-
-            $sql = "delete from admin where admin_id = $dmn_admin_id;";
-
-        } else {
-
-           ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-            $msg =~ s/\'/\\\'/g;
-
-            $sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
-
-        }
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return $rs if ($rs != 0);
-
-    } elsif ($dmn_status eq 'restore') {
-
-        # Changing domains;
-
-        $rs = dmn_restore_data($entry);
-
-        $timestamp = time();
-
-        if ($rs == 0) {
-
-            $sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
-
-        } else {
-
-            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-            $msg =~ s/\'/\\\'/g;
-
-            $sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
-
-        }
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return $rs if ($rs != 0);
-
-    } elsif ($dmn_status eq 'toenable') {
-
-        $rs = dmn_enable_data($entry);
-
-        $timestamp = time();
-
-        if ($rs == 0) {
-
-            $sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
-
-        } else {
-
-            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-            $msg =~ s/\'/\\\'/g;
-
-            $sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
-
-        }
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return $rs if ($rs != 0);
-
-    } elsif ($dmn_status eq 'todisable') {
-
-        # Changing domains;
-
-        $rs = dmn_disable_data($entry);
-
-        $timestamp = time();
-
-        if ($rs == 0) {
-
-            $sql = "update domain set domain_status='disabled' where domain_id = $dmn_id;";
-
-        } else {
-
-            ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-            $msg =~ s/\'/\\\'/g;
-
-            $sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
-
-        }
-
-        ($rs, $rdata) = doSQL($sql);
-
-        return $rs if ($rs != 0);
-
-    }
-
-    sleep(1);
-
-    push_el(\@main::el, 'dmn_mngr_engine()', 'Ending...');
-
-    return 0;
-
+	my ($rs, $rows, $rdata) = (undef, undef, undef);
+
+	push_el(\@main::el, 'dmn_mngr_engine()', 'Starting...');
+
+	my $sql = "SELECT t1.domain_id, t1.domain_name, t1.domain_gid, t1.domain_uid, t1.domain_admin_id,
+		t1.domain_created_id, t1.domain_created, t1.domain_last_modified, t1.domain_mailacc_limit, t1.domain_ftpacc_limit,
+		t1.domain_traffic_limit, t1.domain_sqld_limit, t1.domain_sqlu_limit, t1.domain_status, t1.domain_alias_limit,
+		t1.domain_subd_limit, t1.domain_ip_id, t1.domain_disk_limit, t1.domain_disk_usage, t1.domain_php,
+		t1.domain_cgi, t2.ip_number FROM domain AS t1, server_ips AS t2 WHERE t1.domain_ip_id = t2.ip_id
+		AND t1.domain_id = $main::dmn_task_id";
+
+	($rs, $rows) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'dmn_mngr_engine()', "proceeding -> $sql");
+
+	my $entry = @$rows[0];
+	my ($dmn_status, $dmn_id, $dmn_admin_id) = (@$entry[13], @$entry[0], @$entry[4]);
+	my $timestamp = undef;
+	my $sub_name = undef;
+	my $msg = undef;
+	if ($dmn_status eq 'toadd') {
+		$rs = dmn_add_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update domain set domain_status='ok' where domain_id = $dmn_id";
+			} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+	} elsif ($dmn_status eq 'change') {
+		# Changing domains;
+		$rs = dmn_change_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
+			# PHP, CGI support for subdomains also must be changed;
+			# $sql = "update subdomain set subdomain_status='change' where domain_id = $dmn_id;";
+			# ($rs, $rdata) = doSQL($sql);
+			# return $rs if ($rs != 0);
+		} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+	} elsif ($dmn_status eq 'delete') {
+		# Removing domains;
+		$rs = dmn_del_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "delete from domain where domain_id = $dmn_id;";
+			($rs, $rdata) = doSQL($sql);
+			return $rs if ($rs != 0);
+			$sql = "delete from admin where admin_id = $dmn_admin_id;";
+		} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+	} elsif ($dmn_status eq 'restore') {
+		# Changing domains;
+		$rs = dmn_restore_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
+		} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+	} elsif ($dmn_status eq 'toenable') {
+		$rs = dmn_enable_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
+		} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+	} elsif ($dmn_status eq 'todisable') {
+		# Changing domains;
+		$rs = dmn_disable_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update domain set domain_status='disabled' where domain_id = $dmn_id;";
+		} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
+	}
+	sleep(1);
+
+	push_el(\@main::el, 'dmn_mngr_engine()', 'Ending...');
+	return 0;
 }
 
 ################################################################################
 ##                                    MAIN                                    ##
 ################################################################################
-
 my $rs = undef;
-
 $rs = dmn_mngr_start_up();
-
 if ($rs != 0) {
-
-    dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
-
-    dmn_mngr_shut_down();
-
-    exit 1;
-
+	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
+	dmn_mngr_shut_down();
+	exit 1;
 }
-
 $rs = dmn_mngr_engine();
-
 if ($rs != 0) {
-
-    dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
-
-    dmn_mngr_shut_down();
-
-    exit 1;
-
+	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
+	dmn_mngr_shut_down();
+	exit 1;
 }
-
 $rs = dmn_mngr_shut_down();
-
 if ($rs != 0) {
-
-    dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
-
-    exit 1;
-
+	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
+	exit 1;
 }
-
 exit 0;

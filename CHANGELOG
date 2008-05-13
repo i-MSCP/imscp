@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-13 Benedikt Heintel
+	- ENGINE:
+		* Fixed #1249: ispcp-dmn-mngr beautifying patch
+	- LANGUAGES:
+		* Updated Catalan
+
 2008-05-12 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1244: Use of uninitialized value in concatenation - in file engine/ispcp-htuser-mngr
