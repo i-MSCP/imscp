@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version:	1.0.0 RC5
-INSTALL Script:		2.0
+INSTALL Script:		2.1
 Maintainer:			Benedikt Heintel
 Homepage:			http://www.isp-contol.net
 Linux Distros:		Debian Sarge, Etch, Lenny
@@ -65,12 +65,12 @@ Make sure you are logged in as root and MySQL is running.
    First update your system:
 	# apt-get update && apt-get upgrade
 
-   for Debian Sarge please use:
-	# apt-get install `cat ./docs/Debian/debian-packages-sarge`
-   for Debian Etch please use:
-   	# apt-get install `cat ./docs/Debian/debian-packages-etch`
-   for Debian Lenny/Sid please use:
-   	# apt-get install `cat ./docs/Debian/debian-packages-lenny`
+   for Debian Sarge use:
+	# apt-get install $(cat ./docs/Debian/debian-packages-sarge)
+   for Debian Etch use:
+	# apt-get install $(cat ./docs/Debian/debian-packages-etch)
+   for Debian Lenny/Sid use:
+	# apt-get install $(cat ./docs/Debian/debian-packages-lenny)
 
    Make sure you have added the non-free into your /etc/apt/sources.list:
 
@@ -101,13 +101,13 @@ Make sure you are logged in as root and MySQL is running.
 6. Copy all the directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp/* /
 
-7. Now it's time to set up the frontend. Change into the engine directory:
+7. Change or create MySQL root password, remove anonymous users, disallow root
+	login remotely, remove test database (and access to it), reload privilege tables.
+	# mysql_secure_installation
+
+8. Now it's time to set up the frontend. Change into the engine directory and
+	start the engine setup:
 	# cd /var/www/ispcp/engine/setup
-
-7a. Set the MySQL password, if not set:
-	# mysqladmin -u root password YOUR_PASSWORD
-
-8. Start the engine setup:
 	# perl ispcp-setup
 
 9. Install ispCP ω step-by-step
@@ -115,7 +115,7 @@ Make sure you are logged in as root and MySQL is running.
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-10. There is an error in some courier-versions. Courier won't stop, if you use
+10. There is an error in some old courier-versions. Courier won't stop, if you use
 	/etc/init.d/courier-authdaemon stop, so change it:
 	# nano /etc/init.d/courier-authdaemon
 
@@ -141,12 +141,12 @@ Make sure you are logged in as root and MySQL is running.
    first update your system:
 	# apt-get update && apt-get upgrade
 
-   for Debian Sarge please use:
-	# apt-get install `cat ./docs/Debian/debian-packages-sarge`
-   for Debian Etch please use:
-	# apt-get install `cat ./docs/Debian/debian-packages-etch`
-   for Debian Lenny/Sid please use:
-	# apt-get install `cat ./docs/Debian/debian-packages-lenny`
+   for Debian Sarge use:
+	# apt-get install $(cat ./docs/Debian/debian-packages-sarge)
+   for Debian Etch use:
+	# apt-get install $(cat ./docs/Debian/debian-packages-etch)
+   for Debian Lenny/Sid use:
+	# apt-get install $(cat ./docs/Debian/debian-packages-lenny)
 
    Make sure you have added the non-free into your /etc/apt/sources.list:
 

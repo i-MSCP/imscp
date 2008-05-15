@@ -1,6 +1,12 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-15 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1250: Please harden the php open_basedir pathes in the apache config files.
+	- ENGINE:
+		* Fixed #1249: ispcp-dmn-mngr beautifying patch
+
 2008-05-15 Jochen Manz
 	- GUI:
 		* Fixed #1255: please commit these patches for an better useful/readable database update files

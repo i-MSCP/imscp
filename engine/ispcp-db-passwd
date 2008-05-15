@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (c) 2001-2006 by moleSoftware GmbH
 # http://www.molesoftware.com
@@ -33,204 +32,126 @@
 use FindBin;
 use lib "$FindBin::Bin/";
 require 'ispcp_common_code.pl';
-
 use strict;
-
 use warnings;
 
 sub db_passwd_start_up {
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'db_passwd_start_up()', 'Starting...');
-
-    # config check;
-
-    $rs = get_conf();
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'db_passwd_start_up()', 'Ending...');
-
-    return 0;
-
+	my ($rs, $rdata) = (undef, undef);
+	
+	push_el(\@main::el, 'db_passwd_start_up()', 'Starting...');
+	
+	# config check;
+	$rs = get_conf();
+	return $rs if ($rs != 0);
+	
+	push_el(\@main::el, 'db_passwd_start_up()', 'Ending...');
+	return 0;
 }
 
 sub get_user_pass {
-
-    my ($check_with) = @_;
-
-    my ($rs, $rdata, $upass, $upass_check, $upass_current) = (undef, undef, undef, undef, undef);
-
-    push_el(\@main::el, 'get_user_pass()', 'Starting...');
-
-    if ($check_with eq '') {
-
-        $upass = read_password('Please Enter Your New Database Password:');
-
-        if ($upass eq '') {
-
-            return (1, '');
-
-        }
-
-        $upass_check = read_password('Please Repeat Your New Database Password:');
-
-        if ($upass ne $upass_check) {
-
-            print STDERR ">>> Enterred passwords differ. Please try again !\n";
-
-            return (1, '');
-
-        } else {
-
-            return (0, $upass);
-
-        }
-
-    } else {
-
-        $upass_current = read_password('Please Enter Your Current Password:');
-
-        if ($upass_current ne $check_with) {
-
-            print STDERR ">>> Enterred password does not match. Please try again !\n";
-
-            return (1, '');
-
-        }
-
-        $upass = read_password('Please Enter Your New Database Password:');
-
-        if ($upass eq '') {
-
-            return (0, '');
-
-        }
-
-        $upass_check = read_password('Please Repeat Your New Database Password:');
-
-        if ($upass ne $upass_check) {
-
-            print STDERR ">>> Enterred passwords differ. Please try again !\n";
-
-            return (1, '');
-
-        } else {
-
-            return (0, $upass);
-
-        }
-
-    }
-
-    push_el(\@main::el, 'get_user_pass()', 'Ending...');
-
-    return 0;
-
+	my ($check_with) = @_;
+	my ($rs, $rdata, $upass, $upass_check, $upass_current) = (undef, undef, undef, undef, undef);
+	
+	push_el(\@main::el, 'get_user_pass()', 'Starting...');
+	
+	if ($check_with eq '') {
+		$upass = read_password('Please Enter Your New Database Password:');
+		if ($upass eq '') {
+			return (1, '');
+		}
+		$upass_check = read_password('Please Repeat Your New Database Password:');
+		if ($upass ne $upass_check) {
+			print STDERR ">>> Enterred passwords differ. Please try again !\n";
+			return (1, '');
+			} else {
+			return (0, $upass);
+		}
+	} else {
+		$upass_current = read_password('Please Enter Your Current Password:');
+		if ($upass_current ne $check_with) {
+			print STDERR ">>> Enterred password does not match. Please try again !\n";
+			return (1, '');
+		}
+		$upass = read_password('Please Enter Your New Database Password:');
+		if ($upass eq '') {
+			return (0, '');
+		}
+		$upass_check = read_password('Please Repeat Your New Database Password:');
+		if ($upass ne $upass_check) {
+			print STDERR ">>> Enterred passwords differ. Please try again !\n";
+			return (1, '');
+			} else {
+			return (0, $upass);
+		}
+	}
+	
+	push_el(\@main::el, 'get_user_pass()', 'Ending...');
+	return 0;
 }
+
+######################## main program ############################
 
 my ($rs, $rdata) = (undef, undef);
 
 $rs = db_passwd_start_up();
-
 if ($rs != 0) {
-
-    my $el_data = pop_el(\@main::el);
-
-    my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-    print STDERR "$msg\n";
-
-    exit 1;
-
+	my $el_data = pop_el(\@main::el);
+	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+	
+	print STDERR "$msg\n";
+	exit 1;
 }
 
-	my $current_db_pass = undef ;
+my $current_db_pass = undef ;
 
 if(exists  $main::cfg{'DATABASE_PASSWORD'} && $main::cfg{'DATABASE_PASSWORD'}) {
 	$current_db_pass = $main::cfg{'DATABASE_PASSWORD'};
-}
-else {
+} else {
 	$current_db_pass = '';
 }
 
-
 if ($current_db_pass eq '') { # We have not DATABASE password;
-
-    ($rs, $rdata) = get_user_pass('');
-
+	($rs, $rdata) = get_user_pass('');
 } else {
-
-    ($rs, $current_db_pass) = decrypt_db_password($current_db_pass);
-
-    if ($rs != 0) {
-
-        my $el_data = pop_el(\@main::el);
-
-        my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-        print STDERR "$msg\n";
-
-        exit 1;
-
-    }
-
-    ($rs, $rdata) = get_user_pass($current_db_pass);
-
+	($rs, $current_db_pass) = decrypt_db_password($current_db_pass);
+	if ($rs != 0) {
+		my $el_data = pop_el(\@main::el);
+		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+		
+		print STDERR "$msg\n";
+		exit 1;
+	}
+	($rs, $rdata) = get_user_pass($current_db_pass);
 }
 
 if ($rs == 0) {
-
-    my $new_db_pass = $rdata;
-
-    if ($new_db_pass ne '') {
-
-        ($rs, $rdata) = encrypt_db_password($new_db_pass);
-
-        if ($rs != 0) {
-
-            my $el_data = pop_el(\@main::el);
-
-            my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-            print STDERR "$msg\n";
-
-            exit 1;
-
-        }
-
-    }
-
-    $rs = set_conf_val('DATABASE_PASSWORD', $rdata);
-
-    if ($rs != 0) {
-
-        my $el_data = pop_el(\@main::el);
-
-        my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-        print STDERR "$msg\n";
-
-        exit 1;
-
-    }
-
-    $rs = store_conf();
-
-    if ($rs != 0) {
-
-        my $el_data = pop_el(\@main::el);
-
-        my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-        print STDERR "$msg\n";
-
-        exit 1;
-
-    }
-
-    print STDOUT "Database Password Updated Successfully!\n";
-
+	my $new_db_pass = $rdata;
+	
+	if ($new_db_pass ne '') {
+		($rs, $rdata) = encrypt_db_password($new_db_pass);
+		if ($rs != 0) {
+			my $el_data = pop_el(\@main::el);
+			my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+			
+			print STDERR "$msg\n";
+			exit 1;
+		}
+	}
+	$rs = set_conf_val('DATABASE_PASSWORD', $rdata);
+	if ($rs != 0) {
+		my $el_data = pop_el(\@main::el);
+		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+		
+		print STDERR "$msg\n";
+		exit 1;
+	}
+	$rs = store_conf();
+	if ($rs != 0) {
+		my $el_data = pop_el(\@main::el);
+		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
+		
+		print STDERR "$msg\n";
+		exit 1;
+	}	
+	print STDOUT "Database Password Updated Successfully!\n";
 }
-
