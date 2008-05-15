@@ -87,27 +87,27 @@ function executeDatabaseUpdates() {
 		$newRevision 	= getNextRevision();
 		$functionName 	= returnFunctionName($newRevision);
 
-		if(function_exists($functionName)) {
-			$queryArray 	= array();
-			$queryArray[] 	= $functionName();
+		$queryArray 	= array();
+		
+		// Pull the query from the update function
+		$queryArray[] 	= $functionName();
 
-			// Query to set the new Database Revision
-			$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
+		// Query to set the new Database Revision
+		$queryArray[]	= "UPDATE `config` SET `value` = '$newRevision' WHERE `name` = 'DATABASE_REVISION'";
 
-			$sql->StartTrans();
+		$sql->StartTrans();
 
-			foreach($queryArray as $query) {
-				$sql->Execute($query);
-			}
-
-			// Prompt a error when a update fails
-			if ($sql->HasFailedTrans()) {
-				set_page_message(tr("Db update %s failed", $newRevision));
-			}
-
-			$sql->CompleteTrans();
-			unset($queryArray);
+		foreach($queryArray as $query) {
+			$sql->Execute($query);
 		}
+
+		// Prompt a error when a update fails
+		if ($sql->HasFailedTrans()) {
+			set_page_message(tr("Db update %s failed", $newRevision));
+		}
+
+		$sql->CompleteTrans();
+		unset($queryArray);	
 	}
 }
 
@@ -122,7 +122,7 @@ function executeDatabaseUpdates() {
 function _databaseUpdate_1() {
 	$sqlUpd = array();
 
-	$sqlUpd[] = "INSERT INTO config (name, value) VALUES (DATABASE_REVISION , 1)";
+	$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('DATABASE_REVISION' , '1')";
 
 	return $sqlUpd;
 }

@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-15 Jochen Manz
+	- GUI:
+		* Fixed #1255: please commit these patches for an better useful/readable database update files
+
 2008-05-15 Marc Pujol
 	- GUI
 		* Fixed #1254: Admin level hosting plans are not working
