@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-05-15 Jochen Manz
 	- GUI:
 		* Fixed #1255: please commit these patches for an better useful/readable database update files
+		* Fixed #1256: admin's database update does not stop if there is an update failure
 
 2008-05-15 Marc Pujol
 	- GUI

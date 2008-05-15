@@ -101,13 +101,16 @@ function executeDatabaseUpdates() {
 			$sql->Execute($query);
 		}
 
-		// Prompt a error when a update fails
-		if ($sql->HasFailedTrans()) {
-			set_page_message(tr("Db update %s failed", $newRevision));
-		}
-
-		$sql->CompleteTrans();
-		unset($queryArray);	
+		// Prompt a error and break while-loop when a update fails
+ 		if ($sql->HasFailedTrans()) {
+ 			set_page_message(tr("Db update %s failed", $newRevision));+			$sql->CompleteTrans();
+			
+			unset($queryArray);
+			break;
+		} else {
+			$sql->CompleteTrans();
+			unset($queryArray);
+ 		}
 	}
 }
 

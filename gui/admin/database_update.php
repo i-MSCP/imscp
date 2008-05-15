@@ -75,8 +75,7 @@ if(checkDatabaseUpdateExists()) {
 	$tpl->assign(array(
 		'TR_UPDATE_MESSAGE' 		=> tr('No database updates available'),
 		'DATABASE_UPDATE_INFOS'		=> ''
-	));
-	
+	));	
 	$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');	
 }
 
@@ -85,7 +84,6 @@ if($execute) {
 	executeDatabaseUpdates();
 	header('Location:' . $_SERVER['PHP_SELF']);
 }
-
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
