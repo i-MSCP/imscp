@@ -156,7 +156,7 @@ function delete_account(url) {
                         <td>&nbsp;</td>
                         <td class="content2">{TR_VALUE}</td>
                         <td class="content"><input name="hp_currency" {READONLY} type="text" class="textinput" id="hp_currency" style="width:100px" value="{HP_CURRENCY}">
-                            <small>{TR_EXAMPEL}</small></td>
+                            <small>{TR_EXAMPLE}</small></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

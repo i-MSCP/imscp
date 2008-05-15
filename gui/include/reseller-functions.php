@@ -195,6 +195,9 @@ SQL_QUERY;
 	if (!$cfg['ISPCP_SUPPORT_SYSTEM']) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
+	if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) === 'admin') {
+		$tpl->assign('HP_MENU_ADD', '');
+	}
 
 	$tpl->parse('MENU', 'menu');
 } // End of gen_reseller_menu()

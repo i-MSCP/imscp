@@ -722,6 +722,8 @@ SQL_QUERY;
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],
 						'USR_USERNAME' => $rs->fields['domain_name'],
+						'TR_EDIT_DOMAIN' => tr('Edit domain'),
+						'TR_EDIT_USR' => tr('Edit user'),
 						)
 					);
 				$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');

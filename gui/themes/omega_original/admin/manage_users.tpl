@@ -221,7 +221,7 @@ function sbmt(form, uaction) {
           <td class="content3"><b>{TR_USR_USERNAME}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_CREATED_ON}</b></td>
           <td width="100" align="center" class="content3"><b>{TR_USR_CREATED_BY}</b></td>
-          <td colspan="4" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
+          <td colspan="5" align="center" class="content3"><b>{TR_USR_OPTIONS}</b></td>
         </tr>
         <!-- BDP: usr_item -->
         <tr>
@@ -232,7 +232,10 @@ function sbmt(form, uaction) {
           <td class="{USR_CLASS}" align="center">{USR_CREATED_BY}</td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" align="absmiddle" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
           <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_CHANGE_INTERFACE}" class="link" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a></td>
-          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT}</a></td>
+          <!-- BDP: edit_option -->
+	  <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle" /> <a href="edit_domain.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
+          <!-- EDP: edit_option -->
+          <td width="100" align="center" class="{USR_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" align="absmiddle" /> <a href="{URL_EDIT_USR}" class="link">{TR_EDIT_USR}</a></td>
           <td width="100" align="center" class="{USR_CLASS}">
 		    <!-- BDP: usr_delete_show -->
             -

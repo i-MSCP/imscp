@@ -121,7 +121,7 @@ $tpl->assign(
 		)
 	);
 
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) === 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 

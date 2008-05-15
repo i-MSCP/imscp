@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-15 Marc Pujol
+	- GUI
+		* Fixed #1254: Admin level hosting plans are not working
+
 2008-05-13 Benedikt Heintel
 	- ENGINE:
 		* Fixed #1249: ispcp-dmn-mngr beautifying patch

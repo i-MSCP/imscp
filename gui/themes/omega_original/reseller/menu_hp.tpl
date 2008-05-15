@@ -18,12 +18,14 @@
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
+  <!-- BDP: hp_menu_add -->
   <tr>
     <td><a href="ahp.php" class="submenu">{TR_MENU_ADD_HOSTING}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" /></td>
   </tr>
+  <!-- EDP: hp_menu_add -->
     <tr>
     <td>&nbsp;</td>
   </tr>

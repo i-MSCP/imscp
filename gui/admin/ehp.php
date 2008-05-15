@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
+if (strtolower($cfg['HOSTING_PLANS_LEVEL']) != 'admin') {
 	header("Location: index.php");
 	die();
 }
@@ -31,7 +31,6 @@ $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/ehp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
-global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 /*
@@ -71,14 +70,13 @@ $tpl->assign(
 			'TR_YES' => tr('yes'),
 			'TR_NO' => tr('no'),
 			'TR_BILLING_PROPS' => tr('Billing Settings'),
-			'TR_PRICE_STYLE' => tr('Price Style'),
 			'TR_PRICE' => tr('Price'),
 			'TR_SETUP_FEE' => tr('Setup fee'),
 			'TR_VALUE' => tr('Currency'),
 			'TR_PAYMENT' => tr('Payment period'),
 			'TR_STATUS' => tr('Available for purchasing'),
 			'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-			'TR_EXAMPEL' => tr('(e.g. EUR)'),
+			'TR_EXAMPLE' => tr('(e.g. EUR)'),
 			'TR_UPDATE_PLAN' => tr('Update plan')));
 
 /*

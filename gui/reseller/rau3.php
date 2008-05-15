@@ -213,8 +213,13 @@ function add_user_data($reseller_id) {
 		$props = $_SESSION["ch_hpprops"];
 		unset($_SESSION["ch_hpprops"]);
 	} else {
-		$query = "select props from hosting_plans where reseller_id = ? and id = ?";
-		$res = exec_query($sql, $query, array($reseller_id, $hpid));
+		if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL'] == 'admin')) {
+			$query = 'select props from hosting_plans where id = ?';
+			$res = exec_query($sql, $query, array($hpid));
+		} else {
+			$query = "select props from hosting_plans where reseller_id = ? and id = ?";
+			$res = exec_query($sql, $query, array($reseller_id, $hpid));
+		}
 		$data = $res->FetchRow();
 		$props = $data['props'];
 	}

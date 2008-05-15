@@ -114,7 +114,7 @@ function check_user_data() {
 		$even_txt = tr('Master domain cannot be used!');
 	}
 	// we have plans only for admins
-	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+	if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) === 'admin') {
 		$dmn_pt = '_no_';
 	}
 

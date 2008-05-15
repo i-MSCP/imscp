@@ -22,9 +22,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] == strtolower('admin')) {
+if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) == 'admin') {
 	Header("Location: hp.php");
-
 	die();
 }
 
@@ -301,7 +300,7 @@ SQL_QUERY;
 				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
 
 				$_SESSION['hp_added'] = '_yes_';
-				header("Location: ehp.php");
+				header("Location: hp.php");
 				die();
 			}
 		}

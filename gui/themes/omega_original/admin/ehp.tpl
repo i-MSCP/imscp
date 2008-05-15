@@ -27,7 +27,7 @@ function delete_account(url) {
 <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" border="0"></td>
 </tr>
 	<tr>
-		<td style="width: 195px; vertical-align: top;">{SUB_MENU}</td>
+		<td style="width: 195px; vertical-align: top;">{MENU}</td>
 	    <td colspan=2 style="vertical-align: top;"><table style="width: 100%; border-collapse: collapse;padding:0;margin:0;">
 				<tr height="95";>
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
@@ -148,9 +148,9 @@ function delete_account(url) {
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_CURRENCY}</td>
+                              <td class="content2">{TR_VALUE}</td>
                               <td class="content"><input name="hp_currency" {READONLY} type="text" class="textinput" id="hp_currency" style="width:100px" value="{HP_CURRENCY}">
-                                  <small>{TR_EXAMPEL}</small></td>
+                                  <small>{TR_EXAMPLE}</small></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>

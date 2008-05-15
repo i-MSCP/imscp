@@ -22,7 +22,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
+if (strtolower($cfg['HOSTING_PLANS_LEVEL']) != 'admin') {
 	header("Location: index.php");
 	die();
 }
@@ -30,7 +30,7 @@ if ($cfg['HOSTING_PLANS_LEVEL'] != strtolower('admin')) {
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/ahp.tpl');
 $tpl->define_dynamic('page_message', 'page');
-global $cfg;
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
@@ -122,6 +122,7 @@ function gen_empty_ahp_page(&$tpl) {
 
 	$tpl->assign('MESSAGE', '');
 } // End of gen_empty_hp_page()
+
 // Show last entered data for new hp
 function gen_data_ahp_page(&$tpl) {
 	global $hp_name, $description, $hp_php, $hp_cgi;
@@ -188,12 +189,12 @@ function check_data_correction(&$tpl) {
 	if (empty($_POST['hp_price'])) {
 		$price = 0;
 	} else {
-		$price = $_POST['hp_price'];
+		$price = clean_input($_POST['hp_price']);
 	}
 	if (empty($_POST['hp_setupfee'])) {
 		$setup_fee = 0;
 	} else {
-		$setup_fee = $_POST['hp_setupfee'];
+		$setup_fee = clean_input($_POST['hp_setupfee']);
 	}
 
 	$value = clean_input($_POST['hp_value']);
@@ -206,19 +207,19 @@ function check_data_correction(&$tpl) {
 	if (isset($_POST['cgi']))
 		$hp_cgi = $_POST['cgi'];;
 
-	if (empty($hp_name)) {
+	if ($hp_name == '') {
 		$ahp_error = tr('Incorrect template name length!');
 	}
 
-	if (empty($description)) {
+	if ($description == '') {
 		$ahp_error = tr('Incorrect template description length!');
 	}
 	if (!is_numeric($price)) {
-		$ahp_error = tr('Incorrect price syntax!');
+		$ahp_error = tr('Price must be a number!');
 	}
 
 	if (!is_numeric($setup_fee)) {
-		$ahp_error = tr('Incorrect setup fee syntax!');
+		$ahp_error = tr('Setup fee must be a number!');
 	}
 
 	if (!ispcp_limit_check($hp_sub, -1)) {

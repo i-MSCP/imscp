@@ -21,19 +21,31 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-global $cfg;
+if (strtolower($cfg['HOSTING_PLANS_LEVEL']) != 'admin') {
+	header('Location: index.php');
+	die();
+}
+
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 if(isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 	$hpid = $_GET['hpid'];
-else{
+else {
 	$_SESSION['hp_deleted'] = '_no_';
 	Header("Location: hp.php");
 	die();
 }
 
+// Check if there is no order for this plan
+$res = exec_query($sql, "SELECT COUNT(id) FROM orders WHERE plan_id=?", array($hpid));
+$data = $res->FetchRow();
+if ($data['0'] > 0) {
+	$_SESSION['hp_deleted_ordererror'] = '_yes_';
+	header("Location: hp.php");
+	die();
+}
+
 // Try to delete hosting plan from db
-//
 $query = "delete from hosting_plans where id=?";
 $res = exec_query($sql, $query, array($hpid));
 

@@ -105,6 +105,10 @@ if (isset($_SESSION['user_added'])) {
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_manage_users.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_manage_users.tpl');
 
+if (!isset($cfg['HOSTING_PLANS_LEVEL']) || strtolower($cfg['HOSTING_PLANS_LEVEL']) !== 'admin') {
+	$tpl->assign('EDIT_OPTION', '');
+}
+
 get_admin_manage_users($tpl, $sql);
 
 gen_page_message($tpl);

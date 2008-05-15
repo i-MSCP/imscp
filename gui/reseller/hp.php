@@ -11,7 +11,7 @@
  * @license
  *   This program is free software; you can redistribute it and/or modify it under
  *   the terms of the MPL General Public License as published by the Free Software
- *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   Foundation; either version 2.1 of the License, or (at your option) any later
  *   version.
  *   You should have received a copy of the MPL Mozilla Public License along with
  *   this program; if not, write to the Open Source Initiative (OSI)
@@ -27,6 +27,7 @@ $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg['RESELLER_TEMPLATE_PATH'] . '/hp.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
+
 // Table with hosting plans
 $tpl->define_dynamic('hp_table', 'page');
 $tpl->define_dynamic('hp_entry', 'hp_table');
@@ -35,14 +36,12 @@ $tpl->define_dynamic('hp_menu_add', 'page');
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
-$tpl->assign(
-		array(
-			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-			)
-		);
+$tpl->assign(array(
+	'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
+	'THEME_COLOR_PATH' => "../themes/$theme_color",
+	'THEME_CHARSET' => tr('encoding'),
+	'ISP_LOGO' => get_logo($_SESSION['user_id'])
+));
 
 /*
  *
@@ -52,23 +51,19 @@ $tpl->assign(
 
 gen_reseller_mainmenu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/main_menu_hp.tpl');
 gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_hp.tpl');
-
 gen_logged_from($tpl);
-
 gen_hp_table($tpl, $_SESSION['user_id']);
 
-$tpl->assign(
-		array(
-			'TR_HOSTING_PLANS' => tr('Hosting plans'),
-			'TR_PAGE_MENU' => tr('Manage hosting plans'),
-			'TR_PURCHASING' => tr('Purchasing'),
-			'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-			'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
-			'TR_BACK' => tr('Back'),
-			'TR_TITLE_BACK' => tr('Return to previous menu'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')
-			)
-		);
+$tpl->assign(array(
+	'TR_HOSTING_PLANS' => tr('Hosting plans'),
+	'TR_PAGE_MENU' => tr('Manage hosting plans'),
+	'TR_PURCHASING' => tr('Purchasing'),
+	'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
+	'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
+	'TR_BACK' => tr('Back'),
+	'TR_TITLE_BACK' => tr('Return to previous menu'),
+	'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete')
+));
 
 gen_hp_message($tpl);
 gen_page_message($tpl);
@@ -76,7 +71,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-// BEGIN FUNCTION DECLARE PATH
+// BEGIN FUNCTION DECLARE PAT
 
 function gen_hp_message (&$tpl) {
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
@@ -100,8 +95,7 @@ function gen_hp_message (&$tpl) {
 		unset($_SESSION["hp_updated"]);
 		if (isset($GLOBALS['hp_updated']))
 			unset($GLOBALS['hp_updated']);
-	}
-	else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
+	} else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
 		//$external_event = '_on_';
 		set_page_message(tr('Hosting plan can\'t be deleted, there are orders!'));
 		unset($_SESSION["hp_deleted_ordererror"]);
@@ -112,7 +106,7 @@ function gen_hp_message (&$tpl) {
 function gen_hp_table(&$tpl, $reseller_id) {
 	global $sql, $cfg, $external_event;
 
-	if (isset($cfg['HOSTING_PLANS_LEVEL']) && $cfg['HOSTING_PLANS_LEVEL'] === 'admin') {
+	if (isset($cfg['HOSTING_PLANS_LEVEL']) && strtolower($cfg['HOSTING_PLANS_LEVEL']) === 'admin') {
 		$query = <<<SQL_QUERY
 	        SELECT
 	            t1.id, t1.reseller_id, t1.name, t1.props, t1.status,
@@ -158,11 +152,13 @@ SQL_QUERY;
 			$tpl->assign('HP_MESSAGE', '');
 		}
 
-		$tpl->assign(array('TR_HOSTING_PLANS' => tr('Hosting plans'),
-				'TR_NOM' => tr('No.'),
-				'TR_EDIT' => $tr_edit,
-				'TR_PLAN_NAME' => tr('Name'),
-				'TR_ACTION' => tr('Action')));
+		$tpl->assign(array(
+			'TR_HOSTING_PLANS'	=> tr('Hosting plans'),
+			'TR_NOM' 		=> tr('No.'),
+			'TR_EDIT' 		=> $tr_edit,
+			'TR_PLAN_NAME' 		=> tr('Name'),
+			'TR_ACTION' 		=> tr('Action')
+		));
 
 		$i = 1;
 
@@ -179,15 +175,19 @@ SQL_QUERY;
 				$status = tr('Disabled');
 			}
 
-			$tpl->assign(array('PLAN_NOM' => $i++,
-					'PLAN_NAME' => stripslashes($data['name']),
-					'PLAN_ACTION' => tr('Delete'),
-					'PLAN_SHOW' => tr('Show hosting plan'),
-					'PURCHASING' => $status,
-					'HP_ID' => $data['id'],
-					'RESELLER_ID' => $_SESSION['user_id']));
+			$tpl->assign(array(
+				'PLAN_NOM' 	=> $i++,
+				'PLAN_NAME' 	=> stripslashes($data['name']),
+				'PLAN_ACTION' 	=> tr('Delete'),
+				'PLAN_SHOW' 	=> tr('Show hosting plan'),
+				'PURCHASING' 	=> $status,
+				'HP_ID' 	=> $data['id'],
+				'RESELLER_ID' 	=> $_SESSION['user_id']
+			));
 			$tpl->parse('HP_ENTRY', '.hp_entry');
+
 		} // End  loop
+
 		$tpl->parse('HP_TABLE', 'hp_table');
 	}
 } // End of gen_hp_table()
@@ -195,8 +195,7 @@ SQL_QUERY;
 // ******************************
 // END OF FUNCTION DECLARE PATH
 // *****************************
-if ($cfg['DUMP_GUI_DEBUG'])
-	dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
 
 unset_messages();
 
