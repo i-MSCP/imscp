@@ -422,7 +422,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 SQL_QUERY;
 
     $rs = exec_query($sql, $query, array($ftp_user, $ftp_passwd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
-    write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user");
+    write_log($_SESSION['user_logged'] . ": adds new FTP account: $ftp_user");
     set_page_message(tr('FTP account added!'));
     header('Location: ftp_accounts.php');
     exit(0);

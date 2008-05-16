@@ -306,7 +306,7 @@ function check_hosting_plan_name($admin_id) {
 	global $hp_name;
 	global $sql;
 
-	$query = "select id from hosting_plans where name = ? and reseller_id = ?";
+	$query = "SELECT id FROM hosting_plans WHERE name = ? AND reseller_id = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 	if ($res->RowCount() !== 0) {
 		return false;

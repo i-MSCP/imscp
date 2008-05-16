@@ -57,7 +57,7 @@ function checkDatabaseUpdateExists() {
 }
 
 /*
- * Check for existenz of a available update
+ * Check for existence of an available update
  */
 function checkNewRevisionExists() {
 	$functionName = returnFunctionName(getNextRevision());
@@ -88,7 +88,7 @@ function executeDatabaseUpdates() {
 		$functionName 	= returnFunctionName($newRevision);
 
 		$queryArray 	= array();
-		
+
 		// Pull the query from the update function
 		$queryArray[] 	= $functionName();
 
@@ -101,7 +101,7 @@ function executeDatabaseUpdates() {
 			$sql->Execute($query);
 		}
 
-		// Prompt a error and break while-loop when a update fails
+		// Prompt an error and break while-loop when an update fails
  		if ($sql->HasFailedTrans()) {
  			set_page_message(tr("Db update %s failed", $newRevision));
 			$sql->CompleteTrans();
@@ -116,7 +116,7 @@ function executeDatabaseUpdates() {
 
 /*
  * Insert the update functions below this entry please. The revision should be ascending.
- * Don't insert a update twice!
+ * Don't insert an update twice!
  */
 
 /*

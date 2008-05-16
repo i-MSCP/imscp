@@ -112,6 +112,12 @@ $net2ftp_settings["max_consumption_ftpserver_executiontime"] = 1500; // per FTP 
 // Check the user's home directory?
 $net2ftp_settings["check_homedirectory"] = "yes";
 
+// ----------------------------------------------------------------------------------
+// TEMP DIR OVERRIDING (ispCP Mod to avoid PHP error)
+// ----------------------------------------------------------------------------------
+$tmpdir = realpath(basedir(__FILE__) . '../../phptmp');
+$_ENV['PHP_TMPDIR'] = $tmpdir;
+putenv("PHP_TMPDIR=" . $tmpdir);
 
 // ----------------------------------------------------------------------------------
 // DO NOT CHANGE ANYTHING BELOW THIS LINE

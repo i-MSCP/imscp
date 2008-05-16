@@ -716,7 +716,7 @@ sub gen_httpd_dmn_group_entry {
 		'{SUEXEC_GROUP}'            => $suexec_group,
 		'{BWLIMIT}'                 => $dmn_traffic_limit,
 		'{BWLIMIT_DISABLED}'        => $bw_disabled,
-		'##TEMPLATE' => '' #Used to prevent apache from parsing commands which are part of the template
+		'##TEMPLATE' 				=> '' 			#Used to prevent apache from parsing commands which are part of the template
 	);
 	(
 		$rs,

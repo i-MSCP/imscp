@@ -1,36 +1,34 @@
 <?php
 /**
- *  ispCP (OMEGA) - Virtual Hosting Control System | Omega Version
+ * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- *  @copyright 	2001-2006 by moleSoftware GmbH
- *  @copyright 	2006-2008 by ispCP | http://isp-control.net
- *  @link 		http://isp-control.net
- *  @author		ispCP Team (2007)
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @version 	SVN: $ID$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  *
- *  @license
- *  This program is free software; you can redistribute it and/or modify it under
- *  the terms of the MPL General Public License as published by the Free Software
- *  Foundation; either version 1.1 of the License, or (at your option) any later
- *  version.
- *  You should have received a copy of the MPL Mozilla Public License along with
- *  this program; if not, write to the Open Source Initiative (OSI)
- *  http://opensource.org | osi@opensource.org
- **/
-
-
-
+ * @license
+ *   This program is free software; you can redistribute it and/or modify it under
+ *   the terms of the MPL General Public License as published by the Free Software
+ *   Foundation; either version 1.1 of the License, or (at your option) any later
+ *   version.
+ *   You should have received a copy of the MPL Mozilla Public License along with
+ *   this program; if not, write to the Open Source Initiative (OSI)
+ *   http://opensource.org | osi@opensource.org
+ */
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
-  global $cfg;
+	global $cfg;
 
-  $mail_id = $_GET['id'];
-  $item_delete_status = $cfg['ITEM_DELETE_STATUS'];
-  $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+	$mail_id = $_GET['id'];
+	$item_delete_status = $cfg['ITEM_DELETE_STATUS'];
+	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         select
              mail_id
         from
@@ -41,15 +39,15 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
             mail_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($dmn_id, $mail_id));
+	$rs = exec_query($sql, $query, array($dmn_id, $mail_id));
 
-  if ($rs -> RecordCount() == 0) {
-    user_goto('catchall.php');
-  }
+	if ($rs->RecordCount() == 0) {
+		user_goto('catchall.php');
+	}
 
-  check_for_lock_file();
+	check_for_lock_file();
 
-  $query = <<<SQL_QUERY
+	$query = <<<SQL_QUERY
         update
             mail_users
         set
@@ -58,15 +56,14 @@ SQL_QUERY;
             mail_id = ?
 SQL_QUERY;
 
-  $rs = exec_query($sql, $query, array($item_delete_status, $mail_id));
+	$rs = exec_query($sql, $query, array($item_delete_status, $mail_id));
 
-  send_request();
-  write_log($_SESSION['user_logged'].": delete email catch all!");
-  set_page_message(tr('Catch all account scheduled for deletion!'));
-  user_goto('catchall.php');
-
+	send_request();
+	write_log($_SESSION['user_logged'] . ": deletes email catch all!");
+	set_page_message(tr('Catch all account scheduled for deletion!'));
+	user_goto('catchall.php');
 } else {
-  user_goto('catchall.php');
+	user_goto('catchall.php');
 }
 
 ?>

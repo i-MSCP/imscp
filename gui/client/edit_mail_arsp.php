@@ -118,7 +118,7 @@ SQL_QUERY;
 		$rs = exec_query($sql, $query, array($mail_id));
 		$mail_name = $rs->fields['mail_acc'];
 		$dmn_name = $rs->fields['domain_name'];
-		write_log($_SESSION['user_logged'] . ": changed mail autoresponder: " . $mail_name . "@" . $dmn_name);
+		write_log($_SESSION['user_logged'] . ": changes mail autoresponder: " . $mail_name . "@" . $dmn_name);
 		set_page_message(tr('Mail account scheduler for modification!'));
 		header("Location: email_accounts.php");
 		exit(0);

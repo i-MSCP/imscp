@@ -91,7 +91,7 @@ $user_logged = $_SESSION['user_logged'];
 
 $ip_number = $rs->fields['ip_number'];
 
-write_log("$user_logged: delete IP address $ip_number");
+write_log("$user_logged: deletes IP address $ip_number");
 
 /* delete it ! */
 $query = <<<SQL_QUERY

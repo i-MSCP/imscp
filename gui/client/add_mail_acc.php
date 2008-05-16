@@ -245,8 +245,8 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name) {
 					WHERE
 						`subdomain_id` = ?
 SQL_QUERY;
-		    $rs = exec_query($sql, $query, array($sub_id));
-		    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['subdomain_name']).'.'.$dmn_name; // the complete address
+			    $rs = exec_query($sql, $query, array($sub_id));
+			    $mail_addr = $mail_acc.'@'.decode_idna($rs->fields['subdomain_name']).'.'.$dmn_name; // the complete address
 	        } else if ($_POST['dmn_type'] === 'als') {
 				$mail_pass = $_POST['pass'];
 				$mail_forward = '_no_';
@@ -361,7 +361,7 @@ SQL_QUERY;
             $mail_auto_respond_text,
             $mail_addr));
 
-    write_log($_SESSION['user_logged'] . ": add new mail account: " . $mail_addr);
+    write_log($_SESSION['user_logged'] . ": adds new mail account: " . (isset($mail_addr) ? $mail_addr : $mail_acc));
     set_page_message(tr('Mail account scheduled for addition!'));
     send_request();
     header("Location: email_accounts.php");

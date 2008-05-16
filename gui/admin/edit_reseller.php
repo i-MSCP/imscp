@@ -600,7 +600,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: change data/password for reseller: $edit_username!");
+			write_log("$user_logged: changes data/password for reseller: $edit_username!");
 
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				send_add_user_auto_msg ($user_id,

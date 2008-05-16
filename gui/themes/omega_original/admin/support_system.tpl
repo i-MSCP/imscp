@@ -46,7 +46,7 @@ function action_delete(url) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_support.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_OPEN_TICKETS}</td>
 	</tr>
-</table>	
+</table>
 	</td>
     <td width="27" align="right">&nbsp;</td>
   </tr>
@@ -62,7 +62,9 @@ function action_delete(url) {
           <!-- EDP: page_message -->
           <!-- BDP: tickets_list -->
           <tr>
-            <td colspan="2" class="content3" align="center"><b>{TR_TICKET_FROM}</b></td>
+            <td width="30" class="content3" align="center"><b>{TR_STATUS}</b></td>
+          	<td class="content3" align="center"><b>{TR_TICKET_FROM}</b></td>
+          	<td class="content3" align="center"><b>{TR_TICKET_TO}</b></td>
             <td width="260" class="content3" align="center"><b>{TR_SUBJECT}</b></td>
             <td width="150" class="content3" align="center"><b>{TR_URGENCY}</b></td>
             <td width="100" class="content3" align="center"><b>{TR_LAST_DATA}</b></td>
@@ -72,6 +74,7 @@ function action_delete(url) {
           <tr>
             <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
             <td class="{CONTENT}" nowrap="nowrap" align="left">{FROM}</td>
+            <td class="{CONTENT}" nowrap="nowrap" align="left">{TO}</td>
             <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left" />
                     <script language="JavaScript" type="text/javascript">
 							document.write('<a href="view_ticket.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">');
@@ -109,7 +112,7 @@ function action_delete(url) {
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-</table>				  
+</table>
 				  </td>
 				</tr>
 			</table>

@@ -830,7 +830,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
 
-	write_log($_SESSION['user_logged'] . ": delete SQL database: " . $db_name);
+	write_log($_SESSION['user_logged'] . ": deletes SQL database: " . $db_name);
 	// delete desired database from the ispcp sql_database table;
 	$query = <<<SQL_QUERY
         delete from

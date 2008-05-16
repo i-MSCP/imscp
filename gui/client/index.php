@@ -284,8 +284,7 @@ list($sub_cnt,
     $ftp_acc_cnt,
     $sqld_acc_cnt,
     $sqlu_acc_cnt) = get_domain_running_props_cnt($sql, $dmn_id);
-// ko ima jump from other user interface neka esik i optica da ostanat tezi na
-// ska4ashtijat user
+
 /*if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
     list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 } else {

@@ -65,20 +65,20 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($user_id));
 	$tpl->assign(
 		array(
-			'FIRST_NAME' => $rs->fields['fname'],
-			'LAST_NAME' => $rs->fields['lname'],
-			'FIRM' => $rs->fields['firm'],
-			'ZIP' => $rs->fields['zip'],
-			'CITY' => $rs->fields['city'],
-			'COUNTRY' => $rs->fields['country'],
-			'STREET_1' => $rs->fields['street1'],
-			'STREET_2' => $rs->fields['street2'],
-			'EMAIL' => $rs->fields['email'],
-			'PHONE' => $rs->fields['phone'],
-			'FAX' => $rs->fields['fax'],
-			'VL_MALE' => (($rs -> fields['gender'] == 'M')? 'selected' : ''),
-			'VL_FEMALE' => (($rs -> fields['gender'] == 'F')? 'selected' : ''),
-			'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
+			'FIRST_NAME' 	=> (($rs->fields['fname'] == null) 		? '' : $rs->fields['fname']),
+			'LAST_NAME' 	=> (($rs->fields['lname'] == null) 		? '' : $rs->fields['lname']),
+			'FIRM' 			=> (($rs->fields['firm'] == null) 		? '' : $rs->fields['firm']),
+			'ZIP' 			=> (($rs->fields['zip'] == null) 		? '' : $rs->fields['zip']),
+			'CITY' 			=> (($rs->fields['city'] == null) 		? '' : $rs->fields['city']),
+			'COUNTRY' 		=> (($rs->fields['country'] == null) 	? '' : $rs->fields['country']),
+			'STREET_1' 		=> (($rs->fields['street1'] == null) 	? '' : $rs->fields['street1']),
+			'STREET_2' 		=> (($rs->fields['street2'] == null) 	? '' : $rs->fields['street2']),
+			'EMAIL' 		=> (($rs->fields['email'] == null) 		? '' : $rs->fields['email']),
+			'PHONE' 		=> (($rs->fields['phone'] == null) 		? '' : $rs->fields['phone']),
+			'FAX' 			=> (($rs->fields['fax'] == null) 		? '' : $rs->fields['fax']),
+			'VL_MALE' 		=> (($rs->fields['gender'] == 'M') 		? 'selected' : ''),
+			'VL_FEMALE' 	=> (($rs->fields['gender'] == 'F') 		? 'selected' : ''),
+			'VL_UNKNOWN' 	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected' : '')
 			)
 		);
 }

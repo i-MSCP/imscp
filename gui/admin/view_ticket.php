@@ -17,6 +17,7 @@
  *   this program; if not, write to the Open Source Initiative (OSI)
  *   http://opensource.org | osi@opensource.org
  */
+
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -31,9 +32,7 @@ $tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/view_ticket.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
 $tpl->define_dynamic('tickets_item', 'tickets_list');
-
 // page functions.
-
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	$query = <<<SQL_QUERY
         SELECT
@@ -48,11 +47,9 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
             tickets
         WHERE
             ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign('TICKETS_LIST', '');
@@ -73,13 +70,15 @@ SQL_QUERY;
 
 		if ($ticket_urgency == 1) {
 			$tpl->assign(
-				array('URGENCY' => tr("Low"),
+				array(
+					'URGENCY' => tr("Low"),
 					'URGENCY_ID' => '1',
 					)
 				);
 		} elseif ($ticket_urgency == 2) {
 			$tpl->assign(
-				array('URGENCY' => tr("Medium"),
+				array(
+					'URGENCY' => tr("Medium"),
 					'URGENCY_ID' => '2',
 					)
 				);
@@ -91,7 +90,8 @@ SQL_QUERY;
 				);
 		} elseif ($ticket_urgency == 4) {
 			$tpl->assign(
-				array('URGENCY' => tr("Very high"),
+				array(
+					'URGENCY' => tr("Very high"),
 					'URGENCY_ID' => '4',
 					)
 				);
@@ -101,13 +101,13 @@ SQL_QUERY;
 		global $cfg;
 		$date_formt = $cfg['DATE_FORMAT'];
 		$tpl->assign(
-			array('TR_ACTION' => $tr_action,
+			array(
+				'TR_ACTION' => $tr_action,
 				'ACTION' => $action,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'SUBJECT' => stripslashes($rs->fields['ticket_subject']),
 				'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200) / 7), "<br>\n", 1),
-				'ID' => $rs->fields['ticket_id'],
-
+				'ID' => $rs->fields['ticket_id']
 				)
 			);
 
@@ -144,7 +144,8 @@ SQL_QUERY;
 		global $cfg;
 		$date_formt = $cfg['DATE_FORMAT'];
 		$tpl->assign(
-			array('DATE' => date($date_formt, $rs->fields['ticket_date']),
+			array(
+				'DATE' => date($date_formt, $rs->fields['ticket_date']),
 				'TICKET_CONTENT' => wordwrap(html_entity_decode(nl2br($rs->fields['ticket_message'])), round(($screenwidth-200) / 7), "<br>\n", 1),
 				// 'ID' => $rs -> fields['ticket_reply'],
 				)
@@ -166,11 +167,9 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
           tickets
       WHERE
           ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 
 	$ticket_from = $rs->fields['ticket_from'];
 	$ticket_to = $rs->fields['ticket_to'];
@@ -195,42 +194,35 @@ SQL_QUERY;
 
 	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
 
-	$tpl->assign(
-		array('FROM' => $from_name
-			)
-		);
+	$tpl->assign(array('FROM' => $from_name));
 }
-
 // common page data.
-
 global $cfg;
 $theme_color = $cfg['USER_INITIAL_THEME'];
 
 $tpl->assign(
-	array('TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client : Support System: View Tickets'),
+	array(
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client : Support System: View Tickets'),
 		'THEME_COLOR_PATH' => "../themes/$theme_color",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
-	if (!isset($_POST['uaction'])) return;
-	// close ticket
-	elseif ($_POST['uaction'] == "close") {
+	if (!isset($_POST['uaction'])) {
+		return;
+	} elseif ($_POST['uaction'] == "close") {
+		// close ticket
 		close_ticket($sql, $ticket_id);
 		return;
-	}
-	// open ticket
-	elseif ($_POST['uaction'] == "open") {
+	} elseif ($_POST['uaction'] == "open") {
+		// open ticket
 		open_ticket($sql, $ticket_id);
 		return;
-	}
-	// no message check->error
-	elseif ($_POST['user_message'] === '') {
+	} elseif ($_POST['user_message'] === '') {
+		// no message check->error
 		set_page_message(tr('Please type your message!'));
-
 		return;
 	}
 
@@ -261,15 +253,12 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
                 tickets
             WHERE
                 ticket_id = ?
-                and
-                (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_reply, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_reply));
 
 	$ticket_to = $rs->fields['ticket_from'];
-
-	$ticket_from = $rs->fields['ticket_to'];
+	$ticket_from = $_SESSION['user_id'];
 
 	$query = <<<SQL_QUERY
         INSERT INTO
@@ -326,11 +315,9 @@ function change_ticket_status($sql, $ticket_id) {
             tickets
         WHERE
             ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 	$ch_ticket_status = $rs->fields['ticket_status'];
 
 	if ($ch_ticket_status == 0) {
@@ -348,11 +335,9 @@ SQL_QUERY;
             ticket_status = ?
         WHERE
             ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
 	// end of set status 3
 }
 
@@ -364,11 +349,9 @@ function close_ticket($sql, $ticket_id) {
           ticket_status = '0'
       WHERE
           ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_id));
 
 	set_page_message(tr('Ticket was closed!'));
 }
@@ -383,17 +366,13 @@ function open_ticket($sql, $ticket_id) {
             ticket_status = ?
         WHERE
             ticket_id = ?
-            and
-            (ticket_from = ? or ticket_to = ?)
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id));
 
 	set_page_message(tr('Ticket was reopened!'));
 }
-
 // dynamic page data.
-
 $reseller_id = $_SESSION['user_created_by'];
 
 if (isset($_GET['ticket_id'])) {
@@ -421,14 +400,13 @@ if (isset($_GET['ticket_id'])) {
 	Header("Location: support_system.php");
 	die();
 }
-
 // static page messages.
-
 gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_support_system.tpl');
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_support_system.tpl');
 
 $tpl->assign(
-	array('TR_SUPPORT_SYSTEM' => tr('ispCP - Admin : Support System: View Tickets'),
+	array(
+		'TR_SUPPORT_SYSTEM' => tr('ispCP - Admin : Support System: View Tickets'),
 		'TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 		'TR_TICKET_URGENCY' => tr('Priority'),
 		'TR_TICKET_SUBJECT' => tr('Subject'),

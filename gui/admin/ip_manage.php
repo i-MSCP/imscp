@@ -126,7 +126,7 @@ SQL_QUERY;
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: add new IP4 address: $ip_number!");
+			write_log("$user_logged: adds new IP4 address: $ip_number!");
 
 			$sucess = true;
 		}

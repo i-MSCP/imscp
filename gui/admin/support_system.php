@@ -59,33 +59,34 @@ SQL_QUERY;
 	$date_formt = $cfg['DATE_FORMAT'];
 	$last_date = date($date_formt, $rs->fields['ticket_date']);
 	$tpl->assign(
-		array('LAST_DATE' => $last_date
-
+		array(
+			'LAST_DATE' => $last_date
 			)
 		);
 }
 
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
+	global $cfg;
+
 	$start_index = 0;
 
-	$rows_per_page = 8;
+	$rows_per_page = $cfg['DOMAIN_ROWS_PER_PAGE'];
 
-	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
+	if (isset($_GET['psi']))
+		$start_index = $_GET['psi'];
 
 	$count_query = <<<SQL_QUERY
-                select
-                    count(ticket_id) as cnt
-                from
+                SELECT
+                    COUNT(ticket_id) as cnt
+                FROM
                     tickets
-                where
-                    ticket_to = ?
-                  and
+                WHERE
                     ticket_status != 0
-                  and
-                    ticket_reply  = 0
+                  AND
+                    ticket_reply = 0
 SQL_QUERY;
 
-	$rs = exec_query($sql, $count_query, array($user_id));
+	$rs = exec_query($sql, $count_query, array());
 	$records_count = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
@@ -99,22 +100,21 @@ SQL_QUERY;
           FROM
                 tickets
           WHERE
-                ticket_to = ?
-            AND
                 ticket_status != 0
             AND
-                ticket_reply  = 0
+                ticket_reply = 0
           ORDER BY
                 ticket_date DESC
           LIMIT
                 $start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, array());
 
 	if ($rs->RecordCount() == 0) {
 		$tpl->assign(
-			array('TICKETS_LIST' => '',
+			array(
+				'TICKETS_LIST' => '',
 				'SCROLL_PREV' => '',
 				'SCROLL_NEXT' => ''
 				)
@@ -128,7 +128,8 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_PREV_GRAY' => '',
+				array(
+					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si
 					)
 				);
@@ -140,16 +141,18 @@ SQL_QUERY;
 			$tpl->assign('SCROLL_NEXT', '');
 		} else {
 			$tpl->assign(
-				array('SCROLL_NEXT_GRAY' => '',
+				array(
+					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si
 					)
 				);
 		}
-		global $i ;
+		global $i;
 
 		while (!$rs->EOF) {
 			$ticket_id = $rs->fields['ticket_id'];
 			$from = get_ticket_from($sql, $ticket_id);
+			$to = get_ticket_to($sql, $ticket_id, $user_id);
 			get_last_date($tpl, $sql, $ticket_id);
 			$ticket_urgency = $rs->fields['ticket_urgency'];
 
@@ -161,45 +164,29 @@ SQL_QUERY;
 						)
 					);
 			} elseif ($ticket_urgency == 2) {
-				$tpl->assign(
-					array('URGENCY' => tr("Medium")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("Medium")));
 			} elseif ($ticket_urgency == 3) {
-				$tpl->assign(
-					array('URGENCY' => tr("High")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("High")));
 			} elseif ($ticket_urgency == 4) {
-				$tpl->assign(
-					array('URGENCY' => tr("Very high")
-						)
-					);
+				$tpl->assign(array('URGENCY' => tr("Very high")));
 			}
 
-			if ($ticket_status == 2) {
-				$tpl->assign(
-					array('NEW' => tr("[New]")
-						)
-					);
-			} else if ($ticket_status == 5) {
-				$tpl->assign(
-					array('NEW' => tr("[Re]")
-						)
-					);
+			if ($ticket_status == 1 OR $ticket_status ==  2) {
+				$tpl->assign(array('NEW' => tr("[New]")));
+			} else if ($ticket_status == 4 OR $ticket_status == 5) {
+				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
-				$tpl->assign(
-					array('NEW' => " "
-						)
-					);
+				$tpl->assign(array('NEW' => " "));
 			}
 
 			$tpl->assign(
-				array('ID' => $ticket_id,
-					'FROM' => $from,
-					'SUBJECT' => clean_html(stripslashes(wordwrap($rs->fields['ticket_subject']))),
-					'MESSAGE' => clean_html($rs->fields['ticket_message']),
-					'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'
+				array(
+					'ID' 		=> $ticket_id,
+					'FROM' 		=> $from,
+					'TO'		=> $to,
+					'SUBJECT' 	=> clean_html(stripslashes(wordwrap($rs->fields['ticket_subject']))),
+					'MESSAGE' 	=> clean_html($rs->fields['ticket_message']),
+					'CONTENT' 	=> ($i % 2 == 0) ? 'content' : 'content2'
 					)
 				);
 
@@ -221,7 +208,6 @@ function get_ticket_from(&$sql, $ticket_id) {
 			tickets
 		where
 			ticket_id = ?
-
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($ticket_id));
@@ -253,6 +239,53 @@ SQL_QUERY;
 	return $from_name;
 }
 
+function get_ticket_to(&$sql, $ticket_id, $user_id) {
+	$query = <<<SQL_QUERY
+		select
+			ticket_from,
+			ticket_to,
+			ticket_status,
+			ticket_reply
+		from
+			tickets
+		where
+			ticket_id = ?
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($ticket_id));
+	$ticket_from = $rs->fields['ticket_from'];
+	$ticket_to = $rs->fields['ticket_to'];
+	$ticket_status = $rs->fields['ticket_status'];
+	$ticket_reply = clean_html($rs->fields['ticket_reply']);
+
+	$query = <<<SQL_QUERY
+		SELECT
+			admin_id,
+			admin_name,
+			admin_type,
+			fname,
+			lname
+		FROM
+			admin
+		WHERE
+			admin_id = ?
+SQL_QUERY;
+
+	$rs = exec_query($sql, $query, array($ticket_to));
+	$to_user_name = decode_idna($rs->fields['admin_name']);
+	$admin_type = $rs->fields['admin_type'];
+	$to_first_name = $rs->fields['fname'];
+	$to_last_name = $rs->fields['lname'];
+
+	if ($rs->fields['admin_id'] == $user_id) {
+		$to_name = "<b>". $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")</b>";
+	} else {
+		$to_name = $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")";
+	}
+
+	return $to_name;
+}
+
 // common page data.
 
 $theme_color = $cfg['USER_INITIAL_THEME'];
@@ -275,18 +308,21 @@ gen_admin_mainmenu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/main_menu_support_syste
 gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_support_system.tpl');
 
 $tpl->assign(
-	array('TR_SUPPORT_SYSTEM' => tr('Support system'),
-		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-		'TR_TICKET_FROM' => tr('From'),
-		'TR_NEW' => ' ',
-		'TR_ACTION' => tr('Action'),
-		'TR_URGENCY' => tr('Priority'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_LAST_DATA' => tr('Last reply'),
-		'TR_DELETE_ALL' => tr('Delete all'),
-		'TR_OPEN_TICKETS' => tr('Open tickets'),
+	array(
+		'TR_SUPPORT_SYSTEM'	=> tr('Support system'),
+		'TR_SUPPORT_TICKETS'=> tr('Support tickets'),
+		'TR_TICKET_FROM' 	=> tr('From'),
+		'TR_TICKET_TO' 		=> tr('To'),
+		'TR_STATUS' 		=> tr('Status'),
+		'TR_NEW' 			=> ' ',
+		'TR_ACTION' 		=> tr('Action'),
+		'TR_URGENCY' 		=> tr('Priority'),
+		'TR_SUBJECT' 		=> tr('Subject'),
+		'TR_LAST_DATA' 		=> tr('Last reply'),
+		'TR_DELETE_ALL' 	=> tr('Delete all'),
+		'TR_OPEN_TICKETS' 	=> tr('Open tickets'),
 		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-		'TR_DELETE' => tr('Delete'),
+		'TR_DELETE' 		=> tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete'),
 		)
 	);
@@ -294,10 +330,10 @@ $tpl->assign(
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 

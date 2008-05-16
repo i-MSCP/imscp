@@ -50,7 +50,8 @@ gen_reseller_menu($tpl, $cfg['RESELLER_TEMPLATE_PATH'] . '/menu_manage_users.tpl
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array('TR_ADD_USER' => tr('Add user'),
+	array(
+		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_PASSWORD' => tr('Password'),

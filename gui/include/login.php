@@ -89,7 +89,7 @@ SQL_QUERY;
 	    return true;
 	} else {
 		$backButtonDestination = "http://" . $cfg['BASE_SERVER_VHOST'];
-	
+
 		write_log($uname." entered incorrect password.");
 		system_message(tr("You entered an incorrect password."), $backButtonDestination);
   		return false;
@@ -292,7 +292,7 @@ function change_user_interface($from_id, $to_id) {
 
         exec_query($sql, $query, array(session_id(), $to_udata['admin_name'], $_SESSION['user_login_time']));
 
-        write_log(sprintf("%s changed into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
+        write_log(sprintf("%s changes into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
         break;
     }
 

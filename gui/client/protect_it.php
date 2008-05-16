@@ -64,7 +64,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 		return;
 	}
 	// Check for existing directory
-	$path = clean_input($_POST['other_dir'], false);
+	$path = clean_input($_POST['other_dir']);
 	$domain = $_SESSION['user_logged'];
 	// We need to use the virtual file system
 	$vfs = &new vfs($domain, $sql);

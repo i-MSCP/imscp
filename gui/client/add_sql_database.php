@@ -140,7 +140,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_name));
 
-	write_log($_SESSION['user_logged'] . ": add new SQL database: " . $db_name);
+	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . $db_name);
 	set_page_message(tr('SQL database created successfully!'));
 	user_goto('manage_sql.php');
 }

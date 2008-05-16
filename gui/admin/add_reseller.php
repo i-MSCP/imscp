@@ -23,7 +23,6 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-
 $tpl->define_dynamic('page', $cfg['ADMIN_TEMPLATE_PATH'] . '/add_reseller.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
@@ -124,7 +123,6 @@ SQL_QUERY;
 		}
 
 		$tpl->parse('RSL_IP_LIST', 'rsl_ip_list');
-
 		$tpl->assign('RSL_IP_MESSAGE', '');
 	}
 
@@ -553,7 +551,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if ($cfg['DUMP_GUI_DEBUG']) dump_gui_debug();
+if ($cfg['DUMP_GUI_DEBUG'])
+	dump_gui_debug();
 
 unset_messages();
 

@@ -53,7 +53,7 @@ function action_delete(url, mailacc) {
 		<td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_email.png" width="25" height="25"></td>
 		<td colspan="2" class="title">{TR_MAIL_USERS}</td>
 	</tr>
-</table>			
+</table>
 			</td>
             <td width="27" align="right">&nbsp;</td>
           </tr>
@@ -98,7 +98,7 @@ function action_delete(url, mailacc) {
                     <!-- EDP: mail_item -->
                     <!-- BDP: mails_total -->
                     <tr>
-                      <td colspan="4" align="right" nowrap class="content3">{TR_TOTAL_MAIL_ACCOUNTS}:&nbsp;<b>{TOTAL_MAIL_ACCOUNTS}</b></td>
+                      <td colspan="4" align="right" nowrap class="content3">{TR_TOTAL_MAIL_ACCOUNTS}:&nbsp;<b>{TOTAL_MAIL_ACCOUNTS}</b>/{ALLOWED_MAIL_ACCOUNTS}</td>
                     </tr>
                     <!-- EDP: mails_total -->
                   </table>
@@ -111,7 +111,7 @@ function action_delete(url, mailacc) {
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
-        </table>			
+        </table>
 			</td>
           </tr>
         </table>

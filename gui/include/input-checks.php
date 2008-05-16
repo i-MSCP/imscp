@@ -104,7 +104,7 @@ function clean_html($text) {
  * @param boolean $htmlencode should return value be html encoded (& -> &amp;)
  * @return String {|} trimmed, stripslashed, ev htmlencoded input string
  */
-function clean_input($input, $htmlencode = false) {
+function clean_input($input, $htmlencode = true) {
 	if ((strpos($input, "{") == 0) && (strpos($input, "}") == strlen($input)-1)) {
 		$input = trim($input, "{..}");
 	}

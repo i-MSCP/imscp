@@ -1,6 +1,19 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-16 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #1250: Please harden the php open_basedir pathes in the apache config files.
+	- ENGINE:
+		* Fixed #1260: Syntaxerror in ispcp-als-mngr
+	- GUI:
+		* Fixed #1144: Show all support tickets to adminShow all support tickets to admin
+		* Fixed #1226: Logging Deamon (Mail)
+		* Fixed #1258: possible XSS - Cross Site Scripting in some GUI-files
+		* Fixed #1259: tiny typos in php comments
+	- TOOLS:
+		* Fixed #923: Open basedir errors with filemanager. Anyone else has the same error?
+
 2008-05-15 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1250: Please harden the php open_basedir pathes in the apache config files.
