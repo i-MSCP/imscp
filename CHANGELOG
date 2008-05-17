@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-17 Benedikt Heintel
+	- DISTROS:
+		* Fixed #1262: Opensuse: Cron job for awstats static
+
 2008-05-16 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1250: Please harden the php open_basedir pathes in the apache config files.
