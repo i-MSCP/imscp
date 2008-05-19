@@ -4,6 +4,7 @@ ispCP ω 1.0.0 Changelog
 2008-05-19 Benedikt Heintel
 	- GUI:
 		* Fixed #1263: Error 404 when deleting user from "reseller" interface
+		* Fixed #1267: placeholder of awstats menu entry in client/webtools is not replaced with path
 	- TOOLS:
 		* Fixed #1264: (Webmail) Error: File does not exist
 		* Fixed #1265: (Filemanager) Fatal error in filemanager

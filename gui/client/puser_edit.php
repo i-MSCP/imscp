@@ -123,7 +123,7 @@ SQL_QUERY;
 	}
 }
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	global $cfg;
 	$awstats_act = $cfg['AWSTATS_ACTIVE'];
 	if ($awstats_act != 'yes') {

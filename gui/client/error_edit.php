@@ -75,7 +75,7 @@ if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 		);
 }
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	global $cfg;
 	$awstats_act = $cfg['AWSTATS_ACTIVE'];
 	if ($awstats_act != 'yes') {

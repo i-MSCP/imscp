@@ -62,7 +62,7 @@ $tpl->assign(array('TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Err
 		'DOMAIN' => $domain
 		));
 
-function gen_page_awstats($tpl) {
+function gen_page_awstats(&$tpl) {
 	global $cfg;
 	$awstats_act = $cfg['AWSTATS_ACTIVE'];
 	if ($awstats_act != 'yes') {
