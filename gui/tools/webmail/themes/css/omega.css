@@ -127,7 +127,7 @@ td {
 	background-repeat: repeat-x;
 	color : #ffffff;
 }
-
+/*
 .options_bar {
 	padding: 1 1;
 	background: url(../../skins/omega/options_back.gif);
@@ -139,7 +139,7 @@ td {
 .options_bar.a {
 	color: #ffffff;
 }
-
+*/
 .read_icon_bar {
 	background: url(../../skins/omega/readbar_silver.gif);
 	background-repeat: repeat-x;
@@ -259,7 +259,7 @@ frame {
 	color: #000000;
 }
 /** END Login **/
-
+/*
 #right_logo {
 	background: url(../../skins/omega/logo.gif);
 	background-repeat: no-repeat;
@@ -269,7 +269,7 @@ frame {
 	margin: 0px 0px 0px -3px;
 	cursor: hand;
 }
-
+*/
 p.button_text {
 	margin: 55px 0px 0px 10px;
 	font-size: 9px;
@@ -419,7 +419,7 @@ p.button_text {
 }
 
 #file_manager {
-	background-image: url(../../skins/omega/file_manager.png);
+	/*background-image: url(../../skins/omega/file_manager.png);*/
 	background-repeat: no-repeat;
 	background-position: top left;
 	padding: 0px 15px 5px 0px;
@@ -815,7 +815,7 @@ p.button_text {
 	border: 0px solid #0099FF;
 	background-color: transparent;
 }
-
+/*
 .savedraft_button {
 	font-family: tahoma;
 	font-size: 11px;
@@ -913,7 +913,7 @@ p.button_text {
 	border: 1px solid #9FA0FF;
 	background-color: #D4E3F0;
 }
-
+*/
 .toggle, .viewing {
 	font-size: .8em;
 	color: #f4dc6b;

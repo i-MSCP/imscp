@@ -1,6 +1,13 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-19 Benedikt Heintel
+	- GUI:
+		* Fixed #1263: Error 404 when deleting user from "reseller" interface
+	- TOOLS:
+		* Fixed #1264: (Webmail) Error: File does not exist
+		* Fixed #1265: (Filemanager) Fatal error in filemanager
+
 2008-05-17 Benedikt Heintel
 	- DISTROS:
 		* Fixed #1262: Opensuse: Cron job for awstats static

@@ -115,7 +115,7 @@ $net2ftp_settings["check_homedirectory"] = "yes";
 // ----------------------------------------------------------------------------------
 // TEMP DIR OVERRIDING (ispCP Mod to avoid PHP error)
 // ----------------------------------------------------------------------------------
-$tmpdir = realpath(basedir(__FILE__) . '../../phptmp');
+$tmpdir = realpath(dirname(__FILE__) . '../../phptmp');
 $_ENV['PHP_TMPDIR'] = $tmpdir;
 putenv("PHP_TMPDIR=" . $tmpdir);
 
