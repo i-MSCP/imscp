@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-20 Benedikt Heintel
+	- GUI:
+		* Fixed #1266: client webtools site overview misses awstats menu entry
+		* Fixed #1270: some HTML fixes in the HTML templates for the ispcp login
+
 2008-05-19 Benedikt Heintel
 	- GUI:
 		* Fixed #1263: Error 404 when deleting user from "reseller" interface

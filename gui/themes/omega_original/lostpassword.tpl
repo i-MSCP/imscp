@@ -8,10 +8,10 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
 <body onLoad="javascript:document.frm.uname.focus()">
-<table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
+<table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-<table width="453" style="border:solid 1px #CCCCCC;"align="center" cellpadding="0" cellspacing="0">
+<table width="453" style="border:solid 1px #CCCCCC;" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td>
 <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -24,7 +24,8 @@
         <table width="453" border="0" cellspacing="0" cellpadding="0">
          <tr>
           <td width="45" rowspan="6"></td>
-          <td colspan="2"><strong><div class="login_text">{TR_IMGCAPCODE}<br />{TR_CAPCODE}</div></strong></td>
+          <td colspan="2">
+		  	<div class="login_text"><strong>{TR_IMGCAPCODE}<br />{TR_CAPCODE}</strong></div></td>
          </tr>
          <tr>
           <td colspan="2"><input name="capcode" type="text" class="textinput" ID="capcode" style="width:210px" value=""></td>
@@ -36,8 +37,8 @@
           <td width="106"><br></td>
          </tr>
          <tr>
-          <td colspan="2"><strong>
-           <div class="login_text">{TR_USERNAME}</div>
+          <td colspan="2">
+           <div class="login_text"><strong>{TR_USERNAME}</strong></div>
           </td>
          </tr>
          <tr>

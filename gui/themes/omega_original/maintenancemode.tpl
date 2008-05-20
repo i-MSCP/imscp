@@ -8,10 +8,10 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
  <body text="#000000">
-  <table width="100%" height="100% "align="center" cellpadding="0" cellspacing="0">
+  <table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
    <tr>
     <td>
-     <table width="453" style="border:solid 1px #CCCCCC;"align="center" cellpadding="0" cellspacing="0">
+     <table width="453" style="border:solid 1px #CCCCCC;" align="center" cellpadding="0" cellspacing="0">
       <tr>
        <td>
         <table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
