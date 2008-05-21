@@ -10,7 +10,7 @@ function saveContent() {
 	tinyMCEPopup.close();
 }
 
-function onLoadInit() {
+function onloadInit() {
 	tinyMCEPopup.resizeToInnerSize();
 
 	// Fix for endless reloading in FF

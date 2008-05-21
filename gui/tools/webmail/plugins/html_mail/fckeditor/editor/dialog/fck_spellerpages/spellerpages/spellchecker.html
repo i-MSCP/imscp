@@ -41,7 +41,7 @@ function postWords() {
 	bodyDoc.write('<link rel="stylesheet" type="text/css" href="spellerStyle.css"/>');
 	if (opener) {
 		var speller = opener.speller;
-		bodyDoc.write('<body class="normalText" onLoad="document.forms[0].submit();">');
+		bodyDoc.write('<body class="normalText" onload="document.forms[0].submit();">');
 		bodyDoc.write('<p>' + window.parent.FCKLang.DlgSpellProgress + '<\/p>');		// by FredCK
 		bodyDoc.write('<form action="'+speller.spellCheckScript+'" method="post">');
 		for( var i = 0; i < speller.textInputs.length; i++ ) {
@@ -64,7 +64,7 @@ function postWords() {
 <head>
 <title>Speller Pages</title>
 </head>
-<frameset rows="*,201" onLoad="postWords();">
+<frameset rows="*,201" onload="postWords();">
 <frame src="blank.html">
 <frame src="controls.html">
 </frameset>

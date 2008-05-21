@@ -84,7 +84,7 @@ var TinyMCE_PreviewPlugin = {
 					html += 'writeEmbed = window.opener.TinyMCE_PreviewPlugin._writeEmbed;';
 					html += '</script>';
 					html += '</head>';
-					html += '<body dir="' + tinyMCE.getParam("directionality") + '" onload="window.opener.TinyMCE_PreviewPlugin._onLoad();">';
+					html += '<body dir="' + tinyMCE.getParam("directionality") + '" onload="window.opener.TinyMCE_PreviewPlugin._onload();">';
 					html += c;
 					html += '</body>';
 					html += '</html>';
@@ -108,7 +108,7 @@ var TinyMCE_PreviewPlugin = {
 		TinyMCE_PreviewPlugin._win = d;
 	},
 
-	_onLoad : function() {
+	_onload : function() {
 		var nl, i, el = new Array(), d = TinyMCE_PreviewPlugin._doc, sv, ne;
 
 		nl = d.getElementsByTagName("script");

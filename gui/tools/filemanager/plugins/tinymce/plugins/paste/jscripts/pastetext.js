@@ -12,7 +12,7 @@ function saveContent() {
 	tinyMCEPopup.close();
 }
 
-function onLoadInit() {
+function onloadInit() {
 	tinyMCEPopup.resizeToInnerSize();
 
 	// Remove Gecko spellchecking

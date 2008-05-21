@@ -276,7 +276,7 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 		// Hot fix:
 		// Commented out; we cannot calculate how many domains are added: 3 Domains are created by default
 		// but user can delete them and there would be a new inconsitency if so.
-		// TODO: Fix it!
+		// todo: Fix it!
 		/* if ($umail_max != $rmail_current && $umail_current > 0)
 			$err = tr('Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d', $umail_max, $rmail_current);
 		else */
@@ -337,7 +337,6 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 		// We have something like that: $u <= ($umax = $r) <= $rmax
 		if ($umax != $r && $u > 0) { // ... && $u != unlimited
 			$err = tr('Reseller data inconsistency!'); //really?
-
 			return;
 		}
 
@@ -383,8 +382,7 @@ function calculate_new_reseller_vals ($new_limit, $r, &$rmax, $u, $umax, $unlimi
 	}
 }
 
-function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err)
-{
+function check_user_ip_data($reseller_id, $r_ips, $u_ips, &$err) {
 	if ($r_ips == $u_ips) {
 		return;
 	} else {

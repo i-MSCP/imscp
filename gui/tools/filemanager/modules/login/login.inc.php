@@ -157,7 +157,7 @@ function net2ftp_module_printCss() {
 // **                                                                                  **
 // **                                                                                  **
 
-function net2ftp_module_printBodyOnload() {
+function net2ftp_module_printBodyonload() {
 
 // --------------
 // This function prints the <body onload="" actions
@@ -166,7 +166,7 @@ function net2ftp_module_printBodyOnload() {
 //	global $net2ftp_settings, $net2ftp_globals, $net2ftp_messages, $net2ftp_result;
 //	echo "";
 
-} // end net2ftp_printBodyOnload
+} // end net2ftp_printBodyonload
 
 // **                                                                                  **
 // **                                                                                  **

@@ -156,7 +156,7 @@ function getPluginProperties() {
 	$pluginProperties["fckeditor"]["includePhpFiles"][1]       = "fckeditor/fckeditor.php";
 	$pluginProperties["fckeditor"]["printJavascript"]          = "<script type=\"text/javascript\" src=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/fckeditor/fckeditor.js\"></script>\n";
 	$pluginProperties["fckeditor"]["printCss"]                 = "";
-	$pluginProperties["fckeditor"]["printBodyOnload"]          = "";
+	$pluginProperties["fckeditor"]["printBodyonload"]          = "";
 
 
 
@@ -226,7 +226,7 @@ function getPluginProperties() {
 	$pluginProperties["tinymce"]["printJavascript"]         .= "	}\n\n";
 	$pluginProperties["tinymce"]["printJavascript"]         .= "</script>\n";
 	$pluginProperties["tinymce"]["printCss"]                 = "";
-	$pluginProperties["tinymce"]["printBodyOnload"]          = "";
+	$pluginProperties["tinymce"]["printBodyonload"]          = "";
 
 
 // -------------------------------------------------------------------------
@@ -261,7 +261,7 @@ function getPluginProperties() {
 	$pluginProperties["codepress"]["includePhpFiles"][1]     = "";
 	$pluginProperties["codepress"]["printJavascript"]        = "<script type=\"text/javascript\" src=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/codepress/codepress.js\"></script>\n";
 	$pluginProperties["codepress"]["printCss"]               = "";
-	$pluginProperties["codepress"]["printBodyOnload"]        = "";
+	$pluginProperties["codepress"]["printBodyonload"]        = "";
 
 
 
@@ -283,7 +283,7 @@ function getPluginProperties() {
 	$pluginProperties["versioncheck"]["includePhpFiles"][1] = "";
 	$pluginProperties["versioncheck"]["printJavascript"]    = "<script type=\"text/javascript\" src=\"http://www.net2ftp.com/version.js\"></script>\n";
 	$pluginProperties["versioncheck"]["printCss"]           = "";
-	$pluginProperties["versioncheck"]["printBodyOnload"]    = "";
+	$pluginProperties["versioncheck"]["printBodyonload"]    = "";
 
 
 // -------------------------------------------------------------------------
@@ -319,7 +319,7 @@ function getPluginProperties() {
 	$pluginProperties["jscalendar"]["printJavascript"]       .= "<script type=\"text/javascript\" src=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/jscalendar/calendar-setup.js\"></script>\n";
 	$pluginProperties["jscalendar"]["printCss"]               = "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/jscalendar/skins/aqua/theme.css\" title=\"Aqua\" />\n";
 	$pluginProperties["jscalendar"]["printCss"]              .= "<link rel=\"alternate stylesheet\" type=\"text/css\" media=\"all\" href=\"" . $net2ftp_globals["application_rootdir_url"] . "/plugins/jscalendar/calendar-win2k-cold-1.css\" title=\"win2k-cold-1\" />\n";
-	$pluginProperties["jscalendar"]["printBodyOnload"]        = "";
+	$pluginProperties["jscalendar"]["printBodyonload"]        = "";
 
 
 // -------------------------------------------------------------------------
@@ -339,7 +339,7 @@ function getPluginProperties() {
 	$pluginProperties["jupload"]["includePhpFiles"][1]       = "";
 	$pluginProperties["jupload"]["printCss"]                 = "";
 	$pluginProperties["jupload"]["printJavascript"]          = "";
-	$pluginProperties["jupload"]["printBodyOnload"]          = "";
+	$pluginProperties["jupload"]["printBodyonload"]          = "";
 
 // -------------------------------------------------------------------------
 // SWFUpload http://swfupload.mammon.se/index.php
@@ -394,7 +394,7 @@ function getPluginProperties() {
 //	$pluginProperties["swfupload"]["printJavascript"]       .= "	function uploadError(error) { alert(error); }\n";
 	$pluginProperties["swfupload"]["printJavascript"]       .= "</script>\n";
 	$pluginProperties["swfupload"]["printCss"]               = "";
-	$pluginProperties["swfupload"]["printBodyOnload"]        = "initializeSwfu();";
+	$pluginProperties["swfupload"]["printBodyonload"]        = "initializeSwfu();";
 
 // -------------------------------------------------------------------------
 // GeSHi
@@ -413,7 +413,7 @@ function getPluginProperties() {
 	$pluginProperties["geshi"]["includePhpFiles"][1]       = "geshi/geshi.php";
 	$pluginProperties["geshi"]["printCss"]                 = "";
 	$pluginProperties["geshi"]["printJavascript"]          = "";
-	$pluginProperties["geshi"]["printBodyOnload"]          = "";
+	$pluginProperties["geshi"]["printBodyonload"]          = "";
 
 	return $pluginProperties;
 
@@ -595,7 +595,7 @@ function net2ftp_plugin_printCss() {
 // **                                                                                  **
 // **                                                                                  **
 
-function net2ftp_plugin_printBodyOnload() {
+function net2ftp_plugin_printBodyonload() {
 
 // --------------
 // This function includes PHP files which are required by the active plugins
@@ -627,11 +627,11 @@ function net2ftp_plugin_printBodyOnload() {
 // -------------------------------------------------------------------------
 // Print <body onload=""> code
 // -------------------------------------------------------------------------
-		echo $currentPlugin["printBodyOnload"];
+		echo $currentPlugin["printBodyonload"];
 
 	} // end for
 
-} // End function net2ftp_plugin_printBodyOnload
+} // End function net2ftp_plugin_printBodyonload
 
 // **                                                                                  **
 // **                                                                                  **

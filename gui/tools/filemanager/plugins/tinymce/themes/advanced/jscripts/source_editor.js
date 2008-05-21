@@ -3,7 +3,7 @@ function saveContent() {
 	tinyMCE.closeWindow(window);
 }
 
-function onLoadInit() {
+function onloadInit() {
 	tinyMCEPopup.resizeToInnerSize();
 
 	// Remove Gecko spellchecking

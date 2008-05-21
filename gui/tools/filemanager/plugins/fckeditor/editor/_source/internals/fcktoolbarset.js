@@ -292,7 +292,7 @@ FCKToolbarSet.prototype.Load = function( toolbarSetName )
 	this.IsLoaded = true ;
 	this.IsEnabled = true ;
 
-	FCKTools.RunFunction( this.OnLoad ) ;
+	FCKTools.RunFunction( this.onload ) ;
 }
 
 FCKToolbarSet.prototype.Enable = function()

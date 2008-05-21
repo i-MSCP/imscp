@@ -118,7 +118,7 @@ FCK.InitializeBehaviors = function()
 	}
 	this.EditorDocument.addEventListener( 'dblclick', this._DblClickListener, true ) ;
 
-	this._OnLoad = function()
+	this._onload = function()
 	{
 		if ( this._FCK_HTML )
 		{
@@ -126,7 +126,7 @@ FCK.InitializeBehaviors = function()
 			this._FCK_HTML = null ;
 		}
 	}
-	this.EditorWindow.addEventListener( 'load', this._OnLoad, true ) ;
+	this.EditorWindow.addEventListener( 'load', this._onload, true ) ;
 
 //	var oEditorWindow_OnUnload = function()
 //	{

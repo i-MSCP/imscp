@@ -348,7 +348,7 @@ $language_data = array (
 			'MainFile','Margin','MaxButton','MaxHeight','MaxLeft','MaxLength',
 			'MaxTop','MaxWidth','MemoWindow','MinButton','MinHeight','MinWidth',
 			'MouseIcon','MousePointer','Movable','MoverBars','MultiSelect','Name',
-			'NapTime','NewIndex','NewItemId','NoDataOnLoad','NoDefine','NotifyContainer',
+			'NapTime','NewIndex','NewItemId','NoDataonload','NoDefine','NotifyContainer',
 			'NullDisplay','NumberOfElements','OLEDragMode','OLEDragPicture','OLEDropEffects','OLEDropHasData',
 			'OLEDropMode','OLERequestPendingTimeOut','OLEServerBusyRaiseError','OLEServerBusyTimeOut','OLETypeAllowed','OleClass',
 			'OleClassId','OleControlContainer','OleIDispInValue','OleIDispOutValue','OleIDispatchIncoming','OleIDispatchOutgoing',

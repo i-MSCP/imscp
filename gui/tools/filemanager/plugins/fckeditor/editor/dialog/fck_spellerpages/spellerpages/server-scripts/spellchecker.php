@@ -184,8 +184,8 @@ function init_spell() {
 </script>
 
 </head>
-<!-- <body onLoad="init_spell();">		by FredCK -->
-<body onLoad="init_spell();" bgcolor="#ffffff">
+<!-- <body onload="init_spell();">		by FredCK -->
+<body onload="init_spell();" bgcolor="#ffffff">
 
 <script type="text/javascript">
 wordWindowObj.writeBody();

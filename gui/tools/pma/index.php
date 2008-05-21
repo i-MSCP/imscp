@@ -141,11 +141,11 @@ header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
 <?php } ?>
     }
     var onloadCnt = 0; 
-    var onLoadHandler = window.onload;
+    var onloadHandler = window.onload;
     window.onload = function() {
         if (onloadCnt == 0) {
-            if (typeof(onLoadHandler) == "function") { 
-                onLoadHandler(); 
+            if (typeof(onloadHandler) == "function") { 
+                onloadHandler(); 
             }
             if (typeof(getFrames) != 'undefined' && typeof(getFrames) == 'function') { 
                 getFrames(); 

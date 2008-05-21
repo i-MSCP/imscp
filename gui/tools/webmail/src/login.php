@@ -158,7 +158,7 @@ if (! isset($color) || ! is_array($color)) {
 
 displayHtmlHeader( "$org_name - " . _("Login"), $header, FALSE );
 
-echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onLoad=\"squirrelmail_loginpage_onload();\">" .
+echo "<body text=\"$color[8]\" bgcolor=\"$color[4]\" link=\"$color[7]\" vlink=\"$color[7]\" alink=\"$color[7]\" onload=\"squirrelmail_loginpage_onload();\">" .
      "\n" . addForm('redirect.php', 'post');
 
 $username_form_name = 'login_username';

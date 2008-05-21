@@ -290,16 +290,16 @@ TinyMCE_Engine.prototype = {
 		// Only do this once
 		if (this.configs.length == 0) {
 			if (typeof(TinyMCECompressed) == "undefined") {
-				tinyMCE.addEvent(window, "DOMContentLoaded", TinyMCE_Engine.prototype.onLoad);
+				tinyMCE.addEvent(window, "DOMContentLoaded", TinyMCE_Engine.prototype.onload);
 
 				if (tinyMCE.isRealIE) {
 					if (document.body)
-						tinyMCE.addEvent(document.body, "readystatechange", TinyMCE_Engine.prototype.onLoad);
+						tinyMCE.addEvent(document.body, "readystatechange", TinyMCE_Engine.prototype.onload);
 					else
-						tinyMCE.addEvent(document, "readystatechange", TinyMCE_Engine.prototype.onLoad);
+						tinyMCE.addEvent(document, "readystatechange", TinyMCE_Engine.prototype.onload);
 				}
 
-				tinyMCE.addEvent(window, "load", TinyMCE_Engine.prototype.onLoad);
+				tinyMCE.addEvent(window, "load", TinyMCE_Engine.prototype.onload);
 				tinyMCE._addUnloadEvents();
 			}
 		}
@@ -1552,13 +1552,13 @@ TinyMCE_Engine.prototype = {
 		tinyMCE.formSubmit(this, true);
 	},
 
-	onLoad : function() {
+	onload : function() {
 		var r, i, c, mode, trigger, elements, element, settings, elementId, elm;
 		var selector, deselector, elementRefAr, form;
 
 		// Wait for everything to be loaded first
 		if (tinyMCE.settings.strict_loading_mode && this.loadingIndex != -1) {
-			window.setTimeout('tinyMCE.onLoad();', 1);
+			window.setTimeout('tinyMCE.onload();', 1);
 			return;
 		}
 

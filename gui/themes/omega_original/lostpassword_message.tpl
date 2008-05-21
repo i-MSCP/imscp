@@ -6,7 +6,7 @@
   <meta name="robots" content="nofollow">
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
  </head>
-<body onLoad="javascript:document.frm.uname.focus()">
+<body onload="javascript:document.frm.uname.focus()">
 <table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td>
@@ -24,8 +24,8 @@
          <tr>
           <td width="6" background="{THEME_COLOR_PATH}/images/login/content_line.gif"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="2" height="2"></td>
           <td width="4">&nbsp;</td>
-          <td width="377"><strong>
-            <div class="login_text">{TR_MESSAGE}</div></strong></td>
+          <td width="377">
+            <div class="login_text"><strong>{TR_MESSAGE}</strong></div></td>
          </tr>
          <tr>
           <td background="{THEME_COLOR_PATH}/images/login/content_line.gif">&nbsp;</td>

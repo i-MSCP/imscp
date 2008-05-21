@@ -50,7 +50,7 @@ net2ftp("sendHttpHeaders");
 <?php net2ftp("printJavascript"); ?>
 <?php net2ftp("printCss"); ?>
 </head>
-<body onload="<?php net2ftp("printBodyOnload"); ?>">
+<body onload="<?php net2ftp("printBodyonload"); ?>">
 
 <?php net2ftp("printBody"); ?>
 

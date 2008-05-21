@@ -118,9 +118,9 @@ function load_optpage_data_display() {
     );
 
     if ($optmode != 'submit')
-       $onLoadScript = 'document.forms[0].new_js_autodetect_results.value = \'' . SMPREF_JS_ON . '\'';
+       $onloadScript = 'document.forms[0].new_js_autodetect_results.value = \'' . SMPREF_JS_ON . '\'';
     else
-       $onLoadScript = '';
+       $onloadScript = '';
 
     $optvals[SMOPT_GRP_GENERAL][] = array(
         'name'    => 'js_autodetect_results',
@@ -368,7 +368,7 @@ function load_optpage_data_display() {
     $result = array(
         'grps' => $optgrps,
         'vals' => $optvals,
-        'xtra' => $onLoadScript
+        'xtra' => $onloadScript
     );
     return ($result);
 }

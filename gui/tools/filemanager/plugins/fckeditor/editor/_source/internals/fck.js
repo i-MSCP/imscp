@@ -426,7 +426,7 @@ var FCK =
 				sHtml += '</body></html>' ;
 			}
 
-			this.EditingArea.OnLoad = _FCK_EditingArea_OnLoad ;
+			this.EditingArea.onload = _FCK_EditingArea_onload ;
 			this.EditingArea.Start( sHtml ) ;
 		}
 		else
@@ -436,7 +436,7 @@ var FCK =
 			FCK.EditorWindow	= null ;
 			FCK.EditorDocument	= null ;
 
-			this.EditingArea.OnLoad = null ;
+			this.EditingArea.onload = null ;
 			this.EditingArea.Start( html ) ;
 
 			// Enables the context menu in the textarea.
@@ -642,7 +642,7 @@ function _FCK_ProtectEvents_RestoreEvents( match, encodedOriginal )
 	return encodedOriginal.ReplaceAll( [/&#39;/g,/&quot;/g,/&#61;/g,/&lt;/g,/&gt;/g,/&#10;/g,/&#13;/g,/&apos;/g], ["'",'"','=','<','>','\r','\n','&'] ) ;
 }
 
-function _FCK_EditingArea_OnLoad()
+function _FCK_EditingArea_onload()
 {
 	// Get the editor's window and document (DOM)
 	FCK.EditorWindow	= FCK.EditingArea.Window ;

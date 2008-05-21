@@ -82,7 +82,7 @@ function net2ftp($action) {
 // -------------------------------------------------------------------------
 // Input checks
 // -------------------------------------------------------------------------
-	if ($action != "sendHttpHeaders" && $action != "printJavascript" && $action != "printCss" && $action != "printBodyOnload" && $action != "printBody") {
+	if ($action != "sendHttpHeaders" && $action != "printJavascript" && $action != "printCss" && $action != "printBodyonload" && $action != "printBody") {
 		$net2ftp_result["success"]         = false;
 		$net2ftp_result["error_message"]   = "The \$action variable has an unknown value: $action.";
 		$net2ftp_result["debug_backtrace"] = debug_backtrace();
@@ -301,9 +301,9 @@ function net2ftp($action) {
 			net2ftp_module_printCss();
 			net2ftp_plugin_printCss();
 		}
-		elseif ($action == "printBodyOnload") {
-			net2ftp_module_printBodyOnload();
-			net2ftp_plugin_printBodyOnload();
+		elseif ($action == "printBodyonload") {
+			net2ftp_module_printBodyonload();
+			net2ftp_plugin_printBodyonload();
 		}
 		elseif ($action == "printBody")       {
 
@@ -357,7 +357,7 @@ function net2ftp($action) {
 		}
 		elseif ($action == "printJavascript") { }
 		elseif ($action == "printCss")        { }
-		elseif ($action == "printBodyOnload") { }
+		elseif ($action == "printBodyonload") { }
 		elseif ($action == "printBody")       { }
 	}
 	elseif ($net2ftp_globals["state"] == "error") {

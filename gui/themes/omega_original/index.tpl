@@ -7,8 +7,8 @@
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
- <body onLoad="javascript:document.frm.uname.focus()">
-  <table width="100%" height="100%" "align="center" cellpadding="0" cellspacing="0">
+ <body onload="javascript:document.frm.uname.focus()">
+  <table width="100%" height="100%" align="center" cellpadding="0" cellspacing="0">
    <tr>
     <td>
      <table width="453" style="border:solid 1px #CCCCCC;" align="center" cellpadding="0" cellspacing="0">

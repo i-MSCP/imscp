@@ -130,8 +130,8 @@ FCKEditingArea.prototype.Start = function( html, secondCall )
 
 		eTextarea.value = html  ;
 
-		// Fire the "OnLoad" event.
-		FCKTools.RunFunction( this.OnLoad ) ;
+		// Fire the "onload" event.
+		FCKTools.RunFunction( this.onload ) ;
 	}
 }
 
@@ -148,8 +148,8 @@ function FCKEditingArea_CompleteStart()
 	var oEditorArea = this._FCKEditingArea ;
 	oEditorArea.MakeEditable() ;
 
-	// Fire the "OnLoad" event.
-	FCKTools.RunFunction( oEditorArea.OnLoad ) ;
+	// Fire the "onload" event.
+	FCKTools.RunFunction( oEditorArea.onload ) ;
 }
 
 FCKEditingArea.prototype.MakeEditable = function()

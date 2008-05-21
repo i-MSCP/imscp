@@ -398,7 +398,7 @@ TinyMCE_Windows.prototype.open = function(url, name, features) {
 	html += '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 	html += '<link href="' + this.getParam("css_file") + '" rel="stylesheet" type="text/css" />';
 	html += '</head>';
-	html += '<body onload="parent.mcWindows.onLoad(\'' + name + '\');">';
+	html += '<body onload="parent.mcWindows.onload(\'' + name + '\');">';
 
 	html += '<div id="' + id + '_container" class="mceWindow">';
 	html += '<div id="' + id + '_head" class="mceWindowHead" onmousedown="parent.mcWindows.windows[\'' + name + '\'].focus();">';
@@ -472,7 +472,7 @@ TinyMCE_Windows.prototype.setDocumentLock = function(state) {
 };
 
 // Gets called when wrapper iframe is initialized
-TinyMCE_Windows.prototype.onLoad = function(name) {
+TinyMCE_Windows.prototype.onload = function(name) {
 	var win = mcWindows.windows[name];
 	var id = "mcWindow_" + name;
 	var wrapperIframe = window.frames[id + "_iframe"].frames[0];

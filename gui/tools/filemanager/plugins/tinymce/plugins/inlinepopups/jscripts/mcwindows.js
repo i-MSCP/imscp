@@ -171,7 +171,7 @@ MCWindows.prototype.open = function(url, name, features) {
 	html += '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 	html += '<link href="../jscripts/tiny_mce/themes/advanced/css/editor_ui.css" rel="stylesheet" type="text/css" />';
 	html += '</head>';
-	html += '<body onload="parent.mcWindows.onLoad(\'' + name + '\');">';
+	html += '<body onload="parent.mcWindows.onload(\'' + name + '\');">';
 
 	html += '<div id="' + id + '_container" class="mceWindow">';
 	html += '<div id="' + id + '_head" class="mceWindowHead" onmousedown="parent.mcWindows.windows[\'' + name + '\'].focus();">';
@@ -197,7 +197,7 @@ MCWindows.prototype.open = function(url, name, features) {
 };
 
 // Gets called when wrapper iframe is initialized
-MCWindows.prototype.onLoad = function(name) {
+MCWindows.prototype.onload = function(name) {
 	var win = mcWindows.windows[name];
 	var id = "mcWindow_" + name;
 	var wrapperIframe = window.frames[id + "_iframe"].frames[0];

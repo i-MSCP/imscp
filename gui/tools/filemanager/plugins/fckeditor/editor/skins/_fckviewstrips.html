@@ -44,22 +44,22 @@
 window.onload = function()
 {
 	var eImg1 = document.createElement( 'img' ) ;
-	eImg1.onload = Img_OnLoad ;
+	eImg1.onload = Img_onload ;
 	eImg1.src = 'default/fck_strip.gif' ;
 
 	var eImg2 = document.createElement( 'img' ) ;
-	eImg2.onload = Img_OnLoad ;
+	eImg2.onload = Img_onload ;
 	eImg2.src = 'office2003/fck_strip.gif' ;
 
 	var eImg3 = document.createElement( 'img' ) ;
-	eImg3.onload = Img_OnLoad ;
+	eImg3.onload = Img_onload ;
 	eImg3.src = 'silver/fck_strip.gif' ;
 }
 
 var iTotalStrips = 3 ;
 var iMaxHeight = 0 ;
 
-function Img_OnLoad()
+function Img_onload()
 {
 	if ( iMaxHeight < this.height )
 		iMaxHeight = this.height ;

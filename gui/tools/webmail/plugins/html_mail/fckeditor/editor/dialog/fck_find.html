@@ -25,7 +25,7 @@
 
 var oEditor = window.parent.InnerDialogLoaded() ;
 
-function OnLoad()
+function onload()
 {
 	// Whole word is available on IE only.
 	if ( oEditor.FCKBrowserInfo.IsIE )
@@ -132,7 +132,7 @@ function FindGecko()
 }
 		</script>
 	</head>
-	<body onload="OnLoad()" scroll="no" style="OVERFLOW: hidden">
+	<body onload="onload()" scroll="no" style="OVERFLOW: hidden">
 		<table cellSpacing="3" cellPadding="2" width="100%" border="0">
 			<tr>
 				<td nowrap>

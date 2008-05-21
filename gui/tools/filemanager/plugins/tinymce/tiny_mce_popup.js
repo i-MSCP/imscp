@@ -43,7 +43,7 @@ TinyMCE_Popup.prototype = {
 
 		window.opener = win;
 		this.windowOpener = win;
-		this.onLoadEval = "";
+		this.onloadEval = "";
 
 		// Setup parent references
 		tinyMCE = win.tinyMCE;
@@ -89,10 +89,10 @@ TinyMCE_Popup.prototype = {
 			document.write('<link href="' + c + '" rel="stylesheet" type="text/css">');
 		}
 
-		tinyMCE.addEvent(window, "load", this.onLoad);
+		tinyMCE.addEvent(window, "load", this.onload);
 	},
 
-	onLoad : function() {
+	onload : function() {
 		var dir, i, elms, body = document.body;
 
 		if (tinyMCE.getWindowArg('mce_replacevariables', true))
@@ -111,13 +111,13 @@ TinyMCE_Popup.prototype = {
 			body.style.display = 'block';
 
 		// Execute real onload (Opera fix)
-		if (tinyMCEPopup.onLoadEval !== '')
-			eval(tinyMCEPopup.onLoadEval);
+		if (tinyMCEPopup.onloadEval !== '')
+			eval(tinyMCEPopup.onloadEval);
 	},
 
-	executeOnLoad : function(str) {
+	executeonload : function(str) {
 		if (tinyMCE.isOpera)
-			this.onLoadEval = str;
+			this.onloadEval = str;
 		else
 			eval(str);
 	},

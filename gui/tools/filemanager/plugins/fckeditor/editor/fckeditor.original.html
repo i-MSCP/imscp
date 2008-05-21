@@ -233,7 +233,7 @@ function LoadToolbar()
 		StartEditor() ;
 	else
 	{
-		oToolbarSet.OnLoad = StartEditor ;
+		oToolbarSet.onload = StartEditor ;
 		oToolbarSet.Load( FCKURLParams['Toolbar'] || 'Default' ) ;
 	}
 }
@@ -241,7 +241,7 @@ function LoadToolbar()
 function StartEditor()
 {
 	// Remove the onload listener.
-	FCK.ToolbarSet.OnLoad = null ;
+	FCK.ToolbarSet.onload = null ;
 
 	FCKeditorAPI._FunctionQueue.Remove( LoadToolbar ) ;
 

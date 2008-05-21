@@ -184,7 +184,7 @@ if ($show == 'form' && !isset($listall)) {
     echo '<body text="' . $color[6] . '" bgcolor="' . $color[3] . '" ' .
                'link="' . $color[6] . '" vlink="'   . $color[6] . '" ' .
                                         'alink="'   . $color[6] . '" ' .
-         'OnLoad="document.sform.query.focus();">';
+         'onload="document.sform.query.focus();">';
 } else {
     echo '<body text="' . $color[8] . '" bgcolor="' . $color[4] . '" ' .
                'link="' . $color[7] . '" vlink="'   . $color[7] . '" ' .

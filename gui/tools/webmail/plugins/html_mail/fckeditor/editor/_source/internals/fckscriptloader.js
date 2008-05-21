@@ -130,7 +130,7 @@ else
 		{
 			// IE must wait for the file to be downloaded.
 			if ( FCKBrowserInfo.IsIE )
-				e.onload = FCKScriptLoader_OnLoad ;
+				e.onload = FCKScriptLoader_onload ;
 			// Gecko doens't fire any event when the CSS is loaded, so we 
 			// can't wait for it.
 			else
@@ -141,12 +141,12 @@ else
 		else
 		{
 			// Gecko fires the "onload" event and IE fires "onreadystatechange"
-			e.onload = e.onreadystatechange = FCKScriptLoader_OnLoad ;
+			e.onload = e.onreadystatechange = FCKScriptLoader_onload ;
 			e.src = filePath ;
 		}
 	}
 
-	function FCKScriptLoader_OnLoad()
+	function FCKScriptLoader_onload()
 	{
 		// Gecko doesn't have a "readyState" property
 		if ( this.tagName == 'LINK' || !this.readyState || this.readyState == 'loaded' )

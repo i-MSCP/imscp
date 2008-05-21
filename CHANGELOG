@@ -1,6 +1,11 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-22 Benedikt Heintel
+	- GUI:
+		* Fixed #1273: some HTML fixes in the HTML templates - Part 1
+		* Fixed #1274: remove Disallow /ispcp/ from robots.txt
+
 2008-05-20 Benedikt Heintel
 	- GUI:
 		* Fixed #1266: client webtools site overview misses awstats menu entry

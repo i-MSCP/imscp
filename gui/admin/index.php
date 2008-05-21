@@ -68,7 +68,7 @@ SQL_QUERY;
 	}
 }
 
-function get_update_infos(&$tpl) {
+function get_ispcp_update_infos(&$tpl) {
 	global $cfg;
 
 	$last_update = "http://www.isp-control.net/latest.txt";
@@ -96,12 +96,14 @@ function get_update_infos(&$tpl) {
 	} else {
 		$tpl->assign(array('UPDATE_MESSAGE' => ''));
 	}
+}
 
+function get_db_update_infos(&$tpl) {
 	if(checkDatabaseUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class=\"link\">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
-		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
+		$tpl->assign(array('DATABASE_UPDATE' => ''));
 	}
 }
 
@@ -187,7 +189,8 @@ gen_admin_menu($tpl, $cfg['ADMIN_TEMPLATE_PATH'] . '/menu_general_information.tp
 
 get_admin_general_info($tpl, $sql);
 
-get_update_infos($tpl);
+get_ispcp_update_infos($tpl);
+get_db_update_infos($tpl);
 
 gen_system_message($tpl, $sql);
 
