@@ -101,7 +101,7 @@ function MM_goToURL() { //v3.0
                       </tr>
                       <tr align="center" valign="top">
                         <td width="25" nowrap>&nbsp;</td>
-                        <td width="200" nowrap class="content"><select name=min size=6 multiple id="min">
+                        <td width="200" nowrap class="content"><select name="min" size="6" multiple id="min">
                             <option value=*> Every Minute
                             <option value=*/2> Every Other Minute
                             <option value=*/5> Every Five Minutes
@@ -175,7 +175,7 @@ function MM_goToURL() { //v3.0
                             <option value=58> 58
                             <option value=59> 59
                             </select></td>
-                        <td class="content"><select name=hour size=6 multiple id="hour">
+                        <td class="content"><select name="hour" size="6" multiple id="hour">
                             <option value=*> Every Hour
                             <option value=*/2> Every Other Hour
                                 
@@ -209,7 +209,7 @@ function MM_goToURL() { //v3.0
                             <option value=23> 23 = 11 PM
                             </select>
                         </td>
-                        <td class="content"><select name=day_of_month size=6 multiple id="day_of_month">
+                        <td class="content"><select name="day_of_month" size="6" multiple id="day_of_month">
                             <option value=*> Every Day
                             <option value=1> 1
                             <option value=2> 2
@@ -246,7 +246,7 @@ function MM_goToURL() { //v3.0
                             <option value=30> 30
                             <option value=31> 31
                             </select></td>
-                        <td class="content"><select name=month size=6 multiple id="month">
+                        <td class="content"><select name="month" size="6" multiple id="month">
                             <option value=*> Every Month
                             <option value=1> January
                             <option value=2> February
@@ -262,7 +262,7 @@ function MM_goToURL() { //v3.0
                             <option value=11> November
                             <option value=12> December
                             </select></td>
-                        <td class="content"><select name=day_of_week size=6 multiple id="day_of_week">
+                        <td class="content"><select name="day_of_week" size="6" multiple id="day_of_week">
                             <option value=*> Every Weekday
                             <option value=0> Sunday
                                 
@@ -280,7 +280,7 @@ function MM_goToURL() { //v3.0
                           &nbsp;&nbsp;
                           <input name="Reset" type="reset" class="button" value="{TR_RESET}">
                           &nbsp;&nbsp;
-                          <input name="button" type="button" class="button" onClick="MM_goToURL('parent','cronjobs_overview.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                          <input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_overview.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
                       </tr>
                     </table>
                   <input type="hidden" name="uaction" value="add_cronjob">

@@ -6,7 +6,7 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
 
 function change_status(dom_id) {
@@ -73,7 +73,7 @@ function delete_account(url) {
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2" width="200">{TR_MESSAGE_SUBJECT}</td>
-                        <td class="content"><input type="text" name=msg_subject value="{MESSAGE_SUBJECT}" style="width:80%" class="textinput">
+                        <td class="content"><input type="text" name="msg_subject" value="{MESSAGE_SUBJECT}" style="width:80%" class="textinput">
                         </td>
                       </tr>
                       <tr>
@@ -89,12 +89,12 @@ function delete_account(url) {
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">{TR_SENDER_EMAIL}</td>
-                        <td class="content"><input type="text" name=sender_email value="{SENDER_EMAIL}" style="width:270px" class="textinput"></td>
+                        <td class="content"><input type="text" name="sender_email" value="{SENDER_EMAIL}" style="width:270px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">{TR_SENDER_NAME}</td>
-                        <td class="content"><input type="text" name=sender_name value="{SENDER_NAME}" style="width:270px" class="textinput"></td>
+                        <td class="content"><input type="text" name="sender_name" value="{SENDER_NAME}" style="width:270px" class="textinput"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

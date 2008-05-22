@@ -113,9 +113,9 @@ function action_delete(url) {
               </td>
             </tr>
             <tr>
-              <td width="100"><input name="Button" type="button" class="button" value="{TR_REPLY}" onClick="return sbmt(document.forms[0],'send_msg');">
+              <td width="100"><input name="Button" type="button" class="button" value="{TR_REPLY}" onclick="return sbmt(document.forms[0],'send_msg');">
               </td>
-              <td width="383"><input name="Button" type="button" class="button" value="{TR_ACTION}" onClick="return sbmt(document.forms[0],'{ACTION}');">
+              <td width="383"><input name="Button" type="button" class="button" value="{TR_ACTION}" onclick="return sbmt(document.forms[0],'{ACTION}');">
               </td>
             </tr>
             <!-- EDP: tickets_list -->

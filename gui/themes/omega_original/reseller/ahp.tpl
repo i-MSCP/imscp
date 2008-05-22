@@ -6,7 +6,8 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
+<!--
 function change_status(dom_id) {
 	if (!confirm("{TR_MESSAGE_CHANGE_STATUS}"))
 		return false;
@@ -20,7 +21,7 @@ function delete_account(url) {
 
 	location = url;
 }
-
+//-->
 </script>
 
 </head>
@@ -71,7 +72,7 @@ function delete_account(url) {
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_TEMPLATE_NAME}</td>
-                        <td class="content"><input type="text" name=hp_name value="{HP_NAME_VALUE}" style="width:210px" class="textinput">
+                        <td class="content"><input type="text" name="hp_name" value="{HP_NAME_VALUE}" style="width:210px" class="textinput">
                         </td>
                       </tr>
                       <tr>
@@ -81,50 +82,50 @@ function delete_account(url) {
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
-                        <td class="content2" width="250">{TR_MAX_SUBDOMAINS}</i></td>
-                        <td class="content"><input type="text" name=hp_sub value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput">
+                        <td class="content2" width="250">{TR_MAX_SUBDOMAINS}</td>
+                        <td class="content"><input type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
-                        <td class="content2" width="250">{TR_MAX_ALIASES}</i></b> </td>
-                        <td class="content"><input type="text" name=hp_als value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
+                        <td class="content2" width="250">{TR_MAX_ALIASES}</td>
+                        <td class="content"><input type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_MAILACCOUNTS}</td>
-                        <td class="content"><input type="text" name=hp_mail value="{HP_MAIL_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_FTP}</td>
-                        <td class="content"><input type="text" name=hp_ftp value="{HP_FTP_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SQL}</td>
-                        <td class="content"><input type="text" name=hp_sql_db value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SQL_USERS}</td>
-                        <td class="content"><input type="text" name=hp_sql_user value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_TRAFFIC}</td>
-                        <td class="content"><input type="text" name=hp_traff value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_DISK_LIMIT}</td>
-                        <td class="content"><input type="text" name=hp_disk value="{HP_DISK_VALUE}" style="width:100px" class="textinput">
+                        <td class="content"><input type="text" name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput">
                         </td>
                       </tr>
                       <tr>
@@ -150,23 +151,23 @@ function delete_account(url) {
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_PRICE}</td>
-                        <td class="content"><input name=hp_price type="text" class="textinput" id="hp_price" style="width:100px" value="{HP_PRICE}"></td>
+                        <td class="content"><input name="hp_price" type="text" class="textinput" id="hp_price" style="width:100px" value="{HP_PRICE}"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_SETUP_FEE}</td>
-                        <td class="content"><input name=hp_setupfee type="text" class="textinput" id="hp_setupfee" style="width:100px" value="{HP_SETUPFEE}"></td>
+                        <td class="content"><input name="hp_setupfee" type="text" class="textinput" id="hp_setupfee" style="width:100px" value="{HP_SETUPFEE}"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_VALUE}</td>
-                        <td class="content"><input name=hp_value type="text" class="textinput" id="hp_value" style="width:100px" value="{HP_VELUE}">
+                        <td class="content"><input name="hp_value" type="text" class="textinput" id="hp_value" style="width:100px" value="{HP_VELUE}">
                             <small>{TR_EXAMPEL}</small></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_PAYMENT}</td>
-                        <td class="content"><input name=hp_payment type="text" class="textinput" id="hp_payment" style="width:100px" value="{HP_PAYMENT}"></td>
+                        <td class="content"><input name="hp_payment" type="text" class="textinput" id="hp_payment" style="width:100px" value="{HP_PAYMENT}"></td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>

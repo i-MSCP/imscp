@@ -7,7 +7,7 @@
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/tooltip.js"></script>
-<script>
+<script type="text/javascript">
 <!--
 function over(number) {
   document.images["image"+number+"_1"].src='{THEME_COLOR_PATH}/images/bars/menu_button_left.gif';

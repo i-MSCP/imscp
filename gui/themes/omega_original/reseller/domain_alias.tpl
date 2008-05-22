@@ -6,7 +6,7 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
 
 function change_status(dom_id) {
@@ -109,7 +109,7 @@ function MM_goToURL() { //v3.0
                         {REAL_DOMAIN_MOUNT}</td>
                       <td align="center" nowrap class="{CONTENT}">{FORWARD}</td>
                       <td class="{CONTENT}" nowrap align="center">{STATUS}</td>
-                      <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="delete_account('{DELETE_LINK}')" class="link" title="{DELETE}">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{EDIT_LINK}" class="link" title="{EDIT}">{EDIT}</a></td>
+                      <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="delete_account('{DELETE_LINK}')" class="link" title="{DELETE}">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{EDIT_LINK}" class="link" title="{EDIT}">{EDIT}</a></td>
                     </tr>
                     <!-- EDP: table_item -->
                     <!-- EDP: table_list -->
@@ -117,7 +117,7 @@ function MM_goToURL() { //v3.0
                     <table width="100%"  border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td width="30">&nbsp;</td>
-                        <td><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','add_alias.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
+                        <td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','add_alias.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   ">
                         </td>
                         <td><div align="right">
                             <!-- BDP: scroll_prev_gray -->

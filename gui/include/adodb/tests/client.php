@@ -77,7 +77,7 @@ if ($testhttp) {
 }
 
 
-print "<a name=c><h1>CLIENT Driver Tests</h1>";
+print "<a name=\"c\"><h1>CLIENT Driver Tests</h1>";
 $conn = ADONewConnection('csv');
 $conn->Connect($serverURL);
 $conn->debug = true;

@@ -108,12 +108,12 @@
                </tr>
                <tr>
                 <td nowrap class="content2" colspan="2">
-                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');">{TR_FORWARD_MAIL}
+                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');">{TR_FORWARD_MAIL}
                 </td>
                </tr>
                <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('fwd_help', event)" onMouseOut="hideTip('fwd_help')" />
+                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
                 </td>
                 <td nowrap class="content">
                  <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
@@ -125,14 +125,14 @@
               <table width="100%" cellpadding="5" cellspacing="5">
                <tr>
                 <td class="content2" style="width:125px;vertical-align:top;">
-                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('fwd_help', event)" onMouseOut="hideTip('fwd_help')" />
+                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
                 </td>
                 <td  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea></td>
                </tr>
               </table>
               <!-- EDP: forward_mail -->
               <br />
-              <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'{ACTION}');">
+              <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'{ACTION}');">
               <input type="hidden" name="id" value="{MAIL_ID}">
               <input type="hidden" name="mail_type" value="{MAIL_TYPE}">
               <input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}">

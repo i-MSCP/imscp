@@ -64,7 +64,7 @@ function sbmt(form, uaction) {
                       <!-- BDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
+                        <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                       </tr>
                       <!-- EDP: page_message -->
                       <tr>
@@ -163,11 +163,11 @@ function sbmt(form, uaction) {
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2"><input name="add" type="button" onClick="return sbmt(document.forms[0],'add_user');" class="button" value="{TR_ADD}">
+                        <td colspan="2"><input name="add" type="button" onclick="return sbmt(document.forms[0],'add_user');" class="button" value="{TR_ADD}">
                           &nbsp;&nbsp;
-                          <input name="update" type="button" onClick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}">
+                          <input name="update" type="button" onclick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}">
                           &nbsp;&nbsp;
-                          <input name="delete" type="button" onClick="delete_order('orders_delete.php?order_id={ID}')" class="button" value="{TR_DELETE_ORDER}">
+                          <input name="delete" type="button" onclick="delete_order('orders_delete.php?order_id={ID}')" class="button" value="{TR_DELETE_ORDER}">
                           <input type="hidden" name="uaction" value="">
                           <input name="order_id" type="hidden" value="{ID}"></td>
                       </tr>

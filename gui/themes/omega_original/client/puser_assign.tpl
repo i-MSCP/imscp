@@ -69,7 +69,7 @@ function MM_goToURL() { //v3.0
                           <!-- EDP: already_in -->
                       </select></td>
                       <td class="content"><!-- BDP: remove_button -->
-                          <input name="Submit" type="submit" class="button" value="  {TR_REMOVE}  " onClick="return sbmt(document.forms[0],'remove');">
+                          <input name="Submit" type="submit" class="button" value="  {TR_REMOVE}  " onclick="return sbmt(document.forms[0],'remove');">
                           <!-- EDP: remove_button -->
                       </td>
                     </tr>
@@ -83,7 +83,7 @@ function MM_goToURL() { //v3.0
                         </select>
                       </td>
                       <td class="content"><!-- BDP: add_button -->
-                          <input name="Submit" type="submit" class="button" value="  {TR_ADD}  " onClick="return sbmt(document.forms[0],'add');">
+                          <input name="Submit" type="submit" class="button" value="  {TR_ADD}  " onclick="return sbmt(document.forms[0],'add');">
                           <!-- EDP: add_button -->
                       </td>
                     </tr>
@@ -91,7 +91,7 @@ function MM_goToURL() { //v3.0
                       <td>&nbsp;</td>
                       <td colspan="3"><input type="hidden" name="nadmin_name" value="{UID}">
                           <input type="hidden" name="uaction" value="">
-                          <input name="Submit" type="submit" class="button" value="  {TR_BACK}  " onClick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue">
+                          <input name="Submit" type="submit" class="button" value="  {TR_BACK}  " onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue">
                       </td>
                     </tr>
                 </table></td>

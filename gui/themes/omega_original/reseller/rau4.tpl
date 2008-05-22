@@ -6,7 +6,7 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
 
 function change_status(dom_id) {
@@ -125,7 +125,7 @@ function MM_goToURL() { //v3.0
                         <td width="25">&nbsp;</td>
                         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_ADD}  ">
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_GO_USERS}  ">
+                          <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_GO_USERS}  ">
                         </td>
                       </tr>
                     </table>

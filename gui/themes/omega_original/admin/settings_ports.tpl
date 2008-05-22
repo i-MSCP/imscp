@@ -63,7 +63,7 @@ return true;
                             <!-- BDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
+                              <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
                             </tr>
                             <!-- EDP: page_message -->
                             <tr>
@@ -101,7 +101,7 @@ return true;
                                 <!-- EDP: port_delete_show -->
                                 <!-- BDP: port_delete_link -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle">
-                                <a href="#" onClick="action_delete('{URL_DELETE}')" class="link">{TR_DELETE}</a>
+                                <a href="#" onclick="action_delete('{URL_DELETE}')" class="link">{TR_DELETE}</a>
                                 <!-- EDP: port_delete_link -->
                               </td>
                             </tr>

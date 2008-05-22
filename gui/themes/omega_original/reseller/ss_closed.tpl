@@ -82,11 +82,11 @@ function action_delete(url) {
                               {SUBJECT}</a> </td>
                             <td class="{CONTENT}" nowrap align="center">{URGENCY}</td>
                             <td class="{CONTENT}" nowrap align="center">{LAST_DATE}</td>
-                            <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onClick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
+                            <td class="{CONTENT}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" onclick="action_delete('delete_ticket.php?ticket_id={ID}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: tickets_item -->
                           <tr>
-                            <td colspan="2" nowrap><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','delete_ticket.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
+                            <td colspan="2" nowrap><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','delete_ticket.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}"></td>
                             <td colspan="3" nowrap><div align="right">
                                 <!-- BDP: scroll_prev_gray -->
                                 <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0">

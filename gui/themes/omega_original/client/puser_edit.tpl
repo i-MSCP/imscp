@@ -78,7 +78,7 @@ function MM_goToURL() { //v3.0
                           <input type="hidden" name="uaction" value="modify_user">
                           <input name="Submit" type="submit" class="button" value="  {TR_UPDATE}  ">
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
                     </tr>
                 </table></form></td>
                 <td>&nbsp;</td>

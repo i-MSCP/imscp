@@ -42,7 +42,7 @@
           <!-- BDP: page_message -->
            <tr>
              <td>&nbsp;</td>
-             <td colspan="2" class=title><font color="#FF0000">{MESSAGE}</font></td>
+             <td colspan="2" class="title"><font color="#FF0000">{MESSAGE}</font></td>
            </tr>
           <!-- EDP: page_message -->
           <tr>

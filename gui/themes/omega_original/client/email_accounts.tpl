@@ -92,7 +92,7 @@ function action_delete(url, mailacc) {
                       </td>
                       <td nowrap class="{ITEM_CLASS}" width="150">{MAIL_TYPE}</td>
                       <td nowrap class="{ITEM_CLASS}" align="center" width="180">{MAIL_STATUS}</td>
-                      <td nowrap class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onClick="action_delete('{MAIL_ACTION_SCRIPT}', '{MAIL_ACC}')">{MAIL_ACTION}</a></td>
+                      <td nowrap class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{MAIL_ACTION_SCRIPT}', '{MAIL_ACC}')">{MAIL_ACTION}</a></td>
 					</td>
                     </tr>
                     <!-- EDP: mail_item -->

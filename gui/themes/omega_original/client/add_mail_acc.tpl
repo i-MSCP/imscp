@@ -197,13 +197,13 @@
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">
-                  <input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onClick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
+                  <input type="radio" name="dmn_type" value="dmn" {MAIL_DMN_CHECKED} onclick="changeDom('real');">{TR_TO_MAIN_DOMAIN}</td>
                 <td nowrap class="content" colspan="2">@{DOMAIN_NAME}</td>
               </tr>
 			  <!-- BDP: to_alias_domain -->
               <tr>
                 <td nowrap class="content2" width="200">
-                  <input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onClick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
+                  <input type="radio" name="dmn_type" value="als" {MAIL_ALS_CHECKED} onclick="changeDom('alias');">{TR_TO_DMN_ALIAS}</td>
                 <td nowrap class="content">
                   <select name="als_id">
                     <!-- BDP: als_list -->
@@ -216,7 +216,7 @@
 			  <!-- BDP: to_subdomain -->
               <tr>
                 <td nowrap class="content2" width="200">
-                  <input type="radio" name="dmn_type" value="sub" {MAIL_SUB_CHECKED} onClick="changeDom('subdom');">{TR_TO_SUBDOMAIN}</td>
+                  <input type="radio" name="dmn_type" value="sub" {MAIL_SUB_CHECKED} onclick="changeDom('subdom');">{TR_TO_SUBDOMAIN}</td>
                 <td nowrap class="content">
                   <select name="sub_id">
                     <!-- BDP: sub_list -->
@@ -228,7 +228,7 @@
 			  <!-- EDP: to_subdomain -->
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onClick="changeType();" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_normal" value="1" onclick="changeType();" {NORMAL_MAIL_CHECKED}>{TR_NORMAL_MAIL}</td>
               </tr>
               <tr>
                 <td nowrap class="content2" width="200">&nbsp;&nbsp;&nbsp;&nbsp;{TR_PASSWORD}</td>
@@ -244,13 +244,13 @@
               </tr>
               <tr>
                 <td nowrap class="content2" colspan="2">
-                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType();">{TR_FORWARD_MAIL}</td>
+                  &nbsp;&nbsp;<input type="checkbox" name="mail_type_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType();">{TR_FORWARD_MAIL}</td>
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('fwd_help', event)" onMouseOut="hideTip('fwd_help')" />
+				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
 				</td>
-                <td nowrap  class="content">
+                <td nowrap class="content">
                   <textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px">{FORWARD_LIST}</textarea>
 	    	    </td>
 	          </tr>

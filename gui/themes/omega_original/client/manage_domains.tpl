@@ -127,7 +127,7 @@ function MM_swapImage() { //v3.0
             <td class="{ITEM_CLASS}" nowrap>{ALS_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap align="center">{ALS_FORWARD}</td>
             <td class="{ITEM_CLASS}" nowrap align="center">{ALS_STATUS}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
+            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{ALS_ACTION_SCRIPT}')" title="{ALS_ACTION}">{ALS_ACTION}</a> - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="absmiddle"> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a></td>
           </tr>
           <!-- EDP: als_item -->
           <!-- EDP: als_list -->
@@ -175,7 +175,7 @@ function MM_swapImage() { //v3.0
             <td class="{ITEM_CLASS}" colspan="2" nowrap><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="15" height="14" align="left">{SUB_NAME}</td>
             <td class="{ITEM_CLASS}" nowrap>{SUB_MOUNT}</td>
             <td class="{ITEM_CLASS}" nowrap align="center">{SUB_STATUS}</td>
-            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class=link onClick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
+            <td class="{ITEM_CLASS}" nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}')">{SUB_ACTION}</a></td>
           </tr>
           <!-- EDP: sub_item -->
           <!-- EDP: sub_list -->

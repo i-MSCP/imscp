@@ -72,7 +72,7 @@ function MM_goToURL() { //v3.0
                       <td colspan="3"><input type="hidden" name="uaction" value="add_group">
                           <input name="Submit" type="submit" class="button" value="{TR_ADD_GROUP}">
                         &nbsp;&nbsp;
-                        <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
+                        <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

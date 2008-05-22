@@ -203,13 +203,13 @@ function OpenTree()
                             </tr>
                             <tr>
                               <td nowrap class="content2" width="200">{TR_PASSWORD_REPEAT}</td>
-                              <td nowrap class=content><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
+                              <td nowrap class="content"><input type="password" name="pass_rep" value="" style="width:170px" class="textinput">
                               </td>
                             </tr>
                             <tr>
                               <td nowrap class="content2" width="200"><input id="use_other_dir" type="checkbox" name="use_other_dir" {USE_OTHER_DIR_CHECKED}>
                                 <label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
-                              <td nowrap class=content><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput">
+                              <td nowrap class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput">
                                   <br>
                                 <a href="javascript:OpenTree();" class="link">{CHOOSE_DIR} </a> </td>
                             </tr>

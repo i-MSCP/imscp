@@ -64,7 +64,7 @@ function MM_goToURL() { //v3.0
                         <td>&nbsp;</td>
                         <td><input name="Submit" type="submit" class="button" value=" {TR_SAVE} ">
                           &nbsp;&nbsp;
-                          <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','error_pages.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
+                          <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','error_pages.php');return document.MM_returnValue" value=" {TR_CANCEL} "></td>
                       </tr>
                     </table>
                 </form></td>

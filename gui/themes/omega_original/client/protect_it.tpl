@@ -147,17 +147,17 @@ function begin_js(){
                         </tr>
                         <tr>
                           <td nowrap>&nbsp;</td>
-                          <td colspan="2" nowrap><input name="Button" type="button" class="button" value="{TR_PROTECT_IT}" onClick="return sbmt(document.forms[0],'protect_it');">
+                          <td colspan="2" nowrap><input name="Button" type="button" class="button" value="{TR_PROTECT_IT}" onclick="return sbmt(document.forms[0],'protect_it');">
                             &nbsp;&nbsp;&nbsp;
                             <!-- BDP: unprotect_it -->
-                            <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','protect_delete.php?id={CDIR}');return document.MM_returnValue" value="{TR_UNPROTECT_IT}">
+                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protect_delete.php?id={CDIR}');return document.MM_returnValue" value="{TR_UNPROTECT_IT}">
                             &nbsp;&nbsp;&nbsp;
                             <!-- EDP: unprotect_it -->
                             <br>
                             <br>
-                            <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}">
+                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}">
                             &nbsp;&nbsp;&nbsp;
-                            <input name="Button" type="button" class="button" onClick="MM_goToURL('parent','protected_areas.php');return document.MM_returnValue" value="{TR_CANCEL}">
+                            <input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_areas.php');return document.MM_returnValue" value="{TR_CANCEL}">
                           </td>
                         </tr>
                       </table>

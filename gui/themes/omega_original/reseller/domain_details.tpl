@@ -6,7 +6,7 @@
   <meta name="robots" content="nofollow">
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-<script>
+<script type="text/javascript">
 <!--
 
 function change_status(dom_id) {
@@ -71,17 +71,17 @@ function MM_goToURL() { //v3.0
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td class="content2" width="193">{TR_DOMAIN_IP}</i></td>
+                      <td class="content2" width="193">{TR_DOMAIN_IP}</td>
                       <td  class="content" colspan="2">{VL_DOMAIN_IP}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td class="content2" width="193">{TR_STATUS}</i></td>
+                      <td class="content2" width="193">{TR_STATUS}</td>
                       <td  class="content" colspan="2">{VL_STATUS}</td>
                     </tr>
                     <tr>
                       <td width="25">&nbsp;</td>
-                      <td class="content2" width="193">{TR_PHP_SUPP}</i></b> </td>
+                      <td class="content2" width="193">{TR_PHP_SUPP}</td>
                       <td  class="content" colspan="2">{VL_PHP_SUPP}</td>
                     </tr>
                     <tr>
@@ -176,10 +176,10 @@ function MM_goToURL() { //v3.0
                     <tr>
                       <td>&nbsp;</td>
                       <td colspan="3"><form name="buttons" method="post" action="#">
-                          <input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
+                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="  {TR_BACK}  ">
                         &nbsp;&nbsp;&nbsp;
                         <!-- BDP: edit_option -->
-                        <input name="Submit2" type="submit" class="button" onClick="MM_goToURL('parent','edit_domain.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
+                        <input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','edit_domain.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="   {TR_EDIT}   ">
                         <!-- EDP: edit_option -->
                       </form></td>
                     </tr>

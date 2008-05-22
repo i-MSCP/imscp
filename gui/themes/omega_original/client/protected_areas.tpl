@@ -77,9 +77,9 @@ function MM_goToURL() { //v3.0
                     <!-- EDP: protected_areas -->
                     <tr>
                       <td width="25" align="center" nowrap>&nbsp;</td>
-                      <td colspan="4" nowrap><input name="Button" type="button" class="button" onClick="MM_goToURL('parent','protect_it.php');return document.MM_returnValue" value="{TR_ADD_AREA}">
+                      <td colspan="4" nowrap><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protect_it.php');return document.MM_returnValue" value="{TR_ADD_AREA}">
                         &nbsp;&nbsp;&nbsp;
-                        <input name="Button2" type="button" class="button" onClick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}"></td>
+                        <input name="Button2" type="button" class="button" onclick="MM_goToURL('parent','puser_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}"></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>

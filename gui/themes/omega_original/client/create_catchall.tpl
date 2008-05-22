@@ -108,7 +108,7 @@
                               }
                               //-->
                               </script>
-                              <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onClick="changeType('normal');">
+                              <td nowrap class="content2" width="200"><input type="radio" name="mail_type" value="normal" {NORMAL_MAIL} onclick="changeType('normal');">
                                 {TR_MAIL_LIST} </td>
                               <td nowrap class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
@@ -118,12 +118,12 @@
                               </td>
                             </tr>
                             <tr>
-                              <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onClick="changeType('forward');">
+                              <td nowrap class="content2" colspan="2"><input type="radio" name="mail_type" value="forward" {FORWARD_MAIL} onclick="changeType('forward');">
                                 {TR_FORWARD_MAIL} </td>
                             </tr>
                             <tr>
                               <td nowrap class="content2" width="200">{TR_FORWARD_TO}</td>
-                              <td nowrap  class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea>
+                              <td nowrap class="content"><textarea name="forward_list" cols="35" rows="5" wrap="virtual" style="width:210px"></textarea>
                               </td>
                             </tr>
                           </table>

@@ -76,7 +76,7 @@ function MM_goToURL() { //v3.0
       <!-- EDP: pusres -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="5"><input name="Button" type="button" class="button" onClick="MM_goToURL('parent','puser_uadd.php');return document.MM_returnValue" value="{TR_ADD_USER}">
+        <td colspan="5"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','puser_uadd.php');return document.MM_returnValue" value="{TR_ADD_USER}">
           &nbsp;&nbsp; </td>
       </tr>
     </table></td>
@@ -128,7 +128,7 @@ function MM_goToURL() { //v3.0
       <!-- EDP: pgroups -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onClick="MM_goToURL('parent','puser_gadd.php');return document.MM_returnValue">
+        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','puser_gadd.php');return document.MM_returnValue">
           &nbsp; </td>
       </tr>
     </table></td>

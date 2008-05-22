@@ -83,7 +83,7 @@ function action_delete(url) {
                                 {TR_UNINSTALL}
                                 <!-- EDP: lang_delete_show -->
                                 <!-- BDP: lang_delete_link -->
-                                <a href="#" onClick="action_delete('{URL_DELETE}')" class="link">{TR_UNINSTALL}</a>
+                                <a href="#" onclick="action_delete('{URL_DELETE}')" class="link">{TR_UNINSTALL}</a>
                                 <!-- EDP: lang_delete_link --></td>
                             </tr>
                             <!-- EDP: lang_row -->
@@ -92,7 +92,7 @@ function action_delete(url) {
                             <tr>
                               <td width="25">&nbsp;</td>
                               <td><span class="{LANG_CLASS}">
-                                  <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'change_language');" /></td>
+                                  <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'change_language');" /></td>
                             </tr>
                         </table>
                         <br />
@@ -111,7 +111,7 @@ function action_delete(url) {
                             </tr>
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
-                              <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="  {TR_INSTALL}  " onClick="return sbmt(document.forms[0],'upload_language');" /></td>
+                              <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="  {TR_INSTALL}  " onclick="return sbmt(document.forms[0],'upload_language');" /></td>
                             </tr>
                           </table>
                         <input type="hidden" name="uaction" value="" />

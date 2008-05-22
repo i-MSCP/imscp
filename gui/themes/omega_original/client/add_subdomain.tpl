@@ -114,7 +114,7 @@ function MM_swapImage() { //v3.0
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="250" class="content2">
-							   {TR_SUBDOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('dmn_help', event)" onMouseOut="hideTip('dmn_help')" />
+							   {TR_SUBDOMAIN_NAME} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
 							  </td>
                               <td class="content"><input type="text" name="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onBlur="makeUser()";>
                                 {DOMAIN_NAME}</td>

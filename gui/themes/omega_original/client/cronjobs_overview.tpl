@@ -75,12 +75,12 @@ function MM_goToURL() { //v3.0
                         {DESCRIPTION}</td>
                       <td width="100" align="center" nowrap class="{ITEM_CLASS}">{ACTIVE}</td>
                       <td width="100" nowrap class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" align="absmiddle"> <a href="cronjobs_edit.php?cron_id={ID}" class="link">{TR_EDIT}</a></td>
-                      <td width="100" nowrap class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onClick="action_delete('cronjobs_delete.php?cron_id={ID}')">{TR_DELETE}</td>
+                      <td width="100" nowrap class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle"> <a href="#" class="link" onclick="action_delete('cronjobs_delete.php?cron_id={ID}')">{TR_DELETE}</td>
                       <!-- EDP: cronjobs -->
                     </tr>
                     <tr>
                       <td nowrap>&nbsp;</td>
-                      <td colspan="4"><input name="button" type="button" class="button" onClick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}"></td>
+                      <td colspan="4"><input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}"></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>
