@@ -7,31 +7,29 @@
 <link href="../themes/omega_original/css/ispcp.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="../themes/omega_original/css/ispcp.js"></script>
 <script language="javascript" type="text/javascript">
+<!--
+function validateForm(contact) {
 
-//<!-- hide script from older browsers
-function validateForm(contact)
-{
-
-	if(""==document.forms.client_info.client_name.value)
+	if (""==document.forms.client_info.client_name.value)
 	{
 		alert("Please enter your full name.");
 		return false;
 	}
 
-	if(""==document.forms.client_info.client_email.value)
+	if (""==document.forms.client_info.client_email.value)
 	{
 		alert("Please enter your email address.");
 		return false;
 	}
 
-	if(""==document.forms.client_info.client_domain.value)
+	if (""==document.forms.client_info.client_domain.value)
 	{
 		alert("Please enter your domain name.");
 		return false;
 	}
 
 }
-//stop hiding script -->
+//-->
 </script>
 </head>
 
@@ -41,7 +39,7 @@ function validateForm(contact)
     <td height="80" align="left" valign="top">&nbsp;</td>
   </tr>
   <tr>
-    <td valign="top"><table height="100%" width="100%"  border="0" cellpadding="0" cellspacing="0">
+    <td valign="top"><table height="100%" width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>

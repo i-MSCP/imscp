@@ -27,7 +27,6 @@ function sbmt(form, uaction) {
   <tr>
     <td>
 
-
                 <tr>
                   <td width="200" class="content2">{TR_FIRSTNAME} <font color="#FF0000">*</font></td>
                   <td class="content"><input type="text" name="fname" value="{VL_USR_NAME}" style="width:210px" class="textinput">

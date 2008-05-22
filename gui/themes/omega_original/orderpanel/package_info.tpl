@@ -123,7 +123,7 @@
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr align="center">
-    <td colspan="2"><a href="addon.php?id={PACK_ID}&user_id={USER_ID}" class="link"><strong><font color=red>{TR_PURCHASE}</font></strong></a></td>
+    <td colspan="2"><a href="addon.php?id={PACK_ID}&amp;user_id={USER_ID}" class="link"><strong><font color=red>{TR_PURCHASE}</font></strong></a></td>
   </tr>
 </table>
 

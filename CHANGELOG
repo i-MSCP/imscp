@@ -1,6 +1,10 @@
 ispCP ω 1.0.0 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2008-05-22 Jochen Manz
+	- GUI:
+		* Fixed #1278: Some HTML, JS fixes, removed ugly/useless whitespace, langauage german updated - Part 3
+
 2008-05-22 Benedikt Heintel
 	- GUI:
 		* Fixed #1273: some HTML fixes in the HTML templates - Part 1

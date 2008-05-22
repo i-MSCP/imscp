@@ -57,7 +57,7 @@ for $mod (@needed) {
 
 if ($mod_err eq '_on_') {
     print STDERR "\nModules [$mod_missing] WERE NOT FOUND in your system...\n";
-    print STDERR "\nPlease INSTALL them before using isCP Omega !\n";
+    print STDERR "\nPlease INSTALL them before using ispCP Omega !\n";
     exit 1;
 } else {
     $| = 1;
