@@ -73,8 +73,8 @@
                           <table width="100%" border="0" cellspacing="5" cellpadding="5">
                             <tr>
                               <td width="80">&nbsp;</td>
-                              <td>{TR_CLEAR_LOG_MESSAGE}
-                                <select name="uaction_clear">
+                              <td><label for="uaction_clear">{TR_CLEAR_LOG_MESSAGE}</label>
+                                <select name="uaction_clear" id="uaction_clear">
                                     <option value="0" selected>{TR_CLEAR_LOG_EVERYTHING}</option>
                                     <option value="2">{TR_CLEAR_LOG_LAST2}</option>
                                     <option value="4">{TR_CLEAR_LOG_LAST4}</option>

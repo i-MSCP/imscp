@@ -50,8 +50,8 @@
                       <!-- EDP: page_message -->
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td width="203" class="content2"> {TR_CHOOSE_DEFAULT_LANGUAGE}</td>
-                        <td class="content"><select name="def_language">
+                        <td width="203" class="content2"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+                        <td class="content"><select name="def_language" id="def_language">
                             <!-- BDP: def_language -->
                             <option value="{LANG_VALUE}" {LANG_SELECTED}>{LANG_NAME}</option>
                             <!-- EDP: def_language -->

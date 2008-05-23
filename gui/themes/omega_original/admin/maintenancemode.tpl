@@ -48,14 +48,14 @@
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="25">&nbsp;</td>
-                              <td width="200" class="content2">{TR_MESSAGE}</td>
-                              <td class="content"><textarea name="maintenancemode_message" style="width:80%" class="textinput2" rows="30">{MESSAGE_VALUE}</textarea>
+                              <td width="200" class="content2"><label for="maintenancemode_message">{TR_MESSAGE}</label></td>
+                              <td class="content"><textarea name="maintenancemode_message" id="maintenancemode_message" style="width:80%" class="textinput2" rows="30">{MESSAGE_VALUE}</textarea>
                               </td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_MAINTENANCEMODE}</td>
-                              <td class="content"><select name="maintenancemode">
+                              <td class="content2"><label for="maintenancemode">{TR_MAINTENANCEMODE}</label></td>
+                              <td class="content"><select name="maintenancemode" id="maintenancemode">
                                   <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
                                   <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
                               </select></td>

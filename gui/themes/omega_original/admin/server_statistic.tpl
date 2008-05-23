@@ -38,15 +38,15 @@
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                               <td width="45">&nbsp;</td>
-                              <td width="80" class="content">{TR_MONTH}</td>
-                              <td width="80" class="content"><select name="month">
+                              <td width="80" class="content"><label for="month">{TR_MONTH}</label></td>
+                              <td width="80" class="content"><select name="month" id="month">
                                   <!-- BDP: month_list -->
                                   <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
                                   <!-- EDP: month_list -->
                                 </select>
                               </td>
-                              <td width="80" class="content">{TR_YEAR}</td>
-                              <td width="80" class="content"><select name="year">
+                              <td width="80" class="content"><label for="year">{TR_YEAR}</label></td>
+                              <td width="80" class="content"><select name="year" id="year">
                                   <!-- BDP: year_list -->
                                   <option {OPTION_SELECTED}>{YEAR_VALUE}</option>
                                   <!-- EDP: year_list -->

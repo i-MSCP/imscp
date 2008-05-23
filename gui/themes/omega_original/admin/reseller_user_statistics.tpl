@@ -42,15 +42,15 @@
                                   <form action="reseller_user_statistics.php?psi={POST_PREV_PSI}" method="post" name="rs_frm" id="rs_frm">
                                     <table width="100%">
                                       <tr>
-                                        <td width="80" class="content">{TR_MONTH}</td>
-                                        <td width="80" class="content"><select name="month">
+                                        <td width="80" class="content"><label for="month">{TR_MONTH}</label></td>
+                                        <td width="80" class="content"><select name="month" id="month">
                                             <!-- BDP: month_list -->
                                             <option {OPTION_SELECTED}>{MONTH_VALUE}</option>
                                             <!-- EDP: month_list -->
                                           </select>
                                         </td>
-                                        <td width="80" class="content">{TR_YEAR}</td>
-                                        <td width="80" class="content"><select name="year">
+                                        <td width="80" class="content"><label for="year">{TR_YEAR}</label></td>
+                                        <td width="80" class="content"><select name="year" id="year">
                                             <!-- BDP: year_list -->
                                             <option {OPTION_SELECTED}>{YEAR_VALUE}</option>
                                             <!-- EDP: year_list -->

@@ -29,25 +29,25 @@
          </tr>
          <tr>
           <td width="19">&nbsp;</td>
-          <td width="94" rowspan="4"><div align="center"><img src="{THEME_COLOR_PATH}/images/login/login_lock.jpg" width="53" height="72" /></div></td>
+          <td width="94" rowspan="4"><div align="center"><img src="{THEME_COLOR_PATH}/images/login/login_lock.jpg" width="53" height="72" alt="" /></div></td>
           <td width="20">&nbsp;</td>
           <td colspan="4" width="320">&nbsp;</td>
          </tr>
          <tr>
           <td rowspan="3">&nbsp;</td>
           <td rowspan="3">&nbsp;</td>
-          <td width="131" class="login_text"><div align="right">{TR_USERNAME}</div></td>
+          <td width="131" class="login_text"><div align="right"><label for="uname">{TR_USERNAME}</label></div></td>
           <td width="14" class="login_text">&nbsp;</td>
-          <td width="150"><input type="text" name="uname" value="" maxlength="255" style="width:150px" class="textinput" tabindex="1"></td>
+          <td width="150"><input type="text" name="uname" id="uname" value="" maxlength="255" style="width:150px" class="textinput" tabindex="1"></td>
           <td width="25">&nbsp;</td>
          </tr>
          <tr>
           <td colspan="4">&nbsp;</td>
          </tr>
          <tr>
-          <td class="login_text"><div align="right">{TR_PASSWORD}</div></td>
+          <td class="login_text"><div align="right"><label for="upass">{TR_PASSWORD}</label></div></td>
           <td class="login_text">&nbsp;</td>
-          <td><input type="password" name="upass" value="" maxlength="255" style="width:150px" class="textinput" tabindex="2"></td>
+          <td><input type="password" name="upass" id="upass" value="" maxlength="255" style="width:150px" class="textinput" tabindex="2"></td>
           <td>&nbsp;</td>
          </tr>
          <tr>
